@@ -7,6 +7,16 @@ Hartmut
 -------------------------------------------------------------------
 
 Date     Changes
+98/06/28 Updated addons/print test files
+	 Added a not to DJGPP & BCC src/makefiles that command.com
+	   is required as shell
+98/06/08 GCC asm enhancements (arith.h,ioport.h,highlow.h)
+98/06/07 fine tuning mach64 banking functions
+98/06/06 Fixed a typo in addons/ctx2jpeg.c
+	 DJGPP&BCC didn't cleanup the addons subdir's
+	 DJGPP v1 failed on grxprint.c compilation
+	 Added optimized GCC/i386 asm repfill_b code
+98/06/03 ----------- GRX v2.3 released
 98/05/26 Fixed a bug in gcc/highlow.h
 98/05/24 Printing code synced with Andris
 	 Some additional files needed memcopy.h

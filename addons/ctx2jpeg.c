@@ -137,7 +137,7 @@ SaveContextToJpeg(GrContext *volatile cxt, char *jpegn, int accuracy)
       int x;
       GrColor c;
 #if GRX_VERSION_API-0 >= 0x229
-      const GrColor *rcb = GrGetScanlineC(ctx,0,width-1,row);
+      const GrColor *rcb = GrGetScanlineC(cxt,0,width-1,row);
       if (rcb) {
         for (x=0; x < width; ++x) {
           c = rcb[x];

@@ -31,10 +31,10 @@
         ({                                                      \
         register long _repvalue;                                \
         __asm__(                                                \
-              " movzbl  %%al,%%eax                       \n"    \
-              " movb    %%al,%%ah"                              \
-                : "=a" (_repvalue)                              \
-                : "0"  ((char)(BYTE))                           \
+               "movzbl  %b1,%0  "                       "\n\t"  \
+               "movb    %b0,%h0 "                               \
+                : "=q" (_repvalue)                              \
+                : "0m"  ((char)(BYTE))                          \
         );                                                      \
         _repvalue;                                              \
         })                                                      \
@@ -45,11 +45,11 @@
         ({                                                      \
           register long  _repvalue;                             \
           __asm__(                                              \
-              " movw    %1,%%ax                          \n"    \
-              " shll    $16,%%eax                        \n"    \
-              " movw    %1,%%ax                          \n"    \
-                : "=&a" (_repvalue)                             \
-                : "q"  ((GR_int16u)(WORD))                      \
+               "movw    %w1,%w0  "                      "\n\t"  \
+               "shll    $16,%0   "                      "\n\t"  \
+               "movw    %w1,%w0  "                              \
+                : "=&r" (_repvalue)                             \
+                : "rm" ((GR_int16u)(WORD))                      \
           );                                                    \
         _repvalue;                                              \
         })                                                      \
@@ -60,13 +60,13 @@
         ({                                                      \
         register long  _repvalue;                               \
         __asm__(                                                \
-              " movb    %1,%%al                          \n"    \
-              " movb    %1,%%ah                          \n"    \
-              " shll    $16,%0                           \n"    \
-              " movb    %1,%%al                          \n"    \
-              " movb    %1,%%ah                            "    \
-                : "=&a" (_repvalue)                             \
-                : "q"  ((char)(BYTE))                           \
+               "movb    %b1,%b0  "                      "\n\t"  \
+               "movb    %b0,%h0  "                      "\n\t"  \
+               "shll    $16,%0   "                      "\n\t"  \
+               "movb    %b1,%b0  "                      "\n\t"  \
+               "movb    %b0,%h0  "                              \
+                : "=&q" (_repvalue)                             \
+                : "qm" ((char)(BYTE))                           \
         );                                                      \
         _repvalue;                                              \
         })                                                      \

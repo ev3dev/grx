@@ -1,6 +1,7 @@
 #
 # GRX 2.0 Library Makefile for Turbo C.
 # Uses Turbo C Make (v3.7 worked for me)
+# Make sure your shell is command.com !
 #
 .AUTODEPEND
 
@@ -99,6 +100,9 @@ clean:
 	if exist utils\*.obj    del utils\*.obj
 	if exist vdrivers\*.obj del vdrivers\*.obj
 	if exist wideline\*.obj del wideline\*.obj
+	if exist ..\addons\*.obj       del ..\addons\*.obj
+	if exist ..\addons\print\*.obj del ..\addons\print\*.obj
+	if exist ..\addons\bmp\*.obj   del ..\addons\bmp\*.obj
 	if exist ..\bin\vesaif16.exe del ..\bin\vesaif16.exe
 	if exist config.bcc del config.bcc
 	if exist *.asm del *.asm

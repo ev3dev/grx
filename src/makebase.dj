@@ -1,6 +1,6 @@
 #
 # GRX 2.0 Library basis Makefile for DJGPP v1 and DJGPP v2
-# Needs GNU Make.
+# Needs GNU Make. Make sure your shell is command.com !
 #
 .PHONY : clean cleanall
 
@@ -98,7 +98,9 @@ clean:
 	if exist utils\*.o    del utils\*.o
 	if exist vdrivers\*.o del vdrivers\*.o
 	if exist wideline\*.o del wideline\*.o
-	if exist ..\addons\*.o del ..\addons\*.o
+	if exist ..\addons\*.o       del ..\addons\*.o
+	if exist ..\addons\print\*.o del ..\addons\print\*.o
+	if exist ..\addons\bmp\*.o   del ..\addons\bmp\*.o
 	if exist ..\bin\vesainfo.exe del ..\bin\vesainfo.exe
 	if exist $(TAG)       del $(TAG)
 
@@ -151,4 +153,3 @@ $(ALL_O:.o=.dm) : %.dm : %.c
 	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
 
 include depend.dj2
-

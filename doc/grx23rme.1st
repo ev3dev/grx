@@ -4,6 +4,10 @@ GRX installation instructions
 Requirements:
 -------------
 
+  The source files: grx23.zip
+  The fonts       : grx23fnt.zip
+  This document   : grx23rme.1st
+
   Currently GRX directly supports the following platforms:
 
      DOS     / DJGPP v1.12     (GCC 2.6.3)

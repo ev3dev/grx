@@ -5,7 +5,7 @@
 
 #define FONT "../fonts/tms38b.fnt"
 
-void main(void)
+int main(void)
 {
   char bits[] = {0, 76, 50, 0, 0, 76, 60, 0};
   GrPattern *p1, *p2;
@@ -49,6 +49,6 @@ void main(void)
   if (fail_p1) fprintf(stderr, "Couldn't create first pattern\n");
   if (fail_p2) fprintf(stderr, "Couldn't create second pattern\n");
   if (fail_font) fprintf(stderr, "Couldn't load font %s\n", FONT);
-
+  return 0;
 }
 

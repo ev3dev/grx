@@ -77,9 +77,9 @@
 #include <grxprn00.h>
 #include <sys/stat.h>
 #include <stddef.h>
-#ifndef __WATCOMC__
+#if !defined(__WATCOMC__) && !(defined(__GO32__) && !defined(__DJGPP__))
 #include <sys/ioctl.h>
-#endif /* __WATCOMC__ */
+#endif
 
 static  short         InitDone=0;
 static  short         Mode=-1;                /* Print mode to be used */

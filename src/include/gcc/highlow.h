@@ -17,12 +17,12 @@
         _res_ = __highlow__((hi),(lo));                             \
     else                                                            \
     if(__builtin_constant_p((hi)))                                  \
-      __asm__ volatile( "  movb %1,%%al"                            \
-          : "=&a" (_res_)                                           \
+      __asm__ volatile( "  movb %b1,%b0"                            \
+          : "=&q" (_res_)                                           \
           : "qnm" ((GR_int8u)(lo)), "0" (((int)(hi))<<8) );         \
     else                                                            \
-      __asm__ volatile( "  movb %1,%%ah"                            \
-          : "=&a" (_res_)                                           \
+      __asm__ volatile( "  movb %b1,%h0"                            \
+          : "=&q" (_res_)                                           \
           : "qnm" ((GR_int8u)(hi)), "0" ((int)(lo)) );              \
     _res_;                                                          \
 })
@@ -32,9 +32,9 @@
 #define highlowP(p) ({                          \
     register GR_int32u _res_;                   \
     __asm__ volatile( "xorl   %0,%0      \n\t"  \
-                      "movw   (%1),%%ax  \n\t"  \
-                      "exch   %%al,%%ah      "  \
-        : "=&a" (_res_)                         \
+                      "movw   (%1),%w0   \n\t"  \
+                      "exch   %b0,%h0        "  \
+        : "=&q" (_res_)                         \
         : "r" ((GR_int8u *)(p))                 \
     );                                          \
     _res_;                                      \

@@ -112,6 +112,64 @@
         __INLINE_STD_ROWFILL__(P,V,C,FMODE,SIZE,TYPE)
 #endif  /* I386_GCC_FAR_MEMORY */
 
+/* ============================================ special optimized fills */
+
+/* optimized byte based fill:
+** if (c&(~3)) { (* c >= 4 *)
+**   if (p&1) write 8bit, p++, c--;
+**   if (p&2) write 16bit, p+=2,  c-=2;
+**   if (c&(~3)) { (* c >= 4 *)
+**     c>>2 times: write 32bit, p+=4;
+**   }
+** }
+** if (c&2) write 16bit, p += 2;
+** if (c&1) write 8bit, p++;
+*/
+#define repfill_b(p,v,c) do {                      \
+  asm volatile(""                                  \
+    "      testl   $-4,%%ecx                \n"    \
+    "      je      2f                       \n"    \
+    "      testl   $1,%%edi                 \n"    \
+    "      je      0f                       \n"    \
+    "      movb    %%al,(%%edi)             \n"    \
+    "      incl    %%edi                    \n"    \
+    "      decl    %%ecx                    \n"    \
+    "0:    testl   $2,%%edi                 \n"    \
+    "      je      1f                       \n"    \
+    "      movw    %%ax,(%%edi)             \n"    \
+    "      leal    -2(%%ecx),%%ecx          \n"    \
+    "      leal     2(%%edi),%%edi          \n"    \
+    "1:    testl   $-4,%%ecx                \n"    \
+    "      je      2f                       \n"    \
+    "      pushl   %%ecx                    \n"    \
+    "      shrl    $2,%%ecx                 \n"    \
+    "      cld                              \n"    \
+    "      rep                              \n"    \
+    "      stosl                            \n"    \
+    "      popl    %%ecx                    \n"    \
+    "2:    testb   $2,%%cl                  \n"    \
+    "      je      3f                       \n"    \
+    "      movw    %%ax,(%%edi)             \n"    \
+    "      leal    2(%%edi),%%edi           \n"    \
+    "3:    testb   $1,%%cl                  \n"    \
+    "      je      4f                       \n"    \
+    "      movb    %%al,(%%edi)             \n"    \
+    "      incl    %%edi                    \n"    \
+    "4:                                       "    \
+  : "=c" ((unsigned int) (c)),                     \
+    "=D" ((void *)(p))                             \
+  : "0" ((unsigned int) (c)),                      \
+    "1" ((void *)(p)),                             \
+    "a" ((GR_int32u)(v))                           \
+  );                                               \
+} while (0)
+
+#ifndef  I386_GCC_FAR_MEMORY
+/* Video memory is near: use optimized code */
+#define repfill_b_f(p,v,c)  repfill_b((p),(v),(c))
+#endif
+
+/* ====================================================== 24bpp support */
 
 #define __INLINE_386_REPFILL24__(p,c,b,INS,SEG) do {               \
   __asm__ volatile (                "\n"                           \

@@ -5,7 +5,7 @@
                            Andris Pavenis
                   e-mail: pavenis@lanet.lv
 
-                           9 March 1998
+                           26 June 1998
 
    This directory contains procedures that allows printing graphics
 from GRX graphic library. The source of this package is based on
@@ -13,7 +13,7 @@ sources of printer BGI driver for Borland C and Pascal compilers
 developed by Ullrich von Bassevitz (see copying.uz).
    Printing from GRX is tested under MS-DOS with DJGPP and under Linux.
 There is no plans to allow use it from MS-DOS real mode with Borland C++
-as the memory available to program is mostly insufficient to allocate memory
+as the memory available to program is insufficient to allocate memory
 area necessary to build image in memory.
 
 

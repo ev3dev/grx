@@ -75,37 +75,22 @@
 
 #ifdef  __GNUC__
 #ifdef  __i386__
-#define __INLINE_LOW_PORT_TEST__(P)  (                  \
-    (__builtin_constant_p((P))) &&                      \
-    ((unsigned)(P) < 0x100U)                            \
-)
 #define __INLINE_INPORT__(P,SIZE,T) ({                  \
     register T _value;                                  \
-    if(__INLINE_LOW_PORT_TEST__(P)) __asm__ volatile(   \
-    "in"#SIZE" %1,%0"                                   \
+    __asm__ volatile(                                   \
+    "in"#SIZE" %w1,%0"                                  \
     : "=a"  (_value)                                    \
-    : "n"   ((unsigned short)(P))                       \
-    );                                                  \
-    else __asm__ volatile(                              \
-    "in"#SIZE" %1,%0"                                   \
-    : "=a"  (_value)                                    \
-    : "d"   ((unsigned short)(P))                       \
+    : "Nd"   ((unsigned short)(P))                      \
     );                                                  \
     __INLINE_SLOW_DOWN_IO__;                            \
     _value;                                             \
 })
 #define __INLINE_OUTPORT__(P,V,SIZE,T) ({               \
-    if(__INLINE_LOW_PORT_TEST__(P)) __asm__ volatile(   \
-    "out"#SIZE" %0,%1"                                  \
+    __asm__ volatile(                                   \
+    "out"#SIZE" %"#SIZE"0,%w1"                          \
     : /* no outputs */                                  \
     : "a" ((unsigned T)(V)),                            \
-      "n" ((unsigned short)(P))                         \
-    );                                                  \
-    else __asm__ volatile(                              \
-    "out"#SIZE" %0,%1"                                  \
-    : /* no outputs */                                  \
-    : "a" ((unsigned T)(V)),                            \
-      "d" ((unsigned short)(P))                         \
+      "Nd" ((unsigned short)(P))                        \
     );                                                  \
     __INLINE_SLOW_DOWN_IO__;                            \
 })

@@ -8,34 +8,40 @@
 #include "libgrx.h"
 #include "grdriver.h"
 #include "arith.h"
+#include "highlow.h"
 #include "ioport.h"
 #include "memmode.h"
 
 static void setbank(int bk)
 {
+        register unsigned b1;
         if(inport_b(0x6aec) & 4) {
             bk <<= 1;
-            outport_b(0x56ec,(bk + 0));
-            outport_b(0x56ee,(bk + 1));
-            outport_b(0x5aec,(bk + 0));
-            outport_b(0x5aee,(bk + 1));
-            return;
-        }
-        outport_w(0x1ce,(((bk & 7) << 13) | ((bk & 7) << 9) | 0xb2));
+            b1 = bk+1;
+            outport_b(0x56ec,bk);
+            outport_b(0x56ee,b1);
+            outport_b(0x5aec,bk);
+            outport_b(0x5aee,b1);
+        } else {
+            b1 = (GR_int16u)(bk&7);
+            b1 = ( ((b1<<4)+b1) << 9) + 0xb2;
+            outport_w(0x1ce,b1);
+       }
 }
 
 static void setrwbanks(int rb,int wb)
 {
         if(inport_b(0x6aec) & 4) {
             wb <<= 1;
-            rb <<= 1;
             outport_b(0x56ec,(wb + 0));
             outport_b(0x56ee,(wb + 1));
+            rb <<= 1;
             outport_b(0x5aec,(rb + 0));
             outport_b(0x5aee,(rb + 1));
-            return;
+        } else {
+            register unsigned b = ((((rb&7) << 4) + (wb&7)) << 9) + 0xb2;
+            outport_w(0x1ce,b);
         }
-        outport_w(0x1ce,(((rb & 7) << 13) | ((wb & 7) << 9) | 0xb2));
 }
 
 static GrVideoModeExt gr4ext = {
