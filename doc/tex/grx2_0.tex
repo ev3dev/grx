@@ -36,7 +36,7 @@
 
  
 @example
-                       GRX 2.4.1 User's Manual
+                       GRX 2.4.2 User's Manual
 
          A graphics library for DOS, Linux, X11 and Win32
 
@@ -53,11 +53,14 @@ ______________________________________________________________________________
 
 @end example
 
-LIBGRX is a graphics library for DOS (DJGPP v2 and Turbo C/Borland C++ 
-versions), Linux and X11. On DOS it supports VGA (32768, 256 or 16 colors), EGA 
-(16 colors), and VESA compliant cards (up to 16M colors). On Linux console it 
-uses svgalib. On X11 it must work on any X11R5 (or later). From the 2.4 version,
-GRX comes with a Win32 driver, but you must considere it in alpha stage. 
+GRX is a 2D graphics library originaly written by
+Csaba Biegl for DJ Delorie's DOS port of the GCC compiler. Now it support
+a big range of platforms, the main four are: DOS (DJGPPv2), Linux console,
+X11 and Win32 (Mingw). On DOS it supports VGA, EGA and VESA compliant cards.
+On Linux console it uses svgalib or the framebuffer. On X11 it must work on
+any X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver,
+but you must considere it in alpha stage. The framebuffer Linux console
+driver is new in 2.4.2 and it is in alpha stage too.
 
 @c -----------------------------------------------------------------------------
 @node Hello world, Data types and function declarations, Credits, A User Manual For GRX2
@@ -70,7 +73,7 @@ world" centered. Then it waits after a key is pressed.
 #include <grx20.h>
 #include <grxkeys.h>
 
-int main()
+int GRXMain()
 @{
   char *message = "Hello, GRX world";
   int x, y;
@@ -99,7 +102,7 @@ int main()
 @}
 
 @end example
-Note. With the Win32 version you must use GRXMain instead main by now. 
+Note. Except for the Win32 version you can use main instead GRXMain.
 
 @c -----------------------------------------------------------------------------
 @node Data types and function declarations, Setting the graphics driver, Hello world, A User Manual For GRX2
@@ -137,7 +140,7 @@ Available drivers are for:
 
 @example
 * DOS => herc, stdvga, stdega, et4000, cl5426, mach64, ati28800, s3, VESA, memory 
-* Linux => svgalib, memory 
+* Linux => svgalib, linuxfb, memory 
 * X11 => xwin, memory 
 * Win32 => win32, memory 
 @end example
@@ -364,7 +367,7 @@ GrContext *GrCreateContext(int w,int h,char far *memory[4],GrContext *where);
 can be used to create a new context in system memory. The NULL pointer is also 
 accepted as the value of the memory and where arguments, in this case the 
 library allocates the necessary amount of memory internally. It is a general 
-convention in the library that functions returning pointers to any LIBGRX 
+convention in the library that functions returning pointers to any GRX 
 specific data structure have a last argument (most of the time named where in 
 the prototypes) which can be used to pass the address of the data structure 
 which should be filled with the result. If this where pointer has the value of 
@@ -1412,7 +1415,7 @@ necessary, avoiding the possibility of the font file being deleted or corrupted.
 You can use the premade fnt2c.c program (see the source, it's so simple) to 
 dump a selected font to source code, by example: 
 
-"fnt2c helv15 myhelv15 nyhelv15.c"
+"fnt2c helv15 myhelv15 myhelv15.c"
 
 Next, if this line is included in your main include file: 
 
@@ -2071,10 +2074,12 @@ disabled (by passing a non-zero or zero, respectively, value in the
 corresponding enable_XX parameter) by calling: 
 
 @example
-void MouseEventEnable(int enable_kb,int enable_ms);
+void GrMouseEventEnable(int enable_kb,int enable_ms);
 @end example
 
-Note that GrMouseInit set both by default. 
+Note that GrMouseInit set both by default. If you want to use
+GrMouseGetEvent and GrKeyRead at the same time, a call to
+GrMouseEventEnable( 0,1 ) is needed before input process.
 
 See the @pxref{mousetst.c} example.
 
@@ -2232,7 +2237,7 @@ From the 2.3.1 version, GRX includes the BCC2GRX library created by Hartmut
 Schirmer. The BCC2GRX was created to allow users of GRX to compile graphics 
 programs written for Borland-C++ and Turbo-C graphics interface. BCC2GRX is not 
 a convenient platform to develop new BGI programs. Of course you should use 
-native LIBGRX in such cases! 
+native GRX interface in such cases! 
 
 Read the readme.bgi file for more info. 
 

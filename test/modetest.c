@@ -130,11 +130,7 @@ void PrintModes(void) {
         } while (1);
 }
 
-#if defined(__WIN32__)
 int GRXMain(void)
-#else
-int main(void)
-#endif
 {
         static int firstgr = 1;
         GrSetDriver(NULL);
@@ -144,7 +140,7 @@ int main(void)
         }
         for( ; ; ) {
             int  i,w,h,px,py;
-            char m1[40];
+            char m1[41];
             nmodes = (int)(collectmodes(GrCurrentVideoDriver(),grmodes) - grmodes);
             GrSetMode(GR_default_text);
             if(nmodes == 0) {
@@ -167,7 +163,8 @@ int main(void)
             PrintModes();
             printf("\nEnter choice #, or anything else to quit> ");
             fflush(stdout);
-            if(!gets(m1) || (sscanf(m1,"%d",&i) != 1) || (i < 1) || (i > nmodes)) {
+            if(!fgets(m1,40,stdin) || 
+            (sscanf(m1,"%d",&i) != 1) || (i < 1) || (i > nmodes)) {
                 exit(0);
             }
             if(firstgr) {
@@ -176,7 +173,7 @@ int main(void)
                     "Now press <CR> to continue..."
                 );
                 fflush(stdout);
-                gets(m1);
+                fgets(m1,40,stdin);
                 firstgr = 0;
             }
             i--;
@@ -225,7 +222,7 @@ int main(void)
                 }
             }
             kbhit();    /* this is here to flush in the X version 8-) */
-            gets(m1);
+            fgets(m1,40,stdin);
         }
         return 0;
 }

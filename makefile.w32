@@ -1,8 +1,10 @@
 #
-# GRX 2.0 makefile for Mingw32 distribution version
+# GRX makefile for Mingw distribution version
 #
 
-include makedefs.gnu
+GRXVW32=y
+
+include makedefs.grx
 
 all:   libs test bgitest
 
@@ -11,12 +13,27 @@ libs:
 
 test:   libs
 	$(MAKE) -C test -f makefile.w32
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	$(MAKE) -C pascal -f makefile.w32
+endif
 
 bgitest:   libs
 	$(MAKE) -C test/bgi -f makefile.w32
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	$(MAKE) -C pascal/bgi -f makefile.w32
+endif
 
 clean:
 	$(MAKE) -C test -f makefile.w32 clean
 	$(MAKE) -C src  -f makefile.w32 clean
 	$(MAKE) -C test/bgi -f makefile.w32 clean
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	$(MAKE) -C pascal -f makefile.w32 clean
+	$(MAKE) -C pascal/bgi -f makefile.w32 clean
+endif
 
+install:
+	$(MAKE) -C src -f makefile.w32 install
+
+uninstall:
+	$(MAKE) -C src -f makefile.w32 uninstall

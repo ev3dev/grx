@@ -51,11 +51,7 @@ void name(void);        \
 void (*testfunc)(void) = name;  \
 void name(void)
 
-#if defined(__WIN32__)
 int GRXMain(int argc,char **argv)
-#else
-int main(int argc,char **argv)
-#endif
 {
         int  x = 0;
         int  y = 0;

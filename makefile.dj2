@@ -1,8 +1,10 @@
 #
-# GRX 2.0 makefile for DJGPP distribution version
+# GRX makefile for DJGPP distribution version
 #
 
-include makedefs.gnu
+GRXVDJ2=y
+
+include makedefs.grx
 
 all:   libs test bgitest
 
@@ -13,12 +15,13 @@ test:   libs
 	$(MAKE) -C test -f makefile.dj2
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	$(MAKE) -C pascal -f makefile.dj2
-	$(MAKE) -C pascal/bgi/demos -f makefile.dj2
-	$(MAKE) -C pascal/bgi/test -f makefile.dj2
 endif
 
 bgitest:   libs
 	$(MAKE) -C test/bgi -f makefile.dj2
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	$(MAKE) -C pascal/bgi -f makefile.dj2
+endif
 
 clean:
 	$(MAKE) -C test -f makefile.dj2 clean
@@ -26,6 +29,11 @@ clean:
 	$(MAKE) -C src  -f makefile.dj2 clean
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	$(MAKE) -C pascal -f makefile.dj2 clean
-	$(MAKE) -C pascal/bgi/demos -f makefile.dj2 clean
-	$(MAKE) -C pascal/bgi/test -f makefile.dj2 clean
+	$(MAKE) -C pascal/bgi -f makefile.dj2 clean
 endif
+
+install:
+	$(MAKE) -C src -f makefile.dj2 install
+
+uninstall:
+	$(MAKE) -C src -f makefile.dj2 uninstall

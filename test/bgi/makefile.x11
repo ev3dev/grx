@@ -2,8 +2,9 @@
 # GRX test programs makefile for LINUX/X11. Uses GNU make.
 #
 
-MAKEDEFS_DIR = ../..
-include  $(MAKEDEFS_DIR)/makedefs.x11
+GRXVX11=y
+
+include ../../makedefs.grx
 
 INCDIR=  -I../../include
 

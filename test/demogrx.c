@@ -25,11 +25,13 @@
 #include "gfaz.h"
 #include "drawing.h"
 
+/* default mode */
+
 #define WIDTH 640
 #define HEIGHT 480
 #define BPP 16
 
-#define WINTITLE "GRX 2.4.1, the graphics library"
+#define WINTITLE "GRX 2.4.2, the graphics library"
 
 #define NDEMOS 25
 
@@ -147,6 +149,7 @@ GrTextOption grt_left;
 static void ini_objects( void );
 static void paint_screen( void );
 static void the_title( int x, int y );
+static void the_info( int x, int y );
 static int pev_command( Event *ev );
 static int pev_select( Event *ev );
 static void paint_foot( char *s );
@@ -155,15 +158,18 @@ static void disaster( char *s );
 
 /************************************************************************/
 
-#if defined(__WIN32__)
-int GRXMain()
-#else
-int main()
-#endif
+int GRXMain( int argc, char **argv )
 {
   Event ev;
+  int width=WIDTH, height=HEIGHT, bpp=BPP;
 
-  gfaz_ini( WIDTH,HEIGHT,BPP );
+  if( argc >= 4 ){
+    width = atoi( argv[1] );
+    height = atoi( argv[2] );
+    bpp = atoi( argv[3] );
+    }
+
+  gfaz_ini( width,height,bpp );
   GrSetWindowTitle( WINTITLE );
   ini_objects();
   paint_screen();
@@ -172,6 +178,10 @@ int main()
     event_read( &ev );
     if( ev.type == EV_END ) break;
     if( (ev.type == EV_KEY) && (ev.p1 == GrKey_Escape) ) break;
+    if( (ev.type == EV_KEY) && (ev.p1 == 's' ) ){
+      GrSaveContextToPpm( NULL,"demogrx.ppm","DemoGRX" );
+      continue;
+      }
     if( pev_button_group( &ev,&bg ) ) continue;
     if( pev_command( &ev ) ) continue;
     if( pev_select( &ev ) ) continue;
@@ -235,8 +245,9 @@ static void paint_screen( void )
                             NULL,NULL );
   GrLoadContextFromPnm( grc,"pnmtest.ppm" );
   GrDestroyContext( grc );
-  the_title( 500,90 );
-  drawing( 400,210,200,200,BROWN,DARKGRAY);
+  the_title( 500,100 );
+  the_info( 500,215 );
+  drawing( 400,280,200,150,BROWN,DARKGRAY);
   paint_foot( "Hold down left mouse buttom to see a comment" );
 }
 
@@ -244,10 +255,8 @@ static void paint_screen( void )
 
 static void the_title( int x, int y )
 {
-  char *t1 = "GRX 2.4.1";
+  char *t1 = "GRX 2.4.2";
   char *t2 = "test programs launcher";
-  char aux[81], sys[4] = "?";
-  int nsys;
 
   grt_centered.txo_fgcolor.v = LIGHTGREEN;
 
@@ -256,6 +265,17 @@ static void the_title( int x, int y )
 
   grt_centered.txo_font = grf_std;
   GrDrawString( t2,strlen( t2 ),0+x,40+y,&grt_centered );
+}
+
+/************************************************************************/
+
+static void the_info( int x, int y )
+{
+  char aux[81], sys[4] = "?";
+  int nsys;
+
+  grt_centered.txo_fgcolor.v = CYAN;
+  grt_centered.txo_font = grf_std;
 
   nsys = GrGetLibrarySystem();
   if( nsys == GRX_VERSION_TCC_8086_DOS ) strcpy( sys,"TCC" );
@@ -266,7 +286,14 @@ static void the_title( int x, int y )
   if( nsys == GRX_VERSION_GCC_386_WIN32 ) strcpy( sys,"W32" );
 
   sprintf( aux,"Version:%x System:%s",GrGetLibraryVersion(),sys );
-  GrDrawString( aux,strlen( aux ),0+x,90+y,&grt_centered );
+  GrDrawString( aux,strlen( aux ),0+x,0+y,&grt_centered );
+
+  sprintf( aux,"VideoDriver: %s",GrCurrentVideoDriver()->name );
+  GrDrawString( aux,strlen( aux ),0+x,25+y,&grt_centered );
+
+  sprintf( aux,"Mode: %dx%d %d bpp",GrCurrentVideoMode()->width,
+    GrCurrentVideoMode()->height,GrCurrentVideoMode()->bpp );
+  GrDrawString( aux,strlen( aux ),0+x,50+y,&grt_centered );
 }
 
 /************************************************************************/
@@ -339,7 +366,7 @@ static void paint_foot( char *s )
 static void paint_animation( void )
 {
   static char *text =
-    "GRX 2.4.1, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "GRX 2.4.2, the graphics library for DJGPPv2, Linux, X11 and Win32";
   static int pos = 620;
   static int ini = 0;
   static int ltext, wtext;

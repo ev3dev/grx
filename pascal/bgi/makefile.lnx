@@ -1,0 +1,48 @@
+#
+# GRX test programs makefile for LINUX/console.
+# Uses GNU make.
+#
+.PHONY: clean install uninstall
+
+GRXVLNX=y
+
+include ../../makedefs.grx
+
+GRXLIB = ../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+GRXLIBPATH = -L../../lib/$(GRX_LIB_SUBDIR)
+
+ADDON_LIBS= -lvga
+
+ifeq ($(HAVE_LIBTIFF),y)
+  ADDON_LIBS += -ltiff
+endif
+
+ifeq ($(HAVE_LIBJPEG),y)
+  ADDON_LIBS += -ljpeg
+endif
+
+ifeq ($(NEED_ZLIB),y)
+  ADDON_LIBS += -lz
+endif
+
+LIBS= $(GRXLIBPATH) $(ADDON_LIBS) -lm
+
+# Compiler and options on your system  
+COMPILER = gpc --automake
+
+PROGS= 			\
+	allmodes	\
+	modelist	\
+	colors		\
+	demo		\
+	small		\
+	palette
+
+all: $(PROGS)
+
+$(PROGS): % : %.pas $(GRXLIB)
+	$(COMPILER) $(CCOPT) -o $* $*.pas $(LIBS)
+
+clean:
+	rm -f *.o *.gpi *.gpm $(PROGS)
+

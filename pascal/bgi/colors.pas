@@ -99,7 +99,7 @@ end;
 
 begin
   grDriver := Detect;
-  InitGraph(grDriver, grMode,'..\..\..\chr');
+  InitGraph(grDriver, grMode,'..\..\chr');
   ErrCode := GraphResult;
   if ErrCode = grOk then
   begin  { Do graphics }

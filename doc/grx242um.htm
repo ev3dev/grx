@@ -2,13 +2,13 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
-   <title>GRX 2.4.1, User's Guide</title>
+   <title>GRX 2.4.2, User's Guide</title>
 </head>
 <body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>2.4.1</small></h1>
+<small>2.4.2</small></h1>
 <h1>a graphics library for DOS, Linux, X11 and Win32</h1>
 <h2>User's Manual</h2>
 <p>Based on the original doc written by: Csaba Biegl on August 10, 1992
@@ -19,12 +19,14 @@
 <hr>
 <h2>Abstract</h2>
 
-<p>&nbsp;&nbsp;<b>LIBGRX</b> is a graphics library for DOS (DJGPP v2 and
-Turbo C/Borland C++ versions), Linux and X11. On DOS it supports VGA (32768,
-256 or 16 colors), EGA (16 colors), and VESA compliant cards (up to 16M
-colors). On Linux console it uses svgalib. On X11 it must work on any
-X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver, but
-you must considere it in alpha stage.
+<p>&nbsp;&nbsp;<b>GRX</b> is a 2D graphics library originaly written by
+Csaba Biegl for DJ Delorie's DOS port of the GCC compiler. Now it support
+a big range of platforms, the main four are: DOS (DJGPPv2), Linux console,
+X11 and Win32 (Mingw). On DOS it supports VGA, EGA and VESA compliant cards.
+On Linux console it uses svgalib or the framebuffer. On X11 it must work on
+any X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver,
+but you must considere it in alpha stage. The framebuffer Linux console
+driver is new in 2.4.2 and it is in alpha stage too.
 
 <h2>Contents</h2>
 <dir>
@@ -63,7 +65,7 @@ writes "Hello, GRX world" centered. Then it waits after a key is pressed.
 #include &lt;grx20.h>
 #include &lt;grxkeys.h>
 
-int main()
+int GRXMain()
 {
   char *message = "Hello, GRX world";
   int x, y;
@@ -92,7 +94,8 @@ int main()
 }
 </pre>
 
-<p>Note. With the Win32 version you must use GRXMain instead main by now.
+<p>Note. Except for the Win32 version you can use <code>main</code>
+instead <code>GRXMain</code>.
 <hr>
 <h2><a name="dtfd">Data types, function declarations</a></h2>
 
@@ -126,7 +129,7 @@ variable:
 Available drivers are for:
 <ul>
 <li>DOS => herc, stdvga, stdega, et4000, cl5426, mach64, ati28800, s3, VESA, memory
-<li>Linux => svgalib, memory
+<li>Linux => svgalib, linuxfb, memory
 <li>X11 => xwin, memory
 <li>Win32 => win32, memory
 </ul>
@@ -337,7 +340,7 @@ GrContext *GrCreateContext(int w,int h,char far *memory[4],GrContext *where);
 also accepted as the value of the <code>memory</code> and <code>where</code>
 arguments, in this case the library allocates the necessary amount of memory
 internally. It is a general convention in the library that functions
-returning pointers to any <b>LIBGRX</b> specific data structure have a last
+returning pointers to any <b>GRX</b> specific data structure have a last
 argument (most of the time named <code>where</code> in the prototypes) which
 can be used to pass the address of the data structure which should be filled
 with the result. If this <code>where</code> pointer has the value of NULL,
@@ -1270,7 +1273,7 @@ font file being deleted or corrupted.
 <p>&nbsp;&nbsp;You can use the premade <b>fnt2c.c</b> program (see the
 source, it's so simple) to dump a selected font to source code, by example:
 <pre>
-"fnt2c helv15 myhelv15 nyhelv15.c"
+"fnt2c helv15 myhelv15 myhelv15.c"
 </pre>
 <p>&nbsp;&nbsp;Next, if this line is included in your main include file:
 <pre>
@@ -1868,9 +1871,12 @@ individually enabled or disabled (by passing a non-zero or zero,
 respectively, value in the corresponding <code>enable_XX</code>
 parameter) by calling:
 <pre>
-void MouseEventEnable(int enable_kb,int enable_ms);
+void GrMouseEventEnable(int enable_kb,int enable_ms);
 </pre>
-<p>&nbsp;&nbsp;Note that <code>GrMouseInit</code> set both by default.
+<p>&nbsp;&nbsp;Note that <code>GrMouseInit</code> set both by default. If
+you want to use <code>GrMouseGetEvent</code> and <code>GrKeyRead</code>
+at the same time, a call to <code>GrMouseEventEnable( 0,1 )</code> is needed
+before input process.
 
 <hr>
 <h2><a name="pnm">Writing/reading PNM graphics files</a></h2>
@@ -2033,8 +2039,8 @@ and bit=0 respectively. Here is an example:
 library created by Hartmut Schirmer. The BCC2GRX was created to allow
 users of <b>GRX</b> to compile graphics programs written for Borland-C++
 and Turbo-C graphics interface. BCC2GRX is not a convenient platform
-to develop new BGI programs. Of course you should use native <b>LIBGRX</b>
-in such cases!
+to develop new BGI programs. Of course you should use native <b>GRX</b>
+interface in such cases!
 
 <p>&nbsp;&nbsp;Read the <b>readme.bgi</b> file for more info.
 

@@ -26,5 +26,5 @@
 
 /* ----------------------------------------------------------------- */
 void __gr_getfillpattern(char *pattern) {
-  getfillpattern(pattern);
+  memcpy(pattern, &__gr_fpatterns[USER_FILL], 8);
 }

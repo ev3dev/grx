@@ -49,11 +49,14 @@
 
 HINSTANCE          hGlobInst;
 HWND               hGRXWnd = NULL;
-HDC                                        hDCMem = NULL;
+HDC                hDCMem = NULL;
 SEventQueue        *pEventQueue;
 CRITICAL_SECTION   csEventQueue;
 SColorList         *ColorList;
 HBITMAP            hBitmapScreen;
+
+int _nkeysw32pool = 0;
+int _keysw32pool[_MAXKEYSW32POOL];
 
 static int maxWindowWidth, maxWindowHeight;
 // Identifier of the main thread

@@ -202,6 +202,7 @@ char *FrameDriverName(GrFrameMode m) {
     case GR_frameRAM32L: return "RAM32L";
     case GR_frameRAM32H: return "RAM32H";
     case GR_frameRAM3x8: return "RAM3x8";
+    default: return "UNKNOWN";
   }
   return "UNKNOWN";
 }
@@ -612,7 +613,7 @@ int identical_measured(gvmode *tm) {
 #endif
 
 void speedcheck(gvmode *gp, int wait) {
-  char m[40];
+  char m[41];
   static int first = 1;
   gvmode *rp = NULL;
 
@@ -622,7 +623,7 @@ void speedcheck(gvmode *gp, int wait) {
       "Now press <CR> to continue..."
     );
     fflush(stdout);
-    gets(m);
+    fgets(m,40,stdin);
   }
 
   GrSetMode(
@@ -671,7 +672,7 @@ void speedcheck(gvmode *gp, int wait) {
     if (rp)
       printresultline(stdout, rp);
     kbhit();    /* this is here to flush in the X version 8-) */
-    gets(m);
+    fgets(m,40,stdin);
   }
 }
 
@@ -774,11 +775,7 @@ void PrintModes(void) {
         } while (1);
 }
 
-#if defined(__WIN32__)
 int GRXMain(void)
-#else
-int main(void)
-#endif
 {
         int  i;
 
@@ -812,7 +809,7 @@ int main(void)
 #endif
 
         for( ; ; ) {
-            char mb[40], *m = mb;
+            char mb[41], *m = mb;
             int tflag = 0;
             GrSetMode(GR_default_text);
             printf(
@@ -826,7 +823,7 @@ int main(void)
             PrintModes();
             printf("\nEnter #, 't#' toggels tag, 'm' measure tagged and 'q' to quit> ");
             fflush(stdout);
-            if(!gets(m)) continue;
+            if(!fgets(m,40,stdin)) continue;
             switch (*m) {
               case 't':
               case 'T': tflag = 1;

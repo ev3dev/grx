@@ -29,6 +29,11 @@ static int  mou_enabled = TRUE;
 static int  mou_buttons = 0;
 static long evt_lasttime;
 
+int _GrIsKbdEnabled ( void )
+{
+  return kbd_enabled;
+}
+
 static void uninit ( void )
 {
   if ( MOUINFO -> msstatus > 1 ) {
@@ -111,21 +116,6 @@ void GrMouseGetEventT ( int flags, GrMouseEvent *ev, long tout )
     tout = 1L;
   }
   for ( ; ; ) {
-/*
-    int     nmsec;
-
-    nmsec = 0;
-    while ( nmsec < tout ) {
-      EnterCriticalSection ( &csEventQueue );
-      if ( pEventQueue -> pNext != NULL ) {
-        LeaveCriticalSection ( &csEventQueue );
-        break;
-      }
-      LeaveCriticalSection ( &csEventQueue );
-      Sleep ( 50 );
-      nmsec += 50;
-    }
-*/
     _GrUpdateInputs ();
     GrMouseUpdateCursor ();
     while ( MOUINFO -> qlength > 0 ) {
@@ -167,20 +157,6 @@ unsigned int _ButtonEvent2GrButton ( GrMouseEvent *event )
 {
   unsigned int    uiRet = 0;
 
-/*
-  if ( ( event -> flags & GR_M_LEFT_DOWN ) ||
-       ( event -> flags & GR_M_LEFT_UP ) ) {
-    uiRet |= GR_M_LEFT;
-  }
-  if ( ( event -> flags & GR_M_MIDDLE_DOWN ) ||
-       ( event -> flags & GR_M_MIDDLE_UP ) ) {
-    uiRet |= GR_M_MIDDLE;
-  }
-  if ( ( event -> flags & GR_M_RIGHT_DOWN ) ||
-       ( event -> flags & GR_M_RIGHT_UP ) ) {
-    uiRet |= GR_M_RIGHT;
-  }
-*/
   if ( event -> flags & GR_M_LEFT_DOWN ) {
     uiRet |= GR_M_LEFT;
   }
@@ -255,6 +231,8 @@ void _GrUpdateInputs ( void )
           real_dtime ( ev.dtime, evt_lasttime );
           enqueue_event ( ev );
           MOUINFO -> moved = FALSE;
+        } else if( _nkeysw32pool < _MAXKEYSW32POOL ) {
+          _keysw32pool[_nkeysw32pool++] = pWinEv -> key;
         }
         break;
 

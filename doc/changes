@@ -4,6 +4,30 @@ the 2.2 version.
 
 Date     Changes
 
+01/05/15 ----------- GRX v2.4.2 released (Mariano Alvarez Fernandez)
+01/06/12 Modified win32 input code to work GrMouseGetEvent and
+         GrKeyRead at the same time when GrMouseEventEnable(1,0) is set
+01/06/07 Merged makedefs.gnu, makedefs.x11, makedefs.dj2 and
+         makedefs.w32 in makedefs.grx (readme file updated)
+01/06/06 Now we can use "GRXMain" for all GRX versions, grx20.h defines
+         it like "main" except for the win32 version. Deleted the ugly
+         "#ifdef __WIN32__ ..." in test programs (except for BGI tests)
+01/06/05 Added the Linux framebuffer videodriver (vdrivers/vd_lnxfb.c)
+         alpha stage, only in 16 or 24 bpp. To use it set GRX20DRV to
+         "linuxfb" in the GRX Linux version. The mouse doesn't work
+01/06/05 Some minimal changes to compile ok with gcc 2.96 and
+         Linux 2.4.x
+01/05/30 Applied patch to sanity bgi code for gcc 3.0, by Andris
+         Pavenis
+01/05/28 Modified makefiles for linux and x11. Now they build
+         shared and static libs at the same time. Added install and
+         uninstall targets.
+01/05/16 Applied patch to add standard pascal makefiles for dj2, w32,
+         x11 and lnx. pascal/bgi/test and pascal/bgi/demo merged in
+         pascal/bgi. Pascal readme updated. By Maurice Lombardi
+01/05/09 Applied patch to produce makefiles for mingw32 pascal tests
+         by Maurice Lombardi
+
 01/04/26 ----------- GRX v2.4.1 released (Mariano Alvarez Fernandez)
 01/04/25 User's guide (info) updated, by Vicente Fuentes Gea
 01/04/20 User's guide (html) updated

@@ -1,33 +1,27 @@
 #
-# GRX 2.0 makefile for LINUX/X11 distribution version (GNU-make)
+# GRX makefile for LINUX/X11 distribution version (GNU-make)
 #
 
-# set MAKE to GNU make
-#MAKE=gmake
+GRXVX11=y
 
-MAKEDEFS_DIR=.
-include makedefs.x11
+include makedefs.grx
 
 all: libs test bgitest
 
-libs: static_libs shared_libs
+libs:
+	$(MAKE) -C src -f makefile.x11
 
-static_libs:
-	$(MAKE) -C src STATIC=1 -f makefile.x11
-
-shared_libs:
-	$(MAKE) -C src SHARED=1 -f makefile.x11
-
-test:   static_libs
+test: libs
 	$(MAKE) -C test -f makefile.x11
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	$(MAKE) -C pascal -f makefile.x11
-	$(MAKE) -C pascal/bgi/demos -f makefile.x11
-	$(MAKE) -C pascal/bgi/test -f makefile.x11
 endif
 
-bgitest:   static_libs
+bgitest: libs
 	$(MAKE) -C test/bgi -f makefile.x11
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	$(MAKE) -C pascal/bgi -f makefile.x11
+endif
 
 clean:
 	$(MAKE) -C test          -f makefile.x11 clean
@@ -36,6 +30,11 @@ clean:
 	$(MAKE) -C src  SHARED=1 -f makefile.x11 clean
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	$(MAKE) -C pascal -f makefile.x11 clean
-	$(MAKE) -C pascal/bgi/demos -f makefile.x11 clean
-	$(MAKE) -C pascal/bgi/test -f makefile.x11 clean
+	$(MAKE) -C pascal/bgi -f makefile.x11 clean
 endif
+
+install:
+	$(MAKE) -C src -f makefile.x11 install
+
+uninstall:
+	$(MAKE) -C src -f makefile.x11 uninstall

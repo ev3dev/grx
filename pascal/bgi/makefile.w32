@@ -1,16 +1,17 @@
 #
-# GRX 2.0 test programs makefile for DJGPP v2.
+# GRX test programs makefile for Mingw.
 # Uses GNU make.
 #
 .SUFFIXES: .exe
 .PHONY: clean install uninstall
 
-include  ../../../makedefs.gnu
-include  ../../../makedefs.dj2
+GRXVW32=y
+
+include  ../../makedefs.grx
 
 UNITPATH = --unit-path=..
-GRXLIB = ../../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
-GRXLIBPATH = -L../../../lib/$(GRX_LIB_SUBDIR)
+GRXLIB = ../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+GRXLIBPATH = -L../../lib/$(GRX_LIB_SUBDIR)
 
 ADDON_LIBS=
 ifeq ($(HAVE_LIBTIFF),y)
@@ -25,15 +26,19 @@ ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
 
-LIBS= $(GRXLIBPATH) $(ADDON_LIBS)
+LIBS= $(GRXLIBPATH) $(ADDON_LIBS) -mwindows -mconsole
 
 # Compiler and options on your system  
-COMPILER = gpc --automake
+COMPILER = gpc --autobuild  --gpc-main=GRXMain
 
 
-PROGS= 			\
-	palette.exe	\
-	small.exe
+PROGS= 		\
+	allmodes.exe	\
+	modelist.exe	\
+	colors.exe	\
+	demo.exe	\
+	small.exe	\
+	palette.exe
 
 all: $(PROGS)
 

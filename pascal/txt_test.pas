@@ -47,7 +47,7 @@ begin
    GrLineNC(0, GrScreenY, GrScreenX, 0, GrWhite);
 
    { o.txo_font    := @GrFont_PC8x16; }
-   o.txo_font    := GrLoadFont('PC8x16.FNT');
+   o.txo_font    := GrLoadFont('pc8x16.fnt');
    o.txo_fgcolor.v := GrBlack;
    o.txo_bgcolor.v := GrWhite;
    o.txo_chrtype := GR_BYTE_TEXT;
@@ -61,11 +61,11 @@ begin
    GrDrawString(St, Length(St), 20, 50, o);
    GrTextXY(20, 80, 'This is another text', GrBlack, GrWhite);
 
-   o.txo_font    := GrLoadFont('HELV22.FNT');
+   o.txo_font    := GrLoadFont('helv22.fnt');
    GrDrawString(St, Length(St), 20, 100, o);
 
    { GrLoadConvertedFont(var name: Char; cvt, w, h, minch, maxch: Integer): GrFontPt;}
-   o.txo_font    := GrLoadConvertedFont('HELV22.FNT',
+   o.txo_font    := GrLoadConvertedFont('helv22.fnt',
                   { GR_FONTCVT_NONE       =  0;
                     GR_FONTCVT_SKIPCHARS  =  1;
                     GR_FONTCVT_RESIZE     =  2;

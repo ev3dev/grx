@@ -1,16 +1,16 @@
-This is grx241.inf, produced by makeinfo version 4.0 from grx2.tex.
+This is grx242um.inf, produced by makeinfo version 4.0 from grx2.tex.
 
 This is the GRX2 User's Manual
 
 
-File: grx241.inf,  Node: Top,  Next: A User Manual For GRX2,  Prev: (dir),  Up: (dir)
+File: grx242um.inf,  Node: Top,  Next: A User Manual For GRX2,  Prev: (dir),  Up: (dir)
 
 * Menu:
 
 * A User Manual For GRX2::
 
 
-File: grx241.inf,  Node: A User Manual For GRX2,  Prev: Top,  Up: Top
+File: grx242um.inf,  Node: A User Manual For GRX2,  Prev: Top,  Up: Top
 
 GRX2 User's Manual
 ******************
@@ -44,12 +44,12 @@ GRX2 User's Manual
 * Includes::
 
 
-File: grx241.inf,  Node: Credits,  Next: Hello world,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Credits,  Next: Hello world,  Up: A User Manual For GRX2
 
 Credits
 =======
 
-                            GRX 2.4.1 User's Manual
+                            GRX 2.4.2 User's Manual
      
               A graphics library for DOS, Linux, X11 and Win32
 
@@ -61,15 +61,17 @@ ______________________________________________________________________________
 
                                   Abstract
 
-LIBGRX is a graphics library for DOS (DJGPP v2 and Turbo C/Borland C++
-versions), Linux and X11. On DOS it supports VGA (32768, 256 or 16
-colors), EGA (16 colors), and VESA compliant cards (up to 16M colors).
-On Linux console it uses svgalib. On X11 it must work on any X11R5 (or
-later). From the 2.4 version, GRX comes with a Win32 driver, but you
-must considere it in alpha stage.
+GRX is a 2D graphics library originaly written by Csaba Biegl for DJ
+Delorie's DOS port of the GCC compiler. Now it support a big range of
+platforms, the main four are: DOS (DJGPPv2), Linux console, X11 and
+Win32 (Mingw). On DOS it supports VGA, EGA and VESA compliant cards.
+On Linux console it uses svgalib or the framebuffer. On X11 it must
+work on any X11R5 (or later). From the 2.4 version, GRX comes with a
+Win32 driver, but you must considere it in alpha stage. The framebuffer
+Linux console driver is new in 2.4.2 and it is in alpha stage too.
 
 
-File: grx241.inf,  Node: Hello world,  Next: Data types and function declarations,  Prev: Credits,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Hello world,  Next: Data types and function declarations,  Prev: Credits,  Up: A User Manual For GRX2
 
 Hello world
 ===========
@@ -81,7 +83,7 @@ The next program draws a double frame around the screen and writes
      #include <grx20.h>
      #include <grxkeys.h>
      
-     int main()
+     int GRXMain()
      {
        char *message = "Hello, GRX world";
        int x, y;
@@ -108,10 +110,10 @@ The next program draws a double frame around the screen and writes
      
        return 0;
      }
-Note. With the Win32 version you must use GRXMain instead main by now.
+Note. Except for the Win32 version you can use main instead GRXMain.
 
 
-File: grx241.inf,  Node: Data types and function declarations,  Next: Setting the graphics driver,  Prev: Hello world,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Data types and function declarations,  Next: Setting the graphics driver,  Prev: Hello world,  Up: A User Manual For GRX2
 
 Data types and function declarations
 ====================================
@@ -128,7 +130,7 @@ the 'include' sub-directory):
      User programs normally only include *note grx20.h:: and *note grxkeys.h::
 
 
-File: grx241.inf,  Node: Setting the graphics driver,  Next: Setting video modes,  Prev: Data types and function declarations,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Setting the graphics driver,  Next: Setting video modes,  Prev: Data types and function declarations,  Up: A User Manual For GRX2
 
 Setting the graphics driver
 ===========================
@@ -145,7 +147,7 @@ The drvspec string has the same format as the environment variable:
 Available drivers are for:
 
      * DOS => herc, stdvga, stdega, et4000, cl5426, mach64, ati28800, s3, VESA, memory
-     * Linux => svgalib, memory
+     * Linux => svgalib, linuxfb, memory
      * X11 => xwin, memory
      * Win32 => win32, memory
 
@@ -156,7 +158,7 @@ driver name can be obtained from:
      GrCurrentVideoDriver()->name
 
 
-File: grx241.inf,  Node: Setting video modes,  Next: Graphics contexts,  Prev: Setting the graphics driver,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Setting video modes,  Next: Graphics contexts,  Prev: Setting the graphics driver,  Up: A User Manual For GRX2
 
 Setting video modes
 ===================
@@ -294,7 +296,7 @@ Note that the VESA driver return GR_VGA here.
 See the *note modetest.c:: example.
 
 
-File: grx241.inf,  Node: Graphics contexts,  Next: Context use,  Prev: Setting video modes,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Graphics contexts,  Next: Context use,  Prev: Setting video modes,  Up: A User Manual For GRX2
 
 Graphics contexts
 =================
@@ -352,7 +354,7 @@ can be used to create a new context in system memory. The NULL pointer
 is also accepted as the value of the memory and where arguments, in
 this case the library allocates the necessary amount of memory
 internally. It is a general convention in the library that functions
-returning pointers to any LIBGRX specific data structure have a last
+returning pointers to any GRX specific data structure have a last
 argument (most of the time named where in the prototypes) which can be
 used to pass the address of the data structure which should be filled
 with the result. If this where pointer has the value of NULL, then the
@@ -464,7 +466,7 @@ and the current viewport position can be obtained by:
      int GrViewportY(void);
 
 
-File: grx241.inf,  Node: Context use,  Next: Color management,  Prev: Graphics contexts,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Context use,  Next: Color management,  Prev: Graphics contexts,  Up: A User Manual For GRX2
 
 Context use
 ===========
@@ -512,7 +514,7 @@ because it uses the parent buffer.
 See the *note winclip.c:: and *note wintest.c:: examples.
 
 
-File: grx241.inf,  Node: Color management,  Next: Portable use of a few colors,  Prev: Context use,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Color management,  Next: Portable use of a few colors,  Prev: Context use,  Up: A User Manual For GRX2
 
 Color management
 ================
@@ -643,7 +645,7 @@ call the normal routines).
 See the *note rgbtest.c:: and *note colorops.c:: examples.
 
 
-File: grx241.inf,  Node: Portable use of a few colors,  Next: Graphics primitives,  Prev: Color management,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Portable use of a few colors,  Next: Graphics primitives,  Prev: Color management,  Up: A User Manual For GRX2
 
 Portable use of a few colors
 ============================
@@ -699,7 +701,7 @@ table. Note too that this don't work to initialize static variables
 with a color, because egacolors is not initialized.
 
 
-File: grx241.inf,  Node: Graphics primitives,  Next: Non-clipping graphics primitives,  Prev: Portable use of a few colors,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Graphics primitives,  Next: Non-clipping graphics primitives,  Prev: Portable use of a few colors,  Up: A User Manual For GRX2
 
 Graphics primitives
 ===================
@@ -873,7 +875,7 @@ fit GrCVALUEMASK otherwise the results are implementation dependend. So
 you can't supply operation code with the pixel data!.
 
 
-File: grx241.inf,  Node: Non-clipping graphics primitives,  Next: Customized line drawing,  Prev: Graphics primitives,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Non-clipping graphics primitives,  Next: Customized line drawing,  Prev: Graphics primitives,  Up: A User Manual For GRX2
 
 Non-clipping graphics primitives
 ================================
@@ -902,7 +904,7 @@ supported non-clipping primitives:
      GrColor GrPixelCNC(GrContext *c,int x,int y);
 
 
-File: grx241.inf,  Node: Customized line drawing,  Next: Pattern filled graphics primitives,  Prev: Non-clipping graphics primitives,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Customized line drawing,  Next: Pattern filled graphics primitives,  Prev: Non-clipping graphics primitives,  Up: A User Manual For GRX2
 
 Customized line drawing
 =======================
@@ -954,7 +956,7 @@ The available custom line drawing primitives:
 See the *note linetest.c:: example.
 
 
-File: grx241.inf,  Node: Pattern filled graphics primitives,  Next: Patterned line drawing,  Prev: Customized line drawing,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Pattern filled graphics primitives,  Next: Patterned line drawing,  Prev: Customized line drawing,  Up: A User Manual For GRX2
 
 Pattern filled graphics primitives
 ==================================
@@ -1090,7 +1092,7 @@ Strictly speaking the plot and line functions in the above group are not
 filled, but they have been included here for convenience.
 
 
-File: grx241.inf,  Node: Patterned line drawing,  Next: Image manipulation,  Prev: Pattern filled graphics primitives,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Patterned line drawing,  Next: Image manipulation,  Prev: Pattern filled graphics primitives,  Up: A User Manual For GRX2
 
 Patterned line drawing
 ======================
@@ -1122,7 +1124,7 @@ as their last argument. The list of available functions:
      void GrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
 
 
-File: grx241.inf,  Node: Image manipulation,  Next: Text drawing,  Prev: Patterned line drawing,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Image manipulation,  Next: Text drawing,  Prev: Patterned line drawing,  Up: A User Manual For GRX2
 
 Image manipulation
 ==================
@@ -1195,7 +1197,7 @@ To destroy a image objet when you don't need it any more use:
 See the *note imgtest.c:: example.
 
 
-File: grx241.inf,  Node: Text drawing,  Next: Drawing in user coordinates,  Prev: Image manipulation,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Text drawing,  Next: Drawing in user coordinates,  Prev: Image manipulation,  Up: A User Manual For GRX2
 
 Text drawing
 ============
@@ -1301,7 +1303,7 @@ file being deleted or corrupted.
 You can use the premade fnt2c.c program (see the source, it's so
 simple) to dump a selected font to source code, by example:
 
-"fnt2c helv15 myhelv15 nyhelv15.c"
+"fnt2c helv15 myhelv15 myhelv15.c"
 
 Next, if this line is included in your main include file:
 
@@ -1476,7 +1478,7 @@ you know the area to update is small).
 See the *note fonttest.c:: example.
 
 
-File: grx241.inf,  Node: Drawing in user coordinates,  Next: Graphics cursors,  Prev: Text drawing,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Drawing in user coordinates,  Next: Graphics cursors,  Prev: Text drawing,  Up: A User Manual For GRX2
 
 Drawing in user coordinates
 ===========================
@@ -1587,7 +1589,7 @@ zero' error.  The list of supported user coordinate drawing functions:
      void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 
 
-File: grx241.inf,  Node: Graphics cursors,  Next: Keyboard input,  Prev: Drawing in user coordinates,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Graphics cursors,  Next: Keyboard input,  Prev: Drawing in user coordinates,  Up: A User Manual For GRX2
 
 Graphics cursors
 ================
@@ -1641,7 +1643,7 @@ appropriate library functions. Other cursor manipulation functions:
 See the *note curstest.c:: example.
 
 
-File: grx241.inf,  Node: Keyboard input,  Next: Mouse event handling,  Prev: Graphics cursors,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Keyboard input,  Next: Mouse event handling,  Prev: Graphics cursors,  Up: A User Manual For GRX2
 
 Keyboard input
 ==============
@@ -1699,7 +1701,7 @@ be known the status of some special keys:
 See the *note keys.c:: example.
 
 
-File: grx241.inf,  Node: Mouse event handling,  Next: Writing/reading PNM graphics files,  Prev: Keyboard input,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Mouse event handling,  Next: Writing/reading PNM graphics files,  Prev: Keyboard input,  Up: A User Manual For GRX2
 
 Mouse event handling
 ====================
@@ -1898,14 +1900,16 @@ The generation of mouse and keyboard events can be individually enabled
 or disabled (by passing a non-zero or zero, respectively, value in the
 corresponding enable_XX parameter) by calling:
 
-     void MouseEventEnable(int enable_kb,int enable_ms);
+     void GrMouseEventEnable(int enable_kb,int enable_ms);
 
-Note that GrMouseInit set both by default.
+Note that GrMouseInit set both by default. If you want to use
+GrMouseGetEvent and GrKeyRead at the same time, a call to
+GrMouseEventEnable( 0,1 ) is needed before input process.
 
 See the *note mousetst.c:: example.
 
 
-File: grx241.inf,  Node: Writing/reading PNM graphics files,  Next: Miscellaneous functions,  Prev: Mouse event handling,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Writing/reading PNM graphics files,  Next: Miscellaneous functions,  Prev: Mouse event handling,  Up: A User Manual For GRX2
 
 Writing/reading PNM graphics files
 ==================================
@@ -1970,7 +1974,7 @@ returns the pnm height; maxval returns the max color component value.
 The function returns 1 to 6 on success (the PNM format) or -1 on error.
 
 
-File: grx241.inf,  Node: Miscellaneous functions,  Next: BGI interface,  Prev: Writing/reading PNM graphics files,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Miscellaneous functions,  Next: BGI interface,  Prev: Writing/reading PNM graphics files,  Up: A User Manual For GRX2
 
 Miscellaneous functions
 =======================
@@ -2038,7 +2042,7 @@ respectively. Here is an example:
         GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
 
 
-File: grx241.inf,  Node: BGI interface,  Next: Test examples,  Prev: Miscellaneous functions,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: BGI interface,  Next: Test examples,  Prev: Miscellaneous functions,  Up: A User Manual For GRX2
 
 BGI interface
 =============
@@ -2047,12 +2051,12 @@ From the 2.3.1 version, GRX includes the BCC2GRX library created by
 Hartmut Schirmer. The BCC2GRX was created to allow users of GRX to
 compile graphics programs written for Borland-C++ and Turbo-C graphics
 interface. BCC2GRX is not a convenient platform to develop new BGI
-programs. Of course you should use native LIBGRX in such cases!
+programs. Of course you should use native GRX interface in such cases!
 
 Read the readme.bgi file for more info.
 
 
-File: grx241.inf,  Node: Test examples,  Next: arctest.c,  Prev: BGI interface,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Test examples,  Next: arctest.c,  Prev: BGI interface,  Up: A User Manual For GRX2
 
 Test examples
 =============
@@ -2096,7 +2100,7 @@ Test examples
 * polytest.dat::
 
 
-File: grx241.inf,  Node: arctest.c,  Next: bb1test.c,  Prev: Test examples,  Up: Test examples
+File: grx242um.inf,  Node: arctest.c,  Next: bb1test.c,  Prev: Test examples,  Up: Test examples
 
 arctest.c
 =========
@@ -2163,7 +2167,7 @@ arctest.c
      }
 
 
-File: grx241.inf,  Node: bb1test.c,  Next: blittest.c,  Prev: arctest.c,  Up: Test examples
+File: grx242um.inf,  Node: bb1test.c,  Next: blittest.c,  Prev: arctest.c,  Up: Test examples
 
 bb1test.c
 =========
@@ -2187,15 +2191,10 @@ bb1test.c
       **/
      
      #include <stdlib.h>
-     //#include <stdio.h>
      #include "grx20.h"
      #include "grxkeys.h"
      
-     #if defined(__WIN32__)
      int GRXMain(void)
-     #else
-     int main(void)
-     #endif
      {
        GrContext *pContext;
        int sizex = 40;
@@ -2251,7 +2250,7 @@ bb1test.c
      }
 
 
-File: grx241.inf,  Node: blittest.c,  Next: circtest.c,  Prev: bb1test.c,  Up: Test examples
+File: grx242um.inf,  Node: blittest.c,  Next: circtest.c,  Prev: bb1test.c,  Up: Test examples
 
 blittest.c
 ==========
@@ -2550,7 +2549,7 @@ blittest.c
      }
 
 
-File: grx241.inf,  Node: circtest.c,  Next: cliptest.c,  Prev: blittest.c,  Up: Test examples
+File: grx242um.inf,  Node: circtest.c,  Next: cliptest.c,  Prev: blittest.c,  Up: Test examples
 
 circtest.c
 ==========
@@ -2649,7 +2648,7 @@ circtest.c
      }
 
 
-File: grx241.inf,  Node: cliptest.c,  Next: colorops.c,  Prev: circtest.c,  Up: Test examples
+File: grx242um.inf,  Node: cliptest.c,  Next: colorops.c,  Prev: circtest.c,  Up: Test examples
 
 cliptest.c
 ==========
@@ -2707,7 +2706,7 @@ cliptest.c
      }
 
 
-File: grx241.inf,  Node: colorops.c,  Next: curstest.c,  Prev: cliptest.c,  Up: Test examples
+File: grx242um.inf,  Node: colorops.c,  Next: curstest.c,  Prev: cliptest.c,  Up: Test examples
 
 colorops.c
 ==========
@@ -2837,7 +2836,7 @@ colorops.c
      }
 
 
-File: grx241.inf,  Node: curstest.c,  Next: demogrx.c,  Prev: colorops.c,  Up: Test examples
+File: grx242um.inf,  Node: curstest.c,  Next: demogrx.c,  Prev: colorops.c,  Up: Test examples
 
 curstest.c
 ==========
@@ -2949,7 +2948,7 @@ curstest.c
      }
 
 
-File: grx241.inf,  Node: demogrx.c,  Next: fnt2c.c,  Prev: curstest.c,  Up: Test examples
+File: grx242um.inf,  Node: demogrx.c,  Next: fnt2c.c,  Prev: curstest.c,  Up: Test examples
 
 demogrx.c
 =========
@@ -2981,11 +2980,13 @@ demogrx.c
      #include "gfaz.h"  /* *note gfaz.h:: */
      #include "drawing.h"  /* *note drawing.h:: */
      
+     /* default mode */
+     
      #define WIDTH 640
      #define HEIGHT 480
      #define BPP 16
      
-     #define WINTITLE "GRX 2.4.1, the graphics library"
+     #define WINTITLE "GRX 2.4.2, the graphics library"
      
      #define NDEMOS 25
      
@@ -3103,6 +3104,7 @@ demogrx.c
      static void ini_objects( void );
      static void paint_screen( void );
      static void the_title( int x, int y );
+     static void the_info( int x, int y );
      static int pev_command( Event *ev );
      static int pev_select( Event *ev );
      static void paint_foot( char *s );
@@ -3111,15 +3113,18 @@ demogrx.c
      
      /************************************************************************/
      
-     #if defined(__WIN32__)
-     int GRXMain()
-     #else
-     int main()
-     #endif
+     int GRXMain( int argc, char **argv )
      {
        Event ev;
+       int width=WIDTH, height=HEIGHT, bpp=BPP;
      
-       gfaz_ini( WIDTH,HEIGHT,BPP );
+       if( argc >= 4 ){
+         width = atoi( argv[1] );
+         height = atoi( argv[2] );
+         bpp = atoi( argv[3] );
+         }
+     
+       gfaz_ini( width,height,bpp );
        GrSetWindowTitle( WINTITLE );
        ini_objects();
        paint_screen();
@@ -3128,6 +3133,10 @@ demogrx.c
          event_read( &ev );
          if( ev.type == EV_END ) break;
          if( (ev.type == EV_KEY) && (ev.p1 == GrKey_Escape) ) break;
+         if( (ev.type == EV_KEY) && (ev.p1 == 's' ) ){
+           GrSaveContextToPpm( NULL,"demogrx.ppm","DemoGRX" );
+           continue;
+           }
          if( pev_button_group( &ev,&bg ) ) continue;
          if( pev_command( &ev ) ) continue;
          if( pev_select( &ev ) ) continue;
@@ -3191,8 +3200,9 @@ demogrx.c
                                  NULL,NULL );
        GrLoadContextFromPnm( grc,"pnmtest.ppm" );
        GrDestroyContext( grc );
-       the_title( 500,90 );
-       drawing( 400,210,200,200,BROWN,DARKGRAY);
+       the_title( 500,100 );
+       the_info( 500,215 );
+       drawing( 400,280,200,150,BROWN,DARKGRAY);
        paint_foot( "Hold down left mouse buttom to see a comment" );
      }
      
@@ -3200,10 +3210,8 @@ demogrx.c
      
      static void the_title( int x, int y )
      {
-       char *t1 = "GRX 2.4.1";
+       char *t1 = "GRX 2.4.2";
        char *t2 = "test programs launcher";
-       char aux[81], sys[4] = "?";
-       int nsys;
      
        grt_centered.txo_fgcolor.v = LIGHTGREEN;
      
@@ -3212,6 +3220,17 @@ demogrx.c
      
        grt_centered.txo_font = grf_std;
        GrDrawString( t2,strlen( t2 ),0+x,40+y,&grt_centered );
+     }
+     
+     /************************************************************************/
+     
+     static void the_info( int x, int y )
+     {
+       char aux[81], sys[4] = "?";
+       int nsys;
+     
+       grt_centered.txo_fgcolor.v = CYAN;
+       grt_centered.txo_font = grf_std;
      
        nsys = GrGetLibrarySystem();
        if( nsys == GRX_VERSION_TCC_8086_DOS ) strcpy( sys,"TCC" );
@@ -3222,7 +3241,14 @@ demogrx.c
        if( nsys == GRX_VERSION_GCC_386_WIN32 ) strcpy( sys,"W32" );
      
        sprintf( aux,"Version:%x System:%s",GrGetLibraryVersion(),sys );
-       GrDrawString( aux,strlen( aux ),0+x,90+y,&grt_centered );
+       GrDrawString( aux,strlen( aux ),0+x,0+y,&grt_centered );
+     
+       sprintf( aux,"VideoDriver: %s",GrCurrentVideoDriver()->name );
+       GrDrawString( aux,strlen( aux ),0+x,25+y,&grt_centered );
+     
+       sprintf( aux,"Mode: %dx%d %d bpp",GrCurrentVideoMode()->width,
+         GrCurrentVideoMode()->height,GrCurrentVideoMode()->bpp );
+       GrDrawString( aux,strlen( aux ),0+x,50+y,&grt_centered );
      }
      
      /************************************************************************/
@@ -3295,7 +3321,7 @@ demogrx.c
      static void paint_animation( void )
      {
        static char *text =
-         "GRX 2.4.1, the graphics library for DJGPPv2, Linux, X11 and Win32";
+         "GRX 2.4.2, the graphics library for DJGPPv2, Linux, X11 and Win32";
        static int pos = 620;
        static int ini = 0;
        static int ltext, wtext;
@@ -3340,7 +3366,7 @@ demogrx.c
      }
 
 
-File: grx241.inf,  Node: fnt2c.c,  Next: fnt2text.c,  Prev: demogrx.c,  Up: Test examples
+File: grx242um.inf,  Node: fnt2c.c,  Next: fnt2text.c,  Prev: demogrx.c,  Up: Test examples
 
 fnt2c.c
 =======
@@ -3394,7 +3420,7 @@ fnt2c.c
      }
 
 
-File: grx241.inf,  Node: fnt2text.c,  Next: fonttest.c,  Prev: fnt2c.c,  Up: Test examples
+File: grx242um.inf,  Node: fnt2text.c,  Next: fonttest.c,  Prev: fnt2c.c,  Up: Test examples
 
 fnt2text.c
 ==========
@@ -3456,7 +3482,7 @@ fnt2text.c
      }
 
 
-File: grx241.inf,  Node: fonttest.c,  Next: gfaz.c,  Prev: fnt2text.c,  Up: Test examples
+File: grx242um.inf,  Node: fonttest.c,  Next: gfaz.c,  Prev: fnt2text.c,  Up: Test examples
 
 fonttest.c
 ==========
@@ -3654,7 +3680,7 @@ fonttest.c
      }
 
 
-File: grx241.inf,  Node: gfaz.c,  Next: imgtest.c,  Prev: fonttest.c,  Up: Test examples
+File: grx242um.inf,  Node: gfaz.c,  Next: imgtest.c,  Prev: fonttest.c,  Up: Test examples
 
 gfaz.c
 ======
@@ -4058,7 +4084,7 @@ gfaz.c
      }
 
 
-File: grx241.inf,  Node: imgtest.c,  Next: keys.c,  Prev: gfaz.c,  Up: Test examples
+File: grx242um.inf,  Node: imgtest.c,  Next: keys.c,  Prev: gfaz.c,  Up: Test examples
 
 imgtest.c
 =========
@@ -4149,7 +4175,7 @@ imgtest.c
      }
 
 
-File: grx241.inf,  Node: keys.c,  Next: life.c,  Prev: imgtest.c,  Up: Test examples
+File: grx242um.inf,  Node: keys.c,  Next: life.c,  Prev: imgtest.c,  Up: Test examples
 
 keys.c
 ======
@@ -4500,11 +4526,7 @@ keys.c
      
      #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
      
-     #if defined(__WIN32__)
      int GRXMain(void) {
-     #else
-     int main(void) {
-     #endif
        int spaces_count = 0;
        KeyEntry *kp;
        GrKeyType k;
@@ -4586,7 +4608,7 @@ keys.c
      }
 
 
-File: grx241.inf,  Node: life.c,  Next: linetest.c,  Prev: keys.c,  Up: Test examples
+File: grx242um.inf,  Node: life.c,  Next: linetest.c,  Prev: keys.c,  Up: Test examples
 
 life.c
 ======
@@ -4704,7 +4726,7 @@ life.c
      }
 
 
-File: grx241.inf,  Node: linetest.c,  Next: memtest.c,  Prev: life.c,  Up: Test examples
+File: grx242um.inf,  Node: linetest.c,  Next: memtest.c,  Prev: life.c,  Up: Test examples
 
 linetest.c
 ==========
@@ -4780,7 +4802,7 @@ linetest.c
      }
 
 
-File: grx241.inf,  Node: memtest.c,  Next: modetest.c,  Prev: linetest.c,  Up: Test examples
+File: grx242um.inf,  Node: memtest.c,  Next: modetest.c,  Prev: linetest.c,  Up: Test examples
 
 memtest.c
 =========
@@ -4854,7 +4876,7 @@ memtest.c
      }
 
 
-File: grx241.inf,  Node: modetest.c,  Next: mousetst.c,  Prev: memtest.c,  Up: Test examples
+File: grx242um.inf,  Node: modetest.c,  Next: mousetst.c,  Prev: memtest.c,  Up: Test examples
 
 modetest.c
 ==========
@@ -4991,11 +5013,7 @@ modetest.c
      	} while (1);
      }
      
-     #if defined(__WIN32__)
      int GRXMain(void)
-     #else
-     int main(void)
-     #endif
      {
      	static int firstgr = 1;
      	GrSetDriver(NULL);
@@ -5005,7 +5023,7 @@ modetest.c
      	}
      	for( ; ; ) {
      	    int  i,w,h,px,py;
-     	    char m1[40];
+     	    char m1[41];
      	    nmodes = (int)(collectmodes(GrCurrentVideoDriver(),grmodes) - grmodes);
      	    GrSetMode(GR_default_text);
      	    if(nmodes == 0) {
@@ -5028,7 +5046,8 @@ modetest.c
      	    PrintModes();
      	    printf("\nEnter choice #, or anything else to quit> ");
      	    fflush(stdout);
-     	    if(!gets(m1) || (sscanf(m1,"%d",&i) != 1) || (i < 1) || (i > nmodes)) {
+     	    if(!fgets(m1,40,stdin) ||
+     	    (sscanf(m1,"%d",&i) != 1) || (i < 1) || (i > nmodes)) {
      		exit(0);
      	    }
      	    if(firstgr) {
@@ -5037,7 +5056,7 @@ modetest.c
      		    "Now press <CR> to continue..."
      		);
      		fflush(stdout);
-     		gets(m1);
+     		fgets(m1,40,stdin);
      		firstgr = 0;
      	    }
      	    i--;
@@ -5086,13 +5105,13 @@ modetest.c
      		}
      	    }
      	    kbhit();    /* this is here to flush in the X version 8-) */
-     	    gets(m1);
+     	    fgets(m1,40,stdin);
      	}
      	return 0;
      }
 
 
-File: grx241.inf,  Node: mousetst.c,  Next: pcirctst.c,  Prev: modetest.c,  Up: Test examples
+File: grx242um.inf,  Node: mousetst.c,  Next: pcirctst.c,  Prev: modetest.c,  Up: Test examples
 
 mousetst.c
 ==========
@@ -5208,7 +5227,7 @@ mousetst.c
      }
 
 
-File: grx241.inf,  Node: pcirctst.c,  Next: pnmtest.c,  Prev: mousetst.c,  Up: Test examples
+File: grx242um.inf,  Node: pcirctst.c,  Next: pnmtest.c,  Prev: mousetst.c,  Up: Test examples
 
 pcirctst.c
 ==========
@@ -5323,7 +5342,7 @@ pcirctst.c
      }
 
 
-File: grx241.inf,  Node: pnmtest.c,  Next: polytest.c,  Prev: pcirctst.c,  Up: Test examples
+File: grx242um.inf,  Node: pnmtest.c,  Next: polytest.c,  Prev: pcirctst.c,  Up: Test examples
 
 pnmtest.c
 =========
@@ -5358,11 +5377,7 @@ pnmtest.c
      #define FIMAGEPBM2 "prueba.pbm"
      #define FSCREEN "output.ppm"
      
-     #if defined(__WIN32__)
      int GRXMain(void)
-     #else
-     int main(void)
-     #endif
      {
        GrContext *grc;
        int wide, high, maxval;
@@ -5437,7 +5452,7 @@ pnmtest.c
      }
 
 
-File: grx241.inf,  Node: polytest.c,  Next: rgbtest.c,  Prev: pnmtest.c,  Up: Test examples
+File: grx242um.inf,  Node: polytest.c,  Next: rgbtest.c,  Prev: pnmtest.c,  Up: Test examples
 
 polytest.c
 ==========
@@ -5594,7 +5609,7 @@ polytest.c
      }
 
 
-File: grx241.inf,  Node: rgbtest.c,  Next: sbctest.c,  Prev: polytest.c,  Up: Test examples
+File: grx242um.inf,  Node: rgbtest.c,  Next: sbctest.c,  Prev: polytest.c,  Up: Test examples
 
 rgbtest.c
 =========
@@ -5638,7 +5653,7 @@ rgbtest.c
      }
 
 
-File: grx241.inf,  Node: sbctest.c,  Next: scroltst.c,  Prev: rgbtest.c,  Up: Test examples
+File: grx242um.inf,  Node: sbctest.c,  Next: scroltst.c,  Prev: rgbtest.c,  Up: Test examples
 
 sbctest.c
 =========
@@ -5841,7 +5856,7 @@ sbctest.c
      }
 
 
-File: grx241.inf,  Node: scroltst.c,  Next: speedtst.c,  Prev: sbctest.c,  Up: Test examples
+File: grx242um.inf,  Node: scroltst.c,  Next: speedtst.c,  Prev: sbctest.c,  Up: Test examples
 
 scroltst.c
 ==========
@@ -5922,7 +5937,7 @@ scroltst.c
      }
 
 
-File: grx241.inf,  Node: speedtst.c,  Next: textpatt.c,  Prev: scroltst.c,  Up: Test examples
+File: grx242um.inf,  Node: speedtst.c,  Next: textpatt.c,  Prev: scroltst.c,  Up: Test examples
 
 speedtst.c
 ==========
@@ -6131,6 +6146,7 @@ speedtst.c
          case GR_frameRAM32L: return "RAM32L";
          case GR_frameRAM32H: return "RAM32H";
          case GR_frameRAM3x8: return "RAM3x8";
+         default: return "UNKNOWN";
        }
        return "UNKNOWN";
      }
@@ -6541,7 +6557,7 @@ speedtst.c
      #endif
      
      void speedcheck(gvmode *gp, int wait) {
-       char m[40];
+       char m[41];
        static int first = 1;
        gvmode *rp = NULL;
      
@@ -6551,7 +6567,7 @@ speedtst.c
            "Now press <CR> to continue..."
          );
          fflush(stdout);
-         gets(m);
+         fgets(m,40,stdin);
        }
      
        GrSetMode(
@@ -6600,7 +6616,7 @@ speedtst.c
          if (rp)
            printresultline(stdout, rp);
          kbhit();    /* this is here to flush in the X version 8-) */
-         gets(m);
+         fgets(m,40,stdin);
        }
      }
      
@@ -6703,11 +6719,7 @@ speedtst.c
      	} while (1);
      }
      
-     #if defined(__WIN32__)
      int GRXMain(void)
-     #else
-     int main(void)
-     #endif
      {
      	int  i;
      
@@ -6741,7 +6753,7 @@ speedtst.c
      #endif
      
      	for( ; ; ) {
-     	    char mb[40], *m = mb;
+     	    char mb[41], *m = mb;
      	    int tflag = 0;
      	    GrSetMode(GR_default_text);
      	    printf(
@@ -6755,7 +6767,7 @@ speedtst.c
      	    PrintModes();
      	    printf("\nEnter #, 't#' toggels tag, 'm' measure tagged and 'q' to quit> ");
      	    fflush(stdout);
-     	    if(!gets(m)) continue;
+     	    if(!fgets(m,40,stdin)) continue;
      	    switch (*m) {
      	      case 't':
      	      case 'T': tflag = 1;
@@ -6807,7 +6819,7 @@ speedtst.c
      }
 
 
-File: grx241.inf,  Node: textpatt.c,  Next: winclip.c,  Prev: speedtst.c,  Up: Test examples
+File: grx242um.inf,  Node: textpatt.c,  Next: winclip.c,  Prev: speedtst.c,  Up: Test examples
 
 textpatt.c
 ==========
@@ -6835,11 +6847,7 @@ textpatt.c
      
      #define FONT "../fonts/tms38b.fnt"
      
-     #if defined(__WIN32__)
      int GRXMain(void)
-     #else
-     int main(void)
-     #endif
      {
        char bits[] = {0, 76, 50, 0, 0, 76, 60, 0};
        GrPattern *p1, *p2;
@@ -6888,7 +6896,7 @@ textpatt.c
      }
 
 
-File: grx241.inf,  Node: winclip.c,  Next: wintest.c,  Prev: textpatt.c,  Up: Test examples
+File: grx242um.inf,  Node: winclip.c,  Next: wintest.c,  Prev: textpatt.c,  Up: Test examples
 
 winclip.c
 =========
@@ -6950,7 +6958,7 @@ winclip.c
      }
 
 
-File: grx241.inf,  Node: wintest.c,  Next: drawing.h,  Prev: winclip.c,  Up: Test examples
+File: grx242um.inf,  Node: wintest.c,  Next: drawing.h,  Prev: winclip.c,  Up: Test examples
 
 wintest.c
 =========
@@ -7012,7 +7020,7 @@ wintest.c
      }
 
 
-File: grx241.inf,  Node: drawing.h,  Next: gfaz.h,  Prev: wintest.c,  Up: Test examples
+File: grx242um.inf,  Node: drawing.h,  Next: gfaz.h,  Prev: wintest.c,  Up: Test examples
 
 drawing.h
 =========
@@ -7054,7 +7062,7 @@ drawing.h
      #undef YP
 
 
-File: grx241.inf,  Node: gfaz.h,  Next: rand.h,  Prev: drawing.h,  Up: Test examples
+File: grx242um.inf,  Node: gfaz.h,  Next: rand.h,  Prev: drawing.h,  Up: Test examples
 
 gfaz.h
 ======
@@ -7197,7 +7205,7 @@ gfaz.h
      void paint_board( Board *b );
 
 
-File: grx241.inf,  Node: rand.h,  Next: test.h,  Prev: gfaz.h,  Up: Test examples
+File: grx242um.inf,  Node: rand.h,  Next: test.h,  Prev: gfaz.h,  Up: Test examples
 
 rand.h
 ======
@@ -7248,7 +7256,7 @@ rand.h
      #endif
 
 
-File: grx241.inf,  Node: test.h,  Next: arctest.dat,  Prev: rand.h,  Up: Test examples
+File: grx242um.inf,  Node: test.h,  Next: arctest.dat,  Prev: rand.h,  Up: Test examples
 
 test.h
 ======
@@ -7306,11 +7314,7 @@ test.h
      void (*testfunc)(void) = name;  \
      void name(void)
      
-     #if defined(__WIN32__)
      int GRXMain(int argc,char **argv)
-     #else
-     int main(int argc,char **argv)
-     #endif
      {
      	int  x = 0;
      	int  y = 0;
@@ -7353,7 +7357,7 @@ test.h
      #endif /* _TEST_H_ */
 
 
-File: grx241.inf,  Node: arctest.dat,  Next: polytest.dat,  Prev: test.h,  Up: Test examples
+File: grx242um.inf,  Node: arctest.dat,  Next: polytest.dat,  Prev: test.h,  Up: Test examples
 
 arctest.dat
 ===========
@@ -7368,7 +7372,7 @@ arctest.dat
      arc xc=300 yc=200 xa=25  ya=15  start=0    end=900
 
 
-File: grx241.inf,  Node: polytest.dat,  Next: Includes,  Prev: arctest.dat,  Up: Test examples
+File: grx242um.inf,  Node: polytest.dat,  Next: Includes,  Prev: arctest.dat,  Up: Test examples
 
 polytest.dat
 ============
@@ -7462,7 +7466,7 @@ polytest.dat
      end
 
 
-File: grx241.inf,  Node: Includes,  Next: grx20.h,  Prev: polytest.dat,  Up: A User Manual For GRX2
+File: grx242um.inf,  Node: Includes,  Next: grx20.h,  Prev: polytest.dat,  Up: A User Manual For GRX2
 
 Includes
 ========
@@ -7473,7 +7477,7 @@ Includes
 * grxkeys.h::
 
 
-File: grx241.inf,  Node: grx20.h,  Next: grxkeys.h,  Prev: Includes,  Up: Includes
+File: grx242um.inf,  Node: grx20.h,  Next: grxkeys.h,  Prev: Includes,  Up: Includes
 
 grx20.h
 =======
@@ -7515,7 +7519,7 @@ grx20.h
      **    #endif
      **    #endif
      */
-     #define GRX_VERSION_API 0x0241
+     #define GRX_VERSION_API 0x0242
      
      /* these are the supported configurations: */
      #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -7527,6 +7531,8 @@ grx20.h
      /*#define GRX_VERSION_WATCOM_REAL_MODE  6*/     /* GS - Watcom C++ 11.0 16 Bit - TODO! */
      #define GRX_VERSION_GCC_386_WIN32       7       /* WIN32 using Mingw32 */
      #define GRX_VERSION_MSC_386_WIN32       8       /* WIN32 using MS-VC */
+     
+     #define GRXMain main  /* WIN32 targets undef it */
      
      #ifdef  __TURBOC__
      #define GRX_VERSION     GRX_VERSION_TCC_8086_DOS
@@ -7541,6 +7547,7 @@ grx20.h
      #endif
      #ifdef  __WIN32__
      #define GRX_VERSION     GRX_VERSION_GCC_386_WIN32
+     #undef GRXMain
      #endif
      #endif
      
@@ -7558,6 +7565,7 @@ grx20.h
      #ifdef _WIN32
      #ifdef _M_IX86
      #define GRX_VERSION     GRX_VERSION_MSC_386_WIN32
+     #undef GRXMain
      #if !defined(__WIN32__)
      #define __WIN32__ _WIN32
      #endif
@@ -7733,6 +7741,7 @@ grx20.h
      	GR_S3,                              /* S3 graphics accelerator */
      	GR_XWIN,                            /* X11 driver */
              GR_WIN32,                           /* WIN32 driver */
+     	GR_LNXFB,                           /* Linux framebuffer */
      	GR_MEM                              /* memory only driver */
      } GrVideoAdapter;
      
@@ -9063,7 +9072,7 @@ grx20.h
      #endif  /* whole file */
 
 
-File: grx241.inf,  Node: grxkeys.h,  Prev: grx20.h,  Up: Includes
+File: grx242um.inf,  Node: grxkeys.h,  Prev: grx20.h,  Up: Includes
 
 grxkeys.h
 =========
@@ -9435,69 +9444,69 @@ grxkeys.h
 
 
 Tag Table:
-Node: Top101
-Node: A User Manual For GRX2227
-Node: Credits974
-Node: Hello world1861
-Node: Data types and function declarations3014
-Node: Setting the graphics driver3747
-Node: Setting video modes4662
-Node: Graphics contexts9609
-Node: Context use16803
-Node: Color management18194
-Node: Portable use of a few colors23012
-Node: Graphics primitives24928
-Node: Non-clipping graphics primitives32498
-Node: Customized line drawing33993
-Node: Pattern filled graphics primitives36298
-Node: Patterned line drawing43231
-Node: Image manipulation44798
-Node: Text drawing47616
-Node: Drawing in user coordinates61365
-Node: Graphics cursors67643
-Node: Keyboard input70198
-Node: Mouse event handling72199
-Node: Writing/reading PNM graphics files81364
-Node: Miscellaneous functions84020
-Node: BGI interface86799
-Node: Test examples87332
-Node: arctest.c87972
-Node: bb1test.c90358
-Node: blittest.c93043
-Node: circtest.c100965
-Node: cliptest.c103723
-Node: colorops.c105375
-Node: curstest.c109456
-Node: demogrx.c113090
-Node: fnt2c.c126930
-Node: fnt2text.c128396
-Node: fonttest.c130210
-Node: gfaz.c135547
-Node: imgtest.c147891
-Node: keys.c150424
-Node: life.c170808
-Node: linetest.c174251
-Node: memtest.c176889
-Node: modetest.c179119
-Node: mousetst.c185848
-Node: pcirctst.c189995
-Node: pnmtest.c193129
-Node: polytest.c197455
-Node: rgbtest.c201680
-Node: sbctest.c202961
-Node: scroltst.c210392
-Node: speedtst.c213334
-Node: textpatt.c240714
-Node: winclip.c243583
-Node: wintest.c245563
-Node: drawing.h247501
-Node: gfaz.h248902
-Node: rand.h253630
-Node: test.h255035
-Node: arctest.dat257750
-Node: polytest.dat258319
-Node: Includes259423
-Node: grx20.h259581
-Node: grxkeys.h340749
+Node: Top103
+Node: A User Manual For GRX2231
+Node: Credits980
+Node: Hello world2038
+Node: Data types and function declarations3194
+Node: Setting the graphics driver3929
+Node: Setting video modes4855
+Node: Graphics contexts9804
+Node: Context use16997
+Node: Color management18390
+Node: Portable use of a few colors23210
+Node: Graphics primitives25128
+Node: Non-clipping graphics primitives32700
+Node: Customized line drawing34197
+Node: Pattern filled graphics primitives36504
+Node: Patterned line drawing43439
+Node: Image manipulation45008
+Node: Text drawing47828
+Node: Drawing in user coordinates61579
+Node: Graphics cursors67859
+Node: Keyboard input70416
+Node: Mouse event handling72419
+Node: Writing/reading PNM graphics files81723
+Node: Miscellaneous functions84381
+Node: BGI interface87162
+Node: Test examples87704
+Node: arctest.c88346
+Node: bb1test.c90734
+Node: blittest.c93324
+Node: circtest.c101248
+Node: cliptest.c104008
+Node: colorops.c105662
+Node: curstest.c109745
+Node: demogrx.c113381
+Node: fnt2c.c128207
+Node: fnt2text.c129675
+Node: fonttest.c131491
+Node: gfaz.c136830
+Node: imgtest.c149176
+Node: keys.c151711
+Node: life.c172024
+Node: linetest.c175469
+Node: memtest.c178109
+Node: modetest.c180341
+Node: mousetst.c187041
+Node: pcirctst.c191190
+Node: pnmtest.c194326
+Node: polytest.c198583
+Node: rgbtest.c202810
+Node: sbctest.c204093
+Node: scroltst.c211526
+Node: speedtst.c214470
+Node: textpatt.c241847
+Node: winclip.c244647
+Node: wintest.c246629
+Node: drawing.h248569
+Node: gfaz.h249972
+Node: rand.h254702
+Node: test.h256109
+Node: arctest.dat258739
+Node: polytest.dat259310
+Node: Includes260416
+Node: grx20.h260576
+Node: grxkeys.h341914
 
 End Tag Table

@@ -1,0 +1,154 @@
+### CONFIGURATION ####################################################
+
+# Specify version of GRX
+# Currently only used to generate name of shared libraries for linux
+GRX_VERSION=2.4.2
+
+# Specify if you have libtiff.a and corresponding .h files.
+# Change setting to 'y' if you have it, or to 'n' if not.
+HAVE_LIBTIFF=n
+
+# Specify if you have libjpeg.a and corresponding .h files.
+HAVE_LIBJPEG=n
+
+# Specify if one of the above libs requires the
+# zlib compression library
+NEED_ZLIB=n
+
+# Specify if you want to include printing code from addons
+INCLUDE_PRINTING_CODE=y
+
+# Specify if you want to include bmp image code from addons
+INCLUDE_BMP_CODE=y
+
+# Specify if you want to include GNU_Pascal (gpc) support
+INCLUDE_GPC_SUPPORT=n
+
+### SYSTEM SETTINGS ##################################################
+
+CC     = gcc
+AR     = ar
+RANLIB = ranlib
+STRIP  = strip
+
+# Different systems / setups may generate .o files
+# this tag files will show what version is present
+SYSTEM_TAG_PREFIX     = systag
+LINUX_i386_CONSOLE    = $(SYSTEM_TAG_PREFIX).000
+LINUX_i386_X11        = $(SYSTEM_TAG_PREFIX).002
+DOS_DJGPP_V2          = $(SYSTEM_TAG_PREFIX).004
+WIN32_GCC_i386_STATIC = $(SYSTEM_TAG_PREFIX).006
+
+ifdef   DEBUG
+CCOPT = -O2 -Wall -g -DDEBUG=$(DEBUG)
+LDOPT = -g
+else
+CCOPT = -O2 -Wall
+LDOPT =
+endif
+
+ifdef PROFILE
+CCOPT += -pg
+endif
+
+# Additional warnings for development
+WARNOPTS = -W -Wshadow -Wpointer-arith -Wbad-function-cast \
+	   -Wcast-align -Wconversion -Wmissing-prototypes  \
+	   -Wnested-externs -Wstrict-prototypes
+#CCOPT += $(WARNOPTS)
+
+# Some systems can't allocate big arrays on stack.
+# If test/xcirctest fails on bigger diameters, try
+#CCOPT += -DSMALL_STACK
+
+# You may want to enable one (oe both) of the following
+# switches if your get lots of warnings when compiling GRX
+#CCOPT += -DNO_LEFTSIDE_LVALUE_CAST
+#CCOPT += -DNO_LEFTSIDE_PTR_CAST
+
+### LINUX CONSOLE SPECIFIC ###########################################
+
+ifdef GRXVLNX
+
+# place libgrx20.a and libgrx20.so in lib/unix
+GRX_LIB_SUBDIR=unix
+
+# Set here the default destination dir for install and uninstall targets
+INSTALLDIR=/usr/local
+
+# Set the default GRX font path
+#GRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
+
+endif
+
+### LINUX X11 SPECIFIC ###############################################
+
+ifdef GRXVX11
+
+# place libgrx20X.a and libgrx20X.so in lib/unix
+GRX_LIB_SUBDIR=unix
+
+# Set here the destination dir for install and uninstall targets
+INSTALLDIR=/usr/local
+
+# Set the default GRX font path
+#GRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
+
+# The X11 base dir on your system
+X11BASE=/usr/X11R6
+
+# Add directories with X11 include files here
+X11INCS=-I$(X11BASE)/include
+
+# put X11 required libraries and directories here
+# note: some systems need -lsocket added
+X11LIBS=-L$(X11BASE)/lib -lX11
+
+endif
+
+### DOS DJGPPv2 SPECIFIC #############################################
+
+ifdef GRXVDJ2
+
+# Put libgrx20.a to lib/dj2
+GRX_LIB_SUBDIR=dj2
+
+# If you want to use 'djp.exe' compressor
+# disavle the echo line and enable djp line.
+EXE_COMPRESS = -echo
+#EXE_COMPRESS = djp
+
+# Default compiler switches.  In djgpp.env. under [make],
+# add the line "BUTT=-m386", if that is your target.
+# At present gcc supports `-m386' and `-m486'.
+#CCOPT += $(BUTT)
+#CCOPT += -m486
+
+# GRX uses "uclock" to gets 1 ms resolution in the input code,
+# this can causes problems in Win3.1, so you may want to enable
+# of the following switch
+#CCOPT += -DNO_REPROGRAM_TIMER
+
+# for a builtin default font path
+#CCOPT += -DGRX_DEFAULT_FONT_PATH= \
+#         strcat(getenv(\"DJDIR\"),\"/contrib/grx242/fonts\")
+
+endif
+
+### WIN32 MINGW SPECIFIC #############################################
+
+ifdef GRXVW32
+
+# Put libgrx20.a to lib/win32
+GRX_LIB_SUBDIR=win32
+
+# Set here your MINGW dir for install and uninstall targets
+MINGWDIR=C:\MINGW
+
+# for a builtin default font path
+#CCOPT += -DGRX_DEFAULT_FONT_PATH=\"/mingw/contrib/grx242/fonts\"
+
+endif
+
+######################################################################
+

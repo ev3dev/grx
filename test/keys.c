@@ -344,11 +344,7 @@ static KeyEntry Keys[] = {
 
 #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
 
-#if defined(__WIN32__)
 int GRXMain(void) {
-#else
-int main(void) {
-#endif
   int spaces_count = 0;
   KeyEntry *kp;
   GrKeyType k;

@@ -112,6 +112,7 @@ _GrVideoDriverXWIN,                     /* X11 interface */
 #ifdef  __linux__
 #ifndef __XWIN__
 _GrVideoDriverSVGALIB,                  /* Linux SVGALIB interface */
+_GrVideoDriverLINUXFB,                  /* Linux framebuffer */
 #endif
 #endif
 #ifdef  __WIN32__

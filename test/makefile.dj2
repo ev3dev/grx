@@ -5,8 +5,9 @@
 .SUFFIXES: .exe
 .PHONY: clean install uninstall
 
-include  ../makedefs.gnu
-include  ../makedefs.dj2
+GRXVDJ2=y
+
+include ../makedefs.grx
 
 INCDIR=  -I../include
 GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a

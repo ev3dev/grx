@@ -1,18 +1,18 @@
 #
-# GRX test programs makefile for DJGPP v2.
+# GRX test programs makefile for LINUX/console.
 # Uses GNU make.
 #
-.SUFFIXES: .exe
 .PHONY: clean install uninstall
 
-GRXVDJ2=y
+GRXVLNX=y
 
-include ../makedefs.grx
+include  ../makedefs.grx
 
 GRXLIB = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 GRXLIBPATH = -L../lib/$(GRX_LIB_SUBDIR)
 
-ADDON_LIBS=
+ADDON_LIBS= -lvga
+
 ifeq ($(HAVE_LIBTIFF),y)
   ADDON_LIBS += -ltiff
 endif
@@ -25,28 +25,24 @@ ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
 
-LIBS= $(GRXLIBPATH) $(ADDON_LIBS)
+LIBS= $(GRXLIBPATH) $(ADDON_LIBS) -lm
 
 # Compiler and options on your system  
 COMPILER = gpc --automake
 
 
 PROGS= 			\
-	blt_test.exe 	\
-	modetest.exe 	\
-	taste.exe 	\
-	txt_test.exe 	\
-	vir_test.exe
+	blt_test 	\
+	modetest 	\
+	taste 		\
+	txt_test 	\
+	vir_test
 
 all: $(PROGS)
 
-$(PROGS): %.exe : %.pas $(GRXLIB)
-	$(COMPILER) $(CCOPT) -o $*.exe $*.pas $(LIBS)
+$(PROGS): % : %.pas $(GRXLIB)
+	$(COMPILER) $(CCOPT) -o $* $*.pas $(LIBS)
 
 clean:
-	if exist *.o del *.o
-	if exist *.exe del *.exe
-	if exist *.gpi del *.gpi
-	if exist *.gpm del *.gpm
-
+	rm -f *.o *.gpi *.gpm $(PROGS)
 

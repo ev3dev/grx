@@ -1,9 +1,11 @@
 #
 # GRX Library Makefile for LINUX/svgalib. Uses GNU Make.
 #
-.PHONY : clean cleanall install uninstall
+.PHONY : libst libsh clean cleanall install uninstall
 
-include ../makedefs.gnu
+GRXVLNX=y
+
+include ../makedefs.grx
 
 INCDIR= -I. -I./include -I../include
 CCOPT += -DLFB_BY_NEAR_POINTER -pipe
@@ -12,15 +14,12 @@ ifdef GRX_DEFAULT_FONT_PATH
 CCOPT += -DGRX_DEFAULT_FONT_PATH=$(GRX_DEFAULT_FONT_PATH)
 endif
 
+GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+
 GRX20SH = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.so
 GRX20SHli = $(GRX20SH).$(word 1,$(subst ., ,$(GRX_VERSION)))
 GRX20SHna = $(GRX20SH).$(GRX_VERSION)
-
-GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
-
-ifdef SHARED
-CCOPT += -fPIC -D__SHARED__
-endif
+SHCCOPT = -fPIC -D__SHARED__ 
 
 OX=.o
 OP=
@@ -35,6 +34,7 @@ BGI_O= $(BGI_1) $(BGI_2)  $(BGI_3)  $(BGI_4) \
        $(BGI_5) $(BGI_6)
 
 ADDON_O=
+
 ifdef DEBUG
  ADDON_O += $(DBG_1)
 endif
@@ -74,58 +74,71 @@ O=      $(STD_O)                \
 	mouse/lnxinput.o        \
 	mouse/lnxkeys.o         \
 	misc/lnxmisc.o          \
+	vdrivers/vd_lnxfb.o     \
 	vdrivers/svgalib.o
 
-ifdef SHARED
-# ------------------------ SHARED
-all: $(GRX20SHna)
+LO = $(subst $(OX),.lo,$(O))
 
-$(GRX20SHna): $(LINUX_i386_SVGALIB_SHARED) $(O)
+all: libst libsh
+
+libsh: $(GRX20SHna)
+
+libst: $(GRX20ST)
+
+$(GRX20SHna): $(LINUX_i386_CONSOLE) $(LO)
 	-rm -f $(GRX20SHna)
-	$(CC) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(O)
+	$(CC) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(LO)
+	ln -sf $(notdir $(GRX20SHna)) $(GRX20SHli)
 
-$(O): $(LINUX_i386_SVGALIB_SHARED)
-
-else
-# ------------------------- STATIC
-all: $(GRX20ST)
-
-$(GRX20ST): $(LINUX_i386_SVGALIB_STATIC) $(O)
+$(GRX20ST): $(LINUX_i386_CONSOLE) $(O)
 	-rm -f $(GRX20ST)
 	$(AR) -rv $(GRX20ST) $(O)
 	$(RANLIB) $(GRX20ST)
 
-$(O): $(LINUX_i386_SVGALIB_STATIC)
-endif
+$(O): $(LINUX_i386_CONSOLE)
 
-$(LINUX_i386_SVGALIB_STATIC):
-	if [ ! -e $(LINUX_i386_SVGALIB_STATIC) ]; then rm -f $(SYSTEM_TAG_PREFIX).* $(O); fi
-	touch $(LINUX_i386_SVGALIB_STATIC)
+$(LO): $(LINUX_i386_CONSOLE)
 
-$(LINUX_i386_SVGALIB_SHARED):
-	if [ ! -e $(LINUX_i386_SVGALIB_SHARED) ]; then rm -f $(SYSTEM_TAG_PREFIX).* $(O); fi
-	touch $(LINUX_i386_SVGALIB_SHARED)
+$(LINUX_i386_CONSOLE):
+	if [ ! -e $(LINUX_i386_CONSOLE) ]; then \
+	rm -f $(SYSTEM_TAG_PREFIX).* $(O) $(LO); fi
+	touch $(LINUX_i386_CONSOLE)
 
 clean:
-	rm -f $(O) $(O:.o=.s) $(LINUX_i386_SVGALIB_STATIC) $(LINUX_i386_SVGALIB_SHARED)
+	rm -f $(O) $(O:.o=.s) $(LO) $(LINUX_i386_CONSOLE)
 
 cleanall: clean
 	rm -f $(GRX20SHna) $(GRX20SHli) $(GRX20ST)
 
+install: libst libsh
+	install -m 0644 $(GRX20ST) $(INSTALLDIR)/lib
+	install -m 0755 $(GRX20SHna) $(INSTALLDIR)/lib
+	ln -sf $(notdir $(GRX20SHna)) $(INSTALLDIR)/lib/$(notdir $(GRX20SHli))
+	ln -sf $(notdir $(GRX20SHli)) $(INSTALLDIR)/lib/$(notdir $(GRX20SH))
+	install -m 0644 ../include/grx20.h $(INSTALLDIR)/include
+	install -m 0644 ../include/grxkeys.h $(INSTALLDIR)/include
+	install -m 0644 ../include/libbcc.h $(INSTALLDIR)/include
+ 
+uninstall:
+	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20ST))
+	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SH))
+	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SHli))
+	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SHna))
+	rm -f $(INSTALLDIR)/include/grx20.h
+	rm -f $(INSTALLDIR)/include/grxkeys.h
+	rm -f $(INSTALLDIR)/include/libbcc.h
+
 dep:
-	gcc -MM $(CCOPT) $(INCDIR) $(O:.o=.c) | sed 's#^.*: \(.*\)\.c#\1.o: \1.c#g' >depend.lnx
-
-$(O:.o=.i) : %.i : %.c
-	$(CC) -E $(CCOPT) $(INCDIR) $*.c > $*.i
-
-$(O:.o=.dm) : %.dm : %.c
-	$(CC) -dM -E $(CCOPT) $(INCDIR) $*.c > $*.dm
+	gcc -MM $(CCOPT) $(INCDIR) $(O:.o=.c) \
+	| sed 's#^.*: \(.*\)\.c#\1.o: \1.c#g' >depend.lnx
 
 .c.s:
 	$(CC) -S $(CCOPT)  $(INCDIR) $*.c -o $*.s
 
-.c.o:
-	$(CC) -c $(CCOPT)  $(INCDIR) $*.c -o $*.o
+$(O): %.o : %.c
+	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
+
+$(LO): %.lo : %.c
+	$(CC) -c $(CCOPT) $(SHCCOPT) $(INCDIR) $*.c -o $*.lo 
 
 include depend.lnx
-

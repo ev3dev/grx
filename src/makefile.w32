@@ -4,8 +4,9 @@
 #
 .PHONY : clean cleanall install uninstall
 
-include ../makedefs.gnu
-include ../makedefs.w32
+GRXVW32=y
+
+include ../makedefs.grx
 
 TAG = $(WIN32_GCC_i386_STATIC)
 

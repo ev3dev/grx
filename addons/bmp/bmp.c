@@ -1,5 +1,5 @@
 /*
-**  <bmp.h>     - BMP read/write file
+**  <bmp.c>     - BMP read/write file
 **                by Michal Stencl Copyright (c) 1998
 **              - read  BMP 2, 4, 8 bpp
 **              - write BMP 8, 24   bpp

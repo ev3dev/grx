@@ -35,7 +35,7 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0241
+#define GRX_VERSION_API 0x0242
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -47,6 +47,8 @@
 /*#define GRX_VERSION_WATCOM_REAL_MODE  6*/     /* GS - Watcom C++ 11.0 16 Bit - TODO! */
 #define GRX_VERSION_GCC_386_WIN32       7       /* WIN32 using Mingw32 */
 #define GRX_VERSION_MSC_386_WIN32       8       /* WIN32 using MS-VC */
+
+#define GRXMain main  /* WIN32 targets undef it */
 
 #ifdef  __TURBOC__
 #define GRX_VERSION     GRX_VERSION_TCC_8086_DOS
@@ -61,6 +63,7 @@
 #endif
 #ifdef  __WIN32__
 #define GRX_VERSION     GRX_VERSION_GCC_386_WIN32
+#undef GRXMain
 #endif
 #endif
 
@@ -78,6 +81,7 @@
 #ifdef _WIN32
 #ifdef _M_IX86
 #define GRX_VERSION     GRX_VERSION_MSC_386_WIN32
+#undef GRXMain
 #if !defined(__WIN32__)
 #define __WIN32__ _WIN32
 #endif
@@ -253,6 +257,7 @@ typedef enum _GR_videoAdapters {
         GR_S3,                              /* S3 graphics accelerator */
         GR_XWIN,                            /* X11 driver */
         GR_WIN32,                           /* WIN32 driver */
+        GR_LNXFB,                           /* Linux framebuffer */
         GR_MEM                              /* memory only driver */
 } GrVideoAdapter;
 

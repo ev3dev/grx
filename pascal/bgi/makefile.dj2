@@ -7,12 +7,13 @@
 
 GRXVDJ2=y
 
-include ../makedefs.grx
+include ../../makedefs.grx
 
-GRXLIB = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
-GRXLIBPATH = -L../lib/$(GRX_LIB_SUBDIR)
+GRXLIB = ../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+GRXLIBPATH = -L../../lib/$(GRX_LIB_SUBDIR)
 
 ADDON_LIBS=
+
 ifeq ($(HAVE_LIBTIFF),y)
   ADDON_LIBS += -ltiff
 endif
@@ -30,13 +31,13 @@ LIBS= $(GRXLIBPATH) $(ADDON_LIBS)
 # Compiler and options on your system  
 COMPILER = gpc --automake
 
-
 PROGS= 			\
-	blt_test.exe 	\
-	modetest.exe 	\
-	taste.exe 	\
-	txt_test.exe 	\
-	vir_test.exe
+	allmodes.exe	\
+	modelist.exe	\
+	colors.exe	\
+	demo.exe	\
+	small.exe	\
+	palette.exe
 
 all: $(PROGS)
 

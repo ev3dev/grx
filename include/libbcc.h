@@ -30,9 +30,6 @@
          0x230 v2.3 offical release */
 #define __BCC2GRX__ 0x22b
 
-#include <malloc.h>
-#include <string.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -661,7 +658,7 @@ static _BGI_INLINE_ void getfillsettings(struct fillsettingstype  *fillinfo) {
 
 /* ----------------------------------------------------------------- */
 static _BGI_INLINE_ void getfillpattern(char *pattern) {
-  memcpy(pattern, &__gr_fpatterns[USER_FILL], 8);
+  __gr_getfillpattern(pattern);
 }
 
 /* ----------------------------------------------------------------- */

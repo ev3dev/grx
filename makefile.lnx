@@ -1,29 +1,27 @@
 #
-# GRX 2.0 makefile for LINUX/svgalib distribution version
+# GRX makefile for LINUX/svgalib distribution version
 #
 
-include makedefs.gnu
+GRXVLNX=y
+
+include makedefs.grx
 
 all: libs test bgitest
 
-libs: static_libs shared_libs
+libs:
+	$(MAKE) -C src -f makefile.lnx
 
-static_libs:
-	$(MAKE) -C src STATIC=1 -f makefile.lnx
-
-shared_libs:
-	$(MAKE) -C src SHARED=1 -f makefile.lnx
-
-test:   static_libs
+test: libs
 	$(MAKE) -C test -f makefile.lnx
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	$(MAKE) -C pascal -f makefile.lnx
-	$(MAKE) -C pascal/bgi/demos -f makefile.lnx
-	$(MAKE) -C pascal/bgi/test -f makefile.lnx
 endif
 
-bgitest:   static_libs
+bgitest: libs
 	$(MAKE) -C test/bgi -f makefile.lnx
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	$(MAKE) -C pascal/bgi -f makefile.lnx
+endif
 
 clean:
 	$(MAKE) -C test          -f makefile.lnx clean
@@ -32,6 +30,11 @@ clean:
 	$(MAKE) -C src  SHARED=1 -f makefile.lnx clean
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	$(MAKE) -C pascal -f makefile.lnx clean
-	$(MAKE) -C pascal/bgi/demos -f makefile.lnx clean
-	$(MAKE) -C pascal/bgi/test -f makefile.lnx clean
+	$(MAKE) -C pascal/bgi -f makefile.lnx clean
 endif
+
+install:
+	$(MAKE) -C src -f makefile.lnx install
+ 
+uninstall:
+	$(MAKE) -C src -f makefile.lnx uninstall 

@@ -23,12 +23,18 @@ and GNU-Pascal.
   "Q" leaves vir_test.
 
 
-To build up the programs, just edit the makefile and edit
-the paths. You need to know, where your libtiff libjpeg is.
+To build up the programs, either
 
-Then type
-   make -f makefile all
+- use the generic makefile and edit the paths, then type
+   make 
 
+- For djgpp, mingw32, LINUX/svga and LINUX/X11, they should 
+have been built with the library and C tests from top level makefile,
+if you used them. 
+If you want to rebuild only the tests type from this dir
+   make -f <your makefile>
+Pathes and parameters will be borrowed from corresponding top level
+makedefs files
 
 Have fun!
 

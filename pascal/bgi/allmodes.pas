@@ -52,7 +52,7 @@ begin
   grDriver := Detect;
   { grDriver := Detect; }
   { grDriver := InstallUserDriver('SVGA256', nil); Not used in GPC }
-  InitGraph(grDriver, grMode,'e:\bp\bgi');
+  InitGraph(grDriver, grMode,'..\..\chr');
   ErrCode := GraphResult;
   if ErrCode = grOk then
   begin  { Do graphics }

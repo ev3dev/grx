@@ -23,6 +23,9 @@ Unit GRX;
 (*$ifdef __DJGPP__ *)
   (*$L grx20 *)
 (*$else *)
+(*$ifdef __MINGW32__ *)
+  (*$L grx20 *)
+(*$else *)  
 (*$ifdef _WIN32 *)
   (*$L grxW32 *)
   (*$L vfs.c *)
@@ -31,10 +34,11 @@ Unit GRX;
 (*$else *)
   (*$L grx20X *)
   (*$L X11 *)
-  (*$L tiff *)  (* !!! *)
+  (*.$L tiff *)  (* !!! *)
 (*$endif *)
 (*$endif *)
-(*$L jpeg *)
+(*$endif *)
+(*.$L jpeg *)
 
 
 Interface

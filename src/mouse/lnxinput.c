@@ -29,7 +29,7 @@
 #include <string.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
-#include <sys/time.h>
+#include <time.h>
 #include <vga.h>
 #include <vgamouse.h>
 

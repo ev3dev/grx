@@ -35,12 +35,20 @@ struct _ColorList {
 };
 typedef struct _ColorList SColorList;
 
-extern SEventQueue                *pEventQueue;
-extern CRITICAL_SECTION                csEventQueue;
-extern SColorList                *ColorList;
-extern HBITMAP                        hBitmapScreen;
-extern HWND                        hGRXWnd;
-extern HDC                        hDCMem;
+extern SEventQueue      *pEventQueue;
+extern CRITICAL_SECTION csEventQueue;
+extern SColorList       *ColorList;
+extern HBITMAP          hBitmapScreen;
+extern HWND             hGRXWnd;
+extern HDC              hDCMem;
+
+/* _keysw32pool used only when GrMouseEventEnable( 0,x ) is set */
+
+#define  _MAXKEYSW32POOL 16
+extern int _nkeysw32pool;
+extern int _keysw32pool[_MAXKEYSW32POOL];
+
+extern int _GrIsKbdEnabled ( void );
 
 extern int GRXMain ( int, char**, char** );
 

@@ -1,0 +1,49 @@
+#
+# GRX test programs makefile for LINUX/X11. Uses GNU make.
+# Uses GNU make.
+#
+.PHONY: clean install uninstall
+
+GRXVX11=y
+
+include ../../makedefs.grx
+
+GRXLIB = ../../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
+GRXLIBPATH = -L../../lib/$(GRX_LIB_SUBDIR)
+
+ADDON_LIBS=
+
+ifeq ($(HAVE_LIBTIFF),y)
+  ADDON_LIBS += -ltiff
+endif
+
+ifeq ($(HAVE_LIBJPEG),y)
+  ADDON_LIBS += -ljpeg
+endif
+
+ifeq ($(NEED_ZLIB),y)
+  ADDON_LIBS += -lz
+endif
+
+LIBS= $(GRXLIBPATH) $(ADDON_LIBS) $(X11LIBS) -lm
+
+# Compiler and options on your system  
+COMPILER = gpc --automake
+
+PROGS= 			\
+	xallmodes	\
+	xmodelist	\
+	xcolors		\
+	xdemo		\
+	xsmall		\
+	xpalette
+
+all: $(PROGS)
+
+$(PROGS): x% : %.pas $(GRXLIB)
+	$(COMPILER) $(CCOPT) -o $@ $*.pas $(LIBS)
+
+clean:
+	rm -f *.o *.gpi *.gpm $(PROGS)
+
+

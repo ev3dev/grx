@@ -28,5 +28,6 @@ begin
       fivm := GrNextVideoMode(fivm);
     end;
   end;
+  readln;
   { M := GrSetMode(GR_default_text,0,0,0,0,0); }
 end.

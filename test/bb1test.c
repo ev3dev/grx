@@ -17,15 +17,10 @@
  **/
  
 #include <stdlib.h>
-//#include <stdio.h>
 #include "grx20.h"
 #include "grxkeys.h"
 
-#if defined(__WIN32__)
 int GRXMain(void)
-#else
-int main(void)
-#endif
 {
   GrContext *pContext;
   int sizex = 40;

@@ -27,6 +27,10 @@ int kbhit(void)
   SEventQueue *pEvQ;
   int ret;
         
+  if ( ! _GrIsKbdEnabled () ) {
+    return ( _nkeysw32pool > 0 );
+  }
+
   if ( MOUINFO -> msstatus < 2 ) {
     GrMouseInit ();
     GrMouseEventEnable ( 1, 0 );
@@ -48,12 +52,19 @@ int kbhit(void)
 
 int getkey(void)
 {
-/*
-  SEventQueue *pEvQ, *pPrevEvQ;
-  int ret;
-*/
   GrMouseEvent ev;
+  int i, key;
         
+  if ( ! _GrIsKbdEnabled () ) {
+    while( _nkeysw32pool < 1 )
+      _GrUpdateInputs ();
+    key = _keysw32pool[0];
+    for ( i=0; i<_nkeysw32pool; i++ )
+      _keysw32pool[i] = _keysw32pool[i+1];
+    _nkeysw32pool--;
+    return key;
+  }    
+
   if ( MOUINFO -> msstatus < 2 ) {
     GrMouseInit ();
     GrMouseEventEnable ( 1, 0 ); 
@@ -64,25 +75,6 @@ int getkey(void)
       return ( ev.key );
     }
   }
-/*
-  EnterCriticalSection ( &csEventQueue );
-  pEvQ = pEventQueue;
-  ret = FALSE;
-  while ( pEvQ -> pNext != NULL ) {
-    pPrevEvQ = pEvQ;
-    pEvQ = pEvQ -> pNext;
-    if ( ( ( pEvQ -> pEvent -> flags ) & GR_M_KEYPRESS ) == GR_M_KEYPRESS ) {
-      ret = pEvQ -> pEvent -> key;
-      free ( pEvQ -> pEvent );
-      pPrevEvQ -> pNext = pEvQ -> pNext;
-      free ( pEvQ );
-      break;
-    }
-  }
-  LeaveCriticalSection ( &csEventQueue );
-
-  return ret;
-*/
 }
 
 int getch(void)
@@ -102,20 +94,6 @@ int getch(void)
   lastkey = key & 0xff;
         
   return ( 0 );
-/*
-  GrMouseEvent ev;
-        
-  if ( MOUINFO -> msstatus < 2 ) {
-    GrMouseInit ();
-    GrMouseEventEnable ( 1, 0 ); 
-  }
-  for ( ; ; ) {
-    GrMouseGetEvent ( ( GR_M_EVENT | GR_M_NOPAINT ), &ev );
-    if ( ev.flags & GR_M_KEYPRESS ) {
-      return ( ev.key );
-    }
-  }
-*/
 }
 
 int getkbstat(void)

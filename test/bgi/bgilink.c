@@ -2,6 +2,7 @@
  * Copyright (C) 1993-97 by Hartmut Schirmer
  */
 
+#include <string.h>
 #include "libbcc.h"
 
 static void check_linked( void *ptr )
