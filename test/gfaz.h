@@ -72,7 +72,7 @@ typedef struct{
   long p3;
   } Event;
 
-int gfaz_ini( void );
+int gfaz_ini( int width, int height, int bpp );
 int gfaz_fin( void );
 
 void event_read( Event *ev );

@@ -98,14 +98,18 @@ static void testmode(int mode) {
           setgraphmode(oldmode);
 }
 
+#if defined(__WIN32__)
+int GRXMain(void)
+#else
 int main(void)
+#endif
 {
   int gd, gm;
   int err;
   int lomode, himode;
 
   gd = DETECT;
-  initgraph(&gd,&gm,"c:\\bc\\bgi");
+  initgraph(&gd,&gm,"..\\..\\chr");
   err = graphresult();
   if (err != grOk) {
     fprintf(stderr, "Couldn't initialize graphics\n");

@@ -12,7 +12,12 @@ static void check_linked( void *ptr )
     }
 }
 
-int main(void) {
+#if defined(__WIN32__)
+int GRXMain(void)
+#else
+int main(void)
+#endif
+{
    check_linked(restorecrtmode);
    check_linked(closegraph);
    check_linked(getgraphmode);

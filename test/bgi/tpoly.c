@@ -13,7 +13,11 @@
 #  include <conio.h>
 #endif
 
-void main(void)
+#if defined(__WIN32__)
+int GRXMain(void)
+#else
+int main(void)
+#endif
 {
   int gd, gm;
   int err;
@@ -50,4 +54,5 @@ void main(void)
   fillpoly( 10, &poly[2]);
   getch();
   closegraph();
+  return 0;
 }

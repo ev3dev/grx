@@ -60,7 +60,7 @@ TESTFUNC(life)
         which = 0;
         old = map[which];
         cur = map[1 - which];
-        srand((int)time(NULL));
+        SRND((int)time(NULL));
         for(y = 0; y < H; y++) {
             for(x = 0; x < W; x++) {
                 int ii = RND() % 53;

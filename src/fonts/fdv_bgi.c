@@ -36,12 +36,6 @@
 /* This code requires packed structs. Should be revised for **
 ** better portability                           hsc, 980427 */
 
-#ifdef  __MSDOS__
-#define OPENMODE        "rb"
-#else
-#define OPENMODE        "r"
-#endif
-
 #ifndef SEEK_SET
 #define SEEK_SET        0
 #endif
@@ -132,7 +126,7 @@ static int openfile(char *fname)
     res = FALSE;
     do {
         cleanup();
-        fp = fopen(fname,OPENMODE);
+        fp = fopen(fname,"rb");
         if(!fp) break; /* FALSE */
         fseek(fp,0L,SEEK_END);
         flen = ftell(fp);
@@ -150,12 +144,12 @@ static int openfile(char *fname)
         p = strchr(fdata,MARKEREND); /* skip copyright text */
         if (!p || ((++p) > &fdata[128 - sizeof(*fhdr)])) break; /* FALSE */
         fhdr = (BGIfontFileHeader *)p;
-#       ifdef BIG_ENDIAN
+#       if BYTE_ORDER==BIG_ENDIAN
           _GR_swap16u(&fhdr->header_size);
           _GR_swap16u(&fhdr->font_size);
 #       endif
         fhtp = (BGIfontHeaderType *)(fdata + fhdr->header_size);
-#       ifdef BIG_ENDIAN
+#       if BYTE_ORDER==BIG_ENDIAN
            _GR_swap16u(&fhtp->nchrs);
            _GR_swap16u(&fhtp->cdefs);
 #       endif

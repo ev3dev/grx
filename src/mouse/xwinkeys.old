@@ -24,8 +24,8 @@
 #include "grxkeys.h"
 
 #define _NOKEY_ (-1)
-static int lastkey = _NOKEY_;
-static int lastgetchkey = _NOKEY_;
+static int lastkey1 = _NOKEY_;
+static int lastkey2 = _NOKEY_;
 
 static int getkey_w (int delay)
 {
@@ -43,92 +43,100 @@ static int getkey_w (int delay)
 int getkey(void)
 {
   int key;
-  lastgetchkey = _NOKEY_;
-  if (lastkey != _NOKEY_) {
-    key = lastkey;
-    lastkey = _NOKEY_;
-  } 
-  else do {
+  do {
     key = getkey_w (1L);
   } while (key == _NOKEY_);
   return key;
 }
 
+
 int getch(void)
 {
   int key;
-  if (lastgetchkey != _NOKEY_) {
-    key = lastgetchkey;
-    lastgetchkey = _NOKEY_;
+  if(lastkey1 != _NOKEY_) {
+    key = lastkey1;
+    lastkey1 = lastkey2;
+    lastkey2 = _NOKEY_;
     return(key);
   }
-  if (lastkey != _NOKEY_) {
-    key = lastkey;
-    lastkey = _NOKEY_;
-  }
-  else
-    key = getkey();
+  key = getkey();
   if(key < 0x100) {
     return(key);
   }
-  lastgetchkey = key & 0xff;
+  lastkey1 = key & 0xff;
   return(0);
 }
 
 int kbhit(void)
 {
   int key;
-  if (lastkey != _NOKEY_ || lastgetchkey != _NOKEY_)
+  if (lastkey1 != _NOKEY_)
     return TRUE;
   key = getkey_w (0);
   if (key != _NOKEY_) {
-    lastkey = key;
+    if (key >= 0x100) {
+      lastkey1 = 0;
+      lastkey2 = key & 0xff;
+    } else
+      lastkey1 = key;
     return TRUE;
   }
   return FALSE;
+#if 0
+  if(MOUINFO->msstatus < 2) {
+     GrMouseInit();
+     GrMouseEventEnable(1,0);
+  }
+  return(_XGrKeyboardHit());
+#endif
 }
 
 int getkbstat(void)
 {
   if(MOUINFO->msstatus < 2) {
-    GrMouseInit();
-    GrMouseEventEnable(1,0);
+     GrMouseInit();
+     GrMouseEventEnable(1,0);
   }
   return(_XGrKeyboardGetState());
 }
+
 
 /*
 ** new functions to replace the old style
 **   kbhit / getch / getkey / getxkey / getkbstat
 ** keyboard interface
 */
-
-int GrKeyPressed(void)
+int GrKeyPressed(void) 
 {
-  int  key;
-  if (lastkey != _NOKEY_)
-    return TRUE;
-  key = getkey_w (0);
-  if (key==_NOKEY_)
-    return FALSE;
-  lastkey = key;
-  return TRUE;    
+    int  key;
+    if (lastkey1 != _NOKEY_)
+       return TRUE;
+    key = getkey_w (0);
+    if (key==_NOKEY_)
+       return FALSE;
+    lastkey1 = key;
+    return TRUE;    
 }
 
-GrKeyType GrKeyRead(void)
-{
-  int key;
-  if (lastkey != _NOKEY_){
-    key = lastkey;
-    lastkey = _NOKEY_;
-    return (GrKeyType) key;
-  }
-  do {
-    key = getkey_w (1);
-  } while (key == _NOKEY_);
+GrKeyType GrKeyRead(void) {
+    int key;
+    if (lastkey1 != _NOKEY_)
+       {
+           key = lastkey1;
+	   lastkey1 = _NOKEY_;
+	   return (GrKeyType) key;
+       }
+    do 
+       {
+           key = getkey_w (1);
+       } while (key == _NOKEY_);
   return key;
 }
+
+
 
 int GrKeyStat(void) {
   return getkbstat();
 }
+
+

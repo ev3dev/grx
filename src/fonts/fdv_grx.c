@@ -24,12 +24,6 @@
 #include "allocate.h"
 #include "fonts/fdv_grx.h"
 
-#ifdef   __MSDOS__
-#define  OPENMODE       "rb"
-#else
-#define  OPENMODE       "r"
-#endif
-
 #ifndef  SEEK_SET
 #define  SEEK_SET       0
 #endif
@@ -40,7 +34,7 @@ static GR_int16u far *wtable = NULL;
 static unsigned int wtsize = 0;
 static int     nextch = 0;
 
-#ifdef BIG_ENDIAN
+#if BYTE_ORDER==BIG_ENDIAN
 #include "ordswap.h"
 static void swap_header(void) {
     GRX_ENTER();
@@ -87,22 +81,22 @@ static void cleanup(void)
 static int openfile(char *fname)
 {
         int res;
-#ifdef BIG_ENDIAN
+#if BYTE_ORDER==BIG_ENDIAN
         int swap;
 #endif
         GRX_ENTER();
         res = FALSE;
         cleanup();
-        fontfp = fopen(fname,OPENMODE);
+        fontfp = fopen(fname,"rb");
         if(fontfp == NULL) {
-            DBGPRINTF(DBG_FONT,("fopen(\"%s\",\"%s\") failed\n", fname, OPENMODE));
+            DBGPRINTF(DBG_FONT,("fopen(\"%s\") failed\n", fname));
             goto done;
         }
         if(fread(&fhdr,sizeof(fhdr),1,fontfp) != 1) {
             DBGPRINTF(DBG_FONT,("reading header failed\n"));
             goto done;
         }
-#ifdef BIG_ENDIAN
+#if BYTE_ORDER==BIG_ENDIAN
         swap = 0;
         if(fhdr.magic == GRX_FONTMAGIC_SWAPPED) {
           swap = 1;
@@ -126,7 +120,7 @@ static int openfile(char *fname)
                 DBGPRINTF(DBG_FONT,("Loading wtable failed\n"));
                 goto done;
             }
-#ifdef BIG_ENDIAN
+#if BYTE_ORDER==BIG_ENDIAN
             if (swap) {
               DBGPRINTF(DBG_FONT,("swaping wtable byte order\n"));
               swap_wtable();

@@ -29,8 +29,8 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrPattern *p)
     if (p->gp_ispixmap) {
         void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor);
         int pattwdt = p->gp_pxp_width;
-        int xdest = x-sx;
-        int ydest = y-sy;
+        int xdest = x;
+        int ydest = y;
         int ypatt = (y-sy) % p->gp_pxp_height;
         int xpatt = (x-sx) % pattwdt;
         int cpysize = pattwdt - xpatt;

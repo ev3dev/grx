@@ -2,11 +2,6 @@
    GRAPHICS DEMO FOR Borland C++
 
    Copyright (c) 1987,88,91 Borland International. All rights reserved.
-
-   From the command line, use:
-
-        bcc bgidemo graphics.lib
-
 */
 
 /* Partially copyrighted (c) 1993-97 by Hartmut Schirmer */
@@ -15,34 +10,29 @@
 #error BGIDEMO will not run in the tiny model.
 #endif
 
-#ifdef __linux__
+#if defined(__linux__)
 #  include "bcclnx.h"
+#elif defined(__WIN32__)
+#  include "bccw32.h"
 #else
 #  include <dos.h>
+#  include <pc.h>
 #endif
+
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 
-#ifdef __GNUC__
-#  define BGI_PATH "..\\chr"
-#  ifndef __linux__
-#    include <pc.h>
-#  endif
-#  include "libbcc.h"
-#  define Random(r) (random() % (r))
-#  define Seed(s) srandom(s)
-#  define itoa(value,str,radix) sprintf((str),"%d",(value))
-#  define getch() getkey()
-#else
-#  define BGI_PATH "e:\\comp\\tp\\bgi"
-#  define Random(r) random(r)
-#  define Seed(s) srand(s)
-#  include <conio.h>
-#  include <graphics.h>
-#endif
+#include "../rand.h"
+#define Random(r) ((RND() % (r)) + 1)
+#define Seed(s) SRND(s)
+
+#define BGI_PATH "..\\..\\chr"
+#include "libbcc.h"
+#define itoa(value,str,radix) sprintf((str),"%d",(value))
+#define getch() getkey()
 
 #include "bgiext.h"
 
@@ -973,13 +963,15 @@ void PutPixelDemo(void)
 #define PID_STEPS 250
 
 int SaucerMoveX(int *dx, int x) {
-    *dx += (Random( 2*MAXXSTEP+1) - MAXXSTEP + (MAXXSTEP*(MaxX/2-x))/MaxX) / 10;
+//    *dx += (Random( 2*MAXXSTEP+1) - MAXXSTEP + (MAXXSTEP*(MaxX/2-x))/MaxX) / 10;
+    *dx += Random( 2*MAXXSTEP) - MAXXSTEP;
     if ( *dx >  MAXXSTEP) *dx =  MAXXSTEP; else
     if ( *dx < -MAXXSTEP) *dx = -MAXXSTEP;
     return *dx;
 }
 int SaucerMoveY(int *dy, int y) {
-    *dy += (Random( 2*MAXYSTEP+1) - MAXYSTEP + (MAXYSTEP*(MaxY/2-y))/MaxY) / 10;
+//    *dy += (Random( 2*MAXYSTEP+1) - MAXYSTEP + (MAXYSTEP*(MaxY/2-y))/MaxY) / 10;
+    *dy += Random( 2*MAXYSTEP) - MAXYSTEP;
     if ( *dy >  MAXYSTEP) *dy =  MAXYSTEP; else
     if ( *dy < -MAXYSTEP) *dy = -MAXYSTEP;
     return *dy;
@@ -2173,7 +2165,11 @@ void ColorPlay(void)
 /*      Begin main function                                             */
 /*                                                                      */
 
-int main()
+#if defined(__WIN32__)
+int GRXMain(void)
+#else
+int main(void)
+#endif
 {
 
 #if 0 && defined(__GNUC__)

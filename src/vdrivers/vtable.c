@@ -37,6 +37,9 @@ GrVideoDriver *_GrVideoDriverTable[] = {
 #if defined(__linux__) && !defined(__XWIN__)
     &_GrVideoDriverSVGALIB,
 #endif
+#ifdef __WIN32__
+    &_GrVideoDriverWIN32,
+#endif
     &_GrDriverMEM,
     NULL
 };

@@ -31,6 +31,7 @@
 #define __BCC2GRX__ 0x22b
 
 #include <malloc.h>
+#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {

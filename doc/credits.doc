@@ -12,8 +12,8 @@ Starting from version v2.2 GRX was maintained by Hartmut Schirmer
 
 Peter Gerwinski (peter@gerwinski.de) released GRX 2.3.1 and 2.3.2
 
-Mariano Alvarez Fernandez (malfer@teleline.es) released GRX 2.3.3
-and the latest: 2.3.4
+Mariano Alvarez Fernandez (malfer@teleline.es) released GRX 2.3.3,
+2.3.4 and the latest: 2.4
 
 Credits for GRX > v2.0 in alphabetical order
 ============================================
@@ -35,6 +35,8 @@ Michael Goffioul (goffioul@emic.ucl.ac.be) for his GREAT work:
 	- Custom Line functions
 	- User Coordinates functions
 
+Gernot Graeff <gernot.graeff@t-online.de> for the Win32 driver.
+
 Thomas Hahn <hahn@itpaxp5.physik.uni-karlsruhe.de> for the ALPHA
 processor patches (64bit support)
 
@@ -44,7 +46,10 @@ bug reports
 Eike Lange <eike.lange@uni-essen.de> for pascal updates
 
 Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77] for linear framebuffer
-support
+support.
+
+Maurice Lombardi <Maurice.Lombardi@ujf-grenoble.fr> for patches
+and bug reports.
 
 Peter C. Mehlitz <peter@transvirtual.com> for his suggestions on
 Linux and X11 event time handling
@@ -53,7 +58,8 @@ Vincenzo Morello (morellov@tin.it) continous using GRX as base
 graphics API for his MGUI lib. He submitted many suggestions,
 found lots of bugs and contributed the SaveContextToJpeg() code.
 
-Josu Onandia <jonandia@fagorautomation.es> for patches and bug reports
+Josu Onandia <jonandia@fagorautomation.es> for patches, bug reports
+and lot of inprovements to the Win32 driver.
 
 Andris Pavenis (pavenis@acad.latnet.lv) for many suggestions, the
 memory driver, printing support, variable X11 resolution, patches

@@ -17,4 +17,5 @@ for x in *.chr; do
 done
 
 ar rc ../lib/dj2/libgrx20.a *.o
+ranlib ../lib/dj2/libgrx20.a
 rm -f *.o

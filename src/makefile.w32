@@ -4,6 +4,7 @@
 #
 .PHONY : clean cleanall
 
+include ../makedefs.gnu
 include ../makedefs.w32
 
 #ifndef DEBUG
@@ -59,15 +60,20 @@ ifeq ($(INCLUDE_GPC_SUPPORT),y)
 endif
 
 W32_O = $(ADDON_O)              \
+	fdrivers/fd_win32.o     \
 	fdrivers/ram24.o        \
 	fdrivers/ram32l.o       \
-	fdrivers/ram32h.o
+	fdrivers/ram32h.o       \
+	mouse/w32inp.o          \
+	mouse/w32keys.o         \
+	vdrivers/vd_win32.o
 
 ALL_O = $(STD_Oa) $(STD_Ob) $(BGI_Oa) $(BGI_Ob) $(W32_O)
 
 all:    $(GRX20ST)
 
 clean:
+	if exist bgi\*.o      del bgi\*.o
 	if exist draw\*.o     del draw\*.o
 	if exist fdrivers\*.o del fdrivers\*.o
 	if exist fonts\*.o    del fonts\*.o

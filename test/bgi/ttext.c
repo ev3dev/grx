@@ -83,14 +83,18 @@ void all_user_tests(int fnt, int sze) {
   user_info(fnt, sze);
 }
 
+#if defined(__WIN32__)
+int GRXMain(void)
+#else
 int main(void)
+#endif
 {
   int gd, gm, x, y;
   int err;
   char ch[2];
 
   gd = DETECT;
-  initgraph(&gd,&gm,"d:\\tp\\bgi");
+  initgraph(&gd,&gm,"..\\..\\chr");
   err = graphresult();
   if (err != grOk) {
     fprintf(stderr, "Couldn't initialize graphics\n");

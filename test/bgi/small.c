@@ -4,7 +4,11 @@
 #  include <graphics.h>
 #endif
 
-void main(void)
+#if defined(__WIN32__)
+int GRXMain(void)
+#else
+int main(void)
+#endif
 {
   int  gd, gm, err;
 
@@ -12,4 +16,5 @@ void main(void)
   initgraph(&gd,&gm,"d:\\tp\\bgi");
   err = graphresult();
   closegraph();
+  return 0;
 }

@@ -4,10 +4,35 @@ the 2.2 version.
 
 Date     Changes
 
+01/03/18 ----------- GRX v2.4 released (Mariano Alvarez Fernandez)
+01/03/16 Win32 drivers improved again by Josu Onandia
+01/03/15 Make bccbgi to use ../rand.h to work with the Win32 drivers
+01/03/14 Added ifdef to demo programs to use GRXMain with the Win32 drivers
+01/03/12 Fixed a bug in mouse/xwinkeys.c, preventing getkey & kbhit work
+         together (Now bccbgi demo works properly in X, except restoring
+         from text mode)
+01/03/10 Support for DJGPP v1 removed (really only removed makefiles by now)
+01/03/10 Optimized pnm/ctx2pnm.c, contributed by Josu Onandia
+01/03/10 Improved frame and video drivers for win32, by Josu Onandia
+           <jonandia@fagorautomation.es>
+01/03/06 Integrated the win32 version written by Gernot Graeff
+           <gernot.graeff@t-online.de>
+01/03/05 Fixed bug in modetest.c preventing 32 bpp modes to work.
+01/03/04 Applied patch to solve 32bpp problems, by Hartmut Schirmer
+01/03/03 Applied patch to make GRX compile with gcc 3.0, by Andris Pavenis
+01/03/03 Fixed bug in pattern/fillpatt.c
+01/02/26 Modified setmode.c and svgalib.c to set frame pointer dinamicaly
+         and fix the svgalib video driver.
+01/02/22 Applied some patches by Maurice Lombardi
+           <Maurice.Lombardi@ujf-grenoble.fr>
+01/02/20 Fixed bug in pattern/patfbox.c
+01/02/14 Fixed bug preventing GrLoadFont work with BGI fonts
+
+01/02/12 ----------- GRX v2.3.4 released (Mariano Alvarez Fernandez)
 01/02/06 user's manual in info format contributed by Vicente Fuentes Gea
            <vfg@servidor.unam.mx>
 01/02/01 new WIN32 Mingw32 target (memory driver only)
-01/01/28 ctx2pnm functiosn added.
+01/01/28 ctx2pnm functions added.
 01/01/28 user's manual updated again.
 01/01/28 new test programs added: pnmtest and demogrx.
 01/01/28 some test programs bug fixes.

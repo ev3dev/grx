@@ -1,6 +1,5 @@
-# load the compiler specific setup first
-# default GCC (eg. Linux) systems
-include ../makedefs.gnu
+# Global settings for Win32 makefile
+# >>>>> Also check makedefs.gnu !
 
 # Put libgrx20.a to lib/win32
 GRX_LIB_SUBDIR=win32

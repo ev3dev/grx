@@ -107,7 +107,7 @@
 #define MS_PER_TICK 55
 #endif
 
-#if !defined(user_time) && defined(unix)
+#if !defined(user_time) && ( defined(unix) || defined(__WIN32__) )
 #include <time.h>
 #define user_time(tv) do {                                                  \
         (tv) = clock();                                                     \

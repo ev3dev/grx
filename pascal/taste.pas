@@ -12,12 +12,14 @@ var
   Finito : boolean;
 
 procedure MouseBehandlung;
+   var st:string[80];
 begin
   if (evt.flags and GR_M_KEYPRESS) > 0 then begin
     key := chr(evt.key);
-    writeln('Key :', key:2, ord(key):4, evt.key mod 256: 4, evt.key div 256: 4, evt.key: 6);
+    writestr(st,'Key :', key:2, ord(key):4, evt.key mod 256: 4, evt.key div 256: 4, evt.key: 6);
+    GrTextXY(evt.x,evt.y,st,GrWhite,GrBlack);
     case evt.key of
-      81, 131 : Finito := true; {'Q', 'q'}
+      81, 113 : Finito := true; {'Q', 'q'}
     end;
   end;
 end;

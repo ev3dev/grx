@@ -1,8 +1,19 @@
 /**
- ** SVGALIB.C ---- Linux driver, i.e. an interface to SVGALIB
+ ** svgalib.c ---- Linux driver, i.e. an interface to SVGALIB
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include <string.h>
@@ -65,7 +76,7 @@ static int setmode(GrVideoMode *mp,int noclear)
           if (vga_setlinearaddressing() == -1)
             return(FALSE);
         }
-        if(mp->extinfo->frame != (char *)vga_getgraphmem()) return(FALSE);
+        mp->extinfo->frame = (char *)vga_getgraphmem();
         return(TRUE);
 }
 
@@ -244,7 +255,6 @@ static void add_video_mode(
 static int init(char *options)
 {
         if(detect()) {
-            char          *frame = NULL;
             vga_modeinfo  *mdinfo;
             GrVideoMode    mode,*modep = &modes[1];
             GrVideoModeExt ext, *extp  = &exts[0];
@@ -254,22 +264,7 @@ static int init(char *options)
                 if(!(vga_hasmode(mindex)))                 continue;
                 if(!(mdinfo = vga_getmodeinfo(mindex)))    continue;
                 if(!(build_video_mode(mdinfo,&mode,&ext))) continue;
-                if(frame == NULL) {
-#if 0
-                    /* paranoid hack to really make sure... */
-                    long endmem = (long)(sbrk(0));
-                    if((endmem & 0xffffL) != 0) {
-                        brk((void *)((endmem + 0xffffL) & ~0xffffL));
-                    }
-#endif
-                    vga_setmode(mindex);
-                    if (ext.flags & GR_VMODEF_LINEAR)
-                      vga_setlinearaddressing();
-                    frame = (char *)vga_getgraphmem();
-                    vga_setmode(initmode);
-                }
                 mode.mode = mindex;
-                ext.frame = frame;
                 add_video_mode(&mode,&ext,&modep,&extp);
             }
             _GrVideoDriverSVGALIB.adapter = isEGA ? GR_EGA : GR_VGA;

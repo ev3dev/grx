@@ -50,7 +50,7 @@ $(PROGS): x%: %.o ../../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
 	$(CC) $(LDOPT) -o $@ $*.o $(LIBS)
 
 $(PROGS:x%=%.o): %.o : %.c
-	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
+	$(CC) -c $(CCOPT) -D__XWIN__ $(INCDIR) $*.c -o $*.o
 
 .c.s:
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c

@@ -369,8 +369,8 @@ int GrSetMode(GrGraphicsMode which,...)
             }
             sttcopy(&vmd,mdp);
             if((t || buildframedriver(&vmd,&fdr)) &&
-               (t || buildcontext(&vmd,&fdr,&cxt)) &&
-               (*vmd.extinfo->setup)(&vmd,noclear)) {
+               (*vmd.extinfo->setup)(&vmd,noclear) &&
+               (t || buildcontext(&vmd,&fdr,&cxt))) {
                 if((!t) &&
                    ((vw > vmd.width) || (vh > vmd.height)) &&
                    (vmd.extinfo->setvsize != NULL) &&
@@ -418,7 +418,10 @@ int GrSetMode(GrGraphicsMode which,...)
                 DRVINFO->vposx   = 0;
                 DRVINFO->vposy   = 0;
                 DBGPRINTF(DBG_SETMD,("GrResetColors ...\n"));
-                GrResetColors();
+                if ( !_GrResetColors() ) {
+                    res = errhdlr("could not set color mode");
+                    goto done;
+                }
                 DBGPRINTF(DBG_SETMD,("GrResetColors done\n"));
                 if(fdr.init) {
                     DBGPRINTF(DBG_SETMD,("fdr.init ...\n"));

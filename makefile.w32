@@ -4,7 +4,7 @@
 
 include makedefs.gnu
 
-all:   libs test
+all:   libs test bgitest
 
 libs:
 	$(MAKE) -C src -f makefile.w32
@@ -12,6 +12,11 @@ libs:
 test:   libs
 	$(MAKE) -C test -f makefile.w32
 
+bgitest:   libs
+	$(MAKE) -C test/bgi -f makefile.w32
+
 clean:
 	$(MAKE) -C test -f makefile.w32 clean
 	$(MAKE) -C src  -f makefile.w32 clean
+	$(MAKE) -C test/bgi -f makefile.w32 clean
+

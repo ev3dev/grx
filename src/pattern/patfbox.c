@@ -37,15 +37,15 @@ void GrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p)
             void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor);
             int pwdt = p->gp_pxp_width;
             int phgt = p->gp_pxp_height;
-            int xoff = (x1 + CURC->gc_xoffset) % pwdt;
-            int ypos = y1 + CURC->gc_yoffset;
+            int xoff = x1 % pwdt;
+            int ypos = y1;
             int yoff = ypos % phgt;
             if (CURC->gc_onscreen) bltfun = CURC->gc_driver->bltr2v;
             else                   bltfun = CURC->gc_driver->bitblt;
             while(height > 0) {
                 int fillh   = min(height,(phgt - yoff));
                 int linewdt = width;
-                int xpos    = x1 + CURC->gc_xoffset;
+                int xpos    = x1;
                 int xcuroff = xoff;
                 while(linewdt > 0) {
                     int fillw = min(linewdt,(pwdt - xcuroff));

@@ -130,7 +130,11 @@ void PrintModes(void) {
         } while (1);
 }
 
+#if defined(__WIN32__)
+int GRXMain(void)
+#else
 int main(void)
+#endif
 {
         static int firstgr = 1;
         GrSetDriver(NULL);
@@ -177,10 +181,10 @@ int main(void)
             }
             i--;
             GrSetMode(
-                GR_width_height_color_graphics,
+                GR_width_height_bpp_graphics,
                 grmodes[i].w,
                 grmodes[i].h,
-                1L << grmodes[i].bpp
+                grmodes[i].bpp
             );
             if(grmodes[i].bpp<15) {
                 w = GrScreenX() >> 1;

@@ -279,6 +279,7 @@ extern  struct _GR_mouseInfo   _GrMouseInfo;
  */
 extern int _GR_firstFreeColor; /* can't access all colors on all systems */
 extern int _GR_lastFreeColor;  /* eg. X11 and other windowing systems    */
+int _GrResetColors(void);      /* like GrResetColors but return true on success */
 
 #ifdef __TURBOC__
 #  define C_OPER(color)   (unsigned int)(((unsigned char *)(&(color)))[3])

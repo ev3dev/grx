@@ -69,7 +69,8 @@ int _GR_lastFreeColor  = -1;
 #else
 #define _GR_firstFreeColor 0
 #endif
-void GrResetColors(void)
+
+int _GrResetColors(void)
 {
 #       define NSAVED 16
         static char infosave[offsetof(struct _GR_colorInfo,ctable[NSAVED])];
@@ -82,12 +83,19 @@ void GrResetColors(void)
         sttzero(CLRINFO);
         if(DRVINFO->actmode.extinfo->mode == GR_frameText) {
             memcpy(CLRINFO,infosave,sizeof(infosave));
-            return;
+            return TRUE;
         }
         DACload = DRVINFO->actmode.extinfo->loadcolor;
-        CLRINFO->ncolors = 1L << DRVINFO->actmode.bpp;
         CLRINFO->black   = GrNOCOLOR;
         CLRINFO->white   = GrNOCOLOR;
+        CLRINFO->ncolors = DRVINFO->actmode.bpp>=32 ? 0 : (1L << DRVINFO->actmode.bpp);
+        if ( ((CLRINFO->ncolors-1)&GrCVALUEMASK) != (CLRINFO->ncolors-1) ) {
+            /* can happen on 32bpp systems. */
+            int cbpp = 0;
+            for(i=0; i < 3; ++i)
+                cbpp += DRVINFO->actmode.extinfo->cprec[i];
+            CLRINFO->ncolors = 1L << cbpp;
+        }
         setbits(
             DRVINFO->actmode.extinfo->cprec,
             DRVINFO->actmode.extinfo->cpos
@@ -115,6 +123,12 @@ void GrResetColors(void)
             CLRINFO->RGBmode = TRUE;
             break;
         }
+        return ((CLRINFO->ncolors-1)&GrCVALUEMASK) == CLRINFO->ncolors-1;
+}
+ 
+void GrResetColors(void)
+{
+        _GrResetColors();
 }
 
 void GrSetRGBcolorMode(void)

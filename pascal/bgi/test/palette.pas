@@ -20,7 +20,7 @@ begin
   { InitGraph is not needed for GetMaxMode and GetModeName in GPC }
   { grDriver := Detect; }
   grDriver := InstallUserDriver('SVGA256', nil); { Not used in GPC }
-  InitGraph(grDriver, grMode,'e:\bp\bgi');
+  InitGraph(grDriver, grMode,'..\..\..\chr');
   ErrCode := GraphResult;
   if ErrCode = grOk then
   begin  { Do graphics }
@@ -30,6 +30,7 @@ begin
     Writeln('Palette size: ', i);
     for i := 0 to pal.Size-1 do
       Writeln('Color ', i:3, ' : ', pal.Colors[i]);
+    Readln;  
   end
   else begin
     Writeln('Graphics error:', GraphErrorMsg(ErrCode));

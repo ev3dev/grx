@@ -23,22 +23,34 @@ Unit BGI2GRX;
  * e-mail : sven@rufus.central.de
  *
  * Version 1.0 12/96
+ *
+ * 22/02/01 patches by Maurice Lombardi <Maurice.Lombardi@ujf-grenoble.fr>
+ * Necessary to correct the drawpoly and fillpoly declarations.
+ * Some changes to make this file compile with more recent versions of
+ * gpc (change in declaration of external variables, removal of now
+ * invalid __soso__  declarations).
 }
+
+(*$ifdef __DJGPP__ *)
+  (*$L grx20 *)
+(*$else *)
+(*$ifdef _WIN32 *)
+  (*$L grxW32 *)
+  (*$L vfs.c *)
+  (*$L user32 *)
+  (*$L gdi32 *)
+(*$else *)
+  (*$L grx20X *)
+  (*$L X11 *)
+  (*$L tiff *)  (* !!! *)
+(*$endif *)
+(*$endif *)
+(*$L jpeg *)
+
 
 Interface
 
 Type
-  { Following definition are from BPCOMPAT.PAS (Peter Gerwinski) }
-  ShortInt  = __byte__ Integer;
-  LongInt   = Integer;
-  Comp      = __longlong__ Integer;
-
-  Byte      = __unsigned__ ShortInt;
-  Word      = __unsigned__ Integer;
-
-  Single    = __short__ Real;
-  Double    = Real;             { !!! There is no 6-Byte Real }
-  Extended  = __long__ Real;
   PChar     = ^char;
 
 { Pointer   = ^Void; I hate the warnings }
@@ -268,7 +280,7 @@ Type
 
   LineSettingsType = record
 	LineStyle : Integer;
-	uPattern  : __Short__ Integer;  { ??? original Pattern }
+	uPattern  : ShortInt;  { ??? original Pattern }
 	Thickness : Integer;
   end;
 
@@ -326,7 +338,7 @@ function  GetPixel(X,Y: Integer): Integer; C;
 procedure PutPixel(X, Y: Integer; Pixel: Integer); C;
 procedure Bar3D(left, top, right, bottom: Integer; Depth: Integer; TopFlag: Boolean); C;
 procedure Rectangle(left, top, right, bottom: Integer); C;
-procedure FillPoly(NumPoints: Word; var PolyPoints: array of PointType); C;
+procedure FillPoly(NumPoints: Word; var PolyPoints); C;
 procedure FillEllipse(X, Y: Integer; XRadius, YRadius: Integer); C;
 procedure GetArcCoords(var ArcCoords: ArcCoordsType); C;
 procedure FloodFill(X, Y: Integer; Border: Integer); C;
@@ -351,7 +363,7 @@ function  InstallUserFont(Name: WrkString): Integer;
 
 function  GetPaletteSize: Integer; C;
 procedure GetPalette(var Palette: PaletteType); C;
-procedure SetPalette(ColorNum: Word; Color: Shortint); AsmName '__gr_setpalette';
+procedure SetPalette(ColorNum: Word; Color: Integer); AsmName '__gr_setpalette';
 procedure SetAllPalette(var Palette: PaletteType); C;
 
 procedure RestoreCrtMode; AsmName '__gr_restorecrtmode';
@@ -365,7 +377,7 @@ procedure MoveTo(x, y: Integer); AsmName '__gr_moveto';
 procedure Arc(X, Y: Integer; StAngle, EndAngle, Radius: Word); AsmName '__gr_arc';
 procedure Circle(X,Y: Integer; Radius: Word); AsmName '__gr_circle';
 procedure ClearDevice; AsmName '__gr_cleardevice';
-procedure DrawPoly(NumPoints: Word; var PolyPoints: array of PointType); AsmName '__gr_drawpoly';
+procedure DrawPoly(NumPoints: Word; var PolyPoints); AsmName '__gr_drawpoly';
 procedure Ellipse(X, Y: Integer; StAngle, EndAngle: Word; XRadius, YRadius: Word); AsmName '__gr_ellipse';
 procedure GetAspectRatio(var Xasp, Yasp: Integer); AsmName '__gr_getaspectratio';
 function  GetBkColor: Word; AsmName '__gr_getbkcolor';
@@ -398,6 +410,7 @@ procedure GetModeRange(GraphDriver:Integer; var LoMode, HiMode:Integer); AsmName
 
 { Linkable font files }
 var
+{$if __GPC_RELEASE__ < 20000412}
   Bold_Font : __asmname__ '_bold_font' Pointer;
   Euro_Font : __asmname__ '_euro_font' Pointer;
   Goth_Font : __asmname__ '_goth_font' Pointer;
@@ -408,6 +421,19 @@ var
   Simp_Font : __asmname__ '_simp_font' Pointer;
   Trip_Font : __asmname__ '_trip_font' Pointer;
   Tscr_Font : __asmname__ '_tscr_font' Pointer;
+{$else}
+  Bold_Font : Pointer; AsmName '_bold_font'; external;
+  Euro_Font : Pointer; AsmName '_euro_font'; external;
+  Goth_Font : Pointer; AsmName '_goth_font'; external;
+  Lcom_Font : Pointer; AsmName '_lcom_font'; external;
+  Litt_Font : Pointer; AsmName '_litt_font'; external;
+  Sans_Font : Pointer; AsmName '_sans_font'; external;
+  Scri_Font : Pointer; AsmName '_scri_font'; external;
+  Simp_Font : Pointer; AsmName '_simp_font'; external;
+  Trip_Font : Pointer; AsmName '_trip_font'; external;
+  Tscr_Font : Pointer; AsmName '_tscr_font'; external;
+{$endif}
+
 
 procedure SetBGImode(Var gdrv, gmode: Integer); AsmName 'set_BGI_mode';
   { Translates BGI driver/mode into BGI2GRX driver/mode pair
@@ -572,7 +598,7 @@ end;
 
 
 
-function InstallUserDriver(Name: String; AutoDetectPtr: pointer):integer;
+function InstallUserDriver(Name: WrkString; AutoDetectPtr: pointer):integer;
 begin InstallUserdriver := grError end;
 
 function RegisterBGIdriver(driver: pointer): Integer;

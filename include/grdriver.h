@@ -42,7 +42,7 @@ extern GrFrameDriver
 /*
  * Standard frame drivers in GRX
  */
-#ifndef __XWIN__
+#if !defined(__XWIN__) && !defined(__WIN32__)
 _GrFrameDriverHERC1,                    /* Hercules mono */
 _GrFrameDriverEGAVGA1,                  /* EGA VGA mono */
 _GrFrameDriverEGA4,                     /* EGA 16 color */
@@ -61,12 +61,18 @@ _GrFrameDriverSVGA24_LFB,               /* Super VGA 16M color */
 _GrFrameDriverSVGA32L_LFB,              /* Super VGA 16M color padded #1 */
 _GrFrameDriverSVGA32H_LFB,              /* Super VGA 16M color padded #2 */
 #endif
-#else
-_GrFrameDriverXWIN8,                /* X 8 bpp */
-_GrFrameDriverXWIN16,               /* X 16 bpp */
-_GrFrameDriverXWIN24,               /* X 24 bpp */
+#endif
+#ifdef __XWIN__
+_GrFrameDriverXWIN8,                    /* X 8 bpp */
+_GrFrameDriverXWIN16,                   /* X 16 bpp */
+_GrFrameDriverXWIN24,                   /* X 24 bpp */
 _GrFrameDriverXWIN32L,                  /* X 32 bpp padded #1 */
 _GrFrameDriverXWIN32H,                  /* X 32 bpp padded #2 */
+#endif
+#ifdef __WIN32__
+_GrFrameDriverWIN32_4,                  /* WIN32 4 bpp */
+_GrFrameDriverWIN32_8,                  /* WIN32 8 bpp */
+_GrFrameDriverWIN32_24,                 /* WIN32 24 bpp */
 #endif
 _GrFrameDriverRAM1,                     /* mono */
 _GrFrameDriverRAM4,                     /* 16 color planar */
@@ -107,6 +113,9 @@ _GrVideoDriverXWIN,                     /* X11 interface */
 #ifndef __XWIN__
 _GrVideoDriverSVGALIB,                  /* Linux SVGALIB interface */
 #endif
+#endif
+#ifdef  __WIN32__
+_GrVideoDriverWIN32,                    /* WIN32 interface */
 #endif
 _GrDriverMEM,                           /* memory screen driver */
 

@@ -25,12 +25,66 @@ GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 
 LIBS= $(GRX20) $(ADDON_LIBS)
 
-PROGS=  memtest.exe
+PROGS=  arctest.exe     \
+	blittest.exe    \
+	circtest.exe    \
+	cliptest.exe    \
+	colorops.exe    \
+	curstest.exe    \
+	fonttest.exe    \
+	imgtest.exe     \
+	life.exe        \
+	linetest.exe    \
+	mousetst.exe    \
+	pcirctst.exe    \
+	pnmtest.exe     \
+	polytest.exe    \
+	rgbtest.exe     \
+	sbctest.exe     \
+	scroltst.exe    \
+	textpatt.exe    \
+	winclip.exe     \
+	wintest.exe
 
-all: $(PROGS)
+all: 	$(PROGS) \
+	modetest.exe \
+	fnt2c.exe \
+	../bin/modetest.exe \
+	../bin/fnt2c.exe \
+	demogrx.exe \
+	keys.exe \
+	speedtst.exe
+#	memtest.exe
+
+
+modetest.exe: modetest.o
+	$(CC) $(LDOPT) -o modetest.exe modetest.o $(LIBS) -lm -mwindows -mconsole
+
+fnt2c.exe: fnt2c.o
+	$(CC) $(LDOPT) -o fnt2c.exe fnt2c.o $(LIBS) -lm -mwindows -mconsole
+
+../bin/modetest.exe: modetest.exe
+	if exist ..\bin\modetest.exe del ..\bin\modetest.exe
+	copy modetest.exe ..\bin\modetest.exe
+
+../bin/fnt2c.exe: fnt2c.exe
+	if exist ..\bin\fnt2c.exe del ..\bin\fnt2c.exe
+	copy fnt2c.exe ..\bin\fnt2c.exe
+
+demogrx.exe: demogrx.o gfaz.o
+	$(CC) $(LDOPT) -o demogrx.exe demogrx.o gfaz.o $(LIBS) -lm -mwindows
+
+keys.exe: keys.o
+	$(CC) $(LDOPT) -o keys.exe keys.o $(LIBS) -lm -mwindows -mconsole
+
+speedtst.exe: speedtst.o
+	$(CC) $(LDOPT) -o speedtst.exe speedtst.o $(LIBS) -lm -mwindows -mconsole
+
+memtest.exe: memtest.o
+	$(CC) $(LDOPT) -o memtest.exe memtest.o $(LIBS) -lm
 
 $(PROGS): %.exe : %.o $(GRX20)
-	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm
+	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm -mwindows
 
 .c.o:
 	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o

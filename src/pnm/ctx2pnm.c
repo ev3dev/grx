@@ -14,10 +14,14 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by Josu Onandia (jonandia@fagorautomation.es) 10/03/2001
+ **   _GrLoadContextFromPpm optimized (applied to Pbm and Pgm too)
+ **
  **/
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "grx20.h"
 
 /*
@@ -240,39 +244,49 @@ static int _GrLoadContextFromPbm( FILE *f, int width, int height )
   GrColor color;
   int currentbyte, isbyteread = 0;
   int currentbit = 0;
+  GrColor *pColors=NULL;
+  int res = 0;
 
   maxwidth = (width > GrSizeX()) ? GrSizeX() : width;
   maxheight = (height > GrSizeY()) ? GrSizeY() : height;
 
+  pColors = malloc( maxwidth * sizeof(GrColor) );
+  if(pColors == NULL) { res = -1; goto salida; }
+
   for( y=0; y<maxheight; y++ ){
     for( x=0; x<width; x++ ){
       if( !isbyteread ){
-        if( fread( &currentbyte,1,1,f ) != 1 ) return -1;
+        if( fread( &currentbyte,1,1,f ) != 1 ) { res = -1; goto salida; }
         isbyteread = 1;
         currentbit = 7;
         }
       if( x < maxwidth ){
         color = currentbyte & (1 << currentbit) ? GrBlack() : GrWhite();
-        GrPlot( x,y,color );
+        pColors[x] = color;
         }
       currentbit--;
       if( currentbit < 0 ) isbyteread = 0;
       }
+    GrPutScanline( 0,maxwidth-1,y,pColors,GrWRITE );
     isbyteread = 0;
     }
 
-  return 0;
+salida:
+  if( pColors != NULL ) free( pColors );
+  return res;
 }
 
 /**/
 
 static int _GrLoadContextFromPgm( FILE *f, int width, int height, int maxval )
 {
-  unsigned char grey;
   int x, y;
   int needcoloradjust = 0;
   int maxwidth, maxheight;
   double coloradjust = 255.0;
+  GrColor *pColors=NULL;
+  unsigned char *pData=NULL, *pCursor;
+  int res = 0;
 
   maxwidth = (width > GrSizeX()) ? GrSizeX() : width;
   maxheight = (height > GrSizeY()) ? GrSizeY() : height;
@@ -282,27 +296,41 @@ static int _GrLoadContextFromPgm( FILE *f, int width, int height, int maxval )
     coloradjust = 255.0 / maxval;
     }
 
-  for( y=0; y<maxheight; y++ )
-    for( x=0; x<width; x++ ){
-      if( fread( &grey,1,1,f ) != 1 ) return -1;
-      if( needcoloradjust )
-        grey *= coloradjust;
-      if( x < maxwidth )
-        GrPlot( x,y,GrAllocColor( grey,grey,grey ) );
-      }
+  pData = NULL;
+  pColors = malloc( maxwidth * sizeof(GrColor) );
+  if(pColors == NULL) { res = -1; goto salida; }
+  pData = malloc( width * sizeof(char) );
+  if(pData == NULL) { res = -1; goto salida; }
 
-  return 0;
+  for( y=0; y<maxheight; y++ ){
+    if( fread( pData,1,width,f ) != width ) { res = -1; goto salida; }
+    pCursor = pData;
+    for( x=0; x<maxwidth; x++ ){
+      if( needcoloradjust )
+        *pCursor *= coloradjust;
+      pColors[x] = GrAllocColor( *pCursor,*pCursor,*pCursor );
+      pCursor += 1;
+      }
+    GrPutScanline( 0,maxwidth-1,y,pColors,GrWRITE );
+    }
+
+salida:
+  if( pColors != NULL ) free( pColors );
+  if( pData != NULL ) free( pData );
+  return res;
 }
 
 /**/
 
 static int _GrLoadContextFromPpm( FILE *f, int width, int height, int maxval )
 {
-  unsigned char buf[3];
   int x, y;
   int needcoloradjust = 0;
   int maxwidth, maxheight;
   double coloradjust = 255.0;
+  GrColor *pColors=NULL;
+  unsigned char *pRGB=NULL, *pCursor;
+  int res = 0;
 
   maxwidth = (width > GrSizeX()) ? GrSizeX() : width;
   maxheight = (height > GrSizeY()) ? GrSizeY() : height;
@@ -312,19 +340,31 @@ static int _GrLoadContextFromPpm( FILE *f, int width, int height, int maxval )
     coloradjust = 255.0 / maxval;
     }
 
-  for( y=0; y<maxheight; y++ )
-    for( x=0; x<width; x++ ){
-      if( fread( buf,1,3,f ) != 3 ) return -1;
-      if( needcoloradjust ){
-        buf[0] *= coloradjust;
-        buf[1] *= coloradjust;
-        buf[2] *= coloradjust;
-        }
-      if( x < maxwidth )
-        GrPlot( x,y,GrAllocColor( buf[0],buf[1],buf[2] ) );
-      }
+  pRGB = NULL;
+  pColors = malloc( maxwidth * sizeof(GrColor) );
+  if(pColors == NULL) { res = -1; goto salida; }
+  pRGB = malloc( width * 3 * sizeof(char) );
+  if(pRGB == NULL) { res = -1; goto salida; }
 
-  return 0;
+  for( y=0; y<maxheight; y++ ){
+    if( fread( pRGB,3,width,f ) != width ) { res = -1; goto salida; }
+    pCursor = pRGB;
+    for( x=0; x<maxwidth; x++ ){
+      if( needcoloradjust ){
+        pCursor[0] *= coloradjust;
+        pCursor[1] *= coloradjust;
+        pCursor[2] *= coloradjust;
+        }
+      pColors[x] = GrAllocColor( pCursor[0],pCursor[1],pCursor[2] );
+      pCursor += 3;
+      }
+    GrPutScanline( 0,maxwidth-1,y,pColors,GrWRITE );
+    }
+
+salida:
+  if( pColors != NULL ) free( pColors );
+  if( pRGB != NULL ) free( pRGB );
+  return res;
 }
 
 /*

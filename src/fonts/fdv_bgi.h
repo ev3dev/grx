@@ -78,7 +78,7 @@ typedef struct {
 /*
  * macros to parse data words in the stroke vector table
  */
-#ifdef LITTLE_ENDIAN
+#if BYTE_ORDER==LITTLE_ENDIAN
 #define SV_COMMAND(w)   ((w) & 0x8080U)
 #define SV_XCOORD(w)    ((int)(signed char)((w) << 1) >> 1)
 #define SV_YCOORD(w)    ((int)(signed char)((w) >> 7) >> 1)

@@ -1,4 +1,4 @@
-Welcome to GRX 2.3.4!
+Welcome to GRX 2.4!
 
 GRX is a graphics library originaly written by Csaba Biegl for DJ Delorie's
 DOS port of the GCC compiler. Now it support a big range of platforms.
@@ -10,33 +10,38 @@ GRX installation instructions
 Requirements:
 -------------
 
-  The source files and fonts:  grx234.tgz or grx234.zip
+  The source files and fonts:  grx24.tar.gz or grx24.zip
   This document:               readme
 
   Currently GRX directly supports the following platforms:
 
-     DOS     / DJGPP v1.12     (GCC 2.6.3)
-     DOS     / DJGPP v2.03     (GCC 2.8.1, and newer)
+   * DOS     / DJGPP v2.03     (GCC 2.9.2)
      DOS     / Borland C++     (v2.0, v3.1 and v4.52 checked)
      DOS     / Turbo C         (v1.0)
      DOS     / Watcom C++      (v11.0 checked, 32bit only)
-     Linux   / svgalib         (GCC 2.7.2, 2.8.1, and newer)
-     Linux   / X11R6           (GCC 2.7.2, 2.8.1, and newer)
+   * Linux   / svgalib         (GCC 2.7.2, 2.8.1, and newer)
+   * Linux   / X11R6           (GCC 2.7.2, 2.8.1, and newer)
      Solaris / X11R5           (GCC 2.7.2, SUN cc v4.1)
+   * Win32   / Mingwin         (GCC 2.9.2)
 
-  GRX should work on any X11R5 (or later) system after a few 
+  Only the versions marked with a '*' have been tested. Makefiles
+  for TurboC/BorlandC and Watcom must be checked.
+
+  GRX should work on any X11R5 (or later) system after a few
   changes in makedefs.gnu and makedefs.x11
 
-  Most makefiles (DJGPP and Unix systems) require GNU make
+  Most makefiles (DJGPP, Linux and Win32 systems) require GNU make
+
+  The Win32 target is new in the GRX 2.4 version. It must be used
+  like alpha code.
 
 
 A. Unpacking the GRX archive
 ----------------------------
 
-  1) Choose and download the .tgz or .zip package. You can use either, but
-     the .tgz is best suited for linux/unix system, because source files
-     are in unix format (not CR-LF). The .zip is intended for dos users,
-     specialy for DJGPP users, because it expand to the contrib subdir.
+  1) Choose and download the .tar.gz or .zip package. You can use either.
+     The .zip is intended for dos users, specialy for DJGPP users, because
+     it expand to the contrib subdir and has manifest files.
 
   2) 'cd' to a directory where you want the GRX file tree to be created
      as a subdirectory. Examples are:
@@ -46,18 +51,18 @@ A. Unpacking the GRX archive
 
   3) unpack the GRX archive:
 
-         tar xzf grx234.tgz
+         tar xzf grx24.tar.gz
      or
-         unzip grx234.zip
+         unzip grx24.zip
 
-     This will create a subdirectory 'grx234' or 'contrib/grx234'.
+     This will create a subdirectory 'grx24' or 'contrib/grx24'.
 
 
 B. Set the environment variables
 --------------------------------
 
   1) set the default driver and graphics mode info (very useful but not
-     required), in DOS:
+     required), in DOS or Windows:
 
        SET GRX20DRV=<driver> gw <width> gh <height> nc <colors>
 
@@ -71,11 +76,12 @@ B. Set the environment variables
               ati28800, s3, VESA, memory
        Linux: svgalib, memory
        X11  : xwin, memory
+       Win32: win32, memory
 
      Values for gw and gh can be by example 640,480 or 800,600
      Values for nc can be 2, 16, 256, 64K or 16M.
 
-  2) set the GRX font dir, in DOS:
+  2) set the GRX font dir, in DOS or Windows:
 
        SET GRXFONT=<directory for the GRX fonts>
 

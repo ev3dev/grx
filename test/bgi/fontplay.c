@@ -22,13 +22,17 @@ long long Time(void) {
   return ((long long)tm.tv_sec)*1000+(tm.tv_usec/1000);
 }
   
-void main(int argc, char *argv[])
+#if defined(__WIN32__)
+int GRXMain(int argc, char *argv[])
+#else
+int main(int argc, char *argv[])
+#endif
 {
   int gd, gm, i, font;
   int err;
   long long start, stop;
 
-  initgraph(&gd,&gm,"..\\chr");
+  initgraph(&gd,&gm,"..\\..\\chr");
   err = graphresult();
   if (err != grOk) {
     fprintf(stderr, "Couldn't initialize graphics\n");
@@ -59,5 +63,6 @@ void main(int argc, char *argv[])
   stop = Time();  
   closegraph();
   printf("Time : %1.3fs\n", (stop-start)/1000.0);
+  return 0;
 }
 

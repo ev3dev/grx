@@ -67,6 +67,7 @@ int __gr_text_installfont( int start, int stop, const char *name)
   void *font;
   int   res;
   char *temp = alloca(strlen(name)+1+4);
+  char *temp1;
 
 #ifdef __linux__
 #  define CHG_CHAR '\\'
@@ -79,7 +80,7 @@ int __gr_text_installfont( int start, int stop, const char *name)
   if (temp != NULL) {
     int have_ext = FALSE;
     strcpy(temp, name);
-    name = temp;
+    temp1 = temp;
     while (*temp != '\0') {
       if (*temp == CHG_CHAR) *temp = NEW_CHAR;
                         else *temp = (tolower)(*temp);
@@ -88,10 +89,10 @@ int __gr_text_installfont( int start, int stop, const char *name)
       ++temp;
     }
     if (!have_ext)
-      strcat(temp, ".chr");
+      strcat(temp1, ".chr");
   }
 
-  ff = fopen(temp, "rb");
+  ff = fopen(temp1, "rb");
   if (ff == NULL)
     return grFileNotFound;
   fseek( ff, 0, SEEK_END);

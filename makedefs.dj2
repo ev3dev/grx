@@ -15,3 +15,5 @@ GRX_LIB_SUBDIR=dj2
 #CCOPT += $(BUTT)
 #CCOPT += -m486
 
+# for a builtin default font path
+#CCOPT += -DGRX_DEFAULT_FONT_PATH=strcat(getenv(\"DJDIR\"),\"/contrib/grx234/fonts\")

@@ -774,7 +774,11 @@ void PrintModes(void) {
         } while (1);
 }
 
+#if defined(__WIN32__)
+int GRXMain(void)
+#else
 int main(void)
+#endif
 {
         int  i;
 

@@ -14,7 +14,11 @@
 #  include <conio.h>
 #endif
 
+#if defined(__WIN32__)
+int GRXMain(void)
+#else
 int main(void)
+#endif
 {
   int gd, gm;
   int err;

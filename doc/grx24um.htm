@@ -2,18 +2,18 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
-   <title>GRX 2.3, User's Guide</title>
+   <title>GRX 2.4, User's Guide</title>
 </head>
 <body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>2.3.4</small></h1>
+<small>2.4</small></h1>
 <h1>a graphics library for DOS, Linux and X11</h1>
 <h2>User's Manual</h2>
 <p>Based on the original doc written by: Csaba Biegl on August 10, 1992
 <p>Updated by: Mariano Alvarez Fern&aacute;ndez on August 17, 2000
-<p>2.3.4 update: January 28, 2001
+<p>Last update: March 11, 2001
 </center>
 
 <hr>
@@ -23,7 +23,8 @@
 Turbo C/Borland C++ versions), Linux and X11. On DOS it supports VGA (32768,
 256 or 16 colors), EGA (16 colors), and VESA compliant cards (up to 16M
 colors). On Linux console it uses svgalib. On X11 it must work on any
-X11R5 (or later).
+X11R5 (or later). New, GRX 2.4 comes with a Win32 driver, but it is in
+alpha stage.
 
 <h2>Contents</h2>
 <dir>
@@ -90,6 +91,7 @@ int main()
 }
 </pre>
 
+<p>Note. With the Win32 version you must use GRXMain instead main by now.
 <hr>
 <h2><a name="dtfd">Data types, function declarations</a></h2>
 
@@ -125,6 +127,7 @@ Available drivers are for:
 <li>DOS => herc, stdvga, stdega, et4000, cl5426, mach64, ati28800, s3, VESA, memory
 <li>Linux => svgalib, memory
 <li>X11 => xwin, memory
+<li>Win32 => win32, memory
 </ul>
 
 <p>&nbsp;&nbsp;The optionals gw, gh and nc parameters set the desired
@@ -1283,7 +1286,7 @@ void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 <code>GrDefaultFont</code> (mapped in the <b>grx20.h</b> file to the
 <code>GrFont_PC8x14</code> font) with <code>x</code>, <code>y</code> like
 the upper left corner and the foreground and background colors given (note
-that <code>bg</code> equal to <code>GrBlack() | GrOR</code> make the
+that <code>bg</code> equal to <code>GrNOCOLOR</code> make the
 background transparent).
 
 <p>&nbsp;&nbsp;For other functions the <code>GrTextOption</code> structure

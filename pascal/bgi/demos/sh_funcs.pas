@@ -20,7 +20,6 @@ Const
 
 Type
   WrkString = String[255];
-  Word  = __unsigned__ Integer;
   PChar = ^char;
 
 Function KeyPressed: Boolean; AsmName 'kbhit';

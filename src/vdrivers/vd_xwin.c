@@ -413,7 +413,7 @@ static int init(char *options)
   case 16: grxwinext.mode = GR_frameXWIN16; break;
   case 24:
     switch (bpp) {
-  case 24: grxwinext.mode = GR_frameXWIN24; break;
+    case 24: grxwinext.mode = GR_frameXWIN24; break;
     case 32: grxwinext.mode =
                (visual->red_mask & 0xff000000) ? GR_frameXWIN32H : GR_frameXWIN32L; break;
     }

@@ -54,6 +54,11 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverXWIN32L,
     &_GrFrameDriverXWIN32H,
 #endif
+#ifdef __WIN32__
+    &_GrFrameDriverWIN32_4,
+    &_GrFrameDriverWIN32_8,
+    &_GrFrameDriverWIN32_24,
+#endif
 /* now the drivers for RAM based context */
     &_GrFrameDriverRAM1,
     &_GrFrameDriverRAM4,

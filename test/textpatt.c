@@ -21,7 +21,11 @@
 
 #define FONT "../fonts/tms38b.fnt"
 
+#if defined(__WIN32__)
+int GRXMain(void)
+#else
 int main(void)
+#endif
 {
   char bits[] = {0, 76, 50, 0, 0, 76, 60, 0};
   GrPattern *p1, *p2;

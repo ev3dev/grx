@@ -35,7 +35,7 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0234
+#define GRX_VERSION_API 0x0240
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -195,6 +195,14 @@ typedef enum _GR_frameModes {
         GR_frameXWIN24  = GR_frameSVGA24,
         GR_frameXWIN32L = GR_frameSVGA32L,
         GR_frameXWIN32H = GR_frameSVGA32H,
+        /* ==== modes provided by the WIN32 driver ===== */
+        GR_frameWIN32_1   = GR_frameEGAVGA1,
+        GR_frameWIN32_4   = GR_frameSVGA4,
+        GR_frameWIN32_8   = GR_frameSVGA8,
+        GR_frameWIN32_16  = GR_frameSVGA16,
+        GR_frameWIN32_24  = GR_frameSVGA24,
+        GR_frameWIN32_32L = GR_frameSVGA32L,
+        GR_frameWIN32_32H = GR_frameSVGA32H,
         /* ==== linear frame buffer modes  ====== */
         GR_frameSVGA8_LFB,                  /* (Super) VGA 256 color */
         GR_frameSVGA16_LFB,                 /* Super VGA 32768/65536 color */
@@ -230,6 +238,7 @@ typedef enum _GR_videoAdapters {
         GR_8514A,                           /* 8514A or compatible */
         GR_S3,                              /* S3 graphics accelerator */
         GR_XWIN,                            /* X11 driver */
+        GR_WIN32,                           /* WIN32 driver */
         GR_MEM                              /* memory only driver */
 } GrVideoAdapter;
 

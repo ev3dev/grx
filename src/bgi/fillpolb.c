@@ -22,6 +22,7 @@
  **
  **/
 
+#include <stdlib.h>
 #include "bccgrx00.h"
 
 /*

@@ -25,6 +25,10 @@
 #include "gfaz.h"
 #include "drawing.h"
 
+#define WIDTH 640
+#define HEIGHT 480
+#define BPP 16
+
 #define NDEMOS 24
 
 #define ID_ARCTEST   1
@@ -133,11 +137,15 @@ static void disaster( char *s );
 
 /************************************************************************/
 
+#if defined(__WIN32__)
+int GRXMain()
+#else
 int main()
+#endif
 {
   Event ev;
 
-  gfaz_ini();
+  gfaz_ini( WIDTH,HEIGHT,BPP );
   ini_objects();
   paint_screen();
   
@@ -180,13 +188,13 @@ static void ini_objects( void )
       disaster( "lucb40b.fnt not found" );
     }
 
-  grt_centered.txo_bgcolor.v = BLACK | GrOR;
+  grt_centered.txo_bgcolor.v = GrNOCOLOR;
   grt_centered.txo_direct = GR_TEXT_RIGHT;
   grt_centered.txo_xalign = GR_ALIGN_CENTER;
   grt_centered.txo_yalign = GR_ALIGN_CENTER;
   grt_centered.txo_chrtype = GR_BYTE_TEXT;
 
-  grt_left.txo_bgcolor.v = BLACK | GrOR;
+  grt_left.txo_bgcolor.v = GrNOCOLOR;
   grt_left.txo_direct = GR_TEXT_RIGHT;
   grt_left.txo_xalign = GR_ALIGN_LEFT;
   grt_left.txo_yalign = GR_ALIGN_CENTER;
@@ -217,7 +225,7 @@ static void paint_screen( void )
 
 static void the_title( int x, int y )
 {
-  char *t1 = "GRX 2.3.4";
+  char *t1 = "GRX 2.4";
   char *t2 = "test programs launcher";
   char aux[81];
 
@@ -250,13 +258,17 @@ static int pev_command( Event *ev )
     for( i=0; i<NDEMOS; i++ ){
       if( ev->p1 == ptable[i].cid ){
         gfaz_fin();
+#if defined(__MSDOS__) || defined(__WIN32__)
+        strcpy( nprog,".\\" );
+#else
         strcpy( nprog,"./" );
-#ifdef __XWIN__
+#endif
+#if defined(__XWIN__)
         strcat( nprog,"x" );
 #endif
         strcat( nprog,ptable[i].prog );
         system( nprog );
-        gfaz_ini();
+        gfaz_ini( WIDTH,HEIGHT,BPP );
         paint_screen();
         return 1;
         }
@@ -300,7 +312,7 @@ static void paint_foot( char *s )
 static void paint_animation( void )
 {
   static char *text =
-    "GRX 2.3.4, the graphics library for DJGPPv2, Linux and X11";
+    "GRX 2.4, the graphics library for DJGPPv2, Linux, X11 and Win32";
   static int pos = 620;
   static int ini = 0;
   static int ltext, wtext;
