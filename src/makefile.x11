@@ -4,6 +4,8 @@
 include ../makedefs.gnu
 include ../makedefs.x11
 
+.PHONY : clean cleanall
+
 INCDIR= -I. -I./include -I../include $(X11INCS)
 CCOPT += -pipe
 
@@ -156,6 +158,9 @@ $(LINUX_X11_SHARED):
 clean:
 	rm -f $(O) $(Oxwin) $(LINUX_X11_STATIC) $(LINUX_X11_SHARED)
 
+cleanall: clean
+	rm -f $(GRX20X)
+
 depend.new:
 	gcc -MM $(CCOPT) $(INCDIR) $(filter draw/%,$(O:.o=.c) $(Oxwin:.o=.c))     | sed 's#^\(.*\.o\):#draw/\1:#g'     >depend.new
 	gcc -MM $(CCOPT) $(INCDIR) $(filter fdrivers/%,$(O:.o=.c) $(Oxwin:.o=.c)) | sed 's#^\(.*\.o\):#fdrivers/\1:#g'>>depend.new
@@ -169,8 +174,6 @@ depend.new:
 	gcc -MM $(CCOPT) $(INCDIR) $(filter utils/%,$(O:.o=.c) $(Oxwin:.o=.c))    | sed 's#^\(.*\.o\):#utils/\1:#g'   >>depend.new
 	gcc -MM $(CCOPT) $(INCDIR) $(filter vdrivers/%,$(O:.o=.c) $(Oxwin:.o=.c)) | sed 's#^\(.*\.o\):#vdrivers/\1:#g'>>depend.new
 	gcc -MM $(CCOPT) $(INCDIR) $(filter wideline/%,$(O:.o=.c) $(Oxwin:.o=.c)) | sed 's#^\(.*\.o\):#wideline/\1:#g'>>depend.new
-
-	$(CC) -shared -Wl,-soname,$(notdir GRX20X) -o $(GRX20X) $(O) $(Oxwin)
 
 .c.s:
 	$(CC) -S $(CCOPT) -D__XWIN__ $(INCDIR) $*.c -o $*.s

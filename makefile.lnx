@@ -3,11 +3,17 @@
 #
 include makedefs.gnu
 
-libs:
+all: libs test
+
+libs: static_libs shared_libs
+
+static_libs:
 	$(MAKE) -C src STATIC=1 -f makefile.lnx
+
+shared_libs:
 	$(MAKE) -C src SHARED=1 -f makefile.lnx
 
-test:   libs
+test:   static_libs
 	$(MAKE) -C test -f makefile.lnx
 
 clean:

@@ -142,7 +142,8 @@
         __emit__((char)(0x50)),               /* push ax */     \
         _AX = (int)(Y),                                         \
         __emit__((char)(0x5a)),               /* pop dx */      \
-        __emit__((char)(0xf7),(char)(0xea)),  /* imul dx */     \
+        __emit__((char)(0xf7)),               /* imul dx */     \
+            __emit__((char)(0xea)),                             \
         _BX = _AX,                                              \
         _CX = _DX,                                              \
         (long)((void _seg *)_CX + (void near *)_BX)             \
@@ -152,7 +153,8 @@
         __emit__((char)(0x50)),               /* push ax */     \
         _AX = (int)(Y),                                         \
         __emit__((char)(0x5a)),               /* pop dx */      \
-        __emit__((char)(0xf7),(char)(0xe2)),  /* mul dx */      \
+        __emit__((char)(0xf7)),               /* mul dx */      \
+            __emit__((char)(0xe2)),                             \
         _BX = _AX,                                              \
         _CX = _DX,                                              \
         (unsigned long)((void _seg *)_CX + (void near *)_BX)    \
@@ -178,8 +180,10 @@
         _AX = (int)(X),                                             \
         __emit__((char)(0x5a)),                     /* pop dx */    \
         __emit__((char)(0x59)),                     /* pop cx */    \
-        __emit__((char)(0xf7),(char)(0xea)),        /* imul dx */   \
-        __emit__((char)(0xf7),(char)(0xf9)),        /* idiv cx */   \
+        __emit__((char)(0xf7)),                     /* imul dx */   \
+            __emit__((char)(0xea)),                                 \
+        __emit__((char)(0xf7)),                     /* idiv cx */   \
+            __emit__((char)(0xf9)),                                 \
         (int)_AX                                                    \
 )
 #define uscale(X,N,D) (                                             \
@@ -190,15 +194,21 @@
         _AX = (int)(X),                                             \
         __emit__((char)(0x5a)),                     /* pop dx */    \
         __emit__((char)(0x59)),                     /* pop cx */    \
-        __emit__((char)(0xf7),(char)(0xe2)),        /* mul dx */    \
-        __emit__((char)(0xf7),(char)(0xf1)),        /* div cx */    \
+        __emit__((char)(0xf7)),                     /* mul dx */    \
+            __emit__((char)(0xe2)),                                 \
+        __emit__((char)(0xf7)),                     /* div cx */    \
+            __emit__((char)(0xf1)),                                 \
         (unsigned int)_AX                                           \
 )
 #define irscale(X,N,D) (                                                  \
         _DX = iscale(((int)(X) << 1),N,D),                                \
-        __emit__((char)(0x03),(char)(0xd2)),          /* add dx,dx     */ \
-        __emit__((char)(0x1d),(char)(-1),(char)(-1)), /* sbc ax,0xffff */ \
-        __emit__((char)(0xd1),(char)(0xf8)),          /* sar ax,1      */ \
+        __emit__((char)(0x03)),                       /* add dx,dx */     \
+            __emit__((char)(0xd2)),                                       \
+        __emit__((char)(0x1d)),                       /* sbc ax,0xffff */ \
+            __emit__((char)(-1)),                                         \
+            __emit__((char)(-1)),                                         \
+        __emit__((char)(0xd1)),                       /* sar ax,1 */      \
+            __emit__((char)(0xf8)),                                       \
         (int)_AX                                                          \
 )
 #endif  /* __TURBOC__ */

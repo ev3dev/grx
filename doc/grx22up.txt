@@ -1,0 +1,19 @@
+Hi,
+
+the official GRX v2.2 has a few minor problem. This update file
+fixes all currently know problem.
+
+All BCC users should check the supplied grx20l.lib (BCC 4.52) or
+recompile the library on their own after installing this update.
+
+Hartmut
+
+Date     Changes
+97/09/30 Updated makefiles and makedefs
+	 Added the addons directory and the SaveContextToTiff
+	   function
+	 Fixed some BCC specific warnings
+	 S3 driver banking doesn't work for 16 color modes, at
+	   least for my card. Uses VESA banking for < 256 colors
+	 Fixed BCC __emit__() code in arith.h (thanks, Andris)
+

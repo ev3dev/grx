@@ -28,6 +28,10 @@ PROGS=                  \
 
 all:    $(PROGS) ..\bin\modtst16.exe ..\bin\fnt2c16.exe
 
+clean:
+	if exist *.obj del *.obj
+	if exist *.exe del *.exe
+
 ..\bin\modtst16.exe: modtst16.exe
 	copy modtst16.exe ..\bin
 	-$(STRIP) ..\bin\modtst16.exe

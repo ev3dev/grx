@@ -1,9 +1,8 @@
 #
 # GRX 2.0 Library Makefile for Turbo C. Uses Turbo C Make.
-# NOTE:
-#   Early TCC Make versions will not build all objects properly. Use the
-#   'BUILDTC.BAT' batch file instead.
 #
+.AUTODEPEND
+
 !include "../makedefs.bcc"
 INCDIR= -I. -I./include -I../include -I$(BCCROOT)/include -I./vdrivers
 LIBDIR= -L$(BCCROOT)/lib
@@ -154,6 +153,27 @@ ASM=    $(OBJ:.obj=.asm)
 
 all:    config.bcc ..\lib\grx20$(MODEL).lib ..\bin\vesaif16.exe
 
+clean:
+	if exist draw\*.obj     del draw\*.obj
+	if exist fdrivers\*.obj del fdrivers\*.obj
+	if exist fonts\*.obj    del fonts\*.obj
+	if exist mouse\*.obj    del mouse\*.obj
+	if exist pattern\*.obj  del pattern\*.obj
+	if exist setup\*.obj    del setup\*.obj
+	if exist shape\*.obj    del shape\*.obj
+	if exist text\*.obj     del text\*.obj
+	if exist user\*.obj     del user\*.obj
+	if exist utils\*.obj    del utils\*.obj
+	if exist vdrivers\*.obj del vdrivers\*.obj
+	if exist wideline\*.obj del wideline\*.obj
+	if exist ..\bin\vesaif16.exe del ..\bin\vesaif16.exe
+	if exist config.bcc del config.bcc
+	if exist *.asm del *.asm
+	if exist *.obj del *.obj
+
+cleanall: clean
+	if exist ..\lib\libgrx20$(MODEL).lib del ..\lib\libgrx20$(MODEL).lib
+
 ..\lib\grx20$(MODEL).lib: $(OBJ)
 	if exist ..\lib\grx20$(MODEL).lib del ..\lib\grx20$(MODEL).lib
 	$(TLIB) /C ..\lib\grx20$(MODEL).lib @&&!
@@ -180,4 +200,4 @@ config.bcc: makefile.bcc ../makedefs.bcc
 	 $(LIBDIR)
 ! config.bcc
 
-!include "depend.bcc"
+#!include "depend.bcc"

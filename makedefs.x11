@@ -1,2 +1,4 @@
+# Add directories with X11R6 include files here
 X11INCS=-I/usr/X11/include
-X11LIBS=-L/usr/X11/lib -lX11 -lsocket
+# put X11R6 required libraries and directories here
+X11LIBS=-L/usr/X11R6/lib -lX11

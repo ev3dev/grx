@@ -3,6 +3,8 @@
 #
 
 include  ../makedefs.gnu
+include  ../makedefs.x11
+
 INCDIR=  -I../include
 
 GRX20X = ../lib/libgrx20X.a

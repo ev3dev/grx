@@ -78,7 +78,7 @@ static void drawhline(int x,int y,int w,long color) {
   if (w == 0 || !DOCOLOR8(color,opr)) return;
   cval = freplicate_b2l((int)color);
   offs = (y * CURC->gc_lineoffset) + (x >> 2);
-  p = (uchar far *)(&CURC->gc_baseaddr[0][offs]);
+  p = (uchar far *)(&CURC->gc_baseaddr[0][(unsigned)offs]);
   setup_far_selector(CURC->gc_selector);
   if ((opr == C_WRITE) && (w >= 10)) {  /* 10 = 3(left) + 1*4 + 3(right) */
       int rmask = (x + w) & 3;

@@ -3,6 +3,8 @@
 #
 !include "makedefs.bcc"
 
+all:    libs test
+
 libs:
 	cd src
 	$(MAKE)
@@ -11,4 +13,11 @@ libs:
 test:   libs
 	cd test
 	$(MAKE)
+	cd ..
+
+clean:
+	cd src
+	$(MAKE) clean
+	cd ..\test
+	$(MAKE) clean
 	cd ..

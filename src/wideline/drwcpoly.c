@@ -160,16 +160,6 @@ static void genrect(int p1[2],int p2[2],int w,int rect[4][2])
         rect[2][1] = p2[1] + wy2;
         rect[3][0] = p2[0] + wx1;
         rect[3][1] = p2[1] + wy1;
-/*
-        rect[0][0] = p1[0] + wx1;
-        rect[0][1] = p1[1] + wy1;
-        rect[1][0] = p2[0] + wx1;
-        rect[1][1] = p2[1] + wy1;
-        rect[2][0] = p2[0] + wx2;
-        rect[2][1] = p2[1] + wy2;
-        rect[3][0] = p1[0] + wx2;
-        rect[3][1] = p1[1] + wy2;
-*/
 }
 
 /*

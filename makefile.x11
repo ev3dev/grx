@@ -1,13 +1,18 @@
 #
 # GRX 2.0 makefile for LINUX/X11 distribution version (GNU-make)
 #
-include makedefs.gnu
 
-libs:
+all: libs test
+
+libs: static_libs shared_libs
+
+static_libs:
 	$(MAKE) -C src STATIC=1 -f makefile.x11
+
+shared_libs:
 	$(MAKE) -C src SHARED=1 -f makefile.x11
 
-test:   libs
+test:   static_libs
 	$(MAKE) -C test -f makefile.x11
 
 clean:

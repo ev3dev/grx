@@ -1,8 +1,9 @@
-BCCROOT =e:\comp\bc
+BCCROOT =e:\comp\bc45
 BCC     =$(BCCROOT)\bin\bcc
 TLIB    =$(BCCROOT)\bin\tlib
+TASM    =$(BCCROOT)\bin\tasm
 STRIP   =$(BCCROOT)\bin\tdstrip
-MAKE    =$(BCCROOT)\bin\maker -fmakefile.tcc
+MAKE    =$(BCCROOT)\bin\maker -fmakefile.bcc
 
 MODEL=  l
 

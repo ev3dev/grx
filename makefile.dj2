@@ -3,12 +3,14 @@
 #
 include makedefs.gnu
 
+all:   libs test
+
 libs:
-	$(MAKE) -C src -f makefile.djp
+	$(MAKE) -C src -f makefile.dj2
 
 test:   libs
-	$(MAKE) -C test -f makefile.djp
+	$(MAKE) -C test -f makefile.dj2
 
 clean:
-	$(MAKE) -C test -f makefile.djp clean
-	$(MAKE) -C src  -f makefile.djp clean
+	$(MAKE) -C test -f makefile.dj2 clean
+	$(MAKE) -C src  -f makefile.dj2 clean

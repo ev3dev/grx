@@ -5,6 +5,8 @@
 include ../makedefs.gnu
 include ../makedefs.dj2
 
+.PHONY : clean cleanall
+
 INCDIR= -I. -I./include -I../include
 
 O=                              \
@@ -155,6 +157,25 @@ O=                              \
 
 all:    ../lib/libgrx20.a ../bin/vesainfo.exe
 
+clean:
+	if exist draw\*.o     del draw\*.o
+	if exist fdrivers\*.o del fdrivers\*.o
+	if exist fonts\*.o    del fonts\*.o
+	if exist mouse\*.o    del mouse\*.o
+	if exist pattern\*.o  del pattern\*.o
+	if exist setup\*.o    del setup\*.o
+	if exist shape\*.o    del shape\*.o
+	if exist text\*.o     del text\*.o
+	if exist user\*.o     del user\*.o
+	if exist utils\*.o    del utils\*.o
+	if exist vdrivers\*.o del vdrivers\*.o
+	if exist wideline\*.o del wideline\*.o
+	if exist ..\bin\vesainfo.exe del ..\bin\vesainfo.exe
+	if exist $(DOS_DJGPP_V2)     del $(DOS_DJGPP_V2)
+
+cleanall: clean
+	if exist ..\lib\libgrx20.a   del ..\lib\libgrx20.a
+
 depend.new:
 	gcc -MM $(CCOPT) $(INCDIR) $(O:.o=.c) >depend.new
 
@@ -174,6 +195,7 @@ depend.b: depend.new
 $(DOS_DJGPP_V2):
 	if not exist $(DOS_DJGPP_V2) del $(SYSTEM_TAG_PREFIX).*
 	echo DOS_DJGPP_V2_TARGET > $(DOS_DJGPP_V2)
+	$(MAKE) -f makefile.dj2 clean
 
 $(O): $(DOS_DJGPP_V2)
 

@@ -51,9 +51,9 @@
 #define poke_24_f_and(p,c)      __INTERN_24_POKE__(p,c,_f_and)
 #define poke_24_f(p,c)          __INTERN_24_POKE__(p,c,_f)
 
-#define poke_24_xor(p,c)        __INTERN_24_POKE__(p,c,_f_xor)
-#define poke_24_or(p,c)         __INTERN_24_POKE__(p,c,_f_or)
-#define poke_24_and(p,c)        __INTERN_24_POKE__(p,c,_f_and)
+#define poke_24_xor(p,c)        __INTERN_24_POKE__(p,c,_xor)
+#define poke_24_or(p,c)         __INTERN_24_POKE__(p,c,_or)
+#define poke_24_and(p,c)        __INTERN_24_POKE__(p,c,_and)
 #define poke_24(p,c)            __INTERN_24_POKE__(p,c,)
 
 #define peek_24_f(p)            __INTERN_24_PEEK__(p,_f)

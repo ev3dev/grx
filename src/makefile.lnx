@@ -3,6 +3,8 @@
 #
 include ../makedefs.gnu
 
+.PHONY : clean cleanall
+
 INCDIR= -I. -I./include -I../include
 CCOPT += -m486 -DLFB_BY_NEAR_POINTER -pipe
 
@@ -167,6 +169,9 @@ $(LINUX_i386_SVGALIB_SHARED):
 
 clean:
 	rm -f $(O) $(O:.o=.s) $(LINUX_i386_SVGALIB_STATIC) $(LINUX_i386_SVGALIB_SHARED)
+
+cleanall: clean
+	rm -f $(GRX20S)
 
 depend.new:
 	gcc -MM $(CCOPT) $(INCDIR) $(filter draw/%,$(O:.o=.c))     | sed 's#^\(.*\.o\):#draw/\1:#g'     >depend.new

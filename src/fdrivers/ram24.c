@@ -65,38 +65,38 @@ static void drawhline(int x,int y,int w,long color)
           w    -= bytes;
           switch (op) {
               case C_XOR: if (bytes&1) {
-                             poke_b_f_xor(p,*cp);
+                             poke_b_xor(p,*cp);
                              ptrinc(p,1); ptrinc(cp,1);
                           }
                           if (bytes&2) {
-                             poke_w_f_xor(p,*((ushort *)cp));
+                             poke_w_xor(p,*((ushort *)cp));
                              ptrinc(p,2);
                           }
                           break;
               case C_OR:  if (bytes&1) {
-                             poke_b_f_or(p,*cp);
+                             poke_b_or(p,*cp);
                              ptrinc(p,1); ptrinc(cp,1);
                           }
                           if (bytes&2) {
-                             poke_w_f_or(p,*((ushort *)cp));
+                             poke_w_or(p,*((ushort *)cp));
                              ptrinc(p,2);
                           }
                           break;
               case C_AND: if (bytes&1) {
-                             poke_b_f_and(p,*cp);
+                             poke_b_and(p,*cp);
                              ptrinc(p,1); ptrinc(cp,1);
                           }
                           if (bytes&2) {
-                             poke_w_f_and(p,*((ushort *)cp));
+                             poke_w_and(p,*((ushort *)cp));
                              ptrinc(p,2);
                           }
                           break;
               default:    if (bytes&1) {
-                             poke_b_f(p,*cp);
+                             poke_b(p,*cp);
                              ptrinc(p,1); ptrinc(cp,1);
                           }
                           if (bytes&2) {
-                             poke_w_f(p,*((ushort *)cp));
+                             poke_w(p,*((ushort *)cp));
                              ptrinc(p,2);
                           }
                           break;
@@ -105,10 +105,10 @@ static void drawhline(int x,int y,int w,long color)
         }
         f = &five[1];
         switch (op) {
-            case C_XOR: rowfill_24_f_xor(p,f,w); break;
-            case C_OR:  rowfill_24_f_or( p,f,w); break;
-            case C_AND: rowfill_24_f_and(p,f,w); break;
-            default:    rowfill_24_f(    p,f,w); break;
+            case C_XOR: rowfill_24_xor(p,f,w); break;
+            case C_OR:  rowfill_24_or( p,f,w); break;
+            case C_AND: rowfill_24_and(p,f,w); break;
+            default:    rowfill_24(    p,f,w); break;
         }
 }
 #else

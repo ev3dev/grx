@@ -3,6 +3,7 @@
 # Uses GNU make.
 #
 .SUFFIXES: .exe
+.PHONY: clean install uninstall
 
 include  ../makedefs.gnu
 include  ../makedefs.dj2
@@ -53,7 +54,8 @@ all: $(PROGS) ../bin/modetest.exe ../bin/fnt2c.exe
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c
 
 clean:
-	rm -f *.o *.exe
+	if exist *.o del *.o
+	if exist *.exe del *.exe
 
 depend.new:
 	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:.exe=.c) >depend.new

@@ -59,7 +59,7 @@ static void drawvline(int x,int y,int h,long color)
         long offs = umul32(y,lwdt) + x;
         int  copr = C_OPER(color);
         if(DOCOLOR8(color,copr)) {
-            char far *pp = &CURC->gc_baseaddr[0][offs];
+            char far *pp = &CURC->gc_baseaddr[0][(unsigned)offs];
             switch(copr) {
                 case C_XOR: colfill_b_xor(pp,lwdt,(int)color,h); break;
                 case C_OR:  colfill_b_or( pp,lwdt,(int)color,h); break;

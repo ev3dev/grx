@@ -138,7 +138,7 @@ static int init(char *options) {
   /* step through all modes and select S3 banking */
   for (i=0; i < _GrVideoDriverS3.nmodes; ++i) {
     GrVideoMode *mp = &_GrVideoDriverS3.modes[i];
-    if (mp->extinfo) {
+    if (mp->bpp >= 8 && mp->extinfo) {
       mp->extinfo->setbank    = bank;
       mp->extinfo->setrwbanks = NULL;
     }

@@ -12,17 +12,6 @@
 #endif
 
 #ifdef __TURBOC__
-#if defined(__BORLANDC__) && (__BORLANDC__>=0x450)
-
-/* Have alloca() ... */
-#include <malloc.h>
-/* ... but need to have variables referenced on stack */
-#define setup_alloca() { int _setup_alloca_dummy_ = 1; \
-                         if (_setup_alloca_dummy_) {
-#define reset_alloca() }}
-
-#else /* -> !(defined(__BORLANDC__) && (__BORLANDC__>=0x450)) */
-
 /*
  * I have TC++ 1.01 (quite old). It is possible that newer TC++ versions
  * have a built-in alloca.
@@ -44,7 +33,6 @@ extern unsigned int _stklen;
 #endif
 #define setup_alloca() { unsigned int __saved_SP__ = _SP;
 #define reset_alloca() _SP = __saved_SP__; }
-#endif /* -> (defined(__BORLANDC__) && (__BORLANDC__>=0x450)) */
 
 #endif /* __TURBOC__ */
 

@@ -26,6 +26,8 @@ Daniel Skarda (DSKA4435@novell.karlin.mff.cuni.cz) for bug reports.
 Mauro Condarelli (mc5686@mclink.it) for the Linux SVGA version keyboard
 enhancements.
 
+------ grx21a
+
 Michael Goffioul (goffioul@emic.ucl.ac.be) for
 	- Pattern Filled functions
 	- Patterned Line functions
@@ -35,8 +37,16 @@ Michael Goffioul (goffioul@emic.ucl.ac.be) for
 Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77] for linear framebuffer
 support
 
-Sven Hilscher (Sven@rufus.central.de) for GNU-Pascal interface and 
+------ grx22 (release & beta)
+
+Sven Hilscher (Sven@rufus.central.de) for GNU-Pascal interface and
 bug reports
 
-Daniel Skarda (0rfelyus@atrey.karlin.mff.cuni.cz) for Linux shared 
+Daniel Skarda (0rfelyus@atrey.karlin.mff.cuni.cz) for Linux shared
 libraries and bug reports
+
+Michael (mh@conrad.chem.uni-potsdam.de) for bug reports
+
+Frank Donahoe <fdonahoe@wilkes1.wilkes.edu> for bug reports and patches
+
+Andris Pavenis <pavenis@laima.acad.latnet.lv> for bug reports and patches
