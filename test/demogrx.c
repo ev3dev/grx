@@ -31,7 +31,7 @@ static int gwidth = 640;
 static int gheight = 480;
 static int gbpp = 16;
 
-#define WINTITLE "GRX 2.4.4, the graphics library"
+#define WINTITLE "GRX 2.4.5, the graphics library"
 
 #define NDEMOS 27
 
@@ -285,7 +285,7 @@ static void paint_screen( void )
 
 static void the_title( int x, int y )
 {
-  char *t1 = "GRX 2.4.4";
+  char *t1 = "GRX 2.4.5";
   char *t2 = "test programs launcher";
 
   grt_centered.txo_fgcolor.v = LIGHTGREEN;
@@ -402,7 +402,7 @@ static void paint_foot( char *s )
 static void paint_animation( void )
 {
   static char *text =
-    "GRX 2.4.4, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "GRX 2.4.5, the graphics library for DJGPPv2, Linux, X11 and Win32";
   static int pos = 620;
   static int ini = 0;
   static int ltext, wtext;

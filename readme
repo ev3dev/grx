@@ -1,4 +1,4 @@
-Welcome to GRX 2.4.4!
+Welcome to GRX 2.4.5!
 
 GRX is a 2D graphics C library originaly written by Csaba Biegl for
 DJ Delorie's DOS port of the GCC compiler. Now it support a big range
@@ -60,7 +60,7 @@ GRX installation instructions
 Requirements:
 -------------
 
-  The source files and fonts:  grx244.tar.gz or grx244.zip
+  The source files and fonts:  grx245.tar.gz or grx245.zip
   This document:               readme
 
 A. Unpacking the GRX archive
@@ -79,12 +79,12 @@ A. Unpacking the GRX archive
 
   3) unpack the GRX archive:
 
-         tar xzvf grx244.tar.gz  (1)
+         tar xzvf grx245.tar.gz  (1)
      or
-         unzip grx244.zip        (2)
+         unzip grx245.zip        (2)
 
-     (1) This will create the subdirectory 'grx244'.
-     (2) This will create the subdirectory 'contrib/grx244'.
+     (1) This will create the subdirectory 'grx245'.
+     (2) This will create the subdirectory 'contrib/grx245'.
 
 B. Compiling GRX
 ----------------
@@ -235,6 +235,21 @@ Environment variables for using GRX programs
        export FRAMEBUFFER=<device file>
 
 
+Suidroot in the Linux console platform
+======================================
+
+  You know setting suidroot is a security flaw, if you want your grx linux
+  console program really portable yo have not options, because the svgalib
+  stable version requires it. But if you really wants a suidroot aware
+  libgrx you can modify makedefs.grx to obtain:
+
+  * a framebuffer only linux console libgrx version
+
+  * a libgrx version without some framedrivers than do direct in/out port,
+  so you can link it with the svgalib alpha version (1.9.x) that not
+  requires suidroot.
+
+
 Pascal users
 ============
 
@@ -255,9 +270,9 @@ Pascal users
 Help
 ====
 
-  Read the user's guide in the "doc/grx243um.htm" file. If you ran
-  'make <your makefile> install', just type 'info grx' to view the
-  info version of the manual.
+  Read the user's guide in the "doc/grx245um.htm" file. If you ran
+  'make <your makefile> install-info', just type 'info grx' to view
+  the info version of the manual.
 
   If you have problems installing or running GRX check
 
@@ -305,5 +320,5 @@ Credits
   and other people, see the "doc/credits.doc" for details.
 
 
-Enjoy, M.Alvarez <malfer@teleline.es>
+Enjoy, M.Alvarez <malfer@telefonica.es>
 

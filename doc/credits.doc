@@ -12,7 +12,7 @@ Starting from version v2.2 GRX was maintained by Hartmut Schirmer
 
 Peter Gerwinski <peter@gerwinski.de> released GRX 2.3.1 and 2.3.2.
 
-Mariano Alvarez Fernandez (malfer@teleline.es) released GRX 2.3.3,
+Mariano Alvarez Fernandez (malfer@telefonica.net) released GRX 2.3.3,
 2.3.4 and the 2.4.x series.
 
 Credits for GRX > v2.0 in alphabetical order
@@ -82,6 +82,8 @@ Waldemar Schultz <schultz@mathematik.tu-muenchen.de> for bug reports.
 
 Michael <mh@conrad.chem.uni-potsdam.de> for bug reports.
 
+Dimitar Zhekov <jimmy@is-vn.bg> for three new font drivers, makefile
+fixes for the bcc version, bgi updates and other fixes.
 
 ###########################################################################
 This is the original contrib.doc by Csaba Biegl (csaba@vuse.vanderbilt.edu)

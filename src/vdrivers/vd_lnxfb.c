@@ -108,7 +108,7 @@ static int settext( GrVideoMode *mp, int noclear )
         return TRUE;
 }
 
-GrVideoModeExt _GrViDrvEGAVGAtextModeExt2 = {
+GrVideoModeExt grtextextfb = {
     GR_frameText,                       /* frame driver */
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
@@ -126,7 +126,7 @@ GrVideoModeExt _GrViDrvEGAVGAtextModeExt2 = {
 static GrVideoModeExt exts[NUM_EXTS];
 static GrVideoMode   modes[NUM_MODES] = {
     /* pres.  bpp wdt   hgt   mode   scan  priv. &ext                             */
-    {  TRUE,  4,  80,   25,      0,  160,  0,    &_GrViDrvEGAVGAtextModeExt2 },
+    {  TRUE,  4,  80,   25,      0,  160,  0,    &grtextextfb },
     {  0  }
 };
 

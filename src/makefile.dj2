@@ -58,6 +58,9 @@ endif
 ifeq ($(INCLUDE_PRINTING_CODE),y)
   ADDON_O += $(PRN_1)
   INCDIR += -I../addons/print
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
+  BGI_Ob += $(PRNBGI_1)
+endif
 endif
 
 ifeq ($(INCLUDE_BMP_CODE),y)
@@ -103,7 +106,11 @@ DJ_O=   $(ADDON_O)              \
 	vdrivers/u_vsvirt.o     \
 	vdrivers/vesa.o
 
-ALL_O = $(STD_Oa) $(STD_Ob) $(BGI_Oa) $(BGI_Ob) $(DJ_O)
+ALL_O = $(STD_Oa) $(STD_Ob) $(DJ_O)
+
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
+  ALL_O += $(BGI_Oa) $(BGI_Ob)
+endif
 
 UTILP = ../bin/bin2c.exe        \
 	../bin/fnt2c.exe        \
@@ -144,6 +151,9 @@ install: $(GRX20ST)
 	copy ..\include\grx20.h $(DJDIRdos)\include
 	copy ..\include\grxkeys.h $(DJDIRdos)\include
 	copy ..\include\libbcc.h $(DJDIRdos)\include
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+	copy ..\addons\print\grxprint.h $(DJDIRdos)\include
+endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	if not exist $(DJDIRdos)\units\nul mkdir $(DJDIRdos)\units
 	copy ..\pascal\grx.pas $(DJDIRdos)\units
@@ -155,6 +165,9 @@ uninstall:
 	if exist $(DJDIRdos)\include\grx20.h   del $(DJDIRdos)\include\grx20.h
 	if exist $(DJDIRdos)\include\grxkeys.h del $(DJDIRdos)\include\grxkeys.h
 	if exist $(DJDIRdos)\include\libbcc.h del $(DJDIRdos)\include\libbcc.h
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+	if exist $(DJDIRdos)\include\grxprint.h del $(DJDIRdos)\include\grxprint.h
+endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	if exist $(DJDIRdos)\units\grx.pas del $(DJDIRdos)\units\grx.pas
 	if exist $(DJDIRdos)\units\graph.pas del $(DJDIRdos)\units\graph.pas
@@ -203,8 +216,10 @@ $(GRX20ST): $(TAG) $(ALL_O)
 	if exist $(GRX20STdos) del $(GRX20STdos)
 	$(AR) -r $(GRX20ST) $(STD_Oa)
 	$(AR) -r $(GRX20ST) $(STD_Ob)
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(AR) -r $(GRX20ST) $(BGI_Oa)
 	$(AR) -r $(GRX20ST) $(BGI_Ob)
+endif
 	$(AR) -r $(GRX20ST) $(DJ_O)
 	$(RANLIB) $(GRX20ST)
 

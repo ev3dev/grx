@@ -16,6 +16,24 @@ ifdef GRX_DEFAULT_FONT_PATH
 CCOPT += -DGRX_DEFAULT_FONT_PATH=\"$(GRX_DEFAULT_FONT_PATH)\"
 endif
 
+ifeq ($(USE_SVGALIB_DRIVER),y)
+CCOPT += -DSVGALIB_DRIVER
+endif
+
+ifeq ($(USE_FRAMEBUFFER_DRIVER),y)
+CCOPT += -DFRAMEBUFFER_DRIVER
+endif
+
+ifeq ($(USE_INOUTP_FRAMEDRIVERS),y)
+CCOPT += -DINOUTP_FRAMEDRIVERS
+endif
+
+ifeq ($(SET_SUIDROOT),y)
+EXECBITS = 4755
+else
+EXECBITS = 0755
+endif
+
 GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 
 GRX20SH = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.so
@@ -60,13 +78,17 @@ endif
 ifeq ($(INCLUDE_PRINTING_CODE),y)
   ADDON_O += $(PRN_1)
   INCDIR += -I../addons/print
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
+  BGI_O += $(PRNBGI_1)
+endif
 endif
 
 O=      $(STD_O)                \
 	$(ADDON_O)              \
-	$(BGI_O)                \
 	fdrivers/egavga1.o      \
 	fdrivers/ega4.o         \
+	fdrivers/svga4.o        \
+	fdrivers/vga8x.o        \
 	fdrivers/ram24.o        \
 	fdrivers/ram32l.o       \
 	fdrivers/ram32h.o       \
@@ -74,13 +96,21 @@ O=      $(STD_O)                \
 	fdrivers/svga24.o       \
 	fdrivers/svga32h.o      \
 	fdrivers/svga32l.o      \
-	fdrivers/svga4.o        \
 	fdrivers/svga8.o        \
-	fdrivers/vga8x.o        \
 	mouse/lnxkeys.o         \
-	misc/lnxmisc.o          \
-	vdrivers/vd_lnxfb.o     \
-	vdrivers/svgalib.o
+	misc/lnxmisc.o
+
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
+  O += $(BGI_O)
+endif
+
+ifeq ($(USE_SVGALIB_DRIVER),y)
+  O += vdrivers/svgalib.o
+endif
+
+ifeq ($(USE_FRAMEBUFFER_DRIVER),y)
+  O += vdrivers/vd_lnxfb.o
+endif
 
 ifeq ($(USE_DIRECT_MOUSE_DRIVER),y)
   O += mouse/lnxinpu2.o
@@ -98,23 +128,23 @@ UTILPS= ../bin/modetest
 
 all: libst libsh $(UTILP) $(UTILPS)
 
+libst: $(GRX20ST)
+
+$(GRX20ST): $(LINUX_i386_CONSOLE) $(O)
+	-rm -f $(GRX20ST)
+	$(AR) -r $(GRX20ST) $(O)
+	$(RANLIB) $(GRX20ST)
+
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
 libsh: $(GRX20SHna)
 else
 libsh:
 endif
 
-libst: $(GRX20ST)
-
 $(GRX20SHna): $(LINUX_i386_CONSOLE) $(LO)
 	-rm -f $(GRX20SHna)
 	$(CC) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(LO)
 	ln -sf $(notdir $(GRX20SHna)) $(GRX20SHli)
-
-$(GRX20ST): $(LINUX_i386_CONSOLE) $(O)
-	-rm -f $(GRX20ST)
-	$(AR) -r $(GRX20ST) $(O)
-	$(RANLIB) $(GRX20ST)
 
 $(UTILP): ../bin/% : utilprog/%.o $(GRX20ST)
 	$(CC) -o $@ utilprog/$*.o $(GRX20ST)
@@ -123,7 +153,7 @@ $(UTILP): ../bin/% : utilprog/%.o $(GRX20ST)
 $(UTILPS): ../bin/% : utilprog/%.o $(GRX20ST)
 	$(CC) -o $@ utilprog/$*.o $(GRX20ST) -lvga -lm
 	$(STRIP) $@
-	chmod 4755 $@
+	chmod $(EXECBITS) $@
 
 $(O): $(LINUX_i386_CONSOLE)
 
@@ -157,6 +187,9 @@ endif
 	install -m 0644 ../include/grx20.h $(INSTALLDIR)/include
 	install -m 0644 ../include/grxkeys.h $(INSTALLDIR)/include
 	install -m 0644 ../include/libbcc.h $(INSTALLDIR)/include
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+	install -m 0644 ../addons/print/grxprint.h $(INSTALLDIR)/include
+endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	install -m 0755 -d $(INSTALLDIR)/units
 	install -m 0644 ../pascal/grx.pas $(INSTALLDIR)/units
@@ -173,14 +206,21 @@ endif
 	rm -f $(INSTALLDIR)/include/grx20.h
 	rm -f $(INSTALLDIR)/include/grxkeys.h
 	rm -f $(INSTALLDIR)/include/libbcc.h
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+	rm -f $(INSTALLDIR)/include/grxprint.h
+endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	rm -f $(INSTALLDIR)/units/grx.pas
 	rm -f $(INSTALLDIR)/units/graph.pas
 endif
 
 setsuid: $(UTILPS)
+ifeq ($(SET_SUIDROOT),y)
 	chown root ../bin/modetest
-	chmod 4755 ../bin/modetest
+	chmod $(EXECBITS) ../bin/modetest
+else
+	@echo "Nothing to do, SET_SUIDROOT is not set to 'y' in makedefs.grx"
+endif
 
 install-info:
 	install -m 0755 -d $(INSTALLDIR)/info
@@ -204,7 +244,7 @@ install-bin: $(UTILP) $(UTILPS)
 	install -m 0755 ../bin/bin2c $(INSTALLDIR)/bin
 	install -m 0755 ../bin/fnt2c $(INSTALLDIR)/bin
 	install -m 0755 ../bin/lfbinfo $(INSTALLDIR)/bin
-	install -m 4755 ../bin/modetest $(INSTALLDIR)/bin
+	install -m $(EXECBITS) ../bin/modetest $(INSTALLDIR)/bin
 
 uninstall-bin:
 	rm -f $(INSTALLDIR)/bin/bin2c

@@ -24,7 +24,7 @@
 
 static ScanFillFunc _filler;
 static GrFillArg _fa;
-static int lx, ly, mx, my;
+static int lx, ly, mx, my, lxo, lyo;
 static GrColor _border;
 static jmp_buf error;
 
@@ -130,7 +130,7 @@ static void fill(int x, int y) {
     --sx;
   while ( x < mx && !test_pixel(x+1,y))
     ++x;
-  (*_filler)(sx+lx,y+ly,x-sx,_fa);
+  (*_filler)(sx+lxo,y+lyo,x-sx+1,_fa);
   mark_line( done, sx, x, y);
   if (y>0)  { mark_line( start, sx, x, y-1);
               SetStartFlag(sx,y-1);          }
@@ -195,6 +195,8 @@ void _GrFloodFill(int x,int y,GrColor border,GrFiller *f,GrFillArg fa) {
   mx = CURC->gc_xcliphi;
   ly = CURC->gc_ycliplo;
   my = CURC->gc_ycliphi;
+  lxo = lx + CURC->gc_xoffset;
+  lyo = ly + CURC->gc_yoffset;
 
   if ( x < lx || y < ly || x > mx || y > my || GrPixelNC(x,y) == border)
     return;

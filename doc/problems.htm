@@ -42,9 +42,7 @@ by default, so some code is necesary to enable it.
 <p>
 <li>Implement bltv2r for 24 bpp.
 <p>
-<li>Implement full screen mode when maximum resolution is required.
-<p>
-<li>The printing code doesn't work.
+<li>The printing code doesn't work correctly.
 </ul>
 
 <h2>X11 driver:</h2>
@@ -71,6 +69,8 @@ by default, so some code is necesary to enable it.
 <h2>VGA DOS driver:</h2>
 <ul>
 <li>It can be improved a lot, replacing the generic funtions it uses.
+<li>BitBlt to screen doens't work in 4bpp modes if the screen is not
+set as the default context.
 </ul>
 
 </body>

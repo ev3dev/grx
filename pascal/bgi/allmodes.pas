@@ -15,9 +15,6 @@ program AllModes;
 uses
   Graph;
 
-type
-  WrkString = String[255];
-
 function MyStr(Numeric, Len: Integer):WrkString;
 var
   RetString : WrkString;

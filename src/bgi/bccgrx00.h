@@ -103,7 +103,24 @@ extern GraphicsMode *__gr_Modes;
 #define IMAGE_CONTEXT_SIZE      (((sizeof(GrContext)+15)&~15)+4)
 
 /* ----------------------------------------------------------------- */
-static _BGI_INLINE_ void __gr_Reset_ClipBox(void)
+#ifdef GRX_VERSION
+#define GrResetClipBox() GrSetClipBox( 0, PY, getmaxx(), getmaxy()+PY)
+#endif
+
+void __gr_Reset_ClipBox(void);
+#define __gr_Reset_ClipBox() \
+  do { \
+  if (__gr_clip) GrSetClipBox( VL, VT+PY, VR, VB+PY); \
+  else GrResetClipBox(); \
+  } while(0)
+
+#ifdef GRX_VERSION
+#undef GrResetClipBox
+#endif
+
+#ifdef __BCCGRX_C
+
+void (__gr_Reset_ClipBox)(void)
 {
   if (__gr_clip) GrSetClipBox( VL, VT+PY, VR, VB+PY);
   else
@@ -113,6 +130,8 @@ static _BGI_INLINE_ void __gr_Reset_ClipBox(void)
            GrResetClipBox();
 #endif
 }
+
+#endif
 
 /* ----------------------------------------------------------------- */
 

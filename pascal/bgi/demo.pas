@@ -19,9 +19,6 @@ uses
   graph, crt;
 (*$endif*)
 
-type
-  WrkString = String[255];
-
 var
   Test,
   Corr : Real;

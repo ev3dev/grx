@@ -24,12 +24,7 @@
 #ifndef __BGIEXT_H
 #define __BGIEXT_H
 
-#ifdef __TURBOC__
-#  include <graphics.h>
-#endif
-#ifdef __GNUC__
-#  include <libbcc.h>
-#endif
+#include <libbcc.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -15,232 +15,344 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by M.Alvarez (malfer@teleline.es) 18/11/2001
+ **   - Better keys handling using translation tables (w32input.h).
+ **
+ ** Contributions by M.Alvarez (malfer@teleline.es) 02/02/2002
+ **   - The w32 imput queue implemented as a circular queue.
+ **   - All the input related code moved here from vd_win32.c
  **/
 
 #include "libwin32.h"
 #include "libgrx.h"
+#include "grxkeys.h"
 #include "input.h"
 #include "arith.h"
 #include "memcopy.h"
+#include "w32input.h"
 
-static int  kbd_enabled = TRUE;
-static int  kbd_lastmod = 0;
-static int  mou_enabled = TRUE;
-static int  mou_buttons = 0;
+int _nkeysw32pool = 0;
+int _keysw32pool[_MAXKEYSW32POOL];
+
+static int kbd_enabled = TRUE;
+static int kbd_lastmod = 0;
+static int kbd_hitcount = 0;
+static int mou_enabled = TRUE;
+static int mou_buttons = 0;
 static long evt_lasttime;
 
-int _GrIsKbdEnabled ( void )
+int _GrIsKbdEnabled(void)
 {
-  return kbd_enabled;
+    return kbd_enabled;
 }
 
-static void uninit ( void )
+int _GrKeyPressed(void)
 {
-  if ( MOUINFO -> msstatus > 1 ) {
-    MOUINFO -> msstatus = 1;
-  }
+    _GrUpdateInputs();
+    if (kbd_enabled)
+        return (kbd_hitcount > 0);
+    else
+        return (_nkeysw32pool > 0);
 }
 
-int GrMouseDetect ( void )
+int _GrKeyStat(void)
 {
-  return GetSystemMetrics ( SM_MOUSEPRESENT );
+    return kbd_lastmod;
 }
 
-void GrMouseInitN (int queue_size )
+static void uninit(void)
 {
-  uninit ();
-  queue_size = umax ( 4, umin ( 256, queue_size ) );
-  init_queue ( queue_size );
-  if ( GrMouseDetect () ) {
-    GrMouseSetSpeed ( 1, 1 );
-    GrMouseSetAccel ( 100, 1 );
-    GrMouseSetLimits ( 0, 0, SCRN -> gc_xmax, SCRN -> gc_ymax );
-    GrMouseWarp ( ( SCRN -> gc_xmax >> 1 ), ( SCRN -> gc_ymax >> 1 ) );
-    _GrInitMouseCursor ();
-    MOUINFO -> msstatus = 2;
-    mou_buttons = 0;
-  }
-  GrMouseEventEnable ( TRUE, TRUE );
-  real_time ( evt_lasttime );
-  MOUINFO -> uninit = uninit;
+    if (MOUINFO->msstatus > 1) {
+        MOUINFO->msstatus = 1;
+    }
 }
 
-void GrMouseSetSpeed ( int spmult, int spdiv )
+int GrMouseDetect(void)
 {
-  MOUINFO -> spmult = umin ( 16,umax ( 1, spmult ) );
-  MOUINFO -> spdiv = umin ( 16, umax ( 1, spdiv ) );
+    return GetSystemMetrics(SM_MOUSEPRESENT);
 }
 
-void GrMouseSetAccel ( int thresh, int accel )
+static void init_w32queue(int queue_size)
 {
-  MOUINFO -> thresh = umin ( 64, umax ( 1, thresh ) );
-  MOUINFO -> accel = umin ( 16, umax ( 1, accel ) );
+    EnterCriticalSection(&_csEventQueue);
+    if (_W32EventQueueSize != queue_size) {
+        if (_W32EventQueue != NULL)
+            free(_W32EventQueue);
+        _W32EventQueue = (W32Event *)malloc(sizeof(W32Event) * queue_size);
+        _W32EventQueueSize = _W32EventQueue ? queue_size : 0;
+    }
+    _W32EventQueueRead = 0;
+    _W32EventQueueWrite = 0;
+    _W32EventQueueLength = 0;
+    LeaveCriticalSection(&_csEventQueue);
 }
 
-void GrMouseSetLimits ( int x1, int y1, int x2, int y2 )
+void GrMouseInitN(int queue_size)
 {
-  isort ( x1, x2 );
-  isort ( y1, y2 );
-  MOUINFO -> xmin = imax ( 0, imin ( x1, SCRN -> gc_xmax ) );
-  MOUINFO -> ymin = imax ( 0, imin ( y1, SCRN -> gc_ymax ) );
-  MOUINFO -> xmax = imax ( 0, imin ( x2, SCRN -> gc_xmax ) );
-  MOUINFO -> ymax = imax ( 0, imin ( y2, SCRN -> gc_ymax ) );
+    uninit();
+    queue_size = umax(4, umin(256, queue_size));
+    init_queue(queue_size);
+    init_w32queue(queue_size);
+    kbd_hitcount = 0;
+    if (GrMouseDetect()) {
+        GrMouseSetSpeed(1, 1);
+        GrMouseSetAccel(100, 1);
+        GrMouseSetLimits(0, 0, SCRN->gc_xmax, SCRN->gc_ymax);
+        GrMouseWarp((SCRN->gc_xmax >> 1), (SCRN->gc_ymax >> 1));
+        _GrInitMouseCursor();
+        MOUINFO->msstatus = 2;
+        mou_buttons = 0;
+    }
+    GrMouseEventEnable(TRUE, TRUE);
+    real_time(evt_lasttime);
+    MOUINFO->uninit = uninit;
 }
 
-void GrMouseWarp(int x,int y)
+void GrMouseSetSpeed(int spmult, int spdiv)
 {
-  MOUINFO -> xpos = imax ( MOUINFO -> xmin, imin ( MOUINFO -> xmax, x ) );
-  MOUINFO -> ypos = imax ( MOUINFO -> ymin, imin ( MOUINFO -> ymax, y ) );
-  GrMouseUpdateCursor ();
-  SetCursorPos ( MOUINFO -> xpos, MOUINFO -> ypos );
+    MOUINFO->spmult = umin(16, umax(1, spmult));
+    MOUINFO->spdiv = umin(16, umax(1, spdiv));
 }
 
-void GrMouseEventEnable ( int enable_kb, int enable_ms )
+void GrMouseSetAccel(int thresh, int accel)
 {
-  kbd_enabled = enable_kb;
-  mou_enabled = enable_ms;
+    MOUINFO->thresh = umin(64, umax(1, thresh));
+    MOUINFO->accel = umin(16, umax(1, accel));
 }
 
-void GrMouseGetEventT ( int flags, GrMouseEvent *ev, long tout )
+void GrMouseSetLimits(int x1, int y1, int x2, int y2)
 {
-  int     msdraw;
-        
-  if ( MOUINFO -> msstatus  == 0 ) {
-    GrMouseInit ();
-  }
-  msdraw = ! MOUINFO -> displayed && !( flags & GR_M_NOPAINT );
-  if ( msdraw ) {
-    GrMouseDisplayCursor ();
-  }
-  if ( tout <= 0L ) {
-    tout = 1L;
-  }
-  for ( ; ; ) {
-    _GrUpdateInputs ();
-    GrMouseUpdateCursor ();
-    while ( MOUINFO -> qlength > 0 ) {
-      dequeue_event ( ( *ev ) );
-      if ( ev -> flags & flags ) {
-        if ( msdraw ) {
-          GrMouseEraseCursor ();
+    isort(x1, x2);
+    isort(y1, y2);
+    MOUINFO->xmin = imax(0, imin(x1, SCRN->gc_xmax));
+    MOUINFO->ymin = imax(0, imin(y1, SCRN->gc_ymax));
+    MOUINFO->xmax = imax(0, imin(x2, SCRN->gc_xmax));
+    MOUINFO->ymax = imax(0, imin(y2, SCRN->gc_ymax));
+}
+
+void GrMouseWarp(int x, int y)
+{
+    MOUINFO->xpos = imax(MOUINFO->xmin, imin(MOUINFO->xmax, x));
+    MOUINFO->ypos = imax(MOUINFO->ymin, imin(MOUINFO->ymax, y));
+    GrMouseUpdateCursor();
+    SetCursorPos(MOUINFO->xpos, MOUINFO->ypos);
+}
+
+void GrMouseEventEnable(int enable_kb, int enable_ms)
+{
+    kbd_enabled = enable_kb;
+    mou_enabled = enable_ms;
+}
+
+void GrMouseGetEventT(int flags, GrMouseEvent * ev, long tout)
+{
+    int msdraw;
+
+    if (MOUINFO->msstatus == 0) GrMouseInit();
+
+    msdraw = !MOUINFO->displayed && !(flags & GR_M_NOPAINT);
+    if (msdraw) GrMouseDisplayCursor();
+
+    if (tout <= 0L) tout = 1L;
+
+    for (;;) {
+        _GrUpdateInputs();
+        GrMouseUpdateCursor();
+        while (MOUINFO->qlength > 0) {
+            dequeue_event((*ev));
+            if (ev->flags & GR_M_KEYPRESS) kbd_hitcount--;
+            if (ev->flags & flags) {
+                if (msdraw) GrMouseEraseCursor();
+                return;
+            }
         }
-        return;
-      }
+        if ((flags & GR_M_POLL) ||
+            (tout == 0L) || (MOUINFO->moved && (flags & GR_M_MOTION))) {
+            fill_mouse_ev((*ev),
+                          mou_buttons, mou_buttons,
+                          GR_M_LEFT, GR_M_MIDDLE, GR_M_RIGHT, kbd_lastmod);
+            if (ev->flags)        /* something happend */
+                real_dtime(ev->dtime, evt_lasttime);
+            else
+                ev->dtime = -1;        /* special time if nothing happend */
+            MOUINFO->moved = FALSE;
+            if (msdraw) {
+                GrMouseEraseCursor();
+            }
+            return;
+        }
+        if (tout > 0L) {
+            Sleep(10);
+            if ((tout -= 10) < 0L) tout = 0L;
+        }
     }
-    if ( ( flags & GR_M_POLL ) ||
-         ( tout == 0L ) ||
-         ( MOUINFO -> moved && ( flags & GR_M_MOTION ) ) ) {
-      fill_mouse_ev ( ( *ev ),
-                      mou_buttons, mou_buttons,
-                      GR_M_LEFT,
-                      GR_M_MIDDLE,
-                      GR_M_RIGHT,
-                      kbd_lastmod );
-      if ( ev->flags ) /* something happend */
-        real_dtime(ev->dtime,evt_lasttime);
-      else
-        ev->dtime = -1; /* special time if nothing happend */
-      MOUINFO -> moved = FALSE;
-      if ( msdraw ) {
-        GrMouseEraseCursor ();
-      }
-      return;
-    }
-    if(tout > 0L) {
-      Sleep( 10 );
-      if((tout -= 10) < 0L) tout = 0L;
-    }
-  }
 }
 
-unsigned int _ButtonEvent2GrButton ( GrMouseEvent *event )
+static GrKeyType StdKeyTranslate(int winkey, int fkbState)
 {
-  unsigned int    uiRet = 0;
+    keytrans *k;
+    int i;
 
-  if ( event -> flags & GR_M_LEFT_DOWN ) {
-    uiRet |= GR_M_LEFT;
-  }
-  if ( event -> flags & GR_M_MIDDLE_DOWN ) {
-    uiRet |= GR_M_MIDDLE;
-  }
-  if ( event -> flags & GR_M_RIGHT_DOWN ) {
-    uiRet |= GR_M_RIGHT;
-  }
+    if (fkbState & GR_KB_ALT)
+        k = altstdkeys;
+    else if (fkbState & GR_KB_CTRL)
+        k = controlstdkeys;
+    else if (fkbState & GR_KB_SHIFT)
+        k = shiftstdkeys;
+    else
+        k = stdkeys;
 
-  return uiRet;
+    for (i = 0; i < NSTDKEYS; i++) {
+        if (winkey == k[i].winkey)
+            return k[i].grkey;
+    }
+
+    return 0;
 }
 
-void _GrUpdateInputs ( void )
+static int DequeueW32Event(GrMouseEvent * ev)
 {
-  int count;
-  SEventQueue *pEvents, *pNextEvent;
+    W32Event evaux;
+    int key;
+    int buttons;
 
-  EnterCriticalSection ( &csEventQueue );
-  pEvents = pEventQueue;
-  count = 0;
-  while ( pEvents -> pNext != NULL ) {
-    count++;
-    pEvents = pEvents -> pNext;
-  }
-  if ( count <= 0 ) {
-    LeaveCriticalSection ( &csEventQueue );
-    return;
-  }
-  pEvents = pEventQueue;
-  while ( --count >= 0 ) {
+    if (_W32EventQueueLength < 1)
+        return 0;
+
+    EnterCriticalSection(&_csEventQueue);
+//    if (!TryEnterCriticalSection(&_csEventQueue))
+//        return 0;
+
+    evaux = _W32EventQueue[_W32EventQueueRead];
+    if (++_W32EventQueueRead == _W32EventQueueSize)
+        _W32EventQueueRead = 0;
+    _W32EventQueueLength--;
+    LeaveCriticalSection(&_csEventQueue);
+
+    switch (evaux.uMsg) {
+
+    case WM_CHAR:
+        fill_keybd_ev((*ev), evaux.wParam, evaux.kbstat);
+        kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_SYSCHAR:
+        key = 0;
+        if (evaux.wParam >= 'a' && evaux.wParam <= 'z')
+            key = altletters[evaux.wParam - 'a'];
+        if (evaux.wParam >= 'A' && evaux.wParam <= 'Z')
+            key = altletters[evaux.wParam - 'A'];
+        if (evaux.wParam >= '0' && evaux.wParam <= '9')
+            key = altnumbers[evaux.wParam - '0'];
+        if (key == 0)
+            return -1;
+        fill_keybd_ev((*ev), key, evaux.kbstat);
+        kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_KEYDOWN:
+    case WM_SYSKEYDOWN:
+        key = StdKeyTranslate(evaux.wParam, evaux.kbstat);
+        if (key == 0)
+            return -1;
+        fill_keybd_ev((*ev), key, evaux.kbstat);
+        kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_LBUTTONDOWN:
+        buttons = GR_M_LEFT | mou_buttons;
+        MOUINFO->xpos = LOWORD(evaux.lParam);
+        MOUINFO->ypos = HIWORD(evaux.lParam);
+        fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
+                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+        mou_buttons = buttons;
+        MOUINFO->moved = FALSE;
+        kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_MBUTTONDOWN:
+        buttons = GR_M_MIDDLE | mou_buttons;
+        MOUINFO->xpos = LOWORD(evaux.lParam);
+        MOUINFO->ypos = HIWORD(evaux.lParam);
+        fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
+                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+        mou_buttons = buttons;
+        MOUINFO->moved = FALSE;
+        kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_RBUTTONDOWN:
+        buttons = GR_M_RIGHT | mou_buttons;
+        MOUINFO->xpos = LOWORD(evaux.lParam);
+        MOUINFO->ypos = HIWORD(evaux.lParam);
+        fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
+                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+        mou_buttons = buttons;
+        MOUINFO->moved = FALSE;
+        kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_LBUTTONUP:
+        buttons = ~GR_M_LEFT & mou_buttons;
+        MOUINFO->xpos = LOWORD(evaux.lParam);
+        MOUINFO->ypos = HIWORD(evaux.lParam);
+        fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
+                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+        mou_buttons = buttons;
+        MOUINFO->moved = FALSE;
+        kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_MBUTTONUP:
+        buttons = ~GR_M_MIDDLE & mou_buttons;
+        MOUINFO->xpos = LOWORD(evaux.lParam);
+        MOUINFO->ypos = HIWORD(evaux.lParam);
+        fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
+                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+        mou_buttons = buttons;
+        MOUINFO->moved = FALSE;
+        kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_RBUTTONUP:
+        buttons = ~GR_M_RIGHT & mou_buttons;
+        MOUINFO->xpos = LOWORD(evaux.lParam);
+        MOUINFO->ypos = HIWORD(evaux.lParam);
+        fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
+                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+        mou_buttons = buttons;
+        MOUINFO->moved = FALSE;
+        kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_MOUSEMOVE:
+        MOUINFO->xpos = LOWORD(evaux.lParam);
+        MOUINFO->ypos = HIWORD(evaux.lParam);
+        MOUINFO->moved = TRUE;
+        return -1;
+
+    default:
+        return -1;
+
+    }
+}
+
+void _GrUpdateInputs(void)
+{
     GrMouseEvent ev;
-    GrMouseEvent *pWinEv;
-    int btn;
+    int r;
 
-    pWinEv = pEvents -> pNext -> pEvent;
-    switch ( pWinEv -> flags ) {
-
-      case GR_M_MOTION :
-        if ( mou_enabled && ( MOUINFO -> msstatus == 2 ) ) {
-          MOUINFO -> xpos = pWinEv -> x;
-          MOUINFO -> ypos = pWinEv -> y;
-          MOUINFO -> moved = TRUE;
+    while ((r = DequeueW32Event(&ev)) != 0) {
+        if (r > 0) {
+            if (ev.flags & GR_M_KEYPRESS && !kbd_enabled){
+                if (_nkeysw32pool < _MAXKEYSW32POOL)
+                    _keysw32pool[_nkeysw32pool++] = ev.key;
+            }
+            else{
+                real_dtime(ev.dtime, evt_lasttime);
+                enqueue_event(ev);
+                if (ev.flags & GR_M_KEYPRESS) kbd_hitcount++;
+            }
         }
-        break;
-
-      case GR_M_LEFT_DOWN :
-      case GR_M_MIDDLE_DOWN :
-      case GR_M_RIGHT_DOWN :
-      case GR_M_LEFT_UP :
-      case GR_M_MIDDLE_UP :
-      case GR_M_RIGHT_UP :
-        if ( mou_enabled && ( MOUINFO -> msstatus == 2 ) ) {
-          MOUINFO -> xpos = pWinEv -> x;
-          MOUINFO -> ypos = pWinEv -> y;
-/*        MOUINFO -> moved = TRUE; */
-          btn = _ButtonEvent2GrButton ( pWinEv );
-/*        if ( btn != mou_buttons ) { */
-            fill_mouse_ev ( ev, mou_buttons, btn, GR_M_LEFT,
-                            GR_M_MIDDLE, GR_M_RIGHT, kbd_lastmod );
-            real_dtime ( ev.dtime, evt_lasttime );
-            enqueue_event ( ev );
-            MOUINFO -> moved = FALSE;
-            mou_buttons = btn;
-/*        } */
-        }
-        break;
-
-      case GR_M_KEYPRESS :
-        if ( kbd_enabled ) {
-          fill_keybd_ev ( ev, pWinEv -> key, kbd_lastmod );
-          real_dtime ( ev.dtime, evt_lasttime );
-          enqueue_event ( ev );
-          MOUINFO -> moved = FALSE;
-        } else if( _nkeysw32pool < _MAXKEYSW32POOL ) {
-          _keysw32pool[_nkeysw32pool++] = pWinEv -> key;
-        }
-        break;
-
     }
-    free ( pEvents -> pNext -> pEvent );
-    pNextEvent = pEvents -> pNext -> pNext;
-    free ( pEvents -> pNext );
-    pEvents -> pNext = pNextEvent;
-  }
-  LeaveCriticalSection ( &csEventQueue );
 }

@@ -62,7 +62,8 @@ void GrRefreshColors(void)
 
 /* _GR_firstFreeColor is normally zero but some systems may protect some
 ** colors for other programs (eg. X11). In this case we don't touch them.
-** These variables are only used in palette modes                        */
+** These variables are only used in palette modes
+*/
 #ifdef __XWIN__
 int _GR_firstFreeColor =  0;
 int _GR_lastFreeColor  = -1;
@@ -325,6 +326,13 @@ void GrQueryColor(GrColor c,int *r,int *g,int *b)
 {
         GRX_ENTER();
         GrQueryColorID(c,r,g,b);
+        GRX_LEAVE();
+}
+
+void GrQueryColor2(GrColor c,long *hcolor)
+{
+        GRX_ENTER();
+        GrQueryColor2ID(c,hcolor);
         GRX_LEAVE();
 }
 

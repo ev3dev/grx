@@ -40,7 +40,7 @@ static void invert_image (GrContext *gc)
 void putimage(int left, int top, void *bitmap, int op)
 {
   GrContext *gc;
-  int gr_op;
+  GrColor gr_op;
 
   _DO_INIT_CHECK;
   GrSetContext(NULL);

@@ -42,7 +42,7 @@ int           __gr_vpl, __gr_vpt,               /* actual viewport          */
 int           __gr_color;                       /* drawing color            */
 int           __gr_colorbg;                     /* background color         */
 int           __gr_colorfill;                   /* fill color               */
-int           __gr_WR = GrWRITE;                /* Write mode               */
+GrColor       __gr_WR = GrWRITE;                /* Write mode               */
 int           __gr_lstyle = SOLID_LINE;         /* Actual line style        */
 int           __gr_fpatno = SOLID_FILL;         /* Actual filling pattern   */
 int           __gr_Xasp = 10000;                /* Aspect ratio             */
@@ -176,6 +176,9 @@ int __gr_getmode_whc(int mode, int *w, int *h, long *c) {
              ++fmode ) {
       mp = GrFirstVideoMode(fmode);
       while (mp != NULL) {
+#if defined(__TURBOC__) && defined(__MSDOS__)
+        if(mp->bpp < 15)
+#endif
         NewMode(mp->width, mp->height, 1<<mp->bpp);
         mp = GrNextVideoMode(mp);
       }
@@ -324,7 +327,7 @@ void graphdefaults(void)
   __gr_clip = TRUE;
 
   __gr_Xasp = 10000;
-  __gr_Yasp = __gr_Xasp * ((VR+1)*3) / ((VB+1)*4);
+  __gr_Yasp = __gr_Xasp * ((VR+1)*3L) / ((VB+1)*4L);
 
   __gr_lstyle     = SOLID_LINE;
   LNE.lno_pattlen = 0;

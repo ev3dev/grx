@@ -27,7 +27,7 @@ GrFrameDriver *_GrFrameDriverTable[] = {
 #if defined(__DJGPP__) || defined(__TURBOC__) || defined (__WATCOMC__)
     &_GrFrameDriverHERC1,
 #endif
-#if !defined(__XWIN__) && !defined(__WIN32__)
+#if defined(__MSDOS__) || (defined(__linux__) && !defined(__XWIN__))
     &_GrFrameDriverEGAVGA1,
     &_GrFrameDriverEGA4,
     &_GrFrameDriverSVGA4,

@@ -32,8 +32,7 @@ grxprint.c	- main sources of printing code
 grxprint.h      - interface definitions for user
 prndata.c       - printer definitions 
 grxprn00.h      - definitions used internally by grxprint only
-test.cc         - test example
-print.gpr       - RHIDE project file for test           
+printest.c      - test example
 copying.uz      - original copyright notice from Ullrich von Bassevitz
 printer.doc     - original docs on printer BGI driver
 ------------------------------------------------------------------------

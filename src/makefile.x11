@@ -61,6 +61,9 @@ endif
 ifeq ($(INCLUDE_PRINTING_CODE),y)
   ADDON_O += $(PRN_1)
   INCDIR += -I../addons/print
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
+  BGI_O += $(PRNBGI_1)
+endif
 endif
 
 ifeq ($(INCLUDE_BMP_CODE),y)
@@ -70,7 +73,6 @@ endif
 
 O=      $(STD_O)            \
 	$(ADDON_O)          \
-	$(BGI_O)            \
 	fdrivers/fd_xwin.o  \
 	fdrivers/ram24.o    \
 	fdrivers/ram32l.o   \
@@ -81,6 +83,10 @@ O=      $(STD_O)            \
 	misc/x11misc.o      \
 	vdrivers/vd_xwin.o
 
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
+  O += $(BGI_O)
+endif
+
 LO = $(subst $(OX),.lo,$(O))
 
 UTILP = ../bin/bin2c \
@@ -88,7 +94,14 @@ UTILP = ../bin/bin2c \
 
 UTILPX= ../bin/xmodetest
 
-all: libst libsh  $(UTILP) $(UTILPX)
+all: libst libsh $(UTILP) $(UTILPX)
+
+libst: $(GRX20ST)
+
+$(GRX20ST): $(LINUX_i386_X11) $(O)
+	-rm -f $(GRX20ST)
+	$(AR) -r $(GRX20ST) $(O)
+	$(RANLIB) $(GRX20ST)
 
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
 libsh: $(GRX20SHna)
@@ -96,17 +109,10 @@ else
 libsh:
 endif
 
-libst: $(GRX20ST)
-
 $(GRX20SHna): $(LINUX_i386_X11) $(LO)
 	-rm -f $(GRX20SHna)
 	$(CC) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(LO)
 	ln -sf $(notdir $(GRX20SHna)) $(GRX20SHli)
-
-$(GRX20ST): $(LINUX_i386_X11) $(O)
-	-rm -f $(GRX20ST)
-	$(AR) -r $(GRX20ST) $(O)
-	$(RANLIB) $(GRX20ST)
 
 $(UTILP): ../bin/% : utilprog/%.o $(GRX20ST)
 	$(CC) -o $@ utilprog/$*.o $(GRX20ST) $(X11LIBS)
@@ -148,6 +154,9 @@ endif
 	install -m 0644 ../include/grx20.h $(INSTALLDIR)/include
 	install -m 0644 ../include/grxkeys.h $(INSTALLDIR)/include
 	install -m 0644 ../include/libbcc.h $(INSTALLDIR)/include
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+	install -m 0644 ../addons/print/grxprint.h $(INSTALLDIR)/include
+endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	install -m 0755 -d $(INSTALLDIR)/units
 	install -m 0644 ../pascal/grx.pas $(INSTALLDIR)/units
@@ -164,6 +173,9 @@ endif
 	rm -f $(INSTALLDIR)/include/grx20.h
 	rm -f $(INSTALLDIR)/include/grxkeys.h
 	rm -f $(INSTALLDIR)/include/libbcc.h
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+	rm -f $(INSTALLDIR)/include/grxprint.h
+endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	rm -f $(INSTALLDIR)/units/grx.pas
 	rm -f $(INSTALLDIR)/units/graph.pas

@@ -77,7 +77,7 @@
 #include <grxprn00.h>
 #include <sys/stat.h>
 #include <stddef.h>
-#if !defined(__WATCOMC__) && !defined(__DJGPP__)
+#if !defined(__WATCOMC__) && !defined(__DJGPP__) && !defined(__WIN32__)
 #include <sys/ioctl.h>
 #endif
 

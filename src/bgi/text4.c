@@ -25,14 +25,8 @@
 #include "text.h"
 
 /* ----------------------------------------------------------------- */
-static _BGI_INLINE_ int xoff(_ushort x) {
-  /* Csaba did it this way, well done */
-  return ((int)(signed char)((x) << 1) >> 1);
-}
-
-static _BGI_INLINE_ int yoff(_ushort y) {
-  return - ((int)(signed char)((y) >> 7) >> 1);
-}
+#define xoff(x) ((int)(signed char)(((_ushort) (x)) << 1) >> 1)
+#define yoff(y) (-((int)(signed char)(((_ushort) (y)) >> 7) >> 1))
 
 /* ----------------------------------------------------------------- */
 void __gr_text_vec(int *xx, int *yy, int XX, int YY, int len, uchar *txt)

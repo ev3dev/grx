@@ -1,6 +1,7 @@
 #
 # GRX test programs makefile for LINUX/console. Uses GNU make.
 #
+.PHONY : clean setsuid
 
 GRXVLNX=y
 
@@ -29,6 +30,12 @@ ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
 
+ifeq ($(SET_SUIDROOT),y)
+EXECBITS = 4755
+else
+EXECBITS = 0755
+endif
+
 LIBS= $(GRX20) $(ADDON_LIBS) -lm
 
 PROGS=              \
@@ -45,9 +52,22 @@ PROGS=              \
 
 all:    $(PROGS)
 
+$(PROGS): % : %.o $(GRX20)
+
+clean:
+	rm -f *.o $(PROGS)
+
+setsuid: $(PROGS)
+ifeq ($(SET_SUIDROOT),y)
+	chown root $(PROGS)
+	chmod $(EXECBITS) $(PROGS)
+else
+	@echo "Nothing to do, SET_SUIDROOT is not set to 'y' in makedefs.grx"
+endif
+
 .o:
 	$(CC) $(LDOPT) -o $* $*.o $(LIBS)
-	chmod 4755 $*
+	chmod $(EXECBITS) $*
 
 .oo:
 	$(CC) $(LDOPT) -o $* $*.o $(LIBS)
@@ -59,12 +79,7 @@ all:    $(PROGS)
 .c.s:
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c
 
-clean:
-	rm -f *.o $(PROGS)
-
 depend.new:
 	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:=.c) >depend.new
-
-$(PROGS): % : %.o $(GRX20)
 
 #include depend.gnu

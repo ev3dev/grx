@@ -23,12 +23,12 @@ GrContext *(GrCreateContext)(int w,int h,char far *memory[4],GrContext *where)
         return(GrCreateContext(w,h,memory,where));
 }
 
-const GrContext *(GrCurrentContext)()
+GrContext *(GrCurrentContext)()
 {
         return(GrCurrentContext());
 }
 
-const GrContext *(GrScreenContext)()
+GrContext *(GrScreenContext)()
 {
         return(GrScreenContext());
 }

@@ -67,6 +67,16 @@ static line_index *start_flg = NULL; /* !=0: index+1 of first start element !=0 
 #define calc_high_bits(x) ( (~((element)0)) << ((x)&(bits_per_element-1)))
 #define calc_ofs(x)       ((x) / offset_div)
 
+/* ----------------------------------------------------------------- */
+#if defined(__GNUC__)
+#define _BGI_INLINE_        __inline__
+#elif defined(_MSC_VER)
+#define _BGI_INLINE_        _inline
+#else
+#define _BGI_INLINE_
+#endif
+/* ----------------------------------------------------------------- */
+
 /* -------- internal line buffer functions
 **
 **  (x,y) scaled to (0..mx,0..my)

@@ -4,6 +4,98 @@ the 2.2 version.
 
 Date     Changes
 
+02/10/20 ----------- GRX v2.4.5 released (Mariano Alvarez Fernandez)
+02/10/18 Changed __MINGW32__ to _WIN32 in Pascal units, by
+         Frank Heckenbach. 
+02/10/16 Updated the configure script, by Frank Heckenbach.
+02/10/02 Corrected bugs in GrFloodFill, before it didn't paint the
+         righter point (causing ocasionall aborts too) and didn't
+         work on subcontexts.
+02/08/27 Updates to the fdv_raw font driver, the loadfont source
+         now does a cleanup to close the font file, fontdemo test
+         program updated, by Dimitar Zhekov.
+02/08/10 Make the test/bgi programs depend of a unique file header
+         for input and delay functions.
+02/08/10 New api functions with a unique color parameter in 0xRRGGBB
+         format:
+         GrColor GrAllocColor2(long hcolor);
+         GrColor GrAllocColor2ID(long hcolor);
+         void    GrQueryColor2(GrColor c,long *hcolor);
+         void    GrQueryColor2ID(GrColor c,long *hcolor);
+02/08/06 Added 'setsuid' target to test/makefile.lnx and
+         test/bgi/makefile.lnx. Now you can run 'make -f makefile.lnx'
+         in the grx base directory an them become root and run
+         'make -f makefile.lnx setsuid'.
+02/08/06 Use the SET_SUIDROOT variable in test/bgi/makefile.lnx,
+         by Dimitar Zhekov.
+02/08/06 Fontdemo update, by Dimitar Zhekov.
+02/08/02 Modifications to acomodate new options in makedefs.grx,
+         for the four standard platforms:
+           INCLUDE_BGI_SUPPORT, 'y' by default
+         for the linux console platform:
+           USE_SVGALIB_DRIVER, 'y' by default
+           USE_FRAMEBUFFER_DRIVER, 'y' by default
+           SET_SUIDROOT, 'y' by default
+           USE_INOUTP_FRAMEDRIVERS, 'y' by default
+         Added a note about "Suidroot in the Linux console platform"
+         in the readme file.
+02/07/29 Revert some changes in the bgi test demos to compile again
+         with DJGPP.
+02/07/29 Corrected an off-by-one error in the raw font driver, by
+         Dimitar Zhekov.
+02/07/29 16-bit fix for BGI and GRX. __gr_WR must match GrColor, by
+         Dimitar Zhekov.
+02/07/29 Changes to the BGI interface, by Dimitar Zhekov.
+         Inline functions defined as macro and non-inline versions.
+         BGI number of colors for DOS / BCC limited to < 15bpp.
+         BGI aspect ratio fixed for 16-bit systems (DOS / BCC).
+         _BGI_INLINE_ moved to fldfill.c, the only module that uses it now.
+         Inline functions in text4.c replaced with macros.
+         Test\bgi\colortst.c fixed to use getch() not getchar().
+02/07/21 Make bccbgi works with Borland C, by Dimitar Zhekov.
+02/06/17 Added fontdemo test program, by Dimitar Zhekov.
+02/06/17 Added the GrDumpFnaFont fucntion, to save a fon in a ascii
+         fna file, by Dimitar Zhekov.
+02/06/12 Three new font drivers by Dimitar Zhekov:
+         * RAW driver - for RAW data and Linux PSF (not PCF) files. RAW
+         data files must be 8 points wide. 512 character PSF files are
+         supported. For the PSF files contained in Linux systems to be
+         readable with GRX, you'll have to unzip them.
+         * FNA driver - for the ascii font format used by grx 1 font
+         read/write tool. A doc about this format was added to the doc
+         subdirectory.
+         * WIN driver - for MS Windows FNT and RES files. FNT versions 2
+         and 3 are supported, 32-bit RES and FON files are not. The first
+         resource from RES is used. As far as I know, all MS Windows-es
+         from 2.0 to NT 4.0 use FNT version 2 and 16-bit resources packed
+         into FON for raster fonts. To use the MS Windows .FON files,
+         split them into .FNT or .RES files using a resource editor.
+         Note. Big endian support is untested.
+02/06/12 Fixes for src/makefile.bcc and test/makefile.bcc,
+         by Dimitar Zhekov <jimmy@is-vn.bg>
+02/04/29 GrResizeSubContext uses now the parent context coordinates.
+02/04/29 Reverted some 'const' that didn't make sense.
+02/03/31 The win32 driver accepts arbitrary (user defined) resolution.
+02/03/14 A new global switch _GR_textattrintensevideo (false by default)
+         permits the use (when true) of 16 background colors in
+         GR_ATTR_TEXT strings.
+02/03/13 When the close icon is pressed in the w32 version a dialog
+         is issued warning it aborts the program.
+02/03/12 Fixed some bugs introduced with the new win32 input queue.
+02/02/11 The makefile install target installs the grxprint.h file
+         if printer support is activate
+02/02/11 Inprovements to the win32 driver:
+         Now the GRX window is properly closed, so the previous app
+         gets the focus.
+02/02/02 Inprovements to the win32 driver:
+         The w32 imput queue implemented as a circular queue.
+         All the input related code moved to w32inp.c from vd_win32.c
+         The main window is created in WinMain, so the grx program
+         can use other videodrivers like the memory one.
+         Now the printer stuff compiles and run, checked with the
+         DeskJet driver, printing to a file and them "copy file lpt1",
+         but the printout is not totally correct (?).
+
 02/01/11 ----------- GRX v2.4.4 released (Mariano Alvarez Fernandez)
 02/01/09 Modified the demogrx test program to center the image when
          a mode bigger than 640x480 is selected

@@ -2,18 +2,18 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
-   <title>GRX 2.4.4, User's Guide</title>
+   <title>GRX 2.4.5, User's Guide</title>
 </head>
 <body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>2.4.4</small></h1>
+<small>2.4.5</small></h1>
 <h1>a graphics library for DOS, Linux, X11 and Win32</h1>
 <h2>User's Manual</h2>
 <p>Based on the original doc written by: Csaba Biegl on August 10, 1992
 <p>Updated by: Mariano Alvarez Fern&aacute;ndez on August 17, 2000
-<p>Last update: November 8, 2001
+<p>Last update: August 10, 2002
 </center>
 
 <hr>
@@ -96,6 +96,15 @@ int GRXMain()
 }
 </pre>
 
+<p>How to compile the hello world program (assuming the GRX library was
+previously installed)
+<ul>
+<li>DJGPP: gcc -o hellogrx.exe hellogrx.c -lgrx20
+<li>Mingw: gcc -o hellogrx.exe hellogrx.c -lgrx20 -mwindows
+<li>X11: gcc -o hellogrx hellogrx.c -D__XWIN__ -I/usr/X11R6/include
+-lgrx20X -L/usr/X11R6/lib -lX11
+<li>Linux: gcc -o hellogrx hellogrx.c -lgrx20 -lvga
+</ul>
 <p>Note. Except for the Win32 version you can use <code>main</code>
 instead <code>GRXMain</code>.
 <hr>
@@ -572,8 +581,10 @@ GrColor GrNumFreeColors(void);
 <p>&nbsp;&nbsp;Colors can be allocated with the:
 <pre>
 GrColor GrAllocColor(int r,int g,int b);
+GrColor GrAllocColor2(long hcolor);
 </pre>
-<p>function (component intensities can range from 0 to 255), or with the:
+<p>functions (component intensities can range from 0 to 255, <code>
+hcolor</code> must be in 0xRRGGBB format), or with the:
 <pre>
 GrColor GrAllocCell(void);
 </pre>
@@ -582,7 +593,7 @@ color can be set with:
 <pre>
 void GrSetColor(GrColor color,int r,int g,int b); 
 </pre>
-<p>&nbsp;&nbsp;In the color table model both <code>Alloc</code> functions
+<p>&nbsp;&nbsp;In the color table model all <code>Alloc</code> functions
 return <code>GrNOCOLOR</code> if there are no more free colors available. In
 the RGB model <code>GrNumFreeColors</code> returns 0 and <code>GrAllocCell
 </code> always returns <code>GrNOCOLOR</code>, as colors returned
@@ -597,9 +608,10 @@ calling:
 void GrFreeColor(GrColor color);
 </pre>
 <p>&nbsp;&nbsp;The component intensities of any color can be queried using
-the function:
+one of this functions:
 <pre>
 void GrQueryColor(GrColor c,int *r,int *g,int *b); 
+void GrQueryColor2(GrColor c,long *hcolor); 
 </pre>
 <p>&nbsp;&nbsp;Initially the color system is in color table (indirect) model
 if there are 256 or less colors. 256 color modes can be put into the RGB
@@ -623,7 +635,9 @@ is programmed directly by the application.
 <p>&nbsp;&nbsp;This functions:
 <pre>
 GrColor GrAllocColorID(int r,int g,int b);
+GrColor GrAllocColor2ID(long hcolor);
 void GrQueryColorID(GrColor c,int *r,int *g,int *b);
+void GrQueryColor2ID(GrColor c,long *hcolor);
 </pre>
 <p>are inlined versions (except if you compile <b>GRX</b> with <b>
 GRX_SKIP_INLINES</b> defined) to be used in the RGB model (in the color
@@ -1260,6 +1274,14 @@ these defines:
 <p>&nbsp;&nbsp;<code>GR_FONTCVT_SKIPCHARS</code> needs 'minch' and 'maxch'
 arguments.
 <p>&nbsp;&nbsp;<code>GR_FONTCVT_RESIZE</code> needs 'w' and 'h' arguments.
+
+<p>&nbsp;&nbsp;The function:
+<pre>
+void GrDumpFnaFont(const GrFont *f, char *fileName);
+</pre>
+<p>writes a font to an ascii font file, so it can be quickly edited with a
+text editor. For a description of the ascii font format, see the <b>fna.txt
+</b> file.
 
 <p>&nbsp;&nbsp;The function:
 <pre>

@@ -23,24 +23,37 @@
 #include <windows.h>
 #include "grx20.h"
 
-typedef struct _EvQueue {
-        GrMouseEvent        *pEvent;
-        struct _EvQueue        *pNext;
-} SEventQueue;
+typedef struct _W32Event {
+    UINT uMsg;
+    WPARAM wParam;
+    LPARAM lParam;
+    int kbstat;
+} W32Event;
 
 struct _ColorList {
-        int               nIndex;
-        COLORREF          color;
-        struct _ColorList *pNext;
+    int nIndex;
+    COLORREF color;
+    struct _ColorList *pNext;
 };
 typedef struct _ColorList SColorList;
 
-extern SEventQueue      *pEventQueue;
-extern CRITICAL_SECTION csEventQueue;
-extern SColorList       *ColorList;
-extern HBITMAP          hBitmapScreen;
-extern HWND             hGRXWnd;
-extern HDC              hDCMem;
+extern CRITICAL_SECTION _csEventQueue;
+extern W32Event *_W32EventQueue;
+extern int _W32EventQueueSize;
+extern int _W32EventQueueRead;
+extern int _W32EventQueueWrite;
+extern int _W32EventQueueLength;
+
+extern SColorList *ColorList;
+extern HBITMAP hBitmapScreen;
+extern HWND hGRXWnd;
+extern HDC hDCMem;
+
+extern int _GrIsKbdEnabled(void);
+extern int _GrKeyPressed(void);
+extern int _GrKeyStat(void);
+
+extern int GRXMain(int, char **, char **);
 
 /* _keysw32pool used only when GrMouseEventEnable( 0,x ) is set */
 
@@ -48,9 +61,4 @@ extern HDC              hDCMem;
 extern int _nkeysw32pool;
 extern int _keysw32pool[_MAXKEYSW32POOL];
 
-extern int _GrIsKbdEnabled ( void );
-
-extern int GRXMain ( int, char**, char** );
-
 #endif
-

@@ -122,9 +122,6 @@ static int setmode(GrVideoMode *mp,int noclear)
   GRX_RETURN(res);
 }
 
-/* Note: _GrViDrvEGAVGAtextModeExt is referenced in setup/drvinfo.c */
-#define grtextext _GrViDrvEGAVGAtextModeExt
-
 GrVideoModeExt grtextext = {
     GR_frameText,                       /* frame driver */
     NULL,                               /* frame driver override */

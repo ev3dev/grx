@@ -107,10 +107,12 @@ void GrResizeSubContext(GrContext *context,int x1,int y1,int x2,int y2)
         GrContext *parent = context->gc_root;
 
         if((parent = context->gc_root) == NULL) return;
+/*
         x1 += context->gc_xoffset;
         y1 += context->gc_yoffset;
         x2 += context->gc_xoffset;
         y2 += context->gc_yoffset;
+*/
         cxclip_box(parent,x1,y1,x2,y2);
         context->gc_xoffset = x1;
         context->gc_yoffset = y1;

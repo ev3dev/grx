@@ -2,6 +2,7 @@
  * Copyright (C) 1993-97 by Hartmut Schirmer
  */
 
+#include <stdlib.h>    /* NULL, exit() */
 #include <string.h>
 #include "libbcc.h"
 

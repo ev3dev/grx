@@ -38,12 +38,14 @@ PROGS=  arctest.exe     \
 	cliptest.exe    \
 	colorops.exe    \
 	curstest.exe    \
+	fontdemo.exe    \
 	fonttest.exe    \
 	imgtest.exe     \
 	jpgtest.exe     \
 	keys.exe        \
 	life.exe        \
 	linetest.exe    \
+	memtest.exe     \
 	mousetst.exe    \
 	pcirctst.exe    \
 	pnmtest.exe     \

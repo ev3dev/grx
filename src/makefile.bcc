@@ -28,10 +28,12 @@ GRX20ST = ..\lib\$(GRX_LIB_SUBDIR)\grx20$(MODEL).lib
 GRX20STa= ..\lib\$(GRX_LIB_SUBDIR)\temp1.lib
 GRX20STb= ..\lib\$(GRX_LIB_SUBDIR)\temp2.lib
 GRX20STc= ..\lib\$(GRX_LIB_SUBDIR)\temp3.lib
+GRX20STd= ..\lib\$(GRX_LIB_SUBDIR)\temp4.lib
+GRX20STe= ..\lib\$(GRX_LIB_SUBDIR)\temp5.lib
 TEMP_LIB= ..\lib\$(GRX_LIB_SUBDIR)\temp?.lib
 
 INCDIR= -I. -I./include -I../include -I$(BCCROOT)/include\
-	-I./vdrivers
+	-I./vdrivers -I./bgi
 LIBDIR= -L$(BCCROOT)/lib
 
 OP=+
@@ -58,6 +60,7 @@ BCCOBJ= +fdrivers\egavga1.obj  \
 	+fdrivers\vga8x.obj    \
 	+mouse\dosinput.obj    \
 	+mouse\doskeys.obj     \
+	+misc\dosmisc.obj      \
 	+utils\bccarith.obj    \
 	+utils\bcccopy.obj     \
 	+utils\bccfil08.obj    \
@@ -82,17 +85,26 @@ BCCOBJ= +fdrivers\egavga1.obj  \
 LOBJ1=$(STD_1:/=\) $(STD_2:/=\) $(STD_3:/=\) $(STD_4:/=\)
 LOBJ2=$(STD_5:/=\) $(STD_6:/=\) $(STD_7:/=\) $(STD_8:/=\)
 LOBJ3=$(STD_9:/=\) $(STD_10:/=\)
-LOBJ4=$(STD_11:/=\) $(BCCOBJ) $(DBG_O)
+LOBJ4=$(BGI_1:/=\) $(BGI_2:/=\) $(BGI_3:/=\)
+LOBJ5=$(BGI_4:/=\) $(BGI_5:/=\) $(BGI_6:/=\)
+LOBJ6=$(STD_11:/=\) $(BCCOBJ) $(DBG_O)
 
-all:    config.bcc $(GRX20ST) ..\bin\vesaif16.exe
+UTILP = \
+	..\bin\vesaif16.exe \
+	..\bin\fnt2c16.exe \
+	..\bin\modtst16.exe \
+	..\bin\bin2c16.exe
+
+all:    config.bcc $(GRX20ST) $(UTILP)
 
 clean:
 	if exist bgi\*.obj      del bgi\*.obj
 	if exist draw\*.obj     del draw\*.obj
 	if exist fdrivers\*.obj del fdrivers\*.obj
 	if exist fonts\*.obj    del fonts\*.obj
+	if exist gformats\*.obj del gformats\*.obj
 	if exist image\*.obj    del image\*.obj
-	if exist pnm\*.obj      del pnm\*.obj
+	if exist misc\*.obj     del misc\*.obj
 	if exist mouse\*.obj    del mouse\*.obj
 	if exist pattern\*.obj  del pattern\*.obj
 	if exist setup\*.obj    del setup\*.obj
@@ -106,6 +118,9 @@ clean:
 	if exist ..\addons\print\*.obj del ..\addons\print\*.obj
 	if exist ..\addons\bmp\*.obj   del ..\addons\bmp\*.obj
 	if exist ..\bin\vesaif16.exe del ..\bin\vesaif16.exe
+	if exist ..\bin\fnt2c16.exe del ..\bin\fnt2c16.exe
+	if exist ..\bin\modtst16.exe del ..\bin\modtst16.exe
+	if exist ..\bin\bin2c16.exe del ..\bin\bin2c16.exe
 	if exist config.bcc del config.bcc
 	if exist *.asm del *.asm
 	if exist *.obj del *.obj
@@ -115,13 +130,15 @@ cleanall: clean
 	if exist $(GRX20ST) del $(GRX20ST)
 
 # the & tells TLIB to continue on next line
-$(GRX20ST): $(GRX20STa) $(GRX20STb) $(GRX20STc) $(LOBJ4:+=)
+$(GRX20ST): $(GRX20STa) $(GRX20STb) $(GRX20STc) $(GRX20STd) $(GRX20STe) $(LOBJ6:+=)
 	if exist $(GRX20ST) del $(GRX20ST)
 	$(TLIB) $(LIBPAGE) /C $(GRX20ST) @&&!
 	+$(GRX20STa) &
 	+$(GRX20STb) &
 	+$(GRX20STc) &
-	$(LOBJ4)
+	+$(GRX20STd) &
+	+$(GRX20STe) &
+	$(LOBJ6)
 !
 
 $(GRX20STa): $(LOBJ1:+=)
@@ -142,9 +159,36 @@ $(GRX20STc): $(LOBJ3:+=)
 	$(LOBJ3)
 !
 
-..\bin\vesaif16.exe: vdrivers\vesainfo.c $(GRX20ST) config.bcc
+$(GRX20STd): $(LOBJ4:+=)
+	if exist $(GRX20STd) del $(GRX20STd)
+	$(TLIB) $(LIBPAGE) /C $(GRX20STd) @&&!
+	$(LOBJ4)
+!
+
+$(GRX20STe): $(LOBJ5:+=)
+	if exist $(GRX20STe) del $(GRX20STe)
+	$(TLIB) $(LIBPAGE) /C $(GRX20STe) @&&!
+	$(LOBJ5)
+!
+
+..\bin\vesaif16.exe: utilprog\vesainfo.c $(GRX20ST) config.bcc
 	$(BCC) +config.bcc -e..\bin\vesaif16 @&&!
-	vdrivers\vesainfo.c $(GRX20ST)
+	utilprog\vesainfo.c $(GRX20ST)
+!
+
+..\bin\fnt2c16.exe: utilprog\fnt2c.c $(GRX20ST) config.bcc
+	$(BCC) +config.bcc -e..\bin\fnt2c16 @&&!
+	utilprog\fnt2c.c $(GRX20ST)
+!
+
+..\bin\modtst16.exe: utilprog\modetest.c $(GRX20ST) config.bcc
+	$(BCC) +config.bcc -I..\test -e..\bin\modtst16 @&&!
+	utilprog\modetest.c $(GRX20ST)
+!
+
+..\bin\bin2c16.exe: utilprog\bin2c.c $(GRX20ST) config.bcc
+	$(BCC) +config.bcc -e..\bin\bin2c16 @&&!
+	utilprog\bin2c.c $(GRX20ST)
 !
 
 .c.obj:

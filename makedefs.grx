@@ -1,8 +1,11 @@
 ### CONFIGURATION ####################################################
 
+# This file sets variables that direct the libary build for the
+# programmer needs. The file is used for the four standard plattforms
+
 # Specify version of GRX
 # Currently only used to generate name of shared libraries for linux
-GRX_VERSION=2.4.4
+GRX_VERSION=2.4.5
 
 # Specify if you have libtiff.a and corresponding .h files.
 # Change setting to 'y' if you have it, or to 'n' if not.
@@ -29,6 +32,9 @@ INCLUDE_GPC_SUPPORT=n
 
 # Specify if you want shared library support (Linux console and X11)
 INCLUDE_SHARED_SUPPORT=y
+
+# Specify if you want to include BGI support
+INCLUDE_BGI_SUPPORT=y
 
 ### SYSTEM SETTINGS ##################################################
 
@@ -86,7 +92,24 @@ INSTALLDIR=/usr/local
 #GRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
 
 # Use direct PS/2 mouse driver instead the svgalib one
-#USE_DIRECT_MOUSE_DRIVER=y
+USE_DIRECT_MOUSE_DRIVER=n
+
+# Set the videodrivers to be included, you can set both or only one of them
+# (remember to set USE_DIRECT_MOUSE_DRIVER to 'y' if you set only the
+# framebuffer driver)
+USE_SVGALIB_DRIVER=y
+USE_FRAMEBUFFER_DRIVER=y
+
+# Set or not set suid root. This is required for the svgalib 1.4.x stable
+# release, it can be set to 'n' if you use the framebuffer driver only or
+# the svgalib 1.9.x alpha release without the 1 and 4 bpp resolutions
+# (see bellow)
+SET_SUIDROOT=y
+
+# Set to 'n' this variable if you don't want suid root executables with
+# svgalib 1.9.x (alpha). This removes framedrivers that use inport/outport:
+# 1, and 4 bpp and the 8 bpp mode X
+USE_INOUTP_FRAMEDRIVERS=y
 
 endif
 

@@ -27,7 +27,15 @@ GRX20 = ../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 LIBS= $(GRX20) $(ADDON_LIBS)
 
 PROGS=                  \
-	bccbgi.exe       
+	bgilink.exe     \
+	bccbgi.exe      \
+	colortst.exe    \
+	small.exe       \
+	tellipse.exe    \
+	tfill.exe       \
+	tmodes.exe      \
+	tpoly.exe       \
+	ttext.exe
 
 all: 	$(PROGS) \
 

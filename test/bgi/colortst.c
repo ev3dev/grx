@@ -4,12 +4,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#ifdef __GNUC__
-#  include "libbcc.h"
-#else
-#  include <graphics.h>
-#endif
-
+#include "libbcc.h"
+#include "stdfun.h"
 
 static void testmode(int mode) {
         int xmax, ymax;
@@ -92,7 +88,7 @@ static void testmode(int mode) {
           settextjustify( CENTER_TEXT, BOTTOM_TEXT );
           outtextxy(getmaxx()/2, getmaxy(), mn);
         }
-        getchar();
+        getch();
 
         if (oldmode != mode)
           setgraphmode(oldmode);
@@ -113,7 +109,7 @@ int main(void)
   err = graphresult();
   if (err != grOk) {
     fprintf(stderr, "Couldn't initialize graphics\n");
-    exit(1);
+    return 1;
   }
   getmoderange(gd, &lomode, &himode);
   gm = lomode;

@@ -65,6 +65,7 @@ static GrFont *doit(char *fname,char *path,int cvt,int w,int h,int lo,int hi)
             (*fd)->cleanup();
             continue;
         }
+        (*fd)->cleanup();
         res = f;
         break;
     }

@@ -3,12 +3,9 @@
 #include <string.h>
 #include <libbcc.h>
 #include <sys/time.h>
+#include "stdfun.h"
+
 #ifdef __GNUC__
-#  ifdef __MSDOS__
-#    include <pc.h>
-#  else
-     extern int khbit(void), getkey(void);
-#  endif
 #  define getch() getkey()
 #else
 #  error fontplay requires DJGPP/GRX based compiler

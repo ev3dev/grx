@@ -92,8 +92,23 @@ GrColor (GrAllocColorID)(int r,int g,int b)
         return(GrAllocColorID(r,g,b));
 }
 
+GrColor (GrAllocColor2)(long hcolor)
+{
+        return(GrAllocColor2(hcolor));
+}
+
+GrColor (GrAllocColor2ID)(long hcolor)
+{
+        return(GrAllocColor2ID(hcolor));
+}
+
 void (GrQueryColorID)(GrColor c,int *r,int *g,int *b)
 {
         GrQueryColorID(c,r,g,b);
+}
+
+void (GrQueryColor2ID)(GrColor c,long *hcolor)
+{
+        GrQueryColor2ID(c,hcolor);
 }
 

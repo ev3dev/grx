@@ -54,7 +54,7 @@ Unit Graph;
 {.$L z}
 {.$L socket}
 
-{$ifdef __MINGW32__}
+{$ifdef _WIN32}
 {$gpc-main="GRXMain"}
 {$endif}
 

@@ -35,7 +35,7 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0244
+#define GRX_VERSION_API 0x0245
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -89,7 +89,6 @@
 #endif /* _WIN32   */
 #endif /* _MSC_VER */
 
-
 #ifndef GRX_VERSION
 #if defined(unix) || defined(__unix) || defined(__unix__) || defined(_AIX)
 #define GRX_VERSION     GRX_VERSION_GENERIC_X11
@@ -135,7 +134,7 @@ typedef struct _GR_context      GrContext;
 /* ================================================================== */
 
 /* need unsigned 32 bit integer for color stuff */
-#ifdef __TURBOC__
+#if defined(__TURBOC__) && defined(__MSDOS__)
 /* TCC && BCC are 16 bit compilers */
 typedef unsigned long int GrColor;
 #else
@@ -509,8 +508,8 @@ GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,char far *memory[4],G
 GrContext *GrCreateSubContext(int x1,int y1,int x2,int y2,const GrContext *parent,GrContext *where);
 GrContext *GrSaveContext(GrContext *where);
 
-const GrContext *GrCurrentContext(void);
-const GrContext *GrScreenContext(void);
+GrContext *GrCurrentContext(void);
+GrContext *GrScreenContext(void);
 
 void  GrDestroyContext(GrContext *context);
 void  GrResizeSubContext(GrContext *context,int x1,int y1,int x2,int y2);
@@ -534,8 +533,8 @@ int   GrHighY(void);
 
 #ifndef GRX_SKIP_INLINES
 #define GrCreateContext(w,h,m,c) (GrCreateFrameContext(GrCoreFrameMode(),w,h,m,c))
-#define GrCurrentContext()       ((const GrContext *)(&GrContextInfo->current))
-#define GrScreenContext()        ((const GrContext *)(&GrContextInfo->screen))
+#define GrCurrentContext()       ((GrContext *)(&GrContextInfo->current))
+#define GrScreenContext()        ((GrContext *)(&GrContextInfo->screen))
 #define GrMaxX()                 (GrCurrentContext()->gc_xmax)
 #define GrMaxY()                 (GrCurrentContext()->gc_ymax)
 #define GrSizeX()                (GrMaxX() + 1)
@@ -623,6 +622,8 @@ int     GrRGBcolorBlue(GrColor c);
 
 GrColor GrAllocColor(int r,int g,int b);   /* shared, read-only */
 GrColor GrAllocColorID(int r,int g,int b); /* potentially inlined version */
+GrColor GrAllocColor2(long hcolor);        /* shared, read-only, 0xRRGGBB */
+GrColor GrAllocColor2ID(long hcolor);      /* potentially inlined version */
 GrColor GrAllocCell(void);                 /* unshared, read-write */
 
 GrColor *GrAllocEgaColors(void);           /* shared, read-only standard EGA colors */
@@ -633,6 +634,8 @@ void    GrFreeCell(GrColor c);
 
 void    GrQueryColor(GrColor c,int *r,int *g,int *b);
 void    GrQueryColorID(GrColor c,int *r,int *g,int *b);
+void    GrQueryColor2(GrColor c,long *hcolor);
+void    GrQueryColor2ID(GrColor c,long *hcolor);
 
 int     GrColorSaveBufferSize(void);
 void    GrSaveColors(void *buffer);
@@ -685,6 +688,16 @@ void    GrRestoreColors(void *buffer);
         GrBuildRGBcolorR(r,g,b) :                                              \
         GrAllocColor(r,g,b)                                                    \
 )
+#define GrAllocColor2(hcolor) (GrAllocColor(                                   \
+        ((hcolor & 0xff0000) >> 16),                                           \
+        ((hcolor & 0x00ff00) >> 8),                                            \
+        (hcolor & 0x0000ff))                                                   \
+)
+#define GrAllocColor2ID(hcolor) (GrAllocColorID(                               \
+        ((hcolor & 0xff0000) >> 16),                                           \
+        ((hcolor & 0x00ff00) >> 8),                                            \
+        (hcolor & 0x0000ff))                                                   \
+)
 #define GrQueryColorID(c,r,g,b) do {                                           \
         if(GrColorInfo->RGBmode) {                                             \
         *(r) = GrRGBcolorRed(c);                                               \
@@ -700,6 +713,22 @@ void    GrRestoreColors(void *buffer);
         break;                                                                 \
         }                                                                      \
         *(r) = *(g) = *(b) = 0;                                                \
+} while(0)
+#define GrQueryColor2ID(c,hcolor) do {                                         \
+        if(GrColorInfo->RGBmode) {                                             \
+        *(hcolor) = GrRGBcolorRed(c) << 16;                                    \
+        *(hcolor) |= GrRGBcolorGreen(c) << 8;                                  \
+        *(hcolor) |= GrRGBcolorBlue(c);                                        \
+        break;                                                                 \
+        }                                                                      \
+        if(((GrColor)(c) < GrColorInfo->ncolors) &&                            \
+           (GrColorInfo->ctable[(GrColor)(c)].defined)) {                      \
+        *(hcolor) = GrColorInfo->ctable[(GrColor)(c)].r;                       \
+        *(hcolor) = GrColorInfo->ctable[(GrColor)(c)].g;                       \
+        *(hcolor) = GrColorInfo->ctable[(GrColor)(c)].b;                       \
+        break;                                                                 \
+        }                                                                      \
+        *(hcolor) = 0;                                                         \
 } while(0)
 #endif  /* GRX_SKIP_INLINES */
 
@@ -892,11 +921,27 @@ GrColor GrPixelCNC(GrContext *c,int x,int y);
 
 /*
  * text attribute macros for the GR_ATTR_TEXT type
+ * _GR_textattrintensevideo drives if the eighth bit is used for
+ * underline (false, default) or more background colors (true)
  */
-#define GR_BUILD_ATTR(fg,bg,ul) (((fg) & 15) | (((bg) & 7) << 4) | ((ul) ? 128 : 0))
+extern int _GR_textattrintensevideo;
+
+#define GR_BUILD_ATTR(fg,bg,ul) (_GR_textattrintensevideo ? \
+                                (((fg) & 15) | (((bg) & 15) << 4)) \
+                                : \
+                                (((fg) & 15) | (((bg) & 7) << 4) | ((ul) ? 128 : 0)) \
+                                )
 #define GR_ATTR_FGCOLOR(attr)   (((attr)     ) &  15)
-#define GR_ATTR_BGCOLOR(attr)   (((attr) >> 4) &   7)
-#define GR_ATTR_UNDERLINE(attr) (((attr)     ) & 128)
+#define GR_ATTR_BGCOLOR(attr)   (_GR_textattrintensevideo ? \
+                                (((attr) >> 4) &  15) \
+                                : \
+                                (((attr) >> 4) &   7) \
+                                )
+#define GR_ATTR_UNDERLINE(attr) (_GR_textattrintensevideo ? \
+                                (0) \
+                                : \
+                                (((attr)     ) & 128) \
+                                )
 
 /*
  * OR this to the foreground color value for underlined text when
@@ -963,6 +1008,7 @@ GrFont *GrBuildConvertedFont(const GrFont *from,int cvt,int w,int h,int minch,in
 
 void GrUnloadFont(GrFont *font);
 void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName);
+void GrDumpFnaFont(const GrFont *f, char *fileName);
 void GrSetFontPath(char *path_list);
 
 int  GrFontCharPresent(const GrFont *font,int chr);

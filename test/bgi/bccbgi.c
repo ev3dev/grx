@@ -10,37 +10,22 @@
 #error BGIDEMO will not run in the tiny model.
 #endif
 
-#if defined(__MSDOS__)
-#  include <dos.h>
-#  include <pc.h>
-#elif defined(__WIN32__)
-#  include "bccw32.h"
-#else
-#  include "bcclnx.h"
-#endif
-
-#ifndef __DJGPP__
-extern int getch(void);
-extern int getkey(void);
-extern int kbhit(void);
-#endif
-
-#include <math.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <string.h>
 #include <stdarg.h>
+#include "libbcc.h"
+#include "bgiext.h"
+#include "stdfun.h"
 
 #include "../rand.h"
-#define Random(r) ((RND() % (r)) + 1)
+#define Random(r) ((unsigned) (((RND() % (r)) + 1)))
 #define Seed(s) SRND(s)
 
 #define BGI_PATH "..\\..\\chr"
-#include "libbcc.h"
 #define itoa(value,str,radix) sprintf((str),"%d",(value))
 #define getch() getkey()
-
-#include "bgiext.h"
 
 #define ESC     0x1b                    /* Define the escape key        */
 #ifndef TRUE

@@ -33,7 +33,7 @@ typedef unsigned char  uchar;
 typedef   signed char  schar;
 typedef unsigned short _ushort;
 
-#if defined(_MSC_VER) && defined(_WIN32)
+#if defined(__TURBOC__) || (defined(_MSC_VER) && defined(_WIN32))
 #include <io.h>
 #else
 #include <unistd.h>

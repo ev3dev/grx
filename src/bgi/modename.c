@@ -47,9 +47,9 @@ char *getmodename(int mode_number)
   if (!__gr_getmode_whc(mode_number, &xw, &yw, &nc))
     return NULL;
   switch (nc) {
-    case 1<<15 : strcpy(cols,"32K"); break;
-    case 1<<16 : strcpy(cols,"64K"); break;
-    case 1<<24 : strcpy(cols,"16M"); break;
+    case 1L<<15 : strcpy(cols,"32K"); break;
+    case 1L<<16 : strcpy(cols,"64K"); break;
+    case 1L<<24 : strcpy(cols,"16M"); break;
     default    : sprintf(cols, "%ld", nc);
                  break;
   }

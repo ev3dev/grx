@@ -6,7 +6,7 @@
 #       to do with it, just ignore it and follow the normal install
 #       instructions.
 #
-# Copyright (C) 2001 Frank Heckenbach <frank@pascal.gnu.de>
+# Copyright (C) 2001-2002 Frank Heckenbach <frank@pascal.gnu.de>
 #
 # Parts copied from GCC's configure script,
 # Copyright (C) 1992, 93, 94, 95, 96 Free Software Foundation, Inc.
@@ -52,6 +52,12 @@ INCLUDE_BMP_CODE=y
 INCLUDE_PRINTING_CODE=y
 INCLUDE_GPC_SUPPORT=n
 INCLUDE_SHARED_SUPPORT=y
+INCLUDE_BGI_SUPPORT=y
+USE_DIRECT_MOUSE_DRIVER=n
+USE_SVGALIB_DRIVER=y
+USE_FRAMEBUFFER_DRIVER=y
+SET_SUIDROOT=y
+USE_INOUTP_FRAMEDRIVERS=y
 lsocket=""
 
 ac_prev=
@@ -84,29 +90,41 @@ for ac_option do
   # Don't complain about unknown enable, disable, with and without options
   -enable-* | --enable-* | -en-* | --en-*)
     case "`echo "$ac_option" | sed -e 's/^-*enable-//;s/^-*en-//'`" in
-      jpeg)         HAVE_LIBJPEG=y;;
-      png)          HAVE_LIBPNG=y;;
-      z | zlib)     NEED_ZLIB=y;;
-      png-z)        HAVE_LIBPNG=y; NEED_ZLIB=y;;
-      tiff)         HAVE_LIBTIFF=y;;
-      bmp)          INCLUDE_BMP_CODE=y;;
-      print)        INCLUDE_PRINTING_CODE=y;;
-      pascal | gpc) INCLUDE_GPC_SUPPORT=y;;
-      shared)       INCLUDE_SHARED_SUPPORT=y;;
-      lsocket)      lsocket=" -lsocket";;
+      jpeg)            HAVE_LIBJPEG=y;;
+      png)             HAVE_LIBPNG=y;;
+      z | zlib)        NEED_ZLIB=y;;
+      png-z)           HAVE_LIBPNG=y; NEED_ZLIB=y;;
+      tiff)            HAVE_LIBTIFF=y;;
+      bmp)             INCLUDE_BMP_CODE=y;;
+      print)           INCLUDE_PRINTING_CODE=y;;
+      pascal | gpc)    INCLUDE_GPC_SUPPORT=y;;
+      shared)          INCLUDE_SHARED_SUPPORT=y;;
+      bgi)             INCLUDE_BGI_SUPPORT=y;;
+      direct-mouse)    USE_DIRECT_MOUSE_DRIVER=y;;
+      svgalib)         USE_SVGALIB_DRIVER=y;;
+      framebuffer)     USE_FRAMEBUFFER_DRIVER=y;;
+      suidroot)        SET_SUIDROOT=y;;
+      io-framedrivers) USE_INOUTP_FRAMEDRIVERS=y;;
+      lsocket)         lsocket=" -lsocket";;
     esac;;
   -disable-* | --disable-* | -di-* | --di-*)
     case "`echo "$ac_option" | sed -e 's/^-*disable-//;s/^-*di-//'`" in
-      jpeg)         HAVE_LIBJPEG=n;;
-      png)          HAVE_LIBPNG=n;;
-      z | zlib)     NEED_ZLIB=n;;
-      png-z)        HAVE_LIBPNG=n; NEED_ZLIB=n;;
-      tiff)         HAVE_LIBTIFF=n;;
-      bmp)          INCLUDE_BMP_CODE=n;;
-      print)        INCLUDE_PRINTING_CODE=n;;
-      pascal | gpc) INCLUDE_GPC_SUPPORT=n;;
-      shared)       INCLUDE_SHARED_SUPPORT=n;;
-      lsocket)      lsocket="";;
+      jpeg)            HAVE_LIBJPEG=n;;
+      png)             HAVE_LIBPNG=n;;
+      z | zlib)        NEED_ZLIB=n;;
+      png-z)           HAVE_LIBPNG=n; NEED_ZLIB=n;;
+      tiff)            HAVE_LIBTIFF=n;;
+      bmp)             INCLUDE_BMP_CODE=n;;
+      print)           INCLUDE_PRINTING_CODE=n;;
+      pascal | gpc)    INCLUDE_GPC_SUPPORT=n;;
+      shared)          INCLUDE_SHARED_SUPPORT=n;;
+      bgi)             INCLUDE_BGI_SUPPORT=n;;
+      direct-mouse)    USE_DIRECT_MOUSE_DRIVER=n;;
+      svgalib)         USE_SVGALIB_DRIVER=n;;
+      framebuffer)     USE_FRAMEBUFFER_DRIVER=n;;
+      suidroot)        SET_SUIDROOT=n;;
+      io-framedrivers) USE_INOUTP_FRAMEDRIVERS=n;;
+      lsocket)         lsocket="";;
     esac;;
   -with-* | --with-*)
     case "`echo "$ac_option" | sed -e 's/^-*with-//'`" in
@@ -123,29 +141,39 @@ for ac_option do
     cat << EOF
 Usage: $0 [options]
 Options: [defaults in brackets after descriptions]
-  --help                print this message and exit
-  --version             print version information and exit
-  --silent              silent operation
-  --prefix=PREFIX       install files in PREFIX [$default_prefix]
-  --target=TARGET       configure for TARGET [$default_target]
-                        possible values: DJGPP, X11, svgalib
-  --enable-jpeg         include JPEG support [no]
-  --enable-png          include PNG support [no]
-  --enable-z or         use zlib [no]
+  --help                    print this message and exit
+  --version                 print version information and exit
+  --silent                  silent operation
+  --prefix=PREFIX           install files in PREFIX [$default_prefix]
+  --target=TARGET           configure for TARGET [$default_target]
+                            possible values: DJGPP, X11, svgalib
+  --enable-jpeg             include JPEG support [no]
+  --enable-png              include PNG support [no]
+  --enable-z or             use zlib [no]
     --enable-zlib
-  --enable-png-z        include PNG support and use zlib [no]
-  --enable-tiff         include TIFF support [no]
-  --enable-bmp          include BMP support [yes]
-  --enable-print        include printing code [yes]
-  --enable-pascal or    include Pascal support [no]
+  --enable-png-z            include PNG support and use zlib [no]
+  --enable-tiff             include TIFF support [no]
+  --enable-bmp              include BMP support [yes]
+  --enable-print            include printing code [yes]
+  --enable-pascal or        include Pascal support [no]
     --enable-gpc
-  --enable-shared       build shared libraries [yes]
-  --enable-lsocket      link lsocket [no]
-  --disable-FOO         opposite of --enable-FOO
-  --with-fontpath=PATH  set GRX font path to PATH
-  --with-fontpath       set GRX font path to $default_fontpath
-  --without-fontpath    use no GRX font path [default]
-  --with-x11-base=DIR   use DIR as X11 base directry [$default_x11base]
+  --enable-shared           build shared libraries [yes]
+  --enable-bgi              include BGI support [yes]
+  --enable-lsocket          link lsocket [no]
+  --disable-FOO             opposite of --enable-FOO
+  --with-fontpath=PATH      set GRX font path to PATH
+  --with-fontpath           set GRX font path to $default_fontpath
+  --without-fontpath        use no GRX font path [default]
+  --with-x11-base=DIR       use DIR as X11 base directry [$default_x11base]
+
+The following options apply to the Linux console (not X11) target only:
+  --enable-direct-mouse     use PS/2 instead of svgalib mouse driver [no]
+  --enable-svgalib          use svgalib driver [yes]
+  --enable-framebuffer      use framebuffer driver [yes]
+  --enable-suidroot         create suid root executables (required with svgalib
+                            1.4.x) [yes]
+  --enable-io-framedrivers  use frame drivers that require suid root
+                            executables under newer versions of svgalib [yes]
 
 Some options can be abbreviated, e.g. \`--p' for \`--prefix',
 \`--en-FOO' for \`--enable-FOO' and \`--di-FOO' for \`--disable-FOO'.
@@ -169,6 +197,11 @@ case "`echo "$target" | tr A-Z a-z`" in
   svgalib) cfgsection=GRXVLNX; target_makefile=makefile.lnx;;
   *)       echo "$0: invalid target" >&2; exit 1;;
 esac
+
+if [ $USE_SVGALIB_DRIVER != y ] && [ $USE_FRAMEBUFFER_DRIVER != y ]; then
+  echo "$0: either \`--enable-svgalib' or \`--enable-framebuffer' must be set" >&2
+  exit 1
+fi
 
 if [ -r Makefile ]; then
   if cmp Makefile makefile.lnx > /dev/null 2>&1 ||
@@ -217,6 +250,12 @@ if sed -e "/^HAVE_LIBTIFF=/s/=.*/=$HAVE_LIBTIFF/;
            /^INCLUDE_BMP_CODE=/s/=.*/=$INCLUDE_BMP_CODE/;
            /^INCLUDE_GPC_SUPPORT=/s/=.*/=$INCLUDE_GPC_SUPPORT/;
            /^INCLUDE_SHARED_SUPPORT=/s/=.*/=$INCLUDE_SHARED_SUPPORT/;
+           /^INCLUDE_BGI_SUPPORT=/s/=.*/=$INCLUDE_BGI_SUPPORT/;
+           /^USE_DIRECT_MOUSE_DRIVER=/s/=.*/=$USE_DIRECT_MOUSE_DRIVER/;
+           /^USE_SVGALIB_DRIVER=/s/=.*/=$USE_SVGALIB_DRIVER/;
+           /^USE_FRAMEBUFFER_DRIVER=/s/=.*/=$USE_FRAMEBUFFER_DRIVER/;
+           /^SET_SUIDROOT=/s/=.*/=$SET_SUIDROOT/;
+           /^USE_INOUTP_FRAMEDRIVERS=/s/=.*/=$USE_INOUTP_FRAMEDRIVERS/;
            /^ifdef $cfgsection\$/,/^endif\$/{
              /^INSTALLDIR=/s|=.*|=$prefix|;
              /^X11BASE=/s|=.*|=$x11base|;

@@ -1,17 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#ifdef __GNUC__
-#  include <libbcc.h>
-#  ifdef __MSDOS__
-#    include <pc.h>
-#  else
-     extern int khbit(void), getkey(void);
-#  endif
-#  define getch() getkey()
-#else
-#  include <graphics.h>
-#  include <conio.h>
-#endif
+
+#include <libbcc.h>
+#include "stdfun.h"
 
 void play_font(char *name, char *file, int *x, int *y)
 {

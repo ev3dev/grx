@@ -43,6 +43,9 @@ STD_2 = $(OP)fdrivers/dotab8$(OX)   \
 
 STD_3 = $(OP)fonts/fdv_bgi$(OX)     \
 	$(OP)fonts/fdv_grx$(OX)     \
+	$(OP)fonts/fdv_raw$(OX)     \
+	$(OP)fonts/fdv_fna$(OX)     \
+	$(OP)fonts/fdv_win$(OX)     \
 	$(OP)fonts/fdtable$(OX)     \
 	$(OP)fonts/pc6x8$(OX)       \
 	$(OP)fonts/pc8x8$(OX)       \
@@ -133,6 +136,7 @@ STD_8 = $(OP)text/buildaux$(OX)     \
 	$(OP)text/drawstrg$(OX)     \
 	$(OP)text/drawtext$(OX)     \
 	$(OP)text/drwstrg$(OX)      \
+	$(OP)text/dumpfna$(OX)      \
 	$(OP)text/dumpfont$(OX)     \
 	$(OP)text/dumptext$(OX)     \
 	$(OP)text/epatstrg$(OX)     \
@@ -331,6 +335,7 @@ PNG_1 = $(OP)gformats/ctx2png$(OX) \
 NOPNG_1 = $(OP)gformats/dummypng$(OX) \
 
 PRN_1 = $(OP)../addons/print/grxprint$(OX) \
-	$(OP)../addons/print/prndata$(OX)  \
-	$(OP)bgi/bgiprint$(OX)
+	$(OP)../addons/print/prndata$(OX)
+
+PRNBGI_1 = $(OP)bgi/bgiprint$(OX)
 

@@ -129,6 +129,7 @@ static int build_video_mode(
         ep->setrwbanks = (ip->flags & HAVE_RWPAGE) ? setrwbanks : NULL;
         ep->loadcolor  = NULL;
         switch(ip->colors) {
+#ifdef INOUTP_FRAMEDRIVERS
           case 2:
             mp->bpp       = 1;
             ep->mode      = GR_frameEGAVGA1;
@@ -150,10 +151,15 @@ static int build_video_mode(
             ep->cpos[2]   = 0;
             ep->loadcolor = loadcolor;
             break;
+#endif
           case 256:
             mp->bpp       = 8;
             if (ip->flags & IS_MODEX)
+#ifdef INOUTP_FRAMEDRIVERS
                 ep->mode = GR_frameVGA8X;
+#else
+                return(FALSE);
+#endif
             else
             if (ip->flags & CAPABLE_LINEAR) {
                 ep->mode  = GR_frameSVGA8_LFB;

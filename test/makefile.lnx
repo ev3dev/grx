@@ -1,6 +1,7 @@
 #
 # GRX test programs makefile for LINUX/console. Uses GNU make.
 #
+.PHONY : clean setsuid
 
 GRXVLNX=y
 
@@ -15,7 +16,17 @@ GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 # or this if you've already installed the shared libs
 #GRX20 = -L../lib/$(GRX_LIB_SUBDIR) -lgrx20
 
-ADDON_LIBS= -lvga -lm
+ifeq ($(SET_SUIDROOT),y)
+EXECBITS = 4755
+else
+EXECBITS = 0755
+endif
+
+ADDON_LIBS =
+
+ifeq ($(USE_SVGALIB_DRIVER),y)
+  ADDON_LIBS += -lvga
+endif
 
 ifeq ($(HAVE_LIBTIFF),y)
   ADDON_LIBS += -ltiff
@@ -42,12 +53,14 @@ PROGS=	arctest     \
 	cliptest    \
 	colorops    \
 	curstest    \
+	fontdemo    \
 	fonttest    \
 	imgtest     \
 	jpgtest     \
 	keys        \
 	life        \
 	linetest    \
+	memtest     \
 	mousetst    \
 	pcirctst    \
 	pnmtest     \
@@ -65,11 +78,24 @@ all:    $(PROGS) demogrx
 
 demogrx: demogrx.o gfaz.o $(GRX20)
 	$(CC) $(LDOPT) -o demogrx demogrx.o gfaz.o $(LIBS)
-	chmod 4755 demogrx
+	chmod $(EXECBITS) demogrx
+
+$(PROGS): % : %.o $(GRX20)
+
+clean:
+	rm -f *.o $(PROGS) demogrx
+
+setsuid: $(PROGS) demogrx
+ifeq ($(SET_SUIDROOT),y)
+	chown root $(PROGS) demogrx
+	chmod $(EXECBITS) $(PROGS) demogrx
+else
+	@echo "Nothing to do, SET_SUIDROOT is not set to 'y' in makedefs.grx"
+endif
 
 .o:
 	$(CC) $(LDOPT) -o $* $*.o $(LIBS)
-	chmod 4755 $*
+	chmod $(EXECBITS) $*
 
 .oo:
 	$(CC) $(LDOPT) -o $* $*.o $(LIBS)
@@ -81,12 +107,7 @@ demogrx: demogrx.o gfaz.o $(GRX20)
 .c.s:
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c
 
-clean:
-	rm -f *.o $(PROGS) demogrx
-
 depend.new:
 	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:=.c) >depend.new
-
-$(PROGS): % : %.o $(GRX20)
 
 include depend.gnu

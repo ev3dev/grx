@@ -54,6 +54,9 @@ _GrFontDriverBGI,                       /* Borland BGI font driver */
 #ifdef __XWIN__
 _GrFontDriverXWIN,                      /* X font driver */
 #endif
+_GrFontDriverRAW,                       /* RAW data/linux PSF font driver */
+_GrFontDriverFNA,                       /* ASCII font driver */
+_GrFontDriverWIN,                       /* MS Windows font resource driver */
 /*
  * This is a NULL-terminated table of font driver descriptor pointers. Users
  * can provide their own table with only the desired (or additional) drivers.

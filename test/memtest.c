@@ -21,7 +21,7 @@
 #include "grx20.h"
 #include "drawing.h"
 
-int main()
+int GRXMain()
 {
   int x, y, ww, wh;
   GrColor c;

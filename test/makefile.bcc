@@ -17,12 +17,11 @@ PROGS=                  \
 	cliptest.exe    \
 	colorops.exe    \
 	curstest.exe    \
-	fnt2c.exe       \
+	fontdemo.exe    \
 	fonttest.exe    \
 	imgtest.exe     \
 	life.exe        \
 	linetest.exe    \
-	modtst16.exe    \
 	mousetst.exe    \
 	pcirctst.exe    \
 	pnmtest.exe     \
@@ -35,28 +34,14 @@ PROGS=                  \
 	winclip.exe     \
 	wintest.exe
 
-all:    $(PROGS) ..\bin\modtst16.exe ..\bin\fnt2c16.exe
+all:    $(PROGS)
 
 clean:
 	if exist *.obj del *.obj
 	if exist *.exe del *.exe
 
-..\bin\modtst16.exe: modtst16.exe
-	copy modtst16.exe ..\bin
-	-$(STRIP) ..\bin\modtst16.exe
-
-..\bin\fnt2c16.exe: fnt2c16.exe
-	copy fnt2c16.exe ..\bin
-	-$(STRIP) ..\bin\fnt2c16.exe
-
-modtst16.exe: modetest.obj
-	$(BCC) $(LIBDIR) $(LDOPT) -n. -emodtst16 modetest.obj $(GRX20ST)
-
 spdtst16.exe: speedtst.obj
 	$(BCC) $(LIBDIR) $(LDOPT) -n. -espdtst16 speedtst.obj $(GRX20ST)
-
-fnt2c16.exe: fnt2c.obj
-	$(BCC) $(LIBDIR) $(LDOPT) -n. -efnt2c16 fnt2c.obj $(GRX20ST)
 
 .obj.exe:
 	$(BCC) $(LIBDIR) $(LDOPT) -n. -e$* $*.obj $(GRX20ST)

@@ -1,6 +1,9 @@
 #
-# GRX makefile for LINUX/X11 distribution version (GNU-make)
+# GRX makefile for LINUX/X11 version (GNU-make)
 #
+.PHONY : libs test bgitest clean cleanall install uninstall \
+	 install-bin uninstall-bin install-fonts uninstall-fonts \
+	 install-info uninstall-info
 
 GRXVX11=y
 
@@ -18,19 +21,28 @@ ifeq ($(INCLUDE_GPC_SUPPORT),y)
 endif
 
 bgitest: libs
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(MAKE) -C test/bgi   -f makefile.x11
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	$(MAKE) -C pascal/bgi -f makefile.x11
 endif
+endif
 
 clean:
 	$(MAKE) -C test       -f makefile.x11 clean
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(MAKE) -C test/bgi   -f makefile.x11 clean
+endif
 	$(MAKE) -C src        -f makefile.x11 clean
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	$(MAKE) -C pascal     -f makefile.x11 clean
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(MAKE) -C pascal/bgi -f makefile.x11 clean
 endif
+endif
+
+cleanall: clean
+	$(MAKE) -C src -f makefile.x11 cleanall
 
 install:
 	$(MAKE) -C src -f makefile.x11 install

@@ -55,10 +55,13 @@ else
   ADDON_O += $(NOPNG_1)
 endif
 
-#ifeq ($(INCLUDE_PRINTING_CODE),y)
-#  ADDON_O += $(PRN_1)
-#  INCDIR += -I../addons/print
-#endif
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+  ADDON_O += $(PRN_1)
+  INCDIR += -I../addons/print
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
+  BGI_Ob += $(PRNBGI_1)
+endif
+endif
 
 ifeq ($(INCLUDE_BMP_CODE),y)
   ADDON_O += $(BMP_1)
@@ -75,7 +78,11 @@ W32_O = $(ADDON_O)              \
 	misc/w32misc.o          \
 	vdrivers/vd_win32.o
 
-ALL_O = $(STD_Oa) $(STD_Ob) $(STD_Oc) $(STD_Od) $(BGI_Oa) $(BGI_Ob) $(W32_O)
+ALL_O = $(STD_Oa) $(STD_Ob) $(STD_Oc) $(STD_Od) $(W32_O)
+
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
+  ALL_O += $(BGI_Oa) $(BGI_Ob)
+endif
 
 UTILPC= ../bin/bin2c.exe        \
 	../bin/fnt2c.exe        \
@@ -116,6 +123,9 @@ install: $(GRX20ST)
 	copy ..\include\grx20.h $(MINGWDIR)\include
 	copy ..\include\grxkeys.h $(MINGWDIR)\include
 	copy ..\include\libbcc.h $(MINGWDIR)\include
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+	copy ..\addons\print\grxprint.h $(MINGWDIR)\include
+endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	if not exist $(MINGWDIR)\units\nul mkdir $(MINGWDIR)\units
 	copy ..\pascal\grx.pas $(MINGWDIR)\units
@@ -127,6 +137,9 @@ uninstall:
 	if exist $(MINGWDIR)\include\grx20.h   del $(MINGWDIR)\include\grx20.h
 	if exist $(MINGWDIR)\include\grxkeys.h del $(MINGWDIR)\include\grxkeys.h
 	if exist $(MINGWDIR)\include\libbcc.h del $(MINGWDIR)\include\libbcc.h
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+	if exist $(MINGWDIR)\include\grxprint.h del $(MINGWDIR)\include\grxprint.h
+endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	if exist $(MINGWDIR)\units\grx.pas del $(MINGWDIR)\units\grx.pas
 	if exist $(MINGWDIR)\units\graph.pas del $(MINGWDIR)\units\graph.pas
@@ -167,8 +180,10 @@ $(GRX20ST): $(TAG) $(ALL_O)
 	$(AR) -r $(GRX20ST) $(STD_Ob)
 	$(AR) -r $(GRX20ST) $(STD_Oc)
 	$(AR) -r $(GRX20ST) $(STD_Od)
+ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(AR) -r $(GRX20ST) $(BGI_Oa)
 	$(AR) -r $(GRX20ST) $(BGI_Ob)
+endif
 	$(AR) -r $(GRX20ST) $(W32_O)
 	$(RANLIB) $(GRX20ST)
 
@@ -180,7 +195,7 @@ $(UTILPW): ../bin/%.exe : utilprog/%.o $(GRX20ST)
 
 $(WIN32_GCC_i386_STATIC):
 	$(MAKE) -f makefile.w32 clean
-	if not exist $(WIN32_i386) del $(SYSTEM_TAG_PREFIX).*
+	if not exist $(WIN32_GCC_i386_STATIC) del $(SYSTEM_TAG_PREFIX).*
 	echo WIN32_GCC_i386_STATIC_TARGET > $(WIN32_GCC_i386_STATIC)
 
 $(ALL_O): $(TAG)

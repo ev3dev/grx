@@ -631,8 +631,8 @@ void speedcheck(gvmode *gp, int wait) {
   }
 
   GrSetMode(
-      GR_width_height_color_graphics,
-      gp->w, gp->h, 1UL<<gp->bpp
+      GR_width_height_bpp_graphics,
+      gp->w, gp->h, gp->bpp
   );
 
   if (first) {

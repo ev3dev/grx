@@ -37,6 +37,7 @@ PROGS=  arctest.exe     \
 	cliptest.exe    \
 	colorops.exe    \
 	curstest.exe    \
+	fontdemo.exe    \
 	fonttest.exe    \
 	imgtest.exe     \
 	jpgtest.exe     \
@@ -57,8 +58,8 @@ PROGS=  arctest.exe     \
 all: 	$(PROGS) \
 	demogrx.exe \
 	keys.exe \
-	speedtst.exe
-#	memtest.exe
+	speedtst.exe \
+	memtest.exe
 
 
 demogrx.exe: demogrx.o gfaz.o $(GRX20)
@@ -71,7 +72,7 @@ speedtst.exe: speedtst.o $(GRX20)
 	$(CC) $(LDOPT) -o speedtst.exe speedtst.o $(LIBS) -lm -mwindows -mconsole
 
 memtest.exe: memtest.o $(GRX20)
-	$(CC) $(LDOPT) -o memtest.exe memtest.o $(LIBS) -lm
+	$(CC) $(LDOPT) -o memtest.exe memtest.o $(LIBS) -lm -mwindows -mconsole
 
 $(PROGS): %.exe : %.o $(GRX20)
 	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm -mwindows

@@ -25,6 +25,9 @@ GrFontDriver *_GrFontDriverTable[] = {
 #endif
     &_GrFontDriverGRX,
     &_GrFontDriverBGI,
+    &_GrFontDriverRAW,
+    &_GrFontDriverFNA,
+    &_GrFontDriverWIN,
     NULL
 };
 

@@ -1,8 +1,4 @@
-#ifdef __GNUC__
-#  include <libbcc.h>
-#else
-#  include <graphics.h>
-#endif
+#include <libbcc.h>
 
 #if defined(__WIN32__)
 int GRXMain(void)

@@ -21,6 +21,8 @@
 #include "clipping.h"
 #include "text/text.h"
 
+int _GR_textattrintensevideo = 0;
+
 void _GrDrawString(const void *text,int length,int x,int y,
                    const GrTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm)
 {

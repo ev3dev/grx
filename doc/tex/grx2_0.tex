@@ -38,7 +38,7 @@
 
  
 @example
-                       GRX 2.4.4 User's Manual
+                       GRX 2.4.5 User's Manual
 
          A graphics library for DOS, Linux, X11 and Win32
 
@@ -47,7 +47,7 @@
 Based on the original doc written by: Csaba Biegl on August 10, 1992 
 Updated by: Mariano Alvarez Fernandez on August 17, 2000 
 
-Last update: November 8, 2001
+Last update: August 10, 2002
 ______________________________________________________________________________
 
 @example
@@ -103,6 +103,15 @@ int GRXMain()
   return 0;
 @}
 
+@end example
+How to compile the hello world (assuming the GRX library was
+previously installed)
+@example
+  DJGPP: gcc -o hellogrx.exe hellogrx.c -lgrx20
+  Mingw: gcc -o hellogrx.exe hellogrx.c -lgrx20 -mwindows
+  X11  : gcc -o hellogrx hellogrx.c -D__XWIN__ -I/usr/X11R6/include
+         -lgrx20X -L/usr/X11R6/lib -lX11
+  Linux: gcc -o hellogrx hellogrx.c -lgrx20 -lvga
 @end example
 Note. Except for the Win32 version you can use main instead GRXMain.
 
@@ -636,9 +645,11 @@ Colors can be allocated with the:
 
 @example
 GrColor GrAllocColor(int r,int g,int b);
+GrColor GrAllocColor2(long hcolor);
 @end example
 
-function (component intensities can range from 0 to 255), or with the: 
+functions (component intensities can range from 0 to 255,
+hcolor must be in 0xRRGGBB format), or with the:
 
 @example
 GrColor GrAllocCell(void);
@@ -664,10 +675,11 @@ Color table entries can be freed (when not in RGB mode) by calling:
 void GrFreeColor(GrColor color);
 @end example
 
-The component intensities of any color can be queried using the function: 
+The component intensities of any color can be queried using one of this function: 
 
 @example
 void GrQueryColor(GrColor c,int *r,int *g,int *b); 
+void GrQueryColor2(GrColor c,long *hcolor); 
 @end example
 
 Initially the color system is in color table (indirect) model if there are 256 
@@ -698,7 +710,9 @@ This functions:
 
 @example
 GrColor GrAllocColorID(int r,int g,int b);
+GrColor GrAllocColor2ID(long hcolor);
 void GrQueryColorID(GrColor c,int *r,int *g,int *b);
+void GrQueryColor2ID(GrColor c,long *hcolor);
 @end example
 
 are inlined versions (except if you compile GRX with GRX_SKIP_INLINES defined) 
@@ -1399,6 +1413,15 @@ argument direct the conversion or-ing the desired operations from these defines:
 GR_FONTCVT_SKIPCHARS needs 'minch' and 'maxch' arguments. 
 
 GR_FONTCVT_RESIZE needs 'w' and 'h' arguments. 
+
+The function:
+
+@example
+void GrDumpFnaFont(const GrFont *f, char *fileName);
+@end example
+
+writes a font to an ascii font file, so it can be quickly edited with a text
+editor. For a description of the ascii font format, see the fna.txt file.
 
 The function: 
 

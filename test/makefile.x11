@@ -44,12 +44,14 @@ PROGS=  xarctest     \
 	xcliptest    \
 	xcolorops    \
 	xcurstest    \
+	xfontdemo    \
 	xfonttest    \
 	ximgtest     \
 	xjpgtest     \
 	xkeys        \
 	xlife        \
 	xlinetest    \
+	xmemtest     \
 	xmousetst    \
 	xpcirctst    \
 	xpnmtest     \

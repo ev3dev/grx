@@ -7,7 +7,7 @@
 static void displaytext (GrFont *font,char *text,int len);
 
 
-int main (int argc , char * argv [])
+int GRXMain (int argc , char * argv [])
   {
       int i, j, rc, mc, MaxX, MaxY;
       unsigned AspX, AspY;
@@ -23,11 +23,11 @@ int main (int argc , char * argv [])
             );
 
 /*      rc = GrPrintSetMode (LQ_180x180);             mc = 2; */
-      rc = GrPrintSetMode (HPLJ_300x300);           mc = 2; 
+/*      rc = GrPrintSetMode (HPLJ_300x300);           mc = 2; */
 /*      rc = GrPrintSetMode (HPLJ_1200x1200);         mc = 2; */
 /*      rc = GrPrintSetMode (HPLJ_IV_600x600);        mc = 2; */
 /*      rc = GrPrintSetMode (HPLJ_300x300_NC);        mc = 2; */
-/*      rc = GrPrintSetMode (HPDJ500C_300x300x8_B);   mc = 8; */
+      rc = GrPrintSetMode (HPDJ500C_300x300x8_B);   mc = 8; 
       printf ("GrPrintSetMode : rc=%d\n",rc);
 
       MaxX = GrMaxX ();
