@@ -12,11 +12,11 @@
 #include "clipping.h"
 #include "mempeek.h"
 
-#define  MSCURSOR        (MOUINFO->cursor)
-#define  CURSORMODE        (MOUINFO->cursmode)
-#define  SPECIALMODE        (MOUINFO->cursmode != GR_M_CUR_NORMAL)
+#define  MSCURSOR       (MOUINFO->cursor)
+#define  CURSORMODE     (MOUINFO->cursmode)
+#define  SPECIALMODE    (MOUINFO->cursmode != GR_M_CUR_NORMAL)
 #define  BLOCKED        1
-#define  ERASED                2
+#define  ERASED         2
 
 static void draw_special(void)
 {
@@ -80,8 +80,8 @@ static void erase_mouse(void)
 
 void GrMouseDisplayCursor(void)
 {
-        if(MOUINFO->msstatus  != 2)        GrMouseInit();
-        if(MOUINFO->msstatus  != 2)        return;
+        if(MOUINFO->msstatus  != 2)     GrMouseInit();
+        if(MOUINFO->msstatus  != 2)     return;
         if(MOUINFO->cursor    == NULL)  return;
         if(MOUINFO->displayed != FALSE) return;
         move_mouse();
@@ -93,10 +93,10 @@ void GrMouseDisplayCursor(void)
 
 void GrMouseEraseCursor(void)
 {
-        if(MOUINFO->msstatus  != 2)        return;
+        if(MOUINFO->msstatus  != 2)     return;
         if(MOUINFO->cursor    == NULL)  return;
         if(MOUINFO->displayed == FALSE) return;
-        if(MOUINFO->blockflag != 0)        return;
+        if(MOUINFO->blockflag != 0)     return;
         MOUINFO->displayed = FALSE;
         MOUINFO->docheck   = FALSE;
         erase_mouse();
@@ -106,14 +106,14 @@ void GrMouseSetCursor(GrCursor *C)
 {
         if(!MOUINFO->displayed && C && (C != MSCURSOR) && COMPATIBLE(C)) {
             GrCursor *oldcursor  = MSCURSOR;
-            if(C->displayed)           GrEraseCursor(C);
-            MOUINFO->cursor         = C;
+            if(C->displayed)       GrEraseCursor(C);
+            MOUINFO->cursor      = C;
             if(MOUINFO->owncursor) GrDestroyCursor(oldcursor);
-            MOUINFO->owncursor         = FALSE;
+            MOUINFO->owncursor   = FALSE;
         }
 }
 
-void GrMouseSetColors(long fg,long bg)
+void GrMouseSetColors(GrColor fg,GrColor bg)
 {
         static char ptr12x16bits[] = {
             0,1,0,0,0,0,0,0,0,0,0,0,
@@ -134,7 +134,7 @@ void GrMouseSetColors(long fg,long bg)
             0,1,0,0,0,0,0,0,0,0,0,0,
         };
         GrCursor *newc;
-        long cols[3];
+        GrColor cols[3];
         if(MOUINFO->displayed) return;
         cols[0] = 2;
         cols[1] = bg;
@@ -152,14 +152,14 @@ void GrMouseSetCursorMode(int mode,...)
         va_start(ap,mode);
         switch(mode) {
           case GR_M_CUR_BOX:
-            MOUINFO->x2               = va_arg(ap,int);
-            MOUINFO->y2               = va_arg(ap,int);
+            MOUINFO->x2        = va_arg(ap,int);
+            MOUINFO->y2        = va_arg(ap,int);
           case GR_M_CUR_RUBBER:
           case GR_M_CUR_LINE:
             MOUINFO->cursmode  = mode;
-            MOUINFO->x1               = va_arg(ap,int);
-            MOUINFO->y1               = va_arg(ap,int);
-            MOUINFO->curscolor = GrXorModeColor(va_arg(ap,long));
+            MOUINFO->x1        = va_arg(ap,int);
+            MOUINFO->y1        = va_arg(ap,int);
+            MOUINFO->curscolor = GrXorModeColor(va_arg(ap,GrColor));
             break;
           default:
             MOUINFO->cursmode  = GR_M_CUR_NORMAL;
@@ -173,9 +173,9 @@ static int block(GrContext *c,int x1,int y1,int x2,int y2)
         int mx1,my1,mx2,my2,oldblock = MOUINFO->blockflag;
         if(!c) c = CURC;
         if(!MOUINFO->displayed) return(0);
-        if(!MOUINFO->docheck)        return(0);
-        if(!c->gc_onscreen)        return(0);
-        if(oldblock & ERASED)        return(0);
+        if(!MOUINFO->docheck)   return(0);
+        if(!c->gc_onscreen)     return(0);
+        if(oldblock & ERASED)   return(0);
         MOUINFO->blockflag = BLOCKED;
         isort(x1,x2); x1 += c->gc_xoffset; x2 += c->gc_xoffset;
         isort(y1,y2); y1 += c->gc_yoffset; y2 += c->gc_yoffset;
@@ -227,7 +227,7 @@ static void unblock(int flags)
             }
             draw_mouse();
             MOUINFO->blockflag &= ~ERASED;
-            MOUINFO->docheck        = TRUE;
+            MOUINFO->docheck    = TRUE;
             return;
         }
         if(flags & MOUINFO->blockflag & BLOCKED) {
@@ -256,7 +256,7 @@ void _GrInitMouseCursor(void)
         if(MSCURSOR && !COMPATIBLE(MSCURSOR)) {
             if(MOUINFO->owncursor) {
                 GrCursor *obsolete = MSCURSOR;
-                MOUINFO->cursor           = NULL;
+                MOUINFO->cursor    = NULL;
                 MOUINFO->owncursor = FALSE;
                 GrDestroyCursor(obsolete);
             }
@@ -272,7 +272,7 @@ void _GrInitMouseCursor(void)
         MOUINFO->displayed = FALSE;
         MOUINFO->blockflag = 0;
         MOUINFO->docheck   = FALSE;
-        MOUINFO->block           = block;
+        MOUINFO->block     = block;
         MOUINFO->unblock   = unblock;
 }
 

@@ -10,10 +10,10 @@
 
 int  cx;
 int  cy;
-long c1;
-long c2;
-long c3;
-long c4;
+GrColor c1;
+GrColor c2;
+GrColor c3;
+GrColor c4;
 
 char test_text[] = {
     "QUICK BROWN FOX JUMPS OVER THE LAZY DOG, "
@@ -32,7 +32,7 @@ void displayfont(GrFont *font,char *text,int len)
         opt.txo_xalign = GR_ALIGN_LEFT;
         opt.txo_yalign = GR_ALIGN_TOP;
         GrFilledBox(0,0,GrSizeX(),GrSizeY(),GrBlack());
-        opt.txo_direct          = GR_TEXT_RIGHT;
+        opt.txo_direct    = GR_TEXT_RIGHT;
         opt.txo_fgcolor.v = GrBlack();
         opt.txo_bgcolor.v = c1;
         ww = GrStringWidth(text,len,&opt);
@@ -42,18 +42,18 @@ void displayfont(GrFont *font,char *text,int len)
         bx = cx - bw/2;
         by = cy - bh/2;
         GrDrawString(text,len,bx+hh,by,&opt);
-        opt.txo_direct          = GR_TEXT_DOWN;
+        opt.txo_direct    = GR_TEXT_DOWN;
         opt.txo_bgcolor.v = c2;
         GrDrawString(text,len,bx+bw-hh,by,&opt);
-        opt.txo_direct          = GR_TEXT_LEFT;
+        opt.txo_direct    = GR_TEXT_LEFT;
         opt.txo_bgcolor.v = c3;
         GrDrawString(text,len,bx+bw-ww-hh,by+bh-hh,&opt);
-        opt.txo_direct          = GR_TEXT_UP;
+        opt.txo_direct    = GR_TEXT_UP;
         opt.txo_bgcolor.v = c4;
         GrDrawString(text,len,bx,by+bh-ww,&opt);
         getch();
         GrClearClipBox(GrBlack());
-        opt.txo_direct          = GR_TEXT_RIGHT;
+        opt.txo_direct    = GR_TEXT_RIGHT;
         opt.txo_fgcolor.v = c1;
         opt.txo_bgcolor.v = GrBlack();
         bx = GrSizeX() / 16;
@@ -173,7 +173,7 @@ TESTFUNC(fonttest)
             f = GrLoadFont(Argv[i]);
             if(f) {
                 sprintf(buff,"This is font %s",Argv[i]);
-                    displayfont(f,buff,strlen(buff));
+                displayfont(f,buff,strlen(buff));
             }
         }
 }

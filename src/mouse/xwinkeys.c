@@ -1,62 +1,131 @@
 /**
  ** XWINKEYS.C ---- DOS (TCC/BCC/DJGPP: "conio.h") style keyboard utilities
  **
- ** Author:        Ulrich Leodolter
- ** E-mail:        ulrich@lab1.psy.univie.ac.at
- ** Date:        Sun Oct  1 08:10:30 1995
- ** RCSId:        $Id: xwinkeys.c 1.1 1995/11/19 16:34:52 ulrich Exp $
+ ** Author:     Ulrich Leodolter
+ ** E-mail:     ulrich@lab1.psy.univie.ac.at
+ ** Date:       Sun Oct  1 08:10:30 1995
+ ** RCSId:      $Id: xwinkeys.c 1.1 1995/11/19 16:34:52 ulrich Exp $
  **/
- 
-#include "libxwin.h"
+
 #include "libgrx.h"
+#include "libxwin.h"
 #include "input.h"
+#include "grxkeys.h"
 
-int kbhit(void)
-{
-  if(MOUINFO->msstatus < 2) {
-     GrMouseInit();
-     GrMouseEventEnable(1,0);
-  }
-  return(_XGrKeyboardHit());
-}
+#define _NOKEY_ (-1)
+static int lastkey1 = _NOKEY_;
+static int lastkey2 = _NOKEY_;
 
-int getkey(void)
+static int getkey_w (int delay)
 {
   GrMouseEvent ev;
   if(MOUINFO->msstatus < 2) {
      GrMouseInit();
-     GrMouseEventEnable(1,0); 
+     GrMouseEventEnable(1,0);
   }
-  for( ; ; ) {
-     GrMouseGetEvent((GR_M_EVENT | GR_M_NOPAINT),&ev);
-     if(ev.flags & GR_M_KEYPRESS) {
-         return(ev.key);
-     }
-  }
+  GrMouseGetEventT((GR_M_EVENT | GR_M_NOPAINT),&ev,delay);
+  if(ev.flags & GR_M_KEYPRESS)
+    return(ev.key);
+  return _NOKEY_;
 }
+
+int getkey(void)
+{
+  int key;
+  do {
+    key = getkey_w (1L);
+  } while (key == _NOKEY_);
+  return key;
+}
+
 
 int getch(void)
 {
-  static int lastkey = (-1);
   int key;
-  if(lastkey != (-1)) {
-    key = lastkey;
-    lastkey = (-1);
+  if(lastkey1 != _NOKEY_) {
+    key = lastkey1;
+    lastkey1 = lastkey2;
+    lastkey2 = _NOKEY_;
     return(key);
   }
   key = getkey();
   if(key < 0x100) {
     return(key);
   }
-  lastkey = key & 0xff;
+  lastkey1 = key & 0xff;
   return(0);
 }
-  
+
+int kbhit(void)
+{
+  int key;
+  if (lastkey1 != _NOKEY_)
+    return TRUE;
+  key = getkey_w (0);
+  if (key != _NOKEY_) {
+    if (key >= 0x100) {
+      lastkey1 = 0;
+      lastkey2 = key & 0xff;
+    } else
+      lastkey1 = key;
+    return TRUE;
+  }
+  return FALSE;
+#if 0
+  if(MOUINFO->msstatus < 2) {
+     GrMouseInit();
+     GrMouseEventEnable(1,0);
+  }
+  return(_XGrKeyboardHit());
+#endif
+}
+
 int getkbstat(void)
 {
   if(MOUINFO->msstatus < 2) {
      GrMouseInit();
-     GrMouseEventEnable(1,0); 
+     GrMouseEventEnable(1,0);
   }
   return(_XGrKeyboardGetState());
 }
+
+
+/*
+** new functions to replace the old style
+**   kbhit / getch / getkey / getxkey / getkbstat
+** keyboard interface
+*/
+int GrKeyPressed(void) 
+{
+    int  key;
+    if (lastkey1 != _NOKEY_)
+       return TRUE;
+    key = getkey_w (0);
+    if (key==_NOKEY_)
+       return FALSE;
+    lastkey1 = key;
+    return TRUE;    
+}
+
+GrKeyType GrKeyRead(void) {
+    int key;
+    if (lastkey1 != _NOKEY_)
+       {
+           key = lastkey1;
+           lastkey1 = _NOKEY_;
+           return (GrKeyType) key;
+       }
+    do 
+       {
+           key = getkey_w (1);
+       } while (key == _NOKEY_);
+  return key;
+}
+
+
+
+int GrKeyStat(void) {
+  return getkbstat();
+}
+
+

@@ -28,9 +28,9 @@ char p16d[] = {
 
 TESTFUNC(cursortest)
 {
-        long bgc = GrAllocColor(0,0,128);
-        long fgc = GrAllocColor(255,255,0);
-        long msc[3];
+        GrColor bgc = GrAllocColor(0,0,128);
+        GrColor fgc = GrAllocColor(255,255,0);
+        GrColor msc[3];
         GrCursor *cur;
         int x,y;
 
@@ -47,19 +47,19 @@ TESTFUNC(cursortest)
         GrFilledBox(0,0,320,120,GrAllocColor(0,255,255));
         GrTextXY( 10,90,"ANDmask",GrBlack(),GrNOCOLOR);
         GrTextXY( 90,90,"ORmask", GrBlack(),GrNOCOLOR);
-        GrTextXY(170,90,"Save",          GrBlack(),GrNOCOLOR);
-        GrTextXY(250,90,"Work",          GrBlack(),GrNOCOLOR);
+        GrTextXY(170,90,"Save",   GrBlack(),GrNOCOLOR);
+        GrTextXY(250,90,"Work",   GrBlack(),GrNOCOLOR);
         GrDisplayCursor(cur);
         for( ; ; ) {
             GrBitBlt(
-                    NULL,10,10,
-                    &cur->work,cur->xwork/2,0,cur->xwork/2+cur->xsize-1,cur->ysize-1,
-                    GrWRITE
+                NULL,10,10,
+                &cur->work,cur->xwork/2,0,cur->xwork/2+cur->xsize-1,cur->ysize-1,
+                GrWRITE
             );
             GrBitBlt(
-                    NULL,90,10,
-                    &cur->work,0,0,cur->xsize-1,cur->ysize-1,
-                    GrWRITE
+                NULL,90,10,
+                &cur->work,0,0,cur->xsize-1,cur->ysize-1,
+                GrWRITE
             );
             GrBitBlt(
                 NULL,170,10,
@@ -67,9 +67,9 @@ TESTFUNC(cursortest)
                 GrWRITE
             );
             GrBitBlt(
-                    NULL,250,10,
-                    &cur->work,0,cur->ysize+cur->ywork,cur->xwork-1,cur->ysize+2*cur->ywork-1,
-                    GrWRITE
+                NULL,250,10,
+                &cur->work,0,cur->ysize+cur->ywork,cur->xwork-1,cur->ysize+2*cur->ywork-1,
+                GrWRITE
             );
             switch(getch()) {
                 case 'u': y--; break;

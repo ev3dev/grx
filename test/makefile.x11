@@ -2,12 +2,34 @@
 # GRX 2.0 test programs makefile for LINUX/X11. Uses GNU make.
 #
 
-include  ../makedefs.gnu
 include  ../makedefs.x11
 
 INCDIR=  -I../include
 
-GRX20X = ../lib/libgrx20X.a
+# Enable this line for static linked test progs (default)
+GRX20X = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
+# or this if you've already installed the shared libs
+#GRX20X = -L../lib/$(GRX_LIB_SUBDIR) -lgrx20X
+
+ADDON_LIBS=
+
+ifeq ($(HAVE_LIBTIFF),y)
+  ADDON_LIBS += -ltiff
+endif
+
+ifeq ($(HAVE_LIBJPEG),y)
+  ADDON_LIBS += -ljpeg
+endif
+
+ifeq ($(NEED_ZLIB),y)
+  ADDON_LIBS += -lz
+endif
+
+LIBS= $(GRX20X) $(ADDON_LIBS) $(X11LIBS) -lm
+
+ifndef   DEBUG
+LDOPT += -s
+endif
 
 PROGS=               \
 	xarctest     \
@@ -17,6 +39,8 @@ PROGS=               \
 	xcolorops    \
 	xcurstest    \
 	xfonttest    \
+	ximgtest     \
+	xkeys        \
 	xlife        \
 	xlinetest    \
 	xmodetest    \
@@ -26,6 +50,7 @@ PROGS=               \
 	xrgbtest     \
 	xscroltst    \
 	xspeedtst    \
+	xtextpatt    \
 	xwinclip     \
 	xwintest
 
@@ -34,11 +59,11 @@ all: $(PROGS) ../bin/xmodetest
 ../bin/xmodetest: xmodetest
 	cp xmodetest ../bin
 
-$(PROGS): x%: %_x11.o $(GRX20X)
-	$(CC) $(CCOPT) -s -o $@ $*_x11.o $(GRX20X) $(X11LIBS) -lm
+$(PROGS): x%: %.o ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
+	$(CC) $(LDOPT) -o $@ $*.o $(LIBS)
 
-$(PROGS:x%=%_x11.o): %_x11.o : %.c
-	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*_x11.o
+$(PROGS:x%=%.o): %.o : %.c
+	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
 
 .c.s:
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c
@@ -47,6 +72,6 @@ clean:
 	rm -f *.o $(PROGS)
 
 depend.new:
-	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:x%=%.c) | sed s/.o:/_x11.o:/g > depend.new
+	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:x%=%.c) > depend.new
 
-include depend.x11
+include depend.gnu

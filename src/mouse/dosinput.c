@@ -6,19 +6,22 @@
  **/
 
 #include <stdlib.h>
-#ifdef         __TURBOC__
+
+#if defined(__TURBOC__) || defined(__WATCOMC__) /* GS - Watcom C++ 11.0 */
 #include <conio.h>
 #endif
-#ifdef         __GO32__
+
+#ifdef   __GO32__
 #include <pc.h>
 #endif
 
 #include "libgrx.h"
+#include "grxkeys.h"
 #include "allocate.h"
 #include "arith.h"
 #include "int86.h"
-#include "memfill.h"
 #include "memcopy.h"
+#include "memfill.h"
 #include "mouse/input.h"
 
 static int  kbd_enabled = TRUE;
@@ -35,12 +38,12 @@ int GrMouseDetect(void)
 {
         Int86Regs r;
         if(MOUINFO->msstatus == 0) {
-            MOUINFO->msstatus = (-1);                /* assume missing */
+            MOUINFO->msstatus = (-1);           /* assume missing */
             sttzero(&r);
             int33(&r);
             if(IREG_AX(r) != 0) {
                 atexit(uninit);
-                MOUINFO->msstatus = 1;                /* present, but not initted */
+                MOUINFO->msstatus = 1;          /* present, but not initted */
             }
         }
         return((MOUINFO->msstatus > 0) ? TRUE : FALSE);
@@ -61,7 +64,7 @@ void GrMouseInitN(int queue_size)
             mou_buttons = 0;
         }
         GrMouseEventEnable(TRUE,TRUE);
-        read_time(evt_lasttime);
+        real_time(evt_lasttime);
         MOUINFO->uninit = uninit;
 }
 
@@ -117,7 +120,7 @@ void _GrUpdateInputs(void)
                 if((mick = (short)IREG_DX(r)) != 0) {
                     update_coord(y,mick);
                 }
-                IREG_AX(r) = 3;                        /* read button state */
+                IREG_AX(r) = 3;                 /* read button state */
                 int33(&r);
                 btn = IREG_BX(r);
                 if(btn != mou_buttons) {
@@ -127,18 +130,18 @@ void _GrUpdateInputs(void)
                         GR_M_LEFT,
                         GR_M_MIDDLE,
                         GR_M_RIGHT,
-                        getkbstat()
+                        GrKeyStat()
                     );
-                    get_dtime(ev.dtime,evt_lasttime);
+                    real_dtime(ev.dtime,evt_lasttime);
                     enqueue_event(ev);
                     MOUINFO->moved = FALSE;
                     mou_buttons = btn;
                     gotevt = TRUE;
                 }
             }
-            if(kbd_enabled && kbhit()) {
-                fill_keybd_ev(ev,getxkey(),getkbstat());
-                get_dtime(ev.dtime,evt_lasttime);
+            if(kbd_enabled && GrKeyPressed()) {
+                fill_keybd_ev(ev,GrKeyRead(),GrKeyStat());
+                real_dtime(ev.dtime,evt_lasttime);
                 enqueue_event(ev);
                 MOUINFO->moved = FALSE;
                 gotevt = TRUE;
@@ -154,7 +157,7 @@ void GrMouseGetEventT(int flags,GrMouseEvent *ev,long tout)
         if(MOUINFO->msstatus == 0) GrMouseInit();
         msdraw = !MOUINFO->displayed && !(flags & GR_M_NOPAINT);
         if(msdraw) GrMouseDisplayCursor();
-        read_time(prevtime);
+        real_time(prevtime);
         for( ; ; ) {
             _GrUpdateInputs();
             GrMouseUpdateCursor();
@@ -174,16 +177,19 @@ void GrMouseGetEventT(int flags,GrMouseEvent *ev,long tout)
                     GR_M_LEFT,
                     GR_M_MIDDLE,
                     GR_M_RIGHT,
-                    getkbstat()
+                    GrKeyStat()
                 );
-                get_dtime(ev->dtime,evt_lasttime);
+                if ( ev->flags ) /* something happend */
+                  real_dtime(ev->dtime,evt_lasttime);
+                else
+                  ev->dtime = -1; /* special time if nothing happend */
                 MOUINFO->moved = FALSE;
                 if(msdraw) GrMouseEraseCursor();
                 return;
             }
             if(tout > 0L) {
                 long dtime;
-                get_dtime(dtime,prevtime);
+                real_dtime(dtime,prevtime);
                 if((tout -= dtime) < 0L) tout = 0L;
             }
         }

@@ -5,20 +5,24 @@
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
  ** Contrib by Christian Domp (alma.student.uni-kl.de) See "doc/contrib.doc"
  ** Contributions by: (See "doc/credits.doc" for details)
- ** Hartmut Schirmer (hsc@xaphod.techfak.uni-kiel.d400.de)
+ ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  **/
 
 #include <stdio.h>
 #include <string.h>
 
-#include "grfontdv.h"
 #include "libgrx.h"
+#include "grfontdv.h"
 #include "allocate.h"
 #include "arith.h"
 #include "memfill.h"
+#include "ordswap.h"
 #include "fonts/fdv_bgi.h"
 
 /* This is based on the font code in Hartmut Schirmer's BCC2GRX package */
+
+/* This code requires packed structs. Should be revised for **
+** better portability                           hsc, 980427 */
 
 #ifdef  __MSDOS__
 #define OPENMODE        "rb"
@@ -33,39 +37,21 @@
 #define SEEK_END        2
 #endif
 
-#ifdef  DEBUG
-#define DPRINTF(x)      debugprintf x
-#include <stdarg.h>
-static void debugprintf(char *fmt,...)
-{
-        static FILE *dfp = NULL;
-        va_list ap;
-        if(!dfp) dfp = fopen("bgiload.dbg","w");
-        if(!dfp) return;
-        va_start(ap,fmt);
-        vfprintf(dfp,fmt,ap);
-        va_end(ap);
-        fflush(dfp);
-}
-#else
-#define DPRINTF(x)
-#endif
-
-static char   *fdata   = NULL;
-static uchar  *wtable  = NULL;
-static ushort *offsets = NULL;
-static uchar  *vecdata = NULL;
-static int    *realwdt = NULL;
-static int    *xoffset = NULL;
-static int     realhgt = 0;
-static int     yoffset = 0;
-static BGIfontFileHeader *fhdr = NULL;
-static BGIfontHeaderType *fhtp = NULL;
+static GR_int8   far *fdata   = NULL;
+static GR_int8u  far *wtable  = NULL;
+static GR_int16u far *offsets = NULL;
+static GR_int8u  far *vecdata = NULL;
+static int       far *realwdt = NULL;
+static int       far *xoffset = NULL;
+static int            realhgt = 0;
+static int            yoffset = 0;
+static BGIfontFileHeader far *fhdr = NULL;
+static BGIfontHeaderType far *fhtp = NULL;
 
 static void cleanup(void)
 {
-        if(fdata)   free(fdata);
-        if(realwdt) free(realwdt);
+        if(fdata)   farfree(fdata);
+        if(realwdt) farfree(realwdt);
         fdata   = NULL;
         realwdt = NULL;
 }
@@ -78,7 +64,7 @@ static void fixlimits(void)
         for(i = 0; i < fhtp->nchrs; i++) {
             int xpos = 0,ypos = 0,xend,yend;
             int xmin = 32000,xmax = -32000;
-            ushort *vp = (ushort *)(vecdata + offsets[i]);
+            GR_int16u far *vp = (GR_int16u far *)(vecdata + offsets[i]);
             for( ; ; vp++) {
                 switch(SV_COMMAND(*vp)) {
                   case SVC_END:
@@ -105,7 +91,7 @@ static void fixlimits(void)
             }
             xoffset[i] = imax(0,(-xmin));
             realwdt[i] = imax(1,(imax((xmax + 1),wtable[i]) + xoffset[i]));
-            DPRINTF((
+            DBGPRINTF(DBG_FONT,(
                 "character %3d: origwdt=%-3d realwdt=%-3d xoffset=%-3d %c\n",
                 (i + fhtp->firstch),
                 wtable[i],
@@ -116,7 +102,7 @@ static void fixlimits(void)
         }
         yoffset = imax(0,(-ymin));
         realhgt = imax((ymax + 1),orighgt) + yoffset;
-        DPRINTF((
+        DBGPRINTF(DBG_FONT,(
             "FONT orighgt=%-3d realhgt=%-3d yoffset=%-3d\n",
             orighgt,
             realhgt,
@@ -126,46 +112,63 @@ static void fixlimits(void)
 
 static int openfile(char *fname)
 {
-        char *p;
-        FILE *fp;
-        long flen;
+    GR_int8 far *p;
+    FILE *fp;
+    long flen;
+    int res;
+    GRX_ENTER();
+    res = FALSE;
+    do {
         cleanup();
         fp = fopen(fname,OPENMODE);
-        if(!fp) return(FALSE);
+        if(!fp) break; /* FALSE */
         fseek(fp,0L,SEEK_END);
         flen = ftell(fp);
         fseek(fp,0L,SEEK_SET);
         if((flen <= (signed long)(sizeof(*fhdr) + sizeof(*fhtp))) ||
-           (flen != (long)(ushort)flen) ||
-           (!(fdata = malloc((uint)flen))) ||
-           (fread(fdata,1,(uint)flen,fp) != (size_t)flen) ||
-           (strncmp(fdata,FILEMARKER,strlen(FILEMARKER)) != 0) ||
-           (!(p = strchr(fdata,MARKEREND))) ||
-           ((++p) > &fdata[128 - sizeof(*fhdr)]) ||
-           (!(fhdr = (BGIfontFileHeader *)p)) ||
-           (!(fhtp = (BGIfontHeaderType *)(fdata + fhdr->header_size))) ||
-           (fhtp->sig != SIGBYTE)) {
-            cleanup();
-            fclose(fp);
-            return(FALSE);
-        }
-        fclose(fp);
-        offsets = (ushort *)(fhtp + 1);
-        wtable  = (uchar  *)(offsets + fhtp->nchrs);
-        vecdata = (uchar  *)((char *)fhtp + fhtp->cdefs);
-        realwdt = malloc(sizeof(int) * fhtp->nchrs * 2);
+           (flen != (signed long)((size_t)flen)))
+          break; /* FALSE */
+        fdata = farmalloc((size_t)flen);
+        if (!fdata) break; /* FALSE */
+        if (fread(fdata,1,(size_t)flen,fp) != (size_t)flen)
+          break; /* FALSE */
+        fclose(fp); fp = NULL;
+        if (strncmp(fdata,FILEMARKER,strlen(FILEMARKER)) != 0)
+          break; /*FALSE, magic code not found */
+        p = strchr(fdata,MARKEREND); /* skip copyright text */
+        if (!p || ((++p) > &fdata[128 - sizeof(*fhdr)])) break; /* FALSE */
+        fhdr = (BGIfontFileHeader *)p;
+#       ifdef BIG_ENDIAN
+          _GR_swap16u(&fhdr->header_size);
+          _GR_swap16u(&fhdr->font_size);
+#       endif
+        fhtp = (BGIfontHeaderType *)(fdata + fhdr->header_size);
+#       ifdef BIG_ENDIAN
+           _GR_swap16u(&fhtp->nchrs);
+           _GR_swap16u(&fhtp->cdefs);
+#       endif
+        if (fhtp->sig != SIGBYTE)
+             break; /* FALSE */
+        offsets = (GR_int16u *)(fhtp + 1);
+        wtable  = (GR_int8u  *)(offsets + fhtp->nchrs);
+        vecdata = (GR_int8u far *)((GR_int8u far *)fhtp + fhtp->cdefs);
+        realwdt = farmalloc(sizeof(int) * fhtp->nchrs * 2);
         xoffset = realwdt + fhtp->nchrs;
-        if(!realwdt) {
-            cleanup();
-            return(FALSE);
-        }
+        if(!realwdt)
+          break; /* FALSE */
         fixlimits();
-        return(TRUE);
+        res = TRUE;
+    } while (0);
+    if (!res) {
+      cleanup();
+      if (fp) fclose(fp);
+    }
+    GRX_RETURN(res);
 }
 
-static uint avgwidth(void)
+static unsigned int avgwidth(void)
 {
-        uint i,total = 0;
+        unsigned int i,total = 0;
         for(i = 0; i < fhtp->nchrs; i++) total += realwdt[i];
         return((total + (fhtp->nchrs >> 1)) / fhtp->nchrs);
 }
@@ -187,7 +190,7 @@ static int header(GrFontHeader *hdr)
         hdr->ulpos        = hdr->height - hdr->ulheight;
         hdr->minchar      = fhtp->firstch;
         hdr->numchars     = fhtp->nchrs;
-        DPRINTF((
+        DBGPRINTF(DBG_FONT,(
             "Font header:\n"
             "  name         = %s\n"
             "  family       = %s\n"
@@ -223,8 +226,8 @@ static int charwdt(int chr)
 {
         chr -= fhtp->firstch;
         if(!fdata) return(-1);
-        if((uint)chr >= (uint)fhtp->nchrs) return(-1);
-        DPRINTF(("charwdt for %d is %d\n",(chr + fhtp->firstch),realwdt[chr]));
+        if((unsigned int)chr >= (unsigned int)fhtp->nchrs) return(-1);
+        DBGPRINTF(DBG_FONT,("charwdt for %d is %d\n",(chr + fhtp->firstch),realwdt[chr]));
         return(realwdt[chr]);
 }
 
@@ -234,9 +237,9 @@ static void bitline(int x1,int y1,int x2,int y2,char *buffer,int pitch)
         int  dy    = y2 - y1;
         int  xstep = (dx < 0) ? ((dx = -dx),(-1)) : 1;
         int  ystep = ((dy < 0) ? ((dy = -dy),(-pitch)) : pitch) << 3;
-        uint addr  = ((y1 * pitch) << 3) + x1;
+        unsigned int addr  = ((y1 * pitch) << 3) + x1;
         int  count,error,errsub,erradd;
-        uint step1,step2;
+        unsigned int step1,step2;
         if(dy > dx) {
             count  = dy + 1;
             error  = dy >> 1;
@@ -270,22 +273,22 @@ static int bitmap(int chr,int w,int h,char *buffer)
         int xmul,xdiv,ymul,ydiv;
         int xpos,ypos,xend,yend;
         int offs;
-        ushort *vp;
+        GR_int16u far *vp;
         chr -= fhtp->firstch;
         if(!fdata) return(FALSE);
-        if((uint)chr >= (uint)fhtp->nchrs) return(FALSE);
+        if((unsigned int)chr >= (unsigned int)fhtp->nchrs) return(FALSE);
         if((w <= 0) || (h <= 0)) return(FALSE);
         xmul = w - 1;
         xdiv = realwdt[chr] - 1;
         ymul = h - 1;
         ydiv = realhgt - 1;
-        DPRINTF((
+        DBGPRINTF(DBG_FONT,(
             "bitmap for %d, origsize = %d %d, rendered = %d %d\n",
             (chr  + fhtp->firstch),
             (xdiv + 1),(ydiv + 1),
             (xmul + 1),(ymul + 1)
         ));
-        vp   = (ushort *)(vecdata + offsets[chr]);
+        vp   = (GR_int16u far *)(vecdata + offsets[chr]);
         offs = (w + 7) >> 3;
         memfill_b(buffer,0,(offs * h));
         if(xdiv <= 0) return(TRUE);
@@ -296,25 +299,25 @@ static int bitmap(int chr,int w,int h,char *buffer)
               case SVC_MOVE:
                 xpos = SV_XCOORD(*vp) + xoffset[chr];
                 ypos = fhtp->org_to_cap - SV_YCOORD(*vp) + yoffset;
-                DPRINTF((
+                DBGPRINTF(DBG_FONT,(
                     "  cmd=0x%04x, move   %-3d %d\n",
                     *vp,xpos,ypos
                 ));
                 continue;
               case SVC_SCAN:
                 /* what to do here ? */
-                DPRINTF(("  cmd=0x%04x **** SCAN COMMAND FOUND ****\n",*vp));
+                DBGPRINTF(DBG_FONT,("  cmd=0x%04x **** SCAN COMMAND FOUND ****\n",*vp));
                 continue;
               case SVC_DRAW:
                 xend = SV_XCOORD(*vp) + xoffset[chr];
                 yend = fhtp->org_to_cap - SV_YCOORD(*vp) + yoffset;
-                DPRINTF((
+                DBGPRINTF(DBG_FONT,(
                     "  cmd=0x%04x, vector %-3d %-3d [ %-3d %-3d ] %c\n",
                     *vp,xend,yend,xpos,ypos,
-                    ((((uint)xend > (uint)xdiv) ||
-                      ((uint)yend > (uint)ydiv) ||
-                      ((uint)xpos > (uint)xdiv) ||
-                      ((uint)ypos > (uint)ydiv)) ? '*' : ' '
+                    ((((unsigned int)xend > (unsigned int)xdiv) ||
+                      ((unsigned int)yend > (unsigned int)ydiv) ||
+                      ((unsigned int)xpos > (unsigned int)xdiv) ||
+                      ((unsigned int)ypos > (unsigned int)ydiv)) ? '*' : ' '
                     )
                 ));
                 bitline(
@@ -341,4 +344,3 @@ GrFontDriver _GrFontDriverBGI = {
     bitmap,                             /* character bitmap reader routine */
     cleanup                             /* cleanup routine */
 };
-

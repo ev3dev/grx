@@ -82,4 +82,3 @@ begin
 
    readln;
 end.
-

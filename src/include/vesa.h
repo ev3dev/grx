@@ -41,10 +41,17 @@
 #define PACK
 #endif
 
+#ifdef __WATCOMC__ /* GS - WATCOM C++ 11.0 */
+#pragma pack ( 0 );
+#define PACKTYPEMOD _Packed
+#else
+#define PACKTYPEMOD
+#endif
+
 /*
  * The VGA info structure (without padding)
  */
-typedef struct {
+typedef PACKTYPEMOD struct {
     char        VESAsignature[4]  PACK;     /* should be "VESA" */
     short       VESAversion       PACK;     /* VESA version number */
     char   far *OEMstringPtr      PACK;     /* Pointer to OEM string */
@@ -70,7 +77,7 @@ typedef struct {
 /*
  * The mode information structure (without padding)
  */
-typedef struct {
+typedef PACKTYPEMOD struct {
     short       ModeAttributes    PACK;     /* mode attributes */
     char        WinAAttributes    PACK;     /* Window A attributes */
     char        WinBAttributes    PACK;     /* Window B attributes */
@@ -111,7 +118,7 @@ typedef struct {
 /*
  * The protected mode info structure (VBE2+)
  */
-typedef struct {
+typedef PACKTYPEMOD struct {
     unsigned short RealMode_SEG      PACK;     /* RealMode physical base addr */
     unsigned short RealMode_OFF      PACK;     /* of the following data table */
     unsigned short PhysicalLength    PACK;     /* length of original table */
@@ -123,7 +130,8 @@ typedef struct {
 } VESApmInfoBlock;
 #define VESApmInfoBlock_BASEOFF       (3*sizeof(unsigned short))
 
-#undef  PACK
+#undef PACK
+#undef PACKTYPEMOD
 
 /*
  * MODE attribute bits

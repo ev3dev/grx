@@ -6,6 +6,7 @@
  **/
 
 #include "test.h"
+#include "rand.h"
 
 TESTFUNC(cliptest)
 {
@@ -14,7 +15,7 @@ TESTFUNC(cliptest)
         int y = GrSizeY();
         int ww = (x * 2) / 3;
         int wh = (y * 2) / 3;
-        long c;
+        GrColor c;
 
         c = GrAllocColor(200,100,100);
         GrBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,GrWhite());

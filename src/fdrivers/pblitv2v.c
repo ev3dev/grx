@@ -5,25 +5,30 @@
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
  **/
 
-#include "grdriver.h"
 #include "libgrx.h"
-#include "alloca.h"
+#include "grdriver.h"
+#include "allocate.h"
 #include "arith.h"
 #include "mempeek.h"
 
-static
-#ifdef  __GNUC__
-inline
-#endif
-void dualpageblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h)
+/* frame offset address calculation */
+#define FOFS(x,y,lo) umuladd32((y),(lo),(x))
+
+#ifndef __XWIN__
+static INLINE
+void dualpageblt(GrFrame *dst,int dx,int dy,
+                 GrFrame *src,int sx,int sy,
+                 int w,int h)
 {
-        ulong doff,soff;
+        unsigned long doff,soff;
         int   dskip,sskip;
         int   rb,rbb;
         int   wb,wbb;
+
+        GRX_ENTER();
         if(dy > sy) {
-            dy         += (h - 1);
-            sy         += (h - 1);
+            dy   += (h - 1);
+            sy   += (h - 1);
             dskip = -(dst->gf_lineoffset + w);
             sskip = -(src->gf_lineoffset + w);
         }
@@ -31,21 +36,21 @@ void dualpageblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int
             dskip = dst->gf_lineoffset - w;
             sskip = src->gf_lineoffset - w;
         }
-        doff = umul32(dy,dst->gf_lineoffset) + dx;
-        soff = umul32(sy,src->gf_lineoffset) + sx;
+        doff = FOFS(dx,dy,dst->gf_lineoffset);
+        soff = FOFS(sx,sy,src->gf_lineoffset);
         wbb  = (-1);
         rbb  = (-1);
         setup_far_selector(dst->gf_selector);
         do {
-            uint w1 = BANKLFT(doff);
-            uint w2 = BANKLFT(soff);
-            uint w3,ww;
+            unsigned w1 = BANKLFT(doff);
+            unsigned w2 = BANKLFT(soff);
+            unsigned w3,ww;
             w1 = umin(w,w1);
             w2 = umin(w,w2);
             usort(w1,w2);
             w3 = w  - w2;
             w2 = w2 - w1;
-            if(w2 == 0) w2 = w3,w3 = 0;
+            if(w2 == 0) w2=w3 , w3=0;
             do {
                 char far *dptr = &dst->gf_baseaddr[0][BANKPOS(doff)];
                 char far *sptr = &src->gf_baseaddr[0][BANKPOS(soff)];
@@ -54,6 +59,12 @@ void dualpageblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int
                 if((rbb - rb) | (wbb - wb)) SRWBANK((rbb = rb),(wbb = wb));
                 doff += w1;
                 soff += w1;
+#ifndef MISALIGNED_16bit_OK
+                do {
+                    poke_b_f(dptr,peek_b_f(sptr));
+                    dptr++; sptr++;
+                } while (w1--);
+#else
                 if(w1 >= 3) {
                     if((int)(dptr) & 1) {
                         poke_b_f(dptr,peek_b_f(sptr));
@@ -75,6 +86,7 @@ void dualpageblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int
                 if(w1 & 1) {
                     poke_b_f(dptr,peek_b_f(sptr));
                 }
+#endif
                 w1 = w2;
                 w2 = w3;
                 w3 = 0;
@@ -82,28 +94,37 @@ void dualpageblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int
             doff += dskip;
             soff += sskip;
         } while(--h != 0);
+        GRX_LEAVE();
 }
+#endif /* !__XWIN__ */
 
-#ifdef  __TURBOC__
-#define TMPSIZE                2048
-#else
-#define TMPSIZE                8192
-#endif
+#define TMPSIZE 16384
 
-void _GrFrDrvPackedBitBltV2V(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,long op)
+void _GrFrDrvPackedBitBltV2V(GrFrame *dst,int dx,int dy,
+                             GrFrame *src,int sx,int sy,
+                             int w,int h,GrColor op)
 {
-        GrFrame tmp;
-        int tmpx,tmpn;
-        if((C_OPER(op) == C_WRITE) && DRVINFO->splitbanks && ((dy != sy) || (sx >= dx))) {
+
+        GRX_ENTER();
+#ifndef __XWIN__
+        if((C_OPER(op) == C_WRITE) && DRVINFO->splitbanks &&
+           ((dy != sy) || (sx >= dx))) {
             dualpageblt(dst,dx,dy,src,sx,sy,w,h);
-            return;
-        }
-        setup_alloca();
-        tmp.gf_lineoffset = (w + 7) & ~3;
-        tmpn = umax(umin(h,(TMPSIZE / tmp.gf_lineoffset)),1);
-        tmpx = tmp.gf_lineoffset * tmpn;
-        tmp.gf_baseaddr[0] = alloca(tmpx);
-        if(tmp.gf_baseaddr[0]) {
+        } else
+#endif
+        {
+          GrFrame tmp;
+          int tmpx,tmpn;
+          tmp.gf_lineoffset = (w + 7) & ~3;
+          tmpn = umax(umin(h,(TMPSIZE / tmp.gf_lineoffset)),1);
+          tmpx = tmp.gf_lineoffset * tmpn;
+#ifdef SMALL_STACK
+          tmp.gf_baseaddr[0] = _GrTempBufferAlloc(tmpx);
+#else
+          setup_alloca();
+          tmp.gf_baseaddr[0] = alloca((size_t)tmpx);
+#endif
+          if(tmp.gf_baseaddr[0]) {
             int ydir = 0;
             tmpx = sx & 3;
             if(dy > sy) {
@@ -121,7 +142,11 @@ void _GrFrDrvPackedBitBltV2V(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int 
                 sy += (~ydir & cnt);
                 h  -= cnt;
             } while(h != 0);
+          }
+#ifndef SMALL_STACK
+          reset_alloca();
+#endif
         }
-        reset_alloca();
+        GRX_LEAVE();
 }
 

@@ -26,6 +26,7 @@
 
 #include "libgrx.h"
 #include "clipping.h"
+#include "shapes.h"
 
 void GrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p)
 {
@@ -33,7 +34,7 @@ void GrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p)
         int dx,dy,sy,ymajor;
         int pw,ph,px,py;
         int ispixmap;
-        long fgc = 0, bgc = 0;
+        GrColor fgc = 0, bgc = 0;
         int points,error;
         int by1, by2;
 

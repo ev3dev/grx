@@ -1,5 +1,5 @@
-/** 
- ** USERCORD.C 
+/**
+ ** USERCORD.C
  **
  **  Copyright (C) 1992, Csaba Biegl
  **    820 Stirrup Dr, Nashville, TN, 37221
@@ -23,22 +23,6 @@
 
 #include "libgrx.h"
 #include "usercord.h"
-
-void GrSetUserWindow(int x1,int y1,int x2,int y2)
-{
-        CURC->gc_usrxbase  = x1;
-        CURC->gc_usrybase  = y1;
-        CURC->gc_usrwidth  = x2 - x1;
-        CURC->gc_usrheight = y2 - y1;
-}
-
-void GrGetUserWindow(int *x1,int *y1,int *x2,int *y2)
-{
-        *x1 = CURC->gc_usrxbase;
-        *y1 = CURC->gc_usrybase;
-        *x2 = CURC->gc_usrxbase + CURC->gc_usrwidth;
-        *y2 = CURC->gc_usrybase + CURC->gc_usrheight;
-}
 
 void GrGetScreenCoord(int *x,int *y)
 {

@@ -1,5 +1,5 @@
-/** 
- ** ULINE.C 
+/**
+ ** ULINE.C
  **
  **  Copyright (C) 1992, Csaba Biegl
  **    820 Stirrup Dr, Nashville, TN, 37221
@@ -24,7 +24,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrLine(int x1,int y1,int x2,int y2,long c)
+void GrUsrLine(int x1,int y1,int x2,int y2,GrColor c)
 {
         U2SX(x1,CURC);
         U2SY(y1,CURC);

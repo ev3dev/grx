@@ -6,6 +6,9 @@
  **/
 
 #include "test.h"
+#ifdef __GO32__
+#include <pc.h>
+#endif
 
 TESTFUNC(test1)
 {

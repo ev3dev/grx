@@ -6,6 +6,8 @@
  **/
 
 #include "test.h"
+#include "rand.h"
+
 #include <malloc.h>
 #include <string.h>
 #include <time.h>
@@ -17,7 +19,8 @@ TESTFUNC(life)
         char **map[2],**old,**cur;
         int  *xp,*xn,*yp,*yn;
         int  which,x,y,gen;
-        long c[2],thresh;
+        GrColor c[2];
+        long thresh;
         for(which = 0; which < 2; which++) {
             cur = malloc(H * sizeof(char *));
             if(!cur) return;

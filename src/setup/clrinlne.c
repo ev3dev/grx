@@ -7,81 +7,81 @@
 
 #include "libgrx.h"
 
-long (GrColorValue)(long c)
+GrColor (GrColorValue)(GrColor c)
 {
         return(GrColorValue(c));
 }
 
-long (GrColorMode)(long c)
+GrColor (GrColorMode)(GrColor c)
 {
         return(GrColorMode(c));
 }
 
-long (GrWriteModeColor)(long c)
+GrColor (GrWriteModeColor)(GrColor c)
 {
         return(GrWriteModeColor(c));
 }
 
-long (GrXorModeColor)(long c)
+GrColor (GrXorModeColor)(GrColor c)
 {
         return(GrXorModeColor(c));
 }
 
-long (GrOrModeColor)(long c)
+GrColor (GrOrModeColor)(GrColor c)
 {
         return(GrOrModeColor(c));
 }
-long (GrAndModeColor)(long c)
+GrColor (GrAndModeColor)(GrColor c)
 {
         return(GrAndModeColor(c));
 }
 
-long (GrImageModeColor)(long c)
+GrColor (GrImageModeColor)(GrColor c)
 {
         return(GrImageModeColor(c));
 }
 
-long (GrNumColors)(void)
+GrColor (GrNumColors)(void)
 {
         return(GrNumColors());
 }
 
-long (GrNumFreeColors)(void)
+GrColor (GrNumFreeColors)(void)
 {
         return(GrNumFreeColors());
 }
 
-long (GrBuildRGBcolorT)(int r,int g,int b)
+GrColor (GrBuildRGBcolorT)(int r,int g,int b)
 {
         return(GrBuildRGBcolorT(r,g,b));
 }
 
-long (GrBuildRGBcolorR)(int r,int g,int b)
+GrColor (GrBuildRGBcolorR)(int r,int g,int b)
 {
         return(GrBuildRGBcolorR(r,g,b));
 }
 
-int (GrRGBcolorRed)(long c)
+int (GrRGBcolorRed)(GrColor c)
 {
         return(GrRGBcolorRed(c));
 }
 
-int (GrRGBcolorGreen)(long c)
+int (GrRGBcolorGreen)(GrColor c)
 {
         return(GrRGBcolorGreen(c));
 }
 
-int (GrRGBcolorBlue)(long c)
+int (GrRGBcolorBlue)(GrColor c)
 {
         return(GrRGBcolorBlue(c));
 }
 
-long (GrAllocColorID)(int r,int g,int b)
+GrColor (GrAllocColorID)(int r,int g,int b)
 {
         return(GrAllocColorID(r,g,b));
 }
 
-void (GrQueryColorID)(long c,int *r,int *g,int *b)
+void (GrQueryColorID)(GrColor c,int *r,int *g,int *b)
 {
         GrQueryColorID(c,r,g,b);
 }

@@ -30,4 +30,3 @@ begin
   end;
   { M := GrSetMode(GR_default_text,0,0,0,0,0); }
 end.
-

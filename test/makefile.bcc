@@ -1,9 +1,14 @@
 #
 # GRX 2.0 test programs makefile for Turbo C. Uses Turbo C make.
 #
+.AUTODEPEND
+
 !include "../makedefs.bcc"
+
 INCDIR= -I../include -I$(BCCROOT)\include
 LIBDIR= -L$(BCCROOT)/lib
+
+GRX20ST = ../lib/$(GRX_LIB_SUBDIR)/grx20$(MODEL).lib
 
 PROGS=                  \
 	arctest.exe     \
@@ -14,15 +19,17 @@ PROGS=                  \
 	curstest.exe    \
 	fnt2c.exe       \
 	fonttest.exe    \
+	imgtest.exe     \
 	life.exe        \
 	linetest.exe    \
-	modetest.exe    \
+	modtst16.exe    \
 	mousetst.exe    \
 	pcirctst.exe    \
 	polytest.exe    \
 	rgbtest.exe     \
 	scroltst.exe    \
-	speedtst.exe    \
+	spdtst16.exe    \
+	textpatt.exe    \
 	winclip.exe     \
 	wintest.exe
 
@@ -41,15 +48,17 @@ clean:
 	-$(STRIP) ..\bin\fnt2c16.exe
 
 modtst16.exe: modetest.obj
-	$(BCC) $(LIBDIR) $(LDOPT) -n. -emodtst16 modetest.obj ../lib/grx20$(MODEL).lib
+	$(BCC) $(LIBDIR) $(LDOPT) -n. -emodtst16 modetest.obj $(GRX20ST)
+
+spdtst16.exe: speedtst.obj
+	$(BCC) $(LIBDIR) $(LDOPT) -n. -espdtst16 speedtst.obj $(GRX20ST)
 
 fnt2c16.exe: fnt2c.obj
-	$(BCC) $(LIBDIR) $(LDOPT) -n. -efnt2c16 fnt2c.obj ../lib/grx20$(MODEL).lib
+	$(BCC) $(LIBDIR) $(LDOPT) -n. -efnt2c16 fnt2c.obj $(GRX20ST)
 
 .obj.exe:
-	$(BCC) $(LIBDIR) $(LDOPT) -n. -e$* $*.obj ../lib/grx20$(MODEL).lib
+	$(BCC) $(LIBDIR) $(LDOPT) -n. -e$* $*.obj $(GRX20ST)
 
 .c.obj:
 	$(BCC) -c $(CCOPT) $(INCDIR) -o$*.obj $*.c
 
-!include "depend.bcc"

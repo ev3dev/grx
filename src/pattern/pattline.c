@@ -34,16 +34,11 @@ void GrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp)
 {
         GrFillArg fval;
         int points[2][2];
-        GrFiller *grf = (GrFiller *)malloc(sizeof(GrFiller));
 
         points[0][0] = x1;
         points[0][1] = y1;
         points[1][0] = x2;
         points[1][1] = y2;
         fval.p = lp->lnp_pattern;
-        grf->pixel = _GrDrawPatternedPixel;
-        grf->line = _GrDrawPatternedLine;
-        grf->scan = _GrFillPatternedScanLine;
-        _GrDrawCustomPolygon(2,points,lp->lnp_option,grf,fval,FALSE,FALSE);
+        _GrDrawCustomPolygon(2,points,lp->lnp_option,&_GrPatternFiller,fval,FALSE,FALSE);
 }
-

@@ -1,5 +1,5 @@
-/** 
- ** UPIXEL.C 
+/**
+ ** UPIXEL.C
  **
  **  Copyright (C) 1992, Csaba Biegl
  **    820 Stirrup Dr, Nashville, TN, 37221
@@ -24,16 +24,9 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-long GrUsrPixel(int x,int y)
+GrColor GrUsrPixel(int x,int y)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);
         return(GrPixel(x,y));
-}
-
-long GrUsrPixelC(GrContext *c,int x,int y)
-{
-        U2SX(x,c);
-        U2SY(y,c);
-        return(GrPixelC(c,x,y));
 }

@@ -1,0 +1,26 @@
+/**
+ ** CELLI.C ---- draw dashed and/or wide ellipses
+ **
+ ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ **/
+
+#include "libgrx.h"
+#include "allocate.h"
+#include "shapes.h"
+
+void GrCustomEllipse(int xc,int yc,int xa,int ya,GrLineOption *o)
+{
+    int (*pnts)[2];
+    setup_ALLOC();
+    pnts = ALLOC(sizeof(int) * 2 * GR_MAX_ELLIPSE_POINTS);
+    if (pnts != NULL)
+    {
+        GrFillArg fval;
+        int npts  = GrGenerateEllipse(xc,yc,xa,ya,pnts);
+        fval.color = o->lno_color;
+        _GrDrawCustomPolygon(npts,pnts,o,&_GrSolidFiller,fval,TRUE,TRUE);
+        FREE(pnts);
+    }
+    reset_ALLOC();
+}

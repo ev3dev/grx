@@ -5,17 +5,22 @@
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
  **/
 
-#include "grdriver.h"
 #include "libgrx.h"
+#include "grdriver.h"
 #include "memcopy.h"
 
-void _GrFrDrvGenericBitBlt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long op)
+void _GrFrDrvGenericBitBlt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op)
 {
         GrFrame csave;
-        long (*readpix)(GrFrame *,int,int) = src->gf_driver->readpixel;
-        void (*drawpix)(int,int,long) = dst->gf_driver->drawpixel;
-        long skipc = op ^ GrIMAGE;
-        int  step  = 1;
+        GrColor (*readpix)(GrFrame *,int,int);
+        void (*drawpix)(int,int,GrColor);
+        GrColor skipc;
+        int  step;
+        GRX_ENTER();
+        readpix = src->gf_driver->readpixel;
+        drawpix = dst->gf_driver->drawpixel;
+        skipc = op ^ GrIMAGE;
+        step  = 1;
         op &= GrCMODEMASK;
         sttcopy(&csave,&CURC->gc_frame);
         sttcopy(&CURC->gc_frame,dst);
@@ -27,12 +32,13 @@ void _GrFrDrvGenericBitBlt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,i
         do {
             int dxx = dx,xx = x,ww = w;
             do {
-                long c = (*readpix)(src,xx,y);
+                GrColor c = (*readpix)(src,xx,y);
                 if(c != skipc) (*drawpix)(dxx,dy,(c | op));
                 dxx += step; xx += step;
             } while(--ww > 0);
             dy += step; y += step;
         } while(--h > 0);
         sttcopy(&CURC->gc_frame,&csave);
+        GRX_LEAVE();
 }
 

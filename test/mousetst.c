@@ -13,8 +13,8 @@
 TESTFUNC(mousetest)
 {
         GrMouseEvent evt;
-        long bgc = GrAllocColor(0,0,128);
-        long fgc = GrAllocColor(255,255,0);
+        GrColor bgc = GrAllocColor(0,0,128);
+        GrColor fgc = GrAllocColor(255,255,0);
         int  testmotion = 0;
         int  ii,mode;
 
@@ -38,8 +38,8 @@ TESTFUNC(mousetest)
                 GrMouseGetEventT(GR_M_EVENT,&evt,0L);
                 if(evt.flags & (GR_M_KEYPRESS | GR_M_BUTTON_CHANGE | testmotion)) {
                     strcpy(msg,"Got event(s): ");
-#                    define mend (&msg[strlen(msg)])
-                    if(evt.flags & GR_M_MOTION)             strcpy( mend,"[moved] ");
+#                   define mend (&msg[strlen(msg)])
+                    if(evt.flags & GR_M_MOTION)      strcpy( mend,"[moved] ");
                     if(evt.flags & GR_M_LEFT_DOWN)   strcpy( mend,"[left down] ");
                     if(evt.flags & GR_M_MIDDLE_DOWN) strcpy( mend,"[middle down] ");
                     if(evt.flags & GR_M_RIGHT_DOWN)  strcpy( mend,"[right down] ");
@@ -83,5 +83,15 @@ TESTFUNC(mousetest)
                 if((ii += 7) > 20) ii -= 20;
             }
             GrMouseUnInit();
+        } else {
+            GrClearScreen(bgc);
+            ii = 0;
+            mode = GR_M_CUR_NORMAL;
+            GrTextXY(
+                (GrScreenX()/3),(GrScreenY() - 20),
+                "Sorry, no mouse found !",
+                GrWhite(),
+                bgc
+            );
         }
 }

@@ -13,13 +13,20 @@
 #endif
 
 /*
+** The following definitions shouldn't be used in portable
+** or binary distributed programs for compatibility with
+** future versions of GRX
+*/
+#ifdef USE_GRX_INTERNAL_DEFINITIONS
+
+/*
  * Font driver header. Font drivers are used to load various font file
  * formats into the internal bitmap ('GrFont') representation.
  */
 typedef struct _GR_fontDriver {
     char  *name;                        /* font format name (doc only) */
-    char  *ext;                                /* font file name extension */
-    int           scalable;                        /* scalable font file format */
+    char  *ext;                         /* font file name extension */
+    int    scalable;                    /* scalable font file format */
     int  (*openfile)(char *fname);
     int  (*header)(GrFontHeader *hdr);
     int  (*charwdt)(int chr);
@@ -31,10 +38,10 @@ extern GrFontDriver
 /*
  * Available font drivers in GRX
  */
-_GrFontDriverGRX,                        /* native GRX bitmap fonts */
-_GrFontDriverBGI,                        /* Borland BGI font driver */
+_GrFontDriverGRX,                       /* native GRX bitmap fonts */
+_GrFontDriverBGI,                       /* Borland BGI font driver */
 #ifdef __XWIN__
-_GrFontDriverXWIN,                        /* X font driver */
+_GrFontDriverXWIN,                      /* X font driver */
 #endif
 /*
  * This is a NULL-terminated table of font driver descriptor pointers. Users
@@ -48,8 +55,8 @@ _GrFontDriverXWIN,                        /* X font driver */
  * Various bits of font related global data
  */
 extern struct _GR_fontFileInfo {
-    int            npath;                        /* number of dirs to search */
-    char  **path;                        /* the search directories */
+    int     npath;                      /* number of dirs to search */
+    char  **path;                       /* the search directories */
 } _GrFontFileInfo;
 
 /*
@@ -66,6 +73,8 @@ GrFont *_GrBuildFont(
     int  (*bitmap)(int chr,int w,int h,char far *buffer),
     int  canscale
 );
+
+#endif /* USE_GRX_INTERNAL_DEFINITIONS */
 
 #endif /* whole file */
 

@@ -33,16 +33,12 @@
 #define GCM_MYMEMORY        1           /* set if my context memory */
 #define GCM_MYCONTEXT       2           /* set if my context structure */
 
-#if !defined(C_COLOR) && defined(GrCVALUEMASK)
-#define C_COLOR GrCVALUEMASK
-#endif
-
 /*
  * try to replicate a pixmap for faster bitblt-s
  * in bitplane modes it is especially desirable to replicate until
  * the width is a multiple of 8
  */
-int _GrBestPixmapWidth(int wdt,int hgt)
+static int _GrBestPixmapWidth(int wdt,int hgt)
 {
         long total   = GrContextSize(wdt,hgt);
         int  linelen = GrLineOffset(wdt);
@@ -69,13 +65,16 @@ GrPattern *GrBuildPixmap(char *pixels,int w,int h,GrColorTableP ct)
         unsigned  char *src;
         int  wdt,wdt2,fullw;
         int  hgt;
-        long color;
+        GrColor color;
 
         if((fullw = _GrBestPixmapWidth(w,h)) <= 0) return(NULL);
         result = (GrPixmap *)malloc(sizeof(GrPixmap));
         if (result == NULL) return(NULL);
 
-        GrCreateContext(fullw,h,(char **)0,&cwork);
+        if (!GrCreateContext(fullw,h,NULL,&cwork)) {
+          free(result);
+          return NULL;
+        }
         csave = *CURC;
         *CURC = cwork;
         for(hgt = 0; hgt < h; hgt++) {
@@ -99,7 +98,7 @@ GrPattern *GrBuildPixmap(char *pixels,int w,int h,GrColorTableP ct)
         return((GrPattern *)result);
 }
 
-GrPattern *GrBuildPixmapFromBits(char *bits,int w,int h,long fgc,long bgc)
+GrPattern *GrBuildPixmapFromBits(char *bits,int w,int h,GrColor fgc,GrColor bgc)
 {
         GrContext csave,cwork;
         GrPixmap  *result;
@@ -111,7 +110,10 @@ GrPattern *GrBuildPixmapFromBits(char *bits,int w,int h,long fgc,long bgc)
         result = (GrPixmap *)malloc(sizeof(GrPixmap));
         if(result == NULL) return(NULL);
 
-        GrCreateContext(fullw,h,(char **)0,&cwork);
+        if (!GrCreateContext(fullw,h,NULL,&cwork)) {
+          free(result);
+          return NULL;
+        }
         csave = *CURC;
         *CURC = cwork;
         fgc &= C_COLOR;
@@ -156,13 +158,17 @@ GrPattern *GrConvertToPixmap(GrContext *src)
 
 void GrDestroyPattern(GrPattern *p)
 {
-        if(p->gp_ispixmap) {
-            if(p->gp_pxp_source.gf_memflags & GCM_MYMEMORY)
-                farfree(p->gp_pxp_source.gf_baseaddr);
-            if(p->gp_pxp_source.gf_memflags & GCM_MYCONTEXT)
-                free(p);
-            return;
-        }
-        if(p->gp_bitmap.bmp_memflags) free(p);
+  if (!p) return;
+  if (p->gp_ispixmap) {
+    if ( p->gp_pxp_source.gf_memflags & GCM_MYMEMORY) {
+      int ii;
+      for ( ii = p->gp_pxp_source.gf_driver->num_planes; ii > 0; ii-- )
+         farfree(p->gp_pxp_source.gf_baseaddr[ii - 1]);
+    }
+    if ( p->gp_pxp_source.gf_memflags & GCM_MYCONTEXT )
+      free(p);
+    return;
+  }
+  if ( p->gp_bitmap.bmp_memflags ) free(p);
 }
 

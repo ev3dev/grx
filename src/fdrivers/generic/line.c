@@ -4,17 +4,19 @@
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
  **/
-  
-void drawline(int x,int y,int dx,int dy,long c)
+
+void drawline(int x,int y,int dx,int dy,GrColor c)
 {
-        int cnt,err,yoff = 1;
+        int cnt,err,yoff;
+        GRX_ENTER();
+        yoff = 1;
         if(dx < 0) {
             x += dx; dx = (-dx);
             y += dy; dy = (-dy);
         }
         if(dy < 0) {
             yoff = (-1);
-            dy         = (-dy);
+            dy   = (-dy);
         }
         if(dx > dy) {
             err = (cnt = dx) >> 1;
@@ -32,5 +34,6 @@ void drawline(int x,int y,int dx,int dy,long c)
                 y += yoff;
             } while(--cnt >= 0);
         }
+        GRX_LEAVE();
 }
 

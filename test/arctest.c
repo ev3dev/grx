@@ -13,26 +13,31 @@ TESTFUNC(arctest)
         char buff[300];
         int  xc,yc,xa,ya,start,end;
         FILE *fp;
+        GrColor red   = GrAllocColor(255,0,0);
+        GrColor green = GrAllocColor(0,255,0);
+        GrColor blue  = GrAllocColor(0,0,255);
 
         fp = fopen("arctest.dat","r");
         if(fp == NULL) return;
         while(fgets(buff,299,fp) != NULL) {
             int len = strlen(buff);
             while(--len >= 0) {
-                    if(buff[len] == '\n') { buff[len] = '\0'; continue; }
-                    if(buff[len] == '\r') { buff[len] = '\0'; continue; }
-                    break;
+                if(buff[len] == '\n') { buff[len] = '\0'; continue; }
+                if(buff[len] == '\r') { buff[len] = '\0'; continue; }
+                break;
             }
             if(sscanf(buff,
                       "arc xc=%d yc=%d xa=%d ya=%d start=%d end=%d",
                       &xc,&yc,&xa,&ya,&start,&end) == 6) {
                 GrClearScreen(GrBlack());
-                GrFilledEllipse(xc,yc,xa,ya,GrAllocColor(0,0,255));
+                GrEllipse(xc,yc,xa,ya,red);
+                GrFilledEllipse(xc,yc,xa,ya,blue);
                 GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,GrWhite());
                 GrTextXY(0,0,buff,GrWhite(),GrNOCOLOR);
                 getch();
                 GrClearScreen(GrBlack());
-                GrFilledEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,GrAllocColor(255,0,0));
+                GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,red);
+                GrFilledEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,green);
                 GrTextXY(0,0,buff,GrWhite(),GrNOCOLOR);
                 getch();
             }

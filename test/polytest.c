@@ -15,10 +15,11 @@
 
 #include "test.h"
 
-static long black = 0L;
-static long red          = 1L;
-static long blue  = (1L ^ 3L);
-static long white = 3L;
+static GrColor *EGA;
+#define black EGA[0]
+#define red   EGA[12]
+#define blue  EGA[1]
+#define white EGA[15]
 
 static void testpoly(int n,int points[][2],int convex)
 {
@@ -42,7 +43,7 @@ static void speedtest(void)
         int sx = (GrSizeX() - 2*ww) / 32;
         int sy = (GrSizeY() - 2*hh) / 32;
         int  ii,jj;
-        long color;
+        GrColor color;
         long t1,t2,t3;
 
         GrClearScreen(black);
@@ -58,7 +59,7 @@ static void speedtest(void)
             pts[2][0] = ww;
             pts[3][0] = 0;
             for(jj = 0; jj < 32; jj++) {
-                GrFilledPolygon(4,pts,color | GrXOR);
+                GrFilledPolygon(4,pts, EGA[color] | GrXOR);
                 color = (color + 1) & 15;
                 pts[0][0] += sx;
                 pts[1][0] += sx;
@@ -82,7 +83,7 @@ static void speedtest(void)
             pts[2][0] = ww;
             pts[3][0] = 0;
             for(jj = 0; jj < 32; jj++) {
-                GrFilledConvexPolygon(4,pts,color | GrXOR);
+                GrFilledConvexPolygon(4,pts, EGA[color] | GrXOR);
                 color = (color + 1) & 15;
                 pts[0][0] += sx;
                 pts[1][0] += sx;
@@ -114,17 +115,14 @@ TESTFUNC(ptest)
 
         fp = fopen("polytest.dat","r");
         if(fp == NULL) return;
+        EGA = GrAllocEgaColors();
         ii  = collect = convex = 0;
-        GrSetColor(black,0,0,0);
-        GrSetColor(red,255,0,0);
-        GrSetColor(blue,0,0,255);
-        GrSetColor(white,255,255,255);
         while(fgets(buff,299,fp) != NULL) {
             if(!collect) {
                 if(strncmp(buff,"begin",5) == 0) {
                     convex  = (buff[5] == 'c');
                     collect = 1;
-                    ii            = 0;
+                    ii      = 0;
                 }
                 continue;
             }

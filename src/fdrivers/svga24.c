@@ -7,167 +7,285 @@
  ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  **/
 
-#include "grdriver.h"
 #include "libgrx.h"
-#include "access24.h"
+#include "grdriver.h"
 #include "arith.h"
 #include "mempeek.h"
+#include "memfill.h"
+#include "access24.h"
 
 #if BYTE_ORDER!=HARDWARE_BYTE_ORDER
 #error Mismatching byte order between ram and video ram !
 #endif
 
-#define US(x) ( *( (ushort *) &(x) ) )
-
-static
-#ifdef __GNUC__
-inline
+/* helper ... */
+#define MULT3(x)     ( (x)+(x)+(x) )
+#ifdef __TURBOC__
+#define REMAIN3(x)   ( ((unsigned int)(x)) % 3 )
+#else
+#define REMAIN3(x)   ( (x) % 3 )
 #endif
-long readpixel(GrFrame *c,int x,int y)
+
+/* frame offset address calculation */
+#define FOFS(x,y,lo) umuladd32((y),(lo),MULT3(x))
+
+
+static INLINE
+GrColor readpixel(GrFrame *c,int x,int y)
 {
-        long cval   = 0L;
-        long offs   = umul32(y,SCRN->gc_lineoffset) + (x + x + x);
-        int  bank   = BANKNUM(offs);
-        char far *p = &SCRN->gc_baseaddr[0][BANKPOS(offs)];
+        GrColor cval;
+        GR_int32u offs;
+        int  bank;
+        char far *p;
+        GRX_ENTER();
+        cval = (GrColor)0;
+        offs = FOFS(x,y,SCRN->gc_lineoffset);
+        bank = BANKNUM(offs);
+        p    = &SCRN->gc_baseaddr[0][BANKPOS(offs)];
         setup_far_selector(SCRN->gc_selector);
         CHKBANK(bank);
         switch (BANKLFT(offs)) {
-          case 1 : C24BYTE(cval,0) = peek_b_f(p);
-                   SETBANK(++bank);
+          case 1 : cval = peek_b_f(p);
+                   ++bank;
+                   SETBANK(bank);
                    p = SCRN->gc_baseaddr[0];
-                   US(C24BYTE(cval,1)) = peek_w_f(p);
-                   return cval;
-          case 2 : US(C24BYTE(cval,0)) = peek_w_f(p);
-                   SETBANK(++bank);
+                   cval |= ((GR_int32u)peek_w_f(p)) << 8;
+                   break;
+          case 2 : cval = peek_w_f(p);
+                   ++bank;
+                   SETBANK(bank);
                    p = SCRN->gc_baseaddr[0];
-                   C24BYTE(cval,2) = peek_b_f(p);
-                   return cval;
-        }
-        return peek_24_f(p);
-}
-
-static
-#ifdef __GNUC__
-inline
+                   WR24BYTE(cval,2,peek_b_f(p));
+                   break;
+#ifdef PEEK_24_F_READS_ONE_MORE
+          case 3 : cval = peek_w_f(p);
+                   WR24BYTE(cval,2,peek_b_f(p+2));
+                   break;
 #endif
-void drawpixel(int x,int y,long color)
+          default: cval = peek_24_f(p);
+                   break;
+        }
+        GRX_RETURN(cval);
+}
+
+static INLINE
+void drawpixel(int x,int y,GrColor color)
 {
-        long cmask;
-        long offs   = umul32(y,CURC->gc_lineoffset) + (x + x + x);
-        int  bank   = BANKNUM(offs);
-        char far *p = &CURC->gc_baseaddr[0][BANKPOS(offs)];
-        switch(C_OPER(color)) {
-            case C_XOR: cmask = -1L;                break;
-            case C_OR:  cmask = ~color;             break;
-            case C_AND: cmask =  color; color = 0L; break;
-            default:    cmask =  0L;                break;
-        }
+        GR_int32u offs;
+        int bank;
+        char far *p;
+        GRX_ENTER();
+        offs = FOFS(x,y,CURC->gc_lineoffset);
+        p    = &CURC->gc_baseaddr[0][BANKPOS(offs)];
         setup_far_selector(CURC->gc_selector);
+        bank = BANKNUM(offs);
         CHKBANK(bank);
-        switch (BANKLFT(offs)) {
-          case 1 : poke_b_f(p,((peek_b_f(p) & C24BYTE(cmask,0)) ^ C24BYTE(color,0)));
-                   SETBANK(++bank);
-                   p = SCRN->gc_baseaddr[0];
-                   poke_w_f(p,((peek_w_f(p) & US(C24BYTE(cmask,1))) ^ US(C24BYTE(color,1))));
-                   return;
-          case 2 : poke_w_f(p,((peek_w_f(p) & US(C24BYTE(cmask,0))) ^ US(C24BYTE(color,0))));
-                   SETBANK(++bank);
-                   p = SCRN->gc_baseaddr[0];
-                   goto lastbyte;
+        switch(C_OPER(color)) {
+          case C_XOR:
+              switch (BANKLFT(offs)) {
+                case 1:
+                  poke_b_f_xor(p,(GR_int8u)color);
+                  SETBANK(++bank);
+                  p = SCRN->gc_baseaddr[0];
+                  poke_b_f_xor(p,RD24BYTE(color,1));
+                  poke_b_f_xor(p+1,RD24BYTE(color,2));
+                  break;
+                case 2:
+                  poke_w_f_xor(p,(GR_int16u)color);
+                  SETBANK(++bank);
+                  p = SCRN->gc_baseaddr[0];
+                  poke_b_f_xor(p,RD24BYTE(color,2));
+                  break;
+                default:
+                  poke_24_f_xor(p,color);
+                  break;
+              }
+              break;
+          case C_OR:
+              switch (BANKLFT(offs)) {
+                case 1:
+                  poke_b_f_or(p,(GR_int8u)color);
+                  SETBANK(++bank);
+                  p = SCRN->gc_baseaddr[0];
+                  poke_b_f_or(p,RD24BYTE(color,1));
+                  poke_b_f_or(p+1,RD24BYTE(color,2));
+                  break;
+                case 2:
+                  poke_w_f_or(p,(GR_int16u)color);
+                  SETBANK(++bank);
+                  p = SCRN->gc_baseaddr[0];
+                  poke_b_f_or(p,RD24BYTE(color,2));
+                  break;
+                default:
+                  poke_24_f_or(p,color);
+                  break;
+              }
+              break;
+          case C_AND:
+              switch (BANKLFT(offs)) {
+                case 1:
+                  poke_b_f_and(p,(GR_int8u)color);
+                  SETBANK(++bank);
+                  p = SCRN->gc_baseaddr[0];
+                  poke_b_f_and(p,RD24BYTE(color,1));
+                  poke_b_f_and(p+1,RD24BYTE(color,2));
+                  break;
+                case 2:
+                  poke_w_f_and(p,(GR_int16u)color);
+                  SETBANK(++bank);
+                  p = SCRN->gc_baseaddr[0];
+                  poke_b_f_and(p,RD24BYTE(color,2));
+                  break;
+                default:
+                  poke_24_f_and(p,color);
+                  break;
+              }
+              break;
+          default:
+              switch (BANKLFT(offs)) {
+                case 1:
+                  poke_b_f(p,(GR_int8u)color);
+                  SETBANK(++bank);
+                  p = SCRN->gc_baseaddr[0];
+                  poke_b_f(p,RD24BYTE(color,1));
+                  poke_b_f(p+1,RD24BYTE(color,2));
+                  break;
+                case 2:
+                  poke_w_f(p,(GR_int16u)color);
+                  SETBANK(++bank);
+                  p = SCRN->gc_baseaddr[0];
+                  poke_b_f(p,RD24BYTE(color,2));
+                  break;
+                default:
+                  poke_24_f(p,color);
+                  break;
+              }
+              break;
         }
-        poke_w_f(p,((peek_w_f(p) & US(C24BYTE(cmask,0))) ^ US(C24BYTE(color,0))));
-        ptrinc(p,2);
-lastbyte:
-        poke_b_f(p,((peek_b_f(p) & C24BYTE(cmask,2)) ^ C24BYTE(color,2)));
+        GRX_LEAVE();
 }
 
 
-static void drawhline(int x,int y,int w,long color)
+static void drawhline(int x,int y,int w,GrColor color)
 {
-      ulong *f, five[5];
-      int   bytes;
-      uint  ww;
-      int op =  C_OPER(color);
-      long offs = umul32(y,CURC->gc_lineoffset) + (x + x + x);
+      char far *p;
+      int op, bank;
+      unsigned int  w1, w2;
+      GR_int32u offs;
+      GR_int8u c2;
+
+      GRX_ENTER();
+      op   =  C_OPER(color);
+      offs = FOFS(x,y,CURC->gc_lineoffset);
+      p    = &CURC->gc_baseaddr[0][BANKPOS(offs)];
       setup_far_selector(CURC->gc_selector);
 
-      /* make sure we don't run in problems on first pixel */
-      if (BANKLFT(offs) < 3) {
-        _GrFrameDriverSVGA24.drawpixel(x,y,color);
-        offs += 3;
-        if ( !(--w) ) return ;
-      };
-      /* now prepare fast filling */
-      w = w + w + w;
-      bytes = (int)(offs & 3);
-      if (!bytes) bytes = 4;
-      FillFive(five, color, bytes);
-      if (bytes!=4) {
-          /* we need to write up to 3 bytes for correct alignment */
-          /* can't run into a bank switch here */
-          char far *p = &CURC->gc_baseaddr[0][BANKPOS(offs)];
-          uchar   *cp = ((uchar *)five) + bytes;
-          CHKBANK(BANKNUM(offs));
-          bytes = 4-bytes;
-          w    -= bytes;
-          offs += bytes;
-          switch (op) {
-              case C_XOR: if (bytes&1) { poke_b_f_xor(p,*cp);
-                                         ptrinc(p,1); ptrinc(cp,1);      }
-                          if (bytes&2) poke_w_f_xor(p,*((ushort *)cp));
-                          break;
-              case C_OR:  if (bytes&1) { poke_b_f_or(p,*cp);
-                                        ptrinc(p,1); ptrinc(cp,1); }
-                          if (bytes&2) poke_w_f_or(p,*((ushort *)cp));
-                          break;
-              case C_AND: if (bytes&1) { poke_b_f_and(p,*cp);
-                                         ptrinc(p,1); ptrinc(cp,1); }
-                          if (bytes&2) poke_w_f_and(p,*((ushort *)cp));
-                          break;
-              default:    if (bytes&1) { poke_b_f(p,*cp);
-                                         ptrinc(p,1); ptrinc(cp,1); }
-                          if (bytes&2) poke_w_f(p,*((ushort *)cp));
-                          break;
-          }
-          if (!w) return;
-      }
-      /* now we're ready for fast 32bit fill ... */
-      ww = 0;
-      f = NULL;
+      c2 = RD24BYTE(color,2);
+      bank = BANKNUM(offs);
+      CHKBANK(bank);
+      w = MULT3(w);
+#     ifndef GRX_HAVE_FAST_REPFILL24
+        if (c2 == RD24BYTE(color,0) && c2 == RD24BYTE(color,1) ) {
+           GR_repl cval = freplicate_b(c2);
+           w1 = BANKLFT(offs);
+           w2 = w - (w1 = umin(w,w1));
+           for (;;) {
+             switch(op) {
+                 case C_XOR: repfill_b_f_xor(p,cval,w1); break;
+                 case C_OR:  repfill_b_f_or( p,cval,w1); break;
+                 case C_AND: repfill_b_f_and(p,cval,w1); break;
+                 default:    repfill_b_f(    p,cval,w1); break;
+             }
+             if (!w2) break;
+             w1 = w2;
+             w2 = 0;
+             ++bank;
+             SETBANK(bank);
+             p = CURC->gc_baseaddr[0];
+           }
+           goto done;
+        }
+#     endif
       for (;;) {
-          char far *p = &CURC->gc_baseaddr[0][BANKPOS(offs)];
-          CHKBANK(BANKNUM(offs));
-          if (ww) {
-            /* did bankswitch before all 3 longs were done */
-            /* can't reach end of bank here ! */
-            ww = umin(w,ww);
-            offs += ww;
-            w    -= ww;
-            switch (op) {
-              case C_XOR: rowfill_24s_f_xor(p,f,ww); break;
-              case C_OR:  rowfill_24s_f_or( p,f,ww); break;
-              case C_AND: rowfill_24s_f_and(p,f,ww); break;
-              default:    rowfill_24s_f(    p,f,ww); break;
-            }
-            if (!w) return;
+        w1 = BANKLFT(offs);
+        w1 = umin(w,w1);
+        w -= w1;
+        if (w1 <= 3) {
+          /* make sure we don't run in problems on first pixel */
+          w2 = w1;
+          switch (w1) {
+            case 1 : switch (op) {
+                       case C_XOR: poke_b_f_xor(p,color); break;
+                       case C_OR:  poke_b_f_or( p,color); break;
+                       case C_AND: poke_b_f_and(p,color); break;
+                       default:    poke_b_f_set(p,color); break;
+                     }
+                     break;
+            case 2 : switch (op) {
+                       case C_XOR: poke_w_f_xor(p,color); break;
+                       case C_OR:  poke_w_f_or( p,color); break;
+                       case C_AND: poke_w_f_and(p,color); break;
+                       default:    poke_w_f_set(p,color); break;
+                     }
+                     break;
+            case 3 : switch (op) {
+                       case C_XOR: poke_24_f_xor(p,color); break;
+                       case C_OR:  poke_24_f_or( p,color); break;
+                       case C_AND: poke_24_f_and(p,color); break;
+                       default:    poke_24_f_set(p,color); break;
+                     }
+                     goto next_bank;
           }
-          ww = BANKLFT(offs);
-          ww = umin(w,ww);
-          offs += ww;
-          w    -= ww;
-          f = &five[1];
-          switch (op) {
-              case C_XOR: rowfill_24_f_xor(p,f,ww); break;
-              case C_OR:  rowfill_24_f_or( p,f,ww); break;
-              case C_AND: rowfill_24_f_and(p,f,ww); break;
-              default:    rowfill_24_f(    p,f,ww); break;
+          goto complete;
+        }
+        if (w) w2 = REMAIN3(w1);
+        else   w2 = 0;
+        switch (op) {
+          case C_XOR: repfill_24_f_xor(p,color,w1); break;
+          case C_OR:  repfill_24_f_or( p,color,w1); break;
+          case C_AND: repfill_24_f_and(p,color,w1); break;
+          default:    repfill_24_f_set(p,color,w1); break;
+        }
+        if (w2) {
+          /* complete pixel on next bank */
+  complete:
+          bank++;
+          SETBANK(bank);
+          p = CURC->gc_baseaddr[0];
+          switch (w2) {
+            case 1 : offs = 2;
+                     switch (op) {
+                       case C_XOR: poke_w_f_xor(p,color>>8); break;
+                       case C_OR:  poke_w_f_or( p,color>>8); break;
+                       case C_AND: poke_w_f_and(p,color>>8); break;
+                       default:    poke_w_f_set(p,color>>8); break;
+                     }
+                     if ( !(w-=2) ) goto done;
+                     p += 2;
+                     break;
+            case 2 : offs = 1;
+                     switch (op) {
+                       case C_XOR: poke_b_f_xor(p,c2); break;
+                       case C_OR:  poke_b_f_or( p,c2); break;
+                       case C_AND: poke_b_f_and(p,c2); break;
+                       default:    poke_b_f_set(p,c2); break;
+                     }
+                     if ( !(--w) ) goto done;
+                     ++p;
+                     break;
           }
-          if (!w) return;
-          ww = (int)ptrdiff(&five[4], f);
-          if (ww > 8) ww = 0;
+          continue;
+        }
+  next_bank:
+        if (!w) goto done;
+        bank++;
+        SETBANK(bank);
+        p = CURC->gc_baseaddr[0];
+        offs = 0;
       }
+  done:
+      GRX_LEAVE();
 }
-
 
 static
 #include "fdrivers/generic/vline.c"
@@ -184,8 +302,9 @@ static
 static
 #include "fdrivers/generic/pattern.c"
 
-static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,long op)
+static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
+        GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
             dst,dx,dy,
             src,sx,sy,
@@ -193,15 +312,19 @@ static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
             op
         );
         else _GrFrDrvPackedBitBltV2V(
-            dst,(dx * 3),dy,
-            src,(sx * 3),sy,
-            (w * 3),h,
+            dst,MULT3(dx),dy,
+            src,MULT3(sx),sy,
+            MULT3(w),h,
             op
         );
+        GRX_LEAVE();
 }
 
-static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,long op)
+#ifndef GRX_USE_RAM3x8
+
+static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
+        GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
             dst,dx,dy,
             src,sx,sy,
@@ -209,15 +332,17 @@ static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
             op
         );
         else _GrFrDrvPackedBitBltV2R(
-            dst,(dx * 3),dy,
-            src,(sx * 3),sy,
-            (w * 3),h,
+            dst,MULT3(dx),dy,
+            src,MULT3(sx),sy,
+            MULT3(w),h,
             op
         );
+        GRX_LEAVE();
 }
 
-static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,long op)
+static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
+        GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
             dst,dx,dy,
             src,sx,sy,
@@ -225,16 +350,23 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
             op
         );
         else _GrFrDrvPackedBitBltR2V(
-            dst,(dx * 3),dy,
-            src,(sx * 3),sy,
-            (w * 3),h,
+            dst,MULT3(dx),dy,
+            src,MULT3(sx),sy,
+            MULT3(w),h,
             op
         );
+        GRX_LEAVE();
 }
+
+#endif /* !GRX_USE_RAM3x8 */
 
 GrFrameDriver _GrFrameDriverSVGA24 = {
     GR_frameSVGA24,             /* frame mode */
+#ifdef GRX_USE_RAM3x8
+    GR_frameRAM3x8,             /* compatible RAM frame mode */
+#else
     GR_frameRAM24,              /* compatible RAM frame mode */
+#endif
     TRUE,                       /* onscreen */
     4,                          /* line width alignment */
     1,                          /* number of planes */
@@ -250,7 +382,13 @@ GrFrameDriver _GrFrameDriverSVGA24 = {
     drawbitmap,
     drawpattern,
     bitblt,
+#ifdef GRX_USE_RAM3x8
+    _GrFrDrvGenericBitBlt,
+    _GrFrDrvGenericBitBlt,
+#else
     bltv2r,
-    bltr2v
+    bltr2v,
+#endif
+    _GrFrDrvGenericGetIndexedScanline,
+    _GrFrDrvGenericPutScanline
 };
-

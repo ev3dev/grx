@@ -3,21 +3,32 @@
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** Contributions by: (See "doc/credits.doc" for details)
+ ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  **/
 
 #include "libgrx.h"
+#include "grxkeys.h"
 #include "int86.h"
 #include "memfill.h"
+
+#ifdef __GO32__
+#include <pc.h>
+#endif
+
+#if defined(__WATCOMC__) || defined(__TURBOC__)
+#include <conio.h>
+#endif
 
 #define USE_AT_BIOS
 
 #ifdef  USE_AT_BIOS
-#define KBD_BIOS_BASE        0x10
+#define KBD_BIOS_BASE   0x10
 #else
-#define KBD_BIOS_BASE        0
+#define KBD_BIOS_BASE   0
 #endif
 
-#ifdef __TURBOC__
+#if defined(__TURBOC__) || defined(__WATCOMC__) /* GS - Watcom C++ 11.0 */
 
 int getkey(void)
 {
@@ -65,3 +76,34 @@ int getkbstat(void)
         return(IREG_AL(r));
 }
 
+
+/*
+** new functions to replace the old style
+**   kbhit / getch / getkey / getxkey / getkbstat
+** keyboard interface
+*/
+int GrKeyPressed(void) {
+  return kbhit();
+}
+
+GrKeyType GrKeyRead(void) {
+  int key = getkey();
+
+  switch (key) {
+    case 0x197: key = GrKey_Alt_Home;      break;
+    case 0x198: key = GrKey_Alt_Up;        break;
+    case 0x199: key = GrKey_Alt_PageUp;    break;
+    case 0x19b: key = GrKey_Alt_Left;      break;
+    case 0x19d: key = GrKey_Alt_Right;     break;
+    case 0x19f: key = GrKey_Alt_End;       break;
+    case 0x1a0: key = GrKey_Alt_Down;      break;
+    case 0x1a1: key = GrKey_Alt_PageDown;  break;
+    case 0x1a2: key = GrKey_Alt_Insert;    break;
+    case 0x1a3: key = GrKey_Alt_Delete;    break;
+  }
+  return (GrKeyType) key;
+}
+
+int GrKeyStat(void) {
+  return getkbstat();
+}

@@ -18,7 +18,8 @@ int GrFrameLineOffset(GrFrameMode md,int width)
 {
         GrFrameDriver *dp = _GrFindRAMframeDriver(md);
         if(dp) {
-            uint w = (uint)width * (dp->bits_per_pixel / dp->num_planes);
+            unsigned int w = (unsigned int)width 
+                           * (dp->bits_per_pixel / dp->num_planes);
             w = ((w + 7) >> 3);
             w = ((w + dp->row_align - 1) / dp->row_align) * dp->row_align;
             return(w);

@@ -1,10 +1,10 @@
 /**
  ** HERC.C ---- Hercules video driver
  **
- ** Author:        Ulrich Leodolter
- ** E-mail:        ulrich@lab1.psy.univie.ac.at
- ** Date:        Tue Nov 14 15:55:56 1995
- ** Comment:        Driver code partly from X11R6/XFree86 (see below)
+ ** Author:     Ulrich Leodolter
+ ** E-mail:     ulrich@lab1.psy.univie.ac.at
+ ** Date:       Tue Nov 14 15:55:56 1995
+ ** Comment:    Driver code partly from X11R6/XFree86 (see below)
  **/
 /* $XFree86: xc/programs/Xserver/hw/xfree86/mono/drivers/hercules/hercules.c,v 3.2 1994/09/23 10:18:52 dawes Exp $ */
 /*
@@ -23,8 +23,8 @@
  *
  */
 
-#include "grdriver.h"
 #include "libgrx.h"
+#include "grdriver.h"
 #include "arith.h"
 #include "int86.h"
 #include "ioport.h"
@@ -33,17 +33,17 @@
 /*
  * Define the generic HGA I/O Ports
  */
-#define HGA_INDEX        0x3B4
+#define HGA_INDEX       0x3B4
 #define HGA_DATA        0x3B5
 #define HGA_MODE        0x3B8
-#define HGA_STATUS        0x3BA
-#define HGA_CONFIG        0x3BF
+#define HGA_STATUS      0x3BA
+#define HGA_CONFIG      0x3BF
 
 /*
  * Since the conf and mode registers are write only, we need to keep
  * a local copy of the state here.  The initial state is assumed to be:
  * conf: enable setting of graphics mode, and disable page one
- *         (allows coexistence with a color graphics board)
+ *       (allows coexistence with a color graphics board)
  * mode: text, deactivate screen, enable text blink, and page zero at 0xB0000
  */
 static unsigned char static_config = 0x01;
@@ -60,7 +60,7 @@ static unsigned char
 
 static unsigned char init_config = 0x03;
 static unsigned char init_mode = 0x0A;
-static unsigned char           /* 720x348 graphics mode parameters */
+static unsigned char       /* 720x348 graphics mode parameters */
   init_tbl[] = {0x35, 0x2D, 0x2E, 0x07, 0x5B, 0x02, 0x57, 0x57,
                   0x02, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2A};
 /*
@@ -103,24 +103,24 @@ static void loadcolor (int c,int r,int g,int b)
 }
 
 static GrVideoModeExt grherc1ext = {
-    GR_frameHERC1,                        /* frame driver */
-    NULL,                                /* frame driver override */
-    MK_FP(0xb000,0),                        /* frame buffer address */
+    GR_frameHERC1,                      /* frame driver */
+    NULL,                               /* frame driver override */
+    MK_FP(0xb000,0),                    /* frame buffer address */
     { 1, 1, 1 },                        /* color precisions */
     { 0, 0, 0 },                        /* color component bit positions */
-    0,                                        /* mode flag bits */
-    setmode,                                /* mode set */
-    NULL,                                /* virtual size set */
-    NULL,                                /* virtual scroll */
-    setbank,                                /* bank set function */
-    setrwbanks,                                /* double bank set function */
-    loadcolor,                                /* color loader */
+    0,                                  /* mode flag bits */
+    setmode,                            /* mode set */
+    NULL,                               /* virtual size set */
+    NULL,                               /* virtual scroll */
+    setbank,                            /* bank set function */
+    setrwbanks,                         /* double bank set function */
+    loadcolor,                          /* color loader */
 };
 
 static GrVideoMode modes[] = {
-    /* pres.  bpp wdt        hgt   BIOS   scan  priv. &ext */
-    {  TRUE,  1,  80,        25,   0x07,  160,  0,         &_GrViDrvEGAVGAtextModeExt },
-    {  TRUE,  1,  720,  348,  0x00,   92,  0,         &grherc1ext }
+    /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext */
+    {  TRUE,  1,  80,   25,   0x07,  160,  0,    &_GrViDrvEGAVGAtextModeExt },
+    {  TRUE,  1,  720,  348,  0x00,   92,  0,    &grherc1ext }
 };
 
 static int detect (void)
@@ -154,10 +154,10 @@ static int detect (void)
     /* The Plus and InColor versions have an ID code as well. */
     dsp = inport_b(HGA_STATUS) & DSP_ID_MASK;
     switch(dsp) {
-    case 0x10:              /* Plus */
+    case 0x10:        /* Plus */
       videoRam = 64;
       break;
-    case 0x50:              /* InColor */
+    case 0x50:        /* InColor */
       videoRam = 256;
       break;
     }
@@ -168,14 +168,15 @@ static int detect (void)
 }
 
 GrVideoDriver _GrVideoDriverHERC = {
-    "herc",                                /* name */
-    GR_HERC,                                /* adapter type */
-    NULL,                                /* inherit modes from this driver */
-    modes,                                /* mode table */
-    itemsof(modes),                        /* # of modes */
-    detect,                                /* detection routine */
-    NULL,                                /* initialization routine */
-    _GrViDrvResetEGAVGA                        /* reset routine */
+    "herc",                             /* name */
+    GR_HERC,                            /* adapter type */
+    NULL,                               /* inherit modes from this driver */
+    modes,                              /* mode table */
+    itemsof(modes),                     /* # of modes */
+    detect,                             /* detection routine */
+    NULL,                               /* initialization routine */
+    _GrViDrvResetEGAVGA,                /* reset routine */
+    _gr_selectmode,                     /* standard mode select routine */
+    0                                   /* no additional capabilities */
 };
 
-

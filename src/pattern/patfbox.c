@@ -8,27 +8,26 @@
 #include "libgrx.h"
 #include "arith.h"
 #include "clipping.h"
+#include "shapes.h"
 
 void GrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p)
 {
         int width,height;
-        void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,long);
 
         clip_box(CURC,x1,y1,x2,y2);
         mouse_block(CURC,x1,y1,x2,y2);
         width  = x2 - x1 + 1;
         height = y2 - y1 + 1;
-        if (CURC->gc_onscreen)
-                bltfun = CURC->gc_driver->bltr2v;
-        else
-                bltfun = CURC->gc_driver->bitblt;
         if(!p->gp_ispixmap)
             while(--height >= 0) _GrFillPattern(x1,y1++,width,p);
         else {
+            void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor);
             int pwdt = p->gp_pxp_width;
             int phgt = p->gp_pxp_height;
             int xoff = (x1 + CURC->gc_xoffset) % pwdt;
             int yoff = (y1 + CURC->gc_yoffset) % phgt;
+            if (CURC->gc_onscreen) bltfun = CURC->gc_driver->bltr2v;
+            else                   bltfun = CURC->gc_driver->bitblt;
             while(height > 0) {
                 int fillh   = min(height,(phgt - yoff));
                 int linewdt = width;

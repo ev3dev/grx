@@ -7,7 +7,7 @@
 
 #include "libgrx.h"
 #include "shapes.h"
-#include "alloca.h"
+#include "allocate.h"
 #include "clipping.h"
 #include "arith.h"
 #include "shape/polyedge.h"
@@ -89,9 +89,9 @@ void _GrScanPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c)
         if(n < 1) {
             return;
         }
-        setup_alloca();
-        edges = (edge *)alloca(sizeof(edge) * (n + 2));
-        scans = (scan *)alloca(sizeof(scan) * (n + 8));
+        setup_ALLOC();
+        edges = (edge *)ALLOC(sizeof(edge) * (n + 2));
+        scans = (scan *)ALLOC(sizeof(scan) * (n + 8));
         if(edges && scans) {
             /*
              * Build the edge table. Store only those edges which are in the
@@ -193,7 +193,7 @@ void _GrScanPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c)
                         xmin     = segments->x1;
                         xmax     = segments->x2;
                         segments = segments->next;
-                        clip_ordxrange_(CURC,xmin,xmax,continue,);
+                        clip_ordxrange_(CURC,xmin,xmax,continue,CLIP_EMPTY_MACRO_ARG);
                         (*f->scan)(
                             (xmin + CURC->gc_xoffset),
                             (ypos + CURC->gc_yoffset),
@@ -205,6 +205,8 @@ void _GrScanPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c)
                 mouse_unblock();
             }
         }
-        reset_alloca();
+        if (edges) FREE(edges);
+        if (scans) FREE(scans);
+        reset_ALLOC();
 }
 

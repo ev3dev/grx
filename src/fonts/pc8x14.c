@@ -6,7 +6,7 @@
 #include "grx20.h"
 #undef   GrFont_PC8x14
 
-static char far GrFont_PC8x14_bits[] = {
+static unsigned char far GrFont_PC8x14_bits[] = {
         /* character 0 */
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
         0x00,0x00,
@@ -797,7 +797,7 @@ struct {
             0,                      /* lowest character code in font */
             256                     /* number of characters in font */
         },
-        GrFont_PC8x14_bits,         /* character bitmap array */
+        (char *)GrFont_PC8x14_bits, /* character bitmap array */
         0,                          /* auxiliary bitmap */
         8,                          /* width of narrowest character */
         8,                          /* width of widest character */

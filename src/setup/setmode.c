@@ -16,12 +16,16 @@
 #include "memcopy.h"
 #include "grdriver.h"
 
-static GrVideoMode *selectmode(GrVideoDriver *drv,int w,int h,int bpp,int txt,uint *ep)
+GrVideoMode * _gr_selectmode(GrVideoDriver *drv,int w,int h,int bpp,
+            int txt,unsigned int *ep)
 {
 #       define ERROR(des,act)   ((des > act) ? ((des - act) + 20000) : (act - des))
         int  n;
-        uint cerr,serr,err[2];
-        GrVideoMode *best = NULL,*mp = drv->modes;
+        unsigned int cerr,serr,err[2];
+        GrVideoMode *best,*mp;
+        GRX_ENTER();
+        best = NULL;
+        mp = drv->modes;
         for(n = drv->nmodes; --n >= 0; mp++) {
             if(!mp->present) continue;
             if(!mp->extinfo) continue;
@@ -32,21 +36,26 @@ static GrVideoMode *selectmode(GrVideoDriver *drv,int w,int h,int bpp,int txt,ui
                ((cerr <  ep[0])) ||
                ((cerr == ep[0]) && (serr < ep[1]))) {
                 best  = mp;
+                if (!cerr && !serr) break;
                 ep[0] = cerr;
                 ep[1] = serr;
             }
         }
         if(drv->inherit) {
-            mp = selectmode(drv->inherit,w,h,bpp,txt,ep);
+            mp = (drv->inherit->selectmode) (drv->inherit,w,h,bpp,txt,ep);
             if(mp) best = mp;
         }
-        return(best);
+        GRX_RETURN(best);
 }
 
 static int buildframedriver(GrVideoMode *mp,GrFrameDriver *drv)
 {
-        GrFrameDriver *d1 = _GrFindFrameDriver(mp->extinfo->mode);
-        GrFrameDriver *d2 = mp->extinfo->drv;
+        GrFrameDriver *d1, *d2;
+        int res = TRUE;
+        GRX_ENTER();
+        res = TRUE;
+        d1 = _GrFindFrameDriver(mp->extinfo->mode);
+        d2 = mp->extinfo->drv;
         if(d1) sttcopy(drv,d1);
         if(d2) {
             int compl = TRUE;
@@ -62,11 +71,13 @@ static int buildframedriver(GrVideoMode *mp,GrFrameDriver *drv)
             MERGE(bitblt);
             MERGE(bltv2r);
             MERGE(bltr2v);
+            MERGE(getindexedscanline);
+            MERGE(putscanline);
             if(compl) {
-                memcopy(drv,d2,offsetof(GrFrameDriver,readpixel));
-                return(TRUE);
+                memcpy(drv,d2,offsetof(GrFrameDriver,readpixel));
+                goto done; /* TRUE */
             }
-            if(!d1) return(FALSE);
+            if(!d1) { res = FALSE; goto done; }
             if((d2->mode == d1->mode) &&
                (d2->rmode == d1->rmode) &&
                (d1->is_video ? d2->is_video : !d2->is_video) &&
@@ -75,49 +86,107 @@ static int buildframedriver(GrVideoMode *mp,GrFrameDriver *drv)
                (d2->max_plane_size >= d1->max_plane_size) &&
                (d2->bits_per_pixel == d1->bits_per_pixel)) {
                 drv->init = d2->init ? d2->init : d1->init;
-                return(TRUE);
+                goto done; /* TRUE */
             }
         }
-        if(!d1) return(FALSE);
+        if(!d1) { res = FALSE; goto done; }
         sttcopy(drv,d1);
-        return(TRUE);
+done:   GRX_RETURN(res);
 }
 
 static int buildcontext(GrVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
 {
-        long plsize = umul32(mp->lineoffset,mp->height);
+        long plsize;
+        int res;
+        GRX_ENTER();
+        res = FALSE;
+        plsize = umul32(mp->lineoffset,mp->height);
+        DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame buffer = 0x%x\n",mp->extinfo->frame));
+        DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame selector = 0x%x\n",mp->extinfo->LFB_Selector));
         sttzero(cxt);
+#if !defined(__TURBOC__) \
+ && !(defined(__WATCOMC__) && !defined(__386__)) \
+ && !defined(__XWIN__)
         if(mp->extinfo->flags&GR_VMODEF_LINEAR)
         {
+            DBGPRINTF(DBG_SETMD,("buildcontext - Linear Mode\n"));
             cxt->gc_baseaddr[0] =
             cxt->gc_baseaddr[1] =
             cxt->gc_baseaddr[2] =
-            cxt->gc_baseaddr[3] = 
-#ifdef LFB_BY_NEAR_POINTER
-                                  LINP_PTR(mp->extinfo->frame);
-            cxt->gc_selector    = LINP_SEL(mp->extinfo->frame);
-#else
-                                  0;
+            cxt->gc_baseaddr[3] = LINP_PTR(mp->extinfo->frame);
             cxt->gc_selector    = mp->extinfo->LFB_Selector;
+        } else
+#endif /* !__TURBOC__ && !( __WATCOMC__ && !__386__) && !__XWIN__ */
+        if (mp->extinfo->flags&GR_VMODEF_MEMORY)
+        {
+            DBGPRINTF(DBG_SETMD,("buildcontext - Memory Mode\n"));
+            if(plsize > fdp->max_plane_size) goto done; /* FALSE */
+            if(mp->lineoffset % fdp->row_align) goto done; /* FALSE */
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->present    = %d\n",mp->present));
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->bpp        = %d\n",mp->bpp));
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->width      = %d\n",mp->width));
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->height     = %d\n",mp->height));
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->mode       = %d\n",mp->mode));
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->lineoffset = %d\n",mp->lineoffset));
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->ext->mode  = %d\n",mp->extinfo->mode));
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->ext->flags = %x\n",mp->extinfo->flags));
+#ifdef GRX_USE_RAM3x8
+            if (mp->bpp==24)
+              {
+                 int m_incr = mp->lineoffset*mp->height;
+                 cxt->gc_baseaddr[0] = mp->extinfo->frame;
+                 cxt->gc_baseaddr[1] = cxt->gc_baseaddr[0] + m_incr;
+                 cxt->gc_baseaddr[2] = cxt->gc_baseaddr[1] + m_incr;
+                 cxt->gc_baseaddr[3] = NULL;
+              }
+            else
+#endif
+            if (mp->bpp==4)
+              {
+                 int m_incr = mp->lineoffset*mp->height;
+                 cxt->gc_baseaddr[0] = mp->extinfo->frame;
+                 cxt->gc_baseaddr[1] = cxt->gc_baseaddr[0] + m_incr;
+                 cxt->gc_baseaddr[2] = cxt->gc_baseaddr[1] + m_incr;
+                 cxt->gc_baseaddr[3] = cxt->gc_baseaddr[2] + m_incr;
+              }
+            else
+              {
+                 cxt->gc_baseaddr[0] =
+                 cxt->gc_baseaddr[1] =
+                 cxt->gc_baseaddr[2] =
+                 cxt->gc_baseaddr[3] = mp->extinfo->frame;
+              }
+#if defined(__TURBOC__) || (defined(__WATCOMC__) && !defined(__386__))
+            cxt->gc_selector    = LINP_SEL(mp->extinfo->frame);
 #endif
         }
         else
         {
-            if(plsize > fdp->max_plane_size) return(FALSE);
-            if(!mp->extinfo->setbank && (plsize > 0x10000L)) return(FALSE);
-            if(mp->lineoffset % fdp->row_align) return(FALSE);
+            if(plsize > fdp->max_plane_size) goto done; /* FALSE */
+            if(!mp->extinfo->setbank && (plsize > 0x10000L)) goto done; /* FALSE */
+            if(mp->lineoffset % fdp->row_align) goto done; /* FALSE */
             cxt->gc_baseaddr[0] =
             cxt->gc_baseaddr[1] =
             cxt->gc_baseaddr[2] =
             cxt->gc_baseaddr[3] = LINP_PTR(mp->extinfo->frame);
             cxt->gc_selector    = LINP_SEL(mp->extinfo->frame);
         }
+        cxt->gc_onscreen    = !(mp->extinfo->flags&GR_VMODEF_MEMORY);
+        /* Why do we default to screen driver ?? */
         cxt->gc_onscreen    = TRUE;
         cxt->gc_lineoffset  = mp->lineoffset;
         cxt->gc_xcliphi     = cxt->gc_xmax = mp->width  - 1;
         cxt->gc_ycliphi     = cxt->gc_ymax = mp->height - 1;
         cxt->gc_driver      = &DRVINFO->sdriver;
-        return(TRUE);
+
+        res = TRUE;
+
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 0 = 0x%x\n",cxt->gc_baseaddr[0]));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 1 = 0x%x\n",cxt->gc_baseaddr[1]));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 2 = 0x%x\n",cxt->gc_baseaddr[2]));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 3 = 0x%x\n",cxt->gc_baseaddr[3]));
+done:
+        GRX_RETURN(res);
 }
 
 static int errhdlr(char *msg)
@@ -133,14 +202,24 @@ static int errhdlr(char *msg)
 
 int GrSetMode(GrGraphicsMode which,...)
 {
-        int  w,h,pl,vw = 0,vh = 0;
-        int  t = FALSE,noclear = FALSE;
-        long c;
+        int  w,h,pl,vw,vh;
+        int  t,noclear,res;
+        GrColor c;
         va_list ap;
+        GRX_ENTER();
+        pl = 0;
+        vw = 0;
+        vh = 0;
+        t = FALSE;
+        noclear = FALSE;
+        c = 0;
+        res = FALSE;
+        DBGPRINTF(DBG_SETMD,("Mode: %d\n",(int)which));
         if(DRVINFO->vdriver == NULL) {
             GrSetDriver(NULL);
             if(DRVINFO->vdriver == NULL) {
-                return(errhdlr("could not find suitable video driver"));
+                res = errhdlr("could not find suitable video driver");
+                goto done;
             }
         }
         va_start(ap,which);
@@ -182,8 +261,16 @@ int GrSetMode(GrGraphicsMode which,...)
           case GR_width_height_color_text:
             w = va_arg(ap,int);
             h = va_arg(ap,int);
-            c = va_arg(ap,long);
+            c = va_arg(ap,GrColor);
             t = TRUE;
+            break;
+          case GR_NC_width_height_bpp_text:
+            noclear = TRUE;
+          case GR_width_height_bpp_text:
+            w  = va_arg(ap,int);
+            h  = va_arg(ap,int);
+            pl = va_arg(ap,int);
+            t  = TRUE;
             break;
           case GR_NC_320_200_graphics:
             noclear = TRUE;
@@ -225,47 +312,70 @@ int GrSetMode(GrGraphicsMode which,...)
           case GR_width_height_color_graphics:
             w = va_arg(ap,int);
             h = va_arg(ap,int);
-            c = va_arg(ap,long);
+            c = va_arg(ap,GrColor);
+            break;
+          case GR_NC_width_height_bpp_graphics:
+            noclear = TRUE;
+          case GR_width_height_bpp_graphics:
+            w  = va_arg(ap,int);
+            h  = va_arg(ap,int);
+            pl = va_arg(ap,int);
             break;
           case GR_NC_custom_graphics:
             noclear = TRUE;
           case GR_custom_graphics:
             w  = va_arg(ap,int);
             h  = va_arg(ap,int);
-            c  = va_arg(ap,long);
+            c  = va_arg(ap,GrColor);
+            vw = va_arg(ap,int);
+            vh = va_arg(ap,int);
+            break;
+          case GR_NC_custom_bpp_graphics:
+            noclear = TRUE;
+          case GR_custom_bpp_graphics:
+            w  = va_arg(ap,int);
+            h  = va_arg(ap,int);
+            pl = va_arg(ap,int);
             vw = va_arg(ap,int);
             vh = va_arg(ap,int);
             break;
           default:
             va_end(ap);
-            return(errhdlr("unknown video mode"));
+            res = errhdlr("unknown video mode");
+            goto done;
         }
         va_end(ap);
-        for(pl = 1; (pl < 32) && ((1UL << pl) < (ulong)c); pl++);
+        if (c)
+          for(pl = 1; (pl < 32) && ((1UL << pl) < (GrColor)c); pl++) ;
         for( ; ; ) {
             GrContext     cxt;
             GrFrameDriver fdr;
             GrVideoMode  *mdp,vmd;
-            mdp = selectmode(DRVINFO->vdriver,w,h,pl,t,NULL);
-            if(!mdp) return(errhdlr("could not find suitable video mode"));
+            mdp = (DRVINFO->vdriver->selectmode)(DRVINFO->vdriver,w,h,pl,t,NULL);
+            if(!mdp) {
+                res = errhdlr("could not find suitable video mode");
+                goto done;
+            }
             sttcopy(&vmd,mdp);
             if((t || buildframedriver(&vmd,&fdr)) &&
                (t || buildcontext(&vmd,&fdr,&cxt)) &&
-               (vmd.extinfo->setup)(&vmd,noclear)) {
+               (*vmd.extinfo->setup)(&vmd,noclear)) {
                 if((!t) &&
                    ((vw > vmd.width) || (vh > vmd.height)) &&
                    (vmd.extinfo->setvsize != NULL) &&
                    (vmd.extinfo->scroll   != NULL)) {
-                    int w = vmd.width  = imax(vw,vmd.width);
-                    int h = vmd.height = imax(vh,vmd.height);
-                    if(!(*vmd.extinfo->setvsize)(&vmd,w,h,&vmd) ||
+                    int ww = vmd.width  = imax(vw,vmd.width);
+                    int hh = vmd.height = imax(vh,vmd.height);
+                    if(!(*vmd.extinfo->setvsize)(&vmd,ww,hh,&vmd) ||
                        !buildcontext(&vmd,&fdr,&cxt)) {
                         sttcopy(&vmd,mdp);
                         buildcontext(&vmd,&fdr,&cxt);
                         (*vmd.extinfo->setup)(&vmd,noclear);
                     }
                 }
+                DBGPRINTF(DBG_SETMD,("GrMouseUnInit ...\n"));
                 GrMouseUnInit();
+                DBGPRINTF(DBG_SETMD,("GrMouseUnInit done\n"));
                 DRVINFO->setbank    = (void (*)(int    ))_GrDummyFunction;
                 DRVINFO->setrwbanks = (void (*)(int,int))_GrDummyFunction;
                 DRVINFO->curbank    = (-1);
@@ -296,12 +406,25 @@ int GrSetMode(GrGraphicsMode which,...)
                 DRVINFO->mcode   = which;
                 DRVINFO->vposx   = 0;
                 DRVINFO->vposy   = 0;
+                DBGPRINTF(DBG_SETMD,("GrResetColors ...\n"));
                 GrResetColors();
-                if(fdr.init) (*fdr.init)(&DRVINFO->actmode);
-                if(DRVINFO->mdsethook) (*DRVINFO->mdsethook)();
-                return(TRUE);
+                DBGPRINTF(DBG_SETMD,("GrResetColors done\n"));
+                if(fdr.init) {
+                    DBGPRINTF(DBG_SETMD,("fdr.init ...\n"));
+                    (*fdr.init)(&DRVINFO->actmode);
+                    DBGPRINTF(DBG_SETMD,("fdr.init done\n"));
+                }
+                if(DRVINFO->mdsethook) {
+                    DBGPRINTF(DBG_SETMD,("mdsethook ...\n"));
+                    (*DRVINFO->mdsethook)();
+                    DBGPRINTF(DBG_SETMD,("mdsethook done\n"));
+                }
+                DBGPRINTF(DBG_SETMD,("GrSetMode complete\n"));
+                res = TRUE;
+                goto done;
             }
             mdp->present = FALSE;
         }
+done:   GRX_RETURN(res);
 }
 

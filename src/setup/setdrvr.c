@@ -8,11 +8,11 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "grdriver.h"
 #include "libgrx.h"
+#include "grdriver.h"
 #include "arith.h"
-#include "memfill.h"
 #include "memcopy.h"
+#include "memfill.h"
 
 static char *near nxtoken(char *p,char *token)
 {
@@ -34,7 +34,7 @@ int GrSetDriver(char *drvspec)
             name[0] = '\0';
             while(p = nxtoken(p,t),t[0] != '\0') {
                 if(strlen(t) == 2) {
-#                    define CH16(c1,c2)  (((c1) << 8) | (c2))
+#                   define CH16(c1,c2)  (((c1) << 8) | (c2))
                     void *oaddr = NULL;
                     int  cf = FALSE;
                     switch(CH16(tolower(t[0]),tolower(t[1]))) {

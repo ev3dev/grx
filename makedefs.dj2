@@ -1,14 +1,17 @@
-# Global settings for DJGPP v2 makefile's
+# Global settings for DJGPP v2's makefile
 # >>>>> Also check makedefs.gnu !
 
 # If you don't have `djp.exe' compressor
 # enable the echo line and disable djp line.
-#EXE_COMPRESS = -echo
-EXE_COMPRESS = djp
+EXE_COMPRESS = -echo
+#EXE_COMPRESS = djp
 
+# Put libgrx20.a to lib/dj2
+GRX_LIB_SUBDIR=dj2
 
 # Default compiler switches.  In djgpp.env. under [make],
-# add the line "BUTT=-m386" if that is what your target.
+# add the line "BUTT=-m386", if that is your target.
 # At present gcc supports `-m386' and `-m486'.
 #CCOPT += $(BUTT)
+#CCOPT += -m486
 

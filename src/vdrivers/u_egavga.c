@@ -5,8 +5,8 @@
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
  **/
 
-#include "grdriver.h"
 #include "libgrx.h"
+#include "grdriver.h"
 #include "int86.h"
 #include "vesa.h"
 #include "memfill.h"
@@ -19,7 +19,7 @@ int _GrViDrvDetectEGAVGA(void)
         IREG_AX(r) = 0x1007;
         IREG_BX(r) = 0xff00;
         int10(&r);
-        return(((uchar)IREG_BH(r) != (uchar)0xff) ? TRUE : FALSE);
+        return ( (unsigned char)IREG_BH(r) != (unsigned char)0xff );
 }
 
 static int detectvga(void)
@@ -32,7 +32,8 @@ static int detectvga(void)
         IREG_CX(r) = 0xffff;
         IREG_DX(r) = 0xffff;
         int10(&r);
-        return(((ushort)(IREG_CX(r) & IREG_DX(r)) != (ushort)0xffff) ? TRUE : FALSE);
+        return( (   (unsigned short)(IREG_CX(r) & IREG_DX(r))
+                 != (unsigned short)0xffff                  ) ? TRUE : FALSE);
 }
 
 int _GrViDrvDetectEGA(void)
@@ -110,32 +111,32 @@ void _GrViDrvResetEGAVGA(void)
 }
 
 GrVideoModeExt _GrViDrvEGAVGAtextModeExt = {
-    GR_frameText,                        /* frame driver */
-    NULL,                                /* frame driver override */
-    MK_FP(0xb800,0),                        /* frame buffer address */
+    GR_frameText,                       /* frame driver */
+    NULL,                               /* frame driver override */
+    MK_FP(0xb800,0),                    /* frame buffer address */
     { 0, 0, 0 },                        /* color precisions */
     { 0, 0, 0 },                        /* color component bit positions */
-    0,                                        /* mode flag bits */
-    _GrViDrvSetEGAVGAmode,                /* mode set */
-    NULL,                                /* virtual size set */
-    NULL,                                /* virtual scroll */
-    NULL,                                /* bank set function */
-    NULL,                                /* double bank set function */
+    0,                                  /* mode flag bits */
+    _GrViDrvSetEGAVGAmode,              /* mode set */
+    NULL,                               /* virtual size set */
+    NULL,                               /* virtual scroll */
+    NULL,                               /* bank set function */
+    NULL,                               /* double bank set function */
     NULL                                /* color loader */
 };
 
 GrVideoModeExt _GrViDrvEGAVGAcustomTextModeExt = {
-    GR_frameText,                        /* frame driver */
-    NULL,                                /* frame driver override */
-    MK_FP(0xb800,0),                        /* frame buffer address */
+    GR_frameText,                       /* frame driver */
+    NULL,                               /* frame driver override */
+    MK_FP(0xb800,0),                    /* frame buffer address */
     { 0, 0, 0 },                        /* color precisions */
     { 0, 0, 0 },                        /* color component bit positions */
-    0,                                        /* mode flag bits */
-    _GrViDrvSetEGAVGAcustomTextMode,        /* mode set */
-    NULL,                                /* virtual size set */
-    NULL,                                /* virtual scroll */
-    NULL,                                /* bank set function */
-    NULL,                                /* double bank set function */
+    0,                                  /* mode flag bits */
+    _GrViDrvSetEGAVGAcustomTextMode,    /* mode set */
+    NULL,                               /* virtual size set */
+    NULL,                               /* virtual scroll */
+    NULL,                               /* bank set function */
+    NULL,                               /* double bank set function */
     NULL                                /* color loader */
 };
 

@@ -5,8 +5,8 @@
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
  **/
 
-#include "grdriver.h"
 #include "libgrx.h"
+#include "grdriver.h"
 
 GrFrameDriver *_GrFindFrameDriver(GrFrameMode mode)
 {

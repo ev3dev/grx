@@ -9,8 +9,8 @@
 #pragma  inline
 #endif
 
-#include "grdriver.h"
 #include "libgrx.h"
+#include "grdriver.h"
 #include "arith.h"
 #include "mempeek.h"
 #include "memfill.h"
@@ -19,42 +19,52 @@
 #error Mismatching byte order between ram and video ram !
 #endif
 
-static
-#ifdef __GNUC__
-inline
-#endif
-long readpixel(GrFrame *c,int x,int y)
+/* frame offset address calculation */
+#define FOFS(x,y,lo) umuladd32((y),(lo),((x) << 1))
+
+
+static INLINE
+GrColor readpixel(GrFrame *c,int x,int y)
 {
-        long offs = umul32(y,SCRN->gc_lineoffset) + (x << 1);
+        GR_int32u offs;
+        GRX_ENTER();
+        offs = FOFS(x,y,SCRN->gc_lineoffset);
         CHKBANK(BANKNUM(offs));
         setup_far_selector(SCRN->gc_selector);
-        return((ushort)peek_w_f(&SCRN->gc_baseaddr[0][BANKPOS(offs)]));
+        GRX_RETURN((GR_int16u)peek_w_f(&SCRN->gc_baseaddr[0][BANKPOS(offs)]));
 }
 
-static
-#ifdef __GNUC__
-inline
-#endif
-void drawpixel(int x,int y,long color)
+
+static INLINE
+void drawpixel(int x,int y,GrColor color)
 {
-        long offs = umul32(y,CURC->gc_lineoffset) + (x << 1);
-        char far *ptr = &CURC->gc_baseaddr[0][BANKPOS(offs)];
+        GR_int32u offs;
+        char far *ptr;
+        GRX_ENTER();
+        offs = FOFS(x,y,CURC->gc_lineoffset);
+        ptr  = &CURC->gc_baseaddr[0][BANKPOS(offs)];
         CHKBANK(BANKNUM(offs));
         setup_far_selector(CURC->gc_selector);
         switch(C_OPER(color)) {
-            case C_XOR: poke_w_f_xor(ptr,(ushort)color); break;
-            case C_OR:  poke_w_f_or( ptr,(ushort)color); break;
-            case C_AND: poke_w_f_and(ptr,(ushort)color); break;
-            default:    poke_w_f(    ptr,(ushort)color); break;
+            case C_XOR: poke_w_f_xor(ptr,(GR_int16u)color); break;
+            case C_OR:  poke_w_f_or( ptr,(GR_int16u)color); break;
+            case C_AND: poke_w_f_and(ptr,(GR_int16u)color); break;
+            default:    poke_w_f(    ptr,(GR_int16u)color); break;
         }
+        GRX_LEAVE();
 }
 
-static void drawhline(int x,int y,int w,long color)
+
+static void drawhline(int x,int y,int w,GrColor color)
 {
-        long offs = umul32(y,CURC->gc_lineoffset) + (x << 1);
-        int  cval = freplicate_w2l((int)color);
-        uint w1,w2 = BANKLFT(offs) >> 1;
+        GR_int32u offs;
+        GR_repl cval;
+        unsigned int w1,w2;
+        GRX_ENTER();
+        offs = FOFS(x,y,CURC->gc_lineoffset);
+        w2  = BANKLFT(offs) >> 1;
         w2 = w - (w1 = umin(w,w2));
+        cval = freplicate_w(color);
         setup_far_selector(CURC->gc_selector);
         do {
             char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
@@ -69,37 +79,49 @@ static void drawhline(int x,int y,int w,long color)
             w1 = w2;
             w2 = 0;
         } while(w1 != 0);
+        GRX_LEAVE();
 }
 
-static void drawvline(int x,int y,int h,long color)
+
+static void drawvline(int x,int y,int h,GrColor color)
 {
-        uint lwdt = CURC->gc_lineoffset;
-        long offs = umul32(y,lwdt) + (x << 1);
+        unsigned int lwdt;
+        GR_int32u offs;
+        GRX_ENTER();
+        lwdt = CURC->gc_lineoffset;
+        offs = FOFS(x,y,lwdt);
         setup_far_selector(CURC->gc_selector);
         do {
             char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
-            uint h1 = BANKLFT(offs) / lwdt;
+            unsigned int h1 = BANKLFT(offs) / lwdt;
             h -= (h1 = umin(h,umax(h1,1)));
             CHKBANK(BANKNUM(offs));
             offs += (h1 * lwdt);
             switch(C_OPER(color)) {
-                case C_XOR: colfill_w_f_xor(pp,lwdt,(int)color,h1); break;
-                case C_OR:  colfill_w_f_or( pp,lwdt,(int)color,h1); break;
-                case C_AND: colfill_w_f_and(pp,lwdt,(int)color,h1); break;
-                default:    colfill_w_f(    pp,lwdt,(int)color,h1); break;
+                case C_XOR: colfill_w_f_xor(pp,lwdt,(GR_int16u)color,h1); break;
+                case C_OR:  colfill_w_f_or( pp,lwdt,(GR_int16u)color,h1); break;
+                case C_AND: colfill_w_f_and(pp,lwdt,(GR_int16u)color,h1); break;
+                default:    colfill_w_f(    pp,lwdt,(GR_int16u)color,h1); break;
             }
         } while(h != 0);
+        GRX_LEAVE();
 }
 
-static void drawblock(int x,int y,int w,int h,long color)
+
+static void drawblock(int x,int y,int w,int h,GrColor color)
 {
-        long offs = umul32(y,CURC->gc_lineoffset) + (x << 1);
-        int  cval = freplicate_w2l((int)color);
-        int  copr = C_OPER(color);
-        int  skip = CURC->gc_lineoffset - (w << 1);
+        GR_int32u offs;
+        GR_repl cval;
+        int copr, skip;
+        GRX_ENTER();
+        skip = CURC->gc_lineoffset;
+        offs = FOFS(x,y,skip);
+        skip -= w << 1;
+        cval = freplicate_w(color);
+        copr = C_OPER(color);
         setup_far_selector(CURC->gc_selector);
         do {
-            uint w1,w2 = BANKLFT(offs) >> 1;
+            unsigned int w1,w2 = BANKLFT(offs) >> 1;
             w2 = w - (w1 = umin(w,w2));
             do {
                 char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
@@ -116,9 +138,17 @@ static void drawblock(int x,int y,int w,int h,long color)
             } while(w1 != 0);
             offs += skip;
         } while(--h != 0);
+        GRX_LEAVE();
 }
 
-static void drawline(int x,int y,int dx,int dy,long color)
+
+#if !defined(__WATCOMC__) && (defined(__GO32__) || defined(__TURBOC__))
+/* The VGA banked frame buffer must start on a 64k boundary
+** for this optimized assembler code.
+** Linux: mmap may place the frame buffer on a 4k boundary :(
+** Watcom C++: Can't use ES register :(
+*/
+static void drawline(int x,int y,int dx,int dy,GrColor color)
 {
         struct {
             int errsub;         /* subtract from error term */
@@ -127,54 +157,56 @@ static void drawline(int x,int y,int dx,int dy,long color)
             int offset2;        /* add to pointer if carry / banking dir */
         } lndata;
         long offs;
-        int  npts,error,xstep = 2;
+        int  npts,error,xstep;
         char far *ptr;
+
+        GRX_ENTER();
 
 #       ifdef __GNUC__
 #       ifdef __i386__
-#       define ASM_LINE1(OPC) asm volatile("
-            .align 2,0x90
-         0: "#OPC"w %6,"I386_GCC_FAR_SELECTOR"(%0)
-            subl %7,%2
-            jb   1f
-            subw $2,%3
-            jb   2f
-            decl %1
-            jne  0b
-            jmp  4f
-            .align 2,0x90
-         1: addl 4  + %7,%2
-            addw 12 + %7,%3
-            jb   3f
-            decl %1
-            jne  0b
-            jmp  4f
-         2: negl 8 + %7
-         3: decl %1
-         4: "                                                     \
+#       define ASM_LINE1(OPC) asm volatile(""                     \
+        "   .align 2,0x90                                 \n"     \
+        "0: "#OPC"w %6,"I386_GCC_FAR_SELECTOR"(%0)        \n"     \
+        "   subl %7,%2                                    \n"     \
+        "   jb   1f                                       \n"     \
+        "   subw $2,%3                                    \n"     \
+        "   jb   2f                                       \n"     \
+        "   decl %1                                       \n"     \
+        "   jne  0b                                       \n"     \
+        "   jmp  4f                                       \n"     \
+        "   .align 2,0x90                                 \n"     \
+        "1: addl 4  + %7,%2                               \n"     \
+        "   addw 12 + %7,%3                               \n"     \
+        "   jb   3f                                       \n"     \
+        "   decl %1                                       \n"     \
+        "   jne  0b                                       \n"     \
+        "   jmp  4f                                       \n"     \
+        "2: negl 8 + %7                                   \n"     \
+        "3: decl %1                                       \n"     \
+        "4: "                                                     \
          :  "=r" (ptr),                "=r" (npts), "=r" (error)  \
          :  "0"  ((short)(long)(ptr)), "1"  (npts), "2"  (error), \
             "r"  ((short)(color)),     "o"  (lndata)              \
         )
-#       define ASM_LINE2(OPC) asm volatile("
-            .align 2,0x90
-         0: "#OPC"w %6,"I386_GCC_FAR_SELECTOR"(%0)
-            subl %7,%2
-            jb   1f
-            addw 8 + %7,%3
-            jb   2f
-            decl %1
-            jne  0b
-            jmp  3f
-            .align 2,0x90
-         1: addl 4  + %7,%2
-            addw 12 + %7,%3
-            jb   2f
-            decl %1
-            jne  0b
-            jmp  3f
-         2: decl %1
-         3: "                                                     \
+#       define ASM_LINE2(OPC) asm volatile(""                     \
+        "   .align 2,0x90                                 \n"     \
+        "0: "#OPC"w %6,"I386_GCC_FAR_SELECTOR"(%0)        \n"     \
+        "   subl %7,%2                                    \n"     \
+        "   jb   1f                                       \n"     \
+        "   addw 8 + %7,%3                                \n"     \
+        "   jb   2f                                       \n"     \
+        "   decl %1                                       \n"     \
+        "   jne  0b                                       \n"     \
+        "   jmp  3f                                       \n"     \
+        "   .align 2,0x90                                 \n"     \
+        "1: addl 4  + %7,%2                               \n"     \
+        "   addw 12 + %7,%3                               \n"     \
+        "   jb   2f                                       \n"     \
+        "   decl %1                                       \n"     \
+        "   jne  0b                                       \n"     \
+        "   jmp  3f                                       \n"     \
+        "2: decl %1                                       \n"     \
+        "3: "                                                     \
          :  "=r" (ptr),                "=r" (npts), "=r" (error)  \
          :  "0"  ((short)(long)(ptr)), "1"  (npts), "2"  (error), \
             "r"  ((short)(color)),     "o"  (lndata)              \
@@ -247,8 +279,10 @@ static void drawline(int x,int y,int dx,int dy,long color)
         if(dx < 0) {
             xstep = (-2);
             dx    = (-dx);
-        }
-        offs = umul32(y,CURC->gc_lineoffset) + (x << 1);
+        } else
+            xstep = 2;
+
+        offs = FOFS(x,y,CURC->gc_lineoffset);
         ptr  = &CURC->gc_baseaddr[0][BANKPOS(offs)];
         CHKBANK(BANKNUM(offs));
         setup_far_selector(CURC->gc_selector);
@@ -268,7 +302,7 @@ static void drawline(int x,int y,int dx,int dy,long color)
                     case C_AND: ASM_LINE1(and); break;
                     default:    ASM_LINE1(mov); break;
                 }
-                if(npts == 0) return;
+                if(npts == 0) goto done;
                 SETBANK(DRVINFO->curbank + lndata.offset1);
                 goto again_nonlinear;
             }
@@ -288,19 +322,29 @@ static void drawline(int x,int y,int dx,int dy,long color)
             case C_AND: ASM_LINE2(and); break;
             default:    ASM_LINE2(mov); break;
         }
-        if(npts == 0) return;
+        if(npts == 0) goto done;
         SETBANK(DRVINFO->curbank + 1);
         goto again_linear;
+  done:
+        GRX_LEAVE();
 }
+#else
+static
+#include "fdrivers/generic/line.c"
+#endif
+
 
 static
 #include "fdrivers/generic/bitmap.c"
 
+
 static
 #include "fdrivers/generic/pattern.c"
 
-static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,long op)
+
+static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
+        GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
             dst,dx,dy,
             src,sx,sy,
@@ -313,10 +357,13 @@ static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
             (w << 1),h,
             op
         );
+        GRX_LEAVE();
 }
 
-static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,long op)
+
+static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
+        GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
             dst,dx,dy,
             src,sx,sy,
@@ -329,10 +376,13 @@ static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
             (w << 1),h,
             op
         );
+        GRX_LEAVE();
 }
 
-static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,long op)
+
+static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
+        GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
             dst,dx,dy,
             src,sx,sy,
@@ -345,7 +395,9 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
             (w << 1),h,
             op
         );
+        GRX_LEAVE();
 }
+
 
 GrFrameDriver _GrFrameDriverSVGA16 = {
     GR_frameSVGA16,             /* frame mode */
@@ -366,6 +418,7 @@ GrFrameDriver _GrFrameDriverSVGA16 = {
     drawpattern,
     bitblt,
     bltv2r,
-    bltr2v
+    bltr2v,
+    _GrFrDrvGenericGetIndexedScanline,
+    _GrFrDrvGenericPutScanline
 };
-

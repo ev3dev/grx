@@ -9,7 +9,22 @@ include  ../makedefs.gnu
 include  ../makedefs.dj2
 
 INCDIR=  -I../include
-GRX20 = ../lib/libgrx20.a
+GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+
+ADDON_LIBS=-lpc
+ifeq ($(HAVE_LIBTIFF),y)
+  ADDON_LIBS += -ltiff
+endif
+
+ifeq ($(HAVE_LIBJPEG),y)
+  ADDON_LIBS += -ljpeg
+endif
+
+ifeq ($(NEED_ZLIB),y)
+  ADDON_LIBS += -lz
+endif
+
+LIBS= $(GRX20) $(ADDON_LIBS)
 
 PROGS=                  \
 	arctest.exe     \
@@ -20,6 +35,8 @@ PROGS=                  \
 	curstest.exe    \
 	fnt2c.exe       \
 	fonttest.exe    \
+	imgtest.exe     \
+	keys.exe        \
 	life.exe        \
 	linetest.exe    \
 	modetest.exe    \
@@ -29,6 +46,7 @@ PROGS=                  \
 	rgbtest.exe     \
 	scroltst.exe    \
 	speedtst.exe    \
+	textpatt.exe    \
 	winclip.exe     \
 	wintest.exe
 
@@ -44,8 +62,8 @@ all: $(PROGS) ../bin/modetest.exe ../bin/fnt2c.exe
 	copy fnt2c.exe ..\bin\fnt2c.exe
 	$(EXE_COMPRESS) ../bin/fnt2c.exe
 
-.o.exe:
-	$(CC) $(LDOPT) -o $*.exe $*.o $(GRX20) -lpc -lm
+$(PROGS): %.exe : %.o $(GRX20)
+	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm
 
 .c.o:
 	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
@@ -60,6 +78,4 @@ clean:
 depend.new:
 	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:.exe=.c) >depend.new
 
-$(PROGS): %.exe : %.o $(GRX20)
-
-include depend.dj2
+include depend.gnu

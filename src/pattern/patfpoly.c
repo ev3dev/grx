@@ -29,14 +29,10 @@
 
 void GrPatternFilledPolygon(int n,int pt[][2],GrPattern *p)
 {
-        GrFiller *grf = (GrFiller *)malloc(sizeof(GrFiller));
         GrFillArg fa;
 
-        grf->pixel = _GrDrawPatternedPixel;
-        grf->line  = _GrDrawPatternedLine;
-        grf->scan  = _GrFillPatternedScanLine;
         fa.p = p;
-        if(n <= 3) _GrScanConvexPoly(n,pt,grf,fa);
-        else _GrScanPolygon(n,pt,grf,fa);
+        if(n <= 3) _GrScanConvexPoly(n,pt,&_GrPatternFiller,fa);
+        else       _GrScanPolygon(   n,pt,&_GrPatternFiller,fa);
 }
 

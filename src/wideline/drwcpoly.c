@@ -127,7 +127,7 @@ static void genrect(int p1[2],int p2[2],int w,int rect[4][2])
            wy = w;
         }
         else {
-            ulong minerr,error = ~0L,w2 = imul32(w,w);
+            unsigned long minerr,error = ~0UL,w2 = imul32(w,w);
             int mindelta = umin(iabs(dx),iabs(dy));
             int maxdelta = umax(iabs(dx),iabs(dy));
             wx1 = w/2;
@@ -171,7 +171,7 @@ typedef struct {
     int       plength;          /* total length of pattern in pixels */
     int       ppos;             /* current pattern position (modulo plength) */
     int       on;               /* is the pattern currently on ? */
-    uchar    *patt;             /* the pattern bits */
+    unsigned char *patt;        /* the pattern bits */
     GrFiller *f;                /* the filler functions */
     GrFillArg c;                /* the filler argument */
 } linepatt;

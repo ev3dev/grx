@@ -7,17 +7,17 @@
 
 #include "libgrx.h"
 
-void (GrPlotNC)(int x,int y,long c)
+void (GrPlotNC)(int x,int y,GrColor c)
 {
         GrPlotNC(x,y,c);
 }
 
-long (GrPixelNC)(int x,int y)
+GrColor (GrPixelNC)(int x,int y)
 {
         return(GrPixelNC(x,y));
 }
 
-long (GrPixelCNC)(GrContext *c,int x,int y)
+GrColor (GrPixelCNC)(GrContext *c,int x,int y)
 {
         return(GrPixelCNC(c,x,y));
 }

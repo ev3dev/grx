@@ -13,11 +13,19 @@
 #endif
 
 /*
+** The following definitions shouldn't be used in portable
+** or binary distributed programs for compatibility with
+** future versions of GRX
+*/
+#ifdef USE_GRX_INTERNAL_DEFINITIONS
+
+/*
  * Video mode flag bits (in the 'GrVideoModeExt' structure)
  */
 #define GR_VMODEF_LINEAR        1       /* uses linear memory mapping */
 #define GR_VMODEF_ACCEL         2       /* it is an accelerated mode */
 #define GR_VMODEF_FAST_SVGA8    4       /* use faster mixed linear-planar access */
+#define GR_VMODEF_MEMORY        8       /* virtual screen, memory only mode */
 
 extern GrFrameDriver
 /*
@@ -87,6 +95,8 @@ _GrVideoDriverXWIN,                     /* X11 interface */
 _GrVideoDriverSVGALIB,                  /* Linux SVGALIB interface */
 #endif
 #endif
+_GrDriverMEM,                           /* memory screen driver */
+
 /*
  * This is a NULL-terminated table of video driver descriptor pointers. Users
  * can provide their own table with only the desired (or additional) drivers.
@@ -96,16 +106,38 @@ _GrVideoDriverSVGALIB,                  /* Linux SVGALIB interface */
 *_GrVideoDriverTable[];
 
 /*
+ * frame driver function types used inside GRX
+ */
+typedef GrColor  (*_GR_readPix)(GrFrame *,int,int);
+typedef void     (*_GR_drawPix)(int,int,GrColor);
+typedef void     (*_GR_blitFunc)(GrFrame *dst,int dx,int dy,
+                                 GrFrame *src,int  x,int  y,
+                                 int w,int h,GrColor op);
+typedef GrColor far *(*_GR_getIndexedScanline)(GrFrame *c,int x,int y,
+                                               int w, int *indx);
+typedef void     (*_GR_putScanline)(int x,int y,int w,
+                                    const GrColor far *scl,GrColor op);
+
+/*
  * Frame driver utility functions
  */
-void _GrFrDrvGenericBitBlt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long op);
-void _GrFrDrvPackedBitBltR2R(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long op);
-void _GrFrDrvPackedBitBltR2V(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long op);
-void _GrFrDrvPackedBitBltV2R(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long op);
-void _GrFrDrvPackedBitBltV2V(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long op);
-void _GrFrDrvPackedBitBltR2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long op);
-void _GrFrDrvPackedBitBltV2R_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long op);
-void _GrFrDrvPackedBitBltV2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long op);
+void _GrFrDrvGenericBitBlt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
+void _GrFrDrvPackedBitBltR2R(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
+void _GrFrDrvPackedBitBltR2V(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
+void _GrFrDrvPackedBitBltV2R(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
+void _GrFrDrvPackedBitBltV2V(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
+void _GrFrDrvPackedBitBltR2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
+void _GrFrDrvPackedBitBltV2R_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
+void _GrFrDrvPackedBitBltV2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
+
+void _GrFrDrvGenericPutScanline(int x,int y,int w,const GrColor far *scl, GrColor op );
+GrColor *_GrFrDrvGenericGetIndexedScanline(GrFrame *c,
+                                           int x,int y,int w,
+                                           int *indx         );
+
+void _GrFrDrvGenericStretchBlt(GrFrame *dst,int dx,int dy,int dw,int dh,
+                               GrFrame *src,int sx,int sy,int sw,int sh,
+                               GrColor op);
 
 /*
  * Video driver utility functions
@@ -139,6 +171,11 @@ void _GrViDrvSetDACshift(int shift);
  */
 extern GrVideoModeExt _GrViDrvEGAVGAtextModeExt;
 extern GrVideoModeExt _GrViDrvEGAVGAcustomTextModeExt;
+
+GrVideoMode * _gr_selectmode(GrVideoDriver *drv,int w,int h,int bpp,
+                             int txt,unsigned int *ep);
+
+#endif /* USE_GRX_INTERNAL_DEFINITIONS */
 
 #endif /* whole file */
 

@@ -9,8 +9,8 @@
 
 #include <string.h>
 
-#include "grdriver.h"
 #include "libgrx.h"
+#include "grdriver.h"
 #include "arith.h"
 #include "int86.h"
 #include "memfill.h"
@@ -18,34 +18,40 @@
 #include "ioport.h"
 
 /* so that GCC in its infinite wisdom does not optimize things away.. */
-static volatile uchar junk;
+static volatile unsigned char junk;
 
 static int DACshift = 2;
 
 void _GrViDrvSetDACshift(int shift) {
+  GRX_ENTER();
   DACshift = shift;
+  GRX_LEAVE();
 }
 
 void _GrViDrvLoadColorVGA8(int c,int r,int g,int b) {
+  GRX_ENTER();
         int_disable();
         outport_b(0x3c8,c);
         junk += inport_b(0x80);
-        outport_b(0x3c9,((uchar)r >> DACshift));
+        outport_b(0x3c9,((unsigned char)r >> DACshift));
         junk += inport_b(0x80);
-        outport_b(0x3c9,((uchar)g >> DACshift));
+        outport_b(0x3c9,((unsigned char)g >> DACshift));
         junk += inport_b(0x80);
-        outport_b(0x3c9,((uchar)b >> DACshift));
+        outport_b(0x3c9,((unsigned char)b >> DACshift));
         int_enable();
+  GRX_LEAVE();
 }
 
 void _GrViDrvLoadColorVGA4(int c,int r,int g,int b)
 {
         Int86Regs rg;
+  GRX_ENTER();
         sttzero(&rg);
         IREG_AX(rg) = 0x1000;
         IREG_BX(rg) = (c & 0x0f) | ((c & 0x0f) << 8);
         int10(&rg);
         _GrViDrvLoadColorVGA8(c,r,g,b);
+  GRX_LEAVE();
 }
 
 static GrVideoModeExt gr1ext = {
@@ -96,8 +102,8 @@ static GrVideoModeExt gr8ext = {
 /* ==== tweaked planar 256 color graphics modes (MODE X) ==== */
 
 static struct xtweakdef {
-    uchar  miscreg;
-    uchar  crtc_regs[24];
+    unsigned char miscreg;
+    unsigned char crtc_regs[24];
 } xtweaks[] = {
     {                                   /* 320x240 */
         0xe3,
@@ -136,10 +142,12 @@ static struct xtweakdef {
 
 static int setmodex(GrVideoMode *mp,int noclear)
 {
-        if(((uint)mp->privdata < itemsof(xtweaks)) &&
+  int res = FALSE;
+  GRX_ENTER();
+        if(((unsigned int)mp->privdata < itemsof(xtweaks)) &&
            (_GrViDrvSetEGAVGAmode(mp,noclear) != FALSE)) {
             struct xtweakdef *tp = &xtweaks[mp->privdata];
-            uint i;
+            unsigned int i;
             /* turn off chain4 */
             outport_w(0x3c4,0x604);
             if(!noclear) {
@@ -164,9 +172,10 @@ static int setmodex(GrVideoMode *mp,int noclear)
                 outport_w(0x3d4,((tp->crtc_regs[i] << 8) | i));
             }
             int_enable();
-            return(TRUE);
+            res = TRUE;
         }
-        return(FALSE);
+  GRX_LEAVE();
+  return(res);
 }
 
 static GrVideoModeExt gr8xext = {
@@ -207,9 +216,11 @@ static unsigned short ttweaks[][16] = {
 
 static int set_tweaked_text(GrVideoMode *mp,int noclear)
 {
-        if(((uint)mp->privdata < itemsof(ttweaks)) &&
+  int res = FALSE;
+  GRX_ENTER();
+        if(((unsigned int)mp->privdata < itemsof(ttweaks)) &&
            (_GrViDrvSetEGAVGAmode(mp,noclear) != FALSE)) {
-            uint i;
+            unsigned int i;
             /* load 8x14 font for 34 line modes */
             if(mp->height == 34) {
                 Int86Regs r;
@@ -241,9 +252,10 @@ static int set_tweaked_text(GrVideoMode *mp,int noclear)
             poke_b_f(0x484,(mp->height - 1));
             poke_w_f(0x44c,(mp->width * mp->height * 2));
             int_enable();
-            return(TRUE);
+            res = TRUE;
         }
-        return(FALSE);
+  GRX_LEAVE();
+  return res;
 }
 
 static GrVideoModeExt twtext = {
@@ -292,6 +304,8 @@ static GrVideoMode modes[] = {
 
 static int init(char *options)
 {
+  int res = FALSE;
+  GRX_ENTER();
         if(_GrViDrvInitEGAVGA(options)) {
             if(options && (strncmp(options,"svga",4) == 0)) {
                 int svgamode;
@@ -304,9 +318,10 @@ static int init(char *options)
                     }
                 }
             }
-            return(TRUE);
+            res = TRUE;
         }
-        return(FALSE);
+  GRX_LEAVE();
+  return res;
 }
 
 GrVideoDriver _GrVideoDriverSTDVGA = {
@@ -317,6 +332,8 @@ GrVideoDriver _GrVideoDriverSTDVGA = {
     itemsof(modes),                     /* # of modes */
     _GrViDrvDetectVGA,                  /* detection routine */
     init,                               /* initialization routine */
-    _GrViDrvResetEGAVGA                 /* reset routine */
+    _GrViDrvResetEGAVGA,                /* reset routine */
+    _gr_selectmode,                     /* standard mode select routine */
+    0                                   /* no additional capabilities */
 };
 

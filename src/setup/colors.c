@@ -6,8 +6,8 @@
  **/
 
 #include "libgrx.h"
-#include "memfill.h"
 #include "memcopy.h"
+#include "memfill.h"
 
 static void (*DACload)(int c,int r,int g,int b) = NULL;
 
@@ -49,6 +49,15 @@ void GrRefreshColors(void)
         }
 }
 
+/* _GR_firstFreeColor is normally zero but some systems may protect some
+** colors for other programs (eg. X11). In this case we don't touch them.
+** These variables are only used in palette modes                        */
+#ifdef __XWIN__
+int _GR_firstFreeColor =  0;
+int _GR_lastFreeColor  = -1;
+#else
+#define _GR_firstFreeColor 0
+#endif
 void GrResetColors(void)
 {
 #       define NSAVED 16
@@ -56,12 +65,12 @@ void GrResetColors(void)
         static int  firsttime = TRUE;
         int i;
         if(firsttime) {
-            memcopy(infosave,CLRINFO,sizeof(infosave));
+            memcpy(infosave,CLRINFO,sizeof(infosave));
             firsttime = FALSE;
         }
         sttzero(CLRINFO);
         if(DRVINFO->actmode.extinfo->mode == GR_frameText) {
-            memcopy(CLRINFO,infosave,sizeof(infosave));
+            memcpy(CLRINFO,infosave,sizeof(infosave));
             return;
         }
         DACload = DRVINFO->actmode.extinfo->loadcolor;
@@ -75,10 +84,15 @@ void GrResetColors(void)
         switch(DRVINFO->actmode.bpp) {
           case 4:
           case 8:
-            CLRINFO->nfree = CLRINFO->ncolors;
+#ifdef __XWIN__
+            if (_GR_lastFreeColor >= _GR_firstFreeColor)
+              CLRINFO->nfree = _GR_lastFreeColor - _GR_firstFreeColor + 1;
+            else
+#endif
+              CLRINFO->nfree = CLRINFO->ncolors - _GR_firstFreeColor;
             for(i = 0; i < NSAVED; i++) {
                 loadcolor(
-                    (int)(i),
+                    (i + _GR_firstFreeColor),
                     ((struct _GR_colorInfo *)(infosave))->ctable[i].r,
                     ((struct _GR_colorInfo *)(infosave))->ctable[i].g,
                     ((struct _GR_colorInfo *)(infosave))->ctable[i].b
@@ -95,7 +109,7 @@ void GrResetColors(void)
 void GrSetRGBcolorMode(void)
 {
         if(!CLRINFO->RGBmode) {
-            unsigned long c;
+            GrColor c;
             switch(CLRINFO->ncolors) {
                 case 16L:  setbits("\1\2\1","\3\1\0"); break;
                 case 256L: setbits("\3\3\2","\5\2\0"); break;
@@ -107,44 +121,60 @@ void GrSetRGBcolorMode(void)
             CLRINFO->white   = CLRINFO->ncolors - 1L;
             for(c = 0; c < CLRINFO->ncolors; c++) loadcolor(
                 (int)(c),
-                GrRGBcolorRed(c),
-                GrRGBcolorGreen(c),
-                GrRGBcolorBlue(c)
+                (int)GrRGBcolorRed(c),
+                (int)GrRGBcolorGreen(c),
+                (int)GrRGBcolorBlue(c)
             );
         }
 }
 
 #define ROUNDCOLORCOMP(x,n) (                                   \
-    ((uint)(x) >= CLRINFO->mask[n]) ?                           \
+    ((unsigned int)(x) >= CLRINFO->mask[n]) ?                   \
         CLRINFO->mask[n] :                                      \
         (((x) + CLRINFO->round[n]) & CLRINFO->mask[n])          \
 )
 
-long GrAllocColor(int r,int g,int b)
+GrColor GrAllocColor(int r,int g,int b)
 {
+        GrColor res;
+
+        GRX_ENTER();
+        res = GrNOCOLOR;
         r = ROUNDCOLORCOMP(r,0);
         g = ROUNDCOLORCOMP(g,1);
         b = ROUNDCOLORCOMP(b,2);
         if(CLRINFO->RGBmode) {
-            return(GrBuildRGBcolorT(r,g,b));
+            res = GrBuildRGBcolorT(r,g,b);
         }
         else {
-            int i,minerr = 10000;
-            int free = (-1),allfree = (-1),best = (-1);
+            GR_int32u minerr = 1000;
+            int i;
+            int free_ = (-1),allfree = (-1),best = (-1);
             int ndef = (int)CLRINFO->ncolors - (int)CLRINFO->nfree;
+            DBGPRINTF(DBG_COLOR,("Allocating color: r=%d, g=%d, b=%d\n",r,g,b));
             for(i = 0; i < (int)CLRINFO->ncolors; i++) {
                 if(CLRINFO->ctable[i].defined) {
                     if(!CLRINFO->ctable[i].writable) {
-                        int err =
-                            iabs(r - CLRINFO->ctable[i].r) +
-                            iabs(g - CLRINFO->ctable[i].g) +
-                            iabs(b - CLRINFO->ctable[i].b);
+                        GR_int32u err = 0;
+                        GR_int16u colerr;
+                        colerr = iabs(r - CLRINFO->ctable[i].r);
+                        colerr = colerr * colerr;
+                        err += colerr;
+                        colerr = iabs(g - CLRINFO->ctable[i].g);
+                        colerr = colerr * colerr;
+                        err += colerr;
+                        colerr = iabs(b - CLRINFO->ctable[i].b);
+                        colerr = colerr * colerr;
+                        err += colerr;
                         if(err < minerr) {
+                            DBGPRINTF(DBG_COLOR,("New best color %d (err=%ld): r=%d, g=%d, b=%d\n", i, err, \
+                              (int)CLRINFO->ctable[i].r,(int)CLRINFO->ctable[i].g,(int)CLRINFO->ctable[i].b));
                             best = i;
                             if((minerr = err) == 0) goto foundbest;
                         }
-                        if((free <= 0) && !CLRINFO->ctable[i].nused) {
-                            free = i;
+                        if((free_ <= 0) && !CLRINFO->ctable[i].nused) {
+                            DBGPRINTF(DBG_COLOR,("First free color: r=%d\n", i));
+                            free_ = i;
                         }
                     }
                     if(CLRINFO->ctable[i].nused) ndef--;
@@ -153,58 +183,64 @@ long GrAllocColor(int r,int g,int b)
                     if(allfree < 0) allfree = i;
                 }
                 if((allfree >= 0) && (ndef <= 0)) {
+                    DBGPRINTF(DBG_COLOR,("Found a usable color: allfree = %d, ndef = %d\n", allfree, ndef));
                     break;
                 }
             }
             if(allfree >= 0) {
-                free = allfree;
+                DBGPRINTF(DBG_COLOR,("Using %d as free color (free=%d)\n", allfree, free_));
+                free_ = allfree;
             }
-            if(free >= 0) {
-                CLRINFO->ctable[free].defined  = TRUE;
-                CLRINFO->ctable[free].writable = FALSE;
-                CLRINFO->ctable[free].nused    = 1;
+            if(free_ >= 0) {
+                DBGPRINTF(DBG_COLOR,("Allocating %d\n", free_));
+                CLRINFO->ctable[free_].defined  = TRUE;
+                CLRINFO->ctable[free_].writable = FALSE;
+                CLRINFO->ctable[free_].nused    = 1;
                 CLRINFO->nfree--;
-                loadcolor(free,r,g,b);
-                return((long)(free));
+                loadcolor(free_,r,g,b);
+                res = free_;
+                goto done;
             }
           foundbest:
             if(best >= 0) {
+                DBGPRINTF(DBG_COLOR,("Using best %d\n", best));
                 if(!CLRINFO->ctable[best].nused) CLRINFO->nfree--;
                 CLRINFO->ctable[best].nused++;
-                return((long)(best));
+                res = best;
+                goto done;
             }
         }
-        return(GrNOCOLOR);
+done:   GRX_RETURN(res);
 }
 
-long GrAllocCell(void)
+GrColor GrAllocCell(void)
 {
         if(!CLRINFO->RGBmode && CLRINFO->nfree) {
-            int i,free = (-1);
+            int i,free_ = (-1);
             for(i = 0; i < (int)CLRINFO->ncolors; i++) {
                 if(!CLRINFO->ctable[i].defined) {
-                    free = i;
+                    free_ = i;
                     break;
                 }
                 if(!CLRINFO->ctable[i].nused) {
-                    if(free < 0) free = i;
+                    if(free_ < 0) free_ = i;
                 }
             }
-            if(free >= 0) {
-                CLRINFO->ctable[free].defined  = TRUE;
-                CLRINFO->ctable[free].writable = TRUE;
-                CLRINFO->ctable[free].nused    = 1;
+            if(free_ >= 0) {
+                CLRINFO->ctable[free_].defined  = TRUE;
+                CLRINFO->ctable[free_].writable = TRUE;
+                CLRINFO->ctable[free_].nused    = 1;
                 CLRINFO->nfree--;
-                loadcolor(free,0,0,0);
-                return((long)(free));
+                loadcolor(free_,0,0,0);
+                return((GrColor)(free_));
             }
         }
         return(GrNOCOLOR);
 }
 
-void GrFreeColor(long c)
+void GrFreeColor(GrColor c)
 {
-        if(!CLRINFO->RGBmode && ((ulong)(c) < CLRINFO->ncolors) &&
+        if(!CLRINFO->RGBmode && ((GrColor)(c) < CLRINFO->ncolors) &&
             !CLRINFO->ctable[(int)(c)].writable &&
             CLRINFO->ctable[(int)(c)].defined &&
             (--CLRINFO->ctable[(int)(c)].nused == 0)) {
@@ -215,9 +251,10 @@ void GrFreeColor(long c)
             }
 }
 
-void GrFreeCell(long c)
+void GrFreeCell(GrColor c)
 {
-        if(!CLRINFO->RGBmode && ((ulong)(c) < CLRINFO->ncolors)) {
+        GRX_ENTER();
+        if(!CLRINFO->RGBmode && ((GrColor)(c) < CLRINFO->ncolors)) {
             if(CLRINFO->ctable[(int)(c)].writable) {
                 CLRINFO->nfree++;
                 CLRINFO->ctable[(int)(c)].defined  = FALSE;
@@ -225,11 +262,13 @@ void GrFreeCell(long c)
                 CLRINFO->ctable[(int)(c)].nused    = 0;
             }
         }
+        GRX_LEAVE();
 }
 
-void GrSetColor(long c,int r,int g,int b)
+void GrSetColor(GrColor c,int r,int g,int b)
 {
-        if(!CLRINFO->RGBmode && ((ulong)(c) < CLRINFO->ncolors)) {
+        GRX_ENTER();
+        if(!CLRINFO->RGBmode && ((GrColor)(c) < CLRINFO->ncolors)) {
             if(!CLRINFO->ctable[(int)(c)].defined) {
                 CLRINFO->ctable[(int)(c)].defined  = TRUE;
                 CLRINFO->ctable[(int)(c)].nused    = 0;
@@ -241,35 +280,26 @@ void GrSetColor(long c,int r,int g,int b)
             }
             if(CLRINFO->ctable[(int)(c)].writable) loadcolor(
                 (int)(c),
-                ROUNDCOLORCOMP(r,0),
-                ROUNDCOLORCOMP(g,1),
-                ROUNDCOLORCOMP(b,2)
+                (int)ROUNDCOLORCOMP(r,0),
+                (int)ROUNDCOLORCOMP(g,1),
+                (int)ROUNDCOLORCOMP(b,2)
             );
         }
+        GRX_LEAVE();
 }
 
-void GrQueryColor(long c,int *r,int *g,int *b)
+void GrQueryColor(GrColor c,int *r,int *g,int *b)
 {
+        GRX_ENTER();
         GrQueryColorID(c,r,g,b);
-}
-
-long (GrBlack)(void)
-{
-        if(CLRINFO->black == GrNOCOLOR) CLRINFO->black = GrAllocColor(0,0,0);
-        return(CLRINFO->black);
-}
-
-long (GrWhite)(void)
-{
-        if(CLRINFO->white == GrNOCOLOR) CLRINFO->white = GrAllocColor(255,255,255);
-        return(CLRINFO->white);
+        GRX_LEAVE();
 }
 
 #define CSAVE_MAGIC     0x7abf5698UL
 
 typedef struct {
-    unsigned long magic;
-    unsigned long nc;
+    GrColor magic;
+    GrColor nc;
     struct _GR_colorInfo info;
 } colorsave;
 

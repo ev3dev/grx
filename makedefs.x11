@@ -1,4 +1,25 @@
-# Add directories with X11R6 include files here
-X11INCS=-I/usr/X11/include
-# put X11R6 required libraries and directories here
-X11LIBS=-L/usr/X11R6/lib -lX11
+# load the compiler specific setup first
+# default GCC (eg. Linux) systems
+include ../makedefs.gnu
+# DEC alpha systems
+#include ../makedefs.dec
+
+# The X11 base dir on your system
+X11BASE=/usr/X11R6
+# Add directories with X11 include files here
+X11INCS=-I$(X11BASE)/include
+# put X11 required libraries and directories here
+# note: some systems need -lsocket added
+X11LIBS=-L$(X11BASE)/lib -lX11
+
+# Put libgrx20X.a to lib/unix
+GRX_LIB_SUBDIR=unix
+
+# Some systems can't allocate big arrays on stack.
+# If test/xcirctest fails on bigger diameters, try
+# CCOPT += -DSMALL_STACK
+
+# You may want to enable one (oe both) of the following
+# switches if your get lots of warnings when compiling GRX
+#CCOPT += -DNO_LEFTSIDE_LVALUE_CAST
+#CCOPT += -DNO_LEFTSIDE_PTR_CAST

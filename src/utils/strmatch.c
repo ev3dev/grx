@@ -12,7 +12,7 @@ int GrMatchString(const char *pat,const char *str)
         int i,n,escape = FALSE;
         union {
             struct { const char *s; int l; } str[20];
-            struct { uchar loc; uchar hic; } chr[50];
+            struct { unsigned char loc; unsigned char hic; } chr[50];
         } m;
         for( ; ; ) {
             if(*pat == '\0') {
@@ -70,8 +70,8 @@ int GrMatchString(const char *pat,const char *str)
                 }
                 for(i = 0; ; i++) {
                     if(i == n) return(FALSE);
-                    if((uchar)(*str) < m.chr[i].loc) continue;
-                    if((uchar)(*str) > m.chr[i].hic) continue;
+                    if((unsigned char)(*str) < m.chr[i].loc) continue;
+                    if((unsigned char)(*str) > m.chr[i].hic) continue;
                     str++;
                     break;
                 }
@@ -104,7 +104,7 @@ int GrMatchString(const char *pat,const char *str)
                     break;
                 }
                 for(i = 0; i < n; i++) {
-                    if(strncmp(str,m.str[i].s,m.str[i].l) != 0)  continue;
+                    if(strncmp(str,m.str[i].s,(size_t)m.str[i].l)!=0) continue;
                     if(GrMatchString(pat,&str[m.str[i].l]) == 0) continue;
                     return(TRUE);
                 }

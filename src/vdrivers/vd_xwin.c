@@ -1,31 +1,36 @@
 /**
  ** VD_XWIN.C ---- the standard X Window driver
  **
- ** Author:        Ulrich Leodolter
- ** E-mail:        ulrich@lab1.psy.univie.ac.at
- ** Date:        Thu Sep 28 09:29:26 1995
- ** RCSId:        $Id: vd_xwin.c 1.2 1995/11/19 19:28:12 ulrich Exp $
+ ** Author:     Ulrich Leodolter
+ ** E-mail:     ulrich@lab1.psy.univie.ac.at
+ ** Date:       Thu Sep 28 09:29:26 1995
+ ** RCSId:      $Id: vd_xwin.c 1.2 1995/11/19 19:28:12 ulrich Exp $
  **/
 
-#include "libxwin.h"
 #include "libgrx.h"
+#include "libxwin.h"
 #include "grdriver.h"
 #include "arith.h"
 
-Display *        _XGrDisplay;
-int                _XGrScreen;
-Window                _XGrWindow;
-Pixmap                _XGrBitmap;
-Pixmap                _XGrPattern;
+Display *       _XGrDisplay;
+int             _XGrScreen;
+Window          _XGrWindow;
+Pixmap          _XGrBitmap;
+Pixmap          _XGrPattern;
 Colormap        _XGrColormap;
-GC                _XGrGC;
-GC                _XGrBitmapGC;
-GC                _XGrPatternGC;
-long                _XGrForeColor;
-long                _XGrBackColor;
-unsigned int        _XGrColorOper;
-unsigned int        _XGrDepth;
-unsigned int        _XGrBitsPerPixel;
+GC              _XGrGC;
+GC              _XGrBitmapGC;
+GC              _XGrPatternGC;
+unsigned long   _XGrForeColor;
+unsigned long   _XGrBackColor;
+unsigned int    _XGrColorOper;
+unsigned int    _XGrDepth;
+unsigned int    _XGrBitsPerPixel;
+
+unsigned long   _XGrColorPlanes[8];
+unsigned int    _XGrColorNumPlanes;
+unsigned long   _XGrColorPixels[2];
+unsigned int    _XGrColorNumPixels;
 
 static void setbank(int bk)
 {}
@@ -35,8 +40,14 @@ static void setrwbanks(int rb,int wb)
 
 static void loadcolor(int c,int r,int g,int b)
 {
-  if (_XGrDisplay != NULL && _XGrColormap != None) {
+  GRX_ENTER();
+  if (  _XGrDisplay != NULL
+     && _XGrColormap != None
+     && ! (  _XGrColorNumPixels == 1
+          && (c < _XGrColorPixels[0] || c > _XGrColorPixels[1])) ) {
     XColor xcolor;
+
+    DBGPRINTF(DBG_DRIVER,("Setting X11 color %d to r=%d, g=%d, b=%d\n",c,r,g,b));
     xcolor.pixel = c;
     xcolor.red   = r * 257;
     xcolor.green = g * 257;
@@ -44,6 +55,7 @@ static void loadcolor(int c,int r,int g,int b)
     xcolor.flags = DoRed|DoGreen|DoBlue;
     XStoreColor (_XGrDisplay, _XGrColormap, &xcolor);
   }
+  GRX_LEAVE();
 }
 
 static int setmode(GrVideoMode *mp,int noclear)
@@ -51,87 +63,91 @@ static int setmode(GrVideoMode *mp,int noclear)
   char name[100], *window_name, *icon_name;
   int nc;
   char *cu;
+  int res;
 
-  if (_XGrWindow == None)
-    return (FALSE);
+  GRX_ENTER();
+  res = FALSE;
+  if (_XGrWindow != None) {
 
-  XUnmapWindow (_XGrDisplay, _XGrWindow);
-  if (mp->extinfo->mode != GR_frameText) {
-    XSizeHints hints;
-      
-    XResizeWindow (_XGrDisplay, _XGrWindow, mp->width, mp->height);
+    XUnmapWindow (_XGrDisplay, _XGrWindow);
+    if (mp->extinfo->mode != GR_frameText) {
+      XSizeHints hints;
 
-    cu = "";
-    nc = 1 << mp->bpp;
-    if ((nc % 1024) == 0) nc >>= 10, cu = "K";
-    if ((nc % 1024) == 0) nc >>= 10, cu = "M";
+      XResizeWindow (_XGrDisplay, _XGrWindow, mp->width, mp->height);
 
-    sprintf (name, "grx %dx%dx%d%s", mp->width, mp->height, nc, cu);
-    window_name = name;
-    icon_name = name;
-      
-    hints.min_width = mp->width;
-    hints.max_width = mp->width;
-    hints.min_height = mp->height;
-    hints.max_height = mp->height;
-    hints.flags = PMaxSize | PMinSize;
+      cu = "";
+      nc = 1 << mp->bpp;
+      if ((nc % 1024) == 0) nc >>= 10, cu = "K";
+      if ((nc % 1024) == 0) nc >>= 10, cu = "M";
 
-    XSetStandardProperties (_XGrDisplay,        /* display */
-                            _XGrWindow,                /* w */
-                            window_name,        /* window_name */
-                            icon_name,                /* icon_name */
-                            None,                /* icon_pixmap */
-                            NULL,                /* argv */
-                            0,                        /* argc */
-                            &hints);                /* hints */
+      sprintf (name, "grx %dx%dx%d%s", mp->width, mp->height, nc, cu);
+      window_name = name;
+      icon_name = name;
 
-    XMapRaised (_XGrDisplay, _XGrWindow);
-      
-    /* Wait until window appears on screen */
-    {
-      XEvent xevent;
-        
-      while (1)        {
-        XNextEvent (_XGrDisplay, &xevent);
-        if (xevent.type == MapNotify)
-          break;
+      hints.min_width = mp->width;
+      hints.max_width = mp->width;
+      hints.min_height = mp->height;
+      hints.max_height = mp->height;
+      hints.flags = PMaxSize | PMinSize;
+
+      XSetStandardProperties (_XGrDisplay,        /* display */
+                              _XGrWindow,         /* w */
+                              window_name,        /* window_name */
+                              icon_name,          /* icon_name */
+                              None,               /* icon_pixmap */
+                              NULL,               /* argv */
+                              0,                  /* argc */
+                              &hints);            /* hints */
+
+      XMapRaised (_XGrDisplay, _XGrWindow);
+
+      /* Wait until window appears on screen */
+      {
+        XEvent xevent;
+
+        while (1) {
+          XNextEvent (_XGrDisplay, &xevent);
+          if (xevent.type == MapNotify)
+            break;
+        }
       }
     }
+    res = TRUE;
   }
-  return (TRUE);
+  GRX_RETURN(res);
 }
 
 /* Note: _GrViDrvEGAVGAtextModeExt is referenced in setup/drvinfo.c */
 #define grtextext _GrViDrvEGAVGAtextModeExt
 
 GrVideoModeExt grtextext = {
-    GR_frameText,                        /* frame driver */
-    NULL,                                /* frame driver override */
-    NULL,                                /* frame buffer address */
+    GR_frameText,                       /* frame driver */
+    NULL,                               /* frame driver override */
+    NULL,                               /* frame buffer address */
     { 0, 0, 0 },                        /* color precisions */
     { 0, 0, 0 },                        /* color component bit positions */
-    0,                                        /* mode flag bits */
-    setmode,                                /* mode set */
-    NULL,                                /* virtual size set */
-    NULL,                                /* virtual scroll */
-    NULL,                                /* bank set function */
-    NULL,                                /* double bank set function */
+    0,                                  /* mode flag bits */
+    setmode,                            /* mode set */
+    NULL,                               /* virtual size set */
+    NULL,                               /* virtual scroll */
+    NULL,                               /* bank set function */
+    NULL,                               /* double bank set function */
     NULL                                /* color loader */
 };
 
 static GrVideoModeExt grxwinext = {
   GR_frameUndef,                        /* frame driver */
-  NULL,                                        /* frame driver override */
-  NULL,                                        /* frame buffer address */
-  { 0, 0, 0 },                                /* color precisions */
-  { 0, 0, 0 },                                /* color component bit positions */
-  0,                                        /* mode flag bits */
-  setmode,                                /* mode set */
-  NULL,                                        /* virtual size set */
-  NULL,                                        /* virtual scroll */
-  setbank,                                /* bank set function */
-  setrwbanks,                                /* double bank set function */
-  loadcolor                                /* color loader */
+  NULL,                                 /* frame driver override */
+  NULL,                                 /* frame buffer address */
+  { 0, 0, 0 },                          /* color precisions */
+  { 0, 0, 0 },                          /* color component bit positions */
+  0,                                    /* mode flag bits */
+  setmode,                              /* mode set */
+  NULL,                                 /* virtual size set */
+  NULL,                                 /* virtual scroll */
+  setbank,                              /* bank set function */
+  setrwbanks,                           /* double bank set function */
+  loadcolor                             /* color loader */
 };
 
 
@@ -143,11 +159,66 @@ static GrVideoMode modes[] = {
   { FALSE,  0,  800,  600,  0x00,     0, 0,    &grxwinext  },
   { FALSE,  0, 1024,  768,  0x00,     0, 0,    &grxwinext  },
   { FALSE,  0, 1280, 1024,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0, 1600, 1200,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0, 9999, 9999,  0x00,     0, 0,    &grxwinext  }
 };
+
+static int (*previous_error_handler) (Display *dpy, XErrorEvent *ev);
+
+static int error_handler (Display *dpy, XErrorEvent *ev)
+{
+  char buffer[200];
+
+  /*
+   * This error is triggerd in fd_xwin.c:bltv2r() if the source rectangle
+   * is not fully contained in the root window
+   */
+  if (ev->request_code == X_GetImage && ev->error_code == BadMatch)
+    return 0;
+
+  if (previous_error_handler)
+    return (*previous_error_handler) (dpy, ev);
+
+  XGetErrorText (dpy, ev->error_code, buffer, sizeof(buffer)),
+  fprintf (stderr, "GRX: XError: %s XID=%ld request_code=%d serial=%lu\n",
+           buffer,
+           ev->resourceid,
+           ev->request_code,
+           ev->serial);
+  return 0;
+}
+
+static GrVideoMode * _xw_selectmode ( GrVideoDriver * drv, int w, int h, int bpp,
+                                      int txt, unsigned int * ep )
+{
+  GrVideoMode *mp, *res;
+  GRX_ENTER();
+  if (txt) {
+    res = _gr_selectmode(drv,w,h,bpp,txt,ep);
+    goto done;
+  }
+  for (mp = &modes[1]; mp < &modes[itemsof(modes)-1]; mp++) {
+    if ( mp->present && mp->width == w && mp->height == h) {
+      res = _gr_selectmode (drv,w,h,bpp,txt,ep);
+      goto done;
+    }
+  }
+  /* no predefined mode found. Create a new mode */
+  mp->present = TRUE;
+  mp->width = w;
+  mp->height = h;
+  mp->lineoffset = (mp->width * mp->bpp) / 8;
+  res = _gr_selectmode (drv,w,h,bpp,txt,ep);
+done:
+  GRX_RETURN(res);
+}
 
 static int detect(void)
 {
-  return (getenv("DISPLAY") ? TRUE : FALSE);
+  int res;
+  GRX_ENTER();
+  res = (getenv("DISPLAY") ? TRUE : FALSE);
+  GRX_RETURN(res);
 }
 
 static int init(char *options)
@@ -158,27 +229,70 @@ static int init(char *options)
   Visual *visual;
   GrVideoMode *mp;
   unsigned int depth, bpp;
-  
+  int private_colormap;
+  int i, j, res;
+
+  GRX_ENTER();
+  res = FALSE;
+  private_colormap = FALSE;
   _XGrDisplay = XOpenDisplay ("");
   if (_XGrDisplay == NULL)
-    return (FALSE);
+    goto done; /* FALSE */
+
+  previous_error_handler = XSetErrorHandler (error_handler);
 
   _XGrScreen = DefaultScreen (_XGrDisplay);
   _XGrDepth = depth = DefaultDepth (_XGrDisplay, _XGrScreen);
 
   visual = DefaultVisual (_XGrDisplay, _XGrScreen);
   root = RootWindow (_XGrDisplay, _XGrScreen);
-  
+
+  if (options && (strncmp ("privcmap", options, 8) == 0)) {
+    private_colormap = TRUE;
+  }
+
+  _XGrColorNumPlanes = 0;
+  _XGrColorNumPixels = 0;
+
   if (visual->class == PseudoColor
       && (depth == 4 || depth == 8)) {
-    _XGrColormap = XCreateColormap (_XGrDisplay, root, visual, True);
+    if (! private_colormap) {
+      /*
+       * Allocate at least 4 planes (= 16 colors) of writable cells
+       */
+      _XGrColormap = DefaultColormap (_XGrDisplay, _XGrScreen);
+      for (i = depth - 1; i >= 4; i--) {
+        if (XAllocColorCells (_XGrDisplay,
+                              _XGrColormap,
+                              True,     /* contiguous */
+                              _XGrColorPlanes,
+                              i,
+                              _XGrColorPixels,
+                              1)) {
+          _XGrColorNumPlanes = i;
+          _XGrColorNumPixels = 1;
+          _GR_firstFreeColor = _XGrColorPixels[0];
+          _XGrColorPixels[1] = _XGrColorPixels[0];
+          for (j = 0; j < _XGrColorNumPlanes; j++) {
+            _XGrColorPixels[1] |= _XGrColorPlanes[j];
+          }
+          _GR_lastFreeColor = _XGrColorPixels[1]-1;
+          break;
+        }
+      }
+      if (_XGrColorNumPlanes == 0)
+        private_colormap = TRUE;
+    }
+    if (private_colormap) {
+      _XGrColormap = XCreateColormap (_XGrDisplay, root, visual, AllocAll);
+    }
     grxwinext.cprec[0] = visual->bits_per_rgb;
     grxwinext.cprec[1] = visual->bits_per_rgb;
     grxwinext.cprec[2] = visual->bits_per_rgb;
     grxwinext.cpos[0] = 0;
     grxwinext.cpos[1] = 0;
     grxwinext.cpos[2] = 0;
-    /* loadcolor (0, 0, 0, 0); */        /* load black */
+    /* loadcolor (0, 0, 0, 0); */       /* load black */
   }
   else if (visual->class == TrueColor
            && (depth == 8 || depth == 15 || depth == 16 || depth == 24)) {
@@ -186,7 +300,6 @@ static int init(char *options)
     unsigned long mask[3];
 
     _XGrColormap = (Colormap) 0;
-
     mask[0] = visual->red_mask;
     mask[1] = visual->green_mask;
     mask[2] = visual->blue_mask;
@@ -200,7 +313,7 @@ static int init(char *options)
   else {
     static char *class_names[] = {
       "StaticGray",
-      "GrayScale", 
+      "GrayScale",
       "StaticColor",
       "PseudoColor",
       "TrueColor",
@@ -211,9 +324,9 @@ static int init(char *options)
              class_names[visual->class], depth);
     exit (1);
   }
-  _XGrForeColor = GrNOCOLOR;        /* force XSetForeground */
-  _XGrBackColor = GrNOCOLOR;        /* force XSetBackground */
-  _XGrColorOper = C_WRITE; 
+  _XGrForeColor = GrNOCOLOR;    /* force XSetForeground */
+  _XGrBackColor = GrNOCOLOR;    /* force XSetBackground */
+  _XGrColorOper = C_WRITE;
 
   mask = 0L;
   attr.backing_store = Always;
@@ -235,22 +348,28 @@ static int init(char *options)
                      | PointerMotionMask);
   mask |= CWEventMask;
   _XGrWindow = XCreateWindow (_XGrDisplay,
-                              root,                /* parent */
+                              root,             /* parent */
                               0,                /* x */
                               0,                /* y */
                               1,                /* width */
                               1,                /* height */
                               0,                /* border_width */
-                              depth,                /* depth */
-                              InputOutput,        /* class */
-                              visual,                /* visual */
-                              mask,                /* valuemask */
-                              &attr);                /* attributes */
+                              depth,            /* depth */
+                              InputOutput,      /* class */
+                              visual,           /* visual */
+                              mask,             /* valuemask */
+                              &attr);           /* attributes */
   _XGrGC = XCreateGC (_XGrDisplay, _XGrWindow, 0L, NULL);
   _XGrBitmap = XCreatePixmap (_XGrDisplay, root, 128, 128, 1);
   _XGrBitmapGC = XCreateGC (_XGrDisplay, _XGrBitmap, 0L, NULL);
   _XGrPattern = XCreatePixmap (_XGrDisplay, root, 8, 1, 1);
   _XGrPatternGC = XCreateGC (_XGrDisplay, _XGrPattern, 0L, NULL);
+
+  /* is this required ?? */
+  if (_XGrColormap) {
+     XInstallColormap(_XGrDisplay, _XGrColormap);
+     XSetWindowColormap(_XGrDisplay, _XGrWindow, _XGrColormap);
+  }
 
   grxwinext.frame = (char far *) _XGrWindow;
 
@@ -266,27 +385,41 @@ static int init(char *options)
 
   _XGrBitsPerPixel = bpp;
 
-  for (mp = &modes[1]; mp < &modes[itemsof(modes)]; mp++) {
+  /* fixed size modes */
+  for (mp = &modes[1]; mp < &modes[itemsof(modes)-1]; mp++) {
     mp->present = TRUE;
     mp->bpp = depth;
     mp->lineoffset = (mp->width * bpp) / 8;
   }
-  return(TRUE);
+  /* this is the variable size mode */
+  mp->present = FALSE;
+  mp->bpp = depth;
+  mp->lineoffset = 0;
+  res = TRUE;
+done:
+  GRX_RETURN( res );
 }
 
 static void reset(void)
 {
+  GRX_ENTER();
   if (_XGrDisplay) XCloseDisplay (_XGrDisplay);
+  _XGrDisplay = NULL;
+  _GR_firstFreeColor =  0;
+  _GR_lastFreeColor  = -1;
+  GRX_LEAVE();
 }
 
 GrVideoDriver _GrVideoDriverXWIN = {
-  "xwin",                                /* name */
-  GR_XWIN,                                /* adapter type */
-  NULL,                                        /* inherit modes from this driver */
+  "xwin",                               /* name */
+  GR_XWIN,                              /* adapter type */
+  NULL,                                 /* inherit modes from this driver */
   modes,                                /* mode table */
-  itemsof(modes),                        /* # of modes */
-  detect,                                /* detection routine */
-  init,                                        /* initialization routine */
-  reset                                        /* reset routine */
+  itemsof(modes),                       /* # of modes */
+  detect,                               /* detection routine */
+  init,                                 /* initialization routine */
+  reset,                                /* reset routine */
+  _xw_selectmode,                       /* special mode select routine */
+  GR_DRIVERF_USER_RESOLUTION            /* arbitrary resolution possible */
 };
 

@@ -22,7 +22,7 @@ static char bitmaphdr[] =
 "#include \"grx20.h\"\n"
 "#undef   %s\n"
 "\n"
-"static char far %s[] = {\n";
+"static unsigned char far %s[] = {\n";
 
 /* ----------------------------------------------------------------------- */
 static char fonthdr[] =
@@ -35,28 +35,28 @@ static char fonthdr[] =
 "} %s = {\n"
 "    {\n"
 "        {                           /* font header */\n"
-"            %-24s"                    "/* font name */\n"
-"            %-24s"                    "/* font family name */\n"
-"            %d,  \t\t    "            "/* characters have varying width */\n"
+"            %-24s"                 "/* font name */\n"
+"            %-24s"                 "/* font family name */\n"
+"            %d,  \t\t    "         "/* characters have varying width */\n"
 "            0,                      /* derived from a scalable font */\n"
 "            1,                      /* font permanently linked into program */\n"
 "            GR_FONTCVT_NONE,        /* 'tweaked' font (resized, etc..) */\n"
-"            %d,  \t\t    "            "/* width (average when proportional) */\n"
-"            %d,  \t\t    "            "/* font height */\n"
-"            %d,  \t\t    "            "/* baseline pixel pos (from top) */\n"
-"            %d,  \t\t    "            "/* underline pixel pos (from top) */\n"
-"            %d,  \t\t    "            "/* underline width */\n"
-"            %d,  \t\t    "            "/* lowest character code in font */\n"
-"            %d   \t\t    "            "/* number of characters in font */\n"
+"            %d,  \t\t    "         "/* width (average when proportional) */\n"
+"            %d,  \t\t    "         "/* font height */\n"
+"            %d,  \t\t    "         "/* baseline pixel pos (from top) */\n"
+"            %d,  \t\t    "         "/* underline pixel pos (from top) */\n"
+"            %d,  \t\t    "         "/* underline width */\n"
+"            %d,  \t\t    "         "/* lowest character code in font */\n"
+"            %d   \t\t    "         "/* number of characters in font */\n"
 "        },\n"
-"        %-28s"                            "/* character bitmap array */\n"
+"        (char *)%-20s"             "/* character bitmap array */\n"
 "        0,                          /* auxiliary bitmap */\n"
-"        %d,\t\t\t    "                    "/* width of narrowest character */\n"
-"        %d,\t\t\t    "                    "/* width of widest character */\n"
+"        %d,\t\t\t    "             "/* width of narrowest character */\n"
+"        %d,\t\t\t    "             "/* width of widest character */\n"
 "        0,                          /* allocated size of auxiliary bitmap */\n"
 "        0,                          /* free space in auxiliary bitmap */\n"
-"        {  0\t\t"        "},          /* converted character bitmap offsets */\n"
-"        {{ %d,\t0\t"        "}}          /* first character info */\n"
+"        {  0\t\t"      "},          /* converted character bitmap offsets */\n"
+"        {{ %d,\t0\t"   "}}          /* first character info */\n"
 "    },\n"
 "    {\n";
 
@@ -75,7 +75,7 @@ static char fontend[] =
 
 void GrDumpFont(GrFont *f,char *CsymbolName,char *fileName)
 {
-        uint i;
+        unsigned int i;
         int  offset;
         char filname[200];
         char fntname[200];

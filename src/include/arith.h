@@ -11,9 +11,14 @@
 #ifndef __ARITH_H_INCLUDED__
 #define __ARITH_H_INCLUDED__
 
-#ifdef __TURBOC__
-/* prototype for __emit__() */
-#include <dos.h>
+#ifdef __GNUC__
+#include "gcc/arith.h"
+#elif defined(__TURBOC__)
+#include "bcc/arith.h"
+#endif
+
+#ifdef _MSC_VER
+#define __emit__(x) __asm{ __emit (x) }
 #endif
 
 /*
@@ -135,91 +140,28 @@
  * [i|u]mul32(x,y)
  * multiply two int-s for a long result
  */
-#ifdef  __TURBOC__
-/* void    __emit__(); */
-#define imul32(X,Y) (                                           \
-        _AX = (int)(X),                                         \
-        __emit__((char)(0x50)),               /* push ax */     \
-        _AX = (int)(Y),                                         \
-        __emit__((char)(0x5a)),               /* pop dx */      \
-        __emit__((char)(0xf7)),               /* imul dx */     \
-            __emit__((char)(0xea)),                             \
-        _BX = _AX,                                              \
-        _CX = _DX,                                              \
-        (long)((void _seg *)_CX + (void near *)_BX)             \
-)
-#define umul32(X,Y) (                                           \
-        _AX = (int)(X),                                         \
-        __emit__((char)(0x50)),               /* push ax */     \
-        _AX = (int)(Y),                                         \
-        __emit__((char)(0x5a)),               /* pop dx */      \
-        __emit__((char)(0xf7)),               /* mul dx */      \
-            __emit__((char)(0xe2)),                             \
-        _BX = _AX,                                              \
-        _CX = _DX,                                              \
-        (unsigned long)((void _seg *)_CX + (void near *)_BX)    \
-)
-#endif  /* __TURBOC__ */
-
 #ifndef imul32
 #define imul32(X,Y) ((long)(X) * (long)(Y))
+#endif
+#ifndef umul32
 #define umul32(X,Y) ((unsigned long)(X) * (unsigned long)(Y))
 #endif
+
+
+/*
+ * umuladd32(x,y,z)
+ * multiply two unsigned-s for a long result and add an unsigned
+ */
+#ifndef umuladd32
+#define umuladd32(X,Y,Z) (umul32((X),(Y))+(Z))
+#endif
+
 
 /*
  * [i|u]scale(X,N,D)
  * scale an integer with long intermediate result but without using long
  * arithmetic all the way
  */
-#ifdef  __TURBOC__
-#define iscale(X,N,D) (                                             \
-        _AX = (int)(D),                                             \
-        __emit__((char)(0x50)),                     /* push ax */   \
-        _AX = (int)(N),                                             \
-        __emit__((char)(0x50)),                     /* push ax */   \
-        _AX = (int)(X),                                             \
-        __emit__((char)(0x5a)),                     /* pop dx */    \
-        __emit__((char)(0x59)),                     /* pop cx */    \
-        __emit__((char)(0xf7)),                     /* imul dx */   \
-            __emit__((char)(0xea)),                                 \
-        __emit__((char)(0xf7)),                     /* idiv cx */   \
-            __emit__((char)(0xf9)),                                 \
-        (int)_AX                                                    \
-)
-#define uscale(X,N,D) (                                             \
-        _AX = (int)(D),                                             \
-        __emit__((char)(0x50)),                     /* push ax */   \
-        _AX = (int)(N),                                             \
-        __emit__((char)(0x50)),                     /* push ax */   \
-        _AX = (int)(X),                                             \
-        __emit__((char)(0x5a)),                     /* pop dx */    \
-        __emit__((char)(0x59)),                     /* pop cx */    \
-        __emit__((char)(0xf7)),                     /* mul dx */    \
-            __emit__((char)(0xe2)),                                 \
-        __emit__((char)(0xf7)),                     /* div cx */    \
-            __emit__((char)(0xf1)),                                 \
-        (unsigned int)_AX                                           \
-)
-#define irscale(X,N,D) (                                                  \
-        _DX = iscale(((int)(X) << 1),N,D),                                \
-        __emit__((char)(0x03)),                       /* add dx,dx */     \
-            __emit__((char)(0xd2)),                                       \
-        __emit__((char)(0x1d)),                       /* sbc ax,0xffff */ \
-            __emit__((char)(-1)),                                         \
-            __emit__((char)(-1)),                                         \
-        __emit__((char)(0xd1)),                       /* sar ax,1 */      \
-            __emit__((char)(0xf8)),                                       \
-        (int)_AX                                                          \
-)
-#endif  /* __TURBOC__ */
-
-#ifdef  __GNUC__
-#define irscale(X,N,D) ({                                           \
-        register int _SclVal_ = iscale(((int)(X) << 1),N,D);        \
-        (_SclVal_ + (_SclVal_ >> (bitsof(int) - 1)) + 1) >> 1;      \
-})
-#endif
-
 #ifndef iscale
 #define iscale(X,N,D)   (int)(imul32(X,N) / (long)(D))
 #endif
@@ -246,83 +188,38 @@
         ((unsigned TTO)(unsigned TFROM)(V) << (sizeof(TFROM) * 8))      \
 )
 
-#ifdef  __GNUC__
-#ifdef  __i386__
-#define replicate_b2w(BYTE) (__builtin_constant_p(BYTE) ?       \
-        (long)__INLINE_REPLICATE__(BYTE,char,int) :             \
-        ({                                                      \
-        register long _repvalue;                                \
-        __asm__("
-                xorl    %%ecx,%%ecx
-                movb    %%al,%%cl
-                movb    %%al,%%ch"                              \
-                : "=c" (_repvalue)                              \
-                : "a"  ((char)(BYTE))                           \
-        );                                                      \
-        _repvalue;                                              \
-        })                                                      \
-)
-#define replicate_w2l(WORD) (__builtin_constant_p(WORD) ?       \
-        (long)__INLINE_REPLICATE__(WORD,short,int) :            \
-        ({                                                      \
-        register long  _repvalue;                               \
-        register short _scratch;                                \
-        __asm__("
-                movw    %%ax,%1
-                shll    $16,%%eax
-                movw    %1,%%ax"                                \
-                : "=a" (_repvalue), "=r" (_scratch)             \
-                : "a"  ((short)(WORD))                          \
-        );                                                      \
-        _repvalue;                                              \
-        })                                                      \
-)
-#define replicate_b2l(BYTE) (__builtin_constant_p(BYTE) ?               \
-        (long)__INLINE_REPLICATE__(replicate_b2w(BYTE),short,int) :     \
-        ({                                                              \
-        register long  _repvalue;                                       \
-        register short _scratch;                                        \
-        __asm__("
-                movb    %%al,%%ah
-                movw    %%ax,%1
-                shll    $16,%%eax
-                movw    %1,%%ax"                                        \
-                : "=a" (_repvalue), "=r" (_scratch)                     \
-                : "a"  ((char)(BYTE))                                   \
-        );                                                              \
-        _repvalue;                                                      \
-        })                                                              \
-)
-#endif  /* __i386__ */
-#endif  /* __GNUC__ */
-
-#ifdef  __TURBOC__
-#define replicate_b2w(BYTE) (                                   \
-        _AL = (char)(BYTE),                                     \
-        _AH = _AL,                                              \
-        (int)_AX                                                \
-)
-#define replicate_w2l(WORD) (                                   \
-        _AX = (int)(WORD),                                      \
-        _DX = _AX,                                              \
-        (long)((void _seg *)_DX + (void near *)_AX)             \
-)
-#define replicate_b2l(BYTE) (                                   \
-        _AL = (char)(BYTE),                                     \
-        _AH = _AL,                                              \
-        _DX = _AX,                                              \
-        (long)((void _seg *)_DX + (void near *)_AX)             \
-)
-#endif  /* __TURBOC__ */
-
-#ifndef replicate_b2w
-#define replicate_b2w(BYTE) __INLINE_REPLICATE__(BYTE,char,int)
+#ifndef replicate_b2b
+#define replicate_b2b(BYTE) (BYTE)
 #endif
-#ifndef replicate_w2l
-#define replicate_w2l(WORD) __INLINE_REPLICATE__(WORD,short,long)
+#ifndef replicate_b2w
+#define replicate_b2w(BYTE) __INLINE_REPLICATE__(BYTE,GR_int8,GR_int16)
 #endif
 #ifndef replicate_b2l
 #define replicate_b2l(BYTE) replicate_w2l(replicate_b2w(BYTE))
+#endif
+#ifndef replicate_b2h
+#define replicate_b2h(BYTE) replicate_l2h(replicate_w2l(replicate_b2w(BYTE)))
+#endif
+
+#ifndef replicate_w2w
+#define replicate_w2w(WORD) (WORD)
+#endif
+#ifndef replicate_w2l
+#define replicate_w2l(WORD) __INLINE_REPLICATE__(WORD,GR_int16,GR_int32)
+#endif
+#ifndef replicate_w2h
+#define replicate_w2h(WORD) replicate_l2h(replicate_w2l(WORD))
+#endif
+
+#ifndef replicate_l2l
+#define replicate_l2l(LONG) (LONG)
+#endif
+#ifndef replicate_l2h
+#define replicate_l2h(LONG) __INLINE_REPLICATE__(LONG,GR_int32,GR_int64)
+#endif
+
+#ifndef replicate_h2h
+#define replicate_h2h(LLONG) (LLONG)
 #endif
 
 #endif  /* whole file */

@@ -8,8 +8,17 @@
 #ifndef __LIBGRX_H_INCLUDED__
 #define __LIBGRX_H_INCLUDED__
 
+#define USE_GRX_INTERNAL_DEFINITIONS
+
+/* The LCC compiler on Linux requires this */
+#if defined(__LCC__) && defined(__linux__)
+/* make alloca work ... */
+#  define __USE_MISC
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #ifndef __GRX20_H_INCLUDED__
 #include "grx20.h"
@@ -27,24 +36,98 @@
 #define TRUE            1
 #endif
 
-#ifndef uint
-#define uint            unsigned int
-#define uchar           unsigned char
-#define ushort          unsigned short
-#define ulong           unsigned long
+/*
+** identify the compiler / system
+** and check for special restrictions
+*/
+/* DEC alpha chips have special alignment
+** restrictions. We'll have do care about them */
+#if !defined(__alpha__) && defined(__alpha)
+#define __alpha__ __alpha
 #endif
+
+
+/* Casting a lvalue on the left side of an assignment 
+** causes error or warnings on several compilers:
+**
+** LCC v4.0
+** Watcom C++ v11.0
+** SUN cc v4.0
+*/
+#if !defined(NO_LEFTSIDE_LVALUE_CAST) &&                  \
+    (   defined(__LCC__)                                  \
+     || defined(__WATCOMC__)                              \
+     || defined(__SUNPRO_C)                               )
+#define NO_LEFTSIDE_LVALUE_CAST
+#endif
+/* Casting a pointer on the left side of an assignment
+** also cuses problems on several systems:
+**
+** LCC v4.0
+** Watcom C++ v11.0
+*/
+#if !defined(NO_LEFTSIDE_PTR_CAST) &&                     \
+    (   defined(__LCC__)                                  \
+     || defined(__WATCOMC__)                              )
+#define NO_LEFTSIDE_PTR_CAST
+#endif
+
+/* some CPU allow misaligned access to non byte location */
+#if   defined(__TURBOC__) \
+   || defined(_MSC_VER) \
+   || defined(__386__) \
+   || defined(__i386__) \
+   || defined(__i386)
+   /* x86 can write to misalgined 16bit locations */
+#  define MISALIGNED_16bit_OK
+#endif
+
+#if   defined(__386__) \
+   || defined(__i386__) \
+   || defined(__i386)
+   /* x86 can write to misalgined 32bit locations */
+#  define MISALIGNED_32bit_OK
+#endif
+
+
+/* need some n-bit types */
+/* char should always be 8bit and short 16bit ... */
+#define GR_int8  char
+#define GR_int16 short
+#if defined(__alpha__) || (defined(_MIPS_SZLONG) && _MIPS_SZLONG == 64)
+#define GR_int32 int
+#define GR_int64 long
+#else
+#define GR_int32 long
+#endif
+
+/* signed and unsigned variants of the above */
+typedef   signed GR_int8  GR_int8s;
+typedef   signed GR_int16 GR_int16s;
+typedef   signed GR_int32 GR_int32s;
+typedef unsigned GR_int8  GR_int8u;
+typedef unsigned GR_int16 GR_int16u;
+typedef unsigned GR_int32 GR_int32u;
+#ifdef GR_int64
+typedef   signed GR_int64 GR_int64s;
+typedef unsigned GR_int64 GR_int64u;
+#endif
+
 
 /*
 ** get system endian
 */
-#ifdef __GO32__
-#  include <machine/endian.h>
-#elif defined(__TURBOC__)
-#  define _LITTLE_ENDIAN
-#elif defined(__linux__)
-#  include <endian.h>
-#else
-#  include <sys/byteorder.h>
+#if !defined(_BIG_ENDIAN) && !defined(_LITTLE_ENDIAN)
+#  if   defined(__TURBOC__) \
+     || defined(__WATCOMC__) \
+     || defined(_MSC_VER) \
+     || defined(__alpha__) \
+     || (defined(__LCC__) && defined(__i386__)) \
+     || (defined(__GNUC__) && defined(__i386__))
+#    define _LITTLE_ENDIAN
+#  else
+#    include <sys/byteorder.h>
+#  endif
 #endif
 
 #if defined(__BYTE_ORDER__) && !defined(BYTE_ORDER)
@@ -65,9 +148,43 @@
 #ifndef BYTE_ORDER
 #error Unknown byte ordering !
 #endif
+
 #ifndef HARDWARE_BYTE_ORDER
 #define HARDWARE_BYTE_ORDER BYTE_ORDER
 #endif
+
+/*
+ * Debug support
+ */
+#if defined(DEBUG) && !defined(__GRXDEBUG_H_INCLUDED__)
+# include "grxdebug.h"
+#endif
+#ifndef DBGPRINTF
+# define DBGPRINTF(chk,x)
+# define GRX_ENTER()
+# define GRX_LEAVE()
+# define GRX_RETURN(x) return x
+#endif
+
+/* simple pointer arithmetic */
+#define ptrdiff(a,b) ( ((GR_int8 far *)(a)) - ((GR_int8 far *)(b)) )
+#define ptradd(P,SKIP) ( (void *)( ((GR_int8 *)(P))+(SKIP)) )
+#ifdef NO_LEFTSIDE_LVALUE_CAST
+#define ptrinc(P,SKIP) do (P) = ptradd((P),(SKIP)); while (0)
+#else
+#define ptrinc(P,SKIP) do ((GR_int8 *)(P)) += (SKIP); while (0)
+#endif
+
+/*
+ * function inline
+ */
+#ifdef __GNUC__
+#define INLINE __inline__
+#endif
+#ifndef INLINE
+#define INLINE
+#endif
+
 
 /*
  * global library data structures
@@ -104,12 +221,19 @@ extern  struct _GR_mouseInfo   _GrMouseInfo;
 #define RWBANKHOOK
 #endif
 
-#define BANKPOS(offs)   ((ushort)(offs))
-#ifdef  __TURBOC__
-#define BANKNUM(offs)   (((ushort *)(&(offs)))[1])
-#define BANKLFT(offs)   (_AX = -(int)(BANKPOS(offs)),(_AX ? _AX : 0xffffU))
-#else
-#define BANKNUM(offs)   ((int)((ulong)(offs) >> 16))
+#ifdef __TURBOC__
+#  define BANKPOS(offs)   ((unsigned short)(offs))
+#  define BANKNUM(offs)   (((unsigned short *)(&(offs)))[1])
+#  define BANKLFT(offs)   (_AX = -(int)(BANKPOS(offs)),(_AX ? _AX : 0xffffU))
+#endif
+
+#ifndef BANKPOS
+#define BANKPOS(offs)   ((GR_int16u)(offs))
+#endif
+#ifndef BANKNUM
+#define BANKNUM(offs)   ((int)((GR_int32u)(offs) >> 16))
+#endif
+#ifndef BANKLFT
 #define BANKLFT(offs)   (0x10000 - BANKPOS(offs))
 #endif
 
@@ -138,16 +262,22 @@ extern  struct _GR_mouseInfo   _GrMouseInfo;
 /*
  * color stuff
  */
-#ifdef  __TURBOC__
-#define C_OPER(color)   (uint)(((uchar *)(&(color)))[3])
-#else
-#define C_OPER(color)   (uint)((ulong)(color) >> 24)
+extern int _GR_firstFreeColor; /* can't access all colors on all systems */
+extern int _GR_lastFreeColor;  /* eg. X11 and other windowing systems    */
+
+#ifdef __TURBOC__
+#  define C_OPER(color)   (unsigned int)(((unsigned char *)(&(color)))[3])
+#endif
+
+#ifndef C_OPER
+#define C_OPER(color)   (unsigned int)((GrColor)(color) >> 24)
 #endif
 #define C_WRITE         (int)(GrWRITE >> 24)
 #define C_XOR           (int)(GrXOR   >> 24)
 #define C_OR            (int)(GrOR    >> 24)
 #define C_AND           (int)(GrAND   >> 24)
 #define C_IMAGE         (int)(GrIMAGE >> 24)
+#define C_COLOR         GrCVALUEMASK
 
 /*
  * mouse stuff
@@ -174,11 +304,6 @@ GrFrameDriver *_GrFindRAMframeDriver(GrFrameMode mode);
 void _GrCloseVideoDriver(void);
 void _GrDummyFunction(void);
 
-/*
- * missing functions for compatibility
- */
-void _GrFillPattern(int x,int y,int width,GrPattern *p);
-void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p);
 
 #endif  /* whole file */
 

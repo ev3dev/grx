@@ -11,33 +11,34 @@
 /*
  *  font file structure:
  *  +-----------------------+
- *  |          FILE HEADER            |
+ *  |     FILE HEADER       |
  *  +-----------------------+
- *  |          PROPORTIONAL            |
- *  |          WIDTH TABLE            |
- *  |          (16 bit ints)            |
- *  |          (prop fonts only) |
+ *  |     PROPORTIONAL      |
+ *  |     WIDTH TABLE       |
+ *  |     (16 bit ints)     |
+ *  |     (prop fonts only) |
  *  +-----------------------+
- *  |          BITMAP            |
+ *  |     BITMAP            |
  *  +-----------------------+
  */
 
-#define GRX_NAMEWIDTH        16
-#define GRX_FONTMAGIC        0x19590214L
+#define GRX_NAMEWIDTH   16
+#define GRX_FONTMAGIC   0x19590214L
+#define GRX_FONTMAGIC_SWAPPED 0x14025919L
 
 typedef struct _GR_fontFileHeaderGRX {  /* the header */
-    unsigned long  magic;                /* font file magic number */
-    unsigned long  bmpsize;                /* character bitmap size */
-    unsigned short width;                /* width (average for proportional) */
-    unsigned short height;                /* font height */
-    unsigned short minchar;                /* lowest character code in font */
-    unsigned short maxchar;                /* highest character code in font */
-    unsigned short isfixed;                /* nonzero if fixed font */
-    unsigned short reserved;                /* ??? */
-    unsigned short baseline;                /* baseline from top of font */
-    unsigned short undwidth;                /* underline width (at bottom) */
-    char     fnname[GRX_NAMEWIDTH];        /* font file name (w/o path) */
-    char     family[GRX_NAMEWIDTH];        /* font family name */
+    GR_int32u magic;                  /* font file magic number */
+    GR_int32u bmpsize;                /* character bitmap size */
+    GR_int16u width;                  /* width (average for proportional) */
+    GR_int16u height;                 /* font height */
+    GR_int16u minchar;                /* lowest character code in font */
+    GR_int16u maxchar;                /* highest character code in font */
+    GR_int16u isfixed;                /* nonzero if fixed font */
+    GR_int16u reserved;               /* ??? */
+    GR_int16u baseline;               /* baseline from top of font */
+    GR_int16u undwidth;               /* underline width (at bottom) */
+    char      fnname[GRX_NAMEWIDTH];  /* font file name (w/o path) */
+    char      family[GRX_NAMEWIDTH];  /* font family name */
 } GrFontFileHeaderGRX;
 
 #endif /* whole file */

@@ -15,7 +15,7 @@
 #define PHALF        (PERIOD / 2)
 #define PQUART  (PERIOD / 4)
 
-static unsigned int sintab[PQUART + 1] = {
+static int sintab[PQUART + 1] = {
         0,   101,   201,   302,          402,         503,        603,   704,
       804,   904,  1005,  1105,  1205,  1306,  1406,  1506,
      1606,  1706,  1806,  1906,  2006,  2105,  2205,  2305,
@@ -76,8 +76,8 @@ static void sincos(int n,int cx,int cy,int rx,int ry,int *pt)
             cval =  sintab[n - PERIOD + PQUART];
             break;
         }
-        pt[0] = cx + irscale(rx,cval,TRIGMGN);
-        pt[1] = cy - irscale(ry,sval,TRIGMGN);
+        pt[0] = cx; pt[0] += irscale(rx,cval,TRIGMGN);
+        pt[1] = cy; pt[1] -= irscale(ry,sval,TRIGMGN);
 }
 
 int GrGenerateEllipseArc(int cx,int cy,int rx,int ry,int start,int end,int pt[][2])

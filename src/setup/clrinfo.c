@@ -6,39 +6,39 @@
  **/
 
 #include "libgrx.h"
-#undef         GrColorInfo
+#undef   GrColorInfo
 
 const
 struct _GR_colorInfo * const GrColorInfo = &_GrColorInfo;
 struct _GR_colorInfo _GrColorInfo = {
-    16,                                /* ncolors: initted for 16 color VGA modes */
-    0,                                /* nfree */
-    0,                                /* black */
-    15,                                /* white */
-    FALSE,                        /* RBG         */
-    { 6,    6,          6        },        /* precision */
-    { 5,    5,          5        },        /* bit position */
-    { 0xfc, 0xfc, 0xfc  },        /* mask */
-    { 2,    2,          2        },        /* round */
-    { 2,    2,          2        },        /* shift */
-    2,                                /* normalization */
-    {                                /* first 16 EGA/VGA colors */
-        { 0,   0,   0        },        /* black */
-        { 0,   0,   128 },        /* blue */
-        { 0,   128, 0        },        /* green */
-        { 0,   128, 128 },        /* cyan */
-        { 128, 0,   0        },        /* red */
-        { 128, 0,   128 },        /* magenta */
-        { 128, 64,  0        },        /* brown */
-        { 128, 128, 128 },        /* light gray */
-        { 64,  64,  64  },        /* dark gray */
-        { 64,  64,  255 },        /* light blue */
-        { 64,  255, 64  },        /* light green */
-        { 64,  255, 255 },        /* light cyan */
-        { 255, 64,  64  },        /* light red */
-        { 255, 64,  255 },        /* light magenta */
-        { 255, 255, 64  },        /* yellow */
-        { 255, 255, 255 }        /* white */
+    16,                         /* ncolors: initted for 16 color VGA modes */
+    0,                          /* nfree */
+    0,                          /* black */
+    15,                         /* white */
+    FALSE,                      /* RBG   */
+    { 6,    6,    6     },      /* precision */
+    { 5,    5,    5     },      /* bit position */
+    { 0xfc, 0xfc, 0xfc  },      /* mask */
+    { 2,    2,    2     },      /* round */
+    { 2,    2,    2     },      /* shift */
+    2,                          /* normalization */
+    {                           /* first 16 EGA/VGA colors */
+        { 0,   0,   0   },      /* black */
+        { 0,   0,   170 },      /* blue */
+        { 0,   170, 0   },      /* green */
+        { 0,   170, 170 },      /* cyan */
+        { 170, 0,   0   },      /* red */
+        { 170, 0,   170 },      /* magenta */
+        { 170, 85,  0   },      /* brown */
+        { 170, 170, 170 },      /* light gray */
+        { 85,  85,  85  },      /* dark gray */
+        { 85,  85,  255 },      /* light blue */
+        { 85,  255, 85  },      /* light green */
+        { 85,  255, 255 },      /* light cyan */
+        { 255, 85,  85  },      /* light red */
+        { 255, 85,  255 },      /* light magenta */
+        { 255, 255, 85  },      /* yellow */
+        { 255, 255, 255 }       /* white */
     }
 };
 

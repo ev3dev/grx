@@ -7,12 +7,12 @@
  ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  **/
 
-#include "grdriver.h"
 #include "libgrx.h"
+#include "grdriver.h"
 
 GrFrameDriver *_GrFrameDriverTable[] = {
 /* first the drivers for video based context */
-#if defined(__GO32__) || defined(__TURBOC__)
+#if defined(__GO32__) || defined(__TURBOC__) || defined (__WATCOMC__)
     &_GrFrameDriverHERC1,
 #endif
 #if !defined(__XWIN__)
@@ -26,7 +26,9 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverSVGA32L,
     &_GrFrameDriverSVGA32H,
 #endif
-#if defined(__GO32__) || defined(LFB_BY_NEAR_POINTER)
+#if  defined(__GO32__) \
+  || defined(LFB_BY_NEAR_POINTER) \
+  || ( defined(__WATCOMC__) && defined ( __386__ ) )
     &_GrFrameDriverSVGA8_LFB,
     &_GrFrameDriverSVGA16_LFB,
     &_GrFrameDriverSVGA24_LFB,
@@ -39,17 +41,18 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverXWIN24,
 #endif
 /* now the drivers for RAM based context */
-#if !defined(__XWIN__)
     &_GrFrameDriverRAM1,
     &_GrFrameDriverRAM4,
-#endif
     &_GrFrameDriverRAM8,
     &_GrFrameDriverRAM16,
+#ifdef GRX_USE_RAM3x8
+    &_GrFrameDriverRAM3x8,
+#else
     &_GrFrameDriverRAM24,
-#if !defined(__XWIN__)
+#endif
+#if !defined(__XWIN__) && !defined(GRX_USE_RAM3x8)
     &_GrFrameDriverRAM32L,
     &_GrFrameDriverRAM32H,
-    &_GrFrameDriverRAM3x8,
 #endif
     NULL
 };

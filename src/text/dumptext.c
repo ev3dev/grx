@@ -12,8 +12,8 @@ void GrDumpText(int col,int row,int wdt,int hgt,GrTextRegion *r)
 {
         GrColorTableP fgcp = r->txr_fgcolor.p;
         GrColorTableP bgcp = r->txr_bgcolor.p;
-        long fgcv = r->txr_fgcolor.v;
-        long bgcv = r->txr_bgcolor.v;
+        GrColor fgcv = r->txr_fgcolor.v;
+        GrColor bgcv = r->txr_bgcolor.v;
         int  undl = (fgcv & GR_UNDERLINE_TEXT) ? 1 : 0;
         GrFont *f = r->txr_font;
         char *ptr = r->txr_buffer;
@@ -24,8 +24,8 @@ void GrDumpText(int col,int row,int wdt,int hgt,GrTextRegion *r)
         int  chrw,chrh,bmpw;
         int  xpos,ypos;
         if((f == NULL) || f->h.proportional)   return;
-        if((uint)col >= (uint)r->txr_width)  return;
-        if((uint)row >= (uint)r->txr_height) return;
+        if((unsigned int)col >= (unsigned int)r->txr_width)  return;
+        if((unsigned int)row >= (unsigned int)r->txr_height) return;
         wdt = umin(wdt,(r->txr_width  - col));
         hgt = umin(hgt,(r->txr_height - row));
         if((wdt <= 0) || (hgt <= 0)) return;
@@ -67,24 +67,24 @@ void GrDumpText(int col,int row,int wdt,int hgt,GrTextRegion *r)
         for( ; --hgt >= 0; ptr += offs,bpt += offs,ypos += chrh) {
             char *pt2 = ptr;
             char *bp2 = bpt;
-            int          wd2 = wdt;
-            int          xp2 = xpos;
+            int   wd2 = wdt;
+            int   xp2 = xpos;
             for( ; --wd2 >= 0; pt2 += cofs,bp2 += cofs,xp2 += chrw) {
                 int  chr,attr;
                 char far *bmp;
                 switch(r->txr_chrtype) {
                   case GR_WORD_TEXT:
-                    chr = *((ushort *)(pt2));
+                    chr = *((unsigned short *)(pt2));
                     if(fast) {
-                        if(*((ushort *)(bp2)) == chr) continue;
-                        *((ushort *)(bp2)) = chr;
+                        if(*((unsigned short *)(bp2)) == chr) continue;
+                        *((unsigned short *)(bp2)) = chr;
                     }
                     break;
                   case GR_ATTR_TEXT:
-                    chr = *((ushort *)(pt2));
+                    chr = *((unsigned short *)(pt2));
                     if(fast) {
-                        if(*((ushort *)(bp2)) == chr) continue;
-                        *((ushort *)(bp2)) = chr;
+                        if(*((unsigned short *)(bp2)) == chr) continue;
+                        *((unsigned short *)(bp2)) = chr;
                     }
                     attr = GR_TEXTCHR_ATTR(chr,GR_ATTR_TEXT);
                     chr  = GR_TEXTCHR_CODE(chr,GR_ATTR_TEXT);
@@ -93,10 +93,10 @@ void GrDumpText(int col,int row,int wdt,int hgt,GrTextRegion *r)
                     undl = GR_ATTR_UNDERLINE(attr);
                     break;
                   default:
-                    chr = *((uchar *)(pt2));
+                    chr = *((unsigned char *)(pt2));
                     if(fast) {
-                        if(*((uchar *)(bp2)) == chr) continue;
-                        *((uchar *)(bp2)) = chr;
+                        if(*((unsigned char *)(bp2)) == chr) continue;
+                        *((unsigned char *)(bp2)) = chr;
                     }
                     break;
                 }
@@ -127,8 +127,8 @@ void GrDumpTextRegion(GrTextRegion *r)
 void GrDumpChar(int chr,int col,int row,GrTextRegion *r)
 {
         int offs;
-        if((uint)col >= (uint)r->txr_width)  return;
-        if((uint)row >= (uint)r->txr_height) return;
+        if((unsigned int)col >= (unsigned int)r->txr_width)  return;
+        if((unsigned int)row >= (unsigned int)r->txr_height) return;
         switch(r->txr_chrtype) {
           case GR_WORD_TEXT:
           case GR_ATTR_TEXT:

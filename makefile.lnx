@@ -1,8 +1,6 @@
 #
 # GRX 2.0 makefile for LINUX/svgalib distribution version
 #
-include makedefs.gnu
-
 all: libs test
 
 libs: static_libs shared_libs

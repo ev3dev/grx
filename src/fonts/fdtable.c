@@ -5,8 +5,8 @@
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
  **/
 
-#include "grfontdv.h"
 #include "libgrx.h"
+#include "grfontdv.h"
 
 GrFontDriver *_GrFontDriverTable[] = {
 #ifdef __XWIN__

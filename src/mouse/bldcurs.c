@@ -8,7 +8,6 @@
 #include "libgrx.h"
 #include "allocate.h"
 #include "memfill.h"
-#include "memcopy.h"
 
 GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,int xo,int yo,GrColorTableP C)
 {
@@ -18,7 +17,8 @@ GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,int xo,int yo,GrC
         int  workw = wrkw2 << 1;
         int  workh = ((h + 7) & ~7) << 1;
         int  xx,yy;
-        if(!(curs = malloc(sizeof(GrCursor)))) return(NULL);
+        curs = malloc(sizeof(GrCursor));
+        if(!curs) return(NULL);
         sttzero(curs);
         if(!GrCreateContext(workw,((workh << 1) + h),NULL,&curs->work)) {
             free(curs);
@@ -34,7 +34,7 @@ GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,int xo,int yo,GrC
         GrSetContext(&curs->work);
         GrFilledBoxNC(0,0,(workw - 1),(h - 1),0L);
         for(yy = 0; yy < h; yy++) {
-            uchar far *p = (uchar far *)pixels + (yy * pitch);
+            unsigned char far *p = (unsigned char far *)pixels + (yy * pitch);
             for(xx = 0; xx < w; xx++,p++) {
                 if(*p) GrPlotNC(xx,yy,GrColorValue(GR_CTABLE_COLOR(C,(*p - 1))));
                 else   GrPlotNC((xx + wrkw2),yy,GrColorValue(-1L));

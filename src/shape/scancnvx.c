@@ -12,13 +12,13 @@
 #include "shape/polyedge.h"
 
 typedef struct {
-    uint     dir;                /* which direction to go for next point */
-    uint     index;                /* index of the current point */
+    unsigned int dir;                /* which direction to go for next point */
+    unsigned int index;                /* index of the current point */
     polyedge e;
 } edge;
 
 #define next_edge(ed,n,pt) {                                        \
-    ed.index   = (ed.index + ed.dir) % (uint)n;                        \
+    ed.index   = (ed.index + ed.dir) % (unsigned int)n;                \
     ed.e.x     = ed.e.xlast;                                        \
     ed.e.y     = ed.e.ylast;                                        \
     ed.e.xlast = pt[ed.index][0];                                \
@@ -123,7 +123,7 @@ void _GrScanConvexPoly(int n,int pt[][2],GrFiller *f,GrFillArg c)
                     ystep_edge(&R.e);
                 }
             }
-            clip_ordxrange_(CURC,xmin,xmax,continue,);
+            clip_ordxrange_(CURC,xmin,xmax,continue,CLIP_EMPTY_MACRO_ARG);
             (*f->scan)(
                 (xmin + CURC->gc_xoffset),
                 (ypos + CURC->gc_yoffset),

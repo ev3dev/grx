@@ -15,8 +15,8 @@ int     BWW =   83;
 
 void drbox(GrContext *src,int x,int y)
 {
-        long c1 = GrAllocColor(0,0,255);
-        long c2 = GrAllocColor(255,0,0);
+        GrColor c1 = GrAllocColor(0,0,255);
+        GrColor c2 = GrAllocColor(255,0,0);
         int  xx;
 
         GrClearScreen(c1);
@@ -36,6 +36,7 @@ void drbox(GrContext *src,int x,int y)
 
 void doblits(GrContext *src,int x,int y)
 {
+        GrColor xc = GrAllocColor(255,255,255) | GrXOR;
         int xx = (GrSizeX() - BWW)/ 2;
         int yy = 2;
         int ii;
@@ -45,6 +46,16 @@ void doblits(GrContext *src,int x,int y)
             xx++;
             yy += (BHH + 2);
         }
+/*
+        getch();
+        xx = (GrSizeX() - BWW)/ 2;
+        yy = 2;
+        for(ii = 0; ii < 8; ii++) {
+            GrFilledBox(xx,yy,xx+BWW-1,yy+BHH-1,xc);
+            xx++;
+            yy += (BHH + 2);
+        }
+*/
 }
 
 void bltest(GrContext *src,int x,int y)
@@ -74,7 +85,7 @@ void blxtest(void)
 TESTFUNC(blittest)
 {
         GrFBoxColors bcolors,ocolors,icolors;
-        long c,bg;
+        GrColor c,bg;
         int  x = GrSizeX();
         int  y = GrSizeY();
         int  ww = (x * 2) / 3;
@@ -84,6 +95,7 @@ TESTFUNC(blittest)
         int  bw = x / 17;
         int  bh = y / 17;
         int  bx,by;
+        int  cnt;
 
         GrContext *save = GrCreateSubContext(0,0,GrMaxX(),GrMaxY(),NULL,NULL);
         GrContext *tile = GrCreateContext(bw,bh,NULL,NULL);
@@ -112,8 +124,8 @@ TESTFUNC(blittest)
 
         c = GrAllocColor(250,250,0);
 
-        for(ii = 0,by = -(bh/3); ii < 18; ii++) {
-            for(jj = 0,bx = -(bw/2); jj < 18; jj++) {
+        for(ii = 0,by = -(bh/3); ii < 19; ii++) {
+            for(jj = 0,bx = -(bw/2); jj < 19; jj++) {
                 GrFramedBox(bx+2*wdt,by+2*wdt,bx+bw-2*wdt-1,by+bh-2*wdt-1,2*wdt,&bcolors);
                 bx += bw;
             }
@@ -135,8 +147,9 @@ TESTFUNC(blittest)
 
         GrFramedBox(bx+2*wdt,by+2*wdt,bx+bw-2*wdt-1,by+bh-2*wdt-1,2*wdt,&bcolors);
 
-        for(ii = 0,by = -(bh/3); ii < 18; ii++) {
-            for(jj = 0,bx = -(bw/2); jj < 18; jj++) {
+        for (cnt=0; cnt<3; cnt++) {
+          for(ii = 0,by = -(bh/3); ii < 19; ii++) {
+            for(jj = 0,bx = -(bw/2); jj < 19; jj++) {
                 if((ii != 15) || (jj != 15)) {
                     GrBitBlt(save,
                         bx,by,
@@ -145,12 +158,13 @@ TESTFUNC(blittest)
                         -(bh/3) + 15*bh,
                         -(bw/2) + 15*bw + bw - 1,
                         -(bh/3) + 15*bh + bh - 1,
-                        GrWRITE
+                        cnt==1 ? GrXOR : GrWRITE
                     );
                 }
                 bx += bw;
             }
             by += bh;
+          }
         }
 
         GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
@@ -176,8 +190,8 @@ TESTFUNC(blittest)
         GrClearScreen(0);
         GrSetContext(save);
 
-        for(ii = 0,by = -(bh/3); ii < 18; ii++) {
-            for(jj = 0,bx = -(bw/2); jj < 18; jj++) {
+        for(ii = 0,by = -(bh/3); ii < 19; ii++) {
+            for(jj = 0,bx = -(bw/2); jj < 19; jj++) {
                 GrBitBlt(save,
                     bx,by,
                     tile,

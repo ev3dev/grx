@@ -1,184 +1,111 @@
 #
 # GRX 2.0 Library Makefile for LINUX/X11. Uses GNU Make.
 #
-include ../makedefs.gnu
+# set up for GCC / Linux
+#
 include ../makedefs.x11
 
 .PHONY : clean cleanall
 
 INCDIR= -I. -I./include -I../include $(X11INCS)
-CCOPT += -pipe
 
-ifdef STATIC
-GRX20X=../lib/libgrx20X.a
-else
-GRX20X=../lib/libgrx20X.so.2.2.0
+GRX20SHli = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.so
+GRX20SHna = $(GRX20SHli).2.2.8
+
+GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
+
+ifdef SHARED
 CCOPT += -fPIC -D__SHARED__
 endif
 
-O=                          \
-	draw/bitblt.o       \
-	draw/box.o          \
-	draw/clear.o        \
-	draw/drwinlne.o     \
-	draw/fillbox.o      \
-	draw/frambox.o      \
-	draw/line.o         \
-	draw/majorln.o      \
-	draw/pixel.o        \
-	draw/plot.o         \
-	fdrivers/dotab8.o   \
-	fdrivers/ftable.o   \
-	fdrivers/genblit.o  \
-	fdrivers/pblitr2r.o \
-	fdrivers/pblitr2v.o \
-	fdrivers/pblitv2r.o \
-	fdrivers/pblitv2v.o \
-	fdrivers/ram16.o    \
-	fdrivers/ram24.o    \
-	fdrivers/ram8.o     \
-	fonts/fdv_bgi.o     \
-	fonts/fdv_grx.o     \
-	fonts/fdtable.o     \
-	fonts/pc6x8.o       \
-	fonts/pc8x8.o       \
-	fonts/pc8x14.o      \
-	fonts/pc8x16.o      \
-	mouse/bldcurs.o     \
-	mouse/drawcurs.o    \
-	mouse/mouinfo.o     \
-	mouse/mouinlne.o    \
-	mouse/mscursor.o    \
-	pattern/fillpatt.o  \
-	pattern/makepat.o   \
-	pattern/patfbox.o   \
-	pattern/patfcirc.o  \
-	pattern/patfcvxp.o  \
-	pattern/patfline.o  \
-	pattern/patfplot.o  \
-	pattern/patfpoly.o  \
-	pattern/pattcirc.o  \
-	pattern/pattline.o  \
-	pattern/pattpoly.o  \
-	pattern/scanpatt.o  \
-	setup/clip.o        \
-	setup/clrinfo.o     \
-	setup/clrinlne.o    \
-	setup/colors.o      \
-	setup/context.o     \
-	setup/cxtinfo.o     \
-	setup/cxtinlne.o    \
-	setup/drvinfo.o     \
-	setup/drvinlne.o    \
-	setup/fframe.o      \
-	setup/fgeom.o       \
-	setup/hooks.o       \
-	setup/modewalk.o    \
-	setup/setdrvr.o     \
-	setup/setmode.o     \
-	setup/viewport.o    \
-	shape/circle.o      \
-	shape/drawpoly.o    \
-	shape/fillcirc.o    \
-	shape/fillcnvx.o    \
-	shape/fillpoly.o    \
-	shape/genellip.o    \
-	shape/polygon.o     \
-	shape/polyline.o    \
-	shape/scancnvx.o    \
-	shape/scanellp.o    \
-	shape/scanpoly.o    \
-	text/buildaux.o     \
-	text/buildfnt.o     \
-	text/convfont.o     \
-	text/drawstrg.o     \
-	text/drawtext.o     \
-	text/dumpfont.o     \
-	text/dumptext.o     \
-	text/fntinlne.o     \
-	text/fontinfo.o     \
-	text/fontpath.o     \
-	text/loadfont.o     \
-	text/propwdt.o      \
-	text/unloadfn.o     \
-	user/ubox.o         \
-	user/ucircle.o      \
-	user/ucust.o        \
-	user/udrawtxt.o     \
-	user/uellarc.o      \
-	user/ufillbox.o     \
-	user/ufilpatt.o     \
-	user/uframbox.o     \
-	user/uhline.o       \
-	user/uline.o        \
-	user/upatt.o        \
-	user/upixel.o       \
-	user/uplot.o        \
-	user/upoly.o        \
-	user/usercord.o     \
-	user/uvline.o       \
-	utils/resize.o      \
-	utils/strmatch.o    \
-	vdrivers/vtable.o   \
-	wideline/custbox.o  \
-	wideline/custcirc.o \
-	wideline/custline.o \
-	wideline/custplne.o \
-	wideline/custpoly.o \
-	wideline/drwcpoly.o
+ifndef DEBUG
+CCOPT += -fomit-frame-pointer
+endif
 
-Oxwin=                      \
+OX=.o
+OP=
+include ./stdobjs.mak
+
+STD_O= $(STD_1) $(STD_2)  $(STD_3)  $(STD_4) \
+       $(STD_5) $(STD_6)  $(STD_7)  $(STD_8) \
+       $(STD_9) $(STD_10) $(STD_11) $(STD_12)
+
+ADDON_O=
+ifdef DEBUG
+ ADDON_O += utils/dbgprint.o
+endif
+
+ifeq ($(HAVE_LIBTIFF),y)
+  ADDON_O += ../addons/ctx2tiff.o
+endif
+
+ifeq ($(HAVE_LIBJPEG),y)
+  ADDON_O += ../addons/ctx2jpeg.o
+endif
+
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+  ADDON_O += ../addons/print/grxprint.o \
+	     ../addons/print/prndata.o
+  INCDIR += -I../addons/print
+endif
+
+ifeq ($(INCLUDE_BMP_CODE),y)
+  ADDON_O += ../addons/bmp/bmp.o
+  INCDIR  += -I../addons/bmp
+endif
+
+O=      $(STD_O) $(ADDON_O) \
 	fdrivers/fd_xwin.o  \
+	fdrivers/ram24.o    \
 	fonts/fdv_xwin.o    \
 	mouse/xwininp.o     \
 	mouse/xwinkeys.o    \
 	vdrivers/vd_xwin.o
 
-all: $(GRX20X)
-
 ifdef SHARED
-$(GRX20X): $(LINUX_X11_SHARED) $(O)
-	-rm -f $(GRX20X)
-	$(CC) -shared -Wl,-soname,$(notdir $(GRX20X)) -o $(GRX20X) $(O) $(Oxwin)
+# ------------------------ SHARED
+all: $(GRX20SHna)
+
+$(GRX20SHna): $(LINUX_i386_X11_SHARED) $(O)
+	-rm -f $(GRX20SHna)
+	$(CC) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(O)
+
+$(O): $(LINUX_i386_X11_SHARED)
+
 else
-$(GRX20X): $(LINUX_X11_STATIC) $(O) $(Oxwin)
-	-rm -f $(GRX20X)
-	$(AR) -rv $(GRX20X) $(O) $(Oxwin)
-	$(RANLIB) $(GRX20X)
+# ------------------------- STATIC
+all: $(GRX20ST)
+
+$(GRX20ST): $(LINUX_i386_X11_STATIC) $(O)
+	-rm -f $(GRX20ST)
+	$(AR) -rv $(GRX20ST) $(O)
+	$(RANLIB) $(GRX20ST)
+
+$(O): $(LINUX_i386_X11_STATIC)
 endif
 
-$(LINUX_X11_STATIC):
-	if [ ! -e $(LINUX_i386_X11_STATIC) ]; then rm -f $(SYSTEM_TAG_PREFIX).* $(O) $(Oxwin); fi
-	touch $(LINUX_X11_STATIC)
 
-$(LINUX_X11_SHARED):
-	if [ ! -e $(LINUX_i386_X11_SHARED) ]; then rm -f $(SYSTEM_TAG_PREFIX).* $(O) $(Oxwin); fi
-	touch $(LINUX_X11_SHARED)
+$(LINUX_i386_X11_STATIC):
+	-if [ ! -e $(LINUX_i386_X11_STATIC) ]; then rm -f $(SYSTEM_TAG_PREFIX).* $(O); fi
+	touch $(LINUX_i386_X11_STATIC)
+
+$(LINUX_i386_X11_SHARED):
+	-if [ ! -e $(LINUX_i386_X11_SHARED) ]; then rm -f $(SYSTEM_TAG_PREFIX).* $(O); fi
+	touch $(LINUX_i386_X11_SHARED)
 
 clean:
-	rm -f $(O) $(Oxwin) $(LINUX_X11_STATIC) $(LINUX_X11_SHARED)
+	rm -f $(O) $(LINUX_i386_X11_STATIC) $(LINUX_i386_X11_SHARED)
 
 cleanall: clean
-	rm -f $(GRX20X)
+	rm -f $(GRX20SHna) $(GRX20SHli) $(GRX20ST)
 
-depend.new:
-	gcc -MM $(CCOPT) $(INCDIR) $(filter draw/%,$(O:.o=.c) $(Oxwin:.o=.c))     | sed 's#^\(.*\.o\):#draw/\1:#g'     >depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter fdrivers/%,$(O:.o=.c) $(Oxwin:.o=.c)) | sed 's#^\(.*\.o\):#fdrivers/\1:#g'>>depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter fonts/%,$(O:.o=.c) $(Oxwin:.o=.c))    | sed 's#^\(.*\.o\):#fonts/\1:#g'   >>depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter mouse/%,$(O:.o=.c) $(Oxwin:.o=.c))    | sed 's#^\(.*\.o\):#mouse/\1:#g'   >>depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter pattern/%,$(O:.o=.c) $(Oxwin:.o=.c))  | sed 's#^\(.*\.o\):#pattern/\1:#g' >>depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter setup/%,$(O:.o=.c) $(Oxwin:.o=.c))    | sed 's#^\(.*\.o\):#setup/\1:#g'   >>depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter shape/%,$(O:.o=.c) $(Oxwin:.o=.c))    | sed 's#^\(.*\.o\):#shape/\1:#g'   >>depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter text/%,$(O:.o=.c) $(Oxwin:.o=.c))     | sed 's#^\(.*\.o\):#text/\1:#g'    >>depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter user/%,$(O:.o=.c) $(Oxwin:.o=.c))     | sed 's#^\(.*\.o\):#user/\1:#g'    >>depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter utils/%,$(O:.o=.c) $(Oxwin:.o=.c))    | sed 's#^\(.*\.o\):#utils/\1:#g'   >>depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter vdrivers/%,$(O:.o=.c) $(Oxwin:.o=.c)) | sed 's#^\(.*\.o\):#vdrivers/\1:#g'>>depend.new
-	gcc -MM $(CCOPT) $(INCDIR) $(filter wideline/%,$(O:.o=.c) $(Oxwin:.o=.c)) | sed 's#^\(.*\.o\):#wideline/\1:#g'>>depend.new
+dep:
+	gcc -MM $(CCOPT) $(INCDIR) $(O:.o=.c) | sed 's#^.*: \(.*\)\.c#\1.o: \1.c#g' >depend.x11
 
 .c.s:
 	$(CC) -S $(CCOPT) -D__XWIN__ $(INCDIR) $*.c -o $*.s
 
-$(Oxwin) $(O) : %.o : %.c
+$(O) : %.o : %.c
 	$(CC) -c $(CCOPT) -D__XWIN__ $(INCDIR) $*.c -o $*.o
 
 include depend.x11

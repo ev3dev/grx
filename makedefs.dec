@@ -1,0 +1,12 @@
+# use cc compiler
+CC=     cc
+
+GRX_LIB_SUBDIR=unix
+
+ifdef   DEBUG
+CCOPT=  -O5 -g3 -DDEBUG=$(DEBUG)
+LDOPT=  -g
+else
+CCOPT=  -O5 -g3
+LDOPT=
+endif

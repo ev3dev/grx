@@ -2,6 +2,9 @@
 # GRX 2.0 makefile for LINUX/X11 distribution version (GNU-make)
 #
 
+# set MAKE to GNU make
+#MAKE=gmake
+
 all: libs test
 
 libs: static_libs shared_libs

@@ -5,8 +5,8 @@
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
  **/
 
-#include "grdriver.h"
 #include "libgrx.h"
+#include "grdriver.h"
 
 GrVideoDriver *_GrVideoDriverTable[] = {
 #if defined(__MSDOS__)
@@ -26,6 +26,7 @@ GrVideoDriver *_GrVideoDriverTable[] = {
 #if defined(__linux__) && !defined(__XWIN__)
     &_GrVideoDriverSVGALIB,
 #endif
+    &_GrDriverMEM,
     NULL
 };
 

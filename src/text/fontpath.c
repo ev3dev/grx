@@ -7,18 +7,20 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "grfontdv.h"
 #include "libgrx.h"
+#include "grfontdv.h"
 #include "allocate.h"
-#include "alloca.h"
 #include "arith.h"
 
 void GrSetFontPath(char *p)
 {
-        int  chr,totlen = 0,npath = 0,plen = 0;
+        int  chr,totlen = 0,npath,plen = 0;
         char path[200],*plist[100];
         if(!p || (*p == '\0')) return;
-        setup_alloca();
+        for (npath = 0; npath < itemsof(plist); ++npath)
+          plist[npath] = NULL;
+        npath = 0;
+        setup_ALLOC();
         path[0] = '\0';
         while(((chr = *p++) != '\0') || (plen > 0)) {
             int pathchr = TRUE;
@@ -53,7 +55,7 @@ void GrSetFontPath(char *p)
             if(plen > 0) {
                 if(path[plen - 1] != '/') path[plen++] = '/';
                 path[plen++] = '\0';
-                plist[npath] = alloca(plen);
+                plist[npath] = ALLOC((size_t)plen);
                 if(plist[npath] == NULL) goto error;
                 strcpy(plist[npath],path);
                 totlen += plen;
@@ -80,5 +82,7 @@ void GrSetFontPath(char *p)
         _GrFontFileInfo.path  = NULL;
         _GrFontFileInfo.npath = 0;
       done:
-        reset_alloca();
+        for (npath = 0; npath < itemsof(plist); ++npath)
+          FREE(plist[npath]);
+        reset_ALLOC();
 }

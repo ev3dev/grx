@@ -1,28 +1,28 @@
 /**
  ** FDV_XWIN.C -- driver X Windows fonts
  **
- ** Author:        Ulrich Leodolter
- ** E-mail:        ulrich@lab1.psy.univie.ac.at
- ** Date:        Thu Sep 28 11:21:46 1995
- ** RCSId:        $Id$
+ ** Author:     Ulrich Leodolter
+ ** E-mail:     ulrich@lab1.psy.univie.ac.at
+ ** Date:       Thu Sep 28 11:21:46 1995
+ ** RCSId:      $Id$
  **/
 
 #include <stdio.h>
 #include <string.h>
 
-#include "grfontdv.h"
-#include "libxwin.h"
 #include "libgrx.h"
+#include "libxwin.h"
+#include "grfontdv.h"
 #include "allocate.h"
 
-static XFontStruct *        fontp = NULL;
-static Pixmap                fontbmp = None;
-static GC                fontgc = None;
+static XFontStruct *    fontp = NULL;
+static Pixmap           fontbmp = None;
+static GC               fontgc = None;
 
-static unsigned char        swap_byte[256];
-static unsigned char        swap_byte_inited = 0;
+static unsigned char    swap_byte[256];
+static unsigned char    swap_byte_inited = 0;
 
-static void init_swap_byte ()
+static void init_swap_byte (void)
 {
   if (!swap_byte_inited) {
     unsigned int i;
@@ -55,15 +55,15 @@ static int openfile(char *fname)
   init_swap_byte();
   cleanup();
   if (_XGrDisplay != NULL) fontp = XLoadQueryFont (_XGrDisplay, fname);
-  if (fontp == NULL)        return(cleanup(), FALSE);
+  if (fontp == NULL)    return(cleanup(), FALSE);
 
   numchars = fontp->max_char_or_byte2 - fontp->min_char_or_byte2 + 1;
   fontbmp = XCreatePixmap (_XGrDisplay, _XGrWindow,
                            numchars * fontp->max_bounds.width,
                            fontp->ascent + fontp->descent, 1);
-  if (fontbmp == None)        return(cleanup(), FALSE);
+  if (fontbmp == None)  return(cleanup(), FALSE);
   fontgc = XCreateGC (_XGrDisplay, fontbmp, 0L, NULL);
-  if (fontgc == None)        return(cleanup(), FALSE);
+  if (fontgc == None)   return(cleanup(), FALSE);
   XSetFont (_XGrDisplay, fontgc, fontp->fid);
   XSetForeground (_XGrDisplay, fontgc, 0);
   XFillRectangle (_XGrDisplay, fontbmp, fontgc, 0, 0,
@@ -86,26 +86,26 @@ static int header(GrFontHeader *hdr)
   strcpy(hdr->name, "");
   strcpy(hdr->family, "xwin");
   hdr->proportional = (fontp->per_char == NULL) ? FALSE : TRUE;
-  hdr->scalable          = FALSE;
+  hdr->scalable   = FALSE;
   hdr->preloaded  = FALSE;
-  hdr->modified          = GR_FONTCVT_NONE;
-  hdr->width          = fontp->max_bounds.width;
-  hdr->height          = fontp->ascent + fontp->descent;
-  hdr->baseline          = fontp->ascent;
-  hdr->ulpos          = fontp->ascent;
-  hdr->ulheight          = fontp->descent;
-  hdr->minchar          = fontp->min_char_or_byte2;
-  hdr->numchars          = fontp->max_char_or_byte2 - fontp->min_char_or_byte2 + 1;
+  hdr->modified   = GR_FONTCVT_NONE;
+  hdr->width      = fontp->max_bounds.width;
+  hdr->height     = fontp->ascent + fontp->descent;
+  hdr->baseline   = fontp->ascent;
+  hdr->ulpos      = fontp->ascent;
+  hdr->ulheight   = fontp->descent;
+  hdr->minchar    = fontp->min_char_or_byte2;
+  hdr->numchars   = fontp->max_char_or_byte2 - fontp->min_char_or_byte2 + 1;
   return(TRUE);
 }
 
 static int charwdt(int chr)
 {
   int width;
-  if (fontp == NULL)        return(-1);
-  if (chr < fontp->min_char_or_byte2)        return(-1);
-  if (chr > fontp->max_char_or_byte2)        return(-1);
-  if (fontp->per_char == NULL)                return(fontp->max_bounds.width);
+  if (fontp == NULL)    return(-1);
+  if (chr < fontp->min_char_or_byte2)   return(-1);
+  if (chr > fontp->max_char_or_byte2)   return(-1);
+  if (fontp->per_char == NULL)          return(fontp->max_bounds.width);
   width = fontp->per_char[chr - fontp->min_char_or_byte2].width;
   if (width <= 0)
     return fontp->per_char[fontp->default_char - fontp->min_char_or_byte2].width;;
@@ -118,10 +118,10 @@ static int bitmap(int chr,int w,int h,char *buffer)
   int x, y, bpl;
   unsigned char *data;
 
-  if (fontp == NULL || fontbmp == None)        return(FALSE);
-  if ((w <= 0) || (w != charwdt(chr)))        return(FALSE);
-  if ((h <= 0) || (h != (fontp->ascent + fontp->descent)))        return(FALSE);
-  if (_XGrDisplay == NULL)        return(FALSE);
+  if (fontp == NULL || fontbmp == None) return(FALSE);
+  if ((w <= 0) || (w != charwdt(chr)))  return(FALSE);
+  if ((h <= 0) || (h != (fontp->ascent + fontp->descent)))      return(FALSE);
+  if (_XGrDisplay == NULL)      return(FALSE);
   img = XGetImage (_XGrDisplay,
                    fontbmp,
                    (chr - fontp->min_char_or_byte2) * fontp->max_bounds.width,
@@ -130,8 +130,8 @@ static int bitmap(int chr,int w,int h,char *buffer)
                    h,
                    AllPlanes,
                    ZPixmap);
-  if (img == NULL)                return(FALSE);
-  data = img->data;
+  if (img == NULL)              return(FALSE);
+  data = (unsigned char *)(img->data);
   bpl = (w + 7) >> 3;
   for (y = 0; y < h; y++) {
     for (x = 0; x < bpl; x++) buffer[x] = swap_byte[data[x]];
@@ -143,13 +143,13 @@ static int bitmap(int chr,int w,int h,char *buffer)
 }
 
 GrFontDriver _GrFontDriverXWIN = {
-    "XWIN",                                /* driver name (doc only) */
-    "",                                        /* font file extension */
-    FALSE,                                /* scalable */
-    openfile,                                /* file open and check routine */
-    header,                                /* font header reader routine */
-    charwdt,                                /* character width reader routine */
-    bitmap,                                /* character bitmap reader routine */
-    cleanup                                /* cleanup routine */
+    "XWIN",                             /* driver name (doc only) */
+    "",                                 /* font file extension */
+    FALSE,                              /* scalable */
+    openfile,                           /* file open and check routine */
+    header,                             /* font header reader routine */
+    charwdt,                            /* character width reader routine */
+    bitmap,                             /* character bitmap reader routine */
+    cleanup                             /* cleanup routine */
 };
 

@@ -5,8 +5,8 @@
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
  **/
 
-#include "grdriver.h"
 #include "libgrx.h"
+#include "grdriver.h"
 #include "arith.h"
 #include "ioport.h"
 #include "memmode.h"
@@ -39,115 +39,117 @@ static void setrwbanks(int rb,int wb)
 }
 
 static GrVideoModeExt gr4ext = {
-    GR_frameSVGA4,                        /* frame driver */
-    NULL,                                /* frame driver override */
-    MK_FP(0xa000,0),                        /* frame buffer address */
+    GR_frameSVGA4,                      /* frame driver */
+    NULL,                               /* frame driver override */
+    MK_FP(0xa000,0),                    /* frame buffer address */
     { 6, 6, 6 },                        /* color precisions */
     { 0, 0, 0 },                        /* color component bit positions */
-    0,                                        /* mode flag bits */
-    _GrViDrvSetEGAVGAmode,                /* mode set */
-    _GrViDrvVESAsetVirtualSize,                /* virtual size set */
-    _GrViDrvVESAvirtualScroll,                /* virtual scroll */
-    setbank,                                /* bank set function */
-    setrwbanks,                                /* double bank set function */
-    _GrViDrvLoadColorVGA4                /* color loader */
+    0,                                  /* mode flag bits */
+    _GrViDrvSetEGAVGAmode,              /* mode set */
+    _GrViDrvVESAsetVirtualSize,         /* virtual size set */
+    _GrViDrvVESAvirtualScroll,          /* virtual scroll */
+    setbank,                            /* bank set function */
+    setrwbanks,                         /* double bank set function */
+    _GrViDrvLoadColorVGA4               /* color loader */
 };
 
 static GrVideoModeExt gr8ext = {
-    GR_frameSVGA8,                        /* frame driver */
-    NULL,                                /* frame driver override */
-    MK_FP(0xa000,0),                        /* frame buffer address */
+    GR_frameSVGA8,                      /* frame driver */
+    NULL,                               /* frame driver override */
+    MK_FP(0xa000,0),                    /* frame buffer address */
     { 6, 6, 6 },                        /* color precisions */
     { 0, 0, 0 },                        /* color component bit positions */
-    GR_VMODEF_FAST_SVGA8,                /* mode flag bits */
-    _GrViDrvSetEGAVGAmode,                /* mode set */
-    _GrViDrvVESAsetVirtualSize,                /* virtual size set */
-    _GrViDrvVESAvirtualScroll,                /* virtual scroll */
-    setbank,                                /* bank set function */
-    setrwbanks,                                /* double bank set function */
-    _GrViDrvLoadColorVGA8                /* color loader */
+    GR_VMODEF_FAST_SVGA8,               /* mode flag bits */
+    _GrViDrvSetEGAVGAmode,              /* mode set */
+    _GrViDrvVESAsetVirtualSize,         /* virtual size set */
+    _GrViDrvVESAvirtualScroll,          /* virtual scroll */
+    setbank,                            /* bank set function */
+    setrwbanks,                         /* double bank set function */
+    _GrViDrvLoadColorVGA8               /* color loader */
 };
 
 static GrVideoModeExt gr15ext = {
-    GR_frameSVGA16,                        /* frame driver */
-    NULL,                                /* frame driver override */
-    MK_FP(0xa000,0),                        /* frame buffer address */
-    { 5,  5,  5 },                        /* color precisions */
-    { 10, 5,  0 },                        /* color component bit positions */
-    0,                                        /* mode flag bits */
-    _GrViDrvSetEGAVGAmode,                /* mode set */
-    _GrViDrvVESAsetVirtualSize,                /* virtual size set */
-    _GrViDrvVESAvirtualScroll,                /* virtual scroll */
-    setbank,                                /* bank set function */
-    setrwbanks,                                /* double bank set function */
+    GR_frameSVGA16,                     /* frame driver */
+    NULL,                               /* frame driver override */
+    MK_FP(0xa000,0),                    /* frame buffer address */
+    { 5,  5,  5 },                      /* color precisions */
+    { 10, 5,  0 },                      /* color component bit positions */
+    0,                                  /* mode flag bits */
+    _GrViDrvSetEGAVGAmode,              /* mode set */
+    _GrViDrvVESAsetVirtualSize,         /* virtual size set */
+    _GrViDrvVESAvirtualScroll,          /* virtual scroll */
+    setbank,                            /* bank set function */
+    setrwbanks,                         /* double bank set function */
     NULL                                /* color loader */
 };
 
 static GrVideoModeExt gr16ext = {
-    GR_frameSVGA16,                        /* frame driver */
-    NULL,                                /* frame driver override */
-    MK_FP(0xa000,0),                        /* frame buffer address */
-    { 5,  6,  5 },                        /* color precisions */
-    { 11, 5,  0 },                        /* color component bit positions */
-    0,                                        /* mode flag bits */
-    _GrViDrvSetEGAVGAmode,                /* mode set */
-    _GrViDrvVESAsetVirtualSize,                /* virtual size set */
-    _GrViDrvVESAvirtualScroll,                /* virtual scroll */
-    setbank,                                /* bank set function */
-    setrwbanks,                                /* double bank set function */
+    GR_frameSVGA16,                     /* frame driver */
+    NULL,                               /* frame driver override */
+    MK_FP(0xa000,0),                    /* frame buffer address */
+    { 5,  6,  5 },                      /* color precisions */
+    { 11, 5,  0 },                      /* color component bit positions */
+    0,                                  /* mode flag bits */
+    _GrViDrvSetEGAVGAmode,              /* mode set */
+    _GrViDrvVESAsetVirtualSize,         /* virtual size set */
+    _GrViDrvVESAvirtualScroll,          /* virtual scroll */
+    setbank,                            /* bank set function */
+    setrwbanks,                         /* double bank set function */
     NULL                                /* color loader */
 };
 
 static GrVideoModeExt gr24ext = {
-    GR_frameSVGA24,                        /* frame driver */
-    NULL,                                /* frame driver override */
-    MK_FP(0xa000,0),                        /* frame buffer address */
-    { 8,  8,  8 },                        /* color precisions */
-    { 16, 8,  0 },                        /* color component bit positions */
-    0,                                        /* mode flag bits */
-    _GrViDrvSetEGAVGAmode,                /* mode set */
-    _GrViDrvVESAsetVirtualSize,                /* virtual size set */
-    _GrViDrvVESAvirtualScroll,                /* virtual scroll */
-    setbank,                                /* bank set function */
-    setrwbanks,                                /* double bank set function */
+    GR_frameSVGA24,                     /* frame driver */
+    NULL,                               /* frame driver override */
+    MK_FP(0xa000,0),                    /* frame buffer address */
+    { 8,  8,  8 },                      /* color precisions */
+    { 16, 8,  0 },                      /* color component bit positions */
+    0,                                  /* mode flag bits */
+    _GrViDrvSetEGAVGAmode,              /* mode set */
+    _GrViDrvVESAsetVirtualSize,         /* virtual size set */
+    _GrViDrvVESAvirtualScroll,          /* virtual scroll */
+    setbank,                            /* bank set function */
+    setrwbanks,                         /* double bank set function */
     NULL                                /* color loader */
 };
 
 static GrVideoMode modes[] = {
-    /* pres.  bpp wdt        hgt   BIOS   scan  priv. &ext                                  */
-    {  TRUE,  4,  100,  25,   0x21,  200,  0,         &_GrViDrvEGAVGAtextModeExt          },
-    {  TRUE,  4,  100,  28,   0x21,  200,  0,         &_GrViDrvEGAVGAcustomTextModeExt },
-    {  TRUE,  4,  100,  30,   0x22,  200,  0,         &_GrViDrvEGAVGAtextModeExt          },
-    {  TRUE,  4,  100,  34,   0x22,  200,  0,         &_GrViDrvEGAVGAcustomTextModeExt },
-    {  TRUE,  4,  100,  50,   0x21,  200,  0,         &_GrViDrvEGAVGAcustomTextModeExt },
-    {  TRUE,  4,  132,  25,   0x23,  264,  0,         &_GrViDrvEGAVGAtextModeExt          },
-    {  TRUE,  4,  132,  28,   0x23,  264,  0,         &_GrViDrvEGAVGAcustomTextModeExt },
-    {  TRUE,  4,  132,  44,   0x33,  264,  0,         &_GrViDrvEGAVGAtextModeExt          },
-    {  TRUE,  4,  132,  50,   0x23,  264,  0,         &_GrViDrvEGAVGAcustomTextModeExt },
-    {  TRUE,  4,  800,  600,  0x102, 100,  0,         &gr4ext                          },
-    {  TRUE,  4,  1024, 768,  0x104, 128,  0,         &gr4ext                          },
-    {  TRUE,  8,  640,  480,  0x101, 640,  0,         &gr8ext                          },
-    {  TRUE,  8,  800,  600,  0x103, 800,  0,         &gr8ext                          },
-    {  TRUE,  8,  1024, 768,  0x105, 1024, 0,         &gr8ext                          },
-    {  TRUE,  8,  1280, 1024, 0x107, 1280, 0,         &gr8ext                          },
-    {  TRUE,  15, 640,  480,  0x110, 1280, 0,         &gr15ext                          },
-    {  TRUE,  15, 800,  600,  0x113, 1600, 0,         &gr15ext                          },
-    {  TRUE,  15, 1024, 768,  0x116, 2048, 0,         &gr15ext                          },
-    {  TRUE,  16, 640,  480,  0x111, 1280, 0,         &gr16ext                          },
-    {  TRUE,  16, 800,  600,  0x114, 1600, 0,         &gr16ext                          },
-    {  TRUE,  16, 1024, 768,  0x117, 2048, 0,         &gr16ext                          },
-    {  TRUE,  24, 640,  480,  0x112, 1920, 0,         &gr24ext                          },
-    {  TRUE,  24, 800,  600,  0x115, 2400, 0,         &gr24ext                          }
+    /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext                             */
+    {  TRUE,  4,  100,  25,   0x21,  200,  0,    &_GrViDrvEGAVGAtextModeExt       },
+    {  TRUE,  4,  100,  28,   0x21,  200,  0,    &_GrViDrvEGAVGAcustomTextModeExt },
+    {  TRUE,  4,  100,  30,   0x22,  200,  0,    &_GrViDrvEGAVGAtextModeExt       },
+    {  TRUE,  4,  100,  34,   0x22,  200,  0,    &_GrViDrvEGAVGAcustomTextModeExt },
+    {  TRUE,  4,  100,  50,   0x21,  200,  0,    &_GrViDrvEGAVGAcustomTextModeExt },
+    {  TRUE,  4,  132,  25,   0x23,  264,  0,    &_GrViDrvEGAVGAtextModeExt       },
+    {  TRUE,  4,  132,  28,   0x23,  264,  0,    &_GrViDrvEGAVGAcustomTextModeExt },
+    {  TRUE,  4,  132,  44,   0x33,  264,  0,    &_GrViDrvEGAVGAtextModeExt       },
+    {  TRUE,  4,  132,  50,   0x23,  264,  0,    &_GrViDrvEGAVGAcustomTextModeExt },
+    {  TRUE,  4,  800,  600,  0x102, 100,  0,    &gr4ext                          },
+    {  TRUE,  4,  1024, 768,  0x104, 128,  0,    &gr4ext                          },
+    {  TRUE,  8,  640,  480,  0x101, 640,  0,    &gr8ext                          },
+    {  TRUE,  8,  800,  600,  0x103, 800,  0,    &gr8ext                          },
+    {  TRUE,  8,  1024, 768,  0x105, 1024, 0,    &gr8ext                          },
+    {  TRUE,  8,  1280, 1024, 0x107, 1280, 0,    &gr8ext                          },
+    {  TRUE,  15, 640,  480,  0x110, 1280, 0,    &gr15ext                         },
+    {  TRUE,  15, 800,  600,  0x113, 1600, 0,    &gr15ext                         },
+    {  TRUE,  15, 1024, 768,  0x116, 2048, 0,    &gr15ext                         },
+    {  TRUE,  16, 640,  480,  0x111, 1280, 0,    &gr16ext                         },
+    {  TRUE,  16, 800,  600,  0x114, 1600, 0,    &gr16ext                         },
+    {  TRUE,  16, 1024, 768,  0x117, 2048, 0,    &gr16ext                         },
+    {  TRUE,  24, 640,  480,  0x112, 1920, 0,    &gr24ext                         },
+    {  TRUE,  24, 800,  600,  0x115, 2400, 0,    &gr24ext                         }
 };
 
 GrVideoDriver _GrVideoDriverMACH64 = {
-    "mach64",                                /* name */
-    GR_VGA,                                /* adapter type */
-    &_GrVideoDriverSTDVGA,                /* inherit modes from this driver */
-    modes,                                /* mode table */
-    itemsof(modes),                        /* # of modes */
-    NULL,                                /* detection routine */
-    _GrViDrvInitEGAVGA,                        /* initialization routine */
-    _GrViDrvResetEGAVGA                        /* reset routine */
+    "mach64",                           /* name */
+    GR_VGA,                             /* adapter type */
+    &_GrVideoDriverSTDVGA,              /* inherit modes from this driver */
+    modes,                              /* mode table */
+    itemsof(modes),                     /* # of modes */
+    NULL,                               /* detection routine */
+    _GrViDrvInitEGAVGA,                 /* initialization routine */
+    _GrViDrvResetEGAVGA,                /* reset routine */
+    _gr_selectmode,                     /* standard mode select routine */
+    0                                   /* no additional capabilities */
 };
 

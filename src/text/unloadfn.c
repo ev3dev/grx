@@ -12,7 +12,7 @@
 void GrUnloadFont(GrFont *f)
 {
         if((f != NULL) && !f->h.preloaded) {
-            uint i;
+            unsigned int i;
             free(f->h.name);
             free(f->h.family);
             farfree(f->bitmap);

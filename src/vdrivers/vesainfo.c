@@ -122,8 +122,8 @@ void printmodeinfo(int mode,int version,VESAmodeInfoBlock *modeinfo)
         printbits(modeinfo->WinBAttributes,winattrbits);
         printf("  WinGranularity:   %d\n",modeinfo->WinGranularity);
         printf("  WinSize:          %d\n",modeinfo->WinSize);
-        printf("  WinASegment:      0x%04x\n",(ushort)modeinfo->WinASegment);
-        printf("  WinBSegment:      0x%04x\n",(ushort)modeinfo->WinBSegment);
+        printf("  WinASegment:      0x%04x\n",(unsigned short)modeinfo->WinASegment);
+        printf("  WinBSegment:      0x%04x\n",(unsigned short)modeinfo->WinBSegment);
         printf("  WinFuncPtr:       0x%08lx\n",(long)modeinfo->WinFuncPtr);
         printf("  BytesPerScanLine: %d\n",modeinfo->BytesPerScanLine);
         if(!(modeinfo->ModeAttributes & MODE_EXTINFO)) return;
@@ -211,4 +211,4 @@ int main(void)
         return 0;
 }
 
-
+

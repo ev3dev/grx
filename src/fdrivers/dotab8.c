@@ -10,5 +10,5 @@
 #include "libgrx.h"
 #include "docolor.h"
 
-uint _GrFDdotable8[] = { 0xffffU, 0, 0, 0xffU };
+unsigned int _GrFDdotable8[] = { 0xffffU, 0, 0, 0xffU };
 

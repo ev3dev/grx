@@ -1,0 +1,194 @@
+Hi,
+
+this file lists the history of changes to the grx source files.
+
+Hartmut
+
+-------------------------------------------------------------------
+
+Date     Changes
+98/05/26 Fixed a bug in gcc/highlow.h
+98/05/24 Printing code synced with Andris
+	 Some additional files needed memcopy.h
+	 X11R6 driver was broken (XInitImage) -- fixed
+98/05/20 DOS _GrUpdateInputs() still used getxkey -- fixed
+	 ram3x8, ega4, herc1 & dosinput didn't include memcopy.h
+	 System endian can now be defined by -D_BIG_ENDIAN or
+	   -D_LITTLE_ENDIAN at compile time
+98/05/19 GrSetFontPath() still used alloca -- fixed
+	 Again fixed minor problems in printing code:
+	   - some functions where declared extern but
+	     implemented static
+	   - signed / unsigned problem in RepeatByte()
+98/05/18 Update printing support.
+	 There were no RAM drivers for 1 & 4bpp in X11
+	   build.
+	 Fixed a bug on short hlines in ram1 & ram4
+	 GRX uses it's own memcopy now
+98/05/17 Watcom makefiles changed for DEBUG support and
+	   .dat copy from test/ to bin/
+98/05/14 Some code fixes to avoid warnings fron SUN cc
+98/05/13 Minor changes to avoid warnings on several platforms
+	   (eg, eliminated C++ style comments, non ASCII chars, ...)
+98/05/11 Fixed LFB frame buffer address handling when
+	   LFB_BY_NEAR_POINTER active
+	 JPEG & TIFF save now use GrGetScanlineC() and
+	   malloc() instead of alloca()
+98/05/10 Fixed a typo in watcom/memfill.h
+	 GCC v2.8.1 broke dependency file creation under
+	   DJGPP v2, no subdir information was included for
+	   the target. The gcc -MM output is now passed through
+	   a new sed script and the created dep-file should be
+	   ok on any version GCC. Same change for Linux and X11
+	   makefile. This change makes Watcom makefile creation
+	   by utils/watmake work again.
+	 Again fixed Watcom makefiles
+	 Added -DGRX_DEFAULT_FONT_PATH="...." configuration for
+	   default font path when no GRXFONT environment entry
+	   specified. This is mostly useful on Unix platforms.
+	 Getting scanline changed for GrPixel / GrPixelC
+	   like naming: GrGetScanline && GrGetScanlineC
+98/05/07 Watcom updates (bmp/printing/makefiles)
+	 Minor BMP & printing updates for better Unix support
+98/05/06 Fixed a bug in _GrFrDrvGenericStretchBlt()
+	 Fixed potential bug in GrImageFilledBoxAlign()
+98/05/05 GrGetScanline && GrPutScanline functions added
+98/05/04 GCC/i386 peek_24 was broken
+	 Image streching fixes and imgtest prog
+98/05/03 Added getindexscanline() and putscanline() to frame
+	   drivers and implemented generic versions.
+	 Added _GrFrDrvGenericStretchBlt() using integer
+	   arithmetic and the new scanline functions.
+	 Fixed dynamic memory allocation bugs im image code.
+	 GrImageStretch() now uses _GrFrDrvGenericStretchBlt()
+98/04/30 Pascal definition for GrGetLibrarySystem
+	 Changed VBE2 memory mapped IO support so a buggy BIOS
+	   won't break the code that easily
+98/04/28 Pattern filling uses predefined _GrPatternFiller instead
+	   of local initialized var
+	 S3 drivers banking functions enhanced
+	 Unified DJGPP & Watcom VBE2 code
+98/04/27 Fixed problems in font loading code on big endian systems
+	 Updated Watcom support
+	 Again eliminated some empty macro args
+	 Added GrGetLibrarySystem() returning GRX_VERSION for
+	   portable runtime system check
+98/04/26 Fixed a bug introduced when changing pattern filled text
+	   code
+98/04/22 (Pattern-) fill code unified & simplified.
+	 Fixed a filling bug on big endian systems.
+	 Makefiles updated (printing, zlib)
+	 Configuration switches for 'noisy' compilers
+	 Code cleanups and splitted some files
+98/04/21 Better cooperation between X11 and GRX in Pseudocolor mode
+	 Added GrAllocEgaColors() for allocation standard EGA colors
+	 Borland-C++ 4bpp blit was broken.
+	 Relaxed some macro argument handlings for older BCC versions
+98/04/20 GRX should work on X11R5 systems now.
+	 Added some new key definitions (shift left/right/up/down).
+	 Changed inline -> INLINE for portability.
+	 Removed empty arguments in clipping.h
+	 Again fixed minor problems.
+98/04/15 Added X11 driver changes by Ulrich. Fixes the XGetImage problem.
+	 Fixed several portability problems, mainly removed cast
+	   to (unsigned) int of assigned variables.
+	 Fixed some bugs Thomas found in the ALPHA code
+	 Changed temp. memory allocation. New function ALLOC()
+	   will use malloc if SMALL_STACK defined of alloca otherwise.
+	 Watcom assembler code didn't work. Changed the #pragma
+	   definitions so they don't use macros.
+	 Fixed several minor bugs
+98/04/13 Fixed minor bugs in X11 driver.
+98/04/06 Checked GNU-Pascal support (basic functions only)
+98/04/05 Minor bugfixes and some GCC/386 speedups (copy & fill
+	 loops aligned on 16byte boundary for optimal performance)
+	 Changed the mouse timing information to real world time
+	 instead of user process time (X11 & Linux)
+	 GrMouseGetEventT will only return a valid ev.dtime if
+	 any event occured
+98/04/02 Faster VGA8X line drawing
+	 The far (eg. to video ram) peek and poke operations
+	 won't get optimized away any more (solves 4bpp blit bug)
+98/03/31 Added 64 bit support (_h)
+	 Fixed a bug in egavga1.c/drawvline
+98/03/30 Integrated Gary's Watcom changes.
+	 Watcom port now defined LFB_BY_NEAR_POINTER
+	 Added _n as near/normal opposite of _f in macro names to
+	 avoid empty arguments in macro calls
+98/03/27 Borland port now uses RAM3x8 in 24bpp and 32bpp modes
+	 Fast and robust colfill_... functions for Borland
+	 Updated image support
+98/03/19 24bpp mode changed:
+	 - Added repfill_24 and optimized peek_24/poke_24
+	 - dropped access24.h (only color component access left)
+	 - LFB24 and RAM24 now use the same code.
+	 - Optimization for black/grey/white filling: done by repfill_b
+	 Fixed some Linux/386 shared lib problems (can't use EBX with -fPIC)
+98/03/17 Major code rearrangement: (Watcom port may be broken :((
+	 - A lot of frame driver now share code and use much
+	   more optimized (!= generic) drawing functions
+	 - Generic and asm fwdcopy/revcopy functions for blitting
+	 - splitted header files to individual system files
+	   (filling, copying, ...) for better maintaince and
+	   easier optimization
+	 - much work on BCC speed & stability
+	 - Expect the Watcom port to be broken :((
+	 Added Andris latest changes to the printing system
+98/02/25 Fixed X11 keyboard handling
+	 minor changes for BSD compilation
+	 updates to printing system
+98/02/24 Fixed a bug in GrDestroyPattern() when freeing the
+	 bitmap planes (found&patched by Michal).
+	 access24.h needed another fix for linux shared lib :(
+98/02/20 Added BMP file read && image display contributed
+	 by Michal Stencl
+	 Added JPEG context save by Vincenzo Morello
+98/02/19 Watcom makefiles, fixes to print system
+	 Changed access24.h for shared library compilation
+	 on Linux-i386 systems
+98/02/17 Watcom fixes and addons by Gary
+	 Fixed svga4, lfb8 and vga8x blit functions
+	 Added color selection by bpp to GrSetMode
+	 Added patterned text output by Stencl Peter
+	 Added printing support (thanks again Andris!)
+98/01/13 fast RAM to video blit to 16 color driver
+	 fast hline for 16 color RAM driver
+98/01/08 Watcom support integrated. Code cleanup (eg. gcc
+	 multi line strings cleaned for other compilers)
+	 Added platform dependent lib-subdirs
+	 Fixed some Linux/svgalib keyboard bugs
+98/01/01 Revised keyboard support as suggested by Andris and
+	 Vincenzo. See new grxkeys.h file in include dir!
+97/12/21 Updated DJGPP (v1&v2) makefiles again.
+	 Fixed some GCC warnings with additional -W... switches
+	 (WARNOPTS in makedefs.gnu)
+	 Fixed a BCC problem with the new 16 color blit function
+	 Some local functions didn't have a static :(
+	 Fixed some Linux && X11 keyboard problems (input got
+	 desynced on heavy load / high keyrates)
+97/12/18 updated Pascal support
+	 BCC allocates from heap instead of stack for big blocks
+	 eliminated some unchecked malloc's
+	 Splitted several code files for smarter linking
+	 BCC arithmetic moved from assembler macro to optimized
+	 function for more reliable results
+97/12/16 ported the flood fill function from BCC2GRX. See grx20.h
+	 for ...FloodFill
+97/12/15 changed ulong, ushort, etc to GR_int32u, GR_int16u, etc
+	 for better portability and to avoid warnings on Linux
+97/12/08 Integrated code (variable X11 window size & memory driver)
+	 and patches (genellip & SaveContextToTiff & other) by Andris
+97/11/16 Updated Linux and X11 makefiles
+97/11/02 Makefiles for DJGPP v1 compilation
+	 New (much faster) 16 color video to video blit routine
+97/11/01 Fixed some far pointers to RAM area in the video drivers
+97/10/29 Added ALPHA processor support
+97/10/01 Fixed DJGPP systag generation in SRC makefile
+97/09/30 Updated makefiles and makedefs
+	 Added the addons directory and the SaveContextToTiff
+	   function
+	 Fixed some BCC specific warnings
+	 S3 driver banking doesn't work for 16 color modes, at
+	   least for my card. Uses VESA banking for < 256 colors
+	 Fixed BCC __emit__() code in arith.h (thanks, Andris)
+------- grx v2.2 release

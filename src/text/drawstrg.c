@@ -1,31 +1,40 @@
 /**
- ** DRAWSTRG.C ---- draw a character string 
+ ** DRAWSTRG.C ---- low level character string output
  **
+ ** Copyright (c) 1998 Hartmut Schirmer
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
  **/
 
 #include "libgrx.h"
 #include "clipping.h"
+#include "text/text.h"
 
-void GrDrawString(void *text,int length,int x,int y,GrTextOption *opt)
+void _GrDrawString(void *text,int length,int x,int y,
+                   GrTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm)
 {
-        GrColorTableP fgcp = opt->txo_fgcolor.p;
-        GrColorTableP bgcp = opt->txo_bgcolor.p;
-        long fgcv = opt->txo_fgcolor.v;
-        long bgcv = opt->txo_bgcolor.v;
-        int  undl = (fgcv & GR_UNDERLINE_TEXT) ? 1 : 0;
-        GrFont *f = opt->txo_font;
-        int rotat = GR_TEXT_IS_VERTICAL(opt->txo_direct) ? ~0 : 0;
-        int dxpre = 0,dypre = 0,dxpost = 0,dypost = 0;
-        int ww,hh,x1,y1,x2,y2;
-        int type,step;
-        if(!f) return;
-        x1 = GrFontStringWidth(f,text,length,opt->txo_chrtype);
-        y1 = f->h.height;
-        if(!x1) return;
-        ww = (x1 & ~rotat) | (y1 &  rotat);
-        hh = (x1 &  rotat) | (y1 & ~rotat);
+    GrFont *f;
+    int    x1;
+    GRX_ENTER();
+
+    if (  ((f = opt->txo_font) != NULL)
+       && (x1= GrFontStringWidth(f,text,length,opt->txo_chrtype))!=0 ) {
+        GrColorTableP fgcp  = opt->txo_fgcolor.p;
+        GrColorTableP bgcp  = opt->txo_bgcolor.p;
+        GrColor fgcv  = opt->txo_fgcolor.v;
+        GrColor bgcv  = opt->txo_bgcolor.v;
+        int     undl  = (fgcv & GR_UNDERLINE_TEXT) ? 1 : 0;
+        int     rotat = GR_TEXT_IS_VERTICAL(opt->txo_direct) ? ~0 : 0;
+        int     dxpre = 0;
+        int     dypre = 0;
+        int     dxpost= 0;
+        int     dypost= 0;
+        int     oldx  = x;
+        int     oldy  = y;
+        int     y1    = f->h.height;
+        int     ww    = (x1 & ~rotat) | (y1 &  rotat);
+        int     hh    = (x1 &  rotat) | (y1 & ~rotat);
+        int type, step, x2, y2;
         switch(opt->txo_xalign) {
           case GR_ALIGN_RIGHT:
             x -= ww - 1;
@@ -85,17 +94,19 @@ void GrDrawString(void *text,int length,int x,int y,GrTextOption *opt)
             y2 = (yy = y1) + ch - 1;
             x += (cw & dxpost);
             y += (ch & dypost);
-            clip_ordbox_(CURC,x1,y1,x2,y2,continue,);
+            clip_ordbox_(CURC,x1,y1,x2,y2,continue,CLIP_EMPTY_MACRO_ARG);
             bmp = GrFontCharAuxBmp(f,chr,opt->txo_direct,undl);
-            if(bmp) (*FDRV->drawbitmap)(
+            if(bmp) (*dbm)(
                 (x1 + CURC->gc_xoffset),
                 (y1 + CURC->gc_yoffset),
                 (x2 - x1 + 1),
                 (y2 - y1 + 1),
+                oldx, oldy,
                 bmp,
                 ((cw + 7) >> 3),
                 ((x1 - xx) + ((y1 - yy) * ((cw + 7) & ~7))),
-                fgcv,bgcv
+                fgcv,bgcv,
+                p
             );
             else (*FDRV->drawblock)(
                 (x1 + CURC->gc_xoffset),
@@ -106,23 +117,6 @@ void GrDrawString(void *text,int length,int x,int y,GrTextOption *opt)
             );
         }
         mouse_unblock();
+    }
+    GRX_LEAVE();
 }
-
-void GrDrawChar(int chr,int x,int y,GrTextOption *opt)
-{
-        char  cbuff[2];
-        short sbuff[2];
-
-        switch(opt->txo_chrtype) {
-          case GR_WORD_TEXT:
-          case GR_ATTR_TEXT:
-            sbuff[0] = chr;
-            GrDrawString(sbuff,1,x,y,opt);
-            break;
-          default:
-            cbuff[0] = chr;
-            GrDrawString(cbuff,1,x,y,opt);
-            break;
-        }
-}
-

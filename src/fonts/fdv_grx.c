@@ -8,106 +8,192 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "grfontdv.h"
 #include "libgrx.h"
+#include "grfontdv.h"
 #include "allocate.h"
 #include "fonts/fdv_grx.h"
 
-#ifdef         __MSDOS__
-#define  OPENMODE        "rb"
+#ifdef   __MSDOS__
+#define  OPENMODE       "rb"
 #else
-#define  OPENMODE        "r"
+#define  OPENMODE       "r"
 #endif
 
 #ifndef  SEEK_SET
-#define  SEEK_SET        0
+#define  SEEK_SET       0
 #endif
 
 static GrFontFileHeaderGRX fhdr;
 static FILE   *fontfp = NULL;
-static ushort *wtable = NULL;
-static uint    wtsize = 0;
+static GR_int16u far *wtable = NULL;
+static unsigned int wtsize = 0;
 static int     nextch = 0;
+
+#ifdef BIG_ENDIAN
+#include "ordswap.h"
+static void swap_header(void) {
+    GRX_ENTER();
+    _GR_swap32u(&fhdr.magic);
+    _GR_swap32u(&fhdr.bmpsize);
+    _GR_swap16u(&fhdr.width);
+    _GR_swap16u(&fhdr.height);
+    _GR_swap16u(&fhdr.minchar);
+    _GR_swap16u(&fhdr.maxchar);
+    _GR_swap16u(&fhdr.isfixed);
+    _GR_swap16u(&fhdr.reserved);
+    _GR_swap16u(&fhdr.baseline);
+    _GR_swap16u(&fhdr.undwidth);
+    /* no need to change fnname  && family */
+    GRX_LEAVE();
+}
+
+static void swap_wtable(void) {
+  GR_int16u far *wt;
+  unsigned int   ws;
+  GRX_ENTER();
+  wt = wtable;
+  ws = wtsize / sizeof(GR_int16u);
+  while (ws-- > 0) {
+    _GR_swap16u(wt);
+    ++wt;
+  }
+  GRX_LEAVE();
+}
+#endif
 
 static void cleanup(void)
 {
+        GRX_ENTER();
         if(fontfp != NULL) fclose(fontfp);
-        if(wtable != NULL) free(wtable);
+        if(wtable != NULL) farfree(wtable);
         fontfp = NULL;
         wtable = NULL;
         nextch = 0;
         wtsize = 0;
+        GRX_LEAVE();
 }
 
 static int openfile(char *fname)
 {
+        int res;
+#ifdef BIG_ENDIAN
+        int swap;
+#endif
+        GRX_ENTER();
+        res = FALSE;
         cleanup();
         fontfp = fopen(fname,OPENMODE);
-        if(fontfp == NULL)                            return(cleanup(),FALSE);
-        if(fread(&fhdr,sizeof(fhdr),1,fontfp) != 1) return(cleanup(),FALSE);
-        if(fhdr.magic != GRX_FONTMAGIC)                    return(cleanup(),FALSE);
+        if(fontfp == NULL) {
+            DBGPRINTF(DBG_FONT,("fopen(\"%s\",\"%s\") failed\n", fname, OPENMODE));
+            goto done;
+        }
+        if(fread(&fhdr,sizeof(fhdr),1,fontfp) != 1) {
+            DBGPRINTF(DBG_FONT,("reading header failed\n"));
+            goto done;
+        }
+#ifdef BIG_ENDIAN
+        swap = 0;
+        if(fhdr.magic == GRX_FONTMAGIC_SWAPPED) {
+          swap = 1;
+          DBGPRINTF(DBG_FONT,("swaping header byte order\n"));
+          swap_header();
+        }
+#endif
+        if(fhdr.magic != GRX_FONTMAGIC) {
+            DBGPRINTF(DBG_FONT,("font magic doesn't fit: %lx != %lx\n", \
+                   (unsigned long)fhdr.magic,(unsigned long)GRX_FONTMAGIC));
+            goto done;
+        }
         if(!fhdr.isfixed) {
-            wtsize = sizeof(ushort) * (fhdr.maxchar - fhdr.minchar + 1);
-            wtable = malloc(wtsize);
-            if(wtable == NULL)                            return(cleanup(),FALSE);
-            if(fread(wtable,wtsize,1,fontfp) != 1)  return(cleanup(),FALSE);
+            wtsize = sizeof(GR_int16u) * (fhdr.maxchar - fhdr.minchar + 1);
+            wtable = farmalloc(wtsize);
+            if(wtable == NULL) {
+                DBGPRINTF(DBG_FONT,("Allocating wtable failed\n"));
+                goto done;
+            }
+            if(fread(wtable,wtsize,1,fontfp) != 1) {
+                DBGPRINTF(DBG_FONT,("Loading wtable failed\n"));
+                goto done;
+            }
+#ifdef BIG_ENDIAN
+            if (swap) {
+              DBGPRINTF(DBG_FONT,("swaping wtable byte order\n"));
+              swap_wtable();
+            }
+#endif
         }
         nextch = fhdr.minchar;
-        return(TRUE);
+        res = TRUE;
+done:   if (!res) cleanup();
+        GRX_RETURN(res);
 }
 
 static int header(GrFontHeader *hdr)
 {
-        if(fontfp == NULL) return(FALSE);
-        memcpy(hdr->name,  fhdr.fnname,sizeof(fhdr.fnname));
-        memcpy(hdr->family,fhdr.family,sizeof(fhdr.family));
-        hdr->name  [sizeof(fhdr.fnname)] = '\0';
-        hdr->family[sizeof(fhdr.family)] = '\0';
-        hdr->proportional = fhdr.isfixed ? FALSE : TRUE;
-        hdr->scalable          = FALSE;
-        hdr->preloaded          = FALSE;
-        hdr->modified          = GR_FONTCVT_NONE;
-        hdr->width          = fhdr.width;
-        hdr->height          = fhdr.height;
-        hdr->baseline          = fhdr.baseline;
-        hdr->ulpos          = fhdr.height - fhdr.undwidth;
-        hdr->ulheight          = fhdr.undwidth;
-        hdr->minchar          = fhdr.minchar;
-        hdr->numchars          = fhdr.maxchar - fhdr.minchar + 1;
-        return(TRUE);
+        int res;
+        GRX_ENTER();
+        res = FALSE;
+        if(fontfp != NULL) {
+            memcpy(hdr->name,  fhdr.fnname,sizeof(fhdr.fnname));
+            memcpy(hdr->family,fhdr.family,sizeof(fhdr.family));
+            hdr->name  [sizeof(fhdr.fnname)] = '\0';
+            hdr->family[sizeof(fhdr.family)] = '\0';
+            hdr->proportional = fhdr.isfixed ? FALSE : TRUE;
+            hdr->scalable     = FALSE;
+            hdr->preloaded    = FALSE;
+            hdr->modified     = GR_FONTCVT_NONE;
+            hdr->width        = fhdr.width;
+            hdr->height       = fhdr.height;
+            hdr->baseline     = fhdr.baseline;
+            hdr->ulpos        = fhdr.height - fhdr.undwidth;
+            hdr->ulheight     = fhdr.undwidth;
+            hdr->minchar      = fhdr.minchar;
+            hdr->numchars     = fhdr.maxchar - fhdr.minchar + 1;
+            res = TRUE;
+        }
+        GRX_RETURN(res);
 }
 
 static int charwdt(int chr)
 {
-        if(fontfp == NULL)        return(-1);
-        if(chr < fhdr.minchar)  return(-1);
-        if(chr > fhdr.maxchar)  return(-1);
-        return(fhdr.isfixed ? fhdr.width : wtable[chr - fhdr.minchar]);
+        int res;
+        GRX_ENTER();
+        res = -1;
+        if(fontfp != NULL &&
+           chr >= fhdr.minchar &&
+           chr <= fhdr.maxchar    )
+          res = (fhdr.isfixed ? fhdr.width : wtable[chr - fhdr.minchar]);
+        GRX_RETURN(res);
 }
 
 static int bitmap(int chr,int w,int h,char *buffer)
 {
-        if((w <= 0) || (w != charwdt(chr))) return(FALSE);
-        if((h <= 0) || (h != fhdr.height))  return(FALSE);
-        if(chr != nextch) {
-            long fpos = sizeof(fhdr) + (fhdr.isfixed ? 0 : wtsize);
-            for(nextch = fhdr.minchar; nextch != chr; nextch++) {
-                fpos += ((charwdt(nextch) + 7) >> 3) * fhdr.height;
+        int res;
+        GRX_ENTER();
+        res = FALSE;
+        if( (w > 0) && (w == charwdt(chr))
+          &&(h > 0) && (h == fhdr.height) ) {
+            if(chr != nextch) {
+                long fpos = sizeof(fhdr) + (fhdr.isfixed ? 0 : wtsize);
+                for(nextch = fhdr.minchar; nextch != chr; nextch++) {
+                    fpos += ((charwdt(nextch) + 7) >> 3) * fhdr.height;
+                }
+                fseek(fontfp,fpos,SEEK_SET);
             }
-            fseek(fontfp,fpos,SEEK_SET);
+            nextch = chr + 1;
+            res = fread(buffer,(((w + 7) >> 3) * h),1,fontfp) == 1;
         }
-        nextch = chr + 1;
-        return(fread(buffer,(((w + 7) >> 3) * h),1,fontfp) == 1);
+        GRX_RETURN(res);
 }
 
 GrFontDriver _GrFontDriverGRX = {
-    "GRX",                                /* driver name (doc only) */
-    ".fnt",                                /* font file extension */
-    FALSE,                                /* scalable */
-    openfile,                                /* file open and check routine */
-    header,                                /* font header reader routine */
-    charwdt,                                /* character width reader routine */
-    bitmap,                                /* character bitmap reader routine */
-    cleanup                                /* cleanup routine */
+    "GRX",                              /* driver name (doc only) */
+    ".fnt",                             /* font file extension */
+    FALSE,                              /* scalable */
+    openfile,                           /* file open and check routine */
+    header,                             /* font header reader routine */
+    charwdt,                            /* character width reader routine */
+    bitmap,                             /* character bitmap reader routine */
+    cleanup                             /* cleanup routine */
 };
 

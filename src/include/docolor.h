@@ -7,7 +7,7 @@
  ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  **/
 
-extern uint _GrFDdotable8[];
+extern unsigned int _GrFDdotable8[];
 
-#define DOCOLOR8(c,op)    (_GrFDdotable8[(op)] ^ (uint)(uchar)(c))
+#define DOCOLOR8(c,op) (_GrFDdotable8[(op)] ^ (unsigned int)(unsigned char)(c))
 

@@ -9,12 +9,11 @@
 #include "allocate.h"
 #include "arith.h"
 #include "memfill.h"
-#include "memcopy.h"
 
 char far *GrBuildAuxiliaryBitmap(GrFont *f,int chr,int dir,int ul)
 {
-        uint idx = (uint)chr - f->h.minchar;
-        uint bpos,rbpos,size,rsize,w,h;
+        unsigned int idx = (unsigned int)chr - f->h.minchar;
+        unsigned int bpos,rbpos,size,rsize,w,h;
         int  boff,rboff,rbinc;
         char far *stdmap,far *cvtmap;
         if(idx >= f->h.numchars) return(NULL);
@@ -22,7 +21,7 @@ char far *GrBuildAuxiliaryBitmap(GrFont *f,int chr,int dir,int ul)
         dir = (dir & 3) + ((ul && (f->h.ulheight > 0)) ? 4 : 0);
         if(dir == GR_TEXT_RIGHT) return(stdmap);
         if(f->auxoffs[--dir] != NULL) {
-            uint offs = f->auxoffs[dir][idx];
+            unsigned int offs = f->auxoffs[dir][idx];
             if(offs > 0) return(&f->auxmap[offs - 1]);
         }
         else {
@@ -42,13 +41,13 @@ char far *GrBuildAuxiliaryBitmap(GrFont *f,int chr,int dir,int ul)
             rbpos = 0;
             rbinc = 1;
             break;
-          case (GR_TEXT_DOWN - 1):                /* downward */
+          case (GR_TEXT_DOWN - 1):              /* downward */
           case (GR_TEXT_DOWN - 1 + 4):
             rbpos = h - 1;
             rbinc = rboff;
             rboff = -1;
             break;
-          case (GR_TEXT_LEFT - 1):                /* upside down, right to left */
+          case (GR_TEXT_LEFT - 1):              /* upside down, right to left */
           case (GR_TEXT_LEFT - 1 + 4):
             rboff = boff;
             rsize = size;
@@ -68,15 +67,15 @@ char far *GrBuildAuxiliaryBitmap(GrFont *f,int chr,int dir,int ul)
         if((rsize >>= 3) == 0) return(NULL);
         if(rsize > (f->auxsize - f->auxnext)) {
             /* add space for 32 (average) characters */
-            uint newsize = (((f->h.width + 7) >> 3) * f->h.height) << 6;
+            unsigned int newsize = (((f->h.width + 7) >> 3) * f->h.height) << 6;
             newsize = umax(newsize,(rsize << 2));
-            newsize = umin(newsize,((uint)(-4) - f->auxsize));
+            newsize = umin(newsize,((unsigned int)(-4) - f->auxsize));
             newsize += f->auxsize;
             if(rsize > (newsize - f->auxnext)) return(NULL);
             cvtmap = farmalloc(newsize);
             if(cvtmap == NULL) return(NULL);
             if(f->auxsize > 0) {
-                memcopy(cvtmap,f->auxmap,f->auxsize);
+                memcpy(cvtmap,f->auxmap,f->auxsize);
                 farfree(f->auxmap);
             }
             f->auxmap  = cvtmap;
@@ -87,10 +86,10 @@ char far *GrBuildAuxiliaryBitmap(GrFont *f,int chr,int dir,int ul)
         f->auxnext += rsize;
         memfill_b(cvtmap,0,rsize);
         for(h = bpos = 0; bpos < size; bpos += boff,rbpos += rboff,h++) {
-            uint bp    = bpos;
-            uint bptop = bpos + w;
-            uint rbp   = rbpos;
-            uint ulrow = ul && ((h - f->h.ulpos) < f->h.ulheight);
+            unsigned int bp    = bpos;
+            unsigned int bptop = bpos + w;
+            unsigned int rbp   = rbpos;
+            unsigned int ulrow = ul && ((h - f->h.ulpos) < f->h.ulheight);
             for( ; bp < bptop; bp++,rbp += rbinc) {
                 if(stdmap[bp >> 3] & (0x80 >> (bp & 7)) || ulrow) {
                     cvtmap[rbp >> 3] |= (0x80 >> (rbp & 7));

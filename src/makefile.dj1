@@ -1,0 +1,14 @@
+#
+# GRX 2.0 Library Makefile for DJGPP v1.
+# Needs GNU Make.
+#
+# This file just reads the basic system setup and
+# prepares the TAG variable.  All real work is in
+# files shared between DJGPP v1 && DJGPP v2.
+
+include ../makedefs.gnu
+include ../makedefs.dj1
+
+TAG = $(DOS_DJGPP_V1)
+
+include ./makebase.dj

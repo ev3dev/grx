@@ -10,16 +10,35 @@
  ** tifflib and GRX libraries
  **/
 
+#include <stdlib.h>
 #include <grx20.h>
 #include <tiffio.h>
+#include <string.h>
 
 #define SCALE(x)        ((x)<<8)
+
+#define puttobuf(r,x,depth,col) do {                      \
+    switch (depth) {                                      \
+      case 1 : if (col) {                                 \
+                 int  offset = (x) >> 3;                  \
+                 int  mask = 0x80 >> ((x) & 7);           \
+                 r[offset] |= mask;                       \
+               }                                          \
+               break;                                     \
+      case 8 : r[x] = (unsigned char)(col); break;        \
+      case 24: r[3*(x)+0] = GrRGBcolorRed(col);           \
+               r[3*(x)+1] = GrRGBcolorGreen(col);         \
+               r[3*(x)+2] = GrRGBcolorBlue(col);          \
+               break;                                     \
+    }                                                     \
+} while(0)
+
 
 /*
 ** SaveContextToTiff - Dump a context in a TIFF file
 **
 ** Arguments:
-**   cxt:   Context to be saved (NULL -> use current context)
+**   ctx:   Context to be saved (NULL -> use current context)
 **   tiffn: Name of tiff file
 **   compr: Compression method (see tiff.h), 0: automatic selection
 **   docn:  string saved in the tiff file (DOCUMENTNAME tag)
@@ -28,7 +47,7 @@
 **          -1 on error
 */
 int
-SaveContextToTiff(GrContext *cxt, char *tiffn, unsigned compr, char *docn) {
+SaveContextToTiff(GrContext *ctx, char *tiffn, unsigned compr, char *docn) {
     int    depth, i, res;
     long   row;
     TIFF  *tif;
@@ -39,19 +58,20 @@ SaveContextToTiff(GrContext *cxt, char *tiffn, unsigned compr, char *docn) {
     unsigned char *r;
     unsigned short red[256], green[256], blue[256];
 
-    if (!cxt) cxt = (GrContext *)GrCurrentContext();
-    if (!cxt) return -1;
-    width  = cxt->gc_xmax+1;
-    height = cxt->gc_ymax+1;
+    if (!ctx) ctx = (GrContext *)GrCurrentContext();
+    if (!ctx) return -1;
+    width  = ctx->gc_xmax+1;
+    height = ctx->gc_ymax+1;
     colors = GrNumColors();
     if (colors < 2) return -1;
     if (colors ==   2)    depth = 1;  else
     if (colors <= 256)    depth = 8;  else
     if (colors <= 1L<<24) depth = 24; else return -1;
 
-    if (!compr) /* compr == 0 -> auto select compression */
+    if (!compr) { /* compr == 0 -> auto select compression */
       if (depth==1) compr = COMPRESSION_CCITTFAX4;
                else compr = COMPRESSION_LZW;
+    }
 
     switch (depth) {
     case 1:
@@ -73,11 +93,16 @@ SaveContextToTiff(GrContext *cxt, char *tiffn, unsigned compr, char *docn) {
         return -1; /* shouldn't happen */
     }
 
-    r = alloca(samplesperpixel*width*sizeof(unsigned char));
+    r = (unsigned char *) malloc( depth>1 ?
+        samplesperpixel*width*sizeof(unsigned char) :
+        (width+7)/8);
     if (!r) return -1;
 
     tif = TIFFOpen(tiffn, "w");
-    if (tif == NULL) return -1;
+    if (tif == NULL) {
+      free(r);
+      return -1;
+    }
 
     TIFFSetField(tif, TIFFTAG_IMAGEWIDTH, width);
     TIFFSetField(tif, TIFFTAG_IMAGELENGTH, height);
@@ -108,16 +133,21 @@ SaveContextToTiff(GrContext *cxt, char *tiffn, unsigned compr, char *docn) {
     res = 0;
     for (row = 0; row < height; row++) {
       int x;
-      long c;
-      for (x=0; x < width; ++x) {
-        c = GrPixelC(cxt,x,row);
-        switch (depth) {
-          case 1 : r[x] = c ? 1 : 0; break;
-          case 8 : r[x] = (unsigned char) c; break;
-          case 24: r[3*x+0] = GrRGBcolorRed(c);
-                   r[3*x+1] = GrRGBcolorGreen(c);
-                   r[3*x+2] = GrRGBcolorBlue(c);
-                   break;
+      GrColor c;
+#if GRX_VERSION_API-0 >= 0x229
+      const GrColor *rcb = GrGetScanlineC(ctx,0,width-1,row);
+      if (rcb) {
+        for (x=0; x < width; ++x) {
+          c = rcb[x];
+          puttobuf(r,x,depth,c);
+        }
+      } else
+#endif
+      {
+        if (depth==1) memset (r,0,(width+7)/8);
+        for (x=0; x < width; ++x) {
+          c = GrPixelC(ctx,x,row);
+          puttobuf(r,x,depth,c);
         }
       }
       if (TIFFWriteScanline(tif, r, row, 0) < 0) {
@@ -127,6 +157,7 @@ SaveContextToTiff(GrContext *cxt, char *tiffn, unsigned compr, char *docn) {
     }
     TIFFFlushData(tif);
     TIFFClose(tif);
+    free(r);
     return res;
 }
 

@@ -21,7 +21,7 @@ end; { TestFunc }
 
 var
    i, j,
-   x, y, xv, yv, c,
+   x, y, xv, yv, bpp,
    m : Integer;
    f : GrFont;
    o  : GrTextOption;
@@ -32,10 +32,10 @@ begin
    y  :=  768;
    xv :=  1024;
    yv :=  1024;
-   c  :=  256;
+   bpp:=  8;
 
-   M := GrSetMode(GR_width_height_color_graphics,x,y,c,xv,yv);
-   { M := GrSetMode(GR_custom_graphics,x,y,c,xv,yv); }
+(* M := GrSetMode(GR_width_height_bpp_graphics,x,y,bpp,0,0); *)
+   M := GrSetMode(GR_custom_bpp_graphics,x,y,bpp,xv,yv);
 
    TestFunc;
    GrCircle(400,400,200,GrWhite);
@@ -55,4 +55,4 @@ begin
    GrBitBltNC(GrScreenContext, 600, 600, GrScreenContext, 0, 0, 200, 200, GrImage);
    readln;
 end.
-
+

@@ -8,37 +8,31 @@
 #ifndef __SHAPES_H_INCLUDED__
 #define __SHAPES_H_INCLUDED__
 
+#define USE_FDR_DRAWPATTERN 1
+
 typedef union _GR_fillArg {
-    long    color;
+    GrColor color;
     struct _GR_bitmap *bmp;
     struct _GR_pixmap *pxp;
     GrPattern *p;
 } GrFillArg;
-/*
-typedef union _GR_fillArg {
-    long    color;
-    struct _GR_bitmap *bmp;
-    struct _GR_pixmap *pxp;
-} GrFillArg;
-*/
 
 typedef void (*PixelFillFunc)(int x,int y,GrFillArg fval);
 typedef void (*LineFillFunc)(int x,int y,int dx,int dy,GrFillArg fval);
 typedef void (*ScanFillFunc)(int x,int y,int w,GrFillArg fval);
 
-/*
- * The order of the three functions in this struct MUST match the order
- * of the corresponding three functions in the frame driver structure.
- */
 typedef struct _GR_filler {
     PixelFillFunc pixel;
     LineFillFunc  line;
     ScanFillFunc  scan;
 } GrFiller;
 
-#define         _GrSolidFiller          (*((GrFiller *)(&FDRV->drawpixel)))
+extern GrFiller _GrSolidFiller;
+extern GrFiller _GrPatternFiller;
+/*
 extern GrFiller _GrBitmapFiller;
 extern GrFiller _GrPixmapFiller;
+*/
 
 void _GrDrawPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c,int doClose);
 void _GrDrawCustomPolygon(int n,int pt[][2],GrLineOption *lp,GrFiller *f,GrFillArg c,int doClose,int circle);
@@ -50,5 +44,20 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
 #define _GrDrawPatternedPixel ((PixelFillFunc)GrPatternFilledPlot)
 #define _GrDrawPatternedLine ((LineFillFunc)_GrPatternFilledLine)
 void _GrFillPatternedScanLine(int x,int y,int w,GrFillArg arg);
+
+/* --- */
+void _GrFloodFill(int x,int y,GrColor border,GrFiller *f,GrFillArg fa);
+
+/* -- */
+void _GrFillPattern(int x,int y,int width,GrPattern *p);
+void _GrFillPatternExt(int x,int y,int sx, int sy,int width,GrPattern *p);
+void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p);
+
+void _GrFillBitmapPattern(int x,int y,int w,int h,
+                          char far *bmp,int pitch,int start,
+                          GrPattern* p,GrColor bg);
+void _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
+                             char far *bmp,int pitch,int start,
+                             GrPattern* p,GrColor bg);
 
 #endif

@@ -7,11 +7,12 @@
 
 
 #include "test.h"
+#include "rand.h"
 
 TESTFUNC(colorops)
 {
         GrFBoxColors bcolors,ocolors,icolors;
-        long bg,c;
+        GrColor bg,c;
         int x = GrSizeX();
         int y = GrSizeY();
         int ww = (x * 2) / 3;
@@ -22,6 +23,9 @@ TESTFUNC(colorops)
         int bh = y / 16;
         int bx,by;
 
+        /* This won't work very well under X11 in pseudocolor
+        ** mode (256 colors or less) if not using a private
+        ** color map. The missing colors break RGB mode      */
         GrSetRGBcolorMode();
 
         bcolors.fbx_intcolor = GrAllocColor(160,100,30);

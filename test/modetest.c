@@ -10,6 +10,14 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#ifdef __WATCOMC__
+#include <conio.h>
+#endif
+
+#ifdef __GO32__
+#include <pc.h>
+#endif
+
 #include "grx20.h"
 #include "drawing.h"
 
@@ -135,10 +143,10 @@ int main(void)
                 GrCurrentVideoDriver()->name,
                 GrDriverInfo->defgw,
                 GrDriverInfo->defgh,
-                GrDriverInfo->defgc,
+                (long)GrDriverInfo->defgc,
                 GrDriverInfo->deftw,
                 GrDriverInfo->defth,
-                GrDriverInfo->deftc
+                (long)GrDriverInfo->deftc
             );
             PrintModes();
             printf("\nEnter choice #, or anything else to quit> ");
@@ -163,40 +171,41 @@ int main(void)
                 1L << grmodes[i].bpp
             );
             if(grmodes[i].bpp<15) {
-            w = GrScreenX() >> 1;
-            h = GrScreenY() >> 1;
-            px = w + 5;
-            py = h + 5;
-            w -= 10;
-            h -= 10;
-            drawing(
-                5,5,w,h,
-                GrBlack(),
-                GrWhite()
-            );
-            drawing(
-                px,5,w,h,
-                GrAllocColor(255,0,0),
-                GrAllocColor(0,255,0)
-            );
-            drawing(
-                5,py,w,h,
-                GrAllocColor(0,0,255),
-                GrAllocColor(255,255,0)
-            );
-            drawing(
-                px,py,w,h,
-                GrAllocColor(255,0,255),
-                GrAllocColor(0,255,255)
-            );
+                w = GrScreenX() >> 1;
+                h = GrScreenY() >> 1;
+                px = w + 5;
+                py = h + 5;
+                w -= 10;
+                h -= 10;
+                drawing(
+                    5,5,w,h,
+                    GrBlack(),
+                    GrWhite()
+                );
+                drawing(
+                    px,5,w,h,
+                    GrAllocColor(255,0,0),
+                    GrAllocColor(0,255,0)
+                );
+                drawing(
+                    5,py,w,h,
+                    GrAllocColor(0,0,255),
+                    GrAllocColor(255,255,0)
+                );
+                drawing(
+                    px,py,w,h,
+                    GrAllocColor(255,0,255),
+                    GrAllocColor(0,255,255)
+                );
             } else {
                 int y,sx;
                 sx=GrScreenX()>>2;
-                for(y=0;y<256;y++) {
-                    GrHLine(0,sx-1,y,GrBuildRGBcolorT(y,0,0));
-                    GrHLine(sx,2*sx-1,y,GrBuildRGBcolorT(0,y,0));
-                    GrHLine(2*sx,3*sx-1,y,GrBuildRGBcolorT(0,0,y));
-                    GrHLine(3*sx,4*sx-1,y,GrBuildRGBcolorT(y,y,y));
+                for(y=0;y<GrScreenY();y++) {
+                    int yy = y & 255;
+                    GrHLine(0,sx-1,y,GrBuildRGBcolorT(yy,0,0));
+                    GrHLine(sx,2*sx-1,y,GrBuildRGBcolorT(0,yy,0));
+                    GrHLine(2*sx,3*sx-1,y,GrBuildRGBcolorT(0,0,yy));
+                    GrHLine(3*sx,4*sx-1,y,GrBuildRGBcolorT(yy,yy,yy));
                 }
             }
             kbhit();    /* this is here to flush in the X version 8-) */

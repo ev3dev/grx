@@ -8,7 +8,7 @@
 #include "test.h"
 #include <math.h>
 
-void drawellip(int xc,int yc,int xa,int ya,long c1,long c2,long c3)
+void drawellip(int xc,int yc,int xa,int ya,GrColor c1,GrColor c2,GrColor c3)
 {
         double ddx = (double)xa;
         double ddy = (double)ya;
@@ -39,9 +39,9 @@ void drawellip(int xc,int yc,int xa,int ya,long c1,long c2,long c3)
 
 TESTFUNC(circtest)
 {
-        int  xc,yc;
-        int  xr,yr;
-        long c1,c2,c3;
+        int     xc,yc;
+        int     xr,yr;
+        GrColor c1,c2,c3;
 
         c1 = GrAllocColor(64,64,255);
         c2 = GrAllocColor(255,255,64);

@@ -10,10 +10,10 @@
 #include "libgrx.h"
 #include "allocate.h"
 #include "clipping.h"
-#include "memfill.h"
 #include "memcopy.h"
+#include "memfill.h"
 
-#define  MYCONTEXT        1
+#define  MYCONTEXT      1
 #define  MYFRAME        2
 
 GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,char far *memory[4],GrContext *where)
@@ -36,7 +36,7 @@ GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,char far *memory[4],G
         sttzero(where);
         if(!memory) {
             for(ii = 0; ii < fd->num_planes; ii++) {
-                mymem[ii] = farmalloc(psize);
+                mymem[ii] = farmalloc((size_t)psize);
                 if(!mymem[ii]) {
                     while(--ii >= 0) farfree(mymem[ii]);
                     if(flags) free(where);
@@ -74,7 +74,7 @@ GrContext *GrCreateSubContext(
             y2 += parent->gc_yoffset;
             parent = parent->gc_root;
         }
-        cxclip_box_(parent,x1,y1,x2,y2,return(NULL),);
+        cxclip_box_(parent,x1,y1,x2,y2,return(NULL),CLIP_EMPTY_MACRO_ARG);
         if(!where) {
             where = malloc(sizeof(GrContext));
             if(!where) return(NULL);
@@ -87,7 +87,7 @@ GrContext *GrCreateSubContext(
         where->gc_yoffset  = y1;
         where->gc_xcliphi  = where->gc_xmax = x2 - x1;
         where->gc_ycliphi  = where->gc_ymax = y2 - y1;
-        where->gc_root           = (GrContext *)parent;
+        where->gc_root     = (GrContext *)parent;
         return(where);
 }
 

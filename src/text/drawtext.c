@@ -8,16 +8,16 @@
 #include <string.h>
 #include "libgrx.h"
 
-void GrTextXY(int x,int y,char *text,long fg,long bg)
+void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg)
 {
         GrTextOption opt;
-        opt.txo_font          = &GrDefaultFont;
+        opt.txo_font      = &GrDefaultFont;
         opt.txo_fgcolor.v = fg;
         opt.txo_bgcolor.v = bg;
-        opt.txo_chrtype          = GR_BYTE_TEXT;
-        opt.txo_direct          = GR_TEXT_RIGHT;
-        opt.txo_xalign          = GR_ALIGN_LEFT;
-        opt.txo_yalign          = GR_ALIGN_TOP;
-        GrDrawString(text,strlen(text),x,y,&opt);
+        opt.txo_chrtype   = GR_BYTE_TEXT;
+        opt.txo_direct    = GR_TEXT_RIGHT;
+        opt.txo_xalign    = GR_ALIGN_LEFT;
+        opt.txo_yalign    = GR_ALIGN_TOP;
+        GrDrawString(text,(int)strlen(text),x,y,&opt);
 }
 

@@ -6,12 +6,12 @@
  **/
 
 #include "libgrx.h"
-#include "alloca.h"
+#include "allocate.h"
 #include "arith.h"
 #include "clipping.h"
 #include "shapes.h"
 
-#define  MAXR        120                /* max radius for which Bresenheim works */
+#define  MAXR   120             /* max radius for which Bresenheim works */
 
 void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int filled)
 {
@@ -22,7 +22,7 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
         x2 = xc + xa; y2 = yc + ya;
         clip_ordbox(CURC,x1,y1,x2,y2);
         mouse_block(CURC,x1,y1,x2,y2);
-        setup_alloca();
+        setup_ALLOC();
         if((xa == 0) || (ya == 0)) (*f->line)(
             (x1 + CURC->gc_xoffset),
             (y1 + CURC->gc_yoffset),
@@ -30,16 +30,17 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
             (y2 - y1),
             c
         );
-        else if((xa > MAXR) || (ya > MAXR)) {        /* Bresenheim would overflow !! */
-            int (*points)[2] = alloca(sizeof(int) * 2 * GR_MAX_ELLIPSE_POINTS);
+        else if((xa > MAXR) || (ya > MAXR)) {   /* Bresenheim would overflow !! */
+            int (*points)[2] = ALLOC(sizeof(int) * 2 * GR_MAX_ELLIPSE_POINTS);
             if(points != NULL) {
                 int count = GrGenerateEllipse(xc,yc,xa,ya,points);
                 if(filled) _GrScanConvexPoly(count,points,f,c);
-                else           _GrDrawPolygon(count,points,f,c,TRUE);
+                else       _GrDrawPolygon(count,points,f,c,TRUE);
+                FREE(points);
             }
         }
         else {
-            int *scans = alloca(sizeof(int) * (ya + 1));
+            int *scans = ALLOC(sizeof(int) * (ya + 1));
             int  row   = ya;
             int  col   = 0;
             if(scans != NULL) {
@@ -61,7 +62,7 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
                     error += yasq2 * (3 + (col << 1));
                     col++;
                 }
-                error = (yasq2 * (col + 1) * col)          +
+                error = (yasq2 * (col + 1) * col)         +
                         (xasq2 * ((row * (row - 2)) + 1)) +
                         (yasq  * (1 - xasq2));
                 while(row >= 0) {
@@ -79,16 +80,15 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
                         x1 = xc - scans[col];
                         x2 = xc - scans[col + 1];
                         if(x1 < x2) x2--;
-                        for( ; ; ) {
-                            clip_ordxrange_(CURC,x1,x2,break,);
+                        do {
+                            clip_ordxrange_(CURC,x1,x2,break,CLIP_EMPTY_MACRO_ARG);
                             (*f->scan)(
                                 (x1  + CURC->gc_xoffset),
                                 (row + CURC->gc_yoffset),
                                 (x2  - x1 + 1),
                                 c
                             );
-                            break;
-                        }
+                        } while (0);
                         x1 = xc + scans[col + 1];
                         x2 = xc + scans[col];
                         if(x1 < x2) x1++;
@@ -105,9 +105,10 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
                         c
                     );
                 }
+                FREE(scans);
             }
         }
-        reset_alloca();
+        reset_ALLOC();
         mouse_unblock();
 }
 

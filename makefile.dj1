@@ -1,0 +1,16 @@
+#
+# GRX 2.0 makefile for DJGPP distribution version
+#
+include makedefs.gnu
+
+all:   libs test
+
+libs:
+	$(MAKE) -C src -f makefile.dj1
+
+test:   libs
+	$(MAKE) -C test -f makefile.dj1
+
+clean:
+	$(MAKE) -C test -f makefile.dj1 clean
+	$(MAKE) -C src  -f makefile.dj1 clean

@@ -9,12 +9,12 @@
 #include "clipping.h"
 
 void GrBitBlt(GrContext *dst,int dx,int dy,
-              GrContext *src,int x1,int y1,int x2,int y2,long oper)
+              GrContext *src,int x1,int y1,int x2,int y2,GrColor oper)
 {
         int  oldx1,oldy1;
         int  oldx2,oldy2;
         int  dstx2,dsty2;
-        void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,long);
+        void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor);
         if(dst == NULL) dst = CURC;
         if(src == NULL) src = CURC;
         isort(x1,x2); oldx1 = x1;
@@ -46,29 +46,5 @@ void GrBitBlt(GrContext *dst,int dx,int dy,
             oper
         );
         mouse_unblock();
-}
-
-void GrBitBltNC(GrContext *dst,int dx,int dy,
-                GrContext *src,int x1,int y1,int x2,int y2,long oper)
-{
-        void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,long);
-        if(dst == NULL) dst = CURC;
-        if(src == NULL) src = CURC;
-        isort(x1,x2);
-        isort(y1,y2);
-        if(src->gc_driver == dst->gc_driver)
-            bltfun = src->gc_driver->bitblt;
-        else if(src->gc_driver->mode == dst->gc_driver->rmode)
-            bltfun = dst->gc_driver->bltr2v;
-        else if(src->gc_driver->rmode == dst->gc_driver->mode)
-            bltfun = src->gc_driver->bltv2r;
-        else return;
-        (*bltfun)(
-            &dst->gc_frame,(dx + dst->gc_xoffset),(dy + dst->gc_yoffset),
-            &src->gc_frame,(x1 + src->gc_xoffset),(y1 + src->gc_yoffset),
-            (x2 - x1 + 1),
-            (y2 - y1 + 1),
-            oper
-        );
 }
 

@@ -11,126 +11,192 @@
  **/
 
 #include <string.h>
-#include "libxwin.h"
 #include "libgrx.h"
+#include "libxwin.h"
+#include "arith.h"
+#include "memfill.h"
 #include "grdriver.h"
 
-#if defined(XLibSpecificationRelease) && (XLibSpecificationRelease<6)
-#error X11 driver needs X11R6 or newer !
-#endif
-
-static inline
-void _XGrSetForeColor (long color)
+static INLINE
+void _XGrSetForeColor (GrColor color)
 {
+  GRX_ENTER();
   color &= GrCVALUEMASK;
   if (color != _XGrForeColor)
     {
+      DBGPRINTF(DBG_DRIVER,("New foreground color: %x\n",(unsigned)color));
       _XGrForeColor = color;
       XSetForeground (_XGrDisplay, _XGrGC, _XGrForeColor);
     }
+  GRX_LEAVE();
 }
 
-static inline
-void _XGrSetBackColor (long color)
+static INLINE
+void _XGrSetBackColor (GrColor color)
 {
+  GRX_ENTER();
   color &= GrCVALUEMASK;
   if (color != _XGrBackColor)
     {
+      DBGPRINTF(DBG_DRIVER,("New background color: %x\n",(unsigned)color));
       _XGrBackColor = color;
       XSetBackground (_XGrDisplay, _XGrGC, _XGrBackColor);
     }
+  GRX_LEAVE();
 }
 
-static inline
-void _XGrSetColorOper (long color)
+static INLINE void _XGrSetColorOper (GrColor color)
 {
   static int _GXtable[4] = {
     GXcopy,     /* C_WRITE */
     GXxor,      /* C_XOR */
     GXor,       /* C_OR */
-    GXand,      /* C_AND */
+    GXand       /* C_AND */
   };
-  unsigned int coper = C_OPER(color) & 0x03;
+  unsigned int coper;
 
+  GRX_ENTER();
+  coper = C_OPER(color) & 0x03;
   if (coper != _XGrColorOper)
     {
       _XGrColorOper = coper;
       XSetFunction (_XGrDisplay, _XGrGC, _GXtable[_XGrColorOper]);
     }
+  GRX_LEAVE();
 }
 
-static XImage * _XGrPixelCacheImage = NULL;
-static Drawable _XGrPixelCacheDrawable = None;
-static int      _XGrPixelCacheXmin;
-static int      _XGrPixelCacheYmin;
-static int      _XGrPixelCacheXmax;
-static int      _XGrPixelCacheYmax;
+static XImage * _XGrPixelCacheImage     = NULL;
+static Drawable _XGrPixelCacheDrawable  = None;
+#define _XGrPixelCacheX1 0
+#define _XGrPixelCacheX2 _XGrPixelCacheWidth
+static int      _XGrPixelCacheY1;
+static int      _XGrPixelCacheY2;
+static int      _XGrPixelCacheWidth = 32;
 
-#define DOT_INSIDE_PIXEL_CACHE(x,y)     \
-        (   (x) >= _XGrPixelCacheXmin   \
-         && (x) <  _XGrPixelCacheXmax   \
-         && (y) >= _XGrPixelCacheYmin   \
-         && (y) <  _XGrPixelCacheYmax)
+/*
+ * Designed for loops like:
+ *
+ * for (y = 0; y < height; y++)
+ *   for (x = 0; x < width; x++)
+ *     *dest++ = GrPixel (x, y);
+ */
+#define PIXEL_CACHE_WIDTH       _XGrPixelCacheWidth
+#define PIXEL_CACHE_HEIGHT      4
 
-#define INVALIDATE_PIXEL_CACHE do {     \
-        _XGrPixelCacheDrawable = None;  \
+/* x1 <= x2 && y1 <= y2 required ! */
+#define AREA_OVERLAP_PIXEL_CACHE(x1,y1,x2,y2) \
+        (   (x2) >= _XGrPixelCacheX1          \
+         && (x1) <  _XGrPixelCacheX2          \
+         && (y2) >= _XGrPixelCacheY1          \
+         && (y1) <  _XGrPixelCacheY2 )
+
+#define PIXEL_CACHE_CONTAINS_POINT(x,y)       \
+        AREA_OVERLAP_PIXEL_CACHE((x),(y),(x),(y))
+
+#define PIXEL_CACHE_INVALIDATE() do {              \
+            _XGrPixelCacheDrawable = None;         \
+            if (_XGrPixelCacheImage) {             \
+              XDestroyImage (_XGrPixelCacheImage); \
+              _XGrPixelCacheImage = NULL;          \
+            }                                      \
         } while (0)
 
-/* BUG: every drawing operation should check for drawings inside
-   pixel cache, and if so invalidate pixel chache drawable */
 
 static
-long readpixel(GrFrame *c,int x, int y)
+GrColor readpixel(GrFrame *c,int x, int y)
 {
+  GrColor col;
+  GRX_ENTER();
   if (_XGrPixelCacheDrawable != (Drawable) c->gf_baseaddr[0]
-      || !DOT_INSIDE_PIXEL_CACHE(x,y))
-    {
-      Window dummy_root;
-      unsigned int dummy_x, dummy_y, dummy_border_width, dummy_depth;
-      unsigned int width, height;
+      || _XGrPixelCacheImage == NULL
+      || !PIXEL_CACHE_CONTAINS_POINT(x,y)) {
+    Pixmap pixmap;
+    Window dummy_root;
+    unsigned int dummy_border_width, dummy_depth;
+    int          dummy_x, dummy_y;
+    unsigned int width, height;
 
-      if (_XGrPixelCacheImage)
-        XDestroyImage (_XGrPixelCacheImage);
-
-      _XGrPixelCacheXmin = x;
-      _XGrPixelCacheYmin = y;
-      _XGrPixelCacheXmax = x + 32;
-      _XGrPixelCacheYmax = y + 32;
-      _XGrPixelCacheDrawable = (Drawable) c->gf_baseaddr[0];
-      XGetGeometry (_XGrDisplay,
-                    _XGrPixelCacheDrawable,
-                    &dummy_root,
-                    &dummy_x,
-                    &dummy_y,
-                    &width,
-                    &height,
-                    &dummy_border_width,
-                    &dummy_depth);
-      if (_XGrPixelCacheXmax > width)
-        _XGrPixelCacheXmax = width;
-      if (_XGrPixelCacheYmax > height)
-        _XGrPixelCacheYmax = height;
-
-      _XGrPixelCacheImage =
-        XGetImage (_XGrDisplay,
-                   _XGrPixelCacheDrawable,
-                   _XGrPixelCacheXmin,
-                   _XGrPixelCacheYmin,
-                   _XGrPixelCacheXmax - _XGrPixelCacheXmin,
-                   _XGrPixelCacheYmax - _XGrPixelCacheYmin,
-                   AllPlanes,
-                   ZPixmap);
+    if (_XGrPixelCacheImage) {
+      XDestroyImage (_XGrPixelCacheImage);
+      _XGrPixelCacheImage = NULL;
     }
-  return XGetPixel (_XGrPixelCacheImage,
-                    x - _XGrPixelCacheXmin,
-                    y - _XGrPixelCacheYmin);
+    _XGrPixelCacheY1 = y;
+    _XGrPixelCacheY2 = y + PIXEL_CACHE_HEIGHT;
+
+    _XGrPixelCacheDrawable = (Drawable) c->gf_baseaddr[0];
+    XGetGeometry (_XGrDisplay,
+                  _XGrPixelCacheDrawable,
+                  &dummy_root,
+                  &dummy_x,
+                  &dummy_y,
+                  &width,
+                  &height,
+                  &dummy_border_width,
+                  &dummy_depth);
+    if (_XGrPixelCacheX2 > width) {
+      /* can't happen ... */
+      col = GrNOCOLOR;
+      goto done;
+    }
+    if (_XGrPixelCacheY2 > height)
+      _XGrPixelCacheY2 = height;
+
+    width  = _XGrPixelCacheX2 - _XGrPixelCacheX1;
+    height = _XGrPixelCacheY2 - _XGrPixelCacheY1;
+
+    _XGrPixelCacheImage = XGetImage (_XGrDisplay,
+                                     _XGrPixelCacheDrawable,
+                                     _XGrPixelCacheX1,
+                                     _XGrPixelCacheY1,
+                                     width,
+                                     height,
+                                     AllPlanes,
+                                     ZPixmap);
+    if (! _XGrPixelCacheImage) {
+      pixmap = XCreatePixmap (_XGrDisplay,
+                              _XGrPixelCacheDrawable,
+                              width,
+                              height,
+                              _XGrDepth);
+      if (pixmap) {
+        XCopyArea (_XGrDisplay,
+                   _XGrPixelCacheDrawable,      /* src */
+                   pixmap,                      /* dest */
+                   DefaultGC (_XGrDisplay, _XGrScreen),
+                   _XGrPixelCacheX1,
+                   _XGrPixelCacheY1,
+                   width,
+                   height,
+                   0,
+                   0);
+        _XGrPixelCacheImage = XGetImage (_XGrDisplay,
+                                         pixmap,
+                                         0,
+                                         0,
+                                         width,
+                                         height,
+                                         AllPlanes,
+                                         ZPixmap);
+        XFreePixmap (_XGrDisplay, pixmap);
+
+        if (! _XGrPixelCacheImage) {
+          col = GrNOCOLOR;
+          goto done;
+        }
+      }
+    }
+  }
+  col = XGetPixel (_XGrPixelCacheImage,
+                   x - _XGrPixelCacheX1,
+                   y - _XGrPixelCacheY1);
+done:
+  GRX_RETURN( col );
 }
 
-
-static
-inline
-void drawpixel(int x,int y,long c)
+static INLINE
+void drawpixel(int x,int y,GrColor c)
 {
+  GRX_ENTER();
   _XGrSetForeColor (c);
   _XGrSetColorOper (c);
   XDrawPoint (_XGrDisplay,
@@ -138,42 +204,63 @@ void drawpixel(int x,int y,long c)
               _XGrGC,
               x,
               y);
+
+  if ( _XGrPixelCacheDrawable != None &&
+       PIXEL_CACHE_CONTAINS_POINT(x,y) )
+    PIXEL_CACHE_INVALIDATE();
+/* XDrawPoint to cache ? */
+
+  GRX_LEAVE();
 }
 
-
 static
-void drawhline(int x,int y,int w,long c)
+void drawhline(int x,int y,int w,GrColor c)
 {
+  int x2;
+
+  GRX_ENTER();
   _XGrSetForeColor (c);
   _XGrSetColorOper (c);
+  x2 = x + w - 1;
   XDrawLine (_XGrDisplay,
              (Drawable) CURC->gc_baseaddr[0],
              _XGrGC,
-             x,
-             y,
-             x + w - 1,
-             y);
+             x,  y,
+             x2, y);
+
+  if ( _XGrPixelCacheDrawable != None &&
+       AREA_OVERLAP_PIXEL_CACHE(x,y,x2,y) )
+    PIXEL_CACHE_INVALIDATE();
+
+  GRX_LEAVE();
 }
 
-
 static
-void drawvline(int x,int y,int h,long c)
+void drawvline(int x,int y,int h,GrColor c)
 {
+  int y2;
+
+  GRX_ENTER();
   _XGrSetForeColor (c);
   _XGrSetColorOper (c);
+  y2 = y + h - 1;
   XDrawLine (_XGrDisplay,
              (Drawable) CURC->gc_baseaddr[0],
              _XGrGC,
-             x,
-             y,
-             x,
-             y + h - 1);
+             x, y,
+             x, y2);
+
+  if ( _XGrPixelCacheDrawable != None &&
+       AREA_OVERLAP_PIXEL_CACHE(x,y,x,y2) )
+    PIXEL_CACHE_INVALIDATE();
+
+  GRX_LEAVE();
 }
 
-
 static
-void drawblock(int x,int y,int w,int h,long c)
+void drawblock(int x,int y,int w,int h,GrColor c)
 {
+  GRX_ENTER();
   _XGrSetForeColor (c);
   _XGrSetColorOper (c);
   XFillRectangle (_XGrDisplay,
@@ -183,30 +270,48 @@ void drawblock(int x,int y,int w,int h,long c)
                   y,
                   w,
                   h);
+
+  if ( _XGrPixelCacheDrawable != None) {
+      w += x - 1;
+      h += y - 1;
+      if ( AREA_OVERLAP_PIXEL_CACHE(x,y,w,h) )
+          PIXEL_CACHE_INVALIDATE();
+  }
+  GRX_LEAVE();
 }
 
 
 static
-void drawline(int x,int y,int dx,int dy,long c)
+void drawline(int x,int y,int dx,int dy,GrColor c)
 {
+  GRX_ENTER();
   _XGrSetForeColor (c);
   _XGrSetColorOper (c);
+  dx += x;
+  dy += y;
   XDrawLine (_XGrDisplay,
              (Drawable) CURC->gc_baseaddr[0],
              _XGrGC,
-             x,
-             y,
-             x + dx,
-             y + dy);
+             x, y,
+             dx, dy);
+
+  if ( _XGrPixelCacheDrawable != None) {
+      isort(x,dx);
+      isort(y,dy);
+      if ( AREA_OVERLAP_PIXEL_CACHE(x,y,dx,dy) )
+          PIXEL_CACHE_INVALIDATE();
+  }
+
+  GRX_LEAVE();
 }
 
-
 static
-void drawbitmap(int x,int y,int w,int h,char far *bmp,int pitch,int start,long fg,long bg)
+void drawbitmap(int x,int y,int w,int h,char far *bmp,int pitch,int start,GrColor fg,GrColor bg)
 {
   XImage ximage;
 
-  bmp += (uint)start >> 3;
+  GRX_ENTER();
+  bmp += (unsigned int)start >> 3;
   start &= 7;
 
   ximage.width          = w;
@@ -225,90 +330,106 @@ void drawbitmap(int x,int y,int w,int h,char far *bmp,int pitch,int start,long f
   ximage.green_mask     = 0L;
   ximage.blue_mask      = 0L;
   ximage.obdata         = NULL;
-  memchr(&ximage.f, 0, sizeof(ximage.f));
+  sttzero(&ximage.f);
 
-  if (XInitImage (&ximage) == 0)
-    return;
-
-  if ((C_OPER(fg) == C_OPER(bg)) && (fg != GrNOCOLOR)) {
-    _XGrSetForeColor (fg);
-    _XGrSetBackColor (bg);
-    _XGrSetColorOper (fg);
-    XPutImage (_XGrDisplay,
-               (Drawable) CURC->gc_baseaddr[0],
-               _XGrGC,
-               &ximage,
-               0,
-               0,
-               x,
-               y,
-               w,
-               h);
-  }
-  else {
-    if (fg != GrNOCOLOR) {
-      XSetForeground (_XGrDisplay, _XGrBitmapGC, 1);
-      XSetBackground (_XGrDisplay, _XGrBitmapGC, 0);
-      XPutImage (_XGrDisplay,
-                 _XGrBitmap,
-                 _XGrBitmapGC,
-                 &ximage,
-                 0,
-                 0,
-                 0,
-                 0,
-                 w,
-                 h);
-      XSetStipple (_XGrDisplay, _XGrGC, _XGrBitmap);
-      XSetTSOrigin (_XGrDisplay, _XGrGC, x, y);
-      XSetFillStyle (_XGrDisplay, _XGrGC, FillStippled);
+# ifndef PRE_R6_ICCCM
+  if ( XInitImage (&ximage) != 0)
+# endif
+  {
+    if ((C_OPER(fg) == C_OPER(bg)) && (fg != GrNOCOLOR)) {
       _XGrSetForeColor (fg);
+      _XGrSetBackColor (bg);
       _XGrSetColorOper (fg);
-      XFillRectangle (_XGrDisplay,
-                      (Drawable) CURC->gc_baseaddr[0],
-                      _XGrGC,
-                      x,
-                      y,
-                      w,
-                      h);
-    }
-    if (bg != GrNOCOLOR) {
-      XSetForeground (_XGrDisplay, _XGrBitmapGC, 0);
-      XSetBackground (_XGrDisplay, _XGrBitmapGC, 1);
+      DBGPRINTF(DBG_DRIVER,("Calling XPutImage (1) ...\n"));
       XPutImage (_XGrDisplay,
-                 _XGrBitmap,
-                 _XGrBitmapGC,
+                 (Drawable) CURC->gc_baseaddr[0],
+                 _XGrGC,
                  &ximage,
                  0,
                  0,
-                 0,
-                 0,
+                 x,
+                 y,
                  w,
                  h);
-      XSetStipple (_XGrDisplay, _XGrGC, _XGrBitmap);
-      XSetTSOrigin (_XGrDisplay, _XGrGC, x, y);
-      XSetFillStyle (_XGrDisplay, _XGrGC, FillStippled);
-      _XGrSetForeColor (bg);
-      _XGrSetColorOper (bg);
-      XFillRectangle (_XGrDisplay,
-                      (Drawable) CURC->gc_baseaddr[0],
-                      _XGrGC,
-                      x,
-                      y,
-                      w,
-                      h);
+      DBGPRINTF(DBG_DRIVER,("Calling XPutImage (1) done\n"));
     }
-    XSetFillStyle (_XGrDisplay, _XGrGC, FillSolid);
-  }
-}
+    else {
+      if (fg != GrNOCOLOR) {
+        XSetForeground (_XGrDisplay, _XGrBitmapGC, 1);
+        XSetBackground (_XGrDisplay, _XGrBitmapGC, 0);
+        DBGPRINTF(DBG_DRIVER,("Calling XPutImage (2) ...\n"));
+        XPutImage (_XGrDisplay,
+                   _XGrBitmap,
+                   _XGrBitmapGC,
+                   &ximage,
+                   0,
+                   0,
+                   0,
+                   0,
+                   w,
+                   h);
+        DBGPRINTF(DBG_DRIVER,("Calling XPutImage (2) done\n"));
+        XSetStipple (_XGrDisplay, _XGrGC, _XGrBitmap);
+        XSetTSOrigin (_XGrDisplay, _XGrGC, x, y);
+        XSetFillStyle (_XGrDisplay, _XGrGC, FillStippled);
+        _XGrSetForeColor (fg);
+        _XGrSetColorOper (fg);
+        XFillRectangle (_XGrDisplay,
+                        (Drawable) CURC->gc_baseaddr[0],
+                        _XGrGC,
+                        x,
+                        y,
+                        w,
+                        h);
+      }
+      if (bg != GrNOCOLOR) {
+        XSetForeground (_XGrDisplay, _XGrBitmapGC, 0);
+        XSetBackground (_XGrDisplay, _XGrBitmapGC, 1);
+        DBGPRINTF(DBG_DRIVER,("Calling XPutImage (3) ...\n"));
+        XPutImage (_XGrDisplay,
+                   _XGrBitmap,
+                   _XGrBitmapGC,
+                   &ximage,
+                   0,
+                   0,
+                   0,
+                   0,
+                   w,
+                   h);
+        DBGPRINTF(DBG_DRIVER,("Calling XPutImage (3) done\n"));
+        XSetStipple (_XGrDisplay, _XGrGC, _XGrBitmap);
+        XSetTSOrigin (_XGrDisplay, _XGrGC, x, y);
+        XSetFillStyle (_XGrDisplay, _XGrGC, FillStippled);
+        _XGrSetForeColor (bg);
+        _XGrSetColorOper (bg);
+        XFillRectangle (_XGrDisplay,
+                        (Drawable) CURC->gc_baseaddr[0],
+                        _XGrGC,
+                        x,
+                        y,
+                        w,
+                        h);
+      }
+      XSetFillStyle (_XGrDisplay, _XGrGC, FillSolid);
+    }
 
+    if ( _XGrPixelCacheDrawable != None) {
+        w += x - 1;
+        h += y - 1;
+        if ( AREA_OVERLAP_PIXEL_CACHE(x,y,w,h) )
+            PIXEL_CACHE_INVALIDATE();
+    }
+  }
+  GRX_LEAVE();
+}
 
 /* Note: drawpattern is not tested because it's not used in this GRX version */
 static
-void drawpattern(int x,int y,int w,char patt,long fg,long bg)
+void drawpattern(int x,int y,int w,char patt,GrColor fg,GrColor bg)
 {
   XImage ximage;
 
+  GRX_ENTER();
   ximage.width          = 8;
   ximage.height         = 1;
   ximage.xoffset        = 0;
@@ -325,40 +446,13 @@ void drawpattern(int x,int y,int w,char patt,long fg,long bg)
   ximage.green_mask     = 0L;
   ximage.blue_mask      = 0L;
   ximage.obdata         = NULL;
-  memchr(&ximage.f, 0, sizeof(ximage.f));
+  sttzero(&ximage.f);
 
-  if (XInitImage (&ximage) == 0)
-    return;
-
-  if ((C_OPER(fg) == C_OPER(bg)) && (fg != GrNOCOLOR)) {
-    XSetForeground (_XGrDisplay, _XGrPatternGC, 1);
-    XSetBackground (_XGrDisplay, _XGrPatternGC, 0);
-    XPutImage (_XGrDisplay,
-               _XGrPattern,
-               _XGrPatternGC,
-               &ximage,
-               0,
-               0,
-               0,
-               0,
-               8,
-               1);
-    XSetStipple (_XGrDisplay, _XGrGC, _XGrPattern);
-    XSetTSOrigin (_XGrDisplay, _XGrGC, x, y);
-    XSetFillStyle (_XGrDisplay, _XGrGC, FillOpaqueStippled);
-    _XGrSetForeColor (fg);
-    _XGrSetBackColor (bg);
-    _XGrSetColorOper (fg);
-    XFillRectangle (_XGrDisplay,
-                    (Drawable) CURC->gc_baseaddr[0],
-                    _XGrGC,
-                    x,
-                    y,
-                    w,
-                    1);
-  }
-  else {
-    if (fg != GrNOCOLOR) {
+# ifndef PRE_R6_ICCCM
+  if (XInitImage (&ximage) != 0)
+# endif
+  {
+    if ((C_OPER(fg) == C_OPER(bg)) && (fg != GrNOCOLOR)) {
       XSetForeground (_XGrDisplay, _XGrPatternGC, 1);
       XSetBackground (_XGrDisplay, _XGrPatternGC, 0);
       XPutImage (_XGrDisplay,
@@ -373,8 +467,9 @@ void drawpattern(int x,int y,int w,char patt,long fg,long bg)
                  1);
       XSetStipple (_XGrDisplay, _XGrGC, _XGrPattern);
       XSetTSOrigin (_XGrDisplay, _XGrGC, x, y);
-      XSetFillStyle (_XGrDisplay, _XGrGC, FillStippled);
+      XSetFillStyle (_XGrDisplay, _XGrGC, FillOpaqueStippled);
       _XGrSetForeColor (fg);
+      _XGrSetBackColor (bg);
       _XGrSetColorOper (fg);
       XFillRectangle (_XGrDisplay,
                       (Drawable) CURC->gc_baseaddr[0],
@@ -384,40 +479,75 @@ void drawpattern(int x,int y,int w,char patt,long fg,long bg)
                       w,
                       1);
     }
-    if (bg != GrNOCOLOR) {
-      XSetForeground (_XGrDisplay, _XGrPatternGC, 0);
-      XSetBackground (_XGrDisplay, _XGrPatternGC, 1);
-      XPutImage (_XGrDisplay,
-                 _XGrPattern,
-                 _XGrPatternGC,
-                 &ximage,
-                 0,
-                 0,
-                 0,
-                 0,
-                 8,
-                 1);
-      XSetStipple (_XGrDisplay, _XGrGC, _XGrPattern);
-      XSetTSOrigin (_XGrDisplay, _XGrGC, x, y);
-      XSetFillStyle (_XGrDisplay, _XGrGC, FillStippled);
-      _XGrSetForeColor (bg);
-      _XGrSetColorOper (bg);
-      XFillRectangle (_XGrDisplay,
-                      (Drawable) CURC->gc_baseaddr[0],
-                      _XGrGC,
-                      x,
-                      y,
-                      w,
-                      1);
+    else {
+      if (fg != GrNOCOLOR) {
+        XSetForeground (_XGrDisplay, _XGrPatternGC, 1);
+        XSetBackground (_XGrDisplay, _XGrPatternGC, 0);
+        XPutImage (_XGrDisplay,
+                   _XGrPattern,
+                   _XGrPatternGC,
+                   &ximage,
+                   0,
+                   0,
+                   0,
+                   0,
+                   8,
+                   1);
+        XSetStipple (_XGrDisplay, _XGrGC, _XGrPattern);
+        XSetTSOrigin (_XGrDisplay, _XGrGC, x, y);
+        XSetFillStyle (_XGrDisplay, _XGrGC, FillStippled);
+        _XGrSetForeColor (fg);
+        _XGrSetColorOper (fg);
+        XFillRectangle (_XGrDisplay,
+                        (Drawable) CURC->gc_baseaddr[0],
+                        _XGrGC,
+                        x,
+                        y,
+                        w,
+                        1);
+      }
+      if (bg != GrNOCOLOR) {
+        XSetForeground (_XGrDisplay, _XGrPatternGC, 0);
+        XSetBackground (_XGrDisplay, _XGrPatternGC, 1);
+        XPutImage (_XGrDisplay,
+                   _XGrPattern,
+                   _XGrPatternGC,
+                   &ximage,
+                   0,
+                   0,
+                   0,
+                   0,
+                   8,
+                   1);
+        XSetStipple (_XGrDisplay, _XGrGC, _XGrPattern);
+        XSetTSOrigin (_XGrDisplay, _XGrGC, x, y);
+        XSetFillStyle (_XGrDisplay, _XGrGC, FillStippled);
+        _XGrSetForeColor (bg);
+        _XGrSetColorOper (bg);
+        XFillRectangle (_XGrDisplay,
+                        (Drawable) CURC->gc_baseaddr[0],
+                        _XGrGC,
+                        x,
+                        y,
+                        w,
+                        1);
+      }
+    }
+    XSetFillStyle (_XGrDisplay, _XGrGC, FillSolid);
+
+    if ( _XGrPixelCacheDrawable != None) {
+        w += x - 1;
+        if ( AREA_OVERLAP_PIXEL_CACHE(x,y,w,y) )
+            PIXEL_CACHE_INVALIDATE();
     }
   }
-  XSetFillStyle (_XGrDisplay, _XGrGC, FillSolid);
+  GRX_LEAVE();
 }
 
-
 static
-void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long op)
+void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op)
 {
+  GRX_ENTER();
   _XGrSetColorOper (op);
   XCopyArea (_XGrDisplay,
              (Drawable) src->gf_baseaddr[0],
@@ -429,11 +559,21 @@ void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,long
              h,
              dx,
              dy);
+
+  if ( _XGrPixelCacheDrawable != None) {
+      int x2 = dx + w - 1;
+      int y2 = dy + h - 1;
+      if ( AREA_OVERLAP_PIXEL_CACHE(dx,dy,x2,y2) )
+          PIXEL_CACHE_INVALIDATE();
+  }
+
+  GRX_LEAVE();
 }
 
 static
-void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,long op)
+void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
+  GRX_ENTER();
   if(GrColorMode(op) == GrIMAGE)
     _GrFrDrvGenericBitBlt(dst,dx,dy,
                           src,sx,sy,
@@ -451,6 +591,36 @@ void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,lo
                         h,
                         AllPlanes,
                         ZPixmap);
+    if (! ximage) {
+      Pixmap pixmap;
+
+      pixmap = XCreatePixmap (_XGrDisplay,
+                              (Drawable) src->gf_baseaddr[0],
+                              w,
+                              h,
+                              _XGrDepth);
+      if (pixmap) {
+        XCopyArea (_XGrDisplay,
+                   (Drawable) src->gf_baseaddr[0],
+                   pixmap,
+                   DefaultGC (_XGrDisplay, _XGrScreen),
+                   sx,
+                   sy,
+                   w,
+                   h,
+                   0,
+                   0);
+        ximage = XGetImage (_XGrDisplay,
+                            pixmap,
+                            0,
+                            0,
+                            w,
+                            h,
+                            AllPlanes,
+                            ZPixmap);
+        XFreePixmap (_XGrDisplay, pixmap);
+      }
+    }
     if (ximage) {
       int bytes_per_pixel = _XGrBitsPerPixel >> 3;
       GrFrame tmp = *dst;
@@ -469,10 +639,12 @@ void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,lo
       XDestroyImage (ximage);
     }
   }
+  GRX_LEAVE();
 }
 
-static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,long op)
+static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
+  GRX_ENTER();
   if(GrColorMode(op) == GrIMAGE)
     _GrFrDrvGenericBitBlt(dst,dx,dy,
                           src,sx,sy,
@@ -498,9 +670,12 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
     ximage.green_mask   = 0L;
     ximage.blue_mask    = 0L;
     ximage.obdata       = NULL;
-    memchr(&ximage.f, 0, sizeof(ximage.f));
+    sttzero(&ximage.f);
 
-    if (XInitImage (&ximage) != 0) {
+# ifndef PRE_R6_ICCCM
+      if (XInitImage (&ximage) != 0)
+# endif
+    {
       _XGrSetColorOper (op);
       XPutImage (_XGrDisplay,
                  (Drawable) dst->gf_baseaddr[0],
@@ -512,8 +687,62 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
                  dy,
                  w,
                  h);
+      if ( _XGrPixelCacheDrawable != None) {
+          w += dx - 1;
+          h += dy - 1;
+          if ( AREA_OVERLAP_PIXEL_CACHE(dx,dy,w,h) )
+              PIXEL_CACHE_INVALIDATE();
+      }
     }
   }
+  GRX_LEAVE();
+}
+
+
+#define ROUNDCOLORCOMP(x,n) (                                   \
+    ((uint)(x) >= CLRINFO->mask[n]) ?                           \
+        CLRINFO->mask[n] :                                      \
+        (((x) + CLRINFO->round[n]) & CLRINFO->mask[n])          \
+)
+
+static int init(GrVideoMode *mp)
+{
+
+  if (_XGrColorNumPixels == 1) {
+    unsigned long i;
+
+    for (i = 0; i < CLRINFO->ncolors; i++) {
+      if (i >= _XGrColorPixels[0] && i <= _XGrColorPixels[1]) {
+        CLRINFO->ctable[i].defined  = FALSE;
+      }
+      else {
+        int r, g, b;
+        XColor xcolor;
+
+        xcolor.red   = 0;
+        xcolor.green = 0;
+        xcolor.blue  = 0;
+        xcolor.pixel = i;
+        XQueryColors (_XGrDisplay, _XGrColormap, &xcolor, 1);
+        r = xcolor.red   >> 8;
+        g = xcolor.green >> 8;
+        b = xcolor.blue  >> 8;
+        /*
+         * Preallocate Cell; Only a buggy program will free this entry.
+         */
+        CLRINFO->ctable[i].r    = ROUNDCOLORCOMP(r,0);
+        CLRINFO->ctable[i].g    = ROUNDCOLORCOMP(g,1);
+        CLRINFO->ctable[i].b    = ROUNDCOLORCOMP(b,2);
+        CLRINFO->ctable[i].defined      = TRUE;
+        CLRINFO->ctable[i].writable     = FALSE;
+        CLRINFO->ctable[i].nused        = 1;
+        CLRINFO->nfree--;
+      }
+    }
+  }
+  PIXEL_CACHE_INVALIDATE();
+  PIXEL_CACHE_WIDTH = mp->width;
+  return(TRUE);
 }
 
 
@@ -525,7 +754,7 @@ GrFrameDriver _GrFrameDriverXWIN8 = {
   1,                            /* number of planes */
   8,                            /* bits per pixel */
   8*16*1024L*1024L,             /* max plane size the code can handle */
-  NULL,
+  init,
   readpixel,
   drawpixel,
   drawline,
@@ -537,6 +766,8 @@ GrFrameDriver _GrFrameDriverXWIN8 = {
   bitblt,
   bltv2r,
   bltr2v,
+  _GrFrDrvGenericGetIndexedScanline,
+  _GrFrDrvGenericPutScanline
 };
 
 GrFrameDriver _GrFrameDriverXWIN16 = {
@@ -559,6 +790,8 @@ GrFrameDriver _GrFrameDriverXWIN16 = {
   bitblt,
   bltv2r,
   bltr2v,
+  _GrFrDrvGenericGetIndexedScanline,
+  _GrFrDrvGenericPutScanline
 };
 
 GrFrameDriver _GrFrameDriverXWIN24 = {
@@ -581,4 +814,7 @@ GrFrameDriver _GrFrameDriverXWIN24 = {
   bitblt,
   bltv2r,
   bltr2v,
+  _GrFrDrvGenericGetIndexedScanline,
+  _GrFrDrvGenericPutScanline
 };
+

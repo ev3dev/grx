@@ -8,7 +8,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrFilledConvexPolygon(int n,int pt[][2],long c)
+void GrFilledConvexPolygon(int n,int pt[][2],GrColor c)
 {
         GrFillArg fval;
         fval.color = c;

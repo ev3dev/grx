@@ -6,20 +6,18 @@
  **/
 
 /* combine two bytes into one word: generic version */
-#define _highlow(hi,lo) ((ushort)( (((ushort)(hi))<<8) | ((uchar)(lo)) ))
+#define __highlow__(hi,lo) ((((GR_int16u)(hi))<<8)|((GR_int8u)(lo)))
 
-#if defined(__GNUC__) && defined(__i386__)
-/* combine two bytes into one word: optimized i386 version */
-#define highlow(hi,lo) ({                                           \
-    register ushort _res_;                                          \
-    if(__builtin_constant_p((hi))&& !__builtin_constant_p((lo)))    \
-      __asm__ volatile( "  movb %1,%%ah"                            \
-          : "=a" (_res_) : "n" ((uchar)(hi)), "0" ((uchar)(lo)) );  \
-    else                                                            \
-        _res_ = _highlow((hi),(lo));                                \
-    _res_;                                                          \
-})
-#else
-#define highlow(hi,lo) _highlow((hi),(lo))
+#ifdef __GNUC__
+#include "gcc/highlow.h"
+#elif defined(__TURBOC__)
+#include "bcc/highlow.h"
 #endif
 
+#ifndef highlow
+#define highlow(hi,lo) __highlow__((hi),(lo))
+#endif
+
+#ifndef highlowP
+#define highlowP(p) highlow(*((GR_int8u *)(p)),*(((GR_int8u *)(p))+1))
+#endif
