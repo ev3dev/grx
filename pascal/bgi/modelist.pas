@@ -12,8 +12,7 @@ program ModeList;
  * e-mail : sven@rufus.central.de
 }
 
-uses
-  Graph;
+uses Graph;
 
 var
   i,
@@ -27,22 +26,22 @@ begin
   grDriver := InstallUserDriver('SVGA256', nil); { Not used in GPC }
   InitGraph(grDriver, grMode,'..\..\chr');
   ErrCode := GraphResult;
-  if ErrCode = grOk then
+  if ErrCode = GrOk then
   begin  { Do graphics }
     (*$ifdef __GPC__ *)
       CloseGraph;
     (*$endif*)
     for i := 0 to GetMaxMode do begin
-      writeln(i:4, ' ' + GetModeName(i));
+      WriteLn(i:4, ' ' + GetModeName(i))
     end;
-    readln;
+    ReadLn;
     (*$ifndef __GPC__ *)
-      CloseGraph;
+      CloseGraph
     (*$endif*)
   end
   else begin
-    Writeln('Graphics error:', GraphErrorMsg(ErrCode));
+    WriteLn('Graphics error:', GraphErrorMsg(ErrCode));
     Write  ('Press Enter ...');
-    Readln;
+    ReadLn
   end
 end.

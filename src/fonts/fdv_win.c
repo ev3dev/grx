@@ -1,7 +1,7 @@
 /**
  ** fdv_win.c -- driver for Windows resource font file format
  **
- ** Copyright (C) 2002 Dimitar Zhekov
+ ** Copyright (C) 2003 Dimitar Zhekov
  ** [e-mail: jimmy@is-vn.bg]
  **
  ** This file is part of the GRX graphics library.
@@ -42,10 +42,11 @@ static GrCharHeaderWIN far *ctable = NULL;
 static void swap_resource(void)
 {
         GRX_ENTER();
-        _GR_swap16u(rhdr.type_id);
-        _GR_swap16u(rhdr.name_id);
-        _GR_swap16u(rhdr.flags);
-        _GR_swap32u(rhdr.size);
+        _GR_swap16u(&rhdr.type_id);
+        _GR_swap16u(&rhdr.name_id);
+        _GR_swap16u(&rhdr.flags);
+        _GR_swap32u(&rhdr.size);
+        GRX_LEAVE();
 }
 
 static void swap_header(void)
@@ -159,25 +160,28 @@ done:        if(!res) cleanup();
         GRX_RETURN(res);
 }
 
+static char *families[] = { "Unknown", "Roman", "Swiss", "Modern", "Script", "Decorative" };
+
 static int header(GrFontHeader *hdr)
 {
         int res;
-        char c;
+        int c;
         char *s;
         GRX_ENTER();
         res = FALSE;
         if(fontfp != NULL) {
+            if((c = fhdr.pitch_and_family >> 4) <= 5) strcpy(hdr->family, families[c]);
+            else sprintf(hdr->family, "0x%x", fhdr.pitch_and_family);
             if(fhdr.face) {
                 s = hdr->name;
                 if(fseek(fontfp, offset + fhdr.face, SEEK_SET) < 0) goto done;
                 do {
                     if((c = fgetc(fontfp)) == EOF) goto done;
                     *(s++) = c;
-                } while(c);
+                } while(c && s - hdr->name < 99);
+                if(c) *s = '\0';
             }
-            else
-                strcpy(hdr->name, "win");
-            sprintf(hdr->family, "0x%x", fhdr.pitch_and_family);
+            else sprintf(hdr->name, "%s-%d", hdr->family, fhdr.pix_height);
             hdr->proportional = fhdr.pix_width == 0;
             hdr->scalable = FALSE;
             hdr->preloaded = FALSE;

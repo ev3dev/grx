@@ -55,7 +55,8 @@ static int detect(void)
 
 static void reset(void)
 {
-        if(initted > 0) vga_setmode(initmode);
+        if(initted > 0 && vga_getcurrentmode() != initmode)
+            vga_setmode(initmode);
 }
 
 static void setrwbanks(int rb,int wb)

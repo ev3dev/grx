@@ -74,11 +74,7 @@ void all_user_tests(int fnt, int sze) {
   user_info(fnt, sze);
 }
 
-#if defined(__WIN32__)
-int GRXMain(void)
-#else
 int main(void)
-#endif
 {
   int gd, gm, x, y;
   int err;

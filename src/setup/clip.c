@@ -37,7 +37,7 @@ void GrSetClipBoxC(GrContext *c,int x1,int y1,int x2,int y2)
         c->gc_ycliphi = y2;
 }
 
-void GrResetClipBox()
+void GrResetClipBox(void)
 {
         CURC->gc_xcliplo = 0;
         CURC->gc_ycliplo = 0;

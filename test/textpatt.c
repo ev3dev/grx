@@ -21,13 +21,12 @@
 
 #define FONT "../fonts/tms38b.fnt"
 
-int GRXMain(void)
+int main(void)
 {
   char bits[] = {0, 76, 50, 0, 0, 76, 60, 0};
   GrPattern *p1, *p2;
   GrFont *font;
   GrTextOption opt;
-  int fail_p1, fail_p2, fail_font;
 
   GrSetMode(GR_width_height_color_graphics, 320, 200, (GrColor)256);
   p1 = GrBuildPixmapFromBits(bits, 8, 8, 11,  3);
@@ -55,16 +54,13 @@ int GRXMain(void)
     GrPatternDrawStringExt(" Hello world !!", 16, 44, 140, &opt, p2);
     GrKeyRead();
   }
-  fail_p1 = p1 == NULL;
   if (p1)   GrDestroyPattern(p1);
-  fail_p2 = p2 == NULL;
   if (p2)   GrDestroyPattern(p2);
-  fail_font = font == NULL;
   if (font) GrUnloadFont(font);
   GrSetMode(GR_default_text);
-  if (fail_p1) fprintf(stderr, "Couldn't create first pattern\n");
-  if (fail_p2) fprintf(stderr, "Couldn't create second pattern\n");
-  if (fail_font) fprintf(stderr, "Couldn't load font %s\n", FONT);
+  if (!p1) fprintf(stderr, "Couldn't create first pattern\n");
+  if (!p2) fprintf(stderr, "Couldn't create second pattern\n");
+  if (!font) fprintf(stderr, "Couldn't load font %s\n", FONT);
 
   return 0;
 }

@@ -24,6 +24,9 @@ source code (and of course: MANY THANKS FOR THE GREAT GRX LIB !).
 N. D. Culver <ndc@alum.mit.edu> for suggesting the bpp based color
 spec with GrSetMode().
 
+Thomas Demmer <TDemmer@krafteurope.com> for inprovements and good ideas
+with the win32 driver.
+
 Frank Donahoe <fdonahoe@wilkes1.wilkes.edu> for bug reports and patches.
 
 Vicente Fuentes Gea <vfg@servidor.unam.mx> for the info version of the
@@ -83,7 +86,8 @@ Waldemar Schultz <schultz@mathematik.tu-muenchen.de> for bug reports.
 Michael <mh@conrad.chem.uni-potsdam.de> for bug reports.
 
 Dimitar Zhekov <jimmy@is-vn.bg> for three new font drivers, makefile
-fixes for the bcc version, bgi updates and other fixes.
+fixes for the bcc version, bgi updates, X11 fixes and the Xfree86 DGA2
+video driver.
 
 ###########################################################################
 This is the original contrib.doc by Csaba Biegl (csaba@vuse.vanderbilt.edu)

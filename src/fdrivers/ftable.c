@@ -1,5 +1,5 @@
 /**
- ** FTABLE.C ---- a table of available frame drivers
+ ** ftable.c ---- a table of available frame drivers
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  ** [e-mail: csaba@vuse.vanderbilt.edu].
@@ -38,7 +38,7 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverSVGA32L,
     &_GrFrameDriverSVGA32H,
 #endif
-#if  defined(__DJGPP__) \
+#if  defined(__DJGPP__) || defined(XF86DGA_DRIVER) \
   || ( defined(LFB_BY_NEAR_POINTER) && !defined(__WIN32__) ) \
   || ( defined(__WATCOMC__) && defined ( __386__ ) )
     &_GrFrameDriverSVGA8_LFB,
@@ -55,7 +55,6 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverXWIN32H,
 #endif
 #ifdef __WIN32__
-    &_GrFrameDriverWIN32_4,
     &_GrFrameDriverWIN32_8,
     &_GrFrameDriverWIN32_24,
 #endif

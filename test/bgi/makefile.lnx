@@ -16,7 +16,9 @@ GRX20 = ../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 # or this if you've already installed the shared libs
 #GRX20 = -L../../lib/$(GRX_LIB_SUBDIR) -lgrx20
 
-ADDON_LIBS= -lvga
+ifeq ($(USE_SVGALIB_DRIVER),y)
+  ADDON_LIBS= -lvga
+endif
 
 ifeq ($(HAVE_LIBTIFF),y)
   ADDON_LIBS += -ltiff

@@ -20,36 +20,36 @@
 
 program jpgtest;
 
-uses gpc, grx;
+uses GPC, GRX;
 
 var grc: GrContextPtr;
 
-procedure imagen( nf: String; scale: Integer );
+procedure imagen( nf: String; Scale: Integer );
 var
   grc        : GrContextPtr;
-  wide, high : Integer;
+  Width, Height : Integer;
   s          : String[81];
   w, h       : Integer;
 begin
   GrQueryJpeg( nf,w,h );
-  WriteStr( s,nf,' ',w,' ',h,' scale 1/',scale );
-  wide := min(600 , w div scale);
-  high := min(400 , h div scale);
+  WriteStr( s,nf,' ',w,' ',h,' Scale 1/',Scale );
+  Width := min(600 , w div Scale);
+  Height := min(400 , h div Scale);
   GrClearScreen( GrAllocColor( 0,0,200 ) );
 
-  GrBox( 10,40,10+wide+1,40+high+1,GrWhite );
-  grc := GrCreateSubContext( 11,41,11+wide-1,41+high-1,NIL,NIL );
-  GrLoadContextFromJpeg( grc,nf,scale );
+  GrBox( 10,40,10+Width+1,40+Height+1,GrWhite );
+  grc := GrCreateSubContext( 11,41,11+Width-1,41+Height-1,NIL,NIL );
+  GrLoadContextFromJpeg( grc,nf,Scale );
   GrDestroyContext( grc );
 
   GrTextXY( 10,10,s,GrBlack,GrWhite );
-  GrTextXY( 10,50+high,'Press any key to continue',GrBlack,GrWhite );
-  GrKeyRead;
+  GrTextXY( 10,50+Height,'Press any key to continue',GrBlack,GrWhite );
+  GrKeyRead
 end;
 
 procedure nojpegsupport;
 const
-  s: array[0..5] of string[50] = (
+  s: array[0..5] of String[50] = (
 		 'Warning!',
 		 'You need libjpeg (http://www.ijg.org) and enable',
 		 'jpeg support in the GRX lib (edit makedefs.grx)',
@@ -57,20 +57,20 @@ const
 		 ' ',
 		 'Press any key to continue...' );
 var 
-  i: integer;
+  i: Integer;
 begin
   GrClearScreen( GrAllocColor( 0,0,100 ) );
   for i:=0 to 5 do
-    GrTextXY( 90,160+i*18,s[i],GrWhite,GrNOCOLOR );
-  GrKeyRead;
+    GrTextXY( 90,160+i*18,s[i],GrWhite,GrNoColor);
+  GrKeyRead
 end;
 
 begin
-   GrSetMode( GR_width_height_bpp_graphics,640,480,24,0,0 );
+   GrSetMode( Gr_Width_Height_BPP_Graphics,640,480,24,0,0 );
 
    if GrJpegSupport = 0 then begin
 		nojpegsupport;
-		GrSetMode(GR_default_text,0,0,0,0,0);
+		GrSetMode(Gr_Default_Text,0,0,0,0,0);
 		halt( 1 );
    end;
 
@@ -110,5 +110,5 @@ begin
    GrTextXY( 10,10,'Press any key to end                       ',GrBlack,GrWhite );
    GrKeyRead;
 
-   GrSetMode(GR_default_text,0,0,0,0,0);
+   GrSetMode(Gr_Default_Text,0,0,0,0,0)
 end.

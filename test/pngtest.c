@@ -67,7 +67,7 @@ void nopngsupport( void )
 }
 
 
-int GRXMain()
+int main()
 {
   GrContext *grc;
 

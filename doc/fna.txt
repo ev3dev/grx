@@ -87,10 +87,6 @@ undwidth <number>
 Underline height in lines. The default is height / 15 rounded down, or 1 if
 the font height is < 15.
 
-ulpos <number>
-
-Underline position. The default is height - undwidth.
-
 note <string>
 
 Comment. May be empty. Any number of comments may be specified. The usual

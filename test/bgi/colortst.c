@@ -94,11 +94,7 @@ static void testmode(int mode) {
           setgraphmode(oldmode);
 }
 
-#if defined(__WIN32__)
-int GRXMain(void)
-#else
 int main(void)
-#endif
 {
   int gd, gm;
   int err;

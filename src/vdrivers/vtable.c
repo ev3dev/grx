@@ -32,6 +32,9 @@ GrVideoDriver *_GrVideoDriverTable[] = {
     &_GrVideoDriverS3,
 #endif
 #if defined(__XWIN__)
+#if defined(XF86DGA_DRIVER)
+    &_GrVideoDriverXF86DGA,
+#endif
     &_GrVideoDriverXWIN,
 #endif
 #if defined(__linux__) && !defined(__XWIN__)

@@ -20,7 +20,7 @@
 #include "grx20.h"
 #include "grxkeys.h"
 
-int GRXMain(void)
+int main(void)
 {
   GrContext *pContext;
   int sizex = 40;
@@ -39,13 +39,15 @@ int GRXMain(void)
   GrLine(0, 0, sizex-1, sizey-1, GrWhite());
   GrLine(0, sizey-1, sizex-1, 0, GrWhite());
 
-  /* Put the bitmap into the screen */
   GrSetContext(NULL);
   fcolor = GrAllocColor( 255,0,0 );
   bcolor = GrAllocColor( 0,0,255 );
-  GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
+  GrTextXY(0,0,"Type u d l r U D L R to move, 1 2 to change color, q to quit",
+           GrWhite(),GrNOCOLOR);
+  GrSetClipBox(0, 40, GrScreenX(), GrScreenY());
 
-  GrTextXY(0,0,"Type u d l r U D L R or q to quit",GrWhite(),GrNOCOLOR);
+  /* Put the bitmap into the screen */
+  GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
 
   while( 1 ){
     k = GrKeyRead();
@@ -59,11 +61,17 @@ int GRXMain(void)
       case 'D': y += 10; break;
       case 'L': x -= 10; break;
       case 'R': x += 10; break;
+      case '1': fcolor = GrAllocColor( 255,0,0 );
+                bcolor = GrAllocColor( 0,0,255 );
+                break;
+      case '2': fcolor = GrAllocColor( 0,255,255 );
+                bcolor = GrAllocColor( 255,255,0 );
+                break;
       default:  continue;
       }
-    if(x < 0) x = 0;
+    if(x < -40) x = -40;
     if(x > GrScreenX()) x = GrScreenX();
-    if(y < 40) y = 40;
+    if(y < 0) y = 0;
     if(y > GrScreenY()) y = GrScreenY();
     GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
     }

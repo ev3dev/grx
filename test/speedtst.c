@@ -28,14 +28,6 @@
 #else
 #include <values.h>
 #endif
-#ifdef __DJGPP__
-#include <conio.h>
-#include <pc.h>
-#else
-extern int getch(void);
-extern int getkey(void);
-extern int kbhit(void);
-#endif
 #include <math.h>
 #include <time.h>
 
@@ -647,7 +639,7 @@ void speedcheck(gvmode *gp, int wait) {
     printf("Setup failed : %s != %s\n",
     FrameDriverName(act),
     FrameDriverName(gp->fm));
-    getch();
+    fgets(m,40,stdin);
     return;
   }
 
@@ -675,7 +667,6 @@ void speedcheck(gvmode *gp, int wait) {
     printresultline(stdout, gp);
     if (rp)
       printresultline(stdout, rp);
-    kbhit();    /* this is here to flush in the X version 8-) */
     fgets(m,40,stdin);
   }
 }
@@ -779,7 +770,7 @@ void PrintModes(void) {
         } while (1);
 }
 
-int GRXMain(void)
+int main(void)
 {
         int  i;
 

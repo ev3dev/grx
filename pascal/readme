@@ -11,7 +11,7 @@ and GNU-Pascal.
 
 * blt_test.pas draws some circles
 * modetest.pas prints out the available modes
-* taste.pas prints out the character-codes. Use "Q" to quit.
+* keytest.pas prints out the character-codes. Use "Q" to quit.
 * txt_test.pas prints out some text. Press Return to exit.
 * vir_test.pas lets you draw something.
   Press "1", to place some sqares with the mouse.

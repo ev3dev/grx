@@ -18,9 +18,6 @@
  **/
 
 #include "test.h"
-#ifdef __DJGPP__
-#include <pc.h>
-#endif
 
 TESTFUNC(test1)
 {

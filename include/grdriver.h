@@ -101,6 +101,7 @@ _GrVideoDriverMACH64,                   /* ATI MACH64 driver */
 _GrVideoDriverS3,                       /* S3 driver */
 
 _GrVideoDriverXWIN,                     /* X11 interface */
+_GrVideoDriverXF86DGA,                  /* XFree86 DGA interface */
 
 _GrVideoDriverSVGALIB,                  /* Linux SVGALIB interface */
 _GrVideoDriverLINUXFB,                  /* Linux framebuffer */

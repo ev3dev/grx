@@ -28,3 +28,8 @@ clean:
 	cd bgi
 	$(MAKE) clean
 	cd ..\..
+
+cleanall: clean
+	cd src
+	$(MAKE) cleanall
+	cd ..

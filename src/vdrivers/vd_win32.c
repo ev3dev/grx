@@ -15,7 +15,7 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
- ** Contributions by Josu Onandia (jonandia@fagorautomation.es) 21/02/2001
+ ** Changes by Josu Onandia (jonandia@fagorautomation.es) 21/02/2001
  **   - The colors loaded in the ColorList are guaranteed to be actually used
  **     by Windows (GetNearestColor), for the GR_frameWin32 to work.
  **   - When the window is created, it gets the maximum size allowed by the
@@ -36,22 +36,39 @@
  **   - The window title is selectable with a define, at compile time.
  **     If not defined, it defaults to "GRX".
  **
- ** Contributions by M.Alvarez (malfer@teleline.es) 02/01/2002
+ ** Changes by M.Alvarez (malfer@telefonica.net) 02/01/2002
  **   - Go to full screen if the framemode dimensions are equal to
  **     the screen dimensions (setting the client start area at 0,0).
  **
- ** Contributions by M.Alvarez (malfer@teleline.es) 02/02/2002
+ ** Changes by M.Alvarez (malfer@telefonica.net) 02/02/2002
  **   - The w32 imput queue implemented as a circular queue.
  **   - All the input related code moved to w32inp.c
  **   - The main window is created in WinMain, so the grx program
  **     can use other videodrivers like the memory one.
  **
- ** Contributions by M.Alvarez (malfer@teleline.es) 11/02/2002
+ ** Changes by M.Alvarez (malfer@telefonica.net) 11/02/2002
  **   - Now the GRX window is properly closed, so the previous app
  **     gets the focus.
  **
- ** Contributions by M.Alvarez (malfer@teleline.es) 31/03/2002
- **   - Accepts arbitrary (user defined) resolution
+ ** Changes by M.Alvarez (malfer@telefonica.net) 31/03/2002
+ **   - Accepts arbitrary (user defined) resolution.
+ **
+ ** Changes by Thomas Demmer (TDemmer@krafteurope.com)
+ **   - Instead of begin with WinMain and start a thread with the main
+ **     GRX program, do it backward: begin in main and start a thread to
+ **     handle the Windows window. With this change we get rid of the
+ **     awful GRXMain special entry point.
+ **
+ ** Changes by M.Alvarez (malfer@telefonica.net) 12/02/2003
+ **   - Sanitize the Thomas changes.
+ **
+ ** Changes by Thomas Demmer (TDemmer@krafteurope.com) 18/03/2003
+ **   - Use a DIB for the hDCMem.
+ **
+ ** Changes by Josu Onandia (jonandia@fagorautomation.es) 19/03/2003
+ **   - With the Thomas idea of using a DIB, we can now use the DIB like
+ **     a linear frame buffer, so the new win32 framedrivers can take
+ **     advantage of the standard GRX frame drivers.
  **/
 
 #include "libwin32.h"
@@ -63,74 +80,84 @@
 #define GRXWINDOW_TITLE "GRX"
 #endif
 
-HINSTANCE hGlobInst;
 HWND hGRXWnd = NULL;
 HDC hDCMem = NULL;
+
 CRITICAL_SECTION _csEventQueue;
 W32Event *_W32EventQueue = NULL;
 int _W32EventQueueSize = 0;
 int _W32EventQueueRead = 0;
 int _W32EventQueueWrite = 0;
 int _W32EventQueueLength = 0;
-SColorList *ColorList;
-HBITMAP hBitmapScreen;
+
+static HBITMAP hBmpDIB = NULL;
 
 static int maxScreenWidth, maxScreenHeight;
 static int maxWindowWidth, maxWindowHeight;
 
-static DWORD mainThreadId; /* Identifier of the main thread */
-HANDLE hThread;            /* Handle of the worker thread (GRXMain ) */
-static int isGRXMainworking = 0;  /* True if hThread is running */
+HANDLE windowThread = INVALID_HANDLE_VALUE;
+static HANDLE mainThread   = INVALID_HANDLE_VALUE;
 
+static volatile int isWindowThreadRunning = 0;
+static volatile int isMainWaitingTermination = 0;
+
+static DWORD WINAPI WndThread(void *param);
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
                                 LPARAM lParam);
 
-/* NOTE: Adjusts the color to the real RGB used by Windows */
 static void loadcolor(int c, int r, int g, int b)
 {
-    SColorList *clTmp, *clPrev;
-    HDC hdcW;
-    COLORREF color;
-
-    hdcW = GetDC(hGRXWnd);
-    color = RGB(r, g, b);
-    color = GetNearestColor(hdcW, color);
-    ReleaseDC(hGRXWnd, hdcW);
-    if (ColorList == NULL) {
-        clTmp = malloc(sizeof(SColorList));
-        clTmp->nIndex = c;
-        clTmp->color = color;
-        clTmp->pNext = NULL;
-        ColorList = clTmp;
-        return;
-    } else {
-        clTmp = ColorList;
-        do {
-            if (clTmp->nIndex == c) {
-                clTmp->color = color;
-                return;
-            }
-            clPrev = clTmp;
-            clTmp = clTmp->pNext;
-        } while (clTmp);
-        clPrev->pNext = malloc(sizeof(SColorList));
-        clTmp = clPrev->pNext;
-        clTmp->nIndex = c;
-        clTmp->color = color;
-        clTmp->pNext = NULL;
-        return;
-    }
+    RGBQUAD color;
+    color.rgbBlue = b;
+    color.rgbGreen = g;
+    color.rgbRed = r;
+    color.rgbReserved = 0;
+    SetDIBColorTable(hDCMem, c, 1, &color);
+    InvalidateRect(hGRXWnd, NULL, FALSE);        
 }
 
-static void ColorList_destroy(void)
+static HBITMAP CreateDIB8(HDC hdc, int w, int h, char **pBits)
 {
-    SColorList *clTmp;
+    BITMAPINFO *pbmInfo;
+    HBITMAP hBmp;
 
-    while (ColorList != NULL) {
-        clTmp = ColorList;
-        ColorList = ColorList->pNext;
-        free(clTmp);
-    }
+    pbmInfo = malloc(sizeof(BITMAPINFO) +255*sizeof(RGBQUAD));
+    pbmInfo->bmiHeader.biSize = sizeof (BITMAPINFOHEADER);
+    pbmInfo->bmiHeader.biWidth = w;
+    pbmInfo->bmiHeader.biHeight = -h;
+    pbmInfo->bmiHeader.biPlanes = 1;
+    pbmInfo->bmiHeader.biBitCount = 8;
+    pbmInfo->bmiHeader.biCompression = BI_RGB;
+    pbmInfo->bmiHeader.biSizeImage = 0;
+    pbmInfo->bmiHeader.biXPelsPerMeter = 0;
+    pbmInfo->bmiHeader.biYPelsPerMeter = 0;
+    pbmInfo->bmiHeader.biClrUsed = 0;
+    pbmInfo->bmiHeader.biClrImportant = 0;
+    hBmp = CreateDIBSection(0, pbmInfo, DIB_RGB_COLORS, (void*)pBits, 0, 0);
+    free(pbmInfo);
+    return(hBmp);
+}
+
+static HBITMAP CreateDIB24(HDC hdc, int w, int h, char **pBits)
+{
+    BITMAPINFO *pbmInfo;
+    HBITMAP hBmp;
+
+    pbmInfo = malloc(sizeof(BITMAPINFO));
+    pbmInfo->bmiHeader.biSize = sizeof (BITMAPINFOHEADER);
+    pbmInfo->bmiHeader.biWidth = w;
+    pbmInfo->bmiHeader.biHeight = -h;
+    pbmInfo->bmiHeader.biPlanes = 1;
+    pbmInfo->bmiHeader.biBitCount = 24;
+    pbmInfo->bmiHeader.biCompression = BI_RGB;
+    pbmInfo->bmiHeader.biSizeImage = 0;
+    pbmInfo->bmiHeader.biXPelsPerMeter = 0;
+    pbmInfo->bmiHeader.biYPelsPerMeter = 0;
+    pbmInfo->bmiHeader.biClrUsed = 0;
+    pbmInfo->bmiHeader.biClrImportant = 0;
+    hBmp = CreateDIBSection(0, pbmInfo, DIB_RGB_COLORS, (void*)pBits, 0, 0);
+    free(pbmInfo);
+    return(hBmp);
 }
 
 static int setmode(GrVideoMode * mp, int noclear)
@@ -156,35 +183,35 @@ static int setmode(GrVideoMode * mp, int noclear)
                      maxWindowWidth, maxWindowHeight,
                      SWP_DRAWFRAME | SWP_NOZORDER | SWP_SHOWWINDOW);
 
-        if (hBitmapScreen != NULL) {
-            DeleteObject(hBitmapScreen);
-            hBitmapScreen = NULL;
+        if (hBmpDIB != NULL) {
+            DeleteObject(hBmpDIB);
+            hBmpDIB = NULL;
         }
         hDC = GetDC(hGRXWnd);
         if (hDCMem == NULL)
             hDCMem = CreateCompatibleDC(hDC);
-        hBitmapScreen = CreateCompatibleBitmap(hDC, mp->width, mp->height);
-        SelectObject(hDCMem, hBitmapScreen);
+        if (mp->bpp == 8) {
+            hBmpDIB = CreateDIB8(hDC, mp->width, mp->height,
+                                 &mp->extinfo->frame);
+        } else {
+            hBmpDIB = CreateDIB24(hDC, mp->width, mp->height,
+                                  &mp->extinfo->frame);
+        }
+        SelectObject(hDCMem, hBmpDIB);
         SetRect(&Rect, 0, 0, mp->width, mp->height);
         hBrush = CreateSolidBrush(RGB(0, 0, 0));
         FillRect(hDCMem, &Rect, hBrush);
+        FillRect(hDC, &Rect, hBrush);
         ReleaseDC(hGRXWnd, hDC);
         DeleteObject(hBrush);
-
         UpdateWindow(hGRXWnd);
-
-        ColorList_destroy();
+        SetForegroundWindow(hGRXWnd);
     } else {
         /* If changing to text-mode, hide the graphics window. */
         if (hGRXWnd != NULL)
             ShowWindow(hGRXWnd, SW_HIDE);
     }
     return (TRUE);
-}
-
-static int detect(void)
-{
-    return TRUE;
 }
 
 static void setbank_dummy(int bk)
@@ -212,7 +239,7 @@ static GrVideoModeExt grxwinext8 = {
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
     {8, 8, 8},                        /* color precisions */
-    {0, 8, 16},                        /* color component bit positions */
+    {0, 8, 16},                 /* color component bit positions */
     0,                                /* mode flag bits */
     setmode,                        /* mode set */
     NULL,                        /* virtual size set */
@@ -227,7 +254,7 @@ static GrVideoModeExt grxwinext24 = {
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
     {8, 8, 8},                        /* color precisions */
-    {0, 8, 16},                        /* color component bit positions */
+    {16, 8, 0},                 /* color component bit positions */
     0,                                /* mode flag bits */
     setmode,                        /* mode set */
     NULL,                        /* virtual size set */
@@ -248,20 +275,103 @@ static GrVideoMode modes[] = {
     {TRUE, 8, 1280, 1024, 0x00, 1280, 0, &grxwinext8},
     {TRUE, 8, 1600, 1200, 0x00, 1600, 0, &grxwinext8},
 
-    {TRUE, 24, 320, 240, 0x00, 0, 0, &grxwinext24},
-    {TRUE, 24, 640, 480, 0x00, 0, 0, &grxwinext24},
-    {TRUE, 24, 800, 600, 0x00, 0, 0, &grxwinext24},
-    {TRUE, 24, 1024, 768, 0x00, 0, 0, &grxwinext24},
-    {TRUE, 24, 1280, 1024, 0x00, 0, 0, &grxwinext24},
-    {TRUE, 24, 1600, 1200, 0x00, 0, 0, &grxwinext24},
+    {TRUE, 24, 320, 240, 0x00, 960, 0, &grxwinext24},
+    {TRUE, 24, 640, 480, 0x00, 1920, 0, &grxwinext24},
+    {TRUE, 24, 800, 600, 0x00, 2400, 0, &grxwinext24},
+    {TRUE, 24, 1024, 768, 0x00, 3072, 0, &grxwinext24},
+    {TRUE, 24, 1280, 1024, 0x00, 3840, 0, &grxwinext24},
+    {TRUE, 24, 1600, 1200, 0x00, 4800, 0, &grxwinext24},
 
     {FALSE, 0, 9999, 9999, 0x00, 0, 0, NULL}
 };
+
+static int detect(void)
+{
+    static int inited = 0;
+    WNDCLASSEX wndclass;
+
+    if (!inited) {
+        wndclass.cbSize = sizeof(wndclass);
+        wndclass.style = CS_HREDRAW | CS_VREDRAW;
+        wndclass.lpfnWndProc = WndProc;
+        wndclass.cbClsExtra = 0;
+        wndclass.cbWndExtra = 0;
+        wndclass.hInstance = GetModuleHandle(NULL);
+        wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+        wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
+        wndclass.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
+        wndclass.lpszMenuName = NULL;
+        wndclass.lpszClassName = "GRXCLASS";
+        wndclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+        if (RegisterClassEx(&wndclass)== 0) return FALSE;
+        inited = 1;
+    }
+
+    return TRUE;
+}
+
+static int init(char *options)
+{
+    int i;
+    DWORD thread_id;
+
+    if (!detect()) return FALSE;
+
+    /* WARNING: mainThread can not be used in the windowThread */
+    mainThread = GetCurrentThread();
+
+    InitializeCriticalSection(&_csEventQueue);
+    
+    /* The modes not compatible width the configuration */
+    /* of Windows are made 'non-present'                */
+    maxScreenWidth = GetSystemMetrics(SM_CXSCREEN);
+    for (i = 1; i < itemsof(modes); i++) {
+        if (modes[i].width > maxScreenWidth)
+            modes[i].present = FALSE;
+    }
+    maxScreenHeight = GetSystemMetrics(SM_CYSCREEN);
+    for (i = 1; i < itemsof(modes); i++) {
+        if (modes[i].height > maxScreenHeight)
+            modes[i].present = FALSE;
+    }
+
+    windowThread = CreateThread(NULL, 0, WndThread, NULL, 0, &thread_id);
+
+    /* Wait for thread creating the window. This is a busy */
+    /* waiting loop (bad), but we Sleep to yield (good)    */
+    while (isWindowThreadRunning == 0)
+        Sleep(1); 
+
+    return TRUE;
+}
+
+static void reset(void)
+{
+    isMainWaitingTermination = 1;
+    PostMessage(hGRXWnd, WM_CLOSE, 0, 0);
+
+    while (isWindowThreadRunning == 1)
+        Sleep(1); 
+
+    isMainWaitingTermination = 0;
+    DeleteCriticalSection(&_csEventQueue);
+
+    if(hBmpDIB != NULL)
+    {
+        DeleteObject(hBmpDIB);
+        hBmpDIB = NULL;
+    }
+    if (hDCMem != NULL) {
+        DeleteDC(hDCMem);
+        hDCMem = NULL;
+    }
+}
 
 static GrVideoMode * _w32_selectmode(GrVideoDriver * drv, int w, int h,
                                      int bpp, int txt, unsigned int * ep)
 {
     GrVideoMode *mp, *res;
+    long resto;
 
     if (txt) {
         res = _gr_selectmode(drv, w, h, bpp, txt, ep);
@@ -281,43 +391,21 @@ static GrVideoMode * _w32_selectmode(GrVideoDriver * drv, int w, int h,
         if (bpp <= 8) {
             mp->bpp = 8;
             mp->extinfo = &grxwinext8;
-            mp->lineoffset = mp->width;
+            resto = mp->width % 4;
+            if (resto) resto = 4 - resto;
+            mp->lineoffset = mp->width + resto;
         }
         else {
             mp->bpp = 24;
             mp->extinfo = &grxwinext24;
-            mp->lineoffset = 0;
+            resto = (mp->width * 3) % 4;
+            if (resto) resto = 4 - resto;
+            mp->lineoffset = mp->width * 3 + resto;
         }
     }
     res = _gr_selectmode(drv, w, h, bpp, txt, ep);
 done:
     return res;
-}
-
-/* The modes not compatible width the configuration */
-/* of Windows are made 'non-present'                */
-static int init(char *options)
-{
-    int i;
-
-    maxScreenWidth = GetSystemMetrics(SM_CXSCREEN);
-    for (i = 1; i < itemsof(modes); i++) {
-        if (modes[i].width > maxScreenWidth)
-            modes[i].present = FALSE;
-    }
-    maxScreenHeight = GetSystemMetrics(SM_CYSCREEN);
-    for (i = 1; i < itemsof(modes); i++) {
-        if (modes[i].height > maxScreenHeight)
-            modes[i].present = FALSE;
-    }
-    return TRUE;
-}
-
-static void reset(void)
-{
-    ColorList_destroy();
-    if (hGRXWnd != NULL)
-        ShowWindow(hGRXWnd, SW_HIDE);
 }
 
 GrVideoDriver _GrVideoDriverWIN32 = {
@@ -333,105 +421,27 @@ GrVideoDriver _GrVideoDriverWIN32 = {
     GR_DRIVERF_USER_RESOLUTION  /* arbitrary resolution possible */
 };
 
-DWORD WINAPI GRXLocalMain(LPVOID pCmdLine)
+static DWORD WINAPI WndThread(void *param)
 {
-    int argc;
-    char **argv;
-    char **envp;
-    char *pszCmdLine;
-    char *psz;
-    char **ppargv;
-    int i;
-
-    isGRXMainworking = 1;
-
-    pszCmdLine = GetCommandLine();
-    psz = pszCmdLine;
-    argc = 1;
-    while (*psz) {
-        if (*psz == ' ') {
-            argc++;
-            while (*psz == ' ') {
-                *psz = 0x00;
-                psz++;
-            }
-            if (*psz == 0x00) {
-                argc--;
-                break;
-            }
-            psz--;
-        }
-        psz++;
-    }
-    psz = pszCmdLine;
-    argv = malloc(argc * sizeof(char *));
-    ppargv = argv;
-    for (i = 0; i < argc; i++) {
-        *ppargv = _strdup(psz);
-        ppargv++;
-        psz += strlen(psz);
-        while (*psz == 0x00) {
-            psz++;
-        }
-    }
-    envp = (char **) GetEnvironmentStrings();
-    Sleep(1000);
-    /* Execute the main program */
-    GRXMain(argc, argv, envp);
-    /* Send a message to the main thread */
-    isGRXMainworking = 0;
-    PostMessage(hGRXWnd, WM_CLOSE, 0, 0);
-    ExitThread(0);
-    return 0;
-}
-
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-                   PSTR szCmdLine, int nCmdShow)
-{
-    WNDCLASSEX wndclass;
-    DWORD tid;
     MSG msg;
-
-    hGlobInst = hInstance;
-    tid = 0;
-    mainThreadId = GetCurrentThreadId();
-    ColorList = NULL;
-    hBitmapScreen = NULL;
-    InitializeCriticalSection(&_csEventQueue);
-
-    wndclass.cbSize = sizeof(wndclass);
-    wndclass.style = CS_HREDRAW | CS_VREDRAW;
-    wndclass.lpfnWndProc = WndProc;
-    wndclass.cbClsExtra = 0;
-    wndclass.cbWndExtra = 0;
-    wndclass.hInstance = hGlobInst;
-    wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-    wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wndclass.hbrBackground = (HBRUSH) GetStockObject(BLACK_BRUSH);
-    wndclass.lpszMenuName = NULL;
-    wndclass.lpszClassName = "GRXCLASS";
-    wndclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-    RegisterClassEx(&wndclass);
 
     hGRXWnd = CreateWindow("GRXCLASS", GRXWINDOW_TITLE,
                            WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU
                            | WS_THICKFRAME | WS_MINIMIZEBOX, 0, 0,
                            CW_USEDEFAULT, CW_USEDEFAULT, NULL,
-                           NULL, hGlobInst, NULL);
+                           NULL, GetModuleHandle(NULL), NULL);
     ShowWindow(hGRXWnd, SW_HIDE);
-    UpdateWindow(hGRXWnd);
-    SetFocus(hGRXWnd);
 
-    hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE) GRXLocalMain,
-                           (LPVOID) szCmdLine, 0, &tid);
+    isWindowThreadRunning = 1;
+
     while (GetMessage(&msg, NULL, 0, 0)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
-    DeleteCriticalSection(&_csEventQueue);
-    /* Before terminating, stop the worker thread if running */
-    if (isGRXMainworking) TerminateThread(hThread, 0);
 
+    isWindowThreadRunning = 0;
+
+    ExitThread(0);
     return 0;
 }
 
@@ -504,18 +514,13 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
         }
 
     case WM_CLOSE:
-        if ( isGRXMainworking && MessageBox(hWnd,
+        if (!isMainWaitingTermination && MessageBox(hWnd,
             "This will abort the program\nare you sure?", "Abort",
              MB_APPLMODAL | MB_ICONQUESTION | MB_YESNO ) != IDYES)
-             return 0;
-        /* While terminating suspend the worker thread if running */
-        if (isGRXMainworking ) SuspendThread(hThread);
-        if (hBitmapScreen != NULL) {
-            DeleteObject(hBitmapScreen);
-            hBitmapScreen = NULL;
-        }
-        DeleteDC(hDCMem);
+            return 0;
         DestroyWindow(hWnd);
+        if (!isMainWaitingTermination)
+            ExitProcess(1);
         break;
 
     case WM_DESTROY:
@@ -527,15 +532,12 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
             LPMINMAXINFO lpmmi = (LPMINMAXINFO) lParam;
 
             lpmmi->ptMaxSize.x = lpmmi->ptMaxTrackSize.x = maxWindowWidth;
-
             lpmmi->ptMaxSize.y = lpmmi->ptMaxTrackSize.y = maxWindowHeight;
         }
         return 0;
 
     case WM_CHAR:
         kbstat = convertwin32keystate();
-//        if (kbstat & GR_KB_ALT)
-//            break;
         EnqueueW32Event(uMsg, wParam, lParam, kbstat);
         return 0;
 
@@ -586,7 +588,6 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
             HDC hDC;
             PAINTSTRUCT ps;
 
-            SuspendThread(hThread);
             if (GetUpdateRect(hWnd, &UpdateRect, FALSE)) {
                 BeginPaint(hWnd, &ps);
                 hDC = GetDC(hWnd);
@@ -598,7 +599,6 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
                 ReleaseDC(hWnd, hDC);
                 EndPaint(hWnd, &ps);
             }
-            ResumeThread(hThread);
         }
         return 0;
 
@@ -631,12 +631,10 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 
     default:
 /*
-        {
-            char szMsg[255];
-            sprintf(szMsg, "Msg %x, wParam %d, lParam %d",
-                    uMsg, wParam, lParam);
-            MessageBox(NULL, szMsg, "Msg", MB_OK);
-        }
+        char szMsg[255];
+        sprintf(szMsg, "Msg %x, wParam %d, lParam %d",
+                uMsg, wParam, lParam);
+        MessageBox(NULL, szMsg, "Msg", MB_OK);
 */
         break;
 

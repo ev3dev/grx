@@ -24,7 +24,7 @@
 /* some systems map LFB in normal user space (eg. Linux/svgalib) */
 /* near pointer stuff is equal to ram stuff :)                   */
 /* in this is the far pointer code using %fs descriptor          */
-#ifndef LBF_BY_NEAR_POINTER
+#ifndef LFB_BY_NEAR_POINTER
 
 #ifdef   __TURBOC__
 #error This library will not work with as a 16-bit real-mode code

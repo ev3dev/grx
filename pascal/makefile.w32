@@ -21,7 +21,7 @@ COMPILER = gpc --autobuild --gpc-main=GRXMain
 PROGS= 			\
 	blt_test.exe 	\
 	modetest.exe 	\
-	taste.exe 	\
+	keytest.exe 	\
 	txt_test.exe 	\
 	vir_test.exe	\
 	polytest.exe	\

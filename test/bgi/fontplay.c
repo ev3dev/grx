@@ -19,11 +19,7 @@ long long Time(void) {
   return ((long long)tm.tv_sec)*1000+(tm.tv_usec/1000);
 }
   
-#if defined(__WIN32__)
-int GRXMain(int argc, char *argv[])
-#else
 int main(int argc, char *argv[])
-#endif
 {
   int gd, gm, i, font;
   int err;

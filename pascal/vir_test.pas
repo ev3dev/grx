@@ -1,7 +1,6 @@
-Program Vir_Test;
+program Vir_Test;
 
-uses
-  grx;
+uses GRX;
 
 procedure TestFunc;
 var
@@ -20,14 +19,13 @@ begin
 end; { TestFunc }
 
 var
-   i, j, x1, y1,
+   x1, y1,
    MouseMode, DrawMode,
    xc, yc,
    x, y, xv, yv, c : Integer;
-   bgc, fgc,
    m : Integer;
    evt: GrMouseEvent;
-   key : Char;
+   Key : Char;
    Finito : Boolean;
    Conti: GrContext;
    ContiPtr : GrContextPtr;
@@ -41,7 +39,7 @@ begin
    xc :=  40;
    yc :=  30;
 
-   M := GrSetMode(GR_custom_graphics,x,y,c,xv,yv);
+   m := GrSetMode(Gr_Custom_Graphics,x,y,c,xv,yv);
    GrSetModeRestore(False);
 
    xv := GrVirtualX;
@@ -57,81 +55,81 @@ begin
      GrMouseSetColors(GrAllocColor(200,50,150),GrBlack);
      { GrMouseSetLimits(10, 10, xv-10, yv-10); }
      GrMouseDisplayCursor;
-     Finito := false;
+     Finito := False;
      repeat
-       GrMouseGetEvent(GR_M_EVENT,@evt);
-       if (evt.flags and GR_M_KEYPRESS) > 0 then begin
-	 key := chr(evt.key);
-	 case key of
-	   'Q', 'q': Finito := true;
+       GrMouseGetEvent(Gr_M_Event,@evt);
+       if (evt.Flags and Gr_M_KeyPress) > 0 then begin
+	 Key := Chr (evt.Key);
+	 case Key of
+	   'Q', 'q': Finito := True;
 	   'W', 'w': GrMouseWarp(2, 2);
 	   'U', 'u': GrMouseUpdateCursor;
-	   '>': if (xc < x) and (MouseMode = 3) and ((evt.flags and GR_M_LEFT_DOWN) = 0) then begin
+	   '>': if (xc < x) and (MouseMode = 3) and ((evt.Flags and Gr_M_Left_Down) = 0) then begin
 		  xc := xc + 8;
 		  yc := yc + 6;
 		  GrMouseEraseCursor;
-		  GrMouseSetCursorMode(GR_M_CUR_BOX, -xc div 2, -yc div 2, xc div 2, yc div 2,GrWhite);
+		  GrMouseSetCursorMode(Gr_M_Cur_Box, -xc div 2, -yc div 2, xc div 2, yc div 2,GrWhite);
 		  GrMouseDisplayCursor;
 		end;
-	   '<': if (xc > 8) and (MouseMode = 3) and ((evt.flags and GR_M_LEFT_DOWN) = 0) then begin
+	   '<': if (xc > 8) and (MouseMode = 3) and ((evt.Flags and Gr_M_Left_Down) = 0) then begin
 		  xc := xc - 8;
 		  yc := yc - 6;
 		  GrMouseEraseCursor;
-		  GrMouseSetCursorMode(GR_M_CUR_BOX, -xc div 2, -yc div 2, xc div 2, yc div 2,GrWhite);
+		  GrMouseSetCursorMode(Gr_M_Cur_Box, -xc div 2, -yc div 2, xc div 2, yc div 2,GrWhite);
 		  GrMouseDisplayCursor;
 		end;
 	   '1': begin
 		  GrMouseEraseCursor;
-		  GrMouseSetCursorMode(GR_M_CUR_NORMAL,0,0,0,0,0);
+		  GrMouseSetCursorMode(Gr_M_Cur_Normal,0,0,0,0,0);
 		  GrMouseDisplayCursor;
 		  MouseMode := 1;
 		end;
 	   '2': begin
 		  GrMouseEraseCursor;
-		  GrMouseSetCursorMode(GR_M_CUR_NORMAL,0,0,0,0,0);
+		  GrMouseSetCursorMode(Gr_M_Cur_Normal,0,0,0,0,0);
 		  GrMouseDisplayCursor;
 		  MouseMode := 2;
 		end;
 	   '3': begin
 		  GrMouseEraseCursor;
-		  GrMouseSetCursorMode(GR_M_CUR_BOX, -xc div 2, -yc div 2, xc div 2, yc div 2,GrWhite);
+		  GrMouseSetCursorMode(Gr_M_Cur_Box, -xc div 2, -yc div 2, xc div 2, yc div 2,GrWhite);
 		  GrMouseDisplayCursor;
 		  MouseMode := 3;
 		end;
 	   '0': begin
 		  GrMouseEraseCursor;
-		  GrMouseSetCursorMode(GR_M_CUR_NORMAL,0,0,0,0,0);
+		  GrMouseSetCursorMode(Gr_M_Cur_Normal,0,0,0,0,0);
 		  GrMouseDisplayCursor;
 		  MouseMode := 0;
 		end;
 	   '4': begin
 		  GrMouseEraseCursor;
-		  GrMouseSetCursorMode(GR_M_CUR_NORMAL,0,0,0,0,0);
+		  GrMouseSetCursorMode(Gr_M_Cur_Normal,0,0,0,0,0);
 		  GrMouseDisplayCursor;
 		  MouseMode := 4;
 		end;
 	   '5': begin
 		  GrMouseEraseCursor;
-		  GrMouseSetCursorMode(GR_M_CUR_CROSS,0,0,GrWhite,0,0);
+		  GrMouseSetCursorMode(Gr_M_Cur_Cross,0,0,GrWhite,0,0);
 		  GrMouseDisplayCursor;
 		  MouseMode := 4;
 		end;
 	 end;
        end;
-       if (evt.flags and GR_M_LEFT_DOWN) > 0 then begin
+       if (evt.Flags and Gr_M_Left_Down) > 0 then begin
 	 case MouseMode of
 	   1: begin
 		x1 := evt.x;
 		y1 := evt.y;
 		GrMouseEraseCursor;
-		GrMouseSetCursorMode(GR_M_CUR_RUBBER,evt.x,evt.y,GrWhite,0,0);
+		GrMouseSetCursorMode(Gr_M_Cur_Rubber,evt.x,evt.y,GrWhite,0,0);
 		GrMouseDisplayCursor;
 	      end;
 	   2: begin
 		x1 := evt.x;
 		y1 := evt.y;
 		GrMouseEraseCursor;
-		GrMouseSetCursorMode(GR_M_CUR_LINE,evt.x,evt.y,GrWhite,0,0);
+		GrMouseSetCursorMode(Gr_M_Cur_Line,evt.x,evt.y,GrWhite,0,0);
 		GrMouseDisplayCursor;
 	      end;
 	   3: begin
@@ -139,7 +137,7 @@ begin
 		y1 := evt.y;  { Why I have to save the position ??? }
 		ContiPtr := GrCreateContext(xc + 1, yc + 1, Nil, @Conti);
 		GrMouseEraseCursor;
-		GrBitBlt(@Conti, 0, 0, GrScreenContext, x1 - (xc div 2), y1 - (yc div 2), x1 + (xc div 2), y1 + (yc div 2), GrWRITE);
+		GrBitBlt(@Conti, 0, 0, GrScreenContext, x1 - (xc div 2), y1 - (yc div 2), x1 + (xc div 2), y1 + (yc div 2), GrWrite);
 		GrMouseDisplayCursor;
 	      end;
 	   4: begin
@@ -149,23 +147,23 @@ begin
 	      end;
 	 end;
        end;
-       if (evt.flags and GR_M_LEFT_UP) > 0 then begin
+       if (evt.Flags and Gr_M_Left_Up) > 0 then begin
 	 case MouseMode of
 	   1: begin
 		GrBox(x1, y1, evt.x, evt.y, GrAllocColor(50,100,150));
 		GrMouseEraseCursor;
-		GrMouseSetCursorMode(GR_M_CUR_NORMAL,0,0,0,0,0);
+		GrMouseSetCursorMode(Gr_M_Cur_Normal,0,0,0,0,0);
 		GrMouseDisplayCursor;
 	      end;
 	   2: begin
 		GrLine(x1, y1, evt.x, evt.y, GrAllocColor(150,100,50));
 		GrMouseEraseCursor;
-		GrMouseSetCursorMode(GR_M_CUR_NORMAL,0,0,0,0,0);
+		GrMouseSetCursorMode(Gr_M_Cur_Normal,0,0,0,0,0);
 		GrMouseDisplayCursor;
 	      end;
 	   3: begin
 		GrMouseEraseCursor;
-		GrBitBlt(GrScreenContext, evt.x - (xc div 2), evt.y - (yc div 2), @Conti, 0, 0, xc, yc, GrWRITE);
+		GrBitBlt(GrScreenContext, evt.x - (xc div 2), evt.y - (yc div 2), @Conti, 0, 0, xc, yc, GrWrite);
 		GrDestroyContext(@Conti);
 		GrMouseDisplayCursor;
 	      end;
@@ -177,15 +175,15 @@ begin
 	 x1 := evt.x;
 	 y1 := evt.y;
        end;
-       if (evt.flags and GR_M_RIGHT_DOWN) > 0 then begin
+       if (evt.Flags and Gr_M_Right_Down) > 0 then begin
        end;
        { Move the visible Part of the virtual screen }
-       M := GrSetViewPort(evt.x - x div 2, evt.y - y div 2);
+       m := GrSetViewport(evt.x - x div 2, evt.y - y div 2);
      until Finito;
      GrMouseUnInit;
    end;
-   M := GrSetMode(GR_default_text,0,0,0,0,0);
-   writeln(xv);
-   writeln(yv);
+   m := GrSetMode(Gr_Default_Text,0,0,0,0,0);
+   WriteLn(xv);
+   WriteLn(yv);
 end.
 

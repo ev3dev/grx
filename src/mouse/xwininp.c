@@ -17,6 +17,8 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Small changes by Dimitar Zhekov to work in fullscreen mode (DGA2).
+ **
  **/
 
 #include <stdlib.h>
@@ -82,7 +84,7 @@ void GrMouseInitN(int queue_size)
             /*
              * Define an invisible X cursor for _XGrWindow
              */
-            {
+            if(_XGrWindowedMode) {
               static char cbits[8] = { 0,0,0,0,0,0,0,0, };
               Pixmap csource, cmask;
               XColor cfore, cback;
@@ -570,8 +572,14 @@ void _GrUpdateInputs(void)
       switch (xev.type) {
       case MotionNotify:
         if (mou_enabled && (MOUINFO->msstatus == 2)) {
-          MOUINFO->xpos   = xev.xmotion.x;
-          MOUINFO->ypos   = xev.xmotion.y;
+          if (_XGrWindowedMode) {
+            MOUINFO->xpos = xev.xmotion.x;
+            MOUINFO->ypos = xev.xmotion.y;
+          }
+          else {
+            MOUINFO->xpos += xev.xmotion.x;
+            MOUINFO->ypos += xev.xmotion.y;
+          }
           MOUINFO->moved  = TRUE;
           MouseMoveTime   = xev.xmotion.time;
         }

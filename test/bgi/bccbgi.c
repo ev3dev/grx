@@ -608,7 +608,7 @@ void ColorDemo(void)
       itoa( color, cnum, 10 );          /* Convert # to ASCII           */
       outtextxy( x+(width/2), y+height+4, cnum );  /* Show color #      */
 
-      color = ++color % MaxColors;      /* Advance to the next color    */
+      color = (color + 1) % MaxColors;  /* Advance to the next color    */
       x += (width / 2) * 3;             /* move the column base         */
     }                           /* End of Column loop           */
 
@@ -1211,6 +1211,7 @@ void CRTModeDemo(void)
 {
   struct viewporttype vp;
   int mode;
+  char m[41];
 
   MainWindow( "SetGraphMode / RestoreCRTMode demo" );
   getviewsettings( &vp );
@@ -1224,9 +1225,9 @@ void CRTModeDemo(void)
 
   restorecrtmode();
   printf( "Now you are in text mode.\n\n" );
-  printf( "Press any key to go back to graphics..." );
+  printf( "Press <CR> to go back to graphics..." );
   fflush(stdout);
-  getch();
+  fgets(m,40,stdin);
 
   setgraphmode( mode );
   MainWindow( "SetGraphMode / RestoreCRTMode demo" );
@@ -1278,7 +1279,7 @@ void UserLineStyleDemo(void)
     line( x, y, x, h-y );               /* Draw the new line pattern    */
 
     x += 5;                             /* Move the X location of line  */
-    i = ++i % 16;                       /* Advance to next bit pattern  */
+    i = (i + 1) % 16;                   /* Advance to next bit pattern  */
 
     if( style == 0xffff ){              /* Are all bits set?            */
       flag = FALSE;                     /*   begin removing bits        */
@@ -2156,11 +2157,7 @@ void ColorPlay(void)
 /*      Begin main function                                             */
 /*                                                                      */
 
-#if defined(__WIN32__)
-int GRXMain(void)
-#else
 int main(void)
-#endif
 {
 
 #if 0 && defined(__GNUC__)

@@ -1,7 +1,7 @@
 /**
  ** fdv_fna.c -- driver for ascii font file format
  **
- ** Copyright (C) 2002 Dimitar Zhekov
+ ** Copyright (C) 2003 Dimitar Zhekov
  ** [e-mail: jimmy@is-vn.bg]
  **
  ** This file is part of the GRX graphics library.
@@ -56,7 +56,10 @@ static int readline(void)
             s = fhdr.buffer + strlen(fhdr.buffer);
             while(--s >= fhdr.buffer && (*s == '\n' || *s == '\r'));
             *++s = '\0';
-            if(strlen(fhdr.buffer) > 127) DBGPRINTF(DBG_FONT, ("line too long \"%s\"", fhdr.buffer));
+            if(strlen(fhdr.buffer) > 127) {
+                DBGPRINTF(DBG_FONT, ("line too long \"%s\"", fhdr.buffer));
+                goto done;
+            }
             while(--s >= fhdr.buffer && isspace(*s));
             *++s = '\0';
         } while(s == fhdr.buffer || *fhdr.buffer == ';');
@@ -125,7 +128,6 @@ static int header(GrFontHeader *hdr)
             "maxchar",
             "baseline",
             "undwidth",
-            "undpos",
             "avgwidth",
             "minwidth",
             "maxwidth",
@@ -158,12 +160,12 @@ static int header(GrFontHeader *hdr)
                 DBGPRINTF(DBG_FONT, ("unknown attribute \"%s\"\n", fhdr.buffer));
                 goto done;
             }
-            if(index == 10) index = 3;
+            if(index == 9) index = 3;
             if(attrib & (1 << index)) {
                 DBGPRINTF(DBG_FONT, ("duplicate attribute \"%s\"\n", fhdr.buffer));
                 goto done;
             }
-            if(index >= 2 && index <= 12) {
+            if(index >= 2 && index <= 11) {
                 if(sscanf(s, "%d%n", &i, &n) != 1 || n != strlen(s)) {
                     DBGPRINTF(DBG_FONT, ("invalid number \"%s\"\n", s));
                     goto done;
@@ -186,20 +188,19 @@ static int header(GrFontHeader *hdr)
                 case 6 : fhdr.maxchar = i; break;
                 case 7 : hdr->baseline = i; break;
                 case 8 : hdr->ulheight = i; break;
-                case 9 : hdr->ulpos = i; break;
-                case 11 :
+                case 10 :
                     if(i == 0) {
                         DBGPRINTF(DBG_FONT, ("invalid width %d\n", i));
                         goto done;
                     }
                     break;
-                case 12 :
+                case 11 :
                     if(i > 127) {
                         DBGPRINTF(DBG_FONT, ("invalid width %d\n", i));
                         goto done;
                     }
                     break;
-                case 13 : break;
+                case 12 : continue;
                 default :
                     DBGPRINTF(DBG_FONT, ("unsupported attribute \"%s\"\n", fhdr.buffer));
                     goto done;
@@ -220,7 +221,7 @@ static int header(GrFontHeader *hdr)
         hdr->preloaded = FALSE;
         hdr->modified = GR_FONTCVT_NONE;
         if((attrib & 0x0100) == 0) hdr->ulheight = imax(1, hdr->height / 15);
-        if((attrib & 0x0200) == 0) hdr->ulpos = hdr->height - hdr->ulheight;
+        hdr->ulpos = hdr->height - hdr->ulheight;
         res = TRUE;
 done:        GRX_RETURN(res);
 }

@@ -26,11 +26,7 @@ void test(char *dn, char *mn, int gd, int gm)
                       ETEST(drv,#drv,RES1024x768); \
                       ETEST(drv,#drv,RES1280x1024)
 
-#if defined(__WIN32__)
-int GRXMain(void)
-#else
 int main(void)
-#endif
 {
   int i;
 

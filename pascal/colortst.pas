@@ -13,7 +13,7 @@
 
 program ColorTest;
 
-uses GPC, GRX;
+uses GRX;
 
 var
   Dummy, i, x, y, j: Integer = 0;

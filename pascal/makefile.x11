@@ -20,7 +20,7 @@ COMPILER = gpc --automake
 PROGS= 			\
 	xblt_test 	\
 	xmodetest 	\
-	xtaste	 	\
+	xkeytest	 	\
 	xtxt_test 	\
 	xvir_test	\
 	xpolytest	\

@@ -26,6 +26,8 @@
 #  include <malloc.h>
 #elif defined(_MSC_VER) && defined(_WIN32)
 #  include <malloc.h>
+#elif defined(__MINGW32__) && !defined(alloca)
+#  define alloca __builtin_alloca
 #else
 #  include <stdlib.h>
 #endif

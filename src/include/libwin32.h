@@ -30,13 +30,6 @@ typedef struct _W32Event {
     int kbstat;
 } W32Event;
 
-struct _ColorList {
-    int nIndex;
-    COLORREF color;
-    struct _ColorList *pNext;
-};
-typedef struct _ColorList SColorList;
-
 extern CRITICAL_SECTION _csEventQueue;
 extern W32Event *_W32EventQueue;
 extern int _W32EventQueueSize;
@@ -44,16 +37,13 @@ extern int _W32EventQueueRead;
 extern int _W32EventQueueWrite;
 extern int _W32EventQueueLength;
 
-extern SColorList *ColorList;
-extern HBITMAP hBitmapScreen;
 extern HWND hGRXWnd;
 extern HDC hDCMem;
+extern HANDLE windowThread;
 
 extern int _GrIsKbdEnabled(void);
 extern int _GrKeyPressed(void);
 extern int _GrKeyStat(void);
-
-extern int GRXMain(int, char **, char **);
 
 /* _keysw32pool used only when GrMouseEventEnable( 0,x ) is set */
 

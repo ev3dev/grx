@@ -21,7 +21,7 @@ var
 procedure CloseGraph;
 var Dummy: Integer;
 begin
-  if GraphicsActive then Dummy := GrSetMode (GR_Default_Text, 0, 0, 0, 0, 0);
+  if GraphicsActive then Dummy := GrSetMode (Gr_Default_Text, 0, 0, 0, 0, 0);
   GraphicsActive := False
 end;
 
@@ -42,7 +42,7 @@ var Width, Height: Integer;
 begin
   Width := (GWidth + 7) div 8 * 8;
   Height := GHeight;
-  if GrSetMode (GR_Width_Height_BPP_Graphics, Width, Height, 24, 0, 0) <> 1 then
+  if GrSetMode (Gr_Width_Height_BPP_Graphics, Width, Height, 24, 0, 0) <> 1 then
     Error ('could not initialize graphics');
   GraphicsActive := True
 end;
@@ -50,7 +50,7 @@ end;
 var
   ImgFileName: TString;
   ArgStart, ArgN, ImgWidth, ImgHeight, Key: Integer;
-  GrC: GrContextPtr;
+  grc: GrContextPtr;
   Centered: Boolean;
 
 begin
@@ -98,12 +98,12 @@ begin
               { More complex example: window larger than image, display image centered }
               OpenGraph (2 * ImgWidth, 2 * ImgHeight);
               GrClearScreen (GrWhite);
-              GrC := GrCreateSubContext (Max (0, (GrScreenX - ImgWidth) div 2),
+              grc := GrCreateSubContext (Max (0, (GrScreenX - ImgWidth) div 2),
                                          Max (0, (GrScreenY - ImgHeight) div 2),
                                          GrScreenX, GrScreenY, nil, nil);
-              if GrLoadContextFromPng (GrC, ImgFileName, 0) <> 0 then
+              if GrLoadContextFromPng (grc, ImgFileName, 0) <> 0 then
                 Error ('could not load ' + ImgFileName);
-              GrDestroyContext (GrC)
+              GrDestroyContext (grc)
 
             end
         end
@@ -121,12 +121,12 @@ begin
             begin
               OpenGraph (2 * ImgWidth, 2 * ImgHeight);
               GrClearScreen (GrWhite);
-              GrC := GrCreateSubContext (Max (0, (GrScreenX - ImgWidth) div 2),
+              grc := GrCreateSubContext (Max (0, (GrScreenX - ImgWidth) div 2),
                                          Max (0, (GrScreenY - ImgHeight) div 2),
                                          GrScreenX, GrScreenY, nil, nil);
-              if GrLoadContextFromJpeg (GrC, ImgFileName, 1) <> 0 then
+              if GrLoadContextFromJpeg (grc, ImgFileName, 1) <> 0 then
                 Error ('could not load ' + ImgFileName);
-              GrDestroyContext (GrC)
+              GrDestroyContext (grc)
             end
         end
 

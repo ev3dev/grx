@@ -38,7 +38,7 @@
 
  
 @example
-                       GRX 2.4.5 User's Manual
+                       GRX 2.4.6 User's Manual
 
          A graphics library for DOS, Linux, X11 and Win32
 
@@ -47,7 +47,7 @@
 Based on the original doc written by: Csaba Biegl on August 10, 1992 
 Updated by: Mariano Alvarez Fernandez on August 17, 2000 
 
-Last update: August 10, 2002
+Last update: March 4, 2003
 ______________________________________________________________________________
 
 @example
@@ -75,7 +75,7 @@ world" centered. Then it waits after a key is pressed.
 #include <grx20.h>
 #include <grxkeys.h>
 
-int GRXMain()
+int main()
 @{
   char *message = "Hello, GRX world";
   int x, y;
@@ -113,7 +113,6 @@ previously installed)
          -lgrx20X -L/usr/X11R6/lib -lX11
   Linux: gcc -o hellogrx hellogrx.c -lgrx20 -lvga
 @end example
-Note. Except for the Win32 version you can use main instead GRXMain.
 
 @c -----------------------------------------------------------------------------
 @node Data types and function declarations, Setting the graphics driver, Hello world, A User Manual For GRX2

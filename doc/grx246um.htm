@@ -2,18 +2,18 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
-   <title>GRX 2.4.5, User's Guide</title>
+   <title>GRX 2.4.6, User's Guide</title>
 </head>
 <body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>2.4.5</small></h1>
+<small>2.4.6</small></h1>
 <h1>a graphics library for DOS, Linux, X11 and Win32</h1>
 <h2>User's Manual</h2>
 <p>Based on the original doc written by: Csaba Biegl on August 10, 1992
 <p>Updated by: Mariano Alvarez Fern&aacute;ndez on August 17, 2000
-<p>Last update: August 10, 2002
+<p>Last update: March 4, 2003
 </center>
 
 <hr>
@@ -67,7 +67,7 @@ writes "Hello, GRX world" centered. Then it waits after a key is pressed.
 #include &lt;grx20.h>
 #include &lt;grxkeys.h>
 
-int GRXMain()
+int main()
 {
   char *message = "Hello, GRX world";
   int x, y;
@@ -105,8 +105,6 @@ previously installed)
 -lgrx20X -L/usr/X11R6/lib -lX11
 <li>Linux: gcc -o hellogrx hellogrx.c -lgrx20 -lvga
 </ul>
-<p>Note. Except for the Win32 version you can use <code>main</code>
-instead <code>GRXMain</code>.
 <hr>
 <h2><a name="dtfd">Data types, function declarations</a></h2>
 

@@ -44,6 +44,15 @@ unsigned int    _XGrColorNumPlanes;
 unsigned long   _XGrColorPixels[2];
 unsigned int    _XGrColorNumPixels;
 
+char *_XGrClassNames[6] = {
+    "StaticGray",
+    "GrayScale",
+    "StaticColor",
+    "PseudoColor",
+    "TrueColor",
+    "DirectColor"
+};
+
 static void setbank(int bk)
 {}
 
@@ -316,17 +325,9 @@ static int init(char *options)
     }
   }
   else {
-    static char *class_names[] = {
-      "StaticGray",
-      "GrayScale",
-      "StaticColor",
-      "PseudoColor",
-      "TrueColor",
-      "DirectColor"
-    };
     XCloseDisplay (_XGrDisplay);
     fprintf (stderr, "GRX init: Visual class=%s depth=%d not supported\n",
-             class_names[visual->class], depth);
+             _XGrClassNames[visual->class], depth);
     exit (1);
   }
   _XGrForeColor = GrNOCOLOR;    /* force XSetForeground */

@@ -1,4 +1,4 @@
-This is grx245um.inf, produced by makeinfo version 4.0 from grx2.tex.
+This is grx246um.inf, produced by makeinfo version 4.0 from grx2.tex.
 
 INFO-DIR-SECTION Libraries
 START-INFO-DIR-ENTRY
@@ -8,14 +8,14 @@ END-INFO-DIR-ENTRY
 This is the GRX2 User's Manual
 
 
-File: grx245um.inf,  Node: Top,  Next: A User Manual For GRX2,  Prev: (dir),  Up: (dir)
+File: grx246um.inf,  Node: Top,  Next: A User Manual For GRX2,  Prev: (dir),  Up: (dir)
 
 * Menu:
 
 * A User Manual For GRX2::
 
 
-File: grx245um.inf,  Node: A User Manual For GRX2,  Prev: Top,  Up: Top
+File: grx246um.inf,  Node: A User Manual For GRX2,  Prev: Top,  Up: Top
 
 GRX2 User's Manual
 ******************
@@ -51,19 +51,19 @@ GRX2 User's Manual
 * Includes::
 
 
-File: grx245um.inf,  Node: Credits,  Next: Hello world,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Credits,  Next: Hello world,  Up: A User Manual For GRX2
 
 Credits
 =======
 
-                            GRX 2.4.5 User's Manual
+                            GRX 2.4.6 User's Manual
      
               A graphics library for DOS, Linux, X11 and Win32
 
 Based on the original doc written by: Csaba Biegl on August 10, 1992
 Updated by: Mariano Alvarez Fernandez on August 17, 2000
 
-Last update: August 10, 2002
+Last update: March 4, 2003
 ______________________________________________________________________________
 
                                   Abstract
@@ -78,7 +78,7 @@ Win32 driver, but you must considere it in alpha stage. The framebuffer
 Linux console driver was new in 2.4.2 and it is in alpha stage too.
 
 
-File: grx245um.inf,  Node: Hello world,  Next: Data types and function declarations,  Prev: Credits,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Hello world,  Next: Data types and function declarations,  Prev: Credits,  Up: A User Manual For GRX2
 
 Hello world
 ===========
@@ -90,7 +90,7 @@ The next program draws a double frame around the screen and writes
      #include <grx20.h>
      #include <grxkeys.h>
      
-     int GRXMain()
+     int main()
      {
        char *message = "Hello, GRX world";
        int x, y;
@@ -124,10 +124,9 @@ installed)
        X11  : gcc -o hellogrx hellogrx.c -D__XWIN__ -I/usr/X11R6/include
               -lgrx20X -L/usr/X11R6/lib -lX11
        Linux: gcc -o hellogrx hellogrx.c -lgrx20 -lvga
-Note. Except for the Win32 version you can use main instead GRXMain.
 
 
-File: grx245um.inf,  Node: Data types and function declarations,  Next: Setting the graphics driver,  Prev: Hello world,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Data types and function declarations,  Next: Setting the graphics driver,  Prev: Hello world,  Up: A User Manual For GRX2
 
 Data types and function declarations
 ====================================
@@ -144,7 +143,7 @@ the 'include' sub-directory):
      User programs normally only include *note grx20.h:: and *note grxkeys.h::
 
 
-File: grx245um.inf,  Node: Setting the graphics driver,  Next: Setting video modes,  Prev: Data types and function declarations,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Setting the graphics driver,  Next: Setting video modes,  Prev: Data types and function declarations,  Up: A User Manual For GRX2
 
 Setting the graphics driver
 ===========================
@@ -172,7 +171,7 @@ driver name can be obtained from:
      GrCurrentVideoDriver()->name
 
 
-File: grx245um.inf,  Node: Setting video modes,  Next: Graphics contexts,  Prev: Setting the graphics driver,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Setting video modes,  Next: Graphics contexts,  Prev: Setting the graphics driver,  Up: A User Manual For GRX2
 
 Setting video modes
 ===================
@@ -308,7 +307,7 @@ following symbolic constants (defined in grx20.h):
 Note that the VESA driver return GR_VGA here.
 
 
-File: grx245um.inf,  Node: Graphics contexts,  Next: Context use,  Prev: Setting video modes,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Graphics contexts,  Next: Context use,  Prev: Setting video modes,  Up: A User Manual For GRX2
 
 Graphics contexts
 =================
@@ -478,7 +477,7 @@ and the current viewport position can be obtained by:
      int GrViewportY(void);
 
 
-File: grx245um.inf,  Node: Context use,  Next: Color management,  Prev: Graphics contexts,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Context use,  Next: Color management,  Prev: Graphics contexts,  Up: A User Manual For GRX2
 
 Context use
 ===========
@@ -526,7 +525,7 @@ because it uses the parent buffer.
 See the *note winclip.c:: and *note wintest.c:: examples.
 
 
-File: grx245um.inf,  Node: Color management,  Next: Portable use of a few colors,  Prev: Context use,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Color management,  Next: Portable use of a few colors,  Prev: Context use,  Up: A User Manual For GRX2
 
 Color management
 ================
@@ -662,7 +661,7 @@ call the normal routines).
 See the *note rgbtest.c:: and *note colorops.c:: examples.
 
 
-File: grx245um.inf,  Node: Portable use of a few colors,  Next: Graphics primitives,  Prev: Color management,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Portable use of a few colors,  Next: Graphics primitives,  Prev: Color management,  Up: A User Manual For GRX2
 
 Portable use of a few colors
 ============================
@@ -718,7 +717,7 @@ table. Note too that this don't work to initialize static variables
 with a color, because egacolors is not initialized.
 
 
-File: grx245um.inf,  Node: Graphics primitives,  Next: Non-clipping graphics primitives,  Prev: Portable use of a few colors,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Graphics primitives,  Next: Non-clipping graphics primitives,  Prev: Portable use of a few colors,  Up: A User Manual For GRX2
 
 Graphics primitives
 ===================
@@ -892,7 +891,7 @@ fit GrCVALUEMASK otherwise the results are implementation dependend. So
 you can't supply operation code with the pixel data!.
 
 
-File: grx245um.inf,  Node: Non-clipping graphics primitives,  Next: Customized line drawing,  Prev: Graphics primitives,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Non-clipping graphics primitives,  Next: Customized line drawing,  Prev: Graphics primitives,  Up: A User Manual For GRX2
 
 Non-clipping graphics primitives
 ================================
@@ -921,7 +920,7 @@ supported non-clipping primitives:
      GrColor GrPixelCNC(GrContext *c,int x,int y);
 
 
-File: grx245um.inf,  Node: Customized line drawing,  Next: Pattern filled graphics primitives,  Prev: Non-clipping graphics primitives,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Customized line drawing,  Next: Pattern filled graphics primitives,  Prev: Non-clipping graphics primitives,  Up: A User Manual For GRX2
 
 Customized line drawing
 =======================
@@ -973,7 +972,7 @@ The available custom line drawing primitives:
 See the *note linetest.c:: example.
 
 
-File: grx245um.inf,  Node: Pattern filled graphics primitives,  Next: Patterned line drawing,  Prev: Customized line drawing,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Pattern filled graphics primitives,  Next: Patterned line drawing,  Prev: Customized line drawing,  Up: A User Manual For GRX2
 
 Pattern filled graphics primitives
 ==================================
@@ -1109,7 +1108,7 @@ Strictly speaking the plot and line functions in the above group are not
 filled, but they have been included here for convenience.
 
 
-File: grx245um.inf,  Node: Patterned line drawing,  Next: Image manipulation,  Prev: Pattern filled graphics primitives,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Patterned line drawing,  Next: Image manipulation,  Prev: Pattern filled graphics primitives,  Up: A User Manual For GRX2
 
 Patterned line drawing
 ======================
@@ -1141,7 +1140,7 @@ as their last argument. The list of available functions:
      void GrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
 
 
-File: grx245um.inf,  Node: Image manipulation,  Next: Text drawing,  Prev: Patterned line drawing,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Image manipulation,  Next: Text drawing,  Prev: Patterned line drawing,  Up: A User Manual For GRX2
 
 Image manipulation
 ==================
@@ -1214,7 +1213,7 @@ To destroy a image objet when you don't need it any more use:
 See the *note imgtest.c:: example.
 
 
-File: grx245um.inf,  Node: Text drawing,  Next: Drawing in user coordinates,  Prev: Image manipulation,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Text drawing,  Next: Drawing in user coordinates,  Prev: Image manipulation,  Up: A User Manual For GRX2
 
 Text drawing
 ============
@@ -1503,7 +1502,7 @@ you know the area to update is small).
 See the *note fonttest.c:: example.
 
 
-File: grx245um.inf,  Node: Drawing in user coordinates,  Next: Graphics cursors,  Prev: Text drawing,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Drawing in user coordinates,  Next: Graphics cursors,  Prev: Text drawing,  Up: A User Manual For GRX2
 
 Drawing in user coordinates
 ===========================
@@ -1614,7 +1613,7 @@ zero' error.  The list of supported user coordinate drawing functions:
      void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 
 
-File: grx245um.inf,  Node: Graphics cursors,  Next: Keyboard input,  Prev: Drawing in user coordinates,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Graphics cursors,  Next: Keyboard input,  Prev: Drawing in user coordinates,  Up: A User Manual For GRX2
 
 Graphics cursors
 ================
@@ -1668,7 +1667,7 @@ appropriate library functions. Other cursor manipulation functions:
 See the *note curstest.c:: example.
 
 
-File: grx245um.inf,  Node: Keyboard input,  Next: Mouse event handling,  Prev: Graphics cursors,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Keyboard input,  Next: Mouse event handling,  Prev: Graphics cursors,  Up: A User Manual For GRX2
 
 Keyboard input
 ==============
@@ -1726,7 +1725,7 @@ be known the status of some special keys:
 See the *note keys.c:: example.
 
 
-File: grx245um.inf,  Node: Mouse event handling,  Next: Writing/reading PNM graphics files,  Prev: Keyboard input,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Mouse event handling,  Next: Writing/reading PNM graphics files,  Prev: Keyboard input,  Up: A User Manual For GRX2
 
 Mouse event handling
 ====================
@@ -1934,7 +1933,7 @@ GrMouseEventEnable( 0,1 ) is needed before input process.
 See the *note mousetst.c:: example.
 
 
-File: grx245um.inf,  Node: Writing/reading PNM graphics files,  Next: Writing/reading PNG graphics files,  Prev: Mouse event handling,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Writing/reading PNM graphics files,  Next: Writing/reading PNG graphics files,  Prev: Mouse event handling,  Up: A User Manual For GRX2
 
 Writing/reading PNM graphics files
 ==================================
@@ -2007,7 +2006,7 @@ input from a buffer instead of a file. This way, pnm files can be
 embeded in a program (using the bin2c program by example).
 
 
-File: grx245um.inf,  Node: Writing/reading PNG graphics files,  Next: Writing/reading JPEG graphics files,  Prev: Writing/reading PNM graphics files,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Writing/reading PNG graphics files,  Next: Writing/reading JPEG graphics files,  Prev: Writing/reading PNM graphics files,  Up: A User Manual For GRX2
 
 Writing/reading PNG graphics files
 ==================================
@@ -2055,7 +2054,7 @@ is not support for png, dummy functions are added to the library,
 returning error (-1) ever.
 
 
-File: grx245um.inf,  Node: Writing/reading JPEG graphics files,  Next: Miscellaneous functions,  Prev: Writing/reading PNG graphics files,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Writing/reading JPEG graphics files,  Next: Miscellaneous functions,  Prev: Writing/reading PNG graphics files,  Up: A User Manual For GRX2
 
 Writing/reading PNG graphics files
 ==================================
@@ -2112,7 +2111,7 @@ there is not support for jpeg, dummy functions are added to the
 library, returning error (-1) ever.
 
 
-File: grx245um.inf,  Node: Miscellaneous functions,  Next: BGI interface,  Prev: Writing/reading JPEG graphics files,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Miscellaneous functions,  Next: BGI interface,  Prev: Writing/reading JPEG graphics files,  Up: A User Manual For GRX2
 
 Miscellaneous functions
 =======================
@@ -2180,7 +2179,7 @@ respectively. Here is an example:
         GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
 
 
-File: grx245um.inf,  Node: BGI interface,  Next: Test examples,  Prev: Miscellaneous functions,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: BGI interface,  Next: Test examples,  Prev: Miscellaneous functions,  Up: A User Manual For GRX2
 
 BGI interface
 =============
@@ -2194,7 +2193,7 @@ programs. Of course you should use native GRX interface in such cases!
 Read the readme.bgi file for more info.
 
 
-File: grx245um.inf,  Node: Test examples,  Next: arctest.c,  Prev: BGI interface,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Test examples,  Next: arctest.c,  Prev: BGI interface,  Up: A User Manual For GRX2
 
 Test examples
 =============
@@ -2238,7 +2237,7 @@ Test examples
 * polytest.dat::
 
 
-File: grx245um.inf,  Node: arctest.c,  Next: bb1test.c,  Prev: Test examples,  Up: Test examples
+File: grx246um.inf,  Node: arctest.c,  Next: bb1test.c,  Prev: Test examples,  Up: Test examples
 
 arctest.c
 =========
@@ -2305,7 +2304,7 @@ arctest.c
      }
 
 
-File: grx245um.inf,  Node: bb1test.c,  Next: blittest.c,  Prev: arctest.c,  Up: Test examples
+File: grx246um.inf,  Node: bb1test.c,  Next: blittest.c,  Prev: arctest.c,  Up: Test examples
 
 bb1test.c
 =========
@@ -2332,7 +2331,7 @@ bb1test.c
      #include "grx20.h"
      #include "grxkeys.h"
      
-     int GRXMain(void)
+     int main(void)
      {
        GrContext *pContext;
        int sizex = 40;
@@ -2351,13 +2350,15 @@ bb1test.c
        GrLine(0, 0, sizex-1, sizey-1, GrWhite());
        GrLine(0, sizey-1, sizex-1, 0, GrWhite());
      
-       /* Put the bitmap into the screen */
        GrSetContext(NULL);
        fcolor = GrAllocColor( 255,0,0 );
        bcolor = GrAllocColor( 0,0,255 );
-       GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
+       GrTextXY(0,0,"Type u d l r U D L R to move, 1 2 to change color, q to quit",
+                GrWhite(),GrNOCOLOR);
+       GrSetClipBox(0, 40, GrScreenX(), GrScreenY());
      
-       GrTextXY(0,0,"Type u d l r U D L R or q to quit",GrWhite(),GrNOCOLOR);
+       /* Put the bitmap into the screen */
+       GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
      
        while( 1 ){
          k = GrKeyRead();
@@ -2371,11 +2372,17 @@ bb1test.c
            case 'D': y += 10; break;
            case 'L': x -= 10; break;
            case 'R': x += 10; break;
+           case '1': fcolor = GrAllocColor( 255,0,0 );
+                     bcolor = GrAllocColor( 0,0,255 );
+                     break;
+           case '2': fcolor = GrAllocColor( 0,255,255 );
+                     bcolor = GrAllocColor( 255,255,0 );
+                     break;
            default:  continue;
            }
-         if(x < 0) x = 0;
+         if(x < -40) x = -40;
          if(x > GrScreenX()) x = GrScreenX();
-         if(y < 40) y = 40;
+         if(y < 0) y = 0;
          if(y > GrScreenY()) y = GrScreenY();
          GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
          }
@@ -2388,7 +2395,7 @@ bb1test.c
      }
 
 
-File: grx245um.inf,  Node: blittest.c,  Next: circtest.c,  Prev: bb1test.c,  Up: Test examples
+File: grx246um.inf,  Node: blittest.c,  Next: circtest.c,  Prev: bb1test.c,  Up: Test examples
 
 blittest.c
 ==========
@@ -2687,7 +2694,7 @@ blittest.c
      }
 
 
-File: grx245um.inf,  Node: circtest.c,  Next: cliptest.c,  Prev: blittest.c,  Up: Test examples
+File: grx246um.inf,  Node: circtest.c,  Next: cliptest.c,  Prev: blittest.c,  Up: Test examples
 
 circtest.c
 ==========
@@ -2786,7 +2793,7 @@ circtest.c
      }
 
 
-File: grx245um.inf,  Node: cliptest.c,  Next: colorops.c,  Prev: circtest.c,  Up: Test examples
+File: grx246um.inf,  Node: cliptest.c,  Next: colorops.c,  Prev: circtest.c,  Up: Test examples
 
 cliptest.c
 ==========
@@ -2844,7 +2851,7 @@ cliptest.c
      }
 
 
-File: grx245um.inf,  Node: colorops.c,  Next: curstest.c,  Prev: cliptest.c,  Up: Test examples
+File: grx246um.inf,  Node: colorops.c,  Next: curstest.c,  Prev: cliptest.c,  Up: Test examples
 
 colorops.c
 ==========
@@ -2974,7 +2981,7 @@ colorops.c
      }
 
 
-File: grx245um.inf,  Node: curstest.c,  Next: demogrx.c,  Prev: colorops.c,  Up: Test examples
+File: grx246um.inf,  Node: curstest.c,  Next: demogrx.c,  Prev: colorops.c,  Up: Test examples
 
 curstest.c
 ==========
@@ -3086,7 +3093,7 @@ curstest.c
      }
 
 
-File: grx245um.inf,  Node: demogrx.c,  Next: fontdemo.c,  Prev: curstest.c,  Up: Test examples
+File: grx246um.inf,  Node: demogrx.c,  Next: fontdemo.c,  Prev: curstest.c,  Up: Test examples
 
 demogrx.c
 =========
@@ -3124,9 +3131,13 @@ demogrx.c
      static int gheight = 480;
      static int gbpp = 16;
      
-     #define WINTITLE "GRX 2.4.5, the graphics library"
+     char *wintitle =
+         "GRX 2.4.6, the graphics library";
      
-     #define NDEMOS 27
+     char *animatedtext =
+         "GRX 2.4.6, the graphics library for DJGPPv2, Linux, X11 and Win32";
+     
+     #define NDEMOS 33
      
      #define ID_ARCTEST   1
      #define ID_BB1TEST   2
@@ -3153,43 +3164,56 @@ demogrx.c
      #define ID_TEXTPATT 23
      #define ID_WINCLIP  24
      #define ID_WINTEST  25
+     #define ID_FNTDEMO1 26
+     #define ID_FNTDEMO2 27
+     #define ID_FNTDEMO3 28
+     #define ID_FNTDEMO4 29
      #define ID_MODETEST 50
+     #define ID_PAGE1    81
+     #define ID_PAGE2    82
      #define ID_EXIT     99
      
-     typedef struct{
-       int cid;
-       char *prog;
-       char *text;
-       } ProgTable;
+     typedef struct {
+         int cid;
+         char *prog;
+         char *text;
+     } ProgTable;
      
      static ProgTable ptable[NDEMOS] = {
-       { ID_ARCTEST,"arctest","arctest.c -> test arc outline and filled arc drawing" },
-       { ID_BB1TEST,"bb1test","bb1test.c -> test GrBitBlt1bpp routine" },
-       { ID_BLITTEST,"blittest","blittest.c -> test various bitblt-s" },
-       { ID_CIRCTEST,"circtest","circtest.c -> test circle and ellipse rendering" },
-       { ID_CLIPTEST,"cliptest","cliptest.c -> test clipping" },
-       { ID_COLOROPS,"colorops","colorops.c -> test WRITE, XOR, OR, and AND draw modes" },
-       { ID_CURSTEST,"curstest","curstest.c -> test cursors" },
-       { ID_FONTTEST,"fonttest","fonttest.c -> test text drawing" },
-       { ID_IMGTEST,"imgtest","imgtest.c -> test image functions mapping" },
-       { ID_JPGTEST,"jpgtest","jpgtext.c -> text context to jpeg functions" },
-       { ID_KEYS,"keys","keys.c -> test keyboard input" },
-       { ID_LIFE,"life","life.c -> Conway's life program" },
-       { ID_LINETEST,"linetest","linetest.c -> test wide and patterned lines" },
-       { ID_MOUSETST,"mousetst","mousetst.c -> test mouse cursor and mouse/keyboard input" },
-       { ID_PCIRCTST,"pcirctst","pcirctst.c -> test custom circle and ellipse rendering" },
-       { ID_PNMTEST,"pnmtest","pnmtext.c -> text context to pnm functions" },
-       { ID_PNGTEST,"pngtest","pngtext.c -> text context to png functions" },
-       { ID_POLYTEST,"polytest","polytest.c -> test polygon rendering" },
-       { ID_RGBTEST,"rgbtest","rgbtest.c -> show 256 color RGB palette" },
-       { ID_SBCTEST,"sbctest","sbctest.c -> test subcontext operations" },
-       { ID_SCROLTST,"scroltst","scroltst.c -> test virtual screen set/scroll" },
-       { ID_SPEEDTST,"speedtst","speedtst.c -> check all available frame drivers speed" },
-       { ID_TEXTPATT,"textpatt","textpatt.c -> text patterned text" },
-       { ID_WINCLIP,"winclip","winclip.c -> clip a drawing to various windows (contexts)" },
-       { ID_WINTEST,"wintest","wintest.c -> test window (context) mapping" },
-       { ID_MODETEST,"modetest","modetest.c -> test all available graphics modes" },
-       { ID_EXIT,"","Exit GRX test programs launcher" } };
+         {ID_ARCTEST, "arctest", "arctest.c -> test arc outline and filled arc drawing"},
+         {ID_BB1TEST, "bb1test", "bb1test.c -> test GrBitBlt1bpp routine"},
+         {ID_BLITTEST, "blittest", "blittest.c -> test various bitblt-s"},
+         {ID_CIRCTEST, "circtest", "circtest.c -> test circle and ellipse rendering"},
+         {ID_CLIPTEST, "cliptest", "cliptest.c -> test clipping"},
+         {ID_COLOROPS, "colorops", "colorops.c -> test WRITE, XOR, OR, and AND draw modes"},
+         {ID_CURSTEST, "curstest", "curstest.c -> test cursors"},
+         {ID_FONTTEST, "fonttest", "fonttest.c -> test text drawing"},
+         {ID_IMGTEST, "imgtest", "imgtest.c -> test image functions mapping"},
+         {ID_JPGTEST, "jpgtest", "jpgtext.c -> text context to jpeg functions"},
+         {ID_KEYS, "keys", "keys.c -> test keyboard input"},
+         {ID_LIFE, "life", "life.c -> Conway's life program"},
+         {ID_LINETEST, "linetest", "linetest.c -> test wide and patterned lines"},
+         {ID_MOUSETST, "mousetst", "mousetst.c -> test mouse cursor and mouse/keyboard input"},
+         {ID_PCIRCTST, "pcirctst", "pcirctst.c -> test custom circle and ellipse rendering"},
+         {ID_PNMTEST, "pnmtest", "pnmtext.c -> text context to pnm functions"},
+         {ID_PNGTEST, "pngtest", "pngtext.c -> text context to png functions"},
+         {ID_POLYTEST, "polytest", "polytest.c -> test polygon rendering"},
+         {ID_RGBTEST, "rgbtest", "rgbtest.c -> show 256 color RGB palette"},
+         {ID_SBCTEST, "sbctest", "sbctest.c -> test subcontext operations"},
+         {ID_SCROLTST, "scroltst", "scroltst.c -> test virtual screen set/scroll"},
+         {ID_SPEEDTST, "speedtst", "speedtst.c -> check all available frame drivers speed"},
+         {ID_TEXTPATT, "textpatt", "textpatt.c -> test patterned text"},
+         {ID_WINCLIP, "winclip", "winclip.c -> clip a drawing to various windows (contexts)"},
+         {ID_WINTEST, "wintest", "wintest.c -> test window (context) mapping"},
+         {ID_FNTDEMO1, "fontdemo ncen22b.fnt", "fontdemo ncen22b.fnt -> test a GRX font"},
+         {ID_FNTDEMO2, "fontdemo ter-114b.res", "fontdemo ter-114b.res -> test a RES font"},
+         {ID_FNTDEMO3, "fontdemo ter-114n.fna", "fontdemo ter-114n.fna -> test a FNA font"},
+         {ID_FNTDEMO4, "fontdemo ter-114v.psf", "fontdemo ter-114v.psf -> test a PSF font"},
+         {ID_MODETEST, "modetest", "modetest.c -> test all available graphics modes"},
+         {ID_PAGE1, "", "Change to page 1"},
+         {ID_PAGE2, "", "Change to page 2"},
+         {ID_EXIT, "", "Exit GRX test programs launcher"}
+     };
      
      #define PX0 10
      #define PX1 115
@@ -3204,42 +3228,62 @@ demogrx.c
      #define PY7 318
      #define PY8 362
      
-     static Button b[NDEMOS] = {
-       { PX0,PY0,100,40,IND_BLUE,IND_YELLOW,"ArcTest",BSTATUS_SELECTED,ID_ARCTEST },
-       { PX0,PY1,100,40,IND_BLUE,IND_YELLOW,"Bb1Test",0,ID_BB1TEST },
-       { PX0,PY2,100,40,IND_BLUE,IND_YELLOW,"BlitTest",0,ID_BLITTEST },
-       { PX0,PY3,100,40,IND_BLUE,IND_YELLOW,"CircTest",0,ID_CIRCTEST },
-       { PX0,PY4,100,40,IND_BLUE,IND_YELLOW,"ClipTest",0,ID_CLIPTEST },
-       { PX0,PY5,100,40,IND_BLUE,IND_YELLOW,"Colorops",0,ID_COLOROPS },
-       { PX0,PY6,100,40,IND_BLUE,IND_YELLOW,"CursTest",0,ID_CURSTEST },
-       { PX0,PY7,100,40,IND_BLUE,IND_YELLOW,"FontTest",0,ID_FONTTEST },
-       { PX0,PY8,100,40,IND_BLUE,IND_YELLOW,"ImgTest",0,ID_IMGTEST },
-       { PX1,PY0,100,40,IND_BLUE,IND_YELLOW,"JpgTest",0,ID_JPGTEST },
-       { PX1,PY1,100,40,IND_BLUE,IND_YELLOW,"Keys",0,ID_KEYS },
-       { PX1,PY2,100,40,IND_BLUE,IND_YELLOW,"Life",0,ID_LIFE },
-       { PX1,PY3,100,40,IND_BLUE,IND_YELLOW,"LineTest",0,ID_LINETEST },
-       { PX1,PY4,100,40,IND_BLUE,IND_YELLOW,"MouseTst",0,ID_MOUSETST },
-       { PX1,PY5,100,40,IND_BLUE,IND_YELLOW,"PcircTst",0,ID_PCIRCTST },
-       { PX1,PY6,100,40,IND_BLUE,IND_YELLOW,"PnmTest",0,ID_PNMTEST },
-       { PX1,PY7,100,40,IND_BLUE,IND_YELLOW,"PngTest",0,ID_PNGTEST },
-       { PX1,PY8,100,40,IND_BLUE,IND_YELLOW,"PolyTest",0,ID_POLYTEST },
-       { PX2,PY0,100,40,IND_BLUE,IND_YELLOW,"RgbTest",0,ID_RGBTEST },
-       { PX2,PY1,100,40,IND_BLUE,IND_YELLOW,"SbcTest",0,ID_SBCTEST },
-       { PX2,PY2,100,40,IND_BLUE,IND_YELLOW,"ScrolTst",0,ID_SCROLTST },
-       { PX2,PY3,100,40,IND_BLUE,IND_YELLOW,"SpeedTst",0,ID_SPEEDTST },
-       { PX2,PY4,100,40,IND_BLUE,IND_YELLOW,"TextPatt",0,ID_TEXTPATT },
-       { PX2,PY5,100,40,IND_BLUE,IND_YELLOW,"WinClip",0,ID_WINCLIP },
-       { PX2,PY6,100,40,IND_BLUE,IND_YELLOW,"WinTest",0,ID_WINTEST },
-       { PX2,PY7,100,40,IND_GREEN,IND_YELLOW,"ModeTest",0,ID_MODETEST },
-       { PX2,PY8,100,40,IND_RED,IND_WHITE,"Exit",0,ID_EXIT } };
+     #define NBUTTONSP1 26
      
-     static Button_Group bg = { 20,30,b,NDEMOS,0,0 };
+     static Button bp1[NBUTTONSP1] = {
+         {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "ArcTest", BSTATUS_SELECTED, ID_ARCTEST},
+         {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Bb1Test", 0, ID_BB1TEST},
+         {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "BlitTest", 0, ID_BLITTEST},
+         {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "CircTest", 0, ID_CIRCTEST},
+         {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "ClipTest", 0, ID_CLIPTEST},
+         {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "Colorops", 0, ID_COLOROPS},
+         {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "CursTest", 0, ID_CURSTEST},
+         {PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, "ImgTest", 0, ID_IMGTEST},
+         {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "JpgTest", 0, ID_JPGTEST},
+         {PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, "Keys", 0, ID_KEYS},
+         {PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Life", 0, ID_LIFE},
+         {PX1, PY2, 100, 40, IND_BLUE, IND_YELLOW, "LineTest", 0, ID_LINETEST},
+         {PX1, PY3, 100, 40, IND_BLUE, IND_YELLOW, "MouseTst", 0, ID_MOUSETST},
+         {PX1, PY4, 100, 40, IND_BLUE, IND_YELLOW, "PcircTst", 0, ID_PCIRCTST},
+         {PX1, PY5, 100, 40, IND_BLUE, IND_YELLOW, "PnmTest", 0, ID_PNMTEST},
+         {PX1, PY6, 100, 40, IND_BLUE, IND_YELLOW, "PngTest", 0, ID_PNGTEST},
+         {PX1, PY7, 100, 40, IND_BLUE, IND_YELLOW, "PolyTest", 0, ID_POLYTEST},
+         {PX1, PY8, 100, 40, IND_BLUE, IND_YELLOW, "RgbTest", 0, ID_RGBTEST},
+         {PX2, PY0, 100, 40, IND_BLUE, IND_YELLOW, "SbcTest", 0, ID_SBCTEST},
+         {PX2, PY1, 100, 40, IND_BLUE, IND_YELLOW, "ScrolTst", 0, ID_SCROLTST},
+         {PX2, PY2, 100, 40, IND_BLUE, IND_YELLOW, "SpeedTst", 0, ID_SPEEDTST},
+         {PX2, PY3, 100, 40, IND_BLUE, IND_YELLOW, "WinClip", 0, ID_WINCLIP},
+         {PX2, PY4, 100, 40, IND_BLUE, IND_YELLOW, "WinTest", 0, ID_WINTEST},
+         {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 2", 0, ID_PAGE2},
+         {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
+         {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
+     };
      
-     static Board brd = { 0,0,640,480,IND_BLACK,IND_CYAN,IND_DARKGRAY,1 };
-     static Board brdimg = { 384,46,235,157,IND_BLACK,IND_CYAN,IND_DARKGRAY,1 };
+     #define NBUTTONSP2  9
      
-     static GrFont * grf_std;
-     static GrFont * grf_big;
+     static Button bp2[NBUTTONSP2] = {
+         {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "FontTest", BSTATUS_SELECTED, ID_FONTTEST},
+         {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "TextPatt", 0, ID_TEXTPATT},
+         {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo1", 0, ID_FNTDEMO1},
+         {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo2", 0, ID_FNTDEMO2},
+         {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo3", 0, ID_FNTDEMO3},
+         {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo4", 0, ID_FNTDEMO4},
+         {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 1", 0, ID_PAGE1},
+         {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
+         {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
+     };
+     
+     static Button_Group bgp1 = { 20, 30, bp1, NBUTTONSP1, 0, 0 };
+     static Button_Group bgp2 = { 20, 30, bp2, NBUTTONSP2, 0, 0 };
+     static Button_Group *bgact = &bgp1;
+     
+     static Board brd =
+         { 0, 0, 640, 480, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
+     static Board brdimg =
+         { 384, 46, 235, 157, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
+     
+     static GrFont *grf_std;
+     static GrFont *grf_big;
      GrTextOption grt_centered;
      GrTextOption grt_left;
      
@@ -3248,299 +3292,322 @@ demogrx.c
      
      /* Internal routines */
      
-     static void ini_graphics( void );
-     static void ini_objects( void );
-     static void paint_screen( void );
-     static void the_title( int x, int y );
-     static void the_info( int x, int y );
-     static int pev_command( Event *ev );
-     static int pev_select( Event *ev );
-     static void paint_foot( char *s );
-     static void paint_animation( void );
-     static void disaster( char *s );
+     static void ini_graphics(void);
+     static void ini_objects(void);
+     static void paint_screen(void);
+     static void the_title(int x, int y);
+     static void the_info(int x, int y);
+     static int pev_command(Event * ev);
+     static int pev_select(Event * ev);
+     static void paint_foot(char *s);
+     static void paint_animation(void);
+     static void disaster(char *s);
      
      /************************************************************************/
      
-     int GRXMain( int argc, char **argv )
+     int main(int argc, char **argv)
      {
-       Event ev;
+         Event ev;
      
-       if( argc >= 4 ){
-         gwidth = atoi( argv[1] );
-         gheight = atoi( argv[2] );
-         gbpp = atoi( argv[3] );
+         if (argc >= 4) {
+     	gwidth = atoi(argv[1]);
+     	gheight = atoi(argv[2]);
+     	gbpp = atoi(argv[3]);
          }
      
-       ini_graphics();
-       GrSetWindowTitle( WINTITLE );
-       ini_objects();
-       paint_screen();
+         ini_graphics();
+         GrSetWindowTitle(wintitle);
+         ini_objects();
+         paint_screen();
      
-       while( 1 ){
-         event_read( &ev );
-         if( ev.type == EV_MOUSE ){
-           ev.p2 -= worg;
-           ev.p3 -= horg;
-           }
-         if( ev.type == EV_END ) break;
-         if( (ev.type == EV_KEY) && (ev.p1 == GrKey_Escape) ) break;
-         if( (ev.type == EV_KEY) && (ev.p1 == 's' ) ){
-           GrSaveContextToPpm( NULL,"demogrx.ppm","DemoGRX" );
-           continue;
-           }
-         if( pev_button_group( &ev,&bg ) ) continue;
-         if( pev_command( &ev ) ) continue;
-         if( pev_select( &ev ) ) continue;
-         if( ev.type == EV_MOUSE ){
-           if( ev.p1 == MOUSE_LB_PRESSED )
-             paint_foot( "over a button, please" );
-           else if( ev.p1 == MOUSE_LB_RELEASED )
-             paint_foot( "Hold down left mouse buttom to see a comment" );
-           }
-         if( ev.type == EV_NULL )
-           paint_animation();
+         while (1) {
+     	event_read(&ev);
+     	if (ev.type == EV_MOUSE) {
+     	    ev.p2 -= worg;
+     	    ev.p3 -= horg;
+     	}
+     	if (ev.type == EV_END)
+     	    break;
+     	if ((ev.type == EV_KEY) && (ev.p1 == GrKey_Escape))
+     	    break;
+     	if ((ev.type == EV_KEY) && (ev.p1 == 's')) {
+     	    GrSaveContextToPpm(NULL, "demogrx.ppm", "DemoGRX");
+     	    continue;
+     	}
+             if (pev_button_group(&ev, bgact))
+     	    continue;
+     	if (pev_command(&ev))
+     	    continue;
+     	if (pev_select(&ev))
+     	    continue;
+     	if (ev.type == EV_MOUSE) {
+     	    if (ev.p1 == MOUSE_LB_PRESSED)
+     		paint_foot("over a button, please");
+     	    else if (ev.p1 == MOUSE_LB_RELEASED)
+     		paint_foot("Hold down left mouse buttom to see a comment");
+     	}
+     	if (ev.type == EV_NULL)
+     	    paint_animation();
          }
      
-       gfaz_fin();
-       return 0;
+         gfaz_fin();
+         return 0;
      }
      
      /************************************************************************/
      
-     static void ini_graphics( void )
+     static void ini_graphics(void)
      {
-       gfaz_ini( gwidth,gheight,gbpp );
-       gwidth = GrScreenX();
-       gheight = GrScreenY();
-       grcglob = NULL;
-       if( gwidth > 640 || gheight > 480 ){
-         GrClearScreen( GrAllocColor( 120,90,60 ) );
-         worg = (gwidth - 640) / 2;
-         horg = (gheight - 480) / 2;
-         grcglob = GrCreateSubContext( worg,horg,worg+639,horg+479,NULL,NULL );
-         GrSetContext( grcglob );
+         gfaz_ini(gwidth, gheight, gbpp);
+         gwidth = GrScreenX();
+         gheight = GrScreenY();
+         grcglob = NULL;
+         if (gwidth > 640 || gheight > 480) {
+     	GrClearScreen(GrAllocColor(120, 90, 60));
+     	worg = (gwidth - 640) / 2;
+     	horg = (gheight - 480) / 2;
+             grcglob = GrCreateSubContext(worg, horg, worg + 639, horg + 479,
+                                          NULL, NULL);
+     	GrSetContext(grcglob);
          }
      }
      
      /************************************************************************/
      
-     static void ini_objects( void )
+     static void ini_objects(void)
      {
-       grf_std = GrLoadFont( "lucb21.fnt" );
-       if( grf_std == NULL ){
-         grf_std = GrLoadFont( "../fonts/lucb21.fnt" );
-         if( grf_std == NULL )
-           disaster( "lucb21.fnt not found" );
+         grf_std = GrLoadFont("lucb21.fnt");
+         if (grf_std == NULL) {
+     	grf_std = GrLoadFont("../fonts/lucb21.fnt");
+     	if (grf_std == NULL)
+     	    disaster("lucb21.fnt not found");
          }
      
-       grf_big = GrLoadFont( "lucb40b.fnt" );
-       if( grf_big == NULL ){
-         grf_big = GrLoadFont( "../fonts/lucb40b.fnt" );
-         if( grf_big == NULL )
-           disaster( "lucb40b.fnt not found" );
+         grf_big = GrLoadFont("lucb40b.fnt");
+         if (grf_big == NULL) {
+     	grf_big = GrLoadFont("../fonts/lucb40b.fnt");
+     	if (grf_big == NULL)
+     	    disaster("lucb40b.fnt not found");
          }
      
-       grt_centered.txo_bgcolor.v = GrNOCOLOR;
-       grt_centered.txo_direct = GR_TEXT_RIGHT;
-       grt_centered.txo_xalign = GR_ALIGN_CENTER;
-       grt_centered.txo_yalign = GR_ALIGN_CENTER;
-       grt_centered.txo_chrtype = GR_BYTE_TEXT;
+         grt_centered.txo_bgcolor.v = GrNOCOLOR;
+         grt_centered.txo_direct = GR_TEXT_RIGHT;
+         grt_centered.txo_xalign = GR_ALIGN_CENTER;
+         grt_centered.txo_yalign = GR_ALIGN_CENTER;
+         grt_centered.txo_chrtype = GR_BYTE_TEXT;
      
-       grt_left.txo_bgcolor.v = GrNOCOLOR;
-       grt_left.txo_direct = GR_TEXT_RIGHT;
-       grt_left.txo_xalign = GR_ALIGN_LEFT;
-       grt_left.txo_yalign = GR_ALIGN_CENTER;
-       grt_left.txo_chrtype = GR_BYTE_TEXT;
+         grt_left.txo_bgcolor.v = GrNOCOLOR;
+         grt_left.txo_direct = GR_TEXT_RIGHT;
+         grt_left.txo_xalign = GR_ALIGN_LEFT;
+         grt_left.txo_yalign = GR_ALIGN_CENTER;
+         grt_left.txo_chrtype = GR_BYTE_TEXT;
      }
      
      /************************************************************************/
      
-     static void paint_screen( void )
+     static void paint_screen(void)
      {
-       GrContext *grc;
+         GrContext *grc;
      
-       paint_board( &brd );
-       paint_button_group( &bg );
-       paint_board( &brdimg );
-       grc = GrCreateSubContext( brdimg.x+4,brdimg.y+4,
-                                 brdimg.x+brdimg.wide-5,
-                                 brdimg.y+brdimg.high-5,
-                                 grcglob,NULL );
-       GrLoadContextFromPnm( grc,"pnmtest.ppm" );
-       GrDestroyContext( grc );
-       the_title( 500,100 );
-       the_info( 500,215 );
-       drawing( 400,280,200,150,BROWN,DARKGRAY);
-       paint_foot( "Hold down left mouse buttom to see a comment" );
+         paint_board(&brd);
+         paint_button_group(bgact);
+         paint_board(&brdimg);
+         grc = GrCreateSubContext(brdimg.x + 4, brdimg.y + 4,
+     			     brdimg.x + brdimg.wide - 5,
+     			     brdimg.y + brdimg.high - 5, grcglob, NULL);
+         if (bgact == &bgp1)
+             GrLoadContextFromPnm(grc, "pnmtest.ppm");
+         else
+             GrLoadContextFromPnm(grc, "pnmtest2.ppm");
+         GrDestroyContext(grc);
+         the_info(500, 215);
+         drawing(400, 280, 200, 150, BROWN, DARKGRAY);
+         the_title(500, 330);
+         paint_foot("Hold down left mouse buttom to see a comment");
      }
      
      /************************************************************************/
      
-     static void the_title( int x, int y )
+     static void the_title(int x, int y)
      {
-       char *t1 = "GRX 2.4.5";
-       char *t2 = "test programs launcher";
+         char *t1 = "GRX 2.4.6";
+         char *t2 = "test programs launcher";
      
-       grt_centered.txo_fgcolor.v = LIGHTGREEN;
+         grt_centered.txo_fgcolor.v = LIGHTGREEN;
      
-       grt_centered.txo_font = grf_big;
-       GrDrawString( t1,strlen( t1 ),0+x,0+y,&grt_centered );
+         grt_centered.txo_font = grf_big;
+         GrDrawString(t1, strlen(t1), 0 + x, 0 + y, &grt_centered);
      
-       grt_centered.txo_font = grf_std;
-       GrDrawString( t2,strlen( t2 ),0+x,40+y,&grt_centered );
+         grt_centered.txo_font = grf_std;
+         GrDrawString(t2, strlen(t2), 0 + x, 40 + y, &grt_centered);
      }
      
      /************************************************************************/
      
-     static void the_info( int x, int y )
+     static void the_info(int x, int y)
      {
-       char aux[81], sys[4] = "?";
-       int nsys;
+         char aux[81], sys[4] = "?";
+         int nsys;
      
-       grt_centered.txo_fgcolor.v = CYAN;
-       grt_centered.txo_font = grf_std;
+         grt_centered.txo_fgcolor.v = CYAN;
+         grt_centered.txo_font = grf_std;
      
-       nsys = GrGetLibrarySystem();
-       if( nsys == GRX_VERSION_TCC_8086_DOS ) strcpy( sys,"TCC" );
-       if( nsys == GRX_VERSION_GCC_386_DJGPP ) strcpy( sys,"DJ2" );
-       if( nsys == GRX_VERSION_GCC_386_LINUX ) strcpy( sys,"LNX" );
-       if( nsys == GRX_VERSION_GENERIC_X11 ) strcpy( sys,"X11" );
-       if( nsys == GRX_VERSION_WATCOM_DOS4GW ) strcpy( sys,"WAT" );
-       if( nsys == GRX_VERSION_GCC_386_WIN32 ) strcpy( sys,"W32" );
+         nsys = GrGetLibrarySystem();
+         if (nsys == GRX_VERSION_TCC_8086_DOS)
+     	strcpy(sys, "TCC");
+         if (nsys == GRX_VERSION_GCC_386_DJGPP)
+     	strcpy(sys, "DJ2");
+         if (nsys == GRX_VERSION_GCC_386_LINUX)
+     	strcpy(sys, "LNX");
+         if (nsys == GRX_VERSION_GENERIC_X11)
+     	strcpy(sys, "X11");
+         if (nsys == GRX_VERSION_WATCOM_DOS4GW)
+     	strcpy(sys, "WAT");
+         if (nsys == GRX_VERSION_GCC_386_WIN32)
+     	strcpy(sys, "W32");
      
-       sprintf( aux,"Version:%x System:%s",GrGetLibraryVersion(),sys );
-       GrDrawString( aux,strlen( aux ),0+x,0+y,&grt_centered );
+         sprintf(aux, "Version:%x System:%s", GrGetLibraryVersion(), sys);
+         GrDrawString(aux, strlen(aux), 0 + x, 0 + y, &grt_centered);
      
-       sprintf( aux,"VideoDriver: %s",GrCurrentVideoDriver()->name );
-       GrDrawString( aux,strlen( aux ),0+x,25+y,&grt_centered );
+         sprintf(aux, "VideoDriver: %s", GrCurrentVideoDriver()->name);
+         GrDrawString(aux, strlen(aux), 0 + x, 25 + y, &grt_centered);
      
-       sprintf( aux,"Mode: %dx%d %d bpp",GrCurrentVideoMode()->width,
-         GrCurrentVideoMode()->height,GrCurrentVideoMode()->bpp );
-       GrDrawString( aux,strlen( aux ),0+x,50+y,&grt_centered );
+         sprintf(aux, "Mode: %dx%d %d bpp", GrCurrentVideoMode()->width,
+     	    GrCurrentVideoMode()->height, GrCurrentVideoMode()->bpp);
+         GrDrawString(aux, strlen(aux), 0 + x, 50 + y, &grt_centered);
      }
      
      /************************************************************************/
      
-     static int pev_command( Event *ev )
+     static int pev_command(Event * ev)
      {
-       int i;
-       char nprog[81];
+         int i;
+         char nprog[81];
      
-       if( ev->type == EV_COMMAND ){
-         if( ev->p1 == ID_EXIT ){
-           par_event_queue( EV_END,0,0,0 );
-           return 1;
-           }
-         for( i=0; i<NDEMOS; i++ ){
-           if( ev->p1 == ptable[i].cid ){
-             gfaz_fin();
+         if (ev->type == EV_COMMAND) {
+     	if (ev->p1 == ID_EXIT) {
+     	    par_event_queue(EV_END, 0, 0, 0);
+     	    return 1;
+     	}
+             if (ev->p1 == ID_PAGE1) {
+                 bgact = &bgp1;
+                 paint_screen();
+     	    return 1;
+     	}
+             if (ev->p1 == ID_PAGE2) {
+                 bgact = &bgp2;
+                 paint_screen();
+     	    return 1;
+     	}
+     	for (i = 0; i < NDEMOS; i++) {
+     	    if (ev->p1 == ptable[i].cid) {
+     		gfaz_fin();
      #if defined(__MSDOS__) || defined(__WIN32__)
-             if( ev->p1 == ID_MODETEST )
-               strcpy( nprog,"..\\bin\\" );
-             else
-               strcpy( nprog,".\\" );
+     		if (ev->p1 == ID_MODETEST)
+     		    strcpy(nprog, "..\\bin\\");
+     		else
+     		    strcpy(nprog, ".\\");
      #else
-             if( ev->p1 == ID_MODETEST )
-               strcpy( nprog,"../bin/" );
-             else
-               strcpy( nprog,"./" );
+     		if (ev->p1 == ID_MODETEST)
+     		    strcpy(nprog, "../bin/");
+     		else
+     		    strcpy(nprog, "./");
      #endif
      #if defined(__XWIN__)
-             strcat( nprog,"x" );
+     		strcat(nprog, "x");
      #endif
-             strcat( nprog,ptable[i].prog );
-             system( nprog );
-     	ini_graphics();
-             GrSetWindowTitle( WINTITLE );
-             paint_screen();
-             return 1;
-             }
-           }
+     		strcat(nprog, ptable[i].prog);
+     		system(nprog);
+     		ini_graphics();
+                     GrSetWindowTitle(wintitle);
+     		paint_screen();
+     		return 1;
+     	    }
+     	}
          }
-       return 0;
+         return 0;
      }
      
      /************************************************************************/
      
-     static int pev_select( Event *ev )
+     static int pev_select(Event * ev)
      {
-       int i;
+         int i;
      
-       if( ev->type == EV_SELECT ){
-         for( i=0; i<NDEMOS; i++ ){
-           if( ev->p1 == ptable[i].cid ){
-             paint_foot( ptable[i].text );
-             return 1;
-             }
-           }
+         if (ev->type == EV_SELECT) {
+     	for (i = 0; i < NDEMOS; i++) {
+     	    if (ev->p1 == ptable[i].cid) {
+     		paint_foot(ptable[i].text);
+     		return 1;
+     	    }
+     	}
          }
-       return 0;
+         return 0;
      }
      
      /************************************************************************/
      
-     static void paint_foot( char *s )
+     static void paint_foot(char *s)
      {
-       grt_centered.txo_fgcolor.v = LIGHTGREEN;
-       grt_centered.txo_font = grf_std;
+         grt_centered.txo_fgcolor.v = LIGHTGREEN;
+         grt_centered.txo_font = grf_std;
      
-       GrSetClipBox( 10,440,630,470 );
-       GrClearClipBox( CYAN );
-       GrDrawString( s,strlen( s ),320,455,&grt_centered );
-       GrResetClipBox();
+         GrSetClipBox(10, 440, 630, 470);
+         GrClearClipBox(CYAN);
+         GrDrawString(s, strlen(s), 320, 455, &grt_centered);
+         GrResetClipBox();
      }
      
      /************************************************************************/
      
-     static void paint_animation( void )
+     static void paint_animation(void)
      {
-       static char *text =
-         "GRX 2.4.5, the graphics library for DJGPPv2, Linux, X11 and Win32";
-       static int pos = 620;
-       static int ini = 0;
-       static int ltext, wtext;
-       static GrContext *grc;
+         static int pos = 620;
+         static int ini = 0;
+         static GrContext *grc;
+         int ltext, wtext;
      
-       if( !ini ){
-         grc = GrCreateContext( 620,30,NULL,NULL );
-         if( grc == NULL ) return;
-         ltext = strlen( text );
-     //    wtext = GrStringWidth( text,ltext,&grt_left ); ! doesn't work
-         wtext = 620;
-         ini = 1;
+         if (!ini) {
+     	grc = GrCreateContext(620, 30, NULL, NULL);
+     	if (grc == NULL)
+     	    return;
+     	ini = 1;
          }
      
          grt_left.txo_fgcolor.v = CYAN;
          grt_left.txo_font = grf_std;
+         ltext = strlen(animatedtext);
+         wtext = GrStringWidth(animatedtext, ltext, &grt_left);
      
-         GrSetContext( grc );
-         GrClearContext( DARKGRAY );
-         GrDrawString( text,ltext,pos,15,&grt_left );
-         GrSetContext( grcglob );
-         GrBitBlt( NULL,10,8,grc,0,0,629,29,GrWRITE );
+         GrSetContext(grc);
+         GrClearContext(DARKGRAY);
+         GrDrawString(animatedtext, ltext, pos, 15, &grt_left);
+         GrSetContext(grcglob);
+         GrBitBlt(NULL, 10, 8, grc, 0, 0, 629, 29, GrWRITE);
      
          pos -= 1;
-         if( pos <= -wtext ) pos = 620;
+         if (pos <= -wtext)
+     	pos = 620;
      }
      
      /************************************************************************/
      
-     static void disaster( char *s )
+     static void disaster(char *s)
      {
-       void _GrCloseVideoDriver(void);
+         void _GrCloseVideoDriver(void);
      
-       char aux[81];
+         char aux[81];
      
-       gfaz_fin();
-       _GrCloseVideoDriver();
-       printf( "DemoGRX: %s\n",s );
-       printf( "press Return to continue\n" );
-       fgets( aux,80,stdin );
-       exit( 1 );
+         gfaz_fin();
+         _GrCloseVideoDriver();
+         printf("DemoGRX: %s\n", s);
+         printf("press Return to continue\n");
+         fgets(aux, 80, stdin);
+         exit(1);
      }
 
 
-File: grx245um.inf,  Node: fontdemo.c,  Next: fonttest.c,  Prev: demogrx.c,  Up: Test examples
+File: grx246um.inf,  Node: fontdemo.c,  Next: fonttest.c,  Prev: demogrx.c,  Up: Test examples
 
 fontdemo.c
 ==========
@@ -3564,13 +3631,12 @@ fontdemo.c
       **
       **/
      
-     #include <limits.h>
      #include <stdio.h>
      #include <stdlib.h>
      #include <string.h>
      
-     #include <grx20.h>
-     #include <grxkeys.h>
+     #include "grx20.h"
+     #include "grxkeys.h"
      
      static GrTextOption opt;
      static int curx = 0, cury = 0;
@@ -3616,7 +3682,7 @@ fontdemo.c
      	curx = cury = 0;
      }
      
-     int GRXMain(int argc, char **argv)
+     int main(int argc, char **argv)
      {
      	int i, n;
      	char *s;
@@ -3773,7 +3839,7 @@ fontdemo.c
      }
 
 
-File: grx245um.inf,  Node: fonttest.c,  Next: gfaz.c,  Prev: fontdemo.c,  Up: Test examples
+File: grx246um.inf,  Node: fonttest.c,  Next: gfaz.c,  Prev: fontdemo.c,  Up: Test examples
 
 fonttest.c
 ==========
@@ -3971,7 +4037,7 @@ fonttest.c
      }
 
 
-File: grx245um.inf,  Node: gfaz.c,  Next: imgtest.c,  Prev: fonttest.c,  Up: Test examples
+File: grx246um.inf,  Node: gfaz.c,  Next: imgtest.c,  Prev: fonttest.c,  Up: Test examples
 
 gfaz.c
 ======
@@ -4375,7 +4441,7 @@ gfaz.c
      }
 
 
-File: grx245um.inf,  Node: imgtest.c,  Next: jpgtest.c,  Prev: gfaz.c,  Up: Test examples
+File: grx246um.inf,  Node: imgtest.c,  Next: jpgtest.c,  Prev: gfaz.c,  Up: Test examples
 
 imgtest.c
 =========
@@ -4466,7 +4532,7 @@ imgtest.c
      }
 
 
-File: grx245um.inf,  Node: jpgtest.c,  Next: keys.c,  Prev: imgtest.c,  Up: Test examples
+File: grx246um.inf,  Node: jpgtest.c,  Next: keys.c,  Prev: imgtest.c,  Up: Test examples
 
 jpgtest.c
 =========
@@ -4534,7 +4600,7 @@ jpgtest.c
        GrKeyRead();
      }
      
-     int GRXMain()
+     int main()
      {
        GrContext *grc;
      
@@ -4591,7 +4657,7 @@ jpgtest.c
      }
 
 
-File: grx245um.inf,  Node: keys.c,  Next: life.c,  Prev: jpgtest.c,  Up: Test examples
+File: grx246um.inf,  Node: keys.c,  Next: life.c,  Prev: jpgtest.c,  Up: Test examples
 
 keys.c
 ======
@@ -4946,7 +5012,7 @@ keys.c
      
      #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
      
-     int GRXMain(void) {
+     int main(void) {
        int spaces_count = 0;
        KeyEntry *kp;
        GrKeyType k;
@@ -5028,7 +5094,7 @@ keys.c
      }
 
 
-File: grx245um.inf,  Node: life.c,  Next: linetest.c,  Prev: keys.c,  Up: Test examples
+File: grx246um.inf,  Node: life.c,  Next: linetest.c,  Prev: keys.c,  Up: Test examples
 
 life.c
 ======
@@ -5146,7 +5212,7 @@ life.c
      }
 
 
-File: grx245um.inf,  Node: linetest.c,  Next: memtest.c,  Prev: life.c,  Up: Test examples
+File: grx246um.inf,  Node: linetest.c,  Next: memtest.c,  Prev: life.c,  Up: Test examples
 
 linetest.c
 ==========
@@ -5171,9 +5237,6 @@ linetest.c
       **/
      
      #include "test.h"  /* *note test.h:: */
-     #ifdef __DJGPP__
-     #include <pc.h>
-     #endif
      
      TESTFUNC(test1)
      {
@@ -5222,7 +5285,7 @@ linetest.c
      }
 
 
-File: grx245um.inf,  Node: memtest.c,  Next: mousetst.c,  Prev: linetest.c,  Up: Test examples
+File: grx246um.inf,  Node: memtest.c,  Next: mousetst.c,  Prev: linetest.c,  Up: Test examples
 
 memtest.c
 =========
@@ -5250,7 +5313,7 @@ memtest.c
      #include "grx20.h"
      #include "drawing.h"  /* *note drawing.h:: */
      
-     int GRXMain()
+     int main()
      {
        int x, y, ww, wh;
        GrColor c;
@@ -5296,7 +5359,7 @@ memtest.c
      }
 
 
-File: grx245um.inf,  Node: mousetst.c,  Next: pcirctst.c,  Prev: memtest.c,  Up: Test examples
+File: grx246um.inf,  Node: mousetst.c,  Next: pcirctst.c,  Prev: memtest.c,  Up: Test examples
 
 mousetst.c
 ==========
@@ -5412,7 +5475,7 @@ mousetst.c
      }
 
 
-File: grx245um.inf,  Node: pcirctst.c,  Next: pngtest.c,  Prev: mousetst.c,  Up: Test examples
+File: grx246um.inf,  Node: pcirctst.c,  Next: pngtest.c,  Prev: mousetst.c,  Up: Test examples
 
 pcirctst.c
 ==========
@@ -5527,7 +5590,7 @@ pcirctst.c
      }
 
 
-File: grx245um.inf,  Node: pngtest.c,  Next: pnmtest.c,  Prev: pcirctst.c,  Up: Test examples
+File: grx246um.inf,  Node: pngtest.c,  Next: pnmtest.c,  Prev: pcirctst.c,  Up: Test examples
 
 pngtest.c
 =========
@@ -5601,7 +5664,7 @@ pngtest.c
      }
      
      
-     int GRXMain()
+     int main()
      {
        GrContext *grc;
      
@@ -5641,7 +5704,7 @@ pngtest.c
      }
 
 
-File: grx245um.inf,  Node: pnmtest.c,  Next: polytest.c,  Prev: pngtest.c,  Up: Test examples
+File: grx246um.inf,  Node: pnmtest.c,  Next: polytest.c,  Prev: pngtest.c,  Up: Test examples
 
 pnmtest.c
 =========
@@ -5676,7 +5739,7 @@ pnmtest.c
      #define FIMAGEPBM2 "prueba.pbm"
      #define FSCREEN "output.ppm"
      
-     int GRXMain(void)
+     int main(void)
      {
        GrContext *grc;
        int wide, high, maxval;
@@ -5751,7 +5814,7 @@ pnmtest.c
      }
 
 
-File: grx245um.inf,  Node: polytest.c,  Next: rgbtest.c,  Prev: pnmtest.c,  Up: Test examples
+File: grx246um.inf,  Node: polytest.c,  Next: rgbtest.c,  Prev: pnmtest.c,  Up: Test examples
 
 polytest.c
 ==========
@@ -5908,7 +5971,7 @@ polytest.c
      }
 
 
-File: grx245um.inf,  Node: rgbtest.c,  Next: sbctest.c,  Prev: polytest.c,  Up: Test examples
+File: grx246um.inf,  Node: rgbtest.c,  Next: sbctest.c,  Prev: polytest.c,  Up: Test examples
 
 rgbtest.c
 =========
@@ -5952,7 +6015,7 @@ rgbtest.c
      }
 
 
-File: grx245um.inf,  Node: sbctest.c,  Next: scroltst.c,  Prev: rgbtest.c,  Up: Test examples
+File: grx246um.inf,  Node: sbctest.c,  Next: scroltst.c,  Prev: rgbtest.c,  Up: Test examples
 
 sbctest.c
 =========
@@ -6155,7 +6218,7 @@ sbctest.c
      }
 
 
-File: grx245um.inf,  Node: scroltst.c,  Next: speedtst.c,  Prev: sbctest.c,  Up: Test examples
+File: grx246um.inf,  Node: scroltst.c,  Next: speedtst.c,  Prev: sbctest.c,  Up: Test examples
 
 scroltst.c
 ==========
@@ -6236,7 +6299,7 @@ scroltst.c
      }
 
 
-File: grx245um.inf,  Node: speedtst.c,  Next: textpatt.c,  Prev: scroltst.c,  Up: Test examples
+File: grx246um.inf,  Node: speedtst.c,  Next: textpatt.c,  Prev: scroltst.c,  Up: Test examples
 
 speedtst.c
 ==========
@@ -6270,14 +6333,6 @@ speedtst.c
      #include <conio.h>
      #else
      #include <values.h>
-     #endif
-     #ifdef __DJGPP__
-     #include <conio.h>
-     #include <pc.h>
-     #else
-     extern int getch(void);
-     extern int getkey(void);
-     extern int kbhit(void);
      #endif
      #include <math.h>
      #include <time.h>
@@ -6890,7 +6945,7 @@ speedtst.c
          printf("Setup failed : %s != %s\n",
          FrameDriverName(act),
          FrameDriverName(gp->fm));
-         getch();
+         fgets(m,40,stdin);
          return;
        }
      
@@ -6918,7 +6973,6 @@ speedtst.c
          printresultline(stdout, gp);
          if (rp)
            printresultline(stdout, rp);
-         kbhit();    /* this is here to flush in the X version 8-) */
          fgets(m,40,stdin);
        }
      }
@@ -7022,7 +7076,7 @@ speedtst.c
      	} while (1);
      }
      
-     int GRXMain(void)
+     int main(void)
      {
      	int  i;
      
@@ -7122,7 +7176,7 @@ speedtst.c
      }
 
 
-File: grx245um.inf,  Node: textpatt.c,  Next: winclip.c,  Prev: speedtst.c,  Up: Test examples
+File: grx246um.inf,  Node: textpatt.c,  Next: winclip.c,  Prev: speedtst.c,  Up: Test examples
 
 textpatt.c
 ==========
@@ -7150,13 +7204,12 @@ textpatt.c
      
      #define FONT "../fonts/tms38b.fnt"
      
-     int GRXMain(void)
+     int main(void)
      {
        char bits[] = {0, 76, 50, 0, 0, 76, 60, 0};
        GrPattern *p1, *p2;
        GrFont *font;
        GrTextOption opt;
-       int fail_p1, fail_p2, fail_font;
      
        GrSetMode(GR_width_height_color_graphics, 320, 200, (GrColor)256);
        p1 = GrBuildPixmapFromBits(bits, 8, 8, 11,  3);
@@ -7184,22 +7237,19 @@ textpatt.c
          GrPatternDrawStringExt(" Hello world !!", 16, 44, 140, &opt, p2);
          GrKeyRead();
        }
-       fail_p1 = p1 == NULL;
        if (p1)   GrDestroyPattern(p1);
-       fail_p2 = p2 == NULL;
        if (p2)   GrDestroyPattern(p2);
-       fail_font = font == NULL;
        if (font) GrUnloadFont(font);
        GrSetMode(GR_default_text);
-       if (fail_p1) fprintf(stderr, "Couldn't create first pattern\n");
-       if (fail_p2) fprintf(stderr, "Couldn't create second pattern\n");
-       if (fail_font) fprintf(stderr, "Couldn't load font %s\n", FONT);
+       if (!p1) fprintf(stderr, "Couldn't create first pattern\n");
+       if (!p2) fprintf(stderr, "Couldn't create second pattern\n");
+       if (!font) fprintf(stderr, "Couldn't load font %s\n", FONT);
      
        return 0;
      }
 
 
-File: grx245um.inf,  Node: winclip.c,  Next: wintest.c,  Prev: textpatt.c,  Up: Test examples
+File: grx246um.inf,  Node: winclip.c,  Next: wintest.c,  Prev: textpatt.c,  Up: Test examples
 
 winclip.c
 =========
@@ -7261,7 +7311,7 @@ winclip.c
      }
 
 
-File: grx245um.inf,  Node: wintest.c,  Next: drawing.h,  Prev: winclip.c,  Up: Test examples
+File: grx246um.inf,  Node: wintest.c,  Next: drawing.h,  Prev: winclip.c,  Up: Test examples
 
 wintest.c
 =========
@@ -7323,7 +7373,7 @@ wintest.c
      }
 
 
-File: grx245um.inf,  Node: drawing.h,  Next: gfaz.h,  Prev: wintest.c,  Up: Test examples
+File: grx246um.inf,  Node: drawing.h,  Next: gfaz.h,  Prev: wintest.c,  Up: Test examples
 
 drawing.h
 =========
@@ -7365,7 +7415,7 @@ drawing.h
      #undef YP
 
 
-File: grx245um.inf,  Node: gfaz.h,  Next: rand.h,  Prev: drawing.h,  Up: Test examples
+File: grx246um.inf,  Node: gfaz.h,  Next: rand.h,  Prev: drawing.h,  Up: Test examples
 
 gfaz.h
 ======
@@ -7508,7 +7558,7 @@ gfaz.h
      void paint_board( Board *b );
 
 
-File: grx245um.inf,  Node: rand.h,  Next: test.h,  Prev: gfaz.h,  Up: Test examples
+File: grx246um.inf,  Node: rand.h,  Next: test.h,  Prev: gfaz.h,  Up: Test examples
 
 rand.h
 ======
@@ -7559,7 +7609,7 @@ rand.h
      #endif
 
 
-File: grx245um.inf,  Node: test.h,  Next: arctest.dat,  Prev: rand.h,  Up: Test examples
+File: grx246um.inf,  Node: test.h,  Next: arctest.dat,  Prev: rand.h,  Up: Test examples
 
 test.h
 ======
@@ -7590,19 +7640,6 @@ test.h
      #include <stdlib.h>
      #include <string.h>
      
-     #ifdef  __TURBOC__
-     #include <conio.h>
-     #endif
-     
-     #ifdef  __WATCOMC__
-     #include <conio.h>
-     #endif
-     
-     #ifdef  __GNUC__
-     extern  int getch(void);
-     extern  int kbhit(void);
-     #endif
-     
      #include "grx20.h"
      #include "grxkeys.h"
      #include "drawing.h"  /* *note drawing.h:: */
@@ -7617,11 +7654,12 @@ test.h
      void (*testfunc)(void) = name;  \
      void name(void)
      
-     int GRXMain(int argc,char **argv)
+     int main(int argc,char **argv)
      {
      	int  x = 0;
      	int  y = 0;
      	long c = 0;
+     	char m[41];
      
      	Argc = argc - 1;
      	Argv = argv + 1;
@@ -7652,7 +7690,8 @@ test.h
      	GrSetMode(GR_default_text);
      	if(strlen(exit_message) > 0) {
      		puts(exit_message);
-     		getch();
+     		fflush(stdout);
+     		fgets(m,40,stdin);
      	}
      	return(0);
      }
@@ -7660,7 +7699,7 @@ test.h
      #endif /* _TEST_H_ */
 
 
-File: grx245um.inf,  Node: arctest.dat,  Next: polytest.dat,  Prev: test.h,  Up: Test examples
+File: grx246um.inf,  Node: arctest.dat,  Next: polytest.dat,  Prev: test.h,  Up: Test examples
 
 arctest.dat
 ===========
@@ -7675,7 +7714,7 @@ arctest.dat
      arc xc=300 yc=200 xa=25  ya=15  start=0    end=900
 
 
-File: grx245um.inf,  Node: polytest.dat,  Next: Includes,  Prev: arctest.dat,  Up: Test examples
+File: grx246um.inf,  Node: polytest.dat,  Next: Includes,  Prev: arctest.dat,  Up: Test examples
 
 polytest.dat
 ============
@@ -7769,7 +7808,7 @@ polytest.dat
      end
 
 
-File: grx245um.inf,  Node: Includes,  Next: grx20.h,  Prev: polytest.dat,  Up: A User Manual For GRX2
+File: grx246um.inf,  Node: Includes,  Next: grx20.h,  Prev: polytest.dat,  Up: A User Manual For GRX2
 
 Includes
 ========
@@ -7780,7 +7819,7 @@ Includes
 * grxkeys.h::
 
 
-File: grx245um.inf,  Node: grx20.h,  Next: grxkeys.h,  Prev: Includes,  Up: Includes
+File: grx246um.inf,  Node: grx20.h,  Next: grxkeys.h,  Prev: Includes,  Up: Includes
 
 grx20.h
 =======
@@ -7822,7 +7861,7 @@ grx20.h
      **    #endif
      **    #endif
      */
-     #define GRX_VERSION_API 0x0245
+     #define GRX_VERSION_API 0x0246
      
      /* these are the supported configurations: */
      #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -7834,8 +7873,10 @@ grx20.h
      /*#define GRX_VERSION_WATCOM_REAL_MODE  6*/     /* GS - Watcom C++ 11.0 16 Bit - TODO! */
      #define GRX_VERSION_GCC_386_WIN32       7       /* WIN32 using Mingw32 */
      #define GRX_VERSION_MSC_386_WIN32       8       /* WIN32 using MS-VC */
+     #define GRX_VERSION_GCC_386_CYG32       9       /* WIN32 using CYGWIN */
      
-     #define GRXMain main  /* WIN32 targets undef it */
+     #define GRXMain main  /* From the 2.4.6 version We don't need this */
+                           /* anymore, but it is here for previous apps */
      
      #ifdef  __TURBOC__
      #define GRX_VERSION     GRX_VERSION_TCC_8086_DOS
@@ -7850,9 +7891,12 @@ grx20.h
      #endif
      #ifdef  __WIN32__
      #define GRX_VERSION     GRX_VERSION_GCC_386_WIN32
-     #undef GRXMain
      #endif
+     #ifdef __CYGWIN32__
+     #define GRX_VERSION     GRX_VERSION_GCC_386_CYG32
+     #define __WIN32__
      #endif
+     #endif /* __GNUC__ */
      
      #ifdef  __WATCOMC__     /* GS - Watcom C++ 11.0 */
      #ifdef  __DOS__
@@ -7868,7 +7912,6 @@ grx20.h
      #ifdef _WIN32
      #ifdef _M_IX86
      #define GRX_VERSION     GRX_VERSION_MSC_386_WIN32
-     #undef GRXMain
      #if !defined(__WIN32__)
      #define __WIN32__ _WIN32
      #endif
@@ -9425,7 +9468,7 @@ grx20.h
      #endif  /* whole file */
 
 
-File: grx245um.inf,  Node: grxkeys.h,  Prev: grx20.h,  Up: Includes
+File: grx246um.inf,  Node: grxkeys.h,  Prev: grx20.h,  Up: Includes
 
 grxkeys.h
 =========
@@ -9800,68 +9843,68 @@ Tag Table:
 Node: Top229
 Node: A User Manual For GRX2357
 Node: Credits1185
-Node: Hello world2245
-Node: Data types and function declarations3774
-Node: Setting the graphics driver4509
-Node: Setting video modes5435
-Node: Graphics contexts10347
-Node: Context use17540
-Node: Color management18933
-Node: Portable use of a few colors23981
-Node: Graphics primitives25899
-Node: Non-clipping graphics primitives33477
-Node: Customized line drawing34980
-Node: Pattern filled graphics primitives37335
-Node: Patterned line drawing44288
-Node: Image manipulation45857
-Node: Text drawing48689
-Node: Drawing in user coordinates62810
-Node: Graphics cursors69150
-Node: Keyboard input71713
-Node: Mouse event handling73716
-Node: Writing/reading PNM graphics files83020
-Node: Writing/reading PNG graphics files86075
-Node: Writing/reading JPEG graphics files87928
-Node: Miscellaneous functions90255
-Node: BGI interface93037
-Node: Test examples93579
-Node: arctest.c94222
-Node: bb1test.c96610
-Node: blittest.c99200
-Node: circtest.c107124
-Node: cliptest.c109884
-Node: colorops.c111538
-Node: curstest.c115621
-Node: demogrx.c119257
-Node: fontdemo.c135377
-Node: fonttest.c142686
-Node: gfaz.c148025
-Node: imgtest.c160371
-Node: jpgtest.c162909
-Node: keys.c166779
-Node: life.c187191
-Node: linetest.c190636
-Node: memtest.c193276
-Node: mousetst.c195511
-Node: pcirctst.c199659
-Node: pngtest.c202795
-Node: pnmtest.c206338
-Node: polytest.c210594
-Node: rgbtest.c214821
-Node: sbctest.c216104
-Node: scroltst.c223537
-Node: speedtst.c226481
-Node: textpatt.c253950
-Node: winclip.c256750
-Node: wintest.c258732
-Node: drawing.h260672
-Node: gfaz.h262075
-Node: rand.h266805
-Node: test.h268212
-Node: arctest.dat270842
-Node: polytest.dat271413
-Node: Includes272519
-Node: grx20.h272679
-Node: grxkeys.h358201
+Node: Hello world2243
+Node: Data types and function declarations3700
+Node: Setting the graphics driver4435
+Node: Setting video modes5361
+Node: Graphics contexts10273
+Node: Context use17466
+Node: Color management18859
+Node: Portable use of a few colors23907
+Node: Graphics primitives25825
+Node: Non-clipping graphics primitives33403
+Node: Customized line drawing34906
+Node: Pattern filled graphics primitives37261
+Node: Patterned line drawing44214
+Node: Image manipulation45783
+Node: Text drawing48615
+Node: Drawing in user coordinates62736
+Node: Graphics cursors69076
+Node: Keyboard input71639
+Node: Mouse event handling73642
+Node: Writing/reading PNM graphics files82946
+Node: Writing/reading PNG graphics files86001
+Node: Writing/reading JPEG graphics files87854
+Node: Miscellaneous functions90181
+Node: BGI interface92963
+Node: Test examples93505
+Node: arctest.c94148
+Node: bb1test.c96536
+Node: blittest.c99503
+Node: circtest.c107427
+Node: cliptest.c110187
+Node: colorops.c111841
+Node: curstest.c115924
+Node: demogrx.c119560
+Node: fontdemo.c137831
+Node: fonttest.c145112
+Node: gfaz.c150451
+Node: imgtest.c162797
+Node: jpgtest.c165335
+Node: keys.c169202
+Node: life.c189611
+Node: linetest.c193056
+Node: memtest.c195641
+Node: mousetst.c197873
+Node: pcirctst.c202021
+Node: pngtest.c205157
+Node: pnmtest.c208697
+Node: polytest.c212950
+Node: rgbtest.c217177
+Node: sbctest.c218460
+Node: scroltst.c225893
+Node: speedtst.c228837
+Node: textpatt.c256065
+Node: winclip.c258719
+Node: wintest.c260701
+Node: drawing.h262641
+Node: gfaz.h264044
+Node: rand.h268774
+Node: test.h270181
+Node: arctest.dat272626
+Node: polytest.dat273197
+Node: Includes274303
+Node: grx20.h274463
+Node: grxkeys.h360247
 
 End Tag Table

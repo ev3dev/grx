@@ -16,6 +16,10 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by Dimitar Zhekov (jimmy@is-vn.bg) May 11 2003
+ **   - use the default underline height instead of font descent
+ **   - use a separate X display and window (how costly is that?)
+ **   - use the real font name and font family whenever possible
  **/
 
 #include <stdio.h>
@@ -23,9 +27,13 @@
 
 #include "libgrx.h"
 #include "libxwin.h"
+#include <X11/Xatom.h>
 #include "grfontdv.h"
 #include "allocate.h"
+#include "arith.h"
 
+static Display *        fontdsp = NULL;
+static Window           fontwin = None;
 static XFontStruct *    fontp = NULL;
 static Pixmap           fontbmp = None;
 static GC               fontgc = None;
@@ -49,11 +57,15 @@ static void init_swap_byte (void)
 
 static void cleanup(void)
 {
-  if (_XGrDisplay != NULL) {
-    if (fontp != NULL) XFreeFont (_XGrDisplay, fontp);
-    if (fontbmp != None) XFreePixmap (_XGrDisplay, fontbmp);
-    if (fontgc != None) XFreeGC (_XGrDisplay, fontgc);
+  if (fontdsp != NULL) {
+    if (fontp != NULL) XFreeFont (fontdsp, fontp);
+    if (fontbmp != None) XFreePixmap (fontdsp, fontbmp);
+    if (fontgc != None) XFreeGC (fontdsp, fontgc);
+    if (fontwin != None) XDestroyWindow (fontdsp, fontwin);
+    XCloseDisplay (fontdsp);
   }
+  fontdsp = NULL;
+  fontwin = None;
   fontp = NULL;
   fontbmp = None;
   fontgc = None;
@@ -61,41 +73,63 @@ static void cleanup(void)
 
 static int openfile(char *fname)
 {
+  int res;
+  Window root;
   int i, numchars;
 
+  res = FALSE;
   init_swap_byte();
   cleanup();
-  if (_XGrDisplay != NULL) fontp = XLoadQueryFont (_XGrDisplay, fname);
-  if (fontp == NULL)    return(cleanup(), FALSE);
+  fontdsp = XOpenDisplay ("");
+  if (fontdsp == NULL)  goto done;
+  root = DefaultRootWindow (fontdsp);
+  fontwin = XCreateSimpleWindow (fontdsp, root, 0, 0, 1, 1, 0, 0, 0);
+  if (fontwin == None)  goto done;
+
+  fontp = XLoadQueryFont (fontdsp, fname);
+  if (fontp == NULL)    goto done;
 
   numchars = fontp->max_char_or_byte2 - fontp->min_char_or_byte2 + 1;
-  fontbmp = XCreatePixmap (_XGrDisplay, _XGrWindow,
+  fontbmp = XCreatePixmap (fontdsp, fontwin,
                            numchars * fontp->max_bounds.width,
                            fontp->ascent + fontp->descent, 1);
-  if (fontbmp == None)  return(cleanup(), FALSE);
-  fontgc = XCreateGC (_XGrDisplay, fontbmp, 0L, NULL);
-  if (fontgc == None)   return(cleanup(), FALSE);
-  XSetFont (_XGrDisplay, fontgc, fontp->fid);
-  XSetForeground (_XGrDisplay, fontgc, 0);
-  XFillRectangle (_XGrDisplay, fontbmp, fontgc, 0, 0,
+  if (fontbmp == None)  goto done;
+  fontgc = XCreateGC (fontdsp, fontbmp, 0L, NULL);
+  if (fontgc == None)   goto done;
+  XSetFont (fontdsp, fontgc, fontp->fid);
+  XSetForeground (fontdsp, fontgc, 0);
+  XFillRectangle (fontdsp, fontbmp, fontgc, 0, 0,
                   numchars * fontp->max_bounds.width,
                   fontp->ascent + fontp->descent);
-  XSetForeground (_XGrDisplay, fontgc, 1);
-  XSetBackground (_XGrDisplay, fontgc, 0);
+  XSetForeground (fontdsp, fontgc, 1);
+  XSetBackground (fontdsp, fontgc, 0);
   for (i = 0; i < numchars; i++) {
     char c = fontp->min_char_or_byte2 + i;
-    XDrawString (_XGrDisplay, fontbmp, fontgc,
+    XDrawString (fontdsp, fontbmp, fontgc,
                  i * fontp->max_bounds.width,
                  fontp->ascent, &c, 1);
   }
-  return(TRUE);
+  res = TRUE;
+done:
+  if (!res) cleanup();
+  return(res);
 }
 
 static int header(GrFontHeader *hdr)
 {
+  unsigned long card32;
+  char *value;
+
   if (fontp == NULL) return(FALSE);
-  strcpy(hdr->name, "");
   strcpy(hdr->family, "xwin");
+  if (XGetFontProperty (fontp, XA_FAMILY_NAME, &card32)) {
+    value = XGetAtomName (fontdsp, card32);
+    if (value != NULL) {
+      strncpy(hdr->family, value, 99);
+      hdr->family[99] = '\0';
+      XFree (value);
+    }
+  }
   hdr->proportional = (fontp->per_char == NULL) ? FALSE : TRUE;
   hdr->scalable   = FALSE;
   hdr->preloaded  = FALSE;
@@ -103,10 +137,21 @@ static int header(GrFontHeader *hdr)
   hdr->width      = fontp->max_bounds.width;
   hdr->height     = fontp->ascent + fontp->descent;
   hdr->baseline   = fontp->ascent;
-  hdr->ulpos      = fontp->ascent;
-  hdr->ulheight   = fontp->descent;
+  hdr->ulheight   = imax(1,(hdr->height / 15));
+  hdr->ulpos      = hdr->height - hdr->ulheight;
   hdr->minchar    = fontp->min_char_or_byte2;
   hdr->numchars   = fontp->max_char_or_byte2 - fontp->min_char_or_byte2 + 1;
+  strncpy(hdr->name, hdr->family, 89);
+  hdr->name[89] = '\0';
+  sprintf(hdr->name + strlen(hdr->name), "-%d", hdr->height);
+  if (XGetFontProperty (fontp, XA_FONT_NAME, &card32)) {
+    value = XGetAtomName (fontdsp, card32);
+    if (value != NULL) {
+      strncpy(hdr->name, value, 99);
+      hdr->name[99] = '\0';
+      XFree (value);
+    }
+  }
   return(TRUE);
 }
 
@@ -119,7 +164,7 @@ static int charwdt(int chr)
   if (fontp->per_char == NULL)          return(fontp->max_bounds.width);
   width = fontp->per_char[chr - fontp->min_char_or_byte2].width;
   if (width <= 0)
-    return fontp->per_char[fontp->default_char - fontp->min_char_or_byte2].width;;
+    return fontp->per_char[fontp->default_char - fontp->min_char_or_byte2].width;
   return(width);
 }
 
@@ -132,8 +177,8 @@ static int bitmap(int chr,int w,int h,char *buffer)
   if (fontp == NULL || fontbmp == None) return(FALSE);
   if ((w <= 0) || (w != charwdt(chr)))  return(FALSE);
   if ((h <= 0) || (h != (fontp->ascent + fontp->descent)))      return(FALSE);
-  if (_XGrDisplay == NULL)      return(FALSE);
-  img = XGetImage (_XGrDisplay,
+  if (fontdsp == NULL)  return(FALSE);
+  img = XGetImage (fontdsp,
                    fontbmp,
                    (chr - fontp->min_char_or_byte2) * fontp->max_bounds.width,
                    0,
@@ -141,7 +186,7 @@ static int bitmap(int chr,int w,int h,char *buffer)
                    h,
                    AllPlanes,
                    ZPixmap);
-  if (img == NULL)              return(FALSE);
+  if (img == NULL)      return(FALSE);
   data = (unsigned char *)(img->data);
   bpl = (w + 7) >> 3;
   for (y = 0; y < h; y++) {

@@ -28,7 +28,7 @@
 #define FIMAGEPBM2 "prueba.pbm"
 #define FSCREEN "output.ppm"
 
-int GRXMain(void)
+int main(void)
 {
   GrContext *grc;
   int wide, high, maxval;

@@ -3,8 +3,7 @@ program Test_GetDefaultPalette;
  * test program for the Graph unit
 }
 
-uses
-  Graph;
+uses Graph;
 
 var
   i,
@@ -18,19 +17,19 @@ begin
   grDriver := InstallUserDriver('SVGA256', nil); { Not used in GPC }
   InitGraph(grDriver, grMode,'..\..\chr');
   ErrCode := GraphResult;
-  if ErrCode = grOk then
+  if ErrCode = GrOk then
   begin  { Do graphics }
     GetDefaultPalette(pal);
     CloseGraph;
     i := pal.Size;
-    Writeln('Palette size: ', i);
+    WriteLn('Palette size: ', i);
     for i := 0 to pal.Size-1 do
-      Writeln('Color ', i:3, ' : ', pal.Colors[i]);
-    Readln;  
+      WriteLn('Color ', i:3, ' : ', pal.Colors[i]);
+    ReadLn; 
   end
   else begin
-    Writeln('Graphics error:', GraphErrorMsg(ErrCode));
+    WriteLn('Graphics error:', GraphErrorMsg(ErrCode));
     Write  ('Press Enter ...');
-    Readln;
+    ReadLn
   end
 end.

@@ -24,19 +24,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef  __TURBOC__
-#include <conio.h>
-#endif
-
-#ifdef  __WATCOMC__
-#include <conio.h>
-#endif
-
-#ifdef  __GNUC__
-extern  int getch(void);
-extern  int kbhit(void);
-#endif
-
 #include "grx20.h"
 #include "grxkeys.h"
 #include "drawing.h"
@@ -51,11 +38,12 @@ void name(void);        \
 void (*testfunc)(void) = name;  \
 void name(void)
 
-int GRXMain(int argc,char **argv)
+int main(int argc,char **argv)
 {
         int  x = 0;
         int  y = 0;
         long c = 0;
+        char m[41];
 
         Argc = argc - 1;
         Argv = argv + 1;
@@ -86,7 +74,8 @@ int GRXMain(int argc,char **argv)
         GrSetMode(GR_default_text);
         if(strlen(exit_message) > 0) {
                 puts(exit_message);
-                getch();
+                fflush(stdout);
+                fgets(m,40,stdin);
         }
         return(0);
 }

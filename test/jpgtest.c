@@ -61,7 +61,7 @@ void nojpegsupport( void )
   GrKeyRead();
 }
 
-int GRXMain()
+int main()
 {
   GrContext *grc;
 

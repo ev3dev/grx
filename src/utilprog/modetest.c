@@ -21,20 +21,24 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#ifdef __WATCOMC__
-#include <conio.h>
-#endif
-
-#ifdef __DJGPP__
-#include <pc.h>
-#else
-extern int getch(void);
-extern int getkey(void);
-extern int kbhit(void);
-#endif
-
 #include "grx20.h"
+#include "grxkeys.h"
+
 #include "../../test/drawing.h"
+
+static void PrintInfo(void)
+{
+    char aux[81];
+    int x, y;
+
+    sprintf(aux, " Mode: %dx%d %d bpp ", GrCurrentVideoMode()->width,
+    GrCurrentVideoMode()->height, GrCurrentVideoMode()->bpp);
+    x = (GrMaxX() -
+        GrFontStringWidth(&GrDefaultFont, aux, strlen(aux), GR_BYTE_TEXT)) / 2;
+    y = (GrMaxY() -
+        GrFontStringHeight(&GrDefaultFont, aux, strlen(aux), GR_BYTE_TEXT)) / 2;
+    GrTextXY(x, y, aux, GrWhite(), GrBlack());
+}
 
 typedef struct {
     int  w,h,bpp;
@@ -133,7 +137,7 @@ void PrintModes(void) {
         } while (1);
 }
 
-int GRXMain(void)
+int main(void)
 {
         static int firstgr = 1;
         GrSetDriver(NULL);
@@ -172,7 +176,7 @@ int GRXMain(void)
             }
             if(firstgr) {
                 printf(
-                    "When in graphics mode, press <CR> to return to menu.\n"
+                    "When in graphics mode, press any key to return to menu.\n"
                     "Now press <CR> to continue..."
                 );
                 fflush(stdout);
@@ -224,9 +228,8 @@ int GRXMain(void)
                     GrHLine(3*sx,4*sx-1,y,GrBuildRGBcolorT(yy,yy,yy));
                 }
             }
-            kbhit();    /* this is here to flush in the X version 8-) */
-            fgets(m1,40,stdin);
+            PrintInfo();
+            GrKeyRead();
         }
         return 0;
 }
-

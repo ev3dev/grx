@@ -1,6 +1,7 @@
 #
 # GRX test programs makefile for LINUX/X11. Uses GNU make.
 #
+.PHONY : clean setsuid
 
 GRXVX11=y
 
@@ -13,7 +14,17 @@ GRX20X = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
 # or this if you've already installed the shared libs
 #GRX20X = -L../lib/$(GRX_LIB_SUBDIR) -lgrx20X
 
+ifeq ($(SET_XSUIDROOT),y)
+EXECBITS = 4755
+else
+EXECBITS = 0755
+endif
+
 ADDON_LIBS=
+
+ifeq ($(USE_XF86DGA_DRIVER),y)
+  ADDON_LIBS += -lXxf86dga -lXext
+endif
 
 ifeq ($(HAVE_LIBTIFF),y)
   ADDON_LIBS += -ltiff
@@ -67,11 +78,13 @@ PROGS=  xarctest     \
 
 all: $(PROGS) xdemogrx
 
-xdemogrx: demogrx.o gfaz.o $(GRX20)
+xdemogrx: demogrx.o gfaz.o $(GRX20X)
 	$(CC) $(LDOPT) -o xdemogrx demogrx.o gfaz.o $(LIBS)
+	chmod $(EXECBITS) xdemogrx
 
-$(PROGS): x%: %.o $(GRX20)
+$(PROGS): x%: %.o $(GRX20X)
 	$(CC) $(LDOPT) -o $@ $*.o $(LIBS)
+	chmod $(EXECBITS) $@
 
 $(PROGS:x%=%.o): %.o : %.c
 	$(CC) -c $(CCOPT) -D__XWIN__ $(INCDIR) $*.c -o $*.o
@@ -84,6 +97,14 @@ $(PROGS:x%=%.o): %.o : %.c
 
 clean:
 	rm -f *.o $(PROGS) xdemogrx
+
+setsuid: $(PROGS) xdemogrx
+ifeq ($(SET_XSUIDROOT),y)
+	chown root $(PROGS) xdemogrx
+	chmod $(EXECBITS) $(PROGS) xdemogrx
+else
+	@echo "Nothing to do, SET_XSUIDROOT is not set to 'y' in makedefs.grx"
+endif
 
 depend.new:
 	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:x%=%.c) > depend.new

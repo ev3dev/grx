@@ -7,10 +7,9 @@ uses
   Graph;
 
 var
-  grDriver,
-  grMode   : Integer;
+  grDriver, grMode: Integer;
 begin
   grDriver := Detect;
   InitGraph(grDriver, grMode,'');
-  CloseGraph;
+  CloseGraph
 end.

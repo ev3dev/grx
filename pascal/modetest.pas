@@ -1,33 +1,30 @@
-Program Vir_Test;
+program Vir_Test;
 
-uses
-  grx;
+uses GRX;
 
 var
   i, f, m : Integer;
   gvm : GrVideoMode;
-  cuvm, fivm : GrVideoModePtr;
+  fivm : GrVideoModePtr;
 
 begin
-  { Das initialisiert grx20 erstmal }
-  m := GrSetMode(GR_default_text, 0, 0, 0, 0, 0);
+  { intializes grx20 }
+  m := GrSetMode(Gr_Default_Text, 0, 0, 0, 0, 0);
 
   GrSetModeRestore(False);
 
-  for f := GR_unknown_mode to GR_frameSVGA32H do begin
+  for f := Gr_Unknown_Mode to Gr_FrameSVGA32H do begin
     fivm := GrFirstVideoMode(f);
     while fivm <> Nil do begin
       gvm := fivm^;
       i := i + 1;
-      write  (i:3);
-      write  (f:3);
-      write  (gvm.mode:6);
-      write  (gvm.width:5, 'x',gvm.height:4, 'x', ord(gvm.bpp):3);
-      { write  (' ', gvm.present > chr(0)); }
-      writeln;
-      fivm := GrNextVideoMode(fivm);
-    end;
+      Write  (i:3);
+      Write  (f:3);
+      Write  (gvm.Mode:6);
+      Write  (gvm.Width:5, 'x',gvm.Height:4, 'x', Ord(gvm.BPP):3);
+      WriteLn;
+      fivm := GrNextVideoMode(fivm)
+    end
   end;
-  readln;
-  { M := GrSetMode(GR_default_text,0,0,0,0,0); }
+  ReadLn
 end.

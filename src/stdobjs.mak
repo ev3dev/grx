@@ -300,7 +300,7 @@ BGI_5 =	$(OP)bgi/rgbpal_g$(OX)	\
 	$(OP)bgi/text$(OX)	\
 	$(OP)bgi/text1$(OX)	\
 	$(OP)bgi/text2$(OX)	\
-	$(OP)bgi/text3$(OX)	\
+	$(OP)bgi/text3$(OX)
 	
 BGI_6 =	$(OP)bgi/text4$(OX)	\
 	$(OP)bgi/text5$(OX)	\
@@ -318,12 +318,10 @@ BGI_6 =	$(OP)bgi/text4$(OX)	\
 
 DBG_1 = $(OP)utils/dbgprint$(OX)
 
-TIF_1 = $(OP)../addons/ctx2tiff$(OX)
-
 JPG_1 = $(OP)gformats/ctx2jpg$(OX) \
 	$(OP)gformats/jpg2ctx$(OX)
 
-NOJPG_1 = $(OP)gformats/dummyjpg$(OX) \
+NOJPG_1 = $(OP)gformats/dummyjpg$(OX)
 
 BMP_1 = $(OP)../addons/bmp/bmp$(OX)
 
@@ -332,7 +330,7 @@ TIF_1 = $(OP)../addons/ctx2tiff$(OX)
 PNG_1 = $(OP)gformats/ctx2png$(OX) \
 	$(OP)gformats/png2ctx$(OX)
 
-NOPNG_1 = $(OP)gformats/dummypng$(OX) \
+NOPNG_1 = $(OP)gformats/dummypng$(OX)
 
 PRN_1 = $(OP)../addons/print/grxprint$(OX) \
 	$(OP)../addons/print/prndata$(OX)

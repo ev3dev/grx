@@ -3,7 +3,7 @@
 #
 # set up for GCC / Linux
 #
-.PHONY : libst libsh clean cleanall install uninstall \
+.PHONY : libst libsh clean cleanall install uninstall setsuid \
 	 install-bin uninstall-bin install-fonts uninstall-fonts \
 	 install-info uninstall-info
          
@@ -15,6 +15,22 @@ INCDIR= -I. -I./include -I../include $(X11INCS)
 
 ifdef GRX_DEFAULT_FONT_PATH
 CCOPT += -DGRX_DEFAULT_FONT_PATH=\"$(GRX_DEFAULT_FONT_PATH)\"
+endif
+
+ifeq ($(USE_XF86DGA_DRIVER),y)
+CCOPT += -DXF86DGA_DRIVER
+endif
+
+ifeq ($(SET_XSUIDROOT),y)
+EXECBITS = 4755
+else
+EXECBITS = 0755
+endif
+
+ADDON_LIBS =
+
+ifeq ($(USE_XF86DGA_DRIVER),y)
+  ADDON_LIBS += -lXxf86dga -lXext
 endif
 
 GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
@@ -83,6 +99,18 @@ O=      $(STD_O)            \
 	misc/x11misc.o      \
 	vdrivers/vd_xwin.o
 
+ifeq ($(USE_XF86DGA_DRIVER),y)
+O+=	fdrivers/lfb16.o    \
+	fdrivers/lfb24.o    \
+	fdrivers/lfb32h.o   \
+	fdrivers/lfb32l.o   \
+	fdrivers/lfb8.o     \
+	fdrivers/lfbbltrv.o \
+	fdrivers/lfbbltvr.o \
+	fdrivers/lfbbltvv.o \
+	vdrivers/vd_xfdga.o
+endif
+
 ifeq ($(INCLUDE_BGI_SUPPORT),y)
   O += $(BGI_O)
 endif
@@ -119,8 +147,9 @@ $(UTILP): ../bin/% : utilprog/%.o $(GRX20ST)
 	$(STRIP) $@
 
 $(UTILPX): ../bin/x% : utilprog/%.o $(GRX20ST)
-	$(CC) -o $@ utilprog/$*.o $(GRX20ST) $(X11LIBS)
+	$(CC) -o $@ utilprog/$*.o $(GRX20ST) $(ADDON_LIBS) $(X11LIBS)
 	$(STRIP) $@
+	chmod $(EXECBITS) $@
 
 $(O): $(LINUX_i386_X11)
 
@@ -181,6 +210,14 @@ ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	rm -f $(INSTALLDIR)/units/graph.pas
 endif
 
+setsuid: $(UTILPX)
+ifeq ($(SET_XSUIDROOT),y)
+	chown root ../bin/modetest
+	chmod $(EXECBITS) ../bin/modetest
+else
+	@echo "Nothing to do, SET_XSUIDROOT is not set to 'y' in makedefs.grx"
+endif
+
 install-info:
 	install -m 0755 -d $(INSTALLDIR)/info
 	install -m 0644 ../doc/grx*um.inf $(INSTALLDIR)/info/grx.info
@@ -202,7 +239,7 @@ install-bin: $(UTILP) $(UTILPX)
 	install -m 0755 -d $(INSTALLDIR)/bin
 	install -m 0755 ../bin/bin2c $(INSTALLDIR)/bin
 	install -m 0755 ../bin/fnt2c $(INSTALLDIR)/bin
-	install -m 0755 ../bin/xmodetest $(INSTALLDIR)/bin
+	install -m $(EXECBITS) ../bin/xmodetest $(INSTALLDIR)/bin
 
 uninstall-bin:
 	rm -f $(INSTALLDIR)/bin/bin2c

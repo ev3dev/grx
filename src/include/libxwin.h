@@ -29,6 +29,12 @@
 
 #include <X11/Xlib.h>
 
+#if defined(XF86DGA_DRIVER)
+#include <X11/extensions/xf86dga.h>
+extern int _XGrWindowedMode;
+#else
+#define _XGrWindowedMode 1
+#endif
 
 /*
   Invoke pre-X11R6 ICCCM routines if XlibSpecificationRelease is not 6.
@@ -71,6 +77,7 @@ extern unsigned long   _XGrColorPlanes[8];
 extern unsigned int    _XGrColorNumPlanes;
 extern unsigned long   _XGrColorPixels[2];
 extern unsigned int    _XGrColorNumPixels;
+extern char *          _XGrClassNames[6];
 
 extern int              _XGrKeyboardHit(void);
 extern int              _XGrKeyboardGetKey(void);

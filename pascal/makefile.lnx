@@ -20,7 +20,7 @@ COMPILER = gpc --automake
 PROGS= 			\
 	blt_test 	\
 	modetest 	\
-	taste 		\
+	keytest 		\
 	txt_test 	\
 	vir_test	\
 	polytest	\

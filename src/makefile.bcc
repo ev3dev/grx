@@ -117,10 +117,6 @@ clean:
 	if exist ..\addons\*.obj       del ..\addons\*.obj
 	if exist ..\addons\print\*.obj del ..\addons\print\*.obj
 	if exist ..\addons\bmp\*.obj   del ..\addons\bmp\*.obj
-	if exist ..\bin\vesaif16.exe del ..\bin\vesaif16.exe
-	if exist ..\bin\fnt2c16.exe del ..\bin\fnt2c16.exe
-	if exist ..\bin\modtst16.exe del ..\bin\modtst16.exe
-	if exist ..\bin\bin2c16.exe del ..\bin\bin2c16.exe
 	if exist config.bcc del config.bcc
 	if exist *.asm del *.asm
 	if exist *.obj del *.obj
@@ -128,6 +124,7 @@ clean:
 
 cleanall: clean
 	if exist $(GRX20ST) del $(GRX20ST)
+ 	if exist ..\bin\*.exe del ..\bin\*.exe
 
 # the & tells TLIB to continue on next line
 $(GRX20ST): $(GRX20STa) $(GRX20STb) $(GRX20STc) $(GRX20STd) $(GRX20STe) $(LOBJ6:+=)

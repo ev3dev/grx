@@ -6,8 +6,6 @@ height 14
 minchar 0
 maxchar 255
 baseline 12
-undwidth 1
-undpos 13
 
 ; character 0 width = 8
 ........

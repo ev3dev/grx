@@ -49,17 +49,22 @@ typedef struct {
 #ifdef DEBUG
 static void bdump(char *hd,unsigned char *bmp,int w,int h,int pitch)
 {
-        if(GrCurrentMode() >= GR_320_200_graphics) return;
-        printf("%s (%dx%d):\n",hd,w,h);
-        while(--h >= 0) {
-            int x;
-            for(x = 0; x < w; x++) {
-                putchar(bmp[x] ? '#' : '.');
+        char *s;
+        DBGPRINTF(DBG_FONT, ("%s (%dx%d):\n",hd,w,h));
+        setup_ALLOC();
+        s = ALLOC((size_t) (w + 1));
+        if(s == NULL) DBGPRINTF(DBG_FONT, ("no memory to show the char\n"));
+        else {
+            while(--h >= 0) {
+                int x;
+                for(x = 0; x < w; x++) s[x] = bmp[x] ? '#' : '.';
+                s[x] = '\0';
+                DBGPRINTF(DBG_FONT, ("%s\n", s));
+                bmp += pitch;
             }
-            putchar('\n');
-            bmp += pitch;
+            FREE(s);
         }
-        putchar('\n');
+        reset_ALLOC();
 }
 #define BDUMP(hd,bmp,w,h,pitch) bdump(hd,bmp,w,h,pitch)
 #else

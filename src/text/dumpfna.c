@@ -43,7 +43,6 @@ void GrDumpFnaFont(const GrFont *f, char *fileName)
         fprintf(fp, "maxchar %d\n", f->h.minchar + f->h.numchars - 1);
         fprintf(fp, "baseline %d\n", f->h.baseline);
         fprintf(fp, "undwidth %d\n", f->h.ulheight);
-        fprintf(fp, "undpos %d\n", f->h.ulpos);
         /* write characters */
         for(chr = f->h.minchar; chr < f->h.minchar + f->h.numchars; chr++) {
             width = GrFontCharWidth(f, chr);

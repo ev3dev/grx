@@ -38,7 +38,7 @@ int     set_BGI_print_mode ( int mode , char * dest )
 
 
 
-int     bgiprint_init (void)
+static  int     bgiprint_init (void)
   {
       int  ret;
       ret = GrPrintSetMode (__gr_print_mode);
@@ -50,7 +50,7 @@ int     bgiprint_init (void)
   }
 
 
-int     bgiprint_close (void)
+static  int     bgiprint_close (void)
   {
       if (__gr_print_dest)
         {

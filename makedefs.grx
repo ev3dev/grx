@@ -5,7 +5,7 @@
 
 # Specify version of GRX
 # Currently only used to generate name of shared libraries for linux
-GRX_VERSION=2.4.5
+GRX_VERSION=2.4.6
 
 # Specify if you have libtiff.a and corresponding .h files.
 # Change setting to 'y' if you have it, or to 'n' if not.
@@ -106,10 +106,11 @@ USE_FRAMEBUFFER_DRIVER=y
 # (see bellow)
 SET_SUIDROOT=y
 
-# Set to 'n' this variable if you don't want suid root executables with
-# svgalib 1.9.x (alpha). This removes framedrivers that use inport/outport:
-# 1, and 4 bpp and the 8 bpp mode X
-USE_INOUTP_FRAMEDRIVERS=y
+# Set to 'y' this variable if you want to add the framedrivers that use
+# inport/outport instructions: 1 and 4 bpp modes and the 8 bpp mode X. But
+# beware this works only with svgalib 1.4.x (not with 1.9.x) and without
+# the linux framebuffer enabled
+USE_INOUTP_FRAMEDRIVERS=n
 
 endif
 
@@ -125,6 +126,14 @@ INSTALLDIR=/usr/local
 
 # Set the default GRX font path
 #GRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
+
+# Set to try to use the XFree86 Direct Graphics Access driver (DGA2)
+# (if DGA2 is not available, fall back to the windowed X11 driver)
+# CAUTION! As of XFree86-4.2.1, DGA/DGA2 is unstable and may lockup!
+USE_XF86DGA_DRIVER=n
+
+# Set or not set suid root for X11 - must be 'y' for DGA2 to work
+SET_XSUIDROOT=n
 
 # The X11 base dir on your system
 X11BASE=/usr/X11R6

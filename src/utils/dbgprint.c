@@ -20,11 +20,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-#include "grxkeys.h"
 #include "grxdebug.h"
-#ifdef __XWIN__
-#include "libxwin.h"
-#endif
 
 #ifndef DBG_LOGFILE
 #define DBG_LOGFILE "grxdebug.log"
@@ -53,11 +49,6 @@ void _GR_debug_printf(char *fmt,...)
         vfprintf(dfp,fmt,ap);
         va_end(ap);
         fclose(dfp);
-#ifndef __XWIN__
-        if (GrKeyPressed()) {
-          if (GrKeyRead() == GrKey_Escape) exit(1);
-        }
-#endif
 }
 
 #endif

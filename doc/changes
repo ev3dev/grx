@@ -4,6 +4,111 @@ the 2.2 version.
 
 Date     Changes
 
+03/07/17 ----------- GRX v2.4.6 released (Mariano Alvarez Fernandez)
+03/07/15 fdv_win.c: the resource header fields must be swapped,
+         not the data they "point" to, by Dimitar Zhekov.
+03/07/15 Changed the default to 'n' for the USE_INOUTP_FRAMEDRIVERS
+         switch in makedefs.grx 
+03/06/25 In the svgalib driver don't re-setting the initial mode if
+         it's already set, by Dimitar Zhekov.
+03/06/23 define alloca to __builtin_alloca in src/include/allocate.h
+         to avoid warnings in Mingw with gcc 3.x. src/makefile.lnx,
+         src/makefile.x11: don't link ADDON_LIBS for UTILP.
+         src/stdobjs.mak: remove any duplicate definitions and
+         trailing \-s. src/text/buildfnt.c: produce a more readable
+         bdump() DEBUG output, by Dimitar Zhekov.
+03/06/23 The GRX raw keyboard I/O can't be safely used in text mode.
+         Fixed it in test/bgi/, by Dimitar Zhekov.
+03/06/10 Small fixes, replaced some printf with DBGPRINTF, removed
+         GrKeyPressed test in debug mode, it can't be used in all
+         plattforms, by Dimitar Zhekov.
+03/06/10 Small chamges to fdv_win.c, better name/family supportm, avoid
+         possible overflow, by Dimitar Zhekov.
+03/06/10 More Pascal updates, by Frank Heckenbach.
+03/05/31 Small fixes to fdv_fna.c and fdv_xwin.c, by Dimitar Zhekov.
+03/05/31 Pascal demos updates, by Eike Lange.
+03/05/03 Added a InvalidateRect in the loadcolor function in the Win32
+         videodriver, now the play-palette bgi demo works properly.
+         I think the Win32 driver is now very usable, not more in alpha.
+03/05/03 Faster w32_drawpixel function in the Win32 framedrivers.
+03/05/02 Small patch for the next GPC version, by Frank Heckenbach.
+03/05/02 Small test fixes, by Dimitar Zhekov.
+03/05/02 Added a cleanall target to the borland makefile,
+         by Dimitar Zhekov.
+03/04/02 Added new video driver for Xfree86 DGA2 (Direct Graphics Access),
+         experimental, not compiled by default, you must activate it in
+         makedefs.grx, by Dimitar Zhekov.
+03/03/31 New 8bpp frame driver (by Josu) and 24 bpp frame driver (by me)
+         for Win32. They use the standard GRX framedirvers plus the
+         necesary InvalidateRects. Now the Win32 version is faster and
+         reliable.
+03/03/31 With the Thomas idea of using a DIB i nthe win32 video driver,
+         we can now use the DIB like a linear frame buffer, so the new
+         win32 framedrivers can take advantage of the standard GRX frame
+         drivers, by Josu Onandia.
+03/03/31 Use a DIB for the hDCMem in the win32 video driver,
+         by Thomas Demmer
+03/03/11 The alternate linux console input driver now calls
+         _LnxfbSwitchConsoleAndWait if _lnxfb_waiting_to_switch_console
+         is set.
+03/03/11 Changes to the linuxfb driver. Added code to catch a signal
+         when user wants to change virtual terminals. The driver sets
+         _lnxfb_waiting_to_switch_console and the input driver must
+         calls _LnxfbSwitchConsoleAndWait then.
+         Previous function _SwitchConsoleLnxfbDriver renamed to
+         _LnxfbSwitchConsoleVt, not used,is here only for possible
+         future use.
+03/03/10 Some more adjustments to GPC changes. This time, however,
+         there will be backward-incompatible changes (WRT …smname'
+         etc.). Therefore, I'm using a compiler version check, so it
+         should work with old and new GPC versions. At this occasion,
+         I'm also removing the old-style external variable syntax
+         (of GPC versions prior to 2000-04-12) from graph.pas, by
+         Frank Heckenbach.
+03/03/10 Changes the x11 font driver to use it's own X11 display
+         and window. It allows X11 fonts to be loaded before GrSetMode()
+         and makes the font driver independent from the X11 video and
+         frame drivers, by Dimitar Zhekov.
+03/03/10 Syncs ulheight/ulpos calculation in the X11 font driver with
+         all other drivers for which ulheight isn't known, by
+         Dimitar Zhekov.
+03/02/27 Changes to the .fna font driver: undpos is not supported and
+         fix driver inability to read fonts with 2+ nonempty "note",
+         by Dimitar Zhekov.
+03/02/26 Get rid of GRXMain in test programs, we use main now.
+03/02/12 Sanitize the Thomas changes.
+03/02/12 Changes to the win32 videodriver. Instead of begin with WinMain
+         and start a thread with the main GRX program, do it backward:
+         begin in main and start a thread to handle the Windows window.
+         With this change we get rid of the awful GRXMain special entry
+         point and GRX compiles now with CygWin, added the new platform
+         to grx20.h, by Thomas Demmer <TDemmer@krafteurope.com>
+03/02/11 Some small bugfixes for the Pascal units, by Frank Heckenbach.
+03/01/14 Pascal units rewritten, this is to make the formatting more in
+         line with the GPC conventions, by Frank Heckenbach.
+02/12/29 The alternate linux console input driver now works with PS2 and
+         IMPS2 mice (but the whell is not used).
+02/12/21 Added function to change virtual terminals in the linuxfb
+         driver, _SwitchConsoleLnxfbDriver to be called from the input
+         driver (it doesn't work yet).
+02/12/21 Some cleanups to the linuxfb driver, now the text screen restart
+         ok on exit.
+02/12/13 Added 8bpp paletted mode to the linuxfb driver,
+         by Josu Onandia.
+02/11/24 In fdrivers/lfb8.c, lfbbltrv.c, lfbbltvr.c and lfbbltvv.c
+         there was a erroneous test on LBF_BY_NEAR_POINTER instead
+         LFB_BY_NEAR_POINTER, reported by <YaoXiaoxi@elong.com>.
+02/11/24 Changes avoid some warnings given by `-W' in graph.pas, by
+         Frank Heckenbach. 
+02/11/24 The test program launcher, demogrx, has now two pages. Added
+         some fontdemos.
+02/10/27 Modetest shows the actual resolution when in graphics mode.
+02/10/26 Corrected bug in fdrives/ram4.c, if the GR_UNDERLINE_TEXT
+         flag was set colors were wrong, reported by Alex.
+02/10/26 Corrected bug in draw/bitblt1b.c, bad source origin if the
+         destination origin was negative, by Alex <alexbodn@012.net.il>
+         Changed bb1test.c test program to see the efect.
+
 02/10/20 ----------- GRX v2.4.5 released (Mariano Alvarez Fernandez)
 02/10/18 Changed __MINGW32__ to _WIN32 in Pascal units, by
          Frank Heckenbach. 

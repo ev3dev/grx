@@ -10,37 +10,12 @@ of using real planes.
 <li>Printing in 1200dpi on Laserjet supporting PCL6 doesn't work.
 </ul>
 
-<h2>Linux console framebuffer driver:</h2>
-<ul>
-<li>Try to change modes if the underlaying framebuffer driver allow it.
-<p>
-<li>Complete the alternate direct mouse driver (now it only handles
-PS/2 mouses) to have a svgalib free GRX.
-<p>
-<li>When in graphics mode, the virtual console switching is disabled
-by default, so some code is necesary to enable it.
-<p>
-<li>Only 15, 16 and 24bpp framedrivers are provided.
-</ul>
-
 <h2>Win32 driver:</h2>
 <ul>
-<li>There is a general design problem. The video driver is initiated
-    at the begining instead when the user program call GrSetDriver (usually
-    indirectly by calling GrSetMode), this makes difficult the use the
-    memory driver.
+<li>Drawline can be faster. Now when we paint a long diagonal line, the
+invalidate rect is very big.
 <p>
-<li>Logical operations for 8 bpp are wrong implemented, they must operate
-    with color indices instead of colors.
-<p>
-<li>Drawline must paint the last point (not trivial).
-<p>
-<li>Add support for all logical operations in drawpixel, drawblock and
-    putscanline.
-<p>
-<li>Implement getiscanline for 8 and 24 bpp.
-<p>
-<li>Implement bltv2r for 24 bpp.
+<li>Add a 16 bpp framedriver.
 <p>
 <li>The printing code doesn't work correctly.
 </ul>
@@ -55,20 +30,38 @@ by default, so some code is necesary to enable it.
 <li>The driver can't respond to PAINT events, so it has problems with
     XFree86 v4 because the backing-store is not enabled by default. The
     best solution is to have a context to save the actual window (and
-    the GrPixel problem can be solved too). Te workaround is to add 
+    the GrPixel problem can be solved too). The workaround is to add 
     next lines to the /etc/X11/XF86Config-4 file, in the Device section:
 <p>      Option "BackingStore"
 <p>      Option "SaveUnders"
 </ul>
 
-<h2>SVGALIB driver:</h2>
+<h2>Linux console framebuffer driver:</h2>
 <ul>
-<li>The mouse jumps more than one pixel.
+<li>Try to change modes if the underlaying framebuffer driver allow it.
+<p>
+<li>Complete the alternate direct mouse driver (now it only handles
+PS/2 and IMPS2 mice).
+<p>
+<li>Use the alternate input driver even when the Svgalib driver is included,
+so virtual consoles can be switched.
+</ul>
+
+<h2>Linux console SVGALIB driver:</h2>
+<ul>
+<li>Nedded alternate framedrivers for 1 and 4 bpp modes. The actual ones are
+using inport/outport instructions and doesn't work with svgalib 1.9.x and
+even with 1.4.x if the linux framebuffer is enabled.
+<p>
+<li>A bug in gcc 3.2 and never compilers abort the compilation with errors
+like "can't find a register in class AD_REGS while reloading asm". No fix
+at the moment. Workaround: change "-O2" to "-O1" in makedefs.grx.
 </ul>
 
 <h2>VGA DOS driver:</h2>
 <ul>
 <li>It can be improved a lot, replacing the generic funtions it uses.
+<p>
 <li>BitBlt to screen doens't work in 4bpp modes if the screen is not
 set as the default context.
 </ul>

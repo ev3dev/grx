@@ -58,7 +58,7 @@ void drawpixel(int x,int y,GrColor color)
         offs = FOFS(x,y,CURC->gc_lineoffset);
         mask = 0x80 >> (x &= 7);
         cval = (unsigned int)color << (7 - x);
-        switch(op = C_OPER(color)) {
+        switch(op = C_OPER(color) & 3) {
           case C_WRITE:
           case C_AND:
             CURC->gc_baseaddr[0][offs] &= ((cval     ) | ~mask);

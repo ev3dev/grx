@@ -69,7 +69,11 @@ ifeq ($(INCLUDE_BMP_CODE),y)
 endif
 
 W32_O = $(ADDON_O)              \
-	fdrivers/fd_win32.o     \
+	fdrivers/fdw32_24.o     \
+	fdrivers/fdw32_8.o      \
+	fdrivers/lfbbltrv.o     \
+	fdrivers/lfbbltvr.o     \
+	fdrivers/lfbbltvv.o     \
 	fdrivers/ram24.o        \
 	fdrivers/ram32l.o       \
 	fdrivers/ram32h.o       \

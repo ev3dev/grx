@@ -1,26 +1,26 @@
-unit test;
+unit Test;
 
-INTERFACE
+interface
 
-uses grx;
+uses GRX;
 
-var exit_message: string [1000];
+var exit_message: String [1000];
 
 procedure InitTest;
 procedure EndTest;
 
-IMPLEMENTATION
+implementation
 
 procedure InitTest;
-   var M,n,i: integer;
-       w,h,c: integer = 0;
+   var m,n,i: Integer;
+       w,h,c: Integer = 0;
 begin
    if ParamCount < 2 then 
-      M := GrSetMode(GR_default_graphics,0,0,0,0,0)
+      m := GrSetMode(Gr_Default_Graphics,0,0,0,0,0)
    else begin
-      for n:=1 to Paramcount do begin
-         readstr(Paramstr(n),i);
-         case Paramstr(n)[length(ParamStr(n))] of
+      for n:=1 to ParamCount do begin
+         ReadStr(ParamStr(n),i);
+         case ParamStr(n)[Length(ParamStr(n))] of
             'k','K': i := i shl 10;
             'm','M': i := i shl 20;
          end;
@@ -28,23 +28,23 @@ begin
             1: w:=i;
             2: h:=i;
             3: c:=i;
-         end;
+         end
       end;
       if ParamCount = 2 then
-         M:=GrSetMode(GR_width_height_graphics,w,h,0,0,0)
+         m :=GrSetMode(Gr_Width_Height_Graphics,w,h,0,0,0)
       else 
-         M := GrSetMode(GR_width_height_color_graphics,w,h,c,0,0);
-   end;
+         m := GrSetMode(Gr_Width_Height_Color_Graphics,w,h,c,0,0)
+   end
 end;
 
 procedure EndTest;
-   var M:integer; k:GrKeyType;
+   var m:Integer; k:GrKeyType;
 begin
-   M:=GrSetMode(GR_default_text,0,0,0,0,0);
+   m:=GrSetMode(Gr_Default_Text,0,0,0,0,0);
    if exit_message <> '' then begin
-      writeln(exit_message);
-      k:=GrKeyRead;
-   end;
+      WriteLn(exit_message);
+      k:=GrKeyRead
+   end
 end;
 
 end.

@@ -36,7 +36,7 @@ begin
   { grDriver := InstallUserDriver('SVGA256', nil); Not used in GPC }
   InitGraph(grDriver, grMode,'..\..\chr');
   ErrCode := GraphResult;
-  if ErrCode = grOk then
+  if ErrCode = GrOk then
   begin  { Do graphics }
     for i := 0 to GetMaxMode do
     begin
@@ -54,32 +54,30 @@ begin
       if GetMaxColor < 256 then
 	for c := 0 to GetMaxColor do
 	begin
-	  Setcolor(c);
+	  SetColor(c);
 	  Line(c + 10, 5, c + 10, 30)
 	end
       else
 	for c := 0 to 255 do
 	begin
-	  Setcolor(c);
+	  SetColor(c);
 	  Line(c + 10, 5, c + 10, 30)
 	end;
 
-      readln;
-
+      ReadLn;
       SetColor(White);
       for c:= 1 to GetMaxX div 3 do
 	Line(c * 3, 0, c * 3, GetMaxY);
       for c:= 1 to GetMaxY div 3 do
 	Line(0, c * 3, GetMaxX, c * 3);
-
-      readln;
+      ReadLn
     end;
-    CloseGraph;
+    CloseGraph
   end
   else begin
     Writeln('Graphics error:', GraphErrorMsg(ErrCode));
     Write  ('Press Enter ...');
-    Readln;
+    ReadLn
   end
 end.
 

@@ -348,7 +348,7 @@ static KeyEntry Keys[] = {
 
 #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
 
-int GRXMain(void) {
+int main(void) {
   int spaces_count = 0;
   KeyEntry *kp;
   GrKeyType k;

@@ -15,7 +15,7 @@ COMPILER = gpc --automake -Wall
 # I Think, you don't need to change from here
 # --------------------------------------------
 
-all: blt_test modetest taste txt_test vir_test polytest jpgtest colortst imgview
+all: blt_test modetest keytest txt_test vir_test polytest jpgtest colortst imgview
 
 blt_test:blt_test.pas
 	$(COMPILER) $(GRXLIB) $(GRAPHICSLIB) blt_test.pas -oblt_test
@@ -23,8 +23,8 @@ blt_test:blt_test.pas
 modetest:modetest.pas
 	$(COMPILER) $(GRXLIB) $(GRAPHICSLIB) modetest.pas -omodetest
 
-taste:	taste.pas
-	$(COMPILER) $(GRXLIB) $(GRAPHICSLIB) taste.pas -otaste
+keytest:	keytest.pas
+	$(COMPILER) $(GRXLIB) $(GRAPHICSLIB) keytest.pas -okeytest
 
 txt_test:txt_test.pas
 	$(COMPILER) $(GRXLIB) $(GRAPHICSLIB) txt_test.pas -otxt_test
@@ -45,6 +45,6 @@ imgview:imgview.pas
 	$(COMPILER) $(GRXLIB) $(GRAPHICSLIB) imgview.pas -oimgview
 
 clean:
-	rm -f *.o *.gpi blt_test modetest taste txt_test vir_test polytest jpgtest colortst imgview
+	rm -f *.o *.gpi blt_test modetest keytest txt_test vir_test polytest jpgtest colortst imgview
 
 

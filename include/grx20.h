@@ -35,7 +35,7 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0245
+#define GRX_VERSION_API 0x0246
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -47,8 +47,10 @@
 /*#define GRX_VERSION_WATCOM_REAL_MODE  6*/     /* GS - Watcom C++ 11.0 16 Bit - TODO! */
 #define GRX_VERSION_GCC_386_WIN32       7       /* WIN32 using Mingw32 */
 #define GRX_VERSION_MSC_386_WIN32       8       /* WIN32 using MS-VC */
+#define GRX_VERSION_GCC_386_CYG32       9       /* WIN32 using CYGWIN */
 
-#define GRXMain main  /* WIN32 targets undef it */
+#define GRXMain main  /* From the 2.4.6 version We don't need this */
+                      /* anymore, but it is here for previous apps */
 
 #ifdef  __TURBOC__
 #define GRX_VERSION     GRX_VERSION_TCC_8086_DOS
@@ -63,9 +65,12 @@
 #endif
 #ifdef  __WIN32__
 #define GRX_VERSION     GRX_VERSION_GCC_386_WIN32
-#undef GRXMain
 #endif
+#ifdef __CYGWIN32__
+#define GRX_VERSION     GRX_VERSION_GCC_386_CYG32
+#define __WIN32__
 #endif
+#endif /* __GNUC__ */
 
 #ifdef  __WATCOMC__     /* GS - Watcom C++ 11.0 */
 #ifdef  __DOS__
@@ -81,7 +86,6 @@
 #ifdef _WIN32
 #ifdef _M_IX86
 #define GRX_VERSION     GRX_VERSION_MSC_386_WIN32
-#undef GRXMain
 #if !defined(__WIN32__)
 #define __WIN32__ _WIN32
 #endif

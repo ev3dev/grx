@@ -1,7 +1,6 @@
 Program Blt_Test;
 
-uses
-  grx;
+uses GRX;
 
 procedure TestFunc;
 var
@@ -20,22 +19,18 @@ begin
 end; { TestFunc }
 
 var
-   i, j,
-   x, y, xv, yv, bpp,
+   x, y, xv, yv, BPP,
    m : Integer;
-   f : GrFont;
-   o  : GrTextOption;
-   Col: GrTextColor;
 
 begin
    x  :=  1024;
    y  :=  768;
    xv :=  1024;
    yv :=  1024;
-   bpp:=  8;
+   BPP:=  8;
 
-(* M := GrSetMode(GR_width_height_bpp_graphics,x,y,bpp,0,0); *)
-   M := GrSetMode(GR_custom_bpp_graphics,x,y,bpp,xv,yv);
+(* M := GrSetMode(GR_Width_Height_BPP_Graphics,x,y,bpp,0,0); *)
+   m := GrSetMode(Gr_Custom_BPP_Graphics,x,y,BPP,xv,yv);
 
    TestFunc;
    GrCircle(400,400,200,GrWhite);
@@ -46,11 +41,11 @@ begin
    writeln('GrScreenContext');
    GrBitBltNC(GrScreenContext, 200, 200, GrScreenContext, 0, 0, 200, 200, GrWrite);
    readln;
-   GrBitBltNC(GrScreenContext, 300, 300, GrScreenContext, 0, 0, 200, 200, GrOR);
+   GrBitBltNC(GrScreenContext, 300, 300, GrScreenContext, 0, 0, 200, 200, GrOr);
    readln;
-   GrBitBltNC(GrScreenContext, 400, 400, GrScreenContext, 0, 0, 200, 200, GrAND);
+   GrBitBltNC(GrScreenContext, 400, 400, GrScreenContext, 0, 0, 200, 200, GrAnd);
    readln;
-   GrBitBltNC(GrScreenContext, 500, 500, GrScreenContext, 0, 0, 200, 200, GrXOR);
+   GrBitBltNC(GrScreenContext, 500, 500, GrScreenContext, 0, 0, 200, 200, GrXor);
    readln;
    GrBitBltNC(GrScreenContext, 600, 600, GrScreenContext, 0, 0, 200, 200, GrImage);
    readln;
