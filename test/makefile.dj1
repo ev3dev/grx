@@ -41,8 +41,10 @@ PROGS=                  \
 	modetest.exe    \
 	mousetst.exe    \
 	pcirctst.exe    \
+	pnmtest.exe     \
 	polytest.exe    \
 	rgbtest.exe     \
+	sbctest.exe     \
 	scroltst.exe    \
 	speedtst.exe    \
 	textpatt.exe    \

@@ -1,7 +1,19 @@
 /**
- ** IMGTEST.C ---- test image functions mapping
+ ** imgtest.c ---- test image functions mapping
  **
  ** Copyright (c) 1998 Hartmut Schirmer
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "test.h"
@@ -40,7 +52,7 @@ TESTFUNC(imgtest)
         GrImageDisplay(ww+16,1,img1);
         GrImageDisplayExt(0,wh+4,x-1,y-1, img1);
 
-        getch();
+        GrKeyRead();
 
         for (m1=1; m1 <= PARTS ; m1<<=1) {
           for (d1=1; d1 <= PARTS; d1 <<= 1) {
@@ -55,7 +67,7 @@ TESTFUNC(imgtest)
             }
           }
         }
-        getch();
+        GrKeyRead();
 
         /* let's finish with some GrGetScanline / GrPutScanline tests */
         for (d1 = 1; d1 < 32; ++d1) {
@@ -68,6 +80,6 @@ TESTFUNC(imgtest)
           }
         }
 
-        getch();
+        GrKeyRead();
 }
 

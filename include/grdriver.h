@@ -1,8 +1,19 @@
 /**
- ** GRDRIVER.H ---- utilities for frame buffer and video card drivers
+ ** grdriver.h ---- utilities for frame buffer and video card drivers
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #ifndef __GRDRIVER_H_INCLUDED__
@@ -54,6 +65,8 @@ _GrFrameDriverSVGA32H_LFB,              /* Super VGA 16M color padded #2 */
 _GrFrameDriverXWIN8,                /* X 8 bpp */
 _GrFrameDriverXWIN16,               /* X 16 bpp */
 _GrFrameDriverXWIN24,               /* X 24 bpp */
+_GrFrameDriverXWIN32L,                  /* X 32 bpp padded #1 */
+_GrFrameDriverXWIN32H,                  /* X 32 bpp padded #2 */
 #endif
 _GrFrameDriverRAM1,                     /* mono */
 _GrFrameDriverRAM4,                     /* 16 color planar */

@@ -56,7 +56,7 @@ B. Set the environment variables
      This is required for GRX graphics text output. Path: <GRX base>/fonts
      NOTE: You can define a default font directory when compiling GRX.
 	   E.g, if you installed the fonts in /usr/local/lib/grx/fonts add
-	     CCOPT += -DGRX_DEFAULT_FONT_PATH="/usr/local/lib/grx/fonts"
+	     CCOPT += -DGRX_DEFAULT_FONT_PATH=\"/usr/local/lib/grx/fonts\"
 	   to makedefs.gnu (Linux / GNU-make example)
 
 

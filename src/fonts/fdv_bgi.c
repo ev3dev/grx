@@ -1,11 +1,23 @@
 /**
- ** FDV_BGI.C -- driver for Borland BGI font file format
+ ** fdv_bgi.c -- driver for Borland BGI font file format
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  ** Contrib by Christian Domp (alma.student.uni-kl.de) See "doc/contrib.doc"
  ** Contributions by: (See "doc/credits.doc" for details)
  ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
+ **
  **/
 
 #include <stdio.h>

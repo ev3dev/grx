@@ -1,8 +1,19 @@
 /**
- ** DRWCPOLY.C ---- draw the outline of a custom (wide and/or dashed) polygon
+ ** drwcpoly.c ---- draw the outline of a custom (wide and/or dashed) polygon
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "libgrx.h"
@@ -231,7 +242,7 @@ static void dashedsegment(
         int x,y,dx,dy;
         int error,erradd,errsub,count;
         int xinc1,xinc2,yinc1,yinc2;
-        int start[2],end[2];
+        int start[2],end[2], se_init;
 
         /* find the current starting segment for the pattern */
         pos = (p->ppos %= p->plength);
@@ -267,9 +278,11 @@ static void dashedsegment(
             yinc1  = yinc2;
             xinc1  = 0;
         }
+        se_init = 0;
         if(on) {
             start[0] = x;
             start[1] = y;
+            se_init = 1;
         }
         else {
             prev = NULL;
@@ -279,6 +292,7 @@ static void dashedsegment(
             if(on) {
                 end[0] = x;
                 end[1] = y;
+                se_init |= 2;
             }
             if((error -= errsub) < 0) {
                 error += erradd;
@@ -300,15 +314,19 @@ static void dashedsegment(
                 if ( !old_state &&  on && count > 0) {
                     start[0] = x;
                     start[1] = y;
+                    se_init = 1;
                 } else
                 if (  old_state && !on) {
                     (*doseg)(start,end,prev,NULL,p);
                     prev = NULL;
+                    se_init = 0;
                 }
                 /* else: zero length element(s), continue current segment */
             }
         }
-        if(on) (*doseg)(start,end,prev,next,p);
+        if(on && se_init==3) {
+            (*doseg)(start,end,prev,next,p);
+        }
         p->on = on;
 }
 

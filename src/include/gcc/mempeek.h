@@ -1,12 +1,23 @@
 /**
- ** MEMPEEK.H ---- (far) memory read/write operations
+ ** mempeek.h ---- (far) memory read/write operations
  **                GNU-C special assembler code
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
  ** Basic memory peek and poke operations in byte, word and long sizes.
  ** The poke operations are available in WRITE, XOR, OR and AND versions.
+ **
  **/
 
 /* ================================================================ */
@@ -82,13 +93,13 @@
 })
 
 #define __INLINE_386_POKE24__(P,C,INS,SEL) do {                         \
+          int _dummy_;                                                  \
           __asm__ volatile(                              "\n"           \
-                "    "#INS"w %%ax," SEL "(%1)             \n"           \
+                "    "#INS"w %%ax," SEL "(%2)             \n"           \
                 "    shrl    $8,%%eax                     \n"           \
-                "    "#INS"b %%ah," SEL "2(%1)            \n"           \
-                : /* nothing */                                         \
-                : "a" ((unsigned)(C)), "r" ((void *)(P))                \
-                : "ax"                                                  \
+                "    "#INS"b %%ah," SEL "2(%2)            \n"           \
+                : "=a" (_dummy_)                                        \
+                : "0" (C), "r" ((void *)(P))                            \
           );                                                            \
 } while (0)
 

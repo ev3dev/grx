@@ -1,12 +1,25 @@
 /**
- ** BLITTEST.C ---- test various bitblt-s
+ ** blittest.c ---- test various bitblt-s
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "test.h"
 
@@ -36,7 +49,6 @@ void drbox(GrContext *src,int x,int y)
 
 void doblits(GrContext *src,int x,int y)
 {
-        GrColor xc = GrAllocColor(255,255,255) | GrXOR;
         int xx = (GrSizeX() - BWW)/ 2;
         int yy = 2;
         int ii;
@@ -47,7 +59,9 @@ void doblits(GrContext *src,int x,int y)
             yy += (BHH + 2);
         }
 /*
-        getch();
+  {
+        GrColor xc = GrAllocColor(255,255,255) | GrXOR;
+        GrKeyRead();
         xx = (GrSizeX() - BWW)/ 2;
         yy = 2;
         for(ii = 0; ii < 8; ii++) {
@@ -55,6 +69,7 @@ void doblits(GrContext *src,int x,int y)
             xx++;
             yy += (BHH + 2);
         }
+  }
 */
 }
 
@@ -65,7 +80,7 @@ void bltest(GrContext *src,int x,int y)
         for(ii = 0; ii < 8; ii++) {
             drbox(src,x,y);
             doblits(src,x,y);
-            getch();
+            GrKeyRead();
             x++;
         }
 }
@@ -101,8 +116,11 @@ TESTFUNC(blittest)
         GrContext *tile = GrCreateContext(bw,bh,NULL,NULL);
 
         blxtest();
+        GrKeyRead();
+
         BWW = 3;
         blxtest();
+        GrKeyRead();
 
         bcolors.fbx_intcolor = GrAllocColor(160,100,30);
         bcolors.fbx_topcolor = GrAllocColor(240,150,45);
@@ -137,7 +155,7 @@ TESTFUNC(blittest)
 
         GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        getch();
+        GrKeyRead();
 
         GrClearScreen(0);
         GrSetContext(save);
@@ -172,7 +190,7 @@ TESTFUNC(blittest)
 
         GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        getch();
+        GrKeyRead();
 
 
         GrBitBlt(tile,
@@ -210,7 +228,7 @@ TESTFUNC(blittest)
         GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
 
-        getch();
+        GrKeyRead();
         GrResetClipBox();
         GrBitBlt(NULL,
            60,60,
@@ -221,7 +239,7 @@ TESTFUNC(blittest)
            GrWRITE
         );
 
-        getch();
+        GrKeyRead();
 
         GrBitBlt(NULL,
            10,10,
@@ -232,7 +250,7 @@ TESTFUNC(blittest)
            GrWRITE
         );
 
-        getch();
+        GrKeyRead();
 
         GrSetContext(tile);
         GrClearContext(0);
@@ -270,7 +288,7 @@ TESTFUNC(blittest)
         GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
 
-        getch();
+        GrKeyRead();
 
 }
 

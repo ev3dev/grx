@@ -5,7 +5,10 @@
 # set MAKE to GNU make
 #MAKE=gmake
 
-all: libs test
+MAKEDEFS_DIR=.
+include makedefs.x11
+
+all: libs test bgitest
 
 libs: static_libs shared_libs
 
@@ -17,8 +20,22 @@ shared_libs:
 
 test:   static_libs
 	$(MAKE) -C test -f makefile.x11
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	$(MAKE) -C pascal -f makefile.x11
+	$(MAKE) -C pascal/bgi/demos -f makefile.x11
+	$(MAKE) -C pascal/bgi/test -f makefile.x11
+endif
+
+bgitest:   static_libs
+	$(MAKE) -C test/bgi -f makefile.x11
 
 clean:
 	$(MAKE) -C test          -f makefile.x11 clean
+	$(MAKE) -C test/bgi      -f makefile.x11 clean
 	$(MAKE) -C src  STATIC=1 -f makefile.x11 clean
 	$(MAKE) -C src  SHARED=1 -f makefile.x11 clean
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	$(MAKE) -C pascal -f makefile.x11 clean
+	$(MAKE) -C pascal/bgi/demos -f makefile.x11 clean
+	$(MAKE) -C pascal/bgi/test -f makefile.x11 clean
+endif

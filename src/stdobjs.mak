@@ -54,7 +54,8 @@ STD_3 = $(OP)fonts/fdv_bgi$(OX)     \
 	$(OP)image/iinverse$(OX)    \
 	$(OP)image/imginlne$(OX)    \
 	$(OP)image/iplot$(OX)       \
-	$(OP)image/istretch$(OX)
+        $(OP)image/istretch$(OX)    \
+        $(OP)pnm/ctx2pnm$(OX)
 
 STD_4 = $(OP)mouse/bldcurs$(OX)     \
 	$(OP)mouse/drawcurs$(OX)    \
@@ -213,4 +214,113 @@ STD_11= $(OP)utils/resize$(OX)      \
 	$(OP)wideline/custplne$(OX) \
 	$(OP)wideline/custpoly$(OX) \
 	$(OP)wideline/drwcpoly$(OX)
+
+BGI_1 =	$(OP)bgi/arc$(OX)	\
+	$(OP)bgi/aspectra$(OX)	\
+	$(OP)bgi/bar$(OX)	\
+	$(OP)bgi/bar3d$(OX)	\
+	$(OP)bgi/bccgrx$(OX)	\
+	$(OP)bgi/bgimode$(OX)	\
+	$(OP)bgi/circle$(OX)	\
+	$(OP)bgi/clearvp$(OX)	\
+	$(OP)bgi/closegra$(OX)	\
+	$(OP)bgi/clrdev$(OX)	\
+	$(OP)bgi/detectg$(OX)	\
+	$(OP)bgi/drvname$(OX)	\
+	$(OP)bgi/egacolor$(OX)	\
+	$(OP)bgi/ellipse$(OX)	\
+	$(OP)bgi/errmsg$(OX)
+
+BGI_2 =	$(OP)bgi/fellipse$(OX)	\
+	$(OP)bgi/fillpatb$(OX)	\
+	$(OP)bgi/fillpolb$(OX)	\
+	$(OP)bgi/fillstyl$(OX)	\
+	$(OP)bgi/fldfill$(OX)	\
+	$(OP)bgi/getbkcol$(OX)	\
+	$(OP)bgi/getcol$(OX)	\
+	$(OP)bgi/getdefpa$(OX)	\
+	$(OP)bgi/getfillp$(OX)	\
+	$(OP)bgi/getfills$(OX)	\
+	$(OP)bgi/getgramo$(OX)	\
+	$(OP)bgi/getimage$(OX)	\
+	$(OP)bgi/getmaxmo$(OX)	\
+	$(OP)bgi/getmoran$(OX)	\
+	$(OP)bgi/getpixel$(OX)	\
+	$(OP)bgi/getviewp$(OX)
+
+BGI_3 =	$(OP)bgi/getx$(OX)	\
+	$(OP)bgi/gety$(OX)	\
+	$(OP)bgi/gmaxcol$(OX)	\
+	$(OP)bgi/gmmaxcol$(OX)	\
+	$(OP)bgi/gmmaxx$(OX)	\
+	$(OP)bgi/gmmaxy$(OX)	\
+	$(OP)bgi/gpalsize$(OX)	\
+	$(OP)bgi/graphres$(OX)	\
+	$(OP)bgi/imagesze$(OX)	\
+	$(OP)bgi/instbgid$(OX)	\
+	$(OP)bgi/lineb$(OX)	\
+	$(OP)bgi/linerel$(OX)	\
+	$(OP)bgi/lineto$(OX)	\
+	$(OP)bgi/lnestyle$(OX)
+
+BGI_4 =	$(OP)bgi/modename$(OX)	\
+	$(OP)bgi/moverel$(OX)	\
+	$(OP)bgi/moveto$(OX)	\
+	$(OP)bgi/page1$(OX)	\
+	$(OP)bgi/page2$(OX)	\
+	$(OP)bgi/page3$(OX)	\
+	$(OP)bgi/page4$(OX)	\
+	$(OP)bgi/page5$(OX)	\
+	$(OP)bgi/page6$(OX)	\
+	$(OP)bgi/palette$(OX)	\
+	$(OP)bgi/pieslice$(OX)	\
+	$(OP)bgi/polygonb$(OX)	\
+	$(OP)bgi/putimage$(OX)	\
+	$(OP)bgi/putpixel$(OX)	\
+	$(OP)bgi/rectang$(OX)	\
+	$(OP)bgi/regbgidr$(OX)
+
+BGI_5 =	$(OP)bgi/rgbpal_g$(OX)	\
+	$(OP)bgi/rgbpal_s$(OX)	\
+	$(OP)bgi/rstcrtmd$(OX)	\
+	$(OP)bgi/sector$(OX)	\
+	$(OP)bgi/setbgiwh$(OX)	\
+	$(OP)bgi/setbkcol$(OX)	\
+	$(OP)bgi/setbusze$(OX)	\
+	$(OP)bgi/setcolor$(OX)	\
+	$(OP)bgi/setrgbc$(OX)	\
+	$(OP)bgi/setviewp$(OX)	\
+	$(OP)bgi/setwrmod$(OX)	\
+	$(OP)bgi/text$(OX)	\
+	$(OP)bgi/text1$(OX)	\
+	$(OP)bgi/text2$(OX)	\
+	$(OP)bgi/text3$(OX)	\
+	
+BGI_6 =	$(OP)bgi/text4$(OX)	\
+	$(OP)bgi/text5$(OX)	\
+	$(OP)bgi/text6$(OX)	\
+	$(OP)bgi/text7$(OX)	\
+	$(OP)bgi/text8$(OX)	\
+	$(OP)bgi/text9$(OX)	\
+	$(OP)bgi/texta$(OX)	\
+	$(OP)bgi/textb$(OX)	\
+	$(OP)bgi/textc$(OX)	\
+	$(OP)bgi/textd$(OX)	\
+	$(OP)bgi/txtlnest$(OX)  \
+	$(OP)bgi/bgiext01$(OX)  \
+	$(OP)bgi/bgiext02$(OX)
+
+DBG_1 = $(OP)utils/dbgprint$(OX)
+
+TIF_1 = $(OP)../addons/ctx2tiff$(OX)
+
+JPG_1 = $(OP)../addons/ctx2jpeg$(OX)
+
+BMP_1 = $(OP)../addons/bmp/bmp$(OX)
+
+TIF_1 = $(OP)../addons/ctx2tiff$(OX)
+
+PRN_1 = $(OP)../addons/print/grxprint$(OX) \
+	$(OP)../addons/print/prndata$(OX)  \
+	$(OP)bgi/bgiprint$(OX)
 

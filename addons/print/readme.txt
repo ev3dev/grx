@@ -15,7 +15,7 @@ I didn't even try to compile it with Borland C++ for real mode as
 I think it is useless due to lack of memory needed for buffer where
 to create image. To print from GRX under Linux one should install
 printer filter that allows to send PCL output to printer.
- 
+
 Only some modes are tested:
 	Epson LQ printer : 180x180 dpi
         LaserJet 4L : 300x300 dpi (with and without compression)
@@ -29,7 +29,7 @@ Currently it's included as addon to GRX.
 
 --------------------  Files  -------------------------------------------
 grxprint.c	- main sources of printing code
-grxprint.h      - interface definitions for user 
+grxprint.h      - interface definitions for user
 prndata.c       - printer definitions 
 grxprn00.h      - definitions used internally by grxprint only
 test.cc         - test example

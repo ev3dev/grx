@@ -1,7 +1,7 @@
 Program Text_Test;
  
 uses
-  grx20;
+  grx;
 
 procedure TestFunc;
 var
@@ -45,7 +45,6 @@ begin
    GrCircle(400,400,205,GrWhite);
    GrLineNC(0, 0, GrScreenX, GrScreenY, GrWhite);
    GrLineNC(0, GrScreenY, GrScreenX, 0, GrWhite);
-   readln;
 
    { o.txo_font    := @GrFont_PC8x16; }
    o.txo_font    := GrLoadFont('PC8x16.FNT');
@@ -56,11 +55,11 @@ begin
    o.txo_xalign  := GR_ALIGN_DEFAULT;
    o.txo_yalign  := GR_ALIGN_DEFAULT;
 
-   GrDrawString('Das ist ein Text', 16, 20, 20, o);
-   St := 'Das ist auch ein Text';
+   GrDrawString('This is simple text', 16, 20, 20, o);
+   St := 'This text is more complex';
    o.txo_font    := @GrFont_PC8x8;
    GrDrawString(St, Length(St), 20, 50, o);
-   GrTextXY(20, 80, 'Das ist ein zweiter Test', GrBlack, GrWhite);
+   GrTextXY(20, 80, 'This is another text', GrBlack, GrWhite);
 
    o.txo_font    := GrLoadFont('HELV22.FNT');
    GrDrawString(St, Length(St), 20, 100, o);

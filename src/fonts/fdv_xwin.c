@@ -1,10 +1,21 @@
 /**
- ** FDV_XWIN.C -- driver X Windows fonts
+ ** fdv_xwin.c -- driver X Windows fonts
  **
  ** Author:     Ulrich Leodolter
  ** E-mail:     ulrich@lab1.psy.univie.ac.at
  ** Date:       Thu Sep 28 11:21:46 1995
  ** RCSId:      $Id$
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include <stdio.h>

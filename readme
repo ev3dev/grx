@@ -1,0 +1,176 @@
+Welcome to GRX 2.3.4!
+
+GRX is a graphics library originaly written by Csaba Biegl for DJ Delorie's
+DOS port of the GCC compiler. Now it support a big range of platforms.
+
+
+GRX installation instructions
+=============================
+
+Requirements:
+-------------
+
+  The source files and fonts:  grx234.tgz or grx234.zip
+  This document:               readme
+
+  Currently GRX directly supports the following platforms:
+
+     DOS     / DJGPP v1.12     (GCC 2.6.3)
+     DOS     / DJGPP v2.03     (GCC 2.8.1, and newer)
+     DOS     / Borland C++     (v2.0, v3.1 and v4.52 checked)
+     DOS     / Turbo C         (v1.0)
+     DOS     / Watcom C++      (v11.0 checked, 32bit only)
+     Linux   / svgalib         (GCC 2.7.2, 2.8.1, and newer)
+     Linux   / X11R6           (GCC 2.7.2, 2.8.1, and newer)
+     Solaris / X11R5           (GCC 2.7.2, SUN cc v4.1)
+
+  GRX should work on any X11R5 (or later) system after a few 
+  changes in makedefs.gnu and makedefs.x11
+
+  Most makefiles (DJGPP and Unix systems) require GNU make
+
+
+A. Unpacking the GRX archive
+----------------------------
+
+  1) Choose and download the .tgz or .zip package. You can use either, but
+     the .tgz is best suited for linux/unix system, because source files
+     are in unix format (not CR-LF). The .zip is intended for dos users,
+     specialy for DJGPP users, because it expand to the contrib subdir.
+
+  2) 'cd' to a directory where you want the GRX file tree to be created
+     as a subdirectory. Examples are:
+
+       DJGPP: \DJGPP\
+       Unix : /usr/src/
+
+  3) unpack the GRX archive:
+
+         tar xzf grx234.tgz
+     or
+         unzip grx234.zip
+
+     This will create a subdirectory 'grx234' or 'contrib/grx234'.
+
+
+B. Set the environment variables
+--------------------------------
+
+  1) set the default driver and graphics mode info (very useful but not
+     required), in DOS:
+
+       SET GRX20DRV=<driver> gw <width> gh <height> nc <colors>
+
+     in linux:
+
+       export GRX20DRV="<driver> gw <width> gh <height> nc <colors>"
+
+     Available drivers are for
+
+       DOS  : herc, stdvga, stdega, et4000, cl5426, mach64,
+              ati28800, s3, VESA, memory
+       Linux: svgalib, memory
+       X11  : xwin, memory
+
+     Values for gw and gh can be by example 640,480 or 800,600
+     Values for nc can be 2, 16, 256, 64K or 16M.
+
+  2) set the GRX font dir, in DOS:
+
+       SET GRXFONT=<directory for the GRX fonts>
+
+     in linux:
+
+       export GRXFONT=<directory for the GRX fonts>
+
+     This is required for GRX graphics text output. Path: <GRX base>/fonts
+
+     NOTE: You can define a default font directory when compiling GRX.
+	   E.g, if you installed the fonts in /usr/local/lib/grx/fonts add
+	     CCOPT += -DGRX_DEFAULT_FONT_PATH="/usr/local/lib/grx/fonts"
+	   to makedefs.gnu (Linux / GNU-make example)
+
+
+C. Compiling GRX
+----------------
+
+  1) Go to GRX base dir and check the makefile and makedefs file
+     for your system setup
+
+  2) Switch to src sub dir and check the makefile
+
+  3) run make -f <your makefile>
+     (some system may need additional arguments here !)
+
+  Note for DJGPP users: Do _not_ use an environment variable
+  `SHELL' leading to `bash', e.g. `SHELL=/djgpp/bin/bash.exe'.
+  Some parts of the DJGPP Makefiles require `command.com'.
+
+
+D. Testing GRX
+--------------
+
+  1) Switch to test sub dir, check the makefile
+
+  2) run make -f <your makefile>
+
+  3) run the 'demogrx' program
+
+  1) Switch to test/bgi sub dir, check the makefile
+
+  2) run make -f <your makefile>
+
+  3) run the 'bccbgi' program
+
+  Note for SVGALIB users: you must compile test programs as root.
+
+
+E. Installing GRX for your compiler
+-----------------------------------
+
+  You'll either need to 1: copy some GRX files to places where your compiler
+  will find them or 2: change your compiler setup so it will find the GRX
+  files in there default place.
+
+  1) Copy the library from <GRX base>/lib/<your system> to the compiler
+     library directory.
+     Copy the header files from <GRX base>/include to your compiler include
+     directory
+
+  2) See compiler documentation. Either change the default compiler behaviour
+     (eg., change djgpp.env) or use command line switches to tell the
+     compiler where to find the GRX files.
+
+
+F. Problems
+-----------
+
+  Read the user's guide in the "doc" subdirectory.
+
+  If you have problems installing or running GRX check
+
+    http://www.gnu.de/software/GRX/
+
+  for updates, pre-compiled libs, ...
+
+  If this doesn't help, check your system/compiler FAQ (eg., the
+  DJGPP v2 FAQ is at http://www.delorie.com/djgpp/v2faq)
+
+  Check the GRX mailing list archive at
+  http://www.gnu.de/archive/wilma.cgi/grx
+
+  Check out the DJGPP newsgroup comp.os.msdos.djgpp (archive at
+  http://www.delorie.com/djgpp/mail-archives)
+
+  Send a problem report to comp.os.msdos.djgpp or to the GRX mailing
+  list <grx@gnu.de> (see below).
+
+
+There is a GRX mailing list <grx@gnu.de> and a separate, moderated
+mailing list for GRX announcements <grx-announce@gnu.de>. To
+subscribe to one of the lists, send an email containing "subscribe
+grx" or "subscribe grx-announce" in the body to <majordomo@gnu.de>.
+(The subject will be ignored.)
+
+Enjoy.
+

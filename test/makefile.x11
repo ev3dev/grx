@@ -2,7 +2,8 @@
 # GRX 2.0 test programs makefile for LINUX/X11. Uses GNU make.
 #
 
-include  ../makedefs.x11
+MAKEDEFS_DIR = ..
+include  $(MAKEDEFS_DIR)/makedefs.x11
 
 INCDIR=  -I../include
 
@@ -31,8 +32,7 @@ ifndef   DEBUG
 LDOPT += -s
 endif
 
-PROGS=               \
-	xarctest     \
+PROGS=  xarctest     \
 	xblittest    \
 	xcirctest    \
 	xcliptest    \
@@ -46,24 +46,32 @@ PROGS=               \
 	xmodetest    \
 	xmousetst    \
 	xpcirctst    \
+	xpnmtest     \
 	xpolytest    \
 	xrgbtest     \
+	xsbctest     \
 	xscroltst    \
 	xspeedtst    \
 	xtextpatt    \
 	xwinclip     \
 	xwintest
 
-all: $(PROGS) ../bin/xmodetest
+all: $(PROGS) ../bin/xmodetest xdemogrx
 
 ../bin/xmodetest: xmodetest
 	cp xmodetest ../bin
+
+xdemogrx: demogrx.o gfaz.o
+	$(CC) $(LDOPT) -o xdemogrx demogrx.o gfaz.o $(LIBS)
 
 $(PROGS): x%: %.o ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
 	$(CC) $(LDOPT) -o $@ $*.o $(LIBS)
 
 $(PROGS:x%=%.o): %.o : %.c
-	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
+	$(CC) -c $(CCOPT) -D__XWIN__ $(INCDIR) $*.c -o $*.o
+
+.c.o:
+	$(CC) -c $(CCOPT) -D__XWIN__ $(INCDIR) $*.c
 
 .c.s:
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c

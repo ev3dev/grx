@@ -2,7 +2,18 @@
  ** DRAWCURS.C ---- display, erase and move graphics cursors
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "mouse/input.h"
@@ -24,8 +35,8 @@ void GrDisplayCursor(GrCursor *C)
         ypos = C->ycord - C->yoffs;
         xsiz = C->xwork;
         ysiz = C->ywork;
-        xwrk = (xpos - (C->xsize >> 1)) & ~7;
-        ywrk = (ypos - (C->ysize >> 1)) & ~7;
+        xwrk = xpos & ~7;
+        ywrk = ypos & ~7;
         if(xwrk < 0) xwrk = 0;
         if(ywrk < 0) ywrk = 0;
         if(xwrk > (GrVirtualX() - xsiz)) xwrk = GrVirtualX() - xsiz;

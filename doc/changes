@@ -1,22 +1,68 @@
-Hi,
-
-this file lists the history of changes to the grx source files.
-
-Hartmut
-
+This file lists the history of changes to the grx source files from
+the 2.2 version.
 -------------------------------------------------------------------
 
 Date     Changes
+
+01/02/06 user's manual in info format contributed by Vicente Fuentes Gea
+           <vfg@servidor.unam.mx>
+01/02/01 new WIN32 Mingw32 target (memory driver only)
+01/01/28 ctx2pnm functiosn added.
+01/01/28 user's manual updated again.
+01/01/28 new test programs added: pnmtest and demogrx.
+01/01/28 some test programs bug fixes.
+01/01/28 pascal subdirectory update contributed by Eike Lange
+           <eike.lange@uni-essen.de>
+
+01/01/24 ----------- GRX v2.3.3 released (Mariano Alvarez Fernandez)
+01/01/21 BGI test programs moved to test/bgi
+01/01/21 Added the updated GRX user's guide.
+01/01/20 BCC2GRX license comments changed to point to the GRX license.
+01/01/20 Sources changed to point to the copying.grx file
+01/01/10 Applied some patches by Andris Pavenis.
+
+00/09/14 ----------- GRX v2.3.2 released (Peter Gerwinski)
+
+00/06/21 ----------- GRX v2.3.1 released (Peter Gerwinski)
+00/06/21 Some bug fixes (solved problems induced by the update).
+
+00/05/20 ----------- GRX update released (Hartmut Schirmer)
+00/05/20 Added AIX support in grx20.h, xwininp.c, allocate.h as
+	 suggested by Andris Pavenis <pavenis@lanet.lv>.
+	 Added BGI-Support from BCC2GRX.
+00/05/19 Don't use GCC/i386 asm in highlow.h on gcc after v2.8.x
+00/05/17 Added test/sbctest.c contributed by
+           Mariano Alvarez Fernandez <malfer@teleline.es>
+	 Fixed additional subcontext bugs in GrPatternFilledLine
+	   and GrPatternFilledPlot (reported by Mariano Alvarez
+	   Fernández <malfer@teleline.es>)
+	 Applied the 32bit X11 patch by Ulrich Leodolter
+00/04/23 Applied some changes suggested by Josu Onandia
+           <jonandia@fagorautomation.es>
+         - pattern/patfbox.c: Context offset wasn't added
+             to drawing coordinates
+         - text/buildfnt.c: Fixed a typo, pointer to passed
+             free() not same as returned by malloc()
+         - mouse/drawcurs.c: Incorrect calculation of mouse
+             cursor work area
+         Applied asm bugfixes by Ian Miller <Ian@shelob.f9.co.uk>
+           required for EGCS/GCC compilers after v2.8.x
+           and for binutils after v2.9.1
+         Changed GRX internal version to 0x0231
+         Changed return type of main in test/textpatt.c to int
+00/04/06 Fixed an uninitialized variable reported by Josu Onandia
+           <jonandia@fagorautomation.es>n wideline/drwcpoly.c
 98/06/28 Updated addons/print test files
-	 Added a not to DJGPP & BCC src/makefiles that command.com
-	   is required as shell
+	 Added a note to DJGPP & BCC src/makefiles that command.com
+           is required as shell
 98/06/08 GCC asm enhancements (arith.h,ioport.h,highlow.h)
 98/06/07 fine tuning mach64 banking functions
 98/06/06 Fixed a typo in addons/ctx2jpeg.c
 	 DJGPP&BCC didn't cleanup the addons subdir's
 	 DJGPP v1 failed on grxprint.c compilation
 	 Added optimized GCC/i386 asm repfill_b code
-98/06/03 ----------- GRX v2.3 released
+
+98/06/03 ----------- GRX v2.3 released (Hartmut Schirmer)
 98/05/26 Fixed a bug in gcc/highlow.h
 98/05/24 Printing code synced with Andris
 	 Some additional files needed memcopy.h

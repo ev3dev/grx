@@ -1,7 +1,7 @@
 Program Blt_Test;
 
 uses
-  grx20;
+  grx;
 
 procedure TestFunc;
 var

@@ -1,8 +1,20 @@
 /**
- ** PCIRCTST.C ---- test custom circle and ellipse rendering
+ ** pcirctst.c ---- test custom circle and ellipse rendering
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "test.h"
@@ -32,7 +44,7 @@ void drawellip(int xc,int yc,int xa,int ya,GrColor c1,GrColor c2,GrColor c3)
         for (idx = 0, l = *Patterns; l != NULL; l = Patterns[++idx])
             for (wdt=widths; *wdt != 0; ++wdt) {
                 GrClearScreen(GrBlack());
-/*
+
                 GrFilledBox(xc-xa,yc-ya,xc+xa,yc+ya,c1);
                 dx = xa;
                 dy = 0;
@@ -50,11 +62,11 @@ void drawellip(int xc,int yc,int xa,int ya,GrColor c1,GrColor c2,GrColor c3)
                     GrPlot(x1,y2,c3);
                     GrPlot(x2,y2,c3);
                 }
-*/
+
                 l->lno_color = c2;
                 l->lno_width = *wdt;
                 GrCustomEllipse(xc,yc,xa,ya,l);
-                if(getch() == 'q') {
+                if(GrKeyRead() == 'q') {
                   stop = 1;
                   return;
                 }

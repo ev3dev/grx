@@ -1,8 +1,20 @@
 /**
- ** SPEEDTST.C ---- check all available frame drivers speed
+ ** speedtst.c ---- check all available frame drivers speed
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include <string.h>
@@ -530,8 +542,8 @@ void blittest(gvmode *gp, XY_PAIRS *pairs, int ram) {
 
 #if BLIT_loops-0
   blit_measure(gp, &gp->blitv2v, xb, yb,
-               RAMMODE(gp) ? GrCurrentContext() : NULL,
-               RAMMODE(gp) ? GrCurrentContext() : NULL);
+               (GrContext *)(RAMMODE(gp) ? GrCurrentContext() : NULL),
+               (GrContext *)(RAMMODE(gp) ? GrCurrentContext() : NULL));
   if (!BLIT_FAIL(gp) && !ram) {
     GrContext rc;
     GrContext *rcp = GrCreateContext(gp->w,gp->h,NULL,&rc);

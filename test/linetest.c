@@ -1,8 +1,20 @@
 /**
- ** LINETEST.C ---- test wide and patterned lines
+ ** linetest.c ---- test wide and patterned lines
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "test.h"
@@ -48,11 +60,11 @@ TESTFUNC(test1)
             GrCustomLine(420,100,440,300,&o4);
             GrCustomLine(480,100,460,300,&o4);
             GrCustomLine(600,200,500,300,&o4);
-            getkey();
+            GrKeyRead();
             GrClearScreen(GrBlack());
             GrCustomBox(50,50,550,350,&o3);
             GrCustomCircle(300,200,50,&o2);
-            getkey();
+            GrKeyRead();
         }
 }
 

@@ -6,6 +6,16 @@
  ** Date:       Thu Sep 28 10:31:08 1995
  ** RCSId:      $Id: fd_xwin.c 1.1 1995/11/19 17:42:55 ulrich Exp $
  **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  ** Contributions by: (See "doc/credits.doc" for details)
  ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  **/
@@ -653,6 +663,7 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
                           );
   else {
     XImage ximage;
+    Visual *visual = DefaultVisual(_XGrDisplay,_XGrScreen);
 
     ximage.width        = src->gf_lineoffset;
     ximage.height       = sy + h;
@@ -660,15 +671,15 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
     ximage.format       = ZPixmap;
     ximage.data         = src->gf_baseaddr[0];
     ximage.byte_order   = LSBFirst;
-    ximage.bitmap_unit  = _XGrBitsPerPixel;
-    ximage.bitmap_bit_order = MSBFirst;
-    ximage.bitmap_pad   = _XGrBitsPerPixel;
+    ximage.bitmap_unit  = BitmapUnit(_XGrDisplay);
+    ximage.bitmap_bit_order = BitmapBitOrder(_XGrDisplay);
+    ximage.bitmap_pad   = BitmapPad(_XGrDisplay);
     ximage.depth        = _XGrDepth;
     ximage.bytes_per_line = src->gf_lineoffset;
     ximage.bits_per_pixel = _XGrBitsPerPixel;
-    ximage.red_mask     = 0L;
-    ximage.green_mask   = 0L;
-    ximage.blue_mask    = 0L;
+    ximage.red_mask     = visual->red_mask;
+    ximage.green_mask   = visual->green_mask;
+    ximage.blue_mask    = visual->blue_mask;
     ximage.obdata       = NULL;
     sttzero(&ximage.f);
 
@@ -778,7 +789,7 @@ GrFrameDriver _GrFrameDriverXWIN16 = {
   1,                            /* number of planes */
   16,                           /* bits per pixel */
   16*16*1024L*1024L,            /* max plane size the code can handle */
-  NULL,
+  init,
   readpixel,
   drawpixel,
   drawline,
@@ -802,7 +813,7 @@ GrFrameDriver _GrFrameDriverXWIN24 = {
   1,                            /* number of planes */
   24,                           /* bits per pixel */
   24*16*1024L*1024L,            /* max plane size the code can handle */
-  NULL,
+  init,
   readpixel,
   drawpixel,
   drawline,
@@ -818,3 +829,50 @@ GrFrameDriver _GrFrameDriverXWIN24 = {
   _GrFrDrvGenericPutScanline
 };
 
+GrFrameDriver _GrFrameDriverXWIN32L = {
+  GR_frameXWIN32L,              /* frame mode */
+  GR_frameRAM32L,               /* compatible RAM frame mode */
+  TRUE,                         /* onscreen */
+  4,                            /* line width alignment */
+  1,                            /* number of planes */
+  32,                           /* bits per pixel */
+  32*16*1024L*1024L,            /* max plane size the code can handle */
+  init,
+  readpixel,
+  drawpixel,
+  drawline,
+  drawhline,
+  drawvline,
+  drawblock,
+  drawbitmap,
+  drawpattern,
+  bitblt,
+  bltv2r,
+  bltr2v,
+  _GrFrDrvGenericGetIndexedScanline,
+  _GrFrDrvGenericPutScanline
+};
+
+GrFrameDriver _GrFrameDriverXWIN32H = {
+  GR_frameXWIN32H,              /* frame mode */
+  GR_frameRAM32H,                /* compatible RAM frame mode */
+  TRUE,                         /* onscreen */
+  4,                            /* line width alignment */
+  1,                            /* number of planes */
+  32,                           /* bits per pixel */
+  32*16*1024L*1024L,            /* max plane size the code can handle */
+  init,
+  readpixel,
+  drawpixel,
+  drawline,
+  drawhline,
+  drawvline,
+  drawblock,
+  drawbitmap,
+  drawpattern,
+  bitblt,
+  bltv2r,
+  bltr2v,
+  _GrFrDrvGenericGetIndexedScanline,
+  _GrFrDrvGenericPutScanline
+};

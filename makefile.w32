@@ -1,0 +1,17 @@
+#
+# GRX 2.0 makefile for Mingw32 distribution version
+#
+
+include makedefs.gnu
+
+all:   libs test
+
+libs:
+	$(MAKE) -C src -f makefile.w32
+
+test:   libs
+	$(MAKE) -C test -f makefile.w32
+
+clean:
+	$(MAKE) -C test -f makefile.w32 clean
+	$(MAKE) -C src  -f makefile.w32 clean

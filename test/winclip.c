@@ -1,8 +1,20 @@
 /**
- ** WINCLIP.C ---- clip a drawing to various windows (contexts)
+ ** winclip.c ---- clip a drawing to various windows (contexts)
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "test.h"
@@ -39,6 +51,6 @@ TESTFUNC(winclip)
         drawing(-ww/2,-wh/2,ww*2,wh*2,c,GrBlack());
         GrBox(0,0,ww-1,wh-1,c);
 
-        getch();
+        GrKeyRead();
 }
 

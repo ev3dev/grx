@@ -1,16 +1,31 @@
 #
 # GRX 2.0 makefile for DJGPP distribution version
 #
+
 include makedefs.gnu
 
-all:   libs test
+all:   libs test bgitest
 
 libs:
 	$(MAKE) -C src -f makefile.dj2
 
 test:   libs
 	$(MAKE) -C test -f makefile.dj2
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	$(MAKE) -C pascal -f makefile.dj2
+	$(MAKE) -C pascal/bgi/demos -f makefile.dj2
+	$(MAKE) -C pascal/bgi/test -f makefile.dj2
+endif
+
+bgitest:   libs
+	$(MAKE) -C test/bgi -f makefile.dj2
 
 clean:
 	$(MAKE) -C test -f makefile.dj2 clean
+	$(MAKE) -C test/bgi -f makefile.dj2 clean
 	$(MAKE) -C src  -f makefile.dj2 clean
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	$(MAKE) -C pascal -f makefile.dj2 clean
+	$(MAKE) -C pascal/bgi/demos -f makefile.dj2 clean
+	$(MAKE) -C pascal/bgi/test -f makefile.dj2 clean
+endif

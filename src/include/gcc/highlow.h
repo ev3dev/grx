@@ -1,7 +1,17 @@
 /**
- ** HIGHLOW.H ---- combining two BYTES into one WORD -- GNU-C special
+ ** highlow.h ---- combining two BYTES into one WORD -- GNU-C special
  **
  ** Copyright (c) 1997 Hartmut Schirmer
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
  **/
 
@@ -9,6 +19,8 @@
 /* ==                     80386 FAMILY                           == */
 /* ================================================================ */
 #ifdef __i386__
+#if __GNUC_MAJOR__==2 && __GNUC_MINOR__<=8
+/* should not be used for EGCS/GCC after v2.8.x */
 
 /* combine two bytes into one word: optimized i386 version */
 #define highlow(hi,lo) ({                                           \
@@ -40,4 +52,5 @@
     _res_;                                      \
 })
 
+#endif /* __GNUC_MAJOR__==2 && __GNUC_MINOR__<=8 */
 #endif /* __i386__ */

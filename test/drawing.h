@@ -31,3 +31,6 @@ void drawing(int xpos,int ypos,int xsize,int ysize,long fg,long bg)
         }
 }
 
+#undef XP
+#undef YP
+

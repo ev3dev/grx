@@ -1,5 +1,5 @@
 /**
- ** PC8X14.C ---- GRX 2.0 font converted to C by 'GrDumpFont()'
+ ** pc8x14.c ---- GRX 2.0 font converted to C by 'GrDumpFont()'
  **/
 
 #define  GrFont_PC8x14  FONTNAME_TEMPORARY_REDIRECTION

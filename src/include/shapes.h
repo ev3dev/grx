@@ -1,8 +1,19 @@
 /**
- ** SHAPES.H ---- declarations and global data for generating complex shapes
+ ** shapes.h ---- declarations and global data for generating complex shapes
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #ifndef __SHAPES_H_INCLUDED__
@@ -41,7 +52,7 @@ void _GrScanPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c);
 void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int filled);
 
 /* --- */
-#define _GrDrawPatternedPixel ((PixelFillFunc)GrPatternFilledPlot)
+#define _GrDrawPatternedPixel ((PixelFillFunc)_GrPatternFilledPlot)
 #define _GrDrawPatternedLine ((LineFillFunc)_GrPatternFilledLine)
 void _GrFillPatternedScanLine(int x,int y,int w,GrFillArg arg);
 
@@ -52,6 +63,7 @@ void _GrFloodFill(int x,int y,GrColor border,GrFiller *f,GrFillArg fa);
 void _GrFillPattern(int x,int y,int width,GrPattern *p);
 void _GrFillPatternExt(int x,int y,int sx, int sy,int width,GrPattern *p);
 void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p);
+void _GrPatternFilledPlot(int x,int y,GrPattern *p);
 
 void _GrFillBitmapPattern(int x,int y,int w,int h,
                           char far *bmp,int pitch,int start,

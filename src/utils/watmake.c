@@ -1,8 +1,19 @@
-/*
-** generates makefile.wat from depend.dj2
-**
-** Copyright (c) 1998 Hartmut Schirmer & Gary Sands
-*/
+/**
+ ** watmake.c ---- generates makefile.wat from depend.dj2
+ **
+ ** Copyright (c) 1998 Hartmut Schirmer & Gary Sands
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ **/
 
 /*
 ** NOTE: The src/depend.dj2 file in the GRX v2.3 archive is

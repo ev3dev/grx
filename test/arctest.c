@@ -1,8 +1,20 @@
 /**
- ** ARCTEST.C ---- test arc outline and filled arc drawing
+ ** arctest.c ---- test arc outline and filled arc drawing
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include <string.h>
@@ -34,12 +46,14 @@ TESTFUNC(arctest)
                 GrFilledEllipse(xc,yc,xa,ya,blue);
                 GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,GrWhite());
                 GrTextXY(0,0,buff,GrWhite(),GrNOCOLOR);
-                getch();
+                GrTextXY(0,20,"press any key to continue",GrWhite(),GrNOCOLOR);
+                GrKeyRead();
                 GrClearScreen(GrBlack());
                 GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,red);
                 GrFilledEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,green);
                 GrTextXY(0,0,buff,GrWhite(),GrNOCOLOR);
-                getch();
+                GrTextXY(0,20,"press any key to continue",GrWhite(),GrNOCOLOR);
+                GrKeyRead();
             }
         }
         fclose(fp);

@@ -1,0 +1,80 @@
+
+	BGI2GRX
+	=======
+
+BGI2GRX basiert auf GRX und BCC2GRX und ist nur in Verbindung mit diesen
+Librarys lauffÑhig. Bitte beachte die Copyrights der Autoren.
+
+BCC2GRX ist eine Interface-Library fÅr GCC von Hartmut Schirmer, die es
+ermîglicht, auf die GRX20-Library (Sammlung leistungsfÑhiger Grafikfunktionen
+von Csaba A. Biegl) mit Borlands BGI-Syntax zugreifen zu kînnen.
+
+Ich habe mit BGI2GRX ein Interface geschrieben, das den GPC-Benutzern die
+gleichen Funktionen in Gnu PASCAL zur VerfÅgung stellt.
+
+BGI2GRX wurde von mir mit GPC 2.0 (DJGPP), GRX 2.0 von 04/96 und BCC2GRX 2.0
+von 10/96 unter DOS und in der DOS-Box von Windows 95 getestet.
+GRX20 und BCC2GRX sind zwar auch fÅr LINUX konzipiert, daher ist anzunehmen,
+da· auch BGI2GRX unter LINUX lauffÑhig ist, es wurde bisher aber nicht
+getestet.
+
+
+!!! Achtung !!!
+---------------
+BCC2GRX benîtigt zur Darstellung von Text im Grafikmodus die Umgebungsvariable
+"GRXFONT", die auf den Pfad der GRX-Fonts eingestellt werden mu·.
+
+Zur Verwendung verschiedener Grafiktreiber, mu· auch die Umgebungsvariable
+"GRX20DRV" gesetzt werden. Lies dazu bitte in den GRX-Docs nach. Ich selbst
+habe GRX-Programme nur auf VESA-kompatiblen Grafikkarten getestet und dort
+liefen die Programme auch ohne "GRX20DRV".
+
+Die Grafik-Funktionen, die FillStyles und/oder LineStyles verwenden, arbeiten
+nur mit den Standardwerten, da die dafÅr notwendige FunktionalitÑt noch nicht
+in GRX 2.0 enthalten ist. Es kînnen zwar abweichende Werte gesetzt werden,
+aber diese werden einfach ignoriert.
+
+
+Autoren und Bezugsquellen von GRX20 und BCC2GRX
+-----------------------------------------------
+GRX20	: csaba@vuse.vanderbildt.edu (Csaba A. Biegl)
+	  ftp://ftp.simtel.net/pub/gnu/djgpp/
+
+BCC2GRX : hsc@techfak.uni-kiel.de (Hartmut Schirmer)
+	  ftp://ftp.simtel.net/pub/gnu/djgpp/
+	  http://www.techfak.uni-kiel.de/~hsc/BCC2GRX/
+
+
+Meine Demos
+-----------
+Alle Demos (au·er Colors.pas) wurden sowohl mit GPC als auch mit Borland
+Pascal getestet. Man kann sehr gut die Geschwindigkeitsunterschiede (besonders
+in 8-Bit Farbtiefe) und die gute KompatibilitÑt (bis auf FillStyles und
+LineStyles) sehen. Mir ist aufgefallen, da· einige "spezielle" BGI-Treiber
+(z.B. VESA.BGI) bei PutImage die Verwendung von AndPut und OrPut vertauschen.
+
+
+Historie
+--------
+  12/96 erste Verîffentlichung
+
+
+Planung fÅr die Zukunft
+-----------------------
+  gleiche Unit fÅr DOS (DJGPP) und Linux (SVGALIB, X)
+  Verbesserung der KombatibiltÑt
+
+
+Vielen Dank an:
+---------------
+  Hartmut Schirmer und Csaba Biegl fÅr ihre UnterstÅtzung
+  Peter Gerwinski fÅr seine Geduld und die kurzfristigen énderungen an GPC
+  Ralf Meyer fÅr seine Hilfe bei der öbersetzung ...
+
+
+Viel Spa· mit GPC, GRX, BCC2GRX und BGI2GRX !!!
+
+Sven Hilscher
+sven@rufus.central.de
+
+PS: Ich wÅnsche mir Kritik, Anregungen und Mithilfe ...

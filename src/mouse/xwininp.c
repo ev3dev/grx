@@ -1,11 +1,22 @@
 /**
- ** XWININPUT.C ---- mouse and keyboard interface for X Windows
+ ** xwininp.c ---- mouse and keyboard interface for X Windows
  **
  ** Author:     Ulrich Leodolter
  ** E-mail:     ulrich@lab1.psy.univie.ac.at
  ** Date:       Thu Sep 28 20:22:16 1995
  ** Comment:    Implements the same GRX functions as dosinput.c
  ** RCSId:      $Id: xwininput.c 1.2 1995/11/19 19:32:30 ulrich Exp $
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include <stdlib.h>
@@ -20,6 +31,10 @@
 #include "memcopy.h"
 #include "memfill.h"
 #include "mouse/input.h"
+
+#ifdef _AIX
+#include <sys/select.h>
+#endif
 
 static int  kbd_enabled = TRUE;
 static int  kbd_lastmod = 0;

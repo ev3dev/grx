@@ -1,14 +1,41 @@
-Unit GRX20;
+Unit GRX;
 
 { Converted by Sven Hilscher eMail sven@rufus.central.de
   from Headerfile grx20.h }
 
 {*
- ** GRX20.H ---- GRX 2.0 API functions and data structure declarations
+ ** grx20.h ---- GRX 2.x API functions and data structure declarations
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *}
+
+(*$ifdef __DJGPP__ *)
+  (*$L grx20 *)
+(*$else *)
+(*$ifdef _WIN32 *)
+  (*$L grxW32 *)
+  (*$L vfs.c *)
+  (*$L user32 *)
+  (*$L gdi32 *)
+(*$else *)
+  (*$L grx20X *)
+  (*$L X11 *)
+  (*$L tiff *)  (* !!! *)
+(*$endif *)
+(*$endif *)
+(*$L jpeg *)
+
 
 Interface
 
@@ -249,7 +276,7 @@ Type
   end;
 
 var
-  GrDriverInfo : __asmname__ 'GrDriverInfo'  ^GrDriverInfoType;
+  GrDriverInfo : ^GrDriverInfoType; AsmName 'GrDriverInfo'; external;
 
 { setup stuff }
 
@@ -345,7 +372,7 @@ Type
   end;
 
 var
-  GrContextInfo : __asmname__ 'GrContextInfo' GrContextInfoType;
+  GrContextInfo : GrContextInfoType; AsmName 'GrContextInfo'; external;
 
 Function  GrCreateContext(w, h: Integer; memory: MemPtr; var where: GrContext): GrContextPtr; AsmName 'GrCreateContext';
 Function  GrCreateFrameContext(md: ByteCard; w, h: Integer; memory: MemPtr; var where: GrContext): GrContextPtr; AsmName 'GrCreateFrameContext';
@@ -354,7 +381,7 @@ Function  GrSaveContext(var where: GrContext): GrContextPtr; AsmName 'GrSaveCont
 Function  GrCurrentContext: GrContextPtr; AsmName 'GrCurrentContext';
 Function  GrScreenContext : GrContextPtr; AsmName 'GrScreenContext';
 
-Procedure GrDestroyContext(var context: GrContext); AsmName 'GrDestroyContext';
+Procedure GrDestroyContext(context: GrContextPtr); AsmName 'GrDestroyContext';
 Procedure GrResizeSubContext(context: GrContextPtr; x1, y1, x2, y2: Integer); AsmName 'GrResizeSubContext';
 Procedure GrSetContext(context: GrContextPtr); AsmName 'GrSetContext';
 
@@ -595,11 +622,11 @@ Type
   GrFontPtr = ^GrFont;
 
 var
-  GrFont_PC6x8  : __asmname__ 'GrFont_PC6x8'  GrFont;
-  GrFont_PC8x8  : __asmname__ 'GrFont_PC8x8'  GrFont;
-  GrFont_PC8x14 : __asmname__ 'GrFont_PC8x14' GrFont;
-  GrFont_PC8x16 : __asmname__ 'GrFont_PC8x16' GrFont;
-  GrDefaultFont : __asmname__ 'GrFont_PC8x14' GrFont;
+  GrFont_PC6x8  : GrFont; AsmName 'GrFont_PC6x8'; external;
+  GrFont_PC8x8  : GrFont; AsmName 'GrFont_PC8x8'; external;
+  GrFont_PC8x14 : GrFont; AsmName 'GrFont_PC8x14'; external;
+  GrFont_PC8x16 : GrFont; AsmName 'GrFont_PC8x16'; external;
+  GrDefaultFont : GrFont; AsmName 'GrFont_PC8x14'; external;
 
 Function GrLoadFont(name: CString): GrFontPtr; AsmName 'GrLoadFont';
 Function GrLoadConvertedFont(name: CString; cvt, w, h, minch, maxch: Integer): GrFontPtr; AsmName 'GrLoadConvertedFont';
@@ -914,9 +941,9 @@ Type
 	xwpos,ywpos  : Integer;    { save/work area position on screen }
 	displayed    : Integer;    { set if displayed }
   end;
-  GrCursorPtr = GrCursor;
+  GrCursorPtr = ^GrCursor;
 
-Function  GrBuildCursor(pixels: CString; pitch, w, h, xo, yo: Integer; c: GrColorTableP): GrCursorPtr; AsmName 'GrBuildCursor';
+Function  GrBuildCursor(pixels: Pointer; pitch, w, h, xo, yo: Integer; c: GrColorTableP): GrCursorPtr; AsmName 'GrBuildCursor';
 Procedure GrDestroyCursor(cursor: GrCursorPtr); AsmName 'GrDestroyCursor';
 Procedure GrDisplayCursor(cursor: GrCursorPtr); AsmName 'GrDisplayCursor';
 Procedure GrEraseCursor(cursor: GrCursorPtr); AsmName 'GrEraseCursor';
@@ -945,7 +972,8 @@ Const
   GR_M_KEYPRESS      = $0080;      { other event flag bits }
   GR_M_POLL          = $0100;
   GR_M_NOPAINT       = $0200;
-  GR_M_EVENT         = (GR_M_MOTION or GR_M_KEYPRESS or GR_M_BUTTON_DOWN or GR_M_BUTTON_UP);
+  GR_SIZE_CHANGED    = $0400;
+  GR_M_EVENT         = (GR_M_MOTION or GR_M_KEYPRESS or GR_M_BUTTON_DOWN or GR_M_BUTTON_UP or GR_SIZE_CHANGED);
 
   GR_KB_RIGHTSHIFT   = $01;    { Keybd states: right shift key depressed }
   GR_KB_LEFTSHIFT    = $02;    { left shift key depressed }
@@ -1317,7 +1345,7 @@ const
 	 GrKey_Return             = GrKey_Control_M;
 
 Type
-  GrKeyType = __short__ Integer;
+  GrKeyType = ShortInt;
 
 (*
 ** new functions to replace the old style

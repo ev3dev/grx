@@ -1,8 +1,20 @@
 /**
- ** CURSTEST.C ---- test cursors
+ ** curstest.c ---- test cursors
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "test.h"
@@ -71,7 +83,8 @@ TESTFUNC(cursortest)
                 &cur->work,0,cur->ysize+cur->ywork,cur->xwork-1,cur->ysize+2*cur->ywork-1,
                 GrWRITE
             );
-            switch(getch()) {
+            GrTextXY(0,GrMaxY()-20,"Type u d l r U D L R or q to quit",GrWhite(),GrNOCOLOR);
+            switch(GrKeyRead()) {
                 case 'u': y--; break;
                 case 'd': y++; break;
                 case 'l': x--; break;

@@ -1,8 +1,20 @@
 /**
- ** FONTTEST.C ---- test text drawing
+ ** fonttest.c ---- test text drawing
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include <string.h>
@@ -51,7 +63,7 @@ void displayfont(GrFont *font,char *text,int len)
         opt.txo_direct    = GR_TEXT_UP;
         opt.txo_bgcolor.v = c4;
         GrDrawString(text,len,bx,by+bh-ww,&opt);
-        getch();
+        GrKeyRead();
         GrClearClipBox(GrBlack());
         opt.txo_direct    = GR_TEXT_RIGHT;
         opt.txo_fgcolor.v = c1;
@@ -64,7 +76,7 @@ void displayfont(GrFont *font,char *text,int len)
             opt.txo_fgcolor.v ^= GR_UNDERLINE_TEXT;
             by += hh;
         }
-        getch();
+        GrKeyRead();
 }
 
 TESTFUNC(fonttest)

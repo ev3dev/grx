@@ -1,0 +1,67 @@
+#
+# GRX 2.0 test programs makefile for LINUX/svgalib. Uses GNU make.
+#
+
+include  ../../makedefs.gnu
+INCDIR=  -I../../include
+
+CCOPT += -pipe
+
+# Enable this line for static linked test progs (default)
+GRX20 = ../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+# or this if you've already installed the shared libs
+#GRX20 = -L../../lib/$(GRX_LIB_SUBDIR) -lgrx20
+
+ADDON_LIBS= -lvga
+
+ifeq ($(HAVE_LIBTIFF),y)
+  ADDON_LIBS += -ltiff
+endif
+
+ifeq ($(HAVE_LIBJPEG),y)
+  ADDON_LIBS += -ljpeg
+endif
+
+ifeq ($(NEED_ZLIB),y)
+  ADDON_LIBS += -lz
+endif
+
+LIBS= $(GRX20) $(ADDON_LIBS) -lm
+
+PROGS=              \
+	bgilink     \
+	bccbgi      \
+	colortst    \
+	fontplay    \
+	small       \
+	tellipse    \
+	tfill       \
+	tmodes      \
+	tpoly       \
+	ttext
+
+all:    $(PROGS)
+
+.o:
+	$(CC) $(LDOPT) -o $* $*.o $(LIBS)
+	chmod 4755 $*
+
+.oo:
+	$(CC) $(LDOPT) -o $* $*.o $(LIBS)
+	$(STRIP) $*
+
+.c.o:
+	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
+
+.c.s:
+	$(CC) -S $(CCOPT) $(INCDIR) $*.c
+
+clean:
+	rm -f *.o $(PROGS)
+
+depend.new:
+	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:=.c) >depend.new
+
+$(PROGS): % : %.o ../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+
+#include depend.gnu

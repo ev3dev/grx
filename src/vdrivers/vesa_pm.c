@@ -1,8 +1,20 @@
 /**
- ** VESA_PM.C ---- the GRX 2.0 VBE2 BIOS interface: protected mode stuff
- **                Watcom C++ 11.0 DOS4GW by Gary Sands [gsands@stbni.co.uk]
- **                DJGPP v2 by Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77]
- **                        and Hartmut Schirmer (hsc@techfak.uni-kiel.de)
+ ** vesa_pm.c ---- the GRX 2.0 VBE2 BIOS interface: protected mode stuff
+ **
+ ** Watcom C++ 11.0 DOS4GW by Gary Sands [gsands@stbni.co.uk]
+ ** DJGPP v2 by Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77]
+ ** and Hartmut Schirmer (hsc@techfak.uni-kiel.de)
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 /* memory information for linear frame buffer access */
@@ -349,7 +361,7 @@ static int PM_alloc(int len) {
 static INLINE void PM_banking(short BX, short DX) {
   __asm__ volatile (
     " pushal   \n"
-    " call %3  \n"
+    " call *%3 \n"
     " popal      "
     : /* no output */
     : "a" (0x4F05), "b" (BX), "d" (DX),
@@ -362,7 +374,7 @@ static INLINE void PM_es_banking(short es, short BX, short DX) {
     " pushal             \n"
     " movw %%ax, %%es    \n"
     " movw $0x4f05, %%ax \n"
-    " call %3            \n"
+    " call *%3           \n"
     " popal                "
     : /* no output */
     : "a" (es), "b" (BX), "d" (DX),

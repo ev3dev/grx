@@ -1,13 +1,22 @@
 /**
- **  FILLPATT.C ------- draw a pattern filled horizontal line
+ ** fillpatt.c ---- draw a pattern filled horizontal line
  **
- **    Copyright (C) 1997, Michael Goffioul
- **    [e-mail : goffioul@emic.ucl.ac.be]
+ ** Copyright (C) 1997, Michael Goffioul
+ ** [e-mail : goffioul@emic.ucl.ac.be]
  **
- **    see copying.cb for details
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
  ** Contributions by: (See "doc/credits.doc" for details)
  ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
+ **
  **/
 
 #include "libgrx.h"
@@ -20,10 +29,10 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrPattern *p)
     if (p->gp_ispixmap) {
         void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor);
         int pattwdt = p->gp_pxp_width;
+        int xdest = x-sx;
+        int ydest = y-sy;
         int ypatt = (y-sy) % p->gp_pxp_height;
         int xpatt = (x-sx) % pattwdt;
-        int xdest = x;
-        int ydest = y;
         int cpysize = pattwdt - xpatt;
         GrColor optype = p->gp_pxp_oper;
 

@@ -3,16 +3,23 @@
 #
 # set up for GCC / Linux
 #
-include ../makedefs.x11
+
+MAKEDEFS_DIR = ..
+include $(MAKEDEFS_DIR)/makedefs.x11
 
 .PHONY : clean cleanall
 
 INCDIR= -I. -I./include -I../include $(X11INCS)
 
-GRX20SHli = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.so
-GRX20SHna = $(GRX20SHli).2.2.8
+GRX20SH = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.so
+GRX20SHli = $(GRX20SH).$(word 1,$(subst ., ,$(GRX_VERSION)))
+GRX20SHna = $(GRX20SH).$(GRX_VERSION)
 
 GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
+
+ifdef GRX_DEFAULT_FONT_PATH
+CCOPT += -DGRX_DEFAULT_FONT_PATH=$(GRX_DEFAULT_FONT_PATH)
+endif
 
 ifdef SHARED
 CCOPT += -fPIC -D__SHARED__
@@ -28,7 +35,10 @@ include ./stdobjs.mak
 
 STD_O= $(STD_1) $(STD_2)  $(STD_3)  $(STD_4) \
        $(STD_5) $(STD_6)  $(STD_7)  $(STD_8) \
-       $(STD_9) $(STD_10) $(STD_11) $(STD_12)
+       $(STD_9) $(STD_10) $(STD_11) $(STD_12)\
+
+BGI_O= $(BGI_1) $(BGI_2)  $(BGI_3)  $(BGI_4) \
+       $(BGI_5) $(BGI_6)
 
 ADDON_O=
 ifdef DEBUG
@@ -36,27 +46,34 @@ ifdef DEBUG
 endif
 
 ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_O += ../addons/ctx2tiff.o
+  ADDON_O += $(TIF_1)
 endif
 
 ifeq ($(HAVE_LIBJPEG),y)
-  ADDON_O += ../addons/ctx2jpeg.o
+  ADDON_O += $(JPG_1)
 endif
 
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-  ADDON_O += ../addons/print/grxprint.o \
-	     ../addons/print/prndata.o
+  ADDON_O += $(PRN_1)
   INCDIR += -I../addons/print
 endif
 
 ifeq ($(INCLUDE_BMP_CODE),y)
-  ADDON_O += ../addons/bmp/bmp.o
+  ADDON_O += $(BMP_1)
   INCDIR  += -I../addons/bmp
 endif
 
-O=      $(STD_O) $(ADDON_O) \
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+  ADDON_O += $(OP)bgi/gpc_init$(OX) $(OP)bgi/gpc_text$(OX)
+endif
+
+O=      $(STD_O)            \
+	$(ADDON_O)          \
+	$(BGI_O)            \
 	fdrivers/fd_xwin.o  \
 	fdrivers/ram24.o    \
+	fdrivers/ram32l.o   \
+	fdrivers/ram32h.o   \
 	fonts/fdv_xwin.o    \
 	mouse/xwininp.o     \
 	mouse/xwinkeys.o    \

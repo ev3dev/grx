@@ -1,8 +1,20 @@
 /**
- ** SCROLTST.C ---- test virtual screen set/scroll
+ ** scroltst.c ---- test virtual screen set/scroll
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "test.h"
@@ -42,7 +54,7 @@ TESTFUNC(scrolltest)
                 GrTextXY(x,yy,l4,txc,bgc); yy += txh;
                 GrTextXY(x,yy,l5,txc,bgc); yy += txh;
                 GrTextXY(x,yy,l6,txc,bgc); yy += txh;
-                switch(getch()) {
+                switch(GrKeyRead()) {
                     case 'w': vw -= 8; break;
                     case 'W': vw += 8; break;
                     case 'h': vh -= 8; break;

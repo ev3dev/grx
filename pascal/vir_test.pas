@@ -1,7 +1,7 @@
 Program Vir_Test;
 
 uses
-  grx20;
+  grx;
 
 procedure TestFunc;
 var
@@ -48,8 +48,8 @@ begin
    yv := GrVirtualY;
 
    TestFunc;
-   GrTextXY(10, 10, ' Benutze die Tasten <1> <2> <3> <4> <0> und Klicke mit der Maus ', GrBlack, GrWhite);
-   GrTextXY(10, 30, ' Im Modus 3 benutze "<" und ">"                      "Q" = Quit ', GrBlack, GrWhite);
+   GrTextXY(10, 10, ' Use the Keys <1> <2> <3> <4> <0> and press the mousebutton ', GrBlack, GrWhite);
+   GrTextXY(10, 30, ' In "mode 3" use "<" and ">" to resize the area  "Q" = Quit ', GrBlack, GrWhite);
 
    if GrMouseDetect then begin
      GrMouseEventMode(1);
@@ -166,7 +166,7 @@ begin
 	   3: begin
 		GrMouseEraseCursor;
 		GrBitBlt(GrScreenContext, evt.x - (xc div 2), evt.y - (yc div 2), @Conti, 0, 0, xc, yc, GrWRITE);
-		GrDestroyContext(Conti);
+		GrDestroyContext(@Conti);
 		GrMouseDisplayCursor;
 	      end;
 	   4: DrawMode := 0;

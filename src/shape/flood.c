@@ -1,13 +1,19 @@
 /**
- ** FLOOD.C ---- fill an arbitrary area
+ ** flood.c ---- fill an arbitrary area
  **
  ** Copyright (c) 1997 Hartmut Schirmer
  ** [e-mail: hsc@techfak.uni-kiel.de]
  **
- ** The GRX copyright conditions by
- **   Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- **   [e-mail: csaba@vuse.vanderbilt.edu]
- ** still apply to this code. See "doc/copying.cb" for details.
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include <setjmp.h>

@@ -1,3 +1,19 @@
+/**
+ ** textpatt.c
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ **/
+
 #include <stdio.h>
 #include <string.h>
 #include "grx20.h"
@@ -49,6 +65,7 @@ int main(void)
   if (fail_p1) fprintf(stderr, "Couldn't create first pattern\n");
   if (fail_p2) fprintf(stderr, "Couldn't create second pattern\n");
   if (fail_font) fprintf(stderr, "Couldn't load font %s\n", FONT);
+
   return 0;
 }
 

@@ -1,11 +1,23 @@
 /**
- ** HERC.C ---- Hercules video driver
+ ** herc.c ---- Hercules video driver
  **
  ** Author:     Ulrich Leodolter
  ** E-mail:     ulrich@lab1.psy.univie.ac.at
  ** Date:       Tue Nov 14 15:55:56 1995
  ** Comment:    Driver code partly from X11R6/XFree86 (see below)
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
+
 /* $XFree86: xc/programs/Xserver/hw/xfree86/mono/drivers/hercules/hercules.c,v 3.2 1994/09/23 10:18:52 dawes Exp $ */
 /*
  * MONO: Driver family for interlaced and banked monochrome video adaptors

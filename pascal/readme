@@ -1,0 +1,42 @@
+
+Welcome to the wonderful world of GRX for pascal-users.
+=======================================================
+
+If you are interested in GNU-Pascal (gpc), visit
+http://home.pages.de/~gnu-pascal/
+There is a mailinglist available.
+
+This directory contains several test-programs for GRX
+and GNU-Pascal.
+
+* blt_test.pas draws some circles
+* modetest.pas prints out the available modes
+* taste.pas prints out the character-codes. Use "Q" to quit.
+* txt_test.pas prints out some text. Press Return to exit.
+* vir_test.pas lets you draw something.
+  Press "1", to place some sqares with the mouse.
+  Press "2" to draw some lines
+  Press "3" to copy some drawings from one place to another
+    ("<" and ">" change the size of your "copy-area")
+  Press "4" to draw whatever you like :-)
+  Press "0" to leave drawing-mode
+  "Q" leaves vir_test.
+
+
+To build up the programs, just edit the makefile and edit
+the paths. You need to know, where your libtiff libjpeg is.
+
+Then type
+   make -f makefile all
+
+
+Have fun!
+
+
+
+
+
+
+ 
+
+

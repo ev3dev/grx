@@ -1,7 +1,7 @@
 Program Taste;
 
 uses
-  grx20;
+  grx;
 
 var
   MouseMode, DrawMode,
@@ -15,7 +15,7 @@ procedure MouseBehandlung;
 begin
   if (evt.flags and GR_M_KEYPRESS) > 0 then begin
     key := chr(evt.key);
-    writeln('Taste :', key:2, ord(key):4, evt.key mod 256: 4, evt.key div 256: 4, evt.key: 6);
+    writeln('Key :', key:2, ord(key):4, evt.key mod 256: 4, evt.key div 256: 4, evt.key: 6);
     case evt.key of
       81, 131 : Finito := true; {'Q', 'q'}
     end;
@@ -23,13 +23,14 @@ begin
 end;
 
 begin
-  {
+  
+  Writeln('Use ''Q'' to Quit'); 
+
   x  := 640;
   y  := 480;
   co := 256;
   M  := GrSetMode(GR_default_graphics,x,y,co,0,0);
-  }
-
+  
   if GrMouseDetect then begin
     GrMouseEventMode(1);
     GrMouseInit;

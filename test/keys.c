@@ -1,3 +1,18 @@
+/**
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ **/
+
 #include <stdio.h>
 #include <math.h>
 #include <ctype.h>
@@ -24,22 +39,9 @@ inline  long   rdtsc(void)  { long h,l; RDTSC(h,l); return l; }
 /* ***************************************************************************/
 #endif /* PENTIUM_CLOCK */
 
-#if (GRX_VERSION_API-0) <= 0x0225
 #ifdef __GO32__
+#include <conio.h>
 #include <pc.h>
-#endif
-int GrKeyPressed(void) {
-  return kbhit();
-}
-
-GrKeyType GrKeyRead(void) {
-  return (GrKeyType) getkey();
-}
-/*
-int GrKeyStat(void) {
-  return getkbstat();
-}
-*/
 #endif
 
 #define ISPRINT(k) (((unsigned int)(k)) <= 255 && isprint(k))
@@ -342,7 +344,7 @@ static KeyEntry Keys[] = {
 
 #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
 
-void main(void) {
+int main(void) {
   int spaces_count = 0;
   KeyEntry *kp;
   GrKeyType k;
@@ -420,5 +422,5 @@ void main(void) {
     else
       printf("not printable\n");
   }
-
+  return 0;
 }

@@ -42,15 +42,17 @@ PROGS=                  \
 	modetest.exe    \
 	mousetst.exe    \
 	pcirctst.exe    \
+	pnmtest.exe     \
 	polytest.exe    \
 	rgbtest.exe     \
+	sbctest.exe     \
 	scroltst.exe    \
 	speedtst.exe    \
 	textpatt.exe    \
 	winclip.exe     \
 	wintest.exe
 
-all: $(PROGS) ../bin/modetest.exe ../bin/fnt2c.exe
+all: $(PROGS) ../bin/modetest.exe ../bin/fnt2c.exe demogrx.exe
 
 ../bin/modetest.exe: modetest.exe
 	if exist ..\bin\modetest.exe del ..\bin\modetest.exe
@@ -61,6 +63,9 @@ all: $(PROGS) ../bin/modetest.exe ../bin/fnt2c.exe
 	if exist ..\bin\fnt2c.exe del ..\bin\fnt2c.exe
 	copy fnt2c.exe ..\bin\fnt2c.exe
 	$(EXE_COMPRESS) ../bin/fnt2c.exe
+
+demogrx.exe: demogrx.o gfaz.o
+	$(CC) $(LDOPT) -o demogrx.exe demogrx.o gfaz.o $(LIBS) -lm
 
 $(PROGS): %.exe : %.o $(GRX20)
 	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm

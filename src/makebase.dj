@@ -18,29 +18,34 @@ include ./stdobjs.mak
 # Keep things a little smaller when building the lib ...
 STD_Oa= $(STD_1) $(STD_2)  $(STD_3)  $(STD_4) $(STD_5) $(STD_6)
 STD_Ob= $(STD_7) $(STD_8) $(STD_9) $(STD_10) $(STD_11) $(STD_12)
+BGI_Oa= $(BGI_1) $(BGI_2) $(BGI_3)
+BGI_Ob= $(BGI_4) $(BGI_5) $(BGI_6)
 
 ADDON_O=
 ifdef DEBUG
- ADDON_O += utils/dbgprint.o
+ ADDON_O += $(DBG_1)
 endif
 
 ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_O += ../addons/ctx2tiff.o
+  ADDON_O += $(TIF_1)
 endif
 
 ifeq ($(HAVE_LIBJPEG),y)
-  ADDON_O += ../addons/ctx2jpeg.o
+  ADDON_O += $(JPG_1)
 endif
 
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-  ADDON_O += ../addons/print/grxprint.o \
-	     ../addons/print/prndata.o
+  ADDON_O += $(PRN_1)
   INCDIR += -I../addons/print
 endif
 
 ifeq ($(INCLUDE_BMP_CODE),y)
-  ADDON_O += ../addons/bmp/bmp.o
+  ADDON_O += $(BMP_1)
   INCDIR  += -I../addons/bmp
+endif
+
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+  ADDON_O += $(OP)bgi/gpc_init$(OX) $(OP)bgi/gpc_text$(OX)
 endif
 
 DJ_O=   $(ADDON_O)              \
@@ -80,15 +85,19 @@ DJ_O=   $(ADDON_O)              \
 	vdrivers/u_vsvirt.o     \
 	vdrivers/vesa.o
 
-ALL_O = $(STD_Oa) $(STD_Ob) $(DJ_O)
+ALL_O = $(STD_Oa) $(STD_Ob) $(BGI_Oa) $(BGI_Ob) $(DJ_O)
+
+VPATH=../chr
 
 all:    $(GRX20ST) ../bin/vesainfo.exe
 
 clean:
+	if exist bgi\*.o      del bgi\*.o
 	if exist draw\*.o     del draw\*.o
 	if exist fdrivers\*.o del fdrivers\*.o
 	if exist fonts\*.o    del fonts\*.o
 	if exist image\*.o    del image\*.o
+	if exist pnm\*.o      del pnm\*.o
 	if exist mouse\*.o    del mouse\*.o
 	if exist pattern\*.o  del pattern\*.o
 	if exist setup\*.o    del setup\*.o
@@ -98,7 +107,7 @@ clean:
 	if exist utils\*.o    del utils\*.o
 	if exist vdrivers\*.o del vdrivers\*.o
 	if exist wideline\*.o del wideline\*.o
-	if exist ..\addons\*.o       del ..\addons\*.o
+	if exist ..\addons\*.o del ..\addons\*.o
 	if exist ..\addons\print\*.o del ..\addons\print\*.o
 	if exist ..\addons\bmp\*.o   del ..\addons\bmp\*.o
 	if exist ..\bin\vesainfo.exe del ..\bin\vesainfo.exe
@@ -121,6 +130,8 @@ $(GRX20ST): $(TAG) $(ALL_O)
 	if exist $(GRX20STdos) del $(GRX20STdos)
 	$(AR) -rv $(GRX20ST) $(STD_Oa)
 	$(AR) -rv $(GRX20ST) $(STD_Ob)
+	$(AR) -rv $(GRX20ST) $(BGI_Oa)
+	$(AR) -rv $(GRX20ST) $(BGI_Ob)
 	$(AR) -rv $(GRX20ST) $(DJ_O)
 	$(RANLIB) $(GRX20ST)
 
@@ -145,6 +156,7 @@ $(ALL_O:.o=.i) : %.i : %.c
 
 $(ALL_O:.o=.dm) : %.dm : %.c
 	$(CC) -dM -E $(CCOPT) $(INCDIR) $*.c > $*.dm
+
 
 .c.s:
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c -o $*.s

@@ -1,27 +1,23 @@
 /**
- ** PFCIRC.C
+ ** pfcirc.c
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
  **
  **  Copyright (C) 1992, Csaba Biegl
  **    820 Stirrup Dr, Nashville, TN, 37221
  **    csaba@vuse.vanderbilt.edu
  **
- **  This file is distributed under the terms listed in the document
- **  "copying.cb", available from the author at the address above.
- **  A copy of "copying.cb" should accompany this file; if not, a copy
- **  should be available from where this file was obtained.  This file
- **  may not be distributed without a verbatim copy of "copying.cb".
- **  You should also have received a copy of the GNU General Public
- **  License along with this program (it is in the file "copying");
- **  if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
- **  Cambridge, MA 02139, USA.
+ ** This file is part of the GRX graphics library.
  **
- **  This program is distributed in the hope that it will be useful,
- **  but WITHOUT ANY WARRANTY; without even the implied warranty of
- **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- **  GNU General Public License for more details.
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "libgrx.h"

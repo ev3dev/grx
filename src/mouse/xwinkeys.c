@@ -1,10 +1,21 @@
 /**
- ** XWINKEYS.C ---- DOS (TCC/BCC/DJGPP: "conio.h") style keyboard utilities
+ ** xwinkeys.c ---- DOS (TCC/BCC/DJGPP: "conio.h") style keyboard utilities
  **
  ** Author:     Ulrich Leodolter
  ** E-mail:     ulrich@lab1.psy.univie.ac.at
  ** Date:       Sun Oct  1 08:10:30 1995
  ** RCSId:      $Id: xwinkeys.c 1.1 1995/11/19 16:34:52 ulrich Exp $
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "libgrx.h"

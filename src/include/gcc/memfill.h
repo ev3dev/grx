@@ -1,8 +1,19 @@
 /**
- ** MEMFILL.H ---- inline assembly memory fill macros -- GNU-C code
+ ** memfill.h ---- inline assembly memory fill macros -- GNU-C code
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 /* ================================================================ */
@@ -172,6 +183,7 @@
 /* ====================================================== 24bpp support */
 
 #define __INLINE_386_REPFILL24__(p,c,b,INS,SEG) do {               \
+  int _dummy_;                                                     \
   __asm__ volatile (                "\n"                           \
     "      testl  $1,%0              \n"                           \
     "      je     1f                 \n"                           \
@@ -238,9 +250,9 @@
     "    "#INS"b  %%dl,"#SEG"(%0)    \n"                           \
     "      incl   %0                 \n"                           \
     "9:                              \n"                           \
-          : "=r" ((void *)(p)), "=r" ((int)(b))                    \
-          : "d"  ((int)(c)), "0"  ((void *)(p)), "1"  ((int)(b))   \
-          : "ax", "cx", "dx"                                       \
+          : "=r" ((void *)(p)), "=r" ((int)(b)), "=d" (_dummy_)    \
+          : "2"  ((int)(c)), "0"  ((void *)(p)), "1"  ((int)(b))   \
+          : "ax", "cx"                                             \
   );                                                               \
 } while (0)
 

@@ -1,8 +1,19 @@
 /**
- ** GRX20.H ---- GRX 2.x API functions and data structure declarations
+ ** grx20.h ---- GRX 2.x API functions and data structure declarations
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #ifndef __GRX20_H_INCLUDED__
@@ -24,7 +35,7 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0229
+#define GRX_VERSION_API 0x0234
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -33,6 +44,7 @@
 #define GRX_VERSION_GENERIC_X11         4       /* generic X11 version */
 #define GRX_VERSION_WATCOM_DOS4GW       5       /* GS - Watcom C++ 11.0 32 Bit */
 /*#define GRX_VERSION_WATCOM_REAL_MODE  6*/     /* GS - Watcom C++ 11.0 16 Bit - TODO! */
+#define GRX_VERSION_GCC_386_WIN32       7       /* WIN32 using Mingw32 */
 
 #ifdef  __TURBOC__
 #define GRX_VERSION     GRX_VERSION_TCC_8086_DOS
@@ -44,6 +56,9 @@
 #endif
 #if defined(__linux__) && defined(__i386__)
 #define GRX_VERSION     GRX_VERSION_GCC_386_LINUX
+#endif
+#ifdef  __WIN32__
+#define GRX_VERSION     GRX_VERSION_GCC_386_WIN32
 #endif
 #endif
 
@@ -58,7 +73,7 @@
 #endif /* __WATCOMC__ */
 
 #ifndef GRX_VERSION
-#if defined(unix) || defined(__unix) || defined(__unix__)
+#if defined(unix) || defined(__unix) || defined(__unix__) || defined(_AIX)
 #define GRX_VERSION     GRX_VERSION_GENERIC_X11
 #endif
 #endif
@@ -1162,20 +1177,21 @@ void GrPatternDrawChar(int chr,int x,int y,GrTextOption *opt,GrPattern *p);
 void GrPatternDrawString(void *text,int length,int x,int y,GrTextOption *opt,GrPattern *p);
 void GrPatternDrawStringExt(void *text,int length,int x,int y,GrTextOption *opt,GrPattern *p);
 
+/* ================================================================== */
+/*                      IMAGE MANIPULATION                            */
+/* ================================================================== */
+
 /*
-**  <image.h>   - Image Utility
-**                by Michal Stencl Copyright (c) 1998 for GRX
-**
-**
-**  <e-mail>    - [stenclpmd@ba.telecom.sk]
-**
-*/
+ *  by Michal Stencl Copyright (c) 1998 for GRX
+ *  <e-mail>    - [stenclpmd@ba.telecom.sk]
+ */
 
 #ifndef GrImage
 #define GrImage GrPixmap
 #endif
 
 /* Flags for GrImageInverse() */
+
 #define GR_IMAGE_INVERSE_LR  0x01  /* inverse left right */
 #define GR_IMAGE_INVERSE_TD  0x02  /* inverse top down */
 
@@ -1209,6 +1225,30 @@ GrPattern *GrPatternFromImage(GrImage *p);
 #define GrImageDestroy(i)   \
           GrDestroyPattern((GrPattern *)(i));
 #endif
+
+/* ================================================================== */
+/*                        CTX2PNM ROUTINES                            */
+/* ================================================================== */
+
+/*
+ *  The PBM formats, grx support load/save of
+ *  binaries formats (4,5,6) only
+ */
+
+#define PLAINPBMFORMAT 1
+#define PLAINPGMFORMAT 2
+#define PLAINPPMFORMAT 3
+#define PBMFORMAT      4
+#define PGMFORMAT      5
+#define PPMFORMAT      6
+
+/* The ctx2pnm routines */
+
+int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn );
+int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn );
+int GrSaveContextToPpm( GrContext *grc, char *ppmfn, char *docn );
+int GrLoadContextFromPnm( GrContext *grc, char *pnmfn );
+int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval );
 
 /* ================================================================== */
 /*               DRAWING IN USER WINDOW COORDINATES                   */

@@ -1,0 +1,15 @@
+# load the compiler specific setup first
+# default GCC (eg. Linux) systems
+include ../makedefs.gnu
+
+# Put libgrx20.a to lib/win32
+GRX_LIB_SUBDIR=win32
+
+# Some systems can't allocate big arrays on stack.
+# If test/xcirctest fails on bigger diameters, try
+# CCOPT += -DSMALL_STACK
+
+# You may want to enable one (oe both) of the following
+# switches if your get lots of warnings when compiling GRX
+#CCOPT += -DNO_LEFTSIDE_LVALUE_CAST
+#CCOPT += -DNO_LEFTSIDE_PTR_CAST

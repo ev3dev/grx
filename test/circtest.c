@@ -1,10 +1,23 @@
 /**
- ** CIRCTEST.C ---- test circle and ellipse rendering
+ ** circtest.c ---- test circle and ellipse rendering
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
+#include <unistd.h>
 #include "test.h"
 #include <math.h>
 
@@ -54,23 +67,28 @@ TESTFUNC(circtest)
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             xr += xr/4+1;
             yr += yr/4+1;
-            if(getch() == 'q') break;
+            sleep(1);
         }
+        c1 = GrAllocColor(64,64,128);
         xr = 4;
         yr = 1;
         while((xr < 1000) || (yr < 1000)) {
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             yr += yr/4+1;
             xr = yr * 4;
-            if(getch() == 'q') break;
+            sleep(1);
         }
+        c1 = GrAllocColor(64,64,64);
         xr = 1;
         yr = 4;
         while((xr < 1000) || (yr < 1000)) {
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             xr += xr/4+1;
             yr = xr * 4;
-            if(getch() == 'q') break;
+            sleep(1);
         }
+
+        GrTextXY(0,0,"press any key to continue",GrWhite(),GrBlack());
+        GrKeyRead();
 }
 

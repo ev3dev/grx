@@ -1,9 +1,21 @@
 /**
- ** BUILDFNT.C ---- allocate and fill a font descriptor
+ ** buildfnt.c ---- allocate and fill a font descriptor
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
+
 #include <string.h>
 #include <stdio.h>
 
@@ -57,14 +69,15 @@ static void bdump(char *hd,unsigned char *bmp,int w,int h,int pitch)
 static int cvtbitmap(int oldw,int neww,conv *c,char *bmp)
 {
         int wofs,i,j,x,y,w,h;
-        unsigned char *work;
+        unsigned char *work_base;
         setup_ALLOC();
         wofs = umax(oldw,neww) + c->boldwdt + c->italwdt + c->propgap;
         wofs = umax(wofs,c->fixwdt);
         wofs = (wofs + 15) & ~3;
         i    = wofs * (umax(c->newhgt,c->oldhgt) + 2);
-        work = ALLOC((size_t)i);
-        if(work) {
+        work_base = ALLOC((size_t)i);
+        if(work_base) {
+            unsigned char *work = work_base;
             memzero(work,i);
             work += wofs;
             w = neww - c->boldwdt - c->italwdt;
@@ -175,7 +188,7 @@ static int cvtbitmap(int oldw,int neww,conv *c,char *bmp)
                     if(wp[xpos]) bp[j >> 3] |= (0x80 >> (j & 7));
                 }
             }
-            FREE(work);
+            FREE(work_base);
         }
         reset_ALLOC();
         return(neww);
@@ -259,7 +272,7 @@ GrFont *_GrBuildFont(
             cv.italwdt = imax(cv.italwdt,0);
             if(cv.italwdt > 0) bmpcv |= GR_FONTCVT_ITALICIZE;
         }
-        if((cvt & GR_FONTCVT_FIXIFY) & fprop) {
+        if((cvt & GR_FONTCVT_FIXIFY) && fprop) {
             bmpcv     |= GR_FONTCVT_FIXIFY;
             cv.fixwdt  = f->maxwidth;
             bmplen     = umul32((hgt * ((cv.fixwdt + 7) >> 3)),numch);

@@ -1,10 +1,21 @@
 /**
- ** VD_XWIN.C ---- the standard X Window driver
+ ** vd_xwin.c ---- the standard X Window driver
  **
  ** Author:     Ulrich Leodolter
  ** E-mail:     ulrich@lab1.psy.univie.ac.at
  ** Date:       Thu Sep 28 09:29:26 1995
  ** RCSId:      $Id: vd_xwin.c 1.2 1995/11/19 19:28:12 ulrich Exp $
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include "libgrx.h"
@@ -26,6 +37,7 @@ unsigned long   _XGrBackColor;
 unsigned int    _XGrColorOper;
 unsigned int    _XGrDepth;
 unsigned int    _XGrBitsPerPixel;
+unsigned int        _XGrScanlinePad;
 
 unsigned long   _XGrColorPlanes[8];
 unsigned int    _XGrColorNumPlanes;
@@ -61,8 +73,6 @@ static void loadcolor(int c,int r,int g,int b)
 static int setmode(GrVideoMode *mp,int noclear)
 {
   char name[100], *window_name, *icon_name;
-  int nc;
-  char *cu;
   int res;
 
   GRX_ENTER();
@@ -75,12 +85,7 @@ static int setmode(GrVideoMode *mp,int noclear)
 
       XResizeWindow (_XGrDisplay, _XGrWindow, mp->width, mp->height);
 
-      cu = "";
-      nc = 1 << mp->bpp;
-      if ((nc % 1024) == 0) nc >>= 10, cu = "K";
-      if ((nc % 1024) == 0) nc >>= 10, cu = "M";
-
-      sprintf (name, "grx %dx%dx%d%s", mp->width, mp->height, nc, cu);
+      sprintf (name, "grx %dx%dx%d", mp->width, mp->height, mp->bpp);
       window_name = name;
       icon_name = name;
 
@@ -227,10 +232,13 @@ static int init(char *options)
   XSetWindowAttributes attr;
   unsigned long mask;
   Visual *visual;
+  XPixmapFormatValues *pfmt;
+  int pfmt_count;
   GrVideoMode *mp;
-  unsigned int depth, bpp;
+  unsigned int depth, bpp, pad;
   int private_colormap;
   int i, j, res;
+
 
   GRX_ENTER();
   res = FALSE;
@@ -373,27 +381,57 @@ static int init(char *options)
 
   grxwinext.frame = (char far *) _XGrWindow;
 
-  bpp = depth;
+  pfmt = XListPixmapFormats (_XGrDisplay, &pfmt_count);
+  if (!pfmt || pfmt_count <= 0) {
+    XCloseDisplay (_XGrDisplay);
+    fprintf (stderr, "GRX init: cannot list pixmap formats\n");
+    exit (1);
+  }
+
+  bpp = 0;
+  pad = 0;
+  for (i = 0; i < pfmt_count; i++) {
+    if (pfmt[i].depth == depth)
+      {
+        bpp = pfmt[i].bits_per_pixel;
+        pad = pfmt[i].scanline_pad;
+        break;
+      }
+  }
+  XFree (pfmt);
+  if (!bpp) {
+    XCloseDisplay (_XGrDisplay);
+    fprintf (stderr, "GRX init: cannot find pixmap format\n");
+    exit (1);
+  }
+
   switch (depth) {
   case  1: grxwinext.mode = GR_frameXWIN1; break;
   case  4: grxwinext.mode = GR_frameXWIN4; break;
   case  8: grxwinext.mode = GR_frameXWIN8; break;
-  case 15: bpp++;
+  case 15:
   case 16: grxwinext.mode = GR_frameXWIN16; break;
+  case 24:
+    switch (bpp) {
   case 24: grxwinext.mode = GR_frameXWIN24; break;
+    case 32: grxwinext.mode =
+               (visual->red_mask & 0xff000000) ? GR_frameXWIN32H : GR_frameXWIN32L; break;
+    }
+    break;
   }
 
   _XGrBitsPerPixel = bpp;
+  _XGrScanlinePad  = pad;
 
   /* fixed size modes */
   for (mp = &modes[1]; mp < &modes[itemsof(modes)-1]; mp++) {
     mp->present = TRUE;
-    mp->bpp = depth;
+    mp->bpp = bpp;
     mp->lineoffset = (mp->width * bpp) / 8;
   }
   /* this is the variable size mode */
   mp->present = FALSE;
-  mp->bpp = depth;
+  mp->bpp = bpp;
   mp->lineoffset = 0;
   res = TRUE;
 done:

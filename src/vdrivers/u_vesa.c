@@ -1,8 +1,19 @@
 /**
- ** U_VESA.C ---- interface utility functions to VESA BIOS inquiry calls
+ ** u_vesa.c ---- interface utility functions to VESA BIOS inquiry calls
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  ** Contributions by: (See "doc/credits.doc" for details)
  ** Hartmut Schirmer (hsc@xaphod.techfak.uni-kiel.d400.de)
  **/

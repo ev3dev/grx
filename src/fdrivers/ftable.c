@@ -2,9 +2,21 @@
  ** FTABLE.C ---- a table of available frame drivers
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu].
+ **
+ ** This file is part of the GRX graphics library.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  ** Contributions by: (See "doc/credits.doc" for details)
  ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
+ **
  **/
 
 #include "libgrx.h"
@@ -15,7 +27,7 @@ GrFrameDriver *_GrFrameDriverTable[] = {
 #if defined(__GO32__) || defined(__TURBOC__) || defined (__WATCOMC__)
     &_GrFrameDriverHERC1,
 #endif
-#if !defined(__XWIN__)
+#if !defined(__XWIN__) && !defined(__WIN32__)
     &_GrFrameDriverEGAVGA1,
     &_GrFrameDriverEGA4,
     &_GrFrameDriverSVGA4,
@@ -27,7 +39,7 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverSVGA32H,
 #endif
 #if  defined(__GO32__) \
-  || defined(LFB_BY_NEAR_POINTER) \
+  || ( defined(LFB_BY_NEAR_POINTER) && !defined(__WIN32__) ) \
   || ( defined(__WATCOMC__) && defined ( __386__ ) )
     &_GrFrameDriverSVGA8_LFB,
     &_GrFrameDriverSVGA16_LFB,
@@ -39,6 +51,8 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverXWIN8,
     &_GrFrameDriverXWIN16,
     &_GrFrameDriverXWIN24,
+    &_GrFrameDriverXWIN32L,
+    &_GrFrameDriverXWIN32H,
 #endif
 /* now the drivers for RAM based context */
     &_GrFrameDriverRAM1,
@@ -49,8 +63,6 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverRAM3x8,
 #else
     &_GrFrameDriverRAM24,
-#endif
-#if !defined(__XWIN__) && !defined(GRX_USE_RAM3x8)
     &_GrFrameDriverRAM32L,
     &_GrFrameDriverRAM32H,
 #endif

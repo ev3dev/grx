@@ -7,8 +7,13 @@ for DJ Delorie's DOS port of the GCC compiler.
 Michael Goffioul (goffioul@emic.ucl.ac.be) released GRX 2.1a
 (first full API implementation)
 
-Starting from version v2.2 GRX is maintained by Hartmut Schirmer
+Starting from version v2.2 GRX was maintained by Hartmut Schirmer
 (hsc@techfak.uni-kiel.de)
+
+Peter Gerwinski (peter@gerwinski.de) released GRX 2.3.1 and 2.3.2
+
+Mariano Alvarez Fernandez (malfer@teleline.es) released GRX 2.3.3
+and the latest: 2.3.4
 
 Credits for GRX > v2.0 in alphabetical order
 ============================================
@@ -20,6 +25,9 @@ N. D. Culver <ndc@alum.mit.edu> for suggesting the bpp based color
 spec with GrSetMode()
 
 Frank Donahoe <fdonahoe@wilkes1.wilkes.edu> for bug reports and patches
+
+Vicente Fuentes Gea <vfg@servidor.unam.mx> for the info version of the
+user's manual
 
 Michael Goffioul (goffioul@emic.ucl.ac.be) for his GREAT work:
 	- Pattern Filled functions
@@ -33,6 +41,11 @@ processor patches (64bit support)
 Sven Hilscher (Sven@rufus.central.de) for GNU-Pascal interface and
 bug reports
 
+Eike Lange <eike.lange@uni-essen.de> for pascal updates
+
+Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77] for linear framebuffer
+support
+
 Peter C. Mehlitz <peter@transvirtual.com> for his suggestions on
 Linux and X11 event time handling
 
@@ -40,8 +53,7 @@ Vincenzo Morello (morellov@tin.it) continous using GRX as base
 graphics API for his MGUI lib. He submitted many suggestions,
 found lots of bugs and contributed the SaveContextToJpeg() code.
 
-Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77] for linear framebuffer
-support
+Josu Onandia <jonandia@fagorautomation.es> for patches and bug reports
 
 Andris Pavenis (pavenis@acad.latnet.lv) for many suggestions, the
 memory driver, printing support, variable X11 resolution, patches

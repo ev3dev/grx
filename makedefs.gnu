@@ -1,5 +1,9 @@
 ##################### CONFIGURATION ######################
 
+# Specify version of GRX
+# Currently only used to generate name of shared libraries for linux
+GRX_VERSION=2.3.4
+
 # Specify if you have libtiff.a and corresponding .h files.
 # Change setting to 'y' if you have it, or to 'n' if not.
 HAVE_LIBTIFF=n
@@ -17,6 +21,9 @@ INCLUDE_PRINTING_CODE=y
 # Specify if you want to include bmp image code from addons
 INCLUDE_BMP_CODE=y
 
+# Specify if you want to include GNU_Pascal (gpc) support
+INCLUDE_GPC_SUPPORT=n
+
 #################### SYSTEM SETTINGS #####################
 
 CC=     gcc
@@ -33,6 +40,7 @@ LINUX_i386_X11_STATIC     = $(SYSTEM_TAG_PREFIX).002
 LINUX_i386_X11_SHARED     = $(SYSTEM_TAG_PREFIX).003
 DOS_DJGPP_V2              = $(SYSTEM_TAG_PREFIX).004
 DOS_DJGPP_V1              = $(SYSTEM_TAG_PREFIX).005
+WIN32_GCC_i386_STATIC     = $(SYSTEM_TAG_PREFIX).006
 
 ifdef   DEBUG
 CCOPT=  -O2 -Wall -g -DDEBUG=$(DEBUG)

@@ -44,15 +44,17 @@ PROGS=              \
 	modetest    \
 	mousetst    \
 	pcirctst    \
+	pnmtest     \
 	polytest    \
 	rgbtest     \
+	sbctest     \
 	scroltst    \
 	speedtst    \
 	textpatt    \
 	winclip     \
 	wintest
 
-all:    $(PROGS)
+all:    $(PROGS) demogrx
 
 modetest: modetest.o
 	$(CC) $(LDOPT) -o modetest modetest.o $(LIBS)
@@ -65,6 +67,10 @@ fnt2c: fnt2c.o
 	$(CC) $(LDOPT) -o fnt2c fnt2c.o $(LIBS)
 	$(STRIP) fnt2c
 	cp fnt2c ../bin
+
+demogrx: demogrx.o gfaz.o
+	$(CC) $(LDOPT) -o demogrx demogrx.o gfaz.o $(LIBS)
+	chmod 4755 demogrx
 
 .o:
 	$(CC) $(LDOPT) -o $* $*.o $(LIBS)

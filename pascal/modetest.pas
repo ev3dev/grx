@@ -1,7 +1,7 @@
 Program Vir_Test;
 
 uses
-  grx20;
+  grx;
 
 var
   i, f, m : Integer;

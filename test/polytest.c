@@ -1,8 +1,20 @@
 /**
- ** POLYTEST.C ---- test polygon rendering
+ ** polytest.c ---- test polygon rendering
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "doc/copying.cb" for details.
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
+ **
+ ** This is a test/demo file of the GRX graphics library.
+ ** You can use GRX test/demo files as you want.
+ **
+ ** The GRX graphics library is free software; you can redistribute it
+ ** and/or modify it under some conditions; see the "copying.grx" file
+ ** for details.
+ **
+ ** This library is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
  **/
 
 #include <string.h>
@@ -26,12 +38,12 @@ static void testpoly(int n,int points[][2],int convex)
         GrClearScreen(black);
         GrPolygon(n,points,white);
         GrFilledPolygon(n,points,(red | GrXOR));
-        getch();
+        GrKeyRead();
         if(convex || (n <= 3)) {
             GrClearScreen(black);
             GrFilledPolygon(n,points,white);
             GrFilledConvexPolygon(n,points,(red | GrXOR));
-            getch();
+            GrKeyRead();
         }
 }
 

@@ -1,8 +1,8 @@
 # load the compiler specific setup first
 # default GCC (eg. Linux) systems
-include ../makedefs.gnu
+include $(MAKEDEFS_DIR)/makedefs.gnu
 # DEC alpha systems
-#include ../makedefs.dec
+#include $(MAKEDEFS_DIR)/makedefs.dec
 
 # The X11 base dir on your system
 X11BASE=/usr/X11R6

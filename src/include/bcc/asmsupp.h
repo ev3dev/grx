@@ -2,6 +2,7 @@
  *  Define assembler memonics for asm code creation
  *  and memonic extensions for different operand sizes
  */
+
 #ifndef __BCC_ASMSUPP_H_INCLUDED
 #define __BCC_ASMSUPP_H_INCLUDED
 
