@@ -1,0 +1,50 @@
+#
+# GRX 2.0 test programs makefile for LINUX/X11. Uses GNU make.
+#
+
+include  ../makedefs.gnu
+INCDIR=  -I../include
+
+GRX20X = ../lib/libgrx20X.a
+
+PROGS=               \
+	xarctest     \
+	xblittest    \
+	xcirctest    \
+	xcliptest    \
+	xcolorops    \
+	xcurstest    \
+	xfonttest    \
+	xlife        \
+	xlinetest    \
+	xmodetest    \
+	xmousetst    \
+	xpcirctst    \
+	xpolytest    \
+	xrgbtest     \
+	xscroltst    \
+	xspeedtst    \
+	xwinclip     \
+	xwintest
+
+all: $(PROGS) ../bin/xmodetest
+
+../bin/xmodetest: xmodetest
+	cp xmodetest ../bin
+
+$(PROGS): x%: %_x11.o $(GRX20X)
+	$(CC) $(CCOPT) -s -o $@ $*_x11.o $(GRX20X) $(X11LIBS) -lm
+
+$(PROGS:x%=%_x11.o): %_x11.o : %.c
+	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*_x11.o
+
+.c.s:
+	$(CC) -S $(CCOPT) $(INCDIR) $*.c
+
+clean:
+	rm -f *.o $(PROGS)
+
+depend.new:
+	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:x%=%.c) | sed s/.o:/_x11.o:/g > depend.new
+
+include depend.x11

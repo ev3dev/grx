@@ -1,0 +1,183 @@
+#
+# GRX 2.0 Library Makefile for Turbo C. Uses Turbo C Make.
+# NOTE:
+#   Early TCC Make versions will not build all objects properly. Use the
+#   'BUILDTC.BAT' batch file instead.
+#
+!include "../makedefs.bcc"
+INCDIR= -I. -I./include -I../include -I$(BCCROOT)/include -I./vdrivers
+LIBDIR= -L$(BCCROOT)/lib
+
+LIBOBJ=                        \
+	+draw\bitblt.obj       \
+	+draw\box.obj          \
+	+draw\clear.obj        \
+	+draw\drwinlne.obj     \
+	+draw\fillbox.obj      \
+	+draw\frambox.obj      \
+	+draw\line.obj         \
+	+draw\majorln.obj      \
+	+draw\pixel.obj        \
+	+draw\plot.obj         \
+	+fdrivers\dotab8.obj   \
+	+fdrivers\egavga1.obj  \
+	+fdrivers\ega4.obj     \
+	+fdrivers\ftable.obj   \
+	+fdrivers\genblit.obj  \
+	+fdrivers\herc1.obj    \
+	+fdrivers\pblitr2r.obj \
+	+fdrivers\pblitr2v.obj \
+	+fdrivers\pblitv2r.obj \
+	+fdrivers\pblitv2v.obj \
+	+fdrivers\ram16.obj    \
+	+fdrivers\ram24.obj    \
+	+fdrivers\ram32l.obj   \
+	+fdrivers\ram32h.obj   \
+	+fdrivers\ram3x8.obj   \
+	+fdrivers\ram1.obj     \
+	+fdrivers\ram4.obj     \
+	+fdrivers\ram8.obj     \
+	+fdrivers\svga16.obj   \
+	+fdrivers\svga24.obj   \
+	+fdrivers\svga32h.obj  \
+	+fdrivers\svga32l.obj  \
+	+fdrivers\svga4.obj    \
+	+fdrivers\svga8.obj    \
+	+fdrivers\vga8x.obj    \
+	+fonts\fdv_bgi.obj     \
+	+fonts\fdv_grx.obj     \
+	+fonts\fdtable.obj     \
+	+fonts\pc6x8.obj       \
+	+fonts\pc8x8.obj       \
+	+fonts\pc8x14.obj      \
+	+fonts\pc8x16.obj      \
+	+mouse\bldcurs.obj     \
+	+mouse\dosinput.obj    \
+	+mouse\doskeys.obj     \
+	+mouse\drawcurs.obj    \
+	+mouse\mouinfo.obj     \
+	+mouse\mouinlne.obj    \
+	+mouse\mscursor.obj    \
+	+pattern\fillpatt.obj  \
+	+pattern\makepat.obj   \
+	+pattern\patfbox.obj   \
+	+pattern\patfcirc.obj  \
+	+pattern\patfcvxp.obj  \
+	+pattern\patfline.obj  \
+	+pattern\patfplot.obj  \
+	+pattern\patfpoly.obj  \
+	+pattern\pattcirc.obj  \
+	+pattern\pattline.obj  \
+	+pattern\pattpoly.obj  \
+	+pattern\scanpatt.obj  \
+	+setup\clip.obj        \
+	+setup\clrinfo.obj     \
+	+setup\clrinlne.obj    \
+	+setup\colors.obj      \
+	+setup\context.obj     \
+	+setup\cxtinfo.obj     \
+	+setup\cxtinlne.obj    \
+	+setup\drvinfo.obj     \
+	+setup\drvinlne.obj    \
+	+setup\fframe.obj      \
+	+setup\fgeom.obj       \
+	+setup\hooks.obj       \
+	+setup\modewalk.obj    \
+	+setup\setdrvr.obj     \
+	+setup\setmode.obj     \
+	+setup\version.obj     \
+	+setup\viewport.obj    \
+	+shape\circle.obj      \
+	+shape\drawpoly.obj    \
+	+shape\fillcirc.obj    \
+	+shape\fillcnvx.obj    \
+	+shape\fillpoly.obj    \
+	+shape\genellip.obj    \
+	+shape\polygon.obj     \
+	+shape\polyline.obj    \
+	+shape\scancnvx.obj    \
+	+shape\scanellp.obj    \
+	+shape\scanpoly.obj    \
+	+text\buildaux.obj     \
+	+text\buildfnt.obj     \
+	+text\convfont.obj     \
+	+text\drawstrg.obj     \
+	+text\drawtext.obj     \
+	+text\dumpfont.obj     \
+	+text\dumptext.obj     \
+	+text\fntinlne.obj     \
+	+text\fontinfo.obj     \
+	+text\fontpath.obj     \
+	+text\loadfont.obj     \
+	+text\propwdt.obj      \
+	+text\unloadfn.obj     \
+	+user\ubox.obj         \
+	+user\ucircle.obj      \
+	+user\ucust.obj        \
+	+user\udrawtxt.obj     \
+	+user\uellarc.obj      \
+	+user\ufillbox.obj     \
+	+user\ufilpatt.obj     \
+	+user\uframbox.obj     \
+	+user\uhline.obj       \
+	+user\uline.obj        \
+	+user\upatt.obj        \
+	+user\upixel.obj       \
+	+user\uplot.obj        \
+	+user\upoly.obj        \
+	+user\usercord.obj     \
+	+user\uvline.obj       \
+	+utils\resize.obj      \
+	+utils\strmatch.obj    \
+	+vdrivers\ati28800.obj \
+	+vdrivers\cl5426.obj   \
+	+vdrivers\et4000.obj   \
+	+vdrivers\herc.obj     \
+	+vdrivers\mach64.obj   \
+	+vdrivers\s3.obj       \
+	+vdrivers\stdega.obj   \
+	+vdrivers\stdvga.obj   \
+	+vdrivers\u_egavga.obj \
+	+vdrivers\u_vesa.obj   \
+	+vdrivers\u_vsvirt.obj \
+	+vdrivers\vesa.obj     \
+	+vdrivers\vtable.obj   \
+	+wideline\custbox.obj  \
+	+wideline\custcirc.obj \
+	+wideline\custline.obj \
+	+wideline\custplne.obj \
+	+wideline\custpoly.obj \
+	+wideline\drwcpoly.obj
+
+OBJ=    $(LIBOBJ:+=)
+ASM=    $(OBJ:.obj=.asm)
+
+all:    config.bcc ..\lib\grx20$(MODEL).lib ..\bin\vesaif16.exe
+
+..\lib\grx20$(MODEL).lib: $(OBJ)
+	if exist ..\lib\grx20$(MODEL).lib del ..\lib\grx20$(MODEL).lib
+	$(TLIB) /C ..\lib\grx20$(MODEL).lib @&&!
+	$(LIBOBJ)
+!
+
+..\bin\vesaif16.exe: vdrivers\vesainfo.c ..\lib\grx20$(MODEL).lib config.bcc
+	$(BCC) +config.bcc -e..\bin\vesaif16 @&&!
+	vdrivers\vesainfo.c ..\lib\grx20$(MODEL).lib
+!
+#       del vesainfo.obj
+
+.c.obj:
+	$(BCC) +config.bcc -c -o$*.obj $*.c
+
+.c.asm:
+	$(BCC) +config.bcc -S -o$*.asm $*.c
+
+
+config.bcc: makefile.bcc ../makedefs.bcc
+	copy &&!
+	 $(CCOPT)
+	 $(INCDIR)
+	 $(LIBDIR)
+! config.bcc
+
+!include "depend.bcc"

@@ -1,0 +1,51 @@
+#
+# GRX 2.0 test programs makefile for Turbo C. Uses Turbo C make.
+#
+!include "../makedefs.bcc"
+INCDIR= -I../include -I$(BCCROOT)\include
+LIBDIR= -L$(BCCROOT)/lib
+
+PROGS=                  \
+	arctest.exe     \
+	blittest.exe    \
+	circtest.exe    \
+	cliptest.exe    \
+	colorops.exe    \
+	curstest.exe    \
+	fnt2c.exe       \
+	fonttest.exe    \
+	life.exe        \
+	linetest.exe    \
+	modetest.exe    \
+	mousetst.exe    \
+	pcirctst.exe    \
+	polytest.exe    \
+	rgbtest.exe     \
+	scroltst.exe    \
+	speedtst.exe    \
+	winclip.exe     \
+	wintest.exe
+
+all:    $(PROGS) ..\bin\modtst16.exe ..\bin\fnt2c16.exe
+
+..\bin\modtst16.exe: modtst16.exe
+	copy modtst16.exe ..\bin
+	-$(STRIP) ..\bin\modtst16.exe
+
+..\bin\fnt2c16.exe: fnt2c16.exe
+	copy fnt2c16.exe ..\bin
+	-$(STRIP) ..\bin\fnt2c16.exe
+
+modtst16.exe: modetest.obj
+	$(BCC) $(LIBDIR) $(LDOPT) -n. -emodtst16 modetest.obj ../lib/grx20$(MODEL).lib
+
+fnt2c16.exe: fnt2c.obj
+	$(BCC) $(LIBDIR) $(LDOPT) -n. -efnt2c16 fnt2c.obj ../lib/grx20$(MODEL).lib
+
+.obj.exe:
+	$(BCC) $(LIBDIR) $(LDOPT) -n. -e$* $*.obj ../lib/grx20$(MODEL).lib
+
+.c.obj:
+	$(BCC) -c $(CCOPT) $(INCDIR) -o$*.obj $*.c
+
+!include "depend.bcc"

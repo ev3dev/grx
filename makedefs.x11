@@ -1,0 +1,2 @@
+X11INCS=-I/usr/X11/include
+X11LIBS=-L/usr/X11/lib -lX11 -lsocket

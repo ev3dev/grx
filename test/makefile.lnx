@@ -1,0 +1,64 @@
+#
+# GRX 2.0 test programs makefile for LINUX/svgalib. Uses GNU make.
+#
+
+include  ../makedefs.gnu
+INCDIR=  -I../include
+
+PROGS=              \
+	arctest     \
+	blittest    \
+	circtest    \
+	cliptest    \
+	colorops    \
+	curstest    \
+	fnt2c       \
+	fonttest    \
+	life        \
+	linetest    \
+	modetest    \
+	mousetst    \
+	pcirctst    \
+	polytest    \
+	rgbtest     \
+	scroltst    \
+	speedtst    \
+	winclip     \
+	wintest
+
+all:    $(PROGS)
+
+modetest: modetest.o
+	$(CC) $(LDOPT) -o modetest modetest.o ../lib/libgrx20.a -lvga
+	$(STRIP)  modetest
+	cp modetest ../bin
+
+fnt2c: fnt2c.o
+	$(CC) $(LDOPT) -o fnt2c fnt2c.o ../lib/libgrx20.a -lvga
+	$(STRIP)  fnt2c
+	cp fnt2c ../bin
+
+.o:
+	$(CC) $(LDOPT) -o $* $*.o ../lib/libgrx20.a -lvga -lm
+
+.oo:
+	$(CC) $(LDOPT) -o $* $*.o ../lib/libgrx20.a -lvga -lm
+	$(STRIP) $*
+
+.c.o:
+	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
+
+.c.s:
+	$(CC) -S $(CCOPT) $(INCDIR) $*.c
+
+clean:
+	rm -f *.o $(PROGS)
+
+depend.new:
+	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:=.c) >depend.new
+
+$(PROGS): % : %.o ../lib/libgrx20.a
+
+include depend.lnx
+
+

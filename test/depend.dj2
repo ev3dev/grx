@@ -1,0 +1,19 @@
+arctest.o: arctest.c test.h ../include/grx20.h drawing.h
+blittest.o: blittest.c test.h ../include/grx20.h drawing.h
+circtest.o: circtest.c test.h ../include/grx20.h drawing.h
+cliptest.o: cliptest.c test.h ../include/grx20.h drawing.h
+colorops.o: colorops.c test.h ../include/grx20.h drawing.h
+curstest.o: curstest.c test.h ../include/grx20.h drawing.h
+fnt2c.o: fnt2c.c ../include/grx20.h
+fonttest.o: fonttest.c test.h ../include/grx20.h drawing.h
+life.o: life.c test.h ../include/grx20.h drawing.h
+linetest.o: linetest.c test.h ../include/grx20.h drawing.h
+modetest.o: modetest.c ../include/grx20.h drawing.h
+mousetst.o: mousetst.c test.h ../include/grx20.h drawing.h
+pcirctst.o: pcirctst.c test.h ../include/grx20.h drawing.h
+polytest.o: polytest.c test.h ../include/grx20.h drawing.h
+rgbtest.o: rgbtest.c test.h ../include/grx20.h drawing.h
+scroltst.o: scroltst.c test.h ../include/grx20.h drawing.h
+speedtst.o: speedtst.c ../include/grx20.h
+winclip.o: winclip.c test.h ../include/grx20.h drawing.h
+wintest.o: wintest.c test.h ../include/grx20.h drawing.h

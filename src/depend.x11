@@ -1,0 +1,264 @@
+bitblt.o: draw/bitblt.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+box.o: draw/box.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+clear.o: draw/clear.c include/libgrx.h ../include/grx20.h \
+ include/memcopy.h include/memmode.h
+drwinlne.o: draw/drwinlne.c include/libgrx.h ../include/grx20.h
+fillbox.o: draw/fillbox.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+frambox.o: draw/frambox.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+line.o: draw/line.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+majorln.o: draw/majorln.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+pixel.o: draw/pixel.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+plot.o: draw/plot.c include/libgrx.h ../include/grx20.h \
+ include/arith.h include/clipping.h
+dotab8.o: fdrivers/dotab8.c include/libgrx.h ../include/grx20.h \
+ include/docolor.h
+ftable.o: fdrivers/ftable.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h
+genblit.o: fdrivers/genblit.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h include/memcopy.h include/memmode.h
+pblitr2r.o: fdrivers/pblitr2r.c ../include/grdriver.h \
+ ../include/grx20.h include/libgrx.h include/mempeek.h \
+ include/memmode.h
+pblitr2v.o: fdrivers/pblitr2v.c ../include/grdriver.h \
+ ../include/grx20.h include/libgrx.h include/arith.h include/mempeek.h \
+ include/memmode.h
+pblitv2r.o: fdrivers/pblitv2r.c ../include/grdriver.h \
+ ../include/grx20.h include/libgrx.h include/arith.h include/mempeek.h \
+ include/memmode.h
+pblitv2v.o: fdrivers/pblitv2v.c ../include/grdriver.h \
+ ../include/grx20.h include/libgrx.h include/alloca.h include/arith.h \
+ include/mempeek.h include/memmode.h
+ram16.o: fdrivers/ram16.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h include/arith.h include/mempeek.h include/memmode.h \
+ include/memfill.h fdrivers/generic/block.c fdrivers/generic/line.c \
+ fdrivers/generic/bitmap.c fdrivers/generic/pattern.c
+ram24.o: fdrivers/ram24.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h include/arith.h include/mempeek.h include/memmode.h \
+ include/memfill.h fdrivers/generic/vline.c fdrivers/generic/block.c \
+ fdrivers/generic/line.c fdrivers/generic/bitmap.c \
+ fdrivers/generic/pattern.c
+ram32l.o: fdrivers/ram32l.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h include/mempeek.h include/memmode.h \
+ include/memfill.h include/arith.h fdrivers/generic/block.c \
+ fdrivers/generic/line.c fdrivers/generic/bitmap.c \
+ fdrivers/generic/pattern.c
+ram32h.o: fdrivers/ram32h.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h include/mempeek.h include/memmode.h \
+ include/memfill.h include/arith.h fdrivers/generic/block.c \
+ fdrivers/generic/line.c fdrivers/generic/bitmap.c \
+ fdrivers/generic/pattern.c
+ram3x8.o: fdrivers/ram3x8.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h include/mempeek.h include/memmode.h \
+ fdrivers/generic/hline.c fdrivers/generic/vline.c \
+ fdrivers/generic/block.c fdrivers/generic/line.c \
+ fdrivers/generic/bitmap.c fdrivers/generic/pattern.c \
+ fdrivers/generic/bitblt.c include/memcopy.h
+ram1.o: fdrivers/ram1.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h include/mempeek.h include/memmode.h \
+ fdrivers/generic/hline.c fdrivers/generic/vline.c \
+ fdrivers/generic/block.c fdrivers/generic/line.c \
+ fdrivers/generic/bitmap.c fdrivers/generic/pattern.c \
+ fdrivers/generic/bitblt.c include/memcopy.h
+ram4.o: fdrivers/ram4.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h include/arith.h include/memfill.h include/memmode.h \
+ include/mempeek.h fdrivers/generic/hline.c fdrivers/generic/vline.c \
+ fdrivers/generic/block.c fdrivers/generic/line.c \
+ fdrivers/generic/bitmap.c fdrivers/generic/pattern.c \
+ fdrivers/generic/bitblt.c include/memcopy.h
+ram8.o: fdrivers/ram8.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h include/arith.h include/docolor.h include/mempeek.h \
+ include/memmode.h include/memfill.h fdrivers/generic/block.c \
+ fdrivers/generic/line.c fdrivers/generic/bitmap.c \
+ fdrivers/generic/pattern.c
+fdv_bgi.o: fonts/fdv_bgi.c ../include/grfontdv.h ../include/grx20.h \
+ include/libgrx.h include/allocate.h include/arith.h include/memfill.h \
+ include/memmode.h include/mempeek.h fonts/fdv_bgi.h
+fdv_grx.o: fonts/fdv_grx.c ../include/grfontdv.h ../include/grx20.h \
+ include/libgrx.h include/allocate.h fonts/fdv_grx.h
+fdtable.o: fonts/fdtable.c ../include/grfontdv.h ../include/grx20.h \
+ include/libgrx.h
+pc6x8.o: fonts/pc6x8.c ../include/grx20.h
+pc8x8.o: fonts/pc8x8.c ../include/grx20.h
+pc8x14.o: fonts/pc8x14.c ../include/grx20.h
+pc8x16.o: fonts/pc8x16.c ../include/grx20.h
+bldcurs.o: mouse/bldcurs.c include/libgrx.h ../include/grx20.h \
+ include/allocate.h include/memfill.h include/memmode.h \
+ include/mempeek.h include/arith.h include/memcopy.h
+drawcurs.o: mouse/drawcurs.c mouse/input.h include/libgrx.h \
+ ../include/grx20.h
+mouinfo.o: mouse/mouinfo.c include/libgrx.h ../include/grx20.h
+mouinlne.o: mouse/mouinlne.c include/libgrx.h ../include/grx20.h
+mscursor.o: mouse/mscursor.c mouse/input.h include/libgrx.h \
+ ../include/grx20.h include/clipping.h include/arith.h \
+ include/mempeek.h include/memmode.h
+fillpatt.o: pattern/fillpatt.c include/libgrx.h ../include/grx20.h
+makepat.o: pattern/makepat.c include/libgrx.h ../include/grx20.h \
+ include/allocate.h
+patfbox.o: pattern/patfbox.c include/libgrx.h ../include/grx20.h \
+ include/arith.h include/clipping.h
+patfcirc.o: pattern/patfcirc.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h include/shapes.h
+patfcvxp.o: pattern/patfcvxp.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+patfline.o: pattern/patfline.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+patfplot.o: pattern/patfplot.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+patfpoly.o: pattern/patfpoly.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+pattcirc.o: pattern/pattcirc.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+pattline.o: pattern/pattline.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+pattpoly.o: pattern/pattpoly.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+scanpatt.o: pattern/scanpatt.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+clip.o: setup/clip.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+clrinfo.o: setup/clrinfo.c include/libgrx.h ../include/grx20.h
+clrinlne.o: setup/clrinlne.c include/libgrx.h ../include/grx20.h
+colors.o: setup/colors.c include/libgrx.h ../include/grx20.h \
+ include/memfill.h include/memmode.h include/mempeek.h include/arith.h \
+ include/memcopy.h
+context.o: setup/context.c include/libgrx.h ../include/grx20.h \
+ include/allocate.h include/clipping.h include/arith.h \
+ include/memfill.h include/memmode.h include/mempeek.h \
+ include/memcopy.h
+cxtinfo.o: setup/cxtinfo.c include/libgrx.h ../include/grx20.h \
+ include/memmode.h
+cxtinlne.o: setup/cxtinlne.c include/libgrx.h ../include/grx20.h
+drvinfo.o: setup/drvinfo.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h
+drvinlne.o: setup/drvinlne.c include/libgrx.h ../include/grx20.h
+fframe.o: setup/fframe.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h
+fgeom.o: setup/fgeom.c include/libgrx.h ../include/grx20.h \
+ include/arith.h
+hooks.o: setup/hooks.c include/libgrx.h ../include/grx20.h
+modewalk.o: setup/modewalk.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h
+setdrvr.o: setup/setdrvr.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h include/arith.h include/memfill.h include/memmode.h \
+ include/mempeek.h include/memcopy.h
+setmode.o: setup/setmode.c include/libgrx.h ../include/grx20.h \
+ include/arith.h include/memfill.h include/memmode.h include/mempeek.h \
+ include/memcopy.h ../include/grdriver.h
+viewport.o: setup/viewport.c include/libgrx.h ../include/grx20.h \
+ include/arith.h
+circle.o: shape/circle.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+drawpoly.o: shape/drawpoly.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h include/clipping.h include/arith.h
+fillcirc.o: shape/fillcirc.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+fillcnvx.o: shape/fillcnvx.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+fillpoly.o: shape/fillpoly.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+genellip.o: shape/genellip.c include/libgrx.h ../include/grx20.h \
+ include/arith.h
+polygon.o: shape/polygon.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+polyline.o: shape/polyline.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+scancnvx.o: shape/scancnvx.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h include/clipping.h include/arith.h shape/polyedge.h
+scanellp.o: shape/scanellp.c include/libgrx.h ../include/grx20.h \
+ include/alloca.h include/arith.h include/clipping.h include/shapes.h
+scanpoly.o: shape/scanpoly.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h include/alloca.h include/clipping.h include/arith.h \
+ shape/polyedge.h
+buildaux.o: text/buildaux.c include/libgrx.h ../include/grx20.h \
+ include/allocate.h include/arith.h include/memfill.h \
+ include/memmode.h include/mempeek.h include/memcopy.h
+buildfnt.o: text/buildfnt.c ../include/grfontdv.h ../include/grx20.h \
+ include/libgrx.h include/allocate.h include/alloca.h include/arith.h \
+ include/memfill.h include/memmode.h include/mempeek.h \
+ include/memcopy.h
+convfont.o: text/convfont.c ../include/grfontdv.h ../include/grx20.h \
+ include/libgrx.h include/arith.h include/memcopy.h include/memmode.h
+drawstrg.o: text/drawstrg.c include/libgrx.h ../include/grx20.h \
+ include/clipping.h include/arith.h
+drawtext.o: text/drawtext.c include/libgrx.h ../include/grx20.h
+dumpfont.o: text/dumpfont.c include/libgrx.h ../include/grx20.h
+dumptext.o: text/dumptext.c include/libgrx.h ../include/grx20.h \
+ include/arith.h
+fntinlne.o: text/fntinlne.c include/libgrx.h ../include/grx20.h
+fontinfo.o: text/fontinfo.c ../include/grfontdv.h ../include/grx20.h \
+ include/libgrx.h
+fontpath.o: text/fontpath.c ../include/grfontdv.h ../include/grx20.h \
+ include/libgrx.h include/allocate.h include/alloca.h include/arith.h
+loadfont.o: text/loadfont.c ../include/grfontdv.h ../include/grx20.h \
+ include/libgrx.h
+propwdt.o: text/propwdt.c include/libgrx.h ../include/grx20.h
+unloadfn.o: text/unloadfn.c include/libgrx.h ../include/grx20.h \
+ include/allocate.h include/arith.h
+ubox.o: user/ubox.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+ucircle.o: user/ucircle.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+ucust.o: user/ucust.c include/libgrx.h ../include/grx20.h \
+ include/alloca.h user/usercord.h user/scale.h
+udrawtxt.o: user/udrawtxt.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+uellarc.o: user/uellarc.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+ufillbox.o: user/ufillbox.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+ufilpatt.o: user/ufilpatt.c include/libgrx.h ../include/grx20.h \
+ include/alloca.h user/usercord.h user/scale.h
+uframbox.o: user/uframbox.c include/libgrx.h ../include/grx20.h \
+ include/arith.h user/usercord.h user/scale.h
+uhline.o: user/uhline.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+uline.o: user/uline.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+upatt.o: user/upatt.c include/libgrx.h ../include/grx20.h \
+ include/alloca.h user/usercord.h user/scale.h
+upixel.o: user/upixel.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+uplot.o: user/uplot.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+upoly.o: user/upoly.c include/libgrx.h ../include/grx20.h \
+ include/alloca.h user/usercord.h user/scale.h
+usercord.o: user/usercord.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+uvline.o: user/uvline.c include/libgrx.h ../include/grx20.h \
+ user/usercord.h user/scale.h
+resize.o: utils/resize.c include/libgrx.h ../include/grx20.h
+strmatch.o: utils/strmatch.c include/libgrx.h ../include/grx20.h
+vtable.o: vdrivers/vtable.c ../include/grdriver.h ../include/grx20.h \
+ include/libgrx.h
+custbox.o: wideline/custbox.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+custcirc.o: wideline/custcirc.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+custline.o: wideline/custline.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+custplne.o: wideline/custplne.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+custpoly.o: wideline/custpoly.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h
+drwcpoly.o: wideline/drwcpoly.c include/libgrx.h ../include/grx20.h \
+ include/shapes.h include/clipping.h include/arith.h include/memcopy.h \
+ include/memmode.h
+fd_xwin.o: fdrivers/fd_xwin.c include/libxwin.h include/libgrx.h \
+ ../include/grx20.h ../include/grdriver.h
+fdv_xwin.o: fonts/fdv_xwin.c ../include/grfontdv.h ../include/grx20.h \
+ include/libxwin.h include/libgrx.h include/allocate.h
+xwininp.o: mouse/xwininp.c include/libxwin.h include/libgrx.h \
+ ../include/grx20.h mouse/xwinkeys.h include/allocate.h \
+ include/arith.h include/memfill.h include/memmode.h include/mempeek.h \
+ include/memcopy.h mouse/input.h
+xwinkeys.o: mouse/xwinkeys.c include/libxwin.h include/libgrx.h \
+ ../include/grx20.h mouse/input.h
+vd_xwin.o: vdrivers/vd_xwin.c include/libxwin.h include/libgrx.h \
+ ../include/grx20.h ../include/grdriver.h include/arith.h

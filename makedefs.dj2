@@ -1,0 +1,10 @@
+# Global settings for DJGPP v2 makefile's
+# >>>>> Also check makedefs.gnu !
+
+# if yo don't have djp exe compressor
+# enable the echo line and disable djp line
+#EXE_COMPRESS = -echo
+EXE_COMPRESS = djp
+
+# default compiler switches
+#CCOPT += -m486

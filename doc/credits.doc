@@ -1,0 +1,42 @@
+CONTRIB.DOC
+===========
+
+This is a (far from complete) list of people who sent me ideas, bug reports
+or useful code pieces during the development of GRX 2.0.
+
+This file is under construction (I need to go back in my e-mail records to
+see who sent me bug reports, ideas, etc...). Currently it has only the most
+recent contributions. If you think you sent me something for which you should
+be mentioned here, but you don't see your name in the list, drop me an e-mail.
+I may have lost same of the older correspondence.
+
+Hartmut Schirmer (hsc@techfak.uni-kiel.de) for many good ideas, bug reports,
+the BGI font loader sources and the protected mode VESA paging code.
+
+Christian Domp (alma.student.uni-kl.de) for bug reports, the 90x30, 94x30
+90x34 and 94x34 text modes in the stdvga driver and for fixing the HiColor
+and TrueColor modes in the et4000 driver.
+
+Ulrich Leodolter (ulrich@lab1.psy.univie.ac.at) for the wonderful X11
+video, frame and font drivers, bug reports and the DOS Hercules video
+driver.
+
+Daniel Skarda (DSKA4435@novell.karlin.mff.cuni.cz) for bug reports.
+
+Mauro Condarelli (mc5686@mclink.it) for the Linux SVGA version keyboard
+enhancements.
+
+Michael Goffioul (goffioul@emic.ucl.ac.be) for
+	- Pattern Filled functions
+	- Patterned Line functions
+	- Custom Line functions
+	- User Coordinates functions
+
+Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77] for linear framebuffer
+support
+
+Sven Hilscher (Sven@rufus.central.de) for GNU-Pascal interface and 
+bug reports
+
+Daniel Skarda (0rfelyus@atrey.karlin.mff.cuni.cz) for Linux shared 
+libraries and bug reports

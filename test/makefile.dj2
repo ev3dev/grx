@@ -1,0 +1,63 @@
+#
+# GRX 2.0 test programs makefile for DJGPP v2.
+# Uses GNU make.
+#
+.SUFFIXES: .exe
+
+include  ../makedefs.gnu
+include  ../makedefs.dj2
+
+INCDIR=  -I../include
+GRX20 = ../lib/libgrx20.a
+
+PROGS=                  \
+	arctest.exe     \
+	blittest.exe    \
+	circtest.exe    \
+	cliptest.exe    \
+	colorops.exe    \
+	curstest.exe    \
+	fnt2c.exe       \
+	fonttest.exe    \
+	life.exe        \
+	linetest.exe    \
+	modetest.exe    \
+	mousetst.exe    \
+	pcirctst.exe    \
+	polytest.exe    \
+	rgbtest.exe     \
+	scroltst.exe    \
+	speedtst.exe    \
+	winclip.exe     \
+	wintest.exe
+
+all: $(PROGS) ../bin/modetest.exe ../bin/fnt2c.exe
+
+../bin/modetest.exe: modetest.exe
+	if exist ..\bin\modetest.exe del ..\bin\modetest.exe
+	copy modetest.exe ..\bin\modetest.exe
+	$(EXE_COMPRESS) ../bin/modetest.exe
+
+../bin/fnt2c.exe: fnt2c.exe
+	if exist ..\bin\fnt2c.exe del ..\bin\fnt2c.exe
+	copy fnt2c.exe ..\bin\fnt2c.exe
+	$(EXE_COMPRESS) ../bin/fnt2c.exe
+
+.o.exe:
+	$(CC) $(LDOPT) -o $*.exe $*.o $(GRX20) -lpc -lm
+
+.c.o:
+	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
+
+.c.s:
+	$(CC) -S $(CCOPT) $(INCDIR) $*.c
+
+clean:
+	rm -f *.o *.exe
+
+depend.new:
+	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:.exe=.c) >depend.new
+
+$(PROGS): %.exe : %.o $(GRX20)
+
+include depend.dj2

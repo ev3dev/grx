@@ -1,0 +1,16 @@
+#
+# GRX 2.0 makefile for LINUX/svgalib distribution version
+#
+include makedefs.gnu
+
+libs:
+	$(MAKE) -C src STATIC=1 -f makefile.lnx
+	$(MAKE) -C src SHARED=1 -f makefile.lnx
+
+test:   libs
+	$(MAKE) -C test -f makefile.lnx
+
+clean:
+	$(MAKE) -C test          -f makefile.lnx clean
+	$(MAKE) -C src  STATIC=1 -f makefile.lnx clean
+	$(MAKE) -C src  SHARED=1 -f makefile.lnx clean
