@@ -4,7 +4,27 @@ the 2.2 version.
 
 Date     Changes
 
-01/05/15 ----------- GRX v2.4.2 released (Mariano Alvarez Fernandez)
+01/06/28 ----------- GRX v2.4.3 released (Mariano Alvarez Fernandez)
+01/06/27 Added new targets to makefiles: install-bin, uninstall-bin,
+         install-fonts and uninstall-fonts (readme file updated)
+01/06/26 Moved bin2c, fnt2c, vesainfo, lfbinfo and modetest to
+         src/utilprog. They are build in the source makefile.
+01/06/22 Except for the w32 version the install target installs the
+         info manual. As suggested by Maurice Lombardi and Waldemar
+         Schultz
+01/06/21 pngtest test program added. It works too without png support
+         and shows a message
+01/06/20 Changed BCCGRX cleardevice function to clear the screen to
+         the current BACKGROUND color instead of black. Suggested by
+         Waldemar Schultz
+01/06/19 ctx2png functions (GrSaveContextToPng, GrLoadContextFromPng,
+         GrQueryPng, GrPngSupport) integrated in GRX. src/pnm subdir
+         renamed to src/gformats. Added dummy functions if there isn't
+         png support
+01/06/18 New API functions: GrLoadContextFromPnmBuffer and
+         GrQueryPnmBuffer
+
+01/06/15 ----------- GRX v2.4.2 released (Mariano Alvarez Fernandez)
 01/06/12 Modified win32 input code to work GrMouseGetEvent and
          GrKeyRead at the same time when GrMouseEventEnable(1,0) is set
 01/06/07 Merged makedefs.gnu, makedefs.x11, makedefs.dj2 and

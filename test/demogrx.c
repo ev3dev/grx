@@ -31,33 +31,34 @@
 #define HEIGHT 480
 #define BPP 16
 
-#define WINTITLE "GRX 2.4.2, the graphics library"
+#define WINTITLE "GRX 2.4.3, the graphics library"
 
-#define NDEMOS 25
+#define NDEMOS 26
 
 #define ID_ARCTEST   1
-#define ID_BB1TEST  23
-#define ID_BLITTEST  2
-#define ID_CIRCTEST  3
-#define ID_CLIPTEST  4
-#define ID_COLOROPS  5
-#define ID_CURSTEST  6
-#define ID_FONTTEST  7
-#define ID_IMGTEST   8
-#define ID_KEYS      9
-#define ID_LIFE     10
-#define ID_LINETEST 11
-#define ID_MOUSETST 12
-#define ID_PCIRCTST 13
-#define ID_PNMTEST  14
-#define ID_POLYTEST 15
-#define ID_RGBTEST  16
-#define ID_SCROLTST 17
-#define ID_SBCTEST  18
-#define ID_SPEEDTST 19
-#define ID_TEXTPATT 20
-#define ID_WINCLIP  21
-#define ID_WINTEST  22
+#define ID_BB1TEST   2
+#define ID_BLITTEST  3
+#define ID_CIRCTEST  4
+#define ID_CLIPTEST  5
+#define ID_COLOROPS  6
+#define ID_CURSTEST  7
+#define ID_FONTTEST  8
+#define ID_IMGTEST   9
+#define ID_KEYS     10
+#define ID_LIFE     11
+#define ID_LINETEST 12
+#define ID_MOUSETST 13
+#define ID_PCIRCTST 14
+#define ID_PNMTEST  15
+#define ID_PNGTEST  16
+#define ID_POLYTEST 17
+#define ID_RGBTEST  18
+#define ID_SCROLTST 19
+#define ID_SBCTEST  20
+#define ID_SPEEDTST 21
+#define ID_TEXTPATT 22
+#define ID_WINCLIP  23
+#define ID_WINTEST  24
 #define ID_MODETEST 50
 #define ID_EXIT     99
 
@@ -82,7 +83,8 @@ static ProgTable ptable[NDEMOS] = {
   { ID_LINETEST,"linetest","linetest.c -> test wide and patterned lines" },
   { ID_MOUSETST,"mousetst","mousetst.c -> test mouse cursor and mouse/keyboard input" },
   { ID_PCIRCTST,"pcirctst","pcirctst.c -> test custom circle and ellipse rendering" },
-  { ID_PNMTEST,"pnmtest","pnmtext.c -> text context to pnm routines" },
+  { ID_PNMTEST,"pnmtest","pnmtext.c -> text context to pnm functions" },
+  { ID_PNGTEST,"pngtest","pngtext.c -> text context to png functions" },
   { ID_POLYTEST,"polytest","polytest.c -> test polygon rendering" },
   { ID_RGBTEST,"rgbtest","rgbtest.c -> show 256 color RGB palette" },
   { ID_SBCTEST,"sbctest","sbctest.c -> test subcontext operations" },
@@ -123,14 +125,15 @@ static Button b[NDEMOS] = {
   { PX1,PY3,100,40,IND_BLUE,IND_YELLOW,"MouseTst",0,ID_MOUSETST },
   { PX1,PY4,100,40,IND_BLUE,IND_YELLOW,"PcircTst",0,ID_PCIRCTST },
   { PX1,PY5,100,40,IND_BLUE,IND_YELLOW,"PnmTest",0,ID_PNMTEST },
-  { PX1,PY6,100,40,IND_BLUE,IND_YELLOW,"PolyTest",0,ID_POLYTEST },
-  { PX1,PY7,100,40,IND_BLUE,IND_YELLOW,"RgbTest",0,ID_RGBTEST },
-  { PX1,PY8,100,40,IND_BLUE,IND_YELLOW,"SbcTest",0,ID_SBCTEST },
-  { PX2,PY0,100,40,IND_BLUE,IND_YELLOW,"ScrolTst",0,ID_SCROLTST },
-  { PX2,PY1,100,40,IND_BLUE,IND_YELLOW,"SpeedTst",0,ID_SPEEDTST },
-  { PX2,PY2,100,40,IND_BLUE,IND_YELLOW,"TextPatt",0,ID_TEXTPATT },
-  { PX2,PY3,100,40,IND_BLUE,IND_YELLOW,"WinClip",0,ID_WINCLIP },
-  { PX2,PY4,100,40,IND_BLUE,IND_YELLOW,"WinTest",0,ID_WINTEST },
+  { PX1,PY6,100,40,IND_BLUE,IND_YELLOW,"PngTest",0,ID_PNGTEST },
+  { PX1,PY7,100,40,IND_BLUE,IND_YELLOW,"PolyTest",0,ID_POLYTEST },
+  { PX1,PY8,100,40,IND_BLUE,IND_YELLOW,"RgbTest",0,ID_RGBTEST },
+  { PX2,PY0,100,40,IND_BLUE,IND_YELLOW,"SbcTest",0,ID_SBCTEST },
+  { PX2,PY1,100,40,IND_BLUE,IND_YELLOW,"ScrolTst",0,ID_SCROLTST },
+  { PX2,PY2,100,40,IND_BLUE,IND_YELLOW,"SpeedTst",0,ID_SPEEDTST },
+  { PX2,PY3,100,40,IND_BLUE,IND_YELLOW,"TextPatt",0,ID_TEXTPATT },
+  { PX2,PY4,100,40,IND_BLUE,IND_YELLOW,"WinClip",0,ID_WINCLIP },
+  { PX2,PY5,100,40,IND_BLUE,IND_YELLOW,"WinTest",0,ID_WINTEST },
   { PX2,PY7,100,40,IND_GREEN,IND_YELLOW,"ModeTest",0,ID_MODETEST },
   { PX2,PY8,100,40,IND_RED,IND_WHITE,"Exit",0,ID_EXIT } };
 
@@ -255,7 +258,7 @@ static void paint_screen( void )
 
 static void the_title( int x, int y )
 {
-  char *t1 = "GRX 2.4.2";
+  char *t1 = "GRX 2.4.3";
   char *t2 = "test programs launcher";
 
   grt_centered.txo_fgcolor.v = LIGHTGREEN;
@@ -312,9 +315,15 @@ static int pev_command( Event *ev )
       if( ev->p1 == ptable[i].cid ){
         gfaz_fin();
 #if defined(__MSDOS__) || defined(__WIN32__)
-        strcpy( nprog,".\\" );
+        if( ev->p1 == ID_MODETEST )
+          strcpy( nprog,"..\\bin\\" );
+        else
+          strcpy( nprog,".\\" );
 #else
-        strcpy( nprog,"./" );
+        if( ev->p1 == ID_MODETEST )
+          strcpy( nprog,"../bin/" );
+        else
+          strcpy( nprog,"./" );
 #endif
 #if defined(__XWIN__)
         strcat( nprog,"x" );
@@ -366,7 +375,7 @@ static void paint_foot( char *s )
 static void paint_animation( void )
 {
   static char *text =
-    "GRX 2.4.2, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "GRX 2.4.3, the graphics library for DJGPPv2, Linux, X11 and Win32";
   static int pos = 620;
   static int ini = 0;
   static int ltext, wtext;

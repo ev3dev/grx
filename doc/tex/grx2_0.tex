@@ -24,6 +24,7 @@
 * Keyboard input::
 * Mouse event handling::
 * Writing/reading PNM graphics files::
+* Writing/reading PNG graphics files::
 * Miscellaneous functions::
 * BGI interface::
 * Test examples::
@@ -36,7 +37,7 @@
 
  
 @example
-                       GRX 2.4.2 User's Manual
+                       GRX 2.4.3 User's Manual
 
          A graphics library for DOS, Linux, X11 and Win32
 
@@ -45,7 +46,7 @@
 Based on the original doc written by: Csaba Biegl on August 10, 1992 
 Updated by: Mariano Alvarez Fernandez on August 17, 2000 
 
-Last update: April 22, 2001 
+Last update: June 28, 2001
 ______________________________________________________________________________
 
 @example
@@ -60,7 +61,7 @@ X11 and Win32 (Mingw). On DOS it supports VGA, EGA and VESA compliant cards.
 On Linux console it uses svgalib or the framebuffer. On X11 it must work on
 any X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver,
 but you must considere it in alpha stage. The framebuffer Linux console
-driver is new in 2.4.2 and it is in alpha stage too.
+driver was new in 2.4.2 and it is in alpha stage too.
 
 @c -----------------------------------------------------------------------------
 @node Hello world, Data types and function declarations, Credits, A User Manual For GRX2
@@ -302,8 +303,6 @@ typedef enum _GR_videoAdapters @{
 @end example
 
 Note that the VESA driver return GR_VGA here. 
-
-See the @pxref{modetest.c} example.
 
 @c -----------------------------------------------------------------------------
 @node Graphics contexts, Context use, Setting video modes, A User Manual For GRX2
@@ -2083,7 +2082,7 @@ GrMouseEventEnable( 0,1 ) is needed before input process.
 
 See the @pxref{mousetst.c} example.
 
-@node Writing/reading PNM graphics files, Miscellaneous functions,Mouse event handling , A User Manual For GRX2
+@node Writing/reading PNM graphics files, Writing/reading PNG graphics files,Mouse event handling , A User Manual For GRX2
 @unnumberedsec Writing/reading PNM graphics files
 
 GRX includes functions to load/save a context from/to a PNM file. 
@@ -2129,7 +2128,9 @@ quantized to gray scale using .299r + .587g + .114b.
 GrSaveContextToPpm dumps a context in a PPM file (real color). 
 To load a PNM file in a context you must use: 
 
+@example
 int GrLoadContextFromPnm( GrContext *grc, char *pnmfn );
+@end example
 
 it support reading PBM, PGM and PPM binary files. grc must be a pointer to the 
 context to be written, is it is NULL the current context is used; p-mfn is the 
@@ -2138,15 +2139,82 @@ function loads as much as it can. If color mode is not in RGB mode, the routine
 allocates as much colors as it can. The function returns 0 on succes and -1 on 
 error. 
 
-Finally to query the file format, width and height of a PNM file you can use: 
+To query the file format, width and height of a PNM file you can use:
 
+@example
 int GrQueryPnm( char *ppmfn, int *width, int *height, int *maxval );
+@end example
 
 pnmfn is the name of pnm file; width returns the pnm width; height returns the 
 pnm height; maxval returns the max color component value. The function returns 1 
 to 6 on success (the PNM format) or -1 on error. 
 
-@node Miscellaneous functions, BGI interface, Writing/reading PNM graphics files, A User Manual For GRX2
+The two next functions:
+
+@example
+int GrLoadContextFromPnmBuffer( GrContext *grc, char *pnmbuf );
+int GrQueryPnmBuffer( char *pnmbuf, int *width, int *height, int *maxval );
+@end example
+
+work like GrLoadContextFromPnm and
+GrQueryPnmBuffer, but they get his input from a buffer instead
+of a file. This way, pnm files can be embeded in a program (using the
+bin2c program by example).
+
+@node Writing/reading PNG graphics files, Miscellaneous functions, Writing/reading PNM graphics files, A User Manual For GRX2
+@unnumberedsec Writing/reading PNG graphics files
+
+GRX includes functions to load/save a context
+from/to a png file. But note, for this purpose it needs the
+(a href="http://www.libpng.org/pub/png/libpng.html) libpng library,
+and to enable the png support before make the GRX lib.
+
+Use next function to save a context in a PNG file:
+
+@example
+int GrSaveContextToPng( GrContext *grc, char *pngfn );
+@end example
+
+it works both in RGB and palette modes, grc must be
+a pointer to the context to be saved, if it is NULL the current context is
+saved; pngfn is the file name to be created.
+The function returns 0 on succes and -1 on error.
+
+To load a PNG file in a context you must use:
+
+@example
+int GrLoadContextFromPng( GrContext *grc, char *pngfn, int use_alpha );
+@end example
+
+grc must be a pointer to the context to be written, is it
+is NULL the current context is used; pngfn is the file name
+to be read; set use_alpha to 1 if you want to use the image
+alpha channel (if available). If context dimensions are lesser than png
+dimensions, the function loads as much as it can. If color mode is not
+in RGB mode, the routine allocates as much colors as it can. The function
+returns 0 on succes and -1 on error.
+
+To query the width and height of a PNG file you can use:
+
+@example
+int GrQueryPng( char *pngfn, int *width, int *height );
+@end example
+
+pngfn is the name of png file; width returns the
+png width; height returns the png height.
+The function returns 0 on success or -1 on error.
+
+The function:
+
+@example
+int GrPngSupport( void );
+@end example
+
+returns 1 if there is png support in the library, 0 otherwise. If there is
+not support for png, dummy functions are added to the library, returning
+ever error (-1).
+
+@node Miscellaneous functions, BGI interface, Writing/reading PNG graphics files, A User Manual For GRX2
 @unnumberedsec Miscellaneous functions
 
 Here we will describe some miscellaneous functions. 

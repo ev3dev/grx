@@ -12,17 +12,21 @@ include ../makedefs.grx
 INCDIR=  -I../include
 GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 
-#ifeq ($(HAVE_LIBTIFF),y)
-#  ADDON_LIBS += -ltiff
-#endif
+ifeq ($(HAVE_LIBTIFF),y)
+  ADDON_LIBS += -ltiff
+endif
 
-#ifeq ($(HAVE_LIBJPEG),y)
-#  ADDON_LIBS += -ljpeg
-#endif
+ifeq ($(HAVE_LIBJPEG),y)
+  ADDON_LIBS += -ljpeg
+endif
 
-#ifeq ($(NEED_ZLIB),y)
-#  ADDON_LIBS += -lz
-#endif
+ifeq ($(HAVE_LIBPNG),y)
+  ADDON_LIBS += -lpng
+endif
+
+ifeq ($(NEED_ZLIB),y)
+  ADDON_LIBS += -lz
+endif
 
 LIBS= $(GRX20) $(ADDON_LIBS)
 
@@ -40,6 +44,7 @@ PROGS=  arctest.exe     \
 	mousetst.exe    \
 	pcirctst.exe    \
 	pnmtest.exe     \
+	pngtest.exe     \
 	polytest.exe    \
 	rgbtest.exe     \
 	sbctest.exe     \
@@ -49,29 +54,11 @@ PROGS=  arctest.exe     \
 	wintest.exe
 
 all: 	$(PROGS) \
-	modetest.exe \
-	fnt2c.exe \
-	../bin/modetest.exe \
-	../bin/fnt2c.exe \
 	demogrx.exe \
 	keys.exe \
 	speedtst.exe
 #	memtest.exe
 
-
-modetest.exe: modetest.o $(GRX20)
-	$(CC) $(LDOPT) -o modetest.exe modetest.o $(LIBS) -lm -mwindows -mconsole
-
-fnt2c.exe: fnt2c.o $(GRX20)
-	$(CC) $(LDOPT) -o fnt2c.exe fnt2c.o $(LIBS) -lm -mwindows -mconsole
-
-../bin/modetest.exe: modetest.exe
-	if exist ..\bin\modetest.exe del ..\bin\modetest.exe
-	copy modetest.exe ..\bin\modetest.exe
-
-../bin/fnt2c.exe: fnt2c.exe
-	if exist ..\bin\fnt2c.exe del ..\bin\fnt2c.exe
-	copy fnt2c.exe ..\bin\fnt2c.exe
 
 demogrx.exe: demogrx.o gfaz.o $(GRX20)
 	$(CC) $(LDOPT) -o demogrx.exe demogrx.o gfaz.o $(LIBS) -lm -mwindows

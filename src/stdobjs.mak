@@ -55,8 +55,9 @@ STD_3 = $(OP)fonts/fdv_bgi$(OX)     \
 	$(OP)image/iinverse$(OX)    \
 	$(OP)image/imginlne$(OX)    \
 	$(OP)image/iplot$(OX)       \
-        $(OP)image/istretch$(OX)    \
-        $(OP)pnm/ctx2pnm$(OX)
+	$(OP)image/istretch$(OX)    \
+	$(OP)gformats/ctx2pnm$(OX)  \
+	$(OP)gformats/pnm2ctx$(OX)
 
 STD_4 = $(OP)mouse/bldcurs$(OX)     \
 	$(OP)mouse/drawcurs$(OX)    \
@@ -320,6 +321,11 @@ JPG_1 = $(OP)../addons/ctx2jpeg$(OX)
 BMP_1 = $(OP)../addons/bmp/bmp$(OX)
 
 TIF_1 = $(OP)../addons/ctx2tiff$(OX)
+
+PNG_1 = $(OP)gformats/ctx2png$(OX) \
+	$(OP)gformats/png2ctx$(OX)
+
+NOPNG_1 = $(OP)gformats/dummypng$(OX) \
 
 PRN_1 = $(OP)../addons/print/grxprint$(OX) \
 	$(OP)../addons/print/prndata$(OX)  \

@@ -23,6 +23,10 @@ ifeq ($(HAVE_LIBJPEG),y)
   ADDON_LIBS += -ljpeg
 endif
 
+ifeq ($(HAVE_LIBPNG),y)
+  ADDON_LIBS += -lpng
+endif
+
 ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
@@ -45,10 +49,10 @@ PROGS=  xarctest     \
 	xkeys        \
 	xlife        \
 	xlinetest    \
-	xmodetest    \
 	xmousetst    \
 	xpcirctst    \
 	xpnmtest     \
+	xpngtest     \
 	xpolytest    \
 	xrgbtest     \
 	xsbctest     \
@@ -58,10 +62,7 @@ PROGS=  xarctest     \
 	xwinclip     \
 	xwintest
 
-all: $(PROGS) ../bin/xmodetest xdemogrx
-
-../bin/xmodetest: xmodetest
-	cp xmodetest ../bin
+all: $(PROGS) xdemogrx
 
 xdemogrx: demogrx.o gfaz.o
 	$(CC) $(LDOPT) -o xdemogrx demogrx.o gfaz.o $(LIBS)

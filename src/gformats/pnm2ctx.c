@@ -1,7 +1,7 @@
 /**
- ** ctx2pnm.c ---- loads/saves a context from/in a PNM file
+ ** pnm2ctx.c ---- loads a context from a PNM file or PNM buffer
  **
- ** Copyright (C) 2000 Mariano Alvarez Fernandez
+ ** Copyright (C) 2000,2001 Mariano Alvarez Fernandez
  ** [e-mail: malfer@teleline.es]
  **
  ** This file is part of the GRX graphics library.
@@ -24,166 +24,64 @@
 #include <string.h>
 #include "grx20.h"
 
-/*
-** GrSaveContextToPbm - Dump a context in a PBM file (bitmap)
-**
-** This routine works both in RGB and palette modes
-** If the pixel color isn't Black it asumes White
-**
-** Arguments:
-**   ctx:   Context to be saved (NULL -> use current context)
-**   pbmfn: Name of pbm file
-**   docn:  string saved like a comment in the pbm file (can be NULL)
-**
-** Returns  0 on success
-**         -1 on error
-*/
+typedef struct{
+  int method;  /* 0=file, 1=buffer */
+  FILE *file;
+  char *buffer;
+  int bufferpointer;
+  } inputstruct;
 
-int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn )
+/**/
+
+static size_t inputread( void *buffer, size_t size, size_t number,
+                         inputstruct *is )
 {
-  FILE *f;
-  GrContext grcaux;
-  char cab[81];
-  int currentbyte = 0, currentbit = 7;
-  int x, y;
-
-  if( (f = fopen( pbmfn,"wb" )) == NULL ) return -1;
-  
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
-  sprintf( cab,"P4\n#" );
-  fwrite( cab,1,strlen( cab ),f );
-  if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
-  sprintf( cab,"\n%d %d\n",GrSizeX(),GrSizeY() );
-  fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<GrSizeY(); y++ ){
-    for( x=0; x<GrSizeX(); x++ ){
-      if( GrPixel( x,y ) == GrBlack() )
-        currentbyte |= 1 << currentbit;
-      currentbit--;
-      if( currentbit < 0 ){
-        fwrite( &currentbyte,1,1,f );
-        currentbyte = 0;
-        currentbit = 7;
-        }
-      }
-    if( currentbit < 7 ){
-      fwrite( &currentbyte,1,1,f );
-      currentbyte = 0;
-      currentbit = 7;
-      }
+  if( is->method == 0 )
+    return fread( buffer,size,number,is->file );
+  else{
+    memcpy( buffer,&(is->buffer[is->bufferpointer]),size*number );
+    is->bufferpointer += size * number;
+    return number;
     }
-  GrSetContext( &grcaux );
-  fclose( f );
-
-  return 0;
-}
-
-/*
-** GrSaveContextToPgm - Dump a context in a PGM file (gray scale)
-**
-** This routine works both in RGB and palette modes
-** The colors are quantized to gray scale using .299r + .587g + .114b
-**
-** Arguments:
-**   ctx:   Context to be saved (NULL -> use current context)
-**   pgmfn: Name of pgm file
-**   docn:  string saved like a comment in the pgm file (can be NULL)
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn )
-{
-  FILE *f;
-  GrContext grcaux;
-  char cab[81];
-  unsigned char grey;
-  int rgb[3];
-  int x, y;
-
-  if( (f = fopen( pgmfn,"wb" )) == NULL ) return -1;
-  
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
-  sprintf( cab,"P5\n#" );
-  fwrite( cab,1,strlen( cab ),f );
-  if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
-  sprintf( cab,"\n%d %d\n255\n",GrSizeX(),GrSizeY() );
-  fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<GrSizeY(); y++ )
-    for( x=0; x<GrSizeX(); x++ ){
-      GrQueryColor( GrPixel( x,y ),&rgb[0],&rgb[1],&rgb[2] );
-      grey = (0.229 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2]);
-      fwrite( &grey,1,1,f );
-      }
-  GrSetContext( &grcaux );
-  fclose( f );
-
-  return 0;
-}
-
-/*
-** GrSaveContextToPpm - Dump a context in a PPM file (real color)
-**
-** This routine works both in RGB and palette modes
-**
-** Arguments:
-**   ctx:   Context to be saved (NULL -> use current context)
-**   ppmfn: Name of ppm file
-**   docn:  string saved like a comment in the ppm file (can be NULL)
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int GrSaveContextToPpm( GrContext *grc, char *ppmfn, char *docn )
-{
-  FILE *f;
-  GrContext grcaux;
-  char cab[81];
-  unsigned char brgb[3];
-  int x, y, r, g, b;
-
-  if( (f = fopen( ppmfn,"wb" )) == NULL ) return -1;
-  
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
-  sprintf( cab,"P6\n#" );
-  fwrite( cab,1,strlen( cab ),f );
-  if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
-  sprintf( cab,"\n%d %d\n255\n",GrSizeX(),GrSizeY() );
-  fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<GrSizeY(); y++ )
-    for( x=0; x<GrSizeX(); x++ ){
-      GrQueryColor( GrPixel( x,y ),&r,&g,&b );
-      brgb[0] = r;
-      brgb[1] = g;
-      brgb[2] = b;
-      fwrite( brgb,1,3,f );
-      }
-  GrSetContext( &grcaux );
-  fclose( f );
-
-  return 0;
 }
 
 /**/
 
-static int skipspaces( FILE *f )
+static int inputgetc( inputstruct *is )
+{
+  if( is->method == 0 )
+    return fgetc( is->file );
+  else
+    return is->buffer[is->bufferpointer++];
+}
+
+/**/
+
+int inputungetc( int c, inputstruct *is )
+{
+  if( is->method == 0 )
+    return ungetc( c,is->file );
+  else{
+    is->bufferpointer--;
+    return c;
+    }
+}
+
+/**/
+
+static int skipspaces( inputstruct *is )
 {
   int c;
   
   while( 1 ){
-    if( (c = fgetc( f )) == EOF ) return -1;
+    if( (c = inputgetc( is )) == EOF ) return -1;
     if( c == '#' ) // it's a comment
       while( 1 ){
-        if( (c = fgetc( f )) == EOF ) return -1;
+        if( (c = inputgetc( is )) == EOF ) return -1;
         if( c == '\n' ) break;
         }
     if( c != ' ' && c != '\t' && c != '\n' && c != '\r' ){
-      ungetc( c,f );
+      inputungetc( c,is );
       return 0;
       }
     }
@@ -191,16 +89,16 @@ static int skipspaces( FILE *f )
 
 /**/
 
-static int readnumber( FILE *f )
+static int readnumber( inputstruct *is )
 {
   char buf[81];
   int count;
   
   count = 0;
   while( 1 ){
-    if( (buf[count] = fgetc( f )) == EOF ) return -1;
+    if( (buf[count] = inputgetc( is )) == EOF ) return -1;
     if( buf[count] == ' ' || buf[count] == '\t' || buf[count] == '\n' ){
-      ungetc( buf[count],f );
+      inputungetc( buf[count],is );
       break;
       }
     if( count > 80 ) break;
@@ -212,32 +110,32 @@ static int readnumber( FILE *f )
 
 /**/
 
-static int loaddata( FILE *f, int *width, int *height, int *maxval )
+static int loaddata( inputstruct *is, int *width, int *height, int *maxval )
 {
   unsigned char buf[10];
   int r;
 
-  if( fread( buf,1,2,f ) != 2 ) return -1;
+  if( inputread( buf,1,2,is ) != 2 ) return -1;
   if( buf[0] != 'P' ) return -1;
   r = buf[1] - '0';
   if( (r < PLAINPBMFORMAT) || (r > PPMFORMAT) ) return -1;
-  if( skipspaces( f ) != 0 ) return -1;
-  if( (*width = readnumber( f )) < 0 ) return -1;
-  if( skipspaces( f ) != 0 ) return -1;
-  if( (*height = readnumber( f )) < 0 ) return -1;
+  if( skipspaces( is ) != 0 ) return -1;
+  if( (*width = readnumber( is )) < 0 ) return -1;
+  if( skipspaces( is ) != 0 ) return -1;
+  if( (*height = readnumber( is )) < 0 ) return -1;
   if( (r == PLAINPBMFORMAT) || (r == PBMFORMAT) )
     *maxval = 1;
   else{
-    if( skipspaces( f ) != 0 ) return -1;
-    if( (*maxval = readnumber( f )) < 0 ) return -1;
+    if( skipspaces( is ) != 0 ) return -1;
+    if( (*maxval = readnumber( is )) < 0 ) return -1;
     }
-  fgetc( f );  // skip \n
+  inputgetc( is );  // skip \n
   return r;
 }
 
 /**/
 
-static int _GrLoadContextFromPbm( FILE *f, int width, int height )
+static int _GrLoadContextFromPbm( inputstruct *is, int width, int height )
 {
   int x, y;
   int maxwidth, maxheight;
@@ -256,7 +154,7 @@ static int _GrLoadContextFromPbm( FILE *f, int width, int height )
   for( y=0; y<maxheight; y++ ){
     for( x=0; x<width; x++ ){
       if( !isbyteread ){
-        if( fread( &currentbyte,1,1,f ) != 1 ) { res = -1; goto salida; }
+        if( inputread( &currentbyte,1,1,is ) != 1 ) { res = -1; goto salida; }
         isbyteread = 1;
         currentbit = 7;
         }
@@ -278,7 +176,8 @@ salida:
 
 /**/
 
-static int _GrLoadContextFromPgm( FILE *f, int width, int height, int maxval )
+static int _GrLoadContextFromPgm( inputstruct *is, int width,
+                                  int height, int maxval )
 {
   int x, y;
   int needcoloradjust = 0;
@@ -303,7 +202,7 @@ static int _GrLoadContextFromPgm( FILE *f, int width, int height, int maxval )
   if(pData == NULL) { res = -1; goto salida; }
 
   for( y=0; y<maxheight; y++ ){
-    if( fread( pData,1,width,f ) != width ) { res = -1; goto salida; }
+    if( inputread( pData,1,width,is ) != width ) { res = -1; goto salida; }
     pCursor = pData;
     for( x=0; x<maxwidth; x++ ){
       if( needcoloradjust )
@@ -322,7 +221,8 @@ salida:
 
 /**/
 
-static int _GrLoadContextFromPpm( FILE *f, int width, int height, int maxval )
+static int _GrLoadContextFromPpm( inputstruct *is, int width,
+                                  int height, int maxval )
 {
   int x, y;
   int needcoloradjust = 0;
@@ -347,7 +247,7 @@ static int _GrLoadContextFromPpm( FILE *f, int width, int height, int maxval )
   if(pRGB == NULL) { res = -1; goto salida; }
 
   for( y=0; y<maxheight; y++ ){
-    if( fread( pRGB,3,width,f ) != width ) { res = -1; goto salida; }
+    if( inputread( pRGB,3,width,is ) != width ) { res = -1; goto salida; }
     pCursor = pRGB;
     for( x=0; x<maxwidth; x++ ){
       if( needcoloradjust ){
@@ -388,32 +288,32 @@ salida:
 
 int GrLoadContextFromPnm( GrContext *grc, char *pnmfn )
 {
-  FILE *f;
+  inputstruct is = {0, NULL, NULL, 0};
   GrContext grcaux;
   int r = -1;
   int format, width, height, maxval;
 
-  if( (f = fopen( pnmfn,"rb" )) == NULL ) return -1;
+  if( (is.file = fopen( pnmfn,"rb" )) == NULL ) return -1;
 
   GrSaveContext( &grcaux );
   if( grc != NULL ) GrSetContext( grc );
 
-  format = loaddata( f,&width,&height,&maxval );
+  format = loaddata( &is,&width,&height,&maxval );
   if( maxval > 255 ) goto ENDFUNCTION;
   if( (format < PBMFORMAT) || (format > PPMFORMAT) ) goto ENDFUNCTION;
 
   switch( format ){
-    case PBMFORMAT: r = _GrLoadContextFromPbm( f,width,height );
+    case PBMFORMAT: r = _GrLoadContextFromPbm( &is,width,height );
                     break;
-    case PGMFORMAT: r = _GrLoadContextFromPgm( f,width,height,maxval );
+    case PGMFORMAT: r = _GrLoadContextFromPgm( &is,width,height,maxval );
                     break;
-    case PPMFORMAT: r = _GrLoadContextFromPpm( f,width,height,maxval );
+    case PPMFORMAT: r = _GrLoadContextFromPpm( &is,width,height,maxval );
                     break;
     }
 
 ENDFUNCTION:
   GrSetContext( &grcaux );
-  fclose( f );
+  fclose( is.file );
 
   return r;
 }
@@ -431,16 +331,91 @@ ENDFUNCTION:
 **         -1 on error
 */
 
-int GrQueryPnm( char *ppmfn, int *width, int *height, int *maxval )
+int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval )
 {
-  FILE *f;
+  inputstruct is = {0, NULL, NULL, 0};
   int r;
 
-  if( (f = fopen( ppmfn,"rb" )) == NULL ) return -1;
+  if( (is.file = fopen( pnmfn,"rb" )) == NULL ) return -1;
 
-  r = loaddata( f,width,height,maxval );
+  r = loaddata( &is,width,height,maxval );
 
-  fclose( f );
+  fclose( is.file );
+
+  return r;
+}
+
+/*
+** GrLoadContextFromPnmBuffer - Load a context from a PNM buffer
+**
+** Support only PBM, PGM and PPM binary buffers with maxval < 256
+**
+** If context dimensions are lesser than pnm dimensions,
+** the routine loads as much as it can
+**
+** If color mode is not in RGB mode, the routine allocates as
+** much colors as it can
+**
+** Arguments:
+**   ctx:    Context to be loaded (NULL -> use current context)
+**   pnmbuf: Buffer that holds data
+**
+** Returns  0 on success
+**         -1 on error
+*/
+
+int GrLoadContextFromPnmBuffer( GrContext *grc, char *pnmbuf )
+{
+  inputstruct is = {1, NULL, NULL, 0};
+  GrContext grcaux;
+  int r = -1;
+  int format, width, height, maxval;
+
+  is.buffer = pnmbuf;
+  
+  GrSaveContext( &grcaux );
+  if( grc != NULL ) GrSetContext( grc );
+
+  format = loaddata( &is,&width,&height,&maxval );
+  if( maxval > 255 ) goto ENDFUNCTION;
+  if( (format < PBMFORMAT) || (format > PPMFORMAT) ) goto ENDFUNCTION;
+
+  switch( format ){
+    case PBMFORMAT: r = _GrLoadContextFromPbm( &is,width,height );
+                    break;
+    case PGMFORMAT: r = _GrLoadContextFromPgm( &is,width,height,maxval );
+                    break;
+    case PPMFORMAT: r = _GrLoadContextFromPpm( &is,width,height,maxval );
+                    break;
+    }
+
+ENDFUNCTION:
+  GrSetContext( &grcaux );
+
+  return r;
+}
+
+/*
+** GrQueryPnmBuffer - Query format, width and height data from a PNM buffer
+**
+** Arguments:
+**   pnmbuf:  Buffer that holds data
+**   width:   return pnm width
+**   height:  return pnm height
+**   maxval:  max color component value
+**
+** Returns  1 to 6 on success (PNM FORMAT)
+**         -1 on error
+*/
+
+int GrQueryPnmBuffer( char *pnmbuf, int *width, int *height, int *maxval )
+{
+  inputstruct is = {1, NULL, NULL, 0};
+  int r;
+
+  is.buffer = pnmbuf;
+
+  r = loaddata( &is,width,height,maxval );
 
   return r;
 }

@@ -21,6 +21,10 @@ ifeq ($(HAVE_LIBJPEG),y)
   ADDON_LIBS += -ljpeg
 endif
 
+ifeq ($(HAVE_LIBPNG),y)
+  ADDON_LIBS += -lpng
+endif
+
 ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
@@ -34,16 +38,15 @@ PROGS=  arctest.exe     \
 	cliptest.exe    \
 	colorops.exe    \
 	curstest.exe    \
-	fnt2c.exe       \
 	fonttest.exe    \
 	imgtest.exe     \
 	keys.exe        \
 	life.exe        \
 	linetest.exe    \
-	modetest.exe    \
 	mousetst.exe    \
 	pcirctst.exe    \
 	pnmtest.exe     \
+	pngtest.exe     \
 	polytest.exe    \
 	rgbtest.exe     \
 	sbctest.exe     \
@@ -53,17 +56,7 @@ PROGS=  arctest.exe     \
 	winclip.exe     \
 	wintest.exe
 
-all: $(PROGS) ../bin/modetest.exe ../bin/fnt2c.exe demogrx.exe
-
-../bin/modetest.exe: modetest.exe
-	if exist ..\bin\modetest.exe del ..\bin\modetest.exe
-	copy modetest.exe ..\bin\modetest.exe
-	$(EXE_COMPRESS) ../bin/modetest.exe
-
-../bin/fnt2c.exe: fnt2c.exe
-	if exist ..\bin\fnt2c.exe del ..\bin\fnt2c.exe
-	copy fnt2c.exe ..\bin\fnt2c.exe
-	$(EXE_COMPRESS) ../bin/fnt2c.exe
+all: $(PROGS) demogrx.exe
 
 demogrx.exe: demogrx.o gfaz.o $(GRX20)
 	$(CC) $(LDOPT) -o demogrx.exe demogrx.o gfaz.o $(LIBS) -lm

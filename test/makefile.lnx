@@ -25,6 +25,10 @@ ifeq ($(HAVE_LIBJPEG),y)
   ADDON_LIBS += -ljpeg
 endif
 
+ifeq ($(HAVE_LIBPNG),y)
+  ADDON_LIBS += -lpng
+endif
+
 ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
@@ -38,16 +42,15 @@ PROGS=	arctest     \
 	cliptest    \
 	colorops    \
 	curstest    \
-	fnt2c       \
 	fonttest    \
 	imgtest     \
 	keys        \
 	life        \
 	linetest    \
-	modetest    \
 	mousetst    \
 	pcirctst    \
 	pnmtest     \
+	pngtest     \
 	polytest    \
 	rgbtest     \
 	sbctest     \
@@ -58,18 +61,6 @@ PROGS=	arctest     \
 	wintest
 
 all:    $(PROGS) demogrx
-
-modetest: modetest.o
-	$(CC) $(LDOPT) -o modetest modetest.o $(LIBS)
-	$(STRIP) modetest
-	chmod 4755 modetest
-	cp modetest ../bin
-	chmod 4755 ../bin/modetest
-
-fnt2c: fnt2c.o
-	$(CC) $(LDOPT) -o fnt2c fnt2c.o $(LIBS)
-	$(STRIP) fnt2c
-	cp fnt2c ../bin
 
 demogrx: demogrx.o gfaz.o
 	$(CC) $(LDOPT) -o demogrx demogrx.o gfaz.o $(LIBS)

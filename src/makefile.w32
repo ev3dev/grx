@@ -2,15 +2,20 @@
 # GRX Library Makefile for Mingw
 # Make sure your shell is command.com !
 #
-.PHONY : clean cleanall install uninstall
-
+.PHONY : clean cleanall install uninstall \
+	 install-bin uninstall-bin install-fonts uninstall-fonts
+         
 GRXVW32=y
 
 include ../makedefs.grx
 
-TAG = $(WIN32_GCC_i386_STATIC)
-
 INCDIR= -I. -I./include -I../include
+
+ifdef GRX_DEFAULT_FONT_PATH
+CCOPT += -DGRX_DEFAULT_FONT_PATH=\"$(GRX_DEFAULT_FONT_PATH)\"
+endif
+
+TAG = $(WIN32_GCC_i386_STATIC)
 
 GRX20ln    = libgrx20.a
 GRX20ST    = ../lib/$(GRX_LIB_SUBDIR)/$(GRX20ln)
@@ -21,10 +26,11 @@ OP=
 
 include ./stdobjs.mak
 
-# DJGPP v1 ar fails on very long command lines.
 # Keep things a little smaller when building the lib ...
-STD_Oa= $(STD_1) $(STD_2)  $(STD_3)  $(STD_4) $(STD_5) $(STD_6)
-STD_Ob= $(STD_7) $(STD_8) $(STD_9) $(STD_10) $(STD_11) $(STD_12)
+STD_Oa= $(STD_1) $(STD_2) $(STD_3)
+STD_Ob= $(STD_4) $(STD_5) $(STD_6)
+STD_Oc= $(STD_7) $(STD_8) $(STD_9)
+STD_Od= $(STD_10) $(STD_11) $(STD_12)
 BGI_Oa= $(BGI_1) $(BGI_2) $(BGI_3)
 BGI_Ob= $(BGI_4) $(BGI_5) $(BGI_6)
 
@@ -39,6 +45,12 @@ endif
 
 ifeq ($(HAVE_LIBJPEG),y)
   ADDON_O += $(JPG_1)
+endif
+
+ifeq ($(HAVE_LIBPNG),y)
+  ADDON_O += $(PNG_1)
+else
+  ADDON_O += $(NOPNG_1)
 endif
 
 #ifeq ($(INCLUDE_PRINTING_CODE),y)
@@ -65,9 +77,14 @@ W32_O = $(ADDON_O)              \
 	misc/w32misc.o          \
 	vdrivers/vd_win32.o
 
-ALL_O = $(STD_Oa) $(STD_Ob) $(BGI_Oa) $(BGI_Ob) $(W32_O)
+ALL_O = $(STD_Oa) $(STD_Ob) $(STD_Oc) $(STD_Od) $(BGI_Oa) $(BGI_Ob) $(W32_O)
 
-all:    $(GRX20ST)
+UTILPC= ../bin/bin2c.exe        \
+	../bin/fnt2c.exe        \
+
+UTILPW= ../bin/modetest.exe
+
+all:    $(GRX20ST) $(UTILPC) $(UTILPW)
 
 clean:
 	if exist bgi\*.o      del bgi\*.o
@@ -75,7 +92,7 @@ clean:
 	if exist fdrivers\*.o del fdrivers\*.o
 	if exist fonts\*.o    del fonts\*.o
 	if exist image\*.o    del image\*.o
-	if exist pnm\*.o      del pnm\*.o
+	if exist gformats\*.o del gformats\*.o
 	if exist mouse\*.o    del mouse\*.o
 	if exist misc\*.o     del misc\*.o
 	if exist pattern\*.o  del pattern\*.o
@@ -84,6 +101,7 @@ clean:
 	if exist text\*.o     del text\*.o
 	if exist user\*.o     del user\*.o
 	if exist utils\*.o    del utils\*.o
+	if exist utilprog\*.o del utilprog\*.o
 	if exist vdrivers\*.o del vdrivers\*.o
 	if exist wideline\*.o del wideline\*.o
 	if exist ..\addons\*.o del ..\addons\*.o
@@ -93,6 +111,7 @@ clean:
 
 cleanall: clean
 	if exist $(GRX20STdos) del $(GRX20STdos)
+	if exist ..\bin\*.exe del ..\bin\*.exe
 
 install: $(GRX20ST)
 	copy $(GRX20STdos) $(MINGWDIR)\lib
@@ -106,6 +125,24 @@ uninstall:
 	if exist $(MINGWDIR)\include\grxkeys.h del $(MINGWDIR)\include\grxkeys.h
 	if exist $(MINGWDIR)\include\libbcc.h del $(MINGWDIR)\include\libbcc.h
 
+install-bin: $(UTILPC) $(UTILPW)
+	copy ..\bin\bin2c.exe $(MINGWDIR)\bin
+	copy ..\bin\fnt2c.exe $(MINGWDIR)\bin
+	copy ..\bin\modetest.exe $(MINGWDIR)\bin
+
+uninstall-bin:
+	if exist $(MINGWDIR)\bin\bin2c.exe del $(MINGWDIR)\bin\bin2c.exe
+	if exist $(MINGWDIR)\bin\fnt2c.exe del $(MINGWDIR)\bin\fnt2c.exe
+	if exist $(MINGWDIR)\bin\modetest.exe del $(MINGWDIR)\bin\modetest.exe
+
+ifdef GRX_DEFAULT_FONT_PATH
+FONTPATHdos = $(subst /,\,$(GRX_DEFAULT_FONT_PATH))
+install-fonts:
+	copy ..\fonts\*.* $(FONTPATHdos)
+uninstall-fonts:
+	del $(FONTPATHdos)\*.*
+endif
+                        
 dep:
 	if exist depend.tmp del depend.tmp
 	gcc -MM $(CCOPT) $(INCDIR) $(ALL_O:.o=.c) >depend.tmp
@@ -120,10 +157,18 @@ $(GRX20ST): $(TAG) $(ALL_O)
 	if exist $(GRX20STdos) del $(GRX20STdos)
 	$(AR) -rv $(GRX20ST) $(STD_Oa)
 	$(AR) -rv $(GRX20ST) $(STD_Ob)
+	$(AR) -rv $(GRX20ST) $(STD_Oc)
+	$(AR) -rv $(GRX20ST) $(STD_Od)
 	$(AR) -rv $(GRX20ST) $(BGI_Oa)
 	$(AR) -rv $(GRX20ST) $(BGI_Ob)
 	$(AR) -rv $(GRX20ST) $(W32_O)
 	$(RANLIB) $(GRX20ST)
+
+$(UTILPC): ../bin/%.exe : utilprog/%.o $(GRX20ST)
+	$(CC) -s -o $@ utilprog/$*.o $(GRX20ST)
+
+$(UTILPW): ../bin/%.exe : utilprog/%.o $(GRX20ST)
+	$(CC) -s -o $@ utilprog/$*.o $(GRX20ST) -mwindows -mconsole
 
 $(WIN32_GCC_i386_STATIC):
 	$(MAKE) -f makefile.w32 clean

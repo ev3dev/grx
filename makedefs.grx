@@ -2,7 +2,7 @@
 
 # Specify version of GRX
 # Currently only used to generate name of shared libraries for linux
-GRX_VERSION=2.4.2
+GRX_VERSION=2.4.3
 
 # Specify if you have libtiff.a and corresponding .h files.
 # Change setting to 'y' if you have it, or to 'n' if not.
@@ -10,6 +10,9 @@ HAVE_LIBTIFF=n
 
 # Specify if you have libjpeg.a and corresponding .h files.
 HAVE_LIBJPEG=n
+
+# Specify if you have libpng.a and corresponding .h files.
+HAVE_LIBPNG=n
 
 # Specify if one of the above libs requires the
 # zlib compression library
@@ -113,25 +116,24 @@ ifdef GRXVDJ2
 # Put libgrx20.a to lib/dj2
 GRX_LIB_SUBDIR=dj2
 
-# If you want to use 'djp.exe' compressor
-# disavle the echo line and enable djp line.
+# If you want to use 'upx.exe' compressor
+# disable the echo line and enable upx line.
 EXE_COMPRESS = -echo
-#EXE_COMPRESS = djp
+#EXE_COMPRESS = upx --best
 
 # Default compiler switches.  In djgpp.env. under [make],
 # add the line "BUTT=-m386", if that is your target.
-# At present gcc supports `-m386' and `-m486'.
+# At present gcc supports '-m386', '-m486' and '-mpentium'.
 #CCOPT += $(BUTT)
-#CCOPT += -m486
+#CCOPT += -mpentium
 
 # GRX uses "uclock" to gets 1 ms resolution in the input code,
 # this can causes problems in Win3.1, so you may want to enable
-# of the following switch
+# the following switch
 #CCOPT += -DNO_REPROGRAM_TIMER
 
-# for a builtin default font path
-#CCOPT += -DGRX_DEFAULT_FONT_PATH= \
-#         strcat(getenv(\"DJDIR\"),\"/contrib/grx242/fonts\")
+# Set the default GRX font path
+#GRX_DEFAULT_FONT_PATH=c:/grxfonts
 
 endif
 
@@ -145,8 +147,8 @@ GRX_LIB_SUBDIR=win32
 # Set here your MINGW dir for install and uninstall targets
 MINGWDIR=C:\MINGW
 
-# for a builtin default font path
-#CCOPT += -DGRX_DEFAULT_FONT_PATH=\"/mingw/contrib/grx242/fonts\"
+# Set the default GRX font path
+#GRX_DEFAULT_FONT_PATH=c:/grxfonts
 
 endif
 

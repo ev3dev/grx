@@ -2,18 +2,18 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
-   <title>GRX 2.4.2, User's Guide</title>
+   <title>GRX 2.4.3, User's Guide</title>
 </head>
 <body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>2.4.2</small></h1>
+<small>2.4.3</small></h1>
 <h1>a graphics library for DOS, Linux, X11 and Win32</h1>
 <h2>User's Manual</h2>
 <p>Based on the original doc written by: Csaba Biegl on August 10, 1992
 <p>Updated by: Mariano Alvarez Fern&aacute;ndez on August 17, 2000
-<p>Last update: April 22, 2001
+<p>Last update: June 28, 2001
 </center>
 
 <hr>
@@ -26,7 +26,7 @@ X11 and Win32 (Mingw). On DOS it supports VGA, EGA and VESA compliant cards.
 On Linux console it uses svgalib or the framebuffer. On X11 it must work on
 any X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver,
 but you must considere it in alpha stage. The framebuffer Linux console
-driver is new in 2.4.2 and it is in alpha stage too.
+driver was new in 2.4.2 and it is in alpha stage too.
 
 <h2>Contents</h2>
 <dir>
@@ -50,6 +50,7 @@ driver is new in 2.4.2 and it is in alpha stage too.
 <li><a href="#ki">Keyboard input</a>
 <li><a href="#meh">Mouse event handling</a>
 <li><a href="#pnm">Writing/reading PNM graphics files</a>
+<li><a href="#png">Writing/reading PNG graphics files</a>
 <li><a href="#misc">Miscellaneous functions</a>
 <li><a href="#bgi">BGI interface</a>
 </dir>
@@ -1941,17 +1942,82 @@ dimensions are lesser than pnm dimensions, the function loads as much as it
 can. If color mode is not in RGB mode, the routine allocates as much colors
 as it can. The function returns 0 on succes and -1 on error.
 
-<p>&nbsp;&nbsp;Finally to query the file format, width and height of a PNM
+<p>&nbsp;&nbsp;To query the file format, width and height of a PNM
 file you can use:
 
 <pre>
-int GrQueryPnm( char *ppmfn, int *width, int *height, int *maxval );
+int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval );
 </pre>
 
 <code>pnmfn</code> is the name of pnm file; <code>width</code> returns the
 pnm width; <code>height</code> returns the pnm height; <code>maxval</code>
 returns the max color component value. The function returns 1 to 6 on success
 (the PNM format) or -1 on error.
+
+<p>&nbsp;&nbsp;The two next functions:
+
+<pre>
+int GrLoadContextFromPnmBuffer( GrContext *grc, char *pnmbuf );
+int GrQueryPnmBuffer( char *pnmbuf, int *width, int *height, int *maxval );
+</pre>
+
+work like <code>GrLoadContextFromPnm</code> and
+<code>GrQueryPnmBuffer</code>, but they get his input from a buffer instead
+of a file. This way, pnm files can be embeded in a program (using the
+bin2c program by example).
+
+<hr>
+<h2><a name="png">Writing/reading PNG graphics files</a></h2>
+
+<p>&nbsp;&nbsp;<b>GRX</b> includes functions to load/save a context
+from/to a png file. But note, for this purpose it needs the
+<a href="http://www.libpng.org/pub/png/libpng.html">libpng</a> library,
+and to enable the png support before make the <b>GRX</b> lib.
+
+<p>&nbsp;&nbsp;Use next function to save a context in a PNG file:
+
+<pre>
+int GrSaveContextToPng( GrContext *grc, char *pngfn );
+</pre>
+
+it works both in RGB and palette modes, <code>grc</code> must be
+a pointer to the context to be saved, if it is NULL the current context is
+saved; <code>pngfn</code> is the file name to be created.
+The function returns 0 on succes and -1 on error.
+
+<p>&nbsp;&nbsp;To load a PNG file in a context you must use:
+
+<pre>
+int GrLoadContextFromPng( GrContext *grc, char *pngfn, int use_alpha );
+</pre>
+
+<code>grc</code> must be a pointer to the context to be written, is it
+is NULL the current context is used; <code>pngfn</code> is the file name
+to be read; set <code>use_alpha</code> to 1 if you want to use the image
+alpha channel (if available). If context dimensions are lesser than png
+dimensions, the function loads as much as it can. If color mode is not
+in RGB mode, the routine allocates as much colors as it can. The function
+returns 0 on succes and -1 on error.
+
+<p>&nbsp;&nbsp;To query the width and height of a PNG file you can use:
+
+<pre>
+int GrQueryPng( char *pngfn, int *width, int *height );
+</pre>
+
+<code>pngfn</code> is the name of png file; <code>width</code> returns the
+png width; <code>height</code> returns the png height.
+The function returns 0 on success or -1 on error.
+
+<p>&nbsp;&nbsp;The function:
+
+<pre>
+int GrPngSupport( void );
+</pre>
+
+returns 1 if there is png support in the library, 0 otherwise. If there is
+not support for png, dummy functions are added to the library, returning
+ever error (-1).
 
 <hr>
 <h2><a name="misc">Miscellaneous functions</a></h2>

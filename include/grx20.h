@@ -35,7 +35,7 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0242
+#define GRX_VERSION_API 0x0243
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -1256,30 +1256,6 @@ GrPattern *GrPatternFromImage(GrImage *p);
 #endif
 
 /* ================================================================== */
-/*                        CTX2PNM ROUTINES                            */
-/* ================================================================== */
-
-/*
- *  The PBM formats, grx support load/save of
- *  binaries formats (4,5,6) only
- */
-
-#define PLAINPBMFORMAT 1
-#define PLAINPGMFORMAT 2
-#define PLAINPPMFORMAT 3
-#define PBMFORMAT      4
-#define PGMFORMAT      5
-#define PPMFORMAT      6
-
-/* The ctx2pnm routines */
-
-int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn );
-int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn );
-int GrSaveContextToPpm( GrContext *grc, char *ppmfn, char *docn );
-int GrLoadContextFromPnm( GrContext *grc, char *pnmfn );
-int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval );
-
-/* ================================================================== */
 /*               DRAWING IN USER WINDOW COORDINATES                   */
 /* ================================================================== */
 
@@ -1533,6 +1509,42 @@ int  getxkey(void);
 #endif  /* GRX_SKIP_INLINES */
 
 /* ================================================================== */
+/*                           PNM FUNCTIONS                            */
+/* ================================================================== */
+
+/*
+ *  The PNM formats, grx support load/save of
+ *  binaries formats (4,5,6) only
+ */
+
+#define PLAINPBMFORMAT 1
+#define PLAINPGMFORMAT 2
+#define PLAINPPMFORMAT 3
+#define PBMFORMAT      4
+#define PGMFORMAT      5
+#define PPMFORMAT      6
+
+/* The PNM functions */
+
+int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn );
+int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn );
+int GrSaveContextToPpm( GrContext *grc, char *ppmfn, char *docn );
+int GrLoadContextFromPnm( GrContext *grc, char *pnmfn );
+int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval );
+int GrLoadContextFromPnmBuffer( GrContext *grc, char *pnmfn );
+int GrQueryPnmBuffer( char *pnmfn, int *width, int *height, int *maxval );
+
+/* ================================================================== */
+/*                           PNG FUNCTIONS                            */
+/*  these functions may not be installed or available on all system   */
+/* ================================================================== */
+
+int GrPngSupport( void );
+int GrSaveContextToPng( GrContext *grc, char *pngfn );
+int GrLoadContextFromPng( GrContext *grc, char *pngfn, int use_alpha );
+int GrQueryPng( char *pngfn, int *width, int *height );
+
+/* ================================================================== */
 /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */
 /* ================================================================== */
 
@@ -1541,9 +1553,8 @@ int  GrMatchString(const char *pattern,const char *strg);
 void GrSetWindowTitle(char *title);
 void GrSleep(int msec);
 
-
 /* ================================================================== */
-/*                            ADDON FUNCTIONS                         */
+/*                    TIFF & JPEG ADDON FUNCTIONS                     */
 /*  these functions may not be installed or available on all system   */
 /* ================================================================== */
 
@@ -1564,7 +1575,6 @@ void GrSleep(int msec);
 */
 int SaveContextToTiff(GrContext *cxt, char *tiffn, unsigned compr, char *docn);
 
-
 /*
 ** SaveContextToJpeg - Dump a context in a JPEG file
 **
@@ -1580,7 +1590,6 @@ int SaveContextToTiff(GrContext *cxt, char *tiffn, unsigned compr, char *docn);
 **        available at  ftp.uu.net as graphics/jpeg/jpegsrc.v6a.tar.gz
 */
 int SaveContextToJpeg(GrContext *volatile cxt, char *jpegn, int accuracy);
-
 
 #ifdef __cplusplus
 }

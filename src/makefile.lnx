@@ -1,7 +1,8 @@
 #
 # GRX Library Makefile for LINUX/svgalib. Uses GNU Make.
 #
-.PHONY : libst libsh clean cleanall install uninstall
+.PHONY : libst libsh clean cleanall install uninstall setsuid \
+	 install-bin uninstall-bin install-fonts uninstall-fonts
 
 GRXVLNX=y
 
@@ -11,7 +12,7 @@ INCDIR= -I. -I./include -I../include
 CCOPT += -DLFB_BY_NEAR_POINTER -pipe
 
 ifdef GRX_DEFAULT_FONT_PATH
-CCOPT += -DGRX_DEFAULT_FONT_PATH=$(GRX_DEFAULT_FONT_PATH)
+CCOPT += -DGRX_DEFAULT_FONT_PATH=\"$(GRX_DEFAULT_FONT_PATH)\"
 endif
 
 GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
@@ -47,6 +48,12 @@ ifeq ($(HAVE_LIBJPEG),y)
   ADDON_O += $(JPG_1)
 endif
 
+ifeq ($(HAVE_LIBPNG),y)
+  ADDON_O += $(PNG_1)
+else
+  ADDON_O += $(NOPNG_1)
+endif
+
 ifeq ($(INCLUDE_PRINTING_CODE),y)
   ADDON_O += $(PRN_1)
   INCDIR += -I../addons/print
@@ -79,7 +86,13 @@ O=      $(STD_O)                \
 
 LO = $(subst $(OX),.lo,$(O))
 
-all: libst libsh
+UTILP = ../bin/bin2c            \
+	../bin/fnt2c            \
+	../bin/lfbinfo
+
+UTILPS= ../bin/modetest 
+
+all: libst libsh $(UTILP) $(UTILPS)
 
 libsh: $(GRX20SHna)
 
@@ -95,20 +108,31 @@ $(GRX20ST): $(LINUX_i386_CONSOLE) $(O)
 	$(AR) -rv $(GRX20ST) $(O)
 	$(RANLIB) $(GRX20ST)
 
+$(UTILP): ../bin/% : utilprog/%.o $(GRX20ST)
+	$(CC) -o $@ utilprog/$*.o $(GRX20ST)
+	$(STRIP) $@
+
+$(UTILPS): ../bin/% : utilprog/%.o $(GRX20ST)
+	$(CC) -o $@ utilprog/$*.o $(GRX20ST) -lvga
+	$(STRIP) $@
+	chmod 4755 $@
+
 $(O): $(LINUX_i386_CONSOLE)
 
 $(LO): $(LINUX_i386_CONSOLE)
 
 $(LINUX_i386_CONSOLE):
 	if [ ! -e $(LINUX_i386_CONSOLE) ]; then \
-	rm -f $(SYSTEM_TAG_PREFIX).* $(O) $(LO); fi
+	rm -f $(SYSTEM_TAG_PREFIX).* $(O) $(LO) utilprog/*.o; fi
 	touch $(LINUX_i386_CONSOLE)
 
 clean:
 	rm -f $(O) $(O:.o=.s) $(LO) $(LINUX_i386_CONSOLE)
+	rm -f utilprog/*.o
 
 cleanall: clean
 	rm -f $(GRX20SHna) $(GRX20SHli) $(GRX20ST)
+	rm -f $(UTILP) $(UTILPS)
 
 install: libst libsh
 	install -m 0644 $(GRX20ST) $(INSTALLDIR)/lib
@@ -118,7 +142,11 @@ install: libst libsh
 	install -m 0644 ../include/grx20.h $(INSTALLDIR)/include
 	install -m 0644 ../include/grxkeys.h $(INSTALLDIR)/include
 	install -m 0644 ../include/libbcc.h $(INSTALLDIR)/include
- 
+	install -m 0644 ../doc/grx*um.inf $(INSTALLDIR)/info/grx.info
+	install-info -e \
+	 "* grx: (grx).                   2D graphics library" \
+	 $(INSTALLDIR)/info/grx.info /etc/info-dir
+
 uninstall:
 	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20ST))
 	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SH))
@@ -127,18 +155,47 @@ uninstall:
 	rm -f $(INSTALLDIR)/include/grx20.h
 	rm -f $(INSTALLDIR)/include/grxkeys.h
 	rm -f $(INSTALLDIR)/include/libbcc.h
+	rm -f $(INSTALLDIR)/info/grx.info
+	install-info -r grx /etc/info-dir
+
+setsuid: $(UTILPS)
+	chown root ../bin/modetest
+	chmod 4755 ../bin/modetest
+
+install-bin: $(UTILP) $(UTILPS)
+	install -m 0755 ../bin/bin2c $(INSTALLDIR)/bin
+	install -m 0755 ../bin/fnt2c $(INSTALLDIR)/bin
+	install -m 0755 ../bin/lfbinfo $(INSTALLDIR)/bin
+	install -m 4755 ../bin/modetest $(INSTALLDIR)/bin
+
+uninstall-bin:
+	rm -f $(INSTALLDIR)/bin/bin2c
+	rm -f $(INSTALLDIR)/bin/fnt2c
+	rm -f $(INSTALLDIR)/bin/lfbinfo
+	rm -f $(INSTALLDIR)/bin/modetest
+
+ifdef GRX_DEFAULT_FONT_PATH
+install-fonts:
+	install -d $(GRX_DEFAULT_FONT_PATH)
+	install -m 0644 ../fonts/* $(GRX_DEFAULT_FONT_PATH)
+uninstall-fonts:
+	rm -f $(GRX_DEFAULT_FONT_PATH)/*
+endif
 
 dep:
 	gcc -MM $(CCOPT) $(INCDIR) $(O:.o=.c) \
 	| sed 's#^.*: \(.*\)\.c#\1.o: \1.c#g' >depend.lnx
-
-.c.s:
-	$(CC) -S $(CCOPT)  $(INCDIR) $*.c -o $*.s
 
 $(O): %.o : %.c
 	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
 
 $(LO): %.lo : %.c
 	$(CC) -c $(CCOPT) $(SHCCOPT) $(INCDIR) $*.c -o $*.lo 
+
+.c.s:
+	$(CC) -S $(CCOPT)  $(INCDIR) $*.c -o $*.s
+
+.c.o:
+	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
 
 include depend.lnx

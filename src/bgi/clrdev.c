@@ -27,7 +27,7 @@
 void __gr_cleardevice(void) {
   _DO_INIT_CHECK;
   GrResetClipBox();
-  GrFilledBox( 0, 0+PY, getmaxx(), getmaxy()+PY, BLACK);
+  GrFilledBox( 0, 0+PY, getmaxx(), getmaxy()+PY, __gr_colorbg);
   __gr_Reset_ClipBox();
   moveto( 0, 0);
 }
