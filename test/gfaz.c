@@ -18,8 +18,9 @@
  **/
 
 #include <stdlib.h>
+#include <string.h>
 #include <grx20.h>
-#include "grxkeys.h"
+#include <grxkeys.h>
 #include "gfaz.h"
 
 GrColor *egacolors;
@@ -216,18 +217,19 @@ void dboton( int x, int y, int an, int al,
 //   c, ct color del fondo y del texto
 //   t, tipo bit 0 0=normal, 1=apretado
 //           bit 1 0=no selec, 1=seleccionado
-//           bit 2 0=no despl, 1=texto desplazado
 
 {
   int pol[7][2], prof, pulsd, selec, despl;
   GrTextOption grt;
   GrLineOption glo;
+  int mouseblock;
 
   prof = (t & 0x1) ? 2 : 4;
   pulsd = (t & 0x1) ? 1 : 0;
   selec = (t & 0x2) ? 1 : 0;
   despl = (t & 0x1) ? 1 : 0;
 
+  mouseblock = GrMouseBlock( NULL,x,y,x+an-1,y+al-1 );
   GrBox( x,y,x+an-1,y+al-1,BLACK );
   x = x + 1; y = y + 1;
   an = an - 2; al = al - 2;
@@ -266,9 +268,11 @@ void dboton( int x, int y, int an, int al,
     glo.lno_color = ct;
     glo.lno_width = 1;
     glo.lno_pattlen = 2;
-    glo.lno_dashpat = "\1\1";
+    glo.lno_dashpat = "\2\1";
     GrCustomBox( x+8,y+al/2-6,x+an-8,y+al/2+5,&glo );
     }
+
+  GrMouseUnBlock( mouseblock );
 }
 
 /**************************************************************************/

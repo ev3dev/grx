@@ -28,8 +28,8 @@ void __gr_bar(int left, int top, int right, int bottom)
 {
   _DO_INIT_CHECK;
 
-  if (left > right) SWAP(left,right);
-  if (bottom < top) SWAP(bottom,top);
+  if (left > right) SWAP(int,left,right);
+  if (bottom < top) SWAP(int,bottom,top);
 
   left += VL;    right  += VL;
   top  += VT+PY; bottom += VT+PY;

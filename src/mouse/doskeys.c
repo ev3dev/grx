@@ -24,7 +24,7 @@
 #include "int86.h"
 #include "memfill.h"
 
-#ifdef __GO32__
+#ifdef __DJGPP__
 #include <pc.h>
 #endif
 

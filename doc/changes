@@ -4,6 +4,32 @@ the 2.2 version.
 
 Date     Changes
 
+01/04/26 ----------- GRX v2.4.1 released (Mariano Alvarez Fernandez)
+01/04/25 User's guide (info) updated, by Vicente Fuentes Gea
+01/04/20 User's guide (html) updated
+01/04/19 Applied partially patches to make GRX compile with MS-VC
+         by Hartmut Schirmer
+01/04/18 Added install and uninstall targets to src/makefile.dj2 and
+         src/makefile.w32
+01/04/18 Patched src/bgi/text7.c to compile Ok with GCC 3.0
+         by Andris Pavenis
+01/04/14 New API routine: GrBitBlt1bpp, contributed by Josu Onandia
+         Added bb1test.c test program
+01/04/01 Changed compiler options from "-O6 -fomit-frame-pointer" to
+         "-O2" only. Suggested by Andris Pavenis.
+01/03/27 drawpattern and bltr2v_24 added to fdrivers/fd_win32.c
+01/03/26 Fixed a bug in pnm/ctx2pnm.c, when grx == NULL the actual context
+         must be used. Reported by Vicente Fuentes Gea
+01/03/25 The dj2 version uses now "uclock" in mouse/input.h to get 1ms
+         resolution in input code. Because "uclock" can be unsafe in W3.1
+         when NO_REPROGRAM_TIMER is defined the old code is used. A
+         comment has been added to makedefs.dj2
+01/03/25 Changed CLOCKS_PER_SECOND by CLK_TCK for linux in mouse/input.h
+         to get real ticks per second
+01/03/24 New API routines: GrSetWindowTitle and GrSleep
+01/03/22 Changed DJGPP test macro from __GO32__ to __DJGPP__
+           by Andris Pavenis
+
 01/03/18 ----------- GRX v2.4 released (Mariano Alvarez Fernandez)
 01/03/16 Win32 drivers improved again by Josu Onandia
 01/03/15 Make bccbgi to use ../rand.h to work with the Win32 drivers

@@ -22,6 +22,7 @@
  **
  **/
 
+#include "libbcc.h"
 #include "bgiext.h"
 
 unsigned char _dac_normal[256][3] = {

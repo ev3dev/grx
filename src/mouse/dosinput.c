@@ -22,7 +22,7 @@
 #include <conio.h>
 #endif
 
-#ifdef   __GO32__
+#ifdef   __DJGPP__
 #include <pc.h>
 #endif
 

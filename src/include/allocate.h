@@ -24,11 +24,13 @@
 #  include "bcc/allocate.h"
 #elif defined(__WATCOMC__)
 #  include <malloc.h>
+#elif defined(_MSC_VER) && defined(_WIN32)
+#  include <malloc.h>
 #else
 #  include <stdlib.h>
 #endif
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && !defined(_WIN32)
 #define farmalloc  _fmalloc
 #define farrealloc _frealloc
 #define farcalloc  _fcalloc
@@ -40,7 +42,7 @@
 #define farfree    free
 #endif
 
-#ifdef _MSC_VER
+#if 0 && defined(_MSC_VER)
 #define setup_alloca() do { unsigned char _stack_dummy_var_ = '\001'
 #define reset_alloca() } while (0)
 #endif
@@ -57,6 +59,11 @@
 #define FREE(p)    free(p)
 #define setup_ALLOC()
 #define reset_ALLOC()
+#elif defined(_MSC_VER) && !defined(_WIN32)
+#define ALLOC(sze) _alloca(sze)
+#define FREE(p)
+#define setup_ALLOC  setup_alloca
+#define reset_ALLOC  reset_alloca
 #else
 #define ALLOC(sze) alloca(sze)
 #define FREE(p)

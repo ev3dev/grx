@@ -95,16 +95,15 @@ extern GraphicsMode *__gr_Modes;
 #define PY     (0)
 #endif
 
-#define SWAP(a,b) ({typeof(a) tmp; tmp = a; a = b; b = tmp;})
+#define SWAP(ty,a,b) do { ty _tmp_; _tmp_=(a);(a)=(b);(b)=_tmp_; } while(0)
 
-#define _DO_INIT_CHECK ({if (!__gr_INIT) {__gr_Result=grNoInitGraph;return;}})
-#define _DO_INIT_CHECK_RV(rv) ({if (!__gr_INIT) { __gr_Result = grNoInitGraph;\
-                                                  return (rv);}})
+#define _DO_INIT_CHECK        do {if (!__gr_INIT) {__gr_Result=grNoInitGraph;return;     }} while (0)
+#define _DO_INIT_CHECK_RV(rv) do {if (!__gr_INIT) {__gr_Result=grNoInitGraph;return (rv);}} while (0)
 
 #define IMAGE_CONTEXT_SIZE      (((sizeof(GrContext)+15)&~15)+4)
 
 /* ----------------------------------------------------------------- */
-__inline__ static void __gr_Reset_ClipBox(void)
+static _BGI_INLINE_ void __gr_Reset_ClipBox(void)
 {
   if (__gr_clip) GrSetClipBox( VL, VT+PY, VR, VB+PY);
   else

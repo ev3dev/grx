@@ -39,7 +39,7 @@ inline  long   rdtsc(void)  { long h,l; RDTSC(h,l); return l; }
 /* ***************************************************************************/
 #endif /* PENTIUM_CLOCK */
 
-#ifdef __GO32__
+#ifdef __DJGPP__
 #include <conio.h>
 #include <pc.h>
 #endif

@@ -2,6 +2,7 @@
 
 STD_1 = $(OP)draw/bitblt$(OX)       \
 	$(OP)draw/bitbltnc$(OX)     \
+	$(OP)draw/bitblt1b$(OX)     \
 	$(OP)draw/box$(OX)          \
 	$(OP)draw/boxnc$(OX)        \
 	$(OP)draw/clearclp$(OX)     \

@@ -22,13 +22,7 @@
  **
  **/
 
-#ifdef __TURBOC__
-#  include <graphics.h>
-#endif
-#ifdef __GNUC__
-#  include "../include/libbcc.h"
-#endif
-
+#include "libbcc.h"
 #include "bgiext.h"
 
 unsigned char _dac_g256[256][3] = {

@@ -15,5 +15,10 @@ GRX_LIB_SUBDIR=dj2
 #CCOPT += $(BUTT)
 #CCOPT += -m486
 
+# GRX uses "uclock" to gets 1 ms resolution in the input code,
+# this can causes problems in Win3.1, so you may want to enable
+# of the following switch
+#CCOPT += -DNO_REPROGRAM_TIMER
+
 # for a builtin default font path
-#CCOPT += -DGRX_DEFAULT_FONT_PATH=strcat(getenv(\"DJDIR\"),\"/contrib/grx234/fonts\")
+#CCOPT += -DGRX_DEFAULT_FONT_PATH=strcat(getenv(\"DJDIR\"),\"/contrib/grx241/fonts\")

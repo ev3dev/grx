@@ -18,7 +18,7 @@
  **/
 
 #include "test.h"
-#ifdef __GO32__
+#ifdef __DJGPP__
 #include <pc.h>
 #endif
 

@@ -1,5 +1,5 @@
 #
-# GRX 2.0 test programs makefile for Mingw32
+# GRX test programs makefile for Mingw
 # Uses GNU make.
 #
 .SUFFIXES: .exe
@@ -26,6 +26,7 @@ GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 LIBS= $(GRX20) $(ADDON_LIBS)
 
 PROGS=  arctest.exe     \
+	bb1test.exe     \
 	blittest.exe    \
 	circtest.exe    \
 	cliptest.exe    \
@@ -57,10 +58,10 @@ all: 	$(PROGS) \
 #	memtest.exe
 
 
-modetest.exe: modetest.o
+modetest.exe: modetest.o $(GRX20)
 	$(CC) $(LDOPT) -o modetest.exe modetest.o $(LIBS) -lm -mwindows -mconsole
 
-fnt2c.exe: fnt2c.o
+fnt2c.exe: fnt2c.o $(GRX20)
 	$(CC) $(LDOPT) -o fnt2c.exe fnt2c.o $(LIBS) -lm -mwindows -mconsole
 
 ../bin/modetest.exe: modetest.exe
@@ -71,16 +72,16 @@ fnt2c.exe: fnt2c.o
 	if exist ..\bin\fnt2c.exe del ..\bin\fnt2c.exe
 	copy fnt2c.exe ..\bin\fnt2c.exe
 
-demogrx.exe: demogrx.o gfaz.o
+demogrx.exe: demogrx.o gfaz.o $(GRX20)
 	$(CC) $(LDOPT) -o demogrx.exe demogrx.o gfaz.o $(LIBS) -lm -mwindows
 
-keys.exe: keys.o
+keys.exe: keys.o $(GRX20)
 	$(CC) $(LDOPT) -o keys.exe keys.o $(LIBS) -lm -mwindows -mconsole
 
-speedtst.exe: speedtst.o
+speedtst.exe: speedtst.o $(GRX20)
 	$(CC) $(LDOPT) -o speedtst.exe speedtst.o $(LIBS) -lm -mwindows -mconsole
 
-memtest.exe: memtest.o
+memtest.exe: memtest.o $(GRX20)
 	$(CC) $(LDOPT) -o memtest.exe memtest.o $(LIBS) -lm
 
 $(PROGS): %.exe : %.o $(GRX20)

@@ -15,9 +15,12 @@ X11LIBS=-L$(X11BASE)/lib -lX11
 # Put libgrx20X.a to lib/unix
 GRX_LIB_SUBDIR=unix
 
+# Set here the destination dir for install and uninstall targets
+INSTALLDIR=/usr/local
+
 # Some systems can't allocate big arrays on stack.
 # If test/xcirctest fails on bigger diameters, try
-# CCOPT += -DSMALL_STACK
+#CCOPT += -DSMALL_STACK
 
 # You may want to enable one (oe both) of the following
 # switches if your get lots of warnings when compiling GRX

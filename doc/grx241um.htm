@@ -2,18 +2,18 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
-   <title>GRX 2.4, User's Guide</title>
+   <title>GRX 2.4.1, User's Guide</title>
 </head>
 <body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>2.4</small></h1>
-<h1>a graphics library for DOS, Linux and X11</h1>
+<small>2.4.1</small></h1>
+<h1>a graphics library for DOS, Linux, X11 and Win32</h1>
 <h2>User's Manual</h2>
 <p>Based on the original doc written by: Csaba Biegl on August 10, 1992
 <p>Updated by: Mariano Alvarez Fern&aacute;ndez on August 17, 2000
-<p>Last update: March 11, 2001
+<p>Last update: April 22, 2001
 </center>
 
 <hr>
@@ -23,8 +23,8 @@
 Turbo C/Borland C++ versions), Linux and X11. On DOS it supports VGA (32768,
 256 or 16 colors), EGA (16 colors), and VESA compliant cards (up to 16M
 colors). On Linux console it uses svgalib. On X11 it must work on any
-X11R5 (or later). New, GRX 2.4 comes with a Win32 driver, but it is in
-alpha stage.
+X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver, but
+you must considere it in alpha stage.
 
 <h2>Contents</h2>
 <dir>
@@ -48,6 +48,7 @@ alpha stage.
 <li><a href="#ki">Keyboard input</a>
 <li><a href="#meh">Mouse event handling</a>
 <li><a href="#pnm">Writing/reading PNM graphics files</a>
+<li><a href="#misc">Miscellaneous functions</a>
 <li><a href="#bgi">BGI interface</a>
 </dir>
 
@@ -1945,6 +1946,85 @@ int GrQueryPnm( char *ppmfn, int *width, int *height, int *maxval );
 pnm width; <code>height</code> returns the pnm height; <code>maxval</code>
 returns the max color component value. The function returns 1 to 6 on success
 (the PNM format) or -1 on error.
+
+<hr>
+<h2><a name="misc">Miscellaneous functions</a></h2>
+
+<p>&nbsp;&nbsp;Here we will describe some miscellaneous functions.
+
+<pre>
+unsigned GrGetLibraryVersion(void);
+</pre>
+<p>&nbsp;&nbsp;<code>GrGetLibraryVersion</code> returns the <b>GRX</b>
+version API, like a hexadecimal coded number. By example 0x0241 means 2.4.1
+Because <b>grx20.h</b> defines the <code>GRX_VERSION_API</code> macro, you
+can check if both, the library and the include file, are in the same version
+using <code>if( GrGetLibraryVersion() == GRX_VERSION_API )</code>
+
+<pre>
+unsigned GrGetLibrarySystem(void);
+</pre>
+<p>&nbsp;&nbsp;This functions returns a unsigned integer identifing the
+system you are working in. <b>grx20.h</b> defines some macros you can use:
+
+<pre>
+/* these are the supported configurations: */
+#define GRX_VERSION_TCC_8086_DOS    1   /* also works with BCC */
+#define GRX_VERSION_GCC_386_DJGPP   2   /* DJGPP v2 */
+#define GRX_VERSION_GCC_386_LINUX   3   /* the real stuff */
+#define GRX_VERSION_GENERIC_X11     4   /* generic X11 version */
+#define GRX_VERSION_WATCOM_DOS4GW   5   /* GS - Watcom C++ 11.0 32 Bit
+#define GRX_VERSION_GCC_386_WIN32   7   /* WIN32 using Mingw32 */
+</pre>
+
+<p>Note. On Linux, <code>GrGetLibrarySystem</code> returns
+<code>GRX_VERSION_GCC_386_LINUX</code> even in the X11 version.
+
+<pre>
+void GrSetWindowTitle(char *title);
+</pre>
+<p>&nbsp;&nbsp;<code>GrSetWindowTitle</code> sets the main window title
+in the X11 an Win32 versions. It doesn't do nothing in the DOS and
+Linux-SvgaLib versions.
+
+<pre>
+void GrSleep(int msec);
+</pre>
+<p>&nbsp;&nbsp;This function stops the program execution for
+<code>msec</code> miliseconds.
+
+<pre>
+GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,
+           char far *memory[4],GrContext *where);
+</pre>
+<p>&nbsp;&nbsp;This function is like <code>GrCreateContext</code>, except
+that you can specify any valid memory frame mode, not only the Screen
+associated frame mode. It can be used for special purposes (see <code>
+GrBitBlt1bpp</code> for an example).
+
+<pre>
+void GrBitBlt1bpp(GrContext *dst,int dx,int dy,GrContext *src,
+     int x1,int y1,int x2,int y2,GrColor fg,GrColor bg);
+</pre>
+<p>&nbsp;&nbsp;This special function does a bitblt from a 1bpp context (a
+bitmap really),
+using <code>fg</code> and <code>bg</code> like the color+opcode when bit=1
+and bit=0 respectively. Here is an example:
+
+<pre>
+  pContext = GrCreateFrameContext(GR_frameRAM1, sizex, sizey, NULL, NULL);
+  /* draw something (black and white) into the bitmap */
+  GrSetContext(pContext);
+  GrClearContext( GrBlack() );
+  GrLine(0, 0, sizex-1, sizey-1, GrWhite());
+  GrLine(0, sizey-1, sizex-1, 0, GrWhite());
+
+  /* Put the bitmap into the screen */
+  GrSetContext(NULL);
+  fcolor = GrAllocColor( 255,0,0 );
+  bcolor = GrAllocColor( 0,0,255 );
+  GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
+</pre>
 
 <hr>
 <h2><a name="bgi">BGI interface</a></h2>

@@ -26,7 +26,7 @@
 #include <conio.h>
 #endif
 
-#ifdef __GO32__
+#ifdef __DJGPP__
 #include <pc.h>
 #endif
 
@@ -121,7 +121,7 @@ void PrintModes(void) {
             for (i = 0; i < nmodes; ++i) {
               if (++c == cols) c = 0;
               ModeText(i,shrt,mdtxt);
-              printf("%*s%s", (c ? -maxlen-n : -maxlen), mdtxt, (c ? "" : "\n") );
+              printf("%*s%s", (c ? -((int)(maxlen+n)) : -((int)maxlen)), mdtxt, (c ? "" : "\n") );
             }
             if (!c) printf("\n");
             return;

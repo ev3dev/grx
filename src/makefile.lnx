@@ -1,19 +1,15 @@
 #
-# GRX 2.0 Library Makefile for LINUX/svgalib. Uses GNU Make.
+# GRX Library Makefile for LINUX/svgalib. Uses GNU Make.
 #
-include ../makedefs.gnu
+.PHONY : clean cleanall install uninstall
 
-.PHONY : clean cleanall
+include ../makedefs.gnu
 
 INCDIR= -I. -I./include -I../include
 CCOPT += -DLFB_BY_NEAR_POINTER -pipe
 
 ifdef GRX_DEFAULT_FONT_PATH
 CCOPT += -DGRX_DEFAULT_FONT_PATH=$(GRX_DEFAULT_FONT_PATH)
-endif
-
-ifndef DEBUG
-CCOPT += -fomit-frame-pointer
 endif
 
 GRX20SH = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.so
@@ -77,6 +73,7 @@ O=      $(STD_O)                \
 	fdrivers/vga8x.o        \
 	mouse/lnxinput.o        \
 	mouse/lnxkeys.o         \
+	misc/lnxmisc.o          \
 	vdrivers/svgalib.o
 
 ifdef SHARED

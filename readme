@@ -1,4 +1,4 @@
-Welcome to GRX 2.4!
+Welcome to GRX 2.4.1!
 
 GRX is a graphics library originaly written by Csaba Biegl for DJ Delorie's
 DOS port of the GCC compiler. Now it support a big range of platforms.
@@ -22,7 +22,7 @@ Requirements:
    * Linux   / svgalib         (GCC 2.7.2, 2.8.1, and newer)
    * Linux   / X11R6           (GCC 2.7.2, 2.8.1, and newer)
      Solaris / X11R5           (GCC 2.7.2, SUN cc v4.1)
-   * Win32   / Mingwin         (GCC 2.9.2)
+   * Win32   / Mingw           (GCC 2.9.2)
 
   Only the versions marked with a '*' have been tested. Makefiles
   for TurboC/BorlandC and Watcom must be checked.
@@ -32,7 +32,7 @@ Requirements:
 
   Most makefiles (DJGPP, Linux and Win32 systems) require GNU make
 
-  The Win32 target is new in the GRX 2.4 version. It must be used
+  The Win32 target was new in the GRX 2.4 version. It must be used
   like alpha code.
 
 

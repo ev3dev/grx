@@ -23,6 +23,7 @@
  **/
 
 #include "text.h"
+#include "allocate.h"
 
 #include <ctype.h>
 static void StrLwrCpy(char *d, const char *s, int n)
@@ -52,12 +53,20 @@ static int _installgrxfont(int start, int stop, const char *name)
 
 static int _installuserfont(int len, const char *name)
 {
-  char loc_name[len+5];
+  int res;
+  char *loc_name = ALLOC(len+5);
+
+  if ( !loc_name )
+          return grNoFontMem;
 
   StrLwrCpy(loc_name, name, len);
   if (strstr(loc_name, ".fnt") != NULL)
-    return _installgrxfont( FirstGrxFont, LastGrxFont, (char *) name);
-  return __gr_text_installfont( FirstUserFont, LastUserFont, loc_name);
+    res = _installgrxfont( FirstGrxFont, LastGrxFont, name);
+  else
+        res = __gr_text_installfont( FirstUserFont, LastUserFont, loc_name);
+
+  FREE(loc_name);
+  return res;
 }
 
 int installuserfont(const char *name)

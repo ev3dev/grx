@@ -91,25 +91,31 @@
 
 
 #if defined(__TURBOC__) || defined(__WATCOMC__) /* GS - Watcom C++ 11.0 */
-#define user_time(tv) do {                                                  \
+#define real_time(tv) do {                                                  \
         (tv) = *(long far *)(MK_FP(0x40,0x6c));                             \
 } while(0)
-#define real_time(tv) user_time(tv)
 #define MS_PER_TICK 55
 #endif
 
-#ifdef __GO32__
-#define user_time(tv) do {                                                  \
+#ifdef __DJGPP__
+#ifdef NO_REPROGRAM_TIMER
+#define real_time(tv) do {                                                  \
         setup_far_selector(LINP_SEL(0x0000046c));                           \
         (tv) = peek_l_f(LINP_PTR(0x0000046c));                              \
 } while(0)
-#define real_time(tv) user_time(tv)
 #define MS_PER_TICK 55
+#else
+#include <time.h>
+#define real_time(tv) do {                                                  \
+        (tv) = uclock()/(UCLOCKS_PER_SEC/1000);                             \
+} while(0)
+#define MS_PER_TICK 1
+#endif
 #endif
 
-#if !defined(user_time) && ( defined(unix) || defined(__WIN32__) )
+#ifdef __WIN32__
 #include <time.h>
-#define user_time(tv) do {                                                  \
+#define real_time(tv) do {                                                  \
         (tv) = clock();                                                     \
 } while(0)
 #define MS_PER_TICK (int)(1000 / CLOCKS_PER_SEC)
@@ -120,18 +126,8 @@
 #define real_time(tv) do {                                                  \
         (tv) = times(NULL);                                                 \
 } while(0)
+#define MS_PER_TICK (int)(1000 / CLK_TCK)
 #endif
-
-#if !defined(real_time)
-#define real_time(tv) user_time(tv)
-#endif
-
-#define user_dtime(dt,oldtime) do {                                         \
-        long newtime;                                                       \
-        user_time(newtime);                                                 \
-        (dt) = (newtime - oldtime) * MS_PER_TICK;                           \
-        oldtime = newtime;                                                  \
-} while(0)
 
 #define real_dtime(dt,oldtime) do {                                         \
         long newtime;                                                       \
@@ -144,7 +140,7 @@
 #define test_unblock(flag) do {                                             \
         static long lastcheck = 0L;                                         \
         long checktime;                                                     \
-        user_time(checktime);                                               \
+        real_time(checktime);                                               \
         flag = (int)(checktime - lastcheck);                                \
         lastcheck = checktime;                                              \
 } while(0)

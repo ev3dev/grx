@@ -45,10 +45,10 @@
 # ifdef NO_LEFTSIDE_PTR_CAST
 #  define __INLINE_STD_POKE__(P,V,OP,I,S,T) do {                \
               register unsigned T *_ISPptr = (void *)(P);       \
-              *_ISPptr OP (V);                                  \
+              *_ISPptr OP (unsigned T)(V);                      \
           } while (0)
 # else
-#  define __INLINE_STD_POKE__(P,V,OP,I,S,T) (*(unsigned T *)(P) OP (V))
+#  define __INLINE_STD_POKE__(P,V,OP,I,S,T) (*(unsigned T *)(P) OP (unsigned T)(V))
 # endif
 #endif
 

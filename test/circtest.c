@@ -17,7 +17,6 @@
  **
  **/
 
-#include <unistd.h>
 #include "test.h"
 #include <math.h>
 
@@ -67,7 +66,7 @@ TESTFUNC(circtest)
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             xr += xr/4+1;
             yr += yr/4+1;
-            sleep(1);
+            GrSleep(200);
         }
         c1 = GrAllocColor(64,64,128);
         xr = 4;
@@ -76,7 +75,7 @@ TESTFUNC(circtest)
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             yr += yr/4+1;
             xr = yr * 4;
-            sleep(1);
+            GrSleep(200);
         }
         c1 = GrAllocColor(64,64,64);
         xr = 1;
@@ -85,7 +84,7 @@ TESTFUNC(circtest)
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             xr += xr/4+1;
             yr = xr * 4;
-            sleep(1);
+            GrSleep(200);
         }
 
         GrTextXY(0,0,"press any key to continue",GrWhite(),GrBlack());

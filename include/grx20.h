@@ -35,24 +35,26 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0240
+#define GRX_VERSION_API 0x0241
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
-#define GRX_VERSION_GCC_386_GO32        2       /* DJGPP */
+#define GRX_VERSION_GCC_386_GO32        2       /* deprecated, don't use it */
+#define GRX_VERSION_GCC_386_DJGPP       2       /* DJGPP v2 */
 #define GRX_VERSION_GCC_386_LINUX       3       /* the real stuff */
 #define GRX_VERSION_GENERIC_X11         4       /* generic X11 version */
 #define GRX_VERSION_WATCOM_DOS4GW       5       /* GS - Watcom C++ 11.0 32 Bit */
 /*#define GRX_VERSION_WATCOM_REAL_MODE  6*/     /* GS - Watcom C++ 11.0 16 Bit - TODO! */
 #define GRX_VERSION_GCC_386_WIN32       7       /* WIN32 using Mingw32 */
+#define GRX_VERSION_MSC_386_WIN32       8       /* WIN32 using MS-VC */
 
 #ifdef  __TURBOC__
 #define GRX_VERSION     GRX_VERSION_TCC_8086_DOS
 #endif
 
 #ifdef  __GNUC__
-#ifdef  __GO32__
-#define GRX_VERSION     GRX_VERSION_GCC_386_GO32
+#ifdef  __DJGPP__
+#define GRX_VERSION     GRX_VERSION_GCC_386_DJGPP
 #endif
 #if defined(__linux__) && defined(__i386__)
 #define GRX_VERSION     GRX_VERSION_GCC_386_LINUX
@@ -71,6 +73,18 @@
 #endif /* __386__ */
 #endif /* __DOS__ */
 #endif /* __WATCOMC__ */
+
+#ifdef _MSC_VER
+#ifdef _WIN32
+#ifdef _M_IX86
+#define GRX_VERSION     GRX_VERSION_MSC_386_WIN32
+#if !defined(__WIN32__)
+#define __WIN32__ _WIN32
+#endif
+#endif /* _M_IX86  */
+#endif /* _WIN32   */
+#endif /* _MSC_VER */
+
 
 #ifndef GRX_VERSION
 #if defined(unix) || defined(__unix) || defined(__unix__) || defined(_AIX)
@@ -755,6 +769,7 @@ void GrPolygon(int numpts,int points[][2],GrColor c);
 void GrFilledConvexPolygon(int numpts,int points[][2],GrColor c);
 void GrFilledPolygon(int numpts,int points[][2],GrColor c);
 void GrBitBlt(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,GrColor op);
+void GrBitBlt1bpp(GrContext *dst,int dx,int dy,GrContext *src,int x1,int y1,int x2,int y2,GrColor fg,GrColor bg);
 void GrFloodFill(int x, int y, GrColor border, GrColor c);
 
 GrColor GrPixel(int x,int y);
@@ -1468,7 +1483,7 @@ void GrMouseUnBlock(int return_value_from_GrMouseBlock);
 int  kbhit(void);
 int  getch(void);
 #endif
-#ifndef __GO32__
+#ifndef __DJGPP__
 int  getkey(void);
 int  getxkey(void);
 #endif
@@ -1518,6 +1533,8 @@ int  getxkey(void);
 
 void GrResizeGrayMap(unsigned char far *map,int pitch,int ow,int oh,int nw,int nh);
 int  GrMatchString(const char *pattern,const char *strg);
+void GrSetWindowTitle(char *title);
+void GrSleep(int msec);
 
 
 /* ================================================================== */

@@ -24,11 +24,12 @@
 
 #include "bccgrx00.h"
 
-#define DEFAULT_PALETTE                                                      \
-  { size:16, colors:{EGA_BLACK, EGA_BLUE, EGA_GREEN, EGA_CYAN, EGA_RED,      \
-                     EGA_MAGENTA, EGA_BROWN, EGA_LIGHTGRAY, EGA_DARKGRAY,    \
-                     EGA_LIGHTBLUE, EGA_LIGHTGREEN, EGA_LIGHTCYAN,           \
-                     EGA_LIGHTRED, EGA_LIGHTMAGENTA, EGA_YELLOW, EGA_WHITE} }
+#define DEFAULT_PALETTE                                                  \
+  { /*size:*/16,                                                         \
+    /*colors:*/ {EGA_BLACK, EGA_BLUE, EGA_GREEN, EGA_CYAN, EGA_RED,      \
+                 EGA_MAGENTA, EGA_BROWN, EGA_LIGHTGRAY, EGA_DARKGRAY,    \
+                 EGA_LIGHTBLUE, EGA_LIGHTGREEN, EGA_LIGHTCYAN,           \
+                 EGA_LIGHTRED, EGA_LIGHTMAGENTA, EGA_YELLOW, EGA_WHITE} }
 
 struct palettetype __gr_EGAdef = DEFAULT_PALETTE;
 static struct palettetype UsrPal = DEFAULT_PALETTE;
@@ -37,7 +38,7 @@ static struct palettetype UsrPal = DEFAULT_PALETTE;
 
 void __gr_setpalette(int colornum, int color)
 {
-#ifdef __GO32__
+#ifdef __DJGPP__
 # include <dpmi.h>
 # include <go32.h>
   _go32_dpmi_registers regs;

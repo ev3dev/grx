@@ -25,12 +25,12 @@
 #include "text.h"
 
 /* ----------------------------------------------------------------- */
-inline static int xoff(ushort x) {
+static _BGI_INLINE_ int xoff(ushort x) {
   /* Csaba did it this way, well done */
   return ((int)(signed char)((x) << 1) >> 1);
 }
 
-inline static int yoff(ushort y) {
+static _BGI_INLINE_ int yoff(ushort y) {
   return - ((int)(signed char)((y) >> 7) >> 1);
 }
 

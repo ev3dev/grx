@@ -50,7 +50,7 @@ int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn )
   if( (f = fopen( pbmfn,"wb" )) == NULL ) return -1;
   
   GrSaveContext( &grcaux );
-  GrSetContext( grc );
+  if( grc != NULL ) GrSetContext( grc );
   sprintf( cab,"P4\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
@@ -106,7 +106,7 @@ int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn )
   if( (f = fopen( pgmfn,"wb" )) == NULL ) return -1;
   
   GrSaveContext( &grcaux );
-  GrSetContext( grc );
+  if( grc != NULL ) GrSetContext( grc );
   sprintf( cab,"P5\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
@@ -149,7 +149,7 @@ int GrSaveContextToPpm( GrContext *grc, char *ppmfn, char *docn )
   if( (f = fopen( ppmfn,"wb" )) == NULL ) return -1;
   
   GrSaveContext( &grcaux );
-  GrSetContext( grc );
+  if( grc != NULL ) GrSetContext( grc );
   sprintf( cab,"P6\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
@@ -396,7 +396,7 @@ int GrLoadContextFromPnm( GrContext *grc, char *pnmfn )
   if( (f = fopen( pnmfn,"rb" )) == NULL ) return -1;
 
   GrSaveContext( &grcaux );
-  GrSetContext( grc );
+  if( grc != NULL ) GrSetContext( grc );
 
   format = loaddata( f,&width,&height,&maxval );
   if( maxval > 255 ) goto ENDFUNCTION;

@@ -108,7 +108,7 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
                         x1 = xc - scans[col];
                         x2 = xc + scans[col];
                     }
-                    clip_ordxrange_(CURC,x1,x2,continue,);
+                        clip_ordxrange_(CURC,x1,x2,continue,CLIP_EMPTY_MACRO_ARG);
                     (*f->scan)(
                         (x1  + CURC->gc_xoffset),
                         (row + CURC->gc_yoffset),

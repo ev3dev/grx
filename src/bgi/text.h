@@ -35,7 +35,11 @@ typedef   signed char  schar;
 typedef unsigned short ushort;
 #endif
 
+#if defined(_MSC_VER) && defined(_WIN32)
+#include <io.h>
+#else
 #include <unistd.h>
+#endif
 #include "bccgrx00.h"
 
 #define FirstUserFont    11
@@ -44,7 +48,12 @@ typedef unsigned short ushort;
 #define LastGrxFont      (FirstGrxFont+9)
 #define NrFonts          (LastGrxFont+1)
 #define PreSkip          0x080
+
+#ifdef __GNUC__
 #define ZERO2ONE(chrsze) ((chrsze) ? : 1)
+#else
+#define ZERO2ONE(chrsze) ((chrsze) ? (chrsze) : 1)
+#endif
 
 #define BITMAP(f) ((f)==DEFAULT_FONT || ((f)>=FirstGrxFont && (f)<=LastGrxFont))
 
@@ -54,9 +63,18 @@ typedef struct {
 } CharInfo;
 
 /* -------------------------------------------------------------- */
-#define PACKED __attribute ((packed))
 
 typedef char FontNameTyp[4];
+
+#ifdef __GNUC__
+#define PACKED __attribute ((packed))
+#elif defined(_MSC_VER)
+#pragma pack(push,1)
+#endif
+
+#ifndef PACKED
+#define PACKED
+#endif
 
 typedef struct FontFileHeader {
   ushort      header_size PACKED;   /* Version 2.0 Header Format   */
@@ -80,6 +98,11 @@ typedef struct FontHeaderTyp {
   schar  org_to_dec PACKED;     /* Height from origin to bot of decender */
   uchar  unused2[0x5] PACKED;   /* Currently undefined                   */
 } FontHeaderTyp;
+
+#undef PACKED
+#if defined(_MSC_VER)
+#pragma pack(pop)
+#endif
 
 extern int  __gr_text_height;
 extern int  __gr_text_multx, __gr_text_divx,

@@ -30,8 +30,8 @@ void setviewport(int left, int top, int right, int bottom, int clip)
 
   _DO_INIT_CHECK;
   GrSetContext( NULL);         /* ViewPort == Full screen */
-  if (left > right) SWAP(left,right);
-  if (bottom < top) SWAP(bottom,top);
+  if (left > right) SWAP(int,left,right);
+  if (bottom < top) SWAP(int,bottom,top);
   if (left < 0) left = 0;
   if (right > (mm=getmaxx())) right = mm;
   if (top < 0) top = 0;

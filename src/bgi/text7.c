@@ -24,30 +24,8 @@
 
 #include "text.h"
 
-/* ----------------------------------------------------------------- */
 static void _outtextxy(int *xx, int *yy, int XX, int YY,
-                                      int len, const uchar *textstring)
-{
-  _DO_INIT_CHECK;
-  __gr_text_init();
-#ifdef GRX_VERSION
-  if (TXT.font==DEFAULT_FONT) {
-    if (DefaultFonts[TXT.charsize] == NULL)
-      DefaultFonts[TXT.charsize] =
-        GrBuildConvertedFont(
-          DefaultFonts[1],
-          GR_FONTCVT_RESIZE,
-          8*ZERO2ONE(TXT.charsize),
-          8*ZERO2ONE(TXT.charsize),
-          0, 0);
-    __gr_text_bit(DefaultFonts[TXT.charsize],xx,yy,XX,YY,len,(char *) textstring);
-  } else
-#endif
-  if (BITMAP(TXT.font))
-    __gr_text_bit((GrFont *)Fonts[TXT.font],xx,yy,XX,YY,len,(char *) textstring);
-  else
-    __gr_text_vec(xx,yy,XX,YY,len,(char *) textstring);
-}
+                                      int len, const uchar *textstring);
 
 /* ----------------------------------------------------------------- */
 void outtext(const char *textstring)
@@ -71,4 +49,29 @@ void __gr_p_outtext(__gr_p_GPCstr *txt)
 void __gr_p_outtextxy(int x, int y, __gr_p_GPCstr *txt)
 {
   _outtextxy( &x, &y, x+VL, y+VT+PY, txt->len, txt->str);
+}
+
+/* ----------------------------------------------------------------- */
+static void _outtextxy(int *xx, int *yy, int XX, int YY,
+                                      int len, const uchar *textstring)
+{
+  _DO_INIT_CHECK;
+  __gr_text_init();
+#ifdef GRX_VERSION
+  if (TXT.font==DEFAULT_FONT) {
+    if (DefaultFonts[TXT.charsize] == NULL)
+      DefaultFonts[TXT.charsize] =
+        GrBuildConvertedFont(
+          DefaultFonts[1],
+          GR_FONTCVT_RESIZE,
+          8*ZERO2ONE(TXT.charsize),
+          8*ZERO2ONE(TXT.charsize),
+          0, 0);
+    __gr_text_bit(DefaultFonts[TXT.charsize],xx,yy,XX,YY,len,(char *) textstring);
+  } else
+#endif
+  if (BITMAP(TXT.font))
+    __gr_text_bit((GrFont *)Fonts[TXT.font],xx,yy,XX,YY,len,(char *) textstring);
+  else
+    __gr_text_vec(xx,yy,XX,YY,len,(char *) textstring);
 }

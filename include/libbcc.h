@@ -347,7 +347,7 @@ extern int           __gr_fpatno;
 extern int           __gr_lstyle;
 extern int           __gr_clip;                 /* actual clipping state    */
 extern int           __gr_ADAPTER;              /* Adapter used             */
-extern char          __gr_fpatterns[][8];
+extern unsigned char __gr_fpatterns[][8];
 extern struct palettetype __gr_EGAdef;
 extern int           __gr_BGI_w;                /* Width, height and color  */
 extern int           __gr_BGI_h;                /* used in                  */
@@ -512,204 +512,216 @@ int  __gr_p_installuserfont(__gr_p_GPCstr *name);
 #endif
 
 /* ----------------------------------------------------------------- */
+#ifdef __cplusplus
+#define _BGI_INLINE_ inline
+#elif defined(__GNUC__)
+#define _BGI_INLINE_        __inline__
+#elif defined(_MSC_VER)
+#define _BGI_INLINE_ _inline
+#else
+#define _BGI_INLINE_
+#endif
+/* ----------------------------------------------------------------- */
+
+/* ----------------------------------------------------------------- */
 /* ---  The following functions work line macros with gcc, each  --- */
 /* ---  function <func> has a compatible direct linkable variant --- */
 /* ---  __gr_<func> that is fully compatible                     --- */
 /* ----------------------------------------------------------------- */
-__inline__ static void restorecrtmode(void) {
+static _BGI_INLINE_ void restorecrtmode(void) {
   __gr_restorecrtmode();
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int getgraphmode(void) {
+static _BGI_INLINE_ int getgraphmode(void) {
   return (__gr_INIT ? __gr_Mode : (__gr_Result=grNoInitGraph));
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int getmaxmode(void) {
+static _BGI_INLINE_ int getmaxmode(void) {
   __gr_set_up_modes();
   return __gr_MaxMode;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void getmoderange(int gd, int *lomode, int *himode) {
+static _BGI_INLINE_ void getmoderange(int gd, int *lomode, int *himode) {
   __gr_getmoderange(gd, lomode, himode);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int graphresult(void) {
+static _BGI_INLINE_ int graphresult(void) {
   int res = (__gr_INIT ? __gr_Result : grNoInitGraph);
   __gr_Result = grOk;
   return res;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int getx(void) {
+static _BGI_INLINE_ int getx(void) {
   return __gr_X;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int gety(void) {
+static _BGI_INLINE_ int gety(void) {
   return __gr_Y;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void moveto(int x, int y) {
+static _BGI_INLINE_ void moveto(int x, int y) {
   __gr_X = x; __gr_Y = y;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void moverel(int dx, int dy) {
+static _BGI_INLINE_ void moverel(int dx, int dy) {
   moveto( getx()+dx, gety()+dy);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int getbkcolor(void) {
+static _BGI_INLINE_ int getbkcolor(void) {
   return __gr_colorbg;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int getcolor(void) {
+static _BGI_INLINE_ int getcolor(void) {
   return __gr_color;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void cleardevice(void) {
+static _BGI_INLINE_ void cleardevice(void) {
   __gr_cleardevice();
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void setbkcolor(int color) {
+static _BGI_INLINE_ void setbkcolor(int color) {
   __gr_colorbg= color;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void setcolor(int color) {
+static _BGI_INLINE_ void setcolor(int color) {
   __gr_color= color;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void line(int x1, int y1, int x2, int y2) {
+static _BGI_INLINE_ void line(int x1, int y1, int x2, int y2) {
   __gr_line(x1,y1,x2,y2);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void linerel(int dx, int dy) {
+static _BGI_INLINE_ void linerel(int dx, int dy) {
   register int x = getx();
   register int y = gety();
   __gr_line(x,y,x+dx,y+dy);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void lineto(int x, int y) {
+static _BGI_INLINE_ void lineto(int x, int y) {
   __gr_line( getx(), gety(), x, y);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void  drawpoly(int numpoints, void *polypoints) {
+static _BGI_INLINE_ void  drawpoly(int numpoints, void *polypoints) {
   __gr_drawpol(numpoints, polypoints, FALSE);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void bar(int left, int top, int right, int bottom) {
+static _BGI_INLINE_ void bar(int left, int top, int right, int bottom) {
   __gr_bar(left,top,right, bottom);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void circle(int x, int y, int radius) {
+static _BGI_INLINE_ void circle(int x, int y, int radius) {
   __gr_circle(x,y,radius);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void ellipse( int x, int y, int stangle, int endangle,
+static _BGI_INLINE_ void ellipse( int x, int y, int stangle, int endangle,
                                         int xradius, int yradius  ) {
   __gr_ellipse( x, y, stangle, endangle, xradius, yradius);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void  arc(int x, int y, int stangle, int endangle, int radius) {
+static _BGI_INLINE_ void  arc(int x, int y, int stangle, int endangle, int radius) {
   __gr_ellipse(x,y,stangle,endangle,radius,radius);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void getaspectratio(int *xasp, int *yasp) {
+static _BGI_INLINE_ void getaspectratio(int *xasp, int *yasp) {
    *xasp = __gr_Xasp; *yasp = __gr_Yasp;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void setaspectratio( int xasp, int yasp ) {
+static _BGI_INLINE_ void setaspectratio( int xasp, int yasp ) {
   __gr_Xasp = xasp; __gr_Yasp = yasp;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void getfillsettings(struct fillsettingstype  *fillinfo) {
+static _BGI_INLINE_ void getfillsettings(struct fillsettingstype  *fillinfo) {
   fillinfo->pattern = __gr_fpatno;
   fillinfo->color   = __gr_colorfill;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void getfillpattern(char *pattern) {
+static _BGI_INLINE_ void getfillpattern(char *pattern) {
   memcpy(pattern, &__gr_fpatterns[USER_FILL], 8);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void sector( int x, int y, int stangle, int endangle,
+static _BGI_INLINE_ void sector( int x, int y, int stangle, int endangle,
                                    int xradius, int yradius  ) {
   __gr_sector(x,y,stangle,endangle,xradius, yradius);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void pieslice(int x, int y, int stangle, int endangle, int radius) {
+static _BGI_INLINE_ void pieslice(int x, int y, int stangle, int endangle, int radius) {
   __gr_sector(x,y,stangle,endangle,radius,radius);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static unsigned setgraphbufsize(unsigned bufsize) {
+static _BGI_INLINE_ unsigned setgraphbufsize(unsigned bufsize) {
   return __gr_setgraphbufsize(bufsize);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static struct palettetype *getdefaultpalette(void) {
+static _BGI_INLINE_ struct palettetype *getdefaultpalette(void) {
   return &__gr_EGAdef;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int installbgidriver(char *name, void *detect) {
+static _BGI_INLINE_ int installbgidriver(char *name, void *detect) {
   return __gr_installbgidriver(name, detect);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int registerfarbgidriver(void *driver) {
+static _BGI_INLINE_ int registerfarbgidriver(void *driver) {
   return __gr_registerfarbgidriver(driver);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int registerfarbgifont(void *font) {
+static _BGI_INLINE_ int registerfarbgifont(void *font) {
   return registerbgifont(font);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void textlinestyle(int on) {
+static _BGI_INLINE_ void textlinestyle(int on) {
   __gr_TextLineStyle = on;
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void setpalette(int colornum, int color) {
+static _BGI_INLINE_ void setpalette(int colornum, int color) {
   __gr_setpalette(colornum,color);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void set_BGI_mode_pages(int p) {
+static _BGI_INLINE_ void set_BGI_mode_pages(int p) {
   __gr_set_BGI_mode_pages(p);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int get_BGI_mode_pages(void) {
+static _BGI_INLINE_ int get_BGI_mode_pages(void) {
   return __gr_get_BGI_mode_pages();
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void set_BGI_mode_whc(int *gd, int *gm,
+static _BGI_INLINE_ void set_BGI_mode_whc(int *gd, int *gm,
                                   int width, int height, int colors) {
   __gr_set_BGI_mode_pages(1);
   __gr_BGI_w = width;
@@ -720,45 +732,45 @@ __inline__ static void set_BGI_mode_whc(int *gd, int *gm,
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int getmodemaxcolor(int mode) {
+static _BGI_INLINE_ int getmodemaxcolor(int mode) {
    /* works like getmaxcolor() for mode */
    return __gr_getmodemaxcolor(mode);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int getmodemaxx(int mode) {
+static _BGI_INLINE_ int getmodemaxx(int mode) {
    /* works like getmaxx() for mode */
    return __gr_getmodemaxx(mode);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int getmodemaxy(int mode) {
+static _BGI_INLINE_ int getmodemaxy(int mode) {
    /* works like getmaxy() for mode */
    return __gr_getmodemaxx(mode);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int setrgbcolor(int r, int g, int b) {
+static _BGI_INLINE_ int setrgbcolor(int r, int g, int b) {
   return __gr_setrgbcolor(r,g,b);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void setactivepage(int p) {
+static _BGI_INLINE_ void setactivepage(int p) {
   __gr_setactivepage(p);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int getactivepage(void) {
+static _BGI_INLINE_ int getactivepage(void) {
   return __gr_getactivepage();
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static void setvisualpage(int p) {
+static _BGI_INLINE_ void setvisualpage(int p) {
   __gr_setvisualpage(p);
 }
 
 /* ----------------------------------------------------------------- */
-__inline__ static int getvisualpage(void) {
+static _BGI_INLINE_ int getvisualpage(void) {
   return __gr_getvisualpage();
 }
 

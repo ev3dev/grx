@@ -1,5 +1,5 @@
 #
-# GRX 2.0 test programs makefile for LINUX/svgalib. Uses GNU make.
+# GRX test programs makefile for LINUX/svgalib. Uses GNU make.
 #
 
 include  ../makedefs.gnu
@@ -28,8 +28,8 @@ endif
 
 LIBS= $(GRX20) $(ADDON_LIBS) -lm
 
-PROGS=              \
-	arctest     \
+PROGS=	arctest     \
+	bb1test     \
 	blittest    \
 	circtest    \
 	cliptest    \

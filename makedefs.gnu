@@ -2,7 +2,7 @@
 
 # Specify version of GRX
 # Currently only used to generate name of shared libraries for linux
-GRX_VERSION=2.4.0
+GRX_VERSION=2.4.1
 
 # Specify if you have libtiff.a and corresponding .h files.
 # Change setting to 'y' if you have it, or to 'n' if not.
@@ -39,14 +39,13 @@ LINUX_i386_SVGALIB_SHARED = $(SYSTEM_TAG_PREFIX).001
 LINUX_i386_X11_STATIC     = $(SYSTEM_TAG_PREFIX).002
 LINUX_i386_X11_SHARED     = $(SYSTEM_TAG_PREFIX).003
 DOS_DJGPP_V2              = $(SYSTEM_TAG_PREFIX).004
-DOS_DJGPP_V1              = $(SYSTEM_TAG_PREFIX).005
 WIN32_GCC_i386_STATIC     = $(SYSTEM_TAG_PREFIX).006
 
 ifdef   DEBUG
 CCOPT=  -O2 -Wall -g -DDEBUG=$(DEBUG)
 LDOPT=  -g
 else
-CCOPT=  -O6 -Wall
+CCOPT=  -O2 -Wall
 LDOPT=
 endif
 
@@ -62,3 +61,7 @@ WARNOPTS = -W -Wshadow -Wpointer-arith -Wbad-function-cast \
 
 # place libgrx20.a in lib/unix by default
 GRX_LIB_SUBDIR=unix
+
+# Set here the default destination dir for install and uninstall targets
+INSTALLDIR=/usr/local
+

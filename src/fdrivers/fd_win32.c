@@ -23,7 +23,7 @@
  **   - Loops optimized in bitmap operations
  **   - Color handling optimized. By storing the last color used
  **     (index, rgb value) if the next color is the same, there is
- **     not need to call _GetColor, wich is time consuming.
+ **     not need to call _GetColor, which is time consuming.
  **   - 24 bpp driver.
  **   - WARNINGS: - The colors returned by GetPixel have to be the SAME that
  **                 colors in the ColorList. Unfortunately, Windows doesn't
@@ -33,10 +33,18 @@
  **                 that loads colors in the ColorList to guarantee that
  **                 those colors will actually be used by Windows 'as-is'.
  **               - The driver for 4 bits per pixel doesn't work.
- **   - TO DO: Support for logical operations in drawpixel, drawblock
- **            and putscanline
- **            Implement getiscanline for 8 and 24 bpp
- **            Implement bltv2r and bltr2v for 24 bpp
+ **
+ ** Contributions by Mariano Alvarez Fernandez (malfer@terra.es) 27/03/2001
+ **   - drawpattern implemented
+ **   - bltr2v_24 implemented
+ **
+ ** TO DO: Support for logical operations in drawpixel, drawblock
+ **        and putscanline
+ **        Implement getiscanline for 8 and 24 bpp
+ **        Implement bltv2r for 24 bpp
+ **        Logical operations for 8 bpp are wrong implemented, they
+ **        must operate with color indices
+ **        Drawline must paint the last point
  **/
 
 #include <string.h>
@@ -181,8 +189,10 @@ static void i_drawline(int x,int y,int dx,int dy,GrColor c)
         MoveToEx ( hDCMem, x, y, NULL );
         LineTo ( hDCMem, x + dx, y + dy );
         SelectObject ( hDCMem, oldPen );
+        SetROP2(hDCMem, R2_COPYPEN);
         DeleteObject(hPen);
 }
+
 static void i_drawhline(int x,int y,int w,GrColor c)
 {
         i_drawline(x, y, w, 0, c);
@@ -251,6 +261,23 @@ static void i_drawbitmap(int x,int y,int w,int h,char far *bmp,int pitch,
 
 static void drawpattern(int x,int y,int w,char patt,GrColor fg,GrColor bg)
 {
+        HDC hDC;
+        COLORREF fgcolor, bgcolor;
+        GR_int8u mask;
+
+        GRX_ENTER();
+        mask = 0x80;
+        w += x;
+        fgcolor = fGetColor ( GrColorValue(fg) );
+        bgcolor = fGetColor ( GrColorValue(bg) );
+        hDC = GetDC ( hGRXWnd );
+        do {
+            SetPixelV ( hDC, x, y, (patt & mask) ? fgcolor : bgcolor );
+            SetPixelV ( hDCMem, x, y, (patt & mask) ? fgcolor : bgcolor );
+            if((mask >>= 1) == 0) mask = 0x80;
+        } while(++x != w);
+        ReleaseDC ( hGRXWnd, hDC );
+        GRX_LEAVE();
 }
 
 static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,
@@ -437,6 +464,76 @@ static void bltr2v_8(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,
         }
 }
 
+static void bltr2v_24(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,
+                                        int w,int h,GrColor op)
+{
+        HDC      hDC, hDCAux=0, hDCDest;
+        int      y, x, offx, offy;
+        GrColor  color;
+        GrColor  skipc;
+        DWORD    dwRop;
+        HGDIOBJ  oldBitmapAux=0;
+        HBITMAP  hBitmapAux=0;
+
+        switch ( op ) {
+
+        case GrWRITE :
+        case GrIMAGE :
+            dwRop = SRCCOPY;
+            break;
+        case GrXOR :
+            dwRop = SRCINVERT;
+            break;
+        case GrOR :
+            dwRop = SRCPAINT;
+            break;
+        case GrAND :
+            dwRop = SRCAND;         //SRCERASE;
+            break;
+        default:
+            dwRop = SRCCOPY;
+            break;
+        }
+        skipc = op ^ GrIMAGE;
+
+        hDC = GetDC ( hGRXWnd );
+        
+        if(dwRop != SRCCOPY)
+        {
+            hDCAux = CreateCompatibleDC ( hDC );
+            hBitmapAux = CreateCompatibleBitmap ( hDC, w, h );
+            oldBitmapAux = SelectObject ( hDCAux, hBitmapAux );
+            offx = 0;
+            offy = 0;
+            hDCDest = hDCAux;
+        }
+        else
+        {
+            offx = dx;
+            offy = dy;
+            hDCDest = hDCMem;
+        }
+        
+        for ( y = 0; y < h; y++ )
+        {
+            for ( x = 0; x < w; x++ )
+            {
+                color = src->gf_driver->readpixel( src, x+sx, y+sy );
+                if( color != skipc )
+                    SetPixelV( hDCDest, offx+x, offy+y, (COLORREF)color );
+            }
+        }
+        BitBlt ( hDC, dx, dy, w, h, hDCDest, offx, offy, dwRop );
+        ReleaseDC ( hGRXWnd, hDC );
+        if(dwRop != SRCCOPY)
+        {
+            BitBlt ( hDCMem, dx, dy, w, h, hDCAux, 0, 0, dwRop );
+            SelectObject ( hDCAux, oldBitmapAux );
+            DeleteDC ( hDCAux );
+            DeleteObject ( hBitmapAux );
+        }
+}
+
 static int init_frame(GrVideoMode *md)
 {
         if(md->bpp >= 24)
@@ -526,7 +623,7 @@ GrFrameDriver _GrFrameDriverWIN32_24 = {
         drawpattern,
         bitblt,
         _GrFrDrvGenericBitBlt,
-        _GrFrDrvGenericBitBlt,
+        bltr2v_24,
         _GrFrDrvGenericGetIndexedScanline,
         i_putscanline
 };

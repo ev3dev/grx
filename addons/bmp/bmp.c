@@ -10,7 +10,11 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#if defined(_MSC_VER) && defined(_WIN32)
+#include <io.h>
+#else
 #include <unistd.h>
+#endif
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <string.h>

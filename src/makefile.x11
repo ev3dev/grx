@@ -1,13 +1,12 @@
 #
-# GRX 2.0 Library Makefile for LINUX/X11. Uses GNU Make.
+# Library Makefile for LINUX/X11. Uses GNU Make.
 #
 # set up for GCC / Linux
 #
+.PHONY : clean cleanall install uninstall
 
 MAKEDEFS_DIR = ..
 include $(MAKEDEFS_DIR)/makedefs.x11
-
-.PHONY : clean cleanall
 
 INCDIR= -I. -I./include -I../include $(X11INCS)
 
@@ -23,10 +22,6 @@ endif
 
 ifdef SHARED
 CCOPT += -fPIC -D__SHARED__
-endif
-
-ifndef DEBUG
-CCOPT += -fomit-frame-pointer
 endif
 
 OX=.o
@@ -77,6 +72,7 @@ O=      $(STD_O)            \
 	fonts/fdv_xwin.o    \
 	mouse/xwininp.o     \
 	mouse/xwinkeys.o    \
+	misc/x11misc.o      \
 	vdrivers/vd_xwin.o
 
 ifdef SHARED

@@ -73,17 +73,23 @@ int _GR_lastFreeColor  = -1;
 int _GrResetColors(void)
 {
 #       define NSAVED 16
-        static char infosave[offsetof(struct _GR_colorInfo,ctable[NSAVED])];
+        static char *infosave = NULL;
         static int  firsttime = TRUE;
         int i;
         if(firsttime) {
-            memcpy(infosave,CLRINFO,sizeof(infosave));
+                infosave = malloc(offsetof(struct _GR_colorInfo,ctable[NSAVED]));
+                if ( infosave ) {
+                        memcpy(infosave,CLRINFO,offsetof(struct _GR_colorInfo,ctable[NSAVED]));
+                }
             firsttime = FALSE;
         }
         sttzero(CLRINFO);
         if(DRVINFO->actmode.extinfo->mode == GR_frameText) {
-            memcpy(CLRINFO,infosave,sizeof(infosave));
-            return TRUE;
+                if ( infosave ) {
+                        memcpy(CLRINFO,infosave,sizeof(infosave));
+                        return TRUE;
+                }
+                return FALSE;
         }
         DACload = DRVINFO->actmode.extinfo->loadcolor;
         CLRINFO->black   = GrNOCOLOR;
@@ -109,14 +115,16 @@ int _GrResetColors(void)
             else
 #endif
               CLRINFO->nfree = CLRINFO->ncolors - _GR_firstFreeColor;
-            for(i = 0; i < NSAVED; i++) {
-                loadcolor(
-                    (i + _GR_firstFreeColor),
-                    ((struct _GR_colorInfo *)(infosave))->ctable[i].r,
-                    ((struct _GR_colorInfo *)(infosave))->ctable[i].g,
-                    ((struct _GR_colorInfo *)(infosave))->ctable[i].b
-                );
-                CLRINFO->ctable[i].defined = TRUE;
+                if ( infosave ) {
+              for(i = 0; i < NSAVED; i++) {
+                  loadcolor(
+                      (i + _GR_firstFreeColor),
+                      ((struct _GR_colorInfo *)(infosave))->ctable[i].r,
+                      ((struct _GR_colorInfo *)(infosave))->ctable[i].g,
+                      ((struct _GR_colorInfo *)(infosave))->ctable[i].b
+                  );
+                  CLRINFO->ctable[i].defined = TRUE;
+                  }
             }
             break;
           default:

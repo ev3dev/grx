@@ -49,8 +49,8 @@ void floodfill(int x, int y, int border)
 #include <setjmp.h>
 
 static int lx, ly, mx, my;
-static int _border;
-static int _color;
+static GrColor _border;
+static GrColor _color;
 static jmp_buf error;
 
 typedef unsigned char element;       /* for 1bit/pixel images */
@@ -72,14 +72,14 @@ static line_index *start_flg = NULL; /* !=0: index+1 of first start element !=0 
 **  (x,y) scaled to (0..mx,0..my)
 */
 
-static inline element *generate_line(element **buf, int y) {
+static _BGI_INLINE_ element *generate_line(element **buf, int y) {
   if (buf[y] == NULL)
     if ( (buf[y] = calloc(sizeof(element),elements)) == NULL)
       longjmp(error,1);
   return buf[y];
 }
 
-static inline void mark_line( element **buf, int x1, int x2, int y) {
+static _BGI_INLINE_ void mark_line( element **buf, int x1, int x2, int y) {
   element *l = generate_line(buf,y);
   element *anf, *ende;
   int start_bit, stop_bit;
@@ -96,26 +96,28 @@ static inline void mark_line( element **buf, int x1, int x2, int y) {
   /* start_bit rejects all invalid low bits, let stop_bit discard
      all invalid high bits, but make sure stop_bit won't get zero */
   stop_bit = ~calc_high_bits(x2+1);
-  *ende |= (start_bit & (stop_bit ? : ~0));
+  if ( stop_bit )
+    start_bit &= stop_bit;
+  *ende |= start_bit;
 }
 
-static inline void set_pix(element **buf, int x, int y) {
+static _BGI_INLINE_ void set_pix(element **buf, int x, int y) {
   element *l = generate_line(buf,y);
   l[calc_ofs(x)] |= calc_bit(x);
 }
 
-static inline int test_pix(element **buf, int x, int y) {
+static _BGI_INLINE_ int test_pix(element **buf, int x, int y) {
   element *l = buf[y];
   if (l != NULL)
     return (l[calc_ofs(x)] & calc_bit(x)) != 0;
   return FALSE;
 }
 
-static inline int test_screen(int x, int y) {
+static _BGI_INLINE_ int test_screen(int x, int y) {
   return (GrPixelNC(x+lx,y+ly) == _border);
 }
 
-static inline int test_pixel(int x, int y) {
+static _BGI_INLINE_ int test_pixel(int x, int y) {
   if (test_pix(done,x,y)) return TRUE;
   if (test_screen(x,y)) {
     set_pix(done,x,y);
@@ -124,7 +126,7 @@ static inline int test_pixel(int x, int y) {
   return FALSE;
 }
 
-static inline void SetStartFlag(int x, int y) {
+static _BGI_INLINE_ void SetStartFlag(int x, int y) {
     int _x = calc_ofs(x);
     if (   !start_flg[y]
         || _x<start_flg[y] ) start_flg[y] = _x+1;
@@ -235,10 +237,10 @@ void floodfill(int x, int y, int border)
   }
   x += VL;
   y += VT+PY;
-  if ( x < lx || y < ly || x > mx || y > my || GrPixel(x,y) == border)
+  _border = border;
+  if ( x < lx || y < ly || x > mx || y > my || GrPixel(x,y) == _border)
     return;
 
-  _border = border;
   mx -= lx; _x = x - lx;
   my -= ly; _y = y - ly;
   done      = calloc(sizeof(element *),  my+1);

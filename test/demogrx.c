@@ -29,9 +29,12 @@
 #define HEIGHT 480
 #define BPP 16
 
-#define NDEMOS 24
+#define WINTITLE "GRX 2.4.1, the graphics library"
+
+#define NDEMOS 25
 
 #define ID_ARCTEST   1
+#define ID_BB1TEST  23
 #define ID_BLITTEST  2
 #define ID_CIRCTEST  3
 #define ID_CLIPTEST  4
@@ -64,6 +67,7 @@ typedef struct{
 
 static ProgTable ptable[NDEMOS] = {
   { ID_ARCTEST,"arctest","arctest.c -> test arc outline and filled arc drawing" },
+  { ID_BB1TEST,"bb1test","bb1test.c -> test GrBitBlt1bpp routine" },
   { ID_BLITTEST,"blittest","blittest.c -> test various bitblt-s" },
   { ID_CIRCTEST,"circtest","circtest.c -> test circle and ellipse rendering" },
   { ID_CLIPTEST,"cliptest","cliptest.c -> test clipping" },
@@ -88,31 +92,45 @@ static ProgTable ptable[NDEMOS] = {
   { ID_MODETEST,"modetest","modetest.c -> test all available graphics modes" },
   { ID_EXIT,"","Exit GRX test programs launcher" } };
 
+#define PX0 10
+#define PX1 115
+#define PX2 220
+#define PY0 10
+#define PY1 54
+#define PY2 98
+#define PY3 142
+#define PY4 186
+#define PY5 230
+#define PY6 274
+#define PY7 318
+#define PY8 362
+
 static Button b[NDEMOS] = {
-  {  10, 10,100,40,IND_BLUE,IND_YELLOW,"ArcTest",BSTATUS_SELECTED,ID_ARCTEST },
-  {  10, 55,100,40,IND_BLUE,IND_YELLOW,"BlitTest",0,ID_BLITTEST },
-  {  10,100,100,40,IND_BLUE,IND_YELLOW,"CircTest",0,ID_CIRCTEST },
-  {  10,145,100,40,IND_BLUE,IND_YELLOW,"ClipTest",0,ID_CLIPTEST },
-  {  10,190,100,40,IND_BLUE,IND_YELLOW,"Colorops",0,ID_COLOROPS },
-  {  10,235,100,40,IND_BLUE,IND_YELLOW,"CursTest",0,ID_CURSTEST },
-  {  10,280,100,40,IND_BLUE,IND_YELLOW,"FontTest",0,ID_FONTTEST },
-  {  10,325,100,40,IND_BLUE,IND_YELLOW,"ImgTest",0,ID_IMGTEST },
-  { 115, 10,100,40,IND_BLUE,IND_YELLOW,"Keys",0,ID_KEYS },
-  { 115, 55,100,40,IND_BLUE,IND_YELLOW,"Life",0,ID_LIFE },
-  { 115,100,100,40,IND_BLUE,IND_YELLOW,"LineTest",0,ID_LINETEST },
-  { 115,145,100,40,IND_BLUE,IND_YELLOW,"MouseTst",0,ID_MOUSETST },
-  { 115,190,100,40,IND_BLUE,IND_YELLOW,"PcircTst",0,ID_PCIRCTST },
-  { 115,235,100,40,IND_BLUE,IND_YELLOW,"PnmTest",0,ID_PNMTEST },
-  { 115,280,100,40,IND_BLUE,IND_YELLOW,"PolyTest",0,ID_POLYTEST },
-  { 115,325,100,40,IND_BLUE,IND_YELLOW,"RgbTest",0,ID_RGBTEST },
-  { 220, 10,100,40,IND_BLUE,IND_YELLOW,"SbcTest",0,ID_SBCTEST },
-  { 220, 55,100,40,IND_BLUE,IND_YELLOW,"ScrolTst",0,ID_SCROLTST },
-  { 220,100,100,40,IND_BLUE,IND_YELLOW,"SpeedTst",0,ID_SPEEDTST },
-  { 220,145,100,40,IND_BLUE,IND_YELLOW,"TextPatt",0,ID_TEXTPATT },
-  { 220,190,100,40,IND_BLUE,IND_YELLOW,"WinClip",0,ID_WINCLIP },
-  { 220,235,100,40,IND_BLUE,IND_YELLOW,"WinTest",0,ID_WINTEST },
-  { 220,280,100,40,IND_GREEN,IND_YELLOW,"ModeTest",0,ID_MODETEST },
-  { 220,325,100,40,IND_RED,IND_WHITE,"Exit",0,ID_EXIT } };
+  { PX0,PY0,100,40,IND_BLUE,IND_YELLOW,"ArcTest",BSTATUS_SELECTED,ID_ARCTEST },
+  { PX0,PY1,100,40,IND_BLUE,IND_YELLOW,"Bb1Test",0,ID_BB1TEST },
+  { PX0,PY2,100,40,IND_BLUE,IND_YELLOW,"BlitTest",0,ID_BLITTEST },
+  { PX0,PY3,100,40,IND_BLUE,IND_YELLOW,"CircTest",0,ID_CIRCTEST },
+  { PX0,PY4,100,40,IND_BLUE,IND_YELLOW,"ClipTest",0,ID_CLIPTEST },
+  { PX0,PY5,100,40,IND_BLUE,IND_YELLOW,"Colorops",0,ID_COLOROPS },
+  { PX0,PY6,100,40,IND_BLUE,IND_YELLOW,"CursTest",0,ID_CURSTEST },
+  { PX0,PY7,100,40,IND_BLUE,IND_YELLOW,"FontTest",0,ID_FONTTEST },
+  { PX0,PY8,100,40,IND_BLUE,IND_YELLOW,"ImgTest",0,ID_IMGTEST },
+  { PX1,PY0,100,40,IND_BLUE,IND_YELLOW,"Keys",0,ID_KEYS },
+  { PX1,PY1,100,40,IND_BLUE,IND_YELLOW,"Life",0,ID_LIFE },
+  { PX1,PY2,100,40,IND_BLUE,IND_YELLOW,"LineTest",0,ID_LINETEST },
+  { PX1,PY3,100,40,IND_BLUE,IND_YELLOW,"MouseTst",0,ID_MOUSETST },
+  { PX1,PY4,100,40,IND_BLUE,IND_YELLOW,"PcircTst",0,ID_PCIRCTST },
+  { PX1,PY5,100,40,IND_BLUE,IND_YELLOW,"PnmTest",0,ID_PNMTEST },
+  { PX1,PY6,100,40,IND_BLUE,IND_YELLOW,"PolyTest",0,ID_POLYTEST },
+  { PX1,PY7,100,40,IND_BLUE,IND_YELLOW,"RgbTest",0,ID_RGBTEST },
+  { PX1,PY8,100,40,IND_BLUE,IND_YELLOW,"SbcTest",0,ID_SBCTEST },
+  { PX2,PY0,100,40,IND_BLUE,IND_YELLOW,"ScrolTst",0,ID_SCROLTST },
+  { PX2,PY1,100,40,IND_BLUE,IND_YELLOW,"SpeedTst",0,ID_SPEEDTST },
+  { PX2,PY2,100,40,IND_BLUE,IND_YELLOW,"TextPatt",0,ID_TEXTPATT },
+  { PX2,PY3,100,40,IND_BLUE,IND_YELLOW,"WinClip",0,ID_WINCLIP },
+  { PX2,PY4,100,40,IND_BLUE,IND_YELLOW,"WinTest",0,ID_WINTEST },
+  { PX2,PY7,100,40,IND_GREEN,IND_YELLOW,"ModeTest",0,ID_MODETEST },
+  { PX2,PY8,100,40,IND_RED,IND_WHITE,"Exit",0,ID_EXIT } };
 
 static Button_Group bg = { 20,30,b,NDEMOS,0,0 };
 
@@ -146,6 +164,7 @@ int main()
   Event ev;
 
   gfaz_ini( WIDTH,HEIGHT,BPP );
+  GrSetWindowTitle( WINTITLE );
   ini_objects();
   paint_screen();
   
@@ -225,9 +244,10 @@ static void paint_screen( void )
 
 static void the_title( int x, int y )
 {
-  char *t1 = "GRX 2.4";
+  char *t1 = "GRX 2.4.1";
   char *t2 = "test programs launcher";
-  char aux[81];
+  char aux[81], sys[4] = "?";
+  int nsys;
 
   grt_centered.txo_fgcolor.v = LIGHTGREEN;
 
@@ -237,9 +257,15 @@ static void the_title( int x, int y )
   grt_centered.txo_font = grf_std;
   GrDrawString( t2,strlen( t2 ),0+x,40+y,&grt_centered );
 
-  sprintf( aux,"Version:%x System:%d",
-           GrGetLibraryVersion(),
-           GrGetLibrarySystem() );
+  nsys = GrGetLibrarySystem();
+  if( nsys == GRX_VERSION_TCC_8086_DOS ) strcpy( sys,"TCC" );
+  if( nsys == GRX_VERSION_GCC_386_DJGPP ) strcpy( sys,"DJ2" );
+  if( nsys == GRX_VERSION_GCC_386_LINUX ) strcpy( sys,"LNX" );
+  if( nsys == GRX_VERSION_GENERIC_X11 ) strcpy( sys,"X11" );
+  if( nsys == GRX_VERSION_WATCOM_DOS4GW ) strcpy( sys,"WAT" );
+  if( nsys == GRX_VERSION_GCC_386_WIN32 ) strcpy( sys,"W32" );
+
+  sprintf( aux,"Version:%x System:%s",GrGetLibraryVersion(),sys );
   GrDrawString( aux,strlen( aux ),0+x,90+y,&grt_centered );
 }
 
@@ -269,6 +295,7 @@ static int pev_command( Event *ev )
         strcat( nprog,ptable[i].prog );
         system( nprog );
         gfaz_ini( WIDTH,HEIGHT,BPP );
+        GrSetWindowTitle( WINTITLE );
         paint_screen();
         return 1;
         }
@@ -312,7 +339,7 @@ static void paint_foot( char *s )
 static void paint_animation( void )
 {
   static char *text =
-    "GRX 2.4, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "GRX 2.4.1, the graphics library for DJGPPv2, Linux, X11 and Win32";
   static int pos = 620;
   static int ini = 0;
   static int ltext, wtext;

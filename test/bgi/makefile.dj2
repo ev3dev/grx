@@ -1,5 +1,5 @@
 #
-# GRX 2.0 test programs makefile for DJGPP v2.
+# GRX test programs makefile for DJGPP v2.
 # Uses GNU make.
 #
 .SUFFIXES: .exe
@@ -27,7 +27,7 @@ endif
 LIBS= $(GRX20) $(ADDON_LIBS)
 
 PROGS=                  \
-	bgilink.exe	\
+	bgilink.exe     \
 	bccbgi.exe      \
 	colortst.exe    \
 	fontplay.exe    \

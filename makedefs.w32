@@ -4,6 +4,9 @@
 # Put libgrx20.a to lib/win32
 GRX_LIB_SUBDIR=win32
 
+# Set here your MINGW dir for install and uninstall targets
+MINGWDIR=C:\MINGW
+
 # Some systems can't allocate big arrays on stack.
 # If test/xcirctest fails on bigger diameters, try
 # CCOPT += -DSMALL_STACK

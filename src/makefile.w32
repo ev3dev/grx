@@ -1,23 +1,18 @@
 #
-# GRX 2.0 Library basis Makefile for DJGPP v1 and DJGPP v2
-# Needs GNU Make. Make sure your shell is command.com !
+# GRX Library Makefile for Mingw
+# Make sure your shell is command.com !
 #
-.PHONY : clean cleanall
+.PHONY : clean cleanall install uninstall
 
 include ../makedefs.gnu
 include ../makedefs.w32
-
-#ifndef DEBUG
-#ifndef PROFILE
-#CCOPT += -fomit-frame-pointer
-#endif
-#endif
 
 TAG = $(WIN32_GCC_i386_STATIC)
 
 INCDIR= -I. -I./include -I../include
 
-GRX20ST    = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+GRX20ln    = libgrx20.a
+GRX20ST    = ../lib/$(GRX_LIB_SUBDIR)/$(GRX20ln)
 GRX20STdos = $(subst /,\,$(GRX20ST))
 
 OX=.o
@@ -66,6 +61,7 @@ W32_O = $(ADDON_O)              \
 	fdrivers/ram32h.o       \
 	mouse/w32inp.o          \
 	mouse/w32keys.o         \
+	misc/w32misc.o          \
 	vdrivers/vd_win32.o
 
 ALL_O = $(STD_Oa) $(STD_Ob) $(BGI_Oa) $(BGI_Ob) $(W32_O)
@@ -80,6 +76,7 @@ clean:
 	if exist image\*.o    del image\*.o
 	if exist pnm\*.o      del pnm\*.o
 	if exist mouse\*.o    del mouse\*.o
+	if exist misc\*.o     del misc\*.o
 	if exist pattern\*.o  del pattern\*.o
 	if exist setup\*.o    del setup\*.o
 	if exist shape\*.o    del shape\*.o
@@ -95,6 +92,18 @@ clean:
 
 cleanall: clean
 	if exist $(GRX20STdos) del $(GRX20STdos)
+
+install: $(GRX20ST)
+	copy $(GRX20STdos) $(MINGWDIR)\lib
+	copy ..\include\grx20.h $(MINGWDIR)\include
+	copy ..\include\grxkeys.h $(MINGWDIR)\include
+	copy ..\include\libbcc.h $(MINGWDIR)\include
+
+uninstall:
+	if exist $(MINGWDIR)\lib\$(GRX20ln)    del $(MINGWDIR)\lib\$(GRX20ln)
+	if exist $(MINGWDIR)\include\grx20.h   del $(MINGWDIR)\include\grx20.h
+	if exist $(MINGWDIR)\include\grxkeys.h del $(MINGWDIR)\include\grxkeys.h
+	if exist $(MINGWDIR)\include\libbcc.h del $(MINGWDIR)\include\libbcc.h
 
 dep:
 	if exist depend.tmp del depend.tmp

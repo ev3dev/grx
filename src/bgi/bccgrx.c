@@ -62,7 +62,7 @@ int          (*__gr_closegraph_hook)(void)=NULL;
 GrPattern      __gr_fillpattern;                /* GRX filling settings     */
 GrLineOption   __gr_Line;                       /* GRX line settings        */
 
-char __gr_fpatterns[][8] = {                    /* BGI fill patterns        */
+unsigned char __gr_fpatterns[][8] = {     /* BGI fill patterns        */
   { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   /* EMPTY_FILL        */
   { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF},   /* SOLID_FILL        */
   { 0xFF, 0xFF, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00},   /* LINE_FILL         */
@@ -86,7 +86,11 @@ int __gr_BGI_h = 480; /* BGI driver modes                               */
 int __gr_BGI_c = 16;  /* default : Standard VGA                         */
 
 
+#ifdef __GNUC__
 #define NULL_IS_EMPTY(s) ((s) ? : "")
+#else
+#define NULL_IS_EMPTY(s) ((s) ? (s) : "")
+#endif
 
 /* ----------------------------------------------------------------- */
 
@@ -265,7 +269,7 @@ void __gr_set_up_modes(void)
 
   if (DidInit) return;
   if (strlen(copyright) != sizeof(copyright)-1)
-    exit(1);
+    ; // exit(1);
 # ifdef __linux__
    /* vga_init(); */
 # endif

@@ -1,5 +1,5 @@
 #
-# GRX 2.0 test programs makefile for Mingw32
+# GRX test programs makefile for Mingw
 # Uses GNU make.
 #
 .SUFFIXES: .exe

@@ -30,8 +30,8 @@ void bar3d(int left,int top,int right,int bottom,int depth, int topflag)
 
   _DO_INIT_CHECK;
 
-  if (left > right) SWAP(left,right);
-  if (bottom < top) SWAP(bottom,top);
+  if (left > right) SWAP(int,left,right);
+  if (bottom < top) SWAP(int,bottom,top);
 
   __gr_bar(left,top,right,bottom);
 
@@ -39,8 +39,8 @@ void bar3d(int left,int top,int right,int bottom,int depth, int topflag)
   top    += VT+PY;
   right  += VL;
   bottom += VT+PY;
-  if (left > right) SWAP(left,right);
-  if (bottom < top) SWAP(bottom,top);
+  if (left > right) SWAP(int,left,right);
+  if (bottom < top) SWAP(int,bottom,top);
 
   fast = (__gr_lstyle == SOLID_LINE) && (LNE.lno_width == 1);
   LNE.lno_color = col = COL|WR;

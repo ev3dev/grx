@@ -145,7 +145,7 @@ int GrKeyPressed(void)
 
 GrKeyType GrKeyRead(void)
 {
-  return (GrKeyType)getch();
+  return (GrKeyType)getkey();
 }
 
 int GrKeyStat(void)
