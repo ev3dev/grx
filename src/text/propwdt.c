@@ -18,7 +18,7 @@
 
 #include "libgrx.h"
 
-int GrProportionalTextWidth(GrFont *font,void *text,int len,int type)
+int GrProportionalTextWidth(const GrFont *font,const void *text,int len,int type)
 {
         char *txp = (char *)text;
         int   wdt = 0;

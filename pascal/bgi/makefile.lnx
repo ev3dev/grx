@@ -8,24 +8,11 @@ GRXVLNX=y
 
 include ../../makedefs.grx
 
+UNITPATH = --unit-path=..
 GRXLIB = ../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 GRXLIBPATH = -L../../lib/$(GRX_LIB_SUBDIR)
 
-ADDON_LIBS= -lvga
-
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_LIBS += -ltiff
-endif
-
-ifeq ($(HAVE_LIBJPEG),y)
-  ADDON_LIBS += -ljpeg
-endif
-
-ifeq ($(NEED_ZLIB),y)
-  ADDON_LIBS += -lz
-endif
-
-LIBS= $(GRXLIBPATH) $(ADDON_LIBS) -lm
+LIBS= $(GRXLIBPATH) $(GRXLIB) -lvga -lm
 
 # Compiler and options on your system  
 COMPILER = gpc --automake
@@ -41,7 +28,7 @@ PROGS= 			\
 all: $(PROGS)
 
 $(PROGS): % : %.pas $(GRXLIB)
-	$(COMPILER) $(CCOPT) -o $* $*.pas $(LIBS)
+	$(COMPILER) $(CCOPT) -o $* $*.pas $(UNITPATH) $(LIBS)
 
 clean:
 	rm -f *.o *.gpi *.gpm $(PROGS)

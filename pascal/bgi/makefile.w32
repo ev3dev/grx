@@ -13,20 +13,7 @@ UNITPATH = --unit-path=..
 GRXLIB = ../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 GRXLIBPATH = -L../../lib/$(GRX_LIB_SUBDIR)
 
-ADDON_LIBS=
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_LIBS += -ltiff
-endif
-
-ifeq ($(HAVE_LIBJPEG),y)
-  ADDON_LIBS += -ljpeg
-endif
-
-ifeq ($(NEED_ZLIB),y)
-  ADDON_LIBS += -lz
-endif
-
-LIBS= $(GRXLIBPATH) $(ADDON_LIBS) -mwindows -mconsole
+LIBS= $(GRXLIBPATH) $(GRXLIB) -mwindows -mconsole
 
 # Compiler and options on your system  
 COMPILER = gpc --autobuild  --gpc-main=GRXMain

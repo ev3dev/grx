@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void GrCustomEllipse(int xc,int yc,int xa,int ya,GrLineOption *o)
+void GrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o)
 {
     int (*pnts)[2];
     setup_ALLOC();

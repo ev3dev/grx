@@ -27,7 +27,7 @@
 int __gr_text_ChrFontInfo(void *Font, CharInfo *fntptr, int *height) {
   int i, LstChar;
   char *cp;
-  ushort *Offsets;
+  _ushort *Offsets;
   uchar *Widths;
   char *Data;
   FontFileHeader *ffh;
@@ -49,7 +49,7 @@ int __gr_text_ChrFontInfo(void *Font, CharInfo *fntptr, int *height) {
   if (fht->scan_flag) {
     /* font may have DO_SCAN op, anything we should do ? */
   }
-  Offsets = (ushort *)((char *)fht + sizeof(FontHeaderTyp));
+  Offsets = (_ushort *)((char *)fht + sizeof(FontHeaderTyp));
   Widths  = (uchar *)Offsets + 2 * (int)fht->nchrs;
   Data    = (char *)Font + fht->cdefs + ffh->header_size;
   LstChar = fht->firstch + fht->nchrs - 1;
@@ -57,7 +57,7 @@ int __gr_text_ChrFontInfo(void *Font, CharInfo *fntptr, int *height) {
   *height = (int)fht->org_to_cap - (int)fht->org_to_dec;
   for (i=fht->firstch; i <= LstChar; ++i) {
     fntptr[i].width = Widths[i - fht->firstch];
-    fntptr[i].cmd   = (ushort *)(Data + Offsets[i - fht->firstch]);
+    fntptr[i].cmd   = (_ushort *)(Data + Offsets[i - fht->firstch]);
   }
   return TRUE;
 }

@@ -3,7 +3,8 @@
 # Make sure your shell is command.com !
 #
 .PHONY : clean cleanall install uninstall \
-	 install-bin uninstall-bin install-fonts uninstall-fonts
+	 install-bin uninstall-bin install-fonts uninstall-fonts \
+	 install-info uninstall-info
 
 GRXVDJ2=y
 
@@ -44,6 +45,8 @@ endif
 
 ifeq ($(HAVE_LIBJPEG),y)
   ADDON_O += $(JPG_1)
+else
+  ADDON_O += $(NOJPG_1)
 endif
 
 ifeq ($(HAVE_LIBPNG),y)
@@ -60,10 +63,6 @@ endif
 ifeq ($(INCLUDE_BMP_CODE),y)
   ADDON_O += $(BMP_1)
   INCDIR  += -I../addons/bmp
-endif
-
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-  ADDON_O += $(OP)bgi/gpc_init$(OX) $(OP)bgi/gpc_text$(OX)
 endif
 
 DJ_O=   $(ADDON_O)              \
@@ -145,16 +144,27 @@ install: $(GRX20ST)
 	copy ..\include\grx20.h $(DJDIRdos)\include
 	copy ..\include\grxkeys.h $(DJDIRdos)\include
 	copy ..\include\libbcc.h $(DJDIRdos)\include
-	copy ..\doc\grx*um.inf $(DJDIRdos)\info\grx.inf
-	install-info -e \
-	 "* grx: (grx).                   2D graphics library" \
-	 $(DJDIRdos)\info\grx.inf $(DJDIRdos)\info\dir
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	if not exist $(DJDIRdos)\units\nul mkdir $(DJDIRdos)\units
+	copy ..\pascal\grx.pas $(DJDIRdos)\units
+	copy ..\pascal\bgi\graph.pas $(DJDIRdos)\units
+endif
 
 uninstall:
 	if exist $(DJDIRdos)\lib\$(GRX20ln)    del $(DJDIRdos)\lib\$(GRX20ln)
 	if exist $(DJDIRdos)\include\grx20.h   del $(DJDIRdos)\include\grx20.h
 	if exist $(DJDIRdos)\include\grxkeys.h del $(DJDIRdos)\include\grxkeys.h
 	if exist $(DJDIRdos)\include\libbcc.h del $(DJDIRdos)\include\libbcc.h
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	if exist $(DJDIRdos)\units\grx.pas del $(DJDIRdos)\units\grx.pas
+	if exist $(DJDIRdos)\units\graph.pas del $(DJDIRdos)\units\graph.pas
+endif
+
+install-info:
+	copy ..\doc\grx*um.inf $(DJDIRdos)\info\grx.inf
+	install-info $(DJDIRdos)\info\grx.inf $(DJDIRdos)\info\dir
+
+uninstall-info:
 	if exist $(DJDIRdos)\info\grx.inf del $(DJDIRdos)\info\grx.inf
 	install-info -r $(DJDIRdos)\info\grx.inf $(DJDIRdos)\info\dir
 
@@ -173,6 +183,7 @@ uninstall-bin:
 ifdef GRX_DEFAULT_FONT_PATH
 FONTPATHdos = $(subst /,\,$(GRX_DEFAULT_FONT_PATH))
 install-fonts:
+	if not exist $(FONTPATHdos)\nul mkdir $(FONTPATHdos)
 	copy ..\fonts\*.* $(FONTPATHdos)
 uninstall-fonts:
 	del $(FONTPATHdos)\*.*
@@ -190,11 +201,11 @@ depend.b: depend.new
 
 $(GRX20ST): $(TAG) $(ALL_O)
 	if exist $(GRX20STdos) del $(GRX20STdos)
-	$(AR) -rv $(GRX20ST) $(STD_Oa)
-	$(AR) -rv $(GRX20ST) $(STD_Ob)
-	$(AR) -rv $(GRX20ST) $(BGI_Oa)
-	$(AR) -rv $(GRX20ST) $(BGI_Ob)
-	$(AR) -rv $(GRX20ST) $(DJ_O)
+	$(AR) -r $(GRX20ST) $(STD_Oa)
+	$(AR) -r $(GRX20ST) $(STD_Ob)
+	$(AR) -r $(GRX20ST) $(BGI_Oa)
+	$(AR) -r $(GRX20ST) $(BGI_Ob)
+	$(AR) -r $(GRX20ST) $(DJ_O)
 	$(RANLIB) $(GRX20ST)
 
 $(UTILP): ../bin/%.exe : utilprog/%.o $(GRX20ST)

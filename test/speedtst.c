@@ -31,6 +31,10 @@
 #ifdef __DJGPP__
 #include <conio.h>
 #include <pc.h>
+#else
+extern int getch(void);
+extern int getkey(void);
+extern int kbhit(void);
 #endif
 #include <math.h>
 #include <time.h>

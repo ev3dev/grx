@@ -20,7 +20,7 @@
 #include "grfontdv.h"
 #include "arith.h"
 
-static GrFont *cvfont;
+static const GrFont *cvfont;
 
 static int charwdt(int chr)
 {
@@ -43,7 +43,7 @@ static int bitmap(int chr,int w,int h,char *buffer)
         return(TRUE);
 }
 
-GrFont *GrBuildConvertedFont(GrFont *from,int cvt,int w,int h,int minch,int maxch)
+GrFont *GrBuildConvertedFont(const GrFont *from,int cvt,int w,int h,int minch,int maxch)
 {
         cvfont = from;
         if(!cvfont) return(NULL);

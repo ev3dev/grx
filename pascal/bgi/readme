@@ -13,8 +13,9 @@
 
 Pascal (GPC) demo Programs
 
-BGI2GRX.pas is the unit import file, as far as possible a plug-in
-replacement for graph.pas (see grx241/doc/readme.bgi for differences)
+graph.pas is the unit import file, as far as possible a plug-in
+replacement for the BP unit of the same name
+(see doc/readme.bgi for differences)
 
 * small.pas opens and closes the graphics to check for improper installation.
 * modelist.pas prints out the available modes.
@@ -25,7 +26,7 @@ replacement for graph.pas (see grx241/doc/readme.bgi for differences)
    and displays red, green, blue gray degraded stripes.
 * demo.pas displays various demos to illustrate graphics possibilities. 
    It supposes for some of them that borland .chr files have been put in 
-   the grx241/chr directory (otherwise it uses the always available default font). 
+   the chr directory (otherwise it uses the always available default font).
    
 Makefiles are supplied to build up the demo programs for 
 djgpp, mingw32, LINUX/svga and LINUX/X11.

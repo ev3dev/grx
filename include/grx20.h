@@ -35,7 +35,7 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0243
+#define GRX_VERSION_API 0x0244
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -757,7 +757,7 @@ void GrHLine(int x1,int x2,int y,GrColor c);
 void GrVLine(int x,int y1,int y2,GrColor c);
 void GrBox(int x1,int y1,int x2,int y2,GrColor c);
 void GrFilledBox(int x1,int y1,int x2,int y2,GrColor c);
-void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c);
+void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
 int  GrGenerateEllipse(int xc,int yc,int xa,int ya,int points[GR_MAX_ELLIPSE_POINTS][2]);
 int  GrGenerateEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int points[GR_MAX_ELLIPSE_POINTS][2]);
 void GrLastArcCoords(int *xs,int *ys,int *xe,int *ye,int *xc,int *yc);
@@ -819,7 +819,7 @@ void GrHLineNC(int x1,int x2,int y,GrColor c);
 void GrVLineNC(int x,int y1,int y2,GrColor c);
 void GrBoxNC(int x1,int y1,int x2,int y2,GrColor c);
 void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrColor c);
-void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c);
+void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
 void GrBitBltNC(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,GrColor op);
 
 GrColor GrPixelNC(int x,int y);
@@ -959,23 +959,23 @@ extern  GrFont          GrFont_PC8x16;
 
 GrFont *GrLoadFont(char *name);
 GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minch,int maxch);
-GrFont *GrBuildConvertedFont(GrFont *from,int cvt,int w,int h,int minch,int maxch);
+GrFont *GrBuildConvertedFont(const GrFont *from,int cvt,int w,int h,int minch,int maxch);
 
 void GrUnloadFont(GrFont *font);
-void GrDumpFont(GrFont *f,char *CsymbolName,char *fileName);
+void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName);
 void GrSetFontPath(char *path_list);
 
-int  GrFontCharPresent(GrFont *font,int chr);
-int  GrFontCharWidth(GrFont *font,int chr);
-int  GrFontCharHeight(GrFont *font,int chr);
-int  GrFontCharBmpRowSize(GrFont *font,int chr);
-int  GrFontCharBitmapSize(GrFont *font,int chr);
-int  GrFontStringWidth(GrFont *font,void *text,int len,int type);
-int  GrFontStringHeight(GrFont *font,void *text,int len,int type);
-int  GrProportionalTextWidth(GrFont *font,void *text,int len,int type);
+int  GrFontCharPresent(const GrFont *font,int chr);
+int  GrFontCharWidth(const GrFont *font,int chr);
+int  GrFontCharHeight(const GrFont *font,int chr);
+int  GrFontCharBmpRowSize(const GrFont *font,int chr);
+int  GrFontCharBitmapSize(const GrFont *font,int chr);
+int  GrFontStringWidth(const GrFont *font,void *text,int len,int type);
+int  GrFontStringHeight(const GrFont *font,void *text,int len,int type);
+int  GrProportionalTextWidth(const GrFont *font,const void *text,int len,int type);
 
 char far *GrBuildAuxiliaryBitmap(GrFont *font,int chr,int dir,int ul);
-char far *GrFontCharBitmap(GrFont *font,int chr);
+char far *GrFontCharBitmap(const GrFont *font,int chr);
 char far *GrFontCharAuxBmp(GrFont *font,int chr,int dir,int ul);
 
 typedef union _GR_textColor {           /* text color union */
@@ -1007,20 +1007,20 @@ typedef struct {                        /* fixed font text window desc. */
         char    txr_chrtype;                /* character type (see above) */
 } GrTextRegion;
 
-int  GrCharWidth(int chr,GrTextOption *opt);
-int  GrCharHeight(int chr,GrTextOption *opt);
-void GrCharSize(int chr,GrTextOption *opt,int *w,int *h);
-int  GrStringWidth(void *text,int length,GrTextOption *opt);
-int  GrStringHeight(void *text,int length,GrTextOption *opt);
-void GrStringSize(void *text,int length,GrTextOption *opt,int *w,int *h);
+int  GrCharWidth(int chr,const GrTextOption *opt);
+int  GrCharHeight(int chr,const GrTextOption *opt);
+void GrCharSize(int chr,const GrTextOption *opt,int *w,int *h);
+int  GrStringWidth(void *text,int length,const GrTextOption *opt);
+int  GrStringHeight(void *text,int length,const GrTextOption *opt);
+void GrStringSize(void *text,int length,const GrTextOption *opt,int *w,int *h);
 
-void GrDrawChar(int chr,int x,int y,GrTextOption *opt);
-void GrDrawString(void *text,int length,int x,int y,GrTextOption *opt);
+void GrDrawChar(int chr,int x,int y,const GrTextOption *opt);
+void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt);
 void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 
-void GrDumpChar(int chr,int col,int row,GrTextRegion *r);
-void GrDumpText(int col,int row,int wdt,int hgt,GrTextRegion *r);
-void GrDumpTextRegion(GrTextRegion *r);
+void GrDumpChar(int chr,int col,int row,const GrTextRegion *r);
+void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r);
+void GrDumpTextRegion(const GrTextRegion *r);
 
 #ifndef GRX_SKIP_INLINES
 #define GrFontCharPresent(f,ch) (                                              \
@@ -1106,14 +1106,14 @@ typedef struct {
         unsigned char *lno_dashpat;         /* draw/nodraw pattern */
 } GrLineOption;
 
-void GrCustomLine(int x1,int y1,int x2,int y2,GrLineOption *o);
-void GrCustomBox(int x1,int y1,int x2,int y2,GrLineOption *o);
-void GrCustomCircle(int xc,int yc,int r,GrLineOption *o);
-void GrCustomEllipse(int xc,int yc,int xa,int ya,GrLineOption *o);
-void GrCustomCircleArc(int xc,int yc,int r,int start,int end,int style,GrLineOption *o);
-void GrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrLineOption *o);
-void GrCustomPolyLine(int numpts,int points[][2],GrLineOption *o);
-void GrCustomPolygon(int numpts,int points[][2],GrLineOption *o);
+void GrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
+void GrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
+void GrCustomCircleArc(int xc,int yc,int r,int start,int end,int style,const GrLineOption *o);
+void GrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,const GrLineOption *o);
+void GrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
+void GrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
 
 /* ================================================================== */
 /*             PATTERNED DRAWING AND FILLING PRIMITIVES               */
@@ -1176,8 +1176,8 @@ typedef struct {
         GrLineOption  *lnp_option;          /* width + dash pattern */
 } GrLinePattern;
 
-GrPattern *GrBuildPixmap(char *pixels,int w,int h,GrColorTableP colors);
-GrPattern *GrBuildPixmapFromBits(char *bits,int w,int h,GrColor fgc,GrColor bgc);
+GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP colors);
+GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrColor fgc,GrColor bgc);
 GrPattern *GrConvertToPixmap(GrContext *src);
 
 void GrDestroyPattern(GrPattern *p);
@@ -1202,9 +1202,9 @@ void GrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);
 
-void GrPatternDrawChar(int chr,int x,int y,GrTextOption *opt,GrPattern *p);
-void GrPatternDrawString(void *text,int length,int x,int y,GrTextOption *opt,GrPattern *p);
-void GrPatternDrawStringExt(void *text,int length,int x,int y,GrTextOption *opt,GrPattern *p);
+void GrPatternDrawChar(int chr,int x,int y,const GrTextOption *opt,GrPattern *p);
+void GrPatternDrawString(void *text,int length,int x,int y,const GrTextOption *opt,GrPattern *p);
+void GrPatternDrawStringExt(void *text,int length,int x,int y,const GrTextOption *opt,GrPattern *p);
 
 /* ================================================================== */
 /*                      IMAGE MANIPULATION                            */
@@ -1224,7 +1224,7 @@ void GrPatternDrawStringExt(void *text,int length,int x,int y,GrTextOption *opt,
 #define GR_IMAGE_INVERSE_LR  0x01  /* inverse left right */
 #define GR_IMAGE_INVERSE_TD  0x02  /* inverse top down */
 
-GrImage *GrImageBuild(char *pixels,int w,int h,GrColorTableP colors);
+GrImage *GrImageBuild(const char *pixels,int w,int h,const GrColorTableP colors);
 void     GrImageDestroy(GrImage *i);
 void     GrImageDisplay(int x,int y, GrImage *i);
 void     GrImageDisplayExt(int x1,int y1,int x2,int y2, GrImage *i);
@@ -1237,7 +1237,7 @@ GrImage *GrImageStretch(GrImage *p,int nwidth,int nheight);
 
 GrImage *GrImageFromPattern(GrPattern *p);
 GrImage *GrImageFromContext(GrContext *c);
-GrImage *GrImageBuildUsedAsPattern(char *pixels,int w,int h,GrColorTableP colors);
+GrImage *GrImageBuildUsedAsPattern(const char *pixels,int w,int h,const GrColorTableP colors);
 
 GrPattern *GrPatternFromImage(GrImage *p);
 
@@ -1288,14 +1288,14 @@ void GrUsrFloodFill(int x, int y, GrColor border, GrColor c);
 GrColor GrUsrPixel(int x,int y);
 GrColor GrUsrPixelC(GrContext *c,int x,int y);
 
-void GrUsrCustomLine(int x1,int y1,int x2,int y2,GrLineOption *o);
-void GrUsrCustomBox(int x1,int y1,int x2,int y2,GrLineOption *o);
-void GrUsrCustomCircle(int xc,int yc,int r,GrLineOption *o);
-void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,GrLineOption *o);
-void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,int style,GrLineOption *o);
-void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrLineOption *o);
-void GrUsrCustomPolyLine(int numpts,int points[][2],GrLineOption *o);
-void GrUsrCustomPolygon(int numpts,int points[][2],GrLineOption *o);
+void GrUsrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrUsrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
+void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
+void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,int style,const GrLineOption *o);
+void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,const GrLineOption *o);
+void GrUsrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
+void GrUsrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
 
 void GrUsrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
 void GrUsrPatternedBox(int x1,int y1,int x2,int y2,GrLinePattern *lp);
@@ -1317,8 +1317,8 @@ void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);
 
-void GrUsrDrawChar(int chr,int x,int y,GrTextOption *opt);
-void GrUsrDrawString(char *text,int length,int x,int y,GrTextOption *opt);
+void GrUsrDrawChar(int chr,int x,int y,const GrTextOption *opt);
+void GrUsrDrawString(char *text,int length,int x,int y,const GrTextOption *opt);
 void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 
 /* ================================================================== */
@@ -1335,7 +1335,7 @@ typedef struct _GR_cursor {
         int     displayed;                          /* set if displayed */
 } GrCursor;
 
-GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,int xo,int yo,GrColorTableP c);
+GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,int xo,int yo,const GrColorTableP c);
 void GrDestroyCursor(GrCursor *cursor);
 void GrDisplayCursor(GrCursor *cursor);
 void GrEraseCursor(GrCursor *cursor);
@@ -1531,8 +1531,8 @@ int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn );
 int GrSaveContextToPpm( GrContext *grc, char *ppmfn, char *docn );
 int GrLoadContextFromPnm( GrContext *grc, char *pnmfn );
 int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval );
-int GrLoadContextFromPnmBuffer( GrContext *grc, char *pnmfn );
-int GrQueryPnmBuffer( char *pnmfn, int *width, int *height, int *maxval );
+int GrLoadContextFromPnmBuffer( GrContext *grc, const char *buffer );
+int GrQueryPnmBuffer( const char *buffer, int *width, int *height, int *maxval );
 
 /* ================================================================== */
 /*                           PNG FUNCTIONS                            */
@@ -1545,6 +1545,17 @@ int GrLoadContextFromPng( GrContext *grc, char *pngfn, int use_alpha );
 int GrQueryPng( char *pngfn, int *width, int *height );
 
 /* ================================================================== */
+/*                          JPEG FUNCTIONS                            */
+/*  these functions may not be installed or available on all system   */
+/* ================================================================== */
+
+int GrJpegSupport( void );
+int GrLoadContextFromJpeg( GrContext *grc, char *jpegfn, int scale );
+int GrQueryJpeg( char *jpegfn, int *width, int *height );
+int GrSaveContextToJpeg( GrContext *grc, char *jpegfn, int quality );
+int GrSaveContextToGrayJpeg( GrContext *grc, char *jpegfn, int quality );
+
+/* ================================================================== */
 /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */
 /* ================================================================== */
 
@@ -1554,7 +1565,7 @@ void GrSetWindowTitle(char *title);
 void GrSleep(int msec);
 
 /* ================================================================== */
-/*                    TIFF & JPEG ADDON FUNCTIONS                     */
+/*                        TIFF ADDON FUNCTIONS                        */
 /*  these functions may not be installed or available on all system   */
 /* ================================================================== */
 
@@ -1574,22 +1585,6 @@ void GrSleep(int msec);
 **        available at  ftp://ftp.sgi.com/graphics/tiff
 */
 int SaveContextToTiff(GrContext *cxt, char *tiffn, unsigned compr, char *docn);
-
-/*
-** SaveContextToJpeg - Dump a context in a JPEG file
-**
-** Arguments:
-**   cxt:      Context to be saved (NULL -> use current context)
-**   jpegn:    Name of the jpeg file
-**   accuracy: Accuracy percentage (100 for no loss of quality)
-**
-**  Returns  0 on success
-**          -1 on error
-**
-** requires jpeg-6a by  IJG (Independent JPEG Group)
-**        available at  ftp.uu.net as graphics/jpeg/jpegsrc.v6a.tar.gz
-*/
-int SaveContextToJpeg(GrContext *volatile cxt, char *jpegn, int accuracy);
 
 #ifdef __cplusplus
 }

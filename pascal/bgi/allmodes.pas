@@ -1,8 +1,8 @@
 program AllModes;
 {
- * test and demo program for unit BGI2GRX
+ * test and demo program for the Graph unit
  *
- * Please read the copyright notices of BGI2GRX.PAS
+ * Please read the copyright notices of graph.pas
  *
  * This file is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,32 +13,17 @@ program AllModes;
 }
 
 uses
-(*$ifdef __GPC__ *)
-  BGI2GRX, SH_Funcs;
-(*$else *)
-  graph;
-(*$endif*)
+  Graph;
 
-
-(*$ifndef __GPC__ *)
 type
   WrkString = String[255];
-(*$endif*)
-
 
 function MyStr(Numeric, Len: Integer):WrkString;
 var
   RetString : WrkString;
 begin
-  (*$ifdef __GPC__ *)
-    { MyStr := SH_Str(Numeric, Len); }
-    RetString := '';
-    WriteStr(RetString, Numeric:Len);
-    MyStr := RetString;
-  (*$else *)
-    str(Numeric:Len, RetString);
-    MyStr := RetString;
-  (*$endif*)
+  str(Numeric:Len, RetString);
+  MyStr := RetString;
 end;
 
 

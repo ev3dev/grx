@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,GrLineOption *lo)
+void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *lo)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);

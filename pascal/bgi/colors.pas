@@ -1,8 +1,8 @@
 program Colors;
 {
- * test and demo program for unit BGI2GRX
+ * test and demo program for the Graph unit
  *
- * Please read the copyright notices of BGI2GRX.PAS
+ * Please read the copyright notices of graph.pas
  *
  * This file is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,7 +13,7 @@ program Colors;
 }
 
 uses
-  BGI2GRX;
+  Graph;
 
 var
   i, c,
@@ -28,7 +28,7 @@ end;
 
 procedure ShowColors(Mode: Word);
 var
-  x, y, c: word;
+  y: word;
   f1, f2 : real;
 begin
   { Show only 8 bit, hicolor and truecolor modes }

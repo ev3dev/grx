@@ -23,7 +23,7 @@
 #include "mempeek.h"
 #include "image/image.h"
 
-GrImage *GrImageBuild(char *pixels,int w,int h,GrColorTableP colors)
+GrImage *GrImageBuild(const char *pixels,int w,int h,const GrColorTableP colors)
 {
   GrImage   *img;
   GRX_ENTER();

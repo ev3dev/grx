@@ -316,7 +316,10 @@ DBG_1 = $(OP)utils/dbgprint$(OX)
 
 TIF_1 = $(OP)../addons/ctx2tiff$(OX)
 
-JPG_1 = $(OP)../addons/ctx2jpeg$(OX)
+JPG_1 = $(OP)gformats/ctx2jpg$(OX) \
+	$(OP)gformats/jpg2ctx$(OX)
+
+NOJPG_1 = $(OP)gformats/dummyjpg$(OX) \
 
 BMP_1 = $(OP)../addons/bmp/bmp$(OX)
 

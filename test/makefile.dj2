@@ -40,6 +40,7 @@ PROGS=  arctest.exe     \
 	curstest.exe    \
 	fonttest.exe    \
 	imgtest.exe     \
+	jpgtest.exe     \
 	keys.exe        \
 	life.exe        \
 	linetest.exe    \

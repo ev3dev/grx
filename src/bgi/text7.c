@@ -40,18 +40,6 @@ void outtextxy(int x, int y, const char *textstring)
 }
 
 /* ----------------------------------------------------------------- */
-void __gr_p_outtext(__gr_p_GPCstr *txt)
-{
-  _outtextxy(&X, &Y, X+VL, Y+VT+PY, txt->len, txt->str);
-}
-
-/* ----------------------------------------------------------------- */
-void __gr_p_outtextxy(int x, int y, __gr_p_GPCstr *txt)
-{
-  _outtextxy( &x, &y, x+VL, y+VT+PY, txt->len, txt->str);
-}
-
-/* ----------------------------------------------------------------- */
 static void _outtextxy(int *xx, int *yy, int XX, int YY,
                                       int len, const uchar *textstring)
 {

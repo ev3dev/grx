@@ -482,7 +482,7 @@ the list if it is missing.
 The following filled primitives are available:
 
 void GrFilledBox(int x1,int y1,int x2,int y2,int c);
-void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c);
+void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
 void GrFilledCircle(int xc,int yc,int r,int c);
 void GrFilledEllipse(int xc,int yc,int xa,int ya,int c);
 void GrFilledCircleArc(int xc,int yc,int r,int start,int end,int c);
@@ -555,7 +555,7 @@ void GrHLineNC(int x1,int x2,int y,int c);
 void GrVLineNC(int x,int y1,int y2,int c);
 void GrBoxNC(int x1,int y1,int x2,int y2,int c);
 void GrFilledBoxNC(int x1,int y1,int x2,int y2,int c);
-void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c);
+void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
 void GrBitBltNC(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,int oper);
 int GrPixelNC(int x,int y);
 
@@ -589,14 +589,14 @@ the 'lno_dashpat' element. The dash pattern array is assumed to begin with a
 drawn section. If the pattern length is equal to zero a continuous line is
 drawn. The available custom line drawing primitives:
 
-void GrCustomLine(int x1,int y1,int x2,int y2,GrLineOption *o);
-void GrCustomBox(int x1,int y1,int x2,int y2,GrLineOption *o);
-void GrCustomCircle(int xc,int yc,int r,GrLineOption *o);
-void GrCustomEllipse(int xc,int yc,int xa,int ya,GrLineOption *o);
-void GrCustomCircleArc(int xc,int yc,int r,int start,int end,GrLineOption *o);
-void GrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrLineOption *o);
-void GrCustomPolyLine(int numpts,int points[][2],GrLineOption *o);
-void GrCustomPolygon(int numpts,int points[][2],GrLineOption *o);
+void GrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
+void GrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
+void GrCustomCircleArc(int xc,int yc,int r,int start,int end,const GrLineOption *o);
+void GrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,const GrLineOption *o);
+void GrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
+void GrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
 
 
 Pattern filled graphics primitives
@@ -687,8 +687,8 @@ LIBGRX graphics library user's manual 14
 library provides three functions to create pixmap patterns in a mode-
 independent way:
 
-GrPattern *GrBuildPixmap(char *pixels,int w,int h,GrColorTableP colors);
-GrPattern *GrBuildPixmapFromBits(char *bits,int w,int h,int fgc,int bgc);
+GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP colors);
+GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,int fgc,int bgc);
 GrPattern *GrConvertToPixmap(GrContext *src);
 
 'GrBuildPixmap' build a pixmap from a two dimensional ('w' by 'h') array of
@@ -971,8 +971,8 @@ LIBGRX graphics library user's manual 19
 After the application initializes a text option structure with the
 desired values it can call one of the following two text drawing functions:
 
-void GrDrawChar(int chr,int x,int y,GrTextOption *opt);
-void GrDrawString(char *text,int length,int x,int y,GrTextOption *opt);
+void GrDrawChar(int chr,int x,int y,const GrTextOption *opt);
+void GrDrawString(char *text,int length,int x,int y,const GrTextOption *opt);
 
 NOTE: text drawing is fastest when the font is not magnified, it is drawn in
 the 'normal' direction, and the character does not have to be clipped. It this
@@ -995,10 +995,10 @@ option structure passed to them.
 
 int GrFontHeight(GrTextOption *opt);
 int GrFontWidth(GrTextOption *opt);
-int GrCharWidth(int chr,GrTextOption *opt);
-int GrCharHeight(int chr,GrTextOption *opt);
-int GrStringWidth(char *text,int length,GrTextOption *opt);
-int GrStringHeight(char *text,int length,GrTextOption *opt);
+int GrCharWidth(int chr,const GrTextOption *opt);
+int GrCharHeight(int chr,const GrTextOption *opt);
+int GrStringWidth(char *text,int length,const GrTextOption *opt);
+int GrStringHeight(char *text,int length,const GrTextOption *opt);
 
 The 'GrTextRegion' structure and its associated functions can be used to
 implement a fast (as much as possible in graphics modes) rectangular text
@@ -1035,9 +1035,9 @@ GrColorTableP p; /* ptr to color table otherwise */
 char txr_chrtype; /* character type (see above) */
 } GrTextRegion;
 
-void GrDumpChar(int chr,int col,int row,GrTextRegion *r);
-void GrDumpText(int col,int row,int wdt,int hgt,GrTextRegion *r);
-void GrDumpTextRegion(GrTextRegion *r);
+void GrDumpChar(int chr,int col,int row,const GrTextRegion *r);
+void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r);
+void GrDumpTextRegion(const GrTextRegion *r);
 
 The 'GrDumpTextRegion' function outputs the whole text region, while
 'GrDumpText' draws only a user-specified part of it. 'GrDumpChar' updates the
@@ -1121,14 +1121,14 @@ void GrUsrFilledConvexPolygon(int numpts,int points[][2],int c);
 void GrUsrFilledPolygon(int numpts,int points[][2],int c);
 int GrUsrPixel(int x,int y);
 
-void GrUsrCustomLine(int x1,int y1,int x2,int y2,GrLineOption *o);
-void GrUsrCustomBox(int x1,int y1,int x2,int y2,GrLineOption *o);
-void GrUsrCustomCircle(int xc,int yc,int r,GrLineOption *o);
-void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,GrLineOption *o);
-void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,GrLineOption *o);
-void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrLineOption *o);
-void GrUsrCustomPolyLine(int numpts,int points[][2],GrLineOption *o);
-void GrUsrCustomPolygon(int numpts,int points[][2],GrLineOption *o);
+void GrUsrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrUsrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
+void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
+void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,const GrLineOption *o);
+void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,const GrLineOption *o);
+void GrUsrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
+void GrUsrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
 
 void GrUsrPatternedPlot(int x,int y,GrPattern *p);
 void GrUsrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
@@ -1157,8 +1157,8 @@ void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 
 GrTextOption *GrUsrFindBestFont(int width,int height,int magnify,char *family,GrTextOption *where);
-void GrUsrDrawChar(int chr,int x,int y,GrTextOption *opt);
-void GrUsrDrawString(char *text,int length,int x,int y,GrTextOption *opt);
+void GrUsrDrawChar(int chr,int x,int y,const GrTextOption *opt);
+void GrUsrDrawString(char *text,int length,int x,int y,const GrTextOption *opt);
 void GrUsrTextXY(int x,int y,char *text,int fg,int bg);
 
 
@@ -1173,7 +1173,7 @@ and redraw the cursor after finishing the drawing. All cursor and mouse
 related declaration are in the include file "mousex.h". Cursors are created
 with the 'GrBuildCursor' function:
 
-GrCursor *GrBuildCursor(char *data,int w,int h,int xo,int yo,GrColorTableP c);
+GrCursor *GrBuildCursor(char *data,int w,int h,int xo,int yo,const GrColorTableP c);
 
 The 'data', 'w' (=width), 'h' (=height) and 'c' (= color table) arguments are
 similar to the arguments of the pixmap building library function:

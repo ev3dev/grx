@@ -2,7 +2,7 @@
 
 # Specify version of GRX
 # Currently only used to generate name of shared libraries for linux
-GRX_VERSION=2.4.3
+GRX_VERSION=2.4.4
 
 # Specify if you have libtiff.a and corresponding .h files.
 # Change setting to 'y' if you have it, or to 'n' if not.
@@ -26,6 +26,9 @@ INCLUDE_BMP_CODE=y
 
 # Specify if you want to include GNU_Pascal (gpc) support
 INCLUDE_GPC_SUPPORT=n
+
+# Specify if you want shared library support (Linux console and X11)
+INCLUDE_SHARED_SUPPORT=y
 
 ### SYSTEM SETTINGS ##################################################
 
@@ -82,6 +85,9 @@ INSTALLDIR=/usr/local
 # Set the default GRX font path
 #GRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
 
+# Use direct PS/2 mouse driver instead the svgalib one
+#USE_DIRECT_MOUSE_DRIVER=y
+
 endif
 
 ### LINUX X11 SPECIFIC ###############################################
@@ -122,10 +128,12 @@ EXE_COMPRESS = -echo
 #EXE_COMPRESS = upx --best
 
 # Default compiler switches.  In djgpp.env. under [make],
-# add the line "BUTT=-m386", if that is your target.
-# At present gcc supports '-m386', '-m486' and '-mpentium'.
+# add the line "BUTT=-mcpu=i386", if that is your target,
+# or directly add -mcpu here.
+# At present gcc supports 'i386', 'i486', 'i586' ('pentium'),
+# 'i686' ('pentiumpro') and 'k6'.
 #CCOPT += $(BUTT)
-#CCOPT += -mpentium
+#CCOPT += -mcpu=i586
 
 # GRX uses "uclock" to gets 1 ms resolution in the input code,
 # this can causes problems in Win3.1, so you may want to enable

@@ -22,7 +22,7 @@
 #include "clipping.h"
 #include "shapes.h"
 
-#define  MAXR   120             /* max radius for which Bresenheim works */
+#define  MAXR   120             /* max radius for which Bresenham works */
 
 void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int filled)
 {
@@ -41,7 +41,7 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
             (y2 - y1),
             c
         );
-        else if((xa > MAXR) || (ya > MAXR)) {   /* Bresenheim would overflow !! */
+        else if((xa > MAXR) || (ya > MAXR)) {   /* Bresenham would overflow !! */
             int (*points)[2] = ALLOC(sizeof(int) * 2 * GR_MAX_ELLIPSE_POINTS);
             if(points != NULL) {
                 int count = GrGenerateEllipse(xc,yc,xa,ya,points);

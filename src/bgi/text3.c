@@ -48,9 +48,3 @@ int __gr_text_Width(int len, const char  *txt) {
 int textwidth( const char *textstring) {
   return __gr_text_Width(strlen(textstring), textstring);
 }
-
-/* ----------------------------------------------------------------- */
-
-int __gr_p_textwidth(__gr_p_GPCstr *txt) {
-  return __gr_text_Width(txt->len, txt->str);
-}

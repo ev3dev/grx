@@ -1,7 +1,0 @@
-This is a list of known bugs and other problems in GRX
-
-- The memory driver allocates all planes in one chunk instead
-  of using real planes
-- Using DJGPP v2.01 / GCC 2.7.2 with -O2 optimization breaks
-  the mouse functions on some systems.
-- Printing in 1200dpi on Laserjet supporting PCL6 doesn't work

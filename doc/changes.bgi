@@ -10,7 +10,6 @@
 ******* 1.3 --> 2.0
 - new copyright terms, see readme
 - compiles with both grx v2.0 and v1.03
-- there's no Pascal (P2C) support any longer, sorry
 - text.c splitted
 - added setactivepage(), setvisualpage() and helper func's
   set_BGI_mode_pages(int p), get_BGI_mode_pages(),
@@ -34,7 +33,7 @@
   are just linked with -lgrx20X -X11 instead of -lgrx20 -lvga
 - LINUX: Enhanced Linux support (svgalib && X11)
 - rewrote bgi font loading
-- libbcc.h won't include GRX and pascal stuff any more
+- libbcc.h won't include GRX stuff any more
 - rewrote floodfill(): Will use it's own dumb monochrome
   context to keep track of drawn points. Uses less memory but
   seems to be a little slower in few cases.

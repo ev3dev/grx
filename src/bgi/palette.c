@@ -73,7 +73,7 @@ void getpalette(struct palettetype  *palette)
 }
 
 /* ----------------------------------------------------------------- */
-void setallpalette(struct palettetype *palette)
+void setallpalette(const struct palettetype *palette)
 {
   int i, col;
 

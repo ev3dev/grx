@@ -10,13 +10,19 @@
 #error BGIDEMO will not run in the tiny model.
 #endif
 
-#if defined(__linux__)
-#  include "bcclnx.h"
+#if defined(__MSDOS__)
+#  include <dos.h>
+#  include <pc.h>
 #elif defined(__WIN32__)
 #  include "bccw32.h"
 #else
-#  include <dos.h>
-#  include <pc.h>
+#  include "bcclnx.h"
+#endif
+
+#ifndef __DJGPP__
+extern int getch(void);
+extern int getkey(void);
+extern int kbhit(void);
 #endif
 
 #include <math.h>

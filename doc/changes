@@ -4,6 +4,68 @@ the 2.2 version.
 
 Date     Changes
 
+02/01/11 ----------- GRX v2.4.4 released (Mariano Alvarez Fernandez)
+02/01/09 Modified the demogrx test program to center the image when
+         a mode bigger than 640x480 is selected
+02/01/09 Added an alternate linux console input driver, it handles
+         the mouse directly openning /dev/psaux, but note only PS/2
+         mouses work by now. It must be activate explicitly by
+         uncomenting the switch "USE_DIRECT_MOUSE_DRIVER=y" in
+         "makedefs.grx"
+02/01/09 The linux framebuffer video driver now set the console in
+         graphics or text mode when necesary. Now the text cursor is
+         not show, and the svgalib mouse input driver doesn't collide
+         with GPM, so, surprise!, it works!
+02/01/09 Small changes to improve the linux console input driver
+02/01/07 More patches to the Pascal interface, by Frank Heckenbach and
+         Maurice Lombardi
+02/01/02 Go to full screen in the Win32 driver if the requested framemode
+         dimensions are equal to the screen dimensions (setting the
+         client start area at 0,0).
+01/12/22 More patches to the Pascal interface, by Frank Heckenbach and
+         Maurice Lombardi
+01/12/22 Added an optional configure script, by Frank Heckenbach
+01/12/21 The linuxfb driver now open /dev/fb0 by default. An alternative
+         frame buffer device can be specified setting the environment
+         variable $FRAMEBUFFER
+01/12/21 pascal ega colors are now functions, by Frank Heckenbach
+01/12/21 fixed some borland bgi incompatibilities, by Frank Heckenbach
+01/12/21 added 'const' (C) and 'protected' (Pascal) to some
+         function parameters, to make them a little "safer",
+         by Frank Heckenbach
+01/12/16 Added imgview.pas and colortst.pas demo programs, by
+         Frank Heckenbach
+01/12/16 Change in the pascal interface: GrAllocEgaColors, GrGetScanline,
+         etc. return a pointer to an array of GrColor, rather than to a
+         single GrColor, by Frank Heckenbach
+01/12/16 Make installation of shared libraries optional on Linux/X11
+         by Frank Heckenbach
+01/12/16 GrSaveContextToGrayJpeg added to the pascal interface, by
+         Maurice Lombardi
+01/11/29 better w32 keyboard handling. Now most special keys with
+         shift, alt and control combinations works
+01/11/29 added jpeg functions to grx.pas and jpgtest.pas demo, by
+         Maurice Lombardi
+01/11/29 patch to define gpc-main in grx.pas and graph.pas, by
+         Frank Heckenbach
+01/11/29 patch to remove warnings on unix in test/bgi programs, by
+         Frank Heckenbach
+01/11/16 Added new function: GrSaveContextToGrayJpeg. Now
+         GrLoadContextFromJpeg can load grayscale jpeg files
+01/11/08 jpgtest test program added. It works too without jpeg support
+         and shows a message
+01/11/08 New jpeg functions (GrSaveContextToJpeg, GrLoadContextFromJpeg,
+         GrQueryJpeg, GrJpegSupport). Added dummy functions if there
+         isn't jpeg support
+01/11/07 Added new targets to makefiles: install-info, unisntall-info.
+         Now install doesn't install info (readme file updated)
+01/09/08 Applied additional patches to update Pascal interface, new
+         polytest.pas demo, by Maurice Lombardi
+01/09/07 Applied patches to update the Pascal interface, by
+         Frank Heckenbach. Note, the "bgi2grx" unit was renamed to
+         "Graph", so it will be BP compatible and more natural to
+         Pascal programmers
+
 01/06/28 ----------- GRX v2.4.3 released (Mariano Alvarez Fernandez)
 01/06/27 Added new targets to makefiles: install-bin, uninstall-bin,
          install-fonts and uninstall-fonts (readme file updated)
@@ -25,8 +87,8 @@ Date     Changes
          GrQueryPnmBuffer
 
 01/06/15 ----------- GRX v2.4.2 released (Mariano Alvarez Fernandez)
-01/06/12 Modified win32 input code to work GrMouseGetEvent and
-         GrKeyRead at the same time when GrMouseEventEnable(1,0) is set
+01/06/12 Modified win32 input code for GrMouseGetEvent and GrKeyRead
+         work at the same time, when GrMouseEventEnable(1,0) is set
 01/06/07 Merged makedefs.gnu, makedefs.x11, makedefs.dj2 and
          makedefs.w32 in makedefs.grx (readme file updated)
 01/06/06 Now we can use "GRXMain" for all GRX versions, grx20.h defines

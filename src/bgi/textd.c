@@ -73,8 +73,3 @@ int installuserfont(const char *name)
 {
   return _installuserfont(strlen(name), name);
 }
-
-int __gr_p_installuserfont(__gr_p_GPCstr *name) {
-  return _installuserfont(name->len, name->str);
-}
-

@@ -21,8 +21,8 @@
 #include "clipping.h"
 #include "text/text.h"
 
-void _GrDrawString(void *text,int length,int x,int y,
-                   GrTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm)
+void _GrDrawString(const void *text,int length,int x,int y,
+                   const GrTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm)
 {
     GrFont *f;
     int    x1;

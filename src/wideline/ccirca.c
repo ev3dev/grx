@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrCustomCircleArc(int xc,int yc,int r,int start,int end,int style,GrLineOption *o)
+void GrCustomCircleArc(int xc,int yc,int r,int start,int end,int style,const GrLineOption *o)
 {
         GrCustomEllipseArc(xc,yc,r,r,start,end,style,o);
 }

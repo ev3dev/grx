@@ -65,6 +65,6 @@ clean:
 depend.new:
 	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:=.c) >depend.new
 
-$(PROGS): % : %.o ../../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+$(PROGS): % : %.o $(GRX20)
 
 #include depend.gnu

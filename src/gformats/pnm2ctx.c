@@ -27,7 +27,7 @@
 typedef struct{
   int method;  /* 0=file, 1=buffer */
   FILE *file;
-  char *buffer;
+  const char *buffer;
   int bufferpointer;
   } inputstruct;
 
@@ -364,7 +364,7 @@ int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval )
 **         -1 on error
 */
 
-int GrLoadContextFromPnmBuffer( GrContext *grc, char *pnmbuf )
+int GrLoadContextFromPnmBuffer( GrContext *grc, const char *pnmbuf )
 {
   inputstruct is = {1, NULL, NULL, 0};
   GrContext grcaux;
@@ -408,7 +408,7 @@ ENDFUNCTION:
 **         -1 on error
 */
 
-int GrQueryPnmBuffer( char *pnmbuf, int *width, int *height, int *maxval )
+int GrQueryPnmBuffer( const char *pnmbuf, int *width, int *height, int *maxval )
 {
   inputstruct is = {1, NULL, NULL, 0};
   int r;

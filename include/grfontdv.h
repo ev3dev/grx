@@ -74,7 +74,7 @@ extern struct _GR_fontFileInfo {
  * utilities
  */
 GrFont *_GrBuildFont(
-    GrFontHeader *hdr,
+    const GrFontHeader *hdr,
     int  cvt,
     int  width,
     int  height,

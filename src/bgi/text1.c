@@ -90,9 +90,11 @@ int __gr_text_installfont( int start, int stop, const char *name)
     }
     if (!have_ext)
       strcat(temp1, ".chr");
+    ff = fopen(temp1, "rb");
   }
+  else
+    ff = NULL;
 
-  ff = fopen(temp1, "rb");
   if (ff == NULL)
     return grFileNotFound;
   fseek( ff, 0, SEEK_END);

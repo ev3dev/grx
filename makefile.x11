@@ -12,24 +12,23 @@ libs:
 	$(MAKE) -C src -f makefile.x11
 
 test: libs
-	$(MAKE) -C test -f makefile.x11
+	$(MAKE) -C test   -f makefile.x11
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	$(MAKE) -C pascal -f makefile.x11
 endif
 
 bgitest: libs
-	$(MAKE) -C test/bgi -f makefile.x11
+	$(MAKE) -C test/bgi   -f makefile.x11
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	$(MAKE) -C pascal/bgi -f makefile.x11
 endif
 
 clean:
-	$(MAKE) -C test          -f makefile.x11 clean
-	$(MAKE) -C test/bgi      -f makefile.x11 clean
-	$(MAKE) -C src  STATIC=1 -f makefile.x11 clean
-	$(MAKE) -C src  SHARED=1 -f makefile.x11 clean
+	$(MAKE) -C test       -f makefile.x11 clean
+	$(MAKE) -C test/bgi   -f makefile.x11 clean
+	$(MAKE) -C src        -f makefile.x11 clean
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	$(MAKE) -C pascal -f makefile.x11 clean
+	$(MAKE) -C pascal     -f makefile.x11 clean
 	$(MAKE) -C pascal/bgi -f makefile.x11 clean
 endif
 
@@ -38,3 +37,21 @@ install:
 
 uninstall:
 	$(MAKE) -C src -f makefile.x11 uninstall
+
+install-info:
+	$(MAKE) -C src -f makefile.x11 install-info
+
+uninstall-info:
+	$(MAKE) -C src -f makefile.x11 uninstall-info
+
+install-bin:
+	$(MAKE) -C src -f makefile.x11 install-bin
+
+uninstall-bin:
+	$(MAKE) -C src -f makefile.x11 uninstall-bin
+
+install-fonts:
+	$(MAKE) -C src -f makefile.x11 install-fonts
+
+uninstall-fonts:
+	$(MAKE) -C src -f makefile.x11 uninstall-fonts

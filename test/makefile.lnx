@@ -15,7 +15,7 @@ GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 # or this if you've already installed the shared libs
 #GRX20 = -L../lib/$(GRX_LIB_SUBDIR) -lgrx20
 
-ADDON_LIBS= -lvga
+ADDON_LIBS= -lvga -lm
 
 ifeq ($(HAVE_LIBTIFF),y)
   ADDON_LIBS += -ltiff
@@ -44,6 +44,7 @@ PROGS=	arctest     \
 	curstest    \
 	fonttest    \
 	imgtest     \
+	jpgtest     \
 	keys        \
 	life        \
 	linetest    \
@@ -62,7 +63,7 @@ PROGS=	arctest     \
 
 all:    $(PROGS) demogrx
 
-demogrx: demogrx.o gfaz.o
+demogrx: demogrx.o gfaz.o $(GRX20)
 	$(CC) $(LDOPT) -o demogrx demogrx.o gfaz.o $(LIBS)
 	chmod 4755 demogrx
 
@@ -86,6 +87,6 @@ clean:
 depend.new:
 	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:=.c) >depend.new
 
-$(PROGS): % : %.o ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+$(PROGS): % : %.o $(GRX20)
 
 include depend.gnu

@@ -1,8 +1,8 @@
 program Demo;
 {
- * test and demo program for unit BGI2GRX
+ * test and demo program for the Graph unit
  *
- * Please read the copyright notices of BGI2GRX.PAS
+ * Please read the copyright notices of graph.pas
  *
  * This file is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,16 +14,13 @@ program Demo;
 
 uses
 (*$ifdef __GPC__ *)
-  BGI2GRX, SH_Funcs;
+  Graph;
 (*$else *)
   graph, crt;
 (*$endif*)
 
-
-(*$ifndef __GPC__ *)
 type
   WrkString = String[255];
-(*$endif*)
 
 var
   Test,
@@ -33,15 +30,8 @@ function MyStr(Numeric, Len: Integer):WrkString;
 var
   RetString : WrkString;
 begin
-  (*$ifdef __GPC__ *)
-    { MyStr := SH_Str(Numeric, Len); }
-    RetString := '';
-    WriteStr(RetString, Numeric:Len);
-    MyStr := RetString;
-  (*$else *)
-    str(Numeric:Len, RetString);
-    MyStr := RetString;
-  (*$endif*)
+  str(Numeric:Len, RetString);
+  MyStr := RetString;
 end;
 
 procedure ColorSetup;
@@ -149,7 +139,7 @@ procedure RectangleTest;
 var
   i: Word;
 begin
-  StartTest('RecTangle');
+  StartTest('Rectangle');
   repeat
     SetRandomColor;
     for i := 1 to 50 do
@@ -360,7 +350,7 @@ begin
       y := Round(cos(p) * (r * Corr)) + GetMaxY div 2 + 10;
       LineTo(x, y);
     until ((r + 1) * Corr) > GetMaxY div 2 - 5;
-    RecTangle(0, 10, GetMaxX, GetMaxY);
+    Rectangle(0, 10, GetMaxX, GetMaxY);
     FloodFill(GetMaxX div 2,GetMaxY div 2 + 10, GetColor);
   until keypressed;
   while keypressed do i := ord(ReadKey);
@@ -371,7 +361,7 @@ procedure ImageTest;
 const
   d = 8;
 var
-  p1, p2 : Pointer;
+  p1, p2 : ^Byte;
   Size,
   x, y, c,
   i, j : Word;
@@ -385,7 +375,7 @@ begin
   for j := 0 to 20 do
     for i := 0 to 20 do PutPixel(2 * j + 10, 2 * i + 10, 0);
 
-  Size := ImageSize(10, 10, 50, 40) * 4; { Unknown crashes in GPC }
+  Size := ImageSize(10, 10, 50, 40);
   GetMem(p1, Size);
   GetMem(p2, Size);
   GetImage(10, 10, 50, 40, p1^);
@@ -494,7 +484,7 @@ begin
       SetTextStyle(SmallFont, HorizDir, 7);
     OutTextXY(GetMaxX div 2, GetMaxY div 2 - 60, 'That''s all friends');
     OutTextXY(GetMaxX div 2, GetMaxY div 2 - 20, 'Have a good time while using');
-    OutTextXY(GetMaxX div 2, GetMaxY div 2 + 20, 'GPC, GRX20, BCC2GRX and BGI2GRX !');
+    OutTextXY(GetMaxX div 2, GetMaxY div 2 + 20, 'GPC and GRX !');
     SetTextStyle(DefaultFont, HorizDir, 0);
     OutTextXY(GetMaxX div 2, GetMaxY div 2 + 80, 'Contact me: sven@rufus.central.de');
   end;
@@ -512,7 +502,7 @@ var
   ModeName: array[0..200] of WrkString;
 
 begin
-  { Try different drivers in Boland Pascal }
+  { Try different drivers in Borland Pascal }
   { No difference in GPC  }
 
   grDriver := Detect;

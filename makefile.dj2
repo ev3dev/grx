@@ -37,3 +37,21 @@ install:
 
 uninstall:
 	$(MAKE) -C src -f makefile.dj2 uninstall
+
+install-info:
+	$(MAKE) -C src -f makefile.dj2 install-info
+
+uninstall-info:
+	$(MAKE) -C src -f makefile.dj2 uninstall-info
+
+install-bin:
+	$(MAKE) -C src -f makefile.dj2 install-bin
+
+uninstall-bin:
+	$(MAKE) -C src -f makefile.dj2 uninstall-bin
+
+install-fonts:
+	$(MAKE) -C src -f makefile.dj2 install-fonts
+
+uninstall-fonts:
+	$(MAKE) -C src -f makefile.dj2 uninstall-fonts

@@ -31,9 +31,7 @@
 
 typedef unsigned char  uchar;
 typedef   signed char  schar;
-#ifndef __linux__
-typedef unsigned short ushort;
-#endif
+typedef unsigned short _ushort;
 
 #if defined(_MSC_VER) && defined(_WIN32)
 #include <io.h>
@@ -59,7 +57,7 @@ typedef unsigned short ushort;
 
 typedef struct {
   uchar width;
-  ushort *cmd;
+  _ushort *cmd;
 } CharInfo;
 
 /* -------------------------------------------------------------- */
@@ -77,9 +75,9 @@ typedef char FontNameTyp[4];
 #endif
 
 typedef struct FontFileHeader {
-  ushort      header_size PACKED;   /* Version 2.0 Header Format   */
+  _ushort     header_size PACKED;   /* Version 2.0 Header Format   */
   FontNameTyp font_name   PACKED;   /* Font Internal Name          */
-  ushort      font_size   PACKED;   /* filesize in byte            */
+  _ushort     font_size   PACKED;   /* filesize in byte            */
   uchar       font_major  PACKED,   /* Driver Version Information  */
                   font_minor  PACKED;
   uchar       min_major   PACKED,   /* BGI Revision Information    */
@@ -87,16 +85,16 @@ typedef struct FontFileHeader {
 } FontFileHeader;
 
 typedef struct FontHeaderTyp {
-  char   sig PACKED;            /* SIGNATURE byte                        */
-  ushort nchrs PACKED;          /* number of characters in file          */
-  char   unused1 PACKED;        /* Currently Undefined                   */
-  uchar  firstch PACKED;        /* first character in file               */
-  ushort cdefs PACKED;          /* offset to char definitions            */
-  uchar  scan_flag PACKED;      /* <> 0 if set is scanable               */
-  uchar  org_to_cap PACKED;     /* Height from origin to top of capitol  */
-  uchar  org_to_base PACKED;    /* Height from origin to baseline        */
-  schar  org_to_dec PACKED;     /* Height from origin to bot of decender */
-  uchar  unused2[0x5] PACKED;   /* Currently undefined                   */
+  char    sig PACKED;            /* SIGNATURE byte                        */
+  _ushort nchrs PACKED;          /* number of characters in file          */
+  char    unused1 PACKED;        /* Currently Undefined                   */
+  uchar   firstch PACKED;        /* first character in file               */
+  _ushort cdefs PACKED;          /* offset to char definitions            */
+  uchar   scan_flag PACKED;      /* <> 0 if set is scanable               */
+  uchar   org_to_cap PACKED;     /* Height from origin to top of capitol  */
+  uchar   org_to_base PACKED;    /* Height from origin to baseline        */
+  schar   org_to_dec PACKED;     /* Height from origin to bot of decender */
+  uchar   unused2[0x5] PACKED;   /* Currently undefined                   */
 } FontHeaderTyp;
 
 #undef PACKED

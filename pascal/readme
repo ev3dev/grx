@@ -21,7 +21,10 @@ and GNU-Pascal.
   Press "4" to draw whatever you like :-)
   Press "0" to leave drawing-mode
   "Q" leaves vir_test.
-
+* polytest.pas draws some polygons
+* jpgtest.pas loads/saves jpeg images
+* imgview.pas loads png and jpeg images
+* colortst.pas tests allocating many colors
 
 To build up the programs, either
 

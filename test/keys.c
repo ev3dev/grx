@@ -42,6 +42,10 @@ inline  long   rdtsc(void)  { long h,l; RDTSC(h,l); return l; }
 #ifdef __DJGPP__
 #include <conio.h>
 #include <pc.h>
+#else
+extern int getch(void);
+extern int getkey(void);
+extern int kbhit(void);
 #endif
 
 #define ISPRINT(k) (((unsigned int)(k)) <= 255 && isprint(k))

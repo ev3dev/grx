@@ -37,3 +37,15 @@ install:
 
 uninstall:
 	$(MAKE) -C src -f makefile.w32 uninstall
+
+install-bin:
+	$(MAKE) -C src -f makefile.w32 install-bin
+
+uninstall-bin:
+	$(MAKE) -C src -f makefile.w32 uninstall-bin
+
+install-fonts:
+	$(MAKE) -C src -f makefile.w32 install-fonts
+
+uninstall-fonts:
+	$(MAKE) -C src -f makefile.w32 uninstall-fonts

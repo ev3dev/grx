@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "arith.h"
 
-void GrDumpText(int col,int row,int wdt,int hgt,GrTextRegion *r)
+void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r)
 {
         GrColorTableP fgcp = r->txr_fgcolor.p;
         GrColorTableP bgcp = r->txr_bgcolor.p;
@@ -130,12 +130,12 @@ void GrDumpText(int col,int row,int wdt,int hgt,GrTextRegion *r)
         mouse_unblock();
 }
 
-void GrDumpTextRegion(GrTextRegion *r)
+void GrDumpTextRegion(const GrTextRegion *r)
 {
         GrDumpText(0,0,r->txr_width,r->txr_height,r);
 }
 
-void GrDumpChar(int chr,int col,int row,GrTextRegion *r)
+void GrDumpChar(int chr,int col,int row,const GrTextRegion *r)
 {
         int offs;
         if((unsigned int)col >= (unsigned int)r->txr_width)  return;

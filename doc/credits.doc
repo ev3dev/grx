@@ -1,35 +1,35 @@
 CONTRIB.DOC
 ===========
 
-GRX was original written by Csaba Biegl (csaba@vuse.vanderbilt.edu)
+GRX was original written by Csaba Biegl <csaba@vuse.vanderbilt.edu>
 for DJ Delorie's DOS port of the GCC compiler.
 
-Michael Goffioul (goffioul@emic.ucl.ac.be) released GRX 2.1a
-(first full API implementation)
+Michael Goffioul <goffioul@emic.ucl.ac.be> released GRX 2.1a
+(first full API implementation).
 
 Starting from version v2.2 GRX was maintained by Hartmut Schirmer
-(hsc@techfak.uni-kiel.de)
+<hsc@techfak.uni-kiel.de>.
 
-Peter Gerwinski (peter@gerwinski.de) released GRX 2.3.1 and 2.3.2
+Peter Gerwinski <peter@gerwinski.de> released GRX 2.3.1 and 2.3.2.
 
 Mariano Alvarez Fernandez (malfer@teleline.es) released GRX 2.3.3,
-2.3.4 and the latest: 2.4
+2.3.4 and the 2.4.x series.
 
 Credits for GRX > v2.0 in alphabetical order
 ============================================
 
-Csaba Biegl (csaba@vuse.vanderbilt.edu) for the post v2.0 developers
-source code (and of course: MANY THANKS FOR THE GREAT GRX LIB !)
+Csaba Biegl <csaba@vuse.vanderbilt.edu> for the post v2.0 developers
+source code (and of course: MANY THANKS FOR THE GREAT GRX LIB !).
 
 N. D. Culver <ndc@alum.mit.edu> for suggesting the bpp based color
-spec with GrSetMode()
+spec with GrSetMode().
 
-Frank Donahoe <fdonahoe@wilkes1.wilkes.edu> for bug reports and patches
+Frank Donahoe <fdonahoe@wilkes1.wilkes.edu> for bug reports and patches.
 
 Vicente Fuentes Gea <vfg@servidor.unam.mx> for the info version of the
-user's manual
+user's manual.
 
-Michael Goffioul (goffioul@emic.ucl.ac.be) for his GREAT work:
+Michael Goffioul <goffioul@emic.ucl.ac.be> for his GREAT work:
 	- Pattern Filled functions
 	- Patterned Line functions
 	- Custom Line functions
@@ -38,44 +38,49 @@ Michael Goffioul (goffioul@emic.ucl.ac.be) for his GREAT work:
 Gernot Graeff <gernot.graeff@t-online.de> for the Win32 driver.
 
 Thomas Hahn <hahn@itpaxp5.physik.uni-karlsruhe.de> for the ALPHA
-processor patches (64bit support)
+processor patches (64bit support).
 
-Sven Hilscher (Sven@rufus.central.de) for GNU-Pascal interface and
-bug reports
+Frank Heckenbach <frank@g-n-u.de> for Pascal interface updates,
+configure script and many others inprovements.
 
-Eike Lange <eike.lange@uni-essen.de> for pascal updates
+Sven Hilscher <Sven@rufus.lan-ks.de> for GNU-Pascal interface and
+bug reports.
+
+Eike Lange <eike.lange@uni-essen.de> for Pascal updates.
 
 Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77] for linear framebuffer
 support.
 
-Maurice Lombardi <Maurice.Lombardi@ujf-grenoble.fr> for patches
+Maurice Lombardi <Maurice.Lombardi@ujf-grenoble.fr> for many patches
 and bug reports.
 
 Peter C. Mehlitz <peter@transvirtual.com> for his suggestions on
 Linux and X11 event time handling
 
-Vincenzo Morello (morellov@tin.it) continous using GRX as base
+Vincenzo Morello <morellov@tin.it> continous using GRX as base
 graphics API for his MGUI lib. He submitted many suggestions,
 found lots of bugs and contributed the SaveContextToJpeg() code.
 
 Josu Onandia <jonandia@fagorautomation.es> for patches, bug reports
 and lot of inprovements to the Win32 driver.
 
-Andris Pavenis (pavenis@acad.latnet.lv) for many suggestions, the
+Andris Pavenis <pavenis@acad.latnet.lv> for many suggestions, the
 memory driver, printing support, variable X11 resolution, patches
-and bug reports
+and bug reports.
 
-Gary Sands (gsands@stbni.co.uk) did the Watcom C++ port
+Gary Sands <gsands@stbni.co.uk> did the Watcom C++ port.
 
-Daniel Skarda (0rfelyus@atrey.karlin.mff.cuni.cz) for Linux shared
-libraries and bug reports
+Daniel Skarda <0rfelyus@atrey.karlin.mff.cuni.cz> for Linux shared
+libraries and bug reports.
 
-Anton Norup Soerensen (norup@ursa.astro.ku.dk) for patches and bug reports
+Anton Norup Soerensen <norup@ursa.astro.ku.dk> for patches and bug reports.
 
 Michal Stencl <stenclpmd@bratislava.telecom.sk> for the pattern text
-output, BMP handling and image display functions
+output, BMP handling and image display functions.
 
-Michael (mh@conrad.chem.uni-potsdam.de) for bug reports
+Waldemar Schultz <schultz@mathematik.tu-muenchen.de> for bug reports.
+
+Michael <mh@conrad.chem.uni-potsdam.de> for bug reports.
 
 
 ###########################################################################

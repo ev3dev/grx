@@ -25,6 +25,7 @@
 * Mouse event handling::
 * Writing/reading PNM graphics files::
 * Writing/reading PNG graphics files::
+* Writing/reading JPEG graphics files::
 * Miscellaneous functions::
 * BGI interface::
 * Test examples::
@@ -37,7 +38,7 @@
 
  
 @example
-                       GRX 2.4.3 User's Manual
+                       GRX 2.4.4 User's Manual
 
          A graphics library for DOS, Linux, X11 and Win32
 
@@ -46,7 +47,7 @@
 Based on the original doc written by: Csaba Biegl on August 10, 1992 
 Updated by: Mariano Alvarez Fernandez on August 17, 2000 
 
-Last update: June 28, 2001
+Last update: November 8, 2001
 ______________________________________________________________________________
 
 @example
@@ -805,8 +806,8 @@ void GrEllipse(int xc,int yc,int xa,int ya,GrColor c);
 void GrCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c); 
 void GrEllipseArc(int xc,int yc,int xa,int ya,
                   int start,int end,int style,GrColor c);
-void GrPolyLine(int numpts,int points[][2],GrColor c); 
-void GrPolygon(int numpts,int points[][2],GrColor c); 
+void GrPolyLine(int numpts,int points[][2],GrColor c);
+void GrPolygon(int numpts,int points[][2],GrColor c);
 @end example
 
 All primitives operate on the current graphics context. The last argument of 
@@ -863,15 +864,15 @@ The following filled primitives are available:
 
 @example
 void GrFilledBox(int x1,int y1,int x2,int y2,GrColor c); 
-void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c); 
+void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
 void GrFilledCircle(int xc,int yc,int r,GrColor c); 
 void GrFilledEllipse(int xc,int yc,int xa,int ya,GrColor c); 
 void GrFilledCircleArc(int xc,int yc,int r,
                        int start,int end,int style,GrColor c);
 void GrFilledEllipseArc(int xc,int yc,int xa,int ya,
                         int start,int end,int style,GrColor c);
-void GrFilledPolygon(int numpts,int points[][2],GrColor c); 
-void GrFilledConvexPolygon(int numpts,int points[][2],GrColor c); 
+void GrFilledPolygon(int numpts,int points[][2],GrColor c);
+void GrFilledConvexPolygon(int numpts,int points[][2],GrColor c);
 @end example
 
 Similarly to the line drawing, all of the above primitives operate on the 
@@ -982,7 +983,7 @@ void GrHLineNC(int x1,int x2,int y,GrColor c);
 void GrVLineNC(int x,int y1,int y2,GrColor c); 
 void GrBoxNC(int x1,int y1,int x2,int y2,GrColor c); 
 void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrColor c); 
-void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c); 
+void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
 void grbitbltNC(GrContext *dst,int x,int y,GrContext *src,
                 int x1,int y1,int x2,int y2,GrColor op);
 GrColor GrPixelNC(int x,int y);
@@ -1029,16 +1030,16 @@ mylineop.lno_dashpat = "\x06\x04";
 The available custom line drawing primitives: 
 
 @example
-void GrCustomLine(int x1,int y1,int x2,int y2,GrLineOption *o); 
-void GrCustomBox(int x1,int y1,int x2,int y2,GrLineOption *o); 
-void GrCustomCircle(int xc,int yc,int r,GrLineOption *o); 
-void GrCustomEllipse(int xc,int yc,int xa,int ya,GrLineOption *o); 
+void GrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
+void GrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
 void GrCustomCircleArc(int xc,int yc,int r,
-                       int start,int end,int style,GrLineOption *o);
+                       int start,int end,int style,const GrLineOption *o);
 void GrCustomEllipseArc(int xc,int yc,int xa,int ya,
-                        int start,int end,int style,GrLineOption *o);
-void GrCustomPolyLine(int numpts,int points[][2],GrLineOption *o); 
-void GrCustomPolygon(int numpts,int points[][2],GrLineOption *o); 
+                        int start,int end,int style,const GrLineOption *o);
+void GrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
+void GrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
 @end example
 
 See the @pxref{linetest.c} example.
@@ -1123,8 +1124,8 @@ memory which changes for different video modes. For this reason the library
 provides three functions to create pixmap patterns in a mode-independent way: 
 
 @example
-GrPattern *GrBuildPixmap(char *pixels,int w,int h,GrColorTableP colors);
-GrPattern *GrBuildPixmapFromBits(char *bits,int w,int h,
+GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP colors);
+GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,
                                  GrColor fgc,GrColor bgc);
 GrPattern *GrConvertToPixmap(GrContext *src);
 @end example
@@ -1246,7 +1247,7 @@ Like pixmaps patterns images are dependent of the actual video mode set. So
 the library provides functions to create images in a mode-independent way: 
 
 @example
-GrImage *GrImageBuild(char *pixels,int w,int h,GrColorTableP colors);
+GrImage *GrImageBuild(const char *pixels,int w,int h,const GrColorTableP colors);
 GrImage *GrImageFromContext(GrContext *c);
 @end example
 
@@ -1375,7 +1376,7 @@ Using these functions:
 @example
 GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,
                             int minch,int maxch);
-GrFont *GrBuildConvertedFont(GrFont *from,int cvt,int w,int h,
+GrFont *GrBuildConvertedFont(const GrFont *from,int cvt,int w,int h,
                              int minch,int maxch);
 @end example
 
@@ -1402,7 +1403,7 @@ GR_FONTCVT_RESIZE needs 'w' and 'h' arguments.
 The function: 
 
 @example
-void GrDumpFont(GrFont *f,char *CsymbolName,char *fileName);
+void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName);
 @end example
 
 writes a font to a C source code file, so it can be compiled and linked with a 
@@ -1523,8 +1524,8 @@ After the application initializes a text option structure with the desired
 values it can call one of the following two text drawing functions: 
 
 @example
-void GrDrawChar(int chr,int x,int y,GrTextOption *opt);
-void GrDrawString(void *text,int length,int x,int y,GrTextOption *opt);
+void GrDrawChar(int chr,int x,int y,const GrTextOption *opt);
+void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt);
 @end example
 
 NOTE: text drawing is fastest when it is drawn in the 'normal' direction, and 
@@ -1535,11 +1536,11 @@ is drawn pixel-by-pixel by the higher-level code.
 There are pattern filed versions too: 
 
 @example
-void GrPatternDrawChar(int chr,int x,int y,GrTextOption *opt,GrPattern *p);
-void GrPatternDrawString(void *text,int length,int x,int y,GrTextOption *opt,
+void GrPatternDrawChar(int chr,int x,int y,const GrTextOption *opt,GrPattern *p);
+void GrPatternDrawString(void *text,int length,int x,int y,const GrTextOption *opt,
                          GrPattern *p);
 void GrPatternDrawStringExt(void *text,int length,int x,int y,
-                            GrTextOption *opt,GrPattern *p);
+                            const GrTextOption *opt,GrPattern *p);
 @end example
 
 The size of a font, a character or a text string can be obtained by calling 
@@ -1547,20 +1548,20 @@ one of the following functions. These functions also take into consideration the
 text direction specified in the text option structure passed to them. 
 
 @example
-int  GrFontCharPresent(GrFont *font,int chr);
-int  GrFontCharWidth(GrFont *font,int chr);
-int  GrFontCharHeight(GrFont *font,int chr);
-int  GrFontCharBmpRowSize(GrFont *font,int chr);
-int  GrFontCharBitmapSize(GrFont *font,int chr);
-int  GrFontStringWidth(GrFont *font,void *text,int len,int type);
-int  GrFontStringHeight(GrFont *font,void *text,int len,int type);
-int  GrProportionalTextWidth(GrFont *font,void *text,int len,int type);
-int  GrCharWidth(int chr,GrTextOption *opt);
-int  GrCharHeight(int chr,GrTextOption *opt);
-void GrCharSize(int chr,GrTextOption *opt,int *w,int *h);
-int  GrStringWidth(void *text,int length,GrTextOption *opt);
-int  GrStringHeight(void *text,int length,GrTextOption *opt);
-void GrStringSize(void *text,int length,GrTextOption *opt,int *w,int *h);
+int  GrFontCharPresent(const GrFont *font,int chr);
+int  GrFontCharWidth(const GrFont *font,int chr);
+int  GrFontCharHeight(const GrFont *font,int chr);
+int  GrFontCharBmpRowSize(const GrFont *font,int chr);
+int  GrFontCharBitmapSize(const GrFont *font,int chr);
+int  GrFontStringWidth(const GrFont *font,void *text,int len,int type);
+int  GrFontStringHeight(const GrFont *font,void *text,int len,int type);
+int  GrProportionalTextWidth(const GrFont *font,void *text,int len,int type);
+int  GrCharWidth(int chr,const GrTextOption *opt);
+int  GrCharHeight(int chr,const GrTextOption *opt);
+void GrCharSize(int chr,const GrTextOption *opt,int *w,int *h);
+int  GrStringWidth(void *text,int length,const GrTextOption *opt);
+int  GrStringHeight(void *text,int length,const GrTextOption *opt);
+void GrStringSize(void *text,int length,const GrTextOption *opt,int *w,int *h);
 @end example
 
   The GrTextRegion structure and its associated functions can be used to 
@@ -1590,9 +1591,9 @@ typedef struct @{                     /* fixed font text window desc. */
   char    txr_chrtype;                /* character type (see above) */
 @} GrTextRegion;
 
-void GrDumpChar(int chr,int col,int row,GrTextRegion *r);
-void GrDumpText(int col,int row,int wdt,int hgt,GrTextRegion *r);
-void GrDumpTextRegion(GrTextRegion *r);
+void GrDumpChar(int chr,int col,int row,const GrTextRegion *r);
+void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r);
+void GrDumpTextRegion(const GrTextRegion *r);
 
 @end example
 
@@ -1691,16 +1692,16 @@ void GrUsrFilledPolygon(int numpts,int points[][2],GrColor c);
 void GrUsrFloodFill(int x, int y, GrColor border, GrColor c);
 GrColor GrUsrPixel(int x,int y);
 GrColor GrUsrPixelC(GrContext *c,int x,int y);
-void GrUsrCustomLine(int x1,int y1,int x2,int y2,GrLineOption *o);
-void GrUsrCustomBox(int x1,int y1,int x2,int y2,GrLineOption *o);
-void GrUsrCustomCircle(int xc,int yc,int r,GrLineOption *o);
-void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,GrLineOption *o);
+void GrUsrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
+void GrUsrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
+void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
 void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,
-                          int style,GrLineOption *o);
+                          int style,const GrLineOption *o);
 void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
-                           int style,GrLineOption *o);
-void GrUsrCustomPolyLine(int numpts,int points[][2],GrLineOption *o);
-void GrUsrCustomPolygon(int numpts,int points[][2],GrLineOption *o);
+                           int style,const GrLineOption *o);
+void GrUsrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
+void GrUsrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
 void GrUsrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
 void GrUsrPatternedBox(int x1,int y1,int x2,int y2,GrLinePattern *lp);
 void GrUsrPatternedCircle(int xc,int yc,int r,GrLinePattern *lp);
@@ -1721,8 +1722,8 @@ void GrUsrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
 void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);
-void GrUsrDrawChar(int chr,int x,int y,GrTextOption *opt);
-void GrUsrDrawString(char *text,int length,int x,int y,GrTextOption *opt);
+void GrUsrDrawChar(int chr,int x,int y,const GrTextOption *opt);
+void GrUsrDrawString(char *text,int length,int x,int y,const GrTextOption *opt);
 void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 @end example
 
@@ -1740,7 +1741,7 @@ function:
 
 @example
 GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,
-                        int xo,int yo,GrColorTableP c);
+                        int xo,int yo,const GrColorTableP c);
 @end example
 
 The pixels, w (=width), h (=height) and c (= color table) arguments are 
@@ -2133,7 +2134,7 @@ int GrLoadContextFromPnm( GrContext *grc, char *pnmfn );
 @end example
 
 it support reading PBM, PGM and PPM binary files. grc must be a pointer to the 
-context to be written, is it is NULL the current context is used; p-mfn is the 
+context to be written, if it is NULL the current context is used; p-mfn is the 
 file name to be read. If context dimensions are lesser than pnm dimensions, the 
 function loads as much as it can. If color mode is not in RGB mode, the routine 
 allocates as much colors as it can. The function returns 0 on succes and -1 on 
@@ -2152,8 +2153,8 @@ to 6 on success (the PNM format) or -1 on error.
 The two next functions:
 
 @example
-int GrLoadContextFromPnmBuffer( GrContext *grc, char *pnmbuf );
-int GrQueryPnmBuffer( char *pnmbuf, int *width, int *height, int *maxval );
+int GrLoadContextFromPnmBuffer( GrContext *grc, const char *pnmbuf );
+int GrQueryPnmBuffer( const char *pnmbuf, int *width, int *height, int *maxval );
 @end example
 
 work like GrLoadContextFromPnm and
@@ -2161,7 +2162,7 @@ GrQueryPnmBuffer, but they get his input from a buffer instead
 of a file. This way, pnm files can be embeded in a program (using the
 bin2c program by example).
 
-@node Writing/reading PNG graphics files, Miscellaneous functions, Writing/reading PNM graphics files, A User Manual For GRX2
+@node Writing/reading PNG graphics files, Writing/reading JPEG graphics files, Writing/reading PNM graphics files, A User Manual For GRX2
 @unnumberedsec Writing/reading PNG graphics files
 
 GRX includes functions to load/save a context
@@ -2186,7 +2187,7 @@ To load a PNG file in a context you must use:
 int GrLoadContextFromPng( GrContext *grc, char *pngfn, int use_alpha );
 @end example
 
-grc must be a pointer to the context to be written, is it
+grc must be a pointer to the context to be written, if it
 is NULL the current context is used; pngfn is the file name
 to be read; set use_alpha to 1 if you want to use the image
 alpha channel (if available). If context dimensions are lesser than png
@@ -2212,9 +2213,74 @@ int GrPngSupport( void );
 
 returns 1 if there is png support in the library, 0 otherwise. If there is
 not support for png, dummy functions are added to the library, returning
-ever error (-1).
+error (-1) ever.
 
-@node Miscellaneous functions, BGI interface, Writing/reading PNG graphics files, A User Manual For GRX2
+@node Writing/reading JPEG graphics files, Miscellaneous functions, Writing/reading PNG graphics files, A User Manual For GRX2
+@unnumberedsec Writing/reading PNG graphics files
+
+GRX includes functions to load/save a context
+from/to a jpeg file. But note, for this purpose it needs the
+(a href="http://www.ijg.org) libjpeg library,
+and to enable the jpeg support before make the GRX lib.
+
+Use next function to save a context in a JPEG file:
+
+@example
+int GrSaveContextToJpeg( GrContext *grc, char *jpegfn, int quality );
+@end example
+
+it works both in RGB and palette modes, grc must be
+a pointer to the context to be saved, if it is NULL the current context is
+saved; jpegfn is the file name to be created;
+quality is a number between 1 and 100 to drive the compression
+quality, use higher values for better quality (and bigger files), you can
+use 75 as a standard value, normally a value between 50 and 95 is good.
+The function returns 0 on succes and -1 on error.
+
+This function saves a context in a grayscale JPEG file:
+
+@example
+int GrSaveContextToGrayJpeg( GrContext *grc, char *jpegfn, int quality );
+@end example
+
+parameters and return codes are like in GrSaveContextToJpeg.
+The colors are quantized to gray scale using .299r + .587g + .114b.
+
+To load a JPEG file in a context you must use:
+
+@example
+int GrLoadContextFromJpeg( GrContext *grc, char *jpegfn, int scale );
+@end example
+
+grc must be a pointer to the context to be written, if it
+is NULL the current context is used; jpegfn is the file name
+to be read; set scale to 1, 2, 4 or 8 to reduce the loaded
+image to 1/1, 1/2, 1/4 or 1/8. If context dimensions are lesser than jpeg
+dimensions, the function loads as much as it can. If color mode is not
+in RGB mode, the routine allocates as much colors as it can. The function
+returns 0 on succes and -1 on error.
+
+To query the width and height of a JPEG file you can use:
+
+@example
+int GrQueryJpeg( char *jpegfn, int *width, int *height );
+@end example
+
+jpegfn is the name of jpeg file; width returns the
+jpeg width; height returns the jpeg height.
+The function returns 0 on success or -1 on error.
+
+The function:
+
+@example
+int GrJpegSupport( void );
+@end example
+
+returns 1 if there is jpeg support in the library, 0 otherwise. If there is
+not support for jpeg, dummy functions are added to the library, returning
+error (-1) ever.
+
+@node Miscellaneous functions, BGI interface, Writing/reading JPEG graphics files, A User Manual For GRX2
 @unnumberedsec Miscellaneous functions
 
 Here we will describe some miscellaneous functions. 

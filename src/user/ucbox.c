@@ -20,7 +20,7 @@
 #include "usercord.h"
 
 
-void GrUsrCustomBox(int x1,int y1,int x2,int y2,GrLineOption *lo)
+void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *lo)
 {
         U2SX(x1,CURC);
         U2SX(x2,CURC);

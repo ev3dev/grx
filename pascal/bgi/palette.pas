@@ -1,14 +1,10 @@
 program Test_GetDefaultPalette;
 {
- * test program for unit BGI2GRX
+ * test program for the Graph unit
 }
 
 uses
-(*$ifdef __GPC__ *)
-  BGI2GRX;
-(*$else *)
-  graph;
-(*$endif*)
+  Graph;
 
 var
   i,

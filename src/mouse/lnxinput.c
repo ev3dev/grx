@@ -345,7 +345,7 @@ int GrMouseDetect(void)
                 mouse_setxrange(0,32767);
                 mouse_setyrange(0,32767);
                 mouse_setwrap(MOUSE_NOWRAP);
-                mouse_setscale(1);
+                mouse_setscale(16);
             }
         }
         return((MOUINFO->msstatus > 0) ? TRUE : FALSE);
@@ -512,8 +512,8 @@ void GrMouseGetEventT(int flags,GrMouseEvent *ev,long tout)
             if(tout > 0) {
                 wtime.tv_sec  = (tout / 1000);
                 wtime.tv_usec = (tout % 1000) * 1000;
-                select(N,&readfds,NULL,NULL,&wtime);
-                tout = 0;
+                if(select(N,&readfds,NULL,NULL,&wtime) < 1)
+                    tout = 0;
                 continue;
             }
             select(N,&readfds,NULL,NULL,NULL);

@@ -323,8 +323,7 @@
    BLACK now is a constant
    Several (minor) bug fixes
    Updated for GRX v2
-   libbcc.h won't include GRX and pascal stuff any more
-   there's no Pascal support any longer, sorry
+   libbcc.h won't include GRX stuff any more
    added version control __BCC2GRX__
    Linux support
    setactivepage()/setvisualpage() with GRX v2

@@ -79,7 +79,7 @@ void set_BGI_mode(int *graphdriver, int *graphmode)
                      case EGAHI : rx = 640; ry = 350; rc = 16;       break;
                    }
                    break;
-    case EGAMONO : if (*graphmode == EGAMONOHI) {
+    case EGAMONO : if (*graphmode == EGAMONOHI || *graphmode == EGAMONOHI_PAS) {
                      rx = 640; ry = 350; rc = 16;
                    }
                    break;

@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrCustomPolygon(int n,int pt[][2],GrLineOption *o)
+void GrCustomPolygon(int n,int pt[][2],const GrLineOption *o)
 {
         GrFillArg fval;
         fval.color = o->lno_color;

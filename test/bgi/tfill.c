@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #ifdef __GNUC__
 #  include <libbcc.h>
-#  ifdef __linux__
+#  ifdef __MSDOS__
+#    include <pc.h>
+#  else
      extern int kbhit(void);
      extern int getkey(void);
-#  else
-#    include <pc.h>
 #  endif
 #  define getch() getkey()
 #else

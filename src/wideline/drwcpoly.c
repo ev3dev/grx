@@ -348,7 +348,7 @@ static void dashedsegmentw(
 
 void _GrDrawCustomPolygon(
      int n,int pt[][2],
-     GrLineOption *lp,
+     const GrLineOption *lp,
      GrFiller *f,GrFillArg c,
      int doClose,int circle
 ){

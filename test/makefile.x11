@@ -46,6 +46,7 @@ PROGS=  xarctest     \
 	xcurstest    \
 	xfonttest    \
 	ximgtest     \
+	xjpgtest     \
 	xkeys        \
 	xlife        \
 	xlinetest    \
@@ -64,10 +65,10 @@ PROGS=  xarctest     \
 
 all: $(PROGS) xdemogrx
 
-xdemogrx: demogrx.o gfaz.o
+xdemogrx: demogrx.o gfaz.o $(GRX20)
 	$(CC) $(LDOPT) -o xdemogrx demogrx.o gfaz.o $(LIBS)
 
-$(PROGS): x%: %.o ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
+$(PROGS): x%: %.o $(GRX20)
 	$(CC) $(LDOPT) -o $@ $*.o $(LIBS)
 
 $(PROGS:x%=%.o): %.o : %.c

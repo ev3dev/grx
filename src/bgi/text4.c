@@ -25,12 +25,12 @@
 #include "text.h"
 
 /* ----------------------------------------------------------------- */
-static _BGI_INLINE_ int xoff(ushort x) {
+static _BGI_INLINE_ int xoff(_ushort x) {
   /* Csaba did it this way, well done */
   return ((int)(signed char)((x) << 1) >> 1);
 }
 
-static _BGI_INLINE_ int yoff(ushort y) {
+static _BGI_INLINE_ int yoff(_ushort y) {
   return - ((int)(signed char)((y) >> 7) >> 1);
 }
 
@@ -41,7 +41,7 @@ void __gr_text_vec(int *xx, int *yy, int XX, int YY, int len, uchar *txt)
     LNE.lno_color= COL|WR;
   if (TXT.direction == HORIZ_DIR) {
     int     _XX, x, y, nx, ny, w;
-    ushort *dc;
+    _ushort *dc;
 
     switch (TXT.horiz) {
       case CENTER_TEXT : XX -= __gr_text_Width(len, txt) / 2; break;
@@ -86,7 +86,7 @@ void __gr_text_vec(int *xx, int *yy, int XX, int YY, int len, uchar *txt)
     *xx += XX-_XX;
   } else {
     int     _YY, x, y, nx, ny, w;
-    ushort *dc;
+    _ushort *dc;
 
     switch (TXT.horiz) {
       case LEFT_TEXT   : XX += __gr_text_Height(len, txt);     break;

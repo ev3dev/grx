@@ -22,6 +22,7 @@
 #include <linux/fb.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
+#include <linux/kd.h>
 
 #include "libgrx.h"
 #include "grdriver.h"
@@ -34,20 +35,27 @@
 
 static int initted  = (-1);
 static int fbfd = -1;
+static int ttyfd = -1;
 static struct fb_fix_screeninfo fbfix;
 static struct fb_var_screeninfo fbvar;
 char *fbuffer = NULL;
 
 static int detect( void )
 {
+        char *fbname;
+        char *default_fbname = "/dev/fb0";
+
         if( initted < 0 ){
                 initted = 0;
-                fbfd = open( "/dev/fb",O_RDWR );
+                fbname = getenv( "FRAMEBUFFER" );
+                if( fbname == NULL ) fbname = default_fbname;
+                fbfd = open( fbname,O_RDWR );
                 if( fbfd == -1 ) return FALSE;
                 ioctl( fbfd,FBIOGET_FSCREENINFO,&fbfix );
                 ioctl( fbfd,FBIOGET_VSCREENINFO,&fbvar );
                 if( fbfix.type != FB_TYPE_PACKED_PIXELS ) return FALSE;
                 if( fbfix.visual != FB_VISUAL_TRUECOLOR ) return FALSE;
+                ttyfd = open( "/dev/tty",O_RDONLY );
                 initted = 1;
         }
         return( (initted > 0) ? TRUE : FALSE );
@@ -61,6 +69,10 @@ static void reset(void)
         }
         if( fbfd != -1 )
             close( fbfd );
+        if( ttyfd > -1 ){
+            ioctl( ttyfd,KDSETMODE,KD_TEXT );
+            close( ttyfd );
+        }
 }
 
 //static void setrwbanks( int rb, int wb )
@@ -80,6 +92,9 @@ static int setmode( GrVideoMode *mp, int noclear )
                                    MAP_SHARED,
                                    fbfd,
                                    0 );
+        if( mp->extinfo->frame && ttyfd > -1 ){
+            ioctl( ttyfd,KDSETMODE,KD_GRAPHICS );
+        }
         if( mp->extinfo->frame && !noclear )
             memzero( mp->extinfo->frame,fbvar.yres*fbfix.line_length );
         return( (mp->extinfo->frame) ? TRUE : FALSE );
@@ -87,9 +102,9 @@ static int setmode( GrVideoMode *mp, int noclear )
 
 static int settext( GrVideoMode *mp, int noclear )
 {
-        if( fbuffer ){
+        if( fbuffer )
             memzero( fbuffer,fbvar.yres*fbfix.line_length );
-        }
+        ioctl( ttyfd,KDSETMODE,KD_TEXT );
         return TRUE;
 }
 

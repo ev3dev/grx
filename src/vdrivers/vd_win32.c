@@ -35,6 +35,13 @@
  **     resumes it.
  **   - The window title is selectable with a define, at compile time.
  **     If not defined, it defaults to "GRX".
+ **
+ ** Contributions by M.Alvarez (malfer@teleline.es) 18/11/2001
+ **   - Better keys handling using translation tables (w32keys.h).
+ **
+ ** Contributions by M.Alvarez (malfer@teleline.es) 02/01/2002
+ **   - Go to full screen if the framemode dimensions are equal to
+ **     the screen dimensions (setting the client start area at 0,0).
  **/
 
 #include "libwin32.h"
@@ -42,6 +49,7 @@
 #include "grdriver.h"
 #include "arith.h"
 #include "grxkeys.h"
+#include "w32keys.h"
 
 #ifndef GRXWINDOW_TITLE
 #define GRXWINDOW_TITLE "GRX"
@@ -58,7 +66,9 @@ HBITMAP            hBitmapScreen;
 int _nkeysw32pool = 0;
 int _keysw32pool[_MAXKEYSW32POOL];
 
+static int maxScreenWidth, maxScreenHeight;
 static int maxWindowWidth, maxWindowHeight;
+
 // Identifier of the main thread
 static DWORD mainThreadId;
 // Handle of the worker thread, which is executing GRXMain
@@ -120,6 +130,7 @@ static int setmode(GrVideoMode *mp,int noclear)
         RECT    Rect;
         HDC     hDC;
         HBRUSH        hBrush;
+        int     inipos;
 
         if ( mp -> extinfo -> mode != GR_frameText )
         {
@@ -139,10 +150,13 @@ static int setmode(GrVideoMode *mp,int noclear)
                                 NULL
                                 );
                 }
-                Rect.left = 50;
-                Rect.top = 50;
-                Rect.right = mp->width + 50;
-                Rect.bottom = mp->height + 50;
+                inipos = 50;
+                if( mp->width == maxScreenWidth &&
+                    mp->height == maxScreenHeight ) inipos = 0;
+                Rect.left = inipos;
+                Rect.top = inipos;
+                Rect.right = mp->width + inipos;
+                Rect.bottom = mp->height + inipos;
                 AdjustWindowRect ( &Rect, WS_OVERLAPPEDWINDOW, FALSE );
                 maxWindowWidth = Rect.right - Rect.left;
                 maxWindowHeight = Rect.bottom - Rect.top;
@@ -256,18 +270,18 @@ static GrVideoMode modes[] = {
 // made 'non-present'
 static int init(char *options)
 {
-        int size, i;
+        int i;
         
-        size = GetSystemMetrics(SM_CXSCREEN);
+        maxScreenWidth = GetSystemMetrics(SM_CXSCREEN);
         for(i=1; i < itemsof(modes); i++)
         {
-                if(modes[i].width > size)
+                if(modes[i].width > maxScreenWidth)
                         modes[i].present = FALSE;
         }
-        size = GetSystemMetrics(SM_CYSCREEN);
+        maxScreenHeight = GetSystemMetrics(SM_CYSCREEN);
         for(i=1; i < itemsof(modes); i++)
         {
-                if(modes[i].height > size)
+                if(modes[i].height > maxScreenHeight)
                         modes[i].present = FALSE;
         }
         return TRUE;
@@ -352,9 +366,9 @@ DWORD WINAPI GRXLocalMain ( LPVOID pCmdLine )
 int WINAPI WinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                                         PSTR szCmdLine, int nCmdShow )
 {
-        WNDCLASSEX        wndclass;
-        DWORD                tid;
-        MSG                        msg;
+        WNDCLASSEX wndclass;
+        DWORD      tid;
+        MSG        msg;
 
         hGlobInst = hInstance;
         tid = 0;
@@ -395,6 +409,56 @@ int WINAPI WinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
         // the bitmap or the window while they are being destroyed.
         SuspendThread(hThread);
         
+        return 0;
+}
+
+static ULONG convertwin32keystate( void )
+{
+        ULONG fkbState = 0;
+
+        if ( GetKeyState ( VK_SHIFT ) < 0 ) {
+                fkbState |= GR_KB_SHIFT;
+        }
+        if ( GetKeyState ( VK_CONTROL ) < 0 ) {
+                fkbState |= GR_KB_CTRL;
+        }
+        if ( GetKeyState ( VK_MENU ) < 0 ) {
+                fkbState |= GR_KB_ALT;
+        }
+        if ( GetKeyState ( VK_SCROLL ) < 0 ) {
+                fkbState |= GR_KB_SCROLLOCK;
+        }
+        if ( GetKeyState ( VK_NUMLOCK ) < 0 ) {
+                fkbState |= GR_KB_NUMLOCK;
+        }
+        if ( GetKeyState ( VK_CAPITAL ) < 0 ) {
+                fkbState |= GR_KB_CAPSLOCK;
+        }
+        if ( GetKeyState ( VK_INSERT ) < 0 ) {
+                fkbState |= GR_KB_INSERT;
+        }
+        return fkbState;
+}
+
+static GrKeyType stdkeytranslate( int winkey, ULONG fkbState )
+{
+        keytrans *k;
+        int i;
+
+        if ( fkbState & GR_KB_ALT )
+                k = altstdkeys;
+        else if ( fkbState & GR_KB_CTRL )
+                k = controlstdkeys;
+        else if ( fkbState & GR_KB_SHIFT )
+                k = shiftstdkeys;
+        else
+                k = stdkeys;
+
+        for ( i=0; i<NSTDKEYS; i++ ) {
+                if ( winkey == k[i].winkey )
+                        return k[i].grkey;
+        }
+
         return 0;
 }
 
@@ -459,46 +523,21 @@ static LRESULT CALLBACK WndProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
                         BOOL                fInsert = TRUE;
 
                         EnterCriticalSection ( &csEventQueue );
-                        chKey = wParam;
-                        pEv = malloc ( sizeof ( SEventQueue ) );
-                        pEv -> pEvent = malloc ( sizeof ( GrMouseEvent ) );
-                        pEv -> pEvent -> flags = GR_M_KEYPRESS;
-                        pEv -> pEvent -> key = wParam;
-                        fkbState = 0;
-                        if ( GetKeyState ( VK_SHIFT ) < 0 ) {
-                                fkbState |= GR_KB_SHIFT;
-                        }
-                        if ( GetKeyState ( VK_CONTROL ) < 0 ) {
-                                fkbState |= GR_KB_CTRL;
-                        }
-                        if ( GetKeyState ( VK_MENU ) < 0 ) {
-                                fkbState |= GR_KB_ALT;
-                                fInsert = FALSE;
-                        }
-                        if ( GetKeyState ( VK_SCROLL ) < 0 ) {
-                                fkbState |= GR_KB_SCROLLOCK;
-                        }
-                        if ( GetKeyState ( VK_NUMLOCK ) < 0 ) {
-                                fkbState |= GR_KB_NUMLOCK;
-                        }
-                        if ( GetKeyState ( VK_CAPITAL ) < 0 ) {
-                                fkbState |= GR_KB_CAPSLOCK;
-                        }
-                        if ( GetKeyState ( VK_INSERT ) < 0 ) {
-                                fkbState |= GR_KB_INSERT;
-                        }
-                        pEv -> pEvent -> kbstat = fkbState;
-                        pEv -> pNext = NULL;
+                        fkbState = convertwin32keystate ();
+                        if ( fkbState & GR_KB_ALT ) fInsert = FALSE;
                         if ( fInsert ) {
+                                chKey = wParam;
+                                pEv = malloc ( sizeof ( SEventQueue ) );
+                                pEv -> pEvent = malloc ( sizeof ( GrMouseEvent ) );
+                                pEv -> pEvent -> flags = GR_M_KEYPRESS;
+                                pEv -> pEvent -> key = wParam;
+                                pEv -> pEvent -> kbstat = fkbState;
+                                pEv -> pNext = NULL;
                                 pEvQ = pEventQueue;
                                 while ( pEvQ -> pNext != NULL ) {
                                         pEvQ = pEvQ -> pNext;
                                 }
                                 pEvQ -> pNext = pEv;
-                        }
-                        else {
-                                free ( pEv -> pEvent );
-                                free ( pEv );
                         }
                         LeaveCriticalSection ( &csEventQueue );
                 }
@@ -512,165 +551,25 @@ static LRESULT CALLBACK WndProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
                         BOOL                fInsert = FALSE;
 
                         EnterCriticalSection ( &csEventQueue );
+                        fkbState = convertwin32keystate ();
                         chKey = wParam;
                         pEv = malloc ( sizeof ( SEventQueue ) );
                         pEv -> pEvent = malloc ( sizeof ( GrMouseEvent ) );
                         pEv -> pEvent -> flags = GR_M_KEYPRESS;
                         pEv -> pEvent -> key = wParam;
-                        fkbState = 0;
-                        if ( GetKeyState ( VK_SHIFT ) < 0 ) {
-                                fkbState |= GR_KB_SHIFT;
-                        }
-                        if ( GetKeyState ( VK_CONTROL ) < 0 ) {
-                                fkbState |= GR_KB_CTRL;
-                        }
-                        if ( GetKeyState ( VK_MENU ) < 0 ) {
-                                fkbState |= GR_KB_ALT;
-                                switch ( chKey ) {
-                                        
-                                case 0x61 :
-                                        pEv -> pEvent -> key = GrKey_Alt_A;
+                        if ( fkbState & GR_KB_ALT ) {
+                                if ( chKey >= 'a' && chKey <= 'z' ) {
+                                        pEv -> pEvent -> key = altletters[chKey - 'a'];
                                         fInsert = TRUE;
-                                        break;
-
-                                case 0x62 :
-                                        pEv -> pEvent -> key = GrKey_Alt_B;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x63 :
-                                        pEv -> pEvent -> key = GrKey_Alt_C;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x64 :
-                                        pEv -> pEvent -> key = GrKey_Alt_D;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x65 :
-                                        pEv -> pEvent -> key = GrKey_Alt_E;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x66 :
-                                        pEv -> pEvent -> key = GrKey_Alt_F;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x67 :
-                                        pEv -> pEvent -> key = GrKey_Alt_G;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x68 :
-                                        pEv -> pEvent -> key = GrKey_Alt_H;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x69 :
-                                        pEv -> pEvent -> key = GrKey_Alt_I;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x6a :
-                                        pEv -> pEvent -> key = GrKey_Alt_J;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x6b :
-                                        pEv -> pEvent -> key = GrKey_Alt_K;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x6c :
-                                        pEv -> pEvent -> key = GrKey_Alt_L;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x6d :
-                                        pEv -> pEvent -> key = GrKey_Alt_M;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x6e :
-                                        pEv -> pEvent -> key = GrKey_Alt_N;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x6f :
-                                        pEv -> pEvent -> key = GrKey_Alt_O;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x70 :
-                                        pEv -> pEvent -> key = GrKey_Alt_P;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x71 :
-                                        pEv -> pEvent -> key = GrKey_Alt_Q;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x72 :
-                                        pEv -> pEvent -> key = GrKey_Alt_R;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x73 :
-                                        pEv -> pEvent -> key = GrKey_Alt_S;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x74 :
-                                        pEv -> pEvent -> key = GrKey_Alt_T;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x75 :
-                                        pEv -> pEvent -> key = GrKey_Alt_U;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x76 :
-                                        pEv -> pEvent -> key = GrKey_Alt_V;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x77 :
-                                        pEv -> pEvent -> key = GrKey_Alt_W;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x78 :
-                                        pEv -> pEvent -> key = GrKey_Alt_X;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x79 :
-                                        pEv -> pEvent -> key = GrKey_Alt_Y;
-                                        fInsert = TRUE;
-                                        break;
-
-                                case 0x7a :
-                                        pEv -> pEvent -> key = GrKey_Alt_Z;
-                                        fInsert = TRUE;
-                                        break;
-
                                 }
-                        }
-                        if ( GetKeyState ( VK_SCROLL ) < 0 ) {
-                                fkbState |= GR_KB_SCROLLOCK;
-                        }
-                        if ( GetKeyState ( VK_NUMLOCK ) < 0 ) {
-                                fkbState |= GR_KB_NUMLOCK;
-                        }
-                        if ( GetKeyState ( VK_CAPITAL ) < 0 ) {
-                                fkbState |= GR_KB_CAPSLOCK;
-                        }
-                        if ( GetKeyState ( VK_INSERT ) < 0 ) {
-                                fkbState |= GR_KB_INSERT;
+                                if ( chKey >= 'A' && chKey <= 'Z' ) {
+                                        pEv -> pEvent -> key = altletters[chKey - 'A'];
+                                        fInsert = TRUE;
+                                }
+                                if ( chKey >= '0' && chKey <= '9' ) {
+                                        pEv -> pEvent -> key = altnumbers[chKey - '0'];
+                                        fInsert = TRUE;
+                                }
                         }
                         pEv -> pEvent -> kbstat = fkbState;
                         pEv -> pNext = NULL;
@@ -690,186 +589,34 @@ static LRESULT CALLBACK WndProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
                 return 0;
         
         case WM_KEYDOWN :
-                {
-                        SEventQueue        *pEvQ, *pEv;
-                        ULONG                fkbState;
-                        char                chKey;
-                        BOOL                fInsert = FALSE;
-
-                        EnterCriticalSection ( &csEventQueue );
-                        chKey = wParam;
-                        pEv = malloc ( sizeof ( SEventQueue ) );
-                        pEv -> pEvent = malloc ( sizeof ( GrMouseEvent ) );
-                        pEv -> pEvent -> flags = GR_M_KEYPRESS;
-                        switch ( chKey ) {
-/*
-                        case VK_SHIFT :
-                                pEv -> pEvent -> key = GrKey_Shift;
-                                fInsert = TRUE;
-                                break;
-*/
-                        case VK_LEFT :
-                                pEv -> pEvent -> key = GrKey_Left;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_RIGHT :
-                                pEv -> pEvent -> key = GrKey_Right;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_UP :
-                                pEv -> pEvent -> key = GrKey_Up;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_DOWN :
-                                pEv -> pEvent -> key = GrKey_Down;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_F1 :
-                                pEv -> pEvent -> key = GrKey_F1;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_F2 :
-                                pEv -> pEvent -> key = GrKey_F2;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_F3 :
-                                pEv -> pEvent -> key = GrKey_F3;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_F4 :
-                                pEv -> pEvent -> key = GrKey_F4;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_F5 :
-                                pEv -> pEvent -> key = GrKey_F5;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_F6 :
-                                pEv -> pEvent -> key = GrKey_F6;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_F7 :
-                                pEv -> pEvent -> key = GrKey_F7;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_F8 :
-                                pEv -> pEvent -> key = GrKey_F8;
-                                fInsert = TRUE;
-                                break;
-
-                        case VK_F9 :
-                                pEv -> pEvent -> key = GrKey_F9;
-                                fInsert = TRUE;
-                                break;
-
-                        }
-                        fkbState = 0;
-                        if ( GetKeyState ( VK_SHIFT ) < 0 ) {
-                                fkbState |= GR_KB_SHIFT;
-                        }
-                        if ( GetKeyState ( VK_CONTROL ) < 0 ) {
-                                fkbState |= GR_KB_CTRL;
-                        }
-                        if ( GetKeyState ( VK_MENU ) < 0 ) {
-                                fkbState |= GR_KB_ALT;
-                        }
-                        if ( GetKeyState ( VK_SCROLL ) < 0 ) {
-                                fkbState |= GR_KB_SCROLLOCK;
-                        }
-                        if ( GetKeyState ( VK_NUMLOCK ) < 0 ) {
-                                fkbState |= GR_KB_NUMLOCK;
-                        }
-                        if ( GetKeyState ( VK_CAPITAL ) < 0 ) {
-                                fkbState |= GR_KB_CAPSLOCK;
-                        }
-                        if ( GetKeyState ( VK_INSERT ) < 0 ) {
-                                fkbState |= GR_KB_INSERT;
-                        }
-                        pEv -> pEvent -> kbstat = fkbState;
-                        pEv -> pNext = NULL;
-                        if ( fInsert ) {
-                                pEvQ = pEventQueue;
-                                while ( pEvQ -> pNext != NULL ) {
-                                        pEvQ = pEvQ -> pNext;
-                                }
-                                pEvQ -> pNext = pEv;
-                        }
-                        else {
-                                free ( pEv -> pEvent );
-                                free ( pEv );
-                        }
-                        LeaveCriticalSection ( &csEventQueue );
-                }
-                return 0;
-        
         case WM_SYSKEYDOWN :
                 {
                         SEventQueue        *pEvQ, *pEv;
                         ULONG                fkbState;
                         char                chKey;
-                        BOOL                fInsert = FALSE;
 
                         EnterCriticalSection ( &csEventQueue );
+                        fkbState = convertwin32keystate ();
                         chKey = wParam;
                         pEv = malloc ( sizeof ( SEventQueue ) );
                         pEv -> pEvent = malloc ( sizeof ( GrMouseEvent ) );
                         pEv -> pEvent -> flags = GR_M_KEYPRESS;
-                        switch ( chKey ) {
-
-                        case VK_F4 :
-                                pEv -> pEvent -> key = GrKey_F4;
-                                if ( GetKeyState ( VK_MENU ) < 0 ) {
-                                        PostMessage ( hWnd, WM_DESTROY, 0, 0 );
-                                }
-                                break;
-
-                        case VK_F10 :
-                                pEv -> pEvent -> key = GrKey_F10;
-                                fInsert = TRUE;
-                                break;
-
-                        }
-                        fkbState = 0;
-                        if ( GetKeyState ( VK_SHIFT ) < 0 ) {
-                                fkbState |= GR_KB_SHIFT;
-                        }
-                        if ( GetKeyState ( VK_CONTROL ) < 0 ) {
-                                fkbState |= GR_KB_CTRL;
-                        }
-                        if ( GetKeyState ( VK_MENU ) < 0 ) {
-                                fkbState |= GR_KB_ALT;
-                        }
-                        if ( GetKeyState ( VK_SCROLL ) < 0 ) {
-                                fkbState |= GR_KB_SCROLLOCK;
-                        }
-                        if ( GetKeyState ( VK_NUMLOCK ) < 0 ) {
-                                fkbState |= GR_KB_NUMLOCK;
-                        }
-                        if ( GetKeyState ( VK_CAPITAL ) < 0 ) {
-                                fkbState |= GR_KB_CAPSLOCK;
-                        }
-                        if ( GetKeyState ( VK_INSERT ) < 0 ) {
-                                fkbState |= GR_KB_INSERT;
-                        }
+                        pEv -> pEvent -> key = stdkeytranslate( chKey,fkbState );
                         pEv -> pEvent -> kbstat = fkbState;
                         pEv -> pNext = NULL;
-                        if ( fInsert ) {
+/*
+                        if( pEv -> pEvent -> key == GrKey_Alt_F4 ) {
+                                PostMessage ( hWnd, WM_DESTROY, 0, 0 );
+                                pEv -> pEvent -> key = 0;
+                        }
+*/
+                        if ( pEv -> pEvent -> key != 0) {
                                 pEvQ = pEventQueue;
                                 while ( pEvQ -> pNext != NULL ) {
                                         pEvQ = pEvQ -> pNext;
                                 }
                                 pEvQ -> pNext = pEv;
+
                         }
                         else {
                                 free ( pEv -> pEvent );

@@ -4,10 +4,10 @@
 #include <libbcc.h>
 #include <sys/time.h>
 #ifdef __GNUC__
-#  ifdef __linux__
-     extern int khbit(void), getkey(void);
-#  else
+#  ifdef __MSDOS__
 #    include <pc.h>
+#  else
+     extern int khbit(void), getkey(void);
 #  endif
 #  define getch() getkey()
 #else

@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrCustomBox(int x1,int y1,int x2,int y2,GrLineOption *o)
+void GrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o)
 {
         GrFillArg fval;
         int pt[4][2];

@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "memfill.h"
 
-GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,int xo,int yo,GrColorTableP C)
+GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,int xo,int yo,const GrColorTableP C)
 {
         GrCursor  *curs;
         GrContext  save;

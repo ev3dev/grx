@@ -195,7 +195,7 @@ static int cvtbitmap(int oldw,int neww,conv *c,char *bmp)
 }
 
 GrFont *_GrBuildFont(
-    GrFontHeader *h,
+    const GrFontHeader *h,
     int  cvt,
     int  wdt,
     int  hgt,

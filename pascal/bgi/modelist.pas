@@ -1,8 +1,8 @@
 program ModeList;
 {
- * test and demo program for unit BGI2GRX
+ * test and demo program for the Graph unit
  *
- * Please read the copyright notices of BGI2GRX.PAS
+ * Please read the copyright notices of graph.pas
  *
  * This file is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,11 +13,7 @@ program ModeList;
 }
 
 uses
-(*$ifdef __GPC__ *)
-  BGI2GRX;
-(*$else *)
-  graph;
-(*$endif*)
+  Graph;
 
 var
   i,

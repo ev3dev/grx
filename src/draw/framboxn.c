@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c)
+void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c)
 {
         isort(x1,x2);
         isort(y1,y2);

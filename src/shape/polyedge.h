@@ -22,7 +22,7 @@ typedef struct {
     int dx,dy;                        /* line diagonals */
     int xmajor;                        /* flag for X major lines */
     int xstep;                        /* direction of X scan */
-    int error;                        /* Bresenheim error term */
+    int error;                        /* Bresenham error term */
 } polyedge;
 
 #define setup_edge(ep) {                                                \

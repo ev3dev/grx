@@ -47,7 +47,7 @@ PROGS=               \
 
 all: $(PROGS)
 
-$(PROGS): x%: %.o ../../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
+$(PROGS): x%: %.o $(GRX20X)
 	$(CC) $(LDOPT) -o $@ $*.o $(LIBS)
 
 $(PROGS:x%=%.o): %.o : %.c

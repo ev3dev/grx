@@ -27,13 +27,13 @@
 
 /* default mode */
 
-#define WIDTH 640
-#define HEIGHT 480
-#define BPP 16
+static int gwidth = 640;
+static int gheight = 480;
+static int gbpp = 16;
 
-#define WINTITLE "GRX 2.4.3, the graphics library"
+#define WINTITLE "GRX 2.4.4, the graphics library"
 
-#define NDEMOS 26
+#define NDEMOS 27
 
 #define ID_ARCTEST   1
 #define ID_BB1TEST   2
@@ -44,21 +44,22 @@
 #define ID_CURSTEST  7
 #define ID_FONTTEST  8
 #define ID_IMGTEST   9
-#define ID_KEYS     10
-#define ID_LIFE     11
-#define ID_LINETEST 12
-#define ID_MOUSETST 13
-#define ID_PCIRCTST 14
-#define ID_PNMTEST  15
-#define ID_PNGTEST  16
-#define ID_POLYTEST 17
-#define ID_RGBTEST  18
-#define ID_SCROLTST 19
-#define ID_SBCTEST  20
-#define ID_SPEEDTST 21
-#define ID_TEXTPATT 22
-#define ID_WINCLIP  23
-#define ID_WINTEST  24
+#define ID_JPGTEST  10
+#define ID_KEYS     11
+#define ID_LIFE     12
+#define ID_LINETEST 13
+#define ID_MOUSETST 14
+#define ID_PCIRCTST 15
+#define ID_PNMTEST  16
+#define ID_PNGTEST  17
+#define ID_POLYTEST 18
+#define ID_RGBTEST  19
+#define ID_SCROLTST 20
+#define ID_SBCTEST  21
+#define ID_SPEEDTST 22
+#define ID_TEXTPATT 23
+#define ID_WINCLIP  24
+#define ID_WINTEST  25
 #define ID_MODETEST 50
 #define ID_EXIT     99
 
@@ -78,6 +79,7 @@ static ProgTable ptable[NDEMOS] = {
   { ID_CURSTEST,"curstest","curstest.c -> test cursors" },
   { ID_FONTTEST,"fonttest","fonttest.c -> test text drawing" },
   { ID_IMGTEST,"imgtest","imgtest.c -> test image functions mapping" },
+  { ID_JPGTEST,"jpgtest","jpgtext.c -> text context to jpeg functions" },
   { ID_KEYS,"keys","keys.c -> test keyboard input" },
   { ID_LIFE,"life","life.c -> Conway's life program" },
   { ID_LINETEST,"linetest","linetest.c -> test wide and patterned lines" },
@@ -119,21 +121,22 @@ static Button b[NDEMOS] = {
   { PX0,PY6,100,40,IND_BLUE,IND_YELLOW,"CursTest",0,ID_CURSTEST },
   { PX0,PY7,100,40,IND_BLUE,IND_YELLOW,"FontTest",0,ID_FONTTEST },
   { PX0,PY8,100,40,IND_BLUE,IND_YELLOW,"ImgTest",0,ID_IMGTEST },
-  { PX1,PY0,100,40,IND_BLUE,IND_YELLOW,"Keys",0,ID_KEYS },
-  { PX1,PY1,100,40,IND_BLUE,IND_YELLOW,"Life",0,ID_LIFE },
-  { PX1,PY2,100,40,IND_BLUE,IND_YELLOW,"LineTest",0,ID_LINETEST },
-  { PX1,PY3,100,40,IND_BLUE,IND_YELLOW,"MouseTst",0,ID_MOUSETST },
-  { PX1,PY4,100,40,IND_BLUE,IND_YELLOW,"PcircTst",0,ID_PCIRCTST },
-  { PX1,PY5,100,40,IND_BLUE,IND_YELLOW,"PnmTest",0,ID_PNMTEST },
-  { PX1,PY6,100,40,IND_BLUE,IND_YELLOW,"PngTest",0,ID_PNGTEST },
-  { PX1,PY7,100,40,IND_BLUE,IND_YELLOW,"PolyTest",0,ID_POLYTEST },
-  { PX1,PY8,100,40,IND_BLUE,IND_YELLOW,"RgbTest",0,ID_RGBTEST },
-  { PX2,PY0,100,40,IND_BLUE,IND_YELLOW,"SbcTest",0,ID_SBCTEST },
-  { PX2,PY1,100,40,IND_BLUE,IND_YELLOW,"ScrolTst",0,ID_SCROLTST },
-  { PX2,PY2,100,40,IND_BLUE,IND_YELLOW,"SpeedTst",0,ID_SPEEDTST },
-  { PX2,PY3,100,40,IND_BLUE,IND_YELLOW,"TextPatt",0,ID_TEXTPATT },
-  { PX2,PY4,100,40,IND_BLUE,IND_YELLOW,"WinClip",0,ID_WINCLIP },
-  { PX2,PY5,100,40,IND_BLUE,IND_YELLOW,"WinTest",0,ID_WINTEST },
+  { PX1,PY0,100,40,IND_BLUE,IND_YELLOW,"JpgTest",0,ID_JPGTEST },
+  { PX1,PY1,100,40,IND_BLUE,IND_YELLOW,"Keys",0,ID_KEYS },
+  { PX1,PY2,100,40,IND_BLUE,IND_YELLOW,"Life",0,ID_LIFE },
+  { PX1,PY3,100,40,IND_BLUE,IND_YELLOW,"LineTest",0,ID_LINETEST },
+  { PX1,PY4,100,40,IND_BLUE,IND_YELLOW,"MouseTst",0,ID_MOUSETST },
+  { PX1,PY5,100,40,IND_BLUE,IND_YELLOW,"PcircTst",0,ID_PCIRCTST },
+  { PX1,PY6,100,40,IND_BLUE,IND_YELLOW,"PnmTest",0,ID_PNMTEST },
+  { PX1,PY7,100,40,IND_BLUE,IND_YELLOW,"PngTest",0,ID_PNGTEST },
+  { PX1,PY8,100,40,IND_BLUE,IND_YELLOW,"PolyTest",0,ID_POLYTEST },
+  { PX2,PY0,100,40,IND_BLUE,IND_YELLOW,"RgbTest",0,ID_RGBTEST },
+  { PX2,PY1,100,40,IND_BLUE,IND_YELLOW,"SbcTest",0,ID_SBCTEST },
+  { PX2,PY2,100,40,IND_BLUE,IND_YELLOW,"ScrolTst",0,ID_SCROLTST },
+  { PX2,PY3,100,40,IND_BLUE,IND_YELLOW,"SpeedTst",0,ID_SPEEDTST },
+  { PX2,PY4,100,40,IND_BLUE,IND_YELLOW,"TextPatt",0,ID_TEXTPATT },
+  { PX2,PY5,100,40,IND_BLUE,IND_YELLOW,"WinClip",0,ID_WINCLIP },
+  { PX2,PY6,100,40,IND_BLUE,IND_YELLOW,"WinTest",0,ID_WINTEST },
   { PX2,PY7,100,40,IND_GREEN,IND_YELLOW,"ModeTest",0,ID_MODETEST },
   { PX2,PY8,100,40,IND_RED,IND_WHITE,"Exit",0,ID_EXIT } };
 
@@ -147,8 +150,12 @@ static GrFont * grf_big;
 GrTextOption grt_centered;
 GrTextOption grt_left;
 
+static GrContext *grcglob = NULL;
+static int worg = 0, horg = 0;
+
 /* Internal routines */
 
+static void ini_graphics( void );
 static void ini_objects( void );
 static void paint_screen( void );
 static void the_title( int x, int y );
@@ -164,21 +171,24 @@ static void disaster( char *s );
 int GRXMain( int argc, char **argv )
 {
   Event ev;
-  int width=WIDTH, height=HEIGHT, bpp=BPP;
 
   if( argc >= 4 ){
-    width = atoi( argv[1] );
-    height = atoi( argv[2] );
-    bpp = atoi( argv[3] );
+    gwidth = atoi( argv[1] );
+    gheight = atoi( argv[2] );
+    gbpp = atoi( argv[3] );
     }
 
-  gfaz_ini( width,height,bpp );
+  ini_graphics();
   GrSetWindowTitle( WINTITLE );
   ini_objects();
   paint_screen();
   
   while( 1 ){
     event_read( &ev );
+    if( ev.type == EV_MOUSE ){
+      ev.p2 -= worg;
+      ev.p3 -= horg;
+      }
     if( ev.type == EV_END ) break;
     if( (ev.type == EV_KEY) && (ev.p1 == GrKey_Escape) ) break;
     if( (ev.type == EV_KEY) && (ev.p1 == 's' ) ){
@@ -200,6 +210,23 @@ int GRXMain( int argc, char **argv )
 
   gfaz_fin();
   return 0;
+}
+
+/************************************************************************/
+
+static void ini_graphics( void )
+{
+  gfaz_ini( gwidth,gheight,gbpp );
+  gwidth = GrScreenX();
+  gheight = GrScreenY();
+  grcglob = NULL;
+  if( gwidth > 640 || gheight > 480 ){
+    GrClearScreen( GrAllocColor( 120,90,60 ) );
+    worg = (gwidth - 640) / 2;
+    horg = (gheight - 480) / 2;
+    grcglob = GrCreateSubContext( worg,horg,worg+639,horg+479,NULL,NULL );
+    GrSetContext( grcglob );
+    }
 }
 
 /************************************************************************/
@@ -245,7 +272,7 @@ static void paint_screen( void )
   grc = GrCreateSubContext( brdimg.x+4,brdimg.y+4,
                             brdimg.x+brdimg.wide-5,
                             brdimg.y+brdimg.high-5,
-                            NULL,NULL );
+                            grcglob,NULL );
   GrLoadContextFromPnm( grc,"pnmtest.ppm" );
   GrDestroyContext( grc );
   the_title( 500,100 );
@@ -258,7 +285,7 @@ static void paint_screen( void )
 
 static void the_title( int x, int y )
 {
-  char *t1 = "GRX 2.4.3";
+  char *t1 = "GRX 2.4.4";
   char *t2 = "test programs launcher";
 
   grt_centered.txo_fgcolor.v = LIGHTGREEN;
@@ -330,7 +357,7 @@ static int pev_command( Event *ev )
 #endif
         strcat( nprog,ptable[i].prog );
         system( nprog );
-        gfaz_ini( WIDTH,HEIGHT,BPP );
+        ini_graphics();
         GrSetWindowTitle( WINTITLE );
         paint_screen();
         return 1;
@@ -375,7 +402,7 @@ static void paint_foot( char *s )
 static void paint_animation( void )
 {
   static char *text =
-    "GRX 2.4.3, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "GRX 2.4.4, the graphics library for DJGPPv2, Linux, X11 and Win32";
   static int pos = 620;
   static int ini = 0;
   static int ltext, wtext;
@@ -396,7 +423,7 @@ static void paint_animation( void )
     GrSetContext( grc );
     GrClearContext( DARKGRAY );
     GrDrawString( text,ltext,pos,15,&grt_left );
-    GrSetContext( NULL );
+    GrSetContext( grcglob );
     GrBitBlt( NULL,10,8,grc,0,0,629,29,GrWRITE );
 
     pos -= 1;

@@ -1,13 +1,8 @@
-Unit BGI2GRX;
+Unit Graph;
 
 {
- * BGI2GRX  -  Interfacing BGI based graphics programs to LIBGRX
+ * Graph  -  Interfacing BGI based graphics programs to LIBGRX
  * Copyright (C) 96 by Sven Hilscher
- *
- * ==============================================================
- * This unit only works with the BCC2GRX library, now part of GRX
- * BGI2GRX is created by converting the file BCC2GRX.H
- * ==============================================================
  *
  * This file is part of the GRX graphics library.
  *
@@ -20,7 +15,7 @@ Unit BGI2GRX;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * Author : Sven Hilscher
- * e-mail : sven@rufus.central.de
+ * e-mail : sven@rufus.lan-ks.de
  *
  * Version 1.0 12/96
  *
@@ -31,32 +26,42 @@ Unit BGI2GRX;
  * invalid __soso__  declarations).
 }
 
-(*$ifdef __DJGPP__ *)
-  (*$L grx20 *)
-(*$else *)
-(*$ifdef __MINGW32__ *)
-  (*$L grx20 *)
-(*$else *)  
-(*$ifdef _WIN32 *)
-  (*$L grxW32 *)
-  (*$L vfs.c *)
-  (*$L user32 *)
-  (*$L gdi32 *)
-(*$else *)
-  (*$L grx20X *)
-  (*$L X11 *)
-(*$endif *)
-(*$endif *)
-(*$endif *)
+{ Define this if you don't want this unit to declare a KeyPressed
+  and a ReadKey function. }
+{.$define NO_GRAPH_KEY_FUNCTIONS}
 
+{ Define this if you want to use the Linux console version.
+  (Ignored on non-Linux systems.) }
+{.$define LINUX_CONSOLE}
+
+{$gnu-pascal,I-}
+{$ifdef __DJGPP__}
+  {$L grx20}
+{$elif defined (__MINGW32__)}
+  {$L grx20}
+{$elif defined (_WIN32)}
+  {$L grxW32, vfs.c, user32, gdi32}
+{$elif defined (linux) and defined (LINUX_CONSOLE)}
+  {$L grx20, vga}
+{$else}
+  {$L grx20X, X11}
+{$endif}
+
+{ Uncomment those of the following libraries that you need }
+{.$L tiff}
+{.$L jpeg}
+{.$L png}
+{.$L z}
+{.$L socket}
+
+{$ifdef __MINGW32__}
+{$gpc-main="GRXMain"}
+{$endif}
 
 Interface
 
 Type
-  PChar     = ^char;
-
-{ Pointer   = ^Void; I hate the warnings }
-  Pointer   = PChar;
+  PByte     = ^Byte;
 
   WrkString = String[255];
 
@@ -80,54 +85,54 @@ Const
   grInvalidFontNum  = -14;
   grInvalidVersion  = -18;
 
-  Detect             =(-2); { in Borland compilers is Detect = 0 !!! }
-  NATIVE_GRX         =(-3);
-  Current_Driver     =(-1);
-  VGA                =( 9);
-  EGA                =( 3);
-  IBM8514            =( 6);
-  HERCMono           =( 7);
-  EGA64              =( 4);
-  EGAMono            =( 5);
-  CGA                =( 1);
-  MCGA               =( 2);
-  ATT400             =( 8);
-  PC3270            = (10);
+  Detect             = 0;
+  NATIVE_GRX         = -3;
+  CurrentDriver      = -128;
+  VGA                = 9;
+  EGA                = 3;
+  IBM8514            = 6;
+  HERCMono           = 7;
+  EGA64              = 4;
+  EGAMono            = 5;
+  CGA                = 1;
+  MCGA               = 2;
+  ATT400             = 8;
+  PC3270             = 10;
 { driver definitions from BC++ 4.5 : }
-  DETECTX           = (DETECT);
-  VGA256            = (11);
-  ATTDEB            = (12);
-  TOSHIBA           = (13);
-  SVGA16            = (14);
-  SVGA256           = (15);
-  SVGA32K           = (16);
-  SVGA64K           = (17);
-  VESA16            = (18);
-  VESA256           = (19);
-  VESA32K           = (20);
-  VESA64K           = (21);
-  VESA16M           = (22);
-  ATI16             = (23);
-  ATI256            = (24);
-  ATI32K            = (25);
-  COMPAQ            = (26);
-  TSENG316          = (27);
-  TSENG3256         = (28);
-  TSENG416          = (29);
-  TSENG4256         = (30);
-  TSENG432K         = (31);
-  GENOA5            = (32);
-  GENOA6            = (33);
-  OAK               = (34);
-  PARADIS16         = (35);
-  PARADIS256        = (36);
-  TECMAR            = (37);
-  TRIDENT16         = (38);
-  TRIDENT256        = (39);
-  VIDEO7            = (40);
-  VIDEO7II          = (41);
-  S3                = (42);
-  ATIGUP            = (43);
+  DETECTX           = DETECT;
+  VGA256            = 11;
+  ATTDEB            = 12;
+  TOSHIBA           = 13;
+  SVGA16            = 14;
+  SVGA256           = 15;
+  SVGA32K           = 16;
+  SVGA64K           = 17;
+  VESA16            = 18;
+  VESA256           = 19;
+  VESA32K           = 20;
+  VESA64K           = 21;
+  VESA16M           = 22;
+  ATI16             = 23;
+  ATI256            = 24;
+  ATI32K            = 25;
+  COMPAQ            = 26;
+  TSENG316          = 27;
+  TSENG3256         = 28;
+  TSENG416          = 29;
+  TSENG4256         = 30;
+  TSENG432K         = 31;
+  GENOA5            = 32;
+  GENOA6            = 33;
+  OAK               = 34;
+  PARADIS16         = 35;
+  PARADIS256        = 36;
+  TECMAR            = 37;
+  TRIDENT16         = 38;
+  TRIDENT256        = 39;
+  VIDEO7            = 40;
+  VIDEO7II          = 41;
+  S3                = 42;
+  ATIGUP            = 43;
 
   VGALO            =  0;
   VGAMED           =  1;
@@ -156,7 +161,7 @@ Const
   EGA64HI          =  1;
   EGALO            =  0;
   EGAHI            =  1;
-  EGAMONOHI        =  0;
+  EGAMONOHI        =  3;
   PC3270HI         =  0;
 { mode definitions from BC++ 4.5 : }
   RES640x350       =  0;
@@ -173,24 +178,6 @@ Const
   {$W-} { underscore warning disabled }
   __FIRST_DRIVER_SPECIFIC_MODE      =  4;
   {$W+}
-
-  Black        =  0;
-  Blue         =  1;
-  Green        =  2;
-  Cyan         =  3;
-  Red          =  4;
-  Magenta      =  5;
-  Brown        =  6;
-  LightGray    =  7;
-  DarkGray     =  8;
-  LightBlue    =  9;
-  LightGreen   = 10;
-  LightCyan    = 11;
-  LightRed     = 12;
-  LightMagenta = 13;
-  Yellow       = 14;
-  { White        = 15; }
-  { WHITE        = (__gr_White); }
 
   EGABlack       =  0;
   EGABlue        =  1;
@@ -240,7 +227,7 @@ Const
   XORPut          =  1; { XOR }
   OrPut           =  2; { OR  }
   AndPut          =  3; { AND }
- {NotPut          =  4;}{ NOT } {not available}
+  NotPut          =  4; { NOT }
 
   LeftText        =  0;
   CenterText      =  1;
@@ -282,7 +269,7 @@ Type
 
   LineSettingsType = record
 	LineStyle : Integer;
-	uPattern  : ShortInt;  { ??? original Pattern }
+	uPattern  : ShortCard;
 	Thickness : Integer;
   end;
 
@@ -309,8 +296,8 @@ Type
   end;
 
   ViewPortType = record
-	left, top, right, bottom : Integer;
-	Clip : Boolean; { ??? was Integer }
+	x1, y1, x2, y2 : Integer;
+	Clip : WordBool;
   end;
 
   ArcCoordsType = record
@@ -318,11 +305,15 @@ Type
 	Xstart, Ystart, Xend, Yend : Integer;
   end;
 
+Var
+  GraphGetMemPtr  : Pointer;   { Dummy! }
+  GraphFreeMemPtr : Pointer;   { Dummy! }
+
 { ------------------------------------------------------------------ }
 { ---                  BGI - API definitions                     --- }
 
 procedure DetectGraph(var GraphDriver, GraphMode: Integer); C;
-procedure InitGraph(var GraphDriver:Integer; var GraphMode: Integer; PathToDriver: WrkString);
+procedure InitGraph(var GraphDriver, GraphMode: Integer; PathToDriver: CString); AsmName 'initgraph';
 procedure SetGraphMode(Mode: Integer); C;
 function  GetModeName(ModeNumber: Integer): WrkString;
 procedure GraphDefaults; C;
@@ -340,14 +331,14 @@ function  GetPixel(X,Y: Integer): Integer; C;
 procedure PutPixel(X, Y: Integer; Pixel: Integer); C;
 procedure Bar3D(left, top, right, bottom: Integer; Depth: Integer; TopFlag: Boolean); C;
 procedure Rectangle(left, top, right, bottom: Integer); C;
-procedure FillPoly(NumPoints: Word; var PolyPoints); C;
+procedure FillPoly(NumPoints: Word; var PolyPoints { : array of PointType }); C;
 procedure FillEllipse(X, Y: Integer; XRadius, YRadius: Integer); C;
 procedure GetArcCoords(var ArcCoords: ArcCoordsType); C;
 procedure FloodFill(X, Y: Integer; Border: Integer); C;
 procedure SetFillPattern(uPattern: FillPatternType; Color: Integer); C;
 procedure SetFillStyle(Pattern: Integer; Color: Integer); C;
-procedure GetImage(left, top, right, bottom: Integer; var BitMap: Void); C;
-procedure PutImage(left, top: Integer; var BitMap: Void; Op: Integer); C;
+procedure GetImage(left, top, right, bottom: Integer; var BitMap); C;
+procedure PutImage(left, top: Integer; var BitMap; Op: Integer); C;
 function  ImageSize(left, top, right, bottom: Integer): Integer; C;
 procedure GetTextSettings(var TextTypeInfo: TextSettingsType); C;
 procedure SetTextJustify(Horiz, Vert: Integer); C;
@@ -355,18 +346,18 @@ procedure SetTextStyle(Font, Direction: Integer; CharSize: Integer); C;
 procedure SetRGBPalette(Color, Red, Green, Blue: Integer); C;
 procedure SetUserCharSize(MultX, DivX, MultY, DivY: Integer); C;
 procedure SetWriteMode(Mode: Integer); C;
-procedure OutText(TextString: WrkString);
-procedure OutTextXY(X,Y: Integer; TextString: WrkString);
-function  TextHeight(TextString: WrkString): Integer;
-function  TextWidth(TextString: WrkString): Integer;
+procedure OutText(TextString: CString); AsmName 'outtext';
+procedure OutTextXY(X,Y: Integer; TextString: CString); AsmName 'outtextxy';
+function  TextHeight(TextString: CString): Integer; AsmName 'textheight';
+function  TextWidth(TextString: CString): Integer; AsmName 'textwidth';
 
 function  RegisterBGIfont(Font: pointer): Integer; C;
-function  InstallUserFont(Name: WrkString): Integer;
+function  InstallUserFont(Name: CString): Integer; AsmName 'installuserfont';
 
 function  GetPaletteSize: Integer; C;
 procedure GetPalette(var Palette: PaletteType); C;
 procedure SetPalette(ColorNum: Word; Color: Integer); AsmName '__gr_setpalette';
-procedure SetAllPalette(var Palette: PaletteType); C;
+procedure SetAllPalette(protected var Palette: PaletteType); C;
 
 procedure RestoreCrtMode; AsmName '__gr_restorecrtmode';
 procedure CloseGraph; AsmName '__gr_closegraph';
@@ -379,7 +370,7 @@ procedure MoveTo(x, y: Integer); AsmName '__gr_moveto';
 procedure Arc(X, Y: Integer; StAngle, EndAngle, Radius: Word); AsmName '__gr_arc';
 procedure Circle(X,Y: Integer; Radius: Word); AsmName '__gr_circle';
 procedure ClearDevice; AsmName '__gr_cleardevice';
-procedure DrawPoly(NumPoints: Word; var PolyPoints); AsmName '__gr_drawpoly';
+procedure DrawPoly(NumPoints: Word; var PolyPoints { : array of PointType }); AsmName '__gr_drawpoly';
 procedure Ellipse(X, Y: Integer; StAngle, EndAngle: Word; XRadius, YRadius: Word); AsmName '__gr_ellipse';
 procedure GetAspectRatio(var Xasp, Yasp: Integer); AsmName '__gr_getaspectratio';
 function  GetBkColor: Word; AsmName '__gr_getbkcolor';
@@ -390,7 +381,7 @@ function  GetMaxMode: Integer; AsmName '__gr_getmaxmode';
 function  GetGraphMode: Integer; AsmName '__gr_getgraphmode';
 function  GetX: Integer; AsmName '__gr_getx';
 function  GetY: Integer; AsmName '__gr_gety';
-function  InstallUserDriver(Name: WrkString; AutoDetectPtr: pointer):integer;
+function  InstallUserDriver(const Name: String; AutoDetectPtr: pointer):integer;
 procedure LineRel(Dx, Dy: Integer); AsmName '__gr_linerel';
 procedure LineTo(X, Y: Integer); AsmName '__gr_lineto';
 procedure MoveRel(Dx, Dy: Integer); AsmName '__gr_moverel';
@@ -402,10 +393,24 @@ procedure SetGraphBufSize(BufSize: Word); AsmName '__gr_setgraphbufsize';
 procedure SetActivePage(Page: Word); AsmName '__gr_setactivepage';
 procedure SetVisualPage(Page: Word); AsmName '__gr_setvisualpage';
 procedure GetDefaultPalette(var Palette: PaletteType);
-
-function  White:Word; AsmName '__gr_White';
-
 procedure GetModeRange(GraphDriver:Integer; var LoMode, HiMode:Integer); AsmName '__gr_getmoderange';
+
+function  Black       : Integer;
+function  Blue        : Integer;
+function  Green       : Integer;
+function  Cyan        : Integer;
+function  Red         : Integer;
+function  Magenta     : Integer;
+function  Brown       : Integer;
+function  LightGray   : Integer;
+function  DarkGray    : Integer;
+function  LightBlue   : Integer;
+function  LightGreen  : Integer;
+function  LightCyan   : Integer;
+function  LightRed    : Integer;
+function  LightMagenta: Integer;
+function  Yellow      : Integer;
+function  White       : Integer;
 
 { ------------------------------------------------------------------ }
 { ---                  BGI - API extensions                      --- }
@@ -413,32 +418,32 @@ procedure GetModeRange(GraphDriver:Integer; var LoMode, HiMode:Integer); AsmName
 { Linkable font files }
 var
 {$if __GPC_RELEASE__ < 20000412}
-  Bold_Font : __asmname__ '_bold_font' Pointer;
-  Euro_Font : __asmname__ '_euro_font' Pointer;
-  Goth_Font : __asmname__ '_goth_font' Pointer;
-  Lcom_Font : __asmname__ '_lcom_font' Pointer;
-  Litt_Font : __asmname__ '_litt_font' Pointer;
-  Sans_Font : __asmname__ '_sans_font' Pointer;
-  Scri_Font : __asmname__ '_scri_font' Pointer;
-  Simp_Font : __asmname__ '_simp_font' Pointer;
-  Trip_Font : __asmname__ '_trip_font' Pointer;
-  Tscr_Font : __asmname__ '_tscr_font' Pointer;
+  Bold_Font : __asmname__ '_bold_font' PByte;
+  Euro_Font : __asmname__ '_euro_font' PByte;
+  Goth_Font : __asmname__ '_goth_font' PByte;
+  Lcom_Font : __asmname__ '_lcom_font' PByte;
+  Litt_Font : __asmname__ '_litt_font' PByte;
+  Sans_Font : __asmname__ '_sans_font' PByte;
+  Scri_Font : __asmname__ '_scri_font' PByte;
+  Simp_Font : __asmname__ '_simp_font' PByte;
+  Trip_Font : __asmname__ '_trip_font' PByte;
+  Tscr_Font : __asmname__ '_tscr_font' PByte;
 {$else}
-  Bold_Font : Pointer; AsmName '_bold_font'; external;
-  Euro_Font : Pointer; AsmName '_euro_font'; external;
-  Goth_Font : Pointer; AsmName '_goth_font'; external;
-  Lcom_Font : Pointer; AsmName '_lcom_font'; external;
-  Litt_Font : Pointer; AsmName '_litt_font'; external;
-  Sans_Font : Pointer; AsmName '_sans_font'; external;
-  Scri_Font : Pointer; AsmName '_scri_font'; external;
-  Simp_Font : Pointer; AsmName '_simp_font'; external;
-  Trip_Font : Pointer; AsmName '_trip_font'; external;
-  Tscr_Font : Pointer; AsmName '_tscr_font'; external;
+  Bold_Font : PByte; AsmName '_bold_font'; external;
+  Euro_Font : PByte; AsmName '_euro_font'; external;
+  Goth_Font : PByte; AsmName '_goth_font'; external;
+  Lcom_Font : PByte; AsmName '_lcom_font'; external;
+  Litt_Font : PByte; AsmName '_litt_font'; external;
+  Sans_Font : PByte; AsmName '_sans_font'; external;
+  Scri_Font : PByte; AsmName '_scri_font'; external;
+  Simp_Font : PByte; AsmName '_simp_font'; external;
+  Trip_Font : PByte; AsmName '_trip_font'; external;
+  Tscr_Font : PByte; AsmName '_tscr_font'; external;
 {$endif}
 
 
 procedure SetBGImode(Var gdrv, gmode: Integer); AsmName 'set_BGI_mode';
-  { Translates BGI driver/mode into BGI2GRX driver/mode pair
+  { Translates BGI driver/mode into a driver/mode pair for this unit
     for usage with InitGraph / SetGraphMode                  }
 
 procedure SetBGImodeWHC(Var gdrv, gmode: Integer; Width, Height, Colors: Integer); AsmName '__gr_set_BGI_mode_whc';
@@ -476,117 +481,33 @@ function  GetActivePage : Integer; AsmName '__gr_getactivepage';
 function  GetVisualPage : Integer; AsmName '__gr_getvisualpage';
   { Counterparts of SetActivePage/SetVisualPage }
 
+{$ifndef NO_GRAPH_KEY_FUNCTIONS}
+function KeyPressed: Boolean; AsmName 'kbhit';
+function ReadKey: Char; AsmName 'getch';
+{$endif}
+
 Implementation
 
-
-{
-| AFAIK there's no way to pass value parameter strings by pointer
-| in GPC  ---  Define some helper functions passing pointers
-}
-
-procedure ig(var gd, gm : integer; var ptd: WrkString);
-    AsmName '__gr_p_initgraph';
-
-function th(var txt : WrkString) : Integer;
-    Asmname '__gr_p_textheight';
-
-function tw(var txt : WrkString) : Integer;
-    Asmname '__gr_p_textwidth';
-
-function iuf(var ts: WrkString): Integer;
-    Asmname '__gr_p_installuserfont';
-
-procedure ot(var ts: WrkString);
-    Asmname '__gr_p_outtext';
-
-procedure otxy(x,y: Integer; var ts: WrkString);
-    Asmname '__gr_p_outtextxy';
-
-
-{ Convert strings returned from C into GPC strings }
-function StrPas(Src: PChar): WrkString;
-var
-  S : WrkString;
-begin
-  S := '';
-  if (Src <> NIL)
-  then while ( (Src^ <> chr(0)) AND (length(S) < S.capacity)) do
-	   begin
-		 S := S + Src^;
-		 inc(Word(Src));
-	   end;
-  StrPas := S;
-end;
-
-
-
-procedure InitGraph(var GraphDriver:Integer; var GraphMode: Integer;
-						    PathToDriver: WrkString);
-begin
-  ig(GraphDriver, GraphMode, PathToDriver);
-end;
-
-
-
-function TextHeight(TextString: WrkString): Integer;
-begin
-  TextHeight := th(TextString);
-end;
-
-
-
-function TextWidth(TextString: WrkString): Integer;
-begin
-  TextWidth := tw(TextString);
-end;
-
-
-
-function InstallUserFont(Name: WrkString): Integer;
-begin
-  InstallUserFont := iuf(Name);
-end;
-
-
-
-procedure OutText(TextString: WrkString);
-begin
-  ot(TextString);
-end;
-
-
-
-procedure OutTextXY(X,Y: Integer; TextString: WrkString);
-begin
-  otxy(X, Y, TextString);
-end;
-
-
-
 function  GraphErrorMsg(ErrorCode: Integer): WrkString;
-  function gem(ec: Integer): PChar; Asmname 'grapherrormsg';
+  function gem(ec: Integer): CString; Asmname 'grapherrormsg';
 begin
-  GraphErrorMsg := StrPas(gem(ErrorCode));
+  GraphErrorMsg := CString2String(gem(ErrorCode));
 end;
 
 
 
 function  GetModeName(ModeNumber: Integer): WrkString;
-  function gmn(mn: Integer): PChar; Asmname 'getmodename';
+  function gmn(mn: Integer): CString; Asmname 'getmodename';
 begin
-  GetModeName := StrPas(gmn(ModeNumber));
+  GetModeName := CString2String(gmn(ModeNumber));
 end;
 
 
 
 function  GetDriverName: WrkString;
-var
-  Buff : PChar;
-  function gdn: PChar; Asmname 'getdrivername';
-
+  function gdn: CString; Asmname 'getdrivername';
 begin
-  Buff := gdn;
-  GetDriverName := StrPas(Buff);
+  GetDriverName := CString2String(gdn);
 end;
 
 
@@ -600,11 +521,91 @@ end;
 
 
 
-function InstallUserDriver(Name: WrkString; AutoDetectPtr: pointer):integer;
+function InstallUserDriver(const Name: String; AutoDetectPtr: pointer):integer;
 begin InstallUserdriver := grError end;
 
 function RegisterBGIdriver(driver: pointer): Integer;
 begin RegisterBGIdriver := grError end;
 
-end.
 
+function Black: Integer;
+begin
+  Black := EgaColor (0)
+end;
+
+function Blue: Integer;
+begin
+  Blue := EgaColor (1)
+end;
+
+function Green: Integer;
+begin
+  Green := EgaColor (2)
+end;
+
+function Cyan: Integer;
+begin
+  Cyan := EgaColor (3)
+end;
+
+function Red: Integer;
+begin
+  Red := EgaColor (4)
+end;
+
+function Magenta: Integer;
+begin
+  Magenta := EgaColor (5)
+end;
+
+function Brown: Integer;
+begin
+  Brown := EgaColor (6)
+end;
+
+function LightGray: Integer;
+begin
+  LightGray := EgaColor (7)
+end;
+
+function DarkGray: Integer;
+begin
+  DarkGray := EgaColor (8)
+end;
+
+function LightBlue: Integer;
+begin
+  LightBlue := EgaColor (9)
+end;
+
+function LightGreen: Integer;
+begin
+  LightGreen := EgaColor (10)
+end;
+
+function LightCyan: Integer;
+begin
+  LightCyan := EgaColor (11)
+end;
+
+function LightRed: Integer;
+begin
+  LightRed := EgaColor (12)
+end;
+
+function LightMagenta: Integer;
+begin
+  LightMagenta := EgaColor (13)
+end;
+
+function Yellow: Integer;
+begin
+  Yellow := EgaColor (14)
+end;
+
+function White: Integer;
+begin
+  White := EgaColor (15)
+end;
+
+end.

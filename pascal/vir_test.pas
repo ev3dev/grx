@@ -137,7 +137,7 @@ begin
 	   3: begin
 		x1 := evt.x;
 		y1 := evt.y;  { Why I have to save the position ??? }
-		ContiPtr := GrCreateContext(xc + 1, yc + 1, Nil, Conti);
+		ContiPtr := GrCreateContext(xc + 1, yc + 1, Nil, @Conti);
 		GrMouseEraseCursor;
 		GrBitBlt(@Conti, 0, 0, GrScreenContext, x1 - (xc div 2), y1 - (yc div 2), x1 + (xc div 2), y1 + (yc div 2), GrWRITE);
 		GrMouseDisplayCursor;

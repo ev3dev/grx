@@ -69,6 +69,7 @@ extern "C" {
 #define grInvalidVersion   -18
 
 #define DETECT             (-2)
+#define DETECT_PAS         (0)
 #define NATIVE_GRX         (-3)
 #define CURRENT_DRIVER     (-1)
 #define VGA                ( 9)
@@ -145,6 +146,7 @@ extern "C" {
 #define EGALO              0
 #define EGAHI              1
 #define EGAMONOHI          0
+#define EGAMONOHI_PAS      3
 #define PC3270HI           0
 /* mode definitions from BC++ 4.5 : */
 #define RES640x350         0
@@ -273,7 +275,7 @@ enum fill_patterns {        /* Fill patterns for get/setfillstyle */
 #define XOR_PUT  1
 #define OR_PUT   2
 #define AND_PUT  3
-/*      NOT_PUT  not available */
+#define NOT_PUT  4
 
 #define LEFT_TEXT   0
 #define CENTER_TEXT 1
@@ -403,7 +405,7 @@ int      installuserfont(const char *name);
 
 int      getpalettesize(void);
 void     getpalette(struct palettetype  *palette);
-void     setallpalette( struct palettetype  *palette);
+void     setallpalette( const struct palettetype  *palette);
 
 
 
@@ -437,7 +439,7 @@ int      _ega_color(int egacol);
 
 /* ------------------------------------------------------------------ */
 /* ---            direct linkable API functions                   --- */
-/* ---     ( mainly for GNU Pascal BGI2GRX interface usage )      --- */
+/* ---      ( mainly for GNU Pascal Graph unit usage )            --- */
 
 void __gr_restorecrtmode(void);
 void __gr_closegraph(void);
@@ -487,22 +489,6 @@ int  __gr_getmodemaxcolor(int mode);
 void __gr_set_BGI_mode_whc(int *gd, int *gm, int width, int height, int colors);
 int  __gr_get_BGI_mode_pages(void);
 void __gr_set_BGI_mode_pages(int p);
-
-/* ------------------------------------------------------------------ */
-/* ---                  GPC support functions                     --- */
-
-typedef struct {
-  int  cap;      /* Capacity */
-  int  len;      /* actual Length */
-  char str[1];   /* String contents */
-} __gr_p_GPCstr;
-
-void __gr_p_initgraph(int *graphdriver, int *graphmode, __gr_p_GPCstr *ptd);
-void __gr_p_outtext(__gr_p_GPCstr *txt);
-void __gr_p_outtextxy(int x, int y, __gr_p_GPCstr *txt);
-int  __gr_p_textheight(__gr_p_GPCstr *txt);
-int  __gr_p_textwidth(__gr_p_GPCstr *txt);
-int  __gr_p_installuserfont(__gr_p_GPCstr *name);
 
 #ifdef __cplusplus
 }

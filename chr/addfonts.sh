@@ -7,7 +7,7 @@
 #
 
 rm -f *.o
-gcc -O2 ../src/bgi/bin2c.c -o bin2c.exe 
+gcc -O2 ../src/utilprog/bin2c.c -o bin2c.exe
 for x in *.chr; do
 	echo "Processing $x ...";
 	name=`basename $x | sed -e 's,\.chr,,g'`

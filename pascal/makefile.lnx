@@ -11,21 +11,7 @@ include  ../makedefs.grx
 GRXLIB = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 GRXLIBPATH = -L../lib/$(GRX_LIB_SUBDIR)
 
-ADDON_LIBS= -lvga
-
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_LIBS += -ltiff
-endif
-
-ifeq ($(HAVE_LIBJPEG),y)
-  ADDON_LIBS += -ljpeg
-endif
-
-ifeq ($(NEED_ZLIB),y)
-  ADDON_LIBS += -lz
-endif
-
-LIBS= $(GRXLIBPATH) $(ADDON_LIBS) -lm
+LIBS= $(GRXLIBPATH) $(GRXLIB) -lvga -lm
 
 # Compiler and options on your system  
 COMPILER = gpc --automake
@@ -36,7 +22,11 @@ PROGS= 			\
 	modetest 	\
 	taste 		\
 	txt_test 	\
-	vir_test
+	vir_test	\
+	polytest	\
+	jpgtest		\
+	colortst	\
+	imgview
 
 all: $(PROGS)
 

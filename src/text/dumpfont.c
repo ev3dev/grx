@@ -84,7 +84,7 @@ static char fontend[] =
 
 /* ----------------------------------------------------------------------- */
 
-void GrDumpFont(GrFont *f,char *CsymbolName,char *fileName)
+void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName)
 {
         unsigned int i;
         int  offset;
