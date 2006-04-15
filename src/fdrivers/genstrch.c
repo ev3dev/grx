@@ -66,7 +66,7 @@ static void stretch(GrFrame *dst,int dx,int dy,int dw, int dh,
     setup_ALLOC();
     do {
         GrFrame csave;
-        GrColor far *pixels = NULL;
+        GrColor *pixels = NULL;
         _GR_lineData lne;
         _GR_getIndexedScanline getscl = src->gf_driver->getindexedscanline;
         _GR_putScanline        putscl = dst->gf_driver->putscanline;

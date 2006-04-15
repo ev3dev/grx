@@ -1,8 +1,8 @@
 /**
- ** memtest.c ---- test memory driver
+ ** memtest.c ---- test the memory driver
  **
  ** Copyright (C) 2001 Mariano Alvarez Fernandez
- ** [e-mail: malfer@teleline.es]
+ ** [e-mail: malfer@telefonica.net]
  **
  ** This is a test/demo file of the GRX graphics library.
  ** You can use GRX test/demo files as you want.
@@ -18,7 +18,7 @@
  **/
 
 #include <stdio.h>
-#include "grx20.h"
+#include "mgrx.h"
 #include "drawing.h"
 
 int main()

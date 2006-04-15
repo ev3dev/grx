@@ -89,7 +89,7 @@ void _GrDrawString(const void *text,int length,int x,int y,
         while(--length >= 0) {
             int  chr = GR_TEXTSTR_CODE(text,type);
             int  attr,xx,yy,cw,ch;
-            char far *bmp;
+            char *bmp;
             if(type == GR_ATTR_TEXT) {
                 attr = GR_TEXTSTR_ATTR(text,GR_ATTR_TEXT);
                 fgcv = GR_CTABLE_COLOR(fgcp,GR_ATTR_FGCOLOR(attr));

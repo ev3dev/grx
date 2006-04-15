@@ -19,8 +19,8 @@
 #ifndef __GRDRIVER_H_INCLUDED__
 #define __GRDRIVER_H_INCLUDED__
 
-#ifndef __GRX20_H_INCLUDED__
-#include "grx20.h"
+#ifndef __MGRX_H_INCLUDED__
+#include "mgrx.h"
 #endif
 
 /*
@@ -42,7 +42,6 @@ extern GrFrameDriver
 /*
  * Standard frame drivers in GRX
  */
-_GrFrameDriverHERC1,                    /* Hercules mono */
 _GrFrameDriverEGAVGA1,                  /* EGA VGA mono */
 _GrFrameDriverEGA4,                     /* EGA 16 color */
 _GrFrameDriverSVGA4,                    /* (Super) VGA 16 color */
@@ -90,15 +89,9 @@ extern GrVideoDriver
 /*
  * Standard video drivers in GRX
  */
-_GrVideoDriverHERC,                     /* Hercules driver */
 _GrVideoDriverSTDEGA,                   /* standard EGA driver */
 _GrVideoDriverSTDVGA,                   /* standard VGA driver */
 _GrVideoDriverVESA,                     /* generic VESA Super VGA driver */
-_GrVideoDriverATI28800,                 /* ATI 28800 chipset driver */
-_GrVideoDriverET4000,                   /* Tseng ET4000 driver */
-_GrVideoDriverCL5426,                   /* Cirrus 5426 driver */
-_GrVideoDriverMACH64,                   /* ATI MACH64 driver */
-_GrVideoDriverS3,                       /* S3 driver */
 
 _GrVideoDriverXWIN,                     /* X11 interface */
 _GrVideoDriverXF86DGA,                  /* XFree86 DGA interface */
@@ -126,10 +119,10 @@ typedef void     (*_GR_drawPix)(int,int,GrColor);
 typedef void     (*_GR_blitFunc)(GrFrame *dst,int dx,int dy,
                                  GrFrame *src,int  x,int  y,
                                  int w,int h,GrColor op);
-typedef GrColor far *(*_GR_getIndexedScanline)(GrFrame *c,int x,int y,
+typedef GrColor *(*_GR_getIndexedScanline)(GrFrame *c,int x,int y,
                                                int w, int *indx);
 typedef void     (*_GR_putScanline)(int x,int y,int w,
-                                    const GrColor far *scl,GrColor op);
+                                    const GrColor *scl,GrColor op);
 
 /*
  * Frame driver utility functions
@@ -143,7 +136,7 @@ void _GrFrDrvPackedBitBltR2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,i
 void _GrFrDrvPackedBitBltV2R_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
 void _GrFrDrvPackedBitBltV2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
 
-void _GrFrDrvGenericPutScanline(int x,int y,int w,const GrColor far *scl, GrColor op );
+void _GrFrDrvGenericPutScanline(int x,int y,int w,const GrColor *scl, GrColor op );
 GrColor *_GrFrDrvGenericGetIndexedScanline(GrFrame *c,
                                            int x,int y,int w,
                                            int *indx         );

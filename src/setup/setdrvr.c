@@ -25,7 +25,7 @@
 #include "memcopy.h"
 #include "memfill.h"
 
-static char *near nxtoken(char *p,char *token)
+static char * nxtoken(char *p,char *token)
 {
         while(*p == ' ') p++;
         while(*p && (*p != ' ')) *token++ = *p++;
@@ -38,7 +38,7 @@ int GrSetDriver(char *drvspec)
         static int firsttime = TRUE;
         GrVideoDriver *drv = NULL;
         char options[100];
-        if(!drvspec) drvspec = getenv("GRX20DRV");
+        if(!drvspec) drvspec = getenv("MGRXDRV");
         options[0] = '\0';
         if(drvspec) {
             char t[100],name[100],*p = drvspec;

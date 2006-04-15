@@ -21,8 +21,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "grx20.h"
-#include "grxkeys.h"
+#include "mgrx.h"
+#include "mgrxkeys.h"
 
 static GrTextOption opt;
 static int curx = 0, cury = 0;
@@ -34,10 +34,10 @@ static void gnewl(void)
         cury += GrCharHeight('A', &opt) + deltay;
         curx = 0;
         if(cury + GrCharHeight('A', &opt) > GrSizeY() + deltay) {
-            if(GrKeyRead() == GrKey_F10) {
-                GrUnloadFont(opt.txo_font);
-                exit(0);
-            }
+//            if(GrKeyRead() == GrKey_F10) {
+//                GrUnloadFont(opt.txo_font);
+//                exit(0);
+//            }
             GrClearScreen(opt.txo_bgcolor.v);
             cury = 0;
         }
@@ -81,7 +81,8 @@ int main(int argc, char **argv)
         GrFontHeader *hdr;
         FILE *f;
         char buffer[0x20];
-        GrKeyType key;
+        GrEvent ev;
+        int key;
 
         /* unfortunately not all systems support getopt() */
         for(i = 1; i < argc; i++) {
@@ -180,8 +181,8 @@ int main(int argc, char **argv)
         gnewl();
 
         if(hdr->minchar <= 0xC0 && hdr->minchar + hdr->numchars >= 0x100) {
-            gputs("БЪРЗАТА КАФЯВА ЛИСИЦА ПРЕСКАЧА ЛЕНИВОТО КУЧЕ");
-            gputs("бързата кафява лисица прескача ленивото куче");
+            gputs("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ");
+            gputs("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ");
             gnewl();
         }
 
@@ -212,12 +213,19 @@ int main(int argc, char **argv)
         gputs("F1-new line  F5-toggle reverse  F7-toggle underline  F10-exit");
         gnewl();
 
-        while((key = GrKeyRead()) != GrKey_F10) {
-            if(key == GrKey_F1) gnewl();
-            else if(key == GrKey_F5) revert();
-            else if(key == GrKey_F7) opt.txo_fgcolor.v ^= GR_UNDERLINE_TEXT;
-            else if(key < 0x100) gputc(key);
+        GrEventInit();
+        while(1) {
+            GrEventWait(&ev);
+            if(ev.type == GREV_KEY) {
+                key = ev.p1;
+                if( key == GrKey_F10) break;
+                if(key == GrKey_F1) gnewl();
+                else if(key == GrKey_F5) revert();
+                else if(key == GrKey_F7) opt.txo_fgcolor.v ^= GR_UNDERLINE_TEXT;
+                else if(key < 0x100) gputc(key);
+            }
         }
+        GrEventUnInit();
 
         GrUnloadFont(opt.txo_font);
 

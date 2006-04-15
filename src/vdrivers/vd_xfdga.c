@@ -14,6 +14,9 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Changes by Dimitar Zhekov (jimmy@is-vn.bg) Aug 27 2003
+ **   - use Xlib for rendering unless defined XF86DGA_FRAMEBUFFER
+ **
  **/
 
 #include "libgrx.h"
@@ -32,6 +35,15 @@ static int setmode(GrVideoMode *mp,int noclear)
         GRX_ENTER();
         res = FALSE;
         DBGPRINTF(DBG_DRIVER, ("attempting to set DGA mode %d\n", mp->mode));
+#ifndef XF86DGA_FRAMEBUFFER
+        if(_XGrPatternGC != None) XFreeGC(_XGrDisplay, _XGrPatternGC);
+        if(_XGrPattern != None) XFreePixmap(_XGrDisplay, _XGrPattern);
+        if(_XGrBitmapGC != None) XFreeGC(_XGrDisplay, _XGrBitmapGC);
+        if(_XGrBitmap != None) XFreePixmap(_XGrDisplay, _XGrBitmap);
+        if(_XGrGC != None) XFreeGC(_XGrDisplay, _XGrGC);
+        _XGrGC = _XGrBitmapGC = _XGrPatternGC = None;
+        _XGrBitmap = _XGrPattern = None;
+#endif
         XUngrabPointer(_XGrDisplay, CurrentTime);
         XUngrabKeyboard(_XGrDisplay, CurrentTime);
         dev = XDGASetMode(_XGrDisplay, _XGrScreen, mp->mode);
@@ -40,7 +52,11 @@ static int setmode(GrVideoMode *mp,int noclear)
                 DBGPRINTF(DBG_DRIVER, ("can't set DGA mode\n"));
                 goto done;
             }
+#ifdef XF86DGA_FRAMEBUFFER
             mp->extinfo->frame = dev->data;
+#else
+            mp->extinfo->frame = (char *) dev->pixmap;
+#endif
             XDGASync(_XGrDisplay, _XGrScreen);
             XDGASetViewport(_XGrDisplay, _XGrScreen, 0, 0, XDGAFlipRetrace);
             XGrabKeyboard(_XGrDisplay, _XGrWindow, True, GrabModeAsync,
@@ -51,7 +67,7 @@ static int setmode(GrVideoMode *mp,int noclear)
                          GrabModeAsync, None, None, CurrentTime);
             if(mp->bpp == 8) {
                 if(_XGrColormap == None) {
-                    /* one colormap for all modes - XFreeColormap() crashes */
+                    /* one colormap for all modes, XFreeColormap() problems */
                     _XGrColormap = XDGACreateColormap(_XGrDisplay, _XGrScreen,
                                                       dev, AllocAll);
                 }
@@ -60,7 +76,26 @@ static int setmode(GrVideoMode *mp,int noclear)
                     _GR_lastFreeColor = 255;
                 }
             }
+#ifdef XF86DGA_FRAMEBUFFER
             if(!noclear) memzero(dev->data, mp->lineoffset * mp->height);
+#else
+            _XGrDepth = _XGrBitsPerPixel = mp->bpp;
+            if(_XGrDepth == 32) _XGrDepth = 24;
+            _XGrForeColor = GrNOCOLOR;                /* force XSetForeground */
+            _XGrBackColor = GrNOCOLOR;                /* force XSetBackground */
+            _XGrColorOper = C_WRITE;
+            _XGrGC = XCreateGC(_XGrDisplay, dev->pixmap, 0L, NULL);
+            _XGrBitmap = XCreatePixmap(_XGrDisplay, dev->pixmap, 128, 128, 1);
+            _XGrBitmapGC = XCreateGC(_XGrDisplay, _XGrBitmap, 0L, NULL);
+            _XGrPattern = XCreatePixmap(_XGrDisplay, dev->pixmap, 8, 1, 1);
+            _XGrPatternGC = XCreateGC(_XGrDisplay, _XGrPattern, 0L, NULL);
+            if(!noclear) {
+                XSetForeground(_XGrDisplay, _XGrGC, 0);
+                XSetFunction(_XGrDisplay, _XGrGC, GXcopy);
+                XFillRectangle(_XGrDisplay, dev->pixmap, _XGrGC, 0, 0,
+                               mp->width, mp->height);
+            }
+#endif
         }
         res = TRUE;
 done:        if(dev != NULL) XFree(dev);
@@ -74,7 +109,9 @@ static void reset(void)
         if(_XGrDisplay != NULL) {
             XUngrabPointer(_XGrDisplay, CurrentTime);
             XUngrabKeyboard(_XGrDisplay, CurrentTime);
+#ifdef XF86DGA_FRAMEBUFFER
             XDGACloseFramebuffer(_XGrDisplay, _XGrScreen);
+#endif
             dev = XDGASetMode(_XGrDisplay, _XGrScreen, 0);
             if(dev != NULL) XFree(dev);
             XCloseDisplay(_XGrDisplay);
@@ -93,11 +130,13 @@ static int detect(void)
         int major, minor;
         GRX_ENTER();
         res = FALSE;
-        if (geteuid()) {
+#ifdef XF86DGA_FRAMEBUFFER
+        if(geteuid()) {
             DBGPRINTF(DBG_DRIVER, ("root priviledges required\n"));
             goto done;
         }
-        if((_XGrDisplay = XOpenDisplay ("")) == NULL) {
+#endif
+        if((_XGrDisplay = XOpenDisplay("")) == NULL) {
             DBGPRINTF(DBG_DRIVER, ("can't connect to X server\n"));
             goto done;
         }
@@ -109,7 +148,7 @@ static int detect(void)
             DBGPRINTF(DBG_DRIVER, ("can't query DGA version\n"));
             goto done;
         }
-        if (major < 2) {
+        if(major < 2) {
             DBGPRINTF(DBG_DRIVER, ("required DGA version 2.0, detected %d.%d\n",
                                    major, minor));
             goto done;
@@ -119,12 +158,19 @@ done:        if(!res) reset();
         GRX_RETURN(res);
 }
 
-/* from vd_xwin.c, cut; use 255? */
+#ifndef XF86DGA_FRAMEBUFFER
+static void setbank(int bk)
+{}
+
+static void setrwbanks(int rb,int wb)
+{}
+#endif
+
 static void loadcolor(int c,int r,int g,int b)
 {
         XColor xcolor;
 
-        if (_XGrColormap != None) {
+        if(_XGrColormap != None) {
             xcolor.pixel = c;
             xcolor.red   = r * 257;
             xcolor.green = g * 257;
@@ -133,6 +179,12 @@ static void loadcolor(int c,int r,int g,int b)
             XStoreColor(_XGrDisplay, _XGrColormap, &xcolor);
         }
 }
+
+#ifdef XF86DGA_FRAMEBUFFER
+#define GRFRAMEDRIVER(bpp) GR_frameSVGA##bpp##_LFB
+#else
+#define GRFRAMEDRIVER(bpp) GR_frameXWIN##bpp
+#endif
 
 static int build_video_mode(XDGAMode *ip, GrVideoMode *mp, GrVideoModeExt *ep)
 {
@@ -147,23 +199,41 @@ static int build_video_mode(XDGAMode *ip, GrVideoMode *mp, GrVideoModeExt *ep)
 
         ep->drv        = NULL;
         ep->frame      = NULL;
+#ifdef XF86DGA_FRAMEBUFFER
         ep->flags      = GR_VMODEF_LINEAR;
+#else
+        ep->flags      = 0;
+#endif
         ep->setup      = setmode;
         ep->setvsize   = NULL;
         ep->scroll     = NULL;
+#ifdef XF86DGA_FRAMEBUFFER
         ep->setbank    = NULL;
         ep->setrwbanks = NULL;
+#else
+        ep->setbank    = setbank;
+        ep->setrwbanks = setrwbanks;
+#endif
         ep->loadcolor  = NULL;
 
         if(ip->visualClass != (mp->bpp == 8 ? PseudoColor : TrueColor)) {
-            DBGPRINTF(DBG_DRIVER, ("visual class %s not supported in %dbpp\n",
-                                   _XGrClassNames[ip->visualClass], mp->bpp));
+            DBGPRINTF(DBG_DRIVER, ("%d: visual class %s depth %d unsupported\n",
+                                   ip->num, _XGrClassNames[ip->visualClass],
+                                   mp->bpp));
             return(FALSE);
         }
 
+#ifndef XF86DGA_FRAMEBUFFER
+        if(!(ip->flags & XDGAPixmap)) {
+            DBGPRINTF(DBG_DRIVER, ("%d: rendering with XLib impossible\n",
+                                   ip->num));
+            return(FALSE);
+        }
+#endif
+
         switch(mp->bpp) {
             case 8 :
-                ep->mode = GR_frameSVGA8_LFB;
+                ep->mode = GRFRAMEDRIVER(8);
                 ep->cprec[0] =
                 ep->cprec[1] =
                 ep->cprec[2] = 6;
@@ -173,7 +243,7 @@ static int build_video_mode(XDGAMode *ip, GrVideoMode *mp, GrVideoModeExt *ep)
                 ep->loadcolor = loadcolor;
                 break;
             case 15 :
-                ep->mode = GR_frameSVGA16_LFB;
+                ep->mode = GRFRAMEDRIVER(16);
                 ep->cprec[0] =
                 ep->cprec[1] =
                 ep->cprec[2] = 5;
@@ -182,7 +252,7 @@ static int build_video_mode(XDGAMode *ip, GrVideoMode *mp, GrVideoModeExt *ep)
                 ep->cpos[2]  = 0;
                 break;
             case 16 :
-                ep->mode = GR_frameSVGA16_LFB;
+                ep->mode = GRFRAMEDRIVER(16);
                 ep->cprec[0] = 5;
                 ep->cprec[1] = 6;
                 ep->cprec[2] = 5;
@@ -197,15 +267,15 @@ static int build_video_mode(XDGAMode *ip, GrVideoMode *mp, GrVideoModeExt *ep)
                 ep->cpos[0]   = 16;
                 ep->cpos[1]   = 8;
                 ep->cpos[2]   = 0;
-                ep->mode = GR_frameSVGA24_LFB;
+                ep->mode = GRFRAMEDRIVER(24);
                 if(ip->bitsPerPixel == 32) {
                     mp->bpp = 32;
-                    ep->mode = GR_frameSVGA32L_LFB;
+                    ep->mode = GRFRAMEDRIVER(32L);
                     if(ip->redMask == 0xFF000000) {
                         ep->cpos[0]   = 24;
                         ep->cpos[1]   = 16;
                         ep->cpos[2]   = 8;
-                        ep->mode = GR_frameSVGA32H_LFB;
+                        ep->mode = GRFRAMEDRIVER(32H);
                     }
                 }
                 break;
@@ -231,7 +301,7 @@ GrVideoModeExt grtextextdga = {
     NULL                                /* color loader */
 };
 
-#define  NUM_MODES    40                /* max # of supported modes */
+#define  NUM_MODES    200               /* max # of supported modes */
 #define  NUM_EXTS     10                /* max # of mode extensions */
 
 static GrVideoModeExt exts[NUM_EXTS];
@@ -280,10 +350,12 @@ static int init(char *options)
         if(detect()) {
             _XGrScreen = DefaultScreen(_XGrDisplay);
             _XGrWindow = DefaultRootWindow(_XGrDisplay);
+#ifdef XF86DGA_FRAMEBUFFER
             if(!XDGAOpenFramebuffer(_XGrDisplay, _XGrScreen)) {
                 DBGPRINTF(DBG_DRIVER, ("can't open framebuffer\n"));
                 goto done;
             }
+#endif
             modev = XDGAQueryModes(_XGrDisplay, _XGrScreen, &modec);
             if(modev == NULL) {
                 DBGPRINTF(DBG_DRIVER, ("can't query DGA modes"));
@@ -296,6 +368,9 @@ static int init(char *options)
             }
             _XGrWindowedMode = 0;
             _XGrColormap = None;
+#ifndef XF86DGA_FRAMEBUFFER
+            _XGrColorNumPixels = 0;
+#endif
             res = TRUE;
         }
 done:        if(modev != NULL) XFree(modev);

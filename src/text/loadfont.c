@@ -109,9 +109,9 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
     f = doit(fname,"",cvt,w,h,minc,maxc);
     if((f == NULL) && !abspath) {
         if(_GrFontFileInfo.npath < 0) {
-            char *fPath = getenv("GRXFONT");
-#ifdef GRX_DEFAULT_FONT_PATH
-            if (!fPath) fPath = GRX_DEFAULT_FONT_PATH;
+            char *fPath = getenv("MGRXFONT");
+#ifdef MGRX_DEFAULT_FONT_PATH
+            if (!fPath) fPath = MGRX_DEFAULT_FONT_PATH;
 #endif            
             GrSetFontPath(fPath);
         }

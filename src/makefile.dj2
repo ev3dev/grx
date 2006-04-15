@@ -12,15 +12,15 @@ include ../makedefs.grx
 
 INCDIR= -I. -I./include -I../include
 
-ifdef GRX_DEFAULT_FONT_PATH
-CCOPT += -DGRX_DEFAULT_FONT_PATH=\"$(GRX_DEFAULT_FONT_PATH)\"
+ifdef MGRX_DEFAULT_FONT_PATH
+CCOPT += -DMGRX_DEFAULT_FONT_PATH=\"$(MGRX_DEFAULT_FONT_PATH)\"
 endif
 
 TAG = $(DOS_DJGPP_V2)
 
-GRX20ln    = libgrx20.a
-GRX20ST    = ../lib/$(GRX_LIB_SUBDIR)/$(GRX20ln)
-GRX20STdos = $(subst /,\,$(GRX20ST))
+MGRXln    = libmgrx.a
+MGRXST    = ../lib/$(GRX_LIB_SUBDIR)/$(MGRXln)
+MGRXSTdos = $(subst /,\,$(MGRXST))
 DJDIRdos   = $(subst /,\,$(DJDIR))
 
 OX=.o
@@ -31,16 +31,10 @@ include ./stdobjs.mak
 # Keep things a little smaller when building the lib ...
 STD_Oa= $(STD_1) $(STD_2)  $(STD_3)  $(STD_4) $(STD_5) $(STD_6)
 STD_Ob= $(STD_7) $(STD_8) $(STD_9) $(STD_10) $(STD_11) $(STD_12)
-BGI_Oa= $(BGI_1) $(BGI_2) $(BGI_3)
-BGI_Ob= $(BGI_4) $(BGI_5) $(BGI_6)
 
 ADDON_O=
 ifdef DEBUG
  ADDON_O += $(DBG_1)
-endif
-
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_O += $(TIF_1)
 endif
 
 ifeq ($(HAVE_LIBJPEG),y)
@@ -55,23 +49,9 @@ else
   ADDON_O += $(NOPNG_1)
 endif
 
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-  ADDON_O += $(PRN_1)
-  INCDIR += -I../addons/print
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  BGI_Ob += $(PRNBGI_1)
-endif
-endif
-
-ifeq ($(INCLUDE_BMP_CODE),y)
-  ADDON_O += $(BMP_1)
-  INCDIR  += -I../addons/bmp
-endif
-
 DJ_O=   $(ADDON_O)              \
 	fdrivers/egavga1.o      \
 	fdrivers/ega4.o         \
-	fdrivers/herc1.o        \
 	fdrivers/lfb16.o        \
 	fdrivers/lfb24.o        \
 	fdrivers/lfb32h.o       \
@@ -90,15 +70,8 @@ DJ_O=   $(ADDON_O)              \
 	fdrivers/svga4.o        \
 	fdrivers/svga8.o        \
 	fdrivers/vga8x.o        \
-	mouse/dosinput.o        \
-	mouse/doskeys.o         \
+	input/grev_dj2.o        \
 	misc/dosmisc.o          \
-	vdrivers/ati28800.o     \
-	vdrivers/cl5426.o       \
-	vdrivers/et4000.o       \
-	vdrivers/herc.o         \
-	vdrivers/mach64.o       \
-	vdrivers/s3.o           \
 	vdrivers/stdega.o       \
 	vdrivers/stdvga.o       \
 	vdrivers/u_egavga.o     \
@@ -108,19 +81,14 @@ DJ_O=   $(ADDON_O)              \
 
 ALL_O = $(STD_Oa) $(STD_Ob) $(DJ_O)
 
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  ALL_O += $(BGI_Oa) $(BGI_Ob)
-endif
-
 UTILP = ../bin/bin2c.exe        \
 	../bin/fnt2c.exe        \
 	../bin/vesainfo.exe     \
 	../bin/modetest.exe
 
-all:    $(GRX20ST) $(UTILP)
+all:    $(MGRXST) $(UTILP)
 
 clean:
-	if exist bgi\*.o      del bgi\*.o
 	if exist draw\*.o     del draw\*.o
 	if exist fdrivers\*.o del fdrivers\*.o
 	if exist fonts\*.o    del fonts\*.o
@@ -143,35 +111,18 @@ clean:
 	if exist $(TAG)       del $(TAG)
 
 cleanall: clean
-	if exist $(GRX20STdos) del $(GRX20STdos)
+	if exist $(MGRXSTdos) del $(MGRXSTdos)
 	if exist ..\bin\*.exe del ..\bin\*.exe
 
-install: $(GRX20ST)
-	copy $(GRX20STdos) $(DJDIRdos)\lib
-	copy ..\include\grx20.h $(DJDIRdos)\include
-	copy ..\include\grxkeys.h $(DJDIRdos)\include
-	copy ..\include\libbcc.h $(DJDIRdos)\include
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-	copy ..\addons\print\grxprint.h $(DJDIRdos)\include
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	if not exist $(DJDIRdos)\units\nul mkdir $(DJDIRdos)\units
-	copy ..\pascal\grx.pas $(DJDIRdos)\units
-	copy ..\pascal\bgi\graph.pas $(DJDIRdos)\units
-endif
+install: $(MGRXST)
+	copy $(MGRXSTdos) $(DJDIRdos)\lib
+	copy ..\include\mgrx.h $(DJDIRdos)\include
+	copy ..\include\mgrxkeys.h $(DJDIRdos)\include
 
 uninstall:
-	if exist $(DJDIRdos)\lib\$(GRX20ln)    del $(DJDIRdos)\lib\$(GRX20ln)
-	if exist $(DJDIRdos)\include\grx20.h   del $(DJDIRdos)\include\grx20.h
-	if exist $(DJDIRdos)\include\grxkeys.h del $(DJDIRdos)\include\grxkeys.h
-	if exist $(DJDIRdos)\include\libbcc.h del $(DJDIRdos)\include\libbcc.h
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-	if exist $(DJDIRdos)\include\grxprint.h del $(DJDIRdos)\include\grxprint.h
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	if exist $(DJDIRdos)\units\grx.pas del $(DJDIRdos)\units\grx.pas
-	if exist $(DJDIRdos)\units\graph.pas del $(DJDIRdos)\units\graph.pas
-endif
+	if exist $(DJDIRdos)\lib\$(MGRXln)    del $(DJDIRdos)\lib\$(MGRXln)
+	if exist $(DJDIRdos)\include\mgrx.h   del $(DJDIRdos)\include\mgrx.h
+	if exist $(DJDIRdos)\include\mgrxkeys.h del $(DJDIRdos)\include\mgrxkeys.h
 
 install-info:
 	copy ..\doc\grx*um.inf $(DJDIRdos)\info\grx.inf
@@ -193,8 +144,8 @@ uninstall-bin:
 	if exist $(DJDIRdos)\bin\vesainfo.exe del $(DJDIRdos)\bin\vesainfo.exe
 	if exist $(DJDIRdos)\bin\modetest.exe del $(DJDIRdos)\bin\modetest.exe
 
-ifdef GRX_DEFAULT_FONT_PATH
-FONTPATHdos = $(subst /,\,$(GRX_DEFAULT_FONT_PATH))
+ifdef MGRX_DEFAULT_FONT_PATH
+FONTPATHdos = $(subst /,\,$(MGRX_DEFAULT_FONT_PATH))
 install-fonts:
 	if not exist $(FONTPATHdos)\nul mkdir $(FONTPATHdos)
 	copy ..\fonts\*.* $(FONTPATHdos)
@@ -212,20 +163,15 @@ depend.b: depend.new
 	sed "s#\.o:#.obj:#g" <depend.new >depend.b
 	sed "s#\.o:#.asm:#g" <depend.new >>depend.b
 
-$(GRX20ST): $(TAG) $(ALL_O)
-	if exist $(GRX20STdos) del $(GRX20STdos)
-	$(AR) -r $(GRX20ST) $(STD_Oa)
-	$(AR) -r $(GRX20ST) $(STD_Ob)
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(AR) -r $(GRX20ST) $(BGI_Oa)
-	$(AR) -r $(GRX20ST) $(BGI_Ob)
-endif
-	$(AR) -r $(GRX20ST) $(DJ_O)
-	$(RANLIB) $(GRX20ST)
+$(MGRXST): $(TAG) $(ALL_O)
+	if exist $(MGRXSTdos) del $(MGRXSTdos)
+	$(AR) -r $(MGRXST) $(STD_Oa)
+	$(AR) -r $(MGRXST) $(STD_Ob)
+	$(AR) -r $(MGRXST) $(DJ_O)
+	$(RANLIB) $(MGRXST)
 
-$(UTILP): ../bin/%.exe : utilprog/%.o $(GRX20ST)
-	$(CC) -s -o $@ utilprog/$*.o $(GRX20ST)
-	$(EXE_COMPRESS) $@
+$(UTILP): ../bin/%.exe : utilprog/%.o $(MGRXST)
+	$(CC) -s -o $@ utilprog/$*.o $(MGRXST)
 
 $(DOS_DJGPP_V2):
 	$(MAKE) -f makefile.dj2 clean

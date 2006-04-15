@@ -377,7 +377,7 @@ static int init(char *options)
      XSetWindowColormap(_XGrDisplay, _XGrWindow, _XGrColormap);
   }
 
-  grxwinext.frame = (char far *) _XGrWindow;
+  grxwinext.frame = (char *) _XGrWindow;
 
   pfmt = XListPixmapFormats (_XGrDisplay, &pfmt_count);
   if (!pfmt || pfmt_count <= 0) {

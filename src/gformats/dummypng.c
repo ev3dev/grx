@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "grx20.h"
+#include "mgrx.h"
 
 /*
 ** GrPngSupport - Returns false

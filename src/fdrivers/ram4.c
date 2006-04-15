@@ -105,7 +105,7 @@ static void drawhline(int x,int y,int w,GrColor color) {
     GR_int32u cv = cval & 1 ? ~0L : 0L;
     cval >>= 1;
     if (!( !cv && (oper==C_OR||oper==C_XOR)) && !(cv && oper==C_AND) ) {
-      GR_int8u far *dptr = (GR_int8u far *)&CURC->gc_baseaddr[pl][DO];
+      GR_int8u *dptr = (GR_int8u *)&CURC->gc_baseaddr[pl][DO];
       int ww = wd;
       if ( ((GR_int8u)(~lm)) ) {
           switch(oper) {
@@ -143,7 +143,7 @@ static void drawhline(int x,int y,int w,GrColor color) {
 static void drawvline(int x,int y,int h,GrColor color)
 {
         unsigned int lwdt, mask, oper, hh;
-        char far *p;
+        char *p;
         GR_int32u offs;
         GRX_ENTER();
         oper = C_OPER(color);

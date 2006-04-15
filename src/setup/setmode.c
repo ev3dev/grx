@@ -117,7 +117,7 @@ static int buildcontext(GrVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
         sttzero(cxt);
 #if !defined(__TURBOC__) \
  && !(defined(__WATCOMC__) && !defined(__386__)) \
- && !(defined(__XWIN__) && !defined(XF86DGA_DRIVER))
+ && !(defined(__XWIN__) && !defined(XF86DGA_FRAMEBUFFER))
         if(mp->extinfo->flags&GR_VMODEF_LINEAR)
         {
             DBGPRINTF(DBG_SETMD,("buildcontext - Linear Mode\n"));
@@ -384,9 +384,9 @@ int GrSetMode(GrGraphicsMode which,...)
                         (*vmd.extinfo->setup)(&vmd,noclear);
                     }
                 }
-                DBGPRINTF(DBG_SETMD,("GrMouseUnInit ...\n"));
-                GrMouseUnInit();
-                DBGPRINTF(DBG_SETMD,("GrMouseUnInit done\n"));
+//                DBGPRINTF(DBG_SETMD,("GrMouseUnInit ...\n"));
+//                GrMouseUnInit();
+//                DBGPRINTF(DBG_SETMD,("GrMouseUnInit done\n"));
                 DRVINFO->setbank    = (void (*)(int    ))_GrDummyFunction;
                 DRVINFO->setrwbanks = (void (*)(int,int))_GrDummyFunction;
                 DRVINFO->curbank    = (-1);

@@ -19,36 +19,38 @@
 #include "libgrx.h"
 #include "grdriver.h"
 
-GrVideoDriver *_GrVideoDriverTable[] = {
 #if defined(__MSDOS__)
-    &_GrVideoDriverHERC,
+GrVideoDriver *_GrVideoDriverTable[] = {
     &_GrVideoDriverSTDEGA,
     &_GrVideoDriverSTDVGA,
     &_GrVideoDriverVESA,
-    &_GrVideoDriverATI28800,
-    &_GrVideoDriverET4000,
-    &_GrVideoDriverCL5426,
-    &_GrVideoDriverMACH64,
-    &_GrVideoDriverS3,
+    &_GrDriverMEM,
+    NULL
 #endif
+
 #if defined(__XWIN__)
+GrVideoDriver *_GrVideoDriverTable[] = {
 #if defined(XF86DGA_DRIVER)
     &_GrVideoDriverXF86DGA,
 #endif
     &_GrVideoDriverXWIN,
-#endif
-#if defined(__linux__) && !defined(__XWIN__)
-#ifdef SVGALIB_DRIVER
-    &_GrVideoDriverSVGALIB,
-#endif
-#ifdef FRAMEBUFFER_DRIVER
-    &_GrVideoDriverLINUXFB,
-#endif
-#endif
-#ifdef __WIN32__
-    &_GrVideoDriverWIN32,
-#endif
     &_GrDriverMEM,
     NULL
+#endif
+
+#if defined(__linux__) && !defined(__XWIN__)
+GrVideoDriver *_GrVideoDriverTable[] = {
+    &_GrVideoDriverLINUXFB,
+    &_GrDriverMEM,
+    NULL
+#endif
+
+#ifdef __WIN32__
+GrVideoDriver *_GrVideoDriverTable[] = {
+    &_GrVideoDriverWIN32,
+    &_GrDriverMEM,
+    NULL
+#endif
+
 };
 

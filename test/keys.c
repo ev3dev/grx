@@ -14,44 +14,13 @@
  **/
 
 #include <stdio.h>
-#include <math.h>
-#include <ctype.h>
-#include "grx20.h"
-#include "grxkeys.h"
-
-#if defined(PENTIUM_CLOCK) && (!defined(__GNUC__) || !defined(__i386__))
-#undef PENTIUM_CLOCK
-#endif
-
-#ifdef PENTIUM_CLOCK
-/******************************************************************************
-** This is modified version of keys.c that checks also work of GrKeyPressed()
-** and measures time spent in this procedure (at first set divider to clock
-** frequency of Your CPU (I have 90MHz): gcc -DPENTIUM_CLOCK=90.
-**    A.Pavenis (pavenis@acad.latnet.lv)
-*******************  Some time measurements stuff  ***************************
-** Macrodefinition RDTSC reads Pentium CPU timestamp counter. It is counting
-** CPU clocks. Attempt to use it under 386 or 486 will cause an invalid
-** instruction
-*/
-#define RDTSC(h,l) __asm__ ("rdtsc" : "=a"(l) , "=d"(h))
-inline  long   rdtsc(void)  { long h,l; RDTSC(h,l); return l; }
-/* ***************************************************************************/
-#endif /* PENTIUM_CLOCK */
-
-#ifdef __DJGPP__
-#include <conio.h>
-#include <pc.h>
-#else
-extern int getch(void);
-extern int getkey(void);
-extern int kbhit(void);
-#endif
+#include "mgrx.h"
+#include "mgrxkeys.h"
 
 #define ISPRINT(k) (((unsigned int)(k)) <= 255 && isprint(k))
 
-typedef struct { GrKeyType key;
-                 char     *name; } KeyEntry;
+typedef struct { unsigned short key;
+                 char *name; } KeyEntry;
 
 static KeyEntry Keys[] = {
   { GrKey_NoKey              , "GrKey_NoKey" },
@@ -349,82 +318,49 @@ static KeyEntry Keys[] = {
 #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
 
 int main(void) {
-  int spaces_count = 0;
-  KeyEntry *kp;
-  GrKeyType k;
-  int ok;
+    int spaces_count = 0;
+    KeyEntry *kp;
+    GrEvent ev;
+    int k, ok;
 
-  /* need to initialize X11 drivers before using keyboard && mouse functions */
-#if (GRX_VERSION_API-0) >= 0x0229
-  if ( GrGetLibrarySystem() == GRX_VERSION_GENERIC_X11)
     GrSetMode(GR_320_200_graphics);
-#elif (GRX_VERSION == GRX_VERSION_GENERIC_X11)
-  GrSetMode(GR_320_200_graphics);
-#endif
+    GrEventInit();
+    GrMouseDisplayCursor();
 
-  printf("\n\n Checking GrKey... style interface"
+    printf("\n\n Checking GrKey... style interface"
            "\n Type 3 spaces to quit the test\n\n");
-  while (spaces_count < 3) {
-#ifdef PENTIUM_CLOCK
-    int keyPressed=0;
-    do
-    {
-        static double old_tm = -1.0;
-        double  tm;
-        unsigned s,e;
-        s = rdtsc();
-        keyPressed = GrKeyPressed();
-        e = rdtsc();
-        tm = ((double) (e-s))/(1000.0*PENTIUM_CLOCK);
-        if (fabs(tm-old_tm) > 0.01) {
-          printf ("%5.2f ",tm);
-          fflush (stdout);
-          old_tm = tm;
+
+    while (spaces_count < 3) {
+        GrEventWait(&ev);
+        if (ev.type == GREV_KEY) {
+            k = ev.p1;
+            if (k == ' ') ++spaces_count;
+            else spaces_count = 0;
+            ok = 0;
+            printf("GREV_KEY, time=%ld, kbstat=0x%03x, ",
+                   (long)ev.time, (unsigned)ev.kbstat);
+            for (kp = Keys; kp < &Keys[KEYS]; ++kp) {
+                if (k == kp->key) {
+                    printf("code=0x%04x, symbol=%s\n", (unsigned)k, kp->name);
+                    ok = 1;
+                    break;
+                }
+            }
+            if (!ok)
+                 printf("code=0x%04x, symbol=UNKNOWN\n", (unsigned)k);
         }
-    } while (!keyPressed);
-#endif /* PENTIUM_CLOCK */
-    k = GrKeyRead();
-    if (k == ' ') ++spaces_count; else spaces_count = 0;
-
-    ok = 0;
-    for ( kp = Keys; kp < &Keys[KEYS]; ++kp ) {
-      if (k == kp->key) {
-        printf("code 0x%04x\tsymbol %s\n", (unsigned)k, kp->name);
-        ok = 1;
-        break;
-      }
+        else if (ev.type == GREV_MOUSE) {
+            printf("GREV_MOUSE, time=%ld, kbstat=0x%03x, ",
+                   (long)ev.time, (unsigned)ev.kbstat);
+            printf("p1=%ld, X=%ld, Y=%ld\n",
+                   ev.p1, ev.p2, ev.p3);
+        }
+        else {
+            printf("TYPE=%d, time=%ld, kbstat=0x%03x, ",
+                   ev.type, (long)ev.time, (unsigned int)ev.kbstat);
+            printf("p1=%ld, p2=%ld, p3=%ld\n",
+                   ev.p1, ev.p2, ev.p3);
+        }
     }
-    if (!ok)
-      printf("code 0x%04x\tsymbol UNKNOWN\n", (unsigned)k);
-  }
-
-  printf("\n\n Now checking getch()"
-           "\n Type 3 spaces to quit the test\n\n");
-  spaces_count = 0;
-  while (spaces_count < 3) {
-    k = getch();
-    if (k == ' ') ++spaces_count; else spaces_count = 0;
-
-    printf("code 0x%02x\tchar ", (unsigned)k);
-    if (ISPRINT(k))
-      printf("'%c'\n", (char)k);
-    else
-      printf("not printable\n");
-
-  }
-
-  printf("\n\n Now checking getkey()"
-           "\n Type 3 spaces to quit the test\n\n");
-  spaces_count = 0;
-  while (spaces_count < 3) {
-    k = getkey();
-    if (k == ' ') ++spaces_count; else spaces_count = 0;
-
-    printf("code 0x%04x\tchar ", (unsigned)k);
-    if (ISPRINT(k))
-      printf("'%c'\n", (char)k);
-    else
-      printf("not printable\n");
-  }
-  return 0;
+    return 0;
 }

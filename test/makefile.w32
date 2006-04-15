@@ -10,7 +10,7 @@ GRXVW32=y
 include ../makedefs.grx
 
 INCDIR=  -I../include
-GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+MGRX = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
 
 ifeq ($(HAVE_LIBTIFF),y)
   ADDON_LIBS += -ltiff
@@ -28,7 +28,7 @@ ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
 
-LIBS= $(GRX20) $(ADDON_LIBS)
+LIBS= $(MGRX) $(ADDON_LIBS)
 
 PROGS=  arctest.exe     \
 	bb1test.exe     \
@@ -56,25 +56,25 @@ PROGS=  arctest.exe     \
 	wintest.exe
 
 all: 	$(PROGS) \
-	demogrx.exe \
+	demomgrx.exe \
 	keys.exe \
 	speedtst.exe \
 	memtest.exe
 
 
-demogrx.exe: demogrx.o gfaz.o $(GRX20)
-	$(CC) $(LDOPT) -o demogrx.exe demogrx.o gfaz.o $(LIBS) -lm -mwindows
+demomgrx.exe: demomgrx.o gfaz.o $(MGRX)
+	$(CC) $(LDOPT) -o demomgrx.exe demomgrx.o gfaz.o $(LIBS) -lm -mwindows
 
-keys.exe: keys.o $(GRX20)
+keys.exe: keys.o $(MGRX)
 	$(CC) $(LDOPT) -o keys.exe keys.o $(LIBS) -lm -mwindows -mconsole
 
-speedtst.exe: speedtst.o $(GRX20)
+speedtst.exe: speedtst.o $(MGRX)
 	$(CC) $(LDOPT) -o speedtst.exe speedtst.o $(LIBS) -lm -mwindows -mconsole
 
-memtest.exe: memtest.o $(GRX20)
+memtest.exe: memtest.o $(MGRX)
 	$(CC) $(LDOPT) -o memtest.exe memtest.o $(LIBS) -lm -mwindows -mconsole
 
-$(PROGS): %.exe : %.o $(GRX20)
+$(PROGS): %.exe : %.o $(MGRX)
 	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm -mwindows
 
 .c.o:

@@ -33,6 +33,7 @@ TESTFUNC(colorops)
         int bw = x / 16;
         int bh = y / 16;
         int bx,by;
+        GrEvent ev;
 
         /* This won't work very well under X11 in pseudocolor
         ** mode (256 colors or less) if not using a private
@@ -74,7 +75,7 @@ TESTFUNC(colorops)
         GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
 
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        while(!GrKeyPressed()) {
+        while(!GrEventCheck()) {
             drawing(ww/4+(RND()%100),
                 wh/4+(RND()%100),
                 ww,
@@ -83,10 +84,11 @@ TESTFUNC(colorops)
                 bg
             );
         }
-        GrKeyRead();
+        GrEventFlush();
+        GrEventWaitKeyOrClick(&ev);
         GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        while(!GrKeyPressed()) {
+        while(!GrEventCheck()) {
             drawing(ww/4+(RND()%100),
                 wh/4+(RND()%100),
                 ww,
@@ -95,10 +97,11 @@ TESTFUNC(colorops)
                 bg
             );
         }
-        GrKeyRead();
+        GrEventFlush();
+        GrEventWaitKeyOrClick(&ev);
         GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        while(!GrKeyPressed()) {
+        while(!GrEventCheck()) {
             drawing(ww/4+(RND()%100),
                 wh/4+(RND()%100),
                 ww,
@@ -107,10 +110,11 @@ TESTFUNC(colorops)
                 bg
             );
         }
-        GrKeyRead();
+        GrEventFlush();
+        GrEventWaitKeyOrClick(&ev);
         GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        while(!GrKeyPressed()) {
+        while(!GrEventCheck()) {
             drawing(ww/4+(RND()%100),
                 wh/4+(RND()%100),
                 ww,
@@ -119,6 +123,7 @@ TESTFUNC(colorops)
                 bg
             );
         }
-        GrKeyRead();
+        GrEventFlush();
+        GrEventWaitKeyOrClick(&ev);
 }
 

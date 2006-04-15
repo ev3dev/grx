@@ -76,15 +76,15 @@
 static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
-    GR_int8u far *pp;
+    GR_int8u *pp;
     GRX_ENTER();
 #ifdef FAR_ACCESS
-    pp = (GR_int8u far *)&SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
+    pp = (GR_int8u *)&SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
     SETFARSEL(SCRN->gc_selector);
     GRX_RETURN((GR_int8u)peek8(pp));
 #else
 /* problem with LFB_BY_NEAR_POINTER here? Does c always point to screen? */
-    pp = (GR_int8u far *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+    pp = (GR_int8u *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
     GRX_RETURN(*pp);
 #endif
 }
@@ -94,7 +94,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-    char far *pp;
+    char *pp;
     GRX_ENTER();
     pp = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
     SETFARSEL(CURC->gc_selector);
@@ -116,7 +116,7 @@ static void drawvline(int x,int y,int h,GrColor color)
     copr = C_OPER(color);
     if(DOCOLOR8(color,copr)) {
         unsigned lwdt = CURC->gc_lineoffset;
-        char far *pp = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
+        char *pp = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
         SETFARSEL(CURC->gc_selector);
         switch(copr) {
             case C_XOR: colfill8_xor(pp,lwdt,(GR_int8u)color,h); break;
@@ -137,7 +137,7 @@ static void drawhline(int x,int y,int w,GrColor color)
     copr = C_OPER(color);
     if(DOCOLOR8(color,copr)) {
         GR_repl cval = freplicate_b(color);
-        char far *pp = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+        char *pp = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
         SETFARSEL(CURC->gc_selector);
         switch(copr) {
             case C_XOR: repfill8_xor(pp,cval,w); break;
@@ -159,7 +159,7 @@ static void drawblock(int x,int y,int w,int h,GrColor color)
     if(DOCOLOR8(color,copr)) {
         GR_repl cval = freplicate_b(color);
         unsigned int skip = CURC->gc_lineoffset;
-        char far *pp = &CURC->gc_baseaddr[0][FOFS(x,y,skip)];
+        char *pp = &CURC->gc_baseaddr[0][FOFS(x,y,skip)];
         skip -= w;
         SETFARSEL(CURC->gc_selector);
         switch(copr) {
@@ -200,7 +200,7 @@ static void drawline(int x,int y,int dx,int dy,GrColor color)
         int offset2;
     } lndata;
     int  copr,xstep,npts,error;
-    char far *ptr;
+    char *ptr;
 
     GRX_ENTER();
     copr = C_OPER(color);
@@ -309,7 +309,7 @@ static
 /* -------------------------------------------------------------------- */
 
 static void drawbitmap(int x,int y,int w,int h,
-                       char far *bmp,int pitch,int start,GrColor fg,GrColor bg)
+                       char *bmp,int pitch,int start,GrColor fg,GrColor bg)
 {
         int fgop, bgop;
         int dofg, dobg;
@@ -326,11 +326,11 @@ static void drawbitmap(int x,int y,int w,int h,
             start &= 7;
             SETFARSEL(CURC->gc_selector);
             do {
-                GR_int8u  far *bp = (GR_int8u far *)bmp;
+                GR_int8u  *bp = (GR_int8u *)bmp;
                 GR_int8u  bits    = *bp;
                 GR_int8u  mask    = 0x80 >> start;
                 GR_int32u w1      = w;
-                char far *pp = &CURC->gc_baseaddr[0][offs];
+                char *pp = &CURC->gc_baseaddr[0][offs];
 #               define DOBOTH(POKEOP) do {                              \
                     POKEOP(pp,((bits&mask)?(GR_int8u)fg:(GR_int8u)bg)); \
                     if((mask >>= 1) == 0) bits = *++bp,mask = 0x80;     \
@@ -353,7 +353,7 @@ static void drawbitmap(int x,int y,int w,int h,
                     default:    DOBOTH(poke8);     break;
                 }
                 else {
-                    char far *ppsave = pp;
+                    char *ppsave = pp;
                     GR_int32u w1save = w1;
                     if(dofg) switch(fgop) {
                         case C_XOR: DOFGC(poke8_xor); break;
@@ -364,7 +364,7 @@ static void drawbitmap(int x,int y,int w,int h,
                     if(dobg) {
                         pp   = ppsave;
                         w1   = w1save;
-                        bp   = (GR_int8u far *)bmp;
+                        bp   = (GR_int8u *)bmp;
                         bits = *bp;
                         mask = 0x80 >> start;
                         switch(bgop) {

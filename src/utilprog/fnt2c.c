@@ -17,7 +17,7 @@
  **/
 
 #include <stdio.h>
-#include "grx20.h"
+#include "mgrx.h"
 
 int main(int argc,char **argv)
 {

@@ -29,6 +29,7 @@ TESTFUNC(sbctest)
   GrLinePattern grlp;
   GrFont *grf;
   GrTextOption grt;
+  GrEvent ev;
 
   grc = GrCreateContext( 300,300,NULL,NULL );
   if( grc == NULL ) return;
@@ -52,14 +53,14 @@ TESTFUNC(sbctest)
   drawing( 10,10,280,280,GrWhite(),GrNOCOLOR );
   GrSetContext( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrWRITE );
-  GrKeyRead();
+  GrEventWaitKeyOrClick(&ev);
 
   GrTextXY( 0,0,"Black drawing on subcontext    ",GrWhite(),GrBlack() );
   GrSetContext( grsc );
   drawing( 0,0,280,280,GrBlack(),GrNOCOLOR );
   GrSetContext( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrWRITE );
-  GrKeyRead();
+  GrEventWaitKeyOrClick(&ev);
 
   GrTextXY( 0,0,"Pattern drawing on context     ",GrWhite(),GrBlack() );
   GrSetContext( grc );
@@ -67,7 +68,7 @@ TESTFUNC(sbctest)
   drawpf( 10,pat1 );
   GrSetContext( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrWRITE );
-  GrKeyRead();
+  GrEventWaitKeyOrClick(&ev);
 
   GrTextXY( 0,0,"Pattern drawing on subcontext  ",GrWhite(),GrBlack() );
   GrSetContext( grsc );
@@ -75,7 +76,7 @@ TESTFUNC(sbctest)
   drawpf( 0,pat2 );
   GrSetContext( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrXOR );
-  GrKeyRead();
+  GrEventWaitKeyOrClick(&ev);
 
   grl.lno_color = GrWhite();
   grl.lno_width = 3;
@@ -90,7 +91,7 @@ TESTFUNC(sbctest)
   drawp( 10,&grlp );
   GrSetContext( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrWRITE );
-  GrKeyRead();
+  GrEventWaitKeyOrClick(&ev);
 
   GrTextXY( 0,0,"Patterned drawing on subcontext",GrWhite(),GrBlack() );
   GrSetContext( grsc );
@@ -99,7 +100,7 @@ TESTFUNC(sbctest)
   drawp( 0,&grlp );
   GrSetContext( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrXOR );
-  GrKeyRead();
+  GrEventWaitKeyOrClick(&ev);
 
   grt.txo_fgcolor.v = GrWhite();
   grt.txo_bgcolor.v = GrBlack() | GrOR;
@@ -117,7 +118,7 @@ TESTFUNC(sbctest)
   GrPatternDrawStringExt( "Hola a todos",12,20,180,&grt,pat1 );
   GrSetContext( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrWRITE );
-  GrKeyRead();
+  GrEventWaitKeyOrClick(&ev);
 
   GrTextXY( 0,0,"Patterned text on subcontext   ",GrWhite(),GrBlack() );
   GrSetContext( grsc );
@@ -127,7 +128,7 @@ TESTFUNC(sbctest)
   GrPatternDrawStringExt( "Hola a todos",12,10,170,&grt,pat2 );
   GrSetContext( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrXOR );
-  GrKeyRead();
+  GrEventWaitKeyOrClick(&ev);
 
   GrUnloadFont( grf );
   GrDestroyPattern( pat2 );

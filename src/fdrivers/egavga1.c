@@ -53,7 +53,7 @@ void GrSetEGAVGAmonoShownPlane(int plane)
 }
 
 static size_t LineBytes = 0;
-static char far *LineBuff = NULL;
+static char *LineBuff = NULL;
 
 static int alloc_blit_buffer(void) {
     GRX_ENTER();
@@ -83,7 +83,7 @@ static int init(GrVideoMode *mp)
 static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
-    char far *ptr;
+    char *ptr;
     GRX_ENTER();
     ptr = &SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
     setup_far_selector(SCRN->gc_selector);
@@ -93,7 +93,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        char far *ptr;
+        char *ptr;
         unsigned cval;
         GRX_ENTER();
         ptr = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
@@ -123,7 +123,7 @@ static void drawhline(int x,int y,int w,GrColor color)
     color = color & 1 ? ~0L : 0L;
     if (   !(!color && (oper==C_OR||oper==C_XOR))
         && !( color && oper==C_AND)                ) {
-      GR_int8u far *pp = (GR_int8u far *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+      GR_int8u *pp = (GR_int8u *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
       GR_int8u lm = 0xff >> (x & 7);
       GR_int8u rm = 0xff << ((-(w += x)) & 7);
       w  = ((w + 7) >> 3) - (x >> 3);
@@ -165,7 +165,7 @@ done:
 
 static void drawvline(int x,int y,int h,GrColor color)
 {
-        char far *p;
+        char *p;
         unsigned int cval;
         unsigned int lwdt;
         GRX_ENTER();
@@ -247,7 +247,7 @@ static
 ** compared with the old pixel by pixel method.
 */
 
-static void put_scanline(char far *dptr,char far *sptr,int w,
+static void put_scanline(char *dptr,char *sptr,int w,
                          GR_int8u lm, GR_int8u rm, int op    ) {
   GRX_ENTER();
   if (w==1) lm &= rm;
@@ -280,14 +280,14 @@ done:
   GRX_LEAVE();
 }
 
-static void get_scanline(char far *dptr, char far *sptr, int w) {
+static void get_scanline(char *dptr, char *sptr, int w) {
     GRX_ENTER();
     fwdcopy_set_f(sptr,dptr,sptr,w);
     GRX_LEAVE();
 }
 
-extern void _GR_shift_scanline(GR_int8u far **dst,
-                               GR_int8u far **src,
+extern void _GR_shift_scanline(GR_int8u **dst,
+                               GR_int8u **src,
                                int ws, int shift, int planes );
 #define shift_scanline(dst,src,w,sh) \
     _GR_shift_scanline((GR_int8u **)&(dst),(GR_int8u **)&(src),(w),(sh),1)
@@ -303,7 +303,7 @@ static void bltv2v(GrFrame *dst,int dx,int dy,
     GRX_ENTER();
     if(GrColorMode(op) != GrIMAGE && alloc_blit_buffer()) {
         int shift = ((int)(x&7)) - ((int)(dx&7));
-        char far *dptr, *sptr;
+        char *dptr, *sptr;
         int      skip, lo = SCRN->gc_lineoffset;
         int      oper= C_OPER(op);
         GR_int8u lm = 0xff >> (dx & 7);
@@ -340,7 +340,7 @@ static void bltr2v(GrFrame *dst,int dx,int dy,
     if(GrColorMode(op) != GrIMAGE && alloc_blit_buffer()) {
         int oper  = C_OPER(op);
         int shift = ((int)(x&7)) - ((int)(dx&7));
-        char far *dptr, *sptr;
+        char *dptr, *sptr;
         int sskip,dskip;
         GR_int8u lm = 0xff >> (dx & 7);
         GR_int8u rm = 0xff << ((-(w + dx)) & 7);
@@ -379,7 +379,7 @@ static void bltv2r(GrFrame *dst,int dx,int dy,
       if(alloc_blit_buffer()) {
         int oper  = C_OPER(op);
         int shift = ((int)(x&7)) - ((int)(dx&7));
-        char far *dp, *dptr, *sp, *sptr;
+        char *dp, *dptr, *sp, *sptr;
         int sskip,dskip;
         GR_int8u lm = 0xff >> (dx & 7);
         GR_int8u rm = 0xff << ((-(w + dx)) & 7);

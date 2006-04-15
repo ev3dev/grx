@@ -25,6 +25,8 @@ TESTFUNC(winclip)
         int  y = GrSizeY();
         int  ww = (x / 2) - 10;
         int  wh = (y / 2) - 10;
+        GrEvent ev;
+
         GrColor c;
         GrContext *w1 = GrCreateSubContext(5,5,ww+4,wh+4,NULL,NULL);
         GrContext *w2 = GrCreateSubContext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
@@ -51,6 +53,6 @@ TESTFUNC(winclip)
         drawing(-ww/2,-wh/2,ww*2,wh*2,c,GrBlack());
         GrBox(0,0,ww-1,wh-1,c);
 
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 }
 

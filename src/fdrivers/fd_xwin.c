@@ -316,7 +316,7 @@ void drawline(int x,int y,int dx,int dy,GrColor c)
 }
 
 static
-void drawbitmap(int x,int y,int w,int h,char far *bmp,int pitch,int start,GrColor fg,GrColor bg)
+void drawbitmap(int x,int y,int w,int h,char *bmp,int pitch,int start,GrColor fg,GrColor bg)
 {
   XImage ximage;
 

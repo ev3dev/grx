@@ -24,86 +24,110 @@
 
 TESTFUNC(mousetest)
 {
-        GrMouseEvent evt;
-        GrColor bgc = GrAllocColor(0,0,128);
-        GrColor fgc = GrAllocColor(255,255,0);
-        int  testmotion = 0;
-        int  ii,mode;
+    GrEvent evt;
+    GrColor bgc = GrAllocColor(0,0,128);
+    GrColor fgc = GrAllocColor(255,255,0);
+    int  ii,mode;
+    char lmr[4] = "lmr";
+    int px = 0;
+    int py = 0;
+    int genmmove = 0;
 
-        if(GrMouseDetect()) {
-            GrMouseEventMode(1);
-            GrMouseInit();
-            GrMouseSetColors(GrAllocColor(255,0,0),GrBlack());
-            GrMouseDisplayCursor();
-            GrClearScreen(bgc);
-            ii = 0;
-            mode = GR_M_CUR_NORMAL;
-            GrTextXY(
-                10,(GrScreenY() - 20),
-                "Commands: 'N' -- next mouse mode, 'Q' -- exit",
-                GrWhite(),
-                bgc
-            );
-            for( ; ; ) {
-                char msg[200];
-                drawing(ii,ii,(GrSizeX() - 20),(GrSizeY() - 20),((fgc ^ bgc) | GrXOR),GrNOCOLOR);
-                GrMouseGetEventT(GR_M_EVENT,&evt,0L);
-                if(evt.flags & (GR_M_KEYPRESS | GR_M_BUTTON_CHANGE | testmotion)) {
-                    strcpy(msg,"Got event(s): ");
-#                   define mend (&msg[strlen(msg)])
-                    if(evt.flags & GR_M_MOTION)      strcpy( mend,"[moved] ");
-                    if(evt.flags & GR_M_LEFT_DOWN)   strcpy( mend,"[left down] ");
-                    if(evt.flags & GR_M_MIDDLE_DOWN) strcpy( mend,"[middle down] ");
-                    if(evt.flags & GR_M_RIGHT_DOWN)  strcpy( mend,"[right down] ");
-                    if(evt.flags & GR_M_LEFT_UP)     strcpy( mend,"[left up] ");
-                    if(evt.flags & GR_M_MIDDLE_UP)   strcpy( mend,"[middle up] ");
-                    if(evt.flags & GR_M_RIGHT_UP)    strcpy( mend,"[right up] ");
-                    if(evt.flags & GR_M_KEYPRESS)    sprintf(mend,"[key (0x%03x)] ",evt.key);
-                    sprintf(mend,"at X=%d, Y=%d, ",evt.x,evt.y);
-                    sprintf(mend,
-                        "buttons=%c%c%c, ",
-                        (evt.buttons & GR_M_LEFT)   ? 'L' : 'l',
-                        (evt.buttons & GR_M_MIDDLE) ? 'M' : 'm',
-                        (evt.buttons & GR_M_RIGHT)  ? 'R' : 'r'
-                    );
-                    sprintf(mend,"deltaT=%ld (ms)",evt.dtime);
-                    strcpy (mend,"                         ");
-                    GrTextXY(10,(GrScreenY() - 40),msg,GrWhite(),bgc);
-                    testmotion = evt.buttons ? GR_M_MOTION : 0;
+    GrClearScreen(bgc);
+
+    if (!GrMouseDetect()) {
+        GrTextXY((GrScreenX()/3), (GrScreenY() - 20),
+                 "Sorry, no mouse found !", GrWhite(), bgc);
+        GrEventWaitKeyOrClick(&evt);
+        return;
+    }
+
+    GrMouseEraseCursor();
+    GrMouseSetInternalCursor(GR_MCUR_TYPE_CROSS, GrAllocColor(255, 0, 0), GrBlack());
+    GrMouseDisplayCursor();
+    ii = 0;
+    mode = GR_M_CUR_NORMAL;
+    GrTextXY(10, (GrScreenY()-20),
+             "Commands: 'N' next mouse mode, 'G' next genmove mode, 'Q' exit",
+             GrWhite(), bgc);
+
+    for ( ; ; ) {
+        char msg[200];
+        drawing(ii, ii, (GrSizeX()-20), (GrSizeY()-20), ((fgc^bgc)|GrXOR), GrNOCOLOR);
+        if ((ii += 7) > 20) ii -= 20;
+        GrEventRead(&evt);
+        GrSleep(1);
+        if (evt.type != GREV_NULL) {
+            strcpy(msg,"Got event(s): ");
+#           define mend (&msg[strlen(msg)])
+            if (evt.type == GREV_MOUSE) {
+                px = evt.p2;
+                py = evt.p3;
+                if (evt.p1 == GRMOUSE_LB_PRESSED) {
+                    strcpy(mend,"[left down] ");
+                    lmr[0] = 'L';
                 }
-                if(evt.flags & GR_M_KEYPRESS) {
-                    int key = evt.key;
-                    if((key == 'Q') || (key == 'q')) break;
-                    if((key != 'N') && (key != 'n')) continue;
+                if (evt.p1 == GRMOUSE_MB_PRESSED) {
+                    strcpy(mend,"[middle down] ");
+                    lmr[1] = 'M';
+                }
+                if (evt.p1 == GRMOUSE_RB_PRESSED) {
+                    strcpy(mend,"[right down] ");
+                    lmr[2] = 'R';
+                }
+                if (evt.p1 == GRMOUSE_LB_RELEASED) {
+                    strcpy(mend,"[left up] ");
+                    lmr[0] = 'l';
+                }
+                if (evt.p1 == GRMOUSE_MB_RELEASED) {
+                    strcpy(mend,"[middle up] ");
+                    lmr[1] = 'm';
+                }
+                if (evt.p1 == GRMOUSE_RB_RELEASED) {
+                    strcpy( mend,"[right up] ");
+                    lmr[2] = 'r';
+                }
+                sprintf(mend,"at X=%ld, Y=%ld, ", evt.p2, evt.p3);
+            }
+            if (evt.type == GREV_MMOVE) {
+                px = evt.p2;
+                py = evt.p3;
+                sprintf(mend,"[moved (0x%03lx)] at X=%ld, Y=%ld, ", evt.p1, evt.p2, evt.p3);
+            }
+            if (evt.type == GREV_KEY) {
+                sprintf(mend,"[key (0x%03lx)] ", evt.p1);
+            }
+            sprintf(mend, "buttons=%s", lmr);
+            strcpy (mend, "                         ");
+            GrTextXY(10, (GrScreenY()-40), msg, GrWhite(), bgc);
+
+            if (evt.type == GREV_KEY) {
+                int key = evt.p1;
+                if ((key == 'Q') || (key == 'q')) break;
+                if ((key == 'N') || (key == 'n')) {
                     GrMouseEraseCursor();
-                    switch(mode = (mode + 1) & 3) {
-                      case GR_M_CUR_RUBBER:
-                        GrMouseSetCursorMode(GR_M_CUR_RUBBER,evt.x,evt.y,GrWhite() ^ bgc);
+                    switch (mode = (mode + 1) & 3) {
+                    case GR_M_CUR_RUBBER:
+                        GrMouseSetCursorMode(GR_M_CUR_RUBBER, px, py, GrWhite()^bgc);
                         break;
-                      case GR_M_CUR_LINE:
-                        GrMouseSetCursorMode(GR_M_CUR_LINE,evt.x,evt.y,GrWhite() ^ bgc);
+                    case GR_M_CUR_LINE:
+                        GrMouseSetCursorMode(GR_M_CUR_LINE, px, py, GrWhite()^bgc);
                         break;
-                      case GR_M_CUR_BOX:
-                        GrMouseSetCursorMode(GR_M_CUR_BOX,-20,-10,20,10,GrWhite() ^ bgc);
+                    case GR_M_CUR_BOX:
+                        GrMouseSetCursorMode(GR_M_CUR_BOX, -20, -10, 20, 10, GrWhite()^bgc);
                         break;
-                      default:
+                    default:
                         GrMouseSetCursorMode(GR_M_CUR_NORMAL);
                         break;
                     }
                     GrMouseDisplayCursor();
                 }
-                if((ii += 7) > 20) ii -= 20;
+                if ((key == 'G') || (key == 'g')) {
+                    genmmove++;
+                    if (genmmove > 2) genmmove = 0;
+                    GrEventGenMmove(genmmove);
+                }
             }
-            GrMouseUnInit();
-        } else {
-            GrClearScreen(bgc);
-            ii = 0;
-            mode = GR_M_CUR_NORMAL;
-            GrTextXY(
-                (GrScreenX()/3),(GrScreenY() - 20),
-                "Sorry, no mouse found !",
-                GrWhite(),
-                bgc
-            );
         }
+    }
 }

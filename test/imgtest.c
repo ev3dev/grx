@@ -31,6 +31,8 @@ TESTFUNC(imgtest)
         GrContext ctx;
         GrImage *img1;
         GrImage *img2;
+        GrEvent ev;
+
         if (! GrCreateContext(ww,wh,NULL,&ctx)) return;
 
         GrSetContext(&ctx);
@@ -52,7 +54,7 @@ TESTFUNC(imgtest)
         GrImageDisplay(ww+16,1,img1);
         GrImageDisplayExt(0,wh+4,x-1,y-1, img1);
 
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 
         for (m1=1; m1 <= PARTS ; m1<<=1) {
           for (d1=1; d1 <= PARTS; d1 <<= 1) {
@@ -67,7 +69,7 @@ TESTFUNC(imgtest)
             }
           }
         }
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 
         /* let's finish with some GrGetScanline / GrPutScanline tests */
         for (d1 = 1; d1 < 32; ++d1) {
@@ -80,6 +82,6 @@ TESTFUNC(imgtest)
           }
         }
 
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 }
 

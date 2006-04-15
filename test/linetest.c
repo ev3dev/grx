@@ -23,6 +23,8 @@ TESTFUNC(test1)
 {
         GrLineOption o1,o2,o3,o4;
         int i;
+        GrEvent ev;
+
         for(i = 0; i < 2; i++) {
             o1.lno_color   = GrAllocColor(255,0,0);
             o1.lno_width   = 1;
@@ -57,11 +59,11 @@ TESTFUNC(test1)
             GrCustomLine(420,100,440,300,&o4);
             GrCustomLine(480,100,460,300,&o4);
             GrCustomLine(600,200,500,300,&o4);
-            GrKeyRead();
+            GrEventWaitKeyOrClick(&ev);
             GrClearScreen(GrBlack());
             GrCustomBox(50,50,550,350,&o3);
             GrCustomCircle(300,200,50,&o2);
-            GrKeyRead();
+            GrEventWaitKeyOrClick(&ev);
         }
 }
 

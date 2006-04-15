@@ -380,7 +380,7 @@ static int init(char *options)
             VESAmodeInfoBlock mdinfo;
             GrVideoMode       mode,*modep = &modes[0];
             GrVideoModeExt    ext, *extp  = &exts[0];
-            short far        *mp;
+            short             *mp;
             VRAMsize     = blk.MemorySize;
             VRAMsize   <<= 16;
             _GrVidDrvVESAflags = 0;

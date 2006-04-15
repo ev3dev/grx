@@ -35,15 +35,17 @@ static GrColor *EGA;
 
 static void testpoly(int n,int points[][2],int convex)
 {
+        GrEvent ev;
+
         GrClearScreen(black);
         GrPolygon(n,points,white);
         GrFilledPolygon(n,points,(red | GrXOR));
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
         if(convex || (n <= 3)) {
             GrClearScreen(black);
             GrFilledPolygon(n,points,white);
             GrFilledConvexPolygon(n,points,(red | GrXOR));
-            GrKeyRead();
+            GrEventWaitKeyOrClick(&ev);
         }
 }
 
@@ -124,6 +126,7 @@ TESTFUNC(ptest)
         int  ii,collect;
         int  convex;
         FILE *fp;
+        GrEvent ev;
 
         fp = fopen("polytest.dat","r");
         if(fp == NULL) return;
@@ -147,5 +150,6 @@ TESTFUNC(ptest)
         }
         fclose(fp);
         speedtest();
+        GrEventWaitKeyOrClick(&ev);
 }
 

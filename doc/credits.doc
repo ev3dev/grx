@@ -1,5 +1,10 @@
 CONTRIB.DOC
 ===========
+MGRX is a derived work of GRX
+
+###########################################################################
+This is the original contrib.doc from GRX 2.4.7 p1
+###########################################################################
 
 GRX was original written by Csaba Biegl <csaba@vuse.vanderbilt.edu>
 for DJ Delorie's DOS port of the GCC compiler.

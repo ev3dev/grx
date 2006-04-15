@@ -54,6 +54,7 @@ TESTFUNC(circtest)
         int     xc,yc;
         int     xr,yr;
         GrColor c1,c2,c3;
+        GrEvent ev;
 
         c1 = GrAllocColor(64,64,255);
         c2 = GrAllocColor(255,255,64);
@@ -88,6 +89,6 @@ TESTFUNC(circtest)
         }
 
         GrTextXY(0,0,"press any key to continue",GrWhite(),GrBlack());
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 }
 

@@ -3,10 +3,10 @@
  **/
 
 #define  GrFont_PC8x8   FONTNAME_TEMPORARY_REDIRECTION
-#include "grx20.h"
+#include "mgrx.h"
 #undef   GrFont_PC8x8
 
-static unsigned char far GrFont_PC8x8_bits[] = {
+static unsigned char GrFont_PC8x8_bits[] = {
         /* character 0 */
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
         /* character 1 */

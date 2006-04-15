@@ -43,16 +43,16 @@
 #define SEEK_END        2
 #endif
 
-static GR_int8   far *fdata   = NULL;
-static GR_int8u  far *wtable  = NULL;
-static GR_int16u far *offsets = NULL;
-static GR_int8u  far *vecdata = NULL;
-static int       far *realwdt = NULL;
-static int       far *xoffset = NULL;
+static GR_int8   *fdata   = NULL;
+static GR_int8u  *wtable  = NULL;
+static GR_int16u *offsets = NULL;
+static GR_int8u  *vecdata = NULL;
+static int       *realwdt = NULL;
+static int       *xoffset = NULL;
 static int            realhgt = 0;
 static int            yoffset = 0;
-static BGIfontFileHeader far *fhdr = NULL;
-static BGIfontHeaderType far *fhtp = NULL;
+static BGIfontFileHeader *fhdr = NULL;
+static BGIfontHeaderType *fhtp = NULL;
 
 static void cleanup(void)
 {
@@ -70,7 +70,7 @@ static void fixlimits(void)
         for(i = 0; i < fhtp->nchrs; i++) {
             int xpos = 0,ypos = 0,xend,yend;
             int xmin = 32000,xmax = -32000;
-            GR_int16u far *vp = (GR_int16u far *)(vecdata + offsets[i]);
+            GR_int16u *vp = (GR_int16u *)(vecdata + offsets[i]);
             for( ; ; vp++) {
                 switch(SV_COMMAND(*vp)) {
                   case SVC_END:
@@ -118,7 +118,7 @@ static void fixlimits(void)
 
 static int openfile(char *fname)
 {
-    GR_int8 far *p;
+    GR_int8 *p;
     FILE *fp;
     long flen;
     int res;
@@ -157,7 +157,7 @@ static int openfile(char *fname)
              break; /* FALSE */
         offsets = (GR_int16u *)(fhtp + 1);
         wtable  = (GR_int8u  *)(offsets + fhtp->nchrs);
-        vecdata = (GR_int8u far *)((GR_int8u far *)fhtp + fhtp->cdefs);
+        vecdata = (GR_int8u *)((GR_int8u *)fhtp + fhtp->cdefs);
         realwdt = farmalloc(sizeof(int) * fhtp->nchrs * 2);
         xoffset = realwdt + fhtp->nchrs;
         if(!realwdt)
@@ -279,7 +279,7 @@ static int bitmap(int chr,int w,int h,char *buffer)
         int xmul,xdiv,ymul,ydiv;
         int xpos,ypos,xend,yend;
         int offs;
-        GR_int16u far *vp;
+        GR_int16u *vp;
         chr -= fhtp->firstch;
         if(!fdata) return(FALSE);
         if((unsigned int)chr >= (unsigned int)fhtp->nchrs) return(FALSE);
@@ -294,7 +294,7 @@ static int bitmap(int chr,int w,int h,char *buffer)
             (xdiv + 1),(ydiv + 1),
             (xmul + 1),(ymul + 1)
         ));
-        vp   = (GR_int16u far *)(vecdata + offsets[chr]);
+        vp   = (GR_int16u *)(vecdata + offsets[chr]);
         offs = (w + 7) >> 3;
         memfill_b(buffer,0,(offs * h));
         if(xdiv <= 0) return(TRUE);

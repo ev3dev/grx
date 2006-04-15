@@ -162,7 +162,7 @@ static int setmodex(GrVideoMode *mp,int noclear)
             /* turn off chain4 */
             outport_w(0x3c4,0x604);
             if(!noclear) {
-                char far *ptr = LINP_PTR(mp->extinfo->frame);
+                char *ptr = LINP_PTR(mp->extinfo->frame);
                 int size = 0x8000U;
                 /* enable all planes */
                 outport_w(0x3c4,((0x0f << 8) | 2));

@@ -17,6 +17,7 @@
  **/
 
 #include <unistd.h>
+#include <sys/times.h>
 #include "libgrx.h"
 
 void GrSetWindowTitle( char *title )
@@ -26,5 +27,10 @@ void GrSetWindowTitle( char *title )
 void GrSleep( int msec )
 {
   usleep( msec*1000L );
+}
+
+long GrMsecTime( void )
+{
+  return ((long)times(NULL) * (1000 / CLK_TCK));
 }
 

@@ -103,7 +103,7 @@ static void w32_drawpattern(int x, int y, int w, char patt,
 }
 
 static void w32_putscanline(int x, int y, int w,
-                            const GrColor far *scl, GrColor op)
+                            const GrColor *scl, GrColor op)
 {
     RECT r;
 
@@ -131,7 +131,7 @@ static void w32_drawblock(int x, int y, int w, int h, GrColor c)
     GRX_LEAVE();
 }
 
-static void w32_drawbitmap(int x, int y, int w, int h, char far *bmp,
+static void w32_drawbitmap(int x, int y, int w, int h, char *bmp,
                            int pitch, int start, GrColor fg, GrColor bg)
 {
     RECT r;

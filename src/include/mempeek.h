@@ -42,14 +42,10 @@
 #endif
 
 #ifndef __INLINE_STD_POKE__
-# ifdef NO_LEFTSIDE_PTR_CAST
-#  define __INLINE_STD_POKE__(P,V,OP,I,S,T) do {                \
-              register unsigned T *_ISPptr = (void *)(P);       \
-              *_ISPptr OP (unsigned T)(V);                      \
-          } while (0)
-# else
-#  define __INLINE_STD_POKE__(P,V,OP,I,S,T) (*(unsigned T *)(P) OP (unsigned T)(V))
-# endif
+#define __INLINE_STD_POKE__(P,V,OP,I,S,T) do {                \
+            register unsigned T *_ISPptr = (void *)(P);       \
+            *_ISPptr OP (unsigned T)(V);                      \
+        } while (0)
 #endif
 
 /* the volatile modifier ensures the video ram access is really done */
@@ -58,14 +54,10 @@
 #endif
 
 #ifndef __INLINE_FAR_POKE__
-# ifdef NO_LEFTSIDE_PTR_CAST
-#  define __INLINE_FAR_POKE__(P,V,OP,I,S,T) do {                \
-              register unsigned T *_ISPptr = (void *)(P);       \
-              *_ISPptr OP (V);                                  \
-          } while (0)
-# else
-#  define __INLINE_FAR_POKE__(P,V,OP,I,S,T) (*(volatile unsigned T *)(P) OP (V))
-# endif
+#define __INLINE_FAR_POKE__(P,V,OP,I,S,T) do {                \
+            register unsigned T *_ISPptr = (void *)(P);       \
+            *_ISPptr OP (V);                                  \
+        } while (0)
 #endif
 
 

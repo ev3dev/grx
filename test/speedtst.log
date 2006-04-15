@@ -1,0 +1,6 @@
+
+Graphics driver: "xwin"
+
+Driver               readp drawp line   hline vline  block  v2v    v2r    r2v
+XWIN32L    320x 240   0.00  0.00  0.00   0.13  0.00   0.00   0.00   0.01   0.02
+RAM32L     320x 240   0.01  0.01  0.01   0.13  0.02   0.13   0.02   0.00   0.00

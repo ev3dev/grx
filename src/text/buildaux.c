@@ -21,12 +21,12 @@
 #include "arith.h"
 #include "memfill.h"
 
-char far *GrBuildAuxiliaryBitmap(GrFont *f,int chr,int dir,int ul)
+char *GrBuildAuxiliaryBitmap(GrFont *f,int chr,int dir,int ul)
 {
         unsigned int idx = (unsigned int)chr - f->h.minchar;
         unsigned int bpos,rbpos,size,rsize,w,h;
         int  boff,rboff,rbinc;
-        char far *stdmap,far *cvtmap;
+        char *stdmap,*cvtmap;
         if(idx >= f->h.numchars) return(NULL);
         stdmap = &f->bitmap[f->chrinfo[idx].offset];
         dir = (dir & 3) + ((ul && (f->h.ulheight > 0)) ? 4 : 0);

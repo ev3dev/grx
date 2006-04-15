@@ -30,7 +30,7 @@
 
 static GrFontFileHeaderGRX fhdr;
 static FILE   *fontfp = NULL;
-static GR_int16u far *wtable = NULL;
+static GR_int16u *wtable = NULL;
 static unsigned int wtsize = 0;
 static int     nextch = 0;
 
@@ -53,7 +53,7 @@ static void swap_header(void) {
 }
 
 static void swap_wtable(void) {
-  GR_int16u far *wt;
+  GR_int16u *wt;
   unsigned int   ws;
   GRX_ENTER();
   wt = wtable;

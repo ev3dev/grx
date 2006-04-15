@@ -82,7 +82,7 @@
 static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
-        char far *pp;
+        char *pp;
         GRX_ENTER();
 #ifdef FAR_ACCESS
         pp = &SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
@@ -97,7 +97,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        char far *ptr;
+        char *ptr;
         int op;
         GRX_ENTER();
         ptr  = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
@@ -117,7 +117,7 @@ void drawpixel(int x,int y,GrColor color)
 static void drawvline(int x,int y,int h,GrColor color)
 {
         unsigned lwdt;
-        char far *pp;
+        char *pp;
         int op;
 
         GRX_ENTER();
@@ -143,7 +143,7 @@ static
 static void drawhline(int x,int y,int w,GrColor color)
 {
         int op;
-        char far *pp;
+        char *pp;
         GR_repl cval;
 
         GRX_ENTER();
@@ -165,7 +165,7 @@ static void drawblock(int x,int y,int w,int h,GrColor color)
 {
         unsigned skip;
         int op;
-        char far *pp;
+        char *pp;
         GR_repl cval;
 
         GRX_ENTER();
@@ -219,7 +219,7 @@ static void drawline(int x,int y,int dx,int dy,GrColor color)
             int offset2;        /* add to pointer if carry / banking dir */
         } lndata;
         int  op,npts,error,xstep;
-        char far *ptr;
+        char *ptr;
 
         GRX_ENTER();
         op = C_OPER(color);

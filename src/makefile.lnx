@@ -13,21 +13,8 @@ INCDIR= -I. -I./include -I../include
 CCOPT += -DLFB_BY_NEAR_POINTER -pipe
 ADDON_LIBS =
 
-ifdef GRX_DEFAULT_FONT_PATH
-CCOPT += -DGRX_DEFAULT_FONT_PATH=\"$(GRX_DEFAULT_FONT_PATH)\"
-endif
-
-ifeq ($(USE_SVGALIB_DRIVER),y)
-CCOPT += -DSVGALIB_DRIVER
-ADDON_LIBS += -lvga
-endif
-
-ifeq ($(USE_FRAMEBUFFER_DRIVER),y)
-CCOPT += -DFRAMEBUFFER_DRIVER
-endif
-
-ifeq ($(USE_INOUTP_FRAMEDRIVERS),y)
-CCOPT += -DINOUTP_FRAMEDRIVERS
+ifdef MGRX_DEFAULT_FONT_PATH
+CCOPT += -DMGRX_DEFAULT_FONT_PATH=\"$(MGRX_DEFAULT_FONT_PATH)\"
 endif
 
 ifeq ($(SET_SUIDROOT),y)
@@ -36,11 +23,17 @@ else
 EXECBITS = 0755
 endif
 
-GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+ifeq ($(BUILD_X86_64),y)
+INSLIBSUBDIR = lib64
+else
+INSLIBSUBDIR = lib
+endif
 
-GRX20SH = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.so
-GRX20SHli = $(GRX20SH).$(word 1,$(subst ., ,$(GRX_VERSION)))
-GRX20SHna = $(GRX20SH).$(GRX_VERSION)
+MGRXST   = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
+
+MGRXSH = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.so
+MGRXSHli = $(MGRXSH).$(word 1,$(subst ., ,$(MGRX_VERSION)))
+MGRXSHna = $(MGRXSH).$(MGRX_VERSION)
 SHCCOPT = -fPIC -D__SHARED__ 
 
 OX=.o
@@ -52,17 +45,10 @@ STD_O= $(STD_1) $(STD_2)  $(STD_3)  $(STD_4) \
        $(STD_5) $(STD_6)  $(STD_7)  $(STD_8) \
        $(STD_9) $(STD_10) $(STD_11) $(STD_12)
 
-BGI_O= $(BGI_1) $(BGI_2)  $(BGI_3)  $(BGI_4) \
-       $(BGI_5) $(BGI_6)
-
 ADDON_O=
 
 ifdef DEBUG
  ADDON_O += $(DBG_1)
-endif
-
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_O += $(TIF_1)
 endif
 
 ifeq ($(HAVE_LIBJPEG),y)
@@ -77,20 +63,8 @@ else
   ADDON_O += $(NOPNG_1)
 endif
 
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-  ADDON_O += $(PRN_1)
-  INCDIR += -I../addons/print
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  BGI_O += $(PRNBGI_1)
-endif
-endif
-
 O=      $(STD_O)                \
 	$(ADDON_O)              \
-	fdrivers/egavga1.o      \
-	fdrivers/ega4.o         \
-	fdrivers/svga4.o        \
-	fdrivers/vga8x.o        \
 	fdrivers/ram24.o        \
 	fdrivers/ram32l.o       \
 	fdrivers/ram32h.o       \
@@ -99,26 +73,10 @@ O=      $(STD_O)                \
 	fdrivers/svga32h.o      \
 	fdrivers/svga32l.o      \
 	fdrivers/svga8.o        \
-	mouse/lnxkeys.o         \
+	input/grev_lnx.o        \
 	misc/lnxmisc.o
 
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  O += $(BGI_O)
-endif
-
-ifeq ($(USE_SVGALIB_DRIVER),y)
-  O += vdrivers/svgalib.o
-endif
-
-ifeq ($(USE_FRAMEBUFFER_DRIVER),y)
-  O += vdrivers/vd_lnxfb.o
-endif
-
-ifeq ($(USE_DIRECT_MOUSE_DRIVER),y)
-  O += mouse/lnxinpu2.o
-else
-  O += mouse/lnxinput.o
-endif
+O += vdrivers/vd_lnxfb.o
 
 LO = $(subst $(OX),.lo,$(O))
 
@@ -130,30 +88,30 @@ UTILPS= ../bin/modetest
 
 all: libst libsh $(UTILP) $(UTILPS)
 
-libst: $(GRX20ST)
+libst: $(MGRXST)
 
-$(GRX20ST): $(LINUX_i386_CONSOLE) $(O)
-	-rm -f $(GRX20ST)
-	$(AR) -r $(GRX20ST) $(O)
-	$(RANLIB) $(GRX20ST)
+$(MGRXST): $(LINUX_i386_CONSOLE) $(O)
+	-rm -f $(MGRXST)
+	$(AR) -r $(MGRXST) $(O)
+	$(RANLIB) $(MGRXST)
 
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-libsh: $(GRX20SHna)
+libsh: $(MGRXSHna)
 else
 libsh:
 endif
 
-$(GRX20SHna): $(LINUX_i386_CONSOLE) $(LO)
-	-rm -f $(GRX20SHna)
-	$(CC) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(LO)
-	ln -sf $(notdir $(GRX20SHna)) $(GRX20SHli)
+$(MGRXSHna): $(LINUX_i386_CONSOLE) $(LO)
+	-rm -f $(MGRXSHna)
+	$(CC) $(LDOPT) -shared -Wl,-soname,$(notdir $(MGRXSHli)) -o $(MGRXSHna) $(LO)
+	ln -sf $(notdir $(MGRXSHna)) $(MGRXSHli)
 
-$(UTILP): ../bin/% : utilprog/%.o $(GRX20ST)
-	$(CC) -o $@ utilprog/$*.o $(GRX20ST)
+$(UTILP): ../bin/% : utilprog/%.o $(MGRXST)
+	$(CC) $(LDOPT) -o $@ utilprog/$*.o $(MGRXST)
 	$(STRIP) $@
 
-$(UTILPS): ../bin/% : utilprog/%.o $(GRX20ST)
-	$(CC) -o $@ utilprog/$*.o $(GRX20ST) $(ADDON_LIBS) -lm
+$(UTILPS): ../bin/% : utilprog/%.o $(MGRXST)
+	$(CC) $(LDOPT) -o $@ utilprog/$*.o $(MGRXST) $(ADDON_LIBS) -lm
 	$(STRIP) $@
 	chmod $(EXECBITS) $@
 
@@ -172,49 +130,32 @@ clean:
 
 cleanall: clean
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-	rm -f $(GRX20SHna) $(GRX20SHli)
+	rm -f $(MGRXSHna) $(MGRXSHli)
 endif
-	rm -f $(GRX20ST)
+	rm -f $(MGRXST)
 	rm -f $(UTILP) $(UTILPS)
 
 install: libst libsh
-	install -m 0755 -d $(INSTALLDIR)/lib
+	install -m 0755 -d $(INSTALLDIR)/$(INSLIBSUBDIR)
 	install -m 0755 -d $(INSTALLDIR)/include
-	install -m 0644 $(GRX20ST) $(INSTALLDIR)/lib
+	install -m 0644 $(MGRXST) $(INSTALLDIR)/$(INSLIBSUBDIR)
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-	install -m 0755 $(GRX20SHna) $(INSTALLDIR)/lib
-	ln -sf $(notdir $(GRX20SHna)) $(INSTALLDIR)/lib/$(notdir $(GRX20SHli))
-	ln -sf $(notdir $(GRX20SHli)) $(INSTALLDIR)/lib/$(notdir $(GRX20SH))
+	install -m 0755 $(MGRXSHna) $(INSTALLDIR)/$(INSLIBSUBDIR)
+	ln -sf $(notdir $(MGRXSHna)) $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXSHli))
+	ln -sf $(notdir $(MGRXSHli)) $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXSH))
 endif
-	install -m 0644 ../include/grx20.h $(INSTALLDIR)/include
-	install -m 0644 ../include/grxkeys.h $(INSTALLDIR)/include
-	install -m 0644 ../include/libbcc.h $(INSTALLDIR)/include
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-	install -m 0644 ../addons/print/grxprint.h $(INSTALLDIR)/include
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	install -m 0755 -d $(INSTALLDIR)/units
-	install -m 0644 ../pascal/grx.pas $(INSTALLDIR)/units
-	install -m 0644 ../pascal/bgi/graph.pas $(INSTALLDIR)/units
-endif
+	install -m 0644 ../include/mgrx.h $(INSTALLDIR)/include
+	install -m 0644 ../include/mgrxkeys.h $(INSTALLDIR)/include
 
 uninstall:
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20ST))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXST))
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SH))
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SHli))
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SHna))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXSH))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXSHli))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXSHna))
 endif
-	rm -f $(INSTALLDIR)/include/grx20.h
-	rm -f $(INSTALLDIR)/include/grxkeys.h
-	rm -f $(INSTALLDIR)/include/libbcc.h
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-	rm -f $(INSTALLDIR)/include/grxprint.h
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	rm -f $(INSTALLDIR)/units/grx.pas
-	rm -f $(INSTALLDIR)/units/graph.pas
-endif
+	rm -f $(INSTALLDIR)/include/mgrx.h
+	rm -f $(INSTALLDIR)/include/mgrxkeys.h
 
 setsuid: $(UTILPS)
 ifeq ($(SET_SUIDROOT),y)
@@ -254,12 +195,12 @@ uninstall-bin:
 	rm -f $(INSTALLDIR)/bin/lfbinfo
 	rm -f $(INSTALLDIR)/bin/modetest
 
-ifdef GRX_DEFAULT_FONT_PATH
+ifdef MGRX_DEFAULT_FONT_PATH
 install-fonts:
-	install -m 0755 -d $(GRX_DEFAULT_FONT_PATH)
-	install -m 0644 ../fonts/* $(GRX_DEFAULT_FONT_PATH)
+	install -m 0755 -d $(MGRX_DEFAULT_FONT_PATH)
+	install -m 0644 ../fonts/* $(MGRX_DEFAULT_FONT_PATH)
 uninstall-fonts:
-	rm -f $(GRX_DEFAULT_FONT_PATH)/*
+	rm -f $(MGRX_DEFAULT_FONT_PATH)/*
 endif
 
 dep:

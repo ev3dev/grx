@@ -10,9 +10,9 @@ include ../makedefs.grx
 INCDIR=  -I../include
 
 # Enable this line for static linked test progs (default)
-GRX20X = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
+MGRXX = ../lib/$(GRX_LIB_SUBDIR)/libmgrxX.a
 # or this if you've already installed the shared libs
-#GRX20X = -L../lib/$(GRX_LIB_SUBDIR) -lgrx20X
+#MGRXX = -L../lib/$(GRX_LIB_SUBDIR) -lmgrxX
 
 ifeq ($(SET_XSUIDROOT),y)
 EXECBITS = 4755
@@ -42,7 +42,7 @@ ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
 
-LIBS= $(GRX20X) $(ADDON_LIBS) $(X11LIBS) -lm
+LIBS= $(MGRXX) $(ADDON_LIBS) $(X11LIBS) -lm
 
 ifndef   DEBUG
 LDOPT += -s
@@ -76,13 +76,13 @@ PROGS=  xarctest     \
 	xwinclip     \
 	xwintest
 
-all: $(PROGS) xdemogrx
+all: $(PROGS) xdemomgrx
 
-xdemogrx: demogrx.o gfaz.o $(GRX20X)
-	$(CC) $(LDOPT) -o xdemogrx demogrx.o gfaz.o $(LIBS)
-	chmod $(EXECBITS) xdemogrx
+xdemomgrx: demomgrx.o gfaz.o $(MGRXX)
+	$(CC) $(LDOPT) -o xdemomgrx demomgrx.o gfaz.o $(LIBS)
+	chmod $(EXECBITS) xdemomgrx
 
-$(PROGS): x%: %.o $(GRX20X)
+$(PROGS): x%: %.o $(MGRXX)
 	$(CC) $(LDOPT) -o $@ $*.o $(LIBS)
 	chmod $(EXECBITS) $@
 
@@ -96,12 +96,12 @@ $(PROGS:x%=%.o): %.o : %.c
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c
 
 clean:
-	rm -f *.o $(PROGS) xdemogrx
+	rm -f *.o $(PROGS) xdemomgrx
 
-setsuid: $(PROGS) xdemogrx
+setsuid: $(PROGS) xdemomgrx
 ifeq ($(SET_XSUIDROOT),y)
-	chown root $(PROGS) xdemogrx
-	chmod $(EXECBITS) $(PROGS) xdemogrx
+	chown root $(PROGS) xdemomgrx
+	chmod $(EXECBITS) $(PROGS) xdemomgrx
 else
 	@echo "Nothing to do, SET_XSUIDROOT is not set to 'y' in makedefs.grx"
 endif

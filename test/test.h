@@ -24,8 +24,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "grx20.h"
-#include "grxkeys.h"
+#include "mgrx.h"
+#include "mgrxkeys.h"
 #include "drawing.h"
 
 extern void (*testfunc)(void);
@@ -43,7 +43,6 @@ int main(int argc,char **argv)
         int  x = 0;
         int  y = 0;
         long c = 0;
-        char m[41];
 
         Argc = argc - 1;
         Argv = argv + 1;
@@ -70,12 +69,13 @@ int main(int argc,char **argv)
         else if((x >= 320) && (y >= 200))
                 GrSetMode(GR_width_height_graphics,x,y);
         else GrSetMode(GR_default_graphics);
+        GrEventInit();
+        GrMouseDisplayCursor();
         (*testfunc)();
+        GrEventUnInit();
         GrSetMode(GR_default_text);
         if(strlen(exit_message) > 0) {
                 puts(exit_message);
-                fflush(stdout);
-                fgets(m,40,stdin);
         }
         return(0);
 }

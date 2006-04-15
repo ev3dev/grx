@@ -23,12 +23,12 @@
 /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
 /*    else             pv[i=0..w-1] = readpixel(x+indx[i],y)   */
 
-GrColor far *_GrFrDrvGenericGetIndexedScanline(GrFrame *c,
+GrColor *_GrFrDrvGenericGetIndexedScanline(GrFrame *c,
                                                int x,int y,int w,
                                                int *indx          )
 {
-   GrColor far *pixels;
-   GrColor far *p;
+   GrColor *pixels;
+   GrColor *p;
    GRX_ENTER();
    DBGPRINTF(DBG_DRIVER,("x=%d, y=%d, w=%d\n",x,y,w));
    p = pixels = _GrTempBufferAlloc(sizeof(GrColor) * (w+1));

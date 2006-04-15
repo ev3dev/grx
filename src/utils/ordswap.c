@@ -23,7 +23,7 @@
 #if 1
 #define SWAPBYTE(ty,mb,src,dst) (((ty)((GR_int8u)((mb) >> (8*(src)))) << (8*(dst))))
 
-void _GR_swap16(GR_int16 far *w) {
+void _GR_swap16(GR_int16 *w) {
   GR_int16 res;
   GRX_ENTER();
   res  = SWAPBYTE(GR_int16,*w,1,0);
@@ -32,7 +32,7 @@ void _GR_swap16(GR_int16 far *w) {
   GRX_LEAVE();
 }
 
-void _GR_swap32(GR_int32 far *l) {
+void _GR_swap32(GR_int32 *l) {
   GR_int32 res;
   GRX_ENTER();
   res  = SWAPBYTE(GR_int32,*l,3,0);
@@ -45,7 +45,7 @@ void _GR_swap32(GR_int32 far *l) {
 
 #ifdef GR_int64
 
-void _GR_swap64(GR_int64 far *h) {
+void _GR_swap64(GR_int64 *h) {
   GR_int64 res;
   GRX_ENTER();
   res  = SWAPBYTE(GR_int64,*h,7,0);
@@ -62,7 +62,7 @@ void _GR_swap64(GR_int64 far *h) {
 #endif
 
 #else
-static void swapbytes(GR_int8 far *b1, GR_int8 far *b2) {
+static void swapbytes(GR_int8 *b1, GR_int8 *b2) {
   GR_int8 b;
   GRX_ENTER();
   b = peek_b(b1);
@@ -71,27 +71,27 @@ static void swapbytes(GR_int8 far *b1, GR_int8 far *b2) {
   GRX_LEAVE();
 }
 
-void _GR_swap16(GR_int16 far *w) {
+void _GR_swap16(GR_int16 *w) {
   GRX_ENTER();
-  swapbytes((GR_int8 far *)w, ((GR_int8 far *)w)+1);
+  swapbytes((GR_int8 *)w, ((GR_int8 *)w)+1);
   GRX_LEAVE();
 }
 
-void _GR_swap32(GR_int32 far *l) {
+void _GR_swap32(GR_int32 *l) {
   GRX_ENTER();
-  swapbytes(((GR_int8 far *)l)  , ((GR_int8 far *)l)+3);
-  swapbytes(((GR_int8 far *)l)+1, ((GR_int8 far *)l)+2); 
+  swapbytes(((GR_int8 *)l)  , ((GR_int8 *)l)+3);
+  swapbytes(((GR_int8 *)l)+1, ((GR_int8 *)l)+2); 
   GRX_LEAVE();
 }
 
 #ifdef GR_int64
 
-void _GR_swap64(GR_int64 far *h) {
+void _GR_swap64(GR_int64 *h) {
   GRX_ENTER();
-  swapbytes(((GR_int8 far *)h)  , ((GR_int8 far *)h)+7);
-  swapbytes(((GR_int8 far *)h)+1, ((GR_int8 far *)h)+6); 
-  swapbytes(((GR_int8 far *)h)+2, ((GR_int8 far *)h)+5);
-  swapbytes(((GR_int8 far *)h)+3, ((GR_int8 far *)h)+4); 
+  swapbytes(((GR_int8 *)h)  , ((GR_int8 *)h)+7);
+  swapbytes(((GR_int8 *)h)+1, ((GR_int8 *)h)+6); 
+  swapbytes(((GR_int8 *)h)+2, ((GR_int8 *)h)+5);
+  swapbytes(((GR_int8 *)h)+3, ((GR_int8 *)h)+4); 
   GRX_LEAVE();
 }
 

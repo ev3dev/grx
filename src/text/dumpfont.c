@@ -30,7 +30,7 @@ static char bitmaphdr[] =
 " **/\n"
 "\n"
 "#define  %s     FONTNAME_TEMPORARY_REDIRECTION\n"
-"#include \"grx20.h\"\n"
+"#include \"mgrx.h\"\n"
 "#undef   %s\n"
 "\n"
 "static unsigned char far %s[] = {\n";
@@ -114,7 +114,7 @@ void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName)
             int  chr = i + f->h.minchar;
             int  len = GrFontCharBitmapSize(f,chr);
             int  pos = 0,j;
-            char far *bmp = GrFontCharBitmap(f,chr);
+            char *bmp = GrFontCharBitmap(f,chr);
             fprintf(fp,"\t/* character %d */\n\t",chr);
             for(j = 0; j < len; j++) {
                 fprintf(fp,"0x%02x",(bmp[j] & 0xff));

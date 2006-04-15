@@ -13,12 +13,16 @@ include ../makedefs.grx
 
 INCDIR= -I. -I./include -I../include $(X11INCS)
 
-ifdef GRX_DEFAULT_FONT_PATH
-CCOPT += -DGRX_DEFAULT_FONT_PATH=\"$(GRX_DEFAULT_FONT_PATH)\"
+ifdef MGRX_DEFAULT_FONT_PATH
+CCOPT += -DMGRX_DEFAULT_FONT_PATH=\"$(MGRX_DEFAULT_FONT_PATH)\"
 endif
 
 ifeq ($(USE_XF86DGA_DRIVER),y)
 CCOPT += -DXF86DGA_DRIVER
+endif
+
+ifeq ($(USE_XF86DGA_FRAMEBUFFER),y)
+CCOPT += -DXF86DGA_FRAMEBUFFER
 endif
 
 ifeq ($(SET_XSUIDROOT),y)
@@ -27,17 +31,23 @@ else
 EXECBITS = 0755
 endif
 
+ifeq ($(BUILD_X86_64),y)
+INSLIBSUBDIR = lib64
+else
+INSLIBSUBDIR = lib
+endif
+
 ADDON_LIBS =
 
 ifeq ($(USE_XF86DGA_DRIVER),y)
   ADDON_LIBS += -lXxf86dga -lXext
 endif
 
-GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.a
+MGRXST   = ../lib/$(GRX_LIB_SUBDIR)/libmgrxX.a
 
-GRX20SH = ../lib/$(GRX_LIB_SUBDIR)/libgrx20X.so
-GRX20SHli = $(GRX20SH).$(word 1,$(subst ., ,$(GRX_VERSION)))
-GRX20SHna = $(GRX20SH).$(GRX_VERSION)
+MGRXSH = ../lib/$(GRX_LIB_SUBDIR)/libmgrxX.so
+MGRXSHli = $(MGRXSH).$(word 1,$(subst ., ,$(MGRX_VERSION)))
+MGRXSHna = $(MGRXSH).$(MGRX_VERSION)
 SHCCOPT = -fPIC -D__SHARED__
 
 OX=.o
@@ -58,10 +68,6 @@ ifdef DEBUG
  ADDON_O += utils/dbgprint.o
 endif
 
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_O += $(TIF_1)
-endif
-
 ifeq ($(HAVE_LIBJPEG),y)
   ADDON_O += $(JPG_1)
 else
@@ -74,19 +80,6 @@ else
   ADDON_O += $(NOPNG_1)
 endif
 
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-  ADDON_O += $(PRN_1)
-  INCDIR += -I../addons/print
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  BGI_O += $(PRNBGI_1)
-endif
-endif
-
-ifeq ($(INCLUDE_BMP_CODE),y)
-  ADDON_O += $(BMP_1)
-  INCDIR  += -I../addons/bmp
-endif
-
 O=      $(STD_O)            \
 	$(ADDON_O)          \
 	fdrivers/fd_xwin.o  \
@@ -94,8 +87,7 @@ O=      $(STD_O)            \
 	fdrivers/ram32l.o   \
 	fdrivers/ram32h.o   \
 	fonts/fdv_xwin.o    \
-	mouse/xwininp.o     \
-	mouse/xwinkeys.o    \
+	input/grev_x11.o    \
 	misc/x11misc.o      \
 	vdrivers/vd_xwin.o
 
@@ -111,10 +103,6 @@ O+=	fdrivers/lfb16.o    \
 	vdrivers/vd_xfdga.o
 endif
 
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  O += $(BGI_O)
-endif
-
 LO = $(subst $(OX),.lo,$(O))
 
 UTILP = ../bin/bin2c \
@@ -124,30 +112,30 @@ UTILPX= ../bin/xmodetest
 
 all: libst libsh $(UTILP) $(UTILPX)
 
-libst: $(GRX20ST)
+libst: $(MGRXST)
 
-$(GRX20ST): $(LINUX_i386_X11) $(O)
-	-rm -f $(GRX20ST)
-	$(AR) -r $(GRX20ST) $(O)
-	$(RANLIB) $(GRX20ST)
+$(MGRXST): $(LINUX_i386_X11) $(O)
+	-rm -f $(MGRXST)
+	$(AR) -r $(MGRXST) $(O)
+	$(RANLIB) $(MGRXST)
 
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-libsh: $(GRX20SHna)
+libsh: $(MGRXSHna)
 else
 libsh:
 endif
 
-$(GRX20SHna): $(LINUX_i386_X11) $(LO)
-	-rm -f $(GRX20SHna)
-	$(CC) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(LO)
-	ln -sf $(notdir $(GRX20SHna)) $(GRX20SHli)
+$(MGRXSHna): $(LINUX_i386_X11) $(LO)
+	-rm -f $(MGRXSHna)
+	$(CC) $(LDOPT) -shared -Wl,-soname,$(notdir $(MGRXSHli)) -o $(MGRXSHna) $(LO)
+	ln -sf $(notdir $(MGRXSHna)) $(MGRXSHli)
 
-$(UTILP): ../bin/% : utilprog/%.o $(GRX20ST)
-	$(CC) -o $@ utilprog/$*.o $(GRX20ST) $(X11LIBS)
+$(UTILP): ../bin/% : utilprog/%.o $(MGRXST)
+	$(CC) $(LDOPT) -o $@ utilprog/$*.o $(MGRXST) $(X11LIBS)
 	$(STRIP) $@
 
-$(UTILPX): ../bin/x% : utilprog/%.o $(GRX20ST)
-	$(CC) -o $@ utilprog/$*.o $(GRX20ST) $(ADDON_LIBS) $(X11LIBS)
+$(UTILPX): ../bin/x% : utilprog/%.o $(MGRXST)
+	$(CC) $(LDOPT) -o $@ utilprog/$*.o $(MGRXST) $(ADDON_LIBS) $(X11LIBS)
 	$(STRIP) $@
 	chmod $(EXECBITS) $@
 
@@ -166,49 +154,32 @@ clean:
 
 cleanall: clean
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-	rm -f $(GRX20SHna) $(GRX20SHli)
+	rm -f $(MGRXSHna) $(MGRXSHli)
 endif
-	rm -f $(GRX20ST)
+	rm -f $(MGRXST)
 	rm -f $(UTILP) $(UTILPX)
 
 install: libst libsh
-	install -m 0755 -d $(INSTALLDIR)/lib
+	install -m 0755 -d $(INSTALLDIR)/$(INSLIBSUBDIR)
 	install -m 0755 -d $(INSTALLDIR)/include
-	install -m 0644 $(GRX20ST) $(INSTALLDIR)/lib
+	install -m 0644 $(MGRXST) $(INSTALLDIR)/$(INSLIBSUBDIR)
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-	install -m 0755 $(GRX20SHna) $(INSTALLDIR)/lib
-	ln -sf $(notdir $(GRX20SHna)) $(INSTALLDIR)/lib/$(notdir $(GRX20SHli))
-	ln -sf $(notdir $(GRX20SHli)) $(INSTALLDIR)/lib/$(notdir $(GRX20SH))
+	install -m 0755 $(MGRXSHna) $(INSTALLDIR)/$(INSLIBSUBDIR)
+	ln -sf $(notdir $(MGRXSHna)) $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXSHli))
+	ln -sf $(notdir $(MGRXSHli)) $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXSH))
 endif
-	install -m 0644 ../include/grx20.h $(INSTALLDIR)/include
-	install -m 0644 ../include/grxkeys.h $(INSTALLDIR)/include
-	install -m 0644 ../include/libbcc.h $(INSTALLDIR)/include
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-	install -m 0644 ../addons/print/grxprint.h $(INSTALLDIR)/include
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	install -m 0755 -d $(INSTALLDIR)/units
-	install -m 0644 ../pascal/grx.pas $(INSTALLDIR)/units
-	install -m 0644 ../pascal/bgi/graph.pas $(INSTALLDIR)/units
-endif
+	install -m 0644 ../include/mgrx.h $(INSTALLDIR)/include
+	install -m 0644 ../include/mgrxkeys.h $(INSTALLDIR)/include
 
 uninstall:
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20ST))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXST))
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SH))
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SHli))
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SHna))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXSH))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXSHli))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXSHna))
 endif
-	rm -f $(INSTALLDIR)/include/grx20.h
-	rm -f $(INSTALLDIR)/include/grxkeys.h
-	rm -f $(INSTALLDIR)/include/libbcc.h
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-	rm -f $(INSTALLDIR)/include/grxprint.h
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	rm -f $(INSTALLDIR)/units/grx.pas
-	rm -f $(INSTALLDIR)/units/graph.pas
-endif
+	rm -f $(INSTALLDIR)/include/mgrx.h
+	rm -f $(INSTALLDIR)/include/mgrxkeys.h
 
 setsuid: $(UTILPX)
 ifeq ($(SET_XSUIDROOT),y)
@@ -246,16 +217,16 @@ uninstall-bin:
 	rm -f $(INSTALLDIR)/bin/fnt2c
 	rm -f $(INSTALLDIR)/bin/xmodetest
 
-ifdef GRX_DEFAULT_FONT_PATH
+ifdef MGRX_DEFAULT_FONT_PATH
 install-fonts:
-	install -m 0755 -d $(GRX_DEFAULT_FONT_PATH)
-	install -m 0644 ../fonts/* $(GRX_DEFAULT_FONT_PATH)
+	install -m 0755 -d $(MGRX_DEFAULT_FONT_PATH)
+	install -m 0644 ../fonts/* $(MGRX_DEFAULT_FONT_PATH)
 uninstall-fonts:
-	rm -f $(GRX_DEFAULT_FONT_PATH)/*
+	rm -f $(MGRX_DEFAULT_FONT_PATH)/*
 endif
 
 dep:
-	gcc -MM $(CCOPT) $(INCDIR) $(O:.o=.c) \
+	gcc -MM $(CCOPT) -D__XWIN__ $(INCDIR) $(O:.o=.c) \
 	| sed 's#^.*: \(.*\)\.c#\1.o: \1.c#g' >depend.x11
 
 $(O): %.o : %.c

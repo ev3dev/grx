@@ -40,6 +40,7 @@ void drawellip(int xc,int yc,int xa,int ya,GrColor c1,GrColor c2,GrColor c3)
         int dx,dy;
         int *wdt, idx;
         GrLineOption *l;
+        GrEvent ev;
 
         for (idx = 0, l = *Patterns; l != NULL; l = Patterns[++idx])
             for (wdt=widths; *wdt != 0; ++wdt) {
@@ -66,7 +67,8 @@ void drawellip(int xc,int yc,int xa,int ya,GrColor c1,GrColor c2,GrColor c3)
                 l->lno_color = c2;
                 l->lno_width = *wdt;
                 GrCustomEllipse(xc,yc,xa,ya,l);
-                if(GrKeyRead() == 'q') {
+                GrEventRead(&ev);
+                if(ev.type == GREV_KEY && ev.p1 == 'q') {
                   stop = 1;
                   return;
                 }

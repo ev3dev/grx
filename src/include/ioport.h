@@ -164,7 +164,7 @@
 } while(0)
 #ifndef SLOW_DOWN_IO
 #define __INLINE_INPORTS__(P,B,C,SIZE,T) do {           \
-    _ES = (unsigned)(void _seg *)(void far *)(B);       \
+    _ES = (unsigned)(void _seg *)(void *)(B);       \
     _DI = (unsigned)(void near *)(B);                   \
     _CX = ((unsigned short)(C));                        \
     _DX = ((unsigned short)(P));                        \
@@ -173,7 +173,7 @@
     __emit__((char)(0x6c+sizeof(T)-1)); /* insB|W */    \
 } while(0)
 #define __INLINE_OUTPORTS__(P,B,C,SIZE,T) do {          \
-    _ES = (unsigned)(void _seg *)(void far *)(B);       \
+    _ES = (unsigned)(void _seg *)(void *)(B);       \
     _SI = (unsigned)(void near *)(B);                   \
     _CX = ((unsigned short)(C));                        \
     _DX = ((unsigned short)(P));                        \
@@ -184,7 +184,7 @@
 } while(0)
 #else   /* SLOW_DOWN_IO */
 #define __INLINE_INPORTS__(P,B,C,SIZE,T) do {           \
-    _ES = (unsigned)(void _seg *)(void far *)(B);       \
+    _ES = (unsigned)(void _seg *)(void *)(B);       \
     _BX = (unsigned)(void near *)(B);                   \
     _CX = ((unsigned short)(C));                        \
     _DX = ((unsigned short)(P));                        \
@@ -197,7 +197,7 @@
     } while(_CX);                                       \
 } while(0)
 #define __INLINE_OUTPORTS__(P,B,C,SIZE,T) do {          \
-    _ES = (unsigned)(void _seg *)(void far *)(B);       \
+    _ES = (unsigned)(void _seg *)(void *)(B);       \
     _BX = (unsigned)(void near *)(B);                   \
     _CX = ((unsigned short)(C));                        \
     _DX = ((unsigned short)(P));                        \

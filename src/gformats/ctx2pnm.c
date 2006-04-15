@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "grx20.h"
+#include "mgrx.h"
 
 /*
 ** GrSaveContextToPbm - Dump a context in a PBM file (bitmap)

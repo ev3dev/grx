@@ -28,6 +28,7 @@ TESTFUNC(arctest)
         GrColor red   = GrAllocColor(255,0,0);
         GrColor green = GrAllocColor(0,255,0);
         GrColor blue  = GrAllocColor(0,0,255);
+        GrEvent ev;
 
         fp = fopen("arctest.dat","r");
         if(fp == NULL) return;
@@ -47,13 +48,13 @@ TESTFUNC(arctest)
                 GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,GrWhite());
                 GrTextXY(0,0,buff,GrWhite(),GrNOCOLOR);
                 GrTextXY(0,20,"press any key to continue",GrWhite(),GrNOCOLOR);
-                GrKeyRead();
+                GrEventWaitKeyOrClick(&ev);
                 GrClearScreen(GrBlack());
                 GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,red);
                 GrFilledEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,green);
                 GrTextXY(0,0,buff,GrWhite(),GrNOCOLOR);
                 GrTextXY(0,20,"press any key to continue",GrWhite(),GrNOCOLOR);
-                GrKeyRead();
+                GrEventWaitKeyOrClick(&ev);
             }
         }
         fclose(fp);

@@ -33,7 +33,7 @@ static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
         GR_int32u offs;
-        char far *pp;
+        char *pp;
         GRX_ENTER();
         offs = FOFS(x,y,SCRN->gc_lineoffset);
         CHKBANK(BANKNUM(offs));
@@ -46,7 +46,7 @@ static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
         GR_int32u offs;
-        char far *ptr;
+        char *ptr;
         int op;
         GRX_ENTER();
         offs = FOFS(x,y,SCRN->gc_lineoffset);
@@ -80,7 +80,7 @@ static void drawhline(int x,int y,int w,GrColor color)
         cval = freplicate_l(color);
         setup_far_selector(CURC->gc_selector);
         do {
-            char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
+            char *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
             CHKBANK(BANKNUM(offs));
             offs += (w1 << 2);
             switch(oper) {

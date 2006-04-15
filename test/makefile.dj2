@@ -10,7 +10,7 @@ GRXVDJ2=y
 include ../makedefs.grx
 
 INCDIR=  -I../include
-GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+MGRX = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
 
 ADDON_LIBS=-lpc
 ifeq ($(HAVE_LIBTIFF),y)
@@ -29,7 +29,7 @@ ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
 
-LIBS= $(GRX20) $(ADDON_LIBS)
+LIBS= $(MGRX) $(ADDON_LIBS)
 
 PROGS=  arctest.exe     \
 	bb1test.exe     \
@@ -59,12 +59,12 @@ PROGS=  arctest.exe     \
 	winclip.exe     \
 	wintest.exe
 
-all: $(PROGS) demogrx.exe
+all: $(PROGS) demomgrx.exe
 
-demogrx.exe: demogrx.o gfaz.o $(GRX20)
-	$(CC) $(LDOPT) -o demogrx.exe demogrx.o gfaz.o $(LIBS) -lm
+demomgrx.exe: demomgrx.o gfaz.o $(MGRX)
+	$(CC) $(LDOPT) -o demomgrx.exe demomgrx.o gfaz.o $(LIBS) -lm
 
-$(PROGS): %.exe : %.o $(GRX20)
+$(PROGS): %.exe : %.o $(MGRX)
 	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm
 
 .c.o:

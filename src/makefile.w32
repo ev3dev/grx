@@ -11,15 +11,15 @@ include ../makedefs.grx
 
 INCDIR= -I. -I./include -I../include
 
-ifdef GRX_DEFAULT_FONT_PATH
-CCOPT += -DGRX_DEFAULT_FONT_PATH=\"$(GRX_DEFAULT_FONT_PATH)\"
+ifdef MGRX_DEFAULT_FONT_PATH
+CCOPT += -DMGRX_DEFAULT_FONT_PATH=\"$(MGRX_DEFAULT_FONT_PATH)\"
 endif
 
 TAG = $(WIN32_GCC_i386_STATIC)
 
-GRX20ln    = libgrx20.a
-GRX20ST    = ../lib/$(GRX_LIB_SUBDIR)/$(GRX20ln)
-GRX20STdos = $(subst /,\,$(GRX20ST))
+MGRXln    = libmgrx.a
+MGRXST    = ../lib/$(GRX_LIB_SUBDIR)/$(MGRXln)
+MGRXSTdos = $(subst /,\,$(MGRXST))
 
 OX=.o
 OP=
@@ -31,16 +31,10 @@ STD_Oa= $(STD_1) $(STD_2) $(STD_3)
 STD_Ob= $(STD_4) $(STD_5) $(STD_6)
 STD_Oc= $(STD_7) $(STD_8) $(STD_9)
 STD_Od= $(STD_10) $(STD_11) $(STD_12)
-BGI_Oa= $(BGI_1) $(BGI_2) $(BGI_3)
-BGI_Ob= $(BGI_4) $(BGI_5) $(BGI_6)
 
 ADDON_O=
 ifdef DEBUG
  ADDON_O += $(DBG_1)
-endif
-
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_O += $(TIF_1)
 endif
 
 ifeq ($(HAVE_LIBJPEG),y)
@@ -55,19 +49,6 @@ else
   ADDON_O += $(NOPNG_1)
 endif
 
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-  ADDON_O += $(PRN_1)
-  INCDIR += -I../addons/print
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  BGI_Ob += $(PRNBGI_1)
-endif
-endif
-
-ifeq ($(INCLUDE_BMP_CODE),y)
-  ADDON_O += $(BMP_1)
-  INCDIR  += -I../addons/bmp
-endif
-
 W32_O = $(ADDON_O)              \
 	fdrivers/fdw32_24.o     \
 	fdrivers/fdw32_8.o      \
@@ -77,26 +58,20 @@ W32_O = $(ADDON_O)              \
 	fdrivers/ram24.o        \
 	fdrivers/ram32l.o       \
 	fdrivers/ram32h.o       \
-	mouse/w32inp.o          \
-	mouse/w32keys.o         \
+	input/grev_w32.o        \
 	misc/w32misc.o          \
 	vdrivers/vd_win32.o
 
 ALL_O = $(STD_Oa) $(STD_Ob) $(STD_Oc) $(STD_Od) $(W32_O)
-
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  ALL_O += $(BGI_Oa) $(BGI_Ob)
-endif
 
 UTILPC= ../bin/bin2c.exe        \
 	../bin/fnt2c.exe        \
 
 UTILPW= ../bin/modetest.exe
 
-all:    $(GRX20ST) $(UTILPC) $(UTILPW)
+all:    $(MGRXST) $(UTILPC) $(UTILPW)
 
 clean:
-	if exist bgi\*.o      del bgi\*.o
 	if exist draw\*.o     del draw\*.o
 	if exist fdrivers\*.o del fdrivers\*.o
 	if exist fonts\*.o    del fonts\*.o
@@ -119,35 +94,18 @@ clean:
 	if exist $(TAG)       del $(TAG)
 
 cleanall: clean
-	if exist $(GRX20STdos) del $(GRX20STdos)
+	if exist $(MGRXSTdos) del $(MGRXSTdos)
 	if exist ..\bin\*.exe del ..\bin\*.exe
 
-install: $(GRX20ST)
-	copy $(GRX20STdos) $(MINGWDIR)\lib
-	copy ..\include\grx20.h $(MINGWDIR)\include
-	copy ..\include\grxkeys.h $(MINGWDIR)\include
-	copy ..\include\libbcc.h $(MINGWDIR)\include
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-	copy ..\addons\print\grxprint.h $(MINGWDIR)\include
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	if not exist $(MINGWDIR)\units\nul mkdir $(MINGWDIR)\units
-	copy ..\pascal\grx.pas $(MINGWDIR)\units
-	copy ..\pascal\bgi\graph.pas $(MINGWDIR)\units
-endif
+install: $(MGRXST)
+	copy $(MGRXSTdos) $(MINGWDIR)\lib
+	copy ..\include\mgrx.h $(MINGWDIR)\include
+	copy ..\include\mgrxkeys.h $(MINGWDIR)\include
 
 uninstall:
-	if exist $(MINGWDIR)\lib\$(GRX20ln)    del $(MINGWDIR)\lib\$(GRX20ln)
-	if exist $(MINGWDIR)\include\grx20.h   del $(MINGWDIR)\include\grx20.h
-	if exist $(MINGWDIR)\include\grxkeys.h del $(MINGWDIR)\include\grxkeys.h
-	if exist $(MINGWDIR)\include\libbcc.h del $(MINGWDIR)\include\libbcc.h
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-	if exist $(MINGWDIR)\include\grxprint.h del $(MINGWDIR)\include\grxprint.h
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	if exist $(MINGWDIR)\units\grx.pas del $(MINGWDIR)\units\grx.pas
-	if exist $(MINGWDIR)\units\graph.pas del $(MINGWDIR)\units\graph.pas
-endif
+	if exist $(MINGWDIR)\lib\$(MGRXln)    del $(MINGWDIR)\lib\$(MGRXln)
+	if exist $(MINGWDIR)\include\mgrx.h   del $(MINGWDIR)\include\mgrx.h
+	if exist $(MINGWDIR)\include\mgrxkeys.h del $(MINGWDIR)\include\mgrxkeys.h
 
 install-bin: $(UTILPC) $(UTILPW)
 	copy ..\bin\bin2c.exe $(MINGWDIR)\bin
@@ -159,8 +117,8 @@ uninstall-bin:
 	if exist $(MINGWDIR)\bin\fnt2c.exe del $(MINGWDIR)\bin\fnt2c.exe
 	if exist $(MINGWDIR)\bin\modetest.exe del $(MINGWDIR)\bin\modetest.exe
 
-ifdef GRX_DEFAULT_FONT_PATH
-FONTPATHdos = $(subst /,\,$(GRX_DEFAULT_FONT_PATH))
+ifdef MGRX_DEFAULT_FONT_PATH
+FONTPATHdos = $(subst /,\,$(MGRX_DEFAULT_FONT_PATH))
 install-fonts:
 	if not exist $(FONTPATHdos)\nul mkdir $(FONTPATHdos)
 	copy ..\fonts\*.* $(FONTPATHdos)
@@ -178,24 +136,20 @@ depend.b: depend.new
 	sed "s#\.o:#.obj:#g" <depend.new >depend.b
 	sed "s#\.o:#.asm:#g" <depend.new >>depend.b
 
-$(GRX20ST): $(TAG) $(ALL_O)
-	if exist $(GRX20STdos) del $(GRX20STdos)
-	$(AR) -r $(GRX20ST) $(STD_Oa)
-	$(AR) -r $(GRX20ST) $(STD_Ob)
-	$(AR) -r $(GRX20ST) $(STD_Oc)
-	$(AR) -r $(GRX20ST) $(STD_Od)
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(AR) -r $(GRX20ST) $(BGI_Oa)
-	$(AR) -r $(GRX20ST) $(BGI_Ob)
-endif
-	$(AR) -r $(GRX20ST) $(W32_O)
-	$(RANLIB) $(GRX20ST)
+$(MGRXST): $(TAG) $(ALL_O)
+	if exist $(MGRXSTdos) del $(MGRXSTdos)
+	$(AR) -r $(MGRXST) $(STD_Oa)
+	$(AR) -r $(MGRXST) $(STD_Ob)
+	$(AR) -r $(MGRXST) $(STD_Oc)
+	$(AR) -r $(MGRXST) $(STD_Od)
+	$(AR) -r $(MGRXST) $(W32_O)
+	$(RANLIB) $(MGRXST)
 
-$(UTILPC): ../bin/%.exe : utilprog/%.o $(GRX20ST)
-	$(CC) -s -o $@ utilprog/$*.o $(GRX20ST)
+$(UTILPC): ../bin/%.exe : utilprog/%.o $(MGRXST)
+	$(CC) -s -o $@ utilprog/$*.o $(MGRXST)
 
-$(UTILPW): ../bin/%.exe : utilprog/%.o $(GRX20ST)
-	$(CC) -s -o $@ utilprog/$*.o $(GRX20ST) -mwindows -mconsole
+$(UTILPW): ../bin/%.exe : utilprog/%.o $(MGRXST)
+	$(CC) -s -o $@ utilprog/$*.o $(MGRXST) -mwindows -mconsole
 
 $(WIN32_GCC_i386_STATIC):
 	$(MAKE) -f makefile.w32 clean

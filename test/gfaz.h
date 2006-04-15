@@ -1,8 +1,8 @@
 /**
  ** gfaz.h ---- gfaz headers
  **
- ** Copyright (C) 2000,2001 Mariano Alvarez Fernandez
- ** [e-mail: malfer@teleline.es]
+ ** Copyright (C) 2000,2001,2005 Mariano Alvarez Fernandez
+ ** [e-mail: malfer@telefonica.net]
  **
  ** This is a test/demo file of the GRX graphics library.
  ** You can use GRX test/demo files as you want.
@@ -53,33 +53,14 @@ extern GrColor *egacolors;
 #define IND_YELLOW       14
 #define IND_WHITE        15
 
-#define EV_NULL    0
-#define EV_KEY     1
-#define EV_MOUSE   2
-#define EV_COMMAND 3
-#define EV_SELECT  4
-#define EV_END     5
-
-#define MOUSE_LB_PRESSED 1
-#define MOUSE_RB_PRESSED 2
-#define MOUSE_LB_RELEASED 3
-#define MOUSE_RB_RELEASED 4
-
-typedef struct{
-  int type;
-  long p1;
-  long p2;
-  long p3;
-  } Event;
+#define GREV_COMMAND (GREV_USER+0)
+#define GREV_SELECT  (GREV_USER+1)
+#define GREV_END     (GREV_USER+2)
 
 int gfaz_ini( int width, int height, int bpp );
 int gfaz_fin( void );
 
-void event_read( Event *ev );
-void event_wait( Event *ev );
-void event_queue( Event *ev );
 void par_event_queue( int type, long p1, long p2, long p3 );
-void set_hook_input_event( void (*fn)( Event * ) );
 
 void show_mouse( void );
 void hide_mouse( void );
@@ -107,7 +88,7 @@ typedef struct{
   } Button_Group;
 
 void paint_button_group( Button_Group *bg );
-int  pev_button_group( Event *ev, Button_Group *bg );
+int  pev_button_group( GrEvent *ev, Button_Group *bg );
 
 typedef struct{
   int x, y;                   // left upper coordinates
@@ -124,7 +105,7 @@ typedef struct{
   Area *a;                    // area array
   } Area_Group;
 
-int  pev_area_group( Event *ev, Area_Group *ag );
+int  pev_area_group( GrEvent *ev, Area_Group *ag );
 
 typedef struct{
   int x, y;                   // left upper coordinates

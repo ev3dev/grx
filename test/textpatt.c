@@ -16,8 +16,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "grx20.h"
-#include "grxkeys.h"
+#include "mgrx.h"
+#include "mgrxkeys.h"
 
 #define FONT "../fonts/tms38b.fnt"
 
@@ -27,8 +27,11 @@ int main(void)
   GrPattern *p1, *p2;
   GrFont *font;
   GrTextOption opt;
+  GrEvent ev;
 
   GrSetMode(GR_width_height_color_graphics, 320, 200, (GrColor)256);
+  GrEventInit();
+  GrMouseDisplayCursor();
   p1 = GrBuildPixmapFromBits(bits, 8, 8, 11,  3);
   p2 = GrBuildPixmapFromBits(bits, 8, 8,  3, 11);
   font = GrLoadFont(FONT);
@@ -41,22 +44,23 @@ int main(void)
     opt.txo_fgcolor.v = GrNOCOLOR;
     opt.txo_bgcolor.v = GrNOCOLOR;
     GrPatternFilledBox(0, 0, GrMaxX(), GrMaxY(), p1);
-    GrKeyRead();
+    GrEventWaitKeyOrClick(&ev);
     GrPatternDrawString(" Hello world !", 15, 40, 10, &opt, p1);
     GrPatternDrawString(" Hello world !", 15, 44, 50, &opt, p2);
     GrPatternDrawStringExt(" Hello world !!", 16, 40, 100, &opt, p1);
     GrPatternDrawStringExt(" Hello world !!", 16, 44, 140, &opt, p2);
-    GrKeyRead();
+    GrEventWaitKeyOrClick(&ev);
     opt.txo_bgcolor.v = GrBlack();
     GrPatternDrawString(" Hello world !", 15, 40, 10, &opt, p1);
     GrPatternDrawString(" Hello world !", 15, 44, 50, &opt, p2);
     GrPatternDrawStringExt(" Hello world !!", 16, 40, 100, &opt, p1);
     GrPatternDrawStringExt(" Hello world !!", 16, 44, 140, &opt, p2);
-    GrKeyRead();
+    GrEventWaitKeyOrClick(&ev);
   }
   if (p1)   GrDestroyPattern(p1);
   if (p2)   GrDestroyPattern(p2);
   if (font) GrUnloadFont(font);
+  GrEventUnInit();
   GrSetMode(GR_default_text);
   if (!p1) fprintf(stderr, "Couldn't create first pattern\n");
   if (!p2) fprintf(stderr, "Couldn't create second pattern\n");

@@ -19,8 +19,8 @@
 #ifndef __GRFONTDV_H_INCLUDED__
 #define __GRFONTDV_H_INCLUDED__
 
-#ifndef __GRX20_H_INCLUDED__
-#include "grx20.h"
+#ifndef __MGRX_H_INCLUDED__
+#include "mgrx.h"
 #endif
 
 /*
@@ -84,7 +84,7 @@ GrFont *_GrBuildFont(
     int  minch,
     int  maxch,
     int  (*charwdt)(int chr),
-    int  (*bitmap)(int chr,int w,int h,char far *buffer),
+    int  (*bitmap)(int chr,int w,int h,char *buffer),
     int  canscale
 );
 

@@ -450,19 +450,19 @@ static int convertwin32keystate(void)
     int fkbState = 0;
 
     if (GetKeyState(VK_SHIFT) < 0)
-        fkbState |= GR_KB_SHIFT;
+        fkbState |= GRKBS_SHIFT;
     if (GetKeyState(VK_CONTROL) < 0)
-        fkbState |= GR_KB_CTRL;
+        fkbState |= GRKBS_CTRL;
     if (GetKeyState(VK_MENU) < 0)
-        fkbState |= GR_KB_ALT;
+        fkbState |= GRKBS_ALT;
     if (GetKeyState(VK_SCROLL) < 0)
-        fkbState |= GR_KB_SCROLLOCK;
+        fkbState |= GRKBS_SCROLLOCK;
     if (GetKeyState(VK_NUMLOCK) < 0)
-        fkbState |= GR_KB_NUMLOCK;
+        fkbState |= GRKBS_NUMLOCK;
     if (GetKeyState(VK_CAPITAL) < 0)
-        fkbState |= GR_KB_CAPSLOCK;
+        fkbState |= GRKBS_CAPSLOCK;
     if (GetKeyState(VK_INSERT) < 0)
-        fkbState |= GR_KB_INSERT;
+        fkbState |= GRKBS_INSERT;
     return fkbState;
 }
 
@@ -544,7 +544,7 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
     case WM_SYSCHAR:
         fInsert = FALSE;
         kbstat = convertwin32keystate();
-        if (kbstat & GR_KB_ALT) {
+        if (kbstat & GRKBS_ALT) {
             if (wParam >= 'a' && wParam <= 'z')
                 fInsert = TRUE;
             if (wParam >= 'A' && wParam <= 'Z')

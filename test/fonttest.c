@@ -38,6 +38,7 @@ void displayfont(GrFont *font,char *text,int len)
         int ww,hh;
         int bx,by;
         int bw,bh;
+        GrEvent ev;
 
         memset(&opt,0,sizeof(opt));
         opt.txo_font   = font;
@@ -63,7 +64,7 @@ void displayfont(GrFont *font,char *text,int len)
         opt.txo_direct    = GR_TEXT_UP;
         opt.txo_bgcolor.v = c4;
         GrDrawString(text,len,bx,by+bh-ww,&opt);
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
         GrClearClipBox(GrBlack());
         opt.txo_direct    = GR_TEXT_RIGHT;
         opt.txo_fgcolor.v = c1;
@@ -76,7 +77,7 @@ void displayfont(GrFont *font,char *text,int len)
             opt.txo_fgcolor.v ^= GR_UNDERLINE_TEXT;
             by += hh;
         }
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 }
 
 TESTFUNC(fonttest)

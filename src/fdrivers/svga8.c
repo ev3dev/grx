@@ -48,7 +48,7 @@ static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
         GR_int32u offs;
-        char far *ptr;
+        char *ptr;
         GRX_ENTER();
         offs = FOFS(x,y,CURC->gc_lineoffset);
         ptr  = &CURC->gc_baseaddr[0][BANKPOS(offs)];
@@ -76,7 +76,7 @@ static void drawhline(int x,int y,int w,GrColor color)
           GR_repl cval = freplicate_b(color);
           setup_far_selector(CURC->gc_selector);
           do {
-            char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
+            char *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
             CHKBANK(BANKNUM(offs));
             offs += w1;
             switch(copr) {
@@ -103,7 +103,7 @@ static void drawvline(int x,int y,int h,GrColor color)
           GR_int32u offs = FOFS(x,y,lwdt);
           setup_far_selector(CURC->gc_selector);
           do {
-            char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
+            char *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
             unsigned int h1 = BANKLFT(offs) / lwdt;
             h -= (h1 = umin(h,umax(h1,1)));
             CHKBANK(BANKNUM(offs));
@@ -135,7 +135,7 @@ static void drawblock(int x,int y,int w,int h,GrColor color)
             unsigned int w1 = BANKLFT(offs);
             unsigned int w2 = w - (w1 = umin(w,w1));
             do {
-                char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
+                char *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
                 CHKBANK(BANKNUM(offs));
                 offs += w1;
                 switch(copr) {
@@ -169,7 +169,7 @@ static void drawline(int x,int y,int dx,int dy,GrColor color)
             int offset2;        /* add to pointer if carry / banking dir */
         } lndata;
         int  copr, xstep, npts,error;
-        char far *ptr;
+        char *ptr;
         GR_int32u offs;
 
         GRX_ENTER();
@@ -348,7 +348,7 @@ static
 #endif
 
 
-static void drawbitmap(int x,int y,int w,int h,char far *bmp,int pitch,int start,GrColor fg,GrColor bg)
+static void drawbitmap(int x,int y,int w,int h,char *bmp,int pitch,int start,GrColor fg,GrColor bg)
 {
         int fgop, bgop;
         int dofg, dobg;
@@ -366,13 +366,13 @@ static void drawbitmap(int x,int y,int w,int h,char far *bmp,int pitch,int start
             start &= 7;
             setup_far_selector(CURC->gc_selector);
             do {
-                GR_int8u far *bp = (GR_int8u far *)bmp;
+                GR_int8u *bp = (GR_int8u *)bmp;
                 GR_int8u bits    = *bp;
                 GR_int8u mask    = 0x80 >> start;
                 unsigned int  w1 = BANKLFT(offs);
                 unsigned int  w2 = w - (w1  = umin(w,w1));
                 do {
-                    char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
+                    char *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
                     CHKBANK(BANKNUM(offs));
                     offs += w1;
 #                   define DOBOTH(POKEOP) do {                              \
@@ -397,7 +397,7 @@ static void drawbitmap(int x,int y,int w,int h,char far *bmp,int pitch,int start
                         default:    DOBOTH(poke_b_f);     break;
                     }
                     else {
-                        char far *ppsave = pp;
+                        char *ppsave = pp;
                         unsigned int w1save = w1;
                         if(dofg) switch(fgop) {
                             case C_XOR: DOFGC(poke_b_f_xor); break;
@@ -408,7 +408,7 @@ static void drawbitmap(int x,int y,int w,int h,char far *bmp,int pitch,int start
                         if(dobg) {
                             pp   = ppsave;
                             w1   = w1save;
-                            bp   = (GR_int8u far *)bmp;
+                            bp   = (GR_int8u *)bmp;
                             bits = *bp;
                             mask = 0x80 >> start;
                             switch(bgop) {

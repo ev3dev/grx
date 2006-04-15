@@ -18,9 +18,9 @@
 #include "libgrx.h"
 
 unsigned GrGetLibraryVersion(void) {
-  return (unsigned)GRX_VERSION_API;
+  return (unsigned)MGRX_VERSION_API;
 }
 
 unsigned GrGetLibrarySystem(void) {
-  return (unsigned)GRX_VERSION;
+  return (unsigned)MGRX_VERSION;
 }

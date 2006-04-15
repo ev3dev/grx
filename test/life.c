@@ -33,6 +33,7 @@ TESTFUNC(life)
         int  which,x,y,gen;
         GrColor c[2];
         long thresh;
+
         for(which = 0; which < 2; which++) {
             cur = malloc(H * sizeof(char *));
             if(!cur) return;
@@ -106,7 +107,6 @@ TESTFUNC(life)
             which = 1 - which;
             old = map[which];
             cur = map[1 - which];
-        } while(!GrKeyPressed());
-        while(GrKeyPressed()) GrKeyRead();
+        } while(!GrEventCheck());
 }
 

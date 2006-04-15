@@ -16,6 +16,6 @@ for x in *.chr; do
 	rm $name.c
 done
 
-ar rc ../lib/dj2/libgrx20.a *.o
-ranlib ../lib/dj2/libgrx20.a
+ar rc ../lib/dj2/libmgrx.a *.o
+ranlib ../lib/dj2/libmgrx.a
 rm -f *.o

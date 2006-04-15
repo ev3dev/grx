@@ -25,6 +25,9 @@ TESTFUNC(scrolltest)
         int  hgt = GrScreenY();
         GrColor nc  = GrNumColors();
         int  txh = GrDefaultFont.h.height + 2;
+        GrEvent ev;
+        int k;
+
         for( ; ; ) {
             char buff[100];
             char *l1 = "Screen resolution: %dx%d";
@@ -54,7 +57,10 @@ TESTFUNC(scrolltest)
                 GrTextXY(x,yy,l4,txc,bgc); yy += txh;
                 GrTextXY(x,yy,l5,txc,bgc); yy += txh;
                 GrTextXY(x,yy,l6,txc,bgc); yy += txh;
-                switch(GrKeyRead()) {
+                GrEventRead(&ev);
+                k = 0;
+                if (ev.type == GREV_KEY) k = ev.p1;
+                switch (k) {
                     case 'w': vw -= 8; break;
                     case 'W': vw += 8; break;
                     case 'h': vh -= 8; break;

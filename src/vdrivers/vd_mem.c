@@ -22,11 +22,9 @@
 #include "grdriver.h"
 #include "allocate.h"
 #include "arith.h"
-#include "int86.h"
 #include "memfill.h"
 
-
-static  char far * MemBuf = NULL;
+static  char * MemBuf = NULL;
 static  unsigned long MemBufSze = 0;
 
 static void FreeMemBuf(void) {
@@ -53,7 +51,6 @@ static int AllocMemBuf(unsigned long sze) {
 }
 
 static int mem_setmode (GrVideoMode *mp,int noclear);
-
 
 static GrVideoModeExt gr1ext = {
     GR_frameRAM1,                       /* frame driver */
@@ -119,13 +116,11 @@ static GrVideoModeExt gr24ext = {
     NULL                                /* color loader */
 };
 
-
 static int dummymode (GrVideoMode * mp , int noclear )
 {
     FreeMemBuf();
     return TRUE;
 }
-
 
 GrVideoModeExt   dummyExt = {
     GR_frameText,                       /* frame driver */
@@ -142,9 +137,6 @@ GrVideoModeExt   dummyExt = {
     NULL                                /* color loader */
 };
 
-
-
-
 static GrVideoMode modes[] = {
     /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext                             */
     {  TRUE,  1,  640,  480,  0x00,   80,    0,  &gr1ext                          },
@@ -154,14 +146,10 @@ static GrVideoMode modes[] = {
     {  TRUE,  1,   80,   25,  0x00,  160,    0,  &dummyExt                        }
 };
 
-
-
 static int mem_setmode (GrVideoMode *mp,int noclear)
 {
      return MemBuf ? TRUE : FALSE;
 }
-
-
 
 static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
                                       int bpp, int txt, unsigned int * ep )
@@ -221,7 +209,6 @@ static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
     return FALSE;
 }
 
-
 /*
 static int detect (void)
 {
@@ -236,7 +223,6 @@ static void mem_reset (void)
     }
 }
 
-
 GrVideoDriver _GrDriverMEM = {
     "memory",                           /* name */
     GR_MEM,                             /* adapter type */
@@ -249,4 +235,3 @@ GrVideoDriver _GrDriverMEM = {
     mem_selectmode,                     /* special mode select routine */
     GR_DRIVERF_USER_RESOLUTION          /* arbitrary resolution possible */
 };
-

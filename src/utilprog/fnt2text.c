@@ -18,12 +18,12 @@
  **/
 
 #include <stdio.h>
-#include "grx20.h"
+#include "mgrx.h"
 
 void dumpf(GrFont *f)
 {
         int  chr,wdt,hgt,xpos,ypos;
-        char far *bmp;
+        char *bmp;
         hgt = f->h.height;
         for(chr = f->h.minchar; chr < (f->h.minchar + f->h.numchars); chr++) {
             wdt = GrFontCharWidth(f,chr);

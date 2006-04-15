@@ -18,6 +18,7 @@
 
 #include "libgrx.h"
 #include "libwin32.h"
+#include <time.h>
 
 void GrSetWindowTitle( char *title )
 {
@@ -27,5 +28,10 @@ void GrSetWindowTitle( char *title )
 void GrSleep( int msec )
 {
   Sleep( msec );
+}
+
+long GrMsecTime( void )
+{
+  return ((long)clock() * (1000 / CLOCKS_PER_SEC));
 }
 

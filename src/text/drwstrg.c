@@ -21,7 +21,7 @@
 #include "text/text.h"
 
 static void FdrvDrawBitmap(int x,int y,int w,int h,int ox, int oy,
-                           char far *bmp,int pitch,int start,
+                           char *bmp,int pitch,int start,
                            GrColor fg,GrColor bg,GrPattern *p)
 {
   GRX_ENTER();

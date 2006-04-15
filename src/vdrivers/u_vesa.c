@@ -54,9 +54,9 @@ int _GrViDrvVESAgetVGAinfo(VESAvgaInfoBlock *ib)
         static char  *nmcopy = NULL;
         static short *mdcopy = NULL;
         Int86Regs regs;
-        short FAR *mp;
+        short *mp;
         short *modes;
-        char FAR *p1;
+        char *p1;
         char *p2;
         int  ii;
         DECLARE_XFER_BUFFER(1000);
@@ -64,7 +64,7 @@ int _GrViDrvVESAgetVGAinfo(VESAvgaInfoBlock *ib)
          * copy VBE 2.0 tag into XFER buffer
          */
         setup_far_selector(LINP_SEL(XFER_BUFFER));
-        p1 = (char FAR *)LINP_PTR(XFER_BUFFER);
+        p1 = (char *)LINP_PTR(XFER_BUFFER);
         poke_b_f(p1,'V'); ++p1;
         poke_b_f(p1,'B'); ++p1;
         poke_b_f(p1,'E'); ++p1;
@@ -85,7 +85,7 @@ int _GrViDrvVESAgetVGAinfo(VESAvgaInfoBlock *ib)
          * copy VESA info block into accessible memory
          */
         setup_far_selector(LINP_SEL(XFER_BUFFER));
-        p1 = (char FAR *)LINP_PTR(XFER_BUFFER);
+        p1 = (char *)LINP_PTR(XFER_BUFFER);
         p2 = (char *)ib;
         for(ii = sizeof(*ib); --ii >= 0; p1++,p2++) *p2 = peek_b_f(p1);
 
@@ -100,23 +100,23 @@ int _GrViDrvVESAgetVGAinfo(VESAvgaInfoBlock *ib)
          * allocate space and copy mode list into accessible memory
          */
         mp = LINP_PTR(MK_FP(FP86_SEG(ib->VideoModePtr),FP86_OFF(ib->VideoModePtr)));
-        p1 = (char FAR *)mp;
+        p1 = (char *)mp;
         for(ii = 1; (short)peek_w_f(mp) != (short)(-1); mp++,ii++);
         modes = mdcopy = realloc(mdcopy,ii * sizeof(short));
         if(!modes) { DELETE_XFER_BUFFER; return(FALSE); }
         ib->VideoModePtr = modes;
-        mp = (short far *)p1;
+        mp = (short *)p1;
         for( ; --ii >= 0; mp++,modes++) *modes = peek_w_f(mp);
         /*
          * allocate space and copy ID string into accessible memory
          */
         p1 = LINP_PTR(MK_FP(FP86_SEG(ib->OEMstringPtr),FP86_OFF(ib->OEMstringPtr)));
-        mp = (short FAR *)p1;
+        mp = (short *)p1;
         for(ii = 1; (char)peek_b_f(p1) != (char)(0); p1++,ii++);
         p2 = nmcopy = realloc(nmcopy,ii * sizeof(char));
         if(!p2) { DELETE_XFER_BUFFER; return(FALSE); }
         ib->OEMstringPtr = p2;
-        p1 = (char FAR *)mp;
+        p1 = (char *)mp;
         for( ; --ii >= 0; p1++,p2++) *p2 = peek_b_f(p1);
         DELETE_XFER_BUFFER;
         return(TRUE);
@@ -126,7 +126,7 @@ VESApmInfoBlock * _GrViDrvVESAgetPMinfo(void) {
   Int86Regs r;
   static VESApmInfoBlock *ib = NULL;
   unsigned Length, ii;
-  char FAR *p1;
+  char *p1;
   char *p2;
 
   sttzero(&r);
@@ -193,7 +193,7 @@ VESApmInfoBlock * _GrViDrvVESAgetPMinfo(void) {
 int _GrViDrvVESAgetModeInfo(int mode,VESAmodeInfoBlock *ib)
 {
         Int86Regs regs;
-        char FAR *p1;
+        char *p1;
         char *p2;
         int  ii;
         DECLARE_XFER_BUFFER(1000);
@@ -214,7 +214,7 @@ int _GrViDrvVESAgetModeInfo(int mode,VESAmodeInfoBlock *ib)
          * copy VESA info block into accessible memory
          */
         setup_far_selector(LINP_SEL(XFER_BUFFER));
-        p1 = (char FAR *)LINP_PTR(XFER_BUFFER);
+        p1 = (char *)LINP_PTR(XFER_BUFFER);
         p2 = (char *)ib;
         for(ii = sizeof(*ib); --ii >= 0; p1++,p2++) *p2 = peek_b_f(p1);
         DELETE_XFER_BUFFER;

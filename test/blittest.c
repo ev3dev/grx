@@ -57,29 +57,17 @@ void doblits(GrContext *src,int x,int y)
             xx++;
             yy += (BHH + 2);
         }
-/*
-  {
-        GrColor xc = GrAllocColor(255,255,255) | GrXOR;
-        GrKeyRead();
-        xx = (GrSizeX() - BWW)/ 2;
-        yy = 2;
-        for(ii = 0; ii < 8; ii++) {
-            GrFilledBox(xx,yy,xx+BWW-1,yy+BHH-1,xc);
-            xx++;
-            yy += (BHH + 2);
-        }
-  }
-*/
 }
 
 void bltest(GrContext *src,int x,int y)
 {
         int ii;
+        GrEvent ev;
 
         for(ii = 0; ii < 8; ii++) {
             drbox(src,x,y);
             doblits(src,x,y);
-            GrKeyRead();
+            GrEventWaitKeyOrClick(&ev);
             x++;
         }
 }
@@ -110,16 +98,17 @@ TESTFUNC(blittest)
         int  bh = y / 17;
         int  bx,by;
         int  cnt;
+        GrEvent ev;
 
         GrContext *save = GrCreateSubContext(0,0,GrMaxX(),GrMaxY(),NULL,NULL);
         GrContext *tile = GrCreateContext(bw,bh,NULL,NULL);
 
         blxtest();
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 
         BWW = 3;
         blxtest();
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 
         bcolors.fbx_intcolor = GrAllocColor(160,100,30);
         bcolors.fbx_topcolor = GrAllocColor(240,150,45);
@@ -154,7 +143,7 @@ TESTFUNC(blittest)
 
         GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 
         GrClearScreen(0);
         GrSetContext(save);
@@ -189,7 +178,7 @@ TESTFUNC(blittest)
 
         GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 
 
         GrBitBlt(tile,
@@ -227,7 +216,7 @@ TESTFUNC(blittest)
         GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
 
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
         GrResetClipBox();
         GrBitBlt(NULL,
            60,60,
@@ -238,7 +227,7 @@ TESTFUNC(blittest)
            GrWRITE
         );
 
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 
         GrBitBlt(NULL,
            10,10,
@@ -249,7 +238,7 @@ TESTFUNC(blittest)
            GrWRITE
         );
 
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 
         GrSetContext(tile);
         GrClearContext(0);
@@ -287,7 +276,7 @@ TESTFUNC(blittest)
         GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
 
-        GrKeyRead();
+        GrEventWaitKeyOrClick(&ev);
 
 }
 

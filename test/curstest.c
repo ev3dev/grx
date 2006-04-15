@@ -44,7 +44,8 @@ TESTFUNC(cursortest)
         GrColor fgc = GrAllocColor(255,255,0);
         GrColor msc[3];
         GrCursor *cur;
-        int x,y;
+        int x,y,k;
+        GrEvent ev;
 
         msc[0] = 2;
         msc[1] = GrWhite();
@@ -84,7 +85,10 @@ TESTFUNC(cursortest)
                 GrWRITE
             );
             GrTextXY(0,GrMaxY()-20,"Type u d l r U D L R or q to quit",GrWhite(),GrNOCOLOR);
-            switch(GrKeyRead()) {
+            k = '\0';
+            GrEventWait(&ev);
+            if (ev.type == GREV_KEY) k = ev.p1;
+            switch(k) {
                 case 'u': y--; break;
                 case 'd': y++; break;
                 case 'l': x--; break;

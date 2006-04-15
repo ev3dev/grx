@@ -17,6 +17,7 @@
  **/
 
 #include <dos.h>
+#include <time.h>
 #include "libgrx.h"
 
 void GrSetWindowTitle( char *title )
@@ -26,5 +27,10 @@ void GrSetWindowTitle( char *title )
 void GrSleep( int msec )
 {
   delay( msec );
+}
+
+long GrMsecTime( void )
+{
+  return (uclock()/(UCLOCKS_PER_SEC/1000));
 }
 

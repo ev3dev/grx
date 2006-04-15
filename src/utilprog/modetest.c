@@ -21,8 +21,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#include "grx20.h"
-#include "grxkeys.h"
+#include "mgrx.h"
+#include "mgrxkeys.h"
 
 #include "../../test/drawing.h"
 
@@ -140,6 +140,8 @@ void PrintModes(void) {
 int main(void)
 {
         static int firstgr = 1;
+        GrEvent ev;
+
         GrSetDriver(NULL);
         if(GrCurrentVideoDriver() == NULL) {
             printf("No graphics driver found\n");
@@ -149,7 +151,6 @@ int main(void)
             int  i,w,h,px,py;
             char m1[41];
             nmodes = (int)(collectmodes(GrCurrentVideoDriver(),grmodes) - grmodes);
-            GrSetMode(GR_default_text);
             if(nmodes == 0) {
                 printf("No graphics modes found\n");
                 exit(1);
@@ -229,7 +230,11 @@ int main(void)
                 }
             }
             PrintInfo();
-            GrKeyRead();
+            GrEventInit();
+            GrMouseDisplayCursor();
+            GrEventWait(&ev);
+            GrEventUnInit();
+            GrSetMode(GR_default_text);
         }
         return 0;
 }

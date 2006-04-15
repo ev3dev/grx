@@ -12,9 +12,9 @@ INCDIR=  -I../include
 CCOPT += -pipe
 
 # Enable this line for static linked test progs (default)
-GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
+MGRX = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
 # or this if you've already installed the shared libs
-#GRX20 = -L../lib/$(GRX_LIB_SUBDIR) -lgrx20
+#MGRX = -L../lib/$(GRX_LIB_SUBDIR) -lmgrx
 
 ifeq ($(SET_SUIDROOT),y)
 EXECBITS = 4755
@@ -23,10 +23,6 @@ EXECBITS = 0755
 endif
 
 ADDON_LIBS =
-
-ifeq ($(USE_SVGALIB_DRIVER),y)
-  ADDON_LIBS += -lvga
-endif
 
 ifeq ($(HAVE_LIBTIFF),y)
   ADDON_LIBS += -ltiff
@@ -44,7 +40,7 @@ ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
 
-LIBS= $(GRX20) $(ADDON_LIBS) -lm
+LIBS= $(MGRX) $(ADDON_LIBS) -lm
 
 PROGS=	arctest     \
 	bb1test     \
@@ -74,21 +70,21 @@ PROGS=	arctest     \
 	winclip     \
 	wintest
 
-all:    $(PROGS) demogrx
+all:    $(PROGS) demomgrx
 
-demogrx: demogrx.o gfaz.o $(GRX20)
-	$(CC) $(LDOPT) -o demogrx demogrx.o gfaz.o $(LIBS)
-	chmod $(EXECBITS) demogrx
+demomgrx: demomgrx.o gfaz.o $(MGRX)
+	$(CC) $(LDOPT) -o demomgrx demomgrx.o gfaz.o $(LIBS)
+	chmod $(EXECBITS) demomgrx
 
-$(PROGS): % : %.o $(GRX20)
+$(PROGS): % : %.o $(MGRX)
 
 clean:
-	rm -f *.o $(PROGS) demogrx
+	rm -f *.o $(PROGS) demomgrx
 
-setsuid: $(PROGS) demogrx
+setsuid: $(PROGS) demomgrx
 ifeq ($(SET_SUIDROOT),y)
-	chown root $(PROGS) demogrx
-	chmod $(EXECBITS) $(PROGS) demogrx
+	chown root $(PROGS) demomgrx
+	chmod $(EXECBITS) $(PROGS) demomgrx
 else
 	@echo "Nothing to do, SET_SUIDROOT is not set to 'y' in makedefs.grx"
 endif

@@ -880,7 +880,7 @@
 #endif
 */
 #define memzero(p,s) do {                                               \
-        register void far *_FP = (void far *)(p);                       \
+        register void *_FP = (void *)(p);                       \
         register GR_repl   _FV = 0;                                     \
         register unsigned  _FC = (unsigned)(s);                         \
         DBGPRINTF(DBG_COPYFILL,("memzero size=%u\n",_FC));              \

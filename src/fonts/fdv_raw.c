@@ -1,7 +1,7 @@
 /**
  ** fdv_raw.c -- driver for raw font file format
  **
- ** Copyright (C) 2002 Dimitar Zhekov
+ ** Copyright (C) 2003 Dimitar Zhekov
  ** [e-mail: jimmy@is-vn.bg]
  **
  ** This file is part of the GRX graphics library.
@@ -13,6 +13,10 @@
  ** This library is distributed in the hope that it will be useful,
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** Changes by Dimitar Zhekov (jimmy@is-vn.bg) Nov 20 2003
+ **   - Added psf2 support, raw and psf1 are now treated as pseudo-psf2.
+ **   - Better support for RAW files: up to 16x32, assuming scale 1:2.
  **
  **/
 
@@ -35,12 +39,24 @@
 #endif
 
 static FILE *fontfp = NULL;
-static int   nextch = 0;
-static char  name[40];
-static char  family[40];
-static long  offset;
-static int   height;
-static int   numchars;
+static int nextch = 0;
+static char name[40], family[40];
+static GrFontFileHeaderPSF fhdr;
+
+#if BYTE_ORDER==BIG_ENDIAN
+#include "ordswap.h"
+static void swap_header(void) {
+    GRX_ENTER();
+    _GR_swap32u(&fhdr.version);
+    _GR_swap32u(&fhdr.offset);
+    _GR_swap32u(&fhdr.flags);
+    _GR_swap32u(&fhdr.length);
+    _GR_swap32u(&fhdr.charsize);
+    _GR_swap32u(&fhdr.height);
+    _GR_swap32u(&fhdr.width);
+    GRX_LEAVE();
+}
+#endif
 
 static void cleanup(void)
 {
@@ -55,7 +71,6 @@ static int openfile(char *fname)
 {
         int res;
         long size;
-        GrFontFileHeaderPSF fhdr;
         char *s;
         GRX_ENTER();
         res = FALSE;
@@ -80,31 +95,50 @@ static int openfile(char *fname)
             goto done;
         }
         /* try to guess file type */
-        if(fhdr.magic1 == PSF_FONTMAGIC1 && fhdr.magic2 == PSF_FONTMAGIC2 && fhdr.filemode <= PSF_FILEMODE_MAX) {
-            offset = sizeof fhdr;
-            height = fhdr.fontheight;
-            numchars = (fhdr.filemode & PSF_512_CHARACTERS) == 0 ? 256 : 512;
-            if(height == 0) {
-                DBGPRINTF(DBG_FONT, ("invalid psf font height"));
-                goto done;
-            }
-            if(size - offset < height * numchars) {
-                DBGPRINTF(DBG_FONT, ("invalid psf file size\n"));
+        if(fhdr.id[0] == PSF1_MAGIC0 && fhdr.id[1] == PSF1_MAGIC1) {
+            fhdr.offset = PSF1_HDRSIZE;
+            fhdr.width = 8;
+            fhdr.height = fhdr.charsize = fhdr.size;
+            fhdr.numchars = (fhdr.mode & PSF1_MODE512) == 0 ? 256 : 512;
+        }
+        else if(fhdr.id[0] == PSF2_MAGIC0 && fhdr.id[1] == PSF2_MAGIC1 && fhdr.mode == PSF2_MAGIC2 && fhdr.size == PSF2_MAGIC3)
+        {
+#if BYTE_ORDER==BIG_ENDIAN
+            DBGPRINTF(DBG_FONT, ("swapping header byte order\n"));
+            swap_header();
+#endif
+            fhdr.charsize = ((fhdr.width + 7) / 8) * fhdr.height;
+            if(fhdr.numchars == 0) {
+                DBGPRINTF(DBG_FONT, ("invalid numchars\n"));
                 goto done;
             }
         }
         else {
-            if(size % 256) {
+            if(size > 16384 || size % (size <= 4096 ? 256 : 512)) {
                 DBGPRINTF(DBG_FONT, ("invalid raw file size\n"));
                 goto done;
             }
-            if(size / 256 > 255) {
-                DBGPRINTF(DBG_FONT, ("invalid raw font height\n"));
+            fhdr.offset = 0;
+            fhdr.charsize = size / 256;
+            if(size <= 4096) {
+                fhdr.width = 8;
+                fhdr.height = fhdr.charsize;
+            }
+            else {
+                fhdr.height = size / 512;
+                fhdr.width = (fhdr.height + 1) / 2;
+            }
+            fhdr.numchars = 256;
+        }
+        if(fhdr.offset != 0) {
+            if(fhdr.charsize == 0) {
+                DBGPRINTF(DBG_FONT, ("invalid psf charsize\n"));
                 goto done;
             }
-            offset = 0;
-            height = size / 256;
-            numchars = 256;
+            if(size - fhdr.offset < fhdr.charsize * fhdr.numchars) {
+                DBGPRINTF(DBG_FONT, ("invalid psf file size\n"));
+                goto done;
+            }
         }
         /* get font name and family */
         s = strrchr(fname, '/');
@@ -119,12 +153,12 @@ static int openfile(char *fname)
         strncpy(name, s, sizeof name - 1);
         name[sizeof name - 1] = '\0';
         if((s = strrchr(name, '.')) != NULL) *s = '\0';
-        if(*name == '\0') sprintf(name, offset != 0 ? "psf%d" : "raw%d", height);
+        if(*name == '\0') sprintf(name, fhdr.offset != 0 ? "psf%d" : "raw%d", (int) fhdr.height);
         strcpy(family, name);
         for(s = family; isalpha(*s); s++);
         if(s > family) *s = '\0';
         /* finish and return */
-        nextch = numchars;
+        nextch = fhdr.numchars;
         res = TRUE;
 done:   if(!res) cleanup();
         GRX_RETURN(res);
@@ -142,13 +176,13 @@ static int header(GrFontHeader *hdr)
             hdr->scalable = FALSE;
             hdr->preloaded = FALSE;
             hdr->modified = GR_FONTCVT_NONE;
-            hdr->width = 8;
-            hdr->height = height;
-            hdr->baseline = (hdr->height * 4) / 5 + (hdr->height < 10);
+            hdr->width = fhdr.width;
+            hdr->height = fhdr.height;
+            hdr->baseline = (hdr->height * 4) / 5 + (hdr->height < 15);
             hdr->ulheight = imax(1, hdr->height / 15);
             hdr->ulpos = hdr->height - hdr->ulheight;
             hdr->minchar = 0;
-            hdr->numchars = numchars;
+            hdr->numchars = fhdr.numchars;
             res = TRUE;
         }
         GRX_RETURN(res);
@@ -159,7 +193,7 @@ static int charwdt(int chr)
         int res;
         GRX_ENTER();
         res = -1;
-        if(fontfp != NULL && chr >= 0 && chr < numchars) res = 8;
+        if(fontfp != NULL && chr >= 0 && chr < fhdr.numchars) res = fhdr.width;
         GRX_RETURN(res);
 }
 
@@ -168,9 +202,9 @@ static int bitmap(int chr,int w,int h,char *buffer)
         int res;
         GRX_ENTER();
         res = FALSE;
-        if(w != charwdt(chr) || h != height) goto done;
-        if(chr != nextch && fseek(fontfp, offset + height * chr, SEEK_SET) < 0) goto done;
-        if(fread(buffer, 1, height, fontfp) != height) goto done;
+        if(w != charwdt(chr) || h != fhdr.height) goto done;
+        if(chr != nextch && fseek(fontfp, fhdr.offset + fhdr.charsize * chr, SEEK_SET) < 0) goto done;
+        if(fread(buffer, 1, fhdr.charsize, fontfp) != fhdr.charsize) goto done;
         nextch = chr + 1;
         res = TRUE;
 done:        GRX_RETURN(res);
@@ -178,7 +212,7 @@ done:        GRX_RETURN(res);
 
 GrFontDriver _GrFontDriverRAW = {
     "RAW",                              /* driver name (doc only) */
-    ".raw",                             /* font file extension */
+    ".psf",                             /* font file extension */
     FALSE,                              /* scalable */
     openfile,                           /* file open and check routine */
     header,                             /* font header reader routine */
