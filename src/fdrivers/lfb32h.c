@@ -25,18 +25,10 @@
 /* in this is the far pointer code using %fs descriptor          */
 #ifndef LFB_BY_NEAR_POINTER
 
-#ifdef   __TURBOC__
-#error This library will not work with as a 16-bit real-mode code
-#endif
-
-/* -------------------------------------------------------------------- */
-
 #define PIX2COL(col) ((col)>>8)
 #define COL2PIX(col) ((col)<<8)
 #define FAR_ACCESS
 #include "fdrivers/driver32.h"
-
-/* -------------------------------------------------------------------- */
 
 GrFrameDriver _GrFrameDriverSVGA32H_LFB = {
     GR_frameSVGA32H_LFB,        /* frame mode */

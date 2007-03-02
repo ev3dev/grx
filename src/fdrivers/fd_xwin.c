@@ -665,7 +665,7 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
     XImage ximage;
     Visual *visual = DefaultVisual(_XGrDisplay,_XGrScreen);
 
-    ximage.width        = src->gf_lineoffset;
+    ximage.width        = sx + w;
     ximage.height       = sy + h;
     ximage.xoffset      = 0;
     ximage.format       = ZPixmap;

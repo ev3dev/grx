@@ -84,10 +84,6 @@ gvmode *rammodes = NULL;
 #define DBL(x)  ((double)(x))
 #define INT(x) ((int)(x))
 
-#ifndef  CLK_TCK
-#define  CLK_TCK    CLOCKS_PER_SEC
-#endif
-
 #ifndef min
 #define min(a,b) ((a)<(b) ? (a) : (b))
 #endif
@@ -252,7 +248,7 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs,int loops) {
        GrPixelNC(x[j],y[j]);
   }
   t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
   if (seconds > 0)
     gp->readpix.rate = gp->readpix.count / seconds;
 }
@@ -281,7 +277,7 @@ void drawpixeltest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c4);
   }
   t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
   if (seconds > 0)
     gp->drawpix.rate = gp->drawpix.count / seconds;
 }
@@ -317,7 +313,7 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
         GrLineNC(x[j],y[j],x[j+1],y[j+1],c4);
   }
   t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
   if (seconds > 0)
     gp->drawlin.rate = gp->drawlin.count / seconds;
 }
@@ -353,7 +349,7 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
       GrHLineNC(x[j],x[j+1],y[j],c4);
   }
   t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
   if (seconds > 0)
     gp->drawhlin.rate = gp->drawhlin.count / seconds;
 }
@@ -389,7 +385,7 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
        GrVLineNC(x[j],y[j],y[j+1],c4);
   }
   t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
   if (seconds > 0)
     gp->drawvlin.rate = gp->drawvlin.count / seconds;
 }
@@ -432,7 +428,7 @@ void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
       GrFilledBoxNC(xb[j],yb[j],xb[j+1],yb[j+1],c4);
   }
   t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
   if (seconds > 0)
     gp->drawblk.rate = gp->drawblk.count / seconds;
 }
@@ -486,7 +482,7 @@ void blit_measure(gvmode *gp, perfm *p,
       GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GrAND);
   }
   t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
   if (seconds > 0)
     p->rate = p->count / seconds;
 }

@@ -21,10 +21,6 @@
 #include <stdio.h>
 #include <time.h>
 
-#ifndef  CLK_TCK
-#define  CLK_TCK    CLOCKS_PER_SEC
-#endif
-
 #include "test.h"
 
 static GrColor *EGA;
@@ -114,8 +110,8 @@ static void speedtest(void)
             "Times to scan 1024 polygons\n"
             "   with 'GrFilledPolygon': %.2f (s)\n"
             "   with 'GrFilledConvexPolygon': %.2f (s)\n",
-            (double)(t2 - t1) / (double)CLK_TCK,
-            (double)(t3 - t2) / (double)CLK_TCK
+            (double)(t2 - t1) / (double)CLOCKS_PER_SEC,
+            (double)(t3 - t2) / (double)CLOCKS_PER_SEC
         );
 }
 

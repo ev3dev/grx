@@ -24,12 +24,6 @@
 
 #ifdef __GNUC__
 #include "gcc/arith.h"
-#elif defined(__TURBOC__)
-#include "bcc/arith.h"
-#endif
-
-#ifdef _MSC_VER
-#define __emit__(x) __asm{ __emit (x) }
 #endif
 
 /*
@@ -112,7 +106,6 @@
         if((unsigned long)(x) > (unsigned long)(y)) lswap(x,y)  \
 }
 
-
 /*
  * couple of 'sizeof'-like useful macros
  */
@@ -158,7 +151,6 @@
 #define umul32(X,Y) ((unsigned long)(X) * (unsigned long)(Y))
 #endif
 
-
 /*
  * umuladd32(x,y,z)
  * multiply two unsigned-s for a long result and add an unsigned
@@ -166,7 +158,6 @@
 #ifndef umuladd32
 #define umuladd32(X,Y,Z) (umul32((X),(Y))+(Z))
 #endif
-
 
 /*
  * [i|u]scale(X,N,D)

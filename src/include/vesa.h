@@ -53,12 +53,7 @@
 #define PACK
 #endif
 
-#ifdef __WATCOMC__ /* GS - WATCOM C++ 11.0 */
-#pragma pack ( 0 );
-#define PACKTYPEMOD _Packed
-#else
 #define PACKTYPEMOD
-#endif
 
 /*
  * The VGA info structure (without padding)

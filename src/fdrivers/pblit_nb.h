@@ -45,11 +45,6 @@
 
 /* check if forward blit would overwrite source */
 #ifdef BLIT_CAN_OVERLAP
-#ifdef __TURBOC__
-#define _USEG_(p)  ((unsigned)(void _seg *)(void *)(p))
-#define _UOFF_(p)  ((unsigned)(void near *)(p))
-#define OVERLAP(dp,sp) ( _USEG_(dp) == _USEG_(sp) && _UOFF_(dp) > _UOFF_(sp) )
-#endif
 #ifndef OVERLAP
 #define OVERLAP(dp,sp) ( ((GR_int8 *)dp) > ((GR_int8 *)sp) )
 #endif

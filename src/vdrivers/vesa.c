@@ -30,13 +30,8 @@
 #include "memfill.h"
 #include "vesa.h"
 
-#if defined(__GNUC__) || (defined(__WATCOMC__) && defined(__386__))
 #define  NUM_MODES    100               /* max # of supported modes */
 #define  NUM_EXTS     25                /* max # of mode extensions */
-#else
-#define  NUM_MODES    40                /* max # of supported modes */
-#define  NUM_EXTS     12                /* max # of mode extensions */
-#endif
 
 static GrVideoMode    modes[NUM_MODES];
 static GrVideoModeExt exts[NUM_EXTS];
@@ -71,8 +66,7 @@ static void (*_SETBANK)(int bk);
 /* get the real mode stuff ... */
 #include "vesa_rm.c"
 
-#if   (defined(__WATCOMC__) && defined (__386__)) \
-   || (defined(DJGPP) && defined(DJGPP_MINOR))
+#if (defined(DJGPP) && defined(DJGPP_MINOR))
 #define HAVE_VBE2
 /* get the VBE2 protected mode stuff ... */
 #include "vesa_pm.c"
@@ -113,11 +107,7 @@ static int setup48(GrVideoMode *mp,int noclear) {
       IREG_AX(r) = VESA_FUNC + VESA_PAL_CNTRL;
       IREG_BX(r) = 0x0800; /* BL = 0 -> set DAC width, BH=8 -> req. width */
       DBGPRINTF(DBG_DRIVER,("Variable DAC\n"));
-#ifdef __WATCOMC__
-      int10x(&r);
-#else
       int10(&r);
-#endif
       if(IREG_AX(r) == VESA_SUCCESS) {
         DBGPRINTF(DBG_DRIVER,("Variable DAC initialised\n"));
         _GrViDrvSetDACshift(8-IREG_BH(r));
@@ -181,19 +171,6 @@ static int build_video_mode( VESAmodeInfoBlock *ip,
     ep->cprec[0]   = ep->cprec[1] = ep->cprec[2] = 6;
     ep->cpos[0]    = ep->cpos[1]  = ep->cpos[2]  = 0;
 
-#ifdef __TURBOC__
-    if (  _GrVidDrvVESAflags & PROTBANKING) {
-        if(VESAbankfn && (VESAbankfn != ip->WinFuncPtr)) {
-            _GrVidDrvVESAflags &= ~PROTBANKING;
-            _SETRWBANKS = RM_setrwbanks;
-            _SETBANK    = RM_setbank;
-        } else {
-            VESAbankfn = ip->WinFuncPtr;
-            _SETRWBANKS = RM_protsetrwbanks;
-            _SETBANK    = RM_protsetbank;
-        }
-    }
-#endif
 #ifdef HAVE_VBE2
     if(!(_GrVidDrvVESAflags&NOT_LINEAR) && VESAversion>=VESA_VERSION(2,0)) {
         /* check for linear frame buffer */

@@ -34,5 +34,5 @@ void GrSleep( int msec )
 
 long GrMsecTime( void )
 {
-  return ((long)times(NULL) * (1000 / CLK_TCK));
+  return ((long)times(NULL) * (1000L / sysconf(_SC_CLK_TCK)));
 }

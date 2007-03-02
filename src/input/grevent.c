@@ -199,9 +199,10 @@ int GrEventAddHook(int (*fn) (GrEvent *))
     int i;
 
     for (i=0; i<MAX_HOOK_FUNCTIONS; i++) {
-        if (hook_event[i] == NULL)
+        if (hook_event[i] == NULL) {
             hook_event[i] = fn;
-        return 1;
+            return 1;
+        }
     }
 
     return 0;
@@ -221,9 +222,10 @@ int GrEventDeleteHook(int (*fn) (GrEvent *))
     int i;
 
     for (i=0; i<MAX_HOOK_FUNCTIONS; i++) {
-        if (hook_event[i] == fn)
+        if (hook_event[i] == fn) {
             hook_event[i] = NULL;
-        return 1;
+            return 1;
+        }
     }
 
     return 0;

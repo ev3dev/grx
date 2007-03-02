@@ -16,16 +16,9 @@
  **/
 
 /* combine two bytes into one word: generic version */
-#define __highlow__(hi,lo) ((((GR_int16u)(hi))<<8)|((GR_int8u)(lo)))
-
-#ifdef __GNUC__
-#include "gcc/highlow.h"
-#elif defined(__TURBOC__)
-#include "bcc/highlow.h"
-#endif
 
 #ifndef highlow
-#define highlow(hi,lo) __highlow__((hi),(lo))
+#define highlow(hi,lo) ((((GR_int16u)(hi))<<8)|((GR_int8u)(lo)))
 #endif
 
 #ifndef highlowP

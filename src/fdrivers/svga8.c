@@ -16,10 +16,6 @@
  **
  **/
 
-#ifdef   __TURBOC__
-#pragma  inline
-#endif
-
 #include "libgrx.h"
 #include "grdriver.h"
 #include "arith.h"
@@ -154,11 +150,10 @@ static void drawblock(int x,int y,int w,int h,GrColor color)
 }
 
 
-#if !defined(__WATCOMC__) && (defined(__DJGPP__) || defined(__TURBOC__))
+#if defined(__DJGPP__)
 /* The VGA banked frame buffer must start on a 64k boundary
 ** for this optimized assembler code.
 ** Linux: mmap may place the frame buffer on a 4k boundary :(
-** Watcom C++: Can't use ES register :(
 */
 static void drawline(int x,int y,int dx,int dy,GrColor color)
 {
@@ -224,64 +219,6 @@ static void drawline(int x,int y,int dx,int dy,GrColor color)
             "q"  ((char)(color)),      "o"  (lndata)              \
         )
 #       endif
-#       endif
-#       ifdef __TURBOC__
-#       define ASM_LINE1(OPC) {                                   \
-            _ES = FP_SEG(ptr);                                    \
-            _BX = FP_OFF(ptr);                                    \
-            _CX = npts;                                           \
-            _DX = error;                                          \
-            _AX = (int)color;                                     \
-          OPC##1loop:                                             \
-            asm OPC  byte ptr es:[bx],al;                         \
-            asm sub  dx,word ptr lndata.errsub;                   \
-            asm jb   OPC##1adjust;                                \
-            asm sub  bx,1;                                        \
-            asm jb   OPC##1newbank1;                              \
-            asm loop OPC##1loop;                                  \
-            asm jmp  OPC##1done;                                  \
-          OPC##1adjust:                                           \
-            asm add  dx,word ptr lndata.erradd;                   \
-            asm add  bx,word ptr lndata.offset2;                  \
-            asm jb   OPC##1newbank2;                              \
-            asm loop OPC##1loop;                                  \
-            asm jmp  OPC##1done;                                  \
-          OPC##1newbank1:                                         \
-            asm neg  word ptr lndata.offset1;                     \
-          OPC##1newbank2:                                         \
-            asm dec  cx;                                          \
-          OPC##1done:                                             \
-            *((short *)(&ptr)) = _BX;                             \
-            npts  = _CX;                                          \
-            error = _DX;                                          \
-        }
-#       define ASM_LINE2(OPC) {                                   \
-            _ES = FP_SEG(ptr);                                    \
-            _BX = FP_OFF(ptr);                                    \
-            _CX = npts;                                           \
-            _DX = error;                                          \
-            _AX = (int)color;                                     \
-          OPC##2loop:                                             \
-            asm OPC  byte ptr es:[bx],al;                         \
-            asm sub  dx,word ptr lndata.errsub;                   \
-            asm jb   OPC##2adjust;                                \
-            asm add  bx,word ptr lndata.offset1;                  \
-            asm jb   OPC##2newbank;                               \
-            asm loop OPC##2loop;                                  \
-            asm jmp  OPC##2done;                                  \
-          OPC##2adjust:                                           \
-            asm add  dx,word ptr lndata.erradd;                   \
-            asm add  bx,word ptr lndata.offset2;                  \
-            asm jb   OPC##2newbank;                               \
-            asm loop OPC##2loop;                                  \
-            asm jmp  OPC##2done;                                  \
-          OPC##2newbank:                                          \
-            asm dec  cx;                                          \
-          OPC##2done:                                             \
-            *((short *)(&ptr)) = _BX;                             \
-            npts  = _CX;                                          \
-            error = _DX;                                          \
-        }
 #       endif
 
         copr = C_OPER(color);

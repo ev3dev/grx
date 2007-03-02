@@ -16,8 +16,8 @@
  **
  ** Basic memory peek and poke operations in byte, word and long sizes.
  ** The poke operations are available in WRITE, XOR, OR and AND versions.
- ** Intel CPU specific support is provided for the Turbo C and GNU C
- ** compilers. The i386 GCC version supports segment overrides. May
+ ** Intel CPU specific support is provided for the GNU C
+ ** compiler. The i386 GCC version supports segment overrides. May
  ** work with other compilers and CPU-s, but is not optimized for them.
  **
  **/
@@ -31,10 +31,6 @@
 
 #ifdef __GNUC__
 #include "gcc/mempeek.h"
-#elif defined(__TURBOC__)
-#include "bcc/mempeek.h"
-#elif defined(__WATCOMC__)
-#include "watcom/mempeek.h"
 #endif
 
 #ifndef __INLINE_STD_PEEK__

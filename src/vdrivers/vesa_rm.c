@@ -51,35 +51,3 @@ static void RM_setrwbanks(int rb,int wb)
         int10(&r);
         setup_far_selector(SCRN->gc_selector);
 }
-
-#ifdef __TURBOC__
-
-static void far (*VESAbankfn)(void);
-
-static void RM_protsetbank(int bk)
-{
-        _DX = bk << _GrVidDrvVESAbanksft;
-        _BX = _GrVidDrvVESAwrbank;
-        _AX = VESA_FUNC + VESA_PAGE_CTL;
-        (*VESAbankfn)();
-        if(_GrVidDrvVESArdbank >= 0) {
-            _DX = bk << _GrVidDrvVESAbanksft;
-            _BX = _GrVidDrvVESArdbank;
-            _AX = VESA_FUNC + VESA_PAGE_CTL;
-            (*VESAbankfn)();
-        }
-}
-
-static void RM_protsetrwbanks(int rb,int wb)
-{
-        _DX = wb << _GrVidDrvVESAbanksft;
-        _BX = _GrVidDrvVESAwrbank;
-        _AX = VESA_FUNC + VESA_PAGE_CTL;
-        (*VESAbankfn)();
-        _DX = rb << _GrVidDrvVESAbanksft;
-        _BX = _GrVidDrvVESArdbank;
-        _AX = VESA_FUNC + VESA_PAGE_CTL;
-        (*VESAbankfn)();
-}
-
-#endif

@@ -14,25 +14,12 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
- ** Intel CPU specific input/output instructions. This file
- ** supports i386 GCC and Turbo C.
+ ** Intel CPU specific input/output instructions
  **
  **/
 
 #ifndef __IOPORT_H_INCLUDED__
 #define __IOPORT_H_INCLUDED__
-
-#ifdef __TURBOC__
-/* prototype for __emit__() */
-#include <dos.h>
-#endif
-
-#ifdef _MSC_VER
-/* prototype for _inp/_inpw/_outp/_outpw */
-#include <conio.h>
-/* prototype _enable/_disable */
-#include <dos.h>
-#endif
 
 #ifdef  SLOW_DOWN_IO
 #ifndef SLOW_DOWN_IO_PORT
@@ -48,16 +35,6 @@
     );                                                  \
 })
 #endif
-#endif
-#ifdef  __TURBOC__
-#define __INLINE_SLOW_IO_ONCE__  (                      \
-    __emit__((char)(0xe6)),   /* outb to const port */  \
-    __emit__((char)(SLOW_DOWN_IO_PORT))                 \
-)
-#endif
-
-#ifdef _MSC_VER
-#define __INLINE_SLOW_IO_ONCE__ outp(SLOW_DOWN_IO_PORT,0)
 #endif
 
 #if (SLOW_DOWN_IO - 0) <= 1
@@ -148,123 +125,6 @@
 #endif  /* __i386__ */
 #endif  /* __GNUC__ */
 
-#ifdef  __TURBOC__
-/* void    __emit__(); */
-#define __INLINE_INPORT__(P,SIZE,T) (                   \
-    _DX = ((unsigned short)(P)),                        \
-    __emit__((char)(0xec+sizeof(T)-1)), /* inB|W  */    \
-    __INLINE_SLOW_DWN_IOC__                             \
-    (unsigned T)_AX                                     \
-)
-#define __INLINE_OUTPORT__(P,V,SIZE,T) do {             \
-    _AX = ((unsigned short)(V));                        \
-    _DX = ((unsigned short)(P));                        \
-    __emit__((char)(0xee+sizeof(T)-1)); /* outB|W */    \
-    __INLINE_SLOW_DOWN_IO__;                            \
-} while(0)
-#ifndef SLOW_DOWN_IO
-#define __INLINE_INPORTS__(P,B,C,SIZE,T) do {           \
-    _ES = (unsigned)(void _seg *)(void *)(B);       \
-    _DI = (unsigned)(void near *)(B);                   \
-    _CX = ((unsigned short)(C));                        \
-    _DX = ((unsigned short)(P));                        \
-    __emit__((char)(0xfc));     /* cld    */            \
-    __emit__((char)(0xf3));     /* rep    */            \
-    __emit__((char)(0x6c+sizeof(T)-1)); /* insB|W */    \
-} while(0)
-#define __INLINE_OUTPORTS__(P,B,C,SIZE,T) do {          \
-    _ES = (unsigned)(void _seg *)(void *)(B);       \
-    _SI = (unsigned)(void near *)(B);                   \
-    _CX = ((unsigned short)(C));                        \
-    _DX = ((unsigned short)(P));                        \
-    __emit__((char)(0xfc));     /* cld     */           \
-    __emit__((char)(0x26));     /* seg es  */           \
-    __emit__((char)(0xf3));     /* rep     */           \
-    __emit__((char)(0x6e+sizeof(T)-1)); /* outsB|W */   \
-} while(0)
-#else   /* SLOW_DOWN_IO */
-#define __INLINE_INPORTS__(P,B,C,SIZE,T) do {           \
-    _ES = (unsigned)(void _seg *)(void *)(B);       \
-    _BX = (unsigned)(void near *)(B);                   \
-    _CX = ((unsigned short)(C));                        \
-    _DX = ((unsigned short)(P));                        \
-    do {                                                \
-    __emit__((char)(0xec+sizeof(T)-1)); /* inB|W */     \
-    __INLINE_SLOW_DOWN_IO__;                            \
-    *((T _seg *)_ES + (T near *)_BX) = (T)_AX;          \
-    _BX += sizeof(T);                                   \
-    _CX--;                                              \
-    } while(_CX);                                       \
-} while(0)
-#define __INLINE_OUTPORTS__(P,B,C,SIZE,T) do {          \
-    _ES = (unsigned)(void _seg *)(void *)(B);       \
-    _BX = (unsigned)(void near *)(B);                   \
-    _CX = ((unsigned short)(C));                        \
-    _DX = ((unsigned short)(P));                        \
-    do {                                                \
-    (T)_AX = *((T _seg *)_ES + (T near *)_BX);          \
-    __emit__((char)(0xee+sizeof(T)-1)); /* outB|W */    \
-    __INLINE_SLOW_DOWN_IO__;                            \
-    _BX += sizeof(T);                                   \
-    _CX--;                                              \
-    } while(_CX);                                       \
-} while(0)
-#endif  /* SLOW_DOWN_IO */
-#endif  /* __TURBOC__ */
-
-#ifdef  __WATCOMC__ /* GS - Watcom C++ 11.0 */
-#include <conio.h>
-/* 8bit port access */
-#define inpb(a) inp(a)
-#define outpb(a,b) outp(a,b)
-/* 16bit port access */
-/* inpw(a)    already defined */
-/* outpw(a,b) already defined */
-/* 32bit port access */
-#define inpl(a) inpd(a)
-#define outpl(a,b) outpd(a,b)
-#define __INLINE_INPORT__(P,SIZE,T) (                   \
-    (unsigned T) inp##SIZE (P)                          \
-)
-#define __INLINE_OUTPORT__(P,V,SIZE,T) (                \
-    (unsigned T) outp##SIZE (P,V)                       \
-)
-#ifndef SLOW_DOWN_IO
-#define __INLINE_INPORTS__(P,B,C,SIZE,T) do {           \
-    do {                                                \
-        *B = __INLINE_INPORT__(P,SIZE,T);               \
-        (T)B ++;                                        \
-    } while(C--);                                       \
-} while(0)
-#define __INLINE_OUTPORTS__(P,B,C,SIZE,T) do {          \
-        do{                                             \
-        __INLINE_OUTPORTS__(P,*B,SIZE,T);               \
-        (T)B ++;                                        \
-        } while (C--);                                  \
-} while(0)
-#else   /* SLOW_DOWN_IO */
-#define __INLINE_INPORTS__(P,B,C,SIZE,T) do {           \
-    do {                                                \
-        *B = __INLINE_INPORT__(P,SIZE,T);               \
-        (T)B ++;                                        \
-    } while(C--);                                       \
-} while(0)
-#define __INLINE_OUTPORTS__(P,B,C,SIZE,T) do {          \
-        do{                                             \
-        __INLINE_OUTPORTS__(P,*B,SIZE,T);               \
-        (T)B ++;                                        \
-        } while (C--);                                  \
-} while(0)
-#endif  /* SLOW_DOWN_IO */
-#endif  /* __WATCOMC__ */
-
-#ifdef _MSC_VER
-#define inport_b(port)          _inp((unsigned)(port))
-#define inport_w(port)          _inpw((unsigned)(port))
-#define outport_b(port,val)     _outp(((unsigned)(port)),((int)(val)))
-#define outport_w(port,val)     _outp(((unsigned)(port)),((unsigned)(val)))
-#endif
-
 #ifndef inport_b
 #define inport_b(port)          __INLINE_INPORT__(port,b,char)
 #endif
@@ -315,27 +175,6 @@
 #define int_enable()
 #endif
 #endif
-#endif
-
-#ifdef  __TURBOC__
-#define int_disable()           __emit__((char)(0xfa))
-#define int_enable()            __emit__((char)(0xfb))
-#endif
-
-#if defined(_MSC_VER) || defined(__WATCOMC__) /* GS - Watcom C++ 11.0 */
-#define int_disable()           _disable()
-#define int_enable()            _enable()
-#endif
-
-
-#if defined(__TURBOC__) || defined(_MSC_VER)
-/*
- * These are not really here!
- */
-#undef  inport_l
-#undef  outport_l
-#undef  inport_l_s
-#undef  outport_l_s
 #endif
 
 #endif  /* whole file */
