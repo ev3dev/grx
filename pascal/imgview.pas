@@ -49,7 +49,8 @@ end;
 
 var
   ImgFileName: TString;
-  ArgStart, ArgN, ImgWidth, ImgHeight, Key: Integer;
+  ArgStart, ArgN, Key: Integer;
+  ImgWidth, ImgHeight: CInteger;
   grc: GrContextPtr;
   Centered: Boolean;
 

@@ -15,7 +15,7 @@ procedure InitTest;
    var m,n,i: Integer;
        w,h,c: Integer = 0;
 begin
-   if ParamCount < 2 then 
+   if ParamCount < 2 then
       m := GrSetMode(Gr_Default_Graphics,0,0,0,0,0)
    else begin
       for n:=1 to ParamCount do begin
@@ -32,18 +32,18 @@ begin
       end;
       if ParamCount = 2 then
          m :=GrSetMode(Gr_Width_Height_Graphics,w,h,0,0,0)
-      else 
+      else
          m := GrSetMode(Gr_Width_Height_Color_Graphics,w,h,c,0,0)
    end
 end;
 
 procedure EndTest;
-   var m:Integer; k:GrKeyType;
+   var m:Integer;
 begin
    m:=GrSetMode(Gr_Default_Text,0,0,0,0,0);
    if exit_message <> '' then begin
       WriteLn(exit_message);
-      k:=GrKeyRead
+      Readln
    end
 end;
 

@@ -1,0 +1,40 @@
+#
+# GRX test programs makefile for SDL. Uses GNU make.
+#
+.PHONY: clean
+
+GRXVSDL=y
+
+include ../makedefs.grx
+
+GRXLIB = ../lib/$(GRX_LIB_SUBDIR)/libgrx20S.a
+GRXLIBPATH = -L../lib/$(GRX_LIB_SUBDIR)
+
+ifneq ($(EP),x)
+  EX = .exe
+endif
+
+LIBS = $(GRXLIBPATH) $(GRXLIB)
+
+# Compiler and options on your system  
+COMPILER = $(PC) --autobuild
+
+
+PROGS= 				\
+	$(EP)blt_test$(EX) 	\
+	$(EP)modetest$(EX) 	\
+	$(EP)keytest$(EX) 	\
+	$(EP)txt_test$(EX) 	\
+	$(EP)vir_test$(EX)	\
+	$(EP)polytest$(EX)	\
+	$(EP)jpgtest$(EX)	\
+	$(EP)colortst$(EX)	\
+	$(EP)imgview$(EX)
+
+all: $(PROGS)
+
+$(PROGS): $(EP)%$(EX) : %.pas $(GRXLIB)
+	$(COMPILER) $(CCOPT) -o $@ $*.pas $(LDOPT) $(LIBS)
+
+clean:
+	rm -f *.o *.gpi *.gpm $(PROGS) 

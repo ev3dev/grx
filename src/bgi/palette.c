@@ -40,7 +40,7 @@ void __gr_setpalette(int colornum, int color)
 {
 #ifdef __DJGPP__
 # include <dpmi.h>
-# include <go32.h>
+//# include <go32.h>
   _go32_dpmi_registers regs;
 
   _DO_INIT_CHECK;

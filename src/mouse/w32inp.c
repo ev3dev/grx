@@ -215,6 +215,8 @@ static int DequeueW32Event(GrMouseEvent * ev)
     W32Event evaux;
     int key;
     int buttons;
+    extern int GrCurrentWindowWidth;
+    extern int GrCurrentWindowHeight;
 
     if (_W32EventQueueLength < 1)
         return 0;
@@ -257,6 +259,32 @@ static int DequeueW32Event(GrMouseEvent * ev)
             return -1;
         fill_keybd_ev((*ev), key, evaux.kbstat);
         kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_SIZE:
+        GrCurrentContext ()->gc_xmax = LOWORD (evaux.lParam);
+        GrCurrentContext ()->gc_ymax = HIWORD (evaux.lParam);
+        GrCurrentContext ()->gc_xcliphi = LOWORD (evaux.lParam);
+        GrCurrentContext ()->gc_ycliphi = HIWORD (evaux.lParam);
+        GrScreenContext ()->gc_xmax = LOWORD (evaux.lParam);
+        GrScreenContext ()->gc_ymax = HIWORD (evaux.lParam);
+        GrScreenContext ()->gc_xcliphi = LOWORD (evaux.lParam);
+        GrScreenContext ()->gc_ycliphi = HIWORD (evaux.lParam);
+        GrCurrentWindowWidth = LOWORD (evaux.lParam);
+        GrCurrentWindowHeight = HIWORD (evaux.lParam);
+        fill_size_ev ((*ev), LOWORD (evaux.lParam), HIWORD (evaux.lParam));
+        return 1;
+
+    case WM_PAINT:
+      {
+        RECT *UpdateRect = (RECT *) (evaux.lParam);
+        fill_paint_ev ((*ev), UpdateRect->left, UpdateRect->top,
+                       UpdateRect->right, UpdateRect->bottom);
+        return 1;
+      }
+
+    case WM_COMMAND:
+        fill_cmd_ev((*ev), evaux.wParam, evaux.kbstat);
         return 1;
 
     case WM_LBUTTONDOWN:
@@ -329,6 +357,8 @@ static int DequeueW32Event(GrMouseEvent * ev)
         MOUINFO->xpos = LOWORD(evaux.lParam);
         MOUINFO->ypos = HIWORD(evaux.lParam);
         MOUINFO->moved = TRUE;
+        ev->kbstat = evaux.kbstat;
+        kbd_lastmod = evaux.kbstat;
         return -1;
 
     default:

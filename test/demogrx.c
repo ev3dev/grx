@@ -32,10 +32,10 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "GRX 2.4.6, the graphics library";
+    "GRX 2.4.7, the graphics library";
 
 char *animatedtext =
-    "GRX 2.4.6, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "GRX 2.4.7, the graphics library for DJGPPv2, Linux, X11 and Win32";
 
 #define NDEMOS 33
 
@@ -208,6 +208,7 @@ static void disaster(char *s);
 int main(int argc, char **argv)
 {
     Event ev;
+    char buffer[100];
 
     if (argc >= 4) {
         gwidth = atoi(argv[1]);
@@ -241,8 +242,10 @@ int main(int argc, char **argv)
         if (pev_select(&ev))
             continue;
         if (ev.type == EV_MOUSE) {
-            if (ev.p1 == MOUSE_LB_PRESSED)
-                paint_foot("over a button, please");
+            if (ev.p1 == MOUSE_LB_PRESSED) {
+                sprintf(buffer, "%ld %ld over a button, please",ev.p2,ev.p3);
+                paint_foot(buffer);
+            }
             else if (ev.p1 == MOUSE_LB_RELEASED)
                 paint_foot("Hold down left mouse buttom to see a comment");
         }
@@ -330,7 +333,7 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "GRX 2.4.6";
+    char *t1 = "GRX 2.4.7";
     char *t2 = "test programs launcher";
 
     grt_centered.txo_fgcolor.v = LIGHTGREEN;
@@ -359,6 +362,12 @@ static void the_info(int x, int y)
         strcpy(sys, "DJ2");
     if (nsys == GRX_VERSION_GCC_386_LINUX)
         strcpy(sys, "LNX");
+    if (nsys == GRX_VERSION_GCC_386_X11)
+        strcpy(sys, "X11");
+    if (nsys == GRX_VERSION_GCC_X86_64_LINUX)
+        strcpy(sys, "L64");
+    if (nsys == GRX_VERSION_GCC_X86_64_X11)
+        strcpy(sys, "X64");
     if (nsys == GRX_VERSION_GENERIC_X11)
         strcpy(sys, "X11");
     if (nsys == GRX_VERSION_WATCOM_DOS4GW)

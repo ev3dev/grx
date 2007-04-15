@@ -66,7 +66,7 @@ static int last_xs = 0,last_ys = 0;
 static int last_xe = 0,last_ye = 0;
 static int last_xc = 0,last_yc = 0;
 
-static void sincos(int n,int cx,int cy,int rx,int ry,int *pt)
+static void GrSinCos(int n,int cx,int cy,int rx,int ry,int *pt)
 {
         int cval,sval;
         switch((n &= (PERIOD - 1)) / PQUART) {
@@ -120,13 +120,13 @@ int GrGenerateEllipseArc(int cx,int cy,int rx,int ry,int start,int end,int pt[][
             start2 = end - (((end - start) / step) * step);
             npts = 0;
             if(start2 > start) {
-                sincos(start,cx,cy,rx,ry,pt[0]);
+                GrSinCos(start,cx,cy,rx,ry,pt[0]);
                 start = start2;
                 npts++;
             }
         }
         while(start <= end) {
-            sincos(start,cx,cy,rx,ry,pt[npts]);
+            GrSinCos(start,cx,cy,rx,ry,pt[npts]);
             start += step;
             npts++;
         }

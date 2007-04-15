@@ -557,7 +557,7 @@ int getvisualpage(void);
 #define getmaxmode() (__gr_set_up_modes(), __gr_MaxMode)
 #define getmoderange(gd, lomode, himode) \
   __gr_getmoderange((gd),(lomode),(himode))
-/* graphresult() uses local variable res */
+#define graphresult() __gr_graphresult()
 #define getx() (__gr_X+0)
 #define gety() (__gr_Y+0)
 #define moveto(x, y) do { __gr_X = (x); __gr_Y = (y); } while(0)
@@ -638,9 +638,7 @@ void (getmoderange)(int gd, int *lomode, int *himode) {
 
 /* ----------------------------------------------------------------- */
 int (graphresult)(void) {
-  int res = (__gr_INIT ? __gr_Result : grNoInitGraph);
-  __gr_Result = grOk;
-  return res;
+  return __gr_graphresult();
 }
 
 /* ----------------------------------------------------------------- */

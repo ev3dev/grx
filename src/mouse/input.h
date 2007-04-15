@@ -58,7 +58,34 @@
         EV.y        = MOUINFO->ypos;                                        \
         EV.key      = KEY;                                                  \
         EV.kbstat   = KBSTAT;                                               \
-        EV.buttons = 0;                                                     \
+        EV.buttons  = 0;                                                    \
+} while(0)
+
+#define fill_size_ev(EV,NEWX,NEWY) do {                                     \
+        EV.flags    = GR_SIZE_CHANGED;                                      \
+        EV.x        = NEWX;                                                 \
+        EV.y        = NEWY;                                                 \
+        EV.key      = 0;                                                    \
+        EV.kbstat   = 0;                                                    \
+        EV.buttons  = 0;                                                    \
+} while(0)
+
+#define fill_paint_ev(EV,LEFT,TOP,RIGHT,BOTTOM) do {                        \
+        EV.flags    = GR_OS_DRAW_REQUEST;                                   \
+        EV.x        = LEFT;                                                 \
+        EV.y        = TOP;                                                  \
+        EV.buttons  = RIGHT;                                                \
+        EV.key      = BOTTOM;                                               \
+        EV.kbstat   = 0;                                                    \
+} while(0)
+
+#define fill_cmd_ev(EV,CMD,KBSTAT) do {                                     \
+        EV.flags    = GR_COMMAND | (MOUINFO->moved ? GR_M_MOTION : 0);      \
+        EV.x        = MOUINFO->xpos;                                        \
+        EV.y        = MOUINFO->ypos;                                        \
+        EV.key      = CMD;                                                  \
+        EV.kbstat   = KBSTAT;                                               \
+        EV.buttons  = 0;                                                    \
 } while(0)
 
 #define enqueue_event(EV) do {                                              \
@@ -122,11 +149,12 @@
 #endif
 
 #if !defined(real_time) && defined(unix)
+#include <time.h>
 #include <sys/times.h>
 #define real_time(tv) do {                                                  \
         (tv) = times(NULL);                                                 \
 } while(0)
-#define MS_PER_TICK (int)(1000 / CLK_TCK)
+#define MS_PER_TICK (int)(1000 / CLOCKS_PER_SEC)
 #endif
 
 #define real_dtime(dt,oldtime) do {                                         \

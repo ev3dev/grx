@@ -29,7 +29,7 @@ var
   grc        : GrContextPtr;
   Width, Height : Integer;
   s          : String[81];
-  w, h       : Integer;
+  w, h       : CInteger;
 begin
   GrQueryJpeg( nf,w,h );
   WriteStr( s,nf,' ',w,' ',h,' Scale 1/',Scale );
@@ -74,21 +74,21 @@ begin
 		halt( 1 );
    end;
 
-   imagen( '..\test\jpeg1.jpg',1 );
-   imagen( '..\test\jpeg1.jpg',2 );
-   imagen( '..\test\jpeg1.jpg',4 );
-   imagen( '..\test\jpeg1.jpg',8 );
-   imagen( '..\test\jpeg2.jpg',1 );
-   imagen( '..\test\jpeg2.jpg',2 );
-   imagen( '..\test\jpeg2.jpg',4 );
-   imagen( '..\test\jpeg2.jpg',8 );
+   imagen( '../test/jpeg1.jpg',1 );
+   imagen( '../test/jpeg1.jpg',2 );
+   imagen( '../test/jpeg1.jpg',4 );
+   imagen( '../test/jpeg1.jpg',8 );
+   imagen( '../test/jpeg2.jpg',1 );
+   imagen( '../test/jpeg2.jpg',2 );
+   imagen( '../test/jpeg2.jpg',4 );
+   imagen( '../test/jpeg2.jpg',8 );
 
    GrClearScreen( GrAllocColor( 0,100,0 ) );
    grc := GrCreateSubContext( 10,40,10+400-1,40+300-1,NIL,NIL );
-   GrLoadContextFromJpeg( grc,'..\test\jpeg1.jpg',2 );
+   GrLoadContextFromJpeg( grc,'../test/jpeg1.jpg',2 );
    GrDestroyContext( grc );
    grc := GrCreateSubContext( 210,150,210+400-1,150+300-1,NIL,NIL );
-   GrLoadContextFromJpeg( grc,'..\test\jpeg2.jpg',2 );
+   GrLoadContextFromJpeg( grc,'../test/jpeg2.jpg',2 );
    GrDestroyContext( grc );
 
    GrTextXY( 10,10,'Press any key to save color and gray screen',GrBlack,GrWhite );

@@ -170,16 +170,19 @@ int __gr_getmode_whc(int mode, int *w, int *h, long *c) {
   static void build_mode_table(void) {
     GrFrameMode fmode;
     const GrVideoMode *mp;
+    char ubpp;
 
     for (fmode = GR_firstGraphicsFrameMode;
            fmode <= GR_lastGraphicsFrameMode;
              ++fmode ) {
       mp = GrFirstVideoMode(fmode);
       while (mp != NULL) {
+        ubpp = mp->bpp;
+        if(ubpp > 24) ubpp = 24;
 #if defined(__TURBOC__) && defined(__MSDOS__)
-        if(mp->bpp < 15)
+        if(ubpp < 15)
 #endif
-        NewMode(mp->width, mp->height, 1<<mp->bpp);
+        NewMode(mp->width, mp->height, 1L << ubpp);
         mp = GrNextVideoMode(mp);
       }
     }

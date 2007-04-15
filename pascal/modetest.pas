@@ -1,3 +1,5 @@
+{$X+}
+
 program Vir_Test;
 
 uses GRX;
@@ -21,10 +23,10 @@ begin
       Write  (i:3);
       Write  (f:3);
       Write  (gvm.Mode:6);
-      Write  (gvm.Width:5, 'x',gvm.Height:4, 'x', Ord(gvm.BPP):3);
+      Write  (gvm.Width:5, 'x',gvm.Height:4, 'x', gvm.BPP:3);
       WriteLn;
       fivm := GrNextVideoMode(fivm)
     end
   end;
-  ReadLn
+  Readln
 end.

@@ -10,7 +10,7 @@ int main(void)
   int err;
 
   gd = DETECT;
-  initgraph(&gd,&gm,"c:\\bc\\bgi");
+  initgraph(&gd,&gm,"..\\..\\chr");
   err = graphresult();
   if (err != grOk) {
     fprintf(stderr, "Couldn't initialize graphics\n");

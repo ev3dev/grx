@@ -36,6 +36,12 @@ else
 EXECBITS = 0755
 endif
 
+ifeq ($(BUILD_X86_64),y)
+INSLIBSUBDIR = lib64
+else
+INSLIBSUBDIR = lib
+endif
+
 GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 
 GRX20SH = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.so
@@ -145,15 +151,15 @@ endif
 
 $(GRX20SHna): $(LINUX_i386_CONSOLE) $(LO)
 	-rm -f $(GRX20SHna)
-	$(CC) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(LO)
+	$(CC) $(LDOPT) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(LO)
 	ln -sf $(notdir $(GRX20SHna)) $(GRX20SHli)
 
 $(UTILP): ../bin/% : utilprog/%.o $(GRX20ST)
-	$(CC) -o $@ utilprog/$*.o $(GRX20ST)
+	$(CC) $(LDOPT) -o $@ utilprog/$*.o $(GRX20ST)
 	$(STRIP) $@
 
 $(UTILPS): ../bin/% : utilprog/%.o $(GRX20ST)
-	$(CC) -o $@ utilprog/$*.o $(GRX20ST) $(ADDON_LIBS) -lm
+	$(CC) $(LDOPT) -o $@ utilprog/$*.o $(GRX20ST) $(ADDON_LIBS) -lm
 	$(STRIP) $@
 	chmod $(EXECBITS) $@
 
@@ -178,13 +184,13 @@ endif
 	rm -f $(UTILP) $(UTILPS)
 
 install: libst libsh
-	install -m 0755 -d $(INSTALLDIR)/lib
+	install -m 0755 -d $(INSTALLDIR)/$(INSLIBSUBDIR)
 	install -m 0755 -d $(INSTALLDIR)/include
-	install -m 0644 $(GRX20ST) $(INSTALLDIR)/lib
+	install -m 0644 $(GRX20ST) $(INSTALLDIR)/$(INSLIBSUBDIR)
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-	install -m 0755 $(GRX20SHna) $(INSTALLDIR)/lib
-	ln -sf $(notdir $(GRX20SHna)) $(INSTALLDIR)/lib/$(notdir $(GRX20SHli))
-	ln -sf $(notdir $(GRX20SHli)) $(INSTALLDIR)/lib/$(notdir $(GRX20SH))
+	install -m 0755 $(GRX20SHna) $(INSTALLDIR)/$(INSLIBSUBDIR)
+	ln -sf $(notdir $(GRX20SHna)) $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20SHli))
+	ln -sf $(notdir $(GRX20SHli)) $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20SH))
 endif
 	install -m 0644 ../include/grx20.h $(INSTALLDIR)/include
 	install -m 0644 ../include/grxkeys.h $(INSTALLDIR)/include
@@ -199,11 +205,11 @@ ifeq ($(INCLUDE_GPC_SUPPORT),y)
 endif
 
 uninstall:
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20ST))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20ST))
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SH))
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SHli))
-	rm -f $(INSTALLDIR)/lib/$(notdir $(GRX20SHna))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20SH))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20SHli))
+	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20SHna))
 endif
 	rm -f $(INSTALLDIR)/include/grx20.h
 	rm -f $(INSTALLDIR)/include/grxkeys.h
@@ -263,7 +269,7 @@ uninstall-fonts:
 endif
 
 dep:
-	gcc -MM $(CCOPT) $(INCDIR) $(O:.o=.c) \
+	$(CC) -MM $(CCOPT) $(INCDIR) $(O:.o=.c) \
 	| sed 's#^.*: \(.*\)\.c#\1.o: \1.c#g' >depend.lnx
 
 $(O): %.o : %.c

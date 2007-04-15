@@ -166,25 +166,33 @@ double ABS(int a, int b) {
 
 char *FrameDriverName(GrFrameMode m) {
 
-#if GRX_VERSION_API-0 >= 0x0229
-  int x11 = GrGetLibrarySystem() == GRX_VERSION_GENERIC_X11;
+#if GRX_VERSION_API-0 >= 0x0229                                     
+  unsigned sys = GrGetLibrarySystem();
 #else
-# define x11 (GRX_VERSION == GRX_VERSION_GENERIC_X11)
+  unsigned sys = (unsigned) GRX_VERSION;
 #endif
+
+  int x11 = ( (sys == GRX_VERSION_GENERIC_X11) ||
+              (sys == GRX_VERSION_GCC_386_X11) ||
+              (sys == GRX_VERSION_GCC_X86_64_X11) );
+  int w32 = ( (sys == GRX_VERSION_GCC_386_WIN32) ||
+              (sys == GRX_VERSION_MSC_386_WIN32) ||
+              (sys == GRX_VERSION_GCC_386_CYG32) );
+  int sdl = strcmp( GrCurrentVideoDriver()->name , "sdl") == 0;
 
   switch(m) {
     case GR_frameUndef: return "Undef";
     case GR_frameText : return "Text";
     case GR_frameHERC1: return "HERC1";
-    case GR_frameEGAVGA1: return x11 ? "XWIN1" : "EGAVGA1";
+    case GR_frameEGAVGA1: return x11 ? "XWIN1" : w32 ? "WIN32_1" : "EGAVGA1";
     case GR_frameEGA4: return "EGA4";
-    case GR_frameSVGA4: return x11 ? "XWIN4" : "SVGA4";
-    case GR_frameSVGA8: return x11 ? "XWIN8" : "SVGA8";
+    case GR_frameSVGA4: return x11 ? "XWIN4" : w32 ? "WIN32_4" : "SVGA4";
+    case GR_frameSVGA8: return sdl ? "SDL8" : x11 ? "XWIN8" : w32 ? "WIN32_8" : "SVGA8";
     case GR_frameVGA8X: return "VGA8X";
-    case GR_frameSVGA16: return x11 ? "XWIN16" : "SVGA16";
-    case GR_frameSVGA24: return x11 ? "XWIN24" : "SVGA24";
-    case GR_frameSVGA32L: return x11 ? "XWIN32L" : "SVGA32L";
-    case GR_frameSVGA32H: return x11 ? "XWIN32H" : "SVGA32H";
+    case GR_frameSVGA16: return sdl ? "SDL16" : x11 ? "XWIN16" : w32 ? "WIN32_16" : "SVGA16";
+    case GR_frameSVGA24: return sdl ? "SDL24" : x11 ? "XWIN24" : w32 ? "WIN32_24" : "SVGA24";
+    case GR_frameSVGA32L: return sdl ? "SDL32L" : x11 ? "XWIN32L" : w32 ? "WIN32_32L" : "SVGA32L";
+    case GR_frameSVGA32H: return sdl ? "SDL32H" : x11 ? "XWIN32H" : w32 ? "WIN32_32H" : "SVGA32H";
     case GR_frameSVGA8_LFB: return "LFB8";
     case GR_frameSVGA16_LFB: return "LFB16";
     case GR_frameSVGA24_LFB: return "LFB24";
@@ -207,12 +215,15 @@ void Message(int disp, char *txt, gvmode *gp) {
   char msg[200];
   sprintf(msg, "%s: %d x %d x %dbpp",
                 FrameDriverName(gp->fm), gp->w, gp->h, gp->bpp);
-#if (GRX_VERSION_API-0) >= 0x0229
-  if ( GrGetLibrarySystem() == GRX_VERSION_GENERIC_X11)
-    fprintf(stderr,"%s\t%s\n", msg, txt);
-#elif (GRX_VERSION == GRX_VERSION_GENERIC_X11)
-  fprintf(stderr,"%s\t%s\n", msg, txt);
+#if GRX_VERSION_API-0 >= 0x0229                                     
+  unsigned sys = GrGetLibrarySystem();
+#else
+  unsigned sys = (unsigned) GRX_VERSION;
 #endif
+  if ( (sys == GRX_VERSION_GENERIC_X11) ||
+       (sys == GRX_VERSION_GCC_386_X11) ||
+       (sys == GRX_VERSION_GCC_X86_64_X11) )
+    fprintf(stderr,"%s\t%s\n", msg, txt);
   if (disp) {
     GrTextOption to;
     GrContext save;
@@ -562,13 +573,15 @@ void measure_one(gvmode *gp, int ram) {
   GrFilledBox( 0, 0, gp->w-1, gp->h-1, GrBlack());
   Message(RAMMODE(gp),"read pixel test", gp);
   { int rd_loops = READPIX_loops;
-#if (GRX_VERSION_API-0) >= 0x0229
-    if ( GrGetLibrarySystem() == GRX_VERSION_GENERIC_X11) {
-      if (!RAMMODE(gp)) rd_loops = READPIX_X11_loops;
-    }
-#elif (GRX_VERSION == GRX_VERSION_GENERIC_X11)
-    if (!RAMMODE(gp)) rd_loops = READPIX_X11_loops;
+#if GRX_VERSION_API-0 >= 0x0229                                     
+  unsigned sys = GrGetLibrarySystem();
+#else
+  unsigned sys = (unsigned) GRX_VERSION;
 #endif
+  if ( (sys == GRX_VERSION_GENERIC_X11) ||
+       (sys == GRX_VERSION_GCC_386_X11) ||
+       (sys == GRX_VERSION_GCC_X86_64_X11) )
+      if (!RAMMODE(gp)) rd_loops = READPIX_X11_loops;
     readpixeltest(gp,pairs,rd_loops);
   }
   GrFilledBox( 0, 0, gp->w-1, gp->h-1, GrBlack());
@@ -608,9 +621,10 @@ int identical_measured(gvmode *tm) {
 }
 #endif
 
-void speedcheck(gvmode *gp, int wait) {
+static int first = 0;
+
+void speedcheck(gvmode *gp, int print, int wait) {
   char m[41];
-  static int first = 1;
   gvmode *rp = NULL;
 
   if (first) {
@@ -661,14 +675,15 @@ void speedcheck(gvmode *gp, int wait) {
 #endif
 
   GrSetMode(GR_default_text);
-  if (wait) {
+  if (print) {
     printf("Results: \n");
     printresultheader(stdout);
     printresultline(stdout, gp);
     if (rp)
       printresultline(stdout, rp);
-    fgets(m,40,stdin);
   }
+  if (wait) 
+    fgets(m,40,stdin);
 }
 
 int collectmodes(const GrVideoDriver *drv)
@@ -770,7 +785,7 @@ void PrintModes(void) {
         } while (1);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
         int  i;
 
@@ -803,6 +818,12 @@ int main(void)
         }
 #endif
 
+        if(argc >= 2 && (i = atoi(argv[1])) >= 1 && i <= nmodes) {
+            speedcheck(&grmodes[i - 1], 1, 0);
+            goto done;
+        }
+
+        first = 1;
         for( ; ; ) {
             char mb[41], *m = mb;
             int tflag = 0;
@@ -831,7 +852,7 @@ int main(void)
               case 'M':
               case 'm': for (i=0; i < nmodes; ++i)
                           if (TAGGED(&grmodes[i])) {
-                            speedcheck(&grmodes[i], 0);
+                            speedcheck(&grmodes[i], 0, 0);
                             TOGGLE_TAGGED(&grmodes[i]);
                           }
                         break;
@@ -842,7 +863,7 @@ int main(void)
                 continue;
             i--;
             if (tflag) TOGGLE_TAGGED(&grmodes[i]);
-                  else speedcheck(&grmodes[i], 1);
+                  else speedcheck(&grmodes[i], 1, 1);
         }
 done:
         if (measured_any) {

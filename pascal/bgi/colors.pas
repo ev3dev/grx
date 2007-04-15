@@ -1,3 +1,5 @@
+{$X+}
+
 program Colors;
 {
  * test and demo program for the Graph unit
@@ -18,11 +20,6 @@ uses
 var
   i, grDriver, grMode, ErrCode: Integer;
 
-function RealToWord(r:Real): Word;
-begin
-   RealToWord:=round(r)
-end;
-
 procedure ShowColors(Mode: Word);
 var
   y: Word;
@@ -39,44 +36,44 @@ begin
   { Red }
   for y := 0 to GetMaxY do begin
     if GetMaxColor = 255 then begin
-      SetRGBPalette(RealToWord(y / f1), RealToWord(y / f1), 0, 0);
-      SetColor(RealToWord(y / f1))
+      SetRGBPalette(trunc(y / f1), trunc(y / f1), 0, 0);
+      SetColor(trunc(y / f1))
     end
     else
-      SetRGBColor(RealToWord(y / f2), 0, 0);
+      SetRGBColor(trunc(y / f2), 0, 0);
     Line(0, y, GetMaxX div 4, y)
   end;
 
   { Green }
   for y := 0 to GetMaxY do begin
     if GetMaxColor = 255 then begin
-      SetRGBPalette(64 + RealToWord(y / f1), 0, RealToWord(y / f1), 0);
-      SetColor(64 + RealToWord(y / f1))
+      SetRGBPalette(64 + trunc(y / f1), 0, trunc(y / f1), 0);
+      SetColor(64 + trunc(y / f1))
     end
     else
-      SetRGBColor(0, RealToWord(y / f2), 0);
+      SetRGBColor(0, trunc(y / f2), 0);
     Line(GetMaxX div 4, y, GetMaxX div 2, y)
   end;
 
   { Blue }
   for y := 0 to GetMaxY do begin
     if GetMaxColor = 255 then begin
-      SetRGBPalette(128 + RealToWord(y / f1), 0, 0, RealToWord(y / f1));
-      SetColor(128 + RealToWord(y / f1))
+      SetRGBPalette(128 + trunc(y / f1), 0, 0, trunc(y / f1));
+      SetColor(128 + trunc(y / f1))
     end
     else
-      SetRGBColor(0, 0, RealToWord(y / f2));
+      SetRGBColor(0, 0, trunc(y / f2));
     Line(GetMaxX div 2, y, GetMaxX - GetMaxX div 4, y)
   end;
 
   { Gray }
   for y := 0 to GetMaxY do begin
     if GetMaxColor = 255 then begin
-      SetRGBPalette(192 + RealToWord(y / f1), RealToWord(y / f1), RealToWord(y / f1), RealToWord(y / f1));
-      SetColor(192 + RealToWord(y / f1))
+      SetRGBPalette(192 + trunc(y / f1), trunc(y / f1), trunc(y / f1), trunc(y / f1));
+      SetColor(192 + trunc(y / f1))
     end
     else
-      SetRGBColor(RealToWord(y / f2), RealToWord(y / f2), RealToWord(y / f2));
+      SetRGBColor(trunc(y / f2), trunc(y / f2), trunc(y / f2));
     Line(GetMaxX - GetMaxX div 4, y, GetMaxX, y)
   end;
 
@@ -86,12 +83,12 @@ begin
     SetColor(White);
   OutTextXY(10, 2, GetModeName(Mode)) ;
   Rectangle(0,0,GetMaxX,GetMaxY);
-  ReadLn
+  ReadKey
 end;
 
 begin
   grDriver := Detect;
-  InitGraph(grDriver, grMode,'..\..\chr');
+  InitGraph(grDriver, grMode,'../../chr');
   ErrCode := GraphResult;
   if ErrCode = GrOk then
   begin  { Do graphics }

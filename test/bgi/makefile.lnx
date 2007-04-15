@@ -20,17 +20,17 @@ ifeq ($(USE_SVGALIB_DRIVER),y)
   ADDON_LIBS= -lvga
 endif
 
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_LIBS += -ltiff
-endif
-
-ifeq ($(HAVE_LIBJPEG),y)
-  ADDON_LIBS += -ljpeg
-endif
-
-ifeq ($(NEED_ZLIB),y)
-  ADDON_LIBS += -lz
-endif
+#ifeq ($(HAVE_LIBTIFF),y)
+#  ADDON_LIBS += -ltiff
+#endif
+#
+#ifeq ($(HAVE_LIBJPEG),y)
+#  ADDON_LIBS += -ljpeg
+#endif
+#
+#ifeq ($(NEED_ZLIB),y)
+#  ADDON_LIBS += -lz
+#endif
 
 ifeq ($(SET_SUIDROOT),y)
 EXECBITS = 4755

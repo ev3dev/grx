@@ -74,8 +74,12 @@ $(PROGS): %.exe : %.o $(GRX20)
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c
 
 clean:
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f *.o *.exe
+else
 	if exist *.o del *.o
 	if exist *.exe del *.exe
+endif
 
 depend.new:
 	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:.exe=.c) >depend.new

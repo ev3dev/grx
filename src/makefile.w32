@@ -19,7 +19,11 @@ TAG = $(WIN32_GCC_i386_STATIC)
 
 GRX20ln    = libgrx20.a
 GRX20ST    = ../lib/$(GRX_LIB_SUBDIR)/$(GRX20ln)
+ifeq ($(HAVE_UNIX_TOOLS), y)
+GRX20STdos = $(GRX20ST)
+else
 GRX20STdos = $(subst /,\,$(GRX20ST))
+endif
 
 OX=.o
 OP=
@@ -96,6 +100,9 @@ UTILPW= ../bin/modetest.exe
 all:    $(GRX20ST) $(UTILPC) $(UTILPW)
 
 clean:
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f */*.o ../addons/*.o ../addons/*/*.o $(TAG)
+else
 	if exist bgi\*.o      del bgi\*.o
 	if exist draw\*.o     del draw\*.o
 	if exist fdrivers\*.o del fdrivers\*.o
@@ -117,69 +124,133 @@ clean:
 	if exist ..\addons\print\*.o del ..\addons\print\*.o
 	if exist ..\addons\bmp\*.o   del ..\addons\bmp\*.o
 	if exist $(TAG)       del $(TAG)
+endif
 
 cleanall: clean
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f $(GRX20STdos) ../bin/*.exe
+else
 	if exist $(GRX20STdos) del $(GRX20STdos)
 	if exist ..\bin\*.exe del ..\bin\*.exe
+endif
 
 install: $(GRX20ST)
-	copy $(GRX20STdos) $(MINGWDIR)\lib
-	copy ..\include\grx20.h $(MINGWDIR)\include
-	copy ..\include\grxkeys.h $(MINGWDIR)\include
-	copy ..\include\libbcc.h $(MINGWDIR)\include
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	cp $(GRX20STdos) $(INSTALLDIR)/lib
+	cp ../include/grx20.h ../include/grxkeys.h \
+	   ../include/libbcc.h $(INSTALLDIR)/include
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-	copy ..\addons\print\grxprint.h $(MINGWDIR)\include
+	cp ../addons/print/grxprint.h $(INSTALLDIR)/include
 endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	if not exist $(MINGWDIR)\units\nul mkdir $(MINGWDIR)\units
-	copy ..\pascal\grx.pas $(MINGWDIR)\units
-	copy ..\pascal\bgi\graph.pas $(MINGWDIR)\units
+	mkdir -p $(INSTALLDIR)/units
+	cp ../pascal/grx.pas ../pascal/bgi/graph.pas $(INSTALLDIR)/units
+endif
+else
+	copy $(GRX20STdos) $(INSTALLDIR)\lib
+	copy ..\include\grx20.h $(INSTALLDIR)\include
+	copy ..\include\grxkeys.h $(INSTALLDIR)\include
+	copy ..\include\libbcc.h $(INSTALLDIR)\include
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+	copy ..\addons\print\grxprint.h $(INSTALLDIR)\include
+endif
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	if not exist $(INSTALLDIR)\units\nul mkdir $(INSTALLDIR)\units
+	copy ..\pascal\grx.pas $(INSTALLDIR)\units
+	copy ..\pascal\bgi\graph.pas $(INSTALLDIR)\units
+endif
 endif
 
 uninstall:
-	if exist $(MINGWDIR)\lib\$(GRX20ln)    del $(MINGWDIR)\lib\$(GRX20ln)
-	if exist $(MINGWDIR)\include\grx20.h   del $(MINGWDIR)\include\grx20.h
-	if exist $(MINGWDIR)\include\grxkeys.h del $(MINGWDIR)\include\grxkeys.h
-	if exist $(MINGWDIR)\include\libbcc.h del $(MINGWDIR)\include\libbcc.h
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f $(INSTALLDIR)/lib/$(GRX20ln) $(INSTALLDIR)/include/grx20.h \
+	      $(INSTALLDIR)/include/grxkeys.h $(INSTALLDIR)/include/libbcc.h
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-	if exist $(MINGWDIR)\include\grxprint.h del $(MINGWDIR)\include\grxprint.h
+	rm -f $(INSTALLDIR)/include/grxprint.h
 endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	if exist $(MINGWDIR)\units\grx.pas del $(MINGWDIR)\units\grx.pas
-	if exist $(MINGWDIR)\units\graph.pas del $(MINGWDIR)\units\graph.pas
+	rm -f $(INSTALLDIR)/units/grx.pas $(INSTALLDIR)/units/graph.pas
+endif
+else
+	if exist $(INSTALLDIR)\lib\$(GRX20ln)    del $(INSTALLDIR)\lib\$(GRX20ln)
+	if exist $(INSTALLDIR)\include\grx20.h   del $(INSTALLDIR)\include\grx20.h
+	if exist $(INSTALLDIR)\include\grxkeys.h del $(INSTALLDIR)\include\grxkeys.h
+	if exist $(INSTALLDIR)\include\libbcc.h del $(INSTALLDIR)\include\libbcc.h
+ifeq ($(INCLUDE_PRINTING_CODE),y)
+	if exist $(INSTALLDIR)\include\grxprint.h del $(INSTALLDIR)\include\grxprint.h
+endif
+ifeq ($(INCLUDE_GPC_SUPPORT),y)
+	if exist $(INSTALLDIR)\units\grx.pas del $(INSTALLDIR)\units\grx.pas
+	if exist $(INSTALLDIR)\units\graph.pas del $(INSTALLDIR)\units\graph.pas
+endif
 endif
 
 install-bin: $(UTILPC) $(UTILPW)
-	copy ..\bin\bin2c.exe $(MINGWDIR)\bin
-	copy ..\bin\fnt2c.exe $(MINGWDIR)\bin
-	copy ..\bin\modetest.exe $(MINGWDIR)\bin
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	cp ../bin/bin2c.exe ../bin/fnt2c.exe \
+	   ../bin/modetest.exe $(INSTALLDIR)/bin
+else
+	copy ..\bin\bin2c.exe $(INSTALLDIR)\bin
+	copy ..\bin\fnt2c.exe $(INSTALLDIR)\bin
+	copy ..\bin\modetest.exe $(INSTALLDIR)\bin
+endif
 
 uninstall-bin:
-	if exist $(MINGWDIR)\bin\bin2c.exe del $(MINGWDIR)\bin\bin2c.exe
-	if exist $(MINGWDIR)\bin\fnt2c.exe del $(MINGWDIR)\bin\fnt2c.exe
-	if exist $(MINGWDIR)\bin\modetest.exe del $(MINGWDIR)\bin\modetest.exe
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f $(INSTALLDIR)/bin/bin2c.exe $(INSTALLDIR)/bin/fnt2c.exe \
+	      $(INSTALLDIR)/bin/modetest.exe
+else
+	if exist $(INSTALLDIR)\bin\bin2c.exe del $(INSTALLDIR)\bin\bin2c.exe
+	if exist $(INSTALLDIR)\bin\fnt2c.exe del $(INSTALLDIR)\bin\fnt2c.exe
+	if exist $(INSTALLDIR)\bin\modetest.exe del $(INSTALLDIR)\bin\modetest.exe
+endif
 
 ifdef GRX_DEFAULT_FONT_PATH
+ifeq ($(HAVE_UNIX_TOOLS),y)
+FONTPATHdos = $(GRX_DEFAULT_FONT_PATH)
+else
 FONTPATHdos = $(subst /,\,$(GRX_DEFAULT_FONT_PATH))
+endif
 install-fonts:
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	mkdir -p $(FONTPATHdos)
+	cp ../fonts/* $(FONTPATHdos)
+else
 	if not exist $(FONTPATHdos)\nul mkdir $(FONTPATHdos)
 	copy ..\fonts\*.* $(FONTPATHdos)
+endif
 uninstall-fonts:
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f $(FONTPATHdos)/*
+else
 	del $(FONTPATHdos)\*.*
+endif
 endif
                         
 dep:
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f depend.tmp
+else
 	if exist depend.tmp del depend.tmp
-	gcc -MM $(CCOPT) $(INCDIR) $(ALL_O:.o=.c) >depend.tmp
+endif
+	$(CC) -MM $(CCOPT) $(INCDIR) $(ALL_O:.o=.c) >depend.tmp
 	sed 's#^.*: \(.*\)\.c#\1.o: \1.c#g'   <depend.tmp >depend.w32
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f depend.tmp
+else
 	if exist depend.tmp del depend.tmp
+endif
 
 depend.b: depend.new
 	sed "s#\.o:#.obj:#g" <depend.new >depend.b
 	sed "s#\.o:#.asm:#g" <depend.new >>depend.b
 
 $(GRX20ST): $(TAG) $(ALL_O)
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f $(GRX20STdos)
+else
 	if exist $(GRX20STdos) del $(GRX20STdos)
+endif
 	$(AR) -r $(GRX20ST) $(STD_Oa)
 	$(AR) -r $(GRX20ST) $(STD_Ob)
 	$(AR) -r $(GRX20ST) $(STD_Oc)
@@ -192,14 +263,19 @@ endif
 	$(RANLIB) $(GRX20ST)
 
 $(UTILPC): ../bin/%.exe : utilprog/%.o $(GRX20ST)
-	$(CC) -s -o $@ utilprog/$*.o $(GRX20ST)
+	$(CC) $(LDOPT) -o $@ utilprog/$*.o $(GRX20ST)
 
 $(UTILPW): ../bin/%.exe : utilprog/%.o $(GRX20ST)
-	$(CC) -s -o $@ utilprog/$*.o $(GRX20ST) -mwindows -mconsole
+	$(CC) $(LDOPT) -o $@ utilprog/$*.o $(GRX20ST) -mwindows -mconsole
 
 $(WIN32_GCC_i386_STATIC):
 	$(MAKE) -f makefile.w32 clean
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	if [ ! -r $(WIN32_GCC_i386_STATIC) ]; then \
+	  rm -f $(SYSTEM_TAG_PREFIX).*; fi
+else
 	if not exist $(WIN32_GCC_i386_STATIC) del $(SYSTEM_TAG_PREFIX).*
+endif
 	echo WIN32_GCC_i386_STATIC_TARGET > $(WIN32_GCC_i386_STATIC)
 
 $(ALL_O): $(TAG)

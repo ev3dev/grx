@@ -69,6 +69,12 @@ _GrFrameDriverWIN32_4,                  /* WIN32 4 bpp */
 _GrFrameDriverWIN32_8,                  /* WIN32 8 bpp */
 _GrFrameDriverWIN32_24,                 /* WIN32 24 bpp */
 
+_GrFrameDriverSDL8,                     /* SDL 8 bpp */
+_GrFrameDriverSDL16,                    /* SDL 16 bpp */
+_GrFrameDriverSDL24,                    /* SDL 24 bpp */
+_GrFrameDriverSDL32L,                   /* SDL 32 bpp padded #2 */
+_GrFrameDriverSDL32H,                   /* SDL 32 bpp padded #2 */
+
 _GrFrameDriverRAM1,                     /* mono */
 _GrFrameDriverRAM4,                     /* 16 color planar */
 _GrFrameDriverRAM8,                     /* 256 color */
@@ -107,6 +113,8 @@ _GrVideoDriverSVGALIB,                  /* Linux SVGALIB interface */
 _GrVideoDriverLINUXFB,                  /* Linux framebuffer */
 
 _GrVideoDriverWIN32,                    /* WIN32 interface */
+
+_GrVideoDriverSDL,                      /* SDL intrercace */
 
 _GrDriverMEM,                           /* memory screen driver */
 

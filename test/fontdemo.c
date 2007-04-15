@@ -105,7 +105,7 @@ int main(int argc, char **argv)
                 case 'b' : if((bpp = n) < 2 || bpp > 32) bad = "bpp"; break;
                 case 'g' : if((gray = n) > 255) bad = "gray"; break;
                 case 'X' : if((deltax = n) > 31) bad = "deltax"; break;
-                case 'Y' : if((deltax = n) > 31) bad = "deltay"; break;
+                case 'Y' : if((deltay = n) > 31) bad = "deltay"; break;
                 case 'a' : if((attributes = n) > 3) bad = "attributes"; break;
                 default  : {
                     fprintf(stderr, "-%c: invalid option\n", c);
@@ -149,10 +149,8 @@ int main(int argc, char **argv)
                 switch(hdr->height) {
                     case 8 :
                     case 14 : height = 400; break;
-                    case 16 : height = 480; break;
-                    case 20 : height = 600; break;
                     case 24 : height = 768; break;
-                    default : height = hdr->height < 20 ? 480 : 768;
+                    default : height = hdr->height * 30;
                 }
             }
             else height = width * 3 / 4;

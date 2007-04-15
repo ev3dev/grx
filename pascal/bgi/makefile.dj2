@@ -16,7 +16,7 @@ GRXLIBPATH = -L../../lib/$(GRX_LIB_SUBDIR)
 LIBS= $(GRXLIBPATH) $(GRXLIB)
 
 # Compiler and options on your system  
-COMPILER = gpc --automake
+COMPILER = $(PC) --automake
 
 PROGS= 			\
 	allmodes.exe	\
@@ -32,9 +32,11 @@ $(PROGS): %.exe : %.pas $(GRXLIB)
 	$(COMPILER) $(CCOPT) -o $*.exe $*.pas $(UNITPATH) $(LIBS)
 
 clean:
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f *.o *.exe *.gpi *.gpm
+else
 	if exist *.o del *.o
 	if exist *.exe del *.exe
 	if exist *.gpi del *.gpi
 	if exist *.gpm del *.gpm
-
-
+endif

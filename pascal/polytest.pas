@@ -17,13 +17,13 @@
  **
  **)
 
+{$R-}
+
 program polytest;
 
 uses GPC, GRX, Test;
 
-type EGA             = array [0..63] of GrColor;
-     EGAPtr          = ^EGA;
-     WrkString       = String[80];
+type WrkString       = String[80];
 
 var  f               : Text;
      Line            : WrkString;
@@ -31,7 +31,7 @@ var  f               : Text;
      convex,collect  : boolean;
      k               : GrKeyType;
      polygon         : array [0..300] of PointType;
-     pEGA            : EGAPtr;
+     pEGA            : GrColorsPtr;
      black,white,red : GrColor;
 
 procedure TestPoly(n:Integer; var Points: array of PointType; convex:boolean);
@@ -57,7 +57,7 @@ var
    sy  : Integer = (GrSizeY - 2*hh) div 32;
    ii,jj : Integer;
    color : GrColor;
-   t1,t2,t3,mu1,mu2,mu3: Integer;
+   t1,t2,t3,mu1,mu2,mu3: CInteger;
 begin
    GrClearScreen(black);
    t1 := GetCPUTime(mu1);
@@ -117,7 +117,7 @@ end;
 
 begin
    InitTest;
-   pEGA:=EGAPtr(GrAllocEgaColors);
+   pEGA:=GrAllocEgaColors;
    black:=pEGA^[0]; red:=pEGA^[12]; white:=pEGA^[15];
 
    Assign(f,'../test/polytest.dat'); Reset(f);

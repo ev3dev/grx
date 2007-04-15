@@ -14,13 +14,13 @@ GRXLIBPATH = -L../lib/$(GRX_LIB_SUBDIR)
 LIBS= $(GRXLIBPATH) $(GRXLIB) -lvga -lm
 
 # Compiler and options on your system  
-COMPILER = gpc --automake
+COMPILER = $(PC) --automake
 
 
 PROGS= 			\
 	blt_test 	\
 	modetest 	\
-	keytest 		\
+	keytest 	\
 	txt_test 	\
 	vir_test	\
 	polytest	\

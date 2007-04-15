@@ -11,12 +11,16 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Changes by D.Zhekov (jimmy@is-vn.bg) 16/02/2004
+ **   - converted to a standard test program [GRX I/O only].
+ **
  **/
 
 #include <stdio.h>
 #include <math.h>
 #include <ctype.h>
-#include "grx20.h"
+#include <stdarg.h>
+#include "test.h"
 #include "grxkeys.h"
 
 #if defined(PENTIUM_CLOCK) && (!defined(__GNUC__) || !defined(__i386__))
@@ -348,21 +352,53 @@ static KeyEntry Keys[] = {
 
 #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
 
-int main(void) {
+static GrTextOption opt;
+static int curx = 0, cury = 0;
+
+static void gputc(int c)
+{
+        if(c == '\n' || curx + GrCharWidth(c, &opt) > GrSizeX()) {
+            cury += GrCharHeight('A', &opt);
+            curx = 0;
+            if(cury + GrCharHeight('A', &opt) > GrSizeY()) {
+                GrClearScreen(opt.txo_bgcolor.v);
+                cury = 0;
+            }
+        }
+
+        if(c != '\n') {
+            GrDrawChar(c, curx, cury, &opt);
+            curx += GrCharWidth(c, &opt);
+        }
+}
+
+static void gprintf(const char *format, ...)
+{
+        va_list ap;
+        char buffer[0x100], *s;
+
+        va_start(ap, format);
+        vsprintf(buffer, format, ap);
+        va_end(ap);
+
+        for(s = buffer; *s; s++) gputc(*s);
+}
+
+TESTFUNC(keys) {
   int spaces_count = 0;
   KeyEntry *kp;
   GrKeyType k;
   int ok;
 
-  /* need to initialize X11 drivers before using keyboard && mouse functions */
-#if (GRX_VERSION_API-0) >= 0x0229
-  if ( GrGetLibrarySystem() == GRX_VERSION_GENERIC_X11)
-    GrSetMode(GR_320_200_graphics);
-#elif (GRX_VERSION == GRX_VERSION_GENERIC_X11)
-  GrSetMode(GR_320_200_graphics);
-#endif
+  opt.txo_font = &GrFont_PC8x16;
+  opt.txo_fgcolor.v = GrWhite();
+  opt.txo_bgcolor.v = GrBlack();
+  opt.txo_chrtype = GR_BYTE_TEXT;
+  opt.txo_direct = GR_TEXT_RIGHT;
+  opt.txo_xalign = GR_ALIGN_LEFT;
+  opt.txo_yalign = GR_ALIGN_TOP;
 
-  printf("\n\n Checking GrKey... style interface"
+  gprintf("\n\n Checking GrKey... style interface"
            "\n Type 3 spaces to quit the test\n\n");
   while (spaces_count < 3) {
 #ifdef PENTIUM_CLOCK
@@ -377,7 +413,7 @@ int main(void) {
         e = rdtsc();
         tm = ((double) (e-s))/(1000.0*PENTIUM_CLOCK);
         if (fabs(tm-old_tm) > 0.01) {
-          printf ("%5.2f ",tm);
+          gprintf ("%5.2f ",tm);
           fflush (stdout);
           old_tm = tm;
         }
@@ -389,42 +425,41 @@ int main(void) {
     ok = 0;
     for ( kp = Keys; kp < &Keys[KEYS]; ++kp ) {
       if (k == kp->key) {
-        printf("code 0x%04x\tsymbol %s\n", (unsigned)k, kp->name);
+        gprintf("code 0x%04x     symbol %s\n", (unsigned)k, kp->name);
         ok = 1;
         break;
       }
     }
     if (!ok)
-      printf("code 0x%04x\tsymbol UNKNOWN\n", (unsigned)k);
+      gprintf("code 0x%04x     symbol UNKNOWN\n", (unsigned)k);
   }
 
-  printf("\n\n Now checking getch()"
+  gprintf("\n\n Now checking getch()"
            "\n Type 3 spaces to quit the test\n\n");
   spaces_count = 0;
   while (spaces_count < 3) {
     k = getch();
     if (k == ' ') ++spaces_count; else spaces_count = 0;
 
-    printf("code 0x%02x\tchar ", (unsigned)k);
+    gprintf("code 0x%02x       char ", (unsigned)k);
     if (ISPRINT(k))
-      printf("'%c'\n", (char)k);
+      gprintf("'%c'\n", (char)k);
     else
-      printf("not printable\n");
+      gprintf("not printable\n");
 
   }
 
-  printf("\n\n Now checking getkey()"
+  gprintf("\n\n Now checking getkey()"
            "\n Type 3 spaces to quit the test\n\n");
   spaces_count = 0;
   while (spaces_count < 3) {
     k = getkey();
     if (k == ' ') ++spaces_count; else spaces_count = 0;
 
-    printf("code 0x%04x\tchar ", (unsigned)k);
+    gprintf("code 0x%04x     char ", (unsigned)k);
     if (ISPRINT(k))
-      printf("'%c'\n", (char)k);
+      gprintf("'%c'\n", (char)k);
     else
-      printf("not printable\n");
+      gprintf("not printable\n");
   }
-  return 0;
 }

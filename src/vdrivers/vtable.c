@@ -31,13 +31,13 @@ GrVideoDriver *_GrVideoDriverTable[] = {
     &_GrVideoDriverMACH64,
     &_GrVideoDriverS3,
 #endif
-#if defined(__XWIN__)
+#if defined(__XWIN__) && !defined(__SDL__)
 #if defined(XF86DGA_DRIVER)
     &_GrVideoDriverXF86DGA,
 #endif
     &_GrVideoDriverXWIN,
 #endif
-#if defined(__linux__) && !defined(__XWIN__)
+#if defined(__linux__) && !defined(__XWIN__) && !defined(__SDL__)
 #ifdef SVGALIB_DRIVER
     &_GrVideoDriverSVGALIB,
 #endif
@@ -45,8 +45,11 @@ GrVideoDriver *_GrVideoDriverTable[] = {
     &_GrVideoDriverLINUXFB,
 #endif
 #endif
-#ifdef __WIN32__
+#if defined(__WIN32__) && !defined(__SDL__)
     &_GrVideoDriverWIN32,
+#endif
+#if defined(__SDL__)
+    &_GrVideoDriverSDL,
 #endif
     &_GrDriverMEM,
     NULL

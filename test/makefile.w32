@@ -41,6 +41,7 @@ PROGS=  arctest.exe     \
 	fonttest.exe    \
 	imgtest.exe     \
 	jpgtest.exe     \
+	keys.exe        \
 	life.exe        \
 	linetest.exe    \
 	mousetst.exe    \
@@ -57,16 +58,12 @@ PROGS=  arctest.exe     \
 
 all: 	$(PROGS) \
 	demogrx.exe \
-	keys.exe \
 	speedtst.exe \
 	memtest.exe
 
 
 demogrx.exe: demogrx.o gfaz.o $(GRX20)
 	$(CC) $(LDOPT) -o demogrx.exe demogrx.o gfaz.o $(LIBS) -lm -mwindows
-
-keys.exe: keys.o $(GRX20)
-	$(CC) $(LDOPT) -o keys.exe keys.o $(LIBS) -lm -mwindows -mconsole
 
 speedtst.exe: speedtst.o $(GRX20)
 	$(CC) $(LDOPT) -o speedtst.exe speedtst.o $(LIBS) -lm -mwindows -mconsole
@@ -84,8 +81,12 @@ $(PROGS): %.exe : %.o $(GRX20)
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c
 
 clean:
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f *.o *.exe
+else
 	if exist *.o del *.o
 	if exist *.exe del *.exe
+endif
 
 depend.new:
 	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:.exe=.c) >depend.new

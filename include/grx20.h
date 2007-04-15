@@ -35,7 +35,7 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0246
+#define GRX_VERSION_API 0x0247
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -48,6 +48,9 @@
 #define GRX_VERSION_GCC_386_WIN32       7       /* WIN32 using Mingw32 */
 #define GRX_VERSION_MSC_386_WIN32       8       /* WIN32 using MS-VC */
 #define GRX_VERSION_GCC_386_CYG32       9       /* WIN32 using CYGWIN */
+#define GRX_VERSION_GCC_386_X11        10       /* X11 version */
+#define GRX_VERSION_GCC_X86_64_LINUX   11       /* console framebuffer 64 */
+#define GRX_VERSION_GCC_X86_64_X11     12       /* X11 version 64 */
 
 #define GRXMain main  /* From the 2.4.6 version We don't need this */
                       /* anymore, but it is here for previous apps */
@@ -60,8 +63,20 @@
 #ifdef  __DJGPP__
 #define GRX_VERSION     GRX_VERSION_GCC_386_DJGPP
 #endif
+#if defined(__XWIN__)
+#if defined(__linux__) && defined(__i386__)
+#define GRX_VERSION     GRX_VERSION_GCC_386_X11
+#endif
+#if defined(__linux__) && defined(__x86_64__)
+#define GRX_VERSION     GRX_VERSION_GCC_X86_64_X11
+#endif
+#else
 #if defined(__linux__) && defined(__i386__)
 #define GRX_VERSION     GRX_VERSION_GCC_386_LINUX
+#endif
+#if defined(__linux__) && defined(__x86_64__)
+#define GRX_VERSION     GRX_VERSION_GCC_X86_64_LINUX
+#endif
 #endif
 #ifdef  __WIN32__
 #define GRX_VERSION     GRX_VERSION_GCC_386_WIN32
@@ -142,7 +157,7 @@ typedef struct _GR_context      GrContext;
 /* TCC && BCC are 16 bit compilers */
 typedef unsigned long int GrColor;
 #else
-/* all other platforms (GCC on i386 and ALPHA) have 32 bit ints */
+/* all other platforms (GCC on i386 or x86_64 and ALPHA) have 32 bit ints */
 typedef unsigned int GrColor;
 #endif
 
@@ -224,6 +239,12 @@ typedef enum _GR_frameModes {
         GR_frameWIN32_24  = GR_frameSVGA24,
         GR_frameWIN32_32L = GR_frameSVGA32L,
         GR_frameWIN32_32H = GR_frameSVGA32H,
+        /* ==== modes provided by the SDL driver ===== */
+        GR_frameSDL8   = GR_frameSVGA8,
+        GR_frameSDL16  = GR_frameSVGA16,
+        GR_frameSDL24  = GR_frameSVGA24,
+        GR_frameSDL32L = GR_frameSVGA32L,
+        GR_frameSDL32H = GR_frameSVGA32H,
         /* ==== linear frame buffer modes  ====== */
         GR_frameSVGA8_LFB,                  /* (Super) VGA 256 color */
         GR_frameSVGA16_LFB,                 /* Super VGA 32768/65536 color */
@@ -261,6 +282,7 @@ typedef enum _GR_videoAdapters {
         GR_XWIN,                            /* X11 driver */
         GR_WIN32,                           /* WIN32 driver */
         GR_LNXFB,                           /* Linux framebuffer */
+        GR_SDL,                             /* SDL driver */
         GR_MEM                              /* memory only driver */
 } GrVideoAdapter;
 
@@ -1413,7 +1435,10 @@ void GrMoveCursor(GrCursor *cursor,int x,int y);
 #define GR_M_KEYPRESS       0x080               /* other event flag bits */
 #define GR_M_POLL           0x100
 #define GR_M_NOPAINT        0x200
-#define GR_M_EVENT          (GR_M_MOTION | GR_M_KEYPRESS | GR_M_BUTTON_DOWN | GR_M_BUTTON_UP)
+#define GR_SIZE_CHANGED     0x400
+#define GR_OS_DRAW_REQUEST  0x800
+#define GR_COMMAND          0x1000
+#define GR_M_EVENT          (GR_M_MOTION | GR_M_KEYPRESS | GR_M_BUTTON_DOWN | GR_M_BUTTON_UP | GR_SIZE_CHANGED | GR_OS_DRAW_REQUEST | GR_COMMAND)
 
 #define GR_KB_RIGHTSHIFT    0x01                /* Keybd states: right shift key depressed */
 #define GR_KB_LEFTSHIFT     0x02                /* left shift key depressed */

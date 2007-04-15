@@ -11,6 +11,8 @@
   even the implied warranty of MERCHANTABILITY or FITNESS FOR A
   PARTICULAR PURPOSE. }
 
+{$X+}
+
 program ColorTest;
 
 uses GRX;

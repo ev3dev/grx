@@ -11,7 +11,7 @@ int main(void)
   int poly[50];
 
   gd = DETECT;
-  initgraph(&gd,&gm,"c:\\bc\\bgi");
+  initgraph(&gd,&gm,"..\\..\\chr");
   err = graphresult();
   if (err != grOk) {
     fprintf(stderr, "Couldn't initialize graphics\n");

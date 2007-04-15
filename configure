@@ -6,9 +6,10 @@
 #       to do with it, just ignore it and follow the normal install
 #       instructions.
 #
-# Copyright (C) 2001-2002 Frank Heckenbach <frank@pascal.gnu.de>
+# Copyright (C) 2001-2002,2004 Frank Heckenbach <frank@pascal.gnu.de>
+#                              Peter Gerwinski <peter@gerwinski.de>
 #
-# Parts copied from GCC's configure script,
+# Parts copied from some version of GCC's configure script,
 # Copyright (C) 1992, 93, 94, 95, 96 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
@@ -48,6 +49,7 @@ HAVE_LIBJPEG=n
 HAVE_LIBPNG=n
 NEED_ZLIB=n
 HAVE_LIBTIFF=n
+HAVE_UNIX_TOOLS=n
 INCLUDE_BMP_CODE=y
 INCLUDE_PRINTING_CODE=y
 INCLUDE_GPC_SUPPORT=n
@@ -58,7 +60,9 @@ USE_SVGALIB_DRIVER=y
 USE_FRAMEBUFFER_DRIVER=y
 SET_SUIDROOT=y
 USE_INOUTP_FRAMEDRIVERS=y
+BUILD_X86_64=n
 lsocket=""
+subst_EP=""
 
 ac_prev=
 for ac_option do
@@ -90,6 +94,7 @@ for ac_option do
   # Don't complain about unknown enable, disable, with and without options
   -enable-* | --enable-* | -en-* | --en-*)
     case "`echo "$ac_option" | sed -e 's/^-*enable-//;s/^-*en-//'`" in
+      x86_64)          BUILD_X86_64=y;;
       jpeg)            HAVE_LIBJPEG=y;;
       png)             HAVE_LIBPNG=y;;
       z | zlib)        NEED_ZLIB=y;;
@@ -109,6 +114,7 @@ for ac_option do
     esac;;
   -disable-* | --disable-* | -di-* | --di-*)
     case "`echo "$ac_option" | sed -e 's/^-*disable-//;s/^-*di-//'`" in
+      x86_64)          BUILD_X86_64=n;;
       jpeg)            HAVE_LIBJPEG=n;;
       png)             HAVE_LIBPNG=n;;
       z | zlib)        NEED_ZLIB=n;;
@@ -146,7 +152,9 @@ Options: [defaults in brackets after descriptions]
   --silent                  silent operation
   --prefix=PREFIX           install files in PREFIX [$default_prefix]
   --target=TARGET           configure for TARGET [$default_target]
-                            possible values: DJGPP, X11, svgalib
+                            possible values: DJGPP, X11, svgalib, w32, sdlx, sdlw
+                            or GCC-style ("i386-mingw32") for cross-compiling
+  --enable-x86_64           build for x86_64 architecture [no]
   --enable-jpeg             include JPEG support [no]
   --enable-png              include PNG support [no]
   --enable-z or             use zlib [no]
@@ -192,10 +200,29 @@ EOF
 done
 
 case "`echo "$target" | tr A-Z a-z`" in
-  djgpp)   cfgsection=GRXVDJ2; target_makefile=makefile.dj2;;
-  x | x11) cfgsection=GRXVX11; target_makefile=makefile.x11;;
-  svgalib) cfgsection=GRXVLNX; target_makefile=makefile.lnx;;
-  *)       echo "$0: invalid target" >&2; exit 1;;
+  *djgpp*)        cfgsection=GRXVDJ2; target_makefile=makefile.dj2;;
+  x | x11)        cfgsection=GRXVX11; target_makefile=makefile.x11;;
+  svgalib)        cfgsection=GRXVLNX; target_makefile=makefile.lnx;;
+  *w32 | *mingw*) cfgsection=GRXVW32; target_makefile=makefile.w32;;
+  sdlx)           cfgsection=GRXVSDL; target_makefile=makefile.sdl; subst_EP="/^EP=/s/=.*/=x/";;
+  sdlw)           cfgsection=GRXVSDL; target_makefile=makefile.sdl; subst_EP="/^EP=/s/=.*/=/";;
+  *)              echo "$0: invalid target" >&2; exit 1;;
+esac
+
+case "$target" in
+  *[A-Za-z0-9]-[A-Za-z0-9]*|mingw32)
+     CROSS_PLATFORM="`echo "$target" | tr A-Z a-z`-"
+     installdir="$prefix/$target"
+     # Cross-compiling is usually done from a Unix-like platform.
+     HAVE_UNIX_TOOLS=y;;
+  sdl*)
+     # makefile.sdl needs a Unix-like platform (msys for mingw32)
+     HAVE_UNIX_TOOLS=y
+     CROSS_PLATFORM=""
+     installdir="$prefix";;
+  *)
+     CROSS_PLATFORM=""
+     installdir="$prefix";;
 esac
 
 if [ $USE_SVGALIB_DRIVER != y ] && [ $USE_FRAMEBUFFER_DRIVER != y ]; then
@@ -207,7 +234,8 @@ if [ -r Makefile ]; then
   if cmp Makefile makefile.lnx > /dev/null 2>&1 ||
      cmp Makefile makefile.dj2 > /dev/null 2>&1 ||
      cmp Makefile makefile.w32 > /dev/null 2>&1 ||
-     cmp Makefile makefile.x11 > /dev/null 2>&1; then
+     cmp Makefile makefile.x11 > /dev/null 2>&1 ||
+     cmp Makefile makefile.sdl > /dev/null 2>&1; then
     rm -f Makefile
   else
     echo "$0: Makefile exists already. Not overwriting!" >&2
@@ -242,24 +270,28 @@ else
   subst_fontpath="/^#*GRX_DEFAULT_FONT_PATH=/{s/^#*//;s|=.*|=$fontpath|;}"
 fi
 
-if sed -e "/^HAVE_LIBTIFF=/s/=.*/=$HAVE_LIBTIFF/;
+if sed -e "/^BUILD_X86_64=/s/=.*/=$BUILD_X86_64/;
+           /^HAVE_LIBTIFF=/s/=.*/=$HAVE_LIBTIFF/;
            /^HAVE_LIBJPEG=/s/=.*/=$HAVE_LIBJPEG/;
            /^HAVE_LIBPNG=/s/=.*/=$HAVE_LIBPNG/;
+           /^HAVE_UNIX_TOOLS=/s/=.*/=$HAVE_UNIX_TOOLS/;
            /^NEED_ZLIB=/s/=.*/=$NEED_ZLIB/;
            /^INCLUDE_PRINTING_CODE=/s/=.*/=$INCLUDE_PRINTING_CODE/;
            /^INCLUDE_BMP_CODE=/s/=.*/=$INCLUDE_BMP_CODE/;
            /^INCLUDE_GPC_SUPPORT=/s/=.*/=$INCLUDE_GPC_SUPPORT/;
            /^INCLUDE_SHARED_SUPPORT=/s/=.*/=$INCLUDE_SHARED_SUPPORT/;
            /^INCLUDE_BGI_SUPPORT=/s/=.*/=$INCLUDE_BGI_SUPPORT/;
+           /^CROSS_PLATFORM=/s/=.*/=$CROSS_PLATFORM/;
            /^USE_DIRECT_MOUSE_DRIVER=/s/=.*/=$USE_DIRECT_MOUSE_DRIVER/;
            /^USE_SVGALIB_DRIVER=/s/=.*/=$USE_SVGALIB_DRIVER/;
            /^USE_FRAMEBUFFER_DRIVER=/s/=.*/=$USE_FRAMEBUFFER_DRIVER/;
            /^SET_SUIDROOT=/s/=.*/=$SET_SUIDROOT/;
            /^USE_INOUTP_FRAMEDRIVERS=/s/=.*/=$USE_INOUTP_FRAMEDRIVERS/;
            /^ifdef $cfgsection\$/,/^endif\$/{
-             /^INSTALLDIR=/s|=.*|=$prefix|;
-             /^X11BASE=/s|=.*|=$x11base|;
+	     $subst_EP;
+             /^INSTALLDIR=/s|=.*|=$installdir|;
              $subst_fontpath;
+             /^X11BASE=/s|=.*|=$x11base|;
              /^X11LIBS=/s/\$/$lsocket/;
            }" "$cfgorigfile" > "$cfgfile"; then
   [ $silent = y ] || echo "Modified $cfgfile"
@@ -275,6 +307,7 @@ if [ x"$INCLUDE_GPC_SUPPORT" = x"y" ]; then
       exit 1
     fi
     if sed -e "s/{.*\\\$define LINUX_CONSOLE}/{`if [ x"$target" != x"svgalib" ]; then echo .; fi`\$define LINUX_CONSOLE}/;
+               s/{.*\\\$define __SDL__}/{`if [ x"$target" != x"sdlx" -a x"$target" != x"sdlw" ]; then echo .; fi`\$define __SDL__}/;
                s/{.*\\\$L tiff}/{`if [ $HAVE_LIBTIFF != y ]; then echo .; fi`\$L tiff}/;
                s/{.*\\\$L jpeg}/{`if [ $HAVE_LIBJPEG != y ]; then echo .; fi`\$L jpeg}/;
                s/{.*\\\$L png}/{`if [ $HAVE_LIBPNG != y ]; then echo .; fi`\$L png}/;

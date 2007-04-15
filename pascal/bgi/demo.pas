@@ -507,7 +507,7 @@ begin
   { grDriver := VGA;      }
   { grDriver := InstallUserDriver('svga256', nil) }
 
-  InitGraph(grDriver, grMode,'..\..\chr');
+  InitGraph(grDriver, grMode,'../../chr');
   ErrCode := GraphResult;
   if ErrCode = GrOk then
   begin  { Do graphics }
@@ -527,7 +527,7 @@ begin
       ReadLn(grMode);
     end;
     m := grMode;
-    InitGraph(grDriver, grMode,'..\..\chr');
+    InitGraph(grDriver, grMode,'../../chr');
     SetGraphMode(m);
     ColorSetup;
     BGIInfo(m);

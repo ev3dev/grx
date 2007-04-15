@@ -68,10 +68,12 @@
 ** LCC v4.0
 ** Watcom C++ v11.0
 ** SUN cc v4.0
+** GCC v > 3
 */
 #if !defined(NO_LEFTSIDE_LVALUE_CAST) &&                  \
     (   defined(__LCC__)                                  \
      || defined(__WATCOMC__)                              \
+     || (defined(__GNUC__) && (__GNUC__>=3))              \
      || defined(__SUNPRO_C)                               )
 #define NO_LEFTSIDE_LVALUE_CAST
 #endif
@@ -92,14 +94,16 @@
    || defined(_MSC_VER) \
    || defined(__386__) \
    || defined(__i386__) \
-   || defined(__i386)
+   || defined(__i386)  \
+   || defined(__x86_64__)
    /* x86 can write to misalgined 16bit locations */
 #  define MISALIGNED_16bit_OK
 #endif
 
 #if   defined(__386__) \
    || defined(__i386__) \
-   || defined(__i386)
+   || defined(__i386)        \
+   || defined(__x86_64__)
    /* x86 can write to misalgined 32bit locations */
 #  define MISALIGNED_32bit_OK
 #endif
@@ -109,11 +113,13 @@
 /* char should always be 8bit and short 16bit ... */
 #define GR_int8  char
 #define GR_int16 short
-#if defined(__alpha__) || (defined(_MIPS_SZLONG) && _MIPS_SZLONG == 64)
+#if defined(__alpha__) || (defined(_MIPS_SZLONG) && _MIPS_SZLONG == 64)        || defined(__x86_64__)
 #define GR_int32 int
 #define GR_int64 long
+#define GR_PtrInt long
 #else
 #define GR_int32 long
+#define GR_PtrInt int
 #endif
 
 /* signed and unsigned variants of the above */
@@ -138,10 +144,17 @@ typedef unsigned GR_int64 GR_int64u;
      || defined(_MSC_VER) \
      || defined(__alpha__) \
      || (defined(__LCC__) && defined(__i386__)) \
-     || (defined(__GNUC__) && defined(__i386__))
+     || (defined(__GNUC__) && \
+          (defined(__i386__) || defined(__x86_64__)))
 #    define _LITTLE_ENDIAN
 #  else
-#    include <sys/byteorder.h>
+#    include <asm/byteorder.h>
+#    ifdef __LITTLE_ENDIAN
+#      define _LITTLE_ENDIAN
+#    endif
+#    ifdef __BIG_ENDIAN
+#      define _BIG_ENDIAN
+#    endif
 #  endif
 #endif
 

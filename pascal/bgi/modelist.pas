@@ -22,9 +22,9 @@ var
 
 begin
   { InitGraph is not needed for GetMaxMode and GetModeName in GPC }
-  { grDriver := Detect; }
-  grDriver := InstallUserDriver('SVGA256', nil); { Not used in GPC }
-  InitGraph(grDriver, grMode,'..\..\chr');
+  grDriver := Detect;
+  {grDriver := InstallUserDriver('SVGA256', nil);} { Not used in GPC }
+  InitGraph(grDriver, grMode,'../../chr');
   ErrCode := GraphResult;
   if ErrCode = GrOk then
   begin  { Do graphics }

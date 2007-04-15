@@ -1,5 +1,7 @@
+{$X+}
+
 program Text_Test;
- 
+
 uses GRX;
 
 procedure TestFunc;
@@ -37,8 +39,8 @@ begin
    TestFunc;
    GrCircle(400,400,200,GrWhite);
    GrCircle(400,400,205,GrWhite);
-   GrLineNC(0, 0, GrScreenX, GrScreenY, GrWhite);
-   GrLineNC(0, GrScreenY, GrScreenX, 0, GrWhite);
+   GrLineNC(0, 0, GrScreenX-1, GrScreenY-1, GrWhite);
+   GrLineNC(0, GrScreenY-1, GrScreenX-1, 0, GrWhite);
 
    { o.txo_font    := @GrFont_PC8x16; }
    o.txo_Font    := GrLoadFont('pc8x16.fnt');
@@ -73,5 +75,5 @@ begin
                     32, 127);
    GrDrawString(St, Length(St), 20, 130, o);
 
-   ReadLn;
+   GrKeyRead;
 end.

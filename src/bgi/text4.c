@@ -122,7 +122,7 @@ void __gr_text_vec(int *xx, int *yy, int XX, int YY, int len, uchar *txt)
         }
       }
     }
-    *yy -= YY-_YY;
+    *yy += YY-_YY;
   }
 }
 

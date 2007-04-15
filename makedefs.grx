@@ -5,7 +5,7 @@
 
 # Specify version of GRX
 # Currently only used to generate name of shared libraries for linux
-GRX_VERSION=2.4.6
+GRX_VERSION=2.4.7
 
 # Specify if you have libtiff.a and corresponding .h files.
 # Change setting to 'y' if you have it, or to 'n' if not.
@@ -36,12 +36,23 @@ INCLUDE_SHARED_SUPPORT=y
 # Specify if you want to include BGI support
 INCLUDE_BGI_SUPPORT=y
 
+# For cross-compiling, specify prefix for tools including the trailing dash
+# (e.g. "i386-mingw32-" for using i386-mingw32-gcc instead of just gcc)
+CROSS_PLATFORM=""
+
+# Specify if you want to use Unix tools on DOS-like platforms
+HAVE_UNIX_TOOLS=n
+
+# Specify in linux if you want to build the library for x86_64
+BUILD_X86_64=n
+
 ### SYSTEM SETTINGS ##################################################
 
-CC     = gcc
-AR     = ar
-RANLIB = ranlib
-STRIP  = strip
+CC     = $(CROSS_PLATFORM)gcc
+PC     = $(CROSS_PLATFORM)gpc
+AR     = $(CROSS_PLATFORM)ar
+RANLIB = $(CROSS_PLATFORM)ranlib
+STRIP  = $(CROSS_PLATFORM)strip
 
 # Different systems / setups may generate .o files
 # this tag files will show what version is present
@@ -50,13 +61,14 @@ LINUX_i386_CONSOLE    = $(SYSTEM_TAG_PREFIX).000
 LINUX_i386_X11        = $(SYSTEM_TAG_PREFIX).002
 DOS_DJGPP_V2          = $(SYSTEM_TAG_PREFIX).004
 WIN32_GCC_i386_STATIC = $(SYSTEM_TAG_PREFIX).006
+ANY_GCC_SDL_STATIC    = $(SYSTEM_TAG_PREFIX).008
 
 ifdef   DEBUG
-CCOPT = -O2 -Wall -g -DDEBUG=$(DEBUG)
+CCOPT = -O2 -fno-strict-aliasing -Wall -g -DDEBUG=$(DEBUG)
 LDOPT = -g
 else
-CCOPT = -O2 -Wall
-LDOPT =
+CCOPT = -O2 -fno-strict-aliasing -Wall
+LDOPT = -s
 endif
 
 ifdef PROFILE
@@ -73,7 +85,7 @@ WARNOPTS = -W -Wshadow -Wpointer-arith -Wbad-function-cast \
 # If test/xcirctest fails on bigger diameters, try
 #CCOPT += -DSMALL_STACK
 
-# You may want to enable one (oe both) of the following
+# You may want to enable one (or both) of the following
 # switches if your get lots of warnings when compiling GRX
 #CCOPT += -DNO_LEFTSIDE_LVALUE_CAST
 #CCOPT += -DNO_LEFTSIDE_PTR_CAST
@@ -85,7 +97,7 @@ ifdef GRXVLNX
 # place libgrx20.a and libgrx20.so in lib/unix
 GRX_LIB_SUBDIR=unix
 
-# Set here the default destination dir for install and uninstall targets
+# Set here the destination dir for install and uninstall targets
 INSTALLDIR=/usr/local
 
 # Set the default GRX font path
@@ -112,6 +124,15 @@ SET_SUIDROOT=y
 # the linux framebuffer enabled
 USE_INOUTP_FRAMEDRIVERS=n
 
+# check for i386 or x86_64 build
+ifeq ($(BUILD_X86_64),y)
+CCOPT += -m64
+LDOPT += -m64
+else
+CCOPT += -m32
+LDOPT += -m32
+endif
+
 endif
 
 ### LINUX X11 SPECIFIC ###############################################
@@ -127,14 +148,6 @@ INSTALLDIR=/usr/local
 # Set the default GRX font path
 #GRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
 
-# Set to try to use the XFree86 Direct Graphics Access driver (DGA2)
-# (if DGA2 is not available, fall back to the windowed X11 driver)
-# CAUTION! As of XFree86-4.2.1, DGA/DGA2 is unstable and may lockup!
-USE_XF86DGA_DRIVER=n
-
-# Set or not set suid root for X11 - must be 'y' for DGA2 to work
-SET_XSUIDROOT=n
-
 # The X11 base dir on your system
 X11BASE=/usr/X11R6
 
@@ -143,7 +156,34 @@ X11INCS=-I$(X11BASE)/include
 
 # put X11 required libraries and directories here
 # note: some systems need -lsocket added
+ifeq ($(BUILD_X86_64),y)
+X11LIBS=-L$(X11BASE)/lib64 -lX11
+else
 X11LIBS=-L$(X11BASE)/lib -lX11
+endif
+
+# Set to try to use the XFree86 Direct Graphics Access driver (DGA2)
+# (if DGA2 is not available, fall back to the windowed X11 driver)
+# As of XFree-4.3.99.5 DGA/DGA2 seems stable, but use with caution.
+USE_XF86DGA_DRIVER=n
+# Set to 'y' this variable if you want the DGA2 driver to use direct
+# framebuffer access. That should not make DGA2 more unstable and is
+# faster. If this setting is 'y', the DGA2 driver (see above) must
+# also be 'y', or you will get compilation/linkage errors.
+USE_XF86DGA_FRAMEBUFFER=n
+# Set or not set suid root for X11. This is required for the DGA2
+# framebuffer access, it can be set to 'n' if you use the standard
+# X11 driver only or DGA2 without framebuffer access.
+SET_XSUIDROOT=n
+
+# check for i386 or x86_64 build
+ifeq ($(BUILD_X86_64),y)
+CCOPT += -m64
+LDOPT += -m64
+else
+CCOPT += -m32
+LDOPT += -m32
+endif
 
 endif
 
@@ -153,6 +193,9 @@ ifdef GRXVDJ2
 
 # Put libgrx20.a to lib/dj2
 GRX_LIB_SUBDIR=dj2
+
+# Set here the destination dir for install and uninstall targets
+INSTALLDIR=$(DJDIR)
 
 # If you want to use 'upx.exe' compressor
 # disable the echo line and enable upx line.
@@ -173,7 +216,7 @@ EXE_COMPRESS = -echo
 #CCOPT += -DNO_REPROGRAM_TIMER
 
 # Set the default GRX font path
-#GRX_DEFAULT_FONT_PATH=c:/grxfonts
+#GRX_DEFAULT_FONT_PATH=c:/djgpp/share/grx/fonts
 
 endif
 
@@ -184,11 +227,57 @@ ifdef GRXVW32
 # Put libgrx20.a to lib/win32
 GRX_LIB_SUBDIR=win32
 
-# Set here your MINGW dir for install and uninstall targets
-MINGWDIR=C:\MINGW
+# Set here the destination dir for install and uninstall targets
+INSTALLDIR=C:\MINGW
 
 # Set the default GRX font path
 #GRX_DEFAULT_FONT_PATH=c:/grxfonts
+
+endif
+
+### SDL SPECIFIC #####################################################
+
+ifdef GRXVSDL
+
+# Put libgrx20.a to lib/sdl
+GRX_LIB_SUBDIR=sdl
+
+# The executable prefix EP is used in sub makefile.sdl 's
+# to discriminate between linux X11 and mingw32. Use
+#EP=x         ... For linux X11.
+#EP=          ... For mingw32
+EP=x
+
+# Set here the destination dir for install and uninstall targets
+INSTALLDIR=/usr/local
+
+# Set the default GRX font path
+#GRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
+
+#The following can remain in any case (even if unemployed in mingw32)
+
+# The X11 base dir on your system
+X11BASE=/usr/X11R6
+
+# Add directories with X11 include files here
+X11INCS=-I$(X11BASE)/include
+
+# put X11 required libraries and directories here
+# note: some systems need -lsocket added
+ifeq ($(BUILD_X86_64),y)
+X11LIBS=-L$(X11BASE)/lib64 -lX11
+else
+X11LIBS=-L$(X11BASE)/lib -lX11
+endif
+
+# check for i386 or x86_64 build
+ifeq ($(BUILD_X86_64),y)
+CCOPT += -m64
+LDOPT += -m64
+else
+CCOPT += -m32
+LDOPT += -m32
+endif
 
 endif
 

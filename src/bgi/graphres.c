@@ -25,5 +25,7 @@
 #include "bccgrx00.h"
 
 int __gr_graphresult(void) {
-  return graphresult();
+  int res = (__gr_INIT ? __gr_Result : grNoInitGraph);
+  __gr_Result = grOk;
+  return res;
 }

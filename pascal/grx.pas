@@ -20,17 +20,28 @@
   (Ignored on non-Linux systems.) }
 {.$define LINUX_CONSOLE}
 
+{ Define this if you want to use the SDL driver in mingw or x11}
+{.$define __SDL__}
+
 {$gnu-pascal,I-}
 {$ifdef __DJGPP__}
   {$L grx20}
 {$elif defined (__MINGW32__)}
-  {$L grx20}
+  {$ifdef __SDL__}
+    {$L grx20S, SDL}
+  {$else}
+    {$L grx20}
+  {$endif}
 {$elif defined (_WIN32)}
   {$L grxW32, vfs.c, user32, gdi32}
 {$elif defined (linux) and defined (LINUX_CONSOLE)}
   {$L grx20, vga}
 {$else}
-  {$L grx20X, X11}
+  {$ifdef __SDL__}
+    {$L grx20S, SDL, pthread, X11}
+  {$else}
+    {$L grx20X, X11}
+  {$endif}
 {$endif}
 
 { Uncomment those of the following libraries that you need }
@@ -50,6 +61,11 @@ interface
 {$else}
 {$define varasmname external; asmname}
 {$endif}
+{$if __GPC_RELEASE__ < 20040917}
+type
+  CInteger = Integer;
+  CCardinal = Cardinal;
+{$endif}
 
 const
   MaxVarSize = MaxInt div 8;
@@ -68,16 +84,22 @@ type
   { This definition is compatible with the grx
     definition 'int pts[][2]' used to define polygons }
   PointType = record
-    x, y: Integer;
+    x, y: CInteger
   end;
 
 const
   { these are the supported configurations: }
-  GRX_Version_TCC_8086_DOS  = 1;  { also works with BCC }
-  GRX_Version_GCC_386_GO32  = 2;  { DJGPP }
-  GRX_Version_GCC_386_Linux = 3;  { the real stuff }
-  GRX_Version_Generic_X11   = 4;  { generic X11 version }
-  GRX_Version_Watcom_DOS4GW = 5;  { Watcom C++ 11.0 32 Bit }
+  GRX_Version_TCC_8086_DOS     =  1;  { also works with BCC }
+  GRX_Version_GCC_386_GO32     =  2;  { DJGPP }
+  GRX_Version_GCC_386_Linux    =  3;  { the real stuff }
+  GRX_Version_Generic_X11      =  4;  { generic X11 version }
+  GRX_Version_Watcom_DOS4GW    =  5;  { Watcom C++ 11.0 32 Bit }
+  GRX_VERSION_GCC_386_WIN32    =  7;  { WIN32 using Mingw32 }
+  GRX_VERSION_MSC_386_WIN32    =  8;  { WIN32 using MS-VC }
+  GRX_VERSION_GCC_386_CYG32    =  9;  { WIN32 using CYGWIN }
+  GRX_VERSION_GCC_386_X11      = 10;  { X11 version }
+  GRX_VERSION_GCC_X86_64_LINUX = 11;  { console framebuffer 64 }
+  GRX_VERSION_GCC_X86_64_X11   = 12;  { X11 version 64 }
 
   { available video modes (for 'GrSetMode') }
 
@@ -92,9 +114,9 @@ const
   Gr_Width_Height_Graphics             = 6;  { Integer w,Integer h }
   Gr_Biggest_Noninterlaced_Graphics    = 7;
   Gr_Biggest_Graphics                  = 8;
-  Gr_Width_Height_Color_Graphics       = 9;  { Integer w,Integer h,Word nc }
-  Gr_Width_Height_Color_Text           = 10; { Integer w,Integer h,Word nc }
-  Gr_Custom_Graphics                   = 11; { Integer w,Integer h,Word nc,Integer vx,Integer vy }
+  Gr_Width_Height_Color_Graphics       = 9;  { Integer w,Integer h,Cardinal nc }
+  Gr_Width_Height_Color_Text           = 10; { Integer w,Integer h,Cardinal nc }
+  Gr_Custom_Graphics                   = 11; { Integer w,Integer h,Cardinal nc,Integer vx,Integer vy }
   { ==== equivalent modes which do not clear the video memory ==== }
   Gr_NC_80_25_Text                     = 12;
   Gr_NC_Default_Text                   = 13;
@@ -105,17 +127,17 @@ const
   Gr_NC_Width_Height_Graphics          = 18; { Integer w,Integer h }
   Gr_NC_Biggest_Noninterlaced_Graphics = 19;
   Gr_NC_Biggest_Graphics               = 20;
-  Gr_NC_Width_Height_Color_Graphics    = 21; { Integer w,Integer h,Word nc }
-  Gr_NC_Width_Height_Color_Text        = 22; { Integer w,Integer h,Word nc }
-  Gr_NC_Custom_Graphics                = 23; { Integer w,Integer h,Word nc,Integer vx,Integer vy }
+  Gr_NC_Width_Height_Color_Graphics    = 21; { Integer w,Integer h,Cardinal nc }
+  Gr_NC_Width_Height_Color_Text        = 22; { Integer w,Integer h,Cardinal nc }
+  Gr_NC_Custom_Graphics                = 23; { Integer w,Integer h,Cardinal nc,Integer vx,Integer vy }
   { ==== plane instead of color based modes ==== }
   { colors = 1 << bpp  >>> resort enum for GRX3 <<< }
-  Gr_Width_Height_BPP_Graphics         = 24; { int w,int h,int bpp }
-  Gr_Width_Height_BPP_Text             = 25; { int w,int h,int bpp }
-  Gr_Custom_BPP_Graphics               = 26; { int w,int h,int bpp,int vx,int vy }
-  Gr_NC_Width_Height_BPP_Graphics      = 27; { int w,int h,int bpp }
-  Gr_NC_Width_Height_BPP_Text          = 28; { int w,int h,int bpp }
-  Gr_NC_Custom_BPP_Graphics            = 29; { int w,int h,int bpp,int vx,int vy }
+  Gr_Width_Height_BPP_Graphics         = 24; { Integer w,Integer h,Integer bpp }
+  Gr_Width_Height_BPP_Text             = 25; { Integer w,Integer h,Integer bpp }
+  Gr_Custom_BPP_Graphics               = 26; { Integer w,Integer h,Integer bpp,Integer vx,Integer vy }
+  Gr_NC_Width_Height_BPP_Graphics      = 27; { Integer w,Integer h,Integer bpp }
+  Gr_NC_Width_Height_BPP_Text          = 28; { Integer w,Integer h,Integer bpp }
+  Gr_NC_Custom_BPP_Graphics            = 29; { Integer w,Integer h,Integer bpp,Integer vx,Integer vy }
 
   { Available frame modes (video memory layouts) }
 
@@ -140,6 +162,20 @@ const
   Gr_FrameXWin24  = Gr_FrameSVGA24;
   Gr_FrameXWin32L = Gr_FrameSVGA32L;
   Gr_FrameXWin32H = Gr_FrameSVGA32H;
+  { ==== modes provided by the WIN32 driver ===== }
+  Gr_FrameWIN32_1   = Gr_FrameEGAVGA1;
+  Gr_FrameWIN32_4   = Gr_FrameSVGA4;
+  Gr_FrameWIN32_8   = Gr_FrameSVGA8;
+  Gr_FrameWIN32_16  = Gr_FrameSVGA16;
+  Gr_FrameWIN32_24  = Gr_FrameSVGA24;
+  Gr_FrameWIN32_32L = Gr_FrameSVGA32L;
+  Gr_FrameWIN32_32H = Gr_FrameSVGA32H;
+  { ==== modes provided by the SDL driver ===== }
+  Gr_FrameSDL8   = Gr_FrameSVGA8;
+  Gr_FrameSDL16  = Gr_FrameSVGA16;
+  Gr_FrameSDL24  = Gr_FrameSVGA24;
+  Gr_FrameSDL32L = Gr_FrameSVGA32L;
+  Gr_FrameSDL32H = Gr_FrameSVGA32H;
   { ==== linear frame buffer modes  ====== }
   Gr_FrameSVGA8_LFB   = 12;   { (Super) VGA 256 color }
   Gr_FrameSVGA16_LFB  = 13;   { Super VGA 32768/65536 color }
@@ -172,7 +208,10 @@ const
   Gr_8514A   =  3;          { 8514A or compatible }
   Gr_S3      =  4;          { S3 graphics accelerator }
   Gr_XWin    =  5;          { X11 driver }
-  Gr_Mem     =  6;          { memory only driver }
+  Gr_WIN32   =  6;          { WIN32 driver }
+  Gr_LNXFB   =  7;          { Linux framebuffer }
+  Gr_SDL     =  8;          { SDL driver }
+  Gr_Mem     =  9;          { memory only driver }
 
   Gr_Max_Polygon_Pointers = 1000000;
   Gr_Max_Ellipse_Pointers = 1024 + 5;
@@ -186,34 +225,35 @@ const
 
 type
 
+  GrVideoModePtr = ^GrVideoMode;
+
   { The video driver descriptor structure }
   { struct _GR_videoDriver }
-  GrVideoDriver = record
-    Name      : CString;        { driver name }
-    Adapter   : Char;           { adapter type }
-    Inherit   : ^GrVideoDriver; { inherit video modes from this }
-    Modes     : ^GrVideoMode;   { table of supported modes }
-    NModes    : Integer;        { number of modes }
-    Detect    : Pointer;
-    Init      : Pointer;
-    Reset     : Pointer;
-    SelectMode: Pointer;
-    DrvFlags  : Integer;
-  end;
   GrVideoDriverPtr = ^GrVideoDriver;
+  GrVideoDriver = record
+    Name      : CString;           { driver name }
+    Adapter   : CInteger;          { adapter type }
+    Inherit   : GrVideoDriverPtr;  { inherit video modes from this }
+    Modes     : GrVideoModePtr;    { table of supported modes }
+    NModes    : CInteger;          { number of modes }
+    Detect    : function: CInteger;
+    Init      : function (Options: CString): CInteger;
+    Reset     : procedure;
+    SelectMode: function (Drv: GrVideoDriverPtr; w, h, BPP, txt: CInteger; var ep: CCardinal): GrVideoModePtr;
+    DrvFlags  : CCardinal
+  end;
 
   { Video driver mode descriptor structure }
   { struct _GR_videoMode }
   GrVideoMode = record
-    Present     : Char;         { is it really available? }
-    BPP         : Char;       { log2 of # of colors }
-    Width,Height: ShortInt;    { video mode geometry }
-    Mode        : ShortInt;         { BIOS mode number (if any) }
-    LineOffset  : Integer;         { scan line length }
-    PrivData    : Integer;        { driver can use it for anything }
-    ExtInfo     : ^GrVideoModeExt;   { extra info (maybe shared) }
+    Present: ByteBool;        { is it really available? }
+    BPP: Byte;                { log2 of # of colors }
+    Width, Height,            { video mode geometry }
+    Mode: ShortInt;           { BIOS mode number (if any) }
+    LineOffset,               { scan line length }
+    PrivData: CInteger;       { driver can use it for anything }
+    ExtInfo: ^GrVideoModeExt  { extra info (maybe shared) }
   end;
-  GrVideoModePtr = ^GrVideoMode;
 
   { Video driver mode descriptor extension structure. This is a separate
     structure accessed via a pointer from the main mode descriptor. The
@@ -221,72 +261,83 @@ type
     extended info. }
 
   { struct _GR_videoModeExt }
+  Int2 = array [0 .. 1] of CInteger;
   GrVideoModeExt = record
-    Mode        : Integer;                     { frame driver for this video mode }
+    Mode        : CInteger;                    { frame driver for this video mode }
     Drv         : ^GrFrameDriver;              { optional frame driver override }
     Frame       : MemPtr;                      { frame buffer address }
     CPrec       : array [1 .. 3] of ByteCard;  { color component precisions }
     CPos        : array [1 .. 3] of ByteCard;  { color component bit positions }
-    Flags       : Integer;                     { mode flag bits; see "grdriver.h" }
-    Setup       : Pointer;
-    SetVSize    : Pointer;
-    Scroll      : Pointer;
-    SetBank     : Pointer;
-    SetRWBanks  : Pointer;
-    LoadColor   : Pointer;
-    LFB_Selector: Integer;
+    Flags       : CInteger;                    { mode flag bits; see "grdriver.h" }
+    Setup       : function (var md: GrVideoMode; NoClear: CInteger): CInteger;
+    SetVSize    : function (var md: GrVideoMode; w, h: CInteger; var Result: GrVideoMode): CInteger;
+    Scroll      : function (var md: GrVideoMode; x, y: CInteger; var Result: Int2): CInteger;
+    SetBank     : procedure (bk: CInteger);
+    SetRWBanks  : procedure (rb, wb: CInteger);
+    LoadColor   : procedure (c, r, g, b: CInteger);
+    LFB_Selector: CInteger
+  end;
+
+  GrFrameDriverPtr = ^GrFrameDriver;
+
+  GrFrameType = record
+    gf_BaseAddr  : array [0 .. 3] of MemPtr;  { base address of frame memory }
+    gf_Selector  : ShortInt;                  { frame memory segment selector }
+    gf_OnScreen  : ByteBool;                  { is it in video memory ? }
+    gf_MemFlags  : Byte;                      { memory allocation flags }
+    gf_LineOffset: CInteger;                  { offset to next scan line in bytes }
+    gf_Driver    : GrFrameDriverPtr           { frame access functions }
   end;
 
   { The frame driver descriptor structure. }
 
   { struct _GR_frameDriver }
   GrFrameDriver = record
-    Mode              : Integer; { supported frame access mode }
-    RMode             : Integer; { matching RAM frame (if video) }
-    Is_Video          : Integer; { video RAM frame driver ? }
-    Row_Align         : Integer; { scan line size alignment }
-    Num_Planes        : Integer; { number of planes }
-    Bits_Per_Pixel    : Integer; { bits per pixel }
-    Max_Plane_Size    : Integer; { maximum plane size in bytes }
-    Init              : Pointer;
-    ReadPixel         : Pointer;
-    DrawPixel         : Pointer;
-    DrawLine          : Pointer;
-    DrawHLine         : Pointer;
-    DrawVLine         : Pointer;
-    DrawBlock         : Pointer;
-    DrawBitmap        : Pointer;
-    DrawPattern       : Pointer;
-    BitBlt            : Pointer;
-    BltV2R            : Pointer;
-    BltR2V            : Pointer;
-    GetIndexedScanline: Pointer;
-    PutScanLine       : Pointer;
+    Mode,                         { supported frame access mode }
+    RMode,                        { matching RAM frame (if video) }
+    Is_Video,                     { video RAM frame driver ? }
+    Row_Align,                    { scan line size alignment }
+    Num_Planes,                   { number of planes }
+    Bits_Per_Pixel    : CInteger; { bits per pixel }
+    Max_Plane_Size    : MedInt;   { maximum plane size in bytes }
+    Init              : function (var md: GrVideoMode): CInteger;
+    ReadPixel         : function (var c: GrFrameType; x, y: CInteger): GrColor;
+    DrawPixel         : procedure (x, y: CInteger; c: GrColor);
+    DrawLine          : procedure (x, y, dx, dy: CInteger; c: GrColor);
+    DrawHLine         : procedure (x, y, w: CInteger; c: GrColor);
+    DrawVLine         : procedure (x, y, h: CInteger; c: GrColor);
+    DrawBlock         : procedure (x, y, w, h: CInteger; c: GrColor);
+    DrawBitmap        : procedure (x, y, w, h: CInteger; BMP: MemPtr; Pitch, Start: CInteger; fg, bg: GrColor);
+    DrawPattern       : procedure (x, y, w: CInteger; Patt: Byte; fg, bg: GrColor);
+    BitBlt            : procedure (var Dst: GrFrameType; dx, dy: CInteger; var Src: GrFrameType; x, y, w, h: CInteger; Op: GrColor);
+    BltV2R            : procedure (var Dst: GrFrameType; dx, dy: CInteger; var Src: GrFrameType; x, y, w, h: CInteger; Op: GrColor);
+    BltR2V            : procedure (var Dst: GrFrameType; dx, dy: CInteger; var Src: GrFrameType; x, y, w, h: CInteger; Op: GrColor);
+    GetIndexedScanline: function (var c: GrFrameType; x, y, w: CInteger; var Index: CInteger): GrColorsPtr;
+    PutScanLine       : procedure (x, y, w: CInteger; scl: GrColorsPtr; Op: GrColor);
   end;
-  GrFrameDriverPtr = ^GrFrameDriver;
 
   { driver and mode info structure }
 
   { extern const struct _GR_driverInfo }
   GrDriverInfoType = record
-    VDriver    : ^GrVideoDriver; { the current video driver }
-    CurMode    : ^GrVideoMode;   { current video mode pointer }
-    ActMode    : GrVideoMode;    { copy of above, resized if virtual }
-    FDriver    : GrFrameDriver;  { frame driver for the current context }
-    SDriver    : GrFrameDriver;  { frame driver for the screen }
-    TDriver    : GrFrameDriver;  { a dummy driver for text modes }
-    MCode      : ByteCard;       { code for the current mode }
-    DefTW,DefTH: Integer;        { default text mode size }
-    DefGW,DefGH: Integer;        { default graphics mode size }
-    DefTC,DefGC: GrColor;        { default text and graphics colors }
-    VPosX,VPosY: Integer;        { current virtual viewport position }
-    ErrsFatal  : Integer;        { if set, exit upon errors }
-    ModeRestore: Integer;        { restore startup video mode if set }
-    SplitBanks : Integer;        { indicates separate R/W banks }
-    CurBank    : Integer;        { currently mapped bank }
-    MdSetHook  : Pointer;        { callback for mode set }
-    SetBank    : Pointer;        { banking routine }
-    SetRWBanks : Pointer;        { split banking routine }
+    VDriver    : GrVideoDriverPtr;              { the current video driver }
+    CurMode    : GrVideoModePtr;                { current video mode pointer }
+    ActMode    : GrVideoMode;                   { copy of above, resized if virtual }
+    FDriver,                                    { frame driver for the current context }
+    SDriver,                                    { frame driver for the screen }
+    TDriver    : GrFrameDriver;                 { a dummy driver for text modes }
+    MCode,                                      { code for the current mode }
+    DefTW,DefTH,                                { default text mode size }
+    DefGW,DefGH: CInteger;                      { default graphics mode size }
+    DefTC,DefGC: GrColor;                       { default text and graphics colors }
+    VPosX,VPosY,                                { current virtual viewport position }
+    ErrsFatal,                                  { if set, exit upon errors }
+    ModeRestore,                                { restore startup video mode if set }
+    SplitBanks,                                 { indicates separate R/W banks }
+    CurBank    : CInteger;                      { currently mapped bank }
+    MdSetHook  : procedure;                     { callback for mode set }
+    SetBank    : procedure (bk: CInteger);      { banking routine }
+    SetRWBanks : procedure (rb, wb: CInteger);  { split banking routine }
   end;
 
 var
@@ -294,26 +345,26 @@ var
 
 { setup stuff }
 
-function  GrSetDriver(DrvSpec: CString):Integer; asmname 'GrSetDriver';
-function  GrSetMode(m, w, h, nc, vx, vy:Integer):Integer; asmname 'GrSetMode';
-function  GrSetViewport(XPos, YPos: Integer):Integer; asmname 'GrSetViewport';
+function  GrSetDriver(DrvSpec: CString):CInteger; asmname 'GrSetDriver';
+function  GrSetMode(m, w, h, nc, vx, vy:CInteger):CInteger; asmname 'GrSetMode';
+function  GrSetViewport(XPos, YPos: CInteger):CInteger; asmname 'GrSetViewport';
 procedure GrSetModeHook(HookFunc:Pointer); asmname 'GrSetModeHook';
 procedure GrSetModeRestore(RestoreFlag:Boolean); asmname 'GrSetModeRestore';
 
 procedure GrSetErrorHandling(ExitIfError:Boolean); asmname 'GrSetErrorHandling';
-procedure GrSetEGAVGAmonoDrawnPlane(Plane:Integer); asmname 'GrSetEGAVGAmonoDrawnPlane';
-procedure GrSetEGAVGAmonoShownPlane(Plane:Integer); asmname 'GrSetEGAVGAmonoShownPlane';
+procedure GrSetEGAVGAmonoDrawnPlane(Plane:CInteger); asmname 'GrSetEGAVGAmonoDrawnPlane';
+procedure GrSetEGAVGAmonoShownPlane(Plane:CInteger); asmname 'GrSetEGAVGAmonoShownPlane';
 
-function  GrGetLibraryVersion: Integer; asmname 'GrGetLibraryVersion';
-function  GrGetLibrarySystem: Integer; asmname 'GrGetLibrarySystem';
+function  GrGetLibraryVersion: CInteger; asmname 'GrGetLibraryVersion';
+function  GrGetLibrarySystem: CInteger; asmname 'GrGetLibrarySystem';
 
 { inquiry stuff ---- many of these can be macros }
 
-function  GrCurrentMode:Integer; asmname 'GrCurrentMode';
-function  GrAdapterType:Integer; asmname 'GrAdapterType';
-function  GrCurrentFrameMode:Integer; asmname 'GrCurrentFrameMode';
-function  GrScreenFrameMode:Integer; asmname 'GrScreenFrameMode';
-function  GrCoreFrameMode:Integer; asmname 'GrCoreFrameMode';
+function  GrCurrentMode:CInteger; asmname 'GrCurrentMode';
+function  GrAdapterType:CInteger; asmname 'GrAdapterType';
+function  GrCurrentFrameMode:CInteger; asmname 'GrCurrentFrameMode';
+function  GrScreenFrameMode:CInteger; asmname 'GrScreenFrameMode';
+function  GrCoreFrameMode:CInteger; asmname 'GrCoreFrameMode';
 
 function  GrCurrentVideoDriver: GrVideoDriverPtr; asmname 'GrCurrentVideoDriver' ;
 function  GrCurrentVideoMode:GrVideoModePtr; asmname 'GrCurrentVideoMode';
@@ -321,94 +372,85 @@ function  GrVirtualVideoMode:GrVideoModePtr; asmname 'GrVirtualVideoMode';
 function  GrCurrentFrameDriver: GrFrameDriverPtr; asmname 'GrCurrentFrameDriver';
 function  GrScreenFrameDriver: GrFrameDriverPtr; asmname 'GrScreenFrameDriver';
 
-function  GrFirstVideoMode(FMode:Integer):GrVideoModePtr; asmname 'GrFirstVideoMode';
+function  GrFirstVideoMode(FMode:CInteger):GrVideoModePtr; asmname 'GrFirstVideoMode';
 function  GrNextVideoMode(Prev:GrVideoModePtr):GrVideoModePtr; asmname 'GrNextVideoMode';
 
-function  GrScreenX:Integer; asmname 'GrScreenX';
-function  GrScreenY:Integer; asmname 'GrScreenY';
-function  GrVirtualX:Integer; asmname 'GrVirtualX';
-function  GrVirtualY:Integer; asmname 'GrVirtualY';
-function  GrViewportX:Integer; asmname 'GrViewportX';
-function  GrViewportY:Integer; asmname 'GrViewportY';
+function  GrScreenX:CInteger; asmname 'GrScreenX';
+function  GrScreenY:CInteger; asmname 'GrScreenY';
+function  GrVirtualX:CInteger; asmname 'GrVirtualX';
+function  GrVirtualY:CInteger; asmname 'GrVirtualY';
+function  GrViewportX:CInteger; asmname 'GrViewportX';
+function  GrViewportY:CInteger; asmname 'GrViewportY';
 function  GrScreenIsVirtual:Boolean; asmname 'GrScreenIsVirtual';
 
 { RAM context geometry and memory allocation inquiry stuff }
 
-function  GrFrameNumPlanes(md:Integer):Integer; asmname 'GrFrameNumPlanes';
-function  GrFrameLineOffset(md,Width:Integer):Integer; asmname 'GrFrameLineOffset';
-function  GrFramePlaneSize(md,w,h:Integer):Integer; asmname 'GrFramePlaneSize';
-function  GrFrameContextSize(md,w,h:Integer):Integer; asmname 'GrFrameContextSize';
+function  GrFrameNumPlanes(md:CInteger):CInteger; asmname 'GrFrameNumPlanes';
+function  GrFrameLineOffset(md,Width:CInteger):CInteger; asmname 'GrFrameLineOffset';
+function  GrFramePlaneSize(md,w,h:CInteger):CInteger; asmname 'GrFramePlaneSize';
+function  GrFrameContextSize(md,w,h:CInteger):CInteger; asmname 'GrFrameContextSize';
 
-function  GrNumPlanes:Integer; asmname 'GrNumPlanes';
-function  GrLineOffset(Width:Integer):Integer; asmname 'GrLineOffset';
-function  GrPlaneSize(w,h:Integer):Integer; asmname 'GrPlaneSize';
-function  GrContextSize(w,h:Integer):Integer; asmname 'GrContextSize';
+function  GrNumPlanes:CInteger; asmname 'GrNumPlanes';
+function  GrLineOffset(Width:CInteger):CInteger; asmname 'GrLineOffset';
+function  GrPlaneSize(w,h:CInteger):CInteger; asmname 'GrPlaneSize';
+function  GrContextSize(w,h:CInteger):CInteger; asmname 'GrContextSize';
 
 { ==================================================================
             FRAME BUFFER, CONTEXT AND CLIPPING STUFF
   ================================================================== }
 
 type
-  GrFrameType = record
-    gf_BaseAddr  : array [0 .. 3] of MemPtr; { base address of frame memory }
-    gf_Selector  : ShortInt;                 { frame memory segment selector }
-    gf_OnScreen  : Char;                     { is it in video memory ? }
-    gf_MemFlags  : Char;                     { memory allocation flags }
-    gf_LineOffset: Integer;                  { offset to next scan line in bytes }
-    gf_Driver    : ^GrFrameDriver;           { frame access functions }
-  end;
-
   { struct _GR_context }
-  GrContext = record
-    gc_Frame    : GrFrameType;  { frame buffer info }
-    gc_Root     : ^GrContext;   { context which owns frame }
-    gc_XMax     : Integer;      { max X coord (width  - 1) }
-    gc_YMax     : Integer;      { max Y coord (height - 1) }
-    gc_XOffset  : Integer;      { X offset from root's base }
-    gc_YOffset  : Integer;      { Y offset from root's base }
-    gc_XClipLo  : Integer;      { low X clipping limit }
-    gc_YClipLo  : Integer;      { low Y clipping limit }
-    gc_XClipHi  : Integer;      { high X clipping limit }
-    gc_YClipHi  : Integer;      { high Y clipping limit }
-    gc_UsrXBase : Integer;      { user window min X coordinate }
-    gc_UsrYBase : Integer;      { user window min Y coordinate }
-    gc_UsrWidth : Integer;      { user window width  }
-    gc_UsrHeight: Integer;      { user window height }
-  end;
   GrContextPtr = ^GrContext;
+  GrContext = record
+    gc_Frame: GrFrameType;  { frame buffer info }
+    gc_Root: GrContextPtr;  { context which owns frame }
+    gc_XMax,                { max X coord (width  - 1) }
+    gc_YMax,                { max Y coord (height - 1) }
+    gc_XOffset,             { X offset from root's base }
+    gc_YOffset,             { Y offset from root's base }
+    gc_XClipLo,             { low X clipping limit }
+    gc_YClipLo,             { low Y clipping limit }
+    gc_XClipHi,             { high X clipping limit }
+    gc_YClipHi,             { high Y clipping limit }
+    gc_UsrXBase,            { user window min X coordinate }
+    gc_UsrYBase,            { user window min Y coordinate }
+    gc_UsrWidth,            { user window width  }
+    gc_UsrHeight: CInteger  { user window height }
+  end;
 
   { extern const struct _GR_contextInfo }
   GrContextInfoType = record
-    Current: GrContext;  { the current context }
-    Screen : GrContext;  { the screen context }
+    Current,           { the current context }
+    Screen: GrContext  { the screen context }
   end;
 
 var
   GrContextInfo: GrContextInfoType; varasmname 'GrContextInfo';
 
-function  GrCreateContext(w, h: Integer; Memory: MemPtr; Where: GrContextPtr): GrContextPtr; asmname 'GrCreateContext';
-function  GrCreateFrameContext(md: ByteCard; w, h: Integer; Memory: MemPtr; Where: GrContextPtr): GrContextPtr; asmname 'GrCreateFrameContext';
-function  GrCreateSubContext(x1, y1, x2, y2: Integer; Parent, Where: GrContextPtr): GrContextPtr; asmname 'GrCreateSubContext';
+function  GrCreateContext(w, h: CInteger; Memory: MemPtr; Where: GrContextPtr): GrContextPtr; asmname 'GrCreateContext';
+function  GrCreateFrameContext(md: ByteCard; w, h: CInteger; Memory: MemPtr; Where: GrContextPtr): GrContextPtr; asmname 'GrCreateFrameContext';
+function  GrCreateSubContext(x1, y1, x2, y2: CInteger; Parent, Where: GrContextPtr): GrContextPtr; asmname 'GrCreateSubContext';
 function  GrSaveContext(Where: GrContextPtr): GrContextPtr; asmname 'GrSaveContext';
 function  GrCurrentContext: GrContextPtr; asmname 'GrCurrentContext';
 function  GrScreenContext: GrContextPtr; asmname 'GrScreenContext';
 
 procedure GrDestroyContext(Context: GrContextPtr); asmname 'GrDestroyContext';
-procedure GrResizeSubContext(Context: GrContextPtr; x1, y1, x2, y2: Integer); asmname 'GrResizeSubContext';
+procedure GrResizeSubContext(Context: GrContextPtr; x1, y1, x2, y2: CInteger); asmname 'GrResizeSubContext';
 procedure GrSetContext(Context: GrContextPtr); asmname 'GrSetContext';
 
-procedure GrSetClipBox(x1, y1, x2, y2:Integer); asmname 'GrSetClipBox';
-procedure GrGetClipBox(var x1p, y1p, x2p, y2p: Integer); asmname 'GrGetClipBox';
+procedure GrSetClipBox(x1, y1, x2, y2:CInteger); asmname 'GrSetClipBox';
+procedure GrGetClipBox(var x1p, y1p, x2p, y2p: CInteger); asmname 'GrGetClipBox';
 procedure GrResetClipBox; asmname 'GrResetClipBox';
 
-function  GrMaxX: Integer; asmname 'GrMaxX';
-function  GrMaxY: Integer; asmname 'GrMaxY';
-function  GrSizeX:Integer; asmname 'GrSizeX';
-function  GrSizeY:Integer; asmname 'GrSizeY';
-function  GrLowX: Integer; asmname 'GrLowX';
-function  GrLowY: Integer; asmname 'GrLowY';
-function  GrHighX:Integer; asmname 'GrHighX';
-function  GrHighY:Integer; asmname 'GrHighY';
+function  GrMaxX: CInteger; asmname 'GrMaxX';
+function  GrMaxY: CInteger; asmname 'GrMaxY';
+function  GrSizeX:CInteger; asmname 'GrSizeX';
+function  GrSizeY:CInteger; asmname 'GrSizeY';
+function  GrLowX: CInteger; asmname 'GrLowX';
+function  GrLowY: CInteger; asmname 'GrLowY';
+function  GrHighX:CInteger; asmname 'GrHighX';
+function  GrHighY:CInteger; asmname 'GrHighY';
 
 { ==================================================================
                            COLOR STUFF
@@ -444,71 +486,71 @@ function  GrNumFreeColors:GrColor; asmname 'GrNumFreeColors';
 function  GrBlack:GrColor; asmname 'GrBlack';
 function  GrWhite:GrColor; asmname 'GrWhite';
 
-function  GrBuildRGBcolorT(r,g,b:Integer):GrColor; asmname 'GrBuildRGBcolorT';
-function  GrBuildRGBcolorR(r,g,b:Integer):GrColor; asmname 'GrBuildRGBcolorR';
-function  GrRGBcolorRed(c:GrColor):Integer ; asmname 'GrRGBcolorRed';
-function  GrRGBcolorGreen(c:GrColor):Integer ; asmname 'GrRGBcolorGreen';
-function  GrRGBcolorBlue(c:GrColor):Integer ; asmname 'GrRGBcolorBlue';
+function  GrBuildRGBcolorT(r,g,b:CInteger):GrColor; asmname 'GrBuildRGBcolorT';
+function  GrBuildRGBcolorR(r,g,b:CInteger):GrColor; asmname 'GrBuildRGBcolorR';
+function  GrRGBcolorRed(c:GrColor):CInteger ; asmname 'GrRGBcolorRed';
+function  GrRGBcolorGreen(c:GrColor):CInteger ; asmname 'GrRGBcolorGreen';
+function  GrRGBcolorBlue(c:GrColor):CInteger ; asmname 'GrRGBcolorBlue';
 
-function  GrAllocColor(r,g,b:Integer):GrColor; asmname 'GrAllocColor'; { shared, read-only }
-function  GrAllocColorID(r,g,b:Integer):GrColor; asmname 'GrAllocColorID'; { potentially inlined version }
+function  GrAllocColor(r,g,b:CInteger):GrColor; asmname 'GrAllocColor'; { shared, read-only }
+function  GrAllocColorID(r,g,b:CInteger):GrColor; asmname 'GrAllocColorID'; { potentially inlined version }
 function  GrAllocCell:GrColor; asmname 'GrAllocCell'; { unshared, read-write }
 
 function  GrAllocEgaColors:GrColorsPtr; asmname 'GrAllocEgaColors'; { shared, read-only standard EGA colors }
 
-procedure GrSetColor(c:GrColor; r,g,b:Integer); asmname 'GrSetColor';
+procedure GrSetColor(c:GrColor; r,g,b:CInteger); asmname 'GrSetColor';
 procedure GrFreeColor(c:GrColor); asmname 'GrFreeColor';
 procedure GrFreeCell(c:GrColor);  asmname 'GrFreeCell';
 
-procedure GrQueryColor(c:GrColor; var r,g,b:Integer); asmname 'GrQueryColor';
-procedure GrQueryColorID(c:GrColor; var r,g,b:Integer); asmname 'GrQueryColorID';
+procedure GrQueryColor(c:GrColor; var r,g,b:CInteger); asmname 'GrQueryColor';
+procedure GrQueryColorID(c:GrColor; var r,g,b:CInteger); asmname 'GrQueryColorID';
 
-function  GrColorSaveBufferSize:Integer ; asmname 'GrColorSaveBufferSize';
+function  GrColorSaveBufferSize:CInteger ; asmname 'GrColorSaveBufferSize';
 procedure GrSaveColors(Buffer:Pointer); asmname 'GrSaveColors';
 procedure GrRestoreColors(Buffer:Pointer); asmname 'GrRestoreColors';
 
 type
-  { typedef struct } { framed box colors }
+  { framed box colors }
   GrFBoxColors = record
-    fbx_IntegerColor: Integer;
-    fbx_TopColor    : Integer;
-    fbx_RightColor  : Integer;
-    fbx_BottomColor : Integer;
-    fbx_LeftColor   : Integer;
+    fbx_IntColor,
+    fbx_TopColor,
+    fbx_RightColor,
+    fbx_BottomColor,
+    fbx_LeftColor: GrColor
   end;
 
 procedure GrClearScreen(bg:GrColor); asmname 'GrClearScreen';
 procedure GrClearClipBox(bg:GrColor); asmname 'GrClearClipBox';
-procedure GrPlot(x, y: Integer; c:GrColor); asmname 'GrPlot';
-procedure GrLine(x1, y1, x2, y2: Integer; c:GrColor); asmname 'GrLine';
-procedure GrHLine(x1, x2, y:Integer; c:GrColor); asmname 'GrHLine';
-procedure GrVLine(x, y1, y2: Integer; c: GrColor); asmname 'GrVLine';
-procedure GrBox(x1, y1, x2, y2: Integer; c: GrColor); asmname 'GrBox';
-procedure GrFilledBox(x1, y1, x2, y2: Integer; c: GrColor); asmname 'GrFilledBox';
-procedure GrFramedBox(x1, y1, x2, y2, Wdt: Integer; protected var c: GrFBoxColors); asmname 'GrFramedBox';
-function  GrGenerateEllipse(xc, yc, xa, ya:Integer; var Points{ : array of PointType }):Integer; asmname 'GrGenerateEllipse';
-function  GrGenerateEllipseArc(xc, yc, xa, ya, Start, Ende: Integer; var Points{ : array of PointType }):Integer; asmname 'GrGenerateEllipseArc';
-procedure GrLastArcCoords(var xs, ys, xe, ye, xc, yc: Integer); asmname 'GrLastArcCoords';
-procedure GrCircle(xc, yc, r: Integer; c: GrColor); asmname 'GrCircle';
-procedure GrEllipse(xc, yc, xa, ya: Integer; c: GrColor); asmname 'GrEllipse';
-procedure GrCircleArc(xc, yc, r, Start, Ende, Style: Integer; c: GrColor); asmname 'GrCircleArc';
-procedure GrEllipseArc(xc, yc, xa, ya, Start, Ende, Style: Integer; c: GrColor); asmname 'GrEllipseArc';
-procedure GrFilledCircle(xc, yc, r: Integer; c: GrColor); asmname 'GrFilledCircle';
-procedure GrFilledEllipse(xc, yc, xa, ya: Integer; c: GrColor); asmname 'GrFilledEllipse';
-procedure GrFilledCircleArc(xc, yc, r, Start, Ende, Style: Integer; c: GrColor); asmname 'GrFilledCircleArc';
-procedure GrFilledEllipseArc(xc, yc, xa, ya, Start, Ende, Style: Integer; c: GrColor); asmname 'GrFilledEllipseArc';
-procedure GrPolyLine(NumPts: Integer; var Points{ : array of PointType }; c: GrColor); asmname 'GrPolyLine';
-procedure GrPolygon(NumPts: Integer; var Points{ : array of PointType }; c: GrColor); asmname 'GrPolygon';
-procedure GrFilledConvexPolygon(NumPts: Integer; var Points{ : array of PointType }; c: GrColor); asmname 'GrFilledConvexPolygon';
-procedure GrFilledPolygon(NumPts: Integer; var Points{ : array of PointType }; c: GrColor); asmname 'GrFilledPolygon';
-procedure GrBitBlt(Dest: GrContextPtr; x, y: Integer; Src: GrContextPtr; x1, y1, x2, y2: Integer; op: GrColor); asmname 'GrBitBlt';
-function  GrPixel(x, y:Integer):GrColor; asmname 'GrPixel';
-function  GrPixelC(c: GrContextPtr; x, y: Integer): GrColor; asmname 'GrPixelC';
+procedure GrPlot(x, y: CInteger; c:GrColor); asmname 'GrPlot';
+procedure GrLine(x1, y1, x2, y2: CInteger; c:GrColor); asmname 'GrLine';
+procedure GrHLine(x1, x2, y:CInteger; c:GrColor); asmname 'GrHLine';
+procedure GrVLine(x, y1, y2: CInteger; c: GrColor); asmname 'GrVLine';
+procedure GrBox(x1, y1, x2, y2: CInteger; c: GrColor); asmname 'GrBox';
+procedure GrFilledBox(x1, y1, x2, y2: CInteger; c: GrColor); asmname 'GrFilledBox';
+procedure GrFramedBox(x1, y1, x2, y2, Wdt: CInteger; protected var c: GrFBoxColors); asmname 'GrFramedBox';
+function  GrGenerateEllipse(xc, yc, xa, ya:CInteger; var Points{ : array of PointType }):CInteger; asmname 'GrGenerateEllipse';
+function  GrGenerateEllipseArc(xc, yc, xa, ya, Start, Ende: CInteger; var Points{ : array of PointType }):CInteger; asmname 'GrGenerateEllipseArc';
+procedure GrLastArcCoords(var xs, ys, xe, ye, xc, yc: CInteger); asmname 'GrLastArcCoords';
+procedure GrCircle(xc, yc, r: CInteger; c: GrColor); asmname 'GrCircle';
+procedure GrEllipse(xc, yc, xa, ya: CInteger; c: GrColor); asmname 'GrEllipse';
+procedure GrCircleArc(xc, yc, r, Start, Ende, Style: CInteger; c: GrColor); asmname 'GrCircleArc';
+procedure GrEllipseArc(xc, yc, xa, ya, Start, Ende, Style: CInteger; c: GrColor); asmname 'GrEllipseArc';
+procedure GrFilledCircle(xc, yc, r: CInteger; c: GrColor); asmname 'GrFilledCircle';
+procedure GrFilledEllipse(xc, yc, xa, ya: CInteger; c: GrColor); asmname 'GrFilledEllipse';
+procedure GrFilledCircleArc(xc, yc, r, Start, Ende, Style: CInteger; c: GrColor); asmname 'GrFilledCircleArc';
+procedure GrFilledEllipseArc(xc, yc, xa, ya, Start, Ende, Style: CInteger; c: GrColor); asmname 'GrFilledEllipseArc';
+procedure GrPolyLine(NumPts: CInteger; var Points{ : array of PointType }; c: GrColor); asmname 'GrPolyLine';
+procedure GrPolygon(NumPts: CInteger; var Points{ : array of PointType }; c: GrColor); asmname 'GrPolygon';
+procedure GrFilledConvexPolygon(NumPts: CInteger; var Points{ : array of PointType }; c: GrColor); asmname 'GrFilledConvexPolygon';
+procedure GrFilledPolygon(NumPts: CInteger; var Points{ : array of PointType }; c: GrColor); asmname 'GrFilledPolygon';
+procedure GrBitBlt(Dest: GrContextPtr; x, y: CInteger; Src: GrContextPtr; x1, y1, x2, y2: CInteger; Op: GrColor); asmname 'GrBitBlt';
+function  GrPixel(x, y:CInteger):GrColor; asmname 'GrPixel';
+function  GrPixelC(c: GrContextPtr; x, y: CInteger): GrColor; asmname 'GrPixelC';
 
-procedure GrFloodFill(x, y: Integer; Border, c: GrColor); asmname 'GrFloodFill';
+procedure GrFloodFill(x, y: CInteger; Border, c: GrColor); asmname 'GrFloodFill';
 
-function GrGetScanline(x1,x2,yy: Integer): GrColorsPtr; asmname 'GrGetScanline';
-function GrGetScanlineC(ctx: GrContextPtr; x1,x2,yy: Integer): GrColorsPtr; asmname 'GrGetScanlineC';
+function GrGetScanline(x1,x2,yy: CInteger): GrColorsPtr; asmname 'GrGetScanline';
+function GrGetScanlineC(ctx: GrContextPtr; x1,x2,yy: CInteger): GrColorsPtr; asmname 'GrGetScanlineC';
 { Input   ctx: source context, if NULL the current context is used }
 {         x1 : first x coordinate read                             }
 {         x2 : last  x coordinate read                             }
@@ -519,12 +561,12 @@ function GrGetScanlineC(ctx: GrContextPtr; x1,x2,yy: Integer): GrColorsPtr; asmn
 {                      (w = |x2-y1|)                               }
 {           Output data is valid until next GRX call !             }
 
-procedure GrPutScanline(x1,x2,yy: Integer;c: GrColorsPtr; op: GrColor); asmname 'GrPutScanline';
+procedure GrPutScanline(x1,x2,yy: CInteger;c: GrColorsPtr; Op: GrColor); asmname 'GrPutScanline';
 { Input   x1: first x coordinate to be set                         }
 {         x2: last  x coordinate to be set                         }
 {         yy: y coordinate                                         }
 {         c : c[0..(|x2-x1|] hold the pixel data                   }
-{         op: Operation (GrWRITE/GrXOR/GrOR/GrAND/GrIMAGE)         }
+{         Op: Operation (GrWRITE/GrXOR/GrOR/GrAND/GrIMAGE)         }
 {                                                                  }
 { Note    c[..] data must fit GrCVALUEMASK otherwise the results   }
 {         are implementation dependend.                            }
@@ -535,16 +577,16 @@ procedure GrPutScanline(x1,x2,yy: Integer;c: GrColorsPtr; op: GrColor); asmname 
         NON CLIPPING DRAWING PRIMITIVES
   ================================================================== }
 
-procedure GrPlotNC(x, y: Integer; c: GrColor); asmname 'GrPlotNC';
-procedure GrLineNC(x1, y1, x2, y2: Integer; c: GrColor); asmname 'GrLineNC';
-procedure GrHLineNC(x1, x2, y: Integer; c: GrColor); asmname 'GrHLineNC';
-procedure GrVLineNC(x, y1, y2: Integer; c: GrColor); asmname 'GrVLineNC';
-procedure GrBoxNC(x1, y1, x2, y2: Integer; c: GrColor); asmname 'GrBoxNC';
-procedure GrFilledBoxNC(x1, y1, x2, y2: Integer; c: GrColor); asmname 'GrFilledBoxNC';
-procedure GrFramedBoxNC(x1, y1, x2, y2, Wdt: Integer; protected var c: GrFBoxColors); asmname 'GrFramedBoxNC';
-procedure GrBitBltNC(Dest: GrContextPtr; x, y: Integer; Src: GrContextPtr; x1, y1, x2, y2: Integer; op: GrColor); asmname 'GrBitBltNC';
-function  GrPixelNC(x, y:Integer):GrColor; asmname 'GrPixelNC';
-function  GrPixelCNC(c: GrContextPtr; x, y: Integer): GrColor; asmname 'GrPixelCNC';
+procedure GrPlotNC(x, y: CInteger; c: GrColor); asmname 'GrPlotNC';
+procedure GrLineNC(x1, y1, x2, y2: CInteger; c: GrColor); asmname 'GrLineNC';
+procedure GrHLineNC(x1, x2, y: CInteger; c: GrColor); asmname 'GrHLineNC';
+procedure GrVLineNC(x, y1, y2: CInteger; c: GrColor); asmname 'GrVLineNC';
+procedure GrBoxNC(x1, y1, x2, y2: CInteger; c: GrColor); asmname 'GrBoxNC';
+procedure GrFilledBoxNC(x1, y1, x2, y2: CInteger; c: GrColor); asmname 'GrFilledBoxNC';
+procedure GrFramedBoxNC(x1, y1, x2, y2, Wdt: CInteger; protected var c: GrFBoxColors); asmname 'GrFramedBoxNC';
+procedure GrBitBltNC(Dest: GrContextPtr; x, y: CInteger; Src: GrContextPtr; x1, y1, x2, y2: CInteger; Op: GrColor); asmname 'GrBitBltNC';
+function  GrPixelNC(x, y:CInteger):GrColor; asmname 'GrPixelNC';
+function  GrPixelCNC(c: GrContextPtr; x, y: CInteger): GrColor; asmname 'GrPixelCNC';
 
 { ==================================================================
            FONTS AND TEXT PRIMITIVES
@@ -588,43 +630,42 @@ const
 
 { font structures }
 type
-  { typedef struct _GR_fontHeader }  { font descriptor }
+  { font descriptor }
   GrFontHeader = record
-    Name        : CString;  { font name }
-    Family      : CString;  { font family name }
-    Proportional: Char;     { characters have varying width }
-    Scalable    : Char;     { derived from a scalable font }
-    Preloaded   : Char;     { set when linked Integero program }
-    Modified    : Char;     { "tweaked" font (resized, etc..) }
-    Width       : Integer;  { width (proportional=>average) }
-    Height      : Integer;  { font height }
-    Baseline    : Integer;  { baseline pixel pos (from top) }
-    ULPos       : Integer;  { underline pixel pos (from top) }
-    ULHeight    : Integer;  { underline width }
-    MinChar     : Integer;  { lowest character code in font }
-    NumChars    : Integer;  { number of characters in font }
+    Name,                { font name }
+    Family: CString;     { font family name }
+    Proportional,        { characters have varying width }
+    Scalable,            { derived from a scalable font }
+    Preloaded,           { set when linked Integero program }
+    Modified: ByteBool;  { "tweaked" font (resized, etc..) }
+    Width,               { width (proportional=>average) }
+    Height,              { font height }
+    Baseline,            { baseline pixel pos (from top) }
+    ULPos,               { underline pixel pos (from top) }
+    ULHeight,            { underline width }
+    MinChar,             { lowest character code in font }
+    NumChars: CCardinal  { number of characters in font }
   end;
 
-  { typedef struct _GR_fontChrInfo } { character descriptor }
+  { character descriptor }
   GrFontChrInfo = record
-    Width : Integer;  { width of this character }
-    Offset: Integer;  { offset from start of bitmap }
+    Width,             { width of this character }
+    Offset: CCardinal  { offset from start of bitmap }
   end;
 
-  { typedef struct _GR_font } { the complete font }
-  AuxoffsType = array [1 .. 7] of Integer;
+  { the complete font }
+  AuxOffsType = array [0 .. 6] of CInteger;
   GrFont = record
-    h       : GrFontHeader;  { the font info structure }
-    BitMap  : MemPtr;        { character bitmap array }
-    AuxMap  : MemPtr;        { map for rotated & underline chrs }
-    MinWidth: Integer;       { width of narrowest character }
-    MaxWidth: Integer;       { width of widest character }
-    AuxSize : Integer;       { allocated size of auxiliary map }
-    AuxNext : Integer;       { next free byte in auxiliary map }
-    AuxOffs : ^AuxoffsType;  { offsets to completed aux chars }
-    ChrInfo : array [1 .. 1] of GrFontChrInfo; { character info (not act. size) }
+    h: GrFontHeader;        { the font info structure }
+    BitMap,                 { character bitmap array }
+    AuxMap: MemPtr;         { map for rotated & underline chrs }
+    MinWidth,               { width of narrowest character }
+    MaxWidth,               { width of widest character }
+    AuxSize,                { allocated size of auxiliary map }
+    AuxNext: CCardinal;     { next free byte in auxiliary map }
+    AuxOffs: ^AuxOffsType;  { offsets to completed aux chars }
+    ChrInfo: array [1 .. 1] of GrFontChrInfo  { character info (not act. size) }
   end;
-
   GrFontPtr = ^GrFont;
 
 var
@@ -635,74 +676,74 @@ var
   GrDefaultFont: GrFont; varasmname 'GrFont_PC8x14';
 
 function GrLoadFont(FontName: CString): GrFontPtr; asmname 'GrLoadFont';
-function GrLoadConvertedFont(FontName: CString; cvt, w, h, MinCh, MaxCh: Integer): GrFontPtr; asmname 'GrLoadConvertedFont';
-function GrBuildConvertedFont(protected var From: GrFont; cvt, w, h, MinCh, MaxCh: Integer): GrFontPtr; asmname 'GrBuildConvertedFont';
+function GrLoadConvertedFont(FontName: CString; cvt, w, h, MinCh, MaxCh: CInteger): GrFontPtr; asmname 'GrLoadConvertedFont';
+function GrBuildConvertedFont(protected var From: GrFont; cvt, w, h, MinCh, MaxCh: CInteger): GrFontPtr; asmname 'GrBuildConvertedFont';
 
 procedure GrUnloadFont(var Font: GrFont); asmname 'GrUnloadFont';
 procedure GrDumpFont(protected var f: GrFont; CsymbolName, FileName: CString); asmname 'GrDumpFont';
 procedure GrSetFontPath(path_list: CString); asmname 'GrSetFontPath';
 
-function  GrFontCharPresent(protected var Font: GrFont; Chr: Integer): Boolean; asmname 'GrFontCharPresent';
-function  GrFontCharWidth(protected var Font: GrFont; Chr: Integer): Integer; asmname 'GrFontCharWidth';
-function  GrFontCharHeight(protected var Font: GrFont; Chr: Integer): Integer; asmname 'GrFontCharHeight';
-function  GrFontCharBmpRowSize(protected var Font: GrFont; Chr: Integer): Integer; asmname 'GrFontCharBmpRowSize';
-function  GrFontCharBitmapSize(protected var Font: GrFont; Chr: Integer): Integer; asmname 'GrFontCharBitmapSize';
-function  GrFontStringWidth(protected var Font: GrFont; Text: CString; Len, Typ_e: Integer): Integer; asmname 'GrFontStringWidth';
-function  GrFontStringHeight(protected var Font: GrFont; Text: CString; Len, Typ_e: Integer): Integer; asmname 'GrFontStringHeight';
-function  GrProportionalTextWidth(protected var Font: GrFont; Text: CString; Len, Typ_e: Integer): Integer; asmname 'GrProportionalTextWidth';
-function  GrBuildAuxiliaryBitmap(var Font: GrFont; Chr, Dir, ul: Integer): MemPtr; asmname 'GrBuildAuxiliaryBitmap';
-function  GrFontCharBitmap(protected var Font: GrFont; Chr: Integer): MemPtr; asmname 'GrFontCharBitmap';
-function  GrFontCharAuxBmp(var Font: GrFont; Chr, Dir, ul: Integer): MemPtr; asmname 'GrFontCharAuxBmp';
+function  GrFontCharPresent(protected var Font: GrFont; Chr: CInteger): Boolean; asmname 'GrFontCharPresent';
+function  GrFontCharWidth(protected var Font: GrFont; Chr: CInteger): CInteger; asmname 'GrFontCharWidth';
+function  GrFontCharHeight(protected var Font: GrFont; Chr: CInteger): CInteger; asmname 'GrFontCharHeight';
+function  GrFontCharBmpRowSize(protected var Font: GrFont; Chr: CInteger): CInteger; asmname 'GrFontCharBmpRowSize';
+function  GrFontCharBitmapSize(protected var Font: GrFont; Chr: CInteger): CInteger; asmname 'GrFontCharBitmapSize';
+function  GrFontStringWidth(protected var Font: GrFont; Text: CString; Len, Typ_e: CInteger): CInteger; asmname 'GrFontStringWidth';
+function  GrFontStringHeight(protected var Font: GrFont; Text: CString; Len, Typ_e: CInteger): CInteger; asmname 'GrFontStringHeight';
+function  GrProportionalTextWidth(protected var Font: GrFont; Text: CString; Len, Typ_e: CInteger): CInteger; asmname 'GrProportionalTextWidth';
+function  GrBuildAuxiliaryBitmap(var Font: GrFont; Chr, Dir, ul: CInteger): MemPtr; asmname 'GrBuildAuxiliaryBitmap';
+function  GrFontCharBitmap(protected var Font: GrFont; Chr: CInteger): MemPtr; asmname 'GrFontCharBitmap';
+function  GrFontCharAuxBmp(var Font: GrFont; Chr, Dir, ul: CInteger): MemPtr; asmname 'GrFontCharAuxBmp';
 
 type
-  GrColorTableP = ^GrColor;
+  GrColorTableP = ^GrColors;
 
-  { typedef union _GR_textColor }   { text color union }
+  { text color union }
   GrTextColor = record
-  case 1..2 of
+  case 1 .. 2 of
     1: (v: GrColor);           { color value for "direct" text }
     2: (p: GrColorTableP);     { color table for attribute text }
   end;
 
-  { typedef struct _GR_textOption } { text drawing option structure }
+  { text drawing option structure }
   GrTextOption = record
-    txo_Font   : GrFontPtr;    { font to be used }
-    txo_FgColor: GrTextColor;  { foreground color }
+    txo_Font: GrFontPtr;       { font to be used }
+    txo_FgColor,               { foreground color }
     txo_BgColor: GrTextColor;  { background color }
-    txo_ChrType: ByteCard;     { character type (see above) }
-    txo_Direct : ByteCard;     { direction (see above) }
-    txo_XAlign : ByteCard;     { X alignment (see above) }
-    txo_YAlign : ByteCard;     { Y alignment (see above) }
+    txo_ChrType,               { character type (see above) }
+    txo_Direct,                { direction (see above) }
+    txo_XAlign,                { X alignment (see above) }
+    txo_YAlign: ByteCard       { Y alignment (see above) }
   end;
 
-  { typedef struct }        { fixed font text window desc. }
+  { fixed font text window desc. }
   GrTextRegion = record
-    txr_Font      : GrTextColor; { font to be used }
-    txr_FgColor   : GrTextColor; { foreground color }
-    txr_BgColor   : GrTextColor; { background color }
-    txr_Buffer    : Pointer;     { pointer to text buffer }
-    txr_Backup    : Pointer;     { optional backup buffer }
-    txr_Width     : Integer;     { width of area in chars }
-    txr_Height    : Integer;     { height of area in chars }
-    txr_LineOffset: Integer;     { offset in buffer(s) between rows }
-    txr_XPos      : Integer;     { upper left corner X coordinate }
-    txr_YPos      : Integer;     { upper left corner Y coordinate }
-    txr_ChrType   : Char;        { character type (see above) }
+    txr_Font: GrFontPtr;       { font to be used }
+    txr_FgColor,               { foreground color }
+    txr_BgColor: GrTextColor;  { background color }
+    txr_Buffer,                { pointer to text buffer }
+    txr_Backup: Pointer;       { optional backup buffer }
+    txr_Width,                 { width of area in chars }
+    txr_Height,                { height of area in chars }
+    txr_LineOffset,            { offset in buffer(s) between rows }
+    txr_XPos,                  { upper left corner X coordinate }
+    txr_YPos: CInteger;        { upper left corner Y coordinate }
+    txr_ChrType: ByteCard      { character type (see above) }
   end;
 
-function  GrCharWidth(Chr: Integer; protected var Opt: GrTextOption): Integer; asmname 'GrCharWidth';
-function  GrCharHeight(Chr: Integer; protected var Opt: GrTextOption): Integer; asmname 'GrCharHeight';
-procedure GrCharSize(Chr: Integer; protected var Opt: GrTextOption; var w, h: Integer); asmname 'GrCharSize';
-function  GrStringWidth(Text: CString; Length: Integer; protected var Opt: GrTextOption): Integer; asmname 'GrStringWidth';
-function  GrStringHeight(Text: CString; Length: Integer; protected var Opt: GrTextOption): Integer; asmname 'GrStringHeight';
-procedure GrStringSize(Text: CString; Length: Integer; protected var Opt: GrTextOption;var w, h: Integer); asmname 'GrStringSize';
+function  GrCharWidth(Chr: CInteger; protected var Opt: GrTextOption): CInteger; asmname 'GrCharWidth';
+function  GrCharHeight(Chr: CInteger; protected var Opt: GrTextOption): CInteger; asmname 'GrCharHeight';
+procedure GrCharSize(Chr: CInteger; protected var Opt: GrTextOption; var w, h: CInteger); asmname 'GrCharSize';
+function  GrStringWidth(Text: CString; Length: CInteger; protected var Opt: GrTextOption): CInteger; asmname 'GrStringWidth';
+function  GrStringHeight(Text: CString; Length: CInteger; protected var Opt: GrTextOption): CInteger; asmname 'GrStringHeight';
+procedure GrStringSize(Text: CString; Length: CInteger; protected var Opt: GrTextOption;var w, h: CInteger); asmname 'GrStringSize';
 
-procedure GrDrawChar(Chr, x, y: Integer; protected var Opt: GrTextOption); asmname 'GrDrawChar';
-procedure GrDrawString(Text: CString; Length, x, y: Integer; protected var Opt: GrTextOption); asmname 'GrDrawString';
-procedure GrTextXY(x, y: Integer; Text: CString; fg, bg: GrColor); asmname 'GrTextXY';
+procedure GrDrawChar(Chr, x, y: CInteger; protected var Opt: GrTextOption); asmname 'GrDrawChar';
+procedure GrDrawString(Text: CString; Length, x, y: CInteger; protected var Opt: GrTextOption); asmname 'GrDrawString';
+procedure GrTextXY(x, y: CInteger; Text: CString; fg, bg: GrColor); asmname 'GrTextXY';
 
-procedure GrDumpChar(Chr, Col, Row: Integer; protected var r: GrTextRegion); asmname 'GrDumpChar';
-procedure GrDumpText(Col, Row, Wdt, Hgt: Integer; protected var r: GrTextRegion); asmname 'GrDumpText';
+procedure GrDumpChar(Chr, Col, Row: CInteger; protected var r: GrTextRegion); asmname 'GrDumpChar';
+procedure GrDumpText(Col, Row, Wdt, Hgt: CInteger; protected var r: GrTextRegion); asmname 'GrDumpText';
 procedure GrDumpTextRegion(protected var r: GrTextRegion); asmname 'GrDumpTextRegion';
 
 { =================================================================
@@ -715,20 +756,20 @@ procedure GrDumpTextRegion(protected var r: GrTextRegion); asmname 'GrDumpTextRe
 
 type
   GrLineOption = record
-   No_Color   : GrColor;   { color used to draw line }
-   Lno_Width  : Integer;   { width of the line }
-   Lno_PattLen: Integer;   { length of the dash pattern }
-   Lno_DashPat: ^ByteCard; { draw/nodraw pattern }
+    No_Color   : GrColor;   { color used to draw line }
+    Lno_Width,              { width of the line }
+    Lno_PattLen: CInteger;  { length of the dash pattern }
+    Lno_DashPat: MemPtr     { draw/nodraw pattern }
   end;
 
-procedure GrCustomLine(x1, y1, x2, y2: Integer; protected var o: GrLineOption); asmname 'GrCustomLine';
-procedure GrCustomBox(x1, y1, x2, y2: Integer; protected var o: GrLineOption); asmname 'GrCustomBox';
-procedure GrCustomCircle(xc, yc, r: Integer; protected var o: GrLineOption); asmname 'GrCustomCircle';
-procedure GrCustomEllipse(xc, yc, r: Integer; protected var o: GrLineOption); asmname 'GrCustomEllipse';
-procedure GrCustomCircleArc(xc, yc, r, Start, Ende, Style: Integer; protected var o: GrLineOption); asmname 'GrCustomCircleArc';
-procedure GrCustomEllipseArc(xc, yc, xa, ya, Start, Ende, Style: Integer; protected var o: GrLineOption); asmname 'GrCustomEllipseArc';
-procedure GrCustomPolyLine(NumPts: Integer; var Points{ : array of PointType }; protected var o: GrLineOption); asmname 'GrCustomPolyLine';
-procedure GrCustomPolygon(NumPts: Integer; var Points{ : array of PointType }; protected var o: GrLineOption); asmname 'GrCustomPolygon';
+procedure GrCustomLine(x1, y1, x2, y2: CInteger; protected var o: GrLineOption); asmname 'GrCustomLine';
+procedure GrCustomBox(x1, y1, x2, y2: CInteger; protected var o: GrLineOption); asmname 'GrCustomBox';
+procedure GrCustomCircle(xc, yc, r: CInteger; protected var o: GrLineOption); asmname 'GrCustomCircle';
+procedure GrCustomEllipse(xc, yc, r: CInteger; protected var o: GrLineOption); asmname 'GrCustomEllipse';
+procedure GrCustomCircleArc(xc, yc, r, Start, Ende, Style: CInteger; protected var o: GrLineOption); asmname 'GrCustomCircleArc';
+procedure GrCustomEllipseArc(xc, yc, xa, ya, Start, Ende, Style: CInteger; protected var o: GrLineOption); asmname 'GrCustomEllipseArc';
+procedure GrCustomPolyLine(NumPts: CInteger; var Points{ : array of PointType }; protected var o: GrLineOption); asmname 'GrCustomPolyLine';
+procedure GrCustomPolygon(NumPts: CInteger; var Points{ : array of PointType }; protected var o: GrLineOption); asmname 'GrCustomPolygon';
 
 { ==================================================================
            PATTERNED DRAWING AND FILLING PRIMITIVES
@@ -739,14 +780,13 @@ procedure GrCustomPolygon(NumPts: Integer; var Points{ : array of PointType }; p
   height is user-defined. SET THE TYPE FLAG TO ZERO!!! }
 
 type
-  { typedef struct _GR_bitmap }
   GrBitmap = record
-    bmp_IsPixMap: Integer;      { type flag for pattern union }
-    bmp_Height  : Integer;      { bitmap height }
-    bmp_Data    : ^ByteCard;    { pointer to the bit pattern }
-    bmp_FgColor : GrColor;      { foreground color for fill }
-    bmp_BgColor : GrColor;      { background color for fill }
-    bmp_MemFlags: Integer;      { set if dynamically allocated }
+    bmp_IsPixMap,           { type flag for pattern union }
+    bmp_Height: CInteger;   { bitmap height }
+    bmp_Data: MemPtr;       { pointer to the bit pattern }
+    bmp_FgColor,            { foreground color for fill }
+    bmp_BgColor: GrColor;   { background color for fill }
+    bmp_MemFlags: CInteger  { set if dynamically allocated }
   end;
 
   { PIXMAP: a fill pattern stored in a layout identical to the video RAM
@@ -754,22 +794,21 @@ type
       of the library functions is used to build it. KEEP THE TYPE FLAG
       NONZERO!!! }
 
-  { typedef struct _GR_pixmap }
   GrPixmap = record
-    pxp_IsPixMap: Integer;     { type flag for pattern union }
-    pxp_Width   : Integer;     { pixmap width (in pixels)  }
-    pxp_Height  : Integer;     { pixmap height (in pixels) }
-    pxp_Oper    : GrColor;     { bitblt mode (SET, OR, XOR, AND, IMAGE) }
-    pxp_Source  : GrFrameType; { source context for fill }
+    pxp_IsPixMap,            { type flag for pattern union }
+    pxp_Width,               { pixmap width (in pixels)  }
+    pxp_Height: CInteger;    { pixmap height (in pixels) }
+    pxp_Oper: GrColor;       { bitblt mode (SET, OR, XOR, AND, IMAGE) }
+    pxp_Source: GrFrameType  { source context for fill }
   end;
 
   { Fill pattern union -- can either be a bitmap or a pixmap }
 
-  { typedef union _GR_pattern }
   GrPattern = record
-    gp_IsPixMap: Integer;   { nonzero for pixmaps }
-    gp_BitMap  : GrBitmap;  { fill bitmap }
-    gp_PixMap  : GrPixmap;  { fill pixmap }
+  case 1 .. 3 of
+    1: (gp_IsPixMap: CInteger);   { nonzero for pixmaps }
+    2: (gp_BitMap  : GrBitmap);  { fill bitmap }
+    3: (gp_PixMap  : GrPixmap);  { fill pixmap }
   end;
   GrPatternPtr = ^GrPattern;
 
@@ -777,40 +816,40 @@ type
       (1) fill pattern, and the
       (2) custom line drawing option }
   GrLinePattern = record
-    lnp_Pattern: GrPatternPtr;   { fill pattern }
-    lnp_Option : ^GrLineOption;  { width + dash pattern }
+    lnp_Pattern: GrPatternPtr;  { fill pattern }
+    lnp_Option : ^GrLineOption  { width + dash pattern }
   end;
   GrLinePatternPtr = GrLinePattern;
 
-function  GrBuildPixmap(protected var Pixels; w, h: Integer; protected var Colors { : array of GrColor }): GrPatternPtr; asmname 'GrBuildPixmap';
-function  GrBuildPixmapFromBits(protected var Bits; w, h: Integer; fgc, bgc: GrColor): GrPatternPtr; asmname 'GrBuildPixmapFromBits';
+function  GrBuildPixmap(protected var Pixels; w, h: CInteger; protected var Colors { : array of GrColor }): GrPatternPtr; asmname 'GrBuildPixmap';
+function  GrBuildPixmapFromBits(protected var Bits; w, h: CInteger; fgc, bgc: GrColor): GrPatternPtr; asmname 'GrBuildPixmapFromBits';
 function  GrConvertToPixmap(Src: GrContextPtr): GrPatternPtr; asmname 'GrConvertToPixmap';
 
 procedure GrDestroyPattern(p: GrPatternPtr); asmname 'GrDestroyPattern';
 
-procedure GrPatternedLine(x1, y1, x2, y2: Integer; lp: GrLinePatternPtr); asmname 'GrPatternedLine';
-procedure GrPatternedBox(x1, y1, x2, y2: Integer; lp: GrLinePatternPtr); asmname 'GrPatternedBox';
-procedure GrPatternedCircle(xc, yc, r: Integer; lp: GrLinePatternPtr); asmname 'GrPatternedCircle';
-procedure GrPatternedEllipse(xc, yc, xa, ya: Integer; lp: GrLinePatternPtr); asmname 'GrPatternedEllipse';
-procedure GrPatternedCircleArc(xc, yc, r, Start, Ende, Style: Integer; lp: GrLinePatternPtr); asmname 'GrPatternedCircleArc';
-procedure GrPatternedEllipseArc(xc, yc, xa, ya, Start, Ende, Style: Integer; lp: GrLinePatternPtr); asmname 'GrPatternedEllipseArc';
-procedure GrPatternedPolyLine(NumPts: Integer; var Points{ : array of PointType }; lp: GrLinePatternPtr); asmname 'GrPatternedPolyLine';
-procedure GrPatternedPolygon(NumPts: Integer; var Points{ : array of PointType }; lp: GrLinePatternPtr); asmname 'GrPatternedPolygon';
+procedure GrPatternedLine(x1, y1, x2, y2: CInteger; lp: GrLinePatternPtr); asmname 'GrPatternedLine';
+procedure GrPatternedBox(x1, y1, x2, y2: CInteger; lp: GrLinePatternPtr); asmname 'GrPatternedBox';
+procedure GrPatternedCircle(xc, yc, r: CInteger; lp: GrLinePatternPtr); asmname 'GrPatternedCircle';
+procedure GrPatternedEllipse(xc, yc, xa, ya: CInteger; lp: GrLinePatternPtr); asmname 'GrPatternedEllipse';
+procedure GrPatternedCircleArc(xc, yc, r, Start, Ende, Style: CInteger; lp: GrLinePatternPtr); asmname 'GrPatternedCircleArc';
+procedure GrPatternedEllipseArc(xc, yc, xa, ya, Start, Ende, Style: CInteger; lp: GrLinePatternPtr); asmname 'GrPatternedEllipseArc';
+procedure GrPatternedPolyLine(NumPts: CInteger; var Points{ : array of PointType }; lp: GrLinePatternPtr); asmname 'GrPatternedPolyLine';
+procedure GrPatternedPolygon(NumPts: CInteger; var Points{ : array of PointType }; lp: GrLinePatternPtr); asmname 'GrPatternedPolygon';
 
-procedure GrPatternFilledPlot(x, y: Integer; p: GrPatternPtr); asmname 'GrPatternFilledPlot';
-procedure GrPatternFilledLine(x1, y1, x2, y2: Integer; p: GrPatternPtr); asmname 'GrPatternFilledLine';
-procedure GrPatternFilledBox(x1, y1, x2, y2: Integer; p: GrPatternPtr); asmname 'GrPatternFilledBox';
-procedure GrPatternFilledCircle(xc, yc, r: Integer; p: GrPatternPtr); asmname 'GrPatternFilledCircle';
-procedure GrPatternFilledEllipse(xc, yc, xa, ya: Integer; p: GrPatternPtr); asmname 'GrPatternFilledEllipse';
-procedure GrPatternFilledCircleArc(xc, yc, r, Start, Ende, Style: Integer; p: GrPatternPtr); asmname 'GrPatternFilledCircleArc';
-procedure GrPatternFilledEllipseArc(xc, yc, xa, ya, Start, Ende, Style: Integer; p: GrPatternPtr); asmname 'GrPatternFilledEllipseArc';
-procedure GrPatternFilledConvexPolygon(NumPts: Integer; var Points{ : array of PointType }; p: GrPatternPtr); asmname 'GrPatternFilledConvexPolygon';
-procedure GrPatternFilledPolygon(NumPts: Integer; var Points{ : array of PointType }; p: GrPatternPtr); asmname 'GrPatternFilledPolygon';
-procedure GrPatternFloodFill(x, y: Integer; Border: GrColor; p: GrPatternPtr); asmname 'GrPatternFloodFill';
+procedure GrPatternFilledPlot(x, y: CInteger; p: GrPatternPtr); asmname 'GrPatternFilledPlot';
+procedure GrPatternFilledLine(x1, y1, x2, y2: CInteger; p: GrPatternPtr); asmname 'GrPatternFilledLine';
+procedure GrPatternFilledBox(x1, y1, x2, y2: CInteger; p: GrPatternPtr); asmname 'GrPatternFilledBox';
+procedure GrPatternFilledCircle(xc, yc, r: CInteger; p: GrPatternPtr); asmname 'GrPatternFilledCircle';
+procedure GrPatternFilledEllipse(xc, yc, xa, ya: CInteger; p: GrPatternPtr); asmname 'GrPatternFilledEllipse';
+procedure GrPatternFilledCircleArc(xc, yc, r, Start, Ende, Style: CInteger; p: GrPatternPtr); asmname 'GrPatternFilledCircleArc';
+procedure GrPatternFilledEllipseArc(xc, yc, xa, ya, Start, Ende, Style: CInteger; p: GrPatternPtr); asmname 'GrPatternFilledEllipseArc';
+procedure GrPatternFilledConvexPolygon(NumPts: CInteger; var Points{ : array of PointType }; p: GrPatternPtr); asmname 'GrPatternFilledConvexPolygon';
+procedure GrPatternFilledPolygon(NumPts: CInteger; var Points{ : array of PointType }; p: GrPatternPtr); asmname 'GrPatternFilledPolygon';
+procedure GrPatternFloodFill(x, y: CInteger; Border: GrColor; p: GrPatternPtr); asmname 'GrPatternFloodFill';
 
-procedure GrPatternDrawChar(Chr, x, y: Integer; protected var Opt: GrTextOption; p: GrPatternPtr); asmname 'GrPatternDrawChar';
-procedure GrPatternDrawString(Text: CString; Length, x, y: Integer; protected var Opt: GrTextOption; p: GrPatternPtr); asmname 'GrPatternDrawString';
-procedure GrPatternDrawStringExt(Text: CString; Length, x, y: Integer; protected var Opt: GrTextOption; p: GrPatternPtr); asmname 'GrPatternDrawStringExt';
+procedure GrPatternDrawChar(Chr, x, y: CInteger; protected var Opt: GrTextOption; p: GrPatternPtr); asmname 'GrPatternDrawChar';
+procedure GrPatternDrawString(Text: CString; Length, x, y: CInteger; protected var Opt: GrTextOption; p: GrPatternPtr); asmname 'GrPatternDrawString';
+procedure GrPatternDrawStringExt(Text: CString; Length, x, y: CInteger; protected var Opt: GrTextOption; p: GrPatternPtr); asmname 'GrPatternDrawStringExt';
 
 
 { <image.h>   - Image Utility
@@ -818,11 +857,6 @@ procedure GrPatternDrawStringExt(Text: CString; Length, x, y: Integer; protected
   <e-mail>    - [stenclpmd@ba.telecom.sk] }
 
 type
-  { Original GRX decl:
-    GrImage = GrPixmap;
-    GrImagePtr = ^GrImage;
-       Pascal isn't case sensitive so GrImage conficts with GrIMAGE above.
-       Since we only need GrImagePtr we take a short cut here: }
   GrImagePtr = ^GrPixmap;
 
 { Flags for GrImageInverse() }
@@ -830,20 +864,20 @@ const
   Gr_Image_Inverse_LR = 1;  { inverse left right }
   Gr_Image_Inverse_TD = 2;  { inverse top down   }
 
-function  GrImageBuild(protected var Pixels; w, h: Integer; protected var Colors { : array of GrColor }): GrImagePtr; asmname 'GrImageBuild';
+function  GrImageBuild(protected var Pixels; w, h: CInteger; protected var Colors { : array of GrColor }): GrImagePtr; asmname 'GrImageBuild';
 procedure GrImageDestroy(i: GrImagePtr); asmname 'GrImageDestroy';
-procedure GrImageDisplay(x,y: Integer; i: GrImagePtr); asmname 'GrImageDisplay';
-procedure GrImageDisplayExt(x1,y1,x2,y2: Integer; i: GrImagePtr); asmname 'GrImageDisplayExt';
-procedure GrImageFilledBoxAlign(xo,yo,x1,y1,x2,y2: Integer; p: GrImagePtr); asmname 'GrImageFilledBoxAlign';
-procedure GrImageHLineAlign(xo,yo,x,y,Width: Integer; p: GrImagePtr); asmname 'GrImageHLineAlign';
-procedure GrImagePlotAlign(xo,yo,x,y: Integer; p: GrImagePtr); asmname 'GrImagePlotAlign';
+procedure GrImageDisplay(x,y: CInteger; i: GrImagePtr); asmname 'GrImageDisplay';
+procedure GrImageDisplayExt(x1,y1,x2,y2: CInteger; i: GrImagePtr); asmname 'GrImageDisplayExt';
+procedure GrImageFilledBoxAlign(xo,yo,x1,y1,x2,y2: CInteger; p: GrImagePtr); asmname 'GrImageFilledBoxAlign';
+procedure GrImageHLineAlign(xo,yo,x,y,Width: CInteger; p: GrImagePtr); asmname 'GrImageHLineAlign';
+procedure GrImagePlotAlign(xo,yo,x,y: CInteger; p: GrImagePtr); asmname 'GrImagePlotAlign';
 
-function  GrImageInverse(p: GrImagePtr; Flag: Integer): GrImagePtr; asmname 'GrImageInverse';
-function  GrImageStretch(p: GrImagePtr; NWidth, NHeight: Integer): GrImagePtr; asmname 'GrImageStretch';
+function  GrImageInverse(p: GrImagePtr; Flag: CInteger): GrImagePtr; asmname 'GrImageInverse';
+function  GrImageStretch(p: GrImagePtr; NWidth, NHeight: CInteger): GrImagePtr; asmname 'GrImageStretch';
 
 function  GrImageFromPattern(p: GrPatternPtr): GrImagePtr; asmname 'GrImageFromPattern';
 function  GrImageFromContext(c: GrContextPtr): GrImagePtr; asmname 'GrImageFromContext';
-function  GrImageBuildUsedAsPattern(protected var Pixels; w, h: Integer; protected var Colors { : array of GrColor }): GrImagePtr; asmname 'GrImageBuildUsedAsPattern';
+function  GrImageBuildUsedAsPattern(protected var Pixels; w, h: CInteger; protected var Colors { : array of GrColor }): GrImagePtr; asmname 'GrImageBuildUsedAsPattern';
 
 function  GrPatternFromImage(i: GrImagePtr): GrPatternPtr; asmname 'GrPatternFromImage';
 
@@ -851,91 +885,90 @@ function  GrPatternFromImage(i: GrImagePtr): GrPatternPtr; asmname 'GrPatternFro
                  DRAWING IN USER WINDOW COORDINATES
   ================================================================== }
 
-procedure GrSetUserWindow(x1, y1, x2, y2: Integer); asmname 'GrSetUserWindow';
-procedure GrGetUserWindow(var x1, y1, x2, y2: Integer); asmname 'GrGetUserWindow';
-procedure GrGetScreenCoord(var x, y: Integer); asmname 'GrGetScreenCoord';
-procedure GrGetUserCoord(var x, y: Integer); asmname 'GrGetUserCoord';
+procedure GrSetUserWindow(x1, y1, x2, y2: CInteger); asmname 'GrSetUserWindow';
+procedure GrGetUserWindow(var x1, y1, x2, y2: CInteger); asmname 'GrGetUserWindow';
+procedure GrGetScreenCoord(var x, y: CInteger); asmname 'GrGetScreenCoord';
+procedure GrGetUserCoord(var x, y: CInteger); asmname 'GrGetUserCoord';
 
-procedure GrUsrPlot(x, y: Integer; c:GrColor); asmname 'GrUsrPlot';
-procedure GrUsrLine(x1, y1, x2, y2: Integer; c:GrColor); asmname 'GrUsrLine';
-procedure GrUsrHLine(x1, x2, y:Integer; c:GrColor); asmname 'GrUsrHLine';
-procedure GrUsrVLine(x, y1, y2: Integer; c: GrColor); asmname 'GrUsrVLine';
-procedure GrUsrBox(x1, y1, x2, y2: Integer; c: GrColor); asmname 'GrUsrBox';
-procedure GrUsrFilledBox(x1, y1, x2, y2: Integer; c: GrColor); asmname 'GrUsrFilledBox';
-procedure GrUsrFramedBox(x1, y1, x2, y2, Wdt: Integer; c: GrFBoxColors); asmname 'GrUsrFramedBox';
+procedure GrUsrPlot(x, y: CInteger; c:GrColor); asmname 'GrUsrPlot';
+procedure GrUsrLine(x1, y1, x2, y2: CInteger; c:GrColor); asmname 'GrUsrLine';
+procedure GrUsrHLine(x1, x2, y:CInteger; c:GrColor); asmname 'GrUsrHLine';
+procedure GrUsrVLine(x, y1, y2: CInteger; c: GrColor); asmname 'GrUsrVLine';
+procedure GrUsrBox(x1, y1, x2, y2: CInteger; c: GrColor); asmname 'GrUsrBox';
+procedure GrUsrFilledBox(x1, y1, x2, y2: CInteger; c: GrColor); asmname 'GrUsrFilledBox';
+procedure GrUsrFramedBox(x1, y1, x2, y2, Wdt: CInteger; c: GrFBoxColors); asmname 'GrUsrFramedBox';
 
-procedure GrUsrCircle(xc, yc, r: Integer; c: GrColor); asmname 'GrUsrCircle';
-procedure GrUsrEllipse(xc, yc, xa, ya: Integer; c: GrColor); asmname 'GrUsrEllipse';
-procedure GrUsrCircleArc(xc, yc, r, Start, Ende, Style: Integer; c: GrColor); asmname 'GrUsrCircleArc';
-procedure GrUsrEllipseArc(xc, yc, xa, ya, Start, Ende, Style: Integer; c: GrColor); asmname 'GrUsrEllipseArc';
-procedure GrUsrFilledCircle(xc, yc, r: Integer; c: GrColor); asmname 'GrUsrFilledCircle';
-procedure GrUsrFilledEllipse(xc, yc, xa, ya: Integer; c: GrColor); asmname 'GrUsrFilledEllipse';
-procedure GrUsrFilledCircleArc(xc, yc, r, Start, Ende, Style: Integer; c: GrColor); asmname 'GrUsrFilledCircleArc';
-procedure GrUsrFilledEllipseArc(xc, yc, xa, ya, Start, Ende, Style: Integer; c: GrColor); asmname 'GrUsrFilledEllipseArc';
-procedure GrUsrPolyLine(NumPts: Integer; var Points{ : array of PointType }; c: GrColor); asmname 'GrUsrPolyLine';
-procedure GrUsrPolygon(NumPts: Integer; var Points{ : array of PointType }; c: GrColor); asmname 'GrUsrPolygon';
-procedure GrUsrFilledConvexPolygon(NumPts: Integer; var Points{ : array of PointType }; c: GrColor); asmname 'GrUsrFilledConvexPolygon';
-procedure GrUsrFilledPolygon(NumPts: Integer; var Points{ : array of PointType }; c: GrColor); asmname 'GrUsrFilledPolygon';
-procedure GrUsrFloodFill(x, y: Integer; Border, c: GrColor); asmname 'GrUsrFloodFill';
+procedure GrUsrCircle(xc, yc, r: CInteger; c: GrColor); asmname 'GrUsrCircle';
+procedure GrUsrEllipse(xc, yc, xa, ya: CInteger; c: GrColor); asmname 'GrUsrEllipse';
+procedure GrUsrCircleArc(xc, yc, r, Start, Ende, Style: CInteger; c: GrColor); asmname 'GrUsrCircleArc';
+procedure GrUsrEllipseArc(xc, yc, xa, ya, Start, Ende, Style: CInteger; c: GrColor); asmname 'GrUsrEllipseArc';
+procedure GrUsrFilledCircle(xc, yc, r: CInteger; c: GrColor); asmname 'GrUsrFilledCircle';
+procedure GrUsrFilledEllipse(xc, yc, xa, ya: CInteger; c: GrColor); asmname 'GrUsrFilledEllipse';
+procedure GrUsrFilledCircleArc(xc, yc, r, Start, Ende, Style: CInteger; c: GrColor); asmname 'GrUsrFilledCircleArc';
+procedure GrUsrFilledEllipseArc(xc, yc, xa, ya, Start, Ende, Style: CInteger; c: GrColor); asmname 'GrUsrFilledEllipseArc';
+procedure GrUsrPolyLine(NumPts: CInteger; var Points{ : array of PointType }; c: GrColor); asmname 'GrUsrPolyLine';
+procedure GrUsrPolygon(NumPts: CInteger; var Points{ : array of PointType }; c: GrColor); asmname 'GrUsrPolygon';
+procedure GrUsrFilledConvexPolygon(NumPts: CInteger; var Points{ : array of PointType }; c: GrColor); asmname 'GrUsrFilledConvexPolygon';
+procedure GrUsrFilledPolygon(NumPts: CInteger; var Points{ : array of PointType }; c: GrColor); asmname 'GrUsrFilledPolygon';
+procedure GrUsrFloodFill(x, y: CInteger; Border, c: GrColor); asmname 'GrUsrFloodFill';
 
-function  GrUsrPixel(x, y:Integer):GrColor; asmname 'GrUsrPixel';
-function  GrUsrPixelC(c: GrContextPtr; x, y: Integer):GrColor; asmname 'GrUsrPixelC';
+function  GrUsrPixel(x, y:CInteger):GrColor; asmname 'GrUsrPixel';
+function  GrUsrPixelC(c: GrContextPtr; x, y: CInteger):GrColor; asmname 'GrUsrPixelC';
 
-procedure GrUsrCustomLine(x1, y1, x2, y2: Integer; protected var o: GrLineOption); asmname 'GrUsrCustomLine';
-procedure GrUsrCustomBox(x1, y1, x2, y2: Integer; protected var o: GrLineOption); asmname 'GrUsrCustomBox';
-procedure GrUsrCustomCircle(xc, yc, r: Integer; protected var o: GrLineOption); asmname 'GrUsrCustomCircle';
-procedure GrUsrCustomEllipse(xc, yc, r: Integer; protected var o: GrLineOption); asmname 'GrUsrCustomEllipse';
-procedure GrUsrCustomCircleArc(xc, yc, r, Start, Ende, Style: Integer; protected var o: GrLineOption); asmname 'GrUsrCustomCircleArc';
-procedure GrUsrCustomEllipseArc(xc, yc, xa, ya, Start, Ende, Style: Integer; protected var o: GrLineOption); asmname 'GrUsrCustomEllipseArc';
-procedure GrUsrCustomPolyLine(NumPts: Integer; var Points{ : array of PointType }; protected var o: GrLineOption); asmname 'GrUsrCustomPolyLine';
-procedure GrUsrCustomPolygon(NumPts: Integer; var Points{ : array of PointType }; protected var o: GrLineOption); asmname 'GrUsrCustomPolygon';
+procedure GrUsrCustomLine(x1, y1, x2, y2: CInteger; protected var o: GrLineOption); asmname 'GrUsrCustomLine';
+procedure GrUsrCustomBox(x1, y1, x2, y2: CInteger; protected var o: GrLineOption); asmname 'GrUsrCustomBox';
+procedure GrUsrCustomCircle(xc, yc, r: CInteger; protected var o: GrLineOption); asmname 'GrUsrCustomCircle';
+procedure GrUsrCustomEllipse(xc, yc, r: CInteger; protected var o: GrLineOption); asmname 'GrUsrCustomEllipse';
+procedure GrUsrCustomCircleArc(xc, yc, r, Start, Ende, Style: CInteger; protected var o: GrLineOption); asmname 'GrUsrCustomCircleArc';
+procedure GrUsrCustomEllipseArc(xc, yc, xa, ya, Start, Ende, Style: CInteger; protected var o: GrLineOption); asmname 'GrUsrCustomEllipseArc';
+procedure GrUsrCustomPolyLine(NumPts: CInteger; var Points{ : array of PointType }; protected var o: GrLineOption); asmname 'GrUsrCustomPolyLine';
+procedure GrUsrCustomPolygon(NumPts: CInteger; var Points{ : array of PointType }; protected var o: GrLineOption); asmname 'GrUsrCustomPolygon';
 
-procedure GrUsrPatternedLine(x1, y1, x2, y2: Integer; lp: GrLinePatternPtr); asmname 'GrUsrPatternedLine';
-procedure GrUsrPatternedBox(x1, y1, x2, y2: Integer; lp: GrLinePatternPtr); asmname 'GrUsrPatternedBox';
-procedure GrUsrPatternedCircle(xc, yc, r: Integer; lp: GrLinePatternPtr); asmname 'GrUsrPatternedCircle';
-procedure GrUsrPatternedEllipse(xc, yc, xa, ya: Integer; lp: GrLinePatternPtr); asmname 'GrUsrPatternedEllipse';
-procedure GrUsrPatternedCircleArc(xc, yc, r, Start, Ende, Style: Integer; lp: GrLinePatternPtr); asmname 'GrUsrPatternedCircleArc';
-procedure GrUsrPatternedEllipseArc(xc, yc, xa, ya, Start, Ende, Style: Integer; lp: GrLinePatternPtr); asmname 'GrUsrPatternedEllipseArc';
-procedure GrUsrPatternedPolyLine(NumPts: Integer; var Points{ : array of PointType }; lp: GrLinePatternPtr); asmname 'GrUsrPatternedPolyLine';
-procedure GrUsrPatternedPolygon(NumPts: Integer; var Points{ : array of PointType }; lp: GrLinePatternPtr); asmname 'GrUsrPatternedPolygon';
+procedure GrUsrPatternedLine(x1, y1, x2, y2: CInteger; lp: GrLinePatternPtr); asmname 'GrUsrPatternedLine';
+procedure GrUsrPatternedBox(x1, y1, x2, y2: CInteger; lp: GrLinePatternPtr); asmname 'GrUsrPatternedBox';
+procedure GrUsrPatternedCircle(xc, yc, r: CInteger; lp: GrLinePatternPtr); asmname 'GrUsrPatternedCircle';
+procedure GrUsrPatternedEllipse(xc, yc, xa, ya: CInteger; lp: GrLinePatternPtr); asmname 'GrUsrPatternedEllipse';
+procedure GrUsrPatternedCircleArc(xc, yc, r, Start, Ende, Style: CInteger; lp: GrLinePatternPtr); asmname 'GrUsrPatternedCircleArc';
+procedure GrUsrPatternedEllipseArc(xc, yc, xa, ya, Start, Ende, Style: CInteger; lp: GrLinePatternPtr); asmname 'GrUsrPatternedEllipseArc';
+procedure GrUsrPatternedPolyLine(NumPts: CInteger; var Points{ : array of PointType }; lp: GrLinePatternPtr); asmname 'GrUsrPatternedPolyLine';
+procedure GrUsrPatternedPolygon(NumPts: CInteger; var Points{ : array of PointType }; lp: GrLinePatternPtr); asmname 'GrUsrPatternedPolygon';
 
-procedure GrUsrPatternFilledPlot(x, y: Integer; p: GrPatternPtr); asmname 'GrPatternFilledPlot';
-procedure GrUsrPatternFilledLine(x1, y1, x2, y2: Integer; p: GrPatternPtr); asmname 'GrUsrPatternFilledLine';
-procedure GrUsrPatternFilledBox(x1, y1, x2, y2: Integer; p: GrPatternPtr); asmname 'GrUsrPatternFilledBox';
-procedure GrUsrPatternFilledCircle(xc, yc, r: Integer; p: GrPatternPtr); asmname 'GrUsrPatternFilledCircle';
-procedure GrUsrPatternFilledEllipse(xc, yc, xa, ya: Integer; p: GrPatternPtr); asmname 'GrUsrPatternFilledEllipse';
-procedure GrUsrPatternFilledCircleArc(xc, yc, r, Start, Ende, Style: Integer; p: GrPatternPtr); asmname 'GrUsrPatternFilledCircleArc';
-procedure GrUsrPatternFilledEllipseArc(xc, yc, xa, ya, Start, Ende, Style: Integer; p: GrPatternPtr); asmname 'GrUsrPatternFilledEllipseArc';
-procedure GrUsrPatternFilledConvexPolygon(NumPts: Integer; var Points{ : array of PointType }; p: GrPatternPtr); asmname 'GrUsrPatternFilledConvexPolygon';
-procedure GrUsrPatternFilledPolygon(NumPts: Integer; var Points{ : array of PointType }; p: GrPatternPtr); asmname 'GrUsrPatternFilledPolygon';
-procedure GrUsrPatternFloodFill(x, y: Integer; Border: GrColor; p: GrPatternPtr); asmname 'GrUsrPatternFloodFill';
+procedure GrUsrPatternFilledPlot(x, y: CInteger; p: GrPatternPtr); asmname 'GrPatternFilledPlot';
+procedure GrUsrPatternFilledLine(x1, y1, x2, y2: CInteger; p: GrPatternPtr); asmname 'GrUsrPatternFilledLine';
+procedure GrUsrPatternFilledBox(x1, y1, x2, y2: CInteger; p: GrPatternPtr); asmname 'GrUsrPatternFilledBox';
+procedure GrUsrPatternFilledCircle(xc, yc, r: CInteger; p: GrPatternPtr); asmname 'GrUsrPatternFilledCircle';
+procedure GrUsrPatternFilledEllipse(xc, yc, xa, ya: CInteger; p: GrPatternPtr); asmname 'GrUsrPatternFilledEllipse';
+procedure GrUsrPatternFilledCircleArc(xc, yc, r, Start, Ende, Style: CInteger; p: GrPatternPtr); asmname 'GrUsrPatternFilledCircleArc';
+procedure GrUsrPatternFilledEllipseArc(xc, yc, xa, ya, Start, Ende, Style: CInteger; p: GrPatternPtr); asmname 'GrUsrPatternFilledEllipseArc';
+procedure GrUsrPatternFilledConvexPolygon(NumPts: CInteger; var Points{ : array of PointType }; p: GrPatternPtr); asmname 'GrUsrPatternFilledConvexPolygon';
+procedure GrUsrPatternFilledPolygon(NumPts: CInteger; var Points{ : array of PointType }; p: GrPatternPtr); asmname 'GrUsrPatternFilledPolygon';
+procedure GrUsrPatternFloodFill(x, y: CInteger; Border: GrColor; p: GrPatternPtr); asmname 'GrUsrPatternFloodFill';
 
-procedure GrUsrDrawChar(Chr, x, y: Integer; protected var Opt: GrTextOption); asmname 'GrUsrDrawChar';
-procedure GrUsrDrawString(Text: CString; Length, x, y: Integer; protected var Opt: GrTextOption); asmname 'GrUsrDrawString';
-procedure GrUsrTextXY(x, y: Integer; Text: CString; fg, bg: Integer); asmname 'GrUsrTextXY';
+procedure GrUsrDrawChar(Chr, x, y: CInteger; protected var Opt: GrTextOption); asmname 'GrUsrDrawChar';
+procedure GrUsrDrawString(Text: CString; Length, x, y: CInteger; protected var Opt: GrTextOption); asmname 'GrUsrDrawString';
+procedure GrUsrTextXY(x, y: CInteger; Text: CString; fg, bg: CInteger); asmname 'GrUsrTextXY';
 
 { ==================================================================
                   GRAPHICS CURSOR UTILITIES
   ================================================================== }
 
 type
-  { typedef struct _GR_cursor }
   GrCursor = record
-    Work       : GrContext;  { work areas (4) }
-    XCord,YCord: Integer;    { cursor position on screen }
-    XSize,YSize: Integer;    { cursor size }
-    XOffs,YOffs: Integer;    { LU corner to hot point offset }
-    XWork,YWork: Integer;    { save/work area sizes }
-    XWPos,YWPos: Integer;    { save/work area position on screen }
-    Displayed  : Integer;    { set if displayed }
+    Work: GrContext;     { work areas (4) }
+    XCord,YCord,         { cursor position on screen }
+    XSize,YSize,         { cursor size }
+    XOffs,YOffs,         { LU corner to hot point offset }
+    XWork,YWork,         { save/work area sizes }
+    XWPos,YWPos,         { save/work area position on screen }
+    Displayed: CInteger  { set if displayed }
   end;
   GrCursorPtr = ^GrCursor;
 
-function  GrBuildCursor(Pixels: Pointer; Pitch, w, h, xo, yo: Integer; protected var Colors { : array of GrColor }): GrCursorPtr; asmname 'GrBuildCursor';
+function  GrBuildCursor(Pixels: Pointer; Pitch, w, h, xo, yo: CInteger; protected var Colors { : array of GrColor }): GrCursorPtr; asmname 'GrBuildCursor';
 procedure GrDestroyCursor(Cursor: GrCursorPtr); asmname 'GrDestroyCursor';
 procedure GrDisplayCursor(Cursor: GrCursorPtr); asmname 'GrDisplayCursor';
 procedure GrEraseCursor(Cursor: GrCursorPtr); asmname 'GrEraseCursor';
-procedure GrMoveCursor(Cursor: GrCursorPtr; x, y: Integer); asmname 'GrMoveCursor';
+procedure GrMoveCursor(Cursor: GrCursorPtr; x, y: CInteger); asmname 'GrMoveCursor';
 
 { ==================================================================
        MOUSE AND KEYBOARD INPUT UTILITIES
@@ -982,43 +1015,43 @@ const
   Gr_M_Queue_Size    = 128;     { default queue size }
 
 type
-  { typedef struct _GR_mouseEvent }         { mouse event buffer structure }
+  { mouse event buffer structure }
   GrMouseEvent = record
-    Flags  : Integer;           { event type flags (see above) }
-    x, y   : Integer;           { mouse coordinates }
-    Buttons: Integer;           { mouse button state }
-    Key    : Integer;           { key code from keyboard }
-    KBStat : Integer;           { keybd status (ALT, CTRL, etc..) }
-    DTime  : Integer;           { time since last event (msec) }
+    Flags,             { event type flags (see above) }
+    x, y,              { mouse coordinates }
+    Buttons,           { mouse button state }
+    Key,               { key code from keyboard }
+    KBStat: CInteger;  { keybd status (ALT, CTRL, etc..) }
+    DTime: MedInt      { time since last event (msec) }
   end;
   GrMouseEventPtr = ^GrMouseEvent;
 
 function  GrMouseDetect: Boolean; asmname 'GrMouseDetect';
-procedure GrMouseEventMode(Dummy: Integer); asmname 'GrMouseEventMode';
+procedure GrMouseEventMode(Dummy: CInteger); asmname 'GrMouseEventMode';
 procedure GrMouseInit; asmname 'GrMouseInit';
-procedure GrMouseInitN(Queue_Size: Integer); asmname 'GrMouseInitN';
+procedure GrMouseInitN(Queue_Size: CInteger); asmname 'GrMouseInitN';
 procedure GrMouseUnInit; asmname 'GrMouseUnInit';
-procedure GrMouseSetSpeed(SPMult, SPDiv: Integer); asmname 'GrMouseSetSpeed';
-procedure GrMouseSetAccel(Thresh, Accel: Integer); asmname 'GrMouseSetAccel';
-procedure GrMouseSetLimits(x1, y1, x2, y2: Integer); asmname 'GrMouseSetLimits';
-procedure GrMouseGetLimits(var x1, y1, x2, y2: Integer); asmname 'GrMouseGetLimits';
-procedure GrMouseWarp(x, y: Integer); asmname 'GrMouseWarp';
+procedure GrMouseSetSpeed(SPMult, SPDiv: CInteger); asmname 'GrMouseSetSpeed';
+procedure GrMouseSetAccel(Thresh, Accel: CInteger); asmname 'GrMouseSetAccel';
+procedure GrMouseSetLimits(x1, y1, x2, y2: CInteger); asmname 'GrMouseSetLimits';
+procedure GrMouseGetLimits(var x1, y1, x2, y2: CInteger); asmname 'GrMouseGetLimits';
+procedure GrMouseWarp(x, y: CInteger); asmname 'GrMouseWarp';
 procedure GrMouseEventEnable(Enable_KB, Enable_MS: Boolean); asmname 'GrMouseEventEnable';
-procedure GrMouseGetEvent(Flags: Integer; Event: GrMouseEventPtr); asmname 'GrMouseGetEvent';
-procedure GrMouseGetEventT(Flags: Integer; Event: GrMouseEventPtr; timout_msecs: Integer); asmname 'GrMouseGetEventT';
-function  GrMousePendingEvent: Integer; asmname 'GrMousePendingEvent';
+procedure GrMouseGetEvent(Flags: CInteger; Event: GrMouseEventPtr); asmname 'GrMouseGetEvent';
+procedure GrMouseGetEventT(Flags: CInteger; Event: GrMouseEventPtr; timout_msecs: CInteger); asmname 'GrMouseGetEventT';
+function  GrMousePendingEvent: CInteger; asmname 'GrMousePendingEvent';
 
 function  GrMouseGetCursor: GrCursorPtr; asmname 'GrMouseGetCursor';
 procedure GrMouseSetCursor(Cursor: GrCursorPtr); asmname 'GrMouseSetCursor';
 procedure GrMouseSetColors(fg,bg: GrColor); asmname 'GrMouseSetColors';
-procedure GrMouseSetCursorMode(Mode: Integer; x1, y1, x2, y2: Integer; c: Integer); asmname 'GrMouseSetCursorMode';
+procedure GrMouseSetCursorMode(Mode: CInteger; x1, y1, x2, y2: CInteger; c: CInteger); asmname 'GrMouseSetCursorMode';
 procedure GrMouseDisplayCursor; asmname 'GrMouseDisplayCursor';
 procedure GrMouseEraseCursor; asmname 'GrMouseEraseCursor';
 procedure GrMouseUpdateCursor; asmname 'GrMouseUpdateCursor';
 function  GrMouseCursorIsDisplayed: Boolean; asmname 'GrMouseCursorIsDisplayed';
 
-function  GrMouseBlock(c: GrContextPtr; x1, y1, x2, y2: Integer): Integer; asmname 'GrMouseBlock';
-procedure GrMouseUnBlock(Return_Value_From_GrMouseBlock: Integer); asmname 'GrMouseUnBlock';
+function  GrMouseBlock(c: GrContextPtr; x1, y1, x2, y2: CInteger): CInteger; asmname 'GrMouseBlock';
+procedure GrMouseUnBlock(Return_Value_From_GrMouseBlock: CInteger); asmname 'GrMouseUnBlock';
 
 { ==================================================================
                          KEYBOARD INTERFACE
@@ -1338,18 +1371,18 @@ type
 { new functions to replace the old style
     kbhit / getch / getkey / getxkey / getkbstat
   keyboard interface }
-function GrKeyPressed: Integer; asmname 'GrKeyPressed';
+function GrKeyPressed: CInteger; asmname 'GrKeyPressed';
 function GrKeyRead: GrKeyType; asmname 'GrKeyRead';
-function GrKeyStat: Integer; asmname 'GrKeyStat';
+function GrKeyStat: CInteger; asmname 'GrKeyStat';
 
 { ==================================================================
                 MISCELLANEOUS UTILITIY FUNCTIONS
   ================================================================== }
 
-procedure GrResizeGrayMap (var Map; Pitch, ow, oh, nw, nh: Integer); asmname 'GrResizeGrayMap';
-function  GrMatchString (Pattern, Strg: CString): Integer; asmname 'GrMatchString';
+procedure GrResizeGrayMap (var Map; Pitch, ow, oh, nw, nh: CInteger); asmname 'GrResizeGrayMap';
+function  GrMatchString (Pattern, Strg: CString): CInteger; asmname 'GrMatchString';
 procedure GrSetWindowTitle (Title: CString); asmname 'GrSetWindowTitle';
-procedure GrSleep (MSec: Integer); asmname 'GrSleep';
+procedure GrSleep (MSec: CInteger); asmname 'GrSleep';
 
 { ==================================================================
                             PNM FUNCTIONS
@@ -1367,23 +1400,23 @@ const
 
 { The PNM functions }
 
-function GrSaveContextToPbm (grc: GrContextPtr; FileName, Comment: CString): Integer; asmname 'GrSaveContextToPbm';
-function GrSaveContextToPgm (grc: GrContextPtr; FileName, Comment: CString): Integer; asmname 'GrSaveContextToPgm';
-function GrSaveContextToPpm (grc: GrContextPtr; FileName, Comment: CString): Integer; asmname 'GrSaveContextToPpm';
-function GrLoadContextFromPnm (grc: GrContextPtr; FileName: CString): Integer; asmname 'GrLoadContextFromPnm';
-function GrQueryPnm (FileName: CString; var Width, Height, MaxVal: Integer): Integer; asmname 'GrQueryPnm';
-function GrLoadContextFromPnmBuffer (grc: GrContextPtr; protected var Buffer): Integer; asmname 'GrLoadContextFromPnmBuffer';
-function GrQueryPnmBuffer (protected var Buffer; var Width, Height, MaxVal: Integer): Integer; asmname 'GrQueryPnmBuffer';
+function GrSaveContextToPbm (grc: GrContextPtr; FileName, Comment: CString): CInteger; asmname 'GrSaveContextToPbm';
+function GrSaveContextToPgm (grc: GrContextPtr; FileName, Comment: CString): CInteger; asmname 'GrSaveContextToPgm';
+function GrSaveContextToPpm (grc: GrContextPtr; FileName, Comment: CString): CInteger; asmname 'GrSaveContextToPpm';
+function GrLoadContextFromPnm (grc: GrContextPtr; FileName: CString): CInteger; asmname 'GrLoadContextFromPnm';
+function GrQueryPnm (FileName: CString; var Width, Height, MaxVal: CInteger): CInteger; asmname 'GrQueryPnm';
+function GrLoadContextFromPnmBuffer (grc: GrContextPtr; protected var Buffer): CInteger; asmname 'GrLoadContextFromPnmBuffer';
+function GrQueryPnmBuffer (protected var Buffer; var Width, Height, MaxVal: CInteger): CInteger; asmname 'GrQueryPnmBuffer';
 
 { ==================================================================
                              ADDON FUNCTIONS
    these functions may not be installed or available on all systems
   ================================================================== }
 
-function GrPngSupport: Integer; asmname 'GrPngSupport';
-function GrSaveContextToPng (grc: GrContextPtr; FileName: CString): Integer; asmname 'GrSaveContextToPng';
-function GrLoadContextFromPng (grc: GrContextPtr; FileName: CString; UseAlpha: Integer): Integer; asmname 'GrLoadContextFromPng';
-function GrQueryPng (FileName: CString; var Width, Height: Integer): Integer; asmname 'GrQueryPng';
+function GrPngSupport: CInteger; asmname 'GrPngSupport';
+function GrSaveContextToPng (grc: GrContextPtr; FileName: CString): CInteger; asmname 'GrSaveContextToPng';
+function GrLoadContextFromPng (grc: GrContextPtr; FileName: CString; UseAlpha: CInteger): CInteger; asmname 'GrLoadContextFromPng';
+function GrQueryPng (FileName: CString; var Width, Height: CInteger): CInteger; asmname 'GrQueryPng';
 
 { SaveContextToTiff - Dump a context in a TIFF file
 
@@ -1398,7 +1431,7 @@ function GrQueryPng (FileName: CString; var Width, Height: Integer): Integer; as
 
   requires tifflib by  Sam Leffler (sam@engr.sgi.com)
          available at  ftp://ftp.sgi.com/graphics/tiff }
-function SaveContextToTiff(Cxt: GrContextPtr; TiffN: CString; Compr: Integer; DocN: CString): Integer; asmname 'SaveContextToTiff';
+function SaveContextToTiff(Cxt: GrContextPtr; TiffN: CString; Compr: CInteger; DocN: CString): CInteger; asmname 'SaveContextToTiff';
 
 { GrSaveContextToJpeg - Dump a context in a JPEG file
 
@@ -1412,11 +1445,11 @@ function SaveContextToTiff(Cxt: GrContextPtr; TiffN: CString; Compr: Integer; Do
 
   requires jpeg-6a by  IJG (Independent JPEG Group)
          available at  ftp.uu.net as graphics/jpeg/jpegsrc.v6a.tar.gz }
-function GrSaveContextToJpeg(grc: GrContextPtr; FileName: CString; Accuracy: Integer): Integer; asmname 'GrSaveContextToJpeg';
-function GrSaveContextToGrayJpeg(grc: GrContextPtr; FileName: CString; Accuracy: Integer): Integer; asmname 'GrSaveContextToGrayJpeg';
-function GrJpegSupport: Integer; asmname 'GrJpegSupport';
-function GrLoadContextFromJpeg(grc: GrContextPtr; FileName: CString; Scale: Integer): Integer; asmname 'GrLoadContextFromJpeg';
-function GrQueryJpeg(FileName: CString; var Width, Height: Integer): Integer; asmname 'GrQueryJpeg';
+function GrSaveContextToJpeg(grc: GrContextPtr; FileName: CString; Accuracy: CInteger): CInteger; asmname 'GrSaveContextToJpeg';
+function GrSaveContextToGrayJpeg(grc: GrContextPtr; FileName: CString; Accuracy: CInteger): CInteger; asmname 'GrSaveContextToGrayJpeg';
+function GrJpegSupport: CInteger; asmname 'GrJpegSupport';
+function GrLoadContextFromJpeg(grc: GrContextPtr; FileName: CString; Scale: CInteger): CInteger; asmname 'GrLoadContextFromJpeg';
+function GrQueryJpeg(FileName: CString; var Width, Height: CInteger): CInteger; asmname 'GrQueryJpeg';
 
 implementation
 

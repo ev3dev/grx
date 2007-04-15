@@ -3,7 +3,7 @@ Welcome to the wonderful world of GRX for pascal-users.
 =======================================================
 
 If you are interested in GNU-Pascal (gpc), visit
-http://home.pages.de/~gnu-pascal/
+http://gnu-pascal.de/gpc/h-index.html
 There is a mailinglist available.
 
 This directory contains several test-programs for GRX
@@ -31,7 +31,7 @@ To build up the programs, either
 - use the generic makefile and edit the paths, then type
    make 
 
-- For djgpp, mingw32, LINUX/svga and LINUX/X11, they should 
+- For djgpp, mingw32, LINUX/svga and LINUX/X11, sdl, they should 
 have been built with the library and C tests from top level makefile,
 if you used them. 
 If you want to rebuild only the tests type from this dir

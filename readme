@@ -1,4 +1,4 @@
-Welcome to GRX 2.4.6!
+Welcome to GRX 2.4.7!
 
 GRX is a 2D graphics C library originaly written by Csaba Biegl for
 DJ Delorie's DOS port of the GCC compiler. Now it support a big range
@@ -21,6 +21,9 @@ Directly supported platforms:
   The Linux console framebuffer driver is new from GRX 2.4.2, it is in
   alpha stage but usable.
 
+  Both i386 and x86_64 architectures are supported for the linux
+  console and the linux X11 versions. See below.
+
 Other DOS platforms:
 --------------------
 
@@ -39,11 +42,17 @@ Other X11 platforms:
   experimental, not compiled by default, it must be enabled editing
   the "makedefs.grx" file.
 
+  New in GRX 2.4.7 is a SDL driver. Compiled separately after editing
+  the "makedefs.grx" file, SDL section, EP=x .
+
 Other Win32 platforms:
 ----------------------
 
   GRX is reported to compile with MSVC, and there is support in the source
   files, so you only need to generate the project files.
+
+  New in GRX 2.4.7 is a SDL driver. Compiled separately after editing
+  the "makedefs.grx" file, SDL section, EP= .
 
   Other Win32 compilers may probably work.
 
@@ -60,7 +69,7 @@ GRX installation instructions
 Requirements:
 -------------
 
-  The source files and fonts:  grx246.tar.gz or grx246.zip
+  The source files and fonts:  grx247.tar.gz or grx247.zip
   This document:               readme
 
 A. Unpacking the GRX archive
@@ -79,12 +88,12 @@ A. Unpacking the GRX archive
 
   3) unpack the GRX archive:
 
-         tar xzvf grx246.tar.gz  (1)
+         tar xzvf grx247.tar.gz  (1)
      or
-         unzip grx246.zip        (2)
+         unzip grx247.zip        (2)
 
-     (1) This will create the subdirectory 'grx246'.
-     (2) This will create the subdirectory 'contrib/grx246'.
+     (1) This will create the subdirectory 'grx247'.
+     (2) This will create the subdirectory 'contrib/grx247'.
 
 B. Compiling GRX
 ----------------
@@ -100,14 +109,18 @@ B. Compiling GRX
      makefile.w32 for Win32/Mingw
      makefile.lnx for Linux/console
      makefile.x11 for Linux/X11
+     makefile.sdl for SDL driver on MingW and X11
 
      This process generates the GRX lib in the "lib/---" (where --- is
-     dj2, w32, lnx or x11) subdir and some utility programs in the
+     dj2, w32, lnx, x11 or sdl) subdir and some utility programs in the
      "bin" subdir.
 
-     Note for DJGPP/Mingw users: Do _not_ use an environment variable
-     `SHELL' leading to `bash', e.g. `SHELL=/djgpp/bin/bash.exe'.
-     Some parts of the DJGPP/Mingw Makefiles require `command.com'.
+     Note for DJGPP/Mingw users: If you set in makedefs.grx HAVE_UNIX_TOOLS=n
+     do _not_ use an environment variable  `SHELL' leading to `bash', e.g. 
+     `SHELL=/djgpp/bin/bash.exe'. For mingw use mingw32-make instead of make.
+     Some parts of the DJGPP/Mingw Makefiles with this option require 
+     `command.com'. If you set HAVE_UNIX_TOOLS=y (i.e. work under bash
+     for djgpp or msys for mingw32), there are no problems.
 
      Note for Linux/console users: At the end you must become root and
      run 'make -f makefile.lnx setsuid' in order to set de suid flag of
@@ -185,6 +198,14 @@ G. Installing GRX info doc
   Note for Linux users: probably you must be root to do that.
 
 
+Support for the x86_64 architecture
+===================================
+
+  By default, on linux, the makefiles build the library for the i386
+  architecture even in a x86_64 cpu. To build the x86_64 library (in
+  a x86_64 compatible cpu of course) you must set to 'y' the BUILD_X86_64
+  variable in the makedefs.grx file.
+
 Alternate installation by a Configure script
 ============================================
 
@@ -211,6 +232,10 @@ Environment variables for using GRX programs
        Linux: svgalib, linuxfb, memory
        X11  : xwin, memory
        Win32: win32, memory
+
+       There is also a sdl driver for x11 and win32, compiled separately.
+       In this case GRX20DRV="sdl::fs" gives full screen, GRX20DRV="sdl::ww"
+       gives windowed graphics. See test/fswwtest.c.
 
      Values for gw and gh can be by example 640,480 or 800,600
      Values for nc can be 2, 16, 256, 64K or 16M.
@@ -262,7 +287,7 @@ Pascal users
   the '{.$L ...}' directives (near the beginning) to load the auxiliary
   libraries (tiff, jpeg, png, z and socket) you need.
 
-  Alernatively you can use the configure script.
+  Alternatively you can use the configure script.
 
   See the "pascal/readme" file for other details.
 
@@ -270,7 +295,7 @@ Pascal users
 Help
 ====
 
-  Read the user's guide in the "doc/grx246um.htm" file. If you ran
+  Read the user's guide in the "doc/grx247um.htm" file. If you ran
   'make <your makefile> install-info', just type 'info grx' to view
   the info version of the manual.
 

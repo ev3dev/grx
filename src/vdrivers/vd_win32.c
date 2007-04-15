@@ -69,6 +69,9 @@
  **   - With the Thomas idea of using a DIB, we can now use the DIB like
  **     a linear frame buffer, so the new win32 framedrivers can take
  **     advantage of the standard GRX frame drivers.
+ **
+ ** Changes by Peter Gerwinski 19/06/2004
+ **   - more W32 events handling
  **/
 
 #include "libwin32.h"
@@ -94,6 +97,9 @@ static HBITMAP hBmpDIB = NULL;
 
 static int maxScreenWidth, maxScreenHeight;
 static int maxWindowWidth, maxWindowHeight;
+
+int GrCurrentWindowWidth = 0;
+int GrCurrentWindowHeight = 0;
 
 HANDLE windowThread = INVALID_HANDLE_VALUE;
 static HANDLE mainThread   = INVALID_HANDLE_VALUE;
@@ -165,6 +171,7 @@ static int setmode(GrVideoMode * mp, int noclear)
     RECT Rect;
     HDC hDC;
     HBRUSH hBrush;
+    RGBQUAD color;
     int inipos;
 
     if (mp->extinfo->mode != GR_frameText) {
@@ -176,8 +183,8 @@ static int setmode(GrVideoMode * mp, int noclear)
         Rect.right = mp->width + inipos;
         Rect.bottom = mp->height + inipos;
         AdjustWindowRect(&Rect, WS_OVERLAPPEDWINDOW, FALSE);
-        maxWindowWidth = Rect.right - Rect.left;
-        maxWindowHeight = Rect.bottom - Rect.top;
+        GrCurrentWindowWidth = maxWindowWidth = Rect.right - Rect.left;
+        GrCurrentWindowHeight = maxWindowHeight = Rect.bottom - Rect.top;
         SetWindowPos(hGRXWnd, NULL,
                      Rect.left, Rect.top,
                      maxWindowWidth, maxWindowHeight,
@@ -198,10 +205,18 @@ static int setmode(GrVideoMode * mp, int noclear)
                                   &mp->extinfo->frame);
         }
         SelectObject(hDCMem, hBmpDIB);
+        if (mp->bpp == 8) {
+            color.rgbBlue = color.rgbGreen = color.rgbRed =
+                            color.rgbReserved = 0;
+            SetDIBColorTable(hDCMem, 0, 1, &color);
+        }
         SetRect(&Rect, 0, 0, mp->width, mp->height);
-        hBrush = CreateSolidBrush(RGB(0, 0, 0));
+        hBrush = CreateSolidBrush(0);
         FillRect(hDCMem, &Rect, hBrush);
-        FillRect(hDC, &Rect, hBrush);
+        if (mp->bpp == 8)
+            BitBlt(hDC, 0, 0, mp->width, mp->height, hDCMem, 0, 0, SRCCOPY);
+        else
+            FillRect(hDC, &Rect, hBrush);
         ReleaseDC(hGRXWnd, hDC);
         DeleteObject(hBrush);
         UpdateWindow(hGRXWnd);
@@ -520,7 +535,10 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
             return 0;
         DestroyWindow(hWnd);
         if (!isMainWaitingTermination)
+        {
+            isWindowThreadRunning = 0;
             ExitProcess(1);
+        }
         break;
 
     case WM_DESTROY:
@@ -543,8 +561,12 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 
     case WM_SYSCHAR:
         fInsert = FALSE;
+
+        if (GetKeyState (VK_MENU) < 0
+            && DefWindowProc (hWnd, uMsg, wParam, lParam) == 0)
+          return 0;
         kbstat = convertwin32keystate();
-        if (kbstat & GR_KB_ALT) {
+        if ((kbstat & GR_KB_ALT) != 0 && (wParam & 0xff) == 0 ) {
             if (wParam >= 'a' && wParam <= 'z')
                 fInsert = TRUE;
             if (wParam >= 'A' && wParam <= 'Z')
@@ -559,27 +581,24 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 
     case WM_KEYDOWN:
     case WM_SYSKEYDOWN:
-        kbstat = convertwin32keystate();
-/*
-        if (kbstat & GR_KB_ALT && wParam == VK_F4)
-            PostMessage(hWnd, WM_CLOSE, 0, 0);
-*/
-        EnqueueW32Event(uMsg, wParam, lParam, kbstat);
-        return 0;
-
     case WM_LBUTTONDOWN:
     case WM_MBUTTONDOWN:
     case WM_RBUTTONDOWN:
     case WM_LBUTTONUP:
     case WM_MBUTTONUP:
     case WM_RBUTTONUP:
-        kbstat = convertwin32keystate();
-        EnqueueW32Event(uMsg, wParam, lParam, kbstat);
-        return 0;
-
     case WM_MOUSEMOVE:
-        kbstat = convertwin32keystate();
-        EnqueueW32Event(uMsg, wParam, lParam, kbstat);
+    case WM_SIZE:
+    case WM_COMMAND:
+        if (uMsg == WM_COMMAND && lParam == 1208)
+          ShowCursor (TRUE);
+        else if (uMsg == WM_COMMAND && lParam == 1209)
+          ShowCursor (FALSE);
+        else
+          {
+            kbstat = convertwin32keystate();
+            EnqueueW32Event(uMsg, wParam, lParam, kbstat);
+          }
         return 0;
 
     case WM_PAINT:
@@ -589,6 +608,7 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
             PAINTSTRUCT ps;
 
             if (GetUpdateRect(hWnd, &UpdateRect, FALSE)) {
+                EnqueueW32Event(uMsg, wParam, (long) &UpdateRect, 0);
                 BeginPaint(hWnd, &ps);
                 hDC = GetDC(hWnd);
                 BitBlt(hDC,
@@ -622,7 +642,6 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
     case WM_WINDOWPOSCHANGED:
     case WM_GETDLGCODE:
     case WM_MOVE:
-    case WM_SIZE:
     case WM_SETCURSOR:
     case WM_HELP:
     case WM_KEYUP:

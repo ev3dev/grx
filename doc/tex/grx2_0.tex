@@ -36,16 +36,16 @@
 @node Credits, Hello world, , A User Manual For GRX2
 @unnumberedsec Credits
 
- 
+
 @example
-                       GRX 2.4.6 User's Manual
+                       GRX 2.4.7 User's Manual
 
          A graphics library for DOS, Linux, X11 and Win32
 
 @end example
 
-Based on the original doc written by: Csaba Biegl on August 10, 1992 
-Updated by: Mariano Alvarez Fernandez on August 17, 2000 
+Based on the original doc written by: Csaba Biegl on August 10, 1992
+Updated by: Mariano Alvarez Fernandez on August 17, 2000
 
 Last update: March 4, 2003
 ______________________________________________________________________________
@@ -62,13 +62,15 @@ X11 and Win32 (Mingw). On DOS it supports VGA, EGA and VESA compliant cards.
 On Linux console it uses svgalib or the framebuffer. On X11 it must work on
 any X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver,
 but you must considere it in alpha stage. The framebuffer Linux console
-driver was new in 2.4.2 and it is in alpha stage too.
+driver was new in 2.4.2 and it is in alpha stage too. From 2.4.7 there is a
+support for x86_64 bits Linux machines and on MingW and X11 support for an
+SDL driver.
 
 @c -----------------------------------------------------------------------------
 @node Hello world, Data types and function declarations, Credits, A User Manual For GRX2
 @unnumberedsec Hello world
-The next program draws a double frame around the screen and writes "Hello, GRX 
-world" centered. Then it waits after a key is pressed. 
+The next program draws a double frame around the screen and writes "Hello, GRX
+world" centered. Then it waits after a key is pressed.
 
 @example
 #include <string.h>
@@ -112,19 +114,28 @@ previously installed)
   X11  : gcc -o hellogrx hellogrx.c -D__XWIN__ -I/usr/X11R6/include
          -lgrx20X -L/usr/X11R6/lib -lX11
   Linux: gcc -o hellogrx hellogrx.c -lgrx20 -lvga
+
+  For the SDL driver:
+  Mingw: gcc -o hellogrx.exe hellogrx.c -lgrx20S -lSDL
+  X11  : gcc -o hellogrx hellogrx.c -D__XWIN__ -I/usr/X11R6/include
+         -lgrx20S -lSDL -lpthread -L/usr/X11R6/lib -lX11
+
+  For x86_64 systems add -m32 or -m64 for 32/64 bits executables
+  and replace /lib by /lib64 as needed
+
 @end example
 
 @c -----------------------------------------------------------------------------
 @node Data types and function declarations, Setting the graphics driver, Hello world, A User Manual For GRX2
 @unnumberedsec Data types and function declarations
-All public data structures and graphics primitives meant for usage by the 
-application program are declared/prototyped in the header files (in the 
+All public data structures and graphics primitives meant for usage by the
+application program are declared/prototyped in the header files (in the
 'include' sub-directory):
 
 @example
-   * grdriver.h   graphics driver format specifications 
-   * grfontdv.h   format of a font when loaded into memory 
-   * grx20.h      drawing-related structures and functions 
+   * grdriver.h   graphics driver format specifications
+   * grfontdv.h   format of a font when loaded into memory
+   * grx20.h      drawing-related structures and functions
    * grxkeys.h    platform independent key definitions
 
 User programs normally only include @pxref{grx20.h} and @pxref{grxkeys.h}
@@ -133,32 +144,33 @@ User programs normally only include @pxref{grx20.h} and @pxref{grxkeys.h}
 @c -----------------------------------------------------------------------------
 @node Setting the graphics driver, Setting video modes, Data types and function declarations, A User Manual For GRX2
 @unnumberedsec Setting the graphics driver
-The graphics driver is normally set by the final user by the environment 
-variable GRX20DRV, but a program can set it using: 
+The graphics driver is normally set by the final user by the environment
+variable GRX20DRV, but a program can set it using:
 
 @example
 int GrSetDriver(char *drvspec);
 @end example
 
-The drvspec string has the same format as the environment variable: 
+The drvspec string has the same format as the environment variable:
 
 @example
 <driver> gw <width> gh <height> nc <colors>
 @end example
 
-Available drivers are for: 
+Available drivers are for:
 
 @example
-* DOS => herc, stdvga, stdega, et4000, cl5426, mach64, ati28800, s3, VESA, memory 
-* Linux => svgalib, linuxfb, memory 
-* X11 => xwin, memory 
-* Win32 => win32, memory 
+* DOS => herc, stdvga, stdega, et4000, cl5426, mach64, ati28800, s3, VESA, memory
+* Linux => svgalib, linuxfb, memory
+* X11 => xwin, memory
+* Win32 => win32, memory
+* SDL (Win32 and X11) => sdl::fs, sdl::ww, memory
 @end example
 
 
-The optionals gw, gh and nc parameters set the desired default graphics mode. 
-Normal values for 'nc' are 2, 16, 256, 64K and 16M. The current driver name can 
-be obtained from: 
+The optionals gw, gh and nc parameters set the desired default graphics mode.
+Normal values for 'nc' are 2, 16, 256, 64K and 16M. The current driver name can
+be obtained from:
 
 @example
 GrCurrentVideoDriver()->name
@@ -168,12 +180,12 @@ GrCurrentVideoDriver()->name
 @node Setting video modes, Graphics contexts, Setting the graphics driver, A User Manual For GRX2
 @unnumberedsec Setting video modes
 
-Before a program can do any graphics drawing it has to configure the graphics 
-driver for the desired graphics mode. It is done with the GrSetMode function as 
-follows: 
+Before a program can do any graphics drawing it has to configure the graphics
+driver for the desired graphics mode. It is done with the GrSetMode function as
+follows:
 
 @example
-int GrSetMode(int which,...); 
+int GrSetMode(int which,...);
 @end example
 
 On succes it returns non-zero (TRUE). The which parameter can be one of the
@@ -214,27 +226,27 @@ typedef enum _GR_graphicsModes @{
 @} GrGraphicsMode;
 @end example
 
-The GR_width_height_text and GR_width_height_graphics modes require the two 
-size arguments: int width and int height. 
+The GR_width_height_text and GR_width_height_graphics modes require the two
+size arguments: int width and int height.
 
-The GR_width_height_color_graphics and GR_width_height_color_text modes 
-require three arguments: int width, int height and GrColor colors. 
+The GR_width_height_color_graphics and GR_width_height_color_text modes
+require three arguments: int width, int height and GrColor colors.
 
-The GR_width_height_bpp_graphics and GR_width_height_bpp_text modes require 
-three arguments: int width, int height and int bpp (bits per plane instead 
-number of colors). 
+The GR_width_height_bpp_graphics and GR_width_height_bpp_text modes require
+three arguments: int width, int height and int bpp (bits per plane instead
+number of colors).
 
-The GR_custom_graphics and GR_custom_bpp_graphics modes require five 
-arguments: int width, int height, GrColor colors or int bpp, int vx and int vy. 
-Using this modes you can set a virtual screen of vx by vy size. 
+The GR_custom_graphics and GR_custom_bpp_graphics modes require five
+arguments: int width, int height, GrColor colors or int bpp, int vx and int vy.
+Using this modes you can set a virtual screen of vx by vy size.
 
-A call with any other mode does not require any arguments. 
+A call with any other mode does not require any arguments.
 
-The GR_NC_... modes are equivalent to the GR_.. ones, but they don't clear the 
-video memory. 
+The GR_NC_... modes are equivalent to the GR_.. ones, but they don't clear the
+video memory.
 
-Graphics drivers can provide info of the supported graphics modes, use the 
-next code skeleton to colect the data: 
+Graphics drivers can provide info of the supported graphics modes, use the
+next code skeleton to colect the data:
 
 @example
 @{
@@ -252,8 +264,8 @@ next code skeleton to colect the data:
 @}
 @end example
 
-Don't worry if you don't understand it, normal user programs don't need to 
-know about FrameModes. The GrVideoMode structure has the following fields: 
+Don't worry if you don't understand it, normal user programs don't need to
+know about FrameModes. The GrVideoMode structure has the following fields:
 
 @example
 typedef struct _GR_videoMode GrVideoMode;
@@ -269,34 +281,34 @@ struct _GR_videoMode @{
 @};
 @end example
 
-The width, height and bpp members are the useful information if you are 
+The width, height and bpp members are the useful information if you are
 interested in set modes other than the GR_default_graphics.
 
-A user-defined function can be invoked every time the video mode is changed 
-(i.e. GrSetMode is called). This function should not take any parameters and 
-don't return any value. It can be installed (for all subsequent GrSetMode calls) 
-with the: 
+A user-defined function can be invoked every time the video mode is changed
+(i.e. GrSetMode is called). This function should not take any parameters and
+don't return any value. It can be installed (for all subsequent GrSetMode calls)
+with the:
 
 @example
 void GrSetModeHook(void (*hookfunc)(void));
 @end example
 
-function. The current graphics mode (one of the valid mode argument values for 
-GrSetMode) can be obtained with the: 
+function. The current graphics mode (one of the valid mode argument values for
+GrSetMode) can be obtained with the:
 
 @example
 GrGraphicsMode GrCurrentMode(void);
 @end example
 
-function, while the type of the installed graphics adapter can be determined 
-with the: 
+function, while the type of the installed graphics adapter can be determined
+with the:
 
 @example
 GrVideoAdapter GrAdapterType(void);
 @end example
 
-function. GrAdapterType returns the type of the adapter as one of the following 
-symbolic constants (defined in grx20.h): 
+function. GrAdapterType returns the type of the adapter as one of the following
+symbolic constants (defined in grx20.h):
 
 @example
 typedef enum _GR_videoAdapters @{
@@ -307,22 +319,25 @@ typedef enum _GR_videoAdapters @{
   GR_8514A,              /* 8514A or compatible */
   GR_S3,                 /* S3 graphics accelerator */
   GR_XWIN,               /* X11 driver */
+  GR_WIN32,              /* WIN32 driver */
+  GR_LNXFB,              /* Linux framebuffer */
+  GR_SDL,                /* SDL driver */
   GR_MEM                 /* memory only driver */
 @} GrVideoAdapter;
 @end example
 
-Note that the VESA driver return GR_VGA here. 
+Note that the VESA driver return GR_VGA here.
 
 @c -----------------------------------------------------------------------------
 @node Graphics contexts, Context use, Setting video modes, A User Manual For GRX2
 @unnumberedsec Graphics contexts
 
 
-The library supports a set of drawing regions called contexts (the GrContext 
-structure). These can be in video memory or in system memory. Contexts in system 
-memory always have the same memory organization as the video memory. When 
-GrSetMode is called, a default context is created which maps to the whole 
-graphics screen. Contexts are described by the GrContext data structure: 
+The library supports a set of drawing regions called contexts (the GrContext
+structure). These can be in video memory or in system memory. Contexts in system
+memory always have the same memory organization as the video memory. When
+GrSetMode is called, a default context is created which maps to the whole
+graphics screen. Contexts are described by the GrContext data structure:
 
 @example
 typedef struct _GR_context GrContext;
@@ -351,114 +366,114 @@ struct _GR_context @{
 @};
 @end example
 
-The following four functions return information about the layout of and memory 
-occupied by a graphics context of size width by height in the current graphics 
-mode (as set up by GrSetMode): 
+The following four functions return information about the layout of and memory
+occupied by a graphics context of size width by height in the current graphics
+mode (as set up by GrSetMode):
 
 @example
-int GrLineOffset(int width); 
-int GrNumPlanes(void); 
-long GrPlaneSize(int w,int h); 
-long GrContextSize(int w,int h); 
+int GrLineOffset(int width);
+int GrNumPlanes(void);
+long GrPlaneSize(int w,int h);
+long GrContextSize(int w,int h);
 @end example
 
-GrLineOffset always returns the offset between successive pixel rows of the 
-context in bytes. GrNumPlanes returns the number of bitmap planes in the current 
-graphics mode. GrContextSize calculates the total amount of memory needed by a 
-context, while GrPlaneSize calculates the size of a bitplane in the context. The 
-function: 
+GrLineOffset always returns the offset between successive pixel rows of the
+context in bytes. GrNumPlanes returns the number of bitmap planes in the current
+graphics mode. GrContextSize calculates the total amount of memory needed by a
+context, while GrPlaneSize calculates the size of a bitplane in the context. The
+function:
 
 @example
 GrContext *GrCreateContext(int w,int h,char far *memory[4],GrContext *where);
 @end example
 
-can be used to create a new context in system memory. The NULL pointer is also 
-accepted as the value of the memory and where arguments, in this case the 
-library allocates the necessary amount of memory internally. It is a general 
-convention in the library that functions returning pointers to any GRX 
-specific data structure have a last argument (most of the time named where in 
-the prototypes) which can be used to pass the address of the data structure 
-which should be filled with the result. If this where pointer has the value of 
-NULL, then the library allocates space for the data structure internally. 
+can be used to create a new context in system memory. The NULL pointer is also
+accepted as the value of the memory and where arguments, in this case the
+library allocates the necessary amount of memory internally. It is a general
+convention in the library that functions returning pointers to any GRX
+specific data structure have a last argument (most of the time named where in
+the prototypes) which can be used to pass the address of the data structure
+which should be filled with the result. If this where pointer has the value of
+NULL, then the library allocates space for the data structure internally.
 
-The memory argument is really a 4 pointer array, each pointer must point to 
-space to handle GrPlaneSize(w,h) bytes, really only GrNumPlanes() pointers must 
+The memory argument is really a 4 pointer array, each pointer must point to
+space to handle GrPlaneSize(w,h) bytes, really only GrNumPlanes() pointers must
 be malloced, the rest can be NULL. Nevertheless the normal use (see below) is
 
 @example
 gc = GrCreateContext(w,h,NULL,NULL);
 @end example
 
-so yo don't need to care about. 
+so yo don't need to care about.
 
-The function: 
+The function:
 @example
 
 GrContext *GrCreateSubContext(int x1,int y1,int x2,int y2,
                               const GrContext *parent,GrContext *where);
 @end example
 
-creates a new sub-context which maps to a part of an existing context. The 
-coordinate arguments (x1 through y2) are interpreted relative to the parent 
-context's limits. Pixel addressing is zero-based even in sub-contexts, i.e. the 
-address of the top left pixel is (0,0) even in a sub-context which has been 
-mapped onto the interior of its parent context. 
+creates a new sub-context which maps to a part of an existing context. The
+coordinate arguments (x1 through y2) are interpreted relative to the parent
+context's limits. Pixel addressing is zero-based even in sub-contexts, i.e. the
+address of the top left pixel is (0,0) even in a sub-context which has been
+mapped onto the interior of its parent context.
 
-Sub-contexts can be resized, but not their parents (i.e. anything returned by 
-GrCreateContext or set up by GrSetMode cannot be resized -- because this could 
-lead to irrecoverable "loss" of drawing memory. The following function can be 
-used for this purpose: 
+Sub-contexts can be resized, but not their parents (i.e. anything returned by
+GrCreateContext or set up by GrSetMode cannot be resized -- because this could
+lead to irrecoverable "loss" of drawing memory. The following function can be
+used for this purpose:
 
 @example
-void GrResizeSubContext(GrContext *context,int x1,int y1,int x2,int y2); 
+void GrResizeSubContext(GrContext *context,int x1,int y1,int x2,int y2);
 @end example
 
-The current context structure is stored in a static location in the library. 
-(For efficiency reasons -- it is used quite frequently, and this way no pointer 
-dereferencing is necessary.) The context stores all relevant information about 
-the video organization, coordinate limits, etc... The current context can be set 
-with the: 
+The current context structure is stored in a static location in the library.
+(For efficiency reasons -- it is used quite frequently, and this way no pointer
+dereferencing is necessary.) The context stores all relevant information about
+the video organization, coordinate limits, etc... The current context can be set
+with the:
 
 @example
 void GrSetContext(const GrContext *context);
 @end example
 
-function. This function will reset the current context to the full graphics 
-screen if it is passed the NULL pointer as argument. The value of the current 
-context can be saved into a GrContext structure pointed to by where using: 
+function. This function will reset the current context to the full graphics
+screen if it is passed the NULL pointer as argument. The value of the current
+context can be saved into a GrContext structure pointed to by where using:
 
 @example
-GrContext *GrSaveContext(GrContext *where); 
+GrContext *GrSaveContext(GrContext *where);
 @end example
 
-(Again, if where is NULL, the library allocates the space.) The next two 
-functions: 
+(Again, if where is NULL, the library allocates the space.) The next two
+functions:
 
 @example
 const GrContext *GrCurrentContext(void);
 const GrContext *GrScreenContext(void);
 @end example
 
-return the current context and the screen context respectively. Contexts can be 
-destroyed with: 
+return the current context and the screen context respectively. Contexts can be
+destroyed with:
 
 @example
 void GrDestroyContext(GrContext *context);
 @end example
 
-This function will free the memory occupied by the context only if it was 
-allocated originally by the library. The next three functions set up and query 
-the clipping limits associated with the current context: 
+This function will free the memory occupied by the context only if it was
+allocated originally by the library. The next three functions set up and query
+the clipping limits associated with the current context:
 
 @example
-void GrSetClipBox(int x1,int y1,int x2,int y2); 
-void GrGetClipBox(int *x1p,int *y1p,int *x2p,int *y2p); 
+void GrSetClipBox(int x1,int y1,int x2,int y2);
+void GrGetClipBox(int *x1p,int *y1p,int *x2p,int *y2p);
 void GrResetClipBox(void);
 @end example
 
-GrResetClipBox sets the clipping limits to the limits of context. These are 
-the limits set up initially when a context is created. There are three similar 
-functions to sets/gets the clipping limits of any context: 
+GrResetClipBox sets the clipping limits to the limits of context. These are
+the limits set up initially when a context is created. There are three similar
+functions to sets/gets the clipping limits of any context:
 
 @example
 void  GrSetClipBoxC(GrContext *c,int x1,int y1,int x2,int y2);
@@ -466,47 +481,47 @@ void  GrGetClipBoxC(const GrContext *c,int *x1p,int *y1p,int *x2p,int *y2p);
 void  GrResetClipBoxC(GrContext *c);
 @end example
 
-The limits of the current context can be obtained using the following 
-functions: 
+The limits of the current context can be obtained using the following
+functions:
 
 @example
-int GrMaxX(void); 
-int GrMaxY(void); 
-int GrSizeX(void); 
+int GrMaxX(void);
+int GrMaxY(void);
+int GrSizeX(void);
 int GrSizeY(void);
 @end example
 
-The Max functions return the biggest valid coordinate, while the Size 
-functions return a value one higher. The limits of the graphics screen 
-(regardless of the current context) can be obtained with: 
+The Max functions return the biggest valid coordinate, while the Size
+functions return a value one higher. The limits of the graphics screen
+(regardless of the current context) can be obtained with:
 
 @example
-int GrScreenX(void); 
-int GrScreenY(void); 
+int GrScreenX(void);
+int GrScreenY(void);
 @end example
 
-If you had set a virtual screen (using a custom graphics mode), the limits of 
-the virtual screen can be fetched with: 
+If you had set a virtual screen (using a custom graphics mode), the limits of
+the virtual screen can be fetched with:
 
 @example
 int GrVirtualX(void);
 int GrVirtualY(void);
 @end example
 
-The routine: 
+The routine:
 
 @example
 int GrScreenIsVirtual(void);
 @end example
 
-returns non zero if a virtual screen is set. The rectangle showed in the real 
-screen can be set with: 
+returns non zero if a virtual screen is set. The rectangle showed in the real
+screen can be set with:
 
 @example
 int GrSetViewport(int xpos,int ypos);
 @end example
 
-and the current viewport position can be obtained by: 
+and the current viewport position can be obtained by:
 
 @example
 int GrViewportX(void);
@@ -518,7 +533,7 @@ int GrViewportY(void);
 @unnumberedsec Context use
 
 
-Here is a example of normal context use:  
+Here is a example of normal context use:
 
 @example
 GrContext *grc;
@@ -536,8 +551,8 @@ else @{
 
 @end example
 
-But if you have a GrContext variable (not a pointer) you want to use (probably 
-because is static to some routines) you can do: 
+But if you have a GrContext variable (not a pointer) you want to use (probably
+because is static to some routines) you can do:
 
 @example
 static GrContext grc; /* not a pointer!! */
@@ -555,13 +570,13 @@ else @{
 
 @end example
 
-Note that GrDestoryContext knows if grc was automatically malloced or not!! 
+Note that GrDestoryContext knows if grc was automatically malloced or not!!
 
-Only if you don't want GrCreateContext use malloc at all, you must allocate 
-the memory buffers and pass it to GrCreateContext. 
+Only if you don't want GrCreateContext use malloc at all, you must allocate
+the memory buffers and pass it to GrCreateContext.
 
-Using GrCreateSubContext is the same, except it doesn't need the buffer, 
-because it uses the parent buffer. 
+Using GrCreateSubContext is the same, except it doesn't need the buffer,
+because it uses the parent buffer.
 
 See the @pxref{winclip.c} and @pxref{wintest.c} examples.
 
@@ -569,39 +584,39 @@ See the @pxref{winclip.c} and @pxref{wintest.c} examples.
 @node Color management, Portable use of a few colors, Context use, A User Manual For GRX2
 @unnumberedsec Color management
 
-GRX defines the type GrColor for color variables. GrColor it's a 32 bits 
-integer. The 8 left bits are reserved for the write mode (see below). The 24 
-bits right are the color value. 
+GRX defines the type GrColor for color variables. GrColor it's a 32 bits
+integer. The 8 left bits are reserved for the write mode (see below). The 24
+bits right are the color value.
 
-The library supports two models for color management. In the 'indirect' (or 
-color table) model, color values are indices to a color table. The color table 
-slots will be allocated with the highest resolution supported by the hardware 
-(EGA: 2 bits, VGA: 6 bits) with respect to the component color intensities. In 
-the 'direct' (or RGB) model, color values map directly into component color 
-intensities with non-overlapping bitfields of the color index representing the 
-component colors. 
+The library supports two models for color management. In the 'indirect' (or
+color table) model, color values are indices to a color table. The color table
+slots will be allocated with the highest resolution supported by the hardware
+(EGA: 2 bits, VGA: 6 bits) with respect to the component color intensities. In
+the 'direct' (or RGB) model, color values map directly into component color
+intensities with non-overlapping bitfields of the color index representing the
+component colors.
 
-Color table model is supported until 256 color modes. The RGB model is 
-supported in 256 color and up color modes. 
+Color table model is supported until 256 color modes. The RGB model is
+supported in 256 color and up color modes.
 
-In RGB model the color index map to component color intensities depend on the 
-video mode set, so it can't be assumed the component color bitfields (but if you 
-are curious check the GrColorInfo global structure in grx20.h). 
+In RGB model the color index map to component color intensities depend on the
+video mode set, so it can't be assumed the component color bitfields (but if you
+are curious check the GrColorInfo global structure in grx20.h).
 
-After the first GrSetMode call two colors are always defined: black and white. 
-The color values of these two colors are returned by the functions: 
+After the first GrSetMode call two colors are always defined: black and white.
+The color values of these two colors are returned by the functions:
 
 @example
-GrColor GrBlack(void); 
+GrColor GrBlack(void);
 GrColor GrWhite(void);
 @end example
 
-GrBlack() is guaranteed to be 0. 
+GrBlack() is guaranteed to be 0.
 
-The library supports five write modes (a write mode descibes the operation 
-between the actual bit color and the one to be set): write, XOR, logical OR, 
-logical AND and IMAGE. These can be selected with OR-ing the color value with 
-one of the following constants declared in grx20.h : 
+The library supports five write modes (a write mode descibes the operation
+between the actual bit color and the one to be set): write, XOR, logical OR,
+logical AND and IMAGE. These can be selected with OR-ing the color value with
+one of the following constants declared in grx20.h :
 
 @example
 #define GrWRITE       0UL            /* write color */
@@ -611,36 +626,36 @@ one of the following constants declared in grx20.h :
 #define GrIMAGE       0x04000000UL   /* blit: write, except given color */
 @end example
 
-The GrIMAGE write mode only works with the bitblt function. 
-By convention, the no-op color is obtained by combining color value 0 (black) 
-with the XOR operation. This no-op color has been defined in grx20.h as: 
+The GrIMAGE write mode only works with the bitblt function.
+By convention, the no-op color is obtained by combining color value 0 (black)
+with the XOR operation. This no-op color has been defined in grx20.h as:
 
 @example
 #define GrNOCOLOR     (GrXOR | 0)    /* GrNOCOLOR is used for "no" color */
 @end example
 
-The write mode part and the color value part of a GrColor variable can be 
-obtained OR-ing it with one of the following constants declared in grx20.h: 
+The write mode part and the color value part of a GrColor variable can be
+obtained OR-ing it with one of the following constants declared in grx20.h:
 
 @example
 #define GrCVALUEMASK  0x00ffffffUL   /* color value mask */
 #define GrCMODEMASK   0xff000000UL   /* color operation mask */
 @end example
 
-The number of colors in the current graphics mode is returned by the: 
+The number of colors in the current graphics mode is returned by the:
 
 @example
 GrColor GrNumColors(void);
 @end example
 
-function, while the number of unused, available color can be obtained by 
-calling: 
+function, while the number of unused, available color can be obtained by
+calling:
 
 @example
-GrColor GrNumFreeColors(void); 
+GrColor GrNumFreeColors(void);
 @end example
 
-Colors can be allocated with the: 
+Colors can be allocated with the:
 
 @example
 GrColor GrAllocColor(int r,int g,int b);
@@ -654,58 +669,58 @@ hcolor must be in 0xRRGGBB format), or with the:
 GrColor GrAllocCell(void);
 @end example
 
-function. In the second case the component intensities of the returned color can 
-be set with: 
+function. In the second case the component intensities of the returned color can
+be set with:
 
 @example
-void GrSetColor(GrColor color,int r,int g,int b); 
+void GrSetColor(GrColor color,int r,int g,int b);
 @end example
 
-In the color table model both Alloc functions return GrNOCOLOR if there are no 
-more free colors available. In the RGB model GrNumFreeColors returns 0 and 
-GrAllocCell always returns GrNOCOLOR, as colors returned by GrAllocCell are 
-meant to be changed -- what is not supposed to be done in RGB mode. Also note 
-that GrAllocColor operates much more efficiently in RGB mode, and that it never 
-returns GrNOCOLOR in this case. 
+In the color table model both Alloc functions return GrNOCOLOR if there are no
+more free colors available. In the RGB model GrNumFreeColors returns 0 and
+GrAllocCell always returns GrNOCOLOR, as colors returned by GrAllocCell are
+meant to be changed -- what is not supposed to be done in RGB mode. Also note
+that GrAllocColor operates much more efficiently in RGB mode, and that it never
+returns GrNOCOLOR in this case.
 
-Color table entries can be freed (when not in RGB mode) by calling: 
+Color table entries can be freed (when not in RGB mode) by calling:
 
 @example
 void GrFreeColor(GrColor color);
 @end example
 
-The component intensities of any color can be queried using one of this function: 
+The component intensities of any color can be queried using one of this function:
 
 @example
-void GrQueryColor(GrColor c,int *r,int *g,int *b); 
-void GrQueryColor2(GrColor c,long *hcolor); 
+void GrQueryColor(GrColor c,int *r,int *g,int *b);
+void GrQueryColor2(GrColor c,long *hcolor);
 @end example
 
-Initially the color system is in color table (indirect) model if there are 256 
-or less colors. 256 color modes can be put into the RGB model by calling: 
+Initially the color system is in color table (indirect) model if there are 256
+or less colors. 256 color modes can be put into the RGB model by calling:
 
 @example
 void GrSetRGBcolorMode(void);
 @end example
 
-The color system can be reset (i.e. put back into color table model if 
-possible, all colors freed except for black and white) by calling: 
+The color system can be reset (i.e. put back into color table model if
+possible, all colors freed except for black and white) by calling:
 
 @example
 void GrResetColors(void);
 @end example
 
-The function: 
+The function:
 
 @example
 void GrRefreshColors(void);
 @end example
 
-reloads the currently allocated color values into the video hardware. This 
-function is not needed in typical applications, unless the display adapter is 
-programmed directly by the application. 
+reloads the currently allocated color values into the video hardware. This
+function is not needed in typical applications, unless the display adapter is
+programmed directly by the application.
 
-This functions: 
+This functions:
 
 @example
 GrColor GrAllocColorID(int r,int g,int b);
@@ -714,9 +729,9 @@ void GrQueryColorID(GrColor c,int *r,int *g,int *b);
 void GrQueryColor2ID(GrColor c,long *hcolor);
 @end example
 
-are inlined versions (except if you compile GRX with GRX_SKIP_INLINES defined) 
-to be used in the RGB model (in the color table model they call the normal 
-routines). 
+are inlined versions (except if you compile GRX with GRX_SKIP_INLINES defined)
+to be used in the RGB model (in the color table model they call the normal
+routines).
 
 See the @pxref{rgbtest.c} and @pxref{colorops.c} examples.
 
@@ -725,21 +740,21 @@ See the @pxref{rgbtest.c} and @pxref{colorops.c} examples.
 @node Portable use of a few colors, Graphics primitives, Color management, A User Manual For GRX2
 @unnumberedsec Portable use of a few colors
 
-People that only want to use a few colors find the GRX color handling a bit 
-confusing, but it gives the power to manage a lot of color deeps and two color 
-models. Here are some guidelines to easily use the famous 16 ega colors in GRX 
-programs. We need this GRX function: 
+People that only want to use a few colors find the GRX color handling a bit
+confusing, but it gives the power to manage a lot of color deeps and two color
+models. Here are some guidelines to easily use the famous 16 ega colors in GRX
+programs. We need this GRX function:
 
 @example
 GrColor *GrAllocEgaColors(void);
 @end example
 
-it returns a 16 GrColor array with the 16 ega colors alloced (really it's a 
-trivial function, read the source src/setup/colorega.c). We can use a 
-construction like that: 
+it returns a 16 GrColor array with the 16 ega colors alloced (really it's a
+trivial function, read the source src/setup/colorega.c). We can use a
+construction like that:
 
-First, in your C code make a global pointer, and init it after set the 
-graphics mode: 
+First, in your C code make a global pointer, and init it after set the
+graphics mode:
 
 @example
 GrColor *egacolors;
@@ -755,7 +770,7 @@ int your_setup_function( ... )
 
 @end example
 
-Next, add this to your main include file: 
+Next, add this to your main include file:
 
 @example
 extern GrColor *egacolors;
@@ -777,63 +792,63 @@ extern GrColor *egacolors;
 #define WHITE        egacolors[15]
 @end example
 
-Now you can use the defined colors in your code. Note that if you are in color 
-table model in a 16 color mode, you have exhausted the color table. Note too 
-that this don't work to initialize static variables with a color, because 
-egacolors is not initialized. 
+Now you can use the defined colors in your code. Note that if you are in color
+table model in a 16 color mode, you have exhausted the color table. Note too
+that this don't work to initialize static variables with a color, because
+egacolors is not initialized.
 
 
 @c -----------------------------------------------------------------------------
 @node Graphics primitives, Non-clipping graphics primitives, Portable use of a few colors, A User Manual For GRX2
 @unnumberedsec Graphics primitives
 
-The screen, the current context or the current clip box can be cleared (i.e. 
-set to a desired background color) by using one of the following three 
-functions: 
+The screen, the current context or the current clip box can be cleared (i.e.
+set to a desired background color) by using one of the following three
+functions:
 
 @example
-void GrClearScreen(GrColor bg); 
-void GrClearcontext(GrColor bg); 
+void GrClearScreen(GrColor bg);
+void GrClearcontext(GrColor bg);
 void GrClearClipBox(GrColor bg);
 @end example
 
-Thanks to the special GrColor definition, you can do more than simple clear 
-with this functions, by example with: 
+Thanks to the special GrColor definition, you can do more than simple clear
+with this functions, by example with:
 
 @example
 GrClearScreen( GrWhite()|GrXOR );
 @end example
 
-the graphics screen is negativized, do it again and the screen is restored. 
+the graphics screen is negativized, do it again and the screen is restored.
 
-The following line drawing graphics primitives are supported by the library: 
+The following line drawing graphics primitives are supported by the library:
 
 @example
 void GrPlot(int x,int y,GrColor c);
-void GrLine(int x1,int y1,int x2,int y2,GrColor c); 
-void GrHLine(int x1,int x2,int y,GrColor c); 
-void GrVLine(int x,int y1,int y2,GrColor c); 
-void GrBox(int x1,int y1,int x2,int y2,GrColor c); 
-void GrCircle(int xc,int yc,int r,GrColor c); 
-void GrEllipse(int xc,int yc,int xa,int ya,GrColor c); 
-void GrCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c); 
+void GrLine(int x1,int y1,int x2,int y2,GrColor c);
+void GrHLine(int x1,int x2,int y,GrColor c);
+void GrVLine(int x,int y1,int y2,GrColor c);
+void GrBox(int x1,int y1,int x2,int y2,GrColor c);
+void GrCircle(int xc,int yc,int r,GrColor c);
+void GrEllipse(int xc,int yc,int xa,int ya,GrColor c);
+void GrCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c);
 void GrEllipseArc(int xc,int yc,int xa,int ya,
                   int start,int end,int style,GrColor c);
 void GrPolyLine(int numpts,int points[][2],GrColor c);
 void GrPolygon(int numpts,int points[][2],GrColor c);
 @end example
 
-All primitives operate on the current graphics context. The last argument of 
-these functions is always the color to use for the drawing. The HLine and VLine 
-primitives are for drawing horizontal and vertical lines. They have been 
-included in the library because they are more efficient than the general line 
-drawing provided by GrLine. The ellipse primitives can only draw ellipses with 
-their major axis parallel with either the X or Y coordinate axis. They take the 
-half X and Y axis length in the xa and ya arguments. The arc (circle and 
-ellipse) drawing functions take the start and end angles in tenths of degrees 
-(i.e. meaningful range: 0 ... 3600). The angles are interpreted 
-counter-clockwise starting from the positive X axis. The style argument can be 
-one of this defines from grx20.h: 
+All primitives operate on the current graphics context. The last argument of
+these functions is always the color to use for the drawing. The HLine and VLine
+primitives are for drawing horizontal and vertical lines. They have been
+included in the library because they are more efficient than the general line
+drawing provided by GrLine. The ellipse primitives can only draw ellipses with
+their major axis parallel with either the X or Y coordinate axis. They take the
+half X and Y axis length in the xa and ya arguments. The arc (circle and
+ellipse) drawing functions take the start and end angles in tenths of degrees
+(i.e. meaningful range: 0 ... 3600). The angles are interpreted
+counter-clockwise starting from the positive X axis. The style argument can be
+one of this defines from grx20.h:
 
 @example
 #define GR_ARC_STYLE_OPEN       0
@@ -841,30 +856,30 @@ one of this defines from grx20.h:
 #define GR_ARC_STYLE_CLOSE2     2
 @end example
 
-GR_ARC_STYLE_OPEN draws only the arc, GR_ARC_STYLE_CLOSE1 closes the arc with 
-a line between his start and end point, GR_ARC_STYLE_CLOSE1 draws the typical 
-cake slice. This routine: 
+GR_ARC_STYLE_OPEN draws only the arc, GR_ARC_STYLE_CLOSE1 closes the arc with
+a line between his start and end point, GR_ARC_STYLE_CLOSE1 draws the typical
+cake slice. This routine:
 
 @example
 void GrLastArcCoords(int *xs,int *ys,int *xe,int *ye,int *xc,int *yc);
 @end example
 
-can be used to retrieve the start, end, and center points used by the last arc 
-drawing functions. 
+can be used to retrieve the start, end, and center points used by the last arc
+drawing functions.
 
 See the @pxref{circtest.c} and @pxref{arctest.c} examples.
 
-The polyline and polygon primitives take the address of an n by 2 coordinate 
-array. The X values should be stored in the elements with 0 second index, and 
-the Y values in the elements with a second index value of 1. Coordinate arrays 
-passed to the polygon primitive can either contain or omit the closing edge of 
-the polygon -- the primitive will append it to the list if it is missing. 
+The polyline and polygon primitives take the address of an n by 2 coordinate
+array. The X values should be stored in the elements with 0 second index, and
+the Y values in the elements with a second index value of 1. Coordinate arrays
+passed to the polygon primitive can either contain or omit the closing edge of
+the polygon -- the primitive will append it to the list if it is missing.
 
 See the @pxref{polytest.c} example.
 
-Because calculating the arc points it's a very time consuming operation, there 
-are two functions to pre-calculate the points, that can be used next with 
-polyline and polygon primitives: 
+Because calculating the arc points it's a very time consuming operation, there
+are two functions to pre-calculate the points, that can be used next with
+polyline and polygon primitives:
 
 @example
 int  GrGenerateEllipse(int xc,int yc,int xa,int ya,
@@ -873,13 +888,13 @@ int  GrGenerateEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
                           int points[GR_MAX_ELLIPSE_POINTS][2]);
 @end example
 
-The following filled primitives are available: 
+The following filled primitives are available:
 
 @example
-void GrFilledBox(int x1,int y1,int x2,int y2,GrColor c); 
+void GrFilledBox(int x1,int y1,int x2,int y2,GrColor c);
 void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
-void GrFilledCircle(int xc,int yc,int r,GrColor c); 
-void GrFilledEllipse(int xc,int yc,int xa,int ya,GrColor c); 
+void GrFilledCircle(int xc,int yc,int r,GrColor c);
+void GrFilledEllipse(int xc,int yc,int xa,int ya,GrColor c);
 void GrFilledCircleArc(int xc,int yc,int r,
                        int start,int end,int style,GrColor c);
 void GrFilledEllipseArc(int xc,int yc,int xa,int ya,
@@ -888,74 +903,74 @@ void GrFilledPolygon(int numpts,int points[][2],GrColor c);
 void GrFilledConvexPolygon(int numpts,int points[][2],GrColor c);
 @end example
 
-Similarly to the line drawing, all of the above primitives operate on the 
-current graphics context. The GrFramedBox primitive can be used to draw 
-motif-like shaded boxes and "ordinary" framed boxes as well. The x1 through y2 
-coordinates specify the interior of the box, the border is outside this area, 
-wdt pixels wide. The primitive uses five different colors for the interior and 
-four borders of the box which are specified in the GrFBoxColors structure: 
+Similarly to the line drawing, all of the above primitives operate on the
+current graphics context. The GrFramedBox primitive can be used to draw
+motif-like shaded boxes and "ordinary" framed boxes as well. The x1 through y2
+coordinates specify the interior of the box, the border is outside this area,
+wdt pixels wide. The primitive uses five different colors for the interior and
+four borders of the box which are specified in the GrFBoxColors structure:
 
 @example
-typedef struct @{ 
-  GrColor fbx_intcolor; 
-  GrColor fbx_topcolor; 
-  GrColor fbx_rightcolor; 
-  GrColor fbx_bottomcolor; 
-  GrColor fbx_leftcolor; 
+typedef struct @{
+  GrColor fbx_intcolor;
+  GrColor fbx_topcolor;
+  GrColor fbx_rightcolor;
+  GrColor fbx_bottomcolor;
+  GrColor fbx_leftcolor;
 @} GrFBoxColors;
 @end example
 
-The GrFilledConvexPolygon primitive can be used to fill convex polygons. It 
-can also be used to fill some concave polygons whose boundaries do not intersect 
-any horizontal scan line more than twice. All other concave polygons have to be 
-filled with the (somewhat less efficient) GrFilledPolygon primitive. This 
-primitive can also be used to fill several disjoint non­overlapping polygons in 
-a single operation. 
+The GrFilledConvexPolygon primitive can be used to fill convex polygons. It
+can also be used to fill some concave polygons whose boundaries do not intersect
+any horizontal scan line more than twice. All other concave polygons have to be
+filled with the (somewhat less efficient) GrFilledPolygon primitive. This
+primitive can also be used to fill several disjoint non­overlapping polygons in
+a single operation.
 
-The function: 
+The function:
 
 @example
 void GrFloodFill(int x, int y, GrColor border, GrColor c);
 @end example
 
-flood-fills the area bounded by the color border using x, y like the starting 
-point. 
+flood-fills the area bounded by the color border using x, y like the starting
+point.
 
-The current color value of any pixel in the current context can be obtained 
-with: 
+The current color value of any pixel in the current context can be obtained
+with:
 
 @example
 GrColor GrPixel(int x,int y);
 @end example
 
-and: 
+and:
 
 @example
 GrColor GrPixelC(GrContext *c,int x,int y);
 @end example
 
-do the same for any context. 
+do the same for any context.
 
-Rectangular areas can be transferred within a context or between contexts by 
-calling: 
+Rectangular areas can be transferred within a context or between contexts by
+calling:
 
 @example
 void GrBitBlt(GrContext *dest,int x,int y,GrContext *source,
               int x1,int y1,int x2,int y2,GrColor op);
 @end example
 
-x, y is the position in the destination context, and x1, y1, x2, y2 the area 
-from the source context to be transfered. The op argument should be one of 
-supported color write modes (GrWRITE, GrXOR, GrOR, GrAND, GrIMAGE), it will 
-control how the pixels from the source context are combined with the pixels in 
-the destination context (the GrIMAGE op must be ored with the color value to be 
-handled as transparent). If either the source or the destination context 
-argument is the NULL pointer then the current context is used for that argument. 
+x, y is the position in the destination context, and x1, y1, x2, y2 the area
+from the source context to be transfered. The op argument should be one of
+supported color write modes (GrWRITE, GrXOR, GrOR, GrAND, GrIMAGE), it will
+control how the pixels from the source context are combined with the pixels in
+the destination context (the GrIMAGE op must be ored with the color value to be
+handled as transparent). If either the source or the destination context
+argument is the NULL pointer then the current context is used for that argument.
 
 See the @pxref{blittest.c} example.
 
-A efficient form to get/put pixels from/to a context can be achieved using the 
-next functions: 
+A efficient form to get/put pixels from/to a context can be achieved using the
+next functions:
 
 @example
 const GrColor *GrGetScanline(int x1,int x2,int yy);
@@ -963,39 +978,39 @@ const GrColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy);
 void GrPutScanline(int x1,int x2,int yy,const GrColor *c, GrColor op);
 @end example
 
-The Get functions return a pointer to a static GrColor pixel array (or NULL if 
-they fail) with the color values of a row (yy) segment (x1 to x2). GrGetScanline 
-uses the current context. GrGestScanlineC uses the context ctx (that can be NULL 
-to refer to the current context). Note that the output is only valid until the 
-next GRX call. 
+The Get functions return a pointer to a static GrColor pixel array (or NULL if
+they fail) with the color values of a row (yy) segment (x1 to x2). GrGetScanline
+uses the current context. GrGestScanlineC uses the context ctx (that can be NULL
+to refer to the current context). Note that the output is only valid until the
+next GRX call.
 
-GrPutScanline puts the GrColor pixel array c on the yy row segmet defined by 
-x1 to x2 in the current context using the op operation. op can be any of 
-GrWRITE, GrXOR, GrOR, GrAND or GrIMAGE. Data in c must fit GrCVALUEMASK 
-otherwise the results are implementation dependend. So you can't supply 
-operation code with the pixel data!. 
+GrPutScanline puts the GrColor pixel array c on the yy row segmet defined by
+x1 to x2 in the current context using the op operation. op can be any of
+GrWRITE, GrXOR, GrOR, GrAND or GrIMAGE. Data in c must fit GrCVALUEMASK
+otherwise the results are implementation dependend. So you can't supply
+operation code with the pixel data!.
 
 @c -----------------------------------------------------------------------------
 @node Non-clipping graphics primitives, Customized line drawing, Graphics primitives, A User Manual For GRX2
 @unnumberedsec Non-clipping graphics primitives
 
-There is a non-clipping version of some of the elementary primitives. These 
-are somewhat more efficient than the regular versions. These are to be used only 
-in situations when it is absolutely certain that no drawing will be performed 
-beyond the boundaries of the current context. Otherwise the program will almost 
-certainly crash! The reason for including these functions is that they are 
-somewhat more efficient than the regular, clipping versions. ALSO NOTE: These 
-function do not check for conflicts with the mouse cursor. (See the explanation 
-about the mouse cursor handling later in this document.) The list of the 
-supported non-clipping primitives: 
+There is a non-clipping version of some of the elementary primitives. These
+are somewhat more efficient than the regular versions. These are to be used only
+in situations when it is absolutely certain that no drawing will be performed
+beyond the boundaries of the current context. Otherwise the program will almost
+certainly crash! The reason for including these functions is that they are
+somewhat more efficient than the regular, clipping versions. ALSO NOTE: These
+function do not check for conflicts with the mouse cursor. (See the explanation
+about the mouse cursor handling later in this document.) The list of the
+supported non-clipping primitives:
 
 @example
-void GrPlotNC(int x,int y,GrColor c); 
-void GrLineNC(int x1,int y1,int x2,int y2,GrColor c); 
-void GrHLineNC(int x1,int x2,int y,GrColor c); 
-void GrVLineNC(int x,int y1,int y2,GrColor c); 
-void GrBoxNC(int x1,int y1,int x2,int y2,GrColor c); 
-void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrColor c); 
+void GrPlotNC(int x,int y,GrColor c);
+void GrLineNC(int x1,int y1,int x2,int y2,GrColor c);
+void GrHLineNC(int x1,int x2,int y,GrColor c);
+void GrVLineNC(int x,int y1,int y2,GrColor c);
+void GrBoxNC(int x1,int y1,int x2,int y2,GrColor c);
+void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrColor c);
 void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
 void grbitbltNC(GrContext *dst,int x,int y,GrContext *src,
                 int x1,int y1,int x2,int y2,GrColor op);
@@ -1007,13 +1022,13 @@ GrColor GrPixelCNC(GrContext *c,int x,int y);
 @node Customized line drawing, Pattern filled graphics primitives, Non-clipping graphics primitives, A User Manual For GRX2
 @unnumberedsec Customized line drawing
 
-The basic line drawing graphics primitives described previously always draw 
-continuous lines which are one pixel wide. There is another group of line 
-drawing functions which can be used to draw wide and/or patterned lines. These 
-functions have similar parameter passing conventions as the basic ones with one 
-difference: instead of the color value a pointer to a structure of type 
-GrLineOption has to be passed to them. The definition of the GrLineOption 
-structure: 
+The basic line drawing graphics primitives described previously always draw
+continuous lines which are one pixel wide. There is another group of line
+drawing functions which can be used to draw wide and/or patterned lines. These
+functions have similar parameter passing conventions as the basic ones with one
+difference: instead of the color value a pointer to a structure of type
+GrLineOption has to be passed to them. The definition of the GrLineOption
+structure:
 
 @example
 typedef struct @{
@@ -1024,10 +1039,10 @@ typedef struct @{
 @} GrLineOption;
 @end example
 
-The lno_pattlen structure element should be equal to the number of alternating 
-draw -- no draw section length values in the array pointed to by the lno_dashpat 
-element. The dash pattern array is assumed to begin with a drawn section. If the 
-pattern length is equal to zero a continuous line is drawn. 
+The lno_pattlen structure element should be equal to the number of alternating
+draw -- no draw section length values in the array pointed to by the lno_dashpat
+element. The dash pattern array is assumed to begin with a drawn section. If the
+pattern length is equal to zero a continuous line is drawn.
 
 Example, a white line 3 bits wide (thick) and pattern 6 bits draw, 4 bits nodraw:
 
@@ -1040,7 +1055,7 @@ mylineop.lno_pattlen = 2;
 mylineop.lno_dashpat = "\x06\x04";
 @end example
 
-The available custom line drawing primitives: 
+The available custom line drawing primitives:
 
 @example
 void GrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
@@ -1061,18 +1076,18 @@ See the @pxref{linetest.c} example.
 @node Pattern filled graphics primitives, Patterned line drawing, Customized line drawing, A User Manual For GRX2
 @unnumberedsec Pattern filled graphics primitives
 
-The library also supports a pattern filled version of the basic filled 
-primitives described above. These functions have similar parameter passing 
-conventions as the basic ones with one difference: instead of the color value a 
-pointer to an union of type 'GrPattern' has to be passed to them. The GrPattern 
-union can contain either a bitmap or a pixmap fill pattern. The first integer 
-slot in the union determines which type it is. Bitmap fill patterns are 
-rectangular arrays of bits, each set bit representing the foreground color of 
-the fill operation, and each zero bit representing the background. Both the 
-foreground and background colors can be combined with any of the supported 
-logical operations. Bitmap fill patterns have one restriction: their width must 
-be eight pixels. Pixmap fill patterns are very similar to contexts. The relevant 
-structure declarations (from grx20.h): 
+The library also supports a pattern filled version of the basic filled
+primitives described above. These functions have similar parameter passing
+conventions as the basic ones with one difference: instead of the color value a
+pointer to an union of type 'GrPattern' has to be passed to them. The GrPattern
+union can contain either a bitmap or a pixmap fill pattern. The first integer
+slot in the union determines which type it is. Bitmap fill patterns are
+rectangular arrays of bits, each set bit representing the foreground color of
+the fill operation, and each zero bit representing the background. Both the
+foreground and background colors can be combined with any of the supported
+logical operations. Bitmap fill patterns have one restriction: their width must
+be eight pixels. Pixmap fill patterns are very similar to contexts. The relevant
+structure declarations (from grx20.h):
 
 @example
 /*
@@ -1114,7 +1129,7 @@ typedef union _GR_pattern @{
 
 @end example
 
-This define group (from grx20.h) help to acces the GrPattern menbers: 
+This define group (from grx20.h) help to acces the GrPattern menbers:
 
 @example
 #define gp_bmp_data                     gp_bitmap.bmp_data
@@ -1128,13 +1143,13 @@ This define group (from grx20.h) help to acces the GrPattern menbers:
 #define gp_pxp_source                   gp_pixmap.pxp_source
 @end example
 
-Bitmap patterns can be easily built from initialized character arrays and 
-static structures by the C compiler, thus no special support is included in the 
-library for creating them. The only action required from the application program 
-might be changing the foreground and background colors as needed. Pixmap 
-patterns are more difficult to build as they replicate the layout of the video 
-memory which changes for different video modes. For this reason the library 
-provides three functions to create pixmap patterns in a mode-independent way: 
+Bitmap patterns can be easily built from initialized character arrays and
+static structures by the C compiler, thus no special support is included in the
+library for creating them. The only action required from the application program
+might be changing the foreground and background colors as needed. Pixmap
+patterns are more difficult to build as they replicate the layout of the video
+memory which changes for different video modes. For this reason the library
+provides three functions to create pixmap patterns in a mode-independent way:
 
 @example
 GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP colors);
@@ -1143,43 +1158,43 @@ GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,
 GrPattern *GrConvertToPixmap(GrContext *src);
 @end example
 
-GrBuildPixmap build a pixmap from a two dimensional (w by h) array of 
-characters. The elements in this array are used as indices into the color table 
-specified with the argument colors. (This means that pixmaps created this way 
-can use at most 256 colors.) The color table pointer: 
+GrBuildPixmap build a pixmap from a two dimensional (w by h) array of
+characters. The elements in this array are used as indices into the color table
+specified with the argument colors. (This means that pixmaps created this way
+can use at most 256 colors.) The color table pointer:
 
 @example
 typedef GrColor *GrColorTableP;
 @end example
 
-should point to an array of integers with the first element being the number of 
-colors in the table and the color values themselves starting with the second 
-element. NOTE: any color modifiers (GrXOR, GrOR, GrAND) OR-ed to the elements of 
-the color table are ignored. 
+should point to an array of integers with the first element being the number of
+colors in the table and the color values themselves starting with the second
+element. NOTE: any color modifiers (GrXOR, GrOR, GrAND) OR-ed to the elements of
+the color table are ignored.
 
-The GrBuildPixmapFromBits function builds a pixmap fill pattern from bitmap 
-data. It is useful if the width of the bitmap pattern is not eight as such 
-bitmap patterns can not be used to build a GrBitmap structure. 
+The GrBuildPixmapFromBits function builds a pixmap fill pattern from bitmap
+data. It is useful if the width of the bitmap pattern is not eight as such
+bitmap patterns can not be used to build a GrBitmap structure.
 
-The GrConvertToPixmap function converts a graphics context to a pixmap fill 
-pattern. It is useful when the pattern can be created with graphics drawing 
-operations. NOTE: the pixmap pattern and the original context share the drawing 
-RAM, thus if the context is redrawn the fill pattern changes as well. Fill 
-patterns which were built by library routines can be destroyed when no longer 
-needed (i.e. the space occupied by them can be freed) by calling: 
+The GrConvertToPixmap function converts a graphics context to a pixmap fill
+pattern. It is useful when the pattern can be created with graphics drawing
+operations. NOTE: the pixmap pattern and the original context share the drawing
+RAM, thus if the context is redrawn the fill pattern changes as well. Fill
+patterns which were built by library routines can be destroyed when no longer
+needed (i.e. the space occupied by them can be freed) by calling:
 
 @example
 void GrDestroyPattern(GrPattern *p);
 @end example
 
-NOTE: when pixmap fill patterns converted from contexts are destroyed, the 
-drawing RAM is not freed. It is freed when the original context is destroyed. 
-Fill patterns built by the application have to be destroyed by the application 
-as well (if this is needed). 
+NOTE: when pixmap fill patterns converted from contexts are destroyed, the
+drawing RAM is not freed. It is freed when the original context is destroyed.
+Fill patterns built by the application have to be destroyed by the application
+as well (if this is needed).
 
-The list of supported pattern filled graphics primitives is shown below. These 
-functions are very similar to their solid filled counterparts, only their last 
-argument is different: 
+The list of supported pattern filled graphics primitives is shown below. These
+functions are very similar to their solid filled counterparts, only their last
+argument is different:
 
 @example
 void GrPatternFilledPlot(int x,int y,GrPattern *p);
@@ -1196,18 +1211,18 @@ void GrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);
 @end example
 
-Strictly speaking the plot and line functions in the above group are not 
-filled, but they have been included here for convenience. 
+Strictly speaking the plot and line functions in the above group are not
+filled, but they have been included here for convenience.
 
 @c -----------------------------------------------------------------------------
 @node Patterned line drawing, Image manipulation, Pattern filled graphics primitives, A User Manual For GRX2
 @unnumberedsec Patterned line drawing
 
-The custom line drawing functions introduced above also have a version when 
-the drawn sections can be filled with a (pixmap or bitmap) fill pattern. To 
-achieve this these functions must be passed both a custom line drawing option 
-(GrLineOption structure) and a fill pattern (GrPattern union). These two have 
-been combined into the GrLinePattern structure: 
+The custom line drawing functions introduced above also have a version when
+the drawn sections can be filled with a (pixmap or bitmap) fill pattern. To
+achieve this these functions must be passed both a custom line drawing option
+(GrLineOption structure) and a fill pattern (GrPattern union). These two have
+been combined into the GrLinePattern structure:
 
 @example
 typedef struct @{
@@ -1217,8 +1232,8 @@ typedef struct @{
 
 @end example
 
-All patterned line drawing functions take a pointer to this structure as their 
-last argument. The list of available functions: 
+All patterned line drawing functions take a pointer to this structure as their
+last argument. The list of available functions:
 
 @example
 void GrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
@@ -1238,37 +1253,37 @@ void GrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
 @node Image manipulation, Text drawing, Patterned line drawing, A User Manual For GRX2
 @unnumberedsec Image manipulation
 
-GRX defines the GrImage type like a GrPixmap synonym: 
+GRX defines the GrImage type like a GrPixmap synonym:
 
 @example
 #define GrImage GrPixmap
 @end example
 
-nevertheless the GrImage type enforces the image character of this object, so 
-for compatibility with future GRX versions use the next functions if you need to 
-convert between GrImage and GrPixmap objects: 
+nevertheless the GrImage type enforces the image character of this object, so
+for compatibility with future GRX versions use the next functions if you need to
+convert between GrImage and GrPixmap objects:
 
 @example
 GrImage *GrImageFromPattern(GrPattern *p);
 GrPattern *GrPatternFromImage(GrImage *p);
 @end example
 
-the GrImageFromPattern function returns NULL if the GrPattern given is not a 
-GrPixmap. 
+the GrImageFromPattern function returns NULL if the GrPattern given is not a
+GrPixmap.
 
-Like pixmaps patterns images are dependent of the actual video mode set. So 
-the library provides functions to create images in a mode-independent way: 
+Like pixmaps patterns images are dependent of the actual video mode set. So
+the library provides functions to create images in a mode-independent way:
 
 @example
 GrImage *GrImageBuild(const char *pixels,int w,int h,const GrColorTableP colors);
 GrImage *GrImageFromContext(GrContext *c);
 @end example
 
-these functions work like the GrBuildPixmap and GrConvertToPixmap ones. 
-Remember: the image and the original context share the drawing RAM. 
+these functions work like the GrBuildPixmap and GrConvertToPixmap ones.
+Remember: the image and the original context share the drawing RAM.
 
-There are a number of functions to display all or part of an image in the 
-current context: 
+There are a number of functions to display all or part of an image in the
+current context:
 
 @example
 void GrImageDisplay(int x,int y, GrImage *i);
@@ -1279,17 +1294,17 @@ void GrImageHLineAlign(int xo,int yo,int x,int y,int width,GrImage *p);
 void GrImagePlotAlign(int xo,int yo,int x,int y,GrImage *p);
 @end example
 
-GrImageDisplay display the whole image using x, y like the upper left corner 
-in the current context. GrImageDisplayExt display as much as it can (repiting 
-the image if necesary) in the rectangle defined by x1, y1 and x2, y2. 
+GrImageDisplay display the whole image using x, y like the upper left corner
+in the current context. GrImageDisplayExt display as much as it can (repiting
+the image if necesary) in the rectangle defined by x1, y1 and x2, y2.
 
-GrImageFilledBoxAlign is a most general funtion (really the later two call it) 
-display as much as it can in the defined rectangle using xo, yo like the align 
-point, it is the virtual point in the destination context (it doesn't need to be 
-into the rectangle) with that the upper left image corner is aligned. 
+GrImageFilledBoxAlign is a most general funtion (really the later two call it)
+display as much as it can in the defined rectangle using xo, yo like the align
+point, it is the virtual point in the destination context (it doesn't need to be
+into the rectangle) with that the upper left image corner is aligned.
 
-GrImageHLineAlign and GrImagePlotAlign display a row segment or a point of the 
-image at x y position using the xo, yo allign point. 
+GrImageHLineAlign and GrImagePlotAlign display a row segment or a point of the
+image at x y position using the xo, yo allign point.
 
 The most usefull image funtions are these:
 
@@ -1298,17 +1313,17 @@ GrImage *GrImageInverse(GrImage *p,int flag);
 GrImage *GrImageStretch(GrImage *p,int nwidth,int nheight);
 @end example
 
-GrImageInverse creates a new image object, flipping p left-right or top-down 
-as indicated by flag that can be: 
+GrImageInverse creates a new image object, flipping p left-right or top-down
+as indicated by flag that can be:
 
 @example
 #define GR_IMAGE_INVERSE_LR  0x01  /* inverse left right */
 #define GR_IMAGE_INVERSE_TD  0x02  /* inverse top down */
 @end example
 
-GrImageStretch creates a new image stretching p to nwidth by nheight. 
+GrImageStretch creates a new image stretching p to nwidth by nheight.
 
-To destroy a image objet when you don't need it any more use: 
+To destroy a image objet when you don't need it any more use:
 
 @example
 void GrImageDestroy(GrImage *i);
@@ -1320,42 +1335,42 @@ See the @pxref{imgtest.c} example.
 @node Text drawing, Drawing in user coordinates, Image manipulation, A User Manual For GRX2
 @unnumberedsec Text drawing
 
-The library supports loadable fonts. When in memory they are bit-mapped (i.e. 
-not scalable!) fonts. A driver design allow GRX to load different font formats, 
-the last GRX release come with drivers to load the GRX own font format and the 
-BGI Borland format for all platforms supported, the X11 version can load X11 
-fonts too. 
+The library supports loadable fonts. When in memory they are bit-mapped (i.e.
+not scalable!) fonts. A driver design allow GRX to load different font formats,
+the last GRX release come with drivers to load the GRX own font format and the
+BGI Borland format for all platforms supported, the X11 version can load X11
+fonts too.
 
-The GRX distribution come with a font collection in the GRX own format. Some 
-of these fonts were converted from VGA fonts. These fonts have all 256 
-characters from the PC-437 codepage. Some additional fonts were converted from 
-fonts in the MIT X11 distribution. Most of these are ISO-8859-1 coded. Fonts 
-also have family names. The following font families are included: 
+The GRX distribution come with a font collection in the GRX own format. Some
+of these fonts were converted from VGA fonts. These fonts have all 256
+characters from the PC-437 codepage. Some additional fonts were converted from
+fonts in the MIT X11 distribution. Most of these are ISO-8859-1 coded. Fonts
+also have family names. The following font families are included:
 
 @example
 Font file name       Family  Description
-pc<W>x<H>[t].fnt     pc      VGA font, fixed 
-xm<W>x<H>[b][i].fnt  X_misc  X11, fixed, miscellaneous group 
-char<H>[b][i].fnt    char    X11, proportional, charter family 
-cour<H>[b][i].fnt    cour    X11, fixed, courier 
-helve<H>[b][i].fnt   helve   X11, proportional, helvetica 
-lucb<H>[b][i].fnt    lucb    X11, proportional, lucida bright 
-lucs<H>[b][i].fnt    lucs    X11, proportional, lucida sans serif 
-luct<H>[b][i].fnt    luct    X11, fixed, lucida typewriter 
-ncen<H>[b][i].fnt    ncen    X11, proportional, new century schoolbook 
-symb<H>.fnt          symbol  X11, proportional, greek letters, symbols 
+pc<W>x<H>[t].fnt     pc      VGA font, fixed
+xm<W>x<H>[b][i].fnt  X_misc  X11, fixed, miscellaneous group
+char<H>[b][i].fnt    char    X11, proportional, charter family
+cour<H>[b][i].fnt    cour    X11, fixed, courier
+helve<H>[b][i].fnt   helve   X11, proportional, helvetica
+lucb<H>[b][i].fnt    lucb    X11, proportional, lucida bright
+lucs<H>[b][i].fnt    lucs    X11, proportional, lucida sans serif
+luct<H>[b][i].fnt    luct    X11, fixed, lucida typewriter
+ncen<H>[b][i].fnt    ncen    X11, proportional, new century schoolbook
+symb<H>.fnt          symbol  X11, proportional, greek letters, symbols
 tms<H>[b][i].fnt     times   X11, proportional, times
 @end example
 
-In the font names <W> means the font width, <H> the font height. Many font 
-families have bold and/or italic variants. The files containing these fonts 
-contain a 'b' and/or 'i' character in their name just before the extension. 
-Additionally, the strings "_bold" and/or "_ital" are appended to the font family 
-names. Some of the pc VGA fonts come in thin formats also, these are denoted by 
-a 't' in their file names and the string "_thin" in their family names. 
+In the font names <W> means the font width, <H> the font height. Many font
+families have bold and/or italic variants. The files containing these fonts
+contain a 'b' and/or 'i' character in their name just before the extension.
+Additionally, the strings "_bold" and/or "_ital" are appended to the font family
+names. Some of the pc VGA fonts come in thin formats also, these are denoted by
+a 't' in their file names and the string "_thin" in their family names.
 
-The GrFont structure hold a font in memory. A number of 'pc' fonts are 
-built-in to the library and don't need to be loaded: 
+The GrFont structure hold a font in memory. A number of 'pc' fonts are
+built-in to the library and don't need to be loaded:
 
 @example
 extern  GrFont          GrFont_PC6x8;
@@ -1364,19 +1379,19 @@ extern  GrFont          GrFont_PC8x14;
 extern  GrFont          GrFont_PC8x16;
 @end example
 
-Other fonts must be loaded with the GrLoadFont function. If the font file name 
-starts with any path separator character or character sequence (':', '/' or '\') 
-then it is loaded from the specified directory, otherwise the library try load 
-the font first from the current directory and next from the default font path. 
-The font path can be set up with the GrSetFontPath function. If the font path is 
-not set then the value of the 'GRXFONT' environment variable is used as the font 
-path. If GrLoadFont is called again with the name of an already loaded font then 
-it will return a pointer to the result of the first loading. Font loading 
-routines return NULL if the font was not found. When not needed any more, fonts 
-can be unloaded (i.e. the storage occupied by them freed) by calling 
-GrUnloadFont. 
+Other fonts must be loaded with the GrLoadFont function. If the font file name
+starts with any path separator character or character sequence (':', '/' or '\')
+then it is loaded from the specified directory, otherwise the library try load
+the font first from the current directory and next from the default font path.
+The font path can be set up with the GrSetFontPath function. If the font path is
+not set then the value of the 'GRXFONT' environment variable is used as the font
+path. If GrLoadFont is called again with the name of an already loaded font then
+it will return a pointer to the result of the first loading. Font loading
+routines return NULL if the font was not found. When not needed any more, fonts
+can be unloaded (i.e. the storage occupied by them freed) by calling
+GrUnloadFont.
 
-The prototype declarations for these functions: 
+The prototype declarations for these functions:
 
 @example
 GrFont *GrLoadFont(char *name);
@@ -1384,7 +1399,7 @@ void GrUnloadFont(GrFont *font);
 void GrSetFontPath(char *path_list);
 @end example
 
-Using these functions: 
+Using these functions:
 
 @example
 GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,
@@ -1393,8 +1408,8 @@ GrFont *GrBuildConvertedFont(const GrFont *from,int cvt,int w,int h,
                              int minch,int maxch);
 @end example
 
-a new font can be generated from a file font or a font in memory, the 'cvt' 
-argument direct the conversion or-ing the desired operations from these defines: 
+a new font can be generated from a file font or a font in memory, the 'cvt'
+argument direct the conversion or-ing the desired operations from these defines:
 
 @example
 /*
@@ -1409,9 +1424,9 @@ argument direct the conversion or-ing the desired operations from these defines:
 #define GR_FONTCVT_PROPORTION   32    /* convert fixed font to prop. wdt */
 @end example
 
-GR_FONTCVT_SKIPCHARS needs 'minch' and 'maxch' arguments. 
+GR_FONTCVT_SKIPCHARS needs 'minch' and 'maxch' arguments.
 
-GR_FONTCVT_RESIZE needs 'w' and 'h' arguments. 
+GR_FONTCVT_RESIZE needs 'w' and 'h' arguments.
 
 The function:
 
@@ -1422,45 +1437,45 @@ void GrDumpFnaFont(const GrFont *f, char *fileName);
 writes a font to an ascii font file, so it can be quickly edited with a text
 editor. For a description of the ascii font format, see the fna.txt file.
 
-The function: 
+The function:
 
 @example
 void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName);
 @end example
 
-writes a font to a C source code file, so it can be compiled and linked with a 
-user program. GrDumpFont would not normally be used in a release program because 
-its purpose is to produce source code. When the source code is compiled and 
-linked into a program distributing the font file with the program in not 
-necessary, avoiding the possibility of the font file being deleted or corrupted. 
+writes a font to a C source code file, so it can be compiled and linked with a
+user program. GrDumpFont would not normally be used in a release program because
+its purpose is to produce source code. When the source code is compiled and
+linked into a program distributing the font file with the program in not
+necessary, avoiding the possibility of the font file being deleted or corrupted.
 
-You can use the premade fnt2c.c program (see the source, it's so simple) to 
-dump a selected font to source code, by example: 
+You can use the premade fnt2c.c program (see the source, it's so simple) to
+dump a selected font to source code, by example:
 
 "fnt2c helv15 myhelv15 myhelv15.c"
 
-Next, if this line is included in your main include file: 
+Next, if this line is included in your main include file:
 
 @example
 extern GrFont myhelv15
 @end example
 
-and "myhelv15.c" compiled and linked with your project, you can use 'myhelv15' 
-in every place a GrFont is required. 
+and "myhelv15.c" compiled and linked with your project, you can use 'myhelv15'
+in every place a GrFont is required.
 
-This simple function: 
+This simple function:
 
 @example
 void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 @end example
 
-draw text in the current context in the standard direction, using the 
-GrDefaultFont (mapped in the grx20.h file to the GrFont_PC8x14 font) with x, y 
-like the upper left corner and the foreground and background colors given (note 
-that bg equal to GrNOCOLOR make the background transparent). 
+draw text in the current context in the standard direction, using the
+GrDefaultFont (mapped in the grx20.h file to the GrFont_PC8x14 font) with x, y
+like the upper left corner and the foreground and background colors given (note
+that bg equal to GrNOCOLOR make the background transparent).
 
-For other functions the GrTextOption structure specifies how to draw a 
-character string: 
+For other functions the GrTextOption structure specifies how to draw a
+character string:
 
 @example
 typedef struct _GR_textOption @{      /* text drawing option structure */
@@ -1480,9 +1495,9 @@ typedef union _GR_textColor @{        /* text color union */
 
 @end example
 
-The text can be rotated in increments of 90 degrees (txo_direct), alignments 
-can be set in both directions (txo_xalign and txo_yalign), and separate fore and 
-background colors can be specified. The accepted text direction values: 
+The text can be rotated in increments of 90 degrees (txo_direct), alignments
+can be set in both directions (txo_xalign and txo_yalign), and separate fore and
+background colors can be specified. The accepted text direction values:
 
 @example
 #define GR_TEXT_RIGHT           0       /* normal */
@@ -1492,7 +1507,7 @@ background colors can be specified. The accepted text direction values:
 #define GR_TEXT_DEFAULT         GR_TEXT_RIGHT
 @end example
 
-The accepted horizontal and vertical alignment option values: 
+The accepted horizontal and vertical alignment option values:
 
 @example
 #define GR_ALIGN_LEFT           0       /* X only */
@@ -1504,14 +1519,14 @@ The accepted horizontal and vertical alignment option values:
 #define GR_ALIGN_DEFAULT        GR_ALIGN_LEFT
 @end example
 
-Text strings can be of three different types: one character per byte (i.e. the 
-usual C character string, this is the default), one character per 16-bit word 
-(suitable for fonts with a large number of characters), and a PC-style 
-character-attribute pair. In the last case the GrTextOption structure must 
-contain a pointer to a color table of size 16 (fg color bits in attrib) or 8 (bg 
-color bits). (The color table format is explained in more detail in the previous 
-section explaining the methods to build fill patterns.) The supported text 
-types: 
+Text strings can be of three different types: one character per byte (i.e. the
+usual C character string, this is the default), one character per 16-bit word
+(suitable for fonts with a large number of characters), and a PC-style
+character-attribute pair. In the last case the GrTextOption structure must
+contain a pointer to a color table of size 16 (fg color bits in attrib) or 8 (bg
+color bits). (The color table format is explained in more detail in the previous
+section explaining the methods to build fill patterns.) The supported text
+types:
 
 @example
 #define GR_BYTE_TEXT            0       /* one byte per character */
@@ -1519,12 +1534,12 @@ types:
 #define GR_ATTR_TEXT            2       /* chr w/ PC style attribute byte */
 @end example
 
-The PC-style attribute text uses the same layout (first byte: character, 
-second: attributes) and bitfields as the text mode screen on the PC. The only 
-difference is that the 'blink' bit is not supported (it would be very time 
-consuming -- the PC text mode does it with hardware support). This bit is used 
-instead to control the underlined display of characters. For convenience the 
-following attribute manipulation macros have been declared in grx20.h: 
+The PC-style attribute text uses the same layout (first byte: character,
+second: attributes) and bitfields as the text mode screen on the PC. The only
+difference is that the 'blink' bit is not supported (it would be very time
+consuming -- the PC text mode does it with hardware support). This bit is used
+instead to control the underlined display of characters. For convenience the
+following attribute manipulation macros have been declared in grx20.h:
 
 @example
 #define GR_BUILD_ATTR(fg,bg,ul) \
@@ -1534,28 +1549,28 @@ following attribute manipulation macros have been declared in grx20.h:
 #define GR_ATTR_UNDERLINE(attr) (((attr)     ) & 128)
 @end example
 
-Text strings of the types GR_BYTE_TEXT and GR_WORD_TEXT can also be drawn 
-underlined. This is controlled by OR-ing the constant GR_UNDERLINE_TEXT to the 
-foreground color value: 
+Text strings of the types GR_BYTE_TEXT and GR_WORD_TEXT can also be drawn
+underlined. This is controlled by OR-ing the constant GR_UNDERLINE_TEXT to the
+foreground color value:
 
 @example
 #define GR_UNDERLINE_TEXT       (GrXOR << 4)
 @end example
 
-After the application initializes a text option structure with the desired 
-values it can call one of the following two text drawing functions: 
+After the application initializes a text option structure with the desired
+values it can call one of the following two text drawing functions:
 
 @example
 void GrDrawChar(int chr,int x,int y,const GrTextOption *opt);
 void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt);
 @end example
 
-NOTE: text drawing is fastest when it is drawn in the 'normal' direction, and 
-the character does not have to be clipped. It this case the library can use the 
-appropriate low-level video RAM access routine, while in any other case the text 
-is drawn pixel-by-pixel by the higher-level code. 
+NOTE: text drawing is fastest when it is drawn in the 'normal' direction, and
+the character does not have to be clipped. It this case the library can use the
+appropriate low-level video RAM access routine, while in any other case the text
+is drawn pixel-by-pixel by the higher-level code.
 
-There are pattern filed versions too: 
+There are pattern filed versions too:
 
 @example
 void GrPatternDrawChar(int chr,int x,int y,const GrTextOption *opt,GrPattern *p);
@@ -1565,9 +1580,9 @@ void GrPatternDrawStringExt(void *text,int length,int x,int y,
                             const GrTextOption *opt,GrPattern *p);
 @end example
 
-The size of a font, a character or a text string can be obtained by calling 
-one of the following functions. These functions also take into consideration the 
-text direction specified in the text option structure passed to them. 
+The size of a font, a character or a text string can be obtained by calling
+one of the following functions. These functions also take into consideration the
+text direction specified in the text option structure passed to them.
 
 @example
 int  GrFontCharPresent(const GrFont *font,int chr);
@@ -1586,17 +1601,17 @@ int  GrStringHeight(void *text,int length,const GrTextOption *opt);
 void GrStringSize(void *text,int length,const GrTextOption *opt,int *w,int *h);
 @end example
 
-  The GrTextRegion structure and its associated functions can be used to 
-implement a fast (as much as possible in graphics modes) rectangular text window 
-using a fixed font. Clipping for such windows is done in character size 
-increments instead of pixels (i.e. no partial characters are drawn). Only fixed 
-fonts can be used in their natural size. GrDumpText will cache the code of the 
-drawn characters in the buffer pointed to by the 'backup' slot (if it is 
-non-NULL) and will draw a character only if the previously drawn character in 
-that grid element is different. 
+  The GrTextRegion structure and its associated functions can be used to
+implement a fast (as much as possible in graphics modes) rectangular text window
+using a fixed font. Clipping for such windows is done in character size
+increments instead of pixels (i.e. no partial characters are drawn). Only fixed
+fonts can be used in their natural size. GrDumpText will cache the code of the
+drawn characters in the buffer pointed to by the 'backup' slot (if it is
+non-NULL) and will draw a character only if the previously drawn character in
+that grid element is different.
 
-This can speed up text scrolling significantly in graphics modes. The 
-supported text types are the same as above. 
+This can speed up text scrolling significantly in graphics modes. The
+supported text types are the same as above.
 
 @example
 typedef struct @{                     /* fixed font text window desc. */
@@ -1619,13 +1634,13 @@ void GrDumpTextRegion(const GrTextRegion *r);
 
 @end example
 
-The GrDumpTextRegion function outputs the whole text region, while GrDumpText 
-draws only a user-specified part of it. GrDumpChar updates the character in the 
-buffer at the specified location with the new character passed to it as argument 
-and then draws the new character on the screen as well. With these functions you 
-can simulate a text mode window, write chars directly to the txr_buffer and call 
-GrDumpTextRegion when you want to update the window (or GrDumpText if you know 
-the area to update is small). 
+The GrDumpTextRegion function outputs the whole text region, while GrDumpText
+draws only a user-specified part of it. GrDumpChar updates the character in the
+buffer at the specified location with the new character passed to it as argument
+and then draws the new character on the screen as well. With these functions you
+can simulate a text mode window, write chars directly to the txr_buffer and call
+GrDumpTextRegion when you want to update the window (or GrDumpText if you know
+the area to update is small).
 
 See the @pxref{fonttest.c} example.
 
@@ -1633,44 +1648,44 @@ See the @pxref{fonttest.c} example.
 @node Drawing in user coordinates, Graphics cursors, Text drawing, A User Manual For GRX2
 @unnumberedsec Drawing in user coordinates
 
- 
-There is a second set of the graphics primitives which operates in user 
-coordinates. Every context has a user to screen coordinate mapping associated 
-with it. An application specifies the user window by calling the GrSetUserWindow 
-function. 
+
+There is a second set of the graphics primitives which operates in user
+coordinates. Every context has a user to screen coordinate mapping associated
+with it. An application specifies the user window by calling the GrSetUserWindow
+function.
 
 @example
 void GrSetUserWindow(int x1,int y1,int x2,int y2);
 @end example
 
-A call to this function it in fact specifies the virtual coordinate limits 
-which will be mapped onto the current context regardless of the size of the 
-context. For example, the call: 
+A call to this function it in fact specifies the virtual coordinate limits
+which will be mapped onto the current context regardless of the size of the
+context. For example, the call:
 
 @example
 GrSetUserWindow(0,0,11999,8999);
 @end example
 
-tells the library that the program will perform its drawing operations in a 
-coordinate system X:0...11999 (width = 12000) and Y:0...8999 (height = 9000). 
-This coordinate range will be mapped onto the total area of the current context. 
-The virtual coordinate system can also be shifted. For example: 
+tells the library that the program will perform its drawing operations in a
+coordinate system X:0...11999 (width = 12000) and Y:0...8999 (height = 9000).
+This coordinate range will be mapped onto the total area of the current context.
+The virtual coordinate system can also be shifted. For example:
 
 @example
 GrSetUserWindow(5000,2000,16999,10999);
 @end example
 
-The user coordinates can even be used to turn the usual left-handed coordinate 
-system (0:0 corresponds to the upper left corner) to a right handed one (0:0 
-corresponds to the bottom left corner) by calling: 
+The user coordinates can even be used to turn the usual left-handed coordinate
+system (0:0 corresponds to the upper left corner) to a right handed one (0:0
+corresponds to the bottom left corner) by calling:
 
 @example
-GrSetUserWindow(0,8999,11999,0); 
+GrSetUserWindow(0,8999,11999,0);
 @end example
 
-The library also provides three utility functions for the query of the current 
-user coordinate limits and for converting user coordinates to screen coordinates 
-and vice versa. 
+The library also provides three utility functions for the query of the current
+user coordinate limits and for converting user coordinates to screen coordinates
+and vice versa.
 
 @example
 void GrGetUserWindow(int *x1,int *y1,int *x2,int *y2);
@@ -1678,14 +1693,14 @@ void GrGetScreenCoord(int *x,int *y);
 void GrGetUserCoord(int *x,int *y);
 @end example
 
-If an application wants to take advantage of the user to screen coordinate 
-mapping it has to use the user coordinate version of the graphics primitives. 
-These have exactly the same parameter passing conventions as their screen 
-coordinate counterparts. NOTE: the user coordinate system is not initialized by 
-the library! The application has to set up its coordinate mapping before calling 
-any of the use coordinate drawing functions -- otherwise the program will almost 
-certainly exit (in a quite ungraceful fashion) with a 'division by zero' error. 
-The list of supported user coordinate drawing functions: 
+If an application wants to take advantage of the user to screen coordinate
+mapping it has to use the user coordinate version of the graphics primitives.
+These have exactly the same parameter passing conventions as their screen
+coordinate counterparts. NOTE: the user coordinate system is not initialized by
+the library! The application has to set up its coordinate mapping before calling
+any of the use coordinate drawing functions -- otherwise the program will almost
+certainly exit (in a quite ungraceful fashion) with a 'division by zero' error.
+The list of supported user coordinate drawing functions:
 
 @example
 void GrUsrPlot(int x,int y,GrColor c);
@@ -1753,32 +1768,32 @@ void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 @node Graphics cursors, Keyboard input, Drawing in user coordinates, A User Manual For GRX2
 @unnumberedsec Graphics cursors
 
-The library provides support for the creation and usage of an unlimited number 
-of graphics cursors. An application can use these cursors for any purpose. 
-Cursors always save the area they occupy before they are drawn. When moved or 
-erased they restore this area. As a general rule of thumb, an application should 
-erase a cursor before making changes to an area it occupies and redraw the 
-cursor after finishing the drawing. Cursors are created with the GrBuildCursor 
-function: 
+The library provides support for the creation and usage of an unlimited number
+of graphics cursors. An application can use these cursors for any purpose.
+Cursors always save the area they occupy before they are drawn. When moved or
+erased they restore this area. As a general rule of thumb, an application should
+erase a cursor before making changes to an area it occupies and redraw the
+cursor after finishing the drawing. Cursors are created with the GrBuildCursor
+function:
 
 @example
 GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,
                         int xo,int yo,const GrColorTableP c);
 @end example
 
-The pixels, w (=width), h (=height) and c (= color table) arguments are 
-similar to the arguments of the pixmap building library function GrBuildPixmap 
-(see that paragraph for a more detailed explanation.), but with two differences. 
-First, is not assumed that the pixels data is w x h sized, the pitch argument 
-set the offset between rows. Second, the pixmap data is interpreted slightly 
-differently, any pixel with value zero is taken as a "transparent" pixel, i.e. 
-the background will show through the cursor pattern at that pixel. A pixmap data 
-byte with value = 1 will refer to the first color in the table, and so on. 
+The pixels, w (=width), h (=height) and c (= color table) arguments are
+similar to the arguments of the pixmap building library function GrBuildPixmap
+(see that paragraph for a more detailed explanation.), but with two differences.
+First, is not assumed that the pixels data is w x h sized, the pitch argument
+set the offset between rows. Second, the pixmap data is interpreted slightly
+differently, any pixel with value zero is taken as a "transparent" pixel, i.e.
+the background will show through the cursor pattern at that pixel. A pixmap data
+byte with value = 1 will refer to the first color in the table, and so on.
 
-The xo (= X offset) and yo (= Y offset) arguments specify the position (from 
-the top left corner of the cursor pattern) of the cursor's "hot point". 
+The xo (= X offset) and yo (= Y offset) arguments specify the position (from
+the top left corner of the cursor pattern) of the cursor's "hot point".
 
-The GrCursor data structure: 
+The GrCursor data structure:
 
 @example
 typedef struct _GR_cursor @{
@@ -1792,9 +1807,9 @@ typedef struct _GR_cursor @{
 @} GrCursor;
 @end example
 
-is typically not used (i.e. read or changed) by the application program, it 
-should just pass pointers to these structures to the appropriate library 
-functions. Other cursor manipulation functions: 
+is typically not used (i.e. read or changed) by the application program, it
+should just pass pointers to these structures to the appropriate library
+functions. Other cursor manipulation functions:
 
 @example
 void GrDisplayCursor(GrCursor *cursor);
@@ -1809,8 +1824,8 @@ See the @pxref{curstest.c} example.
 @node Keyboard input, Mouse event handling, Graphics cursors, A User Manual For GRX2
 @unnumberedsec Keyboard input
 
-GRX can handle platform independant key input. The file grxkeys.h defines the 
-keys to be used in the user's program. This is an extract: 
+GRX can handle platform independant key input. The file grxkeys.h defines the
+keys to be used in the user's program. This is an extract:
 
 @example
 #define GrKey_Control_A            0x0001
@@ -1830,33 +1845,33 @@ keys to be used in the user's program. This is an extract:
 #define GrKey_Alt_F3               0x016a
 @end example
 
-But you can be confident that the standard ASCII is right maped. 
-The GrKeyType type is defined to store keycodes: 
+But you can be confident that the standard ASCII is right maped.
+The GrKeyType type is defined to store keycodes:
 
 @example
 typedef unsigned short GrKeyType;
 @end example
 
-This function: 
+This function:
 
 @example
 int GrKeyPressed(void);
 @end example
 
-returns non zero if there are any keycode waiting, that can be read with: 
+returns non zero if there are any keycode waiting, that can be read with:
 
 @example
 GrKeyType GrKeyRead(void);
 @end example
 
-The function: 
+The function:
 
 @example
 int GrKeyStat(void);
 @end example
 
-returns a keyboard status word, or-ing it with the next defines it can be known 
-the status of some special keys: 
+returns a keyboard status word, or-ing it with the next defines it can be known
+the status of some special keys:
 
 @example
 #define GR_KB_RIGHTSHIFT    0x01      /* right shift key depressed */
@@ -1876,34 +1891,34 @@ See the @pxref{keys.c} example.
 @node Mouse event handling, Writing/reading PNM graphics files, Keyboard input, A User Manual For GRX2
 @unnumberedsec Mouse event handling
 
-All mouse services need the presence of a mouse. An application can test 
-whether a mouse is available by calling the function: 
+All mouse services need the presence of a mouse. An application can test
+whether a mouse is available by calling the function:
 
 @example
 int  GrMouseDetect(void);
 @end example
 
-which will return zero if no mouse (or mouse driver) is present, non-zero 
-otherwise. The mouse must be initialized by calling one (and only one) of these 
-functions: 
+which will return zero if no mouse (or mouse driver) is present, non-zero
+otherwise. The mouse must be initialized by calling one (and only one) of these
+functions:
 
 @example
 void GrMouseInit(void);
 void GrMouseInitN(int queue_size);
 @end example
 
-GrMouseInit sets a event queue (see below) size to GR_M_QUEU_SIZE (128). A 
-user supply event queue size can be set calling GrMouseInitN instead. 
+GrMouseInit sets a event queue (see below) size to GR_M_QUEU_SIZE (128). A
+user supply event queue size can be set calling GrMouseInitN instead.
 
-It is a good practice to call GrMouseUnInit before exiting the program. This 
-will restore any interrupt vectors hooked by the program to their original 
-values. 
+It is a good practice to call GrMouseUnInit before exiting the program. This
+will restore any interrupt vectors hooked by the program to their original
+values.
 
 @example
 void GrMouseUnInit(void);
 @end example
 
-The mouse can be controlled with the following functions: 
+The mouse can be controlled with the following functions:
 
 @example
 void GrMouseSetSpeed(int spmult,int spdiv);
@@ -1913,83 +1928,83 @@ void GrMouseGetLimits(int *x1,int *y1,int *x2,int *y2);
 void GrMouseWarp(int x,int y);
 @end example
 
-The library calculates the mouse position only from the mouse mickey counters. 
-(To avoid the limit and 'rounding to the next multiple of eight' problem with 
-some mouse driver when it finds itself in a graphics mode unknown to it.) The 
-parameters to the GrMouseSetSpeed function specify how coordinate changes are 
-obtained from mickey counter changes, multipling by spmult and dividing by 
-spdiv. In high resolution graphics modes the value of one just works fine, in 
-low resolution modes (320x200 or similar) it is best set the spdiv to two or 
-three. (Of course, it also depends on the sensitivity the mouse.) The 
-GrMouseSetAccel function is used to control the ballistic effect: if a mouse 
-coordinate changes between two samplings by more than the thresh parameter, the 
-change is multiplied by the accel parameter. NOTE: some mouse drivers perform 
-similar calculations before reporting the coordinates in mickeys. In this case 
-the acceleration done by the library will be additional to the one already 
-performed by the mouse driver. The limits of the mouse movement can be set 
-(passed limits will be clipped to the screen) with GrMouseSetLimits (default is 
-the whole screen) and the current limits can be obtained with GrMouseGetLimits. 
-GrMouseWarp sets the mouse cursor to the specified position. 
+The library calculates the mouse position only from the mouse mickey counters.
+(To avoid the limit and 'rounding to the next multiple of eight' problem with
+some mouse driver when it finds itself in a graphics mode unknown to it.) The
+parameters to the GrMouseSetSpeed function specify how coordinate changes are
+obtained from mickey counter changes, multipling by spmult and dividing by
+spdiv. In high resolution graphics modes the value of one just works fine, in
+low resolution modes (320x200 or similar) it is best set the spdiv to two or
+three. (Of course, it also depends on the sensitivity the mouse.) The
+GrMouseSetAccel function is used to control the ballistic effect: if a mouse
+coordinate changes between two samplings by more than the thresh parameter, the
+change is multiplied by the accel parameter. NOTE: some mouse drivers perform
+similar calculations before reporting the coordinates in mickeys. In this case
+the acceleration done by the library will be additional to the one already
+performed by the mouse driver. The limits of the mouse movement can be set
+(passed limits will be clipped to the screen) with GrMouseSetLimits (default is
+the whole screen) and the current limits can be obtained with GrMouseGetLimits.
+GrMouseWarp sets the mouse cursor to the specified position.
 
-As typical mouse drivers do not know how to draw mouse cursors in high 
-resolution graphics modes, the mouse cursor is drawn by the library. The mouse 
-cursor can be set with: 
+As typical mouse drivers do not know how to draw mouse cursors in high
+resolution graphics modes, the mouse cursor is drawn by the library. The mouse
+cursor can be set with:
 
 @example
 void GrMouseSetCursor(GrCursor *cursor);
 void GrMouseSetColors(GrColor fg,GrColor bg);
 @end example
 
-GrMouseSetColors uses an internal arrow pattern, the color fg will be used as 
-the interior of it and bg will be the border. The current mouse cursor can be 
-obtained with: 
+GrMouseSetColors uses an internal arrow pattern, the color fg will be used as
+the interior of it and bg will be the border. The current mouse cursor can be
+obtained with:
 
 @example
 GrCursor *GrMouseGetCursor(void);
 @end example
 
-The mouse cursor can be displayed/erased with: 
+The mouse cursor can be displayed/erased with:
 
 @example
 void GrMouseDisplayCursor(void);
 void GrMouseEraseCursor(void);
 @end example
 
-The mouse cursor can be left permanently displayed. All graphics primitives 
-except for the few non-clipping functions check for conflicts with the mouse 
-cursor and erase it before the drawing if necessary. Of course, it may be more 
-efficient to erase the cursor manually before a long drawing sequence and redraw 
-it after completion. The library provides an alternative pair of calls for this 
-purpose which will erase the cursor only if it interferes with the drawing: 
+The mouse cursor can be left permanently displayed. All graphics primitives
+except for the few non-clipping functions check for conflicts with the mouse
+cursor and erase it before the drawing if necessary. Of course, it may be more
+efficient to erase the cursor manually before a long drawing sequence and redraw
+it after completion. The library provides an alternative pair of calls for this
+purpose which will erase the cursor only if it interferes with the drawing:
 
 @example
 int  GrMouseBlock(GrContext *c,int x1,int y1,int x2,int y2);
 void GrMouseUnBlock(int return_value_from_GrMouseBlock);
 @end example
 
-GrMouseBlock should be passed the context in which the drawing will take place 
-(the usual convention of NULL meaning the current context is supported) and the 
-limits of the affected area. It will erase the cursor only if it interferes with 
-the drawing. When the drawing is finished GrMouseUnBlock must be called with the 
-argument returned by GrMouseBlock. 
+GrMouseBlock should be passed the context in which the drawing will take place
+(the usual convention of NULL meaning the current context is supported) and the
+limits of the affected area. It will erase the cursor only if it interferes with
+the drawing. When the drawing is finished GrMouseUnBlock must be called with the
+argument returned by GrMouseBlock.
 
-The status of the mouse cursor can be obtained with calling 
-GrMouseCursorIsDisplayed. This function will return non-zero if the cursor is 
-displayed, zero if it is erased. 
+The status of the mouse cursor can be obtained with calling
+GrMouseCursorIsDisplayed. This function will return non-zero if the cursor is
+displayed, zero if it is erased.
 
 @example
 int  GrMouseCursorIsDisplayed(void);
 @end example
 
-The library supports (beside the simple cursor drawing) three types of 
-"rubberband" attached to the mouse cursor. The GrMouseSetCursorMode function is 
-used to select the cursor drawing mode. 
+The library supports (beside the simple cursor drawing) three types of
+"rubberband" attached to the mouse cursor. The GrMouseSetCursorMode function is
+used to select the cursor drawing mode.
 
 @example
 void GrMouseSetCursorMode(int mode,...);
 @end example
 
-The parameter mode can have the following values: 
+The parameter mode can have the following values:
 
 @example
 #define GR_M_CUR_NORMAL   0    /* MOUSE CURSOR modes: just the cursor */
@@ -1998,28 +2013,28 @@ The parameter mode can have the following values:
 #define GR_M_CUR_BOX      3    /* rectangular box dragged by the cursor */
 @end example
 
-GrMouseSetCursorMode takes different parameters depending on the cursor 
-drawing mode selected. The accepted call formats are: 
+GrMouseSetCursorMode takes different parameters depending on the cursor
+drawing mode selected. The accepted call formats are:
 
 @example
-GrMouseSetCursorMode(M_CUR_NORMAL); 
-GrMouseSetCursorMode(M_CUR_RUBBER,xanchor,yanchor,GrColor); 
-GrMouseSetCursorMode(M_CUR_LINE,xanchor,yanchor,GrColor); 
-GrMouseSetCursorMode(M_CUR_BOX,dx1,dy1,dx2,dy2,GrColor); 
+GrMouseSetCursorMode(M_CUR_NORMAL);
+GrMouseSetCursorMode(M_CUR_RUBBER,xanchor,yanchor,GrColor);
+GrMouseSetCursorMode(M_CUR_LINE,xanchor,yanchor,GrColor);
+GrMouseSetCursorMode(M_CUR_BOX,dx1,dy1,dx2,dy2,GrColor);
 @end example
 
-The anchor parameters for the rubberband and rubberline modes specify a fixed 
-screen location to which the other corner of the primitive is bound. The dx1 
-through dy2 parameters define the offsets of the corners of the dragged box from 
-the hotpoint of the mouse cursor. The color value passed is always XOR-ed to the 
-screen, i.e. if an application wants the rubberband to appear in a given color 
-on a given background then it has to pass the XOR of these two colors to 
-GrMouseSetCursorMode. 
+The anchor parameters for the rubberband and rubberline modes specify a fixed
+screen location to which the other corner of the primitive is bound. The dx1
+through dy2 parameters define the offsets of the corners of the dragged box from
+the hotpoint of the mouse cursor. The color value passed is always XOR-ed to the
+screen, i.e. if an application wants the rubberband to appear in a given color
+on a given background then it has to pass the XOR of these two colors to
+GrMouseSetCursorMode.
 
-The GrMouseGetEvent function is used to obtain the next mouse or keyboard 
-event. It takes a flag with various bits encoding the type of event needed. It 
-returns the event in a GrMouseEvent structure. The relevant declarations from 
-grx20.h: 
+The GrMouseGetEvent function is used to obtain the next mouse or keyboard
+event. It takes a flag with various bits encoding the type of event needed. It
+returns the event in a GrMouseEvent structure. The relevant declarations from
+grx20.h:
 
 @example
 void GrMouseGetEvent(int flags,GrMouseEvent *event);
@@ -2034,11 +2049,11 @@ typedef struct _GR_mouseEvent @{    /* mouse event buffer structure */
 @} GrMouseEvent;
 @end example
 
-The event structure has been extended with a keyboard status word (thus a 
-program can check for combinations like ALT-<left mousebutton press>) and a time 
-stamp which can be used to check for double clicks, etc... The following macros 
-have been defined in grx20.h to help in creating the control flag for 
-GrMouseGetEvent and decoding the various bits in the event structure: 
+The event structure has been extended with a keyboard status word (thus a
+program can check for combinations like ALT-<left mousebutton press>) and a time
+stamp which can be used to check for double clicks, etc... The following macros
+have been defined in grx20.h to help in creating the control flag for
+GrMouseGetEvent and decoding the various bits in the event structure:
 
 @example
 #define GR_M_MOTION         0x001         /* mouse event flag bits */
@@ -2065,35 +2080,35 @@ GrMouseGetEvent and decoding the various bits in the event structure:
                              GR_M_BUTTON_DOWN | GR_M_BUTTON_UP)
 @end example
 
-GrMouseGetEvent will display the mouse cursor if it was previously erased and 
-the GR_M_NOPAINT bit is not set in the flag passed to it. In this case it will 
-also erase the cursor after an event has been obtained. 
+GrMouseGetEvent will display the mouse cursor if it was previously erased and
+the GR_M_NOPAINT bit is not set in the flag passed to it. In this case it will
+also erase the cursor after an event has been obtained.
 
-GrMouseGetEvent block until a event is produced, except if the GR_M_POLL bit 
-is set in the falg passed to it. 
+GrMouseGetEvent block until a event is produced, except if the GR_M_POLL bit
+is set in the falg passed to it.
 
-Another version of GetEvent: 
+Another version of GetEvent:
 
 @example
 void GrMouseGetEventT(int flags,GrMouseEvent *event,long timout_msecs);
 @end example
 
-can be istructed to wait timout_msec for the presence of an event. Note that 
-event->dtime is only valid if any event occured (event->flags != 0) otherwise 
-it's set as -1. Additionally event timing is real world time even in X11 && 
-Linux. 
+can be istructed to wait timout_msec for the presence of an event. Note that
+event->dtime is only valid if any event occured (event->flags != 0) otherwise
+it's set as -1. Additionally event timing is real world time even in X11 &&
+Linux.
 
-If there are one or more events waiting the function: 
+If there are one or more events waiting the function:
 
 @example
 int  GrMousePendingEvent(void);
 @end example
 
-returns non-zero value. 
+returns non-zero value.
 
-The generation of mouse and keyboard events can be individually enabled or 
-disabled (by passing a non-zero or zero, respectively, value in the 
-corresponding enable_XX parameter) by calling: 
+The generation of mouse and keyboard events can be individually enabled or
+disabled (by passing a non-zero or zero, respectively, value in the
+corresponding enable_XX parameter) by calling:
 
 @example
 void GrMouseEventEnable(int enable_kb,int enable_ms);
@@ -2108,28 +2123,28 @@ See the @pxref{mousetst.c} example.
 @node Writing/reading PNM graphics files, Writing/reading PNG graphics files,Mouse event handling , A User Manual For GRX2
 @unnumberedsec Writing/reading PNM graphics files
 
-GRX includes functions to load/save a context from/to a PNM file. 
+GRX includes functions to load/save a context from/to a PNM file.
 
 PNM is a group of simple graphics formats from the NetPbm (http://netpbm.sourceforge.net)
-distribution. NetPbm can convert from/to PNM lots of graphics formats, 
+distribution. NetPbm can convert from/to PNM lots of graphics formats,
 and apply some transformations to PNM files.
-(Note. You don't need the NetPbm distribution to use this functions). 
+(Note. You don't need the NetPbm distribution to use this functions).
 
-There are six PNM formats: 
+There are six PNM formats:
 
 @example
-  P1 text PBM (bitmap) 
-  P2 text PGM (gray scale) 
-  P3 text PPM (real color) 
-  P4 binary PBM (bitmap) 
-  P5 binary PGM (gray scale) 
-  P6 binary PPM (real color) 
+  P1 text PBM (bitmap)
+  P2 text PGM (gray scale)
+  P3 text PPM (real color)
+  P4 binary PBM (bitmap)
+  P5 binary PGM (gray scale)
+  P6 binary PPM (real color)
 @end example
 
-GRX can handle the binary formats only (get the NetPbm distribution if you 
-need convert text to binary formats). 
+GRX can handle the binary formats only (get the NetPbm distribution if you
+need convert text to binary formats).
 
-To save a context in a PNM file you have three functions: 
+To save a context in a PNM file you have three functions:
 
 @example
 int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn );
@@ -2137,30 +2152,30 @@ int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn );
 int GrSaveContextToPpm( GrContext *grc, char *ppmfn, char *docn );
 @end example
 
-they work both in RGB and palette modes, grc must be a pointer to the context to 
-be saved, if it is NULL the current context is saved; p-mfn is the file name to 
-be created and docn is an optional text comment to be written in the file, it 
-can be NULL. Three functions return 0 on succes and -1 on error. 
+they work both in RGB and palette modes, grc must be a pointer to the context to
+be saved, if it is NULL the current context is saved; p-mfn is the file name to
+be created and docn is an optional text comment to be written in the file, it
+can be NULL. Three functions return 0 on succes and -1 on error.
 
-GrSaveContextToPbm dumps a context in a PBM file (bitmap). If the pixel color 
-isn't Black it asumes White. 
+GrSaveContextToPbm dumps a context in a PBM file (bitmap). If the pixel color
+isn't Black it asumes White.
 
-GrSaveContextToPgm dumps a context in a PGM file (gray scale). The colors are 
-quantized to gray scale using .299r + .587g + .114b. 
+GrSaveContextToPgm dumps a context in a PGM file (gray scale). The colors are
+quantized to gray scale using .299r + .587g + .114b.
 
-GrSaveContextToPpm dumps a context in a PPM file (real color). 
-To load a PNM file in a context you must use: 
+GrSaveContextToPpm dumps a context in a PPM file (real color).
+To load a PNM file in a context you must use:
 
 @example
 int GrLoadContextFromPnm( GrContext *grc, char *pnmfn );
 @end example
 
-it support reading PBM, PGM and PPM binary files. grc must be a pointer to the 
-context to be written, if it is NULL the current context is used; p-mfn is the 
-file name to be read. If context dimensions are lesser than pnm dimensions, the 
-function loads as much as it can. If color mode is not in RGB mode, the routine 
-allocates as much colors as it can. The function returns 0 on succes and -1 on 
-error. 
+it support reading PBM, PGM and PPM binary files. grc must be a pointer to the
+context to be written, if it is NULL the current context is used; p-mfn is the
+file name to be read. If context dimensions are lesser than pnm dimensions, the
+function loads as much as it can. If color mode is not in RGB mode, the routine
+allocates as much colors as it can. The function returns 0 on succes and -1 on
+error.
 
 To query the file format, width and height of a PNM file you can use:
 
@@ -2168,9 +2183,9 @@ To query the file format, width and height of a PNM file you can use:
 int GrQueryPnm( char *ppmfn, int *width, int *height, int *maxval );
 @end example
 
-pnmfn is the name of pnm file; width returns the pnm width; height returns the 
-pnm height; maxval returns the max color component value. The function returns 1 
-to 6 on success (the PNM format) or -1 on error. 
+pnmfn is the name of pnm file; width returns the pnm width; height returns the
+pnm height; maxval returns the max color component value. The function returns 1
+to 6 on success (the PNM format) or -1 on error.
 
 The two next functions:
 
@@ -2305,14 +2320,14 @@ error (-1) ever.
 @node Miscellaneous functions, BGI interface, Writing/reading JPEG graphics files, A User Manual For GRX2
 @unnumberedsec Miscellaneous functions
 
-Here we will describe some miscellaneous functions. 
+Here we will describe some miscellaneous functions.
 
 @example
 unsigned GrGetLibraryVersion(void);
 @end example
 
-GrGetLibraryVersion returns the GRX version API, like a hexadecimal coded 
-number. By example 0x0241 means 2.4.1 Because grx20.h defines the 
+GrGetLibraryVersion returns the GRX version API, like a hexadecimal coded
+number. By example 0x0241 means 2.4.1 Because grx20.h defines the
 GRX_VERSION_API macro, you can check if both, the library and the
 include file, are in the same version using
 if(GrGetLibraryVersion() == GRX_VERSION_API )
@@ -2321,34 +2336,39 @@ if(GrGetLibraryVersion() == GRX_VERSION_API )
 unsigned GrGetLibrarySystem(void);
 @end example
 
-This functions returns a unsigned integer identifing the system you are 
-working in. grx20.h defines some macros you can use: 
+This functions returns a unsigned integer identifing the system you are
+working in. grx20.h defines some macros you can use:
 
 @example
 /* these are the supported configurations: */
-#define GRX_VERSION_TCC_8086_DOS    1   /* also works with BCC */
-#define GRX_VERSION_GCC_386_DJGPP   2   /* DJGPP v2 */
-#define GRX_VERSION_GCC_386_LINUX   3   /* the real stuff */
-#define GRX_VERSION_GENERIC_X11     4   /* generic X11 version */
-#define GRX_VERSION_WATCOM_DOS4GW   5   /* GS - Watcom C++ 11.0 32 Bit
-#define GRX_VERSION_GCC_386_WIN32   7   /* WIN32 using Mingw32 */
+#define GRX_VERSION_TCC_8086_DOS        1   /* also works with BCC */
+#define GRX_VERSION_GCC_386_DJGPP       2   /* DJGPP v2 */
+#define GRX_VERSION_GCC_386_LINUX       3   /* the real stuff */
+#define GRX_VERSION_GENERIC_X11         4   /* generic X11 version */
+#define GRX_VERSION_WATCOM_DOS4GW       5   /* GS - Watcom C++ 11.0 32 Bit
+#define GRX_VERSION_GCC_386_WIN32       7   /* WIN32 using Mingw32 */
+#define GRX_VERSION_MSC_386_WIN32       8   /* WIN32 using MS-VC */
+#define GRX_VERSION_GCC_386_CYG32       9   /* WIN32 using CYGWIN */
+#define GRX_VERSION_GCC_386_X11        10   /* X11 version */
+#define GRX_VERSION_GCC_X86_64_LINUX   11   /* console framebuffer 64 */
+#define GRX_VERSION_GCC_X86_64_X11     12   /* X11 version 64 */
 @end example
 
-Note. On Linux, GrGetLibrarySystem returns GRX_VERSION_GCC_386_LINUX even in the 
-X11 version. 
+Note. On Linux, GrGetLibrarySystem returns GRX_VERSION_GCC_386_LINUX even in the
+X11 version.
 
 @example
 void GrSetWindowTitle(char *title);
 @end example
 
-GrSetWindowTitle sets the main window title in the X11 an Win32 versions. It 
-doesn't do nothing in the DOS and Linux-SvgaLib versions. 
+GrSetWindowTitle sets the main window title in the X11 an Win32 versions. It
+doesn't do nothing in the DOS and Linux-SvgaLib versions.
 
 @example
 void GrSleep(int msec);
 @end example
 
-This function stops the program execution for msec miliseconds. 
+This function stops the program execution for msec miliseconds.
 
 @example
  GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,
@@ -2356,9 +2376,9 @@ This function stops the program execution for msec miliseconds.
 
 @end example
 
-This function is like GrCreateContext, except that you can specify any valid 
-memory frame mode, not only the Screen associated frame mode. It can be used for 
-special purposes (see GrBitBlt1bpp for an example). 
+This function is like GrCreateContext, except that you can specify any valid
+memory frame mode, not only the Screen associated frame mode. It can be used for
+special purposes (see GrBitBlt1bpp for an example).
 
 @example
  void GrBitBlt1bpp(GrContext *dst,int dx,int dy,GrContext *src,
@@ -2366,8 +2386,8 @@ special purposes (see GrBitBlt1bpp for an example).
 
 @end example
 
-This special function does a bitblt from a 1bpp context (a bitmap really), 
-using fg and bg like the color+opcode when bit=1 and bit=0 respectively. Here is 
+This special function does a bitblt from a 1bpp context (a bitmap really),
+using fg and bg like the color+opcode when bit=1 and bit=0 respectively. Here is
 an example:
 
 @example
@@ -2377,7 +2397,7 @@ an example:
    GrClearContext( GrBlack() );
    GrLine(0, 0, sizex-1, sizey-1, GrWhite());
    GrLine(0, sizey-1, sizex-1, 0, GrWhite());
- 
+
    /* Put the bitmap into the screen */
    GrSetContext(NULL);
    fcolor = GrAllocColor( 255,0,0 );
@@ -2389,11 +2409,11 @@ an example:
 @node BGI interface, Test examples, Miscellaneous functions, A User Manual For GRX2
 @unnumberedsec BGI interface
 
-From the 2.3.1 version, GRX includes the BCC2GRX library created by Hartmut 
-Schirmer. The BCC2GRX was created to allow users of GRX to compile graphics 
-programs written for Borland-C++ and Turbo-C graphics interface. BCC2GRX is not 
-a convenient platform to develop new BGI programs. Of course you should use 
-native GRX interface in such cases! 
+From the 2.3.1 version, GRX includes the BCC2GRX library created by Hartmut
+Schirmer. The BCC2GRX was created to allow users of GRX to compile graphics
+programs written for Borland-C++ and Turbo-C graphics interface. BCC2GRX is not
+a convenient platform to develop new BGI programs. Of course you should use
+native GRX interface in such cases!
 
-Read the readme.bgi file for more info. 
+Read the readme.bgi file for more info.
 

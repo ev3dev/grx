@@ -12,7 +12,7 @@ int main(void)
   int  x, y, xr, i;
 
   gd = DETECT;
-  initgraph(&gd,&gm,"d:\\tp\\bgi");
+  initgraph(&gd,&gm,"..\\..\\chr");
   err = graphresult();
   if (err != grOk) {
     fprintf(stderr, "Couldn't initialize graphics\n");

@@ -980,7 +980,7 @@ void  LaserPrint ( struct _DST * DSTPtr , int PRNHandle )
 
              S = Buf + RowBytes;
              FullCount = RowBytes;
-             while (*(--S)==0 && FullCount>0) FullCount--;
+             while (FullCount>0 && *(--S)==0) FullCount--;
 
              /* Versuchen die Zeile nach Algorithmus 2 (TIFF Pacbits) zu    */
              /* komprimieren. Abgeschickt wird dann der kuerzere der beiden */

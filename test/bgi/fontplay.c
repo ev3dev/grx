@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
   int err;
   long long start, stop;
 
-  initgraph(&gd,&gm,"..\\..\\chr");
+  initgraph(&gd,&gm,"../../chr");
   err = graphresult();
   if (err != grOk) {
     fprintf(stderr, "Couldn't initialize graphics\n");
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     setcolor(i&15);
     for (font=TRIPLEX_FONT; font <= BOLD_FONT; ++font) {
       settextstyle(font, HORIZ_DIR, 1);
-      outtextxy( 0, 0, "M");
+      outtextxy( 10, 10, "M");
     }
   }  
   stop = Time();  

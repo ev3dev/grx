@@ -117,7 +117,7 @@ static int buildcontext(GrVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
         sttzero(cxt);
 #if !defined(__TURBOC__) \
  && !(defined(__WATCOMC__) && !defined(__386__)) \
- && !(defined(__XWIN__) && !defined(XF86DGA_DRIVER))
+ && !(defined(__XWIN__) && !defined(XF86DGA_FRAMEBUFFER) && !defined(__SDL__))
         if(mp->extinfo->flags&GR_VMODEF_LINEAR)
         {
             DBGPRINTF(DBG_SETMD,("buildcontext - Linear Mode\n"));
@@ -127,7 +127,7 @@ static int buildcontext(GrVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
             cxt->gc_baseaddr[3] = LINP_PTR(mp->extinfo->frame);
             cxt->gc_selector    = mp->extinfo->LFB_Selector;
         } else
-#endif /* !__TURBOC__ && !( __WATCOMC__ && !__386__) && !(__XWIN__ && !XF86DGA_DRIVER) */
+#endif /* !__TURBOC__ && !( __WATCOMC__ && !__386__) && !(__XWIN__ && !XF86DGA_FRAMEBUFFER && !__SDL__) */
         if (mp->extinfo->flags&GR_VMODEF_MEMORY)
         {
             DBGPRINTF(DBG_SETMD,("buildcontext - Memory Mode\n"));

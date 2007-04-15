@@ -1,3 +1,5 @@
+{$X+}
+
 Program Blt_Test;
 
 uses GRX;
@@ -24,7 +26,7 @@ var
 
 begin
    x  :=  1024;
-   y  :=  768;
+   y  :=  1000;
    xv :=  1024;
    yv :=  1024;
    BPP:=  8;
@@ -35,19 +37,19 @@ begin
    TestFunc;
    GrCircle(400,400,200,GrWhite);
    GrCircle(400,400,205,GrWhite);
-   GrLineNC(0, 0, GrScreenX, GrScreenY, GrWhite);
-   GrLineNC(0, GrScreenY, GrScreenX, 0, GrWhite);
-   readln;
-   writeln('GrScreenContext');
+   GrLineNC(0, 0, GrScreenX-1, GrScreenY-1, GrWhite);
+   GrLineNC(0, GrScreenY-1, GrScreenX-1, 0, GrWhite);
+   GrKeyRead;
+   GrTextXY(0,0,'GrScreenContext',GrWhite,GrBlack);
    GrBitBltNC(GrScreenContext, 200, 200, GrScreenContext, 0, 0, 200, 200, GrWrite);
-   readln;
+   GrKeyRead;
    GrBitBltNC(GrScreenContext, 300, 300, GrScreenContext, 0, 0, 200, 200, GrOr);
-   readln;
+   GrKeyRead;
    GrBitBltNC(GrScreenContext, 400, 400, GrScreenContext, 0, 0, 200, 200, GrAnd);
-   readln;
+   GrKeyRead;
    GrBitBltNC(GrScreenContext, 500, 500, GrScreenContext, 0, 0, 200, 200, GrXor);
-   readln;
+   GrKeyRead;
    GrBitBltNC(GrScreenContext, 600, 600, GrScreenContext, 0, 0, 200, 200, GrImage);
-   readln;
+   GrKeyRead;
 end.
 

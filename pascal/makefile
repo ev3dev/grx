@@ -9,7 +9,7 @@ GRXLIB = -L/usr/X11R6/lib
 GRAPHICSLIB = -L/usr/lib
 
 # Compiler and options on your system  
-COMPILER = gpc --automake -Wall
+COMPILER = $(PC) --automake -Wall
 
 # --------------------------------------------
 # I Think, you don't need to change from here

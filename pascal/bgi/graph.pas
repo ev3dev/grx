@@ -18,9 +18,9 @@
 
   22/02/01 patches by Maurice Lombardi <Maurice.Lombardi@ujf-grenoble.fr>
   Necessary to correct the drawpoly and fillpoly declarations.
-  Some changes to make this file compile with more recent versions of
-  gpc (change in declaration of external variables, removal of now
-  invalid __soso__  declarations). }
+
+  Maurice Lombardi, Frank Heckenbach <frank@pascal.gnu.de>: Some changes
+  to make this file compile with more recent versions of GPC. }
 
 { Define this if you don't want this unit to declare a KeyPressed
   and a ReadKey function. }
@@ -30,17 +30,28 @@
   (Ignored on non-Linux systems.) }
 {.$define LINUX_CONSOLE}
 
+{ Define this if you want to use the SDL driver in mingw or x11}
+{.$define __SDL__}
+
 {$gnu-pascal,I-}
 {$ifdef __DJGPP__}
   {$L grx20}
 {$elif defined (__MINGW32__)}
-  {$L grx20}
+  {$ifdef __SDL__}
+    {$L grx20S, SDL}
+  {$else}
+    {$L grx20}
+  {$endif}
 {$elif defined (_WIN32)}
   {$L grxW32, vfs.c, user32, gdi32}
 {$elif defined (linux) and defined (LINUX_CONSOLE)}
   {$L grx20, vga}
 {$else}
-  {$L grx20X, X11}
+  {$ifdef __SDL__}
+    {$L grx20S, SDL, pthread, X11}
+  {$else}
+    {$L grx20X, X11}
+  {$endif}
 {$endif}
 
 { Uncomment those of the following libraries that you need }
@@ -60,9 +71,14 @@ interface
 {$else}
 {$define varasmname external; asmname}
 {$endif}
+{$if __GPC_RELEASE__ < 20040917}
+type
+  CInteger = Integer;
+  CCardinal = Cardinal;
+{$endif}
 
 type
-  PByte     = ^Byte;
+  PByte = ^Byte;
   WrkString = String[255];
 
 const
@@ -261,26 +277,26 @@ const
 type
   PaletteType = record
     Size  : Byte;
-    Colors: array [0 .. MaxColors] of Byte;
+    Colors: array [0 .. MaxColors] of Byte
   end;
 
   LineSettingsType = record
-    LineStyle: Integer;
+    LineStyle: CInteger;
     UPattern : ShortCard;
-    Thickness: Integer;
+    Thickness: CInteger
   end;
 
   TextSettingsType = record
-    Font     : Integer;
-    Direction: Integer;
-    CharSize : Integer;
-    Horiz    : Integer;
-    Vert     : Integer;
+    Font,
+    Direction,
+    CharSize,
+    Horiz,
+    Vert: CInteger
    end;
 
   FillSettingsType = record
-    Pattern: Integer;
-    Color  : Integer;
+    Pattern,
+    Color: CInteger
   end;
 
   FillPatternType = array [1 .. 8] of Byte;
@@ -288,17 +304,17 @@ type
   { This definition is compatible with the grx
     definition `int pts[][2]' used to define polygons }
   PointType = record
-    x, y: Integer;
+    x, y: CInteger
   end;
 
   ViewPortType = record
-    x1, y1, x2, y2: Integer;
-    Clip: WordBool;
+    x1, y1, x2, y2: CInteger;
+    Clip: WordBool
   end;
 
   ArcCoordsType = record
-    x, y:Integer;
-    XStart, YStart, XEnd, YEnd: Integer;
+    x, y,
+    XStart, YStart, XEnd, YEnd: CInteger
   end;
 
 var
@@ -307,105 +323,105 @@ var
 
 { BGI - API definitions }
 
-procedure DetectGraph(var GraphDriver, GraphMode: Integer); asmname 'detectgraph';
-procedure InitGraph(var GraphDriver, GraphMode: Integer; PathToDriver: CString); asmname 'initgraph';
-procedure SetGraphMode(Mode: Integer); asmname 'setgraphmode';
-function  GetModeName(ModeNumber: Integer): WrkString;
+procedure DetectGraph(var GraphDriver, GraphMode: Integer);
+procedure InitGraph(var GraphDriver, GraphMode: Integer; PathToDriver: CString);
+procedure SetGraphMode(Mode: CInteger); asmname 'setgraphmode';
+function  GetModeName(ModeNumber: CInteger): WrkString;
 procedure GraphDefaults; asmname 'graphdefaults';
 function  GetDriverName: WrkString;
-function  GraphErrorMsg(ErrorCode: Integer): WrkString;
-function  GetMaxX: Integer; asmname 'getmaxx';
-function  GetMaxY: Integer; asmname 'getmaxy';
-function  GetMaxColor: Integer; asmname 'getmaxcolor';
+function  GraphErrorMsg(ErrorCode: CInteger): WrkString;
+function  GetMaxX: CInteger; asmname 'getmaxx';
+function  GetMaxY: CInteger; asmname 'getmaxy';
+function  GetMaxColor: CInteger; asmname 'getmaxcolor';
 procedure GetViewSettings(var ViewPort: ViewPortType); asmname 'getviewsettings';
-procedure SetViewPort(Left, Top, Right, Bottom: Integer; Clip: Boolean); asmname 'setviewport';
+procedure SetViewPort(Left, Top, Right, Bottom: CInteger; Clip: Boolean); asmname 'setviewport';
 procedure GetLineSettings(var LineInfo: LineSettingsType); asmname 'getlinesettings';
-procedure SetLineStyle(LineStyle: Integer; Pattern: Integer; Thickness: Integer); asmname 'setlinestyle';
+procedure SetLineStyle(LineStyle: CInteger; Pattern: CInteger; Thickness: CInteger); asmname 'setlinestyle';
 procedure ClearViewPort; asmname 'clearviewport';
-function  GetPixel(x,y: Integer): Integer; asmname 'getpixel';
-procedure PutPixel(x, y: Integer; Pixel: Integer); asmname 'putpixel';
-procedure Bar3D(Left, Top, Right, Bottom: Integer; Depth: Integer; TopFlag: Boolean); asmname 'bar';
-procedure Rectangle(Left, Top, Right, Bottom: Integer); asmname 'rectangle';
-procedure FillPoly(NumPoints: Word; var PolyPoints { : array of PointType }); asmname 'fillpoly';
-procedure FillEllipse(x, y: Integer; XRadius, YRadius: Integer); asmname 'fillellipse';
+function  GetPixel(x,y: CInteger): CInteger; asmname 'getpixel';
+procedure PutPixel(x, y: CInteger; Pixel: CInteger); asmname 'putpixel';
+procedure Bar3D(Left, Top, Right, Bottom: CInteger; Depth: CInteger; TopFlag: Boolean); asmname 'bar3d';
+procedure Rectangle(Left, Top, Right, Bottom: CInteger); asmname 'rectangle';
+procedure FillPoly(NumPoints: CCardinal; var PolyPoints { : array of PointType }); asmname 'fillpoly';
+procedure FillEllipse(x, y: CInteger; XRadius, YRadius: CInteger); asmname 'fillellipse';
 procedure GetArcCoords(var ArcCoords: ArcCoordsType); asmname 'getarccoords';
-procedure FloodFill(x, y: Integer; Border: Integer); asmname 'floodfill';
-procedure SetFillPattern(UPattern: FillPatternType; Color: Integer); asmname 'setfillpattern';
-procedure SetFillStyle(Pattern: Integer; Color: Integer); asmname 'setfillstyle';
-procedure GetImage(Left, Top, Right, Bottom: Integer; var BitMap); asmname 'getimage';
-procedure PutImage(Left, Top: Integer; var BitMap; Op: Integer); asmname 'putimage';
-function  ImageSize(Left, Top, Right, Bottom: Integer): Integer; asmname 'imagesize';
+procedure FloodFill(x, y: CInteger; Border: CInteger); asmname 'floodfill';
+procedure SetFillPattern(UPattern: FillPatternType; Color: CInteger); asmname 'setfillpattern';
+procedure SetFillStyle(Pattern: CInteger; Color: CInteger); asmname 'setfillstyle';
+procedure GetImage(Left, Top, Right, Bottom: CInteger; var BitMap); asmname 'getimage';
+procedure PutImage(Left, Top: CInteger; var BitMap; Op: CInteger); asmname 'putimage';
+function  ImageSize(Left, Top, Right, Bottom: CInteger): CInteger; asmname 'imagesize';
 procedure GetTextSettings(var TextTypeInfo: TextSettingsType); asmname 'gettextsettings';
-procedure SetTextJustify(Horiz, Vert: Integer); asmname 'settextjustify';
-procedure SetTextStyle(Font, Direction: Integer; CharSize: Integer); asmname 'settextstyle';
-procedure SetRGBPalette(Color, Red, Green, Blue: Integer); asmname 'setrgbpalette';
-procedure SetUserCharSize(MultX, DivX, MultY, DivY: Integer); asmname 'setusercharsize';
-procedure SetWriteMode(Mode: Integer); asmname 'setwritemode';
+procedure SetTextJustify(Horiz, Vert: CInteger); asmname 'settextjustify';
+procedure SetTextStyle(Font, Direction: CInteger; CharSize: CInteger); asmname 'settextstyle';
+procedure SetRGBPalette(Color, Red, Green, Blue: CInteger); asmname 'setrgbpalette';
+procedure SetUserCharSize(MultX, DivX, MultY, DivY: CInteger); asmname 'setusercharsize';
+procedure SetWriteMode(Mode: CInteger); asmname 'setwritemode';
 procedure OutText(TextString: CString); asmname 'outtext';
-procedure OutTextXY(x, y: Integer; TextString: CString); asmname 'outtextxy';
-function  TextHeight(TextString: CString): Integer; asmname 'textheight';
-function  TextWidth(TextString: CString): Integer; asmname 'textwidth';
+procedure OutTextXY(x, y: CInteger; TextString: CString); asmname 'outtextxy';
+function  TextHeight(TextString: CString): CInteger; asmname 'textheight';
+function  TextWidth(TextString: CString): CInteger; asmname 'textwidth';
 
-function  RegisterBGIfont(Font: Pointer): Integer; asmname 'registerbgifont';
-function  InstallUserFont(FontName: CString): Integer; asmname 'installuserfont';
+function  RegisterBGIfont(Font: Pointer): CInteger; asmname 'registerbgifont';
+function  InstallUserFont(FontName: CString): CInteger; asmname 'installuserfont';
 
-function  GetPaletteSize: Integer; asmname 'getpalettesize';
+function  GetPaletteSize: CInteger; asmname 'getpalettesize';
 procedure GetPalette(var Palette: PaletteType); asmname 'getpalette';
-procedure SetPalette(ColorNum: Word; Color: Integer); asmname '__gr_setpalette';
+procedure SetPalette(ColorNum: CCardinal; Color: CInteger); asmname '__gr_setpalette';
 procedure SetAllPalette(protected var Palette: PaletteType); asmname 'setallpalette';
 
 procedure RestoreCrtMode; asmname '__gr_restorecrtmode';
 procedure CloseGraph; asmname '__gr_closegraph';
-procedure SetColor(Color: Integer); asmname '__gr_setcolor';
-procedure SetBkColor(Color: Integer); asmname '__gr_setbkcolor';
-procedure Bar(Left, Top, Right, Bottom: Integer); asmname '__gr_bar';
-function  GraphResult:Integer; asmname '__gr_graphresult';
-procedure Line(x1, y1, x2, y2: Integer); asmname '__gr_line';
-procedure MoveTo(x, y: Integer); asmname '__gr_moveto';
-procedure Arc(x, y: Integer; StAngle, EndAngle, Radius: Word); asmname '__gr_arc';
-procedure Circle(x, y: Integer; Radius: Word); asmname '__gr_circle';
+procedure SetColor(Color: CInteger); asmname '__gr_setcolor';
+procedure SetBkColor(Color: CInteger); asmname '__gr_setbkcolor';
+procedure Bar(Left, Top, Right, Bottom: CInteger); asmname '__gr_bar';
+function  GraphResult:CInteger; asmname '__gr_graphresult';
+procedure Line(x1, y1, x2, y2: CInteger); asmname '__gr_line';
+procedure MoveTo(x, y: CInteger); asmname '__gr_moveto';
+procedure Arc(x, y: CInteger; StAngle, EndAngle, Radius: CCardinal); asmname '__gr_arc';
+procedure Circle(x, y: CInteger; Radius: CCardinal); asmname '__gr_circle';
 procedure ClearDevice; asmname '__gr_cleardevice';
-procedure DrawPoly(NumPoints: Word; var PolyPoints { : array of PointType }); asmname '__gr_drawpoly';
-procedure Ellipse(x, y: Integer; StAngle, EndAngle: Word; XRadius, YRadius: Word); asmname '__gr_ellipse';
-procedure GetAspectRatio(var XAsp, YAsp: Integer); asmname '__gr_getaspectratio';
-function  GetBkColor: Word; asmname '__gr_getbkcolor';
-function  GetColor: Word; asmname '__gr_getcolor';
+procedure DrawPoly(NumPoints: CCardinal; var PolyPoints { : array of PointType }); asmname '__gr_drawpoly';
+procedure Ellipse(x, y: CInteger; StAngle, EndAngle: CCardinal; XRadius, YRadius: CCardinal); asmname '__gr_ellipse';
+procedure GetAspectRatio(var XAsp, YAsp: Integer);
+function  GetBkColor: CCardinal; asmname '__gr_getbkcolor';
+function  GetColor: CCardinal; asmname '__gr_getcolor';
 procedure GetFillPattern(var FillPattern: FillPatternType); asmname '__gr_getfillpattern';
 procedure GetFillSettings(var FillInfo: FillSettingsType); asmname '__gr_getfillsettings';
-function  GetMaxMode: Integer; asmname '__gr_getmaxmode';
-function  GetGraphMode: Integer; asmname '__gr_getgraphmode';
-function  GetX: Integer; asmname '__gr_getx';
-function  GetY: Integer; asmname '__gr_gety';
-function  InstallUserDriver(const DriverName: String; AutoDetectPtr: Pointer):Integer;
-procedure LineRel(dx, dy: Integer); asmname '__gr_linerel';
-procedure LineTo(x, y: Integer); asmname '__gr_lineto';
-procedure MoveRel(dx, dy: Integer); asmname '__gr_moverel';
-procedure PieSlice(x, y: Integer; StAngle, EndAngle, Radius: Word); asmname '__gr_pieslice';
-function  RegisterBGIdriver(Driver: Pointer): Integer;
-procedure Sector(x, y: Integer; StAngle,EndAngle, XRadius, YRadius: Word); asmname '__gr_sector';
-procedure SetAspectRatio(XAsp, YAsp: Integer); asmname '__gr_setaspectratio';
-procedure SetGraphBufSize(BufSize: Word); asmname '__gr_setgraphbufsize';
-procedure SetActivePage(Page: Word); asmname '__gr_setactivepage';
-procedure SetVisualPage(Page: Word); asmname '__gr_setvisualpage';
+function  GetMaxMode: CInteger; asmname '__gr_getmaxmode';
+function  GetGraphMode: CInteger; asmname '__gr_getgraphmode';
+function  GetX: CInteger; asmname '__gr_getx';
+function  GetY: CInteger; asmname '__gr_gety';
+function  InstallUserDriver(const DriverName: String; AutoDetectPtr: Pointer):CInteger;
+procedure LineRel(dx, dy: CInteger); asmname '__gr_linerel';
+procedure LineTo(x, y: CInteger); asmname '__gr_lineto';
+procedure MoveRel(dx, dy: CInteger); asmname '__gr_moverel';
+procedure PieSlice(x, y: CInteger; StAngle, EndAngle, Radius: CCardinal); asmname '__gr_pieslice';
+function  RegisterBGIdriver(Driver: Pointer): CInteger;
+procedure Sector(x, y: CInteger; StAngle,EndAngle, XRadius, YRadius: CCardinal); asmname '__gr_sector';
+procedure SetAspectRatio(XAsp, YAsp: CInteger); asmname '__gr_setaspectratio';
+procedure SetGraphBufSize(BufSize: CCardinal); asmname '__gr_setgraphbufsize';
+procedure SetActivePage(Page: CCardinal); asmname '__gr_setactivepage';
+procedure SetVisualPage(Page: CCardinal); asmname '__gr_setvisualpage';
 procedure GetDefaultPalette(var Palette: PaletteType);
-procedure GetModeRange(GraphDriver:Integer; var LoMode, HiMode:Integer); asmname '__gr_getmoderange';
+procedure GetModeRange(GraphDriver:CInteger; var LoMode, HiMode:Integer);
 
-function  Black       : Integer;
-function  Blue        : Integer;
-function  Green       : Integer;
-function  Cyan        : Integer;
-function  Red         : Integer;
-function  Magenta     : Integer;
-function  Brown       : Integer;
-function  LightGray   : Integer;
-function  DarkGray    : Integer;
-function  LightBlue   : Integer;
-function  LightGreen  : Integer;
-function  LightCyan   : Integer;
-function  LightRed    : Integer;
-function  LightMagenta: Integer;
-function  Yellow      : Integer;
-function  White       : Integer;
+function  Black       : CInteger;
+function  Blue        : CInteger;
+function  Green       : CInteger;
+function  Cyan        : CInteger;
+function  Red         : CInteger;
+function  Magenta     : CInteger;
+function  Brown       : CInteger;
+function  LightGray   : CInteger;
+function  DarkGray    : CInteger;
+function  LightBlue   : CInteger;
+function  LightGreen  : CInteger;
+function  LightCyan   : CInteger;
+function  LightRed    : CInteger;
+function  LightMagenta: CInteger;
+function  Yellow      : CInteger;
+function  White       : CInteger;
 
 { BGI - API extensions }
 
@@ -425,43 +441,42 @@ var
 
 { Translates BGI driver/mode into a driver/mode pair for this unit
   for usage with InitGraph / SetGraphMode }
-procedure SetBGImode(var GDrv, GMode: Integer); asmname 'set_BGI_mode';
+procedure SetBGImode(var GDrv, GMode: CInteger); asmname 'set_BGI_mode';
 
 { Determines a driver/mode pair for InitGraph that will set
   up a graphics mode with the desired resolution and colors }
-procedure SetBGImodeWHC(var GDrv, GMode: Integer; Width, Height, Colors: Integer); asmname '__gr_set_BGI_mode_whc';
+procedure SetBGImodeWHC(var GDrv, GMode: CInteger; Width, Height, Colors: CInteger); asmname '__gr_set_BGI_mode_whc';
 
 { enable multiple graphics pages by
     SetBGIModePages (2);
     InitGraph (gd, gm, '');
     if (GraphResult = grOk) and (GetBGIModePages=2) then PlayWithPages; }
-procedure SetBGIModePages(p: Integer); asmname '__gr_set_BGI_mode_pages';
-function  GetBGIModePages: Integer; asmname '__gr_get_BGI_mode_pages';
+procedure SetBGIModePages(p: CInteger); asmname '__gr_set_BGI_mode_pages';
+function  GetBGIModePages: CInteger; asmname '__gr_get_BGI_mode_pages';
 
 { like GetMaxColor, GetMaxX, GetMaxY but for any available mode }
-function  GetModeMaxColor(Mode: Integer): Integer; asmname '__gr_getmodemaxcolor';
-function  GetModeMaxX(Mode: Integer): Integer; asmname '__gr_getmodemaxx';
-function  GetModeMaxY(Mode: Integer): Integer; asmname '__gr_getmodemaxy';
+function  GetModeMaxColor(Mode: CInteger): CInteger; asmname '__gr_getmodemaxcolor';
+function  GetModeMaxX(Mode: CInteger): CInteger; asmname '__gr_getmodemaxx';
+function  GetModeMaxY(Mode: CInteger): CInteger; asmname '__gr_getmodemaxy';
 
 { Set the actual drawing color to r/g/b.
   Functional in HiColor/TrueColor modes only }
-procedure SetRGBColor(Red, Green, Blue: Word); asmname '__gr_setrgbcolor';
+procedure SetRGBColor(Red, Green, Blue: CCardinal); asmname '__gr_setrgbcolor';
 
-{ Returns the actual RGB palette. Functional in
-  256 color modes only. Won't work on Linux systems }
-procedure GetRGBPalette(Color: Integer; var Red, Green, Blue: Integer); asmname '__getrgbpalette';
+{ Returns the actual RGB palette. }
+procedure GetRGBPalette(Color: CInteger; var Red, Green, Blue: CInteger); asmname '__getrgbpalette';
 
 { Transforms the predefined 16 EGA colors (RED, BLUE, MAGENTA, ...)
   into the correct color value for the active graphics mode }
-function EGAColor(EGACol: Integer): Integer; asmname '_ega_color';
+function EGAColor(EGACol: CInteger): CInteger; asmname '_ega_color';
 
 { Enable/disable linestyle drawing of vector fonts.
   Currently only functional with GRX v1.x }
 procedure TextLineStyle(On: Boolean); asmname '__gr_textlinestyle';
 
 { Counterparts of SetActivePage/SetVisualPage }
-function  GetActivePage: Integer; asmname '__gr_getactivepage';
-function  GetVisualPage: Integer; asmname '__gr_getvisualpage';
+function  GetActivePage: CInteger; asmname '__gr_getactivepage';
+function  GetVisualPage: CInteger; asmname '__gr_getvisualpage';
 
 {$ifndef NO_GRAPH_KEY_FUNCTIONS}
 function KeyPressed: Boolean; asmname 'kbhit';
@@ -470,32 +485,72 @@ function ReadKey: Char; asmname 'getch';
 
 implementation
 
-function gem(ec: Integer): CString; asmname 'grapherrormsg';
-function GraphErrorMsg(ErrorCode: Integer): WrkString;
+procedure dg(var GraphDriver, GraphMode: CInteger); asmname 'detectgraph';
+procedure DetectGraph(var GraphDriver, GraphMode: Integer);
+var gd, gm: CInteger;
 begin
-  GraphErrorMsg := CString2String(gem(ErrorCode));
+  gd := GraphDriver;
+  gm := GraphMode;
+  dg (gd, gm);
+  GraphDriver := gd;
+  GraphMode := gm
 end;
 
-function gmn(mn: Integer): CString; asmname 'getmodename';
-function GetModeName(ModeNumber: Integer): WrkString;
+procedure ig(var gd, gm: CInteger; PathToDriver: CString); asmname 'initgraph';
+procedure InitGraph(var GraphDriver, GraphMode: Integer; PathToDriver: CString);
+var gd, gm: CInteger;
 begin
-  GetModeName := CString2String(gmn(ModeNumber));
+  gd := GraphDriver;
+  gm := GraphMode;
+  ig (gd, gm, PathToDriver);
+  GraphDriver := gd;
+  GraphMode := gm
+end;
+
+function gem(ec: CInteger): CString; asmname 'grapherrormsg';
+function GraphErrorMsg(ErrorCode: CInteger): WrkString;
+begin
+  GraphErrorMsg := CString2String (gem (ErrorCode))
+end;
+
+function gmn(mn: CInteger): CString; asmname 'getmodename';
+function GetModeName(ModeNumber: CInteger): WrkString;
+begin
+  GetModeName := CString2String (gmn (ModeNumber))
 end;
 
 function gdn: CString; asmname 'getdrivername';
 function GetDriverName: WrkString;
 begin
-  GetDriverName := CString2String(gdn);
+  GetDriverName := CString2String (gdn)
+end;
+
+procedure gar(var XAsp, YAsp: CInteger); asmname '__gr_getaspectratio';
+procedure GetAspectRatio(var XAsp, YAsp: Integer);
+var xa, ya: CInteger;
+begin
+  gar (xa, ya);
+  XAsp := xa;
+  YAsp := ya
 end;
 
 type pPT = ^PaletteType;
 function gdp: pPT; asmname '__gr_getdefaultpalette';
 procedure GetDefaultPalette(var Palette: PaletteType);
 begin
- Palette := gdp^;
+ Palette := gdp^
 end;
 
-function InstallUserDriver(const DriverName: String; AutoDetectPtr: Pointer):Integer;
+procedure gmr(GraphDriver:CInteger; var LoMode, HiMode:CInteger); asmname '__gr_getmoderange';
+procedure GetModeRange(GraphDriver:CInteger; var LoMode, HiMode:Integer);
+var lm, hm: CInteger;
+begin
+  gmr (GraphDriver, lm, hm);
+  LoMode := lm;
+  HiMode := hm
+end;
+
+function InstallUserDriver(const DriverName: String; AutoDetectPtr: Pointer):CInteger;
 var
   Dummy1: Integer;
   Dummy2: Pointer;
@@ -505,89 +560,89 @@ begin
   InstallUserDriver := GrError
 end;
 
-function RegisterBGIdriver(Driver: Pointer): Integer;
+function RegisterBGIdriver(Driver: Pointer): CInteger;
 var Dummy: Pointer;
 begin
   Dummy := Driver;
   RegisterBGIdriver := GrError
 end;
 
-function Black: Integer;
+function Black: CInteger;
 begin
   Black := EGAColor (0)
 end;
 
-function Blue: Integer;
+function Blue: CInteger;
 begin
   Blue := EGAColor (1)
 end;
 
-function Green: Integer;
+function Green: CInteger;
 begin
   Green := EGAColor (2)
 end;
 
-function Cyan: Integer;
+function Cyan: CInteger;
 begin
   Cyan := EGAColor (3)
 end;
 
-function Red: Integer;
+function Red: CInteger;
 begin
   Red := EGAColor (4)
 end;
 
-function Magenta: Integer;
+function Magenta: CInteger;
 begin
   Magenta := EGAColor (5)
 end;
 
-function Brown: Integer;
+function Brown: CInteger;
 begin
   Brown := EGAColor (6)
 end;
 
-function LightGray: Integer;
+function LightGray: CInteger;
 begin
   LightGray := EGAColor (7)
 end;
 
-function DarkGray: Integer;
+function DarkGray: CInteger;
 begin
   DarkGray := EGAColor (8)
 end;
 
-function LightBlue: Integer;
+function LightBlue: CInteger;
 begin
   LightBlue := EGAColor (9)
 end;
 
-function LightGreen: Integer;
+function LightGreen: CInteger;
 begin
   LightGreen := EGAColor (10)
 end;
 
-function LightCyan: Integer;
+function LightCyan: CInteger;
 begin
   LightCyan := EGAColor (11)
 end;
 
-function LightRed: Integer;
+function LightRed: CInteger;
 begin
   LightRed := EGAColor (12)
 end;
 
-function LightMagenta: Integer;
+function LightMagenta: CInteger;
 begin
   LightMagenta := EGAColor (13)
 end;
 
-function Yellow: Integer;
+function Yellow: CInteger;
 begin
   Yellow := EGAColor (14)
 end;
 
-function White: Integer;
+function White: CInteger;
 begin
   White := EGAColor (15)
 end;
