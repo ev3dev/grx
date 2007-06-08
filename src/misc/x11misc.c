@@ -14,6 +14,8 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 070506 M.Alvarez, Added XFlush to GrSleep
+ **
  **/
 
 #include <unistd.h>
@@ -21,15 +23,16 @@
 #include "libgrx.h"
 #include "libxwin.h"
 
-void GrSetWindowTitle( char *title )
+void GrSetWindowTitle(char *title)
 {
-  XStoreName( _XGrDisplay,_XGrWindow,title );
-  XSetIconName( _XGrDisplay,_XGrWindow,title );
+  XStoreName(_XGrDisplay, _XGrWindow,title);
+  XSetIconName(_XGrDisplay, _XGrWindow,title);
 }
 
 void GrSleep( int msec )
 {
-  usleep( msec*1000L );
+  XFlush(_XGrDisplay);
+  usleep(msec*1000L);
 }
 
 long GrMsecTime( void )

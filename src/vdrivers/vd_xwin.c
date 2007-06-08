@@ -16,6 +16,9 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by:
+ ** 070505 M.Alvarez, Using a Pixmap for BackingStore
+ **
  **/
 
 #include "libgrx.h"
@@ -28,6 +31,7 @@ int             _XGrScreen;
 Window          _XGrWindow;
 Pixmap          _XGrBitmap;
 Pixmap          _XGrPattern;
+Pixmap          _XGrBStore;
 Colormap        _XGrColormap;
 GC              _XGrGC;
 GC              _XGrBitmapGC;
@@ -38,6 +42,7 @@ unsigned int    _XGrColorOper;
 unsigned int    _XGrDepth;
 unsigned int    _XGrBitsPerPixel;
 unsigned int        _XGrScanlinePad;
+int             _XGrBStoreInited = 0;
 
 unsigned long   _XGrColorPlanes[8];
 unsigned int    _XGrColorNumPlanes;
@@ -53,6 +58,53 @@ char *_XGrClassNames[6] = {
     "DirectColor"
 };
 
+static void setbank(int bk);
+static void setrwbanks(int rb,int wb);
+static void loadcolor(int c,int r,int g,int b);
+static int setmode(GrVideoMode *mp,int noclear);
+
+GrVideoModeExt grtextext = {
+  GR_frameText,                       /* frame driver */
+  NULL,                               /* frame driver override */
+  NULL,                               /* frame buffer address */
+  { 0, 0, 0 },                        /* color precisions */
+  { 0, 0, 0 },                        /* color component bit positions */
+  0,                                  /* mode flag bits */
+  setmode,                            /* mode set */
+  NULL,                               /* virtual size set */
+  NULL,                               /* virtual scroll */
+  NULL,                               /* bank set function */
+  NULL,                               /* double bank set function */
+  NULL                                /* color loader */
+};
+
+static GrVideoModeExt grxwinext = {
+  GR_frameUndef,                      /* frame driver */
+  NULL,                               /* frame driver override */
+  NULL,                               /* frame buffer address */
+  { 0, 0, 0 },                        /* color precisions */
+  { 0, 0, 0 },                        /* color component bit positions */
+  0,                                  /* mode flag bits */
+  setmode,                            /* mode set */
+  NULL,                               /* virtual size set */
+  NULL,                               /* virtual scroll */
+  setbank,                            /* bank set function */
+  setrwbanks,                         /* double bank set */
+  loadcolor                           /* color loader */
+};
+
+static GrVideoMode modes[] = {
+  /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext  */
+  {  TRUE,  8,   80,   25,  0x00,    80, 1,    &grtextext  },
+  { FALSE,  0,  320,  240,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0,  640,  480,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0,  800,  600,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0, 1024,  768,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0, 1280, 1024,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0, 1600, 1200,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0, 9999, 9999,  0x00,     0, 0,    &grxwinext  }
+};
+
 static void setbank(int bk)
 {}
 
@@ -65,7 +117,7 @@ static void loadcolor(int c,int r,int g,int b)
   if (  _XGrDisplay != NULL
      && _XGrColormap != None
      && ! (  _XGrColorNumPixels == 1
-          && (c < _XGrColorPixels[0] || c > _XGrColorPixels[1])) ) {
+     && (c < _XGrColorPixels[0] || c > _XGrColorPixels[1])) ) {
     XColor xcolor;
 
     DBGPRINTF(DBG_DRIVER,("Setting X11 color %d to r=%d, g=%d, b=%d\n",c,r,g,b));
@@ -89,12 +141,25 @@ static int setmode(GrVideoMode *mp,int noclear)
   if (_XGrWindow != None) {
 
     XUnmapWindow (_XGrDisplay, _XGrWindow);
+    if (_XGrBStoreInited) {
+      XFreePixmap(_XGrDisplay, _XGrBStore);
+      XFreeGC(_XGrDisplay, _XGrGC);
+      _XGrBStoreInited = 0;
+    }
+
     if (mp->extinfo->mode != GR_frameText) {
       XSizeHints hints;
 
       XResizeWindow (_XGrDisplay, _XGrWindow, mp->width, mp->height);
+      if (USE_PIXMAP_FOR_BS ) {
+        _XGrBStore = XCreatePixmap (_XGrDisplay, _XGrWindow, mp->width, mp->height, _XGrDepth);
+        _XGrGC = XCreateGC (_XGrDisplay, _XGrBStore, 0L, NULL);
+        _XGrBStoreInited = 1;
+        XFillRectangle (_XGrDisplay, _XGrBStore, _XGrGC, 0, 0, mp->width, mp->height);
+        grxwinext.frame = (char *) _XGrBStore;
+      }
 
-      sprintf (name, "grx %dx%dx%d", mp->width, mp->height, mp->bpp);
+      sprintf (name, "mgrx %dx%dx%d", mp->width, mp->height, mp->bpp);
       window_name = name;
       icon_name = name;
 
@@ -122,7 +187,7 @@ static int setmode(GrVideoMode *mp,int noclear)
         while (1) {
           XNextEvent (_XGrDisplay, &xevent);
           if (xevent.type == MapNotify)
-            break;
+           break;
         }
       }
     }
@@ -130,49 +195,6 @@ static int setmode(GrVideoMode *mp,int noclear)
   }
   GRX_RETURN(res);
 }
-
-GrVideoModeExt grtextext = {
-    GR_frameText,                       /* frame driver */
-    NULL,                               /* frame driver override */
-    NULL,                               /* frame buffer address */
-    { 0, 0, 0 },                        /* color precisions */
-    { 0, 0, 0 },                        /* color component bit positions */
-    0,                                  /* mode flag bits */
-    setmode,                            /* mode set */
-    NULL,                               /* virtual size set */
-    NULL,                               /* virtual scroll */
-    NULL,                               /* bank set function */
-    NULL,                               /* double bank set function */
-    NULL                                /* color loader */
-};
-
-static GrVideoModeExt grxwinext = {
-  GR_frameUndef,                        /* frame driver */
-  NULL,                                 /* frame driver override */
-  NULL,                                 /* frame buffer address */
-  { 0, 0, 0 },                          /* color precisions */
-  { 0, 0, 0 },                          /* color component bit positions */
-  0,                                    /* mode flag bits */
-  setmode,                              /* mode set */
-  NULL,                                 /* virtual size set */
-  NULL,                                 /* virtual scroll */
-  setbank,                              /* bank set function */
-  setrwbanks,                           /* double bank set function */
-  loadcolor                             /* color loader */
-};
-
-
-static GrVideoMode modes[] = {
-  /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext  */
-  {  TRUE,  8,   80,   25,  0x00,    80, 1,    &grtextext  },
-  { FALSE,  0,  320,  240,  0x00,     0, 0,    &grxwinext  },
-  { FALSE,  0,  640,  480,  0x00,     0, 0,    &grxwinext  },
-  { FALSE,  0,  800,  600,  0x00,     0, 0,    &grxwinext  },
-  { FALSE,  0, 1024,  768,  0x00,     0, 0,    &grxwinext  },
-  { FALSE,  0, 1280, 1024,  0x00,     0, 0,    &grxwinext  },
-  { FALSE,  0, 1600, 1200,  0x00,     0, 0,    &grxwinext  },
-  { FALSE,  0, 9999, 9999,  0x00,     0, 0,    &grxwinext  }
-};
 
 static int (*previous_error_handler) (Display *dpy, XErrorEvent *ev);
 
@@ -192,10 +214,7 @@ static int error_handler (Display *dpy, XErrorEvent *ev)
 
   XGetErrorText (dpy, ev->error_code, buffer, sizeof(buffer)),
   fprintf (stderr, "GRX: XError: %s XID=%ld request_code=%d serial=%lu\n",
-           buffer,
-           ev->resourceid,
-           ev->request_code,
-           ev->serial);
+           buffer, ev->resourceid, ev->request_code, ev->serial);
   return 0;
 }
 
@@ -335,7 +354,7 @@ static int init(char *options)
   _XGrColorOper = C_WRITE;
 
   mask = 0L;
-  attr.backing_store = Always;
+  attr.backing_store = NotUseful;
   mask |= CWBackingStore;
   if (_XGrColormap) {
     attr.colormap = _XGrColormap;
@@ -351,6 +370,7 @@ static int init(char *options)
                      | ButtonPressMask
                      | ButtonReleaseMask
                      | ButtonMotionMask
+                     | ExposureMask
                      | PointerMotionMask);
   mask |= CWEventMask;
   _XGrWindow = XCreateWindow (_XGrDisplay,
@@ -365,19 +385,21 @@ static int init(char *options)
                               visual,           /* visual */
                               mask,             /* valuemask */
                               &attr);           /* attributes */
-  _XGrGC = XCreateGC (_XGrDisplay, _XGrWindow, 0L, NULL);
   _XGrBitmap = XCreatePixmap (_XGrDisplay, root, 128, 128, 1);
   _XGrBitmapGC = XCreateGC (_XGrDisplay, _XGrBitmap, 0L, NULL);
   _XGrPattern = XCreatePixmap (_XGrDisplay, root, 8, 1, 1);
   _XGrPatternGC = XCreateGC (_XGrDisplay, _XGrPattern, 0L, NULL);
+
+  if (!USE_PIXMAP_FOR_BS) {
+    _XGrGC = XCreateGC (_XGrDisplay, _XGrWindow, 0L, NULL);
+    grxwinext.frame = (char *) _XGrWindow;
+  }
 
   /* is this required ?? */
   if (_XGrColormap) {
      XInstallColormap(_XGrDisplay, _XGrColormap);
      XSetWindowColormap(_XGrDisplay, _XGrWindow, _XGrColormap);
   }
-
-  grxwinext.frame = (char *) _XGrWindow;
 
   pfmt = XListPixmapFormats (_XGrDisplay, &pfmt_count);
   if (!pfmt || pfmt_count <= 0) {

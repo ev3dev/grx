@@ -16,8 +16,10 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
- ** Contributions by: (See "doc/credits.doc" for details)
+ ** Contributions by:
  ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
+ ** 070505 M.Alvarez, Using a Pixmap for BackingStore
+ **
  **/
 
 #include <string.h>
@@ -26,6 +28,23 @@
 #include "arith.h"
 #include "memfill.h"
 #include "grdriver.h"
+
+INLINE
+void _XGrCopyBStore(int x, int y, int width, int lenght)
+{
+  if (USE_PIXMAP_FOR_BS) {
+    XCopyArea (_XGrDisplay,
+               _XGrBStore,
+               _XGrWindow,
+               DefaultGC (_XGrDisplay, _XGrScreen),
+               x,
+               y,
+               width,
+               lenght,
+               x,
+               y);
+  }
+}
 
 static INLINE
 void _XGrSetForeColor (GrColor color)
@@ -120,7 +139,6 @@ GrColor readpixel(GrFrame *c,int x, int y)
   if (_XGrPixelCacheDrawable != (Drawable) c->gf_baseaddr[0]
       || _XGrPixelCacheImage == NULL
       || !PIXEL_CACHE_CONTAINS_POINT(x,y)) {
-    Pixmap pixmap;
     Window dummy_root;
     unsigned int dummy_border_width, dummy_depth;
     int          dummy_x, dummy_y;
@@ -163,37 +181,8 @@ GrColor readpixel(GrFrame *c,int x, int y)
                                      AllPlanes,
                                      ZPixmap);
     if (! _XGrPixelCacheImage) {
-      pixmap = XCreatePixmap (_XGrDisplay,
-                              _XGrPixelCacheDrawable,
-                              width,
-                              height,
-                              _XGrDepth);
-      if (pixmap) {
-        XCopyArea (_XGrDisplay,
-                   _XGrPixelCacheDrawable,      /* src */
-                   pixmap,                      /* dest */
-                   DefaultGC (_XGrDisplay, _XGrScreen),
-                   _XGrPixelCacheX1,
-                   _XGrPixelCacheY1,
-                   width,
-                   height,
-                   0,
-                   0);
-        _XGrPixelCacheImage = XGetImage (_XGrDisplay,
-                                         pixmap,
-                                         0,
-                                         0,
-                                         width,
-                                         height,
-                                         AllPlanes,
-                                         ZPixmap);
-        XFreePixmap (_XGrDisplay, pixmap);
-
-        if (! _XGrPixelCacheImage) {
-          col = GrNOCOLOR;
-          goto done;
-        }
-      }
+      col = GrNOCOLOR;
+      goto done;
     }
   }
   col = XGetPixel (_XGrPixelCacheImage,
@@ -214,11 +203,11 @@ void drawpixel(int x,int y,GrColor c)
               _XGrGC,
               x,
               y);
+  _XGrCopyBStore(x, y, 1, 1);
 
   if ( _XGrPixelCacheDrawable != None &&
        PIXEL_CACHE_CONTAINS_POINT(x,y) )
     PIXEL_CACHE_INVALIDATE();
-/* XDrawPoint to cache ? */
 
   GRX_LEAVE();
 }
@@ -237,6 +226,7 @@ void drawhline(int x,int y,int w,GrColor c)
              _XGrGC,
              x,  y,
              x2, y);
+  _XGrCopyBStore(x, y, w, 1);
 
   if ( _XGrPixelCacheDrawable != None &&
        AREA_OVERLAP_PIXEL_CACHE(x,y,x2,y) )
@@ -259,6 +249,7 @@ void drawvline(int x,int y,int h,GrColor c)
              _XGrGC,
              x, y,
              x, y2);
+  _XGrCopyBStore(x, y, 1, h);
 
   if ( _XGrPixelCacheDrawable != None &&
        AREA_OVERLAP_PIXEL_CACHE(x,y,x,y2) )
@@ -280,6 +271,7 @@ void drawblock(int x,int y,int w,int h,GrColor c)
                   y,
                   w,
                   h);
+  _XGrCopyBStore(x, y, w, h);
 
   if ( _XGrPixelCacheDrawable != None) {
       w += x - 1;
@@ -304,10 +296,11 @@ void drawline(int x,int y,int dx,int dy,GrColor c)
              _XGrGC,
              x, y,
              dx, dy);
+  isort(x,dx);
+  isort(y,dy);
+  _XGrCopyBStore(x, y, dx-x+1, dy-y+1);
 
   if ( _XGrPixelCacheDrawable != None) {
-      isort(x,dx);
-      isort(y,dy);
       if ( AREA_OVERLAP_PIXEL_CACHE(x,y,dx,dy) )
           PIXEL_CACHE_INVALIDATE();
   }
@@ -342,10 +335,7 @@ void drawbitmap(int x,int y,int w,int h,char *bmp,int pitch,int start,GrColor fg
   ximage.obdata         = NULL;
   sttzero(&ximage.f);
 
-# ifndef PRE_R6_ICCCM
-  if ( XInitImage (&ximage) != 0)
-# endif
-  {
+  if ( XInitImage (&ximage) != 0) {
     if ((C_OPER(fg) == C_OPER(bg)) && (fg != GrNOCOLOR)) {
       _XGrSetForeColor (fg);
       _XGrSetBackColor (bg);
@@ -423,6 +413,8 @@ void drawbitmap(int x,int y,int w,int h,char *bmp,int pitch,int start,GrColor fg
       XSetFillStyle (_XGrDisplay, _XGrGC, FillSolid);
     }
 
+    _XGrCopyBStore(x, y, w, h);
+
     if ( _XGrPixelCacheDrawable != None) {
         w += x - 1;
         h += y - 1;
@@ -458,10 +450,7 @@ void drawpattern(int x,int y,int w,char patt,GrColor fg,GrColor bg)
   ximage.obdata         = NULL;
   sttzero(&ximage.f);
 
-# ifndef PRE_R6_ICCCM
-  if (XInitImage (&ximage) != 0)
-# endif
-  {
+  if (XInitImage (&ximage) != 0) {
     if ((C_OPER(fg) == C_OPER(bg)) && (fg != GrNOCOLOR)) {
       XSetForeground (_XGrDisplay, _XGrPatternGC, 1);
       XSetBackground (_XGrDisplay, _XGrPatternGC, 0);
@@ -545,6 +534,8 @@ void drawpattern(int x,int y,int w,char patt,GrColor fg,GrColor bg)
     }
     XSetFillStyle (_XGrDisplay, _XGrGC, FillSolid);
 
+    _XGrCopyBStore(x, y, w, 1);
+
     if ( _XGrPixelCacheDrawable != None) {
         w += x - 1;
         if ( AREA_OVERLAP_PIXEL_CACHE(x,y,w,y) )
@@ -569,6 +560,8 @@ void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrCo
              h,
              dx,
              dy);
+
+  _XGrCopyBStore(dx, dy, w, h);
 
   if ( _XGrPixelCacheDrawable != None) {
       int x2 = dx + w - 1;
@@ -601,36 +594,6 @@ void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,Gr
                         h,
                         AllPlanes,
                         ZPixmap);
-    if (! ximage) {
-      Pixmap pixmap;
-
-      pixmap = XCreatePixmap (_XGrDisplay,
-                              (Drawable) src->gf_baseaddr[0],
-                              w,
-                              h,
-                              _XGrDepth);
-      if (pixmap) {
-        XCopyArea (_XGrDisplay,
-                   (Drawable) src->gf_baseaddr[0],
-                   pixmap,
-                   DefaultGC (_XGrDisplay, _XGrScreen),
-                   sx,
-                   sy,
-                   w,
-                   h,
-                   0,
-                   0);
-        ximage = XGetImage (_XGrDisplay,
-                            pixmap,
-                            0,
-                            0,
-                            w,
-                            h,
-                            AllPlanes,
-                            ZPixmap);
-        XFreePixmap (_XGrDisplay, pixmap);
-      }
-    }
     if (ximage) {
       int bytes_per_pixel = _XGrBitsPerPixel >> 3;
       GrFrame tmp = *dst;
@@ -683,10 +646,7 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
     ximage.obdata       = NULL;
     sttzero(&ximage.f);
 
-# ifndef PRE_R6_ICCCM
-      if (XInitImage (&ximage) != 0)
-# endif
-    {
+    if (XInitImage (&ximage) != 0) {
       _XGrSetColorOper (op);
       XPutImage (_XGrDisplay,
                  (Drawable) dst->gf_baseaddr[0],
@@ -698,6 +658,8 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
                  dy,
                  w,
                  h);
+      _XGrCopyBStore(dx, dy, w, h);
+
       if ( _XGrPixelCacheDrawable != None) {
           w += dx - 1;
           h += dy - 1;

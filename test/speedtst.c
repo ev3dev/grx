@@ -15,6 +15,9 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 070512 M.Alvarez, new version more accurate, but still had problems
+ **                   in X11, because functions returns before the paint
+ **                   is done.
  **/
 
 #include <string.h>
@@ -24,7 +27,6 @@
 #include <assert.h>
 #include <values.h>
 #include <math.h>
-#include <time.h>
 #include "rand.h"
 #include "mgrx.h"
 
@@ -33,12 +35,12 @@
 #define MEASURE_RAM_MODES 1
 
 #define READPIX_loops      (384*1)
-#define READPIX_X11_loops  (  4*1)
+#define READPIX_X11_loops  (8*1)
 #define DRAWPIX_loops      (256*1)
 #define DRAWLIN_loops      (12*1)
 #define DRAWHLIN_loops     (16*1)
 #define DRAWVLIN_loops     (12*1)
-#define DRAWBLK_loops      (1*1)
+#define DRAWBLK_loops      (10*1)
 #define BLIT_loops         (1*1)
 
 typedef struct {
@@ -80,10 +82,6 @@ gvmode *rammodes = NULL;
 /* No of Points [(x,y) pairs]. Must be multiple of 2*3=6 */
 #define PAIRS 4200
 
-#define UL(x)  ((unsigned long)(x))
-#define DBL(x)  ((double)(x))
-#define INT(x) ((int)(x))
-
 #ifndef min
 #define min(a,b) ((a)<(b) ? (a) : (b))
 #endif
@@ -98,11 +96,11 @@ typedef struct XYpairs {
   struct XYpairs *nxt;
 } XY_PAIRS;
 
-XY_PAIRS *xyp = NULL;
 int *xb = NULL, *yb = NULL; /* need sorted pairs for block operations */
 int measured_any = 0;
 
-XY_PAIRS *checkpairs(int w, int h) {
+XY_PAIRS *buildpairs(int w, int h) {
+  static XY_PAIRS *xyp = NULL;
   XY_PAIRS *res = xyp;
   int i;
 
@@ -139,36 +137,31 @@ XY_PAIRS *checkpairs(int w, int h) {
 }
 
 double SQR(int a, int b) {
-  double r = DBL(a-b);
+  double r = (double)(a-b);
   return r*r;
 }
 
 double ABS(int a, int b) {
-  double r = DBL(a-b);
+  double r = (double)(a-b);
   return fabs(r);
 }
 
 char *FrameDriverName(GrFrameMode m) {
 
 #if defined(__XWIN__)
-# define x11 1
-#else
-# define x11 0
-#endif
-
   switch(m) {
     case GR_frameUndef: return "Undef";
     case GR_frameText : return "Text";
     case GR_frameHERC1: return "HERC1";
-    case GR_frameEGAVGA1: return x11 ? "XWIN1" : "EGAVGA1";
+    case GR_frameXWIN1: return "XWIN1";
     case GR_frameEGA4: return "EGA4";
-    case GR_frameSVGA4: return x11 ? "XWIN4" : "SVGA4";
-    case GR_frameSVGA8: return x11 ? "XWIN8" : "SVGA8";
+    case GR_frameXWIN4: return "XWIN4";
+    case GR_frameXWIN8: return "XWIN8";
     case GR_frameVGA8X: return "VGA8X";
-    case GR_frameSVGA16: return x11 ? "XWIN16" : "SVGA16";
-    case GR_frameSVGA24: return x11 ? "XWIN24" : "SVGA24";
-    case GR_frameSVGA32L: return x11 ? "XWIN32L" : "SVGA32L";
-    case GR_frameSVGA32H: return x11 ? "XWIN32H" : "SVGA32H";
+    case GR_frameXWIN16: return "XWIN16";
+    case GR_frameXWIN24: return "XWIN24";
+    case GR_frameXWIN32L: return "XWIN32L";
+    case GR_frameXWIN32H: return "XWIN32H";
     case GR_frameSVGA8_LFB: return "LFB8";
     case GR_frameSVGA16_LFB: return "LFB16";
     case GR_frameSVGA24_LFB: return "LFB24";
@@ -182,8 +175,64 @@ char *FrameDriverName(GrFrameMode m) {
     case GR_frameRAM32L: return "RAM32L";
     case GR_frameRAM32H: return "RAM32H";
     case GR_frameRAM3x8: return "RAM3x8";
-    default: return "UNKNOWN";
   }
+#elif defined(__WIN32__)
+  switch(m) {
+    case GR_frameUndef: return "Undef";
+    case GR_frameText : return "Text";
+    case GR_frameHERC1: return "HERC1";
+    case GR_frameEGAVGA1: return "EGAVGA1";
+    case GR_frameEGA4: return "EGA4";
+    case GR_frameSVGA4: return "SVGA4";
+    case GR_frameSVGA8: return "SVGA8";
+    case GR_frameVGA8X: return "VGA8X";
+    case GR_frameSVGA16: return "SVGA16";
+    case GR_frameSVGA24: return "SVGA24";
+    case GR_frameSVGA32L: return "SVGA32L";
+    case GR_frameSVGA32H: return "SVGA32H";
+    case GR_frameSVGA8_LFB: return "LFB8";
+    case GR_frameSVGA16_LFB: return "LFB16";
+    case GR_frameSVGA24_LFB: return "LFB24";
+    case GR_frameSVGA32L_LFB: return "LFB32L";
+    case GR_frameSVGA32H_LFB: return "LFB32H";
+    case GR_frameRAM1: return "RAM1";
+    case GR_frameRAM4: return "RAM4";
+    case GR_frameRAM8: return "RAM8";
+    case GR_frameRAM16: return "RAM16";
+    case GR_frameRAM24: return "RAM24";
+    case GR_frameRAM32L: return "RAM32L";
+    case GR_frameRAM32H: return "RAM32H";
+    case GR_frameRAM3x8: return "RAM3x8";
+  }
+#else
+  switch(m) {
+    case GR_frameUndef: return "Undef";
+    case GR_frameText : return "Text";
+    case GR_frameHERC1: return "HERC1";
+    case GR_frameWIN32_1: return "WIN32_1";
+    case GR_frameEGA4: return "EGA4";
+    case GR_frameWIN32_4: return "WIN32_4";
+    case GR_frameWIN32_8: return "WIN32_8";
+    case GR_frameVGA8X: return "VGA8X";
+    case GR_frameWIN32_16: return "WIN32_16";
+    case GR_frameWIN32_24: return "WIN32_24";
+    case GR_frameWIN32_32L: return "WIN32_32L";
+    case GR_frameWIN32_32H: return "WIN32_32H";
+    case GR_frameSVGA8_LFB: return "LFB8";
+    case GR_frameSVGA16_LFB: return "LFB16";
+    case GR_frameSVGA24_LFB: return "LFB24";
+    case GR_frameSVGA32L_LFB: return "LFB32L";
+    case GR_frameSVGA32H_LFB: return "LFB32H";
+    case GR_frameRAM1: return "RAM1";
+    case GR_frameRAM4: return "RAM4";
+    case GR_frameRAM8: return "RAM8";
+    case GR_frameRAM16: return "RAM16";
+    case GR_frameRAM24: return "RAM24";
+    case GR_frameRAM32L: return "RAM32L";
+    case GR_frameRAM32H: return "RAM32H";
+    case GR_frameRAM3x8: return "RAM3x8";
+  }
+#endif
   return "UNKNOWN";
 }
 
@@ -239,16 +288,16 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs,int loops) {
 
   if (!MEASURED(gp)) {
     gp->readpix.rate  = 0.0;
-    gp->readpix.count = DBL(PAIRS) * DBL(loops);
+    gp->readpix.count = (double)(PAIRS) * (double)(loops);
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=loops; i > 0; --i) {
     for (j=PAIRS-1; j >= 0; j--)
        GrPixelNC(x[j],y[j]);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->readpix.rate = gp->readpix.count / seconds;
 }
@@ -266,18 +315,18 @@ void drawpixeltest(gvmode *gp, XY_PAIRS *pairs) {
 
   if (!MEASURED(gp)) {
     gp->drawpix.rate  = 0.0;
-    gp->drawpix.count = DBL(PAIRS) * DBL(DRAWPIX_loops) * 4.0;
+    gp->drawpix.count = (double)(PAIRS) * (double)(DRAWPIX_loops) * 4.0;
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < DRAWPIX_loops; ++i) {
     for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c1);
     for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c2);
     for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c3);
     for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c4);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->drawpix.rate = gp->drawpix.count / seconds;
 }
@@ -301,7 +350,7 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawlin.count *= 4.0 * DRAWLIN_loops;
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < DRAWLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
         GrLineNC(x[j],y[j],x[j+1],y[j+1],c1);
@@ -312,8 +361,8 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
         GrLineNC(x[j],y[j],x[j+1],y[j+1],c4);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->drawlin.rate = gp->drawlin.count / seconds;
 }
@@ -337,7 +386,7 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawhlin.count *= 4.0 * DRAWHLIN_loops;
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < DRAWHLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
       GrHLineNC(x[j],x[j+1],y[j],c1);
@@ -348,8 +397,8 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
       GrHLineNC(x[j],x[j+1],y[j],c4);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->drawhlin.rate = gp->drawhlin.count / seconds;
 }
@@ -373,7 +422,7 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawvlin.count *= 4.0 * DRAWVLIN_loops;
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < DRAWVLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
        GrVLineNC(x[j],y[j],y[j+1],c1);
@@ -384,8 +433,8 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
        GrVLineNC(x[j],y[j],y[j+1],c4);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->drawvlin.rate = gp->drawvlin.count / seconds;
 }
@@ -416,7 +465,7 @@ void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawblk.count *= 4.0 * DRAWBLK_loops;
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < DRAWBLK_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
       GrFilledBoxNC(xb[j],yb[j],xb[j+1],yb[j+1],c1);
@@ -427,8 +476,8 @@ void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
       GrFilledBoxNC(xb[j],yb[j],xb[j+1],yb[j+1],c4);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->drawblk.rate = gp->drawblk.count / seconds;
 }
@@ -453,24 +502,22 @@ void blit_measure(gvmode *gp, perfm *p,
   long t1,t2;
   double seconds;
   GrContext save;
+  char *s, *d, txt[50];
 
-  GrSaveContext(&save);
   if (dst != src) {
+    GrSaveContext(&save);
     GrSetContext(dst);
     GrClearContext(GrBlack());
+    GrSetContext(&save);
   }
   xor_draw_blocks(src);
-  GrSetContext(&save);
 
-  if (dst != NULL) {
-    char *s = src != NULL ? "ram" : "video";
-    char *d = dst != NULL ? "ram" : "video";
-    char txt[50];
-    sprintf(txt, "blit test: %s -> %s", s, d);
-    Message(1,txt, gp);
-  }
+  s = src != NULL ? "ram" : "video";
+  d = dst != NULL ? "ram" : "video";
+  sprintf(txt, "blit test: %s -> %s", s, d);
+  Message(1,txt, gp);
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < BLIT_loops; ++i) {
     for (j=PAIRS-3; j >= 0; j-=3)
       GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GrWRITE);
@@ -481,8 +528,8 @@ void blit_measure(gvmode *gp, perfm *p,
     for (j=PAIRS-3; j >= 0; j-=3)
       GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GrAND);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLOCKS_PER_SEC);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     p->rate = p->count / seconds;
 }
@@ -534,12 +581,11 @@ void blittest(gvmode *gp, XY_PAIRS *pairs, int ram) {
 #endif
 }
 
-
 void measure_one(gvmode *gp, int ram) {
   XY_PAIRS *pairs;
 
   if (MEASURED(gp)) return;
-  pairs = checkpairs(gp->w, gp->h);
+  pairs = buildpairs(gp->w, gp->h);
   GrFilledBox( 0, 0, gp->w-1, gp->h-1, GrBlack());
   Message(RAMMODE(gp),"read pixel test", gp);
   { int rd_loops = READPIX_loops;
@@ -585,31 +631,26 @@ int identical_measured(gvmode *tm) {
 }
 #endif
 
-static int first = 0;
+static int first_speedcheck = 0;
 
 void speedcheck(gvmode *gp, int wait) {
   char m[41];
   gvmode *rp = NULL;
 
-  if (first) {
+  if (first_speedcheck) {
     printf(
       "speedtest may take some time to process.\n"
       "Now press <CR> to continue..."
     );
     fflush(stdout);
     fgets(m,40,stdin);
+    first_speedcheck = 0;
   }
 
   GrSetMode(
       GR_width_height_bpp_graphics,
       gp->w, gp->h, gp->bpp
   );
-
-  if (first) {
-    /* xor_draw_blocks(NULL);
-       getch(); */
-    first = 0;
-  }
 
   if ( GrScreenFrameMode() != gp->fm) {
     GrFrameMode act = GrScreenFrameMode();
@@ -639,12 +680,12 @@ void speedcheck(gvmode *gp, int wait) {
 #endif
 
   GrSetMode(GR_default_text);
+  printf("Results: \n");
+  printresultheader(stdout);
+  printresultline(stdout, gp);
+  if (rp) printresultline(stdout, rp);
+
   if (wait) {
-    printf("Results: \n");
-    printresultheader(stdout);
-    printresultline(stdout, gp);
-    if (rp)
-      printresultline(stdout, rp);
     fgets(m,40,stdin);
   }
 }
@@ -786,7 +827,7 @@ int main(int argc, char **argv)
             return(0);
         }
 
-        first = 1;
+        first_speedcheck = 1;
         for( ; ; ) {
             char mb[41], *m = mb;
             int tflag = 0;

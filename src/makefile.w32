@@ -125,7 +125,7 @@ install-fonts:
 uninstall-fonts:
 	del $(FONTPATHdos)\*.*
 endif
-                        
+
 dep:
 	if exist depend.tmp del depend.tmp
 	gcc -MM $(CCOPT) $(INCDIR) $(ALL_O:.o=.c) >depend.tmp
@@ -153,7 +153,7 @@ $(UTILPW): ../bin/%.exe : utilprog/%.o $(MGRXST)
 
 $(WIN32_GCC_i386_STATIC):
 	$(MAKE) -f makefile.w32 clean
-	if not exist $(WIN32_GCC_i386_STATIC) del $(SYSTEM_TAG_PREFIX).*
+	if exist $(SYSTEM_TAG_PREFIX).* del $(SYSTEM_TAG_PREFIX).*
 	echo WIN32_GCC_i386_STATIC_TARGET > $(WIN32_GCC_i386_STATIC)
 
 $(ALL_O): $(TAG)

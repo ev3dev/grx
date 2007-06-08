@@ -113,6 +113,7 @@ void GrEventRead(GrEvent * ev)
         if (_GrReadInputs()) {
             continue;
         }
+        GrSleep(1);
         ev->type = GREV_NULL;
         ev->time = GrMsecTime();
         ev->kbstat = 0;

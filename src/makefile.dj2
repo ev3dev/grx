@@ -71,6 +71,7 @@ DJ_O=   $(ADDON_O)              \
 	fdrivers/svga8.o        \
 	fdrivers/vga8x.o        \
 	input/grev_dj2.o        \
+	misc/dj2delay.o         \
 	misc/dosmisc.o          \
 	vdrivers/stdega.o       \
 	vdrivers/stdvga.o       \
@@ -152,7 +153,7 @@ install-fonts:
 uninstall-fonts:
 	del $(FONTPATHdos)\*.*
 endif
-                        
+
 dep:
 	if exist depend.tmp del depend.tmp
 	gcc -MM $(CCOPT) $(INCDIR) $(ALL_O:.o=.c) >depend.tmp
@@ -175,7 +176,7 @@ $(UTILP): ../bin/%.exe : utilprog/%.o $(MGRXST)
 
 $(DOS_DJGPP_V2):
 	$(MAKE) -f makefile.dj2 clean
-	if not exist $(DOS_DJGPP_V2) del $(SYSTEM_TAG_PREFIX).*
+	if exist $(SYSTEM_TAG_PREFIX).* del $(SYSTEM_TAG_PREFIX).*
 	echo DOS_DJGPP_V2_TARGET > $(DOS_DJGPP_V2)
 
 $(ALL_O): $(TAG)

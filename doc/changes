@@ -1,7 +1,20 @@
-2007-02-30 ----------- mGRX 0.9.6 released
-2007-02-30 After a security update in xorg 7.2, bitblt ram to video doesn't work
-           in the x11 driver. We had a bug in the framedriver.
-2007-02-24 ----------- mGRX 0.9.5 released
+2007-06-09 ----------- mGRX 0.9.7 released
+2007-06-03 The djgpp delay function doesn't work on WinXP and W2000. It is
+           corrected in the djgpp CVS version. We included the source for the
+           new delay in src/misc. When a new djgpp version will be released
+           this source code will be removed.
+2007-06-01 The X11 driver now uses a pixmap for backin store and responds to
+           Expose events. But it is a bit slowly. If you want a faster driver
+           edit src/include/libxwin.h and set USE_PIXMAP_FOR_BS to 0.
+2007-06-01 GrEventRead now waits 1 msec if no event is ready, so now MGRX
+           programs doesn't load the cpu 100%.
+2007-06-01 GrSleep calls XFlush in the X11 platform, to flush the graphics
+           queue before wait.
+2007-05-13 new version of test/speedtst.c more accurate
+2007-04-30 ----------- mGRX 0.9.6 released
+2007-04-30 After a security update in xorg 7.2, bitblt ram to video doesn't
+           work in the x11 driver. We had a bug in the framedriver.
+2007-04-24 ----------- mGRX 0.9.5 released
 2007-04-21 Renamed sincos by gr_sincos in genellip.c, it's an internal function
            in gcc.4.1.2
 2007-04-21 Changed CLK_TCK by sysconf(_SC_CLK_TCK), it's obsolete in gcc 4.1.2,

@@ -25,7 +25,7 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0096
+#define MGRX_VERSION_API 0x0097
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */

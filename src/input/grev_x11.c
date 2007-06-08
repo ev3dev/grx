@@ -2,7 +2,7 @@
  ** grev_x11.c ---- MGRX events, X11 input
  **
  ** Copyright (C) 2005 Mariano Alvarez Fernandez
- ** [e-mail: malfer@telefonica.net]
+ ** [e-mail: malfer at telefonica.net]
  **
  ** This file is part of the GRX graphics library.
  **
@@ -13,6 +13,9 @@
  ** This library is distributed in the hope that it will be useful,
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** Contributions by:
+ ** 070505 M.Alvarez, Using a Pixmap for BackingStore
  **
  **/
 
@@ -96,6 +99,11 @@ int _GrReadInputs(void)
     while (--count >= 0) {
         XNextEvent(_XGrDisplay, &xev);
         switch (xev.type) {
+        case Expose:
+            _XGrCopyBStore(xev.xexpose.x, xev.xexpose.y,
+              xev.xexpose.width, xev.xexpose.height);
+            break;
+
         case MotionNotify:
             if (_XGrWindowedMode) {
                 MOUINFO->xpos = xev.xmotion.x;
