@@ -23,7 +23,12 @@
 #define Random(r) ((unsigned) (((RND() % (r)) + 1)))
 #define Seed(s) SRND(s)
 
+#if defined(__MSDOS__) || defined(__WIN32__)
 #define BGI_PATH "..\\..\\chr"
+#else
+#define BGI_PATH "../../chr"
+#endif
+
 #define itoa(value,str,radix) sprintf((str),"%d",(value))
 #define getch() getkey()
 
@@ -1615,7 +1620,7 @@ void PlayRGBpalette(void)
 
   if ( getmaxcolor() != 255) return;
 
-  for (c=0;c<=255;c++) {
+  for (c=1;c<=254;c++) {
     m= (c*3)>>1;
     if ((m<64)) {
       cpal[c][0]=63;

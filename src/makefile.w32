@@ -136,7 +136,9 @@ endif
 
 install: $(GRX20ST)
 ifeq ($(HAVE_UNIX_TOOLS),y)
+	mkdir -p $(INSTALLDIR)/lib
 	cp $(GRX20STdos) $(INSTALLDIR)/lib
+	mkdir -p $(INSTALLDIR)/include
 	cp ../include/grx20.h ../include/grxkeys.h \
 	   ../include/libbcc.h $(INSTALLDIR)/include
 ifeq ($(INCLUDE_PRINTING_CODE),y)
@@ -147,7 +149,9 @@ ifeq ($(INCLUDE_GPC_SUPPORT),y)
 	cp ../pascal/grx.pas ../pascal/bgi/graph.pas $(INSTALLDIR)/units
 endif
 else
+	if not exist $(INSTALLDIR)\lib\nul mkdir $(INSTALLDIR)\lib
 	copy $(GRX20STdos) $(INSTALLDIR)\lib
+	if not exist $(INSTALLDIR)\include\nul mkdir $(INSTALLDIR)\include
 	copy ..\include\grx20.h $(INSTALLDIR)\include
 	copy ..\include\grxkeys.h $(INSTALLDIR)\include
 	copy ..\include\libbcc.h $(INSTALLDIR)\include
@@ -187,9 +191,11 @@ endif
 
 install-bin: $(UTILPC) $(UTILPW)
 ifeq ($(HAVE_UNIX_TOOLS),y)
+	mkdir -p $(INSTALLDIR)/bin
 	cp ../bin/bin2c.exe ../bin/fnt2c.exe \
 	   ../bin/modetest.exe $(INSTALLDIR)/bin
 else
+	if not exist $(INSTALLDIR)\bin\nul mkdir $(INSTALLDIR)\bin
 	copy ..\bin\bin2c.exe $(INSTALLDIR)\bin
 	copy ..\bin\fnt2c.exe $(INSTALLDIR)\bin
 	copy ..\bin\modetest.exe $(INSTALLDIR)\bin

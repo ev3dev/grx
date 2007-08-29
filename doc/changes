@@ -4,25 +4,51 @@ the 2.2 version.
 
 Date     Changes
 
-07/04/06 updates in test/speedtst.c 
-07/04/05 change to bgi/bccgrx.c, so that all 32 bpp modes are considered by BGI
-         as 16M modes (the extra byte is only for padding): this was the case for
-	 older drivers up to VESA which gave GrVideoMode->bpp=24 in these cases
-	 (see lines 246-258 in vdrivers/vesa.c).
+07/08/29 ----------- GRX v2.4.8 released (Maurice Lombardi)
+07/08/29 Sanitized win32, eliminating WM_SIZE events
+07/08/27 Add Sleep(5) to setrgbpalette for win32 which sends WM_PAINT to 
+         redraw whole screen. Compare PlayRGBpalette() in test/bgi/bccbgi.c
+         Add Sleep(1) when no more W32events queued to yield control
+         when looking for grx events by M. Lombardi.
+07/08/21 Correction to WM_PAINT in vdrivers/vd_win32.c: GetUpdateRect() gave
+         wrong UpdateRect -> few missing chars in text drawing, by M. Lombardi
+07/08/17 Change to text/fontpath.c and text/loadfont.c to allow the syntax
+         /dev/env/DJDIR in djgpp when loading fonts by M. Lombardi
+07/08/07 Correction to test/test.h to enable test/scroltst to run as expected.
+07/08/05 Eliminate WM_PAINT in mouse/w32inp.c to enqueue GR_OS_DRAW_REQUEST.
+         Too frequents, they produced saturation of the GRX event queue and 
+         gobbling of keybord/mouse events. Compare responsivity of
+         test/mousetst.c, test/bgi/bccbgi.c, pascal/bgi/demo.pas by M. Lombardi
+07/08/01 The X11 driver now responds to Expose events by using a pixmap 
+         for backing store. But this slows it down. You can recover
+         previous behaviour (faster but no response to Expose) by editing 
+         src/include/libxwin.h and setting USE_PIXMAP_FOR_BS to 0.
+	 Backported from Mariano's MGRX by M. Lombardi.
+07/07/30 various improvements in makefiles, demo.pas, test/speedtst.c 
+         by M. Lombardi.
+
+07/04/06 ----------- GRX v2.4.7 released (Maurice Lombardi)
+07/04/06 updates in test/speedtst.c
+07/04/05 change to bgi/bccgrx.c, so that all 32 bpp modes are considered
+         by BGI as 16M modes (the extra byte is only for padding): this was
+         the case for older drivers up to VESA which gave GrVideoMode->bpp=24
+         in these cases (see lines 246-258 in vdrivers/vesa.c).
 07/03/25 SDL driver (sdl-rc4-support.zip) by Dimitar Zhekov 28 May 2004
             with changes to makefiles/makedefs/configure
             and pascal support by Maurice Lombardi
 07/03/16 inclusion of various corrections submitted to the list
             grx.diff-byteorder by Frank Heckenbach 31 May 2006
-            grx-exitprocess.diff GRX app termination bug (winXP) by Mario Zagar 15 Feb 2005
+            grx-exitprocess.diff GRX app termination bug (winXP) 
+               by Mario Zagar 15 Feb 2005
             grxfixes.zip by Dimitar Zhekov 24 Sep 2004
                fontdemo-res-fix.diff
                fontdemo-Y-fix.diff
                test-changes.diff
                win32-8bpp-cls-fix.diff (win32 setmode() clear screen problem)
                xfdga-detect-once.diff (xfdga avoid double detection)
-            grx-w32events.diff (more W32 event handling) by Peter Gerwinski 19 Jun 2004
-            graphresult.diff by Andris Pavenis 8 Jan 2004    
+            grx-w32events.diff (more W32 event handling) 
+               by Peter Gerwinski 19 Jun 2004
+            graphresult.diff by Andris Pavenis 8 Jan 2004
 07/01/05 introduction of GR_PtrInt (integer of same length as a pointer)
          to suppress warnings (in fact errors) when compiling with
          x86_64 platforms,

@@ -29,6 +29,8 @@
 { Define this if you want to use the Linux console version.
   (Ignored on non-Linux systems.) }
 {.$define LINUX_CONSOLE}
+  {and this if you use the svgalib (instead of only the framebuffer) driver}
+{.$define SVGALIB}
 
 { Define this if you want to use the SDL driver in mingw or x11}
 {.$define __SDL__}
@@ -45,7 +47,10 @@
 {$elif defined (_WIN32)}
   {$L grxW32, vfs.c, user32, gdi32}
 {$elif defined (linux) and defined (LINUX_CONSOLE)}
-  {$L grx20, vga}
+  {$L grx20}
+  {$ifdef SVGALIB}
+     {$L vga}
+  {$endif}
 {$else}
   {$ifdef __SDL__}
     {$L grx20S, SDL, pthread, X11}

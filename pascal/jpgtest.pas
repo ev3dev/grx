@@ -50,13 +50,13 @@ end;
 procedure nojpegsupport;
 const
   s: array[0..5] of String[50] = (
-		 'Warning!',
-		 'You need libjpeg (http://www.ijg.org) and enable',
-		 'jpeg support in the GRX lib (edit makedefs.grx)',
-		 'to run this demo',
-		 ' ',
-		 'Press any key to continue...' );
-var 
+       'Warning!',
+       'You need libjpeg (http://www.ijg.org) and enable',
+       'jpeg support in the GRX lib (edit makedefs.grx)',
+       'to run this demo',
+       ' ',
+       'Press any key to continue...' );
+var
   i: Integer;
 begin
   GrClearScreen( GrAllocColor( 0,0,100 ) );
@@ -69,9 +69,9 @@ begin
    GrSetMode( Gr_Width_Height_BPP_Graphics,640,480,24,0,0 );
 
    if GrJpegSupport = 0 then begin
-		nojpegsupport;
-		GrSetMode(Gr_Default_Text,0,0,0,0,0);
-		halt( 1 );
+      nojpegsupport;
+      GrSetMode(Gr_Default_Text,0,0,0,0,0);
+      halt( 1 );
    end;
 
    imagen( '../test/jpeg1.jpg',1 );

@@ -49,7 +49,9 @@ HAVE_LIBJPEG=n
 HAVE_LIBPNG=n
 NEED_ZLIB=n
 HAVE_LIBTIFF=n
-HAVE_UNIX_TOOLS=n
+# if you are able to run this script you have (ba)sh
+# we suppose you have other needed unix tools as well
+HAVE_UNIX_TOOLS=y
 INCLUDE_BMP_CODE=y
 INCLUDE_PRINTING_CODE=y
 INCLUDE_GPC_SUPPORT=n
@@ -152,7 +154,7 @@ Options: [defaults in brackets after descriptions]
   --silent                  silent operation
   --prefix=PREFIX           install files in PREFIX [$default_prefix]
   --target=TARGET           configure for TARGET [$default_target]
-                            possible values: DJGPP, X11, svgalib, w32, sdlx, sdlw
+                            possible values: DJGPP, X11, console, w32, sdlx, sdlw
                             or GCC-style ("i386-mingw32") for cross-compiling
   --enable-x86_64           build for x86_64 architecture [no]
   --enable-jpeg             include JPEG support [no]
@@ -202,7 +204,7 @@ done
 case "`echo "$target" | tr A-Z a-z`" in
   *djgpp*)        cfgsection=GRXVDJ2; target_makefile=makefile.dj2;;
   x | x11)        cfgsection=GRXVX11; target_makefile=makefile.x11;;
-  svgalib)        cfgsection=GRXVLNX; target_makefile=makefile.lnx;;
+  console)        cfgsection=GRXVLNX; target_makefile=makefile.lnx;;
   *w32 | *mingw*) cfgsection=GRXVW32; target_makefile=makefile.w32;;
   sdlx)           cfgsection=GRXVSDL; target_makefile=makefile.sdl; subst_EP="/^EP=/s/=.*/=x/";;
   sdlw)           cfgsection=GRXVSDL; target_makefile=makefile.sdl; subst_EP="/^EP=/s/=.*/=/";;
@@ -212,14 +214,7 @@ esac
 case "$target" in
   *[A-Za-z0-9]-[A-Za-z0-9]*|mingw32)
      CROSS_PLATFORM="`echo "$target" | tr A-Z a-z`-"
-     installdir="$prefix/$target"
-     # Cross-compiling is usually done from a Unix-like platform.
-     HAVE_UNIX_TOOLS=y;;
-  sdl*)
-     # makefile.sdl needs a Unix-like platform (msys for mingw32)
-     HAVE_UNIX_TOOLS=y
-     CROSS_PLATFORM=""
-     installdir="$prefix";;
+     installdir="$prefix/$target";;
   *)
      CROSS_PLATFORM=""
      installdir="$prefix";;
@@ -227,6 +222,11 @@ esac
 
 if [ $USE_SVGALIB_DRIVER != y ] && [ $USE_FRAMEBUFFER_DRIVER != y ]; then
   echo "$0: either \`--enable-svgalib' or \`--enable-framebuffer' must be set" >&2
+  exit 1
+fi
+
+if [ $USE_SVGALIB_DRIVER != y ] && [ $USE_DIRECT_MOUSE_DRIVER != y ]; then
+  echo "$0: if \`--disable-svgalib' is unset then \`--enable-direct-mouse' must be set" >&2
   exit 1
 fi
 
@@ -306,15 +306,17 @@ if [ x"$INCLUDE_GPC_SUPPORT" = x"y" ]; then
       echo "$0: $file not found" >&2
       exit 1
     fi
-    if sed -e "s/{.*\\\$define LINUX_CONSOLE}/{`if [ x"$target" != x"svgalib" ]; then echo .; fi`\$define LINUX_CONSOLE}/;
+    if sed -e "s/{.*\\\$define LINUX_CONSOLE}/{`if [ x"$target" != x"console" ]; then echo .; fi`\$define LINUX_CONSOLE}/;
+               s/{.*\\\$define SVGALIB}/{`if [ x"$target" != x"console" -o $USE_SVGALIB_DRIVER != y ]; then echo .; fi`\$define SVGALIB}/;
                s/{.*\\\$define __SDL__}/{`if [ x"$target" != x"sdlx" -a x"$target" != x"sdlw" ]; then echo .; fi`\$define __SDL__}/;
-               s/{.*\\\$L tiff}/{`if [ $HAVE_LIBTIFF != y ]; then echo .; fi`\$L tiff}/;
-               s/{.*\\\$L jpeg}/{`if [ $HAVE_LIBJPEG != y ]; then echo .; fi`\$L jpeg}/;
-               s/{.*\\\$L png}/{`if [ $HAVE_LIBPNG != y ]; then echo .; fi`\$L png}/;
-               s/{.*\\\$L z}/{`if [ $NEED_ZLIB != y ]; then echo .; fi`\$L z}/
                s/{.*\\\$L socket}/{`if [ x"$lsocket" = x ]; then echo .; fi`\$L socket}/
               " "$file" > "$file.new" &&
-       mv -f "$file.new" "$file"; then
+       sed -e "s/{.*\\\$L tiff}/{`if [ $HAVE_LIBTIFF != y ]; then echo .; fi`\$L tiff}/;
+               s/{.*\\\$L jpeg}/{`if [ $HAVE_LIBJPEG != y ]; then echo .; fi`\$L jpeg}/;
+               s/{.*\\\$L png}/{`if [ $HAVE_LIBPNG != y ]; then echo .; fi`\$L png}/;
+               s/{.*\\\$L z}/{`if [ $NEED_ZLIB != y ]; then echo .; fi`\$L z}/;
+              " "$file.new" > "$file" &&
+       rm -f "$file.new" ; then
       [ $silent = y ] || echo "Modified $file"
     else
       rm -f "$file.new"

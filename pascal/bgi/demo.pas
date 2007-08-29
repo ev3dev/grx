@@ -22,6 +22,22 @@ uses
 var
   Test, Corr: Real;
 
+procedure Pause;
+const
+  ESC = #$1b;
+var
+  c: Char;
+begin
+  c := ReadKey;
+  if c=ESC then begin
+    CloseGraph;
+    Halt(1)
+  end;
+  if ord(c )= 0 then
+    c := ReadKey;
+  ClearDevice;  
+end;
+
 function MyStr(Numeric, Len: Integer):WrkString;
 var
   RetString: WrkString;
@@ -53,7 +69,7 @@ begin
       end;
       { Set entry 15 to white for text }
       SetRGBPalette(15, 63, 63, 63);
-      { Set entry 0 to white for text }
+      { Set entry 0 to black for text }
       SetRGBPalette(0, 0, 0, 0)
     end
   end
@@ -113,80 +129,66 @@ begin
   OutTextXY( 2,150, 'ImageSize(1,8,1,8)   : ' + MyStr(ImageSize(1, 8, 1, 8), 10));
   repeat
   until KeyPressed;
-  while KeyPressed do x := ord(ReadKey)
+  Pause;
 end;
 
 procedure LineTest;
-var
-  i: Word;
 begin
   StartTest('Line');
   repeat
     SetRandomColor;
-    for i := 1 to 50 do begin
-      Line(0, random(GetMaxY)+10, GetMaxX, random(GetMaxY)+10);
-      Line(random(GetMaxX), 10, random(GetMaxX), GetMaxY);
-    end;
+    Line(0, random(GetMaxY)+10, GetMaxX, random(GetMaxY)+10);
+    Line(random(GetMaxX), 10, random(GetMaxX), GetMaxY);
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure RectangleTest;
-var
-  i: Word;
 begin
   StartTest('Rectangle');
   repeat
     SetRandomColor;
-    for i := 1 to 50 do
-      Rectangle(random(GetMaxX), random(GetMaxY-10)+10, random(GetMaxX), random(GetMaxY-10)+10);
+    Rectangle(random(GetMaxX), random(GetMaxY-10)+10, random(GetMaxX), random(GetMaxY-10)+10);
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure BarTest;
-var
-  i: Word;
 begin
   StartTest('Bar');
   repeat
     SetRandomColor;
-    for i := 1 to 10 do
-      Bar(random(GetMaxX), random(GetMaxY-10)+10, random(GetMaxX), random(GetMaxY-10)+10);
+    Bar(random(GetMaxX), random(GetMaxY-10)+10, random(GetMaxX), random(GetMaxY-10)+10);
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure CircleTest;
 var
-  i, r: Integer;
+  r: Integer;
 begin
   StartTest('Circle');
   repeat
     SetRandomColor;
-    for i := 1 to 10 do begin
-      r := random(GetMaxX div 3) + 1;
-      Circle(random(GetMaxX - 2 * r) + r, random(GetMaxY - (2 * Round(r * Corr) + 10)) + Round(r * Corr) + 10, Round(r*Corr));
-    end;
+    r := random(GetMaxX div 3) + 1;
+    Circle(random(GetMaxX - 2 * r) + r, random(GetMaxY - (2 * Round(r * Corr) + 10)) + Round(r * Corr) + 10, Round(r*Corr));
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure EllipseTest;
 var
-  i, rx, ry: Word;
+  rx, ry: Word;
 begin
   StartTest('Ellipse');
   repeat
     SetRandomColor;
-    for i := 1 to 10 do begin
-      rx := random(GetMaxX div 3);
-      ry := random(GetMaxY div 3);
-      Ellipse(random(GetMaxX - 2 * rx) + rx, random(GetMaxY-(2 * ry + 10)) + ry + 10, 0, 359,
-              Round(rx * Corr), Round(ry * Corr));
-    end;
+    rx := random(GetMaxX div 3);
+    ry := random(GetMaxY div 3);
+    Ellipse(random(GetMaxX - 2 * rx) + rx, random(GetMaxY-(2 * ry + 10)) + ry + 10, 0, 359,
+            Round(rx * Corr), Round(ry * Corr));
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure Ellipse2Test;
@@ -202,73 +204,65 @@ begin
   end;
   repeat
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure FillEllipseTest;
 var
-  i, rx, ry: Word;
+  rx, ry: Word;
 begin
   StartTest('FillEllipse');
   repeat
     SetRandomColor;
-    for i := 1 to 10 do begin
-      rx := random(GetMaxX div 3);
-      ry := random(GetMaxY div 3);
-      FillEllipse(random(GetMaxX - 2 * rx) + rx, random(GetMaxY-(2 * Round(ry * Corr) + 10)) + Round(ry * Corr) + 10,
-                  Round(rx * Corr), Round(ry * Corr));
-    end;
+    rx := random(GetMaxX div 3);
+    ry := random(GetMaxY div 3);
+    FillEllipse(random(GetMaxX - 2 * rx) + rx, random(GetMaxY-(2 * Round(ry * Corr) + 10)) + Round(ry * Corr) + 10,
+                Round(rx * Corr), Round(ry * Corr));
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure ArcTest;
 var
-  i, r: Word;
+  r: Word;
 begin
   StartTest('Arc');
   repeat
     SetRandomColor;
-    for i := 1 to 10 do begin
-      r := random(GetMaxX div 3);
-      Arc(random(GetMaxX - 2 * r) + r, random(GetMaxY-(2 * Round(r * Corr) + 10)) + Round(r * Corr) + 10, 0, random(360),
-          Round(r * Corr));
-    end;
+    r := random(GetMaxX div 3);
+    Arc(random(GetMaxX - 2 * r) + r, random(GetMaxY-(2 * Round(r * Corr) + 10)) + Round(r * Corr) + 10, 0, random(360),
+        Round(r * Corr));
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure SectorTest;
 var
-  i, rx, ry: Word;
+  rx, ry: Word;
 begin
   StartTest('Sector');
   repeat
     SetRandomColor;
-    for i := 1 to 10 do begin
-      rx := random(GetMaxX div 3);
-      ry := random(GetMaxY div 3);
-      Sector(random(GetMaxX - 2 * rx) + rx, random(GetMaxY-(2 * Round(ry * Corr) + 10)) + Round(ry * Corr) + 10,
-             random(360), random(360), Round(rx * Corr), Round(ry * Corr));
-    end;
+    rx := random(GetMaxX div 3);
+    ry := random(GetMaxY div 3);
+    Sector(random(GetMaxX - 2 * rx) + rx, random(GetMaxY-(2 * Round(ry * Corr) + 10)) + Round(ry * Corr) + 10,
+            random(360), random(360), Round(rx * Corr), Round(ry * Corr));
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure PieSliceTest;
 var
-  i, r: Word;
+  r: Word;
 begin
   StartTest('PieSlice');
   repeat
     SetRandomColor;
-    for i := 1 to 10 do begin
-      r := random(GetMaxX div 3);
-      PieSlice(random(GetMaxX - 2 * r) + r, random(GetMaxY-(2 * Round(r * Corr) + 10)) + Round(r * Corr) + 10, 0, random(360),
-               Round(r * Corr));
-    end;
+    r := random(GetMaxX div 3);
+    PieSlice(random(GetMaxX - 2 * r) + r, random(GetMaxY-(2 * Round(r * Corr) + 10)) + Round(r * Corr) + 10, 0, random(360),
+              Round(r * Corr));
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure Bar3DTest;
@@ -285,50 +279,46 @@ begin
   end;
   repeat
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure PolyTest;
 var
-  i, j : Word;
+  j : Word;
   a : array[1..4] of PointType;
 begin
   StartTest('Poly');
   repeat
     SetRandomColor;
-    for i := 1 to 10 do begin
-      for j := 1 to 4 do begin
-        a[j].x := random(GetMaxX);
-        a[j].y := random(GetMaxY - 10) + 10;
-      end;
-      DrawPoly(4, a);
+    for j := 1 to 4 do begin
+      a[j].x := random(GetMaxX);
+      a[j].y := random(GetMaxY - 10) + 10;
     end;
+    DrawPoly(4, a);
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure FillPolyTest;
 var
-  i, j : Word;
+  j : Word;
   a : array[1..4] of PointType;
 begin
   StartTest('FillPoly');
   repeat
     SetRandomColor;
-    for i := 1 to 10 do begin
-      for j := 1 to 4 do begin
-        a[j].x := random(GetMaxX);
-        a[j].y := random(GetMaxY - 10) + 10;
-      end;
-      FillPoly(4, a);
+    for j := 1 to 4 do begin
+      a[j].x := random(GetMaxX);
+      a[j].y := random(GetMaxY - 10) + 10;
     end;
+    FillPoly(4, a);
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 procedure FloodFillTest;
 var
-  i, x, y: Word;
+  x, y: Word;
   r, p : Real;
 begin
   StartTest('LineTo/FloodFill');
@@ -349,7 +339,7 @@ begin
     Rectangle(0, 10, GetMaxX, GetMaxY);
     FloodFill(GetMaxX div 2,GetMaxY div 2 + 10, GetColor);
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 end;
 
 
@@ -417,7 +407,7 @@ begin
     end;
     PutImage(x, y, p2^, NormalPut);
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
   FreeMem(p1, Size);
   FreeMem(p2, Size);
 end;
@@ -432,14 +422,14 @@ begin
     SetRandomColor;
     OutTextXY(random(GetMaxX - 100), random(GetMaxY - 10) + 10, 'OutTextXY DefaultFont');
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
   StartTest('Vector Fonts');
   repeat
     SetRandomColor;
     SetTextStyle(random(10)+1, random(2), random(20) + 6);
     OutTextXY(random(GetMaxX - 100), random(GetMaxY - 10), 'Vector Fonts');
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
   StartTest('Font Names');
   FontName[ 0] := 'DefaultFont';
   FontName[ 1] := 'TriplexFont';
@@ -460,7 +450,7 @@ begin
   end;
   repeat
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
   StartTest('Vertical Fonts');
   Pos := 0;
   for i := 0 to 10 do begin
@@ -470,7 +460,7 @@ begin
   end;
   repeat
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
   StartTest('SetTextJustify');
   for i := 1 to 10 do begin
     SetTextJustify(CenterText, TopText);
@@ -486,7 +476,7 @@ begin
   end;
   repeat
   until KeyPressed;
-  while KeyPressed do i := ord(ReadKey);
+  Pause;
 
 end;
 

@@ -32,10 +32,10 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "GRX 2.4.7, the graphics library";
+    "GRX 2.4.8, the graphics library";
 
 char *animatedtext =
-    "GRX 2.4.7, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "GRX 2.4.8, the graphics library for DJGPPv2, Linux, X11 and Win32";
 
 #define NDEMOS 33
 
@@ -281,14 +281,22 @@ static void ini_objects(void)
 {
     grf_std = GrLoadFont("lucb21.fnt");
     if (grf_std == NULL) {
+#if defined(__MSDOS__) || defined(__WIN32__)
+        grf_std = GrLoadFont("..\\fonts\\lucb21.fnt");
+#else
         grf_std = GrLoadFont("../fonts/lucb21.fnt");
+#endif
         if (grf_std == NULL)
             disaster("lucb21.fnt not found");
     }
 
     grf_big = GrLoadFont("lucb40b.fnt");
     if (grf_big == NULL) {
+#if defined(__MSDOS__) || defined(__WIN32__)
+        grf_big = GrLoadFont("..\\fonts\\lucb40b.fnt");
+#else
         grf_big = GrLoadFont("../fonts/lucb40b.fnt");
+#endif
         if (grf_big == NULL)
             disaster("lucb40b.fnt not found");
     }
@@ -333,7 +341,7 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "GRX 2.4.7";
+    char *t1 = "GRX 2.4.8";
     char *t2 = "test programs launcher";
 
     grt_centered.txo_fgcolor.v = LIGHTGREEN;

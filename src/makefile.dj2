@@ -312,9 +312,9 @@ $(UTILP): ../bin/%.exe : utilprog/%.o $(GRX20ST)
 $(DOS_DJGPP_V2):
 	$(MAKE) -f makefile.dj2 clean
 ifeq ($(HAVE_UNIX_TOOLS),y)
-	if [ ! -r $(DOS-DJGPP_V2) ]; then rm -f $(SYSTEM_TAG_PREFIX).*; fi
+	rm -f $(SYSTEM_TAG_PREFIX).*
 else
-	if not exist $(DOS_DJGPP_V2) del $(SYSTEM_TAG_PREFIX).*
+	if exist $(SYSTEM_TAG_PREFIX).* del $(SYSTEM_TAG_PREFIX).*
 endif
 	echo DOS_DJGPP_V2_TARGET > $(DOS_DJGPP_V2)
 

@@ -44,7 +44,7 @@ int main(void)
   GrLoadContextFromPnm( grc,FIMAGEPPM );
   GrSaveContextToPgm( grc,FIMAGEPGM,"TestPnm" );
   GrDestroyContext( grc );
-  GrTextXY( 10,50+high,"Press RETURN to continue",GrBlack(),GrWhite() );
+  GrTextXY( 10,50+high,"Press any key to continue",GrBlack(),GrWhite() );
   GrKeyRead();
 
   GrClearScreen( GrBlack() );
@@ -55,7 +55,7 @@ int main(void)
   grc = GrCreateSubContext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPGM );
   GrDestroyContext( grc );
-  GrTextXY( 10,50+high,"Press RETURN to continue",GrBlack(),GrWhite() );
+  GrTextXY( 10,50+high,"Press any key to continue",GrBlack(),GrWhite() );
   GrKeyRead();
 
   GrClearScreen( GrBlack() );
@@ -67,7 +67,7 @@ int main(void)
   GrLoadContextFromPnm( grc,FIMAGEPBM );
   GrSaveContextToPbm( grc,FIMAGEPBM2,"TestPnm" );
   GrDestroyContext( grc );
-  GrTextXY( 10,50+high,"Press RETURN to continue",GrBlack(),GrWhite() );
+  GrTextXY( 10,50+high,"Press any key to continue",GrBlack(),GrWhite() );
   GrKeyRead();
 
   GrClearScreen( GrBlack() );
@@ -86,16 +86,16 @@ int main(void)
   grc = GrCreateSubContext( 211,241,211+wide-1,241+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPBM2 );
   GrDestroyContext( grc );
-  GrTextXY( 10,20,"Press RETURN to save screen",GrBlack(),GrWhite() );
+  GrTextXY( 10,20,"Press any key to save screen",GrBlack(),GrWhite() );
   GrKeyRead();
 
   GrSaveContextToPpm( NULL,FSCREEN,"TestPnm" );
   GrClearScreen( GrWhite() );
-  GrTextXY( 10,20,"Press RETURN to reload screen",GrWhite(),GrBlack() );
+  GrTextXY( 10,20,"Press any key to reload screen",GrWhite(),GrBlack() );
   GrKeyRead();
 
   GrLoadContextFromPnm( NULL,FSCREEN );
-  GrTextXY( 10,20,"Press RETURN to end        ",GrBlack(),GrWhite() );
+  GrTextXY( 10,20,"Press any key to end        ",GrBlack(),GrWhite() );
   GrKeyRead();
 
   GrSetMode(GR_default_text);

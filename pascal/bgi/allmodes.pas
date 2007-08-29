@@ -43,6 +43,24 @@ begin
     begin
       SetGraphMode(i);
 
+      if GetMaxColor < 256 then
+         for c := 1 to GetMaxColor-1 do begin
+         begin
+           SetRGBPalette(c,c,0,255-c);
+           SetColor(c);
+           Line(c + 10, 5, c + 10, 30)
+         end;
+         SetRGBPalette(GetMaxColor,255,255,255);
+         SetColor(GetMaxColor)
+      end else begin
+         for c := 0 to 255 do
+         begin
+           SetColor(c);
+           Line(c + 10, 5, c + 10, 30)
+         end;
+         SetColor(White)
+      end;
+
       OutTextXY(10,40, GetDriverName);
       OutTextXY(10,50, 'Resolution : ' + MyStr(GetMaxX + 1, 4) + ' x' + MyStr(GetMaxY + 1, 4));
       OutTextXY(10,60, 'Colors     : ' + MyStr(GetMaxColor + 1, 10));
@@ -52,19 +70,6 @@ begin
 
       Rectangle(0,0,GetMaxX,GetMaxY);
       Rectangle(2,2,GetMaxX-2,GetMaxY-2);
-
-      if GetMaxColor < 256 then
-         for c := 0 to GetMaxColor do
-         begin
-           SetColor(c);
-           Line(c + 10, 5, c + 10, 30)
-         end
-      else
-         for c := 0 to 255 do
-         begin
-           SetColor(c);
-           Line(c + 10, 5, c + 10, 30)
-         end;
 
       ReadKey;
     end;

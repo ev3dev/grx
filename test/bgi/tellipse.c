@@ -12,7 +12,11 @@ int main(void)
   int  x, y, xr, i;
 
   gd = DETECT;
+#if defined(__MSDOS__) || defined(__WIN32__)
   initgraph(&gd,&gm,"..\\..\\chr");
+#else
+  initgraph(&gd,&gm,"../../chr");
+#endif
   err = graphresult();
   if (err != grOk) {
     fprintf(stderr, "Couldn't initialize graphics\n");

@@ -20,10 +20,10 @@ uses GRX;
 var
   Dummy, i, x, y, j: Integer = 0;
   Color: array [0 .. 1023] of Integer;
+  s : string[255];
 
 begin
-  Dummy := GrSetMode (Gr_Width_Height_BPP_Graphics, 800, 300, 16, 1000, 1000);
-  WriteLn;
+  Dummy := GrSetMode (Gr_Width_Height_BPP_Graphics, 800, 300, 16, 0, 0);
   for x := 0 to 1023 do
     begin
       { GrAllocCell; GrSetColor (x, x, x, x); }
@@ -38,9 +38,10 @@ begin
       Inc (j);
       if Color[x] <= $100000 then Inc (i)
     end;
-  WriteLn (i, ' of ', j, ' colors allocated.');
+  WriteStr (s, i, ' of ', j, ' colors allocated.');
   for y := 0 to 299 do
     for x := 0 to 799 do
       GrPlot (x, y, Color[(x + y) mod 1024]);
+  GrTextXY(300, 10, s, GrWhite, GrNoColor);
   i := GrKeyRead
 end.

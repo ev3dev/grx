@@ -839,7 +839,7 @@ int main(int argc, char **argv)
             PrintModes();
             printf("\nEnter #, 't#' toggels tag, 'm' measure tagged and 'q' to quit> ");
             fflush(stdout);
-            if(!fgets(m,40,stdin)) continue;
+            if(!fgets(m,40,stdin)) break;
             switch (*m) {
               case 't':
               case 'T': tflag = 1;

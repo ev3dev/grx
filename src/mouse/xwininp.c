@@ -19,6 +19,9 @@
  **
  ** Small changes by Dimitar Zhekov to work in fullscreen mode (DGA2).
  **
+ ** Contributions by:
+ ** 070505 M.Alvarez, Using a Pixmap for BackingStore.
+ **
  **/
 
 #include <stdlib.h>
@@ -570,6 +573,11 @@ void _GrUpdateInputs(void)
 
       XNextEvent (_XGrDisplay, &xev);
       switch (xev.type) {
+      case Expose:
+          _XGrCopyBStore(xev.xexpose.x, xev.xexpose.y,
+            xev.xexpose.width, xev.xexpose.height);
+          break;
+
       case MotionNotify:
         if (mou_enabled && (MOUINFO->msstatus == 2)) {
           if (_XGrWindowedMode) {

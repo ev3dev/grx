@@ -35,7 +35,7 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0247
+#define GRX_VERSION_API 0x0248
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -1435,10 +1435,8 @@ void GrMoveCursor(GrCursor *cursor,int x,int y);
 #define GR_M_KEYPRESS       0x080               /* other event flag bits */
 #define GR_M_POLL           0x100
 #define GR_M_NOPAINT        0x200
-#define GR_SIZE_CHANGED     0x400
-#define GR_OS_DRAW_REQUEST  0x800
 #define GR_COMMAND          0x1000
-#define GR_M_EVENT          (GR_M_MOTION | GR_M_KEYPRESS | GR_M_BUTTON_DOWN | GR_M_BUTTON_UP | GR_SIZE_CHANGED | GR_OS_DRAW_REQUEST | GR_COMMAND)
+#define GR_M_EVENT          (GR_M_MOTION | GR_M_KEYPRESS | GR_M_BUTTON_CHANGE | GR_COMMAND)
 
 #define GR_KB_RIGHTSHIFT    0x01                /* Keybd states: right shift key depressed */
 #define GR_KB_LEFTSHIFT     0x02                /* left shift key depressed */

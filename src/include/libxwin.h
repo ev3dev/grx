@@ -16,6 +16,9 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by:
+ ** 070505 M.Alvarez, Using a Pixmap for BackingStore
+ **
  **/
 
 #ifndef _LIBXWIN_H_
@@ -27,7 +30,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <X11/Xlib.h>
+#define USE_PIXMAP_FOR_BS 1  // 1 = use a pixmap for backing store
 
 #if defined(XF86DGA_DRIVER)
 #include <X11/extensions/xf86dga.h>
@@ -64,6 +67,7 @@ extern Colormap         _XGrColormap;
 extern Window           _XGrWindow;
 extern Pixmap           _XGrBitmap;
 extern Pixmap           _XGrPattern;
+extern Pixmap           _XGrBStore;
 extern GC               _XGrGC;
 extern GC               _XGrBitmapGC;
 extern GC               _XGrPatternGC;
@@ -72,12 +76,15 @@ extern unsigned long    _XGrBackColor;
 extern unsigned int     _XGrColorOper;
 extern unsigned int     _XGrDepth;
 extern unsigned int     _XGrBitsPerPixel;
+extern int              _XGrBStoreInited;
 
 extern unsigned long   _XGrColorPlanes[8];
 extern unsigned int    _XGrColorNumPlanes;
 extern unsigned long   _XGrColorPixels[2];
 extern unsigned int    _XGrColorNumPixels;
 extern char *          _XGrClassNames[6];
+
+extern void _XGrCopyBStore(int x, int y, int width, int lenght);
 
 extern int              _XGrKeyboardHit(void);
 extern int              _XGrKeyboardGetKey(void);

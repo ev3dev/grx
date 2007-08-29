@@ -6,7 +6,7 @@ uses GRX;
 
 procedure TestFunc;
 var
-  x, y, ww, wh, ii, jj : Integer;
+  x, y, ww, wh, ii, jj, c : Integer;
 
 begin
    x := GrSizeX;
@@ -16,8 +16,12 @@ begin
 
    GrSetRGBcolorMode;
    for ii := 0 to 7 do
-     for jj := 0 to 31 do
-      GrFilledBox(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,ii*32+jj);
+     for jj := 0 to 31 do begin
+       c := ii*32+jj;
+       {gives the same color independently of BPP: not all drivers have good BPP=8}
+       c := GrAllocColor(c and 2#11100000,(c and 2#11100) shl 3, (c and 2#11) shl 6);
+       GrFilledBox(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,c);
+     end;
 end; { TestFunc }
 
 var
@@ -25,13 +29,13 @@ var
    m : Integer;
 
 begin
-   x  :=  1024;
+   x  :=  1000;
    y  :=  1000;
-   xv :=  1024;
+   xv :=  1280;
    yv :=  1024;
-   BPP:=  8;
+   BPP:=  24;
 
-(* M := GrSetMode(GR_Width_Height_BPP_Graphics,x,y,bpp,0,0); *)
+(* m := GrSetMode(Gr_Width_Height_BPP_Graphics,x,y,bpp,0,0);  *)
    m := GrSetMode(Gr_Custom_BPP_Graphics,x,y,BPP,xv,yv);
 
    TestFunc;

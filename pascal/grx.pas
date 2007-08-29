@@ -19,6 +19,8 @@
 { Define this if you want to use the Linux console version.
   (Ignored on non-Linux systems.) }
 {.$define LINUX_CONSOLE}
+  {and this if you use the svgalib (instead of only the framebuffer) driver}
+{.$define SVGALIB}
 
 { Define this if you want to use the SDL driver in mingw or x11}
 {.$define __SDL__}
@@ -35,7 +37,10 @@
 {$elif defined (_WIN32)}
   {$L grxW32, vfs.c, user32, gdi32}
 {$elif defined (linux) and defined (LINUX_CONSOLE)}
-  {$L grx20, vga}
+  {$L grx20}
+  {$ifdef SVGALIB}
+     {$L vga}
+  {$endif}
 {$else}
   {$ifdef __SDL__}
     {$L grx20S, SDL, pthread, X11}
@@ -756,7 +761,7 @@ procedure GrDumpTextRegion(protected var r: GrTextRegion); asmname 'GrDumpTextRe
 
 type
   GrLineOption = record
-    No_Color   : GrColor;   { color used to draw line }
+    Lno_Color  : GrColor;   { color used to draw line }
     Lno_Width,              { width of the line }
     Lno_PattLen: CInteger;  { length of the dash pattern }
     Lno_DashPat: MemPtr     { draw/nodraw pattern }
@@ -993,8 +998,8 @@ const
   Gr_M_KeyPress      = $0080;      { other event flag bits }
   Gr_M_Poll          = $0100;
   Gr_M_NoPaint       = $0200;
-  Gr_Size_Changed    = $0400;
-  Gr_M_Event         = Gr_M_Motion or Gr_M_KeyPress or Gr_M_Button_Down or Gr_M_Button_Up or Gr_Size_Changed;
+  Gr_Command         = $1000;
+  Gr_M_Event         = Gr_M_Motion or Gr_M_KeyPress or Gr_M_Button_Change or Gr_Command;
 
   Gr_KB_RightShift   = $01;    { Keybd states: right shift key depressed }
   Gr_KB_LeftShift    = $02;    { left shift key depressed }

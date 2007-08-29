@@ -1,4 +1,4 @@
-Welcome to GRX 2.4.7!
+Welcome to GRX 2.4.8!
 
 GRX is a 2D graphics C library originaly written by Csaba Biegl for
 DJ Delorie's DOS port of the GCC compiler. Now it support a big range
@@ -13,14 +13,13 @@ Directly supported platforms:
 
   Currently GRX directly supports the following four platforms:
 
-     DOS / DJGPP v2.03 (GCC 2.9.2 and newer) EGA, VGA and VESA drivers
-     Linux / console (GCC 2.9.2, and newer) svgalib and framebuffer drivers
-     Linux / X11R6 (GCC 2.9.2, and newer) running in a window
-     Win32 / Mingw (GCC 2.9.2 and newer) running in a window
+     DOS / DJGPP v>=2.03 EGA, VGA and VESA drivers
+     Linux / console     svgalib and framebuffer drivers
+     Linux / X11R6       xwin  driver (windowed) and SDL (full screen)
+     Win32 / Mingw       win32 driver (windowed) and SDL (full screen)
 
-  The Linux console framebuffer driver is new from GRX 2.4.2, it is in
-  alpha stage but usable.
-
+  The Linux console framebuffer driver is new from GRX 2.4.2.
+  The SDL driver, compiled separately, is new from GRX 2.4.7.
   Both i386 and x86_64 architectures are supported for the linux
   console and the linux X11 versions. See below.
 
@@ -69,7 +68,7 @@ GRX installation instructions
 Requirements:
 -------------
 
-  The source files and fonts:  grx247.tar.gz or grx247.zip
+  The source files and fonts:  grx248.tar.gz or grx248.zip
   This document:               readme
 
 A. Unpacking the GRX archive
@@ -88,12 +87,12 @@ A. Unpacking the GRX archive
 
   3) unpack the GRX archive:
 
-         tar xzvf grx247.tar.gz  (1)
+         tar xzvf grx248.tar.gz  (1)
      or
-         unzip grx247.zip        (2)
+         unzip grx248.zip        (2)
 
-     (1) This will create the subdirectory 'grx247'.
-     (2) This will create the subdirectory 'contrib/grx247'.
+     (1) This will create the subdirectory 'grx248'.
+     (2) This will create the subdirectory 'contrib/grx248'.
 
 B. Compiling GRX
 ----------------
@@ -235,7 +234,8 @@ Environment variables for using GRX programs
 
        There is also a sdl driver for x11 and win32, compiled separately.
        In this case GRX20DRV="sdl::fs" gives full screen, GRX20DRV="sdl::ww"
-       gives windowed graphics. See test/fswwtest.c.
+       gives windowed graphics. You can also change inside a program:
+       see test/fswwtest.c.
 
      Values for gw and gh can be by example 640,480 or 800,600
      Values for nc can be 2, 16, 256, 64K or 16M.
@@ -295,7 +295,7 @@ Pascal users
 Help
 ====
 
-  Read the user's guide in the "doc/grx247um.htm" file. If you ran
+  Read the user's guide in the "doc/grx248um.htm" file. If you ran
   'make <your makefile> install-info', just type 'info grx' to view
   the info version of the manual.
 
@@ -312,7 +312,7 @@ Help
   http://grx.gnu.de/archive/grx/en/
 
   Check out the DJGPP newsgroup comp.os.msdos.djgpp (archive at
-  http://www.delorie.com/djgpp/mail-archives)
+  http://www.delorie.com/djgpp/mail-archives/ )
 
   Send a problem report to comp.os.msdos.djgpp or to the GRX mailing
   list <grx@gnu.de> (see below).
@@ -341,9 +341,11 @@ Credits
   Csaba Biegl <csaba@vuse.vanderbilt.edu> who wrote it.
   Michael Goffioul <goffioul@emic.ucl.ac.be> who released 2.1
   Hartmut Schirmer <hsc@techfak.uni-kiel.de> who released 2.2 and 2.3
+  Peter Gerwinski <peter@gerwinski.de> released GRX 2.3.1 and 2.3.2.
+  Mariano Alvarez Fernandez <malfer@telefonica.net> who released 2.3.3-4 and 2.4.0-6. 
 
   and other people, see the "doc/credits.doc" for details.
 
 
-Enjoy, M.Alvarez <malfer@telefonica.net>
+Enjoy, M. Lombardi <Maurice.Lombardi@ujf-grenoble.fr>
 

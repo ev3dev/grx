@@ -1,9 +1,39 @@
+@ifnottex
+@node  Top, A User Manual For GRX2, ,
+@comment node-name, next,previous, up
+
+@center @majorheading GRX 2.4.8 User's Manual 
+
+@center @chapheading A 2D graphics library for DOS, Linux, X11 and Win32 
+@end ifnottex
+
+@center Based on the original doc written by: Csaba Biegl on August 10, 1992
+@center Updated by: Mariano Alvarez Fernandez on August 17, 2000
+@center Last update: August 14, 2007
+
+@unnumbered Abstract
+
+  @strong{GRX} is a 2D graphics library originaly written by
+Csaba Biegl for DJ Delorie's DOS port of the GCC compiler. Now it support
+a big range of platforms, the main four are: DOS (DJGPPv2), Linux console,
+X11 and Win32 (Mingw). On DOS it supports VGA, EGA and VESA compliant cards.
+On Linux console it uses svgalib or the framebuffer. On X11 it must work on
+any X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver.
+The framebuffer Linux console driver was new in 2.4.2. From 2.4.7 there is a
+support for x86_64 bits Linux machines and a support for an SDL driver
+on MingW and X11. On MingW and X11 it runs on a window with the original
+driver, and either full screen or on a window with the SDL driver.
+
+@menu
+* A User Manual For GRX2::
+@end menu
+
 @c -----------------------------------------------------------------------------
-@node A User Manual For GRX2, , Top,Top
+@node A User Manual For GRX2, Hello world, Top, Top
 @unnumbered GRX2 User's Manual
 
 @menu
-* Credits::
+* Top::
 * Hello world::
 * Data types and function declarations::
 * Setting the graphics driver::
@@ -28,46 +58,13 @@
 * Writing/reading JPEG graphics files::
 * Miscellaneous functions::
 * BGI interface::
-* Test examples::
-* Includes::
+* Pascal interface::
+* References::
 @end menu
 
-
-@node Credits, Hello world, , A User Manual For GRX2
-@unnumberedsec Credits
-
-
-@example
-                       GRX 2.4.7 User's Manual
-
-         A graphics library for DOS, Linux, X11 and Win32
-
-@end example
-
-Based on the original doc written by: Csaba Biegl on August 10, 1992
-Updated by: Mariano Alvarez Fernandez on August 17, 2000
-
-Last update: March 4, 2003
-______________________________________________________________________________
-
-@example
-                             Abstract
-
-@end example
-
-GRX is a 2D graphics library originaly written by
-Csaba Biegl for DJ Delorie's DOS port of the GCC compiler. Now it support
-a big range of platforms, the main four are: DOS (DJGPPv2), Linux console,
-X11 and Win32 (Mingw). On DOS it supports VGA, EGA and VESA compliant cards.
-On Linux console it uses svgalib or the framebuffer. On X11 it must work on
-any X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver,
-but you must considere it in alpha stage. The framebuffer Linux console
-driver was new in 2.4.2 and it is in alpha stage too. From 2.4.7 there is a
-support for x86_64 bits Linux machines and on MingW and X11 support for an
-SDL driver.
-
 @c -----------------------------------------------------------------------------
-@node Hello world, Data types and function declarations, Credits, A User Manual For GRX2
+
+@node Hello world, Data types and function declarations, A User Manual For GRX2, A User Manual For GRX2
 @unnumberedsec Hello world
 The next program draws a double frame around the screen and writes "Hello, GRX
 world" centered. Then it waits after a key is pressed.
@@ -138,7 +135,7 @@ application program are declared/prototyped in the header files (in the
    * grx20.h      drawing-related structures and functions
    * grxkeys.h    platform independent key definitions
 
-User programs normally only include @pxref{grx20.h} and @pxref{grxkeys.h}
+User programs normally only include @strong{include/grx20.h} and @strong{include/grxkeys.h}
 @end example
 
 @c -----------------------------------------------------------------------------
@@ -167,6 +164,8 @@ Available drivers are for:
 * SDL (Win32 and X11) => sdl::fs, sdl::ww, memory
 @end example
 
+The xwin and win32 drivers are windowed. 
+The SDL driver on the same systems can be either fullscreen (::fs) or windowed (::ww).
 
 The optionals gw, gh and nc parameters set the desired default graphics mode.
 Normal values for 'nc' are 2, 16, 256, 64K and 16M. The current driver name can
@@ -578,7 +577,7 @@ the memory buffers and pass it to GrCreateContext.
 Using GrCreateSubContext is the same, except it doesn't need the buffer,
 because it uses the parent buffer.
 
-See the @pxref{winclip.c} and @pxref{wintest.c} examples.
+See the @strong{test/winclip.c} and @strong{test/wintest.c} examples.
 
 @c -----------------------------------------------------------------------------
 @node Color management, Portable use of a few colors, Context use, A User Manual For GRX2
@@ -733,7 +732,7 @@ are inlined versions (except if you compile GRX with GRX_SKIP_INLINES defined)
 to be used in the RGB model (in the color table model they call the normal
 routines).
 
-See the @pxref{rgbtest.c} and @pxref{colorops.c} examples.
+See the @strong{test/rgbtest.c} and @strong{test/colorops.c} examples.
 
 
 @c -----------------------------------------------------------------------------
@@ -867,7 +866,7 @@ void GrLastArcCoords(int *xs,int *ys,int *xe,int *ye,int *xc,int *yc);
 can be used to retrieve the start, end, and center points used by the last arc
 drawing functions.
 
-See the @pxref{circtest.c} and @pxref{arctest.c} examples.
+See the @strong{test/circtest.c} and @strong{test/arctest.c} examples.
 
 The polyline and polygon primitives take the address of an n by 2 coordinate
 array. The X values should be stored in the elements with 0 second index, and
@@ -875,7 +874,7 @@ the Y values in the elements with a second index value of 1. Coordinate arrays
 passed to the polygon primitive can either contain or omit the closing edge of
 the polygon -- the primitive will append it to the list if it is missing.
 
-See the @pxref{polytest.c} example.
+See the @strong{test/polytest.c} example.
 
 Because calculating the arc points it's a very time consuming operation, there
 are two functions to pre-calculate the points, that can be used next with
@@ -967,7 +966,7 @@ the destination context (the GrIMAGE op must be ored with the color value to be
 handled as transparent). If either the source or the destination context
 argument is the NULL pointer then the current context is used for that argument.
 
-See the @pxref{blittest.c} example.
+See the @strong{test/blittest.c} example.
 
 A efficient form to get/put pixels from/to a context can be achieved using the
 next functions:
@@ -1070,7 +1069,7 @@ void GrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
 void GrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
 @end example
 
-See the @pxref{linetest.c} example.
+See the @strong{test/linetest.c} example.
 
 @c -----------------------------------------------------------------------------
 @node Pattern filled graphics primitives, Patterned line drawing, Customized line drawing, A User Manual For GRX2
@@ -1329,7 +1328,7 @@ To destroy a image objet when you don't need it any more use:
 void GrImageDestroy(GrImage *i);
 @end example
 
-See the @pxref{imgtest.c} example.
+See the @strong{test/imgtest.c} example.
 
 @c -----------------------------------------------------------------------------
 @node Text drawing, Drawing in user coordinates, Image manipulation, A User Manual For GRX2
@@ -1452,7 +1451,9 @@ necessary, avoiding the possibility of the font file being deleted or corrupted.
 You can use the premade fnt2c.c program (see the source, it's so simple) to
 dump a selected font to source code, by example:
 
-"fnt2c helv15 myhelv15 myhelv15.c"
+@example
+fnt2c helv15 myhelv15 myhelv15.c
+@end example
 
 Next, if this line is included in your main include file:
 
@@ -1642,7 +1643,7 @@ can simulate a text mode window, write chars directly to the txr_buffer and call
 GrDumpTextRegion when you want to update the window (or GrDumpText if you know
 the area to update is small).
 
-See the @pxref{fonttest.c} example.
+See the @strong{test/fonttest.c} example.
 
 @c -----------------------------------------------------------------------------
 @node Drawing in user coordinates, Graphics cursors, Text drawing, A User Manual For GRX2
@@ -1818,7 +1819,7 @@ void GrMoveCursor(GrCursor *cursor,int x,int y);
 void GrDestroyCursor(GrCursor *cursor);
 @end example
 
-See the @pxref{curstest.c} example.
+See the @strong{test/curstest.c} example.
 
 @c -----------------------------------------------------------------------------
 @node Keyboard input, Mouse event handling, Graphics cursors, A User Manual For GRX2
@@ -1885,7 +1886,7 @@ the status of some special keys:
 #define GR_KB_SHIFT         (GR_KB_LEFTSHIFT | GR_KB_RIGHTSHIFT)
 @end example
 
-See the @pxref{keys.c} example.
+See the @strong{test/keys.c} example.
 
 @c -----------------------------------------------------------------------------
 @node Mouse event handling, Writing/reading PNM graphics files, Keyboard input, A User Manual For GRX2
@@ -2076,8 +2077,9 @@ GrMouseGetEvent and decoding the various bits in the event structure:
 #define GR_M_KEYPRESS       0x080        /* other event flag bits */
 #define GR_M_POLL           0x100
 #define GR_M_NOPAINT        0x200
+#define GR_COMMAND          0x1000
 #define GR_M_EVENT          (GR_M_MOTION | GR_M_KEYPRESS | \
-                             GR_M_BUTTON_DOWN | GR_M_BUTTON_UP)
+                             GR_M_BUTTON_CHANGE | GR_COMMAND)
 @end example
 
 GrMouseGetEvent will display the mouse cursor if it was previously erased and
@@ -2085,7 +2087,7 @@ the GR_M_NOPAINT bit is not set in the flag passed to it. In this case it will
 also erase the cursor after an event has been obtained.
 
 GrMouseGetEvent block until a event is produced, except if the GR_M_POLL bit
-is set in the falg passed to it.
+is set in the flag passed to it.
 
 Another version of GetEvent:
 
@@ -2118,14 +2120,15 @@ Note that GrMouseInit set both by default. If you want to use
 GrMouseGetEvent and GrKeyRead at the same time, a call to
 GrMouseEventEnable( 0,1 ) is needed before input process.
 
-See the @pxref{mousetst.c} example.
+See the @strong{test/mousetst.c} example.
 
 @node Writing/reading PNM graphics files, Writing/reading PNG graphics files,Mouse event handling , A User Manual For GRX2
 @unnumberedsec Writing/reading PNM graphics files
 
 GRX includes functions to load/save a context from/to a PNM file.
 
-PNM is a group of simple graphics formats from the NetPbm (http://netpbm.sourceforge.net)
+PNM is a group of simple graphics formats from the 
+@uref{http://netpbm.sourceforge.net, NetPbm}
 distribution. NetPbm can convert from/to PNM lots of graphics formats,
 and apply some transformations to PNM files.
 (Note. You don't need the NetPbm distribution to use this functions).
@@ -2204,7 +2207,7 @@ bin2c program by example).
 
 GRX includes functions to load/save a context
 from/to a png file. But note, for this purpose it needs the
-(a href="http://www.libpng.org/pub/png/libpng.html) libpng library,
+@uref{http://www.libpng.org/pub/png/libpng.html, libpng} library,
 and to enable the png support before make the GRX lib.
 
 Use next function to save a context in a PNG file:
@@ -2257,7 +2260,7 @@ error (-1) ever.
 
 GRX includes functions to load/save a context
 from/to a jpeg file. But note, for this purpose it needs the
-(a href="http://www.ijg.org) libjpeg library,
+@uref{http://www.ijg.org, libjpeg} library,
 and to enable the jpeg support before make the GRX lib.
 
 Use next function to save a context in a JPEG file:
@@ -2406,7 +2409,8 @@ an example:
 
 @end example
 
-@node BGI interface, Test examples, Miscellaneous functions, A User Manual For GRX2
+@c -----------------------------------------------------------------------------
+@node BGI interface, Pascal interface, Miscellaneous functions, A User Manual For GRX2
 @unnumberedsec BGI interface
 
 From the 2.3.1 version, GRX includes the BCC2GRX library created by Hartmut
@@ -2416,4 +2420,49 @@ a convenient platform to develop new BGI programs. Of course you should use
 native GRX interface in such cases!
 
 Read the readme.bgi file for more info.
+
+@c -----------------------------------------------------------------------------
+@node Pascal interface, References, BGI interface, A User Manual For GRX2
+@unnumberedsec Pascal interface
+
+The Pascal (gpc) support is produced by two unit files @strong{pascal/grx.pas}
+and @strong{pascal/bgi/graph.pas} which are the Pascal translations of the C
+header files @strong{include/grx20.h + include/grxkeys.h}
+and @strong{include/libbcc.h}.
+
+Compilation of the examples and installation of the header files is allowed
+by setting INCLUDE_GPC_SUPPORT=y in makedef.grx.
+
+The unit files contain at the  beginning instructions to load the required
+libraries (libgrx20..., depending on the system) and addon libraries 
+(e.g. libpng).
+You can uncomment manually the addons you want. 
+You can also use the configure script which does that automatically,
+together with editing the makedefs.grx file.
+
+By default they are installed in a @strong{units} directory below the 
+INSTALLDIR directory. But you can put them where you like.
+
+@c -----------------------------------------------------------------------------
+@node References, , Pascal interface, A User Manual For GRX2
+@unnumberedsec References
+
+@multitable {MGRX site (fork from GRX)----}{----http://www.libpng.org/pub/png/libpng.html}
+@item Official GRX site
+@tab @uref{http://grx.gnu.de}
+@item GRX mailing list archive
+@tab @uref{http://grx.gnu.de/archive/grx/en/}
+@item MGRX site (fork from GRX)
+@tab @uref{http://mgrx.fgrim.com}
+@item NetPbm distribution
+@tab @uref{http://netpbm.sourceforge.net}
+@item PNG library
+@tab @uref{http://www.libpng.org/pub/png/libpng.html}
+@item JPEG library
+@tab @uref{http://www.ijg.org}
+@item TIFF library
+@tab @uref{http://www.remotesensing.org/libtiff/}
+@end multitable
+
+@c -----------------------------------------------------------------------------
 

@@ -21,6 +21,11 @@
  ** Contributions by M.Alvarez (malfer@teleline.es) 02/02/2002
  **   - The w32 imput queue implemented as a circular queue.
  **   - All the input related code moved here from vd_win32.c
+ **
+ ** Contribution by M. Lombardi 05/08/2007
+ ** Do not treat WM_PAINT messages here. They are delt with in vd_win32.c.
+ ** This produced saturation of GRX event queue        and gobbling of
+ ** keyboard/mouse events there (compare behavior of test/mousetst)
  **/
 
 #include "libwin32.h"
@@ -215,11 +220,11 @@ static int DequeueW32Event(GrMouseEvent * ev)
     W32Event evaux;
     int key;
     int buttons;
-    extern int GrCurrentWindowWidth;
-    extern int GrCurrentWindowHeight;
 
-    if (_W32EventQueueLength < 1)
+    if (_W32EventQueueLength < 1){
+        Sleep(1); /* yield */
         return 0;
+    }
 
     EnterCriticalSection(&_csEventQueue);
 //    if (!TryEnterCriticalSection(&_csEventQueue))
@@ -260,28 +265,6 @@ static int DequeueW32Event(GrMouseEvent * ev)
         fill_keybd_ev((*ev), key, evaux.kbstat);
         kbd_lastmod = evaux.kbstat;
         return 1;
-
-    case WM_SIZE:
-        GrCurrentContext ()->gc_xmax = LOWORD (evaux.lParam);
-        GrCurrentContext ()->gc_ymax = HIWORD (evaux.lParam);
-        GrCurrentContext ()->gc_xcliphi = LOWORD (evaux.lParam);
-        GrCurrentContext ()->gc_ycliphi = HIWORD (evaux.lParam);
-        GrScreenContext ()->gc_xmax = LOWORD (evaux.lParam);
-        GrScreenContext ()->gc_ymax = HIWORD (evaux.lParam);
-        GrScreenContext ()->gc_xcliphi = LOWORD (evaux.lParam);
-        GrScreenContext ()->gc_ycliphi = HIWORD (evaux.lParam);
-        GrCurrentWindowWidth = LOWORD (evaux.lParam);
-        GrCurrentWindowHeight = HIWORD (evaux.lParam);
-        fill_size_ev ((*ev), LOWORD (evaux.lParam), HIWORD (evaux.lParam));
-        return 1;
-
-    case WM_PAINT:
-      {
-        RECT *UpdateRect = (RECT *) (evaux.lParam);
-        fill_paint_ev ((*ev), UpdateRect->left, UpdateRect->top,
-                       UpdateRect->right, UpdateRect->bottom);
-        return 1;
-      }
 
     case WM_COMMAND:
         fill_cmd_ev((*ev), evaux.wParam, evaux.kbstat);

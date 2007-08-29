@@ -75,14 +75,15 @@ static GrFont *doit(char *fname,char *path,int cvt,int w,int h,int lo,int hi)
 GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
 {
     GrFont *f;
-    int  chr,len,abspath;
+    int  chr,len,abspath,dc;
     char fname[200];
     GRX_ENTER();
     len = 0;
     abspath = FALSE;
+    dc = TRUE;
     while((chr = *name++) != '\0') {
         switch(chr) {
-#ifdef __MSDOS__
+#if defined(__MSDOS__) || defined(__WIN32__)
           case ':':
             abspath = TRUE;
             break;
@@ -90,6 +91,7 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
             chr = '/';
 #endif
           case '/':
+            dc = TRUE;
             if(len == 0) abspath = TRUE;
             break;
           default:
@@ -98,8 +100,14 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
                 name = "";
                 chr  = '\0';
             }
-#ifdef __MSDOS__
-             chr = tolower(chr);
+#ifdef __DJGPP__
+            /* allow syntax /dev/env/DJDIR */
+            if ((len == 9) && (strncmp(fname,"/dev/env/",9)==0))
+                dc = FALSE;
+            if (dc)
+#endif
+#if defined(__MSDOS__) || defined(__WIN32__)
+                chr = tolower(chr);
 #endif
             break;
         }

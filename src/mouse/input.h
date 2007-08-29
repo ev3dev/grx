@@ -61,24 +61,6 @@
         EV.buttons  = 0;                                                    \
 } while(0)
 
-#define fill_size_ev(EV,NEWX,NEWY) do {                                     \
-        EV.flags    = GR_SIZE_CHANGED;                                      \
-        EV.x        = NEWX;                                                 \
-        EV.y        = NEWY;                                                 \
-        EV.key      = 0;                                                    \
-        EV.kbstat   = 0;                                                    \
-        EV.buttons  = 0;                                                    \
-} while(0)
-
-#define fill_paint_ev(EV,LEFT,TOP,RIGHT,BOTTOM) do {                        \
-        EV.flags    = GR_OS_DRAW_REQUEST;                                   \
-        EV.x        = LEFT;                                                 \
-        EV.y        = TOP;                                                  \
-        EV.buttons  = RIGHT;                                                \
-        EV.key      = BOTTOM;                                               \
-        EV.kbstat   = 0;                                                    \
-} while(0)
-
 #define fill_cmd_ev(EV,CMD,KBSTAT) do {                                     \
         EV.flags    = GR_COMMAND | (MOUINFO->moved ? GR_M_MOTION : 0);      \
         EV.x        = MOUINFO->xpos;                                        \

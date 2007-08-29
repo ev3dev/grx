@@ -13,7 +13,10 @@ Starting from version v2.2 GRX was maintained by Hartmut Schirmer
 Peter Gerwinski <peter@gerwinski.de> released GRX 2.3.1 and 2.3.2.
 
 Mariano Alvarez Fernandez (malfer@telefonica.net) released GRX 2.3.3,
-2.3.4 and the 2.4.x series.
+2.3.4 and the 2.4.0-6 series.
+
+Maurice Lombardi <Maurice.Lombardi@ujf-grenoble.fr> packed together
+various contributions to release GRX 2.4.7-8
 
 Credits for GRX > v2.0 in alphabetical order
 ============================================

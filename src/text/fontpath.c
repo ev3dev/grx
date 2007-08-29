@@ -25,7 +25,7 @@
 
 void GrSetFontPath(char *p)
 {
-        int  chr,totlen = 0,npath,plen = 0;
+        int  chr,totlen = 0,npath,plen = 0,dc = TRUE;
         char path[200],*plist[100];
         if(!p || (*p == '\0')) return;
         for (npath = 0; npath < itemsof(plist); ++npath)
@@ -37,7 +37,7 @@ void GrSetFontPath(char *p)
             int pathchr = TRUE;
             switch(chr) {
               case ':':
-#ifdef __MSDOS__
+#if defined(__MSDOS__) || defined(__WIN32__)
                 if((plen == 1) && isalpha(path[0])) break;
 #endif
               case ';':
@@ -47,14 +47,22 @@ void GrSetFontPath(char *p)
                 p--;
                 pathchr = FALSE;
                 break;
-#ifdef __MSDOS__
+#if defined(__MSDOS__) || defined(__WIN32__)
               case '\\':
                 chr = '/';
+              case '/':
+                dc = TRUE;
                 break;
 #endif
               default:
-#ifdef __MSDOS__
-                chr = tolower(chr);
+#ifdef __DJGPP__
+                /* allow syntax /dev/env/DJDIR */
+                if ((plen == 9)        && (strncmp(path,"/dev/env/",9)==0))
+                    dc = FALSE;
+                if (dc)
+#endif
+#if defined(__MSDOS__) || defined(__WIN32__)
+                    chr = tolower(chr);
 #endif
                 if(isspace(chr)) pathchr = FALSE;
                 break;

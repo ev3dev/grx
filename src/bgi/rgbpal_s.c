@@ -30,4 +30,7 @@ void setrgbpalette(int color, int red, int green, int blue)
 {
   _DO_INIT_CHECK;
   GrSetColor( color, SIX(red)<<2, SIX(green)<<2, SIX(blue)<<2);
+#if defined(__WIN32__) && !defined(__SDL__)
+  GrSleep(5);  /* yields for win32 driver which redraws whole screen */
+#endif
 }

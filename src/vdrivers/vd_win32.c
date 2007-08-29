@@ -72,6 +72,12 @@
  **
  ** Changes by Peter Gerwinski 19/06/2004
  **   - more W32 events handling
+ **
+ ** Changes by Maurice Lombardi 21/08/2007
+ **   - Corrections to WM_PAINT
+ **     1 - revert the previous change: was saturating GrMouseInfo->queue
+ **         for fast paintings
+ **     2 - GetUpdateRect() gave wrong UpdateRect !!!
  **/
 
 #include "libwin32.h"
@@ -84,6 +90,7 @@
 #endif
 
 HWND hGRXWnd = NULL;
+HWND hPrvWnd = NULL;
 HDC hDCMem = NULL;
 
 CRITICAL_SECTION _csEventQueue;
@@ -97,9 +104,6 @@ static HBITMAP hBmpDIB = NULL;
 
 static int maxScreenWidth, maxScreenHeight;
 static int maxWindowWidth, maxWindowHeight;
-
-int GrCurrentWindowWidth = 0;
-int GrCurrentWindowHeight = 0;
 
 HANDLE windowThread = INVALID_HANDLE_VALUE;
 static HANDLE mainThread   = INVALID_HANDLE_VALUE;
@@ -127,7 +131,7 @@ static HBITMAP CreateDIB8(HDC hdc, int w, int h, char **pBits)
     BITMAPINFO *pbmInfo;
     HBITMAP hBmp;
 
-    pbmInfo = malloc(sizeof(BITMAPINFO) +255*sizeof(RGBQUAD));
+    pbmInfo = malloc(sizeof(BITMAPINFO) +256*sizeof(RGBQUAD));
     pbmInfo->bmiHeader.biSize = sizeof (BITMAPINFOHEADER);
     pbmInfo->bmiHeader.biWidth = w;
     pbmInfo->bmiHeader.biHeight = -h;
@@ -183,8 +187,8 @@ static int setmode(GrVideoMode * mp, int noclear)
         Rect.right = mp->width + inipos;
         Rect.bottom = mp->height + inipos;
         AdjustWindowRect(&Rect, WS_OVERLAPPEDWINDOW, FALSE);
-        GrCurrentWindowWidth = maxWindowWidth = Rect.right - Rect.left;
-        GrCurrentWindowHeight = maxWindowHeight = Rect.bottom - Rect.top;
+        maxWindowWidth = Rect.right - Rect.left;
+        maxWindowHeight = Rect.bottom - Rect.top;
         SetWindowPos(hGRXWnd, NULL,
                      Rect.left, Rect.top,
                      maxWindowWidth, maxWindowHeight,
@@ -223,8 +227,10 @@ static int setmode(GrVideoMode * mp, int noclear)
         SetForegroundWindow(hGRXWnd);
     } else {
         /* If changing to text-mode, hide the graphics window. */
-        if (hGRXWnd != NULL)
+        if (hGRXWnd != NULL) {
             ShowWindow(hGRXWnd, SW_HIDE);
+            SetForegroundWindow(hPrvWnd);
+        }
     }
     return (TRUE);
 }
@@ -335,6 +341,8 @@ static int init(char *options)
     /* WARNING: mainThread can not be used in the windowThread */
     mainThread = GetCurrentThread();
 
+    hPrvWnd = GetForegroundWindow();
+
     InitializeCriticalSection(&_csEventQueue);
     
     /* The modes not compatible width the configuration */
@@ -355,7 +363,7 @@ static int init(char *options)
     /* Wait for thread creating the window. This is a busy */
     /* waiting loop (bad), but we Sleep to yield (good)    */
     while (isWindowThreadRunning == 0)
-        Sleep(1); 
+        Sleep(1);
 
     return TRUE;
 }
@@ -366,7 +374,7 @@ static void reset(void)
     PostMessage(hGRXWnd, WM_CLOSE, 0, 0);
 
     while (isWindowThreadRunning == 1)
-        Sleep(1); 
+        Sleep(1);
 
     isMainWaitingTermination = 0;
     DeleteCriticalSection(&_csEventQueue);
@@ -554,19 +562,10 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
         }
         return 0;
 
-    case WM_CHAR:
-        kbstat = convertwin32keystate();
-        EnqueueW32Event(uMsg, wParam, lParam, kbstat);
-        return 0;
-
     case WM_SYSCHAR:
         fInsert = FALSE;
-
-        if (GetKeyState (VK_MENU) < 0
-            && DefWindowProc (hWnd, uMsg, wParam, lParam) == 0)
-          return 0;
         kbstat = convertwin32keystate();
-        if ((kbstat & GR_KB_ALT) != 0 && (wParam & 0xff) == 0 ) {
+        if (kbstat & GR_KB_ALT) {
             if (wParam >= 'a' && wParam <= 'z')
                 fInsert = TRUE;
             if (wParam >= 'A' && wParam <= 'Z')
@@ -579,6 +578,8 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
         EnqueueW32Event(uMsg, wParam, lParam, kbstat);
         return 0;
 
+    case WM_COMMAND:
+    case WM_CHAR:
     case WM_KEYDOWN:
     case WM_SYSKEYDOWN:
     case WM_LBUTTONDOWN:
@@ -588,13 +589,6 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
     case WM_MBUTTONUP:
     case WM_RBUTTONUP:
     case WM_MOUSEMOVE:
-    case WM_SIZE:
-    case WM_COMMAND:
-        if (uMsg == WM_COMMAND && lParam == 1208)
-          ShowCursor (TRUE);
-        else if (uMsg == WM_COMMAND && lParam == 1209)
-          ShowCursor (FALSE);
-        else
           {
             kbstat = convertwin32keystate();
             EnqueueW32Event(uMsg, wParam, lParam, kbstat);
@@ -603,20 +597,14 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 
     case WM_PAINT:
         {
-            RECT UpdateRect;
-            HDC hDC;
             PAINTSTRUCT ps;
 
-            if (GetUpdateRect(hWnd, &UpdateRect, FALSE)) {
-                EnqueueW32Event(uMsg, wParam, (long) &UpdateRect, 0);
-                BeginPaint(hWnd, &ps);
-                hDC = GetDC(hWnd);
-                BitBlt(hDC,
-                       UpdateRect.left, UpdateRect.top,
-                       UpdateRect.right - UpdateRect.left + 1,
-                       UpdateRect.bottom - UpdateRect.top + 1,
-                       hDCMem, UpdateRect.left, UpdateRect.top, SRCCOPY);
-                ReleaseDC(hWnd, hDC);
+            if (BeginPaint(hWnd, &ps)){
+                BitBlt(ps.hdc,
+                       ps.rcPaint.left, ps.rcPaint.top,
+                       ps.rcPaint.right - ps.rcPaint.left + 1,
+                       ps.rcPaint.bottom - ps.rcPaint.top + 1,
+                       hDCMem, ps.rcPaint.left, ps.rcPaint.top, SRCCOPY);
                 EndPaint(hWnd, &ps);
             }
         }
@@ -642,6 +630,7 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
     case WM_WINDOWPOSCHANGED:
     case WM_GETDLGCODE:
     case WM_MOVE:
+    case WM_SIZE:
     case WM_SETCURSOR:
     case WM_HELP:
     case WM_KEYUP:

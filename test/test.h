@@ -43,6 +43,8 @@ int main(int argc,char **argv)
         int  x = 0;
         int  y = 0;
         long c = 0;
+        int xv = 0;
+        int yv = 0;
         char m[41];
 
         Argc = argc - 1;
@@ -65,7 +67,15 @@ int main(int argc,char **argv)
                    Argv++;
                 }
         }
-        if(c >= 2)
+        if((Argc >= 2) &&
+           (sscanf(Argv[0],"%d",&xv) == 1) && (xv >= x) &&
+           (sscanf(Argv[1],"%d",&yv) == 1) && (yv >= y)) {
+                Argc -= 2;
+                Argv += 2;
+        }
+        if((xv >= x) && (yv >= y) && (c >= 2))
+                GrSetMode(GR_custom_graphics,x,y,c,xv,yv);
+        else if(c >= 2)
                 GrSetMode(GR_width_height_color_graphics,x,y,c);
         else if((x >= 320) && (y >= 200))
                 GrSetMode(GR_width_height_graphics,x,y);
