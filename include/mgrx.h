@@ -25,7 +25,7 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0097
+#define MGRX_VERSION_API 0x0098
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
@@ -735,6 +735,10 @@ void GrFilledPolygon(int numpts,int points[][2],GrColor c);
 void GrBitBlt(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,GrColor op);
 void GrBitBlt1bpp(GrContext *dst,int dx,int dy,GrContext *src,int x1,int y1,int x2,int y2,GrColor fg,GrColor bg);
 void GrFloodFill(int x, int y, GrColor border, GrColor c);
+void GrFloodSpill(int x1, int y1, int x2, int y2, GrColor old_c, GrColor new_c);
+void GrFloodSpill2(int x1, int y1, int x2, int y2, GrColor old_c1, GrColor new_c1, GrColor old_c2, GrColor new_c2);
+void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2, GrColor old_c, GrColor new_c);
+void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2, GrColor old_c1, GrColor new_c1, GrColor old_c2, GrColor new_c2);
 
 GrColor GrPixel(int x,int y);
 GrColor GrPixelC(GrContext *c,int x,int y);

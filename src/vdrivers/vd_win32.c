@@ -69,6 +69,10 @@
  **   - With the Thomas idea of using a DIB, we can now use the DIB like
  **     a linear frame buffer, so the new win32 framedrivers can take
  **     advantage of the standard GRX frame drivers.
+ **
+ ** Changes by M.Alvarez (malfer@telefonica.net) 01/12/2007
+ **   - Added videomodes for wide monitors
+ **
  **/
 
 #include "libwin32.h"
@@ -274,6 +278,10 @@ static GrVideoMode modes[] = {
     {TRUE, 8, 1024, 768, 0x00, 1024, 0, &grxwinext8},
     {TRUE, 8, 1280, 1024, 0x00, 1280, 0, &grxwinext8},
     {TRUE, 8, 1600, 1200, 0x00, 1600, 0, &grxwinext8},
+    {TRUE, 8, 1440, 900, 0x00, 1440, 0, &grxwinext8},
+    {TRUE, 8, 1680, 1050, 0x00, 1680, 0, &grxwinext8},
+    {TRUE, 8, 1920, 1200, 0x00, 1920, 0, &grxwinext8},
+    {TRUE, 8, 2560, 1600, 0x00, 2560, 0, &grxwinext8},
 
     {TRUE, 24, 320, 240, 0x00, 960, 0, &grxwinext24},
     {TRUE, 24, 640, 480, 0x00, 1920, 0, &grxwinext24},
@@ -281,6 +289,10 @@ static GrVideoMode modes[] = {
     {TRUE, 24, 1024, 768, 0x00, 3072, 0, &grxwinext24},
     {TRUE, 24, 1280, 1024, 0x00, 3840, 0, &grxwinext24},
     {TRUE, 24, 1600, 1200, 0x00, 4800, 0, &grxwinext24},
+    {TRUE, 24, 1440, 900, 0x00, 4320, 0, &grxwinext24},
+    {TRUE, 24, 1680, 1050, 0x00, 5040, 0, &grxwinext24},
+    {TRUE, 24, 1920, 1200, 0x00, 5760, 0, &grxwinext24},
+    {TRUE, 24, 2560, 1600, 0x00, 7680, 0, &grxwinext24},
 
     {FALSE, 0, 9999, 9999, 0x00, 0, 0, NULL}
 };
@@ -321,7 +333,7 @@ static int init(char *options)
     mainThread = GetCurrentThread();
 
     InitializeCriticalSection(&_csEventQueue);
-    
+ 
     /* The modes not compatible width the configuration */
     /* of Windows are made 'non-present'                */
     maxScreenWidth = GetSystemMetrics(SM_CXSCREEN);

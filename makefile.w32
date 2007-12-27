@@ -1,5 +1,5 @@
 #
-# GRX makefile for Mingw version
+# MGRX makefile for Mingw version
 #
 .PHONY : libs test clean cleanall install uninstall \
 	 install-bin uninstall-bin install-fonts uninstall-fonts
@@ -18,7 +18,7 @@ test:   libs
 
 clean:
 	$(MAKE) -C test -f makefile.w32 clean
-	$(MAKE) -C src  -f makefile.w32 clean
+	$(MAKE) -C src -f makefile.w32 clean
 
 cleanall: clean
 	$(MAKE) -C src -f makefile.w32 cleanall

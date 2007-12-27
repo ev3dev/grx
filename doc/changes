@@ -1,3 +1,13 @@
+2007-12-27 ----------- mGRX 0.9.8 released
+2007-12-27 Added GrFloodSpill functions, by richard at dogcreek.ca
+2007-12-01 vd_xwin: go to fullscreen if w,h == X resolution,
+           GR_biggest_graphics is honored.
+2007-12-01 vd_xwin: modes higher than X resolution are made no-present.
+2007-12-01 Added videomodes for wide monitors in x11 and w32 drivers.
+2007-12-01 Introduction of GR_PtrInt (integer of same length as a pointer)
+           to suppress warnings (in fact errors) when compiling with
+           x86_64 platforms. Backport from GRX 2.4.7 (M.Lombardi).
+2007-11-07 Simplify the include/arith.h code.
 2007-06-09 ----------- mGRX 0.9.7 released
 2007-06-03 The djgpp delay function doesn't work on WinXP and W2000. It is
            corrected in the djgpp CVS version. We included the source for the

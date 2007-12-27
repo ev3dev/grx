@@ -100,20 +100,20 @@ int main()
              GrBlack(), GrWhite());
     GrEventWaitKeyOrClick(&ev);
 
-    GrSaveContextToJpeg(NULL, "p.jpg", 75);
-    GrSaveContextToGrayJpeg(NULL, "pgray.jpg", 75);
+    GrSaveContextToJpeg(NULL, "output.jpg", 75);
+    GrSaveContextToGrayJpeg(NULL, "outputg.jpg", 75);
 
     GrClearScreen(GrBlack());
     GrTextXY(10, 10," Press any key to reload color screen       ",
              GrBlack(), GrWhite());
     GrEventWaitKeyOrClick(&ev);
-    GrLoadContextFromJpeg( NULL, "p.jpg", 1);
+    GrLoadContextFromJpeg( NULL, "output.jpg", 1);
 
     GrTextXY(10, 10, "Press any key to reload gray screen        ",
              GrBlack(), GrWhite());
     GrEventWaitKeyOrClick(&ev);
     GrClearScreen(GrBlack());
-    GrLoadContextFromJpeg(NULL, "pgray.jpg", 1);
+    GrLoadContextFromJpeg(NULL, "outputg.jpg", 1);
 
     GrTextXY(10, 10, "Press any key to end                       ",
              GrBlack(), GrWhite());

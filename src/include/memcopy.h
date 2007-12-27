@@ -16,6 +16,10 @@
  ** Basic and optimized memory block copy operations in byte, word and
  ** long sizes. The copys are available in WRITE, XOR, OR and AND modes.
  **
+ ** Modifications
+ ** 071201 Introduction of GR_PtrInt (integer of same length as a pointer)
+ **        to suppress warnings (in fact errors) when compiling with
+ **        x86_64 platforms. Backport from GRX 2.4.7 (M.Lombardi)
  **/
 
 #ifndef __MEMCOPY_H_INCLUDED__
@@ -1034,17 +1038,17 @@
 /* generic optimized forward copy (meets NO alignment resriction :( */
 #ifndef __INLINE_STD_FWD_COPY__
 #define __INLINE_STD_FWD_COPY__(SZ,WOP,SF,ALP,DST,SRC,CNT) do {               \
-      if ((int)(CNT) >= 2*CPSIZE_##SZ-1 ) {                                   \
-        int _c_ = (-((int)(ALP))) & (CPSIZE_##SZ-1);                          \
+      if ((GR_PtrInt)(CNT) >= 2*CPSIZE_##SZ-1 ) {                                   \
+        GR_PtrInt _c_ = (-((GR_PtrInt)(ALP))) & (CPSIZE_##SZ-1);                          \
         if (_c_) {                                                            \
           (CNT) -= _c_;                                                       \
           rowcopy_b##WOP##SF(DST,SRC,_c_);                                    \
         }                                                                     \
-        _c_ = ((int)(CNT)) / CPSIZE_##SZ;                                     \
+        _c_ = ((GR_PtrInt)(CNT)) / CPSIZE_##SZ;                                     \
         rowcopy_##SZ##WOP##SF(DST,SRC,_c_);                                   \
         (CNT) &= (CPSIZE_##SZ-1);                                             \
       }                                                                       \
-      if ( (int)(CNT) )                                                       \
+      if ( (GR_PtrInt)(CNT) )                                                       \
         rowcopy_b##WOP##SF(DST,SRC,CNT));                                     \
 } while(0)
 #endif
@@ -1052,13 +1056,13 @@
 /* generic optimized reverse copy (meets NO alignment resrictions :( */
 #ifndef __INLINE_STD_REV_COPY__
 #define __INLINE_STD_REV_COPY__(SZ,WOP,SF,ALP,DST,SRC,CNT) do {               \
-      if ((int)(CNT) >= 2*CPSIZE_##SZ-1 ) {                                   \
-        int _c_ = ((int)(ALP)+1) & (CPSIZE_##SZ-1);                           \
+      if ((GR_PtrInt)(CNT) >= 2*CPSIZE_##SZ-1 ) {                                   \
+        GR_PtrInt _c_ = ((GR_PtrInt)(ALP)+1) & (CPSIZE_##SZ-1);                           \
         if (_c_) {                                                            \
           (CNT) -= _c_;                                                       \
           colcopy_b##WOP##SF(DST,(-1),SRC,(-1),_c_);                          \
         }                                                                     \
-        _c_ = ((int)(CNT)) / CPSIZE_##SZ;                                     \
+        _c_ = ((GR_PtrInt)(CNT)) / CPSIZE_##SZ;                                     \
         ptrinc(DST,-(CPSIZE_##SZ)+1);                                         \
         ptrinc(SRC,-(CPSIZE_##SZ)+1);                                         \
         colcopy_##SZ##WOP##SF(DST,-(CPSIZE_##SZ),SRC,-(CPSIZE_##SZ),_c_);     \
@@ -1066,7 +1070,7 @@
         ptrinc(SRC,(CPSIZE_##SZ)-1);                                          \
         (CNT) &= (CPSIZE_##SZ-1);                                             \
       }                                                                       \
-      if ( (int)(CNT) )                                                       \
+      if ( (GR_PtrInt)(CNT) )                                                       \
         colcopy_b##WOP##SF(DST,(-1),SRC,(-1),CNT);                            \
 } while(0)
 #endif
@@ -1074,17 +1078,17 @@
 /* forward copy: copy and step to next higher alignment boundary */
 #ifndef __INLINE_FWD_ALIGN__
 #define __INLINE_FWD_ALIGN__(SZ,WOP,SF,AP,D,S,C)                              \
-  if ( ((int)(AP)) & CPSIZE_##SZ ) {                                          \
+  if ( ((GR_PtrInt)(AP)) & CPSIZE_##SZ ) {                                          \
     __INLINE_1_COPY__(D,S,SZ,WOP,SF,CPSIZE_##SZ);                             \
     (C) -= CPSIZE_##SZ;                                                       \
-    if ( ! ((int)(C)) ) break;                                                \
+    if ( ! ((GR_PtrInt)(C)) ) break;                                                \
   }
 #endif
 
 /* forward copy: copy one remaining element */
 #ifndef __INLINE_FWD_TAIL__
 #define __INLINE_FWD_TAIL__(SZ,WOP,SF,D,S,C) do                               \
-  if ( ((int)(C)) & CPSIZE_##SZ )                                             \
+  if ( ((GR_PtrInt)(C)) & CPSIZE_##SZ )                                             \
     __INLINE_1_COPY__(D,S,SZ,WOP,SF,CPSIZE_##SZ);                             \
 while (0)
 #endif
@@ -1095,11 +1099,11 @@ while (0)
 /* 8,16,32,64bit misaligned ok */
 #ifndef __INLINE_FWD_COPY__
 #define __INLINE_FWD_COPY__(WOP,SF,AP,D,S,C) do {                             \
-   if ( ((int)(C)) >= 7 ) {                                                   \
+   if ( ((GR_PtrInt)(C)) >= 7 ) {                                                   \
       __INLINE_FWD_ALIGN__(b,WOP,SF,AP,D,S,C);                                \
       __INLINE_FWD_ALIGN__(w,WOP,SF,AP,D,S,C);                                \
       __INLINE_FWD_ALIGN__(l,WOP,SF,AP,D,S,C);                                \
-      {  int _c_ = ((int)(C)) >> 3;                                           \
+      {  GR_PtrInt _c_ = ((GR_PtrInt)(C)) >> 3;                                           \
          if (_c_) rowcopy_h##WOP##SF(D,S,_c_);  }                             \
    }                                                                          \
    __INLINE_FWD_TAIL__(l,WOP,SF,D,S,C);                                       \
@@ -1109,24 +1113,24 @@ while (0)
 #endif
 #ifndef __INLINE_REV_COPY__
 #define __INLINE_REV_COPY__(WOP,SF,AP,D,S,C) do {                             \
-   if (((int)(C)) >= 7) {                                                     \
-      if ( ! ( ((int)(AP)) & 1) ) {                                           \
+   if (((GR_PtrInt)(C)) >= 7) {                                                     \
+      if ( ! ( ((GR_PtrInt)(AP)) & 1) ) {                                           \
          __INLINE_1_COPY__(D,S,b,WOP,SF,-1);                                  \
          (C)--;                                                               \
       }                                                                       \
-      if ( ! ( ((int)(AP)) & 2) ) {                                           \
+      if ( ! ( ((GR_PtrInt)(AP)) & 2) ) {                                           \
          ptrinc((D),-1);                                                      \
          ptrinc((S),-1);                                                      \
          __INLINE_1_COPY__(D,S,w,WOP,SF,-1);                                  \
          (C) -= 2;                                                            \
       }                                                                       \
-      if ( ! ( ((int)(AP)) & 4) ) {                                           \
+      if ( ! ( ((GR_PtrInt)(AP)) & 4) ) {                                           \
          ptrinc((D),-3);                                                      \
          ptrinc((S),-3);                                                      \
          __INLINE_1_COPY__(D,S,l,WOP,SF,-1);                                  \
          (C) -= 4;                                                            \
       }                                                                       \
-      {  int _rch_ = ((int)(C)) >> 3;                                         \
+      {  GR_PtrInt _rch_ = ((GR_PtrInt)(C)) >> 3;                                         \
          if (_rch_) {                                                         \
             ptrinc((D),-7);                                                   \
             ptrinc((S),-7);                                                   \
@@ -1136,17 +1140,17 @@ while (0)
          }                                                                    \
       }                                                                       \
    }                                                                          \
-   if ( ((int)(C)) & 4 ) {                                                    \
+   if ( ((GR_PtrInt)(C)) & 4 ) {                                                    \
       ptrinc((D),-3);                                                         \
       ptrinc((S),-3);                                                         \
       __INLINE_1_COPY__(D,S,l,WOP,SF,-1);                                     \
    }                                                                          \
-   if ( ((int)(C)) & 2 ) {                                                    \
+   if ( ((GR_PtrInt)(C)) & 2 ) {                                                    \
       ptrinc((D),-1);                                                         \
       ptrinc((S),-1);                                                         \
       __INLINE_1_COPY__(D,S,w,WOP,SF,-1);                                     \
    }                                                                          \
-   if ( ((int)(C)) & 1 )                                                      \
+   if ( ((GR_PtrInt)(C)) & 1 )                                                      \
       __INLINE_1_COPY__(D,S,b,WOP,SF,-1);                                     \
 } while (0)
 #endif
@@ -1167,11 +1171,11 @@ while (0)
 /* 8,16,32bit misaligned ok */
 #ifndef __INLINE_FWD_COPY__
 #define __INLINE_FWD_COPY__(WOP,SF,AP,D,S,C) do {                             \
-   if ( ((int)(C)) >= 3 ) {                                                   \
-      int _fcl_;                                                              \
+   if ( ((GR_PtrInt)(C)) >= 3 ) {                                                   \
+      GR_PtrInt _fcl_;                                                              \
       __INLINE_FWD_ALIGN__(b,WOP,SF,AP,D,S,C);                                \
       __INLINE_FWD_ALIGN__(w,WOP,SF,AP,D,S,C);                                \
-      if ( (_fcl_ = ((int)(C)) >> 2) != 0) rowcopy_l##WOP##SF(D,S,_fcl_);     \
+      if ( (_fcl_ = ((GR_PtrInt)(C)) >> 2) != 0) rowcopy_l##WOP##SF(D,S,_fcl_);     \
    }                                                                          \
    __INLINE_FWD_TAIL__(w,WOP,SF,D,S,C);                                       \
    __INLINE_FWD_TAIL__(b,WOP,SF,D,S,C);                                       \
@@ -1179,18 +1183,18 @@ while (0)
 #endif
 #ifndef __INLINE_REV_COPY__
 #define __INLINE_REV_COPY__(WOP,SF,AP,D,S,C) do {                             \
-   if (((int)(C)) >= 3) {                                                     \
-      if ( ! ( ((int)(AP)) & 1) ) {                                           \
+   if (((GR_PtrInt)(C)) >= 3) {                                                     \
+      if ( ! ( ((GR_PtrInt)(AP)) & 1) ) {                                           \
          __INLINE_1_COPY__(D,S,b,WOP,SF,-1);                                  \
          (C)--;                                                               \
       }                                                                       \
-      if ( ! ( ((int)(AP)) & 2) ) {                                           \
+      if ( ! ( ((GR_PtrInt)(AP)) & 2) ) {                                           \
          ptrinc((D),-1);                                                      \
          ptrinc((S),-1);                                                      \
          __INLINE_1_COPY__(D,S,w,WOP,SF,-1);                                  \
          (C) -= 2;                                                            \
       }                                                                       \
-      {  int _rcl_ = ((int)(C)) >> 2;                                         \
+      {  GR_PtrInt _rcl_ = ((GR_PtrInt)(C)) >> 2;                                         \
          if (_rcl_) {                                                         \
             ptrinc((D),-3);                                                   \
             ptrinc((S),-3);                                                   \
@@ -1200,12 +1204,12 @@ while (0)
          }                                                                    \
       }                                                                       \
    }                                                                          \
-   if ( ((int)(C)) & 2 ) {                                                    \
+   if ( ((GR_PtrInt)(C)) & 2 ) {                                                    \
       ptrinc((D),-1);                                                         \
       ptrinc((S),-1);                                                         \
       __INLINE_1_COPY__(D,S,w,WOP,SF,-1);                                     \
    }                                                                          \
-   if ( ((int)(C)) & 1 )                                                      \
+   if ( ((GR_PtrInt)(C)) & 1 )                                                      \
       __INLINE_1_COPY__(D,S,b,WOP,SF,-1);                                     \
 } while(0)
 #endif
@@ -1224,21 +1228,21 @@ while (0)
 #elif defined(MISALIGNED_16bit_OK) && !defined(NO_16BIT_COPY)
 /* 8,16bit misaligned ok */
 #ifndef __INLINE_FWD_COPY__
-#define __INLINE_FWD_COPY__(WOP,SF,AP,D,S,C) do if ((int)(C)) {               \
+#define __INLINE_FWD_COPY__(WOP,SF,AP,D,S,C) do if ((GR_PtrInt)(C)) {               \
    __INLINE_FWD_ALIGN__(b,WOP,SF,AP,D,S,C);                                   \
-   {  int _fcw_ = ((int)(C)) >> 1;                                              \
+   {  GR_PtrInt _fcw_ = ((GR_PtrInt)(C)) >> 1;                                              \
       if (_fcw_) rowcopy_w##WOP##SF(D,S,_fcw_);  }                                \
    __INLINE_FWD_TAIL__(b,WOP,SF,D,S,C);                                       \
 } while (0)
 #endif
 #ifndef __INLINE_REV_COPY__
-#define __INLINE_REV_COPY__(WOP,SF,AP,D,S,C) do if ((int)(C)) {               \
-   if ( ! ( ((int)(AP)) & 1) ) {                                              \
+#define __INLINE_REV_COPY__(WOP,SF,AP,D,S,C) do if ((GR_PtrInt)(C)) {               \
+   if ( ! ( ((GR_PtrInt)(AP)) & 1) ) {                                              \
       __INLINE_1_COPY__(D,S,b,WOP,SF,-1);                                     \
       (C)--;                                                                  \
-      if ( ! ((int)(C)) ) break;                                              \
+      if ( ! ((GR_PtrInt)(C)) ) break;                                              \
    }                                                                          \
-   {  int _rcw_ = ((int)(C)) >> 1;                                            \
+   {  GR_PtrInt _rcw_ = ((GR_PtrInt)(C)) >> 1;                                            \
       if (_rcw_) {                                                            \
          ptrinc((D),-1);                                                      \
          ptrinc((S),-1);                                                      \
@@ -1247,7 +1251,7 @@ while (0)
          ptrinc((S),+1);                                                      \
       }                                                                       \
    }                                                                          \
-   if ( ((int)(C)) & 1 )                                                      \
+   if ( ((GR_PtrInt)(C)) & 1 )                                                      \
       __INLINE_1_COPY__(D,S,b,WOP,SF,-1);                                     \
 } while (0)
 #endif
@@ -1400,9 +1404,9 @@ while (0)
  * stuff to copy arrays, structures
  */
 #define memcopy(d,s,sze) do {                                           \
-        register void *_CD = (void *)(d);                       \
-        register void *_CS = (void *)(s);                       \
-        register unsigned  _CC = (unsigned)(sze);                       \
+        register void              *_CD = (void *)(d);                  \
+        register void              *_CS = (void *)(s);                  \
+        register unsigned GR_PtrInt _CC = (unsigned GR_PtrInt)(sze);    \
         DBGPRINTF(DBG_COPYFILL,("memcopy size=%u\n",_CC));              \
         fwdcopy_set(_CD,_CD,_CS,_CC);                                   \
 } while(0)

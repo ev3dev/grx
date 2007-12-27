@@ -54,7 +54,10 @@ extern unsigned long    _XGrBackColor;
 extern unsigned int     _XGrColorOper;
 extern unsigned int     _XGrDepth;
 extern unsigned int     _XGrBitsPerPixel;
+extern unsigned int     _XGrMaxWidth;
+extern unsigned int     _XGrMaxHeight;
 extern int              _XGrBStoreInited;
+extern int              _XGrFullScreen;
 
 extern unsigned long   _XGrColorPlanes[8];
 extern unsigned int    _XGrColorNumPlanes;

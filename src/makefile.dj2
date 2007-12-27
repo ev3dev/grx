@@ -1,10 +1,9 @@
 #
-# GRX Library Makefile for DJGPP v2. Needs GNU Make.
+# MGRX Library Makefile for DJGPP v2. Needs GNU Make.
 # Make sure your shell is command.com !
 #
 .PHONY : clean cleanall install uninstall \
-	 install-bin uninstall-bin install-fonts uninstall-fonts \
-	 install-info uninstall-info
+	 install-bin uninstall-bin install-fonts uninstall-fonts
 
 GRXVDJ2=y
 
@@ -21,7 +20,7 @@ TAG = $(DOS_DJGPP_V2)
 MGRXln    = libmgrx.a
 MGRXST    = ../lib/$(GRX_LIB_SUBDIR)/$(MGRXln)
 MGRXSTdos = $(subst /,\,$(MGRXST))
-DJDIRdos   = $(subst /,\,$(DJDIR))
+DJDIRdos  = $(subst /,\,$(DJDIR))
 
 OX=.o
 OP=
@@ -95,7 +94,7 @@ clean:
 	if exist fonts\*.o    del fonts\*.o
 	if exist image\*.o    del image\*.o
 	if exist gformats\*.o del gformats\*.o
-	if exist mouse\*.o    del mouse\*.o
+	if exist input\*.o    del input\*.o
 	if exist misc\*.o     del misc\*.o
 	if exist pattern\*.o  del pattern\*.o
 	if exist setup\*.o    del setup\*.o
@@ -124,14 +123,6 @@ uninstall:
 	if exist $(DJDIRdos)\lib\$(MGRXln)    del $(DJDIRdos)\lib\$(MGRXln)
 	if exist $(DJDIRdos)\include\mgrx.h   del $(DJDIRdos)\include\mgrx.h
 	if exist $(DJDIRdos)\include\mgrxkeys.h del $(DJDIRdos)\include\mgrxkeys.h
-
-install-info:
-	copy ..\doc\grx*um.inf $(DJDIRdos)\info\grx.inf
-	install-info $(DJDIRdos)\info\grx.inf $(DJDIRdos)\info\dir
-
-uninstall-info:
-	if exist $(DJDIRdos)\info\grx.inf del $(DJDIRdos)\info\grx.inf
-	install-info -r $(DJDIRdos)\info\grx.inf $(DJDIRdos)\info\dir
 
 install-bin: $(UTILP)
 	copy ..\bin\bin2c.exe $(DJDIRdos)\bin

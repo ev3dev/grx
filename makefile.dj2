@@ -1,9 +1,8 @@
 #
-# GRX makefile for DJGPPv2 version
+# MGRX makefile for DJGPPv2 version
 #
 .PHONY : libs test clean cleanall install uninstall \
-	 install-bin uninstall-bin install-fonts uninstall-fonts \
-	 install-info uninstall-info
+	 install-bin uninstall-bin install-fonts uninstall-fonts
 
 GRXVDJ2=y
 
@@ -19,7 +18,7 @@ test:   libs
 
 clean:
 	$(MAKE) -C test -f makefile.dj2 clean
-	$(MAKE) -C src  -f makefile.dj2 clean
+	$(MAKE) -C src -f makefile.dj2 clean
 
 cleanall: clean
 	$(MAKE) -C src -f makefile.dj2 cleanall
@@ -29,12 +28,6 @@ install:
 
 uninstall:
 	$(MAKE) -C src -f makefile.dj2 uninstall
-
-install-info:
-	$(MAKE) -C src -f makefile.dj2 install-info
-
-uninstall-info:
-	$(MAKE) -C src -f makefile.dj2 uninstall-info
 
 install-bin:
 	$(MAKE) -C src -f makefile.dj2 install-bin

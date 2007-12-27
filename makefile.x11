@@ -1,9 +1,8 @@
 #
-# GRX makefile for LINUX/X11 version (GNU-make)
+# MGRX makefile for LINUX/X11 version (GNU-make)
 #
 .PHONY : libs test clean cleanall install uninstall \
-	 install-bin uninstall-bin install-fonts uninstall-fonts \
-	 install-info uninstall-info
+	 install-bin uninstall-bin install-fonts uninstall-fonts
 
 GRXVX11=y
 
@@ -15,11 +14,11 @@ libs:
 	$(MAKE) -C src -f makefile.x11
 
 test: libs
-	$(MAKE) -C test   -f makefile.x11
+	$(MAKE) -C test -f makefile.x11
 
 clean:
-	$(MAKE) -C test       -f makefile.x11 clean
-	$(MAKE) -C src        -f makefile.x11 clean
+	$(MAKE) -C test -f makefile.x11 clean
+	$(MAKE) -C src -f makefile.x11 clean
 
 cleanall: clean
 	$(MAKE) -C src -f makefile.x11 cleanall
@@ -29,12 +28,6 @@ install:
 
 uninstall:
 	$(MAKE) -C src -f makefile.x11 uninstall
-
-install-info:
-	$(MAKE) -C src -f makefile.x11 install-info
-
-uninstall-info:
-	$(MAKE) -C src -f makefile.x11 uninstall-info
 
 install-bin:
 	$(MAKE) -C src -f makefile.x11 install-bin

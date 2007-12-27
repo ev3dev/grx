@@ -14,6 +14,10 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Modifications
+ ** 071201 Introduction of GR_PtrInt (integer of same length as a pointer)
+ **        to suppress warnings (in fact errors) when compiling with
+ **        x86_64 platforms. Backport from GRX 2.4.7 (M.Lombardi)
  **/
 
 #ifndef __LIBGRX_H_INCLUDED__
@@ -55,8 +59,10 @@
 #if defined(__x86_64__)
 #define GR_int32 int
 #define GR_int64 long
+#define GR_PtrInt long
 #else
 #define GR_int32 long
+#define GR_PtrInt int
 #endif
 
 /* signed and unsigned variants of the above */

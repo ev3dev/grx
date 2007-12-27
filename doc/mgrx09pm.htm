@@ -825,6 +825,32 @@ void GrFloodFill(int x, int y, GrColor border, GrColor c);
 <p>flood-fills the area bounded by the color <code>border</code> using
 <code>x</code>, <code>y</code> like the starting point.
 
+<p>&nbsp;&nbsp;Floodspill is a color replacer, replacing color A with color B.
+This is quite useful for highlighting a selected item in a list,  or changing
+a selected color(s) in a multi colored area.
+<pre>
+void GrFloodSpill(int x1, int y1, int x2, int y2,
+                 GrColor old_c, GrColor new_c)
+</pre>
+<p>replaces old color with new color in the rectangle bounded by x1, y1, x2, y2.
+<pre>
+void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2,
+                  GrColor old_c, GrColor new_c)
+</pre>
+<p>as above but in the specified context.
+<pre>
+void GrFloodSpill2(int x1, int y1, int x2, int y2,
+                  GrColor old_c1, GrColor new_c1,
+                  GrColor old_c2, GrColor new_c2)
+</pre>
+<p>replaces 2 colors, a one stop shop for highlighting a selection in a list.
+<pre>
+void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2,
+                  GrColor old_c1, GrColor new_c1,
+                  GrColor old_c2, GrColor new_c2)
+</pre>
+<p>as above but in the specified context.
+
 <p>&nbsp;&nbsp;The current color value of any pixel in the current context
 can be obtained with:
 <pre>

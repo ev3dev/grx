@@ -1,9 +1,8 @@
 #
-# GRX Library Makefile for LINUX/console. Uses GNU Make.
+# MGRX Library Makefile for LINUX/console. Uses GNU Make.
 #
 .PHONY : libst libsh clean cleanall install uninstall setsuid \
-	 install-bin uninstall-bin install-fonts uninstall-fonts \
-	 install-info uninstall-info
+	 install-bin uninstall-bin install-fonts uninstall-fonts
 
 GRXVLNX=y
 
@@ -30,11 +29,10 @@ INSLIBSUBDIR = lib
 endif
 
 MGRXST   = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
-
-MGRXSH = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.so
+MGRXSH   = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.so
 MGRXSHli = $(MGRXSH).$(word 1,$(subst ., ,$(MGRX_VERSION)))
 MGRXSHna = $(MGRXSH).$(MGRX_VERSION)
-SHCCOPT = -fPIC -D__SHARED__ 
+SHCCOPT  = -fPIC -D__SHARED__ 
 
 OX=.o
 OP=
@@ -74,9 +72,8 @@ O=      $(STD_O)                \
 	fdrivers/svga32l.o      \
 	fdrivers/svga8.o        \
 	input/grev_lnx.o        \
-	misc/lnxmisc.o
-
-O += vdrivers/vd_lnxfb.o
+	misc/lnxmisc.o          \
+	vdrivers/vd_lnxfb.o
 
 LO = $(subst $(OX),.lo,$(O))
 
@@ -164,23 +161,6 @@ ifeq ($(SET_SUIDROOT),y)
 else
 	@echo "Nothing to do, SET_SUIDROOT is not set to 'y' in makedefs.grx"
 endif
-
-install-info:
-	install -m 0755 -d $(INSTALLDIR)/info
-	install -m 0644 ../doc/grx*um.inf $(INSTALLDIR)/info/grx.info
-	for info_dir_file in $(INSTALLDIR)/info/dir /etc/info-dir; do \
-	  if [ -w $$info_dir_file ]; then \
-	    install-info --dir-file=$$info_dir_file $(INSTALLDIR)/info/grx.info; \
-	  fi; \
-	done
-
-uninstall-info:
-	rm -f $(INSTALLDIR)/info/grx.info
-	for info_dir_file in $(INSTALLDIR)/info/dir /etc/info-dir; do \
-	  if [ -w $$info_dir_file ]; then \
-	    install-info --dir-file=$$info_dir_file -r grx; \
-	  fi; \
-	done
 
 install-bin: $(UTILP) $(UTILPS)
 	install -m 0755 -d $(INSTALLDIR)/bin

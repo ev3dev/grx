@@ -14,20 +14,16 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
- ** Intel CPU specific support is provided for the Turbo C and GNU C. May
- ** work with other compilers and CPU-s, but is not optimized for them.
+ ** Modifications
+ ** 071107 M.Alvarez, simplify the code
  **
  **/
 
 #ifndef __ARITH_H_INCLUDED__
 #define __ARITH_H_INCLUDED__
 
-#ifdef __GNUC__
-#include "gcc/arith.h"
-#endif
-
 /*
- * old standbys
+ * [][i][u][l][ul]min, [][i][u][l][ul]max, [][i][l]abs
  */
 #ifndef min
 #define min(x,y)    (((x) < (y)) ?  (x) : (y))
@@ -35,14 +31,8 @@
 #ifndef max
 #define max(x,y)    (((x) > (y)) ?  (x) : (y))
 #endif
-#ifndef __ABS
-#define __ABS(x)    (((x) < (0)) ? -(x) : (x))
-#endif
 #ifndef abs
-#define abs(x)      __ABS(x)
-#endif
-#ifndef scale
-#define scale(x,n,d)    (((x) * (n)) / (d))
+#define abs(x)      (((x) < (0)) ? -(x) : (x))
 #endif
 #ifndef imin
 #define imin(x,y)   min((int)(x),(int)(y))
@@ -66,7 +56,7 @@
 #define lmax(x,y)   max((long)(x),(long)(y))
 #endif
 #ifndef labs
-#define labs(x)     __ABS((long)(x))
+#define labs(x)     abs((long)(x))
 #endif
 #ifndef ulmin
 #define ulmin(x,y)  min((unsigned long)(x),(unsigned long)(y))
@@ -76,7 +66,7 @@
 #endif
 
 /*
- * swap and sort stuff
+ * [i][l]swap [i][u][l][ul]sort
  */
 #define iswap(x,y) {                                            \
         int _swap_tmpval_ = (x);                                \
@@ -107,28 +97,10 @@
 }
 
 /*
- * couple of 'sizeof'-like useful macros
+ * bitsof itemsof offsetof
  */
-#ifndef bsizeof
-#define bsizeof(s)  (sizeof(s) / sizeof(char))
-#endif
-#ifndef wsizeof
-#define wsizeof(s)  (sizeof(s) / sizeof(short))
-#endif
-#ifndef lsizeof
-#define lsizeof(s)  (sizeof(s) / sizeof(long))
-#endif
 #ifndef bitsof
 #define bitsof(s)   (sizeof(s) * 8)
-#endif
-#ifndef bytesof
-#define bytesof(s)  ((sizeof(s) + sizeof(char) - 1) / sizeof(char))
-#endif
-#ifndef wordsof
-#define wordsof(s)  ((sizeof(s) + sizeof(short) - 1) / sizeof(short))
-#endif
-#ifndef longsof
-#define longsof(s)  ((sizeof(s) + sizeof(long) - 1) / sizeof(long))
 #endif
 #ifndef itemsof
 #define itemsof(arr)    (sizeof(arr) / sizeof((arr)[0]))
@@ -164,6 +136,9 @@
  * scale an integer with long intermediate result but without using long
  * arithmetic all the way
  */
+#ifndef scale
+#define scale(x,n,d)    (((x) * (n)) / (d))
+#endif
 #ifndef iscale
 #define iscale(X,N,D)   (int)(imul32(X,N) / (long)(D))
 #endif
@@ -171,11 +146,9 @@
 #define uscale(X,N,D)   (unsigned int)(umul32(X,N) / (unsigned long)(D))
 #endif
 #ifndef irscale
-#define irscale(X,N,D)  ((                                              \
-        iscale(((int)(X) << 1),N,D) +                                   \
+#define irscale(X,N,D)  ((iscale(((int)(X) << 1),N,D) +                 \
         (((int)(X) ^ (int)(N) ^ (int)(D)) >> (bitsof(int) - 1)) +       \
-        1                                                               \
-) >> 1)
+        1) >> 1)
 #endif
 #ifndef urscale
 #define urscale(X,N,D)  ((uscale(((int)(X) << 1),N,D) + 1) >> 1)
@@ -190,9 +163,6 @@
         ((unsigned TTO)(unsigned TFROM)(V) << (sizeof(TFROM) * 8))      \
 )
 
-#ifndef replicate_b2b
-#define replicate_b2b(BYTE) (BYTE)
-#endif
 #ifndef replicate_b2w
 #define replicate_b2w(BYTE) __INLINE_REPLICATE__(BYTE,GR_int8,GR_int16)
 #endif
@@ -203,9 +173,6 @@
 #define replicate_b2h(BYTE) replicate_l2h(replicate_w2l(replicate_b2w(BYTE)))
 #endif
 
-#ifndef replicate_w2w
-#define replicate_w2w(WORD) (WORD)
-#endif
 #ifndef replicate_w2l
 #define replicate_w2l(WORD) __INLINE_REPLICATE__(WORD,GR_int16,GR_int32)
 #endif
@@ -213,16 +180,10 @@
 #define replicate_w2h(WORD) replicate_l2h(replicate_w2l(WORD))
 #endif
 
-#ifndef replicate_l2l
-#define replicate_l2l(LONG) (LONG)
-#endif
 #ifndef replicate_l2h
 #define replicate_l2h(LONG) __INLINE_REPLICATE__(LONG,GR_int32,GR_int64)
 #endif
 
-#ifndef replicate_h2h
-#define replicate_h2h(LLONG) (LLONG)
-#endif
 
 #endif  /* whole file */
 

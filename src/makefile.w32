@@ -1,10 +1,10 @@
 #
-# GRX Library Makefile for Mingw
+# MGRX Library Makefile for Mingw. Needs GNU Make.
 # Make sure your shell is command.com !
 #
 .PHONY : clean cleanall install uninstall \
 	 install-bin uninstall-bin install-fonts uninstall-fonts
-         
+
 GRXVW32=y
 
 include ../makedefs.grx
@@ -77,7 +77,7 @@ clean:
 	if exist fonts\*.o    del fonts\*.o
 	if exist image\*.o    del image\*.o
 	if exist gformats\*.o del gformats\*.o
-	if exist mouse\*.o    del mouse\*.o
+	if exist input\*.o    del input\*.o
 	if exist misc\*.o     del misc\*.o
 	if exist pattern\*.o  del pattern\*.o
 	if exist setup\*.o    del setup\*.o

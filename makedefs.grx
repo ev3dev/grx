@@ -1,11 +1,11 @@
-### CONFIGURATION ####################################################
+### MGRX CONFIGURATION ###############################################
 
 # This file sets variables that direct the libary build for the
 # programmer needs. The file is used for the four standard plattforms
 
 # Specify version of MGRX
 # Currently only used to generate name of shared libraries for linux
-MGRX_VERSION=0.9.7
+MGRX_VERSION=0.9.8
 
 # Specify if you have libjpeg.a and corresponding .h files.
 HAVE_LIBJPEG=n

@@ -17,6 +17,10 @@
  ** Basic and optimized memory block fill operations in byte, word and
  ** long sizes. The fills are available in WRITE, XOR, OR and AND modes.
  **
+ ** Modifications
+ ** 071201 Introduction of GR_PtrInt (integer of same length as a pointer)
+ **        to suppress warnings (in fact errors) when compiling with
+ **        x86_64 platforms. Backport from GRX 2.4.7 (M.Lombardi)
  **/
 
 #ifndef __MEMFILL_H_INCLUDED__
@@ -408,34 +412,34 @@
 /* fill and step to next higher alignment boundary */
 #ifndef __INLINE_ALIGN_FILL__
 #define __INLINE_ALIGN_FILL__(P,V,C,WOP,SZ,BASE)                              \
-  if ( ((int)(P)) & CPSIZE_##SZ ) {                                           \
+  if ( ((GR_PtrInt)(P)) & CPSIZE_##SZ ) {                                           \
     __INLINE_1_FILL__(P,V,WOP,SZ);                                            \
     (C) -= (CPSIZE_##SZ/CPSIZE_##BASE);                                       \
-    if ( ! ((int)(C)) ) break;                                                \
+    if ( ! ((GR_PtrInt)(C)) ) break;                                                \
   }
 #endif
 
 /* fill && step remaining bytes after otimal fill */
 #ifndef __INLINE_TAIL_FILL__
 #define __INLINE_TAIL_FILL__(P,V,C,WOP,SZ,BASE) do {                          \
-  if ( ((int)(C)) & (CPSIZE_##SZ/CPSIZE_##BASE) )                             \
+  if ( ((GR_PtrInt)(C)) & (CPSIZE_##SZ/CPSIZE_##BASE) )                             \
     __INLINE_1_FILL__(P,V,WOP,SZ);                                            \
 } while (0)
 #endif
 
 #ifndef __INLINE_STD_OPT_FILL__
 #define __INLINE_STD_OPT_FILL__(P,V,C,WOP,SZ,BASE) do {                       \
-      if ((unsigned int)(C) >= 2*(CPSIZE_##SZ/CPSIZE_##BASE)-1 ) {            \
-        unsigned int _c_ = (-((int)(P))) & ((CPSIZE_##SZ/CPSIZE_##BASE)-1);   \
+      if ((unsigned GR_PtrInt)(C) >= 2*(CPSIZE_##SZ/CPSIZE_##BASE)-1 ) {            \
+        unsigned GR_PtrInt _c_ = (-((GR_PtrInt)(P))) & ((CPSIZE_##SZ/CPSIZE_##BASE)-1);   \
         if (_c_) {                                                            \
           (C) -= _c_;                                                         \
           rowfill_##BASE##WOP(P,V,_c_);                                       \
         }                                                                     \
-        _c_ = ((unsigned int)(C)) / (CPSIZE_##SZ/CPSIZE_##BASE);              \
+        _c_ = ((unsigned GR_PtrInt)(C)) / (CPSIZE_##SZ/CPSIZE_##BASE);              \
         rowfill_##SZ##WOP(P,V,_c_);                                           \
         (C) &= ((CPSIZE_##SZ/CPSIZE_##BASE)-1);                               \
       }                                                                       \
-      if ( (int)(C) )                                                         \
+      if ( (GR_PtrInt)(C) )                                                         \
         rowfill_b##WOP(P,V,C);                                                \
 } while(0)
 #endif
@@ -445,11 +449,11 @@
 # if !defined(NO_64BIT_FILL)
 #  if defined(MISALIGNED_32bit_OK) && defined(MISALIGNED_16bit_OK)
 #   define __INLINE_B_REPFILL__(P,V,C,FMODE) do {                             \
-        if ((unsigned int)(C) >= 7 ) {                                        \
+        if ((unsigned GR_PtrInt)(C) >= 7 ) {                                        \
            __INLINE_ALIGN_FILL__(P,V,C,FMODE,b,b);                            \
            __INLINE_ALIGN_FILL__(P,V,C,FMODE,w,b);                            \
            __INLINE_ALIGN_FILL__(P,V,C,FMODE,l,b);                            \
-           { unsigned int _c64_ = ((unsigned int)(C)) >> 3;                   \
+           { unsigned GR_PtrInt _c64_ = ((unsigned GR_PtrInt)(C)) >> 3;                   \
              if (_c64_) rowfill_h##FMODE(P,V,_c64_);         }                \
         }                                                                     \
         __INLINE_TAIL_FILL__(P,V,C,FMODE,l,b);                                \
@@ -463,10 +467,10 @@
 # elif !defined(NO_32BIT_FILL)
 #  if defined(MISALIGNED_16bit_OK)
 #   define __INLINE_B_REPFILL__(P,V,C,FMODE) do {                             \
-        if ((unsigned int)(C) >= 3 ) {                                        \
+        if ((unsigned GR_PtrInt)(C) >= 3 ) {                                        \
            __INLINE_ALIGN_FILL__(P,V,C,FMODE,b,b);                            \
            __INLINE_ALIGN_FILL__(P,V,C,FMODE,w,b);                            \
-           { unsigned int _c32_ = ((unsigned int)(C)) >> 2;                   \
+           { unsigned GR_PtrInt _c32_ = ((unsigned GR_PtrInt)(C)) >> 2;                   \
              if (_c32_) rowfill_l##FMODE(P,V,_c32_);         }                \
         }                                                                     \
         __INLINE_TAIL_FILL__(P,V,C,FMODE,w,b);                                \
@@ -479,7 +483,7 @@
 # elif !defined(NO_16BIT_FILL)
 #   define __INLINE_B_REPFILL__(P,V,C,FMODE) do {                             \
         __INLINE_ALIGN_FILL__(P,V,C,FMODE,b,b);                               \
-        { unsigned int _c16_ = ((unsigned int)(C)) >> 1;                      \
+        { unsigned GR_PtrInt _c16_ = ((unsigned GR_PtrInt)(C)) >> 1;                      \
           if (_c16_) rowfill_w##FMODE(P,V,_c16_);            }                \
         __INLINE_TAIL_FILL__(P,V,C,FMODE,b,b);                                \
     } while (0)
@@ -493,10 +497,10 @@
 # if !defined(NO_64BIT_FILL)
 #  if defined(MISALIGNED_32bit_OK)
 #   define __INLINE_W_REPFILL__(P,V,C,FMODE) do {                             \
-        if ((unsigned int)(C) >= 3 ) {                                        \
+        if ((unsigned GR_PtrInt)(C) >= 3 ) {                                        \
            __INLINE_ALIGN_FILL__(P,V,C,FMODE,w,w);                            \
            __INLINE_ALIGN_FILL__(P,V,C,FMODE,l,w);                            \
-           { unsigned int _c64_ = ((unsigned int)(C)) >> 2;                   \
+           { unsigned GR_PtrInt _c64_ = ((unsigned GR_PtrInt)(C)) >> 2;                   \
              if (_c64_) rowfill_h##FMODE(P,V,_c64_);         }                \
         }                                                                     \
         __INLINE_TAIL_FILL__(P,V,C,FMODE,l,w);                                \
@@ -509,7 +513,7 @@
 # elif !defined(NO_32BIT_FILL)
 #   define __INLINE_W_REPFILL__(P,V,C,FMODE) do {                             \
         __INLINE_ALIGN_FILL__(P,V,C,FMODE,w,w);                               \
-        { unsigned int _c32_ = ((unsigned int)(C)) >> 1;                      \
+        { unsigned GR_PtrInt _c32_ = ((unsigned GR_PtrInt)(C)) >> 1;                      \
           if (_c32_) rowfill_l##FMODE(P,V,_c32_);            }                \
         __INLINE_TAIL_FILL__(P,V,C,FMODE,w,w);                                \
     } while (0)
@@ -523,7 +527,7 @@
 # if !defined(NO_64BIT_FILL)
 #   define __INLINE_L_REPFILL__(P,V,C,FMODE) do {                             \
         __INLINE_ALIGN_FILL__(P,V,C,FMODE,l,l);                               \
-        { unsigned int _c64_ = ((unsigned int)(C)) >> 1;                      \
+        { unsigned GR_PtrInt _c64_ = ((unsigned GR_PtrInt)(C)) >> 1;                      \
           if (_c64_) rowfill_h##FMODE(P,V,_c64_);            }                \
         __INLINE_TAIL_FILL__(P,V,C,FMODE,l,l);                                \
     } while (0)
@@ -729,9 +733,9 @@
 
 #ifndef __INLINE_MEMFILL__
 #define __INLINE_MEMFILL__(P,V,C,SIZE,TYPE,FMODE) do {                  \
-        register void    *_FP = (void *)(P);                            \
-        register GR_repl  _FV = freplicate_##SIZE((TYPE)(V));           \
-        register int      _FC = (int)(C);                               \
+        register void     *_FP = (void *)(P);                           \
+        register GR_repl   _FV = freplicate_##SIZE((TYPE)(V));          \
+        register GR_PtrInt _FC = (GR_PtrInt)(C);                        \
         repfill_##SIZE##FMODE(_FP,_FV,_FC);                             \
 } while(0)
 #endif
@@ -778,7 +782,7 @@
 #ifndef __INLINE_24_REPFILL__
 #define __INLINE_24_REPFILL__(P,C,B,FMODE,INS) do {                \
     GR_int32u _cl24_ = (GR_int32u)(C);                             \
-    int _b24_ = (int)(B);                                          \
+    GR_PtrInt _b24_ = (GR_PtrInt)(B);                                          \
     while ( _b24_ >= 3) {                                          \
         poke_24##FMODE((P), _cl24_);                               \
         ptrinc((P),3);                                             \
@@ -867,7 +871,7 @@
  * stuff to clear arrays, structures
  */
 #define memzero(p,s) do {                                               \
-        register void *_FP = (void *)(p);                       \
+        register void     *_FP = (void *)(p);                           \
         register GR_repl   _FV = 0;                                     \
         register unsigned  _FC = (unsigned)(s);                         \
         DBGPRINTF(DBG_COPYFILL,("memzero size=%u\n",_FC));              \

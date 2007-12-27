@@ -1,12 +1,9 @@
 #
-# Library Makefile for LINUX/X11. Uses GNU Make.
-#
-# set up for GCC / Linux
+# MGRX Library Makefile for LINUX/X11. Uses GNU Make.
 #
 .PHONY : libst libsh clean cleanall install uninstall setsuid \
-	 install-bin uninstall-bin install-fonts uninstall-fonts \
-	 install-info uninstall-info
-         
+	 install-bin uninstall-bin install-fonts uninstall-fonts
+
 GRXVX11=y
 
 include ../makedefs.grx
@@ -44,11 +41,10 @@ ifeq ($(USE_XF86DGA_DRIVER),y)
 endif
 
 MGRXST   = ../lib/$(GRX_LIB_SUBDIR)/libmgrxX.a
-
-MGRXSH = ../lib/$(GRX_LIB_SUBDIR)/libmgrxX.so
+MGRXSH   = ../lib/$(GRX_LIB_SUBDIR)/libmgrxX.so
 MGRXSHli = $(MGRXSH).$(word 1,$(subst ., ,$(MGRX_VERSION)))
 MGRXSHna = $(MGRXSH).$(MGRX_VERSION)
-SHCCOPT = -fPIC -D__SHARED__
+SHCCOPT  = -fPIC -D__SHARED__
 
 OX=.o
 OP=
@@ -59,13 +55,10 @@ STD_O= $(STD_1) $(STD_2)  $(STD_3)  $(STD_4) \
        $(STD_5) $(STD_6)  $(STD_7)  $(STD_8) \
        $(STD_9) $(STD_10) $(STD_11) $(STD_12)\
 
-BGI_O= $(BGI_1) $(BGI_2)  $(BGI_3)  $(BGI_4) \
-       $(BGI_5) $(BGI_6)
-
 ADDON_O=
 
 ifdef DEBUG
- ADDON_O += utils/dbgprint.o
+  ADDON_O += utils/dbgprint.o
 endif
 
 ifeq ($(HAVE_LIBJPEG),y)
@@ -188,23 +181,6 @@ ifeq ($(SET_XSUIDROOT),y)
 else
 	@echo "Nothing to do, SET_XSUIDROOT is not set to 'y' in makedefs.grx"
 endif
-
-install-info:
-	install -m 0755 -d $(INSTALLDIR)/info
-	install -m 0644 ../doc/grx*um.inf $(INSTALLDIR)/info/grx.info
-	for info_dir_file in $(INSTALLDIR)/info/dir /etc/info-dir; do \
-	  if [ -w $$info_dir_file ]; then \
-	    install-info --dir-file=$$info_dir_file $(INSTALLDIR)/info/grx.info; \
-	  fi; \
-	done
-
-uninstall-info:
-	rm -f $(INSTALLDIR)/info/grx.info
-	for info_dir_file in $(INSTALLDIR)/info/dir /etc/info-dir; do \
-	  if [ -w $$info_dir_file ]; then \
-	    install-info --dir-file=$$info_dir_file -r grx; \
-	  fi; \
-	done
 
 install-bin: $(UTILP) $(UTILPX)
 	install -m 0755 -d $(INSTALLDIR)/bin

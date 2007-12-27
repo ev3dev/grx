@@ -1,5 +1,5 @@
 #
-# GRX test programs makefile for LINUX/X11. Uses GNU make.
+# MGRX test programs makefile for LINUX/X11. Uses GNU make.
 #
 .PHONY : clean setsuid
 
