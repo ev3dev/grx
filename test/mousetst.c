@@ -56,7 +56,10 @@ TESTFUNC(mousetest)
         drawing(ii, ii, (GrSizeX()-20), (GrSizeY()-20), ((fgc^bgc)|GrXOR), GrNOCOLOR);
         if ((ii += 7) > 20) ii -= 20;
         GrEventRead(&evt);
-        GrSleep(1);
+//        if (evt.type == GREV_NULL) {
+//          GrSleep(1);
+//        }
+//        else {
         if (evt.type != GREV_NULL) {
             strcpy(msg,"Got event(s): ");
 #           define mend (&msg[strlen(msg)])
@@ -75,6 +78,12 @@ TESTFUNC(mousetest)
                     strcpy(mend,"[right down] ");
                     lmr[2] = 'R';
                 }
+                if (evt.p1 == GRMOUSE_B4_PRESSED) {
+                    strcpy(mend,"[b4 down] ");
+                }
+                if (evt.p1 == GRMOUSE_B5_PRESSED) {
+                    strcpy(mend,"[b5 down] ");
+                }
                 if (evt.p1 == GRMOUSE_LB_RELEASED) {
                     strcpy(mend,"[left up] ");
                     lmr[0] = 'l';
@@ -86,6 +95,12 @@ TESTFUNC(mousetest)
                 if (evt.p1 == GRMOUSE_RB_RELEASED) {
                     strcpy( mend,"[right up] ");
                     lmr[2] = 'r';
+                }
+                if (evt.p1 == GRMOUSE_B4_RELEASED) {
+                    strcpy( mend,"[b4 up] ");
+                }
+                if (evt.p1 == GRMOUSE_B5_RELEASED) {
+                    strcpy( mend,"[b5 up] ");
                 }
                 sprintf(mend,"at X=%ld, Y=%ld, ", evt.p2, evt.p3);
             }

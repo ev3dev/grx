@@ -1,4 +1,5 @@
 /**
+ ** keys.c ---- test events
  **
  ** This is a test/demo file of the GRX graphics library.
  ** You can use GRX test/demo files as you want.
@@ -14,6 +15,7 @@
  **/
 
 #include <stdio.h>
+#include <string.h>
 #include "mgrx.h"
 #include "mgrxkeys.h"
 
@@ -317,18 +319,28 @@ static KeyEntry Keys[] = {
 
 #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
 
+void print_scroll( char *s)
+{
+    int linehigh = 16;
+
+    GrBitBlt(NULL, 0, 0, NULL, 0, linehigh, GrMaxX(), GrMaxY(), GrWRITE);
+    GrFilledBox(0, GrMaxY()-linehigh, GrMaxX(), GrMaxY(), GrBlack());
+    GrTextXY(0, GrMaxY()-linehigh, s, GrWhite(), GrBlack());
+}
+
 int main(void) {
     int spaces_count = 0;
     KeyEntry *kp;
     GrEvent ev;
-    int k, ok;
+    long k;
+    int ok;
+    char buf[121], buf_name[121];
 
-    GrSetMode(GR_320_200_graphics);
+    GrSetMode(GR_width_height_graphics, 800, 600);
     GrEventInit();
     GrMouseDisplayCursor();
 
-    printf("\n\n Checking GrKey... style interface"
-           "\n Type 3 spaces to quit the test\n\n");
+    print_scroll("Checking events, type 3 spaces to quit the test");
 
     while (spaces_count < 3) {
         GrEventWait(&ev);
@@ -337,30 +349,33 @@ int main(void) {
             if (k == ' ') ++spaces_count;
             else spaces_count = 0;
             ok = 0;
-            printf("GREV_KEY, time=%ld, kbstat=0x%03x, ",
-                   (long)ev.time, (unsigned)ev.kbstat);
             for (kp = Keys; kp < &Keys[KEYS]; ++kp) {
                 if (k == kp->key) {
-                    printf("code=0x%04x, symbol=%s\n", (unsigned)k, kp->name);
+                    strcpy(buf_name, kp->name);
                     ok = 1;
                     break;
                 }
             }
-            if (!ok)
-                 printf("code=0x%04x, symbol=UNKNOWN\n", (unsigned)k);
+            if (!ok) {
+                 strcpy(buf_name, "UNKNOWN");
+            }
+            sprintf(buf, "GREV_KEY, time=%ld, kbstat=0x%03x, p2=%d code=0x%08x (%c), symbol=%s",
+                    (long)ev.time, (unsigned)ev.kbstat, (int)ev.p2, (unsigned)k, (char)k, buf_name);
+            print_scroll(buf);
         }
         else if (ev.type == GREV_MOUSE) {
-            printf("GREV_MOUSE, time=%ld, kbstat=0x%03x, ",
-                   (long)ev.time, (unsigned)ev.kbstat);
-            printf("p1=%ld, X=%ld, Y=%ld\n",
-                   ev.p1, ev.p2, ev.p3);
+            sprintf(buf, "GREV_MOUSE, time=%ld, kbstat=0x%03x, p1=%ld, X=%ld, Y=%ld",
+                   (long)ev.time, (unsigned)ev.kbstat, ev.p1, ev.p2, ev.p3);
+            print_scroll(buf);
         }
         else {
-            printf("TYPE=%d, time=%ld, kbstat=0x%03x, ",
-                   ev.type, (long)ev.time, (unsigned int)ev.kbstat);
-            printf("p1=%ld, p2=%ld, p3=%ld\n",
-                   ev.p1, ev.p2, ev.p3);
+            sprintf(buf, "TYPE=%d, time=%ld, kbstat=0x%03x, p1=%ld, X=%ld, Y=%ld",
+                   ev.type, (long)ev.time, (unsigned)ev.kbstat, ev.p1, ev.p2, ev.p3);
+            print_scroll(buf);
         }
     }
+
+    GrEventUnInit();
+    GrSetMode(GR_default_text);
     return 0;
 }

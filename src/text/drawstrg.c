@@ -15,6 +15,9 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by:
+ ** 080125 M.Alvarez, UTF-8 support
+ **
  **/
 
 #include "libgrx.h"
@@ -23,7 +26,7 @@
 
 int _GR_textattrintensevideo = 0;
 
-void _GrDrawString(const void *text,int length,int x,int y,
+static void _GrDrawString2(const void *text,int length,int x,int y,
                    const GrTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm)
 {
     GrFont *f;
@@ -132,4 +135,26 @@ void _GrDrawString(const void *text,int length,int x,int y,
         mouse_unblock();
     }
     GRX_LEAVE();
+}
+
+void _GrDrawString(const void *text, int length, int x, int y,
+                   const GrTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm)
+{
+  GrTextOption opt2;
+  unsigned short *text2;
+  int length2;
+
+  GRX_ENTER();
+  if (opt->txo_chrtype == GR_UTF8_TEXT) {
+    opt2 = *opt;
+    text2 = GrUTF8StrToUCS2Str((unsigned char *)text, &length2);
+    if (text2 == NULL) return;
+    opt2.txo_chrtype = GR_WORD_TEXT;
+    if (length < length2) length2 = length;
+    _GrDrawString2(text2, length2, x, y, &opt2, p, dbm);
+    free(text2);
+  }
+  else
+    _GrDrawString2(text, length, x, y, opt, p, dbm);
+  GRX_LEAVE();
 }

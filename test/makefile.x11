@@ -76,11 +76,15 @@ PROGS=  xarctest     \
 	xwinclip     \
 	xwintest
 
-all: $(PROGS) xdemomgrx
+all: $(PROGS) xdemomgrx xdemointl
 
 xdemomgrx: demomgrx.o gfaz.o $(MGRXX)
 	$(CC) $(LDOPT) -o xdemomgrx demomgrx.o gfaz.o $(LIBS)
 	chmod $(EXECBITS) xdemomgrx
+
+xdemointl: demointl.o gfaz.o $(MGRXX)
+	$(CC) $(LDOPT) -o xdemointl demointl.o gfaz.o $(LIBS)
+	chmod $(EXECBITS) xdemointl
 
 $(PROGS): x%: %.o $(MGRXX)
 	$(CC) $(LDOPT) -o $@ $*.o $(LIBS)
@@ -96,12 +100,12 @@ $(PROGS:x%=%.o): %.o : %.c
 	$(CC) -S $(CCOPT) $(INCDIR) $*.c
 
 clean:
-	rm -f *.o $(PROGS) xdemomgrx
+	rm -f *.o $(PROGS) xdemomgrx xdemointl
 
-setsuid: $(PROGS) xdemomgrx
+setsuid: $(PROGS) xdemomgrx xdemointl
 ifeq ($(SET_XSUIDROOT),y)
-	chown root $(PROGS) xdemomgrx
-	chmod $(EXECBITS) $(PROGS) xdemomgrx
+	chown root $(PROGS) xdemomgrx xdemointl
+	chmod $(EXECBITS) $(PROGS) xdemomgrx xdemointl
 else
 	@echo "Nothing to do, SET_XSUIDROOT is not set to 'y' in makedefs.grx"
 endif

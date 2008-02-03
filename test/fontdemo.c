@@ -80,7 +80,7 @@ int main(int argc, char **argv)
         char *name, *testname;
         GrFontHeader *hdr;
         FILE *f;
-        char buffer[0x20];
+        char buffer[210];
         GrEvent ev;
         int key;
 
@@ -170,9 +170,17 @@ int main(int argc, char **argv)
         opt.txo_xalign = GR_ALIGN_LEFT;
         opt.txo_yalign = GR_ALIGN_TOP;
 
-        sprintf(buffer, "%s %dx%d", hdr->name, GrCharWidth('A', &opt), GrCharHeight('A', &opt));
+        sprintf(buffer, "Font name:%s %dx%d", hdr->name, GrCharWidth('A', &opt), GrCharHeight('A', &opt));
+        if (hdr->proportional)
+            strcat(buffer, " proportional");
+        else
+            strcat(buffer, " fixed");
         gputs(buffer);
-        sprintf(buffer, "%dx%d@%lu", GrSizeX(), GrSizeY(), (unsigned long) GrNumColors());
+        sprintf(buffer, "Font family: %s", hdr->family);
+        gputs(buffer);
+        sprintf(buffer, "Min char, num chars: %d, %d", hdr->minchar,hdr->numchars);
+        gputs(buffer);
+        sprintf(buffer, "Screen res: %dx%d@%lu", GrSizeX(), GrSizeY(), (unsigned long) GrNumColors());
         gputs(buffer);
         gnewl();
 
@@ -180,11 +188,11 @@ int main(int argc, char **argv)
         gputs("the quick brown fox jumps over the lazy dog");
         gnewl();
 
-        if(hdr->minchar <= 0xC0 && hdr->minchar + hdr->numchars >= 0x100) {
-            gputs("������� ��� ���� ���� ��");
-            gputs("������� ��� ���� ���� ��");
-            gnewl();
-        }
+//        if(hdr->minchar <= 0xC0 && hdr->minchar + hdr->numchars >= 0x100) {
+//            gputs("������� ��� ���� ���� ��");
+//            gputs("������� ��� ���� ���� ��");
+//            gnewl();
+//        }
 
         /* ascii table, or to be precise, a full table of the current font */
         opt.txo_chrtype = GR_WORD_TEXT;

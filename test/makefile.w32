@@ -40,6 +40,7 @@ PROGS=  arctest.exe     \
 	fonttest.exe    \
 	imgtest.exe     \
 	jpgtest.exe     \
+	keys.exe        \
 	life.exe        \
 	linetest.exe    \
 	mousetst.exe    \
@@ -56,7 +57,7 @@ PROGS=  arctest.exe     \
 
 all: 	$(PROGS) \
 	demomgrx.exe \
-	keys.exe \
+	demointl.exe \
 	speedtst.exe \
 	memtest.exe
 
@@ -64,8 +65,8 @@ all: 	$(PROGS) \
 demomgrx.exe: demomgrx.o gfaz.o $(MGRX)
 	$(CC) $(LDOPT) -o demomgrx.exe demomgrx.o gfaz.o $(LIBS) -lm -mwindows
 
-keys.exe: keys.o $(MGRX)
-	$(CC) $(LDOPT) -o keys.exe keys.o $(LIBS) -lm -mwindows -mconsole
+demointl.exe: demointl.o gfaz.o $(MGRX)
+	$(CC) $(LDOPT) -o demointl.exe demointl.o gfaz.o $(LIBS) -lm -mwindows
 
 speedtst.exe: speedtst.o $(MGRX)
 	$(CC) $(LDOPT) -o speedtst.exe speedtst.o $(LIBS) -lm -mwindows -mconsole

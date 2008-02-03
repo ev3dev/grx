@@ -16,6 +16,9 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by:
+ ** 080120 M.Alvarez, intl support
+ **
  **/
 
 #include <stdio.h>
@@ -55,6 +58,7 @@ extern int _lnxfb_waiting_to_switch_console;
 extern void _LnxfbSwitchConsoleAndWait(void);
 
 static int kbd_lastmod = 0;
+static int kbsysencoding = 0;
 
 static void kbd_restore(void);
 static void kbd_init(void);
@@ -92,10 +96,22 @@ static int _ReadPS2MouseData(int *mb, int *mx, int *my);
 
 int _GrEventInit(void)
 {
+    char *s;
+
     kbd_init();
     if (GrMouseDetect()) {
         mou_buttons = 0;
     }
+
+    s = getenv("LANG");
+    if (strstr(s,"UTF-8"))
+      kbsysencoding = GRENC_UTF_8;
+    else {
+      s = getenv("MGRXKBSYSENCODING");
+      if (s != NULL) kbsysencoding = GrFindEncoding(s);
+      if (kbsysencoding < 0) kbsysencoding = GRENC_ISO_8859_1;
+    }
+
     return 1;
 }
 
@@ -111,6 +127,16 @@ void _GrEventUnInit(void)
 }
 
 /**
+ ** _GrGetKbSysEncoding - Get kb system encoding
+ **
+ **/
+
+int _GrGetKbSysEncoding(void)
+{
+    return kbsysencoding;
+}
+
+/**
  ** _GrReadInputs - Reads inputs and sets events
  **
  ** For internal use only
@@ -120,7 +146,7 @@ int _GrReadInputs(void)
 {
     GrEvent evaux;
     int nev = 0;
-    int mb, mx, my;
+    int mb = 0, mx = 0, my = 0;
 
     if (_lnxfb_waiting_to_switch_console)
         _LnxfbSwitchConsoleAndWait();
@@ -181,15 +207,46 @@ int _GrReadInputs(void)
     }
 
     if (kbd_isatty && _CheckKeyboardHit()) {
-        int key = _ReadCharFromKeyboard();
-        evaux.type = GREV_KEY;
+        unsigned int key = _ReadCharFromKeyboard();
+        evaux.type = GREV_PREKEY;
         evaux.kbstat = kbd_lastmod;
-        evaux.p1 = key;
-        evaux.p2 = 0;
         evaux.p3 = 0;
+        if (key > 0xff) {
+            evaux.p1 = key;
+            evaux.p2 = GRKEY_KEYCODE;
+        }
+        else if ((key >= 0x80) && (kbsysencoding == GRENC_UTF_8)) {
+            evaux.p1 = 0;
+            if ((key & 0xe0) == 0xc0) {  /* two bytes */
+                evaux.cp1[0] = key;
+                evaux.cp1[1] = _ReadCharFromKeyboard();
+                evaux.p2 = 2;
+            }
+            else if ((key & 0xf0) == 0xe0) {  /* three bytes */
+                evaux.cp1[0] = key;
+                evaux.cp1[1] = _ReadCharFromKeyboard();
+                evaux.cp1[2] = _ReadCharFromKeyboard();
+                evaux.p2 = 3;
+            }
+            else {  /* four bytes */
+                evaux.cp1[0] = key;
+                evaux.cp1[1] = _ReadCharFromKeyboard();
+                evaux.cp1[2] = _ReadCharFromKeyboard();
+                evaux.cp1[3] = _ReadCharFromKeyboard();
+                evaux.p2 = 3;
+            }
+        }
+        else {
+            evaux.p1 = key;
+            evaux.p2 = 1;
+        }
         GrEventEnqueue(&evaux);
         MOUINFO->moved = FALSE;
         nev++;
+    }
+
+    if (nev == 0) {
+        usleep(1000L);   // wait 1 ms to not eat 100% cpu
     }
 
     return nev;

@@ -235,11 +235,19 @@ static int readpng( FILE *f, GrContext *grc, int use_alpha )
         alpha = *pix_ptr++;
       if( x < maxwidth ){
         if( alpha_present && use_alpha ){
-          GrQueryColor( pColors[x],&ro,&go,&bo );
-          r = r * (alpha/255.0) + ro * ((255-alpha)/255.0);
-          g = g * (alpha/255.0) + go * ((255-alpha)/255.0);
-          b = b * (alpha/255.0) + bo * ((255-alpha)/255.0);
+          if (alpha == 0) {
+            GrQueryColor( pColors[x],&r,&g,&b );
           }
+          else if (alpha != 255) { // if a==255, rgb not modified
+            float f1, f2;
+            f1 = (alpha/255.0);
+            f2 = ((255-alpha)/255.0);
+            GrQueryColor( pColors[x],&ro,&go,&bo );
+            r = (r * f1) + (ro * f2);
+            g = (g * f1) + (go * f2);
+            b = (b * f1) + (bo * f2);
+          }
+        }
         pColors[x] = GrAllocColor( r,g,b );
         }
       }

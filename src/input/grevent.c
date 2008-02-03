@@ -14,6 +14,9 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by:
+ ** 080113 M.Alvarez, intl support
+ **
  **/
 
 #include <stdlib.h>
@@ -25,6 +28,9 @@
 
 static GrEvent evqueue[MAX_EVQUEUE];
 static int num_evqueue = 0;
+
+static int kbsysencoding = 0;
+static int kbusrencoding = 0;
 
 #define MAX_HOOK_FUNCTIONS 10
 static int (*hook_event[MAX_HOOK_FUNCTIONS]) (GrEvent *);
@@ -40,7 +46,7 @@ static int preproccess_event(GrEvent *ev);
 
 int GrEventInit(void)
 {
-    int i;
+    int i, ret;
 
     num_evqueue = 0;
     for (i=0; i<MAX_HOOK_FUNCTIONS; i++)
@@ -53,7 +59,13 @@ int GrEventInit(void)
         _GrInitMouseCursor();
         MOUINFO->msstatus = 2;
     }
-    return _GrEventInit();
+    ret = _GrEventInit();
+    kbsysencoding = _GrGetKbSysEncoding();
+    if (kbsysencoding == GRENC_UTF_8)
+        kbusrencoding = GRENC_ISO_8859_1;
+    else
+        kbusrencoding = kbsysencoding;
+    return ret;
 }
 
 /**
@@ -66,6 +78,40 @@ void GrEventUnInit(void)
     num_evqueue = 0;
     if (MOUINFO->msstatus > 1) MOUINFO->msstatus = 1;
     _GrEventUnInit();
+}
+
+/**
+ ** GrGetKbSysEncoding - Get kb system encoding
+ **
+ **/
+
+int GrGetKbSysEncoding(void)
+{
+    return kbsysencoding;
+}
+
+/**
+ ** GrGetKbEncoding - Get kb user encoding
+ **
+ **/
+
+int GrGetKbEncoding(void)
+{
+    return kbusrencoding;
+}
+
+/**
+ ** GrSetKbEncoding - Set kb user encoding
+ **
+ **/
+
+int GrSetKbEncoding(int enc)
+{
+    if (enc >= 0 && enc <= GRENC_LASTENCODE) {
+        kbusrencoding = enc;
+        return 1;
+    }
+    return 0;
 }
 
 /**
@@ -113,7 +159,6 @@ void GrEventRead(GrEvent * ev)
         if (_GrReadInputs()) {
             continue;
         }
-        GrSleep(1);
         ev->type = GREV_NULL;
         ev->time = GrMsecTime();
         ev->kbstat = 0;
@@ -237,6 +282,14 @@ int GrEventDeleteHook(int (*fn) (GrEvent *))
 static int preproccess_event(GrEvent *ev)
 {
     int i;
+
+    if (ev->type == GREV_PREKEY) {
+        if ((ev->p2 != GRKEY_KEYCODE) &&
+            (kbsysencoding != kbusrencoding)) {
+          GrRecodeEvent(ev, kbsysencoding, kbusrencoding);
+        }
+        ev->type = GREV_KEY;
+    }
 
     for ( i=0; i<MAX_HOOK_FUNCTIONS; i++) {
         if (hook_event[i] != NULL)

@@ -70,21 +70,25 @@ PROGS=	arctest     \
 	winclip     \
 	wintest
 
-all:    $(PROGS) demomgrx
+all:    $(PROGS) demomgrx demointl
 
 demomgrx: demomgrx.o gfaz.o $(MGRX)
 	$(CC) $(LDOPT) -o demomgrx demomgrx.o gfaz.o $(LIBS)
 	chmod $(EXECBITS) demomgrx
 
+demointl: demointl.o gfaz.o $(MGRX)
+	$(CC) $(LDOPT) -o demointl demointl.o gfaz.o $(LIBS)
+	chmod $(EXECBITS) demointl
+
 $(PROGS): % : %.o $(MGRX)
 
 clean:
-	rm -f *.o $(PROGS) demomgrx
+	rm -f *.o $(PROGS) demomgrx demointl
 
-setsuid: $(PROGS) demomgrx
+setsuid: $(PROGS) demomgrx demointl
 ifeq ($(SET_SUIDROOT),y)
-	chown root $(PROGS) demomgrx
-	chmod $(EXECBITS) $(PROGS) demomgrx
+	chown root $(PROGS) demomgrx demointl
+	chmod $(EXECBITS) $(PROGS) demomgrx demointl
 else
 	@echo "Nothing to do, SET_SUIDROOT is not set to 'y' in makedefs.grx"
 endif

@@ -68,7 +68,9 @@ STD_4 = $(OP)gcursors/bldcurs$(OX)  \
 	$(OP)input/mouinfo$(OX)     \
 	$(OP)input/mouinlne$(OX)    \
 	$(OP)input/mscursor$(OX)    \
-	$(OP)input/grevent$(OX)
+	$(OP)input/grevent$(OX)     \
+	$(OP)input/recode$(OX)      \
+	$(OP)input/auxintl$(OX)
 
 STD_5 = $(OP)pattern/fillpatt$(OX)  \
 	$(OP)pattern/makepat$(OX)   \

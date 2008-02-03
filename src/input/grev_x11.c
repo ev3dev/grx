@@ -16,6 +16,7 @@
  **
  ** Contributions by:
  ** 070505 M.Alvarez, Using a Pixmap for BackingStore
+ ** 080113 M.Alvarez, intl support
  **
  **/
 
@@ -24,15 +25,21 @@
 #include "libgrx.h"
 #include "libxwin.h"
 #include <X11/keysym.h>
+#include <X11/Xlocale.h>
 #include "mgrxkeys.h"
 #include "ninput.h"
 #include "x11keys.h"
 #include "arith.h"
 
 static int kbd_lastmod = 0;
+static int kbsysencoding = 0;
+static int utf8support = 0;
 
-unsigned short _XKeyEventToGrKey(XKeyEvent *xkey);
+int _XKeyEventToGrKey(XKeyEvent *xkey, long *p1, long *p2);
+int _Xutf8KeyEventToGrKey(XKeyEvent *xkey, long *p1, long *p2);
 unsigned int _XGrModifierKey(KeySym keysym, int type);
+static XIMStyle _XGrChooseBetterStyle(XIMStyle style1, XIMStyle style2);
+static int _XGrOpenXIMandXIC(Display *dpy, Window win, XIM *im, XIC *ic);
 
 /**
  ** _GrEventInit - Initializes inputs
@@ -50,6 +57,10 @@ int _GrEventInit(void)
     XColor cfore, cback;
     Cursor curs;
 
+    if (!_XGrDisplay) {
+        return 0;
+    }
+
     if (GrMouseDetect()) { // Define an invisible X cursor for _XGrWindow
         if(_XGrWindowedMode) {
             csource = cmask = XCreateBitmapFromData(
@@ -61,6 +72,16 @@ int _GrEventInit(void)
             XDefineCursor (_XGrDisplay, _XGrWindow, curs);
         }
     }
+
+    if (_XGrOpenXIMandXIC(_XGrDisplay, _XGrWindow, &_XGrXim, &_XGrXic)) {
+        utf8support = 1;
+        kbsysencoding = GRENC_UTF_8;
+    }
+    else {
+        utf8support = 0;
+        kbsysencoding = GRENC_ISO_8859_1;
+    }
+
     return 1;
 }
 
@@ -72,6 +93,16 @@ int _GrEventInit(void)
 
 void _GrEventUnInit(void)
 {
+}
+
+/**
+ ** _GrGetKbSysEncoding - Get kb system encoding
+ **
+ **/
+
+int _GrGetKbSysEncoding(void)
+{
+    return kbsysencoding;
 }
 
 /**
@@ -93,11 +124,15 @@ int _GrReadInputs(void)
     count = XEventsQueued(_XGrDisplay, QueuedAfterReading);
     if (count <= 0) {
         XFlush(_XGrDisplay);
+        usleep(1000L);   // wait 1 ms to not eat 100% cpu
         return 0;
     }
 
     while (--count >= 0) {
         XNextEvent(_XGrDisplay, &xev);
+        if (utf8support && XFilterEvent(&xev, None)) {
+            continue;
+        }
         switch (xev.type) {
         case Expose:
             _XGrCopyBStore(xev.xexpose.x, xev.xexpose.y,
@@ -146,6 +181,10 @@ int _GrReadInputs(void)
                 case Button3: evaux.p1 = GRMOUSE_RB_PRESSED;
                               MOUINFO->bstatus |= GRMOUSE_RB_STATUS;
                               break;
+                case Button4: evaux.p1 = GRMOUSE_B4_PRESSED;
+                              break;
+                case Button5: evaux.p1 = GRMOUSE_B5_PRESSED;
+                              break;
                 }
                 break;
             case ButtonRelease:
@@ -158,6 +197,10 @@ int _GrReadInputs(void)
                               break;
                 case Button3: evaux.p1 = GRMOUSE_RB_RELEASED;
                               MOUINFO->bstatus &= ~GRMOUSE_RB_STATUS;
+                              break;
+                case Button4: evaux.p1 = GRMOUSE_B4_RELEASED;
+                              break;
+                case Button5: evaux.p1 = GRMOUSE_B5_RELEASED;
                               break;
                 }
                 break;
@@ -172,14 +215,23 @@ int _GrReadInputs(void)
           if (IsModifierKey(keysym)) {
               _XGrModifierKey(keysym, xev.type);
           } else {
-              evaux.type = GREV_KEY;
+              evaux.type = GREV_PREKEY;
               evaux.kbstat = kbd_lastmod;
-              evaux.p1 = _XKeyEventToGrKey (&xev.xkey);
-              evaux.p2 = 0;
               evaux.p3 = 0;
-              GrEventEnqueue(&evaux);
-              MOUINFO->moved = FALSE;
-              nev++;
+              if (utf8support) {
+                  if (_Xutf8KeyEventToGrKey(&xev.xkey,&evaux.p1,&evaux.p2)) {
+                      GrEventEnqueue(&evaux);
+                      MOUINFO->moved = FALSE;
+                      nev++;
+                  }
+              }
+              else {
+                  if (_XKeyEventToGrKey(&xev.xkey,&evaux.p1,&evaux.p2)) {
+                      GrEventEnqueue(&evaux);
+                      MOUINFO->moved = FALSE;
+                      nev++;
+                  }
+              }
           }
           break;
 
@@ -190,6 +242,11 @@ int _GrReadInputs(void)
           }
           break;
       }
+    }
+
+    if (nev == 0) {
+        XFlush(_XGrDisplay);
+        usleep(1000L);   // wait 1 ms to not eat 100% cpu
     }
 
     return nev;
@@ -265,7 +322,7 @@ void GrMouseWarp(int x, int y)
 
 /** Internal functions **/
 
-unsigned short _XKeyEventToGrKey(XKeyEvent *xkey)
+int _XKeyEventToGrKey(XKeyEvent *xkey, long *p1, long *p2)
 {
     KeyEntry *kp;
     unsigned int state;
@@ -277,17 +334,63 @@ unsigned short _XKeyEventToGrKey(XKeyEvent *xkey)
     count = XLookupString(xkey, buffer, sizeof(buffer),
                           &keysym, (XComposeStatus *)NULL);
 
-    if ((count == 1) && ((state & Mod1Mask) == 0))
-        return (unsigned char) buffer[0];
+    if ((count == 1) && ((state & Mod1Mask) == 0)) {
+        *p1 = (unsigned char) buffer[0];
+        *p2 = 1;
+        return 1;
+    }
 
     for (kp = _KeyTable;
          kp < &_KeyTable[sizeof(_KeyTable)/sizeof(_KeyTable[0])];
          kp = kp + 1) {
-        if (keysym == kp->keysym && state == kp->state)
-            return kp->key;
+        if (keysym == kp->keysym && state == kp->state) {
+            *p1 = kp->key;
+            *p2 = GRKEY_KEYCODE;
+            return 1;
+        }
     }
 
-    return EOF;
+    return 0;
+}
+
+int _Xutf8KeyEventToGrKey(XKeyEvent *xkey, long *p1, long *p2)
+{
+    KeyEntry *kp;
+    unsigned int state;
+    char buffer[20];
+    KeySym keysym;
+    Status status;
+    char *cp1;
+    int count;
+    int i;
+
+    state = xkey->state & (ShiftMask | ControlMask | Mod1Mask);
+    count= Xutf8LookupString(_XGrXic, (XKeyPressedEvent *)xkey,
+             buffer, sizeof(buffer), &keysym, &status);
+
+    if (((status == XLookupChars) || (status == XLookupBoth))
+        && (count >= 1) && (count <= 4) && ((state & Mod1Mask) == 0)) {
+        *p1 = 0;
+        cp1 = (char *)p1;
+        for(i=0; i < count; i++)
+            cp1[i] = buffer[i];
+        *p2 = count;
+        return count;
+    }
+
+    if ((status == XLookupKeySym) || status == XLookupBoth) {
+        for (kp = _KeyTable;
+             kp < &_KeyTable[sizeof(_KeyTable)/sizeof(_KeyTable[0])];
+             kp = kp + 1) {
+            if (keysym == kp->keysym && state == kp->state) {
+                *p1 = kp->key;
+                *p2 = GRKEY_KEYCODE;
+                return 1;
+            }
+        }
+    }
+
+    return 0;
 }
 
 unsigned int _XGrModifierKey(KeySym keysym, int type)
@@ -323,4 +426,89 @@ unsigned int _XGrModifierKey(KeySym keysym, int type)
         }
     }
     return kbd_lastmod;
+}
+
+static XIMStyle _XGrChooseBetterStyle(XIMStyle style1, XIMStyle style2)
+{
+  XIMStyle s,t;
+  XIMStyle preedit = XIMPreeditArea | XIMPreeditCallbacks |
+    XIMPreeditPosition | XIMPreeditNothing | XIMPreeditNone;
+  XIMStyle status = XIMStatusArea | XIMStatusCallbacks |
+    XIMStatusNothing | XIMStatusNone;
+
+  if (style1 == 0) return style2;
+  if (style2 == 0) return style1;
+  if ((style1 & (preedit | status)) == (style2 & (preedit | status)))
+    return style1;
+  s = style1 & preedit;
+  t = style2 & preedit;
+  if (s != t) {
+    if ((s | t) & XIMPreeditCallbacks)
+      return (s == XIMPreeditCallbacks)?style1:style2;
+    else if ((s | t) & XIMPreeditPosition)
+      return (s == XIMPreeditPosition)?style1:style2;
+    else if ((s | t) & XIMPreeditArea)
+      return (s == XIMPreeditArea)?style1:style2;
+    else if ((s | t) & XIMPreeditNothing)
+      return (s == XIMPreeditNothing)?style1:style2;
+  }
+  else {
+    s = style1 & status;
+    t = style2 & status;
+    if ((s | t) & XIMStatusCallbacks)
+      return (s == XIMStatusCallbacks)?style1:style2;
+    else if ((s | t) & XIMStatusArea)
+      return (s == XIMStatusArea)?style1:style2;
+    else if ((s | t) & XIMStatusNothing)
+      return (s == XIMStatusNothing)?style1:style2;
+  }
+  return style2;
+}
+
+static int _XGrOpenXIMandXIC(Display *dpy, Window win, XIM *im, XIC *ic)
+{
+  XIMStyle app_supported_styles;
+  XIMStyles *im_supported_styles;
+  XIMStyle style;
+  XIMStyle best_style;
+  int i;
+
+  if (setlocale(LC_ALL, "") == NULL) return 0;
+
+  if (!XSupportsLocale()) return 0;
+  if (XSetLocaleModifiers("") == NULL) return 0;
+  if ((*im = XOpenIM(dpy, NULL, NULL, NULL)) == NULL) return 0;
+
+  app_supported_styles = XIMPreeditNone | XIMPreeditNothing;
+  app_supported_styles |= XIMStatusNone | XIMStatusNothing;
+
+  XGetIMValues(*im, XNQueryInputStyle, &im_supported_styles, NULL);
+  best_style = 0;
+
+  for (i=0; i < im_supported_styles->count_styles; i++) {
+    style = im_supported_styles->supported_styles[i];
+    if ((style & app_supported_styles) == style)
+      best_style = _XGrChooseBetterStyle(style, best_style);
+  }
+  XFree(im_supported_styles);
+
+  if (best_style == 0) {
+    XCloseIM(*im);
+    *im = NULL;
+    return 0;
+  }
+
+  *ic = XCreateIC(*im,
+          XNInputStyle, best_style,
+          XNClientWindow, win,
+          NULL);
+
+  if (ic == NULL) {
+    XCloseIM(*im);
+    *im = NULL;
+    return 0;
+  }
+
+  XSetICFocus(*ic);
+  return 1;
 }

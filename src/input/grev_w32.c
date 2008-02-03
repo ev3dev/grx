@@ -14,6 +14,10 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by:
+ ** 080120 M.Alvarez, intl support
+ ** 080204 M.Alvarez, generate wheel events
+ **
  **/
 
 #include <stdlib.h>
@@ -26,6 +30,7 @@
 #include "arith.h"
 
 static int kbd_lastmod = 0;
+static int kbsysencoding = -1;
 
 static void init_w32queue(int queue_size);
 static unsigned short StdKeyTranslate(int winkey, int fkbState);
@@ -41,7 +46,12 @@ static unsigned short StdKeyTranslate(int winkey, int fkbState);
 
 int _GrEventInit(void)
 {
+    char *s;
+
     init_w32queue(40);
+    s = getenv("MGRXKBSYSENCODING");
+    if (s != NULL) kbsysencoding = GrFindEncoding(s);
+    if (kbsysencoding < 0) kbsysencoding = GRENC_CP1252;
     return 1;
 }
 
@@ -53,6 +63,16 @@ int _GrEventInit(void)
 
 void _GrEventUnInit(void)
 {
+}
+
+/**
+ ** _GrGetKbSysEncoding - Get kb system encoding
+ **
+ **/
+
+int _GrGetKbSysEncoding(void)
+{
+    return kbsysencoding;
 }
 
 /**
@@ -78,10 +98,10 @@ int _GrReadInputs(void)
 
         switch (evaux.uMsg) {
         case WM_CHAR:
-            ev.type = GREV_KEY;
+            ev.type = GREV_PREKEY;
             ev.kbstat = evaux.kbstat;
             ev.p1 = evaux.wParam;
-            ev.p2 = 0;
+            ev.p2 = 1;
             ev.p3 = 0;
             GrEventEnqueue(&ev);
             MOUINFO->moved = FALSE;
@@ -98,10 +118,10 @@ int _GrReadInputs(void)
                 key = altnumbers[evaux.wParam - '0'];
             if (key == 0)
                 break;
-            ev.type = GREV_KEY;
+            ev.type = GREV_PREKEY;
             ev.kbstat = evaux.kbstat;
             ev.p1 = key;
-            ev.p2 = 0;
+            ev.p2 = GRKEY_KEYCODE;
             ev.p3 = 0;
             GrEventEnqueue(&ev);
             MOUINFO->moved = FALSE;
@@ -113,10 +133,10 @@ int _GrReadInputs(void)
             key = StdKeyTranslate(evaux.wParam, evaux.kbstat);
             if (key == 0)
                 break;
-            ev.type = GREV_KEY;
+            ev.type = GREV_PREKEY;
             ev.kbstat = evaux.kbstat;
             ev.p1 = key;
-            ev.p2 = 0;
+            ev.p2 = GRKEY_KEYCODE;
             ev.p3 = 0;
             GrEventEnqueue(&ev);
             MOUINFO->moved = FALSE;
@@ -230,6 +250,25 @@ int _GrReadInputs(void)
             MOUINFO->moved = FALSE;
             kbd_lastmod = evaux.kbstat;
             nev++;
+            break;
+        case WM_MOUSEWHEEL:
+//            MOUINFO->xpos = LOWORD(evaux.lParam);
+//            MOUINFO->ypos = HIWORD(evaux.lParam);
+//            GrMouseUpdateCursor();
+            ev.type = GREV_MOUSE;
+            ev.kbstat = evaux.kbstat;
+            ev.p2 = MOUINFO->xpos;
+            ev.p3 = MOUINFO->ypos;
+            if (HIWORD(evaux.wParam) > 0)
+            ev.p1 = ((short)HIWORD(evaux.wParam) > 0) ?
+                    GRMOUSE_B4_PRESSED : GRMOUSE_B5_PRESSED;
+            GrEventEnqueue(&ev);
+            ev.p1 = ((short)HIWORD(evaux.wParam) > 0) ?
+                    GRMOUSE_B4_RELEASED : GRMOUSE_B5_RELEASED;
+            GrEventEnqueue(&ev);
+            MOUINFO->moved = FALSE;
+            kbd_lastmod = evaux.kbstat;
+            nev += 2;
             break;
         }
     }

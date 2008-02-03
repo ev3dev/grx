@@ -25,7 +25,7 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0098
+#define MGRX_VERSION_API 0x0099
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
@@ -823,6 +823,7 @@ GrColor GrPixelCNC(GrContext *c,int x,int y);
 #define GR_BYTE_TEXT            0       /* one byte per character */
 #define GR_WORD_TEXT            1       /* two bytes per character */
 #define GR_ATTR_TEXT            2       /* chr w/ PC style attribute byte */
+#define GR_UTF8_TEXT            3       /* multibyte UTF-8 encoding, restricted to 4 bytes */
 
 /*
  * macros to access components of various string/character types
@@ -967,14 +968,14 @@ typedef struct {                        /* fixed font text window desc. */
         char    txr_chrtype;                /* character type (see above) */
 } GrTextRegion;
 
-int  GrCharWidth(int chr,const GrTextOption *opt);
-int  GrCharHeight(int chr,const GrTextOption *opt);
-void GrCharSize(int chr,const GrTextOption *opt,int *w,int *h);
+int  GrCharWidth(long chr, const GrTextOption *opt);
+int  GrCharHeight(long chr, const GrTextOption *opt);
+void GrCharSize(long chr, const GrTextOption *opt,int *w,int *h);
 int  GrStringWidth(void *text,int length,const GrTextOption *opt);
 int  GrStringHeight(void *text,int length,const GrTextOption *opt);
 void GrStringSize(void *text,int length,const GrTextOption *opt,int *w,int *h);
 
-void GrDrawChar(int chr,int x,int y,const GrTextOption *opt);
+void GrDrawChar(long chr,int x,int y,const GrTextOption *opt);
 void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt);
 void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 
@@ -1020,20 +1021,6 @@ void GrDumpTextRegion(const GrTextRegion *r);
         GrFontCharBitmap(f,ch) :                                               \
         GrBuildAuxiliaryBitmap((f),(ch),(dir),(ul))                            \
 )
-#define GrCharWidth(c,o) (                                                     \
-        GR_TEXT_IS_VERTICAL((o)->txo_direct) ?                                 \
-        GrFontCharHeight((o)->txo_font,GR_TEXTCHR_CODE(c,(o)->txo_chrtype)) :  \
-        GrFontCharWidth( (o)->txo_font,GR_TEXTCHR_CODE(c,(o)->txo_chrtype))    \
-)
-#define GrCharHeight(c,o) (                                                    \
-        GR_TEXT_IS_VERTICAL((o)->txo_direct) ?                                 \
-        GrFontCharWidth( (o)->txo_font,GR_TEXTCHR_CODE(c,(o)->txo_chrtype)) :  \
-        GrFontCharHeight((o)->txo_font,GR_TEXTCHR_CODE(c,(o)->txo_chrtype))    \
-)
-#define GrCharSize(c,o,wp,hp) do {                                             \
-        *(wp) = GrCharHeight(c,o);                                             \
-        *(hp) = GrCharWidth( c,o);                                             \
-} while(0)
 #define GrStringWidth(t,l,o) (                                                 \
         GR_TEXT_IS_VERTICAL((o)->txo_direct) ?                                 \
         GrFontStringHeight((o)->txo_font,(t),(l),(o)->txo_chrtype) :           \
@@ -1162,7 +1149,7 @@ void GrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);
 
-void GrPatternDrawChar(int chr,int x,int y,const GrTextOption *opt,GrPattern *p);
+void GrPatternDrawChar(long chr,int x,int y,const GrTextOption *opt,GrPattern *p);
 void GrPatternDrawString(void *text,int length,int x,int y,const GrTextOption *opt,GrPattern *p);
 void GrPatternDrawStringExt(void *text,int length,int x,int y,const GrTextOption *opt,GrPattern *p);
 
@@ -1277,7 +1264,7 @@ void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);
 
-void GrUsrDrawChar(int chr,int x,int y,const GrTextOption *opt);
+void GrUsrDrawChar(long chr,int x,int y,const GrTextOption *opt);
 void GrUsrDrawString(char *text,int length,int x,int y,const GrTextOption *opt);
 void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 
@@ -1363,19 +1350,25 @@ long GrMsecTime( void );
 /* ================================================================== */
 
 typedef struct {
-    int type;      /* event type */
-    long time;     /* miliseconds */
-    int kbstat;    /* kb status */
-    long p1;       /* key(GREV_KEY) subevent(GREV_MOUSE) */
-    long p2;       /* x-pos(GREV_MOUSE) */
-    long p3;       /* Y-pos(GREV_MOUSE) */
+    int type;               /* event type */
+    long time;              /* miliseconds */
+    int kbstat;             /* kb status */
+    union {
+      long p1;              /* key(GREV_KEY) subevent(GREV_MOUSE) */
+      unsigned char cp1[4]; /* for easy access to multibyte char encodings (like UTF-8) */
+    };
+    long p2;                /* type or nbytes (GREV_KEY) x-pos(GREV_MOUSE) */
+    long p3;                /* Y-pos(GREV_MOUSE) */
 } GrEvent;
 
 #define GREV_NULL    0           /* no event */
-#define GREV_KEY     1           /* key pressed, p1=GRXkey */
+#define GREV_KEY     1           /* key pressed, p1=GRXkey (char or gr_keycode), p2=type or nbytes */
 #define GREV_MOUSE   2           /* mouse event, p1=subevent, p2=x, p3=y */
 #define GREV_MMOVE   3           /* mouse move event, p1=buttons status, p2=x, p3=y */
+#define GREV_PREKEY  4           /* key event before be recoded, internal event, users don't see it */
 #define GREV_USER    100         /* user event */
+
+#define GRKEY_KEYCODE     100    /* p1 is a special key, not a char */
 
 #define GRMOUSE_LB_PRESSED  1    /* Left button depressed */
 #define GRMOUSE_MB_PRESSED  2    /* Middle button depressed */
@@ -1383,6 +1376,10 @@ typedef struct {
 #define GRMOUSE_LB_RELEASED 4    /* Left button released */
 #define GRMOUSE_MB_RELEASED 5    /* Middle button released */
 #define GRMOUSE_RB_RELEASED 6    /* Rigth button released */
+#define GRMOUSE_B4_PRESSED  7    /* Button 4 depressed (scroll wheel) */
+#define GRMOUSE_B4_RELEASED 8    /* Button 4 released (scroll wheel) */
+#define GRMOUSE_B5_PRESSED  9    /* Button 5 depressed (scroll wheel) */
+#define GRMOUSE_B5_RELEASED 10   /* Button 5 released (scroll wheel) */
 
 #define GRMOUSE_LB_STATUS   1    /* Status bit for left button */
 #define GRMOUSE_MB_STATUS   4    /* Status bit for middle button */
@@ -1413,6 +1410,28 @@ int GrEventEnqueue(GrEvent * ev);
 void GrEventGenMmove(int when);
 int GrEventAddHook(int (*fn) (GrEvent *));
 int GrEventDeleteHook(int (*fn) (GrEvent *));
+
+/* Supported encodings and intl stuff */
+
+#define GRENC_CP437          0   /* standard DOS encoding */
+#define GRENC_CP850          1   /* latin1 DOS encoding */
+#define GRENC_CP1252         2   /* standard Win encoding */
+#define GRENC_ISO_8859_1     3   /* standard in some Linux */
+#define GRENC_UTF_8          4   /* multibyte unicode, standard in newest Linux */
+#define GRENC_UCS_2          5   /* restricted unicode, 2 bytes, only BMP range */
+#define GRENC_LASTENCODE     5   /* last encode, for checks */
+
+int GrGetKbSysEncoding(void);
+int GrGetKbEncoding(void);
+int GrSetKbEncoding(int enc);
+
+char *GrStrEncoding(int nenc);
+int GrFindEncoding(char *strenc);
+
+int GrUTF8StrLen(unsigned char *s);
+long GrUCS2ToUTF8(unsigned short ch);
+unsigned short GrUTF8ToUCS2(unsigned char *s);
+unsigned short *GrUTF8StrToUCS2Str(unsigned char *s, int *ulen);
 
 /* ================================================================== */
 /*                         MOUSE UTILITIES                            */

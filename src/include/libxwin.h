@@ -49,6 +49,8 @@ extern Pixmap           _XGrBStore;
 extern GC               _XGrGC;
 extern GC               _XGrBitmapGC;
 extern GC               _XGrPatternGC;
+extern XIM              _XGrXim;
+extern XIC              _XGrXic;
 extern unsigned long    _XGrForeColor;
 extern unsigned long    _XGrBackColor;
 extern unsigned int     _XGrColorOper;

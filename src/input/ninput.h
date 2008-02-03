@@ -16,9 +16,17 @@
  **
  **/
 
+/* functions to be provided in the input driver */
+
 int _GrEventInit(void);
 void _GrEventUnInit(void);
 int _GrReadInputs(void);
 
 int _GrMouseDetect(void);
 void _GrInitMouseCursor(void);
+
+int _GrGetKbSysEncoding(void);
+
+/* intl support, recode functions */
+
+int GrRecodeEvent(GrEvent *ev, int srcenc, int desenc);

@@ -15,6 +15,9 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by:
+ ** 080125 M.Alvarez, UTF-8 support
+ **
  **/
 
 #include "libgrx.h"
@@ -39,13 +42,16 @@ void GrPatternDrawString(void *text,int length,int x,int y,
     GRX_LEAVE();
 }
 
-void GrPatternDrawChar(int chr,int x,int y,const GrTextOption *opt,GrPattern *p)
+void GrPatternDrawChar(long chr,int x,int y,const GrTextOption *opt,GrPattern *p)
 {
     char  cbuff[2];
     short sbuff[2];
 
     GRX_ENTER();
     switch(opt->txo_chrtype) {
+      case GR_UTF8_TEXT:
+        GrPatternDrawString((void *)&chr,1,x,y,opt,p);
+        break;
       case GR_WORD_TEXT:
       case GR_ATTR_TEXT:
         sbuff[0] = chr;

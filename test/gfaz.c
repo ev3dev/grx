@@ -157,7 +157,7 @@ void dboton( int x, int y, int an, int al,
     glo.lno_color = ct;
     glo.lno_width = 1;
     glo.lno_pattlen = 2;
-    glo.lno_dashpat = "\2\1";
+    glo.lno_dashpat = (unsigned char *)"\2\1";
     GrCustomBox( x+8,y+al/2-6,x+an-8,y+al/2+5,&glo );
     }
 

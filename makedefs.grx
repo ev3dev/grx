@@ -5,17 +5,17 @@
 
 # Specify version of MGRX
 # Currently only used to generate name of shared libraries for linux
-MGRX_VERSION=0.9.8
+MGRX_VERSION=0.9.9
 
 # Specify if you have libjpeg.a and corresponding .h files.
-HAVE_LIBJPEG=n
+HAVE_LIBJPEG=y
 
 # Specify if you have libpng.a and corresponding .h files.
-HAVE_LIBPNG=n
+HAVE_LIBPNG=y
 
 # Specify if one of the above libs requires the
 # zlib compression library
-NEED_ZLIB=n
+NEED_ZLIB=y
 
 # Specify if you want shared library support (Linux console and X11)
 INCLUDE_SHARED_SUPPORT=n

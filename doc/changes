@@ -1,3 +1,104 @@
+2008-02-03 ----------- mGRX 0.9.9 released
+2008-02-03 Changed defaults in makedefs.grx:
+           HAVE_LIBJPEG=y  HAVE_LIBPNG=y  NEED_ZLIB=y
+2008-02-03 Make the w32 driver generates button4 and button5 mouse events
+           (the scroll whell).
+2008-02-02 Planned intl support (and 8, finished by now)
+           Updated the programmer manual with the intl and GR_UTF8_TEXT support,
+2008-01-30 Make textpatt.c demo program works in real color modes.
+2008-01-26 Planned intl support (7)
+           The functions: GrDrawString, GrPatternDrawString, GrPatternDrawStringExt,
+           GrUsrDrawString, GrFontStringWidth, GrFontStringHeight,
+           GrProportionalTextWidth, GrStringWidth, GrStringHeight, GrStringSize
+           support the new GR_UTF8_TEXT text type, "len" must be the UTF8len or less.
+           The functions: GrCharWidth, GrCharHeight, GrCharSize, GrDrawChar,
+           GrPatternDrawChar, GrUsrDrawChar
+           support the new GR_UTF8_TEXT text type too. "chr" must be a unique char,
+           utf-8 encoded, but packed in a long (an union: long and char[4]), like it
+           is packed int the GREV_KEY event.
+           Some utility functions for UTF-8 are provided:
+           int GrUTF8StrLen(unsigned char *s)
+           long GrUCS2ToUTF8(unsigned short ch)
+           unsigned short GrUTF8ToUCS2(unsigned char *s)
+           unsigned short *GrUTF8StrToUCS2Str(unsigned char *s, int *ulen)
+2008-01-23 Warnings fixed in fonts/fdv_bgi.c
+2008-01-21 Planned intl support (6)
+           Added intl support to the dj2 input driver (input/grev_dj2.c). It try
+           to use the MGRXKBSYSENCODING environment variable. If not it sets
+           GRENC_CP437.
+           Added intl support to the w32 input driver (input/grev_w32.c). It try
+           to use the MGRXKBSYSENCODING environment variable. If not it sets
+           GRENC_CP1252.
+           Some warnings fixed.
+2008-01-20 Planned intl support (5)
+           If kbsysencoding == GRENC_UTF_8, sets initial kbencoding
+           to GRENC_ISO_8859_1, because is easier to handle.
+           New input/auxintl.c with auxiliary intl functions
+           Added intl support to the lnx input driver (input/grev_lnx.c). If the
+           LANG environment variable contain "UTF-8" sets the KbSysEncoding
+           to GRENC_UTF_8. If not it try to use the MGRXKBSYSENCODING
+           environment variable. If not it sets GRENC_ISO_8859_1.
+2008-01-19 Planned intl support (4)
+           New input/recode.c recode between supported encodings.
+           Added intl support to grevent.c, it process GREV_PREKEY events and
+           recode if necesary.
+           New test/demointl test program.
+2008-01-14 Planned intl support (3)
+           Added intl support to the x11 input driver (input/grev_x11.c). It try
+           to open a XIM (X input method) and create a XIC (X input context), if
+           it has succes, it uses Xutf8LookupString and sets the KbSysEncoding
+           to GRENC_UTF_8. If it can't, uses the XLookupString and sets
+           KbSysEncoding to GRENC_ISO_8859_1, but this function can't compose
+           accented chars.
+2008-01-12 Planned intl support (2)
+           Changes in input/ninput.h to declare "int _GrGetKbSysEncoding(void)",
+           internal funtion to be provided in the input drivers and the
+           GrRecode function to be written.
+           Added GREV_PREKEY event to mgrx.h. Input drivers with intl support
+           send this ivent instead GREV_KEY, so "grevent.c" can recode it.
+           Added "GrGetKbSysEncoding", "GrGetKbEncoding" and "GrSetKbEncoding"
+           to input/grevent.c, do void GREV_PREKEY preprocess (to be worked
+           later).
+2008-01-11 Planned intl support (1)
+           Changes in mgrx.h and general plan:
+           - Defined the initial supported input encodings:
+             #define GRENC_PC437          0   /* standard DOS encoding */
+             #define GRENC_PC850          1   /* latin1 DOS encoding */
+             #define GRENC_PC1252         2   /* standard Win encoding */
+             #define GRENC_ISO_8859_1     3   /* standard in some Linux */
+             #define GRENC_UTF_8          4   /* multibyte unicode, standard in newest Linux */
+             #define GRENC_UCS_2          5   /* restricted unicode, 2 bytes, only BMP range */
+           - The input driver must guess the system encoding and set an internal
+             var. If unsure, the input driver will use the MGRXKBSYSENCODING
+             environment variable.
+           - The function "int GrGetKbSysEncoding(void)" returns the system
+             encoding.
+           - By default the input driver uses the system encoding in returned
+             GREV_KEY events. Because now char con be a word (2 bytes) for
+             UCS-2 encoding, or multibyte (limited to 4 in MGRX) for UTF-8,we
+             need differ chars from special keycodes. So p2 is used to mark
+             a special key with GRKEY_KEYCODE or to notify the number of bytes
+             used in p1 for a char (1 to 4). The new cp1 char[4] menber event
+             is a union with p1 to facilitate the use of UTF-8 returned chars.
+           - The programmer can ask the input driver to recode the char to other
+             of the supported encodings, before the event is returned with the
+             new function "int GrSetKbEncoding(int enc)", so portable programs
+             can be made for the four supported plattforms. It returns "1" if
+             ok, or "0" else.
+           - The function "int GrGetKbEncoding(void)" returns the actual encoding
+             in use for the input driver.
+           - A new character type "GR_UTF8_TEXT" is defined for use in the text
+             drawing functions, but is to the programmer to use a font wiht the
+             same encoding that the text to be drawn (by example a ISO-8859-1
+             font is ok for UTF-8 text).
+2008-01-10 Changes in test/fontdemo.c to add some info
+2008-01-04 Optimizations to png2ctx.c, by Josu Onaindia.
+2008-01-03 Some changes in test/keys.c to work in graphic mode
+2008-01-02 Added button4 and button5 mouse events (the scroll whell), only
+           the x11 version works by now.
+2008-01-02 Moved the 1msec delay in GrEventRead to x11 and lnx versions of
+           _GrReadInputs, because dj2 and w32 doesn't need it.
+2008-01-02 Some changes in test/polytest.c to show a bug (to be worked).
 2007-12-27 ----------- mGRX 0.9.8 released
 2007-12-27 Added GrFloodSpill functions, by richard at dogcreek.ca
 2007-12-01 vd_xwin: go to fullscreen if w,h == X resolution,

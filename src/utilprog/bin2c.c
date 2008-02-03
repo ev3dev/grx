@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
   fprintf(outp, "unsigned char %s[] = {\n", name);
   count = 0;
   linec = 0;
-  komma = " ";
+  komma = (unsigned char *)" ";
   while (count != length) {
     linec += fprintf(outp, "%s", komma);
     if (linec > 75) {
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
       linec = 1;
     }
     linec += fprintf(outp, "%d", *buffer);
-    komma = ",";
+    komma = (unsigned char *)",";
     ++count;
     ++buffer;
   }

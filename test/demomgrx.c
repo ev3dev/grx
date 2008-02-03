@@ -37,7 +37,7 @@ char *wintitle =
 char *animatedtext =
     "MGRX 0.9, the graphics library for DJGPPv2, Linux, X11 and Win32";
 
-#define NDEMOS 33
+#define NDEMOS 34
 
 #define ID_ARCTEST   1
 #define ID_BB1TEST   2
@@ -68,6 +68,7 @@ char *animatedtext =
 #define ID_FNTDEMO2 27
 #define ID_FNTDEMO3 28
 #define ID_FNTDEMO4 29
+#define ID_DEMOINTL 30
 #define ID_MODETEST 50
 #define ID_PAGE1    81
 #define ID_PAGE2    82
@@ -109,6 +110,7 @@ static ProgTable ptable[NDEMOS] = {
     {ID_FNTDEMO2, "fontdemo ter-114b.res", "fontdemo ter-114b.res -> test a RES font"},
     {ID_FNTDEMO3, "fontdemo ter-114n.fna", "fontdemo ter-114n.fna -> test a FNA font"},
     {ID_FNTDEMO4, "fontdemo ter-114v.psf", "fontdemo ter-114v.psf -> test a PSF font"},
+    {ID_DEMOINTL, "demointl", "test intl support"},
     {ID_MODETEST, "modetest", "modetest.c -> test all available graphics modes"},
     {ID_PAGE1, "", "Change to page 1"},
     {ID_PAGE2, "", "Change to page 2"},
@@ -159,7 +161,7 @@ static Button bp1[NBUTTONSP1] = {
     {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
 };
 
-#define NBUTTONSP2  9
+#define NBUTTONSP2  10
 
 static Button bp2[NBUTTONSP2] = {
     {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "FontTest", BSTATUS_SELECTED, ID_FONTTEST},
@@ -168,6 +170,7 @@ static Button bp2[NBUTTONSP2] = {
     {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo2", 0, ID_FNTDEMO2},
     {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo3", 0, ID_FNTDEMO3},
     {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo4", 0, ID_FNTDEMO4},
+    {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "DemoIntl", 0, ID_DEMOINTL},
     {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 1", 0, ID_PAGE1},
     {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
     {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
@@ -232,7 +235,7 @@ int main(int argc, char **argv)
         if ((ev.type == GREV_KEY) && (ev.p1 == GrKey_Escape))
             break;
         if ((ev.type == GREV_KEY) && (ev.p1 == 's')) {
-            GrSaveContextToPpm(NULL, "demomgrx.ppm", "DemoGRX");
+            GrSaveContextToPpm(NULL, "demomgrx.ppm", "DemoMGRX");
             continue;
         }
         if (pev_button_group(&ev, bgact))
@@ -326,7 +329,7 @@ static void paint_screen(void)
         GrLoadContextFromPnm(grc, "pnmtest2.ppm");
     GrDestroyContext(grc);
     the_info(500, 215);
-    drawing(400, 280, 200, 150, BROWN, DARKGRAY);
+    drawing(400, 290, 200, 150, BROWN, DARKGRAY);
     the_title(500, 330);
     paint_foot("Hold down left mouse buttom to see a comment");
 }
@@ -351,8 +354,11 @@ static void the_title(int x, int y)
 
 static void the_info(int x, int y)
 {
-    char aux[81], sys[4] = "?";
+    char aux[81];
+    char sys[4] = "?";
     int nsys;
+    char *kbsysencoding;
+    int nenc;
 
     grt_centered.txo_fgcolor.v = CYAN;
     grt_centered.txo_font = grf_std;
@@ -360,26 +366,32 @@ static void the_info(int x, int y)
     nsys = GrGetLibrarySystem();
     if (nsys == MGRX_VERSION_GCC_386_DJGPP)
         strcpy(sys, "DJ2");
-    if (nsys == MGRX_VERSION_GCC_386_LINUX)
+    else if (nsys == MGRX_VERSION_GCC_386_LINUX)
         strcpy(sys, "LNX");
-    if (nsys == MGRX_VERSION_GCC_386_X11)
+    else if (nsys == MGRX_VERSION_GCC_386_X11)
         strcpy(sys, "X11");
-    if (nsys == MGRX_VERSION_GCC_X86_64_LINUX)
+    else if (nsys == MGRX_VERSION_GCC_X86_64_LINUX)
         strcpy(sys, "L64");
-    if (nsys == MGRX_VERSION_GCC_X86_64_X11)
+    else if (nsys == MGRX_VERSION_GCC_X86_64_X11)
         strcpy(sys, "X64");
-    if (nsys == MGRX_VERSION_GCC_386_WIN32)
+    else if (nsys == MGRX_VERSION_GCC_386_WIN32)
         strcpy(sys, "W32");
+
+    nenc = GrGetKbSysEncoding();
+    kbsysencoding = GrStrEncoding(nenc);
 
     sprintf(aux, "Version:%x System:%s", GrGetLibraryVersion(), sys);
     GrDrawString(aux, strlen(aux), 0 + x, 0 + y, &grt_centered);
 
+    sprintf(aux, "KbSysEncoding:%s", kbsysencoding);
+    GrDrawString(aux, strlen(aux), 0 + x, 20 + y, &grt_centered);
+
     sprintf(aux, "VideoDriver: %s", GrCurrentVideoDriver()->name);
-    GrDrawString(aux, strlen(aux), 0 + x, 25 + y, &grt_centered);
+    GrDrawString(aux, strlen(aux), 0 + x, 40 + y, &grt_centered);
 
     sprintf(aux, "Mode: %dx%d %d bpp", GrCurrentVideoMode()->width,
             GrCurrentVideoMode()->height, GrCurrentVideoMode()->bpp);
-    GrDrawString(aux, strlen(aux), 0 + x, 50 + y, &grt_centered);
+    GrDrawString(aux, strlen(aux), 0 + x, 60 + y, &grt_centered);
 }
 
 /************************************************************************/
@@ -505,7 +517,7 @@ static void disaster(char *s)
 
     gfaz_fin();
     _GrCloseVideoDriver();
-    printf("DemoGRX: %s\n", s);
+    printf("DemoMGRX: %s\n", s);
     printf("press Return to continue\n");
     fgets(aux, 80, stdin);
     exit(1);

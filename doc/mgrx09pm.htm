@@ -13,7 +13,7 @@
 <h2>Programmer's Manual</h2>
 <p>Based on the original GRX manual written by: Csaba Biegl on August 10, 1992
 <p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on November 1, 2005
-<p>Last update: February 8, 2006
+<p>Last update: January 30, 2008
 </center>
 
 <hr>
@@ -43,6 +43,7 @@ the framebuffer. On X11 and Win32 it runs in a window.
 <li><a href="#pld">Patterned line drawing</a>
 <li><a href="#img">Image manipulation</a>
 <li><a href="#td">Text drawing</a>
+<li><a href="#utf8">Special UTF-8 text type considerations</a>
 <li><a href="#siuc">Drawing in user coordinates</a>
 <li><a href="#gcur">Graphics cursors</a>
 <li><a href="#pnm">Writing/reading PNM graphics files</a>
@@ -50,6 +51,7 @@ the framebuffer. On X11 and Win32 it runs in a window.
 <li><a href="#jpeg">Writing/reading JPEG graphics files</a>
 <li><a href="#misc">Miscellaneous functions</a>
 <li><a href="#input">Input API</a>
+<li><a href="#intl">Intl input support</a>
 <li><a href="#mouse">Mouse cursor handling</a>
 <li><a href="#mdrv">The memory driver</a>
 <li><a href="#ref">References</a>
@@ -1349,7 +1351,8 @@ void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 <code>GrFont_PC8x14</code> font) with <code>x</code>, <code>y</code> like
 the upper left corner and the foreground and background colors given (note
 that <code>bg</code> equal to <code>GrNOCOLOR</code> make the
-background transparent).
+background transparent). This function expects <code>GR_BYTE_TEXT</code>
+character type strings (see bellow).
 
 <p>&nbsp;&nbsp;For other functions the <code>GrTextOption</code> structure
 specifies how to draw a character string:
@@ -1403,7 +1406,14 @@ methods to build fill patterns.) The supported text types:
 #define GR_BYTE_TEXT            0       /* one byte per character */
 #define GR_WORD_TEXT            1       /* two bytes per character */
 #define GR_ATTR_TEXT            2       /* chr w/ PC style attribute byte */
+#define GR_UTF8_TEXT            3       /* multibyte UTF-8 encoding, restricted to 4 bytes */
+
 </pre>
+<p><code>GR_BYTE_TEXT</code> uses one byte per character,
+<code>GR_WORD_TEXT</code> uses two bytes per character and
+<code>GR_UTF8_TEXT</code> is the standard multibyte UTF-8 encoding. Note
+that is up to you the use of a font that match the text encoding you have
+choosing.
 <p>&nbsp;&nbsp;The PC-style attribute text uses the same layout (first byte:
 character, second: attributes) and bitfields as the text mode screen on the
 PC. The only difference is that the 'blink' bit is not supported (it would
@@ -1418,10 +1428,10 @@ convenience the following attribute manipulation macros have been declared
 #define GR_ATTR_BGCOLOR(attr)   (((attr) >> 4) &   7)
 #define GR_ATTR_UNDERLINE(attr) (((attr)     ) & 128)
 </pre>
-<p>&nbsp;&nbsp;Text strings of the types <code>GR_BYTE_TEXT</code> and
-<code>GR_WORD_TEXT</code> can also be drawn underlined. This is controlled
-by OR-ing the constant <code>GR_UNDERLINE_TEXT</code> to the foreground
-color value:
+<p>&nbsp;&nbsp;Text strings of the types <code>GR_BYTE_TEXT</code>,
+<code>GR_WORD_TEXT</code> and <code>GR_UTF8_TEXT</code> can also be drawn
+underlined. This is controlled by OR-ing the constant
+<code>GR_UNDERLINE_TEXT</code> to the foreground color value:
 <pre>
 #define GR_UNDERLINE_TEXT       (GrXOR << 4)
 </pre>
@@ -1429,7 +1439,7 @@ color value:
 with the desired values it can call one of the following two text drawing
 functions:
 <pre>
-void GrDrawChar(int chr,int x,int y,const GrTextOption *opt);
+void GrDrawChar(long chr,int x,int y,const GrTextOption *opt);
 void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt);
 </pre>
 <p>&nbsp;&nbsp;NOTE: text drawing is fastest when it is drawn in the 'normal'
@@ -1439,7 +1449,7 @@ in any other case the text is drawn pixel-by-pixel by the higher-level code.
 
 <p>&nbsp;&nbsp;There are pattern filed versions too:
 <pre>
-void GrPatternDrawChar(int chr,int x,int y,const GrTextOption *opt,GrPattern *p);
+void GrPatternDrawChar(long chr,int x,int y,const GrTextOption *opt,GrPattern *p);
 void GrPatternDrawString(void *text,int length,int x,int y,const GrTextOption *opt,
                          GrPattern *p);
 void GrPatternDrawStringExt(void *text,int length,int x,int y,
@@ -1459,9 +1469,9 @@ int  GrFontStringWidth(const GrFont *font,void *text,int len,int type);
 int  GrFontStringHeight(const GrFont *font,void *text,int len,int type);
 int  GrProportionalTextWidth(const GrFont *font,void *text,int len,int type);
 
-int  GrCharWidth(int chr,const GrTextOption *opt);
-int  GrCharHeight(int chr,const GrTextOption *opt);
-void GrCharSize(int chr,const GrTextOption *opt,int *w,int *h);
+int  GrCharWidth(long chr,const GrTextOption *opt);
+int  GrCharHeight(long chr,const GrTextOption *opt);
+void GrCharSize(long chr,const GrTextOption *opt,int *w,int *h);
 int  GrStringWidth(void *text,int length,const GrTextOption *opt);
 int  GrStringHeight(void *text,int length,const GrTextOption *opt);
 void GrStringSize(void *text,int length,const GrTextOption *opt,int *w,int *h);
@@ -1474,7 +1484,9 @@ characters are drawn). Only fixed fonts can be used in their natural size.
 <code>GrDumpText</code> will cache the code of the drawn characters in the
 buffer pointed to by the 'backup' slot (if it is non-NULL) and will draw a
 character only if the previously drawn character in that grid element
-is different.
+is different. Note that <code>GrTextRegion</code> doesn't support
+<code>GR_UTF8_TEXT</code> text type, because characters can have different
+byte sizes.
 
 <p>&nbsp;&nbsp;This can speed up text scrolling significantly in graphics
 modes. The supported text types are the same as above.
@@ -1505,6 +1517,66 @@ draws the new character on the screen as well. With these functions you can
 simulate a text mode window, write chars directly to the <code>txr_buffer
 </code> and call <code>GrDumpTextRegion</code> when you want to update the
 window (or <code>GrDumpText</code> if you know the area to update is small).
+
+<hr>
+<h2><a name="utf8">Special UTF-8 text type considerations</a></h2>
+
+<p>To deal with <code>GR_UTF8_TEXT</code>, <b>MGRX</b> provides some special
+funtions:
+
+<pre>
+int GrUTF8StrLen(unsigned char *s);
+</pre>
+<p>returns the number of UTF-8 characters in <code>s</code>.
+
+<pre>
+long GrUCS2ToUTF8(unsigned short ch);
+</pre>
+<p>converts a UCS-2 word character to a UTF-8 string packed in a long
+for convenience (some functions use it, see bellow).
+
+<pre>
+unsigned short GrUTF8ToUCS2(unsigned char *s);
+</pre>
+<p>converts the first UTF-8 character in <code>s</code> to a a UCS-2
+word character.
+
+<pre>
+unsigned short *GrUTF8StrToUCS2Str(unsigned char *s, int *ulen);
+</pre>
+<p>converts a UTF-8 string to a UCS-2 string and set the <code>ulen</code>
+variable with the UTF-8 string length. This function allocates the
+necesary memory, so you must check the returned pointer for NULL, and the
+memory must be freed when unneded.
+
+<p>For font related functions that expect a string and a length you must
+pass the UTF-8 string and UTF-8 length (or less), example:
+
+<pre>
+opt.txo_chrtype = GR_UTF8_TEXT;
+GrDrawString(sutf8, GrUTF8StrLen(sutf8), x, y, opt);
+</pre>
+
+<p>For font related functions that expect a unique character packed in
+a long and a char type, you need to pack the UTF-8 char in a long,
+example:
+
+<pre>
+long *c;
+char cutf8[4];
+...
+put in cutf8 the character;
+c = (long *)&amp;cutf8;
+opt.txo_chrtype = GR_UTF8_TEXT;
+void GrDrawChar(*c, x, y, opt);
+</pre>
+
+<p>For font functions that expect a unique character without text type,
+you must pass the UCS-2 equivalent character, example:
+
+<pre>
+GrFontCharWidth(font,GrUTF8ToUCS2(sutf8));
+</pre>
 
 <hr>
 <h2><a name="siuc">Drawing in user coordinates</a></h2>
@@ -1615,7 +1687,7 @@ void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);
 
-void GrUsrDrawChar(int chr,int x,int y,const GrTextOption *opt);
+void GrUsrDrawChar(long chr,int x,int y,const GrTextOption *opt);
 void GrUsrDrawString(char *text,int length,int x,int y,const GrTextOption *opt);
 void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 </pre>
@@ -1988,7 +2060,10 @@ typedef struct {
     int type;      /* event type */
     long time;     /* miliseconds */
     int kbstat;    /* kb status */
-    long p1;       /* key(GREV_KEY) subevent(GREV_MOUSE) */
+    union {
+      long p1;              /* key(GREV_KEY) subevent(GREV_MOUSE) */
+      unsigned char cp1[4]; /* for easy access to multibyte char encodings (like UTF-8) */
+    };
     long p2;       /* x-pos(GREV_MOUSE) */
     long p3;       /* Y-pos(GREV_MOUSE) */
 } GrEvent;
@@ -1999,14 +2074,17 @@ is ready. The possible events are:
 
 <pre>
 #define GREV_NULL    0           /* no event */
-#define GREV_KEY     1           /* key pressed, p1=GRXkey */
+#define GREV_KEY     1           /* key pressed, p1=GRXkey (char or gr_keycode), p2=type or nbytes */
 #define GREV_MOUSE   2           /* mouse event, p1=subevent, p2=x, p3=y */
 #define GREV_MMOVE   3           /* mouse move event, p1=buttons status, p2=x, p3=y */
+#define GREV_PREKEY  4           /* key event before be recoded, internal event, users don't see it */
 #define GREV_USER    100         /* user event */
 </pre>
 
-<p>a programmer can define user type events with values >= GREV_USER. When the event
-is GREV_MOUSE, <code>p1</code> has the subevent:
+<p>a programmer can define user type events with values >= GREV_USER. When the
+event is GREV_KEY, <code>p1</code> has the character or key and <code>p2</code>
+the number of bytes used by the character or <code>GRKEY_KEYCODE</code> if it
+is a special keys. When the event is GREV_MOUSE, <code>p1</code> has the subevent:
 
 <pre>
 #define GRMOUSE_LB_PRESSED  1    /* Left button depressed */
@@ -2015,6 +2093,10 @@ is GREV_MOUSE, <code>p1</code> has the subevent:
 #define GRMOUSE_LB_RELEASED 4    /* Left button released */
 #define GRMOUSE_MB_RELEASED 5    /* Middle button released */
 #define GRMOUSE_RB_RELEASED 6    /* Rigth button released */
+#define GRMOUSE_B4_PRESSED  7    /* Button 4 depressed (scroll wheel) */
+#define GRMOUSE_B4_RELEASED 8    /* Button 4 released (scroll wheel) */
+#define GRMOUSE_B5_PRESSED  9    /* Button 5 depressed (scroll wheel) */
+#define GRMOUSE_B5_RELEASED 10   /* Button 5 released (scroll wheel) */
 </pre>
 
 <p>&nbsp;&nbsp;By default <b>MGRX</b> doesn't generate GREV_MMOVE events except if
@@ -2099,6 +2181,57 @@ int GrEventEnqueue(GrEvent * ev);
 button is pressed.
 
 <p><code>GrEventEnqueue</code> enqueue an user event.
+
+<hr>
+<h2><a name="intl">Intl input support</a></h2>
+
+<p>The input characters returned by the input driver in every plattform
+can be encoded in different encodings. By example in DOS they can be
+encoded in PC-437 or PC-850 and in Linux-X11 in ISO-8859-1 or UTF-8.
+This is a problem to make portable programs.
+
+<p>To resolve this problem <b>MGRX</b> supports different input encodings
+and can recode to the desired programmer encoding before it returns a key
+event. The supported encodings are:
+
+<pre>
+#define GRENC_CP437          0   /* standard DOS encoding */
+#define GRENC_CP850          1   /* latin1 DOS encoding */
+#define GRENC_CP1252         2   /* standard Win encoding */
+#define GRENC_ISO_8859_1     3   /* standard in some Linux */
+#define GRENC_UTF_8          4   /* multibyte unicode, standard in newest Linux */
+#define GRENC_UCS_2          5   /* restricted unicode, 2 bytes, only BMP range */
+#define GRENC_LASTENCODE     5   /* last encode, for checks */
+</pre>
+
+<p>Every input driver try to guess the encoding used for the plattform,
+if not sure it uses the MGRXKBSYSENCODING environment variable that can
+be set by the users to one of these strings: "CP437", "CP850", "CP1252",
+"ISO_8859_1", "UTF_8" or "UCS_2". The system encoding can be get using
+this function:
+
+<pre>
+int GrGetKbSysEncoding(void);
+</pre>
+
+<p>The program can set the encoding it wants to be used in key events using
+this function:
+
+<pre>
+int GrSetKbEncoding(int enc);
+</pre>
+
+<p>and if it is different from the system encoding, the input driver will
+recode key events to the desired encoding. So using by example 
+<code>GrSetKbEncoding(GRENC_ISO_8859_1);</code> you can write a portable
+program that gets ISO-8859-1 encoded keys in every plattform.
+
+<p>To get the actual user encoding you can use this function:
+
+<pre>
+int GrGetKbEncoding(void);
+</pre>
+
 
 <hr>
 <h2><a name="mouse">Mouse cursor handling</a></h2>

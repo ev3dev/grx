@@ -40,6 +40,8 @@ Colormap        _XGrColormap;
 GC              _XGrGC;
 GC              _XGrBitmapGC;
 GC              _XGrPatternGC;
+XIM             _XGrXim = NULL;
+XIC             _XGrXic = NULL;
 unsigned long   _XGrForeColor;
 unsigned long   _XGrBackColor;
 unsigned int    _XGrColorOper;

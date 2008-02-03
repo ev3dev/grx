@@ -63,21 +63,6 @@ char *(GrFontCharAuxBmp)(GrFont *font,int chr,int dir,int ul)
         return(GrFontCharAuxBmp(font,chr,dir,ul));
 }
 
-int (GrCharWidth)(int chr,const GrTextOption *opt)
-{
-        return(GrCharWidth(chr,opt));
-}
-
-int (GrCharHeight)(int chr,const GrTextOption *opt)
-{
-        return(GrCharHeight(chr,opt));
-}
-
-void (GrCharSize)(int chr,const GrTextOption *opt,int *w,int *h)
-{
-        GrCharSize(chr,opt,w,h);
-}
-
 int (GrStringWidth)(void *text,int length,const GrTextOption *opt)
 {
         return(GrStringWidth(text,length,opt));

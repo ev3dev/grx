@@ -28,12 +28,14 @@ int main(void)
   GrFont *font;
   GrTextOption opt;
   GrEvent ev;
+  GrColor *egacolors;
 
   GrSetMode(GR_width_height_color_graphics, 320, 200, (GrColor)256);
   GrEventInit();
   GrMouseDisplayCursor();
-  p1 = GrBuildPixmapFromBits(bits, 8, 8, 11,  3);
-  p2 = GrBuildPixmapFromBits(bits, 8, 8,  3, 11);
+  egacolors = GrAllocEgaColors();
+  p1 = GrBuildPixmapFromBits(bits, 8, 8, egacolors[11], egacolors[3]);
+  p2 = GrBuildPixmapFromBits(bits, 8, 8, egacolors[3], egacolors[11]);
   font = GrLoadFont(FONT);
   if (font && p1 && p2) {
     memset(&opt, 0, sizeof(GrTextOption));

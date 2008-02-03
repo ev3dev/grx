@@ -16,6 +16,9 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by:
+ ** 080120 M.Alvarez, intl support
+ **
  **/
 
 #include <pc.h>
@@ -32,6 +35,7 @@
 #include "mgrxkeys.h"
 
 static int mou_buttons;
+static int kbsysencoding = -1;
 
 static int _GetKey(void);
 static int _GetKbstat(void);
@@ -67,9 +71,14 @@ static void _ReadMouseData(int *mb, int *mx, int *my);
 
 int _GrEventInit(void)
 {
+    char *s;
+
     if (GrMouseDetect()) {
         mou_buttons = 0;
     }
+    s = getenv("MGRXKBSYSENCODING");
+    if (s != NULL) kbsysencoding = GrFindEncoding(s);
+    if (kbsysencoding < 0) kbsysencoding = GRENC_CP437;
     return 1;
 }
 
@@ -81,6 +90,16 @@ int _GrEventInit(void)
 
 void _GrEventUnInit(void)
 {
+}
+
+/**
+ ** _GrGetKbSysEncoding - Get kb system encoding
+ **
+ **/
+
+int _GrGetKbSysEncoding(void)
+{
+    return kbsysencoding;
 }
 
 /**
@@ -153,10 +172,13 @@ int _GrReadInputs(void)
     }
 
     if (kbhit()) {
-        evaux.type = GREV_KEY;
+        evaux.type = GREV_PREKEY;
         evaux.kbstat = _GetKbstat();
         evaux.p1 = _GetKey();
-        evaux.p2 = 0;
+        if (evaux.p1 > 0xff)
+            evaux.p2 = GRENC_CP437;
+        else
+            evaux.p2 = 1;
         evaux.p3 = 0;
         GrEventEnqueue(&evaux);
         MOUINFO->moved = FALSE;

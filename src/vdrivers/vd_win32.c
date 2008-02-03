@@ -585,6 +585,7 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
     case WM_LBUTTONUP:
     case WM_MBUTTONUP:
     case WM_RBUTTONUP:
+    case WM_MOUSEWHEEL:
         kbstat = convertwin32keystate();
         EnqueueW32Event(uMsg, wParam, lParam, kbstat);
         return 0;

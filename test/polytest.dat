@@ -1,4 +1,11 @@
 beginc
+100 100
+200 100
+200 200
+100 200
+end
+
+beginc
 300 200
 400 400
 200 400
@@ -41,7 +48,7 @@ end
 beginc
 400 500
 050 500
-200 560
+200 560la zona que se asemeja
 end
 
 beginc

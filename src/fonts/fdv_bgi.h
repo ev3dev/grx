@@ -49,27 +49,27 @@
  */
 
 typedef struct {
-    GR_int16u header_size  PACKED; /* Version 2.0 Header Format */
-    char      font_name[4] PACKED; /* Font Internal Name */
-    GR_int16u font_size    PACKED; /* file size in bytes */
-    GR_int8u  font_major   PACKED; /* Driver Version Information */
-    GR_int8u  font_minor   PACKED;
-    GR_int8u  bgi_major    PACKED; /* BGI Revision Information */
-    GR_int8u  bgi_minor    PACKED;
-} BGIfontFileHeader;
+    GR_int16u header_size;  /* Version 2.0 Header Format */
+    char      font_name[4]; /* Font Internal Name */
+    GR_int16u font_size;    /* file size in bytes */
+    GR_int8u  font_major;   /* Driver Version Information */
+    GR_int8u  font_minor;
+    GR_int8u  bgi_major;    /* BGI Revision Information */
+    GR_int8u  bgi_minor;
+} PACKED BGIfontFileHeader;
 
 typedef struct {
-    char       sig          PACKED; /* SIGNATURE byte */
-    GR_int16u  nchrs        PACKED; /* number of characters in file */
-    char       unused1      PACKED; /* Currently Undefined */
-    GR_int8u   firstch      PACKED; /* first character in file */
-    GR_int16u  cdefs        PACKED; /* offset to char definitions */
-    GR_int8u   scan_flag    PACKED; /* (!= 0) -> set is scanable */
-    char       org_to_cap   PACKED; /* Height from origin to top of capitol */
-    char       org_to_base  PACKED; /* Height from origin to baseline */
-    char       org_to_dec   PACKED; /* Height from origin to bot of decender */
-    char       unused2[5]   PACKED; /* Currently undefined */
-} BGIfontHeaderType;
+    char       sig;         /* SIGNATURE byte */
+    GR_int16u  nchrs;       /* number of characters in file */
+    char       unused1;     /* Currently Undefined */
+    GR_int8u   firstch;     /* first character in file */
+    GR_int16u  cdefs;       /* offset to char definitions */
+    GR_int8u   scan_flag;   /* (!= 0) -> set is scanable */
+    char       org_to_cap;  /* Height from origin to top of capitol */
+    char       org_to_base; /* Height from origin to baseline */
+    char       org_to_dec;  /* Height from origin to bot of decender */
+    char       unused2[5];  /* Currently undefined */
+} PACKED BGIfontHeaderType;
 
 #define FILEMARKER      "PK\b\b"        /* file should start with this */
 #define MARKEREND       ('Z' - 0x40)    /* end of copyright message */

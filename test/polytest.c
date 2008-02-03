@@ -19,7 +19,6 @@
 
 #include <string.h>
 #include <stdio.h>
-#include <time.h>
 
 #include "test.h"
 
@@ -29,18 +28,38 @@ static GrColor *EGA;
 #define blue  EGA[1]
 #define white EGA[15]
 
+static void printdata(int n,int points[][2],int convex)
+{
+        int i;
+        char buf[41];
+
+        if (!convex)
+            sprintf(buf, "Points");
+        else
+            sprintf(buf, "Convex");
+
+        GrTextXY(550, 0, buf, white, black);
+
+        for (i=0; i<n; i++) {
+            sprintf(buf, "%d %d", points[i][0], points[i][1]);
+            GrTextXY(550, (i+1)*16, buf, white, black);
+        }
+}
+
 static void testpoly(int n,int points[][2],int convex)
 {
         GrEvent ev;
 
         GrClearScreen(black);
+        printdata(n, points, 0);
         GrPolygon(n,points,white);
-        GrFilledPolygon(n,points,(red | GrXOR));
+        GrFilledPolygon(n,points,red);
         GrEventWaitKeyOrClick(&ev);
         if(convex || (n <= 3)) {
             GrClearScreen(black);
-            GrFilledPolygon(n,points,white);
-            GrFilledConvexPolygon(n,points,(red | GrXOR));
+            printdata(n, points, 1);
+            GrPolygon(n,points,white);
+            GrFilledConvexPolygon(n,points,blue);
             GrEventWaitKeyOrClick(&ev);
         }
 }
@@ -55,9 +74,10 @@ static void speedtest(void)
         int  ii,jj;
         GrColor color;
         long t1,t2,t3;
+        char msg[81];
 
         GrClearScreen(black);
-        t1 = clock();
+        t1 = GrMsecTime();
         pts[0][1] = 0;
         pts[1][1] = hh;
         pts[2][1] = 2*hh;
@@ -81,7 +101,7 @@ static void speedtest(void)
             pts[2][1] += sy;
             pts[3][1] += sy;
         }
-        t2 = clock();
+        t2 = GrMsecTime();
         pts[0][1] = 0;
         pts[1][1] = hh;
         pts[2][1] = 2*hh;
@@ -105,14 +125,14 @@ static void speedtest(void)
             pts[2][1] += sy;
             pts[3][1] += sy;
         }
-        t3 = clock();
-        sprintf(exit_message,
-            "Times to scan 1024 polygons\n"
-            "   with 'GrFilledPolygon': %.2f (s)\n"
-            "   with 'GrFilledConvexPolygon': %.2f (s)\n",
-            (double)(t2 - t1) / (double)CLOCKS_PER_SEC,
-            (double)(t3 - t2) / (double)CLOCKS_PER_SEC
-        );
+        t3 = GrMsecTime();
+        GrTextXY(0, 0, "Times to scan 1024 polygons", white, black);
+        sprintf(msg, "   with 'GrFilledPolygon': %.2f (s)",
+               (double)(t2 - t1) / (double)1000);
+        GrTextXY(0, 18, msg, white, black);
+        sprintf(msg, "   with 'GrFilledConvexPolygon': %.2f (s)",
+               (double)(t3 - t2) / (double)1000);
+        GrTextXY(0, 36, msg, white, black);
 }
 
 TESTFUNC(ptest)

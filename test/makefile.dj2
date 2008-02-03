@@ -58,10 +58,13 @@ PROGS=  arctest.exe     \
 	winclip.exe     \
 	wintest.exe
 
-all: $(PROGS) demomgrx.exe
+all: $(PROGS) demomgrx.exe demointl.exe
 
 demomgrx.exe: demomgrx.o gfaz.o $(MGRX)
 	$(CC) $(LDOPT) -o demomgrx.exe demomgrx.o gfaz.o $(LIBS) -lm
+
+demointl.exe: demointl.o gfaz.o $(MGRX)
+	$(CC) $(LDOPT) -o demointl.exe demointl.o gfaz.o $(LIBS) -lm
 
 $(PROGS): %.exe : %.o $(MGRX)
 	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm

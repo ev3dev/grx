@@ -77,11 +77,11 @@ void dualpageblt(GrFrame *dst,int dx,int dy,
                 } while (w1--);
 #else
                 if(w1 >= 3) {
-                    if((int)(dptr) & 1) {
+                    if((GR_PtrInt)(dptr) & 1) {
                         poke_b_f(dptr,peek_b_f(sptr));
                         dptr++; sptr++; w1--;
                     }
-                    if((int)(dptr) & 2) {
+                    if((GR_PtrInt)(dptr) & 2) {
                         poke_w_f(dptr,peek_w_f(sptr));
                         dptr += 2; sptr += 2; w1 -= 2;
                     }
