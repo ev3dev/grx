@@ -53,14 +53,14 @@ PROGS=  arctest.exe     \
 	scroltst.exe    \
 	textpatt.exe    \
 	winclip.exe     \
-	wintest.exe
+	wintest.exe     \
+	biggtest.exe
 
 all: 	$(PROGS) \
 	demomgrx.exe \
 	demointl.exe \
 	speedtst.exe \
 	memtest.exe
-
 
 demomgrx.exe: demomgrx.o gfaz.o $(MGRX)
 	$(CC) $(LDOPT) -o demomgrx.exe demomgrx.o gfaz.o $(LIBS) -lm -mwindows

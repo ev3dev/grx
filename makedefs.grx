@@ -5,7 +5,7 @@
 
 # Specify version of MGRX
 # Currently only used to generate name of shared libraries for linux
-MGRX_VERSION=0.9.9
+MGRX_VERSION=0.1.0
 
 # Specify if you have libjpeg.a and corresponding .h files.
 HAVE_LIBJPEG=y

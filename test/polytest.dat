@@ -48,20 +48,20 @@ end
 beginc
 400 500
 050 500
-200 560la zona que se asemeja
-end
-
-beginc
-400 500
-250 495
-050 500
 200 560
 end
 
 beginc
-100 500
-400 500
-300 550
+400 400
+250 395
+050 400
+200 460
+end
+
+beginc
+100 400
+400 400
+300 450
 end
 
 beginc

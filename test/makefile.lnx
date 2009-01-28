@@ -68,7 +68,8 @@ PROGS=	arctest     \
 	speedtst    \
 	textpatt    \
 	winclip     \
-	wintest
+	wintest     \
+	biggtest
 
 all:    $(PROGS) demomgrx demointl
 

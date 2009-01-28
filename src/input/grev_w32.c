@@ -17,6 +17,7 @@
  ** Contributions by:
  ** 080120 M.Alvarez, intl support
  ** 080204 M.Alvarez, generate wheel events
+ ** 081117 Richard, fixed bug in GrMouseWarp
  **
  **/
 
@@ -331,10 +332,15 @@ void GrMouseSetLimits(int x1, int y1, int x2, int y2)
 
 void GrMouseWarp(int x, int y)
 {
+    POINT point;
+
     MOUINFO->xpos = imax(MOUINFO->xmin, imin(MOUINFO->xmax, x));
     MOUINFO->ypos = imax(MOUINFO->ymin, imin(MOUINFO->ymax, y));
     GrMouseUpdateCursor();
-    SetCursorPos(MOUINFO->xpos, MOUINFO->ypos);
+    point.x = MOUINFO->xpos;
+    point.y = MOUINFO->ypos;
+    ClientToScreen(hGRXWnd, &point);
+    SetCursorPos(point.x, point.y);
 }
 
 /** Internal functions **/

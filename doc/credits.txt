@@ -1,6 +1,8 @@
-CONTRIB.DOC
+credits.txt
 ===========
 MGRX is a derived work of GRX
+
+MGRX contributors are listed in the changes.txt file
 
 ###########################################################################
 This is the original contrib.doc from GRX 2.4.7 p1

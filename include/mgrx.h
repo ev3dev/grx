@@ -25,7 +25,7 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0099
+#define MGRX_VERSION_API 0x0100
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
@@ -94,39 +94,31 @@ typedef unsigned int GrColor;
 typedef enum _GR_graphicsModes {
         GR_unknown_mode = (-1),             /* initial state */
         /* ============= modes which clear the video memory ============= */
-        GR_80_25_text = 0,                  /* Extra parameters for GrSetMode: */
-        GR_default_text,
-        GR_width_height_text,               /* int w,int h */
-        GR_biggest_text,
+        GR_default_text = 0,                /* Extra parameters for GrSetMode: */
         GR_320_200_graphics,
         GR_default_graphics,
         GR_width_height_graphics,           /* int w,int h */
-        GR_biggest_noninterlaced_graphics,
         GR_biggest_graphics,
         GR_width_height_color_graphics,     /* int w,int h,GrColor nc */
-        GR_width_height_color_text,         /* int w,int h,GrColor nc */
         GR_custom_graphics,                 /* int w,int h,GrColor nc,int vx,int vy */
+//        GR_maximized_color_graphics,        /* GrColor nc */
         /* ==== equivalent modes which do not clear the video memory ==== */
-        GR_NC_80_25_text,
         GR_NC_default_text,
-        GR_NC_width_height_text,            /* int w,int h */
-        GR_NC_biggest_text,
         GR_NC_320_200_graphics,
         GR_NC_default_graphics,
         GR_NC_width_height_graphics,        /* int w,int h */
-        GR_NC_biggest_noninterlaced_graphics,
         GR_NC_biggest_graphics,
         GR_NC_width_height_color_graphics,  /* int w,int h,GrColor nc */
-        GR_NC_width_height_color_text,      /* int w,int h,GrColor nc */
         GR_NC_custom_graphics,              /* int w,int h,GrColor nc,int vx,int vy */
+//        GR_NC_maximized_color_graphics,     /* GrColor nc */
         /* ==== plane instead of color based modes ==== */
         /* colors = 1 << bpp  >>> resort enum for GRX3 <<< */
         GR_width_height_bpp_graphics,       /* int w,int h,int bpp */
-        GR_width_height_bpp_text,           /* int w,int h,int bpp */
         GR_custom_bpp_graphics,             /* int w,int h,int bpp,int vx,int vy */
+//        GR_maximized_bpp_graphics,          /* int bpp */
         GR_NC_width_height_bpp_graphics,    /* int w,int h,int bpp */
-        GR_NC_width_height_bpp_text,        /* int w,int h,int bpp */
         GR_NC_custom_bpp_graphics           /* int w,int h,int bpp,int vx,int vy */
+//        GR_NC_maximized_bpp_graphics        /* int bpp */
 } GrGraphicsMode;
 
 /*
@@ -207,12 +199,12 @@ struct _GR_videoDriver {
         enum   _GR_videoAdapters adapter;   /* adapter type */
         struct _GR_videoDriver  *inherit;   /* inherit video modes from this */
         struct _GR_videoMode    *modes;     /* table of supported modes */
-        int     nmodes;                     /* number of modes */
+        int    nmodes;                      /* number of modes */
         int   (*detect)(void);
         int   (*init)(char *options);
         void  (*reset)(void);
         GrVideoMode * (*selectmode)(GrVideoDriver *drv,int w,int h,int bpp,
-                                        int txt,unsigned int *ep);
+                                    int txt,unsigned int *ep);
         unsigned  drvflags;
 };
 /* bits in the drvflags field: */
@@ -302,6 +294,7 @@ extern const struct _GR_driverInfo {
         int     deftw,defth;                /* default text mode size */
         int     defgw,defgh;                /* default graphics mode size */
         GrColor deftc,defgc;                /* default text and graphics colors */
+        int     biggw,biggh;                /* bigest graphics mode size */
         int     vposx,vposy;                /* current virtual viewport position */
         int     errsfatal;                  /* if set, exit upon errors */
         int     moderestore;                /* restore startup video mode if set */
@@ -709,6 +702,7 @@ typedef struct {                        /* framed box colors */
 
 void GrClearScreen(GrColor bg);
 void GrClearContext(GrColor bg);
+void GrClearContextC(GrContext *ctx, GrColor bg);
 void GrClearClipBox(GrColor bg);
 void GrPlot(int x,int y,GrColor c);
 void GrLine(int x1,int y1,int x2,int y2,GrColor c);

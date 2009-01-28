@@ -63,6 +63,7 @@ void drawellip(int xc,int yc,int xa,int ya,GrColor c1,GrColor c2,GrColor c3)
                     GrPlot(x1,y2,c3);
                     GrPlot(x2,y2,c3);
                 }
+                GrSleep(100);
 
                 l->lno_color = c2;
                 l->lno_width = *wdt;
@@ -72,6 +73,7 @@ void drawellip(int xc,int yc,int xa,int ya,GrColor c1,GrColor c2,GrColor c3)
                   stop = 1;
                   return;
                 }
+                GrSleep(100);
             }
 }
 
@@ -80,6 +82,7 @@ TESTFUNC(circtest)
         int  xc,yc;
         int  xr,yr;
         GrColor c1,c2,c3;
+        GrEvent ev;
 
         c1 = GrAllocColor(64,64,255);
         c2 = GrAllocColor(255,255,64);
@@ -88,24 +91,29 @@ TESTFUNC(circtest)
         yc = GrSizeY() / 2;
         xr = 1;
         yr = 1;
-        while(!stop && ((xr < 1000) || (yr < 1000))) {
+        while(!stop && ((xr < 300) || (yr < 300))) {
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             xr += xr/4+1;
             yr += yr/4+1;
+            GrSleep(200);
         }
         xr = 4;
         yr = 1;
-        while(!stop && ((xr < 1000) || (yr < 1000))) {
+        while(!stop && ((xr < 300) || (yr < 300))) {
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             yr += yr/4+1;
             xr = yr * 4;
+            GrSleep(200);
         }
         xr = 1;
         yr = 4;
-        while(!stop && ((xr < 1000) || (yr < 1000))) {
+        while(!stop && ((xr < 300) || (yr < 300))) {
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             xr += xr/4+1;
             yr = xr * 4;
+            GrSleep(200);
         }
+        GrTextXY(0,0,"press any key to continue",GrWhite(),GrBlack());
+        GrEventWaitKeyOrClick(&ev);
 }
 

@@ -73,6 +73,12 @@
  ** Changes by M.Alvarez (malfer@telefonica.net) 01/12/2007
  **   - Added videomodes for wide monitors
  **
+ ** Change by Mario Zagar 02/09/2008
+ **   - Fix app termination bug
+ **
+ ** Changes by M.Alvarez (malfer@telefonica.net) 25/01/2009
+ **   - Simplified the WM_PAINT proccess to solve a race condition
+ **     found in Vista running in multiple core cpu's.
  **/
 
 #include "libwin32.h"
@@ -117,7 +123,7 @@ static void loadcolor(int c, int r, int g, int b)
     color.rgbRed = r;
     color.rgbReserved = 0;
     SetDIBColorTable(hDCMem, c, 1, &color);
-    InvalidateRect(hGRXWnd, NULL, FALSE);        
+    InvalidateRect(hGRXWnd, NULL, FALSE);
 }
 
 static HBITMAP CreateDIB8(HDC hdc, int w, int h, char **pBits)
@@ -333,7 +339,7 @@ static int init(char *options)
     mainThread = GetCurrentThread();
 
     InitializeCriticalSection(&_csEventQueue);
- 
+
     /* The modes not compatible width the configuration */
     /* of Windows are made 'non-present'                */
     maxScreenWidth = GetSystemMetrics(SM_CXSCREEN);
@@ -352,7 +358,7 @@ static int init(char *options)
     /* Wait for thread creating the window. This is a busy */
     /* waiting loop (bad), but we Sleep to yield (good)    */
     while (isWindowThreadRunning == 0)
-        Sleep(1); 
+        Sleep(1);
 
     return TRUE;
 }
@@ -363,7 +369,7 @@ static void reset(void)
     PostMessage(hGRXWnd, WM_CLOSE, 0, 0);
 
     while (isWindowThreadRunning == 1)
-        Sleep(1); 
+        Sleep(1);
 
     isMainWaitingTermination = 0;
     DeleteCriticalSection(&_csEventQueue);
@@ -532,7 +538,10 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
             return 0;
         DestroyWindow(hWnd);
         if (!isMainWaitingTermination)
+        {
+            isWindowThreadRunning = 0;
             ExitProcess(1);
+        }
         break;
 
     case WM_DESTROY:
@@ -597,21 +606,16 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 
     case WM_PAINT:
         {
-            RECT UpdateRect;
             HDC hDC;
             PAINTSTRUCT ps;
 
-            if (GetUpdateRect(hWnd, &UpdateRect, FALSE)) {
-                BeginPaint(hWnd, &ps);
-                hDC = GetDC(hWnd);
-                BitBlt(hDC,
-                       UpdateRect.left, UpdateRect.top,
-                       UpdateRect.right - UpdateRect.left + 1,
-                       UpdateRect.bottom - UpdateRect.top + 1,
-                       hDCMem, UpdateRect.left, UpdateRect.top, SRCCOPY);
-                ReleaseDC(hWnd, hDC);
-                EndPaint(hWnd, &ps);
-            }
+            hDC = BeginPaint(hWnd, &ps);
+            BitBlt(hDC,
+                   ps.rcPaint.left, ps.rcPaint.top,
+                   ps.rcPaint.right - ps.rcPaint.left + 1,
+                   ps.rcPaint.bottom - ps.rcPaint.top + 1,
+                   hDCMem, ps.rcPaint.left, ps.rcPaint.top, SRCCOPY);
+            EndPaint(hWnd, &ps);
         }
         return 0;
 

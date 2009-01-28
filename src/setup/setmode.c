@@ -230,14 +230,6 @@ int GrSetMode(GrGraphicsMode which,...)
         }
         va_start(ap,which);
         switch(which) {
-          case GR_NC_80_25_text:
-            noclear = TRUE;
-          case GR_80_25_text:
-            w = 80;
-            h = 25;
-            c = DRVINFO->deftc;
-            t = TRUE;
-            break;
           case GR_NC_default_text:
             noclear = TRUE;
           case GR_default_text:
@@ -245,38 +237,6 @@ int GrSetMode(GrGraphicsMode which,...)
             h = DRVINFO->defth;
             c = DRVINFO->deftc;
             t = TRUE;
-            break;
-          case GR_NC_width_height_text:
-            noclear = TRUE;
-          case GR_width_height_text:
-            w = va_arg(ap,int);
-            h = va_arg(ap,int);
-            c = DRVINFO->deftc;
-            t = TRUE;
-            break;
-          case GR_NC_biggest_text:
-            noclear = TRUE;
-          case GR_biggest_text:
-            w = 200;
-            h = 80;
-            c = DRVINFO->deftc;
-            t = TRUE;
-            break;
-          case GR_NC_width_height_color_text:
-            noclear = TRUE;
-          case GR_width_height_color_text:
-            w = va_arg(ap,int);
-            h = va_arg(ap,int);
-            c = va_arg(ap,GrColor);
-            t = TRUE;
-            break;
-          case GR_NC_width_height_bpp_text:
-            noclear = TRUE;
-          case GR_width_height_bpp_text:
-            w  = va_arg(ap,int);
-            h  = va_arg(ap,int);
-            pl = va_arg(ap,int);
-            t  = TRUE;
             break;
           case GR_NC_320_200_graphics:
             noclear = TRUE;
@@ -299,19 +259,12 @@ int GrSetMode(GrGraphicsMode which,...)
             h = va_arg(ap,int);
             c = DRVINFO->defgc;
             break;
-          case GR_NC_biggest_noninterlaced_graphics:
-            noclear = TRUE;
-          case GR_biggest_noninterlaced_graphics:
-            w = 800;
-            h = 600;
-            c = DRVINFO->defgc;
-            break;
           case GR_NC_biggest_graphics:
             noclear = TRUE;
           case GR_biggest_graphics:
-            w = 4096;
-            h = 4096;
-            c = DRVINFO->defgc;
+            w = DRVINFO->biggw;
+            h = DRVINFO->biggh;
+            pl = 32;
             break;
           case GR_NC_width_height_color_graphics:
             noclear = TRUE;

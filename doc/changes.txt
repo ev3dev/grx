@@ -1,3 +1,18 @@
+2009-01-29 ----------- mGRX 1.0.0 released
+2009-01-25 Simplified the WM_PAINT proccess to solve a race condition
+           found in Vista running in multiple core cpu's.
+2008-11-19 Fixed a bug in GrMouseWarp win32 version, the cursor was set to the
+           screen, instead to the client area, by Richard Sanders.
+2008-11-05 Added GrClearContextC function, by Richard Sanders.
+2008-09-07 New MGRXBIGG environment variable, it lets the user to limit the
+           dimensions of GR_biggest_graphics mode. MGRXBIGG="maxw maxh"
+2008-09-06 Deleted some graphicsmodes not used anymore: GR_80_25_text,
+           GR_width_height_text, GR_biggest_text, GR_width_height_color_text,
+           GR_width_height_bpp_text and GR_biggest_noninterlaced_graphics
+2008-09-02 vdrivers/vd_win32.c: Added Mario Zagar fix for the app termination bug.
+2008-08-01 fdrivers/fd_xwin.c: Sanitized pixel cache code.
+2008-08-01 fdrivers/fd_xwin.c: New faster and specific for X11 putscanline function,
+           this change accelerates a lot displaying pnm, png and jpeg images.
 2008-02-03 ----------- mGRX 0.9.9 released
 2008-02-03 Changed defaults in makedefs.grx:
            HAVE_LIBJPEG=y  HAVE_LIBPNG=y  NEED_ZLIB=y

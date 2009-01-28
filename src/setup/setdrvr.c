@@ -38,6 +38,12 @@ int GrSetDriver(char *drvspec)
         static int firsttime = TRUE;
         GrVideoDriver *drv = NULL;
         char options[100];
+        char *biggdims;
+
+        if ((biggdims = getenv("MGRXBIGG")) != NULL) {
+            sscanf(biggdims, "%d %d", &DRVINFO->biggw, &DRVINFO->biggh);
+        }
+
         if(!drvspec) drvspec = getenv("MGRXDRV");
         options[0] = '\0';
         if(drvspec) {

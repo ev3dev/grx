@@ -108,6 +108,7 @@ struct _GR_driverInfo _GrDriverInfo = {
     80,25,                                      /* default text size */
     640,480,                                    /* default graphics size */
     16L,16L,                                    /* default txt and gr colors */
+    4096,4096,                                  /* bigest graphics size */
     0,0,                                        /* virtual position */
     TRUE,                                       /* exit upon errors */
     TRUE,                                       /* restore startup mode */
