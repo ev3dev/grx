@@ -1,8 +1,8 @@
 /**
- ** x11misc.c - miscellaneous functions for X11
+ ** mstime.c ---- millisecond time
  **
- ** Copyright (C) 2001 Mariano Alvarez Fernandez
- ** [e-mail: malfer@teleline.es]
+ ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ ** [e-mail: csaba@vuse.vanderbilt.edu]
  **
  ** This file is part of the GRX graphics library.
  **
@@ -15,25 +15,13 @@
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
  **/
-
-#include <unistd.h>
+ 
 #include "libgrx.h"
-#include "libxwin.h"
 #include "mouse/input.h"
 
-void GrSetWindowTitle( char *title )
+long GrMsecTime( void )
 {
-  XStoreName( _XGrDisplay,_XGrWindow,title );
-  XSetIconName( _XGrDisplay,_XGrWindow,title );
-}
-
-void GrSleep( int msec )
-{
-  usleep( msec*1000L );
-}
-
-void GrFlush( void )
-{
-  _GrUpdateInputs();
-  XFlush(_XGrDisplay);
+        long tv;
+        real_time(tv);
+        return (tv * MS_PER_TICK);
 }

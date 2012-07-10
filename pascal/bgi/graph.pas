@@ -488,6 +488,10 @@ function KeyPressed: Boolean; asmname 'kbhit';
 function ReadKey: Char; asmname 'getch';
 {$endif}
 
+{flush the graphics: useful only in X windows when switching 
+ between graphics and console windows open simultaneously}
+procedure GrFlush; asmname 'GrFlush';
+
 implementation
 
 procedure dg(var GraphDriver, GraphMode: CInteger); asmname 'detectgraph';

@@ -374,6 +374,8 @@ int _GrReadCharFromKeyboard(void)
 #define PS2_LEFTBUTTON   1
 #define PS2_MIDDLEBUTTON 4
 #define PS2_RIGHTBUTTON  2
+#define PS2_FOURTHBUTTON 8
+#define PS2_FIFTHBUTTON 16
 
 static int mou_filedsc;
 static int mou_buttons;
@@ -509,7 +511,8 @@ void _GrUpdateInputs(void)
                     fill_mouse_ev(ev,
                                   mou_buttons, mb,
                                   PS2_LEFTBUTTON,
-                                  PS2_MIDDLEBUTTON, PS2_RIGHTBUTTON, 0);
+                                  PS2_MIDDLEBUTTON, PS2_RIGHTBUTTON,
+                                  PS2_FOURTHBUTTON, PS2_FIFTHBUTTON, 0);
                     real_dtime(ev.dtime, evt_lasttime);
                     enqueue_event(ev);
                     MOUINFO->moved = FALSE;
@@ -558,7 +561,8 @@ void GrMouseGetEventT(int flags, GrMouseEvent * ev, long tout)
             fill_mouse_ev((*ev),
                           mou_buttons, mou_buttons,
                           PS2_LEFTBUTTON,
-                          PS2_MIDDLEBUTTON, PS2_RIGHTBUTTON, 0);
+                          PS2_MIDDLEBUTTON, PS2_RIGHTBUTTON,
+                          PS2_FOURTHBUTTON, PS2_FIFTHBUTTON, 0);
             if (ev->flags)        /* something happend */
                 real_dtime(ev->dtime, evt_lasttime);
             else

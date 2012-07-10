@@ -1,11 +1,11 @@
-### CONFIGURATION ####################################################
+### CONFIGURATION ########################################################
 
 # This file sets variables that direct the libary build for the
 # programmer needs. The file is used for the four standard plattforms
 
 # Specify version of GRX
 # Currently only used to generate name of shared libraries for linux
-GRX_VERSION=2.4.8
+GRX_VERSION=2.4.9
 
 # Specify if you have libtiff.a and corresponding .h files.
 # Change setting to 'y' if you have it, or to 'n' if not.
@@ -46,7 +46,13 @@ HAVE_UNIX_TOOLS=n
 # Specify in linux if you want to build the library for x86_64
 BUILD_X86_64=n
 
-### SYSTEM SETTINGS ##################################################
+# For SDL driver the executable prefix EP is used to discriminate 
+# between linux X11 and mingw32. Set
+#EP=x         ... For linux X11.
+#EP=          ... For mingw32
+EP=x
+
+### SYSTEM SETTINGS ######################################################
 
 CC     = $(CROSS_PLATFORM)gcc
 PC     = $(CROSS_PLATFORM)gpc
@@ -90,18 +96,52 @@ WARNOPTS = -W -Wshadow -Wpointer-arith -Wbad-function-cast \
 #CCOPT += -DNO_LEFTSIDE_LVALUE_CAST
 #CCOPT += -DNO_LEFTSIDE_PTR_CAST
 
-### LINUX CONSOLE SPECIFIC ###########################################
+##########################################################################
+
+ifdef GRXVSDL
+ifeq ($(EP),x)
+GRXVX11=y
+else
+GRXVW32=y
+endif
+endif
 
 ifdef GRXVLNX
+GRXVUNX=y
+endif
 
-# place libgrx20.a and libgrx20.so in lib/unix
+ifdef GRXVX11
+GRXVUNX=y
+endif
+
+### UNIX SPECIFIC ########################################################
+
+ifdef GRXVUNX
+
+# Put libgrx20.a, libgrx20.so, libgrx20X.a, libgrx20X.so and libgrx20S.a
+# in lib/unix
 GRX_LIB_SUBDIR=unix
 
-# Set here the destination dir for install and uninstall targets
-INSTALLDIR=/usr/local
+# Set here the default destination dirs for install and uninstall targets
+prefix=/usr/local
 
 # Set the default GRX font path
-#GRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
+#GRX_DEFAULT_FONT_PATH=${datadir}/grx/fonts
+
+# check for i386 or x86_64 build
+ifeq ($(BUILD_X86_64),y)
+CCOPT += -m64
+LDOPT += -m64
+else
+CCOPT += -m32
+LDOPT += -m32
+endif
+
+endif
+
+### LINUX CONSOLE SPECIFIC ###############################################
+
+ifdef GRXVLNX
 
 # Use direct PS/2 mouse driver instead the svgalib one
 USE_DIRECT_MOUSE_DRIVER=n
@@ -124,29 +164,11 @@ SET_SUIDROOT=y
 # the linux framebuffer enabled
 USE_INOUTP_FRAMEDRIVERS=n
 
-# check for i386 or x86_64 build
-ifeq ($(BUILD_X86_64),y)
-CCOPT += -m64
-LDOPT += -m64
-else
-CCOPT += -m32
-LDOPT += -m32
 endif
 
-endif
-
-### LINUX X11 SPECIFIC ###############################################
+### LINUX X11 SPECIFIC ###################################################
 
 ifdef GRXVX11
-
-# place libgrx20X.a and libgrx20X.so in lib/unix
-GRX_LIB_SUBDIR=unix
-
-# Set here the destination dir for install and uninstall targets
-INSTALLDIR=/usr/local
-
-# Set the default GRX font path
-#GRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
 
 # The X11 base dir on your system
 X11BASE=/usr/X11R6
@@ -156,11 +178,8 @@ X11INCS=-I$(X11BASE)/include
 
 # put X11 required libraries and directories here
 # note: some systems need -lsocket added
-ifeq ($(BUILD_X86_64),y)
-X11LIBS=-L$(X11BASE)/lib64 -lX11
-else
-X11LIBS=-L$(X11BASE)/lib -lX11
-endif
+X11LIB=$(X11BASE)/lib
+X11LIBS=-L$(X11LIB) -lX11
 
 # Set to try to use the XFree86 Direct Graphics Access driver (DGA2)
 # (if DGA2 is not available, fall back to the windowed X11 driver)
@@ -176,18 +195,9 @@ USE_XF86DGA_FRAMEBUFFER=n
 # X11 driver only or DGA2 without framebuffer access.
 SET_XSUIDROOT=n
 
-# check for i386 or x86_64 build
-ifeq ($(BUILD_X86_64),y)
-CCOPT += -m64
-LDOPT += -m64
-else
-CCOPT += -m32
-LDOPT += -m32
 endif
 
-endif
-
-### DOS DJGPPv2 SPECIFIC #############################################
+### DOS DJGPPv2 SPECIFIC #################################################
 
 ifdef GRXVDJ2
 
@@ -195,7 +205,10 @@ ifdef GRXVDJ2
 GRX_LIB_SUBDIR=dj2
 
 # Set here the destination dir for install and uninstall targets
-INSTALLDIR=$(DJDIR)
+prefix=/dev/env/DJDIR
+
+# Set the default GRX font path
+#GRX_DEFAULT_FONT_PATH=/dev/env/DJDIR/share/grx/fonts
 
 # If you want to use 'upx.exe' compressor
 # disable the echo line and enable upx line.
@@ -215,71 +228,34 @@ EXE_COMPRESS = -echo
 # the following switch
 #CCOPT += -DNO_REPROGRAM_TIMER
 
-# Set the default GRX font path
-#GRX_DEFAULT_FONT_PATH=c:/djgpp/share/grx/fonts
-
 endif
 
-### WIN32 MINGW SPECIFIC #############################################
+### WIN32 MINGW SPECIFIC #################################################
 
 ifdef GRXVW32
 
-# Put libgrx20.a to lib/win32
+# Put libgrx20.a and libgrx20S.a to lib/win32
 GRX_LIB_SUBDIR=win32
 
 # Set here the destination dir for install and uninstall targets
-INSTALLDIR=C:\MINGW
+prefix=C:\MINGW
 
 # Set the default GRX font path
 #GRX_DEFAULT_FONT_PATH=c:/grxfonts
 
 endif
 
-### SDL SPECIFIC #####################################################
+### COMMON  ##############################################################
 
-ifdef GRXVSDL
+exec_prefix=${prefix}
 
-# Put libgrx20.a to lib/sdl
-GRX_LIB_SUBDIR=sdl
+bindir=${exec_prefix}/bin
+libdir=${exec_prefix}/lib
+datadir=${prefix}/share
 
-# The executable prefix EP is used in sub makefile.sdl 's
-# to discriminate between linux X11 and mingw32. Use
-#EP=x         ... For linux X11.
-#EP=          ... For mingw32
-EP=x
+infodir=${prefix}/info
+includedir=${prefix}/include
+unitsdir=${exec_prefix}/units
 
-# Set here the destination dir for install and uninstall targets
-INSTALLDIR=/usr/local
-
-# Set the default GRX font path
-#GRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
-
-#The following can remain in any case (even if unemployed in mingw32)
-
-# The X11 base dir on your system
-X11BASE=/usr/X11R6
-
-# Add directories with X11 include files here
-X11INCS=-I$(X11BASE)/include
-
-# put X11 required libraries and directories here
-# note: some systems need -lsocket added
-ifeq ($(BUILD_X86_64),y)
-X11LIBS=-L$(X11BASE)/lib64 -lX11
-else
-X11LIBS=-L$(X11BASE)/lib -lX11
-endif
-
-# check for i386 or x86_64 build
-ifeq ($(BUILD_X86_64),y)
-CCOPT += -m64
-LDOPT += -m64
-else
-CCOPT += -m32
-LDOPT += -m32
-endif
-
-endif
-
-######################################################################
+##########################################################################
 

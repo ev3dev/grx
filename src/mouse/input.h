@@ -32,7 +32,7 @@
         }                                                                   \
 } while(0)
 
-#define fill_mouse_ev(EV,OLDBT,NEWBT,LB,MB,RB,KBSTAT) do {                  \
+#define fill_mouse_ev(EV,OLDBT,NEWBT,LB,MB,RB,P4,P5,KBSTAT) do {                  \
         int bdown   = NEWBT & (~OLDBT);                                     \
         int btnup   = OLDBT & (~NEWBT);                                     \
         EV.flags    = MOUINFO->moved ? GR_M_MOTION : 0;                     \
@@ -44,12 +44,18 @@
         if(NEWBT & LB) EV.buttons |= GR_M_LEFT;                             \
         if(NEWBT & MB) EV.buttons |= GR_M_MIDDLE;                           \
         if(NEWBT & RB) EV.buttons |= GR_M_RIGHT;                            \
+        if(NEWBT & P4) EV.buttons |= GR_M_P4;                            \
+        if(NEWBT & P5) EV.buttons |= GR_M_P5;                            \
         if(bdown & LB) EV.flags   |= GR_M_LEFT_DOWN;                        \
         if(bdown & MB) EV.flags   |= GR_M_MIDDLE_DOWN;                      \
         if(bdown & RB) EV.flags   |= GR_M_RIGHT_DOWN;                       \
+        if(bdown & P4) EV.flags   |= GR_M_P4_DOWN;                       \
+        if(bdown & P5) EV.flags   |= GR_M_P5_DOWN;                       \
         if(btnup & LB) EV.flags   |= GR_M_LEFT_UP;                          \
         if(btnup & MB) EV.flags   |= GR_M_MIDDLE_UP;                        \
-        if(btnup & RB) EV.flags   |= GR_M_RIGHT_UP;                         \
+        if(btnup & RB) EV.flags   |= GR_M_RIGHT_UP;                        \
+        if(btnup & P4) EV.flags   |= GR_M_P4_UP;                         \
+        if(btnup & P5) EV.flags   |= GR_M_P5_UP;                         \
 } while(0)
 
 #define fill_keybd_ev(EV,KEY,KBSTAT) do {                                   \
@@ -127,16 +133,16 @@
 #define real_time(tv) do {                                                  \
         (tv) = clock();                                                     \
 } while(0)
-#define MS_PER_TICK (int)(1000 / CLOCKS_PER_SEC)
+#define MS_PER_TICK  (1000L / CLOCKS_PER_SEC)
 #endif
 
 #if !defined(real_time) && defined(unix)
-#include <time.h>
+#include <unistd.h>
 #include <sys/times.h>
 #define real_time(tv) do {                                                  \
         (tv) = times(NULL);                                                 \
 } while(0)
-#define MS_PER_TICK (int)(1000 / CLOCKS_PER_SEC)
+#define MS_PER_TICK  (1000L / sysconf(_SC_CLK_TCK))
 #endif
 
 #define real_dtime(dt,oldtime) do {                                         \

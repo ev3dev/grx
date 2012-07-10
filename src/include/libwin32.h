@@ -32,10 +32,10 @@ typedef struct _W32Event {
 
 extern CRITICAL_SECTION _csEventQueue;
 extern W32Event *_W32EventQueue;
-extern int _W32EventQueueSize;
-extern int _W32EventQueueRead;
-extern int _W32EventQueueWrite;
-extern int _W32EventQueueLength;
+extern volatile int _W32EventQueueSize;
+extern volatile int _W32EventQueueRead;
+extern volatile int _W32EventQueueWrite;
+extern volatile int _W32EventQueueLength;
 
 extern HWND hGRXWnd;
 extern HDC hDCMem;

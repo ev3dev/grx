@@ -19,6 +19,8 @@
  ** Contributions by: (See "doc/credits.doc" for details)
  ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  ** 070505 M.Alvarez, Using a Pixmap for BackingStore
+ ** 080801 M.Alvarez, Sanitized pixel cache code
+ ** 080801 M.Alvarez, New faster and specific for X11 putscanline function
  **
  **/
 
@@ -74,7 +76,8 @@ void _XGrSetBackColor (GrColor color)
   GRX_LEAVE();
 }
 
-static INLINE void _XGrSetColorOper (GrColor color)
+static INLINE
+void _XGrSetColorOper (GrColor color)
 {
   static int _GXtable[4] = {
     GXcopy,     /* C_WRITE */
@@ -94,33 +97,28 @@ static INLINE void _XGrSetColorOper (GrColor color)
   GRX_LEAVE();
 }
 
-static XImage * _XGrPixelCacheImage     = NULL;
-static Drawable _XGrPixelCacheDrawable  = None;
-#define _XGrPixelCacheX1 0
-#define _XGrPixelCacheX2 _XGrPixelCacheWidth
-static int      _XGrPixelCacheY1;
-static int      _XGrPixelCacheY2;
-static int      _XGrPixelCacheWidth = 32;
-
 /*
+ * PixelCache uses complete rows now
  * Designed for loops like:
  *
  * for (y = 0; y < height; y++)
  *   for (x = 0; x < width; x++)
  *     *dest++ = GrPixel (x, y);
  */
-#define PIXEL_CACHE_WIDTH       _XGrPixelCacheWidth
-#define PIXEL_CACHE_HEIGHT      4
 
-/* x1 <= x2 && y1 <= y2 required ! */
-#define AREA_OVERLAP_PIXEL_CACHE(x1,y1,x2,y2) \
-        (   (x2) >= _XGrPixelCacheX1          \
-         && (x1) <  _XGrPixelCacheX2          \
-         && (y2) >= _XGrPixelCacheY1          \
-         && (y1) <  _XGrPixelCacheY2 )
+#define PIXEL_CACHE_HEIGHT 4
 
-#define PIXEL_CACHE_CONTAINS_POINT(x,y)       \
-        AREA_OVERLAP_PIXEL_CACHE((x),(y),(x),(y))
+static XImage * _XGrPixelCacheImage     = NULL;
+static Drawable _XGrPixelCacheDrawable  = None;
+static int      _XGrPixelCacheWidth = 0;
+static int      _XGrPixelCacheHeight = 0;
+static int      _XGrPixelCacheY1 = 0;
+static int      _XGrPixelCacheY2 = 0;
+
+/* y1 <= y2 required ! */
+#define AREA_OVERLAP_PIXEL_CACHE(y1,y2) \
+        (   (y2) >= _XGrPixelCacheY1          \
+         && (y1) <=  _XGrPixelCacheY2 )
 
 #define PIXEL_CACHE_INVALIDATE() do {              \
             _XGrPixelCacheDrawable = None;         \
@@ -130,54 +128,42 @@ static int      _XGrPixelCacheWidth = 32;
             }                                      \
         } while (0)
 
+static INLINE
+void _XGrCheckPixelCache(int y1, int y2)
+{
+  if (_XGrPixelCacheDrawable == None) return;
+  if (AREA_OVERLAP_PIXEL_CACHE(y1,y2))
+    PIXEL_CACHE_INVALIDATE();
+}
 
 static
-GrColor readpixel(GrFrame *c,int x, int y)
+GrColor readpixel(GrFrame *c, int x, int y)
 {
   GrColor col;
   GRX_ENTER();
   if (_XGrPixelCacheDrawable != (Drawable) c->gf_baseaddr[0]
       || _XGrPixelCacheImage == NULL
-      || !PIXEL_CACHE_CONTAINS_POINT(x,y)) {
-    Window dummy_root;
-    unsigned int dummy_border_width, dummy_depth;
-    int          dummy_x, dummy_y;
-    unsigned int width, height;
+      || !AREA_OVERLAP_PIXEL_CACHE(y,y)) {
 
     if (_XGrPixelCacheImage) {
       XDestroyImage (_XGrPixelCacheImage);
       _XGrPixelCacheImage = NULL;
     }
-    _XGrPixelCacheY1 = y;
-    _XGrPixelCacheY2 = y + PIXEL_CACHE_HEIGHT;
-
     _XGrPixelCacheDrawable = (Drawable) c->gf_baseaddr[0];
-    XGetGeometry (_XGrDisplay,
-                  _XGrPixelCacheDrawable,
-                  &dummy_root,
-                  &dummy_x,
-                  &dummy_y,
-                  &width,
-                  &height,
-                  &dummy_border_width,
-                  &dummy_depth);
-    if (_XGrPixelCacheX2 > width) {
-      /* can't happen ... */
-      col = GrNOCOLOR;
-      goto done;
-    }
-    if (_XGrPixelCacheY2 > height)
-      _XGrPixelCacheY2 = height;
 
-    width  = _XGrPixelCacheX2 - _XGrPixelCacheX1;
-    height = _XGrPixelCacheY2 - _XGrPixelCacheY1;
+    _XGrPixelCacheWidth = GrScreenX();
+    _XGrPixelCacheY1 = y;
+    _XGrPixelCacheY2 = y + PIXEL_CACHE_HEIGHT - 1;
+    if (_XGrPixelCacheY2 >= GrScreenY())
+      _XGrPixelCacheY2 = GrScreenY() - 1;
+    _XGrPixelCacheHeight = _XGrPixelCacheY2 - _XGrPixelCacheY1 + 1;
 
     _XGrPixelCacheImage = XGetImage (_XGrDisplay,
                                      _XGrPixelCacheDrawable,
-                                     _XGrPixelCacheX1,
+                                     0,
                                      _XGrPixelCacheY1,
-                                     width,
-                                     height,
+                                     _XGrPixelCacheWidth,
+                                     _XGrPixelCacheHeight,
                                      AllPlanes,
                                      ZPixmap);
     if (! _XGrPixelCacheImage) {
@@ -185,9 +171,7 @@ GrColor readpixel(GrFrame *c,int x, int y)
           goto done;
         }
       }
-  col = XGetPixel (_XGrPixelCacheImage,
-                   x - _XGrPixelCacheX1,
-                   y - _XGrPixelCacheY1);
+  col = XGetPixel (_XGrPixelCacheImage, x, y - _XGrPixelCacheY1);
 done:
   GRX_RETURN( col );
 }
@@ -204,10 +188,7 @@ void drawpixel(int x,int y,GrColor c)
               x,
               y);
   _XGrCopyBStore(x, y, 1, 1);
-
-  if ( _XGrPixelCacheDrawable != None &&
-       PIXEL_CACHE_CONTAINS_POINT(x,y) )
-    PIXEL_CACHE_INVALIDATE();
+  _XGrCheckPixelCache(y, y);
 
   GRX_LEAVE();
 }
@@ -227,10 +208,7 @@ void drawhline(int x,int y,int w,GrColor c)
              x,  y,
              x2, y);
   _XGrCopyBStore(x, y, w, 1);
-
-  if ( _XGrPixelCacheDrawable != None &&
-       AREA_OVERLAP_PIXEL_CACHE(x,y,x2,y) )
-    PIXEL_CACHE_INVALIDATE();
+  _XGrCheckPixelCache(y, y);
 
   GRX_LEAVE();
 }
@@ -250,10 +228,7 @@ void drawvline(int x,int y,int h,GrColor c)
              x, y,
              x, y2);
   _XGrCopyBStore(x, y, 1, h);
-
-  if ( _XGrPixelCacheDrawable != None &&
-       AREA_OVERLAP_PIXEL_CACHE(x,y,x,y2) )
-    PIXEL_CACHE_INVALIDATE();
+  _XGrCheckPixelCache(y, y2);
 
   GRX_LEAVE();
 }
@@ -272,13 +247,8 @@ void drawblock(int x,int y,int w,int h,GrColor c)
                   w,
                   h);
   _XGrCopyBStore(x, y, w, h);
+  _XGrCheckPixelCache(y, y+h-1);
 
-  if ( _XGrPixelCacheDrawable != None) {
-      w += x - 1;
-      h += y - 1;
-      if ( AREA_OVERLAP_PIXEL_CACHE(x,y,w,h) )
-          PIXEL_CACHE_INVALIDATE();
-  }
   GRX_LEAVE();
 }
 
@@ -299,11 +269,7 @@ void drawline(int x,int y,int dx,int dy,GrColor c)
       isort(x,dx);
       isort(y,dy);
   _XGrCopyBStore(x, y, dx-x+1, dy-y+1);
-
-  if ( _XGrPixelCacheDrawable != None) {
-      if ( AREA_OVERLAP_PIXEL_CACHE(x,y,dx,dy) )
-          PIXEL_CACHE_INVALIDATE();
-  }
+  _XGrCheckPixelCache(y, dy);
 
   GRX_LEAVE();
 }
@@ -417,13 +383,7 @@ void drawbitmap(int x,int y,int w,int h,char far *bmp,int pitch,int start,GrColo
     }
 
     _XGrCopyBStore(x, y, w, h);
-
-    if ( _XGrPixelCacheDrawable != None) {
-        w += x - 1;
-        h += y - 1;
-        if ( AREA_OVERLAP_PIXEL_CACHE(x,y,w,h) )
-            PIXEL_CACHE_INVALIDATE();
-    }
+    _XGrCheckPixelCache(y, y+h-1);
   }
   GRX_LEAVE();
 }
@@ -541,12 +501,7 @@ void drawpattern(int x,int y,int w,char patt,GrColor fg,GrColor bg)
     XSetFillStyle (_XGrDisplay, _XGrGC, FillSolid);
 
     _XGrCopyBStore(x, y, w, 1);
-
-    if ( _XGrPixelCacheDrawable != None) {
-        w += x - 1;
-        if ( AREA_OVERLAP_PIXEL_CACHE(x,y,w,y) )
-            PIXEL_CACHE_INVALIDATE();
-    }
+    _XGrCheckPixelCache(y, y);
   }
   GRX_LEAVE();
 }
@@ -568,13 +523,7 @@ void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrCo
              dy);
 
   _XGrCopyBStore(dx, dy, w, h);
-
-  if ( _XGrPixelCacheDrawable != None) {
-      int x2 = dx + w - 1;
-      int y2 = dy + h - 1;
-      if ( AREA_OVERLAP_PIXEL_CACHE(dx,dy,x2,y2) )
-          PIXEL_CACHE_INVALIDATE();
-  }
+  _XGrCheckPixelCache(dy, dy+h-1);
 
   GRX_LEAVE();
 }
@@ -668,18 +617,35 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
                  w,
                  h);
       _XGrCopyBStore(dx, dy, w, h);
-
-      if ( _XGrPixelCacheDrawable != None) {
-          w += dx - 1;
-          h += dy - 1;
-          if ( AREA_OVERLAP_PIXEL_CACHE(dx,dy,w,h) )
-              PIXEL_CACHE_INVALIDATE();
-      }
+      _XGrCheckPixelCache(dy, dy+h-1);
     }
   }
   GRX_LEAVE();
 }
 
+static
+void putscanline(int x, int y, int w, const GrColor *scl, GrColor op)
+{
+  GrColor skipc;
+  int ind;
+  GRX_ENTER();
+  skipc = op ^ GrIMAGE;
+  _XGrSetColorOper(op);
+
+  for (ind = 0; ind < w; ind++) {
+    if (scl[ind] != skipc) {
+      _XGrSetForeColor(scl[ind]);
+      XDrawPoint (_XGrDisplay,
+                  (Drawable) CURC->gc_baseaddr[0],
+                  _XGrGC, x+ind, y);
+    }
+  }
+
+  _XGrCopyBStore(x, y, w, 1);
+  _XGrCheckPixelCache(y, y);
+
+  GRX_LEAVE();
+}
 
 #define ROUNDCOLORCOMP(x,n) (                                   \
     ((uint)(x) >= CLRINFO->mask[n]) ?                           \
@@ -723,7 +689,6 @@ static int init(GrVideoMode *mp)
     }
   }
   PIXEL_CACHE_INVALIDATE();
-  PIXEL_CACHE_WIDTH = mp->width;
   return(TRUE);
 }
 
@@ -749,7 +714,7 @@ GrFrameDriver _GrFrameDriverXWIN8 = {
   bltv2r,
   bltr2v,
   _GrFrDrvGenericGetIndexedScanline,
-  _GrFrDrvGenericPutScanline
+  putscanline
 };
 
 GrFrameDriver _GrFrameDriverXWIN16 = {
@@ -773,7 +738,7 @@ GrFrameDriver _GrFrameDriverXWIN16 = {
   bltv2r,
   bltr2v,
   _GrFrDrvGenericGetIndexedScanline,
-  _GrFrDrvGenericPutScanline
+  putscanline
 };
 
 GrFrameDriver _GrFrameDriverXWIN24 = {
@@ -797,7 +762,7 @@ GrFrameDriver _GrFrameDriverXWIN24 = {
   bltv2r,
   bltr2v,
   _GrFrDrvGenericGetIndexedScanline,
-  _GrFrDrvGenericPutScanline
+  putscanline
 };
 
 GrFrameDriver _GrFrameDriverXWIN32L = {
@@ -821,7 +786,7 @@ GrFrameDriver _GrFrameDriverXWIN32L = {
   bltv2r,
   bltr2v,
   _GrFrDrvGenericGetIndexedScanline,
-  _GrFrDrvGenericPutScanline
+  putscanline
 };
 
 GrFrameDriver _GrFrameDriverXWIN32H = {
@@ -845,5 +810,5 @@ GrFrameDriver _GrFrameDriverXWIN32H = {
   bltv2r,
   bltr2v,
   _GrFrDrvGenericGetIndexedScanline,
-  _GrFrDrvGenericPutScanline
+  putscanline
 };

@@ -19,10 +19,13 @@ TAG = $(WIN32_GCC_i386_STATIC)
 
 GRX20ln    = libgrx20.a
 GRX20ST    = ../lib/$(GRX_LIB_SUBDIR)/$(GRX20ln)
-ifeq ($(HAVE_UNIX_TOOLS), y)
-GRX20STdos = $(GRX20ST)
-else
-GRX20STdos = $(subst /,\,$(GRX20ST))
+ifeq ($(HAVE_UNIX_TOOLS),n)
+GRX20STdos    = $(subst /,\,$(GRX20ST))
+DESTDIRdos    = $(subst /,\,$(DESTDIR))
+libdirdos     = $(subst /,\,$(libdir))
+includedirdos = $(subst /,\,$(includedir))
+unitsdirdos   = $(subst /,\,$(unitsdir))
+infodirdos    = $(subst /,\,$(infodir))
 endif
 
 OX=.o
@@ -136,100 +139,99 @@ endif
 
 install: $(GRX20ST)
 ifeq ($(HAVE_UNIX_TOOLS),y)
-	mkdir -p $(INSTALLDIR)/lib
-	cp $(GRX20STdos) $(INSTALLDIR)/lib
-	mkdir -p $(INSTALLDIR)/include
+	mkdir -p $(DESTDIR)$(libdir)
+	mkdir -p $(DESTDIR)$(includedir)
+	cp $(GRX20ST) $(DESTDIR)$(libdir)
 	cp ../include/grx20.h ../include/grxkeys.h \
-	   ../include/libbcc.h $(INSTALLDIR)/include
+	   ../include/libbcc.h $(DESTDIR)$(includedir)
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-	cp ../addons/print/grxprint.h $(INSTALLDIR)/include
+	cp ../addons/print/grxprint.h $(DESTDIR)$(includedir)
 endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	mkdir -p $(INSTALLDIR)/units
-	cp ../pascal/grx.pas ../pascal/bgi/graph.pas $(INSTALLDIR)/units
+	mkdir -p $(DESTDIR)$(unitsdir)
+	cp ../pascal/grx.pas ../pascal/bgi/graph.pas $(DESTDIR)$(unitsdir)
 endif
 else
-	if not exist $(INSTALLDIR)\lib\nul mkdir $(INSTALLDIR)\lib
-	copy $(GRX20STdos) $(INSTALLDIR)\lib
-	if not exist $(INSTALLDIR)\include\nul mkdir $(INSTALLDIR)\include
-	copy ..\include\grx20.h $(INSTALLDIR)\include
-	copy ..\include\grxkeys.h $(INSTALLDIR)\include
-	copy ..\include\libbcc.h $(INSTALLDIR)\include
+	if not exist $(DESTDIRdos)\nul mkdir $(DESTDIRdos)
+	if not exist $(DESTDIRdos)$(libdirdos)\nul mkdir $(DESTDIRdos)$(libdirdos)
+	if not exist $(DESTDIRdos)$(includedirdos)\nul mkdir $(DESTDIRdos)$(includedirdos)
+	copy $(GRX20STdos) $(DESTDIRdos)$(libdirdos)
+	copy ..\include\grx20.h $(DESTDIRdos)$(includedirdos)
+	copy ..\include\grxkeys.h $(DESTDIRdos)$(includedirdos)
+	copy ..\include\libbcc.h $(DESTDIRdos)$(includedirdos)
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-	copy ..\addons\print\grxprint.h $(INSTALLDIR)\include
+	copy ..\addons\print\grxprint.h $(DESTDIRdos)$(includedirdos)
 endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	if not exist $(INSTALLDIR)\units\nul mkdir $(INSTALLDIR)\units
-	copy ..\pascal\grx.pas $(INSTALLDIR)\units
-	copy ..\pascal\bgi\graph.pas $(INSTALLDIR)\units
+	if not exist $(DESTDIRdos)$(unitsdirdos)\nul mkdir $(DESTDIRdos)$(unitsdirdos)
+	copy ..\pascal\grx.pas $(DESTDIRdos)$(unitsdirdos)
+	copy ..\pascal\bgi\graph.pas $(DESTDIRdos)$(unitsdirdos)
 endif
 endif
 
 uninstall:
 ifeq ($(HAVE_UNIX_TOOLS),y)
-	rm -f $(INSTALLDIR)/lib/$(GRX20ln) $(INSTALLDIR)/include/grx20.h \
-	      $(INSTALLDIR)/include/grxkeys.h $(INSTALLDIR)/include/libbcc.h
+	rm -f $(DESTDIR)$(libdir)/$(GRX20ln) $(DESTDIR)$(includedir)/grx20.h \
+	      $(DESTDIR)$(includedir)/grxkeys.h $(DESTDIR)$(includedir)/libbcc.h
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-	rm -f $(INSTALLDIR)/include/grxprint.h
+	rm -f $(DESTDIR)$(includedir)/grxprint.h
 endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	rm -f $(INSTALLDIR)/units/grx.pas $(INSTALLDIR)/units/graph.pas
+	rm -f $(DESTDIR)$(unitsdir)/grx.pas $(DESTDIR)$(unitsdir)/graph.pas
 endif
 else
-	if exist $(INSTALLDIR)\lib\$(GRX20ln)    del $(INSTALLDIR)\lib\$(GRX20ln)
-	if exist $(INSTALLDIR)\include\grx20.h   del $(INSTALLDIR)\include\grx20.h
-	if exist $(INSTALLDIR)\include\grxkeys.h del $(INSTALLDIR)\include\grxkeys.h
-	if exist $(INSTALLDIR)\include\libbcc.h del $(INSTALLDIR)\include\libbcc.h
+	if exist $(DESTDIRdos)$(libdirdos)\$(GRX20ln)    del $(DESTDIRdos)$(libdirdos)\$(GRX20ln)
+	if exist $(DESTDIRdos)$(includedirdos)\grx20.h   del $(DESTDIRdos)$(includedirdos)\grx20.h
+	if exist $(DESTDIRdos)$(includedirdos)\grxkeys.h del $(DESTDIRdos)$(includedirdos)\grxkeys.h
+	if exist $(DESTDIRdos)$(includedirdos)\libbcc.h del $(DESTDIRdos)$(includedirdos)\libbcc.h
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-	if exist $(INSTALLDIR)\include\grxprint.h del $(INSTALLDIR)\include\grxprint.h
+	if exist $(DESTDIRdos)$(includedirdos)\grxprint.h del $(DESTDIRdos)$(includedirdos)\grxprint.h
 endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	if exist $(INSTALLDIR)\units\grx.pas del $(INSTALLDIR)\units\grx.pas
-	if exist $(INSTALLDIR)\units\graph.pas del $(INSTALLDIR)\units\graph.pas
+	if exist $(DESTDIRdos)$(unitsdirdos)\grx.pas del $(DESTDIRdos)$(unitsdirdos)\grx.pas
+	if exist $(DESTDIRdos)$(unitsdirdos)\graph.pas del $(DESTDIRdos)$(unitsdirdos)\graph.pas
 endif
 endif
 
-install-bin: $(UTILPC) $(UTILPW)
+install-bin: $(UTILP)
 ifeq ($(HAVE_UNIX_TOOLS),y)
-	mkdir -p $(INSTALLDIR)/bin
+	mkdir -p $(DESTDIR)$(bindir)
 	cp ../bin/bin2c.exe ../bin/fnt2c.exe \
-	   ../bin/modetest.exe $(INSTALLDIR)/bin
+	   ../bin/modetest.exe $(DESTDIR)$(bindir)
 else
-	if not exist $(INSTALLDIR)\bin\nul mkdir $(INSTALLDIR)\bin
-	copy ..\bin\bin2c.exe $(INSTALLDIR)\bin
-	copy ..\bin\fnt2c.exe $(INSTALLDIR)\bin
-	copy ..\bin\modetest.exe $(INSTALLDIR)\bin
+	if not exist $(DESTDIRdos)$(bindirdos)\nul mkdir $(DESTDIRdos)$(bindirdos)
+	copy ..\bin\bin2c.exe $(DESTDIRdos)$(bindirdos)
+	copy ..\bin\fnt2c.exe $(DESTDIRdos)$(bindirdos)
+	copy ..\bin\modetest.exe $(DESTDIRdos)$(bindirdos)
 endif
 
 uninstall-bin:
 ifeq ($(HAVE_UNIX_TOOLS),y)
-	rm -f $(INSTALLDIR)/bin/bin2c.exe $(INSTALLDIR)/bin/fnt2c.exe \
-	      $(INSTALLDIR)/bin/modetest.exe
+	rm -f $(DESTDIR)$(bindir)/bin2c.exe $(DESTDIR)$(bindir)/fnt2c.exe \
+	      $(DESTDIR)$(bindir)/modetest.exe
 else
-	if exist $(INSTALLDIR)\bin\bin2c.exe del $(INSTALLDIR)\bin\bin2c.exe
-	if exist $(INSTALLDIR)\bin\fnt2c.exe del $(INSTALLDIR)\bin\fnt2c.exe
-	if exist $(INSTALLDIR)\bin\modetest.exe del $(INSTALLDIR)\bin\modetest.exe
+	if exist $(DESTDIRdos)$(bindirdos)\bin2c.exe del $(DESTDIRdos)$(bindirdos)\bin2c.exe
+	if exist $(DESTDIRdos)$(bindirdos)\fnt2c.exe del $(DESTDIRdos)$(bindirdos)\fnt2c.exe
+	if exist $(DESTDIRdos)$(bindirdos)\modetest.exe del $(DESTDIRdos)$(bindirdos)\modetest.exe
 endif
 
 ifdef GRX_DEFAULT_FONT_PATH
-ifeq ($(HAVE_UNIX_TOOLS),y)
-FONTPATHdos = $(GRX_DEFAULT_FONT_PATH)
-else
+ifeq ($(HAVE_UNIX_TOOLS),n)
 FONTPATHdos = $(subst /,\,$(GRX_DEFAULT_FONT_PATH))
 endif
 install-fonts:
 ifeq ($(HAVE_UNIX_TOOLS),y)
-	mkdir -p $(FONTPATHdos)
-	cp ../fonts/* $(FONTPATHdos)
+	mkdir -p $(DESTDIR)$(GRX_DEFAULT_FONT_PATH)
+	cp ../fonts/* $(DESTDIR)$(GRX_DEFAULT_FONT_PATH)
 else
-	if not exist $(FONTPATHdos)\nul mkdir $(FONTPATHdos)
-	copy ..\fonts\*.* $(FONTPATHdos)
+	if not exist $(DESTDIRdos)$(FONTPATHdos)\nul mkdir $(DESTDIRdos)$(FONTPATHdos)
+	copy ..\fonts\*.* $(DESTDIRdos)$(FONTPATHdos)
 endif
 uninstall-fonts:
 ifeq ($(HAVE_UNIX_TOOLS),y)
-	rm -f $(FONTPATHdos)/*
+	rm -f $(DESTDIR)$(GRX_DEFAULT_FONT_PATH)/*
 else
-	del $(FONTPATHdos)\*.*
+	del $(DESTDIRdos)$(FONTPATHdos)\*.*
 endif
 endif
                         
@@ -253,7 +255,7 @@ depend.b: depend.new
 
 $(GRX20ST): $(TAG) $(ALL_O)
 ifeq ($(HAVE_UNIX_TOOLS),y)
-	rm -f $(GRX20STdos)
+	rm -f $(GRX20ST)
 else
 	if exist $(GRX20STdos) del $(GRX20STdos)
 endif

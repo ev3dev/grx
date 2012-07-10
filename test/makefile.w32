@@ -48,7 +48,6 @@ PROGS=  arctest.exe     \
 	pcirctst.exe    \
 	pnmtest.exe     \
 	pngtest.exe     \
-	polytest.exe    \
 	rgbtest.exe     \
 	sbctest.exe     \
 	scroltst.exe    \
@@ -59,6 +58,7 @@ PROGS=  arctest.exe     \
 all: 	$(PROGS) \
 	demogrx.exe \
 	speedtst.exe \
+	polytest.exe \
 	memtest.exe
 
 
@@ -70,6 +70,9 @@ speedtst.exe: speedtst.o $(GRX20)
 
 memtest.exe: memtest.o $(GRX20)
 	$(CC) $(LDOPT) -o memtest.exe memtest.o $(LIBS) -lm -mwindows -mconsole
+
+polytest.exe: polytest.o $(GRX20)
+	$(CC) $(LDOPT) -o polytest.exe polytest.o $(LIBS) -lm -mwindows -mconsole
 
 $(PROGS): %.exe : %.o $(GRX20)
 	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm -mwindows

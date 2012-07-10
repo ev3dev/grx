@@ -35,7 +35,7 @@
 **    #endif
 **    #endif
 */
-#define GRX_VERSION_API 0x0248
+#define GRX_VERSION_API 0x0249
 
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
@@ -805,6 +805,7 @@ typedef struct {                        /* framed box colors */
 
 void GrClearScreen(GrColor bg);
 void GrClearContext(GrColor bg);
+void GrClearContextC(GrContext *ctx, GrColor bg);
 void GrClearClipBox(GrColor bg);
 void GrPlot(int x,int y,GrColor c);
 void GrLine(int x1,int y1,int x2,int y2,GrColor c);
@@ -831,6 +832,10 @@ void GrFilledPolygon(int numpts,int points[][2],GrColor c);
 void GrBitBlt(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,GrColor op);
 void GrBitBlt1bpp(GrContext *dst,int dx,int dy,GrContext *src,int x1,int y1,int x2,int y2,GrColor fg,GrColor bg);
 void GrFloodFill(int x, int y, GrColor border, GrColor c);
+void GrFloodSpill(int x1, int y1, int x2, int y2, GrColor old_c, GrColor new_c);
+void GrFloodSpill2(int x1, int y1, int x2, int y2, GrColor old_c1, GrColor new_c1, GrColor old_c2, GrColor new_c2);
+void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2, GrColor old_c, GrColor new_c);
+void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2, GrColor old_c1, GrColor new_c1, GrColor old_c2, GrColor new_c2);
 
 GrColor GrPixel(int x,int y);
 GrColor GrPixelC(GrContext *c,int x,int y);
@@ -1424,13 +1429,19 @@ void GrMoveCursor(GrCursor *cursor,int x,int y);
 #define GR_M_RIGHT_UP       0x010
 #define GR_M_MIDDLE_DOWN    0x020
 #define GR_M_MIDDLE_UP      0x040
-#define GR_M_BUTTON_DOWN    (GR_M_LEFT_DOWN | GR_M_MIDDLE_DOWN | GR_M_RIGHT_DOWN)
-#define GR_M_BUTTON_UP      (GR_M_LEFT_UP   | GR_M_MIDDLE_UP   | GR_M_RIGHT_UP)
+#define GR_M_P4_DOWN        0x400
+#define GR_M_P4_UP          0x800
+#define GR_M_P5_DOWN        0x2000
+#define GR_M_P5_UP          0x4000
+#define GR_M_BUTTON_DOWN    (GR_M_LEFT_DOWN | GR_M_MIDDLE_DOWN | GR_M_RIGHT_DOWN | GR_M_P4_DOWN | GR_M_P5_DOWN)
+#define GR_M_BUTTON_UP      (GR_M_LEFT_UP   | GR_M_MIDDLE_UP   | GR_M_RIGHT_UP   | GR_M_P4_UP   | GR_M_P5_UP)
 #define GR_M_BUTTON_CHANGE  (GR_M_BUTTON_UP | GR_M_BUTTON_DOWN )
 
-#define GR_M_LEFT           1                   /* mouse button index bits */
-#define GR_M_RIGHT          2
-#define GR_M_MIDDLE         4
+#define GR_M_LEFT           0x01                /* mouse button index bits */
+#define GR_M_RIGHT          0x02
+#define GR_M_MIDDLE         0x04
+#define GR_M_P4             0x08
+#define GR_M_P5             0x10
 
 #define GR_M_KEYPRESS       0x080               /* other event flag bits */
 #define GR_M_POLL           0x100
@@ -1636,6 +1647,8 @@ void GrResizeGrayMap(unsigned char far *map,int pitch,int ow,int oh,int nw,int n
 int  GrMatchString(const char *pattern,const char *strg);
 void GrSetWindowTitle(char *title);
 void GrSleep(int msec);
+void GrFlush(void);
+long GrMsecTime(void);        
 
 /* ================================================================== */
 /*                        TIFF ADDON FUNCTIONS                        */

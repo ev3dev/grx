@@ -1,9 +1,9 @@
 <html lang="en">
 <head>
-<title>GRX 2.4.8 User's Manual</title>
+<title>GRX 2.4.9 User's Manual</title>
 <meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GRX 2.4.8 User's Manual">
-<meta name="generator" content="makeinfo 4.7">
+<meta name="description" content="GRX 2.4.9 User's Manual">
+<meta name="generator" content="makeinfo 4.13">
 <link title="Top" rel="top" href="#Top">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
 <meta http-equiv="Content-Style-Type" content="text/css">
@@ -14,26 +14,27 @@
   pre.smallformat  { font-family:inherit; font-size:smaller }
   pre.smallexample { font-size:smaller }
   pre.smalllisp    { font-size:smaller }
-  span.sc { font-variant:small-caps }
-  span.roman { font-family: serif; font-weight: normal; } 
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
 --></style>
 </head>
 <body  text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>2.4.8</small></h1>
+<small>2.4.9</small></h1>
 <h1>a 2D graphics library for DOS, Linux, X11 and Win32</h1>
 <h2>User's Manual</h2>
 <p>Based on the original doc written by: Csaba Biegl on August 10, 1992
 <p>Updated by: Mariano Alvarez Fern&aacute;ndez on August 17, 2000
-<p>Last update: August 14, 2007
+<p>Last update: July 10, 2012
 </center>
 
 <div class="node">
+<a name="Top"></a>
 <p><hr>
-<a name="Top"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+Next:&nbsp;<a rel="next" accesskey="n" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
 </div>
 
 <!-- node-name, next,previous, up -->
@@ -57,8 +58,8 @@ driver, and either full screen or on a window with the SDL driver.
 
 <!--  -->
 <div class="node">
-<p><hr>
 <a name="A-User-Manual-For-GRX2"></a>
+<p><hr>
 Next:&nbsp;<a rel="next" accesskey="n" href="#Hello-world">Hello world</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Top">Top</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
@@ -99,11 +100,12 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <!--  -->
 <div class="node">
+<a name="Hello-world"></a>
 <p><hr>
-<a name="Hello-world"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Data-types-and-function-declarations">Data types and function declarations</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Data-types-and-function-declarations">Data types and function declarations</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Hello world</h3>
@@ -158,16 +160,17 @@ previously installed)
               -lgrx20S -lSDL -lpthread -L/usr/X11R6/lib -lX11
      
        For x86_64 systems add -m32 or -m64 for 32/64 bits executables
-       and replace /lib by /lib64 as needed
+       and replace /lib by /lib64 or /lib32 as needed
      
 </pre>
 <!--  -->
 <div class="node">
+<a name="Data-types-and-function-declarations"></a>
 <p><hr>
-<a name="Data-types-and-function-declarations"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Setting-the-graphics-driver">Setting the graphics driver</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Setting-the-graphics-driver">Setting the graphics driver</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Hello-world">Hello world</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Data types and function declarations</h3>
@@ -185,11 +188,12 @@ application program are declared/prototyped in the header files (in the
 </pre>
 <!--  -->
 <div class="node">
+<a name="Setting-the-graphics-driver"></a>
 <p><hr>
-<a name="Setting-the-graphics-driver"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Setting-video-modes">Setting video modes</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Setting-video-modes">Setting video modes</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Data-types-and-function-declarations">Data types and function declarations</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Setting the graphics driver</h3>
@@ -222,11 +226,12 @@ be obtained from:
 </pre>
 <!--  -->
 <div class="node">
+<a name="Setting-video-modes"></a>
 <p><hr>
-<a name="Setting-video-modes"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Graphics-contexts">Graphics contexts</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Graphics-contexts">Graphics contexts</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Setting-the-graphics-driver">Setting the graphics driver</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Setting video modes</h3>
@@ -365,11 +370,12 @@ symbolic constants (defined in grx20.h):
 
 <!--  -->
 <div class="node">
+<a name="Graphics-contexts"></a>
 <p><hr>
-<a name="Graphics-contexts"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Context-use">Context use</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Context-use">Context use</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Setting-video-modes">Setting video modes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Graphics contexts</h3>
@@ -535,11 +541,12 @@ screen can be set with:
 </pre>
 <!--  -->
 <div class="node">
+<a name="Context-use"></a>
 <p><hr>
-<a name="Context-use"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Color-management">Color management</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Color-management">Color management</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Graphics-contexts">Graphics contexts</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Context use</h3>
@@ -589,11 +596,12 @@ because it uses the parent buffer.
 
 <!--  -->
 <div class="node">
+<a name="Color-management"></a>
 <p><hr>
-<a name="Color-management"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Portable-use-of-a-few-colors">Portable use of a few colors</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Portable-use-of-a-few-colors">Portable use of a few colors</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Context-use">Context use</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Color management</h3>
@@ -721,11 +729,12 @@ routines).
 
 <!--  -->
 <div class="node">
+<a name="Portable-use-of-a-few-colors"></a>
 <p><hr>
-<a name="Portable-use-of-a-few-colors"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Graphics-primitives">Graphics primitives</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Graphics-primitives">Graphics primitives</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Color-management">Color management</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Portable use of a few colors</h3>
@@ -783,11 +792,12 @@ egacolors is not initialized.
 
 <!--  -->
 <div class="node">
+<a name="Graphics-primitives"></a>
 <p><hr>
-<a name="Graphics-primitives"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Non_002dclipping-graphics-primitives">Non-clipping graphics primitives</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Non_002dclipping-graphics-primitives">Non-clipping graphics primitives</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Portable-use-of-a-few-colors">Portable use of a few colors</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Graphics primitives</h3>
@@ -797,8 +807,11 @@ set to a desired background color) by using one of the following three
 functions:
 
 <pre class="example">     void GrClearScreen(GrColor bg);
-     void GrClearcontext(GrColor bg);
+     void GrClearContext(GrColor bg);
      void GrClearClipBox(GrColor bg);
+</pre>
+<p>Any context can be cleared using this function:
+<pre class="example">     void GrClearContextC(GrContext *ctx, GrColor bg);
 </pre>
 <p>Thanks to the special GrColor definition, you can do more than simple clear
 with this functions, by example with:
@@ -908,6 +921,32 @@ a single operation.
 <p>flood-fills the area bounded by the color border using x, y like the starting
 point.
 
+<p>Floodspill is a color replacer, replacing color A with color B. 
+This is quite useful for highlighting a selected item in a list,  or changing
+a selected color(s) in a multi colored area.
+
+<pre class="example">     void GrFloodSpill(int x1, int y1, int x2, int y2,
+                      GrColor old_c, GrColor new_c)
+</pre>
+<p>replaces old color with new color in the rectangle bounded by x1, y1, x2, y2.
+
+<pre class="example">     void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2,
+                       GrColor old_c, GrColor new_c)
+</pre>
+<p>as above but in the specified context.
+
+<pre class="example">     void GrFloodSpill2(int x1, int y1, int x2, int y2,
+                       GrColor old_c1, GrColor new_c1,
+                       GrColor old_c2, GrColor new_c2)
+</pre>
+<p>replaces 2 colors, a one stop shop for highlighting a selection in a list.
+
+<pre class="example">     void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2,
+                       GrColor old_c1, GrColor new_c1,
+                       GrColor old_c2, GrColor new_c2)
+</pre>
+<p>as above but in the specified context.
+
 <p>The current color value of any pixel in the current context can be obtained
 with:
 
@@ -956,11 +995,13 @@ operation code with the pixel data!.
 
 <!--  -->
 <div class="node">
+<a name="Non-clipping-graphics-primitives"></a>
+<a name="Non_002dclipping-graphics-primitives"></a>
 <p><hr>
-<a name="Non_002dclipping-graphics-primitives"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Customized-line-drawing">Customized line drawing</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Customized-line-drawing">Customized line drawing</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Graphics-primitives">Graphics primitives</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Non-clipping graphics primitives</h3>
@@ -989,11 +1030,12 @@ supported non-clipping primitives:
 </pre>
 <!--  -->
 <div class="node">
+<a name="Customized-line-drawing"></a>
 <p><hr>
-<a name="Customized-line-drawing"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Pattern-filled-graphics-primitives">Pattern filled graphics primitives</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Pattern-filled-graphics-primitives">Pattern filled graphics primitives</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Non_002dclipping-graphics-primitives">Non-clipping graphics primitives</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Customized line drawing</h3>
@@ -1044,11 +1086,12 @@ pattern length is equal to zero a continuous line is drawn.
 
 <!--  -->
 <div class="node">
+<a name="Pattern-filled-graphics-primitives"></a>
 <p><hr>
-<a name="Pattern-filled-graphics-primitives"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Patterned-line-drawing">Patterned line drawing</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Patterned-line-drawing">Patterned line drawing</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Customized-line-drawing">Customized line drawing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Pattern filled graphics primitives</h3>
@@ -1181,11 +1224,12 @@ filled, but they have been included here for convenience.
 
 <!--  -->
 <div class="node">
+<a name="Patterned-line-drawing"></a>
 <p><hr>
-<a name="Patterned-line-drawing"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Image-manipulation">Image manipulation</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Image-manipulation">Image manipulation</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Pattern-filled-graphics-primitives">Pattern filled graphics primitives</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Patterned line drawing</h3>
@@ -1219,11 +1263,12 @@ last argument. The list of available functions:
 </pre>
 <!--  -->
 <div class="node">
+<a name="Image-manipulation"></a>
 <p><hr>
-<a name="Image-manipulation"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Text-drawing">Text drawing</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Text-drawing">Text drawing</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Patterned-line-drawing">Patterned line drawing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Image manipulation</h3>
@@ -1294,11 +1339,12 @@ as indicated by flag that can be:
 
 <!--  -->
 <div class="node">
+<a name="Text-drawing"></a>
 <p><hr>
-<a name="Text-drawing"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Drawing-in-user-coordinates">Drawing in user coordinates</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Drawing-in-user-coordinates">Drawing in user coordinates</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Image-manipulation">Image manipulation</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Text drawing</h3>
@@ -1576,11 +1622,12 @@ the area to update is small).
 
 <!--  -->
 <div class="node">
+<a name="Drawing-in-user-coordinates"></a>
 <p><hr>
-<a name="Drawing-in-user-coordinates"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Graphics-cursors">Graphics cursors</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Graphics-cursors">Graphics cursors</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Text-drawing">Text drawing</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Drawing in user coordinates</h3>
@@ -1690,11 +1737,12 @@ The list of supported user coordinate drawing functions:
 </pre>
 <!--  -->
 <div class="node">
+<a name="Graphics-cursors"></a>
 <p><hr>
-<a name="Graphics-cursors"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Keyboard-input">Keyboard input</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Keyboard-input">Keyboard input</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Drawing-in-user-coordinates">Drawing in user coordinates</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Graphics cursors</h3>
@@ -1747,11 +1795,12 @@ functions. Other cursor manipulation functions:
 
 <!--  -->
 <div class="node">
+<a name="Keyboard-input"></a>
 <p><hr>
-<a name="Keyboard-input"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Mouse-event-handling">Mouse event handling</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Mouse-event-handling">Mouse event handling</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Graphics-cursors">Graphics cursors</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Keyboard input</h3>
@@ -1809,11 +1858,12 @@ the status of some special keys:
 
 <!--  -->
 <div class="node">
+<a name="Mouse-event-handling"></a>
 <p><hr>
-<a name="Mouse-event-handling"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Writing_002freading-PNM-graphics-files">Writing/reading PNM graphics files</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Writing_002freading-PNM-graphics-files">Writing/reading PNM graphics files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Keyboard-input">Keyboard input</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Mouse event handling</h3>
@@ -1956,22 +2006,24 @@ stamp which can be used to check for double clicks, etc... The following macros
 have been defined in grx20.h to help in creating the control flag for
 GrMouseGetEvent and decoding the various bits in the event structure:
 
-<pre class="example">     #define GR_M_MOTION         0x001         /* mouse event flag bits */
+<pre class="example">     #define GR_M_MOTION         0x001       /* mouse event flag bits */
      #define GR_M_LEFT_DOWN      0x002
      #define GR_M_LEFT_UP        0x004
      #define GR_M_RIGHT_DOWN     0x008
      #define GR_M_RIGHT_UP       0x010
      #define GR_M_MIDDLE_DOWN    0x020
      #define GR_M_MIDDLE_UP      0x040
-     #define GR_M_BUTTON_DOWN    (GR_M_LEFT_DOWN | GR_M_MIDDLE_DOWN | \
-                                  GR_M_RIGHT_DOWN)
-     #define GR_M_BUTTON_UP      (GR_M_LEFT_UP   | GR_M_MIDDLE_UP   | \
-                                  GR_M_RIGHT_UP)
-     #define GR_M_BUTTON_CHANGE  (GR_M_BUTTON_UP | GR_M_BUTTON_DOWN )
+     #define GR_M_BUTTON_DOWN    (GR_M_LEFT_DOWN  | GR_M_MIDDLE_DOWN | \
+                                  GR_M_RIGHT_DOWN | GR_M_P4_DOWN | GR_M_P5_DOWN)
+     #define GR_M_BUTTON_UP      (GR_M_LEFT_UP    | GR_M_MIDDLE_UP   | \
+                                  GR_M_RIGHT_UP   | GR_M_P4_UP  | GR_M_P5_UP)
+     #define GR_M_BUTTON_CHANGE  (GR_M_BUTTON_UP  | GR_M_BUTTON_DOWN )
      
-     #define GR_M_LEFT           1             /* mouse button index bits */
-     #define GR_M_RIGHT          2
-     #define GR_M_MIDDLE         4
+     #define GR_M_LEFT           0x01        /* mouse button index bits */
+     #define GR_M_RIGHT          0x02
+     #define GR_M_MIDDLE         0x04
+     #define GR_M_P4             0x08        /* wheel rolls up */
+     #define GR_M_P5             0x10        /* wheel rolls down */
      
      #define GR_M_KEYPRESS       0x080        /* other event flag bits */
      #define GR_M_POLL           0x100
@@ -2015,11 +2067,13 @@ GrMouseEventEnable( 0,1 ) is needed before input process.
 <p>See the <strong>test/mousetst.c</strong> example.
 
 <div class="node">
+<a name="Writing%2freading-PNM-graphics-files"></a>
+<a name="Writing_002freading-PNM-graphics-files"></a>
 <p><hr>
-<a name="Writing_002freading-PNM-graphics-files"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Writing_002freading-PNG-graphics-files">Writing/reading PNG graphics files</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Writing_002freading-PNG-graphics-files">Writing/reading PNG graphics files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mouse-event-handling">Mouse event handling</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Writing/reading PNM graphics files</h3>
@@ -2092,11 +2146,13 @@ of a file. This way, pnm files can be embeded in a program (using the
 bin2c program by example).
 
 <div class="node">
+<a name="Writing%2freading-PNG-graphics-files"></a>
+<a name="Writing_002freading-PNG-graphics-files"></a>
 <p><hr>
-<a name="Writing_002freading-PNG-graphics-files"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Writing_002freading-JPEG-graphics-files">Writing/reading JPEG graphics files</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Writing_002freading-JPEG-graphics-files">Writing/reading JPEG graphics files</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Writing_002freading-PNM-graphics-files">Writing/reading PNM graphics files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Writing/reading PNG graphics files</h3>
@@ -2144,11 +2200,13 @@ not support for png, dummy functions are added to the library, returning
 error (-1) ever.
 
 <div class="node">
+<a name="Writing%2freading-JPEG-graphics-files"></a>
+<a name="Writing_002freading-JPEG-graphics-files"></a>
 <p><hr>
-<a name="Writing_002freading-JPEG-graphics-files"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Miscellaneous-functions">Miscellaneous functions</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Miscellaneous-functions">Miscellaneous functions</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Writing_002freading-PNG-graphics-files">Writing/reading PNG graphics files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Writing/reading PNG graphics files</h3>
@@ -2206,11 +2264,12 @@ not support for jpeg, dummy functions are added to the library, returning
 error (-1) ever.
 
 <div class="node">
+<a name="Miscellaneous-functions"></a>
 <p><hr>
-<a name="Miscellaneous-functions"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#BGI-interface">BGI interface</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#BGI-interface">BGI interface</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Writing_002freading-JPEG-graphics-files">Writing/reading JPEG graphics files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Miscellaneous functions</h3>
@@ -2255,6 +2314,15 @@ doesn't do nothing in the DOS and Linux-SvgaLib versions.
 </pre>
 <p>This function stops the program execution for msec miliseconds.
 
+<pre class="example">     long GrMsecTime( void );
+</pre>
+<p>This function gives the current time with millisecond resolution
+
+<pre class="example">     void GrFlush( void );
+</pre>
+<p>This funnction flushes the graphics window. Not dummy because useful only on
+X11 when switching between graphics and console windows open simultaneously.
+
 <pre class="example">      GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,
                  char far *memory[4],GrContext *where);
      
@@ -2283,15 +2351,15 @@ an example:
         fcolor = GrAllocColor( 255,0,0 );
         bcolor = GrAllocColor( 0,0,255 );
         GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
-     
 </pre>
 <!--  -->
 <div class="node">
+<a name="BGI-interface"></a>
 <p><hr>
-<a name="BGI-interface"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#Pascal-interface">Pascal interface</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Pascal-interface">Pascal interface</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Miscellaneous-functions">Miscellaneous functions</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">BGI interface</h3>
@@ -2306,11 +2374,12 @@ native GRX interface in such cases!
 
 <!--  -->
 <div class="node">
+<a name="Pascal-interface"></a>
 <p><hr>
-<a name="Pascal-interface"></a>Next:&nbsp;<a rel="next" accesskey="n" href="#References">References</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#References">References</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#BGI-interface">BGI interface</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">Pascal interface</h3>
@@ -2335,10 +2404,11 @@ INSTALLDIR directory. But you can put them where you like.
 
 <!--  -->
 <div class="node">
+<a name="References"></a>
 <p><hr>
-<a name="References"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="#Pascal-interface">Pascal interface</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Pascal-interface">Pascal interface</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-<br>
+
 </div>
 
 <h3 class="unnumberedsec">References</h3>

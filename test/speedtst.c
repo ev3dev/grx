@@ -15,6 +15,9 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 070512 M.Alvarez, new version more accurate, but still had problems
+ **                   in X11, because functions returns before the paint
+ **                   is done.
  **/
 
 #include <string.h>
@@ -29,8 +32,6 @@
 #include <values.h>
 #endif
 #include <math.h>
-#include <time.h>
-
 #include "rand.h"
 
 #include "grx20.h"
@@ -45,7 +46,7 @@
 #define MEASURE_RAM_MODES 1
 
 #define READPIX_loops      (384*1)
-#define READPIX_X11_loops  (  4*1)
+#define READPIX_X11_loops  (4*1)
 #define DRAWPIX_loops      (256*1)
 #define DRAWLIN_loops      (12*1)
 #define DRAWHLIN_loops     (16*1)
@@ -95,10 +96,6 @@ gvmode *rammodes = NULL;
 #define UL(x)  ((unsigned long)(x))
 #define DBL(x)  ((double)(x))
 #define INT(x) ((int)(x))
-
-#ifndef  CLK_TCK
-#define  CLK_TCK    CLOCKS_PER_SEC
-#endif
 
 #ifndef min
 #define min(a,b) ((a)<(b) ? (a) : (b))
@@ -272,13 +269,13 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs,int loops) {
     gp->readpix.count = DBL(PAIRS) * DBL(loops);
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=loops; i > 0; --i) {
     for (j=PAIRS-1; j >= 0; j--)
        GrPixelNC(x[j],y[j]);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->readpix.rate = gp->readpix.count / seconds;
 }
@@ -299,15 +296,15 @@ void drawpixeltest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawpix.count = DBL(PAIRS) * DBL(DRAWPIX_loops) * 4.0;
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < DRAWPIX_loops; ++i) {
     for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c1);
     for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c2);
     for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c3);
     for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c4);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->drawpix.rate = gp->drawpix.count / seconds;
 }
@@ -331,7 +328,7 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawlin.count *= 4.0 * DRAWLIN_loops;
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < DRAWLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
         GrLineNC(x[j],y[j],x[j+1],y[j+1],c1);
@@ -342,8 +339,8 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
         GrLineNC(x[j],y[j],x[j+1],y[j+1],c4);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->drawlin.rate = gp->drawlin.count / seconds;
 }
@@ -367,7 +364,7 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawhlin.count *= 4.0 * DRAWHLIN_loops;
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < DRAWHLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
       GrHLineNC(x[j],x[j+1],y[j],c1);
@@ -378,8 +375,8 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
       GrHLineNC(x[j],x[j+1],y[j],c4);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->drawhlin.rate = gp->drawhlin.count / seconds;
 }
@@ -403,7 +400,7 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawvlin.count *= 4.0 * DRAWVLIN_loops;
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < DRAWVLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
        GrVLineNC(x[j],y[j],y[j+1],c1);
@@ -414,8 +411,8 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
        GrVLineNC(x[j],y[j],y[j+1],c4);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->drawvlin.rate = gp->drawvlin.count / seconds;
 }
@@ -446,7 +443,7 @@ void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawblk.count *= 4.0 * DRAWBLK_loops;
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < DRAWBLK_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
       GrFilledBoxNC(xb[j],yb[j],xb[j+1],yb[j+1],c1);
@@ -457,8 +454,8 @@ void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
       GrFilledBoxNC(xb[j],yb[j],xb[j+1],yb[j+1],c4);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     gp->drawblk.rate = gp->drawblk.count / seconds;
 }
@@ -500,7 +497,7 @@ void blit_measure(gvmode *gp, perfm *p,
     Message(1,txt, gp);
   }
 
-  t1 = clock();
+  t1 = GrMsecTime();
   for (i=0; i < BLIT_loops; ++i) {
     for (j=PAIRS-3; j >= 0; j-=3)
       GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GrWRITE);
@@ -511,8 +508,8 @@ void blit_measure(gvmode *gp, perfm *p,
     for (j=PAIRS-3; j >= 0; j-=3)
       GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GrAND);
   }
-  t2 = clock();
-  seconds = DBL(t2 - t1) / DBL(CLK_TCK);
+  t2 = GrMsecTime();
+  seconds = (double)(t2 - t1) / 1000.0;
   if (seconds > 0)
     p->rate = p->count / seconds;
 }
@@ -563,7 +560,6 @@ void blittest(gvmode *gp, XY_PAIRS *pairs, int ram) {
   }
 #endif
 }
-
 
 void measure_one(gvmode *gp, int ram) {
   XY_PAIRS *pairs;

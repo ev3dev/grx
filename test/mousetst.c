@@ -55,9 +55,13 @@ TESTFUNC(mousetest)
                     if(evt.flags & GR_M_LEFT_DOWN)   strcpy( mend,"[left down] ");
                     if(evt.flags & GR_M_MIDDLE_DOWN) strcpy( mend,"[middle down] ");
                     if(evt.flags & GR_M_RIGHT_DOWN)  strcpy( mend,"[right down] ");
+                    if(evt.flags & GR_M_P4_DOWN)     strcpy( mend,"[p4 down] ");
+                    if(evt.flags & GR_M_P5_DOWN)     strcpy( mend,"[p5 down] ");
                     if(evt.flags & GR_M_LEFT_UP)     strcpy( mend,"[left up] ");
                     if(evt.flags & GR_M_MIDDLE_UP)   strcpy( mend,"[middle up] ");
                     if(evt.flags & GR_M_RIGHT_UP)    strcpy( mend,"[right up] ");
+                    if(evt.flags & GR_M_P4_UP)       strcpy( mend,"[p4 up] ");
+                    if(evt.flags & GR_M_P5_UP)       strcpy( mend,"[p5 up] ");
                     if(evt.flags & GR_M_KEYPRESS)    sprintf(mend,"[key (0x%03x)] ",evt.key);
                     sprintf(mend,"at X=%d, Y=%d, ",evt.x,evt.y);
                     sprintf(mend,

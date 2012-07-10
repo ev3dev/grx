@@ -28,11 +28,13 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverHERC1,
 #endif
 #if defined(__MSDOS__) || (defined(__linux__) && !defined(__XWIN__))
+#ifdef  __i386__
     &_GrFrameDriverEGAVGA1,
     &_GrFrameDriverEGA4,
     &_GrFrameDriverSVGA4,
-    &_GrFrameDriverSVGA8,
     &_GrFrameDriverVGA8X,
+#endif   
+    &_GrFrameDriverSVGA8,
     &_GrFrameDriverSVGA16,
     &_GrFrameDriverSVGA24,
     &_GrFrameDriverSVGA32L,

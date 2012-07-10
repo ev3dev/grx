@@ -4,6 +4,38 @@ the 2.2 version.
 
 Date     Changes
 
+12/07/10 ----------- GRX v2.4.9 released (Maurice Lombardi)
+12/07/04 Change configure script and makedefs.grx to conform to recent
+         GNU practice. Honours DESTDIR to ease building binary distributions.
+         INSTALLDIR is no more present in makedefs.grx, but prefix is there
+         to replace it. (Extension of a patch by Guillem Jover to all targets
+         by M. Lombardi)
+11/11/23 All drivers generate button4 and button5 mouse events (the scroll
+         wheel scrolled up or down). Extended from MGRX by M. Lombardi.
+11/11/18 Add GrFlush(). Useful only on X11 when when switching  between
+         graphics and console windows open simultaneously. (M. Lombardi)
+10/08/17 Add GrMsecTime(). Adapted from MGRX.
+09/04/02 Synchronisation of windows and grx mouse cursors by Richard Sanders
+         <richard@dogcreek.ca>
+08/12/12 Fix a race condition with the loadcolor SetDIBColorTable function 
+         call, which happens sometimes on fast multiprocessor machines
+         This affects only 8 bpp modes (Peter Schauer <peterschauer@gmx.net>)
+08/11/05 Added GrClearContextC function, by Richard Sanders.
+08/08/01 fdrivers/fd_xwin.c: Sanitized pixel cache code.
+         New faster and specific for X11 putscanline function, this change
+         accelerates a lot displaying pnm, png and jpeg images.
+         Backports from MGRX of M.Alvarez <malfer@telefonica.net>
+08/05/15 Fix a conflict between underline and XOR char writing reported by 
+         Al-Junaid H. Walker (M. Lombardi)
+07/12/27 Added GrFloodSpill functions, by Richard Sanders <richard@dogcreek.ca>
+07/12/01 vd_xwin: go to fullscreen if w,h == X resolution, GR_biggest_graphics
+         is honored. Modes higher than X resolution are made no-present.
+         Added videomodes for wide monitors in x11 and w32 drivers.
+         Backports from MGRX of M.Alvarez <malfer@telefonica.net>
+07/08/11 Fix a keyboard bug reported by A. Moreira. It was a bug produced by
+         the optimiser for gcc >= 4 when using asm: memory clobber. 
+         If not corrected it could pop up at other places. (M. Lombardi)
+
 07/08/29 ----------- GRX v2.4.8 released (Maurice Lombardi)
 07/08/29 Sanitized win32, eliminating WM_SIZE events
 07/08/27 Add Sleep(5) to setrgbpalette for win32 which sends WM_PAINT to 
@@ -23,7 +55,7 @@ Date     Changes
          for backing store. But this slows it down. You can recover
          previous behaviour (faster but no response to Expose) by editing 
          src/include/libxwin.h and setting USE_PIXMAP_FOR_BS to 0.
-	 Backported from Mariano's MGRX by M. Lombardi.
+         Backported from Mariano's MGRX by M. Lombardi.
 07/07/30 various improvements in makefiles, demo.pas, test/speedtst.c 
          by M. Lombardi.
 

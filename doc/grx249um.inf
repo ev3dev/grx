@@ -1,4 +1,4 @@
-This is grx248um.inf, produced by makeinfo version 4.7 from grx2.tex.
+This is grx249um.inf, produced by makeinfo version 4.13 from grx2.tex.
 
 INFO-DIR-SECTION Libraries
 START-INFO-DIR-ENTRY
@@ -6,16 +6,16 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
-File: grx248um.inf,  Node: Top,  Next: A User Manual For GRX2
+File: grx249um.inf,  Node: Top,  Next: A User Manual For GRX2
 
-            GRX 2.4.8 User's Manual
-            ***********************
+            GRX 2.4.9 User's Manual
+***********************
 
 A 2D graphics library for DOS, Linux, X11 and Win32
 ***************************************************
  Based on the original doc written by: Csaba Biegl on August 10, 1992
        Updated by: Mariano Alvarez Fernandez on August 17, 2000
-                     Last update: August 14, 2007
+                      Last update: July 10, 2012
 
 Abstract
 ********
@@ -37,7 +37,7 @@ window with the SDL driver.
 * A User Manual For GRX2::
 
 
-File: grx248um.inf,  Node: A User Manual For GRX2,  Next: Hello world,  Prev: Top,  Up: Top
+File: grx249um.inf,  Node: A User Manual For GRX2,  Next: Hello world,  Prev: Top,  Up: Top
 
 GRX2 User's Manual
 ******************
@@ -73,7 +73,7 @@ GRX2 User's Manual
 * References::
 
 
-File: grx248um.inf,  Node: Hello world,  Next: Data types and function declarations,  Prev: A User Manual For GRX2,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Hello world,  Next: Data types and function declarations,  Prev: A User Manual For GRX2,  Up: A User Manual For GRX2
 
 Hello world
 ===========
@@ -126,10 +126,10 @@ installed)
               -lgrx20S -lSDL -lpthread -L/usr/X11R6/lib -lX11
 
        For x86_64 systems add -m32 or -m64 for 32/64 bits executables
-       and replace /lib by /lib64 as needed
+       and replace /lib by /lib64 or /lib32 as needed
 
 
-File: grx248um.inf,  Node: Data types and function declarations,  Next: Setting the graphics driver,  Prev: Hello world,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Data types and function declarations,  Next: Setting the graphics driver,  Prev: Hello world,  Up: A User Manual For GRX2
 
 Data types and function declarations
 ====================================
@@ -146,7 +146,7 @@ the 'include' sub-directory):
      User programs normally only include *include/grx20.h* and *include/grxkeys.h*
 
 
-File: grx248um.inf,  Node: Setting the graphics driver,  Next: Setting video modes,  Prev: Data types and function declarations,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Setting the graphics driver,  Next: Setting video modes,  Prev: Data types and function declarations,  Up: A User Manual For GRX2
 
 Setting the graphics driver
 ===========================
@@ -178,7 +178,7 @@ driver name can be obtained from:
      GrCurrentVideoDriver()->name
 
 
-File: grx248um.inf,  Node: Setting video modes,  Next: Graphics contexts,  Prev: Setting the graphics driver,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Setting video modes,  Next: Graphics contexts,  Prev: Setting the graphics driver,  Up: A User Manual For GRX2
 
 Setting video modes
 ===================
@@ -317,7 +317,7 @@ following symbolic constants (defined in grx20.h):
 Note that the VESA driver return GR_VGA here.
 
 
-File: grx248um.inf,  Node: Graphics contexts,  Next: Context use,  Prev: Setting video modes,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Graphics contexts,  Next: Context use,  Prev: Setting video modes,  Up: A User Manual For GRX2
 
 Graphics contexts
 =================
@@ -487,7 +487,7 @@ and the current viewport position can be obtained by:
      int GrViewportY(void);
 
 
-File: grx248um.inf,  Node: Context use,  Next: Color management,  Prev: Graphics contexts,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Context use,  Next: Color management,  Prev: Graphics contexts,  Up: A User Manual For GRX2
 
 Context use
 ===========
@@ -535,7 +535,7 @@ because it uses the parent buffer.
 See the *test/winclip.c* and *test/wintest.c* examples.
 
 
-File: grx248um.inf,  Node: Color management,  Next: Portable use of a few colors,  Prev: Context use,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Color management,  Next: Portable use of a few colors,  Prev: Context use,  Up: A User Manual For GRX2
 
 Color management
 ================
@@ -671,7 +671,7 @@ call the normal routines).
 See the *test/rgbtest.c* and *test/colorops.c* examples.
 
 
-File: grx248um.inf,  Node: Portable use of a few colors,  Next: Graphics primitives,  Prev: Color management,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Portable use of a few colors,  Next: Graphics primitives,  Prev: Color management,  Up: A User Manual For GRX2
 
 Portable use of a few colors
 ============================
@@ -727,7 +727,7 @@ table. Note too that this don't work to initialize static variables
 with a color, because egacolors is not initialized.
 
 
-File: grx248um.inf,  Node: Graphics primitives,  Next: Non-clipping graphics primitives,  Prev: Portable use of a few colors,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Graphics primitives,  Next: Non-clipping graphics primitives,  Prev: Portable use of a few colors,  Up: A User Manual For GRX2
 
 Graphics primitives
 ===================
@@ -737,8 +737,11 @@ The screen, the current context or the current clip box can be cleared
 three functions:
 
      void GrClearScreen(GrColor bg);
-     void GrClearcontext(GrColor bg);
+     void GrClearContext(GrColor bg);
      void GrClearClipBox(GrColor bg);
+
+Any context can be cleared using this function:
+     void GrClearContextC(GrContext *ctx, GrColor bg);
 
 Thanks to the special GrColor definition, you can do more than simple
 clear with this functions, by example with:
@@ -853,6 +856,34 @@ The function:
 flood-fills the area bounded by the color border using x, y like the
 starting point.
 
+Floodspill is a color replacer, replacing color A with color B.  This
+is quite useful for highlighting a selected item in a list,  or changing
+a selected color(s) in a multi colored area.
+
+     void GrFloodSpill(int x1, int y1, int x2, int y2,
+                      GrColor old_c, GrColor new_c)
+
+replaces old color with new color in the rectangle bounded by x1, y1,
+x2, y2.
+
+     void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2,
+                       GrColor old_c, GrColor new_c)
+
+as above but in the specified context.
+
+     void GrFloodSpill2(int x1, int y1, int x2, int y2,
+                       GrColor old_c1, GrColor new_c1,
+                       GrColor old_c2, GrColor new_c2)
+
+replaces 2 colors, a one stop shop for highlighting a selection in a
+list.
+
+     void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2,
+                       GrColor old_c1, GrColor new_c1,
+                       GrColor old_c2, GrColor new_c2)
+
+as above but in the specified context.
+
 The current color value of any pixel in the current context can be
 obtained with:
 
@@ -901,7 +932,7 @@ fit GrCVALUEMASK otherwise the results are implementation dependend. So
 you can't supply operation code with the pixel data!.
 
 
-File: grx248um.inf,  Node: Non-clipping graphics primitives,  Next: Customized line drawing,  Prev: Graphics primitives,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Non-clipping graphics primitives,  Next: Customized line drawing,  Prev: Graphics primitives,  Up: A User Manual For GRX2
 
 Non-clipping graphics primitives
 ================================
@@ -930,7 +961,7 @@ supported non-clipping primitives:
      GrColor GrPixelCNC(GrContext *c,int x,int y);
 
 
-File: grx248um.inf,  Node: Customized line drawing,  Next: Pattern filled graphics primitives,  Prev: Non-clipping graphics primitives,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Customized line drawing,  Next: Pattern filled graphics primitives,  Prev: Non-clipping graphics primitives,  Up: A User Manual For GRX2
 
 Customized line drawing
 =======================
@@ -982,7 +1013,7 @@ The available custom line drawing primitives:
 See the *test/linetest.c* example.
 
 
-File: grx248um.inf,  Node: Pattern filled graphics primitives,  Next: Patterned line drawing,  Prev: Customized line drawing,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Pattern filled graphics primitives,  Next: Patterned line drawing,  Prev: Customized line drawing,  Up: A User Manual For GRX2
 
 Pattern filled graphics primitives
 ==================================
@@ -1118,7 +1149,7 @@ Strictly speaking the plot and line functions in the above group are not
 filled, but they have been included here for convenience.
 
 
-File: grx248um.inf,  Node: Patterned line drawing,  Next: Image manipulation,  Prev: Pattern filled graphics primitives,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Patterned line drawing,  Next: Image manipulation,  Prev: Pattern filled graphics primitives,  Up: A User Manual For GRX2
 
 Patterned line drawing
 ======================
@@ -1150,7 +1181,7 @@ as their last argument. The list of available functions:
      void GrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
 
 
-File: grx248um.inf,  Node: Image manipulation,  Next: Text drawing,  Prev: Patterned line drawing,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Image manipulation,  Next: Text drawing,  Prev: Patterned line drawing,  Up: A User Manual For GRX2
 
 Image manipulation
 ==================
@@ -1223,7 +1254,7 @@ To destroy a image objet when you don't need it any more use:
 See the *test/imgtest.c* example.
 
 
-File: grx248um.inf,  Node: Text drawing,  Next: Drawing in user coordinates,  Prev: Image manipulation,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Text drawing,  Next: Drawing in user coordinates,  Prev: Image manipulation,  Up: A User Manual For GRX2
 
 Text drawing
 ============
@@ -1512,7 +1543,7 @@ you know the area to update is small).
 See the *test/fonttest.c* example.
 
 
-File: grx248um.inf,  Node: Drawing in user coordinates,  Next: Graphics cursors,  Prev: Text drawing,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Drawing in user coordinates,  Next: Graphics cursors,  Prev: Text drawing,  Up: A User Manual For GRX2
 
 Drawing in user coordinates
 ===========================
@@ -1623,7 +1654,7 @@ zero' error.  The list of supported user coordinate drawing functions:
      void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 
 
-File: grx248um.inf,  Node: Graphics cursors,  Next: Keyboard input,  Prev: Drawing in user coordinates,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Graphics cursors,  Next: Keyboard input,  Prev: Drawing in user coordinates,  Up: A User Manual For GRX2
 
 Graphics cursors
 ================
@@ -1677,7 +1708,7 @@ appropriate library functions. Other cursor manipulation functions:
 See the *test/curstest.c* example.
 
 
-File: grx248um.inf,  Node: Keyboard input,  Next: Mouse event handling,  Prev: Graphics cursors,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Keyboard input,  Next: Mouse event handling,  Prev: Graphics cursors,  Up: A User Manual For GRX2
 
 Keyboard input
 ==============
@@ -1735,7 +1766,7 @@ be known the status of some special keys:
 See the *test/keys.c* example.
 
 
-File: grx248um.inf,  Node: Mouse event handling,  Next: Writing/reading PNM graphics files,  Prev: Keyboard input,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Mouse event handling,  Next: Writing/reading PNM graphics files,  Prev: Keyboard input,  Up: A User Manual For GRX2
 
 Mouse event handling
 ====================
@@ -1884,22 +1915,24 @@ The following macros have been defined in grx20.h to help in creating
 the control flag for GrMouseGetEvent and decoding the various bits in
 the event structure:
 
-     #define GR_M_MOTION         0x001         /* mouse event flag bits */
+     #define GR_M_MOTION         0x001       /* mouse event flag bits */
      #define GR_M_LEFT_DOWN      0x002
      #define GR_M_LEFT_UP        0x004
      #define GR_M_RIGHT_DOWN     0x008
      #define GR_M_RIGHT_UP       0x010
      #define GR_M_MIDDLE_DOWN    0x020
      #define GR_M_MIDDLE_UP      0x040
-     #define GR_M_BUTTON_DOWN    (GR_M_LEFT_DOWN | GR_M_MIDDLE_DOWN | \
-                                  GR_M_RIGHT_DOWN)
-     #define GR_M_BUTTON_UP      (GR_M_LEFT_UP   | GR_M_MIDDLE_UP   | \
-                                  GR_M_RIGHT_UP)
-     #define GR_M_BUTTON_CHANGE  (GR_M_BUTTON_UP | GR_M_BUTTON_DOWN )
+     #define GR_M_BUTTON_DOWN    (GR_M_LEFT_DOWN  | GR_M_MIDDLE_DOWN | \
+                                  GR_M_RIGHT_DOWN | GR_M_P4_DOWN | GR_M_P5_DOWN)
+     #define GR_M_BUTTON_UP      (GR_M_LEFT_UP    | GR_M_MIDDLE_UP   | \
+                                  GR_M_RIGHT_UP   | GR_M_P4_UP  | GR_M_P5_UP)
+     #define GR_M_BUTTON_CHANGE  (GR_M_BUTTON_UP  | GR_M_BUTTON_DOWN )
 
-     #define GR_M_LEFT           1             /* mouse button index bits */
-     #define GR_M_RIGHT          2
-     #define GR_M_MIDDLE         4
+     #define GR_M_LEFT           0x01        /* mouse button index bits */
+     #define GR_M_RIGHT          0x02
+     #define GR_M_MIDDLE         0x04
+     #define GR_M_P4             0x08        /* wheel rolls up */
+     #define GR_M_P5             0x10        /* wheel rolls down */
 
      #define GR_M_KEYPRESS       0x080        /* other event flag bits */
      #define GR_M_POLL           0x100
@@ -1944,7 +1977,7 @@ GrMouseEventEnable( 0,1 ) is needed before input process.
 See the *test/mousetst.c* example.
 
 
-File: grx248um.inf,  Node: Writing/reading PNM graphics files,  Next: Writing/reading PNG graphics files,  Prev: Mouse event handling,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Writing/reading PNM graphics files,  Next: Writing/reading PNG graphics files,  Prev: Mouse event handling,  Up: A User Manual For GRX2
 
 Writing/reading PNM graphics files
 ==================================
@@ -2017,7 +2050,7 @@ input from a buffer instead of a file. This way, pnm files can be
 embeded in a program (using the bin2c program by example).
 
 
-File: grx248um.inf,  Node: Writing/reading PNG graphics files,  Next: Writing/reading JPEG graphics files,  Prev: Writing/reading PNM graphics files,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Writing/reading PNG graphics files,  Next: Writing/reading JPEG graphics files,  Prev: Writing/reading PNM graphics files,  Up: A User Manual For GRX2
 
 Writing/reading PNG graphics files
 ==================================
@@ -2065,7 +2098,7 @@ is not support for png, dummy functions are added to the library,
 returning error (-1) ever.
 
 
-File: grx248um.inf,  Node: Writing/reading JPEG graphics files,  Next: Miscellaneous functions,  Prev: Writing/reading PNG graphics files,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Writing/reading JPEG graphics files,  Next: Miscellaneous functions,  Prev: Writing/reading PNG graphics files,  Up: A User Manual For GRX2
 
 Writing/reading PNG graphics files
 ==================================
@@ -2122,7 +2155,7 @@ there is not support for jpeg, dummy functions are added to the
 library, returning error (-1) ever.
 
 
-File: grx248um.inf,  Node: Miscellaneous functions,  Next: BGI interface,  Prev: Writing/reading JPEG graphics files,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Miscellaneous functions,  Next: BGI interface,  Prev: Writing/reading JPEG graphics files,  Up: A User Manual For GRX2
 
 Miscellaneous functions
 =======================
@@ -2159,24 +2192,28 @@ Note. On Linux, GrGetLibrarySystem returns GRX_VERSION_GCC_386_LINUX
 even in the X11 version.
 
      void GrSetWindowTitle(char *title);
-
 GrSetWindowTitle sets the main window title in the X11 an Win32
 versions. It doesn't do nothing in the DOS and Linux-SvgaLib versions.
 
      void GrSleep(int msec);
-
 This function stops the program execution for msec miliseconds.
+
+     long GrMsecTime( void );
+This function gives the current time with millisecond resolution
+
+     void GrFlush( void );
+This funnction flushes the graphics window. Not dummy because useful
+only on X11 when switching between graphics and console windows open
+simultaneously.
 
       GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,
                  char far *memory[4],GrContext *where);
-
 This function is like GrCreateContext, except that you can specify any
 valid memory frame mode, not only the Screen associated frame mode. It
 can be used for special purposes (see GrBitBlt1bpp for an example).
 
       void GrBitBlt1bpp(GrContext *dst,int dx,int dy,GrContext *src,
            int x1,int y1,int x2,int y2,GrColor fg,GrColor bg);
-
 This special function does a bitblt from a 1bpp context (a bitmap
 really), using fg and bg like the color+opcode when bit=1 and bit=0
 respectively. Here is an example:
@@ -2195,7 +2232,7 @@ respectively. Here is an example:
         GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
 
 
-File: grx248um.inf,  Node: BGI interface,  Next: Pascal interface,  Prev: Miscellaneous functions,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: BGI interface,  Next: Pascal interface,  Prev: Miscellaneous functions,  Up: A User Manual For GRX2
 
 BGI interface
 =============
@@ -2209,7 +2246,7 @@ programs. Of course you should use native GRX interface in such cases!
 Read the readme.bgi file for more info.
 
 
-File: grx248um.inf,  Node: Pascal interface,  Next: References,  Prev: BGI interface,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: Pascal interface,  Next: References,  Prev: BGI interface,  Up: A User Manual For GRX2
 
 Pascal interface
 ================
@@ -2232,7 +2269,7 @@ By default they are installed in a *units* directory below the
 INSTALLDIR directory. But you can put them where you like.
 
 
-File: grx248um.inf,  Node: References,  Prev: Pascal interface,  Up: A User Manual For GRX2
+File: grx249um.inf,  Node: References,  Prev: Pascal interface,  Up: A User Manual For GRX2
 
 References
 ==========
@@ -2248,33 +2285,33 @@ TIFF library                   `http://www.remotesensing.org/libtiff/'
 
 
 Tag Table:
-Node: Top197
+Node: Top198
 Node: A User Manual For GRX21387
 Node: Hello world2236
-Node: Data types and function declarations4011
-Node: Setting the graphics driver4745
-Node: Setting video modes5856
-Node: Graphics contexts10913
-Node: Context use18101
-Node: Color management19482
-Node: Portable use of a few colors24528
-Node: Graphics primitives26446
-Node: Non-clipping graphics primitives34020
-Node: Customized line drawing35523
-Node: Pattern filled graphics primitives37877
-Node: Patterned line drawing44815
-Node: Image manipulation46384
-Node: Text drawing49215
-Node: Drawing in user coordinates63328
-Node: Graphics cursors69668
-Node: Keyboard input72230
-Node: Mouse event handling74232
-Node: Writing/reading PNM graphics files83558
-Node: Writing/reading PNG graphics files86613
-Node: Writing/reading JPEG graphics files88458
-Node: Miscellaneous functions90777
-Node: BGI interface93940
-Node: Pascal interface94485
-Node: References95428
+Node: Data types and function declarations4021
+Node: Setting the graphics driver4755
+Node: Setting video modes5866
+Node: Graphics contexts10923
+Node: Context use18111
+Node: Color management19492
+Node: Portable use of a few colors24538
+Node: Graphics primitives26456
+Node: Non-clipping graphics primitives35143
+Node: Customized line drawing36646
+Node: Pattern filled graphics primitives39000
+Node: Patterned line drawing45938
+Node: Image manipulation47507
+Node: Text drawing50338
+Node: Drawing in user coordinates64451
+Node: Graphics cursors70791
+Node: Keyboard input73353
+Node: Mouse event handling75355
+Node: Writing/reading PNM graphics files84879
+Node: Writing/reading PNG graphics files87934
+Node: Writing/reading JPEG graphics files89779
+Node: Miscellaneous functions92098
+Node: BGI interface95535
+Node: Pascal interface96080
+Node: References97023
 
 End Tag Table

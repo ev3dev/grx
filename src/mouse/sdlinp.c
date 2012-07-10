@@ -148,7 +148,7 @@ void GrMouseGetEventT(int flags, GrMouseEvent * ev, long tout)
             (tout == 0L) || (MOUINFO->moved && (flags & GR_M_MOTION))) {
             fill_mouse_ev((*ev),
                           mou_buttons, mou_buttons,
-                          GR_M_LEFT, GR_M_MIDDLE, GR_M_RIGHT, GrKeyStat());
+                          GR_M_LEFT, GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, GrKeyStat());
             if (ev->flags)        /* something happend */
                 real_dtime(ev->dtime, evt_lasttime);
             else
@@ -241,10 +241,12 @@ static int DequeueSDLEvent(GrMouseEvent *ev)
         case SDL_BUTTON_LEFT   : buttons = GR_M_LEFT | mou_buttons; break;
         case SDL_BUTTON_RIGHT  : buttons = GR_M_RIGHT | mou_buttons; break;
         case SDL_BUTTON_MIDDLE : buttons = GR_M_MIDDLE | mou_buttons; break;
+        case SDL_BUTTON_WHEELUP: buttons = GR_M_P4 | mou_buttons; break;
+        case SDL_BUTTON_WHEELDOWN : buttons = GR_M_P5 | mou_buttons; break;
         default : return(-1);
         }
         fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
-                      GR_M_MIDDLE, GR_M_RIGHT, GrKeyStat());
+                      GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, GrKeyStat());
         mou_buttons = buttons;
         MOUINFO->moved = FALSE;
         return(1);
@@ -254,10 +256,12 @@ static int DequeueSDLEvent(GrMouseEvent *ev)
         case SDL_BUTTON_LEFT   : buttons = ~GR_M_LEFT & mou_buttons; break;
         case SDL_BUTTON_RIGHT  : buttons = ~GR_M_RIGHT & mou_buttons; break;
         case SDL_BUTTON_MIDDLE : buttons = ~GR_M_MIDDLE & mou_buttons; break;
+        case SDL_BUTTON_WHEELUP: buttons = ~GR_M_P4 & mou_buttons; break;
+        case SDL_BUTTON_WHEELDOWN : buttons = ~GR_M_P5 & mou_buttons; break;
         default : return(-1);
         }
         fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
-                      GR_M_MIDDLE, GR_M_RIGHT, GrKeyStat());
+                      GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, GrKeyStat());
         mou_buttons = buttons;
         MOUINFO->moved = FALSE;
         return(1);

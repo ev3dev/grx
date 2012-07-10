@@ -141,6 +141,8 @@ void _GrUpdateInputs(void)
                         GR_M_LEFT,
                         GR_M_MIDDLE,
                         GR_M_RIGHT,
+                        GR_M_P4,
+                        GR_M_P5,
                         GrKeyStat()
                     );
                     real_dtime(ev.dtime,evt_lasttime);
@@ -188,6 +190,8 @@ void GrMouseGetEventT(int flags,GrMouseEvent *ev,long tout)
                     GR_M_LEFT,
                     GR_M_MIDDLE,
                     GR_M_RIGHT,
+                    GR_M_P4,
+                    GR_M_P5,
                     GrKeyStat()
                 );
                 if ( ev->flags ) /* something happend */

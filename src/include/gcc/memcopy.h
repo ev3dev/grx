@@ -27,11 +27,12 @@
 
 #define __INLINE_386_ROWCOPY__(D,S,C,SIZE) ({                           \
     __asm__ volatile(                                                   \
-       " cld        \n"                                                 \
-       " rep        \n"                                                 \
-       " movs"#SIZE                                                     \
+        " cld        \n"                                                 \
+        " rep        \n"                                                 \
+        " movs"#SIZE                                                     \
         : "=D" ((void *)(D)), "=S" ((void *)(S)), "=c" ((int)(C))       \
         : "0"  ((void *)(D)), "1"  ((void *)(S)), "2"  ((int)(C))       \
+        : "memory"                                                      \
     );                                                                  \
 })
 
@@ -60,6 +61,7 @@
             "=&q" ((TYPE)_scr_)                                              \
           : "0"  ((void *)(DP)),"1"  ((void *)(SP)), "2" ((int)(C)),         \
             "gn" ((int)(DS)), "gn" ((int)(SS))                               \
+          : "memory"                                                         \
     );                                                                       \
 })
 
@@ -84,6 +86,7 @@
           : "=r" ((void *)(DP)),"=r" ((void *)(SP)),"=r" ((int)(C)),         \
             "=&q" ((TYPE)_scr_)                                              \
           : "0"  ((void *)(DP)),"1"  ((void *)(SP)), "2" ((int)(C))          \
+          : "memory"                                                         \
     );                                                                       \
 })
 
@@ -201,6 +204,7 @@
           : "=D" ((void *)(D)),"=S" ((void *)(S)),"=r" ((int)(C)),           \
             "=&c" ((int)_scr_)                                               \
           : "0"  ((void *)(D)), "1" ((void *)(S)), "2" ((int)(C))            \
+          : "memory"                                                         \
     );                                                                       \
   else                                                                       \
     __asm__ volatile("\n"                                                    \
@@ -231,6 +235,7 @@
           : "=D" ((void *)(D)),"=S" ((void *)(S)),"=r" ((int)(C)),           \
             "=&c" ((int)_scr_)                                               \
           : "0"  ((void *)(D)), "1" ((void *)(S)), "2" ((int)(C))            \
+          : "memory"                                                         \
     );                                                                       \
 } while (0)
 

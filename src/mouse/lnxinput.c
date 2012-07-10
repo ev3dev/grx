@@ -435,6 +435,8 @@ void _GrUpdateInputs(void)
                         MOUSE_LEFTBUTTON,
                         MOUSE_MIDDLEBUTTON,
                         MOUSE_RIGHTBUTTON,
+                        MOUSE_FOURTHBUTTON,
+                        MOUSE_FIFTHBUTTON,
                         0
                     );
                     real_dtime(ev.dtime,evt_lasttime);
@@ -484,6 +486,8 @@ void GrMouseGetEventT(int flags,GrMouseEvent *ev,long tout)
                     MOUSE_LEFTBUTTON,
                     MOUSE_MIDDLEBUTTON,
                     MOUSE_RIGHTBUTTON,
+                    MOUSE_FOURTHBUTTON,
+                    MOUSE_FIFTHBUTTON,
                     0
                 );
                 if ( ev->flags ) /* something happend */

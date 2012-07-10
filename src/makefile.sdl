@@ -28,12 +28,6 @@ ifdef GRX_DEFAULT_FONT_PATH
 CCOPT += -DGRX_DEFAULT_FONT_PATH=\"$(GRX_DEFAULT_FONT_PATH)\"
 endif
 
-ifeq ($(BUILD_X86_64),y)
-INSLIBSUBDIR = lib64
-else
-INSLIBSUBDIR = lib
-endif
-
 TAG = $(ANY_GCC_SDL_STATIC)
 
 GRX20ST    = ../lib/$(GRX_LIB_SUBDIR)/libgrx20S.a
@@ -129,50 +123,60 @@ cleanall: clean
 	rm -f $(GRX20ST) $(UTILPC) $(UTILPS)
 
 install: $(GRX20ST)
-	cp $(GRX20ST) $(INSTALLDIR)/$(INSLIBSUBDIR)
+	mkdir -p $(DESTDIR)$(libdir)
+	mkdir -p $(DESTDIR)$(includedir)
+	cp $(GRX20ST) $(DESTDIR)$(libdir)
 	cp ../include/grx20.h ../include/grxkeys.h \
-	   ../include/libbcc.h $(INSTALLDIR)/include
+	   ../include/libbcc.h $(DESTDIR)$(includedir)
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-	cp ../addons/print/grxprint.h $(INSTALLDIR)/include
+	cp ../addons/print/grxprint.h $(DESTDIR)$(includedir)
 endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	mkdir -p $(INSTALLDIR)/units
-	cp ../pascal/grx.pas ../pascal/bgi/graph.pas $(INSTALLDIR)/units
+	mkdir -p $(DESTDIR)$(unitsdir)
+	cp ../pascal/grx.pas ../pascal/bgi/graph.pas $(DESTDIR)$(unitsdir)
 endif
 
 uninstall:
-	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20ST)) $(INSTALLDIR)/include/grx20.h \
-	      $(INSTALLDIR)/include/grxkeys.h $(INSTALLDIR)/include/libbcc.h
+	rm -f $(DESTDIR)$(libdir)/$(notdir $(GRX20ST)) $(DESTDIR)$(includedir)/grx20.h \
+	      $(DESTDIR)$(includedir)/grxkeys.h $(DESTDIR)$(includedir)/libbcc.h
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-	rm -f $(INSTALLDIR)/include/grxprint.h
+	rm -f $(DESTDIR)$(includedir)/grxprint.h
 endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	rm -f $(INSTALLDIR)/units/grx.pas $(INSTALLDIR)/units/graph.pas
+	rm -f $(DESTDIR)$(unitsdir)/grx.pas $(DESTDIR)$(unitsdir)/graph.pas
 endif
 
 install-bin: $(UTILPC) $(UTILPW)
+	mkdir -p $(DESTDIR)$(bindir)
 	cp ../bin/bin2c$(EX) ../bin/fnt2c$(EX) \
-	   ../bin/$(EP)modetest$(EX) $(INSTALLDIR)/bin
+	   ../bin/$(EP)modetest$(EX) $(DESTDIR)$(bindir)
 
 uninstall-bin:
-	rm -f $(INSTALLDIR)/bin/bin2c$(EX) $(INSTALLDIR)/bin/fnt2c$(EX) \
-	      $(INSTALLDIR)/bin/$(EP)modetest$(EX)
+	rm -f $(DESTDIR)$(bindir)/bin2c$(EX) $(DESTDIR)$(bindir)/fnt2c$(EX) \
+	      $(DESTDIR)$(bindir)/$(EP)modetest$(EX)
 
 ifdef GRX_DEFAULT_FONT_PATH
 install-fonts:
-	mkdir -p $(GRX_DEFAULT_FONT_PATH)
-	cp ../fonts/* $(GRX_DEFAULT_FONT_PATH)
+	mkdir -p $(DESTDIR)$(GRX_DEFAULT_FONT_PATH)
+	cp ../fonts/* $(DESTDIR)$(GRX_DEFAULT_FONT_PATH)
 
 uninstall-fonts:
-	rm -f $(GRX_DEFAULT_FONT_PATH)/*
+	rm -f $(DESTDIR)$(GRX_DEFAULT_FONT_PATH)/*
 endif
 
 dep:
-	if exist depend.tmp del 
+ifeq ($(HAVE_UNIX_TOOLS),y)
 	rm -f depend.tmp
+else
+	if exist depend.tmp del depend.tmp
+endif
 	gcc -MM $(CCOPT) $(INCDIR) $(ALL_O:.o=.c) >depend.tmp
 	sed 's#^.*: \(.*\)\.c#\1.o: \1.c#g'   <depend.tmp >depend.sdl
+ifeq ($(HAVE_UNIX_TOOLS),y)
+	rm -f depend.tmp
+else
 	if exist depend.tmp del depend.tmp
+endif
 
 depend.b: depend.new
 	sed "s#\.o:#.obj:#g" <depend.new >depend.b

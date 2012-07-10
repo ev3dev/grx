@@ -19,11 +19,6 @@
 
 #include <string.h>
 #include <stdio.h>
-#include <time.h>
-
-#ifndef  CLK_TCK
-#define  CLK_TCK    CLOCKS_PER_SEC
-#endif
 
 #include "test.h"
 
@@ -57,9 +52,10 @@ static void speedtest(void)
         int  ii,jj;
         GrColor color;
         long t1,t2,t3;
+   char msg[81];
 
         GrClearScreen(black);
-        t1 = clock();
+        t1 = GrMsecTime();
         pts[0][1] = 0;
         pts[1][1] = hh;
         pts[2][1] = 2*hh;
@@ -83,7 +79,7 @@ static void speedtest(void)
             pts[2][1] += sy;
             pts[3][1] += sy;
         }
-        t2 = clock();
+        t2 = GrMsecTime();
         pts[0][1] = 0;
         pts[1][1] = hh;
         pts[2][1] = 2*hh;
@@ -107,14 +103,14 @@ static void speedtest(void)
             pts[2][1] += sy;
             pts[3][1] += sy;
         }
-        t3 = clock();
-        sprintf(exit_message,
-            "Times to scan 1024 polygons\n"
-            "   with 'GrFilledPolygon': %.2f (s)\n"
-            "   with 'GrFilledConvexPolygon': %.2f (s)\n",
-            (double)(t2 - t1) / (double)CLK_TCK,
-            (double)(t3 - t2) / (double)CLK_TCK
-        );
+        t3 = GrMsecTime();
+        GrTextXY(0, 0, "Times to scan 1024 polygons", white, black);
+        sprintf(msg, "   with 'GrFilledPolygon': %.2f (s)",
+               (double)(t2 - t1) / (double)1000);
+        GrTextXY(0, 18, msg, white, black);
+        sprintf(msg, "   with 'GrFilledConvexPolygon': %.2f (s)",
+               (double)(t3 - t2) / (double)1000);
+        GrTextXY(0, 36, msg, white, black);
 }
 
 TESTFUNC(ptest)
@@ -147,5 +143,6 @@ TESTFUNC(ptest)
         }
         fclose(fp);
         speedtest();
+        GrKeyRead();
 }
 

@@ -496,6 +496,8 @@ unsigned int _XButtonEventToGrButton (XButtonEvent *event)
   case Button1: mask = Button1Mask; break;
   case Button2: mask = Button2Mask; break;
   case Button3: mask = Button3Mask; break;
+  case Button4: mask = Button4Mask; break;
+  case Button5: mask = Button5Mask; break;
   }
   switch (event->type) {
   case ButtonPress:     state |= mask; break;
@@ -503,7 +505,9 @@ unsigned int _XButtonEventToGrButton (XButtonEvent *event)
   }
   return (  ((state & Button1Mask) ? GR_M_LEFT : 0)
           | ((state & Button2Mask) ? GR_M_MIDDLE : 0)
-          | ((state & Button3Mask) ? GR_M_RIGHT : 0));
+          | ((state & Button3Mask) ? GR_M_RIGHT : 0)
+          | ((state & Button4Mask) ? GR_M_P4 : 0)
+          | ((state & Button5Mask) ? GR_M_P5 : 0));
 }
 
 static INLINE
@@ -604,6 +608,8 @@ void _GrUpdateInputs(void)
                           GR_M_LEFT,
                           GR_M_MIDDLE,
                           GR_M_RIGHT,
+                          GR_M_P4,
+                          GR_M_P5,
                           kbd_lastmod
                           );
             if (evt_lasttime_ok)
@@ -705,6 +711,8 @@ void GrMouseGetEventT(int flags,GrMouseEvent *ev,long tout)
                     GR_M_LEFT,
                     GR_M_MIDDLE,
                     GR_M_RIGHT,
+                    GR_M_P4,
+                    GR_M_P5,
                     kbd_lastmod
                     );
       if ( ev->flags ) {

@@ -23,7 +23,8 @@ STD_1 = $(OP)draw/bitblt$(OX)       \
 	$(OP)draw/pixel$(OX)        \
 	$(OP)draw/pixelc$(OX)       \
 	$(OP)draw/plot$(OX)         \
-	$(OP)draw/putscl$(OX)
+	$(OP)draw/putscl$(OX)       \
+	$(OP)draw/flodspil$(OX)
 
 STD_2 = $(OP)fdrivers/dotab8$(OX)   \
 	$(OP)fdrivers/ftable$(OX)   \
@@ -66,7 +67,8 @@ STD_4 = $(OP)mouse/bldcurs$(OX)     \
 	$(OP)mouse/drawcurs$(OX)    \
 	$(OP)mouse/mouinfo$(OX)     \
 	$(OP)mouse/mouinlne$(OX)    \
-	$(OP)mouse/mscursor$(OX)
+	$(OP)mouse/mscursor$(OX)    \
+	$(OP)mouse/mstime$(OX)
 
 STD_5 = $(OP)pattern/fillpatt$(OX)  \
 	$(OP)pattern/makepat$(OX)   \

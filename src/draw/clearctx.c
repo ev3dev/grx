@@ -14,13 +14,24 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** Contributions by:
+ ** 081105 Richard, GrClearContextC
+ **
  **/
 
 #include "libgrx.h"
 
 void GrClearContext(GrColor bg)
 {
-        mouse_block(CURC,0,0,CURC->gc_xmax,CURC->gc_ymax);
-        GrFilledBoxNC(0,0,CURC->gc_xmax,CURC->gc_ymax,bg);
-        mouse_unblock();
+  mouse_block(CURC,0,0,CURC->gc_xmax,CURC->gc_ymax);
+  GrFilledBoxNC(0,0,CURC->gc_xmax,CURC->gc_ymax,bg);
+  mouse_unblock();
+}
+
+void GrClearContextC(GrContext *ctx, GrColor bg)
+{
+  GrContext *s = GrCurrentContext();
+  GrSetContext(ctx);
+  GrClearContext(bg);
+  GrSetContext(s);
 }

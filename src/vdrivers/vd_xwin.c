@@ -18,7 +18,11 @@
  **
  ** Contributions by:
  ** 070505 M.Alvarez, Using a Pixmap for BackingStore
- **
+ ** 071201 M.Alvarez, Added videomodes for wide monitors
+ ** 071201 M.Alvarez, The modes higher than the X resolution 
+ **                   are made 'non-present'
+ ** 071201 M.Alvarez, go to fullscreen if w,h == X resolution
+ **                   GR_biggest_graphics is honored
  **/
 
 #include "libgrx.h"
@@ -36,13 +40,18 @@ Colormap        _XGrColormap;
 GC              _XGrGC;
 GC              _XGrBitmapGC;
 GC              _XGrPatternGC;
+XIM             _XGrXim = NULL;
+XIC             _XGrXic = NULL;
 unsigned long   _XGrForeColor;
 unsigned long   _XGrBackColor;
 unsigned int    _XGrColorOper;
 unsigned int    _XGrDepth;
 unsigned int    _XGrBitsPerPixel;
 unsigned int        _XGrScanlinePad;
+unsigned int    _XGrMaxWidth;
+unsigned int    _XGrMaxHeight;
 int             _XGrBStoreInited = 0;
+int             _XGrFullScreen = 0;
 
 unsigned long   _XGrColorPlanes[8];
 unsigned int    _XGrColorNumPlanes;
@@ -102,8 +111,46 @@ static GrVideoMode modes[] = {
   { FALSE,  0, 1024,  768,  0x00,     0, 0,    &grxwinext  },
   { FALSE,  0, 1280, 1024,  0x00,     0, 0,    &grxwinext  },
   { FALSE,  0, 1600, 1200,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0, 1440,  900,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0, 1680, 1050,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0, 1920, 1200,  0x00,     0, 0,    &grxwinext  },
+  { FALSE,  0, 2560, 1600,  0x00,     0, 0,    &grxwinext  },
   { FALSE,  0, 9999, 9999,  0x00,     0, 0,    &grxwinext  }
 };
+
+static void goto_fullscreen(Display *dsp, Window win)
+{
+  XEvent xev;
+  Atom wm_state = XInternAtom(dsp, "_NET_WM_STATE", False);
+  Atom fullscreen = XInternAtom(dsp, "_NET_WM_STATE_FULLSCREEN", False);
+  memset(&xev, 0, sizeof(xev));
+  xev.type = ClientMessage;
+  xev.xclient.window = win;
+  xev.xclient.message_type = wm_state;
+  xev.xclient.format = 32;
+  xev.xclient.data.l[0] = 1; // _NET_WM_STATE_ADD
+  xev.xclient.data.l[1] = fullscreen;
+  xev.xclient.data.l[2] = 0;
+  XSendEvent(dsp, DefaultRootWindow(dsp), False,
+    SubstructureNotifyMask, &xev);
+}
+
+static void returnfrom_fullscreen(Display *dsp, Window win)
+{
+  XEvent xev;
+  Atom wm_state = XInternAtom(dsp, "_NET_WM_STATE", False);
+  Atom fullscreen = XInternAtom(dsp, "_NET_WM_STATE_FULLSCREEN", False);
+  memset(&xev, 0, sizeof(xev));
+  xev.type = ClientMessage;
+  xev.xclient.window = win;
+  xev.xclient.message_type = wm_state;
+  xev.xclient.format = 32;
+  xev.xclient.data.l[0] = 0; // _NET_WM_STATE_REMOVE
+  xev.xclient.data.l[1] = fullscreen;
+  xev.xclient.data.l[2] = 0;
+  XSendEvent(dsp, DefaultRootWindow(dsp), False,
+    SubstructureNotifyMask, &xev);
+}
 
 static void setbank(int bk)
 {}
@@ -140,6 +187,10 @@ static int setmode(GrVideoMode *mp,int noclear)
   res = FALSE;
   if (_XGrWindow != None) {
 
+    if (_XGrFullScreen) {
+      returnfrom_fullscreen(_XGrDisplay, _XGrWindow);
+      _XGrFullScreen = 0;
+    }
     XUnmapWindow (_XGrDisplay, _XGrWindow);
     if (_XGrBStoreInited) {
       XFreePixmap(_XGrDisplay, _XGrBStore);
@@ -190,6 +241,12 @@ static int setmode(GrVideoMode *mp,int noclear)
             break;
         }
       }
+
+      /* Go to fullscreen if w,h == X resolution */
+      if ((mp->width == _XGrMaxWidth) && (mp->height == _XGrMaxHeight)) {
+        goto_fullscreen(_XGrDisplay, _XGrWindow);
+        _XGrFullScreen = 1;
+      }
     }
     res = TRUE;
   }
@@ -238,8 +295,8 @@ static GrVideoMode * _xw_selectmode ( GrVideoDriver * drv, int w, int h, int bpp
   }
   /* no predefined mode found. Create a new mode */
   mp->present = TRUE;
-  mp->width = w;
-  mp->height = h;
+  mp->width = (w > _XGrMaxWidth) ? _XGrMaxWidth : w;
+  mp->height = (h > _XGrMaxHeight) ? _XGrMaxHeight : h;
   mp->lineoffset = (mp->width * mp->bpp) / 8;
   res = _gr_selectmode (drv,w,h,bpp,txt,ep);
 done:
@@ -279,6 +336,8 @@ static int init(char *options)
 
   _XGrScreen = DefaultScreen (_XGrDisplay);
   _XGrDepth = depth = DefaultDepth (_XGrDisplay, _XGrScreen);
+  _XGrMaxWidth = DisplayWidth(_XGrDisplay, _XGrScreen);
+  _XGrMaxHeight = DisplayHeight(_XGrDisplay, _XGrScreen);
 
   visual = DefaultVisual (_XGrDisplay, _XGrScreen);
   root = RootWindow (_XGrDisplay, _XGrScreen);
@@ -451,6 +510,8 @@ static int init(char *options)
     mp->present = TRUE;
     mp->bpp = bpp;
     mp->lineoffset = (mp->width * bpp) / 8;
+    if (mp->width > _XGrMaxWidth) mp->present = FALSE;
+    if (mp->height > _XGrMaxHeight) mp->present = FALSE;
   }
   /* this is the variable size mode */
   mp->present = FALSE;

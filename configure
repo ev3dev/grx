@@ -30,20 +30,32 @@ silent=n
 
 default_prefix=/usr/local
 prefix=$default_prefix
+exec_prefix='${prefix}'
+bindir='${exec_prefix}/bin'
+datadir='${prefix}/share'
+libdir='${exec_prefix}/lib'
+includedir='${prefix}/include'
+infodir='${prefix}/info'
 
 # "Detect" default target (wrong for cross-compiling)
 if [ x"$COMSPEC" != x ]; then
   default_target=DJGPP
 else
-  default_target=X11
+  default_target=x11
 fi
 target=$default_target
 
-default_fontpath=/usr/local/lib/fonts/grx
+default_fontpath='${datadir}/grx/fonts'
 fontpath=""
 
 default_x11base=/usr/X11R6
 x11base="$default_x11base"
+
+default_x11lib='$(X11BASE)/lib'
+x11lib="$default_x11lib"
+
+default_unitspath='${exec_prefix}/units'
+unitspath="$default_unitspath"
 
 HAVE_LIBJPEG=n
 HAVE_LIBPNG=n
@@ -85,14 +97,54 @@ for ac_option do
 
   -s | --silent | --silen | --sile | --sil | --si | --s)
     silent=y;;
+
   -prefix | --prefix | --prefi | --pref | --pre | --pr | --p)
     ac_prev=prefix;;
   -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
     prefix="$ac_optarg";;
+
+  -exec-prefix | --exec_prefix | --exec-prefix | --exec-prefi \
+  | --exec-pref | --exec-pre | --exec-pr | --exec-p | --exec- \
+  | --exec | --exe | --ex)
+    ac_prev=exec_prefix ;;
+  -exec-prefix=* | --exec_prefix=* | --exec-prefix=* | --exec-prefi=* \
+  | --exec-pref=* | --exec-pre=* | --exec-pr=* | --exec-p=* | --exec-=* \
+  | --exec=* | --exe=* | --ex=*)
+    exec_prefix=$ac_optarg ;;
+
+  -bindir | --bindir | --bindi | --bind | --bin | --bi)
+    ac_prev=bindir ;;
+  -bindir=* | --bindir=* | --bindi=* | --bind=* | --bin=* | --bi=*)
+    bindir=$ac_optarg ;;
+
+  -libdir | --libdir | --libdi | --libd)
+    ac_prev=libdir ;;
+  -libdir=* | --libdir=* | --libdi=* | --libd=*)
+    libdir=$ac_optarg ;;
+
+  -datadir | --datadir | --datadi | --datad | --data | --dat | --da)
+    ac_prev=datadir ;;
+  -datadir=* | --datadir=* | --datadi=* | --datad=* | --data=* | --dat=* \
+  | --da=*)
+    datadir=$ac_optarg ;;
+
+  -includedir | --includedir | --includedi | --included | --include \
+  | --includ | --inclu | --incl | --inc)
+    ac_prev=includedir ;;
+  -includedir=* | --includedir=* | --includedi=* | --included=* | --include=* \
+  | --includ=* | --inclu=* | --incl=* | --inc=*)
+    includedir=$ac_optarg ;;
+
+  -infodir | --infodir | --infodi | --infod | --info | --inf)
+    ac_prev=infodir ;;
+  -infodir=* | --infodir=* | --infodi=* | --infod=* | --info=* | --inf=*)
+    infodir=$ac_optarg ;;
+
   -target | --target | --targe | --targ | --tar | --ta | --t)
     ac_prev=target;;
   -target=* | --target=* | --targe=* | --targ=* | --tar=* | --ta=* | --t=*)
     target="$ac_optarg";;
+
   # Don't complain about unknown enable, disable, with and without options
   -enable-* | --enable-* | -en-* | --en-*)
     case "`echo "$ac_option" | sed -e 's/^-*enable-//;s/^-*en-//'`" in
@@ -140,6 +192,10 @@ for ac_option do
       fontpath)    fontpath="$default_fontpath";;
       x11-base=*)  x11base="$ac_optarg";;
       x11-base)    echo "$0: \`--with-x11-base' requires an argument" >&2; exit 1;;
+      x11-lib=*)   x11lib="$ac_optarg";;
+      x11-base)    echo "$0: \`--with-x11-lib' requires an argument" >&2; exit 1;;
+      unitspath=*)  unitspath="$ac_optarg";;
+      unitspath)    echo "$0: \`--with-unitspath' requires an argument" >&2; exit 1;;
     esac;;
   -without-* | --without-*)
     case "`echo "$ac_option" | sed -e 's/^-*without-//'`" in
@@ -152,15 +208,23 @@ Options: [defaults in brackets after descriptions]
   --help                    print this message and exit
   --version                 print version information and exit
   --silent                  silent operation
-  --prefix=PREFIX           install files in PREFIX [$default_prefix]
+  --prefix=PREFIX           install architecture-independent files in PREFIX
+                            [$default_prefix]
+  --exec-prefix=EPREFIX     install architecture-dependent files in EPREFIX
+                            [PREFIX]
+  --bindir=DIR              user executables [EPREFIX/bin]
+  --datadir=DIR             read-only architecture-independent data
+                            [PREFIX/share]
+  --libdir=DIR              object code libraries [EPREFIX/lib]
+  --includedir=DIR          C header files [PREFIX/include]
+  --infodir=DIR             info documentation [PREFIX/info]
   --target=TARGET           configure for TARGET [$default_target]
-                            possible values: DJGPP, X11, console, w32, sdlx, sdlw
+                            possible values: djgpp,x11,console,w32,sdlx,sdlw
                             or GCC-style ("i386-mingw32") for cross-compiling
   --enable-x86_64           build for x86_64 architecture [no]
   --enable-jpeg             include JPEG support [no]
   --enable-png              include PNG support [no]
-  --enable-z or             use zlib [no]
-    --enable-zlib
+  --enable-zlib             use zlib [no]
   --enable-png-z            include PNG support and use zlib [no]
   --enable-tiff             include TIFF support [no]
   --enable-bmp              include BMP support [yes]
@@ -174,8 +238,9 @@ Options: [defaults in brackets after descriptions]
   --with-fontpath=PATH      set GRX font path to PATH
   --with-fontpath           set GRX font path to $default_fontpath
   --without-fontpath        use no GRX font path [default]
-  --with-x11-base=DIR       use DIR as X11 base directry [$default_x11base]
-
+  --with-x11-base=DIR       use DIR as X11 base directory [$default_x11base]
+  --with-x11-lib=DIR        use DIR as X11 lib directory [$default_x11lib]
+  --with-unitspath=PATH     set GPC units path to PATH [$default_unitspath]
 The following options apply to the Linux console (not X11) target only:
   --enable-direct-mouse     use PS/2 instead of svgalib mouse driver [no]
   --enable-svgalib          use svgalib driver [yes]
@@ -184,13 +249,10 @@ The following options apply to the Linux console (not X11) target only:
                             1.4.x) [yes]
   --enable-io-framedrivers  use frame drivers that require suid root
                             executables under newer versions of svgalib [yes]
-
 Some options can be abbreviated, e.g. \`--p' for \`--prefix',
 \`--en-FOO' for \`--enable-FOO' and \`--di-FOO' for \`--disable-FOO'.
-
-NOTE: This script is completely OPTIONAL. If you don't know what
-      to do with it, just ignore it and follow the normal install
-      instructions.
+NOTE: This script is completely OPTIONAL. If you don't know what to do with it,
+      just ignore it and follow the normal install instructions.
 EOF
     exit 0;;
   -v | -version | --version | --versio | --versi | --vers)
@@ -206,18 +268,18 @@ case "`echo "$target" | tr A-Z a-z`" in
   x | x11)        cfgsection=GRXVX11; target_makefile=makefile.x11;;
   console)        cfgsection=GRXVLNX; target_makefile=makefile.lnx;;
   *w32 | *mingw*) cfgsection=GRXVW32; target_makefile=makefile.w32;;
-  sdlx)           cfgsection=GRXVSDL; target_makefile=makefile.sdl; subst_EP="/^EP=/s/=.*/=x/";;
-  sdlw)           cfgsection=GRXVSDL; target_makefile=makefile.sdl; subst_EP="/^EP=/s/=.*/=/";;
+  sdlx)           cfgsection=GRXVX11; target_makefile=makefile.sdl; subst_EP="/^EP=/s/=.*/=x/";;
+  sdlw)           cfgsection=GRXVW32; target_makefile=makefile.sdl; subst_EP="/^EP=/s/=.*/=/";;
   *)              echo "$0: invalid target" >&2; exit 1;;
 esac
 
 case "$target" in
   *[A-Za-z0-9]-[A-Za-z0-9]*|mingw32)
      CROSS_PLATFORM="`echo "$target" | tr A-Z a-z`-"
-     installdir="$prefix/$target";;
+     exec_prefix="$prefix/$target";;
   *)
      CROSS_PLATFORM=""
-     installdir="$prefix";;
+     exec_prefix='${prefix}';;
 esac
 
 if [ $USE_SVGALIB_DRIVER != y ] && [ $USE_FRAMEBUFFER_DRIVER != y ]; then
@@ -257,7 +319,7 @@ cfgfile="makedefs.grx"
 cfgorigfile="makedefs.orig"
 if [ ! -r "$cfgfile" ]; then
   echo "$0: $cfgfile not found" >&2
-  exit 1
+  exit 1											    
 fi
 
 if [ ! -r "$cfgorigfile" ]; then
@@ -270,7 +332,14 @@ else
   subst_fontpath="/^#*GRX_DEFAULT_FONT_PATH=/{s/^#*//;s|=.*|=$fontpath|;}"
 fi
 
+if [ "$cfgsection" = GRXVLNX ] || [ "$cfgsection" = GRXVX11 ]; then
+  extra_unix="/^ifdef GRXVUNX\$/,/^endif\$/{/^prefix=/s|=.*|=$prefix|;$subst_fontpath;}"
+else
+  extra_unix=
+fi
+
 if sed -e "/^BUILD_X86_64=/s/=.*/=$BUILD_X86_64/;
+           $subst_EP;
            /^HAVE_LIBTIFF=/s/=.*/=$HAVE_LIBTIFF/;
            /^HAVE_LIBJPEG=/s/=.*/=$HAVE_LIBJPEG/;
            /^HAVE_LIBPNG=/s/=.*/=$HAVE_LIBPNG/;
@@ -287,11 +356,19 @@ if sed -e "/^BUILD_X86_64=/s/=.*/=$BUILD_X86_64/;
            /^USE_FRAMEBUFFER_DRIVER=/s/=.*/=$USE_FRAMEBUFFER_DRIVER/;
            /^SET_SUIDROOT=/s/=.*/=$SET_SUIDROOT/;
            /^USE_INOUTP_FRAMEDRIVERS=/s/=.*/=$USE_INOUTP_FRAMEDRIVERS/;
+           /^exec_prefix=/s|=.*|=$exec_prefix|;
+           /^bindir=/s|=.*|=$bindir|;
+           /^libdir=/s|=.*|=$libdir|;
+           /^datadir=/s|=.*|=$datadir|;
+           /^includedir=/s|=.*|=$includedir|;
+           /^unitsdir=/s|=.*|=$unitspath|;
+           /^infodir=/s|=.*|=$infodir|;
+           $extra_unix;
            /^ifdef $cfgsection\$/,/^endif\$/{
-	     $subst_EP;
-             /^INSTALLDIR=/s|=.*|=$installdir|;
+             /^prefix=/s|=.*|=$prefix|;
              $subst_fontpath;
              /^X11BASE=/s|=.*|=$x11base|;
+             /^X11LIB=/s|=.*|=$x11lib|;
              /^X11LIBS=/s/\$/$lsocket/;
            }" "$cfgorigfile" > "$cfgfile"; then
   [ $silent = y ] || echo "Modified $cfgfile"

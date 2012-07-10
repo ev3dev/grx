@@ -45,7 +45,6 @@ int main(int argc,char **argv)
         long c = 0;
         int xv = 0;
         int yv = 0;
-        char m[41];
 
         Argc = argc - 1;
         Argv = argv + 1;
@@ -84,8 +83,6 @@ int main(int argc,char **argv)
         GrSetMode(GR_default_text);
         if(strlen(exit_message) > 0) {
                 puts(exit_message);
-                fflush(stdout);
-                fgets(m,40,stdin);
         }
         return(0);
 }

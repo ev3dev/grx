@@ -462,7 +462,6 @@ function  GrHighY:CInteger; asmname 'GrHighY';
   ================================================================== }
 
 { Flags to 'OR' to colors for various operations }
-
 const
   GrWrite      = 0                ;  { write color }
   GrXor        = $01000000        ;  { to "xor" any color to the screen }
@@ -499,6 +498,8 @@ function  GrRGBcolorBlue(c:GrColor):CInteger ; asmname 'GrRGBcolorBlue';
 
 function  GrAllocColor(r,g,b:CInteger):GrColor; asmname 'GrAllocColor'; { shared, read-only }
 function  GrAllocColorID(r,g,b:CInteger):GrColor; asmname 'GrAllocColorID'; { potentially inlined version }
+function  GrAllocColor2(hcolor:MedInt):GrColor; asmname 'GrAllocColor2'; { $RRGGBB shared, read-only }
+function  GrAllocColor2ID(hcolor:MedInt):GrColor; asmname 'GrAllocColor2ID'; { potentially inlined version }
 function  GrAllocCell:GrColor; asmname 'GrAllocCell'; { unshared, read-write }
 
 function  GrAllocEgaColors:GrColorsPtr; asmname 'GrAllocEgaColors'; { shared, read-only standard EGA colors }
@@ -509,10 +510,16 @@ procedure GrFreeCell(c:GrColor);  asmname 'GrFreeCell';
 
 procedure GrQueryColor(c:GrColor; var r,g,b:CInteger); asmname 'GrQueryColor';
 procedure GrQueryColorID(c:GrColor; var r,g,b:CInteger); asmname 'GrQueryColorID';
+procedure GrQueryColor2(c:GrColor; var hcolor:MedInt); asmname 'GrQueryColor2';
+procedure GrQueryColor2ID(c:GrColor; var hcolor:MedInt); asmname 'GrQueryColor2ID';
 
 function  GrColorSaveBufferSize:CInteger ; asmname 'GrColorSaveBufferSize';
 procedure GrSaveColors(Buffer:Pointer); asmname 'GrSaveColors';
 procedure GrRestoreColors(Buffer:Pointer); asmname 'GrRestoreColors';
+
+{ ==================================================================
+                        GRAPHICS PRIMITIVES
+  ================================================================== }
 
 type
   { framed box colors }
@@ -525,6 +532,8 @@ type
   end;
 
 procedure GrClearScreen(bg:GrColor); asmname 'GrClearScreen';
+procedure GrClearContext(bg:GrColor); asmname 'GrClearContext';
+procedure GrClearContextC(ctx:GrContextPtr; bg:GrColor); asmname 'GrClearContextC';
 procedure GrClearClipBox(bg:GrColor); asmname 'GrClearClipBox';
 procedure GrPlot(x, y: CInteger; c:GrColor); asmname 'GrPlot';
 procedure GrLine(x1, y1, x2, y2: CInteger; c:GrColor); asmname 'GrLine';
@@ -553,6 +562,10 @@ function  GrPixel(x, y:CInteger):GrColor; asmname 'GrPixel';
 function  GrPixelC(c: GrContextPtr; x, y: CInteger): GrColor; asmname 'GrPixelC';
 
 procedure GrFloodFill(x, y: CInteger; Border, c: GrColor); asmname 'GrFloodFill';
+procedure GrFloodSpill(x1, y1, x2, y2: CInteger; old_c, new_c: GrColor); asmname 'GrFloodSpill';
+procedure GrFloodSpill2( x1,  y1,  x2,  y2: CInteger; old_c1, new_c1, old_c2, new_c2: GrColor); asmname 'GrFloodSpill2';
+procedure GrFloodSpillC(var ctx: GrContext; x1,  y1,  x2,  y2: CInteger; old_c, new_c: GrColor); asmname 'GrFloodSpillC';
+procedure GrFloodSpillC2(var ctx: GrContext; x1,  y1,  x2,  y2: CInteger; old_c1, new_c1, old_c2, new_c2: GrColor); asmname 'GrFloodSpillC2';
 
 function GrGetScanline(x1,x2,yy: CInteger): GrColorsPtr; asmname 'GrGetScanline';
 function GrGetScanlineC(ctx: GrContextPtr; x1,x2,yy: CInteger): GrColorsPtr; asmname 'GrGetScanlineC';
@@ -857,6 +870,10 @@ procedure GrPatternDrawString(Text: CString; Length, x, y: CInteger; protected v
 procedure GrPatternDrawStringExt(Text: CString; Length, x, y: CInteger; protected var Opt: GrTextOption; p: GrPatternPtr); asmname 'GrPatternDrawStringExt';
 
 
+{ ==================================================================
+                        IMAGE MANIPULATION
+  ================================================================== }
+
 { <image.h>   - Image Utility
                 by Michal Stencl Copyright (c) 1998 for GRX
   <e-mail>    - [stenclpmd@ba.telecom.sk] }
@@ -987,13 +1004,19 @@ const
   Gr_M_Right_Up      = $0010;
   Gr_M_Middle_Down   = $0020;
   Gr_M_Middle_Up     = $0040;
-  Gr_M_Button_Down   = Gr_M_Left_Down or Gr_M_Middle_Down or Gr_M_Right_Down;
-  Gr_M_Button_Up     = Gr_M_Left_Up   or Gr_M_Middle_Up   or Gr_M_Right_Up;
+  Gr_M_P4_Down       = $0400;
+  Gr_M_P4_Up         = $0800;
+  Gr_M_P5_Down       = $2000;
+  Gr_M_P5_Up         = $4000;
+  Gr_M_Button_Down   = Gr_M_Left_Down or Gr_M_Middle_Down or Gr_M_Right_Down or Gr_M_P4_Down or Gr_M_P5_Down;
+  Gr_M_Button_Up     = Gr_M_Left_Up   or Gr_M_Middle_Up   or Gr_M_Right_Up   or Gr_M_P4_Up   or Gr_M_P5_Up;
   Gr_M_Button_Change = Gr_M_Button_Up or Gr_M_Button_Down;
 
-  Gr_M_Left          = 1;          { mouse button index bits }
-  Gr_M_Right         = 2;
-  Gr_M_Middle        = 4;
+  Gr_M_Left          = $01;        { mouse button index bits }
+  Gr_M_Right         = $02;
+  Gr_M_Middle        = $04;
+  Gr_M_P4            = $08;
+  Gr_M_P5            = $10;
 
   Gr_M_KeyPress      = $0080;      { other event flag bits }
   Gr_M_Poll          = $0100;
@@ -1388,6 +1411,7 @@ procedure GrResizeGrayMap (var Map; Pitch, ow, oh, nw, nh: CInteger); asmname 'G
 function  GrMatchString (Pattern, Strg: CString): CInteger; asmname 'GrMatchString';
 procedure GrSetWindowTitle (Title: CString); asmname 'GrSetWindowTitle';
 procedure GrSleep (MSec: CInteger); asmname 'GrSleep';
+procedure GrFlush; asmname 'GrFlush';
 
 { ==================================================================
                             PNM FUNCTIONS

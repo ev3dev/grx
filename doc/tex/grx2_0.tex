@@ -2,14 +2,14 @@
 @node  Top, A User Manual For GRX2, ,
 @comment node-name, next,previous, up
 
-@center @majorheading GRX 2.4.8 User's Manual 
+@center @majorheading GRX 2.4.9 User's Manual
 
-@center @chapheading A 2D graphics library for DOS, Linux, X11 and Win32 
+@center @chapheading A 2D graphics library for DOS, Linux, X11 and Win32
 @end ifnottex
 
 @center Based on the original doc written by: Csaba Biegl on August 10, 1992
 @center Updated by: Mariano Alvarez Fernandez on August 17, 2000
-@center Last update: August 14, 2007
+@center Last update: July 10, 2012
 
 @unnumbered Abstract
 
@@ -118,7 +118,7 @@ previously installed)
          -lgrx20S -lSDL -lpthread -L/usr/X11R6/lib -lX11
 
   For x86_64 systems add -m32 or -m64 for 32/64 bits executables
-  and replace /lib by /lib64 as needed
+  and replace /lib by /lib64 or /lib32 as needed
 
 @end example
 
@@ -164,7 +164,7 @@ Available drivers are for:
 * SDL (Win32 and X11) => sdl::fs, sdl::ww, memory
 @end example
 
-The xwin and win32 drivers are windowed. 
+The xwin and win32 drivers are windowed.
 The SDL driver on the same systems can be either fullscreen (::fs) or windowed (::ww).
 
 The optionals gw, gh and nc parameters set the desired default graphics mode.
@@ -807,8 +807,13 @@ functions:
 
 @example
 void GrClearScreen(GrColor bg);
-void GrClearcontext(GrColor bg);
+void GrClearContext(GrColor bg);
 void GrClearClipBox(GrColor bg);
+@end example
+
+Any context can be cleared using this function:
+@example
+void GrClearContextC(GrContext *ctx, GrColor bg);
 @end example
 
 Thanks to the special GrColor definition, you can do more than simple clear
@@ -934,6 +939,40 @@ void GrFloodFill(int x, int y, GrColor border, GrColor c);
 
 flood-fills the area bounded by the color border using x, y like the starting
 point.
+
+Floodspill is a color replacer, replacing color A with color B.
+This is quite useful for highlighting a selected item in a list,  or changing
+a selected color(s) in a multi colored area.
+
+@example
+void GrFloodSpill(int x1, int y1, int x2, int y2,
+                 GrColor old_c, GrColor new_c)
+@end example
+
+replaces old color with new color in the rectangle bounded by x1, y1, x2, y2.
+
+@example
+void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2,
+                  GrColor old_c, GrColor new_c)
+@end example
+
+as above but in the specified context.
+
+@example
+void GrFloodSpill2(int x1, int y1, int x2, int y2,
+                  GrColor old_c1, GrColor new_c1,
+                  GrColor old_c2, GrColor new_c2)
+@end example
+
+replaces 2 colors, a one stop shop for highlighting a selection in a list.
+
+@example
+void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2,
+                  GrColor old_c1, GrColor new_c1,
+                  GrColor old_c2, GrColor new_c2)
+@end example
+
+as above but in the specified context.
 
 The current color value of any pixel in the current context can be obtained
 with:
@@ -2057,22 +2096,24 @@ have been defined in grx20.h to help in creating the control flag for
 GrMouseGetEvent and decoding the various bits in the event structure:
 
 @example
-#define GR_M_MOTION         0x001         /* mouse event flag bits */
+#define GR_M_MOTION         0x001       /* mouse event flag bits */
 #define GR_M_LEFT_DOWN      0x002
 #define GR_M_LEFT_UP        0x004
 #define GR_M_RIGHT_DOWN     0x008
 #define GR_M_RIGHT_UP       0x010
 #define GR_M_MIDDLE_DOWN    0x020
 #define GR_M_MIDDLE_UP      0x040
-#define GR_M_BUTTON_DOWN    (GR_M_LEFT_DOWN | GR_M_MIDDLE_DOWN | \
-                             GR_M_RIGHT_DOWN)
-#define GR_M_BUTTON_UP      (GR_M_LEFT_UP   | GR_M_MIDDLE_UP   | \
-                             GR_M_RIGHT_UP)
-#define GR_M_BUTTON_CHANGE  (GR_M_BUTTON_UP | GR_M_BUTTON_DOWN )
+#define GR_M_BUTTON_DOWN    (GR_M_LEFT_DOWN  | GR_M_MIDDLE_DOWN | \
+                             GR_M_RIGHT_DOWN | GR_M_P4_DOWN | GR_M_P5_DOWN)
+#define GR_M_BUTTON_UP      (GR_M_LEFT_UP    | GR_M_MIDDLE_UP   | \
+                             GR_M_RIGHT_UP   | GR_M_P4_UP  | GR_M_P5_UP)
+#define GR_M_BUTTON_CHANGE  (GR_M_BUTTON_UP  | GR_M_BUTTON_DOWN )
 
-#define GR_M_LEFT           1             /* mouse button index bits */
-#define GR_M_RIGHT          2
-#define GR_M_MIDDLE         4
+#define GR_M_LEFT           0x01        /* mouse button index bits */
+#define GR_M_RIGHT          0x02
+#define GR_M_MIDDLE         0x04
+#define GR_M_P4             0x08        /* wheel rolls up */
+#define GR_M_P5             0x10        /* wheel rolls down */
 
 #define GR_M_KEYPRESS       0x080        /* other event flag bits */
 #define GR_M_POLL           0x100
@@ -2127,7 +2168,7 @@ See the @strong{test/mousetst.c} example.
 
 GRX includes functions to load/save a context from/to a PNM file.
 
-PNM is a group of simple graphics formats from the 
+PNM is a group of simple graphics formats from the
 @uref{http://netpbm.sourceforge.net, NetPbm}
 distribution. NetPbm can convert from/to PNM lots of graphics formats,
 and apply some transformations to PNM files.
@@ -2363,22 +2404,31 @@ X11 version.
 @example
 void GrSetWindowTitle(char *title);
 @end example
-
 GrSetWindowTitle sets the main window title in the X11 an Win32 versions. It
 doesn't do nothing in the DOS and Linux-SvgaLib versions.
 
 @example
 void GrSleep(int msec);
 @end example
-
 This function stops the program execution for msec miliseconds.
+
+@example
+long GrMsecTime( void );
+@end example
+This function gives the current time with millisecond resolution
+
+
+@example
+void GrFlush( void );
+@end example
+This funnction flushes the graphics window. Not dummy because useful only on 
+X11 when switching between graphics and console windows open simultaneously.
 
 @example
  GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,
             char far *memory[4],GrContext *where);
 
 @end example
-
 This function is like GrCreateContext, except that you can specify any valid
 memory frame mode, not only the Screen associated frame mode. It can be used for
 special purposes (see GrBitBlt1bpp for an example).
@@ -2388,7 +2438,6 @@ special purposes (see GrBitBlt1bpp for an example).
       int x1,int y1,int x2,int y2,GrColor fg,GrColor bg);
 
 @end example
-
 This special function does a bitblt from a 1bpp context (a bitmap really),
 using fg and bg like the color+opcode when bit=1 and bit=0 respectively. Here is
 an example:
@@ -2406,7 +2455,6 @@ an example:
    fcolor = GrAllocColor( 255,0,0 );
    bcolor = GrAllocColor( 0,0,255 );
    GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
-
 @end example
 
 @c -----------------------------------------------------------------------------
@@ -2434,13 +2482,13 @@ Compilation of the examples and installation of the header files is allowed
 by setting INCLUDE_GPC_SUPPORT=y in makedef.grx.
 
 The unit files contain at the  beginning instructions to load the required
-libraries (libgrx20..., depending on the system) and addon libraries 
+libraries (libgrx20..., depending on the system) and addon libraries
 (e.g. libpng).
-You can uncomment manually the addons you want. 
+You can uncomment manually the addons you want.
 You can also use the configure script which does that automatically,
 together with editing the makedefs.grx file.
 
-By default they are installed in a @strong{units} directory below the 
+By default they are installed in a @strong{units} directory below the
 INSTALLDIR directory. But you can put them where you like.
 
 @c -----------------------------------------------------------------------------

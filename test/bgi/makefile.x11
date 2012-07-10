@@ -40,10 +40,6 @@ endif
 
 LIBS= $(GRX20X) $(ADDON_LIBS) $(X11LIBS) -lm
 
-ifndef   DEBUG
-LDOPT += -s
-endif
-
 PROGS=               \
 	xbgilink     \
 	xbccbgi      \

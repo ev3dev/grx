@@ -32,10 +32,10 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "GRX 2.4.8, the graphics library";
+    "GRX 2.4.9, the graphics library";
 
 char *animatedtext =
-    "GRX 2.4.8, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "GRX 2.4.9, the graphics library for DJGPPv2, Linux, X11 and Win32";
 
 #define NDEMOS 33
 
@@ -341,7 +341,7 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "GRX 2.4.8";
+    char *t1 = "GRX 2.4.9";
     char *t2 = "test programs launcher";
 
     grt_centered.txo_fgcolor.v = LIGHTGREEN;

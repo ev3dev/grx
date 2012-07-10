@@ -1,4 +1,4 @@
-Welcome to GRX 2.4.8!
+Welcome to GRX 2.4.9!
 
 GRX is a 2D graphics C library originaly written by Csaba Biegl for
 DJ Delorie's DOS port of the GCC compiler. Now it support a big range
@@ -68,7 +68,7 @@ GRX installation instructions
 Requirements:
 -------------
 
-  The source files and fonts:  grx248.tar.gz or grx248.zip
+  The source files and fonts:  grx249.tar.gz or grx249.zip
   This document:               readme
 
 A. Unpacking the GRX archive
@@ -87,12 +87,12 @@ A. Unpacking the GRX archive
 
   3) unpack the GRX archive:
 
-         tar xzvf grx248.tar.gz  (1)
+         tar xzvf grx249.tar.gz  (1)
      or
-         unzip grx248.zip        (2)
+         unzip grx249.zip        (2)
 
-     (1) This will create the subdirectory 'grx248'.
-     (2) This will create the subdirectory 'contrib/grx248'.
+     (1) This will create the subdirectory 'grx249'.
+     (2) This will create the subdirectory 'contrib/grx249'.
 
 B. Compiling GRX
 ----------------
@@ -111,7 +111,7 @@ B. Compiling GRX
      makefile.sdl for SDL driver on MingW and X11
 
      This process generates the GRX lib in the "lib/---" (where --- is
-     dj2, w32, lnx, x11 or sdl) subdir and some utility programs in the
+     dj2, w32, lnx, x11) subdir and some utility programs in the
      "bin" subdir.
 
      Note for DJGPP/Mingw users: If you set in makedefs.grx HAVE_UNIX_TOOLS=n
@@ -295,7 +295,7 @@ Pascal users
 Help
 ====
 
-  Read the user's guide in the "doc/grx248um.htm" file. If you ran
+  Read the user's guide in the "doc/grx249um.htm" file. If you ran
   'make <your makefile> install-info', just type 'info grx' to view
   the info version of the manual.
 

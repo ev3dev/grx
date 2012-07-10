@@ -78,6 +78,23 @@
  **     1 - revert the previous change: was saturating GrMouseInfo->queue
  **         for fast paintings
  **     2 - GetUpdateRect() gave wrong UpdateRect !!!
+ **
+ ** Changes by Peter Schauer <peterschauer@gmx.net> 12/05/2008
+ **   - vdrivers/vd_win32.c has a race condition with the loadcolor
+ **     SetDIBColorTable function call, which happens sometimes on
+ **     fast multiprocessor machines. This affects only 8 bpp modes,
+ **     as loadcolor is not called in 32 bpp modes.
+ **     If the WndThread is currently executing its BitBlt during WM_PAINT
+ **     processing and the GRX user thread is calling GrAllocColor, the
+ **     SetDIBColorTable function call fails, as the DC is locked by the BitBlt.
+ **     This results in the color not being set, which could also happen
+ **     during the initial setting of the VGA colors in _GrResetColors.
+ **     My proposed fix delays the SetDIBColorTable call and moves it to
+ **     the WM_PAINT processing, making it synchronous with the BitBlt call.
+ **
+ ** Changes by M.Alvarez (malfer@telefonica.net) 01/12/2007
+ **   - Added videomodes for wide monitors
+ **
  **/
 
 #include "libwin32.h"
@@ -95,10 +112,10 @@ HDC hDCMem = NULL;
 
 CRITICAL_SECTION _csEventQueue;
 W32Event *_W32EventQueue = NULL;
-int _W32EventQueueSize = 0;
-int _W32EventQueueRead = 0;
-int _W32EventQueueWrite = 0;
-int _W32EventQueueLength = 0;
+volatile int _W32EventQueueSize = 0;
+volatile int _W32EventQueueRead = 0;
+volatile int _W32EventQueueWrite = 0;
+volatile int _W32EventQueueLength = 0;
 
 static HBITMAP hBmpDIB = NULL;
 
@@ -111,6 +128,13 @@ static HANDLE mainThread   = INVALID_HANDLE_VALUE;
 static volatile int isWindowThreadRunning = 0;
 static volatile int isMainWaitingTermination = 0;
 
+struct _GR_modifiedColors {
+    int modified;
+    RGBQUAD color;
+};
+static struct _GR_modifiedColors modifiedColors[256];
+static volatile int isColorModified = 0;
+
 static DWORD WINAPI WndThread(void *param);
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
                                 LPARAM lParam);
@@ -122,8 +146,12 @@ static void loadcolor(int c, int r, int g, int b)
     color.rgbGreen = g;
     color.rgbRed = r;
     color.rgbReserved = 0;
-    SetDIBColorTable(hDCMem, c, 1, &color);
-    InvalidateRect(hGRXWnd, NULL, FALSE);        
+    if (c >= 0 && c <= 256) {
+        modifiedColors[c].color = color;
+        modifiedColors[c].modified = 1;
+        isColorModified = 1;
+        InvalidateRect(hGRXWnd, NULL, FALSE);        
+    }
 }
 
 static HBITMAP CreateDIB8(HDC hdc, int w, int h, char **pBits)
@@ -295,6 +323,10 @@ static GrVideoMode modes[] = {
     {TRUE, 8, 1024, 768, 0x00, 1024, 0, &grxwinext8},
     {TRUE, 8, 1280, 1024, 0x00, 1280, 0, &grxwinext8},
     {TRUE, 8, 1600, 1200, 0x00, 1600, 0, &grxwinext8},
+    {TRUE, 8, 1440, 900, 0x00, 1440, 0, &grxwinext8},
+    {TRUE, 8, 1680, 1050, 0x00, 1680, 0, &grxwinext8},
+    {TRUE, 8, 1920, 1200, 0x00, 1920, 0, &grxwinext8},
+    {TRUE, 8, 2560, 1600, 0x00, 2560, 0, &grxwinext8},
 
     {TRUE, 24, 320, 240, 0x00, 960, 0, &grxwinext24},
     {TRUE, 24, 640, 480, 0x00, 1920, 0, &grxwinext24},
@@ -302,6 +334,10 @@ static GrVideoMode modes[] = {
     {TRUE, 24, 1024, 768, 0x00, 3072, 0, &grxwinext24},
     {TRUE, 24, 1280, 1024, 0x00, 3840, 0, &grxwinext24},
     {TRUE, 24, 1600, 1200, 0x00, 4800, 0, &grxwinext24},
+    {TRUE, 24, 1440, 900, 0x00, 4320, 0, &grxwinext24},
+    {TRUE, 24, 1680, 1050, 0x00, 5040, 0, &grxwinext24},
+    {TRUE, 24, 1920, 1200, 0x00, 5760, 0, &grxwinext24},
+    {TRUE, 24, 2560, 1600, 0x00, 7680, 0, &grxwinext24},
 
     {FALSE, 0, 9999, 9999, 0x00, 0, 0, NULL}
 };
@@ -595,18 +631,43 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
           }
         return 0;
 
+    case WM_MOUSEWHEEL:
+          {
+            kbstat = convertwin32keystate();
+            /* twice to simulate down up */
+            EnqueueW32Event(uMsg, wParam, lParam, kbstat); 
+            EnqueueW32Event(uMsg, wParam, lParam, kbstat);
+          }
+        return 0;
+
+
     case WM_PAINT:
         {
+            HDC hDC;
             PAINTSTRUCT ps;
 
-            if (BeginPaint(hWnd, &ps)){
-                BitBlt(ps.hdc,
-                       ps.rcPaint.left, ps.rcPaint.top,
-                       ps.rcPaint.right - ps.rcPaint.left + 1,
-                       ps.rcPaint.bottom - ps.rcPaint.top + 1,
-                       hDCMem, ps.rcPaint.left, ps.rcPaint.top, SRCCOPY);
-                EndPaint(hWnd, &ps);
+            if (isColorModified) {
+                int c;
+
+                isColorModified = 0;
+                for (c = 0; c < 256; c++) {
+                    if (modifiedColors[c].modified) {
+                        int res;
+
+                        modifiedColors[c].modified = 0;
+                            if ((res = SetDIBColorTable(hDCMem, c, 1, &modifiedColors[c].color)) != 1)
+                            DBGPRINTF(DBG_DRIVER,("SetDIBColorTable returned %d (%ld) color %d\n", res, GetLastError(), c));
+                    }
+                }
             }
+
+            hDC = BeginPaint(hWnd, &ps);
+            BitBlt(hDC,
+                   ps.rcPaint.left, ps.rcPaint.top,
+                   ps.rcPaint.right - ps.rcPaint.left + 1,
+                   ps.rcPaint.bottom - ps.rcPaint.top + 1,
+                   hDCMem, ps.rcPaint.left, ps.rcPaint.top, SRCCOPY);
+            EndPaint(hWnd, &ps);
         }
         return 0;
 

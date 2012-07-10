@@ -28,3 +28,6 @@ void GrSleep( int msec )
   delay( msec );
 }
 
+void GrFlush( void)
+{
+}

@@ -36,12 +36,6 @@ else
 EXECBITS = 0755
 endif
 
-ifeq ($(BUILD_X86_64),y)
-INSLIBSUBDIR = lib64
-else
-INSLIBSUBDIR = lib
-endif
-
 GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 
 GRX20SH = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.so
@@ -93,10 +87,6 @@ endif
 
 O=      $(STD_O)                \
 	$(ADDON_O)              \
-	fdrivers/egavga1.o      \
-	fdrivers/ega4.o         \
-	fdrivers/svga4.o        \
-	fdrivers/vga8x.o        \
 	fdrivers/ram24.o        \
 	fdrivers/ram32l.o       \
 	fdrivers/ram32h.o       \
@@ -107,6 +97,13 @@ O=      $(STD_O)                \
 	fdrivers/svga8.o        \
 	mouse/lnxkeys.o         \
 	misc/lnxmisc.o
+
+ifeq ($(BUILD_X86_64),n)
+  O += fdrivers/egavga1.o      \
+	fdrivers/ega4.o         \
+	fdrivers/svga4.o        \
+	fdrivers/vga8x.o
+endif
 
 ifeq ($(INCLUDE_BGI_SUPPORT),y)
   O += $(BGI_O)
@@ -184,42 +181,42 @@ endif
 	rm -f $(UTILP) $(UTILPS)
 
 install: libst libsh
-	install -m 0755 -d $(INSTALLDIR)/$(INSLIBSUBDIR)
-	install -m 0755 -d $(INSTALLDIR)/include
-	install -m 0644 $(GRX20ST) $(INSTALLDIR)/$(INSLIBSUBDIR)
+	install -m 0755 -d $(DESTDIR)$(libdir)
+	install -m 0755 -d $(DESTDIR)$(includedir)
+	install -m 0644 $(GRX20ST) $(DESTDIR)$(libdir)
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-	install -m 0755 $(GRX20SHna) $(INSTALLDIR)/$(INSLIBSUBDIR)
-	ln -sf $(notdir $(GRX20SHna)) $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20SHli))
-	ln -sf $(notdir $(GRX20SHli)) $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20SH))
+	install -m 0755 $(GRX20SHna) $(DESTDIR)$(libdir)
+	ln -sf $(notdir $(GRX20SHna)) $(DESTDIR)$(libdir)/$(notdir $(GRX20SHli))
+	ln -sf $(notdir $(GRX20SHli)) $(DESTDIR)$(libdir)/$(notdir $(GRX20SH))
 endif
-	install -m 0644 ../include/grx20.h $(INSTALLDIR)/include
-	install -m 0644 ../include/grxkeys.h $(INSTALLDIR)/include
-	install -m 0644 ../include/libbcc.h $(INSTALLDIR)/include
+	install -m 0644 ../include/grx20.h $(DESTDIR)$(includedir)
+	install -m 0644 ../include/grxkeys.h $(DESTDIR)$(includedir)
+	install -m 0644 ../include/libbcc.h $(DESTDIR)$(includedir)
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-	install -m 0644 ../addons/print/grxprint.h $(INSTALLDIR)/include
+	install -m 0644 ../addons/print/grxprint.h $(DESTDIR)$(includedir)
 endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	install -m 0755 -d $(INSTALLDIR)/units
-	install -m 0644 ../pascal/grx.pas $(INSTALLDIR)/units
-	install -m 0644 ../pascal/bgi/graph.pas $(INSTALLDIR)/units
+	install -m 0755 -d $(DESTDIR)$(unitsdir)
+	install -m 0644 ../pascal/grx.pas $(DESTDIR)$(unitsdir)
+	install -m 0644 ../pascal/bgi/graph.pas $(DESTDIR)$(unitsdir)
 endif
 
 uninstall:
-	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20ST))
+	rm -f $(DESTDIR)$(libdir)/$(notdir $(GRX20ST))
 ifeq ($(INCLUDE_SHARED_SUPPORT),y)
-	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20SH))
-	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20SHli))
-	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(GRX20SHna))
+	rm -f $(DESTDIR)$(libdir)/$(notdir $(GRX20SH))
+	rm -f $(DESTDIR)$(libdir)/$(notdir $(GRX20SHli))
+	rm -f $(DESTDIR)$(libdir)/$(notdir $(GRX20SHna))
 endif
-	rm -f $(INSTALLDIR)/include/grx20.h
-	rm -f $(INSTALLDIR)/include/grxkeys.h
-	rm -f $(INSTALLDIR)/include/libbcc.h
+	rm -f $(DESTDIR)$(includedir)/grx20.h
+	rm -f $(DESTDIR)$(includedir)/grxkeys.h
+	rm -f $(DESTDIR)$(includedir)/libbcc.h
 ifeq ($(INCLUDE_PRINTING_CODE),y)
-	rm -f $(INSTALLDIR)/include/grxprint.h
+	rm -f $(DESTDIR)$(includedir)/grxprint.h
 endif
 ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	rm -f $(INSTALLDIR)/units/grx.pas
-	rm -f $(INSTALLDIR)/units/graph.pas
+	rm -f $(DESTDIR)$(unitsdir)/grx.pas
+	rm -f $(DESTDIR)$(unitsdir)/graph.pas
 endif
 
 setsuid: $(UTILPS)
@@ -231,39 +228,39 @@ else
 endif
 
 install-info:
-	install -m 0755 -d $(INSTALLDIR)/info
-	install -m 0644 ../doc/grx*um.inf $(INSTALLDIR)/info/grx.info
-	for info_dir_file in $(INSTALLDIR)/info/dir /etc/info-dir; do \
-	  if [ -w $$info_dir_file ]; then \
-	    install-info --dir-file=$$info_dir_file $(INSTALLDIR)/info/grx.info; \
+	install -m 0755 -d $(DESTDIR)$(infodir)
+	install -m 0644 ../doc/grx*um.inf $(DESTDIR)$(infodir)/grx.info
+	for info_dir_file in $(DESTDIR)$(infodir)/dir /etc/info-dir; do \
+	  if [ -w $info_dir_file ]; then \
+	    install-info --dir-file=$info_dir_file $(DESTDIR)$(infodir)/grx.info; \
 	  fi; \
 	done
 
 uninstall-info:
-	rm -f $(INSTALLDIR)/info/grx.info
-	for info_dir_file in $(INSTALLDIR)/info/dir /etc/info-dir; do \
-	  if [ -w $$info_dir_file ]; then \
-	    install-info --dir-file=$$info_dir_file -r grx; \
+	for info_dir_file in $(DESTDIR)$(infodir)/dir /etc/info-dir; do \
+	  if [ -w $info_dir_file ]; then \
+	    install-info --dir-file=$info_dir_file -r grx; \
 	  fi; \
 	done
+	rm -f $(DESTDIR)$(infodir)/grx.info
 
 install-bin: $(UTILP) $(UTILPS)
-	install -m 0755 -d $(INSTALLDIR)/bin
-	install -m 0755 ../bin/bin2c $(INSTALLDIR)/bin
-	install -m 0755 ../bin/fnt2c $(INSTALLDIR)/bin
-	install -m 0755 ../bin/lfbinfo $(INSTALLDIR)/bin
-	install -m $(EXECBITS) ../bin/modetest $(INSTALLDIR)/bin
+	install -m 0755 -d $(DESTDIR)$(bindir)
+	install -m 0755 ../bin/bin2c $(DESTDIR)$(bindir)
+	install -m 0755 ../bin/fnt2c $(DESTDIR)$(bindir)
+	install -m 0755 ../bin/lfbinfo $(DESTDIR)$(bindir)
+	install -m $(EXECBITS) ../bin/modetest $(DESTDIR)$(bindir)
 
 uninstall-bin:
-	rm -f $(INSTALLDIR)/bin/bin2c
-	rm -f $(INSTALLDIR)/bin/fnt2c
-	rm -f $(INSTALLDIR)/bin/lfbinfo
-	rm -f $(INSTALLDIR)/bin/modetest
+	rm -f $(DESTDIR)$(bindir)/bin2c
+	rm -f $(DESTDIR)$(bindir)/fnt2c
+	rm -f $(DESTDIR)$(bindir)/lfbinfo
+	rm -f $(DESTDIR)$(bindir)/modetest
 
 ifdef GRX_DEFAULT_FONT_PATH
 install-fonts:
-	install -m 0755 -d $(GRX_DEFAULT_FONT_PATH)
-	install -m 0644 ../fonts/* $(GRX_DEFAULT_FONT_PATH)
+	install -m 0755 -d $(DESTDIR)$(GRX_DEFAULT_FONT_PATH)
+	install -m 0644 ../fonts/* $(DESTDIR)$(GRX_DEFAULT_FONT_PATH)
 uninstall-fonts:
 	rm -f $(GRX_DEFAULT_FONT_PATH)/*
 endif

@@ -26,6 +26,9 @@
  ** Do not treat WM_PAINT messages here. They are delt with in vd_win32.c.
  ** This produced saturation of GRX event queue        and gobbling of
  ** keyboard/mouse events there (compare behavior of test/mousetst)
+ **
+ ** Contribution by Richard Sanders (richard@dogcreek.ca) 02/04/2009
+ ** Synchronisation of windows and grx mouse cursors
  **/
 
 #include "libwin32.h"
@@ -137,10 +140,15 @@ void GrMouseSetLimits(int x1, int y1, int x2, int y2)
 
 void GrMouseWarp(int x, int y)
 {
+    POINT point;
+
     MOUINFO->xpos = imax(MOUINFO->xmin, imin(MOUINFO->xmax, x));
     MOUINFO->ypos = imax(MOUINFO->ymin, imin(MOUINFO->ymax, y));
     GrMouseUpdateCursor();
-    SetCursorPos(MOUINFO->xpos, MOUINFO->ypos);
+    point.x = MOUINFO->xpos;
+    point.y = MOUINFO->ypos;
+    ClientToScreen(hGRXWnd, &point);
+    SetCursorPos(point.x, point.y);
 }
 
 void GrMouseEventEnable(int enable_kb, int enable_ms)
@@ -175,7 +183,7 @@ void GrMouseGetEventT(int flags, GrMouseEvent * ev, long tout)
             (tout == 0L) || (MOUINFO->moved && (flags & GR_M_MOTION))) {
             fill_mouse_ev((*ev),
                           mou_buttons, mou_buttons,
-                          GR_M_LEFT, GR_M_MIDDLE, GR_M_RIGHT, kbd_lastmod);
+                          GR_M_LEFT, GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, kbd_lastmod);
             if (ev->flags)        /* something happend */
                 real_dtime(ev->dtime, evt_lasttime);
             else
@@ -275,7 +283,7 @@ static int DequeueW32Event(GrMouseEvent * ev)
         MOUINFO->xpos = LOWORD(evaux.lParam);
         MOUINFO->ypos = HIWORD(evaux.lParam);
         fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
-                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+                      GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, evaux.kbstat);
         mou_buttons = buttons;
         MOUINFO->moved = FALSE;
         kbd_lastmod = evaux.kbstat;
@@ -286,7 +294,7 @@ static int DequeueW32Event(GrMouseEvent * ev)
         MOUINFO->xpos = LOWORD(evaux.lParam);
         MOUINFO->ypos = HIWORD(evaux.lParam);
         fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
-                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+                      GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, evaux.kbstat);
         mou_buttons = buttons;
         MOUINFO->moved = FALSE;
         kbd_lastmod = evaux.kbstat;
@@ -297,7 +305,7 @@ static int DequeueW32Event(GrMouseEvent * ev)
         MOUINFO->xpos = LOWORD(evaux.lParam);
         MOUINFO->ypos = HIWORD(evaux.lParam);
         fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
-                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+                      GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, evaux.kbstat);
         mou_buttons = buttons;
         MOUINFO->moved = FALSE;
         kbd_lastmod = evaux.kbstat;
@@ -308,7 +316,7 @@ static int DequeueW32Event(GrMouseEvent * ev)
         MOUINFO->xpos = LOWORD(evaux.lParam);
         MOUINFO->ypos = HIWORD(evaux.lParam);
         fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
-                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+                      GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, evaux.kbstat);
         mou_buttons = buttons;
         MOUINFO->moved = FALSE;
         kbd_lastmod = evaux.kbstat;
@@ -319,7 +327,7 @@ static int DequeueW32Event(GrMouseEvent * ev)
         MOUINFO->xpos = LOWORD(evaux.lParam);
         MOUINFO->ypos = HIWORD(evaux.lParam);
         fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
-                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+                      GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, evaux.kbstat);
         mou_buttons = buttons;
         MOUINFO->moved = FALSE;
         kbd_lastmod = evaux.kbstat;
@@ -330,7 +338,19 @@ static int DequeueW32Event(GrMouseEvent * ev)
         MOUINFO->xpos = LOWORD(evaux.lParam);
         MOUINFO->ypos = HIWORD(evaux.lParam);
         fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
-                      GR_M_MIDDLE, GR_M_RIGHT, evaux.kbstat);
+                      GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, evaux.kbstat);
+        mou_buttons = buttons;
+        MOUINFO->moved = FALSE;
+        kbd_lastmod = evaux.kbstat;
+        return 1;
+
+    case WM_MOUSEWHEEL:
+        buttons = mou_buttons ^ (((short)HIWORD(evaux.wParam) > 0) ?
+                                   GR_M_P4 : GR_M_P5);
+        MOUINFO->xpos = LOWORD(evaux.lParam);
+        MOUINFO->ypos = HIWORD(evaux.lParam);
+        fill_mouse_ev((*ev), mou_buttons, buttons, GR_M_LEFT,
+                      GR_M_MIDDLE, GR_M_RIGHT, GR_M_P4, GR_M_P5, evaux.kbstat);
         mou_buttons = buttons;
         MOUINFO->moved = FALSE;
         kbd_lastmod = evaux.kbstat;

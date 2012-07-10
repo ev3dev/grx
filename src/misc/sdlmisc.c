@@ -28,3 +28,7 @@ void GrSleep(int msec)
 {
         SDL_Delay(msec);
 }
+
+void GrFlush( void)
+{
+}

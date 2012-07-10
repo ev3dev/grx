@@ -26,7 +26,7 @@ uses GPC, GRX, Test;
 type WrkString       = String[80];
 
 var  f               : Text;
-     Line            : WrkString;
+     Line,msg        : WrkString;
      nb              : Integer;
      convex,collect  : boolean;
      k               : GrKeyType;
@@ -50,7 +50,7 @@ end;
 
 procedure SpeedTest;
 var
-   pts : array[0..3,0..1] of Integer;
+   pts : array[0..3,0..1] of CInteger;
    ww  : Integer = GrSizeX div 10;
    hh  : Integer = GrSizeY div 10;
    sx  : Integer = (GrSizeX - 2*ww) div 32;
@@ -109,10 +109,11 @@ begin
       Inc(pts[3][1],sy);
    end;
    t3 := GetCPUTime(mu3);
-   WriteStr(exit_message,
-      "Times to scan 1024 polygons\n",
-      '   with GrFilledPolygon: ',(t2+mu2/1e6)-(t1+mu1/1e6):0:2," (s)\n",
-      '   with GrFilledConvexPolygon: ',(t3+mu3/1e6)-(t2+mu2/1e6):0:2," (s)\n");
+   GrTextXY(0, 0, 'Times to scan 1024 polygons', white, black);
+   WriteStr(msg, ' with GrFilledPolygon: ',((t2+mu2/1e6)-(t1+mu1/1e6)):0:2,' (s)');
+   GrTextXY(0, 18, msg, white, black);
+   WriteStr(msg, '  with GrFilledConvexPolygon: ',((t3+mu3/1e6)-(t2+mu2/1e6)):0:2,' (s)');
+   GrTextXY(0, 36, msg, white, black);
 end;
 
 begin
@@ -142,5 +143,6 @@ begin
    end;
    Close(f);
    SpeedTest;
+   k:=GrKeyRead;
    EndTest
 end.
