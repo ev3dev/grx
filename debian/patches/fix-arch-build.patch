@@ -1,0 +1,22 @@
+Description: fix build on arm
+ arm does not use -m32 flag for gcc/ld
+Author: David Lechner <david@lechnology.com>
+
+---
+
+--- grx-2.4.9.orig/makedefs.grx
++++ grx-2.4.9/makedefs.grx
+@@ -129,10 +129,11 @@ prefix=/usr/local
+ #GRX_DEFAULT_FONT_PATH=${datadir}/grx/fonts
+ 
+ # check for i386 or x86_64 build
+-ifeq ($(BUILD_X86_64),y)
++ifeq ($(ARCH),amd64)
+ CCOPT += -m64
+ LDOPT += -m64
+-else
++endif
++ifeq ($(ARCH),i386)
+ CCOPT += -m32
+ LDOPT += -m32
+ endif

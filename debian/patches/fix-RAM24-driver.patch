@@ -1,0 +1,31 @@
+Description: Fix RAM24 driver
+ Driver was not setting correct offsets for RGB causing everything to be red.
+Author: David Lechner <david@lechnology.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- grx-2.4.9.orig/src/vdrivers/vd_mem.c
++++ grx-2.4.9/src/vdrivers/vd_mem.c
+@@ -109,7 +109,11 @@ static GrVideoModeExt gr24ext = {
+     NULL,                               /* frame driver override */
+     NULL,                               /* frame buffer address */
+     { 8, 8, 8 },                        /* color precisions */
++#ifdef GRX_USE_RAM3x8
+     { 0, 0, 0 },                        /* color component bit positions */
++#else
++    { 0, 8, 16 },                        /* color component bit positions */
++#endif
+     GR_VMODEF_MEMORY,                   /* mode flag bits */
+     mem_setmode,                        /* mode set */
+     NULL,                               /* virtual size set */

@@ -1,0 +1,86 @@
+Description: Better console switching
+ Console switching was unconventional and linked with the keyboard driver.
+Author: David Lechner <david@lechnology.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- a/src/vdrivers/vd_lnxfb.c
++++ b/src/vdrivers/vd_lnxfb.c
+@@ -54,6 +54,8 @@
+ static struct fb_var_screeninfo fbvar;
+ static char *fbuffer = NULL;
+ static int ingraphicsmode = 0;
++static GrContext *grc;
++static char* frame_addr[4];
+ 
+ int _lnxfb_waiting_to_switch_console = 0;
+ 
+@@ -178,10 +180,47 @@
+     }
+ }
+ 
++void _LnxfbAcqsigHandle(int sig);
+ void _LnxfbRelsigHandle(int sig)
+ {
+-    _lnxfb_waiting_to_switch_console = 1;
++    if (!ingraphicsmode) return;
++    if (ttyfd < 0) return;
++
++    /* create a new context from the screen */
++    grc = GrCreateContext(GrScreenX(), GrScreenY(), NULL, NULL);
++    if (grc != NULL) {
++    GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
++             GrScreenX()-1, GrScreenY()-1, GrWRITE);
++    }
++    /* swap out the screen memory with the new context */
++    frame_addr[0] = GrScreenContext()->gc_baseaddr[0];
++    frame_addr[1] = GrScreenContext()->gc_baseaddr[1];
++    frame_addr[2] = GrScreenContext()->gc_baseaddr[2];
++    frame_addr[3] = GrScreenContext()->gc_baseaddr[3];
++    GrScreenContext()->gc_baseaddr[0] = grc->gc_baseaddr[0];
++    GrScreenContext()->gc_baseaddr[1] = grc->gc_baseaddr[1];
++    GrScreenContext()->gc_baseaddr[2] = grc->gc_baseaddr[2];
++    GrScreenContext()->gc_baseaddr[3] = grc->gc_baseaddr[3];
++    ioctl(ttyfd, VT_RELDISP, 1);
++    signal(SIGUSR1, _LnxfbAcqsigHandle);
++}
++
++void _LnxfbAcqsigHandle(int sig)
++{
++    if (!ingraphicsmode) return;
++    if (ttyfd < 0) return;
++    ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
+     signal(SIGUSR1, _LnxfbRelsigHandle);
++    /* restore framebuffer address and content */
++    GrScreenContext()->gc_baseaddr[0] = frame_addr[0];
++    GrScreenContext()->gc_baseaddr[1] = frame_addr[1];
++    GrScreenContext()->gc_baseaddr[2] = frame_addr[2];
++    GrScreenContext()->gc_baseaddr[3] = frame_addr[3];
++    if (grc != NULL) {
++        GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
++                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
++        GrDestroyContext(grc);
++    }
+ }
+ 
+ static void loadcolor(int c, int r, int g, int b)
+@@ -214,7 +253,7 @@
+ 	ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
+         vtm.mode = VT_PROCESS;
+         vtm.relsig = SIGUSR1;
+-        vtm.acqsig = 0;
++        vtm.acqsig = SIGUSR1;
+         ioctl(ttyfd, VT_SETMODE, &vtm);
+         signal(SIGUSR1, _LnxfbRelsigHandle);
+         ingraphicsmode = 1;

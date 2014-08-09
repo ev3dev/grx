@@ -1,0 +1,47 @@
+Description: In Linux framebuffer driver, use actual console fd.
+ The original library uses /dev/tty which causes a problem if the program
+ terminates while not on the active console. So, instead we look up the active
+ console and use the actual file descriptor /dev/ttyN instead.
+
+Author: David Lechner <david@lechnology.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- a/src/vdrivers/vd_lnxfb.c
++++ b/src/vdrivers/vd_lnxfb.c
+@@ -61,6 +61,8 @@
+ {
+     char *fbname;
+     char *default_fbname = "/dev/fb0";
++    char ttyname[12];
++    struct vt_stat vtstat;
+ 
+     if (initted < 0) {
+ 	initted = 0;
+@@ -74,7 +76,14 @@
+ 	ioctl(fbfd, FBIOGET_VSCREENINFO, &fbvar);
+ 	if (fbfix.type != FB_TYPE_PACKED_PIXELS)
+ 	    return FALSE;
+-	ttyfd = open("/dev/tty", O_RDONLY);
++	ttyfd = open("/dev/tty0", O_RDONLY);
++	if (ttyfd == -1)
++	    return FALSE;
++	ioctl(ttyfd, VT_GETSTATE, &vtstat);
++	sprintf(ttyname, "/dev/tty%d", vtstat.v_active);
++	ttyfd = open(ttyname, O_RDONLY);
++	if (ttyfd == -1)
++	    return FALSE;
+ 	initted = 1;
+     }
+     return ((initted > 0) ? TRUE : FALSE);
