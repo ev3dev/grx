@@ -14,19 +14,9 @@ Author: David Lechner <david@lechnology.com>
  _GrFrameDriverSVGA8_LFB,                /* (Super) VGA 256 color */
  _GrFrameDriverSVGA16_LFB,               /* Super VGA 32768/65536 color */
  _GrFrameDriverSVGA24_LFB,               /* Super VGA 16M color */
-@@ -75,7 +77,8 @@
- _GrFrameDriverSDL32L,                   /* SDL 32 bpp padded #2 */
- _GrFrameDriverSDL32H,                   /* SDL 32 bpp padded #2 */
- 
--_GrFrameDriverRAM1,                     /* mono */
-+_GrFrameDriverRAM1_INV,                 /* mono, 0 = white, 1 = black */
-+_GrFrameDriverRAM1,                     /* mono, 1 = white, 0 = black */
- _GrFrameDriverRAM4,                     /* 16 color planar */
- _GrFrameDriverRAM8,                     /* 256 color */
- _GrFrameDriverRAM16,                    /* 32768/65536 color */
 --- a/include/grx20.h
 +++ b/include/grx20.h
-@@ -246,13 +246,16 @@
+@@ -246,6 +246,8 @@
  	GR_frameSDL32L = GR_frameSVGA32L,
  	GR_frameSDL32H = GR_frameSVGA32H,
  	/* ==== linear frame buffer modes  ====== */
@@ -35,18 +25,9 @@ Author: David Lechner <david@lechnology.com>
  	GR_frameSVGA8_LFB,                  /* (Super) VGA 256 color */
  	GR_frameSVGA16_LFB,                 /* Super VGA 32768/65536 color */
  	GR_frameSVGA24_LFB,                 /* Super VGA 16M color */
- 	GR_frameSVGA32L_LFB,                /* Super VGA 16M color padded #1 */
- 	GR_frameSVGA32H_LFB,                /* Super VGA 16M color padded #2 */
- 	/* ====== system RAM frame buffer modes ====== */
--	GR_frameRAM1,                       /* mono */
-+	GR_frameRAM1_INV,                   /* mono, 0 = white, 1 = black */
-+	GR_frameRAM1,                       /* mono, 0 = black, 1 = white */
- 	GR_frameRAM4,                       /* 16 color planar */
- 	GR_frameRAM8,                       /* 256 color */
- 	GR_frameRAM16,                      /* 32768/65536 color */
 --- a/test/speedtst.c
 +++ b/test/speedtst.c
-@@ -190,12 +190,15 @@
+@@ -190,6 +190,8 @@
      case GR_frameSVGA24: return sdl ? "SDL24" : x11 ? "XWIN24" : w32 ? "WIN32_24" : "SVGA24";
      case GR_frameSVGA32L: return sdl ? "SDL32L" : x11 ? "XWIN32L" : w32 ? "WIN32_32L" : "SVGA32L";
      case GR_frameSVGA32H: return sdl ? "SDL32H" : x11 ? "XWIN32H" : w32 ? "WIN32_32H" : "SVGA32H";
@@ -55,17 +36,44 @@ Author: David Lechner <david@lechnology.com>
      case GR_frameSVGA8_LFB: return "LFB8";
      case GR_frameSVGA16_LFB: return "LFB16";
      case GR_frameSVGA24_LFB: return "LFB24";
-     case GR_frameSVGA32L_LFB: return "LFB32L";
-     case GR_frameSVGA32H_LFB: return "LFB32H";
--    case GR_frameRAM1: return "RAM1";
-+    case GR_frameRAM1_INV: return "RAM1-01";
-+    case GR_frameRAM1: return "RAM1-10";
-     case GR_frameRAM4: return "RAM4";
-     case GR_frameRAM8: return "RAM8";
-     case GR_frameRAM16: return "RAM16";
 --- a/src/vdrivers/vd_lnxfb.c
 +++ b/src/vdrivers/vd_lnxfb.c
-@@ -324,6 +324,22 @@
+@@ -191,8 +191,14 @@
+     if (grc == NULL)
+         return;
+     /* copy framebuffer to new context */
+-    GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
+-             GrScreenX()-1, GrScreenY()-1, GrWRITE);
++    if (GrCurrentVideoMode() == &_GrFrameDriverMONO01_LFB) {
++        /* Need to invert the colors on this one. */
++        GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
++                 GrScreenX()-1, GrScreenY()-1, GrXOR);
++    } else {
++        GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
++                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
++    }
+     /*
+      * swap out the framebuffer memory with the new context so that the
+      * application can continue to run in the background without actually
+@@ -223,8 +229,15 @@
+     GrScreenContext()->gc_baseaddr[2] = frame_addr[2];
+     GrScreenContext()->gc_baseaddr[3] = frame_addr[3];
+     /* copy the temporary context back to the framebuffer */
+-    GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
+-             GrScreenX()-1, GrScreenY()-1, GrWRITE);
++    if (GrCurrentVideoMode() == &_GrFrameDriverMONO01_LFB) {
++        /* need to invert the colors on this one */
++        GrClearScreen(GrNOCOLOR);
++        GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
++                 GrScreenX()-1, GrScreenY()-1, GrXOR);
++    } else {
++        GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
++                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
++    }
+     GrDestroyContext(grc);
+     signal(SIGUSR1, _LnxfbRelsigHandle);
+ }
+@@ -330,6 +343,22 @@
      ep->setrwbanks = NULL;
      ep->loadcolor = NULL;
      switch (fbvar.bits_per_pixel) {
@@ -99,26 +107,27 @@ Author: David Lechner <david@lechnology.com>
      &_GrFrameDriverSVGA8_LFB,
      &_GrFrameDriverSVGA16_LFB,
      &_GrFrameDriverSVGA24_LFB,
-@@ -68,6 +70,7 @@
-     &_GrFrameDriverSDL32H,
- #endif
- /* now the drivers for RAM based context */
-+    &_GrFrameDriverRAM1_INV,
-     &_GrFrameDriverRAM1,
-     &_GrFrameDriverRAM4,
-     &_GrFrameDriverRAM8,
 --- a/src/fdrivers/ram1.c
 +++ b/src/fdrivers/ram1.c
-@@ -35,7 +35,7 @@
+@@ -35,7 +35,16 @@
  	GR_int8u far *ptr;
  	GRX_ENTER();
  	ptr = (GR_int8u far *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
 -	GRX_RETURN((GrColor)( (*ptr >> (7 - (x & 7)) ) & 1));
 +	GRX_RETURN((GrColor)( (*ptr >> (x & 7)) & 1));
++}
++
++static INLINE
++GrColor readpixel_inv(GrFrame *c,int x,int y)
++{
++    GR_int8u far *ptr;
++    GRX_ENTER();
++    ptr = (GR_int8u far *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
++    GRX_RETURN((GrColor)(((*ptr >> (x & 7)) & 1) ? 0 : 1));
  }
  
  static INLINE
-@@ -46,12 +46,12 @@
+@@ -46,16 +55,22 @@
  
  	GRX_ENTER();
  	ptr = (GR_int8u far *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
@@ -133,7 +142,17 @@ Author: David Lechner <david@lechnology.com>
  	}
  	GRX_LEAVE();
  }
-@@ -70,8 +70,8 @@
+ 
++static INLINE
++void drawpixel_inv(int x,int y, GrColor color)
++{
++    drawpixel(x, y, GrColorMode(color)|GrColorValue(~color));
++}
++
+ #define maskoper(d,op,s,msk,SF,DF) do {                       \
+     unsigned char _c_ = peek_b##DF(d);                        \
+     poke_b##DF((d), (_c_ & ~(msk)) | ((_c_ op (s)) & (msk))); \
+@@ -70,8 +85,8 @@
    oper = C_OPER(color);
    color &= 1;
    if (!( !color && (oper==C_OR||oper==C_XOR)) && !(color && oper==C_AND) ) {
@@ -144,7 +163,19 @@ Author: David Lechner <david@lechnology.com>
      GR_int8u far *p = (GR_int8u far *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
      GR_repl cv = 0;
      if (color) cv = ~cv;
-@@ -117,7 +117,7 @@
+@@ -109,6 +124,11 @@
+   GRX_LEAVE();
+ }
+ 
++static void drawhline_inv(int x,int y,int h, GrColor color)
++{
++    drawhline(x, y, h, GrColorMode(color)|GrColorValue(~color));
++}
++
+ static void drawvline(int x,int y,int h,GrColor color)
+ {
+ 	unsigned int lwdt, mask, oper;
+@@ -117,7 +137,7 @@
  	oper = C_OPER(color);
  	color &= 1;
  	lwdt = CURC->gc_lineoffset;
@@ -153,10 +184,64 @@ Author: David Lechner <david@lechnology.com>
  	switch (oper) {
  	  case C_XOR:
  	      /* no need to xor anything with 0 */
-@@ -210,3 +210,26 @@
+@@ -150,6 +170,11 @@
+ 	GRX_LEAVE();
+ }
+ 
++static void drawvline_inv(int x,int y,int h, GrColor color)
++{
++    drawvline(x, y, h, GrColorMode(color)|GrColorValue(~color));
++}
++
+ static
+ #include "fdrivers/generic/block.c"
+ 
+@@ -170,7 +195,16 @@
+ 		   GrColor op)
+ {
+     GRX_ENTER();
+-    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt);
++    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt,FALSE);
++    GRX_LEAVE();
++}
++
++static void bltr2r_inv(GrFrame *dst,int dx,int dy,
++                       GrFrame *src,int x,int y,int w,int h,
++                       GrColor op)
++{
++    GRX_ENTER();
++    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt,TRUE);
+     GRX_LEAVE();
+ }
+ 
+@@ -210,3 +244,50 @@
      _GrFrDrvGenericPutScanline
  };
  
++GrFrameDriver _GrFrameDriverMONO01_LFB = {
++    GR_frameMONO01_LFB,         /* frame mode */
++    GR_frameRAM1,               /* compatible RAM frame mode */
++    TRUE,                       /* onscreen */
++    4,                          /* scan line width alignment */
++    1,                          /* number of planes */
++    1,                          /* bits per pixel */
++    16*1024L*1024L,             /* max plane size the code can handle */
++    NULL,
++    readpixel_inv,
++    drawpixel_inv,
++    drawline,
++    drawhline_inv,
++    drawvline_inv,
++    drawblock,
++    drawbitmap,
++    drawpattern,
++    bltr2r,
++    bltr2r_inv,
++    bltr2r_inv,
++    getindexedscanline,
++    _GrFrDrvGenericPutScanline
++};
++
 +GrFrameDriver _GrFrameDriverMONO10_LFB = {
 +    GR_frameMONO10_LFB,         /* frame mode */
 +    GR_frameRAM1,               /* compatible RAM frame mode */
@@ -181,267 +266,32 @@ Author: David Lechner <david@lechnology.com>
 +    _GrFrDrvGenericPutScanline
 +};
 \ No newline at end of file
---- /dev/null
-+++ b/src/fdrivers/ram1_inv.c
-@@ -0,0 +1,239 @@
-+/**
-+ ** ram1_inv.c ---- the mono system RAM frame driver with inverted colors
-+ **
-+ ** Copyright (c) 2014 David Lechner <david@lechnology.com>
-+ ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
-+ ** [e-mail: csaba@vuse.vanderbilt.edu].
-+ **
-+ ** This file is part of the GRX graphics library.
-+ **
-+ ** The GRX graphics library is free software; you can redistribute it
-+ ** and/or modify it under some conditions; see the "copying.grx" file
-+ ** for details.
-+ **
-+ ** This library is distributed in the hope that it will be useful,
-+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-+ **
-+ **/
-+
-+#include "libgrx.h"
-+#include "grdriver.h"
-+#include "allocate.h"
-+#include "arith.h"
-+#include "mempeek.h"
-+#include "memcopy.h"
-+#include "memfill.h"
-+
-+#include "fdrivers/rblit_14_inv.h"
-+
-+/* frame offset address calculation */
-+#define FOFS(x,y,lo)  umuladd32((y),(lo),((x)>>3))
-+
-+static INLINE
-+GrColor readpixel(GrFrame *c,int x,int y)
-+{
-+	GR_int8u far *ptr;
-+	GRX_ENTER();
-+	ptr = (GR_int8u far *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
-+	GRX_RETURN((GrColor)(((*ptr >> (x & 7)) & 1) ? 0 : 1));
-+}
-+
-+static INLINE
-+void drawpixel(int x,int y,GrColor color)
-+{
-+	GR_int8u far *ptr;
-+	GR_int8u cval;
-+
-+	GRX_ENTER();
-+    color = GrColorMode(color)|GrColorValue(~color);
-+	ptr = (GR_int8u far *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
-+	cval = (color & 1) << (x &= 7);
-+	switch(C_OPER(color)) {
-+	    case C_XOR: *ptr ^=  cval; break;
-+	    case C_OR:  *ptr |=  cval; break;
-+	    case C_AND: *ptr &= ~cval; break;
-+	    default:    *ptr  = (*ptr & (~0x80 >> (7 - x))) | cval; break;
-+	}
-+	GRX_LEAVE();
-+}
-+
-+#define maskoper(d,op,s,msk,SF,DF) do {                       \
-+    unsigned char _c_ = peek_b##DF(d);                        \
-+    poke_b##DF((d), (_c_ & ~(msk)) | ((_c_ op (s)) & (msk))); \
-+  } while (0)
-+#define maskset(d,c,msk,DF) \
-+    poke_b##DF((d),(peek_b##DF(d) & ~(msk)) | ((c) & (msk)))
-+
-+static void drawhline(int x,int y,int w,GrColor color) {
-+  int oper;
-+
-+  GRX_ENTER();
-+  color = GrColorMode(color)|GrColorValue(~color);
-+  oper = C_OPER(color);
-+  color &= 1;
-+  if (!( !color && (oper==C_OR||oper==C_XOR)) && !(color && oper==C_AND) ) {
-+    GR_int8u lm = 0xff << (x & 7);
-+    GR_int8u rm = 0xff >> ((-(w + x)) & 7);
-+    GR_int8u far *p = (GR_int8u far *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
-+    GR_repl cv = 0;
-+    if (color) cv = ~cv;
-+    w = ((x+w+7) >> 3) - (x >> 3);
-+    if (w==1) lm &= rm;
-+    if ( ((GR_int8u)(~lm)) ) {
-+	switch(oper) {
-+	  case C_XOR: maskoper(p,^,(GR_int8u)cv,lm,_set,_n); break;
-+	  case C_OR:  maskoper(p,|,(GR_int8u)cv,lm,_set,_n); break;
-+	  case C_AND: maskoper(p,&,(GR_int8u)cv,lm,_set,_n); break;
-+	  default:    maskset(p,(GR_int8u)cv,lm,_n);         break;
-+	}
-+	if (!(--w)) goto done;
-+	++p;
-+    }
-+    if ( ((GR_int8u)(~rm)) ) --w;
-+    if (w) {
-+	switch(oper) {
-+	  case C_XOR: repfill_b_xor(p,cv,w); break;
-+	  case C_OR:  repfill_b_or(p,cv,w);  break;
-+	  case C_AND: repfill_b_and(p,cv,w); break;
-+	  default:    repfill_b(p,cv,w);     break;
-+	}
-+    }
-+    if ( ((GR_int8u)(~rm)) ) {
-+	switch(oper) {
-+	  case C_XOR: maskoper(p,^,(GR_int8u)cv,rm,_set,_n); break;
-+	  case C_OR:  maskoper(p,|,(GR_int8u)cv,rm,_set,_n); break;
-+	  case C_AND: maskoper(p,&,(GR_int8u)cv,rm,_set,_n); break;
-+	  default:    maskset(p,(GR_int8u)cv,rm,_n);         break;
-+	}
-+    }
-+  }
-+done:
-+  GRX_LEAVE();
-+}
-+
-+static void drawvline(int x,int y,int h,GrColor color)
-+{
-+	unsigned int lwdt, mask, oper;
-+	char far *p;
-+	GRX_ENTER();
-+    color = GrColorMode(color)|GrColorValue(~color);
-+	oper = C_OPER(color);
-+	color &= 1;
-+	lwdt = CURC->gc_lineoffset;
-+	mask = 0x01 << (x & 7);
-+	switch (oper) {
-+	  case C_XOR:
-+	      /* no need to xor anything with 0 */
-+	      if (color) {
-+		p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
-+		colfill_b_xor(p,lwdt,mask,h);
-+	      }
-+	      break;
-+	  case C_OR:
-+	      /* no need to or anything with 0 */
-+	      if (color) {
-+	    do_OR:
-+		p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
-+		colfill_b_or(p,lwdt,mask,h);
-+	      }
-+	      break;
-+	  case C_AND:
-+	      /* no need to and anything with 1 */
-+	      if (!color) {
-+	    do_AND:
-+		mask = ~mask;
-+		p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
-+		colfill_b_and(p,lwdt,mask,h);
-+	      }
-+	      break;
-+	  default:
-+	      if (color) goto do_OR;
-+	      goto do_AND;
-+	}
-+	GRX_LEAVE();
-+}
-+
-+static
-+#include "fdrivers/generic/block.c"
-+
-+static
-+#include "fdrivers/generic/line.c"
-+
-+static
-+#include "fdrivers/generic/bitmap.c"
-+
-+static
-+#include "fdrivers/generic/pattern.c"
-+
-+static
-+#include "fdrivers/generic/bitblt.c"
-+
-+static void bltr2r(GrFrame *dst,int dx,int dy,
-+		   GrFrame *src,int x,int y,int w,int h,
-+		   GrColor op)
-+{
-+    GRX_ENTER();
-+    _GR_rblit_14_inv(dst,dx,dy,src,x,y,w,h,op,1,bitblt);
-+    GRX_LEAVE();
-+}
-+
-+
-+/* -------------------------------------------------------------------- */
-+
-+static
-+#include "fdrivers/generic/getiscl.c"
-+
-+/* -------------------------------------------------------------------- */
-+
-+GrFrameDriver _GrFrameDriverRAM1_INV = {
-+    GR_frameRAM1_INV,           /* frame mode */
-+    GR_frameUndef,              /* compatible RAM frame mode */
-+    FALSE,                      /* onscreen */
-+    4,                          /* scan line width alignment */
-+    1,                          /* number of planes */
-+    1,                          /* bits per pixel */
-+#ifdef __TURBOC__
-+    65520L,                     /* max plane size the code can handle */
-+#else
-+    16*1024L*1024L,             /* max plane size the code can handle */
-+#endif
-+    NULL,
-+    readpixel,
-+    drawpixel,
-+    drawline,
-+    drawhline,
-+    drawvline,
-+    drawblock,
-+    drawbitmap,
-+    drawpattern,
-+    bltr2r,
-+    NULL,
-+    NULL,
-+    getindexedscanline,
-+    _GrFrDrvGenericPutScanline
-+};
-+
-+GrFrameDriver _GrFrameDriverMONO01_LFB = {
-+    GR_frameMONO01_LFB,         /* frame mode */
-+    GR_frameRAM1,               /* compatible RAM frame mode */
-+    TRUE,                       /* onscreen */
-+    4,                          /* scan line width alignment */
-+    1,                          /* number of planes */
-+    1,                          /* bits per pixel */
-+    16*1024L*1024L,             /* max plane size the code can handle */
-+    NULL,
-+    readpixel,
-+    drawpixel,
-+    drawline,
-+    drawhline,
-+    drawvline,
-+    drawblock,
-+    drawbitmap,
-+    drawpattern,
-+    bltr2r,
-+    bltr2r,
-+    bltr2r,
-+    getindexedscanline,
-+    _GrFrDrvGenericPutScanline
-+};
-\ No newline at end of file
---- a/src/stdobjs.mak
-+++ b/src/stdobjs.mak
-@@ -38,9 +38,11 @@
- 	$(OP)fdrivers/pblitv2v$(OX) \
- 	$(OP)fdrivers/ram1$(OX)     \
- 	$(OP)fdrivers/ram16$(OX)    \
-+	$(OP)fdrivers/ram1_inv$(OX) \
- 	$(OP)fdrivers/ram4$(OX)     \
- 	$(OP)fdrivers/ram8$(OX)     \
--	$(OP)fdrivers/rblit_14$(OX)
-+	$(OP)fdrivers/rblit_14$(OX) \
-+	$(OP)fdrivers/rblit_14_inv$(OX)
- 
- STD_3 = $(OP)fonts/fdv_bgi$(OX)     \
- 	$(OP)fonts/fdv_grx$(OX)     \
 --- a/src/fdrivers/rblit_14.c
 +++ b/src/fdrivers/rblit_14.c
-@@ -104,8 +104,8 @@
+@@ -86,6 +86,13 @@
+   GRX_LEAVE();
+ }
+ 
++void invert_scanline(char far *sptr,int w)
++{
++  GRX_ENTER();
++  while (w--)
++    sptr[w] = ~sptr[w];
++  GRX_LEAVE();
++}
+ 
+ extern void _GR_shift_scanline(GR_int8u far **dst,
+ 			       GR_int8u far **src,
+@@ -96,7 +103,7 @@
+ 
+ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
+ 		  GrFrame *src,int x,int y,int w,int h,
+-		  GrColor op, int planes, _GR_blitFunc bitblt)
++		  GrColor op, int planes, _GR_blitFunc bitblt, int invert)
+ {
+     int pl;
+     GRX_ENTER();
+@@ -104,8 +111,8 @@
        GR_int32u doffs, soffs;
        int oper    = C_OPER(op);
        int shift   = ((int)(x&7)) - ((int)(dx&7));
@@ -452,208 +302,60 @@ Author: David Lechner <david@lechnology.com>
        int ws      = ((x+w+7) >> 3) - (x >> 3);
        int wd      = ((dx+w+7) >> 3) - (dx >> 3);
        int dskip   = dst->gf_lineoffset;
---- /dev/null
-+++ b/src/fdrivers/rblit_14_inv.c
-@@ -0,0 +1,178 @@
-+/**
-+ ** rblit_14.c ---- ram to ram blit support functions for 1bpp and
-+ **                 4bpp RAM frame drivers
-+ **
-+ ** Copyright (c) 1998 Hartmut Schirmer
-+ **
-+ ** This file is part of the GRX graphics library.
-+ **
-+ ** The GRX graphics library is free software; you can redistribute it
-+ ** and/or modify it under some conditions; see the "copying.grx" file
-+ ** for details.
-+ **
-+ ** This library is distributed in the hope that it will be useful,
-+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-+ **
-+ **/
-+
-+#include "libgrx.h"
-+#include "grdriver.h"
-+#include "allocate.h"
-+#include "arith.h"
-+#include "mempeek.h"
-+#include "memcopy.h"
-+#include "memfill.h"
-+
-+#include "fdrivers/rblit_14.h"
-+
-+/* frame offset address calculation */
-+#define FOFS(x,y,lo)  umuladd32((y),(lo),((x)>>3))
-+
-+#define maskoper(d,op,s,msk) do {                         \
-+    unsigned char _c_ = peek_b(d);                        \
-+    poke_b((d), (_c_ & ~(msk)) | ((_c_ op (s)) & (msk))); \
-+  } while (0)
-+#define maskset(d,c,msk) \
-+    poke_b((d),(peek_b(d) & ~(msk)) | ((c) & (msk)))
-+
-+static char far *LineBuff = NULL;
-+
-+static int do_alloc(int width) {
-+    size_t bytes;
-+    GRX_ENTER();
-+    bytes = sizeof(char) * (((width+7) >> 3)+2);
-+    LineBuff = _GrTempBufferAlloc(bytes);
-+    GRX_RETURN(LineBuff != NULL);
-+}
-+
-+
-+static void get_scanline(char far *dptr, char far *sptr, int w) {
-+    GRX_ENTER();
-+    fwdcopy_set(sptr,dptr,sptr,w);
-+    GRX_LEAVE();
-+}
-+
-+static void put_scanline(char far *dptr,char far *sptr,int w,
-+			 GR_int8u lm, GR_int8u rm, int op    ) {
-+  GRX_ENTER();
-+  if (w==1) lm &= rm;
-+  if ( ((GR_int8u)(~lm)) ) {
-+    switch (op) {
-+      case C_XOR: maskoper(dptr,^,*sptr,lm); break;
-+      case C_OR : maskoper(dptr,|,*sptr,lm); break;
-+      case C_AND: maskoper(dptr,&,*sptr,lm); break;
-+      default   : maskset(dptr,*sptr,lm);    break;
-+    }
-+    if (--w == 0) goto done;
-+    ++dptr;
-+    ++sptr;
-+  }
-+  if ( ((GR_int8u)(~rm)) ) --w;
-+  if (w) switch (op) {
-+      case C_XOR: fwdcopy_xor(dptr,dptr,sptr,w); break;
-+      case C_OR : fwdcopy_or( dptr,dptr,sptr,w); break;
-+      case C_AND: fwdcopy_and(dptr,dptr,sptr,w); break;
-+      default   : fwdcopy_set(dptr,dptr,sptr,w); break;
-+  }
-+  if ( ((GR_int8u)(~rm)) )
-+    switch (op) {
-+      case C_XOR: maskoper(dptr,^,*sptr,rm); break;
-+      case C_OR : maskoper(dptr,|,*sptr,rm); break;
-+      case C_AND: maskoper(dptr,&,*sptr,rm); break;
-+      default   : maskset(dptr,*sptr,rm);    break;
-+    }
-+done:
-+  GRX_LEAVE();
-+}
-+
-+void invert(char far *sptr,int w)
-+{
-+	GRX_ENTER();
-+	while (w--)
-+		sptr[w] = ~sptr[w];
-+	GRX_LEAVE();
-+}
-+
-+extern void _GR_shift_scanline(GR_int8u far **dst,
-+			       GR_int8u far **src,
-+			       int ws, int shift, int planes );
-+#define shift_scanline(dst,src,w,sh) \
-+    _GR_shift_scanline((GR_int8u **)&(dst),(GR_int8u **)&(src),(w),(sh),1)
-+
-+
-+void _GR_rblit_14_inv(GrFrame *dst,int dx,int dy,
-+		      GrFrame *src,int x,int y,int w,int h,
-+		      GrColor op, int planes, _GR_blitFunc bitblt)
-+{
-+    int pl;
-+    GRX_ENTER();
-+    if(GrColorMode(op) != GrIMAGE && do_alloc(w)) {
-+      GR_int32u doffs, soffs;
-+      int oper    = C_OPER(op);
-+      int shift   = ((int)(x&7)) - ((int)(dx&7));
-+      GR_int8u lm = 0xff << (dx & 7);
-+      GR_int8u rm = 0xff >> ((-(w + dx)) & 7);
-+      int ws      = ((x+w+7) >> 3) - (x >> 3);
-+      int wd      = ((dx+w+7) >> 3) - (dx >> 3);
-+      int dskip   = dst->gf_lineoffset;
-+      int sskip   = src->gf_lineoffset;
-+      if ((dy>y) && (dst->gf_baseaddr[0]==src->gf_baseaddr[0])) {
-+	/* reverse */
-+	dy += h-1;
-+	y  += h-1;
-+	doffs = FOFS(dx,dy,dskip);
-+	soffs = FOFS( x, y,sskip);
-+	for (pl=0; pl < planes; ++pl) {
-+	  char far *dptr = &dst->gf_baseaddr[pl][doffs];
-+	  char far *sptr = &src->gf_baseaddr[pl][soffs];
-+	  int hh = h;
-+	  if (shift) {
-+	    while (hh-- > 0) {
-+	      shift_scanline(LineBuff,sptr,ws,shift);
-+	      invert(LineBuff,ws);
-+	      put_scanline(dptr,LineBuff,wd,lm,rm,oper);
-+	      dptr -= dskip;
-+	      sptr -= sskip;
-+	    }
-+	  } else {
-+	    while (hh-- > 0) {
-+	      get_scanline(LineBuff, sptr, ws);
-+	      invert(LineBuff,ws);
-+	      put_scanline(dptr,LineBuff,wd,lm,rm,oper);
-+	      dptr -= dskip;
-+	      sptr -= sskip;
-+	    }
-+	  }
-+	}
-+      } else {
-+	/* forward */
-+	doffs = FOFS(dx,dy,dst->gf_lineoffset);
-+	soffs = FOFS( x, y,src->gf_lineoffset);
-+	for (pl=0; pl < planes; ++pl) {
-+	  char far *dptr = &dst->gf_baseaddr[pl][doffs];
-+	  char far *sptr = &src->gf_baseaddr[pl][soffs];
-+	  int hh = h;
-+	  if (shift) {
-+	    while (hh-- > 0) {
-+	      shift_scanline(LineBuff,sptr,ws,shift);
-+	      invert(LineBuff,ws);
-+	      put_scanline(dptr,LineBuff,wd,lm,rm,oper);
-+	      dptr += dskip;
-+	      sptr += sskip;
-+	    }
-+	   } else {
-+	     while (hh-- > 0) {
+@@ -123,6 +130,8 @@
+ 	  if (shift) {
+ 	    while (hh-- > 0) {
+ 	      shift_scanline(LineBuff,sptr,ws,shift);
++	if (invert)
++	        invert_scanline(LineBuff,ws);
+ 	      put_scanline(dptr,LineBuff,wd,lm,rm,oper);
+ 	      dptr -= dskip;
+ 	      sptr -= sskip;
+@@ -130,6 +139,8 @@
+ 	  } else {
+ 	    while (hh-- > 0) {
+ 	      get_scanline(LineBuff, sptr, ws);
++	      if (invert)
++	        invert_scanline(LineBuff,ws);
+ 	      put_scanline(dptr,LineBuff,wd,lm,rm,oper);
+ 	      dptr -= dskip;
+ 	      sptr -= sskip;
+@@ -147,13 +158,18 @@
+ 	  if (shift) {
+ 	    while (hh-- > 0) {
+ 	      shift_scanline(LineBuff,sptr,ws,shift);
++	      if (invert)
++	        invert_scanline(LineBuff,ws);
+ 	      put_scanline(dptr,LineBuff,wd,lm,rm,oper);
+ 	      dptr += dskip;
+ 	      sptr += sskip;
+ 	    }
+ 	   } else {
+ 	     while (hh-- > 0) {
+-	       put_scanline(dptr,sptr,wd,lm,rm,oper);
 +	       get_scanline(LineBuff, sptr, ws);
-+	       invert(LineBuff,ws);
++	       if (invert)
++	         invert_scanline(LineBuff,ws);
 +	       put_scanline(dptr,LineBuff,wd,lm,rm,oper);
-+	       dptr += dskip;
-+	       sptr += sskip;
-+	     }
-+	   }
-+	}
-+      }
-+    } else
-+      bitblt(dst,dx,dy,src,x,y,w,h,op);
-+    GRX_LEAVE();
-+}
---- /dev/null
-+++ b/src/fdrivers/rblit_14_inv.h
-@@ -0,0 +1,21 @@
-+/**
-+ ** rblit_14_inv.h ---- ram to ram blit support functions for 1bpp and
-+ **                 4bpp RAM frame drivers
-+ **
-+ ** Copyright (c) 1998 Hartmut Schirmer
-+ **
-+ ** This file is part of the GRX graphics library.
-+ **
-+ ** The GRX graphics library is free software; you can redistribute it
-+ ** and/or modify it under some conditions; see the "copying.grx" file
-+ ** for details.
-+ **
-+ ** This library is distributed in the hope that it will be useful,
-+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-+ **
-+ **/
-+
-+void _GR_rblit_14_inv(GrFrame *dst,int dx,int dy,
-+		  GrFrame *src,int x,int y,int w,int h,
-+		  GrColor op, int planes, _GR_blitFunc bitblt);
+ 	       dptr += dskip;
+ 	       sptr += sskip;
+ 	     }
+--- a/src/fdrivers/ram4.c
++++ b/src/fdrivers/ram4.c
+@@ -260,7 +260,7 @@
+ 		   GrColor op)
+ {
+     GRX_ENTER();
+-    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,4,bitblt);
++    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,4,bitblt,FALSE);
+     GRX_LEAVE();
+ }
+ 
+--- a/src/fdrivers/rblit_14.h
++++ b/src/fdrivers/rblit_14.h
+@@ -18,4 +18,4 @@
+ 
+ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
+ 		  GrFrame *src,int x,int y,int w,int h,
+-		  GrColor op, int planes, _GR_blitFunc bitblt);
++		  GrColor op, int planes, _GR_blitFunc bitblt, int invert);
