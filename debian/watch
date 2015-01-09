@@ -6,6 +6,5 @@
 # Compulsory line, this is a version 3 file
 version=3
 
-# Uncomment to examine a Webpage
-# <Webpage URL> <string match>
-http://grx.gnu.de/download/index.html grx(.*)\.tar\.gz
+opts="uversionmangle=s/(\d)(\d)(\d)/$1.$2.$3/" \
+http://grx.gnu.de/download/index.html grx(\d\d\d)\.tar\.gz
