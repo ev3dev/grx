@@ -1,0 +1,47 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ grx (2.4.9-0ev3dev3~3) testing; urgency=medium
+ .
+   * Fix inverted colors on MONO_01 framebuffer after switching consoles.
+Author: David Lechner <david@lechnology.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- a/src/include/grxdebug.h
++++ b/src/include/grxdebug.h
+@@ -32,7 +32,7 @@
+ extern void  _GR_debug_printf(char *fmt,...);
+ 
+ # ifdef __GNUC__
+-  extern char *_GR_debug_function;
++  extern const char *_GR_debug_function;
+ #  define DBGPRINTF(tst,x) do {           \
+      if ((tst)&_GR_debug_flags) {         \
+        _GR_debug_file = __FILE__;         \
+--- a/src/utils/dbgprint.c
++++ b/src/utils/dbgprint.c
+@@ -29,7 +29,7 @@
+ char *_GR_debug_file;
+ int   _GR_debug_line;
+ #ifdef __GNUC__
+-char *_GR_debug_function;
++const char *_GR_debug_function;
+ # endif
+ int   _GR_debug_flags = DEBUG-0;
+ 

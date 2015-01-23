@@ -3,3 +3,4 @@ fix-RAM24-driver.patch
 linuxfb-use-actual-console-fd.patch
 better-console-switching.patch
 add-mono-frame-buffer-driver.patch
+Fix-compiler-warnings.patch
