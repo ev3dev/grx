@@ -38,14 +38,15 @@ Author: David Lechner <david@lechnology.com>
      case GR_frameSVGA24_LFB: return "LFB24";
 --- a/src/vdrivers/vd_lnxfb.c
 +++ b/src/vdrivers/vd_lnxfb.c
-@@ -191,8 +191,14 @@
+@@ -191,8 +191,15 @@
      if (grc == NULL)
          return;
      /* copy framebuffer to new context */
 -    GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
 -             GrScreenX()-1, GrScreenY()-1, GrWRITE);
-+    if (GrCurrentVideoMode() == &_GrFrameDriverMONO01_LFB) {
++    if (GrScreenFrameMode() == GR_frameMONO01_LFB) {
 +        /* Need to invert the colors on this one. */
++        GrClearContextC(grc, 1);
 +        GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
 +                 GrScreenX()-1, GrScreenY()-1, GrXOR);
 +    } else {
@@ -55,15 +56,22 @@ Author: David Lechner <david@lechnology.com>
      /*
       * swap out the framebuffer memory with the new context so that the
       * application can continue to run in the background without actually
-@@ -223,8 +229,15 @@
+@@ -217,14 +224,22 @@
+     if (ttyfd < 0) return;
+     /* resume control of the vt */
+     ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
++    ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
+     /* restore framebuffer address */
+     GrScreenContext()->gc_baseaddr[0] = frame_addr[0];
+     GrScreenContext()->gc_baseaddr[1] = frame_addr[1];
      GrScreenContext()->gc_baseaddr[2] = frame_addr[2];
      GrScreenContext()->gc_baseaddr[3] = frame_addr[3];
      /* copy the temporary context back to the framebuffer */
 -    GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
 -             GrScreenX()-1, GrScreenY()-1, GrWRITE);
-+    if (GrCurrentVideoMode() == &_GrFrameDriverMONO01_LFB) {
++    if (GrScreenFrameMode() == GR_frameMONO01_LFB) {
 +        /* need to invert the colors on this one */
-+        GrClearScreen(GrNOCOLOR);
++        GrClearScreen(1);
 +        GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
 +                 GrScreenX()-1, GrScreenY()-1, GrXOR);
 +    } else {
@@ -73,7 +81,7 @@ Author: David Lechner <david@lechnology.com>
      GrDestroyContext(grc);
      signal(SIGUSR1, _LnxfbRelsigHandle);
  }
-@@ -330,6 +343,22 @@
+@@ -330,6 +345,22 @@
      ep->setrwbanks = NULL;
      ep->loadcolor = NULL;
      switch (fbvar.bits_per_pixel) {

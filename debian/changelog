@@ -1,8 +1,13 @@
+grx (2.4.9-0ev3dev3) testing; urgency=medium
+
+  * Fix inverted colors on MONO_01 framebuffer after switching consoles.
+
+ -- David Lechner <david@lechnology.com>  Sun, 25 Jan 2015 19:02:03 -0600
+
 grx (2.4.9-0ev3dev2) testing; urgency=medium
 
   * Fix debian/watch file in source package.
   * Fix possible NULL pointer usage when switching consoles.
-  * Fix inverted colors on MONO_01 framebuffer after switching consoles.
 
  -- David Lechner <david@lechnology.com>  Fri, 09 Jan 2015 14:41:57 -0600
 
