@@ -4,3 +4,4 @@ linuxfb-use-actual-console-fd.patch
 better-console-switching.patch
 add-mono-frame-buffer-driver.patch
 Fix-compiler-warnings.patch
+fix-linking.patch

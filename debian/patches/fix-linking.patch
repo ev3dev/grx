@@ -1,0 +1,47 @@
+The upstream make file did not link the jpeg, png, etc. libraries.
+ This caused uses of the libgrx20 shared library to have problems libe not
+ being able to resolve symbols related to these libraries.
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- grx-2.4.9.orig/src/makefile.lnx
++++ grx-2.4.9/src/makefile.lnx
+@@ -63,16 +63,19 @@ endif
+ 
+ ifeq ($(HAVE_LIBTIFF),y)
+   ADDON_O += $(TIF_1)
++  ADDON_LIBS += -ltiff
+ endif
+ 
+ ifeq ($(HAVE_LIBJPEG),y)
+   ADDON_O += $(JPG_1)
++  ADDON_LIBS += -ljpeg
+ else
+   ADDON_O += $(NOJPG_1)
+ endif
+ 
+ ifeq ($(HAVE_LIBPNG),y)
+   ADDON_O += $(PNG_1)
++  ADDON_LIBS += -lpng
+ else
+   ADDON_O += $(NOPNG_1)
+ endif
+@@ -148,7 +151,7 @@ endif
+ 
+ $(GRX20SHna): $(LINUX_i386_CONSOLE) $(LO)
+ 	-rm -f $(GRX20SHna)
+-	$(CC) $(LDOPT) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(LO)
++	$(CC) $(LDOPT) -shared -Wl,-soname,$(notdir $(GRX20SHli)) -o $(GRX20SHna) $(LO) $(ADDON_LIBS) -lm
+ 	ln -sf $(notdir $(GRX20SHna)) $(GRX20SHli)
+ 
+ $(UTILP): ../bin/% : utilprog/%.o $(GRX20ST)
