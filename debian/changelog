@@ -1,4 +1,4 @@
-grx (2.4.9-0ev3dev4) testing; urgency=medium
+grx (2.4.9-0ev3dev4+trusty) trusty; urgency=medium
 
   * Fix dynamic library linking.
 
