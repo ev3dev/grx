@@ -38,7 +38,38 @@ Author: David Lechner <david@lechnology.com>
      case GR_frameSVGA24_LFB: return "LFB24";
 --- a/src/vdrivers/vd_lnxfb.c
 +++ b/src/vdrivers/vd_lnxfb.c
-@@ -191,8 +191,15 @@
+@@ -64,6 +64,7 @@
+     char *fbname;
+     char *default_fbname = "/dev/fb0";
+     char ttyname[12];
++    int err;
+     struct vt_stat vtstat;
+ 
+     if (initted < 0) {
+@@ -79,12 +80,20 @@
+ 	if (fbfix.type != FB_TYPE_PACKED_PIXELS)
+ 	    return FALSE;
+ 	ttyfd = open("/dev/tty", O_RDONLY);
+-	if (ttyfd == -1) {
++    if (ttyfd == -1)
++        err = ttyfd;
++    else
++        err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
++	if (err < 0) {
++        // if we are not currently on a virtual console and we are root, then
++        // we will take over the current virtual console (tty0).
+         ttyfd = open("/dev/tty0", O_RDONLY);
+         if (ttyfd == -1)
+ 	       return FALSE;
++        err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
++        if (err < 0)
++            return FALSE;
+     }
+-	ioctl(ttyfd, VT_GETSTATE, &vtstat);
+ 	sprintf(ttyname, "/dev/tty%d", vtstat.v_active);
+ 	ttyfd = open(ttyname, O_RDONLY);
+ 	if (ttyfd == -1)
+@@ -194,8 +203,15 @@
      if (grc == NULL)
          return;
      /* copy framebuffer to new context */
@@ -56,7 +87,7 @@ Author: David Lechner <david@lechnology.com>
      /*
       * swap out the framebuffer memory with the new context so that the
       * application can continue to run in the background without actually
-@@ -217,14 +224,22 @@
+@@ -220,14 +236,22 @@
      if (ttyfd < 0) return;
      /* resume control of the vt */
      ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
@@ -81,7 +112,7 @@ Author: David Lechner <david@lechnology.com>
      GrDestroyContext(grc);
      signal(SIGUSR1, _LnxfbRelsigHandle);
  }
-@@ -330,6 +345,22 @@
+@@ -333,6 +357,22 @@
      ep->setrwbanks = NULL;
      ep->loadcolor = NULL;
      switch (fbvar.bits_per_pixel) {
