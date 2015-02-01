@@ -1,3 +1,9 @@
+grx (2.4.9-0ev3dev4) testing; urgency=medium
+
+  * Fix dynamic library linking.
+
+ -- David Lechner <david@lechnology.com>  Sat, 31 Jan 2015 18:34:40 -0600
+
 grx (2.4.9-0ev3dev3) testing; urgency=medium
 
   * Fix inverted colors on MONO_01 framebuffer after switching consoles.
