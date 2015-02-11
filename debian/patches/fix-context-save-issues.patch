@@ -1,0 +1,87 @@
+There were several places where the current context was "saved" by pointer
+reference instead of copying. Since this pointer was pointing to the static
+current context struct rather than a heap allocated context, the data was
+written over without actually being saved.
+
+addons/bmp/bmp.c was actually OK, but it is changed for consistancy.
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- grx-2.4.9.orig/addons/bmp/bmp.c
++++ grx-2.4.9/addons/bmp/bmp.c
+@@ -536,7 +536,7 @@ int  GrSaveBmpImage ( char *_filename, G
+   width = _x2 - _x1;
+   height = _y2 - _y1;
+ 
+-  safe = *GrCurrentContext();
++  GrSaveContext(&safe);
+   GrSetContext(_c);
+   colors = GrNumColors();
+   GrSetContext(&safe);
+--- grx-2.4.9.orig/src/draw/clearctx.c
++++ grx-2.4.9/src/draw/clearctx.c
+@@ -30,8 +30,9 @@ void GrClearContext(GrColor bg)
+ 
+ void GrClearContextC(GrContext *ctx, GrColor bg)
+ {
+-  GrContext *s = GrCurrentContext();
++  GrContext s;
++  GrSaveContext(&s);
+   GrSetContext(ctx);
+   GrClearContext(bg);
+-  GrSetContext(s);
++  GrSetContext(&s);
+ }
+--- grx-2.4.9.orig/src/draw/flodspil.c
++++ grx-2.4.9/src/draw/flodspil.c
+@@ -72,9 +72,10 @@ void GrFloodSpillC(GrContext *ctx, int x
+ {
+   int y;
+   int x;
+-  GrContext *ctx_save = GrCurrentContext();
++  GrContext ctx_save;
+   GrColor *scanline;
+ 
++  GrSaveContext(&ctx_save);
+   GrSetContext(ctx);
+ 
+   for(y = y1; y <= y2; ++y)
+@@ -89,7 +90,7 @@ void GrFloodSpillC(GrContext *ctx, int x
+       GrPutScanline(x1, x2, y, scanline, GrWRITE);
+     }
+   }
+-  GrSetContext(ctx_save);
++  GrSetContext(&ctx_save);
+ }
+ 
+ void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2,
+@@ -98,9 +99,10 @@ void GrFloodSpillC2(GrContext *ctx, int
+ {
+   int y;
+   int x;
+-  GrContext *ctx_save = GrCurrentContext();
++  GrContext ctx_save;
+   GrColor *scanline;
+ 
++  GrSaveContext(&ctx_save);
+   GrSetContext(ctx);
+ 
+   for(y = y1; y <= y2; ++y)
+@@ -117,5 +119,5 @@ void GrFloodSpillC2(GrContext *ctx, int
+       GrPutScanline(x1, x2, y, scanline, GrWRITE);
+     }
+   }
+-  GrSetContext(ctx_save);
++  GrSetContext(&ctx_save);
+ }

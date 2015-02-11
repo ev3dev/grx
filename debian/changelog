@@ -1,10 +1,17 @@
-grx (2.4.9-0ev3dev5+trusty) testing; urgency=medium
+grx (2.4.9-0ev3dev6) testing; urgency=medium
+
+  * Fix context not correctly saved in in GrClearContextC, GrFloodSpillC and 
+    GrFloodSpillC2.
+
+ -- David Lechner <david@lechnology.com>  Tue, 10 Feb 2015 22:07:37 -0600
+
+grx (2.4.9-0ev3dev5) testing; urgency=medium
 
   * Fix not useable by non-root users.
 
  -- David Lechner <david@lechnology.com>  Sat, 31 Jan 2015 23:51:42 -0600
 
-grx (2.4.9-0ev3dev4+trusty) trusty; urgency=medium
+grx (2.4.9-0ev3dev4) testing; urgency=medium
 
   * Fix dynamic library linking.
 
