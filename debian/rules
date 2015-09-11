@@ -2,7 +2,7 @@
 # -*- makefile -*-
 
 # Uncomment this to turn on verbose mode.
-export DH_VERBOSE=1
+#export DH_VERBOSE=1
 
 export DEBUG=""
 
@@ -27,6 +27,13 @@ override_dh_auto_configure:
 		--with-fontpath=/usr/share/grx/fonts \
 		--enable-direct-mouse --disable-svgalib \
 		--disable-suidroot --disable-io-framedrivers
+
+override_dh_auto_install:
+	dh_auto_install
+	mkdir -p $(CURDIR)/debian/tmp/usr/lib/pkgconfig
+	cp $(CURDIR)/debian/grx20.pc $(CURDIR)/debian/tmp/usr/lib/pkgconfig
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/vala/vapi
+	cp $(CURDIR)/debian/grx20.vapi $(CURDIR)/debian/tmp/usr/share/vala/vapi
 
 override_dh_strip:
 	dh_strip --keep-debug
