@@ -11,6 +11,7 @@ Vcs-Browser: https://github.com/ev3dev/grx
 Package: libgrx-fonts
 Section: libs
 Architecture: all
+Depends: ${misc:Depends}
 Description: 2D graphics library
  A simple 2D graphics library similar to the old Borland Graphics Interface
  (BGI).
