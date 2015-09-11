@@ -1,3 +1,9 @@
+grx (2.4.9-0ev3dev7+trusty) trusty; urgency=medium
+
+  * Add vala vapi and pkgconfig files to -dev package
+
+ -- David Lechner <david@lechnology.com>  Fri, 11 Sep 2015 13:11:05 -0500
+
 grx (2.4.9-0ev3dev6+trusty) trusty; urgency=medium
 
   * Merge changes from ev3dev-jessie.
