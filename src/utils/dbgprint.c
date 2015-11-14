@@ -29,7 +29,7 @@
 char *_GR_debug_file;
 int   _GR_debug_line;
 #ifdef __GNUC__
-char *_GR_debug_function;
+const char *_GR_debug_function;
 # endif
 int   _GR_debug_flags = DEBUG-0;
 
