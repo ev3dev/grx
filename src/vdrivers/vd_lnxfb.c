@@ -61,6 +61,8 @@ static int detect(void)
 {
     char *fbname;
     char *default_fbname = "/dev/fb0";
+    char ttyname[12];
+    struct vt_stat vtstat;
 
     if (initted < 0) {
         initted = 0;
@@ -74,7 +76,14 @@ static int detect(void)
         ioctl(fbfd, FBIOGET_VSCREENINFO, &fbvar);
         if (fbfix.type != FB_TYPE_PACKED_PIXELS)
             return FALSE;
-        ttyfd = open("/dev/tty", O_RDONLY);
+        ttyfd = open("/dev/tty0", O_RDONLY);
+        if (ttyfd == -1)
+            return FALSE;
+        ioctl(ttyfd, VT_GETSTATE, &vtstat);
+        sprintf(ttyname, "/dev/tty%d", vtstat.v_active);
+        ttyfd = open(ttyname, O_RDONLY);
+        if (ttyfd == -1)
+            return FALSE;
         initted = 1;
     }
     return ((initted > 0) ? TRUE : FALSE);
