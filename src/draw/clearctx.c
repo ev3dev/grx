@@ -30,8 +30,9 @@ void GrClearContext(GrColor bg)
 
 void GrClearContextC(GrContext *ctx, GrColor bg)
 {
-  GrContext *s = GrCurrentContext();
+  GrContext s;
+  GrSaveContext(&s);
   GrSetContext(ctx);
   GrClearContext(bg);
-  GrSetContext(s);
+  GrSetContext(&s);
 }

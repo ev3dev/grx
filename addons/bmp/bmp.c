@@ -536,7 +536,7 @@ int  GrSaveBmpImage ( char *_filename, GrContext *_c, int _x1, int _y1, int _x2,
   width = _x2 - _x1;
   height = _y2 - _y1;
 
-  safe = *GrCurrentContext();
+  GrSaveContext(&safe);
   GrSetContext(_c);
   colors = GrNumColors();
   GrSetContext(&safe);
