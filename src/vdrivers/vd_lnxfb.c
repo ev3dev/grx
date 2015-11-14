@@ -64,6 +64,7 @@ static int detect(void)
     char *fbname;
     char *default_fbname = "/dev/fb0";
     char ttyname[12];
+    int err;
     struct vt_stat vtstat;
 
     if (initted < 0) {
@@ -79,12 +80,20 @@ static int detect(void)
         if (fbfix.type != FB_TYPE_PACKED_PIXELS)
             return FALSE;
         ttyfd = open("/dev/tty", O_RDONLY);
-        if (ttyfd == -1) {
+    if (ttyfd == -1)
+        err = ttyfd;
+    else
+        err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
+        if (err < 0) {
+        // if we are not currently on a virtual console and we are root, then
+        // we will take over the current virtual console (tty0).
         ttyfd = open("/dev/tty0", O_RDONLY);
         if (ttyfd == -1)
                return FALSE;
+        err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
+        if (err < 0)
+            return FALSE;
     }
-        ioctl(ttyfd, VT_GETSTATE, &vtstat);
         sprintf(ttyname, "/dev/tty%d", vtstat.v_active);
         ttyfd = open(ttyname, O_RDONLY);
         if (ttyfd == -1)
@@ -194,8 +203,15 @@ void _LnxfbRelsigHandle(int sig)
     if (grc == NULL)
         return;
     /* copy framebuffer to new context */
-    GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
-             GrScreenX()-1, GrScreenY()-1, GrWRITE);
+    if (GrScreenFrameMode() == GR_frameMONO01_LFB) {
+        /* Need to invert the colors on this one. */
+        GrClearContextC(grc, 1);
+        GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
+                 GrScreenX()-1, GrScreenY()-1, GrXOR);
+    } else {
+        GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
+                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
+    }
     /*
      * swap out the framebuffer memory with the new context so that the
      * application can continue to run in the background without actually
@@ -220,14 +236,22 @@ void _LnxfbAcqsigHandle(int sig)
     if (ttyfd < 0) return;
     /* resume control of the vt */
     ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
+    ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
     /* restore framebuffer address */
     GrScreenContext()->gc_baseaddr[0] = frame_addr[0];
     GrScreenContext()->gc_baseaddr[1] = frame_addr[1];
     GrScreenContext()->gc_baseaddr[2] = frame_addr[2];
     GrScreenContext()->gc_baseaddr[3] = frame_addr[3];
     /* copy the temporary context back to the framebuffer */
-    GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
-             GrScreenX()-1, GrScreenY()-1, GrWRITE);
+    if (GrScreenFrameMode() == GR_frameMONO01_LFB) {
+        /* need to invert the colors on this one */
+        GrClearScreen(1);
+        GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
+                 GrScreenX()-1, GrScreenY()-1, GrXOR);
+    } else {
+        GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
+                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
+    }
     GrDestroyContext(grc);
     signal(SIGUSR1, _LnxfbRelsigHandle);
 }
@@ -333,6 +357,22 @@ static int build_video_mode(GrVideoMode * mp, GrVideoModeExt * ep)
     ep->setrwbanks = NULL;
     ep->loadcolor = NULL;
     switch (fbvar.bits_per_pixel) {
+    case 1:
+    if (fbfix.visual == FB_VISUAL_MONO01)
+        ep->mode = GR_frameMONO01_LFB;
+    else if (fbfix.visual == FB_VISUAL_MONO10)
+        ep->mode = GR_frameMONO10_LFB;
+    else
+        return FALSE;
+    mp->bpp = 1;
+    ep->flags |= GR_VMODEF_LINEAR;
+    ep->cprec[0] = fbvar.red.length;
+    ep->cprec[1] = fbvar.green.length;
+    ep->cprec[2] = fbvar.blue.length;
+    ep->cpos[0] = fbvar.red.offset;
+    ep->cpos[1] = fbvar.green.offset;
+    ep->cpos[2] = fbvar.blue.offset;
+    break;
     case 8:
         if (fbfix.visual != FB_VISUAL_PSEUDOCOLOR)
             return FALSE;

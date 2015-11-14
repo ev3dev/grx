@@ -43,6 +43,8 @@ GrFrameDriver *_GrFrameDriverTable[] = {
 #if defined(__DJGPP__) || defined(XF86DGA_FRAMEBUFFER) \
   || ( defined(LFB_BY_NEAR_POINTER) && !defined(__WIN32__) ) \
   || ( defined(__WATCOMC__) && defined ( __386__ ) )
+    &_GrFrameDriverMONO01_LFB,
+    &_GrFrameDriverMONO10_LFB,
     &_GrFrameDriverSVGA8_LFB,
     &_GrFrameDriverSVGA16_LFB,
     &_GrFrameDriverSVGA24_LFB,

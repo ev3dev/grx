@@ -260,7 +260,7 @@ static void bltr2r(GrFrame *dst,int dx,int dy,
                    GrColor op)
 {
     GRX_ENTER();
-    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,4,bitblt);
+    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,4,bitblt,FALSE);
     GRX_LEAVE();
 }
 

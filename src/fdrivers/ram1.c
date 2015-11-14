@@ -35,7 +35,16 @@ GrColor readpixel(GrFrame *c,int x,int y)
         GR_int8u far *ptr;
         GRX_ENTER();
         ptr = (GR_int8u far *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
-        GRX_RETURN((GrColor)( (*ptr >> (7 - (x & 7)) ) & 1));
+        GRX_RETURN((GrColor)( (*ptr >> (x & 7)) & 1));
+}
+
+static INLINE
+GrColor readpixel_inv(GrFrame *c,int x,int y)
+{
+    GR_int8u far *ptr;
+    GRX_ENTER();
+    ptr = (GR_int8u far *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+    GRX_RETURN((GrColor)(((*ptr >> (x & 7)) & 1) ? 0 : 1));
 }
 
 static INLINE
@@ -46,14 +55,20 @@ void drawpixel(int x,int y,GrColor color)
 
         GRX_ENTER();
         ptr = (GR_int8u far *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
-        cval = (color & 1) << (7 - (x &= 7));
+        cval = (color & 1) << (x &= 7);
         switch(C_OPER(color)) {
             case C_XOR: *ptr ^=  cval; break;
             case C_OR:  *ptr |=  cval; break;
             case C_AND: *ptr &= ~cval; break;
-            default:    *ptr  = (*ptr & (~0x80 >> x)) | cval; break;
+            default:    *ptr  = (*ptr & (~0x80 >> (7 -x))) | cval; break;
         }
         GRX_LEAVE();
+}
+
+static INLINE
+void drawpixel_inv(int x,int y, GrColor color)
+{
+    drawpixel(x, y, GrColorMode(color)|GrColorValue(~color));
 }
 
 #define maskoper(d,op,s,msk,SF,DF) do {                       \
@@ -70,8 +85,8 @@ static void drawhline(int x,int y,int w,GrColor color) {
   oper = C_OPER(color);
   color &= 1;
   if (!( !color && (oper==C_OR||oper==C_XOR)) && !(color && oper==C_AND) ) {
-    GR_int8u lm = 0xff >> (x & 7);
-    GR_int8u rm = 0xff << ((-(w + x)) & 7);
+    GR_int8u lm = 0xff << (x & 7);
+    GR_int8u rm = 0xff >> ((-(w + x)) & 7);
     GR_int8u far *p = (GR_int8u far *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
     GR_repl cv = 0;
     if (color) cv = ~cv;
@@ -109,6 +124,11 @@ done:
   GRX_LEAVE();
 }
 
+static void drawhline_inv(int x,int y,int h, GrColor color)
+{
+    drawhline(x, y, h, GrColorMode(color)|GrColorValue(~color));
+}
+
 static void drawvline(int x,int y,int h,GrColor color)
 {
         unsigned int lwdt, mask, oper;
@@ -117,7 +137,7 @@ static void drawvline(int x,int y,int h,GrColor color)
         oper = C_OPER(color);
         color &= 1;
         lwdt = CURC->gc_lineoffset;
-        mask = 0x80 >> (x & 7);
+        mask = 0x01 << (x & 7);
         switch (oper) {
           case C_XOR:
               /* no need to xor anything with 0 */
@@ -150,6 +170,11 @@ static void drawvline(int x,int y,int h,GrColor color)
         GRX_LEAVE();
 }
 
+static void drawvline_inv(int x,int y,int h, GrColor color)
+{
+    drawvline(x, y, h, GrColorMode(color)|GrColorValue(~color));
+}
+
 static
 #include "fdrivers/generic/block.c"
 
@@ -170,7 +195,16 @@ static void bltr2r(GrFrame *dst,int dx,int dy,
                    GrColor op)
 {
     GRX_ENTER();
-    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt);
+    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt,FALSE);
+    GRX_LEAVE();
+}
+
+static void bltr2r_inv(GrFrame *dst,int dx,int dy,
+                       GrFrame *src,int x,int y,int w,int h,
+                       GrColor op)
+{
+    GRX_ENTER();
+    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt,TRUE);
     GRX_LEAVE();
 }
 
@@ -210,3 +244,50 @@ GrFrameDriver _GrFrameDriverRAM1 = {
     _GrFrDrvGenericPutScanline
 };
 
+GrFrameDriver _GrFrameDriverMONO01_LFB = {
+    GR_frameMONO01_LFB,         /* frame mode */
+    GR_frameRAM1,               /* compatible RAM frame mode */
+    TRUE,                       /* onscreen */
+    4,                          /* scan line width alignment */
+    1,                          /* number of planes */
+    1,                          /* bits per pixel */
+    16*1024L*1024L,             /* max plane size the code can handle */
+    NULL,
+    readpixel_inv,
+    drawpixel_inv,
+    drawline,
+    drawhline_inv,
+    drawvline_inv,
+    drawblock,
+    drawbitmap,
+    drawpattern,
+    bltr2r,
+    bltr2r_inv,
+    bltr2r_inv,
+    getindexedscanline,
+    _GrFrDrvGenericPutScanline
+};
+
+GrFrameDriver _GrFrameDriverMONO10_LFB = {
+    GR_frameMONO10_LFB,         /* frame mode */
+    GR_frameRAM1,               /* compatible RAM frame mode */
+    TRUE,                       /* onscreen */
+    4,                          /* scan line width alignment */
+    1,                          /* number of planes */
+    1,                          /* bits per pixel */
+    16*1024L*1024L,             /* max plane size the code can handle */
+    NULL,
+    readpixel,
+    drawpixel,
+    drawline,
+    drawhline,
+    drawvline,
+    drawblock,
+    drawbitmap,
+    drawpattern,
+    bltr2r,
+    bltr2r,
+    bltr2r,
+    getindexedscanline,
+    _GrFrDrvGenericPutScanline
+};

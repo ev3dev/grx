@@ -86,6 +86,13 @@ done:
   GRX_LEAVE();
 }
 
+void invert_scanline(char far *sptr,int w)
+{
+  GRX_ENTER();
+  while (w--)
+    sptr[w] = ~sptr[w];
+  GRX_LEAVE();
+}
 
 extern void _GR_shift_scanline(GR_int8u far **dst,
                                GR_int8u far **src,
@@ -96,7 +103,7 @@ extern void _GR_shift_scanline(GR_int8u far **dst,
 
 void _GR_rblit_14(GrFrame *dst,int dx,int dy,
                   GrFrame *src,int x,int y,int w,int h,
-                  GrColor op, int planes, _GR_blitFunc bitblt)
+                  GrColor op, int planes, _GR_blitFunc bitblt, int invert)
 {
     int pl;
     GRX_ENTER();
@@ -104,8 +111,8 @@ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
       GR_int32u doffs, soffs;
       int oper    = C_OPER(op);
       int shift   = ((int)(x&7)) - ((int)(dx&7));
-      GR_int8u lm = 0xff >> (dx & 7);
-      GR_int8u rm = 0xff << ((-(w + dx)) & 7);
+      GR_int8u lm = 0xff << (dx & 7);
+      GR_int8u rm = 0xff >> ((-(w + dx)) & 7);
       int ws      = ((x+w+7) >> 3) - (x >> 3);
       int wd      = ((dx+w+7) >> 3) - (dx >> 3);
       int dskip   = dst->gf_lineoffset;
@@ -123,6 +130,8 @@ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
           if (shift) {
             while (hh-- > 0) {
               shift_scanline(LineBuff,sptr,ws,shift);
+        if (invert)
+                invert_scanline(LineBuff,ws);
               put_scanline(dptr,LineBuff,wd,lm,rm,oper);
               dptr -= dskip;
               sptr -= sskip;
@@ -130,6 +139,8 @@ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
           } else {
             while (hh-- > 0) {
               get_scanline(LineBuff, sptr, ws);
+              if (invert)
+                invert_scanline(LineBuff,ws);
               put_scanline(dptr,LineBuff,wd,lm,rm,oper);
               dptr -= dskip;
               sptr -= sskip;
@@ -147,13 +158,18 @@ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
           if (shift) {
             while (hh-- > 0) {
               shift_scanline(LineBuff,sptr,ws,shift);
+              if (invert)
+                invert_scanline(LineBuff,ws);
               put_scanline(dptr,LineBuff,wd,lm,rm,oper);
               dptr += dskip;
               sptr += sskip;
             }
            } else {
              while (hh-- > 0) {
-               put_scanline(dptr,sptr,wd,lm,rm,oper);
+               get_scanline(LineBuff, sptr, ws);
+               if (invert)
+                 invert_scanline(LineBuff,ws);
+               put_scanline(dptr,LineBuff,wd,lm,rm,oper);
                dptr += dskip;
                sptr += sskip;
              }

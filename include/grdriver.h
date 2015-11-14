@@ -53,6 +53,8 @@ _GrFrameDriverSVGA24,                   /* Super VGA 16M color */
 _GrFrameDriverSVGA32L,                  /* Super VGA 16M color padded #1 */
 _GrFrameDriverSVGA32H,                  /* Super VGA 16M color padded #2 */
                                         /* Linear Framebuffer Modes : */
+_GrFrameDriverMONO01_LFB,               /* mono, 0 = white, 1 = black */
+_GrFrameDriverMONO10_LFB,               /* mono, 1 = white, 0 = black */
 _GrFrameDriverSVGA8_LFB,                /* (Super) VGA 256 color */
 _GrFrameDriverSVGA16_LFB,               /* Super VGA 32768/65536 color */
 _GrFrameDriverSVGA24_LFB,               /* Super VGA 16M color */

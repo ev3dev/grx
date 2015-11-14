@@ -246,6 +246,8 @@ typedef enum _GR_frameModes {
         GR_frameSDL32L = GR_frameSVGA32L,
         GR_frameSDL32H = GR_frameSVGA32H,
         /* ==== linear frame buffer modes  ====== */
+        GR_frameMONO01_LFB,                 /* mono, 0 = white, 1 = black */
+        GR_frameMONO10_LFB,                 /* mono, 0 = black, 1 = white */
         GR_frameSVGA8_LFB,                  /* (Super) VGA 256 color */
         GR_frameSVGA16_LFB,                 /* Super VGA 32768/65536 color */
         GR_frameSVGA24_LFB,                 /* Super VGA 16M color */
