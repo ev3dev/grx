@@ -54,6 +54,8 @@ static struct fb_fix_screeninfo fbfix;
 static struct fb_var_screeninfo fbvar;
 static char *fbuffer = NULL;
 static int ingraphicsmode = 0;
+static GrContext *grc;
+static char* frame_addr[4];
 
 int _lnxfb_waiting_to_switch_console = 0;
 
@@ -76,9 +78,12 @@ static int detect(void)
         ioctl(fbfd, FBIOGET_VSCREENINFO, &fbvar);
         if (fbfix.type != FB_TYPE_PACKED_PIXELS)
             return FALSE;
+        ttyfd = open("/dev/tty", O_RDONLY);
+        if (ttyfd == -1) {
         ttyfd = open("/dev/tty0", O_RDONLY);
         if (ttyfd == -1)
-            return FALSE;
+               return FALSE;
+    }
         ioctl(ttyfd, VT_GETSTATE, &vtstat);
         sprintf(ttyname, "/dev/tty%d", vtstat.v_active);
         ttyfd = open(ttyname, O_RDONLY);
@@ -178,9 +183,52 @@ void _LnxfbSwitchConsoleAndWait(void)
     }
 }
 
+void _LnxfbAcqsigHandle(int sig);
 void _LnxfbRelsigHandle(int sig)
 {
-    _lnxfb_waiting_to_switch_console = 1;
+    if (!ingraphicsmode) return;
+    if (ttyfd < 0) return;
+
+    /* create a new context from the screen */
+    grc = GrCreateContext(GrScreenX(), GrScreenY(), NULL, NULL);
+    if (grc == NULL)
+        return;
+    /* copy framebuffer to new context */
+    GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
+             GrScreenX()-1, GrScreenY()-1, GrWRITE);
+    /*
+     * swap out the framebuffer memory with the new context so that the
+     * application can continue to run in the background without actually
+     * writing to the framebuffer.
+     */
+    frame_addr[0] = GrScreenContext()->gc_baseaddr[0];
+    frame_addr[1] = GrScreenContext()->gc_baseaddr[1];
+    frame_addr[2] = GrScreenContext()->gc_baseaddr[2];
+    frame_addr[3] = GrScreenContext()->gc_baseaddr[3];
+    GrScreenContext()->gc_baseaddr[0] = grc->gc_baseaddr[0];
+    GrScreenContext()->gc_baseaddr[1] = grc->gc_baseaddr[1];
+    GrScreenContext()->gc_baseaddr[2] = grc->gc_baseaddr[2];
+    GrScreenContext()->gc_baseaddr[3] = grc->gc_baseaddr[3];
+    /* release control of the vt */
+    ioctl(ttyfd, VT_RELDISP, 1);
+    signal(SIGUSR1, _LnxfbAcqsigHandle);
+}
+
+void _LnxfbAcqsigHandle(int sig)
+{
+    if (!ingraphicsmode) return;
+    if (ttyfd < 0) return;
+    /* resume control of the vt */
+    ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
+    /* restore framebuffer address */
+    GrScreenContext()->gc_baseaddr[0] = frame_addr[0];
+    GrScreenContext()->gc_baseaddr[1] = frame_addr[1];
+    GrScreenContext()->gc_baseaddr[2] = frame_addr[2];
+    GrScreenContext()->gc_baseaddr[3] = frame_addr[3];
+    /* copy the temporary context back to the framebuffer */
+    GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
+             GrScreenX()-1, GrScreenY()-1, GrWRITE);
+    GrDestroyContext(grc);
     signal(SIGUSR1, _LnxfbRelsigHandle);
 }
 
@@ -214,7 +262,7 @@ static int setmode(GrVideoMode * mp, int noclear)
         ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
         vtm.mode = VT_PROCESS;
         vtm.relsig = SIGUSR1;
-        vtm.acqsig = 0;
+        vtm.acqsig = SIGUSR1;
         ioctl(ttyfd, VT_SETMODE, &vtm);
         signal(SIGUSR1, _LnxfbRelsigHandle);
         ingraphicsmode = 1;
