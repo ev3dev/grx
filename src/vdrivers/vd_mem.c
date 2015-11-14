@@ -109,7 +109,11 @@ static GrVideoModeExt gr24ext = {
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
     { 8, 8, 8 },                        /* color precisions */
+#ifdef GRX_USE_RAM3x8
     { 0, 0, 0 },                        /* color component bit positions */
+#else
+    { 0, 8, 16 },                        /* color component bit positions */
+#endif
     GR_VMODEF_MEMORY,                   /* mode flag bits */
     mem_setmode,                        /* mode set */
     NULL,                               /* virtual size set */
