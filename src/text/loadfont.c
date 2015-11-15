@@ -83,7 +83,7 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
     dc = TRUE;
     while((chr = *name++) != '\0') {
         switch(chr) {
-#if defined(__MSDOS__) || defined(__WIN32__)
+#if defined(__WIN32__)
           case ':':
             abspath = TRUE;
             break;
@@ -100,7 +100,7 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
                 name = "";
                 chr  = '\0';
             }
-#if defined(__MSDOS__) || defined(__WIN32__)
+#if defined(__WIN32__)
                 chr = tolower(chr);
 #endif
             break;

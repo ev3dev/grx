@@ -26,14 +26,7 @@ struct _GR_contextInfo _GrContextInfo = {
     {                                   /* the current context */
         {                               /* frame */
             {                           /* frame start addresses */
-#ifdef __MSDOS__
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0))
-#else
                 NULL,NULL,NULL,NULL
-#endif
             },
             0,                          /* selector */
             TRUE,                       /* onscreen */
@@ -46,14 +39,7 @@ struct _GR_contextInfo _GrContextInfo = {
     {                                   /* the screen context */
         {                               /* frame */
             {                           /* frame start addresses */
-#ifdef __MSDOS__
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0))
-#else
                 NULL,NULL,NULL,NULL
-#endif
             },
             0,                          /* selector */
             TRUE,                       /* onscreen */

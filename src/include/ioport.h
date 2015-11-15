@@ -186,13 +186,8 @@
 
 #ifdef  __GNUC__
 #ifdef  __i386__
-#ifdef  __MSDOS__
-#define int_disable()           ({ __asm__ volatile("cli"); })
-#define int_enable()            ({ __asm__ volatile("sti"); })
-#else
 #define int_disable()
 #define int_enable()
-#endif
 #endif
 #endif
 

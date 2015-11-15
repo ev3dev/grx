@@ -18,21 +18,12 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <string.h>
-#ifdef __MSDOS__
-#  include <io.h>
-#endif
 
 #include "libgrx.h"
 #include "clipping.h"
 
-#if defined(__MSDOS__) || defined(MSDOS)
-#define BIN_WR (O_WRONLY | O_BINARY)
-#define BIN_RD (O_RDONLY | O_BINARY)
-#else
 #define BIN_WR O_WRONLY
 #define BIN_RD O_RDONLY
-#endif
-
 #define BIN_CREAT  (BIN_WR|O_CREAT)
 
 #ifndef S_IREAD

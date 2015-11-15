@@ -18,27 +18,6 @@
  **/
 
 #ifdef __i386__
-#ifdef __MSDOS__
-
-#include <errno.h>
-
-#ifdef   ECHILD
-
-#include <go32.h>
-#define  I386_GCC_FAR_MEMORY
-#define  LINP_PTR(p)    (void *)((long)(p) & 0x00ffffffUL)
-#define  LINP_SEL(p)    _go32_info_block.selector_for_linear_memory
-#define  XFER_BUFFER    _go32_info_block.linear_address_of_transfer_buffer
-
-#else    /* ECHILD */
-
-#define  LINP_PTR(p)    (void *)(((long)(p) & 0x00ffffffUL) | 0xe0000000UL)
-#define  LINP_SEL(p)    0
-#define  XFER_BUFFER    __transfer_buffer
-extern   char          *__transfer_buffer;
-
-#endif   /* ECHILD */
-#endif   /* __MSDOS__ */
 
 #define  MK_FP(s,o)      (void *)(                  \
         ((long)(unsigned short)(s) << 4) +          \

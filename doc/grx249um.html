@@ -24,7 +24,7 @@
 <center>
 <h1><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
 <small>2.4.9</small></h1>
-<h1>a 2D graphics library for DOS, Linux, X11 and Win32</h1>
+<h1>a 2D graphics library for Linux, X11 and Win32</h1>
 <h2>User's Manual</h2>
 <p>Based on the original doc written by: Csaba Biegl on August 10, 1992
 <p>Updated by: Mariano Alvarez Fern&aacute;ndez on August 17, 2000
@@ -44,7 +44,7 @@ Next:&nbsp;<a rel="next" accesskey="n" href="#A-User-Manual-For-GRX2">A User Man
 <p><strong>GRX</strong> is a 2D graphics library originaly written by
 Csaba Biegl for DJ Delorie's DOS port of the GCC compiler. Now it support
 a big range of platforms, the main three are: Linux console,
-X11 and Win32 (Mingw). On DOS it supports VGA, EGA and VESA compliant cards. 
+X11 and Win32 (Mingw).
 On Linux console it uses svgalib or the framebuffer. On X11 it must work on
 any X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver. 
 The framebuffer Linux console driver was new in 2.4.2. From 2.4.7 there is a
@@ -207,7 +207,7 @@ variable GRX20DRV, but a program can set it using:
 </pre>
 <p>Available drivers are for:
 
-<pre class="example">     * DOS =&gt; herc, stdvga, stdega, et4000, cl5426, mach64, ati28800, s3, VESA, memory
+<pre class="example">
      * Linux =&gt; svgalib, linuxfb, memory
      * X11 =&gt; xwin, memory
      * Win32 =&gt; win32, memory
@@ -2302,7 +2302,7 @@ X11 version.
 <pre class="example">     void GrSetWindowTitle(char *title);
 </pre>
 <p>GrSetWindowTitle sets the main window title in the X11 an Win32 versions. It
-doesn't do nothing in the DOS and Linux-SvgaLib versions.
+doesn't do anything in the Linux console version.
 
 <pre class="example">     void GrSleep(int msec);
 </pre>

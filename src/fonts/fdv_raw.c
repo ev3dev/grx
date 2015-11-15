@@ -142,7 +142,7 @@ static int openfile(char *fname)
         }
         /* get font name and family */
         s = strrchr(fname, '/');
-#if defined(__MSDOS__) || defined(__WIN32__)
+#if defined(__WIN32__)
         if(s == NULL) {
             s = strrchr(fname, '\\');
             if(s == NULL) s = strrchr(fname, ':');

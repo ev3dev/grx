@@ -129,15 +129,6 @@
         oldtime = newtime;                                                  \
 } while(0)
 
-#ifdef __MSDOS__
-#define test_unblock(flag) do {                                             \
-        static long lastcheck = 0L;                                         \
-        long checktime;                                                     \
-        real_time(checktime);                                               \
-        flag = (int)(checktime - lastcheck);                                \
-        lastcheck = checktime;                                              \
-} while(0)
-#else
 #define test_unblock(flag) do {                                             \
         static int checkcnt = 1000;                                         \
         (flag) = FALSE;                                                     \
@@ -146,13 +137,10 @@
         flag = (TRUE);                                                      \
         }                                                                   \
 } while(0)
-#endif
 
 #define COMPATIBLE(c)   ((c)->work.gc_driver->mode == SDRV->rmode)
 
 void _GrUpdateInputs(void);
 void _GrInitMouseCursor(void);
-#ifndef __MSDOS__
 int  _GrCheckKeyboardHit(void);
 int  _GrReadCharFromKeyboard(void);
-#endif

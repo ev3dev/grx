@@ -20,17 +20,6 @@
 #include "grdriver.h"
 
 GrVideoDriver *_GrVideoDriverTable[] = {
-#if defined(__MSDOS__)
-    &_GrVideoDriverHERC,
-    &_GrVideoDriverSTDEGA,
-    &_GrVideoDriverSTDVGA,
-    &_GrVideoDriverVESA,
-    &_GrVideoDriverATI28800,
-    &_GrVideoDriverET4000,
-    &_GrVideoDriverCL5426,
-    &_GrVideoDriverMACH64,
-    &_GrVideoDriverS3,
-#endif
 #if defined(__XWIN__) && !defined(__SDL__)
 #if defined(XF86DGA_DRIVER)
     &_GrVideoDriverXF86DGA,

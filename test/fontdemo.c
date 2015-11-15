@@ -130,7 +130,7 @@ int main(int argc, char **argv)
         opt.txo_font = GrLoadFont(name);
         if(opt.txo_font == NULL && (testname = malloc(strlen(name) + 10)) != NULL) {
             /* try again, this is a test and the path can not been set yet */
-#if defined(__MSDOS__) || defined(__WIN32__)
+#if defined(__WIN32__)
             sprintf( testname,"..\\fonts\\%s",name );
 #else
             sprintf( testname,"../fonts/%s",name );

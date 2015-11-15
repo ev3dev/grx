@@ -24,7 +24,7 @@
 
 GrFrameDriver *_GrFrameDriverTable[] = {
 /* first the drivers for video based context */
-#if defined(__MSDOS__) || (defined(__linux__) && !defined(__XWIN__))
+#if (defined(__linux__) && !defined(__XWIN__))
 #ifdef  __i386__
     &_GrFrameDriverEGAVGA1,
     &_GrFrameDriverEGA4,

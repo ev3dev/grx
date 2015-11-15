@@ -35,11 +35,7 @@ struct _GR_driverInfo _GrDriverInfo = {
         3,                              /* BIOS mode */
         160,                            /* lineoffset */
         0,                              /* private */
-#ifdef __MSDOS__
-        &_GrViDrvEGAVGAtextModeExt      /* extended info */
-#else
         NULL
-#endif
     },
     {                                   /* current frame driver */
         GR_frameUndef,                  /* frame mode */

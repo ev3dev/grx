@@ -22,11 +22,6 @@ Directly supported platforms:
   Both i386 and x86_64 architectures are supported for the linux
   console and the linux X11 versions. See below.
 
-Other DOS platforms:
---------------------
-
-  Makefiles for Borland C++ have been updated in GRX 2.4.6
-
 Other X11 platforms:
 --------------------
 
@@ -71,7 +66,7 @@ A. Unpacking the GRX archive
 ----------------------------
 
   1) Choose and download the .tar.gz or .zip package. You can use either.
-     The .zip is intended for dos and win32 users, because it expand to the
+     The .zip is intended for win32 users, because it expand to the
      contrib subdir and has manifest files.
 
   2) 'cd' to a directory where you want the GRX file tree to be created
@@ -202,7 +197,7 @@ Environment variables for using GRX programs
 ============================================
 
   1) set the default driver and graphics mode info (very useful but not
-     required), in DOS or Windows:
+     required), in Windows:
 
        SET GRX20DRV=<driver> gw <width> gh <height> nc <colors>
 
@@ -212,8 +207,6 @@ Environment variables for using GRX programs
 
      Available drivers are for:
 
-       DOS  : herc, stdvga, stdega, et4000, cl5426, mach64,
-              ati28800, s3, VESA, memory
        Linux: svgalib, linuxfb, memory
        X11  : xwin, memory
        Win32: win32, memory
@@ -226,7 +219,7 @@ Environment variables for using GRX programs
      Values for gw and gh can be by example 640,480 or 800,600
      Values for nc can be 2, 16, 256, 64K or 16M.
 
-  2) set the GRX font dir, in DOS or Windows:
+  2) set the GRX font dir, in Windows:
 
        SET GRXFONT=<directory for the GRX fonts>
 

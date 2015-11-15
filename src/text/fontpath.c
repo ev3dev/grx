@@ -37,7 +37,7 @@ void GrSetFontPath(char *p)
             int pathchr = TRUE;
             switch(chr) {
               case ':':
-#if defined(__MSDOS__) || defined(__WIN32__)
+#if defined(__WIN32__)
                 if((plen == 1) && isalpha(path[0])) break;
 #endif
               case ';':
@@ -47,7 +47,7 @@ void GrSetFontPath(char *p)
                 p--;
                 pathchr = FALSE;
                 break;
-#if defined(__MSDOS__) || defined(__WIN32__)
+#if defined(__WIN32__)
               case '\\':
                 chr = '/';
               case '/':
@@ -55,7 +55,7 @@ void GrSetFontPath(char *p)
                 break;
 #endif
               default:
-#if defined(__MSDOS__) || defined(__WIN32__)
+#if defined(__WIN32__)
                     chr = tolower(chr);
 #endif
                 if(isspace(chr)) pathchr = FALSE;

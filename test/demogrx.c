@@ -281,7 +281,7 @@ static void ini_objects(void)
 {
     grf_std = GrLoadFont("lucb21.fnt");
     if (grf_std == NULL) {
-#if defined(__MSDOS__) || defined(__WIN32__)
+#if defined(__WIN32__)
         grf_std = GrLoadFont("..\\fonts\\lucb21.fnt");
 #else
         grf_std = GrLoadFont("../fonts/lucb21.fnt");
@@ -292,7 +292,7 @@ static void ini_objects(void)
 
     grf_big = GrLoadFont("lucb40b.fnt");
     if (grf_big == NULL) {
-#if defined(__MSDOS__) || defined(__WIN32__)
+#if defined(__WIN32__)
         grf_big = GrLoadFont("..\\fonts\\lucb40b.fnt");
 #else
         grf_big = GrLoadFont("../fonts/lucb40b.fnt");
@@ -413,7 +413,7 @@ static int pev_command(Event * ev)
         for (i = 0; i < NDEMOS; i++) {
             if (ev->p1 == ptable[i].cid) {
                 gfaz_fin();
-#if defined(__MSDOS__) || defined(__WIN32__)
+#if defined(__WIN32__)
                 if (ev->p1 == ID_MODETEST)
                     strcpy(nprog, "..\\bin\\");
                 else
