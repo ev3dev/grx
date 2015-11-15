@@ -131,19 +131,12 @@ install: $(GRX20ST)
 ifeq ($(INCLUDE_PRINTING_CODE),y)
 	cp ../addons/print/grxprint.h $(DESTDIR)$(includedir)
 endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	mkdir -p $(DESTDIR)$(unitsdir)
-	cp ../pascal/grx.pas ../pascal/bgi/graph.pas $(DESTDIR)$(unitsdir)
-endif
 
 uninstall:
 	rm -f $(DESTDIR)$(libdir)/$(notdir $(GRX20ST)) $(DESTDIR)$(includedir)/grx20.h \
 	      $(DESTDIR)$(includedir)/grxkeys.h $(DESTDIR)$(includedir)/libbcc.h
 ifeq ($(INCLUDE_PRINTING_CODE),y)
 	rm -f $(DESTDIR)$(includedir)/grxprint.h
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	rm -f $(DESTDIR)$(unitsdir)/grx.pas $(DESTDIR)$(unitsdir)/graph.pas
 endif
 
 install-bin: $(UTILPC) $(UTILPW)

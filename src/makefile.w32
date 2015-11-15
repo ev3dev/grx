@@ -147,10 +147,6 @@ ifeq ($(HAVE_UNIX_TOOLS),y)
 ifeq ($(INCLUDE_PRINTING_CODE),y)
 	cp ../addons/print/grxprint.h $(DESTDIR)$(includedir)
 endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	mkdir -p $(DESTDIR)$(unitsdir)
-	cp ../pascal/grx.pas ../pascal/bgi/graph.pas $(DESTDIR)$(unitsdir)
-endif
 else
 	if not exist $(DESTDIRdos)\nul mkdir $(DESTDIRdos)
 	if not exist $(DESTDIRdos)$(libdirdos)\nul mkdir $(DESTDIRdos)$(libdirdos)
@@ -162,11 +158,6 @@ else
 ifeq ($(INCLUDE_PRINTING_CODE),y)
 	copy ..\addons\print\grxprint.h $(DESTDIRdos)$(includedirdos)
 endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	if not exist $(DESTDIRdos)$(unitsdirdos)\nul mkdir $(DESTDIRdos)$(unitsdirdos)
-	copy ..\pascal\grx.pas $(DESTDIRdos)$(unitsdirdos)
-	copy ..\pascal\bgi\graph.pas $(DESTDIRdos)$(unitsdirdos)
-endif
 endif
 
 uninstall:
@@ -176,9 +167,6 @@ ifeq ($(HAVE_UNIX_TOOLS),y)
 ifeq ($(INCLUDE_PRINTING_CODE),y)
 	rm -f $(DESTDIR)$(includedir)/grxprint.h
 endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	rm -f $(DESTDIR)$(unitsdir)/grx.pas $(DESTDIR)$(unitsdir)/graph.pas
-endif
 else
 	if exist $(DESTDIRdos)$(libdirdos)\$(GRX20ln)    del $(DESTDIRdos)$(libdirdos)\$(GRX20ln)
 	if exist $(DESTDIRdos)$(includedirdos)\grx20.h   del $(DESTDIRdos)$(includedirdos)\grx20.h
@@ -186,10 +174,6 @@ else
 	if exist $(DESTDIRdos)$(includedirdos)\libbcc.h del $(DESTDIRdos)$(includedirdos)\libbcc.h
 ifeq ($(INCLUDE_PRINTING_CODE),y)
 	if exist $(DESTDIRdos)$(includedirdos)\grxprint.h del $(DESTDIRdos)$(includedirdos)\grxprint.h
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	if exist $(DESTDIRdos)$(unitsdirdos)\grx.pas del $(DESTDIRdos)$(unitsdirdos)\grx.pas
-	if exist $(DESTDIRdos)$(unitsdirdos)\graph.pas del $(DESTDIRdos)$(unitsdirdos)\graph.pas
 endif
 endif
 

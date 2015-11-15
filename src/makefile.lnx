@@ -198,11 +198,6 @@ endif
 ifeq ($(INCLUDE_PRINTING_CODE),y)
 	install -m 0644 ../addons/print/grxprint.h $(DESTDIR)$(includedir)
 endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	install -m 0755 -d $(DESTDIR)$(unitsdir)
-	install -m 0644 ../pascal/grx.pas $(DESTDIR)$(unitsdir)
-	install -m 0644 ../pascal/bgi/graph.pas $(DESTDIR)$(unitsdir)
-endif
 
 uninstall:
 	rm -f $(DESTDIR)$(libdir)/$(notdir $(GRX20ST))
@@ -216,10 +211,6 @@ endif
 	rm -f $(DESTDIR)$(includedir)/libbcc.h
 ifeq ($(INCLUDE_PRINTING_CODE),y)
 	rm -f $(DESTDIR)$(includedir)/grxprint.h
-endif
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	rm -f $(DESTDIR)$(unitsdir)/grx.pas
-	rm -f $(DESTDIR)$(unitsdir)/graph.pas
 endif
 
 setsuid: $(UTILPS)

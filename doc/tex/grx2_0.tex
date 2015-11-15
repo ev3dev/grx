@@ -58,7 +58,6 @@ driver, and either full screen or on a window with the SDL driver.
 * Writing/reading JPEG graphics files::
 * Miscellaneous functions::
 * BGI interface::
-* Pascal interface::
 * References::
 @end menu
 
@@ -2458,7 +2457,7 @@ an example:
 @end example
 
 @c -----------------------------------------------------------------------------
-@node BGI interface, Pascal interface, Miscellaneous functions, A User Manual For GRX2
+@node BGI interface, References, Miscellaneous functions, A User Manual For GRX2
 @unnumberedsec BGI interface
 
 From the 2.3.1 version, GRX includes the BCC2GRX library created by Hartmut
@@ -2470,29 +2469,7 @@ native GRX interface in such cases!
 Read the readme.bgi file for more info.
 
 @c -----------------------------------------------------------------------------
-@node Pascal interface, References, BGI interface, A User Manual For GRX2
-@unnumberedsec Pascal interface
-
-The Pascal (gpc) support is produced by two unit files @strong{pascal/grx.pas}
-and @strong{pascal/bgi/graph.pas} which are the Pascal translations of the C
-header files @strong{include/grx20.h + include/grxkeys.h}
-and @strong{include/libbcc.h}.
-
-Compilation of the examples and installation of the header files is allowed
-by setting INCLUDE_GPC_SUPPORT=y in makedef.grx.
-
-The unit files contain at the  beginning instructions to load the required
-libraries (libgrx20..., depending on the system) and addon libraries
-(e.g. libpng).
-You can uncomment manually the addons you want.
-You can also use the configure script which does that automatically,
-together with editing the makedefs.grx file.
-
-By default they are installed in a @strong{units} directory below the
-INSTALLDIR directory. But you can put them where you like.
-
-@c -----------------------------------------------------------------------------
-@node References, , Pascal interface, A User Manual For GRX2
+@node References, , BGI interface, A User Manual For GRX2
 @unnumberedsec References
 
 @multitable {MGRX site (fork from GRX)----}{----http://www.libpng.org/pub/png/libpng.html}

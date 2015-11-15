@@ -15,16 +15,10 @@ libs:
 
 test:   libs
 	$(MAKE) -C test -f makefile.sdl
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	$(MAKE) -C pascal -f makefile.sdl
-endif
 
 bgitest:   libs
 ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(MAKE) -C test/bgi -f makefile.sdl
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	$(MAKE) -C pascal/bgi -f makefile.sdl
-endif
 endif
 
 clean:
@@ -33,12 +27,6 @@ ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(MAKE) -C test/bgi -f makefile.sdl clean
 endif
 	$(MAKE) -C src  -f makefile.sdl clean
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	$(MAKE) -C pascal -f makefile.sdl clean
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C pascal/bgi -f makefile.sdl clean
-endif
-endif
 
 cleanall: clean
 	$(MAKE) -C src -f makefile.sdl cleanall

@@ -27,9 +27,6 @@ INCLUDE_PRINTING_CODE=y
 # Specify if you want to include bmp image code from addons
 INCLUDE_BMP_CODE=y
 
-# Specify if you want to include GNU_Pascal (gpc) support
-INCLUDE_GPC_SUPPORT=n
-
 # Specify if you want shared library support (Linux console and X11)
 INCLUDE_SHARED_SUPPORT=y
 

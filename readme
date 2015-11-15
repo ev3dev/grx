@@ -275,23 +275,6 @@ Suidroot in the Linux console platform
   requires suidroot.
 
 
-Pascal users
-============
-
-  GRX has a Pascal interface (gpc), if you plan to use it don't forget
-  next steps before compiling:
-  
-  1) Activate INCLUDE_GPC_SUPPORT editing the "makedefs.grx" file.
-  
-  2) Edit the files pascal/grx.pas and pascal/bgi/graph.pas to uncomment
-  the '{.$L ...}' directives (near the beginning) to load the auxiliary
-  libraries (tiff, jpeg, png, z and socket) you need.
-
-  Alternatively you can use the configure script.
-
-  See the "pascal/readme" file for other details.
-
-
 Help
 ====
 

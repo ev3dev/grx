@@ -66,7 +66,6 @@ HAVE_LIBTIFF=n
 HAVE_UNIX_TOOLS=y
 INCLUDE_BMP_CODE=y
 INCLUDE_PRINTING_CODE=y
-INCLUDE_GPC_SUPPORT=n
 INCLUDE_SHARED_SUPPORT=y
 INCLUDE_BGI_SUPPORT=y
 USE_DIRECT_MOUSE_DRIVER=n
@@ -156,7 +155,6 @@ for ac_option do
       tiff)            HAVE_LIBTIFF=y;;
       bmp)             INCLUDE_BMP_CODE=y;;
       print)           INCLUDE_PRINTING_CODE=y;;
-      pascal | gpc)    INCLUDE_GPC_SUPPORT=y;;
       shared)          INCLUDE_SHARED_SUPPORT=y;;
       bgi)             INCLUDE_BGI_SUPPORT=y;;
       direct-mouse)    USE_DIRECT_MOUSE_DRIVER=y;;
@@ -176,7 +174,6 @@ for ac_option do
       tiff)            HAVE_LIBTIFF=n;;
       bmp)             INCLUDE_BMP_CODE=n;;
       print)           INCLUDE_PRINTING_CODE=n;;
-      pascal | gpc)    INCLUDE_GPC_SUPPORT=n;;
       shared)          INCLUDE_SHARED_SUPPORT=n;;
       bgi)             INCLUDE_BGI_SUPPORT=n;;
       direct-mouse)    USE_DIRECT_MOUSE_DRIVER=n;;
@@ -229,8 +226,6 @@ Options: [defaults in brackets after descriptions]
   --enable-tiff             include TIFF support [no]
   --enable-bmp              include BMP support [yes]
   --enable-print            include printing code [yes]
-  --enable-pascal or        include Pascal support [no]
-    --enable-gpc
   --enable-shared           build shared libraries [yes]
   --enable-bgi              include BGI support [yes]
   --enable-lsocket          link lsocket [no]
@@ -347,7 +342,6 @@ if sed -e "/^BUILD_X86_64=/s/=.*/=$BUILD_X86_64/;
            /^NEED_ZLIB=/s/=.*/=$NEED_ZLIB/;
            /^INCLUDE_PRINTING_CODE=/s/=.*/=$INCLUDE_PRINTING_CODE/;
            /^INCLUDE_BMP_CODE=/s/=.*/=$INCLUDE_BMP_CODE/;
-           /^INCLUDE_GPC_SUPPORT=/s/=.*/=$INCLUDE_GPC_SUPPORT/;
            /^INCLUDE_SHARED_SUPPORT=/s/=.*/=$INCLUDE_SHARED_SUPPORT/;
            /^INCLUDE_BGI_SUPPORT=/s/=.*/=$INCLUDE_BGI_SUPPORT/;
            /^CROSS_PLATFORM=/s/=.*/=$CROSS_PLATFORM/;
@@ -375,29 +369,4 @@ if sed -e "/^BUILD_X86_64=/s/=.*/=$BUILD_X86_64/;
 else
   cp -f "$cfgorigfile" "$cfgfile"
   exit 1
-fi
-
-if [ x"$INCLUDE_GPC_SUPPORT" = x"y" ]; then
-  for file in pascal/grx.pas pascal/bgi/graph.pas; do
-    if [ ! -r "$file" ]; then
-      echo "$0: $file not found" >&2
-      exit 1
-    fi
-    if sed -e "s/{.*\\\$define LINUX_CONSOLE}/{`if [ x"$target" != x"console" ]; then echo .; fi`\$define LINUX_CONSOLE}/;
-               s/{.*\\\$define SVGALIB}/{`if [ x"$target" != x"console" -o $USE_SVGALIB_DRIVER != y ]; then echo .; fi`\$define SVGALIB}/;
-               s/{.*\\\$define __SDL__}/{`if [ x"$target" != x"sdlx" -a x"$target" != x"sdlw" ]; then echo .; fi`\$define __SDL__}/;
-               s/{.*\\\$L socket}/{`if [ x"$lsocket" = x ]; then echo .; fi`\$L socket}/
-              " "$file" > "$file.new" &&
-       sed -e "s/{.*\\\$L tiff}/{`if [ $HAVE_LIBTIFF != y ]; then echo .; fi`\$L tiff}/;
-               s/{.*\\\$L jpeg}/{`if [ $HAVE_LIBJPEG != y ]; then echo .; fi`\$L jpeg}/;
-               s/{.*\\\$L png}/{`if [ $HAVE_LIBPNG != y ]; then echo .; fi`\$L png}/;
-               s/{.*\\\$L z}/{`if [ $NEED_ZLIB != y ]; then echo .; fi`\$L z}/;
-              " "$file.new" > "$file" &&
-       rm -f "$file.new" ; then
-      [ $silent = y ] || echo "Modified $file"
-    else
-      rm -f "$file.new"
-      exit 1
-    fi
-  done
 fi

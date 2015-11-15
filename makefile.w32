@@ -15,16 +15,10 @@ libs:
 
 test:   libs
 	$(MAKE) -C test -f makefile.w32
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	$(MAKE) -C pascal -f makefile.w32
-endif
 
 bgitest:   libs
 ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(MAKE) -C test/bgi -f makefile.w32
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	$(MAKE) -C pascal/bgi -f makefile.w32
-endif
 endif
 
 clean:
@@ -33,12 +27,6 @@ ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(MAKE) -C test/bgi -f makefile.w32 clean
 endif
 	$(MAKE) -C src  -f makefile.w32 clean
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	$(MAKE) -C pascal -f makefile.w32 clean
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C pascal/bgi -f makefile.w32 clean
-endif
-endif
 
 cleanall: clean
 	$(MAKE) -C src -f makefile.w32 cleanall

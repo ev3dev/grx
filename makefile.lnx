@@ -16,16 +16,10 @@ libs:
 
 test: libs
 	$(MAKE) -C test   -f makefile.lnx
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	$(MAKE) -C pascal -f makefile.lnx
-endif
 
 bgitest: libs
 ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(MAKE) -C test/bgi   -f makefile.lnx
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	$(MAKE) -C pascal/bgi -f makefile.lnx
-endif
 endif
 
 clean:
@@ -34,12 +28,6 @@ ifeq ($(INCLUDE_BGI_SUPPORT),y)
 	$(MAKE) -C test/bgi   -f makefile.lnx clean
 endif
 	$(MAKE) -C src        -f makefile.lnx clean
-ifeq ($(INCLUDE_GPC_SUPPORT),y)
-	$(MAKE) -C pascal     -f makefile.lnx clean
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C pascal/bgi -f makefile.lnx clean
-endif
-endif
 
 cleanall: clean
 	$(MAKE) -C src -f makefile.lnx cleanall
