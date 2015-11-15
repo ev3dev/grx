@@ -34,8 +34,6 @@
 
 #ifdef __GNUC__
 #  include "gcc/memfill.h"
-#elif defined(__TURBOC__)
-#  include "bcc/memfill.h"
 #endif
 
 #if !defined(GR_int64) && !defined(NO_64BIT_FILL)
@@ -870,9 +868,6 @@
  * stuff to clear arrays, structures
  */
 /*
-#ifdef  __TURBOC__
-#define memzero(p,s)            memfill_w((p),0,((s) >> 1))
-#endif
 #ifndef memzero
 #define memzero(p,s)            memfill_l((p),0,((s) >> 2))
 #endif

@@ -20,8 +20,6 @@
 
 #ifdef __GNUC__
 #include "gcc/highlow.h"
-#elif defined(__TURBOC__)
-#include "bcc/highlow.h"
 #endif
 
 #ifndef highlow

@@ -22,11 +22,6 @@
 #ifndef __IOPORT_H_INCLUDED__
 #define __IOPORT_H_INCLUDED__
 
-#ifdef __TURBOC__
-/* prototype for __emit__() */
-#include <dos.h>
-#endif
-
 #ifdef _MSC_VER
 /* prototype for _inp/_inpw/_outp/_outpw */
 #include <conio.h>
@@ -48,12 +43,6 @@
     );                                                  \
 })
 #endif
-#endif
-#ifdef  __TURBOC__
-#define __INLINE_SLOW_IO_ONCE__  (                      \
-    __emit__((char)(0xe6)),   /* outb to const port */  \
-    __emit__((char)(SLOW_DOWN_IO_PORT))                 \
-)
 #endif
 
 #ifdef _MSC_VER
@@ -148,70 +137,6 @@
 #endif  /* __i386__ */
 #endif  /* __GNUC__ */
 
-#ifdef  __TURBOC__
-/* void    __emit__(); */
-#define __INLINE_INPORT__(P,SIZE,T) (                   \
-    _DX = ((unsigned short)(P)),                        \
-    __emit__((char)(0xec+sizeof(T)-1)), /* inB|W  */    \
-    __INLINE_SLOW_DWN_IOC__                             \
-    (unsigned T)_AX                                     \
-)
-#define __INLINE_OUTPORT__(P,V,SIZE,T) do {             \
-    _AX = ((unsigned short)(V));                        \
-    _DX = ((unsigned short)(P));                        \
-    __emit__((char)(0xee+sizeof(T)-1)); /* outB|W */    \
-    __INLINE_SLOW_DOWN_IO__;                            \
-} while(0)
-#ifndef SLOW_DOWN_IO
-#define __INLINE_INPORTS__(P,B,C,SIZE,T) do {           \
-    _ES = (unsigned)(void _seg *)(void far *)(B);       \
-    _DI = (unsigned)(void near *)(B);                   \
-    _CX = ((unsigned short)(C));                        \
-    _DX = ((unsigned short)(P));                        \
-    __emit__((char)(0xfc));     /* cld    */            \
-    __emit__((char)(0xf3));     /* rep    */            \
-    __emit__((char)(0x6c+sizeof(T)-1)); /* insB|W */    \
-} while(0)
-#define __INLINE_OUTPORTS__(P,B,C,SIZE,T) do {          \
-    _ES = (unsigned)(void _seg *)(void far *)(B);       \
-    _SI = (unsigned)(void near *)(B);                   \
-    _CX = ((unsigned short)(C));                        \
-    _DX = ((unsigned short)(P));                        \
-    __emit__((char)(0xfc));     /* cld     */           \
-    __emit__((char)(0x26));     /* seg es  */           \
-    __emit__((char)(0xf3));     /* rep     */           \
-    __emit__((char)(0x6e+sizeof(T)-1)); /* outsB|W */   \
-} while(0)
-#else   /* SLOW_DOWN_IO */
-#define __INLINE_INPORTS__(P,B,C,SIZE,T) do {           \
-    _ES = (unsigned)(void _seg *)(void far *)(B);       \
-    _BX = (unsigned)(void near *)(B);                   \
-    _CX = ((unsigned short)(C));                        \
-    _DX = ((unsigned short)(P));                        \
-    do {                                                \
-    __emit__((char)(0xec+sizeof(T)-1)); /* inB|W */     \
-    __INLINE_SLOW_DOWN_IO__;                            \
-    *((T _seg *)_ES + (T near *)_BX) = (T)_AX;          \
-    _BX += sizeof(T);                                   \
-    _CX--;                                              \
-    } while(_CX);                                       \
-} while(0)
-#define __INLINE_OUTPORTS__(P,B,C,SIZE,T) do {          \
-    _ES = (unsigned)(void _seg *)(void far *)(B);       \
-    _BX = (unsigned)(void near *)(B);                   \
-    _CX = ((unsigned short)(C));                        \
-    _DX = ((unsigned short)(P));                        \
-    do {                                                \
-    (T)_AX = *((T _seg *)_ES + (T near *)_BX);          \
-    __emit__((char)(0xee+sizeof(T)-1)); /* outB|W */    \
-    __INLINE_SLOW_DOWN_IO__;                            \
-    _BX += sizeof(T);                                   \
-    _CX--;                                              \
-    } while(_CX);                                       \
-} while(0)
-#endif  /* SLOW_DOWN_IO */
-#endif  /* __TURBOC__ */
-
 #ifdef _MSC_VER
 #define inport_b(port)          _inp((unsigned)(port))
 #define inport_w(port)          _inpw((unsigned)(port))
@@ -271,18 +196,13 @@
 #endif
 #endif
 
-#ifdef  __TURBOC__
-#define int_disable()           __emit__((char)(0xfa))
-#define int_enable()            __emit__((char)(0xfb))
-#endif
-
 #if defined(_MSC_VER) /* GS */
 #define int_disable()           _disable()
 #define int_enable()            _enable()
 #endif
 
 
-#if defined(__TURBOC__) || defined(_MSC_VER)
+#if defined(_MSC_VER)
 /*
  * These are not really here!
  */

@@ -19,9 +19,6 @@
 
 #if defined(__alpha__) || (GRX_VERSION==GRX_VERSION_GENERIC_X11) && !defined(_AIX)
 #  include <alloca.h>
-#elif defined(__TURBOC__)
-#  include <alloc.h>
-#  include "bcc/allocate.h"
 #elif defined(_MSC_VER) && defined(_WIN32)
 #  include <malloc.h>
 #elif defined(__MINGW32__) && !defined(alloca)
@@ -35,11 +32,6 @@
 #define farrealloc _frealloc
 #define farcalloc  _fcalloc
 #define farfree    _ffree
-#elif !defined(__TURBOC__)
-#define farmalloc  malloc
-#define farrealloc realloc
-#define farcalloc  calloc
-#define farfree    free
 #endif
 
 #if 0 && defined(_MSC_VER)

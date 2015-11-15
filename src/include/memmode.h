@@ -21,8 +21,6 @@
 
 #ifdef __GNUC__
 #include "gcc/memmode.h"
-#elif defined(__TURBOC__)
-#include "bcc/memmode.h"
 #endif
 
 #ifndef  LINP_PTR

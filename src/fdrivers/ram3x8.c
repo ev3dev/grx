@@ -178,11 +178,7 @@ GrFrameDriver _GrFrameDriverRAM3x8 = {
     4,                          /* scan line width alignment */
     3,                          /* number of planes */
     24,                         /* bits per pixel */
-#ifdef __TURBOC__
-    65520L,                     /* max plane size the code can handle */
-#else
     8*16*1024L*1024L,           /* max plane size the code can handle */
-#endif
     NULL,
     readpixel,
     drawpixel,

@@ -364,8 +364,6 @@ static void the_info(int x, int y)
     grt_centered.txo_font = grf_std;
 
     nsys = GrGetLibrarySystem();
-    if (nsys == GRX_VERSION_TCC_8086_DOS)
-        strcpy(sys, "TCC");
     if (nsys == GRX_VERSION_GCC_386_LINUX)
         strcpy(sys, "LNX");
     if (nsys == GRX_VERSION_GCC_386_X11)

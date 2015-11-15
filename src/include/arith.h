@@ -24,8 +24,6 @@
 
 #ifdef __GNUC__
 #include "gcc/arith.h"
-#elif defined(__TURBOC__)
-#include "bcc/arith.h"
 #endif
 
 #ifdef _MSC_VER

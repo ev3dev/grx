@@ -199,7 +199,7 @@
  * clipping with default actions: outside => return, clipped => nothing
  */
 /* some systems have problems with emtpy macro args ... */
-#if defined(__GNUC__) || defined(__TURBOC__)
+#if defined(__GNUC__)
 #define CLIP_EMPTY_MACRO_ARG
 #endif
 

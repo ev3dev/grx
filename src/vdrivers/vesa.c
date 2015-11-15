@@ -165,19 +165,6 @@ static int build_video_mode( VESAmodeInfoBlock *ip,
     ep->cprec[0]   = ep->cprec[1] = ep->cprec[2] = 6;
     ep->cpos[0]    = ep->cpos[1]  = ep->cpos[2]  = 0;
 
-#ifdef __TURBOC__
-    if (  _GrVidDrvVESAflags & PROTBANKING) {
-        if(VESAbankfn && (VESAbankfn != ip->WinFuncPtr)) {
-            _GrVidDrvVESAflags &= ~PROTBANKING;
-            _SETRWBANKS = RM_setrwbanks;
-            _SETBANK    = RM_setbank;
-        } else {
-            VESAbankfn = ip->WinFuncPtr;
-            _SETRWBANKS = RM_protsetrwbanks;
-            _SETBANK    = RM_protsetbank;
-        }
-    }
-#endif
 #ifdef HAVE_VBE2
     if(!(_GrVidDrvVESAflags&NOT_LINEAR) && VESAversion>=VESA_VERSION(2,0)) {
         /* check for linear frame buffer */

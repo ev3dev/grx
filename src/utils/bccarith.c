@@ -22,11 +22,6 @@
 #include "libgrx.h"
 #include "arith.h"
 
-#ifdef __TURBOC__
-/* prototype for __emit__() */
-#include <dos.h>
-#endif
-
 #ifdef _MSC_VER
 #define __emit__(x) __asm{ __emit (x) }
 #endif

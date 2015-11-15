@@ -38,7 +38,6 @@
 #define GRX_VERSION_API 0x0249
 
 /* these are the supported configurations: */
-#define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
 #define GRX_VERSION_GCC_386_GO32        2       /* deprecated, don't use it */
 #define GRX_VERSION_GCC_386_LINUX       3       /* the real stuff */
 #define GRX_VERSION_GENERIC_X11         4       /* generic X11 version */
@@ -51,10 +50,6 @@
 
 #define GRXMain main  /* From the 2.4.6 version We don't need this */
                       /* anymore, but it is here for previous apps */
-
-#ifdef  __TURBOC__
-#define GRX_VERSION     GRX_VERSION_TCC_8086_DOS
-#endif
 
 #ifdef  __GNUC__
 #if defined(__XWIN__)
@@ -102,7 +97,6 @@
 #error  GRX is not supported on your COMPILER/CPU/OPERATING SYSTEM!
 #endif
 
-#if !defined(__TURBOC__)
 #ifndef near            /* get rid of these stupid keywords */
 #define near
 #endif
@@ -111,7 +105,6 @@
 #endif
 #ifndef huge
 #define huge
-#endif
 #endif
 
 #ifdef __cplusplus
@@ -131,13 +124,7 @@ typedef struct _GR_context      GrContext;
 /* ================================================================== */
 
 /* need unsigned 32 bit integer for color stuff */
-#if defined(__TURBOC__) && defined(__MSDOS__)
-/* TCC && BCC are 16 bit compilers */
-typedef unsigned long int GrColor;
-#else
-/* all other platforms (GCC on i386 or x86_64 and ALPHA) have 32 bit ints */
 typedef unsigned int GrColor;
-#endif
 
 /* ================================================================== */
 /*                           MODE SETTING                             */
@@ -759,17 +746,8 @@ typedef GrColor *GrColorTableP;
 /*                       GRAPHICS PRIMITIVES                          */
 /* ================================================================== */
 
-#ifdef  __TURBOC__
-/* this is for GRX compiled with SMALL_STACK: */
-#define GR_MAX_POLYGON_POINTS   (8192)
-#define GR_MAX_ELLIPSE_POINTS   (1024 + 5)
-/* old values without SMALL_STACK: */
-/* #define GR_MAX_POLYGON_POINTS   (512) */
-/* #define GR_MAX_ELLIPSE_POINTS   (256 + 5) */
-#else
 #define GR_MAX_POLYGON_POINTS   (1000000)
 #define GR_MAX_ELLIPSE_POINTS   (1024 + 5)
-#endif
 #define GR_MAX_ANGLE_VALUE      (3600)
 #define GR_ARC_STYLE_OPEN       0
 #define GR_ARC_STYLE_CLOSE1     1

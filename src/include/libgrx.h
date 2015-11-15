@@ -86,8 +86,7 @@
 #endif
 
 /* some CPU allow misaligned access to non byte location */
-#if   defined(__TURBOC__) \
-   || defined(_MSC_VER) \
+#if   defined(_MSC_VER) \
    || defined(__386__) \
    || defined(__i386__) \
    || defined(__i386)  \
@@ -135,8 +134,7 @@ typedef unsigned GR_int64 GR_int64u;
 ** get system endian
 */
 #if !defined(_BIG_ENDIAN) && !defined(_LITTLE_ENDIAN)
-#  if   defined(__TURBOC__) \
-     || defined(_MSC_VER) \
+#  if   defined(_MSC_VER) \
      || defined(__alpha__) \
      || (defined(__LCC__) && defined(__i386__)) \
      || (defined(__GNUC__) && \
@@ -244,12 +242,6 @@ extern  struct _GR_mouseInfo   _GrMouseInfo;
 #define RWBANKHOOK
 #endif
 
-#ifdef __TURBOC__
-#  define BANKPOS(offs)   ((unsigned short)(offs))
-#  define BANKNUM(offs)   (((unsigned short *)(&(offs)))[1])
-#  define BANKLFT(offs)   (_AX = -(int)(BANKPOS(offs)),(_AX ? _AX : 0xffffU))
-#endif
-
 #ifndef BANKPOS
 #define BANKPOS(offs)   ((GR_int16u)(offs))
 #endif
@@ -288,10 +280,6 @@ extern  struct _GR_mouseInfo   _GrMouseInfo;
 extern int _GR_firstFreeColor; /* can't access all colors on all systems */
 extern int _GR_lastFreeColor;  /* eg. X11 and other windowing systems    */
 int _GrResetColors(void);      /* like GrResetColors but return true on success */
-
-#ifdef __TURBOC__
-#  define C_OPER(color)   (unsigned int)(((unsigned char *)(&(color)))[3] & 15)
-#endif
 
 #ifndef C_OPER
 #define C_OPER(color)   (unsigned int)(((GrColor)(color) >> 24) & 15)

@@ -18,10 +18,6 @@
 
 #include <stdlib.h>
 
-#if defined(__TURBOC__) /* GS */
-#include <conio.h>
-#endif
-
 #include "libgrx.h"
 #include "grxkeys.h"
 #include "allocate.h"

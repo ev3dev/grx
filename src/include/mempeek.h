@@ -31,8 +31,6 @@
 
 #ifdef __GNUC__
 #include "gcc/mempeek.h"
-#elif defined(__TURBOC__)
-#include "bcc/mempeek.h"
 #endif
 
 #ifndef __INLINE_STD_PEEK__

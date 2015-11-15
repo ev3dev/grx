@@ -32,11 +32,7 @@
 
 /* helper ... */
 #define MULT3(x)     ( (x)+(x)+(x) )
-#ifdef __TURBOC__
-#define REMAIN3(x)   ( ((unsigned int)(x)) % 3 )
-#else
 #define REMAIN3(x)   ( (x) % 3 )
-#endif
 
 /* frame offset address calculation */
 #define FOFS(x,y,lo) umuladd32((y),(lo),MULT3(x))

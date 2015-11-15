@@ -25,10 +25,6 @@
 /* in this is the far pointer code using %fs descriptor          */
 #ifndef LFB_BY_NEAR_POINTER
 
-#ifdef   __TURBOC__
-#error This library will not work with as a 16-bit real-mode code
-#endif
-
 /* -------------------------------------------------------------------- */
 
 #define FAR_ACCESS

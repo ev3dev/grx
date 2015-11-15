@@ -105,13 +105,6 @@
 } while(0);
 
 
-#if defined(__TURBOC__) /* GS */
-#define real_time(tv) do {                                                  \
-        (tv) = *(long far *)(MK_FP(0x40,0x6c));                             \
-} while(0)
-#define MS_PER_TICK 55
-#endif
-
 #ifdef __WIN32__
 #include <time.h>
 #define real_time(tv) do {                                                  \

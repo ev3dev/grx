@@ -46,8 +46,6 @@
 
 #ifdef __GNUC__
 #  include "gcc/memcopy.h"
-#elif defined(__TURBOC__)
-#  include "bcc/memcopy.h"
 #endif
 
 #if !defined(GR_int64) && !defined(NO_64BIT_COPY)
