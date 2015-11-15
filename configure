@@ -65,7 +65,6 @@ HAVE_LIBTIFF=n
 # we suppose you have other needed unix tools as well
 HAVE_UNIX_TOOLS=y
 INCLUDE_BMP_CODE=y
-INCLUDE_PRINTING_CODE=y
 INCLUDE_SHARED_SUPPORT=y
 INCLUDE_BGI_SUPPORT=y
 USE_DIRECT_MOUSE_DRIVER=n
@@ -154,7 +153,6 @@ for ac_option do
       png-z)           HAVE_LIBPNG=y; NEED_ZLIB=y;;
       tiff)            HAVE_LIBTIFF=y;;
       bmp)             INCLUDE_BMP_CODE=y;;
-      print)           INCLUDE_PRINTING_CODE=y;;
       shared)          INCLUDE_SHARED_SUPPORT=y;;
       bgi)             INCLUDE_BGI_SUPPORT=y;;
       direct-mouse)    USE_DIRECT_MOUSE_DRIVER=y;;
@@ -173,7 +171,6 @@ for ac_option do
       png-z)           HAVE_LIBPNG=n; NEED_ZLIB=n;;
       tiff)            HAVE_LIBTIFF=n;;
       bmp)             INCLUDE_BMP_CODE=n;;
-      print)           INCLUDE_PRINTING_CODE=n;;
       shared)          INCLUDE_SHARED_SUPPORT=n;;
       bgi)             INCLUDE_BGI_SUPPORT=n;;
       direct-mouse)    USE_DIRECT_MOUSE_DRIVER=n;;
@@ -225,7 +222,6 @@ Options: [defaults in brackets after descriptions]
   --enable-png-z            include PNG support and use zlib [no]
   --enable-tiff             include TIFF support [no]
   --enable-bmp              include BMP support [yes]
-  --enable-print            include printing code [yes]
   --enable-shared           build shared libraries [yes]
   --enable-bgi              include BGI support [yes]
   --enable-lsocket          link lsocket [no]
@@ -340,7 +336,6 @@ if sed -e "/^BUILD_X86_64=/s/=.*/=$BUILD_X86_64/;
            /^HAVE_LIBPNG=/s/=.*/=$HAVE_LIBPNG/;
            /^HAVE_UNIX_TOOLS=/s/=.*/=$HAVE_UNIX_TOOLS/;
            /^NEED_ZLIB=/s/=.*/=$NEED_ZLIB/;
-           /^INCLUDE_PRINTING_CODE=/s/=.*/=$INCLUDE_PRINTING_CODE/;
            /^INCLUDE_BMP_CODE=/s/=.*/=$INCLUDE_BMP_CODE/;
            /^INCLUDE_SHARED_SUPPORT=/s/=.*/=$INCLUDE_SHARED_SUPPORT/;
            /^INCLUDE_BGI_SUPPORT=/s/=.*/=$INCLUDE_BGI_SUPPORT/;

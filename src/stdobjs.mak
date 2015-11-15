@@ -334,8 +334,5 @@ PNG_1 = $(OP)gformats/ctx2png$(OX) \
 
 NOPNG_1 = $(OP)gformats/dummypng$(OX)
 
-PRN_1 = $(OP)../addons/print/grxprint$(OX) \
-	$(OP)../addons/print/prndata$(OX)
-
 PRNBGI_1 = $(OP)bgi/bgiprint$(OX)
 

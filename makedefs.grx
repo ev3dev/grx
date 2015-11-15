@@ -21,9 +21,6 @@ HAVE_LIBPNG=n
 # zlib compression library
 NEED_ZLIB=n
 
-# Specify if you want to include printing code from addons
-INCLUDE_PRINTING_CODE=y
-
 # Specify if you want to include bmp image code from addons
 INCLUDE_BMP_CODE=y
 

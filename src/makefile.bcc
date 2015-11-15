@@ -115,7 +115,6 @@ clean:
 	if exist vdrivers\*.obj del vdrivers\*.obj
 	if exist wideline\*.obj del wideline\*.obj
 	if exist ..\addons\*.obj       del ..\addons\*.obj
-	if exist ..\addons\print\*.obj del ..\addons\print\*.obj
 	if exist ..\addons\bmp\*.obj   del ..\addons\bmp\*.obj
 	if exist config.bcc del config.bcc
 	if exist *.asm del *.asm

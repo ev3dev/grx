@@ -29,7 +29,7 @@ LINK = wlink
 
 ##################
 ## DEBUG FLAGS
-CC_OPTS = -i=$(WATCOM_HEADER_DIR);.\include;.\src\include;.\src;.\addons\print;.\addons\bmp -w4 &
+CC_OPTS = -i=$(WATCOM_HEADER_DIR);.\include;.\src\include;.\src;.\addons\bmp -w4 &
 -e25 -d__MSDOS__ -dSMALL_STACK -dLFB_BY_NEAR_POINTER -dUSE_WATCOM386_ASM -dDEBUG=0x7800 -zq -od -d2 -5r &
 -bt=dos -mf
 LIB_OPTS = -b -c -n -q -p=512
@@ -39,7 +39,7 @@ LINK_OPTS = d all SYS dos4g op inc op m op maxe=25 op q op symf
 
 ##################
 ## RELEASE FLAGS
-CC_OPTS = -i=$(WATCOM_HEADER_DIR);.\include;.\src\include;.\src;.\addons\print;.\addons\bmp -w4 &
+CC_OPTS = -i=$(WATCOM_HEADER_DIR);.\include;.\src\include;.\src;.\addons\bmp -w4 &
 -e25 -d__MSDOS__ -dSMALL_STACK -dLFB_BY_NEAR_POINTER -dUSE_WATCOM386_ASM -zq -otexan -d1 -5r &
 -bt=dos -mf
 LIB_OPTS = -b -c -n -q -p=512

@@ -83,12 +83,6 @@ OBJS += .AUTODEPEND
 .\bmp.obj : .\addons\bmp\bmp.c .AUTODEPEND
 	$(CC) $[@ $(CC_OPTS)
 
-.\grxprint.obj : .\addons\print\grxprint.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\prndata.obj : .\addons\print\prndata.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
 .\bitblt.obj : .\src\draw\bitblt.c .AUTODEPEND
 	$(CC) $[@ $(CC_OPTS)
 

@@ -78,14 +78,6 @@ else
   ADDON_O += $(NOPNG_1)
 endif
 
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-  ADDON_O += $(PRN_1)
-  INCDIR += -I../addons/print
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  BGI_O += $(PRNBGI_1)
-endif
-endif
-
 ifeq ($(INCLUDE_BMP_CODE),y)
   ADDON_O += $(BMP_1)
   INCDIR  += -I../addons/bmp
@@ -187,9 +179,6 @@ endif
 	install -m 0644 ../include/grx20.h $(DESTDIR)$(includedir)
 	install -m 0644 ../include/grxkeys.h $(DESTDIR)$(includedir)
 	install -m 0644 ../include/libbcc.h $(DESTDIR)$(includedir)
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-	install -m 0644 ../addons/print/grxprint.h $(DESTDIR)$(includedir)
-endif
 
 uninstall:
 	rm -f $(DESTDIR)$(libdir)/$(notdir $(GRX20ST))
@@ -201,9 +190,6 @@ endif
 	rm -f $(DESTDIR)$(includedir)/grx20.h
 	rm -f $(DESTDIR)$(includedir)/grxkeys.h
 	rm -f $(DESTDIR)$(includedir)/libbcc.h
-ifeq ($(INCLUDE_PRINTING_CODE),y)
-	rm -f $(DESTDIR)$(includedir)/grxprint.h
-endif
 
 setsuid: $(UTILPX)
 ifeq ($(SET_XSUIDROOT),y)
