@@ -84,8 +84,8 @@ void printbits(int value,bitdef *def)
 
 void printinfo(VESAvgaInfoBlock *vgainfo)
 {
-        char  far *sp = vgainfo->OEMstringPtr;
-        short far *mp = vgainfo->VideoModePtr;
+        char  *sp = vgainfo->OEMstringPtr;
+        short *mp = vgainfo->VideoModePtr;
 
         printf("VESASignature:\t\"%c%c%c%c\"\n",
             vgainfo->VESAsignature[0],
@@ -204,7 +204,7 @@ int main(void)
         VESAvgaInfoBlock  vb;
         VESAmodeInfoBlock mb;
         if(_GrViDrvVESAgetVGAinfo(&vb)) {
-            short far *mp = vb.VideoModePtr;
+            short *mp = vb.VideoModePtr;
             printinfo(&vb);
             if((pb=_GrViDrvVESAgetPMinfo()) != NULL)
               printpminfo(pb);

@@ -22,7 +22,7 @@
 #pragma inline
 #pragma warn -rvl
 
-void far *_GR_fwdcopy_set(void near *ap, void far *d, void far *s, unsigned cnt)
+void *_GR_fwdcopy_set(void *ap, void *d, void *s, unsigned cnt)
 {
   asm         push    ds
   asm         mov     cx, cnt
@@ -51,7 +51,7 @@ void far *_GR_fwdcopy_set(void near *ap, void far *d, void far *s, unsigned cnt)
 }
 
 #define COPYOPR(FN,INS)                                                       \
-  void far * FN (void near *ap, void far *d, void far *s, unsigned cnt)       \
+  void * FN (void *ap, void *d, void *s, unsigned cnt)                        \
   {                                                                           \
       asm         push    ds                                                ; \
       asm         mov     cx, cnt                                           ; \

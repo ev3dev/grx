@@ -97,16 +97,6 @@
 #error  GRX is not supported on your COMPILER/CPU/OPERATING SYSTEM!
 #endif
 
-#ifndef near            /* get rid of these stupid keywords */
-#define near
-#endif
-#ifndef far
-#define far
-#endif
-#ifndef huge
-#define huge
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -296,7 +286,7 @@ struct _GR_videoMode {
 struct _GR_videoModeExt {
         enum   _GR_frameModes   mode;       /* frame driver for this video mode */
         struct _GR_frameDriver *drv;        /* optional frame driver override */
-        char    far *frame;                 /* frame buffer address */
+        char    *frame;                     /* frame buffer address */
         char    cprec[3];                   /* color component precisions */
         char    cpos[3];                    /* color component bit positions */
         int     flags;                      /* mode flag bits; see "grdriver.h" */
@@ -327,17 +317,17 @@ struct _GR_frameDriver {
     void     (*drawhline)(int x,int y,int w,GrColor c);
     void     (*drawvline)(int x,int y,int h,GrColor c);
     void     (*drawblock)(int x,int y,int w,int h,GrColor c);
-    void     (*drawbitmap)(int x,int y,int w,int h,char far *bmp,int pitch,int start,GrColor fg,GrColor bg);
+    void     (*drawbitmap)(int x,int y,int w,int h,char *bmp,int pitch,int start,GrColor fg,GrColor bg);
     void     (*drawpattern)(int x,int y,int w,char patt,GrColor fg,GrColor bg);
     void     (*bitblt)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
     void     (*bltv2r)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
     void     (*bltr2v)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
     /* new functions in v2.3 */
-    GrColor far *(*getindexedscanline)(GrFrame *c,int x, int y, int w, int *indx);
+    GrColor *(*getindexedscanline)(GrFrame *c,int x, int y, int w, int *indx);
       /* will return an array of pixel values pv[] read from frame   */
       /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
       /*    else             pv[i=0..w-1] = readpixel(x+indx[i],y)   */
-    void     (*putscanline)(int x, int y, int w,const GrColor far *scl, GrColor op);
+    void     (*putscanline)(int x, int y, int w,const GrColor *scl, GrColor op);
       /** will draw scl[i=0..w-1] to frame:                          */
       /*    if (scl[i] != skipcolor) drawpixel(x+i,y,(scl[i] | op))  */
 };
@@ -460,7 +450,7 @@ long GrContextSize(int w,int h);
 /* ================================================================== */
 
 struct _GR_frame {
-        char    far *gf_baseaddr[4];        /* base address of frame memory */
+        char    *gf_baseaddr[4];        /* base address of frame memory */
         short   gf_selector;                /* frame memory segment selector */
         char    gf_onscreen;                /* is it in video memory ? */
         char    gf_memflags;                /* memory allocation flags */
@@ -496,8 +486,8 @@ extern const struct _GR_contextInfo {
         struct _GR_context screen;          /* the screen context */
 } * const GrContextInfo;
 
-GrContext *GrCreateContext(int w,int h,char far *memory[4],GrContext *where);
-GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,char far *memory[4],GrContext *where);
+GrContext *GrCreateContext(int w,int h,char *memory[4],GrContext *where);
+GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,char *memory[4],GrContext *where);
 GrContext *GrCreateSubContext(int x1,int y1,int x2,int y2,const GrContext *parent,GrContext *where);
 GrContext *GrSaveContext(GrContext *where);
 
@@ -975,13 +965,13 @@ typedef struct _GR_fontChrInfo {        /* character descriptor */
 
 typedef struct _GR_font {               /* the complete font */
         struct  _GR_fontHeader  h;          /* the font info structure */
-        char     far *bitmap;               /* character bitmap array */
-        char     far *auxmap;               /* map for rotated & underline chrs */
+        char     *bitmap;                   /* character bitmap array */
+        char     *auxmap;                   /* map for rotated & underline chrs */
         unsigned int  minwidth;             /* width of narrowest character */
         unsigned int  maxwidth;             /* width of widest character */
         unsigned int  auxsize;              /* allocated size of auxiliary map */
         unsigned int  auxnext;              /* next free byte in auxiliary map */
-        unsigned int  far      *auxoffs[7]; /* offsets to completed aux chars */
+        unsigned int  *auxoffs[7];          /* offsets to completed aux chars */
         struct  _GR_fontChrInfo chrinfo[1]; /* character info (not act. size) */
 } GrFont;
 
@@ -1009,9 +999,9 @@ int  GrFontStringWidth(const GrFont *font,void *text,int len,int type);
 int  GrFontStringHeight(const GrFont *font,void *text,int len,int type);
 int  GrProportionalTextWidth(const GrFont *font,const void *text,int len,int type);
 
-char far *GrBuildAuxiliaryBitmap(GrFont *font,int chr,int dir,int ul);
-char far *GrFontCharBitmap(const GrFont *font,int chr);
-char far *GrFontCharAuxBmp(GrFont *font,int chr,int dir,int ul);
+char *GrBuildAuxiliaryBitmap(GrFont *font,int chr,int dir,int ul);
+char *GrFontCharBitmap(const GrFont *font,int chr);
+char *GrFontCharAuxBmp(GrFont *font,int chr,int dir,int ul);
 
 typedef union _GR_textColor {           /* text color union */
         GrColor       v;                    /* color value for "direct" text */
@@ -1088,7 +1078,7 @@ void GrDumpTextRegion(const GrTextRegion *r);
 #define GrFontCharBitmap(f,ch) (                                               \
         GrFontCharPresent(f,ch) ?                                              \
         &(f)->bitmap[(f)->chrinfo[(unsigned int)(ch) - (f)->h.minchar].offset]:\
-        (char far *)0                                                          \
+        (char *)0                                                              \
 )
 #define GrFontCharAuxBmp(f,ch,dir,ul) (                                        \
         (((dir) == GR_TEXT_DEFAULT) && !(ul)) ?                                \
@@ -1370,7 +1360,7 @@ typedef struct _GR_cursor {
         int     displayed;                          /* set if displayed */
 } GrCursor;
 
-GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,int xo,int yo,const GrColorTableP c);
+GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const GrColorTableP c);
 void GrDestroyCursor(GrCursor *cursor);
 void GrDisplayCursor(GrCursor *cursor);
 void GrEraseCursor(GrCursor *cursor);
@@ -1580,7 +1570,7 @@ int GrSaveContextToGrayJpeg( GrContext *grc, char *jpegfn, int quality );
 /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */
 /* ================================================================== */
 
-void GrResizeGrayMap(unsigned char far *map,int pitch,int ow,int oh,int nw,int nh);
+void GrResizeGrayMap(unsigned char *map,int pitch,int ow,int oh,int nw,int nh);
 int  GrMatchString(const char *pattern,const char *strg);
 void GrSetWindowTitle(char *title);
 void GrSleep(int msec);

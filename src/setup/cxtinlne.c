@@ -18,7 +18,7 @@
 
 #include "libgrx.h"
 
-GrContext *(GrCreateContext)(int w,int h,char far *memory[4],GrContext *where)
+GrContext *(GrCreateContext)(int w,int h,char *memory[4],GrContext *where)
 {
         return(GrCreateContext(w,h,memory,where));
 }

@@ -1400,8 +1400,8 @@ while (0)
  * stuff to copy arrays, structures
  */
 #define memcopy(d,s,sze) do {                                           \
-        register void far *_CD          = (void far *)(d);              \
-        register void far *_CS          = (void far *)(s);              \
+        register void *_CD              = (void *)(d);                  \
+        register void *_CS              = (void *)(s);                  \
         register unsigned GR_PtrInt _CC = (unsigned GR_PtrInt)(sze);    \
         DBGPRINTF(DBG_COPYFILL,("memcopy size=%u\n",_CC));              \
         fwdcopy_set(_CD,_CD,_CS,_CC);                                   \

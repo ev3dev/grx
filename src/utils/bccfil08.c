@@ -23,7 +23,7 @@
 #pragma warn -rvl
 
 #define COLFL(FN,INS) \
-  void far * FN (void far *P, int O, unsigned char V, unsigned C) { \
+  void * FN (void *P, int O, unsigned char V, unsigned C) {         \
     asm         les     di, P                      ;                \
     asm         mov     cx, C                      ;                \
     asm         or      cx,cx                      ;                \
@@ -52,7 +52,7 @@ COLFL(_GR_colfill_b_or,OR_INS)
 COLFL(_GR_colfill_b_and,AND_INS)
 
 
-void far *_GR_repfill_b(void far *P,unsigned int V, unsigned int C) {
+void *_GR_repfill_b(void *P,unsigned int V, unsigned int C) {
   asm         les     di, P
   asm         mov     cx, C
   asm         or      cx,cx
@@ -79,7 +79,7 @@ void far *_GR_repfill_b(void far *P,unsigned int V, unsigned int C) {
 }
 
 #define REPFB_OP(FN,INS)                                          \
-  void far * FN (void far *P,unsigned int V, unsigned int C) {    \
+  void * FN (void *P,unsigned int V, unsigned int C) {            \
       asm         mov     cx, C                    ;              \
       asm         push    ds                       ;              \
       asm         lds     di, P                    ;              \

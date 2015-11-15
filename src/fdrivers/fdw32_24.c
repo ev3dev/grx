@@ -101,7 +101,7 @@ static void w32_drawblock(int x, int y, int w, int h, GrColor color)
     GRX_LEAVE();
 }
 
-static void w32_drawbitmap(int x, int y, int w, int h, char far *bmp,
+static void w32_drawbitmap(int x, int y, int w, int h, char *bmp,
                            int pitch, int start, GrColor fg, GrColor bg)
 {
     RECT Rect;
@@ -147,7 +147,7 @@ static void w32_bitblt(GrFrame *dst, int dx, int dy, GrFrame *src,
 }
 
 void w32_putscanline(int x, int y, int w,
-                     const GrColor far *scl, GrColor op )
+                     const GrColor *scl, GrColor op )
 {
     GrColor skipc;
     RECT Rect;

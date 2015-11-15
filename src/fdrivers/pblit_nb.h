@@ -45,7 +45,7 @@
 
 /* check if forward blit would overwrite source */
 #ifdef BLIT_CAN_OVERLAP
-#define OVERLAP(dp,sp) ( ((GR_int8 far *)dp) > ((GR_int8 far *)sp) )
+#define OVERLAP(dp,sp) ( ((GR_int8 *)dp) > ((GR_int8 *)sp) )
 #endif
 
 /* for RAM3x8 support */
@@ -64,7 +64,7 @@ void BLITFUNC(GrFrame *dst,int dx,int dy,
 #endif
               )
 {
-    char far *dptr, *sptr;
+    char *dptr, *sptr;
     unsigned  dskip, sskip;
     int       oper, ww;
     GR_int8u  cval;

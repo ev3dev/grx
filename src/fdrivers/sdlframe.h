@@ -63,7 +63,7 @@ static INLINE void sdl_drawblock(int x, int y, int w, int h, GrColor color)
     SDL_UpdateRect(_SGrScreen, x, y, w, h);
 }
 
-static INLINE void sdl_drawbitmap(int x, int y, int w, int h, char far *bmp,
+static INLINE void sdl_drawbitmap(int x, int y, int w, int h, char *bmp,
                                   int pitch, int start, GrColor fg, GrColor bg)
 {
     drawbitmap(x, y, w, h, bmp, pitch, start, fg, bg);
@@ -91,7 +91,7 @@ static INLINE void sdl_bltr2v(GrFrame *dst, int dx, int dy, GrFrame *src,
     SDL_UpdateRect(_SGrScreen, dx, dy, w, h);
 }
 
-static INLINE void sdl_putscanline(int x, int y, int w, const GrColor far *scl,
+static INLINE void sdl_putscanline(int x, int y, int w, const GrColor *scl,
                                    GrColor op)
 {
     putscanline(x, y, w, scl, op);

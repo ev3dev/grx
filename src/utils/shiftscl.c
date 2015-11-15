@@ -19,8 +19,8 @@
 #include "libgrx.h"
 #include "highlow.h"
 
-void _GR_shift_scanline(GR_int8u far **dst,
-                        GR_int8u far **src,
+void _GR_shift_scanline(GR_int8u **dst,
+                        GR_int8u **src,
                         int ws, int shift, int planes) {
   int plane;
 
@@ -28,8 +28,8 @@ void _GR_shift_scanline(GR_int8u far **dst,
   if (shift <= 0) {
     shift = -shift;
     for (plane = 0; plane < planes; ++plane) {
-      GR_int8u far *s = *(src++) + ws;
-      GR_int8u far *d = *(dst++) + ws;
+      GR_int8u *s = *(src++) + ws;
+      GR_int8u *d = *(dst++) + ws;
 #     if defined(__GNUC__) && defined(__i386__)
         int _dummy_, w = ws;
         /* sad but true: the x86 bytesex forces this inefficient code :( */
@@ -64,8 +64,8 @@ void _GR_shift_scanline(GR_int8u far **dst,
   } else {
     shift = 8-shift;
     for (plane = 0; plane < planes; ++plane) {
-      GR_int8u far *s = *(src++);
-      GR_int8u far *d = *(dst++);
+      GR_int8u *s = *(src++);
+      GR_int8u *d = *(dst++);
 #     if defined(__GNUC__) && defined(__i386__)
         int _dummy_, w = ws;
         asm volatile ("\n"

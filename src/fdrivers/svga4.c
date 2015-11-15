@@ -43,7 +43,7 @@ static int  writeops[] = {
 };
 
 static size_t LineBytes = 0;
-static GR_int8u far *LineBuff[4] = {NULL, NULL, NULL, NULL};
+static GR_int8u *LineBuff[4] = {NULL, NULL, NULL, NULL};
 
 static INLINE
 void reginit(void) {
@@ -62,12 +62,12 @@ void reginit(void) {
 
 static int alloc_blit_buffer(void) {
     size_t bytes;
-    GR_int8u far *base;
+    GR_int8u *base;
 
     GRX_ENTER();
 
     bytes = LineBytes<<2;
-    base = (GR_int8u far *)_GrTempBufferAlloc(bytes);
+    base = (GR_int8u *)_GrTempBufferAlloc(bytes);
     LineBuff[0] = base;
     LineBuff[1] = base+LineBytes;
     LineBuff[2] = base+LineBytes*2;
@@ -97,7 +97,7 @@ static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
         GR_int32u offs;
-        char far *ptr;
+        char *ptr;
         unsigned int mask, pixval;
         GRX_ENTER();
         offs = FOFS(x,y,SCRN->gc_lineoffset);
@@ -123,7 +123,7 @@ static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
         GR_int32u offs;
-        char far *ptr;
+        char *ptr;
         GRX_ENTER();
         offs = umul32(y,CURC->gc_lineoffset) + (x >> 3);
         ptr  = &CURC->gc_baseaddr[0][BANKPOS(offs)];
@@ -160,7 +160,7 @@ static void drawhline(int x,int y,int w,GrColor color)
             lastcolor = color;
         }
         do {
-            GR_int8u far *pp = (GR_int8u far *)&CURC->gc_baseaddr[0][BANKPOS(offs)];
+            GR_int8u *pp = (GR_int8u *)&CURC->gc_baseaddr[0][BANKPOS(offs)];
             CHKBANK(BANKNUM(offs));
             offs += w1;
             if( ((GR_int8u)(~lmask)) ) {
@@ -198,7 +198,7 @@ static void drawvline(int x,int y,int h,GrColor color)
         mask = 0x80 >> (x & 7);
         setup_far_selector(CURC->gc_selector);
         do {
-            char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
+            char *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
             unsigned h1 = BANKLFT(offs) / lwdt;
             h -= (h1 = umin(h,umax(h1,1)));
             CHKBANK(BANKNUM(offs));
@@ -231,7 +231,7 @@ static void drawline(int x,int y,int dx,int dy,GrColor color)
             lastcolor = color;
         }
         if(dx > dy) {
-            char far *pp = NULL;
+            char *pp = NULL;
             int newoffs = TRUE;
             err = (cnt = dx) >> 1;
             do {
@@ -327,7 +327,7 @@ static
 ** may force a little 'snow' effect on screen.
 */
 
-static void get_one(long offs, char far *ptr, int w, GR_int8u far *sl) {
+static void get_one(long offs, char *ptr, int w, GR_int8u *sl) {
   int bnk;
   int w1, w2;
   GRX_ENTER();
@@ -357,8 +357,8 @@ static void get_one(long offs, char far *ptr, int w, GR_int8u far *sl) {
   poke_b_f((p),__v);                    \
 } while (0)
 
-static void put_one(int op, long offs, GR_int8u far *ptr, int w,
-                    GR_int8u lm, GR_int8u rm, GR_int8u far *sl  ) {
+static void put_one(int op, long offs, GR_int8u *ptr, int w,
+                    GR_int8u lm, GR_int8u rm, GR_int8u *sl  ) {
   int w1, w2;
   int bnk;
   GRX_ENTER();
@@ -384,7 +384,7 @@ static void put_one(int op, long offs, GR_int8u far *ptr, int w,
                                ++sl; ++ptr;         }
     if (w2) {
       SETBANK(bnk+1);
-      ptr = (GR_int8u far *)SCRN->gc_baseaddr[0];
+      ptr = (GR_int8u *)SCRN->gc_baseaddr[0];
       if (op) while (w2-- > 0) { poke_b_f_rw(ptr,*sl);
                                  ++sl; ++ptr;         }
       else    while (w2-- > 0) { poke_b_f(ptr, *sl);
@@ -402,7 +402,7 @@ done:
 }
 
 static void get_scanline(long offs, int w) {
-    char far *ptr;
+    char *ptr;
     int plane;
     GRX_ENTER();
     ptr = &SCRN->gc_baseaddr[0][BANKPOS(offs)];
@@ -416,8 +416,8 @@ static void get_scanline(long offs, int w) {
     GRX_LEAVE();
 }
 
-extern void _GR_shift_scanline(GR_int8u far **dst,
-                               GR_int8u far **src,
+extern void _GR_shift_scanline(GR_int8u **dst,
+                               GR_int8u **src,
                                int ws, int shift, int planes );
 #define shift_scanline(dst,src,w,sh) \
     _GR_shift_scanline((dst),(src),(w),(sh),4)
@@ -425,10 +425,10 @@ extern void _GR_shift_scanline(GR_int8u far **dst,
 static void put_scanline(GR_int8u **src, long offs, int ws, int wd,
                          GR_int8u lm, GR_int8u rm, int oper) {
   int plane;
-  GR_int8u far *ptr;
+  GR_int8u *ptr;
 
   GRX_ENTER();
-  ptr = (GR_int8u far *)&CURC->gc_baseaddr[0][BANKPOS(offs)];
+  ptr = (GR_int8u *)&CURC->gc_baseaddr[0][BANKPOS(offs)];
 
   /* dump to screen */
   outport_w(VGA_GR_CTRL_PORT,modereg);
@@ -511,9 +511,9 @@ static void bltr2v(GrFrame *dst,int dx,int dy,
         while (hh-- > 0) {
             /* load pointer to RAM */
             int i;
-            GR_int8u far *slp[4];
+            GR_int8u *slp[4];
             for (i=0; i < 4; ++i)
-              slp[i] = (GR_int8u far *)&src->gf_baseaddr[i][SO];
+              slp[i] = (GR_int8u *)&src->gf_baseaddr[i][SO];
             if (shift) {
               shift_scanline(LineBuff,slp,ws,shift);
               for (i=0; i < 4; ++i)
@@ -558,8 +558,8 @@ static void bltv2r(GrFrame *dst,int dx,int dy,
           if (shift)
             shift_scanline(LineBuff,LineBuff,ws,shift);
           for (pl = 0; pl < 4; ++pl) {
-            GR_int8u far *sptr = LineBuff[pl];
-            GR_int8u far *dptr = (GR_int8u far *)&dst->gf_baseaddr[pl][DO];
+            GR_int8u *sptr = LineBuff[pl];
+            GR_int8u *dptr = (GR_int8u *)&dst->gf_baseaddr[pl][DO];
             int ww = wd;
             if ( ((GR_int8u)(~lm)) ) {
               switch(oper) {

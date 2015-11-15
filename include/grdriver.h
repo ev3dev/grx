@@ -136,10 +136,10 @@ typedef void     (*_GR_drawPix)(int,int,GrColor);
 typedef void     (*_GR_blitFunc)(GrFrame *dst,int dx,int dy,
                                  GrFrame *src,int  x,int  y,
                                  int w,int h,GrColor op);
-typedef GrColor far *(*_GR_getIndexedScanline)(GrFrame *c,int x,int y,
+typedef GrColor *(*_GR_getIndexedScanline)(GrFrame *c,int x,int y,
                                                int w, int *indx);
 typedef void     (*_GR_putScanline)(int x,int y,int w,
-                                    const GrColor far *scl,GrColor op);
+                                    const GrColor *scl,GrColor op);
 
 /*
  * Frame driver utility functions
@@ -153,7 +153,7 @@ void _GrFrDrvPackedBitBltR2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,i
 void _GrFrDrvPackedBitBltV2R_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
 void _GrFrDrvPackedBitBltV2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
 
-void _GrFrDrvGenericPutScanline(int x,int y,int w,const GrColor far *scl, GrColor op );
+void _GrFrDrvGenericPutScanline(int x,int y,int w,const GrColor *scl, GrColor op );
 GrColor *_GrFrDrvGenericGetIndexedScanline(GrFrame *c,
                                            int x,int y,int w,
                                            int *indx         );

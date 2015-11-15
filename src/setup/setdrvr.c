@@ -25,7 +25,7 @@
 #include "memcopy.h"
 #include "memfill.h"
 
-static char *near nxtoken(char *p,char *token)
+static char *nxtoken(char *p,char *token)
 {
         while(*p == ' ') p++;
         while(*p && (*p != ' ')) *token++ = *p++;

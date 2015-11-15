@@ -24,7 +24,7 @@
 #pragma warn -rvl
 
 #define REPF24_OP(FN,INS)                                         \
-  void far * FN (void far *P,unsigned long V, unsigned int B) {   \
+  void * FN (void *P,unsigned long V, unsigned int B) {           \
       _CX = (unsigned)B;                                          \
       _AX = (unsigned)(V);                                        \
       _DL = RD24BYTE(V,2);                                        \

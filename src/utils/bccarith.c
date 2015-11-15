@@ -35,7 +35,7 @@ long _GR_imul32(int x, int y) {
         _AX = (int)(y);
         __emit__((char)(0xf7));               /* imul dx */
         __emit__((char)(0xea));
-        return (long)((void _seg *)_DX + (void near *)_AX);
+        return (long)((void _seg *)_DX + (void *)_AX);
 }
 
 unsigned long _GR_umul32(int x, int y) {
@@ -43,7 +43,7 @@ unsigned long _GR_umul32(int x, int y) {
         _AX = (int)(y);
         __emit__((char)(0xf7));               /* mul dx  */
         __emit__((char)(0xe2));
-        return (unsigned long)((void _seg *)_DX + (void near *)_AX);
+        return (unsigned long)((void _seg *)_DX + (void *)_AX);
 }
 
 /*
@@ -63,7 +63,7 @@ unsigned long _GR_umuladd32(unsigned x, unsigned y, unsigned z) {
         __emit__((char)(0x83));               /* adc dx,0 */
         __emit__((char)(0xd2));
         __emit__((char)(0x00));
-        return (unsigned long)((void _seg *)_DX + (void near *)_AX);
+        return (unsigned long)((void _seg *)_DX + (void *)_AX);
 }
 
 /*
@@ -127,7 +127,7 @@ The _?X register loading fails in some cases.
             __emit__((char)(0xea)),                             \
         _BX = _AX,                                              \
         _CX = _DX,                                              \
-        (long)((void _seg *)_CX + (void near *)_BX)             \
+        (long)((void _seg *)_CX + (void *)_BX)                  \
 )
 #define umul32(X,Y) (                                           \
         _AX = (int)(X),                                         \
@@ -138,7 +138,7 @@ The _?X register loading fails in some cases.
             __emit__((char)(0xe2)),                             \
         _BX = _AX,                                              \
         _CX = _DX,                                              \
-        (unsigned long)((void _seg *)_CX + (void near *)_BX)    \
+        (unsigned long)((void _seg *)_CX + (void *)_BX)         \
 )
 
 #define iscale(X,N,D) (                                             \

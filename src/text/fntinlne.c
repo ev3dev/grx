@@ -53,12 +53,12 @@ int (GrFontStringHeight)(const GrFont *font,void *text,int len,int type)
         return(GrFontStringHeight(font,text,len,type));
 }
 
-char far *(GrFontCharBitmap)(const GrFont *font,int chr)
+char *(GrFontCharBitmap)(const GrFont *font,int chr)
 {
         return(GrFontCharBitmap(font,chr));
 }
 
-char far *(GrFontCharAuxBmp)(GrFont *font,int chr,int dir,int ul)
+char *(GrFontCharAuxBmp)(GrFont *font,int chr,int dir,int ul)
 {
         return(GrFontCharAuxBmp(font,chr,dir,ul));
 }

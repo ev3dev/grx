@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "memfill.h"
 
-GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,int xo,int yo,const GrColorTableP C)
+GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const GrColorTableP C)
 {
         GrCursor  *curs;
         GrContext  save;
@@ -45,7 +45,7 @@ GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,int xo,int yo,con
         GrSetContext(&curs->work);
         GrFilledBoxNC(0,0,(workw - 1),(h - 1),0L);
         for(yy = 0; yy < h; yy++) {
-            unsigned char far *p = (unsigned char far *)pixels + (yy * pitch);
+            unsigned char *p = (unsigned char *)pixels + (yy * pitch);
             for(xx = 0; xx < w; xx++,p++) {
                 if(*p) GrPlotNC(xx,yy,GrColorValue(GR_CTABLE_COLOR(C,(*p - 1))));
                 else   GrPlotNC((xx + wrkw2),yy,GrColorValue(-1L));

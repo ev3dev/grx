@@ -63,8 +63,8 @@ void dualpageblt(GrFrame *dst,int dx,int dy,
             w2 = w2 - w1;
             if(w2 == 0) w2=w3 , w3=0;
             do {
-                char far *dptr = &dst->gf_baseaddr[0][BANKPOS(doff)];
-                char far *sptr = &src->gf_baseaddr[0][BANKPOS(soff)];
+                char *dptr = &dst->gf_baseaddr[0][BANKPOS(doff)];
+                char *sptr = &src->gf_baseaddr[0][BANKPOS(soff)];
                 wb = BANKNUM(doff);
                 rb = BANKNUM(soff);
                 if((rbb - rb) | (wbb - wb)) SRWBANK((rbb = rb),(wbb = wb));

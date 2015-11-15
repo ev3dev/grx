@@ -59,16 +59,16 @@
 typedef struct {
     char        VESAsignature[4]  PACK;     /* should be "VESA" */
     short       VESAversion       PACK;     /* VESA version number */
-    char   far *OEMstringPtr      PACK;     /* Pointer to OEM string */
+    char       *OEMstringPtr      PACK;     /* Pointer to OEM string */
     long        Capabilities      PACK;     /* capabilities of the video env */
-    short  far *VideoModePtr      PACK;     /* ptr to supported Super VGA modes */
+    short      *VideoModePtr      PACK;     /* ptr to supported Super VGA modes */
     /* ==== VESA 1.2 and later ==== */
     short       MemorySize        PACK;     /* # of 64K pages */
     /* ==== VESA 2.0 and later ==== */
     short       OEMversion        PACK;     /* OEM software revision number */
-    char   far *VendorNamePtr     PACK;     /* Pointer to vendor name */
-    char   far *ProductNamePtr    PACK;     /* Pointer to product name */
-    char   far *RevisionStrPtr    PACK;     /* Pointer to product revision string */
+    char       *VendorNamePtr     PACK;     /* Pointer to vendor name */
+    char       *ProductNamePtr    PACK;     /* Pointer to product name */
+    char       *RevisionStrPtr    PACK;     /* Pointer to product revision string */
 } VESAvgaInfoBlock;
 
 /*
@@ -90,7 +90,7 @@ typedef struct {
     short       WinSize           PACK;     /* window size */
     short       WinASegment       PACK;     /* Window A start segment */
     short       WinBSegment       PACK;     /* Window B start segment */
-    void far  (*WinFuncPtr)()     PACK;     /* pointer to window function */
+    void      (*WinFuncPtr)()     PACK;     /* pointer to window function */
     short       BytesPerScanLine  PACK;     /* bytes per scan line */
     /* ==== extended and optional information ==== */
     short       XResolution       PACK;     /* horizontal resolution */

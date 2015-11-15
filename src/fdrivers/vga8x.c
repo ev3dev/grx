@@ -75,7 +75,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        char far *ptr;
+        char *ptr;
         GRX_ENTER();
         ptr = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
         x &= 3;
@@ -93,7 +93,7 @@ static void drawhline(int x,int y,int w,GrColor color) {
   opr = C_OPER(color);
   if (w > 0 && DOCOLOR8(color,opr)) {
     GR_repl cval = freplicate_b(color);
-    char far *p = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+    char *p = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
     setup_far_selector(CURC->gc_selector);
     if ((opr == C_WRITE) && (w >= 10)) {  /* 10 = 3(left) + 1*4 + 3(right) */
         int rmask = (x + w) & 3;
@@ -114,7 +114,7 @@ static void drawhline(int x,int y,int w,GrColor color) {
     } else {
       int i, plane = x & 3;
       for (i=0; i < 4; ++i) {
-        GR_int8u far *pp = (GR_int8u far *)p;
+        GR_int8u *pp = (GR_int8u *)p;
         int ww = (w+3) >> 2;
         if ( !ww ) break;
         _SetVGAWritePlane(plane);
@@ -142,7 +142,7 @@ static void drawhline(int x,int y,int w,GrColor color) {
 
 static void drawvline(int x,int y,int h,GrColor color)
 {
-        char far *ptr;
+        char *ptr;
         unsigned skip;
         GR_int8u cv;
         GRX_ENTER();
@@ -177,7 +177,7 @@ static
 #if 1
 
 static INLINE
-void xmajor(GR_int8u far *ptr, int len, int yskip,
+void xmajor(GR_int8u *ptr, int len, int yskip,
             GR_int32u ErrorAcc, GR_int32u ErrorAdj,
             int op, int color)
 {
@@ -197,7 +197,7 @@ void xmajor(GR_int8u far *ptr, int len, int yskip,
 }
 
 static INLINE
-void middle(GR_int8u far *ptr, int len, int yskip,
+void middle(GR_int8u *ptr, int len, int yskip,
             GR_int32u ErrorAcc, GR_int32u ErrorAdj,
             int op, int color)
 {
@@ -252,7 +252,7 @@ static void drawline(int x,int y,int dx,int dy,GrColor color)
 {
     int i, yskip, oper, plane;
     int len[4];
-    GR_int8u far *ptr;
+    GR_int8u *ptr;
 
     /* Mode X 4-way folded Bresenham line function - by David Boeren */
 
@@ -286,7 +286,7 @@ static void drawline(int x,int y,int dx,int dy,GrColor color)
     }
 
     oper = C_OPER(color);
-    ptr = (GR_int8u far *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+    ptr = (GR_int8u *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
 
     /* Length of sub-line in each plane */
     plane = (x & 3);
@@ -383,7 +383,7 @@ static
 static
 #include "fdrivers/generic/bitblt.c"
 
-static char far *LineBuff = NULL;
+static char *LineBuff = NULL;
 
 static void pbltv2v(GrFrame *dst,int dx,int dy,
                     GrFrame *src,int sx,int sy,
@@ -391,7 +391,7 @@ static void pbltv2v(GrFrame *dst,int dx,int dy,
 {
     GR_int32u soffs, doffs;
     int skip, lo;
-    char far *vp;
+    char *vp;
     GRX_ENTER();
     op = C_OPER(op);
     lo = SCRN->gc_lineoffset;
@@ -408,7 +408,7 @@ static void pbltv2v(GrFrame *dst,int dx,int dy,
     doffs = FOFS(dx,dy,lo);
     setup_far_selector(SCRN->gc_selector);
     while (h--) {
-      char far *dptr, *sptr;
+      char *dptr, *sptr;
       int ww;
       int plc, pl;
       pl = sx & 3;
@@ -416,7 +416,7 @@ static void pbltv2v(GrFrame *dst,int dx,int dy,
       vp = &SCRN->gc_baseaddr[0][soffs];
       dptr = LineBuff;
       for (plc=0; plc < 4; ++plc) {
-        char far *sptr = vp;
+        char *sptr = vp;
         int bytes = (ww+3)>>2;
         _SetVGAReadPlane(pl);
         fwdcopy_set_f(sptr,dptr,sptr,bytes);
@@ -430,7 +430,7 @@ static void pbltv2v(GrFrame *dst,int dx,int dy,
       switch (op) {
         case C_XOR:
           for (plc=0; plc < 4; ++plc) {
-            char far *dptr = vp;
+            char *dptr = vp;
             int bytes = (ww+3)>>2;
             _SetVGAReadPlane(pl);
             _SetVGAWritePlane(pl);
@@ -441,7 +441,7 @@ static void pbltv2v(GrFrame *dst,int dx,int dy,
           break;
         case C_OR:
           for (plc=0; plc < 4; ++plc) {
-            char far *dptr = vp;
+            char *dptr = vp;
             int bytes = (ww+3)>>2;
             _SetVGAReadPlane(pl);
             _SetVGAWritePlane(pl);
@@ -452,7 +452,7 @@ static void pbltv2v(GrFrame *dst,int dx,int dy,
           break;
         case C_AND:
           for (plc=0; plc < 4; ++plc) {
-            char far *dptr = vp;
+            char *dptr = vp;
             int bytes = (ww+3)>>2;
             _SetVGAReadPlane(pl);
             _SetVGAWritePlane(pl);
@@ -463,7 +463,7 @@ static void pbltv2v(GrFrame *dst,int dx,int dy,
           break;
         default:
           for (plc=0; plc < 4; ++plc) {
-            char far *dptr = vp;
+            char *dptr = vp;
             int bytes = (ww+3)>>2;
             _SetVGAWritePlane(pl);
             fwdcopy_f_set(dptr,dptr,sptr,bytes);
@@ -503,8 +503,8 @@ static void bltv2v(GrFrame *dst,int dx,int dy,
 #define VID2MEM_OPR(M,OP) do {                   \
       int _ww_ = w;                              \
       for (plc = 0; plc < 4; ++plc) {            \
-        char far *_p_ = vp;                      \
-        char far *_dptr_ = &M[plc];              \
+        char *_p_ = vp;                      \
+        char *_dptr_ = &M[plc];              \
         int _w_ = (_ww_+3)>>2;                   \
         _SetVGAReadPlane(pl);                    \
         colcopy_b##OP##_f(_dptr_,4,_p_,1,_w_);   \
@@ -519,7 +519,7 @@ static void pbltv2r(GrFrame *dst,int dx,int dy,
 {
     GR_int32u soffs;
     int sskip, dskip;
-    char far *rp, *vp;
+    char *rp, *vp;
     GRX_ENTER();
     op = C_OPER(op);
     sskip = SCRN->gc_lineoffset;
@@ -560,8 +560,8 @@ static void bltv2r(GrFrame *dst,int dx,int dy,
 #define MEM2VID_OPR(M,OP) do {                   \
       int _ww_ = w;                              \
       for (plc = 0; plc < 4; ++plc) {            \
-        char far *_p_ = vp;                      \
-        char far *_sptr_ = &M[plc];              \
+        char *_p_ = vp;                      \
+        char *_sptr_ = &M[plc];              \
         int _w_ = (_ww_+3)>>2;                   \
         _SetVGAWritePlane(pl);                   \
         _SetVGAReadPlane(pl);                    \
@@ -574,8 +574,8 @@ static void bltv2r(GrFrame *dst,int dx,int dy,
 #define MEM2VID_SET(M) do {                      \
       int _ww_ = w;                              \
       for (plc = 0; plc < 4; ++plc) {            \
-        char far *_p_ = vp;                      \
-        char far *_sptr_ = &M[plc];              \
+        char *_p_ = vp;                      \
+        char *_sptr_ = &M[plc];              \
         int _w_ = (_ww_+3)>>2;                   \
         _SetVGAWritePlane(pl);                   \
         colcopy_b_f_set(_p_,1,_sptr_,4,_w_);     \
@@ -590,7 +590,7 @@ static void pbltr2v(GrFrame *dst,int dx,int dy,
 {
     GR_int32u doffs;
     int sskip, dskip;
-    char far *rp, *vp;
+    char *rp, *vp;
     GRX_ENTER();
     op = C_OPER(op);
     dskip = SCRN->gc_lineoffset;

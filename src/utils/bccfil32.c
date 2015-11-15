@@ -23,7 +23,7 @@
 #pragma warn -rvl
 
 #define COLFL(FN,INS) \
-  void far * FN (void far *P,int O, unsigned long V, unsigned C) { \
+  void * FN (void *P,int O, unsigned long V, unsigned C) {         \
     asm         les     di, P                      ;               \
     asm         mov     cx, C                      ;               \
     asm         or      cx,cx                      ;               \

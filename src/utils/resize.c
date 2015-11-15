@@ -21,10 +21,10 @@
 
 #include "libgrx.h"
 
-static void near shrink(unsigned char far *ptr,int pitch,unsigned int oldlen,unsigned int newlen)
+static void shrink(unsigned char *ptr,int pitch,unsigned int oldlen,unsigned int newlen)
 {
-        register unsigned char far *dst = ptr;
-        register unsigned char far *src = ptr;
+        register unsigned char *dst = ptr;
+        register unsigned char *src = ptr;
         int  count  = newlen;
         unsigned int weight = newlen;
         do {
@@ -53,10 +53,10 @@ static void near shrink(unsigned char far *ptr,int pitch,unsigned int oldlen,uns
 #endif
 }
 
-static void grow(unsigned char far *ptr,int pitch,unsigned int oldlen,unsigned int newlen)
+static void grow(unsigned char *ptr,int pitch,unsigned int oldlen,unsigned int newlen)
 {
-        register unsigned char far *dst = ptr + (--newlen * pitch);
-        register unsigned char far *src = ptr + (--oldlen * pitch);
+        register unsigned char *dst = ptr + (--newlen * pitch);
+        register unsigned char *src = ptr + (--oldlen * pitch);
         unsigned int rpix  = *src;
         unsigned int lpix  = rpix;
         int  count = newlen;
@@ -82,10 +82,10 @@ static void grow(unsigned char far *ptr,int pitch,unsigned int oldlen,unsigned i
 #endif
 }
 
-void GrResizeGrayMap(unsigned char far *map,int pitch,int ow,int oh,int nw,int nh)
+void GrResizeGrayMap(unsigned char *map,int pitch,int ow,int oh,int nw,int nh)
 {
         if(ow != nw) {
-            unsigned char far *ptr = map;
+            unsigned char *ptr = map;
             int          cnt = oh;
             if((unsigned int)ow > (unsigned int)nw) do {
                 shrink(ptr,1,ow,nw);

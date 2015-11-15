@@ -49,7 +49,7 @@ static int init(GrVideoMode *mp)
 static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
-        char far *ptr;
+        char *ptr;
         GRX_ENTER();
         ptr = &SCRN->gc_baseaddr[0][FOFS(x,y)];
         setup_far_selector(SCRN->gc_selector);
@@ -59,7 +59,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        char far *ptr;
+        char *ptr;
         unsigned cval;
         GRX_ENTER();
         ptr = &CURC->gc_baseaddr[0][FOFS(x,y)];

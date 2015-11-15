@@ -46,7 +46,7 @@ static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
         GR_int32u offs;
-        char far *ptr;
+        char *ptr;
         GRX_ENTER();
         offs = FOFS(x,y,CURC->gc_lineoffset);
         ptr  = &CURC->gc_baseaddr[0][BANKPOS(offs)];
@@ -74,7 +74,7 @@ static void drawhline(int x,int y,int w,GrColor color)
         cval = freplicate_w(color);
         setup_far_selector(CURC->gc_selector);
         do {
-            char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
+            char *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
             CHKBANK(BANKNUM(offs));
             offs += (w1 << 1);
             switch(C_OPER(color)) {
@@ -99,7 +99,7 @@ static void drawvline(int x,int y,int h,GrColor color)
         offs = FOFS(x,y,lwdt);
         setup_far_selector(CURC->gc_selector);
         do {
-            char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
+            char *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
             unsigned int h1 = BANKLFT(offs) / lwdt;
             h -= (h1 = umin(h,umax(h1,1)));
             CHKBANK(BANKNUM(offs));
@@ -131,7 +131,7 @@ static void drawblock(int x,int y,int w,int h,GrColor color)
             unsigned int w1,w2 = BANKLFT(offs) >> 1;
             w2 = w - (w1 = umin(w,w2));
             do {
-                char far *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
+                char *pp = &CURC->gc_baseaddr[0][BANKPOS(offs)];
                 CHKBANK(BANKNUM(offs));
                 offs += (w1 << 1);
                 switch(copr) {

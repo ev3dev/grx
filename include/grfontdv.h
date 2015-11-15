@@ -83,7 +83,7 @@ GrFont *_GrBuildFont(
     int  minch,
     int  maxch,
     int  (*charwdt)(int chr),
-    int  (*bitmap)(int chr,int w,int h,char far *buffer),
+    int  (*bitmap)(int chr,int w,int h,char *buffer),
     int  canscale
 );
 

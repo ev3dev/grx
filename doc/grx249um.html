@@ -424,7 +424,7 @@ graphics mode. GrContextSize calculates the total amount of memory needed by a
 context, while GrPlaneSize calculates the size of a bitplane in the context. The
 function:
 
-<pre class="example">     GrContext *GrCreateContext(int w,int h,char far *memory[4],GrContext *where);
+<pre class="example">     GrContext *GrCreateContext(int w,int h,char *memory[4],GrContext *where);
 </pre>
 <p>can be used to create a new context in system memory. The NULL pointer is also
 accepted as the value of the memory and where arguments, in this case the
@@ -1752,7 +1752,7 @@ erase a cursor before making changes to an area it occupies and redraw the
 cursor after finishing the drawing. Cursors are created with the GrBuildCursor
 function:
 
-<pre class="example">     GrCursor *GrBuildCursor(char far *pixels,int pitch,int w,int h,
+<pre class="example">     GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,
                              int xo,int yo,const GrColorTableP c);
 </pre>
 <p>The pixels, w (=width), h (=height) and c (= color table) arguments are
@@ -2318,7 +2318,7 @@ doesn't do nothing in the DOS and Linux-SvgaLib versions.
 X11 when switching between graphics and console windows open simultaneously.
 
 <pre class="example">      GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,
-                 char far *memory[4],GrContext *where);
+                 char *memory[4],GrContext *where);
      
 </pre>
 <p>This function is like GrCreateContext, except that you can specify any valid

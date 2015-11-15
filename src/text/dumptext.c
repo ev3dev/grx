@@ -82,7 +82,7 @@ void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r)
             int   xp2 = xpos;
             for( ; --wd2 >= 0; pt2 += cofs,bp2 += cofs,xp2 += chrw) {
                 int  chr,attr;
-                char far *bmp;
+                char *bmp;
                 switch(r->txr_chrtype) {
                   case GR_WORD_TEXT:
                     chr = *((unsigned short *)(pt2));

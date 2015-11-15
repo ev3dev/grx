@@ -51,7 +51,7 @@ static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
         GR_int32u offs;
-        char far *p0,*p1,*p2;
+        char *p0,*p1,*p2;
         GRX_ENTER();
         offs = FOFS(x,y,CURC->gc_lineoffset);
         p0 = &CURC->gc_baseaddr[0][offs];
@@ -89,7 +89,7 @@ static void drawhline(int x,int y,int w,GrColor color) {
     for (pl=0; pl < 3; ++pl) {
       if(DOCOLOR8(color,copr)) {
         GR_repl cval = freplicate_b(color);
-        char far *pp = &CURC->gc_baseaddr[pl][offs];
+        char *pp = &CURC->gc_baseaddr[pl][offs];
         int ww = w;
         switch(copr) {
             case C_XOR: repfill_b_xor(pp,cval,ww); break;
@@ -117,7 +117,7 @@ static void drawvline(int x,int y,int h,GrColor color)
     offs = FOFS(x,y,lwdt);
     for (pl=0; pl < 3; ++pl) {
       if(DOCOLOR8(color,copr)) {
-        char far *pp = &CURC->gc_baseaddr[pl][offs];
+        char *pp = &CURC->gc_baseaddr[pl][offs];
         int hh = h;
         switch(copr) {
             case C_XOR: colfill_b_xor(pp,lwdt,(GR_int8u)color,hh); break;

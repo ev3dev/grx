@@ -188,7 +188,7 @@ typedef unsigned GR_int64 GR_int64u;
 #endif
 
 /* simple pointer arithmetic */
-#define ptrdiff(a,b) ( ((GR_int8 far *)(a)) - ((GR_int8 far *)(b)) )
+#define ptrdiff(a,b) ( ((GR_int8 *)(a)) - ((GR_int8 *)(b)) )
 #define ptradd(P,SKIP) ( (void *)( ((GR_int8 *)(P))+(SKIP)) )
 #ifdef NO_LEFTSIDE_LVALUE_CAST
 #define ptrinc(P,SKIP) do (P) = ptradd((P),(SKIP)); while (0)

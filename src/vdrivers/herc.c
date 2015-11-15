@@ -85,10 +85,10 @@ static int setmode(GrVideoMode *mp,int noclear)
   int i;
 
   if (noclear == FALSE) {
-    long far *p;
-    long far *q;
+    long *p;
+    long *q;
 
-    p = (long far *)LINP_PTR(mp->extinfo->frame);
+    p = (long *)LINP_PTR(mp->extinfo->frame);
     q = p + (videoRam * 1024) / sizeof(*p);
     setup_far_selector (LINP_SEL(mp->extinfo->frame));
     for (; p < q; p++) poke_l_f(p,0L);

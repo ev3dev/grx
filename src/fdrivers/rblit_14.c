@@ -36,7 +36,7 @@
 #define maskset(d,c,msk) \
     poke_b((d),(peek_b(d) & ~(msk)) | ((c) & (msk)))
 
-static char far *LineBuff = NULL;
+static char *LineBuff = NULL;
 
 static int do_alloc(int width) {
     size_t bytes;
@@ -47,13 +47,13 @@ static int do_alloc(int width) {
 }
 
 
-static void get_scanline(char far *dptr, char far *sptr, int w) {
+static void get_scanline(char *dptr, char *sptr, int w) {
     GRX_ENTER();
     fwdcopy_set(sptr,dptr,sptr,w);
     GRX_LEAVE();
 }
 
-static void put_scanline(char far *dptr,char far *sptr,int w,
+static void put_scanline(char *dptr,char *sptr,int w,
                          GR_int8u lm, GR_int8u rm, int op    ) {
   GRX_ENTER();
   if (w==1) lm &= rm;
@@ -86,7 +86,7 @@ done:
   GRX_LEAVE();
 }
 
-void invert_scanline(char far *sptr,int w)
+void invert_scanline(char *sptr,int w)
 {
   GRX_ENTER();
   while (w--)
@@ -94,8 +94,8 @@ void invert_scanline(char far *sptr,int w)
   GRX_LEAVE();
 }
 
-extern void _GR_shift_scanline(GR_int8u far **dst,
-                               GR_int8u far **src,
+extern void _GR_shift_scanline(GR_int8u **dst,
+                               GR_int8u **src,
                                int ws, int shift, int planes );
 #define shift_scanline(dst,src,w,sh) \
     _GR_shift_scanline((GR_int8u **)&(dst),(GR_int8u **)&(src),(w),(sh),1)
@@ -124,8 +124,8 @@ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
         doffs = FOFS(dx,dy,dskip);
         soffs = FOFS( x, y,sskip);
         for (pl=0; pl < planes; ++pl) {
-          char far *dptr = &dst->gf_baseaddr[pl][doffs];
-          char far *sptr = &src->gf_baseaddr[pl][soffs];
+          char *dptr = &dst->gf_baseaddr[pl][doffs];
+          char *sptr = &src->gf_baseaddr[pl][soffs];
           int hh = h;
           if (shift) {
             while (hh-- > 0) {
@@ -152,8 +152,8 @@ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
         doffs = FOFS(dx,dy,dst->gf_lineoffset);
         soffs = FOFS( x, y,src->gf_lineoffset);
         for (pl=0; pl < planes; ++pl) {
-          char far *dptr = &dst->gf_baseaddr[pl][doffs];
-          char far *sptr = &src->gf_baseaddr[pl][soffs];
+          char *dptr = &dst->gf_baseaddr[pl][doffs];
+          char *sptr = &src->gf_baseaddr[pl][soffs];
           int hh = h;
           if (shift) {
             while (hh-- > 0) {

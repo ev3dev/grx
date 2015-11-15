@@ -32,29 +32,29 @@
 static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
-        GR_int8u far *ptr;
+        GR_int8u *ptr;
         GRX_ENTER();
-        ptr = (GR_int8u far *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+        ptr = (GR_int8u *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
         GRX_RETURN((GrColor)( (*ptr >> (x & 7)) & 1));
 }
 
 static INLINE
 GrColor readpixel_inv(GrFrame *c,int x,int y)
 {
-    GR_int8u far *ptr;
+    GR_int8u *ptr;
     GRX_ENTER();
-    ptr = (GR_int8u far *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+    ptr = (GR_int8u *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
     GRX_RETURN((GrColor)(((*ptr >> (x & 7)) & 1) ? 0 : 1));
 }
 
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        GR_int8u far *ptr;
+        GR_int8u *ptr;
         GR_int8u cval;
 
         GRX_ENTER();
-        ptr = (GR_int8u far *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+        ptr = (GR_int8u *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
         cval = (color & 1) << (x &= 7);
         switch(C_OPER(color)) {
             case C_XOR: *ptr ^=  cval; break;
@@ -87,7 +87,7 @@ static void drawhline(int x,int y,int w,GrColor color) {
   if (!( !color && (oper==C_OR||oper==C_XOR)) && !(color && oper==C_AND) ) {
     GR_int8u lm = 0xff << (x & 7);
     GR_int8u rm = 0xff >> ((-(w + x)) & 7);
-    GR_int8u far *p = (GR_int8u far *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+    GR_int8u *p = (GR_int8u *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
     GR_repl cv = 0;
     if (color) cv = ~cv;
     w = ((x+w+7) >> 3) - (x >> 3);
@@ -132,7 +132,7 @@ static void drawhline_inv(int x,int y,int h, GrColor color)
 static void drawvline(int x,int y,int h,GrColor color)
 {
         unsigned int lwdt, mask, oper;
-        char far *p;
+        char *p;
         GRX_ENTER();
         oper = C_OPER(color);
         color &= 1;

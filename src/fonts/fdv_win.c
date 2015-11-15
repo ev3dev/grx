@@ -35,7 +35,7 @@ static FILE *fontfp = NULL;
 static int offset = 0;
 static GrResourceFileHeaderWIN rhdr;
 static GrFontFileHeaderWIN fhdr;
-static GrCharHeaderWIN far *ctable = NULL;
+static GrCharHeaderWIN *ctable = NULL;
 
 #if BYTE_ORDER==BIG_ENDIAN
 #include "ordswap.h"
