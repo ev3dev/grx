@@ -40,7 +40,6 @@
 /* these are the supported configurations: */
 #define GRX_VERSION_TCC_8086_DOS        1       /* also works with BCC */
 #define GRX_VERSION_GCC_386_GO32        2       /* deprecated, don't use it */
-#define GRX_VERSION_GCC_386_DJGPP       2       /* DJGPP v2 */
 #define GRX_VERSION_GCC_386_LINUX       3       /* the real stuff */
 #define GRX_VERSION_GENERIC_X11         4       /* generic X11 version */
 #define GRX_VERSION_GCC_386_WIN32       7       /* WIN32 using Mingw32 */
@@ -58,9 +57,6 @@
 #endif
 
 #ifdef  __GNUC__
-#ifdef  __DJGPP__
-#define GRX_VERSION     GRX_VERSION_GCC_386_DJGPP
-#endif
 #if defined(__XWIN__)
 #if defined(__linux__) && defined(__i386__)
 #define GRX_VERSION     GRX_VERSION_GCC_386_X11
@@ -1522,22 +1518,6 @@ int  GrMouseCursorIsDisplayed(void);
 
 int  GrMouseBlock(GrContext *c,int x1,int y1,int x2,int y2);
 void GrMouseUnBlock(int return_value_from_GrMouseBlock);
-
-#if 0
-/* !! old style (before grx v2.26) keyboard interface    !!
-   !! old functions still linkable but for compatibility !!
-   !! across platforms and with future versions of GRX   !!
-   !! one use functions from grkeys.h                    !! */
-#ifndef __MSDOS__
-int  kbhit(void);
-int  getch(void);
-#endif
-#ifndef __DJGPP__
-int  getkey(void);
-int  getxkey(void);
-#endif
-int  getkbstat(void);
-#endif
 
 #ifndef GRX_SKIP_INLINES
 #define GrMouseEventMode(x)         /* nothing! */

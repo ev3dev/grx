@@ -13,7 +13,6 @@ Directly supported platforms:
 
   Currently GRX directly supports the following four platforms:
 
-     DOS / DJGPP v>=2.03 EGA, VGA and VESA drivers
      Linux / console     svgalib and framebuffer drivers
      Linux / X11R6       xwin  driver (windowed) and SDL (full screen)
      Win32 / Mingw       win32 driver (windowed) and SDL (full screen)
@@ -72,13 +71,12 @@ A. Unpacking the GRX archive
 ----------------------------
 
   1) Choose and download the .tar.gz or .zip package. You can use either.
-     The .zip is intended for dos and win32 users, specialy for DJGPP users,
-     because it expand to the contrib subdir and has manifest files.
+     The .zip is intended for dos and win32 users, because it expand to the
+     contrib subdir and has manifest files.
 
   2) 'cd' to a directory where you want the GRX file tree to be created
      as a subdirectory. Examples are:
 
-       DJGPP : C:\DJGPP\
        Mingw : C:\MINGW\
        Linux : /usr/local/src/
 
@@ -101,22 +99,20 @@ B. Compiling GRX
 
   3) run 'make -f <your makefile>':
 
-     makefile.dj2 for DOS/DJGPPv2
      makefile.w32 for Win32/Mingw
      makefile.lnx for Linux/console
      makefile.x11 for Linux/X11
      makefile.sdl for SDL driver on MingW and X11
 
      This process generates the GRX lib in the "lib/---" (where --- is
-     dj2, w32, lnx, x11) subdir and some utility programs in the
-     "bin" subdir.
+     w32, lnx, x11) subdir and some utility programs in the "bin" subdir.
 
-     Note for DJGPP/Mingw users: If you set in makedefs.grx HAVE_UNIX_TOOLS=n
+     Note for Mingw users: If you set in makedefs.grx HAVE_UNIX_TOOLS=n
      do _not_ use an environment variable  `SHELL' leading to `bash', e.g. 
-     `SHELL=/djgpp/bin/bash.exe'. For mingw use mingw32-make instead of make.
-     Some parts of the DJGPP/Mingw Makefiles with this option require 
-     `command.com'. If you set HAVE_UNIX_TOOLS=y (i.e. work under bash
-     for djgpp or msys for mingw32), there are no problems.
+     `SHELL=/mingw/bin/bash.exe'. For mingw use mingw32-make instead of make.
+     Some parts of the Mingw Makefiles with this option require 
+     `command.com'. If you set HAVE_UNIX_TOOLS=y (i.e. msys for mingw32),
+     there are no problems.
 
      Note for Linux/console users: At the end you must become root and
      run 'make -f makefile.lnx setsuid' in order to set de suid flag of
@@ -154,9 +150,8 @@ D. Installing GRX lib for your compiler
      Note for Linux users: probably you must be root to do that. Don't forget
      to run 'ldconfig' to register the shared libraries.
 
-  2) See compiler documentation. Either change the default compiler behaviour
-     (eg., change djgpp.env) or use command line switches to tell the
-     compiler where to find the GRX files.
+  2) See compiler documentation. Either change the default compiler behaviour or
+     use command line switches to tell the compiler where to find the GRX files.
 
 E. Installing GRX utility programs
 ----------------------------------
@@ -279,17 +274,10 @@ Help
 
   for updates, pre-compiled libs, ...
 
-  If this doesn't help, check your system/compiler FAQ (eg., the
-  DJGPP v2 FAQ is at http://www.delorie.com/djgpp/v2faq)
+  If this doesn't help, check your system/compiler FAQ
 
   Check the GRX mailing list archive at
   http://grx.gnu.de/archive/grx/en/
-
-  Check out the DJGPP newsgroup comp.os.msdos.djgpp (archive at
-  http://www.delorie.com/djgpp/mail-archives/ )
-
-  Send a problem report to comp.os.msdos.djgpp or to the GRX mailing
-  list <grx@gnu.de> (see below).
 
   There is a GRX mailing list <grx@gnu.de> and a separate, moderated
   mailing list for GRX announcements <grx-announce@gnu.de>. To

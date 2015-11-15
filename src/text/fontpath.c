@@ -55,12 +55,6 @@ void GrSetFontPath(char *p)
                 break;
 #endif
               default:
-#ifdef __DJGPP__
-                /* allow syntax /dev/env/DJDIR */
-                if ((plen == 9)        && (strncmp(path,"/dev/env/",9)==0))
-                    dc = FALSE;
-                if (dc)
-#endif
 #if defined(__MSDOS__) || defined(__WIN32__)
                     chr = tolower(chr);
 #endif

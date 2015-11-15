@@ -43,7 +43,7 @@ Next:&nbsp;<a rel="next" accesskey="n" href="#A-User-Manual-For-GRX2">A User Man
 
 <p><strong>GRX</strong> is a 2D graphics library originaly written by
 Csaba Biegl for DJ Delorie's DOS port of the GCC compiler. Now it support
-a big range of platforms, the main four are: DOS (DJGPPv2), Linux console,
+a big range of platforms, the main three are: Linux console,
 X11 and Win32 (Mingw). On DOS it supports VGA, EGA and VESA compliant cards. 
 On Linux console it uses svgalib or the framebuffer. On X11 it must work on
 any X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver. 
@@ -146,7 +146,7 @@ world" centered. Then it waits after a key is pressed.
 </pre>
 <p>How to compile the hello world (assuming the GRX library was
 previously installed)
-<pre class="example">       DJGPP: gcc -o hellogrx.exe hellogrx.c -lgrx20
+<pre class="example">
        Mingw: gcc -o hellogrx.exe hellogrx.c -lgrx20 -mwindows
        X11  : gcc -o hellogrx hellogrx.c -D__XWIN__ -I/usr/X11R6/include
               -lgrx20X -L/usr/X11R6/lib -lX11
@@ -2288,7 +2288,6 @@ working in. grx20.h defines some macros you can use:
 
 <pre class="example">     /* these are the supported configurations: */
      #define GRX_VERSION_TCC_8086_DOS        1   /* also works with BCC */
-     #define GRX_VERSION_GCC_386_DJGPP       2   /* DJGPP v2 */
      #define GRX_VERSION_GCC_386_LINUX       3   /* the real stuff */
      #define GRX_VERSION_GENERIC_X11         4   /* generic X11 version */
      #define GRX_VERSION_GCC_386_WIN32       7   /* WIN32 using Mingw32 */

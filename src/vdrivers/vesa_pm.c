@@ -36,19 +36,6 @@ static void *PM_dstart_ptr  = NULL;
 static void *PM_palette_ptr = NULL;
 */
 
-/* ----------------------------------------------------------- DPMI stuff -- */
-
-#ifdef  __DJGPP__
-#define WHO_AM_I "DJGPP"
-#include <dpmi.h>
-
-/* we do selector based video access with DJGPP.  **
-** The selector gives access to full video ram    **
-** starting at offset 0                           */
-#define LFB_virtualAddr()    ((void *) 0)
-
-#endif
-
 /* ------------------------------------------------------------- */
 /* memory access helper functions */
 static int map_linear(unsigned long adr, unsigned long len,

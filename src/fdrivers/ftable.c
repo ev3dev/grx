@@ -24,7 +24,7 @@
 
 GrFrameDriver *_GrFrameDriverTable[] = {
 /* first the drivers for video based context */
-#if defined(__DJGPP__) || defined(__TURBOC__)
+#if defined(__TURBOC__)
     &_GrFrameDriverHERC1,
 #endif
 #if defined(__MSDOS__) || (defined(__linux__) && !defined(__XWIN__))
@@ -40,7 +40,7 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverSVGA32L,
     &_GrFrameDriverSVGA32H,
 #endif
-#if defined(__DJGPP__) || defined(XF86DGA_FRAMEBUFFER) \
+#if defined(XF86DGA_FRAMEBUFFER) \
   || ( defined(LFB_BY_NEAR_POINTER) && !defined(__WIN32__) )
     &_GrFrameDriverMONO01_LFB,
     &_GrFrameDriverMONO10_LFB,

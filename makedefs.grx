@@ -56,7 +56,6 @@ STRIP  = $(CROSS_PLATFORM)strip
 SYSTEM_TAG_PREFIX     = systag
 LINUX_i386_CONSOLE    = $(SYSTEM_TAG_PREFIX).000
 LINUX_i386_X11        = $(SYSTEM_TAG_PREFIX).002
-DOS_DJGPP_V2          = $(SYSTEM_TAG_PREFIX).004
 WIN32_GCC_i386_STATIC = $(SYSTEM_TAG_PREFIX).006
 ANY_GCC_SDL_STATIC    = $(SYSTEM_TAG_PREFIX).008
 
@@ -186,39 +185,6 @@ USE_XF86DGA_FRAMEBUFFER=n
 # framebuffer access, it can be set to 'n' if you use the standard
 # X11 driver only or DGA2 without framebuffer access.
 SET_XSUIDROOT=n
-
-endif
-
-### DOS DJGPPv2 SPECIFIC #################################################
-
-ifdef GRXVDJ2
-
-# Put libgrx20.a to lib/dj2
-GRX_LIB_SUBDIR=dj2
-
-# Set here the destination dir for install and uninstall targets
-prefix=/dev/env/DJDIR
-
-# Set the default GRX font path
-#GRX_DEFAULT_FONT_PATH=/dev/env/DJDIR/share/grx/fonts
-
-# If you want to use 'upx.exe' compressor
-# disable the echo line and enable upx line.
-EXE_COMPRESS = -echo
-#EXE_COMPRESS = upx --best
-
-# Default compiler switches.  In djgpp.env. under [make],
-# add the line "BUTT=-mcpu=i386", if that is your target,
-# or directly add -mcpu here.
-# At present gcc supports 'i386', 'i486', 'i586' ('pentium'),
-# 'i686' ('pentiumpro') and 'k6'.
-#CCOPT += $(BUTT)
-#CCOPT += -mcpu=i586
-
-# GRX uses "uclock" to gets 1 ms resolution in the input code,
-# this can causes problems in Win3.1, so you may want to enable
-# the following switch
-#CCOPT += -DNO_REPROGRAM_TIMER
 
 endif
 

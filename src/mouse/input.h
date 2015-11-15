@@ -112,22 +112,6 @@
 #define MS_PER_TICK 55
 #endif
 
-#ifdef __DJGPP__
-#ifdef NO_REPROGRAM_TIMER
-#define real_time(tv) do {                                                  \
-        setup_far_selector(LINP_SEL(0x0000046c));                           \
-        (tv) = peek_l_f(LINP_PTR(0x0000046c));                              \
-} while(0)
-#define MS_PER_TICK 55
-#else
-#include <time.h>
-#define real_time(tv) do {                                                  \
-        (tv) = uclock()/(UCLOCKS_PER_SEC/1000);                             \
-} while(0)
-#define MS_PER_TICK 1
-#endif
-#endif
-
 #ifdef __WIN32__
 #include <time.h>
 #define real_time(tv) do {                                                  \

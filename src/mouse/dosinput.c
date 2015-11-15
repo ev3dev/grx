@@ -22,10 +22,6 @@
 #include <conio.h>
 #endif
 
-#ifdef   __DJGPP__
-#include <pc.h>
-#endif
-
 #include "libgrx.h"
 #include "grxkeys.h"
 #include "allocate.h"

@@ -366,8 +366,6 @@ static void the_info(int x, int y)
     nsys = GrGetLibrarySystem();
     if (nsys == GRX_VERSION_TCC_8086_DOS)
         strcpy(sys, "TCC");
-    if (nsys == GRX_VERSION_GCC_386_DJGPP)
-        strcpy(sys, "DJ2");
     if (nsys == GRX_VERSION_GCC_386_LINUX)
         strcpy(sys, "LNX");
     if (nsys == GRX_VERSION_GCC_386_X11)

@@ -154,7 +154,7 @@ static void drawblock(int x,int y,int w,int h,GrColor color)
 }
 
 
-#if (defined(__DJGPP__) || defined(__TURBOC__))
+#if defined(__TURBOC__)
 /* The VGA banked frame buffer must start on a 64k boundary
 ** for this optimized assembler code.
 ** Linux: mmap may place the frame buffer on a 4k boundary :(

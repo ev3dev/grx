@@ -39,7 +39,7 @@ infodir='${prefix}/info'
 
 # "Detect" default target (wrong for cross-compiling)
 if [ x"$COMSPEC" != x ]; then
-  default_target=DJGPP
+  default_target=w32
 else
   default_target=x11
 fi
@@ -210,7 +210,7 @@ Options: [defaults in brackets after descriptions]
   --includedir=DIR          C header files [PREFIX/include]
   --infodir=DIR             info documentation [PREFIX/info]
   --target=TARGET           configure for TARGET [$default_target]
-                            possible values: djgpp,x11,console,w32,sdlx,sdlw
+                            possible values: x11,console,w32,sdlx,sdlw
                             or GCC-style ("i386-mingw32") for cross-compiling
   --enable-x86_64           build for x86_64 architecture [no]
   --enable-jpeg             include JPEG support [no]
@@ -251,7 +251,6 @@ EOF
 done
 
 case "`echo "$target" | tr A-Z a-z`" in
-  *djgpp*)        cfgsection=GRXVDJ2; target_makefile=makefile.dj2;;
   x | x11)        cfgsection=GRXVX11; target_makefile=makefile.x11;;
   console)        cfgsection=GRXVLNX; target_makefile=makefile.lnx;;
   *w32 | *mingw*) cfgsection=GRXVW32; target_makefile=makefile.w32;;
@@ -281,7 +280,6 @@ fi
 
 if [ -r Makefile ]; then
   if cmp Makefile makefile.lnx > /dev/null 2>&1 ||
-     cmp Makefile makefile.dj2 > /dev/null 2>&1 ||
      cmp Makefile makefile.w32 > /dev/null 2>&1 ||
      cmp Makefile makefile.x11 > /dev/null 2>&1 ||
      cmp Makefile makefile.sdl > /dev/null 2>&1; then

@@ -24,10 +24,6 @@
 #include "int86.h"
 #include "memfill.h"
 
-#ifdef __DJGPP__
-#include <pc.h>
-#endif
-
 #define USE_AT_BIOS
 
 #ifdef  USE_AT_BIOS

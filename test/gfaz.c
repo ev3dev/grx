@@ -45,8 +45,6 @@ static int coord_into( int x, int y, int xo, int yo, int xl, int yl );
 
 int gfaz_ini( int width, int height, int bpp )
 {
-/*  __djgpp_set_ctrl_c( 0 );*/
-/*  _go32_want_ctrl_break( 1 );*/
 /*  GrSetMode( GR_default_graphics );*/
 
   GrSetMode( GR_width_height_bpp_graphics,width,height,bpp );

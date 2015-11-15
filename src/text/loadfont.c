@@ -100,12 +100,6 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
                 name = "";
                 chr  = '\0';
             }
-#ifdef __DJGPP__
-            /* allow syntax /dev/env/DJDIR */
-            if ((len == 9) && (strncmp(fname,"/dev/env/",9)==0))
-                dc = FALSE;
-            if (dc)
-#endif
 #if defined(__MSDOS__) || defined(__WIN32__)
                 chr = tolower(chr);
 #endif

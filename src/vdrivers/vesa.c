@@ -71,20 +71,9 @@ static void (*_SETBANK)(int bk);
 /* get the real mode stuff ... */
 #include "vesa_rm.c"
 
-#if (defined(DJGPP) && defined(DJGPP_MINOR))
-#define HAVE_VBE2
-/* get the VBE2 protected mode stuff ... */
-#include "vesa_pm.c"
-
-#  define MC(a,b) a##b
-#  define MODE(md)   ((ep->flags & GR_VMODEF_LINEAR) ? MC(md,_LFB) : md)
-
-#else /* no protected mode support */
 #  define _SETUP          _GrViDrvSetEGAVGAmode
 #  define reset           _GrViDrvResetEGAVGA
 #  define MODE(md)        (md)
-#endif
-
 
 static int detect(void)
 {
