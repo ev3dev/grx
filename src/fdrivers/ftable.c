@@ -23,20 +23,6 @@
 #include "grdriver.h"
 
 GrFrameDriver *_GrFrameDriverTable[] = {
-/* first the drivers for video based context */
-#if (defined(__linux__) && !defined(__XWIN__))
-#ifdef  __i386__
-    &_GrFrameDriverEGAVGA1,
-    &_GrFrameDriverEGA4,
-    &_GrFrameDriverSVGA4,
-    &_GrFrameDriverVGA8X,
-#endif   
-    &_GrFrameDriverSVGA8,
-    &_GrFrameDriverSVGA16,
-    &_GrFrameDriverSVGA24,
-    &_GrFrameDriverSVGA32L,
-    &_GrFrameDriverSVGA32H,
-#endif
 #if defined(XF86DGA_FRAMEBUFFER) \
   || ( defined(LFB_BY_NEAR_POINTER) && !defined(__WIN32__) )
     &_GrFrameDriverMONO01_LFB,

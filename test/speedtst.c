@@ -175,16 +175,6 @@ char *FrameDriverName(GrFrameMode m) {
   switch(m) {
     case GR_frameUndef: return "Undef";
     case GR_frameText : return "Text";
-    case GR_frameHERC1: return "HERC1";
-    case GR_frameEGAVGA1: return x11 ? "XWIN1" : w32 ? "WIN32_1" : "EGAVGA1";
-    case GR_frameEGA4: return "EGA4";
-    case GR_frameSVGA4: return x11 ? "XWIN4" : w32 ? "WIN32_4" : "SVGA4";
-    case GR_frameSVGA8: return sdl ? "SDL8" : x11 ? "XWIN8" : w32 ? "WIN32_8" : "SVGA8";
-    case GR_frameVGA8X: return "VGA8X";
-    case GR_frameSVGA16: return sdl ? "SDL16" : x11 ? "XWIN16" : w32 ? "WIN32_16" : "SVGA16";
-    case GR_frameSVGA24: return sdl ? "SDL24" : x11 ? "XWIN24" : w32 ? "WIN32_24" : "SVGA24";
-    case GR_frameSVGA32L: return sdl ? "SDL32L" : x11 ? "XWIN32L" : w32 ? "WIN32_32L" : "SVGA32L";
-    case GR_frameSVGA32H: return sdl ? "SDL32H" : x11 ? "XWIN32H" : w32 ? "WIN32_32H" : "SVGA32H";
     case GR_frameMONO01_LFB: return "LFB1-01";
     case GR_frameMONO10_LFB: return "LFB1-10";
     case GR_frameSVGA8_LFB: return "LFB8";

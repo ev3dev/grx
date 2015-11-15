@@ -165,41 +165,8 @@ typedef enum _GR_graphicsModes {
  * Available frame modes (video memory layouts)
  */
 typedef enum _GR_frameModes {
-        /* ====== video frame buffer modes ====== */
         GR_frameUndef,                      /* undefined */
         GR_frameText,                       /* text modes */
-        GR_frameHERC1,                      /* Hercules mono */
-        GR_frameEGAVGA1,                    /* EGA VGA mono */
-        GR_frameEGA4,                       /* EGA 16 color */
-        GR_frameSVGA4,                      /* (Super) VGA 16 color */
-        GR_frameSVGA8,                      /* (Super) VGA 256 color */
-        GR_frameVGA8X,                      /* VGA 256 color mode X */
-        GR_frameSVGA16,                     /* Super VGA 32768/65536 color */
-        GR_frameSVGA24,                     /* Super VGA 16M color */
-        GR_frameSVGA32L,                    /* Super VGA 16M color padded #1 */
-        GR_frameSVGA32H,                    /* Super VGA 16M color padded #2 */
-        /* ==== modes provided by the X11 driver ===== */
-        GR_frameXWIN1   = GR_frameEGAVGA1,
-        GR_frameXWIN4   = GR_frameSVGA4,
-        GR_frameXWIN8   = GR_frameSVGA8,
-        GR_frameXWIN16  = GR_frameSVGA16,
-        GR_frameXWIN24  = GR_frameSVGA24,
-        GR_frameXWIN32L = GR_frameSVGA32L,
-        GR_frameXWIN32H = GR_frameSVGA32H,
-        /* ==== modes provided by the WIN32 driver ===== */
-        GR_frameWIN32_1   = GR_frameEGAVGA1,
-        GR_frameWIN32_4   = GR_frameSVGA4,
-        GR_frameWIN32_8   = GR_frameSVGA8,
-        GR_frameWIN32_16  = GR_frameSVGA16,
-        GR_frameWIN32_24  = GR_frameSVGA24,
-        GR_frameWIN32_32L = GR_frameSVGA32L,
-        GR_frameWIN32_32H = GR_frameSVGA32H,
-        /* ==== modes provided by the SDL driver ===== */
-        GR_frameSDL8   = GR_frameSVGA8,
-        GR_frameSDL16  = GR_frameSVGA16,
-        GR_frameSDL24  = GR_frameSVGA24,
-        GR_frameSDL32L = GR_frameSVGA32L,
-        GR_frameSDL32H = GR_frameSVGA32H,
         /* ==== linear frame buffer modes  ====== */
         GR_frameMONO01_LFB,                 /* mono, 0 = white, 1 = black */
         GR_frameMONO10_LFB,                 /* mono, 0 = black, 1 = white */
@@ -220,7 +187,7 @@ typedef enum _GR_frameModes {
         /* ====== markers for scanning modes ====== */
         GR_firstTextFrameMode     = GR_frameText,
         GR_lastTextFrameMode      = GR_frameText,
-        GR_firstGraphicsFrameMode = GR_frameHERC1,
+        GR_firstGraphicsFrameMode = GR_frameMONO01_LFB,
         GR_lastGraphicsFrameMode  = GR_frameSVGA32H_LFB,
         GR_firstRAMframeMode      = GR_frameRAM1,
         GR_lastRAMframeMode       = GR_frameRAM3x8
@@ -231,11 +198,6 @@ typedef enum _GR_frameModes {
  */
 typedef enum _GR_videoAdapters {
         GR_UNKNOWN = (-1),                  /* not known (before driver set) */
-        GR_VGA,                             /* VGA adapter */
-        GR_EGA,                             /* EGA adapter */
-        GR_HERC,                            /* Hercules mono adapter */
-        GR_8514A,                           /* 8514A or compatible */
-        GR_S3,                              /* S3 graphics accelerator */
         GR_XWIN,                            /* X11 driver */
         GR_WIN32,                           /* WIN32 driver */
         GR_LNXFB,                           /* Linux framebuffer */

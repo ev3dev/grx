@@ -11,9 +11,9 @@ Supported platforms
 Directly supported platforms:
 -----------------------------
 
-  Currently GRX directly supports the following four platforms:
+  Currently GRX directly supports the following three platforms:
 
-     Linux / console     svgalib and framebuffer drivers
+     Linux / console     framebuffer driver
      Linux / X11R6       xwin  driver (windowed) and SDL (full screen)
      Win32 / Mingw       win32 driver (windowed) and SDL (full screen)
 
@@ -109,11 +109,6 @@ B. Compiling GRX
      `command.com'. If you set HAVE_UNIX_TOOLS=y (i.e. msys for mingw32),
      there are no problems.
 
-     Note for Linux/console users: At the end you must become root and
-     run 'make -f makefile.lnx setsuid' in order to set de suid flag of
-     the modetest utility program. (This is required by the SVGALIB
-     video driver).
-
 C. Testing GRX
 --------------
 
@@ -122,9 +117,6 @@ C. Testing GRX
   2) run 'make -f <your makefile>'
 
   3) run the 'demogrx' program
-
-  Note for Linux/console users: you must compile test programs as root.
-  (This is required by the SVGALIB video driver).
  
 D. Installing GRX lib for your compiler
 ---------------------------------------
@@ -207,7 +199,7 @@ Environment variables for using GRX programs
 
      Available drivers are for:
 
-       Linux: svgalib, linuxfb, memory
+       Linux: linuxfb, memory
        X11  : xwin, memory
        Win32: win32, memory
 
@@ -237,21 +229,6 @@ Environment variables for using GRX programs
      $FRAMEBUFFER environment variable:
 
        export FRAMEBUFFER=<device file>
-
-
-Suidroot in the Linux console platform
-======================================
-
-  You know setting suidroot is a security flaw, if you want your grx linux
-  console program really portable yo have not options, because the svgalib
-  stable version requires it. But if you really wants a suidroot aware
-  libgrx you can modify makedefs.grx to obtain:
-
-  * a framebuffer only linux console libgrx version
-
-  * a libgrx version without some framedrivers than do direct in/out port,
-  so you can link it with the svgalib alpha version (1.9.x) that not
-  requires suidroot.
 
 
 Help

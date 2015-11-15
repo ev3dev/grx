@@ -17,24 +17,11 @@ ifdef GRX_DEFAULT_FONT_PATH
 CCOPT += -DGRX_DEFAULT_FONT_PATH=\"$(GRX_DEFAULT_FONT_PATH)\"
 endif
 
-ifeq ($(USE_SVGALIB_DRIVER),y)
-CCOPT += -DSVGALIB_DRIVER
-ADDON_LIBS += -lvga
-endif
-
 ifeq ($(USE_FRAMEBUFFER_DRIVER),y)
 CCOPT += -DFRAMEBUFFER_DRIVER
 endif
 
-ifeq ($(USE_INOUTP_FRAMEDRIVERS),y)
-CCOPT += -DINOUTP_FRAMEDRIVERS
-endif
-
-ifeq ($(SET_SUIDROOT),y)
-EXECBITS = 4755
-else
 EXECBITS = 0755
-endif
 
 GRX20ST   = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 
@@ -83,24 +70,8 @@ O=      $(STD_O)                \
 	fdrivers/ram24.o        \
 	fdrivers/ram32l.o       \
 	fdrivers/ram32h.o       \
-	fdrivers/svga16.o       \
-	fdrivers/svga24.o       \
-	fdrivers/svga32h.o      \
-	fdrivers/svga32l.o      \
-	fdrivers/svga8.o        \
 	mouse/lnxkeys.o         \
 	misc/lnxmisc.o
-
-ifeq ($(BUILD_X86_64),n)
-  O += fdrivers/egavga1.o      \
-	fdrivers/ega4.o         \
-	fdrivers/svga4.o        \
-	fdrivers/vga8x.o
-endif
-
-ifeq ($(USE_SVGALIB_DRIVER),y)
-  O += vdrivers/svgalib.o
-endif
 
 ifeq ($(USE_FRAMEBUFFER_DRIVER),y)
   O += vdrivers/vd_lnxfb.o
@@ -192,12 +163,6 @@ endif
 	rm -f $(DESTDIR)$(includedir)/grxkeys.h
 
 setsuid: $(UTILPS)
-ifeq ($(SET_SUIDROOT),y)
-	chown root ../bin/modetest
-	chmod $(EXECBITS) ../bin/modetest
-else
-	@echo "Nothing to do, SET_SUIDROOT is not set to 'y' in makedefs.grx"
-endif
 
 install-info:
 	install -m 0755 -d $(DESTDIR)$(infodir)

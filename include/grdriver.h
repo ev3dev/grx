@@ -42,16 +42,6 @@ extern GrFrameDriver
 /*
  * Standard frame drivers in GRX
  */
-_GrFrameDriverHERC1,                    /* Hercules mono */
-_GrFrameDriverEGAVGA1,                  /* EGA VGA mono */
-_GrFrameDriverEGA4,                     /* EGA 16 color */
-_GrFrameDriverSVGA4,                    /* (Super) VGA 16 color */
-_GrFrameDriverSVGA8,                    /* (Super) VGA 256 color */
-_GrFrameDriverVGA8X,                    /* VGA 256 color mode X */
-_GrFrameDriverSVGA16,                   /* Super VGA 32768/65536 color */
-_GrFrameDriverSVGA24,                   /* Super VGA 16M color */
-_GrFrameDriverSVGA32L,                  /* Super VGA 16M color padded #1 */
-_GrFrameDriverSVGA32H,                  /* Super VGA 16M color padded #2 */
                                         /* Linear Framebuffer Modes : */
 _GrFrameDriverMONO01_LFB,               /* mono, 0 = white, 1 = black */
 _GrFrameDriverMONO10_LFB,               /* mono, 1 = white, 0 = black */
@@ -98,20 +88,9 @@ extern GrVideoDriver
 /*
  * Standard video drivers in GRX
  */
-_GrVideoDriverHERC,                     /* Hercules driver */
-_GrVideoDriverSTDEGA,                   /* standard EGA driver */
-_GrVideoDriverSTDVGA,                   /* standard VGA driver */
-_GrVideoDriverVESA,                     /* generic VESA Super VGA driver */
-_GrVideoDriverATI28800,                 /* ATI 28800 chipset driver */
-_GrVideoDriverET4000,                   /* Tseng ET4000 driver */
-_GrVideoDriverCL5426,                   /* Cirrus 5426 driver */
-_GrVideoDriverMACH64,                   /* ATI MACH64 driver */
-_GrVideoDriverS3,                       /* S3 driver */
-
 _GrVideoDriverXWIN,                     /* X11 interface */
 _GrVideoDriverXF86DGA,                  /* XFree86 DGA interface */
 
-_GrVideoDriverSVGALIB,                  /* Linux SVGALIB interface */
 _GrVideoDriverLINUXFB,                  /* Linux framebuffer */
 
 _GrVideoDriverWIN32,                    /* WIN32 interface */
@@ -161,33 +140,6 @@ GrColor *_GrFrDrvGenericGetIndexedScanline(GrFrame *c,
 void _GrFrDrvGenericStretchBlt(GrFrame *dst,int dx,int dy,int dw,int dh,
                                GrFrame *src,int sx,int sy,int sw,int sh,
                                GrColor op);
-
-/*
- * Video driver utility functions
- */
-int  _GrViDrvDetectEGAVGA(void);
-int  _GrViDrvDetectVGA(void);
-int  _GrViDrvDetectEGA(void);
-int  _GrViDrvInitEGAVGA(char *options);
-void _GrViDrvResetEGAVGA(void);
-int  _GrViDrvGetCurrentEGAVGAmode(void);
-int  _GrViDrvSetEGAVGAmode(GrVideoMode *mp,int noclear);
-int  _GrViDrvSetEGAVGAcustomTextMode(GrVideoMode *mp,int noclear);
-void _GrViDrvLoadColorEGA4(int c,int r,int g,int b);
-void _GrViDrvLoadColorVGA4(int c,int r,int g,int b);
-void _GrViDrvLoadColorVGA8(int c,int r,int g,int b);
-int  _GrViDrvVESAsetVirtualSize(GrVideoMode *md,int w,int h,GrVideoMode *result);
-int  _GrViDrvVESAvirtualScroll(GrVideoMode *md,int x,int y,int result[2]);
-
-/* for 8 bit color modes:
-**   normal DAC has 6bit for each rgb color component, VESA 2.0 allows
-**   6bit or 8bit DAC color values.
-**   _GrViDrvLoadColorVGA8() requires 8bit values that will be shifted right:
-**
-**      DAC width   6bit    8bit
-**          shift   2       0
-*/
-void _GrViDrvSetDACshift(int shift);
 
 /*
  * Commonly used video driver data structures

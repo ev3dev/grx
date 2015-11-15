@@ -85,13 +85,6 @@ int _GrResetColors(void)
             firsttime = FALSE;
         }
         sttzero(CLRINFO);
-        if(DRVINFO->actmode.extinfo->mode == GR_frameText) {
-                if ( infosave ) {
-                        memcpy(CLRINFO,infosave,sizeof(infosave));
-                        return TRUE;
-                }
-                return FALSE;
-        }
         DACload = DRVINFO->actmode.extinfo->loadcolor;
         CLRINFO->black   = GrNOCOLOR;
         CLRINFO->white   = GrNOCOLOR;

@@ -45,7 +45,7 @@ Next:&nbsp;<a rel="next" accesskey="n" href="#A-User-Manual-For-GRX2">A User Man
 Csaba Biegl for DJ Delorie's DOS port of the GCC compiler. Now it support
 a big range of platforms, the main three are: Linux console,
 X11 and Win32 (Mingw).
-On Linux console it uses svgalib or the framebuffer. On X11 it must work on
+On Linux console it uses the framebuffer. On X11 it must work on
 any X11R5 (or later). From the 2.4 version, GRX comes with a Win32 driver. 
 The framebuffer Linux console driver was new in 2.4.2. From 2.4.7 there is a
 support for x86_64 bits Linux machines and a support for an SDL driver
@@ -208,7 +208,7 @@ variable GRX20DRV, but a program can set it using:
 <p>Available drivers are for:
 
 <pre class="example">
-     * Linux =&gt; svgalib, linuxfb, memory
+     * Linux =&gt; linuxfb, memory
      * X11 =&gt; xwin, memory
      * Win32 =&gt; win32, memory
      * SDL (Win32 and X11) =&gt; sdl::fs, sdl::ww, memory
@@ -352,11 +352,6 @@ symbolic constants (defined in grx20.h):
 
 <pre class="example">     typedef enum _GR_videoAdapters {
        GR_UNKNOWN = (-1),     /* not known (before driver set) */
-       GR_VGA,                /* VGA adapter */
-       GR_EGA,                /* EGA adapter */
-       GR_HERC,               /* Hercules mono adapter */
-       GR_8514A,              /* 8514A or compatible */
-       GR_S3,                 /* S3 graphics accelerator */
        GR_XWIN,               /* X11 driver */
        GR_WIN32,              /* WIN32 driver */
        GR_LNXFB,              /* Linux framebuffer */
@@ -611,7 +606,7 @@ bits right are the color value.
 <p>The library supports two models for color management. In the 'indirect' (or
 color table) model, color values are indices to a color table. The color table
 slots will be allocated with the highest resolution supported by the hardware
-(EGA: 2 bits, VGA: 6 bits) with respect to the component color intensities. In
+with respect to the component color intensities. In
 the 'direct' (or RGB) model, color values map directly into component color
 intensities with non-overlapping bitfields of the color index representing the
 component colors.

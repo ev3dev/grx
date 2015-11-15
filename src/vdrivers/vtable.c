@@ -27,9 +27,6 @@ GrVideoDriver *_GrVideoDriverTable[] = {
     &_GrVideoDriverXWIN,
 #endif
 #if defined(__linux__) && !defined(__XWIN__) && !defined(__SDL__)
-#ifdef SVGALIB_DRIVER
-    &_GrVideoDriverSVGALIB,
-#endif
 #ifdef FRAMEBUFFER_DRIVER
     &_GrVideoDriverLINUXFB,
 #endif

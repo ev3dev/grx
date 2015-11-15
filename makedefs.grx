@@ -134,26 +134,11 @@ endif
 
 ifdef GRXVLNX
 
-# Use direct PS/2 mouse driver instead the svgalib one
+# Use direct PS/2 mouse driver
 USE_DIRECT_MOUSE_DRIVER=n
 
-# Set the videodrivers to be included, you can set both or only one of them
-# (remember to set USE_DIRECT_MOUSE_DRIVER to 'y' if you set only the
-# framebuffer driver)
-USE_SVGALIB_DRIVER=y
+# Set the videodrivers to be included
 USE_FRAMEBUFFER_DRIVER=y
-
-# Set or not set suid root. This is required for the svgalib 1.4.x stable
-# release, it can be set to 'n' if you use the framebuffer driver only or
-# the svgalib 1.9.x alpha release without the 1 and 4 bpp resolutions
-# (see bellow)
-SET_SUIDROOT=y
-
-# Set to 'y' this variable if you want to add the framedrivers that use
-# inport/outport instructions: 1 and 4 bpp modes and the 8 bpp mode X. But
-# beware this works only with svgalib 1.4.x (not with 1.9.x) and without
-# the linux framebuffer enabled
-USE_INOUTP_FRAMEDRIVERS=n
 
 endif
 

@@ -20,13 +20,10 @@ override_dh_auto_clean:
 
 override_dh_auto_configure:
 	cp makedefs.grx makedefs.grx.orig
-	# the --enable-x86_64 option just disables the building of ega/vga drivers
-	# and does not actually mean that the system has to be x86_64
-	./configure --prefix=/usr --target=console --enable-x86_64 \
+	./configure --prefix=/usr --target=console \
 		--enable-jpeg --enable-png --enable-zlib \
 		--with-fontpath=/usr/share/grx/fonts \
-		--enable-direct-mouse --disable-svgalib \
-		--disable-suidroot --disable-io-framedrivers
+		--enable-direct-mouse
 
 override_dh_auto_install:
 	dh_auto_install

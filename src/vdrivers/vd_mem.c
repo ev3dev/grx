@@ -22,7 +22,6 @@
 #include "grdriver.h"
 #include "allocate.h"
 #include "arith.h"
-#include "int86.h"
 #include "memfill.h"
 
 

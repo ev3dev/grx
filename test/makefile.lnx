@@ -16,17 +16,9 @@ GRX20 = ../lib/$(GRX_LIB_SUBDIR)/libgrx20.a
 # or this if you've already installed the shared libs
 #GRX20 = -L../lib/$(GRX_LIB_SUBDIR) -lgrx20
 
-ifeq ($(SET_SUIDROOT),y)
-EXECBITS = 4755
-else
 EXECBITS = 0755
-endif
 
 ADDON_LIBS =
-
-ifeq ($(USE_SVGALIB_DRIVER),y)
-  ADDON_LIBS += -lvga
-endif
 
 ifeq ($(HAVE_LIBTIFF),y)
   ADDON_LIBS += -ltiff
@@ -86,12 +78,6 @@ clean:
 	rm -f *.o $(PROGS) demogrx
 
 setsuid: $(PROGS) demogrx
-ifeq ($(SET_SUIDROOT),y)
-	chown root $(PROGS) demogrx
-	chmod $(EXECBITS) $(PROGS) demogrx
-else
-	@echo "Nothing to do, SET_SUIDROOT is not set to 'y' in makedefs.grx"
-endif
 
 .o:
 	$(CC) $(LDOPT) -o $* $*.o $(LIBS)

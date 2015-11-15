@@ -67,10 +67,7 @@ HAVE_UNIX_TOOLS=y
 INCLUDE_BMP_CODE=y
 INCLUDE_SHARED_SUPPORT=y
 USE_DIRECT_MOUSE_DRIVER=n
-USE_SVGALIB_DRIVER=y
 USE_FRAMEBUFFER_DRIVER=y
-SET_SUIDROOT=y
-USE_INOUTP_FRAMEDRIVERS=y
 BUILD_X86_64=n
 lsocket=""
 subst_EP=""
@@ -154,10 +151,7 @@ for ac_option do
       bmp)             INCLUDE_BMP_CODE=y;;
       shared)          INCLUDE_SHARED_SUPPORT=y;;
       direct-mouse)    USE_DIRECT_MOUSE_DRIVER=y;;
-      svgalib)         USE_SVGALIB_DRIVER=y;;
       framebuffer)     USE_FRAMEBUFFER_DRIVER=y;;
-      suidroot)        SET_SUIDROOT=y;;
-      io-framedrivers) USE_INOUTP_FRAMEDRIVERS=y;;
       lsocket)         lsocket=" -lsocket";;
     esac;;
   -disable-* | --disable-* | -di-* | --di-*)
@@ -171,10 +165,7 @@ for ac_option do
       bmp)             INCLUDE_BMP_CODE=n;;
       shared)          INCLUDE_SHARED_SUPPORT=n;;
       direct-mouse)    USE_DIRECT_MOUSE_DRIVER=n;;
-      svgalib)         USE_SVGALIB_DRIVER=n;;
       framebuffer)     USE_FRAMEBUFFER_DRIVER=n;;
-      suidroot)        SET_SUIDROOT=n;;
-      io-framedrivers) USE_INOUTP_FRAMEDRIVERS=n;;
       lsocket)         lsocket="";;
     esac;;
   -with-* | --with-*)
@@ -230,12 +221,9 @@ Options: [defaults in brackets after descriptions]
   --with-unitspath=PATH     set GPC units path to PATH [$default_unitspath]
 The following options apply to the Linux console (not X11) target only:
   --enable-direct-mouse     use PS/2 instead of svgalib mouse driver [no]
-  --enable-svgalib          use svgalib driver [yes]
   --enable-framebuffer      use framebuffer driver [yes]
   --enable-suidroot         create suid root executables (required with svgalib
                             1.4.x) [yes]
-  --enable-io-framedrivers  use frame drivers that require suid root
-                            executables under newer versions of svgalib [yes]
 Some options can be abbreviated, e.g. \`--p' for \`--prefix',
 \`--en-FOO' for \`--enable-FOO' and \`--di-FOO' for \`--disable-FOO'.
 NOTE: This script is completely OPTIONAL. If you don't know what to do with it,
@@ -267,16 +255,6 @@ case "$target" in
      CROSS_PLATFORM=""
      exec_prefix='${prefix}';;
 esac
-
-if [ $USE_SVGALIB_DRIVER != y ] && [ $USE_FRAMEBUFFER_DRIVER != y ]; then
-  echo "$0: either \`--enable-svgalib' or \`--enable-framebuffer' must be set" >&2
-  exit 1
-fi
-
-if [ $USE_SVGALIB_DRIVER != y ] && [ $USE_DIRECT_MOUSE_DRIVER != y ]; then
-  echo "$0: if \`--disable-svgalib' is unset then \`--enable-direct-mouse' must be set" >&2
-  exit 1
-fi
 
 if [ -r Makefile ]; then
   if cmp Makefile makefile.lnx > /dev/null 2>&1 ||
@@ -334,10 +312,7 @@ if sed -e "/^BUILD_X86_64=/s/=.*/=$BUILD_X86_64/;
            /^INCLUDE_SHARED_SUPPORT=/s/=.*/=$INCLUDE_SHARED_SUPPORT/;
            /^CROSS_PLATFORM=/s/=.*/=$CROSS_PLATFORM/;
            /^USE_DIRECT_MOUSE_DRIVER=/s/=.*/=$USE_DIRECT_MOUSE_DRIVER/;
-           /^USE_SVGALIB_DRIVER=/s/=.*/=$USE_SVGALIB_DRIVER/;
            /^USE_FRAMEBUFFER_DRIVER=/s/=.*/=$USE_FRAMEBUFFER_DRIVER/;
-           /^SET_SUIDROOT=/s/=.*/=$SET_SUIDROOT/;
-           /^USE_INOUTP_FRAMEDRIVERS=/s/=.*/=$USE_INOUTP_FRAMEDRIVERS/;
            /^exec_prefix=/s|=.*|=$exec_prefix|;
            /^bindir=/s|=.*|=$bindir|;
            /^libdir=/s|=.*|=$libdir|;
