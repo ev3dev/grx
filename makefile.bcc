@@ -3,7 +3,7 @@
 #
 !include "makedefs.bcc"
 
-all:    libs test bgitest
+all:    libs test
 
 libs:
 	cd src
@@ -15,17 +15,10 @@ test:   libs
 	$(MAKE)
 	cd ..
 
-bgitest:   libs
-	cd test\bgi
-	$(MAKE)
-	cd ..\..
-
 clean:
 	cd src
 	$(MAKE) clean
 	cd ..\test
-	$(MAKE) clean
-	cd bgi
 	$(MAKE) clean
 	cd ..\..
 

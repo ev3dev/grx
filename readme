@@ -135,12 +135,6 @@ C. Testing GRX
 
   3) run the 'demogrx' program
 
-  4) Switch to "test/bgi" sub dir
-
-  5) run 'make -f <your makefile>'
-
-  6) run the 'bccbgi' program
-
   Note for Linux/console users: you must compile test programs as root.
   (This is required by the SVGALIB video driver).
  

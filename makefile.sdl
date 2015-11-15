@@ -1,14 +1,14 @@
 #
 # GRX makefile for SDL version
 #
-.PHONY : libs test bgitest clean cleanall install uninstall \
+.PHONY : libs test clean cleanall install uninstall \
 	 install-bin uninstall-bin install-fonts uninstall-fonts
 
 GRXVSDL=y
 
 include makedefs.grx
 
-all:   libs test bgitest
+all:   libs test
 
 libs:
 	$(MAKE) -C src -f makefile.sdl
@@ -16,16 +16,8 @@ libs:
 test:   libs
 	$(MAKE) -C test -f makefile.sdl
 
-bgitest:   libs
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C test/bgi -f makefile.sdl
-endif
-
 clean:
 	$(MAKE) -C test -f makefile.sdl clean
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C test/bgi -f makefile.sdl clean
-endif
 	$(MAKE) -C src  -f makefile.sdl clean
 
 cleanall: clean

@@ -66,7 +66,6 @@ HAVE_LIBTIFF=n
 HAVE_UNIX_TOOLS=y
 INCLUDE_BMP_CODE=y
 INCLUDE_SHARED_SUPPORT=y
-INCLUDE_BGI_SUPPORT=y
 USE_DIRECT_MOUSE_DRIVER=n
 USE_SVGALIB_DRIVER=y
 USE_FRAMEBUFFER_DRIVER=y
@@ -154,7 +153,6 @@ for ac_option do
       tiff)            HAVE_LIBTIFF=y;;
       bmp)             INCLUDE_BMP_CODE=y;;
       shared)          INCLUDE_SHARED_SUPPORT=y;;
-      bgi)             INCLUDE_BGI_SUPPORT=y;;
       direct-mouse)    USE_DIRECT_MOUSE_DRIVER=y;;
       svgalib)         USE_SVGALIB_DRIVER=y;;
       framebuffer)     USE_FRAMEBUFFER_DRIVER=y;;
@@ -172,7 +170,6 @@ for ac_option do
       tiff)            HAVE_LIBTIFF=n;;
       bmp)             INCLUDE_BMP_CODE=n;;
       shared)          INCLUDE_SHARED_SUPPORT=n;;
-      bgi)             INCLUDE_BGI_SUPPORT=n;;
       direct-mouse)    USE_DIRECT_MOUSE_DRIVER=n;;
       svgalib)         USE_SVGALIB_DRIVER=n;;
       framebuffer)     USE_FRAMEBUFFER_DRIVER=n;;
@@ -223,7 +220,6 @@ Options: [defaults in brackets after descriptions]
   --enable-tiff             include TIFF support [no]
   --enable-bmp              include BMP support [yes]
   --enable-shared           build shared libraries [yes]
-  --enable-bgi              include BGI support [yes]
   --enable-lsocket          link lsocket [no]
   --disable-FOO             opposite of --enable-FOO
   --with-fontpath=PATH      set GRX font path to PATH
@@ -338,7 +334,6 @@ if sed -e "/^BUILD_X86_64=/s/=.*/=$BUILD_X86_64/;
            /^NEED_ZLIB=/s/=.*/=$NEED_ZLIB/;
            /^INCLUDE_BMP_CODE=/s/=.*/=$INCLUDE_BMP_CODE/;
            /^INCLUDE_SHARED_SUPPORT=/s/=.*/=$INCLUDE_SHARED_SUPPORT/;
-           /^INCLUDE_BGI_SUPPORT=/s/=.*/=$INCLUDE_BGI_SUPPORT/;
            /^CROSS_PLATFORM=/s/=.*/=$CROSS_PLATFORM/;
            /^USE_DIRECT_MOUSE_DRIVER=/s/=.*/=$USE_DIRECT_MOUSE_DRIVER/;
            /^USE_SVGALIB_DRIVER=/s/=.*/=$USE_SVGALIB_DRIVER/;

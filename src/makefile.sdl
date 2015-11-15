@@ -42,8 +42,6 @@ STD_Oa= $(STD_1) $(STD_2) $(STD_3)
 STD_Ob= $(STD_4) $(STD_5) $(STD_6)
 STD_Oc= $(STD_7) $(STD_8) $(STD_9)
 STD_Od= $(STD_10) $(STD_11) $(STD_12)
-BGI_Oa= $(BGI_1) $(BGI_2) $(BGI_3)
-BGI_Ob= $(BGI_4) $(BGI_5) $(BGI_6)
 
 ADDON_O=
 ifdef DEBUG
@@ -94,10 +92,6 @@ endif
 
 ALL_O = $(STD_Oa) $(STD_Ob) $(STD_Oc) $(STD_Od) $(SDL_O)
 
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  ALL_O += $(BGI_Oa) $(BGI_Ob)
-endif
-
 UTILPC= ../bin/bin2c$(EX)      \
 	../bin/fnt2c$(EX)      \
 
@@ -106,7 +100,7 @@ UTILPS= ../bin/$(EP)modetest$(EX)
 all:    $(GRX20ST) $(UTILPC) $(UTILPS)
 
 clean:
-	rm -f bgi/*.o draw/*.o fdrivers/*.o fonts/*.o image/*.o gformats/*.o
+	rm -f draw/*.o fdrivers/*.o fonts/*.o image/*.o gformats/*.o
 	rm -f mouse/*.o misc/*.o pattern/*.o setup/*.o shape/*.o text/*.o
 	rm -f user/*.o utils/*.o utilprog/*.o vdrivers/*.o wideline/*.o
 	rm -f ../addons/*.o ../addons/bmp/*.o $(TAG)
@@ -167,10 +161,6 @@ $(GRX20ST): $(TAG) $(ALL_O)
 	$(AR) -r $(GRX20ST) $(STD_Ob)
 	$(AR) -r $(GRX20ST) $(STD_Oc)
 	$(AR) -r $(GRX20ST) $(STD_Od)
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(AR) -r $(GRX20ST) $(BGI_Oa)
-	$(AR) -r $(GRX20ST) $(BGI_Ob)
-endif
 	$(AR) -r $(GRX20ST) $(SDL_O)
 	$(RANLIB) $(GRX20ST)
 

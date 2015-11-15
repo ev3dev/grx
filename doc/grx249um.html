@@ -93,7 +93,6 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a href="#Writing_002freading-PNG-graphics-files">Writing/reading PNG graphics files</a>
 <li><a href="#Writing_002freading-JPEG-graphics-files">Writing/reading JPEG graphics files</a>
 <li><a href="#Miscellaneous-functions">Miscellaneous functions</a>
-<li><a href="#BGI-interface">BGI interface</a>
 <li><a href="#References">References</a>
 </ul>
 
@@ -1348,11 +1347,10 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual 
 
 <h3 class="unnumberedsec">Text drawing</h3>
 
-<p>The library supports loadable fonts. When in memory they are bit-mapped (i.e. 
+<p>The library supports loadable fonts. When in memory they are bit-mapped (i.e.
 not scalable!) fonts. A driver design allow GRX to load different font formats,
-the last GRX release come with drivers to load the GRX own font format and the
-BGI Borland format for all platforms supported, the X11 version can load X11
-fonts too.
+the last GRX release come with drivers to load the GRX own font format for all
+platforms supported, the X11 version can load X11 fonts too.
 
 <p>The GRX distribution come with a font collection in the GRX own format. Some
 of these fonts were converted from VGA fonts. These fonts have all 256
@@ -2265,7 +2263,7 @@ error (-1) ever.
 <div class="node">
 <a name="Miscellaneous-functions"></a>
 <p><hr>
-Next:&nbsp;<a rel="next" accesskey="n" href="#BGI-interface">BGI interface</a>,
+Next:&nbsp;<a rel="next" accesskey="n" href="#Referneces">References</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Writing_002freading-JPEG-graphics-files">Writing/reading JPEG graphics files</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
 
@@ -2351,31 +2349,12 @@ an example:
         bcolor = GrAllocColor( 0,0,255 );
         GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
 </pre>
-<!--  -->
-<div class="node">
-<a name="BGI-interface"></a>
-<p><hr>
-Next:&nbsp;<a rel="next" accesskey="n" href="#References">References</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="#Miscellaneous-functions">Miscellaneous functions</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
-
-</div>
-
-<h3 class="unnumberedsec">BGI interface</h3>
-
-<p>From the 2.3.1 version, GRX includes the BCC2GRX library created by Hartmut
-Schirmer. The BCC2GRX was created to allow users of GRX to compile graphics
-programs written for Borland-C++ and Turbo-C graphics interface. BCC2GRX is not
-a convenient platform to develop new BGI programs. Of course you should use
-native GRX interface in such cases!
-
-<p>Read the readme.bgi file for more info.
 
 <!--  -->
 <div class="node">
 <a name="References"></a>
 <p><hr>
-Previous:&nbsp;<a rel="previous" accesskey="p" href="#BGI-interface">BGI interface</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Miscellaneous-functions">Miscellaneous functions</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual For GRX2</a>
 
 </div>
@@ -2428,7 +2407,6 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual 
 <li><a href="#Writing_002freading-PNG-graphics-files">Writing/reading PNG graphics files</a>
 <li><a href="#Writing_002freading-JPEG-graphics-files">Writing/reading PNG graphics files</a>
 <li><a href="#Miscellaneous-functions">Miscellaneous functions</a>
-<li><a href="#BGI-interface">BGI interface</a>
 <li><a href="#References">References</a>
 </li></ul>
 </li></ul>

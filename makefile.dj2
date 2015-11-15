@@ -1,7 +1,7 @@
 #
 # GRX makefile for DJGPPv2 version
 #
-.PHONY : libs test bgitest clean cleanall install uninstall \
+.PHONY : libs test clean cleanall install uninstall \
 	 install-bin uninstall-bin install-fonts uninstall-fonts \
 	 install-info uninstall-info
 
@@ -9,7 +9,7 @@ GRXVDJ2=y
 
 include makedefs.grx
 
-all:   libs test bgitest
+all:   libs test
 
 libs:
 	$(MAKE) -C src -f makefile.dj2
@@ -17,16 +17,8 @@ libs:
 test:   libs
 	$(MAKE) -C test -f makefile.dj2
 
-bgitest:   libs
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C test/bgi -f makefile.dj2
-endif
-
 clean:
 	$(MAKE) -C test -f makefile.dj2 clean
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C test/bgi -f makefile.dj2 clean
-endif
 	$(MAKE) -C src  -f makefile.dj2 clean
 
 cleanall: clean

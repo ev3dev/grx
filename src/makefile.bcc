@@ -33,7 +33,7 @@ GRX20STe= ..\lib\$(GRX_LIB_SUBDIR)\temp5.lib
 TEMP_LIB= ..\lib\$(GRX_LIB_SUBDIR)\temp?.lib
 
 INCDIR= -I. -I./include -I../include -I$(BCCROOT)/include\
-	-I./vdrivers -I./bgi
+	-I./vdrivers
 LIBDIR= -L$(BCCROOT)/lib
 
 OP=+
@@ -85,8 +85,6 @@ BCCOBJ= +fdrivers\egavga1.obj  \
 LOBJ1=$(STD_1:/=\) $(STD_2:/=\) $(STD_3:/=\) $(STD_4:/=\)
 LOBJ2=$(STD_5:/=\) $(STD_6:/=\) $(STD_7:/=\) $(STD_8:/=\)
 LOBJ3=$(STD_9:/=\) $(STD_10:/=\)
-LOBJ4=$(BGI_1:/=\) $(BGI_2:/=\) $(BGI_3:/=\)
-LOBJ5=$(BGI_4:/=\) $(BGI_5:/=\) $(BGI_6:/=\)
 LOBJ6=$(STD_11:/=\) $(BCCOBJ) $(DBG_O)
 
 UTILP = \
@@ -98,7 +96,6 @@ UTILP = \
 all:    config.bcc $(GRX20ST) $(UTILP)
 
 clean:
-	if exist bgi\*.obj      del bgi\*.obj
 	if exist draw\*.obj     del draw\*.obj
 	if exist fdrivers\*.obj del fdrivers\*.obj
 	if exist fonts\*.obj    del fonts\*.obj

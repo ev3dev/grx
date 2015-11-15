@@ -50,7 +50,6 @@ extern GrFontDriver
  * Available font drivers in GRX
  */
 _GrFontDriverGRX,                       /* native GRX bitmap fonts */
-_GrFontDriverBGI,                       /* Borland BGI font driver */
 #ifdef __XWIN__
 _GrFontDriverXWIN,                      /* X font driver */
 #endif

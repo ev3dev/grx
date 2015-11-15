@@ -1,7 +1,7 @@
 #
 # GRX makefile for LINUX/console version
 #
-.PHONY : libs test bgitest clean cleanall install uninstall setsuid \
+.PHONY : libs test clean cleanall install uninstall setsuid \
 	 install-bin uninstall-bin install-fonts uninstall-fonts \
 	 install-info uninstall-info
 
@@ -9,7 +9,7 @@ GRXVLNX=y
 
 include makedefs.grx
 
-all: libs test bgitest
+all: libs test
 
 libs:
 	$(MAKE) -C src -f makefile.lnx
@@ -17,16 +17,8 @@ libs:
 test: libs
 	$(MAKE) -C test   -f makefile.lnx
 
-bgitest: libs
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C test/bgi   -f makefile.lnx
-endif
-
 clean:
 	$(MAKE) -C test       -f makefile.lnx clean
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C test/bgi   -f makefile.lnx clean
-endif
 	$(MAKE) -C src        -f makefile.lnx clean
 
 cleanall: clean
@@ -59,7 +51,3 @@ uninstall-fonts:
 setsuid:
 	$(MAKE) -C src -f makefile.lnx setsuid
 	$(MAKE) -C test -f makefile.lnx setsuid
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C test/bgi -f makefile.lnx setsuid
-endif
-

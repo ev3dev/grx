@@ -53,9 +53,6 @@ STD_O= $(STD_1) $(STD_2)  $(STD_3)  $(STD_4) \
        $(STD_5) $(STD_6)  $(STD_7)  $(STD_8) \
        $(STD_9) $(STD_10) $(STD_11) $(STD_12)\
 
-BGI_O= $(BGI_1) $(BGI_2)  $(BGI_3)  $(BGI_4) \
-       $(BGI_5) $(BGI_6)
-
 ADDON_O=
 
 ifdef DEBUG
@@ -105,10 +102,6 @@ O+=	fdrivers/lfb16.o    \
 	fdrivers/lfbbltvr.o \
 	fdrivers/lfbbltvv.o \
 	vdrivers/vd_xfdga.o
-endif
-
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  O += $(BGI_O)
 endif
 
 LO = $(subst $(OX),.lo,$(O))

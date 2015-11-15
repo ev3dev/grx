@@ -13,7 +13,7 @@ OBJS = .\bmp.obj .\grxprint.obj .\prndata.obj .\bitblt.obj .\bitbltnc.obj &
  .\pblitv2r.obj .\pblitv2v.obj .\ram1.obj .\ram16.obj .\ram24.obj &
  .\ram32h.obj .\ram32l.obj .\ram4.obj .\ram8.obj .\rblit_14.obj &
  .\svga16.obj .\svga24.obj .\svga32h.obj .\svga32l.obj .\svga4.obj &
- .\svga8.obj .\vga8x.obj .\fdtable.obj .\fdv_bgi.obj .\fdv_grx.obj &
+ .\svga8.obj .\vga8x.obj .\fdtable.obj .\fdv_grx.obj &
  .\pc6x8.obj .\pc8x14.obj .\pc8x16.obj .\pc8x8.obj .\ialloc.obj &
  .\ibuild.obj .\ifbox.obj .\ihline.obj .\iinverse.obj .\imginlne.obj &
  .\iplot.obj .\istretch.obj .\bldcurs.obj .\dosinput.obj .\doskeys.obj &
@@ -261,9 +261,6 @@ OBJS += .AUTODEPEND
 	$(CC) $[@ $(CC_OPTS)
 
 .\fdtable.obj : .\src\fonts\fdtable.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\fdv_bgi.obj : .\src\fonts\fdv_bgi.c .AUTODEPEND
 	$(CC) $[@ $(CC_OPTS)
 
 .\fdv_grx.obj : .\src\fonts\fdv_grx.c .AUTODEPEND
@@ -803,273 +800,6 @@ OBJS += .AUTODEPEND
 .\dbgprint.obj : .\src\utils\dbgprint.c .AUTODEPEND
 	$(CC) $[@ $(CC_OPTS)
 
-.\arc.obj : .\src\bgi\arc.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\aspectra.obj : .\src\bgi\aspectra.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\bar.obj : .\src\bgi\bar.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\bar3d.obj : .\src\bgi\bar3d.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\bccgrx.obj : .\src\bgi\bccgrx.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\bgimode.obj : .\src\bgi\bgimode.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\circle.obj : .\src\bgi\circle.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\clearvp.obj : .\src\bgi\clearvp.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\closegra.obj : .\src\bgi\closegra.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\clrdev.obj : .\src\bgi\clrdev.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\detectg.obj : .\src\bgi\detectg.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\drvname.obj : .\src\bgi\drvname.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\egacolor.obj : .\src\bgi\egacolor.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\ellipse.obj : .\src\bgi\ellipse.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\errmsg.obj : .\src\bgi\errmsg.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\fellipse.obj : .\src\bgi\fellipse.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\fillpatt.obj : .\src\bgi\fillpatt.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\fillpoly.obj : .\src\bgi\fillpoly.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\fillstyl.obj : .\src\bgi\fillstyl.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\fldfill.obj : .\src\bgi\fldfill.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getbkcol.obj : .\src\bgi\getbkcol.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getcol.obj : .\src\bgi\getcol.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getdefpa.obj : .\src\bgi\getdefpa.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getfillp.obj : .\src\bgi\getfillp.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getfills.obj : .\src\bgi\getfills.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getgramo.obj : .\src\bgi\getgramo.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getimage.obj : .\src\bgi\getimage.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getmaxmo.obj : .\src\bgi\getmaxmo.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getmoran.obj : .\src\bgi\getmoran.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getpixel.obj : .\src\bgi\getpixel.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getviewp.obj : .\src\bgi\getviewp.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\getx.obj : .\src\bgi\getx.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\gety.obj : .\src\bgi\gety.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\gmaxcol.obj : .\src\bgi\gmaxcol.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\gmmaxcol.obj : .\src\bgi\gmmaxcol.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\gmmaxx.obj : .\src\bgi\gmmaxx.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\gmmaxy.obj : .\src\bgi\gmmaxy.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\gpalsize.obj : .\src\bgi\gpalsize.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\graphres.obj : .\src\bgi\graphres.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\imagesze.obj : .\src\bgi\imagesze.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\instbgid.obj : .\src\bgi\instbgid.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\line.obj : .\src\bgi\line.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\linerel.obj : .\src\bgi\linerel.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\lineto.obj : .\src\bgi\lineto.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\lnestyle.obj : .\src\bgi\lnestyle.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\modename.obj : .\src\bgi\modename.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\moverel.obj : .\src\bgi\moverel.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\moveto.obj : .\src\bgi\moveto.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\page1.obj : .\src\bgi\page1.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\page2.obj : .\src\bgi\page2.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\page3.obj : .\src\bgi\page3.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\page4.obj : .\src\bgi\page4.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\page5.obj : .\src\bgi\page5.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\page6.obj : .\src\bgi\page6.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\palette.obj : .\src\bgi\palette.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\pieslice.obj : .\src\bgi\pieslice.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\polygon.obj : .\src\bgi\polygon.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\putimage.obj : .\src\bgi\putimage.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\putpixel.obj : .\src\bgi\putpixel.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\rectang.obj : .\src\bgi\rectang.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\regbgidr.obj : .\src\bgi\regbgidr.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\rgbpal_g.obj : .\src\bgi\rgbpal_g.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\rgbpal_s.obj : .\src\bgi\rgbpal_s.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\rstcrtmd.obj : .\src\bgi\rstcrtmd.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\sector.obj : .\src\bgi\sector.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\setbgiwh.obj : .\src\bgi\setbgiwh.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\setbkcol.obj : .\src\bgi\setbkcol.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\setbusze.obj : .\src\bgi\setbusze.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\setcolor.obj : .\src\bgi\setcolor.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\setrgbc.obj : .\src\bgi\setrgbc.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\setviewp.obj : .\src\bgi\setviewp.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\setwrmod.obj : .\src\bgi\setwrmod.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\text.obj : .\src\bgi\text.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\text1.obj : .\src\bgi\text1.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\text2.obj : .\src\bgi\text2.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\text3.obj : .\src\bgi\text3.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\text4.obj : .\src\bgi\text4.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\text5.obj : .\src\bgi\text5.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\text6.obj : .\src\bgi\text6.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\text7.obj : .\src\bgi\text7.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\text8.obj : .\src\bgi\text8.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\text9.obj : .\src\bgi\text9.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\texta.obj : .\src\bgi\texta.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\textb.obj : .\src\bgi\textb.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\textc.obj : .\src\bgi\textc.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\textd.obj : .\src\bgi\textd.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\txtlnest.obj : .\src\bgi\txtlnest.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\bgiext01.obj : .\src\bgi\bgiext01.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
-.\bgiext02.obj : .\src\bgi\bgiext02.c .AUTODEPEND
-	$(CC) $[@ $(CC_OPTS)
-
 ## wat32mak.lb1 is a text file with the names of all the object files
 ## this gets around DOS command line length limit
 
@@ -1085,7 +815,7 @@ lfb24.obj lfb32h.obj lfb32l.obj lfb8.obj lfbbltrv.obj lfbbltvr.obj &
 lfbbltvv.obj pblitr2r.obj pblitr2v.obj pblitv2r.obj pblitv2v.obj ram1.obj &
 ram16.obj ram24.obj ram32h.obj ram32l.obj ram4.obj ram8.obj rblit_14.obj &
 svga16.obj svga24.obj svga32h.obj svga32l.obj svga4.obj svga8.obj vga8x.obj &
-fdtable.obj fdv_bgi.obj fdv_grx.obj pc6x8.obj pc8x14.obj pc8x16.obj &
+fdtable.obj fdv_bgi.obj pc6x8.obj pc8x14.obj pc8x16.obj &
 pc8x8.obj ialloc.obj ibuild.obj ifbox.obj ihline.obj iinverse.obj &
 imginlne.obj iplot.obj istretch.obj bldcurs.obj dosinput.obj doskeys.obj &
 drawcurs.obj mouinfo.obj mouinlne.obj mscursor.obj fillpatt.obj makepat.obj &
@@ -1126,7 +856,7 @@ lfb24.obj lfb32h.obj lfb32l.obj lfb8.obj lfbbltrv.obj lfbbltvr.obj &
 lfbbltvv.obj pblitr2r.obj pblitr2v.obj pblitv2r.obj pblitv2v.obj ram1.obj &
 ram16.obj ram24.obj ram32h.obj ram32l.obj ram4.obj ram8.obj rblit_14.obj &
 svga16.obj svga24.obj svga32h.obj svga32l.obj svga4.obj svga8.obj vga8x.obj &
-fdtable.obj fdv_bgi.obj fdv_grx.obj pc6x8.obj pc8x14.obj pc8x16.obj &
+fdtable.obj pc6x8.obj pc8x14.obj pc8x16.obj &
 pc8x8.obj ialloc.obj ibuild.obj ifbox.obj ihline.obj iinverse.obj &
 imginlne.obj iplot.obj istretch.obj bldcurs.obj dosinput.obj doskeys.obj &
 drawcurs.obj mouinfo.obj mouinlne.obj mscursor.obj fillpatt.obj makepat.obj &

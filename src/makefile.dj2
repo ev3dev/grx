@@ -37,8 +37,6 @@ include ./stdobjs.mak
 # Keep things a little smaller when building the lib ...
 STD_Oa= $(STD_1) $(STD_2)  $(STD_3)  $(STD_4) $(STD_5) $(STD_6)
 STD_Ob= $(STD_7) $(STD_8) $(STD_9) $(STD_10) $(STD_11) $(STD_12)
-BGI_Oa= $(BGI_1) $(BGI_2) $(BGI_3)
-BGI_Ob= $(BGI_4) $(BGI_5) $(BGI_6)
 
 ADDON_O=
 ifdef DEBUG
@@ -106,10 +104,6 @@ DJ_O=   $(ADDON_O)              \
 
 ALL_O = $(STD_Oa) $(STD_Ob) $(DJ_O)
 
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-  ALL_O += $(BGI_Oa) $(BGI_Ob)
-endif
-
 UTILP = ../bin/bin2c.exe        \
 	../bin/fnt2c.exe        \
 	../bin/vesainfo.exe     \
@@ -121,7 +115,6 @@ clean:
 ifeq ($(HAVE_UNIX_TOOLS),y)
 	rm -f */*.o ../addons/*.o ../addons/*/*.o $(TAG)
 else
-	if exist bgi\*.o      del bgi\*.o
 	if exist draw\*.o     del draw\*.o
 	if exist fdrivers\*.o del fdrivers\*.o
 	if exist fonts\*.o    del fonts\*.o
@@ -269,10 +262,6 @@ else
 endif
 	$(AR) -r $(GRX20ST) $(STD_Oa)
 	$(AR) -r $(GRX20ST) $(STD_Ob)
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(AR) -r $(GRX20ST) $(BGI_Oa)
-	$(AR) -r $(GRX20ST) $(BGI_Ob)
-endif
 	$(AR) -r $(GRX20ST) $(DJ_O)
 	$(RANLIB) $(GRX20ST)
 

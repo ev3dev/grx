@@ -1,7 +1,7 @@
 #
 # GRX makefile for LINUX/X11 version (GNU-make)
 #
-.PHONY : libs test bgitest clean cleanall install uninstall \
+.PHONY : libs test clean cleanall install uninstall \
 	 install-bin uninstall-bin install-fonts uninstall-fonts \
 	 install-info uninstall-info
 
@@ -9,7 +9,7 @@ GRXVX11=y
 
 include makedefs.grx
 
-all: libs test bgitest
+all: libs test
 
 libs:
 	$(MAKE) -C src -f makefile.x11
@@ -17,16 +17,8 @@ libs:
 test: libs
 	$(MAKE) -C test   -f makefile.x11
 
-bgitest: libs
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C test/bgi   -f makefile.x11
-endif
-
 clean:
 	$(MAKE) -C test       -f makefile.x11 clean
-ifeq ($(INCLUDE_BGI_SUPPORT),y)
-	$(MAKE) -C test/bgi   -f makefile.x11 clean
-endif
 	$(MAKE) -C src        -f makefile.x11 clean
 
 cleanall: clean

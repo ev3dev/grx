@@ -27,9 +27,6 @@ INCLUDE_BMP_CODE=y
 # Specify if you want shared library support (Linux console and X11)
 INCLUDE_SHARED_SUPPORT=y
 
-# Specify if you want to include BGI support
-INCLUDE_BGI_SUPPORT=y
-
 # For cross-compiling, specify prefix for tools including the trailing dash
 # (e.g.   i386-mingw32-   for using i386-mingw32-gcc instead of just gcc)
 CROSS_PLATFORM=

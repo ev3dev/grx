@@ -23,7 +23,7 @@ override_dh_auto_configure:
 	# the --enable-x86_64 option just disables the building of ega/vga drivers
 	# and does not actually mean that the system has to be x86_64
 	./configure --prefix=/usr --target=console --enable-x86_64 \
-		--enable-jpeg --enable-png --enable-zlib --disable-bgi \
+		--enable-jpeg --enable-png --enable-zlib \
 		--with-fontpath=/usr/share/grx/fonts \
 		--enable-direct-mouse --disable-svgalib \
 		--disable-suidroot --disable-io-framedrivers

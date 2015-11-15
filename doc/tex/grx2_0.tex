@@ -57,7 +57,6 @@ driver, and either full screen or on a window with the SDL driver.
 * Writing/reading PNG graphics files::
 * Writing/reading JPEG graphics files::
 * Miscellaneous functions::
-* BGI interface::
 * References::
 @end menu
 
@@ -1374,9 +1373,8 @@ See the @strong{test/imgtest.c} example.
 
 The library supports loadable fonts. When in memory they are bit-mapped (i.e.
 not scalable!) fonts. A driver design allow GRX to load different font formats,
-the last GRX release come with drivers to load the GRX own font format and the
-BGI Borland format for all platforms supported, the X11 version can load X11
-fonts too.
+the last GRX release come with drivers to load the GRX own font format for all
+platforms supported, the X11 version can load X11 fonts too.
 
 The GRX distribution come with a font collection in the GRX own format. Some
 of these fonts were converted from VGA fonts. These fonts have all 256
@@ -2360,7 +2358,7 @@ returns 1 if there is jpeg support in the library, 0 otherwise. If there is
 not support for jpeg, dummy functions are added to the library, returning
 error (-1) ever.
 
-@node Miscellaneous functions, BGI interface, Writing/reading JPEG graphics files, A User Manual For GRX2
+@node Miscellaneous functions, References, Writing/reading JPEG graphics files, A User Manual For GRX2
 @unnumberedsec Miscellaneous functions
 
 Here we will describe some miscellaneous functions.
@@ -2457,19 +2455,7 @@ an example:
 @end example
 
 @c -----------------------------------------------------------------------------
-@node BGI interface, References, Miscellaneous functions, A User Manual For GRX2
-@unnumberedsec BGI interface
-
-From the 2.3.1 version, GRX includes the BCC2GRX library created by Hartmut
-Schirmer. The BCC2GRX was created to allow users of GRX to compile graphics
-programs written for Borland-C++ and Turbo-C graphics interface. BCC2GRX is not
-a convenient platform to develop new BGI programs. Of course you should use
-native GRX interface in such cases!
-
-Read the readme.bgi file for more info.
-
-@c -----------------------------------------------------------------------------
-@node References, , BGI interface, A User Manual For GRX2
+@node References, , Miscellaneous functions, A User Manual For GRX2
 @unnumberedsec References
 
 @multitable {MGRX site (fork from GRX)----}{----http://www.libpng.org/pub/png/libpng.html}
