@@ -159,7 +159,7 @@ void GrDestroyPattern(GrPattern *p)
     if ( p->gp_pxp_source.gf_memflags & GCM_MYMEMORY) {
       int ii;
       for ( ii = p->gp_pxp_source.gf_driver->num_planes; ii > 0; ii-- )
-         farfree(p->gp_pxp_source.gf_baseaddr[ii - 1]);
+         free(p->gp_pxp_source.gf_baseaddr[ii - 1]);
     }
     if ( p->gp_pxp_source.gf_memflags & GCM_MYCONTEXT )
       free(p);

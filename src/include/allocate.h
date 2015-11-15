@@ -27,19 +27,6 @@
 #  include <stdlib.h>
 #endif
 
-#if defined(_MSC_VER) && !defined(_WIN32)
-#define farmalloc  _fmalloc
-#define farrealloc _frealloc
-#define farcalloc  _fcalloc
-#define farfree    _ffree
-#endif
-
-#if 0 && defined(_MSC_VER)
-#define setup_alloca() do { unsigned char _stack_dummy_var_ = '\001'
-#define reset_alloca() } while (0)
-#endif
-
-
 #ifndef setup_alloca
 #define setup_alloca()
 #define reset_alloca()

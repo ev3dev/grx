@@ -24,7 +24,7 @@ unsigned  _GrTempBufferBytes = 0;
 void *_GrTempBufferAlloc_(size_t bytes) {
   GRX_ENTER();
   if (bytes > _GrTempBufferBytes || _GrTempBuffer == NULL) {
-    void *neu = farrealloc(_GrTempBuffer, bytes);
+    void *neu = realloc(_GrTempBuffer, bytes);
     if (neu) {
       _GrTempBuffer = neu;
       _GrTempBufferBytes = bytes;
@@ -35,7 +35,7 @@ void *_GrTempBufferAlloc_(size_t bytes) {
 }
 
 void _GrTempBufferFree(void) {
-  if (_GrTempBuffer) farfree(_GrTempBuffer);
+  if (_GrTempBuffer) free(_GrTempBuffer);
   _GrTempBuffer = NULL;
   _GrTempBufferBytes = 0;
 }

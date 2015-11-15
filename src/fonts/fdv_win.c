@@ -90,7 +90,7 @@ static void cleanup(void)
 {
         GRX_ENTER();
         if(fontfp != NULL) fclose(fontfp);
-        if(ctable != NULL) farfree(ctable);
+        if(ctable != NULL) free(ctable);
         fontfp = NULL;
         ctable = NULL;
         offset = 0;
@@ -143,7 +143,7 @@ static int openfile(char *fname)
         }
         /* allocate and read the ctable */
         size = (fhdr.last_char - fhdr.first_char + 2) * sizeof *ctable;
-        if((ctable = farmalloc(size)) == NULL) {
+        if((ctable = malloc(size)) == NULL) {
             DBGPRINTF(DBG_FONT, ("allocate ctable failed\n"));
             goto done;
         }

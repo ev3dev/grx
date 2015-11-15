@@ -292,7 +292,7 @@ GrFont *_GrBuildFont(
             fprop      = TRUE;
         }
         if((unsigned long)(unsigned int)bmplen != bmplen) goto error;
-        f->bitmap = farmalloc(bmplen);
+        f->bitmap = malloc(bmplen);
         if(!f->bitmap) goto error;
         memzero(f->bitmap,(unsigned int)bmplen);
         i = f->maxwidth;
@@ -340,7 +340,7 @@ GrFont *_GrBuildFont(
         if(f) {
             if(f->h.name)   free(f->h.name);
             if(f->h.family) free(f->h.family);
-            if(f->bitmap)   farfree(f->bitmap);
+            if(f->bitmap)   free(f->bitmap);
             free(f);
             f = NULL;
         }

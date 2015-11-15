@@ -47,9 +47,9 @@ GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,char *memory[4],GrCon
         sttzero(where);
         if(!memory) {
             for(ii = 0; ii < fd->num_planes; ii++) {
-                mymem[ii] = farmalloc((size_t)psize);
+                mymem[ii] = malloc((size_t)psize);
                 if(!mymem[ii]) {
-                    while(--ii >= 0) farfree(mymem[ii]);
+                    while(--ii >= 0) free(mymem[ii]);
                     if(flags) free(where);
                     return(NULL);
                 }
@@ -127,7 +127,7 @@ void GrDestroyContext(GrContext *cxt)
         if(cxt && (cxt != CURC) && (cxt != SCRN)) {
             if(cxt->gc_memflags & MYFRAME) {
                 int ii = cxt->gc_driver->num_planes;
-                while(--ii >= 0) farfree(cxt->gc_baseaddr[ii]);
+                while(--ii >= 0) free(cxt->gc_baseaddr[ii]);
             }
             if(cxt->gc_memflags & MYCONTEXT) free(cxt);
         }
