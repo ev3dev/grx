@@ -171,7 +171,6 @@ ifeq ($(INCLUDE_SHARED_SUPPORT),y)
 endif
 	install -m 0644 ../include/grx20.h $(DESTDIR)$(includedir)
 	install -m 0644 ../include/grxkeys.h $(DESTDIR)$(includedir)
-	install -m 0644 ../include/libbcc.h $(DESTDIR)$(includedir)
 
 uninstall:
 	rm -f $(DESTDIR)$(libdir)/$(notdir $(GRX20ST))
@@ -182,7 +181,6 @@ ifeq ($(INCLUDE_SHARED_SUPPORT),y)
 endif
 	rm -f $(DESTDIR)$(includedir)/grx20.h
 	rm -f $(DESTDIR)$(includedir)/grxkeys.h
-	rm -f $(DESTDIR)$(includedir)/libbcc.h
 
 setsuid: $(UTILPX)
 ifeq ($(SET_XSUIDROOT),y)

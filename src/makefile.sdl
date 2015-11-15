@@ -113,11 +113,11 @@ install: $(GRX20ST)
 	mkdir -p $(DESTDIR)$(includedir)
 	cp $(GRX20ST) $(DESTDIR)$(libdir)
 	cp ../include/grx20.h ../include/grxkeys.h \
-	   ../include/libbcc.h $(DESTDIR)$(includedir)
+	   $(DESTDIR)$(includedir)
 
 uninstall:
 	rm -f $(DESTDIR)$(libdir)/$(notdir $(GRX20ST)) $(DESTDIR)$(includedir)/grx20.h \
-	      $(DESTDIR)$(includedir)/grxkeys.h $(DESTDIR)$(includedir)/libbcc.h
+	      $(DESTDIR)$(includedir)/grxkeys.h
 
 install-bin: $(UTILPC) $(UTILPW)
 	mkdir -p $(DESTDIR)$(bindir)

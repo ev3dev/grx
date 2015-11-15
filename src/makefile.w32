@@ -127,7 +127,7 @@ ifeq ($(HAVE_UNIX_TOOLS),y)
 	mkdir -p $(DESTDIR)$(includedir)
 	cp $(GRX20ST) $(DESTDIR)$(libdir)
 	cp ../include/grx20.h ../include/grxkeys.h \
-	   ../include/libbcc.h $(DESTDIR)$(includedir)
+	   $(DESTDIR)$(includedir)
 else
 	if not exist $(DESTDIRdos)\nul mkdir $(DESTDIRdos)
 	if not exist $(DESTDIRdos)$(libdirdos)\nul mkdir $(DESTDIRdos)$(libdirdos)
@@ -135,18 +135,16 @@ else
 	copy $(GRX20STdos) $(DESTDIRdos)$(libdirdos)
 	copy ..\include\grx20.h $(DESTDIRdos)$(includedirdos)
 	copy ..\include\grxkeys.h $(DESTDIRdos)$(includedirdos)
-	copy ..\include\libbcc.h $(DESTDIRdos)$(includedirdos)
 endif
 
 uninstall:
 ifeq ($(HAVE_UNIX_TOOLS),y)
 	rm -f $(DESTDIR)$(libdir)/$(GRX20ln) $(DESTDIR)$(includedir)/grx20.h \
-	      $(DESTDIR)$(includedir)/grxkeys.h $(DESTDIR)$(includedir)/libbcc.h
+	      $(DESTDIR)$(includedir)/grxkeys.h
 else
 	if exist $(DESTDIRdos)$(libdirdos)\$(GRX20ln)    del $(DESTDIRdos)$(libdirdos)\$(GRX20ln)
 	if exist $(DESTDIRdos)$(includedirdos)\grx20.h   del $(DESTDIRdos)$(includedirdos)\grx20.h
 	if exist $(DESTDIRdos)$(includedirdos)\grxkeys.h del $(DESTDIRdos)$(includedirdos)\grxkeys.h
-	if exist $(DESTDIRdos)$(includedirdos)\libbcc.h del $(DESTDIRdos)$(includedirdos)\libbcc.h
 endif
 
 install-bin: $(UTILP)
