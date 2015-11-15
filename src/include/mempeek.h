@@ -33,8 +33,6 @@
 #include "gcc/mempeek.h"
 #elif defined(__TURBOC__)
 #include "bcc/mempeek.h"
-#elif defined(__WATCOMC__)
-#include "watcom/mempeek.h"
 #endif
 
 #ifndef __INLINE_STD_PEEK__

@@ -66,13 +66,11 @@
 ** causes error or warnings on several compilers:
 **
 ** LCC v4.0
-** Watcom C++ v11.0
 ** SUN cc v4.0
 ** GCC v > 3
 */
 #if !defined(NO_LEFTSIDE_LVALUE_CAST) &&                  \
     (   defined(__LCC__)                                  \
-     || defined(__WATCOMC__)                              \
      || (defined(__GNUC__) && (__GNUC__>=3))              \
      || defined(__SUNPRO_C)                               )
 #define NO_LEFTSIDE_LVALUE_CAST
@@ -81,11 +79,9 @@
 ** also cuses problems on several systems:
 **
 ** LCC v4.0
-** Watcom C++ v11.0
 */
 #if !defined(NO_LEFTSIDE_PTR_CAST) &&                     \
-    (   defined(__LCC__)                                  \
-     || defined(__WATCOMC__)                              )
+    (   defined(__LCC__)                                  )
 #define NO_LEFTSIDE_PTR_CAST
 #endif
 
@@ -140,7 +136,6 @@ typedef unsigned GR_int64 GR_int64u;
 */
 #if !defined(_BIG_ENDIAN) && !defined(_LITTLE_ENDIAN)
 #  if   defined(__TURBOC__) \
-     || defined(__WATCOMC__) \
      || defined(_MSC_VER) \
      || defined(__alpha__) \
      || (defined(__LCC__) && defined(__i386__)) \

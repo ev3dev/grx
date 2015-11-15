@@ -31,11 +31,7 @@ int _GrViDrvVESAsetVirtualSize(GrVideoMode *md,int w,int h,GrVideoMode *result)
         IREG_AX(r) = VESA_FUNC + VESA_SCAN_LNLEN;
         IREG_BX(r) = 0;
         IREG_CX(r) = w;
-#ifdef __WATCOMC__
-      int10x(&r);
-#else
         int10(&r);
-#endif
         if(IREG_AX(r) == VESA_SUCCESS) {
             result->lineoffset = IREG_BX(r);
             result->width      = IREG_CX(r);
@@ -58,19 +54,11 @@ int _GrViDrvVESAvirtualScroll(GrVideoMode *md,int x,int y,int result[2])
         IREG_BX(r) = 0;
         IREG_CX(r) = x;
         IREG_DX(r) = y;
-#ifdef __WATCOMC__
-      int10x(&r);
-#else
         int10(&r);
-#endif
         if(IREG_AX(r) == VESA_SUCCESS) {
             IREG_AX(r) = VESA_FUNC + VESA_DISP_START;
             IREG_BX(r) = 1;
-#ifdef __WATCOMC__
-        int10x(&r);
-#else
             int10(&r);
-#endif
             result[0] = IREG_CX(r);
             result[1] = IREG_DX(r);
             return(TRUE);

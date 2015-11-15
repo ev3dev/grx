@@ -43,11 +43,7 @@ VESApmInfoBlock * _GrViDrvVESAgetPMinfo(void)
 
 #else
 
-#if defined(__WATCOMC__) && defined(__386__)
-#define FAR _far
-#else
 #define FAR far
-#endif /* __WATCOMC__ && __386__*/
 
 int _GrViDrvVESAgetVGAinfo(VESAvgaInfoBlock *ib)
 {

@@ -22,8 +22,6 @@
 #elif defined(__TURBOC__)
 #  include <alloc.h>
 #  include "bcc/allocate.h"
-#elif defined(__WATCOMC__)
-#  include <malloc.h>
 #elif defined(_MSC_VER) && defined(_WIN32)
 #  include <malloc.h>
 #elif defined(__MINGW32__) && !defined(alloca)

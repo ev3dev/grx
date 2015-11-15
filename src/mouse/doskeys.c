@@ -28,10 +28,6 @@
 #include <pc.h>
 #endif
 
-#if defined(__WATCOMC__) || defined(__TURBOC__)
-#include <conio.h>
-#endif
-
 #define USE_AT_BIOS
 
 #ifdef  USE_AT_BIOS
@@ -40,7 +36,7 @@
 #define KBD_BIOS_BASE   0
 #endif
 
-#if defined(__TURBOC__) || defined(__WATCOMC__) /* GS - Watcom C++ 11.0 */
+#if defined(__TURBOC__) /* GS */
 
 int getkey(void)
 {

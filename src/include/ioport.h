@@ -212,52 +212,6 @@
 #endif  /* SLOW_DOWN_IO */
 #endif  /* __TURBOC__ */
 
-#ifdef  __WATCOMC__ /* GS - Watcom C++ 11.0 */
-#include <conio.h>
-/* 8bit port access */
-#define inpb(a) inp(a)
-#define outpb(a,b) outp(a,b)
-/* 16bit port access */
-/* inpw(a)    already defined */
-/* outpw(a,b) already defined */
-/* 32bit port access */
-#define inpl(a) inpd(a)
-#define outpl(a,b) outpd(a,b)
-#define __INLINE_INPORT__(P,SIZE,T) (                   \
-    (unsigned T) inp##SIZE (P)                          \
-)
-#define __INLINE_OUTPORT__(P,V,SIZE,T) (                \
-    (unsigned T) outp##SIZE (P,V)                       \
-)
-#ifndef SLOW_DOWN_IO
-#define __INLINE_INPORTS__(P,B,C,SIZE,T) do {           \
-    do {                                                \
-        *B = __INLINE_INPORT__(P,SIZE,T);               \
-        (T)B ++;                                        \
-    } while(C--);                                       \
-} while(0)
-#define __INLINE_OUTPORTS__(P,B,C,SIZE,T) do {          \
-        do{                                             \
-        __INLINE_OUTPORTS__(P,*B,SIZE,T);               \
-        (T)B ++;                                        \
-        } while (C--);                                  \
-} while(0)
-#else   /* SLOW_DOWN_IO */
-#define __INLINE_INPORTS__(P,B,C,SIZE,T) do {           \
-    do {                                                \
-        *B = __INLINE_INPORT__(P,SIZE,T);               \
-        (T)B ++;                                        \
-    } while(C--);                                       \
-} while(0)
-#define __INLINE_OUTPORTS__(P,B,C,SIZE,T) do {          \
-        do{                                             \
-        __INLINE_OUTPORTS__(P,*B,SIZE,T);               \
-        (T)B ++;                                        \
-        } while (C--);                                  \
-} while(0)
-#endif  /* SLOW_DOWN_IO */
-#endif  /* __WATCOMC__ */
-
 #ifdef _MSC_VER
 #define inport_b(port)          _inp((unsigned)(port))
 #define inport_w(port)          _inpw((unsigned)(port))
@@ -322,7 +276,7 @@
 #define int_enable()            __emit__((char)(0xfb))
 #endif
 
-#if defined(_MSC_VER) || defined(__WATCOMC__) /* GS - Watcom C++ 11.0 */
+#if defined(_MSC_VER) /* GS */
 #define int_disable()           _disable()
 #define int_enable()            _enable()
 #endif

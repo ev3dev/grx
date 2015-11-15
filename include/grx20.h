@@ -43,8 +43,6 @@
 #define GRX_VERSION_GCC_386_DJGPP       2       /* DJGPP v2 */
 #define GRX_VERSION_GCC_386_LINUX       3       /* the real stuff */
 #define GRX_VERSION_GENERIC_X11         4       /* generic X11 version */
-#define GRX_VERSION_WATCOM_DOS4GW       5       /* GS - Watcom C++ 11.0 32 Bit */
-/*#define GRX_VERSION_WATCOM_REAL_MODE  6*/     /* GS - Watcom C++ 11.0 16 Bit - TODO! */
 #define GRX_VERSION_GCC_386_WIN32       7       /* WIN32 using Mingw32 */
 #define GRX_VERSION_MSC_386_WIN32       8       /* WIN32 using MS-VC */
 #define GRX_VERSION_GCC_386_CYG32       9       /* WIN32 using CYGWIN */
@@ -87,16 +85,6 @@
 #endif
 #endif /* __GNUC__ */
 
-#ifdef  __WATCOMC__     /* GS - Watcom C++ 11.0 */
-#ifdef  __DOS__
-#ifdef  __386__
-#define GRX_VERSION     GRX_VERSION_WATCOM_DOS4GW
-#else
-/* #define GRX_VERSION GRX_VERSION_WATCOM_REAL_MODE  - I haven't tested GRX in 16 bit*/
-#endif /* __386__ */
-#endif /* __DOS__ */
-#endif /* __WATCOMC__ */
-
 #ifdef _MSC_VER
 #ifdef _WIN32
 #ifdef _M_IX86
@@ -118,13 +106,7 @@
 #error  GRX is not supported on your COMPILER/CPU/OPERATING SYSTEM!
 #endif
 
-#if (GRX_VERSION==GRX_VERSION_WATCOM_DOS4GW)
-#define near
-#define far
-#define huge
-#endif
-
-#if !defined(__TURBOC__) && (GRX_VERSION!=GRX_VERSION_WATCOM_REAL_MODE)
+#if !defined(__TURBOC__)
 #ifndef near            /* get rid of these stupid keywords */
 #define near
 #endif
@@ -1556,11 +1538,6 @@ int  getxkey(void);
 #endif
 int  getkbstat(void);
 #endif
-/* Why this ???
-#ifdef __WATCOMC__
-int  getxkey(void);
-#endif
-*/
 
 #ifndef GRX_SKIP_INLINES
 #define GrMouseEventMode(x)         /* nothing! */

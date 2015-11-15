@@ -105,7 +105,7 @@
 } while(0);
 
 
-#if defined(__TURBOC__) || defined(__WATCOMC__) /* GS - Watcom C++ 11.0 */
+#if defined(__TURBOC__) /* GS */
 #define real_time(tv) do {                                                  \
         (tv) = *(long far *)(MK_FP(0x40,0x6c));                             \
 } while(0)

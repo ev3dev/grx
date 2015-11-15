@@ -14,7 +14,6 @@ Requirements:
      DOS     / DJGPP v2.01     (GCC 2.6.3, 2.7.2 and 2.8.1)
      DOS     / Borland C++     (v2.0, v3.1 and v4.52 checked)
      DOS     / Turbo C         (v1.0)
-     DOS     / Watcom C++      (v11.0 checked, 32bit only)
      Linux   / svgalib         (GCC 2.7.2, 2.8.1)
      Linux   / X11R6           (GCC 2.7.2, 2.8.1)
      Solaris / X11R5           (GCC 2.7.2, SUN cc v4.1)

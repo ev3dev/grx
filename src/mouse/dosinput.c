@@ -18,7 +18,7 @@
 
 #include <stdlib.h>
 
-#if defined(__TURBOC__) || defined(__WATCOMC__) /* GS - Watcom C++ 11.0 */
+#if defined(__TURBOC__) /* GS */
 #include <conio.h>
 #endif
 

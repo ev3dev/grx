@@ -25,12 +25,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <assert.h>
-#ifdef __WATCOMC__
-/*#include <wcdefs.h>*/
-#include <conio.h>
-#else
 #include <values.h>
-#endif
 #include <math.h>
 #include "rand.h"
 

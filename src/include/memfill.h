@@ -36,8 +36,6 @@
 #  include "gcc/memfill.h"
 #elif defined(__TURBOC__)
 #  include "bcc/memfill.h"
-#elif defined(__WATCOMC__)
-#  include "watcom/memfill.h"
 #endif
 
 #if !defined(GR_int64) && !defined(NO_64BIT_FILL)
@@ -889,56 +887,5 @@
 
 
 #define sttzero(p)              memzero((p),sizeof(*(p)))
-
-#if (defined(__WATCOMC__) && !defined(__386__))
-/*
- * These are not really here!
- */
-#undef  rowfill_l
-#undef  rowfill_l_xor
-#undef  rowfill_l_or
-#undef  rowfill_l_and
-#undef  rowfill_l_f
-#undef  rowfill_l_f_xor
-#undef  rowfill_l_f_or
-#undef  rowfill_l_f_and
-
-#undef  repfill_l
-#undef  repfill_l_xor
-#undef  repfill_l_or
-#undef  repfill_l_and
-#undef  repfill_l_f
-#undef  repfill_l_f_xor
-#undef  repfill_l_f_or
-#undef  repfill_l_f_and
-
-#undef  optfill_l
-#undef  optfill_l_xor
-#undef  optfill_l_or
-#undef  optfill_l_and
-#undef  optfill_l_f
-#undef  optfill_l_f_xor
-#undef  optfill_l_f_or
-#undef  optfill_l_f_and
-
-#undef  memfill_l
-#undef  memfill_l_xor
-#undef  memfill_l_or
-#undef  memfill_l_and
-#undef  memfill_l_f
-#undef  memfill_l_f_xor
-#undef  memfill_l_f_or
-#undef  memfill_l_f_and
-
-#undef  colfill_l
-#undef  colfill_l_xor
-#undef  colfill_l_or
-#undef  colfill_l_and
-#undef  colfill_l_f
-#undef  colfill_l_f_xor
-#undef  colfill_l_f_or
-#undef  colfill_l_f_and
-
-#endif
 
 #endif  /* whole file */

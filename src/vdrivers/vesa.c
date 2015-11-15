@@ -30,7 +30,7 @@
 #include "memfill.h"
 #include "vesa.h"
 
-#if defined(__GNUC__) || (defined(__WATCOMC__) && defined(__386__))
+#if defined(__GNUC__)
 #define  NUM_MODES    100               /* max # of supported modes */
 #define  NUM_EXTS     25                /* max # of mode extensions */
 #else
@@ -71,8 +71,7 @@ static void (*_SETBANK)(int bk);
 /* get the real mode stuff ... */
 #include "vesa_rm.c"
 
-#if   (defined(__WATCOMC__) && defined (__386__)) \
-   || (defined(DJGPP) && defined(DJGPP_MINOR))
+#if (defined(DJGPP) && defined(DJGPP_MINOR))
 #define HAVE_VBE2
 /* get the VBE2 protected mode stuff ... */
 #include "vesa_pm.c"
@@ -113,11 +112,7 @@ static int setup48(GrVideoMode *mp,int noclear) {
       IREG_AX(r) = VESA_FUNC + VESA_PAL_CNTRL;
       IREG_BX(r) = 0x0800; /* BL = 0 -> set DAC width, BH=8 -> req. width */
       DBGPRINTF(DBG_DRIVER,("Variable DAC\n"));
-#ifdef __WATCOMC__
-      int10x(&r);
-#else
       int10(&r);
-#endif
       if(IREG_AX(r) == VESA_SUCCESS) {
         DBGPRINTF(DBG_DRIVER,("Variable DAC initialised\n"));
         _GrViDrvSetDACshift(8-IREG_BH(r));

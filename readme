@@ -28,9 +28,6 @@ Other DOS platforms:
 
   Makefiles for Borland C++ have been updated in GRX 2.4.6
 
-  Until 2.3 the Watcom C++ compiler was supported, probably it still work,
-  but the makefiles must be updated:
-
 Other X11 platforms:
 --------------------
 

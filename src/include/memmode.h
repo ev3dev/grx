@@ -23,8 +23,6 @@
 #include "gcc/memmode.h"
 #elif defined(__TURBOC__)
 #include "bcc/memmode.h"
-#elif defined(__WATCOMC__)
-#include "watcom/memmode.h"
 #endif
 
 #ifndef  LINP_PTR

@@ -378,8 +378,6 @@ static void the_info(int x, int y)
         strcpy(sys, "X64");
     if (nsys == GRX_VERSION_GENERIC_X11)
         strcpy(sys, "X11");
-    if (nsys == GRX_VERSION_WATCOM_DOS4GW)
-        strcpy(sys, "WAT");
     if (nsys == GRX_VERSION_GCC_386_WIN32)
         strcpy(sys, "W32");
 
