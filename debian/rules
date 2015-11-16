@@ -29,8 +29,6 @@ override_dh_auto_install:
 	dh_auto_install
 	mkdir -p $(CURDIR)/debian/tmp/usr/lib/pkgconfig
 	cp $(CURDIR)/debian/grx20.pc $(CURDIR)/debian/tmp/usr/lib/pkgconfig
-	mkdir -p $(CURDIR)/debian/tmp/usr/share/vala/vapi
-	cp $(CURDIR)/debian/grx20.vapi $(CURDIR)/debian/tmp/usr/share/vala/vapi
 
 override_dh_strip:
 	dh_strip --keep-debug
