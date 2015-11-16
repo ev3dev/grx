@@ -207,71 +207,6 @@ namespace Grx {
         [CCode (cname = "GR_frameText")]
         TEXT,
 
-        /**
-         * Hercules mono
-         */
-        HERC1,
-
-        /**
-         * EGA VGA mono
-         */
-        EGAVGA1,
-
-        /**
-         * EGA 16 color
-         */
-        EGA4,
-
-        /**
-         * (Super) VGA 16 color
-         */
-        SVGA4,
-
-        /**
-         * (Super) VGA 256 color
-         */
-        SVGA8,
-
-        /**
-         * VGA 256 color mode X
-         */
-        SVGA8X,
-
-        /**
-         * Super VGA 32768/65536 color
-         */
-        SVGA16,
-
-        /**
-         * Super VGA 16M color
-         */
-        SVGA24,
-
-        /**
-         * Super VGA 16M color padded #1
-         */
-        SVGA32L,
-
-        /**
-         * Super VGA 16M color padded #2
-         */
-        SVGA32H,
-        /* ==== modes provided by the X11 driver ===== */
-        XWIN1,
-        XWIN4,
-        XWIN8,
-        XWIN16,
-        XWIN24,
-        XWIN32L,
-        XWIN23H,
-        /* ==== modes provided by the WIN32 driver ===== */
-        WIN32_1,
-        WIN32_4,
-        WIN32_8,
-        WIN32_16,
-        WIN32_24,
-        WIN32_32L,
-        WIN32_32H,
         /* ==== modes provided by the SDL driver ===== */
         SDL8,
         SDL16,
@@ -387,31 +322,6 @@ namespace Grx {
          * not known (before driver set)
          */
         UNKNOWN,
-
-        /**
-         * VGA adapter
-         */
-        VGA,
-
-        /**
-         * EGA adapter
-         */
-        EGA,
-
-        /**
-         * Hercules mono adapter
-         */
-        HERC,
-
-        /**
-         * 8514A or compatible
-         */
-        8514A,
-
-        /**
-         * S3 graphics accelerator
-         */
-        S3,
 
         /**
          * X11 driver
@@ -695,10 +605,6 @@ namespace Grx {
     public void set_mode_restore (int restore_flag);
     [CCode (cname = "GrSetErrorHandling")]
     public void set_error_handling (int exit_if_error);
-    [CCode (cname = "GrSetEGAVGAmonoDrawnPlane")]
-    public void set_ega_vga_mono_drawn_plane (int plane);
-    [CCode (cname = "GrSetEGAVGAmonoShownPlane")]
-    public void set_ega_vga_mono_shown_plane (int plane);
 
     [CCode (cname = "GrGetLibraryVersion")]
     public uint get_library_version ();
