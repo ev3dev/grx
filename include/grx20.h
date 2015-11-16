@@ -38,8 +38,7 @@
 #define GRX_VERSION_API 0x0249
 
 /* these are the supported configurations: */
-#define GRX_VERSION_GCC_386_GO32        2       /* deprecated, don't use it */
-#define GRX_VERSION_GCC_386_LINUX       3       /* the real stuff */
+#define GRX_VERSION_GCC_386_LINUX       3       /* linux console framebuffer */
 #define GRX_VERSION_GENERIC_X11         4       /* generic X11 version */
 #define GRX_VERSION_GCC_386_WIN32       7       /* WIN32 using Mingw32 */
 #define GRX_VERSION_MSC_386_WIN32       8       /* WIN32 using MS-VC */
@@ -47,9 +46,6 @@
 #define GRX_VERSION_GCC_386_X11        10       /* X11 version */
 #define GRX_VERSION_GCC_X86_64_LINUX   11       /* console framebuffer 64 */
 #define GRX_VERSION_GCC_X86_64_X11     12       /* X11 version 64 */
-
-#define GRXMain main  /* From the 2.4.6 version We don't need this */
-                      /* anymore, but it is here for previous apps */
 
 #ifdef  __GNUC__
 #if defined(__XWIN__)
