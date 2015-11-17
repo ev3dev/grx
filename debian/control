@@ -1,7 +1,7 @@
 Source: grx
 Priority: optional
 Maintainer: David Lechner <david@lechnology.com>
-Build-Depends: debhelper (>= 9.0.0), autotools-dev, libjpeg-dev, libpng12-dev
+Build-Depends: debhelper (>= 9.0.0), libjpeg-dev, libpng12-dev
 Standards-Version: 3.9.5
 Section: libs
 Homepage: http://grx.gnu.de/

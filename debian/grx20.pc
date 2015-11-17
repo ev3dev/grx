@@ -1,4 +1,0 @@
-Name: GRX
-Description: 2D graphics library
-Version: 2.4.9
-Libs: -lgrx20
