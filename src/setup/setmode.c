@@ -27,8 +27,8 @@
 #include "memcopy.h"
 #include "grdriver.h"
 
-GrVideoMode * _gr_selectmode(GrVideoDriver *drv,int w,int h,int bpp,
-            int txt,unsigned int *ep)
+GrVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
+                              int txt,unsigned int *ep)
 {
 #       define ERROR(des,act)   ((des > act) ? ((des - act) + 20000) : (act - des))
         int  n;
@@ -37,7 +37,7 @@ GrVideoMode * _gr_selectmode(GrVideoDriver *drv,int w,int h,int bpp,
         GRX_ENTER();
         best = NULL;
         mp = drv->modes;
-        for(n = drv->nmodes; --n >= 0; mp++) {
+        for(n = drv->n_modes; --n >= 0; mp++) {
             if(!mp->present) continue;
             if(!mp->extinfo) continue;
             if((mp->extinfo->mode != GRX_FRAME_MODE_TEXT) ? txt : !txt) continue;
@@ -53,7 +53,7 @@ GrVideoMode * _gr_selectmode(GrVideoDriver *drv,int w,int h,int bpp,
             }
         }
         if(drv->inherit) {
-            mp = (drv->inherit->selectmode) (drv->inherit,w,h,bpp,txt,ep);
+            mp = (drv->inherit->select_mode) (drv->inherit,w,h,bpp,txt,ep);
             if(mp) best = mp;
         }
         GRX_RETURN(best);
@@ -328,7 +328,7 @@ int GrSetMode(GrxGraphicsMode which,...)
             GrContext     cxt;
             GrFrameDriver fdr;
             GrVideoMode  *mdp,vmd;
-            mdp = (DRVINFO->vdriver->selectmode)(DRVINFO->vdriver,w,h,pl,t,NULL);
+            mdp = (DRVINFO->vdriver->select_mode)(DRVINFO->vdriver,w,h,pl,t,NULL);
             if(!mdp) {
                 res = errhdlr("could not find suitable video mode");
                 goto done;

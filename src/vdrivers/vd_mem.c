@@ -166,18 +166,15 @@ static int mem_setmode (GrVideoMode *mp,int noclear)
 
 
 
-static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
+static GrVideoMode * mem_selectmode ( GrxVideoDriver * drv, int w, int h,
                                       int bpp, int txt, unsigned int * ep )
 {
     int  index;
     unsigned long  size;
     int  LineOffset;
 
-    if (txt) return _gr_selectmode (drv,w,h,bpp,txt,ep);
-/* why ???
-    if (w<320) w=320;
-    if (h<240) h=240;
-*/
+    if (txt) return _gr_select_mode (drv,w,h,bpp,txt,ep);
+
     if (w < 1 || h < 1) return NULL;
 
     switch (bpp)
@@ -219,7 +216,7 @@ static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
 
     if ( AllocMemBuf(size) ) {
         modes[index].extinfo->frame = MemBuf;
-        return _gr_selectmode (drv,w,h,bpp,txt,ep);
+        return _gr_select_mode (drv,w,h,bpp,txt,ep);
     }
     return FALSE;
 }
@@ -240,7 +237,7 @@ static void mem_reset (void)
 }
 
 
-GrVideoDriver _GrDriverMEM = {
+GrxVideoDriver _GrDriverMEM = {
     "memory",                           /* name */
     GRX_VIDEO_ADAPTER_MEMORY,           /* adapter type */
     NULL,                               /* inherit modes from this driver */

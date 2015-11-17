@@ -84,7 +84,7 @@ _GrFrameDriverRAM3x8,                   /* 16M color planar (image mode) */
 *_GrFrameDriverTable[];
 
 
-extern GrVideoDriver
+extern GrxVideoDriver
 /*
  * Standard video drivers in GRX
  */
@@ -147,8 +147,8 @@ void _GrFrDrvGenericStretchBlt(GrFrame *dst,int dx,int dy,int dw,int dh,
 extern GrVideoModeExt _GrViDrvEGAVGAtextModeExt;
 extern GrVideoModeExt _GrViDrvEGAVGAcustomTextModeExt;
 
-GrVideoMode * _gr_selectmode(GrVideoDriver *drv,int w,int h,int bpp,
-                             int txt,unsigned int *ep);
+GrVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
+                              int txt,unsigned int *ep);
 
 #endif /* USE_GRX_INTERNAL_DEFINITIONS */
 

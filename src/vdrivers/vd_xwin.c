@@ -278,18 +278,18 @@ static int error_handler (Display *dpy, XErrorEvent *ev)
   return 0;
 }
 
-static GrVideoMode * _xw_selectmode ( GrVideoDriver * drv, int w, int h, int bpp,
+static GrVideoMode * _xw_selectmode ( GrxVideoDriver * drv, int w, int h, int bpp,
                                       int txt, unsigned int * ep )
 {
   GrVideoMode *mp, *res;
   GRX_ENTER();
   if (txt) {
-    res = _gr_selectmode(drv,w,h,bpp,txt,ep);
+    res = _gr_select_mode(drv,w,h,bpp,txt,ep);
     goto done;
   }
   for (mp = &modes[1]; mp < &modes[itemsof(modes)-1]; mp++) {
     if ( mp->present && mp->width == w && mp->height == h) {
-      res = _gr_selectmode (drv,w,h,bpp,txt,ep);
+      res = _gr_select_mode (drv,w,h,bpp,txt,ep);
       goto done;
     }
   }
@@ -298,7 +298,7 @@ static GrVideoMode * _xw_selectmode ( GrVideoDriver * drv, int w, int h, int bpp
   mp->width = (w > _XGrMaxWidth) ? _XGrMaxWidth : w;
   mp->height = (h > _XGrMaxHeight) ? _XGrMaxHeight : h;
   mp->lineoffset = (mp->width * mp->bpp) / 8;
-  res = _gr_selectmode (drv,w,h,bpp,txt,ep);
+  res = _gr_select_mode (drv,w,h,bpp,txt,ep);
 done:
   GRX_RETURN(res);
 }
@@ -532,7 +532,7 @@ static void reset(void)
   GRX_LEAVE();
 }
 
-GrVideoDriver _GrVideoDriverXWIN = {
+GrxVideoDriver _GrVideoDriverXWIN = {
   "xwin",                               /* name */
   GRX_VIDEO_ADAPTER_XWIN,               /* adapter type */
   NULL,                                 /* inherit modes from this driver */

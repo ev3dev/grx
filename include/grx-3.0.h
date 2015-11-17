@@ -29,7 +29,7 @@ extern "C" {
 
 /* a couple of forward declarations ... */
 typedef struct _GR_frameDriver  GrFrameDriver;
-typedef struct _GR_videoDriver  GrVideoDriver;
+typedef struct _GrxVideoDriver  GrxVideoDriver;
 typedef struct _GR_videoMode    GrVideoMode;
 typedef struct _GR_videoModeExt GrVideoModeExt;
 typedef struct _GR_frame        GrFrame;
@@ -192,23 +192,36 @@ typedef enum {
     GRX_VIDEO_ADAPTER_MEMORY           /* memory only driver */
 } GrxVideoAdapter;
 
-/*
+/**
+ * GrxVideoDriver:
+ * @name: The name of the driver
+ * @adapter: The adapter type
+ * @inherit: Video modes from this driver will be inherited
+ * @modes: Table of supported modes
+ * @n_modes: Number of modes in @modes
+ * @detect: Function to detect the driver
+ * @init: Function to initialize the driver
+ * @reset: Function to reset the driver
+ * @select_mode: Function to select the video mode of the driver
+ * @flags: Driver flags
+ *
  * The video driver descriptor structure
  */
-struct _GR_videoDriver {
-        char   *name;                       /* driver name */
+typedef struct _GrxVideoDriver {
+        gchar *name;                        /* driver name */
         GrxVideoAdapter adapter;            /* adapter type */
-        struct _GR_videoDriver  *inherit;   /* inherit video modes from this */
+        struct _GrxVideoDriver  *inherit;   /* inherit video modes from this */
         struct _GR_videoMode    *modes;     /* table of supported modes */
-        int     nmodes;                     /* number of modes */
-        int   (*detect)(void);
-        int   (*init)(char *options);
+        gint    n_modes;                    /* number of modes */
+        gint  (*detect)(void);
+        gint  (*init)(gchar *options);
         void  (*reset)(void);
-        GrVideoMode * (*selectmode)(GrVideoDriver *drv,int w,int h,int bpp,
-                                        int txt,unsigned int *ep);
-        unsigned  drvflags;
-};
-/* bits in the drvflags field: */
+        GrVideoMode *(*select_mode)(GrxVideoDriver *drv, gint w, gint h, gint bpp,
+                                    gboolean txt, guint *ep);
+        unsigned  flags;
+} GrxVideoDriver;
+
+/* bits in the flags field: */
 #define GR_DRIVERF_USER_RESOLUTION 1
   /* set if driver supports user setable arbitrary resolution */
 
@@ -285,7 +298,7 @@ struct _GR_frameDriver {
  * driver and mode info structure
  */
 extern const struct _GR_driverInfo {
-        struct _GR_videoDriver  *vdriver;   /* the current video driver */
+        GrxVideoDriver     *vdriver;        /* the current video driver */
         struct _GR_videoMode    *curmode;   /* current video mode pointer */
         struct _GR_videoMode     actmode;   /* copy of above, resized if virtual */
         struct _GR_frameDriver   fdriver;   /* frame driver for the current context */
@@ -329,7 +342,7 @@ GrxFrameMode    GrCurrentFrameMode(void);
 GrxFrameMode    GrScreenFrameMode(void);
 GrxFrameMode    GrCoreFrameMode(void);
 
-const GrVideoDriver *GrCurrentVideoDriver(void);
+const GrxVideoDriver *GrCurrentVideoDriver(void);
 const GrVideoMode   *GrCurrentVideoMode(void);
 const GrVideoMode   *GrVirtualVideoMode(void);
 const GrFrameDriver *GrCurrentFrameDriver(void);
@@ -369,13 +382,13 @@ long GrContextSize(int w,int h);
 #define GrScreenFrameMode()     (GrDriverInfo->sdriver.mode)
 #define GrCoreFrameMode()       (GrDriverInfo->sdriver.rmode)
 
-#define GrCurrentVideoDriver()  ((const GrVideoDriver *)( GrDriverInfo->vdriver))
+#define GrCurrentVideoDriver()  ((const GrxVideoDriver *)( GrDriverInfo->vdriver))
 #define GrCurrentVideoMode()    ((const GrVideoMode   *)( GrDriverInfo->curmode))
 #define GrVirtualVideoMode()    ((const GrVideoMode   *)(&GrDriverInfo->actmode))
 #define GrCurrentFrameDriver()  ((const GrFrameDriver *)(&GrDriverInfo->fdriver))
 #define GrScreenFrameDriver()   ((const GrFrameDriver *)(&GrDriverInfo->sdriver))
 
-#define GrIsFixedMode()      (!(  GrCurrentVideoDriver()->drvflags \
+#define GrIsFixedMode()      (!(  GrCurrentVideoDriver()->flags \
                                    & GR_DRIVERF_USER_RESOLUTION))
 
 #define GrScreenX()             (GrCurrentVideoMode()->width)

@@ -435,8 +435,8 @@ done:        if(!res) reset();
         GRX_RETURN(res);
 }
 
-static GrVideoMode *selectmode(GrVideoDriver *drv, int w, int h,
-                                    int bpp, int txt, unsigned int *ep)
+static GrVideoMode *select_mode(GrxVideoDriver *drv, int w, int h,
+                                int bpp, int txt, unsigned int *ep)
 {
         int i;
 
@@ -450,10 +450,10 @@ static GrVideoMode *selectmode(GrVideoDriver *drv, int w, int h,
             }
             else modes[i].present = FALSE;
         }
-done:        return(_gr_selectmode(drv, w, h, bpp, txt, ep));
+done:        return(_gr_select_mode(drv, w, h, bpp, txt, ep));
 }
 
-GrVideoDriver _GrVideoDriverSDL = {
+GrxVideoDriver _GrVideoDriverSDL = {
     "sdl",                              /* name */
     GRX_VIDEO_ADAPTER_SDL,              /* adapter type */
     NULL,                               /* inherit modes from this driver */
@@ -462,7 +462,7 @@ GrVideoDriver _GrVideoDriverSDL = {
     detect,                             /* detection routine */
     init,                               /* initialization routine */
     reset,                              /* reset routine */
-    selectmode,                         /* special mode select routine */
+    select_mode,                        /* special mode select routine */
     0                                   /* no additional capabilities */
 };
 

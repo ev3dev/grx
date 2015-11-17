@@ -426,19 +426,19 @@ static void reset(void)
     }
 }
 
-static GrVideoMode * _w32_selectmode(GrVideoDriver * drv, int w, int h,
+static GrVideoMode * _w32_selectmode(GrxVideoDriver * drv, int w, int h,
                                      int bpp, int txt, unsigned int * ep)
 {
     GrVideoMode *mp, *res;
     long resto;
 
     if (txt) {
-        res = _gr_selectmode(drv, w, h, bpp, txt, ep);
+        res = _gr_select_mode(drv, w, h, bpp, txt, ep);
         goto done;
     }
     for (mp = &modes[1]; mp < &modes[itemsof(modes)-1]; mp++) {
         if (mp->present && mp->width == w && mp->height == h) {
-            res = _gr_selectmode(drv, w, h, bpp, txt, ep);
+            res = _gr_select_mode(drv, w, h, bpp, txt, ep);
             goto done;
         }
     }
@@ -462,12 +462,12 @@ static GrVideoMode * _w32_selectmode(GrVideoDriver * drv, int w, int h,
             mp->lineoffset = mp->width * 3 + resto;
         }
     }
-    res = _gr_selectmode(drv, w, h, bpp, txt, ep);
+    res = _gr_select_mode(drv, w, h, bpp, txt, ep);
 done:
     return res;
 }
 
-GrVideoDriver _GrVideoDriverWIN32 = {
+GrxVideoDriver _GrVideoDriverWIN32 = {
     "win32",                        /* name */
     GRX_VIDEO_ADAPTER_WIN32,        /* adapter type */
     NULL,                        /* inherit modes from this driver */

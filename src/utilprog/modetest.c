@@ -45,9 +45,9 @@ typedef struct {
 } gvmode;
 
 gvmode grmodes[200];
-int  nmodes = 0;
+int  n_modes = 0;
 
-gvmode *collectmodes(const GrVideoDriver *drv,gvmode *gp)
+gvmode *collectmodes(const GrxVideoDriver *drv,gvmode *gp)
 {
         GrxFrameMode fm;
         const GrVideoMode *mp;
@@ -111,11 +111,11 @@ void PrintModes(void) {
         unsigned int maxlen;
         int i, n, shrt, c, cols;
 
-        cols = (nmodes+LINES-1) / LINES;
+        cols = (n_modes+LINES-1) / LINES;
         do {
           for (shrt = 0; shrt <= 2; ++shrt) {
             maxlen = 0;
-            for (i = 0; i < nmodes; ++i) {
+            for (i = 0; i < n_modes; ++i) {
               ModeText(i,shrt,mdtxt);
               if (strlen(mdtxt) > maxlen) maxlen = strlen(mdtxt);
             }
@@ -125,7 +125,7 @@ void PrintModes(void) {
               while (ColsCheck(cols, maxlen, n+1) && n < 4) ++n;
             }
             c = 0;
-            for (i = 0; i < nmodes; ++i) {
+            for (i = 0; i < n_modes; ++i) {
               if (++c == cols) c = 0;
               ModeText(i,shrt,mdtxt);
               printf("%*s%s", (c ? -((int)(maxlen+n)) : -((int)maxlen)), mdtxt, (c ? "" : "\n") );
@@ -148,13 +148,13 @@ int main(void)
         for( ; ; ) {
             int  i,w,h,px,py;
             char m1[41];
-            nmodes = (int)(collectmodes(GrCurrentVideoDriver(),grmodes) - grmodes);
+            n_modes = (int)(collectmodes(GrCurrentVideoDriver(),grmodes) - grmodes);
             GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
-            if(nmodes == 0) {
+            if(n_modes == 0) {
                 printf("No graphics modes found\n");
                 exit(1);
             }
-            qsort(grmodes,nmodes,sizeof(grmodes[0]),vmcmp);
+            qsort(grmodes,n_modes,sizeof(grmodes[0]),vmcmp);
             printf(
                 "Graphics driver: \"%s\"\n"
                 "  graphics defaults: %dx%d %ld colors\n"
@@ -171,7 +171,7 @@ int main(void)
             printf("\nEnter choice #, or anything else to quit> ");
             fflush(stdout);
             if(!fgets(m1,40,stdin) || 
-            (sscanf(m1,"%d",&i) != 1) || (i < 1) || (i > nmodes)) {
+            (sscanf(m1,"%d",&i) != 1) || (i < 1) || (i > n_modes)) {
                 exit(0);
             }
             if(firstgr) {

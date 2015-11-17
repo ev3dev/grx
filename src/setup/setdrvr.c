@@ -36,7 +36,7 @@ static char *nxtoken(char *p,char *token)
 int GrSetDriver(char *drvspec)
 {
         static int firsttime = TRUE;
-        GrVideoDriver *drv = NULL;
+        GrxVideoDriver *drv = NULL;
         char options[100];
         if(!drvspec) drvspec = getenv("GRX20DRV");
         options[0] = '\0';
@@ -96,12 +96,12 @@ int GrSetDriver(char *drvspec)
             }
         }
         if(!drv) {
-            GrVideoDriver *dp;
+            GrxVideoDriver *dp;
             int ii,maxmodes = 0;
             for(ii = 0; (dp = _GrVideoDriverTable[ii]) != NULL; ii++) {
                 if(dp->detect && (*dp->detect)()) {
                     int nm = 0;
-                    for( ; dp; dp = dp->inherit) nm += dp->nmodes;
+                    for( ; dp; dp = dp->inherit) nm += dp->n_modes;
                     if(nm > maxmodes) {
                         drv = _GrVideoDriverTable[ii];
                         maxmodes = nm;

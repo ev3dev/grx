@@ -295,14 +295,12 @@ namespace Grx {
         public string name;
         public VideoAdapter adapter;
         public VideoDriver inherit;
-        [CCode (array_length_cname = "nmodes", array_length_type = "int")]
+        [CCode (array_length_cname = "n_modes", array_length_type = "int")]
         public VideoMode[] modes;
         public VideoDriverDetect detect;
         public VideoDriverInit init;
         public VideoDriverReset reset;
-        [CCode (cname = "selectmode")]
         public VideoDriverSelectMode select_mode;
-        [CCode (cname = "drvflags")]
         public uint flags;
 
         [CCode (cname = "g_malloc0")]

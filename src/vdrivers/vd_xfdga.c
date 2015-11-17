@@ -381,7 +381,7 @@ done:        if(modev != NULL) XFree(modev);
         GRX_RETURN(res);
 }
 
-GrVideoDriver _GrVideoDriverXF86DGA = {
+GrxVideoDriver _GrVideoDriverXF86DGA = {
     "xf86dga",                          /* name */
     GRX_VIDEO_ADAPTER_XWIN,             /* adapter type */
     NULL,                               /* inherit modes from this driver */
@@ -390,7 +390,7 @@ GrVideoDriver _GrVideoDriverXF86DGA = {
     detect,                             /* detection routine */
     init,                               /* initialization routine */
     reset,                              /* reset routine */
-    _gr_selectmode,                     /* standard mode select routine */
+    _gr_select_mode,                    /* standard mode select routine */
     0                                   /* no additional capabilities */
 };
 

@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "grdriver.h"
 
-GrVideoDriver *_GrVideoDriverTable[] = {
+GrxVideoDriver *_GrVideoDriverTable[] = {
 #if defined(__XWIN__) && !defined(__SDL__)
 #if defined(XF86DGA_DRIVER)
     &_GrVideoDriverXF86DGA,

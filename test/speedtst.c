@@ -73,7 +73,7 @@ typedef struct {
 #define SET_RAMMODE(g)   (g)->flags |= FLG_rammode
 #define TOGGLE_TAGGED(g) (g)->flags ^= FLG_tagged
 
-int  nmodes = 0;
+int  n_modes = 0;
 #define MAX_MODES 256
 gvmode *grmodes = NULL;
 #if MEASURE_RAM_MODES
@@ -576,7 +576,7 @@ void measure_one(gvmode *gp, int ram) {
 #if MEASURE_RAM_MODES
 int identical_measured(gvmode *tm) {
   int i;
-  for (i=0; i < nmodes; ++i) {
+  for (i=0; i < n_modes; ++i) {
     if (tm      != &rammodes[i]    &&
         tm->fm  == rammodes[i].fm  &&
         tm->w   == rammodes[i].w   &&
@@ -653,7 +653,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
     fgets(m,40,stdin);
 }
 
-int collectmodes(const GrVideoDriver *drv)
+int collectmodes(const GrxVideoDriver *drv)
 {
         gvmode *gp = grmodes;
         GrxFrameMode fm;
@@ -727,11 +727,11 @@ void PrintModes(void) {
         unsigned int maxlen;
         int i, n, shrt, c, cols;
 
-        cols = (nmodes+LINES-1) / LINES;
+        cols = (n_modes+LINES-1) / LINES;
         do {
           for (shrt = 0; shrt <= 2; ++shrt) {
             maxlen = 0;
-            for (i = 0; i < nmodes; ++i) {
+            for (i = 0; i < n_modes; ++i) {
               ModeText(i,shrt,mdtxt);
               if (strlen(mdtxt) > maxlen) maxlen = strlen(mdtxt);
             }
@@ -741,10 +741,10 @@ void PrintModes(void) {
               while (ColsCheck(cols, maxlen, n+1) && n < 4) ++n;
             }
             c = 0;
-            for (i = 0; i < nmodes; ++i) {
+            for (i = 0; i < n_modes; ++i) {
               if (++c == cols) c = 0;
               ModeText(i,shrt,mdtxt);
-              printf("%*s%s", (c ? -((int)(maxlen+n)) : -((int)maxlen)), mdtxt, (c || (i+1==nmodes) ? "" : "\n") );
+              printf("%*s%s", (c ? -((int)(maxlen+n)) : -((int)maxlen)), mdtxt, (c || (i+1==n_modes) ? "" : "\n") );
             }
             return;
           }
@@ -769,14 +769,14 @@ int main(int argc, char **argv)
             exit(1);
         }
 
-        nmodes = collectmodes(GrCurrentVideoDriver());
-        if(nmodes == 0) {
+        n_modes = collectmodes(GrCurrentVideoDriver());
+        if(n_modes == 0) {
             printf("No graphics modes found\n");
             exit(1);
         }
-        qsort(grmodes,nmodes,sizeof(grmodes[0]),vmcmp);
+        qsort(grmodes,n_modes,sizeof(grmodes[0]),vmcmp);
 #if MEASURE_RAM_MODES
-        for (i=0; i < nmodes; ++i) {
+        for (i=0; i < n_modes; ++i) {
           rammodes[i].fm    = GRX_FRAME_MODE_UNDEFINED;      /* filled in later */
           rammodes[i].w     = grmodes[i].w;
           rammodes[i].h     = grmodes[i].h;
@@ -785,7 +785,7 @@ int main(int argc, char **argv)
         }
 #endif
 
-        if(argc >= 2 && (i = atoi(argv[1])) >= 1 && i <= nmodes) {
+        if(argc >= 2 && (i = atoi(argv[1])) >= 1 && i <= n_modes) {
             speedcheck(&grmodes[i - 1], 1, 0);
             goto done;
         }
@@ -813,11 +813,11 @@ int main(int argc, char **argv)
                         ++m;
                         break;
               case 'A':
-              case 'a': for (i=0; i < nmodes; ++i)
+              case 'a': for (i=0; i < n_modes; ++i)
                           SET_TAGGED(&grmodes[i]);
                         break;
               case 'M':
-              case 'm': for (i=0; i < nmodes; ++i)
+              case 'm': for (i=0; i < n_modes; ++i)
                           if (TAGGED(&grmodes[i])) {
                             speedcheck(&grmodes[i], 0, 0);
                             TOGGLE_TAGGED(&grmodes[i]);
@@ -826,7 +826,7 @@ int main(int argc, char **argv)
               case 'Q':
               case 'q': goto done;
             }
-            if ((sscanf(m,"%d",&i) != 1) || (i < 1) || (i > nmodes))
+            if ((sscanf(m,"%d",&i) != 1) || (i < 1) || (i > n_modes))
                 continue;
             i--;
             if (tflag) TOGGLE_TAGGED(&grmodes[i]);
@@ -844,11 +844,11 @@ done:
             printf("Results: \n");
             printresultheader(log);
 
-            for (i=0; i < nmodes; ++i)
+            for (i=0; i < n_modes; ++i)
               if (MEASURED(&grmodes[i]))
                 printresultline(log, &grmodes[i]);
 #if MEASURE_RAM_MODES
-            for (i=0; i < nmodes; ++i)
+            for (i=0; i < n_modes; ++i)
               if (MEASURED(&rammodes[i]))
                 printresultline(log, &rammodes[i]);
 #endif

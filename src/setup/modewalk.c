@@ -21,7 +21,7 @@
 
 static GrVideoMode *modewalk(GrVideoMode *pm,GrVideoMode *dup,GrxFrameMode md)
 {
-        GrVideoDriver *vd;
+        GrxVideoDriver *vd;
         GrVideoMode   *vm;
         int n,seen = TRUE;
         if(pm && pm->extinfo) {
@@ -29,7 +29,7 @@ static GrVideoMode *modewalk(GrVideoMode *pm,GrVideoMode *dup,GrxFrameMode md)
             seen = FALSE;
         }
         for(vd = VDRV; vd != NULL; vd = vd->inherit) {
-            for(n = vd->nmodes,vm = vd->modes; --n >= 0; vm++) {
+            for(n = vd->n_modes,vm = vd->modes; --n >= 0; vm++) {
                     if(vm->present == FALSE)    continue;
                     if(vm->extinfo == NULL)     continue;
                     if(vm->extinfo->mode != md) continue;

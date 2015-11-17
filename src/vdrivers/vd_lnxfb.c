@@ -436,7 +436,7 @@ static int init(char *options)
     return (FALSE);
 }
 
-GrVideoDriver _GrVideoDriverLINUXFB = {
+GrxVideoDriver _GrVideoDriverLINUXFB = {
     "linuxfb",                        /* name */
     GRX_VIDEO_ADAPTER_LINUX_FB,       /* adapter type */
     NULL,                        /* inherit modes from this driver */
@@ -445,6 +445,6 @@ GrVideoDriver _GrVideoDriverLINUXFB = {
     detect,                        /* detection routine */
     init,                        /* initialization routine */
     reset,                        /* reset routine */
-    _gr_selectmode,                /* standard mode select routine */
+    _gr_select_mode,                 /* standard mode select routine */
     0                                /* no additional capabilities */
 };

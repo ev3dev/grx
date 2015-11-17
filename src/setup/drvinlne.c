@@ -43,7 +43,7 @@ GrxFrameMode (GrCoreFrameMode)(void)
         return(GrCoreFrameMode());
 }
 
-const GrVideoDriver *(GrCurrentVideoDriver)(void)
+const GrxVideoDriver *(GrCurrentVideoDriver)(void)
 {
         return(GrCurrentVideoDriver());
 }
