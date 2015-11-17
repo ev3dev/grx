@@ -18,5 +18,8 @@ Makefile.in
 *.l[ao]
 *.o
 *.pc
+*.gir
+*.typelib
+Grx_3_0_gir
 *~
 *.orig

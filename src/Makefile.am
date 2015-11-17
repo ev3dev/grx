@@ -263,23 +263,23 @@ INTROSPECTION_GIRS = Grx_3_0_gir
 INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
 INTROSPECTION_COMPILER_ARGS =
 
-#if HAVE_INTROSPECTION
-#introspection_sources = $(libgrx_3_0_la_SOURCES)
-#
-#Grx-3.0.gir: libgrx-3.0.la
-#Grx_3_0_gir_INCLUDES = GObject-2.0
-#Grx_3_0_gir_CFLAGS = $(AM_CPPFLAGS)
-#Grx_3_0_gir_PACKAGES =
-#Grx_3_0_gir_LIBS = libgrx-3.0.la
-#Grx_3_0_gir_FILES = $(introspection_sources)
-#Grx_3_0_gir_NAMESPACE = Grx
-#INTROSPECTION_GIRS += Grx-3.0.gir
-#
-#girdir = $(datadir)/gir-3.0
-#gir_DATA = $(INTROSPECTION_GIRS)
-#
-#typelibdir = $(libdir)/girepository-3.0
-#typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
-#
-#CLEANFILES += $(gir_DATA) $(typelib_DATA)
-#endif
+if HAVE_INTROSPECTION
+introspection_sources = $(libgrx_3_0_la_SOURCES)
+
+Grx-3.0.gir: libgrx-3.0.la
+Grx_3_0_gir_INCLUDES = GObject-2.0
+Grx_3_0_gir_CFLAGS = $(AM_CPPFLAGS)
+Grx_3_0_gir_PACKAGES =
+Grx_3_0_gir_LIBS = libgrx-3.0.la
+Grx_3_0_gir_FILES = $(introspection_sources)
+Grx_3_0_gir_NAMESPACE = Grx
+INTROSPECTION_GIRS += Grx-3.0.gir
+
+girdir = $(datadir)/gir-3.0
+gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibdir = $(libdir)/girepository-3.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
+endif

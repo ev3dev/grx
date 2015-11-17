@@ -28,14 +28,14 @@ AC_CHECK_LIB(jpeg, main, [], [
   exit -1
 ])
 PKG_CHECK_MODULES([PNG], [libpng12])
-#PKG_CHECK_MODULES([GLIB], [glib-2.0])
+PKG_CHECK_MODULES([GLIB], [glib-2.0])
 
 # Checks for typedefs, structures, and compiler characteristics
 AC_PROG_CC_STDC
 
 # Compiler flags
-GRX_CFLAGS="$PNG_CFLAGS"
-GRX_LIBS="$PNG_LIBS"
+GRX_CFLAGS="$PNG_CFLAGS $GLIB_CFLAGS"
+GRX_LIBS="$PNG_LIBS $GLIB_LIBS"
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign -Wno-portability subdir-objects])
 AM_PATH_GLIB_2_0
@@ -54,7 +54,7 @@ AC_SUBST(GRX_MICRO_VERSION)
 AC_SUBST(GRX_VERSION)
 
 # Introspection
-#GOBJECT_INTROSPECTION_CHECK([1.38.0])
+GOBJECT_INTROSPECTION_CHECK([1.38.0])
 
 # Output
 AC_SUBST(GRX_CFLAGS)

@@ -21,6 +21,8 @@
 #ifndef __GRX_3_0_H_INCLUDED__
 #define __GRX_3_0_H_INCLUDED__
 
+#include <glib-2.0/glib.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
