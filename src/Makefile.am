@@ -2,7 +2,7 @@
 
 NULL =
 AM_CPPFLAGS =
-AM_CFLAGS = -I$(top_srcdir)/include -Iinclude
+AM_CFLAGS =
 BUILT_SOURCES =
 CLEANFILES =
 EXTRA_DIST =
@@ -15,6 +15,9 @@ AM_CPPFLAGS += \
     $(NULL)
 
 AM_CFLAGS += \
+    -DGRX_DEFAULT_FONT_PATH=\"$(prefix)/share/$(PACKAGE)/fonts\" \
+    -I$(top_srcdir)/include \
+    -Iinclude \
     $(GRX_CFLAGS) \
     $(NULL)
 

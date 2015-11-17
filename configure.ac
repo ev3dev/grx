@@ -6,7 +6,8 @@ m4_define([grx_version], [grx_major_version.grx_minor_version.grx_micro_version]
 
 AC_PREREQ(2.69)
 
-AC_INIT([grx], [grx_version], [david@lechnology.com])
+AC_INIT([grx-3.0], [grx_version], [https://github.com/ev3dev/ev3dev/issues],
+    [grx], [https://github.com/ev3dev/grx])
 
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([m4])
