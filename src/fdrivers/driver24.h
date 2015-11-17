@@ -67,9 +67,9 @@
 
 
 static INLINE
-GrColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrFrame *c,int x,int y)
 {
-        GrColor col;
+        GrxColor col;
         char *p;
         GRX_ENTER();
 #ifdef FAR_ACCESS
@@ -84,7 +84,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 
 
 static INLINE
-void drawpixel(int x,int y,GrColor color)
+void drawpixel(int x,int y,GrxColor color)
 {
         char *p;
         GRX_ENTER();
@@ -100,7 +100,7 @@ void drawpixel(int x,int y,GrColor color)
 }
 
 
-static void drawhline(int x,int y,int w,GrColor color)
+static void drawhline(int x,int y,int w,GrxColor color)
 {
         char *p;
         GRX_ENTER();
@@ -153,7 +153,7 @@ static
 static
 #include "fdrivers/generic/pattern.c"
 
-static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
+static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
         GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
@@ -180,7 +180,7 @@ static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
 
 static void bltv2r(GrFrame *dst,int dx,int dy,
                    GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+                   int w,int h,GrxColor op)
 {
         GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
@@ -200,7 +200,7 @@ static void bltv2r(GrFrame *dst,int dx,int dy,
 
 static void bltr2v(GrFrame *dst,int dx,int dy,
                    GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+                   int w,int h,GrxColor op)
 {
         GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(

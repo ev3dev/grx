@@ -71,7 +71,7 @@ static int writepng( FILE *f, GrContext *grc )
   png_byte **row_pointers = NULL;
   png_byte *pix_ptr = NULL;
   int x, y, r, g, b;
-  GrColor *pColors = NULL;
+  GrxColor *pColors = NULL;
 
   /* Create and initialize the png_struct */
   png_ptr = png_create_write_struct( PNG_LIBPNG_VER_STRING,NULL,NULL,NULL );
@@ -133,7 +133,7 @@ static int writepng( FILE *f, GrContext *grc )
     return -1;
     }
 
-  pColors = malloc( width * sizeof(GrColor) );
+  pColors = malloc( width * sizeof(GrxColor) );
   if( pColors == NULL ){
     png_destroy_write_struct( &png_ptr,&info_ptr );
     free( row_pointers );
@@ -145,7 +145,7 @@ static int writepng( FILE *f, GrContext *grc )
 
   for( y=0; y<height; y++ ){
     pix_ptr = png_pixels;
-    memcpy( pColors,GrGetScanline( 0,width-1,y ),sizeof(GrColor)*width );
+    memcpy( pColors,GrGetScanline( 0,width-1,y ),sizeof(GrxColor)*width );
     for( x=0; x<width; x++ ){
       GrQueryColor( pColors[x],&r,&g,&b );
       *pix_ptr++ = r;

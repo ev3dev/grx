@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrHLine(int x1,int x2,int yy,GrColor c)
+void GrHLine(int x1,int x2,int yy,GrxColor c)
 {
         clip_hline(CURC,x1,x2,yy);
         mouse_block(CURC,x1,yy,x2,yy);

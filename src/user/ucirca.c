@@ -21,7 +21,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c)
+void GrUsrCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c)
 {
 #ifdef USR_KEEP_SHAPE
         U2SX(xc,CURC);

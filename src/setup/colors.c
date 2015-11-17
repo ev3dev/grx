@@ -136,7 +136,7 @@ void GrResetColors(void)
 void GrSetRGBcolorMode(void)
 {
         if(!CLRINFO->RGBmode) {
-            GrColor c;
+            GrxColor c;
             switch(CLRINFO->ncolors) {
                 case 16L:  setbits("\1\2\1","\3\1\0"); break;
                 case 256L: setbits("\3\3\2","\5\2\0"); break;
@@ -161,9 +161,9 @@ void GrSetRGBcolorMode(void)
         (((x) + CLRINFO->round[n]) & CLRINFO->mask[n])          \
 )
 
-GrColor GrAllocColor(int r,int g,int b)
+GrxColor GrAllocColor(int r,int g,int b)
 {
-        GrColor res;
+        GrxColor res;
 
         GRX_ENTER();
         res = GrNOCOLOR;
@@ -240,7 +240,7 @@ GrColor GrAllocColor(int r,int g,int b)
 done:   GRX_RETURN(res);
 }
 
-GrColor GrAllocCell(void)
+GrxColor GrAllocCell(void)
 {
         if(!CLRINFO->RGBmode && CLRINFO->nfree) {
             int i,free_ = (-1);
@@ -259,15 +259,15 @@ GrColor GrAllocCell(void)
                 CLRINFO->ctable[free_].nused    = 1;
                 CLRINFO->nfree--;
                 loadcolor(free_,0,0,0);
-                return((GrColor)(free_));
+                return((GrxColor)(free_));
             }
         }
         return(GrNOCOLOR);
 }
 
-void GrFreeColor(GrColor c)
+void GrFreeColor(GrxColor c)
 {
-        if(!CLRINFO->RGBmode && ((GrColor)(c) < CLRINFO->ncolors) &&
+        if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors) &&
             !CLRINFO->ctable[(int)(c)].writable &&
             CLRINFO->ctable[(int)(c)].defined &&
             (--CLRINFO->ctable[(int)(c)].nused == 0)) {
@@ -278,10 +278,10 @@ void GrFreeColor(GrColor c)
             }
 }
 
-void GrFreeCell(GrColor c)
+void GrFreeCell(GrxColor c)
 {
         GRX_ENTER();
-        if(!CLRINFO->RGBmode && ((GrColor)(c) < CLRINFO->ncolors)) {
+        if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors)) {
             if(CLRINFO->ctable[(int)(c)].writable) {
                 CLRINFO->nfree++;
                 CLRINFO->ctable[(int)(c)].defined  = FALSE;
@@ -292,10 +292,10 @@ void GrFreeCell(GrColor c)
         GRX_LEAVE();
 }
 
-void GrSetColor(GrColor c,int r,int g,int b)
+void GrSetColor(GrxColor c,int r,int g,int b)
 {
         GRX_ENTER();
-        if(!CLRINFO->RGBmode && ((GrColor)(c) < CLRINFO->ncolors)) {
+        if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors)) {
             if(!CLRINFO->ctable[(int)(c)].defined) {
                 CLRINFO->ctable[(int)(c)].defined  = TRUE;
                 CLRINFO->ctable[(int)(c)].nused    = 0;
@@ -315,14 +315,14 @@ void GrSetColor(GrColor c,int r,int g,int b)
         GRX_LEAVE();
 }
 
-void GrQueryColor(GrColor c,int *r,int *g,int *b)
+void GrQueryColor(GrxColor c,int *r,int *g,int *b)
 {
         GRX_ENTER();
         GrQueryColorID(c,r,g,b);
         GRX_LEAVE();
 }
 
-void GrQueryColor2(GrColor c,long *hcolor)
+void GrQueryColor2(GrxColor c,long *hcolor)
 {
         GRX_ENTER();
         GrQueryColor2ID(c,hcolor);
@@ -332,8 +332,8 @@ void GrQueryColor2(GrColor c,long *hcolor)
 #define CSAVE_MAGIC     0x7abf5698UL
 
 typedef struct {
-    GrColor magic;
-    GrColor nc;
+    GrxColor magic;
+    GrxColor nc;
     struct _GR_colorInfo info;
 } colorsave;
 

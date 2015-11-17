@@ -16,7 +16,7 @@
  **
  **/
 
-void drawblock(int x,int y,int w,int h,GrColor c)
+void drawblock(int x,int y,int w,int h,GrxColor c)
 {
         GRX_ENTER();
         h += y;

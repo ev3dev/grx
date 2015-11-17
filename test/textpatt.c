@@ -28,7 +28,7 @@ int main(void)
   GrFont *font;
   GrTextOption opt;
 
-  GrSetMode(GR_width_height_color_graphics, 320, 200, (GrColor)256);
+  GrSetMode(GR_width_height_color_graphics, 320, 200, (GrxColor)256);
   p1 = GrBuildPixmapFromBits(bits, 8, 8, 11,  3);
   p2 = GrBuildPixmapFromBits(bits, 8, 8,  3, 11);
   font = GrLoadFont(FONT);

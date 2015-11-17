@@ -24,7 +24,7 @@
 
 static void ExtPatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
                                 char *bmp,int pitch,int start,
-                                GrColor fg,GrColor bg,GrPattern *p)
+                                GrxColor fg,GrxColor bg,GrPattern *p)
 {
   GRX_ENTER();
   _GrFillBitmapPatternExt(x,y,w,h,ox,oy,bmp,pitch,start,p,bg);

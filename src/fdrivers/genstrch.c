@@ -59,14 +59,14 @@ static INLINE int XLineInit(_GR_lineData *ld, int x,int y,int dx,int dy)
 /* ---------------------------------------------------- x- and y-dir stretch */
 static void stretch(GrFrame *dst,int dx,int dy,int dw, int dh,
                     GrFrame *src,int sx,int sy,int sw, int sh,
-                    GrColor op)
+                    GrxColor op)
 {
     int maxi;
     GRX_ENTER();
     setup_ALLOC();
     do {
         GrFrame csave;
-        GrColor *pixels = NULL;
+        GrxColor *pixels = NULL;
         _GR_lineData lne;
         _GR_getIndexedScanline getscl = src->gf_driver->getindexedscanline;
         _GR_putScanline        putscl = dst->gf_driver->putscanline;
@@ -114,7 +114,7 @@ static void stretch(GrFrame *dst,int dx,int dy,int dw, int dh,
 
 void _GrFrDrvGenericStretchBlt(GrFrame *dst,int dx,int dy,int dw,int dh,
                                GrFrame *src,int sx,int sy,int sw,int sh,
-                               GrColor op)
+                               GrxColor op)
 {
   GRX_ENTER();
   if (sw > 0 && dw > 0 && sh > 0 && dh > 0) {

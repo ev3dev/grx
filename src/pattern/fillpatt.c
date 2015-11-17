@@ -27,14 +27,14 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrPattern *p)
 {
     GRX_ENTER();
     if (p->gp_ispixmap) {
-        void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor);
+        void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor);
         int pattwdt = p->gp_pxp_width;
         int xdest = x;
         int ydest = y;
         int ypatt = (y-sy) % p->gp_pxp_height;
         int xpatt = (x-sx) % pattwdt;
         int cpysize = pattwdt - xpatt;
-        GrColor optype = p->gp_pxp_oper;
+        GrxColor optype = p->gp_pxp_oper;
 
         if (CURC->gc_onscreen) bltfun = CURC->gc_driver->bltr2v;
         else                   bltfun = CURC->gc_driver->bitblt;
@@ -59,8 +59,8 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrPattern *p)
         else if ((GR_int8u)bits == 0xff)
           (*CURC->gc_driver->drawhline)(x,y,width,p->gp_bmp_fgcolor);
         else {
-          GrColor fg = p->gp_bmp_fgcolor;
-          GrColor bg = p->gp_bmp_bgcolor;
+          GrxColor fg = p->gp_bmp_fgcolor;
+          GrxColor bg = p->gp_bmp_bgcolor;
           int xoffs = x & 7;
 #         if USE_FDR_DRAWPATTERN-0
               GR_int8u pp = replicate_b2w(bits) >> (8-xoffs);

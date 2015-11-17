@@ -40,9 +40,9 @@ char p16d[] = {
 
 TESTFUNC(cursortest)
 {
-        GrColor bgc = GrAllocColor(0,0,128);
-        GrColor fgc = GrAllocColor(255,255,0);
-        GrColor msc[3];
+        GrxColor bgc = GrAllocColor(0,0,128);
+        GrxColor fgc = GrAllocColor(255,255,0);
+        GrxColor msc[3];
         GrCursor *cur;
         int x,y;
 

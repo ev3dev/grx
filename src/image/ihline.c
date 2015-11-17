@@ -25,8 +25,8 @@
 void GrImageHLineAlign(int xo,int yo,int x,int y,int width,GrImage *p)
 {
   int x2, widthimg, yimg, ximg, xdest, ydest, cpysize;
-  GrColor optype;
-  void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor);
+  GrxColor optype;
+  void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor);
   x2 = x+width;
   xo = min(xo, min(x,x2));
   yo = min(yo, y);

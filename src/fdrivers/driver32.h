@@ -80,7 +80,7 @@
 #endif
 
 static INLINE
-GrColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrFrame *c,int x,int y)
 {
         char *pp;
         GRX_ENTER();
@@ -95,7 +95,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 }
 
 static INLINE
-void drawpixel(int x,int y,GrColor color)
+void drawpixel(int x,int y,GrxColor color)
 {
         char *ptr;
         int op;
@@ -114,7 +114,7 @@ void drawpixel(int x,int y,GrColor color)
 }
 
 #ifdef colfill32
-static void drawvline(int x,int y,int h,GrColor color)
+static void drawvline(int x,int y,int h,GrxColor color)
 {
         unsigned lwdt;
         char *pp;
@@ -140,7 +140,7 @@ static
 #endif
 
 #ifdef repfill32
-static void drawhline(int x,int y,int w,GrColor color)
+static void drawhline(int x,int y,int w,GrxColor color)
 {
         int op;
         char *pp;
@@ -161,7 +161,7 @@ static void drawhline(int x,int y,int w,GrColor color)
         GRX_LEAVE();
 }
 
-static void drawblock(int x,int y,int w,int h,GrColor color)
+static void drawblock(int x,int y,int w,int h,GrxColor color)
 {
         unsigned skip;
         int op;
@@ -210,7 +210,7 @@ static
 
 
 #if defined(__GNUC__) && defined(__i386__)
-static void drawline(int x,int y,int dx,int dy,GrColor color)
+static void drawline(int x,int y,int dx,int dy,GrxColor color)
 {
         struct {
             int errsub;         /* subtract from error term */
@@ -327,7 +327,7 @@ static
 
 static void bitblt(GrFrame *dst,int dx,int dy,
                    GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+                   int w,int h,GrxColor op)
 {
         GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
@@ -354,7 +354,7 @@ static void bitblt(GrFrame *dst,int dx,int dy,
 
 static void bltv2r(GrFrame *dst,int dx,int dy,
                    GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+                   int w,int h,GrxColor op)
 {
         GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
@@ -374,7 +374,7 @@ static void bltv2r(GrFrame *dst,int dx,int dy,
 
 static void bltr2v(GrFrame *dst,int dx,int dy,
                    GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+                   int w,int h,GrxColor op)
 {
         GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(

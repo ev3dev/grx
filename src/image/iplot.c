@@ -25,7 +25,7 @@
 void GrImagePlotAlign(int xo,int yo,int x,int y,GrImage *p)
 {
    int xp, yp;
-   GrColor col;
+   GrxColor col;
 
    xo = min(xo, x);
    yo = min(yo, y);

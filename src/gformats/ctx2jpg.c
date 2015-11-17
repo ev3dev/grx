@@ -120,7 +120,7 @@ static int writejpeg( FILE *f, GrContext *grc, int quality, int grayscale )
   JSAMPROW row_pointer[1];
   static unsigned char *buffer = NULL;
   unsigned char *pix_ptr;
-  const GrColor *pColors;
+  const GrxColor *pColors;
   int row_stride;
   int x, y, r, g, b;
 

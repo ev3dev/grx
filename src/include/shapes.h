@@ -22,7 +22,7 @@
 #define USE_FDR_DRAWPATTERN 1
 
 typedef union _GR_fillArg {
-    GrColor color;
+    GrxColor color;
     struct _GR_bitmap *bmp;
     struct _GR_pixmap *pxp;
     GrPattern *p;
@@ -57,7 +57,7 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
 void _GrFillPatternedScanLine(int x,int y,int w,GrFillArg arg);
 
 /* --- */
-void _GrFloodFill(int x,int y,GrColor border,GrFiller *f,GrFillArg fa);
+void _GrFloodFill(int x,int y,GrxColor border,GrFiller *f,GrFillArg fa);
 
 /* -- */
 void _GrFillPattern(int x,int y,int width,GrPattern *p);
@@ -67,9 +67,9 @@ void _GrPatternFilledPlot(int x,int y,GrPattern *p);
 
 void _GrFillBitmapPattern(int x,int y,int w,int h,
                           char *bmp,int pitch,int start,
-                          GrPattern* p,GrColor bg);
+                          GrPattern* p,GrxColor bg);
 void _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
                              char *bmp,int pitch,int start,
-                             GrPattern* p,GrColor bg);
+                             GrPattern* p,GrxColor bg);
 
 #endif

@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrColor c)
+void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrxColor c)
 {
         (*FDRV->drawblock)(
             x1 + CURC->gc_xoffset,

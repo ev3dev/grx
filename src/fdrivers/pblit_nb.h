@@ -58,7 +58,7 @@ static
 #endif
 void BLITFUNC(GrFrame *dst,int dx,int dy,
               GrFrame *src,int sx,int sy,
-              int w,int h,GrColor op
+              int w,int h,GrxColor op
 #ifdef PLANE_ARG
              ,int PLANE
 #endif

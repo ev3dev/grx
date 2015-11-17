@@ -20,12 +20,12 @@
 #include "grdriver.h"
 #include "memcopy.h"
 
-void _GrFrDrvGenericBitBlt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op)
+void _GrFrDrvGenericBitBlt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op)
 {
         GrFrame csave;
-        GrColor (*readpix)(GrFrame *,int,int);
-        void (*drawpix)(int,int,GrColor);
-        GrColor skipc;
+        GrxColor (*readpix)(GrFrame *,int,int);
+        void (*drawpix)(int,int,GrxColor);
+        GrxColor skipc;
         int  step;
         GRX_ENTER();
         readpix = src->gf_driver->readpixel;
@@ -43,7 +43,7 @@ void _GrFrDrvGenericBitBlt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,i
         do {
             int dxx = dx,xx = x,ww = w;
             do {
-                GrColor c = (*readpix)(src,xx,y);
+                GrxColor c = (*readpix)(src,xx,y);
                 if(c != skipc) (*drawpix)(dxx,dy,(c | op));
                 dxx += step; xx += step;
             } while(--ww > 0);

@@ -20,12 +20,12 @@
 #include "clipping.h"
 
 void GrBitBlt(GrContext *dst,int dx,int dy,
-              GrContext *src,int x1,int y1,int x2,int y2,GrColor oper)
+              GrContext *src,int x1,int y1,int x2,int y2,GrxColor oper)
 {
         int  oldx1,oldy1;
         int  oldx2,oldy2;
         int  dstx2,dsty2;
-        void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor);
+        void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor);
         if(dst == NULL) dst = CURC;
         if(src == NULL) src = CURC;
         isort(x1,x2); oldx1 = x1;

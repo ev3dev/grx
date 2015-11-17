@@ -210,7 +210,7 @@ int GrSetMode(GrGraphicsMode which,...)
 {
         int  w,h,pl,vw,vh;
         int  t,noclear,res;
-        GrColor c;
+        GrxColor c;
         va_list ap;
         GRX_ENTER();
         pl = 0;
@@ -267,7 +267,7 @@ int GrSetMode(GrGraphicsMode which,...)
           case GR_width_height_color_text:
             w = va_arg(ap,int);
             h = va_arg(ap,int);
-            c = va_arg(ap,GrColor);
+            c = va_arg(ap,GrxColor);
             t = TRUE;
             break;
           case GR_NC_width_height_bpp_text:
@@ -318,7 +318,7 @@ int GrSetMode(GrGraphicsMode which,...)
           case GR_width_height_color_graphics:
             w = va_arg(ap,int);
             h = va_arg(ap,int);
-            c = va_arg(ap,GrColor);
+            c = va_arg(ap,GrxColor);
             break;
           case GR_NC_width_height_bpp_graphics:
             noclear = TRUE;
@@ -332,7 +332,7 @@ int GrSetMode(GrGraphicsMode which,...)
           case GR_custom_graphics:
             w  = va_arg(ap,int);
             h  = va_arg(ap,int);
-            c  = va_arg(ap,GrColor);
+            c  = va_arg(ap,GrxColor);
             vw = va_arg(ap,int);
             vh = va_arg(ap,int);
             break;
@@ -352,7 +352,7 @@ int GrSetMode(GrGraphicsMode which,...)
         }
         va_end(ap);
         if (c)
-          for(pl = 1; (pl < 32) && ((1UL << pl) < (GrColor)c); pl++) ;
+          for(pl = 1; (pl < 32) && ((1UL << pl) < (GrxColor)c); pl++) ;
         for( ; ; ) {
             GrContext     cxt;
             GrFrameDriver fdr;

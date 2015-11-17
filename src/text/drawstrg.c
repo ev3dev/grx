@@ -34,8 +34,8 @@ void _GrDrawString(const void *text,int length,int x,int y,
        && (x1= GrFontStringWidth(f,text,length,opt->txo_chrtype))!=0 ) {
         GrColorTableP fgcp  = opt->txo_fgcolor.p;
         GrColorTableP bgcp  = opt->txo_bgcolor.p;
-        GrColor fgcv  = opt->txo_fgcolor.v;
-        GrColor bgcv  = opt->txo_bgcolor.v;
+        GrxColor fgcv  = opt->txo_fgcolor.v;
+        GrxColor bgcv  = opt->txo_bgcolor.v;
         int     undl  = (fgcv & GR_UNDERLINE_TEXT) ? 1 : 0;
         int     rotat = GR_TEXT_IS_VERTICAL(opt->txo_direct) ? ~0 : 0;
         int     dxpre = 0;

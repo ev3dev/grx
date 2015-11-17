@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c)
+void GrFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c)
 {
         GrFilledEllipseArc(xc,yc,r,r,start,end,style,c);
 }

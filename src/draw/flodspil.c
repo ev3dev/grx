@@ -21,16 +21,16 @@
 
 
 void GrFloodSpill(int x1, int y1, int x2, int y2,
-                  GrColor old_c, GrColor new_c)
+                  GrxColor old_c, GrxColor new_c)
 {
   int y;
   int x;
 
-  GrColor *scanline;
+  GrxColor *scanline;
 
   for(y = y1; y <= y2; ++y)
   {
-    if ((scanline = (GrColor *)GrGetScanline(x1, x2, y)) != NULL)
+    if ((scanline = (GrxColor *)GrGetScanline(x1, x2, y)) != NULL)
     {
       for(x = x1; x <= x2; ++x)
       {
@@ -43,17 +43,17 @@ void GrFloodSpill(int x1, int y1, int x2, int y2,
 }
 
 void GrFloodSpill2(int x1, int y1, int x2, int y2,
-                  GrColor old_c1, GrColor new_c1,
-                  GrColor old_c2, GrColor new_c2)
+                  GrxColor old_c1, GrxColor new_c1,
+                  GrxColor old_c2, GrxColor new_c2)
 {
   int y;
   int x;
 
-  GrColor *scanline;
+  GrxColor *scanline;
 
   for(y = y1; y <= y2; ++y)
   {
-    if ((scanline = (GrColor *)GrGetScanline(x1, x2, y)) != NULL)
+    if ((scanline = (GrxColor *)GrGetScanline(x1, x2, y)) != NULL)
     {
       for(x = x1; x <= x2; ++x)
       {
@@ -68,19 +68,19 @@ void GrFloodSpill2(int x1, int y1, int x2, int y2,
 }
 
 void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2,
-                   GrColor old_c, GrColor new_c)
+                   GrxColor old_c, GrxColor new_c)
 {
   int y;
   int x;
   GrContext ctx_save;
-  GrColor *scanline;
+  GrxColor *scanline;
 
   GrSaveContext(&ctx_save);
   GrSetContext(ctx);
 
   for(y = y1; y <= y2; ++y)
   {
-    if ((scanline = (GrColor *)GrGetScanline(x1, x2, y)) != NULL)
+    if ((scanline = (GrxColor *)GrGetScanline(x1, x2, y)) != NULL)
     {
       for(x = x1; x <= x2; ++x)
       {
@@ -94,20 +94,20 @@ void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2,
 }
 
 void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2,
-                  GrColor old_c1, GrColor new_c1,
-                  GrColor old_c2, GrColor new_c2)
+                  GrxColor old_c1, GrxColor new_c1,
+                  GrxColor old_c2, GrxColor new_c2)
 {
   int y;
   int x;
   GrContext ctx_save;
-  GrColor *scanline;
+  GrxColor *scanline;
 
   GrSaveContext(&ctx_save);
   GrSetContext(ctx);
 
   for(y = y1; y <= y2; ++y)
   {
-    if ((scanline = (GrColor *)GrGetScanline(x1, x2, y)) != NULL)
+    if ((scanline = (GrxColor *)GrGetScanline(x1, x2, y)) != NULL)
     {
       for(x = x1; x <= x2; ++x)
       {

@@ -26,7 +26,7 @@
 int main()
 {
   int x, y, ww, wh, i = 0;
-  GrColor c;
+  GrxColor c;
   GrContext *w1, *w2, *w3, *w4;
 
   do {

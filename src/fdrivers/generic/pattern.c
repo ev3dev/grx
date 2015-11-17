@@ -16,7 +16,7 @@
  **
  **/
 
-void drawpattern(int x,int y,int w,char patt,GrColor fg,GrColor bg)
+void drawpattern(int x,int y,int w,char patt,GrxColor fg,GrxColor bg)
 {
         GR_int8u mask;
         GRX_ENTER();

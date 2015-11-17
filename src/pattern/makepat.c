@@ -61,7 +61,7 @@ GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
         unsigned  char *src;
         int  wdt,wdt2,fullw;
         int  hgt;
-        GrColor color;
+        GrxColor color;
 
         if((fullw = _GrBestPixmapWidth(w,h)) <= 0) return(NULL);
         result = (GrPixmap *)malloc(sizeof(GrPixmap));
@@ -94,7 +94,7 @@ GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
         return((GrPattern *)result);
 }
 
-GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrColor fgc,GrColor bgc)
+GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
 {
         GrContext csave,cwork;
         GrPixmap  *result;

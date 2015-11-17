@@ -21,14 +21,14 @@
 
 #include "libgrx.h"
 
-void GrClearContext(GrColor bg)
+void GrClearContext(GrxColor bg)
 {
   mouse_block(CURC,0,0,CURC->gc_xmax,CURC->gc_ymax);
   GrFilledBoxNC(0,0,CURC->gc_xmax,CURC->gc_ymax,bg);
   mouse_unblock();
 }
 
-void GrClearContextC(GrContext *ctx, GrColor bg)
+void GrClearContextC(GrContext *ctx, GrxColor bg)
 {
   GrContext s;
   GrSaveContext(&s);

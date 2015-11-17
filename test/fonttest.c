@@ -22,10 +22,10 @@
 
 int  cx;
 int  cy;
-GrColor c1;
-GrColor c2;
-GrColor c3;
-GrColor c4;
+GrxColor c1;
+GrxColor c2;
+GrxColor c3;
+GrxColor c4;
 
 char test_text[] = {
     "QUICK BROWN FOX JUMPS OVER THE LAZY DOG, "

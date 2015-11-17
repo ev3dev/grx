@@ -19,7 +19,7 @@
 #include <string.h>
 #include "libgrx.h"
 
-void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg)
+void GrTextXY(int x,int y,char *text,GrxColor fg,GrxColor bg)
 {
         GrTextOption opt;
         opt.txo_font      = &GrDefaultFont;

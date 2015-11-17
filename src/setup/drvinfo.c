@@ -21,7 +21,7 @@
 
 #undef GrDriverInfo
 
-static GrColor dummyframefn(void);
+static GrxColor dummyframefn(void);
 
 const
 struct _GR_driverInfo * const GrDriverInfo = &_GrDriverInfo;
@@ -46,17 +46,17 @@ struct _GR_driverInfo _GrDriverInfo = {
         0,                              /* bits per pixel */
         0L,                             /* max plane size the code can handle */
         NULL,
-        (GrColor (*)(GrFrame*,int,int))                               dummyframefn,
-        (void (*)(int,int,GrColor))                                   dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,int,char*,int,int,GrColor,GrColor))     dummyframefn,
-        (void (*)(int,int,int,char,GrColor,GrColor))                  dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
+        (GrxColor (*)(GrFrame*,int,int))                               dummyframefn,
+        (void (*)(int,int,GrxColor))                                   dummyframefn,
+        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
+        (void (*)(int,int,int,GrxColor))                               dummyframefn,
+        (void (*)(int,int,int,GrxColor))                               dummyframefn,
+        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
+        (void (*)(int,int,int,int,char*,int,int,GrxColor,GrxColor))     dummyframefn,
+        (void (*)(int,int,int,char,GrxColor,GrxColor))                  dummyframefn,
+        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
+        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
+        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn
     },
     {                                   /* screen frame driver */
         GRX_FRAME_MODE_UNDEFINED,       /* frame mode */
@@ -67,17 +67,17 @@ struct _GR_driverInfo _GrDriverInfo = {
         0,                              /* bits per pixel */
         0L,                             /* max plane size the code can handle */
         NULL,
-        (GrColor (*)(GrFrame*,int,int))                               dummyframefn,
-        (void (*)(int,int,GrColor))                                   dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,int,char*,int,int,GrColor,GrColor))     dummyframefn,
-        (void (*)(int,int,int,char,GrColor,GrColor))                  dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
+        (GrxColor (*)(GrFrame*,int,int))                               dummyframefn,
+        (void (*)(int,int,GrxColor))                                   dummyframefn,
+        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
+        (void (*)(int,int,int,GrxColor))                               dummyframefn,
+        (void (*)(int,int,int,GrxColor))                               dummyframefn,
+        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
+        (void (*)(int,int,int,int,char*,int,int,GrxColor,GrxColor))     dummyframefn,
+        (void (*)(int,int,int,char,GrxColor,GrxColor))                  dummyframefn,
+        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
+        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
+        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn
     },
     {                                   /* dummy text mode frame driver */
         GRX_FRAME_MODE_TEXT,            /* frame mode */
@@ -88,17 +88,17 @@ struct _GR_driverInfo _GrDriverInfo = {
         16,                             /* bits per pixel */
         0L,                             /* max plane size the code can handle */
         NULL,
-        (GrColor (*)(GrFrame*,int,int))                               dummyframefn,
-        (void (*)(int,int,GrColor))                                   dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,int,char*,int,int,GrColor,GrColor))     dummyframefn,
-        (void (*)(int,int,int,char,GrColor,GrColor))                  dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
+        (GrxColor (*)(GrFrame*,int,int))                               dummyframefn,
+        (void (*)(int,int,GrxColor))                                   dummyframefn,
+        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
+        (void (*)(int,int,int,GrxColor))                               dummyframefn,
+        (void (*)(int,int,int,GrxColor))                               dummyframefn,
+        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
+        (void (*)(int,int,int,int,char*,int,int,GrxColor,GrxColor))     dummyframefn,
+        (void (*)(int,int,int,char,GrxColor,GrxColor))                  dummyframefn,
+        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
+        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
+        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn
     },
     GR_default_text,                            /* current mode code */
     80,25,                                      /* default text size */
@@ -114,7 +114,7 @@ struct _GR_driverInfo _GrDriverInfo = {
     (void (*)(int,int))_GrDummyFunction         /* split banking func */
 };
 
-static GrColor dummyframefn(void)
+static GrxColor dummyframefn(void)
 {
         if(DRVINFO->errsfatal) {
             _GrCloseVideoDriver();

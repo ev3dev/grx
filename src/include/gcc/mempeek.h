@@ -89,7 +89,7 @@
                 : "=&a" ((GR_int32u)_pix_)                              \
                 : "r" ((void *)(P))                                     \
           );                                                            \
-          (GrColor)_pix_;                                               \
+          (GrxColor)_pix_;                                               \
 })
 
 #define __INLINE_386_POKE24__(P,C,INS,SEL) do {                         \

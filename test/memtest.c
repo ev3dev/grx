@@ -24,7 +24,7 @@
 int main()
 {
   int x, y, ww, wh;
-  GrColor c;
+  GrxColor c;
   GrContext *w1, *w2, *w3, *w4;
 
   GrSetDriver( "memory gw 400 gh 400 nc 256" );

@@ -47,7 +47,7 @@
 #ifdef GRX_USE_RAM3x8
 void _GrFrDrvPackedBitBltR2R(GrFrame *dst,int dx,int dy,
                              GrFrame *src,int sx,int sy,
-                             int w,int h,GrColor op)
+                             int w,int h,GrxColor op)
 {
    _GrFrDrvPackedBitBltR2Rpl(dst,dx,dy,src,sx,sy,w,h,op,0);
 }

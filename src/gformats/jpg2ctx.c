@@ -128,7 +128,7 @@ static int readjpeg( FILE *f, GrContext *grc, int scale )
   JSAMPARRAY buffer;
   int row_stride;
   int maxwidth, maxheight;
-  static GrColor *pColors = NULL;
+  static GrxColor *pColors = NULL;
   unsigned char *pix_ptr;
   int x, y, r, g, b;
 
@@ -157,7 +157,7 @@ static int readjpeg( FILE *f, GrContext *grc, int scale )
              GrSizeX() : cinfo.output_width;
   maxheight = (cinfo.output_height > GrSizeY()) ?
              GrSizeY() : cinfo.output_height;
-  pColors = malloc( maxwidth * sizeof(GrColor) );
+  pColors = malloc( maxwidth * sizeof(GrxColor) );
   if( pColors == NULL ) longjmp( jerr.setjmp_buffer,1 );
 
   for( y=0; y<maxheight; y++ ){

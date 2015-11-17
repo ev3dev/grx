@@ -17,10 +17,10 @@
  **/
 
 void bitblt(GrFrame *dst,int dx,int dy,
-            GrFrame *src,int  x,int  y,int w,int h,GrColor op)
+            GrFrame *src,int  x,int  y,int w,int h,GrxColor op)
 {
         GrFrame csave;
-        GrColor skipc;
+        GrxColor skipc;
         int step;
         GRX_ENTER();
         skipc = op ^ GrIMAGE;
@@ -36,7 +36,7 @@ void bitblt(GrFrame *dst,int dx,int dy,
         do {
             int dxx = dx,xx = x,ww = w;
             do {
-                GrColor c = readpixel(src,xx,y);
+                GrxColor c = readpixel(src,xx,y);
                 if(c != skipc) drawpixel(dxx,dy,(c | op));
                 dxx += step; xx += step;
             } while(--ww > 0);

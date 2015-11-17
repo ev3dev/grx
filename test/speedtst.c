@@ -256,10 +256,10 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs,int loops) {
 
 void drawpixeltest(gvmode *gp, XY_PAIRS *pairs) {
   int i, j;
-  GrColor c1 = GrWhite();
-  GrColor c2 = GrWhite() | GrXOR;
-  GrColor c3 = GrWhite() | GrOR;
-  GrColor c4 = GrBlack() | GrAND;
+  GrxColor c1 = GrWhite();
+  GrxColor c2 = GrWhite() | GrXOR;
+  GrxColor c3 = GrWhite() | GrOR;
+  GrxColor c4 = GrBlack() | GrAND;
   long t1,t2;
   double seconds;
   int *x = pairs->x;
@@ -287,10 +287,10 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
   int i, j;
   int *x = pairs->x;
   int *y = pairs->y;
-  GrColor c1 = GrWhite();
-  GrColor c2 = GrWhite() | GrXOR;
-  GrColor c3 = GrWhite() | GrOR;
-  GrColor c4 = GrBlack() | GrAND;
+  GrxColor c1 = GrWhite();
+  GrxColor c2 = GrWhite() | GrXOR;
+  GrxColor c3 = GrWhite() | GrOR;
+  GrxColor c4 = GrBlack() | GrAND;
   long t1,t2;
   double seconds;
 
@@ -323,10 +323,10 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
   int  i, j;
   int *x = pairs->x;
   int *y = pairs->y;
-  GrColor c1 = GrWhite();
-  GrColor c2 = GrWhite() | GrXOR;
-  GrColor c3 = GrWhite() | GrOR;
-  GrColor c4 = GrBlack() | GrAND;
+  GrxColor c1 = GrWhite();
+  GrxColor c2 = GrWhite() | GrXOR;
+  GrxColor c3 = GrWhite() | GrOR;
+  GrxColor c4 = GrBlack() | GrAND;
   long t1,t2;
   double seconds;
 
@@ -359,10 +359,10 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
   int i, j;
   int *x = pairs->x;
   int *y = pairs->y;
-  GrColor c1 = GrWhite();
-  GrColor c2 = GrWhite() | GrXOR;
-  GrColor c3 = GrWhite() | GrOR;
-  GrColor c4 = GrBlack() | GrAND;
+  GrxColor c1 = GrWhite();
+  GrxColor c2 = GrWhite() | GrXOR;
+  GrxColor c3 = GrWhite() | GrOR;
+  GrxColor c4 = GrBlack() | GrAND;
   long t1,t2;
   double seconds;
 
@@ -393,10 +393,10 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
 
 void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
   int i, j;
-  GrColor c1 = GrWhite();
-  GrColor c2 = GrWhite() | GrXOR;
-  GrColor c3 = GrWhite() | GrOR;
-  GrColor c4 = GrBlack() | GrAND;
+  GrxColor c1 = GrWhite();
+  GrxColor c2 = GrWhite() | GrXOR;
+  GrxColor c3 = GrWhite() | GrOR;
+  GrxColor c4 = GrBlack() | GrAND;
   long t1,t2;
   double seconds;
 

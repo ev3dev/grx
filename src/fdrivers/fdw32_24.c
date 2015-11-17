@@ -19,7 +19,7 @@
 #include "libwin32.h"
 #include "fdrivers/driver24.h"
 
-static void w32_drawpixel(int x, int y, GrColor color)
+static void w32_drawpixel(int x, int y, GrxColor color)
 {
     HDC hDC;
     COLORREF c;
@@ -35,7 +35,7 @@ static void w32_drawpixel(int x, int y, GrColor color)
     GRX_LEAVE();
 }
 
-static void w32_drawline(int x, int y, int dx, int dy, GrColor color)
+static void w32_drawline(int x, int y, int dx, int dy, GrxColor color)
 {
     RECT Rect;
 
@@ -59,7 +59,7 @@ static void w32_drawline(int x, int y, int dx, int dy, GrColor color)
     GRX_LEAVE();
 }
 
-static void w32_drawhline(int x, int y, int w, GrColor color)
+static void w32_drawhline(int x, int y, int w, GrxColor color)
 {
     RECT Rect;
 
@@ -73,7 +73,7 @@ static void w32_drawhline(int x, int y, int w, GrColor color)
     GRX_LEAVE();
 }
 
-static void w32_drawvline(int x, int y, int h, GrColor color)
+static void w32_drawvline(int x, int y, int h, GrxColor color)
 {
     RECT Rect;
 
@@ -87,7 +87,7 @@ static void w32_drawvline(int x, int y, int h, GrColor color)
     GRX_LEAVE();
 }
 
-static void w32_drawblock(int x, int y, int w, int h, GrColor color)
+static void w32_drawblock(int x, int y, int w, int h, GrxColor color)
 {
     RECT Rect;
 
@@ -102,7 +102,7 @@ static void w32_drawblock(int x, int y, int w, int h, GrColor color)
 }
 
 static void w32_drawbitmap(int x, int y, int w, int h, char *bmp,
-                           int pitch, int start, GrColor fg, GrColor bg)
+                           int pitch, int start, GrxColor fg, GrxColor bg)
 {
     RECT Rect;
 
@@ -117,7 +117,7 @@ static void w32_drawbitmap(int x, int y, int w, int h, char *bmp,
 }
 
 static void w32_drawpattern(int x, int y, int w, char patt,
-                            GrColor fg, GrColor bg)
+                            GrxColor fg, GrxColor bg)
 {
     RECT Rect;
 
@@ -132,7 +132,7 @@ static void w32_drawpattern(int x, int y, int w, char patt,
 }
 
 static void w32_bitblt(GrFrame *dst, int dx, int dy, GrFrame *src,
-                       int sx, int sy, int w, int h, GrColor op)
+                       int sx, int sy, int w, int h, GrxColor op)
 {
     RECT Rect;
 
@@ -147,9 +147,9 @@ static void w32_bitblt(GrFrame *dst, int dx, int dy, GrFrame *src,
 }
 
 void w32_putscanline(int x, int y, int w,
-                     const GrColor *scl, GrColor op )
+                     const GrxColor *scl, GrxColor op )
 {
-    GrColor skipc;
+    GrxColor skipc;
     RECT Rect;
 
     GRX_ENTER();
@@ -161,7 +161,7 @@ void w32_putscanline(int x, int y, int w,
     skipc = op ^ GrIMAGE;
     op &= GrCMODEMASK;
     for ( w += x; x < w; ++x) {
-        GrColor c = *(scl++);
+        GrxColor c = *(scl++);
         if (c != skipc) drawpixel(x, y, (c|op));
     }
 

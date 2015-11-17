@@ -49,7 +49,7 @@ void _XGrCopyBStore(int x, int y, int width, int lenght)
 }
 
 static INLINE
-void _XGrSetForeColor (GrColor color)
+void _XGrSetForeColor (GrxColor color)
 {
   GRX_ENTER();
   color &= GrCVALUEMASK;
@@ -63,7 +63,7 @@ void _XGrSetForeColor (GrColor color)
 }
 
 static INLINE
-void _XGrSetBackColor (GrColor color)
+void _XGrSetBackColor (GrxColor color)
 {
   GRX_ENTER();
   color &= GrCVALUEMASK;
@@ -77,7 +77,7 @@ void _XGrSetBackColor (GrColor color)
 }
 
 static INLINE
-void _XGrSetColorOper (GrColor color)
+void _XGrSetColorOper (GrxColor color)
 {
   static int _GXtable[4] = {
     GXcopy,     /* C_WRITE */
@@ -137,9 +137,9 @@ void _XGrCheckPixelCache(int y1, int y2)
 }
 
 static
-GrColor readpixel(GrFrame *c, int x, int y)
+GrxColor readpixel(GrFrame *c, int x, int y)
 {
-  GrColor col;
+  GrxColor col;
   GRX_ENTER();
   if (_XGrPixelCacheDrawable != (Drawable) c->gf_baseaddr[0]
       || _XGrPixelCacheImage == NULL
@@ -177,7 +177,7 @@ done:
 }
 
 static INLINE
-void drawpixel(int x,int y,GrColor c)
+void drawpixel(int x,int y,GrxColor c)
 {
   GRX_ENTER();
   _XGrSetForeColor (c);
@@ -194,7 +194,7 @@ void drawpixel(int x,int y,GrColor c)
 }
 
 static
-void drawhline(int x,int y,int w,GrColor c)
+void drawhline(int x,int y,int w,GrxColor c)
 {
   int x2;
 
@@ -214,7 +214,7 @@ void drawhline(int x,int y,int w,GrColor c)
 }
 
 static
-void drawvline(int x,int y,int h,GrColor c)
+void drawvline(int x,int y,int h,GrxColor c)
 {
   int y2;
 
@@ -234,7 +234,7 @@ void drawvline(int x,int y,int h,GrColor c)
 }
 
 static
-void drawblock(int x,int y,int w,int h,GrColor c)
+void drawblock(int x,int y,int w,int h,GrxColor c)
 {
   GRX_ENTER();
   _XGrSetForeColor (c);
@@ -254,7 +254,7 @@ void drawblock(int x,int y,int w,int h,GrColor c)
 
 
 static
-void drawline(int x,int y,int dx,int dy,GrColor c)
+void drawline(int x,int y,int dx,int dy,GrxColor c)
 {
   GRX_ENTER();
   _XGrSetForeColor (c);
@@ -275,7 +275,7 @@ void drawline(int x,int y,int dx,int dy,GrColor c)
 }
 
 static
-void drawbitmap(int x,int y,int w,int h,char *bmp,int pitch,int start,GrColor fg,GrColor bg)
+void drawbitmap(int x,int y,int w,int h,char *bmp,int pitch,int start,GrxColor fg,GrxColor bg)
 {
   XImage ximage;
 
@@ -390,7 +390,7 @@ void drawbitmap(int x,int y,int w,int h,char *bmp,int pitch,int start,GrColor fg
 
 /* Note: drawpattern is not tested because it's not used in this GRX version */
 static
-void drawpattern(int x,int y,int w,char patt,GrColor fg,GrColor bg)
+void drawpattern(int x,int y,int w,char patt,GrxColor fg,GrxColor bg)
 {
   XImage ximage;
 
@@ -507,7 +507,7 @@ void drawpattern(int x,int y,int w,char patt,GrColor fg,GrColor bg)
 }
 
 static
-void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op)
+void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op)
 {
   GRX_ENTER();
   _XGrSetColorOper (op);
@@ -529,7 +529,7 @@ void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrCo
 }
 
 static
-void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
+void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
   GRX_ENTER();
   if(GrColorMode(op) == GrIMAGE)
@@ -570,7 +570,7 @@ void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,Gr
   GRX_LEAVE();
 }
 
-static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
+static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
   GRX_ENTER();
   if(GrColorMode(op) == GrIMAGE)
@@ -624,9 +624,9 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
 }
 
 static
-void putscanline(int x, int y, int w, const GrColor *scl, GrColor op)
+void putscanline(int x, int y, int w, const GrxColor *scl, GrxColor op)
 {
-  GrColor skipc;
+  GrxColor skipc;
   int ind;
   GRX_ENTER();
   skipc = op ^ GrIMAGE;

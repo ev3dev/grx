@@ -113,7 +113,7 @@ void dualpageblt(GrFrame *dst,int dx,int dy,
 
 void _GrFrDrvPackedBitBltV2V(GrFrame *dst,int dx,int dy,
                              GrFrame *src,int sx,int sy,
-                             int w,int h,GrColor op)
+                             int w,int h,GrxColor op)
 {
 
         GRX_ENTER();

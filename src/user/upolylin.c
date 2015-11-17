@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "usercord.h"
 
-void GrUsrPolyLine(int numpts,int points[][2],GrColor c)
+void GrUsrPolyLine(int numpts,int points[][2],GrxColor c)
 {
         int pt;
         int (*tmp)[2];

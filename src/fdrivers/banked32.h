@@ -30,7 +30,7 @@
 #define FOFS(x,y,lo) umuladd32((y),(lo),((x)<<2))
 
 static INLINE
-GrColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrFrame *c,int x,int y)
 {
         GR_int32u offs;
         char *pp;
@@ -43,7 +43,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 }
 
 static INLINE
-void drawpixel(int x,int y,GrColor color)
+void drawpixel(int x,int y,GrxColor color)
 {
         GR_int32u offs;
         char *ptr;
@@ -65,7 +65,7 @@ void drawpixel(int x,int y,GrColor color)
 }
 
 #ifdef freplicate_l
-static void drawhline(int x,int y,int w,GrColor color)
+static void drawhline(int x,int y,int w,GrxColor color)
 {
         GR_int32u offs;
         GR_repl cval;
@@ -114,7 +114,7 @@ static
 static
 #include "fdrivers/generic/pattern.c"
 
-static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
+static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
         GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
@@ -134,7 +134,7 @@ static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
 
 #ifndef GRX_USE_RAM3x8
 
-static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
+static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
         GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
@@ -152,7 +152,7 @@ static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
         GRX_LEAVE();
 }
 
-static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
+static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
         GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(

@@ -22,7 +22,7 @@
 
 #include "test.h"
 
-static GrColor *EGA;
+static GrxColor *EGA;
 #define black EGA[0]
 #define red   EGA[12]
 #define blue  EGA[1]
@@ -50,7 +50,7 @@ static void speedtest(void)
         int sx = (GrSizeX() - 2*ww) / 32;
         int sy = (GrSizeY() - 2*hh) / 32;
         int  ii,jj;
-        GrColor color;
+        GrxColor color;
         long t1,t2,t3;
    char msg[81];
 

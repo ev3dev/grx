@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "usercord.h"
 
-void GrUsrFilledPolygon(int numpts,int points[][2],GrColor c)
+void GrUsrFilledPolygon(int numpts,int points[][2],GrxColor c)
 {
         int pt;
         int (*tmp)[2];

@@ -18,7 +18,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrPutScanline(int x1,int x2,int yy,const GrColor *c, GrColor op)
+void GrPutScanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op)
 /* Input   x1 : first x coordinate to be set                        */
 /*         x2 : last  x coordinate to be set                        */
 /*         yy : y coordinate                                        */

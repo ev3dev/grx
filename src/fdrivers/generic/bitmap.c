@@ -17,7 +17,7 @@
  **/
 
 void drawbitmap(int x,int y,int w,int h,
-                char *bmp,int pitch,int start,GrColor fg,GrColor bg)
+                char *bmp,int pitch,int start,GrxColor fg,GrxColor bg)
 {
         GRX_ENTER();
         w += x; h += y;

@@ -24,7 +24,7 @@
 
 static void PatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
                                 char *bmp,int pitch,int start,
-                                GrColor fg,GrColor bg,GrPattern *p)
+                                GrxColor fg,GrxColor bg,GrPattern *p)
 {
     GRX_ENTER();
     _GrFillBitmapPattern(x,y,w,h,bmp,pitch,start,p,bg);

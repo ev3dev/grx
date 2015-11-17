@@ -34,7 +34,7 @@ namespace Grx {
         ERROR;
     }
 
-    [CCode (cname = "GrColor", has_destroy_function = false, has_copy_function = false, has_type_id = false)]
+    [CCode (has_destroy_function = false, has_copy_function = false, has_type_id = false)]
     [SimpleType]
     public struct Color : uint32 {
         [CCode (cname = "GrColorValue")]
@@ -829,7 +829,7 @@ namespace Grx {
     [CCode (cname = "GrHighY")]
     public int high_y ();
 
-    [CCode (cname = "GrColor", has_type_id = false)]
+    [CCode (cname = "GrxColor", has_type_id = false)]
     [Flags]
     public enum ColorMode {
         [CCode (cname = "GrWRITE")]
@@ -980,10 +980,10 @@ namespace Grx {
      * It is an array of colors with the first element being the number of
      * colors in the table
      */
-    [CCode (cname = "GrColor", free_function = "g_free", has_type_id = false)]
+    [CCode (cname = "GrxColor", free_function = "g_free", has_type_id = false)]
     [Compact]
     public class ColorTable {
-        [CCode (cname = "GrColor", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxColor", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         [CCode (cname = "g_malloc0")]

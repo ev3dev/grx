@@ -23,7 +23,7 @@
 #include <grxkeys.h>
 #include "gfaz.h"
 
-GrColor *egacolors;
+GrxColor *egacolors;
 
 static int mouse_found = 0;
 static int mouse_count = 0;
@@ -208,7 +208,7 @@ void hide_mouse( void )
 /**************************************************************************/
 
 void dboton( int x, int y, int an, int al,
-             GrColor c, GrColor ct, char * s, int t )
+             GrxColor c, GrxColor ct, char * s, int t )
 
 //   x, y posici¢n de la esquina izquierda
 //   an, al ancho y alto

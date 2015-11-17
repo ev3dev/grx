@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrFilledEllipse(int xc,int yc,int xa,int ya,GrColor c)
+void GrFilledEllipse(int xc,int yc,int xa,int ya,GrxColor c)
 {
         GrFillArg fval;
         fval.color = c;

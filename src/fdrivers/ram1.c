@@ -30,25 +30,25 @@
 #define FOFS(x,y,lo)  umuladd32((y),(lo),((x)>>3))
 
 static INLINE
-GrColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrFrame *c,int x,int y)
 {
         GR_int8u *ptr;
         GRX_ENTER();
         ptr = (GR_int8u *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
-        GRX_RETURN((GrColor)( (*ptr >> (x & 7)) & 1));
+        GRX_RETURN((GrxColor)( (*ptr >> (x & 7)) & 1));
 }
 
 static INLINE
-GrColor readpixel_inv(GrFrame *c,int x,int y)
+GrxColor readpixel_inv(GrFrame *c,int x,int y)
 {
     GR_int8u *ptr;
     GRX_ENTER();
     ptr = (GR_int8u *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
-    GRX_RETURN((GrColor)(((*ptr >> (x & 7)) & 1) ? 0 : 1));
+    GRX_RETURN((GrxColor)(((*ptr >> (x & 7)) & 1) ? 0 : 1));
 }
 
 static INLINE
-void drawpixel(int x,int y,GrColor color)
+void drawpixel(int x,int y,GrxColor color)
 {
         GR_int8u *ptr;
         GR_int8u cval;
@@ -66,7 +66,7 @@ void drawpixel(int x,int y,GrColor color)
 }
 
 static INLINE
-void drawpixel_inv(int x,int y, GrColor color)
+void drawpixel_inv(int x,int y, GrxColor color)
 {
     drawpixel(x, y, GrColorMode(color)|GrColorValue(~color));
 }
@@ -78,7 +78,7 @@ void drawpixel_inv(int x,int y, GrColor color)
 #define maskset(d,c,msk,DF) \
     poke_b##DF((d),(peek_b##DF(d) & ~(msk)) | ((c) & (msk)))
 
-static void drawhline(int x,int y,int w,GrColor color) {
+static void drawhline(int x,int y,int w,GrxColor color) {
   int oper;
 
   GRX_ENTER();
@@ -124,12 +124,12 @@ done:
   GRX_LEAVE();
 }
 
-static void drawhline_inv(int x,int y,int h, GrColor color)
+static void drawhline_inv(int x,int y,int h, GrxColor color)
 {
     drawhline(x, y, h, GrColorMode(color)|GrColorValue(~color));
 }
 
-static void drawvline(int x,int y,int h,GrColor color)
+static void drawvline(int x,int y,int h,GrxColor color)
 {
         unsigned int lwdt, mask, oper;
         char *p;
@@ -170,7 +170,7 @@ static void drawvline(int x,int y,int h,GrColor color)
         GRX_LEAVE();
 }
 
-static void drawvline_inv(int x,int y,int h, GrColor color)
+static void drawvline_inv(int x,int y,int h, GrxColor color)
 {
     drawvline(x, y, h, GrColorMode(color)|GrColorValue(~color));
 }
@@ -192,7 +192,7 @@ static
 
 static void bltr2r(GrFrame *dst,int dx,int dy,
                    GrFrame *src,int x,int y,int w,int h,
-                   GrColor op)
+                   GrxColor op)
 {
     GRX_ENTER();
     _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt,FALSE);
@@ -201,7 +201,7 @@ static void bltr2r(GrFrame *dst,int dx,int dy,
 
 static void bltr2r_inv(GrFrame *dst,int dx,int dy,
                        GrFrame *src,int x,int y,int w,int h,
-                       GrColor op)
+                       GrxColor op)
 {
     GRX_ENTER();
     _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt,TRUE);

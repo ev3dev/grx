@@ -59,7 +59,7 @@ static void gputs(const char *s)
 
 static void revert(void)
 {
-        GrColor color;
+        GrxColor color;
 
         color = opt.txo_fgcolor.v;
         opt.txo_fgcolor.v = opt.txo_bgcolor.v | (color & GR_UNDERLINE_TEXT);

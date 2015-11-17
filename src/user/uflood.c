@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrFloodFill(int x, int y, GrColor border, GrColor c)
+void GrUsrFloodFill(int x, int y, GrxColor border, GrxColor c)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);

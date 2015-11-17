@@ -27,8 +27,8 @@ int     BWW =   83;
 
 void drbox(GrContext *src,int x,int y)
 {
-        GrColor c1 = GrAllocColor(0,0,255);
-        GrColor c2 = GrAllocColor(255,0,0);
+        GrxColor c1 = GrAllocColor(0,0,255);
+        GrxColor c2 = GrAllocColor(255,0,0);
         int  xx;
 
         GrClearScreen(c1);
@@ -59,7 +59,7 @@ void doblits(GrContext *src,int x,int y)
         }
 /*
   {
-        GrColor xc = GrAllocColor(255,255,255) | GrXOR;
+        GrxColor xc = GrAllocColor(255,255,255) | GrXOR;
         GrKeyRead();
         xx = (GrSizeX() - BWW)/ 2;
         yy = 2;
@@ -99,7 +99,7 @@ void blxtest(void)
 TESTFUNC(blittest)
 {
         GrFBoxColors bcolors,ocolors,icolors;
-        GrColor c,bg;
+        GrxColor c,bg;
         int  x = GrSizeX();
         int  y = GrSizeY();
         int  ww = (x * 2) / 3;

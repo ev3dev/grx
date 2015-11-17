@@ -48,7 +48,7 @@ struct _GR_bitmapinfoheader {
 /* ************************************************************************ */
 struct _GR_bmpimagecolors {
                 GR_int8u           *bp_palette; /* (R, G, B, Reserved) * | 2 | 16 | 256 */
-                GrColor            *bp_colormap;
+                GrxColor            *bp_colormap;
                 int                 bp_numcolors;
 };
 
@@ -73,6 +73,6 @@ GrPattern     *GrConvertBmpImageToStaticPattern ( GrBmpImage *_bmp );
 unsigned long  GrBmpImageWidth ( GrBmpImage* _bmp );
 unsigned long  GrBmpImageHeight ( GrBmpImage* _bmp );
 char          *GrBmpImagePalette ( GrBmpImage* _bmp );
-GrColor       *GrBmpImageColorMap ( GrBmpImage* _bmp );
-GrColor        GrBmpImageNumColors ( GrBmpImage* _bmp );
+GrxColor       *GrBmpImageColorMap ( GrBmpImage* _bmp );
+GrxColor        GrBmpImageNumColors ( GrBmpImage* _bmp );
 

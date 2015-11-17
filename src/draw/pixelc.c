@@ -19,9 +19,9 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-GrColor GrPixelC(GrContext *c,int x,int y)
+GrxColor GrPixelC(GrContext *c,int x,int y)
 {
-        GrColor retval;
+        GrxColor retval;
         cxclip_dot_(c,x,y,return(GrNOCOLOR));
         mouse_block(c,x,y,x,y);
         retval = (*c->gc_driver->readpixel)(

@@ -38,8 +38,8 @@ static struct {
         { 255, 255, 255 }       /* white */
 };
 
-GrColor *GrAllocEgaColors(void) {
-  static GrColor egapal[16];
+GrxColor *GrAllocEgaColors(void) {
+  static GrxColor egapal[16];
   int i;
   for (i=0; i < 16; ++i)
     egapal[i] = GrAllocColor(EGArgb[i].r,EGArgb[i].g,EGArgb[i].b);

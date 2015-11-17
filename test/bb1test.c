@@ -27,7 +27,7 @@ int main(void)
   int sizey = 40;
   int x = 0;
   int y = 40;
-  GrColor fcolor, bcolor;
+  GrxColor fcolor, bcolor;
   GrKeyType k;
 
   GrSetMode( GR_default_graphics );

@@ -103,7 +103,7 @@ extern void _GR_shift_scanline(GR_int8u **dst,
 
 void _GR_rblit_14(GrFrame *dst,int dx,int dy,
                   GrFrame *src,int x,int y,int w,int h,
-                  GrColor op, int planes, _GR_blitFunc bitblt, int invert)
+                  GrxColor op, int planes, _GR_blitFunc bitblt, int invert)
 {
     int pl;
     GRX_ENTER();

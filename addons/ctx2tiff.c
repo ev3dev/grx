@@ -133,8 +133,8 @@ SaveContextToTiff(GrContext *ctx, char *tiffn, unsigned compr, char *docn) {
     res = 0;
     for (row = 0; row < height; row++) {
       int x;
-      GrColor c;
-      const GrColor *rcb = GrGetScanlineC(ctx,0,width-1,row);
+      GrxColor c;
+      const GrxColor *rcb = GrGetScanlineC(ctx,0,width-1,row);
       if (rcb) {
         for (x=0; x < width; ++x) {
           c = rcb[x];

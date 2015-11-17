@@ -18,7 +18,7 @@
 
 #include "libgrx.h"
 
-void GrClearClipBox(GrColor bg)
+void GrClearClipBox(GrxColor bg)
 {
         GrFilledBox(0,0,CURC->gc_xmax,CURC->gc_ymax,bg);
 }

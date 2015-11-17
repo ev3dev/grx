@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrFloodFill(int x, int y, GrColor border, GrColor c)
+void GrFloodFill(int x, int y, GrxColor border, GrxColor c)
 {
         GrFillArg fval;
         fval.color = c;

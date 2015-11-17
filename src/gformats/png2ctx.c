@@ -120,7 +120,7 @@ static int readpng( FILE *f, GrContext *grc, int use_alpha )
   int i, x, y, r, g, b;
   int alpha = 0, ro, go, bo;
   int maxwidth, maxheight;
-  GrColor *pColors = NULL;
+  GrxColor *pColors = NULL;
 
   /* is it a PNG file? */
   if( fread( buf,1,8,f ) != 8 ) return -1;
@@ -211,7 +211,7 @@ static int readpng( FILE *f, GrContext *grc, int use_alpha )
   maxwidth = (width > GrSizeX()) ? GrSizeX() : width;
   maxheight = (height > GrSizeY()) ? GrSizeY() : height;
 
-  pColors = malloc( maxwidth * sizeof(GrColor) );
+  pColors = malloc( maxwidth * sizeof(GrxColor) );
   if( pColors == NULL ){
     free( row_pointers );
     row_pointers = NULL;
@@ -224,7 +224,7 @@ static int readpng( FILE *f, GrContext *grc, int use_alpha )
     pix_ptr = row_pointers[y];
     if( alpha_present && use_alpha ){
       memcpy( pColors,GrGetScanline( 0,maxwidth-1,y ),
-              sizeof(GrColor)*maxwidth );
+              sizeof(GrxColor)*maxwidth );
       }
     for( x=0; x<width; x++ ){
       r = *pix_ptr++;

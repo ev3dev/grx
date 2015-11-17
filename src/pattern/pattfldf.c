@@ -20,7 +20,7 @@
 #include "clipping.h"
 #include "shapes.h"
 
-void GrPatternFloodFill(int x, int y, GrColor border, GrPattern *p)
+void GrPatternFloodFill(int x, int y, GrxColor border, GrPattern *p)
 {
         GrFillArg fval;
 

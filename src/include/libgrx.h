@@ -282,7 +282,7 @@ extern int _GR_lastFreeColor;  /* eg. X11 and other windowing systems    */
 int _GrResetColors(void);      /* like GrResetColors but return true on success */
 
 #ifndef C_OPER
-#define C_OPER(color)   (unsigned int)(((GrColor)(color) >> 24) & 15)
+#define C_OPER(color)   (unsigned int)(((GrxColor)(color) >> 24) & 15)
 #endif
 #define C_WRITE         (int)(GrWRITE >> 24)
 #define C_XOR           (int)(GrXOR   >> 24)

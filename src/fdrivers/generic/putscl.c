@@ -16,14 +16,14 @@
  **/
 
 void putscanline(int x,int y,int w,
-                 const GrColor *scl, GrColor op )
+                 const GrxColor *scl, GrxColor op )
 {
-   GrColor skipc;
+   GrxColor skipc;
    GRX_ENTER();
    skipc = op ^ GrIMAGE;
    op &= GrCMODEMASK;
    for ( w += x; x < w; ++x) {
-     GrColor c = *(scl++);
+     GrxColor c = *(scl++);
      if (c != skipc) drawpixel(x,y,(c|op));
    }
    GRX_LEAVE();

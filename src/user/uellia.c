@@ -18,7 +18,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrColor c)
+void GrUsrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);

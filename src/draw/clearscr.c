@@ -18,7 +18,7 @@
 
 #include "libgrx.h"
 
-void GrClearScreen(GrColor bg)
+void GrClearScreen(GrxColor bg)
 {
         GrContext save;
         GrSaveContext(&save);

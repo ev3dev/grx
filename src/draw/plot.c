@@ -20,7 +20,7 @@
 #include "arith.h"
 #include "clipping.h"
 
-void GrPlot(int x,int y,GrColor c)
+void GrPlot(int x,int y,GrxColor c)
 {
         clip_dot(CURC,x,y);
         mouse_block(CURC,x,y,x,y);

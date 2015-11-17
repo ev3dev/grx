@@ -29,15 +29,15 @@
 
 
 static INLINE
-GrColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrFrame *c,int x,int y)
 {
         GR_int32u offs;
         unsigned mask;
-        GrColor pix;
+        GrxColor pix;
         GRX_ENTER();
         offs = FOFS(x,y,c->gf_lineoffset);
         mask = 0x80 >> (x &= 7);
-        pix = (GrColor)(
+        pix = (GrxColor)(
             (((c->gf_baseaddr[0][offs] & mask)     ) |
              ((c->gf_baseaddr[1][offs] & mask) << 1) |
              ((c->gf_baseaddr[2][offs] & mask) << 2) |
@@ -48,7 +48,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 }
 
 static INLINE
-void drawpixel(int x,int y,GrColor color)
+void drawpixel(int x,int y,GrxColor color)
 {
         GR_int32u offs;
         unsigned int mask;
@@ -89,7 +89,7 @@ void drawpixel(int x,int y,GrColor color)
 #define maskset(d,c,msk) \
     poke_b((d),(peek_b(d) & ~(msk)) | ((c) & (msk)))
 
-static void drawhline(int x,int y,int w,GrColor color) {
+static void drawhline(int x,int y,int w,GrxColor color) {
   int oper, cval, wd, pl;
   GR_int32u DO;
   GR_int8u  lm, rm;
@@ -140,7 +140,7 @@ static void drawhline(int x,int y,int w,GrColor color) {
 }
 #undef maskoper
 
-static void drawvline(int x,int y,int h,GrColor color)
+static void drawvline(int x,int y,int h,GrxColor color)
 {
         unsigned int lwdt, mask, oper, hh;
         char *p;
@@ -257,7 +257,7 @@ static
 
 static void bltr2r(GrFrame *dst,int dx,int dy,
                    GrFrame *src,int x,int y,int w,int h,
-                   GrColor op)
+                   GrxColor op)
 {
     GRX_ENTER();
     _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,4,bitblt,FALSE);

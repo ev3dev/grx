@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void GrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrColor c)
+void GrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c)
 {
     int (*pnts)[2];
     setup_ALLOC();

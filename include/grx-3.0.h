@@ -40,7 +40,7 @@ typedef struct _GR_context      GrContext;
 /* ================================================================== */
 
 /* need unsigned 32 bit integer for color stuff */
-typedef unsigned int GrColor;
+typedef guint32 GrxColor;
 
 /* ================================================================== */
 /*                           MODE SETTING                             */
@@ -61,9 +61,9 @@ typedef enum _GR_graphicsModes {
         GR_width_height_graphics,           /* int w,int h */
         GR_biggest_noninterlaced_graphics,
         GR_biggest_graphics,
-        GR_width_height_color_graphics,     /* int w,int h,GrColor nc */
-        GR_width_height_color_text,         /* int w,int h,GrColor nc */
-        GR_custom_graphics,                 /* int w,int h,GrColor nc,int vx,int vy */
+        GR_width_height_color_graphics,     /* int w,int h,GrxColor nc */
+        GR_width_height_color_text,         /* int w,int h,GrxColor nc */
+        GR_custom_graphics,                 /* int w,int h,GrxColor nc,int vx,int vy */
         /* ==== equivalent modes which do not clear the video memory ==== */
         GR_NC_80_25_text,
         GR_NC_default_text,
@@ -74,9 +74,9 @@ typedef enum _GR_graphicsModes {
         GR_NC_width_height_graphics,        /* int w,int h */
         GR_NC_biggest_noninterlaced_graphics,
         GR_NC_biggest_graphics,
-        GR_NC_width_height_color_graphics,  /* int w,int h,GrColor nc */
-        GR_NC_width_height_color_text,      /* int w,int h,GrColor nc */
-        GR_NC_custom_graphics,              /* int w,int h,GrColor nc,int vx,int vy */
+        GR_NC_width_height_color_graphics,  /* int w,int h,GrxColor nc */
+        GR_NC_width_height_color_text,      /* int w,int h,GrxColor nc */
+        GR_NC_custom_graphics,              /* int w,int h,GrxColor nc,int vx,int vy */
         /* ==== plane instead of color based modes ==== */
         /* colors = 1 << bpp  >>> resort enum for GRX3 <<< */
         GR_width_height_bpp_graphics,       /* int w,int h,int bpp */
@@ -219,23 +219,23 @@ struct _GR_frameDriver {
     int      bits_per_pixel;             /* bits per pixel */
     long     max_plane_size;             /* maximum plane size in bytes */
     int      (*init)(GrVideoMode *md);
-    GrColor  (*readpixel)(GrFrame *c,int x,int y);
-    void     (*drawpixel)(int x,int y,GrColor c);
-    void     (*drawline)(int x,int y,int dx,int dy,GrColor c);
-    void     (*drawhline)(int x,int y,int w,GrColor c);
-    void     (*drawvline)(int x,int y,int h,GrColor c);
-    void     (*drawblock)(int x,int y,int w,int h,GrColor c);
-    void     (*drawbitmap)(int x,int y,int w,int h,char *bmp,int pitch,int start,GrColor fg,GrColor bg);
-    void     (*drawpattern)(int x,int y,int w,char patt,GrColor fg,GrColor bg);
-    void     (*bitblt)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
-    void     (*bltv2r)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
-    void     (*bltr2v)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrColor op);
+    GrxColor  (*readpixel)(GrFrame *c,int x,int y);
+    void     (*drawpixel)(int x,int y,GrxColor c);
+    void     (*drawline)(int x,int y,int dx,int dy,GrxColor c);
+    void     (*drawhline)(int x,int y,int w,GrxColor c);
+    void     (*drawvline)(int x,int y,int h,GrxColor c);
+    void     (*drawblock)(int x,int y,int w,int h,GrxColor c);
+    void     (*drawbitmap)(int x,int y,int w,int h,char *bmp,int pitch,int start,GrxColor fg,GrxColor bg);
+    void     (*drawpattern)(int x,int y,int w,char patt,GrxColor fg,GrxColor bg);
+    void     (*bitblt)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
+    void     (*bltv2r)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
+    void     (*bltr2v)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
     /* new functions in v2.3 */
-    GrColor *(*getindexedscanline)(GrFrame *c,int x, int y, int w, int *indx);
+    GrxColor *(*getindexedscanline)(GrFrame *c,int x, int y, int w, int *indx);
       /* will return an array of pixel values pv[] read from frame   */
       /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
       /*    else             pv[i=0..w-1] = readpixel(x+indx[i],y)   */
-    void     (*putscanline)(int x, int y, int w,const GrColor *scl, GrColor op);
+    void     (*putscanline)(int x, int y, int w,const GrxColor *scl, GrxColor op);
       /** will draw scl[i=0..w-1] to frame:                          */
       /*    if (scl[i] != skipcolor) drawpixel(x+i,y,(scl[i] | op))  */
 };
@@ -253,7 +253,7 @@ extern const struct _GR_driverInfo {
         enum   _GR_graphicsModes mcode;     /* code for the current mode */
         int     deftw,defth;                /* default text mode size */
         int     defgw,defgh;                /* default graphics mode size */
-        GrColor deftc,defgc;                /* default text and graphics colors */
+        GrxColor deftc,defgc;                /* default text and graphics colors */
         int     vposx,vposy;                /* current virtual viewport position */
         int     errsfatal;                  /* if set, exit upon errors */
         int     moderestore;                /* restore startup video mode if set */
@@ -464,22 +464,22 @@ int   GrHighY(void);
 #define GrCMODEMASK     0xff000000UL    /* color operation mask */
 #define GrNOCOLOR       (GrXOR | 0)     /* GrNOCOLOR is used for "no" color */
 
-GrColor GrColorValue(GrColor c);
-GrColor GrColorMode(GrColor c);
-GrColor GrWriteModeColor(GrColor c);
-GrColor GrXorModeColor(GrColor c);
-GrColor GrOrModeColor(GrColor c);
-GrColor GrAndModeColor(GrColor c);
-GrColor GrImageModeColor(GrColor c);
+GrxColor GrColorValue(GrxColor c);
+GrxColor GrColorMode(GrxColor c);
+GrxColor GrWriteModeColor(GrxColor c);
+GrxColor GrXorModeColor(GrxColor c);
+GrxColor GrOrModeColor(GrxColor c);
+GrxColor GrAndModeColor(GrxColor c);
+GrxColor GrImageModeColor(GrxColor c);
 
 /*
  * color system info structure (all [3] arrays are [r,g,b])
  */
 extern const struct _GR_colorInfo {
-        GrColor       ncolors;              /* number of colors */
-        GrColor       nfree;                /* number of unallocated colors */
-        GrColor       black;                /* the black color */
-        GrColor       white;                /* the white color */
+        GrxColor       ncolors;              /* number of colors */
+        GrxColor       nfree;                /* number of unallocated colors */
+        GrxColor       black;                /* the black color */
+        GrxColor       white;                /* the white color */
         unsigned int  RGBmode;              /* set when RGB mode */
         unsigned int  prec[3];              /* color field precisions */
         unsigned int  pos[3];               /* color field positions */
@@ -499,42 +499,42 @@ void    GrResetColors(void);
 void    GrSetRGBcolorMode(void);
 void    GrRefreshColors(void);
 
-GrColor GrNumColors(void);
-GrColor GrNumFreeColors(void);
+GrxColor GrNumColors(void);
+GrxColor GrNumFreeColors(void);
 
-GrColor GrBlack(void);
-GrColor GrWhite(void);
+GrxColor GrBlack(void);
+GrxColor GrWhite(void);
 
-GrColor GrBuildRGBcolorT(int r,int g,int b);
-GrColor GrBuildRGBcolorR(int r,int g,int b);
-int     GrRGBcolorRed(GrColor c);
-int     GrRGBcolorGreen(GrColor c);
-int     GrRGBcolorBlue(GrColor c);
+GrxColor GrBuildRGBcolorT(int r,int g,int b);
+GrxColor GrBuildRGBcolorR(int r,int g,int b);
+int     GrRGBcolorRed(GrxColor c);
+int     GrRGBcolorGreen(GrxColor c);
+int     GrRGBcolorBlue(GrxColor c);
 
-GrColor GrAllocColor(int r,int g,int b);   /* shared, read-only */
-GrColor GrAllocColorID(int r,int g,int b); /* potentially inlined version */
-GrColor GrAllocColor2(long hcolor);        /* shared, read-only, 0xRRGGBB */
-GrColor GrAllocColor2ID(long hcolor);      /* potentially inlined version */
-GrColor GrAllocCell(void);                 /* unshared, read-write */
+GrxColor GrAllocColor(int r,int g,int b);   /* shared, read-only */
+GrxColor GrAllocColorID(int r,int g,int b); /* potentially inlined version */
+GrxColor GrAllocColor2(long hcolor);        /* shared, read-only, 0xRRGGBB */
+GrxColor GrAllocColor2ID(long hcolor);      /* potentially inlined version */
+GrxColor GrAllocCell(void);                 /* unshared, read-write */
 
-GrColor *GrAllocEgaColors(void);           /* shared, read-only standard EGA colors */
+GrxColor *GrAllocEgaColors(void);           /* shared, read-only standard EGA colors */
 
-void    GrSetColor(GrColor c,int r,int g,int b);
-void    GrFreeColor(GrColor c);
-void    GrFreeCell(GrColor c);
+void    GrSetColor(GrxColor c,int r,int g,int b);
+void    GrFreeColor(GrxColor c);
+void    GrFreeCell(GrxColor c);
 
-void    GrQueryColor(GrColor c,int *r,int *g,int *b);
-void    GrQueryColorID(GrColor c,int *r,int *g,int *b);
-void    GrQueryColor2(GrColor c,long *hcolor);
-void    GrQueryColor2ID(GrColor c,long *hcolor);
+void    GrQueryColor(GrxColor c,int *r,int *g,int *b);
+void    GrQueryColorID(GrxColor c,int *r,int *g,int *b);
+void    GrQueryColor2(GrxColor c,long *hcolor);
+void    GrQueryColor2ID(GrxColor c,long *hcolor);
 
 int     GrColorSaveBufferSize(void);
 void    GrSaveColors(void *buffer);
 void    GrRestoreColors(void *buffer);
 
 #ifndef GRX_SKIP_INLINES
-#define GrColorValue(c)         ((GrColor)(c) & GrCVALUEMASK)
-#define GrColorMode(c)          ((GrColor)(c) & GrCMODEMASK)
+#define GrColorValue(c)         ((GrxColor)(c) & GrCVALUEMASK)
+#define GrColorMode(c)          ((GrxColor)(c) & GrCMODEMASK)
 #define GrWriteModeColor(c)     (GrColorValue(c) | GrWRITE)
 #define GrXorModeColor(c)       (GrColorValue(c) | GrXOR)
 #define GrOrModeColor(c)        (GrColorValue(c) | GrOR)
@@ -553,9 +553,9 @@ void    GrRestoreColors(void *buffer);
         GrColorInfo->white                                                     \
 )
 #define GrBuildRGBcolorT(r,g,b) ((                                             \
-        ((GrColor)((int)(r) & GrColorInfo->mask[0]) << GrColorInfo->shift[0]) |\
-        ((GrColor)((int)(g) & GrColorInfo->mask[1]) << GrColorInfo->shift[1]) |\
-        ((GrColor)((int)(b) & GrColorInfo->mask[2]) << GrColorInfo->shift[2])  \
+        ((GrxColor)((int)(r) & GrColorInfo->mask[0]) << GrColorInfo->shift[0]) |\
+        ((GrxColor)((int)(g) & GrColorInfo->mask[1]) << GrColorInfo->shift[1]) |\
+        ((GrxColor)((int)(b) & GrColorInfo->mask[2]) << GrColorInfo->shift[2])  \
         ) >> GrColorInfo->norm                                                 \
 )
 #define GrBuildRGBcolorR(r,g,b) GrBuildRGBcolorT(                              \
@@ -564,15 +564,15 @@ void    GrRestoreColors(void *buffer);
         (((unsigned int)(b)) > GrColorInfo->mask[2]) ? 255 : (unsigned int)(b) + GrColorInfo->round[2]  \
 )
 #define GrRGBcolorRed(c) (                                                     \
-        (int)(((GrColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[0]) &  \
+        (int)(((GrxColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[0]) &  \
         (GrColorInfo->mask[0])                                                 \
 )
 #define GrRGBcolorGreen(c) (                                                   \
-        (int)(((GrColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[1]) &  \
+        (int)(((GrxColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[1]) &  \
         (GrColorInfo->mask[1])                                                 \
 )
 #define GrRGBcolorBlue(c) (                                                    \
-        (int)(((GrColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[2]) &  \
+        (int)(((GrxColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[2]) &  \
         (GrColorInfo->mask[2])                                                 \
 )
 #define GrAllocColorID(r,g,b) (GrColorInfo->RGBmode ?                          \
@@ -596,11 +596,11 @@ void    GrRestoreColors(void *buffer);
         *(b) = GrRGBcolorBlue(c);                                              \
         break;                                                                 \
         }                                                                      \
-        if(((GrColor)(c) < GrColorInfo->ncolors) &&                            \
-           (GrColorInfo->ctable[(GrColor)(c)].defined)) {                      \
-        *(r) = GrColorInfo->ctable[(GrColor)(c)].r;                            \
-        *(g) = GrColorInfo->ctable[(GrColor)(c)].g;                            \
-        *(b) = GrColorInfo->ctable[(GrColor)(c)].b;                            \
+        if(((GrxColor)(c) < GrColorInfo->ncolors) &&                            \
+           (GrColorInfo->ctable[(GrxColor)(c)].defined)) {                      \
+        *(r) = GrColorInfo->ctable[(GrxColor)(c)].r;                            \
+        *(g) = GrColorInfo->ctable[(GrxColor)(c)].g;                            \
+        *(b) = GrColorInfo->ctable[(GrxColor)(c)].b;                            \
         break;                                                                 \
         }                                                                      \
         *(r) = *(g) = *(b) = 0;                                                \
@@ -612,11 +612,11 @@ void    GrRestoreColors(void *buffer);
         *(hcolor) |= GrRGBcolorBlue(c);                                        \
         break;                                                                 \
         }                                                                      \
-        if(((GrColor)(c) < GrColorInfo->ncolors) &&                            \
-           (GrColorInfo->ctable[(GrColor)(c)].defined)) {                      \
-        *(hcolor) = GrColorInfo->ctable[(GrColor)(c)].r;                       \
-        *(hcolor) = GrColorInfo->ctable[(GrColor)(c)].g;                       \
-        *(hcolor) = GrColorInfo->ctable[(GrColor)(c)].b;                       \
+        if(((GrxColor)(c) < GrColorInfo->ncolors) &&                            \
+           (GrColorInfo->ctable[(GrxColor)(c)].defined)) {                      \
+        *(hcolor) = GrColorInfo->ctable[(GrxColor)(c)].r;                       \
+        *(hcolor) = GrColorInfo->ctable[(GrxColor)(c)].g;                       \
+        *(hcolor) = GrColorInfo->ctable[(GrxColor)(c)].b;                       \
         break;                                                                 \
         }                                                                      \
         *(hcolor) = 0;                                                         \
@@ -628,7 +628,7 @@ void    GrRestoreColors(void *buffer);
  *   it is an array of colors with the first element being
  *   the number of colors in the table
  */
-typedef GrColor *GrColorTableP;
+typedef GrxColor *GrColorTableP;
 
 #define GR_CTABLE_SIZE(table) (                                                \
         (table) ? (unsigned int)((table)[0]) : 0U                              \
@@ -652,52 +652,52 @@ typedef GrColor *GrColorTableP;
 #define GR_ARC_STYLE_CLOSE2     2
 
 typedef struct {                        /* framed box colors */
-        GrColor fbx_intcolor;
-        GrColor fbx_topcolor;
-        GrColor fbx_rightcolor;
-        GrColor fbx_bottomcolor;
-        GrColor fbx_leftcolor;
+        GrxColor fbx_intcolor;
+        GrxColor fbx_topcolor;
+        GrxColor fbx_rightcolor;
+        GrxColor fbx_bottomcolor;
+        GrxColor fbx_leftcolor;
 } GrFBoxColors;
 
-void GrClearScreen(GrColor bg);
-void GrClearContext(GrColor bg);
-void GrClearContextC(GrContext *ctx, GrColor bg);
-void GrClearClipBox(GrColor bg);
-void GrPlot(int x,int y,GrColor c);
-void GrLine(int x1,int y1,int x2,int y2,GrColor c);
-void GrHLine(int x1,int x2,int y,GrColor c);
-void GrVLine(int x,int y1,int y2,GrColor c);
-void GrBox(int x1,int y1,int x2,int y2,GrColor c);
-void GrFilledBox(int x1,int y1,int x2,int y2,GrColor c);
+void GrClearScreen(GrxColor bg);
+void GrClearContext(GrxColor bg);
+void GrClearContextC(GrContext *ctx, GrxColor bg);
+void GrClearClipBox(GrxColor bg);
+void GrPlot(int x,int y,GrxColor c);
+void GrLine(int x1,int y1,int x2,int y2,GrxColor c);
+void GrHLine(int x1,int x2,int y,GrxColor c);
+void GrVLine(int x,int y1,int y2,GrxColor c);
+void GrBox(int x1,int y1,int x2,int y2,GrxColor c);
+void GrFilledBox(int x1,int y1,int x2,int y2,GrxColor c);
 void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
 int  GrGenerateEllipse(int xc,int yc,int xa,int ya,int points[GR_MAX_ELLIPSE_POINTS][2]);
 int  GrGenerateEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int points[GR_MAX_ELLIPSE_POINTS][2]);
 void GrLastArcCoords(int *xs,int *ys,int *xe,int *ye,int *xc,int *yc);
-void GrCircle(int xc,int yc,int r,GrColor c);
-void GrEllipse(int xc,int yc,int xa,int ya,GrColor c);
-void GrCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c);
-void GrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrColor c);
-void GrFilledCircle(int xc,int yc,int r,GrColor c);
-void GrFilledEllipse(int xc,int yc,int xa,int ya,GrColor c);
-void GrFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c);
-void GrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrColor c);
-void GrPolyLine(int numpts,int points[][2],GrColor c);
-void GrPolygon(int numpts,int points[][2],GrColor c);
-void GrFilledConvexPolygon(int numpts,int points[][2],GrColor c);
-void GrFilledPolygon(int numpts,int points[][2],GrColor c);
-void GrBitBlt(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,GrColor op);
-void GrBitBlt1bpp(GrContext *dst,int dx,int dy,GrContext *src,int x1,int y1,int x2,int y2,GrColor fg,GrColor bg);
-void GrFloodFill(int x, int y, GrColor border, GrColor c);
-void GrFloodSpill(int x1, int y1, int x2, int y2, GrColor old_c, GrColor new_c);
-void GrFloodSpill2(int x1, int y1, int x2, int y2, GrColor old_c1, GrColor new_c1, GrColor old_c2, GrColor new_c2);
-void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2, GrColor old_c, GrColor new_c);
-void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2, GrColor old_c1, GrColor new_c1, GrColor old_c2, GrColor new_c2);
+void GrCircle(int xc,int yc,int r,GrxColor c);
+void GrEllipse(int xc,int yc,int xa,int ya,GrxColor c);
+void GrCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c);
+void GrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c);
+void GrFilledCircle(int xc,int yc,int r,GrxColor c);
+void GrFilledEllipse(int xc,int yc,int xa,int ya,GrxColor c);
+void GrFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c);
+void GrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c);
+void GrPolyLine(int numpts,int points[][2],GrxColor c);
+void GrPolygon(int numpts,int points[][2],GrxColor c);
+void GrFilledConvexPolygon(int numpts,int points[][2],GrxColor c);
+void GrFilledPolygon(int numpts,int points[][2],GrxColor c);
+void GrBitBlt(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,GrxColor op);
+void GrBitBlt1bpp(GrContext *dst,int dx,int dy,GrContext *src,int x1,int y1,int x2,int y2,GrxColor fg,GrxColor bg);
+void GrFloodFill(int x, int y, GrxColor border, GrxColor c);
+void GrFloodSpill(int x1, int y1, int x2, int y2, GrxColor old_c, GrxColor new_c);
+void GrFloodSpill2(int x1, int y1, int x2, int y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
+void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2, GrxColor old_c, GrxColor new_c);
+void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
 
-GrColor GrPixel(int x,int y);
-GrColor GrPixelC(GrContext *c,int x,int y);
+GrxColor GrPixel(int x,int y);
+GrxColor GrPixelC(GrContext *c,int x,int y);
 
-const GrColor *GrGetScanline(int x1,int x2,int yy);
-const GrColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy);
+const GrxColor *GrGetScanline(int x1,int x2,int yy);
+const GrxColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy);
 /* Input   ctx: source context, if NULL the current context is used */
 /*         x1 : first x coordinate read                             */
 /*         x2 : last  x coordinate read                             */
@@ -708,7 +708,7 @@ const GrColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy);
 /*                      (w = |x2-y1|)                               */
 /*           Output data is valid until next GRX call !             */
 
-void GrPutScanline(int x1,int x2,int yy,const GrColor *c, GrColor op);
+void GrPutScanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op);
 /* Input   x1 : first x coordinate to be set                        */
 /*         x2 : last  x coordinate to be set                        */
 /*         yy : y coordinate                                        */
@@ -729,17 +729,17 @@ void GrPutScanline(int x1,int x2,int yy,const GrColor *c, GrColor op);
 /*                 NON CLIPPING DRAWING PRIMITIVES                    */
 /* ================================================================== */
 
-void GrPlotNC(int x,int y,GrColor c);
-void GrLineNC(int x1,int y1,int x2,int y2,GrColor c);
-void GrHLineNC(int x1,int x2,int y,GrColor c);
-void GrVLineNC(int x,int y1,int y2,GrColor c);
-void GrBoxNC(int x1,int y1,int x2,int y2,GrColor c);
-void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrColor c);
+void GrPlotNC(int x,int y,GrxColor c);
+void GrLineNC(int x1,int y1,int x2,int y2,GrxColor c);
+void GrHLineNC(int x1,int x2,int y,GrxColor c);
+void GrVLineNC(int x,int y1,int y2,GrxColor c);
+void GrBoxNC(int x1,int y1,int x2,int y2,GrxColor c);
+void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrxColor c);
 void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
-void GrBitBltNC(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,GrColor op);
+void GrBitBltNC(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,GrxColor op);
 
-GrColor GrPixelNC(int x,int y);
-GrColor GrPixelCNC(GrContext *c,int x,int y);
+GrxColor GrPixelNC(int x,int y);
+GrxColor GrPixelCNC(GrContext *c,int x,int y);
 
 #ifndef GRX_SKIP_INLINES
 #define GrPlotNC(x,y,c) (                                                      \
@@ -912,7 +912,7 @@ char *GrFontCharBitmap(const GrFont *font,int chr);
 char *GrFontCharAuxBmp(GrFont *font,int chr,int dir,int ul);
 
 typedef union _GR_textColor {           /* text color union */
-        GrColor       v;                    /* color value for "direct" text */
+        GrxColor       v;                    /* color value for "direct" text */
         GrColorTableP p;                    /* color table for attribute text */
 } GrTextColor;
 
@@ -949,7 +949,7 @@ void GrStringSize(void *text,int length,const GrTextOption *opt,int *w,int *h);
 
 void GrDrawChar(int chr,int x,int y,const GrTextOption *opt);
 void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt);
-void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
+void GrTextXY(int x,int y,char *text,GrxColor fg,GrxColor bg);
 
 void GrDumpChar(int chr,int col,int row,const GrTextRegion *r);
 void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r);
@@ -1033,7 +1033,7 @@ void GrDumpTextRegion(const GrTextRegion *r);
  *   the dash pattern always begins with a drawn section
  */
 typedef struct {
-        GrColor lno_color;                  /* color used to draw line */
+        GrxColor lno_color;                  /* color used to draw line */
         int     lno_width;                  /* width of the line */
         int     lno_pattlen;                /* length of the dash pattern */
         unsigned char *lno_dashpat;         /* draw/nodraw pattern */
@@ -1061,8 +1061,8 @@ typedef struct _GR_bitmap {
         int     bmp_ispixmap;               /* type flag for pattern union */
         int     bmp_height;                 /* bitmap height */
         char   *bmp_data;                   /* pointer to the bit pattern */
-        GrColor bmp_fgcolor;                /* foreground color for fill */
-        GrColor bmp_bgcolor;                /* background color for fill */
+        GrxColor bmp_fgcolor;                /* foreground color for fill */
+        GrxColor bmp_bgcolor;                /* background color for fill */
         int     bmp_memflags;               /* set if dynamically allocated */
 } GrBitmap;
 
@@ -1076,7 +1076,7 @@ typedef struct _GR_pixmap {
         int     pxp_ispixmap;               /* type flag for pattern union */
         int     pxp_width;                  /* pixmap width (in pixels)  */
         int     pxp_height;                 /* pixmap height (in pixels) */
-        GrColor pxp_oper;                   /* bitblt mode (SET, OR, XOR, AND, IMAGE) */
+        GrxColor pxp_oper;                   /* bitblt mode (SET, OR, XOR, AND, IMAGE) */
         struct _GR_frame pxp_source;        /* source context for fill */
 } GrPixmap;
 
@@ -1110,7 +1110,7 @@ typedef struct {
 } GrLinePattern;
 
 GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP colors);
-GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrColor fgc,GrColor bgc);
+GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxColor bgc);
 GrPattern *GrConvertToPixmap(GrContext *src);
 
 void GrDestroyPattern(GrPattern *p);
@@ -1133,7 +1133,7 @@ void GrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,int style,Gr
 void GrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrPattern *p);
 void GrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
-void GrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);
+void GrPatternFloodFill(int x, int y, GrxColor border, GrPattern *p);
 
 void GrPatternDrawChar(int chr,int x,int y,const GrTextOption *opt,GrPattern *p);
 void GrPatternDrawString(void *text,int length,int x,int y,const GrTextOption *opt,GrPattern *p);
@@ -1197,29 +1197,29 @@ void GrGetUserWindow(int *x1,int *y1,int *x2,int *y2);
 void GrGetScreenCoord(int *x,int *y);
 void GrGetUserCoord(int *x,int *y);
 
-void GrUsrPlot(int x,int y,GrColor c);
-void GrUsrLine(int x1,int y1,int x2,int y2,GrColor c);
-void GrUsrHLine(int x1,int x2,int y,GrColor c);
-void GrUsrVLine(int x,int y1,int y2,GrColor c);
-void GrUsrBox(int x1,int y1,int x2,int y2,GrColor c);
-void GrUsrFilledBox(int x1,int y1,int x2,int y2,GrColor c);
+void GrUsrPlot(int x,int y,GrxColor c);
+void GrUsrLine(int x1,int y1,int x2,int y2,GrxColor c);
+void GrUsrHLine(int x1,int x2,int y,GrxColor c);
+void GrUsrVLine(int x,int y1,int y2,GrxColor c);
+void GrUsrBox(int x1,int y1,int x2,int y2,GrxColor c);
+void GrUsrFilledBox(int x1,int y1,int x2,int y2,GrxColor c);
 void GrUsrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c);
-void GrUsrCircle(int xc,int yc,int r,GrColor c);
-void GrUsrEllipse(int xc,int yc,int xa,int ya,GrColor c);
-void GrUsrCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c);
-void GrUsrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrColor c);
-void GrUsrFilledCircle(int xc,int yc,int r,GrColor c);
-void GrUsrFilledEllipse(int xc,int yc,int xa,int ya,GrColor c);
-void GrUsrFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c);
-void GrUsrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrColor c);
-void GrUsrPolyLine(int numpts,int points[][2],GrColor c);
-void GrUsrPolygon(int numpts,int points[][2],GrColor c);
-void GrUsrFilledConvexPolygon(int numpts,int points[][2],GrColor c);
-void GrUsrFilledPolygon(int numpts,int points[][2],GrColor c);
-void GrUsrFloodFill(int x, int y, GrColor border, GrColor c);
+void GrUsrCircle(int xc,int yc,int r,GrxColor c);
+void GrUsrEllipse(int xc,int yc,int xa,int ya,GrxColor c);
+void GrUsrCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c);
+void GrUsrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c);
+void GrUsrFilledCircle(int xc,int yc,int r,GrxColor c);
+void GrUsrFilledEllipse(int xc,int yc,int xa,int ya,GrxColor c);
+void GrUsrFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c);
+void GrUsrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c);
+void GrUsrPolyLine(int numpts,int points[][2],GrxColor c);
+void GrUsrPolygon(int numpts,int points[][2],GrxColor c);
+void GrUsrFilledConvexPolygon(int numpts,int points[][2],GrxColor c);
+void GrUsrFilledPolygon(int numpts,int points[][2],GrxColor c);
+void GrUsrFloodFill(int x, int y, GrxColor border, GrxColor c);
 
-GrColor GrUsrPixel(int x,int y);
-GrColor GrUsrPixelC(GrContext *c,int x,int y);
+GrxColor GrUsrPixel(int x,int y);
+GrxColor GrUsrPixelC(GrContext *c,int x,int y);
 
 void GrUsrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
 void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
@@ -1248,11 +1248,11 @@ void GrUsrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,int style
 void GrUsrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrPattern *p);
 void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
-void GrUsrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);
+void GrUsrPatternFloodFill(int x, int y, GrxColor border, GrPattern *p);
 
 void GrUsrDrawChar(int chr,int x,int y,const GrTextOption *opt);
 void GrUsrDrawString(char *text,int length,int x,int y,const GrTextOption *opt);
-void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
+void GrUsrTextXY(int x,int y,char *text,GrxColor fg,GrxColor bg);
 
 /* ================================================================== */
 /*                    GRAPHICS CURSOR UTILITIES                       */
@@ -1346,7 +1346,7 @@ extern const struct _GR_mouseInfo {
         int     docheck;                            /* need to check before gr. op. to screen */
         int     cursmode;                           /* mouse cursor draw mode */
         int     x1,y1,x2,y2;                        /* auxiliary params for some cursor draw modes */
-        GrColor curscolor;                          /* color for some cursor draw modes */
+        GrxColor curscolor;                          /* color for some cursor draw modes */
         int     owncursor;                          /* auto generated cursor */
         int     xpos,ypos;                          /* current mouse position */
         int     xmin,xmax;                          /* mouse movement X coordinate limits */
@@ -1385,7 +1385,7 @@ int  GrMousePendingEvent(void);
 
 GrCursor *GrMouseGetCursor(void);
 void GrMouseSetCursor(GrCursor *cursor);
-void GrMouseSetColors(GrColor fg,GrColor bg);
+void GrMouseSetColors(GrxColor fg,GrxColor bg);
 void GrMouseSetCursorMode(int mode,...);
 void GrMouseDisplayCursor(void);
 void GrMouseEraseCursor(void);

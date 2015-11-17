@@ -23,8 +23,8 @@ void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r)
 {
         GrColorTableP fgcp = r->txr_fgcolor.p;
         GrColorTableP bgcp = r->txr_bgcolor.p;
-        GrColor fgcv = r->txr_fgcolor.v;
-        GrColor bgcv = r->txr_bgcolor.v;
+        GrxColor fgcv = r->txr_fgcolor.v;
+        GrxColor bgcv = r->txr_bgcolor.v;
         int  undl = (fgcv & GR_UNDERLINE_TEXT) ? 1 : 0;
         GrFont *f = r->txr_font;
         char *ptr = r->txr_buffer;

@@ -27,7 +27,7 @@ TESTFUNC(imgtest)
         int  ww = (x / PARTS)-1;
         int  wh = (y / PARTS)-1;
         int m1, m2, d1, d2;
-        GrColor c1, c2, c3;
+        GrxColor c1, c2, c3;
         GrContext ctx;
         GrImage *img1;
         GrImage *img2;
@@ -72,7 +72,7 @@ TESTFUNC(imgtest)
         /* let's finish with some GrGetScanline / GrPutScanline tests */
         for (d1 = 1; d1 < 32; ++d1) {
           for (m1 = wh; m1 < y-wh-d1-1; ++m1) {
-            const GrColor *cp;
+            const GrxColor *cp;
             cp = GrGetScanline(ww+1,x-ww-d1,m1+1);
             if (cp) {
               GrPutScanline(ww,x-ww-d1-1,m1,cp,GrIMAGE|c2);

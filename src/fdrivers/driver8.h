@@ -74,7 +74,7 @@
 
 
 static INLINE
-GrColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrFrame *c,int x,int y)
 {
     GR_int8u *pp;
     GRX_ENTER();
@@ -92,7 +92,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 /* -------------------------------------------------------------------- */
 
 static INLINE
-void drawpixel(int x,int y,GrColor color)
+void drawpixel(int x,int y,GrxColor color)
 {
     char *pp;
     GRX_ENTER();
@@ -109,7 +109,7 @@ void drawpixel(int x,int y,GrColor color)
 
 /* -------------------------------------------------------------------- */
 
-static void drawvline(int x,int y,int h,GrColor color)
+static void drawvline(int x,int y,int h,GrxColor color)
 {
     int copr;
     GRX_ENTER();
@@ -130,7 +130,7 @@ static void drawvline(int x,int y,int h,GrColor color)
 
 /* -------------------------------------------------------------------- */
 
-static void drawhline(int x,int y,int w,GrColor color)
+static void drawhline(int x,int y,int w,GrxColor color)
 {
     int copr;
     GRX_ENTER();
@@ -151,7 +151,7 @@ static void drawhline(int x,int y,int w,GrColor color)
 
 /* -------------------------------------------------------------------- */
 
-static void drawblock(int x,int y,int w,int h,GrColor color)
+static void drawblock(int x,int y,int w,int h,GrxColor color)
 {
     int copr;
     GRX_ENTER();
@@ -191,7 +191,7 @@ static void drawblock(int x,int y,int w,int h,GrColor color)
 /* -------------------------------------------------------------------- */
 
 #if defined(__GNUC__) && defined(__i386__)
-static void drawline(int x,int y,int dx,int dy,GrColor color)
+static void drawline(int x,int y,int dx,int dy,GrxColor color)
 {
     struct {
         int errsub;
@@ -309,7 +309,7 @@ static
 /* -------------------------------------------------------------------- */
 
 static void drawbitmap(int x,int y,int w,int h,
-                       char *bmp,int pitch,int start,GrColor fg,GrColor bg)
+                       char *bmp,int pitch,int start,GrxColor fg,GrxColor bg)
 {
         int fgop, bgop;
         int dofg, dobg;

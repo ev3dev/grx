@@ -21,9 +21,9 @@
 /* will draw array of pixel values to current context          */
 
 void _GrFrDrvGenericPutScanline(int x,int y,int w,
-                                const GrColor *scl, GrColor op )
+                                const GrxColor *scl, GrxColor op )
 {
-   GrColor skipc;
+   GrxColor skipc;
    _GR_drawPix drawpixel;
    GRX_ENTER();
    drawpixel = CURC->gc_driver->drawpixel;
@@ -31,7 +31,7 @@ void _GrFrDrvGenericPutScanline(int x,int y,int w,
    skipc = op ^ GrIMAGE;
    op &= GrCMODEMASK;
    for ( w += x; x < w; ++x) {
-     GrColor c = *(scl++);
+     GrxColor c = *(scl++);
      if (c != skipc) (*drawpixel)(x,y,(c|op));
    }
    GRX_LEAVE();

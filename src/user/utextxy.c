@@ -20,7 +20,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg)
+void GrUsrTextXY(int x,int y,char *text,GrxColor fg,GrxColor bg)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);

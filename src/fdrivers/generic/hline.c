@@ -16,7 +16,7 @@
  **
  **/
 
-void drawhline(int x,int y,int w,GrColor c)
+void drawhline(int x,int y,int w,GrxColor c)
 {
         GRX_ENTER();
         w += x;

@@ -33,7 +33,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrFilledCircle(int xc,int yc,int r,GrColor c)
+void GrUsrFilledCircle(int xc,int yc,int r,GrxColor c)
 {
 #ifdef USR_KEEP_SHAPE
         U2SX(xc,CURC);

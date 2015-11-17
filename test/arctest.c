@@ -25,9 +25,9 @@ TESTFUNC(arctest)
         char buff[300];
         int  xc,yc,xa,ya,start,end;
         FILE *fp;
-        GrColor red   = GrAllocColor(255,0,0);
-        GrColor green = GrAllocColor(0,255,0);
-        GrColor blue  = GrAllocColor(0,0,255);
+        GrxColor red   = GrAllocColor(255,0,0);
+        GrxColor green = GrAllocColor(0,255,0);
+        GrxColor blue  = GrAllocColor(0,0,255);
 
         fp = fopen("arctest.dat","r");
         if(fp == NULL) return;

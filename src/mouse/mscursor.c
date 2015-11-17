@@ -124,7 +124,7 @@ void GrMouseSetCursor(GrCursor *C)
         }
 }
 
-void GrMouseSetColors(GrColor fg,GrColor bg)
+void GrMouseSetColors(GrxColor fg,GrxColor bg)
 {
         static char ptr12x16bits[] = {
             0,1,0,0,0,0,0,0,0,0,0,0,
@@ -145,7 +145,7 @@ void GrMouseSetColors(GrColor fg,GrColor bg)
             0,1,0,0,0,0,0,0,0,0,0,0,
         };
         GrCursor *newc;
-        GrColor cols[3];
+        GrxColor cols[3];
         if(MOUINFO->displayed) return;
         cols[0] = 2;
         cols[1] = bg;
@@ -170,7 +170,7 @@ void GrMouseSetCursorMode(int mode,...)
             MOUINFO->cursmode  = mode;
             MOUINFO->x1        = va_arg(ap,int);
             MOUINFO->y1        = va_arg(ap,int);
-            MOUINFO->curscolor = GrXorModeColor(va_arg(ap,GrColor));
+            MOUINFO->curscolor = GrXorModeColor(va_arg(ap,GrxColor));
             break;
           default:
             MOUINFO->cursmode  = GR_M_CUR_NORMAL;

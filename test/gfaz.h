@@ -17,7 +17,7 @@
  **
  **/
 
-extern GrColor *egacolors;
+extern GrxColor *egacolors;
 
 #define BLACK        egacolors[0]
 #define BLUE         egacolors[1]

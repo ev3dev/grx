@@ -34,7 +34,7 @@ void GrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p)
         if(!p->gp_ispixmap)
             while(--height >= 0) _GrFillPattern(x1,y1++,width,p);
         else {
-            void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor);
+            void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor);
             int pwdt = p->gp_pxp_width;
             int phgt = p->gp_pxp_height;
             int xoff = x1 % pwdt;

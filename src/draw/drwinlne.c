@@ -18,17 +18,17 @@
 
 #include "libgrx.h"
 
-void (GrPlotNC)(int x,int y,GrColor c)
+void (GrPlotNC)(int x,int y,GrxColor c)
 {
         GrPlotNC(x,y,c);
 }
 
-GrColor (GrPixelNC)(int x,int y)
+GrxColor (GrPixelNC)(int x,int y)
 {
         return(GrPixelNC(x,y));
 }
 
-GrColor (GrPixelCNC)(GrContext *c,int x,int y)
+GrxColor (GrPixelCNC)(GrContext *c,int x,int y)
 {
         return(GrPixelCNC(c,x,y));
 }

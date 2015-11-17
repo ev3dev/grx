@@ -18,7 +18,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-const GrColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy)
+const GrxColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy)
 /* Input   ctx: source context, if NULL the current context is used */
 /*         x1 : first x coordinate read                             */
 /*         x2 : last  x coordinate read                             */
@@ -30,7 +30,7 @@ const GrColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy)
 /*                      (w = |x2-y1|+1)                             */
 /*           Output data is valid until next GRX call !             */
 {
-        GrColor *res = NULL;
+        GrxColor *res = NULL;
         if (ctx == NULL) ctx = CURC;
         /* don't accept any clipping .... */
         clip_hline_(ctx,x1,x2,yy,goto done,goto done);
@@ -46,6 +46,6 @@ const GrColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy)
 done:   return res;
 }
 
-const GrColor *(GrGetScanline)(int x1,int x2,int yy) {
+const GrxColor *(GrGetScanline)(int x1,int x2,int yy) {
   return GrGetScanlineC(NULL, x1,x2,yy);
 }

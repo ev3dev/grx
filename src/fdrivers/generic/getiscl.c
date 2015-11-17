@@ -16,18 +16,18 @@
  **/
 
 
-GrColor *getindexedscanline(GrFrame *c,
+GrxColor *getindexedscanline(GrFrame *c,
                                 int x,int y,int w,
                                 int *indx          )
 {
-   GrColor *pixels;
-   GrColor *p;
+   GrxColor *pixels;
+   GrxColor *p;
    GRX_ENTER();
-   p = pixels = _GrTempBufferAlloc(sizeof(GrColor) * (w+1));
+   p = pixels = _GrTempBufferAlloc(sizeof(GrxColor) * (w+1));
    if (pixels) {
      if (indx) {
        int i, oldx = -1;
-       GrColor col = 0;
+       GrxColor col = 0;
        for (i=0; i < w; ++i) {
          int xx = x+indx[i];
          if (oldx != xx) {

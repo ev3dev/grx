@@ -21,7 +21,7 @@
 
 void GrBitBlt1bpp(GrContext *dst,int dx,int dy,
                   GrContext *src,int x1,int y1,int x2,int y2,
-                  GrColor fg, GrColor bg)
+                  GrxColor fg, GrxColor bg)
 {
   int oldx1,oldy1;
   int oldx2,oldy2;

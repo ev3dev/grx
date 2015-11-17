@@ -32,10 +32,10 @@
 /* -------------------------------------------------------------------- */
 
 static INLINE
-GrColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrFrame *c,int x,int y)
 {
         GR_int32u offs;
-        GrColor pix;
+        GrxColor pix;
         GRX_ENTER();
         offs = FOFS(x,y,c->gf_lineoffset);
         pix = 0;
@@ -48,7 +48,7 @@ GrColor readpixel(GrFrame *c,int x,int y)
 /* -------------------------------------------------------------------- */
 
 static INLINE
-void drawpixel(int x,int y,GrColor color)
+void drawpixel(int x,int y,GrxColor color)
 {
         GR_int32u offs;
         char *p0,*p1,*p2;
@@ -80,7 +80,7 @@ void drawpixel(int x,int y,GrColor color)
 
 /* -------------------------------------------------------------------- */
 
-static void drawhline(int x,int y,int w,GrColor color) {
+static void drawhline(int x,int y,int w,GrxColor color) {
     int copr, pl;
     GR_int32u offs;
     GRX_ENTER();
@@ -106,7 +106,7 @@ static void drawhline(int x,int y,int w,GrColor color) {
 
 /* -------------------------------------------------------------------- */
 
-static void drawvline(int x,int y,int h,GrColor color)
+static void drawvline(int x,int y,int h,GrxColor color)
 {
     int copr, pl;
     GR_int32u offs;
@@ -153,11 +153,11 @@ static
 /* in pblitr2r.c if GRX_USE_RAM3x8 defined */
 extern void _GrFrDrvPackedBitBltR2Rpl(GrFrame *dst,int dx,int dy,
                                       GrFrame *src,int x,int y,
-                                      int w,int h,GrColor op,int plane);
+                                      int w,int h,GrxColor op,int plane);
 
 static void bitblit(GrFrame *dst,int dx,int dy,
                     GrFrame *src,int sx,int sy,
-                    int w,int h,GrColor op)
+                    int w,int h,GrxColor op)
 {
     int pl;
     GRX_ENTER();

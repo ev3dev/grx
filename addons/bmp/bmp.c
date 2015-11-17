@@ -89,7 +89,7 @@ struct _GR_bitmapinfoheader {
 /* ************************************************************************ */
 struct _GR_bmpimagecolors {
         GR_int8u           *bp_palette; /* (R, G, B, Reserved) * | 2 | 16 | 256 */
-        GrColor            *bp_colormap;
+        GrxColor            *bp_colormap;
         int                 bp_numcolors;
 };
 
@@ -130,8 +130,8 @@ int            GrSaveBmpImage ( char *_filename, GrContext *_c, int _x1, int _y1
 unsigned long  GrBmpImageWidth ( GrBmpImage* _bmp );
 unsigned long  GrBmpImageHeight ( GrBmpImage* _bmp );
 char          *GrBmpImagePalette ( GrBmpImage* _bmp );
-GrColor       *GrBmpImageColorMap ( GrBmpImage* _bmp );
-GrColor        GrBmpImageNumColors ( GrBmpImage* _bmp );
+GrxColor       *GrBmpImageColorMap ( GrBmpImage* _bmp );
+GrxColor        GrBmpImageNumColors ( GrBmpImage* _bmp );
 /* end of exported functions */
 
 /* ************************************************************************ */
@@ -372,7 +372,7 @@ int  GrFreeBmpImageColors ( GrBmpImageColors *_pal )
   if ( _pal->bp_palette )
   {
     int i;
-    GrColor *colors = _pal->bp_colormap;
+    GrxColor *colors = _pal->bp_colormap;
     colors[0] = _pal->bp_numcolors;
     for ( i = 0; i < _pal->bp_numcolors; i++ )
       GrFreeColor(colors[i+1]);
@@ -394,7 +394,7 @@ int  GrAllocBmpImageColors ( GrBmpImage *_bmp, GrBmpImageColors *_pal )
   if ( _bmp->bi_palette )
   {
     int i;
-    GrColor *colors = malloc(sizeof(GrColor)*(_bmp->bi_numcolors+1));
+    GrxColor *colors = malloc(sizeof(GrxColor)*(_bmp->bi_numcolors+1));
     if ( !colors ) return FALSE;
     colors[0] = _bmp->bi_numcolors;
     for ( i = 0; i < _bmp->bi_numcolors; i++ )
@@ -503,10 +503,10 @@ int  GrSaveBmpImage ( char *_filename, GrContext *_c, int _x1, int _y1, int _x2,
   int r, g, b;
   char* line;
   unsigned long yy, xx;
-  GrColor pixcol;
+  GrxColor pixcol;
   GrBitmapFileHeader fileheader;
   GrBitmapInfoHeader infoheader;
-  GrColor colors, i;
+  GrxColor colors, i;
   GrContext safe;
 
   if ( !_c ) _c = (GrContext *)GrCurrentContext();
@@ -645,14 +645,14 @@ char  *GrBmpImagePalette ( GrBmpImage* _bmp )
 }
 
 /* ************************************************************************ */
-GrColor  *GrBmpImageColorMap ( GrBmpImage* _bmp )
+GrxColor  *GrBmpImageColorMap ( GrBmpImage* _bmp )
 /* ************************************************************************ */
 {
   return ( _bmp && _bmp->bi_bmpimagecolors ) ? _bmp->bi_colormap : NULL;
 }
 
 /* ************************************************************************ */
-GrColor  GrGetBmpImageNumColors ( GrBmpImage* _bmp )
+GrxColor  GrGetBmpImageNumColors ( GrBmpImage* _bmp )
 /* ************************************************************************ */
 {
   return ( _bmp && _bmp->bi_bmpimagecolors ) ? _bmp->bi_numcolors : 0;

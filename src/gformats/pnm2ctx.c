@@ -139,16 +139,16 @@ static int _GrLoadContextFromPbm( inputstruct *is, int width, int height )
 {
   int x, y;
   int maxwidth, maxheight;
-  GrColor color;
+  GrxColor color;
   int currentbyte, isbyteread = 0;
   int currentbit = 0;
-  GrColor *pColors=NULL;
+  GrxColor *pColors=NULL;
   int res = 0;
 
   maxwidth = (width > GrSizeX()) ? GrSizeX() : width;
   maxheight = (height > GrSizeY()) ? GrSizeY() : height;
 
-  pColors = malloc( maxwidth * sizeof(GrColor) );
+  pColors = malloc( maxwidth * sizeof(GrxColor) );
   if(pColors == NULL) { res = -1; goto salida; }
 
   for( y=0; y<maxheight; y++ ){
@@ -183,7 +183,7 @@ static int _GrLoadContextFromPgm( inputstruct *is, int width,
   int needcoloradjust = 0;
   int maxwidth, maxheight;
   double coloradjust = 255.0;
-  GrColor *pColors=NULL;
+  GrxColor *pColors=NULL;
   unsigned char *pData=NULL, *pCursor;
   int res = 0;
 
@@ -196,7 +196,7 @@ static int _GrLoadContextFromPgm( inputstruct *is, int width,
     }
 
   pData = NULL;
-  pColors = malloc( maxwidth * sizeof(GrColor) );
+  pColors = malloc( maxwidth * sizeof(GrxColor) );
   if(pColors == NULL) { res = -1; goto salida; }
   pData = malloc( width * sizeof(char) );
   if(pData == NULL) { res = -1; goto salida; }
@@ -228,7 +228,7 @@ static int _GrLoadContextFromPpm( inputstruct *is, int width,
   int needcoloradjust = 0;
   int maxwidth, maxheight;
   double coloradjust = 255.0;
-  GrColor *pColors=NULL;
+  GrxColor *pColors=NULL;
   unsigned char *pRGB=NULL, *pCursor;
   int res = 0;
 
@@ -241,7 +241,7 @@ static int _GrLoadContextFromPpm( inputstruct *is, int width,
     }
 
   pRGB = NULL;
-  pColors = malloc( maxwidth * sizeof(GrColor) );
+  pColors = malloc( maxwidth * sizeof(GrxColor) );
   if(pColors == NULL) { res = -1; goto salida; }
   pRGB = malloc( width * 3 * sizeof(char) );
   if(pRGB == NULL) { res = -1; goto salida; }

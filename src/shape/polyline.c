@@ -8,7 +8,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrPolyLine(int n,int pt[][2],GrColor c)
+void GrPolyLine(int n,int pt[][2],GrxColor c)
 {
         GrFillArg fval;
         fval.color = c;

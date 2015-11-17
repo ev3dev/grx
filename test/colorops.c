@@ -23,7 +23,7 @@
 TESTFUNC(colorops)
 {
         GrFBoxColors bcolors,ocolors,icolors;
-        GrColor bg,c;
+        GrxColor bg,c;
         int x = GrSizeX();
         int y = GrSizeY();
         int ww = (x * 2) / 3;

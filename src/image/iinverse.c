@@ -25,7 +25,7 @@
 GrImage *GrImageInverse(GrImage *p,int flag)
 {
   GrContext  ctx, save;
-  GrColor    col;
+  GrxColor    col;
   GrImage   *img;
   int yy, xx, sidex, sidey, width, height, xs, ys = 0;
   width = p->pxp_width;

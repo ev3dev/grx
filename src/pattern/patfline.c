@@ -30,7 +30,7 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p)
         int sy,ymajor;
         int pw,ph,px,py;
         int ispixmap;
-        GrColor fgc = 0, bgc = 0;
+        GrxColor fgc = 0, bgc = 0;
         int points,error;
 
         if (dx < 0) {

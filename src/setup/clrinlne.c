@@ -18,96 +18,96 @@
 
 #include "libgrx.h"
 
-GrColor (GrColorValue)(GrColor c)
+GrxColor (GrColorValue)(GrxColor c)
 {
         return(GrColorValue(c));
 }
 
-GrColor (GrColorMode)(GrColor c)
+GrxColor (GrColorMode)(GrxColor c)
 {
         return(GrColorMode(c));
 }
 
-GrColor (GrWriteModeColor)(GrColor c)
+GrxColor (GrWriteModeColor)(GrxColor c)
 {
         return(GrWriteModeColor(c));
 }
 
-GrColor (GrXorModeColor)(GrColor c)
+GrxColor (GrXorModeColor)(GrxColor c)
 {
         return(GrXorModeColor(c));
 }
 
-GrColor (GrOrModeColor)(GrColor c)
+GrxColor (GrOrModeColor)(GrxColor c)
 {
         return(GrOrModeColor(c));
 }
-GrColor (GrAndModeColor)(GrColor c)
+GrxColor (GrAndModeColor)(GrxColor c)
 {
         return(GrAndModeColor(c));
 }
 
-GrColor (GrImageModeColor)(GrColor c)
+GrxColor (GrImageModeColor)(GrxColor c)
 {
         return(GrImageModeColor(c));
 }
 
-GrColor (GrNumColors)(void)
+GrxColor (GrNumColors)(void)
 {
         return(GrNumColors());
 }
 
-GrColor (GrNumFreeColors)(void)
+GrxColor (GrNumFreeColors)(void)
 {
         return(GrNumFreeColors());
 }
 
-GrColor (GrBuildRGBcolorT)(int r,int g,int b)
+GrxColor (GrBuildRGBcolorT)(int r,int g,int b)
 {
         return(GrBuildRGBcolorT(r,g,b));
 }
 
-GrColor (GrBuildRGBcolorR)(int r,int g,int b)
+GrxColor (GrBuildRGBcolorR)(int r,int g,int b)
 {
         return(GrBuildRGBcolorR(r,g,b));
 }
 
-int (GrRGBcolorRed)(GrColor c)
+int (GrRGBcolorRed)(GrxColor c)
 {
         return(GrRGBcolorRed(c));
 }
 
-int (GrRGBcolorGreen)(GrColor c)
+int (GrRGBcolorGreen)(GrxColor c)
 {
         return(GrRGBcolorGreen(c));
 }
 
-int (GrRGBcolorBlue)(GrColor c)
+int (GrRGBcolorBlue)(GrxColor c)
 {
         return(GrRGBcolorBlue(c));
 }
 
-GrColor (GrAllocColorID)(int r,int g,int b)
+GrxColor (GrAllocColorID)(int r,int g,int b)
 {
         return(GrAllocColorID(r,g,b));
 }
 
-GrColor (GrAllocColor2)(long hcolor)
+GrxColor (GrAllocColor2)(long hcolor)
 {
         return(GrAllocColor2(hcolor));
 }
 
-GrColor (GrAllocColor2ID)(long hcolor)
+GrxColor (GrAllocColor2ID)(long hcolor)
 {
         return(GrAllocColor2ID(hcolor));
 }
 
-void (GrQueryColorID)(GrColor c,int *r,int *g,int *b)
+void (GrQueryColorID)(GrxColor c,int *r,int *g,int *b)
 {
         GrQueryColorID(c,r,g,b);
 }
 
-void (GrQueryColor2ID)(GrColor c,long *hcolor)
+void (GrQueryColor2ID)(GrxColor c,long *hcolor)
 {
         GrQueryColor2ID(c,hcolor);
 }

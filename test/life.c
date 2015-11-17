@@ -31,7 +31,7 @@ TESTFUNC(life)
         char **map[2],**old,**cur;
         int  *xp,*xn,*yp,*yn;
         int  which,x,y,gen;
-        GrColor c[2];
+        GrxColor c[2];
         long thresh;
         for(which = 0; which < 2; which++) {
             cur = malloc(H * sizeof(char *));

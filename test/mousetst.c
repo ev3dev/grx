@@ -25,8 +25,8 @@
 TESTFUNC(mousetest)
 {
         GrMouseEvent evt;
-        GrColor bgc = GrAllocColor(0,0,128);
-        GrColor fgc = GrAllocColor(255,255,0);
+        GrxColor bgc = GrAllocColor(0,0,128);
+        GrxColor fgc = GrAllocColor(255,255,0);
         int  testmotion = 0;
         int  ii,mode;
 

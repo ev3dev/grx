@@ -25,7 +25,7 @@
 static ScanFillFunc _filler;
 static GrFillArg _fa;
 static int lx, ly, mx, my, lxo, lyo;
-static GrColor _border;
+static GrxColor _border;
 static jmp_buf error;
 
 typedef unsigned char element;       /* for 1bit/pixel images */
@@ -188,7 +188,7 @@ ThisLine:
   } while (rescan);
 }
 
-void _GrFloodFill(int x,int y,GrColor border,GrFiller *f,GrFillArg fa) {
+void _GrFloodFill(int x,int y,GrxColor border,GrFiller *f,GrFillArg fa) {
   int _x, _y;
 
   lx = CURC->gc_xcliplo;
