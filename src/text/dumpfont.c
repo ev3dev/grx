@@ -30,7 +30,7 @@ static char bitmaphdr[] =
 " **/\n"
 "\n"
 "#define  %s     FONTNAME_TEMPORARY_REDIRECTION\n"
-"#include \"grx20.h\"\n"
+"#include \"grx-3.0.h\"\n"
 "#undef   %s\n"
 "\n"
 "static unsigned char %s[] = {\n";

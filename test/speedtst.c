@@ -29,7 +29,7 @@
 #include <math.h>
 #include "rand.h"
 
-#include "grx20.h"
+#include "grx-3.0.h"
 
 #if GRX_VERSION_API-0 <= 0x0220
 #define GrColor unsigned long

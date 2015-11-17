@@ -18,7 +18,7 @@
  
 #include <stdlib.h>
 #include <stdio.h>
-#include "grx20.h"
+#include "grx-3.0.h"
 #include "grxkeys.h"
 
 #define FIMAGEPPM "pnmtest.ppm"

@@ -22,7 +22,7 @@ AM_CFLAGS += \
     $(NULL)
 
 source_h = \
-    $(top_srcdir)/include/grx20.h \
+    $(top_srcdir)/include/grx-3.0.h \
     $(top_srcdir)/include/grxkeys.h \
     $(NULL)
 

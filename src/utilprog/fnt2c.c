@@ -17,7 +17,7 @@
  **/
 
 #include <stdio.h>
-#include "grx20.h"
+#include "grx-3.0.h"
 
 int main(int argc,char **argv)
 {

@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "grx20.h"
+#include "grx-3.0.h"
 
 typedef struct{
   int method;  /* 0=file, 1=buffer */

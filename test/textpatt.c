@@ -16,7 +16,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "grx20.h"
+#include "grx-3.0.h"
 #include "grxkeys.h"
 
 #define FONT "../fonts/tms38b.fnt"

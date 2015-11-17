@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <setjmp.h>
 #include <jpeglib.h>
-#include "grx20.h"
+#include "grx-3.0.h"
 
 /*
 ** GrJpegSupport - Returns true

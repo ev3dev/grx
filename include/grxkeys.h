@@ -23,8 +23,8 @@
 **       - key values will be differ on different systems
 */
 
-#ifndef __GRX20_H_INCLUDED__
-#include <grx20.h>
+#ifndef __GRX_3_0_H_INCLUDED__
+#include <grx-3.0.h>
 #endif
 
 #ifdef __cplusplus

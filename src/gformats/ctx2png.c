@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <png.h>
-#include "grx20.h"
+#include "grx-3.0.h"
 
 #ifndef png_jmpbuf
 #  define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)

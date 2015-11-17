@@ -1,4 +1,4 @@
-#include "grx20.h"
+#include "grx-3.0.h"
 #include "bmp.c"
 
 int main ( void )

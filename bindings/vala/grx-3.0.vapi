@@ -24,7 +24,7 @@
  *
  * Find out more at [[http://grx.gnu.de]].
  */
-[CCode (cheader_filename = "grx20.h", cprefix = "GR_", lower_case_cprefix = "Gr")]
+[CCode (cheader_filename = "grx-3.0.h", cprefix = "GR_", lower_case_cprefix = "Gr")]
 namespace Grx {
     [CCode (cname = "int", has_type_id = false)]
     public enum Result {

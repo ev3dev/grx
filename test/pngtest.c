@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "grx20.h"
+#include "grx-3.0.h"
 #include "grxkeys.h"
 
 void imagen( char *nf )

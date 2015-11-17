@@ -20,7 +20,7 @@
 #define __GRDRIVER_H_INCLUDED__
 
 #ifndef __GRX20_H_INCLUDED__
-#include "grx20.h"
+#include "grx-3.0.h"
 #endif
 
 /*

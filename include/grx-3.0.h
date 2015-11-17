@@ -1,5 +1,7 @@
 /**
- ** grx20.h ---- GRX 2.x API functions and data structure declarations
+ ** grx-3.0.h ---- GRX 3.x API functions and data structure declarations
+ **
+ ** Copyright (c) 2015 David Lechner <david@lechnology.com>
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  ** [e-mail: csaba@vuse.vanderbilt.edu]
@@ -16,8 +18,8 @@
  **
  **/
 
-#ifndef __GRX20_H_INCLUDED__
-#define __GRX20_H_INCLUDED__
+#ifndef __GRX_3_0_H_INCLUDED__
+#define __GRX_3_0_H_INCLUDED__
 
 /* ================================================================== */
 /*       COMPILER -- CPU -- SYSTEM SPECIFIC VERSION STUFF             */
@@ -1560,4 +1562,4 @@ int SaveContextToTiff(GrContext *cxt, char *tiffn, unsigned compr, char *docn);
 #ifdef __cplusplus
 }
 #endif
-#endif  /* whole file */
+#endif  /* __GRX_3_0_H_INCLUDED__ */
