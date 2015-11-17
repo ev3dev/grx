@@ -252,7 +252,7 @@ namespace Grx {
     /**
      * Supported video adapter types.
      */
-    [CCode (has_type_id = false)]
+    [CCode (cprefix = "GRX_VIDEO_ADAPTER_", has_type_id = false)]
     public enum VideoAdapter {
 
         /**
@@ -273,7 +273,7 @@ namespace Grx {
         /**
          * Linux framebuffer
          */
-        LNXFB,
+        LINUX_FB,
 
         /**
          * SDL driver
@@ -283,7 +283,7 @@ namespace Grx {
         /**
          * memory only driver
          */
-        MEM
+        MEMORY
     }
 
     [CCode (cname = "struct _GR_videoDriver", free_function = "g_free", has_type_id = false)]

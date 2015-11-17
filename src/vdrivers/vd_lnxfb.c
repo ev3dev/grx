@@ -438,7 +438,7 @@ static int init(char *options)
 
 GrVideoDriver _GrVideoDriverLINUXFB = {
     "linuxfb",                        /* name */
-    GR_LNXFB,                        /* adapter type */
+    GRX_VIDEO_ADAPTER_LINUX_FB,       /* adapter type */
     NULL,                        /* inherit modes from this driver */
     modes,                        /* mode table */
     itemsof(modes),                /* # of modes */

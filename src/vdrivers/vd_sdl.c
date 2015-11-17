@@ -455,7 +455,7 @@ done:        return(_gr_selectmode(drv, w, h, bpp, txt, ep));
 
 GrVideoDriver _GrVideoDriverSDL = {
     "sdl",                              /* name */
-    GR_SDL,                             /* adapter type */
+    GRX_VIDEO_ADAPTER_SDL,              /* adapter type */
     NULL,                               /* inherit modes from this driver */
     modes,                              /* mode table */
     itemsof(modes),                     /* # of modes */

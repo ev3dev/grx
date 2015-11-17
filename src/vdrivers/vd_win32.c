@@ -469,7 +469,7 @@ done:
 
 GrVideoDriver _GrVideoDriverWIN32 = {
     "win32",                        /* name */
-    GR_WIN32,                        /* adapter type */
+    GRX_VIDEO_ADAPTER_WIN32,        /* adapter type */
     NULL,                        /* inherit modes from this driver */
     modes,                        /* mode table */
     itemsof(modes),                /* # of modes */

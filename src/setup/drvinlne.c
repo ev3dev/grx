@@ -23,7 +23,7 @@ GrxGraphicsMode (GrCurrentMode)(void)
         return(GrCurrentMode());
 }
 
-GrVideoAdapter (GrAdapterType)(void)
+GrxVideoAdapter (GrAdapterType)(void)
 {
         return(GrAdapterType());
 }

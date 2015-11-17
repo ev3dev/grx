@@ -242,7 +242,7 @@ static void mem_reset (void)
 
 GrVideoDriver _GrDriverMEM = {
     "memory",                           /* name */
-    GR_MEM,                             /* adapter type */
+    GRX_VIDEO_ADAPTER_MEMORY,           /* adapter type */
     NULL,                               /* inherit modes from this driver */
     modes,                              /* mode table */
     itemsof(modes),                     /* # of modes */

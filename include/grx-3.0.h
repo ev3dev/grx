@@ -172,24 +172,32 @@ typedef enum {
     GRX_FRAME_MODE_LAST_RAM       = GRX_FRAME_MODE_RAM_3X8BPP
 } GrxFrameMode;
 
-/*
+/**
+ * GrxVideoAdapter:
+ * @GRX_VIDEO_ADAPTER_UNKNOWN: Unknown (default state before driver is set)
+ * @GRX_VIDEO_ADAPTER_XWIN: X11 adapter
+ * @GRX_VIDEO_ADAPTER_WIN32: Windows adapter
+ * @GRX_VIDEO_ADAPTER_LINUX_FB: Linux framebuffer
+ * @GRX_VIDEO_ADAPTER_SDL: Simple DirectMedia Layer adapter
+ * @GRX_VIDEO_ADAPTER_MEMORY: Memory-only adapter
+ *
  * supported video adapter types
  */
-typedef enum _GR_videoAdapters {
-        GR_UNKNOWN = (-1),                  /* not known (before driver set) */
-        GR_XWIN,                            /* X11 driver */
-        GR_WIN32,                           /* WIN32 driver */
-        GR_LNXFB,                           /* Linux framebuffer */
-        GR_SDL,                             /* SDL driver */
-        GR_MEM                              /* memory only driver */
-} GrVideoAdapter;
+typedef enum {
+    GRX_VIDEO_ADAPTER_UNKNOWN = (-1),  /* not known (before driver set) */
+    GRX_VIDEO_ADAPTER_XWIN,            /* X11 driver */
+    GRX_VIDEO_ADAPTER_WIN32,           /* WIN32 driver */
+    GRX_VIDEO_ADAPTER_LINUX_FB,        /* Linux framebuffer */
+    GRX_VIDEO_ADAPTER_SDL,             /* SDL driver */
+    GRX_VIDEO_ADAPTER_MEMORY           /* memory only driver */
+} GrxVideoAdapter;
 
 /*
  * The video driver descriptor structure
  */
 struct _GR_videoDriver {
         char   *name;                       /* driver name */
-        enum   _GR_videoAdapters adapter;   /* adapter type */
+        GrxVideoAdapter adapter;            /* adapter type */
         struct _GR_videoDriver  *inherit;   /* inherit video modes from this */
         struct _GR_videoMode    *modes;     /* table of supported modes */
         int     nmodes;                     /* number of modes */
@@ -316,7 +324,7 @@ unsigned GrGetLibrarySystem(void);
  * inquiry stuff ---- many of these are actually macros (see below)
  */
 GrxGraphicsMode GrCurrentMode(void);
-GrVideoAdapter GrAdapterType(void);
+GrxVideoAdapter GrAdapterType(void);
 GrxFrameMode    GrCurrentFrameMode(void);
 GrxFrameMode    GrScreenFrameMode(void);
 GrxFrameMode    GrCoreFrameMode(void);
@@ -355,7 +363,7 @@ long GrContextSize(int w,int h);
  * inline implementation for some of the above
  */
 #ifndef GRX_SKIP_INLINES
-#define GrAdapterType()         (GrDriverInfo->vdriver ? GrDriverInfo->vdriver->adapter : GR_UNKNOWN)
+#define GrAdapterType()         (GrDriverInfo->vdriver ? GrDriverInfo->vdriver->adapter : GRX_VIDEO_ADAPTER_UNKNOWN)
 #define GrCurrentMode()         (GrDriverInfo->mcode)
 #define GrCurrentFrameMode()    (GrDriverInfo->fdriver.mode)
 #define GrScreenFrameMode()     (GrDriverInfo->sdriver.mode)
