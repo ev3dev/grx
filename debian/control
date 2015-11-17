@@ -8,7 +8,7 @@ Homepage: http://grx.gnu.de/
 Vcs-Git: git://github.com/ev3dev/grx.git
 Vcs-Browser: https://github.com/ev3dev/grx
 
-Package: libgrx-fonts
+Package: libgrx-3.0-fonts
 Section: libs
 Architecture: all
 Depends: ${misc:Depends}
@@ -16,19 +16,19 @@ Description: 2D graphics library
  A simple 2D graphics library similar to the old Borland Graphics Interface
  (BGI).
  .
- This package contains the fonts used by libgrx.
+ This package contains the fonts used by libgrx-3.0.
 
-Package: libgrx-dev
+Package: libgrx-3.0-dev
 Section: libdevel
 Architecture: any
-Depends: libgrx20-2 (= ${binary:Version}), ${misc:Depends}
+Depends: libgrx-3.0 (= ${binary:Version}), ${misc:Depends}
 Description: 2D graphics library
  A simple 2D graphics library similar to the old Borland Graphics Interface
  (BGI).
  .
  This package contains the development files.
 
-Package: libgrx20-2
+Package: libgrx-3.0-0
 Section: libs
 Architecture: any
 Depends: libgrx-fonts, ${shlibs:Depends}, ${misc:Depends}
