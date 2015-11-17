@@ -31,7 +31,7 @@
 #ifdef USE_GRX_INTERNAL_DEFINITIONS
 
 /*
- * Video mode flag bits (in the 'GrVideoModeExt' structure)
+ * Video mode flag bits (in the 'GrxVideoModeExt' structure)
  */
 #define GR_VMODEF_LINEAR        1       /* uses linear memory mapping */
 #define GR_VMODEF_ACCEL         2       /* it is an accelerated mode */
@@ -144,8 +144,8 @@ void _GrFrDrvGenericStretchBlt(GrFrame *dst,int dx,int dy,int dw,int dh,
 /*
  * Commonly used video driver data structures
  */
-extern GrVideoModeExt _GrViDrvEGAVGAtextModeExt;
-extern GrVideoModeExt _GrViDrvEGAVGAcustomTextModeExt;
+extern GrxVideoModeExt _GrViDrvEGAVGAtextModeExt;
+extern GrxVideoModeExt _GrViDrvEGAVGAcustomTextModeExt;
 
 GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
                               int txt,unsigned int *ep);

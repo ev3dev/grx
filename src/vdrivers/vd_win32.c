@@ -80,10 +80,10 @@
  **     2 - GetUpdateRect() gave wrong UpdateRect !!!
  **
  ** Changes by Peter Schauer <peterschauer@gmx.net> 12/05/2008
- **   - vdrivers/vd_win32.c has a race condition with the loadcolor
+ **   - vdrivers/vd_win32.c has a race condition with the load_color
  **     SetDIBColorTable function call, which happens sometimes on
  **     fast multiprocessor machines. This affects only 8 bpp modes,
- **     as loadcolor is not called in 32 bpp modes.
+ **     as load_color is not called in 32 bpp modes.
  **     If the WndThread is currently executing its BitBlt during WM_PAINT
  **     processing and the GRX user thread is calling GrAllocColor, the
  **     SetDIBColorTable function call fails, as the DC is locked by the BitBlt.
@@ -139,7 +139,7 @@ static DWORD WINAPI WndThread(void *param);
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
                                 LPARAM lParam);
 
-static void loadcolor(int c, int r, int g, int b)
+static void load_color(int c, int r, int g, int b)
 {
     RGBQUAD color;
     color.rgbBlue = b;
@@ -268,7 +268,7 @@ static void setbank_dummy(int bk)
     bk = bk;
 }
 
-GrVideoModeExt grtextext = {
+GrxVideoModeExt grtextext = {
     GRX_FRAME_MODE_TEXT,         /* frame driver */
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
@@ -280,10 +280,10 @@ GrVideoModeExt grtextext = {
     NULL,                        /* virtual scroll */
     NULL,                        /* bank set function */
     NULL,                        /* double bank set function */
-    NULL                        /* color loader */
+    NULL                         /* color loader */
 };
 
-static GrVideoModeExt grxwinext8 = {
+static GrxVideoModeExt grxwinext8 = {
     GR_frameWIN32_8,                /* frame driver */
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
@@ -295,10 +295,10 @@ static GrVideoModeExt grxwinext8 = {
     NULL,                        /* virtual scroll */
     setbank_dummy,                /* bank set function */
     NULL,                        /* double bank set function */
-    loadcolor                        /* color loader */
+    load_color                   /* color loader */
 };
 
-static GrVideoModeExt grxwinext24 = {
+static GrxVideoModeExt grxwinext24 = {
     GR_frameWIN32_24,                /* frame driver */
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
@@ -310,7 +310,7 @@ static GrVideoModeExt grxwinext24 = {
     NULL,                        /* virtual scroll */
     setbank_dummy,                /* bank set function */
     NULL,                        /* double bank set function */
-    NULL                        /* color loader */
+    NULL                         /* color loader */
 };
 
 static GrxVideoMode modes[] = {

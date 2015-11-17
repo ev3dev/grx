@@ -162,14 +162,14 @@ done:        if(!res) reset();
 }
 
 #ifndef XF86DGA_FRAMEBUFFER
-static void setbank(int bk)
+static void set_bank(int bk)
 {}
 
-static void setrwbanks(int rb,int wb)
+static void set_rw_banks(int rb,int wb)
 {}
 #endif
 
-static void loadcolor(int c,int r,int g,int b)
+static void load_color(int c,int r,int g,int b)
 {
         XColor xcolor;
 
@@ -189,7 +189,7 @@ static void loadcolor(int c,int r,int g,int b)
 #define GRFRAMEDRIVER(bpp) GR_frameXWIN##bpp
 #endif
 
-static int build_video_mode(XDGAMode *ip, GrxVideoMode *mp, GrVideoModeExt *ep)
+static int build_video_mode(XDGAMode *ip, GrxVideoMode *mp, GrxVideoModeExt *ep)
 {
         mp->present    = TRUE;
         mp->bpp        = ip->depth;
@@ -208,16 +208,16 @@ static int build_video_mode(XDGAMode *ip, GrxVideoMode *mp, GrVideoModeExt *ep)
         ep->flags      = 0;
 #endif
         ep->setup      = setmode;
-        ep->setvsize   = NULL;
+        ep->set_virtual_size   = NULL;
         ep->scroll     = NULL;
 #ifdef XF86DGA_FRAMEBUFFER
-        ep->setbank    = NULL;
-        ep->setrwbanks = NULL;
+        ep->set_bank    = NULL;
+        ep->set_rw_banks = NULL;
 #else
-        ep->setbank    = setbank;
-        ep->setrwbanks = setrwbanks;
+        ep->set_bank    = set_bank;
+        ep->set_rw_banks = set_rw_banks;
 #endif
-        ep->loadcolor  = NULL;
+        ep->load_color  = NULL;
 
         if(ip->visualClass != (mp->bpp == 8 ? PseudoColor : TrueColor)) {
             DBGPRINTF(DBG_DRIVER, ("%d: visual class %s depth %d unsupported\n",
@@ -243,7 +243,7 @@ static int build_video_mode(XDGAMode *ip, GrxVideoMode *mp, GrVideoModeExt *ep)
                 ep->cpos[0]  =
                 ep->cpos[1]  =
                 ep->cpos[2]  = 0;
-                ep->loadcolor = loadcolor;
+                ep->load_color = load_color;
                 break;
             case 15 :
                 ep->mode = GRFRAMEDRIVER(16);
@@ -289,7 +289,7 @@ static int build_video_mode(XDGAMode *ip, GrxVideoMode *mp, GrVideoModeExt *ep)
         return(TRUE);
 }
 
-GrVideoModeExt grtextextdga = {
+GrxVideoModeExt grtextextdga = {
     GRX_FRAME_MODE_TEXT,                /* frame driver */
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
@@ -307,7 +307,7 @@ GrVideoModeExt grtextextdga = {
 #define  NUM_MODES    200               /* max # of supported modes */
 #define  NUM_EXTS     10                /* max # of mode extensions */
 
-static GrVideoModeExt exts[NUM_EXTS];
+static GrxVideoModeExt exts[NUM_EXTS];
 static GrxVideoMode   modes[NUM_MODES] = {
     /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext  */
     {  TRUE,  8,   80,   25,  0x00,    80, 1,    &grtextextdga  },
@@ -316,14 +316,14 @@ static GrxVideoMode   modes[NUM_MODES] = {
 
 /* from svgalib.c, unmodified */
 static void add_video_mode(
-    GrxVideoMode *mp,  GrVideoModeExt *ep,
-    GrxVideoMode **mpp,GrVideoModeExt **epp
+    GrxVideoMode *mp,  GrxVideoModeExt *ep,
+    GrxVideoMode **mpp,GrxVideoModeExt **epp
 ) {
         if(*mpp < &modes[NUM_MODES]) {
             if(!mp->extended_info) {
-                GrVideoModeExt *etp = &exts[0];
+                GrxVideoModeExt *etp = &exts[0];
                 while(etp < *epp) {
-                    if(memcmp(etp,ep,sizeof(GrVideoModeExt)) == 0) {
+                    if(memcmp(etp,ep,sizeof(GrxVideoModeExt)) == 0) {
                         mp->extended_info = etp;
                         break;
                     }
@@ -347,7 +347,7 @@ static int init(char *options)
         XDGAMode *modev = NULL;
         int modec, mindex;
         GrxVideoMode mode, *modep = &modes[1];
-        GrVideoModeExt ext, *extp = &exts[0];
+        GrxVideoModeExt ext, *extp = &exts[0];
         GRX_ENTER();
         res = FALSE;
         if(detect()) {

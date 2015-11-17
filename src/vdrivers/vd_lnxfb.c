@@ -256,7 +256,7 @@ void _LnxfbAcqsigHandle(int sig)
     signal(SIGUSR1, _LnxfbRelsigHandle);
 }
 
-static void loadcolor(int c, int r, int g, int b)
+static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)
 {
     __u16 red, green, blue, transp;
     struct fb_cmap cmap;
@@ -317,7 +317,7 @@ static int settext(GrxVideoMode * mp, int noclear)
     return TRUE;
 }
 
-GrVideoModeExt grtextextfb = {
+GrxVideoModeExt grtextextfb = {
     GRX_FRAME_MODE_TEXT,         /* frame driver */
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
@@ -332,14 +332,14 @@ GrVideoModeExt grtextextfb = {
     NULL,                        /* color loader */
 };
 
-static GrVideoModeExt exts[NUM_EXTS];
+static GrxVideoModeExt exts[NUM_EXTS];
 static GrxVideoMode modes[NUM_MODES] = {
     /* pres.  bpp wdt   hgt   mode   scan  priv. &ext                             */
     {TRUE, 4, 80, 25, 0, 160, 0, &grtextextfb},
     {0}
 };
 
-static int build_video_mode(GrxVideoMode * mp, GrVideoModeExt * ep)
+static int build_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep)
 {
     mp->present = TRUE;
     mp->width = fbvar.xres;
@@ -351,11 +351,11 @@ static int build_video_mode(GrxVideoMode * mp, GrVideoModeExt * ep)
     ep->frame = NULL;                /* filled in after mode set */
     ep->flags = 0;
     ep->setup = setmode;
-    ep->setvsize = NULL;        /* tbd */
+    ep->set_virtual_size = NULL;        /* tbd */
     ep->scroll = NULL;                /* tbd */
-    ep->setbank = NULL;
-    ep->setrwbanks = NULL;
-    ep->loadcolor = NULL;
+    ep->set_bank = NULL;
+    ep->set_rw_banks = NULL;
+    ep->load_color = NULL;
     switch (fbvar.bits_per_pixel) {
     case 1:
         if (fbfix.visual == FB_VISUAL_MONO01)
@@ -369,7 +369,7 @@ static int build_video_mode(GrxVideoMode * mp, GrVideoModeExt * ep)
         if (fbfix.visual != FB_VISUAL_PSEUDOCOLOR)
             return FALSE;
         ep->mode = GRX_FRAME_MODE_LFB_8BPP;
-        ep->loadcolor = loadcolor;
+        ep->load_color = load_color;
         break;
     case 15:
     case 16:
@@ -396,14 +396,14 @@ static int build_video_mode(GrxVideoMode * mp, GrVideoModeExt * ep)
     return (TRUE);
 }
 
-static void add_video_mode(GrxVideoMode * mp, GrVideoModeExt * ep,
-                           GrxVideoMode ** mpp, GrVideoModeExt ** epp)
+static void add_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep,
+                           GrxVideoMode ** mpp, GrxVideoModeExt ** epp)
 {
     if (*mpp < &modes[NUM_MODES]) {
         if (!mp->extended_info) {
-            GrVideoModeExt *etp = &exts[0];
+            GrxVideoModeExt *etp = &exts[0];
             while (etp < *epp) {
-                if (memcmp(etp, ep, sizeof(GrVideoModeExt)) == 0) {
+                if (memcmp(etp, ep, sizeof(GrxVideoModeExt)) == 0) {
                     mp->extended_info = etp;
                     break;
                 }
@@ -426,7 +426,7 @@ static int init(char *options)
 {
     if (detect()) {
         GrxVideoMode mode, *modep = &modes[1];
-        GrVideoModeExt ext, *extp = &exts[0];
+        GrxVideoModeExt ext, *extp = &exts[0];
         memzero(modep, (sizeof(modes) - sizeof(modes[0])));
         if ((build_video_mode(&mode, &ext))) {
             add_video_mode(&mode, &ext, &modep, &extp);

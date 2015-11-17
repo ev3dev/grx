@@ -353,10 +353,10 @@ namespace Grx {
      * descriptor. The reason for this is that frequently several modes can
      * share the same extended info.
      */
-    [CCode (cname = "struct _GR_videoModeExt", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class VideoModeExt {
-        [CCode (cname = "struct _GR_videoModeExt", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxVideoModeExt", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         public FrameMode mode;
@@ -369,16 +369,11 @@ namespace Grx {
         public char[] color_position;
         public int flags;
         public VideoModeSetup setup;
-        [CCode (cname = "setvsize")]
-        public VideoModeSetSize set_size;
+        public VideoModeSetSize set_virtual_size;
         public VideoModeScroll scroll;
-        [CCode (cname = "setbank")]
         public VideoModeSetBank set_bank;
-        [CCode (cname = "setrwbanks")]
         public VideoModeSetRWBanks set_rw_banks;
-        [CCode (cname = "loadcolor")]
         public VideoModeLoadColor load_color;
-        [CCode (cname = "LFB_Selector")]
         public int lfb_selector;
 
         [CCode (cname = "g_malloc0")]
@@ -387,17 +382,17 @@ namespace Grx {
     }
 
     [CCode (has_target = false, has_type_id = false)]
-    public delegate int VideoModeSetup (VideoMode mode, int no_clear);
+    public delegate bool VideoModeSetup (VideoMode mode, bool no_clear);
     [CCode (has_target = false, has_type_id = false)]
-    public delegate int VideoModeSetSize (VideoMode mode, int width, int height, out VideoMode result);
+    public delegate bool VideoModeSetSize (VideoMode mode, uint width, uint height, out VideoMode result);
     [CCode (has_target = false, has_type_id = false)]
-    public delegate int VideoModeScroll (VideoMode mode, int x, int y, [CCode (array_length = false)]out int[] result);
+    public delegate bool VideoModeScroll (VideoMode mode, int x, int y, [CCode (array_length = false)]out int[] result);
     [CCode (has_target = false, has_type_id = false)]
-    public delegate void VideoModeSetBank (int bank);
+    public delegate void VideoModeSetBank (uint bank);
     [CCode (has_target = false, has_type_id = false)]
-    public delegate void VideoModeSetRWBanks (int read_bank, int write_bank);
+    public delegate void VideoModeSetRWBanks (uint read_bank, uint write_bank);
     [CCode (has_target = false, has_type_id = false)]
-    public delegate void VideoModeLoadColor (int color_index, int red, int green, int blue);
+    public delegate void VideoModeLoadColor (Color color_index, Color red, Color green, Color blue);
 
     /**
      * The frame driver descriptor structure.
@@ -512,9 +507,9 @@ namespace Grx {
         public int current_bank;
         [CCode (cname = "mdsethook")]
         public DriverInfoModeSetHook mode_set_hook;
-        [CCode (cname = "setbank")]
+        [CCode (cname = "set_bank")]
         public DriverInfoSetBank set_bank;
-        [CCode (cname = "setrwbanks")]
+        [CCode (cname = "set_rw_banks")]
         public DriverInfoSetRWBanks set_rw_banks;
     }
 

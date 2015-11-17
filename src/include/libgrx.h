@@ -255,13 +255,13 @@ extern  struct _GR_mouseInfo   _GrMouseInfo;
 #define SETBANK(bk) do {                            \
         register int _bankval_ = (bk);              \
         DRVINFO->curbank = _bankval_;               \
-        (*DRVINFO->setbank)(_bankval_);             \
+        (*DRVINFO->set_bank)(_bankval_);            \
         BANKHOOK;                                   \
 } while(0)
 
 #define SRWBANK(rb,wb) do {                         \
         DRVINFO->curbank = (-1);                    \
-        (*DRVINFO->setrwbanks)((rb),(wb));          \
+        (*DRVINFO->set_rw_banks)((rb),(wb));        \
         RWBANKHOOK;                                 \
 } while(0)
 
@@ -269,7 +269,7 @@ extern  struct _GR_mouseInfo   _GrMouseInfo;
         register int _bankval_ = (bk);              \
         if(_bankval_ != DRVINFO->curbank) {         \
         DRVINFO->curbank = _bankval_;               \
-        (*DRVINFO->setbank)(_bankval_);             \
+        (*DRVINFO->set_bank)(_bankval_);            \
         BANKHOOK;                                   \
         }                                           \
 } while(0)

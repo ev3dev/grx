@@ -31,7 +31,7 @@ extern "C" {
 typedef struct _GR_frameDriver  GrFrameDriver;
 typedef struct _GrxVideoDriver  GrxVideoDriver;
 typedef struct _GrxVideoMode    GrxVideoMode;
-typedef struct _GR_videoModeExt GrVideoModeExt;
+typedef struct _GrxVideoModeExt GrxVideoModeExt;
 typedef struct _GR_frame        GrFrame;
 typedef struct _GR_context      GrContext;
 
@@ -252,29 +252,44 @@ struct _GrxVideoMode {
     guint16  mode;                       /* BIOS mode number (if any) */
     gint     line_offset;                /* scan line length */
     gint     user_data;                  /* driver can use it for anything */
-    struct _GR_videoModeExt *extended_info; /* extra info (maybe shared) */
+    GrxVideoModeExt *extended_info;      /* extra info (maybe shared) */
 };
 
-/*
+/**
+ * GrxVideoModeExt:
+ * @mode: Frame driver mode for this video mode
+ * @drv: Optional frame driver override
+ * @frame: Frame buffer address
+ * @cprec: Color component precisions
+ * @cpos: Color component positions
+ * @flags: Video mode flags
+ * @setup: Setup function
+ * @set_virtual_size: Set virtual size function
+ * @scroll: Scroll function
+ * @set_bank: Set bank function
+ * @set_rw_banks: Set read/write banks function
+ * @load_color: Load color pallet function
+ * @lfb_selector: Linear frame buffer selector
+ *
  * Video driver mode descriptor extension structure. This is a separate
  * structure accessed via a pointer from the main mode descriptor. The
  * reason for this is that frequently several modes can share the same
  * extended info.
  */
-struct _GR_videoModeExt {
-        GrxFrameMode mode;                  /* frame driver for this video mode */
-        struct _GR_frameDriver *drv;        /* optional frame driver override */
-        char    *frame;                     /* frame buffer address */
-        char    cprec[3];                   /* color component precisions */
-        char    cpos[3];                    /* color component bit positions */
-        int     flags;                      /* mode flag bits; see "grdriver.h" */
-        int   (*setup)(GrxVideoMode *md,int noclear);
-        int   (*setvsize)(GrxVideoMode *md,int w,int h,GrxVideoMode *result);
-        int   (*scroll)(GrxVideoMode *md,int x,int y,int result[2]);
-        void  (*setbank)(int bk);
-        void  (*setrwbanks)(int rb,int wb);
-        void  (*loadcolor)(int c,int r,int g,int b);
-        int     LFB_Selector;
+struct _GrxVideoModeExt {
+    GrxFrameMode mode;                  /* frame driver for this video mode */
+    struct _GR_frameDriver *drv;        /* optional frame driver override */
+    guint8 *frame;                      /* frame buffer address */
+    guint8  cprec[3];                   /* color component precisions */
+    guint8  cpos[3];                    /* color component bit positions */
+    gint    flags;                      /* mode flag bits; see "grdriver.h" */
+    gboolean (*setup)(GrxVideoMode *md, gboolean no_clear);
+    gboolean (*set_virtual_size)(GrxVideoMode *md, guint w, guint h, GrxVideoMode *result);
+    gboolean (*scroll)(GrxVideoMode *md, gint x, gint y, gint result[2]);
+    void  (*set_bank)(gint bank);
+    void  (*set_rw_banks)(gint read_bank, gint write_bank);
+    void  (*load_color)(GrxColor c, GrxColor r, GrxColor g, GrxColor b);
+    gint    lfb_selector;
 };
 
 /*
@@ -330,8 +345,8 @@ extern const struct _GR_driverInfo {
         int     splitbanks;                 /* indicates separate R/W banks */
         int     curbank;                    /* currently mapped bank */
         void  (*mdsethook)(void);           /* callback for mode set */
-        void  (*setbank)(int bk);           /* banking routine */
-        void  (*setrwbanks)(int rb,int wb); /* split banking routine */
+        void  (*set_bank)(int bk);          /* banking routine */
+        void  (*set_rw_banks)(int rb,int wb); /* split banking routine */
 } * const GrDriverInfo;
 
 /*

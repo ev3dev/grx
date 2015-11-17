@@ -58,7 +58,7 @@ static int MaxWidth, MaxHeight;
 
 static void reset(void);
 static int detect(void);
-static void loadcolor(int c, int r, int g, int b);
+static void load_color(int c, int r, int g, int b);
 
 static int filter(const SDL_Event *event)
 {
@@ -107,7 +107,7 @@ LONG CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 static int setmode(GrxVideoMode *mp,int noclear)
 {
         int res;
-        GrVideoModeExt *ep = mp->extended_info;
+        GrxVideoModeExt *ep = mp->extended_info;
         int fullscreen = mp->user_data & SDL_FULLSCREEN;
 #if defined (__WIN32__)
         SDL_SysWMinfo info;
@@ -176,7 +176,7 @@ static int setmode(GrxVideoMode *mp,int noclear)
             }
 
             if(!noclear) {
-                if(mp->bpp == 8) loadcolor(0, 0, 0, 0);
+                if(mp->bpp == 8) load_color(0, 0, 0, 0);
                 SDL_FillRect(_SGrScreen, NULL, 0);
                 SDL_UpdateRect(_SGrScreen, 0, 0, 0, 0);
             }
@@ -213,7 +213,7 @@ static int detect(void)
         GRX_RETURN(res);
 }
 
-static void loadcolor(int c, int r, int g, int b)
+static void load_color(int c, int r, int g, int b)
 {
         SDL_Color color;
 
@@ -227,7 +227,7 @@ static void loadcolor(int c, int r, int g, int b)
 
 static int build_video_mode(int mode, int flags, SDL_Rect *rect,
                             SDL_PixelFormat *vfmt, GrxVideoMode *mp,
-                            GrVideoModeExt *ep)
+                            GrxVideoModeExt *ep)
 {
         mp->present    = TRUE;
         mp->bpp        = vfmt->BitsPerPixel;
@@ -242,11 +242,11 @@ static int build_video_mode(int mode, int flags, SDL_Rect *rect,
         ep->frame      = NULL;
         ep->flags      = GR_VMODEF_LINEAR;
         ep->setup      = setmode;
-        ep->setvsize   = NULL;
+        ep->set_virtual_size   = NULL;
         ep->scroll     = NULL;
-        ep->setbank    = NULL;
-        ep->setrwbanks = NULL;
-        ep->loadcolor  = NULL;
+        ep->set_bank    = NULL;
+        ep->set_rw_banks = NULL;
+        ep->load_color  = NULL;
 
         switch(mp->bpp) {
             case 8 :
@@ -257,7 +257,7 @@ static int build_video_mode(int mode, int flags, SDL_Rect *rect,
                 ep->cpos[1]  =
                 ep->cpos[2]  = 0;
                 ep->mode = GR_frameSDL8;
-                ep->loadcolor = loadcolor;
+                ep->load_color = load_color;
                 break;
             case 15 : 
             case 16 : ep->mode = GR_frameSDL16; break;
@@ -293,7 +293,7 @@ static int build_video_mode(int mode, int flags, SDL_Rect *rect,
         return(TRUE);
 }
 
-GrVideoModeExt grtextextsdl = {
+GrxVideoModeExt grtextextsdl = {
     GRX_FRAME_MODE_TEXT,                /* frame driver */
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
@@ -311,7 +311,7 @@ GrVideoModeExt grtextextsdl = {
 #define  NUM_MODES    200               /* max # of supported modes */
 #define  NUM_EXTS     10                /* max # of mode extensions */
 
-static GrVideoModeExt exts[NUM_EXTS];
+static GrxVideoModeExt exts[NUM_EXTS];
 static GrxVideoMode   modes[NUM_MODES] = {
     /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext  */
     {  TRUE,  8,   80,   25,  0x00,    80, 1,    &grtextextsdl  },
@@ -320,14 +320,14 @@ static GrxVideoMode   modes[NUM_MODES] = {
 
 /* from svgalib.c, unmodified */
 static void add_video_mode(
-    GrxVideoMode *mp,  GrVideoModeExt *ep,
-    GrxVideoMode **mpp,GrVideoModeExt **epp
+    GrxVideoMode *mp,  GrxVideoModeExt *ep,
+    GrxVideoMode **mpp,GrxVideoModeExt **epp
 ) {
         if(*mpp < &modes[NUM_MODES]) {
             if(!mp->extended_info) {
-                GrVideoModeExt *etp = &exts[0];
+                GrxVideoModeExt *etp = &exts[0];
                 while(etp < *epp) {
-                    if(memcmp(etp,ep,sizeof(GrVideoModeExt)) == 0) {
+                    if(memcmp(etp,ep,sizeof(GrxVideoModeExt)) == 0) {
                         mp->extended_info = etp;
                         break;
                     }
@@ -374,7 +374,7 @@ static int init(char *options)
         SDL_Rect rect = { 0, 0, 0, 0 };
         int i;
         GrxVideoMode mode, *modep = &modes[1];
-        GrVideoModeExt ext, *extp = &exts[0];
+        GrxVideoModeExt ext, *extp = &exts[0];
         GRX_ENTER();
         res = FALSE;
         if(detect()) {

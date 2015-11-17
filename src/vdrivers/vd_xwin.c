@@ -67,12 +67,12 @@ char *_XGrClassNames[6] = {
     "DirectColor"
 };
 
-static void setbank(int bk);
-static void setrwbanks(int rb,int wb);
-static void loadcolor(int c,int r,int g,int b);
+static void set_bank(int bk);
+static void set_rw_banks(int rb,int wb);
+static void load_color(int c,int r,int g,int b);
 static int setmode(GrxVideoMode *mp,int noclear);
 
-GrVideoModeExt grtextext = {
+GrxVideoModeExt grtextext = {
   GRX_FRAME_MODE_TEXT,                /* frame driver */
   NULL,                               /* frame driver override */
   NULL,                               /* frame buffer address */
@@ -87,7 +87,7 @@ GrVideoModeExt grtextext = {
   NULL                                /* color loader */
 };
 
-static GrVideoModeExt grxwinext = {
+static GrxVideoModeExt grxwinext = {
   GRX_FRAME_MODE_UNDEFINED,           /* frame driver */
   NULL,                               /* frame driver override */
   NULL,                               /* frame buffer address */
@@ -97,9 +97,9 @@ static GrVideoModeExt grxwinext = {
   setmode,                            /* mode set */
   NULL,                               /* virtual size set */
   NULL,                               /* virtual scroll */
-  setbank,                            /* bank set function */
-  setrwbanks,                         /* double bank set */
-  loadcolor                           /* color loader */
+  set_bank,                           /* bank set function */
+  set_rw_banks,                       /* double bank set */
+  load_color                          /* color loader */
 };
 
 static GrxVideoMode modes[] = {
@@ -152,13 +152,13 @@ static void returnfrom_fullscreen(Display *dsp, Window win)
     SubstructureNotifyMask, &xev);
 }
 
-static void setbank(int bk)
+static void set_bank(int bk)
 {}
 
-static void setrwbanks(int rb,int wb)
+static void set_rw_banks(int rb,int wb)
 {}
 
-static void loadcolor(int c,int r,int g,int b)
+static void load_color(int c,int r,int g,int b)
 {
   GRX_ENTER();
   if (  _XGrDisplay != NULL
@@ -387,7 +387,7 @@ static int init(char *options)
     grxwinext.cpos[0] = 0;
     grxwinext.cpos[1] = 0;
     grxwinext.cpos[2] = 0;
-    /* loadcolor (0, 0, 0, 0); */       /* load black */
+    /* load_color (0, 0, 0, 0); */       /* load black */
   }
   else if (visual->class == TrueColor
            && (depth == 8 || depth == 15 || depth == 16 || depth == 24)) {

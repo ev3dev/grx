@@ -113,7 +113,7 @@ static int buildcontext(GrxVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
         res = FALSE;
         plsize = umul32(mp->line_offset,mp->height);
         DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame buffer = 0x%x\n",mp->extended_info->frame));
-        DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame selector = 0x%x\n",mp->extended_info->LFB_Selector));
+        DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame selector = 0x%x\n",mp->extended_info->lfb_selector));
         sttzero(cxt);
 #if !(defined(__XWIN__) && !defined(XF86DGA_FRAMEBUFFER) && !defined(__SDL__))
         if(mp->extended_info->flags&GR_VMODEF_LINEAR)
@@ -123,7 +123,7 @@ static int buildcontext(GrxVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
             cxt->gc_baseaddr[1] =
             cxt->gc_baseaddr[2] =
             cxt->gc_baseaddr[3] = LINP_PTR(mp->extended_info->frame);
-            cxt->gc_selector    = mp->extended_info->LFB_Selector;
+            cxt->gc_selector    = mp->extended_info->lfb_selector;
         } else
 #endif /* !(__XWIN__ && !XF86DGA_FRAMEBUFFER && !__SDL__) */
         if (mp->extended_info->flags&GR_VMODEF_MEMORY)
@@ -169,7 +169,7 @@ static int buildcontext(GrxVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
         else
         {
             if(plsize > fdp->max_plane_size) goto done; /* FALSE */
-            if(!mp->extended_info->setbank && (plsize > 0x10000L)) goto done; /* FALSE */
+            if(!mp->extended_info->set_bank && (plsize > 0x10000L)) goto done; /* FALSE */
             if(mp->line_offset % fdp->row_align) goto done; /* FALSE */
             cxt->gc_baseaddr[0] =
             cxt->gc_baseaddr[1] =
@@ -339,11 +339,11 @@ int GrSetMode(GrxGraphicsMode which,...)
                (t || buildcontext(&vmd,&fdr,&cxt))) {
                 if((!t) &&
                    ((vw > vmd.width) || (vh > vmd.height)) &&
-                   (vmd.extended_info->setvsize != NULL) &&
+                   (vmd.extended_info->set_virtual_size != NULL) &&
                    (vmd.extended_info->scroll   != NULL)) {
                     int ww = vmd.width  = imax(vw,vmd.width);
                     int hh = vmd.height = imax(vh,vmd.height);
-                    if(!(*vmd.extended_info->setvsize)(&vmd,ww,hh,&vmd) ||
+                    if(!(*vmd.extended_info->set_virtual_size)(&vmd,ww,hh,&vmd) ||
                        !buildcontext(&vmd,&fdr,&cxt)) {
                         sttcopy(&vmd,mdp);
                         buildcontext(&vmd,&fdr,&cxt);
@@ -353,16 +353,16 @@ int GrSetMode(GrxGraphicsMode which,...)
                 DBGPRINTF(DBG_SETMD,("GrMouseUnInit ...\n"));
                 GrMouseUnInit();
                 DBGPRINTF(DBG_SETMD,("GrMouseUnInit done\n"));
-                DRVINFO->setbank    = (void (*)(int    ))_GrDummyFunction;
-                DRVINFO->setrwbanks = (void (*)(int,int))_GrDummyFunction;
+                DRVINFO->set_bank    = (void (*)(int    ))_GrDummyFunction;
+                DRVINFO->set_rw_banks = (void (*)(int,int))_GrDummyFunction;
                 DRVINFO->curbank    = (-1);
                 DRVINFO->splitbanks = FALSE;
                 if(!t) {
-                    if(vmd.extended_info->setbank) {
-                        DRVINFO->setbank = vmd.extended_info->setbank;
+                    if(vmd.extended_info->set_bank) {
+                        DRVINFO->set_bank = vmd.extended_info->set_bank;
                     }
-                    if(vmd.extended_info->setrwbanks) {
-                        DRVINFO->setrwbanks = vmd.extended_info->setrwbanks;
+                    if(vmd.extended_info->set_rw_banks) {
+                        DRVINFO->set_rw_banks = vmd.extended_info->set_rw_banks;
                         DRVINFO->splitbanks = TRUE;
                     }
                     if(umul32(vmd.line_offset,vmd.height) <= 0x10000L) {

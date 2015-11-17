@@ -20,9 +20,9 @@
 #include "memcopy.h"
 #include "memfill.h"
 
-static void (*DACload)(int c,int r,int g,int b) = NULL;
+static void (*DACload)(GrxColor c, GrxColor r, GrxColor g, GrxColor b) = NULL;
 
-static void loadcolor(int c,int r,int g,int b)
+static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)
 {
         CLRINFO->ctable[c].r = (r &= CLRINFO->mask[0]);
         CLRINFO->ctable[c].g = (g &= CLRINFO->mask[1]);
@@ -51,7 +51,7 @@ void GrRefreshColors(void)
 {
         int i;
         for(i = 0; i < (int)CLRINFO->ncolors; i++) {
-            if(CLRINFO->ctable[i].defined) loadcolor(
+            if(CLRINFO->ctable[i].defined) load_color(
                 (int)(i),
                 CLRINFO->ctable[i].r,
                 CLRINFO->ctable[i].g,
@@ -85,7 +85,7 @@ int _GrResetColors(void)
             firsttime = FALSE;
         }
         sttzero(CLRINFO);
-        DACload = DRVINFO->actmode.extended_info->loadcolor;
+        DACload = DRVINFO->actmode.extended_info->load_color;
         CLRINFO->black   = GrNOCOLOR;
         CLRINFO->white   = GrNOCOLOR;
         CLRINFO->ncolors = DRVINFO->actmode.bpp>=32 ? 0 : (1L << DRVINFO->actmode.bpp);
@@ -111,7 +111,7 @@ int _GrResetColors(void)
               CLRINFO->nfree = CLRINFO->ncolors - _GR_firstFreeColor;
                 if ( infosave ) {
               for(i = 0; i < NSAVED; i++) {
-                  loadcolor(
+                  load_color(
                       (i + _GR_firstFreeColor),
                       ((struct _GR_colorInfo *)(infosave))->ctable[i].r,
                       ((struct _GR_colorInfo *)(infosave))->ctable[i].g,
@@ -146,7 +146,7 @@ void GrSetRGBcolorMode(void)
             CLRINFO->nfree   = 0L;
             CLRINFO->black   = 0L;
             CLRINFO->white   = CLRINFO->ncolors - 1L;
-            for(c = 0; c < CLRINFO->ncolors; c++) loadcolor(
+            for(c = 0; c < CLRINFO->ncolors; c++) load_color(
                 (int)(c),
                 (int)GrRGBcolorRed(c),
                 (int)GrRGBcolorGreen(c),
@@ -224,7 +224,7 @@ GrxColor GrAllocColor(int r,int g,int b)
                 CLRINFO->ctable[free_].writable = FALSE;
                 CLRINFO->ctable[free_].nused    = 1;
                 CLRINFO->nfree--;
-                loadcolor(free_,r,g,b);
+                load_color(free_,r,g,b);
                 res = free_;
                 goto done;
             }
@@ -258,7 +258,7 @@ GrxColor GrAllocCell(void)
                 CLRINFO->ctable[free_].writable = TRUE;
                 CLRINFO->ctable[free_].nused    = 1;
                 CLRINFO->nfree--;
-                loadcolor(free_,0,0,0);
+                load_color(free_,0,0,0);
                 return((GrxColor)(free_));
             }
         }
@@ -305,7 +305,7 @@ void GrSetColor(GrxColor c,int r,int g,int b)
                 CLRINFO->ctable[(int)(c)].nused    = 1;
                 CLRINFO->nfree--;
             }
-            if(CLRINFO->ctable[(int)(c)].writable) loadcolor(
+            if(CLRINFO->ctable[(int)(c)].writable) load_color(
                 (int)(c),
                 (int)ROUNDCOLORCOMP(r,0),
                 (int)ROUNDCOLORCOMP(g,1),

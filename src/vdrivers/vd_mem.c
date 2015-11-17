@@ -54,7 +54,7 @@ static int AllocMemBuf(unsigned long sze) {
 static int mem_setmode (GrxVideoMode *mp,int noclear);
 
 
-static GrVideoModeExt gr1ext = {
+static GrxVideoModeExt gr1ext = {
     GRX_FRAME_MODE_RAM_1BPP,            /* frame driver */
     NULL,                               /* frame driver override */
     0,                                  /* frame buffer address */
@@ -69,7 +69,7 @@ static GrVideoModeExt gr1ext = {
     NULL                                /* color loader */
 };
 
-static GrVideoModeExt gr4ext = {
+static GrxVideoModeExt gr4ext = {
     GRX_FRAME_MODE_RAM_4BPP,            /* frame driver */
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
@@ -84,7 +84,7 @@ static GrVideoModeExt gr4ext = {
     NULL                                /* color loader */
 };
 
-static GrVideoModeExt gr8ext = {
+static GrxVideoModeExt gr8ext = {
     GRX_FRAME_MODE_RAM_8BPP,            /* frame driver */
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
@@ -99,7 +99,7 @@ static GrVideoModeExt gr8ext = {
     NULL                                /* color loader */
 };
 
-static GrVideoModeExt gr24ext = {
+static GrxVideoModeExt gr24ext = {
 #ifdef GRX_USE_RAM3x8
     GRX_FRAME_MODE_RAM_3X8BPP,          /* frame driver */
 #else
@@ -130,7 +130,7 @@ static int dummymode (GrxVideoMode * mp , int noclear )
 }
 
 
-GrVideoModeExt   dummyExt = {
+GrxVideoModeExt   dummyExt = {
     GRX_FRAME_MODE_TEXT,                /* frame driver */
     NULL,                               /* frame driver override */
     MK_FP(0xb800,0),                    /* frame buffer address */
