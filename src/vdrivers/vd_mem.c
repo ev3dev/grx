@@ -247,6 +247,6 @@ GrxVideoDriver _GrDriverMEM = {
     NULL,                               /* initialization routine */
     mem_reset,                          /* reset routine */
     mem_selectmode,                     /* special mode select routine */
-    GR_DRIVERF_USER_RESOLUTION          /* arbitrary resolution possible */
+    GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION /* arbitrary resolution possible */
 };
 

@@ -542,6 +542,6 @@ GrxVideoDriver _GrVideoDriverXWIN = {
   init,                                 /* initialization routine */
   reset,                                /* reset routine */
   _xw_selectmode,                       /* special mode select routine */
-  GR_DRIVERF_USER_RESOLUTION            /* arbitrary resolution possible */
+  GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION /* arbitrary resolution possible */
 };
 

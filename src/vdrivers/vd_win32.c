@@ -477,7 +477,7 @@ GrxVideoDriver _GrVideoDriverWIN32 = {
     init,                        /* initialization routine */
     reset,                        /* reset routine */
     _w32_selectmode,            /* special mode select routine */
-    GR_DRIVERF_USER_RESOLUTION  /* arbitrary resolution possible */
+    GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION /* arbitrary resolution possible */
 };
 
 static DWORD WINAPI WndThread(void *param)

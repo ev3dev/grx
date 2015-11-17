@@ -193,6 +193,17 @@ typedef enum {
 } GrxVideoAdapter;
 
 /**
+ * GrxVideoDriverFlags:
+ * @GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION: Driver supports arbitrary
+ *    user-specified resolution.
+ *
+ * Flags used by #GrxVideoDriver.
+ */
+typedef enum /*< flags >*/ {
+    GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION = 0x01,
+} GrxVideoDriverFlags;
+
+/**
  * GrxVideoDriver:
  * @name: The name of the driver
  * @adapter: The adapter type
@@ -218,13 +229,8 @@ typedef struct _GrxVideoDriver {
         void  (*reset)(void);
         GrVideoMode *(*select_mode)(GrxVideoDriver *drv, gint w, gint h, gint bpp,
                                     gboolean txt, guint *ep);
-        unsigned  flags;
+        GrxVideoDriverFlags flags;
 } GrxVideoDriver;
-
-/* bits in the flags field: */
-#define GR_DRIVERF_USER_RESOLUTION 1
-  /* set if driver supports user setable arbitrary resolution */
-
 
 /*
  * Video driver mode descriptor structure
@@ -389,7 +395,7 @@ long GrContextSize(int w,int h);
 #define GrScreenFrameDriver()   ((const GrFrameDriver *)(&GrDriverInfo->sdriver))
 
 #define GrIsFixedMode()      (!(  GrCurrentVideoDriver()->flags \
-                                   & GR_DRIVERF_USER_RESOLUTION))
+                                   & GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION))
 
 #define GrScreenX()             (GrCurrentVideoMode()->width)
 #define GrScreenY()             (GrCurrentVideoMode()->height)

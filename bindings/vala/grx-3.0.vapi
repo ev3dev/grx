@@ -286,6 +286,12 @@ namespace Grx {
         MEMORY
     }
 
+    [CCode (cprefix = "GRX_VIDEO_DRIVER_FLAG_", has_type_id = false)]
+    [Flags]
+    public enum VideoDriverFlags {
+        USER_RESOLUTION
+    }
+
     [CCode (cname = "struct _GR_videoDriver", free_function = "g_free", has_type_id = false)]
     [Compact]
     public class VideoDriver {
@@ -301,7 +307,7 @@ namespace Grx {
         public VideoDriverInit init;
         public VideoDriverReset reset;
         public VideoDriverSelectMode select_mode;
-        public uint flags;
+        public VideoDriverFlags flags;
 
         [CCode (cname = "g_malloc0")]
         public VideoDriver (size_t size = sizeof(MallocStruct))
