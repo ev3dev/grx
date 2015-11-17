@@ -17,7 +17,7 @@
  * MA 02110-1301, USA.
  */
 
-/* grx20.vapi - Bindings to the GRX graphics library */
+/* grx-3.0.vapi - Bindings to the GRX graphics library */
 
 /**
  * Old school (circa 1992-2000) 2-D graphics library.
