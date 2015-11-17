@@ -657,7 +657,7 @@ int collectmodes(const GrxVideoDriver *drv)
 {
         gvmode *gp = grmodes;
         GrxFrameMode fm;
-        const GrVideoMode *mp;
+        const GrxVideoMode *mp;
         for(fm =GRX_FRAME_MODE_FIRST_GRAPHICS;
               fm <= GRX_FRAME_MODE_LAST_GRAPHICS; fm++) {
             for(mp = GrFirstVideoMode(fm); mp; mp = GrNextVideoMode(mp)) {

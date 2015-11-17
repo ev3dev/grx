@@ -19,20 +19,20 @@
 #include "grdriver.h"
 #include "libgrx.h"
 
-static GrVideoMode *modewalk(GrVideoMode *pm,GrVideoMode *dup,GrxFrameMode md)
+static GrxVideoMode *modewalk(GrxVideoMode *pm,GrxVideoMode *dup,GrxFrameMode md)
 {
         GrxVideoDriver *vd;
-        GrVideoMode   *vm;
+        GrxVideoMode   *vm;
         int n,seen = TRUE;
-        if(pm && pm->extinfo) {
-            md   = pm->extinfo->mode;
+        if(pm && pm->extended_info) {
+            md   = pm->extended_info->mode;
             seen = FALSE;
         }
         for(vd = VDRV; vd != NULL; vd = vd->inherit) {
             for(n = vd->n_modes,vm = vd->modes; --n >= 0; vm++) {
                     if(vm->present == FALSE)    continue;
-                    if(vm->extinfo == NULL)     continue;
-                    if(vm->extinfo->mode != md) continue;
+                    if(vm->extended_info == NULL)     continue;
+                    if(vm->extended_info->mode != md) continue;
                     if(dup) {
                         if(vm == dup) return(NULL);
                         if(vm->width  != dup->width)  continue;
@@ -52,13 +52,13 @@ static GrVideoMode *modewalk(GrVideoMode *pm,GrVideoMode *dup,GrxFrameMode md)
         return(NULL);
 }
                     
-const GrVideoMode *GrFirstVideoMode(GrxFrameMode fmode)
+const GrxVideoMode *GrFirstVideoMode(GrxFrameMode fmode)
 {
         return(modewalk(NULL,NULL,fmode));
 }
         
-const GrVideoMode *GrNextVideoMode(const GrVideoMode *prev)
+const GrxVideoMode *GrNextVideoMode(const GrxVideoMode *prev)
 {
-        return(modewalk((GrVideoMode *)prev,NULL,GRX_FRAME_MODE_UNDEFINED));
+        return(modewalk((GrxVideoMode *)prev,NULL,GRX_FRAME_MODE_UNDEFINED));
 }
 

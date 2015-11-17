@@ -274,15 +274,15 @@ static void loadcolor(int c, int r, int g, int b)
     ioctl(fbfd, FBIOPUTCMAP, &cmap);
 }
 
-static int setmode(GrVideoMode * mp, int noclear)
+static int setmode(GrxVideoMode * mp, int noclear)
 {
     struct vt_mode vtm;
 
-    fbuffer = mp->extinfo->frame = mmap(0,
+    fbuffer = mp->extended_info->frame = mmap(0,
                                         fbfix.smem_len,
                                         PROT_READ | PROT_WRITE,
                                         MAP_SHARED, fbfd, 0);
-    if (mp->extinfo->frame && ttyfd > -1) {
+    if (mp->extended_info->frame && ttyfd > -1) {
         ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
         vtm.mode = VT_PROCESS;
         vtm.relsig = SIGUSR1;
@@ -291,12 +291,12 @@ static int setmode(GrVideoMode * mp, int noclear)
         signal(SIGUSR1, _LnxfbRelsigHandle);
         ingraphicsmode = 1;
     }
-    if (mp->extinfo->frame && !noclear)
-        memzero(mp->extinfo->frame, fbvar.yres * fbfix.line_length);
-    return ((mp->extinfo->frame) ? TRUE : FALSE);
+    if (mp->extended_info->frame && !noclear)
+        memzero(mp->extended_info->frame, fbvar.yres * fbfix.line_length);
+    return ((mp->extended_info->frame) ? TRUE : FALSE);
 }
 
-static int settext(GrVideoMode * mp, int noclear)
+static int settext(GrxVideoMode * mp, int noclear)
 {
     struct vt_mode vtm;
 
@@ -333,20 +333,20 @@ GrVideoModeExt grtextextfb = {
 };
 
 static GrVideoModeExt exts[NUM_EXTS];
-static GrVideoMode modes[NUM_MODES] = {
+static GrxVideoMode modes[NUM_MODES] = {
     /* pres.  bpp wdt   hgt   mode   scan  priv. &ext                             */
     {TRUE, 4, 80, 25, 0, 160, 0, &grtextextfb},
     {0}
 };
 
-static int build_video_mode(GrVideoMode * mp, GrVideoModeExt * ep)
+static int build_video_mode(GrxVideoMode * mp, GrVideoModeExt * ep)
 {
     mp->present = TRUE;
     mp->width = fbvar.xres;
     mp->height = fbvar.yres;
-    mp->lineoffset = fbfix.line_length;
-    mp->extinfo = NULL;
-    mp->privdata = 0;
+    mp->line_offset = fbfix.line_length;
+    mp->extended_info = NULL;
+    mp->user_data = 0;
     ep->drv = NULL;
     ep->frame = NULL;                /* filled in after mode set */
     ep->flags = 0;
@@ -396,24 +396,24 @@ static int build_video_mode(GrVideoMode * mp, GrVideoModeExt * ep)
     return (TRUE);
 }
 
-static void add_video_mode(GrVideoMode * mp, GrVideoModeExt * ep,
-                           GrVideoMode ** mpp, GrVideoModeExt ** epp)
+static void add_video_mode(GrxVideoMode * mp, GrVideoModeExt * ep,
+                           GrxVideoMode ** mpp, GrVideoModeExt ** epp)
 {
     if (*mpp < &modes[NUM_MODES]) {
-        if (!mp->extinfo) {
+        if (!mp->extended_info) {
             GrVideoModeExt *etp = &exts[0];
             while (etp < *epp) {
                 if (memcmp(etp, ep, sizeof(GrVideoModeExt)) == 0) {
-                    mp->extinfo = etp;
+                    mp->extended_info = etp;
                     break;
                 }
                 etp++;
             }
-            if (!mp->extinfo) {
+            if (!mp->extended_info) {
                 if (etp >= &exts[NUM_EXTS])
                     return;
                 sttcopy(etp, ep);
-                mp->extinfo = etp;
+                mp->extended_info = etp;
                 *epp = ++etp;
             }
         }
@@ -425,7 +425,7 @@ static void add_video_mode(GrVideoMode * mp, GrVideoModeExt * ep,
 static int init(char *options)
 {
     if (detect()) {
-        GrVideoMode mode, *modep = &modes[1];
+        GrxVideoMode mode, *modep = &modes[1];
         GrVideoModeExt ext, *extp = &exts[0];
         memzero(modep, (sizeof(modes) - sizeof(modes[0])));
         if ((build_video_mode(&mode, &ext))) {

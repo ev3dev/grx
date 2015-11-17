@@ -85,7 +85,7 @@ int _GrResetColors(void)
             firsttime = FALSE;
         }
         sttzero(CLRINFO);
-        DACload = DRVINFO->actmode.extinfo->loadcolor;
+        DACload = DRVINFO->actmode.extended_info->loadcolor;
         CLRINFO->black   = GrNOCOLOR;
         CLRINFO->white   = GrNOCOLOR;
         CLRINFO->ncolors = DRVINFO->actmode.bpp>=32 ? 0 : (1L << DRVINFO->actmode.bpp);
@@ -93,12 +93,12 @@ int _GrResetColors(void)
             /* can happen on 32bpp systems. */
             int cbpp = 0;
             for(i=0; i < 3; ++i)
-                cbpp += DRVINFO->actmode.extinfo->cprec[i];
+                cbpp += DRVINFO->actmode.extended_info->cprec[i];
             CLRINFO->ncolors = 1L << cbpp;
         }
         setbits(
-            DRVINFO->actmode.extinfo->cprec,
-            DRVINFO->actmode.extinfo->cpos
+            DRVINFO->actmode.extended_info->cprec,
+            DRVINFO->actmode.extended_info->cpos
         );
         switch(DRVINFO->actmode.bpp) {
           case 4:

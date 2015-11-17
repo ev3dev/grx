@@ -48,12 +48,12 @@ const GrxVideoDriver *(GrCurrentVideoDriver)(void)
         return(GrCurrentVideoDriver());
 }
 
-const GrVideoMode *(GrCurrentVideoMode)(void)
+const GrxVideoMode *(GrCurrentVideoMode)(void)
 {
         return(GrCurrentVideoMode());
 }
 
-const GrVideoMode *(GrVirtualVideoMode)(void)
+const GrxVideoMode *(GrVirtualVideoMode)(void)
 {
         return(GrVirtualVideoMode());
 }

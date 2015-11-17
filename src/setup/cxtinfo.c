@@ -31,7 +31,7 @@ struct _GR_contextInfo _GrContextInfo = {
             0,                          /* selector */
             TRUE,                       /* onscreen */
             0,                          /* memflags */
-            0,                          /* lineoffset */
+            0,                          /* line_offset */
             &DRVINFO->tdriver           /* frame driver */
         },
         NULL                            /* root */
@@ -44,7 +44,7 @@ struct _GR_contextInfo _GrContextInfo = {
             0,                          /* selector */
             TRUE,                       /* onscreen */
             0,                          /* memflags */
-            0,                          /* lineoffset */
+            0,                          /* line_offset */
             &DRVINFO->tdriver           /* frame driver */
         },
         NULL                            /* root */

@@ -198,7 +198,7 @@ static HBITMAP CreateDIB24(HDC hdc, int w, int h, char **pBits)
     return(hBmp);
 }
 
-static int setmode(GrVideoMode * mp, int noclear)
+static int setmode(GrxVideoMode * mp, int noclear)
 {
     RECT Rect;
     HDC hDC;
@@ -206,7 +206,7 @@ static int setmode(GrVideoMode * mp, int noclear)
     RGBQUAD color;
     int inipos;
 
-    if (mp->extinfo->mode != GRX_FRAME_MODE_TEXT) {
+    if (mp->extended_info->mode != GRX_FRAME_MODE_TEXT) {
         inipos = 50;
         if (mp->width == maxScreenWidth && mp->height == maxScreenHeight)
             inipos = 0;
@@ -231,10 +231,10 @@ static int setmode(GrVideoMode * mp, int noclear)
             hDCMem = CreateCompatibleDC(hDC);
         if (mp->bpp == 8) {
             hBmpDIB = CreateDIB8(hDC, mp->width, mp->height,
-                                 &mp->extinfo->frame);
+                                 &mp->extended_info->frame);
         } else {
             hBmpDIB = CreateDIB24(hDC, mp->width, mp->height,
-                                  &mp->extinfo->frame);
+                                  &mp->extended_info->frame);
         }
         SelectObject(hDCMem, hBmpDIB);
         if (mp->bpp == 8) {
@@ -313,7 +313,7 @@ static GrVideoModeExt grxwinext24 = {
     NULL                        /* color loader */
 };
 
-static GrVideoMode modes[] = {
+static GrxVideoMode modes[] = {
     /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext  */
     {TRUE, 8, 80, 25, 0x00, 80, 1, &grtextext},
 
@@ -426,10 +426,10 @@ static void reset(void)
     }
 }
 
-static GrVideoMode * _w32_selectmode(GrxVideoDriver * drv, int w, int h,
+static GrxVideoMode * _w32_selectmode(GrxVideoDriver * drv, int w, int h,
                                      int bpp, int txt, unsigned int * ep)
 {
-    GrVideoMode *mp, *res;
+    GrxVideoMode *mp, *res;
     long resto;
 
     if (txt) {
@@ -449,17 +449,17 @@ static GrVideoMode * _w32_selectmode(GrxVideoDriver * drv, int w, int h,
         mp->height = h;
         if (bpp <= 8) {
             mp->bpp = 8;
-            mp->extinfo = &grxwinext8;
+            mp->extended_info = &grxwinext8;
             resto = mp->width % 4;
             if (resto) resto = 4 - resto;
-            mp->lineoffset = mp->width + resto;
+            mp->line_offset = mp->width + resto;
         }
         else {
             mp->bpp = 24;
-            mp->extinfo = &grxwinext24;
+            mp->extended_info = &grxwinext24;
             resto = (mp->width * 3) % 4;
             if (resto) resto = 4 - resto;
-            mp->lineoffset = mp->width * 3 + resto;
+            mp->line_offset = mp->width * 3 + resto;
         }
     }
     res = _gr_select_mode(drv, w, h, bpp, txt, ep);

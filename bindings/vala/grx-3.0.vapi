@@ -326,10 +326,10 @@ namespace Grx {
     /*
      * Video driver mode descriptor structure.
      */
-    [CCode (cname = "struct _GR_videoMode", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class VideoMode {
-        [CCode (cname = "struct _GR_videoMode", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxVideoMode", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         public char present;
@@ -337,11 +337,8 @@ namespace Grx {
         public short width;
         public short height;
         public short mode;
-        [CCode (cname = "lineoffset")]
         public int line_offset;
-        [CCode (cname = "privdata")]
-        public int private_data;
-        [CCode (cname = "extinfo")]
+        public int user_data;
         public VideoModeExt extended_info;
 
         [CCode (cname = "g_malloc0")]

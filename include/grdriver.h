@@ -147,7 +147,7 @@ void _GrFrDrvGenericStretchBlt(GrFrame *dst,int dx,int dy,int dw,int dh,
 extern GrVideoModeExt _GrViDrvEGAVGAtextModeExt;
 extern GrVideoModeExt _GrViDrvEGAVGAcustomTextModeExt;
 
-GrVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
+GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
                               int txt,unsigned int *ep);
 
 #endif /* USE_GRX_INTERNAL_DEFINITIONS */

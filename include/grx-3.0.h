@@ -30,7 +30,7 @@ extern "C" {
 /* a couple of forward declarations ... */
 typedef struct _GR_frameDriver  GrFrameDriver;
 typedef struct _GrxVideoDriver  GrxVideoDriver;
-typedef struct _GR_videoMode    GrVideoMode;
+typedef struct _GrxVideoMode    GrxVideoMode;
 typedef struct _GR_videoModeExt GrVideoModeExt;
 typedef struct _GR_frame        GrFrame;
 typedef struct _GR_context      GrContext;
@@ -222,27 +222,37 @@ typedef struct _GrxVideoDriver {
         gchar *name;                        /* driver name */
         GrxVideoAdapter adapter;            /* adapter type */
         struct _GrxVideoDriver  *inherit;   /* inherit video modes from this */
-        struct _GR_videoMode    *modes;     /* table of supported modes */
+        GrxVideoMode   *modes;              /* table of supported modes */
         gint    n_modes;                    /* number of modes */
         gint  (*detect)(void);
         gint  (*init)(gchar *options);
         void  (*reset)(void);
-        GrVideoMode *(*select_mode)(GrxVideoDriver *drv, gint w, gint h, gint bpp,
-                                    gboolean txt, guint *ep);
+        GrxVideoMode *(*select_mode)(GrxVideoDriver *drv, gint w, gint h,
+                                     gint bpp, gboolean txt, guint *ep);
         GrxVideoDriverFlags flags;
 } GrxVideoDriver;
 
-/*
+/**
+ * GrxVideoMode:
+ * @present: Indicates if the video mode is actually present
+ * @bpp: Bits per pixel
+ * @width: Width in pixels
+ * @height: Height in pixels
+ * @mode: BIOS mode number (if any)
+ * @line_offset: Scan line length
+ * @user_data: Can be used by the driver for anything.
+ * @extended_info: Extra info (may be shared with other video modes)
+ * 
  * Video driver mode descriptor structure
  */
-struct _GR_videoMode {
-        char    present;                    /* is it really available? */
-        char    bpp;                        /* log2 of # of colors */
-        short   width,height;               /* video mode geometry */
-        short   mode;                       /* BIOS mode number (if any) */
-        int     lineoffset;                 /* scan line length */
-        int     privdata;                   /* driver can use it for anything */
-        struct _GR_videoModeExt *extinfo;   /* extra info (maybe shared) */
+struct _GrxVideoMode {
+    gboolean present;                    /* is it really available? */
+    guint8   bpp;                        /* log2 of # of colors */
+    guint16  width,height;               /* video mode geometry */
+    guint16  mode;                       /* BIOS mode number (if any) */
+    gint     line_offset;                /* scan line length */
+    gint     user_data;                  /* driver can use it for anything */
+    struct _GR_videoModeExt *extended_info; /* extra info (maybe shared) */
 };
 
 /*
@@ -258,9 +268,9 @@ struct _GR_videoModeExt {
         char    cprec[3];                   /* color component precisions */
         char    cpos[3];                    /* color component bit positions */
         int     flags;                      /* mode flag bits; see "grdriver.h" */
-        int   (*setup)(GrVideoMode *md,int noclear);
-        int   (*setvsize)(GrVideoMode *md,int w,int h,GrVideoMode *result);
-        int   (*scroll)(GrVideoMode *md,int x,int y,int result[2]);
+        int   (*setup)(GrxVideoMode *md,int noclear);
+        int   (*setvsize)(GrxVideoMode *md,int w,int h,GrxVideoMode *result);
+        int   (*scroll)(GrxVideoMode *md,int x,int y,int result[2]);
         void  (*setbank)(int bk);
         void  (*setrwbanks)(int rb,int wb);
         void  (*loadcolor)(int c,int r,int g,int b);
@@ -278,7 +288,7 @@ struct _GR_frameDriver {
     int      num_planes;                 /* number of planes */
     int      bits_per_pixel;             /* bits per pixel */
     long     max_plane_size;             /* maximum plane size in bytes */
-    int      (*init)(GrVideoMode *md);
+    int      (*init)(GrxVideoMode *md);
     GrxColor  (*readpixel)(GrFrame *c,int x,int y);
     void     (*drawpixel)(int x,int y,GrxColor c);
     void     (*drawline)(int x,int y,int dx,int dy,GrxColor c);
@@ -305,8 +315,8 @@ struct _GR_frameDriver {
  */
 extern const struct _GR_driverInfo {
         GrxVideoDriver     *vdriver;        /* the current video driver */
-        struct _GR_videoMode    *curmode;   /* current video mode pointer */
-        struct _GR_videoMode     actmode;   /* copy of above, resized if virtual */
+        GrxVideoMode       *curmode;        /* current video mode pointer */
+        GrxVideoMode        actmode;        /* copy of above, resized if virtual */
         struct _GR_frameDriver   fdriver;   /* frame driver for the current context */
         struct _GR_frameDriver   sdriver;   /* frame driver for the screen */
         struct _GR_frameDriver   tdriver;   /* a dummy driver for text modes */
@@ -349,12 +359,12 @@ GrxFrameMode    GrScreenFrameMode(void);
 GrxFrameMode    GrCoreFrameMode(void);
 
 const GrxVideoDriver *GrCurrentVideoDriver(void);
-const GrVideoMode   *GrCurrentVideoMode(void);
-const GrVideoMode   *GrVirtualVideoMode(void);
+const GrxVideoMode   *GrCurrentVideoMode(void);
+const GrxVideoMode   *GrVirtualVideoMode(void);
 const GrFrameDriver *GrCurrentFrameDriver(void);
 const GrFrameDriver *GrScreenFrameDriver(void);
-const GrVideoMode   *GrFirstVideoMode(GrxFrameMode fmode);
-const GrVideoMode   *GrNextVideoMode(const GrVideoMode *prev);
+const GrxVideoMode   *GrFirstVideoMode(GrxFrameMode fmode);
+const GrxVideoMode   *GrNextVideoMode(const GrxVideoMode *prev);
 
 int  GrScreenX(void);
 int  GrScreenY(void);
@@ -389,8 +399,8 @@ long GrContextSize(int w,int h);
 #define GrCoreFrameMode()       (GrDriverInfo->sdriver.rmode)
 
 #define GrCurrentVideoDriver()  ((const GrxVideoDriver *)( GrDriverInfo->vdriver))
-#define GrCurrentVideoMode()    ((const GrVideoMode   *)( GrDriverInfo->curmode))
-#define GrVirtualVideoMode()    ((const GrVideoMode   *)(&GrDriverInfo->actmode))
+#define GrCurrentVideoMode()    ((const GrxVideoMode   *)( GrDriverInfo->curmode))
+#define GrVirtualVideoMode()    ((const GrxVideoMode   *)(&GrDriverInfo->actmode))
 #define GrCurrentFrameDriver()  ((const GrFrameDriver *)(&GrDriverInfo->fdriver))
 #define GrScreenFrameDriver()   ((const GrFrameDriver *)(&GrDriverInfo->sdriver))
 

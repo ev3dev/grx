@@ -70,7 +70,7 @@ char *_XGrClassNames[6] = {
 static void setbank(int bk);
 static void setrwbanks(int rb,int wb);
 static void loadcolor(int c,int r,int g,int b);
-static int setmode(GrVideoMode *mp,int noclear);
+static int setmode(GrxVideoMode *mp,int noclear);
 
 GrVideoModeExt grtextext = {
   GRX_FRAME_MODE_TEXT,                /* frame driver */
@@ -102,7 +102,7 @@ static GrVideoModeExt grxwinext = {
   loadcolor                           /* color loader */
 };
 
-static GrVideoMode modes[] = {
+static GrxVideoMode modes[] = {
   /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext  */
   {  TRUE,  8,   80,   25,  0x00,    80, 1,    &grtextext  },
   { FALSE,  0,  320,  240,  0x00,     0, 0,    &grxwinext  },
@@ -178,7 +178,7 @@ static void loadcolor(int c,int r,int g,int b)
   GRX_LEAVE();
 }
 
-static int setmode(GrVideoMode *mp,int noclear)
+static int setmode(GrxVideoMode *mp,int noclear)
 {
   char name[100], *window_name, *icon_name;
   int res;
@@ -198,7 +198,7 @@ static int setmode(GrVideoMode *mp,int noclear)
       _XGrBStoreInited = 0;
     }
 
-    if (mp->extinfo->mode != GRX_FRAME_MODE_TEXT) {
+    if (mp->extended_info->mode != GRX_FRAME_MODE_TEXT) {
       XSizeHints hints;
 
       XResizeWindow (_XGrDisplay, _XGrWindow, mp->width, mp->height);
@@ -278,10 +278,10 @@ static int error_handler (Display *dpy, XErrorEvent *ev)
   return 0;
 }
 
-static GrVideoMode * _xw_selectmode ( GrxVideoDriver * drv, int w, int h, int bpp,
+static GrxVideoMode * _xw_selectmode ( GrxVideoDriver * drv, int w, int h, int bpp,
                                       int txt, unsigned int * ep )
 {
-  GrVideoMode *mp, *res;
+  GrxVideoMode *mp, *res;
   GRX_ENTER();
   if (txt) {
     res = _gr_select_mode(drv,w,h,bpp,txt,ep);
@@ -297,7 +297,7 @@ static GrVideoMode * _xw_selectmode ( GrxVideoDriver * drv, int w, int h, int bp
   mp->present = TRUE;
   mp->width = (w > _XGrMaxWidth) ? _XGrMaxWidth : w;
   mp->height = (h > _XGrMaxHeight) ? _XGrMaxHeight : h;
-  mp->lineoffset = (mp->width * mp->bpp) / 8;
+  mp->line_offset = (mp->width * mp->bpp) / 8;
   res = _gr_select_mode (drv,w,h,bpp,txt,ep);
 done:
   GRX_RETURN(res);
@@ -319,7 +319,7 @@ static int init(char *options)
   Visual *visual;
   XPixmapFormatValues *pfmt;
   int pfmt_count;
-  GrVideoMode *mp;
+  GrxVideoMode *mp;
   unsigned int depth, bpp, pad;
   int private_colormap;
   int i, j, res;
@@ -509,14 +509,14 @@ static int init(char *options)
   for (mp = &modes[1]; mp < &modes[itemsof(modes)-1]; mp++) {
     mp->present = TRUE;
     mp->bpp = bpp;
-    mp->lineoffset = (mp->width * bpp) / 8;
+    mp->line_offset = (mp->width * bpp) / 8;
     if (mp->width > _XGrMaxWidth) mp->present = FALSE;
     if (mp->height > _XGrMaxHeight) mp->present = FALSE;
   }
   /* this is the variable size mode */
   mp->present = FALSE;
   mp->bpp = bpp;
-  mp->lineoffset = 0;
+  mp->line_offset = 0;
   res = TRUE;
 done:
   GRX_RETURN( res );

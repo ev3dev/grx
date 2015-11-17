@@ -27,20 +27,20 @@
 #include "memcopy.h"
 #include "grdriver.h"
 
-GrVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
+GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
                               int txt,unsigned int *ep)
 {
 #       define ERROR(des,act)   ((des > act) ? ((des - act) + 20000) : (act - des))
         int  n;
         unsigned int cerr,serr,err[2];
-        GrVideoMode *best,*mp;
+        GrxVideoMode *best,*mp;
         GRX_ENTER();
         best = NULL;
         mp = drv->modes;
         for(n = drv->n_modes; --n >= 0; mp++) {
             if(!mp->present) continue;
-            if(!mp->extinfo) continue;
-            if((mp->extinfo->mode != GRX_FRAME_MODE_TEXT) ? txt : !txt) continue;
+            if(!mp->extended_info) continue;
+            if((mp->extended_info->mode != GRX_FRAME_MODE_TEXT) ? txt : !txt) continue;
             cerr = ERROR(bpp,mp->bpp);
             serr = ERROR(w,mp->width) + ERROR(h,mp->height);
             if(((ep) ? FALSE : ((ep = err),TRUE)) ||
@@ -59,14 +59,14 @@ GrVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
         GRX_RETURN(best);
 }
 
-static int buildframedriver(GrVideoMode *mp,GrFrameDriver *drv)
+static int buildframedriver(GrxVideoMode *mp,GrFrameDriver *drv)
 {
         GrFrameDriver *d1, *d2;
         int res = TRUE;
         GRX_ENTER();
         res = TRUE;
-        d1 = _GrFindFrameDriver(mp->extinfo->mode);
-        d2 = mp->extinfo->drv;
+        d1 = _GrFindFrameDriver(mp->extended_info->mode);
+        d2 = mp->extended_info->drv;
         if(d1) sttcopy(drv,d1);
         if(d2) {
             int compl = TRUE;
@@ -105,45 +105,45 @@ static int buildframedriver(GrVideoMode *mp,GrFrameDriver *drv)
 done:   GRX_RETURN(res);
 }
 
-static int buildcontext(GrVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
+static int buildcontext(GrxVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
 {
         long plsize;
         int res;
         GRX_ENTER();
         res = FALSE;
-        plsize = umul32(mp->lineoffset,mp->height);
-        DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame buffer = 0x%x\n",mp->extinfo->frame));
-        DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame selector = 0x%x\n",mp->extinfo->LFB_Selector));
+        plsize = umul32(mp->line_offset,mp->height);
+        DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame buffer = 0x%x\n",mp->extended_info->frame));
+        DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame selector = 0x%x\n",mp->extended_info->LFB_Selector));
         sttzero(cxt);
 #if !(defined(__XWIN__) && !defined(XF86DGA_FRAMEBUFFER) && !defined(__SDL__))
-        if(mp->extinfo->flags&GR_VMODEF_LINEAR)
+        if(mp->extended_info->flags&GR_VMODEF_LINEAR)
         {
             DBGPRINTF(DBG_SETMD,("buildcontext - Linear Mode\n"));
             cxt->gc_baseaddr[0] =
             cxt->gc_baseaddr[1] =
             cxt->gc_baseaddr[2] =
-            cxt->gc_baseaddr[3] = LINP_PTR(mp->extinfo->frame);
-            cxt->gc_selector    = mp->extinfo->LFB_Selector;
+            cxt->gc_baseaddr[3] = LINP_PTR(mp->extended_info->frame);
+            cxt->gc_selector    = mp->extended_info->LFB_Selector;
         } else
 #endif /* !(__XWIN__ && !XF86DGA_FRAMEBUFFER && !__SDL__) */
-        if (mp->extinfo->flags&GR_VMODEF_MEMORY)
+        if (mp->extended_info->flags&GR_VMODEF_MEMORY)
         {
             DBGPRINTF(DBG_SETMD,("buildcontext - Memory Mode\n"));
             if(plsize > fdp->max_plane_size) goto done; /* FALSE */
-            if(mp->lineoffset % fdp->row_align) goto done; /* FALSE */
+            if(mp->line_offset % fdp->row_align) goto done; /* FALSE */
             DBGPRINTF(DBG_SETMD,("buildcontext - mp->present    = %d\n",mp->present));
             DBGPRINTF(DBG_SETMD,("buildcontext - mp->bpp        = %d\n",mp->bpp));
             DBGPRINTF(DBG_SETMD,("buildcontext - mp->width      = %d\n",mp->width));
             DBGPRINTF(DBG_SETMD,("buildcontext - mp->height     = %d\n",mp->height));
             DBGPRINTF(DBG_SETMD,("buildcontext - mp->mode       = %d\n",mp->mode));
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->lineoffset = %d\n",mp->lineoffset));
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->ext->mode  = %d\n",mp->extinfo->mode));
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->ext->flags = %x\n",mp->extinfo->flags));
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->line_offset = %d\n",mp->line_offset));
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->ext->mode  = %d\n",mp->extended_info->mode));
+            DBGPRINTF(DBG_SETMD,("buildcontext - mp->ext->flags = %x\n",mp->extended_info->flags));
 #ifdef GRX_USE_RAM3x8
             if (mp->bpp==24)
               {
-                 int m_incr = mp->lineoffset*mp->height;
-                 cxt->gc_baseaddr[0] = mp->extinfo->frame;
+                 int m_incr = mp->line_offset*mp->height;
+                 cxt->gc_baseaddr[0] = mp->extended_info->frame;
                  cxt->gc_baseaddr[1] = cxt->gc_baseaddr[0] + m_incr;
                  cxt->gc_baseaddr[2] = cxt->gc_baseaddr[1] + m_incr;
                  cxt->gc_baseaddr[3] = NULL;
@@ -152,8 +152,8 @@ static int buildcontext(GrVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
 #endif
             if (mp->bpp==4)
               {
-                 int m_incr = mp->lineoffset*mp->height;
-                 cxt->gc_baseaddr[0] = mp->extinfo->frame;
+                 int m_incr = mp->line_offset*mp->height;
+                 cxt->gc_baseaddr[0] = mp->extended_info->frame;
                  cxt->gc_baseaddr[1] = cxt->gc_baseaddr[0] + m_incr;
                  cxt->gc_baseaddr[2] = cxt->gc_baseaddr[1] + m_incr;
                  cxt->gc_baseaddr[3] = cxt->gc_baseaddr[2] + m_incr;
@@ -163,24 +163,24 @@ static int buildcontext(GrVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
                  cxt->gc_baseaddr[0] =
                  cxt->gc_baseaddr[1] =
                  cxt->gc_baseaddr[2] =
-                 cxt->gc_baseaddr[3] = mp->extinfo->frame;
+                 cxt->gc_baseaddr[3] = mp->extended_info->frame;
               }
         }
         else
         {
             if(plsize > fdp->max_plane_size) goto done; /* FALSE */
-            if(!mp->extinfo->setbank && (plsize > 0x10000L)) goto done; /* FALSE */
-            if(mp->lineoffset % fdp->row_align) goto done; /* FALSE */
+            if(!mp->extended_info->setbank && (plsize > 0x10000L)) goto done; /* FALSE */
+            if(mp->line_offset % fdp->row_align) goto done; /* FALSE */
             cxt->gc_baseaddr[0] =
             cxt->gc_baseaddr[1] =
             cxt->gc_baseaddr[2] =
-            cxt->gc_baseaddr[3] = LINP_PTR(mp->extinfo->frame);
-            cxt->gc_selector    = LINP_SEL(mp->extinfo->frame);
+            cxt->gc_baseaddr[3] = LINP_PTR(mp->extended_info->frame);
+            cxt->gc_selector    = LINP_SEL(mp->extended_info->frame);
         }
-        cxt->gc_onscreen    = !(mp->extinfo->flags&GR_VMODEF_MEMORY);
+        cxt->gc_onscreen    = !(mp->extended_info->flags&GR_VMODEF_MEMORY);
         /* Why do we default to screen driver ?? */
         cxt->gc_onscreen    = TRUE;
-        cxt->gc_lineoffset  = mp->lineoffset;
+        cxt->gc_lineoffset  = mp->line_offset;
         cxt->gc_xcliphi     = cxt->gc_xmax = mp->width  - 1;
         cxt->gc_ycliphi     = cxt->gc_ymax = mp->height - 1;
         cxt->gc_driver      = &DRVINFO->sdriver;
@@ -327,7 +327,7 @@ int GrSetMode(GrxGraphicsMode which,...)
         for( ; ; ) {
             GrContext     cxt;
             GrFrameDriver fdr;
-            GrVideoMode  *mdp,vmd;
+            GrxVideoMode  *mdp,vmd;
             mdp = (DRVINFO->vdriver->select_mode)(DRVINFO->vdriver,w,h,pl,t,NULL);
             if(!mdp) {
                 res = errhdlr("could not find suitable video mode");
@@ -335,19 +335,19 @@ int GrSetMode(GrxGraphicsMode which,...)
             }
             sttcopy(&vmd,mdp);
             if((t || buildframedriver(&vmd,&fdr)) &&
-               (*vmd.extinfo->setup)(&vmd,noclear) &&
+               (*vmd.extended_info->setup)(&vmd,noclear) &&
                (t || buildcontext(&vmd,&fdr,&cxt))) {
                 if((!t) &&
                    ((vw > vmd.width) || (vh > vmd.height)) &&
-                   (vmd.extinfo->setvsize != NULL) &&
-                   (vmd.extinfo->scroll   != NULL)) {
+                   (vmd.extended_info->setvsize != NULL) &&
+                   (vmd.extended_info->scroll   != NULL)) {
                     int ww = vmd.width  = imax(vw,vmd.width);
                     int hh = vmd.height = imax(vh,vmd.height);
-                    if(!(*vmd.extinfo->setvsize)(&vmd,ww,hh,&vmd) ||
+                    if(!(*vmd.extended_info->setvsize)(&vmd,ww,hh,&vmd) ||
                        !buildcontext(&vmd,&fdr,&cxt)) {
                         sttcopy(&vmd,mdp);
                         buildcontext(&vmd,&fdr,&cxt);
-                        (*vmd.extinfo->setup)(&vmd,noclear);
+                        (*vmd.extended_info->setup)(&vmd,noclear);
                     }
                 }
                 DBGPRINTF(DBG_SETMD,("GrMouseUnInit ...\n"));
@@ -358,14 +358,14 @@ int GrSetMode(GrxGraphicsMode which,...)
                 DRVINFO->curbank    = (-1);
                 DRVINFO->splitbanks = FALSE;
                 if(!t) {
-                    if(vmd.extinfo->setbank) {
-                        DRVINFO->setbank = vmd.extinfo->setbank;
+                    if(vmd.extended_info->setbank) {
+                        DRVINFO->setbank = vmd.extended_info->setbank;
                     }
-                    if(vmd.extinfo->setrwbanks) {
-                        DRVINFO->setrwbanks = vmd.extinfo->setrwbanks;
+                    if(vmd.extended_info->setrwbanks) {
+                        DRVINFO->setrwbanks = vmd.extended_info->setrwbanks;
                         DRVINFO->splitbanks = TRUE;
                     }
-                    if(umul32(vmd.lineoffset,vmd.height) <= 0x10000L) {
+                    if(umul32(vmd.line_offset,vmd.height) <= 0x10000L) {
                         DRVINFO->splitbanks = TRUE;
                     }
                 }

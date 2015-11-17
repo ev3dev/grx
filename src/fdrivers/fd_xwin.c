@@ -653,7 +653,7 @@ void putscanline(int x, int y, int w, const GrxColor *scl, GrxColor op)
         (((x) + CLRINFO->round[n]) & CLRINFO->mask[n])          \
 )
 
-static int init(GrVideoMode *mp)
+static int init(GrxVideoMode *mp)
 {
 
   if (_XGrColorNumPixels == 1) {

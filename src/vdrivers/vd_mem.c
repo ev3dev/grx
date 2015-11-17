@@ -51,7 +51,7 @@ static int AllocMemBuf(unsigned long sze) {
   return 1;
 }
 
-static int mem_setmode (GrVideoMode *mp,int noclear);
+static int mem_setmode (GrxVideoMode *mp,int noclear);
 
 
 static GrVideoModeExt gr1ext = {
@@ -123,7 +123,7 @@ static GrVideoModeExt gr24ext = {
 };
 
 
-static int dummymode (GrVideoMode * mp , int noclear )
+static int dummymode (GrxVideoMode * mp , int noclear )
 {
     FreeMemBuf();
     return TRUE;
@@ -148,7 +148,7 @@ GrVideoModeExt   dummyExt = {
 
 
 
-static GrVideoMode modes[] = {
+static GrxVideoMode modes[] = {
     /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext                             */
     {  TRUE,  1,  640,  480,  0x00,   80,    0,  &gr1ext                          },
     {  TRUE,  4,  640,  480,  0x00,  320,    0,  &gr4ext                          },
@@ -159,14 +159,14 @@ static GrVideoMode modes[] = {
 
 
 
-static int mem_setmode (GrVideoMode *mp,int noclear)
+static int mem_setmode (GrxVideoMode *mp,int noclear)
 {
      return MemBuf ? TRUE : FALSE;
 }
 
 
 
-static GrVideoMode * mem_selectmode ( GrxVideoDriver * drv, int w, int h,
+static GrxVideoMode * mem_selectmode ( GrxVideoDriver * drv, int w, int h,
                                       int bpp, int txt, unsigned int * ep )
 {
     int  index;
@@ -212,10 +212,10 @@ static GrVideoMode * mem_selectmode ( GrxVideoDriver * drv, int w, int h,
     modes[index].width       = /* w<320 ? 320 : */ w;
     modes[index].height      = /* h<200 ? 200 : */ h;
     modes[index].bpp         = bpp;
-    modes[index].lineoffset  = LineOffset;
+    modes[index].line_offset  = LineOffset;
 
     if ( AllocMemBuf(size) ) {
-        modes[index].extinfo->frame = MemBuf;
+        modes[index].extended_info->frame = MemBuf;
         return _gr_select_mode (drv,w,h,bpp,txt,ep);
     }
     return FALSE;

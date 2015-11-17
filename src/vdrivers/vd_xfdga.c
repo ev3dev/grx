@@ -28,7 +28,7 @@
 
 int _XGrWindowedMode = 1;
 
-static int setmode(GrVideoMode *mp,int noclear)
+static int setmode(GrxVideoMode *mp,int noclear)
 {
         int res;
         XDGADevice *dev;
@@ -53,9 +53,9 @@ static int setmode(GrVideoMode *mp,int noclear)
                 goto done;
             }
 #ifdef XF86DGA_FRAMEBUFFER
-            mp->extinfo->frame = dev->data;
+            mp->extended_info->frame = dev->data;
 #else
-            mp->extinfo->frame = (char *) dev->pixmap;
+            mp->extended_info->frame = (char *) dev->pixmap;
 #endif
             XDGASync(_XGrDisplay, _XGrScreen);
             XDGASetViewport(_XGrDisplay, _XGrScreen, 0, 0, XDGAFlipRetrace);
@@ -77,7 +77,7 @@ static int setmode(GrVideoMode *mp,int noclear)
                 }
             }
 #ifdef XF86DGA_FRAMEBUFFER
-            if(!noclear) memzero(dev->data, mp->lineoffset * mp->height);
+            if(!noclear) memzero(dev->data, mp->line_offset * mp->height);
 #else
             _XGrDepth = _XGrBitsPerPixel = mp->bpp;
             if(_XGrDepth == 32) _XGrDepth = 24;
@@ -189,16 +189,16 @@ static void loadcolor(int c,int r,int g,int b)
 #define GRFRAMEDRIVER(bpp) GR_frameXWIN##bpp
 #endif
 
-static int build_video_mode(XDGAMode *ip, GrVideoMode *mp, GrVideoModeExt *ep)
+static int build_video_mode(XDGAMode *ip, GrxVideoMode *mp, GrVideoModeExt *ep)
 {
         mp->present    = TRUE;
         mp->bpp        = ip->depth;
         mp->width      = ip->viewportWidth;
         mp->height     = ip->viewportHeight;
         mp->mode       = ip->num;
-        mp->lineoffset = ip->bytesPerScanline;
-        mp->privdata   = 0;
-        mp->extinfo    = NULL;
+        mp->line_offset = ip->bytesPerScanline;
+        mp->user_data   = 0;
+        mp->extended_info    = NULL;
 
         ep->drv        = NULL;
         ep->frame      = NULL;
@@ -308,7 +308,7 @@ GrVideoModeExt grtextextdga = {
 #define  NUM_EXTS     10                /* max # of mode extensions */
 
 static GrVideoModeExt exts[NUM_EXTS];
-static GrVideoMode   modes[NUM_MODES] = {
+static GrxVideoMode   modes[NUM_MODES] = {
     /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext  */
     {  TRUE,  8,   80,   25,  0x00,    80, 1,    &grtextextdga  },
     {  0  }
@@ -316,23 +316,23 @@ static GrVideoMode   modes[NUM_MODES] = {
 
 /* from svgalib.c, unmodified */
 static void add_video_mode(
-    GrVideoMode *mp,  GrVideoModeExt *ep,
-    GrVideoMode **mpp,GrVideoModeExt **epp
+    GrxVideoMode *mp,  GrVideoModeExt *ep,
+    GrxVideoMode **mpp,GrVideoModeExt **epp
 ) {
         if(*mpp < &modes[NUM_MODES]) {
-            if(!mp->extinfo) {
+            if(!mp->extended_info) {
                 GrVideoModeExt *etp = &exts[0];
                 while(etp < *epp) {
                     if(memcmp(etp,ep,sizeof(GrVideoModeExt)) == 0) {
-                        mp->extinfo = etp;
+                        mp->extended_info = etp;
                         break;
                     }
                     etp++;
                 }
-                if(!mp->extinfo) {
+                if(!mp->extended_info) {
                     if(etp >= &exts[NUM_EXTS]) return;
                     sttcopy(etp,ep);
-                    mp->extinfo = etp;
+                    mp->extended_info = etp;
                     *epp = ++etp;
                 }
             }
@@ -346,7 +346,7 @@ static int init(char *options)
         int res;
         XDGAMode *modev = NULL;
         int modec, mindex;
-        GrVideoMode mode, *modep = &modes[1];
+        GrxVideoMode mode, *modep = &modes[1];
         GrVideoModeExt ext, *extp = &exts[0];
         GRX_ENTER();
         res = FALSE;

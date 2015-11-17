@@ -33,7 +33,7 @@ struct _GR_driverInfo _GrDriverInfo = {
         4,                              /* bpp */
         80,25,                          /* geometry */
         3,                              /* BIOS mode */
-        160,                            /* lineoffset */
+        160,                            /* line_offset */
         0,                              /* private */
         NULL
     },
