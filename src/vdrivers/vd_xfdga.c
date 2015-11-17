@@ -203,7 +203,7 @@ static int build_video_mode(XDGAMode *ip, GrxVideoMode *mp, GrxVideoModeExt *ep)
         ep->drv        = NULL;
         ep->frame      = NULL;
 #ifdef XF86DGA_FRAMEBUFFER
-        ep->flags      = GR_VMODEF_LINEAR;
+        ep->flags      = GRX_VIDEO_MODE_FLAG_LINEAR;
 #else
         ep->flags      = 0;
 #endif

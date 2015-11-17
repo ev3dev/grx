@@ -240,7 +240,7 @@ static int build_video_mode(int mode, int flags, SDL_Rect *rect,
 
         ep->drv        = NULL;
         ep->frame      = NULL;
-        ep->flags      = GR_VMODEF_LINEAR;
+        ep->flags      = GRX_VIDEO_MODE_FLAG_LINEAR;
         ep->setup      = setmode;
         ep->set_virtual_size   = NULL;
         ep->scroll     = NULL;

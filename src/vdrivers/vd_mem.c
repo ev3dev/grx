@@ -60,7 +60,7 @@ static GrxVideoModeExt gr1ext = {
     0,                                  /* frame buffer address */
     { 1, 1, 1 },                        /* color precisions */
     { 0, 0, 0 },                        /* color component bit positions */
-    GR_VMODEF_MEMORY,                   /* mode flag bits */
+    GRX_VIDEO_MODE_FLAG_MEMORY,         /* mode flag bits */
     mem_setmode,                        /* mode set */
     NULL,                               /* virtual size set */
     NULL,                               /* virtual scroll */
@@ -75,7 +75,7 @@ static GrxVideoModeExt gr4ext = {
     NULL,                               /* frame buffer address */
     { 8, 8, 8 },                        /* color precisions */
     { 0, 0, 0 },                        /* color component bit positions */
-    GR_VMODEF_MEMORY,                   /* mode flag bits */
+    GRX_VIDEO_MODE_FLAG_MEMORY,         /* mode flag bits */
     mem_setmode,                        /* mode set */
     NULL,                               /* virtual size set */
     NULL,                               /* virtual scroll */
@@ -90,7 +90,7 @@ static GrxVideoModeExt gr8ext = {
     NULL,                               /* frame buffer address */
     { 8, 8, 8 },                        /* color precisions */
     { 0, 0, 0 },                        /* color component bit positions */
-    GR_VMODEF_MEMORY,                   /* mode flag bits */
+    GRX_VIDEO_MODE_FLAG_MEMORY,         /* mode flag bits */
     mem_setmode,                        /* mode set */
     NULL,                               /* virtual size set */
     NULL,                               /* virtual scroll */
@@ -113,7 +113,7 @@ static GrxVideoModeExt gr24ext = {
 #else
     { 0, 8, 16 },                        /* color component bit positions */
 #endif
-    GR_VMODEF_MEMORY,                   /* mode flag bits */
+    GRX_VIDEO_MODE_FLAG_MEMORY,         /* mode flag bits */
     mem_setmode,                        /* mode set */
     NULL,                               /* virtual size set */
     NULL,                               /* virtual scroll */

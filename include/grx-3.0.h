@@ -256,6 +256,23 @@ struct _GrxVideoMode {
 };
 
 /**
+ * GrxVideoModeFlags:
+ *
+ * @GRX_VIDEO_MODE_FLAG_LINEAR: Uses linear memory mapping
+ * @GRX_VIDEO_MODE_FLAG_ACCEL: Uses an acellerated video mode
+ * @GRX_VIDEO_MODE_FLAG_FAST_SVGA8: Uses faster mixed-planar access
+ * @GRX_VIDEO_MODE_FLAG_MEMORY: Uses memory only (virtual screen)
+ *
+ * Video mode flag bits (in the #GrxVideoModeExt structure)
+ */
+typedef enum /*< flags >*/ {
+    GRX_VIDEO_MODE_FLAG_LINEAR        = 0x01,
+    GRX_VIDEO_MODE_FLAG_ACCEL         = 0x02,
+    GRX_VIDEO_MODE_FLAG_FAST_SVGA8    = 0x04,
+    GRX_VIDEO_MODE_FLAG_MEMORY        = 0x08,
+} GrxVideoModeFlags;
+
+/**
  * GrxVideoModeExt:
  * @mode: Frame driver mode for this video mode
  * @drv: Optional frame driver override
@@ -282,7 +299,7 @@ struct _GrxVideoModeExt {
     guint8 *frame;                      /* frame buffer address */
     guint8  cprec[3];                   /* color component precisions */
     guint8  cpos[3];                    /* color component bit positions */
-    gint    flags;                      /* mode flag bits; see "grdriver.h" */
+    GrxVideoModeFlags flags;            /* mode flag bits; see "grdriver.h" */
     gboolean (*setup)(GrxVideoMode *md, gboolean no_clear);
     gboolean (*set_virtual_size)(GrxVideoMode *md, guint w, guint h, GrxVideoMode *result);
     gboolean (*scroll)(GrxVideoMode *md, gint x, gint y, gint result[2]);

@@ -347,6 +347,18 @@ namespace Grx {
     }
 
     /**
+     * Video mode flag bits (in the #GrxVideoModeExt structure)
+     */
+    [CCode (cprefix = "GRX_VIDEO_MODE_FLAG_", has_type_id = false)]
+    [Flags]
+    public enum VideoModeFlags {
+        LINEAR,
+        ACCEL,
+        FAST_SVGA8 ,
+        MEMORY,
+    }
+
+    /**
      * Video driver mode descriptor extension structure.
      *
      * This is a separate structure accessed via a pointer from the main mode
@@ -367,7 +379,7 @@ namespace Grx {
         public char[] color_precision;
         [CCode (cname = "cprec", array_length_cexpr = "3")]
         public char[] color_position;
-        public int flags;
+        public VideoModeFlags flags;
         public VideoModeSetup setup;
         public VideoModeSetSize set_virtual_size;
         public VideoModeScroll scroll;

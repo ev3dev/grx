@@ -30,14 +30,6 @@
 */
 #ifdef USE_GRX_INTERNAL_DEFINITIONS
 
-/*
- * Video mode flag bits (in the 'GrxVideoModeExt' structure)
- */
-#define GR_VMODEF_LINEAR        1       /* uses linear memory mapping */
-#define GR_VMODEF_ACCEL         2       /* it is an accelerated mode */
-#define GR_VMODEF_FAST_SVGA8    4       /* use faster mixed linear-planar access */
-#define GR_VMODEF_MEMORY        8       /* virtual screen, memory only mode */
-
 extern GrFrameDriver
 /*
  * Standard frame drivers in GRX

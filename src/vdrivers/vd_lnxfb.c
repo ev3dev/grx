@@ -386,7 +386,7 @@ static int build_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep)
         return (FALSE);
     }
     mp->bpp = fbvar.bits_per_pixel;
-    ep->flags |= GR_VMODEF_LINEAR;
+    ep->flags |= GRX_VIDEO_MODE_FLAG_LINEAR;
     ep->cprec[0] = fbvar.red.length;
     ep->cprec[1] = fbvar.green.length;
     ep->cprec[2] = fbvar.blue.length;

@@ -116,7 +116,7 @@ static int buildcontext(GrxVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
         DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame selector = 0x%x\n",mp->extended_info->lfb_selector));
         sttzero(cxt);
 #if !(defined(__XWIN__) && !defined(XF86DGA_FRAMEBUFFER) && !defined(__SDL__))
-        if(mp->extended_info->flags&GR_VMODEF_LINEAR)
+        if(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_LINEAR)
         {
             DBGPRINTF(DBG_SETMD,("buildcontext - Linear Mode\n"));
             cxt->gc_baseaddr[0] =
@@ -126,7 +126,7 @@ static int buildcontext(GrxVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
             cxt->gc_selector    = mp->extended_info->lfb_selector;
         } else
 #endif /* !(__XWIN__ && !XF86DGA_FRAMEBUFFER && !__SDL__) */
-        if (mp->extended_info->flags&GR_VMODEF_MEMORY)
+        if (mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_MEMORY)
         {
             DBGPRINTF(DBG_SETMD,("buildcontext - Memory Mode\n"));
             if(plsize > fdp->max_plane_size) goto done; /* FALSE */
@@ -177,7 +177,7 @@ static int buildcontext(GrxVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
             cxt->gc_baseaddr[3] = LINP_PTR(mp->extended_info->frame);
             cxt->gc_selector    = LINP_SEL(mp->extended_info->frame);
         }
-        cxt->gc_onscreen    = !(mp->extended_info->flags&GR_VMODEF_MEMORY);
+        cxt->gc_onscreen    = !(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_MEMORY);
         /* Why do we default to screen driver ?? */
         cxt->gc_onscreen    = TRUE;
         cxt->gc_lineoffset  = mp->line_offset;
