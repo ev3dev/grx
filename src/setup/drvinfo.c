@@ -100,7 +100,7 @@ struct _GR_driverInfo _GrDriverInfo = {
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn
     },
-    GR_default_text,                            /* current mode code */
+    GRX_GRAPHICS_MODE_TEXT_DEFAULT,             /* current mode code */
     80,25,                                      /* default text size */
     640,480,                                    /* default graphics size */
     16L,16L,                                    /* default txt and gr colors */

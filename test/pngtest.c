@@ -71,11 +71,11 @@ int main()
 {
   GrContext *grc;
 
-  GrSetMode( GR_width_height_bpp_graphics,640,480,24 );
+  GrSetMode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,640,480,24 );
 
   if( !GrPngSupport() ){
     nopngsupport();
-    GrSetMode(GR_default_text);
+    GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
     exit( 1 );
     }
 
@@ -102,6 +102,6 @@ int main()
 
   GrTextXY( 10,10,"Press any key to end          ",GrBlack(),GrWhite() );
   GrKeyRead();
-  GrSetMode(GR_default_text);
+  GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   return 0;
 }

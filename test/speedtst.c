@@ -604,7 +604,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
   }
 
   GrSetMode(
-      GR_width_height_bpp_graphics,
+      GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,
       gp->w, gp->h, gp->bpp
   );
 
@@ -616,7 +616,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
 
   if ( GrScreenFrameMode() != gp->fm) {
     GrxFrameMode act = GrScreenFrameMode();
-    GrSetMode(GR_default_text);
+    GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
     printf("Setup failed : %s != %s\n",
     FrameDriverName(act),
     FrameDriverName(gp->fm));
@@ -641,7 +641,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
   }
 #endif
 
-  GrSetMode(GR_default_text);
+  GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   if (print) {
     printf("Results: \n");
     printresultheader(stdout);
@@ -794,7 +794,7 @@ int main(int argc, char **argv)
         for( ; ; ) {
             char mb[41], *m = mb;
             int tflag = 0;
-            GrSetMode(GR_default_text);
+            GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
             printf(
                 "Graphics driver: \"%s\"\t"
                 "graphics defaults: %dx%d %ld colors\n",

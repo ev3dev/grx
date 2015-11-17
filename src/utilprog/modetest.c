@@ -149,7 +149,7 @@ int main(void)
             int  i,w,h,px,py;
             char m1[41];
             nmodes = (int)(collectmodes(GrCurrentVideoDriver(),grmodes) - grmodes);
-            GrSetMode(GR_default_text);
+            GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
             if(nmodes == 0) {
                 printf("No graphics modes found\n");
                 exit(1);
@@ -185,7 +185,7 @@ int main(void)
             }
             i--;
             GrSetMode(
-                GR_width_height_bpp_graphics,
+                GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,
                 grmodes[i].w,
                 grmodes[i].h,
                 grmodes[i].bpp

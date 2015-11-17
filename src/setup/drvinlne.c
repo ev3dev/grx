@@ -18,7 +18,7 @@
 
 #include "libgrx.h"
 
-GrGraphicsMode (GrCurrentMode)(void)
+GrxGraphicsMode (GrCurrentMode)(void)
 {
         return(GrCurrentMode());
 }

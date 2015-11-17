@@ -46,46 +46,79 @@ typedef guint32 GrxColor;
 /*                           MODE SETTING                             */
 /* ================================================================== */
 
-/*
+/**
+ * GrxGraphicsMode:
+ * @GRX_GRAPHICS_MODE_UNKNOWN: Unknown mode / initial state
+ * @GRX_GRAPHICS_MODE_TEXT_80X25: Standard 80x25 text mode
+ * @GRX_GRAPHICS_MODE_TEXT_DEFAULT: Default text mode
+ * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT: Text mode with parameters int w, int h
+ * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR: Text mode with parameters int w,
+ *     int h, GrxColor nc
+ * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP: Text mode with parameters int w,
+ *     int h, int bpp
+ * @GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT: Default graphics mode
+ * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT: Graphics mode with parameters
+ *     int w, int h
+ * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR: Graphics mode with parameters
+ *     int w, int h, GrxColor nc
+ * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP: Graphics mode with parameters
+ *     int w, int h, int bpp
+ * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM: Graphics mode with parameters
+ *     int w, int h, GrxColor nc, int vx, int vy
+ * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP: Graphics mode with parameters
+ *     int w, int h, int bpp, int vx, int vy
+ * @GRX_GRAPHICS_MODE_TEXT_80X25_NC: Same as #GRX_GRAPHICS_MODE_TEXT_80X25
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_TEXT_DEFAULT_NC: Same as #GRX_GRAPHICS_MODE_TEXT_DEFAULT
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_NC: Same as #GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR_NC: Same as #GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP_NC: Same as #GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP
+ *     but does not clear video memory
+ *
  * available video modes (for 'GrSetMode')
  */
-typedef enum _GR_graphicsModes {
-        GR_unknown_mode = (-1),             /* initial state */
-        /* ============= modes which clear the video memory ============= */
-        GR_80_25_text = 0,                  /* Extra parameters for GrSetMode: */
-        GR_default_text,
-        GR_width_height_text,               /* int w,int h */
-        GR_biggest_text,
-        GR_320_200_graphics,
-        GR_default_graphics,
-        GR_width_height_graphics,           /* int w,int h */
-        GR_biggest_noninterlaced_graphics,
-        GR_biggest_graphics,
-        GR_width_height_color_graphics,     /* int w,int h,GrxColor nc */
-        GR_width_height_color_text,         /* int w,int h,GrxColor nc */
-        GR_custom_graphics,                 /* int w,int h,GrxColor nc,int vx,int vy */
-        /* ==== equivalent modes which do not clear the video memory ==== */
-        GR_NC_80_25_text,
-        GR_NC_default_text,
-        GR_NC_width_height_text,            /* int w,int h */
-        GR_NC_biggest_text,
-        GR_NC_320_200_graphics,
-        GR_NC_default_graphics,
-        GR_NC_width_height_graphics,        /* int w,int h */
-        GR_NC_biggest_noninterlaced_graphics,
-        GR_NC_biggest_graphics,
-        GR_NC_width_height_color_graphics,  /* int w,int h,GrxColor nc */
-        GR_NC_width_height_color_text,      /* int w,int h,GrxColor nc */
-        GR_NC_custom_graphics,              /* int w,int h,GrxColor nc,int vx,int vy */
-        /* ==== plane instead of color based modes ==== */
-        /* colors = 1 << bpp  >>> resort enum for GRX3 <<< */
-        GR_width_height_bpp_graphics,       /* int w,int h,int bpp */
-        GR_width_height_bpp_text,           /* int w,int h,int bpp */
-        GR_custom_bpp_graphics,             /* int w,int h,int bpp,int vx,int vy */
-        GR_NC_width_height_bpp_graphics,    /* int w,int h,int bpp */
-        GR_NC_width_height_bpp_text,        /* int w,int h,int bpp */
-        GR_NC_custom_bpp_graphics           /* int w,int h,int bpp,int vx,int vy */
-} GrGraphicsMode;
+typedef enum {
+    GRX_GRAPHICS_MODE_UNKNOWN = (-1),   /* initial state */
+    /* ============= modes which clear the video memory ============= */
+    GRX_GRAPHICS_MODE_TEXT_80X25 = 0,                 /* Extra parameters for GrSetMode: */
+    GRX_GRAPHICS_MODE_TEXT_DEFAULT,
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT,              /* int w,int h */
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR,        /* int w,int h,GrxColor nc */
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP,          /* int w,int h,int bpp */
+    GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT,
+    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT,          /* int w,int h */
+    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,    /* int w,int h,GrxColor nc */
+    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,      /* int w,int h,int bpp */
+    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM,                /* int w,int h,GrxColor nc,int vx,int vy */
+    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP,            /* int w,int h,int bpp,int vx,int vy */
+    /* ==== equivalent modes which do not clear the video memory ==== */
+    GRX_GRAPHICS_MODE_TEXT_80X25_NC,
+    GRX_GRAPHICS_MODE_TEXT_DEFAULT_NC,
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_NC,           /* int w,int h */
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR_NC,     /* int w,int h,GrxColor nc */
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP_NC,       /* int w,int h,int bpp */
+    GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC,
+    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_NC,       /* int w,int h */
+    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR_NC, /* int w,int h,GrxColor nc */
+    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP_NC,   /* int w,int h,int bpp */
+    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_NC,             /* int w,int h,GrxColor nc,int vx,int vy */
+    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC          /* int w,int h,int bpp,int vx,int vy */
+} GrxGraphicsMode;
 
 /**
  * GrxFrameMode:
@@ -250,7 +283,7 @@ extern const struct _GR_driverInfo {
         struct _GR_frameDriver   fdriver;   /* frame driver for the current context */
         struct _GR_frameDriver   sdriver;   /* frame driver for the screen */
         struct _GR_frameDriver   tdriver;   /* a dummy driver for text modes */
-        enum   _GR_graphicsModes mcode;     /* code for the current mode */
+        GrxGraphicsMode     mcode;          /* code for the current mode */
         int     deftw,defth;                /* default text mode size */
         int     defgw,defgh;                /* default graphics mode size */
         GrxColor deftc,defgc;                /* default text and graphics colors */
@@ -268,7 +301,7 @@ extern const struct _GR_driverInfo {
  * setup stuff
  */
 int  GrSetDriver(char *drvspec);
-int  GrSetMode(GrGraphicsMode which,...);
+int  GrSetMode(GrxGraphicsMode which,...);
 int  GrSetViewport(int xpos,int ypos);
 void GrSetModeHook(void (*hookfunc)(void));
 void GrSetModeRestore(int restoreFlag);
@@ -282,7 +315,7 @@ unsigned GrGetLibrarySystem(void);
 /*
  * inquiry stuff ---- many of these are actually macros (see below)
  */
-GrGraphicsMode GrCurrentMode(void);
+GrxGraphicsMode GrCurrentMode(void);
 GrVideoAdapter GrAdapterType(void);
 GrxFrameMode    GrCurrentFrameMode(void);
 GrxFrameMode    GrScreenFrameMode(void);

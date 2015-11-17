@@ -206,7 +206,7 @@ static int errhdlr(char *msg)
         return(FALSE);
 }
 
-int GrSetMode(GrGraphicsMode which,...)
+int GrSetMode(GrxGraphicsMode which,...)
 {
         int  w,h,pl,vw,vh;
         int  t,noclear,res;
@@ -230,115 +230,86 @@ int GrSetMode(GrGraphicsMode which,...)
         }
         va_start(ap,which);
         switch(which) {
-          case GR_NC_80_25_text:
+          case GRX_GRAPHICS_MODE_TEXT_80X25_NC:
             noclear = TRUE;
-          case GR_80_25_text:
+          case GRX_GRAPHICS_MODE_TEXT_80X25:
             w = 80;
             h = 25;
             c = DRVINFO->deftc;
             t = TRUE;
             break;
-          case GR_NC_default_text:
+          case GRX_GRAPHICS_MODE_TEXT_DEFAULT_NC:
             noclear = TRUE;
-          case GR_default_text:
+          case GRX_GRAPHICS_MODE_TEXT_DEFAULT:
             w = DRVINFO->deftw;
             h = DRVINFO->defth;
             c = DRVINFO->deftc;
             t = TRUE;
             break;
-          case GR_NC_width_height_text:
+          case GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_NC:
             noclear = TRUE;
-          case GR_width_height_text:
+          case GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT:
             w = va_arg(ap,int);
             h = va_arg(ap,int);
             c = DRVINFO->deftc;
             t = TRUE;
             break;
-          case GR_NC_biggest_text:
+          case GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR_NC:
             noclear = TRUE;
-          case GR_biggest_text:
-            w = 200;
-            h = 80;
-            c = DRVINFO->deftc;
-            t = TRUE;
-            break;
-          case GR_NC_width_height_color_text:
-            noclear = TRUE;
-          case GR_width_height_color_text:
+          case GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR:
             w = va_arg(ap,int);
             h = va_arg(ap,int);
             c = va_arg(ap,GrxColor);
             t = TRUE;
             break;
-          case GR_NC_width_height_bpp_text:
+          case GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP_NC:
             noclear = TRUE;
-          case GR_width_height_bpp_text:
+          case GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP:
             w  = va_arg(ap,int);
             h  = va_arg(ap,int);
             pl = va_arg(ap,int);
             t  = TRUE;
             break;
-          case GR_NC_320_200_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC:
             noclear = TRUE;
-          case GR_320_200_graphics:
-            w = 320;
-            h = 200;
-            c = DRVINFO->defgc;
-            break;
-          case GR_NC_default_graphics:
-            noclear = TRUE;
-          case GR_default_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT:
             w = DRVINFO->defgw;
             h = DRVINFO->defgh;
             c = DRVINFO->defgc;
             break;
-          case GR_NC_width_height_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_NC:
             noclear = TRUE;
-          case GR_width_height_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT:
             w = va_arg(ap,int);
             h = va_arg(ap,int);
             c = DRVINFO->defgc;
             break;
-          case GR_NC_biggest_noninterlaced_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR_NC:
             noclear = TRUE;
-          case GR_biggest_noninterlaced_graphics:
-            w = 800;
-            h = 600;
-            c = DRVINFO->defgc;
-            break;
-          case GR_NC_biggest_graphics:
-            noclear = TRUE;
-          case GR_biggest_graphics:
-            w = 4096;
-            h = 4096;
-            c = DRVINFO->defgc;
-            break;
-          case GR_NC_width_height_color_graphics:
-            noclear = TRUE;
-          case GR_width_height_color_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR:
             w = va_arg(ap,int);
             h = va_arg(ap,int);
             c = va_arg(ap,GrxColor);
             break;
-          case GR_NC_width_height_bpp_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP_NC:
             noclear = TRUE;
-          case GR_width_height_bpp_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP:
             w  = va_arg(ap,int);
             h  = va_arg(ap,int);
             pl = va_arg(ap,int);
             break;
-          case GR_NC_custom_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_NC:
             noclear = TRUE;
-          case GR_custom_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM:
             w  = va_arg(ap,int);
             h  = va_arg(ap,int);
             c  = va_arg(ap,GrxColor);
             vw = va_arg(ap,int);
             vh = va_arg(ap,int);
             break;
-          case GR_NC_custom_bpp_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC:
             noclear = TRUE;
-          case GR_custom_bpp_graphics:
+          case GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP:
             w  = va_arg(ap,int);
             h  = va_arg(ap,int);
             pl = va_arg(ap,int);

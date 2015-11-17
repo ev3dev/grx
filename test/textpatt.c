@@ -28,7 +28,7 @@ int main(void)
   GrFont *font;
   GrTextOption opt;
 
-  GrSetMode(GR_width_height_color_graphics, 320, 200, (GrxColor)256);
+  GrSetMode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR, 320, 200, (GrxColor)256);
   p1 = GrBuildPixmapFromBits(bits, 8, 8, 11,  3);
   p2 = GrBuildPixmapFromBits(bits, 8, 8,  3, 11);
   font = GrLoadFont(FONT);
@@ -57,7 +57,7 @@ int main(void)
   if (p1)   GrDestroyPattern(p1);
   if (p2)   GrDestroyPattern(p2);
   if (font) GrUnloadFont(font);
-  GrSetMode(GR_default_text);
+  GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   if (!p1) fprintf(stderr, "Couldn't create first pattern\n");
   if (!p2) fprintf(stderr, "Couldn't create second pattern\n");
   if (!font) fprintf(stderr, "Couldn't load font %s\n", FONT);

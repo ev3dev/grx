@@ -28,7 +28,7 @@ int main()
   GrContext *w1, *w2, *w3, *w4;
 
   GrSetDriver( "memory gw 400 gh 400 nc 256" );
-  GrSetMode( GR_default_graphics );
+  GrSetMode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
 
   x = GrSizeX();
   y = GrSizeY();

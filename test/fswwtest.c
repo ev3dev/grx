@@ -35,7 +35,7 @@ int main()
     else GrSetDriver( "sdl::fs gw 600 gh 600 nc 256" );
     i = ! i;
 
-    GrSetMode( GR_default_graphics );
+    GrSetMode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
 
     x = GrSizeX();
     y = GrSizeY();

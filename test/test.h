@@ -73,14 +73,14 @@ int main(int argc,char **argv)
                 Argv += 2;
         }
         if((xv >= x) && (yv >= y) && (c >= 2))
-                GrSetMode(GR_custom_graphics,x,y,c,xv,yv);
+                GrSetMode(GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM,x,y,c,xv,yv);
         else if(c >= 2)
-                GrSetMode(GR_width_height_color_graphics,x,y,c);
+                GrSetMode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,x,y,c);
         else if((x >= 320) && (y >= 200))
-                GrSetMode(GR_width_height_graphics,x,y);
-        else GrSetMode(GR_default_graphics);
+                GrSetMode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT,x,y);
+        else GrSetMode(GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT);
         (*testfunc)();
-        GrSetMode(GR_default_text);
+        GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
         if(strlen(exit_message) > 0) {
                 puts(exit_message);
         }

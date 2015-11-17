@@ -122,70 +122,31 @@ namespace Grx {
     /**
      * Available video modes (for {@link set_mode})
      */
-    [CCode (has_type_id = false)]
+    [CCode (cprefix = "GRX_GRAPHICS_MODE_", has_type_id = false)]
     public enum GraphicsMode {
-        [CCode (cname = "GR_unknown_mode")]
         UNKNOWN_MODE,
-        [CCode (cname = "GR_80_25_text")]
-        TEXT_80_25,
-        [CCode (cname = "GR_default_text")]
+        TEXT_80X25,
         TEXT_DEFAULT,
-        [CCode (cname = "GR_width_height_text")]
         TEXT_WIDTH_HEIGHT,
-        [CCode (cname = "GR_biggest_text")]
-        TEXT_BIGGEST,
-        [CCode (cname = "GR_320_200_graphics")]
-        GRAPHICS_320_200,
-        [CCode (cname = "GR_default_graphics")]
-        GRAPHICS_DEFAULT,
-        [CCode (cname = "GR_width_height_graphics")]
-        GRAPHICS_WIDHT_HEIGHT,
-        [CCode (cname = "GR_biggest_noninterlaced_graphics")]
-        GRAPHICS_BIGGEST_NONINTERLACED,
-        [CCode (cname = "GR_biggest_graphics")]
-        GRAPHICS_BIGGEST,
-        [CCode (cname = "GR_width_height_color_graphics")]
-        GRAPHICS_WIDTH_HEIGHT_COLOR,
-        [CCode (cname = "GR_width_height_color_text")]
         TEXT_WIDTH_HEIGHT_COLOR,
-        [CCode (cname = "GR_custom_graphics")]
-        GRAPHICS_CUSTOM,
-        [CCode (cname = "GR_NC_80_25_text")]
-        TEXT_80_25_NO_CLEAR,
-        [CCode (cname = "GR_NC_default_text")]
-        TEXT_DEFAULT_NO_CLEAR,
-        [CCode (cname = "GR_NC_width_height_text")]
-        TEXT_WIDTH_HEIGHT_NO_CLEAR,
-        [CCode (cname = "GR_NC_biggest_text")]
-        TEXT_BIGGEST_NO_CLEAR,
-        [CCode (cname = "GR_NC_320_200_graphics")]
-        GRAPHICS_320_200_NO_CLEAR,
-        [CCode (cname = "GR_NC_default_graphics")]
-        GRAPHICS_DEFAULT_NO_CLEAR,
-        [CCode (cname = "GR_NC_width_height_graphics")]
-        GRAPHICS_WIDTH_HEIGHT_NO_CLEAR,
-        [CCode (cname = "GR_NC_biggest_noninterlaced_graphics")]
-        GRAPHICS_BIGGEST_NONINTERLACED_NO_CLEAR,
-        [CCode (cname = "GR_NC_biggest_graphics")]
-        GRAPHICS_BIGGEST_NO_CLEAR,
-        [CCode (cname = "GR_NC_width_height_color_graphics")]
-        GRAPHICS_WIDTH_HEIGHT_COLOR_NO_CLEAR,
-        [CCode (cname = "GR_NC_width_height_color_text")]
-        TEXT_WIDTH_HEIGHT_COLOR_NO_CLEAR,
-        [CCode (cname = "GR_NC_custom_graphics")]
-        GRAPHICS_CUSTOM_NO_CLEAR,
-        [CCode (cname = "GR_width_height_bpp_graphics")]
-        GRAPHICS_WIDTH_HEIGHT_BPP,
-        [CCode (cname = "GR_width_height_bpp_text")]
         TEXT_WIDTH_HEIGHT_BPP,
-        [CCode (cname = "GR_custom_bpp_graphics")]
+        GRAPHICS_DEFAULT,
+        GRAPHICS_WIDHT_HEIGHT,
+        GRAPHICS_WIDTH_HEIGHT_COLOR,
+        GRAPHICS_WIDTH_HEIGHT_BPP,
+        GRAPHICS_CUSTOM,
         GRAPHICS_CUSTOM_BPP,
-        [CCode (cname = "GR_NC_width_height_bpp_graphics")]
-        GRAPHICS_WIDTH_HEIGHT_BPP_NO_CLEAR,
-        [CCode (cname = "GR_NC_width_height_bpp_text")]
-        TEXT_WIDTH_HEIGHT_BPP_NO_CLEAR,
-        [CCode (cname = "GR_NC_custom_bpp_graphics")]
-        GRAPHICS_CUSTOM_BPP_NO_CLEAR
+        TEXT_80_25_NC,
+        TEXT_DEFAULT_NC,
+        TEXT_WIDTH_HEIGHT_NC,
+        TEXT_WIDTH_HEIGHT_COLOR_NC,
+        TEXT_WIDTH_HEIGHT_BPP_NC,
+        GRAPHICS_DEFAULT_NC,
+        GRAPHICS_WIDTH_HEIGHT_NC,
+        GRAPHICS_WIDTH_HEIGHT_COLOR_NC,
+        GRAPHICS_WIDTH_HEIGHT_BPP_NC,
+        GRAPHICS_CUSTOM_NC,
+        GRAPHICS_CUSTOM_BPP_NC
     }
 
     /**
