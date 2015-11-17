@@ -87,37 +87,57 @@ typedef enum _GR_graphicsModes {
         GR_NC_custom_bpp_graphics           /* int w,int h,int bpp,int vx,int vy */
 } GrGraphicsMode;
 
-/*
+/**
+ * GrxFrameMode:
+ * @GRX_FRAME_MODE_UNDEFINED: Undefined
+ * @GRX_FRAME_MODE_TEXT: Text mode
+ * @GRX_FRAME_MODE_LFB_MONO01: Linear frame buffer, 1bpp, 0 = white, 1 = black
+ * @GRX_FRAME_MODE_LFB_MONO10: Linear frame buffer, 1bpp, 0 = black, 1 = white
+ * @GRX_FRAME_MODE_LFB_8BPP: Linear frame buffer, 8bpp, 256 color
+ * @GRX_FRAME_MODE_LFB_16BPP: Linear frame buffer, 16bpp, 32768/65536 color
+ * @GRX_FRAME_MODE_LFB_24BPP: Linear frame buffer, 24bpp, 16M color
+ * @GRX_FRAME_MODE_LFB_32BPP_LOW: Linear frame buffer, 32bpp, 16M color using lower 24 bits
+ * @GRX_FRAME_MODE_LFB_32BPP_HIGH: Linear frame buffer, 32bpp, 16M color using upper 24 bits
+ * @GRX_FRAME_MODE_RAM_1BPP: RAM frame buffer, 1bpp, monochome
+ * @GRX_FRAME_MODE_RAM_4BPP: RAM frame buffer, 4bpp, 16 color
+ * @GRX_FRAME_MODE_RAM_8BPP: RAM frame buffer, 8bpp, 256 color
+ * @GRX_FRAME_MODE_RAM_16BPP: RAM frame buffer, 16bpp, 32768/65536 color
+ * @GRX_FRAME_MODE_RAM_24BPP: RAM frame buffer, 24bpp, 16M color
+ * @GRX_FRAME_MODE_RAM_32BPP_LOW: RAM frame buffer, 32bpp, 16M color using lower 24 bits
+ * @GRX_FRAME_MODE_RAM_32BPP_HIGH: RAM frame buffer, 32bpp, 16M color using upper 24 bits
+ * @GRX_FRAME_MODE_RAM_3X8BPP: RAM frame buffer, 3x8bpp, 16M color in 3 planes
+ *
  * Available frame modes (video memory layouts)
  */
-typedef enum _GR_frameModes {
-        GR_frameUndef,                      /* undefined */
-        GR_frameText,                       /* text modes */
-        /* ==== linear frame buffer modes  ====== */
-        GR_frameMONO01_LFB,                 /* mono, 0 = white, 1 = black */
-        GR_frameMONO10_LFB,                 /* mono, 0 = black, 1 = white */
-        GR_frameSVGA8_LFB,                  /* (Super) VGA 256 color */
-        GR_frameSVGA16_LFB,                 /* Super VGA 32768/65536 color */
-        GR_frameSVGA24_LFB,                 /* Super VGA 16M color */
-        GR_frameSVGA32L_LFB,                /* Super VGA 16M color padded #1 */
-        GR_frameSVGA32H_LFB,                /* Super VGA 16M color padded #2 */
-        /* ====== system RAM frame buffer modes ====== */
-        GR_frameRAM1,                       /* mono */
-        GR_frameRAM4,                       /* 16 color planar */
-        GR_frameRAM8,                       /* 256 color */
-        GR_frameRAM16,                      /* 32768/65536 color */
-        GR_frameRAM24,                      /* 16M color */
-        GR_frameRAM32L,                     /* 16M color padded #1 */
-        GR_frameRAM32H,                     /* 16M color padded #2 */
-        GR_frameRAM3x8,                     /* 16M color planar (image mode) */
-        /* ====== markers for scanning modes ====== */
-        GR_firstTextFrameMode     = GR_frameText,
-        GR_lastTextFrameMode      = GR_frameText,
-        GR_firstGraphicsFrameMode = GR_frameMONO01_LFB,
-        GR_lastGraphicsFrameMode  = GR_frameSVGA32H_LFB,
-        GR_firstRAMframeMode      = GR_frameRAM1,
-        GR_lastRAMframeMode       = GR_frameRAM3x8
-} GrFrameMode;
+typedef enum {
+    GRX_FRAME_MODE_UNDEFINED,           /* undefined */
+    GRX_FRAME_MODE_TEXT,                /* text modes */
+    /* ==== linear frame buffer modes  ====== */
+    GRX_FRAME_MODE_LFB_MONO01,          /* mono, 0 = white, 1 = black */
+    GRX_FRAME_MODE_LFB_MONO10,          /* mono, 0 = black, 1 = white */
+    GRX_FRAME_MODE_LFB_8BPP,            /* (Super) VGA 256 color */
+    GRX_FRAME_MODE_LFB_16BPP,           /* Super VGA 32768/65536 color */
+    GRX_FRAME_MODE_LFB_24BPP,           /* Super VGA 16M color */
+    GRX_FRAME_MODE_LFB_32BPP_LOW,       /* Super VGA 16M color padded #1 */
+    GRX_FRAME_MODE_LFB_32BPP_HIGH,      /* Super VGA 16M color padded #2 */
+    /* ====== system RAM frame buffer modes ====== */
+    GRX_FRAME_MODE_RAM_1BPP,            /* mono */
+    GRX_FRAME_MODE_RAM_4BPP,            /* 16 color planar */
+    GRX_FRAME_MODE_RAM_8BPP,            /* 256 color */
+    GRX_FRAME_MODE_RAM_16BPP,           /* 32768/65536 color */
+    GRX_FRAME_MODE_RAM_24BPP,           /* 16M color */
+    GRX_FRAME_MODE_RAM_32BPP_LOW,       /* 16M color padded #1 */
+    GRX_FRAME_MODE_RAM_32BPP_HIGH,      /* 16M color padded #2 */
+    GRX_FRAME_MODE_RAM_3X8BPP,          /* 16M color planar (image mode) */
+    /*< private >*/
+    /* ====== markers for scanning modes ====== */
+    GRX_FRAME_MODE_FIRST_TEXT     = GRX_FRAME_MODE_TEXT,
+    GRX_FRAME_MODE_LAST_TEXT      = GRX_FRAME_MODE_TEXT,
+    GRX_FRAME_MODE_FIRST_GRAPHICS = GRX_FRAME_MODE_LFB_MONO01,
+    GRX_FRAME_MODE_LAST_GRAPHICS  = GRX_FRAME_MODE_LFB_32BPP_HIGH,
+    GRX_FRAME_MODE_FIRST_RAM      = GRX_FRAME_MODE_RAM_1BPP,
+    GRX_FRAME_MODE_LAST_RAM       = GRX_FRAME_MODE_RAM_3X8BPP
+} GrxFrameMode;
 
 /*
  * supported video adapter types
@@ -172,7 +192,7 @@ struct _GR_videoMode {
  * extended info.
  */
 struct _GR_videoModeExt {
-        enum   _GR_frameModes   mode;       /* frame driver for this video mode */
+        GrxFrameMode mode;                  /* frame driver for this video mode */
         struct _GR_frameDriver *drv;        /* optional frame driver override */
         char    *frame;                     /* frame buffer address */
         char    cprec[3];                   /* color component precisions */
@@ -191,8 +211,8 @@ struct _GR_videoModeExt {
  * The frame driver descriptor structure.
  */
 struct _GR_frameDriver {
-    enum    _GR_frameModes mode;         /* supported frame access mode */
-    enum    _GR_frameModes rmode;        /* matching RAM frame (if video) */
+    GrxFrameMode mode;                   /* supported frame access mode */
+    GrxFrameMode rmode;                  /* matching RAM frame (if video) */
     int      is_video;                   /* video RAM frame driver ? */
     int      row_align;                  /* scan line size alignment */
     int      num_planes;                 /* number of planes */
@@ -264,16 +284,16 @@ unsigned GrGetLibrarySystem(void);
  */
 GrGraphicsMode GrCurrentMode(void);
 GrVideoAdapter GrAdapterType(void);
-GrFrameMode    GrCurrentFrameMode(void);
-GrFrameMode    GrScreenFrameMode(void);
-GrFrameMode    GrCoreFrameMode(void);
+GrxFrameMode    GrCurrentFrameMode(void);
+GrxFrameMode    GrScreenFrameMode(void);
+GrxFrameMode    GrCoreFrameMode(void);
 
 const GrVideoDriver *GrCurrentVideoDriver(void);
 const GrVideoMode   *GrCurrentVideoMode(void);
 const GrVideoMode   *GrVirtualVideoMode(void);
 const GrFrameDriver *GrCurrentFrameDriver(void);
 const GrFrameDriver *GrScreenFrameDriver(void);
-const GrVideoMode   *GrFirstVideoMode(GrFrameMode fmode);
+const GrVideoMode   *GrFirstVideoMode(GrxFrameMode fmode);
 const GrVideoMode   *GrNextVideoMode(const GrVideoMode *prev);
 
 int  GrScreenX(void);
@@ -288,10 +308,10 @@ int  GrScreenIsVirtual(void);
 /*
  * RAM context geometry and memory allocation inquiry stuff
  */
-int  GrFrameNumPlanes(GrFrameMode md);
-int  GrFrameLineOffset(GrFrameMode md,int width);
-long GrFramePlaneSize(GrFrameMode md,int w,int h);
-long GrFrameContextSize(GrFrameMode md,int w,int h);
+int  GrFrameNumPlanes(GrxFrameMode md);
+int  GrFrameLineOffset(GrxFrameMode md,int width);
+long GrFramePlaneSize(GrxFrameMode md,int w,int h);
+long GrFrameContextSize(GrxFrameMode md,int w,int h);
 
 int  GrNumPlanes(void);
 int  GrLineOffset(int width);
@@ -375,7 +395,7 @@ extern const struct _GR_contextInfo {
 } * const GrContextInfo;
 
 GrContext *GrCreateContext(int w,int h,char *memory[4],GrContext *where);
-GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,char *memory[4],GrContext *where);
+GrContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrContext *where);
 GrContext *GrCreateSubContext(int x1,int y1,int x2,int y2,const GrContext *parent,GrContext *where);
 GrContext *GrSaveContext(GrContext *where);
 

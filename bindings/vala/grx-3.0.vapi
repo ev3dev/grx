@@ -24,7 +24,7 @@
  *
  * Find out more at [[http://grx.gnu.de]].
  */
-[CCode (cheader_filename = "grx-3.0.h", cprefix = "GR_", lower_case_cprefix = "Gr")]
+[CCode (cheader_filename = "grx-3.0.h", cprefix = "Grx", lower_case_cprefix = "grx_")]
 namespace Grx {
     [CCode (cname = "int", has_type_id = false)]
     public enum Result {
@@ -191,116 +191,92 @@ namespace Grx {
     /**
      * Available frame modes (video memory layouts)
      */
-    [CCode (cname = "enum _GR_frameModes", cprefix = "GR_frame", has_type_id = false)]
+    [CCode (cprefix = "GRX_FRAME_MODE_", has_type_id = false)]
     public enum FrameMode {
         /* ====== video frame buffer modes ====== */
 
         /**
          * Undefined
          */
-        [CCode (cname = "GR_frameUndef")]
         UNDEFINED,
 
         /**
          * Text modes
          */
-        [CCode (cname = "GR_frameText")]
         TEXT,
 
-        /* ==== modes provided by the SDL driver ===== */
-        SDL8,
-        SDL16,
-        SDL24,
-        SDL32L,
-        SDL32H,
         /* ==== linear frame buffer modes  ====== */
 
         /**
          * mono
          */
-        MONO01_LFB,
+        LFB_MONO01,
 
         /**
          * mono
          */
-        MONO10_LFB,
+        LFB_MONO10,
 
         /**
          * (Super) VGA 256 color
          */
-        SVGA8_LFB,
+        LFB_8BPP,
 
         /**
          * Super VGA 32768/65536 color
          */
-        SVGA16_LFB,
+        LFB_16BPP,
 
         /**
          * Super VGA 16M color
          */
-        SVGA24_LFB,
+        LFB_24BPP,
 
         /**
          * Super VGA 16M color padded #1
          */
-        SVGA32L_LFB,
+        LFB_32BPP_LOW,
 
         /**
          * Super VGA 16M color padded #2
          */
-        SVGA32H_LFB,
+        LFB_32BPP_HIGH,
         /* ====== system RAM frame buffer modes ====== */
 
         /**
          * mono
          */
-        RAM1,
+        RAM_1BPP,
 
         /**
          * 16 color planar
          */
-        RAM4,
+        RAM_4BPP,
 
         /**
          * 256 color
          */
-        RAM8,
+        RAM_8BPP,
 
         /**
          * 32768/65536 color
          */
-        RAM16,
+        RAM_16BPP,
 
         /**
          * 16M color
          */
-        RAM24,
+        RAM_24BPP,
 
         /**
          * 16M color padded #1
          */
-        RAM32L,
+        RAM_32BPP_LOW,
 
         /**
          * 16M color padded #2
          */
-        RAM32H,
-        /* not compiled */
-        //[CCode (cname = "GR_frameRAM3x8")]
-        //RAM3X8,                     /* 16M color planar (image mode) */
-        /* ====== markers for scanning modes ====== */
-        [CCode (cname = "GR_firstTextFrameMode")]
-        FIRST_TEXT,
-        [CCode (cname = "GR_lastTextFrameMode")]
-        LAST_TEXT,
-        [CCode (cname = "GR_firstGraphicsFrameMode")]
-        FIRST_GRAPHICS,
-        [CCode (cname = "GR_lastGraphicsFrameMode")]
-        LAST_GRAPHICS,
-        [CCode (cname = "GR_firstRAMframeMode")]
-        FIRST_RAM,
-        [CCode (cname = "GR_lastRAMframeMode")]
-        LAST_RAM;
+        RAM_32BPP_HIGH;
 
         [CCode (cname = "GrFrameNumPlanes")]
         public int num_planes ();

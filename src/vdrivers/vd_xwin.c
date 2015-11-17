@@ -73,7 +73,7 @@ static void loadcolor(int c,int r,int g,int b);
 static int setmode(GrVideoMode *mp,int noclear);
 
 GrVideoModeExt grtextext = {
-  GR_frameText,                       /* frame driver */
+  GRX_FRAME_MODE_TEXT,                /* frame driver */
   NULL,                               /* frame driver override */
   NULL,                               /* frame buffer address */
   { 0, 0, 0 },                        /* color precisions */
@@ -88,7 +88,7 @@ GrVideoModeExt grtextext = {
 };
 
 static GrVideoModeExt grxwinext = {
-  GR_frameUndef,                      /* frame driver */
+  GRX_FRAME_MODE_UNDEFINED,           /* frame driver */
   NULL,                               /* frame driver override */
   NULL,                               /* frame buffer address */
   { 0, 0, 0 },                        /* color precisions */
@@ -198,7 +198,7 @@ static int setmode(GrVideoMode *mp,int noclear)
       _XGrBStoreInited = 0;
     }
 
-    if (mp->extinfo->mode != GR_frameText) {
+    if (mp->extinfo->mode != GRX_FRAME_MODE_TEXT) {
       XSizeHints hints;
 
       XResizeWindow (_XGrDisplay, _XGrWindow, mp->width, mp->height);

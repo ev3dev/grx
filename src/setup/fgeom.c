@@ -19,13 +19,13 @@
 #include "libgrx.h"
 #include "arith.h"
 
-int GrFrameNumPlanes(GrFrameMode md)
+int GrFrameNumPlanes(GrxFrameMode md)
 {
         GrFrameDriver *dp = _GrFindRAMframeDriver(md);
         return(dp ? dp->num_planes : 0);
 }
 
-int GrFrameLineOffset(GrFrameMode md,int width)
+int GrFrameLineOffset(GrxFrameMode md,int width)
 {
         GrFrameDriver *dp = _GrFindRAMframeDriver(md);
         if(dp) {
@@ -38,12 +38,12 @@ int GrFrameLineOffset(GrFrameMode md,int width)
         return(0);
 }
 
-long GrFramePlaneSize(GrFrameMode md,int w,int h)
+long GrFramePlaneSize(GrxFrameMode md,int w,int h)
 {
         return(umul32(GrFrameLineOffset(md,w),h));
 }
 
-long GrFrameContextSize(GrFrameMode md,int w,int h)
+long GrFrameContextSize(GrxFrameMode md,int w,int h)
 {
         return(umul32(GrFrameLineOffset(md,w),(GrFrameNumPlanes(md) * h)));
 }

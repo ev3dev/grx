@@ -32,7 +32,7 @@ int main(void)
 
   GrSetMode( GR_default_graphics );
   /* Create a 1bpp bitmap */
-  pContext = GrCreateFrameContext(GR_frameRAM1, sizex, sizey, NULL, NULL);
+  pContext = GrCreateFrameContext(GRX_FRAME_MODE_RAM_1BPP, sizex, sizey, NULL, NULL);
   /* draw something (black and white) into the bitmap */
   GrSetContext(pContext);
   GrClearContext( GrBlack() );

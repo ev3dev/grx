@@ -310,8 +310,8 @@ int _GrResetColors(void);      /* like GrResetColors but return true on success 
 /*
  * internal utility functions
  */
-GrFrameDriver *_GrFindFrameDriver(GrFrameMode mode);
-GrFrameDriver *_GrFindRAMframeDriver(GrFrameMode mode);
+GrFrameDriver *_GrFindFrameDriver(GrxFrameMode mode);
+GrFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode);
 
 void _GrCloseVideoDriver(void);
 void _GrDummyFunction(void);

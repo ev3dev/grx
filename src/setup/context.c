@@ -27,7 +27,7 @@
 #define  MYCONTEXT      1
 #define  MYFRAME        2
 
-GrContext *GrCreateFrameContext(GrFrameMode md,int w,int h,char *memory[4],GrContext *where)
+GrContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrContext *where)
 {
         GrFrameDriver *fd = _GrFindRAMframeDriver(md);
         int  ii,offset,flags = 0;

@@ -40,7 +40,7 @@ GrVideoMode * _gr_selectmode(GrVideoDriver *drv,int w,int h,int bpp,
         for(n = drv->nmodes; --n >= 0; mp++) {
             if(!mp->present) continue;
             if(!mp->extinfo) continue;
-            if((mp->extinfo->mode != GR_frameText) ? txt : !txt) continue;
+            if((mp->extinfo->mode != GRX_FRAME_MODE_TEXT) ? txt : !txt) continue;
             cerr = ERROR(bpp,mp->bpp);
             serr = ERROR(w,mp->width) + ERROR(h,mp->height);
             if(((ep) ? FALSE : ((ep = err),TRUE)) ||

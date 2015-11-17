@@ -217,8 +217,8 @@ static
 /* -------------------------------------------------------------------- */
 
 GrFrameDriver _GrFrameDriverRAM1 = {
-    GR_frameRAM1,               /* frame mode */
-    GR_frameUndef,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_1BPP,    /* frame mode */
+    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
     4,                          /* scan line width alignment */
     1,                          /* number of planes */
@@ -241,8 +241,8 @@ GrFrameDriver _GrFrameDriverRAM1 = {
 };
 
 GrFrameDriver _GrFrameDriverMONO01_LFB = {
-    GR_frameMONO01_LFB,         /* frame mode */
-    GR_frameRAM1,               /* compatible RAM frame mode */
+    GRX_FRAME_MODE_LFB_MONO01,  /* frame mode */
+    GRX_FRAME_MODE_RAM_1BPP,    /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
     4,                          /* scan line width alignment */
     1,                          /* number of planes */
@@ -265,8 +265,8 @@ GrFrameDriver _GrFrameDriverMONO01_LFB = {
 };
 
 GrFrameDriver _GrFrameDriverMONO10_LFB = {
-    GR_frameMONO10_LFB,         /* frame mode */
-    GR_frameRAM1,               /* compatible RAM frame mode */
+    GRX_FRAME_MODE_LFB_MONO10,  /* frame mode */
+    GRX_FRAME_MODE_RAM_1BPP,    /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
     4,                          /* scan line width alignment */
     1,                          /* number of planes */

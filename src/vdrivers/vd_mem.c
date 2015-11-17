@@ -55,7 +55,7 @@ static int mem_setmode (GrVideoMode *mp,int noclear);
 
 
 static GrVideoModeExt gr1ext = {
-    GR_frameRAM1,                       /* frame driver */
+    GRX_FRAME_MODE_RAM_1BPP,            /* frame driver */
     NULL,                               /* frame driver override */
     0,                                  /* frame buffer address */
     { 1, 1, 1 },                        /* color precisions */
@@ -70,7 +70,7 @@ static GrVideoModeExt gr1ext = {
 };
 
 static GrVideoModeExt gr4ext = {
-    GR_frameRAM4,                       /* frame driver */
+    GRX_FRAME_MODE_RAM_4BPP,            /* frame driver */
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
     { 8, 8, 8 },                        /* color precisions */
@@ -85,7 +85,7 @@ static GrVideoModeExt gr4ext = {
 };
 
 static GrVideoModeExt gr8ext = {
-    GR_frameRAM8,                       /* frame driver */
+    GRX_FRAME_MODE_RAM_8BPP,            /* frame driver */
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
     { 8, 8, 8 },                        /* color precisions */
@@ -101,9 +101,9 @@ static GrVideoModeExt gr8ext = {
 
 static GrVideoModeExt gr24ext = {
 #ifdef GRX_USE_RAM3x8
-    GR_frameRAM3x8,                     /* frame driver */
+    GRX_FRAME_MODE_RAM_3X8BPP,          /* frame driver */
 #else
-    GR_frameRAM24,                      /* frame driver */
+    GRX_FRAME_MODE_RAM_24BPP,           /* frame driver */
 #endif
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
@@ -131,7 +131,7 @@ static int dummymode (GrVideoMode * mp , int noclear )
 
 
 GrVideoModeExt   dummyExt = {
-    GR_frameText,                       /* frame driver */
+    GRX_FRAME_MODE_TEXT,                /* frame driver */
     NULL,                               /* frame driver override */
     MK_FP(0xb800,0),                    /* frame buffer address */
     { 0, 0, 0 },                        /* color precisions */

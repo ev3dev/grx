@@ -28,17 +28,17 @@ GrVideoAdapter (GrAdapterType)(void)
         return(GrAdapterType());
 }
 
-GrFrameMode (GrCurrentFrameMode)(void)
+GrxFrameMode (GrCurrentFrameMode)(void)
 {
         return(GrCurrentFrameMode());
 }
 
-GrFrameMode (GrScreenFrameMode)(void)
+GrxFrameMode (GrScreenFrameMode)(void)
 {
         return(GrScreenFrameMode());
 }
 
-GrFrameMode (GrCoreFrameMode)(void)
+GrxFrameMode (GrCoreFrameMode)(void)
 {
         return(GrCoreFrameMode());
 }

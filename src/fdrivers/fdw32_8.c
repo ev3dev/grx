@@ -165,7 +165,7 @@ static void w32_bitblit(GrFrame *dst, int dx, int dy, GrFrame *src,
 
 GrFrameDriver _GrFrameDriverWIN32_8 = {
     GR_frameWIN32_8,             /* frame mode */
-    GR_frameRAM8,                /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_8BPP,     /* compatible RAM frame mode */
     TRUE,                        /* onscreen */
     4,                           /* line width alignment */
     1,                           /* number of planes */

@@ -695,7 +695,7 @@ static int init(GrVideoMode *mp)
 
 GrFrameDriver _GrFrameDriverXWIN8 = {
   GR_frameXWIN8,                /* frame mode */
-  GR_frameRAM8,                 /* compatible RAM frame mode */
+  GRX_FRAME_MODE_RAM_8BPP,      /* compatible RAM frame mode */
   TRUE,                         /* onscreen */
   4,                            /* line width alignment */
   1,                            /* number of planes */
@@ -719,7 +719,7 @@ GrFrameDriver _GrFrameDriverXWIN8 = {
 
 GrFrameDriver _GrFrameDriverXWIN16 = {
   GR_frameXWIN16,               /* frame mode */
-  GR_frameRAM16,                /* compatible RAM frame mode */
+  GRX_FRAME_MODE_RAM_16BPP,     /* compatible RAM frame mode */
   TRUE,                         /* onscreen */
   4,                            /* line width alignment */
   1,                            /* number of planes */
@@ -743,7 +743,7 @@ GrFrameDriver _GrFrameDriverXWIN16 = {
 
 GrFrameDriver _GrFrameDriverXWIN24 = {
   GR_frameXWIN24,               /* frame mode */
-  GR_frameRAM24,                /* compatible RAM frame mode */
+  GRX_FRAME_MODE_RAM_24BPP,     /* compatible RAM frame mode */
   TRUE,                         /* onscreen */
   4,                            /* line width alignment */
   1,                            /* number of planes */
@@ -767,7 +767,7 @@ GrFrameDriver _GrFrameDriverXWIN24 = {
 
 GrFrameDriver _GrFrameDriverXWIN32L = {
   GR_frameXWIN32L,              /* frame mode */
-  GR_frameRAM32L,               /* compatible RAM frame mode */
+  GRX_FRAME_MODE_RAM_32BPP_LOW, /* compatible RAM frame mode */
   TRUE,                         /* onscreen */
   4,                            /* line width alignment */
   1,                            /* number of planes */
@@ -791,7 +791,7 @@ GrFrameDriver _GrFrameDriverXWIN32L = {
 
 GrFrameDriver _GrFrameDriverXWIN32H = {
   GR_frameXWIN32H,              /* frame mode */
-  GR_frameRAM32H,                /* compatible RAM frame mode */
+  GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
   TRUE,                         /* onscreen */
   4,                            /* line width alignment */
   1,                            /* number of planes */

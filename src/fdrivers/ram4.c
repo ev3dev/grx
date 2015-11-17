@@ -265,8 +265,8 @@ static void bltr2r(GrFrame *dst,int dx,int dy,
 }
 
 GrFrameDriver _GrFrameDriverRAM4 = {
-    GR_frameRAM4,               /* frame mode */
-    GR_frameUndef,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_4BPP,    /* frame mode */
+    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
     4,                          /* scan line width alignment */
     4,                          /* number of planes */

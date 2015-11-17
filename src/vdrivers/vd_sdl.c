@@ -172,7 +172,7 @@ static int setmode(GrVideoMode *mp,int noclear)
                 ep->cpos[1]  = vfmt->Gshift;
                 ep->cpos[2]  = vfmt->Bshift;
                 if(mp->bpp == 32 && vfmt->Rshift == 24)
-                    ep->mode = GR_frameSVGA32H_LFB;
+                    ep->mode = GRX_FRAME_MODE_LFB_32BPP_HIGH;
             }
 
             if(!noclear) {
@@ -294,7 +294,7 @@ static int build_video_mode(int mode, int flags, SDL_Rect *rect,
 }
 
 GrVideoModeExt grtextextsdl = {
-    GR_frameText,                       /* frame driver */
+    GRX_FRAME_MODE_TEXT,                /* frame driver */
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
     { 0, 0, 0 },                        /* color precisions */

@@ -49,7 +49,7 @@ typedef struct {
 } perfm;
 
 typedef struct {
-    GrFrameMode fm;
+    GrxFrameMode fm;
     int    w,h,bpp;
     int    flags;
     perfm  readpix;
@@ -151,7 +151,7 @@ double ABS(int a, int b) {
   return fabs(r);
 }
 
-char *FrameDriverName(GrFrameMode m) {
+char *FrameDriverName(GrxFrameMode m) {
 
   unsigned sys = GrGetLibrarySystem();
   int x11 = ( (sys == GRX_VERSION_GENERIC_X11) ||
@@ -163,23 +163,23 @@ char *FrameDriverName(GrFrameMode m) {
   int sdl = strcmp( GrCurrentVideoDriver()->name , "sdl") == 0;
 
   switch(m) {
-    case GR_frameUndef: return "Undef";
-    case GR_frameText : return "Text";
-    case GR_frameMONO01_LFB: return "LFB1-01";
-    case GR_frameMONO10_LFB: return "LFB1-10";
-    case GR_frameSVGA8_LFB: return "LFB8";
-    case GR_frameSVGA16_LFB: return "LFB16";
-    case GR_frameSVGA24_LFB: return "LFB24";
-    case GR_frameSVGA32L_LFB: return "LFB32L";
-    case GR_frameSVGA32H_LFB: return "LFB32H";
-    case GR_frameRAM1: return "RAM1";
-    case GR_frameRAM4: return "RAM4";
-    case GR_frameRAM8: return "RAM8";
-    case GR_frameRAM16: return "RAM16";
-    case GR_frameRAM24: return "RAM24";
-    case GR_frameRAM32L: return "RAM32L";
-    case GR_frameRAM32H: return "RAM32H";
-    case GR_frameRAM3x8: return "RAM3x8";
+    case GRX_FRAME_MODE_UNDEFINED: return "Undef";
+    case GRX_FRAME_MODE_TEXT : return "Text";
+    case GRX_FRAME_MODE_LFB_MONO01: return "LFB1-01";
+    case GRX_FRAME_MODE_LFB_MONO10: return "LFB1-10";
+    case GRX_FRAME_MODE_LFB_8BPP: return "LFB8";
+    case GRX_FRAME_MODE_LFB_16BPP: return "LFB16";
+    case GRX_FRAME_MODE_LFB_24BPP: return "LFB24";
+    case GRX_FRAME_MODE_LFB_32BPP_LOW: return "LFB32L";
+    case GRX_FRAME_MODE_LFB_32BPP_HIGH: return "LFB32H";
+    case GRX_FRAME_MODE_RAM_1BPP: return "RAM1";
+    case GRX_FRAME_MODE_RAM_4BPP: return "RAM4";
+    case GRX_FRAME_MODE_RAM_8BPP: return "RAM8";
+    case GRX_FRAME_MODE_RAM_16BPP: return "RAM16";
+    case GRX_FRAME_MODE_RAM_24BPP: return "RAM24";
+    case GRX_FRAME_MODE_RAM_32BPP_LOW: return "RAM32L";
+    case GRX_FRAME_MODE_RAM_32BPP_HIGH: return "RAM32H";
+    case GRX_FRAME_MODE_RAM_3X8BPP: return "RAM3x8";
     default: return "UNKNOWN";
   }
   return "UNKNOWN";
@@ -615,7 +615,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
   }
 
   if ( GrScreenFrameMode() != gp->fm) {
-    GrFrameMode act = GrScreenFrameMode();
+    GrxFrameMode act = GrScreenFrameMode();
     GrSetMode(GR_default_text);
     printf("Setup failed : %s != %s\n",
     FrameDriverName(act),
@@ -656,10 +656,10 @@ void speedcheck(gvmode *gp, int print, int wait) {
 int collectmodes(const GrVideoDriver *drv)
 {
         gvmode *gp = grmodes;
-        GrFrameMode fm;
+        GrxFrameMode fm;
         const GrVideoMode *mp;
-        for(fm =GR_firstGraphicsFrameMode;
-              fm <= GR_lastGraphicsFrameMode; fm++) {
+        for(fm =GRX_FRAME_MODE_FIRST_GRAPHICS;
+              fm <= GRX_FRAME_MODE_LAST_GRAPHICS; fm++) {
             for(mp = GrFirstVideoMode(fm); mp; mp = GrNextVideoMode(mp)) {
                 gp->fm    = fm;
                 gp->w     = mp->width;
@@ -777,7 +777,7 @@ int main(int argc, char **argv)
         qsort(grmodes,nmodes,sizeof(grmodes[0]),vmcmp);
 #if MEASURE_RAM_MODES
         for (i=0; i < nmodes; ++i) {
-          rammodes[i].fm    = GR_frameUndef;      /* filled in later */
+          rammodes[i].fm    = GRX_FRAME_MODE_UNDEFINED;      /* filled in later */
           rammodes[i].w     = grmodes[i].w;
           rammodes[i].h     = grmodes[i].h;
           rammodes[i].bpp   = grmodes[i].bpp;

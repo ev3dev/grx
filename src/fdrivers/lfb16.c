@@ -33,8 +33,8 @@
 /* -------------------------------------------------------------------- */
 
 GrFrameDriver _GrFrameDriverSVGA16_LFB = {
-    GR_frameSVGA16_LFB,         /* frame mode */
-    GR_frameRAM16,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_LFB_16BPP,   /* frame mode */
+    GRX_FRAME_MODE_RAM_16BPP,   /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
     4,                          /* scan line width alignment */
     1,                          /* number of planes */

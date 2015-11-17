@@ -38,8 +38,8 @@ struct _GR_driverInfo _GrDriverInfo = {
         NULL
     },
     {                                   /* current frame driver */
-        GR_frameUndef,                  /* frame mode */
-        GR_frameUndef,                  /* compatible RAM frame mode */
+        GRX_FRAME_MODE_UNDEFINED,       /* frame mode */
+        GRX_FRAME_MODE_UNDEFINED,       /* compatible RAM frame mode */
         FALSE,                          /* onscreen */
         1,                              /* line width alignment */
         1,                              /* number of planes */
@@ -59,8 +59,8 @@ struct _GR_driverInfo _GrDriverInfo = {
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
     },
     {                                   /* screen frame driver */
-        GR_frameUndef,                  /* frame mode */
-        GR_frameUndef,                  /* compatible RAM frame mode */
+        GRX_FRAME_MODE_UNDEFINED,       /* frame mode */
+        GRX_FRAME_MODE_UNDEFINED,       /* compatible RAM frame mode */
         FALSE,                          /* onscreen */
         1,                              /* line width alignment */
         1,                              /* number of planes */
@@ -80,8 +80,8 @@ struct _GR_driverInfo _GrDriverInfo = {
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
     },
     {                                   /* dummy text mode frame driver */
-        GR_frameText,                   /* frame mode */
-        GR_frameUndef,                  /* compatible RAM frame mode */
+        GRX_FRAME_MODE_TEXT,            /* frame mode */
+        GRX_FRAME_MODE_UNDEFINED,       /* compatible RAM frame mode */
         TRUE,                           /* onscreen */
         1,                              /* line width alignment */
         1,                              /* number of planes */
@@ -120,7 +120,8 @@ static GrColor dummyframefn(void)
             _GrCloseVideoDriver();
             fprintf(stderr,
                 "GRX Error: graphics operation attempted %s\n",
-                (DRVINFO->fdriver.mode == GR_frameText) ? "in text mode" : "before mode set"
+                (DRVINFO->fdriver.mode == GRX_FRAME_MODE_TEXT)
+                    ? "in text mode" : "before mode set"
             );
             exit(1);
         }

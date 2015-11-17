@@ -203,7 +203,7 @@ void _LnxfbRelsigHandle(int sig)
     if (grc == NULL)
         return;
     /* copy framebuffer to new context */
-    if (GrScreenFrameMode() == GR_frameMONO01_LFB) {
+    if (GrScreenFrameMode() == GRX_FRAME_MODE_LFB_MONO01) {
         /* Need to invert the colors on this one. */
         GrClearContextC(grc, 1);
         GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
@@ -243,7 +243,7 @@ void _LnxfbAcqsigHandle(int sig)
     GrScreenContext()->gc_baseaddr[2] = frame_addr[2];
     GrScreenContext()->gc_baseaddr[3] = frame_addr[3];
     /* copy the temporary context back to the framebuffer */
-    if (GrScreenFrameMode() == GR_frameMONO01_LFB) {
+    if (GrScreenFrameMode() == GRX_FRAME_MODE_LFB_MONO01) {
         /* need to invert the colors on this one */
         GrClearScreen(1);
         GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
@@ -318,7 +318,7 @@ static int settext(GrVideoMode * mp, int noclear)
 }
 
 GrVideoModeExt grtextextfb = {
-    GR_frameText,                /* frame driver */
+    GRX_FRAME_MODE_TEXT,         /* frame driver */
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
     {6, 6, 6},                  /* color precisions */
@@ -358,13 +358,34 @@ static int build_video_mode(GrVideoMode * mp, GrVideoModeExt * ep)
     ep->loadcolor = NULL;
     switch (fbvar.bits_per_pixel) {
     case 1:
-    if (fbfix.visual == FB_VISUAL_MONO01)
-        ep->mode = GR_frameMONO01_LFB;
-    else if (fbfix.visual == FB_VISUAL_MONO10)
-        ep->mode = GR_frameMONO10_LFB;
-    else
-        return FALSE;
-    mp->bpp = 1;
+        if (fbfix.visual == FB_VISUAL_MONO01)
+            ep->mode = GRX_FRAME_MODE_LFB_MONO01;
+        else if (fbfix.visual == FB_VISUAL_MONO10)
+            ep->mode = GRX_FRAME_MODE_LFB_MONO10;
+        else
+            return FALSE;
+    break;
+    case 8:
+        if (fbfix.visual != FB_VISUAL_PSEUDOCOLOR)
+            return FALSE;
+        ep->mode = GRX_FRAME_MODE_LFB_8BPP;
+        ep->loadcolor = loadcolor;
+        break;
+    case 15:
+    case 16:
+        if (fbfix.visual != FB_VISUAL_TRUECOLOR)
+            return FALSE;
+        ep->mode = GRX_FRAME_MODE_LFB_16BPP;
+        break;
+    case 24:
+        if (fbfix.visual != FB_VISUAL_TRUECOLOR)
+            return FALSE;
+        ep->mode = GRX_FRAME_MODE_LFB_24BPP;
+        break;
+    default:
+        return (FALSE);
+    }
+    mp->bpp = fbvar.bits_per_pixel;
     ep->flags |= GR_VMODEF_LINEAR;
     ep->cprec[0] = fbvar.red.length;
     ep->cprec[1] = fbvar.green.length;
@@ -372,63 +393,6 @@ static int build_video_mode(GrVideoMode * mp, GrVideoModeExt * ep)
     ep->cpos[0] = fbvar.red.offset;
     ep->cpos[1] = fbvar.green.offset;
     ep->cpos[2] = fbvar.blue.offset;
-    break;
-    case 8:
-        if (fbfix.visual != FB_VISUAL_PSEUDOCOLOR)
-            return FALSE;
-        mp->bpp = 8;
-        ep->mode = GR_frameSVGA8_LFB;
-        ep->flags |= GR_VMODEF_LINEAR;
-        ep->cprec[0] = fbvar.red.length;
-        ep->cprec[1] = fbvar.green.length;
-        ep->cprec[2] = fbvar.blue.length;
-        ep->cpos[0] = fbvar.red.offset;
-        ep->cpos[1] = fbvar.green.offset;
-        ep->cpos[2] = fbvar.blue.offset;
-        ep->loadcolor = loadcolor;
-        break;
-    case 15:
-        if (fbfix.visual != FB_VISUAL_TRUECOLOR)
-            return FALSE;
-        mp->bpp = 15;
-        ep->mode = GR_frameSVGA16_LFB;
-        ep->flags |= GR_VMODEF_LINEAR;
-        ep->cprec[0] = fbvar.red.length;
-        ep->cprec[1] = fbvar.green.length;
-        ep->cprec[2] = fbvar.blue.length;
-        ep->cpos[0] = fbvar.red.offset;
-        ep->cpos[1] = fbvar.green.offset;
-        ep->cpos[2] = fbvar.blue.offset;
-        break;
-    case 16:
-        if (fbfix.visual != FB_VISUAL_TRUECOLOR)
-            return FALSE;
-        mp->bpp = 16;
-        ep->mode = GR_frameSVGA16_LFB;
-        ep->flags |= GR_VMODEF_LINEAR;
-        ep->cprec[0] = fbvar.red.length;
-        ep->cprec[1] = fbvar.green.length;
-        ep->cprec[2] = fbvar.blue.length;
-        ep->cpos[0] = fbvar.red.offset;
-        ep->cpos[1] = fbvar.green.offset;
-        ep->cpos[2] = fbvar.blue.offset;
-        break;
-    case 24:
-        if (fbfix.visual != FB_VISUAL_TRUECOLOR)
-            return FALSE;
-        mp->bpp = 24;
-        ep->mode = GR_frameSVGA24_LFB;
-        ep->flags |= GR_VMODEF_LINEAR;
-        ep->cprec[0] = fbvar.red.length;
-        ep->cprec[1] = fbvar.green.length;
-        ep->cprec[2] = fbvar.blue.length;
-        ep->cpos[0] = fbvar.red.offset;
-        ep->cpos[1] = fbvar.green.offset;
-        ep->cpos[2] = fbvar.blue.offset;
-        break;
-    default:
-        return (FALSE);
-    }
     return (TRUE);
 }
 

@@ -24,8 +24,8 @@
 #include "fdrivers/driver24.h"
 
 GrFrameDriver _GrFrameDriverRAM24 = {
-    GR_frameRAM24,              /* frame mode */
-    GR_frameUndef,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_24BPP,   /* frame mode */
+    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
     4,                          /* scan line width alignment */
     1,                          /* number of planes */
@@ -55,8 +55,8 @@ GrFrameDriver _GrFrameDriverRAM24 = {
 ** bottom first blits but this shouldn't matter */
 
 GrFrameDriver _GrFrameDriverSVGA24_LFB = {
-    GR_frameSVGA24_LFB,         /* frame mode */
-    GR_frameRAM24,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_LFB_24BPP,   /* frame mode */
+    GRX_FRAME_MODE_RAM_24BPP,   /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
     4,                          /* line width alignment */
     1,                          /* number of planes */

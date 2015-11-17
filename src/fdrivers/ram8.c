@@ -26,8 +26,8 @@
 /* -------------------------------------------------------------------- */
 
 GrFrameDriver _GrFrameDriverRAM8 = {
-    GR_frameRAM8,               /* frame mode */
-    GR_frameUndef,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_8BPP,    /* frame mode */
+    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
     4,                          /* line width alignment */
     1,                          /* number of planes */
@@ -59,8 +59,8 @@ GrFrameDriver _GrFrameDriverRAM8 = {
 ** bottom first blits but this shouldn't matter */
 
 GrFrameDriver _GrFrameDriverSVGA8_LFB = {
-    GR_frameSVGA8_LFB,              /* frame mode */
-    GR_frameRAM8,               /* compatible RAM frame mode */
+    GRX_FRAME_MODE_LFB_8BPP,    /* frame mode */
+    GRX_FRAME_MODE_RAM_8BPP,    /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
     4,                          /* scan line width alignment */
     1,                          /* number of planes */

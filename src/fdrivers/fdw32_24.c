@@ -173,7 +173,7 @@ void w32_putscanline(int x, int y, int w,
 
 GrFrameDriver _GrFrameDriverWIN32_24 = {
     GR_frameWIN32_24,           /* frame mode */
-    GR_frameRAM24,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_24BPP,   /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
     4,                          /* line width alignment */
     1,                          /* number of planes */

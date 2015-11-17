@@ -290,7 +290,7 @@ static int build_video_mode(XDGAMode *ip, GrVideoMode *mp, GrVideoModeExt *ep)
 }
 
 GrVideoModeExt grtextextdga = {
-    GR_frameText,                       /* frame driver */
+    GRX_FRAME_MODE_TEXT,                /* frame driver */
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
     { 0, 0, 0 },                        /* color precisions */

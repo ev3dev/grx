@@ -206,7 +206,7 @@ static int setmode(GrVideoMode * mp, int noclear)
     RGBQUAD color;
     int inipos;
 
-    if (mp->extinfo->mode != GR_frameText) {
+    if (mp->extinfo->mode != GRX_FRAME_MODE_TEXT) {
         inipos = 50;
         if (mp->width == maxScreenWidth && mp->height == maxScreenHeight)
             inipos = 0;
@@ -269,7 +269,7 @@ static void setbank_dummy(int bk)
 }
 
 GrVideoModeExt grtextext = {
-    GR_frameText,                /* frame driver */
+    GRX_FRAME_MODE_TEXT,         /* frame driver */
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
     {0, 0, 0},                        /* color precisions */

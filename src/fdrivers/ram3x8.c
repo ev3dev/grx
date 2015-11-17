@@ -172,8 +172,8 @@ static void bitblit(GrFrame *dst,int dx,int dy,
 /* -------------------------------------------------------------------- */
 
 GrFrameDriver _GrFrameDriverRAM3x8 = {
-    GR_frameRAM3x8,             /* frame mode */
-    GR_frameUndef,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_3X8BPP,  /* frame mode */
+    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
     4,                          /* scan line width alignment */
     3,                          /* number of planes */

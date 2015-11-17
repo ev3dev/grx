@@ -49,10 +49,10 @@ int  nmodes = 0;
 
 gvmode *collectmodes(const GrVideoDriver *drv,gvmode *gp)
 {
-        GrFrameMode fm;
+        GrxFrameMode fm;
         const GrVideoMode *mp;
-        for(fm =GR_firstGraphicsFrameMode;
-              fm <= GR_lastGraphicsFrameMode; fm++) {
+        for(fm =GRX_FRAME_MODE_FIRST_GRAPHICS;
+              fm <= GRX_FRAME_MODE_LAST_GRAPHICS; fm++) {
             for(mp = GrFirstVideoMode(fm); mp; mp = GrNextVideoMode(mp)) {
                 gp->w   = mp->width;
                 gp->h   = mp->height;

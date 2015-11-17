@@ -33,7 +33,7 @@
 
 GrFrameDriver _GrFrameDriverSDL8 = {
     GR_frameSDL8,               /* frame mode */
-    GR_frameRAM8,               /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_8BPP,    /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
     4,                          /* scan line width alignment */
     1,                          /* number of planes */

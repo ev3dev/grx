@@ -19,7 +19,7 @@
 #include "grdriver.h"
 #include "libgrx.h"
 
-static GrVideoMode *modewalk(GrVideoMode *pm,GrVideoMode *dup,GrFrameMode md)
+static GrVideoMode *modewalk(GrVideoMode *pm,GrVideoMode *dup,GrxFrameMode md)
 {
         GrVideoDriver *vd;
         GrVideoMode   *vm;
@@ -52,13 +52,13 @@ static GrVideoMode *modewalk(GrVideoMode *pm,GrVideoMode *dup,GrFrameMode md)
         return(NULL);
 }
                     
-const GrVideoMode *GrFirstVideoMode(GrFrameMode fmode)
+const GrVideoMode *GrFirstVideoMode(GrxFrameMode fmode)
 {
         return(modewalk(NULL,NULL,fmode));
 }
         
 const GrVideoMode *GrNextVideoMode(const GrVideoMode *prev)
 {
-        return(modewalk((GrVideoMode *)prev,NULL,GR_frameUndef));
+        return(modewalk((GrVideoMode *)prev,NULL,GRX_FRAME_MODE_UNDEFINED));
 }
 

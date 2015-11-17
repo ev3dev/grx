@@ -37,7 +37,7 @@ static
 
 GrFrameDriver _GrFrameDriverSDL32H = {
     GR_frameSDL32H,             /* frame mode */
-    GR_frameRAM32H,             /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
     4,                          /* line width alignment */
     1,                          /* number of planes */

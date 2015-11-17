@@ -25,8 +25,8 @@
 #include "fdrivers/driver32.h"
 
 GrFrameDriver _GrFrameDriverRAM32L = {
-    GR_frameRAM32L,             /* frame mode */
-    GR_frameUndef,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_32BPP_LOW, /* frame mode */
+    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
     4,                          /* scan line width alignment */
     1,                          /* number of planes */
@@ -56,8 +56,8 @@ GrFrameDriver _GrFrameDriverRAM32L = {
 ** bottom first blits but this shouldn't matter */
 
 GrFrameDriver _GrFrameDriverSVGA32L_LFB = {
-    GR_frameSVGA32L_LFB,            /* frame mode */
-    GR_frameRAM32L,             /* compatible RAM frame mode */
+    GRX_FRAME_MODE_LFB_32BPP_LOW, /* frame mode */
+    GRX_FRAME_MODE_RAM_32BPP_LOW, /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
     4,                          /* line width alignment */
     1,                          /* number of planes */

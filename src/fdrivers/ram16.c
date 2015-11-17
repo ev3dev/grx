@@ -22,8 +22,8 @@
 #include "fdrivers/driver16.h"
 
 GrFrameDriver _GrFrameDriverRAM16 = {
-    GR_frameRAM16,              /* frame mode */
-    GR_frameUndef,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_RAM_16BPP,   /* frame mode */
+    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
     4,                          /* scan line width alignment */
     1,                          /* number of planes */
@@ -53,8 +53,8 @@ GrFrameDriver _GrFrameDriverRAM16 = {
 ** bottom first blits but this shouldn't matter */
 
 GrFrameDriver _GrFrameDriverSVGA16_LFB = {
-    GR_frameSVGA16_LFB,         /* frame mode */
-    GR_frameRAM16,              /* compatible RAM frame mode */
+    GRX_FRAME_MODE_LFB_16BPP,   /* frame mode */
+    GRX_FRAME_MODE_RAM_16BPP,   /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
     4,                          /* scan line width alignment */
     1,                          /* number of planes */
