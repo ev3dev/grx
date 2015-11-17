@@ -292,10 +292,10 @@ namespace Grx {
         USER_RESOLUTION
     }
 
-    [CCode (cname = "struct _GR_videoDriver", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class VideoDriver {
-        [CCode (cname = "struct _GR_videoDriver", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxVideoDriver", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         public string name;
