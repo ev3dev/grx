@@ -2268,32 +2268,6 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#A-User-Manual-For-GRX2">A User Manual 
 
 <p>Here we will describe some miscellaneous functions.
 
-<pre class="example">     unsigned GrGetLibraryVersion(void);
-</pre>
-<p>GrGetLibraryVersion returns the GRX version API, like a hexadecimal coded
-number. By example 0x0241 means 2.4.1 Because grx20.h defines the
-GRX_VERSION_API macro, you can check if both, the library and the
-include file, are in the same version using
-if(GrGetLibraryVersion() == GRX_VERSION_API )
-
-<pre class="example">     unsigned GrGetLibrarySystem(void);
-</pre>
-<p>This functions returns a unsigned integer identifing the system you are
-working in. grx20.h defines some macros you can use:
-
-<pre class="example">     /* these are the supported configurations: */
-     #define GRX_VERSION_GCC_386_LINUX       3   /* the real stuff */
-     #define GRX_VERSION_GENERIC_X11         4   /* generic X11 version */
-     #define GRX_VERSION_GCC_386_WIN32       7   /* WIN32 using Mingw32 */
-     #define GRX_VERSION_MSC_386_WIN32       8   /* WIN32 using MS-VC */
-     #define GRX_VERSION_GCC_386_CYG32       9   /* WIN32 using CYGWIN */
-     #define GRX_VERSION_GCC_386_X11        10   /* X11 version */
-     #define GRX_VERSION_GCC_X86_64_LINUX   11   /* console framebuffer 64 */
-     #define GRX_VERSION_GCC_X86_64_X11     12   /* X11 version 64 */
-</pre>
-<p>Note. On Linux, GrGetLibrarySystem returns GRX_VERSION_GCC_386_LINUX even in the
-X11 version.
-
 <pre class="example">     void GrSetWindowTitle(char *title);
 </pre>
 <p>GrSetWindowTitle sets the main window title in the X11 an Win32 versions. It

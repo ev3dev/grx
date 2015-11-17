@@ -31,12 +31,7 @@
 
 #include "grx-3.0.h"
 
-#if GRX_VERSION_API-0 <= 0x0220
-#define GrColor unsigned long
-#define BLIT_FAIL(gp) ((gp)->fm!=GR_frameVGA8X)
-#else
 #define BLIT_FAIL(gp)  0
-#endif
 
 #define MEASURE_RAM_MODES 1
 
@@ -158,12 +153,7 @@ double ABS(int a, int b) {
 
 char *FrameDriverName(GrFrameMode m) {
 
-#if GRX_VERSION_API-0 >= 0x0229                                     
   unsigned sys = GrGetLibrarySystem();
-#else
-  unsigned sys = (unsigned) GRX_VERSION;
-#endif
-
   int x11 = ( (sys == GRX_VERSION_GENERIC_X11) ||
               (sys == GRX_VERSION_GCC_386_X11) ||
               (sys == GRX_VERSION_GCC_X86_64_X11) );
@@ -199,11 +189,8 @@ void Message(int disp, char *txt, gvmode *gp) {
   char msg[200];
   sprintf(msg, "%s: %d x %d x %dbpp",
                 FrameDriverName(gp->fm), gp->w, gp->h, gp->bpp);
-#if GRX_VERSION_API-0 >= 0x0229                                     
   unsigned sys = GrGetLibrarySystem();
-#else
-  unsigned sys = (unsigned) GRX_VERSION;
-#endif
+
   if ( (sys == GRX_VERSION_GENERIC_X11) ||
        (sys == GRX_VERSION_GCC_386_X11) ||
        (sys == GRX_VERSION_GCC_X86_64_X11) )
@@ -556,11 +543,8 @@ void measure_one(gvmode *gp, int ram) {
   GrFilledBox( 0, 0, gp->w-1, gp->h-1, GrBlack());
   Message(RAMMODE(gp),"read pixel test", gp);
   { int rd_loops = READPIX_loops;
-#if GRX_VERSION_API-0 >= 0x0229                                     
   unsigned sys = GrGetLibrarySystem();
-#else
-  unsigned sys = (unsigned) GRX_VERSION;
-#endif
+
   if ( (sys == GRX_VERSION_GENERIC_X11) ||
        (sys == GRX_VERSION_GCC_386_X11) ||
        (sys == GRX_VERSION_GCC_X86_64_X11) )

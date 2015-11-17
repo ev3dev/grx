@@ -357,28 +357,10 @@ static void the_title(int x, int y)
 
 static void the_info(int x, int y)
 {
-    char aux[81], sys[4] = "?";
-    int nsys;
+    char aux[81];
 
     grt_centered.txo_fgcolor.v = CYAN;
     grt_centered.txo_font = grf_std;
-
-    nsys = GrGetLibrarySystem();
-    if (nsys == GRX_VERSION_GCC_386_LINUX)
-        strcpy(sys, "LNX");
-    if (nsys == GRX_VERSION_GCC_386_X11)
-        strcpy(sys, "X11");
-    if (nsys == GRX_VERSION_GCC_X86_64_LINUX)
-        strcpy(sys, "L64");
-    if (nsys == GRX_VERSION_GCC_X86_64_X11)
-        strcpy(sys, "X64");
-    if (nsys == GRX_VERSION_GENERIC_X11)
-        strcpy(sys, "X11");
-    if (nsys == GRX_VERSION_GCC_386_WIN32)
-        strcpy(sys, "W32");
-
-    sprintf(aux, "Version:%x System:%s", GrGetLibraryVersion(), sys);
-    GrDrawString(aux, strlen(aux), 0 + x, 0 + y, &grt_centered);
 
     sprintf(aux, "VideoDriver: %s", GrCurrentVideoDriver()->name);
     GrDrawString(aux, strlen(aux), 0 + x, 25 + y, &grt_centered);

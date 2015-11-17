@@ -134,7 +134,6 @@ source_c = \
     setup/modewalk.c    \
     setup/setdrvr.c     \
     setup/setmode.c     \
-    setup/version.c     \
     setup/viewport.c    \
     shape/circle1.c     \
     shape/circle2.c     \
