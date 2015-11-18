@@ -1,22 +1,22 @@
-/**
- ** grx-3.0.h ---- GRX 3.x API functions and data structure declarations
- **
- ** Copyright (c) 2015 David Lechner <david@lechnology.com>
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * grx-3.0.h ---- GRX 3.x API functions and data structure declarations
+ *
+ * Copyright (c) 2015 David Lechner <david@lechnology.com>
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #ifndef __GRX_3_0_H_INCLUDED__
 #define __GRX_3_0_H_INCLUDED__
@@ -257,7 +257,6 @@ struct _GrxVideoMode {
 
 /**
  * GrxVideoModeFlags:
- *
  * @GRX_VIDEO_MODE_FLAG_LINEAR: Uses linear memory mapping
  * @GRX_VIDEO_MODE_FLAG_ACCEL: Uses an acellerated video mode
  * @GRX_VIDEO_MODE_FLAG_FAST_SVGA8: Uses faster mixed-planar access
@@ -363,7 +362,7 @@ struct _GrxFrameDriver {
       /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
       /*    else             pv[i=0..w-1] = readpixel(x+indx[i],y)   */
     void     (*putscanline)(gint x, gint y, gint w, const GrxColor *scl, GrxColor op);
-      /** will draw scl[i=0..w-1] to frame:                          */
+      /* will draw scl[i=0..w-1] to frame:                           */
       /*    if (scl[i] != skipcolor) drawpixel(x+i,y,(scl[i] | op))  */
 };
 
