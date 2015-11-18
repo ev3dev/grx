@@ -34,8 +34,8 @@ int main(void)
   int wide, high, maxval;
   char s[81];
   
-/* GrSetMode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT ); */
-  GrSetMode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,640,480,32768 );
+/* grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT ); */
+  grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,640,480,32768 );
   GrQueryPnm( FIMAGEPPM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPPM,wide,high );
   GrTextXY( 10,20,s,GrBlack(),GrWhite() );
@@ -98,6 +98,6 @@ int main(void)
   GrTextXY( 10,20,"Press any key to end        ",GrBlack(),GrWhite() );
   GrKeyRead();
 
-  GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   return 0;
 }

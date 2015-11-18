@@ -52,12 +52,12 @@ static GrxVideoMode *modewalk(GrxVideoMode *pm,GrxVideoMode *dup,GrxFrameMode md
         return(NULL);
 }
                     
-const GrxVideoMode *GrFirstVideoMode(GrxFrameMode fmode)
+const GrxVideoMode *grx_get_first_video_mode(GrxFrameMode fmode)
 {
         return(modewalk(NULL,NULL,fmode));
 }
         
-const GrxVideoMode *GrNextVideoMode(const GrxVideoMode *prev)
+const GrxVideoMode *grx_get_next_video_mode(const GrxVideoMode *prev)
 {
         return(modewalk((GrxVideoMode *)prev,NULL,GRX_FRAME_MODE_UNDEFINED));
 }

@@ -50,8 +50,8 @@ TESTFUNC(cursortest)
         msc[1] = GrWhite();
         msc[2] = GrAllocColor(255,0,0);
         cur = GrBuildCursor(p16d,16,16,16,1,1,msc);
-        x = GrScreenX() / 2;
-        y = GrScreenY() / 2;
+        x = grx_get_screen_x() / 2;
+        y = grx_get_screen_y() / 2;
         GrMoveCursor(cur,x,y);
         GrClearScreen(bgc);
         GrSetColor((GrNumColors() - 1),255,255,255);
@@ -97,9 +97,9 @@ TESTFUNC(cursortest)
                 default:  continue;
             }
             if(x < 0) x = 0;
-            if(x > GrScreenX()) x = GrScreenX();
+            if(x > grx_get_screen_x()) x = grx_get_screen_x();
             if(y < 100) y = 100;
-            if(y > GrScreenY()) y = GrScreenY();
+            if(y > grx_get_screen_y()) y = grx_get_screen_y();
             GrMoveCursor(cur,x,y);
         }
 }

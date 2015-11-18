@@ -151,11 +151,11 @@ GrxColor readpixel(GrFrame *c, int x, int y)
     }
     _XGrPixelCacheDrawable = (Drawable) c->gf_baseaddr[0];
 
-    _XGrPixelCacheWidth = GrScreenX();
+    _XGrPixelCacheWidth = grx_get_screen_x();
     _XGrPixelCacheY1 = y;
     _XGrPixelCacheY2 = y + PIXEL_CACHE_HEIGHT - 1;
-    if (_XGrPixelCacheY2 >= GrScreenY())
-      _XGrPixelCacheY2 = GrScreenY() - 1;
+    if (_XGrPixelCacheY2 >= grx_get_screen_y())
+      _XGrPixelCacheY2 = grx_get_screen_y() - 1;
     _XGrPixelCacheHeight = _XGrPixelCacheY2 - _XGrPixelCacheY1 + 1;
 
     _XGrPixelCacheImage = XGetImage (_XGrDisplay,

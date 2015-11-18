@@ -157,7 +157,7 @@ int main(int argc, char **argv)
         }
         if(width == 0) width = height == 400 ? 640 : height * 4 / 3;
 
-        GrSetMode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, width, height, bpp);
+        grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, width, height, bpp);
         if(!gray || (opt.txo_fgcolor.v = GrAllocColor(gray, gray, gray)) == GrNOCOLOR) opt.txo_fgcolor.v = GrWhite();
         if(attributes & 0x02) opt.txo_fgcolor.v |= GR_UNDERLINE_TEXT;
         opt.txo_bgcolor.v = GrBlack();

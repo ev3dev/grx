@@ -142,10 +142,10 @@ void _LnxfbSwitchToConsoleVt(unsigned short vt)
     myvt = vtst.v_active;
     if (vt == myvt) return; 
 
-    grc = GrCreateContext(GrScreenX(), GrScreenY(), NULL, NULL);
+    grc = GrCreateContext(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
     if (grc != NULL) {
         GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
-                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
     }
     ioctl(ttyfd, KDSETMODE, KD_TEXT);
     if (ioctl(ttyfd, VT_ACTIVATE, vt) == 0) {
@@ -155,7 +155,7 @@ void _LnxfbSwitchToConsoleVt(unsigned short vt)
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
     if (grc != NULL) {
         GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
-                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
         GrDestroyContext(grc);
     }
 }
@@ -172,10 +172,10 @@ void _LnxfbSwitchConsoleAndWait(void)
     if (ioctl(ttyfd, VT_GETSTATE, &vtst) < 0) return;
     myvt = vtst.v_active;
 
-    grc = GrCreateContext(GrScreenX(), GrScreenY(), NULL, NULL);
+    grc = GrCreateContext(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
     if (grc != NULL) {
         GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
-                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
     }
 
     ioctl(ttyfd, KDSETMODE, KD_TEXT);
@@ -187,7 +187,7 @@ void _LnxfbSwitchConsoleAndWait(void)
 
     if (grc != NULL) {
         GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
-                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
         GrDestroyContext(grc);
     }
 }
@@ -199,18 +199,18 @@ void _LnxfbRelsigHandle(int sig)
     if (ttyfd < 0) return;
 
     /* create a new context from the screen */
-    grc = GrCreateContext(GrScreenX(), GrScreenY(), NULL, NULL);
+    grc = GrCreateContext(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
     if (grc == NULL)
         return;
     /* copy framebuffer to new context */
-    if (GrScreenFrameMode() == GRX_FRAME_MODE_LFB_MONO01) {
+    if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
         /* Need to invert the colors on this one. */
         GrClearContextC(grc, 1);
         GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
-                 GrScreenX()-1, GrScreenY()-1, GrXOR);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrXOR);
     } else {
         GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
-                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
     }
     /*
      * swap out the framebuffer memory with the new context so that the
@@ -243,14 +243,14 @@ void _LnxfbAcqsigHandle(int sig)
     GrScreenContext()->gc_baseaddr[2] = frame_addr[2];
     GrScreenContext()->gc_baseaddr[3] = frame_addr[3];
     /* copy the temporary context back to the framebuffer */
-    if (GrScreenFrameMode() == GRX_FRAME_MODE_LFB_MONO01) {
+    if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
         /* need to invert the colors on this one */
         GrClearScreen(1);
         GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
-                 GrScreenX()-1, GrScreenY()-1, GrXOR);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrXOR);
     } else {
         GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
-                 GrScreenX()-1, GrScreenY()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
     }
     GrDestroyContext(grc);
     signal(SIGUSR1, _LnxfbRelsigHandle);

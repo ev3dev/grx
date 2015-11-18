@@ -30,7 +30,7 @@ int main(void)
   GrxColor fcolor, bcolor;
   GrKeyType k;
 
-  GrSetMode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
+  grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
   /* Create a 1bpp bitmap */
   pContext = GrCreateFrameContext(GRX_FRAME_MODE_RAM_1BPP, sizex, sizey, NULL, NULL);
   /* draw something (black and white) into the bitmap */
@@ -44,7 +44,7 @@ int main(void)
   bcolor = GrAllocColor( 0,0,255 );
   GrTextXY(0,0,"Type u d l r U D L R to move, 1 2 to change color, q to quit",
            GrWhite(),GrNOCOLOR);
-  GrSetClipBox(0, 40, GrScreenX(), GrScreenY());
+  GrSetClipBox(0, 40, grx_get_screen_x(), grx_get_screen_y());
 
   /* Put the bitmap into the screen */
   GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
@@ -70,15 +70,15 @@ int main(void)
       default:  continue;
       }
     if(x < -40) x = -40;
-    if(x > GrScreenX()) x = GrScreenX();
+    if(x > grx_get_screen_x()) x = grx_get_screen_x();
     if(y < 0) y = 0;
-    if(y > GrScreenY()) y = GrScreenY();
+    if(y > grx_get_screen_y()) y = grx_get_screen_y();
     GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
     }
 
   /* Destroy */
   GrDestroyContext(pContext);
 
-  GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   return 0;
 }

@@ -160,7 +160,7 @@ char *FrameDriverName(GrxFrameMode m) {
   int w32 = ( (sys == GRX_VERSION_GCC_386_WIN32) ||
               (sys == GRX_VERSION_MSC_386_WIN32) ||
               (sys == GRX_VERSION_GCC_386_CYG32) );
-  int sdl = strcmp( GrCurrentVideoDriver()->name , "sdl") == 0;
+  int sdl = strcmp( grx_get_current_video_driver()->name , "sdl") == 0;
 
   switch(m) {
     case GRX_FRAME_MODE_UNDEFINED: return "Undef";
@@ -603,7 +603,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
     fgets(m,40,stdin);
   }
 
-  GrSetMode(
+  grx_set_mode(
       GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,
       gp->w, gp->h, gp->bpp
   );
@@ -614,9 +614,9 @@ void speedcheck(gvmode *gp, int print, int wait) {
     first = 0;
   }
 
-  if ( GrScreenFrameMode() != gp->fm) {
-    GrxFrameMode act = GrScreenFrameMode();
-    GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+  if ( grx_get_screen_frame_mode() != gp->fm) {
+    GrxFrameMode act = grx_get_screen_frame_mode();
+    grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
     printf("Setup failed : %s != %s\n",
     FrameDriverName(act),
     FrameDriverName(gp->fm));
@@ -629,7 +629,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
 
 #if MEASURE_RAM_MODES
   rp = &rammodes[(unsigned)(gp-grmodes)];
-  rp->fm = GrCoreFrameMode();
+  rp->fm = grx_get_core_frame_mode();
   if (!MEASURED(rp) && !identical_measured(rp)) {
     GrContext rc;
     if (GrCreateFrameContext(rp->fm,gp->w,gp->h,NULL,&rc)) {
@@ -641,7 +641,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
   }
 #endif
 
-  GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   if (print) {
     printf("Results: \n");
     printresultheader(stdout);
@@ -660,7 +660,7 @@ int collectmodes(const GrxVideoDriver *drv)
         const GrxVideoMode *mp;
         for(fm =GRX_FRAME_MODE_FIRST_GRAPHICS;
               fm <= GRX_FRAME_MODE_LAST_GRAPHICS; fm++) {
-            for(mp = GrFirstVideoMode(fm); mp; mp = GrNextVideoMode(mp)) {
+            for(mp = grx_get_first_video_mode(fm); mp; mp = grx_get_next_video_mode(mp)) {
                 gp->fm    = fm;
                 gp->w     = mp->width;
                 gp->h     = mp->height;
@@ -763,13 +763,13 @@ int main(int argc, char **argv)
         assert(rammodes!=NULL);
 #endif
 
-        GrSetDriver(NULL);
-        if(GrCurrentVideoDriver() == NULL) {
+        grx_set_driver(NULL);
+        if(grx_get_current_video_driver() == NULL) {
             printf("No graphics driver found\n");
             exit(1);
         }
 
-        n_modes = collectmodes(GrCurrentVideoDriver());
+        n_modes = collectmodes(grx_get_current_video_driver());
         if(n_modes == 0) {
             printf("No graphics modes found\n");
             exit(1);
@@ -794,11 +794,11 @@ int main(int argc, char **argv)
         for( ; ; ) {
             char mb[41], *m = mb;
             int tflag = 0;
-            GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+            grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
             printf(
                 "Graphics driver: \"%s\"\t"
                 "graphics defaults: %dx%d %ld colors\n",
-                GrCurrentVideoDriver()->name,
+                grx_get_current_video_driver()->name,
                 GrDriverInfo->defgw,
                 GrDriverInfo->defgh,
                 (long)GrDriverInfo->defgc
@@ -840,7 +840,7 @@ done:
             if (!log) exit(1);
 
             fprintf( log, "\nGraphics driver: \"%s\"\n\n",
-                                               GrCurrentVideoDriver()->name);
+                                               grx_get_current_video_driver()->name);
             printf("Results: \n");
             printresultheader(log);
 

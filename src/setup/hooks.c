@@ -18,17 +18,17 @@
 
 #include "libgrx.h"
 
-void GrSetModeRestore(int restoreFlag)
+void grx_set_restore_mode(int restoreFlag)
 {
         DRVINFO->moderestore = restoreFlag;
 }
 
-void GrSetErrorHandling(int exitIfError)
+void grx_set_error_handling(int exitIfError)
 {
         DRVINFO->errsfatal = exitIfError;
 }
 
-void GrSetModeHook(void (*hookfunc)(void))
+void grx_set_mode_hook_func(void (*hookfunc)(void))
 {
         DRVINFO->mdsethook = hookfunc;
 }

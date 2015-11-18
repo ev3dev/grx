@@ -518,7 +518,7 @@ namespace Grx {
         [CCode (cname = "curbank")]
         public int current_bank;
         [CCode (cname = "mdsethook")]
-        public DriverInfoModeSetHook mode_set_hook;
+        public HookFunc mode_set_hook;
         [CCode (cname = "set_bank")]
         public DriverInfoSetBank set_bank;
         [CCode (cname = "set_rw_banks")]
@@ -529,7 +529,7 @@ namespace Grx {
     public DriverInfo driver_info;
 
     [CCode (has_target = false, has_type_id = false)]
-    public delegate void DriverInfoModeSetHook ();
+    public delegate void HookFunc ();
     [CCode (has_target = false, has_type_id = false)]
     public delegate void DriverInfoSetBank (int bank);
     [CCode (has_target = false, has_type_id = false)]
@@ -538,68 +538,38 @@ namespace Grx {
     /*
      * setup stuff
      */
-    [CCode (cname = "GrSetDriver")]
     public bool set_driver (string driver_spec);
-    [CCode (cname = "GrSetMode")]
-    public bool set_mode (GraphicsMode which, ...);
-    [CCode (cname = "GrSetViewport")]
+    public bool set_mode (GraphicsMode mode, ...);
     public bool set_viewport (int xpos, int ypos);
-    [CCode (cname = "GrSetModeHook")]
-    public void set_mode_hook (DriverInfoModeSetHook hook_func);
-    [CCode (cname = "GrSetModeRestore")]
-    public void set_mode_restore (int restore_flag);
-    [CCode (cname = "GrSetErrorHandling")]
-    public void set_error_handling (int exit_if_error);
-
-    [CCode (cname = "GrGetLibraryVersion")]
-    public uint get_library_version ();
-    [CCode (cname = "GrGetLibrarySystem")]
-    public uint get_library_system ();
+    public void set_mode_hook_func (HookFunc hook_func);
+    public void set_restore_mode (bool restore_flag);
+    public void set_error_handling (bool exit_if_error);
 
     /*
      * inquiry stuff
      */
-    [CCode (cname = "GrCurrentMode")]
-    public GraphicsMode current_mode ();
-    [CCode (cname = "GrAdapterType")]
-    public VideoAdapter adapter_type ();
-    [CCode (cname = "GrCurrentFrameMode")]
-    public FrameMode current_frame_mode ();
-    [CCode (cname = "GrScreenFrameMode")]
-    public FrameMode screen_frame_mode ();
-    [CCode (cname = "GrCoreFrameMode")]
-    public FrameMode core_frame_mode ();
+    public GraphicsMode get_current_graphics_mode ();
+    public VideoAdapter get_adapter_type ();
+    public FrameMode get_current_frame_mode ();
+    public FrameMode get_screen_frame_mode ();
+    public FrameMode get_core_frame_mode ();
 
-    [CCode (cname = "GrCurrentVideoDriver")]
-    public unowned VideoDriver current_video_driver ();
-    [CCode (cname = "GrCurrentVideoMode")]
-    public unowned VideoMode current_video_mode ();
-    [CCode (cname = "GrVirtualVideoMode")]
-    public unowned VideoMode virtual_video_mode ();
-    [CCode (cname = "GrCurrentFrameDriver")]
-    public unowned FrameDriver current_frame_driver ();
-    [CCode (cname = "GrScreenFrameDriver")]
-    public unowned FrameDriver screen_frame_driver ();
-    [CCode (cname = "GrFirstVideoMode")]
-    public unowned VideoMode first_video_mode (FrameMode fmode);
-    [CCode (cname = "GrNextVideoMode")]
-    public unowned VideoMode next_video_mode (VideoMode prev);
+    public unowned VideoDriver get_current_video_driver ();
+    public unowned VideoMode get_current_video_mode ();
+    public unowned VideoMode get_virtual_video_mode ();
+    public unowned FrameDriver get_current_frame_driver ();
+    public unowned FrameDriver get_screen_frame_driver ();
+    public unowned VideoMode get_first_video_mode (FrameMode mode);
+    public unowned VideoMode get_next_video_mode (VideoMode prev);
 
-    [CCode (cname = "GrScreenX")]
-    public int screen_x ();
-    [CCode (cname = "GrScreenY")]
-    public int screen_y ();
-    [CCode (cname = "GrVirtualX")]
-    public int virtual_x ();
-    [CCode (cname = "GrVirtualY")]
-    public int virtual_y ();
-    [CCode (cname = "GrViewportX")]
-    public int viewport_x ();
-    [CCode (cname = "GrViewportY")]
-    public int viewport_y ();
+    public int get_screen_x ();
+    public int get_screen_y ();
+    public int get_virtual_x ();
+    public int get_virtual_y ();
+    public int get_viewport_x ();
+    public int get_viewport_y ();
 
-    [CCode (cname = "GrScreenIsVirtual")]
-    public int screen_is_virtual ();
+    public bool is_screen_virtual ();
 
     /*
      * RAM context geometry and memory allocation inquiry stuff

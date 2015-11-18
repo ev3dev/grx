@@ -5,7 +5,7 @@ int main ( void )
 {
   GrBmpImage *bmp256, *bmp;
   GrPattern *p256, *p;
-  GrSetMode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR, 800, 600, 256);
+  grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR, 800, 600, 256);
   bmp256 = GrLoadBmpImage("mysha256.bmp");
   bmp = GrLoadBmpImage("some1.bmp");
   GrAllocBmpImageColors(bmp, NULL);

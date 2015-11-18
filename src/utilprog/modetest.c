@@ -31,8 +31,8 @@ static void PrintInfo(void)
     char aux[81];
     int x, y;
 
-    sprintf(aux, " Mode: %dx%d %d bpp ", GrCurrentVideoMode()->width,
-    GrCurrentVideoMode()->height, GrCurrentVideoMode()->bpp);
+    sprintf(aux, " Mode: %dx%d %d bpp ", grx_get_current_video_mode()->width,
+    grx_get_current_video_mode()->height, grx_get_current_video_mode()->bpp);
     x = (GrMaxX() -
         GrFontStringWidth(&GrDefaultFont, aux, strlen(aux), GR_BYTE_TEXT)) / 2;
     y = (GrMaxY() -
@@ -53,7 +53,7 @@ gvmode *collectmodes(const GrxVideoDriver *drv,gvmode *gp)
         const GrxVideoMode *mp;
         for(fm =GRX_FRAME_MODE_FIRST_GRAPHICS;
               fm <= GRX_FRAME_MODE_LAST_GRAPHICS; fm++) {
-            for(mp = GrFirstVideoMode(fm); mp; mp = GrNextVideoMode(mp)) {
+            for(mp = grx_get_first_video_mode(fm); mp; mp = grx_get_next_video_mode(mp)) {
                 gp->w   = mp->width;
                 gp->h   = mp->height;
                 gp->bpp = mp->bpp;
@@ -140,16 +140,16 @@ void PrintModes(void) {
 int main(void)
 {
         static int firstgr = 1;
-        GrSetDriver(NULL);
-        if(GrCurrentVideoDriver() == NULL) {
+        grx_set_driver(NULL);
+        if(grx_get_current_video_driver() == NULL) {
             printf("No graphics driver found\n");
             exit(1);
         }
         for( ; ; ) {
             int  i,w,h,px,py;
             char m1[41];
-            n_modes = (int)(collectmodes(GrCurrentVideoDriver(),grmodes) - grmodes);
-            GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+            n_modes = (int)(collectmodes(grx_get_current_video_driver(),grmodes) - grmodes);
+            grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
             if(n_modes == 0) {
                 printf("No graphics modes found\n");
                 exit(1);
@@ -159,7 +159,7 @@ int main(void)
                 "Graphics driver: \"%s\"\n"
                 "  graphics defaults: %dx%d %ld colors\n"
                 "  text defaults: %dx%d %ld colors\n\n",
-                GrCurrentVideoDriver()->name,
+                grx_get_current_video_driver()->name,
                 GrDriverInfo->defgw,
                 GrDriverInfo->defgh,
                 (long)GrDriverInfo->defgc,
@@ -184,15 +184,15 @@ int main(void)
                 firstgr = 0;
             }
             i--;
-            GrSetMode(
+            grx_set_mode(
                 GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,
                 grmodes[i].w,
                 grmodes[i].h,
                 grmodes[i].bpp
             );
             if(grmodes[i].bpp<15) {
-                w = GrScreenX() >> 1;
-                h = GrScreenY() >> 1;
+                w = grx_get_screen_x() >> 1;
+                h = grx_get_screen_y() >> 1;
                 px = w + 5;
                 py = h + 5;
                 w -= 10;
@@ -219,8 +219,8 @@ int main(void)
                 );
             } else {
                 int y,sx;
-                sx=GrScreenX()>>2;
-                for(y=0;y<GrScreenY();y++) {
+                sx=grx_get_screen_x()>>2;
+                for(y=0;y<grx_get_screen_y();y++) {
                     int yy = y & 255;
                     GrHLine(0,sx-1,y,GrBuildRGBcolorT(yy,0,0));
                     GrHLine(sx,2*sx-1,y,GrBuildRGBcolorT(0,yy,0));

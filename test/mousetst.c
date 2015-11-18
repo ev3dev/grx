@@ -39,7 +39,7 @@ TESTFUNC(mousetest)
             ii = 0;
             mode = GR_M_CUR_NORMAL;
             GrTextXY(
-                10,(GrScreenY() - 20),
+                10,(grx_get_screen_y() - 20),
                 "Commands: 'N' -- next mouse mode, 'Q' -- exit",
                 GrWhite(),
                 bgc
@@ -72,7 +72,7 @@ TESTFUNC(mousetest)
                     );
                     sprintf(mend,"deltaT=%ld (ms)",evt.dtime);
                     strcpy (mend,"                         ");
-                    GrTextXY(10,(GrScreenY() - 40),msg,GrWhite(),bgc);
+                    GrTextXY(10,(grx_get_screen_y() - 40),msg,GrWhite(),bgc);
                     testmotion = evt.buttons ? GR_M_MOTION : 0;
                 }
                 if(evt.flags & GR_M_KEYPRESS) {
@@ -104,7 +104,7 @@ TESTFUNC(mousetest)
             ii = 0;
             mode = GR_M_CUR_NORMAL;
             GrTextXY(
-                (GrScreenX()/3),(GrScreenY() - 20),
+                (grx_get_screen_x()/3),(grx_get_screen_y() - 20),
                 "Sorry, no mouse found !",
                 GrWhite(),
                 bgc

@@ -39,8 +39,8 @@ void GrDisplayCursor(GrCursor *C)
         ywrk = ypos & ~7;
         if(xwrk < 0) xwrk = 0;
         if(ywrk < 0) ywrk = 0;
-        if(xwrk > (GrVirtualX() - xsiz)) xwrk = GrVirtualX() - xsiz;
-        if(ywrk > (GrVirtualY() - ysiz)) ywrk = GrVirtualY() - ysiz;
+        if(xwrk > (grx_get_virtual_x() - xsiz)) xwrk = grx_get_virtual_x() - xsiz;
+        if(ywrk > (grx_get_virtual_y() - ysiz)) ywrk = grx_get_virtual_y() - ysiz;
         C->xwpos = xwrk;
         C->ywpos = ywrk;
         mouse_block(SCRN,xwrk,ywrk,(xwrk + xsiz - 1),(ywrk + ysiz - 1));

@@ -18,89 +18,89 @@
 
 #include "libgrx.h"
 
-GrxGraphicsMode (GrCurrentMode)(void)
+GrxGraphicsMode (grx_get_current_graphics_mode)(void)
 {
-        return(GrCurrentMode());
+        return(grx_get_current_graphics_mode());
 }
 
-GrxVideoAdapter (GrAdapterType)(void)
+GrxVideoAdapter (grx_get_adapter_type)(void)
 {
-        return(GrAdapterType());
+        return(grx_get_adapter_type());
 }
 
-GrxFrameMode (GrCurrentFrameMode)(void)
+GrxFrameMode (grx_get_current_frame_mode)(void)
 {
-        return(GrCurrentFrameMode());
+        return(grx_get_current_frame_mode());
 }
 
-GrxFrameMode (GrScreenFrameMode)(void)
+GrxFrameMode (grx_get_screen_frame_mode)(void)
 {
-        return(GrScreenFrameMode());
+        return(grx_get_screen_frame_mode());
 }
 
-GrxFrameMode (GrCoreFrameMode)(void)
+GrxFrameMode (grx_get_core_frame_mode)(void)
 {
-        return(GrCoreFrameMode());
+        return(grx_get_core_frame_mode());
 }
 
-const GrxVideoDriver *(GrCurrentVideoDriver)(void)
+const GrxVideoDriver *(grx_get_current_video_driver)(void)
 {
-        return(GrCurrentVideoDriver());
+        return(grx_get_current_video_driver());
 }
 
-const GrxVideoMode *(GrCurrentVideoMode)(void)
+const GrxVideoMode *(grx_get_current_video_mode)(void)
 {
-        return(GrCurrentVideoMode());
+        return(grx_get_current_video_mode());
 }
 
-const GrxVideoMode *(GrVirtualVideoMode)(void)
+const GrxVideoMode *(grx_get_virtual_video_mode)(void)
 {
-        return(GrVirtualVideoMode());
+        return(grx_get_virtual_video_mode());
 }
 
-const GrFrameDriver *(GrCurrentFrameDriver)(void)
+const GrFrameDriver *(grx_get_current_frame_driver)(void)
 {
-        return(GrCurrentFrameDriver());
+        return(grx_get_current_frame_driver());
 }
 
-const GrFrameDriver *(GrScreenFrameDriver)(void)
+const GrFrameDriver *(grx_get_screen_frame_driver)(void)
 {
-        return(GrScreenFrameDriver());
+        return(grx_get_screen_frame_driver());
 }
 
-int (GrScreenX)(void)
+int (grx_get_screen_x)(void)
 {
-        return(GrScreenX());
+        return(grx_get_screen_x());
 }
 
-int (GrScreenY)(void)
+int (grx_get_screen_y)(void)
 {
-        return(GrScreenY());
+        return(grx_get_screen_y());
 }
 
-int (GrVirtualX)(void)
+int (grx_get_virtual_x)(void)
 {
-        return(GrVirtualX());
+        return(grx_get_virtual_x());
 }
 
-int (GrVirtualY)(void)
+int (grx_get_virtual_y)(void)
 {
-        return(GrVirtualY());
+        return(grx_get_virtual_y());
 }
 
-int (GrViewportX)(void)
+int (grx_get_viewport_x)(void)
 {
-        return(GrViewportX());
+        return(grx_get_viewport_x());
 }
 
-int (GrViewportY)(void)
+int (grx_get_viewport_y)(void)
 {
-        return(GrViewportY());
+        return(grx_get_viewport_y());
 }
 
-int (GrScreenIsVirtual)(void)
+int (grx_is_screen_virtual)(void)
 {
-        return(GrScreenIsVirtual());
+        return(grx_is_screen_virtual());
 }
 
 int (GrNumPlanes)(void)

@@ -33,7 +33,7 @@ static char *nxtoken(char *p,char *token)
         return(p);
 }
 
-int GrSetDriver(char *drvspec)
+int grx_set_driver(char *drvspec)
 {
         static int firsttime = TRUE;
         GrxVideoDriver *drv = NULL;

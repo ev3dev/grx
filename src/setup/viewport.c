@@ -19,14 +19,14 @@
 #include "libgrx.h"
 #include "arith.h"
 
-int GrSetViewport(int x,int y)
+int grx_set_viewport(int x,int y)
 {
         int res[2];
-        if(!GrScreenIsVirtual())              return(FALSE);
+        if(!grx_is_screen_virtual())              return(FALSE);
         if(!DRVINFO->actmode.extended_info->scroll) return(FALSE);
-        x = imax(0,imin((GrVirtualX() - GrScreenX()),x));
-        y = imax(0,imin((GrVirtualY() - GrScreenY()),y));
-        if((x == GrViewportX()) && (y == GrViewportY())) return(TRUE);
+        x = imax(0,imin((grx_get_virtual_x() - grx_get_screen_x()),x));
+        y = imax(0,imin((grx_get_virtual_y() - grx_get_screen_y()),y));
+        if((x == grx_get_viewport_x()) && (y == grx_get_viewport_y())) return(TRUE);
         if((*DRVINFO->actmode.extended_info->scroll)(&DRVINFO->actmode,x,y,res)) {
             DRVINFO->vposx = res[0];
             DRVINFO->vposy = res[1];

@@ -31,11 +31,11 @@ int main()
 
   do {
 
-    if( i ) GrSetDriver( "sdl::ww gw 600 gh 600 nc 256" );
-    else GrSetDriver( "sdl::fs gw 600 gh 600 nc 256" );
+    if( i ) grx_set_driver( "sdl::ww gw 600 gh 600 nc 256" );
+    else grx_set_driver( "sdl::fs gw 600 gh 600 nc 256" );
     i = ! i;
 
-    GrSetMode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
+    grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
 
     x = GrSizeX();
     y = GrSizeY();

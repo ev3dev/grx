@@ -90,12 +90,12 @@ typedef guint32 GrxColor;
  * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP
  *     but does not clear video memory
  *
- * available video modes (for 'GrSetMode')
+ * available video modes (for 'grx_set_mode')
  */
 typedef enum {
     GRX_GRAPHICS_MODE_UNKNOWN = (-1),   /* initial state */
     /* ============= modes which clear the video memory ============= */
-    GRX_GRAPHICS_MODE_TEXT_80X25 = 0,                 /* Extra parameters for GrSetMode: */
+    GRX_GRAPHICS_MODE_TEXT_80X25 = 0,                 /* Extra parameters for grx_set_mode: */
     GRX_GRAPHICS_MODE_TEXT_DEFAULT,
     GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT,              /* int w,int h */
     GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR,        /* int w,int h,GrxColor nc */
@@ -366,46 +366,43 @@ extern const struct _GR_driverInfo {
         void  (*set_rw_banks)(int rb,int wb); /* split banking routine */
 } * const GrDriverInfo;
 
+typedef void (*GrxHookFunc)(void);
+
 /*
  * setup stuff
  */
-int  GrSetDriver(char *drvspec);
-int  GrSetMode(GrxGraphicsMode which,...);
-int  GrSetViewport(int xpos,int ypos);
-void GrSetModeHook(void (*hookfunc)(void));
-void GrSetModeRestore(int restoreFlag);
-void GrSetErrorHandling(int exitIfError);
-void GrSetEGAVGAmonoDrawnPlane(int plane);
-void GrSetEGAVGAmonoShownPlane(int plane);
-
-unsigned GrGetLibraryVersion(void);
-unsigned GrGetLibrarySystem(void);
+gboolean grx_set_driver(gchar *driver_spec);
+gboolean grx_set_mode(GrxGraphicsMode mode, ...);
+gboolean grx_set_viewport(int xpos, int ypos);
+void grx_set_mode_hook_func(GrxHookFunc hook_func);
+void grx_set_restore_mode(gboolean restore);
+void grx_set_error_handling(gboolean exit_if_error);
 
 /*
  * inquiry stuff ---- many of these are actually macros (see below)
  */
-GrxGraphicsMode GrCurrentMode(void);
-GrxVideoAdapter GrAdapterType(void);
-GrxFrameMode    GrCurrentFrameMode(void);
-GrxFrameMode    GrScreenFrameMode(void);
-GrxFrameMode    GrCoreFrameMode(void);
+GrxGraphicsMode grx_get_current_graphics_mode(void);
+GrxVideoAdapter grx_get_adapter_type(void);
+GrxFrameMode    grx_get_current_frame_mode(void);
+GrxFrameMode    grx_get_screen_frame_mode(void);
+GrxFrameMode    grx_get_core_frame_mode(void);
 
-const GrxVideoDriver *GrCurrentVideoDriver(void);
-const GrxVideoMode   *GrCurrentVideoMode(void);
-const GrxVideoMode   *GrVirtualVideoMode(void);
-const GrFrameDriver *GrCurrentFrameDriver(void);
-const GrFrameDriver *GrScreenFrameDriver(void);
-const GrxVideoMode   *GrFirstVideoMode(GrxFrameMode fmode);
-const GrxVideoMode   *GrNextVideoMode(const GrxVideoMode *prev);
+const GrxVideoDriver *grx_get_current_video_driver(void);
+const GrxVideoMode   *grx_get_current_video_mode(void);
+const GrxVideoMode   *grx_get_virtual_video_mode(void);
+const GrFrameDriver *grx_get_current_frame_driver(void);
+const GrFrameDriver *grx_get_screen_frame_driver(void);
+const GrxVideoMode   *grx_get_first_video_mode(GrxFrameMode mode);
+const GrxVideoMode   *grx_get_next_video_mode(const GrxVideoMode *prev);
 
-int  GrScreenX(void);
-int  GrScreenY(void);
-int  GrVirtualX(void);
-int  GrVirtualY(void);
-int  GrViewportX(void);
-int  GrViewportY(void);
+gint  grx_get_screen_x(void);
+gint  grx_get_screen_y(void);
+gint  grx_get_virtual_x(void);
+gint  grx_get_virtual_y(void);
+gint  grx_get_viewport_x(void);
+gint  grx_get_viewport_y(void);
 
-int  GrScreenIsVirtual(void);
+gboolean  grx_is_screen_virtual(void);
 
 /*
  * RAM context geometry and memory allocation inquiry stuff
@@ -424,34 +421,34 @@ long GrContextSize(int w,int h);
  * inline implementation for some of the above
  */
 #ifndef GRX_SKIP_INLINES
-#define GrAdapterType()         (GrDriverInfo->vdriver ? GrDriverInfo->vdriver->adapter : GRX_VIDEO_ADAPTER_UNKNOWN)
-#define GrCurrentMode()         (GrDriverInfo->mcode)
-#define GrCurrentFrameMode()    (GrDriverInfo->fdriver.mode)
-#define GrScreenFrameMode()     (GrDriverInfo->sdriver.mode)
-#define GrCoreFrameMode()       (GrDriverInfo->sdriver.rmode)
+#define grx_get_adapter_type()         (GrDriverInfo->vdriver ? GrDriverInfo->vdriver->adapter : GRX_VIDEO_ADAPTER_UNKNOWN)
+#define grx_get_current_graphics_mode()         (GrDriverInfo->mcode)
+#define grx_get_current_frame_mode()    (GrDriverInfo->fdriver.mode)
+#define grx_get_screen_frame_mode()     (GrDriverInfo->sdriver.mode)
+#define grx_get_core_frame_mode()       (GrDriverInfo->sdriver.rmode)
 
-#define GrCurrentVideoDriver()  ((const GrxVideoDriver *)( GrDriverInfo->vdriver))
-#define GrCurrentVideoMode()    ((const GrxVideoMode   *)( GrDriverInfo->curmode))
-#define GrVirtualVideoMode()    ((const GrxVideoMode   *)(&GrDriverInfo->actmode))
-#define GrCurrentFrameDriver()  ((const GrFrameDriver *)(&GrDriverInfo->fdriver))
-#define GrScreenFrameDriver()   ((const GrFrameDriver *)(&GrDriverInfo->sdriver))
+#define grx_get_current_video_driver()  ((const GrxVideoDriver *)( GrDriverInfo->vdriver))
+#define grx_get_current_video_mode()    ((const GrxVideoMode   *)( GrDriverInfo->curmode))
+#define grx_get_virtual_video_mode()    ((const GrxVideoMode   *)(&GrDriverInfo->actmode))
+#define grx_get_current_frame_driver()  ((const GrFrameDriver *)(&GrDriverInfo->fdriver))
+#define grx_get_screen_frame_driver()   ((const GrFrameDriver *)(&GrDriverInfo->sdriver))
 
-#define GrIsFixedMode()      (!(  GrCurrentVideoDriver()->flags \
+#define GrIsFixedMode()      (!(  grx_get_current_video_driver()->flags \
                                    & GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION))
 
-#define GrScreenX()             (GrCurrentVideoMode()->width)
-#define GrScreenY()             (GrCurrentVideoMode()->height)
-#define GrVirtualX()            (GrVirtualVideoMode()->width)
-#define GrVirtualY()            (GrVirtualVideoMode()->height)
-#define GrViewportX()           (GrDriverInfo->vposx)
-#define GrViewportY()           (GrDriverInfo->vposy)
+#define grx_get_screen_x()             (grx_get_current_video_mode()->width)
+#define grx_get_screen_y()             (grx_get_current_video_mode()->height)
+#define grx_get_virtual_x()            (grx_get_virtual_video_mode()->width)
+#define grx_get_virtual_y()            (grx_get_virtual_video_mode()->height)
+#define grx_get_viewport_x()           (GrDriverInfo->vposx)
+#define grx_get_viewport_y()           (GrDriverInfo->vposy)
 
-#define GrScreenIsVirtual()     ((GrScreenX() + GrScreenY()) < (GrVirtualX() + GrVirtualY()))
+#define grx_is_screen_virtual()     ((grx_get_screen_x() + grx_get_screen_y()) < (grx_get_virtual_x() + grx_get_virtual_y()))
 
-#define GrNumPlanes()           GrFrameNumPlanes(GrCoreFrameMode())
-#define GrLineOffset(w)         GrFrameLineOffset(GrCoreFrameMode(),w)
-#define GrPlaneSize(w,h)        GrFramePlaneSize(GrCoreFrameMode(),w,h)
-#define GrContextSize(w,h)      GrFrameContextSize(GrCoreFrameMode(),w,h)
+#define GrNumPlanes()           GrFrameNumPlanes(grx_get_core_frame_mode())
+#define GrLineOffset(w)         GrFrameLineOffset(grx_get_core_frame_mode(),w)
+#define GrPlaneSize(w,h)        GrFramePlaneSize(grx_get_core_frame_mode(),w,h)
+#define GrContextSize(w,h)      GrFrameContextSize(grx_get_core_frame_mode(),w,h)
 #endif  /* GRX_SKIP_INLINES */
 
 
@@ -525,7 +522,7 @@ int   GrHighX(void);
 int   GrHighY(void);
 
 #ifndef GRX_SKIP_INLINES
-#define GrCreateContext(w,h,m,c) (GrCreateFrameContext(GrCoreFrameMode(),w,h,m,c))
+#define GrCreateContext(w,h,m,c) (GrCreateFrameContext(grx_get_core_frame_mode(),w,h,m,c))
 #define GrCurrentContext()       ((GrContext *)(&GrContextInfo->current))
 #define GrScreenContext()        ((GrContext *)(&GrContextInfo->screen))
 #define GrMaxX()                 (GrCurrentContext()->gc_xmax)
@@ -845,14 +842,14 @@ GrxColor GrPixelCNC(GrContext *c,int x,int y);
 
 #ifndef GRX_SKIP_INLINES
 #define GrPlotNC(x,y,c) (                                                      \
-        (*GrCurrentFrameDriver()->drawpixel)(                                  \
+        (*grx_get_current_frame_driver()->drawpixel)(                                  \
         ((x) + GrCurrentContext()->gc_xoffset),                                \
         ((y) + GrCurrentContext()->gc_yoffset),                                \
         ((c))                                                                  \
         )                                                                      \
 )
 #define GrPixelNC(x,y) (                                                       \
-        (*GrCurrentFrameDriver()->readpixel)(                                  \
+        (*grx_get_current_frame_driver()->readpixel)(                                  \
         (GrFrame *)(&GrCurrentContext()->gc_frame),                            \
         ((x) + GrCurrentContext()->gc_xoffset),                                \
         ((y) + GrCurrentContext()->gc_yoffset)                                 \

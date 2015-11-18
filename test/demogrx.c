@@ -262,8 +262,8 @@ int main(int argc, char **argv)
 static void ini_graphics(void)
 {
     gfaz_ini(gwidth, gheight, gbpp);
-    gwidth = GrScreenX();
-    gheight = GrScreenY();
+    gwidth = grx_get_screen_x();
+    gheight = grx_get_screen_y();
     grcglob = NULL;
     if (gwidth > 640 || gheight > 480) {
         GrClearScreen(GrAllocColor(120, 90, 60));
@@ -362,11 +362,11 @@ static void the_info(int x, int y)
     grt_centered.txo_fgcolor.v = CYAN;
     grt_centered.txo_font = grf_std;
 
-    sprintf(aux, "VideoDriver: %s", GrCurrentVideoDriver()->name);
+    sprintf(aux, "VideoDriver: %s", grx_get_current_video_driver()->name);
     GrDrawString(aux, strlen(aux), 0 + x, 25 + y, &grt_centered);
 
-    sprintf(aux, "Mode: %dx%d %d bpp", GrCurrentVideoMode()->width,
-            GrCurrentVideoMode()->height, GrCurrentVideoMode()->bpp);
+    sprintf(aux, "Mode: %dx%d %d bpp", grx_get_current_video_mode()->width,
+            grx_get_current_video_mode()->height, grx_get_current_video_mode()->bpp);
     GrDrawString(aux, strlen(aux), 0 + x, 50 + y, &grt_centered);
 }
 

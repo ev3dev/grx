@@ -65,11 +65,11 @@ int main()
 {
   GrContext *grc;
 
-  GrSetMode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,640,480,24 );
+  grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,640,480,24 );
 
   if( !GrJpegSupport() ){
     nojpegsupport();
-    GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+    grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
     exit( 1 );
     }
 
@@ -113,6 +113,6 @@ int main()
     GrBlack(),GrWhite() );
   GrKeyRead();
 
-  GrSetMode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   return 0;
 }

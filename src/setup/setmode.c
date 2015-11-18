@@ -200,13 +200,13 @@ static int errhdlr(char *msg)
         if(DRVINFO->errsfatal) {
             DRVINFO->moderestore = TRUE;
             _GrCloseVideoDriver();
-            fprintf(stderr,"GrSetMode: %s\n",msg);
+            fprintf(stderr,"grx_set_mode: %s\n",msg);
             exit(1);
         }
         return(FALSE);
 }
 
-int GrSetMode(GrxGraphicsMode which,...)
+int grx_set_mode(GrxGraphicsMode which,...)
 {
         int  w,h,pl,vw,vh;
         int  t,noclear,res;
@@ -222,7 +222,7 @@ int GrSetMode(GrxGraphicsMode which,...)
         res = FALSE;
         DBGPRINTF(DBG_SETMD,("Mode: %d\n",(int)which));
         if(DRVINFO->vdriver == NULL) {
-            GrSetDriver(NULL);
+            grx_set_driver(NULL);
             if(DRVINFO->vdriver == NULL) {
                 res = errhdlr("could not find suitable video driver");
                 goto done;
@@ -399,7 +399,7 @@ int GrSetMode(GrxGraphicsMode which,...)
                     (*DRVINFO->mdsethook)();
                     DBGPRINTF(DBG_SETMD,("mdsethook done\n"));
                 }
-                DBGPRINTF(DBG_SETMD,("GrSetMode complete\n"));
+                DBGPRINTF(DBG_SETMD,("grx_set_mode complete\n"));
                 res = TRUE;
                 goto done;
             }

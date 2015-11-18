@@ -45,9 +45,9 @@ static int coord_into( int x, int y, int xo, int yo, int xl, int yl );
 
 int gfaz_ini( int width, int height, int bpp )
 {
-/*  GrSetMode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );*/
+/*  grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );*/
 
-  GrSetMode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,width,height,bpp );
+  grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,width,height,bpp );
   
   egacolors = GrAllocEgaColors();
 
@@ -71,7 +71,7 @@ int gfaz_fin( void )
     GrMouseUnInit();
     }
     
-  GrSetMode( GRX_GRAPHICS_MODE_TEXT_DEFAULT );
+  grx_set_mode( GRX_GRAPHICS_MODE_TEXT_DEFAULT );
   
   return 0;
 }
