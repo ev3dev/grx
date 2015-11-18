@@ -264,10 +264,13 @@ INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
 INTROSPECTION_COMPILER_ARGS =
 
 if HAVE_INTROSPECTION
-introspection_sources = $(libgrx_3_0_la_SOURCES)
+introspection_sources =  \
+    ../include/grx-3.0.h \
+    setup/fgeom.c        \
+    $(NULL)
 
 Grx-3.0.gir: libgrx-3.0.la
-Grx_3_0_gir_INCLUDES = GObject-2.0
+Grx_3_0_gir_INCLUDES = GLib-2.0
 Grx_3_0_gir_CFLAGS = $(AM_CPPFLAGS)
 Grx_3_0_gir_PACKAGES =
 Grx_3_0_gir_LIBS = libgrx-3.0.la

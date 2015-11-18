@@ -239,14 +239,10 @@ namespace Grx {
          */
         RAM_32BPP_HIGH;
 
-        [CCode (cname = "GrFrameNumPlanes")]
-        public int num_planes ();
-        [CCode (cname = "GrFrameLineOffset")]
-        public int line_offset (int width);
-        [CCode (cname = "GrFramePlaneSize")]
-        public long plane_size (int width, int height);
-        [CCode (cname = "GrFrameContextSize")]
-        public long context_size (int width, int height);
+        public int get_n_planes ();
+        public int get_line_offset (int width);
+        public long get_plane_size (int width, int height);
+        public long get_context_size (int width, int height);
     }
 
     /**

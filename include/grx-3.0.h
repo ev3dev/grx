@@ -431,10 +431,11 @@ gboolean  grx_is_screen_virtual(void);
 /*
  * RAM context geometry and memory allocation inquiry stuff
  */
-int  GrFrameNumPlanes(GrxFrameMode md);
-int  GrFrameLineOffset(GrxFrameMode md,int width);
-long GrFramePlaneSize(GrxFrameMode md,int w,int h);
-long GrFrameContextSize(GrxFrameMode md,int w,int h);
+
+gint  grx_frame_mode_get_n_planes(GrxFrameMode mode);
+gint  grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width);
+glong grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height);
+glong grx_frame_mode_get_context_size(GrxFrameMode mode, gint w, gint h);
 
 int  GrNumPlanes(void);
 int  GrLineOffset(int width);
@@ -469,10 +470,10 @@ long GrContextSize(int w,int h);
 
 #define grx_is_screen_virtual()     ((grx_get_screen_x() + grx_get_screen_y()) < (grx_get_virtual_x() + grx_get_virtual_y()))
 
-#define GrNumPlanes()           GrFrameNumPlanes(grx_get_core_frame_mode())
-#define GrLineOffset(w)         GrFrameLineOffset(grx_get_core_frame_mode(),w)
-#define GrPlaneSize(w,h)        GrFramePlaneSize(grx_get_core_frame_mode(),w,h)
-#define GrContextSize(w,h)      GrFrameContextSize(grx_get_core_frame_mode(),w,h)
+#define GrNumPlanes()           grx_frame_mode_get_n_planes(grx_get_core_frame_mode())
+#define GrLineOffset(w)         grx_frame_mode_get_line_offset(grx_get_core_frame_mode(),w)
+#define GrPlaneSize(w,h)        grx_frame_mode_get_plane_size(grx_get_core_frame_mode(),w,h)
+#define GrContextSize(w,h)      grx_frame_mode_get_context_size(grx_get_core_frame_mode(),w,h)
 #endif  /* GRX_SKIP_INLINES */
 
 

@@ -35,8 +35,8 @@ GrContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrCo
         long psize;
 
         if(!fd) return(NULL);
-        offset = GrFrameLineOffset(md,w);
-        psize  = GrFramePlaneSize(md,w,h);
+        offset = grx_frame_mode_get_line_offset(md,w);
+        psize  = grx_frame_mode_get_plane_size(md,w,h);
         if(psize <= 0L) return(NULL);
         if(psize >  fd->max_plane_size) return(NULL);
         if(!where) {
