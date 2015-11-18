@@ -35,7 +35,7 @@ static
 
 /* -------------------------------------------------------------------- */
 
-GrFrameDriver _GrFrameDriverSDL32L = {
+GrxFrameDriver _GrFrameDriverSDL32L = {
     GR_frameSDL32L,             /* frame mode */
     GRX_FRAME_MODE_RAM_32BPP_LOW, /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

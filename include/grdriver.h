@@ -30,7 +30,7 @@
 */
 #ifdef USE_GRX_INTERNAL_DEFINITIONS
 
-extern GrFrameDriver
+extern GrxFrameDriver
 /*
  * Standard frame drivers in GRX
  */

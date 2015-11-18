@@ -34,7 +34,7 @@ static
 
 /* -------------------------------------------------------------------- */
 
-GrFrameDriver _GrFrameDriverSDL16 = {
+GrxFrameDriver _GrFrameDriverSDL16 = {
     GR_frameSDL16,              /* frame mode */
     GRX_FRAME_MODE_RAM_16BPP,   /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

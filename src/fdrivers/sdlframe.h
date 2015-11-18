@@ -63,15 +63,15 @@ static INLINE void sdl_drawblock(int x, int y, int w, int h, GrxColor color)
     SDL_UpdateRect(_SGrScreen, x, y, w, h);
 }
 
-static INLINE void sdl_drawbitmap(int x, int y, int w, int h, char *bmp,
+static INLINE void sdl_drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
                                   int pitch, int start, GrxColor fg, GrxColor bg)
 {
     drawbitmap(x, y, w, h, bmp, pitch, start, fg, bg);
     SDL_UpdateRect(_SGrScreen, x, y, w, h);
 }
 
-static INLINE void sdl_drawpattern(int x, int y, int w, char patt, GrxColor fg,
-                                   GrxColor bg)
+static INLINE void sdl_drawpattern(int x, int y, int w, unsigned char patt,
+                                   GrxColor fg, GrxColor bg)
 {
     drawpattern(x, y, w, patt, fg, bg);
     SDL_UpdateRect(_SGrScreen, x, y, w, 1);

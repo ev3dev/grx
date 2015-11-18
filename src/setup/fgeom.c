@@ -21,13 +21,13 @@
 
 int GrFrameNumPlanes(GrxFrameMode md)
 {
-        GrFrameDriver *dp = _GrFindRAMframeDriver(md);
+        GrxFrameDriver *dp = _GrFindRAMframeDriver(md);
         return(dp ? dp->num_planes : 0);
 }
 
 int GrFrameLineOffset(GrxFrameMode md,int width)
 {
-        GrFrameDriver *dp = _GrFindRAMframeDriver(md);
+        GrxFrameDriver *dp = _GrFindRAMframeDriver(md);
         if(dp) {
             unsigned int w = (unsigned int)width 
                            * (dp->bits_per_pixel / dp->num_planes);

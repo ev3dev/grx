@@ -52,8 +52,8 @@ struct _GR_driverInfo _GrDriverInfo = {
         (void (*)(int,int,int,GrxColor))                               dummyframefn,
         (void (*)(int,int,int,GrxColor))                               dummyframefn,
         (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
-        (void (*)(int,int,int,int,char*,int,int,GrxColor,GrxColor))     dummyframefn,
-        (void (*)(int,int,int,char,GrxColor,GrxColor))                  dummyframefn,
+        (void (*)(int,int,int,int,unsigned char*,int,int,GrxColor,GrxColor)) dummyframefn,
+        (void (*)(int,int,int,unsigned char,GrxColor,GrxColor))        dummyframefn,
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn
@@ -73,8 +73,8 @@ struct _GR_driverInfo _GrDriverInfo = {
         (void (*)(int,int,int,GrxColor))                               dummyframefn,
         (void (*)(int,int,int,GrxColor))                               dummyframefn,
         (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
-        (void (*)(int,int,int,int,char*,int,int,GrxColor,GrxColor))     dummyframefn,
-        (void (*)(int,int,int,char,GrxColor,GrxColor))                  dummyframefn,
+        (void (*)(int,int,int,int,unsigned char*,int,int,GrxColor,GrxColor)) dummyframefn,
+        (void (*)(int,int,int,unsigned char,GrxColor,GrxColor))        dummyframefn,
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn
@@ -94,8 +94,8 @@ struct _GR_driverInfo _GrDriverInfo = {
         (void (*)(int,int,int,GrxColor))                               dummyframefn,
         (void (*)(int,int,int,GrxColor))                               dummyframefn,
         (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
-        (void (*)(int,int,int,int,char*,int,int,GrxColor,GrxColor))     dummyframefn,
-        (void (*)(int,int,int,char,GrxColor,GrxColor))                  dummyframefn,
+        (void (*)(int,int,int,int,unsigned char*,int,int,GrxColor,GrxColor)) dummyframefn,
+        (void (*)(int,int,int,unsigned char,GrxColor,GrxColor))        dummyframefn,
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn,
         (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor)) dummyframefn

@@ -28,7 +28,7 @@ extern "C" {
 #endif
 
 /* a couple of forward declarations ... */
-typedef struct _GR_frameDriver  GrFrameDriver;
+typedef struct _GrxFrameDriver  GrxFrameDriver;
 typedef struct _GrxVideoDriver  GrxVideoDriver;
 typedef struct _GrxVideoMode    GrxVideoMode;
 typedef struct _GrxVideoModeExt GrxVideoModeExt;
@@ -295,7 +295,7 @@ typedef enum /*< flags >*/ {
  */
 struct _GrxVideoModeExt {
     GrxFrameMode mode;                  /* frame driver for this video mode */
-    struct _GR_frameDriver *drv;        /* optional frame driver override */
+    GrxFrameDriver *drv;                /* optional frame driver override */
     guint8 *frame;                      /* frame buffer address */
     guint8  cprec[3];                   /* color component precisions */
     guint8  cpos[3];                    /* color component bit positions */
@@ -309,35 +309,60 @@ struct _GrxVideoModeExt {
     gint    lfb_selector;
 };
 
-/*
+/**
+ * GrxFrameDriver:
+ * @mode: The supported frame access mode.
+ * @rmode: The compatible ram frame mode (only if this is a video driver)
+ * @is_video: Indicates that this is a video driver
+ * @row_align: Scan line size alignment
+ * @num_planes: Number of planes
+ * @max_plane_size: The maximum plan size in bytes
+ * @init:
+ * @readpixel:
+ * @drawpixel:
+ * @drawline:
+ * @drawhline:
+ * @drawvline:
+ * @drawblock:
+ * @drawbitmap:
+ * @drawpattern:
+ * @bitblt:
+ * @bltv2r:
+ * @bltr2v:
+ * @getindexedscanline:
+ * @putscanline:
+ *
  * The frame driver descriptor structure.
  */
-struct _GR_frameDriver {
+struct _GrxFrameDriver {
     GrxFrameMode mode;                   /* supported frame access mode */
     GrxFrameMode rmode;                  /* matching RAM frame (if video) */
-    int      is_video;                   /* video RAM frame driver ? */
-    int      row_align;                  /* scan line size alignment */
-    int      num_planes;                 /* number of planes */
-    int      bits_per_pixel;             /* bits per pixel */
-    long     max_plane_size;             /* maximum plane size in bytes */
-    int      (*init)(GrxVideoMode *md);
-    GrxColor  (*readpixel)(GrFrame *c,int x,int y);
-    void     (*drawpixel)(int x,int y,GrxColor c);
-    void     (*drawline)(int x,int y,int dx,int dy,GrxColor c);
-    void     (*drawhline)(int x,int y,int w,GrxColor c);
-    void     (*drawvline)(int x,int y,int h,GrxColor c);
-    void     (*drawblock)(int x,int y,int w,int h,GrxColor c);
-    void     (*drawbitmap)(int x,int y,int w,int h,char *bmp,int pitch,int start,GrxColor fg,GrxColor bg);
-    void     (*drawpattern)(int x,int y,int w,char patt,GrxColor fg,GrxColor bg);
-    void     (*bitblt)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
-    void     (*bltv2r)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
-    void     (*bltr2v)(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
-    /* new functions in v2.3 */
-    GrxColor *(*getindexedscanline)(GrFrame *c,int x, int y, int w, int *indx);
+    gboolean is_video;                   /* video RAM frame driver ? */
+    gint     row_align;                  /* scan line size alignment */
+    gint     num_planes;                 /* number of planes */
+    gint     bits_per_pixel;             /* bits per pixel */
+    glong    max_plane_size;             /* maximum plane size in bytes */
+    gboolean (*init)(GrxVideoMode *md);
+    GrxColor (*readpixel)(GrFrame *c, gint x, gint y);
+    void     (*drawpixel)(gint x, gint y, GrxColor c);
+    void     (*drawline)(gint x, gint y, gint dx, gint dy, GrxColor c);
+    void     (*drawhline)(gint x, gint y, gint w, GrxColor c);
+    void     (*drawvline)(gint x, gint y, gint h, GrxColor c);
+    void     (*drawblock)(gint x, gint y, gint w, gint h, GrxColor c);
+    void     (*drawbitmap)(gint x, gint y, gint w, gint h, guint8 *bmp,
+                           gint pitch, gint start, GrxColor fg, GrxColor bg);
+    void     (*drawpattern)(gint x, gint y, gint w, guint8 patt, GrxColor fg, GrxColor bg);
+    void     (*bitblt)(GrFrame *dst, gint dx, gint dy, GrFrame *src,
+                       gint x, gint y, gint w, gint h, GrxColor op);
+    void     (*bltv2r)(GrFrame *dst, gint dx, gint dy, GrFrame *src,
+                       gint x, gint y, gint w, gint h, GrxColor op);
+    void     (*bltr2v)(GrFrame *dst, gint dx, gint dy, GrFrame *src,
+                       gint x, gint y, gint w, gint h, GrxColor op);
+    GrxColor *(*getindexedscanline)(GrFrame *c, gint x, gint y, gint w, gint *indx);
       /* will return an array of pixel values pv[] read from frame   */
       /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
       /*    else             pv[i=0..w-1] = readpixel(x+indx[i],y)   */
-    void     (*putscanline)(int x, int y, int w,const GrxColor *scl, GrxColor op);
+    void     (*putscanline)(gint x, gint y, gint w, const GrxColor *scl, GrxColor op);
       /** will draw scl[i=0..w-1] to frame:                          */
       /*    if (scl[i] != skipcolor) drawpixel(x+i,y,(scl[i] | op))  */
 };
@@ -349,9 +374,9 @@ extern const struct _GR_driverInfo {
         GrxVideoDriver     *vdriver;        /* the current video driver */
         GrxVideoMode       *curmode;        /* current video mode pointer */
         GrxVideoMode        actmode;        /* copy of above, resized if virtual */
-        struct _GR_frameDriver   fdriver;   /* frame driver for the current context */
-        struct _GR_frameDriver   sdriver;   /* frame driver for the screen */
-        struct _GR_frameDriver   tdriver;   /* a dummy driver for text modes */
+        GrxFrameDriver      fdriver;        /* frame driver for the current context */
+        GrxFrameDriver      sdriver;        /* frame driver for the screen */
+        GrxFrameDriver      tdriver;        /* a dummy driver for text modes */
         GrxGraphicsMode     mcode;          /* code for the current mode */
         int     deftw,defth;                /* default text mode size */
         int     defgw,defgh;                /* default graphics mode size */
@@ -390,8 +415,8 @@ GrxFrameMode    grx_get_core_frame_mode(void);
 const GrxVideoDriver *grx_get_current_video_driver(void);
 const GrxVideoMode   *grx_get_current_video_mode(void);
 const GrxVideoMode   *grx_get_virtual_video_mode(void);
-const GrFrameDriver *grx_get_current_frame_driver(void);
-const GrFrameDriver *grx_get_screen_frame_driver(void);
+const GrxFrameDriver *grx_get_current_frame_driver(void);
+const GrxFrameDriver *grx_get_screen_frame_driver(void);
 const GrxVideoMode   *grx_get_first_video_mode(GrxFrameMode mode);
 const GrxVideoMode   *grx_get_next_video_mode(const GrxVideoMode *prev);
 
@@ -430,8 +455,8 @@ long GrContextSize(int w,int h);
 #define grx_get_current_video_driver()  ((const GrxVideoDriver *)( GrDriverInfo->vdriver))
 #define grx_get_current_video_mode()    ((const GrxVideoMode   *)( GrDriverInfo->curmode))
 #define grx_get_virtual_video_mode()    ((const GrxVideoMode   *)(&GrDriverInfo->actmode))
-#define grx_get_current_frame_driver()  ((const GrFrameDriver *)(&GrDriverInfo->fdriver))
-#define grx_get_screen_frame_driver()   ((const GrFrameDriver *)(&GrDriverInfo->sdriver))
+#define grx_get_current_frame_driver()  ((const GrxFrameDriver *)(&GrDriverInfo->fdriver))
+#define grx_get_screen_frame_driver()   ((const GrxFrameDriver *)(&GrDriverInfo->sdriver))
 
 #define GrIsFixedMode()      (!(  grx_get_current_video_driver()->flags \
                                    & GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION))
@@ -462,7 +487,7 @@ struct _GR_frame {
         char    gf_onscreen;                /* is it in video memory ? */
         char    gf_memflags;                /* memory allocation flags */
         int     gf_lineoffset;              /* offset to next scan line in bytes */
-        struct _GR_frameDriver *gf_driver;  /* frame access functions */
+        GrxFrameDriver *gf_driver;          /* frame access functions */
 };
 
 struct _GR_context {

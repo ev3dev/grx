@@ -101,7 +101,7 @@ static void w32_drawblock(int x, int y, int w, int h, GrxColor color)
     GRX_LEAVE();
 }
 
-static void w32_drawbitmap(int x, int y, int w, int h, char *bmp,
+static void w32_drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
                            int pitch, int start, GrxColor fg, GrxColor bg)
 {
     RECT Rect;
@@ -116,7 +116,7 @@ static void w32_drawbitmap(int x, int y, int w, int h, char *bmp,
     GRX_LEAVE();
 }
 
-static void w32_drawpattern(int x, int y, int w, char patt,
+static void w32_drawpattern(int x, int y, int w, unsigned char patt,
                             GrxColor fg, GrxColor bg)
 {
     RECT Rect;
@@ -171,7 +171,7 @@ void w32_putscanline(int x, int y, int w,
 
 /* -------------------------------------------------------------------- */
 
-GrFrameDriver _GrFrameDriverWIN32_24 = {
+GrxFrameDriver _GrFrameDriverWIN32_24 = {
     GR_frameWIN32_24,           /* frame mode */
     GRX_FRAME_MODE_RAM_24BPP,   /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

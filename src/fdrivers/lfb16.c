@@ -32,7 +32,7 @@
 
 /* -------------------------------------------------------------------- */
 
-GrFrameDriver _GrFrameDriverSVGA16_LFB = {
+GrxFrameDriver _GrFrameDriverSVGA16_LFB = {
     GRX_FRAME_MODE_LFB_16BPP,   /* frame mode */
     GRX_FRAME_MODE_RAM_16BPP,   /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

@@ -409,10 +409,10 @@ namespace Grx {
     /**
      * The frame driver descriptor structure.
      */
-    [CCode (cname = "struct _GR_frameDriver", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class FrameDriver {
-        [CCode (cname = "struct _GR_frameDriver", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxFrameDriver", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         public FrameMode mode;
@@ -467,9 +467,9 @@ namespace Grx {
     [CCode (has_target = false, has_type_id = false)]
     public delegate void FrameDriverDrawBlock (int x, int y, int w, int h, Color c);
     [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverDrawBitmap (int x, int y, int w, int h, char *bmp, int pitch, int start, Color fg, Color bg);
+    public delegate void FrameDriverDrawBitmap (int x, int y, int w, int h, uint8 bmp[], int pitch, int start, Color fg, Color bg);
     [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverDrawPattern (int x, int y, int w, char patt, Color fg, Color bg);
+    public delegate void FrameDriverDrawPattern (int x, int y, int w, uint8 patt, Color fg, Color bg);
     [CCode (has_target = false, has_type_id = false)]
     public delegate void FrameDriverBitBlt (Frame dest, int dx, int dy, Frame src, int x, int y, int w, int h, ColorMode op);
     [CCode (has_target = false, has_type_id = false)]
@@ -477,9 +477,9 @@ namespace Grx {
     [CCode (has_target = false, has_type_id = false)]
     public delegate void FrameDriverBltR2V (Frame dest, int dx, int dy, Frame src, int x, int y, int w, int h, ColorMode op);
     [CCode (has_target = false, has_type_id = false)]
-    public delegate Color *FrameDriverGetIndexedScanLine (Frame frame, int x, int y, int w, out int? index);
+    public delegate Color *FrameDriverGetIndexedScanLine (Frame frame, int x, int y, int w, int index[]);
     [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverPutScanLine (int x, int y, int w, ref Color scl, ColorMode op);
+    public delegate void FrameDriverPutScanLine (int x, int y, int w, Color scl[], ColorMode op);
 
     [CCode (cname = "struct _GR_driverInfo", has_type_id = false)]
     [Compact]

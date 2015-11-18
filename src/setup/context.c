@@ -29,7 +29,7 @@
 
 GrContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrContext *where)
 {
-        GrFrameDriver *fd = _GrFindRAMframeDriver(md);
+        GrxFrameDriver *fd = _GrFindRAMframeDriver(md);
         int  ii,offset,flags = 0;
         char *mymem[4];
         long psize;

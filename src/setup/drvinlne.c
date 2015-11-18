@@ -58,12 +58,12 @@ const GrxVideoMode *(grx_get_virtual_video_mode)(void)
         return(grx_get_virtual_video_mode());
 }
 
-const GrFrameDriver *(grx_get_current_frame_driver)(void)
+const GrxFrameDriver *(grx_get_current_frame_driver)(void)
 {
         return(grx_get_current_frame_driver());
 }
 
-const GrFrameDriver *(grx_get_screen_frame_driver)(void)
+const GrxFrameDriver *(grx_get_screen_frame_driver)(void)
 {
         return(grx_get_screen_frame_driver());
 }

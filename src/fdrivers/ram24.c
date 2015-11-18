@@ -23,7 +23,7 @@
 #undef FAR_ACCESS
 #include "fdrivers/driver24.h"
 
-GrFrameDriver _GrFrameDriverRAM24 = {
+GrxFrameDriver _GrFrameDriverRAM24 = {
     GRX_FRAME_MODE_RAM_24BPP,   /* frame mode */
     GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
@@ -54,7 +54,7 @@ GrFrameDriver _GrFrameDriverRAM24 = {
 /* always do RAM to RAM blit. May result in     **
 ** bottom first blits but this shouldn't matter */
 
-GrFrameDriver _GrFrameDriverSVGA24_LFB = {
+GrxFrameDriver _GrFrameDriverSVGA24_LFB = {
     GRX_FRAME_MODE_LFB_24BPP,   /* frame mode */
     GRX_FRAME_MODE_RAM_24BPP,   /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

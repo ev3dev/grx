@@ -31,7 +31,7 @@
 
 /* -------------------------------------------------------------------- */
 
-GrFrameDriver _GrFrameDriverSDL8 = {
+GrxFrameDriver _GrFrameDriverSDL8 = {
     GR_frameSDL8,               /* frame mode */
     GRX_FRAME_MODE_RAM_8BPP,    /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

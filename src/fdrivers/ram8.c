@@ -25,7 +25,7 @@
 
 /* -------------------------------------------------------------------- */
 
-GrFrameDriver _GrFrameDriverRAM8 = {
+GrxFrameDriver _GrFrameDriverRAM8 = {
     GRX_FRAME_MODE_RAM_8BPP,    /* frame mode */
     GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
@@ -58,7 +58,7 @@ GrFrameDriver _GrFrameDriverRAM8 = {
 /* always do RAM to RAM blit. May result in     **
 ** bottom first blits but this shouldn't matter */
 
-GrFrameDriver _GrFrameDriverSVGA8_LFB = {
+GrxFrameDriver _GrFrameDriverSVGA8_LFB = {
     GRX_FRAME_MODE_LFB_8BPP,    /* frame mode */
     GRX_FRAME_MODE_RAM_8BPP,    /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

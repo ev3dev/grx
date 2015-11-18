@@ -308,8 +308,8 @@ static
 
 /* -------------------------------------------------------------------- */
 
-static void drawbitmap(int x,int y,int w,int h,
-                       char *bmp,int pitch,int start,GrxColor fg,GrxColor bg)
+static void drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
+                       int pitch, int start, GrxColor fg, GrxColor bg)
 {
         int fgop, bgop;
         int dofg, dobg;

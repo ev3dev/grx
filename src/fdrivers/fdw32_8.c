@@ -87,7 +87,7 @@ static void w32_drawvline(int x, int y, int h, GrxColor c)
     GRX_LEAVE();
 }
 
-static void w32_drawpattern(int x, int y, int w, char patt,
+static void w32_drawpattern(int x, int y, int w, unsigned char patt,
                             GrxColor fg, GrxColor bg)
 {
     RECT r;
@@ -131,7 +131,7 @@ static void w32_drawblock(int x, int y, int w, int h, GrxColor c)
     GRX_LEAVE();
 }
 
-static void w32_drawbitmap(int x, int y, int w, int h, char *bmp,
+static void w32_drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
                            int pitch, int start, GrxColor fg, GrxColor bg)
 {
     RECT r;
@@ -163,7 +163,7 @@ static void w32_bitblit(GrFrame *dst, int dx, int dy, GrFrame *src,
 
 /* -------------------------------------------------------------------- */
 
-GrFrameDriver _GrFrameDriverWIN32_8 = {
+GrxFrameDriver _GrFrameDriverWIN32_8 = {
     GR_frameWIN32_8,             /* frame mode */
     GRX_FRAME_MODE_RAM_8BPP,     /* compatible RAM frame mode */
     TRUE,                        /* onscreen */

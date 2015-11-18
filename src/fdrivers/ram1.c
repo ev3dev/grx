@@ -216,7 +216,7 @@ static
 
 /* -------------------------------------------------------------------- */
 
-GrFrameDriver _GrFrameDriverRAM1 = {
+GrxFrameDriver _GrFrameDriverRAM1 = {
     GRX_FRAME_MODE_RAM_1BPP,    /* frame mode */
     GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
@@ -240,7 +240,7 @@ GrFrameDriver _GrFrameDriverRAM1 = {
     _GrFrDrvGenericPutScanline
 };
 
-GrFrameDriver _GrFrameDriverMONO01_LFB = {
+GrxFrameDriver _GrFrameDriverMONO01_LFB = {
     GRX_FRAME_MODE_LFB_MONO01,  /* frame mode */
     GRX_FRAME_MODE_RAM_1BPP,    /* compatible RAM frame mode */
     TRUE,                       /* onscreen */
@@ -264,7 +264,7 @@ GrFrameDriver _GrFrameDriverMONO01_LFB = {
     _GrFrDrvGenericPutScanline
 };
 
-GrFrameDriver _GrFrameDriverMONO10_LFB = {
+GrxFrameDriver _GrFrameDriverMONO10_LFB = {
     GRX_FRAME_MODE_LFB_MONO10,  /* frame mode */
     GRX_FRAME_MODE_RAM_1BPP,    /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

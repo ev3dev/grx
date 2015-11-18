@@ -275,7 +275,7 @@ void drawline(int x,int y,int dx,int dy,GrxColor c)
 }
 
 static
-void drawbitmap(int x,int y,int w,int h,char *bmp,int pitch,int start,GrxColor fg,GrxColor bg)
+void drawbitmap(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,GrxColor fg,GrxColor bg)
 {
   XImage ximage;
 
@@ -390,7 +390,7 @@ void drawbitmap(int x,int y,int w,int h,char *bmp,int pitch,int start,GrxColor f
 
 /* Note: drawpattern is not tested because it's not used in this GRX version */
 static
-void drawpattern(int x,int y,int w,char patt,GrxColor fg,GrxColor bg)
+void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
 {
   XImage ximage;
 
@@ -693,7 +693,7 @@ static int init(GrxVideoMode *mp)
 }
 
 
-GrFrameDriver _GrFrameDriverXWIN8 = {
+GrxFrameDriver _GrFrameDriverXWIN8 = {
   GR_frameXWIN8,                /* frame mode */
   GRX_FRAME_MODE_RAM_8BPP,      /* compatible RAM frame mode */
   TRUE,                         /* onscreen */
@@ -717,7 +717,7 @@ GrFrameDriver _GrFrameDriverXWIN8 = {
   putscanline
 };
 
-GrFrameDriver _GrFrameDriverXWIN16 = {
+GrxFrameDriver _GrFrameDriverXWIN16 = {
   GR_frameXWIN16,               /* frame mode */
   GRX_FRAME_MODE_RAM_16BPP,     /* compatible RAM frame mode */
   TRUE,                         /* onscreen */
@@ -741,7 +741,7 @@ GrFrameDriver _GrFrameDriverXWIN16 = {
   putscanline
 };
 
-GrFrameDriver _GrFrameDriverXWIN24 = {
+GrxFrameDriver _GrFrameDriverXWIN24 = {
   GR_frameXWIN24,               /* frame mode */
   GRX_FRAME_MODE_RAM_24BPP,     /* compatible RAM frame mode */
   TRUE,                         /* onscreen */
@@ -765,7 +765,7 @@ GrFrameDriver _GrFrameDriverXWIN24 = {
   putscanline
 };
 
-GrFrameDriver _GrFrameDriverXWIN32L = {
+GrxFrameDriver _GrFrameDriverXWIN32L = {
   GR_frameXWIN32L,              /* frame mode */
   GRX_FRAME_MODE_RAM_32BPP_LOW, /* compatible RAM frame mode */
   TRUE,                         /* onscreen */
@@ -789,7 +789,7 @@ GrFrameDriver _GrFrameDriverXWIN32L = {
   putscanline
 };
 
-GrFrameDriver _GrFrameDriverXWIN32H = {
+GrxFrameDriver _GrFrameDriverXWIN32H = {
   GR_frameXWIN32H,              /* frame mode */
   GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
   TRUE,                         /* onscreen */

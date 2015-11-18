@@ -171,7 +171,7 @@ static void bitblit(GrFrame *dst,int dx,int dy,
 
 /* -------------------------------------------------------------------- */
 
-GrFrameDriver _GrFrameDriverRAM3x8 = {
+GrxFrameDriver _GrFrameDriverRAM3x8 = {
     GRX_FRAME_MODE_RAM_3X8BPP,  /* frame mode */
     GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */

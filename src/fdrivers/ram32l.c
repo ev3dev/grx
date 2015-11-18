@@ -24,7 +24,7 @@
 
 #include "fdrivers/driver32.h"
 
-GrFrameDriver _GrFrameDriverRAM32L = {
+GrxFrameDriver _GrFrameDriverRAM32L = {
     GRX_FRAME_MODE_RAM_32BPP_LOW, /* frame mode */
     GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
@@ -55,7 +55,7 @@ GrFrameDriver _GrFrameDriverRAM32L = {
 /* always do RAM to RAM blit. May result in     **
 ** bottom first blits but this shouldn't matter */
 
-GrFrameDriver _GrFrameDriverSVGA32L_LFB = {
+GrxFrameDriver _GrFrameDriverSVGA32L_LFB = {
     GRX_FRAME_MODE_LFB_32BPP_LOW, /* frame mode */
     GRX_FRAME_MODE_RAM_32BPP_LOW, /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

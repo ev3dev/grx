@@ -34,7 +34,7 @@
 
 /* -------------------------------------------------------------------- */
 
-GrFrameDriver _GrFrameDriverSVGA32H_LFB = {
+GrxFrameDriver _GrFrameDriverSVGA32H_LFB = {
     GRX_FRAME_MODE_LFB_32BPP_HIGH, /* frame mode */
     GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

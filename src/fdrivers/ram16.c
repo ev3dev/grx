@@ -21,7 +21,7 @@
 
 #include "fdrivers/driver16.h"
 
-GrFrameDriver _GrFrameDriverRAM16 = {
+GrxFrameDriver _GrFrameDriverRAM16 = {
     GRX_FRAME_MODE_RAM_16BPP,   /* frame mode */
     GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */
@@ -52,7 +52,7 @@ GrFrameDriver _GrFrameDriverRAM16 = {
 /* always do RAM to RAM blit. May result in     **
 ** bottom first blits but this shouldn't matter */
 
-GrFrameDriver _GrFrameDriverSVGA16_LFB = {
+GrxFrameDriver _GrFrameDriverSVGA16_LFB = {
     GRX_FRAME_MODE_LFB_16BPP,   /* frame mode */
     GRX_FRAME_MODE_RAM_16BPP,   /* compatible RAM frame mode */
     TRUE,                       /* onscreen */

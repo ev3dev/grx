@@ -264,7 +264,7 @@ static void bltr2r(GrFrame *dst,int dx,int dy,
     GRX_LEAVE();
 }
 
-GrFrameDriver _GrFrameDriverRAM4 = {
+GrxFrameDriver _GrFrameDriverRAM4 = {
     GRX_FRAME_MODE_RAM_4BPP,    /* frame mode */
     GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
     FALSE,                      /* onscreen */

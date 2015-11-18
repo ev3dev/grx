@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "grdriver.h"
 
-GrFrameDriver *_GrFindFrameDriver(GrxFrameMode mode)
+GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode)
 {
         int ii = 0;
         while(_GrFrameDriverTable[ii] != NULL) {
@@ -29,9 +29,9 @@ GrFrameDriver *_GrFindFrameDriver(GrxFrameMode mode)
         return(_GrFrameDriverTable[ii]);
 }
 
-GrFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode)
+GrxFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode)
 {
-        GrFrameDriver *dp = _GrFindFrameDriver(mode);
+        GrxFrameDriver *dp = _GrFindFrameDriver(mode);
         return((dp && dp->is_video) ? _GrFindFrameDriver(dp->rmode) : dp);
 }
 

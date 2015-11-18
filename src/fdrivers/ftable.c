@@ -22,7 +22,7 @@
 #include "libgrx.h"
 #include "grdriver.h"
 
-GrFrameDriver *_GrFrameDriverTable[] = {
+GrxFrameDriver *_GrFrameDriverTable[] = {
 #if defined(XF86DGA_FRAMEBUFFER) \
   || ( defined(LFB_BY_NEAR_POINTER) && !defined(__WIN32__) )
     &_GrFrameDriverMONO01_LFB,

@@ -59,9 +59,9 @@ GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
         GRX_RETURN(best);
 }
 
-static int buildframedriver(GrxVideoMode *mp,GrFrameDriver *drv)
+static int buildframedriver(GrxVideoMode *mp,GrxFrameDriver *drv)
 {
-        GrFrameDriver *d1, *d2;
+        GrxFrameDriver *d1, *d2;
         int res = TRUE;
         GRX_ENTER();
         res = TRUE;
@@ -85,7 +85,7 @@ static int buildframedriver(GrxVideoMode *mp,GrFrameDriver *drv)
             MERGE(getindexedscanline);
             MERGE(putscanline);
             if(compl) {
-                memcpy(drv,d2,offsetof(GrFrameDriver,readpixel));
+                memcpy(drv,d2,offsetof(GrxFrameDriver,readpixel));
                 goto done; /* TRUE */
             }
             if(!d1) { res = FALSE; goto done; }
@@ -105,7 +105,7 @@ static int buildframedriver(GrxVideoMode *mp,GrFrameDriver *drv)
 done:   GRX_RETURN(res);
 }
 
-static int buildcontext(GrxVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
+static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrContext *cxt)
 {
         long plsize;
         int res;
@@ -326,7 +326,7 @@ int grx_set_mode(GrxGraphicsMode which,...)
           for(pl = 1; (pl < 32) && ((1UL << pl) < (GrxColor)c); pl++) ;
         for( ; ; ) {
             GrContext     cxt;
-            GrFrameDriver fdr;
+            GrxFrameDriver fdr;
             GrxVideoMode  *mdp,vmd;
             mdp = (DRVINFO->vdriver->select_mode)(DRVINFO->vdriver,w,h,pl,t,NULL);
             if(!mdp) {

@@ -17,14 +17,14 @@
  **/
 
 void drawbitmap(int x,int y,int w,int h,
-                char *bmp,int pitch,int start,GrxColor fg,GrxColor bg)
+                unsigned char *bmp,int pitch,int start,GrxColor fg,GrxColor bg)
 {
         GRX_ENTER();
         w += x; h += y;
         bmp += (unsigned int)start >> 3;
         start &= 7;
         do {
-            unsigned char *bitp = (unsigned char *)bmp;
+            unsigned char *bitp = bmp;
             unsigned char bits = *bitp;
             unsigned char mask = 0x80 >> start;
             int   xx = x;
