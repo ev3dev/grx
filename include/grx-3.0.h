@@ -553,27 +553,27 @@ int   GrHighY(void);
 
 #ifndef GRX_SKIP_INLINES
 #define GrCreateContext(w,h,m,c) (GrCreateFrameContext(grx_get_core_frame_mode(),w,h,m,c))
-#define GrCurrentContext()       ((GrContext *)(&GrContextInfo->current))
-#define GrScreenContext()        ((GrContext *)(&GrContextInfo->screen))
-#define GrMaxX()                 (GrCurrentContext()->gc_xmax)
-#define GrMaxY()                 (GrCurrentContext()->gc_ymax)
+#define GrCurrentContext()       ((GrxContext *)(&GrContextInfo->current))
+#define GrScreenContext()        ((GrxContext *)(&GrContextInfo->screen))
+#define GrMaxX()                 (GrCurrentContext()->x_max)
+#define GrMaxY()                 (GrCurrentContext()->y_max)
 #define GrSizeX()                (GrMaxX() + 1)
 #define GrSizeY()                (GrMaxY() + 1)
-#define GrLowX()                 (GrCurrentContext()->gc_xcliplo)
-#define GrLowY()                 (GrCurrentContext()->gc_ycliplo)
-#define GrHighX()                (GrCurrentContext()->gc_xcliphi)
-#define GrHighY()                (GrCurrentContext()->gc_ycliphi)
+#define GrLowX()                 (GrCurrentContext()->x_clip_low)
+#define GrLowY()                 (GrCurrentContext()->y_clip_low)
+#define GrHighX()                (GrCurrentContext()->x_clip_high)
+#define GrHighY()                (GrCurrentContext()->y_clip_high)
 #define GrGetClipBoxC(C,x1p,y1p,x2p,y2p) do {           \
-        *(x1p) = (C)->gc_xcliplo;                           \
-        *(y1p) = (C)->gc_ycliplo;                           \
-        *(x2p) = (C)->gc_xcliphi;                           \
-        *(y2p) = (C)->gc_ycliphi;                           \
+    *(x1p) = (C)->x_clip_low;                           \
+    *(y1p) = (C)->y_clip_low;                           \
+    *(x2p) = (C)->x_clip_high;                          \
+    *(y2p) = (C)->y_clip_high;                          \
 } while(0)
 #define GrGetClipBox(x1p,y1p,x2p,y2p) do {              \
-        *(x1p) = GrLowX();                                  \
-        *(y1p) = GrLowY();                                  \
-        *(x2p) = GrHighX();                                 \
-        *(y2p) = GrHighY();                                 \
+    *(x1p) = GrLowX();                                  \
+    *(y1p) = GrLowY();                                  \
+    *(x2p) = GrHighX();                                 \
+    *(y2p) = GrHighY();                                 \
 } while(0)
 #endif  /* GRX_SKIP_INLINES */
 
@@ -872,24 +872,24 @@ GrxColor GrPixelCNC(GrxContext *c,int x,int y);
 
 #ifndef GRX_SKIP_INLINES
 #define GrPlotNC(x,y,c) (                                                      \
-        (*grx_get_current_frame_driver()->drawpixel)(                                  \
-        ((x) + GrCurrentContext()->gc_xoffset),                                \
-        ((y) + GrCurrentContext()->gc_yoffset),                                \
+        (*grx_get_current_frame_driver()->drawpixel)(                          \
+        ((x) + GrCurrentContext()->x_offset),                                  \
+        ((y) + GrCurrentContext()->y_offset),                                  \
         ((c))                                                                  \
         )                                                                      \
 )
 #define GrPixelNC(x,y) (                                                       \
-        (*grx_get_current_frame_driver()->readpixel)(                                  \
-        (GrFrame *)(&GrCurrentContext()->gc_frame),                            \
-        ((x) + GrCurrentContext()->gc_xoffset),                                \
-        ((y) + GrCurrentContext()->gc_yoffset)                                 \
+        (*grx_get_current_frame_driver()->readpixel)(                          \
+        (GrxFrame *)(&GrCurrentContext()->frame),                              \
+        ((x) + GrCurrentContext()->x_offset),                                  \
+        ((y) + GrCurrentContext()->y_offset)                                   \
         )                                                                      \
 )
 #define GrPixelCNC(c,x,y) (                                                    \
         (*(c)->gc_driver->readpixel)(                                          \
-        (&(c)->gc_frame),                                                      \
-        ((x) + (c)->gc_xoffset),                                               \
-        ((y) + (c)->gc_yoffset)                                                \
+        (&(c)->frame),                                                         \
+        ((x) + (c)->x_offset),                                                 \
+        ((y) + (c)->y_offset)                                                  \
         )                                                                      \
 )
 #endif  /* GRX_SKIP_INLINES */
@@ -1544,7 +1544,7 @@ void GrMouseUnBlock(int return_value_from_GrMouseBlock);
         *(x2p) = GrMouseInfo->xmax; *(y2p) = GrMouseInfo->ymax;                \
 } while(0)
 #define GrMouseBlock(c,x1,y1,x2,y2) (                                          \
-        (((c) ? (const GrContext*)(c) : GrCurrentContext())->gc_onscreen &&    \
+        (((c) ? (const GrxContext*)(c) : GrCurrentContext())->gc_is_on_screen && \
          (GrMouseInfo->docheck)) ?                                             \
         (*GrMouseInfo->block)((c),(x1),(y1),(x2),(y2)) :                       \
         0                                                                      \
