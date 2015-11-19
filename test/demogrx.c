@@ -269,9 +269,9 @@ static void ini_graphics(void)
         GrClearScreen(GrAllocColor(120, 90, 60));
         worg = (gwidth - 640) / 2;
         horg = (gheight - 480) / 2;
-        grcglob = GrCreateSubContext(worg, horg, worg + 639, horg + 479,
+        grcglob = grx_context_create_subcontext(worg, horg, worg + 639, horg + 479,
                                      NULL, NULL);
-        GrSetContext(grcglob);
+        grx_context_set_current(grcglob);
     }
 }
 
@@ -323,14 +323,14 @@ static void paint_screen(void)
     paint_board(&brd);
     paint_button_group(bgact);
     paint_board(&brdimg);
-    grc = GrCreateSubContext(brdimg.x + 4, brdimg.y + 4,
+    grc = grx_context_create_subcontext(brdimg.x + 4, brdimg.y + 4,
                              brdimg.x + brdimg.wide - 5,
                              brdimg.y + brdimg.high - 5, grcglob, NULL);
     if (bgact == &bgp1)
         GrLoadContextFromPnm(grc, "pnmtest.ppm");
     else
         GrLoadContextFromPnm(grc, "pnmtest2.ppm");
-    GrDestroyContext(grc);
+    grx_context_free(grc);
     the_info(500, 215);
     drawing(400, 280, 200, 150, BROWN, DARKGRAY);
     the_title(500, 330);
@@ -445,10 +445,10 @@ static void paint_foot(char *s)
     grt_centered.txo_fgcolor.v = LIGHTGREEN;
     grt_centered.txo_font = grf_std;
 
-    GrSetClipBox(10, 440, 630, 470);
+    grx_set_clip_box(10, 440, 630, 470);
     GrClearClipBox(CYAN);
     GrDrawString(s, strlen(s), 320, 455, &grt_centered);
-    GrResetClipBox();
+    grx_reset_clip_box();
 }
 
 /************************************************************************/
@@ -461,7 +461,7 @@ static void paint_animation(void)
     int ltext, wtext;
 
     if (!ini) {
-        grc = GrCreateContext(620, 30, NULL, NULL);
+        grc = grx_context_create(620, 30, NULL, NULL);
         if (grc == NULL)
             return;
         ini = 1;
@@ -472,10 +472,10 @@ static void paint_animation(void)
     ltext = strlen(animatedtext);
     wtext = GrStringWidth(animatedtext, ltext, &grt_left);
 
-    GrSetContext(grc);
+    grx_context_set_current(grc);
     GrClearContext(DARKGRAY);
     GrDrawString(animatedtext, ltext, pos, 15, &grt_left);
-    GrSetContext(grcglob);
+    grx_context_set_current(grcglob);
     GrBitBlt(NULL, 10, 8, grc, 0, 0, 629, 29, GrWRITE);
 
     pos -= 1;

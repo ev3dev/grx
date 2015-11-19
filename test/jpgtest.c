@@ -35,9 +35,9 @@ void imagen( char *nf, int scale )
   GrClearScreen( GrAllocColor( 0,0,200 ) );
 
   GrBox( 10,40,10+wide+1,40+high+1,GrWhite() );
-  grc = GrCreateSubContext( 11,41,11+wide-1,41+high-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromJpeg( grc,nf,scale );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
 
   GrTextXY( 10,10,s,GrBlack(),GrWhite() );
   GrTextXY( 10,50+high,"Press any key to continue",GrBlack(),GrWhite() );
@@ -83,12 +83,12 @@ int main()
   imagen( "jpeg2.jpg",8 );
 
   GrClearScreen( GrAllocColor( 0,100,0 ) );
-  grc = GrCreateSubContext( 10,40,10+400-1,40+300-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 10,40,10+400-1,40+300-1,NULL,NULL );
   GrLoadContextFromJpeg( grc,"jpeg1.jpg",2 );
-  GrDestroyContext( grc );
-  grc = GrCreateSubContext( 210,150,210+400-1,150+300-1,NULL,NULL );
+  grx_context_free( grc );
+  grc = grx_context_create_subcontext( 210,150,210+400-1,150+300-1,NULL,NULL );
   GrLoadContextFromJpeg( grc,"jpeg2.jpg",2 );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
 
   GrTextXY( 10,10,"Press any key to save color and gray screen",
     GrBlack(),GrWhite() );

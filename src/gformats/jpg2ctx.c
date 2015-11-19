@@ -62,10 +62,10 @@ int GrLoadContextFromJpeg( GrxContext *grc, char *jpegfn, int scale )
   f = fopen( jpegfn,"rb" );
   if( f == NULL ) return -1;
 
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
+  grx_context_save( &grcaux );
+  if( grc != NULL ) grx_context_set_current( grc );
   r = readjpeg( f,grc,scale );
-  GrSetContext( &grcaux );
+  grx_context_set_current( &grcaux );
 
   fclose( f );
 
@@ -153,10 +153,10 @@ static int readjpeg( FILE *f, GrxContext *grc, int scale )
   buffer = (*cinfo.mem->alloc_sarray)
            ( (j_common_ptr)&cinfo,JPOOL_IMAGE,row_stride,1 );
 
-  maxwidth = (cinfo.output_width > GrSizeX()) ?
-             GrSizeX() : cinfo.output_width;
-  maxheight = (cinfo.output_height > GrSizeY()) ?
-             GrSizeY() : cinfo.output_height;
+  maxwidth = (cinfo.output_width > grx_get_size_x()) ?
+             grx_get_size_x() : cinfo.output_width;
+  maxheight = (cinfo.output_height > grx_get_size_y()) ?
+             grx_get_size_y() : cinfo.output_height;
   pColors = malloc( maxwidth * sizeof(GrxColor) );
   if( pColors == NULL ) longjmp( jerr.setjmp_buffer,1 );
 

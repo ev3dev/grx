@@ -142,9 +142,9 @@ void _LnxfbSwitchToConsoleVt(unsigned short vt)
     myvt = vtst.v_active;
     if (vt == myvt) return; 
 
-    grc = GrCreateContext(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
+    grc = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
     if (grc != NULL) {
-        GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
+        GrBitBlt(grc, 0, 0, grx_context_get_screen(), 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
     }
     ioctl(ttyfd, KDSETMODE, KD_TEXT);
@@ -154,9 +154,9 @@ void _LnxfbSwitchToConsoleVt(unsigned short vt)
     }
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
     if (grc != NULL) {
-        GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
+        GrBitBlt(grx_context_get_screen(), 0, 0, grc, 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
-        GrDestroyContext(grc);
+        grx_context_free(grc);
     }
 }
 
@@ -172,9 +172,9 @@ void _LnxfbSwitchConsoleAndWait(void)
     if (ioctl(ttyfd, VT_GETSTATE, &vtst) < 0) return;
     myvt = vtst.v_active;
 
-    grc = GrCreateContext(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
+    grc = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
     if (grc != NULL) {
-        GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
+        GrBitBlt(grc, 0, 0, grx_context_get_screen(), 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
     }
 
@@ -186,9 +186,9 @@ void _LnxfbSwitchConsoleAndWait(void)
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
 
     if (grc != NULL) {
-        GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
+        GrBitBlt(grx_context_get_screen(), 0, 0, grc, 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
-        GrDestroyContext(grc);
+        grx_context_free(grc);
     }
 }
 
@@ -199,17 +199,17 @@ void _LnxfbRelsigHandle(int sig)
     if (ttyfd < 0) return;
 
     /* create a new context from the screen */
-    grc = GrCreateContext(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
+    grc = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
     if (grc == NULL)
         return;
     /* copy framebuffer to new context */
     if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
         /* Need to invert the colors on this one. */
         GrClearContextC(grc, 1);
-        GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
+        GrBitBlt(grc, 0, 0, grx_context_get_screen(), 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GrXOR);
     } else {
-        GrBitBlt(grc, 0, 0, GrScreenContext(), 0, 0,
+        GrBitBlt(grc, 0, 0, grx_context_get_screen(), 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
     }
     /*
@@ -217,14 +217,14 @@ void _LnxfbRelsigHandle(int sig)
      * application can continue to run in the background without actually
      * writing to the framebuffer.
      */
-    frame_addr[0] = GrScreenContext()->gc_base_address[0];
-    frame_addr[1] = GrScreenContext()->gc_base_address[1];
-    frame_addr[2] = GrScreenContext()->gc_base_address[2];
-    frame_addr[3] = GrScreenContext()->gc_base_address[3];
-    GrScreenContext()->gc_base_address[0] = grc->gc_base_address[0];
-    GrScreenContext()->gc_base_address[1] = grc->gc_base_address[1];
-    GrScreenContext()->gc_base_address[2] = grc->gc_base_address[2];
-    GrScreenContext()->gc_base_address[3] = grc->gc_base_address[3];
+    frame_addr[0] = grx_context_get_screen()->gc_base_address[0];
+    frame_addr[1] = grx_context_get_screen()->gc_base_address[1];
+    frame_addr[2] = grx_context_get_screen()->gc_base_address[2];
+    frame_addr[3] = grx_context_get_screen()->gc_base_address[3];
+    grx_context_get_screen()->gc_base_address[0] = grc->gc_base_address[0];
+    grx_context_get_screen()->gc_base_address[1] = grc->gc_base_address[1];
+    grx_context_get_screen()->gc_base_address[2] = grc->gc_base_address[2];
+    grx_context_get_screen()->gc_base_address[3] = grc->gc_base_address[3];
     /* release control of the vt */
     ioctl(ttyfd, VT_RELDISP, 1);
     signal(SIGUSR1, _LnxfbAcqsigHandle);
@@ -238,21 +238,21 @@ void _LnxfbAcqsigHandle(int sig)
     ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
     /* restore framebuffer address */
-    GrScreenContext()->gc_base_address[0] = frame_addr[0];
-    GrScreenContext()->gc_base_address[1] = frame_addr[1];
-    GrScreenContext()->gc_base_address[2] = frame_addr[2];
-    GrScreenContext()->gc_base_address[3] = frame_addr[3];
+    grx_context_get_screen()->gc_base_address[0] = frame_addr[0];
+    grx_context_get_screen()->gc_base_address[1] = frame_addr[1];
+    grx_context_get_screen()->gc_base_address[2] = frame_addr[2];
+    grx_context_get_screen()->gc_base_address[3] = frame_addr[3];
     /* copy the temporary context back to the framebuffer */
     if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
         /* need to invert the colors on this one */
         GrClearScreen(1);
-        GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
+        GrBitBlt(grx_context_get_screen(), 0, 0, grc, 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GrXOR);
     } else {
-        GrBitBlt(GrScreenContext(), 0, 0, grc, 0, 0,
+        GrBitBlt(grx_context_get_screen(), 0, 0, grc, 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
     }
-    GrDestroyContext(grc);
+    grx_context_free(grc);
     signal(SIGUSR1, _LnxfbRelsigHandle);
 }
 

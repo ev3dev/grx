@@ -145,8 +145,8 @@ static int _GrLoadContextFromPbm( inputstruct *is, int width, int height )
   GrxColor *pColors=NULL;
   int res = 0;
 
-  maxwidth = (width > GrSizeX()) ? GrSizeX() : width;
-  maxheight = (height > GrSizeY()) ? GrSizeY() : height;
+  maxwidth = (width > grx_get_size_x()) ? grx_get_size_x() : width;
+  maxheight = (height > grx_get_size_y()) ? grx_get_size_y() : height;
 
   pColors = malloc( maxwidth * sizeof(GrxColor) );
   if(pColors == NULL) { res = -1; goto salida; }
@@ -187,8 +187,8 @@ static int _GrLoadContextFromPgm( inputstruct *is, int width,
   unsigned char *pData=NULL, *pCursor;
   int res = 0;
 
-  maxwidth = (width > GrSizeX()) ? GrSizeX() : width;
-  maxheight = (height > GrSizeY()) ? GrSizeY() : height;
+  maxwidth = (width > grx_get_size_x()) ? grx_get_size_x() : width;
+  maxheight = (height > grx_get_size_y()) ? grx_get_size_y() : height;
 
   if( maxval < 255 ){
     needcoloradjust = 1;
@@ -232,8 +232,8 @@ static int _GrLoadContextFromPpm( inputstruct *is, int width,
   unsigned char *pRGB=NULL, *pCursor;
   int res = 0;
 
-  maxwidth = (width > GrSizeX()) ? GrSizeX() : width;
-  maxheight = (height > GrSizeY()) ? GrSizeY() : height;
+  maxwidth = (width > grx_get_size_x()) ? grx_get_size_x() : width;
+  maxheight = (height > grx_get_size_y()) ? grx_get_size_y() : height;
 
   if( maxval < 255 ){
     needcoloradjust = 1;
@@ -295,8 +295,8 @@ int GrLoadContextFromPnm( GrxContext *grc, char *pnmfn )
 
   if( (is.file = fopen( pnmfn,"rb" )) == NULL ) return -1;
 
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
+  grx_context_save( &grcaux );
+  if( grc != NULL ) grx_context_set_current( grc );
 
   format = loaddata( &is,&width,&height,&maxval );
   if( maxval > 255 ) goto ENDFUNCTION;
@@ -312,7 +312,7 @@ int GrLoadContextFromPnm( GrxContext *grc, char *pnmfn )
     }
 
 ENDFUNCTION:
-  GrSetContext( &grcaux );
+  grx_context_set_current( &grcaux );
   fclose( is.file );
 
   return r;
@@ -373,8 +373,8 @@ int GrLoadContextFromPnmBuffer( GrxContext *grc, const char *pnmbuf )
 
   is.buffer = pnmbuf;
   
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
+  grx_context_save( &grcaux );
+  if( grc != NULL ) grx_context_set_current( grc );
 
   format = loaddata( &is,&width,&height,&maxval );
   if( maxval > 255 ) goto ENDFUNCTION;
@@ -390,7 +390,7 @@ int GrLoadContextFromPnmBuffer( GrxContext *grc, const char *pnmbuf )
     }
 
 ENDFUNCTION:
-  GrSetContext( &grcaux );
+  grx_context_set_current( &grcaux );
 
   return r;
 }

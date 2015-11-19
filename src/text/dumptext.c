@@ -45,24 +45,24 @@ void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r)
         bmpw = (chrw + 7) >> 3;
         xpos = r->txr_xpos + (chrw * col);
         ypos = r->txr_ypos + (chrh * row);
-        if(xpos < GrLowX()) {
-            int clip = (GrLowX() - xpos + chrw - 1) / chrw;
+        if(xpos < grx_get_low_x()) {
+            int clip = (grx_get_low_x() - xpos + chrw - 1) / chrw;
             if((wdt -= clip) <= 0) return;
             col += clip;
         }
-        if(ypos < GrLowY()) {
-            int clip = (GrLowY() - ypos + chrh - 1) / chrh;
+        if(ypos < grx_get_low_y()) {
+            int clip = (grx_get_low_y() - ypos + chrh - 1) / chrh;
             if((hgt -= clip) <= 0) return;
             row += clip;
         }
         xpos = r->txr_xpos + (chrw * (col + wdt)) - 1;
         ypos = r->txr_ypos + (chrh * (row + hgt)) - 1;
-        if(xpos > GrHighX()) {
-            int clip = (xpos - GrHighX() + chrw - 1) / chrw;
+        if(xpos > grx_get_high_x()) {
+            int clip = (xpos - grx_get_high_x() + chrw - 1) / chrw;
             if((wdt -= clip) <= 0) return;
         }
-        if(ypos > GrHighY()) {
-            int clip = (ypos - GrHighY() + chrh - 1) / chrh;
+        if(ypos > grx_get_high_y()) {
+            int clip = (ypos - grx_get_high_y() + chrh - 1) / chrh;
             if((hgt -= clip) <= 0) return;
         }
         ptr += (row * offs) + (col * cofs);

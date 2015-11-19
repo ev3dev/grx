@@ -27,11 +27,12 @@
 #define  MYCONTEXT      1
 #define  MYFRAME        2
 
-GrxContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrxContext *where)
+GrxContext *grx_context_create_full(GrxFrameMode md, int w, int h,
+                                    unsigned char *memory[4], GrxContext *where)
 {
         GrxFrameDriver *fd = _GrFindRAMframeDriver(md);
         int  ii,offset,flags = 0;
-        char *mymem[4];
+        unsigned char *mymem[4];
         long psize;
 
         if(!fd) return(NULL);
@@ -70,11 +71,10 @@ GrxContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],Grx
         return(where);
 }
 
-GrxContext *GrCreateSubContext(
-    int x1,int y1,int x2,int y2,
-    const GrxContext *parent,
-    GrxContext *where
-){
+GrxContext *grx_context_create_subcontext(int x1, int y1, int x2, int y2,
+                                          const GrxContext *parent,
+                                          GrxContext *where)
+{
         int flags = 0;
 
         if(!parent) parent = SCRN;
@@ -102,7 +102,8 @@ GrxContext *GrCreateSubContext(
         return(where);
 }
 
-void GrResizeSubContext(GrxContext *context,int x1,int y1,int x2,int y2)
+void grx_context_resize_subcontext(GrxContext *context, int x1, int y1, int x2,
+                                   int y2)
 {
         GrxContext *parent = context->root;
 
@@ -122,7 +123,7 @@ void GrResizeSubContext(GrxContext *context,int x1,int y1,int x2,int y2)
         context->y_clip_low = 0;
 }
 
-void GrDestroyContext(GrxContext *cxt)
+void grx_context_free(GrxContext *cxt)
 {
         if(cxt && (cxt != CURC) && (cxt != SCRN)) {
             if(cxt->gc_memory_flags & MYFRAME) {
@@ -133,14 +134,14 @@ void GrDestroyContext(GrxContext *cxt)
         }
 }
 
-void GrSetContext(const GrxContext *context)
+void grx_context_set_current(const GrxContext *context)
 {
         if(!context) context = SCRN;
         sttcopy(CURC,context);
         sttcopy(FDRV,context->gc_driver);
 }
 
-GrxContext *GrSaveContext(GrxContext *where)
+GrxContext *grx_context_save(GrxContext *where)
 {
         int flags = 0;
 
@@ -153,4 +154,3 @@ GrxContext *GrSaveContext(GrxContext *where)
         where->gc_memory_flags = flags;
         return(where);
 }
-

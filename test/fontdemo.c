@@ -33,7 +33,7 @@ static void gnewl(void)
 {
         cury += GrCharHeight('A', &opt) + deltay;
         curx = 0;
-        if(cury + GrCharHeight('A', &opt) > GrSizeY() + deltay) {
+        if(cury + GrCharHeight('A', &opt) > grx_get_size_y() + deltay) {
             if(GrKeyRead() == GrKey_F10) {
                 GrUnloadFont(opt.txo_font);
                 exit(0);
@@ -46,7 +46,7 @@ static void gnewl(void)
 /* all control characters are displayed 1:1 */
 static void gputc(int c)
 {
-        if(curx + GrCharWidth(c, &opt) + deltax > GrSizeX()) gnewl();
+        if(curx + GrCharWidth(c, &opt) + deltax > grx_get_size_x()) gnewl();
         GrDrawChar(c, curx, cury, &opt);
         curx += GrCharWidth(c, &opt) + deltax;
 }
@@ -169,7 +169,7 @@ int main(int argc, char **argv)
 
         sprintf(buffer, "%s %dx%d", hdr->name, GrCharWidth('A', &opt), GrCharHeight('A', &opt));
         gputs(buffer);
-        sprintf(buffer, "%dx%d@%lu", GrSizeX(), GrSizeY(), (unsigned long) GrNumColors());
+        sprintf(buffer, "%dx%d@%lu", grx_get_size_x(), grx_get_size_y(), (unsigned long) GrNumColors());
         gputs(buffer);
         gnewl();
 

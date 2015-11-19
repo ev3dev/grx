@@ -21,8 +21,8 @@
 
 TESTFUNC(rgbtest)
 {
-        int x = GrSizeX();
-        int y = GrSizeY();
+        int x = grx_get_size_x();
+        int y = grx_get_size_y();
         int ww = (x-10)/32;
         int wh = (y-10)/8;
         int ii,jj;

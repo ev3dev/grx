@@ -21,32 +21,32 @@
 
 TESTFUNC(winclip)
 {
-        int  x = GrSizeX();
-        int  y = GrSizeY();
+        int  x = grx_get_size_x();
+        int  y = grx_get_size_y();
         int  ww = (x / 2) - 10;
         int  wh = (y / 2) - 10;
         GrxColor c;
-        GrxContext *w1 = GrCreateSubContext(5,5,ww+4,wh+4,NULL,NULL);
-        GrxContext *w2 = GrCreateSubContext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
-        GrxContext *w3 = GrCreateSubContext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
-        GrxContext *w4 = GrCreateSubContext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
+        GrxContext *w1 = grx_context_create_subcontext(5,5,ww+4,wh+4,NULL,NULL);
+        GrxContext *w2 = grx_context_create_subcontext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
+        GrxContext *w3 = grx_context_create_subcontext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
+        GrxContext *w4 = grx_context_create_subcontext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
 
-        GrSetContext(w1);
+        grx_context_set_current(w1);
         c = GrAllocColor(200,100,100);
         drawing(0,0,ww,wh,c,GrBlack());
         GrBox(0,0,ww-1,wh-1,c);
 
-        GrSetContext(w2);
+        grx_context_set_current(w2);
         c = GrAllocColor(100,200,200);
         drawing(-ww/4,ww/3,ww,wh,c,GrBlack());
         GrBox(0,0,ww-1,wh-1,c);
 
-        GrSetContext(w3);
+        grx_context_set_current(w3);
         c = GrAllocColor(200,200,0);
         drawing(ww/2,-wh/2,ww,wh,c,GrBlack());
         GrBox(0,0,ww-1,wh-1,c);
 
-        GrSetContext(w4);
+        grx_context_set_current(w4);
         c = GrAllocColor(0,100,200);
         drawing(-ww/2,-wh/2,ww*2,wh*2,c,GrBlack());
         GrBox(0,0,ww-1,wh-1,c);

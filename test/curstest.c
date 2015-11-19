@@ -55,7 +55,7 @@ TESTFUNC(cursortest)
         GrMoveCursor(cur,x,y);
         GrClearScreen(bgc);
         GrSetColor((GrNumColors() - 1),255,255,255);
-        drawing(0,0,GrSizeX(),GrSizeY(),fgc,GrNOCOLOR);
+        drawing(0,0,grx_get_size_x(),grx_get_size_y(),fgc,GrNOCOLOR);
         GrFilledBox(0,0,320,120,GrAllocColor(0,255,255));
         GrTextXY( 10,90,"ANDmask",GrBlack(),GrNOCOLOR);
         GrTextXY( 90,90,"ORmask", GrBlack(),GrNOCOLOR);
@@ -83,7 +83,7 @@ TESTFUNC(cursortest)
                 &cur->work,0,cur->ysize+cur->ywork,cur->xwork-1,cur->ysize+2*cur->ywork-1,
                 GrWRITE
             );
-            GrTextXY(0,GrMaxY()-20,"Type u d l r U D L R or q to quit",GrWhite(),GrNOCOLOR);
+            GrTextXY(0,grx_get_max_y()-20,"Type u d l r U D L R or q to quit",GrWhite(),GrNOCOLOR);
             switch(GrKeyRead()) {
                 case 'u': y--; break;
                 case 'd': y++; break;

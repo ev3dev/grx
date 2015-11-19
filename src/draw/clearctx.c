@@ -31,8 +31,8 @@ void GrClearContext(GrxColor bg)
 void GrClearContextC(GrxContext *ctx, GrxColor bg)
 {
   GrxContext s;
-  GrSaveContext(&s);
-  GrSetContext(ctx);
+  grx_context_save(&s);
+  grx_context_set_current(ctx);
   GrClearContext(bg);
-  GrSetContext(&s);
+  grx_context_set_current(&s);
 }

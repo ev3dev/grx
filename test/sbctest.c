@@ -30,9 +30,9 @@ TESTFUNC(sbctest)
   GrFont *grf;
   GrTextOption grt;
 
-  grc = GrCreateContext( 300,300,NULL,NULL );
+  grc = grx_context_create( 300,300,NULL,NULL );
   if( grc == NULL ) return;
-  grsc = GrCreateSubContext( 10,10,290,290,grc,NULL );
+  grsc = grx_context_create_subcontext( 10,10,290,290,grc,NULL );
   if( grsc == NULL ) return;
   pat1 = GrBuildPixmapFromBits( bits,8,8,GrWhite(),GrBlack() );
   if( pat1 == NULL ) return;
@@ -47,33 +47,33 @@ TESTFUNC(sbctest)
   GrBox( 19,19,320,320,GrWhite() );
 
   GrTextXY( 0,0,"White drawing on context       ",GrWhite(),GrBlack() );
-  GrSetContext( grc );
+  grx_context_set_current( grc );
   GrClearContext( GrBlack() );
   drawing( 10,10,280,280,GrWhite(),GrNOCOLOR );
-  GrSetContext( NULL );
+  grx_context_set_current( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrWRITE );
   GrKeyRead();
 
   GrTextXY( 0,0,"Black drawing on subcontext    ",GrWhite(),GrBlack() );
-  GrSetContext( grsc );
+  grx_context_set_current( grsc );
   drawing( 0,0,280,280,GrBlack(),GrNOCOLOR );
-  GrSetContext( NULL );
+  grx_context_set_current( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrWRITE );
   GrKeyRead();
 
   GrTextXY( 0,0,"Pattern drawing on context     ",GrWhite(),GrBlack() );
-  GrSetContext( grc );
+  grx_context_set_current( grc );
   GrClearContext( GrBlack() );
   drawpf( 10,pat1 );
-  GrSetContext( NULL );
+  grx_context_set_current( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrWRITE );
   GrKeyRead();
 
   GrTextXY( 0,0,"Pattern drawing on subcontext  ",GrWhite(),GrBlack() );
-  GrSetContext( grsc );
+  grx_context_set_current( grsc );
   GrClearContext( GrBlack() );
   drawpf( 0,pat2 );
-  GrSetContext( NULL );
+  grx_context_set_current( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrXOR );
   GrKeyRead();
 
@@ -84,20 +84,20 @@ TESTFUNC(sbctest)
   grlp.lnp_option = &grl;
 
   GrTextXY( 0,0,"Patterned drawing on context   ",GrWhite(),GrBlack() );
-  GrSetContext( grc );
+  grx_context_set_current( grc );
   GrClearContext( GrBlack() );
   grlp.lnp_pattern = pat1;
   drawp( 10,&grlp );
-  GrSetContext( NULL );
+  grx_context_set_current( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrWRITE );
   GrKeyRead();
 
   GrTextXY( 0,0,"Patterned drawing on subcontext",GrWhite(),GrBlack() );
-  GrSetContext( grsc );
+  grx_context_set_current( grsc );
   GrClearContext( GrBlack() );
   grlp.lnp_pattern = pat2;
   drawp( 0,&grlp );
-  GrSetContext( NULL );
+  grx_context_set_current( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrXOR );
   GrKeyRead();
 
@@ -110,30 +110,30 @@ TESTFUNC(sbctest)
   grt.txo_chrtype = GR_BYTE_TEXT;
 
   GrTextXY( 0,0,"Patterned text on context      ",GrWhite(),GrBlack() );
-  GrSetContext( grc );
+  grx_context_set_current( grc );
   GrClearContext( GrBlack() );
   GrPatternDrawString( "Hello all",9,20,60,&grt,pat1 );
   GrPatternDrawChar( 'G',20,120,&grt,pat1 );
   GrPatternDrawStringExt( "Hola a todos",12,20,180,&grt,pat1 );
-  GrSetContext( NULL );
+  grx_context_set_current( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrWRITE );
   GrKeyRead();
 
   GrTextXY( 0,0,"Patterned text on subcontext   ",GrWhite(),GrBlack() );
-  GrSetContext( grsc );
+  grx_context_set_current( grsc );
   GrClearContext( GrBlack() );
   GrPatternDrawString( "Hello all",9,10,50,&grt,pat2 );
   GrPatternDrawChar( 'G',10,110,&grt,pat2 );
   GrPatternDrawStringExt( "Hola a todos",12,10,170,&grt,pat2 );
-  GrSetContext( NULL );
+  grx_context_set_current( NULL );
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrXOR );
   GrKeyRead();
 
   GrUnloadFont( grf );
   GrDestroyPattern( pat2 );
   GrDestroyPattern( pat1 );
-  GrDestroyContext( grsc );
-  GrDestroyContext( grc );
+  grx_context_free( grsc );
+  grx_context_free( grc );
 }
 
 /***/

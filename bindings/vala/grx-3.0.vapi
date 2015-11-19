@@ -605,7 +605,7 @@ namespace Grx {
             requires (size == sizeof(MallocStruct));
     }
 
-    [CCode (free_function = "GrDestroyContext", has_type_id = false)]
+    [CCode (free_function = "grx_context_free", has_type_id = false)]
     [Compact]
     public class Context {
         [CCode (cname = "GrxContext", destroy_function = "", has_type_id = false)]
@@ -637,28 +637,18 @@ namespace Grx {
         [CCode (cname = "frame.driver")]
         public unowned FrameDriver driver;
 
-        [CCode (cname = "GrCreateContext")]
         public static Context? create (int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
-        [CCode (cname = "GrCreateFrameContext")]
-        public static Context? create_with_mode (FrameMode mode, int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
-        [CCode (cname = "GrCreateSubContext")]
+        public static Context? create_full (FrameMode mode, int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
         public static Context? create_subcontext (int x1, int y1, int x2, int y2, Context parent, out Context? where = null);
-        [CCode (cname = "GrSaveContext")]
         public static Context? save (out Context? where = null);
 
-        public static unowned Context current { [CCode (cname = "GrCurrentContext")]get; }
-        public static unowned Context screen {  [CCode (cname = "GrScreenContext")]get; }
+        public static unowned Context current { get; set; }
+        public static unowned Context screen { get; }
 
-        [CCode (cname = "GrResizeSubContext")]
         public void resize_subcontext (int x1, int y1, int x2, int y2);
-        [CCode (cname = "GrSetContext")]
-        public void set ();
 
-        [CCode (cname = "GrSetClipBoxC")]
         public void set_clip_box (int x1, int y1, int x2, int y2);
-        [CCode (cname = "GrGetClipBoxC")]
         public void get_clip_box (out int x1, out int y1, out int x2, out int y2);
-        [CCode (cname = "GrResetClipBoxC")]
         public void reset_clip_box ();
 
 
@@ -726,29 +716,18 @@ namespace Grx {
     [CCode (cname = "GrContextInfo")]
     public ContextInfo context_info;
 
-    [CCode (cname = "GrSetClipBox")]
     public void set_clip_box (int x1, int y1, int x2, int y2);
-    [CCode (cname = "GrGetClipBox")]
     public void get_clip_box (out int x1, out int y1, out int x2, out int y2);
-    [CCode (cname = "GrResetClipBox")]
     public void reset_clip_box ();
 
-    [CCode (cname = "GrMaxX")]
-    public int max_x ();
-    [CCode (cname = "GrMaxY")]
-    public int max_y ();
-    [CCode (cname = "GrSizeX")]
-    public int size_x ();
-    [CCode (cname = "GrSizeY")]
-    public int size_y ();
-    [CCode (cname = "GrLowX")]
-    public int low_x ();
-    [CCode (cname = "GrLowY")]
-    public int low_y ();
-    [CCode (cname = "GrHighX")]
-    public int high_x ();
-    [CCode (cname = "GrHighY")]
-    public int high_y ();
+    public int get_max_x ();
+    public int get_max_y ();
+    public int get_size_x ();
+    public int get_size_y ();
+    public int get_low_x ();
+    public int get_low_y ();
+    public int get_high_x ();
+    public int get_high_y ();
 
     [CCode (cname = "GrxColor", has_type_id = false)]
     [Flags]

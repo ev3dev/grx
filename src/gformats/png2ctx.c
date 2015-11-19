@@ -64,10 +64,10 @@ int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha )
   f = fopen( pngfn,"rb" );
   if( f == NULL ) return -1;
 
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
+  grx_context_save( &grcaux );
+  if( grc != NULL ) grx_context_set_current( grc );
   r = readpng( f,grc,use_alpha );
-  GrSetContext( &grcaux );
+  grx_context_set_current( &grcaux );
 
   fclose( f );
 
@@ -208,8 +208,8 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
   png_destroy_read_struct( &png_ptr,&info_ptr,NULL );
 
   /* write data to context */
-  maxwidth = (width > GrSizeX()) ? GrSizeX() : width;
-  maxheight = (height > GrSizeY()) ? GrSizeY() : height;
+  maxwidth = (width > grx_get_size_x()) ? grx_get_size_x() : width;
+  maxheight = (height > grx_get_size_y()) ? grx_get_size_y() : height;
 
   pColors = malloc( maxwidth * sizeof(GrxColor) );
   if( pColors == NULL ){

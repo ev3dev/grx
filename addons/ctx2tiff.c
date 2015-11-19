@@ -58,7 +58,7 @@ SaveContextToTiff(GrxContext *ctx, char *tiffn, unsigned compr, char *docn) {
     unsigned char *r;
     unsigned short red[256], green[256], blue[256];
 
-    if (!ctx) ctx = (GrxContext *)GrCurrentContext();
+    if (!ctx) ctx = (GrxContext *)grx_context_get_current();
     if (!ctx) return -1;
     width  = ctx->x_max+1;
     height = ctx->y_max+1;
@@ -163,41 +163,41 @@ SaveContextToTiff(GrxContext *ctx, char *tiffn, unsigned compr, char *docn) {
 
 TESTFUNC(wintest)
 {
-        int  x = GrSizeX();
-        int  y = GrSizeY();
+        int  x = grx_get_size_x();
+        int  y = grx_get_size_y();
         int  ww = (x / 2) - 10;
         int  wh = (y / 2) - 10;
         long c;
-        GrxContext *w1 = GrCreateSubContext(5,5,ww+4,wh+4,NULL,NULL);
-        GrxContext *w2 = GrCreateSubContext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
-        GrxContext *w3 = GrCreateSubContext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
-        GrxContext *w4 = GrCreateSubContext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
+        GrxContext *w1 = grx_context_create_subcontext(5,5,ww+4,wh+4,NULL,NULL);
+        GrxContext *w2 = grx_context_create_subcontext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
+        GrxContext *w3 = grx_context_create_subcontext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
+        GrxContext *w4 = grx_context_create_subcontext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
 
-        GrSetContext(w1);
+        grx_context_set_current(w1);
         c = GrAllocColor(200,100,100);
         drawing(0,0,ww,wh,c,GrBlack());
         c = GrAllocColor(100,50,50);
         GrBox(0,0,ww-1,wh-1,c);
 
-        GrSetContext(w2);
+        grx_context_set_current(w2);
         c = GrAllocColor(100,200,200);
         drawing(0,0,ww,wh,c,GrBlack());
         c = GrAllocColor(50,100,100);
         GrBox(0,0,ww-1,wh-1,c);
 
-        GrSetContext(w3);
+        grx_context_set_current(w3);
         c = GrAllocColor(200,200,0);
         drawing(0,0,ww,wh,c,GrBlack());
         c = GrAllocColor(100,100,0);
         GrBox(0,0,ww-1,wh-1,c);
 
-        GrSetContext(w4);
+        grx_context_set_current(w4);
         c = GrAllocColor(0,100,200);
         drawing(0,0,ww,wh,c,GrBlack());
         c = GrAllocColor(255,0,100);
         GrBox(0,0,ww-1,wh-1,c);
 
-        GrSetContext(NULL);
+        grx_context_set_current(NULL);
 
         SaveContextToTiff(NULL, "test.tif", 0, "Context2TIFF test file");
         getch();

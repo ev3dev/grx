@@ -126,7 +126,7 @@ void _GrScanPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c)
                     ep->e.x     = prevx = pt[n][0];
                     ep->e.y     = prevy = pt[n][1];
                 }
-                if((ep->e.y > GrHighY()) || (ep->e.ylast < GrLowY())) continue;
+                if((ep->e.y > grx_get_high_y()) || (ep->e.ylast < grx_get_low_y())) continue;
                 clip_line_ymin(CURC,ep->e.x,ep->e.y,ep->e.xlast,ep->e.ylast);
                 if(ymin > ep->e.y)     ymin = ep->e.y;
                 if(ymax < ep->e.ylast) ymax = ep->e.ylast;
@@ -137,11 +137,11 @@ void _GrScanPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c)
                 nedges++;
                 ep++;
             }
-            if((nedges > 0) && (xmin <= GrHighX()) && (xmax >= GrLowX())) {
-                if(xmin < GrLowX())  xmin = GrLowX();
-                if(ymin < GrLowY())  ymin = GrLowY();
-                if(xmax > GrHighX()) xmax = GrHighX();
-                if(ymax > GrHighY()) ymax = GrHighY();
+            if((nedges > 0) && (xmin <= grx_get_high_x()) && (xmax >= grx_get_low_x())) {
+                if(xmin < grx_get_low_x())  xmin = grx_get_low_x();
+                if(ymin < grx_get_low_y())  ymin = grx_get_low_y();
+                if(xmax > grx_get_high_x()) xmax = grx_get_high_x();
+                if(ymax > grx_get_high_y()) ymax = grx_get_high_y();
                 mouse_block(CURC,xmin,ymin,xmax,ymax);
                 /*
                  * Scan for every row between ymin and ymax.

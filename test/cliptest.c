@@ -23,15 +23,15 @@
 TESTFUNC(cliptest)
 {
         long delay;
-        int x = GrSizeX();
-        int y = GrSizeY();
+        int x = grx_get_size_x();
+        int y = grx_get_size_y();
         int ww = (x * 2) / 3;
         int wh = (y * 2) / 3;
         GrxColor c;
 
         c = GrAllocColor(200,100,100);
         GrBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,GrWhite());
-        GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
+        grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
 
         drawing(0,0,ww,wh,c,GrBlack());
         GrKeyRead();

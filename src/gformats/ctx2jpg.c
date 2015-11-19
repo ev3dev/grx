@@ -47,10 +47,10 @@ int GrSaveContextToJpeg( GrxContext *grc, char *jpegfn, int quality )
   f = fopen( jpegfn,"wb" );
   if( f == NULL ) return -1;
 
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
+  grx_context_save( &grcaux );
+  if( grc != NULL ) grx_context_set_current( grc );
   r = writejpeg( f,grc,quality,0 );
-  GrSetContext( &grcaux );
+  grx_context_set_current( &grcaux );
 
   fclose( f );
 
@@ -80,10 +80,10 @@ int GrSaveContextToGrayJpeg( GrxContext *grc, char *jpegfn, int quality )
   f = fopen( jpegfn,"wb" );
   if( f == NULL ) return -1;
 
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
+  grx_context_save( &grcaux );
+  if( grc != NULL ) grx_context_set_current( grc );
   r = writejpeg( f,grc,quality,1 );
-  GrSetContext( &grcaux );
+  grx_context_set_current( &grcaux );
 
   fclose( f );
 
@@ -135,8 +135,8 @@ static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale )
   jpeg_create_compress( &cinfo );
   jpeg_stdio_dest( &cinfo,f );
 
-  cinfo.image_width = GrSizeX();
-  cinfo.image_height = GrSizeY();
+  cinfo.image_width = grx_get_size_x();
+  cinfo.image_height = grx_get_size_y();
   if( grayscale ){
     cinfo.input_components = 1;
     cinfo.in_color_space = JCS_GRAYSCALE;

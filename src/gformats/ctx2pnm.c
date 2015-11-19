@@ -46,15 +46,15 @@ int GrSaveContextToPbm( GrxContext *grc, char *pbmfn, char *docn )
 
   if( (f = fopen( pbmfn,"wb" )) == NULL ) return -1;
   
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
+  grx_context_save( &grcaux );
+  if( grc != NULL ) grx_context_set_current( grc );
   sprintf( cab,"P4\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
-  sprintf( cab,"\n%d %d\n",GrSizeX(),GrSizeY() );
+  sprintf( cab,"\n%d %d\n",grx_get_size_x(),grx_get_size_y() );
   fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<GrSizeY(); y++ ){
-    for( x=0; x<GrSizeX(); x++ ){
+  for( y=0; y<grx_get_size_y(); y++ ){
+    for( x=0; x<grx_get_size_x(); x++ ){
       if( GrPixel( x,y ) == GrBlack() )
         currentbyte |= 1 << currentbit;
       currentbit--;
@@ -70,7 +70,7 @@ int GrSaveContextToPbm( GrxContext *grc, char *pbmfn, char *docn )
       currentbit = 7;
       }
     }
-  GrSetContext( &grcaux );
+  grx_context_set_current( &grcaux );
   fclose( f );
 
   return 0;
@@ -102,20 +102,20 @@ int GrSaveContextToPgm( GrxContext *grc, char *pgmfn, char *docn )
 
   if( (f = fopen( pgmfn,"wb" )) == NULL ) return -1;
   
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
+  grx_context_save( &grcaux );
+  if( grc != NULL ) grx_context_set_current( grc );
   sprintf( cab,"P5\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
-  sprintf( cab,"\n%d %d\n255\n",GrSizeX(),GrSizeY() );
+  sprintf( cab,"\n%d %d\n255\n",grx_get_size_x(),grx_get_size_y() );
   fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<GrSizeY(); y++ )
-    for( x=0; x<GrSizeX(); x++ ){
+  for( y=0; y<grx_get_size_y(); y++ )
+    for( x=0; x<grx_get_size_x(); x++ ){
       GrQueryColor( GrPixel( x,y ),&rgb[0],&rgb[1],&rgb[2] );
       grey = (0.229 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2]);
       fwrite( &grey,1,1,f );
       }
-  GrSetContext( &grcaux );
+  grx_context_set_current( &grcaux );
   fclose( f );
 
   return 0;
@@ -145,22 +145,22 @@ int GrSaveContextToPpm( GrxContext *grc, char *ppmfn, char *docn )
 
   if( (f = fopen( ppmfn,"wb" )) == NULL ) return -1;
   
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
+  grx_context_save( &grcaux );
+  if( grc != NULL ) grx_context_set_current( grc );
   sprintf( cab,"P6\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
-  sprintf( cab,"\n%d %d\n255\n",GrSizeX(),GrSizeY() );
+  sprintf( cab,"\n%d %d\n255\n",grx_get_size_x(),grx_get_size_y() );
   fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<GrSizeY(); y++ )
-    for( x=0; x<GrSizeX(); x++ ){
+  for( y=0; y<grx_get_size_y(); y++ )
+    for( x=0; x<grx_get_size_x(); x++ ){
       GrQueryColor( GrPixel( x,y ),&r,&g,&b );
       brgb[0] = r;
       brgb[1] = g;
       brgb[2] = b;
       fwrite( brgb,1,3,f );
       }
-  GrSetContext( &grcaux );
+  grx_context_set_current( &grcaux );
   fclose( f );
 
   return 0;

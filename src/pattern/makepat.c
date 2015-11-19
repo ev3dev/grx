@@ -64,7 +64,7 @@ GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
         result = (GrPixmap *)malloc(sizeof(GrPixmap));
         if (result == NULL) return(NULL);
 
-        if (!GrCreateContext(fullw,h,NULL,&cwork)) {
+        if (!grx_context_create(fullw,h,NULL,&cwork)) {
           free(result);
           return NULL;
         }
@@ -103,7 +103,7 @@ GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxCo
         result = (GrPixmap *)malloc(sizeof(GrPixmap));
         if(result == NULL) return(NULL);
 
-        if (!GrCreateContext(fullw,h,NULL,&cwork)) {
+        if (!grx_context_create(fullw,h,NULL,&cwork)) {
           free(result);
           return NULL;
         }

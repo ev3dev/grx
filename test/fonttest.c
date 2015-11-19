@@ -43,7 +43,7 @@ void displayfont(GrFont *font,char *text,int len)
         opt.txo_font   = font;
         opt.txo_xalign = GR_ALIGN_LEFT;
         opt.txo_yalign = GR_ALIGN_TOP;
-        GrFilledBox(0,0,GrSizeX(),GrSizeY(),GrBlack());
+        GrFilledBox(0,0,grx_get_size_x(),grx_get_size_y(),GrBlack());
         opt.txo_direct    = GR_TEXT_RIGHT;
         opt.txo_fgcolor.v = GrBlack();
         opt.txo_bgcolor.v = c1;
@@ -68,10 +68,10 @@ void displayfont(GrFont *font,char *text,int len)
         opt.txo_direct    = GR_TEXT_RIGHT;
         opt.txo_fgcolor.v = c1;
         opt.txo_bgcolor.v = GrBlack();
-        bx = GrSizeX() / 16;
-        by = GrSizeY() / 16;
+        bx = grx_get_size_x() / 16;
+        by = grx_get_size_y() / 16;
         bx = (bx + 7) & ~7;
-        while(by < GrSizeY()) {
+        while(by < grx_get_size_y()) {
             GrDrawString(test_text,strlen(test_text),bx,by,&opt);
             opt.txo_fgcolor.v ^= GR_UNDERLINE_TEXT;
             by += hh;
@@ -84,22 +84,22 @@ TESTFUNC(fonttest)
         GrFont *f;
         int i;
         char buff[100];
-        cx = GrSizeX() / 2;
-        cy = GrSizeY() / 2;
+        cx = grx_get_size_x() / 2;
+        cy = grx_get_size_y() / 2;
         c1 = GrAllocColor(100,200,100);
         c2 = GrAllocColor(150,150,100);
         c3 = GrAllocColor(100,100,200);
         c4 = GrAllocColor(100,180,180);
-        GrBox(GrSizeX()/16 - 2,
-            GrSizeY()/16 - 2,
-            GrSizeX() - GrSizeX()/16 + 1,
-            GrSizeY() - GrSizeY()/16 + 1,
+        GrBox(grx_get_size_x()/16 - 2,
+            grx_get_size_y()/16 - 2,
+            grx_get_size_x() - grx_get_size_x()/16 + 1,
+            grx_get_size_y() - grx_get_size_y()/16 + 1,
             GrAllocColor(250,100,100)
         );
-        GrSetClipBox(GrSizeX()/16,
-            GrSizeY()/16,
-            GrSizeX() - GrSizeX()/16 - 1,
-            GrSizeY() - GrSizeY()/16 - 1
+        grx_set_clip_box(grx_get_size_x()/16,
+            grx_get_size_y()/16,
+            grx_get_size_x() - grx_get_size_x()/16 - 1,
+            grx_get_size_y() - grx_get_size_y()/16 - 1
         );
         strcpy(buff,"Default GRX font");
         displayfont(&GrDefaultFont,buff,strlen(buff));

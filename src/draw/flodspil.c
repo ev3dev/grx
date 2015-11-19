@@ -75,8 +75,8 @@ void GrFloodSpillC(GrxContext *ctx, int x1, int y1, int x2, int y2,
   GrxContext ctx_save;
   GrxColor *scanline;
 
-  GrSaveContext(&ctx_save);
-  GrSetContext(ctx);
+  grx_context_save(&ctx_save);
+  grx_context_set_current(ctx);
 
   for(y = y1; y <= y2; ++y)
   {
@@ -90,7 +90,7 @@ void GrFloodSpillC(GrxContext *ctx, int x1, int y1, int x2, int y2,
       GrPutScanline(x1, x2, y, scanline, GrWRITE);
     }
   }
-  GrSetContext(&ctx_save);
+  grx_context_set_current(&ctx_save);
 }
 
 void GrFloodSpillC2(GrxContext *ctx, int x1, int y1, int x2, int y2,
@@ -102,8 +102,8 @@ void GrFloodSpillC2(GrxContext *ctx, int x1, int y1, int x2, int y2,
   GrxContext ctx_save;
   GrxColor *scanline;
 
-  GrSaveContext(&ctx_save);
-  GrSetContext(ctx);
+  grx_context_save(&ctx_save);
+  grx_context_set_current(ctx);
 
   for(y = y1; y <= y2; ++y)
   {
@@ -119,5 +119,5 @@ void GrFloodSpillC2(GrxContext *ctx, int x1, int y1, int x2, int y2,
       GrPutScanline(x1, x2, y, scanline, GrWRITE);
     }
   }
-  GrSetContext(&ctx_save);
+  grx_context_set_current(&ctx_save);
 }

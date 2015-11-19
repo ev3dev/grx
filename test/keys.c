@@ -352,10 +352,10 @@ static int curx = 0, cury = 0;
 
 static void gputc(int c)
 {
-        if(c == '\n' || curx + GrCharWidth(c, &opt) > GrSizeX()) {
+        if(c == '\n' || curx + GrCharWidth(c, &opt) > grx_get_size_x()) {
             cury += GrCharHeight('A', &opt);
             curx = 0;
-            if(cury + GrCharHeight('A', &opt) > GrSizeY()) {
+            if(cury + GrCharHeight('A', &opt) > grx_get_size_y()) {
                 GrClearScreen(opt.txo_bgcolor.v);
                 cury = 0;
             }

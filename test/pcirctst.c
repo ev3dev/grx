@@ -82,8 +82,8 @@ TESTFUNC(circtest)
         c1 = GrAllocColor(64,64,255);
         c2 = GrAllocColor(255,255,64);
         c3 = GrAllocColor(255,64,64);
-        xc = GrSizeX() / 2;
-        yc = GrSizeY() / 2;
+        xc = grx_get_size_x() / 2;
+        yc = grx_get_size_y() / 2;
         xr = 1;
         yr = 1;
         while(!stop && ((xr < 1000) || (yr < 1000))) {

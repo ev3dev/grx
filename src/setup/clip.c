@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrSetClipBox(int x1,int y1,int x2,int y2)
+void grx_set_clip_box(int x1,int y1,int x2,int y2)
 {
         cxclip_box(CURC,x1,y1,x2,y2);
         CURC->x_clip_low = x1;
@@ -28,7 +28,7 @@ void GrSetClipBox(int x1,int y1,int x2,int y2)
         CURC->y_clip_high = y2;
 }
 
-void GrSetClipBoxC(GrxContext *c,int x1,int y1,int x2,int y2)
+void grx_context_set_clip_box(GrxContext *c,int x1,int y1,int x2,int y2)
 {
         cxclip_box(c,x1,y1,x2,y2);
         c->x_clip_low = x1;
@@ -37,7 +37,7 @@ void GrSetClipBoxC(GrxContext *c,int x1,int y1,int x2,int y2)
         c->y_clip_high = y2;
 }
 
-void GrResetClipBox(void)
+void grx_reset_clip_box(void)
 {
         CURC->x_clip_low = 0;
         CURC->y_clip_low = 0;
@@ -45,7 +45,7 @@ void GrResetClipBox(void)
         CURC->y_clip_high = CURC->y_max;
 }
 
-void GrResetClipBoxC(GrxContext *c)
+void grx_context_reset_clip_box(GrxContext *c)
 {
         c->x_clip_low = 0;
         c->y_clip_low = 0;

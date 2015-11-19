@@ -35,14 +35,14 @@ void imagen( char *nf )
   GrClearScreen( GrAllocColor( 0,0,200 ) );
 
   GrBox( 10,40,10+wide+1,40+high+1,GrWhite() );
-  grc = GrCreateSubContext( 11,41,11+wide-1,41+high-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPng( grc,nf,0 );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
 
   GrBox( 320,40,320+wide+1,40+high+1,GrWhite() );
-  grc = GrCreateSubContext( 321,41,321+wide-1,41+high-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 321,41,321+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPng( grc,nf,1 );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
 
   GrTextXY( 10,10,s,GrBlack(),GrWhite() );
   GrTextXY( 10,50+high,"Press any key to continue",GrBlack(),GrWhite() );
@@ -84,12 +84,12 @@ int main()
   imagen( "pngred.png" );
 
   GrClearScreen( GrAllocColor( 0,100,0 ) );
-  grc = GrCreateSubContext( 191,121,191+256-1,121+240-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 191,121,191+256-1,121+240-1,NULL,NULL );
   GrLoadContextFromPng( grc,"pngred.png",1 );
-  GrDestroyContext( grc );
-  grc = GrCreateSubContext( 181,241,181+289-1,241+80-1,NULL,NULL );
+  grx_context_free( grc );
+  grc = grx_context_create_subcontext( 181,241,181+289-1,241+80-1,NULL,NULL );
   GrLoadContextFromPng( grc,"pngcompo.png",1 );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
 
   GrTextXY( 10,10,"Press any key to save screen",GrBlack(),GrWhite() );
   GrKeyRead();

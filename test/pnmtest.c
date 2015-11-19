@@ -40,10 +40,10 @@ int main(void)
   sprintf( s,"%s %d x %d pixels",FIMAGEPPM,wide,high );
   GrTextXY( 10,20,s,GrBlack(),GrWhite() );
   GrBox( 10,40,10+wide+1,40+high+1,GrWhite() );
-  grc = GrCreateSubContext( 11,41,11+wide-1,41+high-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPPM );
   GrSaveContextToPgm( grc,FIMAGEPGM,"TestPnm" );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
   GrTextXY( 10,50+high,"Press any key to continue",GrBlack(),GrWhite() );
   GrKeyRead();
 
@@ -52,9 +52,9 @@ int main(void)
   sprintf( s,"%s %d x %d pixels",FIMAGEPGM,wide,high );
   GrTextXY( 10,20,s,GrBlack(),GrWhite() );
   GrBox( 10,40,10+wide+1,40+high+1,GrWhite() );
-  grc = GrCreateSubContext( 11,41,11+wide-1,41+high-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPGM );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
   GrTextXY( 10,50+high,"Press any key to continue",GrBlack(),GrWhite() );
   GrKeyRead();
 
@@ -63,29 +63,29 @@ int main(void)
   sprintf( s,"%s %d x %d pixels",FIMAGEPBM,wide,high );
   GrTextXY( 10,20,s,GrBlack(),GrWhite() );
   GrBox( 10,40,10+wide+1,40+high+1,GrWhite() );
-  grc = GrCreateSubContext( 11,41,11+wide-1,41+high-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPBM );
   GrSaveContextToPbm( grc,FIMAGEPBM2,"TestPnm" );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
   GrTextXY( 10,50+high,"Press any key to continue",GrBlack(),GrWhite() );
   GrKeyRead();
 
   GrClearScreen( GrBlack() );
   GrQueryPnm( FIMAGEPPM, &wide, &high, &maxval );
   GrBox( 10,40,10+wide+1,40+high+1,GrWhite() );
-  grc = GrCreateSubContext( 11,41,11+wide-1,41+high-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPPM );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
   GrQueryPnm( FIMAGEPGM, &wide, &high, &maxval );
   GrBox( 110,140,110+wide+1,140+high+1,GrWhite() );
-  grc = GrCreateSubContext( 111,141,111+wide-1,141+high-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 111,141,111+wide-1,141+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPGM );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
   GrQueryPnm( FIMAGEPBM, &wide, &high, &maxval );
   GrBox( 210,240,210+wide+1,240+high+1,GrWhite() );
-  grc = GrCreateSubContext( 211,241,211+wide-1,241+high-1,NULL,NULL );
+  grc = grx_context_create_subcontext( 211,241,211+wide-1,241+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPBM2 );
-  GrDestroyContext( grc );
+  grx_context_free( grc );
   GrTextXY( 10,20,"Press any key to save screen",GrBlack(),GrWhite() );
   GrKeyRead();
 

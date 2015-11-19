@@ -46,7 +46,7 @@ TESTFUNC(mousetest)
             );
             for( ; ; ) {
                 char msg[200];
-                drawing(ii,ii,(GrSizeX() - 20),(GrSizeY() - 20),((fgc ^ bgc) | GrXOR),GrNOCOLOR);
+                drawing(ii,ii,(grx_get_size_x() - 20),(grx_get_size_y() - 20),((fgc ^ bgc) | GrXOR),GrNOCOLOR);
                 GrMouseGetEventT(GR_M_EVENT,&evt,0L);
                 if(evt.flags & (GR_M_KEYPRESS | GR_M_BUTTON_CHANGE | testmotion)) {
                     strcpy(msg,"Got event(s): ");

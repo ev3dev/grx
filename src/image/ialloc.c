@@ -40,10 +40,10 @@ GrImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight)
   GRX_ENTER();
   img = NULL;
   if ( _GrImageTestSize(nwidth, nheight) <= 0 ) goto done;
-  if (!GrCreateContext(nwidth, nheight, NULL, ctx)) goto done;
+  if (!grx_context_create(nwidth, nheight, NULL, ctx)) goto done;
   img = (GrImage *)malloc(sizeof(GrImage));
   if ( !img ) {
-    GrDestroyContext(ctx);
+    grx_context_free(ctx);
     goto done;
   }
   img->pxp_ispixmap = 1;

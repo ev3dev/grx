@@ -1,85 +1,84 @@
-/**
- ** ctcinlne.c ---- the context inline functions
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * ctcinlne.c ---- the context inline functions
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include "libgrx.h"
 
-GrxContext *(GrCreateContext)(int w,int h,char *memory[4],GrxContext *where)
+GrxContext *(grx_context_create)(int w,int h,unsigned char *memory[4],GrxContext *where)
 {
-        return(GrCreateContext(w,h,memory,where));
+        return(grx_context_create(w,h,memory,where));
 }
 
-GrxContext *(GrCurrentContext)(void)
+GrxContext *(grx_context_get_current)(void)
 {
-        return(GrCurrentContext());
+        return(grx_context_get_current());
 }
 
-GrxContext *(GrScreenContext)(void)
+GrxContext *(grx_context_get_screen)(void)
 {
-        return(GrScreenContext());
+        return(grx_context_get_screen());
 }
 
-void (GrGetClipBox)(int *x1p,int *y1p,int *x2p,int *y2p)
+void (grx_get_clip_box)(int *x1p,int *y1p,int *x2p,int *y2p)
 {
-        GrGetClipBox(x1p,y1p,x2p,y2p);
+        grx_get_clip_box(x1p,y1p,x2p,y2p);
 }
 
-void (GrGetClipBoxC)(const GrxContext *c,int *x1p,int *y1p,int *x2p,int *y2p)
+void (grx_context_get_clip_box)(const GrxContext *c,int *x1p,int *y1p,int *x2p,int *y2p)
 {
-        GrGetClipBoxC(c,x1p,y1p,x2p,y2p);
+        grx_context_get_clip_box(c,x1p,y1p,x2p,y2p);
 }
 
-int (GrMaxX)(void)
+int (grx_get_max_x)(void)
 {
-        return(GrMaxX());
+        return(grx_get_max_x());
 }
 
-int (GrMaxY)(void)
+int (grx_get_max_y)(void)
 {
-        return(GrMaxY());
+        return(grx_get_max_y());
 }
 
-int (GrSizeX)(void)
+int (grx_get_size_x)(void)
 {
-        return(GrSizeX());
+        return(grx_get_size_x());
 }
 
-int (GrSizeY)(void)
+int (grx_get_size_y)(void)
 {
-        return(GrSizeY());
+        return(grx_get_size_y());
 }
 
-int (GrLowX)(void)
+int (grx_get_low_x)(void)
 {
-        return(GrLowX());
+        return(grx_get_low_x());
 }
 
-int (GrLowY)(void)
+int (grx_get_low_y)(void)
 {
-        return(GrLowY());
+        return(grx_get_low_y());
 }
 
-int (GrHighX)(void)
+int (grx_get_high_x)(void)
 {
-        return(GrHighX());
+        return(grx_get_high_x());
 }
 
-int (GrHighY)(void)
+int (grx_get_high_y)(void)
 {
-        return(GrHighY());
+        return(grx_get_high_y());
 }
-

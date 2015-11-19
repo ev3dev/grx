@@ -523,57 +523,59 @@ extern const struct _GR_contextInfo {
     GrxContext screen;          /* the screen context */
 } * const GrContextInfo;
 
-GrxContext *GrCreateContext(int w,int h,char *memory[4],GrxContext *where);
-GrxContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrxContext *where);
-GrxContext *GrCreateSubContext(int x1,int y1,int x2,int y2,const GrxContext *parent,GrxContext *where);
-GrxContext *GrSaveContext(GrxContext *where);
+GrxContext *grx_context_create(gint w, gint h, guint8 *memory[4], GrxContext *where);
+GrxContext *grx_context_create_full(GrxFrameMode md, gint w, gint h,
+                                    guint8 *memory[4], GrxContext *where);
+GrxContext *grx_context_create_subcontext(gint x1, gint y1, gint x2, gint y2,
+                                          const GrxContext *parent, GrxContext *where);
+GrxContext *grx_context_save(GrxContext *where);
 
-GrxContext *GrCurrentContext(void);
-GrxContext *GrScreenContext(void);
+GrxContext *grx_context_get_current(void);
+GrxContext *grx_context_get_screen(void);
 
-void  GrDestroyContext(GrxContext *context);
-void  GrResizeSubContext(GrxContext *context,int x1,int y1,int x2,int y2);
-void  GrSetContext(const GrxContext *context);
+void  grx_context_free(GrxContext *context);
+void  grx_context_resize_subcontext(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
+void  grx_context_set_current(const GrxContext *context);
 
-void  GrSetClipBox(int x1,int y1,int x2,int y2);
-void  GrSetClipBoxC(GrxContext *c,int x1,int y1,int x2,int y2);
-void  GrGetClipBox(int *x1p,int *y1p,int *x2p,int *y2p);
-void  GrGetClipBoxC(const GrxContext *c,int *x1p,int *y1p,int *x2p,int *y2p);
-void  GrResetClipBox(void);
-void  GrResetClipBoxC(GrxContext *c);
+void  grx_set_clip_box(gint x1, gint y1, gint x2, gint y2);
+void  grx_context_set_clip_box(GrxContext *c, gint x1, gint y1, gint x2, gint y2);
+void  grx_get_clip_box(gint *x1p, gint *y1p, gint *x2p, gint *y2p);
+void  grx_context_get_clip_box(const GrxContext *c, gint *x1p, gint *y1p, gint *x2p, gint *y2p);
+void  grx_reset_clip_box(void);
+void  grx_context_reset_clip_box(GrxContext *c);
 
-int   GrMaxX(void);
-int   GrMaxY(void);
-int   GrSizeX(void);
-int   GrSizeY(void);
-int   GrLowX(void);
-int   GrLowY(void);
-int   GrHighX(void);
-int   GrHighY(void);
+int   grx_get_max_x(void);
+int   grx_get_max_y(void);
+int   grx_get_size_x(void);
+int   grx_get_size_y(void);
+int   grx_get_low_x(void);
+int   grx_get_low_y(void);
+int   grx_get_high_x(void);
+int   grx_get_high_y(void);
 
 #ifndef GRX_SKIP_INLINES
-#define GrCreateContext(w,h,m,c) (GrCreateFrameContext(grx_get_core_frame_mode(),w,h,m,c))
-#define GrCurrentContext()       ((GrxContext *)(&GrContextInfo->current))
-#define GrScreenContext()        ((GrxContext *)(&GrContextInfo->screen))
-#define GrMaxX()                 (GrCurrentContext()->x_max)
-#define GrMaxY()                 (GrCurrentContext()->y_max)
-#define GrSizeX()                (GrMaxX() + 1)
-#define GrSizeY()                (GrMaxY() + 1)
-#define GrLowX()                 (GrCurrentContext()->x_clip_low)
-#define GrLowY()                 (GrCurrentContext()->y_clip_low)
-#define GrHighX()                (GrCurrentContext()->x_clip_high)
-#define GrHighY()                (GrCurrentContext()->y_clip_high)
-#define GrGetClipBoxC(C,x1p,y1p,x2p,y2p) do {           \
+#define grx_context_create(w,h,m,c) (grx_context_create_full(grx_get_core_frame_mode(),w,h,m,c))
+#define grx_context_get_current()       ((GrxContext *)(&GrContextInfo->current))
+#define grx_context_get_screen()        ((GrxContext *)(&GrContextInfo->screen))
+#define grx_get_max_x()                 (grx_context_get_current()->x_max)
+#define grx_get_max_y()                 (grx_context_get_current()->y_max)
+#define grx_get_size_x()                (grx_get_max_x() + 1)
+#define grx_get_size_y()                (grx_get_max_y() + 1)
+#define grx_get_low_x()                 (grx_context_get_current()->x_clip_low)
+#define grx_get_low_y()                 (grx_context_get_current()->y_clip_low)
+#define grx_get_high_x()                (grx_context_get_current()->x_clip_high)
+#define grx_get_high_y()                (grx_context_get_current()->y_clip_high)
+#define grx_context_get_clip_box(C,x1p,y1p,x2p,y2p) do {           \
     *(x1p) = (C)->x_clip_low;                           \
     *(y1p) = (C)->y_clip_low;                           \
     *(x2p) = (C)->x_clip_high;                          \
     *(y2p) = (C)->y_clip_high;                          \
 } while(0)
-#define GrGetClipBox(x1p,y1p,x2p,y2p) do {              \
-    *(x1p) = GrLowX();                                  \
-    *(y1p) = GrLowY();                                  \
-    *(x2p) = GrHighX();                                 \
-    *(y2p) = GrHighY();                                 \
+#define grx_get_clip_box(x1p,y1p,x2p,y2p) do {              \
+    *(x1p) = grx_get_low_x();                                  \
+    *(y1p) = grx_get_low_y();                                  \
+    *(x2p) = grx_get_high_x();                                 \
+    *(y2p) = grx_get_high_y();                                 \
 } while(0)
 #endif  /* GRX_SKIP_INLINES */
 
@@ -873,16 +875,16 @@ GrxColor GrPixelCNC(GrxContext *c,int x,int y);
 #ifndef GRX_SKIP_INLINES
 #define GrPlotNC(x,y,c) (                                                      \
         (*grx_get_current_frame_driver()->drawpixel)(                          \
-        ((x) + GrCurrentContext()->x_offset),                                  \
-        ((y) + GrCurrentContext()->y_offset),                                  \
+        ((x) + grx_context_get_current()->x_offset),                                  \
+        ((y) + grx_context_get_current()->y_offset),                                  \
         ((c))                                                                  \
         )                                                                      \
 )
 #define GrPixelNC(x,y) (                                                       \
         (*grx_get_current_frame_driver()->readpixel)(                          \
-        (GrxFrame *)(&GrCurrentContext()->frame),                              \
-        ((x) + GrCurrentContext()->x_offset),                                  \
-        ((y) + GrCurrentContext()->y_offset)                                   \
+        (GrxFrame *)(&grx_context_get_current()->frame),                              \
+        ((x) + grx_context_get_current()->x_offset),                                  \
+        ((y) + grx_context_get_current()->y_offset)                                   \
         )                                                                      \
 )
 #define GrPixelCNC(c,x,y) (                                                    \
@@ -1544,7 +1546,7 @@ void GrMouseUnBlock(int return_value_from_GrMouseBlock);
         *(x2p) = GrMouseInfo->xmax; *(y2p) = GrMouseInfo->ymax;                \
 } while(0)
 #define GrMouseBlock(c,x1,y1,x2,y2) (                                          \
-        (((c) ? (const GrxContext*)(c) : GrCurrentContext())->gc_is_on_screen && \
+        (((c) ? (const GrxContext*)(c) : grx_context_get_current())->gc_is_on_screen && \
          (GrMouseInfo->docheck)) ?                                             \
         (*GrMouseInfo->block)((c),(x1),(y1),(x2),(y2)) :                       \
         0                                                                      \

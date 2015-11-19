@@ -31,7 +31,7 @@ GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const G
         curs = malloc(sizeof(GrCursor));
         if(!curs) return(NULL);
         sttzero(curs);
-        if(!GrCreateContext(workw,((workh << 1) + h),NULL,&curs->work)) {
+        if(!grx_context_create(workw,((workh << 1) + h),NULL,&curs->work)) {
             free(curs);
             return(NULL);
         }
@@ -41,8 +41,8 @@ GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const G
         curs->yoffs = yo;
         curs->xwork = workw;
         curs->ywork = workh;
-        GrSaveContext(&save);
-        GrSetContext(&curs->work);
+        grx_context_save(&save);
+        grx_context_set_current(&curs->work);
         GrFilledBoxNC(0,0,(workw - 1),(h - 1),0L);
         for(yy = 0; yy < h; yy++) {
             unsigned char *p = (unsigned char *)pixels + (yy * pitch);
@@ -51,7 +51,7 @@ GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const G
                 else   GrPlotNC((xx + wrkw2),yy,GrColorValue(-1L));
             }
         }
-        GrSetContext(&save);
+        grx_context_set_current(&save);
         return(curs);
 }
 
@@ -59,7 +59,7 @@ void GrDestroyCursor(GrCursor *cursor)
 {
         if(cursor && (cursor != MOUINFO->cursor)) {
             GrEraseCursor(cursor);
-            GrDestroyContext(&cursor->work);
+            grx_context_free(&cursor->work);
             free(cursor);
         }
 }

@@ -30,36 +30,36 @@ int main()
   grx_set_driver( "memory gw 400 gh 400 nc 256" );
   grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
 
-  x = GrSizeX();
-  y = GrSizeY();
+  x = grx_get_size_x();
+  y = grx_get_size_y();
   ww = (x / 2) - 10;
   wh = (y / 2) - 10;
-  w1 = GrCreateSubContext(5,5,ww+4,wh+4,NULL,NULL);
-  w2 = GrCreateSubContext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
-  w3 = GrCreateSubContext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
-  w4 = GrCreateSubContext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
+  w1 = grx_context_create_subcontext(5,5,ww+4,wh+4,NULL,NULL);
+  w2 = grx_context_create_subcontext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
+  w3 = grx_context_create_subcontext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
+  w4 = grx_context_create_subcontext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
 
-  GrSetContext(w1);
+  grx_context_set_current(w1);
   c = GrAllocColor(200,100,100);
   drawing(0,0,ww,wh,c,GrBlack());
   GrBox(0,0,ww-1,wh-1,c);
 
-  GrSetContext(w2);
+  grx_context_set_current(w2);
   c = GrAllocColor(100,200,200);
   drawing(0,0,ww,wh,c,GrBlack());
   GrBox(0,0,ww-1,wh-1,c);
 
-  GrSetContext(w3);
+  grx_context_set_current(w3);
   c = GrAllocColor(200,200,0);
   drawing(0,0,ww,wh,c,GrBlack());
   GrBox(0,0,ww-1,wh-1,c);
 
-  GrSetContext(w4);
+  grx_context_set_current(w4);
   c = GrAllocColor(0,100,200);
   drawing(0,0,ww,wh,c,GrBlack());
   GrBox(0,0,ww-1,wh-1,c);
 
-  GrSetContext( NULL );
+  grx_context_set_current( NULL );
 //  GrSaveBmpImage( "memtest.bmp",NULL,0,0,639,479 );
   GrSaveContextToPpm( NULL,"memtest.ppm","GRX MemTest" );
 

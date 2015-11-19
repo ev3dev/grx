@@ -24,8 +24,8 @@ TESTFUNC(colorops)
 {
         GrFBoxColors bcolors,ocolors,icolors;
         GrxColor bg,c;
-        int x = GrSizeX();
-        int y = GrSizeY();
+        int x = grx_get_size_x();
+        int y = grx_get_size_y();
         int ww = (x * 2) / 3;
         int wh = (y * 2) / 3;
         int ii,jj;
@@ -71,7 +71,7 @@ TESTFUNC(colorops)
         GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
         GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
 
-        GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
+        grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
 
         drawing(ww/4,wh/4,ww,wh,c,bg);
         while(!GrKeyPressed()) {

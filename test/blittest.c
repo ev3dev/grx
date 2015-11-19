@@ -32,23 +32,23 @@ void drbox(GrxContext *src,int x,int y)
         int  xx;
 
         GrClearScreen(c1);
-        GrSetContext(src);
-        GrSetClipBox(x-10,y-10,x+BWW-1+10,y+BHH-1+10);
+        grx_context_set_current(src);
+        grx_set_clip_box(x-10,y-10,x+BWW-1+10,y+BHH-1+10);
         GrClearClipBox(c2);
-        GrSetClipBox(x,y,x+BWW-1,y+BHH-1);
+        grx_set_clip_box(x,y,x+BWW-1,y+BHH-1);
         GrClearClipBox(GrBlack());
         GrBox(x,y,x+BWW-1,y+BHH-1,GrWhite());
         for(xx = x; xx < x+BWW; xx += 5) {
             GrLine(xx,y,xx+BHH,y+BHH,GrWhite());
             GrLine(xx,y,xx-BHH,y+BHH,GrWhite());
         }
-        GrSetContext(NULL);
-        GrResetClipBox();
+        grx_context_set_current(NULL);
+        grx_reset_clip_box();
 }
 
 void doblits(GrxContext *src,int x,int y)
 {
-        int xx = (GrSizeX() - BWW)/ 2;
+        int xx = (grx_get_size_x() - BWW)/ 2;
         int yy = 2;
         int ii;
 
@@ -61,7 +61,7 @@ void doblits(GrxContext *src,int x,int y)
   {
         GrxColor xc = GrAllocColor(255,255,255) | GrXOR;
         GrKeyRead();
-        xx = (GrSizeX() - BWW)/ 2;
+        xx = (grx_get_size_x() - BWW)/ 2;
         yy = 2;
         for(ii = 0; ii < 8; ii++) {
             GrFilledBox(xx,yy,xx+BWW-1,yy+BHH-1,xc);
@@ -92,7 +92,7 @@ void blxtest(void)
 
         bltest(NULL,grx_get_screen_x()-BWW-8,grx_get_screen_y()-BHH);
         bltest(NULL,0,0);
-        GrCreateContext(cw,ch,NULL,&memc);
+        grx_context_create(cw,ch,NULL,&memc);
         bltest(&memc,cw-BWW-8,ch-BHH);
 }
 
@@ -100,8 +100,8 @@ TESTFUNC(blittest)
 {
         GrFBoxColors bcolors,ocolors,icolors;
         GrxColor c,bg;
-        int  x = GrSizeX();
-        int  y = GrSizeY();
+        int  x = grx_get_size_x();
+        int  y = grx_get_size_y();
         int  ww = (x * 2) / 3;
         int  wh = (y * 2) / 3;
         int  ii,jj;
@@ -111,8 +111,8 @@ TESTFUNC(blittest)
         int  bx,by;
         int  cnt;
 
-        GrxContext *save = GrCreateSubContext(0,0,GrMaxX(),GrMaxY(),NULL,NULL);
-        GrxContext *tile = GrCreateContext(bw,bh,NULL,NULL);
+        GrxContext *save = grx_context_create_subcontext(0,0,grx_get_max_x(),grx_get_max_y(),NULL,NULL);
+        GrxContext *tile = grx_context_create(bw,bh,NULL,NULL);
 
         blxtest();
         GrKeyRead();
@@ -152,12 +152,12 @@ TESTFUNC(blittest)
         GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
         GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
 
-        GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
+        grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
         GrKeyRead();
 
         GrClearScreen(0);
-        GrSetContext(save);
+        grx_context_set_current(save);
 
         bx = -(bw/2) + 15*bw;
         by = -(bh/3) + 15*bh;
@@ -187,7 +187,7 @@ TESTFUNC(blittest)
         GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
         GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
 
-        GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
+        grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
         GrKeyRead();
 
@@ -201,11 +201,11 @@ TESTFUNC(blittest)
             -(bh/3) + 15*bh + bh - 1,
             GrWRITE
         );
-        GrSetContext(tile);
+        grx_context_set_current(tile);
         GrFramedBox(2*wdt,2*wdt,bw-2*wdt-1,bh-2*wdt-1,2*wdt,&bcolors);
 
         GrClearScreen(0);
-        GrSetContext(save);
+        grx_context_set_current(save);
 
         for(ii = 0,by = -(bh/3); ii < 19; ii++) {
             for(jj = 0,bx = -(bw/2); jj < 19; jj++) {
@@ -224,17 +224,17 @@ TESTFUNC(blittest)
         GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
         GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
 
-        GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
+        grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
 
         GrKeyRead();
-        GrResetClipBox();
+        grx_reset_clip_box();
         GrBitBlt(NULL,
            60,60,
            NULL,
            20,20,
-           GrSizeX() - 40,
-           GrSizeY() - 40,
+           grx_get_size_x() - 40,
+           grx_get_size_y() - 40,
            GrWRITE
         );
 
@@ -244,14 +244,14 @@ TESTFUNC(blittest)
            10,10,
            NULL,
            60,60,
-           GrSizeX() - 40,
-           GrSizeY() - 40,
+           grx_get_size_x() - 40,
+           grx_get_size_y() - 40,
            GrWRITE
         );
 
         GrKeyRead();
 
-        GrSetContext(tile);
+        grx_context_set_current(tile);
         GrClearContext(0);
 
         GrBitBlt(tile,
@@ -264,7 +264,7 @@ TESTFUNC(blittest)
             GrWRITE
         );
 
-        GrSetContext(save);
+        grx_context_set_current(save);
         GrClearScreen(0);
 
         for(ii = 0,by = -(bh/3); ii < 18; ii++) {
@@ -284,7 +284,7 @@ TESTFUNC(blittest)
         GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
         GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
 
-        GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
+        grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
 
         GrKeyRead();

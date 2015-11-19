@@ -40,7 +40,7 @@ int main(void)
     opt.txo_direct = GR_TEXT_RIGHT;
     opt.txo_fgcolor.v = GrNOCOLOR;
     opt.txo_bgcolor.v = GrNOCOLOR;
-    GrPatternFilledBox(0, 0, GrMaxX(), GrMaxY(), p1);
+    GrPatternFilledBox(0, 0, grx_get_max_x(), grx_get_max_y(), p1);
     GrKeyRead();
     GrPatternDrawString(" Hello world !", 15, 40, 10, &opt, p1);
     GrPatternDrawString(" Hello world !", 15, 44, 50, &opt, p2);

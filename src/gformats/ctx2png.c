@@ -49,10 +49,10 @@ int GrSaveContextToPng( GrxContext *grc, char *pngfn )
   f = fopen( pngfn,"wb" );
   if( f == NULL ) return -1;
 
-  GrSaveContext( &grcaux );
-  if( grc != NULL ) GrSetContext( grc );
+  grx_context_save( &grcaux );
+  if( grc != NULL ) grx_context_set_current( grc );
   r = writepng( f,grc );
-  GrSetContext( &grcaux );
+  grx_context_set_current( &grcaux );
 
   fclose( f );
 
@@ -96,8 +96,8 @@ static int writepng( FILE *f, GrxContext *grc )
   png_init_io( png_ptr,f );
 
   /* Set the image information  */
-  width = GrSizeX();
-  height = GrSizeY();
+  width = grx_get_size_x();
+  height = grx_get_size_y();
   png_set_IHDR( png_ptr,info_ptr,width,height,8,PNG_COLOR_TYPE_RGB,
                 PNG_INTERLACE_NONE,PNG_COMPRESSION_TYPE_BASE,
                 PNG_FILTER_TYPE_BASE );
