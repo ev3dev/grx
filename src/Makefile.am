@@ -278,7 +278,7 @@ Grx_3_0_gir_FILES = $(introspection_sources)
 Grx_3_0_gir_NAMESPACE = Grx
 INTROSPECTION_GIRS += Grx-3.0.gir
 
-girdir = $(datadir)/gir-3.0
+girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)
 
 typelibdir = $(libdir)/girepository-3.0
