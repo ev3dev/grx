@@ -1032,8 +1032,8 @@ int  GrFontCharWidth(const GrFont *font,int chr);
 int  GrFontCharHeight(const GrFont *font,int chr);
 int  GrFontCharBmpRowSize(const GrFont *font,int chr);
 int  GrFontCharBitmapSize(const GrFont *font,int chr);
-int  GrFontStringWidth(const GrFont *font,void *text,int len,int type);
-int  GrFontStringHeight(const GrFont *font,void *text,int len,int type);
+int  GrFontStringWidth(const GrFont *font,const void *text,int len,int type);
+int  GrFontStringHeight(const GrFont *font,const void *text,int len,int type);
 int  GrProportionalTextWidth(const GrFont *font,const void *text,int len,int type);
 
 char *GrBuildAuxiliaryBitmap(GrFont *font,int chr,int dir,int ul);

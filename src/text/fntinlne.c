@@ -43,12 +43,12 @@ int (GrFontCharBitmapSize)(const GrFont *font,int chr)
         return(GrFontCharBitmapSize(font,chr));
 }
 
-int (GrFontStringWidth)(const GrFont *font,void *text,int len,int type)
+int (GrFontStringWidth)(const GrFont *font,const void *text,int len,int type)
 {
         return(GrFontStringWidth(font,text,len,type));
 }
 
-int (GrFontStringHeight)(const GrFont *font,void *text,int len,int type)
+int (GrFontStringHeight)(const GrFont *font,const void *text,int len,int type)
 {
         return(GrFontStringHeight(font,text,len,type));
 }
