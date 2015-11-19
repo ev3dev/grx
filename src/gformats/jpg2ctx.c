@@ -166,7 +166,7 @@ static int readjpeg( FILE *f, GrxContext *grc, int scale )
     if( cinfo.output_components == 1 ){
       for( x=0; x<maxwidth; x++ ){
         r = *pix_ptr++;
-        pColors[x] = GrAllocColor( r,r,r );
+        pColors[x] = grx_color_info_alloc_color( r,r,r );
         }
       }
     else{
@@ -174,7 +174,7 @@ static int readjpeg( FILE *f, GrxContext *grc, int scale )
         r = *pix_ptr++;
         g = *pix_ptr++;
         b = *pix_ptr++;
-        pColors[x] = GrAllocColor( r,g,b );
+        pColors[x] = grx_color_info_alloc_color( r,g,b );
         }
       }
     GrPutScanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );

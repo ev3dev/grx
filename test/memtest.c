@@ -40,23 +40,23 @@ int main()
   w4 = grx_context_create_subcontext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
 
   grx_context_set_current(w1);
-  c = GrAllocColor(200,100,100);
-  drawing(0,0,ww,wh,c,GrBlack());
+  c = grx_color_info_alloc_color(200,100,100);
+  drawing(0,0,ww,wh,c,grx_color_info_get_black());
   GrBox(0,0,ww-1,wh-1,c);
 
   grx_context_set_current(w2);
-  c = GrAllocColor(100,200,200);
-  drawing(0,0,ww,wh,c,GrBlack());
+  c = grx_color_info_alloc_color(100,200,200);
+  drawing(0,0,ww,wh,c,grx_color_info_get_black());
   GrBox(0,0,ww-1,wh-1,c);
 
   grx_context_set_current(w3);
-  c = GrAllocColor(200,200,0);
-  drawing(0,0,ww,wh,c,GrBlack());
+  c = grx_color_info_alloc_color(200,200,0);
+  drawing(0,0,ww,wh,c,grx_color_info_get_black());
   GrBox(0,0,ww-1,wh-1,c);
 
   grx_context_set_current(w4);
-  c = GrAllocColor(0,100,200);
-  drawing(0,0,ww,wh,c,GrBlack());
+  c = grx_color_info_alloc_color(0,100,200);
+  drawing(0,0,ww,wh,c,grx_color_info_get_black());
   GrBox(0,0,ww-1,wh-1,c);
 
   grx_context_set_current( NULL );

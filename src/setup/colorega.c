@@ -38,11 +38,11 @@ static struct {
         { 255, 255, 255 }       /* white */
 };
 
-GrxColor *GrAllocEgaColors(void) {
+GrxColor *grx_color_info_alloc_ega_colors(void) {
   static GrxColor egapal[16];
   int i;
   for (i=0; i < 16; ++i)
-    egapal[i] = GrAllocColor(EGArgb[i].r,EGArgb[i].g,EGArgb[i].b);
+    egapal[i] = grx_color_info_alloc_color(EGArgb[i].r,EGArgb[i].g,EGArgb[i].b);
   return egapal;
 }
 

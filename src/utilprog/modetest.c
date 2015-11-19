@@ -37,7 +37,7 @@ static void PrintInfo(void)
         GrFontStringWidth(&GrDefaultFont, aux, strlen(aux), GR_BYTE_TEXT)) / 2;
     y = (grx_get_max_y() -
         GrFontStringHeight(&GrDefaultFont, aux, strlen(aux), GR_BYTE_TEXT)) / 2;
-    GrTextXY(x, y, aux, GrWhite(), GrBlack());
+    GrTextXY(x, y, aux, grx_color_info_get_white(), grx_color_info_get_black());
 }
 
 typedef struct {
@@ -199,33 +199,33 @@ int main(void)
                 h -= 10;
                 drawing(
                     5,5,w,h,
-                    GrBlack(),
-                    GrWhite()
+                    grx_color_info_get_black(),
+                    grx_color_info_get_white()
                 );
                 drawing(
                     px,5,w,h,
-                    GrAllocColor(255,0,0),
-                    GrAllocColor(0,255,0)
+                    grx_color_info_alloc_color(255,0,0),
+                    grx_color_info_alloc_color(0,255,0)
                 );
                 drawing(
                     5,py,w,h,
-                    GrAllocColor(0,0,255),
-                    GrAllocColor(255,255,0)
+                    grx_color_info_alloc_color(0,0,255),
+                    grx_color_info_alloc_color(255,255,0)
                 );
                 drawing(
                     px,py,w,h,
-                    GrAllocColor(255,0,255),
-                    GrAllocColor(0,255,255)
+                    grx_color_info_alloc_color(255,0,255),
+                    grx_color_info_alloc_color(0,255,255)
                 );
             } else {
                 int y,sx;
                 sx=grx_get_screen_x()>>2;
                 for(y=0;y<grx_get_screen_y();y++) {
                     int yy = y & 255;
-                    GrHLine(0,sx-1,y,GrBuildRGBcolorT(yy,0,0));
-                    GrHLine(sx,2*sx-1,y,GrBuildRGBcolorT(0,yy,0));
-                    GrHLine(2*sx,3*sx-1,y,GrBuildRGBcolorT(0,0,yy));
-                    GrHLine(3*sx,4*sx-1,y,GrBuildRGBcolorT(yy,yy,yy));
+                    GrHLine(0,sx-1,y,grx_color_info_build_rgb_color_t(yy,0,0));
+                    GrHLine(sx,2*sx-1,y,grx_color_info_build_rgb_color_t(0,yy,0));
+                    GrHLine(2*sx,3*sx-1,y,grx_color_info_build_rgb_color_t(0,0,yy));
+                    GrHLine(3*sx,4*sx-1,y,grx_color_info_build_rgb_color_t(yy,yy,yy));
                 }
             }
             PrintInfo();

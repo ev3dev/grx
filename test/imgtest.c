@@ -34,9 +34,9 @@ TESTFUNC(imgtest)
         if (! grx_context_create(ww,wh,NULL,&ctx)) return;
 
         grx_context_set_current(&ctx);
-        c1 = GrAllocColor(255,100,0);
-        c2 = GrAllocColor(0,0,(GrNumColors() >= 16 ? 180 : 63));
-        c3 = GrAllocColor(0,255,0);
+        c1 = grx_color_info_alloc_color(255,100,0);
+        c2 = grx_color_info_alloc_color(0,0,(grx_color_info_n_colors() >= 16 ? 180 : 63));
+        c3 = grx_color_info_alloc_color(0,255,0);
         drawing(0,0,ww,wh,c1,c2);
         GrBox(0,0,ww-1,wh-1,c1);
 

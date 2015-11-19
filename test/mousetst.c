@@ -25,15 +25,15 @@
 TESTFUNC(mousetest)
 {
         GrMouseEvent evt;
-        GrxColor bgc = GrAllocColor(0,0,128);
-        GrxColor fgc = GrAllocColor(255,255,0);
+        GrxColor bgc = grx_color_info_alloc_color(0,0,128);
+        GrxColor fgc = grx_color_info_alloc_color(255,255,0);
         int  testmotion = 0;
         int  ii,mode;
 
         if(GrMouseDetect()) {
             GrMouseEventMode(1);
             GrMouseInit();
-            GrMouseSetColors(GrAllocColor(255,0,0),GrBlack());
+            GrMouseSetColors(grx_color_info_alloc_color(255,0,0),grx_color_info_get_black());
             GrMouseDisplayCursor();
             GrClearScreen(bgc);
             ii = 0;
@@ -41,7 +41,7 @@ TESTFUNC(mousetest)
             GrTextXY(
                 10,(grx_get_screen_y() - 20),
                 "Commands: 'N' -- next mouse mode, 'Q' -- exit",
-                GrWhite(),
+                grx_color_info_get_white(),
                 bgc
             );
             for( ; ; ) {
@@ -72,7 +72,7 @@ TESTFUNC(mousetest)
                     );
                     sprintf(mend,"deltaT=%ld (ms)",evt.dtime);
                     strcpy (mend,"                         ");
-                    GrTextXY(10,(grx_get_screen_y() - 40),msg,GrWhite(),bgc);
+                    GrTextXY(10,(grx_get_screen_y() - 40),msg,grx_color_info_get_white(),bgc);
                     testmotion = evt.buttons ? GR_M_MOTION : 0;
                 }
                 if(evt.flags & GR_M_KEYPRESS) {
@@ -82,13 +82,13 @@ TESTFUNC(mousetest)
                     GrMouseEraseCursor();
                     switch(mode = (mode + 1) & 3) {
                       case GR_M_CUR_RUBBER:
-                        GrMouseSetCursorMode(GR_M_CUR_RUBBER,evt.x,evt.y,GrWhite() ^ bgc);
+                        GrMouseSetCursorMode(GR_M_CUR_RUBBER,evt.x,evt.y,grx_color_info_get_white() ^ bgc);
                         break;
                       case GR_M_CUR_LINE:
-                        GrMouseSetCursorMode(GR_M_CUR_LINE,evt.x,evt.y,GrWhite() ^ bgc);
+                        GrMouseSetCursorMode(GR_M_CUR_LINE,evt.x,evt.y,grx_color_info_get_white() ^ bgc);
                         break;
                       case GR_M_CUR_BOX:
-                        GrMouseSetCursorMode(GR_M_CUR_BOX,-20,-10,20,10,GrWhite() ^ bgc);
+                        GrMouseSetCursorMode(GR_M_CUR_BOX,-20,-10,20,10,grx_color_info_get_white() ^ bgc);
                         break;
                       default:
                         GrMouseSetCursorMode(GR_M_CUR_NORMAL);
@@ -106,7 +106,7 @@ TESTFUNC(mousetest)
             GrTextXY(
                 (grx_get_screen_x()/3),(grx_get_screen_y() - 20),
                 "Sorry, no mouse found !",
-                GrWhite(),
+                grx_color_info_get_white(),
                 bgc
             );
         }

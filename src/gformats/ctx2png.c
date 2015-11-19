@@ -147,7 +147,7 @@ static int writepng( FILE *f, GrxContext *grc )
     pix_ptr = png_pixels;
     memcpy( pColors,GrGetScanline( 0,width-1,y ),sizeof(GrxColor)*width );
     for( x=0; x<width; x++ ){
-      GrQueryColor( pColors[x],&r,&g,&b );
+      grx_color_info_query_color( pColors[x],&r,&g,&b );
       *pix_ptr++ = r;
       *pix_ptr++ = g;
       *pix_ptr++ = b;

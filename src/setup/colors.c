@@ -47,7 +47,7 @@ static void setbits(char *prec,char *pos)
         CLRINFO->shift[2] += CLRINFO->norm;
 }
 
-void GrRefreshColors(void)
+void grx_color_info_refresh_colors(void)
 {
         int i;
         for(i = 0; i < (int)CLRINFO->ncolors; i++) {
@@ -128,12 +128,12 @@ int _GrResetColors(void)
         return ((CLRINFO->ncolors-1)&GRX_COLOR_VALUE_MASK) == CLRINFO->ncolors-1;
 }
  
-void GrResetColors(void)
+void grx_color_info_reset_colors(void)
 {
         _GrResetColors();
 }
 
-void GrSetRGBcolorMode(void)
+void grx_color_info_set_rgb_color_mode(void)
 {
         if(!CLRINFO->RGBmode) {
             GrxColor c;
@@ -148,9 +148,9 @@ void GrSetRGBcolorMode(void)
             CLRINFO->white   = CLRINFO->ncolors - 1L;
             for(c = 0; c < CLRINFO->ncolors; c++) load_color(
                 (int)(c),
-                (int)GrRGBcolorRed(c),
-                (int)GrRGBcolorGreen(c),
-                (int)GrRGBcolorBlue(c)
+                (int)grx_color_info_get_red_value(c),
+                (int)grx_color_info_get_green_value(c),
+                (int)grx_color_info_get_blue_value(c)
             );
         }
 }
@@ -161,7 +161,7 @@ void GrSetRGBcolorMode(void)
         (((x) + CLRINFO->round[n]) & CLRINFO->mask[n])          \
 )
 
-GrxColor GrAllocColor(int r,int g,int b)
+GrxColor grx_color_info_alloc_color(int r,int g,int b)
 {
         GrxColor res;
 
@@ -171,7 +171,7 @@ GrxColor GrAllocColor(int r,int g,int b)
         g = ROUNDCOLORCOMP(g,1);
         b = ROUNDCOLORCOMP(b,2);
         if(CLRINFO->RGBmode) {
-            res = GrBuildRGBcolorT(r,g,b);
+            res = grx_color_info_build_rgb_color_t(r,g,b);
         }
         else {
             GR_int32u minerr = 1000;
@@ -240,7 +240,7 @@ GrxColor GrAllocColor(int r,int g,int b)
 done:   GRX_RETURN(res);
 }
 
-GrxColor GrAllocCell(void)
+GrxColor grx_color_info_alloc_cell(void)
 {
         if(!CLRINFO->RGBmode && CLRINFO->nfree) {
             int i,free_ = (-1);
@@ -265,7 +265,7 @@ GrxColor GrAllocCell(void)
         return(GRX_COLOR_NONE);
 }
 
-void GrFreeColor(GrxColor c)
+void grx_color_info_free_color(GrxColor c)
 {
         if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors) &&
             !CLRINFO->ctable[(int)(c)].writable &&
@@ -278,7 +278,7 @@ void GrFreeColor(GrxColor c)
             }
 }
 
-void GrFreeCell(GrxColor c)
+void grx_color_info_free_cell(GrxColor c)
 {
         GRX_ENTER();
         if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors)) {
@@ -292,7 +292,7 @@ void GrFreeCell(GrxColor c)
         GRX_LEAVE();
 }
 
-void GrSetColor(GrxColor c,int r,int g,int b)
+void grx_color_info_set_color(GrxColor c,int r,int g,int b)
 {
         GRX_ENTER();
         if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors)) {
@@ -315,17 +315,17 @@ void GrSetColor(GrxColor c,int r,int g,int b)
         GRX_LEAVE();
 }
 
-void GrQueryColor(GrxColor c,int *r,int *g,int *b)
+void grx_color_info_query_color(GrxColor c,int *r,int *g,int *b)
 {
         GRX_ENTER();
-        GrQueryColorID(c,r,g,b);
+        grx_color_info_query_color_id(c,r,g,b);
         GRX_LEAVE();
 }
 
-void GrQueryColor2(GrxColor c,long *hcolor)
+void grx_color_info_query_color2(GrxColor c,long *hcolor)
 {
         GRX_ENTER();
-        GrQueryColor2ID(c,hcolor);
+        grx_color_info_query_color2_id(c,hcolor);
         GRX_LEAVE();
 }
 
@@ -337,25 +337,25 @@ typedef struct {
     struct _GR_colorInfo info;
 } colorsave;
 
-int GrColorSaveBufferSize(void)
+int grx_color_info_get_save_buffer_size(void)
 {
         return(sizeof(colorsave));
 }
 
-void GrSaveColors(void *buffer)
+void grx_color_info_save_colors(void *buffer)
 {
         colorsave *cp = (colorsave *)buffer;
         cp->magic = CSAVE_MAGIC;
-        cp->nc    = GrNumColors();
+        cp->nc    = grx_color_info_n_colors();
         sttcopy(&cp->info,CLRINFO);
 }
 
-void GrRestoreColors(void *buffer)
+void grx_color_info_restore_colors(void *buffer)
 {
         colorsave *cp = (colorsave *)buffer;
-        if((cp->magic == CSAVE_MAGIC) && (cp->nc == GrNumColors())) {
+        if((cp->magic == CSAVE_MAGIC) && (cp->nc == grx_color_info_n_colors())) {
             sttcopy(CLRINFO,&cp->info);
-            GrRefreshColors();
+            grx_color_info_refresh_colors();
         }
 }
 

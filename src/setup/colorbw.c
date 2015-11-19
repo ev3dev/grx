@@ -19,23 +19,23 @@
 
 #include "libgrx.h"
 
-#ifdef GrBlack
-#undef GrBlack
+#ifdef grx_color_info_get_black
+#undef grx_color_info_get_black
 #endif
-GrxColor GrBlack(void)
+GrxColor grx_color_info_get_black(void)
 {
         GRX_ENTER();
-        if(CLRINFO->black == GRX_COLOR_NONE) CLRINFO->black = GrAllocColor(0,0,0);
+        if(CLRINFO->black == GRX_COLOR_NONE) CLRINFO->black = grx_color_info_alloc_color(0,0,0);
                GRX_RETURN(CLRINFO->black);
 }
 
-#ifdef GrWhite
-#undef GrWhite
+#ifdef grx_color_info_get_white
+#undef grx_color_info_get_white
 #endif
-GrxColor GrWhite(void)
+GrxColor grx_color_info_get_white(void)
 {
         GRX_ENTER();
-        if(CLRINFO->white == GRX_COLOR_NONE) CLRINFO->white = GrAllocColor(255,255,255);
+        if(CLRINFO->white == GRX_COLOR_NONE) CLRINFO->white = grx_color_info_alloc_color(255,255,255);
         GRX_RETURN(CLRINFO->white);
 }
 

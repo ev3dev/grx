@@ -55,8 +55,8 @@ TESTFUNC(life)
             yp[y] = (y + H - 1) % H;
             yn[y] = (y + H + 1) % H;
         }
-        c[0] = GrBlack();
-        c[1] = GrWhite();
+        c[0] = grx_color_info_get_black();
+        c[1] = grx_color_info_get_white();
         which = 0;
         old = map[which];
         cur = map[1 - which];

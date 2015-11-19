@@ -40,27 +40,27 @@ char p16d[] = {
 
 TESTFUNC(cursortest)
 {
-        GrxColor bgc = GrAllocColor(0,0,128);
-        GrxColor fgc = GrAllocColor(255,255,0);
+        GrxColor bgc = grx_color_info_alloc_color(0,0,128);
+        GrxColor fgc = grx_color_info_alloc_color(255,255,0);
         GrxColor msc[3];
         GrCursor *cur;
         int x,y;
 
         msc[0] = 2;
-        msc[1] = GrWhite();
-        msc[2] = GrAllocColor(255,0,0);
+        msc[1] = grx_color_info_get_white();
+        msc[2] = grx_color_info_alloc_color(255,0,0);
         cur = GrBuildCursor(p16d,16,16,16,1,1,msc);
         x = grx_get_screen_x() / 2;
         y = grx_get_screen_y() / 2;
         GrMoveCursor(cur,x,y);
         GrClearScreen(bgc);
-        GrSetColor((GrNumColors() - 1),255,255,255);
+        grx_color_info_set_color((grx_color_info_n_colors() - 1),255,255,255);
         drawing(0,0,grx_get_size_x(),grx_get_size_y(),fgc,GRX_COLOR_NONE);
-        GrFilledBox(0,0,320,120,GrAllocColor(0,255,255));
-        GrTextXY( 10,90,"ANDmask",GrBlack(),GRX_COLOR_NONE);
-        GrTextXY( 90,90,"ORmask", GrBlack(),GRX_COLOR_NONE);
-        GrTextXY(170,90,"Save",   GrBlack(),GRX_COLOR_NONE);
-        GrTextXY(250,90,"Work",   GrBlack(),GRX_COLOR_NONE);
+        GrFilledBox(0,0,320,120,grx_color_info_alloc_color(0,255,255));
+        GrTextXY( 10,90,"ANDmask",grx_color_info_get_black(),GRX_COLOR_NONE);
+        GrTextXY( 90,90,"ORmask", grx_color_info_get_black(),GRX_COLOR_NONE);
+        GrTextXY(170,90,"Save",   grx_color_info_get_black(),GRX_COLOR_NONE);
+        GrTextXY(250,90,"Work",   grx_color_info_get_black(),GRX_COLOR_NONE);
         GrDisplayCursor(cur);
         for( ; ; ) {
             GrBitBlt(
@@ -83,7 +83,7 @@ TESTFUNC(cursortest)
                 &cur->work,0,cur->ysize+cur->ywork,cur->xwork-1,cur->ysize+2*cur->ywork-1,
                 GRX_COLOR_MODE_WRITE
             );
-            GrTextXY(0,grx_get_max_y()-20,"Type u d l r U D L R or q to quit",GrWhite(),GRX_COLOR_NONE);
+            GrTextXY(0,grx_get_max_y()-20,"Type u d l r U D L R or q to quit",grx_color_info_get_white(),GRX_COLOR_NONE);
             switch(GrKeyRead()) {
                 case 'u': y--; break;
                 case 'd': y++; break;

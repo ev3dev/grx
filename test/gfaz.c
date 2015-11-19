@@ -49,12 +49,12 @@ int gfaz_ini( int width, int height, int bpp )
 
   grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,width,height,bpp );
   
-  egacolors = GrAllocEgaColors();
+  egacolors = grx_color_info_alloc_ega_colors();
 
   if( GrMouseDetect() ){
     mouse_found = 1;
     GrMouseInit();
-    GrMouseSetColors( GrWhite(),GrBlack() );
+    GrMouseSetColors( grx_color_info_get_white(),grx_color_info_get_black() );
     show_mouse();
     }
   GrMouseEventEnable( 1,mouse_found );

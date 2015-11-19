@@ -55,9 +55,9 @@ TESTFUNC(circtest)
         int     xr,yr;
         GrxColor c1,c2,c3;
 
-        c1 = GrAllocColor(64,64,255);
-        c2 = GrAllocColor(255,255,64);
-        c3 = GrAllocColor(255,64,64);
+        c1 = grx_color_info_alloc_color(64,64,255);
+        c2 = grx_color_info_alloc_color(255,255,64);
+        c3 = grx_color_info_alloc_color(255,64,64);
         xc = grx_get_size_x() / 2;
         yc = grx_get_size_y() / 2;
         xr = 1;
@@ -68,7 +68,7 @@ TESTFUNC(circtest)
             yr += yr/4+1;
             GrSleep(200);
         }
-        c1 = GrAllocColor(64,64,128);
+        c1 = grx_color_info_alloc_color(64,64,128);
         xr = 4;
         yr = 1;
         while((xr < 1000) || (yr < 1000)) {
@@ -77,7 +77,7 @@ TESTFUNC(circtest)
             xr = yr * 4;
             GrSleep(200);
         }
-        c1 = GrAllocColor(64,64,64);
+        c1 = grx_color_info_alloc_color(64,64,64);
         xr = 1;
         yr = 4;
         while((xr < 1000) || (yr < 1000)) {
@@ -87,7 +87,7 @@ TESTFUNC(circtest)
             GrSleep(200);
         }
 
-        GrTextXY(0,0,"press any key to continue",GrWhite(),GrBlack());
+        GrTextXY(0,0,"press any key to continue",grx_color_info_get_white(),grx_color_info_get_black());
         GrKeyRead();
 }
 

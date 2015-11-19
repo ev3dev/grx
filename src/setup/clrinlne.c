@@ -52,63 +52,62 @@ GrxColor (grx_color_to_image_mode)(GrxColor c)
         return(grx_color_to_image_mode(c));
 }
 
-GrxColor (GrNumColors)(void)
+int (grx_color_info_n_colors)(void)
 {
-        return(GrNumColors());
+        return(grx_color_info_n_colors());
 }
 
-GrxColor (GrNumFreeColors)(void)
+int (grx_color_info_n_free_colors)(void)
 {
-        return(GrNumFreeColors());
+        return(grx_color_info_n_free_colors());
 }
 
-GrxColor (GrBuildRGBcolorT)(int r,int g,int b)
+GrxColor (grx_color_info_build_rgb_color_t)(int r,int g,int b)
 {
-        return(GrBuildRGBcolorT(r,g,b));
+        return(grx_color_info_build_rgb_color_t(r,g,b));
 }
 
-GrxColor (GrBuildRGBcolorR)(int r,int g,int b)
+GrxColor (grx_color_info_build_rgb_color_r)(int r,int g,int b)
 {
-        return(GrBuildRGBcolorR(r,g,b));
+        return(grx_color_info_build_rgb_color_r(r,g,b));
 }
 
-int (GrRGBcolorRed)(GrxColor c)
+int (grx_color_info_get_red_value)(GrxColor c)
 {
-        return(GrRGBcolorRed(c));
+        return(grx_color_info_get_red_value(c));
 }
 
-int (GrRGBcolorGreen)(GrxColor c)
+int (grx_color_info_get_green_value)(GrxColor c)
 {
-        return(GrRGBcolorGreen(c));
+        return(grx_color_info_get_green_value(c));
 }
 
-int (GrRGBcolorBlue)(GrxColor c)
+int (grx_color_info_get_blue_value)(GrxColor c)
 {
-        return(GrRGBcolorBlue(c));
+        return(grx_color_info_get_blue_value(c));
 }
 
-GrxColor (GrAllocColorID)(int r,int g,int b)
+GrxColor (grx_color_info_alloc_color_id)(int r,int g,int b)
 {
-        return(GrAllocColorID(r,g,b));
+        return(grx_color_info_alloc_color_id(r,g,b));
 }
 
-GrxColor (GrAllocColor2)(long hcolor)
+GrxColor (grx_color_info_alloc_color2)(long hcolor)
 {
-        return(GrAllocColor2(hcolor));
+        return(grx_color_info_alloc_color2(hcolor));
 }
 
-GrxColor (GrAllocColor2ID)(long hcolor)
+GrxColor (grx_color_info_alloc_color2_id)(long hcolor)
 {
-        return(GrAllocColor2ID(hcolor));
+        return(grx_color_info_alloc_color2_id(hcolor));
 }
 
-void (GrQueryColorID)(GrxColor c,int *r,int *g,int *b)
+void (grx_color_info_query_color_id)(GrxColor c,int *r,int *g,int *b)
 {
-        GrQueryColorID(c,r,g,b);
+        grx_color_info_query_color_id(c,r,g,b);
 }
 
-void (GrQueryColor2ID)(GrxColor c,long *hcolor)
+void (grx_color_info_query_color2_id)(GrxColor c,long *hcolor)
 {
-        GrQueryColor2ID(c,hcolor);
+        grx_color_info_query_color2_id(c,hcolor);
 }
-

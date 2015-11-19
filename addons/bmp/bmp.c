@@ -375,7 +375,7 @@ int  GrFreeBmpImageColors ( GrBmpImageColors *_pal )
     GrxColor *colors = _pal->bp_colormap;
     colors[0] = _pal->bp_numcolors;
     for ( i = 0; i < _pal->bp_numcolors; i++ )
-      GrFreeColor(colors[i+1]);
+      grx_color_info_free_color(colors[i+1]);
     free(_pal->bp_palette);
     _pal->bp_palette = NULL;
     _pal->bp_numcolors = 0;
@@ -398,7 +398,7 @@ int  GrAllocBmpImageColors ( GrBmpImage *_bmp, GrBmpImageColors *_pal )
     if ( !colors ) return FALSE;
     colors[0] = _bmp->bi_numcolors;
     for ( i = 0; i < _bmp->bi_numcolors; i++ )
-      colors[i+1] = GrAllocColor(_bmp->bi_palette[i*4+2], _bmp->bi_palette[i*4+1], _bmp->bi_palette[i*4+0]);
+      colors[i+1] = grx_color_info_alloc_color(_bmp->bi_palette[i*4+2], _bmp->bi_palette[i*4+1], _bmp->bi_palette[i*4+0]);
     _bmp->bi_colormap = colors;
     if ( _pal )
     {
@@ -529,7 +529,7 @@ int  GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y1, int _x2
 
   grx_context_save(&safe);
   grx_context_set_current(_c);
-  colors = GrNumColors();
+  colors = grx_color_info_n_colors();
   grx_context_set_current(&safe);
 
   if ( width % 4 ) width += 4 - (width % 4);
@@ -565,7 +565,7 @@ int  GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y1, int _x2
   {
     for ( i = 0; i < colors; i++ )
     {
-      GrQueryColor(i, &r, &g, &b);
+      grx_color_info_query_color(i, &r, &g, &b);
       palette[(i*4)]   = (unsigned char)b;
       palette[(i*4)+1] = (unsigned char)g;
       palette[(i*4)+2] = (unsigned char)r;
@@ -611,9 +611,9 @@ int  GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y1, int _x2
       if ( colors == 256 ) line[xx] = pixcol;
       else
       {
-        line[(xx*3)+0] = GrRGBcolorBlue(pixcol);
-        line[(xx*3)+1] = GrRGBcolorGreen(pixcol);;
-        line[(xx*3)+2] = GrRGBcolorRed(pixcol);;
+        line[(xx*3)+0] = grx_color_info_get_blue_value(pixcol);
+        line[(xx*3)+1] = grx_color_info_get_green_value(pixcol);;
+        line[(xx*3)+2] = grx_color_info_get_red_value(pixcol);;
       }
     } while(++xx < width);
     write(handle, line, width*(infoheader.bn_bitcount / 8));

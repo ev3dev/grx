@@ -23,7 +23,7 @@ TESTFUNC(scrolltest)
 {
         int  wdt = grx_get_screen_x();
         int  hgt = grx_get_screen_y();
-        GrxColor nc  = GrNumColors();
+        GrxColor nc  = grx_color_info_n_colors();
         int  txh = GrDefaultFont.h.height + 2;
         for( ; ; ) {
             char buff[100];
@@ -33,9 +33,9 @@ TESTFUNC(scrolltest)
             char *l4 = "Commands: q -- exit program,";
             char *l5 = "w W h H -- shrink/GROW screen width or height,";
             char *l6 = "x X y Y -- decrease/INCREASE screen start position";
-            GrxColor bgc = GrAllocColor(0,0,128);
-            GrxColor fgc = GrAllocColor(200,200,0);
-            GrxColor txc = GrAllocColor(255,0,255);
+            GrxColor bgc = grx_color_info_alloc_color(0,0,128);
+            GrxColor fgc = grx_color_info_alloc_color(200,200,0);
+            GrxColor txc = grx_color_info_alloc_color(255,0,255);
             int vw = grx_get_virtual_x();
             int vh = grx_get_virtual_y();
             int vx = grx_get_viewport_x();

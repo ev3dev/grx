@@ -159,7 +159,7 @@ static int _GrLoadContextFromPbm( inputstruct *is, int width, int height )
         currentbit = 7;
         }
       if( x < maxwidth ){
-        color = currentbyte & (1 << currentbit) ? GrBlack() : GrWhite();
+        color = currentbyte & (1 << currentbit) ? grx_color_info_get_black() : grx_color_info_get_white();
         pColors[x] = color;
         }
       currentbit--;
@@ -207,7 +207,7 @@ static int _GrLoadContextFromPgm( inputstruct *is, int width,
     for( x=0; x<maxwidth; x++ ){
       if( needcoloradjust )
         *pCursor *= coloradjust;
-      pColors[x] = GrAllocColor( *pCursor,*pCursor,*pCursor );
+      pColors[x] = grx_color_info_alloc_color( *pCursor,*pCursor,*pCursor );
       pCursor += 1;
       }
     GrPutScanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
@@ -255,7 +255,7 @@ static int _GrLoadContextFromPpm( inputstruct *is, int width,
         pCursor[1] *= coloradjust;
         pCursor[2] *= coloradjust;
         }
-      pColors[x] = GrAllocColor( pCursor[0],pCursor[1],pCursor[2] );
+      pColors[x] = grx_color_info_alloc_color( pCursor[0],pCursor[1],pCursor[2] );
       pCursor += 3;
       }
     GrPutScanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );

@@ -383,12 +383,12 @@ int grx_set_mode(GrxGraphicsMode which,...)
                 DRVINFO->mcode   = which;
                 DRVINFO->vposx   = 0;
                 DRVINFO->vposy   = 0;
-                DBGPRINTF(DBG_SETMD,("GrResetColors ...\n"));
+                DBGPRINTF(DBG_SETMD,("grx_color_info_reset_colors ...\n"));
                 if ( !_GrResetColors() ) {
                     res = errhdlr("could not set color mode");
                     goto done;
                 }
-                DBGPRINTF(DBG_SETMD,("GrResetColors done\n"));
+                DBGPRINTF(DBG_SETMD,("grx_color_info_reset_colors done\n"));
                 if(fdr.init) {
                     DBGPRINTF(DBG_SETMD,("fdr.init ...\n"));
                     (*fdr.init)(&DRVINFO->actmode);

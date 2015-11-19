@@ -25,9 +25,9 @@ TESTFUNC(arctest)
         char buff[300];
         int  xc,yc,xa,ya,start,end;
         FILE *fp;
-        GrxColor red   = GrAllocColor(255,0,0);
-        GrxColor green = GrAllocColor(0,255,0);
-        GrxColor blue  = GrAllocColor(0,0,255);
+        GrxColor red   = grx_color_info_alloc_color(255,0,0);
+        GrxColor green = grx_color_info_alloc_color(0,255,0);
+        GrxColor blue  = grx_color_info_alloc_color(0,0,255);
 
         fp = fopen("arctest.dat","r");
         if(fp == NULL) return;
@@ -41,18 +41,18 @@ TESTFUNC(arctest)
             if(sscanf(buff,
                       "arc xc=%d yc=%d xa=%d ya=%d start=%d end=%d",
                       &xc,&yc,&xa,&ya,&start,&end) == 6) {
-                GrClearScreen(GrBlack());
+                GrClearScreen(grx_color_info_get_black());
                 GrEllipse(xc,yc,xa,ya,red);
                 GrFilledEllipse(xc,yc,xa,ya,blue);
-                GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,GrWhite());
-                GrTextXY(0,0,buff,GrWhite(),GRX_COLOR_NONE);
-                GrTextXY(0,20,"press any key to continue",GrWhite(),GRX_COLOR_NONE);
+                GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,grx_color_info_get_white());
+                GrTextXY(0,0,buff,grx_color_info_get_white(),GRX_COLOR_NONE);
+                GrTextXY(0,20,"press any key to continue",grx_color_info_get_white(),GRX_COLOR_NONE);
                 GrKeyRead();
-                GrClearScreen(GrBlack());
+                GrClearScreen(grx_color_info_get_black());
                 GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,red);
                 GrFilledEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,green);
-                GrTextXY(0,0,buff,GrWhite(),GRX_COLOR_NONE);
-                GrTextXY(0,20,"press any key to continue",GrWhite(),GRX_COLOR_NONE);
+                GrTextXY(0,0,buff,grx_color_info_get_white(),GRX_COLOR_NONE);
+                GrTextXY(0,20,"press any key to continue",grx_color_info_get_white(),GRX_COLOR_NONE);
                 GrKeyRead();
             }
         }

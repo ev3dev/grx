@@ -161,13 +161,13 @@ static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale )
     pix_ptr = buffer;
     if( grayscale ){
       for( x=0; x<cinfo.image_width; x++ ){
-        GrQueryColor( pColors[x],&r,&g,&b );
+        grx_color_info_query_color( pColors[x],&r,&g,&b );
         *pix_ptr++ = (0.229 * r) + (0.587 * g) + (0.114 * b);
         }
       }
     else{
       for( x=0; x<cinfo.image_width; x++ ){
-        GrQueryColor( pColors[x],&r,&g,&b );
+        grx_color_info_query_color( pColors[x],&r,&g,&b );
         *pix_ptr++ = r;
         *pix_ptr++ = g;
         *pix_ptr++ = b;

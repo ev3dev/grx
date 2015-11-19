@@ -37,27 +37,27 @@ TESTFUNC(colorops)
         /* This won't work very well under X11 in pseudocolor
         ** mode (256 colors or less) if not using a private
         ** color map. The missing colors break RGB mode      */
-        GrSetRGBcolorMode();
+        grx_color_info_set_rgb_color_mode();
 
-        bcolors.fbx_intcolor = GrAllocColor(160,100,30);
-        bcolors.fbx_topcolor = GrAllocColor(240,150,45);
-        bcolors.fbx_leftcolor = GrAllocColor(240,150,45);
-        bcolors.fbx_rightcolor = GrAllocColor(80,50,15);
-        bcolors.fbx_bottomcolor = GrAllocColor(80,50,15);
+        bcolors.fbx_intcolor = grx_color_info_alloc_color(160,100,30);
+        bcolors.fbx_topcolor = grx_color_info_alloc_color(240,150,45);
+        bcolors.fbx_leftcolor = grx_color_info_alloc_color(240,150,45);
+        bcolors.fbx_rightcolor = grx_color_info_alloc_color(80,50,15);
+        bcolors.fbx_bottomcolor = grx_color_info_alloc_color(80,50,15);
 
-        ocolors.fbx_intcolor = GrAllocColor(0,120,100);
-        ocolors.fbx_topcolor = GrAllocColor(0,180,150);
-        ocolors.fbx_leftcolor = GrAllocColor(0,180,150);
-        ocolors.fbx_rightcolor = GrAllocColor(0,90,60);
-        ocolors.fbx_bottomcolor = GrAllocColor(0,90,60);
+        ocolors.fbx_intcolor = grx_color_info_alloc_color(0,120,100);
+        ocolors.fbx_topcolor = grx_color_info_alloc_color(0,180,150);
+        ocolors.fbx_leftcolor = grx_color_info_alloc_color(0,180,150);
+        ocolors.fbx_rightcolor = grx_color_info_alloc_color(0,90,60);
+        ocolors.fbx_bottomcolor = grx_color_info_alloc_color(0,90,60);
 
-        icolors.fbx_intcolor = GrAllocColor(30,30,30);
-        icolors.fbx_bottomcolor = GrAllocColor(0,180,150);
-        icolors.fbx_rightcolor = GrAllocColor(0,180,150);
-        icolors.fbx_leftcolor = GrAllocColor(0,90,60);
-        icolors.fbx_topcolor = GrAllocColor(0,90,60);
+        icolors.fbx_intcolor = grx_color_info_alloc_color(30,30,30);
+        icolors.fbx_bottomcolor = grx_color_info_alloc_color(0,180,150);
+        icolors.fbx_rightcolor = grx_color_info_alloc_color(0,180,150);
+        icolors.fbx_leftcolor = grx_color_info_alloc_color(0,90,60);
+        icolors.fbx_topcolor = grx_color_info_alloc_color(0,90,60);
 
-        c  = GrAllocColor(250,250,0);
+        c  = grx_color_info_alloc_color(250,250,0);
         bg = GRX_COLOR_NONE;
 
         for(ii = 0,by = -(bh / 3); ii < 17; ii++) {
@@ -79,7 +79,7 @@ TESTFUNC(colorops)
                 wh/4+(RND()%100),
                 ww,
                 wh,
-                ((RND() / 16) & (GrNumColors() - 1)),
+                ((RND() / 16) & (grx_color_info_n_colors() - 1)),
                 bg
             );
         }
@@ -91,7 +91,7 @@ TESTFUNC(colorops)
                 wh/4+(RND()%100),
                 ww,
                 wh,
-                ((RND() / 16) & (GrNumColors() - 1)) | GRX_COLOR_MODE_XOR,
+                ((RND() / 16) & (grx_color_info_n_colors() - 1)) | GRX_COLOR_MODE_XOR,
                 bg
             );
         }
@@ -103,7 +103,7 @@ TESTFUNC(colorops)
                 wh/4+(RND()%100),
                 ww,
                 wh,
-                ((RND() / 16) & (GrNumColors() - 1)) | GRX_COLOR_MODE_OR,
+                ((RND() / 16) & (grx_color_info_n_colors() - 1)) | GRX_COLOR_MODE_OR,
                 bg
             );
         }
@@ -115,7 +115,7 @@ TESTFUNC(colorops)
                 wh/4+(RND()%100),
                 ww,
                 wh,
-                ((RND() / 16) & (GrNumColors() - 1)) | GRX_COLOR_MODE_AND,
+                ((RND() / 16) & (grx_color_info_n_colors() - 1)) | GRX_COLOR_MODE_AND,
                 bg
             );
         }

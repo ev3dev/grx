@@ -123,7 +123,7 @@ TESTFUNC(ptest)
 
         fp = fopen("polytest.dat","r");
         if(fp == NULL) return;
-        EGA = GrAllocEgaColors();
+        EGA = grx_color_info_alloc_ega_colors();
         ii  = collect = convex = 0;
         while(fgets(buff,299,fp) != NULL) {
             if(!collect) {

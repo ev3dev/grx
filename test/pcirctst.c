@@ -43,7 +43,7 @@ void drawellip(int xc,int yc,int xa,int ya,GrxColor c1,GrxColor c2,GrxColor c3)
 
         for (idx = 0, l = *Patterns; l != NULL; l = Patterns[++idx])
             for (wdt=widths; *wdt != 0; ++wdt) {
-                GrClearScreen(GrBlack());
+                GrClearScreen(grx_color_info_get_black());
 
                 GrFilledBox(xc-xa,yc-ya,xc+xa,yc+ya,c1);
                 dx = xa;
@@ -79,9 +79,9 @@ TESTFUNC(circtest)
         int  xr,yr;
         GrxColor c1,c2,c3;
 
-        c1 = GrAllocColor(64,64,255);
-        c2 = GrAllocColor(255,255,64);
-        c3 = GrAllocColor(255,64,64);
+        c1 = grx_color_info_alloc_color(64,64,255);
+        c2 = grx_color_info_alloc_color(255,255,64);
+        c3 = grx_color_info_alloc_color(255,64,64);
         xc = grx_get_size_x() / 2;
         yc = grx_get_size_y() / 2;
         xr = 1;

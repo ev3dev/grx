@@ -24,23 +24,23 @@ TESTFUNC(test1)
         GrLineOption o1,o2,o3,o4;
         int i;
         for(i = 0; i < 2; i++) {
-            o1.lno_color   = GrAllocColor(255,0,0);
+            o1.lno_color   = grx_color_info_alloc_color(255,0,0);
             o1.lno_width   = 1;
             o1.lno_pattlen = 4 * i;
             o1.lno_dashpat = "\5\5\24\24";
-            o2.lno_color   = GrAllocColor(255,255,0);
+            o2.lno_color   = grx_color_info_alloc_color(255,255,0);
             o2.lno_width   = 2;
             o2.lno_pattlen = 6 * i;
             o2.lno_dashpat = "\5\5\24\24\2\2";
-            o3.lno_color   = GrAllocColor(0,255,255);
+            o3.lno_color   = grx_color_info_alloc_color(0,255,255);
             o3.lno_width   = 30;
             o3.lno_pattlen = 8 * i;
             o3.lno_dashpat = "\5\5\24\24\2\2\40\40";
-            o4.lno_color   = GrAllocColor(255,0,255);
+            o4.lno_color   = grx_color_info_alloc_color(255,0,255);
             o4.lno_width   = 4;
             o4.lno_pattlen = 6 * i;
             o4.lno_dashpat = "\2\2\2\2\10\10";
-            GrClearScreen(GrBlack());
+            GrClearScreen(grx_color_info_get_black());
             GrCustomLine(10,10,100,100,&o1);
             GrCustomLine(10,50,100,140,&o1);
             GrCustomLine(10,90,100,180,&o1);
@@ -58,7 +58,7 @@ TESTFUNC(test1)
             GrCustomLine(480,100,460,300,&o4);
             GrCustomLine(600,200,500,300,&o4);
             GrKeyRead();
-            GrClearScreen(GrBlack());
+            GrClearScreen(grx_color_info_get_black());
             GrCustomBox(50,50,550,350,&o3);
             GrCustomCircle(300,200,50,&o2);
             GrKeyRead();

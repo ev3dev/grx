@@ -26,9 +26,9 @@
                }                                          \
                break;                                     \
       case 8 : r[x] = (unsigned char)(col); break;        \
-      case 24: r[3*(x)+0] = GrRGBcolorRed(col);           \
-               r[3*(x)+1] = GrRGBcolorGreen(col);         \
-               r[3*(x)+2] = GrRGBcolorBlue(col);          \
+      case 24: r[3*(x)+0] = grx_color_info_get_red_value(col);           \
+               r[3*(x)+1] = grx_color_info_get_green_value(col);         \
+               r[3*(x)+2] = grx_color_info_get_blue_value(col);          \
                break;                                     \
     }                                                     \
 } while(0)
@@ -62,7 +62,7 @@ SaveContextToTiff(GrxContext *ctx, char *tiffn, unsigned compr, char *docn) {
     if (!ctx) return -1;
     width  = ctx->x_max+1;
     height = ctx->y_max+1;
-    colors = GrNumColors();
+    colors = grx_color_info_n_colors();
     if (colors < 2) return -1;
     if (colors ==   2)    depth = 1;  else
     if (colors <= 256)    depth = 8;  else
@@ -123,7 +123,7 @@ SaveContextToTiff(GrxContext *ctx, char *tiffn, unsigned compr, char *docn) {
     if (depth == 8) {
         for (i = 0; i < colors; i++) {
             int r, g, b;
-            GrQueryColor(i, &r, &g, &b);
+            grx_color_info_query_color(i, &r, &g, &b);
             red[i] = SCALE(r);
             green[i] = SCALE(g);
             blue[i] = SCALE(b);
@@ -174,27 +174,27 @@ TESTFUNC(wintest)
         GrxContext *w4 = grx_context_create_subcontext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
 
         grx_context_set_current(w1);
-        c = GrAllocColor(200,100,100);
-        drawing(0,0,ww,wh,c,GrBlack());
-        c = GrAllocColor(100,50,50);
+        c = grx_color_info_alloc_color(200,100,100);
+        drawing(0,0,ww,wh,c,grx_color_info_get_black());
+        c = grx_color_info_alloc_color(100,50,50);
         GrBox(0,0,ww-1,wh-1,c);
 
         grx_context_set_current(w2);
-        c = GrAllocColor(100,200,200);
-        drawing(0,0,ww,wh,c,GrBlack());
-        c = GrAllocColor(50,100,100);
+        c = grx_color_info_alloc_color(100,200,200);
+        drawing(0,0,ww,wh,c,grx_color_info_get_black());
+        c = grx_color_info_alloc_color(50,100,100);
         GrBox(0,0,ww-1,wh-1,c);
 
         grx_context_set_current(w3);
-        c = GrAllocColor(200,200,0);
-        drawing(0,0,ww,wh,c,GrBlack());
-        c = GrAllocColor(100,100,0);
+        c = grx_color_info_alloc_color(200,200,0);
+        drawing(0,0,ww,wh,c,grx_color_info_get_black());
+        c = grx_color_info_alloc_color(100,100,0);
         GrBox(0,0,ww-1,wh-1,c);
 
         grx_context_set_current(w4);
-        c = GrAllocColor(0,100,200);
-        drawing(0,0,ww,wh,c,GrBlack());
-        c = GrAllocColor(255,0,100);
+        c = grx_color_info_alloc_color(0,100,200);
+        drawing(0,0,ww,wh,c,grx_color_info_get_black());
+        c = grx_color_info_alloc_color(255,0,100);
         GrBox(0,0,ww-1,wh-1,c);
 
         grx_context_set_current(NULL);

@@ -235,12 +235,12 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
         alpha = *pix_ptr++;
       if( x < maxwidth ){
         if( alpha_present && use_alpha ){
-          GrQueryColor( pColors[x],&ro,&go,&bo );
+          grx_color_info_query_color( pColors[x],&ro,&go,&bo );
           r = r * (alpha/255.0) + ro * ((255-alpha)/255.0);
           g = g * (alpha/255.0) + go * ((255-alpha)/255.0);
           b = b * (alpha/255.0) + bo * ((255-alpha)/255.0);
           }
-        pColors[x] = GrAllocColor( r,g,b );
+        pColors[x] = grx_color_info_alloc_color( r,g,b );
         }
       }
     GrPutScanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );

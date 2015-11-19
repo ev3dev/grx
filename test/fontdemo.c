@@ -158,9 +158,9 @@ int main(int argc, char **argv)
         if(width == 0) width = height == 400 ? 640 : height * 4 / 3;
 
         grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, width, height, bpp);
-        if(!gray || (opt.txo_fgcolor.v = GrAllocColor(gray, gray, gray)) == GRX_COLOR_NONE) opt.txo_fgcolor.v = GrWhite();
+        if(!gray || (opt.txo_fgcolor.v = grx_color_info_alloc_color(gray, gray, gray)) == GRX_COLOR_NONE) opt.txo_fgcolor.v = grx_color_info_get_white();
         if(attributes & 0x02) opt.txo_fgcolor.v |= GR_UNDERLINE_TEXT;
-        opt.txo_bgcolor.v = GrBlack();
+        opt.txo_bgcolor.v = grx_color_info_get_black();
         if(attributes & 0x01) revert();
         opt.txo_chrtype = GR_BYTE_TEXT;
         opt.txo_direct = GR_TEXT_RIGHT;
@@ -169,7 +169,7 @@ int main(int argc, char **argv)
 
         sprintf(buffer, "%s %dx%d", hdr->name, GrCharWidth('A', &opt), GrCharHeight('A', &opt));
         gputs(buffer);
-        sprintf(buffer, "%dx%d@%lu", grx_get_size_x(), grx_get_size_y(), (unsigned long) GrNumColors());
+        sprintf(buffer, "%dx%d@%lu", grx_get_size_x(), grx_get_size_y(), (unsigned long) grx_color_info_n_colors());
         gputs(buffer);
         gnewl();
 

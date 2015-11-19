@@ -27,8 +27,8 @@ int     BWW =   83;
 
 void drbox(GrxContext *src,int x,int y)
 {
-        GrxColor c1 = GrAllocColor(0,0,255);
-        GrxColor c2 = GrAllocColor(255,0,0);
+        GrxColor c1 = grx_color_info_alloc_color(0,0,255);
+        GrxColor c2 = grx_color_info_alloc_color(255,0,0);
         int  xx;
 
         GrClearScreen(c1);
@@ -36,11 +36,11 @@ void drbox(GrxContext *src,int x,int y)
         grx_set_clip_box(x-10,y-10,x+BWW-1+10,y+BHH-1+10);
         GrClearClipBox(c2);
         grx_set_clip_box(x,y,x+BWW-1,y+BHH-1);
-        GrClearClipBox(GrBlack());
-        GrBox(x,y,x+BWW-1,y+BHH-1,GrWhite());
+        GrClearClipBox(grx_color_info_get_black());
+        GrBox(x,y,x+BWW-1,y+BHH-1,grx_color_info_get_white());
         for(xx = x; xx < x+BWW; xx += 5) {
-            GrLine(xx,y,xx+BHH,y+BHH,GrWhite());
-            GrLine(xx,y,xx-BHH,y+BHH,GrWhite());
+            GrLine(xx,y,xx+BHH,y+BHH,grx_color_info_get_white());
+            GrLine(xx,y,xx-BHH,y+BHH,grx_color_info_get_white());
         }
         grx_context_set_current(NULL);
         grx_reset_clip_box();
@@ -59,7 +59,7 @@ void doblits(GrxContext *src,int x,int y)
         }
 /*
   {
-        GrxColor xc = GrAllocColor(255,255,255) | GRX_COLOR_MODE_XOR;
+        GrxColor xc = grx_color_info_alloc_color(255,255,255) | GRX_COLOR_MODE_XOR;
         GrKeyRead();
         xx = (grx_get_size_x() - BWW)/ 2;
         yy = 2;
@@ -121,25 +121,25 @@ TESTFUNC(blittest)
         blxtest();
         GrKeyRead();
 
-        bcolors.fbx_intcolor = GrAllocColor(160,100,30);
-        bcolors.fbx_topcolor = GrAllocColor(240,150,45);
-        bcolors.fbx_leftcolor = GrAllocColor(240,150,45);
-        bcolors.fbx_rightcolor = GrAllocColor(80,50,15);
-        bcolors.fbx_bottomcolor = GrAllocColor(80,50,15);
+        bcolors.fbx_intcolor = grx_color_info_alloc_color(160,100,30);
+        bcolors.fbx_topcolor = grx_color_info_alloc_color(240,150,45);
+        bcolors.fbx_leftcolor = grx_color_info_alloc_color(240,150,45);
+        bcolors.fbx_rightcolor = grx_color_info_alloc_color(80,50,15);
+        bcolors.fbx_bottomcolor = grx_color_info_alloc_color(80,50,15);
 
-        ocolors.fbx_intcolor = GrAllocColor(0,120,100);
-        ocolors.fbx_topcolor = GrAllocColor(0,180,150);
-        ocolors.fbx_leftcolor = GrAllocColor(0,180,150);
-        ocolors.fbx_rightcolor = GrAllocColor(0,90,60);
-        ocolors.fbx_bottomcolor = GrAllocColor(0,90,60);
+        ocolors.fbx_intcolor = grx_color_info_alloc_color(0,120,100);
+        ocolors.fbx_topcolor = grx_color_info_alloc_color(0,180,150);
+        ocolors.fbx_leftcolor = grx_color_info_alloc_color(0,180,150);
+        ocolors.fbx_rightcolor = grx_color_info_alloc_color(0,90,60);
+        ocolors.fbx_bottomcolor = grx_color_info_alloc_color(0,90,60);
 
-        icolors.fbx_intcolor = bg = GrAllocColor(30,30,30);
-        icolors.fbx_bottomcolor = GrAllocColor(0,180,150);
-        icolors.fbx_rightcolor = GrAllocColor(0,180,150);
-        icolors.fbx_leftcolor = GrAllocColor(0,90,60);
-        icolors.fbx_topcolor = GrAllocColor(0,90,60);
+        icolors.fbx_intcolor = bg = grx_color_info_alloc_color(30,30,30);
+        icolors.fbx_bottomcolor = grx_color_info_alloc_color(0,180,150);
+        icolors.fbx_rightcolor = grx_color_info_alloc_color(0,180,150);
+        icolors.fbx_leftcolor = grx_color_info_alloc_color(0,90,60);
+        icolors.fbx_topcolor = grx_color_info_alloc_color(0,90,60);
 
-        c = GrAllocColor(250,250,0);
+        c = grx_color_info_alloc_color(250,250,0);
 
         for(ii = 0,by = -(bh/3); ii < 19; ii++) {
             for(jj = 0,bx = -(bw/2); jj < 19; jj++) {

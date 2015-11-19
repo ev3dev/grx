@@ -47,7 +47,7 @@ int main(void)
     GrPatternDrawStringExt(" Hello world !!", 16, 40, 100, &opt, p1);
     GrPatternDrawStringExt(" Hello world !!", 16, 44, 140, &opt, p2);
     GrKeyRead();
-    opt.txo_bgcolor.v = GrBlack();
+    opt.txo_bgcolor.v = grx_color_info_get_black();
     GrPatternDrawString(" Hello world !", 15, 40, 10, &opt, p1);
     GrPatternDrawString(" Hello world !", 15, 44, 50, &opt, p2);
     GrPatternDrawStringExt(" Hello world !!", 16, 40, 100, &opt, p1);

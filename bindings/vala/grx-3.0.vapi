@@ -45,71 +45,48 @@ namespace Grx {
         public ColorMode to_and_mode ();
         public ColorMode to_image_mode ();
 
-        [CCode (cname = "GrResetColors")]
-        public static void reset ();
-        [CCode (cname = "GrSetRGBcolorMode")]
-        public static void set_rgb_mode ();
-        [CCode (cname = "GrRefreshColors")]
-        public static void refresh ();
-
-        [CCode (cname = "GrNumColors")]
-        public static uint num ();
-        [CCode (cname = "GrNumFreeColors")]
-        public static uint num_free ();
-
-        public static Color black { [CCode (cname = "GrBlack")]get; }
-        public static Color white { [CCode (cname = "GrWhite")]get; }
+        public static Color black { [CCode (cname = "grx_color_info_get_black")]get; }
+        public static Color white { [CCode (cname = "grx_color_info_get_white")]get; }
 
         public const Color VALUE_MASK;
         public const Color MODE_MASK;
         public const Color NONE;
+    }
 
-        [CCode (cname = "GrBuildRGBcolorT")]
-        public static Color build_rgb_t (int r, int g, int b);
-        [CCode (cname = "GrBuildRGBcolorR")]
-        public static Color build_rgb_r (int r, int g, int b);
-        [CCode (cname = "GrRGBcolorRed")]
-        public int red ();
-        [CCode (cname = "GrRGBcolorGreen")]
-        public int green ();
-        [CCode (cname = "GrRGBcolorBlue")]
-        public int blue ();
+    namespace ColorInfo {
+        public static void reset_colors ();
+        public static void set_rgb_color_mode ();
+        public static void refresh_colors ();
 
-        [CCode (cname = "GrAllocColor")]
-        public static Color alloc (int r, int g, int b);   /* shared, read-only */
-        [CCode (cname = "GrAllocColorID")]
-        public static Color alloc_id (int r, int g, int b); /* potentially inlined version */
-        [CCode (cname = "GrAllocColor2")]
-        public static Color alloc_rrggbb (long hcolor);        /* shared, read-only, 0xRRGGBB */
-        [CCode (cname = "GrAllocColor2ID")]
-        public static Color alloc_rrggbb_id (long hcolor);      /* potentially inlined version */
-        [CCode (cname = "GrAllocCell")]
-        public static Color alloc_cell ();                 /* unshared, read-write */
+        public static int n_colors ();
+        public static int n_free_colors ();
 
-        [CCode (cname = "GrAllocEgaColors", array_length_cexpr = "16")]
-        public static Color[] alloc_ega_colors ();           /* shared, read-only standard EGA colors */
+        public static Color build_rgb_color_t (int r, int g, int b);
+        public static Color build_rgb_color_r (int r, int g, int b);
+        public static int get_red_value (Color c);
+        public static int get_green_value (Color c);
+        public static int get_blue_value (Color c);
 
-        [CCode (cname = "GrSetColor")]
-        public void set (int r, int g, int b);
-        [CCode (cname = "GrFreeColor")]
-        public void free ();
-        [CCode (cname = "GrFreeCell")]
-        public void free_cell ();
+        public static Color alloc_color (int r, int g, int b);    /* shared, read-only */
+        public static Color alloc_color_id (int r, int g, int b); /* potentially inlined version */
+        public static Color alloc_color2 (long hcolor);           /* shared, read-only, 0xRRGGBB */
+        public static Color alloc_color2_id (long hcolor);        /* potentially inlined version */
+        public static Color alloc_cell ();                        /* unshared, read-write */
 
-        [CCode (cname = "GrQueryColor")]
-        public void query (out int r, out int g, out int b);
-        [CCode (cname = "GrQueryColorID")]
-        public void query_id (out int r, out int g, out int b);
-        [CCode (cname = "GrQueryColor2")]
-        public void query_rrggbb (out long hcolor);
-        [CCode (cname = "GrQueryColor2ID")]
-        public void query_rrggbb_id (out long hcolor);
+        [CCode (array_length_cexpr = "16")]
+        public static Color[] alloc_ega_colors (); /* shared, read-only standard EGA colors */
 
-        [CCode (cname = "GrColorSaveBufferSize")]
-        public static int save_buffer_size ();
-        [CCode (cname = "GrSaveColors")]
+        public static void set_color (Color c, int r, int g, int b);
+        public static void free_color (Color c);
+        public static void free_cell (Color c);
+
+        public static void query_color (Color c, out int r, out int g, out int b);
+        public static void query_color_id (Color c, out int r, out int g, out int b);
+        public static void query_color2 (Color c, out long hcolor);
+        public static void query_color2_id (Color c, out long hcolor);
+
+        public static int get_save_buffer_size ();
         public static void save_colors (void *buffer);
-        [CCode (cname = "GrRestoreColors")]
         public static void restore_colors (void *buffer);
     }
 
@@ -726,98 +703,6 @@ namespace Grx {
         IMAGE,
         UNDERLINE_TEXT
     }
-
-    [CCode (cname = "const struct _GR_colorInfo", has_type_id = false)]
-    public struct ColorInfo {
-
-        /**
-         * number of colors
-         */
-        public Color ncolors;
-
-        /**
-         * number of unallocated colors
-         */
-        public Color nfree;
-
-        /**
-         * the black color
-         */
-        public Color black;
-
-        /**
-         * the white color
-         */
-        public Color white;
-
-        /**
-         * set when RGB mode
-         */
-        [CCode (cname = "RGBmode")]
-        public uint rgb_mode;
-
-        /**
-         * color field precisions
-         */
-        public uint prec[3];
-
-        /**
-         * color field positions
-         */
-        public uint pos[3];
-
-        /**
-         * masks for significant bits
-         */
-        public uint mask[3];
-
-        /**
-         * add these for rounding
-         */
-        public uint round[3];
-
-        /**
-         * shifts for (un)packing color
-         */
-        public uint shift[3];
-
-        /**
-         * normalization for (un)packing
-         */
-        public uint norm;
-
-        /**
-         * color table for non-RGB modes
-         */
-        [CCode (array_length_cexpr = "256")]
-        public ColorInfoTable[] ctable;
-    }
-
-    [CCode (has_type_id = false)]
-    public struct ColorInfoTable {
-        /* loaded components */
-        public uchar r;
-        public uchar g;
-        public uchar b;
-
-        /**
-         * r, g, b values are valid if set
-         */
-        public uint  defined;
-
-        /**
-         * can be changed by 'GrSetColor'
-         */
-        public uint  writable;
-
-        /**
-         * usage count
-         */
-        public ulong nused;
-    }
-
-    [CCode (cname = "GrColorInfo")]
-    public ColorInfo color_info;
 
     public const int MAX_POLYGON_POINTS;
     public const int MAX_ELLIPSE_POINTS;

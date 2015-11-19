@@ -29,15 +29,15 @@ TESTFUNC(cliptest)
         int wh = (y * 2) / 3;
         GrxColor c;
 
-        c = GrAllocColor(200,100,100);
-        GrBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,GrWhite());
+        c = grx_color_info_alloc_color(200,100,100);
+        GrBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,grx_color_info_get_white());
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
 
-        drawing(0,0,ww,wh,c,GrBlack());
+        drawing(0,0,ww,wh,c,grx_color_info_get_black());
         GrKeyRead();
 
         while(!GrKeyPressed()) {
-            GrFilledBox(0,0,x,y,GrBlack());
+            GrFilledBox(0,0,x,y,grx_color_info_get_black());
             drawing(-(RND()%(2*ww))+ww/2,
                 -(RND()%(2*wh))+wh/2,
                 RND()%(3*ww)+10,

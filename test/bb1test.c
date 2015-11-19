@@ -35,15 +35,15 @@ int main(void)
   pContext = grx_context_create_full(GRX_FRAME_MODE_RAM_1BPP, sizex, sizey, NULL, NULL);
   /* draw something (black and white) into the bitmap */
   grx_context_set_current(pContext);
-  GrClearContext( GrBlack() );
-  GrLine(0, 0, sizex-1, sizey-1, GrWhite());
-  GrLine(0, sizey-1, sizex-1, 0, GrWhite());
+  GrClearContext( grx_color_info_get_black() );
+  GrLine(0, 0, sizex-1, sizey-1, grx_color_info_get_white());
+  GrLine(0, sizey-1, sizex-1, 0, grx_color_info_get_white());
 
   grx_context_set_current(NULL);
-  fcolor = GrAllocColor( 255,0,0 );
-  bcolor = GrAllocColor( 0,0,255 );
+  fcolor = grx_color_info_alloc_color( 255,0,0 );
+  bcolor = grx_color_info_alloc_color( 0,0,255 );
   GrTextXY(0,0,"Type u d l r U D L R to move, 1 2 to change color, q to quit",
-           GrWhite(),GRX_COLOR_NONE);
+           grx_color_info_get_white(),GRX_COLOR_NONE);
   grx_set_clip_box(0, 40, grx_get_screen_x(), grx_get_screen_y());
 
   /* Put the bitmap into the screen */
@@ -61,11 +61,11 @@ int main(void)
       case 'D': y += 10; break;
       case 'L': x -= 10; break;
       case 'R': x += 10; break;
-      case '1': fcolor = GrAllocColor( 255,0,0 );
-                bcolor = GrAllocColor( 0,0,255 );
+      case '1': fcolor = grx_color_info_alloc_color( 255,0,0 );
+                bcolor = grx_color_info_alloc_color( 0,0,255 );
                 break;
-      case '2': fcolor = GrAllocColor( 0,255,255 );
-                bcolor = GrAllocColor( 255,255,0 );
+      case '2': fcolor = grx_color_info_alloc_color( 0,255,255 );
+                bcolor = grx_color_info_alloc_color( 255,255,0 );
                 break;
       default:  continue;
       }
