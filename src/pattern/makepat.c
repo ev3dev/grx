@@ -36,8 +36,8 @@
  */
 static int _GrBestPixmapWidth(int wdt,int hgt)
 {
-        long total   = GrContextSize(wdt,hgt);
-        int  linelen = GrLineOffset(wdt);
+        long total   = grx_get_context_size(wdt,hgt);
+        int  linelen = grx_get_line_offset(wdt);
         int  factor  = 1;
         int  test;
 

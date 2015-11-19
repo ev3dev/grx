@@ -437,10 +437,10 @@ gint  grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width);
 glong grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height);
 glong grx_frame_mode_get_context_size(GrxFrameMode mode, gint w, gint h);
 
-int  GrNumPlanes(void);
-int  GrLineOffset(int width);
-long GrPlaneSize(int w,int h);
-long GrContextSize(int w,int h);
+gint  grx_get_n_planes(void);
+gint  grx_get_line_offset(gint width);
+glong grx_get_plane_size(gint w, gint h);
+glong grx_get_context_size(gint w, gint h);
 
 /*
  * inline implementation for some of the above
@@ -470,10 +470,10 @@ long GrContextSize(int w,int h);
 
 #define grx_is_screen_virtual()     ((grx_get_screen_x() + grx_get_screen_y()) < (grx_get_virtual_x() + grx_get_virtual_y()))
 
-#define GrNumPlanes()           grx_frame_mode_get_n_planes(grx_get_core_frame_mode())
-#define GrLineOffset(w)         grx_frame_mode_get_line_offset(grx_get_core_frame_mode(),w)
-#define GrPlaneSize(w,h)        grx_frame_mode_get_plane_size(grx_get_core_frame_mode(),w,h)
-#define GrContextSize(w,h)      grx_frame_mode_get_context_size(grx_get_core_frame_mode(),w,h)
+#define grx_get_n_planes()           grx_frame_mode_get_n_planes(grx_get_core_frame_mode())
+#define grx_get_line_offset(w)         grx_frame_mode_get_line_offset(grx_get_core_frame_mode(),w)
+#define grx_get_plane_size(w,h)        grx_frame_mode_get_plane_size(grx_get_core_frame_mode(),w,h)
+#define grx_get_context_size(w,h)      grx_frame_mode_get_context_size(grx_get_core_frame_mode(),w,h)
 #endif  /* GRX_SKIP_INLINES */
 
 

@@ -570,14 +570,10 @@ namespace Grx {
     /*
      * RAM context geometry and memory allocation inquiry stuff
      */
-    [CCode (cname = "GrNumPlanes")]
-    public int num_planes ();
-    [CCode (cname = "GrLineOffset")]
-    public int line_offset (int width);
-    [CCode (cname = "GrPlaneSize")]
-    public long plane_size (int width, int height);
-    [CCode (cname = "GrContextSize")]
-    public long context_size (int width, int height);
+    public int get_n_planes ();
+    public int get_line_offset (int width);
+    public long get_plane_size (int width, int height);
+    public long get_context_size (int width, int height);
 
     /* ================================================================== */
     /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */

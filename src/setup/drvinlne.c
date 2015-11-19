@@ -103,23 +103,23 @@ int (grx_is_screen_virtual)(void)
         return(grx_is_screen_virtual());
 }
 
-int (GrNumPlanes)(void)
+int (grx_get_n_planes)(void)
 {
-        return(GrNumPlanes());
+        return(grx_get_n_planes());
 }
 
-int (GrLineOffset)(int width)
+int (grx_get_line_offset)(int width)
 {
-        return(GrLineOffset(width));
+        return(grx_get_line_offset(width));
 }
 
-long (GrPlaneSize)(int w,int h)
+long (grx_get_plane_size)(int w,int h)
 {
-        return(GrPlaneSize(w,h));
+        return(grx_get_plane_size(w,h));
 }
 
-long (GrContextSize)(int w,int h)
+long (grx_get_context_size)(int w,int h)
 {
-        return(GrContextSize(w,h));
+        return(grx_get_context_size(w,h));
 }
 

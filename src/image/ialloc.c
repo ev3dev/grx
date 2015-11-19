@@ -26,7 +26,7 @@ int _GrImageTestSize(int wdt,int hgt)
 {
   long total;
   GRX_ENTER();
-  total = GrContextSize(wdt,hgt);
+  total = grx_get_context_size(wdt,hgt);
 # ifdef _MAXMEMPLANESIZE
   if ( total > _MAXMEMPLANESIZE ) total = 0L;
 # endif
