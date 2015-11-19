@@ -33,7 +33,7 @@ int GrJpegSupport( void )
 ** GrSaveContextToJpeg - Returns error
 */
 
-int GrSaveContextToJpeg( GrContext *grc, char *jpegfn, int quality )
+int GrSaveContextToJpeg( GrxContext *grc, char *jpegfn, int quality )
 {
   return -1;
 }
@@ -42,7 +42,7 @@ int GrSaveContextToJpeg( GrContext *grc, char *jpegfn, int quality )
 ** GrSaveContextToGrayJpeg - Returns error
 */
 
-int GrSaveContextToGrayJpeg( GrContext *grc, char *jpegfn, int quality )
+int GrSaveContextToGrayJpeg( GrxContext *grc, char *jpegfn, int quality )
 {
   return -1;
 }
@@ -51,7 +51,7 @@ int GrSaveContextToGrayJpeg( GrContext *grc, char *jpegfn, int quality )
 ** GrLoadContextFromJpeg - Returns error
 */
 
-int GrLoadContextFromJpeg( GrContext *grc, char *jpegfn, int scale )
+int GrLoadContextFromJpeg( GrxContext *grc, char *jpegfn, int scale )
 {
   return -1;
 }

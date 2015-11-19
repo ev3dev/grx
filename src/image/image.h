@@ -30,6 +30,6 @@
 #endif
 
 int _GrImageTestSize(int wdt,int hgt);
-GrImage *_GrImageAllocate(GrContext *ctx, int nwidth,int nheight);
+GrImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight);
 
 #endif

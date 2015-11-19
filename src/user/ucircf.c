@@ -38,7 +38,7 @@ void GrUsrFilledCircle(int xc,int yc,int r,GrxColor c)
 #ifdef USR_KEEP_SHAPE
         U2SX(xc,CURC);
         U2SY(yc,CURC);
-        SCALE(r,r,CURC->gc_xmax,CURC->gc_usrwidth);
+        SCALE(r,r,CURC->x_max,CURC->user_width);
         GrFilledCircle(xc,yc,r,c);
 #else
         GrUsrFilledEllipse(xc,yc,r,r,c);

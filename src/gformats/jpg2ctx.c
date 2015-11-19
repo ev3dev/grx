@@ -31,7 +31,7 @@ int GrJpegSupport( void )
   return 1;
 }
 
-static int readjpeg( FILE *f, GrContext *grc, int scale );
+static int readjpeg( FILE *f, GrxContext *grc, int scale );
 static int queryjpeg( FILE *f, int *w, int *h );
 
 /*
@@ -53,9 +53,9 @@ static int queryjpeg( FILE *f, int *w, int *h );
 **         -1 on error
 */
 
-int GrLoadContextFromJpeg( GrContext *grc, char *jpegfn, int scale )
+int GrLoadContextFromJpeg( GrxContext *grc, char *jpegfn, int scale )
 {
-  GrContext grcaux;
+  GrxContext grcaux;
   FILE *f;
   int r;
   
@@ -121,7 +121,7 @@ METHODDEF(void) my_error_exit( j_common_ptr cinfo )
 
 /**/
 
-static int readjpeg( FILE *f, GrContext *grc, int scale )
+static int readjpeg( FILE *f, GrxContext *grc, int scale )
 {
   struct jpeg_decompress_struct cinfo;
   struct my_error_mgr jerr;

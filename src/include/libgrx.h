@@ -298,7 +298,7 @@ int _GrResetColors(void);      /* like GrResetColors but return true on success 
         int __mouse_block_flag = 0;                                         \
         mouse_addblock(c,x1,y1,x2,y2);
 #define mouse_addblock(c,x1,y1,x2,y2)                                       \
-        if(MOUINFO->docheck && (c)->gc_onscreen) {                          \
+        if(MOUINFO->docheck && (c)->gc_is_on_screen) {                          \
         __mouse_block_flag |= (*MOUINFO->block)((c),(x1),(y1),(x2),(y2));   \
         }
 #define mouse_unblock()                                                     \

@@ -113,15 +113,15 @@ void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r)
                 }
                 bmp = GrFontCharAuxBmp(f,chr,GR_TEXT_RIGHT,undl);
                 if(bmp) (*FDRV->drawbitmap)(
-                    (xp2  + CURC->gc_xoffset),
-                    (ypos + CURC->gc_yoffset),
+                    (xp2  + CURC->x_offset),
+                    (ypos + CURC->y_offset),
                     chrw,chrh,
                     bmp,bmpw,0,
                     fgcv,bgcv
                 );
                 else (*FDRV->drawblock)(
-                    (xp2  + CURC->gc_xoffset),
-                    (ypos + CURC->gc_yoffset),
+                    (xp2  + CURC->x_offset),
+                    (ypos + CURC->y_offset),
                     chrw,chrh,
                     bgcv
                 );

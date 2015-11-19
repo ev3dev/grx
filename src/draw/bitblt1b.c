@@ -19,8 +19,8 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrBitBlt1bpp(GrContext *dst,int dx,int dy,
-                  GrContext *src,int x1,int y1,int x2,int y2,
+void GrBitBlt1bpp(GrxContext *dst,int dx,int dy,
+                  GrxContext *src,int x1,int y1,int x2,int y2,
                   GrxColor fg, GrxColor bg)
 {
   int oldx1,oldy1;
@@ -48,10 +48,10 @@ void GrBitBlt1bpp(GrContext *dst,int dx,int dy,
   mouse_block(src,x1,y1,x2,y2);
   mouse_addblock(dst,dx,dy,dstx2,dsty2);
 
-  (dst->gc_driver->drawbitmap)((dx + dst->gc_xoffset),(dy + dst->gc_yoffset),
-    (x2 - x1 + 1),(y2 - y1 + 1),src->gc_baseaddr[0],src->gc_lineoffset,
+  (dst->gc_driver->drawbitmap)((dx + dst->x_offset),(dy + dst->y_offset),
+    (x2 - x1 + 1),(y2 - y1 + 1),src->gc_base_address[0],src->gc_line_offset,
     /*alex:the offset should anyway be the x1,y1 point in src, as clipped*/
-    (x1 + (y1 * (src->gc_lineoffset << 3))),fg,bg);
+    (x1 + (y1 * (src->gc_line_offset << 3))),fg,bg);
 
   mouse_unblock();
 }

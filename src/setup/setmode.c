@@ -105,7 +105,7 @@ static int buildframedriver(GrxVideoMode *mp,GrxFrameDriver *drv)
 done:   GRX_RETURN(res);
 }
 
-static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrContext *cxt)
+static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
 {
         long plsize;
         int res;
@@ -119,10 +119,10 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrContext *cxt)
         if(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_LINEAR)
         {
             DBGPRINTF(DBG_SETMD,("buildcontext - Linear Mode\n"));
-            cxt->gc_baseaddr[0] =
-            cxt->gc_baseaddr[1] =
-            cxt->gc_baseaddr[2] =
-            cxt->gc_baseaddr[3] = LINP_PTR(mp->extended_info->frame);
+            cxt->gc_base_address[0] =
+            cxt->gc_base_address[1] =
+            cxt->gc_base_address[2] =
+            cxt->gc_base_address[3] = LINP_PTR(mp->extended_info->frame);
             cxt->gc_selector    = mp->extended_info->lfb_selector;
         } else
 #endif /* !(__XWIN__ && !XF86DGA_FRAMEBUFFER && !__SDL__) */
@@ -143,27 +143,27 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrContext *cxt)
             if (mp->bpp==24)
               {
                  int m_incr = mp->line_offset*mp->height;
-                 cxt->gc_baseaddr[0] = mp->extended_info->frame;
-                 cxt->gc_baseaddr[1] = cxt->gc_baseaddr[0] + m_incr;
-                 cxt->gc_baseaddr[2] = cxt->gc_baseaddr[1] + m_incr;
-                 cxt->gc_baseaddr[3] = NULL;
+                 cxt->gc_base_address[0] = mp->extended_info->frame;
+                 cxt->gc_base_address[1] = cxt->gc_base_address[0] + m_incr;
+                 cxt->gc_base_address[2] = cxt->gc_base_address[1] + m_incr;
+                 cxt->gc_base_address[3] = NULL;
               }
             else
 #endif
             if (mp->bpp==4)
               {
                  int m_incr = mp->line_offset*mp->height;
-                 cxt->gc_baseaddr[0] = mp->extended_info->frame;
-                 cxt->gc_baseaddr[1] = cxt->gc_baseaddr[0] + m_incr;
-                 cxt->gc_baseaddr[2] = cxt->gc_baseaddr[1] + m_incr;
-                 cxt->gc_baseaddr[3] = cxt->gc_baseaddr[2] + m_incr;
+                 cxt->gc_base_address[0] = mp->extended_info->frame;
+                 cxt->gc_base_address[1] = cxt->gc_base_address[0] + m_incr;
+                 cxt->gc_base_address[2] = cxt->gc_base_address[1] + m_incr;
+                 cxt->gc_base_address[3] = cxt->gc_base_address[2] + m_incr;
               }
             else
               {
-                 cxt->gc_baseaddr[0] =
-                 cxt->gc_baseaddr[1] =
-                 cxt->gc_baseaddr[2] =
-                 cxt->gc_baseaddr[3] = mp->extended_info->frame;
+                 cxt->gc_base_address[0] =
+                 cxt->gc_base_address[1] =
+                 cxt->gc_base_address[2] =
+                 cxt->gc_base_address[3] = mp->extended_info->frame;
               }
         }
         else
@@ -171,26 +171,26 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrContext *cxt)
             if(plsize > fdp->max_plane_size) goto done; /* FALSE */
             if(!mp->extended_info->set_bank && (plsize > 0x10000L)) goto done; /* FALSE */
             if(mp->line_offset % fdp->row_align) goto done; /* FALSE */
-            cxt->gc_baseaddr[0] =
-            cxt->gc_baseaddr[1] =
-            cxt->gc_baseaddr[2] =
-            cxt->gc_baseaddr[3] = LINP_PTR(mp->extended_info->frame);
+            cxt->gc_base_address[0] =
+            cxt->gc_base_address[1] =
+            cxt->gc_base_address[2] =
+            cxt->gc_base_address[3] = LINP_PTR(mp->extended_info->frame);
             cxt->gc_selector    = LINP_SEL(mp->extended_info->frame);
         }
-        cxt->gc_onscreen    = !(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_MEMORY);
+        cxt->gc_is_on_screen    = !(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_MEMORY);
         /* Why do we default to screen driver ?? */
-        cxt->gc_onscreen    = TRUE;
-        cxt->gc_lineoffset  = mp->line_offset;
-        cxt->gc_xcliphi     = cxt->gc_xmax = mp->width  - 1;
-        cxt->gc_ycliphi     = cxt->gc_ymax = mp->height - 1;
+        cxt->gc_is_on_screen    = TRUE;
+        cxt->gc_line_offset  = mp->line_offset;
+        cxt->x_clip_high     = cxt->x_max = mp->width  - 1;
+        cxt->y_clip_high     = cxt->y_max = mp->height - 1;
         cxt->gc_driver      = &DRVINFO->sdriver;
 
         res = TRUE;
 
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 0 = 0x%x\n",cxt->gc_baseaddr[0]));
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 1 = 0x%x\n",cxt->gc_baseaddr[1]));
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 2 = 0x%x\n",cxt->gc_baseaddr[2]));
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 3 = 0x%x\n",cxt->gc_baseaddr[3]));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 0 = 0x%x\n",cxt->gc_base_address[0]));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 1 = 0x%x\n",cxt->gc_base_address[1]));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 2 = 0x%x\n",cxt->gc_base_address[2]));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 3 = 0x%x\n",cxt->gc_base_address[3]));
 done:
         GRX_RETURN(res);
 }
@@ -325,7 +325,7 @@ int grx_set_mode(GrxGraphicsMode which,...)
         if (c)
           for(pl = 1; (pl < 32) && ((1UL << pl) < (GrxColor)c); pl++) ;
         for( ; ; ) {
-            GrContext     cxt;
+            GrxContext     cxt;
             GrxFrameDriver fdr;
             GrxVideoMode  *mdp,vmd;
             mdp = (DRVINFO->vdriver->select_mode)(DRVINFO->vdriver,w,h,pl,t,NULL);

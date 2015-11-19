@@ -35,8 +35,8 @@ void GrPutScanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op)
         clip_hline(CURC,x1,x2,yy);
         mouse_block(CURC,x1,yy,x2,yy);
         (*FDRV->putscanline)(
-            x1 + CURC->gc_xoffset,
-            yy + CURC->gc_yoffset,
+            x1 + CURC->x_offset,
+            yy + CURC->y_offset,
             x2 - x1 + 1,
             &c[x1-xs],  /* adjust pixel pointer when clipped */
             op

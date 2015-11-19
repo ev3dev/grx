@@ -27,7 +27,7 @@
 #define  MYCONTEXT      1
 #define  MYFRAME        2
 
-GrContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrContext *where)
+GrxContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrxContext *where)
 {
         GrxFrameDriver *fd = _GrFindRAMframeDriver(md);
         int  ii,offset,flags = 0;
@@ -40,7 +40,7 @@ GrContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrCo
         if(psize <= 0L) return(NULL);
         if(psize >  fd->max_plane_size) return(NULL);
         if(!where) {
-            where = malloc(sizeof(GrContext));
+            where = malloc(sizeof(GrxContext));
             if(!where) return(NULL);
             flags = MYCONTEXT;
         }
@@ -59,98 +59,98 @@ GrContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrCo
             flags |= MYFRAME;
         }
         where->gc_driver      = fd;
-        where->gc_baseaddr[0] = memory[0];
-        where->gc_baseaddr[1] = memory[1];
-        where->gc_baseaddr[2] = memory[2];
-        where->gc_baseaddr[3] = memory[3];
-        where->gc_lineoffset  = offset;
-        where->gc_memflags    = flags;
-        where->gc_xcliphi     = where->gc_xmax = w - 1;
-        where->gc_ycliphi     = where->gc_ymax = h - 1;
+        where->gc_base_address[0] = memory[0];
+        where->gc_base_address[1] = memory[1];
+        where->gc_base_address[2] = memory[2];
+        where->gc_base_address[3] = memory[3];
+        where->gc_line_offset  = offset;
+        where->gc_memory_flags    = flags;
+        where->x_clip_high     = where->x_max = w - 1;
+        where->y_clip_high     = where->y_max = h - 1;
         return(where);
 }
 
-GrContext *GrCreateSubContext(
+GrxContext *GrCreateSubContext(
     int x1,int y1,int x2,int y2,
-    const GrContext *parent,
-    GrContext *where
+    const GrxContext *parent,
+    GrxContext *where
 ){
         int flags = 0;
 
         if(!parent) parent = SCRN;
-        if(parent->gc_root) {
-            x1 += parent->gc_xoffset;
-            y1 += parent->gc_yoffset;
-            x2 += parent->gc_xoffset;
-            y2 += parent->gc_yoffset;
-            parent = parent->gc_root;
+        if(parent->root) {
+            x1 += parent->x_offset;
+            y1 += parent->y_offset;
+            x2 += parent->x_offset;
+            y2 += parent->y_offset;
+            parent = parent->root;
         }
         cxclip_box_(parent,x1,y1,x2,y2,return(NULL),CLIP_EMPTY_MACRO_ARG);
         if(!where) {
-            where = malloc(sizeof(GrContext));
+            where = malloc(sizeof(GrxContext));
             if(!where) return(NULL);
             flags = MYCONTEXT;
         }
         sttzero(where);
-        sttcopy(&where->gc_frame,&parent->gc_frame);
-        where->gc_memflags = flags;
-        where->gc_xoffset  = x1;
-        where->gc_yoffset  = y1;
-        where->gc_xcliphi  = where->gc_xmax = x2 - x1;
-        where->gc_ycliphi  = where->gc_ymax = y2 - y1;
-        where->gc_root     = (GrContext *)parent;
+        sttcopy(&where->frame,&parent->frame);
+        where->gc_memory_flags = flags;
+        where->x_offset  = x1;
+        where->y_offset  = y1;
+        where->x_clip_high  = where->x_max = x2 - x1;
+        where->y_clip_high  = where->y_max = y2 - y1;
+        where->root     = (GrxContext *)parent;
         return(where);
 }
 
-void GrResizeSubContext(GrContext *context,int x1,int y1,int x2,int y2)
+void GrResizeSubContext(GrxContext *context,int x1,int y1,int x2,int y2)
 {
-        GrContext *parent = context->gc_root;
+        GrxContext *parent = context->root;
 
-        if((parent = context->gc_root) == NULL) return;
+        if((parent = context->root) == NULL) return;
 /*
-        x1 += context->gc_xoffset;
-        y1 += context->gc_yoffset;
-        x2 += context->gc_xoffset;
-        y2 += context->gc_yoffset;
+        x1 += context->x_offset;
+        y1 += context->y_offset;
+        x2 += context->x_offset;
+        y2 += context->y_offset;
 */
         cxclip_box(parent,x1,y1,x2,y2);
-        context->gc_xoffset = x1;
-        context->gc_yoffset = y1;
-        context->gc_xcliphi = context->gc_xmax = x2 - x1;
-        context->gc_ycliphi = context->gc_ymax = y2 - y1;
-        context->gc_xcliplo = 0;
-        context->gc_ycliplo = 0;
+        context->x_offset = x1;
+        context->y_offset = y1;
+        context->x_clip_high = context->x_max = x2 - x1;
+        context->y_clip_high = context->y_max = y2 - y1;
+        context->x_clip_low = 0;
+        context->y_clip_low = 0;
 }
 
-void GrDestroyContext(GrContext *cxt)
+void GrDestroyContext(GrxContext *cxt)
 {
         if(cxt && (cxt != CURC) && (cxt != SCRN)) {
-            if(cxt->gc_memflags & MYFRAME) {
+            if(cxt->gc_memory_flags & MYFRAME) {
                 int ii = cxt->gc_driver->num_planes;
-                while(--ii >= 0) free(cxt->gc_baseaddr[ii]);
+                while(--ii >= 0) free(cxt->gc_base_address[ii]);
             }
-            if(cxt->gc_memflags & MYCONTEXT) free(cxt);
+            if(cxt->gc_memory_flags & MYCONTEXT) free(cxt);
         }
 }
 
-void GrSetContext(const GrContext *context)
+void GrSetContext(const GrxContext *context)
 {
         if(!context) context = SCRN;
         sttcopy(CURC,context);
         sttcopy(FDRV,context->gc_driver);
 }
 
-GrContext *GrSaveContext(GrContext *where)
+GrxContext *GrSaveContext(GrxContext *where)
 {
         int flags = 0;
 
         if(!where) {
-            where = malloc(sizeof(GrContext));
+            where = malloc(sizeof(GrxContext));
             if(!where) return(NULL);
             flags = MYCONTEXT;
         }
         sttcopy(where,CURC);
-        where->gc_memflags = flags;
+        where->gc_memory_flags = flags;
         return(where);
 }
 

@@ -27,7 +27,7 @@ void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,int style,const 
 #ifdef USR_KEEP_SHAPE
         U2SX(xc,CURC);
         U2SY(yc,CURC);
-        SCALE(r,r,CURC->gc_xmax,CURC->gc_usrwidth);
+        SCALE(r,r,CURC->x_max,CURC->user_width);
         GrCustomCircleArc(xc,yc,r,start,end,style,lo);
 #else
         GrUsrCustomEllipseArc(xc,yc,r,r,start,end,style,lo);

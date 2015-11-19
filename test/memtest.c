@@ -25,7 +25,7 @@ int main()
 {
   int x, y, ww, wh;
   GrxColor c;
-  GrContext *w1, *w2, *w3, *w4;
+  GrxContext *w1, *w2, *w3, *w4;
 
   grx_set_driver( "memory gw 400 gh 400 nc 256" );
   grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );

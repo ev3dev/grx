@@ -183,7 +183,7 @@ void drawpixel(int x,int y,GrxColor c)
   _XGrSetForeColor (c);
   _XGrSetColorOper (c);
   XDrawPoint (_XGrDisplay,
-              (Drawable) CURC->gc_baseaddr[0],
+              (Drawable) CURC->gc_base_address[0],
               _XGrGC,
               x,
               y);
@@ -203,7 +203,7 @@ void drawhline(int x,int y,int w,GrxColor c)
   _XGrSetColorOper (c);
   x2 = x + w - 1;
   XDrawLine (_XGrDisplay,
-             (Drawable) CURC->gc_baseaddr[0],
+             (Drawable) CURC->gc_base_address[0],
              _XGrGC,
              x,  y,
              x2, y);
@@ -223,7 +223,7 @@ void drawvline(int x,int y,int h,GrxColor c)
   _XGrSetColorOper (c);
   y2 = y + h - 1;
   XDrawLine (_XGrDisplay,
-             (Drawable) CURC->gc_baseaddr[0],
+             (Drawable) CURC->gc_base_address[0],
              _XGrGC,
              x, y,
              x, y2);
@@ -240,7 +240,7 @@ void drawblock(int x,int y,int w,int h,GrxColor c)
   _XGrSetForeColor (c);
   _XGrSetColorOper (c);
   XFillRectangle (_XGrDisplay,
-                  (Drawable) CURC->gc_baseaddr[0],
+                  (Drawable) CURC->gc_base_address[0],
                   _XGrGC,
                   x,
                   y,
@@ -262,7 +262,7 @@ void drawline(int x,int y,int dx,int dy,GrxColor c)
   dx += x;
   dy += y;
   XDrawLine (_XGrDisplay,
-             (Drawable) CURC->gc_baseaddr[0],
+             (Drawable) CURC->gc_base_address[0],
              _XGrGC,
              x, y,
              dx, dy);
@@ -311,7 +311,7 @@ void drawbitmap(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,G
       _XGrSetColorOper (fg);
       DBGPRINTF(DBG_DRIVER,("Calling XPutImage (1) ...\n"));
       XPutImage (_XGrDisplay,
-                 (Drawable) CURC->gc_baseaddr[0],
+                 (Drawable) CURC->gc_base_address[0],
                  _XGrGC,
                  &ximage,
                  0,
@@ -344,7 +344,7 @@ void drawbitmap(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,G
         _XGrSetForeColor (fg);
         _XGrSetColorOper (fg);
         XFillRectangle (_XGrDisplay,
-                        (Drawable) CURC->gc_baseaddr[0],
+                        (Drawable) CURC->gc_base_address[0],
                         _XGrGC,
                         x,
                         y,
@@ -372,7 +372,7 @@ void drawbitmap(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,G
         _XGrSetForeColor (bg);
         _XGrSetColorOper (bg);
         XFillRectangle (_XGrDisplay,
-                        (Drawable) CURC->gc_baseaddr[0],
+                        (Drawable) CURC->gc_base_address[0],
                         _XGrGC,
                         x,
                         y,
@@ -437,7 +437,7 @@ void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
       _XGrSetBackColor (bg);
       _XGrSetColorOper (fg);
       XFillRectangle (_XGrDisplay,
-                      (Drawable) CURC->gc_baseaddr[0],
+                      (Drawable) CURC->gc_base_address[0],
                       _XGrGC,
                       x,
                       y,
@@ -464,7 +464,7 @@ void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
         _XGrSetForeColor (fg);
         _XGrSetColorOper (fg);
         XFillRectangle (_XGrDisplay,
-                        (Drawable) CURC->gc_baseaddr[0],
+                        (Drawable) CURC->gc_base_address[0],
                         _XGrGC,
                         x,
                         y,
@@ -490,7 +490,7 @@ void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
         _XGrSetForeColor (bg);
         _XGrSetColorOper (bg);
         XFillRectangle (_XGrDisplay,
-                        (Drawable) CURC->gc_baseaddr[0],
+                        (Drawable) CURC->gc_base_address[0],
                         _XGrGC,
                         x,
                         y,
@@ -636,7 +636,7 @@ void putscanline(int x, int y, int w, const GrxColor *scl, GrxColor op)
     if (scl[ind] != skipc) {
       _XGrSetForeColor(scl[ind]);
       XDrawPoint (_XGrDisplay,
-                  (Drawable) CURC->gc_baseaddr[0],
+                  (Drawable) CURC->gc_base_address[0],
                   _XGrGC, x+ind, y);
     }
   }

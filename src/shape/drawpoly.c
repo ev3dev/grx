@@ -51,8 +51,8 @@ void _GrDrawPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c,int doClose)
                 }
                 clip_line_(CURC,x1,y1,x2,y2,continue,CLIP_EMPTY_MACRO_ARG);
                 (*f->line)(
-                    (x1 + CURC->gc_xoffset),
-                    (y1 + CURC->gc_yoffset),
+                    (x1 + CURC->x_offset),
+                    (y1 + CURC->y_offset),
                     (x2 - x1),
                     (y2 - y1),
                     c

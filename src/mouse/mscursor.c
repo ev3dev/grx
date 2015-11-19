@@ -34,7 +34,7 @@ static void draw_special(void)
         int xpos  = MSCURSOR->xcord;
         int ypos  = MSCURSOR->ycord;
         int check = MOUINFO->docheck;
-        GrContext csave;
+        GrxContext csave;
         MOUINFO->docheck = FALSE;
         GrSaveContext(&csave);
         GrSetContext(SCRN);
@@ -179,17 +179,17 @@ void GrMouseSetCursorMode(int mode,...)
         va_end(ap);
 }
 
-static int block(GrContext *c,int x1,int y1,int x2,int y2)
+static int block(GrxContext *c,int x1,int y1,int x2,int y2)
 {
         int mx1,my1,mx2,my2,oldblock = MOUINFO->blockflag;
         if(!c) c = CURC;
         if(!MOUINFO->displayed) return(0);
         if(!MOUINFO->docheck)   return(0);
-        if(!c->gc_onscreen)     return(0);
+        if(!c->gc_is_on_screen)     return(0);
         if(oldblock & ERASED)   return(0);
         MOUINFO->blockflag = BLOCKED;
-        isort(x1,x2); x1 += c->gc_xoffset; x2 += c->gc_xoffset;
-        isort(y1,y2); y1 += c->gc_yoffset; y2 += c->gc_yoffset;
+        isort(x1,x2); x1 += c->x_offset; x2 += c->x_offset;
+        isort(y1,y2); y1 += c->y_offset; y2 += c->y_offset;
         mx1 = MSCURSOR->xwpos;
         my1 = MSCURSOR->ywpos;
         mx2 = MSCURSOR->xwork + mx1 - 1;

@@ -25,9 +25,9 @@ GrxColor GrPixel(int x,int y)
         cxclip_dot_(CURC,x,y,return(GrNOCOLOR));
         mouse_block(CURC,x,y,x,y);
         retval = (*FDRV->readpixel)(
-            &CURC->gc_frame,
-            x + CURC->gc_xoffset,
-            y + CURC->gc_yoffset
+            &CURC->frame,
+            x + CURC->x_offset,
+            y + CURC->y_offset
         );
         mouse_unblock();
         return(retval);

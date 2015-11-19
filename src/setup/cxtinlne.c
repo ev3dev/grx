@@ -18,17 +18,17 @@
 
 #include "libgrx.h"
 
-GrContext *(GrCreateContext)(int w,int h,char *memory[4],GrContext *where)
+GrxContext *(GrCreateContext)(int w,int h,char *memory[4],GrxContext *where)
 {
         return(GrCreateContext(w,h,memory,where));
 }
 
-GrContext *(GrCurrentContext)(void)
+GrxContext *(GrCurrentContext)(void)
 {
         return(GrCurrentContext());
 }
 
-GrContext *(GrScreenContext)(void)
+GrxContext *(GrScreenContext)(void)
 {
         return(GrScreenContext());
 }
@@ -38,7 +38,7 @@ void (GrGetClipBox)(int *x1p,int *y1p,int *x2p,int *y2p)
         GrGetClipBox(x1p,y1p,x2p,y2p);
 }
 
-void (GrGetClipBoxC)(const GrContext *c,int *x1p,int *y1p,int *x2p,int *y2p)
+void (GrGetClipBoxC)(const GrxContext *c,int *x1p,int *y1p,int *x2p,int *y2p)
 {
         GrGetClipBoxC(c,x1p,y1p,x2p,y2p);
 }

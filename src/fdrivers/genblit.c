@@ -33,8 +33,8 @@ void _GrFrDrvGenericBitBlt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y
         skipc = op ^ GrIMAGE;
         step  = 1;
         op &= GrCMODEMASK;
-        sttcopy(&csave,&CURC->gc_frame);
-        sttcopy(&CURC->gc_frame,dst);
+        sttcopy(&csave,&CURC->frame);
+        sttcopy(&CURC->frame,dst);
         if((dy > y) || ((dy == y) && (dx > x))) {
             x += (w - 1); dx += (w - 1);
             y += (h - 1); dy += (h - 1);
@@ -49,7 +49,7 @@ void _GrFrDrvGenericBitBlt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y
             } while(--ww > 0);
             dy += step; y += step;
         } while(--h > 0);
-        sttcopy(&CURC->gc_frame,&csave);
+        sttcopy(&CURC->frame,&csave);
         GRX_LEAVE();
 }
 

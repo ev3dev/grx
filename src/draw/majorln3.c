@@ -23,8 +23,8 @@ void GrHLineNC(int x1,int x2,int yy,GrxColor c)
 {
         isort(x1,x2);
         (*FDRV->drawhline)(
-            x1 + CURC->gc_xoffset,
-            yy + CURC->gc_yoffset,
+            x1 + CURC->x_offset,
+            yy + CURC->y_offset,
             x2 - x1 + 1,
             c
         );

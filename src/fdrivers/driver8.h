@@ -79,7 +79,7 @@ GrxColor readpixel(GrxFrame *c,int x,int y)
     GR_int8u *pp;
     GRX_ENTER();
 #ifdef FAR_ACCESS
-    pp = (GR_int8u *)&SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
+    pp = (GR_int8u *)&SCRN->gc_base_address[0][FOFS(x,y,SCRN->gc_line_offset)];
     SETFARSEL(SCRN->gc_selector);
     GRX_RETURN((GR_int8u)peek8(pp));
 #else
@@ -96,7 +96,7 @@ void drawpixel(int x,int y,GrxColor color)
 {
     char *pp;
     GRX_ENTER();
-    pp = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+    pp = &CURC->gc_base_address[0][FOFS(x,y,CURC->gc_line_offset)];
     SETFARSEL(CURC->gc_selector);
     switch(C_OPER(color)) {
         case C_XOR: poke8_xor(pp,(GR_int8u)color); break;
@@ -115,8 +115,8 @@ static void drawvline(int x,int y,int h,GrxColor color)
     GRX_ENTER();
     copr = C_OPER(color);
     if(DOCOLOR8(color,copr)) {
-        unsigned lwdt = CURC->gc_lineoffset;
-        char *pp = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
+        unsigned lwdt = CURC->gc_line_offset;
+        char *pp = &CURC->gc_base_address[0][FOFS(x,y,lwdt)];
         SETFARSEL(CURC->gc_selector);
         switch(copr) {
             case C_XOR: colfill8_xor(pp,lwdt,(GR_int8u)color,h); break;
@@ -137,7 +137,7 @@ static void drawhline(int x,int y,int w,GrxColor color)
     copr = C_OPER(color);
     if(DOCOLOR8(color,copr)) {
         GR_repl cval = freplicate_b(color);
-        char *pp = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+        char *pp = &CURC->gc_base_address[0][FOFS(x,y,CURC->gc_line_offset)];
         SETFARSEL(CURC->gc_selector);
         switch(copr) {
             case C_XOR: repfill8_xor(pp,cval,w); break;
@@ -158,8 +158,8 @@ static void drawblock(int x,int y,int w,int h,GrxColor color)
     copr = C_OPER(color);
     if(DOCOLOR8(color,copr)) {
         GR_repl cval = freplicate_b(color);
-        unsigned int skip = CURC->gc_lineoffset;
-        char *pp = &CURC->gc_baseaddr[0][FOFS(x,y,skip)];
+        unsigned int skip = CURC->gc_line_offset;
+        char *pp = &CURC->gc_base_address[0][FOFS(x,y,skip)];
         skip -= w;
         SETFARSEL(CURC->gc_selector);
         switch(copr) {
@@ -259,7 +259,7 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
     } else
         xstep = 1;
 
-    ptr  = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+    ptr  = &CURC->gc_base_address[0][FOFS(x,y,CURC->gc_line_offset)];
     SETFARSEL(CURC->gc_selector);
     if(dx > dy) {
         npts  = dx +  1;
@@ -267,7 +267,7 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
         lndata.errsub  = dy;
         lndata.erradd  = dx;
         lndata.offset1 = xstep;
-        lndata.offset2 = CURC->gc_lineoffset + xstep;
+        lndata.offset2 = CURC->gc_line_offset + xstep;
         if(xstep < 0) {
           again_nonlinear:
             lndata.offset1 = 1;
@@ -286,8 +286,8 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
         error = dy >> 1;
         lndata.errsub  = dx;
         lndata.erradd  = dy;
-        lndata.offset1 = CURC->gc_lineoffset;
-        lndata.offset2 = CURC->gc_lineoffset + xstep;
+        lndata.offset1 = CURC->gc_line_offset;
+        lndata.offset2 = CURC->gc_line_offset + xstep;
     }
   again_linear:
     switch(copr) {
@@ -319,9 +319,9 @@ static void drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
         dofg = DOCOLOR8(fg,fgop);
         dobg = DOCOLOR8(bg,bgop);
         if(dofg | dobg) {
-            long offs = FOFS(x,y,CURC->gc_lineoffset);
+            long offs = FOFS(x,y,CURC->gc_line_offset);
             int  once = dofg && dobg && (fgop == bgop);
-            int  skip = CURC->gc_lineoffset;
+            int  skip = CURC->gc_line_offset;
             bmp   += start >> 3;
             start &= 7;
             SETFARSEL(CURC->gc_selector);
@@ -330,7 +330,7 @@ static void drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
                 GR_int8u  bits    = *bp;
                 GR_int8u  mask    = 0x80 >> start;
                 GR_int32u w1      = w;
-                char *pp = &CURC->gc_baseaddr[0][offs];
+                char *pp = &CURC->gc_base_address[0][offs];
 #               define DOBOTH(POKEOP) do {                              \
                     POKEOP(pp,((bits&mask)?(GR_int8u)fg:(GR_int8u)bg)); \
                     if((mask >>= 1) == 0) bits = *++bp,mask = 0x80;     \

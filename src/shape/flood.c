@@ -191,12 +191,12 @@ ThisLine:
 void _GrFloodFill(int x,int y,GrxColor border,GrFiller *f,GrFillArg fa) {
   int _x, _y;
 
-  lx = CURC->gc_xcliplo;
-  mx = CURC->gc_xcliphi;
-  ly = CURC->gc_ycliplo;
-  my = CURC->gc_ycliphi;
-  lxo = lx + CURC->gc_xoffset;
-  lyo = ly + CURC->gc_yoffset;
+  lx = CURC->x_clip_low;
+  mx = CURC->x_clip_high;
+  ly = CURC->y_clip_low;
+  my = CURC->y_clip_high;
+  lxo = lx + CURC->x_offset;
+  lyo = ly + CURC->y_offset;
 
   if ( x < lx || y < ly || x > mx || y > my || GrPixelNC(x,y) == border)
     return;

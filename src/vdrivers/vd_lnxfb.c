@@ -54,7 +54,7 @@ static struct fb_fix_screeninfo fbfix;
 static struct fb_var_screeninfo fbvar;
 static char *fbuffer = NULL;
 static int ingraphicsmode = 0;
-static GrContext *grc;
+static GrxContext *grc;
 static char* frame_addr[4];
 
 int _lnxfb_waiting_to_switch_console = 0;
@@ -134,7 +134,7 @@ void _LnxfbSwitchToConsoleVt(unsigned short vt)
 {
     struct vt_stat vtst;
     unsigned short myvt;
-    GrContext *grc;
+    GrxContext *grc;
 
     if (!ingraphicsmode) return;
     if (ttyfd < 0) return;
@@ -164,7 +164,7 @@ void _LnxfbSwitchConsoleAndWait(void)
 {
     struct vt_stat vtst;
     unsigned short myvt;
-    GrContext *grc;
+    GrxContext *grc;
 
     _lnxfb_waiting_to_switch_console = 0;
     if (!ingraphicsmode) return;
@@ -217,14 +217,14 @@ void _LnxfbRelsigHandle(int sig)
      * application can continue to run in the background without actually
      * writing to the framebuffer.
      */
-    frame_addr[0] = GrScreenContext()->gc_baseaddr[0];
-    frame_addr[1] = GrScreenContext()->gc_baseaddr[1];
-    frame_addr[2] = GrScreenContext()->gc_baseaddr[2];
-    frame_addr[3] = GrScreenContext()->gc_baseaddr[3];
-    GrScreenContext()->gc_baseaddr[0] = grc->gc_baseaddr[0];
-    GrScreenContext()->gc_baseaddr[1] = grc->gc_baseaddr[1];
-    GrScreenContext()->gc_baseaddr[2] = grc->gc_baseaddr[2];
-    GrScreenContext()->gc_baseaddr[3] = grc->gc_baseaddr[3];
+    frame_addr[0] = GrScreenContext()->gc_base_address[0];
+    frame_addr[1] = GrScreenContext()->gc_base_address[1];
+    frame_addr[2] = GrScreenContext()->gc_base_address[2];
+    frame_addr[3] = GrScreenContext()->gc_base_address[3];
+    GrScreenContext()->gc_base_address[0] = grc->gc_base_address[0];
+    GrScreenContext()->gc_base_address[1] = grc->gc_base_address[1];
+    GrScreenContext()->gc_base_address[2] = grc->gc_base_address[2];
+    GrScreenContext()->gc_base_address[3] = grc->gc_base_address[3];
     /* release control of the vt */
     ioctl(ttyfd, VT_RELDISP, 1);
     signal(SIGUSR1, _LnxfbAcqsigHandle);
@@ -238,10 +238,10 @@ void _LnxfbAcqsigHandle(int sig)
     ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
     /* restore framebuffer address */
-    GrScreenContext()->gc_baseaddr[0] = frame_addr[0];
-    GrScreenContext()->gc_baseaddr[1] = frame_addr[1];
-    GrScreenContext()->gc_baseaddr[2] = frame_addr[2];
-    GrScreenContext()->gc_baseaddr[3] = frame_addr[3];
+    GrScreenContext()->gc_base_address[0] = frame_addr[0];
+    GrScreenContext()->gc_base_address[1] = frame_addr[1];
+    GrScreenContext()->gc_base_address[2] = frame_addr[2];
+    GrScreenContext()->gc_base_address[3] = frame_addr[3];
     /* copy the temporary context back to the framebuffer */
     if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
         /* need to invert the colors on this one */

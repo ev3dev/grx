@@ -23,7 +23,7 @@ GrImage *(GrImageFromPattern)(GrPattern *p) {
   return GrImageFromPattern(p);
 }
 
-GrImage *(GrImageFromContext)(GrContext *c) {
+GrImage *(GrImageFromContext)(GrxContext *c) {
   return GrImageFromContext(c);
 }
 

@@ -23,7 +23,7 @@
 
 void imagen( char *nf, int scale )
 {
-  GrContext *grc;
+  GrxContext *grc;
   int wide, high;
   char s[81];
   int w, h;
@@ -63,7 +63,7 @@ void nojpegsupport( void )
 
 int main()
 {
-  GrContext *grc;
+  GrxContext *grc;
 
   grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,640,480,24 );
 

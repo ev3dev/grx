@@ -195,8 +195,8 @@ static void solidsegment1(
         int x1 = p1[0], y1 = p1[1];
         int x2 = p2[0], y2 = p2[1];
         (*p->f->line)(
-            (x1 + CURC->gc_xoffset),
-            (y1 + CURC->gc_yoffset),
+            (x1 + CURC->x_offset),
+            (y1 + CURC->y_offset),
             (x2 - x1),
             (y2 - y1),
             p->c
@@ -359,7 +359,7 @@ void _GrDrawCustomPolygon(
         int  i,start[2],end[2];
         void (*doseg)(int[2],int[2],int[2],int[2],linepatt*);
         linepatt  p;
-        GrContext preclip;
+        GrxContext preclip;
         if(n < 2) return;
         /* set up working pattern */
         p.f       = f;
@@ -390,8 +390,8 @@ void _GrDrawCustomPolygon(
             if(y2 < ppt[1]) y2 = ppt[1];
         }
         sttcopy(&preclip,CURC);
-        preclip.gc_xcliplo -= p.w; preclip.gc_ycliplo -= p.w;
-        preclip.gc_xcliphi += p.w; preclip.gc_ycliphi += p.w;
+        preclip.x_clip_low -= p.w; preclip.y_clip_low -= p.w;
+        preclip.x_clip_high += p.w; preclip.y_clip_high += p.w;
         clip_ordbox((&preclip),x1,y1,x2,y2);
         mouse_block(CURC,x1,y1,x2,y2);
         /* do the polygon segments */

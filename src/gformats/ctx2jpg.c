@@ -22,7 +22,7 @@
 #include <jpeglib.h>
 #include "grx-3.0.h"
 
-static int writejpeg( FILE *f, GrContext *grc, int quality, int grayscale );
+static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale );
 
 /*
 ** GrSaveContextToJpeg - Dump a context in a JPEG file
@@ -38,9 +38,9 @@ static int writejpeg( FILE *f, GrContext *grc, int quality, int grayscale );
 **         -1 on error
 */
 
-int GrSaveContextToJpeg( GrContext *grc, char *jpegfn, int quality )
+int GrSaveContextToJpeg( GrxContext *grc, char *jpegfn, int quality )
 {
-  GrContext grcaux;
+  GrxContext grcaux;
   FILE *f;
   int r;
   
@@ -71,9 +71,9 @@ int GrSaveContextToJpeg( GrContext *grc, char *jpegfn, int quality )
 **         -1 on error
 */
 
-int GrSaveContextToGrayJpeg( GrContext *grc, char *jpegfn, int quality )
+int GrSaveContextToGrayJpeg( GrxContext *grc, char *jpegfn, int quality )
 {
-  GrContext grcaux;
+  GrxContext grcaux;
   FILE *f;
   int r;
   
@@ -113,7 +113,7 @@ METHODDEF(void) my_error_exit( j_common_ptr cinfo )
 
 /**/
 
-static int writejpeg( FILE *f, GrContext *grc, int quality, int grayscale )
+static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale )
 {
   struct jpeg_compress_struct cinfo;
   struct my_error_mgr jerr;

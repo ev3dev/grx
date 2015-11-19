@@ -366,8 +366,8 @@ void GrMouseInitN(int queue_size)
         if(GrMouseDetect()) {
             GrMouseSetSpeed(1,1);
             GrMouseSetAccel(100,1);
-            GrMouseSetLimits(0,0,SCRN->gc_xmax,SCRN->gc_ymax);
-            GrMouseWarp((SCRN->gc_xmax >> 1),(SCRN->gc_ymax >> 1));
+            GrMouseSetLimits(0,0,SCRN->x_max,SCRN->y_max);
+            GrMouseWarp((SCRN->x_max >> 1),(SCRN->y_max >> 1));
             _GrInitMouseCursor();
             MOUINFO->msstatus = 2;
         }
@@ -392,10 +392,10 @@ void GrMouseSetLimits(int x1,int y1,int x2,int y2)
 {
         isort(x1,x2);
         isort(y1,y2);
-        MOUINFO->xmin = imax(0,imin(x1,SCRN->gc_xmax));
-        MOUINFO->ymin = imax(0,imin(y1,SCRN->gc_ymax));
-        MOUINFO->xmax = imax(0,imin(x2,SCRN->gc_xmax));
-        MOUINFO->ymax = imax(0,imin(y2,SCRN->gc_ymax));
+        MOUINFO->xmin = imax(0,imin(x1,SCRN->x_max));
+        MOUINFO->ymin = imax(0,imin(y1,SCRN->y_max));
+        MOUINFO->xmax = imax(0,imin(x2,SCRN->x_max));
+        MOUINFO->ymax = imax(0,imin(y2,SCRN->y_max));
 }
 
 void GrMouseWarp(int x,int y)

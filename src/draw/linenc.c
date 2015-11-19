@@ -22,8 +22,8 @@
 void GrLineNC(int x1,int y1,int x2,int y2,GrxColor c)
 {
         (*FDRV->drawline)(
-            x1 + CURC->gc_xoffset,
-            y1 + CURC->gc_yoffset,
+            x1 + CURC->x_offset,
+            y1 + CURC->y_offset,
             x2 - x1,
             y2 - y1,
             c

@@ -126,7 +126,7 @@ GrBmpImage    *GrLoadBmpImage ( char *_filename );
 GrPattern     *GrConvertBmpImageToPattern ( GrBmpImage *_bmp );
 GrPattern     *GrConvertBmpImageToStaticPattern ( GrBmpImage *_bmp );
 void           GrUnloadBmpImage ( GrBmpImage *_bmp );
-int            GrSaveBmpImage ( char *_filename, GrContext *_c, int _x1, int _y1, int _x2, int _y2 );
+int            GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y1, int _x2, int _y2 );
 unsigned long  GrBmpImageWidth ( GrBmpImage* _bmp );
 unsigned long  GrBmpImageHeight ( GrBmpImage* _bmp );
 char          *GrBmpImagePalette ( GrBmpImage* _bmp );
@@ -494,7 +494,7 @@ void  GrUnloadBmpImage ( GrBmpImage *_bmp )
 }
 
 /* ************************************************************************ */
-int  GrSaveBmpImage ( char *_filename, GrContext *_c, int _x1, int _y1, int _x2, int _y2 )
+int  GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y1, int _x2, int _y2 )
 /* ************************************************************************ */
 {
   int handle;
@@ -507,9 +507,9 @@ int  GrSaveBmpImage ( char *_filename, GrContext *_c, int _x1, int _y1, int _x2,
   GrBitmapFileHeader fileheader;
   GrBitmapInfoHeader infoheader;
   GrxColor colors, i;
-  GrContext safe;
+  GrxContext safe;
 
-  if ( !_c ) _c = (GrContext *)GrCurrentContext();
+  if ( !_c ) _c = (GrxContext *)GrCurrentContext();
 
 /*
   handle = creat(_filename, S_IWRITE);

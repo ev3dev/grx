@@ -22,7 +22,7 @@
 
 int main(void)
 {
-  GrContext *pContext;
+  GrxContext *pContext;
   int sizex = 40;
   int sizey = 40;
   int x = 0;

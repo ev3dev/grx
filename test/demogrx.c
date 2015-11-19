@@ -187,7 +187,7 @@ static GrFont *grf_big;
 GrTextOption grt_centered;
 GrTextOption grt_left;
 
-static GrContext *grcglob = NULL;
+static GrxContext *grcglob = NULL;
 static int worg = 0, horg = 0;
 
 /* Internal routines */
@@ -318,7 +318,7 @@ static void ini_objects(void)
 
 static void paint_screen(void)
 {
-    GrContext *grc;
+    GrxContext *grc;
 
     paint_board(&brd);
     paint_button_group(bgact);
@@ -457,7 +457,7 @@ static void paint_animation(void)
 {
     static int pos = 620;
     static int ini = 0;
-    static GrContext *grc;
+    static GrxContext *grc;
     int ltext, wtext;
 
     if (!ini) {

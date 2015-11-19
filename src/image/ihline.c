@@ -36,15 +36,15 @@ void GrImageHLineAlign(int xo,int yo,int x,int y,int width,GrImage *p)
   widthimg = p->pxp_width;
   yimg = (y - yo) % p->pxp_height;
   ximg = (x - xo) % widthimg;
-  xdest = x + CURC->gc_xoffset;
-  ydest = y + CURC->gc_yoffset;
+  xdest = x + CURC->x_offset;
+  ydest = y + CURC->y_offset;
   cpysize = widthimg - ximg;
   optype = p->pxp_oper;
-  if (CURC->gc_onscreen) bltfun = CURC->gc_driver->bltr2v;
+  if (CURC->gc_is_on_screen) bltfun = CURC->gc_driver->bltr2v;
   else                   bltfun = CURC->gc_driver->bitblt;
   while ( width > 0 ) {
     if ( cpysize > width ) cpysize = width;
-         (*bltfun)(&CURC->gc_frame,xdest,ydest,
+         (*bltfun)(&CURC->frame,xdest,ydest,
                    &p->pxp_source,ximg,yimg,cpysize,1,
                    optype);
     width -= cpysize;

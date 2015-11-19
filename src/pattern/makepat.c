@@ -53,7 +53,7 @@ static int _GrBestPixmapWidth(int wdt,int hgt)
 
 GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
 {
-        GrContext csave,cwork;
+        GrxContext csave,cwork;
         GrPixmap  *result;
         unsigned  char *src;
         int  wdt,wdt2,fullw;
@@ -82,7 +82,7 @@ GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
             pixels += w;
         }
         *CURC = csave;
-        result->pxp_source = cwork.gc_frame;
+        result->pxp_source = cwork.frame;
         result->pxp_source.memory_flags = (GRX_MEMORY_FLAG_MY_CONTEXT | GRX_MEMORY_FLAG_MY_MEMORY);
         result->pxp_ispixmap = TRUE;
         result->pxp_width  = fullw;
@@ -93,7 +93,7 @@ GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
 
 GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
 {
-        GrContext csave,cwork;
+        GrxContext csave,cwork;
         GrPixmap  *result;
         unsigned  char *src;
         int  wdt,wdt2,fullw;
@@ -123,7 +123,7 @@ GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxCo
             bits += (w + 7) >> 3;
         }
         *CURC = csave;
-        result->pxp_source = cwork.gc_frame;
+        result->pxp_source = cwork.frame;
         result->pxp_source.memory_flags = (GRX_MEMORY_FLAG_MY_CONTEXT | GRX_MEMORY_FLAG_MY_MEMORY);
         result->pxp_ispixmap = TRUE;
         result->pxp_width  = fullw;
@@ -132,18 +132,18 @@ GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxCo
         return((GrPattern *)result);
 }
 
-GrPattern *GrConvertToPixmap(GrContext *src)
+GrPattern *GrConvertToPixmap(GrxContext *src)
 {
         GrPixmap *result;
 
-        if(src->gc_onscreen) return(NULL);
+        if(src->gc_is_on_screen) return(NULL);
         result = malloc(sizeof(GrPixmap));
         if(result == NULL) return(NULL);
-        result->pxp_source = src->gc_frame;
+        result->pxp_source = src->frame;
         result->pxp_source.memory_flags = GRX_MEMORY_FLAG_MY_CONTEXT;
         result->pxp_ispixmap = TRUE;
-        result->pxp_width  = src->gc_xmax + 1;
-        result->pxp_height = src->gc_ymax + 1;
+        result->pxp_width  = src->x_max + 1;
+        result->pxp_height = src->y_max + 1;
         result->pxp_oper   = 0;
         return((GrPattern *)result);
 }

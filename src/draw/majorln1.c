@@ -24,8 +24,8 @@ void GrHLine(int x1,int x2,int yy,GrxColor c)
         clip_hline(CURC,x1,x2,yy);
         mouse_block(CURC,x1,yy,x2,yy);
         (*FDRV->drawhline)(
-            x1 + CURC->gc_xoffset,
-            yy + CURC->gc_yoffset,
+            x1 + CURC->x_offset,
+            yy + CURC->y_offset,
             x2 - x1 + 1,
             c
         );

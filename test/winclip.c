@@ -26,10 +26,10 @@ TESTFUNC(winclip)
         int  ww = (x / 2) - 10;
         int  wh = (y / 2) - 10;
         GrxColor c;
-        GrContext *w1 = GrCreateSubContext(5,5,ww+4,wh+4,NULL,NULL);
-        GrContext *w2 = GrCreateSubContext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
-        GrContext *w3 = GrCreateSubContext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
-        GrContext *w4 = GrCreateSubContext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
+        GrxContext *w1 = GrCreateSubContext(5,5,ww+4,wh+4,NULL,NULL);
+        GrxContext *w2 = GrCreateSubContext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
+        GrxContext *w3 = GrCreateSubContext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
+        GrxContext *w4 = GrCreateSubContext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
 
         GrSetContext(w1);
         c = GrAllocColor(200,100,100);

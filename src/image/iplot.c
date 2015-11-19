@@ -34,6 +34,6 @@ void GrImagePlotAlign(int xo,int yo,int x,int y,GrImage *p)
    yp = (y - yo) % p->pxp_height;
    mouse_block(CURC,x,y,x,y);
    col = (*p->pxp_source.driver->readpixel)(&p->pxp_source,xp,yp);
-   (*CURC->gc_driver->drawpixel)(x + CURC->gc_xoffset, y + CURC->gc_yoffset, col);
+   (*CURC->gc_driver->drawpixel)(x + CURC->x_offset, y + CURC->y_offset, col);
    mouse_unblock();
 }

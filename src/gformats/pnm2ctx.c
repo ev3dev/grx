@@ -286,10 +286,10 @@ salida:
 **         -1 on error
 */
 
-int GrLoadContextFromPnm( GrContext *grc, char *pnmfn )
+int GrLoadContextFromPnm( GrxContext *grc, char *pnmfn )
 {
   inputstruct is = {0, NULL, NULL, 0};
-  GrContext grcaux;
+  GrxContext grcaux;
   int r = -1;
   int format, width, height, maxval;
 
@@ -364,10 +364,10 @@ int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval )
 **         -1 on error
 */
 
-int GrLoadContextFromPnmBuffer( GrContext *grc, const char *pnmbuf )
+int GrLoadContextFromPnmBuffer( GrxContext *grc, const char *pnmbuf )
 {
   inputstruct is = {1, NULL, NULL, 0};
-  GrContext grcaux;
+  GrxContext grcaux;
   int r = -1;
   int format, width, height, maxval;
 

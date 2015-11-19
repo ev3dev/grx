@@ -36,12 +36,12 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrPattern *p)
         int cpysize = pattwdt - xpatt;
         GrxColor optype = p->gp_pxp_oper;
 
-        if (CURC->gc_onscreen) bltfun = CURC->gc_driver->bltr2v;
+        if (CURC->gc_is_on_screen) bltfun = CURC->gc_driver->bltr2v;
         else                   bltfun = CURC->gc_driver->bitblt;
         while (width > 0) {
                 if (cpysize > width) cpysize = width;
                 (*bltfun)(
-                        &CURC->gc_frame,xdest,ydest,
+                        &CURC->frame,xdest,ydest,
                         &p->gp_pxp_source,xpatt,ypatt,cpysize,1,
                         optype
                 );

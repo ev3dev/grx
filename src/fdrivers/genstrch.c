@@ -93,8 +93,8 @@ static void stretch(GrxFrame *dst,int dx,int dy,int dw, int dh,
           break;
         }
         maxi = sy+sh-1;
-        sttcopy(&csave,&CURC->gc_frame);
-        sttcopy(&CURC->gc_frame,dst);
+        sttcopy(&csave,&CURC->frame);
+        sttcopy(&CURC->frame,dst);
         do {
           int y = min(lne.y,maxi);
           if (!pixels || y != rd_y)
@@ -103,7 +103,7 @@ static void stretch(GrxFrame *dst,int dx,int dy,int dw, int dh,
             putscl(dx,lne.x,dw,pixels,op);
           XLineStep(&lne);
         } while (!XLineCheckDone(&lne));
-        sttcopy(&CURC->gc_frame,&csave);
+        sttcopy(&CURC->frame,&csave);
         FREE(xsrc);
     } while (0);
     reset_ALLOC();

@@ -19,8 +19,8 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrBitBltNC(GrContext *dst,int dx,int dy,
-                GrContext *src,int x1,int y1,int x2,int y2,GrxColor oper)
+void GrBitBltNC(GrxContext *dst,int dx,int dy,
+                GrxContext *src,int x1,int y1,int x2,int y2,GrxColor oper)
 {
         void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
         if(dst == NULL) dst = CURC;
@@ -35,8 +35,8 @@ void GrBitBltNC(GrContext *dst,int dx,int dy,
             bltfun = src->gc_driver->bltv2r;
         else return;
         (*bltfun)(
-            &dst->gc_frame,(dx + dst->gc_xoffset),(dy + dst->gc_yoffset),
-            &src->gc_frame,(x1 + src->gc_xoffset),(y1 + src->gc_yoffset),
+            &dst->frame,(dx + dst->x_offset),(dy + dst->y_offset),
+            &src->frame,(x1 + src->x_offset),(y1 + src->y_offset),
             (x2 - x1 + 1),
             (y2 - y1 + 1),
             oper

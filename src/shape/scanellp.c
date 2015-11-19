@@ -35,8 +35,8 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
         mouse_block(CURC,x1,y1,x2,y2);
         setup_ALLOC();
         if((xa == 0) || (ya == 0)) (*f->line)(
-            (x1 + CURC->gc_xoffset),
-            (y1 + CURC->gc_yoffset),
+            (x1 + CURC->x_offset),
+            (y1 + CURC->y_offset),
             (x2 - x1),
             (y2 - y1),
             c
@@ -94,8 +94,8 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
                         do {
                             clip_ordxrange_(CURC,x1,x2,break,CLIP_EMPTY_MACRO_ARG);
                             (*f->scan)(
-                                (x1  + CURC->gc_xoffset),
-                                (row + CURC->gc_yoffset),
+                                (x1  + CURC->x_offset),
+                                (row + CURC->y_offset),
                                 (x2  - x1 + 1),
                                 c
                             );
@@ -110,8 +110,8 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
                     }
                         clip_ordxrange_(CURC,x1,x2,continue,CLIP_EMPTY_MACRO_ARG);
                     (*f->scan)(
-                        (x1  + CURC->gc_xoffset),
-                        (row + CURC->gc_yoffset),
+                        (x1  + CURC->x_offset),
+                        (row + CURC->y_offset),
                         (x2  - x1 + 1),
                         c
                     );

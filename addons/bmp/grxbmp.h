@@ -64,7 +64,7 @@ struct _GR_bmpimage {
 };
 
 GrBmpImage    *GrLoadBmpImage ( char *_filename );
-int            GrSaveBmpImage ( char *_filename, GrContext *_c, int _x1, int _y1, int _x2, int _y2 );
+int            GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y1, int _x2, int _y2 );
 void           GrUnloadBmpImage ( GrBmpImage *_bmp );
 int            GrAllocBmpImageColors ( GrBmpImage *_bmp, GrBmpImageColors *_pal );
 int            GrFreeBmpImageColors ( GrBmpImageColors *_pal );

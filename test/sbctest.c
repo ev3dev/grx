@@ -23,7 +23,7 @@ static void drawp( int border, GrLinePattern *grlp );
 TESTFUNC(sbctest)
 {
   char bits[] = {0, 76, 50, 0, 0, 76, 60, 0};
-  GrContext *grc, *grsc;
+  GrxContext *grc, *grsc;
   GrPattern *pat1, *pat2;
   GrLineOption grl;
   GrLinePattern grlp;

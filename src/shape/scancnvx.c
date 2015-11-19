@@ -136,8 +136,8 @@ void _GrScanConvexPoly(int n,int pt[][2],GrFiller *f,GrFillArg c)
             }
             clip_ordxrange_(CURC,xmin,xmax,continue,CLIP_EMPTY_MACRO_ARG);
             (*f->scan)(
-                (xmin + CURC->gc_xoffset),
-                (ypos + CURC->gc_yoffset),
+                (xmin + CURC->x_offset),
+                (ypos + CURC->y_offset),
                 (xmax - xmin + 1),
                 c
             );

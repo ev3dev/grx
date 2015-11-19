@@ -33,7 +33,7 @@ int _GrImageTestSize(int wdt,int hgt)
   GRX_RETURN(total);
 }
 
-GrImage *_GrImageAllocate(GrContext *ctx, int nwidth,int nheight)
+GrImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight)
 {
   GrImage   *img;
 
@@ -50,7 +50,7 @@ GrImage *_GrImageAllocate(GrContext *ctx, int nwidth,int nheight)
   img->pxp_width  = nwidth;
   img->pxp_height = nheight;
   img->pxp_oper   = 0;
-  img->pxp_source = ctx->gc_frame;
+  img->pxp_source = ctx->frame;
   img->pxp_source.memory_flags =  3;/* MY_CONTEXT & MY_MEMORY */
 done:
   GRX_RETURN(img);

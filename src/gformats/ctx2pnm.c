@@ -36,10 +36,10 @@
 **         -1 on error
 */
 
-int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn )
+int GrSaveContextToPbm( GrxContext *grc, char *pbmfn, char *docn )
 {
   FILE *f;
-  GrContext grcaux;
+  GrxContext grcaux;
   char cab[81];
   int currentbyte = 0, currentbit = 7;
   int x, y;
@@ -91,10 +91,10 @@ int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn )
 **         -1 on error
 */
 
-int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn )
+int GrSaveContextToPgm( GrxContext *grc, char *pgmfn, char *docn )
 {
   FILE *f;
-  GrContext grcaux;
+  GrxContext grcaux;
   char cab[81];
   unsigned char grey;
   int rgb[3];
@@ -135,10 +135,10 @@ int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn )
 **         -1 on error
 */
 
-int GrSaveContextToPpm( GrContext *grc, char *ppmfn, char *docn )
+int GrSaveContextToPpm( GrxContext *grc, char *ppmfn, char *docn )
 {
   FILE *f;
-  GrContext grcaux;
+  GrxContext grcaux;
   char cab[81];
   unsigned char brgb[3];
   int x, y, r, g, b;

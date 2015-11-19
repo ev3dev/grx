@@ -27,7 +27,7 @@ void GrUsrPatternedCircle(int xc,int yc,int r,GrLinePattern *lp)
 #ifdef USR_KEEP_SHAPE
         U2SX(xc,CURC);
         U2SY(yc,CURC);
-        SCALE(r,r,CURC->gc_xmax,CURC->gc_usrwidth);
+        SCALE(r,r,CURC->x_max,CURC->user_width);
         GrPatternedCircle(xc,yc,r,lp);
 #else
         GrUsrPatternedEllipse(xc,yc,r,r,lp);

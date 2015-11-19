@@ -32,7 +32,7 @@ void GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,GrImage *p)
   iwdt = p->pxp_width;
   ihgt = p->pxp_height;
   if ( (y2-y1) <= 0 || (x2-x1) <= 0 || iwdt <= 0 || ihgt <= 0) return;
-  if (CURC->gc_onscreen) bltfun = CURC->gc_driver->bltr2v;
+  if (CURC->gc_is_on_screen) bltfun = CURC->gc_driver->bltr2v;
   else                   bltfun = CURC->gc_driver->bitblt;
   while (xo > x1) xo -= iwdt;
   while (yo > y1) yo -= ihgt;
@@ -47,7 +47,7 @@ void GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,GrImage *p)
     xoff = (x1-xo)%iwdt;
     do {
       copyw = min(x2-xx,iwdt-xoff);
-      (*bltfun)( &CURC->gc_frame, xx + CURC->gc_xoffset, yy + CURC->gc_yoffset,
+      (*bltfun)( &CURC->frame, xx + CURC->x_offset, yy + CURC->y_offset,
                  &p->pxp_source,xoff,yoff,copyw,copyh,
                  p->pxp_oper
       );

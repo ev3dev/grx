@@ -33,7 +33,7 @@ int GrPngSupport( void )
 ** GrSaveContextToPng - Returns error
 */
 
-int GrSaveContextToPng( GrContext *grc, char *pngfn )
+int GrSaveContextToPng( GrxContext *grc, char *pngfn )
 {
   return -1;
 }
@@ -42,7 +42,7 @@ int GrSaveContextToPng( GrContext *grc, char *pngfn )
 ** GrLoadContextFromPng - Returns error
 */
 
-int GrLoadContextFromPng( GrContext *grc, char *pngfn, int use_alpha )
+int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha )
 {
   return -1;
 }

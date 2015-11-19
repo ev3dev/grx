@@ -47,7 +47,7 @@ void GrPatternFilledPlot(int x,int y,GrPattern *p)
 {
         clip_dot(CURC,x,y);
         mouse_block(CURC,x,y,x,y);
-        _GrPatternFilledPlot(x+CURC->gc_xoffset,y+CURC->gc_yoffset, p);
+        _GrPatternFilledPlot(x+CURC->x_offset,y+CURC->y_offset, p);
         mouse_unblock();
 }
 

@@ -47,7 +47,7 @@
 **          -1 on error
 */
 int
-SaveContextToTiff(GrContext *ctx, char *tiffn, unsigned compr, char *docn) {
+SaveContextToTiff(GrxContext *ctx, char *tiffn, unsigned compr, char *docn) {
     int    depth, i, res;
     long   row;
     TIFF  *tif;
@@ -58,10 +58,10 @@ SaveContextToTiff(GrContext *ctx, char *tiffn, unsigned compr, char *docn) {
     unsigned char *r;
     unsigned short red[256], green[256], blue[256];
 
-    if (!ctx) ctx = (GrContext *)GrCurrentContext();
+    if (!ctx) ctx = (GrxContext *)GrCurrentContext();
     if (!ctx) return -1;
-    width  = ctx->gc_xmax+1;
-    height = ctx->gc_ymax+1;
+    width  = ctx->x_max+1;
+    height = ctx->y_max+1;
     colors = GrNumColors();
     if (colors < 2) return -1;
     if (colors ==   2)    depth = 1;  else
@@ -168,10 +168,10 @@ TESTFUNC(wintest)
         int  ww = (x / 2) - 10;
         int  wh = (y / 2) - 10;
         long c;
-        GrContext *w1 = GrCreateSubContext(5,5,ww+4,wh+4,NULL,NULL);
-        GrContext *w2 = GrCreateSubContext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
-        GrContext *w3 = GrCreateSubContext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
-        GrContext *w4 = GrCreateSubContext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
+        GrxContext *w1 = GrCreateSubContext(5,5,ww+4,wh+4,NULL,NULL);
+        GrxContext *w2 = GrCreateSubContext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
+        GrxContext *w3 = GrCreateSubContext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
+        GrxContext *w4 = GrCreateSubContext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
 
         GrSetContext(w1);
         c = GrAllocColor(200,100,100);

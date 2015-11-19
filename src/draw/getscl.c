@@ -18,7 +18,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-const GrxColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy)
+const GrxColor *GrGetScanlineC(GrxContext *ctx,int x1,int x2,int yy)
 /* Input   ctx: source context, if NULL the current context is used */
 /*         x1 : first x coordinate read                             */
 /*         x2 : last  x coordinate read                             */
@@ -36,9 +36,9 @@ const GrxColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy)
         clip_hline_(ctx,x1,x2,yy,goto done,goto done);
         mouse_block(ctx,x1,yy,x2,yy);
         res = (*ctx->gc_driver->getindexedscanline)(
-            &ctx->gc_frame,
-            x1 + ctx->gc_xoffset,
-            yy + ctx->gc_yoffset,
+            &ctx->frame,
+            x1 + ctx->x_offset,
+            yy + ctx->y_offset,
             x2 - x1 + 1,
             NULL
         );

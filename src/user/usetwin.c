@@ -21,8 +21,8 @@
 
 void GrSetUserWindow(int x1,int y1,int x2,int y2)
 {
-        CURC->gc_usrxbase  = x1;
-        CURC->gc_usrybase  = y1;
-        CURC->gc_usrwidth  = x2 - x1;
-        CURC->gc_usrheight = y2 - y1;
+        CURC->user_x_base  = x1;
+        CURC->user_y_base  = y1;
+        CURC->user_width  = x2 - x1;
+        CURC->user_height = y2 - y1;
 }

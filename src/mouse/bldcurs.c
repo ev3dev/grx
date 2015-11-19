@@ -23,7 +23,7 @@
 GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const GrColorTableP C)
 {
         GrCursor  *curs;
-        GrContext  save;
+        GrxContext  save;
         int  wrkw2 = (w + 7) & ~7;
         int  workw = wrkw2 << 1;
         int  workh = ((h + 7) & ~7) << 1;

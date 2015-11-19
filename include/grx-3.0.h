@@ -33,7 +33,7 @@ typedef struct _GrxVideoDriver  GrxVideoDriver;
 typedef struct _GrxVideoMode    GrxVideoMode;
 typedef struct _GrxVideoModeExt GrxVideoModeExt;
 typedef struct _GrxFrame        GrxFrame;
-typedef struct _GR_context      GrContext;
+typedef struct _GrxContext      GrxContext;
 
 /* ================================================================== */
 /*                        SYSTEM TYPE DEF's                           */
@@ -495,52 +495,52 @@ struct _GrxFrame {
     GrxFrameDriver *driver;             /* frame access functions */
 };
 
-struct _GR_context {
-        GrxFrame    gc_frame;               /* frame buffer info */
-        struct _GR_context *gc_root;        /* context which owns frame */
-        int    gc_xmax;                     /* max X coord (width  - 1) */
-        int    gc_ymax;                     /* max Y coord (height - 1) */
-        int    gc_xoffset;                  /* X offset from root's base */
-        int    gc_yoffset;                  /* Y offset from root's base */
-        int    gc_xcliplo;                  /* low X clipping limit */
-        int    gc_ycliplo;                  /* low Y clipping limit */
-        int    gc_xcliphi;                  /* high X clipping limit */
-        int    gc_ycliphi;                  /* high Y clipping limit */
-        int    gc_usrxbase;                 /* user window min X coordinate */
-        int    gc_usrybase;                 /* user window min Y coordinate */
-        int    gc_usrwidth;                 /* user window width  */
-        int    gc_usrheight;                /* user window height */
-#   define gc_baseaddr                  gc_frame.base_address
-#   define gc_selector                  gc_frame.selector
-#   define gc_onscreen                  gc_frame.is_on_screen
-#   define gc_memflags                  gc_frame.memory_flags
-#   define gc_lineoffset                gc_frame.line_offset
-#   define gc_driver                    gc_frame.driver
+struct _GrxContext {
+    GrxFrame    frame;                  /* frame buffer info */
+    GrxContext *root;                   /* context which owns frame */
+    int    x_max;                       /* max X coord (width  - 1) */
+    int    y_max;                       /* max Y coord (height - 1) */
+    int    x_offset;                    /* X offset from root's base */
+    int    y_offset;                    /* Y offset from root's base */
+    int    x_clip_low;                  /* low X clipping limit */
+    int    y_clip_low;                  /* low Y clipping limit */
+    int    x_clip_high;                 /* high X clipping limit */
+    int    y_clip_high;                 /* high Y clipping limit */
+    int    user_x_base;                 /* user window min X coordinate */
+    int    user_y_base;                 /* user window min Y coordinate */
+    int    user_width;                  /* user window width  */
+    int    user_height;                 /* user window height */
+#   define gc_base_address              frame.base_address
+#   define gc_selector                  frame.selector
+#   define gc_is_on_screen              frame.is_on_screen
+#   define gc_memory_flags              frame.memory_flags
+#   define gc_line_offset               frame.line_offset
+#   define gc_driver                    frame.driver
 };
 
 extern const struct _GR_contextInfo {
-        struct _GR_context current;         /* the current context */
-        struct _GR_context screen;          /* the screen context */
+    GrxContext current;         /* the current context */
+    GrxContext screen;          /* the screen context */
 } * const GrContextInfo;
 
-GrContext *GrCreateContext(int w,int h,char *memory[4],GrContext *where);
-GrContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrContext *where);
-GrContext *GrCreateSubContext(int x1,int y1,int x2,int y2,const GrContext *parent,GrContext *where);
-GrContext *GrSaveContext(GrContext *where);
+GrxContext *GrCreateContext(int w,int h,char *memory[4],GrxContext *where);
+GrxContext *GrCreateFrameContext(GrxFrameMode md,int w,int h,char *memory[4],GrxContext *where);
+GrxContext *GrCreateSubContext(int x1,int y1,int x2,int y2,const GrxContext *parent,GrxContext *where);
+GrxContext *GrSaveContext(GrxContext *where);
 
-GrContext *GrCurrentContext(void);
-GrContext *GrScreenContext(void);
+GrxContext *GrCurrentContext(void);
+GrxContext *GrScreenContext(void);
 
-void  GrDestroyContext(GrContext *context);
-void  GrResizeSubContext(GrContext *context,int x1,int y1,int x2,int y2);
-void  GrSetContext(const GrContext *context);
+void  GrDestroyContext(GrxContext *context);
+void  GrResizeSubContext(GrxContext *context,int x1,int y1,int x2,int y2);
+void  GrSetContext(const GrxContext *context);
 
 void  GrSetClipBox(int x1,int y1,int x2,int y2);
-void  GrSetClipBoxC(GrContext *c,int x1,int y1,int x2,int y2);
+void  GrSetClipBoxC(GrxContext *c,int x1,int y1,int x2,int y2);
 void  GrGetClipBox(int *x1p,int *y1p,int *x2p,int *y2p);
-void  GrGetClipBoxC(const GrContext *c,int *x1p,int *y1p,int *x2p,int *y2p);
+void  GrGetClipBoxC(const GrxContext *c,int *x1p,int *y1p,int *x2p,int *y2p);
 void  GrResetClipBox(void);
-void  GrResetClipBoxC(GrContext *c);
+void  GrResetClipBoxC(GrxContext *c);
 
 int   GrMaxX(void);
 int   GrMaxY(void);
@@ -790,7 +790,7 @@ typedef struct {                        /* framed box colors */
 
 void GrClearScreen(GrxColor bg);
 void GrClearContext(GrxColor bg);
-void GrClearContextC(GrContext *ctx, GrxColor bg);
+void GrClearContextC(GrxContext *ctx, GrxColor bg);
 void GrClearClipBox(GrxColor bg);
 void GrPlot(int x,int y,GrxColor c);
 void GrLine(int x1,int y1,int x2,int y2,GrxColor c);
@@ -814,19 +814,19 @@ void GrPolyLine(int numpts,int points[][2],GrxColor c);
 void GrPolygon(int numpts,int points[][2],GrxColor c);
 void GrFilledConvexPolygon(int numpts,int points[][2],GrxColor c);
 void GrFilledPolygon(int numpts,int points[][2],GrxColor c);
-void GrBitBlt(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,GrxColor op);
-void GrBitBlt1bpp(GrContext *dst,int dx,int dy,GrContext *src,int x1,int y1,int x2,int y2,GrxColor fg,GrxColor bg);
+void GrBitBlt(GrxContext *dst,int x,int y,GrxContext *src,int x1,int y1,int x2,int y2,GrxColor op);
+void GrBitBlt1bpp(GrxContext *dst,int dx,int dy,GrxContext *src,int x1,int y1,int x2,int y2,GrxColor fg,GrxColor bg);
 void GrFloodFill(int x, int y, GrxColor border, GrxColor c);
 void GrFloodSpill(int x1, int y1, int x2, int y2, GrxColor old_c, GrxColor new_c);
 void GrFloodSpill2(int x1, int y1, int x2, int y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
-void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2, GrxColor old_c, GrxColor new_c);
-void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
+void GrFloodSpillC(GrxContext *ctx, int x1, int y1, int x2, int y2, GrxColor old_c, GrxColor new_c);
+void GrFloodSpillC2(GrxContext *ctx, int x1, int y1, int x2, int y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
 
 GrxColor GrPixel(int x,int y);
-GrxColor GrPixelC(GrContext *c,int x,int y);
+GrxColor GrPixelC(GrxContext *c,int x,int y);
 
 const GrxColor *GrGetScanline(int x1,int x2,int yy);
-const GrxColor *GrGetScanlineC(GrContext *ctx,int x1,int x2,int yy);
+const GrxColor *GrGetScanlineC(GrxContext *ctx,int x1,int x2,int yy);
 /* Input   ctx: source context, if NULL the current context is used */
 /*         x1 : first x coordinate read                             */
 /*         x2 : last  x coordinate read                             */
@@ -865,10 +865,10 @@ void GrVLineNC(int x,int y1,int y2,GrxColor c);
 void GrBoxNC(int x1,int y1,int x2,int y2,GrxColor c);
 void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrxColor c);
 void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
-void GrBitBltNC(GrContext *dst,int x,int y,GrContext *src,int x1,int y1,int x2,int y2,GrxColor op);
+void GrBitBltNC(GrxContext *dst,int x,int y,GrxContext *src,int x1,int y1,int x2,int y2,GrxColor op);
 
 GrxColor GrPixelNC(int x,int y);
-GrxColor GrPixelCNC(GrContext *c,int x,int y);
+GrxColor GrPixelCNC(GrxContext *c,int x,int y);
 
 #ifndef GRX_SKIP_INLINES
 #define GrPlotNC(x,y,c) (                                                      \
@@ -1240,7 +1240,7 @@ typedef struct {
 
 GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP colors);
 GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxColor bgc);
-GrPattern *GrConvertToPixmap(GrContext *src);
+GrPattern *GrConvertToPixmap(GrxContext *src);
 
 void GrDestroyPattern(GrPattern *p);
 
@@ -1298,7 +1298,7 @@ GrImage *GrImageInverse(GrImage *p,int flag);
 GrImage *GrImageStretch(GrImage *p,int nwidth,int nheight);
 
 GrImage *GrImageFromPattern(GrPattern *p);
-GrImage *GrImageFromContext(GrContext *c);
+GrImage *GrImageFromContext(GrxContext *c);
 GrImage *GrImageBuildUsedAsPattern(const char *pixels,int w,int h,const GrColorTableP colors);
 
 GrPattern *GrPatternFromImage(GrImage *p);
@@ -1348,7 +1348,7 @@ void GrUsrFilledPolygon(int numpts,int points[][2],GrxColor c);
 void GrUsrFloodFill(int x, int y, GrxColor border, GrxColor c);
 
 GrxColor GrUsrPixel(int x,int y);
-GrxColor GrUsrPixelC(GrContext *c,int x,int y);
+GrxColor GrUsrPixelC(GrxContext *c,int x,int y);
 
 void GrUsrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
 void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
@@ -1388,7 +1388,7 @@ void GrUsrTextXY(int x,int y,char *text,GrxColor fg,GrxColor bg);
 /* ================================================================== */
 
 typedef struct _GR_cursor {
-        struct _GR_context work;                    /* work areas (4) */
+        GrxContext work;                            /* work areas (4) */
         int     xcord,ycord;                        /* cursor position on screen */
         int     xsize,ysize;                        /* cursor size */
         int     xoffs,yoffs;                        /* LU corner to hot point offset */
@@ -1464,7 +1464,7 @@ typedef struct _GR_mouseEvent {                 /* mouse event buffer structure 
  * mouse status information
  */
 extern const struct _GR_mouseInfo {
-        int   (*block)(GrContext*,int,int,int,int); /* mouse block function */
+        int   (*block)(GrxContext*,int,int,int,int); /* mouse block function */
         void  (*unblock)(int flags);                /* mouse unblock function */
         void  (*uninit)(void);                      /* mouse cleanupt function */
         struct _GR_cursor     *cursor;              /* the mouse cursor */
@@ -1521,7 +1521,7 @@ void GrMouseEraseCursor(void);
 void GrMouseUpdateCursor(void);
 int  GrMouseCursorIsDisplayed(void);
 
-int  GrMouseBlock(GrContext *c,int x1,int y1,int x2,int y2);
+int  GrMouseBlock(GrxContext *c,int x1,int y1,int x2,int y2);
 void GrMouseUnBlock(int return_value_from_GrMouseBlock);
 
 #ifndef GRX_SKIP_INLINES
@@ -1574,12 +1574,12 @@ void GrMouseUnBlock(int return_value_from_GrMouseBlock);
 
 /* The PNM functions */
 
-int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn );
-int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn );
-int GrSaveContextToPpm( GrContext *grc, char *ppmfn, char *docn );
-int GrLoadContextFromPnm( GrContext *grc, char *pnmfn );
+int GrSaveContextToPbm( GrxContext *grc, char *pbmfn, char *docn );
+int GrSaveContextToPgm( GrxContext *grc, char *pgmfn, char *docn );
+int GrSaveContextToPpm( GrxContext *grc, char *ppmfn, char *docn );
+int GrLoadContextFromPnm( GrxContext *grc, char *pnmfn );
 int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval );
-int GrLoadContextFromPnmBuffer( GrContext *grc, const char *buffer );
+int GrLoadContextFromPnmBuffer( GrxContext *grc, const char *buffer );
 int GrQueryPnmBuffer( const char *buffer, int *width, int *height, int *maxval );
 
 /* ================================================================== */
@@ -1588,8 +1588,8 @@ int GrQueryPnmBuffer( const char *buffer, int *width, int *height, int *maxval )
 /* ================================================================== */
 
 int GrPngSupport( void );
-int GrSaveContextToPng( GrContext *grc, char *pngfn );
-int GrLoadContextFromPng( GrContext *grc, char *pngfn, int use_alpha );
+int GrSaveContextToPng( GrxContext *grc, char *pngfn );
+int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha );
 int GrQueryPng( char *pngfn, int *width, int *height );
 
 /* ================================================================== */
@@ -1598,10 +1598,10 @@ int GrQueryPng( char *pngfn, int *width, int *height );
 /* ================================================================== */
 
 int GrJpegSupport( void );
-int GrLoadContextFromJpeg( GrContext *grc, char *jpegfn, int scale );
+int GrLoadContextFromJpeg( GrxContext *grc, char *jpegfn, int scale );
 int GrQueryJpeg( char *jpegfn, int *width, int *height );
-int GrSaveContextToJpeg( GrContext *grc, char *jpegfn, int quality );
-int GrSaveContextToGrayJpeg( GrContext *grc, char *jpegfn, int quality );
+int GrSaveContextToJpeg( GrxContext *grc, char *jpegfn, int quality );
+int GrSaveContextToGrayJpeg( GrxContext *grc, char *jpegfn, int quality );
 
 /* ================================================================== */
 /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */
@@ -1634,7 +1634,7 @@ long GrMsecTime(void);
 ** requires tifflib by  Sam Leffler (sam@engr.sgi.com)
 **        available at  ftp://ftp.sgi.com/graphics/tiff
 */
-int SaveContextToTiff(GrContext *cxt, char *tiffn, unsigned compr, char *docn);
+int SaveContextToTiff(GrxContext *cxt, char *tiffn, unsigned compr, char *docn);
 
 #ifdef __cplusplus
 }

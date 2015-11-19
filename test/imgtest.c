@@ -28,7 +28,7 @@ TESTFUNC(imgtest)
         int  wh = (y / PARTS)-1;
         int m1, m2, d1, d2;
         GrxColor c1, c2, c3;
-        GrContext ctx;
+        GrxContext ctx;
         GrImage *img1;
         GrImage *img2;
         if (! GrCreateContext(ww,wh,NULL,&ctx)) return;

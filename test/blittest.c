@@ -25,7 +25,7 @@
 #define BHH     (grx_get_screen_y() / 10)
 int     BWW =   83;
 
-void drbox(GrContext *src,int x,int y)
+void drbox(GrxContext *src,int x,int y)
 {
         GrxColor c1 = GrAllocColor(0,0,255);
         GrxColor c2 = GrAllocColor(255,0,0);
@@ -46,7 +46,7 @@ void drbox(GrContext *src,int x,int y)
         GrResetClipBox();
 }
 
-void doblits(GrContext *src,int x,int y)
+void doblits(GrxContext *src,int x,int y)
 {
         int xx = (GrSizeX() - BWW)/ 2;
         int yy = 2;
@@ -72,7 +72,7 @@ void doblits(GrContext *src,int x,int y)
 */
 }
 
-void bltest(GrContext *src,int x,int y)
+void bltest(GrxContext *src,int x,int y)
 {
         int ii;
 
@@ -86,7 +86,7 @@ void bltest(GrContext *src,int x,int y)
 
 void blxtest(void)
 {
-        GrContext memc;
+        GrxContext memc;
         int cw = (BWW + 28) & ~7;
         int ch = BHH + 20;
 
@@ -111,8 +111,8 @@ TESTFUNC(blittest)
         int  bx,by;
         int  cnt;
 
-        GrContext *save = GrCreateSubContext(0,0,GrMaxX(),GrMaxY(),NULL,NULL);
-        GrContext *tile = GrCreateContext(bw,bh,NULL,NULL);
+        GrxContext *save = GrCreateSubContext(0,0,GrMaxX(),GrMaxY(),NULL,NULL);
+        GrxContext *tile = GrCreateContext(bw,bh,NULL,NULL);
 
         blxtest();
         GrKeyRead();

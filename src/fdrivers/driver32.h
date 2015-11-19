@@ -85,7 +85,7 @@ GrxColor readpixel(GrxFrame *c,int x,int y)
         char *pp;
         GRX_ENTER();
 #ifdef FAR_ACCESS
-        pp = &SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
+        pp = &SCRN->gc_base_address[0][FOFS(x,y,SCRN->gc_line_offset)];
         SETFARSEL(SCRN->gc_selector);
 #else
 /* problem with LFB_BY_NEAR_POINTER here? Does c always point to screen? */
@@ -100,7 +100,7 @@ void drawpixel(int x,int y,GrxColor color)
         char *ptr;
         int op;
         GRX_ENTER();
-        ptr  = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+        ptr  = &CURC->gc_base_address[0][FOFS(x,y,CURC->gc_line_offset)];
         op   = C_OPER(color);
         color= COL2PIX(color);
         SETFARSEL(CURC->gc_selector);
@@ -121,8 +121,8 @@ static void drawvline(int x,int y,int h,GrxColor color)
         int op;
 
         GRX_ENTER();
-        lwdt = CURC->gc_lineoffset;
-        pp   = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+        lwdt = CURC->gc_line_offset;
+        pp   = &CURC->gc_base_address[0][FOFS(x,y,CURC->gc_line_offset)];
         op   = C_OPER(color);
         color= COL2PIX(color);
         SETFARSEL(CURC->gc_selector);
@@ -147,7 +147,7 @@ static void drawhline(int x,int y,int w,GrxColor color)
         GR_repl cval;
 
         GRX_ENTER();
-        pp   = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+        pp   = &CURC->gc_base_address[0][FOFS(x,y,CURC->gc_line_offset)];
         op   = C_OPER(color);
         color= COL2PIX(color);
         cval = freplicate_l(color);
@@ -169,8 +169,8 @@ static void drawblock(int x,int y,int w,int h,GrxColor color)
         GR_repl cval;
 
         GRX_ENTER();
-        skip  = CURC->gc_lineoffset;
-        pp    = &CURC->gc_baseaddr[0][FOFS(x,y,skip)];
+        skip  = CURC->gc_line_offset;
+        pp    = &CURC->gc_base_address[0][FOFS(x,y,skip)];
         skip -= w<<2;
         op    = C_OPER(color);
         color = COL2PIX(color);
@@ -278,7 +278,7 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
         } else
             xstep = 4;
 
-        ptr = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+        ptr = &CURC->gc_base_address[0][FOFS(x,y,CURC->gc_line_offset)];
         SETFARSEL(CURC->gc_selector);
         if(dx > dy) {
             npts  = dx +  1;
@@ -286,7 +286,7 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
             lndata.errsub  = dy;
             lndata.erradd  = dx;
             lndata.offset1 = xstep;
-            lndata.offset2 = CURC->gc_lineoffset + xstep;
+            lndata.offset2 = CURC->gc_line_offset + xstep;
             if(xstep < 0) {
                 lndata.offset1 = 1;
                 switch(op) {
@@ -303,8 +303,8 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
             error = dy >> 1;
             lndata.errsub  = dx;
             lndata.erradd  = dy;
-            lndata.offset1 = CURC->gc_lineoffset;
-            lndata.offset2 = CURC->gc_lineoffset + xstep;
+            lndata.offset1 = CURC->gc_line_offset;
+            lndata.offset2 = CURC->gc_line_offset + xstep;
         }
         switch(op) {
             case C_XOR: ASM_LINE2(xor); break;

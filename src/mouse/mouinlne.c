@@ -58,7 +58,7 @@ void (GrMouseGetLimits)(int *x1,int *y1,int *x2,int *y2)
         GrMouseGetLimits(x1,y1,x2,y2);
 }
 
-int (GrMouseBlock)(GrContext *c,int x1,int y1,int x2,int y2)
+int (GrMouseBlock)(GrxContext *c,int x1,int y1,int x2,int y2)
 {
         return(GrMouseBlock(c,x1,y1,x2,y2));
 }

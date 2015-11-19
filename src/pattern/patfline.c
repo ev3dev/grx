@@ -102,6 +102,6 @@ void GrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p)
 {
         clip_line(CURC,x1,y1,x2,y2);
         mouse_block(CURC,x1,y1,x2,y2);
-        _GrPatternFilledLine(x1+CURC->gc_xoffset,y1+CURC->gc_xoffset,x2-x1,y2-y1,p);
+        _GrPatternFilledLine(x1+CURC->x_offset,y1+CURC->x_offset,x2-x1,y2-y1,p);
         mouse_unblock();
 }

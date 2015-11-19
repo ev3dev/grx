@@ -34,7 +34,7 @@ int GrPngSupport( void )
 #  define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
 #endif
 
-static int readpng( FILE *f, GrContext *grc, int use_alpha );
+static int readpng( FILE *f, GrxContext *grc, int use_alpha );
 static int querypng( FILE *f, int *w, int *h );
 
 /*
@@ -55,9 +55,9 @@ static int querypng( FILE *f, int *w, int *h );
 **         -1 on error
 */
 
-int GrLoadContextFromPng( GrContext *grc, char *pngfn, int use_alpha )
+int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha )
 {
-  GrContext grcaux;
+  GrxContext grcaux;
   FILE *f;
   int r;
   
@@ -103,7 +103,7 @@ int GrQueryPng( char *pngfn, int *width, int *height )
 
 /**/
 
-static int readpng( FILE *f, GrContext *grc, int use_alpha )
+static int readpng( FILE *f, GrxContext *grc, int use_alpha )
 {
   png_struct *png_ptr = NULL;
   png_info *info_ptr = NULL;

@@ -24,7 +24,7 @@
 
 GrImage *GrImageInverse(GrImage *p,int flag)
 {
-  GrContext  ctx, save;
+  GrxContext  ctx, save;
   GrxColor    col;
   GrImage   *img;
   int yy, xx, sidex, sidey, width, height, xs, ys = 0;
@@ -52,7 +52,7 @@ GrImage *GrImageInverse(GrImage *p,int flag)
   img->pxp_width  = width;
   img->pxp_height = height;
   img->pxp_oper   = 0;
-  img->pxp_source = ctx.gc_frame;
+  img->pxp_source = ctx.frame;
   img->pxp_source.memory_flags =  3;/* MY_CONTEXT & MY_MEMORY */
   return(img);
 }

@@ -19,8 +19,8 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrBitBlt(GrContext *dst,int dx,int dy,
-              GrContext *src,int x1,int y1,int x2,int y2,GrxColor oper)
+void GrBitBlt(GrxContext *dst,int dx,int dy,
+              GrxContext *src,int x1,int y1,int x2,int y2,GrxColor oper)
 {
         int  oldx1,oldy1;
         int  oldx2,oldy2;
@@ -50,8 +50,8 @@ void GrBitBlt(GrContext *dst,int dx,int dy,
         mouse_block(src,x1,y1,x2,y2);
         mouse_addblock(dst,dx,dy,dstx2,dsty2);
         (*bltfun)(
-            &dst->gc_frame,(dx + dst->gc_xoffset),(dy + dst->gc_yoffset),
-            &src->gc_frame,(x1 + src->gc_xoffset),(y1 + src->gc_yoffset),
+            &dst->frame,(dx + dst->x_offset),(dy + dst->y_offset),
+            &src->frame,(x1 + src->x_offset),(y1 + src->y_offset),
             (x2 - x1 + 1),
             (y2 - y1 + 1),
             oper

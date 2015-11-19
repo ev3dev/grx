@@ -23,8 +23,8 @@ void GrVLineNC(int xx,int y1,int y2,GrxColor c)
 {
         isort(y1,y2);
         (*FDRV->drawvline)(
-            xx + CURC->gc_xoffset,
-            y1 + CURC->gc_yoffset,
+            xx + CURC->x_offset,
+            y1 + CURC->y_offset,
             y2 - y1 + 1,
             c
         );

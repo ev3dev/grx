@@ -19,15 +19,15 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-GrxColor GrPixelC(GrContext *c,int x,int y)
+GrxColor GrPixelC(GrxContext *c,int x,int y)
 {
         GrxColor retval;
         cxclip_dot_(c,x,y,return(GrNOCOLOR));
         mouse_block(c,x,y,x,y);
         retval = (*c->gc_driver->readpixel)(
-            &c->gc_frame,
-            x + c->gc_xoffset,
-            y + c->gc_yoffset
+            &c->frame,
+            x + c->x_offset,
+            y + c->y_offset
         );
         mouse_unblock();
         return(retval);

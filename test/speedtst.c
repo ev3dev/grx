@@ -197,7 +197,7 @@ void Message(int disp, char *txt, gvmode *gp) {
     fprintf(stderr,"%s\t%s\n", msg, txt);
   if (disp) {
     GrTextOption to;
-    GrContext save;
+    GrxContext save;
     GrSaveContext(&save);
     GrSetContext(NULL);
     to.txo_font = &GrFont_PC6x8;
@@ -434,8 +434,8 @@ void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawblk.rate = gp->drawblk.count / seconds;
 }
 
-void xor_draw_blocks(GrContext *c) {
-  GrContext save;
+void xor_draw_blocks(GrxContext *c) {
+  GrxContext save;
   int i;
 
   GrSaveContext(&save);
@@ -449,11 +449,11 @@ void xor_draw_blocks(GrContext *c) {
 
 void blit_measure(gvmode *gp, perfm *p,
                   int *xb, int *yb,
-                  GrContext *dst,GrContext *src) {
+                  GrxContext *dst,GrxContext *src) {
   int i, j;
   long t1,t2;
   double seconds;
-  GrContext save;
+  GrxContext save;
 
   GrSaveContext(&save);
   if (dst != src) {
@@ -521,11 +521,11 @@ void blittest(gvmode *gp, XY_PAIRS *pairs, int ram) {
 
 #if BLIT_loops-0
   blit_measure(gp, &gp->blitv2v, xb, yb,
-               (GrContext *)(RAMMODE(gp) ? GrCurrentContext() : NULL),
-               (GrContext *)(RAMMODE(gp) ? GrCurrentContext() : NULL));
+               (GrxContext *)(RAMMODE(gp) ? GrCurrentContext() : NULL),
+               (GrxContext *)(RAMMODE(gp) ? GrCurrentContext() : NULL));
   if (!BLIT_FAIL(gp) && !ram) {
-    GrContext rc;
-    GrContext *rcp = GrCreateContext(gp->w,gp->h,NULL,&rc);
+    GrxContext rc;
+    GrxContext *rcp = GrCreateContext(gp->w,gp->h,NULL,&rc);
     if (rcp) {
       blit_measure(gp, &gp->blitv2r, xb, yb, rcp, NULL);
       blit_measure(gp, &gp->blitr2v, xb, yb, NULL, rcp);
@@ -631,7 +631,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
   rp = &rammodes[(unsigned)(gp-grmodes)];
   rp->fm = grx_get_core_frame_mode();
   if (!MEASURED(rp) && !identical_measured(rp)) {
-    GrContext rc;
+    GrxContext rc;
     if (GrCreateFrameContext(rp->fm,gp->w,gp->h,NULL,&rc)) {
       GrSetContext(&rc);
       measure_one(rp, 1);

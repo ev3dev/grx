@@ -23,14 +23,14 @@
 
 void GrClearContext(GrxColor bg)
 {
-  mouse_block(CURC,0,0,CURC->gc_xmax,CURC->gc_ymax);
-  GrFilledBoxNC(0,0,CURC->gc_xmax,CURC->gc_ymax,bg);
+  mouse_block(CURC,0,0,CURC->x_max,CURC->y_max);
+  GrFilledBoxNC(0,0,CURC->x_max,CURC->y_max,bg);
   mouse_unblock();
 }
 
-void GrClearContextC(GrContext *ctx, GrxColor bg)
+void GrClearContextC(GrxContext *ctx, GrxColor bg)
 {
-  GrContext s;
+  GrxContext s;
   GrSaveContext(&s);
   GrSetContext(ctx);
   GrClearContext(bg);

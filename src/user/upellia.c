@@ -24,7 +24,7 @@ void GrUsrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int 
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);
-        SCALE(xa,xa,CURC->gc_xmax,CURC->gc_usrwidth);
-        SCALE(ya,ya,CURC->gc_ymax,CURC->gc_usrheight);
+        SCALE(xa,xa,CURC->x_max,CURC->user_width);
+        SCALE(ya,ya,CURC->y_max,CURC->user_height);
         GrPatternedEllipseArc(xc,yc,xa,ya,start,end,style,lp);
 }

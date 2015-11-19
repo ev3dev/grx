@@ -53,10 +53,10 @@ void drawpixel(int x,int y,GrxColor color)
         GR_int32u offs;
         char *p0,*p1,*p2;
         GRX_ENTER();
-        offs = FOFS(x,y,CURC->gc_lineoffset);
-        p0 = &CURC->gc_baseaddr[0][offs];
-        p1 = &CURC->gc_baseaddr[1][offs];
-        p2 = &CURC->gc_baseaddr[2][offs];
+        offs = FOFS(x,y,CURC->gc_line_offset);
+        p0 = &CURC->gc_base_address[0][offs];
+        p1 = &CURC->gc_base_address[1][offs];
+        p2 = &CURC->gc_base_address[2][offs];
         switch(C_OPER(color)) {
           case C_XOR: poke_b_xor(p0,RD24BYTE(color,0));
                       poke_b_xor(p1,RD24BYTE(color,1));
@@ -85,11 +85,11 @@ static void drawhline(int x,int y,int w,GrxColor color) {
     GR_int32u offs;
     GRX_ENTER();
     copr = C_OPER(color);
-    offs = FOFS(x,y,CURC->gc_lineoffset);
+    offs = FOFS(x,y,CURC->gc_line_offset);
     for (pl=0; pl < 3; ++pl) {
       if(DOCOLOR8(color,copr)) {
         GR_repl cval = freplicate_b(color);
-        char *pp = &CURC->gc_baseaddr[pl][offs];
+        char *pp = &CURC->gc_base_address[pl][offs];
         int ww = w;
         switch(copr) {
             case C_XOR: repfill_b_xor(pp,cval,ww); break;
@@ -113,11 +113,11 @@ static void drawvline(int x,int y,int h,GrxColor color)
     unsigned lwdt;
     GRX_ENTER();
     copr = C_OPER(color);
-    lwdt = CURC->gc_lineoffset;
+    lwdt = CURC->gc_line_offset;
     offs = FOFS(x,y,lwdt);
     for (pl=0; pl < 3; ++pl) {
       if(DOCOLOR8(color,copr)) {
-        char *pp = &CURC->gc_baseaddr[pl][offs];
+        char *pp = &CURC->gc_base_address[pl][offs];
         int hh = h;
         switch(copr) {
             case C_XOR: colfill_b_xor(pp,lwdt,(GR_int8u)color,hh); break;

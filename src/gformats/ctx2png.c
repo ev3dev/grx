@@ -25,7 +25,7 @@
 #  define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
 #endif
 
-static int writepng( FILE *f, GrContext *grc );
+static int writepng( FILE *f, GrxContext *grc );
 
 /*
 ** GrSaveContextToPng - Dump a context in a PNG file
@@ -40,9 +40,9 @@ static int writepng( FILE *f, GrContext *grc );
 **         -1 on error
 */
 
-int GrSaveContextToPng( GrContext *grc, char *pngfn )
+int GrSaveContextToPng( GrxContext *grc, char *pngfn )
 {
-  GrContext grcaux;
+  GrxContext grcaux;
   FILE *f;
   int r;
   
@@ -61,7 +61,7 @@ int GrSaveContextToPng( GrContext *grc, char *pngfn )
 
 /**/
 
-static int writepng( FILE *f, GrContext *grc )
+static int writepng( FILE *f, GrxContext *grc )
 {
   png_structp png_ptr;
   png_infop info_ptr;

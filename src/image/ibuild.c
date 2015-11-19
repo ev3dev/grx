@@ -29,7 +29,7 @@ GrImage *GrImageBuild(const char *pixels,int w,int h,const GrColorTableP colors)
   GRX_ENTER();
   img = NULL;
   if ( pixels ) do {
-    GrContext  ctx, save;
+    GrxContext  ctx, save;
     GrxColor    col;
     int yy=0, xx;
     img = _GrImageAllocate(&ctx,w,h);

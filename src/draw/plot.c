@@ -25,8 +25,8 @@ void GrPlot(int x,int y,GrxColor c)
         clip_dot(CURC,x,y);
         mouse_block(CURC,x,y,x,y);
         (*FDRV->drawpixel)(
-            x + CURC->gc_xoffset,
-            y + CURC->gc_yoffset,
+            x + CURC->x_offset,
+            y + CURC->y_offset,
             c
         );
         mouse_unblock();

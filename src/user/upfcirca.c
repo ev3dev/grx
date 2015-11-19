@@ -27,7 +27,7 @@ void GrUsrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,int style
 #ifdef USR_KEEP_SHAPE
         U2SX(xc,CURC);
         U2SY(yc,CURC);
-        SCALE(r,r,CURC->gc_xmax,CURC->gc_usrwidth);
+        SCALE(r,r,CURC->x_max,CURC->user_width);
         GrPatternFilledCircleArc(xc,yc,r,start,end,style,p);
 #else
         GrUsrPatternFilledEllipseArc(xc,yc,r,r,start,end,style,p);

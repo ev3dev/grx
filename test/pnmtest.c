@@ -30,7 +30,7 @@
 
 int main(void)
 {
-  GrContext *grc;
+  GrxContext *grc;
   int wide, high, maxval;
   char s[81];
   

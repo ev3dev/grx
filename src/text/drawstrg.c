@@ -110,8 +110,8 @@ void _GrDrawString(const void *text,int length,int x,int y,
             clip_ordbox_(CURC,x1,y1,x2,y2,continue,CLIP_EMPTY_MACRO_ARG);
             bmp = GrFontCharAuxBmp(f,chr,opt->txo_direct,undl);
             if(bmp) (*dbm)(
-                (x1 + CURC->gc_xoffset),
-                (y1 + CURC->gc_yoffset),
+                (x1 + CURC->x_offset),
+                (y1 + CURC->y_offset),
                 (x2 - x1 + 1),
                 (y2 - y1 + 1),
                 oldx, oldy,
@@ -122,8 +122,8 @@ void _GrDrawString(const void *text,int length,int x,int y,
                 p
             );
             else (*FDRV->drawblock)(
-                (x1 + CURC->gc_xoffset),
-                (y1 + CURC->gc_yoffset),
+                (x1 + CURC->x_offset),
+                (y1 + CURC->y_offset),
                 (x2 - x1 + 1),
                 (y2 - y1 + 1),
                 bgcv

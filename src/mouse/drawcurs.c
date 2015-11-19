@@ -19,10 +19,10 @@
 #include "mouse/input.h"
 #include "libgrx.h"
 
-#define XORMASK(c,x,y)  &(c)->work.gc_frame,(x),(y)
-#define ANDMASK(c,x,y)  &(c)->work.gc_frame,((x) + ((c)->xwork >> 1)),(y)
-#define SAVECXT(c,x,y)  &(c)->work.gc_frame,(x),((y) + (c)->ysize)
-#define WORKCXT(c,x,y)  &(c)->work.gc_frame,(x),((y) + (c)->ysize + (c)->ywork)
+#define XORMASK(c,x,y)  &(c)->work.frame,(x),(y)
+#define ANDMASK(c,x,y)  &(c)->work.frame,((x) + ((c)->xwork >> 1)),(y)
+#define SAVECXT(c,x,y)  &(c)->work.frame,(x),((y) + (c)->ysize)
+#define WORKCXT(c,x,y)  &(c)->work.frame,(x),((y) + (c)->ysize + (c)->ywork)
 
 void GrDisplayCursor(GrCursor *C)
 {
@@ -46,7 +46,7 @@ void GrDisplayCursor(GrCursor *C)
         mouse_block(SCRN,xwrk,ywrk,(xwrk + xsiz - 1),(ywrk + ysiz - 1));
         (*SDRV->bltv2r)(
             SAVECXT(C,0,0),
-            &SCRN->gc_frame,xwrk,ywrk,
+            &SCRN->frame,xwrk,ywrk,
             xsiz,ysiz,
             GrWRITE
         );
@@ -79,7 +79,7 @@ void GrDisplayCursor(GrCursor *C)
             GrXOR
         );
         (*SDRV->bltr2v)(
-            &SCRN->gc_frame,C->xwpos,C->ywpos,
+            &SCRN->frame,C->xwpos,C->ywpos,
             WORKCXT(C,0,0),
             C->xwork,C->ywork,
             GrWRITE
@@ -95,7 +95,7 @@ void GrEraseCursor(GrCursor *C)
                (C->xwpos + C->xwork - 1),(C->ywpos + C->ywork - 1)
             );
             (*SDRV->bltr2v)(
-                &SCRN->gc_frame,C->xwpos,C->ywpos,
+                &SCRN->frame,C->xwpos,C->ywpos,
                 SAVECXT(C,0,0),
                 C->xwork,C->ywork,
                 GrWRITE
@@ -142,7 +142,7 @@ void GrMoveCursor(GrCursor *C,int x,int y)
                 GrXOR
             );
             (*SDRV->bltr2v)(
-                &SCRN->gc_frame,C->xwpos,C->ywpos,
+                &SCRN->frame,C->xwpos,C->ywpos,
                 WORKCXT(C,0,0),
                 C->xwork,C->ywork,
                 GrWRITE

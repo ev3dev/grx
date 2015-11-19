@@ -24,8 +24,8 @@ void GrFilledBox(int x1,int y1,int x2,int y2,GrxColor c)
         clip_box(CURC,x1,y1,x2,y2);
         mouse_block(CURC,x1,y1,x2,y2);
         (*FDRV->drawblock)(
-            x1 + CURC->gc_xoffset,
-            y1 + CURC->gc_yoffset,
+            x1 + CURC->x_offset,
+            y1 + CURC->y_offset,
             x2 - x1 + 1,
             y2 - y1 + 1,
             c

@@ -28,7 +28,7 @@ GrxColor (GrPixelNC)(int x,int y)
         return(GrPixelNC(x,y));
 }
 
-GrxColor (GrPixelCNC)(GrContext *c,int x,int y)
+GrxColor (GrPixelCNC)(GrxContext *c,int x,int y)
 {
         return(GrPixelCNC(c,x,y));
 }

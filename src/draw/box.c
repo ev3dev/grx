@@ -27,27 +27,27 @@ void GrBox(int x1,int y1,int x2,int y2,GrxColor c)
         clip_ordbox(CURC,x1,y1,x2,y2);
         mouse_block(CURC,x1,y1,x2,y2);
         if(!(oy1 -= y1)) (*FDRV->drawhline)(
-            x1 + CURC->gc_xoffset,
-            y1 + CURC->gc_yoffset,
+            x1 + CURC->x_offset,
+            y1 + CURC->y_offset,
             x2 - x1 + 1,
             c
         );
         if(!(oy2 -= y2) && ((y1 != y2) || oy1)) (*FDRV->drawhline)(
-            x1 + CURC->gc_xoffset,
-            y2 + CURC->gc_yoffset,
+            x1 + CURC->x_offset,
+            y2 + CURC->y_offset,
             x2 - x1 + 1,
             c
         );
         if((y2 = y2 - (oy1 ? y1 : ++y1) + (oy2 ? 1 : 0)) > 0) {
             if(!(ox1 -= x1)) (*FDRV->drawvline)(
-                x1 + CURC->gc_xoffset,
-                y1 + CURC->gc_yoffset,
+                x1 + CURC->x_offset,
+                y1 + CURC->y_offset,
                 y2,
                 c
             );
             if((ox2 == x2) && ((x1 != x2) || ox1)) (*FDRV->drawvline)(
-                x2 + CURC->gc_xoffset,
-                y1 + CURC->gc_yoffset,
+                x2 + CURC->x_offset,
+                y1 + CURC->y_offset,
                 y2,
                 c
             );
