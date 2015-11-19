@@ -67,7 +67,7 @@
 
 
 static INLINE
-GrxColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrxFrame *c,int x,int y)
 {
         GrxColor col;
         char *p;
@@ -76,7 +76,7 @@ GrxColor readpixel(GrFrame *c,int x,int y)
         p = &SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
         setup_far_selector(SCRN->gc_selector);
 #else
-        p = &c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+        p = &c->base_address[0][FOFS(x,y,c->line_offset)];
 #endif
         col = peek24(p);
         GRX_RETURN(col);
@@ -153,7 +153,7 @@ static
 static
 #include "fdrivers/generic/pattern.c"
 
-static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrxColor op)
+static void bitblt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
         GRX_ENTER();
         if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
@@ -178,8 +178,8 @@ static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
 
 #ifdef FAR_ACCESS
 
-static void bltv2r(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
+static void bltv2r(GrxFrame *dst,int dx,int dy,
+                   GrxFrame *src,int sx,int sy,
                    int w,int h,GrxColor op)
 {
         GRX_ENTER();
@@ -198,8 +198,8 @@ static void bltv2r(GrFrame *dst,int dx,int dy,
         GRX_LEAVE();
 }
 
-static void bltr2v(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
+static void bltr2v(GrxFrame *dst,int dx,int dy,
+                   GrxFrame *src,int sx,int sy,
                    int w,int h,GrxColor op)
 {
         GRX_ENTER();

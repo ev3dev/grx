@@ -74,7 +74,7 @@
 
 
 static INLINE
-GrxColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrxFrame *c,int x,int y)
 {
     GR_int8u *pp;
     GRX_ENTER();
@@ -84,7 +84,7 @@ GrxColor readpixel(GrFrame *c,int x,int y)
     GRX_RETURN((GR_int8u)peek8(pp));
 #else
 /* problem with LFB_BY_NEAR_POINTER here? Does c always point to screen? */
-    pp = (GR_int8u *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+    pp = (GR_int8u *)&c->base_address[0][FOFS(x,y,c->line_offset)];
     GRX_RETURN(*pp);
 #endif
 }

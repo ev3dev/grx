@@ -27,8 +27,8 @@
 
 #ifndef __XWIN__
 static INLINE
-void dualpageblt(GrFrame *dst,int dx,int dy,
-                 GrFrame *src,int sx,int sy,
+void dualpageblt(GrxFrame *dst,int dx,int dy,
+                 GrxFrame *src,int sx,int sy,
                  int w,int h)
 {
         unsigned long doff,soff;
@@ -40,18 +40,18 @@ void dualpageblt(GrFrame *dst,int dx,int dy,
         if(dy > sy) {
             dy   += (h - 1);
             sy   += (h - 1);
-            dskip = -(dst->gf_lineoffset + w);
-            sskip = -(src->gf_lineoffset + w);
+            dskip = -(dst->line_offset + w);
+            sskip = -(src->line_offset + w);
         }
         else {
-            dskip = dst->gf_lineoffset - w;
-            sskip = src->gf_lineoffset - w;
+            dskip = dst->line_offset - w;
+            sskip = src->line_offset - w;
         }
-        doff = FOFS(dx,dy,dst->gf_lineoffset);
-        soff = FOFS(sx,sy,src->gf_lineoffset);
+        doff = FOFS(dx,dy,dst->line_offset);
+        soff = FOFS(sx,sy,src->line_offset);
         wbb  = (-1);
         rbb  = (-1);
-        setup_far_selector(dst->gf_selector);
+        setup_far_selector(dst->selector);
         do {
             unsigned w1 = BANKLFT(doff);
             unsigned w2 = BANKLFT(soff);
@@ -63,8 +63,8 @@ void dualpageblt(GrFrame *dst,int dx,int dy,
             w2 = w2 - w1;
             if(w2 == 0) w2=w3 , w3=0;
             do {
-                char *dptr = &dst->gf_baseaddr[0][BANKPOS(doff)];
-                char *sptr = &src->gf_baseaddr[0][BANKPOS(soff)];
+                char *dptr = &dst->base_address[0][BANKPOS(doff)];
+                char *sptr = &src->base_address[0][BANKPOS(soff)];
                 wb = BANKNUM(doff);
                 rb = BANKNUM(soff);
                 if((rbb - rb) | (wbb - wb)) SRWBANK((rbb = rb),(wbb = wb));
@@ -111,8 +111,8 @@ void dualpageblt(GrFrame *dst,int dx,int dy,
 
 #define TMPSIZE 16384
 
-void _GrFrDrvPackedBitBltV2V(GrFrame *dst,int dx,int dy,
-                             GrFrame *src,int sx,int sy,
+void _GrFrDrvPackedBitBltV2V(GrxFrame *dst,int dx,int dy,
+                             GrxFrame *src,int sx,int sy,
                              int w,int h,GrxColor op)
 {
 
@@ -124,18 +124,18 @@ void _GrFrDrvPackedBitBltV2V(GrFrame *dst,int dx,int dy,
         } else
 #endif
         {
-          GrFrame tmp;
+          GrxFrame tmp;
           int tmpx,tmpn;
-          tmp.gf_lineoffset = (w + 7) & ~3;
-          tmpn = umax(umin(h,(TMPSIZE / tmp.gf_lineoffset)),1);
-          tmpx = tmp.gf_lineoffset * tmpn;
+          tmp.line_offset = (w + 7) & ~3;
+          tmpn = umax(umin(h,(TMPSIZE / tmp.line_offset)),1);
+          tmpx = tmp.line_offset * tmpn;
 #ifdef SMALL_STACK
-          tmp.gf_baseaddr[0] = _GrTempBufferAlloc(tmpx);
+          tmp.base_address[0] = _GrTempBufferAlloc(tmpx);
 #else
           setup_alloca();
-          tmp.gf_baseaddr[0] = alloca((size_t)tmpx);
+          tmp.base_address[0] = alloca((size_t)tmpx);
 #endif
-          if(tmp.gf_baseaddr[0]) {
+          if(tmp.base_address[0]) {
             int ydir = 0;
             tmpx = sx & 3;
             if(dy > sy) {

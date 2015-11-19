@@ -16,10 +16,10 @@
  **
  **/
 
-void bitblt(GrFrame *dst,int dx,int dy,
-            GrFrame *src,int  x,int  y,int w,int h,GrxColor op)
+void bitblt(GrxFrame *dst,int dx,int dy,
+            GrxFrame *src,int  x,int  y,int w,int h,GrxColor op)
 {
-        GrFrame csave;
+        GrxFrame csave;
         GrxColor skipc;
         int step;
         GRX_ENTER();

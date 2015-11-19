@@ -26,7 +26,7 @@
 
 void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p)
 {
-        union { GrFrame *c; unsigned char *b; } src;
+        union { GrxFrame *c; unsigned char *b; } src;
         int sy,ymajor;
         int pw,ph,px,py;
         int ispixmap;
@@ -79,7 +79,7 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p)
             (*CURC->gc_driver->drawpixel)(
                 x1,y1,
                 ispixmap ?
-                    (*src.c->gf_driver->readpixel)(src.c,px,py) :
+                    (*src.c->driver->readpixel)(src.c,px,py) :
                     (src.b[py] & (0x80U >> px)) ? fgc : bgc
             );
             if(ymajor) {

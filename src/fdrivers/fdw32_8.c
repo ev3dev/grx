@@ -146,7 +146,7 @@ static void w32_drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
     GRX_LEAVE();
 }
 
-static void w32_bitblit(GrFrame *dst, int dx, int dy, GrFrame *src,
+static void w32_bitblit(GrxFrame *dst, int dx, int dy, GrxFrame *src,
                         int sx, int sy, int w, int h, GrxColor op)
 {
     RECT r;

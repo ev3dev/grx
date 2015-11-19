@@ -16,6 +16,6 @@
  **
  **/
 
-void _GR_rblit_14(GrFrame *dst,int dx,int dy,
-                  GrFrame *src,int x,int y,int w,int h,
+void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
+                  GrxFrame *src,int x,int y,int w,int h,
                   GrxColor op, int planes, _GR_blitFunc bitblt, int invert);

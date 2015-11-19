@@ -578,23 +578,26 @@ namespace Grx {
     /* ================================================================== */
     /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */
     /* ================================================================== */
-    [CCode (cname = "struct _GR_frame", free_function = "g_free", has_type_id = false)]
+
+    [Code (cprefix = "GRX_MEMORY_FLAGS_",has_type_id = false)]
+    [Flags]
+    public enum MemoryFlags {
+        MY_MEMORY,
+        MY_CONTEXT,
+    }
+
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class Frame {
-        [CCode (cname = "struct _GR_frame", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxFrame", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
-        [CCode (cname = "gf_baseaddr", array_length_cexpr = "4")]
-        public char*[] base_addr;
-        [CCode (cname = "gf_selector")]
+        [CCode (array_length_cexpr = "4")]
+        public uint8*[] base_address;
         public short selector;
-        [CCode (cname = "gf_onscreen")]
-        public char on_screen;
-        [CCode (cname = "gf_memflags")]
-        public char flags;
-        [CCode (cname = "gf_lineoffset")]
+        public bool is_on_screen;
+        public MemoryFlags memory_flags;
         public int line_offset;
-        [CCode (cname = "gf_driver")]
         public unowned FrameDriver driver;
 
         [CCode (cname = "g_malloc0")]
@@ -634,17 +637,17 @@ namespace Grx {
         public int user_width;
         [CCode (cname = "gc_usrheight")]
         public int user_height;
-        [CCode (cname = "gc_frame.gf_baseaddr", array_length_cexpr = "4")]
+        [CCode (cname = "gc_frame.base_address", array_length_cexpr = "4")]
         public char*[] base_addr;
-        [CCode (cname = "gc_frame.gf_selector")]
+        [CCode (cname = "gc_frame.selector")]
         public short selector;
-        [CCode (cname = "gc_frame.gf_onscreen")]
+        [CCode (cname = "gc_frame.is_on_screen")]
         public char on_screen;
-        [CCode (cname = "gc_frame.gf_memflags")]
+        [CCode (cname = "gc_frame.memory_flags")]
         public char flags;
-        [CCode (cname = "gc_frame.gf_lineoffset")]
+        [CCode (cname = "gc_frame.line_offset")]
         public int line_offset;
-        [CCode (cname = "gc_frame.gf_driver")]
+        [CCode (cname = "gc_frame.driver")]
         public unowned FrameDriver driver;
 
         [CCode (cname = "GrCreateContext")]

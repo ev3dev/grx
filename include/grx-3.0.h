@@ -32,7 +32,7 @@ typedef struct _GrxFrameDriver  GrxFrameDriver;
 typedef struct _GrxVideoDriver  GrxVideoDriver;
 typedef struct _GrxVideoMode    GrxVideoMode;
 typedef struct _GrxVideoModeExt GrxVideoModeExt;
-typedef struct _GR_frame        GrFrame;
+typedef struct _GrxFrame        GrxFrame;
 typedef struct _GR_context      GrContext;
 
 /* ================================================================== */
@@ -342,7 +342,7 @@ struct _GrxFrameDriver {
     gint     bits_per_pixel;             /* bits per pixel */
     glong    max_plane_size;             /* maximum plane size in bytes */
     gboolean (*init)(GrxVideoMode *md);
-    GrxColor (*readpixel)(GrFrame *c, gint x, gint y);
+    GrxColor (*readpixel)(GrxFrame *c, gint x, gint y);
     void     (*drawpixel)(gint x, gint y, GrxColor c);
     void     (*drawline)(gint x, gint y, gint dx, gint dy, GrxColor c);
     void     (*drawhline)(gint x, gint y, gint w, GrxColor c);
@@ -351,13 +351,13 @@ struct _GrxFrameDriver {
     void     (*drawbitmap)(gint x, gint y, gint w, gint h, guint8 *bmp,
                            gint pitch, gint start, GrxColor fg, GrxColor bg);
     void     (*drawpattern)(gint x, gint y, gint w, guint8 patt, GrxColor fg, GrxColor bg);
-    void     (*bitblt)(GrFrame *dst, gint dx, gint dy, GrFrame *src,
+    void     (*bitblt)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src,
                        gint x, gint y, gint w, gint h, GrxColor op);
-    void     (*bltv2r)(GrFrame *dst, gint dx, gint dy, GrFrame *src,
+    void     (*bltv2r)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src,
                        gint x, gint y, gint w, gint h, GrxColor op);
-    void     (*bltr2v)(GrFrame *dst, gint dx, gint dy, GrFrame *src,
+    void     (*bltr2v)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src,
                        gint x, gint y, gint w, gint h, GrxColor op);
-    GrxColor *(*getindexedscanline)(GrFrame *c, gint x, gint y, gint w, gint *indx);
+    GrxColor *(*getindexedscanline)(GrxFrame *c, gint x, gint y, gint w, gint *indx);
       /* will return an array of pixel values pv[] read from frame   */
       /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
       /*    else             pv[i=0..w-1] = readpixel(x+indx[i],y)   */
@@ -481,17 +481,22 @@ glong grx_get_context_size(gint w, gint h);
 /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */
 /* ================================================================== */
 
-struct _GR_frame {
-        char    *gf_baseaddr[4];        /* base address of frame memory */
-        short   gf_selector;                /* frame memory segment selector */
-        char    gf_onscreen;                /* is it in video memory ? */
-        char    gf_memflags;                /* memory allocation flags */
-        int     gf_lineoffset;              /* offset to next scan line in bytes */
-        GrxFrameDriver *gf_driver;          /* frame access functions */
+typedef enum /*< flags >*/ {
+    GRX_MEMORY_FLAG_MY_MEMORY   = 0x01, /* set if my context memory */
+    GRX_MEMORY_FLAG_MY_CONTEXT  = 0x02, /* set if my context structure */
+} GrxMemoryFlags;
+
+struct _GrxFrame {
+    guint8         *base_address[4];    /* base address of frame memory */
+    gshort          selector;           /* frame memory segment selector */
+    gboolean        is_on_screen;       /* is it in video memory ? */
+    GrxMemoryFlags  memory_flags;       /* memory allocation flags */
+    gint            line_offset;        /* offset to next scan line in bytes */
+    GrxFrameDriver *driver;             /* frame access functions */
 };
 
 struct _GR_context {
-        struct _GR_frame    gc_frame;       /* frame buffer info */
+        GrxFrame    gc_frame;               /* frame buffer info */
         struct _GR_context *gc_root;        /* context which owns frame */
         int    gc_xmax;                     /* max X coord (width  - 1) */
         int    gc_ymax;                     /* max Y coord (height - 1) */
@@ -505,12 +510,12 @@ struct _GR_context {
         int    gc_usrybase;                 /* user window min Y coordinate */
         int    gc_usrwidth;                 /* user window width  */
         int    gc_usrheight;                /* user window height */
-#   define gc_baseaddr                  gc_frame.gf_baseaddr
-#   define gc_selector                  gc_frame.gf_selector
-#   define gc_onscreen                  gc_frame.gf_onscreen
-#   define gc_memflags                  gc_frame.gf_memflags
-#   define gc_lineoffset                gc_frame.gf_lineoffset
-#   define gc_driver                    gc_frame.gf_driver
+#   define gc_baseaddr                  gc_frame.base_address
+#   define gc_selector                  gc_frame.selector
+#   define gc_onscreen                  gc_frame.is_on_screen
+#   define gc_memflags                  gc_frame.memory_flags
+#   define gc_lineoffset                gc_frame.line_offset
+#   define gc_driver                    gc_frame.driver
 };
 
 extern const struct _GR_contextInfo {
@@ -1201,7 +1206,7 @@ typedef struct _GR_pixmap {
         int     pxp_width;                  /* pixmap width (in pixels)  */
         int     pxp_height;                 /* pixmap height (in pixels) */
         GrxColor pxp_oper;                   /* bitblt mode (SET, OR, XOR, AND, IMAGE) */
-        struct _GR_frame pxp_source;        /* source context for fill */
+        GrxFrame pxp_source;                /* source context for fill */
 } GrPixmap;
 
 /*

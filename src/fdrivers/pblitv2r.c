@@ -27,8 +27,8 @@
 /* frame offset address calculation */
 #define FOFS(x,y,lo) umuladd32((y),(lo),(x))
 
-void _GrFrDrvPackedBitBltV2R(GrFrame *dst,int dx,int dy,
-                             GrFrame *src,int sx,int sy,
+void _GrFrDrvPackedBitBltV2R(GrxFrame *dst,int dx,int dy,
+                             GrxFrame *src,int sx,int sy,
                              int w,int h,GrxColor op)
 {
         char *dptr, *sptr;
@@ -38,21 +38,21 @@ void _GrFrDrvPackedBitBltV2R(GrFrame *dst,int dx,int dy,
         GR_int8u cval;
 
         GRX_ENTER();
-        dptr  = &dst->gf_baseaddr[0][FOFS(dx,dy,dst->gf_lineoffset)];
-        soff  = FOFS(sx,sy,src->gf_lineoffset);
-        dskip = dst->gf_lineoffset - w;
-        sskip = src->gf_lineoffset - w;
+        dptr  = &dst->base_address[0][FOFS(dx,dy,dst->line_offset)];
+        soff  = FOFS(sx,sy,src->line_offset);
+        dskip = dst->line_offset - w;
+        sskip = src->line_offset - w;
         oper  = C_OPER(op);
         cval  = (GR_int8u)op;
 
 #       define DOICPY()   DOIMGCOPY(FW,_n,_f,w1)
 
-        setup_far_selector(src->gf_selector);
+        setup_far_selector(src->selector);
         do {
             unsigned w1 = BANKLFT(soff);
             unsigned w2 = w - (w1 = umin(w,w1));
             do {
-                sptr = &src->gf_baseaddr[0][BANKPOS(soff)];
+                sptr = &src->base_address[0][BANKPOS(soff)];
                 CHKBANK(BANKNUM(soff));
                 soff += w1;
                 if (w1) switch(oper) {

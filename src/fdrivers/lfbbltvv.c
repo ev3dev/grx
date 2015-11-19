@@ -35,7 +35,7 @@
 #define READ_FAR _f
 
 /* need a selector before video access */
-#define BLITSEL  dst->gf_selector
+#define BLITSEL  dst->selector
 
 /* source and destination may overlap */
 #define BLIT_CAN_OVERLAP

@@ -31,7 +31,7 @@ void _GrPatternFilledPlot(int x,int y,GrPattern *p)
             xp = x % p->gp_pxp_width;
             yp = y % p->gp_pxp_height;
             (*CURC->gc_driver->drawpixel)(x,y,
-                (*p->gp_pxp_source.gf_driver->readpixel)(&p->gp_pxp_source,xp,yp)
+                (*p->gp_pxp_source.driver->readpixel)(&p->gp_pxp_source,xp,yp)
             );
         }
         else {

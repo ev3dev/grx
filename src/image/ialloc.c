@@ -51,7 +51,7 @@ GrImage *_GrImageAllocate(GrContext *ctx, int nwidth,int nheight)
   img->pxp_height = nheight;
   img->pxp_oper   = 0;
   img->pxp_source = ctx->gc_frame;
-  img->pxp_source.gf_memflags =  3;/* MY_CONTEXT & MY_MEMORY */
+  img->pxp_source.memory_flags =  3;/* MY_CONTEXT & MY_MEMORY */
 done:
   GRX_RETURN(img);
 }

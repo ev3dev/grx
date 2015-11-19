@@ -25,7 +25,7 @@
 void GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,GrImage *p)
 {
   int iwdt, ihgt, xoff, yoff, yy, xx, copyh, copyw;
-  void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor);
+  void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
   xo = min(xo, min(x1,x2));
   yo = min(yo, min(y1,y2));
   clip_box(CURC,x1,y1,x2,y2);

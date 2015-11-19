@@ -29,19 +29,19 @@
 
 
 static INLINE
-GrxColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrxFrame *c,int x,int y)
 {
         GR_int32u offs;
         unsigned mask;
         GrxColor pix;
         GRX_ENTER();
-        offs = FOFS(x,y,c->gf_lineoffset);
+        offs = FOFS(x,y,c->line_offset);
         mask = 0x80 >> (x &= 7);
         pix = (GrxColor)(
-            (((c->gf_baseaddr[0][offs] & mask)     ) |
-             ((c->gf_baseaddr[1][offs] & mask) << 1) |
-             ((c->gf_baseaddr[2][offs] & mask) << 2) |
-             ((c->gf_baseaddr[3][offs] & mask) << 3)
+            (((c->base_address[0][offs] & mask)     ) |
+             ((c->base_address[1][offs] & mask) << 1) |
+             ((c->base_address[2][offs] & mask) << 2) |
+             ((c->base_address[3][offs] & mask) << 3)
             ) >> (7 - x)
         );
         GRX_RETURN(pix);
@@ -255,8 +255,8 @@ static
 static
 #include "fdrivers/generic/bitblt.c"
 
-static void bltr2r(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int x,int y,int w,int h,
+static void bltr2r(GrxFrame *dst,int dx,int dy,
+                   GrxFrame *src,int x,int y,int w,int h,
                    GrxColor op)
 {
     GRX_ENTER();

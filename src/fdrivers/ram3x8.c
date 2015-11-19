@@ -32,16 +32,16 @@
 /* -------------------------------------------------------------------- */
 
 static INLINE
-GrxColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrxFrame *c,int x,int y)
 {
         GR_int32u offs;
         GrxColor pix;
         GRX_ENTER();
-        offs = FOFS(x,y,c->gf_lineoffset);
+        offs = FOFS(x,y,c->line_offset);
         pix = 0;
-        WR24BYTE(pix,0,peek_b(&c->gf_baseaddr[0][offs]));
-        WR24BYTE(pix,1,peek_b(&c->gf_baseaddr[1][offs]));
-        WR24BYTE(pix,2,peek_b(&c->gf_baseaddr[2][offs]));
+        WR24BYTE(pix,0,peek_b(&c->base_address[0][offs]));
+        WR24BYTE(pix,1,peek_b(&c->base_address[1][offs]));
+        WR24BYTE(pix,2,peek_b(&c->base_address[2][offs]));
         GRX_RETURN(pix);
 }
 
@@ -151,12 +151,12 @@ static
 #include "fdrivers/generic/bitblt.c"
 
 /* in pblitr2r.c if GRX_USE_RAM3x8 defined */
-extern void _GrFrDrvPackedBitBltR2Rpl(GrFrame *dst,int dx,int dy,
-                                      GrFrame *src,int x,int y,
+extern void _GrFrDrvPackedBitBltR2Rpl(GrxFrame *dst,int dx,int dy,
+                                      GrxFrame *src,int x,int y,
                                       int w,int h,GrxColor op,int plane);
 
-static void bitblit(GrFrame *dst,int dx,int dy,
-                    GrFrame *src,int sx,int sy,
+static void bitblit(GrxFrame *dst,int dx,int dy,
+                    GrxFrame *src,int sx,int sy,
                     int w,int h,GrxColor op)
 {
     int pl;

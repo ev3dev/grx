@@ -101,8 +101,8 @@ extern void _GR_shift_scanline(GR_int8u **dst,
     _GR_shift_scanline((GR_int8u **)&(dst),(GR_int8u **)&(src),(w),(sh),1)
 
 
-void _GR_rblit_14(GrFrame *dst,int dx,int dy,
-                  GrFrame *src,int x,int y,int w,int h,
+void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
+                  GrxFrame *src,int x,int y,int w,int h,
                   GrxColor op, int planes, _GR_blitFunc bitblt, int invert)
 {
     int pl;
@@ -115,17 +115,17 @@ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
       GR_int8u rm = 0xff >> ((-(w + dx)) & 7);
       int ws      = ((x+w+7) >> 3) - (x >> 3);
       int wd      = ((dx+w+7) >> 3) - (dx >> 3);
-      int dskip   = dst->gf_lineoffset;
-      int sskip   = src->gf_lineoffset;
-      if ((dy>y) && (dst->gf_baseaddr[0]==src->gf_baseaddr[0])) {
+      int dskip   = dst->line_offset;
+      int sskip   = src->line_offset;
+      if ((dy>y) && (dst->base_address[0]==src->base_address[0])) {
         /* reverse */
         dy += h-1;
         y  += h-1;
         doffs = FOFS(dx,dy,dskip);
         soffs = FOFS( x, y,sskip);
         for (pl=0; pl < planes; ++pl) {
-          char *dptr = &dst->gf_baseaddr[pl][doffs];
-          char *sptr = &src->gf_baseaddr[pl][soffs];
+          char *dptr = &dst->base_address[pl][doffs];
+          char *sptr = &src->base_address[pl][soffs];
           int hh = h;
           if (shift) {
             while (hh-- > 0) {
@@ -149,11 +149,11 @@ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
         }
       } else {
         /* forward */
-        doffs = FOFS(dx,dy,dst->gf_lineoffset);
-        soffs = FOFS( x, y,src->gf_lineoffset);
+        doffs = FOFS(dx,dy,dst->line_offset);
+        soffs = FOFS( x, y,src->line_offset);
         for (pl=0; pl < planes; ++pl) {
-          char *dptr = &dst->gf_baseaddr[pl][doffs];
-          char *sptr = &src->gf_baseaddr[pl][soffs];
+          char *dptr = &dst->base_address[pl][doffs];
+          char *sptr = &src->base_address[pl][soffs];
           int hh = h;
           if (shift) {
             while (hh-- > 0) {

@@ -56,8 +56,8 @@
 #ifdef LOCALFUNC
 static
 #endif
-void BLITFUNC(GrFrame *dst,int dx,int dy,
-              GrFrame *src,int sx,int sy,
+void BLITFUNC(GrxFrame *dst,int dx,int dy,
+              GrxFrame *src,int sx,int sy,
               int w,int h,GrxColor op
 #ifdef PLANE_ARG
              ,int PLANE
@@ -70,13 +70,13 @@ void BLITFUNC(GrFrame *dst,int dx,int dy,
     GR_int8u  cval;
 
     GRX_ENTER();
-    dskip = dst->gf_lineoffset - w;
-    sskip = src->gf_lineoffset - w;
+    dskip = dst->line_offset - w;
+    sskip = src->line_offset - w;
     oper  = C_OPER(op);
     cval  = (GR_int8u)op;
 
-    dptr = &dst->gf_baseaddr[PLANE][umuladd32(dy,dst->gf_lineoffset,dx)];
-    sptr = &src->gf_baseaddr[PLANE][umuladd32(sy,src->gf_lineoffset,sx)];
+    dptr = &dst->base_address[PLANE][umuladd32(dy,dst->line_offset,dx)];
+    sptr = &src->base_address[PLANE][umuladd32(sy,src->line_offset,sx)];
 
 #   ifdef BLITSEL
       setup_far_selector(BLITSEL);
@@ -84,8 +84,8 @@ void BLITFUNC(GrFrame *dst,int dx,int dy,
 
 #   ifdef BLIT_CAN_OVERLAP
     if(OVERLAP(dptr,sptr)) {
-        dptr += umuladd32((h-1),dst->gf_lineoffset,w-1);
-        sptr += umuladd32((h-1),src->gf_lineoffset,w-1);
+        dptr += umuladd32((h-1),dst->line_offset,w-1);
+        sptr += umuladd32((h-1),src->line_offset,w-1);
         do {
             ww = w;
             switch(oper) {

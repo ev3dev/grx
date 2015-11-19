@@ -41,7 +41,7 @@ GrImage *GrImageInverse(GrImage *p,int flag)
     xx = ( flag & GR_IMAGE_INVERSE_LR ) ? width-1 : 0;
     xs = 0;
     do {
-      col = (*p->pxp_source.gf_driver->readpixel)(&p->pxp_source,xs,ys);
+      col = (*p->pxp_source.driver->readpixel)(&p->pxp_source,xs,ys);
       (*CURC->gc_driver->drawpixel)(xx, yy, col);
       xx += sidex;
     } while(++xs < width);
@@ -53,6 +53,6 @@ GrImage *GrImageInverse(GrImage *p,int flag)
   img->pxp_height = height;
   img->pxp_oper   = 0;
   img->pxp_source = ctx.gc_frame;
-  img->pxp_source.gf_memflags =  3;/* MY_CONTEXT & MY_MEMORY */
+  img->pxp_source.memory_flags =  3;/* MY_CONTEXT & MY_MEMORY */
   return(img);
 }

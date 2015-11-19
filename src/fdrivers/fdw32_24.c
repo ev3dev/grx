@@ -131,7 +131,7 @@ static void w32_drawpattern(int x, int y, int w, unsigned char patt,
     GRX_LEAVE();
 }
 
-static void w32_bitblt(GrFrame *dst, int dx, int dy, GrFrame *src,
+static void w32_bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src,
                        int sx, int sy, int w, int h, GrxColor op)
 {
     RECT Rect;

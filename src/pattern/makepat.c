@@ -26,9 +26,6 @@
 #define  BEST_MAX_LINE         128
 #define  BEST_MAX_CONTEXT      2048L
 
-#define GCM_MYMEMORY        1           /* set if my context memory */
-#define GCM_MYCONTEXT       2           /* set if my context structure */
-
 /*
  * try to replicate a pixmap for faster bitblt-s
  * in bitplane modes it is especially desirable to replicate until
@@ -86,7 +83,7 @@ GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
         }
         *CURC = csave;
         result->pxp_source = cwork.gc_frame;
-        result->pxp_source.gf_memflags = (GCM_MYCONTEXT | GCM_MYMEMORY);
+        result->pxp_source.memory_flags = (GRX_MEMORY_FLAG_MY_CONTEXT | GRX_MEMORY_FLAG_MY_MEMORY);
         result->pxp_ispixmap = TRUE;
         result->pxp_width  = fullw;
         result->pxp_height = h;
@@ -127,7 +124,7 @@ GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxCo
         }
         *CURC = csave;
         result->pxp_source = cwork.gc_frame;
-        result->pxp_source.gf_memflags = (GCM_MYCONTEXT | GCM_MYMEMORY);
+        result->pxp_source.memory_flags = (GRX_MEMORY_FLAG_MY_CONTEXT | GRX_MEMORY_FLAG_MY_MEMORY);
         result->pxp_ispixmap = TRUE;
         result->pxp_width  = fullw;
         result->pxp_height = h;
@@ -143,7 +140,7 @@ GrPattern *GrConvertToPixmap(GrContext *src)
         result = malloc(sizeof(GrPixmap));
         if(result == NULL) return(NULL);
         result->pxp_source = src->gc_frame;
-        result->pxp_source.gf_memflags = GCM_MYCONTEXT;
+        result->pxp_source.memory_flags = GRX_MEMORY_FLAG_MY_CONTEXT;
         result->pxp_ispixmap = TRUE;
         result->pxp_width  = src->gc_xmax + 1;
         result->pxp_height = src->gc_ymax + 1;
@@ -156,12 +153,12 @@ void GrDestroyPattern(GrPattern *p)
 {
   if (!p) return;
   if (p->gp_ispixmap) {
-    if ( p->gp_pxp_source.gf_memflags & GCM_MYMEMORY) {
+    if ( p->gp_pxp_source.memory_flags & GRX_MEMORY_FLAG_MY_MEMORY) {
       int ii;
-      for ( ii = p->gp_pxp_source.gf_driver->num_planes; ii > 0; ii-- )
-         free(p->gp_pxp_source.gf_baseaddr[ii - 1]);
+      for ( ii = p->gp_pxp_source.driver->num_planes; ii > 0; ii-- )
+         free(p->gp_pxp_source.base_address[ii - 1]);
     }
-    if ( p->gp_pxp_source.gf_memflags & GCM_MYCONTEXT )
+    if ( p->gp_pxp_source.memory_flags & GRX_MEMORY_FLAG_MY_CONTEXT )
       free(p);
     return;
   }

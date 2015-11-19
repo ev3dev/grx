@@ -30,20 +30,20 @@
 #define FOFS(x,y,lo)  umuladd32((y),(lo),((x)>>3))
 
 static INLINE
-GrxColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrxFrame *c,int x,int y)
 {
         GR_int8u *ptr;
         GRX_ENTER();
-        ptr = (GR_int8u *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+        ptr = (GR_int8u *)&c->base_address[0][FOFS(x,y,c->line_offset)];
         GRX_RETURN((GrxColor)( (*ptr >> (x & 7)) & 1));
 }
 
 static INLINE
-GrxColor readpixel_inv(GrFrame *c,int x,int y)
+GrxColor readpixel_inv(GrxFrame *c,int x,int y)
 {
     GR_int8u *ptr;
     GRX_ENTER();
-    ptr = (GR_int8u *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+    ptr = (GR_int8u *)&c->base_address[0][FOFS(x,y,c->line_offset)];
     GRX_RETURN((GrxColor)(((*ptr >> (x & 7)) & 1) ? 0 : 1));
 }
 
@@ -190,8 +190,8 @@ static
 static
 #include "fdrivers/generic/bitblt.c"
 
-static void bltr2r(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int x,int y,int w,int h,
+static void bltr2r(GrxFrame *dst,int dx,int dy,
+                   GrxFrame *src,int x,int y,int w,int h,
                    GrxColor op)
 {
     GRX_ENTER();
@@ -199,8 +199,8 @@ static void bltr2r(GrFrame *dst,int dx,int dy,
     GRX_LEAVE();
 }
 
-static void bltr2r_inv(GrFrame *dst,int dx,int dy,
-                       GrFrame *src,int x,int y,int w,int h,
+static void bltr2r_inv(GrxFrame *dst,int dx,int dy,
+                       GrxFrame *src,int x,int y,int w,int h,
                        GrxColor op)
 {
     GRX_ENTER();

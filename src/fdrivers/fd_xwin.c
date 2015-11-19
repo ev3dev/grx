@@ -137,11 +137,11 @@ void _XGrCheckPixelCache(int y1, int y2)
 }
 
 static
-GrxColor readpixel(GrFrame *c, int x, int y)
+GrxColor readpixel(GrxFrame *c, int x, int y)
 {
   GrxColor col;
   GRX_ENTER();
-  if (_XGrPixelCacheDrawable != (Drawable) c->gf_baseaddr[0]
+  if (_XGrPixelCacheDrawable != (Drawable) c->base_address[0]
       || _XGrPixelCacheImage == NULL
       || !AREA_OVERLAP_PIXEL_CACHE(y,y)) {
 
@@ -149,7 +149,7 @@ GrxColor readpixel(GrFrame *c, int x, int y)
       XDestroyImage (_XGrPixelCacheImage);
       _XGrPixelCacheImage = NULL;
     }
-    _XGrPixelCacheDrawable = (Drawable) c->gf_baseaddr[0];
+    _XGrPixelCacheDrawable = (Drawable) c->base_address[0];
 
     _XGrPixelCacheWidth = grx_get_screen_x();
     _XGrPixelCacheY1 = y;
@@ -507,13 +507,13 @@ void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
 }
 
 static
-void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op)
+void bitblt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op)
 {
   GRX_ENTER();
   _XGrSetColorOper (op);
   XCopyArea (_XGrDisplay,
-             (Drawable) src->gf_baseaddr[0],
-             (Drawable) dst->gf_baseaddr[0],
+             (Drawable) src->base_address[0],
+             (Drawable) dst->base_address[0],
              _XGrGC,
              x,
              y,
@@ -529,7 +529,7 @@ void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxC
 }
 
 static
-void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrxColor op)
+void bltv2r(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
   GRX_ENTER();
   if(GrColorMode(op) == GrIMAGE)
@@ -542,7 +542,7 @@ void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,Gr
     XImage *ximage;
 
     ximage = XGetImage (_XGrDisplay,
-                        (Drawable) src->gf_baseaddr[0],
+                        (Drawable) src->base_address[0],
                         sx,
                         sy,
                         w,
@@ -551,13 +551,13 @@ void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,Gr
                         ZPixmap);
     if (ximage) {
       int bytes_per_pixel = _XGrBitsPerPixel >> 3;
-      GrFrame tmp = *dst;
+      GrxFrame tmp = *dst;
 
-      tmp.gf_baseaddr[0] =
-        tmp.gf_baseaddr[1] =
-          tmp.gf_baseaddr[2] =
-            tmp.gf_baseaddr[3] = ximage->data;
-      tmp.gf_lineoffset = ximage->bytes_per_line;
+      tmp.base_address[0] =
+        tmp.base_address[1] =
+          tmp.base_address[2] =
+            tmp.base_address[3] = ximage->data;
+      tmp.line_offset = ximage->bytes_per_line;
 
       _GrFrDrvPackedBitBltR2R(dst, (dx * bytes_per_pixel), dy,
                               &tmp, 0, 0,
@@ -570,7 +570,7 @@ void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,Gr
   GRX_LEAVE();
 }
 
-static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrxColor op)
+static void bltr2v(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
   GRX_ENTER();
   if(GrColorMode(op) == GrIMAGE)
@@ -587,13 +587,13 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
     ximage.height       = sy + h;
     ximage.xoffset      = 0;
     ximage.format       = ZPixmap;
-    ximage.data         = src->gf_baseaddr[0];
+    ximage.data         = src->base_address[0];
     ximage.byte_order   = LSBFirst;
     ximage.bitmap_unit  = BitmapUnit(_XGrDisplay);
     ximage.bitmap_bit_order = BitmapBitOrder(_XGrDisplay);
     ximage.bitmap_pad   = BitmapPad(_XGrDisplay);
     ximage.depth        = _XGrDepth;
-    ximage.bytes_per_line = src->gf_lineoffset;
+    ximage.bytes_per_line = src->line_offset;
     ximage.bits_per_pixel = _XGrBitsPerPixel;
     ximage.red_mask     = visual->red_mask;
     ximage.green_mask   = visual->green_mask;
@@ -607,7 +607,7 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
     {
       _XGrSetColorOper (op);
       XPutImage (_XGrDisplay,
-                 (Drawable) dst->gf_baseaddr[0],
+                 (Drawable) dst->base_address[0],
                  _XGrGC,
                  &ximage,
                  sx,

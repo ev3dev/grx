@@ -102,12 +102,12 @@ _GrDriverMEM,                           /* memory screen driver */
 /*
  * frame driver function types used inside GRX
  */
-typedef GrxColor  (*_GR_readPix)(GrFrame *,int,int);
+typedef GrxColor  (*_GR_readPix)(GrxFrame *,int,int);
 typedef void     (*_GR_drawPix)(int,int,GrxColor);
-typedef void     (*_GR_blitFunc)(GrFrame *dst,int dx,int dy,
-                                 GrFrame *src,int  x,int  y,
+typedef void     (*_GR_blitFunc)(GrxFrame *dst,int dx,int dy,
+                                 GrxFrame *src,int  x,int  y,
                                  int w,int h,GrxColor op);
-typedef GrxColor *(*_GR_getIndexedScanline)(GrFrame *c,int x,int y,
+typedef GrxColor *(*_GR_getIndexedScanline)(GrxFrame *c,int x,int y,
                                                int w, int *indx);
 typedef void     (*_GR_putScanline)(int x,int y,int w,
                                     const GrxColor *scl,GrxColor op);
@@ -115,22 +115,22 @@ typedef void     (*_GR_putScanline)(int x,int y,int w,
 /*
  * Frame driver utility functions
  */
-void _GrFrDrvGenericBitBlt(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltR2R(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltR2V(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltV2R(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltV2V(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltR2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltV2R_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltV2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,int y,int w,int h,GrxColor op);
+void _GrFrDrvGenericBitBlt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+void _GrFrDrvPackedBitBltR2R(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+void _GrFrDrvPackedBitBltR2V(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+void _GrFrDrvPackedBitBltV2R(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+void _GrFrDrvPackedBitBltV2V(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+void _GrFrDrvPackedBitBltR2V_LFB(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+void _GrFrDrvPackedBitBltV2R_LFB(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+void _GrFrDrvPackedBitBltV2V_LFB(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
 
 void _GrFrDrvGenericPutScanline(int x,int y,int w,const GrxColor *scl, GrxColor op );
-GrxColor *_GrFrDrvGenericGetIndexedScanline(GrFrame *c,
+GrxColor *_GrFrDrvGenericGetIndexedScanline(GrxFrame *c,
                                            int x,int y,int w,
                                            int *indx         );
 
-void _GrFrDrvGenericStretchBlt(GrFrame *dst,int dx,int dy,int dw,int dh,
-                               GrFrame *src,int sx,int sy,int sw,int sh,
+void _GrFrDrvGenericStretchBlt(GrxFrame *dst,int dx,int dy,int dw,int dh,
+                               GrxFrame *src,int sx,int sy,int sw,int sh,
                                GrxColor op);
 
 /*

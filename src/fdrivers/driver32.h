@@ -80,7 +80,7 @@
 #endif
 
 static INLINE
-GrxColor readpixel(GrFrame *c,int x,int y)
+GrxColor readpixel(GrxFrame *c,int x,int y)
 {
         char *pp;
         GRX_ENTER();
@@ -89,7 +89,7 @@ GrxColor readpixel(GrFrame *c,int x,int y)
         SETFARSEL(SCRN->gc_selector);
 #else
 /* problem with LFB_BY_NEAR_POINTER here? Does c always point to screen? */
-        pp = &c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+        pp = &c->base_address[0][FOFS(x,y,c->line_offset)];
 #endif
         GRX_RETURN(PIX2COL(peek32(pp)));
 }
@@ -325,8 +325,8 @@ static
 static
 #include "fdrivers/generic/pattern.c"
 
-static void bitblt(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
+static void bitblt(GrxFrame *dst,int dx,int dy,
+                   GrxFrame *src,int sx,int sy,
                    int w,int h,GrxColor op)
 {
         GRX_ENTER();
@@ -352,8 +352,8 @@ static void bitblt(GrFrame *dst,int dx,int dy,
 
 #ifdef FAR_ACCESS
 
-static void bltv2r(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
+static void bltv2r(GrxFrame *dst,int dx,int dy,
+                   GrxFrame *src,int sx,int sy,
                    int w,int h,GrxColor op)
 {
         GRX_ENTER();
@@ -372,8 +372,8 @@ static void bltv2r(GrFrame *dst,int dx,int dy,
         GRX_LEAVE();
 }
 
-static void bltr2v(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
+static void bltr2v(GrxFrame *dst,int dx,int dy,
+                   GrxFrame *src,int sx,int sy,
                    int w,int h,GrxColor op)
 {
         GRX_ENTER();

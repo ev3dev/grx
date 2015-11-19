@@ -77,14 +77,14 @@ static INLINE void sdl_drawpattern(int x, int y, int w, unsigned char patt,
     SDL_UpdateRect(_SGrScreen, x, y, w, 1);
 }
 
-static INLINE void sdl_bitblt(GrFrame *dst, int dx, int dy, GrFrame *src,
+static INLINE void sdl_bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src,
                               int sx, int sy,int w,int h, GrxColor op)
 {
     bitblt(dst, dx, dy, src, sx, sy, w, h, op);
     SDL_UpdateRect(_SGrScreen, dx, dy, w, h);
 }
 
-static INLINE void sdl_bltr2v(GrFrame *dst, int dx, int dy, GrFrame *src,
+static INLINE void sdl_bltr2v(GrxFrame *dst, int dx, int dy, GrxFrame *src,
                               int sx, int sy, int w, int h, GrxColor op)
 {
     bltr2v(dst, dx, dy, src, sx, sy, w, h, op);

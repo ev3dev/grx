@@ -16,7 +16,7 @@
  **/
 
 
-GrxColor *getindexedscanline(GrFrame *c,
+GrxColor *getindexedscanline(GrxFrame *c,
                                 int x,int y,int w,
                                 int *indx          )
 {

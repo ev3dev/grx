@@ -57,19 +57,19 @@ static INLINE int XLineInit(_GR_lineData *ld, int x,int y,int dx,int dy)
 #define XLineCheckDone(ldp) ((ldp)->cnt <= 0)
 
 /* ---------------------------------------------------- x- and y-dir stretch */
-static void stretch(GrFrame *dst,int dx,int dy,int dw, int dh,
-                    GrFrame *src,int sx,int sy,int sw, int sh,
+static void stretch(GrxFrame *dst,int dx,int dy,int dw, int dh,
+                    GrxFrame *src,int sx,int sy,int sw, int sh,
                     GrxColor op)
 {
     int maxi;
     GRX_ENTER();
     setup_ALLOC();
     do {
-        GrFrame csave;
+        GrxFrame csave;
         GrxColor *pixels = NULL;
         _GR_lineData lne;
-        _GR_getIndexedScanline getscl = src->gf_driver->getindexedscanline;
-        _GR_putScanline        putscl = dst->gf_driver->putscanline;
+        _GR_getIndexedScanline getscl = src->driver->getindexedscanline;
+        _GR_putScanline        putscl = dst->driver->putscanline;
         int rd_y = -1;
         int *xsrc = ALLOC(sizeof(int) * dw);
         if (!xsrc) break;
@@ -112,20 +112,20 @@ static void stretch(GrFrame *dst,int dx,int dy,int dw, int dh,
 
 /* -----------------------------------------------------general stretch blit */
 
-void _GrFrDrvGenericStretchBlt(GrFrame *dst,int dx,int dy,int dw,int dh,
-                               GrFrame *src,int sx,int sy,int sw,int sh,
+void _GrFrDrvGenericStretchBlt(GrxFrame *dst,int dx,int dy,int dw,int dh,
+                               GrxFrame *src,int sx,int sy,int sw,int sh,
                                GrxColor op)
 {
   GRX_ENTER();
   if (sw > 0 && dw > 0 && sh > 0 && dh > 0) {
     if (sw == dw) {
       _GR_blitFunc blit;
-      if (dst->gf_onscreen) {
-        if(src->gf_onscreen) blit = dst->gf_driver->bitblt;
-                        else blit = dst->gf_driver->bltr2v;
+      if (dst->is_on_screen) {
+        if(src->is_on_screen) blit = dst->driver->bitblt;
+                        else blit = dst->driver->bltr2v;
       } else {
-        if(src->gf_onscreen) blit = dst->gf_driver->bltv2r;
-                        else blit = dst->gf_driver->bitblt;
+        if(src->is_on_screen) blit = dst->driver->bltv2r;
+                        else blit = dst->driver->bitblt;
       }
 
       if (sh == dh) {

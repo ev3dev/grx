@@ -25,7 +25,7 @@ void GrBitBlt(GrContext *dst,int dx,int dy,
         int  oldx1,oldy1;
         int  oldx2,oldy2;
         int  dstx2,dsty2;
-        void (*bltfun)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrxColor);
+        void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
         if(dst == NULL) dst = CURC;
         if(src == NULL) src = CURC;
         isort(x1,x2); oldx1 = x1;
