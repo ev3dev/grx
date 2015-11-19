@@ -170,7 +170,7 @@ void GrMouseSetCursorMode(int mode,...)
             MOUINFO->cursmode  = mode;
             MOUINFO->x1        = va_arg(ap,int);
             MOUINFO->y1        = va_arg(ap,int);
-            MOUINFO->curscolor = GrXorModeColor(va_arg(ap,GrxColor));
+            MOUINFO->curscolor = grx_color_to_xor_mode(va_arg(ap,GrxColor));
             break;
           default:
             MOUINFO->cursmode  = GR_M_CUR_NORMAL;

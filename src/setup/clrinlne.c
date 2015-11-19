@@ -18,38 +18,38 @@
 
 #include "libgrx.h"
 
-GrxColor (GrColorValue)(GrxColor c)
+GrxColor (grx_color_get_value)(GrxColor c)
 {
-        return(GrColorValue(c));
+        return(grx_color_get_value(c));
 }
 
-GrxColor (GrColorMode)(GrxColor c)
+GrxColor (grx_color_get_mode)(GrxColor c)
 {
-        return(GrColorMode(c));
+        return(grx_color_get_mode(c));
 }
 
-GrxColor (GrWriteModeColor)(GrxColor c)
+GrxColor (grx_color_to_write_mode)(GrxColor c)
 {
-        return(GrWriteModeColor(c));
+        return(grx_color_to_write_mode(c));
 }
 
-GrxColor (GrXorModeColor)(GrxColor c)
+GrxColor (grx_color_to_xor_mode)(GrxColor c)
 {
-        return(GrXorModeColor(c));
+        return(grx_color_to_xor_mode(c));
 }
 
-GrxColor (GrOrModeColor)(GrxColor c)
+GrxColor (grx_color_to_or_mode)(GrxColor c)
 {
-        return(GrOrModeColor(c));
+        return(grx_color_to_or_mode(c));
 }
-GrxColor (GrAndModeColor)(GrxColor c)
+GrxColor (grx_color_to_and_mode)(GrxColor c)
 {
-        return(GrAndModeColor(c));
+        return(grx_color_to_and_mode(c));
 }
 
-GrxColor (GrImageModeColor)(GrxColor c)
+GrxColor (grx_color_to_image_mode)(GrxColor c)
 {
-        return(GrImageModeColor(c));
+        return(grx_color_to_image_mode(c));
 }
 
 GrxColor (GrNumColors)(void)

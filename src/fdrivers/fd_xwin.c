@@ -532,7 +532,7 @@ static
 void bltv2r(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
   GRX_ENTER();
-  if(GrColorMode(op) == GRX_COLOR_MODE_IMAGE)
+  if(grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
     _GrFrDrvGenericBitBlt(dst,dx,dy,
                           src,sx,sy,
                           w,h,
@@ -573,7 +573,7 @@ void bltv2r(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,
 static void bltr2v(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
   GRX_ENTER();
-  if(GrColorMode(op) == GRX_COLOR_MODE_IMAGE)
+  if(grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
     _GrFrDrvGenericBitBlt(dst,dx,dy,
                           src,sx,sy,
                           w,h,

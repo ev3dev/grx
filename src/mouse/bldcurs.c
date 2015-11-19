@@ -47,8 +47,8 @@ GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const G
         for(yy = 0; yy < h; yy++) {
             unsigned char *p = (unsigned char *)pixels + (yy * pitch);
             for(xx = 0; xx < w; xx++,p++) {
-                if(*p) GrPlotNC(xx,yy,GrColorValue(GR_CTABLE_COLOR(C,(*p - 1))));
-                else   GrPlotNC((xx + wrkw2),yy,GrColorValue(-1L));
+                if(*p) GrPlotNC(xx,yy,grx_color_get_value(GR_CTABLE_COLOR(C,(*p - 1))));
+                else   GrPlotNC((xx + wrkw2),yy,grx_color_get_value(-1L));
             }
         }
         grx_context_set_current(&save);

@@ -595,13 +595,13 @@ typedef enum /*< flags >*/ {
 #define GRX_COLOR_MODE_MASK  0xff000000UL /* color operation mask */
 #define GRX_COLOR_NONE ((GrxColor)(GRX_COLOR_MODE_XOR | 0)) /* GRX_COLOR_NONE is used for "no" color */
 
-GrxColor GrColorValue(GrxColor c);
-GrxColor GrColorMode(GrxColor c);
-GrxColor GrWriteModeColor(GrxColor c);
-GrxColor GrXorModeColor(GrxColor c);
-GrxColor GrOrModeColor(GrxColor c);
-GrxColor GrAndModeColor(GrxColor c);
-GrxColor GrImageModeColor(GrxColor c);
+GrxColor grx_color_get_value(GrxColor c);
+GrxColorMode grx_color_get_mode(GrxColor c);
+GrxColor grx_color_to_write_mode(GrxColor c);
+GrxColor grx_color_to_xor_mode(GrxColor c);
+GrxColor grx_color_to_or_mode(GrxColor c);
+GrxColor grx_color_to_and_mode(GrxColor c);
+GrxColor grx_color_to_image_mode(GrxColor c);
 
 /*
  * color system info structure (all [3] arrays are [r,g,b])
@@ -664,13 +664,13 @@ void    GrSaveColors(void *buffer);
 void    GrRestoreColors(void *buffer);
 
 #ifndef GRX_SKIP_INLINES
-#define GrColorValue(c)         ((GrxColor)(c) & GRX_COLOR_VALUE_MASK)
-#define GrColorMode(c)          ((GrxColor)(c) & GRX_COLOR_MODE_MASK)
-#define GrWriteModeColor(c)     (GrColorValue(c) | GRX_COLOR_MODE_WRITE)
-#define GrXorModeColor(c)       (GrColorValue(c) | GRX_COLOR_MODE_XOR)
-#define GrOrModeColor(c)        (GrColorValue(c) | GRX_COLOR_MODE_OR)
-#define GrAndModeColor(c)       (GrColorValue(c) | GRX_COLOR_MODE_AND)
-#define GrImageModeColor(c)     (GrColorValue(c) | GRX_COLOR_MODE_IMAGE)
+#define grx_color_get_value(c)         ((GrxColor)(c) & GRX_COLOR_VALUE_MASK)
+#define grx_color_get_mode(c)          ((GrxColor)(c) & GRX_COLOR_MODE_MASK)
+#define grx_color_to_write_mode(c)     (grx_color_get_value(c) | GRX_COLOR_MODE_WRITE)
+#define grx_color_to_xor_mode(c)       (grx_color_get_value(c) | GRX_COLOR_MODE_XOR)
+#define grx_color_to_or_mode(c)        (grx_color_get_value(c) | GRX_COLOR_MODE_OR)
+#define grx_color_to_and_mode(c)       (grx_color_get_value(c) | GRX_COLOR_MODE_AND)
+#define grx_color_to_image_mode(c)     (grx_color_get_value(c) | GRX_COLOR_MODE_IMAGE)
 #define GrNumColors()           (GrColorInfo->ncolors)
 #define GrNumFreeColors()       (GrColorInfo->nfree)
 #define GrBlack() (                                                            \

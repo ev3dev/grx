@@ -68,7 +68,7 @@ void drawpixel(int x,int y,GrxColor color)
 static INLINE
 void drawpixel_inv(int x,int y, GrxColor color)
 {
-    drawpixel(x, y, GrColorMode(color)|GrColorValue(~color));
+    drawpixel(x, y, grx_color_get_mode(color)|grx_color_get_value(~color));
 }
 
 #define maskoper(d,op,s,msk,SF,DF) do {                       \
@@ -126,7 +126,7 @@ done:
 
 static void drawhline_inv(int x,int y,int h, GrxColor color)
 {
-    drawhline(x, y, h, GrColorMode(color)|GrColorValue(~color));
+    drawhline(x, y, h, grx_color_get_mode(color)|grx_color_get_value(~color));
 }
 
 static void drawvline(int x,int y,int h,GrxColor color)
@@ -172,7 +172,7 @@ static void drawvline(int x,int y,int h,GrxColor color)
 
 static void drawvline_inv(int x,int y,int h, GrxColor color)
 {
-    drawvline(x, y, h, GrColorMode(color)|GrColorValue(~color));
+    drawvline(x, y, h, grx_color_get_mode(color)|grx_color_get_value(~color));
 }
 
 static

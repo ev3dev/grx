@@ -37,19 +37,12 @@ namespace Grx {
     [CCode (has_destroy_function = false, has_copy_function = false, has_type_id = false)]
     [SimpleType]
     public struct Color : uint32 {
-        [CCode (cname = "GrColorValue")]
-        public Color value ();
-        [CCode (cname = "GrColorMode")]
-        public ColorMode mode ();
-        [CCode (cname = "GrWriteModeColor")]
+        public Color value { get; }
+        public ColorMode mode { get; }
         public ColorMode to_write_mode ();
-        [CCode (cname = "GrXorModeColor")]
         public ColorMode to_xor_mode ();
-        [CCode (cname = "GrOrModeColor")]
         public ColorMode to_or_mode ();
-        [CCode (cname = "GrAndModeColor")]
         public ColorMode to_and_mode ();
-        [CCode (cname = "GrImageModeColor")]
         public ColorMode to_image_mode ();
 
         [CCode (cname = "GrResetColors")]
