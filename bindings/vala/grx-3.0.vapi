@@ -580,13 +580,6 @@ namespace Grx {
     /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */
     /* ================================================================== */
 
-    [Code (cprefix = "GRX_MEMORY_FLAGS_",has_type_id = false)]
-    [Flags]
-    public enum MemoryFlags {
-        MY_MEMORY,
-        MY_CONTEXT,
-    }
-
     [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class Frame {
@@ -597,7 +590,7 @@ namespace Grx {
         public uint8*[] base_address;
         public short selector;
         public bool is_on_screen;
-        public MemoryFlags memory_flags;
+        public uint8 memory_flags;
         public int line_offset;
         public unowned FrameDriver driver;
 
@@ -632,7 +625,7 @@ namespace Grx {
         [CCode (cname = "frame.is_on_screen")]
         public bool is_on_screen;
         [CCode (cname = "frame.memory_flags")]
-        public MemoryFlags flags;
+        public uint8 flags;
         [CCode (cname = "frame.line_offset")]
         public int line_offset;
         [CCode (cname = "frame.driver")]

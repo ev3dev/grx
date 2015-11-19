@@ -481,16 +481,11 @@ glong grx_get_context_size(gint w, gint h);
 /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */
 /* ================================================================== */
 
-typedef enum /*< flags >*/ {
-    GRX_MEMORY_FLAG_MY_MEMORY   = 0x01, /* set if my context memory */
-    GRX_MEMORY_FLAG_MY_CONTEXT  = 0x02, /* set if my context structure */
-} GrxMemoryFlags;
-
 struct _GrxFrame {
     guint8         *base_address[4];    /* base address of frame memory */
     gshort          selector;           /* frame memory segment selector */
     gboolean        is_on_screen;       /* is it in video memory ? */
-    GrxMemoryFlags  memory_flags;       /* memory allocation flags */
+    guint8          memory_flags;       /* memory allocation flags */
     gint            line_offset;        /* offset to next scan line in bytes */
     GrxFrameDriver *driver;             /* frame access functions */
 };

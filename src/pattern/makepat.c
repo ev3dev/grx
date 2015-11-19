@@ -23,6 +23,9 @@
 #include "libgrx.h"
 #include "allocate.h"
 
+#define  MY_MEMORY             1        /* set if my context memory */
+#define  MY_CONTEXT            2        /* set if my context structure */
+
 #define  BEST_MAX_LINE         128
 #define  BEST_MAX_CONTEXT      2048L
 
@@ -83,7 +86,7 @@ GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
         }
         *CURC = csave;
         result->pxp_source = cwork.frame;
-        result->pxp_source.memory_flags = (GRX_MEMORY_FLAG_MY_CONTEXT | GRX_MEMORY_FLAG_MY_MEMORY);
+        result->pxp_source.memory_flags = (MY_CONTEXT | MY_MEMORY);
         result->pxp_ispixmap = TRUE;
         result->pxp_width  = fullw;
         result->pxp_height = h;
@@ -124,7 +127,7 @@ GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxCo
         }
         *CURC = csave;
         result->pxp_source = cwork.frame;
-        result->pxp_source.memory_flags = (GRX_MEMORY_FLAG_MY_CONTEXT | GRX_MEMORY_FLAG_MY_MEMORY);
+        result->pxp_source.memory_flags = (MY_CONTEXT | MY_MEMORY);
         result->pxp_ispixmap = TRUE;
         result->pxp_width  = fullw;
         result->pxp_height = h;
@@ -140,7 +143,7 @@ GrPattern *GrConvertToPixmap(GrxContext *src)
         result = malloc(sizeof(GrPixmap));
         if(result == NULL) return(NULL);
         result->pxp_source = src->frame;
-        result->pxp_source.memory_flags = GRX_MEMORY_FLAG_MY_CONTEXT;
+        result->pxp_source.memory_flags = MY_CONTEXT;
         result->pxp_ispixmap = TRUE;
         result->pxp_width  = src->x_max + 1;
         result->pxp_height = src->y_max + 1;
@@ -153,15 +156,14 @@ void GrDestroyPattern(GrPattern *p)
 {
   if (!p) return;
   if (p->gp_ispixmap) {
-    if ( p->gp_pxp_source.memory_flags & GRX_MEMORY_FLAG_MY_MEMORY) {
+    if ( p->gp_pxp_source.memory_flags & MY_MEMORY) {
       int ii;
       for ( ii = p->gp_pxp_source.driver->num_planes; ii > 0; ii-- )
          free(p->gp_pxp_source.base_address[ii - 1]);
     }
-    if ( p->gp_pxp_source.memory_flags & GRX_MEMORY_FLAG_MY_CONTEXT )
+    if ( p->gp_pxp_source.memory_flags & MY_CONTEXT )
       free(p);
     return;
   }
   if ( p->gp_bitmap.bmp_memflags ) free(p);
 }
-
