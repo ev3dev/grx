@@ -165,7 +165,7 @@ static int _GrLoadContextFromPbm( inputstruct *is, int width, int height )
       currentbit--;
       if( currentbit < 0 ) isbyteread = 0;
       }
-    GrPutScanline( 0,maxwidth-1,y,pColors,GrWRITE );
+    GrPutScanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
     isbyteread = 0;
     }
 
@@ -210,7 +210,7 @@ static int _GrLoadContextFromPgm( inputstruct *is, int width,
       pColors[x] = GrAllocColor( *pCursor,*pCursor,*pCursor );
       pCursor += 1;
       }
-    GrPutScanline( 0,maxwidth-1,y,pColors,GrWRITE );
+    GrPutScanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
     }
 
 salida:
@@ -258,7 +258,7 @@ static int _GrLoadContextFromPpm( inputstruct *is, int width,
       pColors[x] = GrAllocColor( pCursor[0],pCursor[1],pCursor[2] );
       pCursor += 3;
       }
-    GrPutScanline( 0,maxwidth-1,y,pColors,GrWRITE );
+    GrPutScanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
     }
 
 salida:

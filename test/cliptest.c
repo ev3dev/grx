@@ -43,7 +43,7 @@ TESTFUNC(cliptest)
                 RND()%(3*ww)+10,
                 RND()%(3*wh)+10,
                 c,
-                GrNOCOLOR
+                GRX_COLOR_NONE
             );
             for(delay = 200000L; delay > 0L; delay--);
         }

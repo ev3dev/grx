@@ -53,13 +53,13 @@ void doblits(GrxContext *src,int x,int y)
         int ii;
 
         for(ii = 0; ii < 8; ii++) {
-            GrBitBlt(NULL,xx,yy,src,x,y,x+BWW-1,y+BHH-1,GrWRITE);
+            GrBitBlt(NULL,xx,yy,src,x,y,x+BWW-1,y+BHH-1,GRX_COLOR_MODE_WRITE);
             xx++;
             yy += (BHH + 2);
         }
 /*
   {
-        GrxColor xc = GrAllocColor(255,255,255) | GrXOR;
+        GrxColor xc = GrAllocColor(255,255,255) | GRX_COLOR_MODE_XOR;
         GrKeyRead();
         xx = (grx_get_size_x() - BWW)/ 2;
         yy = 2;
@@ -175,7 +175,7 @@ TESTFUNC(blittest)
                         -(bh/3) + 15*bh,
                         -(bw/2) + 15*bw + bw - 1,
                         -(bh/3) + 15*bh + bh - 1,
-                        cnt==1 ? GrXOR : GrWRITE
+                        cnt==1 ? GRX_COLOR_MODE_XOR : GRX_COLOR_MODE_WRITE
                     );
                 }
                 bx += bw;
@@ -199,7 +199,7 @@ TESTFUNC(blittest)
             -(bh/3) + 15*bh,
             -(bw/2) + 15*bw + bw - 1,
             -(bh/3) + 15*bh + bh - 1,
-            GrWRITE
+            GRX_COLOR_MODE_WRITE
         );
         grx_context_set_current(tile);
         GrFramedBox(2*wdt,2*wdt,bw-2*wdt-1,bh-2*wdt-1,2*wdt,&bcolors);
@@ -214,7 +214,7 @@ TESTFUNC(blittest)
                     tile,
                     0,0,
                     bw-1,bh-1,
-                    GrWRITE
+                    GRX_COLOR_MODE_WRITE
                 );
                 bx += bw;
             }
@@ -235,7 +235,7 @@ TESTFUNC(blittest)
            20,20,
            grx_get_size_x() - 40,
            grx_get_size_y() - 40,
-           GrWRITE
+           GRX_COLOR_MODE_WRITE
         );
 
         GrKeyRead();
@@ -246,7 +246,7 @@ TESTFUNC(blittest)
            60,60,
            grx_get_size_x() - 40,
            grx_get_size_y() - 40,
-           GrWRITE
+           GRX_COLOR_MODE_WRITE
         );
 
         GrKeyRead();
@@ -261,7 +261,7 @@ TESTFUNC(blittest)
             -(bh/3),
             -(bw/2) + 15*bw + bw - 1,
             -(bh/3) + 15*bh + bh - 1,
-            GrWRITE
+            GRX_COLOR_MODE_WRITE
         );
 
         grx_context_set_current(save);
@@ -274,7 +274,7 @@ TESTFUNC(blittest)
                     tile,
                     0,0,
                     bw-1,bh-1,
-                    GrWRITE
+                    GRX_COLOR_MODE_WRITE
                 );
                 bx += bw;
             }

@@ -43,7 +43,7 @@ int main(void)
   fcolor = GrAllocColor( 255,0,0 );
   bcolor = GrAllocColor( 0,0,255 );
   GrTextXY(0,0,"Type u d l r U D L R to move, 1 2 to change color, q to quit",
-           GrWhite(),GrNOCOLOR);
+           GrWhite(),GRX_COLOR_NONE);
   grx_set_clip_box(0, 40, grx_get_screen_x(), grx_get_screen_y());
 
   /* Put the bitmap into the screen */

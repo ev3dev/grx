@@ -583,17 +583,22 @@ int   grx_get_high_y(void);
 /*                            COLOR STUFF                             */
 /* ================================================================== */
 
-/*
+/**
+ * GrxColorMode:
+ *
  * Flags to 'OR' to colors for various operations
  */
-#define GrWRITE         0UL             /* write color */
-#define GrXOR           0x01000000UL    /* to "XOR" any color to the screen */
-#define GrOR            0x02000000UL    /* to "OR" to the screen */
-#define GrAND           0x03000000UL    /* to "AND" to the screen */
-#define GrIMAGE         0x04000000UL    /* BLIT: write, except given color */
-#define GrCVALUEMASK    0x00ffffffUL    /* color value mask */
-#define GrCMODEMASK     0xff000000UL    /* color operation mask */
-#define GrNOCOLOR       (GrXOR | 0)     /* GrNOCOLOR is used for "no" color */
+typedef enum /*< flags >*/ {
+    GRX_COLOR_MODE_WRITE = 0UL,           /* write color */
+    GRX_COLOR_MODE_XOR   = 0x01000000UL,  /* to "XOR" any color to the screen */
+    GRX_COLOR_MODE_OR    = 0x02000000UL,  /* to "OR" to the screen */
+    GRX_COLOR_MODE_AND   = 0x03000000UL,  /* to "AND" to the screen */
+    GRX_COLOR_MODE_IMAGE = 0x04000000UL,  /* BLIT: write, except given color */
+} GrxColorMode;
+
+#define GRX_COLOR_VALUE_MASK 0x00ffffffUL /* color value mask */
+#define GRX_COLOR_MODE_MASK  0xff000000UL /* color operation mask */
+#define GRX_COLOR_NONE ((GrxColor)(GRX_COLOR_MODE_XOR | 0)) /* GRX_COLOR_NONE is used for "no" color */
 
 GrxColor GrColorValue(GrxColor c);
 GrxColor GrColorMode(GrxColor c);
@@ -664,22 +669,22 @@ void    GrSaveColors(void *buffer);
 void    GrRestoreColors(void *buffer);
 
 #ifndef GRX_SKIP_INLINES
-#define GrColorValue(c)         ((GrxColor)(c) & GrCVALUEMASK)
-#define GrColorMode(c)          ((GrxColor)(c) & GrCMODEMASK)
-#define GrWriteModeColor(c)     (GrColorValue(c) | GrWRITE)
-#define GrXorModeColor(c)       (GrColorValue(c) | GrXOR)
-#define GrOrModeColor(c)        (GrColorValue(c) | GrOR)
-#define GrAndModeColor(c)       (GrColorValue(c) | GrAND)
-#define GrImageModeColor(c)     (GrColorValue(c) | GrIMAGE)
+#define GrColorValue(c)         ((GrxColor)(c) & GRX_COLOR_VALUE_MASK)
+#define GrColorMode(c)          ((GrxColor)(c) & GRX_COLOR_MODE_MASK)
+#define GrWriteModeColor(c)     (GrColorValue(c) | GRX_COLOR_MODE_WRITE)
+#define GrXorModeColor(c)       (GrColorValue(c) | GRX_COLOR_MODE_XOR)
+#define GrOrModeColor(c)        (GrColorValue(c) | GRX_COLOR_MODE_OR)
+#define GrAndModeColor(c)       (GrColorValue(c) | GRX_COLOR_MODE_AND)
+#define GrImageModeColor(c)     (GrColorValue(c) | GRX_COLOR_MODE_IMAGE)
 #define GrNumColors()           (GrColorInfo->ncolors)
 #define GrNumFreeColors()       (GrColorInfo->nfree)
 #define GrBlack() (                                                            \
-        (GrColorInfo->black == GrNOCOLOR) ?                                    \
+        (GrColorInfo->black == GRX_COLOR_NONE) ?                               \
         (GrBlack)() :                                                          \
         GrColorInfo->black                                                     \
 )
 #define GrWhite() (                                                            \
-        (GrColorInfo->white == GrNOCOLOR) ?                                    \
+        (GrColorInfo->white == GRX_COLOR_NONE) ?                               \
         (GrWhite)() :                                                          \
         GrColorInfo->white                                                     \
 )
@@ -767,7 +772,7 @@ typedef GrxColor *GrColorTableP;
 #define GR_CTABLE_COLOR(table,index) (                                         \
         ((unsigned)(index) < GR_CTABLE_SIZE(table)) ?                          \
         (table)[((unsigned)(index)) + 1] :                                     \
-        GrNOCOLOR                                                              \
+        GRX_COLOR_NONE                                                         \
 )
 #define GR_CTABLE_ALLOCSIZE(ncolors)    ((ncolors) + 1)
 
@@ -844,9 +849,9 @@ void GrPutScanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op);
 /*         x2 : last  x coordinate to be set                        */
 /*         yy : y coordinate                                        */
 /*         c  : c[0..(|x2-x1|] hold the pixel data                  */
-/*         op : Operation (GrWRITE/GrXOR/GrOR/GrAND/GrIMAGE)        */
+/*         op : Operation (GRX_COLOR_MODE_WRITE/GRX_COLOR_MODE_XOR/GRX_COLOR_MODE_OR/GRX_COLOR_MODE_AND/GRX_COLOR_MODE_IMAGE)        */
 /*                                                                  */
-/* Note    c[..] data must fit GrCVALUEMASK otherwise the results   */
+/* Note    c[..] data must fit GRX_COLOR_VALUE_MASK otherwise the results   */
 /*         are implementation dependend.                            */
 /*         => You can't supply operation code with the pixel data!  */
 
@@ -965,7 +970,7 @@ extern int _GR_textattrintensevideo;
  * OR this to the foreground color value for underlined text when
  * using GR_BYTE_TEXT or GR_WORD_TEXT modes.
  */
-#define GR_UNDERLINE_TEXT       (GrXOR << 4)
+#define GR_UNDERLINE_TEXT       (GRX_COLOR_MODE_XOR << 4)
 
 /*
  * Font conversion flags for 'GrLoadConvertedFont'. OR them as desired.

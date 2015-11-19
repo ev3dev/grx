@@ -28,8 +28,8 @@ void _GrFrDrvGenericPutScanline(int x,int y,int w,
    GRX_ENTER();
    drawpixel = CURC->gc_driver->drawpixel;
    DBGPRINTF(DBG_DRIVER,("x=%d, y=%d, w=%d, op=%lx\n",x,y,w,op));
-   skipc = op ^ GrIMAGE;
-   op &= GrCMODEMASK;
+   skipc = op ^ GRX_COLOR_MODE_IMAGE;
+   op &= GRX_COLOR_MODE_MASK;
    for ( w += x; x < w; ++x) {
      GrxColor c = *(scl++);
      if (c != skipc) (*drawpixel)(x,y,(c|op));

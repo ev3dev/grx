@@ -25,7 +25,7 @@
 GrxColor GrBlack(void)
 {
         GRX_ENTER();
-        if(CLRINFO->black == GrNOCOLOR) CLRINFO->black = GrAllocColor(0,0,0);
+        if(CLRINFO->black == GRX_COLOR_NONE) CLRINFO->black = GrAllocColor(0,0,0);
                GRX_RETURN(CLRINFO->black);
 }
 
@@ -35,7 +35,7 @@ GrxColor GrBlack(void)
 GrxColor GrWhite(void)
 {
         GRX_ENTER();
-        if(CLRINFO->white == GrNOCOLOR) CLRINFO->white = GrAllocColor(255,255,255);
+        if(CLRINFO->white == GRX_COLOR_NONE) CLRINFO->white = GrAllocColor(255,255,255);
         GRX_RETURN(CLRINFO->white);
 }
 

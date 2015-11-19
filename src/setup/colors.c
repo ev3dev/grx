@@ -86,10 +86,10 @@ int _GrResetColors(void)
         }
         sttzero(CLRINFO);
         DACload = DRVINFO->actmode.extended_info->load_color;
-        CLRINFO->black   = GrNOCOLOR;
-        CLRINFO->white   = GrNOCOLOR;
+        CLRINFO->black   = GRX_COLOR_NONE;
+        CLRINFO->white   = GRX_COLOR_NONE;
         CLRINFO->ncolors = DRVINFO->actmode.bpp>=32 ? 0 : (1L << DRVINFO->actmode.bpp);
-        if ( ((CLRINFO->ncolors-1)&GrCVALUEMASK) != (CLRINFO->ncolors-1) ) {
+        if ( ((CLRINFO->ncolors-1)&GRX_COLOR_VALUE_MASK) != (CLRINFO->ncolors-1) ) {
             /* can happen on 32bpp systems. */
             int cbpp = 0;
             for(i=0; i < 3; ++i)
@@ -125,7 +125,7 @@ int _GrResetColors(void)
             CLRINFO->RGBmode = TRUE;
             break;
         }
-        return ((CLRINFO->ncolors-1)&GrCVALUEMASK) == CLRINFO->ncolors-1;
+        return ((CLRINFO->ncolors-1)&GRX_COLOR_VALUE_MASK) == CLRINFO->ncolors-1;
 }
  
 void GrResetColors(void)
@@ -166,7 +166,7 @@ GrxColor GrAllocColor(int r,int g,int b)
         GrxColor res;
 
         GRX_ENTER();
-        res = GrNOCOLOR;
+        res = GRX_COLOR_NONE;
         r = ROUNDCOLORCOMP(r,0);
         g = ROUNDCOLORCOMP(g,1);
         b = ROUNDCOLORCOMP(b,2);
@@ -262,7 +262,7 @@ GrxColor GrAllocCell(void)
                 return((GrxColor)(free_));
             }
         }
-        return(GrNOCOLOR);
+        return(GRX_COLOR_NONE);
 }
 
 void GrFreeColor(GrxColor c)

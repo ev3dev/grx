@@ -12,7 +12,7 @@ void drawing(int xpos,int ypos,int xsize,int ysize,long fg,long bg)
 #   define XP(x)   (int)((((long)(x) * (long)xsize) / 100L) + xpos)
 #   define YP(y)   (int)((((long)(y) * (long)ysize) / 100L) + ypos)
         int ii;
-        if(bg != GrNOCOLOR) {
+        if(bg != GRX_COLOR_NONE) {
                 GrFilledBox(xpos,ypos,xpos+xsize-1,ypos+ysize-1,bg);
         }
         GrLine(XP(10),YP(10),XP(40),YP(40),fg);

@@ -58,7 +58,7 @@ TESTFUNC(colorops)
         icolors.fbx_topcolor = GrAllocColor(0,90,60);
 
         c  = GrAllocColor(250,250,0);
-        bg = GrNOCOLOR;
+        bg = GRX_COLOR_NONE;
 
         for(ii = 0,by = -(bh / 3); ii < 17; ii++) {
             for(jj = 0,bx = (-bw / 2); jj < 17; jj++) {
@@ -91,7 +91,7 @@ TESTFUNC(colorops)
                 wh/4+(RND()%100),
                 ww,
                 wh,
-                ((RND() / 16) & (GrNumColors() - 1)) | GrXOR,
+                ((RND() / 16) & (GrNumColors() - 1)) | GRX_COLOR_MODE_XOR,
                 bg
             );
         }
@@ -103,7 +103,7 @@ TESTFUNC(colorops)
                 wh/4+(RND()%100),
                 ww,
                 wh,
-                ((RND() / 16) & (GrNumColors() - 1)) | GrOR,
+                ((RND() / 16) & (GrNumColors() - 1)) | GRX_COLOR_MODE_OR,
                 bg
             );
         }
@@ -115,7 +115,7 @@ TESTFUNC(colorops)
                 wh/4+(RND()%100),
                 ww,
                 wh,
-                ((RND() / 16) & (GrNumColors() - 1)) | GrAND,
+                ((RND() / 16) & (GrNumColors() - 1)) | GRX_COLOR_MODE_AND,
                 bg
             );
         }

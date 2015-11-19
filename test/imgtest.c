@@ -75,7 +75,7 @@ TESTFUNC(imgtest)
             const GrxColor *cp;
             cp = GrGetScanline(ww+1,x-ww-d1,m1+1);
             if (cp) {
-              GrPutScanline(ww,x-ww-d1-1,m1,cp,GrIMAGE|c2);
+              GrPutScanline(ww,x-ww-d1-1,m1,cp,GRX_COLOR_MODE_IMAGE|c2);
             }
           }
         }

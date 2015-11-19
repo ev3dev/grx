@@ -30,9 +30,9 @@ void _GrFrDrvGenericBitBlt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y
         GRX_ENTER();
         readpix = src->driver->readpixel;
         drawpix = dst->driver->drawpixel;
-        skipc = op ^ GrIMAGE;
+        skipc = op ^ GRX_COLOR_MODE_IMAGE;
         step  = 1;
-        op &= GrCMODEMASK;
+        op &= GRX_COLOR_MODE_MASK;
         sttcopy(&csave,&CURC->frame);
         sttcopy(&CURC->frame,dst);
         if((dy > y) || ((dy == y) && (dx > x))) {

@@ -62,7 +62,7 @@ void nopngsupport( void )
 
   GrClearScreen( GrAllocColor( 0,0,100 ) );
   for( i=0; i<6; i++ )
-    GrTextXY( 90,160+i*18,s[i],GrWhite(),GrNOCOLOR );
+    GrTextXY( 90,160+i*18,s[i],GrWhite(),GRX_COLOR_NONE );
   GrKeyRead();
 }
 

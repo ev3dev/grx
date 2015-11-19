@@ -23,9 +23,9 @@ void GrPutScanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op)
 /*         x2 : last  x coordinate to be set                        */
 /*         yy : y coordinate                                        */
 /*         c  : c[0..(|x2-x1|] hold the pixel data                  */
-/*         op : Operation (GrWRITE/GrXOR/GrOR/GrAND/GrIMAGE)        */
+/*         op : Operation (GRX_COLOR_MODE_WRITE/GRX_COLOR_MODE_XOR/GRX_COLOR_MODE_OR/GRX_COLOR_MODE_AND/GRX_COLOR_MODE_IMAGE)        */
 /*                                                                  */
-/* Note    c[..] data must fit GrCVALUEMASK otherwise the results   */
+/* Note    c[..] data must fit GRX_COLOR_VALUE_MASK otherwise the results   */
 /*         are implementation dependend.                            */
 /*         => You can't supply operation code with the pixel data!  */
 {

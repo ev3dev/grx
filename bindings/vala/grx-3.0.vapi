@@ -66,9 +66,10 @@ namespace Grx {
 
         public static Color black { [CCode (cname = "GrBlack")]get; }
         public static Color white { [CCode (cname = "GrWhite")]get; }
-        [CCode (cname = "GrNOCOLOR")]
-        const Color NO_COLOR;
-        public static Color no_color { get { return NO_COLOR; } }
+
+        public const Color VALUE_MASK;
+        public const Color MODE_MASK;
+        public const Color NONE;
 
         [CCode (cname = "GrBuildRGBcolorT")]
         public static Color build_rgb_t (int r, int g, int b);
@@ -729,24 +730,14 @@ namespace Grx {
     public int get_high_x ();
     public int get_high_y ();
 
-    [CCode (cname = "GrxColor", has_type_id = false)]
+    [CCode (cprefix = "GRX_COLOR_MODE_", has_type_id = false)]
     [Flags]
     public enum ColorMode {
-        [CCode (cname = "GrWRITE")]
         WRITE,
-        [CCode (cname = "GrXOR")]
         XOR,
-        [CCode (cname = "GrOR")]
         OR,
-        [CCode (cname = "GrAND")]
         AND,
-        [CCode (cname = "GrIMAGE")]
         IMAGE,
-        [CCode (cname = "GrCVALUEMASK")]
-        COLOR_VALUE_MASK,
-        [CCode (cname = "GrCMODEMASK")]
-        COLOR_MODE_MASK,
-        [CCode (cname = "GR_UNDERLINE_TEXT")]
         UNDERLINE_TEXT
     }
 

@@ -22,7 +22,7 @@
 GrxColor GrPixel(int x,int y)
 {
         GrxColor retval;
-        cxclip_dot_(CURC,x,y,return(GrNOCOLOR));
+        cxclip_dot_(CURC,x,y,return(GRX_COLOR_NONE));
         mouse_block(CURC,x,y,x,y);
         retval = (*FDRV->readpixel)(
             &CURC->frame,

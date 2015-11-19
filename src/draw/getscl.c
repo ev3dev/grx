@@ -26,7 +26,7 @@ const GrxColor *GrGetScanlineC(GrxContext *ctx,int x1,int x2,int yy)
 /* Output  NULL     : error / no data (clipping occured)            */
 /*         else                                                     */
 /*           p[0..w-1]: pixel values read                           */
-/*           p[w]     : GrNOCOLOR end marker                        */
+/*           p[w]     : GRX_COLOR_NONE end marker                        */
 /*                      (w = |x2-y1|+1)                             */
 /*           Output data is valid until next GRX call !             */
 {

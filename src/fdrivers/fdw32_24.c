@@ -158,8 +158,8 @@ void w32_putscanline(int x, int y, int w,
     Rect.right = x + w;
     Rect.bottom = y + 1;
 
-    skipc = op ^ GrIMAGE;
-    op &= GrCMODEMASK;
+    skipc = op ^ GRX_COLOR_MODE_IMAGE;
+    op &= GRX_COLOR_MODE_MASK;
     for ( w += x; x < w; ++x) {
         GrxColor c = *(scl++);
         if (c != skipc) drawpixel(x, y, (c|op));

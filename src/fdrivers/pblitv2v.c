@@ -147,7 +147,7 @@ void _GrFrDrvPackedBitBltV2V(GrxFrame *dst,int dx,int dy,
                 int cnt = umin(h,tmpn);
                 dy -= (ydir & cnt);
                 sy -= (ydir & cnt);
-                _GrFrDrvPackedBitBltV2R(&tmp,tmpx,0,src,sx,sy,w,cnt,GrWRITE);
+                _GrFrDrvPackedBitBltV2R(&tmp,tmpx,0,src,sx,sy,w,cnt,GRX_COLOR_MODE_WRITE);
                 _GrFrDrvPackedBitBltR2V(dst,dx,dy,&tmp,tmpx,0,w,cnt,op);
                 dy += (~ydir & cnt);
                 sy += (~ydir & cnt);

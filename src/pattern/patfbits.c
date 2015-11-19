@@ -28,7 +28,7 @@ void  _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
    int xx, width, oldx;
    GRX_ENTER();
    bits = (GR_int8u *)bmp + ((unsigned int)start >> 3);
-   if ( bg == GrNOCOLOR )
+   if ( bg == GRX_COLOR_NONE )
    {
      w += x;
      h += y;

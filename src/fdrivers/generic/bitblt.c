@@ -23,9 +23,9 @@ void bitblt(GrxFrame *dst,int dx,int dy,
         GrxColor skipc;
         int step;
         GRX_ENTER();
-        skipc = op ^ GrIMAGE;
+        skipc = op ^ GRX_COLOR_MODE_IMAGE;
         step  = 1;
-        op   &= GrCMODEMASK;
+        op   &= GRX_COLOR_MODE_MASK;
         sttcopy(&csave,&CURC->frame);
         sttcopy(&CURC->frame,dst);
         if((dy > y) || ((dy == y) && (dx > x))) {

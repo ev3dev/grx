@@ -20,8 +20,8 @@ void putscanline(int x,int y,int w,
 {
    GrxColor skipc;
    GRX_ENTER();
-   skipc = op ^ GrIMAGE;
-   op &= GrCMODEMASK;
+   skipc = op ^ GRX_COLOR_MODE_IMAGE;
+   op &= GRX_COLOR_MODE_MASK;
    for ( w += x; x < w; ++x) {
      GrxColor c = *(scl++);
      if (c != skipc) drawpixel(x,y,(c|op));

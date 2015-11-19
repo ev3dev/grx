@@ -107,7 +107,7 @@ void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
 {
     int pl;
     GRX_ENTER();
-    if(GrColorMode(op) != GrIMAGE && do_alloc(w)) {
+    if(GrColorMode(op) != GRX_COLOR_MODE_IMAGE && do_alloc(w)) {
       GR_int32u doffs, soffs;
       int oper    = C_OPER(op);
       int shift   = ((int)(x&7)) - ((int)(dx&7));

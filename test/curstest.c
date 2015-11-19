@@ -55,35 +55,35 @@ TESTFUNC(cursortest)
         GrMoveCursor(cur,x,y);
         GrClearScreen(bgc);
         GrSetColor((GrNumColors() - 1),255,255,255);
-        drawing(0,0,grx_get_size_x(),grx_get_size_y(),fgc,GrNOCOLOR);
+        drawing(0,0,grx_get_size_x(),grx_get_size_y(),fgc,GRX_COLOR_NONE);
         GrFilledBox(0,0,320,120,GrAllocColor(0,255,255));
-        GrTextXY( 10,90,"ANDmask",GrBlack(),GrNOCOLOR);
-        GrTextXY( 90,90,"ORmask", GrBlack(),GrNOCOLOR);
-        GrTextXY(170,90,"Save",   GrBlack(),GrNOCOLOR);
-        GrTextXY(250,90,"Work",   GrBlack(),GrNOCOLOR);
+        GrTextXY( 10,90,"ANDmask",GrBlack(),GRX_COLOR_NONE);
+        GrTextXY( 90,90,"ORmask", GrBlack(),GRX_COLOR_NONE);
+        GrTextXY(170,90,"Save",   GrBlack(),GRX_COLOR_NONE);
+        GrTextXY(250,90,"Work",   GrBlack(),GRX_COLOR_NONE);
         GrDisplayCursor(cur);
         for( ; ; ) {
             GrBitBlt(
                 NULL,10,10,
                 &cur->work,cur->xwork/2,0,cur->xwork/2+cur->xsize-1,cur->ysize-1,
-                GrWRITE
+                GRX_COLOR_MODE_WRITE
             );
             GrBitBlt(
                 NULL,90,10,
                 &cur->work,0,0,cur->xsize-1,cur->ysize-1,
-                GrWRITE
+                GRX_COLOR_MODE_WRITE
             );
             GrBitBlt(
                 NULL,170,10,
                 &cur->work,0,cur->ysize,cur->xwork-1,cur->ysize+cur->ywork-1,
-                GrWRITE
+                GRX_COLOR_MODE_WRITE
             );
             GrBitBlt(
                 NULL,250,10,
                 &cur->work,0,cur->ysize+cur->ywork,cur->xwork-1,cur->ysize+2*cur->ywork-1,
-                GrWRITE
+                GRX_COLOR_MODE_WRITE
             );
-            GrTextXY(0,grx_get_max_y()-20,"Type u d l r U D L R or q to quit",GrWhite(),GrNOCOLOR);
+            GrTextXY(0,grx_get_max_y()-20,"Type u d l r U D L R or q to quit",GrWhite(),GRX_COLOR_NONE);
             switch(GrKeyRead()) {
                 case 'u': y--; break;
                 case 'd': y++; break;

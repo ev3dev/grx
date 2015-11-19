@@ -125,7 +125,7 @@ static GrxColor dummyframefn(void)
             );
             exit(1);
         }
-        return(GrNOCOLOR);
+        return(GRX_COLOR_NONE);
 }
 
 void _GrDummyFunction(void)

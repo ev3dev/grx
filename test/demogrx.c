@@ -301,13 +301,13 @@ static void ini_objects(void)
             disaster("lucb40b.fnt not found");
     }
 
-    grt_centered.txo_bgcolor.v = GrNOCOLOR;
+    grt_centered.txo_bgcolor.v = GRX_COLOR_NONE;
     grt_centered.txo_direct = GR_TEXT_RIGHT;
     grt_centered.txo_xalign = GR_ALIGN_CENTER;
     grt_centered.txo_yalign = GR_ALIGN_CENTER;
     grt_centered.txo_chrtype = GR_BYTE_TEXT;
 
-    grt_left.txo_bgcolor.v = GrNOCOLOR;
+    grt_left.txo_bgcolor.v = GRX_COLOR_NONE;
     grt_left.txo_direct = GR_TEXT_RIGHT;
     grt_left.txo_xalign = GR_ALIGN_LEFT;
     grt_left.txo_yalign = GR_ALIGN_CENTER;
@@ -476,7 +476,7 @@ static void paint_animation(void)
     GrClearContext(DARKGRAY);
     GrDrawString(animatedtext, ltext, pos, 15, &grt_left);
     grx_context_set_current(grcglob);
-    GrBitBlt(NULL, 10, 8, grc, 0, 0, 629, 29, GrWRITE);
+    GrBitBlt(NULL, 10, 8, grc, 0, 0, 629, 29, GRX_COLOR_MODE_WRITE);
 
     pos -= 1;
     if (pos <= -wtext)

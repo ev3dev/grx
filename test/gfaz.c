@@ -252,7 +252,7 @@ void dboton( int x, int y, int an, int al,
 
   grt.txo_font = &GrFont_PC8x14;
   grt.txo_fgcolor.v = ct;
-  grt.txo_bgcolor.v = GrNOCOLOR;
+  grt.txo_bgcolor.v = GRX_COLOR_NONE;
   grt.txo_direct = GR_TEXT_RIGHT;
   grt.txo_xalign = GR_ALIGN_CENTER;
   grt.txo_yalign = GR_ALIGN_CENTER;

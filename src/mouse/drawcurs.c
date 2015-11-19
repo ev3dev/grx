@@ -48,13 +48,13 @@ void GrDisplayCursor(GrCursor *C)
             SAVECXT(C,0,0),
             &SCRN->frame,xwrk,ywrk,
             xsiz,ysiz,
-            GrWRITE
+            GRX_COLOR_MODE_WRITE
         );
         (*C->work.gc_driver->bitblt)(
             WORKCXT(C,0,0),
             SAVECXT(C,0,0),
             xsiz,ysiz,
-            GrWRITE
+            GRX_COLOR_MODE_WRITE
         );
         xpos -= xwrk;
         ypos -= ywrk;
@@ -70,19 +70,19 @@ void GrDisplayCursor(GrCursor *C)
             WORKCXT(C,xpos,ypos),
             ANDMASK(C,xwrk,ywrk),
             xsiz,ysiz,
-            GrAND
+            GRX_COLOR_MODE_AND
         );
         (*C->work.gc_driver->bitblt)(
             WORKCXT(C,xpos,ypos),
             XORMASK(C,xwrk,ywrk),
             xsiz,ysiz,
-            GrXOR
+            GRX_COLOR_MODE_XOR
         );
         (*SDRV->bltr2v)(
             &SCRN->frame,C->xwpos,C->ywpos,
             WORKCXT(C,0,0),
             C->xwork,C->ywork,
-            GrWRITE
+            GRX_COLOR_MODE_WRITE
         );
         mouse_unblock();
 }
@@ -98,7 +98,7 @@ void GrEraseCursor(GrCursor *C)
                 &SCRN->frame,C->xwpos,C->ywpos,
                 SAVECXT(C,0,0),
                 C->xwork,C->ywork,
-                GrWRITE
+                GRX_COLOR_MODE_WRITE
             );
             C->displayed = FALSE;
             mouse_unblock();
@@ -127,25 +127,25 @@ void GrMoveCursor(GrCursor *C,int x,int y)
                 WORKCXT(C,0,0),
                 SAVECXT(C,0,0),
                 C->xwork,C->ywork,
-                GrWRITE
+                GRX_COLOR_MODE_WRITE
             );
             (*C->work.gc_driver->bitblt)(
                 WORKCXT(C,xpos,ypos),
                 ANDMASK(C,0,0),
                 xsiz,ysiz,
-                GrAND
+                GRX_COLOR_MODE_AND
             );
             (*C->work.gc_driver->bitblt)(
                 WORKCXT(C,xpos,ypos),
                 XORMASK(C,0,0),
                 xsiz,ysiz,
-                GrXOR
+                GRX_COLOR_MODE_XOR
             );
             (*SDRV->bltr2v)(
                 &SCRN->frame,C->xwpos,C->ywpos,
                 WORKCXT(C,0,0),
                 C->xwork,C->ywork,
-                GrWRITE
+                GRX_COLOR_MODE_WRITE
             );
             mouse_unblock();
             return;

@@ -243,7 +243,7 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
         pColors[x] = GrAllocColor( r,g,b );
         }
       }
-    GrPutScanline( 0,maxwidth-1,y,pColors,GrWRITE );
+    GrPutScanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
     }
 
   if( pColors) free( pColors );

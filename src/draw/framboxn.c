@@ -24,7 +24,7 @@ void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c)
         isort(x1,x2);
         isort(y1,y2);
         if(wdt < 0) wdt = 0;
-        if(c->fbx_intcolor != GrNOCOLOR) {
+        if(c->fbx_intcolor != GRX_COLOR_NONE) {
             GrFilledBoxNC(x1,y1,x2,y2,c->fbx_intcolor);
         }
         while(--wdt >= 0) {

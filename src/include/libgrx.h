@@ -284,12 +284,12 @@ int _GrResetColors(void);      /* like GrResetColors but return true on success 
 #ifndef C_OPER
 #define C_OPER(color)   (unsigned int)(((GrxColor)(color) >> 24) & 15)
 #endif
-#define C_WRITE         (int)(GrWRITE >> 24)
-#define C_XOR           (int)(GrXOR   >> 24)
-#define C_OR            (int)(GrOR    >> 24)
-#define C_AND           (int)(GrAND   >> 24)
-#define C_IMAGE         (int)(GrIMAGE >> 24)
-#define C_COLOR         GrCVALUEMASK
+#define C_WRITE         (int)(GRX_COLOR_MODE_WRITE >> 24)
+#define C_XOR           (int)(GRX_COLOR_MODE_XOR   >> 24)
+#define C_OR            (int)(GRX_COLOR_MODE_OR    >> 24)
+#define C_AND           (int)(GRX_COLOR_MODE_AND   >> 24)
+#define C_IMAGE         (int)(GRX_COLOR_MODE_IMAGE >> 24)
+#define C_COLOR         GRX_COLOR_VALUE_MASK
 
 /*
  * mouse stuff

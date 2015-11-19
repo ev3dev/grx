@@ -145,7 +145,7 @@ void _LnxfbSwitchToConsoleVt(unsigned short vt)
     grc = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
     if (grc != NULL) {
         GrBitBlt(grc, 0, 0, grx_context_get_screen(), 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
     }
     ioctl(ttyfd, KDSETMODE, KD_TEXT);
     if (ioctl(ttyfd, VT_ACTIVATE, vt) == 0) {
@@ -155,7 +155,7 @@ void _LnxfbSwitchToConsoleVt(unsigned short vt)
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
     if (grc != NULL) {
         GrBitBlt(grx_context_get_screen(), 0, 0, grc, 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
         grx_context_free(grc);
     }
 }
@@ -175,7 +175,7 @@ void _LnxfbSwitchConsoleAndWait(void)
     grc = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
     if (grc != NULL) {
         GrBitBlt(grc, 0, 0, grx_context_get_screen(), 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
     }
 
     ioctl(ttyfd, KDSETMODE, KD_TEXT);
@@ -187,7 +187,7 @@ void _LnxfbSwitchConsoleAndWait(void)
 
     if (grc != NULL) {
         GrBitBlt(grx_context_get_screen(), 0, 0, grc, 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
         grx_context_free(grc);
     }
 }
@@ -207,10 +207,10 @@ void _LnxfbRelsigHandle(int sig)
         /* Need to invert the colors on this one. */
         GrClearContextC(grc, 1);
         GrBitBlt(grc, 0, 0, grx_context_get_screen(), 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrXOR);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_XOR);
     } else {
         GrBitBlt(grc, 0, 0, grx_context_get_screen(), 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
     }
     /*
      * swap out the framebuffer memory with the new context so that the
@@ -247,10 +247,10 @@ void _LnxfbAcqsigHandle(int sig)
         /* need to invert the colors on this one */
         GrClearScreen(1);
         GrBitBlt(grx_context_get_screen(), 0, 0, grc, 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrXOR);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_XOR);
     } else {
         GrBitBlt(grx_context_get_screen(), 0, 0, grc, 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GrWRITE);
+                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
     }
     grx_context_free(grc);
     signal(SIGUSR1, _LnxfbRelsigHandle);

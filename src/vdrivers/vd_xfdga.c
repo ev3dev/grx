@@ -81,8 +81,8 @@ static int setmode(GrxVideoMode *mp,int noclear)
 #else
             _XGrDepth = _XGrBitsPerPixel = mp->bpp;
             if(_XGrDepth == 32) _XGrDepth = 24;
-            _XGrForeColor = GrNOCOLOR;                /* force XSetForeground */
-            _XGrBackColor = GrNOCOLOR;                /* force XSetBackground */
+            _XGrForeColor = GRX_COLOR_NONE;                /* force XSetForeground */
+            _XGrBackColor = GRX_COLOR_NONE;                /* force XSetBackground */
             _XGrColorOper = C_WRITE;
             _XGrGC = XCreateGC(_XGrDisplay, dev->pixmap, 0L, NULL);
             _XGrBitmap = XCreatePixmap(_XGrDisplay, dev->pixmap, 128, 128, 1);

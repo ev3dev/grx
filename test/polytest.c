@@ -32,12 +32,12 @@ static void testpoly(int n,int points[][2],int convex)
 {
         GrClearScreen(black);
         GrPolygon(n,points,white);
-        GrFilledPolygon(n,points,(red | GrXOR));
+        GrFilledPolygon(n,points,(red | GRX_COLOR_MODE_XOR));
         GrKeyRead();
         if(convex || (n <= 3)) {
             GrClearScreen(black);
             GrFilledPolygon(n,points,white);
-            GrFilledConvexPolygon(n,points,(red | GrXOR));
+            GrFilledConvexPolygon(n,points,(red | GRX_COLOR_MODE_XOR));
             GrKeyRead();
         }
 }
@@ -67,7 +67,7 @@ static void speedtest(void)
             pts[2][0] = ww;
             pts[3][0] = 0;
             for(jj = 0; jj < 32; jj++) {
-                GrFilledPolygon(4,pts, EGA[color] | GrXOR);
+                GrFilledPolygon(4,pts, EGA[color] | GRX_COLOR_MODE_XOR);
                 color = (color + 1) & 15;
                 pts[0][0] += sx;
                 pts[1][0] += sx;
@@ -91,7 +91,7 @@ static void speedtest(void)
             pts[2][0] = ww;
             pts[3][0] = 0;
             for(jj = 0; jj < 32; jj++) {
-                GrFilledConvexPolygon(4,pts, EGA[color] | GrXOR);
+                GrFilledConvexPolygon(4,pts, EGA[color] | GRX_COLOR_MODE_XOR);
                 color = (color + 1) & 15;
                 pts[0][0] += sx;
                 pts[1][0] += sx;

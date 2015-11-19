@@ -45,14 +45,14 @@ TESTFUNC(arctest)
                 GrEllipse(xc,yc,xa,ya,red);
                 GrFilledEllipse(xc,yc,xa,ya,blue);
                 GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,GrWhite());
-                GrTextXY(0,0,buff,GrWhite(),GrNOCOLOR);
-                GrTextXY(0,20,"press any key to continue",GrWhite(),GrNOCOLOR);
+                GrTextXY(0,0,buff,GrWhite(),GRX_COLOR_NONE);
+                GrTextXY(0,20,"press any key to continue",GrWhite(),GRX_COLOR_NONE);
                 GrKeyRead();
                 GrClearScreen(GrBlack());
                 GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,red);
                 GrFilledEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,green);
-                GrTextXY(0,0,buff,GrWhite(),GrNOCOLOR);
-                GrTextXY(0,20,"press any key to continue",GrWhite(),GrNOCOLOR);
+                GrTextXY(0,0,buff,GrWhite(),GRX_COLOR_NONE);
+                GrTextXY(0,20,"press any key to continue",GrWhite(),GRX_COLOR_NONE);
                 GrKeyRead();
             }
         }

@@ -161,7 +161,7 @@ static void bitblit(GrxFrame *dst,int dx,int dy,
 {
     int pl;
     GRX_ENTER();
-    if(GrColorMode(op) == GrIMAGE)
+    if(GrColorMode(op) == GRX_COLOR_MODE_IMAGE)
         bitblt(dst,dx,dy,src,sx,sy,w,h,op);
     else
         for (pl=0; pl < 3; ++pl)

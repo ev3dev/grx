@@ -38,8 +38,8 @@ int main(void)
     opt.txo_xalign = 0;
     opt.txo_yalign = 0;
     opt.txo_direct = GR_TEXT_RIGHT;
-    opt.txo_fgcolor.v = GrNOCOLOR;
-    opt.txo_bgcolor.v = GrNOCOLOR;
+    opt.txo_fgcolor.v = GRX_COLOR_NONE;
+    opt.txo_bgcolor.v = GRX_COLOR_NONE;
     GrPatternFilledBox(0, 0, grx_get_max_x(), grx_get_max_y(), p1);
     GrKeyRead();
     GrPatternDrawString(" Hello world !", 15, 40, 10, &opt, p1);

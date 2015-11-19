@@ -25,7 +25,7 @@ void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c)
         isort(y1,y2);
         if(wdt < 0) wdt = 0;
         mouse_block(CURC,(x1 - wdt),(y1 - wdt),(x2 + wdt),(y2 + wdt));
-        if(c->fbx_intcolor != GrNOCOLOR) {
+        if(c->fbx_intcolor != GRX_COLOR_NONE) {
             GrFilledBox(x1,y1,x2,y2,c->fbx_intcolor);
         }
         while(--wdt >= 0) {

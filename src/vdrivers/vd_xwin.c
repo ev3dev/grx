@@ -411,8 +411,8 @@ static int init(char *options)
              _XGrClassNames[visual->class], depth);
     exit (1);
   }
-  _XGrForeColor = GrNOCOLOR;    /* force XSetForeground */
-  _XGrBackColor = GrNOCOLOR;    /* force XSetBackground */
+  _XGrForeColor = GRX_COLOR_NONE;    /* force XSetForeground */
+  _XGrBackColor = GRX_COLOR_NONE;    /* force XSetBackground */
   _XGrColorOper = C_WRITE;
 
   mask = 0L;

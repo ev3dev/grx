@@ -52,7 +52,7 @@ static INLINE
 void _XGrSetForeColor (GrxColor color)
 {
   GRX_ENTER();
-  color &= GrCVALUEMASK;
+  color &= GRX_COLOR_VALUE_MASK;
   if (color != _XGrForeColor)
     {
       DBGPRINTF(DBG_DRIVER,("New foreground color: %x\n",(unsigned)color));
@@ -66,7 +66,7 @@ static INLINE
 void _XGrSetBackColor (GrxColor color)
 {
   GRX_ENTER();
-  color &= GrCVALUEMASK;
+  color &= GRX_COLOR_VALUE_MASK;
   if (color != _XGrBackColor)
     {
       DBGPRINTF(DBG_DRIVER,("New background color: %x\n",(unsigned)color));
@@ -167,7 +167,7 @@ GrxColor readpixel(GrxFrame *c, int x, int y)
                                      AllPlanes,
                                      ZPixmap);
     if (! _XGrPixelCacheImage) {
-          col = GrNOCOLOR;
+          col = GRX_COLOR_NONE;
           goto done;
         }
       }
@@ -305,7 +305,7 @@ void drawbitmap(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,G
   if ( XInitImage (&ximage) != 0)
 # endif
   {
-    if ((C_OPER(fg) == C_OPER(bg)) && (fg != GrNOCOLOR)) {
+    if ((C_OPER(fg) == C_OPER(bg)) && (fg != GRX_COLOR_NONE)) {
       _XGrSetForeColor (fg);
       _XGrSetBackColor (bg);
       _XGrSetColorOper (fg);
@@ -323,7 +323,7 @@ void drawbitmap(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,G
       DBGPRINTF(DBG_DRIVER,("Calling XPutImage (1) done\n"));
     }
     else {
-      if (fg != GrNOCOLOR) {
+      if (fg != GRX_COLOR_NONE) {
         XSetForeground (_XGrDisplay, _XGrBitmapGC, 1);
         XSetBackground (_XGrDisplay, _XGrBitmapGC, 0);
         DBGPRINTF(DBG_DRIVER,("Calling XPutImage (2) ...\n"));
@@ -351,7 +351,7 @@ void drawbitmap(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,G
                         w,
                         h);
       }
-      if (bg != GrNOCOLOR) {
+      if (bg != GRX_COLOR_NONE) {
         XSetForeground (_XGrDisplay, _XGrBitmapGC, 0);
         XSetBackground (_XGrDisplay, _XGrBitmapGC, 1);
         DBGPRINTF(DBG_DRIVER,("Calling XPutImage (3) ...\n"));
@@ -417,7 +417,7 @@ void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
   if (XInitImage (&ximage) != 0)
 # endif
   {
-    if ((C_OPER(fg) == C_OPER(bg)) && (fg != GrNOCOLOR)) {
+    if ((C_OPER(fg) == C_OPER(bg)) && (fg != GRX_COLOR_NONE)) {
       XSetForeground (_XGrDisplay, _XGrPatternGC, 1);
       XSetBackground (_XGrDisplay, _XGrPatternGC, 0);
       XPutImage (_XGrDisplay,
@@ -445,7 +445,7 @@ void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
                       1);
     }
     else {
-      if (fg != GrNOCOLOR) {
+      if (fg != GRX_COLOR_NONE) {
         XSetForeground (_XGrDisplay, _XGrPatternGC, 1);
         XSetBackground (_XGrDisplay, _XGrPatternGC, 0);
         XPutImage (_XGrDisplay,
@@ -471,7 +471,7 @@ void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
                         w,
                         1);
       }
-      if (bg != GrNOCOLOR) {
+      if (bg != GRX_COLOR_NONE) {
         XSetForeground (_XGrDisplay, _XGrPatternGC, 0);
         XSetBackground (_XGrDisplay, _XGrPatternGC, 1);
         XPutImage (_XGrDisplay,
@@ -532,7 +532,7 @@ static
 void bltv2r(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
   GRX_ENTER();
-  if(GrColorMode(op) == GrIMAGE)
+  if(GrColorMode(op) == GRX_COLOR_MODE_IMAGE)
     _GrFrDrvGenericBitBlt(dst,dx,dy,
                           src,sx,sy,
                           w,h,
@@ -573,7 +573,7 @@ void bltv2r(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,
 static void bltr2v(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {
   GRX_ENTER();
-  if(GrColorMode(op) == GrIMAGE)
+  if(GrColorMode(op) == GRX_COLOR_MODE_IMAGE)
     _GrFrDrvGenericBitBlt(dst,dx,dy,
                           src,sx,sy,
                           w,h,
@@ -629,7 +629,7 @@ void putscanline(int x, int y, int w, const GrxColor *scl, GrxColor op)
   GrxColor skipc;
   int ind;
   GRX_ENTER();
-  skipc = op ^ GrIMAGE;
+  skipc = op ^ GRX_COLOR_MODE_IMAGE;
   _XGrSetColorOper(op);
 
   for (ind = 0; ind < w; ind++) {

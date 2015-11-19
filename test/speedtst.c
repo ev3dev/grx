@@ -257,9 +257,9 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs,int loops) {
 void drawpixeltest(gvmode *gp, XY_PAIRS *pairs) {
   int i, j;
   GrxColor c1 = GrWhite();
-  GrxColor c2 = GrWhite() | GrXOR;
-  GrxColor c3 = GrWhite() | GrOR;
-  GrxColor c4 = GrBlack() | GrAND;
+  GrxColor c2 = GrWhite() | GRX_COLOR_MODE_XOR;
+  GrxColor c3 = GrWhite() | GRX_COLOR_MODE_OR;
+  GrxColor c4 = GrBlack() | GRX_COLOR_MODE_AND;
   long t1,t2;
   double seconds;
   int *x = pairs->x;
@@ -288,9 +288,9 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
   int *x = pairs->x;
   int *y = pairs->y;
   GrxColor c1 = GrWhite();
-  GrxColor c2 = GrWhite() | GrXOR;
-  GrxColor c3 = GrWhite() | GrOR;
-  GrxColor c4 = GrBlack() | GrAND;
+  GrxColor c2 = GrWhite() | GRX_COLOR_MODE_XOR;
+  GrxColor c3 = GrWhite() | GRX_COLOR_MODE_OR;
+  GrxColor c4 = GrBlack() | GRX_COLOR_MODE_AND;
   long t1,t2;
   double seconds;
 
@@ -324,9 +324,9 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
   int *x = pairs->x;
   int *y = pairs->y;
   GrxColor c1 = GrWhite();
-  GrxColor c2 = GrWhite() | GrXOR;
-  GrxColor c3 = GrWhite() | GrOR;
-  GrxColor c4 = GrBlack() | GrAND;
+  GrxColor c2 = GrWhite() | GRX_COLOR_MODE_XOR;
+  GrxColor c3 = GrWhite() | GRX_COLOR_MODE_OR;
+  GrxColor c4 = GrBlack() | GRX_COLOR_MODE_AND;
   long t1,t2;
   double seconds;
 
@@ -360,9 +360,9 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
   int *x = pairs->x;
   int *y = pairs->y;
   GrxColor c1 = GrWhite();
-  GrxColor c2 = GrWhite() | GrXOR;
-  GrxColor c3 = GrWhite() | GrOR;
-  GrxColor c4 = GrBlack() | GrAND;
+  GrxColor c2 = GrWhite() | GRX_COLOR_MODE_XOR;
+  GrxColor c3 = GrWhite() | GRX_COLOR_MODE_OR;
+  GrxColor c4 = GrBlack() | GRX_COLOR_MODE_AND;
   long t1,t2;
   double seconds;
 
@@ -394,9 +394,9 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
 void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
   int i, j;
   GrxColor c1 = GrWhite();
-  GrxColor c2 = GrWhite() | GrXOR;
-  GrxColor c3 = GrWhite() | GrOR;
-  GrxColor c4 = GrBlack() | GrAND;
+  GrxColor c2 = GrWhite() | GRX_COLOR_MODE_XOR;
+  GrxColor c3 = GrWhite() | GRX_COLOR_MODE_OR;
+  GrxColor c4 = GrBlack() | GRX_COLOR_MODE_AND;
   long t1,t2;
   double seconds;
 
@@ -443,7 +443,7 @@ void xor_draw_blocks(GrxContext *c) {
   GrClearContext(GrBlack());
   for (i=28; i > 1; --i)
     GrFilledBox(grx_get_max_x()/i,grx_get_max_y()/i,
-                (i-1)*grx_get_max_x()/i,(i-1)*grx_get_max_y()/i,GrWhite()|GrXOR);
+                (i-1)*grx_get_max_x()/i,(i-1)*grx_get_max_y()/i,GrWhite()|GRX_COLOR_MODE_XOR);
   grx_context_set_current(&save);
 }
 
@@ -474,13 +474,13 @@ void blit_measure(gvmode *gp, perfm *p,
   t1 = GrMsecTime();
   for (i=0; i < BLIT_loops; ++i) {
     for (j=PAIRS-3; j >= 0; j-=3)
-      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GrWRITE);
+      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_WRITE);
     for (j=PAIRS-3; j >= 0; j-=3)
-      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GrXOR);
+      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_XOR);
     for (j=PAIRS-3; j >= 0; j-=3)
-      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GrOR);
+      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_OR);
     for (j=PAIRS-3; j >= 0; j-=3)
-      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GrAND);
+      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_AND);
   }
   t2 = GrMsecTime();
   seconds = (double)(t2 - t1) / 1000.0;
