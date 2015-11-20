@@ -780,60 +780,63 @@ typedef GrxColor *GrColorTableP;
 /*                       GRAPHICS PRIMITIVES                          */
 /* ================================================================== */
 
-#define GR_MAX_POLYGON_POINTS   (1000000)
-#define GR_MAX_ELLIPSE_POINTS   (1024 + 5)
-#define GR_MAX_ANGLE_VALUE      (3600)
-#define GR_ARC_STYLE_OPEN       0
-#define GR_ARC_STYLE_CLOSE1     1
-#define GR_ARC_STYLE_CLOSE2     2
+#define GRX_MAX_POLYGON_POINTS   (1000000)
+#define GRX_MAX_ELLIPSE_POINTS   (1024 + 5)
+#define GRX_MAX_ANGLE_VALUE      (3600)
+
+typedef enum {
+    GRX_ARC_STYLE_OPEN       = 0,
+    GRX_ARC_STYLE_CLOSE1     = 1,
+    GRX_ARC_STYLE_CLOSE2     = 2,
+} GrxArcStyle;
 
 typedef struct {                        /* framed box colors */
-        GrxColor fbx_intcolor;
-        GrxColor fbx_topcolor;
-        GrxColor fbx_rightcolor;
-        GrxColor fbx_bottomcolor;
-        GrxColor fbx_leftcolor;
-} GrFBoxColors;
+    GrxColor background;
+    GrxColor border_top;
+    GrxColor border_right;
+    GrxColor border_bottom;
+    GrxColor border_left;
+} GrxFramedBoxColors;
 
-void GrClearScreen(GrxColor bg);
-void GrClearContext(GrxColor bg);
-void GrClearContextC(GrxContext *ctx, GrxColor bg);
-void GrClearClipBox(GrxColor bg);
-void GrPlot(int x,int y,GrxColor c);
-void GrLine(int x1,int y1,int x2,int y2,GrxColor c);
-void GrHLine(int x1,int x2,int y,GrxColor c);
-void GrVLine(int x,int y1,int y2,GrxColor c);
-void GrBox(int x1,int y1,int x2,int y2,GrxColor c);
-void GrFilledBox(int x1,int y1,int x2,int y2,GrxColor c);
-void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
-int  GrGenerateEllipse(int xc,int yc,int xa,int ya,int points[GR_MAX_ELLIPSE_POINTS][2]);
-int  GrGenerateEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int points[GR_MAX_ELLIPSE_POINTS][2]);
-void GrLastArcCoords(int *xs,int *ys,int *xe,int *ye,int *xc,int *yc);
-void GrCircle(int xc,int yc,int r,GrxColor c);
-void GrEllipse(int xc,int yc,int xa,int ya,GrxColor c);
-void GrCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c);
-void GrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c);
-void GrFilledCircle(int xc,int yc,int r,GrxColor c);
-void GrFilledEllipse(int xc,int yc,int xa,int ya,GrxColor c);
-void GrFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c);
-void GrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c);
-void GrPolyLine(int numpts,int points[][2],GrxColor c);
-void GrPolygon(int numpts,int points[][2],GrxColor c);
-void GrFilledConvexPolygon(int numpts,int points[][2],GrxColor c);
-void GrFilledPolygon(int numpts,int points[][2],GrxColor c);
-void GrBitBlt(GrxContext *dst,int x,int y,GrxContext *src,int x1,int y1,int x2,int y2,GrxColor op);
-void GrBitBlt1bpp(GrxContext *dst,int dx,int dy,GrxContext *src,int x1,int y1,int x2,int y2,GrxColor fg,GrxColor bg);
-void GrFloodFill(int x, int y, GrxColor border, GrxColor c);
-void GrFloodSpill(int x1, int y1, int x2, int y2, GrxColor old_c, GrxColor new_c);
-void GrFloodSpill2(int x1, int y1, int x2, int y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
-void GrFloodSpillC(GrxContext *ctx, int x1, int y1, int x2, int y2, GrxColor old_c, GrxColor new_c);
-void GrFloodSpillC2(GrxContext *ctx, int x1, int y1, int x2, int y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
+void grx_clear_screen(GrxColor bg);
+void grx_clear_context(GrxColor bg);
+void grx_context_clear(GrxContext *ctx, GrxColor bg);
+void grx_clear_clip_box(GrxColor bg);
+void grx_draw_point(gint x, gint y, GrxColor c);
+void grx_draw_line(gint x1, gint y1, gint x2, gint y2, GrxColor c);
+void grx_draw_hline(gint x1, gint x2, gint y, GrxColor c);
+void grx_draw_vline(gint x, gint y1, gint y2,GrxColor c);
+void grx_draw_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
+void grx_draw_filled_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
+void grx_draw_framed_box(gint x1, gint y1, gint x2, gint y2, gint wdt, const GrxFramedBoxColors *c);
+gboolean grx_generate_ellipse(gint xc, gint yc, gint xa, gint ya, gint points[GRX_MAX_ELLIPSE_POINTS][2]);
+gboolean grx_generate_ellipse_arc(gint xc, gint yc, gint xa, gint ya, gint start, gint end, gint points[GRX_MAX_ELLIPSE_POINTS][2]);
+void grx_get_last_arc_coordinates(gint *xs, gint *ys, gint *xe, gint *ye, gint *xc, gint *yc);
+void grx_draw_circle(gint xc, gint yc, gint r, GrxColor c);
+void grx_draw_ellipse(gint xc, gint yc, gint xa, gint ya, GrxColor c);
+void grx_draw_circle_arc(gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
+void grx_draw_ellipse_arc(gint xc, gint yc, gint xa, gint ya, gint start, gint end,GrxArcStyle style,GrxColor c);
+void grx_draw_filled_circle(gint xc, gint yc, gint r, GrxColor c);
+void grx_draw_filled_ellipse(gint xc, gint yc, gint xa, gint ya, GrxColor c);
+void grx_draw_filled_circle_arc(gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
+void grx_draw_filled_ellipse_arc(gint xc, gint yc, gint xa, gint ya, gint start, gint end, GrxArcStyle style, GrxColor c);
+void grx_draw_polyline(gint numpts, gint points[][2], GrxColor c);
+void grx_draw_polygon(gint numpts, gint points[][2], GrxColor c);
+void grx_draw_filled_convex_polygon(gint numpts, gint points[][2], GrxColor c);
+void grx_draw_filled_polygon(gint numpts, gint points[][2], GrxColor c);
+void grx_bit_blt(GrxContext *dst, gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor op);
+void grx_bit_blt_1bpp(GrxContext *dst, gint dx, gint dy, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor fg, GrxColor bg);
+void grx_flood_fill(gint x, gint y, GrxColor border, GrxColor c);
+void grx_flood_spill(gint x1, gint y1, gint x2, gint y2, GrxColor old_c, GrxColor new_c);
+void grx_flood_spill2(gint x1, gint y1, gint x2, gint y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
+void grx_context_flood_spill(GrxContext *ctx, gint x1, gint y1, gint x2, gint y2, GrxColor old_c, GrxColor new_c);
+void grx_context_flood_spill2(GrxContext *ctx, gint x1, gint y1, gint x2, gint y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
 
-GrxColor GrPixel(int x,int y);
-GrxColor GrPixelC(GrxContext *c,int x,int y);
+GrxColor grx_get_pixel_at(gint x, gint y);
+GrxColor grx_context_get_pixel_at(GrxContext *c, gint x, gint y);
 
-const GrxColor *GrGetScanline(int x1,int x2,int yy);
-const GrxColor *GrGetScanlineC(GrxContext *ctx,int x1,int x2,int yy);
+const GrxColor *grx_get_scanline(int x1,int x2,int yy);
+const GrxColor *grx_context_get_scanline(GrxContext *ctx,int x1,int x2,int yy);
 /* Input   ctx: source context, if NULL the current context is used */
 /*         x1 : first x coordinate read                             */
 /*         x2 : last  x coordinate read                             */
@@ -844,7 +847,7 @@ const GrxColor *GrGetScanlineC(GrxContext *ctx,int x1,int x2,int yy);
 /*                      (w = |x2-y1|)                               */
 /*           Output data is valid until next GRX call !             */
 
-void GrPutScanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op);
+void grx_put_scanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op);
 /* Input   x1 : first x coordinate to be set                        */
 /*         x2 : last  x coordinate to be set                        */
 /*         yy : y coordinate                                        */
@@ -857,8 +860,8 @@ void GrPutScanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op);
 
 
 #ifndef GRX_SKIP_INLINES
-#define GrGetScanline(x1,x2,yy) \
-        GrGetScanlineC(NULL,(x1),(x2),(yy))
+#define grx_get_scanline(x1,x2,yy) \
+        grx_context_get_scanline(NULL,(x1),(x2),(yy))
 #endif
 
 /* ================================================================== */
@@ -871,7 +874,7 @@ void GrHLineNC(int x1,int x2,int y,GrxColor c);
 void GrVLineNC(int x,int y1,int y2,GrxColor c);
 void GrBoxNC(int x1,int y1,int x2,int y2,GrxColor c);
 void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrxColor c);
-void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
+void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrxFramedBoxColors *c);
 void GrBitBltNC(GrxContext *dst,int x,int y,GrxContext *src,int x1,int y1,int x2,int y2,GrxColor op);
 
 GrxColor GrPixelNC(int x,int y);
@@ -1179,8 +1182,8 @@ void GrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
 void GrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
 void GrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
 void GrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
-void GrCustomCircleArc(int xc,int yc,int r,int start,int end,int style,const GrLineOption *o);
-void GrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,const GrLineOption *o);
+void GrCustomCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,const GrLineOption *o);
+void GrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,const GrLineOption *o);
 void GrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
 void GrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
 
@@ -1255,8 +1258,8 @@ void GrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
 void GrPatternedBox(int x1,int y1,int x2,int y2,GrLinePattern *lp);
 void GrPatternedCircle(int xc,int yc,int r,GrLinePattern *lp);
 void GrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp);
-void GrPatternedCircleArc(int xc,int yc,int r,int start,int end,int style,GrLinePattern *lp);
-void GrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrLinePattern *lp);
+void GrPatternedCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrLinePattern *lp);
+void GrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrLinePattern *lp);
 void GrPatternedPolyLine(int numpts,int points[][2],GrLinePattern *lp);
 void GrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
 
@@ -1265,8 +1268,8 @@ void GrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p);
 void GrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p);
 void GrPatternFilledCircle(int xc,int yc,int r,GrPattern *p);
 void GrPatternFilledEllipse(int xc,int yc,int xa,int ya,GrPattern *p);
-void GrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrPattern *p);
-void GrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrPattern *p);
+void GrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrPattern *p);
+void GrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrPattern *p);
 void GrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFloodFill(int x, int y, GrxColor border, GrPattern *p);
@@ -1339,15 +1342,15 @@ void GrUsrHLine(int x1,int x2,int y,GrxColor c);
 void GrUsrVLine(int x,int y1,int y2,GrxColor c);
 void GrUsrBox(int x1,int y1,int x2,int y2,GrxColor c);
 void GrUsrFilledBox(int x1,int y1,int x2,int y2,GrxColor c);
-void GrUsrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c);
+void GrUsrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrxFramedBoxColors *c);
 void GrUsrCircle(int xc,int yc,int r,GrxColor c);
 void GrUsrEllipse(int xc,int yc,int xa,int ya,GrxColor c);
-void GrUsrCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c);
-void GrUsrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c);
+void GrUsrCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxColor c);
+void GrUsrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxColor c);
 void GrUsrFilledCircle(int xc,int yc,int r,GrxColor c);
 void GrUsrFilledEllipse(int xc,int yc,int xa,int ya,GrxColor c);
-void GrUsrFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c);
-void GrUsrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c);
+void GrUsrFilledCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxColor c);
+void GrUsrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxColor c);
 void GrUsrPolyLine(int numpts,int points[][2],GrxColor c);
 void GrUsrPolygon(int numpts,int points[][2],GrxColor c);
 void GrUsrFilledConvexPolygon(int numpts,int points[][2],GrxColor c);
@@ -1361,8 +1364,8 @@ void GrUsrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
 void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
 void GrUsrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
 void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
-void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,int style,const GrLineOption *o);
-void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,const GrLineOption *o);
+void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,const GrLineOption *o);
+void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,const GrLineOption *o);
 void GrUsrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
 void GrUsrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
 
@@ -1370,8 +1373,8 @@ void GrUsrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
 void GrUsrPatternedBox(int x1,int y1,int x2,int y2,GrLinePattern *lp);
 void GrUsrPatternedCircle(int xc,int yc,int r,GrLinePattern *lp);
 void GrUsrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp);
-void GrUsrPatternedCircleArc(int xc,int yc,int r,int start,int end,int style,GrLinePattern *lp);
-void GrUsrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrLinePattern *lp);
+void GrUsrPatternedCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrLinePattern *lp);
+void GrUsrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrLinePattern *lp);
 void GrUsrPatternedPolyLine(int numpts,int points[][2],GrLinePattern *lp);
 void GrUsrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
 
@@ -1380,8 +1383,8 @@ void GrUsrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p);
 void GrUsrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p);
 void GrUsrPatternFilledCircle(int xc,int yc,int r,GrPattern *p);
 void GrUsrPatternFilledEllipse(int xc,int yc,int xa,int ya,GrPattern *p);
-void GrUsrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrPattern *p);
-void GrUsrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrPattern *p);
+void GrUsrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrPattern *p);
+void GrUsrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrPattern *p);
 void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFloodFill(int x, int y, GrxColor border, GrPattern *p);

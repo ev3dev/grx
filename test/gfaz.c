@@ -228,7 +228,7 @@ void dboton( int x, int y, int an, int al,
   despl = (t & 0x1) ? 1 : 0;
 
   mouseblock = GrMouseBlock( NULL,x,y,x+an-1,y+al-1 );
-  GrBox( x,y,x+an-1,y+al-1,BLACK );
+  grx_draw_box( x,y,x+an-1,y+al-1,BLACK );
   x = x + 1; y = y + 1;
   an = an - 2; al = al - 2;
 
@@ -239,16 +239,16 @@ void dboton( int x, int y, int an, int al,
   pol[4][0] = x + 1 + prof;      pol[4][1] = y + al - 2 - prof;
   pol[5][0] = x;                 pol[5][1] = y + al - 1;
   pol[6][0] = pol[0][0];         pol[6][1] = pol[0][1];
-  GrFilledPolygon( 7,pol,pulsd ? DARKGRAY : LIGHTGRAY );
-  GrPolygon( 7,pol,BLACK );
-  GrLine( pol[0][0],pol[0][1],pol[3][0],pol[3][1],BLACK );
+  grx_draw_filled_polygon( 7,pol,pulsd ? DARKGRAY : LIGHTGRAY );
+  grx_draw_polygon( 7,pol,BLACK );
+  grx_draw_line( pol[0][0],pol[0][1],pol[3][0],pol[3][1],BLACK );
   pol[0][0] = x + an - 1;        pol[0][1] = y + al - 1;
   pol[3][0] = x + an - 2 - prof; pol[3][1] = y + al - 2 - prof;
   pol[6][0] = pol[0][0];         pol[6][1] = pol[0][1];
-  GrFilledPolygon( 7,pol,pulsd ? LIGHTGRAY : DARKGRAY );
-  GrPolygon( 7,pol,BLACK );
-  GrLine( pol[0][0],pol[0][1],pol[3][0],pol[3][1],BLACK );
-  GrFilledBox( x+2+prof,y+2+prof,x+an-3-prof,y+al-3-prof,c );
+  grx_draw_filled_polygon( 7,pol,pulsd ? LIGHTGRAY : DARKGRAY );
+  grx_draw_polygon( 7,pol,BLACK );
+  grx_draw_line( pol[0][0],pol[0][1],pol[3][0],pol[3][1],BLACK );
+  grx_draw_filled_box( x+2+prof,y+2+prof,x+an-3-prof,y+al-3-prof,c );
 
   grt.txo_font = &GrFont_PC8x14;
   grt.txo_fgcolor.v = ct;
@@ -387,10 +387,10 @@ void paint_board( Board *b )
   x2 = b->x + b->wide - 1;
   y2 = b->y + b->high - 1;
   
-  GrBox( x1,y1,x2,y2,egacolors[b->lcolor] );
-  GrBox( x1+1,y1+1,x2-1,y2-1,egacolors[b->bcolor] );
-  GrBox( x1+2,y1+2,x2-2,y2-2,egacolors[b->bcolor] );
-  GrBox( x1+3,y1+3,x2-3,y2-3,egacolors[b->lcolor] );
-  GrFilledBox( x1+4,y1+4,x2-4,y2-4,egacolors[b->color] );
+  grx_draw_box( x1,y1,x2,y2,egacolors[b->lcolor] );
+  grx_draw_box( x1+1,y1+1,x2-1,y2-1,egacolors[b->bcolor] );
+  grx_draw_box( x1+2,y1+2,x2-2,y2-2,egacolors[b->bcolor] );
+  grx_draw_box( x1+3,y1+3,x2-3,y2-3,egacolors[b->lcolor] );
+  grx_draw_filled_box( x1+4,y1+4,x2-4,y2-4,egacolors[b->color] );
 }
 

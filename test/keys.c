@@ -356,7 +356,7 @@ static void gputc(int c)
             cury += GrCharHeight('A', &opt);
             curx = 0;
             if(cury + GrCharHeight('A', &opt) > grx_get_size_y()) {
-                GrClearScreen(opt.txo_bgcolor.v);
+                grx_clear_screen(opt.txo_bgcolor.v);
                 cury = 0;
             }
         }

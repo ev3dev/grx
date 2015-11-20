@@ -30,10 +30,10 @@
 void GrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp) {
     int (*points)[2];
     setup_ALLOC();
-    points = ALLOC(sizeof(int) * 2 * GR_MAX_ELLIPSE_POINTS);
+    points = ALLOC(sizeof(int) * 2 * GRX_MAX_ELLIPSE_POINTS);
     if (points != NULL)
     {
-        int numpts = GrGenerateEllipse(xc,yc,xa,ya,points);
+        int numpts = grx_generate_ellipse(xc,yc,xa,ya,points);
         GrFillArg fval;
 
         fval.p = lp->lnp_pattern;

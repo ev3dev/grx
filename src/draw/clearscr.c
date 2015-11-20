@@ -18,11 +18,11 @@
 
 #include "libgrx.h"
 
-void GrClearScreen(GrxColor bg)
+void grx_clear_screen(GrxColor bg)
 {
         GrxContext save;
         grx_context_save(&save);
         grx_context_set_current(SCRN);
-        GrClearContext(bg);
+        grx_clear_context(bg);
         grx_context_set_current(&save);
 }

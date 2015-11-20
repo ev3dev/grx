@@ -19,8 +19,8 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrxColor c)
+void grx_draw_filled_circle_arc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxColor c)
 {
-        GrFilledEllipseArc(xc,yc,r,r,start,end,style,c);
+        grx_draw_filled_ellipse_arc(xc,yc,r,r,start,end,style,c);
 }
 

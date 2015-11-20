@@ -21,7 +21,7 @@
 #include "arith.h"
 #include "usercord.h"
 
-void GrUsrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c)
+void GrUsrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrxFramedBoxColors *c)
 {
         int w1,w2;
 
@@ -33,6 +33,6 @@ void GrUsrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c)
         SCALE(w2,wdt,CURC->y_max,CURC->user_height);
         wdt = (iabs((int)w1) + iabs((int)w2)) >> 1;
         if(wdt == 0)
-            GrFilledBox(x1,y1,x2,y2,c->fbx_intcolor);
-        else GrFramedBox(x1,y1,x2,y2,wdt,c);
+            grx_draw_filled_box(x1,y1,x2,y2,c->background);
+        else grx_draw_framed_box(x1,y1,x2,y2,wdt,c);
 }

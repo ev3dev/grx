@@ -18,12 +18,12 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c)
+void GrUsrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxColor c)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);
         SCALE(xa,xa,CURC->x_max,CURC->user_width);
         SCALE(ya,ya,CURC->y_max,CURC->user_height);
-        GrEllipseArc(xc,yc,xa,ya,start,end,style,c);
+        grx_draw_ellipse_arc(xc,yc,xa,ya,start,end,style,c);
 }
 

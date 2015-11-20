@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,const GrLineOption *lo)
+void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,const GrLineOption *lo)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);

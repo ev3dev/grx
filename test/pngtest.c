@@ -32,14 +32,14 @@ void imagen( char *nf )
   sprintf( s,"%s %dx%d",nf,w,h );
   wide = (w > 300) ? 300 : w;
   high = (h > 400) ? 400 : h;
-  GrClearScreen( grx_color_info_alloc_color( 0,0,200 ) );
+  grx_clear_screen( grx_color_info_alloc_color( 0,0,200 ) );
 
-  GrBox( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
+  grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPng( grc,nf,0 );
   grx_context_free( grc );
 
-  GrBox( 320,40,320+wide+1,40+high+1,grx_color_info_get_white() );
+  grx_draw_box( 320,40,320+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 321,41,321+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPng( grc,nf,1 );
   grx_context_free( grc );
@@ -60,7 +60,7 @@ void nopngsupport( void )
     "Press any key to continue..." };
   int i;
 
-  GrClearScreen( grx_color_info_alloc_color( 0,0,100 ) );
+  grx_clear_screen( grx_color_info_alloc_color( 0,0,100 ) );
   for( i=0; i<6; i++ )
     GrTextXY( 90,160+i*18,s[i],grx_color_info_get_white(),GRX_COLOR_NONE );
   GrKeyRead();
@@ -83,7 +83,7 @@ int main()
   imagen( "pngowl.png" );
   imagen( "pngred.png" );
 
-  GrClearScreen( grx_color_info_alloc_color( 0,100,0 ) );
+  grx_clear_screen( grx_color_info_alloc_color( 0,100,0 ) );
   grc = grx_context_create_subcontext( 191,121,191+256-1,121+240-1,NULL,NULL );
   GrLoadContextFromPng( grc,"pngred.png",1 );
   grx_context_free( grc );
@@ -95,7 +95,7 @@ int main()
   GrKeyRead();
   GrSaveContextToPng( NULL,"output.png" );
 
-  GrClearScreen( grx_color_info_get_black() );
+  grx_clear_screen( grx_color_info_get_black() );
   GrTextXY( 10,10,"Press any key to reload screen",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
   GrLoadContextFromPng( NULL,"output.png",0 );

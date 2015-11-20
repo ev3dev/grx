@@ -615,21 +615,14 @@ namespace Grx {
         public void get_clip_box (out int x1, out int y1, out int x2, out int y2);
         public void reset_clip_box ();
 
-
-        [CCode (cname = "GrClearContextC")]
         public void clear (Color bg);
 
-        [CCode (cname = "GrFloodSpillC")]
         public void flood_spill (int x1, int y1, int x2, int y2, Color old_c, Color new_c);
-        [CCode (cname = "GrFloodSpillC2")]
         public void flood_spill_2 (int x1, int y1, int x2, int y2, Color old_c1, Color new_c1, Color old_c2, Color new_c2);
 
-        [CCode (cname = "GrPixelC")]
-        public Color pixel (int x, int y);
+        public Color get_pixel_at (int x, int y);
 
-        [CCode (cname = "GrGetScanLineC")]
         public Color *get_scan_line (int x1, int x2, int yy);
-
 
         [CCode (cname = "GrPixelCNC")]
         public Color pixel_no_clip (int x, int y);
@@ -707,29 +700,24 @@ namespace Grx {
     public const int MAX_POLYGON_POINTS;
     public const int MAX_ELLIPSE_POINTS;
 
-    [CCode (cprefix = "GR_ARC_STYLE_", has_type_id = false)]
+    [CCode (cprefix = "GRX_ARC_STYLE_", has_type_id = false)]
     public enum ArcStyle {
         OPEN,
         CLOSE1,
         CLOSE2
     }
 
-    [CCode (cname = "GrFBoxColors", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class FramedBoxColors {
-        [CCode (cname = "GrFBoxColors", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxFramedBoxColors", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
-        [CCode (cname = "fbx_intcolor")]
-        public Color fill;
-        [CCode (cname = "fbx_topcolor")]
-        public Color top;
-        [CCode (cname = "fbx_rightcolor")]
-        public Color right;
-        [CCode (cname = "fbx_bottomcolor")]
-        public Color bottom;
-        [CCode (cname = "fbx_leftcolor")]
-        public Color left;
+        public Color background;
+        public Color border_top;
+        public Color border_right;
+        public Color border_bottom;
+        public Color border_left;
 
         [CCode (cname = "g_malloc0")]
         public FramedBoxColors (size_t size = sizeof(MallocStruct))
@@ -767,92 +755,61 @@ namespace Grx {
     /*                       GRAPHICS PRIMITIVES                          */
     /* ================================================================== */
 
-    [CCode (cname = "GrClearScreen")]
     public void clear_screen (Color bg);
-    [CCode (cname = "GrClearContext")]
     public void clear_context (Color bg);
-    [CCode (cname = "GrClearClipBox")]
     public void clear_clip_box (Color bg);
-    [CCode (cname = "GrPlot")]
-    public void plot (int x, int y, Color c);
-    [CCode (cname = "GrLine")]
-    public void line (int x1, int y1, int x2, int y2, Color c);
-    [CCode (cname = "GrHLine")]
-    public void horiz_line (int x1, int x2, int y, Color c);
-    [CCode (cname = "GrVLine")]
-    public void vert_line (int x, int y1, int y2, Color c);
-    [CCode (cname = "GrBox")]
-    public void box (int x1, int y1, int x2, int y2, Color c);
-    [CCode (cname = "GrFilledBox")]
-    public void filled_box (int x1, int y1, int x2, int y2, Color c);
-    [CCode (cname = "GrFramedBox")]
-    public void framed_box (int x1, int y1, int x2, int y2, int width, FramedBoxColors c);
-    public void rounded_box (int x1, int y1, int x2, int y2, int radius, Color c) {
-        circle_arc (x1 + radius, y1 + radius, radius, 900, 1800, ArcStyle.OPEN, c);
-        circle_arc (x2 - radius, y1 + radius, radius, 0, 900, ArcStyle.OPEN, c);
-        circle_arc (x1 + radius, y2 - radius, radius, 1800, 2700, ArcStyle.OPEN, c);
-        circle_arc (x2 - radius, y2 - radius, radius, 2700, 3600, ArcStyle.OPEN, c);
-        horiz_line (x1 + radius, x2 - radius, y1, c);
-        horiz_line (x1 + radius, x2 - radius, y2, c);
-        vert_line (x1, y1 + radius, y2 - radius, c);
-        vert_line (x2, y1 + radius, y2 - radius, c);
+    public void draw_point (int x, int y, Color c);
+    public void draw_line (int x1, int y1, int x2, int y2, Color c);
+    public void draw_hline (int x1, int x2, int y, Color c);
+    public void draw_vline (int x, int y1, int y2, Color c);
+    public void draw_box (int x1, int y1, int x2, int y2, Color c);
+    public void draw_filled_box (int x1, int y1, int x2, int y2, Color c);
+    public void draw_framed_box (int x1, int y1, int x2, int y2, int width, FramedBoxColors c);
+    public void draw_rounded_box (int x1, int y1, int x2, int y2, int radius, Color c) {
+        draw_circle_arc (x1 + radius, y1 + radius, radius, 900, 1800, ArcStyle.OPEN, c);
+        draw_circle_arc (x2 - radius, y1 + radius, radius, 0, 900, ArcStyle.OPEN, c);
+        draw_circle_arc (x1 + radius, y2 - radius, radius, 1800, 2700, ArcStyle.OPEN, c);
+        draw_circle_arc (x2 - radius, y2 - radius, radius, 2700, 3600, ArcStyle.OPEN, c);
+        draw_hline (x1 + radius, x2 - radius, y1, c);
+        draw_hline (x1 + radius, x2 - radius, y2, c);
+        draw_vline (x1, y1 + radius, y2 - radius, c);
+        draw_vline (x2, y1 + radius, y2 - radius, c);
     }
-    public void filled_rounded_box (int x1, int y1, int x2, int y2, int radius, Color c) {
-        filled_circle_arc (x1 + radius, y1 + radius, radius, 900, 1800, ArcStyle.CLOSE2, c);
-        filled_circle_arc (x2 - radius, y1 + radius, radius, 0, 900, ArcStyle.CLOSE2, c);
-        filled_circle_arc (x1 + radius, y2 - radius, radius, 1800, 2700, ArcStyle.CLOSE2, c);
-        filled_circle_arc (x2 - radius, y2 - radius, radius, 2700, 3600, ArcStyle.CLOSE2, c);
-        filled_box (x1 + radius, y1, x2 - radius, y2, c);
-        filled_box (x1, y1 + radius, x2, y2 - radius, c);
+    public void draw_filled_rounded_box (int x1, int y1, int x2, int y2, int radius, Color c) {
+        draw_filled_circle_arc (x1 + radius, y1 + radius, radius, 900, 1800, ArcStyle.CLOSE2, c);
+        draw_filled_circle_arc (x2 - radius, y1 + radius, radius, 0, 900, ArcStyle.CLOSE2, c);
+        draw_filled_circle_arc (x1 + radius, y2 - radius, radius, 1800, 2700, ArcStyle.CLOSE2, c);
+        draw_filled_circle_arc (x2 - radius, y2 - radius, radius, 2700, 3600, ArcStyle.CLOSE2, c);
+        draw_filled_box (x1 + radius, y1, x2 - radius, y2, c);
+        draw_filled_box (x1, y1 + radius, x2, y2 - radius, c);
     }
-    [CCode (cname = " GrGenerateEllipse")]
     public int generate_ellipse (int xc, int yc, int xa, int ya, [CCode (array_length_cexpr = "MAX_POLYGON_POINTS")]Point[] points);
-    [CCode (cname = " GrGenerateEllipseArc")]
     public int  generate_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, [CCode (array_length_cexpr = "MAX_POLYGON_POINTS")]Point[] points);
-    [CCode (cname = "GrLastArcCoords")]
-    public void last_arc_coords (out int xs, out int ys, out int xe, out int ye, out int xc, out int yc);
-    [CCode (cname = "GrCircle")]
-    public void circle (int xc, int yc, int r, Color c);
-    [CCode (cname = "GrEllipse")]
-    public void ellipse (int xc, int yc, int xa, int ya, Color c);
-    [CCode (cname = "GrCircleArc")]
-    public void circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
-    [CCode (cname = "GrEllipseArc")]
-    public void ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
-    [CCode (cname = "GrFilledCircle")]
-    public void filled_circle (int xc, int yc, int r, Color c);
-    [CCode (cname = "GrFilledEllipse")]
-    public void filled_ellipse (int xc, int yc, int xa, int ya, Color c);
-    [CCode (cname = "GrFilledCircleArc")]
-    public void filled_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
-    [CCode (cname = "GrFilledEllipseArc")]
-    public void filled_ellipse_rc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
-    [CCode (cname = "GrPolyLine")]
-    public void poly_line ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
-    [CCode (cname = "GrPolygon")]
-    public void polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
-    [CCode (cname = "GrFilledConvexPolygon")]
-    public void filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
-    [CCode (cname = "GrFilledPolygon")]
-    public void filled_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
-    [CCode (cname = "GrBitBlt")]
+    public void get_last_arc_coordinates (out int xs, out int ys, out int xe, out int ye, out int xc, out int yc);
+    public void draw_circle (int xc, int yc, int r, Color c);
+    public void draw_ellipse (int xc, int yc, int xa, int ya, Color c);
+    public void draw_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
+    public void draw_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
+    public void draw_filled_circle (int xc, int yc, int r, Color c);
+    public void draw_filled_ellipse (int xc, int yc, int xa, int ya, Color c);
+    public void draw_filled_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
+    public void draw_filled_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
+    public void draw_poly_line ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
+    public void draw_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
+    public void draw_filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
+    public void draw_filled_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
     public void bit_blt (Context dest, int x, int y, Context src, int x1, int y1, int x2, int y2, ColorMode op = ColorMode.WRITE);
-    [CCode (cname = "GrBitBlt1bpp")]
     public void bit_blt_1bpp (Context dest, int dx, int dy, Context src, int x1, int y1, int x2, int y2, Color fg, Color bg);
-    [CCode (cname = "GrFloodFill")]
     public void flood_fill (int x, int y, Color border, Color c);
-    [CCode (cname = "GrFloodSpill")]
     public void flood_spill (int x1, int y1, int x2, int y2, Color old_c, Color new_c);
-    [CCode (cname = "GrFloodSpill2")]
     public void flood_spill_2 (int x1,  int y1, int x2, int y2, Color old_c1, Color new_c1, Color old_c2, Color new_c2);
 
-    [CCode  (cname =  "GrPixel")]
-    public Color pixel (int x, int y);
+    public Color get_pixel_at (int x, int y);
 
-    [CCode  (cname =  "GrGetScanLine")]
+    [CCode  (cname = "GrGetScanLine")]
     public Color *get_scan_line (int  x1, int x2, int yy);
 
-    [CCode  (cname =  "GrPutScanline")]
+    [CCode  (cname = "grx_put_scanline")]
     public void put_scan_line (int x1, int x2, int yy, [CCode (array_length = false)]Color[] c, ColorMode op = ColorMode.WRITE);
 
     /* ================================================================== */

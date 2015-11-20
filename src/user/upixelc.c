@@ -24,5 +24,5 @@ GrxColor GrUsrPixelC(GrxContext *c,int x,int y)
 {
         U2SX(x,c);
         U2SY(y,c);
-        return(GrPixelC(c,x,y));
+        return(grx_context_get_pixel_at(c,x,y));
 }

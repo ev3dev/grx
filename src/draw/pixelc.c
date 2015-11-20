@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-GrxColor GrPixelC(GrxContext *c,int x,int y)
+GrxColor grx_context_get_pixel_at(GrxContext *c,int x,int y)
 {
         GrxColor retval;
         cxclip_dot_(c,x,y,return(GRX_COLOR_NONE));

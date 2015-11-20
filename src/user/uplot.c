@@ -24,5 +24,5 @@ void GrUsrPlot(int x,int y,GrxColor c)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);
-        GrPlot(x,y,c);
+        grx_draw_point(x,y,c);
 }

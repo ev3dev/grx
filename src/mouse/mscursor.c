@@ -40,13 +40,13 @@ static void draw_special(void)
         grx_context_set_current(SCRN);
         switch(CURSORMODE) {
           case GR_M_CUR_RUBBER:
-            GrBox(xpos,ypos,MOUINFO->x1,MOUINFO->y1,MOUINFO->curscolor);
+            grx_draw_box(xpos,ypos,MOUINFO->x1,MOUINFO->y1,MOUINFO->curscolor);
             break;
           case GR_M_CUR_LINE:
-            GrLine(xpos,ypos,MOUINFO->x1,MOUINFO->y1,MOUINFO->curscolor);
+            grx_draw_line(xpos,ypos,MOUINFO->x1,MOUINFO->y1,MOUINFO->curscolor);
             break;
           case GR_M_CUR_BOX:
-            GrBox(
+            grx_draw_box(
                 (xpos + MOUINFO->x1),(ypos + MOUINFO->y1),
                 (xpos + MOUINFO->x2),(ypos + MOUINFO->y2),
                 MOUINFO->curscolor

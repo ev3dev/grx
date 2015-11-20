@@ -29,11 +29,11 @@ void drawellip(int xc,int yc,int xa,int ya,GrxColor c1,GrxColor c2,GrxColor c3)
         int x1,x2,y1,y2;
         int dx,dy;
 
-        GrFilledBox(xc-xa,yc-ya,xc+xa,yc+ya,c1);
+        grx_draw_filled_box(xc-xa,yc-ya,xc+xa,yc+ya,c1);
         dx = xa;
         dy = 0;
-        GrPlot(xc-dx,yc,c3);
-        GrPlot(xc+dx,yc,c3);
+        grx_draw_point(xc-dx,yc,c3);
+        grx_draw_point(xc+dx,yc,c3);
         while(++dy <= ya) {
             SQ = R2 - (double)dy * (double)dy * ddx * ddx;
             dx = (int)(sqrt(SQ)/ddy + 0.5);
@@ -41,12 +41,12 @@ void drawellip(int xc,int yc,int xa,int ya,GrxColor c1,GrxColor c2,GrxColor c3)
             x2 = xc + dx;
             y1 = yc - dy;
             y2 = yc + dy;
-            GrPlot(x1,y1,c3);
-            GrPlot(x2,y1,c3);
-            GrPlot(x1,y2,c3);
-            GrPlot(x2,y2,c3);
+            grx_draw_point(x1,y1,c3);
+            grx_draw_point(x2,y1,c3);
+            grx_draw_point(x1,y2,c3);
+            grx_draw_point(x2,y2,c3);
         }
-        GrEllipse(xc,yc,xa,ya,c2);
+        grx_draw_ellipse(xc,yc,xa,ya,c2);
 }
 
 TESTFUNC(circtest)

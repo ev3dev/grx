@@ -35,7 +35,7 @@ TESTFUNC(mousetest)
             GrMouseInit();
             GrMouseSetColors(grx_color_info_alloc_color(255,0,0),grx_color_info_get_black());
             GrMouseDisplayCursor();
-            GrClearScreen(bgc);
+            grx_clear_screen(bgc);
             ii = 0;
             mode = GR_M_CUR_NORMAL;
             GrTextXY(
@@ -100,7 +100,7 @@ TESTFUNC(mousetest)
             }
             GrMouseUnInit();
         } else {
-            GrClearScreen(bgc);
+            grx_clear_screen(bgc);
             ii = 0;
             mode = GR_M_CUR_NORMAL;
             GrTextXY(

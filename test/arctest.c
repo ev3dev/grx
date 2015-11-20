@@ -41,16 +41,16 @@ TESTFUNC(arctest)
             if(sscanf(buff,
                       "arc xc=%d yc=%d xa=%d ya=%d start=%d end=%d",
                       &xc,&yc,&xa,&ya,&start,&end) == 6) {
-                GrClearScreen(grx_color_info_get_black());
-                GrEllipse(xc,yc,xa,ya,red);
-                GrFilledEllipse(xc,yc,xa,ya,blue);
-                GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,grx_color_info_get_white());
+                grx_clear_screen(grx_color_info_get_black());
+                grx_draw_ellipse(xc,yc,xa,ya,red);
+                grx_draw_filled_ellipse(xc,yc,xa,ya,blue);
+                grx_draw_ellipse_arc(xc,yc,xa,ya,start,end,GRX_ARC_STYLE_CLOSE2,grx_color_info_get_white());
                 GrTextXY(0,0,buff,grx_color_info_get_white(),GRX_COLOR_NONE);
                 GrTextXY(0,20,"press any key to continue",grx_color_info_get_white(),GRX_COLOR_NONE);
                 GrKeyRead();
-                GrClearScreen(grx_color_info_get_black());
-                GrEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,red);
-                GrFilledEllipseArc(xc,yc,xa,ya,start,end,GR_ARC_STYLE_CLOSE2,green);
+                grx_clear_screen(grx_color_info_get_black());
+                grx_draw_ellipse_arc(xc,yc,xa,ya,start,end,GRX_ARC_STYLE_CLOSE2,red);
+                grx_draw_filled_ellipse_arc(xc,yc,xa,ya,start,end,GRX_ARC_STYLE_CLOSE2,green);
                 GrTextXY(0,0,buff,grx_color_info_get_white(),GRX_COLOR_NONE);
                 GrTextXY(0,20,"press any key to continue",grx_color_info_get_white(),GRX_COLOR_NONE);
                 GrKeyRead();

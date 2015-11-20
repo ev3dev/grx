@@ -23,5 +23,5 @@ void GrUsrFloodFill(int x, int y, GrxColor border, GrxColor c)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);
-        GrFloodFill(x,y,border,c);
+        grx_flood_fill(x,y,border,c);
 }

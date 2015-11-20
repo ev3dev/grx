@@ -32,7 +32,7 @@ void GrUsrCircle(int xc,int yc,int r,GrxColor c)
         U2SX(xc,CURC);
         U2SY(yc,CURC);
         SCALE(r,r,CURC->x_max,CURC->user_width);
-        GrCircle(xc,yc,r,c);
+        grx_draw_circle(xc,yc,r,c);
 #else
         GrUsrEllipse(xc,yc,r,r,c);
 #endif

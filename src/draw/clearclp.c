@@ -18,8 +18,8 @@
 
 #include "libgrx.h"
 
-void GrClearClipBox(GrxColor bg)
+void grx_clear_clip_box(GrxColor bg)
 {
-        GrFilledBox(0,0,CURC->x_max,CURC->y_max,bg);
+        grx_draw_filled_box(0,0,CURC->x_max,CURC->y_max,bg);
 }
 

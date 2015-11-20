@@ -39,7 +39,7 @@ void GrUsrFilledCircle(int xc,int yc,int r,GrxColor c)
         U2SX(xc,CURC);
         U2SY(yc,CURC);
         SCALE(r,r,CURC->x_max,CURC->user_width);
-        GrFilledCircle(xc,yc,r,c);
+        grx_draw_filled_circle(xc,yc,r,c);
 #else
         GrUsrFilledEllipse(xc,yc,r,r,c);
 #endif

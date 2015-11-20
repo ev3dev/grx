@@ -20,22 +20,22 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void GrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrxColor c)
+void grx_draw_ellipse_arc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxColor c)
 {
     int (*pnts)[2];
     setup_ALLOC();
-    pnts = ALLOC(sizeof(int) * 2 * (GR_MAX_ELLIPSE_POINTS + 1));
+    pnts = ALLOC(sizeof(int) * 2 * (GRX_MAX_ELLIPSE_POINTS + 1));
     if (pnts != NULL)
     {
         GrFillArg fval;
-        int npts  = GrGenerateEllipseArc(xc,yc,xa,ya,start,end,pnts);
+        int npts  = grx_generate_ellipse_arc(xc,yc,xa,ya,start,end,pnts);
         int close = FALSE;
         switch(style) {
-          case GR_ARC_STYLE_CLOSE2:
+          case GRX_ARC_STYLE_CLOSE2:
             pnts[npts][0] = xc;
             pnts[npts][1] = yc;
             npts++;
-          case GR_ARC_STYLE_CLOSE1:
+          case GRX_ARC_STYLE_CLOSE1:
             close = TRUE;
             break;
         }

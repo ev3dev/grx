@@ -15,24 +15,24 @@
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
  ** Contributions by:
- ** 081105 Richard, GrClearContextC
+ ** 081105 Richard, grx_context_clear
  **
  **/
 
 #include "libgrx.h"
 
-void GrClearContext(GrxColor bg)
+void grx_clear_context(GrxColor bg)
 {
   mouse_block(CURC,0,0,CURC->x_max,CURC->y_max);
   GrFilledBoxNC(0,0,CURC->x_max,CURC->y_max,bg);
   mouse_unblock();
 }
 
-void GrClearContextC(GrxContext *ctx, GrxColor bg)
+void grx_context_clear(GrxContext *ctx, GrxColor bg)
 {
   GrxContext s;
   grx_context_save(&s);
   grx_context_set_current(ctx);
-  GrClearContext(bg);
+  grx_clear_context(bg);
   grx_context_set_current(&s);
 }

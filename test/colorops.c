@@ -22,7 +22,7 @@
 
 TESTFUNC(colorops)
 {
-        GrFBoxColors bcolors,ocolors,icolors;
+        GrxFramedBoxColors bcolors,ocolors,icolors;
         GrxColor bg,c;
         int x = grx_get_size_x();
         int y = grx_get_size_y();
@@ -39,37 +39,37 @@ TESTFUNC(colorops)
         ** color map. The missing colors break RGB mode      */
         grx_color_info_set_rgb_color_mode();
 
-        bcolors.fbx_intcolor = grx_color_info_alloc_color(160,100,30);
-        bcolors.fbx_topcolor = grx_color_info_alloc_color(240,150,45);
-        bcolors.fbx_leftcolor = grx_color_info_alloc_color(240,150,45);
-        bcolors.fbx_rightcolor = grx_color_info_alloc_color(80,50,15);
-        bcolors.fbx_bottomcolor = grx_color_info_alloc_color(80,50,15);
+        bcolors.background = grx_color_info_alloc_color(160,100,30);
+        bcolors.border_top = grx_color_info_alloc_color(240,150,45);
+        bcolors.border_left = grx_color_info_alloc_color(240,150,45);
+        bcolors.border_right = grx_color_info_alloc_color(80,50,15);
+        bcolors.border_bottom = grx_color_info_alloc_color(80,50,15);
 
-        ocolors.fbx_intcolor = grx_color_info_alloc_color(0,120,100);
-        ocolors.fbx_topcolor = grx_color_info_alloc_color(0,180,150);
-        ocolors.fbx_leftcolor = grx_color_info_alloc_color(0,180,150);
-        ocolors.fbx_rightcolor = grx_color_info_alloc_color(0,90,60);
-        ocolors.fbx_bottomcolor = grx_color_info_alloc_color(0,90,60);
+        ocolors.background = grx_color_info_alloc_color(0,120,100);
+        ocolors.border_top = grx_color_info_alloc_color(0,180,150);
+        ocolors.border_left = grx_color_info_alloc_color(0,180,150);
+        ocolors.border_right = grx_color_info_alloc_color(0,90,60);
+        ocolors.border_bottom = grx_color_info_alloc_color(0,90,60);
 
-        icolors.fbx_intcolor = grx_color_info_alloc_color(30,30,30);
-        icolors.fbx_bottomcolor = grx_color_info_alloc_color(0,180,150);
-        icolors.fbx_rightcolor = grx_color_info_alloc_color(0,180,150);
-        icolors.fbx_leftcolor = grx_color_info_alloc_color(0,90,60);
-        icolors.fbx_topcolor = grx_color_info_alloc_color(0,90,60);
+        icolors.background = grx_color_info_alloc_color(30,30,30);
+        icolors.border_bottom = grx_color_info_alloc_color(0,180,150);
+        icolors.border_right = grx_color_info_alloc_color(0,180,150);
+        icolors.border_left = grx_color_info_alloc_color(0,90,60);
+        icolors.border_top = grx_color_info_alloc_color(0,90,60);
 
         c  = grx_color_info_alloc_color(250,250,0);
         bg = GRX_COLOR_NONE;
 
         for(ii = 0,by = -(bh / 3); ii < 17; ii++) {
             for(jj = 0,bx = (-bw / 2); jj < 17; jj++) {
-                GrFramedBox(bx+2*wdt,by+2*wdt,bx+bw-2*wdt-1,by+bh-2*wdt-1,2*wdt,&bcolors);
+                grx_draw_framed_box(bx+2*wdt,by+2*wdt,bx+bw-2*wdt-1,by+bh-2*wdt-1,2*wdt,&bcolors);
                 bx += bw;
             }
             by += bh;
         }
 
-        GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
-        GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
+        grx_draw_framed_box(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
+        grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
 
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
 
@@ -84,7 +84,7 @@ TESTFUNC(colorops)
             );
         }
         GrKeyRead();
-        GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
+        grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
         drawing(ww/4,wh/4,ww,wh,c,bg);
         while(!GrKeyPressed()) {
             drawing(ww/4+(RND()%100),
@@ -96,7 +96,7 @@ TESTFUNC(colorops)
             );
         }
         GrKeyRead();
-        GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
+        grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
         drawing(ww/4,wh/4,ww,wh,c,bg);
         while(!GrKeyPressed()) {
             drawing(ww/4+(RND()%100),
@@ -108,7 +108,7 @@ TESTFUNC(colorops)
             );
         }
         GrKeyRead();
-        GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
+        grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
         drawing(ww/4,wh/4,ww,wh,c,bg);
         while(!GrKeyPressed()) {
             drawing(ww/4+(RND()%100),

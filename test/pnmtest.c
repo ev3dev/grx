@@ -39,7 +39,7 @@ int main(void)
   GrQueryPnm( FIMAGEPPM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPPM,wide,high );
   GrTextXY( 10,20,s,grx_color_info_get_black(),grx_color_info_get_white() );
-  GrBox( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
+  grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPPM );
   GrSaveContextToPgm( grc,FIMAGEPGM,"TestPnm" );
@@ -47,22 +47,22 @@ int main(void)
   GrTextXY( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
-  GrClearScreen( grx_color_info_get_black() );
+  grx_clear_screen( grx_color_info_get_black() );
   GrQueryPnm( FIMAGEPGM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPGM,wide,high );
   GrTextXY( 10,20,s,grx_color_info_get_black(),grx_color_info_get_white() );
-  GrBox( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
+  grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPGM );
   grx_context_free( grc );
   GrTextXY( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
-  GrClearScreen( grx_color_info_get_black() );
+  grx_clear_screen( grx_color_info_get_black() );
   GrQueryPnm( FIMAGEPBM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPBM,wide,high );
   GrTextXY( 10,20,s,grx_color_info_get_black(),grx_color_info_get_white() );
-  GrBox( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
+  grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPBM );
   GrSaveContextToPbm( grc,FIMAGEPBM2,"TestPnm" );
@@ -70,19 +70,19 @@ int main(void)
   GrTextXY( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
-  GrClearScreen( grx_color_info_get_black() );
+  grx_clear_screen( grx_color_info_get_black() );
   GrQueryPnm( FIMAGEPPM, &wide, &high, &maxval );
-  GrBox( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
+  grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPPM );
   grx_context_free( grc );
   GrQueryPnm( FIMAGEPGM, &wide, &high, &maxval );
-  GrBox( 110,140,110+wide+1,140+high+1,grx_color_info_get_white() );
+  grx_draw_box( 110,140,110+wide+1,140+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 111,141,111+wide-1,141+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPGM );
   grx_context_free( grc );
   GrQueryPnm( FIMAGEPBM, &wide, &high, &maxval );
-  GrBox( 210,240,210+wide+1,240+high+1,grx_color_info_get_white() );
+  grx_draw_box( 210,240,210+wide+1,240+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 211,241,211+wide-1,241+high-1,NULL,NULL );
   GrLoadContextFromPnm( grc,FIMAGEPBM2 );
   grx_context_free( grc );
@@ -90,7 +90,7 @@ int main(void)
   GrKeyRead();
 
   GrSaveContextToPpm( NULL,FSCREEN,"TestPnm" );
-  GrClearScreen( grx_color_info_get_white() );
+  grx_clear_screen( grx_color_info_get_white() );
   GrTextXY( 10,20,"Press any key to reload screen",grx_color_info_get_white(),grx_color_info_get_black() );
   GrKeyRead();
 

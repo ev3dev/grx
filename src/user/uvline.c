@@ -25,5 +25,5 @@ void GrUsrVLine(int x,int y1,int y2,GrxColor c)
         U2SX(x,CURC);
         U2SY(y1,CURC);
         U2SY(y2,CURC);
-        GrVLine(x,y1,y2,c);
+        grx_draw_vline(x,y1,y2,c);
 }

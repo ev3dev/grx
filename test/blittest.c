@@ -31,16 +31,16 @@ void drbox(GrxContext *src,int x,int y)
         GrxColor c2 = grx_color_info_alloc_color(255,0,0);
         int  xx;
 
-        GrClearScreen(c1);
+        grx_clear_screen(c1);
         grx_context_set_current(src);
         grx_set_clip_box(x-10,y-10,x+BWW-1+10,y+BHH-1+10);
-        GrClearClipBox(c2);
+        grx_clear_clip_box(c2);
         grx_set_clip_box(x,y,x+BWW-1,y+BHH-1);
-        GrClearClipBox(grx_color_info_get_black());
-        GrBox(x,y,x+BWW-1,y+BHH-1,grx_color_info_get_white());
+        grx_clear_clip_box(grx_color_info_get_black());
+        grx_draw_box(x,y,x+BWW-1,y+BHH-1,grx_color_info_get_white());
         for(xx = x; xx < x+BWW; xx += 5) {
-            GrLine(xx,y,xx+BHH,y+BHH,grx_color_info_get_white());
-            GrLine(xx,y,xx-BHH,y+BHH,grx_color_info_get_white());
+            grx_draw_line(xx,y,xx+BHH,y+BHH,grx_color_info_get_white());
+            grx_draw_line(xx,y,xx-BHH,y+BHH,grx_color_info_get_white());
         }
         grx_context_set_current(NULL);
         grx_reset_clip_box();
@@ -53,7 +53,7 @@ void doblits(GrxContext *src,int x,int y)
         int ii;
 
         for(ii = 0; ii < 8; ii++) {
-            GrBitBlt(NULL,xx,yy,src,x,y,x+BWW-1,y+BHH-1,GRX_COLOR_MODE_WRITE);
+            grx_bit_blt(NULL,xx,yy,src,x,y,x+BWW-1,y+BHH-1,GRX_COLOR_MODE_WRITE);
             xx++;
             yy += (BHH + 2);
         }
@@ -64,7 +64,7 @@ void doblits(GrxContext *src,int x,int y)
         xx = (grx_get_size_x() - BWW)/ 2;
         yy = 2;
         for(ii = 0; ii < 8; ii++) {
-            GrFilledBox(xx,yy,xx+BWW-1,yy+BHH-1,xc);
+            grx_draw_filled_box(xx,yy,xx+BWW-1,yy+BHH-1,xc);
             xx++;
             yy += (BHH + 2);
         }
@@ -98,7 +98,7 @@ void blxtest(void)
 
 TESTFUNC(blittest)
 {
-        GrFBoxColors bcolors,ocolors,icolors;
+        GrxFramedBoxColors bcolors,ocolors,icolors;
         GrxColor c,bg;
         int  x = grx_get_size_x();
         int  y = grx_get_size_y();
@@ -121,54 +121,54 @@ TESTFUNC(blittest)
         blxtest();
         GrKeyRead();
 
-        bcolors.fbx_intcolor = grx_color_info_alloc_color(160,100,30);
-        bcolors.fbx_topcolor = grx_color_info_alloc_color(240,150,45);
-        bcolors.fbx_leftcolor = grx_color_info_alloc_color(240,150,45);
-        bcolors.fbx_rightcolor = grx_color_info_alloc_color(80,50,15);
-        bcolors.fbx_bottomcolor = grx_color_info_alloc_color(80,50,15);
+        bcolors.background = grx_color_info_alloc_color(160,100,30);
+        bcolors.border_top = grx_color_info_alloc_color(240,150,45);
+        bcolors.border_left = grx_color_info_alloc_color(240,150,45);
+        bcolors.border_right = grx_color_info_alloc_color(80,50,15);
+        bcolors.border_bottom = grx_color_info_alloc_color(80,50,15);
 
-        ocolors.fbx_intcolor = grx_color_info_alloc_color(0,120,100);
-        ocolors.fbx_topcolor = grx_color_info_alloc_color(0,180,150);
-        ocolors.fbx_leftcolor = grx_color_info_alloc_color(0,180,150);
-        ocolors.fbx_rightcolor = grx_color_info_alloc_color(0,90,60);
-        ocolors.fbx_bottomcolor = grx_color_info_alloc_color(0,90,60);
+        ocolors.background = grx_color_info_alloc_color(0,120,100);
+        ocolors.border_top = grx_color_info_alloc_color(0,180,150);
+        ocolors.border_left = grx_color_info_alloc_color(0,180,150);
+        ocolors.border_right = grx_color_info_alloc_color(0,90,60);
+        ocolors.border_bottom = grx_color_info_alloc_color(0,90,60);
 
-        icolors.fbx_intcolor = bg = grx_color_info_alloc_color(30,30,30);
-        icolors.fbx_bottomcolor = grx_color_info_alloc_color(0,180,150);
-        icolors.fbx_rightcolor = grx_color_info_alloc_color(0,180,150);
-        icolors.fbx_leftcolor = grx_color_info_alloc_color(0,90,60);
-        icolors.fbx_topcolor = grx_color_info_alloc_color(0,90,60);
+        icolors.background = bg = grx_color_info_alloc_color(30,30,30);
+        icolors.border_bottom = grx_color_info_alloc_color(0,180,150);
+        icolors.border_right = grx_color_info_alloc_color(0,180,150);
+        icolors.border_left = grx_color_info_alloc_color(0,90,60);
+        icolors.border_top = grx_color_info_alloc_color(0,90,60);
 
         c = grx_color_info_alloc_color(250,250,0);
 
         for(ii = 0,by = -(bh/3); ii < 19; ii++) {
             for(jj = 0,bx = -(bw/2); jj < 19; jj++) {
-                GrFramedBox(bx+2*wdt,by+2*wdt,bx+bw-2*wdt-1,by+bh-2*wdt-1,2*wdt,&bcolors);
+                grx_draw_framed_box(bx+2*wdt,by+2*wdt,bx+bw-2*wdt-1,by+bh-2*wdt-1,2*wdt,&bcolors);
                 bx += bw;
             }
             by += bh;
         }
 
-        GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
-        GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
+        grx_draw_framed_box(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
+        grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
 
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
         GrKeyRead();
 
-        GrClearScreen(0);
+        grx_clear_screen(0);
         grx_context_set_current(save);
 
         bx = -(bw/2) + 15*bw;
         by = -(bh/3) + 15*bh;
 
-        GrFramedBox(bx+2*wdt,by+2*wdt,bx+bw-2*wdt-1,by+bh-2*wdt-1,2*wdt,&bcolors);
+        grx_draw_framed_box(bx+2*wdt,by+2*wdt,bx+bw-2*wdt-1,by+bh-2*wdt-1,2*wdt,&bcolors);
 
         for (cnt=0; cnt<3; cnt++) {
           for(ii = 0,by = -(bh/3); ii < 19; ii++) {
             for(jj = 0,bx = -(bw/2); jj < 19; jj++) {
                 if((ii != 15) || (jj != 15)) {
-                    GrBitBlt(save,
+                    grx_bit_blt(save,
                         bx,by,
                         save,
                         -(bw/2) + 15*bw,
@@ -184,15 +184,15 @@ TESTFUNC(blittest)
           }
         }
 
-        GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
-        GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
+        grx_draw_framed_box(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
+        grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
 
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
         GrKeyRead();
 
 
-        GrBitBlt(tile,
+        grx_bit_blt(tile,
             0,0,
             save,
             -(bw/2) + 15*bw,
@@ -202,14 +202,14 @@ TESTFUNC(blittest)
             GRX_COLOR_MODE_WRITE
         );
         grx_context_set_current(tile);
-        GrFramedBox(2*wdt,2*wdt,bw-2*wdt-1,bh-2*wdt-1,2*wdt,&bcolors);
+        grx_draw_framed_box(2*wdt,2*wdt,bw-2*wdt-1,bh-2*wdt-1,2*wdt,&bcolors);
 
-        GrClearScreen(0);
+        grx_clear_screen(0);
         grx_context_set_current(save);
 
         for(ii = 0,by = -(bh/3); ii < 19; ii++) {
             for(jj = 0,bx = -(bw/2); jj < 19; jj++) {
-                GrBitBlt(save,
+                grx_bit_blt(save,
                     bx,by,
                     tile,
                     0,0,
@@ -221,15 +221,15 @@ TESTFUNC(blittest)
             by += bh;
         }
 
-        GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
-        GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
+        grx_draw_framed_box(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
+        grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
 
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
 
         GrKeyRead();
         grx_reset_clip_box();
-        GrBitBlt(NULL,
+        grx_bit_blt(NULL,
            60,60,
            NULL,
            20,20,
@@ -240,7 +240,7 @@ TESTFUNC(blittest)
 
         GrKeyRead();
 
-        GrBitBlt(NULL,
+        grx_bit_blt(NULL,
            10,10,
            NULL,
            60,60,
@@ -252,9 +252,9 @@ TESTFUNC(blittest)
         GrKeyRead();
 
         grx_context_set_current(tile);
-        GrClearContext(0);
+        grx_clear_context(0);
 
-        GrBitBlt(tile,
+        grx_bit_blt(tile,
             0,0,
             save,
             -(bw/2),
@@ -265,11 +265,11 @@ TESTFUNC(blittest)
         );
 
         grx_context_set_current(save);
-        GrClearScreen(0);
+        grx_clear_screen(0);
 
         for(ii = 0,by = -(bh/3); ii < 18; ii++) {
             for(jj = 0,bx = -(bw/2); jj < 18; jj++) {
-                GrBitBlt(save,
+                grx_bit_blt(save,
                     bx,by,
                     tile,
                     0,0,
@@ -281,8 +281,8 @@ TESTFUNC(blittest)
             by += bh;
         }
 
-        GrFramedBox(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
-        GrFramedBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
+        grx_draw_framed_box(ww/4-5*wdt-1,wh/4-5*wdt-1,ww/4+5*wdt+ww+1,wh/4+5*wdt+wh+1,wdt,&ocolors);
+        grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
 
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);

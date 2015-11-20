@@ -223,7 +223,7 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
   for( y=0; y<maxheight; y++ ){
     pix_ptr = row_pointers[y];
     if( alpha_present && use_alpha ){
-      memcpy( pColors,GrGetScanline( 0,maxwidth-1,y ),
+      memcpy( pColors,grx_get_scanline( 0,maxwidth-1,y ),
               sizeof(GrxColor)*maxwidth );
       }
     for( x=0; x<width; x++ ){
@@ -243,7 +243,7 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
         pColors[x] = grx_color_info_alloc_color( r,g,b );
         }
       }
-    GrPutScanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
+    grx_put_scanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
     }
 
   if( pColors) free( pColors );

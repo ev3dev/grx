@@ -607,7 +607,7 @@ int  GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y1, int _x2
   do {
     xx = 0;
     do {
-      pixcol = GrPixelC(_c,_x1+xx,_y1+yy);
+      pixcol = grx_context_get_pixel_at(_c,_x1+xx,_y1+yy);
       if ( colors == 256 ) line[xx] = pixcol;
       else
       {

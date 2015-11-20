@@ -20,7 +20,7 @@
 #include "usercord.h"
 
 
-void GrUsrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrLinePattern *lp)
+void GrUsrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrLinePattern *lp)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);

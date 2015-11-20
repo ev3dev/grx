@@ -40,7 +40,7 @@ TESTFUNC(test1)
             o4.lno_width   = 4;
             o4.lno_pattlen = 6 * i;
             o4.lno_dashpat = "\2\2\2\2\10\10";
-            GrClearScreen(grx_color_info_get_black());
+            grx_clear_screen(grx_color_info_get_black());
             GrCustomLine(10,10,100,100,&o1);
             GrCustomLine(10,50,100,140,&o1);
             GrCustomLine(10,90,100,180,&o1);
@@ -58,7 +58,7 @@ TESTFUNC(test1)
             GrCustomLine(480,100,460,300,&o4);
             GrCustomLine(600,200,500,300,&o4);
             GrKeyRead();
-            GrClearScreen(grx_color_info_get_black());
+            grx_clear_screen(grx_color_info_get_black());
             GrCustomBox(50,50,550,350,&o3);
             GrCustomCircle(300,200,50,&o2);
             GrKeyRead();

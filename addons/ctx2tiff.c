@@ -134,7 +134,7 @@ SaveContextToTiff(GrxContext *ctx, char *tiffn, unsigned compr, char *docn) {
     for (row = 0; row < height; row++) {
       int x;
       GrxColor c;
-      const GrxColor *rcb = GrGetScanlineC(ctx,0,width-1,row);
+      const GrxColor *rcb = grx_context_get_scanline(ctx,0,width-1,row);
       if (rcb) {
         for (x=0; x < width; ++x) {
           c = rcb[x];
@@ -143,7 +143,7 @@ SaveContextToTiff(GrxContext *ctx, char *tiffn, unsigned compr, char *docn) {
       } else {
         if (depth==1) memset (r,0,(width+7)/8);
         for (x=0; x < width; ++x) {
-          c = GrPixelC(ctx,x,row);
+          c = grx_context_get_pixel_at(ctx,x,row);
           puttobuf(r,x,depth,c);
         }
       }
@@ -177,25 +177,25 @@ TESTFUNC(wintest)
         c = grx_color_info_alloc_color(200,100,100);
         drawing(0,0,ww,wh,c,grx_color_info_get_black());
         c = grx_color_info_alloc_color(100,50,50);
-        GrBox(0,0,ww-1,wh-1,c);
+        grx_draw_box(0,0,ww-1,wh-1,c);
 
         grx_context_set_current(w2);
         c = grx_color_info_alloc_color(100,200,200);
         drawing(0,0,ww,wh,c,grx_color_info_get_black());
         c = grx_color_info_alloc_color(50,100,100);
-        GrBox(0,0,ww-1,wh-1,c);
+        grx_draw_box(0,0,ww-1,wh-1,c);
 
         grx_context_set_current(w3);
         c = grx_color_info_alloc_color(200,200,0);
         drawing(0,0,ww,wh,c,grx_color_info_get_black());
         c = grx_color_info_alloc_color(100,100,0);
-        GrBox(0,0,ww-1,wh-1,c);
+        grx_draw_box(0,0,ww-1,wh-1,c);
 
         grx_context_set_current(w4);
         c = grx_color_info_alloc_color(0,100,200);
         drawing(0,0,ww,wh,c,grx_color_info_get_black());
         c = grx_color_info_alloc_color(255,0,100);
-        GrBox(0,0,ww-1,wh-1,c);
+        grx_draw_box(0,0,ww-1,wh-1,c);
 
         grx_context_set_current(NULL);
 

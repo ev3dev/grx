@@ -22,7 +22,7 @@
 
 #include "libgrx.h"
 
-void GrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrPattern *p)
+void GrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrPattern *p)
 {
         GrPatternFilledEllipseArc(xc,yc,r,r,start,end,style,p);
 }

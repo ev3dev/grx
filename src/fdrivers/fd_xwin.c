@@ -103,7 +103,7 @@ void _XGrSetColorOper (GrxColor color)
  *
  * for (y = 0; y < height; y++)
  *   for (x = 0; x < width; x++)
- *     *dest++ = GrPixel (x, y);
+ *     *dest++ = grx_get_pixel_at (x, y);
  */
 
 #define PIXEL_CACHE_HEIGHT 4

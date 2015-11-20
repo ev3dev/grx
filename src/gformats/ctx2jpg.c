@@ -157,7 +157,7 @@ static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale )
   row_pointer[0] = buffer;
 
   for( y=0; y<cinfo.image_height; y++ ){
-    pColors = GrGetScanline( 0,cinfo.image_width-1,y );
+    pColors = grx_get_scanline( 0,cinfo.image_width-1,y );
     pix_ptr = buffer;
     if( grayscale ){
       for( x=0; x<cinfo.image_width; x++ ){

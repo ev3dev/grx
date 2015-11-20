@@ -1,5 +1,5 @@
 /**
- ** bb1test.c ---- test the GrBitBlt1bpp routine
+ ** bb1test.c ---- test the grx_bit_blt_1bpp routine
  **
  ** Copyright (c) 2001 Josu Onandia
  ** [e-mail: jonandia@fagorautomation.es].
@@ -35,9 +35,9 @@ int main(void)
   pContext = grx_context_create_full(GRX_FRAME_MODE_RAM_1BPP, sizex, sizey, NULL, NULL);
   /* draw something (black and white) into the bitmap */
   grx_context_set_current(pContext);
-  GrClearContext( grx_color_info_get_black() );
-  GrLine(0, 0, sizex-1, sizey-1, grx_color_info_get_white());
-  GrLine(0, sizey-1, sizex-1, 0, grx_color_info_get_white());
+  grx_clear_context( grx_color_info_get_black() );
+  grx_draw_line(0, 0, sizex-1, sizey-1, grx_color_info_get_white());
+  grx_draw_line(0, sizey-1, sizex-1, 0, grx_color_info_get_white());
 
   grx_context_set_current(NULL);
   fcolor = grx_color_info_alloc_color( 255,0,0 );
@@ -47,7 +47,7 @@ int main(void)
   grx_set_clip_box(0, 40, grx_get_screen_x(), grx_get_screen_y());
 
   /* Put the bitmap into the screen */
-  GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
+  grx_bit_blt_1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
 
   while( 1 ){
     k = GrKeyRead();
@@ -73,7 +73,7 @@ int main(void)
     if(x > grx_get_screen_x()) x = grx_get_screen_x();
     if(y < 0) y = 0;
     if(y > grx_get_screen_y()) y = grx_get_screen_y();
-    GrBitBlt1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
+    grx_bit_blt_1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
     }
 
   /* Destroy */

@@ -30,7 +30,7 @@ TESTFUNC(rgbtest)
         grx_color_info_set_rgb_color_mode();
         for(ii = 0; ii < 8; ii++) {
             for(jj = 0; jj < 32; jj++) {
-                GrFilledBox(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,ii*32+jj);
+                grx_draw_filled_box(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,ii*32+jj);
             }
         }
         GrKeyRead();

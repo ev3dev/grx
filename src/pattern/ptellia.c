@@ -27,19 +27,19 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void GrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrLinePattern *lp)
+void GrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrLinePattern *lp)
 {
     int (*points)[2];
     setup_ALLOC();
-    points = ALLOC(sizeof(int) * 2 * (GR_MAX_ELLIPSE_POINTS + 2));
+    points = ALLOC(sizeof(int) * 2 * (GRX_MAX_ELLIPSE_POINTS + 2));
     if (points != NULL)
     {
-        int numpts = GrGenerateEllipseArc(xc,yc,xa,ya,start,end,points);
+        int numpts = grx_generate_ellipse_arc(xc,yc,xa,ya,start,end,points);
         GrFillArg fval;
         int close;
 
         close = FALSE;
-        if (style == GR_ARC_STYLE_CLOSE2) {
+        if (style == GRX_ARC_STYLE_CLOSE2) {
                 points[numpts][0] = xc;
                 points[numpts][1] = yc;
                 numpts++;
@@ -48,7 +48,7 @@ void GrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int sty
                 numpts++;
                 close = TRUE;
         }
-        if (style == GR_ARC_STYLE_CLOSE1) {
+        if (style == GRX_ARC_STYLE_CLOSE1) {
                 points[numpts][0] = points[0][0];
                 points[numpts][1] = points[0][1];
                 numpts++;

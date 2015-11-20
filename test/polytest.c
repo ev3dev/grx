@@ -30,14 +30,14 @@ static GrxColor *EGA;
 
 static void testpoly(int n,int points[][2],int convex)
 {
-        GrClearScreen(black);
-        GrPolygon(n,points,white);
-        GrFilledPolygon(n,points,(red | GRX_COLOR_MODE_XOR));
+        grx_clear_screen(black);
+        grx_draw_polygon(n,points,white);
+        grx_draw_filled_polygon(n,points,(red | GRX_COLOR_MODE_XOR));
         GrKeyRead();
         if(convex || (n <= 3)) {
-            GrClearScreen(black);
-            GrFilledPolygon(n,points,white);
-            GrFilledConvexPolygon(n,points,(red | GRX_COLOR_MODE_XOR));
+            grx_clear_screen(black);
+            grx_draw_filled_polygon(n,points,white);
+            grx_draw_filled_convex_polygon(n,points,(red | GRX_COLOR_MODE_XOR));
             GrKeyRead();
         }
 }
@@ -54,7 +54,7 @@ static void speedtest(void)
         long t1,t2,t3;
    char msg[81];
 
-        GrClearScreen(black);
+        grx_clear_screen(black);
         t1 = GrMsecTime();
         pts[0][1] = 0;
         pts[1][1] = hh;
@@ -67,7 +67,7 @@ static void speedtest(void)
             pts[2][0] = ww;
             pts[3][0] = 0;
             for(jj = 0; jj < 32; jj++) {
-                GrFilledPolygon(4,pts, EGA[color] | GRX_COLOR_MODE_XOR);
+                grx_draw_filled_polygon(4,pts, EGA[color] | GRX_COLOR_MODE_XOR);
                 color = (color + 1) & 15;
                 pts[0][0] += sx;
                 pts[1][0] += sx;
@@ -91,7 +91,7 @@ static void speedtest(void)
             pts[2][0] = ww;
             pts[3][0] = 0;
             for(jj = 0; jj < 32; jj++) {
-                GrFilledConvexPolygon(4,pts, EGA[color] | GRX_COLOR_MODE_XOR);
+                grx_draw_filled_convex_polygon(4,pts, EGA[color] | GRX_COLOR_MODE_XOR);
                 color = (color + 1) & 15;
                 pts[0][0] += sx;
                 pts[1][0] += sx;
@@ -105,10 +105,10 @@ static void speedtest(void)
         }
         t3 = GrMsecTime();
         GrTextXY(0, 0, "Times to scan 1024 polygons", white, black);
-        sprintf(msg, "   with 'GrFilledPolygon': %.2f (s)",
+        sprintf(msg, "   with 'grx_draw_filled_polygon': %.2f (s)",
                (double)(t2 - t1) / (double)1000);
         GrTextXY(0, 18, msg, white, black);
-        sprintf(msg, "   with 'GrFilledConvexPolygon': %.2f (s)",
+        sprintf(msg, "   with 'grx_draw_filled_convex_polygon': %.2f (s)",
                (double)(t3 - t2) / (double)1000);
         GrTextXY(0, 36, msg, white, black);
 }

@@ -177,7 +177,7 @@ static int readjpeg( FILE *f, GrxContext *grc, int scale )
         pColors[x] = grx_color_info_alloc_color( r,g,b );
         }
       }
-    GrPutScanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
+    grx_put_scanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
     }
 
   jpeg_finish_decompress( &cinfo );

@@ -440,9 +440,9 @@ void xor_draw_blocks(GrxContext *c) {
 
   grx_context_save(&save);
   grx_context_set_current(c);
-  GrClearContext(grx_color_info_get_black());
+  grx_clear_context(grx_color_info_get_black());
   for (i=28; i > 1; --i)
-    GrFilledBox(grx_get_max_x()/i,grx_get_max_y()/i,
+    grx_draw_filled_box(grx_get_max_x()/i,grx_get_max_y()/i,
                 (i-1)*grx_get_max_x()/i,(i-1)*grx_get_max_y()/i,grx_color_info_get_white()|GRX_COLOR_MODE_XOR);
   grx_context_set_current(&save);
 }
@@ -458,7 +458,7 @@ void blit_measure(gvmode *gp, perfm *p,
   grx_context_save(&save);
   if (dst != src) {
     grx_context_set_current(dst);
-    GrClearContext(grx_color_info_get_black());
+    grx_clear_context(grx_color_info_get_black());
   }
   xor_draw_blocks(src);
   grx_context_set_current(&save);
@@ -474,13 +474,13 @@ void blit_measure(gvmode *gp, perfm *p,
   t1 = GrMsecTime();
   for (i=0; i < BLIT_loops; ++i) {
     for (j=PAIRS-3; j >= 0; j-=3)
-      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_WRITE);
+      grx_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_WRITE);
     for (j=PAIRS-3; j >= 0; j-=3)
-      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_XOR);
+      grx_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_XOR);
     for (j=PAIRS-3; j >= 0; j-=3)
-      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_OR);
+      grx_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_OR);
     for (j=PAIRS-3; j >= 0; j-=3)
-      GrBitBlt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_AND);
+      grx_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_AND);
   }
   t2 = GrMsecTime();
   seconds = (double)(t2 - t1) / 1000.0;
@@ -540,7 +540,7 @@ void measure_one(gvmode *gp, int ram) {
 
   if (MEASURED(gp)) return;
   pairs = checkpairs(gp->w, gp->h);
-  GrFilledBox( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
   Message(RAMMODE(gp),"read pixel test", gp);
   { int rd_loops = READPIX_loops;
   unsigned sys = GrGetLibrarySystem();
@@ -551,24 +551,24 @@ void measure_one(gvmode *gp, int ram) {
       if (!RAMMODE(gp)) rd_loops = READPIX_X11_loops;
     readpixeltest(gp,pairs,rd_loops);
   }
-  GrFilledBox( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
   Message(RAMMODE(gp),"draw pixel test", gp);
   drawpixeltest(gp,pairs);
-  GrFilledBox( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
   Message(RAMMODE(gp),"draw line test ", gp);
   drawlinetest(gp,pairs);
-  GrFilledBox( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
   Message(RAMMODE(gp),"draw hline test", gp);
   drawhlinetest(gp,pairs);
-  GrFilledBox( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
   Message(RAMMODE(gp),"draw vline test", gp);
   drawvlinetest(gp,pairs);
-  GrFilledBox( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
   Message(RAMMODE(gp),"draw block test", gp);
   drawblocktest(gp,pairs);
-  GrFilledBox( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
   blittest(gp, pairs, ram);
-  GrFilledBox( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
   SET_MEASURED(gp);
   measured_any = 1;
 }

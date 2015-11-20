@@ -22,7 +22,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrPatternedCircleArc(int xc,int yc,int r,int start,int end,int style,GrLinePattern *lp)
+void GrUsrPatternedCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrLinePattern *lp)
 {
 #ifdef USR_KEEP_SHAPE
         U2SX(xc,CURC);

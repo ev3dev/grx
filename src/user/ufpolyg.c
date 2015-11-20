@@ -34,7 +34,7 @@ void GrUsrFilledPolygon(int numpts,int points[][2],GrxColor c)
                 U2SX(tmp[pt][0],CURC);
                 U2SY(tmp[pt][1],CURC);
           }
-          GrFilledPolygon(numpts,tmp,c);
+          grx_draw_filled_polygon(numpts,tmp,c);
           FREE(tmp);
         }
         reset_ALLOC();

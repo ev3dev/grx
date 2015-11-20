@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "arith.h"
 
-#define MAXPTS  (GR_MAX_ELLIPSE_POINTS & (~15))
+#define MAXPTS  (GRX_MAX_ELLIPSE_POINTS & (~15))
 #define SEGLEN  5                /* preferred lenght of line segments on arc */
 #define TRIGMGN 16384                /* scale factor for sine table */
 #define PERIOD  1024                /* number of points in sine table */
@@ -91,12 +91,12 @@ static void GrSinCos(int n,int cx,int cy,int rx,int ry,int *pt)
         pt[1] = cy; pt[1] -= irscale(ry,sval,TRIGMGN);
 }
 
-int GrGenerateEllipseArc(int cx,int cy,int rx,int ry,int start,int end,int pt[][2])
+int grx_generate_ellipse_arc(int cx,int cy,int rx,int ry,int start,int end,int pt[][2])
 {
         int npts = urscale((iabs(rx) + iabs(ry)),314,(SEGLEN * 100));
         int step,closed;
-        start = irscale(start,PERIOD,GR_MAX_ANGLE_VALUE) & (PERIOD - 1);
-        end   = irscale(end,  PERIOD,GR_MAX_ANGLE_VALUE) & (PERIOD - 1);
+        start = irscale(start,PERIOD,GRX_MAX_ANGLE_VALUE) & (PERIOD - 1);
+        end   = irscale(end,  PERIOD,GRX_MAX_ANGLE_VALUE) & (PERIOD - 1);
         if(start == end) {
             closed = TRUE;
             end += PERIOD;
@@ -139,12 +139,12 @@ int GrGenerateEllipseArc(int cx,int cy,int rx,int ry,int start,int end,int pt[][
         return(npts);
 }
 
-int GrGenerateEllipse(int xc,int yc,int rx,int ry,int pt[][2])
+int grx_generate_ellipse(int xc,int yc,int rx,int ry,int pt[][2])
 {
-        return(GrGenerateEllipseArc(xc,yc,rx,ry,0,0,pt));
+        return(grx_generate_ellipse_arc(xc,yc,rx,ry,0,0,pt));
 }
 
-void GrLastArcCoords(int *xs,int *ys,int *xe,int *ye,int *xc,int *yc)
+void grx_get_last_arc_coordinates(int *xs,int *ys,int *xe,int *ye,int *xc,int *yc)
 {
         *xs = last_xs; *ys = last_ys;
         *xe = last_xe; *ye = last_ye;

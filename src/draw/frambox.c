@@ -19,22 +19,22 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c)
+void grx_draw_framed_box(int x1,int y1,int x2,int y2,int wdt,const GrxFramedBoxColors *c)
 {
         isort(x1,x2);
         isort(y1,y2);
         if(wdt < 0) wdt = 0;
         mouse_block(CURC,(x1 - wdt),(y1 - wdt),(x2 + wdt),(y2 + wdt));
-        if(c->fbx_intcolor != GRX_COLOR_NONE) {
-            GrFilledBox(x1,y1,x2,y2,c->fbx_intcolor);
+        if(c->background != GRX_COLOR_NONE) {
+            grx_draw_filled_box(x1,y1,x2,y2,c->background);
         }
         while(--wdt >= 0) {
             x1--; x2++;
             y1--; y2++;
-            GrHLine(x1,x2,y1,c->fbx_topcolor);
-            GrVLine(x1,(y1 + 1),(y2 - 1),c->fbx_leftcolor);
-            GrVLine(x2,(y1 + 1),(y2 - 1),c->fbx_rightcolor);
-            GrHLine(x1,x2,y2,c->fbx_bottomcolor);
+            grx_draw_hline(x1,x2,y1,c->border_top);
+            grx_draw_vline(x1,(y1 + 1),(y2 - 1),c->border_left);
+            grx_draw_vline(x2,(y1 + 1),(y2 - 1),c->border_right);
+            grx_draw_hline(x1,x2,y2,c->border_bottom);
         }
         mouse_unblock();
 }

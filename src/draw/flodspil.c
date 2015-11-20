@@ -20,7 +20,7 @@
 #include "libgrx.h"
 
 
-void GrFloodSpill(int x1, int y1, int x2, int y2,
+void grx_flood_spill(int x1, int y1, int x2, int y2,
                   GrxColor old_c, GrxColor new_c)
 {
   int y;
@@ -30,19 +30,19 @@ void GrFloodSpill(int x1, int y1, int x2, int y2,
 
   for(y = y1; y <= y2; ++y)
   {
-    if ((scanline = (GrxColor *)GrGetScanline(x1, x2, y)) != NULL)
+    if ((scanline = (GrxColor *)grx_get_scanline(x1, x2, y)) != NULL)
     {
       for(x = x1; x <= x2; ++x)
       {
         if (scanline[x] == old_c)
           scanline[x] = new_c;
       }
-      GrPutScanline(x1, x2, y, scanline, GRX_COLOR_MODE_WRITE);
+      grx_put_scanline(x1, x2, y, scanline, GRX_COLOR_MODE_WRITE);
     }
   }
 }
 
-void GrFloodSpill2(int x1, int y1, int x2, int y2,
+void grx_flood_spill2(int x1, int y1, int x2, int y2,
                   GrxColor old_c1, GrxColor new_c1,
                   GrxColor old_c2, GrxColor new_c2)
 {
@@ -53,7 +53,7 @@ void GrFloodSpill2(int x1, int y1, int x2, int y2,
 
   for(y = y1; y <= y2; ++y)
   {
-    if ((scanline = (GrxColor *)GrGetScanline(x1, x2, y)) != NULL)
+    if ((scanline = (GrxColor *)grx_get_scanline(x1, x2, y)) != NULL)
     {
       for(x = x1; x <= x2; ++x)
       {
@@ -62,12 +62,12 @@ void GrFloodSpill2(int x1, int y1, int x2, int y2,
         else if(scanline[x] == old_c2)
           scanline[x] = new_c2;
       }
-      GrPutScanline(x1, x2, y, scanline, GRX_COLOR_MODE_WRITE);
+      grx_put_scanline(x1, x2, y, scanline, GRX_COLOR_MODE_WRITE);
     }
   }
 }
 
-void GrFloodSpillC(GrxContext *ctx, int x1, int y1, int x2, int y2,
+void grx_context_flood_spill(GrxContext *ctx, int x1, int y1, int x2, int y2,
                    GrxColor old_c, GrxColor new_c)
 {
   int y;
@@ -80,20 +80,20 @@ void GrFloodSpillC(GrxContext *ctx, int x1, int y1, int x2, int y2,
 
   for(y = y1; y <= y2; ++y)
   {
-    if ((scanline = (GrxColor *)GrGetScanline(x1, x2, y)) != NULL)
+    if ((scanline = (GrxColor *)grx_get_scanline(x1, x2, y)) != NULL)
     {
       for(x = x1; x <= x2; ++x)
       {
         if (scanline[x] == old_c)
           scanline[x] = new_c;
       }
-      GrPutScanline(x1, x2, y, scanline, GRX_COLOR_MODE_WRITE);
+      grx_put_scanline(x1, x2, y, scanline, GRX_COLOR_MODE_WRITE);
     }
   }
   grx_context_set_current(&ctx_save);
 }
 
-void GrFloodSpillC2(GrxContext *ctx, int x1, int y1, int x2, int y2,
+void grx_context_flood_spill2(GrxContext *ctx, int x1, int y1, int x2, int y2,
                   GrxColor old_c1, GrxColor new_c1,
                   GrxColor old_c2, GrxColor new_c2)
 {
@@ -107,7 +107,7 @@ void GrFloodSpillC2(GrxContext *ctx, int x1, int y1, int x2, int y2,
 
   for(y = y1; y <= y2; ++y)
   {
-    if ((scanline = (GrxColor *)GrGetScanline(x1, x2, y)) != NULL)
+    if ((scanline = (GrxColor *)grx_get_scanline(x1, x2, y)) != NULL)
     {
       for(x = x1; x <= x2; ++x)
       {
@@ -116,7 +116,7 @@ void GrFloodSpillC2(GrxContext *ctx, int x1, int y1, int x2, int y2,
         else if(scanline[x] == old_c2)
           scanline[x] = new_c2;
       }
-      GrPutScanline(x1, x2, y, scanline, GRX_COLOR_MODE_WRITE);
+      grx_put_scanline(x1, x2, y, scanline, GRX_COLOR_MODE_WRITE);
     }
   }
   grx_context_set_current(&ctx_save);

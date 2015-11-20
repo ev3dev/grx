@@ -81,7 +81,7 @@ typedef struct {
 
 static ProgTable ptable[NDEMOS] = {
     {ID_ARCTEST, "arctest", "arctest.c -> test arc outline and filled arc drawing"},
-    {ID_BB1TEST, "bb1test", "bb1test.c -> test GrBitBlt1bpp routine"},
+    {ID_BB1TEST, "bb1test", "bb1test.c -> test grx_bit_blt_1bpp routine"},
     {ID_BLITTEST, "blittest", "blittest.c -> test various bitblt-s"},
     {ID_CIRCTEST, "circtest", "circtest.c -> test circle and ellipse rendering"},
     {ID_CLIPTEST, "cliptest", "cliptest.c -> test clipping"},
@@ -266,7 +266,7 @@ static void ini_graphics(void)
     gheight = grx_get_screen_y();
     grcglob = NULL;
     if (gwidth > 640 || gheight > 480) {
-        GrClearScreen(grx_color_info_alloc_color(120, 90, 60));
+        grx_clear_screen(grx_color_info_alloc_color(120, 90, 60));
         worg = (gwidth - 640) / 2;
         horg = (gheight - 480) / 2;
         grcglob = grx_context_create_subcontext(worg, horg, worg + 639, horg + 479,
@@ -446,7 +446,7 @@ static void paint_foot(char *s)
     grt_centered.txo_font = grf_std;
 
     grx_set_clip_box(10, 440, 630, 470);
-    GrClearClipBox(CYAN);
+    grx_clear_clip_box(CYAN);
     GrDrawString(s, strlen(s), 320, 455, &grt_centered);
     grx_reset_clip_box();
 }
@@ -473,10 +473,10 @@ static void paint_animation(void)
     wtext = GrStringWidth(animatedtext, ltext, &grt_left);
 
     grx_context_set_current(grc);
-    GrClearContext(DARKGRAY);
+    grx_clear_context(DARKGRAY);
     GrDrawString(animatedtext, ltext, pos, 15, &grt_left);
     grx_context_set_current(grcglob);
-    GrBitBlt(NULL, 10, 8, grc, 0, 0, 629, 29, GRX_COLOR_MODE_WRITE);
+    grx_bit_blt(NULL, 10, 8, grc, 0, 0, 629, 29, GRX_COLOR_MODE_WRITE);
 
     pos -= 1;
     if (pos <= -wtext)

@@ -43,7 +43,7 @@ void displayfont(GrFont *font,char *text,int len)
         opt.txo_font   = font;
         opt.txo_xalign = GR_ALIGN_LEFT;
         opt.txo_yalign = GR_ALIGN_TOP;
-        GrFilledBox(0,0,grx_get_size_x(),grx_get_size_y(),grx_color_info_get_black());
+        grx_draw_filled_box(0,0,grx_get_size_x(),grx_get_size_y(),grx_color_info_get_black());
         opt.txo_direct    = GR_TEXT_RIGHT;
         opt.txo_fgcolor.v = grx_color_info_get_black();
         opt.txo_bgcolor.v = c1;
@@ -64,7 +64,7 @@ void displayfont(GrFont *font,char *text,int len)
         opt.txo_bgcolor.v = c4;
         GrDrawString(text,len,bx,by+bh-ww,&opt);
         GrKeyRead();
-        GrClearClipBox(grx_color_info_get_black());
+        grx_clear_clip_box(grx_color_info_get_black());
         opt.txo_direct    = GR_TEXT_RIGHT;
         opt.txo_fgcolor.v = c1;
         opt.txo_bgcolor.v = grx_color_info_get_black();
@@ -90,7 +90,7 @@ TESTFUNC(fonttest)
         c2 = grx_color_info_alloc_color(150,150,100);
         c3 = grx_color_info_alloc_color(100,100,200);
         c4 = grx_color_info_alloc_color(100,180,180);
-        GrBox(grx_get_size_x()/16 - 2,
+        grx_draw_box(grx_get_size_x()/16 - 2,
             grx_get_size_y()/16 - 2,
             grx_get_size_x() - grx_get_size_x()/16 + 1,
             grx_get_size_y() - grx_get_size_y()/16 + 1,

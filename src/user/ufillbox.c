@@ -26,5 +26,5 @@ void GrUsrFilledBox(int x1,int y1,int x2,int y2,GrxColor c)
         U2SY(y1,CURC);
         U2SX(x2,CURC);
         U2SY(y2,CURC);
-        GrFilledBox(x1,y1,x2,y2,c);
+        grx_draw_filled_box(x1,y1,x2,y2,c);
 }

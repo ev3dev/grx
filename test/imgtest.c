@@ -38,17 +38,17 @@ TESTFUNC(imgtest)
         c2 = grx_color_info_alloc_color(0,0,(grx_color_info_n_colors() >= 16 ? 180 : 63));
         c3 = grx_color_info_alloc_color(0,255,0);
         drawing(0,0,ww,wh,c1,c2);
-        GrBox(0,0,ww-1,wh-1,c1);
+        grx_draw_box(0,0,ww-1,wh-1,c1);
 
         grx_context_set_current(NULL);
 
         img1 = GrImageFromContext(&ctx);
         if (!img1) return;
 
-        GrFilledBox(0,0,ww+1,wh+1,c3);
-        GrFilledBox(ww+15,0,2*ww+16,wh+1,c3);
+        grx_draw_filled_box(0,0,ww+1,wh+1,c3);
+        grx_draw_filled_box(ww+15,0,2*ww+16,wh+1,c3);
 
-        GrBitBlt(NULL,1,1,&ctx,0,0,ww-1,wh-1,0);
+        grx_bit_blt(NULL,1,1,&ctx,0,0,ww-1,wh-1,0);
         GrImageDisplay(ww+16,1,img1);
         GrImageDisplayExt(0,wh+4,x-1,y-1, img1);
 
@@ -69,13 +69,13 @@ TESTFUNC(imgtest)
         }
         GrKeyRead();
 
-        /* let's finish with some GrGetScanline / GrPutScanline tests */
+        /* let's finish with some grx_get_scanline / grx_put_scanline tests */
         for (d1 = 1; d1 < 32; ++d1) {
           for (m1 = wh; m1 < y-wh-d1-1; ++m1) {
             const GrxColor *cp;
-            cp = GrGetScanline(ww+1,x-ww-d1,m1+1);
+            cp = grx_get_scanline(ww+1,x-ww-d1,m1+1);
             if (cp) {
-              GrPutScanline(ww,x-ww-d1-1,m1,cp,GRX_COLOR_MODE_IMAGE|c2);
+              grx_put_scanline(ww,x-ww-d1-1,m1,cp,GRX_COLOR_MODE_IMAGE|c2);
             }
           }
         }

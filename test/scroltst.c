@@ -42,7 +42,7 @@ TESTFUNC(scrolltest)
             int vy = grx_get_viewport_y();
             int x  = (vw / 3) - (strlen(l6) * GrDefaultFont.h.width / 2);
             int y  = (vh / 3) - (3 * txh);
-            GrClearScreen(bgc);
+            grx_clear_screen(bgc);
             drawing(0,0,vw,vh,fgc,bgc);
             sprintf(buff,l1,wdt,hgt); GrTextXY(x,y,buff,txc,bgc); y += txh;
             sprintf(buff,l2,vw, vh ); GrTextXY(x,y,buff,txc,bgc); y += txh;

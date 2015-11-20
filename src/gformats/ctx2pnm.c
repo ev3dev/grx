@@ -55,7 +55,7 @@ int GrSaveContextToPbm( GrxContext *grc, char *pbmfn, char *docn )
   fwrite( cab,1,strlen( cab ),f );
   for( y=0; y<grx_get_size_y(); y++ ){
     for( x=0; x<grx_get_size_x(); x++ ){
-      if( GrPixel( x,y ) == grx_color_info_get_black() )
+      if( grx_get_pixel_at( x,y ) == grx_color_info_get_black() )
         currentbyte |= 1 << currentbit;
       currentbit--;
       if( currentbit < 0 ){
@@ -111,7 +111,7 @@ int GrSaveContextToPgm( GrxContext *grc, char *pgmfn, char *docn )
   fwrite( cab,1,strlen( cab ),f );
   for( y=0; y<grx_get_size_y(); y++ )
     for( x=0; x<grx_get_size_x(); x++ ){
-      grx_color_info_query_color( GrPixel( x,y ),&rgb[0],&rgb[1],&rgb[2] );
+      grx_color_info_query_color( grx_get_pixel_at( x,y ),&rgb[0],&rgb[1],&rgb[2] );
       grey = (0.229 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2]);
       fwrite( &grey,1,1,f );
       }
@@ -154,7 +154,7 @@ int GrSaveContextToPpm( GrxContext *grc, char *ppmfn, char *docn )
   fwrite( cab,1,strlen( cab ),f );
   for( y=0; y<grx_get_size_y(); y++ )
     for( x=0; x<grx_get_size_x(); x++ ){
-      grx_color_info_query_color( GrPixel( x,y ),&r,&g,&b );
+      grx_color_info_query_color( grx_get_pixel_at( x,y ),&r,&g,&b );
       brgb[0] = r;
       brgb[1] = g;
       brgb[2] = b;

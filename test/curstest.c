@@ -53,32 +53,32 @@ TESTFUNC(cursortest)
         x = grx_get_screen_x() / 2;
         y = grx_get_screen_y() / 2;
         GrMoveCursor(cur,x,y);
-        GrClearScreen(bgc);
+        grx_clear_screen(bgc);
         grx_color_info_set_color((grx_color_info_n_colors() - 1),255,255,255);
         drawing(0,0,grx_get_size_x(),grx_get_size_y(),fgc,GRX_COLOR_NONE);
-        GrFilledBox(0,0,320,120,grx_color_info_alloc_color(0,255,255));
+        grx_draw_filled_box(0,0,320,120,grx_color_info_alloc_color(0,255,255));
         GrTextXY( 10,90,"ANDmask",grx_color_info_get_black(),GRX_COLOR_NONE);
         GrTextXY( 90,90,"ORmask", grx_color_info_get_black(),GRX_COLOR_NONE);
         GrTextXY(170,90,"Save",   grx_color_info_get_black(),GRX_COLOR_NONE);
         GrTextXY(250,90,"Work",   grx_color_info_get_black(),GRX_COLOR_NONE);
         GrDisplayCursor(cur);
         for( ; ; ) {
-            GrBitBlt(
+            grx_bit_blt(
                 NULL,10,10,
                 &cur->work,cur->xwork/2,0,cur->xwork/2+cur->xsize-1,cur->ysize-1,
                 GRX_COLOR_MODE_WRITE
             );
-            GrBitBlt(
+            grx_bit_blt(
                 NULL,90,10,
                 &cur->work,0,0,cur->xsize-1,cur->ysize-1,
                 GRX_COLOR_MODE_WRITE
             );
-            GrBitBlt(
+            grx_bit_blt(
                 NULL,170,10,
                 &cur->work,0,cur->ysize,cur->xwork-1,cur->ysize+cur->ywork-1,
                 GRX_COLOR_MODE_WRITE
             );
-            GrBitBlt(
+            grx_bit_blt(
                 NULL,250,10,
                 &cur->work,0,cur->ysize+cur->ywork,cur->xwork-1,cur->ysize+2*cur->ywork-1,
                 GRX_COLOR_MODE_WRITE

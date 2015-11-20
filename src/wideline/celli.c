@@ -24,11 +24,11 @@ void GrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o)
 {
     int (*pnts)[2];
     setup_ALLOC();
-    pnts = ALLOC(sizeof(int) * 2 * GR_MAX_ELLIPSE_POINTS);
+    pnts = ALLOC(sizeof(int) * 2 * GRX_MAX_ELLIPSE_POINTS);
     if (pnts != NULL)
     {
         GrFillArg fval;
-        int npts  = GrGenerateEllipse(xc,yc,xa,ya,pnts);
+        int npts  = grx_generate_ellipse(xc,yc,xa,ya,pnts);
         fval.color = o->lno_color;
         _GrDrawCustomPolygon(npts,pnts,o,&_GrSolidFiller,fval,TRUE,TRUE);
         FREE(pnts);

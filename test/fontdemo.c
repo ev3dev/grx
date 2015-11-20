@@ -38,7 +38,7 @@ static void gnewl(void)
                 GrUnloadFont(opt.txo_font);
                 exit(0);
             }
-            GrClearScreen(opt.txo_bgcolor.v);
+            grx_clear_screen(opt.txo_bgcolor.v);
             cury = 0;
         }
 }
@@ -64,7 +64,7 @@ static void revert(void)
         color = opt.txo_fgcolor.v;
         opt.txo_fgcolor.v = opt.txo_bgcolor.v | (color & GR_UNDERLINE_TEXT);
         opt.txo_bgcolor.v = color & ~GR_UNDERLINE_TEXT;
-        GrClearScreen(color);
+        grx_clear_screen(color);
         curx = cury = 0;
 }
 
