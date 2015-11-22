@@ -624,8 +624,7 @@ namespace Grx {
 
         public Color *get_scan_line (int x1, int x2, int yy);
 
-        [CCode (cname = "GrPixelCNC")]
-        public Color pixel_no_clip (int x, int y);
+        public Color get_pixel_nc (int x, int y);
 
         [CCode (cname = "GrConvertToPixmap")]
         public Pattern to_pixmap ();
@@ -816,25 +815,16 @@ namespace Grx {
     /*                 NON CLIPPING DRAWING PRIMITIVES                    */
     /* ================================================================== */
 
-    [CCode (cname = "GrPlotNC")]
-    public void plot_no_clip(int x, int y, Color c);
-    [CCode (cname = "GrLineNC")]
-    public void line_no_clip(int x1, int y1, int x2, int y2, Color c);
-    [CCode (cname = "GrHLineNC")]
-    public void horiz_line_no_clip(int x1, int x2, int y, Color c);
-    [CCode (cname = "GrVLineNC")]
-    public void vert_line_no_clip(int x, int y1, int y2, Color c);
-    [CCode (cname = "GrBoxNC")]
-    public void box_no_clip(int x1, int y1, int x2, int y2, Color c);
-    [CCode (cname = "GrFilledBoxNC")]
-    public void filled_box_no_clip(int x1, int y1, int x2, int y2, Color c);
-    [CCode (cname = "GrFramedBoxNC")]
-    public void framed_box_no_clip(int x1, int y1, int x2, int y2, int wdt, FramedBoxColors c);
-    [CCode (cname = "GrBitBltNC")]
-    public void bit_blt_no_clip(Context dest, int x, int y, Context src, int x1, int y1, int x2, int y2, ColorMode op = ColorMode.WRITE);
+    public void draw_point_nc(int x, int y, Color c);
+    public void draw_line_nc(int x1, int y1, int x2, int y2, Color c);
+    public void draw_hline_nc(int x1, int x2, int y, Color c);
+    public void draw_vline_nc(int x, int y1, int y2, Color c);
+    public void draw_box_nc(int x1, int y1, int x2, int y2, Color c);
+    public void draw_filled_box_nc(int x1, int y1, int x2, int y2, Color c);
+    public void draw_framed_box_nc(int x1, int y1, int x2, int y2, int wdt, FramedBoxColors c);
+    public void bit_blt_nc(Context dest, int x, int y, Context src, int x1, int y1, int x2, int y2, ColorMode op = ColorMode.WRITE);
 
-    [CCode (cname =  "GrPixelNC")]
-    public Color pixel_no_clip (int x, int y);
+    public Color get_pixel_nc (int x, int y);
 
     [CCode (cname = "int", cprefix = "GR_TEXT_", has_type_id = false)]
     public enum TextDirection {

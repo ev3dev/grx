@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrHLineNC(int x1,int x2,int yy,GrxColor c)
+void grx_draw_hline_nc(int x1,int x2,int yy,GrxColor c)
 {
         isort(x1,x2);
         (*FDRV->drawhline)(

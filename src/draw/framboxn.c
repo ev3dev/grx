@@ -19,21 +19,21 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrFramedBoxNC(int x1,int y1,int x2,int y2,int wdt,const GrxFramedBoxColors *c)
+void grx_draw_framed_box_nc(int x1,int y1,int x2,int y2,int wdt,const GrxFramedBoxColors *c)
 {
         isort(x1,x2);
         isort(y1,y2);
         if(wdt < 0) wdt = 0;
         if(c->background != GRX_COLOR_NONE) {
-            GrFilledBoxNC(x1,y1,x2,y2,c->background);
+            grx_draw_filled_box_nc(x1,y1,x2,y2,c->background);
         }
         while(--wdt >= 0) {
             x1--; x2++;
             y1--; y2++;
-            GrHLineNC(x1,x2,y1,c->border_top);
-            GrVLineNC(x1,(y1 + 1),(y2 - 1),c->border_left);
-            GrVLineNC(x2,(y1 + 1),(y2 - 1),c->border_right);
-            GrHLineNC(x1,x2,y2,c->border_bottom);
+            grx_draw_hline_nc(x1,x2,y1,c->border_top);
+            grx_draw_vline_nc(x1,(y1 + 1),(y2 - 1),c->border_left);
+            grx_draw_vline_nc(x2,(y1 + 1),(y2 - 1),c->border_right);
+            grx_draw_hline_nc(x1,x2,y2,c->border_bottom);
         }
 }
 

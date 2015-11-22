@@ -96,7 +96,7 @@ int test_pix(element **buf, int x, int y) {
 
 static INLINE
 int test_screen(int x, int y) {
-  return (GrPixelNC(x+lx,y+ly) == _border);
+  return (grx_get_pixel_nc(x+lx,y+ly) == _border);
 }
 
 static INLINE
@@ -198,7 +198,7 @@ void _GrFloodFill(int x,int y,GrxColor border,GrFiller *f,GrFillArg fa) {
   lxo = lx + CURC->x_offset;
   lyo = ly + CURC->y_offset;
 
-  if ( x < lx || y < ly || x > mx || y > my || GrPixelNC(x,y) == border)
+  if ( x < lx || y < ly || x > mx || y > my || grx_get_pixel_nc(x,y) == border)
     return;
 
   _border = border;

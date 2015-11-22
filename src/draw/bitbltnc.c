@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrBitBltNC(GrxContext *dst,int dx,int dy,
+void grx_bit_blt_nc(GrxContext *dst,int dx,int dy,
                 GrxContext *src,int x1,int y1,int x2,int y2,GrxColor oper)
 {
         void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);

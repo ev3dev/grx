@@ -66,7 +66,7 @@ TESTFUNC(life)
                 int ii = RND() % 53;
                 while(--ii >= 0) RND();
                 old[y][x] = (((RND() % 131) > 107) ? 1 : 0);
-                GrPlotNC(x,y,c[(int)old[y][x]]);
+                grx_draw_point_nc(x,y,c[(int)old[y][x]]);
             }
         }
         thresh = (((unsigned long)RND() << 16) + RND()) % 1003567UL;
@@ -100,7 +100,7 @@ TESTFUNC(life)
                 char *curr = cur[y];
                 char *oldr = old[y];
                 for(x = 0; x < W; x++) {
-                    if(curr[x] != oldr[x]) GrPlotNC(x,y,c[(int)curr[x]]);
+                    if(curr[x] != oldr[x]) grx_draw_point_nc(x,y,c[(int)curr[x]]);
                 }
             }
             which = 1 - which;

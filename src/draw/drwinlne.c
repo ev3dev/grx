@@ -18,19 +18,19 @@
 
 #include "libgrx.h"
 
-void (GrPlotNC)(int x,int y,GrxColor c)
+void (grx_draw_point_nc)(int x,int y,GrxColor c)
 {
-        GrPlotNC(x,y,c);
+        grx_draw_point_nc(x,y,c);
 }
 
-GrxColor (GrPixelNC)(int x,int y)
+GrxColor (grx_get_pixel_nc)(int x,int y)
 {
-        return(GrPixelNC(x,y));
+        return(grx_get_pixel_nc(x,y));
 }
 
-GrxColor (GrPixelCNC)(GrxContext *c,int x,int y)
+GrxColor (grx_context_get_pixel_nc)(GrxContext *c,int x,int y)
 {
-        return(GrPixelCNC(c,x,y));
+        return(grx_context_get_pixel_nc(c,x,y));
 }
 
 

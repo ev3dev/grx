@@ -246,7 +246,7 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs,int loops) {
   t1 = GrMsecTime();
   for (i=loops; i > 0; --i) {
     for (j=PAIRS-1; j >= 0; j--)
-       GrPixelNC(x[j],y[j]);
+       grx_get_pixel_nc(x[j],y[j]);
   }
   t2 = GrMsecTime();
   seconds = (double)(t2 - t1) / 1000.0;
@@ -272,10 +272,10 @@ void drawpixeltest(gvmode *gp, XY_PAIRS *pairs) {
 
   t1 = GrMsecTime();
   for (i=0; i < DRAWPIX_loops; ++i) {
-    for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c1);
-    for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c2);
-    for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c3);
-    for (j=PAIRS-1; j >= 0; j--) GrPlotNC(x[j],y[j],c4);
+    for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c1);
+    for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c2);
+    for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c3);
+    for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c4);
   }
   t2 = GrMsecTime();
   seconds = (double)(t2 - t1) / 1000.0;
@@ -305,13 +305,13 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
   t1 = GrMsecTime();
   for (i=0; i < DRAWLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
-        GrLineNC(x[j],y[j],x[j+1],y[j+1],c1);
+        grx_draw_line_nc(x[j],y[j],x[j+1],y[j+1],c1);
     for (j=PAIRS-2; j >= 0; j-=2)
-        GrLineNC(x[j],y[j],x[j+1],y[j+1],c2);
+        grx_draw_line_nc(x[j],y[j],x[j+1],y[j+1],c2);
     for (j=PAIRS-2; j >= 0; j-=2)
-        GrLineNC(x[j],y[j],x[j+1],y[j+1],c3);
+        grx_draw_line_nc(x[j],y[j],x[j+1],y[j+1],c3);
     for (j=PAIRS-2; j >= 0; j-=2)
-        GrLineNC(x[j],y[j],x[j+1],y[j+1],c4);
+        grx_draw_line_nc(x[j],y[j],x[j+1],y[j+1],c4);
   }
   t2 = GrMsecTime();
   seconds = (double)(t2 - t1) / 1000.0;
@@ -341,13 +341,13 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
   t1 = GrMsecTime();
   for (i=0; i < DRAWHLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
-      GrHLineNC(x[j],x[j+1],y[j],c1);
+      grx_draw_hline_nc(x[j],x[j+1],y[j],c1);
     for (j=PAIRS-2; j >= 0; j-=2)
-      GrHLineNC(x[j],x[j+1],y[j],c2);
+      grx_draw_hline_nc(x[j],x[j+1],y[j],c2);
     for (j=PAIRS-2; j >= 0; j-=2)
-      GrHLineNC(x[j],x[j+1],y[j],c3);
+      grx_draw_hline_nc(x[j],x[j+1],y[j],c3);
     for (j=PAIRS-2; j >= 0; j-=2)
-      GrHLineNC(x[j],x[j+1],y[j],c4);
+      grx_draw_hline_nc(x[j],x[j+1],y[j],c4);
   }
   t2 = GrMsecTime();
   seconds = (double)(t2 - t1) / 1000.0;
@@ -377,13 +377,13 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
   t1 = GrMsecTime();
   for (i=0; i < DRAWVLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
-       GrVLineNC(x[j],y[j],y[j+1],c1);
+       grx_draw_vline_nc(x[j],y[j],y[j+1],c1);
     for (j=PAIRS-2; j >= 0; j-=2)
-       GrVLineNC(x[j],y[j],y[j+1],c2);
+       grx_draw_vline_nc(x[j],y[j],y[j+1],c2);
     for (j=PAIRS-2; j >= 0; j-=2)
-       GrVLineNC(x[j],y[j],y[j+1],c3);
+       grx_draw_vline_nc(x[j],y[j],y[j+1],c3);
     for (j=PAIRS-2; j >= 0; j-=2)
-       GrVLineNC(x[j],y[j],y[j+1],c4);
+       grx_draw_vline_nc(x[j],y[j],y[j+1],c4);
   }
   t2 = GrMsecTime();
   seconds = (double)(t2 - t1) / 1000.0;
@@ -420,13 +420,13 @@ void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
   t1 = GrMsecTime();
   for (i=0; i < DRAWBLK_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
-      GrFilledBoxNC(xb[j],yb[j],xb[j+1],yb[j+1],c1);
+      grx_draw_filled_box_nc(xb[j],yb[j],xb[j+1],yb[j+1],c1);
     for (j=PAIRS-2; j >= 0; j-=2)
-      GrFilledBoxNC(xb[j],yb[j],xb[j+1],yb[j+1],c2);
+      grx_draw_filled_box_nc(xb[j],yb[j],xb[j+1],yb[j+1],c2);
     for (j=PAIRS-2; j >= 0; j-=2)
-      GrFilledBoxNC(xb[j],yb[j],xb[j+1],yb[j+1],c3);
+      grx_draw_filled_box_nc(xb[j],yb[j],xb[j+1],yb[j+1],c3);
     for (j=PAIRS-2; j >= 0; j-=2)
-      GrFilledBoxNC(xb[j],yb[j],xb[j+1],yb[j+1],c4);
+      grx_draw_filled_box_nc(xb[j],yb[j],xb[j+1],yb[j+1],c4);
   }
   t2 = GrMsecTime();
   seconds = (double)(t2 - t1) / 1000.0;

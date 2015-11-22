@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void GrBoxNC(int x1,int y1,int x2,int y2,GrxColor c)
+void grx_draw_box_nc(int x1,int y1,int x2,int y2,GrxColor c)
 {
         isort(x1,x2);
         isort(y1,y2);
