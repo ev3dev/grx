@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "usercord.h"
 
-void GrUsrCustomPolygon(int numpts,int points[][2],const GrLineOption *lo)
+void GrUsrCustomPolygon(int numpts,int points[][2],const GrxLineOptions *lo)
 {
         int pt;
         int (*tmp)[2];
@@ -34,7 +34,7 @@ void GrUsrCustomPolygon(int numpts,int points[][2],const GrLineOption *lo)
                 U2SX(tmp[pt][0],CURC);
                 U2SY(tmp[pt][1],CURC);
           }
-          GrCustomPolygon(numpts,tmp,lo);
+          grx_draw_polygon_with_options(numpts,tmp,lo);
           FREE(tmp);
         }
         reset_ALLOC();

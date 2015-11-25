@@ -25,7 +25,7 @@ TESTFUNC(sbctest)
   char bits[] = {0, 76, 50, 0, 0, 76, 60, 0};
   GrxContext *grc, *grsc;
   GrPattern *pat1, *pat2;
-  GrLineOption grl;
+  GrxLineOptions grl;
   GrLinePattern grlp;
   GrxFont *grf;
   GrxTextOption grt;
@@ -77,9 +77,9 @@ TESTFUNC(sbctest)
   grx_bit_blt( NULL,20,20,grc,0,0,299,299,GRX_COLOR_MODE_XOR );
   GrKeyRead();
 
-  grl.lno_color = grx_color_info_get_white();
-  grl.lno_width = 3;
-  grl.lno_pattlen = 0;
+  grl.color = grx_color_info_get_white();
+  grl.width = 3;
+  grl.n_dash_patterns = 0;
   grlp.lnp_pattern = pat1;
   grlp.lnp_option = &grl;
 

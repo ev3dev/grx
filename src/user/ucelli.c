@@ -19,12 +19,12 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *lo)
+void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrxLineOptions *lo)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);
         SCALE(xa,xa,CURC->x_max,CURC->user_width);
         SCALE(ya,ya,CURC->y_max,CURC->user_height);
-        GrCustomEllipse(xc,yc,xa,ya,lo);
+        grx_draw_ellipse_with_options(xc,yc,xa,ya,lo);
 }
 

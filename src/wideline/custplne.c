@@ -19,9 +19,9 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrCustomPolyLine(int n,int pt[][2],const GrLineOption *o)
+void grx_draw_polyline_with_options(int n,int pt[][2],const GrxLineOptions *o)
 {
         GrFillArg fval;
-        fval.color = o->lno_color;
+        fval.color = o->color;
         _GrDrawCustomPolygon(n,pt,o,&_GrSolidFiller,fval,FALSE,FALSE);
 }

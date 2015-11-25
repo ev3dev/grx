@@ -1203,25 +1203,27 @@ void grx_text_region_dump(const GrxTextRegion *r);
 /* ================================================================== */
 
 /*
- * custom line option structure
+ * custom line options structure
  *   zero or one dash pattern length means the line is continuous
  *   the dash pattern always begins with a drawn section
  */
 typedef struct {
-        GrxColor lno_color;                  /* color used to draw line */
-        int     lno_width;                  /* width of the line */
-        int     lno_pattlen;                /* length of the dash pattern */
-        unsigned char *lno_dashpat;         /* draw/nodraw pattern */
-} GrLineOption;
+    GrxColor color;                   /* color used to draw line */
+    gint     width;                   /* width of the line */
+    gint     n_dash_patterns;         /* length of the dash pattern */
+    guint8  *dash_patterns;           /* draw/nodraw pattern */
+} GrxLineOptions;
 
-void GrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
-void GrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
-void GrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
-void GrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
-void GrCustomCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,const GrLineOption *o);
-void GrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,const GrLineOption *o);
-void GrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
-void GrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
+void grx_draw_line_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
+void grx_draw_box_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
+void grx_draw_circle_with_options(gint xc, gint yc, gint r, const GrxLineOptions *o);
+void grx_draw_ellipse_with_options(gint xc, gint yc, gint xa, gint ya, const GrxLineOptions *o);
+void grx_draw_circle_arc_with_options(gint xc, gint yc, gint r, gint start, gint end,
+                                      GrxArcStyle style, const GrxLineOptions *o);
+void grx_draw_ellipse_arc_with_options(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
+                                       GrxArcStyle style, const GrxLineOptions *o);
+void grx_draw_polyline_with_options(gint numpts, gint points[][2], const GrxLineOptions *o);
+void grx_draw_polygon_with_options(gint numpts, gint points[][2], const GrxLineOptions *o);
 
 /* ================================================================== */
 /*             PATTERNED DRAWING AND FILLING PRIMITIVES               */
@@ -1281,7 +1283,7 @@ typedef union _GR_pattern {
  */
 typedef struct {
         GrPattern     *lnp_pattern;         /* fill pattern */
-        GrLineOption  *lnp_option;          /* width + dash pattern */
+        GrxLineOptions  *lnp_option;          /* width + dash pattern */
 } GrLinePattern;
 
 GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrxColorTable colors);
@@ -1396,14 +1398,14 @@ void GrUsrFloodFill(int x, int y, GrxColor border, GrxColor c);
 GrxColor GrUsrPixel(int x,int y);
 GrxColor GrUsrPixelC(GrxContext *c,int x,int y);
 
-void GrUsrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
-void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
-void GrUsrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
-void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
-void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,const GrLineOption *o);
-void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,const GrLineOption *o);
-void GrUsrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
-void GrUsrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
+void GrUsrCustomLine(int x1,int y1,int x2,int y2,const GrxLineOptions *o);
+void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrxLineOptions *o);
+void GrUsrCustomCircle(int xc,int yc,int r,const GrxLineOptions *o);
+void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrxLineOptions *o);
+void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,const GrxLineOptions *o);
+void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,const GrxLineOptions *o);
+void GrUsrCustomPolyLine(int numpts,int points[][2],const GrxLineOptions *o);
+void GrUsrCustomPolygon(int numpts,int points[][2],const GrxLineOptions *o);
 
 void GrUsrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
 void GrUsrPatternedBox(int x1,int y1,int x2,int y2,GrLinePattern *lp);

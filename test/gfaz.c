@@ -219,7 +219,7 @@ void dboton( int x, int y, int an, int al,
 {
   int pol[7][2], prof, pulsd, selec, despl;
   GrxTextOption grt;
-  GrLineOption glo;
+  GrxLineOptions glo;
   int mouseblock;
 
   prof = (t & 0x1) ? 2 : 4;
@@ -263,11 +263,11 @@ void dboton( int x, int y, int an, int al,
     grx_draw_string_with_text_options( s,strlen( s ),x+an/2,y+al/2,&grt );
 
   if( selec ){
-    glo.lno_color = ct;
-    glo.lno_width = 1;
-    glo.lno_pattlen = 2;
-    glo.lno_dashpat = "\2\1";
-    GrCustomBox( x+8,y+al/2-6,x+an-8,y+al/2+5,&glo );
+    glo.color = ct;
+    glo.width = 1;
+    glo.n_dash_patterns = 2;
+    glo.dash_patterns = "\2\1";
+    grx_draw_box_with_options( x+8,y+al/2-6,x+an-8,y+al/2+5,&glo );
     }
 
   GrMouseUnBlock( mouseblock );

@@ -1109,32 +1109,30 @@ namespace Grx {
      * Zero or one dash pattern length means the line is continuous.
      * The dash pattern always begins with a drawn section.
      */
-    [CCode (cname = "GrLineOption", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
-    public class LineOption {
-        [CCode (cname = "GrLineOption", destroy_function = "", has_type_id = false)]
+    public class LineOptions {
+        [CCode (cname = "GrxLineOptions", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         /**
          * Color used to draw line.
          */
-        [CCode (cname = "lno_color")]
         public Color color;
 
         /**
          * Width of the line.
          */
-        [CCode (cname = "lno_width")]
         public int width;
 
         [CCode (cname = "g_malloc0")]
-        public LineOption (size_t size = sizeof(MallocStruct))
+        public LineOptions (size_t size = sizeof(MallocStruct))
             requires (size == sizeof(MallocStruct));
         /**
          * Draw/no-draw pattern.
          */
-        [CCode (cname = "lno_dashpat", array_length_cname = "lno_pattlen")]
-        public uchar[] dashpat;
+        [CCode (array_length_cname = "n_dash_patterns")]
+        public uchar[] dash_patterns;
     }
 
     [CCode (cname = "", destroy_function = "", has_type_id = false)]
@@ -1143,22 +1141,14 @@ namespace Grx {
         int y;
     }
 
-    [CCode (cname = "GrCustomLine")]
-    public void custom_line(int x1, int y1, int x2, int y2, LineOption o);
-    [CCode (cname = "GrCustomBox")]
-    public void custom_box(int x1, int y1, int x2, int y2, LineOption o);
-    [CCode (cname = "GrCustomCircle")]
-    public void custom_circle(int xc, int yc, int r, LineOption o);
-    [CCode (cname = "GrCustomEllipse")]
-    public void custom_ellipse(int xc, int yc, int xa, int ya, LineOption o);
-    [CCode (cname = "GrCustomCircleArc")]
-    public void custom_circle_arc(int xc, int yc, int r, int start, int end, ArcStyle style, LineOption o);
-    [CCode (cname = "GrCustomEllipseArc")]
-    public void custom_ellipse_arc(int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LineOption o);
-    [CCode (cname = "GrCustomPolyLine")]
-    public void custom_poly_line([CCode (array_length_pos = 0.9)]Point[] points, LineOption o);
-    [CCode (cname = "GrCustomPolygon")]
-    public void custom_polygon([CCode (array_length_pos = 0.9)]Point[] points, LineOption o);
+    public void draw_line_with_options(int x1, int y1, int x2, int y2, LineOptions o);
+    public void draw_box_with_options(int x1, int y1, int x2, int y2, LineOptions o);
+    public void draw_circle_with_options(int xc, int yc, int r, LineOptions o);
+    public void draw_ellipse_with_options(int xc, int yc, int xa, int ya, LineOptions o);
+    public void draw_circle_arc_with_options(int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions o);
+    public void draw_ellipse_arc_with_options(int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LineOptions o);
+    public void draw_polyline_with_options([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o);
+    public void draw_polygon_with_options([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o);
 
     /* ================================================================== */
     /*             PATTERNED DRAWING AND FILLING PRIMITIVES               */
@@ -1283,7 +1273,7 @@ namespace Grx {
          * width + dash pattern
          */
         [CCode (cname = "lnp_option")]
-        LineOption option;
+        LinePattern option;
 
         [CCode (cname = "g_malloc0")]
         public LinePattern (size_t size = sizeof(MallocStruct))
@@ -1367,7 +1357,7 @@ namespace Grx {
         [CCode (cname = "lnp_pattern")]
         Pattern pattern;         /* fill pattern */
         [CCode (cname = "lnp_option")]
-        LineOption option;          /* width + dash pattern */
+        LineOptions options;          /* width + dash pattern */
 
         [CCode (cname = "GrImageBuild")]
         public Image ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
@@ -1457,21 +1447,21 @@ namespace Grx {
     public Color user_pixel (int x, int y);
 
     [CCode (cname = "GrUsrCustomLine")]
-    public void user_custom_line (int x1, int y1, int x2, int y2, LineOption option);
+    public void user_custom_line (int x1, int y1, int x2, int y2, LineOptions options);
     [CCode (cname = "GrUsrCustomBox")]
-    public void user_custom_box (int x1, int y1, int x2, int y2, LineOption option);
+    public void user_custom_box (int x1, int y1, int x2, int y2, LineOptions options);
     [CCode (cname = "GrUsrCustomCircle")]
-    public void user_custom_circle (int xc, int yc, int r, LineOption option);
+    public void user_custom_circle (int xc, int yc, int r, LineOptions options);
     [CCode (cname = "GrUsrCustomEllipse")]
-    public void user_custom_ellipse (int xc, int yc, int xa, int ya, LineOption option);
+    public void user_custom_ellipse (int xc, int yc, int xa, int ya, LineOptions options);
     [CCode (cname = "GrUsrCustomCircleArc")]
-    public void user_custom_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, LineOption option);
+    public void user_custom_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions options);
     [CCode (cname = "GrUsrCustomEllipseArc")]
-    public void user_custom_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LineOption option);
+    public void user_custom_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LineOptions options);
     [CCode (cname = "GrUsrCustomPolyLine")]
-    public void user_custom_poly_line ([CCode (array_length_pos = 0.9)]Point[] points, LineOption option);
+    public void user_custom_poly_line ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions options);
     [CCode (cname = "GrUsrCustomPolygon")]
-    public void user_custom_polygon ([CCode (array_length_pos = 0.9)]Point[] points, LineOption option);
+    public void user_custom_polygon ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions options);
 
     [CCode (cname = "GrUsrPatternedLine")]
     public void user_patterned_line (int x1, int y1, int x2, int y2, LinePattern pattern);

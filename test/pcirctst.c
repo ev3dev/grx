@@ -24,9 +24,9 @@ static int stop = 0;
 
 static int widths[] = { 1, 2, 5, 10, 20, 50, 0 };
 
-static GrLineOption Solid = { 0, 1, 0, NULL };  /* normal solid */
+static GrxLineOptions Solid = { 0, 1, 0, NULL };  /* normal solid */
 
-static GrLineOption *Patterns[] = {
+static GrxLineOptions *Patterns[] = {
   &Solid, NULL
 };
 
@@ -39,7 +39,7 @@ void drawellip(int xc,int yc,int xa,int ya,GrxColor c1,GrxColor c2,GrxColor c3)
         int x1,x2,y1,y2;
         int dx,dy;
         int *wdt, idx;
-        GrLineOption *l;
+        GrxLineOptions *l;
 
         for (idx = 0, l = *Patterns; l != NULL; l = Patterns[++idx])
             for (wdt=widths; *wdt != 0; ++wdt) {
@@ -63,9 +63,9 @@ void drawellip(int xc,int yc,int xa,int ya,GrxColor c1,GrxColor c2,GrxColor c3)
                     grx_draw_point(x2,y2,c3);
                 }
 
-                l->lno_color = c2;
-                l->lno_width = *wdt;
-                GrCustomEllipse(xc,yc,xa,ya,l);
+                l->color = c2;
+                l->width = *wdt;
+                grx_draw_ellipse_with_options(xc,yc,xa,ya,l);
                 if(GrKeyRead() == 'q') {
                   stop = 1;
                   return;

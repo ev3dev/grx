@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "usercord.h"
 
-void GrUsrCustomPolyLine(int numpts,int points[][2],const GrLineOption *lo)
+void GrUsrCustomPolyLine(int numpts,int points[][2],const GrxLineOptions *lo)
 {
         int pt;
         int (*tmp)[2];
@@ -34,7 +34,7 @@ void GrUsrCustomPolyLine(int numpts,int points[][2],const GrLineOption *lo)
                 U2SX(tmp[pt][0],CURC);
                 U2SY(tmp[pt][1],CURC);
           }
-          GrCustomPolyLine(numpts,tmp,lo);
+          grx_draw_polyline_with_options(numpts,tmp,lo);
           FREE(tmp);
         }
         reset_ALLOC();

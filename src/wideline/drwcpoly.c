@@ -348,7 +348,7 @@ static void dashedsegmentw(
 
 void _GrDrawCustomPolygon(
      int n,int pt[][2],
-     const GrLineOption *lp,
+     const GrxLineOptions *lp,
      GrFiller *f,GrFillArg c,
      int doClose,int circle
 ){
@@ -364,10 +364,10 @@ void _GrDrawCustomPolygon(
         /* set up working pattern */
         p.f       = f;
         p.c       = c;
-        p.w       = imax((lp->lno_width - 1),0);
+        p.w       = imax((lp->width - 1),0);
         p.ppos    = 0;
-        p.patt    = lp->lno_dashpat;
-        p.psegs   = p.patt ? imax(lp->lno_pattlen,0) : 0;
+        p.patt    = lp->dash_patterns;
+        p.psegs   = p.patt ? imax(lp->n_dash_patterns,0) : 0;
         p.plength = 0;
         for(i = 0; i < p.psegs; i++) {
 /*          if(!p.patt[i]) { p.plength = 0; break; } */

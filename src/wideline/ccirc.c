@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrCustomCircle(int xc,int yc,int r,const GrLineOption *o)
+void grx_draw_circle_with_options(int xc,int yc,int r,const GrxLineOptions *o)
 {
-        GrCustomEllipse(xc,yc,r,r,o);
+        grx_draw_ellipse_with_options(xc,yc,r,r,o);
 }
