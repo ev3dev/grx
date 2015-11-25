@@ -21,7 +21,7 @@
 
 #include "libgrx.h"
 
-void GrDumpFnaFont(const GrFont *f, char *fileName)
+void grx_font_dump_fna(const GrxFont *f, char *fileName)
 {
         int chr;
         int x, y, width, bytes;
@@ -45,9 +45,9 @@ void GrDumpFnaFont(const GrFont *f, char *fileName)
         fprintf(fp, "undwidth %d\n", f->h.ulheight);
         /* write characters */
         for(chr = f->h.minchar; chr < f->h.minchar + f->h.numchars; chr++) {
-            width = GrFontCharWidth(f, chr);
+            width = grx_font_get_char_width(f, chr);
             bytes = (width - 1) / 8 + 1;
-            buffer = GrFontCharBitmap(f, chr);
+            buffer = grx_font_get_char_bmp(f, chr);
             /* write character header */
             fprintf(fp, "\n; character %d", chr);
             if(isgraph(chr)) fprintf(fp, " (%c)", chr);

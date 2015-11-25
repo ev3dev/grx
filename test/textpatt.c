@@ -25,19 +25,19 @@ int main(void)
 {
   char bits[] = {0, 76, 50, 0, 0, 76, 60, 0};
   GrPattern *p1, *p2;
-  GrFont *font;
-  GrTextOption opt;
+  GrxFont *font;
+  GrxTextOption opt;
 
   grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR, 320, 200, (GrxColor)256);
   p1 = GrBuildPixmapFromBits(bits, 8, 8, 11,  3);
   p2 = GrBuildPixmapFromBits(bits, 8, 8,  3, 11);
-  font = GrLoadFont(FONT);
+  font = grx_font_load(FONT);
   if (font && p1 && p2) {
-    memset(&opt, 0, sizeof(GrTextOption));
+    memset(&opt, 0, sizeof(GrxTextOption));
     opt.txo_font   = font;
     opt.txo_xalign = 0;
     opt.txo_yalign = 0;
-    opt.txo_direct = GR_TEXT_RIGHT;
+    opt.txo_direct = GRX_TEXT_DIRECTION_RIGHT;
     opt.txo_fgcolor.v = GRX_COLOR_NONE;
     opt.txo_bgcolor.v = GRX_COLOR_NONE;
     GrPatternFilledBox(0, 0, grx_get_max_x(), grx_get_max_y(), p1);
@@ -56,7 +56,7 @@ int main(void)
   }
   if (p1)   GrDestroyPattern(p1);
   if (p2)   GrDestroyPattern(p2);
-  if (font) GrUnloadFont(font);
+  if (font) grx_font_unload(font);
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   if (!p1) fprintf(stderr, "Couldn't create first pattern\n");
   if (!p2) fprintf(stderr, "Couldn't create second pattern\n");

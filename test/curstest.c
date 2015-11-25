@@ -57,10 +57,10 @@ TESTFUNC(cursortest)
         grx_color_info_set_color((grx_color_info_n_colors() - 1),255,255,255);
         drawing(0,0,grx_get_size_x(),grx_get_size_y(),fgc,GRX_COLOR_NONE);
         grx_draw_filled_box(0,0,320,120,grx_color_info_alloc_color(0,255,255));
-        GrTextXY( 10,90,"ANDmask",grx_color_info_get_black(),GRX_COLOR_NONE);
-        GrTextXY( 90,90,"ORmask", grx_color_info_get_black(),GRX_COLOR_NONE);
-        GrTextXY(170,90,"Save",   grx_color_info_get_black(),GRX_COLOR_NONE);
-        GrTextXY(250,90,"Work",   grx_color_info_get_black(),GRX_COLOR_NONE);
+        grx_draw_text_xy( 10,90,"ANDmask",grx_color_info_get_black(),GRX_COLOR_NONE);
+        grx_draw_text_xy( 90,90,"ORmask", grx_color_info_get_black(),GRX_COLOR_NONE);
+        grx_draw_text_xy(170,90,"Save",   grx_color_info_get_black(),GRX_COLOR_NONE);
+        grx_draw_text_xy(250,90,"Work",   grx_color_info_get_black(),GRX_COLOR_NONE);
         GrDisplayCursor(cur);
         for( ; ; ) {
             grx_bit_blt(
@@ -83,7 +83,7 @@ TESTFUNC(cursortest)
                 &cur->work,0,cur->ysize+cur->ywork,cur->xwork-1,cur->ysize+2*cur->ywork-1,
                 GRX_COLOR_MODE_WRITE
             );
-            GrTextXY(0,grx_get_max_y()-20,"Type u d l r U D L R or q to quit",grx_color_info_get_white(),GRX_COLOR_NONE);
+            grx_draw_text_xy(0,grx_get_max_y()-20,"Type u d l r U D L R or q to quit",grx_color_info_get_white(),GRX_COLOR_NONE);
             switch(GrKeyRead()) {
                 case 'u': y--; break;
                 case 'd': y++; break;

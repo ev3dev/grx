@@ -115,7 +115,7 @@ done:
   return(res);
 }
 
-static int header(GrFontHeader *hdr)
+static int header(GrxFontHeader *hdr)
 {
   unsigned long card32;
   char *value;
@@ -133,7 +133,7 @@ static int header(GrFontHeader *hdr)
   hdr->proportional = (fontp->per_char == NULL) ? FALSE : TRUE;
   hdr->scalable   = FALSE;
   hdr->preloaded  = FALSE;
-  hdr->modified   = GR_FONTCVT_NONE;
+  hdr->modified   = GRX_FONT_CONV_FLAG_NONE;
   hdr->width      = fontp->max_bounds.width;
   hdr->height     = fontp->ascent + fontp->descent;
   hdr->baseline   = fontp->ascent;

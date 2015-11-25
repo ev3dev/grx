@@ -87,7 +87,7 @@ TESTFUNC(circtest)
             GrSleep(200);
         }
 
-        GrTextXY(0,0,"press any key to continue",grx_color_info_get_white(),grx_color_info_get_black());
+        grx_draw_text_xy(0,0,"press any key to continue",grx_color_info_get_white(),grx_color_info_get_black());
         GrKeyRead();
 }
 

@@ -29,28 +29,28 @@ static void FdrvDrawBitmap(int x,int y,int w,int h,int ox, int oy,
   GRX_LEAVE();
 }
 
-void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt)
+void grx_draw_string_with_text_options(void *text,int length,int x,int y,const GrxTextOption *opt)
 {
   GRX_ENTER();
   _GrDrawString(text,length,x,y,opt,NULL,FdrvDrawBitmap);
   GRX_LEAVE();
 }
 
-void GrDrawChar(int chr,int x,int y,const GrTextOption *opt)
+void grx_draw_char_with_text_options(int chr,int x,int y,const GrxTextOption *opt)
 {
     char  cbuff[2];
     short sbuff[2];
 
     GRX_ENTER();
     switch(opt->txo_chrtype) {
-      case GR_WORD_TEXT:
-      case GR_ATTR_TEXT:
+      case GRX_CHAR_TYPE_WORD:
+      case GRX_CHAR_TYPE_ATTR:
         sbuff[0] = chr;
-        GrDrawString(sbuff,1,x,y,opt);
+        grx_draw_string_with_text_options(sbuff,1,x,y,opt);
         break;
       default:
         cbuff[0] = chr;
-        GrDrawString(cbuff,1,x,y,opt);
+        grx_draw_string_with_text_options(cbuff,1,x,y,opt);
         break;
     }
    GRX_LEAVE();

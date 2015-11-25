@@ -20,14 +20,14 @@
 #include <stdio.h>
 #include "grx-3.0.h"
 
-void dumpf(GrFont *f)
+void dumpf(GrxFont *f)
 {
         int  chr,wdt,hgt,xpos,ypos;
         char *bmp;
         hgt = f->h.height;
         for(chr = f->h.minchar; chr < (f->h.minchar + f->h.numchars); chr++) {
-            wdt = GrFontCharWidth(f,chr);
-            bmp = GrFontCharBitmap(f,chr);
+            wdt = grx_font_get_char_width(f,chr);
+            bmp = grx_font_get_char_bmp(f,chr);
             printf("char '%c', code = 0x%04x\n",chr,chr);
             for(ypos = 0; ypos < hgt; ypos++) {
                 for(xpos = 0; xpos < wdt; xpos++) {
@@ -42,10 +42,10 @@ void dumpf(GrFont *f)
 
 int main()
 {
-        dumpf(GrLoadFont("pc8x16"));
-        dumpf(GrBuildConvertedFont(
-            &GrDefaultFont,
-            (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE | GR_FONTCVT_PROPORTION),
+        dumpf(grx_font_load("pc8x16"));
+        dumpf(grx_font_build_converted(
+            &grx_font_default,
+            (GRX_FONT_CONV_FLAG_SKIP_CHARS | GRX_FONT_CONV_FLAG_RESIZE | GRX_FONT_CONV_FLAG_PROPORTION),
             10,
             20,
             ' ',

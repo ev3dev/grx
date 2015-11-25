@@ -23,11 +23,11 @@
 #include "libgrx.h"
 #include "grfontdv.h"
 
-static GrFont *doit(char *fname,char *path,int cvt,int w,int h,int lo,int hi)
+static GrxFont *doit(char *fname,char *path,GrxFontConversionFlags cvt,int w,int h,int lo,int hi)
 {
     GrFontDriver **fd;
-    GrFontHeader hdr;
-    GrFont *f, *res;
+    GrxFontHeader hdr;
+    GrxFont *f, *res;
     char pathname[200];
     char tempstring[200];
     int  plen;
@@ -72,9 +72,9 @@ static GrFont *doit(char *fname,char *path,int cvt,int w,int h,int lo,int hi)
     GRX_RETURN(res);
 }
 
-GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
+GrxFont *grx_font_load_converted(char *name,GrxFontConversionFlags cvt,int w,int h,int minc,int maxc)
 {
-    GrFont *f;
+    GrxFont *f;
     int  chr,len,abspath,dc;
     char fname[200];
     GRX_ENTER();
@@ -115,7 +115,7 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
 #ifdef GRX_DEFAULT_FONT_PATH
             if (!fPath) fPath = GRX_DEFAULT_FONT_PATH;
 #endif            
-            GrSetFontPath(fPath);
+            grx_font_set_path(fPath);
         }
         for(len = 0; len < _GrFontFileInfo.npath; len++) {
             f = doit(fname,_GrFontFileInfo.path[len],cvt,w,h,minc,maxc);
@@ -125,8 +125,8 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
     GRX_RETURN(f);
 }
 
-GrFont *GrLoadFont(char *name)
+GrxFont *grx_font_load(char *name)
 {
-    return(GrLoadConvertedFont(name,GR_FONTCVT_NONE,0,0,0,0));
+    return(grx_font_load_converted(name,GRX_FONT_CONV_FLAG_NONE,0,0,0,0));
 }
 

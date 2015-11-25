@@ -32,22 +32,22 @@ static void PatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
 }
 
 void GrPatternDrawString(void *text,int length,int x,int y,
-                         const GrTextOption *opt,GrPattern *p)
+                         const GrxTextOption *opt,GrPattern *p)
 {
     GRX_ENTER();
     _GrDrawString(text,length,x,y,opt,p,PatternFilledBmp);
     GRX_LEAVE();
 }
 
-void GrPatternDrawChar(int chr,int x,int y,const GrTextOption *opt,GrPattern *p)
+void GrPatternDrawChar(int chr,int x,int y,const GrxTextOption *opt,GrPattern *p)
 {
     char  cbuff[2];
     short sbuff[2];
 
     GRX_ENTER();
     switch(opt->txo_chrtype) {
-      case GR_WORD_TEXT:
-      case GR_ATTR_TEXT:
+      case GRX_CHAR_TYPE_WORD:
+      case GRX_CHAR_TYPE_ATTR:
         sbuff[0] = chr;
         GrPatternDrawString(sbuff,1,x,y,opt,p);
         break;

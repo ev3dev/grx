@@ -764,17 +764,17 @@ void     grx_color_info_restore_colors(gpointer buffer);
  *   it is an array of colors with the first element being
  *   the number of colors in the table
  */
-typedef GrxColor *GrColorTableP;
+typedef GrxColor *GrxColorTable;
 
-#define GR_CTABLE_SIZE(table) (                                                \
+#define GRX_COLOR_TABLE_GET_SIZE(table) (                                      \
         (table) ? (unsigned int)((table)[0]) : 0U                              \
 )
-#define GR_CTABLE_COLOR(table,index) (                                         \
-        ((unsigned)(index) < GR_CTABLE_SIZE(table)) ?                          \
+#define GRX_COLOR_TABLE_GET_COLOR(table,index) (                               \
+        ((unsigned)(index) < GRX_COLOR_TABLE_GET_SIZE(table)) ?                \
         (table)[((unsigned)(index)) + 1] :                                     \
         GRX_COLOR_NONE                                                         \
 )
-#define GR_CTABLE_ALLOCSIZE(ncolors)    ((ncolors) + 1)
+#define GRX_COLOR_TABLE_GET_ALLOC_SIZE(ncolors)    ((ncolors) + 1)
 
 /* ================================================================== */
 /*                       GRAPHICS PRIMITIVES                          */
@@ -910,45 +910,66 @@ GrxColor grx_context_get_pixel_nc(GrxContext *c, gint x, gint y);
 /*                   FONTS AND TEXT PRIMITIVES                        */
 /* ================================================================== */
 
-/*
+/**
+ * GrxTextDirection:
+ * @GRX_TEXT_DIRECTION_RIGHT: normal
+ * @GRX_TEXT_DIRECTION_DOWN: downward
+ * @GRX_TEXT_DIRECTION_LEFT: upsidedown, right to left
+ * @GRX_TEXT_DIRECTION_UP: upward
+ *
  * text drawing directions
  */
-#define GR_TEXT_RIGHT           0       /* normal */
-#define GR_TEXT_DOWN            1       /* downward */
-#define GR_TEXT_LEFT            2       /* upside down, right to left */
-#define GR_TEXT_UP              3       /* upward */
-#define GR_TEXT_DEFAULT         GR_TEXT_RIGHT
-#define GR_TEXT_IS_VERTICAL(d)  ((d) & 1)
+typedef enum {
+    GRX_TEXT_DIRECTION_RIGHT,
+    GRX_TEXT_DIRECTION_DOWN,
+    GRX_TEXT_DIRECTION_LEFT,
+    GRX_TEXT_DIRECTION_UP,
+    GRX_TEXT_DIRECTION_DEFAULT = GRX_TEXT_DIRECTION_RIGHT
+} GrxTextDirection;
+
+#define GRX_TEXT_DIRECTION_IS_VERTICAL(d)  ((d) & 1)
 
 /*
  * text alignment options
  */
-#define GR_ALIGN_LEFT           0       /* X only */
-#define GR_ALIGN_TOP            0       /* Y only */
-#define GR_ALIGN_CENTER         1       /* X, Y   */
-#define GR_ALIGN_RIGHT          2       /* X only */
-#define GR_ALIGN_BOTTOM         2       /* Y only */
-#define GR_ALIGN_BASELINE       3       /* Y only */
-#define GR_ALIGN_DEFAULT        GR_ALIGN_LEFT
+typedef enum {
+    GRX_TEXT_ALIGN_LEFT,
+    GRX_TEXT_ALIGN_CENTER,
+    GRX_TEXT_ALIGN_RIGHT,
+} GrxTextAlignment;
 
-/*
+typedef enum {
+    GRX_TEXT_VALIGN_TOP,
+    GRX_TEXT_VALIGN_MIDDLE,
+    GRX_TEXT_VALIGN_BOTTOM,
+    GRX_TEXT_VALIGN_BASELINE,
+} GrxTextVerticalAlignment;
+
+/**
+ * GrxCharType:
+ * @GRX_CHAR_TYPE_BYTE: one byte per character
+ * @GRX_CHAR_TYPE_WORD: two bytes per character
+ * @GRX_CHAR_TYPE_ATTR: chr w/ PC style attribute byte
+ *
  * character types in text strings
  */
-#define GR_BYTE_TEXT            0       /* one byte per character */
-#define GR_WORD_TEXT            1       /* two bytes per character */
-#define GR_ATTR_TEXT            2       /* chr w/ PC style attribute byte */
+typedef enum {
+    GRX_CHAR_TYPE_BYTE = 0,
+    GRX_CHAR_TYPE_WORD = 1,
+    GRX_CHAR_TYPE_ATTR = 2,
+} GrxCharType;
 
 /*
  * macros to access components of various string/character types
  */
-#define GR_TEXTCHR_SIZE(ty)     (((ty) == GR_BYTE_TEXT) ? sizeof(char) : sizeof(short))
-#define GR_TEXTCHR_CODE(ch,ty)  (((ty) == GR_WORD_TEXT) ? (unsigned short)(ch) : (unsigned char)(ch))
-#define GR_TEXTCHR_ATTR(ch,ty)  (((ty) == GR_ATTR_TEXT) ? ((unsigned short)(ch) >> 8) : 0)
-#define GR_TEXTSTR_CODE(pt,ty)  (((ty) == GR_WORD_TEXT) ? ((unsigned short *)(pt))[0] : ((unsigned char *)(pt))[0])
-#define GR_TEXTSTR_ATTR(pt,ty)  (((ty) == GR_ATTR_TEXT) ? ((unsigned char *)(pt))[1] : 0)
+#define GRX_CHAR_TYPE_GET_SIZE(ty)     (((ty) == GRX_CHAR_TYPE_BYTE) ? sizeof(char) : sizeof(short))
+#define GRX_CHAR_TYPE_GET_CODE(ty,ch)  (((ty) == GRX_CHAR_TYPE_WORD) ? (unsigned short)(ch) : (unsigned char)(ch))
+#define GRX_CHAR_TYPE_GET_ATTR(ty,ch)  (((ty) == GRX_CHAR_TYPE_ATTR) ? ((unsigned short)(ch) >> 8) : 0)
+#define GRX_CHAR_TYPE_GET_CODE_STR(ty,pt)  (((ty) == GRX_CHAR_TYPE_WORD) ? ((unsigned short *)(pt))[0] : ((unsigned char *)(pt))[0])
+#define GRX_CHAR_TYPE_GET_ATTR_STR(ty,pt)  (((ty) == GRX_CHAR_TYPE_ATTR) ? ((unsigned char *)(pt))[1] : 0)
 
 /*
- * text attribute macros for the GR_ATTR_TEXT type
+ * text attribute macros for the GRX_CHAR_TYPE_ATTR type
  * _GR_textattrintensevideo drives if the eighth bit is used for
  * underline (false, default) or more background colors (true)
  */
@@ -973,194 +994,207 @@ extern int _GR_textattrintensevideo;
 
 /*
  * OR this to the foreground color value for underlined text when
- * using GR_BYTE_TEXT or GR_WORD_TEXT modes.
+ * using GRX_CHAR_TYPE_BYTE or GRX_CHAR_TYPE_WORD modes.
  */
 #define GR_UNDERLINE_TEXT       (GRX_COLOR_MODE_XOR << 4)
 
-/*
- * Font conversion flags for 'GrLoadConvertedFont'. OR them as desired.
+/**
+ * GrxFontConversionFlags:
+ * @GRX_FONT_CONV_FLAG_NONE: no conversion
+ * @GRX_FONT_CONV_FLAG_SKIP_CHARS: load only selected characters
+ * @GRX_FONT_CONV_FLAG_RESIZE: resize the font
+ * @GRX_FONT_CONV_FLAG_ITALICIZE: tilt font for "italic" look
+ * @GRX_FONT_CONV_FLAG_BOLDIFY: make a "bold"(er) font
+ * @GRX_FONT_CONV_FLAG_FIXIFY: convert proportional font to fixed width
+ * @GRX_FONT_CONV_FLAG_PROPORTION: convert fixed font to proportional width
+ *
+ * Font conversion flags for 'grx_font_load_converted'. OR them as desired.
  */
-#define GR_FONTCVT_NONE         0       /* no conversion */
-#define GR_FONTCVT_SKIPCHARS    1       /* load only selected characters */
-#define GR_FONTCVT_RESIZE       2       /* resize the font */
-#define GR_FONTCVT_ITALICIZE    4       /* tilt font for "italic" look */
-#define GR_FONTCVT_BOLDIFY      8       /* make a "bold"(er) font  */
-#define GR_FONTCVT_FIXIFY       16      /* convert prop. font to fixed wdt */
-#define GR_FONTCVT_PROPORTION   32      /* convert fixed font to prop. wdt */
+typedef enum /*< flags >*/ {
+    GRX_FONT_CONV_FLAG_NONE         = 0,
+    GRX_FONT_CONV_FLAG_SKIP_CHARS   = 1,
+    GRX_FONT_CONV_FLAG_RESIZE       = 2,
+    GRX_FONT_CONV_FLAG_ITALICIZE    = 4,
+    GRX_FONT_CONV_FLAG_BOLDIFY      = 8,
+    GRX_FONT_CONV_FLAG_FIXIFY       = 16,
+    GRX_FONT_CONV_FLAG_PROPORTION   = 32,
+} GrxFontConversionFlags;
 
 /*
  * font structures
  */
-typedef struct _GR_fontHeader {         /* font descriptor */
-        char    *name;                      /* font name */
-        char    *family;                    /* font family name */
-        char     proportional;              /* characters have varying width */
-        char     scalable;                  /* derived from a scalable font */
-        char     preloaded;                 /* set when linked into program */
-        char     modified;                  /* "tweaked" font (resized, etc..) */
-        unsigned int  width;                /* width (proportional=>average) */
-        unsigned int  height;               /* font height */
-        unsigned int  baseline;             /* baseline pixel pos (from top) */
-        unsigned int  ulpos;                /* underline pixel pos (from top) */
-        unsigned int  ulheight;             /* underline width */
-        unsigned int  minchar;              /* lowest character code in font */
-        unsigned int  numchars;             /* number of characters in font */
-} GrFontHeader;
+typedef struct {                    /* font descriptor */
+    gchar    *name;                 /* font name */
+    gchar    *family;               /* font family name */
+    gboolean  proportional;         /* characters have varying width */
+    gboolean  scalable;             /* derived from a scalable font */
+    gboolean  preloaded;            /* set when linked into program */
+    gboolean  modified;             /* "tweaked" font (resized, etc..) */
+    guint     width;                /* width (proportional=>average) */
+    guint     height;               /* font height */
+    guint     baseline;             /* baseline pixel pos (from top) */
+    guint     ulpos;                /* underline pixel pos (from top) */
+    guint     ulheight;             /* underline width */
+    guint     minchar;              /* lowest character code in font */
+    guint     numchars;             /* number of characters in font */
+} GrxFontHeader;
 
-typedef struct _GR_fontChrInfo {        /* character descriptor */
-        unsigned int  width;                /* width of this character */
-        unsigned int  offset;               /* offset from start of bitmap */
-} GrFontChrInfo;
+typedef struct {                    /* character descriptor */
+    guint     width;                /* width of this character */
+    guint     offset;               /* offset from start of bitmap */
+} GrxFontCharInfo;
 
-typedef struct _GR_font {               /* the complete font */
-        struct  _GR_fontHeader  h;          /* the font info structure */
-        char     *bitmap;                   /* character bitmap array */
-        char     *auxmap;                   /* map for rotated & underline chrs */
-        unsigned int  minwidth;             /* width of narrowest character */
-        unsigned int  maxwidth;             /* width of widest character */
-        unsigned int  auxsize;              /* allocated size of auxiliary map */
-        unsigned int  auxnext;              /* next free byte in auxiliary map */
-        unsigned int  *auxoffs[7];          /* offsets to completed aux chars */
-        struct  _GR_fontChrInfo chrinfo[1]; /* character info (not act. size) */
-} GrFont;
+typedef struct {                    /* the complete font */
+    GrxFontHeader h;                /* the font info structure */
+    guint8   *bitmap;               /* character bitmap array */
+    guint8   *auxmap;               /* map for rotated & underline chrs */
+    guint     minwidth;             /* width of narrowest character */
+    guint     maxwidth;             /* width of widest character */
+    guint     auxsize;              /* allocated size of auxiliary map */
+    guint     auxnext;              /* next free byte in auxiliary map */
+    guint    *auxoffs[7];           /* offsets to completed aux chars */
+    GrxFontCharInfo chrinfo[1];     /* character info (not act. size) */
+} GrxFont;
 
-extern  GrFont          GrFont_PC6x8;
-extern  GrFont          GrFont_PC8x8;
-extern  GrFont          GrFont_PC8x14;
-extern  GrFont          GrFont_PC8x16;
-#define GrDefaultFont   GrFont_PC8x14
+extern  GrxFont            grx_font_pc6x8;
+extern  GrxFont            grx_font_pc8x8;
+extern  GrxFont            grx_font_pc8x14;
+extern  GrxFont            grx_font_pc8x16;
+#define grx_font_default   grx_font_pc8x14
 
-GrFont *GrLoadFont(char *name);
-GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minch,int maxch);
-GrFont *GrBuildConvertedFont(const GrFont *from,int cvt,int w,int h,int minch,int maxch);
+GrxFont *grx_font_load(gchar *name);
+GrxFont *grx_font_load_converted(gchar *name, GrxFontConversionFlags cvt,
+                                 gint w, gint h, gint minch, gint maxch);
+GrxFont *grx_font_build_converted(const GrxFont *from, GrxFontConversionFlags cvt,
+                                  gint w, gint h, gint minch, gint maxch);
 
-void GrUnloadFont(GrFont *font);
-void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName);
-void GrDumpFnaFont(const GrFont *f, char *fileName);
-void GrSetFontPath(char *path_list);
+void grx_font_unload(GrxFont *font);
+void grx_font_dump(const GrxFont *f,char *CsymbolName,char *fileName);
+void grx_font_dump_fna(const GrxFont *f, char *fileName);
+void grx_font_set_path(char *path_list);
 
-int  GrFontCharPresent(const GrFont *font,int chr);
-int  GrFontCharWidth(const GrFont *font,int chr);
-int  GrFontCharHeight(const GrFont *font,int chr);
-int  GrFontCharBmpRowSize(const GrFont *font,int chr);
-int  GrFontCharBitmapSize(const GrFont *font,int chr);
-int  GrFontStringWidth(const GrFont *font,const void *text,int len,int type);
-int  GrFontStringHeight(const GrFont *font,const void *text,int len,int type);
-int  GrProportionalTextWidth(const GrFont *font,const void *text,int len,int type);
+gboolean grx_font_is_char_present(const GrxFont *font, gint chr);
+gint grx_font_get_char_width(const GrxFont *font, gint chr);
+gint grx_font_get_char_height(const GrxFont *font, gint chr);
+gint grx_font_get_char_bmp_row_size(const GrxFont *font, gint chr);
+gint grx_font_get_char_bmp_size(const GrxFont *font, gint chr);
+gint grx_font_get_string_width(const GrxFont *font, gconstpointer text, gint len, GrxCharType type);
+gint grx_font_get_string_height(const GrxFont *font, gconstpointer text, gint len, GrxCharType type);
+gint grx_font_get_proportional_text_width(const GrxFont *font, gconstpointer text, gint len, GrxCharType type);
 
-char *GrBuildAuxiliaryBitmap(GrFont *font,int chr,int dir,int ul);
-char *GrFontCharBitmap(const GrFont *font,int chr);
-char *GrFontCharAuxBmp(GrFont *font,int chr,int dir,int ul);
+guint8 *grx_font_build_aux_bmp(GrxFont *font, gint chr, GrxTextDirection dir, gint ul);
+guint8 *grx_font_get_char_bmp(const GrxFont *font, gint chr);
+guint8 *grx_font_get_char_aux_bmp(GrxFont *font, gint chr, GrxTextDirection dir, gint ul);
 
-typedef union _GR_textColor {           /* text color union */
-        GrxColor       v;                    /* color value for "direct" text */
-        GrColorTableP p;                    /* color table for attribute text */
-} GrTextColor;
+typedef union {           /* text color union */
+    GrxColor      v;                    /* color value for "direct" text */
+    GrxColorTable p;                    /* color table for attribute text */
+} GrxTextColor;
 
-typedef struct _GR_textOption {         /* text drawing option structure */
-        struct _GR_font     *txo_font;      /* font to be used */
-        union  _GR_textColor txo_fgcolor;   /* foreground color */
-        union  _GR_textColor txo_bgcolor;   /* background color */
-        char    txo_chrtype;                /* character type (see above) */
-        char    txo_direct;                 /* direction (see above) */
-        char    txo_xalign;                 /* X alignment (see above) */
-        char    txo_yalign;                 /* Y alignment (see above) */
-} GrTextOption;
+typedef struct {                          /* text drawing option structure */
+    GrxFont                 *txo_font;    /* font to be used */
+    GrxTextColor             txo_fgcolor; /* foreground color */
+    GrxTextColor             txo_bgcolor; /* background color */
+    GrxCharType              txo_chrtype; /* character type */
+    GrxTextDirection         txo_direct;  /* direction */
+    GrxTextAlignment         txo_xalign;  /* X alignment */
+    GrxTextVerticalAlignment txo_yalign;  /* Y alignment */
+} GrxTextOption;
 
 typedef struct {                        /* fixed font text window desc. */
-        struct _GR_font     *txr_font;      /* font to be used */
-        union  _GR_textColor txr_fgcolor;   /* foreground color */
-        union  _GR_textColor txr_bgcolor;   /* background color */
-        void   *txr_buffer;                 /* pointer to text buffer */
-        void   *txr_backup;                 /* optional backup buffer */
-        int     txr_width;                  /* width of area in chars */
-        int     txr_height;                 /* height of area in chars */
-        int     txr_lineoffset;             /* offset in buffer(s) between rows */
-        int     txr_xpos;                   /* upper left corner X coordinate */
-        int     txr_ypos;                   /* upper left corner Y coordinate */
-        char    txr_chrtype;                /* character type (see above) */
-} GrTextRegion;
+    GrxFont     *txr_font;              /* font to be used */
+    GrxTextColor txr_fgcolor;           /* foreground color */
+    GrxTextColor txr_bgcolor;           /* background color */
+    gpointer     txr_buffer;            /* pointer to text buffer */
+    gpointer     txr_backup;            /* optional backup buffer */
+    gint         txr_width;             /* width of area in chars */
+    gint         txr_height;            /* height of area in chars */
+    gint         txr_lineoffset;        /* offset in buffer(s) between rows */
+    gint         txr_xpos;              /* upper left corner X coordinate */
+    gint         txr_ypos;              /* upper left corner Y coordinate */
+    GrxCharType  txr_chrtype;           /* character type */
+} GrxTextRegion;
 
-int  GrCharWidth(int chr,const GrTextOption *opt);
-int  GrCharHeight(int chr,const GrTextOption *opt);
-void GrCharSize(int chr,const GrTextOption *opt,int *w,int *h);
-int  GrStringWidth(void *text,int length,const GrTextOption *opt);
-int  GrStringHeight(void *text,int length,const GrTextOption *opt);
-void GrStringSize(void *text,int length,const GrTextOption *opt,int *w,int *h);
+gint grx_text_option_get_char_width(const GrxTextOption *opt, gint chr);
+gint grx_text_option_get_char_height(const GrxTextOption *opt, gint chr);
+void grx_text_option_get_char_size(const GrxTextOption *opt, gint chr, gint *w, gint *h);
+gint grx_text_option_get_string_width(const GrxTextOption *opt, gpointer text, gint length);
+gint grx_text_option_get_string_height(const GrxTextOption *opt, gpointer text, gint length);
+void grx_text_option_get_string_size(const GrxTextOption *opt, gpointer text, gint length, gint *w, gint *h);
 
-void GrDrawChar(int chr,int x,int y,const GrTextOption *opt);
-void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt);
-void GrTextXY(int x,int y,char *text,GrxColor fg,GrxColor bg);
+void grx_draw_char_with_text_options(gint chr, gint x, gint y, const GrxTextOption *opt);
+void grx_draw_string_with_text_options(gpointer text, gint length, gint x, gint y, const GrxTextOption *opt);
+void grx_draw_text_xy(gint x, gint y, gchar *text, GrxColor fg, GrxColor bg);
 
-void GrDumpChar(int chr,int col,int row,const GrTextRegion *r);
-void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r);
-void GrDumpTextRegion(const GrTextRegion *r);
+void grx_text_region_dump_char(const GrxTextRegion *r, gint chr, gint col, gint row);
+void grx_text_region_dump_text(const GrxTextRegion *r, gint col, gint row, gint width, gint height);
+void grx_text_region_dump(const GrxTextRegion *r);
 
 #ifndef GRX_SKIP_INLINES
-#define GrFontCharPresent(f,ch) (                                              \
+#define grx_font_is_char_present(f,ch) (                                       \
         ((unsigned int)(ch) - (f)->h.minchar) < (f)->h.numchars                \
 )
-#define GrFontCharWidth(f,ch) (                                                \
-        GrFontCharPresent(f,ch) ?                                              \
+#define grx_font_get_char_width(f,ch) (                                        \
+        grx_font_is_char_present(f,ch) ?                                       \
         (int)(f)->chrinfo[(unsigned int)(ch) - (f)->h.minchar].width :         \
         (f)->h.width                                                           \
 )
-#define GrFontCharHeight(f,ch) (                                               \
+#define grx_font_get_char_height(f,ch) (                                       \
         (f)->h.height                                                          \
 )
-#define GrFontCharBmpRowSize(f,ch) (                                           \
-        GrFontCharPresent(f,ch) ?                                              \
+#define grx_font_get_char_bmp_row_size(f,ch) (                                 \
+        grx_font_is_char_present(f,ch) ?                                       \
         (((f)->chrinfo[(unsigned int)(ch) - (f)->h.minchar].width + 7) >> 3) : \
         0                                                                      \
 )
-#define GrFontCharBitmapSize(f,ch) (                                           \
-        GrFontCharBmpRowSize(f,ch) * (f)->h.height                             \
+#define grx_font_get_char_bmp_size(f,ch) (                                     \
+        grx_font_get_char_bmp_row_size(f,ch) * (f)->h.height                   \
 )
-#define GrFontStringWidth(f,t,l,tp) (                                          \
+#define grx_font_get_string_width(f,t,l,tp) (                                  \
         (f)->h.proportional ?                                                  \
-        GrProportionalTextWidth((f),(t),(l),(tp)) :                            \
+        grx_font_get_proportional_text_width((f),(t),(l),(tp)) :               \
         (f)->h.width * (l)                                                     \
 )
-#define GrFontStringHeight(f,t,l,tp) (                                         \
+#define grx_font_get_string_height(f,t,l,tp) (                                 \
         (f)->h.height                                                          \
 )
-#define GrFontCharBitmap(f,ch) (                                               \
-        GrFontCharPresent(f,ch) ?                                              \
+#define grx_font_get_char_bmp(f,ch) (                                          \
+        grx_font_is_char_present(f,ch) ?                                       \
         &(f)->bitmap[(f)->chrinfo[(unsigned int)(ch) - (f)->h.minchar].offset]:\
-        (char *)0                                                              \
+        (guint8 *)0                                                            \
 )
-#define GrFontCharAuxBmp(f,ch,dir,ul) (                                        \
-        (((dir) == GR_TEXT_DEFAULT) && !(ul)) ?                                \
-        GrFontCharBitmap(f,ch) :                                               \
-        GrBuildAuxiliaryBitmap((f),(ch),(dir),(ul))                            \
+#define grx_font_get_char_aux_bmp(f,ch,dir,ul) (                               \
+        (((dir) == GRX_TEXT_DIRECTION_DEFAULT) && !(ul)) ?                     \
+        grx_font_get_char_bmp(f,ch) :                                          \
+        grx_font_build_aux_bmp((f),(ch),(dir),(ul))                            \
 )
-#define GrCharWidth(c,o) (                                                     \
-        GR_TEXT_IS_VERTICAL((o)->txo_direct) ?                                 \
-        GrFontCharHeight((o)->txo_font,GR_TEXTCHR_CODE(c,(o)->txo_chrtype)) :  \
-        GrFontCharWidth( (o)->txo_font,GR_TEXTCHR_CODE(c,(o)->txo_chrtype))    \
+#define grx_text_option_get_char_width(o,c) (                                  \
+        GRX_TEXT_DIRECTION_IS_VERTICAL((o)->txo_direct) ?                      \
+        grx_font_get_char_height((o)->txo_font,GRX_CHAR_TYPE_GET_CODE((o)->txo_chrtype,c)) :  \
+        grx_font_get_char_width( (o)->txo_font,GRX_CHAR_TYPE_GET_CODE((o)->txo_chrtype,c))    \
 )
-#define GrCharHeight(c,o) (                                                    \
-        GR_TEXT_IS_VERTICAL((o)->txo_direct) ?                                 \
-        GrFontCharWidth( (o)->txo_font,GR_TEXTCHR_CODE(c,(o)->txo_chrtype)) :  \
-        GrFontCharHeight((o)->txo_font,GR_TEXTCHR_CODE(c,(o)->txo_chrtype))    \
+#define grx_text_option_get_char_height(o,c) (                                 \
+        GRX_TEXT_DIRECTION_IS_VERTICAL((o)->txo_direct) ?                      \
+        grx_font_get_char_width( (o)->txo_font,GRX_CHAR_TYPE_GET_CODE((o)->txo_chrtype,c)) :  \
+        grx_font_get_char_height((o)->txo_font,GRX_CHAR_TYPE_GET_CODE((o)->txo_chrtype,c))    \
 )
-#define GrCharSize(c,o,wp,hp) do {                                             \
-        *(wp) = GrCharHeight(c,o);                                             \
-        *(hp) = GrCharWidth( c,o);                                             \
+#define grx_text_option_get_char_size(o,c,wp,hp) do {                          \
+        *(wp) = grx_text_option_get_char_height(o,c);                          \
+        *(hp) = grx_text_option_get_char_width(o,c);                           \
 } while(0)
-#define GrStringWidth(t,l,o) (                                                 \
-        GR_TEXT_IS_VERTICAL((o)->txo_direct) ?                                 \
-        GrFontStringHeight((o)->txo_font,(t),(l),(o)->txo_chrtype) :           \
-        GrFontStringWidth( (o)->txo_font,(t),(l),(o)->txo_chrtype)             \
+#define grx_text_option_get_string_width(o,t,l) (                              \
+        GRX_TEXT_DIRECTION_IS_VERTICAL((o)->txo_direct) ?                      \
+        grx_font_get_string_height((o)->txo_font,(t),(l),(o)->txo_chrtype) :   \
+        grx_font_get_string_width( (o)->txo_font,(t),(l),(o)->txo_chrtype)     \
 )
-#define GrStringHeight(t,l,o) (                                                \
-        GR_TEXT_IS_VERTICAL((o)->txo_direct) ?                                 \
-        GrFontStringWidth( (o)->txo_font,(t),(l),(o)->txo_chrtype) :           \
-        GrFontStringHeight((o)->txo_font,(t),(l),(o)->txo_chrtype)             \
+#define grx_text_option_get_string_height(o,t,l) (                             \
+        GRX_TEXT_DIRECTION_IS_VERTICAL((o)->txo_direct) ?                      \
+        grx_font_get_string_width( (o)->txo_font,(t),(l),(o)->txo_chrtype) :   \
+        grx_font_get_string_height((o)->txo_font,(t),(l),(o)->txo_chrtype)     \
 )
-#define GrStringSize(t,l,o,wp,hp) do {                                         \
-        *(wp) = GrStringWidth( t,l,o);                                         \
-        *(hp) = GrStringHeight(t,l,o);                                         \
+#define grx_text_option_get_string_size(o,t,l,wp,hp) do {                      \
+        *(wp) = grx_text_option_get_string_width( o,t,l);                      \
+        *(hp) = grx_text_option_get_string_height(o,t,l);                      \
 } while(0)
 #endif /* GRX_SKIP_INLINES */
 
@@ -1250,7 +1284,7 @@ typedef struct {
         GrLineOption  *lnp_option;          /* width + dash pattern */
 } GrLinePattern;
 
-GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP colors);
+GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrxColorTable colors);
 GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxColor bgc);
 GrPattern *GrConvertToPixmap(GrxContext *src);
 
@@ -1276,9 +1310,9 @@ void GrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFloodFill(int x, int y, GrxColor border, GrPattern *p);
 
-void GrPatternDrawChar(int chr,int x,int y,const GrTextOption *opt,GrPattern *p);
-void GrPatternDrawString(void *text,int length,int x,int y,const GrTextOption *opt,GrPattern *p);
-void GrPatternDrawStringExt(void *text,int length,int x,int y,const GrTextOption *opt,GrPattern *p);
+void GrPatternDrawChar(int chr,int x,int y,const GrxTextOption *opt,GrPattern *p);
+void GrPatternDrawString(void *text,int length,int x,int y,const GrxTextOption *opt,GrPattern *p);
+void GrPatternDrawStringExt(void *text,int length,int x,int y,const GrxTextOption *opt,GrPattern *p);
 
 /* ================================================================== */
 /*                      IMAGE MANIPULATION                            */
@@ -1298,7 +1332,7 @@ void GrPatternDrawStringExt(void *text,int length,int x,int y,const GrTextOption
 #define GR_IMAGE_INVERSE_LR  0x01  /* inverse left right */
 #define GR_IMAGE_INVERSE_TD  0x02  /* inverse top down */
 
-GrImage *GrImageBuild(const char *pixels,int w,int h,const GrColorTableP colors);
+GrImage *GrImageBuild(const char *pixels,int w,int h,const GrxColorTable colors);
 void     GrImageDestroy(GrImage *i);
 void     GrImageDisplay(int x,int y, GrImage *i);
 void     GrImageDisplayExt(int x1,int y1,int x2,int y2, GrImage *i);
@@ -1311,7 +1345,7 @@ GrImage *GrImageStretch(GrImage *p,int nwidth,int nheight);
 
 GrImage *GrImageFromPattern(GrPattern *p);
 GrImage *GrImageFromContext(GrxContext *c);
-GrImage *GrImageBuildUsedAsPattern(const char *pixels,int w,int h,const GrColorTableP colors);
+GrImage *GrImageBuildUsedAsPattern(const char *pixels,int w,int h,const GrxColorTable colors);
 
 GrPattern *GrPatternFromImage(GrImage *p);
 
@@ -1391,8 +1425,8 @@ void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrUsrPatternFloodFill(int x, int y, GrxColor border, GrPattern *p);
 
-void GrUsrDrawChar(int chr,int x,int y,const GrTextOption *opt);
-void GrUsrDrawString(char *text,int length,int x,int y,const GrTextOption *opt);
+void GrUsrDrawChar(int chr,int x,int y,const GrxTextOption *opt);
+void GrUsrDrawString(char *text,int length,int x,int y,const GrxTextOption *opt);
 void GrUsrTextXY(int x,int y,char *text,GrxColor fg,GrxColor bg);
 
 /* ================================================================== */
@@ -1409,7 +1443,7 @@ typedef struct _GR_cursor {
         int     displayed;                          /* set if displayed */
 } GrCursor;
 
-GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const GrColorTableP c);
+GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const GrxColorTable c);
 void GrDestroyCursor(GrCursor *cursor);
 void GrDisplayCursor(GrCursor *cursor);
 void GrEraseCursor(GrCursor *cursor);

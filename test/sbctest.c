@@ -27,8 +27,8 @@ TESTFUNC(sbctest)
   GrPattern *pat1, *pat2;
   GrLineOption grl;
   GrLinePattern grlp;
-  GrFont *grf;
-  GrTextOption grt;
+  GrxFont *grf;
+  GrxTextOption grt;
 
   grc = grx_context_create( 300,300,NULL,NULL );
   if( grc == NULL ) return;
@@ -38,15 +38,15 @@ TESTFUNC(sbctest)
   if( pat1 == NULL ) return;
   pat2 = GrBuildPixmapFromBits( bits,8,8,grx_color_info_get_black(),grx_color_info_get_white() );
   if( pat2 == NULL ) return;
-  grf = GrLoadFont( "lucb40.fnt" );
+  grf = grx_font_load( "lucb40.fnt" );
   if( grf == NULL ){
-    grf = GrLoadFont( "../fonts/lucb40.fnt" );
+    grf = grx_font_load( "../fonts/lucb40.fnt" );
     if( grf == NULL ) return;
     }
 
   grx_draw_box( 19,19,320,320,grx_color_info_get_white() );
 
-  GrTextXY( 0,0,"White drawing on context       ",grx_color_info_get_white(),grx_color_info_get_black() );
+  grx_draw_text_xy( 0,0,"White drawing on context       ",grx_color_info_get_white(),grx_color_info_get_black() );
   grx_context_set_current( grc );
   grx_clear_context( grx_color_info_get_black() );
   drawing( 10,10,280,280,grx_color_info_get_white(),GRX_COLOR_NONE );
@@ -54,14 +54,14 @@ TESTFUNC(sbctest)
   grx_bit_blt( NULL,20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
   GrKeyRead();
 
-  GrTextXY( 0,0,"Black drawing on subcontext    ",grx_color_info_get_white(),grx_color_info_get_black() );
+  grx_draw_text_xy( 0,0,"Black drawing on subcontext    ",grx_color_info_get_white(),grx_color_info_get_black() );
   grx_context_set_current( grsc );
   drawing( 0,0,280,280,grx_color_info_get_black(),GRX_COLOR_NONE );
   grx_context_set_current( NULL );
   grx_bit_blt( NULL,20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
   GrKeyRead();
 
-  GrTextXY( 0,0,"Pattern drawing on context     ",grx_color_info_get_white(),grx_color_info_get_black() );
+  grx_draw_text_xy( 0,0,"Pattern drawing on context     ",grx_color_info_get_white(),grx_color_info_get_black() );
   grx_context_set_current( grc );
   grx_clear_context( grx_color_info_get_black() );
   drawpf( 10,pat1 );
@@ -69,7 +69,7 @@ TESTFUNC(sbctest)
   grx_bit_blt( NULL,20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
   GrKeyRead();
 
-  GrTextXY( 0,0,"Pattern drawing on subcontext  ",grx_color_info_get_white(),grx_color_info_get_black() );
+  grx_draw_text_xy( 0,0,"Pattern drawing on subcontext  ",grx_color_info_get_white(),grx_color_info_get_black() );
   grx_context_set_current( grsc );
   grx_clear_context( grx_color_info_get_black() );
   drawpf( 0,pat2 );
@@ -83,7 +83,7 @@ TESTFUNC(sbctest)
   grlp.lnp_pattern = pat1;
   grlp.lnp_option = &grl;
 
-  GrTextXY( 0,0,"Patterned drawing on context   ",grx_color_info_get_white(),grx_color_info_get_black() );
+  grx_draw_text_xy( 0,0,"Patterned drawing on context   ",grx_color_info_get_white(),grx_color_info_get_black() );
   grx_context_set_current( grc );
   grx_clear_context( grx_color_info_get_black() );
   grlp.lnp_pattern = pat1;
@@ -92,7 +92,7 @@ TESTFUNC(sbctest)
   grx_bit_blt( NULL,20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
   GrKeyRead();
 
-  GrTextXY( 0,0,"Patterned drawing on subcontext",grx_color_info_get_white(),grx_color_info_get_black() );
+  grx_draw_text_xy( 0,0,"Patterned drawing on subcontext",grx_color_info_get_white(),grx_color_info_get_black() );
   grx_context_set_current( grsc );
   grx_clear_context( grx_color_info_get_black() );
   grlp.lnp_pattern = pat2;
@@ -104,12 +104,12 @@ TESTFUNC(sbctest)
   grt.txo_fgcolor.v = grx_color_info_get_white();
   grt.txo_bgcolor.v = grx_color_info_get_black() | GRX_COLOR_MODE_OR;
   grt.txo_font = grf;
-  grt.txo_direct = GR_TEXT_RIGHT;
-  grt.txo_xalign = GR_ALIGN_LEFT;
-  grt.txo_yalign = GR_ALIGN_CENTER;
-  grt.txo_chrtype = GR_BYTE_TEXT;
+  grt.txo_direct = GRX_TEXT_DIRECTION_RIGHT;
+  grt.txo_xalign = GRX_TEXT_ALIGN_LEFT;
+  grt.txo_yalign = GRX_TEXT_VALIGN_MIDDLE;
+  grt.txo_chrtype = GRX_CHAR_TYPE_BYTE;
 
-  GrTextXY( 0,0,"Patterned text on context      ",grx_color_info_get_white(),grx_color_info_get_black() );
+  grx_draw_text_xy( 0,0,"Patterned text on context      ",grx_color_info_get_white(),grx_color_info_get_black() );
   grx_context_set_current( grc );
   grx_clear_context( grx_color_info_get_black() );
   GrPatternDrawString( "Hello all",9,20,60,&grt,pat1 );
@@ -119,7 +119,7 @@ TESTFUNC(sbctest)
   grx_bit_blt( NULL,20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
   GrKeyRead();
 
-  GrTextXY( 0,0,"Patterned text on subcontext   ",grx_color_info_get_white(),grx_color_info_get_black() );
+  grx_draw_text_xy( 0,0,"Patterned text on subcontext   ",grx_color_info_get_white(),grx_color_info_get_black() );
   grx_context_set_current( grsc );
   grx_clear_context( grx_color_info_get_black() );
   GrPatternDrawString( "Hello all",9,10,50,&grt,pat2 );
@@ -129,7 +129,7 @@ TESTFUNC(sbctest)
   grx_bit_blt( NULL,20,20,grc,0,0,299,299,GRX_COLOR_MODE_XOR );
   GrKeyRead();
 
-  GrUnloadFont( grf );
+  grx_font_unload( grf );
   GrDestroyPattern( pat2 );
   GrDestroyPattern( pat1 );
   grx_context_free( grsc );

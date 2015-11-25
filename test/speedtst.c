@@ -196,19 +196,19 @@ void Message(int disp, char *txt, gvmode *gp) {
        (sys == GRX_VERSION_GCC_X86_64_X11) )
     fprintf(stderr,"%s\t%s\n", msg, txt);
   if (disp) {
-    GrTextOption to;
+    GrxTextOption to;
     GrxContext save;
     grx_context_save(&save);
     grx_context_set_current(NULL);
-    to.txo_font = &GrFont_PC6x8;
+    to.txo_font = &grx_font_pc6x8;
     to.txo_fgcolor.v = grx_color_info_get_white();
     to.txo_bgcolor.v = grx_color_info_get_black();
-    to.txo_chrtype = GR_BYTE_TEXT;
-    to.txo_direct  = GR_TEXT_RIGHT;
-    to.txo_xalign  = GR_ALIGN_LEFT;
-    to.txo_yalign  = GR_ALIGN_TOP;
-    GrDrawString(msg,strlen(msg),0,0,&to);
-    GrDrawString(txt,strlen(txt),0,10,&to);
+    to.txo_chrtype = GRX_CHAR_TYPE_BYTE;
+    to.txo_direct  = GRX_TEXT_DIRECTION_RIGHT;
+    to.txo_xalign  = GRX_TEXT_ALIGN_LEFT;
+    to.txo_yalign  = GRX_TEXT_VALIGN_TOP;
+    grx_draw_string_with_text_options(msg,strlen(msg),0,0,&to);
+    grx_draw_string_with_text_options(txt,strlen(txt),0,10,&to);
     grx_context_set_current(&save);
   }
 }

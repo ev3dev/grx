@@ -218,7 +218,7 @@ void dboton( int x, int y, int an, int al,
 
 {
   int pol[7][2], prof, pulsd, selec, despl;
-  GrTextOption grt;
+  GrxTextOption grt;
   GrLineOption glo;
   int mouseblock;
 
@@ -250,17 +250,17 @@ void dboton( int x, int y, int an, int al,
   grx_draw_line( pol[0][0],pol[0][1],pol[3][0],pol[3][1],BLACK );
   grx_draw_filled_box( x+2+prof,y+2+prof,x+an-3-prof,y+al-3-prof,c );
 
-  grt.txo_font = &GrFont_PC8x14;
+  grt.txo_font = &grx_font_pc8x14;
   grt.txo_fgcolor.v = ct;
   grt.txo_bgcolor.v = GRX_COLOR_NONE;
-  grt.txo_direct = GR_TEXT_RIGHT;
-  grt.txo_xalign = GR_ALIGN_CENTER;
-  grt.txo_yalign = GR_ALIGN_CENTER;
-  grt.txo_chrtype = GR_BYTE_TEXT;
+  grt.txo_direct = GRX_TEXT_DIRECTION_RIGHT;
+  grt.txo_xalign = GRX_TEXT_ALIGN_CENTER;
+  grt.txo_yalign = GRX_TEXT_VALIGN_MIDDLE;
+  grt.txo_chrtype = GRX_CHAR_TYPE_BYTE;
   if( despl )
-    GrDrawString( s,strlen( s ),x+an/2+1,y+al/2+1,&grt );
+    grx_draw_string_with_text_options( s,strlen( s ),x+an/2+1,y+al/2+1,&grt );
   else
-    GrDrawString( s,strlen( s ),x+an/2,y+al/2,&grt );
+    grx_draw_string_with_text_options( s,strlen( s ),x+an/2,y+al/2,&grt );
 
   if( selec ){
     glo.lno_color = ct;

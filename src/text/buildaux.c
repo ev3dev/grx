@@ -21,7 +21,7 @@
 #include "arith.h"
 #include "memfill.h"
 
-char *GrBuildAuxiliaryBitmap(GrFont *f,int chr,int dir,int ul)
+unsigned char *grx_font_build_aux_bmp(GrxFont *f,int chr,GrxTextDirection dir,int ul)
 {
         unsigned int idx = (unsigned int)chr - f->h.minchar;
         unsigned int bpos,rbpos,size,rsize,w,h;
@@ -30,7 +30,7 @@ char *GrBuildAuxiliaryBitmap(GrFont *f,int chr,int dir,int ul)
         if(idx >= f->h.numchars) return(NULL);
         stdmap = &f->bitmap[f->chrinfo[idx].offset];
         dir = (dir & 3) + ((ul && (f->h.ulheight > 0)) ? 4 : 0);
-        if(dir == GR_TEXT_RIGHT) return(stdmap);
+        if(dir == GRX_TEXT_DIRECTION_RIGHT) return(stdmap);
         if(f->auxoffs[--dir] != NULL) {
             unsigned int offs = f->auxoffs[dir][idx];
             if(offs > 0) return(&f->auxmap[offs - 1]);
@@ -46,28 +46,28 @@ char *GrBuildAuxiliaryBitmap(GrFont *f,int chr,int dir,int ul)
         size  = h * (boff  = (w + 7) & ~7);
         rsize = w * (rboff = (h + 7) & ~7);
         switch(dir) {
-          case (GR_TEXT_RIGHT - 1 + 4):
+          case (GRX_TEXT_DIRECTION_RIGHT - 1 + 4):
             rboff = boff;
             rsize = size;
             rbpos = 0;
             rbinc = 1;
             break;
-          case (GR_TEXT_DOWN - 1):              /* downward */
-          case (GR_TEXT_DOWN - 1 + 4):
+          case (GRX_TEXT_DIRECTION_DOWN - 1):              /* downward */
+          case (GRX_TEXT_DIRECTION_DOWN - 1 + 4):
             rbpos = h - 1;
             rbinc = rboff;
             rboff = -1;
             break;
-          case (GR_TEXT_LEFT - 1):              /* upside down, right to left */
-          case (GR_TEXT_LEFT - 1 + 4):
+          case (GRX_TEXT_DIRECTION_LEFT - 1):              /* upside down, right to left */
+          case (GRX_TEXT_DIRECTION_LEFT - 1 + 4):
             rboff = boff;
             rsize = size;
             rbpos = rsize - rboff + w - 1;
             rbinc = -1;
             rboff = -rboff;
             break;
-          case (GR_TEXT_UP - 1):                /* upward */
-          case (GR_TEXT_UP - 1 + 4):
+          case (GRX_TEXT_DIRECTION_UP - 1):                /* upward */
+          case (GRX_TEXT_DIRECTION_UP - 1 + 4):
             rbpos = rsize - rboff;
             rbinc = -rboff;
             rboff = 1;

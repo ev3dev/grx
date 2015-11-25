@@ -42,7 +42,7 @@ int main(void)
   grx_context_set_current(NULL);
   fcolor = grx_color_info_alloc_color( 255,0,0 );
   bcolor = grx_color_info_alloc_color( 0,0,255 );
-  GrTextXY(0,0,"Type u d l r U D L R to move, 1 2 to change color, q to quit",
+  grx_draw_text_xy(0,0,"Type u d l r U D L R to move, 1 2 to change color, q to quit",
            grx_color_info_get_white(),GRX_COLOR_NONE);
   grx_set_clip_box(0, 40, grx_get_screen_x(), grx_get_screen_y());
 

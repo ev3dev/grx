@@ -112,7 +112,7 @@ done:        if(!res) cleanup();
         GRX_RETURN(res);
 }
 
-static int header(GrFontHeader *hdr)
+static int header(GrxFontHeader *hdr)
 {
         int res;
         char *s;
@@ -219,7 +219,7 @@ static int header(GrFontHeader *hdr)
         fhdr.index++;
         hdr->scalable = FALSE;
         hdr->preloaded = FALSE;
-        hdr->modified = GR_FONTCVT_NONE;
+        hdr->modified = GRX_FONT_CONV_FLAG_NONE;
         if((attrib & 0x0100) == 0) hdr->ulheight = imax(1, hdr->height / 15);
         hdr->ulpos = hdr->height - hdr->ulheight;
         res = TRUE;

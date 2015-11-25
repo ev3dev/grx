@@ -44,8 +44,8 @@ void imagen( char *nf )
   GrLoadContextFromPng( grc,nf,1 );
   grx_context_free( grc );
 
-  GrTextXY( 10,10,s,grx_color_info_get_black(),grx_color_info_get_white() );
-  GrTextXY( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_draw_text_xy( 10,10,s,grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_draw_text_xy( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 }
 
@@ -62,7 +62,7 @@ void nopngsupport( void )
 
   grx_clear_screen( grx_color_info_alloc_color( 0,0,100 ) );
   for( i=0; i<6; i++ )
-    GrTextXY( 90,160+i*18,s[i],grx_color_info_get_white(),GRX_COLOR_NONE );
+    grx_draw_text_xy( 90,160+i*18,s[i],grx_color_info_get_white(),GRX_COLOR_NONE );
   GrKeyRead();
 }
 
@@ -91,16 +91,16 @@ int main()
   GrLoadContextFromPng( grc,"pngcompo.png",1 );
   grx_context_free( grc );
 
-  GrTextXY( 10,10,"Press any key to save screen",grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_draw_text_xy( 10,10,"Press any key to save screen",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
   GrSaveContextToPng( NULL,"output.png" );
 
   grx_clear_screen( grx_color_info_get_black() );
-  GrTextXY( 10,10,"Press any key to reload screen",grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_draw_text_xy( 10,10,"Press any key to reload screen",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
   GrLoadContextFromPng( NULL,"output.png",0 );
 
-  GrTextXY( 10,10,"Press any key to end          ",grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_draw_text_xy( 10,10,"Press any key to end          ",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   return 0;

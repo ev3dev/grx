@@ -21,7 +21,7 @@
 
 int main(int argc,char **argv)
 {
-        GrFont *f;
+        GrxFont *f;
         if(argc < 4) {
             fprintf(
                     stderr,
@@ -31,7 +31,7 @@ int main(int argc,char **argv)
             );
             return(1);
         }
-        f = GrLoadFont(argv[1]);
+        f = grx_font_load(argv[1]);
         if(!f) {
             fprintf(
                     stderr,
@@ -41,7 +41,7 @@ int main(int argc,char **argv)
             );
             return(1);
         }
-        GrDumpFont(f,argv[3],argv[2]);
+        grx_font_dump(f,argv[3],argv[2]);
         return(0);
 }
 

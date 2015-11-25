@@ -23,7 +23,7 @@
 #include "mempeek.h"
 #include "image/image.h"
 
-GrImage *GrImageBuild(const char *pixels,int w,int h,const GrColorTableP colors)
+GrImage *GrImageBuild(const char *pixels,int w,int h,const GrxColorTable colors)
 {
   GrImage   *img;
   GRX_ENTER();
@@ -41,7 +41,7 @@ GrImage *GrImageBuild(const char *pixels,int w,int h,const GrColorTableP colors)
       do {
         col = peek_b(pixels);
         ptrinc(pixels,1);
-        if ( colors ) col = GR_CTABLE_COLOR(colors,col);
+        if ( colors ) col = GRX_COLOR_TABLE_GET_COLOR(colors,col);
         (*CURC->gc_driver->drawpixel)(xx, yy, (col & C_COLOR));
       } while(++xx < w);
     } while(++yy < h);

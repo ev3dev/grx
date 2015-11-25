@@ -23,7 +23,7 @@
 #include "allocate.h"
 #include "arith.h"
 
-void GrSetFontPath(char *p)
+void grx_font_set_path(char *p)
 {
         int  chr,totlen = 0,npath,plen = 0,dc = TRUE;
         char path[200],*plist[100];

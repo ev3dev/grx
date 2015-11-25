@@ -54,7 +54,7 @@ static int _GrBestPixmapWidth(int wdt,int hgt)
         return(wdt);
 }
 
-GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
+GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrxColorTable ct)
 {
         GrxContext csave,cwork;
         GrPixmap  *result;
@@ -78,7 +78,7 @@ GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
                 src = (unsigned char *)pixels;
                 for(wdt = 0; wdt < w; wdt++) {
                     color = *src++;
-                    if(ct != NULL) color = GR_CTABLE_COLOR(ct,color);
+                    if(ct != NULL) color = GRX_COLOR_TABLE_GET_COLOR(ct,color);
                     (*CURC->gc_driver->drawpixel)(wdt2+wdt,hgt,(color & C_COLOR));
                 }
             }

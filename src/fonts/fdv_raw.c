@@ -164,7 +164,7 @@ done:   if(!res) cleanup();
         GRX_RETURN(res);
 }
 
-static int header(GrFontHeader *hdr)
+static int header(GrxFontHeader *hdr)
 {
         int res;
         GRX_ENTER();
@@ -175,7 +175,7 @@ static int header(GrFontHeader *hdr)
             hdr->proportional = FALSE;
             hdr->scalable = FALSE;
             hdr->preloaded = FALSE;
-            hdr->modified = GR_FONTCVT_NONE;
+            hdr->modified = GRX_FONT_CONV_FLAG_NONE;
             hdr->width = fhdr.width;
             hdr->height = fhdr.height;
             hdr->baseline = (hdr->height * 4) / 5 + (hdr->height < 15);

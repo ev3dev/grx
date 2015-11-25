@@ -18,13 +18,13 @@
 
 #include "libgrx.h"
 
-int GrProportionalTextWidth(const GrFont *font,const void *text,int len,int type)
+int grx_font_get_proportional_text_width(const GrxFont *font,const void *text,int len,GrxCharType type)
 {
         char *txp = (char *)text;
         int   wdt = 0;
         while(--len >= 0) {
-            wdt += GrFontCharWidth(font,GR_TEXTSTR_CODE(txp,type));
-            txp += GR_TEXTCHR_SIZE(type);
+            wdt += grx_font_get_char_width(font,GRX_CHAR_TYPE_GET_CODE_STR(type, txp));
+            txp += GRX_CHAR_TYPE_GET_SIZE(type);
         }
         return(wdt);
 }

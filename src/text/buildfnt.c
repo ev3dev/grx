@@ -199,9 +199,9 @@ static int cvtbitmap(int oldw,int neww,conv *c,char *bmp)
         return(neww);
 }
 
-GrFont *_GrBuildFont(
-    const GrFontHeader *h,
-    int  cvt,
+GrxFont *_GrBuildFont(
+    const GrxFontHeader *h,
+    GrxFontConversionFlags cvt,
     int  wdt,
     int  hgt,
     int  cmin,
@@ -210,10 +210,10 @@ GrFont *_GrBuildFont(
     int  (*bitmap)(int chr,int w,int h,char *buffer),
     int  scaled
 ){
-        GrFont *f    = NULL;
+        GrxFont *f    = NULL;
         unsigned int  fprop  = h->proportional;
-        unsigned int  chrcv  = GR_FONTCVT_NONE;
-        unsigned int  bmpcv  = GR_FONTCVT_NONE;
+        unsigned int  chrcv  = GRX_FONT_CONV_FLAG_NONE;
+        unsigned int  bmpcv  = GRX_FONT_CONV_FLAG_NONE;
         unsigned long totwdt = 0L;
         unsigned long bmplen = 0L;
         unsigned int  bmpofs = 0;
@@ -222,28 +222,28 @@ GrFont *_GrBuildFont(
         conv  cv;
         setup_ALLOC();
         sttzero(&cv);
-        if(cvt & GR_FONTCVT_SKIPCHARS) {
+        if(cvt & GRX_FONT_CONV_FLAG_SKIP_CHARS) {
             unsigned int lastfntchr = h->minchar + h->numchars - 1;
             cmin = umin(umax(cmin,h->minchar),lastfntchr);
             cmax = umin(umax(cmax,h->minchar),lastfntchr);
             if(cmin > cmax) goto error;
-            if((unsigned int)cmin > h->minchar) chrcv = GR_FONTCVT_SKIPCHARS;
-            if((unsigned int)cmax < lastfntchr) chrcv = GR_FONTCVT_SKIPCHARS;
+            if((unsigned int)cmin > h->minchar) chrcv = GRX_FONT_CONV_FLAG_SKIP_CHARS;
+            if((unsigned int)cmax < lastfntchr) chrcv = GRX_FONT_CONV_FLAG_SKIP_CHARS;
         }
         else {
             cmin = h->minchar;
             cmax = h->minchar + h->numchars - 1;
         }
-        if(cvt & GR_FONTCVT_RESIZE) {
-            if((unsigned int)(wdt = imax(2,wdt)) != h->width)  bmpcv=GR_FONTCVT_RESIZE;
-            if((unsigned int)(hgt = imax(2,hgt)) != h->height) bmpcv=GR_FONTCVT_RESIZE;
+        if(cvt & GRX_FONT_CONV_FLAG_RESIZE) {
+            if((unsigned int)(wdt = imax(2,wdt)) != h->width)  bmpcv=GRX_FONT_CONV_FLAG_RESIZE;
+            if((unsigned int)(hgt = imax(2,hgt)) != h->height) bmpcv=GRX_FONT_CONV_FLAG_RESIZE;
         }
         else {
             wdt = h->width;
             hgt = h->height;
         }
         numch = cmax - cmin + 1;
-        i = sizeof(GrFont) + ((numch - 1) * sizeof(GrFontChrInfo));
+        i = sizeof(GrxFont) + ((numch - 1) * sizeof(GrxFontCharInfo));
         f = malloc(i);
         if(!f) goto error;
         memzero(f,i);
@@ -265,27 +265,27 @@ GrFont *_GrBuildFont(
         }
         cv.oldhgt = scaled ? hgt : h->height;
         cv.newhgt = hgt;
-        if(cvt & GR_FONTCVT_BOLDIFY) {
+        if(cvt & GRX_FONT_CONV_FLAG_BOLDIFY) {
             cv.boldwdt = BOLDWDT(wdt);
             cv.boldwdt = imin(cv.boldwdt,(f->minwidth - 1));
             cv.boldwdt = imax(cv.boldwdt,0);
-            if(cv.boldwdt > 0) bmpcv |= GR_FONTCVT_BOLDIFY;
+            if(cv.boldwdt > 0) bmpcv |= GRX_FONT_CONV_FLAG_BOLDIFY;
         }
-        if(cvt & GR_FONTCVT_ITALICIZE) {
+        if(cvt & GRX_FONT_CONV_FLAG_ITALICIZE) {
             cv.italwdt = ITALWDT(hgt);
             cv.italwdt = imin(cv.italwdt,(f->minwidth - cv.boldwdt - 1));
             cv.italwdt = imax(cv.italwdt,0);
-            if(cv.italwdt > 0) bmpcv |= GR_FONTCVT_ITALICIZE;
+            if(cv.italwdt > 0) bmpcv |= GRX_FONT_CONV_FLAG_ITALICIZE;
         }
-        if((cvt & GR_FONTCVT_FIXIFY) && fprop) {
-            bmpcv     |= GR_FONTCVT_FIXIFY;
+        if((cvt & GRX_FONT_CONV_FLAG_FIXIFY) && fprop) {
+            bmpcv     |= GRX_FONT_CONV_FLAG_FIXIFY;
             cv.fixwdt  = f->maxwidth;
             bmplen     = umul32((hgt * ((cv.fixwdt + 7) >> 3)),numch);
             cv.dofix   = TRUE;
             fprop      = FALSE;
         }
-        if((cvt & GR_FONTCVT_PROPORTION) && !fprop) {
-            bmpcv     |= GR_FONTCVT_PROPORTION;
+        if((cvt & GRX_FONT_CONV_FLAG_PROPORTION) && !fprop) {
+            bmpcv     |= GRX_FONT_CONV_FLAG_PROPORTION;
             cv.propgap = imax(0,(PROPGAP(wdt) - cv.italwdt));
             bmplen     = umul32((hgt * ((wdt + cv.propgap + 7) >> 3)),numch);
             cv.doprop  = TRUE;
@@ -309,7 +309,7 @@ GrFont *_GrBuildFont(
             if(scaled) {
                 unsigned int raww = neww - cv.boldwdt - cv.italwdt;
                 if(!(*bitmap)(chr,raww,hgt,bmp)) goto error;
-                if(bmpcv & ~GR_FONTCVT_RESIZE) neww = cvtbitmap(oldw,raww,&cv,bmp);
+                if(bmpcv & ~GRX_FONT_CONV_FLAG_RESIZE) neww = cvtbitmap(oldw,raww,&cv,bmp);
             }
             else {
                 if(!(*bitmap)(chr,oldw,h->height,bmp)) goto error;

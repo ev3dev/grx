@@ -32,47 +32,47 @@ char test_text[] = {
     "quick brown fox jumps over the lazy dog !@#$%^&*()1234567890"
 };
 
-void displayfont(GrFont *font,char *text,int len)
+void displayfont(GrxFont *font,char *text,int len)
 {
-        GrTextOption opt;
+        GrxTextOption opt;
         int ww,hh;
         int bx,by;
         int bw,bh;
 
         memset(&opt,0,sizeof(opt));
         opt.txo_font   = font;
-        opt.txo_xalign = GR_ALIGN_LEFT;
-        opt.txo_yalign = GR_ALIGN_TOP;
+        opt.txo_xalign = GRX_TEXT_ALIGN_LEFT;
+        opt.txo_yalign = GRX_TEXT_VALIGN_TOP;
         grx_draw_filled_box(0,0,grx_get_size_x(),grx_get_size_y(),grx_color_info_get_black());
-        opt.txo_direct    = GR_TEXT_RIGHT;
+        opt.txo_direct    = GRX_TEXT_DIRECTION_RIGHT;
         opt.txo_fgcolor.v = grx_color_info_get_black();
         opt.txo_bgcolor.v = c1;
-        ww = GrStringWidth(text,len,&opt);
-        hh = GrStringHeight(text,len,&opt);
+        ww = grx_text_option_get_string_width(&opt,text,len);
+        hh = grx_text_option_get_string_height(&opt,text,len);
         bw = ww+2*hh;
         bh = ww;
         bx = cx - bw/2;
         by = cy - bh/2;
-        GrDrawString(text,len,bx+hh,by,&opt);
-        opt.txo_direct    = GR_TEXT_DOWN;
+        grx_draw_string_with_text_options(text,len,bx+hh,by,&opt);
+        opt.txo_direct    = GRX_TEXT_DIRECTION_DOWN;
         opt.txo_bgcolor.v = c2;
-        GrDrawString(text,len,bx+bw-hh,by,&opt);
-        opt.txo_direct    = GR_TEXT_LEFT;
+        grx_draw_string_with_text_options(text,len,bx+bw-hh,by,&opt);
+        opt.txo_direct    = GRX_TEXT_DIRECTION_LEFT;
         opt.txo_bgcolor.v = c3;
-        GrDrawString(text,len,bx+bw-ww-hh,by+bh-hh,&opt);
-        opt.txo_direct    = GR_TEXT_UP;
+        grx_draw_string_with_text_options(text,len,bx+bw-ww-hh,by+bh-hh,&opt);
+        opt.txo_direct    = GRX_TEXT_DIRECTION_UP;
         opt.txo_bgcolor.v = c4;
-        GrDrawString(text,len,bx,by+bh-ww,&opt);
+        grx_draw_string_with_text_options(text,len,bx,by+bh-ww,&opt);
         GrKeyRead();
         grx_clear_clip_box(grx_color_info_get_black());
-        opt.txo_direct    = GR_TEXT_RIGHT;
+        opt.txo_direct    = GRX_TEXT_DIRECTION_RIGHT;
         opt.txo_fgcolor.v = c1;
         opt.txo_bgcolor.v = grx_color_info_get_black();
         bx = grx_get_size_x() / 16;
         by = grx_get_size_y() / 16;
         bx = (bx + 7) & ~7;
         while(by < grx_get_size_y()) {
-            GrDrawString(test_text,strlen(test_text),bx,by,&opt);
+            grx_draw_string_with_text_options(test_text,strlen(test_text),bx,by,&opt);
             opt.txo_fgcolor.v ^= GR_UNDERLINE_TEXT;
             by += hh;
         }
@@ -81,7 +81,7 @@ void displayfont(GrFont *font,char *text,int len)
 
 TESTFUNC(fonttest)
 {
-        GrFont *f;
+        GrxFont *f;
         int i;
         char buff[100];
         cx = grx_get_size_x() / 2;
@@ -102,12 +102,12 @@ TESTFUNC(fonttest)
             grx_get_size_y() - grx_get_size_y()/16 - 1
         );
         strcpy(buff,"Default GRX font");
-        displayfont(&GrDefaultFont,buff,strlen(buff));
+        displayfont(&grx_font_default,buff,strlen(buff));
         strcpy(buff,"Default font scaled to 6x10");
         displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE),
+            grx_font_build_converted(
+                &grx_font_default,
+                (GRX_FONT_CONV_FLAG_SKIP_CHARS | GRX_FONT_CONV_FLAG_RESIZE),
                 6,
                 10,
                 ' ',
@@ -118,9 +118,9 @@ TESTFUNC(fonttest)
         );
         strcpy(buff,"Default font scaled to 12x24");
         displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE),
+            grx_font_build_converted(
+                &grx_font_default,
+                (GRX_FONT_CONV_FLAG_SKIP_CHARS | GRX_FONT_CONV_FLAG_RESIZE),
                 12,
                 24,
                 ' ',
@@ -131,9 +131,9 @@ TESTFUNC(fonttest)
         );
         strcpy(buff,"Default font scaled to 18x36");
         displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE),
+            grx_font_build_converted(
+                &grx_font_default,
+                (GRX_FONT_CONV_FLAG_SKIP_CHARS | GRX_FONT_CONV_FLAG_RESIZE),
                 18,
                 36,
                 ' ',
@@ -144,9 +144,9 @@ TESTFUNC(fonttest)
         );
         strcpy(buff,"Default font scaled to 10x20 proportional");
         displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE | GR_FONTCVT_PROPORTION),
+            grx_font_build_converted(
+                &grx_font_default,
+                (GRX_FONT_CONV_FLAG_SKIP_CHARS | GRX_FONT_CONV_FLAG_RESIZE | GRX_FONT_CONV_FLAG_PROPORTION),
                 10,
                 20,
                 ' ',
@@ -157,9 +157,9 @@ TESTFUNC(fonttest)
         );
         strcpy(buff,"Default font scaled to 10x20 bold");
         displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE | GR_FONTCVT_BOLDIFY),
+            grx_font_build_converted(
+                &grx_font_default,
+                (GRX_FONT_CONV_FLAG_SKIP_CHARS | GRX_FONT_CONV_FLAG_RESIZE | GRX_FONT_CONV_FLAG_BOLDIFY),
                 10,
                 20,
                 ' ',
@@ -170,9 +170,9 @@ TESTFUNC(fonttest)
         );
         strcpy(buff,"Default font scaled to 10x20 italic");
         displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE | GR_FONTCVT_ITALICIZE),
+            grx_font_build_converted(
+                &grx_font_default,
+                (GRX_FONT_CONV_FLAG_SKIP_CHARS | GRX_FONT_CONV_FLAG_RESIZE | GRX_FONT_CONV_FLAG_ITALICIZE),
                 10,
                 20,
                 ' ',
@@ -182,7 +182,7 @@ TESTFUNC(fonttest)
             strlen(buff)
         );
         for(i = 0; i < Argc; i++) {
-            f = GrLoadFont(Argv[i]);
+            f = grx_font_load(Argv[i]);
             if(f) {
                 sprintf(buff,"This is font %s",Argv[i]);
                 displayfont(f,buff,strlen(buff));

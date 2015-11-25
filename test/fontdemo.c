@@ -24,18 +24,18 @@
 #include "grx-3.0.h"
 #include "grxkeys.h"
 
-static GrTextOption opt;
+static GrxTextOption opt;
 static int curx = 0, cury = 0;
 /* deltax and deltay are the additional columns/lines between characters */
 static int deltax = 0, deltay = 0;
 
 static void gnewl(void)
 {
-        cury += GrCharHeight('A', &opt) + deltay;
+        cury += grx_text_option_get_char_height(&opt, 'A') + deltay;
         curx = 0;
-        if(cury + GrCharHeight('A', &opt) > grx_get_size_y() + deltay) {
+        if(cury + grx_text_option_get_char_height(&opt, 'A') > grx_get_size_y() + deltay) {
             if(GrKeyRead() == GrKey_F10) {
-                GrUnloadFont(opt.txo_font);
+                grx_font_unload(opt.txo_font);
                 exit(0);
             }
             grx_clear_screen(opt.txo_bgcolor.v);
@@ -46,9 +46,9 @@ static void gnewl(void)
 /* all control characters are displayed 1:1 */
 static void gputc(int c)
 {
-        if(curx + GrCharWidth(c, &opt) + deltax > grx_get_size_x()) gnewl();
-        GrDrawChar(c, curx, cury, &opt);
-        curx += GrCharWidth(c, &opt) + deltax;
+        if(curx + grx_text_option_get_char_width(&opt, c) + deltax > grx_get_size_x()) gnewl();
+        grx_draw_char_with_text_options(c, curx, cury, &opt);
+        curx += grx_text_option_get_char_width(&opt, c) + deltax;
 }
 
 static void gputs(const char *s)
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
         int width = 0, height = 0, bpp = 8, gray = 192, attributes = 0;
 
         char *name, *testname;
-        GrFontHeader *hdr;
+        GrxFontHeader *hdr;
         FILE *f;
         char buffer[0x20];
         GrKeyType key;
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
         }
 
         name = argv[i++];
-        opt.txo_font = GrLoadFont(name);
+        opt.txo_font = grx_font_load(name);
         if(opt.txo_font == NULL && (testname = malloc(strlen(name) + 10)) != NULL) {
             /* try again, this is a test and the path can not been set yet */
 #if defined(__WIN32__)
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 #else
             sprintf( testname,"../fonts/%s",name );
 #endif
-            opt.txo_font = GrLoadFont(testname);
+            opt.txo_font = grx_font_load(testname);
             free(testname);
         }
         if(opt.txo_font == NULL) {
@@ -162,12 +162,12 @@ int main(int argc, char **argv)
         if(attributes & 0x02) opt.txo_fgcolor.v |= GR_UNDERLINE_TEXT;
         opt.txo_bgcolor.v = grx_color_info_get_black();
         if(attributes & 0x01) revert();
-        opt.txo_chrtype = GR_BYTE_TEXT;
-        opt.txo_direct = GR_TEXT_RIGHT;
-        opt.txo_xalign = GR_ALIGN_LEFT;
-        opt.txo_yalign = GR_ALIGN_TOP;
+        opt.txo_chrtype = GRX_CHAR_TYPE_BYTE;
+        opt.txo_direct = GRX_TEXT_DIRECTION_RIGHT;
+        opt.txo_xalign = GRX_TEXT_ALIGN_LEFT;
+        opt.txo_yalign = GRX_TEXT_VALIGN_TOP;
 
-        sprintf(buffer, "%s %dx%d", hdr->name, GrCharWidth('A', &opt), GrCharHeight('A', &opt));
+        sprintf(buffer, "%s %dx%d", hdr->name, grx_text_option_get_char_width(&opt, 'A'), grx_text_option_get_char_height(&opt, 'A'));
         gputs(buffer);
         sprintf(buffer, "%dx%d@%lu", grx_get_size_x(), grx_get_size_y(), (unsigned long) grx_color_info_n_colors());
         gputs(buffer);
@@ -184,14 +184,14 @@ int main(int argc, char **argv)
         }
 
         /* ascii table, or to be precise, a full table of the current font */
-        opt.txo_chrtype = GR_WORD_TEXT;
+        opt.txo_chrtype = GRX_CHAR_TYPE_WORD;
         for(c = 0; c < hdr->numchars; c++) {
             gputc(hdr->minchar + c);
             if(c % 0x20 == 0x1F) gnewl();
         }
         gnewl();
         if(c % 0x20 != 0) gnewl();
-        opt.txo_chrtype = GR_BYTE_TEXT;
+        opt.txo_chrtype = GRX_CHAR_TYPE_BYTE;
 
         while(i < argc) {
             name = argv[i++];
@@ -217,7 +217,7 @@ int main(int argc, char **argv)
             else if(key < 0x100) gputc(key);
         }
 
-        GrUnloadFont(opt.txo_font);
+        grx_font_unload(opt.txo_font);
 
         return(0);
 }

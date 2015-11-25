@@ -68,7 +68,7 @@ int main()
 
     grx_context_set_current( NULL );
 
-    GrTextXY(10,wh,"press any key to toggle full screen / windowed modes, escape to end",grx_color_info_get_white(),grx_color_info_get_black());
+    grx_draw_text_xy(10,wh,"press any key to toggle full screen / windowed modes, escape to end",grx_color_info_get_white(),grx_color_info_get_black());
 
   } while ( GrKeyRead() != GrKey_Escape );
   return 0;

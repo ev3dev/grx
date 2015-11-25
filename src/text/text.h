@@ -20,4 +20,4 @@ typedef void (*TextDrawBitmapFunc)(int x,int y,int w,int h,int ox, int oy,
                                    GrxColor fg,GrxColor bg,GrPattern *p);
 
 void _GrDrawString(const void *text,int length,int x,int y,
-                   const GrTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm);
+                   const GrxTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm);

@@ -39,8 +39,8 @@ void imagen( char *nf, int scale )
   GrLoadContextFromJpeg( grc,nf,scale );
   grx_context_free( grc );
 
-  GrTextXY( 10,10,s,grx_color_info_get_black(),grx_color_info_get_white() );
-  GrTextXY( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_draw_text_xy( 10,10,s,grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_draw_text_xy( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 }
 
@@ -57,7 +57,7 @@ void nojpegsupport( void )
 
   grx_clear_screen( grx_color_info_alloc_color( 0,0,100 ) );
   for( i=0; i<6; i++ )
-    GrTextXY( 90,160+i*18,s[i],grx_color_info_get_white(),GRX_COLOR_NONE );
+    grx_draw_text_xy( 90,160+i*18,s[i],grx_color_info_get_white(),GRX_COLOR_NONE );
   GrKeyRead();
 }
 
@@ -90,7 +90,7 @@ int main()
   GrLoadContextFromJpeg( grc,"jpeg2.jpg",2 );
   grx_context_free( grc );
 
-  GrTextXY( 10,10,"Press any key to save color and gray screen",
+  grx_draw_text_xy( 10,10,"Press any key to save color and gray screen",
     grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
@@ -98,18 +98,18 @@ int main()
   GrSaveContextToGrayJpeg( NULL,"pgray.jpg",75 );
 
   grx_clear_screen( grx_color_info_get_black() );
-  GrTextXY( 10,10,"Press any key to reload color screen       ",
+  grx_draw_text_xy( 10,10,"Press any key to reload color screen       ",
     grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
   GrLoadContextFromJpeg( NULL,"p.jpg",1 );
 
-  GrTextXY( 10,10,"Press any key to reload gray screen        ",
+  grx_draw_text_xy( 10,10,"Press any key to reload gray screen        ",
     grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
   grx_clear_screen( grx_color_info_get_black() );
   GrLoadContextFromJpeg( NULL,"pgray.jpg",1 );
 
-  GrTextXY( 10,10,"Press any key to end                       ",
+  grx_draw_text_xy( 10,10,"Press any key to end                       ",
     grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 

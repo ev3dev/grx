@@ -32,14 +32,14 @@
 
 /*
  * Font driver header. Font drivers are used to load various font file
- * formats into the internal bitmap ('GrFont') representation.
+ * formats into the internal bitmap ('GrxFont') representation.
  */
 typedef struct _GR_fontDriver {
     char  *name;                        /* font format name (doc only) */
     char  *ext;                         /* font file name extension */
     int    scalable;                    /* scalable font file format */
     int  (*openfile)(char *fname);
-    int  (*header)(GrFontHeader *hdr);
+    int  (*header)(GrxFontHeader *hdr);
     int  (*charwdt)(int chr);
     int  (*bitmap)(int chr,int w,int h,char *buffer);
     void (*cleanup)(void);
@@ -75,9 +75,9 @@ extern struct _GR_fontFileInfo {
 /*
  * utilities
  */
-GrFont *_GrBuildFont(
-    const GrFontHeader *hdr,
-    int  cvt,
+GrxFont *_GrBuildFont(
+    const GrxFontHeader *hdr,
+    GrxFontConversionFlags cvt,
     int  width,
     int  height,
     int  minch,

@@ -1,11 +1,11 @@
 /**
- ** pc6x8.c ---- GRX 2.0 font converted to C by 'GrDumpFont()'
+ ** pc6x8.c ---- GRX 2.0 font converted to C by 'grx_font_dump()'
  **
  **/
  
-#define  GrFont_PC6x8        FONTNAME_TEMPORARY_REDIRECTION
+#define  grx_font_pc6x8        FONTNAME_TEMPORARY_REDIRECTION
 #include "grx-3.0.h"
-#undef         GrFont_PC6x8
+#undef         grx_font_pc6x8
 
 static unsigned char GrFont_PC6x8_bits[] = {
         /* character 0 */
@@ -523,9 +523,9 @@ static unsigned char GrFont_PC6x8_bits[] = {
 };
 
 struct {
-    GrFont          theFont;
-    GrFontChrInfo rest[255];
-} GrFont_PC6x8 = {
+    GrxFont          theFont;
+    GrxFontCharInfo rest[255];
+} grx_font_pc6x8 = {
     {
         {                            /* font header */
             "pc6x8",                /* font name */
@@ -533,7 +533,7 @@ struct {
             0,                            /* characters have varying width */
             0,                            /* derived from a scalable font */
             1,                            /* font permanently linked into program */
-            GR_FONTCVT_NONE,            /* 'tweaked' font (resized, etc..) */
+            GRX_FONT_CONV_FLAG_NONE,            /* 'tweaked' font (resized, etc..) */
             6,                            /* width (average when proportional) */
             8,                            /* font height */
             6,                            /* baseline pixel pos (from top) */

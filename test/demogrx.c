@@ -182,10 +182,10 @@ static Board brd =
 static Board brdimg =
     { 384, 46, 235, 157, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
 
-static GrFont *grf_std;
-static GrFont *grf_big;
-GrTextOption grt_centered;
-GrTextOption grt_left;
+static GrxFont *grf_std;
+static GrxFont *grf_big;
+GrxTextOption grt_centered;
+GrxTextOption grt_left;
 
 static GrxContext *grcglob = NULL;
 static int worg = 0, horg = 0;
@@ -279,39 +279,39 @@ static void ini_graphics(void)
 
 static void ini_objects(void)
 {
-    grf_std = GrLoadFont("lucb21.fnt");
+    grf_std = grx_font_load("lucb21.fnt");
     if (grf_std == NULL) {
 #if defined(__WIN32__)
-        grf_std = GrLoadFont("..\\fonts\\lucb21.fnt");
+        grf_std = grx_font_load("..\\fonts\\lucb21.fnt");
 #else
-        grf_std = GrLoadFont("../fonts/lucb21.fnt");
+        grf_std = grx_font_load("../fonts/lucb21.fnt");
 #endif
         if (grf_std == NULL)
             disaster("lucb21.fnt not found");
     }
 
-    grf_big = GrLoadFont("lucb40b.fnt");
+    grf_big = grx_font_load("lucb40b.fnt");
     if (grf_big == NULL) {
 #if defined(__WIN32__)
-        grf_big = GrLoadFont("..\\fonts\\lucb40b.fnt");
+        grf_big = grx_font_load("..\\fonts\\lucb40b.fnt");
 #else
-        grf_big = GrLoadFont("../fonts/lucb40b.fnt");
+        grf_big = grx_font_load("../fonts/lucb40b.fnt");
 #endif
         if (grf_big == NULL)
             disaster("lucb40b.fnt not found");
     }
 
     grt_centered.txo_bgcolor.v = GRX_COLOR_NONE;
-    grt_centered.txo_direct = GR_TEXT_RIGHT;
-    grt_centered.txo_xalign = GR_ALIGN_CENTER;
-    grt_centered.txo_yalign = GR_ALIGN_CENTER;
-    grt_centered.txo_chrtype = GR_BYTE_TEXT;
+    grt_centered.txo_direct = GRX_TEXT_DIRECTION_RIGHT;
+    grt_centered.txo_xalign = GRX_TEXT_ALIGN_CENTER;
+    grt_centered.txo_yalign = GRX_TEXT_VALIGN_MIDDLE;
+    grt_centered.txo_chrtype = GRX_CHAR_TYPE_BYTE;
 
     grt_left.txo_bgcolor.v = GRX_COLOR_NONE;
-    grt_left.txo_direct = GR_TEXT_RIGHT;
-    grt_left.txo_xalign = GR_ALIGN_LEFT;
-    grt_left.txo_yalign = GR_ALIGN_CENTER;
-    grt_left.txo_chrtype = GR_BYTE_TEXT;
+    grt_left.txo_direct = GRX_TEXT_DIRECTION_RIGHT;
+    grt_left.txo_xalign = GRX_TEXT_ALIGN_LEFT;
+    grt_left.txo_yalign = GRX_TEXT_VALIGN_MIDDLE;
+    grt_left.txo_chrtype = GRX_CHAR_TYPE_BYTE;
 }
 
 /************************************************************************/
@@ -347,10 +347,10 @@ static void the_title(int x, int y)
     grt_centered.txo_fgcolor.v = LIGHTGREEN;
 
     grt_centered.txo_font = grf_big;
-    GrDrawString(t1, strlen(t1), 0 + x, 0 + y, &grt_centered);
+    grx_draw_string_with_text_options(t1, strlen(t1), 0 + x, 0 + y, &grt_centered);
 
     grt_centered.txo_font = grf_std;
-    GrDrawString(t2, strlen(t2), 0 + x, 40 + y, &grt_centered);
+    grx_draw_string_with_text_options(t2, strlen(t2), 0 + x, 40 + y, &grt_centered);
 }
 
 /************************************************************************/
@@ -363,11 +363,11 @@ static void the_info(int x, int y)
     grt_centered.txo_font = grf_std;
 
     sprintf(aux, "VideoDriver: %s", grx_get_current_video_driver()->name);
-    GrDrawString(aux, strlen(aux), 0 + x, 25 + y, &grt_centered);
+    grx_draw_string_with_text_options(aux, strlen(aux), 0 + x, 25 + y, &grt_centered);
 
     sprintf(aux, "Mode: %dx%d %d bpp", grx_get_current_video_mode()->width,
             grx_get_current_video_mode()->height, grx_get_current_video_mode()->bpp);
-    GrDrawString(aux, strlen(aux), 0 + x, 50 + y, &grt_centered);
+    grx_draw_string_with_text_options(aux, strlen(aux), 0 + x, 50 + y, &grt_centered);
 }
 
 /************************************************************************/
@@ -447,7 +447,7 @@ static void paint_foot(char *s)
 
     grx_set_clip_box(10, 440, 630, 470);
     grx_clear_clip_box(CYAN);
-    GrDrawString(s, strlen(s), 320, 455, &grt_centered);
+    grx_draw_string_with_text_options(s, strlen(s), 320, 455, &grt_centered);
     grx_reset_clip_box();
 }
 
@@ -470,11 +470,11 @@ static void paint_animation(void)
     grt_left.txo_fgcolor.v = CYAN;
     grt_left.txo_font = grf_std;
     ltext = strlen(animatedtext);
-    wtext = GrStringWidth(animatedtext, ltext, &grt_left);
+    wtext = grx_text_option_get_string_width(&grt_left, animatedtext, ltext);
 
     grx_context_set_current(grc);
     grx_clear_context(DARKGRAY);
-    GrDrawString(animatedtext, ltext, pos, 15, &grt_left);
+    grx_draw_string_with_text_options(animatedtext, ltext, pos, 15, &grt_left);
     grx_context_set_current(grcglob);
     grx_bit_blt(NULL, 10, 8, grc, 0, 0, 629, 29, GRX_COLOR_MODE_WRITE);
 

@@ -26,7 +26,7 @@
 static char bitmaphdr[] =
 
 "/**\n"
-" ** %s ---- GRX 2.0 font converted to C by 'GrDumpFont()'\n"
+" ** %s ---- GRX 2.0 font converted to C by 'grx_font_dump()'\n"
 " **/\n"
 "\n"
 "#define  %s     FONTNAME_TEMPORARY_REDIRECTION\n"
@@ -41,8 +41,8 @@ static char fonthdr[] =
 "};\n"
 "\n"
 "struct {\n"
-"    GrFont        theFont;\n"
-"    GrFontChrInfo rest[%d];\n"
+"    GrxFont        theFont;\n"
+"    GrxFontCharInfo rest[%d];\n"
 "} %s = {\n"
 "    {\n"
 "        {                           /* font header */\n"
@@ -51,7 +51,7 @@ static char fonthdr[] =
 "            %d,  \t\t    "         "/* characters have varying width */\n"
 "            0,                      /* derived from a scalable font */\n"
 "            1,                      /* font permanently linked into program */\n"
-"            GR_FONTCVT_NONE,        /* 'tweaked' font (resized, etc..) */\n"
+"            GRX_FONT_CONV_FLAG_NONE,        /* 'tweaked' font (resized, etc..) */\n"
 "            %d,  \t\t    "         "/* width (average when proportional) */\n"
 "            %d,  \t\t    "         "/* font height */\n"
 "            %d,  \t\t    "         "/* baseline pixel pos (from top) */\n"
@@ -84,7 +84,7 @@ static char fontend[] =
 
 /* ----------------------------------------------------------------------- */
 
-void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName)
+void grx_font_dump(const GrxFont *f,char *CsymbolName,char *fileName)
 {
         unsigned int i;
         int  offset;
@@ -112,9 +112,9 @@ void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName)
         );
         for(i = 0; i < f->h.numchars; i++) {
             int  chr = i + f->h.minchar;
-            int  len = GrFontCharBitmapSize(f,chr);
+            int  len = grx_font_get_char_bmp_size(f,chr);
             int  pos = 0,j;
-            char *bmp = GrFontCharBitmap(f,chr);
+            char *bmp = grx_font_get_char_bmp(f,chr);
             fprintf(fp,"\t/* character %d */\n\t",chr);
             for(j = 0; j < len; j++) {
                 fprintf(fp,"0x%02x",(bmp[j] & 0xff));
@@ -146,20 +146,20 @@ void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName)
             (strcat(bitname,","),bitname),
             f->minwidth,
             f->maxwidth,
-            GrFontCharWidth(f,f->h.minchar)
+            grx_font_get_char_width(f,f->h.minchar)
         );
-        offset = GrFontCharBitmapSize(f,f->h.minchar);
+        offset = grx_font_get_char_bmp_size(f,f->h.minchar);
         for(i = 1; i < f->h.numchars; i++) {
             int chr = i + f->h.minchar;
             fprintf(
                 fp,
                 charinfo,
-                GrFontCharWidth(f,chr),
+                grx_font_get_char_width(f,chr),
                 offset,
                 ((i == (f->h.numchars - 1)) ? ' ' : ','),
                 chr
             );
-            offset += GrFontCharBitmapSize(f,chr);
+            offset += grx_font_get_char_bmp_size(f,chr);
         }
         fputs(fontend,fp);
         fclose(fp);

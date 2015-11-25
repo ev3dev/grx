@@ -32,7 +32,7 @@ GrPattern *(GrPatternFromImage)(GrImage *p) {
 }
 
 GrImage *(GrImageBuildUsedAsPattern)(const char *pixels,int w,int h,
-                                     const GrColorTableP colors     ) {
+                                     const GrxColorTable colors     ) {
   return GrImageBuildUsedAsPattern(pixels,w,h,colors);
 }
 

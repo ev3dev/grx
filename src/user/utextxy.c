@@ -24,5 +24,5 @@ void GrUsrTextXY(int x,int y,char *text,GrxColor fg,GrxColor bg)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);
-        GrTextXY(x,y,text,fg,bg);
+        grx_draw_text_xy(x,y,text,fg,bg);
 }

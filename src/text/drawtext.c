@@ -19,16 +19,16 @@
 #include <string.h>
 #include "libgrx.h"
 
-void GrTextXY(int x,int y,char *text,GrxColor fg,GrxColor bg)
+void grx_draw_text_xy(int x,int y,char *text,GrxColor fg,GrxColor bg)
 {
-        GrTextOption opt;
-        opt.txo_font      = &GrDefaultFont;
+        GrxTextOption opt;
+        opt.txo_font      = &grx_font_default;
         opt.txo_fgcolor.v = fg;
         opt.txo_bgcolor.v = bg;
-        opt.txo_chrtype   = GR_BYTE_TEXT;
-        opt.txo_direct    = GR_TEXT_RIGHT;
-        opt.txo_xalign    = GR_ALIGN_LEFT;
-        opt.txo_yalign    = GR_ALIGN_TOP;
-        GrDrawString(text,(int)strlen(text),x,y,&opt);
+        opt.txo_chrtype   = GRX_CHAR_TYPE_BYTE;
+        opt.txo_direct    = GRX_TEXT_DIRECTION_RIGHT;
+        opt.txo_xalign    = GRX_TEXT_ALIGN_LEFT;
+        opt.txo_yalign    = GRX_TEXT_VALIGN_TOP;
+        grx_draw_string_with_text_options(text,(int)strlen(text),x,y,&opt);
 }
 

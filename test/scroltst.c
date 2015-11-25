@@ -24,7 +24,7 @@ TESTFUNC(scrolltest)
         int  wdt = grx_get_screen_x();
         int  hgt = grx_get_screen_y();
         GrxColor nc  = grx_color_info_n_colors();
-        int  txh = GrDefaultFont.h.height + 2;
+        int  txh = grx_font_default.h.height + 2;
         for( ; ; ) {
             char buff[100];
             char *l1 = "Screen resolution: %dx%d";
@@ -40,20 +40,20 @@ TESTFUNC(scrolltest)
             int vh = grx_get_virtual_y();
             int vx = grx_get_viewport_x();
             int vy = grx_get_viewport_y();
-            int x  = (vw / 3) - (strlen(l6) * GrDefaultFont.h.width / 2);
+            int x  = (vw / 3) - (strlen(l6) * grx_font_default.h.width / 2);
             int y  = (vh / 3) - (3 * txh);
             grx_clear_screen(bgc);
             drawing(0,0,vw,vh,fgc,bgc);
-            sprintf(buff,l1,wdt,hgt); GrTextXY(x,y,buff,txc,bgc); y += txh;
-            sprintf(buff,l2,vw, vh ); GrTextXY(x,y,buff,txc,bgc); y += txh;
+            sprintf(buff,l1,wdt,hgt); grx_draw_text_xy(x,y,buff,txc,bgc); y += txh;
+            sprintf(buff,l2,vw, vh ); grx_draw_text_xy(x,y,buff,txc,bgc); y += txh;
             for( ; ; grx_set_viewport(vx,vy)) {
                 int yy = y;
                 vx = grx_get_viewport_x();
                 vy = grx_get_viewport_y();
-                sprintf(buff,l3,vx,vy); GrTextXY(x,yy,buff,txc,bgc); yy += txh;
-                GrTextXY(x,yy,l4,txc,bgc); yy += txh;
-                GrTextXY(x,yy,l5,txc,bgc); yy += txh;
-                GrTextXY(x,yy,l6,txc,bgc); yy += txh;
+                sprintf(buff,l3,vx,vy); grx_draw_text_xy(x,yy,buff,txc,bgc); yy += txh;
+                grx_draw_text_xy(x,yy,l4,txc,bgc); yy += txh;
+                grx_draw_text_xy(x,yy,l5,txc,bgc); yy += txh;
+                grx_draw_text_xy(x,yy,l6,txc,bgc); yy += txh;
                 switch(GrKeyRead()) {
                     case 'w': vw -= 8; break;
                     case 'W': vw += 8; break;

@@ -1,95 +1,94 @@
-/**
- ** fntinlne.c ---- the font inline functions
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * fntinlne.c ---- the font inline functions
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include "libgrx.h"
 
-int (GrFontCharPresent)(const GrFont *font,int chr)
+int (grx_font_is_char_present)(const GrxFont *font,int chr)
 {
-        return(GrFontCharPresent(font,chr));
+        return(grx_font_is_char_present(font,chr));
 }
 
-int (GrFontCharWidth)(const GrFont *font,int chr)
+int (grx_font_get_char_width)(const GrxFont *font,int chr)
 {
-        return(GrFontCharWidth(font,chr));
+        return(grx_font_get_char_width(font,chr));
 }
 
-int (GrFontCharHeight)(const GrFont *font,int chr)
+int (grx_font_get_char_height)(const GrxFont *font,int chr)
 {
-        return(GrFontCharHeight(font,chr));
+        return(grx_font_get_char_height(font,chr));
 }
 
-int (GrFontCharBmpRowSize)(const GrFont *font,int chr)
+int (grx_font_get_char_bmp_row_size)(const GrxFont *font,int chr)
 {
-        return(GrFontCharBmpRowSize(font,chr));
+        return(grx_font_get_char_bmp_row_size(font,chr));
 }
 
-int (GrFontCharBitmapSize)(const GrFont *font,int chr)
+int (grx_font_get_char_bmp_size)(const GrxFont *font,int chr)
 {
-        return(GrFontCharBitmapSize(font,chr));
+        return(grx_font_get_char_bmp_size(font,chr));
 }
 
-int (GrFontStringWidth)(const GrFont *font,const void *text,int len,int type)
+int (grx_font_get_string_width)(const GrxFont *font,const void *text,int len,GrxCharType type)
 {
-        return(GrFontStringWidth(font,text,len,type));
+        return(grx_font_get_string_width(font,text,len,type));
 }
 
-int (GrFontStringHeight)(const GrFont *font,const void *text,int len,int type)
+int (grx_font_get_string_height)(const GrxFont *font,const void *text,int len,GrxCharType type)
 {
-        return(GrFontStringHeight(font,text,len,type));
+        return(grx_font_get_string_height(font,text,len,type));
 }
 
-char *(GrFontCharBitmap)(const GrFont *font,int chr)
+unsigned char *(grx_font_get_char_bmp)(const GrxFont *font,int chr)
 {
-        return(GrFontCharBitmap(font,chr));
+        return(grx_font_get_char_bmp(font,chr));
 }
 
-char *(GrFontCharAuxBmp)(GrFont *font,int chr,int dir,int ul)
+unsigned char *(grx_font_get_char_aux_bmp)(GrxFont *font,int chr,GrxTextDirection dir,int ul)
 {
-        return(GrFontCharAuxBmp(font,chr,dir,ul));
+        return(grx_font_get_char_aux_bmp(font,chr,dir,ul));
 }
 
-int (GrCharWidth)(int chr,const GrTextOption *opt)
+int (grx_text_option_get_char_width)(const GrxTextOption *opt,int chr)
 {
-        return(GrCharWidth(chr,opt));
+        return(grx_text_option_get_char_width(opt,chr));
 }
 
-int (GrCharHeight)(int chr,const GrTextOption *opt)
+int (grx_text_option_get_char_height)(const GrxTextOption *opt,int chr)
 {
-        return(GrCharHeight(chr,opt));
+        return(grx_text_option_get_char_height(opt,chr));
 }
 
-void (GrCharSize)(int chr,const GrTextOption *opt,int *w,int *h)
+void (grx_text_option_get_char_size)(const GrxTextOption *opt,int chr,int *w,int *h)
 {
-        GrCharSize(chr,opt,w,h);
+        grx_text_option_get_char_size(opt,chr,w,h);
 }
 
-int (GrStringWidth)(void *text,int length,const GrTextOption *opt)
+int (grx_text_option_get_string_width)(const GrxTextOption *opt,void *text,int length)
 {
-        return(GrStringWidth(text,length,opt));
+        return(grx_text_option_get_string_width(opt,text,length));
 }
 
-int (GrStringHeight)(void *text,int length,const GrTextOption *opt)
+int (grx_text_option_get_string_height)(const GrxTextOption *opt,void *text,int length)
 {
-        return(GrStringHeight(text,length,opt));
+        return(grx_text_option_get_string_height(opt,text,length));
 }
 
-void (GrStringSize)(void *text,int length,const GrTextOption *opt,int *w,int *h)
+void (grx_text_option_get_string_size)(const GrxTextOption *opt,void *text,int length,int *w,int *h)
 {
-        GrStringSize(text,length,opt,w,h);
+        grx_text_option_get_string_size(opt,text,length,w,h);
 }
-

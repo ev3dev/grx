@@ -162,7 +162,7 @@ done:        if(!res) cleanup();
 
 static char *families[] = { "Unknown", "Roman", "Swiss", "Modern", "Script", "Decorative" };
 
-static int header(GrFontHeader *hdr)
+static int header(GrxFontHeader *hdr)
 {
         int res;
         int c;
@@ -185,7 +185,7 @@ static int header(GrFontHeader *hdr)
             hdr->proportional = fhdr.pix_width == 0;
             hdr->scalable = FALSE;
             hdr->preloaded = FALSE;
-            hdr->modified = GR_FONTCVT_NONE;
+            hdr->modified = GRX_FONT_CONV_FLAG_NONE;
             hdr->width = hdr->proportional ? fhdr.avg_width : fhdr.pix_width;
             hdr->height = fhdr.pix_height;
             hdr->baseline = fhdr.ascent;

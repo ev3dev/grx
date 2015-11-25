@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "arith.h"
 
-void GrUnloadFont(GrFont *f)
+void grx_font_unload(GrxFont *f)
 {
         if((f != NULL) && !f->h.preloaded) {
             unsigned int i;

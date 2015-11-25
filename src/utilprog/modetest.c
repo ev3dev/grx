@@ -34,10 +34,10 @@ static void PrintInfo(void)
     sprintf(aux, " Mode: %dx%d %d bpp ", grx_get_current_video_mode()->width,
     grx_get_current_video_mode()->height, grx_get_current_video_mode()->bpp);
     x = (grx_get_max_x() -
-        GrFontStringWidth(&GrDefaultFont, aux, strlen(aux), GR_BYTE_TEXT)) / 2;
+        grx_font_get_string_width(&grx_font_default, aux, strlen(aux), GRX_CHAR_TYPE_BYTE)) / 2;
     y = (grx_get_max_y() -
-        GrFontStringHeight(&GrDefaultFont, aux, strlen(aux), GR_BYTE_TEXT)) / 2;
-    GrTextXY(x, y, aux, grx_color_info_get_white(), grx_color_info_get_black());
+        grx_font_get_string_height(&grx_font_default, aux, strlen(aux), GRX_CHAR_TYPE_BYTE)) / 2;
+    grx_draw_text_xy(x, y, aux, grx_color_info_get_white(), grx_color_info_get_black());
 }
 
 typedef struct {

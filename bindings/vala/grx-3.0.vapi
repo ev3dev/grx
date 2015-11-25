@@ -729,25 +729,21 @@ namespace Grx {
      * It is an array of colors with the first element being the number of
      * colors in the table
      */
-    [CCode (cname = "GrxColor", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class ColorTable {
-        [CCode (cname = "GrxColor", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
         [CCode (cname = "g_malloc0")]
         ColorTable.alloc (size_t size);
         public ColorTable (uint size) {
-            this.alloc (alloc_size (size) * sizeof(MallocStruct));
+            this.alloc (get_alloc_size (size) * sizeof(Color));
         }
 
-        [CCode (cname = "GR_CTABLE_SIZE")]
-        public uint size ();
-        [Ccode (cname = "GR_CTABLE_COLOR")]
+        public uint size { [CCode (cname = "GRX_COLOR_TABLE_GET_SIZE")]get; }
+        [Ccode (cname = "GRX_COLOR_TABLE_GET_COLOR")]
         public Color get (uint index);
 
-        [CCode (cname = "GR_CTABLE_ALLOCSIZE")]
-        int alloc_size (uint num_colors);
+        [CCode (cname = "GRX_COLOR_TABLE_GET_ALLOC_SIZE")]
+        static int get_alloc_size (uint num_colors);
     }
 
     /* ================================================================== */
@@ -826,51 +822,48 @@ namespace Grx {
 
     public Color get_pixel_nc (int x, int y);
 
-    [CCode (cname = "int", cprefix = "GR_TEXT_", has_type_id = false)]
+    /* ================================================================== */
+    /*                   FONTS AND TEXT PRIMITIVES                        */
+    /* ================================================================== */
+
+    [CCode (has_type_id = false)]
     public enum TextDirection {
         RIGHT,
         DOWN,
         LEFT,
-        UP,
-        DEFAULT;
+        UP;
 
-        [CCode (cname = "GR_TEXT_IS_VERTICAL")]
+        [CCode (cname = "GRX_TEXT_DIRECTION_IS_VERTICAL")]
         public bool is_vertical ();
     }
 
-    [CCode (cname = "int", cprefix = "GR_ALIGN_", has_type_id = false)]
-    public enum TextHorizAlign {
+    [CCode (cprefix = "GRX_TEXT_ALIGN_", has_type_id = false)]
+    public enum TextAlignment {
         LEFT,
         CENTER,
-        RIGHT,
-        DEFAULT;
+        RIGHT
     }
 
-    [CCode (cname = "int", cprefix = "GR_ALIGN_", has_type_id = false)]
-    public enum TextVertAlign {
+    [CCode (cprefix = "GRX_TEXT_VALIGN_", has_type_id = false)]
+    public enum TextVerticalAlignment {
         TOP,
-        [CCode (cname = "GR_ALIGN_CENTER")]
         MIDDLE,
         BOTTOM,
-        BASELINE,
-        DEFAULT;
+        BASELINE
     }
 
-    [CCode (cname = "int", has_type_id = false)]
-    public enum ChrType {
-        [CCode (cname = "GR_BYTE_TEXT")]
+    [CCode (has_type_id = false)]
+    public enum CharType {
         BYTE,
-        [CCode (cname = "GR_WORD_TEXT")]
         WORD,
-        [CCode (cname = "GR_ATTR_TEXT")]
         ATTR;
 
-        [CCode (cname = "GR_TEXTCHR_SIZE")]
-        public int size ();
-        [CCode (cname = "GR_TEXTCHR_CODE", instance_pos = 1.1)]
-        public uint code (int ch);
-        [CCode (cname = "GR_TEXTCHR_ATTR", instance_pos = 1.1)]
-        public CharAttr attr (int ch);
+        [CCode (cname = "GRX_CHAR_TYPE_GET_SIZE")]
+        public int get_size ();
+        [CCode (cname = "GRX_CHAR_TYPE_GET_CODE")]
+        public uint get_code (int ch);
+        [CCode (cname = "GRX_CHAR_TYPE_GET_ATTR")]
+        public CharAttr get_attr (int ch);
     }
 
     [CCode (cname = "char", has_destroy_function = false, has_copy_function = false, has_type_id = false)]
@@ -899,32 +892,32 @@ namespace Grx {
         PROPORTION
     }
 
-    [CCode (cname = "struct _GR_fontChrInfo", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
-    public class FontChrInfo {
-        [CCode (cname = "struct _GR_fontChrInfo", destroy_function = "", has_type_id = false)]
+    public class FontCharInfo {
+        [CCode (cname = "GrxFontCharInfo", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         public uint width;
         public uint offset;
 
         [CCode (cname = "g_malloc0")]
-        public FontChrInfo (size_t size = sizeof(MallocStruct))
+        public FontCharInfo (size_t size = sizeof(MallocStruct))
             requires (size == sizeof(MallocStruct));
     }
 
-    [CCode (cname = "struct _GR_font", free_function = "GrUnloadFont", has_type_id = false)]
+    [CCode (free_function = "grx_font_unload", has_type_id = false)]
     [Compact]
     public class Font {
-        [CCode (cname = "&GrFont_PC6x8")]
+        [CCode (cname = "&grx_font_pc6x8")]
         public static unowned Font pc6x8;
-        [CCode (cname = "&GrFont_PC8x8")]
+        [CCode (cname = "&grx_font_pc8x8")]
         public static unowned Font pc8x8;
-        [CCode (cname = "&GrFont_PC8x14")]
+        [CCode (cname = "&grx_font_pc8x14")]
         public static unowned Font pc8x14;
-        [CCode (cname = "&GrFont_PC8x16")]
+        [CCode (cname = "&grx_font_pc8x16")]
         public static unowned Font pc8x16;
-        [CCode (cname = "&GrDefaultFont")]
+        [CCode (cname = "&grx_font_default")]
         public static unowned Font default;
 
         [CCode (cname = "h.name")]
@@ -963,57 +956,46 @@ namespace Grx {
         [CCode (array_length_cexpr = "7")]
         public int[] auxofs;
         [CCode (array_length_cexpr = "1")]
-        public FontChrInfo[] chrinfo;
+        public FontCharInfo[] chrinfo;
 
-        [CCode (cname = "GrLoadFont")]
         public static Font? load (string name);
-        [CCode (cname = "GrLoadConvertedFont")]
         public static Font? load_converted (string name, FontConversionFlag flags, int w = 0, int h = 0, int min_ch = 0, int max_ch = 0);
-        [CCode (cname = "GrBuildConvertedFont")]
         public Font build_converted (FontConversionFlag flags, int w = 0, int h = 0, int min_ch = 0, int max_ch = 0);
 
-        [CCode (cname = "GrDumpFont")]
         public void dump (string c_symbol_name, string file_name);
-        [CCode (cname = "GrDumpFnaFont")]
         public void dump_fna (string file_name);
-        [CCode (cname = "GrSetFontPath")]
         public static void set_path (string path_list);
 
-        [CCode (cname = "GrFontCharPresent")]
-        public int char_present (int chr);
-        [CCode (cname = "GrFontCharWidth")]
-        public int char_width (int chr);
-        [CCode (cname = "GrFontCharHeight")]
-        public int char_height (int chr);
-        [CCode (cname = "GrFontCharBmpRowSize")]
-        public int char_bmp_row_size (int chr);
-        [CCode (cname = "GrFontCharBitmapSize")]
-        public int char_bitmap_size (int chr);
-        [CCode (cname = "GrFontStringWidth")]
-        public int string_width (void *text, int len, ChrType type = ChrType.BYTE);
-        public int vala_string_width (string text) {
-            return string_width (text.data, text.length);
+        public int is_char_present (int chr);
+        public int get_char_width (int chr);
+        public int get_char_height (int chr);
+        public int get_char_bmp_row_size (int chr);
+        public int get_char_bmp_size (int chr);
+        [CCode (cname = "grx_font_get_string_width")]
+        int internal_get_string_width (void *text, int len, CharType type = CharType.BYTE);
+        [CCode (cname = "vala_grx_font_get_string_width")]
+        public int get_string_width (string text) {
+            return internal_get_string_width (text.data, text.length);
         }
-        [CCode (cname = "GrFontStringHeight")]
-        public int string_height (void *text, int len, ChrType type = ChrType.BYTE);
-        public int vala_string_height (string text) {
-            return string_height (text.data, text.length);
+        [CCode (cname = "grx_font_get_string_height")]
+        int internal_get_string_height (void *text, int len, CharType type = CharType.BYTE);
+        [CCode (cname = "vala_grx_font_get_string_height")]
+        public int get_string_height (string text) {
+            return internal_get_string_height (text.data, text.length);
         }
-        [CCode (cname = "GrProportionalTextWidth")]
-        public int proportional_text_width (void *text, int len, ChrType type = ChrType.BYTE);
-        public int proportional_vala_string_width (string text) {
-            return proportional_text_width (text.data, text.length);
+        [CCode (cname = "grx_font_get_proportional_text_width")]
+        int internal_get_proportional_text_width (void *text, int len, CharType type = CharType.BYTE);
+        [CCode (cname = "vala_grx_font_get_proportional_text_width")]
+        public int get_proportional_text_width (string text) {
+            return internal_get_proportional_text_width (text.data, text.length);
         }
 
-        [CCode (cname = "GrBuildAuxiliaryBitmap")]
-        public char *build_auxiliary_bitmap (int chr, TextDirection dir, bool ul);
-        [CCode (cname = "GrFontCharBitmap")]
-        public char *char_bitmap (int chr);
-        [CCode (cname = "GrFontCharAuxBmp")]
-        public char *char_aux_bitmap (int chr, TextDirection dir, bool ul);
+        public uint8 *build_auxiliary_bitmap (int chr, TextDirection dir, bool ul);
+        public uint8 *get_char_bitmap (int chr);
+        public uint8 *get_char_aux_bitmap (int chr, TextDirection dir, bool ul);
     }
 
-    [CCode (cname = "union _GR_textColor", has_type_id = false)]
+    [CCode (has_type_id = false)]
     [SimpleType]
     public struct TextColor : uint32 {
         [CCode (cname = "v")]
@@ -1022,10 +1004,10 @@ namespace Grx {
         unowned ColorTable as_color_table;
     }
 
-    [CCode (cname = "struct _GR_textOption", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class TextOption {
-        [CCode (cname = "struct _GR_textOption", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxTextOption", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         [CCode (cname = "txo_font")]
@@ -1035,45 +1017,45 @@ namespace Grx {
         [CCode (cname = "txo_bgcolor")]
         public unowned TextColor bg_color;
         [CCode (cname = "txo_chrtype")]
-        public ChrType chr_type;
+        public CharType chr_type;
         [CCode (cname = "txo_direct")]
         public TextDirection direction;
         [CCode (cname = "txo_xalign")]
-        public TextHorizAlign x_align;
+        public TextAlignment x_align;
         [CCode (cname = "txo_yalign")]
-        public TextVertAlign y_align;
+        public TextVerticalAlignment y_align;
 
         [CCode (cname = "g_malloc0")]
         public TextOption (size_t size = sizeof(MallocStruct))
             requires (size == sizeof(MallocStruct));
 
-        [CCode (cname = "GrCharWidth", instance_pos = 1.1)]
-        public int char_width (int chr);
-        [CCode (cname = "GrCharHeight", instance_pos = 1.1)]
-        public int char_height (int chr);
-        [CCode (cname = "GrCharSize", instance_pos = 1.1)]
-        public void char_size (int chr, out int width, out int height);
-        [CCode (cname = "GrStringWidth", instance_pos = 2.1)]
-        public int string_width (void *text, int length);
-        public int vala_string_width (string test) {
-            return string_width (test.data, test.length);
+        public int get_char_width (int chr);
+        public int get_char_height (int chr);
+        public void get_char_size (int chr, out int width, out int height);
+        [CCode (cname = "grx_text_option_get_string_width")]
+        int internal_string_width (void *text, int length);
+        [CCode (cname = "vala_grx_text_option_get_string_width")]
+        public int get_string_width (string test) {
+            return internal_string_width (test.data, test.length);
         }
-        [CCode (cname = "GrStringHeight", instance_pos = 2.1)]
-        public int string_height (void *text, int length);
-        public int vala_string_height (string text) {
-            return string_height (text.data, text.length);
+        [CCode (cname = "grx_text_option_get_string_height")]
+        int internal_get_string_height (void *text, int length);
+        [CCode (cname = "vala_grx_text_option_get_string_height")]
+        public int get_string_height (string text) {
+            return internal_get_string_height (text.data, text.length);
         }
-        [CCode (cname = "GrStringSize", instance_pos = 2.1)]
-        public void string_size (void *text, int length, out int w, out int h);
-        public void vala_string_size (string text, out int w, out int h) {
-            string_size (text.data, text.length, out w, out h);
+        [CCode (cname = "grx_text_option_get_string_size")]
+        void internal_get_string_size (void *text, int length, out int w, out int h);
+        [CCode (cname = "vala_grx_text_option_get_string_size")]
+        public void get_string_size (string text, out int w, out int h) {
+            internal_get_string_size (text.data, text.length, out w, out h);
         }
     }
 
-    [CCode (cname = "GrTextRegion", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class TextRegion {
-        [CCode (cname = "GrTextRegion", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxTextRegion", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         [CCode (cname = "txr_font")]
@@ -1097,28 +1079,24 @@ namespace Grx {
         [CCode (cname = "txr_ypos")]
         public int y_pos;
         [CCode (cname = "txr_chrtype")]
-        public ChrType chr_type;
+        public CharType chr_type;
 
         [CCode (cname = "g_malloc0")]
         public TextRegion (size_t size = sizeof(MallocStruct))
             requires (size == sizeof(MallocStruct));
 
-        [CCode (cname = "GrDumpChar", instance_pos = 3.1)]
         public void dump_char (int chr, int col, int row);
-        [CCode (cname = "GrDumpText", instance_pos = 4.1)]
         public void dump_text (int col, int row, int width, int height);
-        [CCode (cname = "GrDumpTextRegion")]
         public void dump ();
     }
 
-    [CCode (cname = "GrDrawChar")]
-    public void draw_char (int chr, int x, int y, TextOption opt);
-    [CCode (cname = "GrDrawString")]
-    public void draw_string (void *text, int length, int x, int y, TextOption opt);
-    public void draw_vala_string (string text, int x, int y, TextOption opt) {
-        draw_string (text.data, text.length, x, y, opt);
+    public void draw_char_with_text_options (int chr, int x, int y, TextOption opt);
+    [CCode (cname = "grx_draw_string_with_text_options")]
+    void internal_draw_string_with_text_options (void *text, int length, int x, int y, TextOption opt);
+    [CCode (cname = "vala_grx_draw_string_with_text_options")]
+    public void draw_string_with_text_options (string text, int x, int y, TextOption opt) {
+        internal_draw_string_with_text_options (text.data, text.length, x, y, opt);
     }
-    [CCode (cname = "GrTextXY")]
     public void draw_text_xy (int x, int y, string text, Color fg, Color bg);
 
     /* ================================================================== */
