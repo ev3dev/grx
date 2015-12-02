@@ -1686,12 +1686,7 @@ int grx_context_save_to_jpeg_grayscale(GrxContext *grc, gchar *jpegfn, gint qual
 /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */
 /* ================================================================== */
 
-void GrResizeGrayMap(unsigned char *map,int pitch,int ow,int oh,int nw,int nh);
-int  GrMatchString(const char *pattern,const char *strg);
-void GrSetWindowTitle(char *title);
-void GrSleep(int msec);
-void GrFlush(void);
-long GrMsecTime(void);        
+void grx_resize_gray_map(unsigned char *map,int pitch,int ow,int oh,int nw,int nh);
 
 /* ================================================================== */
 /*                        TIFF ADDON FUNCTIONS                        */

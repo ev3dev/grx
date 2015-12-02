@@ -1502,16 +1502,5 @@ namespace Grx {
     /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */
     /* ================================================================== */
 
-    [CCode (cname = "GrResizeGrayMap")]
     public void resize_gray_map (uchar *map, int pitch, int old_width, int old_height, int new_width, int new_height);
-    [CCode (cname = "GrMatchString")]
-    public int match_string (string pattern, string str);
-    [CCode (cname = "GrSetWindowTitle")]
-    public void set_window_title (string title);
-    [CCode (cname = "GrSleep")]
-    public void sleep (int msec);
-    [CCode (cname = "GrFlush")]
-    public void flush ();
-    [CCode (cname = "GrMsecTime")]
-    public long msec_time ();
 }

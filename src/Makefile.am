@@ -96,7 +96,6 @@ source_c = \
     mouse/mouinfo.c     \
     mouse/mouinlne.c    \
     mouse/mscursor.c    \
-    mouse/mstime.c      \
     pattern/fillpatt.c  \
     pattern/makepat.c   \
     pattern/patfbits.c  \
@@ -229,7 +228,6 @@ source_c = \
     utils/resize.c      \
     utils/ordswap.c     \
     utils/shiftscl.c    \
-    utils/strmatch.c    \
     utils/tmpbuff.c     \
     vdrivers/vd_lnxfb.c \
     vdrivers/vd_mem.c   \

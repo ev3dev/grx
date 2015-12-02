@@ -82,7 +82,7 @@ static void grow(unsigned char *ptr,int pitch,unsigned int oldlen,unsigned int n
 #endif
 }
 
-void GrResizeGrayMap(unsigned char *map,int pitch,int ow,int oh,int nw,int nh)
+void grx_resize_gray_map(unsigned char *map,int pitch,int ow,int oh,int nw,int nh)
 {
         if(ow != nw) {
             unsigned char *ptr = map;

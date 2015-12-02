@@ -66,7 +66,7 @@ TESTFUNC(circtest)
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             xr += xr/4+1;
             yr += yr/4+1;
-            GrSleep(200);
+            g_usleep(200*1000);
         }
         c1 = grx_color_info_alloc_color(64,64,128);
         xr = 4;
@@ -75,7 +75,7 @@ TESTFUNC(circtest)
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             yr += yr/4+1;
             xr = yr * 4;
-            GrSleep(200);
+            g_usleep(200*1000);
         }
         c1 = grx_color_info_alloc_color(64,64,64);
         xr = 1;
@@ -84,7 +84,7 @@ TESTFUNC(circtest)
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             xr += xr/4+1;
             yr = xr * 4;
-            GrSleep(200);
+            g_usleep(200*1000);
         }
 
         grx_draw_text_xy(0,0,"press any key to continue",grx_color_info_get_white(),grx_color_info_get_black());

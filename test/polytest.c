@@ -51,11 +51,11 @@ static void speedtest(void)
         int sy = (grx_get_size_y() - 2*hh) / 32;
         int  ii,jj;
         GrxColor color;
-        long t1,t2,t3;
+        gint64 t1,t2,t3;
    char msg[81];
 
         grx_clear_screen(black);
-        t1 = GrMsecTime();
+        t1 = g_get_monotonic_time();
         pts[0][1] = 0;
         pts[1][1] = hh;
         pts[2][1] = 2*hh;
@@ -79,7 +79,7 @@ static void speedtest(void)
             pts[2][1] += sy;
             pts[3][1] += sy;
         }
-        t2 = GrMsecTime();
+        t2 = g_get_monotonic_time();
         pts[0][1] = 0;
         pts[1][1] = hh;
         pts[2][1] = 2*hh;
@@ -103,13 +103,13 @@ static void speedtest(void)
             pts[2][1] += sy;
             pts[3][1] += sy;
         }
-        t3 = GrMsecTime();
+        t3 = g_get_monotonic_time();
         grx_draw_text_xy(0, 0, "Times to scan 1024 polygons", white, black);
         sprintf(msg, "   with 'grx_draw_filled_polygon': %.2f (s)",
-               (double)(t2 - t1) / (double)1000);
+               (double)(t2 - t1) / (double)1000000);
         grx_draw_text_xy(0, 18, msg, white, black);
         sprintf(msg, "   with 'grx_draw_filled_convex_polygon': %.2f (s)",
-               (double)(t3 - t2) / (double)1000);
+               (double)(t3 - t2) / (double)1000000);
         grx_draw_text_xy(0, 36, msg, white, black);
 }
 
