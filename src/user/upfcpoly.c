@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "usercord.h"
 
-void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p)
+void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrxPattern *p)
 {
         int pt;
         int (*tmp)[2];
@@ -34,7 +34,7 @@ void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p)
                 U2SX(tmp[pt][0],CURC);
                 U2SY(tmp[pt][1],CURC);
           }
-          GrPatternFilledConvexPolygon(numpts,tmp,p);
+          grx_draw_filled_convex_polygon_with_pattern(numpts,tmp,p);
           FREE(tmp);
         }
         reset_ALLOC();

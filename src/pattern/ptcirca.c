@@ -25,8 +25,8 @@
 
 #include "libgrx.h"
 
-void GrPatternedCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrLinePattern *lp)
+void grx_draw_circle_arc_with_pattern(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxLinePattern *lp)
 {
-        GrPatternedEllipseArc(xc,yc,r,r,start,end,style,lp);
+        grx_draw_ellipse_arc_with_pattern(xc,yc,r,r,start,end,style,lp);
 }
 

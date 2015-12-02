@@ -22,13 +22,13 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrPatternedCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrLinePattern *lp)
+void GrUsrPatternedCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxLinePattern *lp)
 {
 #ifdef USR_KEEP_SHAPE
         U2SX(xc,CURC);
         U2SY(yc,CURC);
         SCALE(r,r,CURC->x_max,CURC->user_width);
-        GrPatternedCircleArc(xc,yc,r,start,end,style,lp);
+        grx_draw_circle_arc_with_pattern(xc,yc,r,start,end,style,lp);
 #else
         GrUsrPatternedEllipseArc(xc,yc,r,r,start,end,style,lp);
 #endif /* USR_KEEP_SHAPE */

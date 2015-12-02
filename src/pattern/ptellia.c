@@ -27,7 +27,7 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void GrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrLinePattern *lp)
+void grx_draw_ellipse_arc_with_pattern(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxLinePattern *lp)
 {
     int (*points)[2];
     setup_ALLOC();
@@ -54,8 +54,8 @@ void GrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcS
                 numpts++;
                 close = TRUE;
         }
-        fval.p = lp->lnp_pattern;
-        _GrDrawCustomPolygon(numpts,points,lp->lnp_option,
+        fval.p = lp->pattern;
+        _GrDrawCustomPolygon(numpts,points,lp->options,
                              &_GrPatternFiller,fval,close,TRUE);
         FREE(points);
     }

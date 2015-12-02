@@ -24,7 +24,7 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void GrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrPattern *p)
+void grx_draw_filled_ellipse_arc_with_pattern(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxPattern *p)
 {
    int (*points)[2];
    setup_ALLOC();

@@ -626,7 +626,7 @@ namespace Grx {
 
         public Color get_pixel_nc (int x, int y);
 
-        [CCode (cname = "GrConvertToPixmap")]
+        [CCode (cname = "grx_pattern_create_pixmap_from_context")]
         public Pattern to_pixmap ();
 
         [CCode (cname = "GrUsrPixelC")]
@@ -1160,40 +1160,35 @@ namespace Grx {
      * It is always 8 pixels wide (1 byte per scan line), its height is
      * user-defined. SET THE TYPE FLAG TO ZERO!!!
      */
-    [CCode (cname = "struct _GR_bitmap", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class Bitmap {
-        [CCode (cname = "struct _GR_bitmap", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxBitmap", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         /**
          * Type flag for pattern union.
          */
-        [CCode (cname = "bmp_ispixmap")]
         public bool is_pixmap;
 
         /**
          * Bitmap height
          */
-        [CCode (cname = "bmp_height")]
         public int height;
 
         /**
          * Pointer to the bit pattern
          */
-        [CCode (cname = "bmp_data")]
         public char *data;
 
         /**
          * Foreground color for fill
          */
-        [CCode (cname = "bmp_fgcolor")]
         public Color fg_color;
 
         /**
          * background color for fill
          */
-        [CCode (cname = "bmp_bgcolor")]
         public Color bg_color;
 
         [CCode (cname = "g_malloc0")]
@@ -1203,8 +1198,7 @@ namespace Grx {
         /**
          * Set if dynamically allocated
          */
-        [CCode (cname = "bmp_memflags")]
-        public int flags;
+        public int free_on_pattern_destroy;
     }
 
     /**
@@ -1214,22 +1208,42 @@ namespace Grx {
      * It is mode dependent, typically one of the library functions is used to
      * build it. KEEP THE TYPE FLAG NONZERO!!!
      */
-    [CCode (cname = "struct _GR_pixmap", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class Pixmap {
-        [CCode (cname = "struct _GR_pixmap", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxPixmap", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
-        [CCode (cname = "pxp_ispixmap")]
-        public bool is_pixmap;               /* type flag for pattern union */
-        [CCode (cname = "pxp_width")]
-        public int width;                  /* pixmap width (in pixels)  */
-        [CCode (cname = "pxp_height")]
-        public int height;                 /* pixmap height (in pixels) */
-        [CCode (cname = "pxp_oper")]
-        public ColorMode operator;                   /* bitblt mode (SET, OR, XOR, AND, IMAGE) */
-        [CCode (cname = "&self->pxp_source")]
-        public static Frame pxp_source;        /* source context for fill */
+        /**
+         * type flag for pattern union
+         */
+        public bool is_pixmap;
+
+        /**
+         * pixmap width (in pixels)
+         */
+        public int width;
+
+        /**
+         * pixmap height (in pixels)
+         */
+        public int height;
+
+        /**
+         * bitblt mode (SET, OR, XOR, AND, IMAGE)
+         */
+        public ColorMode mode;
+
+        [CCode (cname = "&self->source")]
+        static Frame source_hack;
+
+        /**
+         * source context for fill
+         */
+        [CCode (cname = "&self->source")]
+        public Frame source {
+            get { return source_hack; }
+        }
 
         [CCode (cname = "g_malloc0")]
         public Pixmap (size_t size = sizeof(MallocStruct))
@@ -1239,16 +1253,13 @@ namespace Grx {
     /**
      * Fill pattern union -- can either be a bitmap or a pixmap
      */
-    [CCode (cname = "GrPattern", free_function = "GrDestroyPattern", has_type_id = false)]
+    [CCode (free_function = "grx_pattern_free", has_type_id = false)]
     [Compact]
     public class Pattern {
-        [CCode (cname = "gp_ispixmap")]
-        public bool is_pixmap;               /* nonzero for pixmaps */
+        public bool is_pixmap;               /* true for pixmaps */
 
-        [CCode (cname = "GrBuildPixmap")]
-        public Pattern.buildPixmap ([CCode (array_length = false)]char *pixels, int w, int h, ColorTable colors);
-        [CCode (cname = "GrBuildPixmapFromBits")]
-        public Pattern.buildPixmapFromBits ([CCode (array_length = false)]char *bits, int w, int h, Color fgc, Color bgc);
+        public static Pattern create_pixmap ([CCode (array_length = false)]char *pixels, int w, int h, ColorTable colors);
+        public Pattern create_pixmap_from_bits ([CCode (array_length = false)]char *bits, int w, int h, Color fgc, Color bgc);
     }
 
     /**
@@ -1258,77 +1269,60 @@ namespace Grx {
      * 1. Fill pattern, and the
      * 2. Custom line drawing option
      */
-    [CCode (cname = "GrLinePattern", free_function = "g_free", has_type_id = false)]
+    [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
     public class LinePattern {
-        [CCode (cname = "GrLinePattern", destroy_function = "", has_type_id = false)]
+        [CCode (cname = "GrxLinePattern", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         /**
          * Fill pattern
          */
-        [CCode (cname = "lnp_pattern")]
         Pattern pattern;
+
         /**
          * width + dash pattern
          */
-        [CCode (cname = "lnp_option")]
-        LinePattern option;
+        LinePattern options;
 
         [CCode (cname = "g_malloc0")]
         public LinePattern (size_t size = sizeof(MallocStruct))
             requires (size == sizeof(MallocStruct));
     }
 
-    [CCode (cname = "GrPatternedLine")]
-    public void patterned_line (int x1, int y1, int x2, int y2, LinePattern line_pattern);
-    [CCode (cname = "GrPatternedBox")]
-    public void patterned_box  (int x1, int y1, int x2, int y2, LinePattern line_pattern);
-    [CCode (cname = "GrPatternedCircle")]
-    public void patterned_circle (int xc, int yc, int r, LinePattern line_pattern);
-    [CCode (cname = "GrPatternedEllipse")]
-    public void patterned_ellipse (int xc, int yc, int xa, int ya, LinePattern line_pattern);
-    [CCode (cname = "GrPatternedCircleArc")]
-    public void patterned_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, LinePattern line_pattern);
-    [CCode (cname = "GrPatternedEllipseArc")]
-    public void patterned_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LinePattern line_pattern);
-    [CCode (cname = "GrPatternedPolyLine")]
-    public void patterned_poly_line ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern line_pattern);
-    [CCode (cname = "GrPatternedPolygon")]
-    public void patterned_polygon ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern line_pattern);
+    public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LinePattern line_pattern);
+    public void draw_box_with_pattern (int x1, int y1, int x2, int y2, LinePattern line_pattern);
+    public void draw_circle_with_pattern (int xc, int yc, int r, LinePattern line_pattern);
+    public void draw_ellipse_with_pattern (int xc, int yc, int xa, int ya, LinePattern line_pattern);
+    public void draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, ArcStyle style, LinePattern line_pattern);
+    public void draw_ellipse_arc_with_pattern (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LinePattern line_pattern);
+    public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern line_pattern);
+    public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern line_pattern);
 
-    [CCode (cname = "GrPatternFilledPlot")]
-    public void pattern_filled_plot (int x, int y, Pattern pattern);
-    [CCode (cname = "GrPatternFilledLine")]
-    public void pattern_filled_line (int x1, int y1, int x2, int y2, Pattern pattern);
-    [CCode (cname = "GrPatternFilledBox")]
-    public void pattern_filled_box (int x1, int y1, int x2, int y2, Pattern pattern);
-    [CCode (cname = "GrPatternFilledCircle")]
-    public void pattern_filled_circle (int xc, int yc, int r, Pattern pattern);
-    [CCode (cname = "GrPatternFilledEllipse")]
-    public void pattern_filled_ellipse (int xc, int yc, int xa, int ya, Pattern pattern);
-    [CCode (cname = "GrPatternFilledCircleArc")]
-    public void pattern_filled_circle_arc (int xc, int yc, int r, int start, int end, int style, Pattern pattern);
-    [CCode (cname = "GrPatternFilledEllipseArc")]
-    public void pattern_filled_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, int style, Pattern pattern);
-    [CCode (cname = "GrPatternFilledConvexPolygon")]
-    public void pattern_filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
-    [CCode (cname = "GrPatternFilledPolygon")]
-    public void pattern_filled_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
-    [CCode (cname = "GrPatternFloodFill")]
-    public void pattern_flood_fill (int x, int y, Color border, Pattern pattern);
+    public void draw_filled_point_with_pattern (int x, int y, Pattern pattern);
+    public void draw_filled_line_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
+    public void draw_filled_box_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
+    public void draw_filled_circle_with_pattern (int xc, int yc, int r, Pattern pattern);
+    public void draw_filled_ellipse_with_pattern (int xc, int yc, int xa, int ya, Pattern pattern);
+    public void draw_filled_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, int style, Pattern pattern);
+    public void draw_filled_ellipse_arc_with_pattern (int xc, int yc, int xa, int ya, int start, int end, int style, Pattern pattern);
+    public void draw_filled_convex_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
+    public void draw_filled_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
+    public void flood_fill_with_pattern (int x, int y, Color border, Pattern pattern);
 
-    [CCode (cname = "GrPatternDrawChar")]
-    public void pattern_draw_char (int chr, int x, int y, TextOption opt, Pattern pattern);
-    [CCode (cname = "GrPatternDrawString")]
-    public void pattern_draw_string (void *text, int length, int x, int y, TextOption opt, Pattern pattern);
-    public void pattern_draw_vala_string (string text, int x, int y, TextOption opt, Pattern pattern) {
-        pattern_draw_string (text.data, text.length, x, y, opt, pattern);
+    public void draw_char_with_pattern (int chr, int x, int y, TextOption opt, Pattern pattern);
+    [CCode (cname = "grx_draw_string_with_pattern")]
+    void internal_draw_string_with_pattern (void *text, int length, int x, int y, TextOption opt, Pattern pattern);
+    [CCode (cname = "vala_grx_draw_string_with_pattern")]
+
+    public void draw_string_with_pattern (string text, int x, int y, TextOption opt, Pattern pattern) {
+        internal_draw_string_with_pattern (text.data, text.length, x, y, opt, pattern);
     }
-    [CCode (cname = "GrPatternDrawStringExt")]
-    public void pattern_draw_string_ext (void *text, int length, int x, int y, TextOption opt, Pattern pattern);
-    public void pattern_draw_vala_string_ext (string text, int x, int y, TextOption opt, Pattern pattern) {
-        pattern_draw_string_ext (text.data, text.length, x, y, opt, pattern);
+    [CCode (cname = "grx_draw_string_with_pattern_ext")]
+    void internal_draw_string_with_pattern_ext (void *text, int length, int x, int y, TextOption opt, Pattern pattern);
+    [CCode (cname = "vala_grx_draw_string_with_pattern_ext")]
+    public void draw_string_with_pattern_ext (string text, int x, int y, TextOption opt, Pattern pattern) {
+        internal_draw_string_with_pattern_ext (text.data, text.length, x, y, opt, pattern);
     }
 
     /* ================================================================== */
@@ -1354,9 +1348,9 @@ namespace Grx {
         [CCode (cname = "GrImage", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
-        [CCode (cname = "lnp_pattern")]
+        [CCode (cname = "pattern")]
         Pattern pattern;         /* fill pattern */
-        [CCode (cname = "lnp_option")]
+        [CCode (cname = "options")]
         LineOptions options;          /* width + dash pattern */
 
         [CCode (cname = "GrImageBuild")]

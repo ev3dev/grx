@@ -29,8 +29,8 @@ void GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,GrImage *p)
   xo = min(xo, min(x1,x2));
   yo = min(yo, min(y1,y2));
   clip_box(CURC,x1,y1,x2,y2);
-  iwdt = p->pxp_width;
-  ihgt = p->pxp_height;
+  iwdt = p->width;
+  ihgt = p->height;
   if ( (y2-y1) <= 0 || (x2-x1) <= 0 || iwdt <= 0 || ihgt <= 0) return;
   if (CURC->gc_is_on_screen) bltfun = CURC->gc_driver->bltr2v;
   else                   bltfun = CURC->gc_driver->bitblt;
@@ -48,8 +48,8 @@ void GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,GrImage *p)
     do {
       copyw = min(x2-xx,iwdt-xoff);
       (*bltfun)( &CURC->frame, xx + CURC->x_offset, yy + CURC->y_offset,
-                 &p->pxp_source,xoff,yoff,copyw,copyh,
-                 p->pxp_oper
+                 &p->source,xoff,yoff,copyw,copyh,
+                 p->mode
       );
       xx += iwdt-xoff;
       xoff = 0;
@@ -63,7 +63,7 @@ void GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,GrImage *p)
 void  GrImageDisplay(int x,int y,GrImage *p)
 {
   GRX_ENTER();
-  GrImageFilledBoxAlign(x,y,x,y,x+p->pxp_width-1,y+p->pxp_height-1,p);
+  GrImageFilledBoxAlign(x,y,x,y,x+p->width-1,y+p->height-1,p);
   GRX_LEAVE();
 }
 

@@ -46,12 +46,12 @@ GrImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight)
     grx_context_free(ctx);
     goto done;
   }
-  img->pxp_ispixmap = 1;
-  img->pxp_width  = nwidth;
-  img->pxp_height = nheight;
-  img->pxp_oper   = 0;
-  img->pxp_source = ctx->frame;
-  img->pxp_source.memory_flags =  3;/* MY_CONTEXT & MY_MEMORY */
+  img->is_pixmap = 1;
+  img->width  = nwidth;
+  img->height = nheight;
+  img->mode   = 0;
+  img->source = ctx->frame;
+  img->source.memory_flags =  3;/* MY_CONTEXT & MY_MEMORY */
 done:
   GRX_RETURN(img);
 }

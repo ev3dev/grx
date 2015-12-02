@@ -19,9 +19,9 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrPatternFilledPlot(int x,int y,GrPattern *p)
+void GrUsrPatternFilledPlot(int x,int y,GrxPattern *p)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);
-        GrPatternFilledPlot(x,y,p);
+        grx_draw_filled_point_with_pattern(x,y,p);
 }

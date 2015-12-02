@@ -1229,92 +1229,104 @@ void grx_draw_polygon_with_options(gint numpts, gint points[][2], const GrxLineO
 /*             PATTERNED DRAWING AND FILLING PRIMITIVES               */
 /* ================================================================== */
 
-/*
- * BITMAP: a mode independent way to specify a fill pattern of two
- *   colors. It is always 8 pixels wide (1 byte per scan line), its
- *   height is user-defined. SET THE TYPE FLAG TO ZERO!!!
+/**
+ * GrxBitmap:
+ *
+ * A mode independent way to specify a fill pattern of two
+ * colors. It is always 8 pixels wide (1 byte per scan line), its
+ * height is user-defined. SET is_pixmap TO FALSE!!!
  */
-typedef struct _GR_bitmap {
-        int     bmp_ispixmap;               /* type flag for pattern union */
-        int     bmp_height;                 /* bitmap height */
-        char   *bmp_data;                   /* pointer to the bit pattern */
-        GrxColor bmp_fgcolor;                /* foreground color for fill */
-        GrxColor bmp_bgcolor;                /* background color for fill */
-        int     bmp_memflags;               /* set if dynamically allocated */
-} GrBitmap;
+typedef struct {
+    gboolean is_pixmap;               /* type flag for pattern union */
+    gint     height;                  /* bitmap height */
+    guint8  *data;                    /* pointer to the bit pattern */
+    GrxColor fg_color;                /* foreground color for fill */
+    GrxColor bg_color;                /* background color for fill */
+    gboolean free_on_pattern_destroy; /* set if dynamically allocated */
+} GrxBitmap;
 
-/*
- * PIXMAP: a fill pattern stored in a layout identical to the video RAM
- *   for filling using 'bitblt'-s. It is mode dependent, typically one
- *   of the library functions is used to build it. KEEP THE TYPE FLAG
- *   NONZERO!!!
+/**
+ * GrxPixmap:
+ *
+ * A fill pattern stored in a layout identical to the video RAM
+ * for filling using 'bitblt'-s. It is mode dependent, typically one
+ * of the library functions is used to build it. SET is_pixmap TO TRUE!!!
  */
-typedef struct _GR_pixmap {
-        int     pxp_ispixmap;               /* type flag for pattern union */
-        int     pxp_width;                  /* pixmap width (in pixels)  */
-        int     pxp_height;                 /* pixmap height (in pixels) */
-        GrxColor pxp_oper;                   /* bitblt mode (SET, OR, XOR, AND, IMAGE) */
-        GrxFrame pxp_source;                /* source context for fill */
-} GrPixmap;
+typedef struct {
+    gboolean     is_pixmap;      /* type flag for pattern union */
+    gint         width;          /* pixmap width (in pixels)  */
+    gint         height;         /* pixmap height (in pixels) */
+    GrxColorMode mode;           /* bitblt mode (SET, OR, XOR, AND, IMAGE) */
+    GrxFrame     source;         /* source context for fill */
+} GrxPixmap;
 
-/*
+/**
+ * GrxPattern:
+ *
  * Fill pattern union -- can either be a bitmap or a pixmap
  */
-typedef union _GR_pattern {
-        int      gp_ispixmap;               /* nonzero for pixmaps */
-        GrBitmap gp_bitmap;                 /* fill bitmap */
-        GrPixmap gp_pixmap;                 /* fill pixmap */
-} GrPattern;
+typedef union {
+    gboolean  is_pixmap;              /* nonzero for pixmaps */
+    GrxBitmap bitmap;                 /* fill bitmap */
+    GrxPixmap pixmap;                 /* fill pixmap */
+    #define gp_bmp_data               bitmap.data
+    #define gp_bmp_height             bitmap.height
+    #define gp_bmp_fgcolor            bitmap.fg_color
+    #define gp_bmp_bgcolor            bitmap.bg_color
+    #define gp_pxp_width              pixmap.width
+    #define gp_pxp_height             pixmap.height
+    #define gp_pxp_oper               pixmap.mode
+    #define gp_pxp_source             pixmap.source
+} GrxPattern;
 
-#define gp_bmp_data                     gp_bitmap.bmp_data
-#define gp_bmp_height                   gp_bitmap.bmp_height
-#define gp_bmp_fgcolor                  gp_bitmap.bmp_fgcolor
-#define gp_bmp_bgcolor                  gp_bitmap.bmp_bgcolor
 
-#define gp_pxp_width                    gp_pixmap.pxp_width
-#define gp_pxp_height                   gp_pixmap.pxp_height
-#define gp_pxp_oper                     gp_pixmap.pxp_oper
-#define gp_pxp_source                   gp_pixmap.pxp_source
-
-/*
+/**
+ * GrxLinePattern:
+ *
  * Draw pattern for line drawings -- specifies both the:
  *   (1) fill pattern, and the
  *   (2) custom line drawing option
  */
 typedef struct {
-        GrPattern     *lnp_pattern;         /* fill pattern */
-        GrxLineOptions  *lnp_option;          /* width + dash pattern */
-} GrLinePattern;
+    GrxPattern     *pattern;         /* fill pattern */
+    GrxLineOptions *options;         /* width + dash pattern */
+} GrxLinePattern;
 
-GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrxColorTable colors);
-GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxColor bgc);
-GrPattern *GrConvertToPixmap(GrxContext *src);
+GrxPattern *grx_pattern_create_pixmap(const guint8 *pixels, gint w, gint h, const GrxColorTable colors);
+GrxPattern *grx_pattern_create_pixmap_from_bits(const guint8 *bits, gint w, gint h, GrxColor fgc, GrxColor bgc);
+GrxPattern *grx_pattern_create_pixmap_from_context(GrxContext *src);
 
-void GrDestroyPattern(GrPattern *p);
+void grx_pattern_free(GrxPattern *p);
 
-void GrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
-void GrPatternedBox(int x1,int y1,int x2,int y2,GrLinePattern *lp);
-void GrPatternedCircle(int xc,int yc,int r,GrLinePattern *lp);
-void GrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp);
-void GrPatternedCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrLinePattern *lp);
-void GrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrLinePattern *lp);
-void GrPatternedPolyLine(int numpts,int points[][2],GrLinePattern *lp);
-void GrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
+void grx_draw_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *lp);
+void grx_draw_box_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *lp);
+void grx_draw_circle_with_pattern(gint xc, gint yc, gint r, GrxLinePattern *lp);
+void grx_draw_ellipse_with_pattern(gint xc, gint yc, gint xa, gint ya, GrxLinePattern *lp);
+void grx_draw_circle_arc_with_pattern(gint xc, gint yc, gint r, gint start, gint end,
+                                      GrxArcStyle style, GrxLinePattern *lp);
+void grx_draw_ellipse_arc_with_pattern(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
+                                       GrxArcStyle style, GrxLinePattern *lp);
+void grx_draw_polyline_with_pattern(gint numpts, gint points[][2], GrxLinePattern *lp);
+void grx_draw_polygon_with_pattern(gint numpts, gint points[][2], GrxLinePattern *lp);
 
-void GrPatternFilledPlot(int x,int y,GrPattern *p);
-void GrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p);
-void GrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p);
-void GrPatternFilledCircle(int xc,int yc,int r,GrPattern *p);
-void GrPatternFilledEllipse(int xc,int yc,int xa,int ya,GrPattern *p);
-void GrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrPattern *p);
-void GrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrPattern *p);
-void GrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
-void GrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
-void GrPatternFloodFill(int x, int y, GrxColor border, GrPattern *p);
+void grx_draw_filled_point_with_pattern(gint x, gint y, GrxPattern *p);
+void grx_draw_filled_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxPattern *p);
+void grx_draw_filled_box_with_pattern(gint x1, gint y1, gint x2, gint y2,GrxPattern *p);
+void grx_draw_filled_circle_with_pattern(gint xc, gint yc, gint r,GrxPattern *p);
+void grx_draw_filled_ellipse_with_pattern(gint xc, gint yc, gint xa, gint ya, GrxPattern *p);
+void grx_draw_filled_circle_arc_with_pattern(gint xc, gint yc, gint r, gint start, gint end,
+                                             GrxArcStyle style, GrxPattern *p);
+void grx_draw_filled_ellipse_arc_with_pattern(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
+                                              GrxArcStyle style,GrxPattern *p);
+void grx_draw_filled_convex_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *p);
+void grx_draw_filled_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *p);
+void grx_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *p);
 
-void GrPatternDrawChar(int chr,int x,int y,const GrxTextOption *opt,GrPattern *p);
-void GrPatternDrawString(void *text,int length,int x,int y,const GrxTextOption *opt,GrPattern *p);
-void GrPatternDrawStringExt(void *text,int length,int x,int y,const GrxTextOption *opt,GrPattern *p);
+void grx_draw_char_with_pattern(gint chr, gint x, gint y, const GrxTextOption *opt, GrxPattern *p);
+void grx_draw_string_with_pattern(gpointer text, gint length, gint x, gint y,
+                                  const GrxTextOption *opt, GrxPattern *p);
+void grx_draw_string_with_pattern_ext(gpointer text, gint length, gint x, gint y,
+                                      const GrxTextOption *opt, GrxPattern *p);
 
 /* ================================================================== */
 /*                      IMAGE MANIPULATION                            */
@@ -1326,7 +1338,7 @@ void GrPatternDrawStringExt(void *text,int length,int x,int y,const GrxTextOptio
  */
 
 #ifndef GrImage
-#define GrImage GrPixmap
+#define GrImage GrxPixmap
 #endif
 
 /* Flags for GrImageInverse() */
@@ -1345,24 +1357,24 @@ void     GrImagePlotAlign(int xo,int yo,int x,int y,GrImage *p);
 GrImage *GrImageInverse(GrImage *p,int flag);
 GrImage *GrImageStretch(GrImage *p,int nwidth,int nheight);
 
-GrImage *GrImageFromPattern(GrPattern *p);
+GrImage *GrImageFromPattern(GrxPattern *p);
 GrImage *GrImageFromContext(GrxContext *c);
 GrImage *GrImageBuildUsedAsPattern(const char *pixels,int w,int h,const GrxColorTable colors);
 
-GrPattern *GrPatternFromImage(GrImage *p);
+GrxPattern *GrPatternFromImage(GrImage *p);
 
 
 #ifndef GRX_SKIP_INLINES
 #define GrImageFromPattern(p) \
-        (((p) && (p)->gp_ispixmap) ? (&(p)->gp_pixmap) : NULL)
+        (((p) && (p)->is_pixmap) ? (&(p)->pixmap) : NULL)
 #define GrImageFromContext(c) \
-        (GrImage *)GrConvertToPixmap(c)
+        (GrImage *)grx_pattern_create_pixmap_from_context(c)
 #define GrPatternFromImage(p) \
-        (GrPattern *)(p)
+        (GrxPattern *)(p)
 #define GrImageBuildUsedAsPattern(pixels,w,h,colors) \
-        (GrImage *)GrBuildPixmap(pixels,w,h,colors);
+        (GrImage *)grx_pattern_create_pixmap(pixels,w,h,colors);
 #define GrImageDestroy(i)   \
-          GrDestroyPattern((GrPattern *)(i));
+          grx_pattern_free((GrxPattern *)(i));
 #endif
 
 /* ================================================================== */
@@ -1407,25 +1419,25 @@ void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcS
 void GrUsrCustomPolyLine(int numpts,int points[][2],const GrxLineOptions *o);
 void GrUsrCustomPolygon(int numpts,int points[][2],const GrxLineOptions *o);
 
-void GrUsrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
-void GrUsrPatternedBox(int x1,int y1,int x2,int y2,GrLinePattern *lp);
-void GrUsrPatternedCircle(int xc,int yc,int r,GrLinePattern *lp);
-void GrUsrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp);
-void GrUsrPatternedCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrLinePattern *lp);
-void GrUsrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrLinePattern *lp);
-void GrUsrPatternedPolyLine(int numpts,int points[][2],GrLinePattern *lp);
-void GrUsrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
+void GrUsrPatternedLine(int x1,int y1,int x2,int y2,GrxLinePattern *lp);
+void GrUsrPatternedBox(int x1,int y1,int x2,int y2,GrxLinePattern *lp);
+void GrUsrPatternedCircle(int xc,int yc,int r,GrxLinePattern *lp);
+void GrUsrPatternedEllipse(int xc,int yc,int xa,int ya,GrxLinePattern *lp);
+void GrUsrPatternedCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxLinePattern *lp);
+void GrUsrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxLinePattern *lp);
+void GrUsrPatternedPolyLine(int numpts,int points[][2],GrxLinePattern *lp);
+void GrUsrPatternedPolygon(int numpts,int points[][2],GrxLinePattern *lp);
 
-void GrUsrPatternFilledPlot(int x,int y,GrPattern *p);
-void GrUsrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p);
-void GrUsrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p);
-void GrUsrPatternFilledCircle(int xc,int yc,int r,GrPattern *p);
-void GrUsrPatternFilledEllipse(int xc,int yc,int xa,int ya,GrPattern *p);
-void GrUsrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrPattern *p);
-void GrUsrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrPattern *p);
-void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
-void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
-void GrUsrPatternFloodFill(int x, int y, GrxColor border, GrPattern *p);
+void GrUsrPatternFilledPlot(int x,int y,GrxPattern *p);
+void GrUsrPatternFilledLine(int x1,int y1,int x2,int y2,GrxPattern *p);
+void GrUsrPatternFilledBox(int x1,int y1,int x2,int y2,GrxPattern *p);
+void GrUsrPatternFilledCircle(int xc,int yc,int r,GrxPattern *p);
+void GrUsrPatternFilledEllipse(int xc,int yc,int xa,int ya,GrxPattern *p);
+void GrUsrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxPattern *p);
+void GrUsrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxPattern *p);
+void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrxPattern *p);
+void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrxPattern *p);
+void GrUsrPatternFloodFill(int x, int y, GrxColor border, GrxPattern *p);
 
 void GrUsrDrawChar(int chr,int x,int y,const GrxTextOption *opt);
 void GrUsrDrawString(char *text,int length,int x,int y,const GrxTextOption *opt);

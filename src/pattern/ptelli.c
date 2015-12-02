@@ -27,7 +27,7 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void GrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp) {
+void grx_draw_ellipse_with_pattern(int xc,int yc,int xa,int ya,GrxLinePattern *lp) {
     int (*points)[2];
     setup_ALLOC();
     points = ALLOC(sizeof(int) * 2 * GRX_MAX_ELLIPSE_POINTS);
@@ -36,8 +36,8 @@ void GrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp) {
         int numpts = grx_generate_ellipse(xc,yc,xa,ya,points);
         GrFillArg fval;
 
-        fval.p = lp->lnp_pattern;
-        _GrDrawCustomPolygon(numpts,points,lp->lnp_option,
+        fval.p = lp->pattern;
+        _GrDrawCustomPolygon(numpts,points,lp->options,
                              &_GrPatternFiller,fval,TRUE,TRUE);
         FREE(points);
     }

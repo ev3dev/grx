@@ -22,7 +22,7 @@
 
 static void FdrvDrawBitmap(int x,int y,int w,int h,int ox, int oy,
                            char *bmp,int pitch,int start,
-                           GrxColor fg,GrxColor bg,GrPattern *p)
+                           GrxColor fg,GrxColor bg,GrxPattern *p)
 {
   GRX_ENTER();
   (*FDRV->drawbitmap)(x,y,w,h,bmp,pitch,start,fg,bg);

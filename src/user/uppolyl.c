@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "usercord.h"
 
-void GrUsrPatternedPolyLine(int numpts,int points[][2],GrLinePattern *lp)
+void GrUsrPatternedPolyLine(int numpts,int points[][2],GrxLinePattern *lp)
 {
         int pt;
         int (*tmp)[2];
@@ -34,7 +34,7 @@ void GrUsrPatternedPolyLine(int numpts,int points[][2],GrLinePattern *lp)
                 U2SX(tmp[pt][0],CURC);
                 U2SY(tmp[pt][1],CURC);
           }
-          GrPatternedPolyLine(numpts,tmp,lp);
+          grx_draw_polyline_with_pattern(numpts,tmp,lp);
           FREE(tmp);
         }
         reset_ALLOC();

@@ -19,11 +19,11 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrPattern *p)
+void GrUsrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxPattern *p)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);
         SCALE(xa,xa,CURC->x_max,CURC->user_width);
         SCALE(ya,ya,CURC->y_max,CURC->user_height);
-        GrPatternFilledEllipseArc(xc,yc,xa,ya,start,end,style,p);
+        grx_draw_filled_ellipse_arc_with_pattern(xc,yc,xa,ya,start,end,style,p);
 }

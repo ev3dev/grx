@@ -28,8 +28,8 @@ GrImage *GrImageInverse(GrImage *p,int flag)
   GrxColor    col;
   GrImage   *img;
   int yy, xx, sidex, sidey, width, height, xs, ys = 0;
-  width = p->pxp_width;
-  height = p->pxp_height;
+  width = p->width;
+  height = p->height;
   img = _GrImageAllocate(&ctx,width,height);
   if ( !img ) return(NULL);
   save = *CURC;
@@ -41,18 +41,18 @@ GrImage *GrImageInverse(GrImage *p,int flag)
     xx = ( flag & GR_IMAGE_INVERSE_LR ) ? width-1 : 0;
     xs = 0;
     do {
-      col = (*p->pxp_source.driver->readpixel)(&p->pxp_source,xs,ys);
+      col = (*p->source.driver->readpixel)(&p->source,xs,ys);
       (*CURC->gc_driver->drawpixel)(xx, yy, col);
       xx += sidex;
     } while(++xs < width);
     yy += sidey;
   } while(++ys < height);
   *CURC = save;
-  img->pxp_ispixmap = 1;
-  img->pxp_width  = width;
-  img->pxp_height = height;
-  img->pxp_oper   = 0;
-  img->pxp_source = ctx.frame;
-  img->pxp_source.memory_flags =  3;/* MY_CONTEXT & MY_MEMORY */
+  img->is_pixmap = 1;
+  img->width  = width;
+  img->height = height;
+  img->mode   = 0;
+  img->source = ctx.frame;
+  img->source.memory_flags =  3;/* MY_CONTEXT & MY_MEMORY */
   return(img);
 }

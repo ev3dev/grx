@@ -123,8 +123,8 @@ static char   *GrLoadImageFromBmp ( int _handle, unsigned long _offset, int _col
 int            GrFreeBmpImageColors ( GrBmpImageColors *_pal );
 int            GrAllocBmpImageColors ( GrBmpImage *_bmp, GrBmpImageColors *_pal );
 GrBmpImage    *GrLoadBmpImage ( char *_filename );
-GrPattern     *GrConvertBmpImageToPattern ( GrBmpImage *_bmp );
-GrPattern     *GrConvertBmpImageToStaticPattern ( GrBmpImage *_bmp );
+GrxPattern     *GrConvertBmpImageToPattern ( GrBmpImage *_bmp );
+GrxPattern     *GrConvertBmpImageToStaticPattern ( GrBmpImage *_bmp );
 void           GrUnloadBmpImage ( GrBmpImage *_bmp );
 int            GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y1, int _x2, int _y2 );
 unsigned long  GrBmpImageWidth ( GrBmpImage* _bmp );
@@ -459,21 +459,21 @@ GrBmpImage *GrLoadBmpImage ( char *_filename )
 }
 
 /* ************************************************************************ */
-GrPattern *GrConvertBmpImageToPattern ( GrBmpImage *_bmp )
+GrxPattern *GrConvertBmpImageToPattern ( GrBmpImage *_bmp )
 /* ************************************************************************ */
 {
   if (( !_bmp ) || ( !_bmp->bi_map )) return NULL;
-  return GrBuildPixmap(_bmp->bi_map, _bmp->bi_width, _bmp->bi_height, _bmp->bi_colormap);
+  return grx_pattern_create_pixmap(_bmp->bi_map, _bmp->bi_width, _bmp->bi_height, _bmp->bi_colormap);
 }
 
 /* ************************************************************************ */
-GrPattern *GrConvertBmpImageToStaticPattern ( GrBmpImage *_bmp )
+GrxPattern *GrConvertBmpImageToStaticPattern ( GrBmpImage *_bmp )
 /* ************************************************************************ */
 {
-  GrPattern *p = NULL;
+  GrxPattern *p = NULL;
   if ( _bmp && _bmp->bi_map )
   {
-    p = GrBuildPixmap(_bmp->bi_map, _bmp->bi_width, _bmp->bi_height, _bmp->bi_colormap);
+    p = grx_pattern_create_pixmap(_bmp->bi_map, _bmp->bi_width, _bmp->bi_height, _bmp->bi_colormap);
     if ( p ) GrUnloadBmpImage(_bmp);
   }
   return p;

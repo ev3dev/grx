@@ -29,7 +29,7 @@ GrImage *GrImageStretch(GrImage *p,int nwidth,int nheight)
   img = _GrImageAllocate(&ctx,nwidth,nheight);
   if ( img )
     _GrFrDrvGenericStretchBlt(&ctx.frame,0,0,nwidth,nheight,
-                              &p->pxp_source,0,0,p->pxp_width,p->pxp_height,
-                              p->pxp_oper);
+                              &p->source,0,0,p->width,p->height,
+                              p->mode);
   GRX_RETURN(img);
 }

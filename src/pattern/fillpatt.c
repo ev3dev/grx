@@ -23,10 +23,10 @@
 #include "arith.h"
 #include "shapes.h"
 
-void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrPattern *p)
+void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrxPattern *p)
 {
     GRX_ENTER();
-    if (p->gp_ispixmap) {
+    if (p->is_pixmap) {
         void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
         int pattwdt = p->gp_pxp_width;
         int xdest = x;
@@ -79,7 +79,7 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrPattern *p)
     GRX_LEAVE();
 }
 
-void _GrFillPattern(int x, int y, int width, GrPattern *p)
+void _GrFillPattern(int x, int y, int width, GrxPattern *p)
 {
   GRX_ENTER();
   _GrFillPatternExt(x,y,0,0,width,p);

@@ -24,22 +24,22 @@
 
 static void PatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
                                 char *bmp,int pitch,int start,
-                                GrxColor fg,GrxColor bg,GrPattern *p)
+                                GrxColor fg,GrxColor bg,GrxPattern *p)
 {
     GRX_ENTER();
     _GrFillBitmapPattern(x,y,w,h,bmp,pitch,start,p,bg);
     GRX_LEAVE();
 }
 
-void GrPatternDrawString(void *text,int length,int x,int y,
-                         const GrxTextOption *opt,GrPattern *p)
+void grx_draw_string_with_pattern(void *text,int length,int x,int y,
+                         const GrxTextOption *opt,GrxPattern *p)
 {
     GRX_ENTER();
     _GrDrawString(text,length,x,y,opt,p,PatternFilledBmp);
     GRX_LEAVE();
 }
 
-void GrPatternDrawChar(int chr,int x,int y,const GrxTextOption *opt,GrPattern *p)
+void grx_draw_char_with_pattern(int chr,int x,int y,const GrxTextOption *opt,GrxPattern *p)
 {
     char  cbuff[2];
     short sbuff[2];
@@ -49,11 +49,11 @@ void GrPatternDrawChar(int chr,int x,int y,const GrxTextOption *opt,GrPattern *p
       case GRX_CHAR_TYPE_WORD:
       case GRX_CHAR_TYPE_ATTR:
         sbuff[0] = chr;
-        GrPatternDrawString(sbuff,1,x,y,opt,p);
+        grx_draw_string_with_pattern(sbuff,1,x,y,opt,p);
         break;
       default:
         cbuff[0] = chr;
-        GrPatternDrawString(cbuff,1,x,y,opt,p);
+        grx_draw_string_with_pattern(cbuff,1,x,y,opt,p);
         break;
     }
     GRX_LEAVE();

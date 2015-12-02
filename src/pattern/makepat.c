@@ -54,17 +54,17 @@ static int _GrBestPixmapWidth(int wdt,int hgt)
         return(wdt);
 }
 
-GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrxColorTable ct)
+GrxPattern *grx_pattern_create_pixmap(const unsigned char *pixels,int w,int h,const GrxColorTable ct)
 {
         GrxContext csave,cwork;
-        GrPixmap  *result;
+        GrxPixmap  *result;
         unsigned  char *src;
         int  wdt,wdt2,fullw;
         int  hgt;
         GrxColor color;
 
         if((fullw = _GrBestPixmapWidth(w,h)) <= 0) return(NULL);
-        result = (GrPixmap *)malloc(sizeof(GrPixmap));
+        result = (GrxPixmap *)malloc(sizeof(GrxPixmap));
         if (result == NULL) return(NULL);
 
         if (!grx_context_create(fullw,h,NULL,&cwork)) {
@@ -85,25 +85,25 @@ GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrxColorTable ct)
             pixels += w;
         }
         *CURC = csave;
-        result->pxp_source = cwork.frame;
-        result->pxp_source.memory_flags = (MY_CONTEXT | MY_MEMORY);
-        result->pxp_ispixmap = TRUE;
-        result->pxp_width  = fullw;
-        result->pxp_height = h;
-        result->pxp_oper   = 0;
-        return((GrPattern *)result);
+        result->source = cwork.frame;
+        result->source.memory_flags = (MY_CONTEXT | MY_MEMORY);
+        result->is_pixmap = TRUE;
+        result->width  = fullw;
+        result->height = h;
+        result->mode   = 0;
+        return((GrxPattern *)result);
 }
 
-GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
+GrxPattern *grx_pattern_create_pixmap_from_bits(const unsigned char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
 {
         GrxContext csave,cwork;
-        GrPixmap  *result;
+        GrxPixmap  *result;
         unsigned  char *src;
         int  wdt,wdt2,fullw;
         int  hgt,mask,byte;
 
         if((fullw = _GrBestPixmapWidth(w,h)) <= 0) return(NULL);
-        result = (GrPixmap *)malloc(sizeof(GrPixmap));
+        result = (GrxPixmap *)malloc(sizeof(GrxPixmap));
         if(result == NULL) return(NULL);
 
         if (!grx_context_create(fullw,h,NULL,&cwork)) {
@@ -126,36 +126,36 @@ GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrxColor fgc,GrxCo
             bits += (w + 7) >> 3;
         }
         *CURC = csave;
-        result->pxp_source = cwork.frame;
-        result->pxp_source.memory_flags = (MY_CONTEXT | MY_MEMORY);
-        result->pxp_ispixmap = TRUE;
-        result->pxp_width  = fullw;
-        result->pxp_height = h;
-        result->pxp_oper   = 0;
-        return((GrPattern *)result);
+        result->source = cwork.frame;
+        result->source.memory_flags = (MY_CONTEXT | MY_MEMORY);
+        result->is_pixmap = TRUE;
+        result->width  = fullw;
+        result->height = h;
+        result->mode   = 0;
+        return((GrxPattern *)result);
 }
 
-GrPattern *GrConvertToPixmap(GrxContext *src)
+GrxPattern *grx_pattern_create_pixmap_from_context(GrxContext *src)
 {
-        GrPixmap *result;
+        GrxPixmap *result;
 
         if(src->gc_is_on_screen) return(NULL);
-        result = malloc(sizeof(GrPixmap));
+        result = malloc(sizeof(GrxPixmap));
         if(result == NULL) return(NULL);
-        result->pxp_source = src->frame;
-        result->pxp_source.memory_flags = MY_CONTEXT;
-        result->pxp_ispixmap = TRUE;
-        result->pxp_width  = src->x_max + 1;
-        result->pxp_height = src->y_max + 1;
-        result->pxp_oper   = 0;
-        return((GrPattern *)result);
+        result->source = src->frame;
+        result->source.memory_flags = MY_CONTEXT;
+        result->is_pixmap = TRUE;
+        result->width  = src->x_max + 1;
+        result->height = src->y_max + 1;
+        result->mode   = 0;
+        return((GrxPattern *)result);
 }
 
 
-void GrDestroyPattern(GrPattern *p)
+void grx_pattern_free(GrxPattern *p)
 {
   if (!p) return;
-  if (p->gp_ispixmap) {
+  if (p->is_pixmap) {
     if ( p->gp_pxp_source.memory_flags & MY_MEMORY) {
       int ii;
       for ( ii = p->gp_pxp_source.driver->num_planes; ii > 0; ii-- )
@@ -165,5 +165,5 @@ void GrDestroyPattern(GrPattern *p)
       free(p);
     return;
   }
-  if ( p->gp_bitmap.bmp_memflags ) free(p);
+  if ( p->bitmap.free_on_pattern_destroy ) free(p);
 }

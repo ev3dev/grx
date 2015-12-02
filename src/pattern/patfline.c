@@ -24,7 +24,7 @@
 #include "clipping.h"
 #include "shapes.h"
 
-void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p)
+void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p)
 {
         union { GrxFrame *c; unsigned char *b; } src;
         int sy,ymajor;
@@ -49,7 +49,7 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p)
             dy = (-dy);
             sy = (-1);
         }
-        if((ispixmap = p->gp_ispixmap) != FALSE) {
+        if((ispixmap = p->is_pixmap) != FALSE) {
             pw = p->gp_pxp_width;
             ph = p->gp_pxp_height;
             px = x1 % pw;
@@ -98,7 +98,7 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p)
         }
 }
 
-void GrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p)
+void grx_draw_filled_line_with_pattern(int x1,int y1,int x2,int y2,GrxPattern *p)
 {
         clip_line(CURC,x1,y1,x2,y2);
         mouse_block(CURC,x1,y1,x2,y2);

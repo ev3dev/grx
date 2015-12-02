@@ -26,7 +26,7 @@
 #endif
 
 #ifndef GrImage
-#define GrImage GrPixmap
+#define GrImage GrxPixmap
 #endif
 
 int _GrImageTestSize(int wdt,int hgt);

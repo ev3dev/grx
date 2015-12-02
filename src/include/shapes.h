@@ -25,7 +25,7 @@ typedef union _GR_fillArg {
     GrxColor color;
     struct _GR_bitmap *bmp;
     struct _GR_pixmap *pxp;
-    GrPattern *p;
+    GrxPattern *p;
 } GrFillArg;
 
 typedef void (*PixelFillFunc)(int x,int y,GrFillArg fval);
@@ -60,16 +60,16 @@ void _GrFillPatternedScanLine(int x,int y,int w,GrFillArg arg);
 void _GrFloodFill(int x,int y,GrxColor border,GrFiller *f,GrFillArg fa);
 
 /* -- */
-void _GrFillPattern(int x,int y,int width,GrPattern *p);
-void _GrFillPatternExt(int x,int y,int sx, int sy,int width,GrPattern *p);
-void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p);
-void _GrPatternFilledPlot(int x,int y,GrPattern *p);
+void _GrFillPattern(int x,int y,int width,GrxPattern *p);
+void _GrFillPatternExt(int x,int y,int sx, int sy,int width,GrxPattern *p);
+void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p);
+void _GrPatternFilledPlot(int x,int y,GrxPattern *p);
 
 void _GrFillBitmapPattern(int x,int y,int w,int h,
                           char *bmp,int pitch,int start,
-                          GrPattern* p,GrxColor bg);
+                          GrxPattern* p,GrxColor bg);
 void _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
                              char *bmp,int pitch,int start,
-                             GrPattern* p,GrxColor bg);
+                             GrxPattern* p,GrxColor bg);
 
 #endif

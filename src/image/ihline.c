@@ -33,19 +33,19 @@ void GrImageHLineAlign(int xo,int yo,int x,int y,int width,GrImage *p)
   clip_hline(CURC,x,x2,y);
   width = x2 - x;
   mouse_block(CURC,x,y,x2,y);
-  widthimg = p->pxp_width;
-  yimg = (y - yo) % p->pxp_height;
+  widthimg = p->width;
+  yimg = (y - yo) % p->height;
   ximg = (x - xo) % widthimg;
   xdest = x + CURC->x_offset;
   ydest = y + CURC->y_offset;
   cpysize = widthimg - ximg;
-  optype = p->pxp_oper;
+  optype = p->mode;
   if (CURC->gc_is_on_screen) bltfun = CURC->gc_driver->bltr2v;
   else                   bltfun = CURC->gc_driver->bitblt;
   while ( width > 0 ) {
     if ( cpysize > width ) cpysize = width;
          (*bltfun)(&CURC->frame,xdest,ydest,
-                   &p->pxp_source,ximg,yimg,cpysize,1,
+                   &p->source,ximg,yimg,cpysize,1,
                    optype);
     width -= cpysize;
     ximg = 0;

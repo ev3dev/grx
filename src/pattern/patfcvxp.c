@@ -23,7 +23,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void GrPatternFilledConvexPolygon(int n,int pt[][2],GrPattern *p)
+void grx_draw_filled_convex_polygon_with_pattern(int n,int pt[][2],GrxPattern *p)
 {
         GrFillArg fa;
 

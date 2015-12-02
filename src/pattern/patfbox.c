@@ -21,7 +21,7 @@
 #include "clipping.h"
 #include "shapes.h"
 
-void GrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p)
+void grx_draw_filled_box_with_pattern(int x1,int y1,int x2,int y2,GrxPattern *p)
 {
         int width,height;
 
@@ -31,7 +31,7 @@ void GrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p)
         height = y2 - y1 + 1;
         x1 += CURC->x_offset;
         y1 += CURC->y_offset;
-        if(!p->gp_ispixmap)
+        if(!p->is_pixmap)
             while(--height >= 0) _GrFillPattern(x1,y1++,width,p);
         else {
             void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);

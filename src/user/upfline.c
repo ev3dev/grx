@@ -19,11 +19,11 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p)
+void GrUsrPatternFilledLine(int x1,int y1,int x2,int y2,GrxPattern *p)
 {
         U2SX(x1,CURC);
         U2SX(x2,CURC);
         U2SY(y1,CURC);
         U2SY(y2,CURC);
-        GrPatternFilledLine(x1,y1,x2,y2,p);
+        grx_draw_filled_line_with_pattern(x1,y1,x2,y2,p);
 }

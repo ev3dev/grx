@@ -22,7 +22,7 @@
 
 #include "libgrx.h"
 
-void GrPatternFilledCircle(int xc,int yc,int r,GrPattern *p)
+void grx_draw_filled_circle_with_pattern(int xc,int yc,int r,GrxPattern *p)
 {
-        GrPatternFilledEllipse(xc,yc,r,r,p);
+        grx_draw_filled_ellipse_with_pattern(xc,yc,r,r,p);
 }

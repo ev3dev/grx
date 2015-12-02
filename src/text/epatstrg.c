@@ -24,15 +24,15 @@
 
 static void ExtPatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
                                 char *bmp,int pitch,int start,
-                                GrxColor fg,GrxColor bg,GrPattern *p)
+                                GrxColor fg,GrxColor bg,GrxPattern *p)
 {
   GRX_ENTER();
   _GrFillBitmapPatternExt(x,y,w,h,ox,oy,bmp,pitch,start,p,bg);
   GRX_LEAVE();
 }
 
-void GrPatternDrawStringExt(void *text,int length,int x,int y,
-                               const GrxTextOption *opt,GrPattern *p)
+void grx_draw_string_with_pattern_ext(void *text,int length,int x,int y,
+                               const GrxTextOption *opt,GrxPattern *p)
 {
   GRX_ENTER();
   _GrDrawString(text,length,x,y,opt,p,ExtPatternFilledBmp);

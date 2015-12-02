@@ -23,11 +23,11 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void _GrPatternFilledPlot(int x,int y,GrPattern *p)
+void _GrPatternFilledPlot(int x,int y,GrxPattern *p)
 {
         int xp,yp;
 
-        if(p->gp_ispixmap) {
+        if(p->is_pixmap) {
             xp = x % p->gp_pxp_width;
             yp = y % p->gp_pxp_height;
             (*CURC->gc_driver->drawpixel)(x,y,
@@ -43,7 +43,7 @@ void _GrPatternFilledPlot(int x,int y,GrPattern *p)
         }
 }
 
-void GrPatternFilledPlot(int x,int y,GrPattern *p)
+void grx_draw_filled_point_with_pattern(int x,int y,GrxPattern *p)
 {
         clip_dot(CURC,x,y);
         mouse_block(CURC,x,y,x,y);

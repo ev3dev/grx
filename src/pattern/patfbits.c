@@ -21,7 +21,7 @@
 
 void  _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
                                 char *bmp,int pitch,int start,
-                                GrPattern* p,GrxColor bg)
+                                GrxPattern* p,GrxColor bg)
 {
    GR_int8u *bits, *dptr;
    GR_int8u mask;
@@ -90,7 +90,7 @@ void  _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
    GRX_LEAVE();
 }
 
-void  _GrFillBitmapPattern(int x,int y,int w,int h,char *bmp,int pitch,int start,GrPattern* p,GrxColor bg)
+void  _GrFillBitmapPattern(int x,int y,int w,int h,char *bmp,int pitch,int start,GrxPattern* p,GrxColor bg)
 {
    GRX_ENTER();
    _GrFillBitmapPatternExt(x, y, w, h, 0, 0, bmp, pitch, start, p, bg);

@@ -30,10 +30,10 @@ void GrImagePlotAlign(int xo,int yo,int x,int y,GrImage *p)
    xo = min(xo, x);
    yo = min(yo, y);
    clip_dot(CURC,x,y);
-   xp = (x - xo) % p->pxp_width;
-   yp = (y - yo) % p->pxp_height;
+   xp = (x - xo) % p->width;
+   yp = (y - yo) % p->height;
    mouse_block(CURC,x,y,x,y);
-   col = (*p->pxp_source.driver->readpixel)(&p->pxp_source,xp,yp);
+   col = (*p->source.driver->readpixel)(&p->source,xp,yp);
    (*CURC->gc_driver->drawpixel)(x + CURC->x_offset, y + CURC->y_offset, col);
    mouse_unblock();
 }

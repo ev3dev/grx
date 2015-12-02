@@ -25,7 +25,7 @@
 
 #include "libgrx.h"
 
-void GrPatternedCircle(int xc,int yc,int r,GrLinePattern *lp)
+void grx_draw_circle_with_pattern(int xc,int yc,int r,GrxLinePattern *lp)
 {
-        GrPatternedEllipse(xc,yc,r,r,lp);
+        grx_draw_ellipse_with_pattern(xc,yc,r,r,lp);
 }

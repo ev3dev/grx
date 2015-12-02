@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "image/image.h"
 
-GrImage *(GrImageFromPattern)(GrPattern *p) {
+GrImage *(GrImageFromPattern)(GrxPattern *p) {
   return GrImageFromPattern(p);
 }
 
@@ -27,7 +27,7 @@ GrImage *(GrImageFromContext)(GrxContext *c) {
   return GrImageFromContext(c);
 }
 
-GrPattern *(GrPatternFromImage)(GrImage *p) {
+GrxPattern *(GrPatternFromImage)(GrImage *p) {
   return GrPatternFromImage(p);
 }
 
