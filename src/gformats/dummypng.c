@@ -21,28 +21,28 @@
 #include "grx-3.0.h"
 
 /*
-** GrPngSupport - Returns false
+** grx_is_png_supported - Returns false
 */
 
-int GrPngSupport( void )
+int grx_is_png_supported( void )
 {
   return 0;
 }
 
 /*
-** GrSaveContextToPng - Returns error
+** grx_context_save_to_png - Returns error
 */
 
-int GrSaveContextToPng( GrxContext *grc, char *pngfn )
+int grx_context_save_to_png( GrxContext *grc, char *pngfn )
 {
   return -1;
 }
 
 /*
-** GrLoadContextFromPng - Returns error
+** grx_context_load_from_png - Returns error
 */
 
-int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha )
+int grx_context_load_from_png( GrxContext *grc, char *pngfn, int use_alpha )
 {
   return -1;
 }
@@ -51,7 +51,7 @@ int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha )
 ** grx_check_pnm_file - Returns error
 */
 
-int GrQueryPng( char *pngfn, int *width, int *height )
+int grx_check_png_file( char *pngfn, int *width, int *height )
 {
   return -1;
 }

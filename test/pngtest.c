@@ -28,7 +28,7 @@ void imagen( char *nf )
   char s[81];
   int w, h;
 
-  GrQueryPng( nf,&w,&h );
+  grx_check_png_file( nf,&w,&h );
   sprintf( s,"%s %dx%d",nf,w,h );
   wide = (w > 300) ? 300 : w;
   high = (h > 400) ? 400 : h;
@@ -36,12 +36,12 @@ void imagen( char *nf )
 
   grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
-  GrLoadContextFromPng( grc,nf,0 );
+  grx_context_load_from_png( grc,nf,0 );
   grx_context_free( grc );
 
   grx_draw_box( 320,40,320+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 321,41,321+wide-1,41+high-1,NULL,NULL );
-  GrLoadContextFromPng( grc,nf,1 );
+  grx_context_load_from_png( grc,nf,1 );
   grx_context_free( grc );
 
   grx_draw_text_xy( 10,10,s,grx_color_info_get_black(),grx_color_info_get_white() );
@@ -73,7 +73,7 @@ int main()
 
   grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,640,480,24 );
 
-  if( !GrPngSupport() ){
+  if( !grx_is_png_supported() ){
     nopngsupport();
     grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
     exit( 1 );
@@ -85,20 +85,20 @@ int main()
 
   grx_clear_screen( grx_color_info_alloc_color( 0,100,0 ) );
   grc = grx_context_create_subcontext( 191,121,191+256-1,121+240-1,NULL,NULL );
-  GrLoadContextFromPng( grc,"pngred.png",1 );
+  grx_context_load_from_png( grc,"pngred.png",1 );
   grx_context_free( grc );
   grc = grx_context_create_subcontext( 181,241,181+289-1,241+80-1,NULL,NULL );
-  GrLoadContextFromPng( grc,"pngcompo.png",1 );
+  grx_context_load_from_png( grc,"pngcompo.png",1 );
   grx_context_free( grc );
 
   grx_draw_text_xy( 10,10,"Press any key to save screen",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
-  GrSaveContextToPng( NULL,"output.png" );
+  grx_context_save_to_png( NULL,"output.png" );
 
   grx_clear_screen( grx_color_info_get_black() );
   grx_draw_text_xy( 10,10,"Press any key to reload screen",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
-  GrLoadContextFromPng( NULL,"output.png",0 );
+  grx_context_load_from_png( NULL,"output.png",0 );
 
   grx_draw_text_xy( 10,10,"Press any key to end          ",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();

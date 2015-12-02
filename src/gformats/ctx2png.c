@@ -28,7 +28,7 @@
 static int writepng( FILE *f, GrxContext *grc );
 
 /*
-** GrSaveContextToPng - Dump a context in a PNG file
+** grx_context_save_to_png - Dump a context in a PNG file
 **
 ** This routine works both in RGB and palette modes
 **
@@ -40,7 +40,7 @@ static int writepng( FILE *f, GrxContext *grc );
 **         -1 on error
 */
 
-int GrSaveContextToPng( GrxContext *grc, char *pngfn )
+int grx_context_save_to_png( GrxContext *grc, char *pngfn )
 {
   GrxContext grcaux;
   FILE *f;

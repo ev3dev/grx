@@ -22,10 +22,10 @@
 #include "grx-3.0.h"
 
 /*
-** GrPngSupport - Returns true
+** grx_is_png_supported - Returns true
 */
 
-int GrPngSupport( void )
+int grx_is_png_supported( void )
 {
   return 1;
 }
@@ -38,7 +38,7 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha );
 static int querypng( FILE *f, int *w, int *h );
 
 /*
-** GrLoadContextFromPng - Load a context from a PNG file
+** grx_context_load_from_png - Load a context from a PNG file
 **
 ** If context dimensions are lesser than png dimensions,
 ** the routine loads as much as it can
@@ -55,7 +55,7 @@ static int querypng( FILE *f, int *w, int *h );
 **         -1 on error
 */
 
-int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha )
+int grx_context_load_from_png( GrxContext *grc, char *pngfn, int use_alpha )
 {
   GrxContext grcaux;
   FILE *f;
@@ -86,7 +86,7 @@ int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha )
 **         -1 on error
 */
 
-int GrQueryPng( char *pngfn, int *width, int *height )
+int grx_check_png_file( char *pngfn, int *width, int *height )
 {
   FILE *f;
   int r;

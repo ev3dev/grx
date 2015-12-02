@@ -1666,10 +1666,10 @@ int grx_check_pnm_data(const guint8 *buffer, gint *width, gint *height, gint *ma
 /*  these functions may not be installed or available on all system   */
 /* ================================================================== */
 
-int GrPngSupport( void );
-int GrSaveContextToPng( GrxContext *grc, char *pngfn );
-int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha );
-int GrQueryPng( char *pngfn, int *width, int *height );
+int grx_is_png_supported(void);
+int grx_context_save_to_png(GrxContext *grc, gchar *pngfn);
+int grx_context_load_from_png(GrxContext *grc, gchar *pngfn, gboolean use_alpha);
+int grx_check_png_file(gchar *pngfn, gint *width, gint *height);
 
 /* ================================================================== */
 /*                          JPEG FUNCTIONS                            */

@@ -638,10 +638,8 @@ namespace Grx {
 
         public Result load_from_pnm_data (char *buffer);
 
-        [CCode (cname = "GrSaveContextToPng")]
         public Result save_to_png (string file_name);
-        [CCode (cname = "GrLoadContextFromPng")]
-        public Result load_from_png (string file_name, bool use_alpha = true);
+        public Result load_from_png(string file_name, bool use_alpha = true);
 
         [CCode (cname = "GrLoadContextFromJpeg")]
         public Result load_from_jpeg (string file_name, int scale);
@@ -1494,10 +1492,8 @@ namespace Grx {
     /*  these functions may not be installed or available on all system   */
     /* ================================================================== */
 
-    [CCode (cname = "GrPngSupport")]
-    public bool png_support ();
-    [CCode (cname = "GrQueryPng")]
-    public Result query_png (string file_name, out int width, out int height);
+    public bool is_png_supported ();
+    public Result check_png_file (string file_name, out int width, out int height);
 
     /* ================================================================== */
     /*                          JPEG FUNCTIONS                            */
