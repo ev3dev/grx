@@ -572,9 +572,6 @@ namespace Grx {
     [CCode (free_function = "grx_context_free", has_type_id = false)]
     [Compact]
     public class Context {
-        [CCode (cname = "GrxContext", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
         public unowned Context root;
         public int x_max;
         public int y_max;
