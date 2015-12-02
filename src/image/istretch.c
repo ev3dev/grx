@@ -20,10 +20,10 @@
 #include "clipping.h"
 #include "image/image.h"
 
-GrImage *GrImageStretch(GrImage *p,int nwidth,int nheight)
+GrxImage *grx_image_stretch(GrxImage *p,int nwidth,int nheight)
 {
   GrxContext  ctx;
-  GrImage   *img;
+  GrxImage   *img;
 
   GRX_ENTER();
   img = _GrImageAllocate(&ctx,nwidth,nheight);

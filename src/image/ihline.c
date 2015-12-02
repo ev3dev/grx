@@ -22,7 +22,7 @@
 #include "clipping.h"
 #include "image/image.h"
 
-void GrImageHLineAlign(int xo,int yo,int x,int y,int width,GrImage *p)
+void grx_draw_hline_with_image(int xo,int yo,int x,int y,int width,GrxImage *p)
 {
   int x2, widthimg, yimg, ximg, xdest, ydest, cpysize;
   GrxColor optype;

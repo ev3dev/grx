@@ -19,26 +19,23 @@
 #include "libgrx.h"
 #include "image/image.h"
 
-GrImage *(GrImageFromPattern)(GrxPattern *p) {
-  return GrImageFromPattern(p);
+GrxImage *(grx_image_create_from_pattern)(GrxPattern *p) {
+  return grx_image_create_from_pattern(p);
 }
 
-GrImage *(GrImageFromContext)(GrxContext *c) {
-  return GrImageFromContext(c);
+GrxImage *(grx_image_create_from_context)(GrxContext *c) {
+  return grx_image_create_from_context(c);
 }
 
-GrxPattern *(GrPatternFromImage)(GrImage *p) {
-  return GrPatternFromImage(p);
+GrxPattern *(grx_pattern_create_from_image)(GrxImage *p) {
+  return grx_pattern_create_from_image(p);
 }
 
-GrImage *(GrImageBuildUsedAsPattern)(const char *pixels,int w,int h,
+GrxImage *(grx_pattern_create_from_data)(const unsigned char *pixels,int w,int h,
                                      const GrxColorTable colors     ) {
-  return GrImageBuildUsedAsPattern(pixels,w,h,colors);
+  return grx_pattern_create_from_data(pixels,w,h,colors);
 }
 
-void (GrImageDestroy)(GrImage *i) {
-  GrImageDestroy(i);
+void (grx_image_free)(GrxImage *i) {
+  grx_image_free(i);
 }
-
-
-

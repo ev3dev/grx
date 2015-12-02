@@ -22,7 +22,7 @@
 #include "clipping.h"
 #include "image/image.h"
 
-void GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,GrImage *p)
+void grx_draw_filled_box_with_image(int xo,int yo,int x1,int y1,int x2,int y2,GrxImage *p)
 {
   int iwdt, ihgt, xoff, yoff, yy, xx, copyh, copyw;
   void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
@@ -60,17 +60,17 @@ void GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,GrImage *p)
   mouse_unblock();
 }
 
-void  GrImageDisplay(int x,int y,GrImage *p)
+void  grx_draw_image(int x,int y,GrxImage *p)
 {
   GRX_ENTER();
-  GrImageFilledBoxAlign(x,y,x,y,x+p->width-1,y+p->height-1,p);
+  grx_draw_filled_box_with_image(x,y,x,y,x+p->width-1,y+p->height-1,p);
   GRX_LEAVE();
 }
 
-void  GrImageDisplayExt(int x1,int y1,int x2,int y2,GrImage* p)
+void  grx_draw_image_tiled(int x1,int y1,int x2,int y2,GrxImage* p)
 {
   GRX_ENTER();
-  GrImageFilledBoxAlign(x1,y1,x1,y1,x2,y2,p);
+  grx_draw_filled_box_with_image(x1,y1,x1,y1,x2,y2,p);
   GRX_LEAVE();
 }
 

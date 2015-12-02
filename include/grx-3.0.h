@@ -1337,44 +1337,44 @@ void grx_draw_string_with_pattern_ext(gpointer text, gint length, gint x, gint y
  *  <e-mail>    - [stenclpmd@ba.telecom.sk]
  */
 
-#ifndef GrImage
-#define GrImage GrxPixmap
+#ifndef GrxImage
+#define GrxImage GrxPixmap
 #endif
 
-/* Flags for GrImageInverse() */
+typedef enum /*< flags >*/ {
+    GRX_IMAGE_MIRROR_HORIZONTAL = 0x01,  /* inverse left right */
+    GRX_IMAGE_MIRROR_VERTICAL = 0x02,  /* inverse top down */
+} GrxImageMirrorFlags;
 
-#define GR_IMAGE_INVERSE_LR  0x01  /* inverse left right */
-#define GR_IMAGE_INVERSE_TD  0x02  /* inverse top down */
+GrxImage *grx_image_create(const guint8 *pixels, gint w, gint h, const GrxColorTable colors);
+void grx_image_free(GrxImage *i);
+void grx_draw_image(gint x, gint y, GrxImage *i);
+void grx_draw_image_tiled(gint x1, gint y1, gint x2, gint y2, GrxImage *i);
+void grx_draw_filled_box_with_image(gint xo, gint yo, gint x1, gint y1, gint x2, gint y2, GrxImage *p);
+void grx_draw_hline_with_image(gint xo, gint yo, gint x, gint y, gint width, GrxImage *p);
+void grx_draw_point_with_image(gint xo, gint yo, gint x, gint y, GrxImage *p);
 
-GrImage *GrImageBuild(const char *pixels,int w,int h,const GrxColorTable colors);
-void     GrImageDestroy(GrImage *i);
-void     GrImageDisplay(int x,int y, GrImage *i);
-void     GrImageDisplayExt(int x1,int y1,int x2,int y2, GrImage *i);
-void     GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,GrImage *p);
-void     GrImageHLineAlign(int xo,int yo,int x,int y,int width,GrImage *p);
-void     GrImagePlotAlign(int xo,int yo,int x,int y,GrImage *p);
+GrxImage *grx_image_mirror(GrxImage *p, GrxImageMirrorFlags flags);
+GrxImage *grx_image_stretch(GrxImage *p, gint nwidth, gint nheight);
 
-GrImage *GrImageInverse(GrImage *p,int flag);
-GrImage *GrImageStretch(GrImage *p,int nwidth,int nheight);
+GrxImage *grx_image_create_from_pattern(GrxPattern *p);
+GrxImage *grx_image_create_from_context(GrxContext *c);
+GrxImage *grx_pattern_create_from_data(const guint8 *pixels, gint w, gint h, const GrxColorTable colors);
 
-GrImage *GrImageFromPattern(GrxPattern *p);
-GrImage *GrImageFromContext(GrxContext *c);
-GrImage *GrImageBuildUsedAsPattern(const char *pixels,int w,int h,const GrxColorTable colors);
-
-GrxPattern *GrPatternFromImage(GrImage *p);
+GrxPattern *grx_pattern_create_from_image(GrxImage *p);
 
 
 #ifndef GRX_SKIP_INLINES
-#define GrImageFromPattern(p) \
+#define grx_image_create_from_pattern(p) \
         (((p) && (p)->is_pixmap) ? (&(p)->pixmap) : NULL)
-#define GrImageFromContext(c) \
-        (GrImage *)grx_pattern_create_pixmap_from_context(c)
-#define GrPatternFromImage(p) \
+#define grx_image_create_from_context(c) \
+        (GrxImage *)grx_pattern_create_pixmap_from_context(c)
+#define grx_pattern_create_from_image(p) \
         (GrxPattern *)(p)
-#define GrImageBuildUsedAsPattern(pixels,w,h,colors) \
-        (GrImage *)grx_pattern_create_pixmap(pixels,w,h,colors);
-#define GrImageDestroy(i)   \
-          grx_pattern_free((GrxPattern *)(i));
+#define grx_pattern_create_from_data(pixels,w,h,colors) \
+        (GrxImage *)grx_pattern_create_pixmap(pixels,w,h,colors);
+#define grx_image_free(i)   \
+        grx_pattern_free((GrxPattern *)(i));
 #endif
 
 /* ================================================================== */

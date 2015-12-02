@@ -29,8 +29,8 @@ TESTFUNC(imgtest)
         int m1, m2, d1, d2;
         GrxColor c1, c2, c3;
         GrxContext ctx;
-        GrImage *img1;
-        GrImage *img2;
+        GrxImage *img1;
+        GrxImage *img2;
         if (! grx_context_create(ww,wh,NULL,&ctx)) return;
 
         grx_context_set_current(&ctx);
@@ -42,15 +42,15 @@ TESTFUNC(imgtest)
 
         grx_context_set_current(NULL);
 
-        img1 = GrImageFromContext(&ctx);
+        img1 = grx_image_create_from_context(&ctx);
         if (!img1) return;
 
         grx_draw_filled_box(0,0,ww+1,wh+1,c3);
         grx_draw_filled_box(ww+15,0,2*ww+16,wh+1,c3);
 
         grx_bit_blt(NULL,1,1,&ctx,0,0,ww-1,wh-1,0);
-        GrImageDisplay(ww+16,1,img1);
-        GrImageDisplayExt(0,wh+4,x-1,y-1, img1);
+        grx_draw_image(ww+16,1,img1);
+        grx_draw_image_tiled(0,wh+4,x-1,y-1, img1);
 
         GrKeyRead();
 
@@ -58,10 +58,10 @@ TESTFUNC(imgtest)
           for (d1=1; d1 <= PARTS; d1 <<= 1) {
             for (m2=1; m2 <= PARTS ; m2<<=1) {
               for (d2=1; d2 <= PARTS; d2 <<= 1) {
-                img2 = GrImageStretch(img1,(m1*ww)/d1, (m2*wh)/d2);
+                img2 = grx_image_stretch(img1,(m1*ww)/d1, (m2*wh)/d2);
                 if (img2) {
-                  GrImageDisplayExt(0,0,x-1,y-1,img2);
-                  GrImageDestroy(img2);
+                  grx_draw_image_tiled(0,0,x-1,y-1,img2);
+                  grx_image_free(img2);
                 }
               }
             }

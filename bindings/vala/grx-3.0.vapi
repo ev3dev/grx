@@ -1333,55 +1333,38 @@ namespace Grx {
     /**
      * Flags for {@link Image.inverse}.
      */
-    [CCode (cname = "int", has_type_id = false)]
+    [CCode (cprefix = "GRX_IMAGE_MIRROR_", has_type_id = false)]
     [Flags]
-    public enum ImageInverseFlag {
-        [CCode (cname = "GR_IMAGE_INVERSE_LR")]
-        LEFT_RIGHT, /* inverse left right */
-        [CCode (cname = "GR_IMAGE_INVERSE_TD")]
-        TOP_DOWN /* inverse top down */
+    public enum ImageMirrorFlags {
+        HORIZONTAL, /* inverse left right */
+        VERTICAL /* inverse top down */
     }
 
-    [CCode (cname = "GrImage", free_function = "GrImageDestroy", has_type_id = false)]
+    [CCode (free_function = "grx_image_free", has_type_id = false)]
     [Compact]
     public class Image {
-        [CCode (cname = "GrImage", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
-        [CCode (cname = "pattern")]
         Pattern pattern;         /* fill pattern */
-        [CCode (cname = "options")]
         LineOptions options;          /* width + dash pattern */
 
-        [CCode (cname = "GrImageBuild")]
-        public Image ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
-        [CCode (cname = "GrImageBuildUsedAsPattern")]
-        public Image.used_as_pattern ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
+        public static Image create ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
+        [CCode (cname = "grx_pattern_create_from_data")]
+        public static Image create_from_data ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
 
-        [CCode (cname = "GrImageDisplay", instance_pos = 2.1)]
-        public void display (int x, int y);
-        [CCode (cname = "GrImageDisplayExt", instance_pos = 4.1)]
-        public void display_ext (int x1, int y1, int x2, int y2);
-        [CCode (cname = "GrImageFilledBoxAlign", instance_pos = 6.1)]
-        public void filled_box_align (int xo, int yo, int x1, int y1, int x2, int y2);
-        [CCode (cname = "GrImageHLineAlign", instance_pos = 6.1)]
-        public void HLineAlign (int xo, int yo, int x, int y, int width);
-        [CCode (cname = "GrImagePlotAlign", instance_pos = 4.1)]
-        public void PlotAlign (int xo, int yo, int x, int y);
-
-        [CCode (cname = "GrImageInverse")]
-        public Image inverse (ImageInverseFlag flag);
-        [CCode (cname = "GrImageStretch")]
+        public Image mirror (ImageMirrorFlags flags);
         public Image stretch (int width, int height);
 
-        [CCode (cname = "GrImageFromPattern")]
-        public static Image from_pattern (Pattern pattern);
-        [CCode (cname = "GrImageFromContext")]
-        public static Image from_context (Context context);
+        public static Image create_from_pattern (Pattern pattern);
+        public static Image create_from_context (Context context);
 
-        [CCode (cname = "GrPatternFromImage")]
+        [CCode (cname = "grx_pattern_create_from_image")]
         public Pattern to_pattern ();
     }
+
+    public void draw_image (int x, int y);
+    public void draw_image_tiled (int x1, int y1, int x2, int y2);
+    public void draw_filled_box_with_image (int xo, int yo, int x1, int y1, int x2, int y2);
+    public void draw_hline_with_image (int xo, int yo, int x, int y, int width);
+    public void draw_point_with_image (int xo, int yo, int x, int y);
 
     /* ================================================================== */
     /*               DRAWING IN USER WINDOW COORDINATES                   */

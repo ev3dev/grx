@@ -23,9 +23,9 @@
 #include "mempeek.h"
 #include "image/image.h"
 
-GrImage *GrImageBuild(const char *pixels,int w,int h,const GrxColorTable colors)
+GrxImage *grx_image_create(const unsigned char *pixels,int w,int h,const GrxColorTable colors)
 {
-  GrImage   *img;
+  GrxImage   *img;
   GRX_ENTER();
   img = NULL;
   if ( pixels ) do {

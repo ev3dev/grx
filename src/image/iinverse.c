@@ -22,11 +22,11 @@
 #include "clipping.h"
 #include "image/image.h"
 
-GrImage *GrImageInverse(GrImage *p,int flag)
+GrxImage *grx_image_mirror(GrxImage *p, GrxImageMirrorFlags flag)
 {
   GrxContext  ctx, save;
   GrxColor    col;
-  GrImage   *img;
+  GrxImage   *img;
   int yy, xx, sidex, sidey, width, height, xs, ys = 0;
   width = p->width;
   height = p->height;
@@ -34,11 +34,11 @@ GrImage *GrImageInverse(GrImage *p,int flag)
   if ( !img ) return(NULL);
   save = *CURC;
   *CURC = ctx;
-  sidex  = ( flag & GR_IMAGE_INVERSE_LR ) ? -1 : 1;
-  sidey  = ( flag & GR_IMAGE_INVERSE_TD ) ? -1 : 1;
-  yy     = ( flag & GR_IMAGE_INVERSE_TD ) ? height-1 : 0;
+  sidex  = ( flag & GRX_IMAGE_MIRROR_HORIZONTAL ) ? -1 : 1;
+  sidey  = ( flag & GRX_IMAGE_MIRROR_VERTICAL ) ? -1 : 1;
+  yy     = ( flag & GRX_IMAGE_MIRROR_VERTICAL ) ? height-1 : 0;
   do {
-    xx = ( flag & GR_IMAGE_INVERSE_LR ) ? width-1 : 0;
+    xx = ( flag & GRX_IMAGE_MIRROR_HORIZONTAL ) ? width-1 : 0;
     xs = 0;
     do {
       col = (*p->source.driver->readpixel)(&p->source,xs,ys);

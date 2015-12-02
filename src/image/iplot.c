@@ -22,7 +22,7 @@
 #include "clipping.h"
 #include "image/image.h"
 
-void GrImagePlotAlign(int xo,int yo,int x,int y,GrImage *p)
+void grx_draw_point_with_image(int xo,int yo,int x,int y,GrxImage *p)
 {
    int xp, yp;
    GrxColor col;

@@ -25,11 +25,11 @@
 #include "libgrx.h"
 #endif
 
-#ifndef GrImage
-#define GrImage GrxPixmap
+#ifndef GrxImage
+#define GrxImage GrxPixmap
 #endif
 
 int _GrImageTestSize(int wdt,int hgt);
-GrImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight);
+GrxImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight);
 
 #endif
