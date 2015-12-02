@@ -23,7 +23,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrFilledEllipse(int xc,int yc,int xa,int ya,GrxColor c)
+void grx_user_draw_filled_ellipse(int xc,int yc,int xa,int ya,GrxColor c)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);

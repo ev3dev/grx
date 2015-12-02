@@ -1381,67 +1381,79 @@ GrxPattern *grx_pattern_create_from_image(GrxImage *p);
 /*               DRAWING IN USER WINDOW COORDINATES                   */
 /* ================================================================== */
 
-void GrSetUserWindow(int x1,int y1,int x2,int y2);
-void GrGetUserWindow(int *x1,int *y1,int *x2,int *y2);
-void GrGetScreenCoord(int *x,int *y);
-void GrGetUserCoord(int *x,int *y);
+void grx_user_set_window(gint x1, gint y1, gint x2, gint y2);
+void grx_user_get_window(gint *x1, gint *y1, gint *x2, gint *y2);
+void grx_user_convert_user_to_screen(gint *x, gint *y);
+void grx_user_convert_screen_to_user(gint *x, gint *y);
 
-void GrUsrPlot(int x,int y,GrxColor c);
-void GrUsrLine(int x1,int y1,int x2,int y2,GrxColor c);
-void GrUsrHLine(int x1,int x2,int y,GrxColor c);
-void GrUsrVLine(int x,int y1,int y2,GrxColor c);
-void GrUsrBox(int x1,int y1,int x2,int y2,GrxColor c);
-void GrUsrFilledBox(int x1,int y1,int x2,int y2,GrxColor c);
-void GrUsrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrxFramedBoxColors *c);
-void GrUsrCircle(int xc,int yc,int r,GrxColor c);
-void GrUsrEllipse(int xc,int yc,int xa,int ya,GrxColor c);
-void GrUsrCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxColor c);
-void GrUsrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxColor c);
-void GrUsrFilledCircle(int xc,int yc,int r,GrxColor c);
-void GrUsrFilledEllipse(int xc,int yc,int xa,int ya,GrxColor c);
-void GrUsrFilledCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxColor c);
-void GrUsrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxColor c);
-void GrUsrPolyLine(int numpts,int points[][2],GrxColor c);
-void GrUsrPolygon(int numpts,int points[][2],GrxColor c);
-void GrUsrFilledConvexPolygon(int numpts,int points[][2],GrxColor c);
-void GrUsrFilledPolygon(int numpts,int points[][2],GrxColor c);
-void GrUsrFloodFill(int x, int y, GrxColor border, GrxColor c);
+void grx_user_draw_point(gint x, gint y, GrxColor c);
+void grx_user_draw_line(gint x1, gint y1, gint x2, gint y2, GrxColor c);
+void grx_user_draw_hline(gint x1, gint x2, gint y, GrxColor c);
+void grx_user_draw_vline(gint x, gint y1, gint y2, GrxColor c);
+void grx_user_draw_box(gint x1, gint y1, gint x2, gint y2,GrxColor c);
+void grx_user_draw_filled_box(gint x1, gint y1, gint x2, gint y2,GrxColor c);
+void grx_user_draw_framed_box(gint x1, gint y1, gint x2, gint y2, gint wdt,
+                              GrxFramedBoxColors *c);
+void grx_user_draw_circle(gint xc, gint yc, gint r, GrxColor c);
+void grx_user_draw_ellipse(gint xc, gint yc, gint xa, gint ya, GrxColor c);
+void grx_user_draw_circle_arc(gint xc, gint yc, gint r, gint start, gint end,
+                              GrxArcStyle style, GrxColor c);
+void grx_user_draw_ellipse_arc(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
+                               GrxArcStyle style, GrxColor c);
+void grx_user_draw_filled_circle(gint xc, gint yc, gint r, GrxColor c);
+void grx_user_draw_filled_ellipse(gint xc, gint yc, gint xa, gint ya, GrxColor c);
+void grx_user_draw_filled_circle_arc(gint xc, gint yc, gint r, gint start, gint end,
+                                     GrxArcStyle style, GrxColor c);
+void grx_user_draw_filled_ellipse_arc(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
+                                      GrxArcStyle style,GrxColor c);
+void grx_user_draw_polyline(gint numpts, gint points[][2], GrxColor c);
+void grx_user_draw_polygon(gint numpts, gint points[][2], GrxColor c);
+void grx_user_draw_filled_convex_polygon(gint numpts, gint points[][2], GrxColor c);
+void grx_user_draw_filled_polygon(gint numpts, gint points[][2], GrxColor c);
+void grx_user_flood_fill(gint x, gint y, GrxColor border, GrxColor c);
 
-GrxColor GrUsrPixel(int x,int y);
-GrxColor GrUsrPixelC(GrxContext *c,int x,int y);
+GrxColor grx_user_get_pixel_at(gint x, gint y);
+GrxColor grx_context_get_pixel_at_user(GrxContext *c, gint x, gint y);
 
-void GrUsrCustomLine(int x1,int y1,int x2,int y2,const GrxLineOptions *o);
-void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrxLineOptions *o);
-void GrUsrCustomCircle(int xc,int yc,int r,const GrxLineOptions *o);
-void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrxLineOptions *o);
-void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,const GrxLineOptions *o);
-void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,const GrxLineOptions *o);
-void GrUsrCustomPolyLine(int numpts,int points[][2],const GrxLineOptions *o);
-void GrUsrCustomPolygon(int numpts,int points[][2],const GrxLineOptions *o);
+void grx_user_draw_line_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
+void grx_user_draw_box_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
+void grx_user_draw_circle_with_options(gint xc, gint yc, gint r, const GrxLineOptions *o);
+void grx_user_draw_ellipse_with_options(gint xc, gint yc, gint xa, gint ya, const GrxLineOptions *o);
+void grx_user_draw_circle_arc_with_options(gint xc, gint yc, gint r, gint start, gint end,
+                                           GrxArcStyle style, const GrxLineOptions *o);
+void grx_user_draw_ellipse_arc_with_options(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
+                                            GrxArcStyle style, const GrxLineOptions *o);
+void grx_user_draw_polyline_with_options(gint numpts, gint points[][2], const GrxLineOptions *o);
+void grx_user_draw_polygon_with_options(gint numpts, gint points[][2], const GrxLineOptions *o);
 
-void GrUsrPatternedLine(int x1,int y1,int x2,int y2,GrxLinePattern *lp);
-void GrUsrPatternedBox(int x1,int y1,int x2,int y2,GrxLinePattern *lp);
-void GrUsrPatternedCircle(int xc,int yc,int r,GrxLinePattern *lp);
-void GrUsrPatternedEllipse(int xc,int yc,int xa,int ya,GrxLinePattern *lp);
-void GrUsrPatternedCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxLinePattern *lp);
-void GrUsrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxLinePattern *lp);
-void GrUsrPatternedPolyLine(int numpts,int points[][2],GrxLinePattern *lp);
-void GrUsrPatternedPolygon(int numpts,int points[][2],GrxLinePattern *lp);
+void grx_user_draw_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *lp);
+void grx_user_draw_box_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *lp);
+void grx_user_draw_circle_with_pattern(gint xc, gint yc, gint r, GrxLinePattern *lp);
+void grx_user_draw_ellipse_with_pattern(gint xc, gint yc, gint xa, gint ya, GrxLinePattern *lp);
+void grx_user_draw_circle_arc_with_pattern(gint xc, gint yc, gint r, gint start, gint end,
+                                           GrxArcStyle style, GrxLinePattern *lp);
+void grx_user_draw_ellipse_arc_with_pattern(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
+                                            GrxArcStyle style, GrxLinePattern *lp);
+void grx_user_draw_polyline_with_pattern(gint numpts, gint points[][2], GrxLinePattern *lp);
+void grx_user_draw_polygon_with_pattern(gint numpts, gint points[][2], GrxLinePattern *lp);
 
-void GrUsrPatternFilledPlot(int x,int y,GrxPattern *p);
-void GrUsrPatternFilledLine(int x1,int y1,int x2,int y2,GrxPattern *p);
-void GrUsrPatternFilledBox(int x1,int y1,int x2,int y2,GrxPattern *p);
-void GrUsrPatternFilledCircle(int xc,int yc,int r,GrxPattern *p);
-void GrUsrPatternFilledEllipse(int xc,int yc,int xa,int ya,GrxPattern *p);
-void GrUsrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxPattern *p);
-void GrUsrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxPattern *p);
-void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrxPattern *p);
-void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrxPattern *p);
-void GrUsrPatternFloodFill(int x, int y, GrxColor border, GrxPattern *p);
+void grx_user_draw_filled_point_with_pattern(gint x, gint y, GrxPattern *p);
+void grx_user_draw_filled_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxPattern *p);
+void grx_user_draw_filled_box_with_pattern(gint x1, gint y1, gint x2, int y2, GrxPattern *p);
+void grx_user_draw_filled_circle_with_pattern(gint xc, gint yc, gint r, GrxPattern *p);
+void grx_user_draw_filled_ellipse_with_pattern(gint xc, gint yc, gint xa, gint ya, GrxPattern *p);
+void grx_user_draw_filled_circle_arc_with_pattern(gint xc, gint yc, gint r, gint start, gint end,
+                                                  GrxArcStyle style, GrxPattern *p);
+void grx_user_draw_filled_ellipse_arc_with_pattern(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
+                                                   GrxArcStyle style, GrxPattern *p);
+void grx_user_draw_filled_convex_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *p);
+void grx_user_draw_filled_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *p);
+void grx_user_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *p);
 
-void GrUsrDrawChar(int chr,int x,int y,const GrxTextOption *opt);
-void GrUsrDrawString(char *text,int length,int x,int y,const GrxTextOption *opt);
-void GrUsrTextXY(int x,int y,char *text,GrxColor fg,GrxColor bg);
+void grx_user_draw_char_with_text_options(gint chr, gint x, gint y, const GrxTextOption *opt);
+void grx_user_draw_text_with_text_options(gchar *text, gint length, gint x, gint y,
+                                          const GrxTextOption *opt);
+void grx_user_draw_text(gchar *text, gint x, gint y, GrxColor fg, GrxColor bg);
 
 /* ================================================================== */
 /*                    GRAPHICS CURSOR UTILITIES                       */

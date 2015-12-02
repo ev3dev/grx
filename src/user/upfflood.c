@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrPatternFloodFill(int x, int y, GrxColor border, GrxPattern *p)
+void grx_user_flood_fill_with_pattern(int x, int y, GrxColor border, GrxPattern *p)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);

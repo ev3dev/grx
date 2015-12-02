@@ -20,7 +20,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrPlot(int x,int y,GrxColor c)
+void grx_user_draw_point(int x,int y,GrxColor c)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);

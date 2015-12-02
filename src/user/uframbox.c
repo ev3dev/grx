@@ -21,7 +21,7 @@
 #include "arith.h"
 #include "usercord.h"
 
-void GrUsrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrxFramedBoxColors *c)
+void grx_user_draw_framed_box(int x1,int y1,int x2,int y2,int wdt,GrxFramedBoxColors *c)
 {
         int w1,w2;
 

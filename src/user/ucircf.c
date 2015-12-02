@@ -33,7 +33,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrFilledCircle(int xc,int yc,int r,GrxColor c)
+void grx_user_draw_filled_circle(int xc,int yc,int r,GrxColor c)
 {
 #ifdef USR_KEEP_SHAPE
         U2SX(xc,CURC);
@@ -41,6 +41,6 @@ void GrUsrFilledCircle(int xc,int yc,int r,GrxColor c)
         SCALE(r,r,CURC->x_max,CURC->user_width);
         grx_draw_filled_circle(xc,yc,r,c);
 #else
-        GrUsrFilledEllipse(xc,yc,r,r,c);
+        grx_user_draw_filled_ellipse(xc,yc,r,r,c);
 #endif
 }

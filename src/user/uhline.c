@@ -20,7 +20,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrHLine(int x1,int x2,int y,GrxColor c)
+void grx_user_draw_hline(int x1,int x2,int y,GrxColor c)
 {
         U2SX(x1,CURC);
         U2SX(x2,CURC);

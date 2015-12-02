@@ -629,8 +629,7 @@ namespace Grx {
         [CCode (cname = "grx_pattern_create_pixmap_from_context")]
         public Pattern to_pixmap ();
 
-        [CCode (cname = "GrUsrPixelC")]
-        public Color user_pixel (int x, int y);
+        public Color get_pixel_at_user (int x, int y);
 
         [CCode (cname = "GrSaveContextToPbm")]
         public Result save_to_pbm (string file_name, string? comment = null);
@@ -1370,123 +1369,74 @@ namespace Grx {
     /*               DRAWING IN USER WINDOW COORDINATES                   */
     /* ================================================================== */
 
-    [CCode (cname = "GrSetUserWindow")]
-    public void set_user_window (int x1, int y1, int x2, int y2);
-    [CCode (cname = "GrGetUserWindow")]
-    public void get_user_window (out int x1, out int y1, out int x2, out int y2);
-    [CCode (cname = "GrGetScreenCoord")]
-    public void get_screen_coord (out int x, out int y);
-    [CCode (cname = "GrGetUserCoord")]
-    public void get_user_coord (out int x, out int y);
+    namespace User {
 
-    [CCode (cname = "GrUsrPlot")]
-    public void user_plot (int x, int y, Color c);
-    [CCode (cname = "GrUsrLine")]
-    public void user_line (int x1, int y1, int x2, int y2, Color c);
-    [CCode (cname = "GrUsrHLine")]
-    public void user_horiz_line (int x1, int x2, int y, Color c);
-    [CCode (cname = "GrUsrVLine")]
-    public void user_vert_line (int x, int y1, int y2, Color c);
-    [CCode (cname = "GrUsrBox")]
-    public void user_box (int x1, int y1, int x2, int y2, Color c);
-    [CCode (cname = "GrUsrFilledBox")]
-    public void user_filled_box (int x1, int y1, int x2, int y2, Color c);
-    [CCode (cname = "GrUsrFramedBox")]
-    public void user_framed_box (int x1, int y1, int x2, int y2, int wdt, FramedBoxColors c);
-    [CCode (cname = "GrUsrCircle")]
-    public void user_circle (int xc, int yc, int r, Color c);
-    [CCode (cname = "GrUsrEllipse")]
-    public void user_ellipse (int xc, int yc, int xa, int ya, Color c);
-    [CCode (cname = "GrUsrCircleArc")]
-    public void user_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
-    [CCode (cname = "GrUsrEllipseArc")]
-    public void user_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
-    [CCode (cname = "GrUsrFilledCircle")]
-    public void user_filled_circle (int xc, int yc, int r, Color c);
-    [CCode (cname = "GrUsrFilledEllipse")]
-    public void user_filled_ellipse (int xc, int yc, int xa, int ya, Color c);
-    [CCode (cname = "GrUsrFilledCircleArc")]
-    public void user_filled_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
-    [CCode (cname = "GrUsrFilledEllipseArc")]
-    public void user_filled_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
-    [CCode (cname = "GrUsrPolyLine")]
-    public void useR_poly_line ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
-    [CCode (cname = "GrUsrPolygon")]
-    public void user_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
-    [CCode (cname = "GrUsrFilledConvexPolygon")]
-    public void user_filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
-    [CCode (cname = "GrUsrFilledPolygon")]
-    public void user_filled_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
-    [CCode (cname = "GrUsrFloodFill")]
-    public void user_flood_fill (int x, int y, Color border, Color c);
+        public void set_window (int x1, int y1, int x2, int y2);
+        public void get_window (out int x1, out int y1, out int x2, out int y2);
+        public void convert_user_to_screen (ref int x, ref int y);
+        public void convert_screen_to_user (ref int x, ref int y);
 
-    [CCode (cname = "GrUsrPixel")]
-    public Color user_pixel (int x, int y);
+        public void draw_point (int x, int y, Color c);
+        public void draw_line (int x1, int y1, int x2, int y2, Color c);
+        public void draw_hline (int x1, int x2, int y, Color c);
+        public void draw_vline (int x, int y1, int y2, Color c);
+        public void draw_box (int x1, int y1, int x2, int y2, Color c);
+        public void draw_filled_box (int x1, int y1, int x2, int y2, Color c);
+        public void draw_framed_box (int x1, int y1, int x2, int y2, int wdt, FramedBoxColors c);
+        public void draw_circle (int xc, int yc, int r, Color c);
+        public void draw_ellipse (int xc, int yc, int xa, int ya, Color c);
+        public void draw_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
+        public void draw_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
+        public void draw_filled_circle (int xc, int yc, int r, Color c);
+        public void draw_filled_ellipse (int xc, int yc, int xa, int ya, Color c);
+        public void draw_filled_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
+        public void draw_filled_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
+        public void draw_polyline ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
+        public void draw_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
+        public void draw_filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
+        public void draw_filled_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
+        public void flood_fill (int x, int y, Color border, Color c);
 
-    [CCode (cname = "GrUsrCustomLine")]
-    public void user_custom_line (int x1, int y1, int x2, int y2, LineOptions options);
-    [CCode (cname = "GrUsrCustomBox")]
-    public void user_custom_box (int x1, int y1, int x2, int y2, LineOptions options);
-    [CCode (cname = "GrUsrCustomCircle")]
-    public void user_custom_circle (int xc, int yc, int r, LineOptions options);
-    [CCode (cname = "GrUsrCustomEllipse")]
-    public void user_custom_ellipse (int xc, int yc, int xa, int ya, LineOptions options);
-    [CCode (cname = "GrUsrCustomCircleArc")]
-    public void user_custom_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions options);
-    [CCode (cname = "GrUsrCustomEllipseArc")]
-    public void user_custom_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LineOptions options);
-    [CCode (cname = "GrUsrCustomPolyLine")]
-    public void user_custom_poly_line ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions options);
-    [CCode (cname = "GrUsrCustomPolygon")]
-    public void user_custom_polygon ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions options);
+        public Color get_pixel_at (int x, int y);
 
-    [CCode (cname = "GrUsrPatternedLine")]
-    public void user_patterned_line (int x1, int y1, int x2, int y2, LinePattern pattern);
-    [CCode (cname = "GrUsrPatternedBox")]
-    public void user_patterned_box (int x1, int y1, int x2, int y2, LinePattern pattern);
-    [CCode (cname = "GrUsrPatternedCircle")]
-    public void user_patterned_circle (int xc, int yc, int r, LinePattern pattern);
-    [CCode (cname = "GrUsrPatternedEllipse")]
-    public void user_patterned_ellipse (int xc, int yc, int xa, int ya, LinePattern pattern);
-    [CCode (cname = "GrUsrPatternedCircleArc")]
-    public void user_patterned_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, LinePattern pattern);
-    [CCode (cname = "GrUsrPatternedEllipseArc")]
-    public void user_patterned_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LinePattern pattern);
-    [CCode (cname = "GrUsrPatternedPolyLine")]
-    public void user_patterned_poly_line ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern pattern);
-    [CCode (cname = "GrUsrPatternedPolygon")]
-    public void user_patterned_polygon ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern pattern);
+        public void draw_line_with_options (int x1, int y1, int x2, int y2, LineOptions options);
+        public void draw_box_with_options (int x1, int y1, int x2, int y2, LineOptions options);
+        public void draw_circle_with_options (int xc, int yc, int r, LineOptions options);
+        public void draw_ellipse_with_options (int xc, int yc, int xa, int ya, LineOptions options);
+        public void draw_circle_arc_with_options (int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions options);
+        public void draw_ellipse_arc_with_options (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LineOptions options);
+        public void draw_polyline_with_options ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions options);
+        public void draw_polygon_with_options ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions options);
 
-    [CCode (cname = "GrUsrPatternFilledPlot")]
-    public void user_pattern_filled_plot (int x, int y, Pattern pattern);
-    [CCode (cname = "GrUsrPatternFilledLine")]
-    public void user_pattern_filled_line (int x1, int y1, int x2, int y2, Pattern pattern);
-    [CCode (cname = "GrUsrPatternFilledBox")]
-    public void user_pattern_filled_box (int x1, int y1, int x2, int y2, Pattern pattern);
-    [CCode (cname = "GrUsrPatternFilledCircle")]
-    public void user_pattern_filled_circle (int xc, int yc, int r, Pattern pattern);
-    [CCode (cname = "GrUsrPatternFilledEllipse")]
-    public void user_pattern_filled_ellipse (int xc, int yc, int xa, int ya, Pattern pattern);
-    [CCode (cname = "GrUsrPatternFilledCircleArc")]
-    public void user_pattern_filled_circle_arc (int xc, int yc, int r, int start, int end, int style, Pattern pattern);
-    [CCode (cname = "GrUsrPatternFilledEllipseArc")]
-    public void user_pattern_filled_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, int style, Pattern pattern);
-    [CCode (cname = "GrUsrPatternFilledConvexPolygon")]
-    public void user_pattern_filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
-    [CCode (cname = "GrUsrPatternFilledPolygon")]
-    public void user_pattern_filled_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
-    [CCode (cname = "GrUsrPatternFloodFill")]
-    public void user_pattern_flood_fill (int x, int y, Color border, Pattern pattern);
+        public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LinePattern pattern);
+        public void draw_box_with_pattern (int x1, int y1, int x2, int y2, LinePattern pattern);
+        public void draw_circle_with_pattern (int xc, int yc, int r, LinePattern pattern);
+        public void draw_ellipse_with_pattern (int xc, int yc, int xa, int ya, LinePattern pattern);
+        public void draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, ArcStyle style, LinePattern pattern);
+        public void draw_ellipse_arc_with_pattern (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LinePattern pattern);
+        public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern pattern);
+        public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern pattern);
 
-    [CCode (cname = "GrUsrDrawChar")]
-    public void user_draw_char (int chr, int x, int y, TextOption opt);
-    [CCode (cname = "GrUsrDrawString")]
-    public void user_draw_string (char *text, int length, int x, int y, TextOption opt);
-    public void user_draw_vala_string (string text, int x, int y, TextOption opt) {
-        user_draw_string (text.data, text.length, x, y, opt);
+        public void draw_filled_point_with_pattern (int x, int y, Pattern pattern);
+        public void draw_filled_line_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
+        public void draw_filled_box_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
+        public void draw_filled_circle_with_pattern (int xc, int yc, int r, Pattern pattern);
+        public void draw_filled_ellipse_with_pattern (int xc, int yc, int xa, int ya, Pattern pattern);
+        public void draw_filled_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, int style, Pattern pattern);
+        public void draw_filled_ellipse_arc_with_pattern (int xc, int yc, int xa, int ya, int start, int end, int style, Pattern pattern);
+        public void draw_filled_convex_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
+        public void draw_filled_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
+        public void flood_fill_with_pattern (int x, int y, Color border, Pattern pattern);
+
+        public void draw_char_with_text_options (int chr, int x, int y, TextOption opt);
+        [CCode (cname = "grx_user_draw_text_with_text_options")]
+        void _draw_text_with_text_options (char *text, int length, int x, int y, TextOption opt);
+        [CCode (cname = "vala_grx_user_draw_text_with_text_options")]
+        public void draw_text_with_text_options (string text, int x, int y, TextOption opt) {
+            _draw_text_with_text_options (text.data, text.length, x, y, opt);
+        }
+        public void draw_text (string text, int x, int y, Color fg, Color bg);
     }
-    [CCode (cname = "GrUsrTextXY")]
-    public void user_text_xy (int x, int y, string text, Color fg, Color bg);
 
     /* ================================================================== */
     /*                    GRAPHICS CURSOR UTILITIES                       */

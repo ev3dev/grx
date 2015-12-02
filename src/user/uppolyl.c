@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "usercord.h"
 
-void GrUsrPatternedPolyLine(int numpts,int points[][2],GrxLinePattern *lp)
+void grx_user_draw_polyline_with_pattern(int numpts,int points[][2],GrxLinePattern *lp)
 {
         int pt;
         int (*tmp)[2];

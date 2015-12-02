@@ -20,7 +20,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-GrxColor GrUsrPixel(int x,int y)
+GrxColor grx_user_get_pixel_at(int x,int y)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);

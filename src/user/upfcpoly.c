@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "usercord.h"
 
-void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrxPattern *p)
+void grx_user_draw_filled_convex_polygon_with_pattern(int numpts,int points[][2],GrxPattern *p)
 {
         int pt;
         int (*tmp)[2];

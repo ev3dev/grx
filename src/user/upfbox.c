@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void GrUsrPatternFilledBox(int x1,int y1,int x2,int y2,GrxPattern *p)
+void grx_user_draw_filled_box_with_pattern(int x1,int y1,int x2,int y2,GrxPattern *p)
 {
         U2SX(x1,CURC);
         U2SX(x2,CURC);

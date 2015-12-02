@@ -20,7 +20,7 @@
 #include "allocate.h"
 #include "usercord.h"
 
-void GrUsrPolygon(int numpts,int points[][2],GrxColor c)
+void grx_user_draw_polygon(int numpts,int points[][2],GrxColor c)
 {
         int pt;
         int (*tmp)[2];
