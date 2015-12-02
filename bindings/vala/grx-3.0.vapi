@@ -641,9 +641,6 @@ namespace Grx {
         public Result load_from_jpeg (string file_name, int scale);
         public Result save_to_jpeg (string file_name, int quality = 90);
         public Result save_to_jpeg_grayscale (string file_name, int quality = 90);
-
-        //[CCode (cname = "SaveContextToTiff")]
-        //public int to_tiff (string file_name, uint compr, string? comment = null);
     }
 
     [CCode (cname = "const struct _GR_contextInfo", has_type_id = false)]

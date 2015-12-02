@@ -1688,28 +1688,6 @@ int grx_context_save_to_jpeg_grayscale(GrxContext *grc, gchar *jpegfn, gint qual
 
 void grx_resize_gray_map(unsigned char *map,int pitch,int ow,int oh,int nw,int nh);
 
-/* ================================================================== */
-/*                        TIFF ADDON FUNCTIONS                        */
-/*  these functions may not be installed or available on all system   */
-/* ================================================================== */
-
-/*
-** SaveContextToTiff - Dump a context in a TIFF file
-**
-** Arguments:
-**   cxt:   Context to be saved (NULL -> use current context)
-**   tiffn: Name of tiff file
-**   compr: Compression method (see tiff.h), 0: automatic selection
-**   docn:  string saved in the tiff file (DOCUMENTNAME tag)
-**
-**  Returns  0 on success
-**          -1 on error
-**
-** requires tifflib by  Sam Leffler (sam@engr.sgi.com)
-**        available at  ftp://ftp.sgi.com/graphics/tiff
-*/
-int SaveContextToTiff(GrxContext *cxt, char *tiffn, unsigned compr, char *docn);
-
 #ifdef __cplusplus
 }
 #endif
