@@ -1455,6 +1455,8 @@ void grx_user_draw_text_with_text_options(gchar *text, gint length, gint x, gint
                                           const GrxTextOption *opt);
 void grx_user_draw_text(gchar *text, gint x, gint y, GrxColor fg, GrxColor bg);
 
+#ifndef __GI_SCANNER__
+
 /* ================================================================== */
 /*                    GRAPHICS CURSOR UTILITIES                       */
 /* ================================================================== */
@@ -1627,6 +1629,8 @@ void GrMouseUnBlock(int return_value_from_GrMouseBlock);
         }                                                                      \
 } while(0)
 #endif  /* GRX_SKIP_INLINES */
+
+#endif /* __GI_SCANNER__ */
 
 /* ================================================================== */
 /*                           PNM FUNCTIONS                            */
