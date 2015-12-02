@@ -631,17 +631,12 @@ namespace Grx {
 
         public Color get_pixel_at_user (int x, int y);
 
-        [CCode (cname = "GrSaveContextToPbm")]
         public Result save_to_pbm (string file_name, string? comment = null);
-        [CCode (cname = "GrSaveContextToPgm")]
         public Result save_to_pgm (string file_name, string? comment = null);
-        [CCode (cname = "GrSaveContextToPpm")]
         public Result save_to_ppm (string file_name, string? comment = null);
-        [CCode (cname = "GrLoadContextFromPnm")]
         public Result load_from_pnm (string file_name);
 
-        [CCode (cname = "GrLoadContextFromPnmBuffer")]
-        public Result load_from_pnm_buffer (char *buffer);
+        public Result load_from_pnm_data (char *buffer);
 
         [CCode (cname = "GrSaveContextToPng")]
         public Result save_to_png (string file_name);
@@ -1479,28 +1474,20 @@ namespace Grx {
      *  The PNM formats, grx support load/save of
      *  binaries formats (4, 5, 6) only
      */
-    [CCode (cname = "int", has_type_id = false)]
-    public enum PNMFormat {
-        [CCode (cname = "PLAINPBMFORMAT")]
-        PLAIN_PBM,
-        [CCode (cname = "PLAINPGMFORMAT")]
-        PLAIN_PGM,
-        [CCode (cname = "PLAINPPMFORMAT")]
-        PLAIN_PPM,
-        [CCode (cname = "PBMFORMAT")]
-        PBM,
-        [CCode (cname = "PGMFORMAT")]
-        PGM,
-        [CCode (cname = "PPMFORMAT")]
-        PPM
+    [CCode (has_type_id = false)]
+    public enum PnmFormat {
+        ASCII_PBM,
+        ASCII_PGM,
+        ASCII_PPM,
+        BINARY_PBM,
+        BINARY_PGM,
+        BINARY_PPM
     }
 
     /* The PNM functions */
 
-    [CCode (cname = "GrQueryPnm")]
-    public Result query_pnm (string file_name, out int width, out int height, out int maxval);
-    [CCode (cname = "GrQueryPnmBuffer")]
-    public Result query_pnm_buffer (char *buffer, out int width, out int height, out int maxval);
+    public PnmFormat check_pnm_file (string file_name, out int width, out int height, out int maxval);
+    public PnmFormat check_pnm_data (char *buffer, out int width, out int height, out int maxval);
 
     /* ================================================================== */
     /*                           PNG FUNCTIONS                            */

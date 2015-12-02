@@ -118,12 +118,12 @@ static int loaddata( inputstruct *is, int *width, int *height, int *maxval )
   if( inputread( buf,1,2,is ) != 2 ) return -1;
   if( buf[0] != 'P' ) return -1;
   r = buf[1] - '0';
-  if( (r < PLAINPBMFORMAT) || (r > PPMFORMAT) ) return -1;
+  if( (r < GRX_PNM_FORMAT_ASCII_PBM) || (r > GRX_PNM_FORMAT_BINARY_PPM) ) return -1;
   if( skipspaces( is ) != 0 ) return -1;
   if( (*width = readnumber( is )) < 0 ) return -1;
   if( skipspaces( is ) != 0 ) return -1;
   if( (*height = readnumber( is )) < 0 ) return -1;
-  if( (r == PLAINPBMFORMAT) || (r == PBMFORMAT) )
+  if( (r == GRX_PNM_FORMAT_ASCII_PBM) || (r == GRX_PNM_FORMAT_BINARY_PBM) )
     *maxval = 1;
   else{
     if( skipspaces( is ) != 0 ) return -1;
@@ -268,7 +268,7 @@ salida:
 }
 
 /*
-** GrLoadContextFromPnm - Load a context from a PNM file
+** grx_context_load_from_pnm - Load a context from a PNM file
 **
 ** Support only PBM, PGM and PPM binary files with maxval < 256
 **
@@ -286,7 +286,7 @@ salida:
 **         -1 on error
 */
 
-int GrLoadContextFromPnm( GrxContext *grc, char *pnmfn )
+int grx_context_load_from_pnm( GrxContext *grc, char *pnmfn )
 {
   inputstruct is = {0, NULL, NULL, 0};
   GrxContext grcaux;
@@ -300,14 +300,14 @@ int GrLoadContextFromPnm( GrxContext *grc, char *pnmfn )
 
   format = loaddata( &is,&width,&height,&maxval );
   if( maxval > 255 ) goto ENDFUNCTION;
-  if( (format < PBMFORMAT) || (format > PPMFORMAT) ) goto ENDFUNCTION;
+  if( (format < GRX_PNM_FORMAT_BINARY_PBM) || (format > GRX_PNM_FORMAT_BINARY_PPM) ) goto ENDFUNCTION;
 
   switch( format ){
-    case PBMFORMAT: r = _GrLoadContextFromPbm( &is,width,height );
+    case GRX_PNM_FORMAT_BINARY_PBM: r = _GrLoadContextFromPbm( &is,width,height );
                     break;
-    case PGMFORMAT: r = _GrLoadContextFromPgm( &is,width,height,maxval );
+    case GRX_PNM_FORMAT_BINARY_PGM: r = _GrLoadContextFromPgm( &is,width,height,maxval );
                     break;
-    case PPMFORMAT: r = _GrLoadContextFromPpm( &is,width,height,maxval );
+    case GRX_PNM_FORMAT_BINARY_PPM: r = _GrLoadContextFromPpm( &is,width,height,maxval );
                     break;
     }
 
@@ -319,7 +319,7 @@ ENDFUNCTION:
 }
 
 /*
-** GrQueryPnm - Query format, width and height data from a PNM file
+** grx_check_pnm_file - Query format, width and height data from a PNM file
 **
 ** Arguments:
 **   pnmfn:   Name of pnm file
@@ -331,7 +331,7 @@ ENDFUNCTION:
 **         -1 on error
 */
 
-int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval )
+int grx_check_pnm_file( char *pnmfn, int *width, int *height, int *maxval )
 {
   inputstruct is = {0, NULL, NULL, 0};
   int r;
@@ -346,7 +346,7 @@ int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval )
 }
 
 /*
-** GrLoadContextFromPnmBuffer - Load a context from a PNM buffer
+** grx_context_load_from_pnm_data - Load a context from a PNM buffer
 **
 ** Support only PBM, PGM and PPM binary buffers with maxval < 256
 **
@@ -364,7 +364,7 @@ int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval )
 **         -1 on error
 */
 
-int GrLoadContextFromPnmBuffer( GrxContext *grc, const char *pnmbuf )
+int grx_context_load_from_pnm_data(GrxContext *grc, const unsigned char *pnmbuf)
 {
   inputstruct is = {1, NULL, NULL, 0};
   GrxContext grcaux;
@@ -378,14 +378,14 @@ int GrLoadContextFromPnmBuffer( GrxContext *grc, const char *pnmbuf )
 
   format = loaddata( &is,&width,&height,&maxval );
   if( maxval > 255 ) goto ENDFUNCTION;
-  if( (format < PBMFORMAT) || (format > PPMFORMAT) ) goto ENDFUNCTION;
+  if( (format < GRX_PNM_FORMAT_BINARY_PBM) || (format > GRX_PNM_FORMAT_BINARY_PPM) ) goto ENDFUNCTION;
 
   switch( format ){
-    case PBMFORMAT: r = _GrLoadContextFromPbm( &is,width,height );
+    case GRX_PNM_FORMAT_BINARY_PBM: r = _GrLoadContextFromPbm( &is,width,height );
                     break;
-    case PGMFORMAT: r = _GrLoadContextFromPgm( &is,width,height,maxval );
+    case GRX_PNM_FORMAT_BINARY_PGM: r = _GrLoadContextFromPgm( &is,width,height,maxval );
                     break;
-    case PPMFORMAT: r = _GrLoadContextFromPpm( &is,width,height,maxval );
+    case GRX_PNM_FORMAT_BINARY_PPM: r = _GrLoadContextFromPpm( &is,width,height,maxval );
                     break;
     }
 
@@ -396,7 +396,7 @@ ENDFUNCTION:
 }
 
 /*
-** GrQueryPnmBuffer - Query format, width and height data from a PNM buffer
+** grx_check_pnm_data - Query format, width and height data from a PNM buffer
 **
 ** Arguments:
 **   pnmbuf:  Buffer that holds data
@@ -408,7 +408,7 @@ ENDFUNCTION:
 **         -1 on error
 */
 
-int GrQueryPnmBuffer( const char *pnmbuf, int *width, int *height, int *maxval )
+int grx_check_pnm_data(const unsigned char *pnmbuf, int *width, int *height, int *maxval)
 {
   inputstruct is = {1, NULL, NULL, 0};
   int r;

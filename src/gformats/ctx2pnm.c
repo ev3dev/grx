@@ -22,7 +22,7 @@
 #include "grx-3.0.h"
 
 /*
-** GrSaveContextToPbm - Dump a context in a PBM file (bitmap)
+** grx_context_save_to_pbm - Dump a context in a PBM file (bitmap)
 **
 ** This routine works both in RGB and palette modes
 ** If the pixel color isn't Black it asumes White
@@ -36,7 +36,7 @@
 **         -1 on error
 */
 
-int GrSaveContextToPbm( GrxContext *grc, char *pbmfn, char *docn )
+int grx_context_save_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
 {
   FILE *f;
   GrxContext grcaux;
@@ -77,7 +77,7 @@ int GrSaveContextToPbm( GrxContext *grc, char *pbmfn, char *docn )
 }
 
 /*
-** GrSaveContextToPgm - Dump a context in a PGM file (gray scale)
+** grx_context_save_to_pgm - Dump a context in a PGM file (gray scale)
 **
 ** This routine works both in RGB and palette modes
 ** The colors are quantized to gray scale using .299r + .587g + .114b
@@ -91,7 +91,7 @@ int GrSaveContextToPbm( GrxContext *grc, char *pbmfn, char *docn )
 **         -1 on error
 */
 
-int GrSaveContextToPgm( GrxContext *grc, char *pgmfn, char *docn )
+int grx_context_save_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
 {
   FILE *f;
   GrxContext grcaux;
@@ -122,7 +122,7 @@ int GrSaveContextToPgm( GrxContext *grc, char *pgmfn, char *docn )
 }
 
 /*
-** GrSaveContextToPpm - Dump a context in a PPM file (real color)
+** grx_context_save_to_ppm - Dump a context in a PPM file (real color)
 **
 ** This routine works both in RGB and palette modes
 **
@@ -135,7 +135,7 @@ int GrSaveContextToPgm( GrxContext *grc, char *pgmfn, char *docn )
 **         -1 on error
 */
 
-int GrSaveContextToPpm( GrxContext *grc, char *ppmfn, char *docn )
+int grx_context_save_to_ppm( GrxContext *grc, char *ppmfn, char *docn )
 {
   FILE *f;
   GrxContext grcaux;

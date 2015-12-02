@@ -1636,27 +1636,30 @@ void GrMouseUnBlock(int return_value_from_GrMouseBlock);
 /*                           PNM FUNCTIONS                            */
 /* ================================================================== */
 
-/*
+/**
+ * GrxPnmFormat:
+ *
  *  The PNM formats, grx support load/save of
  *  binaries formats (4,5,6) only
  */
-
-#define PLAINPBMFORMAT 1
-#define PLAINPGMFORMAT 2
-#define PLAINPPMFORMAT 3
-#define PBMFORMAT      4
-#define PGMFORMAT      5
-#define PPMFORMAT      6
+typedef enum {
+    GRX_PNM_FORMAT_ASCII_PBM  = 1,
+    GRX_PNM_FORMAT_ASCII_PGM  = 2,
+    GRX_PNM_FORMAT_ASCII_PPM  = 3,
+    GRX_PNM_FORMAT_BINARY_PBM = 4,
+    GRX_PNM_FORMAT_BINARY_PGM = 5,
+    GRX_PNM_FORMAT_BINARY_PPM = 6,
+} GrxPnmFormat;
 
 /* The PNM functions */
 
-int GrSaveContextToPbm( GrxContext *grc, char *pbmfn, char *docn );
-int GrSaveContextToPgm( GrxContext *grc, char *pgmfn, char *docn );
-int GrSaveContextToPpm( GrxContext *grc, char *ppmfn, char *docn );
-int GrLoadContextFromPnm( GrxContext *grc, char *pnmfn );
-int GrQueryPnm( char *pnmfn, int *width, int *height, int *maxval );
-int GrLoadContextFromPnmBuffer( GrxContext *grc, const char *buffer );
-int GrQueryPnmBuffer( const char *buffer, int *width, int *height, int *maxval );
+int grx_context_save_to_pbm(GrxContext *grc, gchar *pbmfn, gchar *docn);
+int grx_context_save_to_pgm(GrxContext *grc, gchar *pgmfn, gchar *docn);
+int grx_context_save_to_ppm(GrxContext *grc, gchar *ppmfn, gchar *docn);
+int grx_context_load_from_pnm(GrxContext *grc, gchar *pnmfn);
+int grx_check_pnm_file(gchar *pnmfn, gint *width, gint *height, gint *maxval);
+int grx_context_load_from_pnm_data(GrxContext *grc, const guint8 *buffer);
+int grx_check_pnm_data(const guint8 *buffer, gint *width, gint *height, gint *maxval);
 
 /* ================================================================== */
 /*                           PNG FUNCTIONS                            */

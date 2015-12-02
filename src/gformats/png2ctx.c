@@ -75,7 +75,7 @@ int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha )
 }
 
 /*
-** GrQueryPnm - Query width and height data from a PNG file
+** grx_check_pnm_file - Query width and height data from a PNG file
 **
 ** Arguments:
 **   pngfn:   Name of png file

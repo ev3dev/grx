@@ -48,7 +48,7 @@ int GrLoadContextFromPng( GrxContext *grc, char *pngfn, int use_alpha )
 }
 
 /*
-** GrQueryPnm - Returns error
+** grx_check_pnm_file - Returns error
 */
 
 int GrQueryPng( char *pngfn, int *width, int *height )
