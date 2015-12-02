@@ -73,7 +73,7 @@ void displayfont(GrxFont *font,char *text,int len)
         bx = (bx + 7) & ~7;
         while(by < grx_get_size_y()) {
             grx_draw_string_with_text_options(test_text,strlen(test_text),bx,by,&opt);
-            opt.txo_fgcolor.v ^= GR_UNDERLINE_TEXT;
+            opt.txo_fgcolor.v ^= GRX_UNDERLINE_TEXT;
             by += hh;
         }
         GrKeyRead();

@@ -996,7 +996,7 @@ extern int _GR_textattrintensevideo;
  * OR this to the foreground color value for underlined text when
  * using GRX_CHAR_TYPE_BYTE or GRX_CHAR_TYPE_WORD modes.
  */
-#define GR_UNDERLINE_TEXT       (GRX_COLOR_MODE_XOR << 4)
+#define GRX_UNDERLINE_TEXT       (GRX_COLOR_MODE_XOR << 4)
 
 /**
  * GrxFontConversionFlags:

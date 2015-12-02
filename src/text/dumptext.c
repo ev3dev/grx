@@ -25,7 +25,7 @@ void grx_text_region_dump_text(const GrxTextRegion *r,int col,int row,int wdt,in
         GrxColorTable bgcp = r->txr_bgcolor.p;
         GrxColor fgcv = r->txr_fgcolor.v;
         GrxColor bgcv = r->txr_bgcolor.v;
-        int  undl = (fgcv & GR_UNDERLINE_TEXT) ? 1 : 0;
+        int  undl = (fgcv & GRX_UNDERLINE_TEXT) ? 1 : 0;
         GrxFont *f = r->txr_font;
         char *ptr = r->txr_buffer;
         char *bpt = r->txr_backup;

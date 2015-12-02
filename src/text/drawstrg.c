@@ -36,7 +36,7 @@ void _GrDrawString(const void *text,int length,int x,int y,
         GrxColorTable bgcp  = opt->txo_bgcolor.p;
         GrxColor fgcv  = opt->txo_fgcolor.v;
         GrxColor bgcv  = opt->txo_bgcolor.v;
-        int     undl  = (fgcv & GR_UNDERLINE_TEXT) ? 1 : 0;
+        int     undl  = (fgcv & GRX_UNDERLINE_TEXT) ? 1 : 0;
         int     rotat = GRX_TEXT_DIRECTION_IS_VERTICAL(opt->txo_direct) ? ~0 : 0;
         int     dxpre = 0;
         int     dypre = 0;

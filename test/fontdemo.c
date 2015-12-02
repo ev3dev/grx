@@ -62,8 +62,8 @@ static void revert(void)
         GrxColor color;
 
         color = opt.txo_fgcolor.v;
-        opt.txo_fgcolor.v = opt.txo_bgcolor.v | (color & GR_UNDERLINE_TEXT);
-        opt.txo_bgcolor.v = color & ~GR_UNDERLINE_TEXT;
+        opt.txo_fgcolor.v = opt.txo_bgcolor.v | (color & GRX_UNDERLINE_TEXT);
+        opt.txo_bgcolor.v = color & ~GRX_UNDERLINE_TEXT;
         grx_clear_screen(color);
         curx = cury = 0;
 }
@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 
         grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, width, height, bpp);
         if(!gray || (opt.txo_fgcolor.v = grx_color_info_alloc_color(gray, gray, gray)) == GRX_COLOR_NONE) opt.txo_fgcolor.v = grx_color_info_get_white();
-        if(attributes & 0x02) opt.txo_fgcolor.v |= GR_UNDERLINE_TEXT;
+        if(attributes & 0x02) opt.txo_fgcolor.v |= GRX_UNDERLINE_TEXT;
         opt.txo_bgcolor.v = grx_color_info_get_black();
         if(attributes & 0x01) revert();
         opt.txo_chrtype = GRX_CHAR_TYPE_BYTE;
@@ -213,7 +213,7 @@ int main(int argc, char **argv)
         while((key = GrKeyRead()) != GrKey_F10) {
             if(key == GrKey_F1) gnewl();
             else if(key == GrKey_F5) revert();
-            else if(key == GrKey_F7) opt.txo_fgcolor.v ^= GR_UNDERLINE_TEXT;
+            else if(key == GrKey_F7) opt.txo_fgcolor.v ^= GRX_UNDERLINE_TEXT;
             else if(key < 0x100) gputc(key);
         }
 
