@@ -23,10 +23,10 @@
 #include "grx-3.0.h"
 
 /*
-** GrJpegSupport - Returns true
+** grx_is_jpeg_supported - Returns true
 */
 
-int GrJpegSupport( void )
+int grx_is_jpeg_supported( void )
 {
   return 1;
 }
@@ -35,7 +35,7 @@ static int readjpeg( FILE *f, GrxContext *grc, int scale );
 static int queryjpeg( FILE *f, int *w, int *h );
 
 /*
-** GrLoadContextFromJpeg - Load a context from a JPEG file
+** grx_context_load_from_jpeg - Load a context from a JPEG file
 **
 ** If context dimensions are lesser than jpeg dimensions,
 ** the routine loads as much as it can
@@ -53,7 +53,7 @@ static int queryjpeg( FILE *f, int *w, int *h );
 **         -1 on error
 */
 
-int GrLoadContextFromJpeg( GrxContext *grc, char *jpegfn, int scale )
+int grx_context_load_from_jpeg( GrxContext *grc, char *jpegfn, int scale )
 {
   GrxContext grcaux;
   FILE *f;
@@ -73,7 +73,7 @@ int GrLoadContextFromJpeg( GrxContext *grc, char *jpegfn, int scale )
 }
 
 /*
-** GrQueryJpeg - Query width and height data from a JPEG file
+** grx_check_jpeg_file - Query width and height data from a JPEG file
 **
 ** Arguments:
 **   jpegfn:  Name of jpeg file
@@ -84,7 +84,7 @@ int GrLoadContextFromJpeg( GrxContext *grc, char *jpegfn, int scale )
 **         -1 on error
 */
 
-int GrQueryJpeg( char *jpegfn, int *width, int *height )
+int grx_check_jpeg_file( char *jpegfn, int *width, int *height )
 {
   FILE *f;
   int r;

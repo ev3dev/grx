@@ -25,7 +25,7 @@
 static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale );
 
 /*
-** GrSaveContextToJpeg - Dump a context in a JPEG file
+** grx_context_save_to_jpeg - Dump a context in a JPEG file
 **
 ** This routine works both in RGB and palette modes
 **
@@ -38,7 +38,7 @@ static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale );
 **         -1 on error
 */
 
-int GrSaveContextToJpeg( GrxContext *grc, char *jpegfn, int quality )
+int grx_context_save_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
 {
   GrxContext grcaux;
   FILE *f;
@@ -58,7 +58,7 @@ int GrSaveContextToJpeg( GrxContext *grc, char *jpegfn, int quality )
 }
 
 /*
-** GrSaveContextToGrayJpeg - Dump a context in a Gray JPEG file
+** grx_context_save_to_jpeg_grayscale - Dump a context in a Gray JPEG file
 **
 ** This routine works both in RGB and palette modes
 **
@@ -71,7 +71,7 @@ int GrSaveContextToJpeg( GrxContext *grc, char *jpegfn, int quality )
 **         -1 on error
 */
 
-int GrSaveContextToGrayJpeg( GrxContext *grc, char *jpegfn, int quality )
+int grx_context_save_to_jpeg_grayscale( GrxContext *grc, char *jpegfn, int quality )
 {
   GrxContext grcaux;
   FILE *f;

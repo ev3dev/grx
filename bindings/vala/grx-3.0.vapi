@@ -641,13 +641,9 @@ namespace Grx {
         public Result save_to_png (string file_name);
         public Result load_from_png(string file_name, bool use_alpha = true);
 
-        [CCode (cname = "GrLoadContextFromJpeg")]
         public Result load_from_jpeg (string file_name, int scale);
-
-        [CCode (cname = "GrSaveContextToJpeg")]
         public Result save_to_jpeg (string file_name, int quality = 90);
-        [CCode (cname = "GrSaveContextToGrayJpeg")]
-        public Result save_to_gray_jpeg (string file_name, int quality = 90);
+        public Result save_to_jpeg_grayscale (string file_name, int quality = 90);
 
         //[CCode (cname = "SaveContextToTiff")]
         //public int to_tiff (string file_name, uint compr, string? comment = null);
@@ -1500,9 +1496,9 @@ namespace Grx {
     /*  these functions may not be installed or available on all system   */
     /* ================================================================== */
 
-    [CCode (cname = "GrJpegSupport")]
+    [CCode (cname = "grx_is_jpeg_supported")]
     public bool jpeg_support ();
-    [CCode (cname = "GrQueryJpeg")]
+    [CCode (cname = "grx_check_jpeg_file")]
     public Result query_jpeg (string file_name, out int width, out int height);
 
     /* ================================================================== */

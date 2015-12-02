@@ -21,46 +21,46 @@
 #include "grx-3.0.h"
 
 /*
-** GrJpegSupport - Returns false
+** grx_is_jpeg_supported - Returns false
 */
 
-int GrJpegSupport( void )
+int grx_is_jpeg_supported( void )
 {
   return 0;
 }
 
 /*
-** GrSaveContextToJpeg - Returns error
+** grx_context_save_to_jpeg - Returns error
 */
 
-int GrSaveContextToJpeg( GrxContext *grc, char *jpegfn, int quality )
+int grx_context_save_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
 {
   return -1;
 }
 
 /*
-** GrSaveContextToGrayJpeg - Returns error
+** grx_context_save_to_jpeg_grayscale - Returns error
 */
 
-int GrSaveContextToGrayJpeg( GrxContext *grc, char *jpegfn, int quality )
+int grx_context_save_to_jpeg_grayscale( GrxContext *grc, char *jpegfn, int quality )
 {
   return -1;
 }
 
 /*
-** GrLoadContextFromJpeg - Returns error
+** grx_context_load_from_jpeg - Returns error
 */
 
-int GrLoadContextFromJpeg( GrxContext *grc, char *jpegfn, int scale )
+int grx_context_load_from_jpeg( GrxContext *grc, char *jpegfn, int scale )
 {
   return -1;
 }
 
 /*
-** GrQueryJpeg - Returns error
+** grx_check_jpeg_file - Returns error
 */
 
-int GrQueryJpeg( char *jpegfn, int *width, int *height )
+int grx_check_jpeg_file( char *jpegfn, int *width, int *height )
 {
   return -1;
 }
