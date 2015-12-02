@@ -366,6 +366,9 @@ struct _GrxFrameDriver {
       /*    if (scl[i] != skipcolor) drawpixel(x+i,y,(scl[i] | op))  */
 };
 
+#ifndef __GI_SCANNER__
+/* TODO: This struct should probably be private */
+
 /*
  * driver and mode info structure
  */
@@ -389,6 +392,8 @@ extern const struct _GR_driverInfo {
         void  (*set_bank)(int bk);          /* banking routine */
         void  (*set_rw_banks)(int rb,int wb); /* split banking routine */
 } * const GrDriverInfo;
+
+#endif /* __GI_SCANNER__ */
 
 typedef void (*GrxHookFunc)(void);
 
@@ -513,10 +518,15 @@ struct _GrxContext {
 #   define gc_driver                    frame.driver
 };
 
+#ifndef __GI_SCANNER__
+/* TODO: This struct should probably be private */
+
 extern const struct _GR_contextInfo {
     GrxContext current;         /* the current context */
     GrxContext screen;          /* the screen context */
 } * const GrContextInfo;
+
+#endif /* __GI_SCANNER__ */
 
 GrxContext *grx_context_create(gint w, gint h, guint8 *memory[4], GrxContext *where);
 GrxContext *grx_context_create_full(GrxFrameMode md, gint w, gint h,
@@ -603,6 +613,9 @@ GrxColor grx_color_to_or_mode(GrxColor c);
 GrxColor grx_color_to_and_mode(GrxColor c);
 GrxColor grx_color_to_image_mode(GrxColor c);
 
+#ifndef __GI_SCANNER__
+/* TODO: This struct should probably be private */
+
 /*
  * color system info structure (all [3] arrays are [r,g,b])
  */
@@ -625,6 +638,8 @@ extern const struct _GR_colorInfo {
         unsigned long int nused;        /* usage count */
     } ctable[256];
 } * const GrColorInfo;
+
+#endif /* __GI_SCANNER__ */
 
 void     grx_color_info_reset_colors(void);
 void     grx_color_info_set_rgb_color_mode(void);
