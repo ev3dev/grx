@@ -1,21 +1,22 @@
-/**
- ** context.c ----- context creation and manipulation functions
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * context.c ----- context creation and manipulation functions
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
+#include <glib-object.h>
 #include <string.h>
 
 #include "libgrx.h"
@@ -26,6 +27,8 @@
 
 #define  MYCONTEXT      1
 #define  MYFRAME        2
+
+G_DEFINE_BOXED_TYPE(GrxContext, grx_context, grx_context_copy, grx_context_free);
 
 GrxContext *grx_context_create_full(GrxFrameMode md, int w, int h,
                                     unsigned char *memory[4], GrxContext *where)
@@ -121,6 +124,29 @@ void grx_context_resize_subcontext(GrxContext *context, int x1, int y1, int x2,
         context->y_clip_high = context->y_max = y2 - y1;
         context->x_clip_low = 0;
         context->y_clip_low = 0;
+}
+
+GrxContext *grx_context_copy(GrxContext *context)
+{
+    GrxContext *new_context;
+    long psize;
+    int i;
+
+    new_context = grx_context_create_full(context->gc_driver->mode,
+                                          context->x_max + 1,
+                                          context->y_max + 1, NULL, NULL);
+    if (!new_context) {
+        return NULL;
+    }
+    psize  = grx_frame_mode_get_plane_size(context->gc_driver->mode,
+                                           context->x_max + 1,
+                                           context->y_max + 1);
+    for (i = 0; i < context->gc_driver->num_planes; i++) {
+        memcopy(new_context->gc_base_address[i], context->gc_base_address[i],
+                psize);
+    }
+
+    return new_context;
 }
 
 void grx_context_free(GrxContext *cxt)

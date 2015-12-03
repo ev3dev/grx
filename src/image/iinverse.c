@@ -1,27 +1,36 @@
-/**
- ** iinverse.c ---- Source Image Utility
- **
- ** by Michal Stencl Copyright (c) 1998
- ** <e-mail>    - [stenclpmd@ba.telecom.sk]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** modifications by Hartmut Schirmer (c) 1998
- **
- **/
+/*
+ * iinverse.c ---- Source Image Utility
+ *
+ * by Michal Stencl Copyright (c) 1998
+ * <e-mail>    - [stenclpmd@ba.telecom.sk]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * modifications by Hartmut Schirmer (c) 1998
+ *
+ */
 
 #include "libgrx.h"
 #include "clipping.h"
 #include "image/image.h"
 
+/**
+ * grx_image_mirror:
+ * @image:
+ * @flags:
+ *
+ * Creates a new image, flipping left-right or top-bottom as indicated by @flags
+ *
+ * Returns: (transfer full):
+ */
 GrxImage *grx_image_mirror(GrxImage *p, GrxImageMirrorFlags flag)
 {
   GrxContext  ctx, save;

@@ -1,24 +1,26 @@
-/**
- ** makepat.c
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu]
- **
- ** Copyright (C) 1992, Csaba Biegl
- **   820 Stirrup Dr, Nashville, TN, 37221
- **   csaba@vuse.vanderbilt.edu
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * makepat.c
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu]
+ *
+ * Copyright (C) 1992, Csaba Biegl
+ *   820 Stirrup Dr, Nashville, TN, 37221
+ *   csaba@vuse.vanderbilt.edu
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
+
+#include <glib-object.h>
 
 #include "libgrx.h"
 #include "allocate.h"
@@ -28,6 +30,8 @@
 
 #define  BEST_MAX_LINE         128
 #define  BEST_MAX_CONTEXT      2048L
+
+G_DEFINE_BOXED_TYPE(GrxPattern, grx_pattern, grx_pattern_copy, grx_pattern_free);
 
 /*
  * try to replicate a pixmap for faster bitblt-s
@@ -151,6 +155,17 @@ GrxPattern *grx_pattern_create_pixmap_from_context(GrxContext *src)
         return((GrxPattern *)result);
 }
 
+/**
+ * grx_pattern_copy:
+ * @pattern:
+ *
+ * FIXME: This is not implemented and calling it will cause the program to abort.
+ */
+GrxPattern *grx_pattern_copy(GrxPattern *p)
+{
+    g_error("grx_pattern_copy is not implemented.\n");
+    return p;
+}
 
 void grx_pattern_free(GrxPattern *p)
 {

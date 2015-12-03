@@ -394,11 +394,6 @@ int grx_set_mode(GrxGraphicsMode which,...)
                     (*fdr.init)(&DRVINFO->actmode);
                     DBGPRINTF(DBG_SETMD,("fdr.init done\n"));
                 }
-                if(DRVINFO->mdsethook) {
-                    DBGPRINTF(DBG_SETMD,("mdsethook ...\n"));
-                    (*DRVINFO->mdsethook)();
-                    DBGPRINTF(DBG_SETMD,("mdsethook done\n"));
-                }
                 DBGPRINTF(DBG_SETMD,("grx_set_mode complete\n"));
                 res = TRUE;
                 goto done;

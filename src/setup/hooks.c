@@ -27,9 +27,3 @@ void grx_set_error_handling(int exitIfError)
 {
         DRVINFO->errsfatal = exitIfError;
 }
-
-void grx_set_mode_hook_func(void (*hookfunc)(void))
-{
-        DRVINFO->mdsethook = hookfunc;
-}
-

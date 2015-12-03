@@ -157,6 +157,7 @@ source_c = \
     text/buildaux.c     \
     text/buildfnt.c     \
     text/convfont.c     \
+    text/copyfont.c     \
     text/drawstrg.c     \
     text/drawtext.c     \
     text/drwstrg.c      \
@@ -170,6 +171,7 @@ source_c = \
     text/loadfont.c     \
     text/pattstrg.c     \
     text/propwdt.c      \
+    text/type.c         \
     text/unloadfn.c     \
     user/ubox.c         \
     user/ucbox.c        \
@@ -262,9 +264,17 @@ INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
 INTROSPECTION_COMPILER_ARGS =
 
 if HAVE_INTROSPECTION
-introspection_sources =  \
-    ../include/grx-3.0.h \
-    setup/fgeom.c        \
+introspection_sources = \
+    $(top_srcdir)/include/grx-3.0.h \
+    image/ibuild.c                  \
+    image/iinverse.c                \
+    image/imginlne.c                \
+    image/istretch.c                \
+    pattern/makepat.c               \
+    setup/context.c                 \
+    setup/fgeom.c                   \
+    text/copyfont.c                 \
+    text/type.c                     \
     $(NULL)
 
 Grx-3.0.gir: libgrx-3.0.la

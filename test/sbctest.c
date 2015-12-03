@@ -129,7 +129,7 @@ TESTFUNC(sbctest)
   grx_bit_blt( NULL,20,20,grc,0,0,299,299,GRX_COLOR_MODE_XOR );
   GrKeyRead();
 
-  grx_font_unload( grf );
+  grx_font_free( grf );
   grx_pattern_free( pat2 );
   grx_pattern_free( pat1 );
   grx_context_free( grsc );

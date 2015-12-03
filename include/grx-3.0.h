@@ -21,7 +21,8 @@
 #ifndef __GRX_3_0_H_INCLUDED__
 #define __GRX_3_0_H_INCLUDED__
 
-#include <glib-2.0/glib.h>
+#include <glib.h>
+#include <glib-object.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -395,15 +396,12 @@ extern const struct _GR_driverInfo {
 
 #endif /* __GI_SCANNER__ */
 
-typedef void (*GrxHookFunc)(void);
-
 /*
  * setup stuff
  */
 gboolean grx_set_driver(gchar *driver_spec);
 gboolean grx_set_mode(GrxGraphicsMode mode, ...);
 gboolean grx_set_viewport(int xpos, int ypos);
-void grx_set_mode_hook_func(GrxHookFunc hook_func);
 void grx_set_restore_mode(gboolean restore);
 void grx_set_error_handling(gboolean exit_if_error);
 
@@ -528,6 +526,7 @@ extern const struct _GR_contextInfo {
 
 #endif /* __GI_SCANNER__ */
 
+GType       grx_context_get_type(void);
 GrxContext *grx_context_create(gint w, gint h, guint8 *memory[4], GrxContext *where);
 GrxContext *grx_context_create_full(GrxFrameMode md, gint w, gint h,
                                     guint8 *memory[4], GrxContext *where);
@@ -538,6 +537,7 @@ GrxContext *grx_context_save(GrxContext *where);
 GrxContext *grx_context_get_current(void);
 GrxContext *grx_context_get_screen(void);
 
+GrxContext *grx_context_copy(GrxContext *context);
 void  grx_context_free(GrxContext *context);
 void  grx_context_resize_subcontext(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
 void  grx_context_set_current(const GrxContext *context);
@@ -1077,13 +1077,16 @@ extern  GrxFont            grx_font_pc8x14;
 extern  GrxFont            grx_font_pc8x16;
 #define grx_font_default   grx_font_pc8x14
 
+GType grx_font_get_type(void);
+
 GrxFont *grx_font_load(gchar *name);
 GrxFont *grx_font_load_converted(gchar *name, GrxFontConversionFlags cvt,
                                  gint w, gint h, gint minch, gint maxch);
 GrxFont *grx_font_build_converted(const GrxFont *from, GrxFontConversionFlags cvt,
                                   gint w, gint h, gint minch, gint maxch);
 
-void grx_font_unload(GrxFont *font);
+GrxFont *grx_font_copy(GrxFont *font);
+void grx_font_free(GrxFont *font);
 void grx_font_dump(const GrxFont *f,char *CsymbolName,char *fileName);
 void grx_font_dump_fna(const GrxFont *f, char *fileName);
 void grx_font_set_path(char *path_list);
@@ -1307,41 +1310,46 @@ typedef struct {
     GrxLineOptions *options;         /* width + dash pattern */
 } GrxLinePattern;
 
-GrxPattern *grx_pattern_create_pixmap(const guint8 *pixels, gint w, gint h, const GrxColorTable colors);
-GrxPattern *grx_pattern_create_pixmap_from_bits(const guint8 *bits, gint w, gint h, GrxColor fgc, GrxColor bgc);
+GType grx_pattern_get_type(void);
+
+GrxPattern *grx_pattern_create_pixmap(const guint8 *pixels, gint w, gint h,
+                                      const GrxColorTable colors);
+GrxPattern *grx_pattern_create_pixmap_from_bits(const guint8 *bits, gint w, gint h,
+                                                GrxColor fgc, GrxColor bgc);
 GrxPattern *grx_pattern_create_pixmap_from_context(GrxContext *src);
 
-void grx_pattern_free(GrxPattern *p);
+GrxPattern *grx_pattern_copy(GrxPattern *pattern);
+void grx_pattern_free(GrxPattern *pattern);
 
-void grx_draw_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *lp);
-void grx_draw_box_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *lp);
-void grx_draw_circle_with_pattern(gint xc, gint yc, gint r, GrxLinePattern *lp);
-void grx_draw_ellipse_with_pattern(gint xc, gint yc, gint xa, gint ya, GrxLinePattern *lp);
+void grx_draw_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *line_pattern);
+void grx_draw_box_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *line_pattern);
+void grx_draw_circle_with_pattern(gint xc, gint yc, gint r, GrxLinePattern *line_pattern);
+void grx_draw_ellipse_with_pattern(gint xc, gint yc, gint xa, gint ya, GrxLinePattern *line_pattern);
 void grx_draw_circle_arc_with_pattern(gint xc, gint yc, gint r, gint start, gint end,
-                                      GrxArcStyle style, GrxLinePattern *lp);
+                                      GrxArcStyle style, GrxLinePattern *line_pattern);
 void grx_draw_ellipse_arc_with_pattern(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
-                                       GrxArcStyle style, GrxLinePattern *lp);
-void grx_draw_polyline_with_pattern(gint numpts, gint points[][2], GrxLinePattern *lp);
-void grx_draw_polygon_with_pattern(gint numpts, gint points[][2], GrxLinePattern *lp);
+                                       GrxArcStyle style, GrxLinePattern *line_pattern);
+void grx_draw_polyline_with_pattern(gint numpts, gint points[][2], GrxLinePattern *line_pattern);
+void grx_draw_polygon_with_pattern(gint numpts, gint points[][2], GrxLinePattern *line_pattern);
 
-void grx_draw_filled_point_with_pattern(gint x, gint y, GrxPattern *p);
-void grx_draw_filled_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxPattern *p);
-void grx_draw_filled_box_with_pattern(gint x1, gint y1, gint x2, gint y2,GrxPattern *p);
-void grx_draw_filled_circle_with_pattern(gint xc, gint yc, gint r,GrxPattern *p);
-void grx_draw_filled_ellipse_with_pattern(gint xc, gint yc, gint xa, gint ya, GrxPattern *p);
+void grx_draw_filled_point_with_pattern(gint x, gint y, GrxPattern *pattern);
+void grx_draw_filled_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxPattern *pattern);
+void grx_draw_filled_box_with_pattern(gint x1, gint y1, gint x2, gint y2,GrxPattern *pattern);
+void grx_draw_filled_circle_with_pattern(gint xc, gint yc, gint r,GrxPattern *pattern);
+void grx_draw_filled_ellipse_with_pattern(gint xc, gint yc, gint xa, gint ya, GrxPattern *pattern);
 void grx_draw_filled_circle_arc_with_pattern(gint xc, gint yc, gint r, gint start, gint end,
-                                             GrxArcStyle style, GrxPattern *p);
+                                             GrxArcStyle style, GrxPattern *pattern);
 void grx_draw_filled_ellipse_arc_with_pattern(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
-                                              GrxArcStyle style,GrxPattern *p);
-void grx_draw_filled_convex_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *p);
-void grx_draw_filled_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *p);
-void grx_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *p);
+                                              GrxArcStyle style,GrxPattern *pattern);
+void grx_draw_filled_convex_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *pattern);
+void grx_draw_filled_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *pattern);
+void grx_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *pattern);
 
-void grx_draw_char_with_pattern(gint chr, gint x, gint y, const GrxTextOption *opt, GrxPattern *p);
+void grx_draw_char_with_pattern(gint chr, gint x, gint y, const GrxTextOption *opt, GrxPattern *pattern);
 void grx_draw_string_with_pattern(gpointer text, gint length, gint x, gint y,
-                                  const GrxTextOption *opt, GrxPattern *p);
+                                  const GrxTextOption *opt, GrxPattern *pattern);
 void grx_draw_string_with_pattern_ext(gpointer text, gint length, gint x, gint y,
-                                      const GrxTextOption *opt, GrxPattern *p);
+                                      const GrxTextOption *opt, GrxPattern *pattern);
 
 /* ================================================================== */
 /*                      IMAGE MANIPULATION                            */
@@ -1352,31 +1360,39 @@ void grx_draw_string_with_pattern_ext(gpointer text, gint length, gint x, gint y
  *  <e-mail>    - [stenclpmd@ba.telecom.sk]
  */
 
-#ifndef GrxImage
-#define GrxImage GrxPixmap
-#endif
+/**
+ * GrxImage:
+ *
+ * Like pixmap patterns images are dependent of the actual video mode set.
+ */
+typedef GrxPixmap GrxImage;
 
 typedef enum /*< flags >*/ {
     GRX_IMAGE_MIRROR_HORIZONTAL = 0x01,  /* inverse left right */
-    GRX_IMAGE_MIRROR_VERTICAL = 0x02,  /* inverse top down */
+    GRX_IMAGE_MIRROR_VERTICAL   = 0x02,  /* inverse top down */
 } GrxImageMirrorFlags;
 
-GrxImage *grx_image_create(const guint8 *pixels, gint w, gint h, const GrxColorTable colors);
-void grx_image_free(GrxImage *i);
-void grx_draw_image(gint x, gint y, GrxImage *i);
-void grx_draw_image_tiled(gint x1, gint y1, gint x2, gint y2, GrxImage *i);
-void grx_draw_filled_box_with_image(gint xo, gint yo, gint x1, gint y1, gint x2, gint y2, GrxImage *p);
-void grx_draw_hline_with_image(gint xo, gint yo, gint x, gint y, gint width, GrxImage *p);
-void grx_draw_point_with_image(gint xo, gint yo, gint x, gint y, GrxImage *p);
+GType grx_image_get_type(void);
+GrxImage *grx_image_create(const guint8 *pixels, gint width, gint height,
+                           const GrxColorTable colors);
+GrxImage *grx_image_copy(GrxImage *image);
+void grx_image_free(GrxImage *image);
+void grx_draw_image(gint x, gint y, GrxImage *image);
+void grx_draw_image_tiled(gint x1, gint y1, gint x2, gint y2, GrxImage *image);
+void grx_draw_filled_box_with_image(gint xo, gint yo, gint x1, gint y1,
+                                    gint x2, gint y2, GrxImage *image);
+void grx_draw_hline_with_image(gint xo, gint yo, gint x, gint y, gint width, GrxImage *image);
+void grx_draw_point_with_image(gint xo, gint yo, gint x, gint y, GrxImage *image);
 
-GrxImage *grx_image_mirror(GrxImage *p, GrxImageMirrorFlags flags);
-GrxImage *grx_image_stretch(GrxImage *p, gint nwidth, gint nheight);
+GrxImage *grx_image_mirror(GrxImage *image, GrxImageMirrorFlags flags);
+GrxImage *grx_image_stretch(GrxImage *image, gint new_width, gint new_height);
 
-GrxImage *grx_image_create_from_pattern(GrxPattern *p);
-GrxImage *grx_image_create_from_context(GrxContext *c);
-GrxImage *grx_pattern_create_from_data(const guint8 *pixels, gint w, gint h, const GrxColorTable colors);
+GrxImage *grx_image_create_from_pattern(GrxPattern *pattern);
+GrxImage *grx_image_create_from_context(GrxContext *context);
+GrxImage *grx_image_create_from_data(const guint8 *pixels, gint width, gint height,
+                                     const GrxColorTable colors);
 
-GrxPattern *grx_pattern_create_from_image(GrxImage *p);
+GrxPattern *grx_pattern_create_from_image(GrxImage *image);
 
 
 #ifndef GRX_SKIP_INLINES
@@ -1386,8 +1402,10 @@ GrxPattern *grx_pattern_create_from_image(GrxImage *p);
         (GrxImage *)grx_pattern_create_pixmap_from_context(c)
 #define grx_pattern_create_from_image(p) \
         (GrxPattern *)(p)
-#define grx_pattern_create_from_data(pixels,w,h,colors) \
+#define grx_image_create_from_data(pixels,w,h,colors) \
         (GrxImage *)grx_pattern_create_pixmap(pixels,w,h,colors);
+#define grx_image_copy(i)   \
+        grx_pattern_copy((GrxPattern *)(i));
 #define grx_image_free(i)   \
         grx_pattern_free((GrxPattern *)(i));
 #endif

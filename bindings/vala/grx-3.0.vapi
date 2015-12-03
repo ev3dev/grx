@@ -484,8 +484,6 @@ namespace Grx {
         public int split_banks;
         [CCode (cname = "curbank")]
         public int current_bank;
-        [CCode (cname = "mdsethook")]
-        public HookFunc mode_set_hook;
         [CCode (cname = "set_bank")]
         public DriverInfoSetBank set_bank;
         [CCode (cname = "set_rw_banks")]
@@ -495,8 +493,6 @@ namespace Grx {
     [CCode (cname = "GrDriverInfo")]
     public DriverInfo driver_info;
 
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void HookFunc ();
     [CCode (has_target = false, has_type_id = false)]
     public delegate void DriverInfoSetBank (int bank);
     [CCode (has_target = false, has_type_id = false)]
@@ -508,7 +504,6 @@ namespace Grx {
     public bool set_driver (string driver_spec);
     public bool set_mode (GraphicsMode mode, ...);
     public bool set_viewport (int xpos, int ypos);
-    public void set_mode_hook_func (HookFunc hook_func);
     public void set_restore_mode (bool restore_flag);
     public void set_error_handling (bool exit_if_error);
 
@@ -569,7 +564,7 @@ namespace Grx {
             requires (size == sizeof(MallocStruct));
     }
 
-    [CCode (free_function = "grx_context_free", has_type_id = false)]
+    [CCode (copy_function = "grx_context_copy", free_function = "grx_context_free", has_type_id = false)]
     [Compact]
     public class Context {
         public unowned Context root;
@@ -888,7 +883,7 @@ namespace Grx {
             requires (size == sizeof(MallocStruct));
     }
 
-    [CCode (free_function = "grx_font_unload", has_type_id = false)]
+    [CCode (free_function = "grx_font_free", has_type_id = false)]
     [Compact]
     public class Font {
         [CCode (cname = "&grx_font_pc6x8")]
@@ -1235,7 +1230,7 @@ namespace Grx {
     /**
      * Fill pattern union -- can either be a bitmap or a pixmap
      */
-    [CCode (free_function = "grx_pattern_free", has_type_id = false)]
+    [CCode (copy_function = "grx_pattern_copy", free_function = "grx_pattern_free", has_type_id = false)]
     [Compact]
     public class Pattern {
         public bool is_pixmap;               /* true for pixmaps */
@@ -1313,7 +1308,7 @@ namespace Grx {
 
 
     /**
-     * Flags for {@link Image.inverse}.
+     * Flags for {@link Image.mirror}.
      */
     [CCode (cprefix = "GRX_IMAGE_MIRROR_", has_type_id = false)]
     [Flags]
@@ -1322,14 +1317,13 @@ namespace Grx {
         VERTICAL /* inverse top down */
     }
 
-    [CCode (free_function = "grx_image_free", has_type_id = false)]
+    [CCode (copy_function = "grx_image_copy", free_function = "grx_image_free", has_type_id = false)]
     [Compact]
     public class Image {
         Pattern pattern;         /* fill pattern */
         LineOptions options;          /* width + dash pattern */
 
         public static Image create ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
-        [CCode (cname = "grx_pattern_create_from_data")]
         public static Image create_from_data ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
 
         public Image mirror (ImageMirrorFlags flags);
