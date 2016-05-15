@@ -6,6 +6,11 @@ set (GIR_NAME "Grx")
 set (GIR_VERSION "3.0")
 set (PACKAGE_NAME ${PROJECT_NAME}-${GIR_VERSION})
 
+set (GRX_DEBUG "OFF" CACHE STRING "Debug message flags")
+if (GRX_DEBUG)
+    add_definitions ("-DDEBUG=${GRX_DEBUG}")
+endif (GRX_DEBUG)
+
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 include(GNUInstallDirs)

@@ -222,6 +222,10 @@ set (LINUX_SOURCE_FILES
     gformats/png2ctx.c
 )
 
+if (GRX_DEBUG)
+    list (APPEND LINUX_SOURCE_FILES utils/dbgprint.c)
+endif (GRX_DEBUG)
+
 add_library (${LIBRARY_NAME} OBJECT ${LINUX_SOURCE_FILES})
 set_target_properties (${LIBRARY_NAME} PROPERTIES POSITION_INDEPENDENT_CODE 1)
 target_compile_definitions (${LIBRARY_NAME} PUBLIC
