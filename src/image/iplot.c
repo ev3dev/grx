@@ -20,7 +20,7 @@
 
 #include "libgrx.h"
 #include "clipping.h"
-#include "image/image.h"
+#include "image.h"
 
 void grx_draw_point_with_image(int xo,int yo,int x,int y,GrxImage *p)
 {

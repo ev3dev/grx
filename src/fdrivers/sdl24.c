@@ -24,12 +24,12 @@
 /* -------------------------------------------------------------------- */
 
 #define FAR_ACCESS
-#include "fdrivers/driver24.h"
+#include "driver24.h"
 
 static
-#include "fdrivers/generic/putscl.c"
+#include "generic/putscl.c"
 
-#include "fdrivers/sdlframe.h"
+#include "sdlframe.h"
 
 /* -------------------------------------------------------------------- */
 

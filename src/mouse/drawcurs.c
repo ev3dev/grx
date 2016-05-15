@@ -16,7 +16,7 @@
  **
  **/
 
-#include "mouse/input.h"
+#include "input.h"
 #include "libgrx.h"
 
 #define XORMASK(c,x,y)  &(c)->work.frame,(x),(y)

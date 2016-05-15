@@ -21,7 +21,7 @@
 #include "allocate.h"
 #include "clipping.h"
 #include "arith.h"
-#include "shape/polyedge.h"
+#include "polyedge.h"
 
 typedef enum {
     inactive,                           /* not reached yet */

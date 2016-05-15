@@ -24,7 +24,7 @@
 #include "memcopy.h"
 #include "memfill.h"
 
-#include "fdrivers/rblit_14.h"
+#include "rblit_14.h"
 
 /* frame offset address calculation */
 #define FOFS(x,y,lo)  umuladd32((y),(lo),((x)>>3))
@@ -176,19 +176,19 @@ static void drawvline_inv(int x,int y,int h, GrxColor color)
 }
 
 static
-#include "fdrivers/generic/block.c"
+#include "generic/block.c"
 
 static
-#include "fdrivers/generic/line.c"
+#include "generic/line.c"
 
 static
-#include "fdrivers/generic/bitmap.c"
+#include "generic/bitmap.c"
 
 static
-#include "fdrivers/generic/pattern.c"
+#include "generic/pattern.c"
 
 static
-#include "fdrivers/generic/bitblt.c"
+#include "generic/bitblt.c"
 
 static void bltr2r(GrxFrame *dst,int dx,int dy,
                    GrxFrame *src,int x,int y,int w,int h,
@@ -212,7 +212,7 @@ static void bltr2r_inv(GrxFrame *dst,int dx,int dy,
 /* -------------------------------------------------------------------- */
 
 static
-#include "fdrivers/generic/getiscl.c"
+#include "generic/getiscl.c"
 
 /* -------------------------------------------------------------------- */
 

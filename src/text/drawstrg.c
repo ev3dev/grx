@@ -19,7 +19,7 @@
 
 #include "libgrx.h"
 #include "clipping.h"
-#include "text/text.h"
+#include "text.h"
 
 int _GR_textattrintensevideo = 0;
 

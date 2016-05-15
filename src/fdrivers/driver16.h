@@ -286,14 +286,14 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
 }
 #else
 static
-#include "fdrivers/generic/line.c"
+#include "generic/line.c"
 #endif
 
 static
-#include "fdrivers/generic/bitmap.c"
+#include "generic/bitmap.c"
 
 static
-#include "fdrivers/generic/pattern.c"
+#include "generic/pattern.c"
 
 static void bitblt(GrxFrame *dst,int dx,int dy,
                    GrxFrame *src,int sx,int sy,

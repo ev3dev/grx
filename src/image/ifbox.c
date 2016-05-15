@@ -20,7 +20,7 @@
 
 #include "libgrx.h"
 #include "clipping.h"
-#include "image/image.h"
+#include "image.h"
 
 void grx_draw_filled_box_with_image(int xo,int yo,int x1,int y1,int x2,int y2,GrxImage *p)
 {

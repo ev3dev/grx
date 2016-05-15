@@ -136,7 +136,7 @@ static void drawvline(int x,int y,int h,GrxColor color)
 }
 #else
 static
-#include "fdrivers/generic/vline.c"
+#include "generic/vline.c"
 #endif
 
 #ifdef repfill32
@@ -202,10 +202,10 @@ static void drawblock(int x,int y,int w,int h,GrxColor color)
 }
 #else
 static
-#include "fdrivers/generic/hline.c"
+#include "generic/hline.c"
 
 static
-#include "fdrivers/generic/block.c"
+#include "generic/block.c"
 #endif
 
 
@@ -316,14 +316,14 @@ done:   GRX_LEAVE();
 }
 #else
 static
-#include "fdrivers/generic/line.c"
+#include "generic/line.c"
 #endif
 
 static
-#include "fdrivers/generic/bitmap.c"
+#include "generic/bitmap.c"
 
 static
-#include "fdrivers/generic/pattern.c"
+#include "generic/pattern.c"
 
 static void bitblt(GrxFrame *dst,int dx,int dy,
                    GrxFrame *src,int sx,int sy,

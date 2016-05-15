@@ -19,7 +19,7 @@
  **
  **/
 
-#include "fdrivers/driver16.h"
+#include "driver16.h"
 
 GrxFrameDriver _GrFrameDriverRAM16 = {
     GRX_FRAME_MODE_RAM_16BPP,   /* frame mode */

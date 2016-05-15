@@ -28,7 +28,7 @@
 #include "libgrx.h"
 #include "grfontdv.h"
 #include "arith.h"
-#include "fonts/fdv_raw.h"
+#include "fdv_raw.h"
 
 #ifndef SEEK_SET
 #define SEEK_SET        0

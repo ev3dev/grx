@@ -134,21 +134,21 @@ static void drawvline(int x,int y,int h,GrxColor color)
 /* -------------------------------------------------------------------- */
 
 static
-#include "fdrivers/generic/block.c"
+#include "generic/block.c"
 
 static
-#include "fdrivers/generic/line.c"
+#include "generic/line.c"
 
 static
-#include "fdrivers/generic/bitmap.c"
+#include "generic/bitmap.c"
 
 static
-#include "fdrivers/generic/pattern.c"
+#include "generic/pattern.c"
 
 /* -------------------------------------------------------------------- */
 
 static
-#include "fdrivers/generic/bitblt.c"
+#include "generic/bitblt.c"
 
 /* in pblitr2r.c if GRX_USE_RAM3x8 defined */
 extern void _GrFrDrvPackedBitBltR2Rpl(GrxFrame *dst,int dx,int dy,

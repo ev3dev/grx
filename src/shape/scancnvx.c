@@ -20,7 +20,7 @@
 #include "shapes.h"
 #include "clipping.h"
 #include "arith.h"
-#include "shape/polyedge.h"
+#include "polyedge.h"
 
 typedef struct {
     unsigned int dir;                /* which direction to go for next point */

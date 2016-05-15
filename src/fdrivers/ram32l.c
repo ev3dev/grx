@@ -22,7 +22,7 @@
 #define PIX2COL(col) ((col)&0xFFFFFF)
 #define COL2PIX(col) ((col)&0xFFFFFF)
 
-#include "fdrivers/driver32.h"
+#include "driver32.h"
 
 GrxFrameDriver _GrFrameDriverRAM32L = {
     GRX_FRAME_MODE_RAM_32BPP_LOW, /* frame mode */

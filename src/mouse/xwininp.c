@@ -35,7 +35,7 @@
 #include "arith.h"
 #include "memcopy.h"
 #include "memfill.h"
-#include "mouse/input.h"
+#include "input.h"
 
 #ifdef _AIX
 #include <sys/select.h>

@@ -20,7 +20,7 @@
 
 #include "libgrx.h"
 #include "allocate.h"
-#include "image/image.h"
+#include "image.h"
 
 int _GrImageTestSize(int wdt,int hgt)
 {

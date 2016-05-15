@@ -21,7 +21,7 @@
 
 
 #undef FAR_ACCESS
-#include "fdrivers/driver24.h"
+#include "driver24.h"
 
 GrxFrameDriver _GrFrameDriverRAM24 = {
     GRX_FRAME_MODE_RAM_24BPP,   /* frame mode */

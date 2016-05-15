@@ -96,23 +96,23 @@ static void drawhline(int x,int y,int w,GrxColor color)
 }
 #else
 static
-#include "fdrivers/generic/hline.c"
+#include "generic/hline.c"
 #endif
 
 static
-#include "fdrivers/generic/vline.c"
+#include "generic/vline.c"
 
 static
-#include "fdrivers/generic/block.c"
+#include "generic/block.c"
 
 static
-#include "fdrivers/generic/line.c"
+#include "generic/line.c"
 
 static
-#include "fdrivers/generic/bitmap.c"
+#include "generic/bitmap.c"
 
 static
-#include "fdrivers/generic/pattern.c"
+#include "generic/pattern.c"
 
 static void bitblt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
 {

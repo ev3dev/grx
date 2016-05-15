@@ -18,7 +18,7 @@
 
 #include <stdarg.h>
 
-#include "mouse/input.h"
+#include "input.h"
 #include "libgrx.h"
 #include "clipping.h"
 #include "mempeek.h"

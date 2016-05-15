@@ -18,7 +18,7 @@
 
 #include "libgrx.h"
 #include "clipping.h"
-#include "text/text.h"
+#include "text.h"
 
 static void FdrvDrawBitmap(int x,int y,int w,int h,int ox, int oy,
                            char *bmp,int pitch,int start,

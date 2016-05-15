@@ -19,7 +19,7 @@
 #include <glib-object.h>
 
 #include "libgrx.h"
-#include "image/image.h"
+#include "image.h"
 
 G_DEFINE_BOXED_TYPE(GrxImage, grx_image, grx_image_copy, grx_image_free);
 

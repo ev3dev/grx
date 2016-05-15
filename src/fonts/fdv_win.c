@@ -25,7 +25,7 @@
 #include "grfontdv.h"
 #include "arith.h"
 #include "allocate.h"
-#include "fonts/fdv_win.h"
+#include "fdv_win.h"
 
 #ifndef SEEK_SET
 #define SEEK_SET        0

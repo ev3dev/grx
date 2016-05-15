@@ -30,7 +30,7 @@
 #define PIX2COL(col) ((col)>>8)
 #define COL2PIX(col) ((col)<<8)
 #define FAR_ACCESS
-#include "fdrivers/driver32.h"
+#include "driver32.h"
 
 /* -------------------------------------------------------------------- */
 

@@ -37,6 +37,6 @@
 /* need a selector before video access */
 #define BLITSEL  dst->selector
 
-#include "fdrivers/pblit_nb.h"
+#include "pblit_nb.h"
 
 #endif

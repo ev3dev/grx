@@ -17,7 +17,7 @@
  **/
 
 #include "libwin32.h"
-#include "fdrivers/driver8.h"
+#include "driver8.h"
 
 static void w32_drawpixel(int x, int y, GrxColor color)
 {

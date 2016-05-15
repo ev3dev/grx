@@ -21,7 +21,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 #include "mempeek.h"
-#include "image/image.h"
+#include "image.h"
 
 /**
  * grx_image_create:

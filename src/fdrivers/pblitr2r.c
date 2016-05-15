@@ -41,7 +41,7 @@
 /* source and destination may overlap */
 #define BLIT_CAN_OVERLAP
 
-#include "fdrivers/pblit_nb.h"
+#include "pblit_nb.h"
 
 
 #ifdef GRX_USE_RAM3x8

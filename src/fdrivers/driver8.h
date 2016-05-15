@@ -303,7 +303,7 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
 }
 #else
 static
-#include "fdrivers/generic/line.c"
+#include "generic/line.c"
 #endif
 
 /* -------------------------------------------------------------------- */
@@ -385,7 +385,7 @@ static void drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
 /* -------------------------------------------------------------------- */
 
 static
-#include "fdrivers/generic/pattern.c"
+#include "generic/pattern.c"
 
 /* -------------------------------------------------------------------- */
 
@@ -400,11 +400,11 @@ static
 /* -------------------------------------------------------------------- */
 
 static
-#include "fdrivers/generic/getiscl.c"
+#include "generic/getiscl.c"
 
 /* -------------------------------------------------------------------- */
 
 static
-#include "fdrivers/generic/putscl.c"
+#include "generic/putscl.c"
 
 /* -------------------------------------------------------------------- */

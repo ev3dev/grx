@@ -24,7 +24,7 @@
 #include "memcopy.h"
 #include "memfill.h"
 
-#include "fdrivers/rblit_14.h"
+#include "rblit_14.h"
 
 /* frame offset address calculation */
 #define FOFS(x,y,lo)  umuladd32((y),(lo),((x)>>3))

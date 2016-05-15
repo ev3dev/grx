@@ -24,10 +24,10 @@
 /* -------------------------------------------------------------------- */
 
 #define FAR_ACCESS
-#include "fdrivers/driver8.h"
+#include "driver8.h"
 
 #define bitblt bitblit
-#include "fdrivers/sdlframe.h"
+#include "sdlframe.h"
 
 /* -------------------------------------------------------------------- */
 

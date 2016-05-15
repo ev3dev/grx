@@ -22,7 +22,7 @@
 #include "libgrx.h"
 #include "grfontdv.h"
 #include "allocate.h"
-#include "fonts/fdv_grx.h"
+#include "fdv_grx.h"
 
 #ifndef  SEEK_SET
 #define  SEEK_SET       0
