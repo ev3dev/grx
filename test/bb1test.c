@@ -77,7 +77,7 @@ int main(void)
     }
 
   /* Destroy */
-  grx_context_free(pContext);
+  grx_context_unref(pContext);
 
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   return 0;

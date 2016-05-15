@@ -56,7 +56,7 @@ int main(void)
   }
   if (p1)   grx_pattern_free(p1);
   if (p2)   grx_pattern_free(p2);
-  if (font) grx_font_free(font);
+  if (font) grx_font_unref(font);
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
   if (!p1) fprintf(stderr, "Couldn't create first pattern\n");
   if (!p2) fprintf(stderr, "Couldn't create second pattern\n");

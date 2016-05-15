@@ -37,7 +37,7 @@ void imagen( char *nf, int scale )
   grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_jpeg( grc,nf,scale );
-  grx_context_free( grc );
+  grx_context_unref( grc );
 
   grx_draw_text_xy( 10,10,s,grx_color_info_get_black(),grx_color_info_get_white() );
   grx_draw_text_xy( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
@@ -85,10 +85,10 @@ int main()
   grx_clear_screen( grx_color_info_alloc_color( 0,100,0 ) );
   grc = grx_context_create_subcontext( 10,40,10+400-1,40+300-1,NULL,NULL );
   grx_context_load_from_jpeg( grc,"jpeg1.jpg",2 );
-  grx_context_free( grc );
+  grx_context_unref( grc );
   grc = grx_context_create_subcontext( 210,150,210+400-1,150+300-1,NULL,NULL );
   grx_context_load_from_jpeg( grc,"jpeg2.jpg",2 );
-  grx_context_free( grc );
+  grx_context_unref( grc );
 
   grx_draw_text_xy( 10,10,"Press any key to save color and gray screen",
     grx_color_info_get_black(),grx_color_info_get_white() );

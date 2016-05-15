@@ -132,8 +132,8 @@ TESTFUNC(sbctest)
   grx_font_unref( grf );
   grx_pattern_free( pat2 );
   grx_pattern_free( pat1 );
-  grx_context_free( grsc );
-  grx_context_free( grc );
+  grx_context_unref( grsc );
+  grx_context_unref( grc );
 }
 
 /***/

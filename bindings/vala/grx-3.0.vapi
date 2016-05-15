@@ -564,7 +564,7 @@ namespace Grx {
             requires (size == sizeof(MallocStruct));
     }
 
-    [CCode (copy_function = "grx_context_copy", free_function = "grx_context_free", has_type_id = false)]
+    [CCode (copy_function = "grx_context_ref", free_function = "grx_context_unref")]
     [Compact]
     public class Context {
         public unowned Context root;

@@ -43,7 +43,7 @@ GrxImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight)
   if (!grx_context_create(nwidth, nheight, NULL, ctx)) goto done;
   img = (GrxImage *)malloc(sizeof(GrxImage));
   if ( !img ) {
-    grx_context_free(ctx);
+    grx_context_unref(ctx);
     goto done;
   }
   img->is_pixmap = 1;

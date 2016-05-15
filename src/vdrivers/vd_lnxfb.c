@@ -156,7 +156,7 @@ void _LnxfbSwitchToConsoleVt(unsigned short vt)
     if (grc != NULL) {
         grx_bit_blt(grx_context_get_screen(), 0, 0, grc, 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
-        grx_context_free(grc);
+        grx_context_unref(grc);
     }
 }
 
@@ -188,7 +188,7 @@ void _LnxfbSwitchConsoleAndWait(void)
     if (grc != NULL) {
         grx_bit_blt(grx_context_get_screen(), 0, 0, grc, 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
-        grx_context_free(grc);
+        grx_context_unref(grc);
     }
 }
 
@@ -252,7 +252,7 @@ void _LnxfbAcqsigHandle(int sig)
         grx_bit_blt(grx_context_get_screen(), 0, 0, grc, 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
     }
-    grx_context_free(grc);
+    grx_context_unref(grc);
     signal(SIGUSR1, _LnxfbRelsigHandle);
 }
 

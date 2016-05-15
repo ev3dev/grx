@@ -529,7 +529,7 @@ void blittest(gvmode *gp, XY_PAIRS *pairs, int ram) {
     if (rcp) {
       blit_measure(gp, &gp->blitv2r, xb, yb, rcp, NULL);
       blit_measure(gp, &gp->blitr2v, xb, yb, NULL, rcp);
-      grx_context_free(rcp);
+      grx_context_unref(rcp);
     }
   }
 #endif
@@ -635,7 +635,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
     if (grx_context_create_full(rp->fm,gp->w,gp->h,NULL,&rc)) {
       grx_context_set_current(&rc);
       measure_one(rp, 1);
-      grx_context_free(&rc);
+      grx_context_unref(&rc);
       grx_context_set_current(NULL);
     }
   }

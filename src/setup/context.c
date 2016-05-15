@@ -28,7 +28,7 @@
 #define  MYCONTEXT      1
 #define  MYFRAME        2
 
-G_DEFINE_BOXED_TYPE(GrxContext, grx_context, grx_context_copy, grx_context_free);
+G_DEFINE_BOXED_TYPE(GrxContext, grx_context, grx_context_ref, grx_context_unref);
 
 GrxContext *grx_context_create_full(GrxFrameMode md, int w, int h,
                                     unsigned char *memory[4], GrxContext *where)
@@ -46,6 +46,7 @@ GrxContext *grx_context_create_full(GrxFrameMode md, int w, int h,
         if(!where) {
             where = malloc(sizeof(GrxContext));
             if(!where) return(NULL);
+            where->ref_count = 1;
             flags = MYCONTEXT;
         }
         sttzero(where);
@@ -92,6 +93,7 @@ GrxContext *grx_context_create_subcontext(int x1, int y1, int x2, int y2,
         if(!where) {
             where = malloc(sizeof(GrxContext));
             if(!where) return(NULL);
+            where->ref_count = 1;
             flags = MYCONTEXT;
         }
         sttzero(where);
@@ -126,30 +128,16 @@ void grx_context_resize_subcontext(GrxContext *context, int x1, int y1, int x2,
         context->y_clip_low = 0;
 }
 
-GrxContext *grx_context_copy(GrxContext *context)
+GrxContext *grx_context_ref(GrxContext *context)
 {
-    GrxContext *new_context;
-    long psize;
-    int i;
+    g_return_val_if_fail(context != NULL, NULL);
 
-    new_context = grx_context_create_full(context->gc_driver->mode,
-                                          context->x_max + 1,
-                                          context->y_max + 1, NULL, NULL);
-    if (!new_context) {
-        return NULL;
-    }
-    psize  = grx_frame_mode_get_plane_size(context->gc_driver->mode,
-                                           context->x_max + 1,
-                                           context->y_max + 1);
-    for (i = 0; i < context->gc_driver->num_planes; i++) {
-        memcopy(new_context->gc_base_address[i], context->gc_base_address[i],
-                psize);
-    }
+    context->ref_count++;
 
-    return new_context;
+    return context;
 }
 
-void grx_context_free(GrxContext *cxt)
+static void grx_context_free(GrxContext *cxt)
 {
         if(cxt && (cxt != CURC) && (cxt != SCRN)) {
             if(cxt->gc_memory_flags & MYFRAME) {
@@ -158,6 +146,17 @@ void grx_context_free(GrxContext *cxt)
             }
             if(cxt->gc_memory_flags & MYCONTEXT) free(cxt);
         }
+}
+
+void grx_context_unref(GrxContext *ctx)
+{
+    g_return_if_fail(ctx != NULL);
+    g_return_if_fail(ctx->ref_count > 0);
+
+    ctx->ref_count--;
+    if (ctx->ref_count == 0) {
+        grx_context_free(ctx);
+    }
 }
 
 void grx_context_set_current(const GrxContext *context)
@@ -174,6 +173,7 @@ GrxContext *grx_context_save(GrxContext *where)
         if(!where) {
             where = malloc(sizeof(GrxContext));
             if(!where) return(NULL);
+            where->ref_count = 1;
             flags = MYCONTEXT;
         }
         sttcopy(where,CURC);

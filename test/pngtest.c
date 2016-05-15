@@ -37,12 +37,12 @@ void imagen( char *nf )
   grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_png( grc,nf,0 );
-  grx_context_free( grc );
+  grx_context_unref( grc );
 
   grx_draw_box( 320,40,320+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 321,41,321+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_png( grc,nf,1 );
-  grx_context_free( grc );
+  grx_context_unref( grc );
 
   grx_draw_text_xy( 10,10,s,grx_color_info_get_black(),grx_color_info_get_white() );
   grx_draw_text_xy( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
@@ -86,10 +86,10 @@ int main()
   grx_clear_screen( grx_color_info_alloc_color( 0,100,0 ) );
   grc = grx_context_create_subcontext( 191,121,191+256-1,121+240-1,NULL,NULL );
   grx_context_load_from_png( grc,"pngred.png",1 );
-  grx_context_free( grc );
+  grx_context_unref( grc );
   grc = grx_context_create_subcontext( 181,241,181+289-1,241+80-1,NULL,NULL );
   grx_context_load_from_png( grc,"pngcompo.png",1 );
-  grx_context_free( grc );
+  grx_context_unref( grc );
 
   grx_draw_text_xy( 10,10,"Press any key to save screen",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();

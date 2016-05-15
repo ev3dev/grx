@@ -43,7 +43,7 @@ int main(void)
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPPM );
   grx_context_save_to_pgm( grc,FIMAGEPGM,"TestPnm" );
-  grx_context_free( grc );
+  grx_context_unref( grc );
   grx_draw_text_xy( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
@@ -54,7 +54,7 @@ int main(void)
   grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPGM );
-  grx_context_free( grc );
+  grx_context_unref( grc );
   grx_draw_text_xy( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
@@ -66,7 +66,7 @@ int main(void)
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPBM );
   grx_context_save_to_pbm( grc,FIMAGEPBM2,"TestPnm" );
-  grx_context_free( grc );
+  grx_context_unref( grc );
   grx_draw_text_xy( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
@@ -75,17 +75,17 @@ int main(void)
   grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPPM );
-  grx_context_free( grc );
+  grx_context_unref( grc );
   grx_check_pnm_file( FIMAGEPGM, &wide, &high, &maxval );
   grx_draw_box( 110,140,110+wide+1,140+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 111,141,111+wide-1,141+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPGM );
-  grx_context_free( grc );
+  grx_context_unref( grc );
   grx_check_pnm_file( FIMAGEPBM, &wide, &high, &maxval );
   grx_draw_box( 210,240,210+wide+1,240+high+1,grx_color_info_get_white() );
   grc = grx_context_create_subcontext( 211,241,211+wide-1,241+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPBM2 );
-  grx_context_free( grc );
+  grx_context_unref( grc );
   grx_draw_text_xy( 10,20,"Press any key to save screen",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 

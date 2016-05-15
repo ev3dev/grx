@@ -330,7 +330,7 @@ static void paint_screen(void)
         grx_context_load_from_pnm(grc, "pnmtest.ppm");
     else
         grx_context_load_from_pnm(grc, "pnmtest2.ppm");
-    grx_context_free(grc);
+    grx_context_unref(grc);
     the_info(500, 215);
     drawing(400, 280, 200, 150, BROWN, DARKGRAY);
     the_title(500, 330);

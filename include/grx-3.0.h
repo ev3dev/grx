@@ -496,6 +496,7 @@ struct _GrxFrame {
 struct _GrxContext {
     GrxFrame    frame;                  /* frame buffer info */
     GrxContext *root;                   /* context which owns frame */
+    guint  ref_count;                   /* private reference count */
     int    x_max;                       /* max X coord (width  - 1) */
     int    y_max;                       /* max Y coord (height - 1) */
     int    x_offset;                    /* X offset from root's base */
@@ -537,8 +538,8 @@ GrxContext *grx_context_save(GrxContext *where);
 GrxContext *grx_context_get_current(void);
 GrxContext *grx_context_get_screen(void);
 
-GrxContext *grx_context_copy(GrxContext *context);
-void  grx_context_free(GrxContext *context);
+GrxContext *grx_context_ref(GrxContext *context);
+void  grx_context_unref(GrxContext *context);
 void  grx_context_resize_subcontext(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
 void  grx_context_set_current(const GrxContext *context);
 

@@ -59,7 +59,7 @@ void GrDestroyCursor(GrCursor *cursor)
 {
         if(cursor && (cursor != MOUINFO->cursor)) {
             GrEraseCursor(cursor);
-            grx_context_free(&cursor->work);
+            grx_context_unref(&cursor->work);
             free(cursor);
         }
 }
