@@ -133,7 +133,6 @@ set (LINUX_SOURCE_FILES
     text/buildaux.c
     text/buildfnt.c
     text/convfont.c
-    text/copyfont.c
     text/drawstrg.c
     text/drawtext.c
     text/drwstrg.c
@@ -264,7 +263,6 @@ add_gir (GIR ${LIBRARY_NAME}-shared ${GIR_NAME} ${GIR_VERSION}
         pattern/makepat.c
         setup/context.c
         setup/fgeom.c
-        text/copyfont.c
         text/type.c
 )
 install (FILES $<TARGET_PROPERTY:${GIR},GIR_FILE_NAME>

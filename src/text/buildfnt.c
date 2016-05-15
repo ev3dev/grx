@@ -347,6 +347,9 @@ GrxFont *_GrBuildFont(
       done:
         if (bmp) FREE(bmp);
         reset_ALLOC();
+        if (f) {
+            grx_font_ref(f);
+        }
         return(f);
 }
 

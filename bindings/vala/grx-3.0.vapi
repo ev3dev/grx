@@ -883,7 +883,7 @@ namespace Grx {
             requires (size == sizeof(MallocStruct));
     }
 
-    [CCode (free_function = "grx_font_free", has_type_id = false)]
+    [CCode (copy_function = "grx_font_ref", free_function = "grx_font_unref")]
     [Compact]
     public class Font {
         [CCode (cname = "&grx_font_pc6x8")]

@@ -35,7 +35,7 @@ static void gnewl(void)
         curx = 0;
         if(cury + grx_text_option_get_char_height(&opt, 'A') > grx_get_size_y() + deltay) {
             if(GrKeyRead() == GrKey_F10) {
-                grx_font_free(opt.txo_font);
+                grx_font_unref(opt.txo_font);
                 exit(0);
             }
             grx_clear_screen(opt.txo_bgcolor.v);
@@ -217,7 +217,7 @@ int main(int argc, char **argv)
             else if(key < 0x100) gputc(key);
         }
 
-        grx_font_free(opt.txo_font);
+        grx_font_unref(opt.txo_font);
 
         return(0);
 }

@@ -19,4 +19,26 @@
 
 #include "libgrx.h"
 
-G_DEFINE_BOXED_TYPE(GrxFont, grx_font, grx_font_copy, grx_font_free);
+G_DEFINE_BOXED_TYPE(GrxFont, grx_font, grx_font_ref, grx_font_unref);
+
+GrxFont *grx_font_ref(GrxFont *font)
+{
+    g_return_val_if_fail(font == NULL, NULL);
+
+    font->ref_count++;
+
+    return font;
+}
+
+extern void grx_font_free(GrxFont *f);
+
+void grx_font_unref(GrxFont *font)
+{
+    g_return_if_fail(font == NULL);
+    g_return_if_fail(font->ref_count == 0);
+
+    font->ref_count--;
+    if (font->ref_count == 0) {
+        grx_font_free(font);
+    }
+}

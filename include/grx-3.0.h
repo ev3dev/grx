@@ -1063,6 +1063,7 @@ typedef struct {                    /* the complete font */
     GrxFontHeader h;                /* the font info structure */
     guint8   *bitmap;               /* character bitmap array */
     guint8   *auxmap;               /* map for rotated & underline chrs */
+    guint     ref_count;            /* private reference count */
     guint     minwidth;             /* width of narrowest character */
     guint     maxwidth;             /* width of widest character */
     guint     auxsize;              /* allocated size of auxiliary map */
@@ -1085,8 +1086,8 @@ GrxFont *grx_font_load_converted(gchar *name, GrxFontConversionFlags cvt,
 GrxFont *grx_font_build_converted(const GrxFont *from, GrxFontConversionFlags cvt,
                                   gint w, gint h, gint minch, gint maxch);
 
-GrxFont *grx_font_copy(GrxFont *font);
-void grx_font_free(GrxFont *font);
+GrxFont *grx_font_ref(GrxFont *font);
+void grx_font_unref(GrxFont *font);
 void grx_font_dump(const GrxFont *f,char *CsymbolName,char *fileName);
 void grx_font_dump_fna(const GrxFont *f, char *fileName);
 void grx_font_set_path(char *path_list);

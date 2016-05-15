@@ -544,6 +544,7 @@ struct {
         },
         (char *)GrFont_PC6x8_bits,  /* character bitmap array */
         0,                            /* auxiliary bitmap */
+        1,                            /* reference count */
         6,                            /* width of narrowest character */
         6,                            /* width of widest character */
         0,                            /* allocated size of auxiliary bitmap */
