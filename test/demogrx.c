@@ -217,7 +217,6 @@ int main(int argc, char **argv)
     }
 
     ini_graphics();
-    GrSetWindowTitle(wintitle);
     ini_objects();
     paint_screen();
 
@@ -412,7 +411,6 @@ static int pev_command(Event * ev)
                 strcat(nprog, ptable[i].prog);
                 system(nprog);
                 ini_graphics();
-                GrSetWindowTitle(wintitle);
                 paint_screen();
                 return 1;
             }

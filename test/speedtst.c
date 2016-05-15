@@ -146,21 +146,12 @@ double SQR(int a, int b) {
   return r*r;
 }
 
-double ABS(int a, int b) {
+double abs_diff(int a, int b) {
   double r = DBL(a-b);
   return fabs(r);
 }
 
 char *FrameDriverName(GrxFrameMode m) {
-
-  unsigned sys = GrGetLibrarySystem();
-  int x11 = ( (sys == GRX_VERSION_GENERIC_X11) ||
-              (sys == GRX_VERSION_GCC_386_X11) ||
-              (sys == GRX_VERSION_GCC_X86_64_X11) );
-  int w32 = ( (sys == GRX_VERSION_GCC_386_WIN32) ||
-              (sys == GRX_VERSION_MSC_386_WIN32) ||
-              (sys == GRX_VERSION_GCC_386_CYG32) );
-  int sdl = strcmp( grx_get_current_video_driver()->name , "sdl") == 0;
 
   switch(m) {
     case GRX_FRAME_MODE_UNDEFINED: return "Undef";
@@ -189,12 +180,7 @@ void Message(int disp, char *txt, gvmode *gp) {
   char msg[200];
   sprintf(msg, "%s: %d x %d x %dbpp",
                 FrameDriverName(gp->fm), gp->w, gp->h, gp->bpp);
-  unsigned sys = GrGetLibrarySystem();
 
-  if ( (sys == GRX_VERSION_GENERIC_X11) ||
-       (sys == GRX_VERSION_GCC_386_X11) ||
-       (sys == GRX_VERSION_GCC_X86_64_X11) )
-    fprintf(stderr,"%s\t%s\n", msg, txt);
   if (disp) {
     GrxTextOption to;
     GrxContext save;
@@ -243,13 +229,13 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs,int loops) {
     gp->readpix.count = DBL(PAIRS) * DBL(loops);
   }
 
-  t1 = GrMsecTime();
+  t1 = g_get_monotonic_time();
   for (i=loops; i > 0; --i) {
     for (j=PAIRS-1; j >= 0; j--)
        grx_get_pixel_nc(x[j],y[j]);
   }
-  t2 = GrMsecTime();
-  seconds = (double)(t2 - t1) / 1000.0;
+  t2 = g_get_monotonic_time();
+  seconds = (double)(t2 - t1) / 1000000.0;
   if (seconds > 0)
     gp->readpix.rate = gp->readpix.count / seconds;
 }
@@ -270,15 +256,15 @@ void drawpixeltest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawpix.count = DBL(PAIRS) * DBL(DRAWPIX_loops) * 4.0;
   }
 
-  t1 = GrMsecTime();
+  t1 = g_get_monotonic_time();
   for (i=0; i < DRAWPIX_loops; ++i) {
     for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c1);
     for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c2);
     for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c3);
     for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c4);
   }
-  t2 = GrMsecTime();
-  seconds = (double)(t2 - t1) / 1000.0;
+  t2 = g_get_monotonic_time();
+  seconds = (double)(t2 - t1) / 1000000.0;
   if (seconds > 0)
     gp->drawpix.rate = gp->drawpix.count / seconds;
 }
@@ -302,7 +288,7 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawlin.count *= 4.0 * DRAWLIN_loops;
   }
 
-  t1 = GrMsecTime();
+  t1 = g_get_monotonic_time();
   for (i=0; i < DRAWLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
         grx_draw_line_nc(x[j],y[j],x[j+1],y[j+1],c1);
@@ -313,8 +299,8 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
         grx_draw_line_nc(x[j],y[j],x[j+1],y[j+1],c4);
   }
-  t2 = GrMsecTime();
-  seconds = (double)(t2 - t1) / 1000.0;
+  t2 = g_get_monotonic_time();
+  seconds = (double)(t2 - t1) / 1000000.0;
   if (seconds > 0)
     gp->drawlin.rate = gp->drawlin.count / seconds;
 }
@@ -334,11 +320,11 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawhlin.rate = 0.0;
     gp->drawhlin.count = 0.0;
     for (j=0; j < PAIRS; j+=2)
-      gp->drawhlin.count += ABS(x[j],x[j+1]);
+      gp->drawhlin.count += abs_diff(x[j],x[j+1]);
     gp->drawhlin.count *= 4.0 * DRAWHLIN_loops;
   }
 
-  t1 = GrMsecTime();
+  t1 = g_get_monotonic_time();
   for (i=0; i < DRAWHLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
       grx_draw_hline_nc(x[j],x[j+1],y[j],c1);
@@ -349,8 +335,8 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
       grx_draw_hline_nc(x[j],x[j+1],y[j],c4);
   }
-  t2 = GrMsecTime();
-  seconds = (double)(t2 - t1) / 1000.0;
+  t2 = g_get_monotonic_time();
+  seconds = (double)(t2 - t1) / 1000000.0;
   if (seconds > 0)
     gp->drawhlin.rate = gp->drawhlin.count / seconds;
 }
@@ -370,11 +356,11 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawvlin.rate = 0.0;
     gp->drawvlin.count = 0.0;
     for (j=0; j < PAIRS; j+=2)
-      gp->drawvlin.count += ABS(y[j],y[j+1]);
+      gp->drawvlin.count += abs_diff(y[j],y[j+1]);
     gp->drawvlin.count *= 4.0 * DRAWVLIN_loops;
   }
 
-  t1 = GrMsecTime();
+  t1 = g_get_monotonic_time();
   for (i=0; i < DRAWVLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
        grx_draw_vline_nc(x[j],y[j],y[j+1],c1);
@@ -385,8 +371,8 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
        grx_draw_vline_nc(x[j],y[j],y[j+1],c4);
   }
-  t2 = GrMsecTime();
-  seconds = (double)(t2 - t1) / 1000.0;
+  t2 = g_get_monotonic_time();
+  seconds = (double)(t2 - t1) / 1000000.0;
   if (seconds > 0)
     gp->drawvlin.rate = gp->drawvlin.count / seconds;
 }
@@ -413,11 +399,11 @@ void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
     gp->drawblk.rate = 0.0;
     gp->drawblk.count = 0.0;
     for (j=0; j < PAIRS; j+=2)
-      gp->drawblk.count += ABS(xb[j],xb[j+1]) * ABS(yb[j],yb[j+1]);
+      gp->drawblk.count += abs_diff(xb[j],xb[j+1]) * abs_diff(yb[j],yb[j+1]);
     gp->drawblk.count *= 4.0 * DRAWBLK_loops;
   }
 
-  t1 = GrMsecTime();
+  t1 = g_get_monotonic_time();
   for (i=0; i < DRAWBLK_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
       grx_draw_filled_box_nc(xb[j],yb[j],xb[j+1],yb[j+1],c1);
@@ -428,8 +414,8 @@ void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
     for (j=PAIRS-2; j >= 0; j-=2)
       grx_draw_filled_box_nc(xb[j],yb[j],xb[j+1],yb[j+1],c4);
   }
-  t2 = GrMsecTime();
-  seconds = (double)(t2 - t1) / 1000.0;
+  t2 = g_get_monotonic_time();
+  seconds = (double)(t2 - t1) / 1000000.0;
   if (seconds > 0)
     gp->drawblk.rate = gp->drawblk.count / seconds;
 }
@@ -471,7 +457,7 @@ void blit_measure(gvmode *gp, perfm *p,
     Message(1,txt, gp);
   }
 
-  t1 = GrMsecTime();
+  t1 = g_get_monotonic_time();
   for (i=0; i < BLIT_loops; ++i) {
     for (j=PAIRS-3; j >= 0; j-=3)
       grx_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_WRITE);
@@ -482,8 +468,8 @@ void blit_measure(gvmode *gp, perfm *p,
     for (j=PAIRS-3; j >= 0; j-=3)
       grx_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_AND);
   }
-  t2 = GrMsecTime();
-  seconds = (double)(t2 - t1) / 1000.0;
+  t2 = g_get_monotonic_time();
+  seconds = (double)(t2 - t1) / 1000000.0;
   if (seconds > 0)
     p->rate = p->count / seconds;
 }
@@ -510,7 +496,7 @@ void blittest(gvmode *gp, XY_PAIRS *pairs, int ram) {
   if (!MEASURED(gp)) {
     double count = 0.0;
     for (j=0; j < PAIRS; j+=3)
-      count += ABS(xb[j],xb[j+1]) * ABS(yb[j],yb[j+1]);
+      count += abs_diff(xb[j],xb[j+1]) * abs_diff(yb[j],yb[j+1]);
     gp->blitv2v.count =
     gp->blitr2v.count =
     gp->blitv2r.count = count * 4.0 * BLIT_loops;
@@ -542,15 +528,7 @@ void measure_one(gvmode *gp, int ram) {
   pairs = checkpairs(gp->w, gp->h);
   grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
   Message(RAMMODE(gp),"read pixel test", gp);
-  { int rd_loops = READPIX_loops;
-  unsigned sys = GrGetLibrarySystem();
 
-  if ( (sys == GRX_VERSION_GENERIC_X11) ||
-       (sys == GRX_VERSION_GCC_386_X11) ||
-       (sys == GRX_VERSION_GCC_X86_64_X11) )
-      if (!RAMMODE(gp)) rd_loops = READPIX_X11_loops;
-    readpixeltest(gp,pairs,rd_loops);
-  }
   grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
   Message(RAMMODE(gp),"draw pixel test", gp);
   drawpixeltest(gp,pairs);
