@@ -26,9 +26,9 @@ static GrxColor dummyframefn(void);
 const
 struct _GR_driverInfo * const GrDriverInfo = &_GrDriverInfo;
 struct _GR_driverInfo _GrDriverInfo = {
-    NULL,                               /* video driver */
-    &DRVINFO->actmode,                  /* current video mode pointer */
-    {                                   /* current video mode struct */
+    .vdriver = NULL,                    /* video driver */
+    .curmode = &DRVINFO->actmode,       /* current video mode pointer */
+    .actmode = {                        /* current video mode struct */
         FALSE,                          /* present */
         4,                              /* bpp */
         80,25,                          /* geometry */
@@ -37,7 +37,7 @@ struct _GR_driverInfo _GrDriverInfo = {
         0,                              /* private */
         NULL
     },
-    {                                   /* current frame driver */
+    .fdriver = {                        /* current frame driver */
         GRX_FRAME_MODE_UNDEFINED,       /* frame mode */
         GRX_FRAME_MODE_UNDEFINED,       /* compatible RAM frame mode */
         FALSE,                          /* onscreen */
@@ -58,7 +58,7 @@ struct _GR_driverInfo _GrDriverInfo = {
         (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
         (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn
     },
-    {                                   /* screen frame driver */
+    .sdriver = {                        /* screen frame driver */
         GRX_FRAME_MODE_UNDEFINED,       /* frame mode */
         GRX_FRAME_MODE_UNDEFINED,       /* compatible RAM frame mode */
         FALSE,                          /* onscreen */
@@ -79,7 +79,7 @@ struct _GR_driverInfo _GrDriverInfo = {
         (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
         (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn
     },
-    {                                   /* dummy text mode frame driver */
+    .tdriver = {                        /* dummy text mode frame driver */
         GRX_FRAME_MODE_TEXT,            /* frame mode */
         GRX_FRAME_MODE_UNDEFINED,       /* compatible RAM frame mode */
         TRUE,                           /* onscreen */
@@ -100,18 +100,18 @@ struct _GR_driverInfo _GrDriverInfo = {
         (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
         (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn
     },
-    GRX_GRAPHICS_MODE_TEXT_DEFAULT,             /* current mode code */
-    80,25,                                      /* default text size */
-    640,480,                                    /* default graphics size */
-    16L,16L,                                    /* default txt and gr colors */
-    0,0,                                        /* virtual position */
-    TRUE,                                       /* exit upon errors */
-    TRUE,                                       /* restore startup mode */
-    FALSE,                                      /* split banks */
-    (-1),                                       /* current bank */
-    NULL,                                       /* mode set hook */
-    (void (*)(int)    )_GrDummyFunction,        /* banking func */
-    (void (*)(int,int))_GrDummyFunction         /* split banking func */
+    .mcode = GRX_GRAPHICS_MODE_TEXT_DEFAULT,    /* current mode code */
+    .deftw = 80,  .defth = 25,                  /* default text size */
+    .defgw = 640, .defgh = 480,                 /* default graphics size */
+    .deftc = 16L, .defgc = 16L,                 /* default txt and gr colors */
+    .vposx = 0,   .vposy = 0,                   /* virtual position */
+    .errsfatal   = TRUE,                        /* exit upon errors */
+    .moderestore = TRUE,                        /* restore startup mode */
+    .splitbanks  = FALSE,                       /* split banks */
+    .curbank     = (-1),                        /* current bank */
+    .modehook    = NULL,                        /* mode set hook */
+    .set_bank = (void (*)(int))_GrDummyFunction,/* banking func */
+    .set_rw_banks = (void (*)(int,int))_GrDummyFunction /* split banking func */
 };
 
 static GrxColor dummyframefn(void)
