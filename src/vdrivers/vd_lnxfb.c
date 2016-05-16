@@ -61,46 +61,99 @@ int _lnxfb_waiting_to_switch_console = 0;
 
 static int detect(void)
 {
-    char *fbname;
-    char *default_fbname = "/dev/fb0";
-    char ttyname[12];
-    int err;
     struct vt_stat vtstat;
+    struct fb_con2fbmap con2fb_map;
+    char ttyname[12];
+    char fbname[10];
+    int err;
 
     if (initted < 0) {
         initted = 0;
-        fbname = getenv("FRAMEBUFFER");
-        if (fbname == NULL)
-            fbname = default_fbname;
-        fbfd = open(fbname, O_RDWR);
-        if (fbfd == -1)
-            return FALSE;
-        ioctl(fbfd, FBIOGET_FSCREENINFO, &fbfix);
-        ioctl(fbfd, FBIOGET_VSCREENINFO, &fbvar);
-        if (fbfix.type != FB_TYPE_PACKED_PIXELS)
-            return FALSE;
+
+        // first, open the current console
+
         ttyfd = open("/dev/tty", O_RDONLY);
-    if (ttyfd == -1)
-        err = ttyfd;
-    else
-        err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
+        if (ttyfd == -1) {
+            err = ttyfd;
+        } else {
+            // This will fail if we are not on a virtual console
+            err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
+            close(ttyfd);
+        }
         if (err < 0) {
-        // if we are not currently on a virtual console and we are root, then
-        // we will take over the current virtual console (tty0).
-        ttyfd = open("/dev/tty0", O_RDONLY);
-        if (ttyfd == -1)
-               return FALSE;
-        err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
-        if (err < 0)
-            return FALSE;
-    }
+            // If we are not currently on a virtual console and we are root,
+            // then we will take over the current virtual console (tty0).
+            ttyfd = open("/dev/tty0", O_RDONLY);
+            if (ttyfd == -1) {
+                return FALSE;
+            }
+            err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
+            close(ttyfd);
+            if (err < 0) {
+                return FALSE;
+            }
+        }
+
+        // Now, open the specific tty file for this console. We do this instead
+        // of using /dev/tty because if we switch active consoles, /dev/tty is
+        // no longer the one we started with.
+
         sprintf(ttyname, "/dev/tty%d", vtstat.v_active);
         ttyfd = open(ttyname, O_RDONLY);
-        if (ttyfd == -1)
+        if (ttyfd == -1) {
             return FALSE;
+        }
+
+        // Then open up the first framebuffer device and use it to find the
+        // fbdev that matches this console.
+
+        fbfd = open("/dev/fb0", O_RDWR);
+        if (fbfd == -1) {
+            close(ttyfd);
+            return FALSE;
+        }
+        con2fb_map.console = vtstat.v_active;
+        if (ioctl(fbfd, FBIOGET_CON2FBMAP, &con2fb_map) < 0) {
+            close(fbfd);
+            close(ttyfd);
+            return FALSE;
+        }
+
+        // Make sure there is actually a framebuffer for this console.
+
+        if (con2fb_map.framebuffer < 0) {
+            close(fbfd);
+            close(ttyfd);
+            return FALSE;
+        }
+
+        // We already have /dev/fb0 open. If it is not the right one then we
+        // need to close it and open the correct one.
+
+        if (con2fb_map.framebuffer != 0) {
+            close(fbfd);
+            sprintf(fbname, "/dev/fb%d", con2fb_map.framebuffer);
+            fbfd = open(fbname, O_RDWR);
+            if (fbfd < 0) {
+                close(ttyfd);
+                return FALSE;
+            }
+        }
+
+        // Finally, we have to make sure the frambuffer is compatible.
+
+        ioctl(fbfd, FBIOGET_FSCREENINFO, &fbfix);
+        ioctl(fbfd, FBIOGET_VSCREENINFO, &fbvar);
+        if (fbfix.type != FB_TYPE_PACKED_PIXELS) {
+            close(fbfd);
+            close(ttyfd);
+            return FALSE;
+        }
+
         initted = 1;
     }
-    return ((initted > 0) ? TRUE : FALSE);
+
+    return (initted > 0);
 }
 
 static void reset(void)
