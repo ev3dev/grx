@@ -46,7 +46,6 @@ GrxContext *grx_context_create_full(GrxFrameMode md, int w, int h,
         if(!where) {
             where = malloc(sizeof(GrxContext));
             if(!where) return(NULL);
-            where->ref_count = 1;
             flags = MYCONTEXT;
         }
         sttzero(where);
@@ -63,6 +62,7 @@ GrxContext *grx_context_create_full(GrxFrameMode md, int w, int h,
             memory = mymem;
             flags |= MYFRAME;
         }
+        where->ref_count = 1;
         where->gc_driver      = fd;
         where->gc_base_address[0] = memory[0];
         where->gc_base_address[1] = memory[1];
@@ -93,11 +93,11 @@ GrxContext *grx_context_create_subcontext(int x1, int y1, int x2, int y2,
         if(!where) {
             where = malloc(sizeof(GrxContext));
             if(!where) return(NULL);
-            where->ref_count = 1;
             flags = MYCONTEXT;
         }
         sttzero(where);
         sttcopy(&where->frame,&parent->frame);
+        where->ref_count = 1;
         where->gc_memory_flags = flags;
         where->x_offset  = x1;
         where->y_offset  = y1;
@@ -173,10 +173,10 @@ GrxContext *grx_context_save(GrxContext *where)
         if(!where) {
             where = malloc(sizeof(GrxContext));
             if(!where) return(NULL);
-            where->ref_count = 1;
             flags = MYCONTEXT;
         }
         sttcopy(where,CURC);
+        where->ref_count = 1;
         where->gc_memory_flags = flags;
         return(where);
 }
