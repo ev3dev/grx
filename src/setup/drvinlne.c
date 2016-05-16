@@ -103,6 +103,11 @@ int (grx_is_screen_virtual)(void)
         return(grx_is_screen_virtual());
 }
 
+int (grx_is_screen_active)(void)
+{
+        return(grx_is_screen_active());
+}
+
 int (grx_get_n_planes)(void)
 {
         return(grx_get_n_planes());

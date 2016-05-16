@@ -265,6 +265,7 @@ add_gir (GIR ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
         pattern/makepat.c
         setup/context.c
         setup/fgeom.c
+        setup/hooks.c
         text/type.c
 )
 install (FILES $<TARGET_PROPERTY:${GIR},GIR_FILE_NAME>

@@ -187,6 +187,12 @@ void _LnxfbRelsigHandle(int sig)
     if (!ingraphicsmode) return;
     if (ttyfd < 0) return;
 
+    // Notify user program to stop using the framebuffer
+    DRVINFO->screen_active = FALSE;
+    if (DRVINFO->screen_active_func) {
+        DRVINFO->screen_active_func(FALSE, DRVINFO->screen_active_func_user_data);
+    }
+
     /* create a new context from the screen */
     grc = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
     if (grc == NULL)
@@ -201,19 +207,7 @@ void _LnxfbRelsigHandle(int sig)
         grx_bit_blt(grc, 0, 0, grx_context_get_screen(), 0, 0,
                  grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
     }
-    /*
-     * swap out the framebuffer memory with the new context so that the
-     * application can continue to run in the background without actually
-     * writing to the framebuffer.
-     */
-    frame_addr[0] = grx_context_get_screen()->gc_base_address[0];
-    frame_addr[1] = grx_context_get_screen()->gc_base_address[1];
-    frame_addr[2] = grx_context_get_screen()->gc_base_address[2];
-    frame_addr[3] = grx_context_get_screen()->gc_base_address[3];
-    grx_context_get_screen()->gc_base_address[0] = grc->gc_base_address[0];
-    grx_context_get_screen()->gc_base_address[1] = grc->gc_base_address[1];
-    grx_context_get_screen()->gc_base_address[2] = grc->gc_base_address[2];
-    grx_context_get_screen()->gc_base_address[3] = grc->gc_base_address[3];
+
     /* release control of the vt */
     ioctl(ttyfd, VT_RELDISP, 1);
     signal(SIGUSR1, _LnxfbAcqsigHandle);
@@ -226,11 +220,7 @@ void _LnxfbAcqsigHandle(int sig)
     /* resume control of the vt */
     ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
-    /* restore framebuffer address */
-    grx_context_get_screen()->gc_base_address[0] = frame_addr[0];
-    grx_context_get_screen()->gc_base_address[1] = frame_addr[1];
-    grx_context_get_screen()->gc_base_address[2] = frame_addr[2];
-    grx_context_get_screen()->gc_base_address[3] = frame_addr[3];
+
     /* copy the temporary context back to the framebuffer */
     if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
         /* need to invert the colors on this one */
@@ -243,6 +233,12 @@ void _LnxfbAcqsigHandle(int sig)
     }
     grx_context_unref(grc);
     signal(SIGUSR1, _LnxfbRelsigHandle);
+
+    // Notify user program it is OK to use the framebuffer
+    DRVINFO->screen_active = TRUE;
+    if (DRVINFO->screen_active_func) {
+        DRVINFO->screen_active_func(TRUE, DRVINFO->screen_active_func_user_data);
+    }
 }
 
 static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)

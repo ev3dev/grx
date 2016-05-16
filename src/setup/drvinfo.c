@@ -109,7 +109,10 @@ struct _GR_driverInfo _GrDriverInfo = {
     .moderestore = TRUE,                        /* restore startup mode */
     .splitbanks  = FALSE,                       /* split banks */
     .curbank     = (-1),                        /* current bank */
-    .modehook    = NULL,                        /* mode set hook */
+    .screen_active = TRUE,
+    .screen_active_func = NULL,
+    .screen_active_func_user_data = NULL,
+    .screen_active_func_notify = NULL,
     .set_bank = (void (*)(int))_GrDummyFunction,/* banking func */
     .set_rw_banks = (void (*)(int,int))_GrDummyFunction /* split banking func */
 };
