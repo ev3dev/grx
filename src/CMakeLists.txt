@@ -256,6 +256,8 @@ add_gir (GIR ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
         GLib-2.0
     INCLUDE_DIRS
         ${INCLUDE_DIRS}
+    ARGS
+        --warn-all
     FILES
         ${CMAKE_SOURCE_DIR}/include/grx-3.0.h
         image/ibuild.c
@@ -273,6 +275,6 @@ install (FILES $<TARGET_PROPERTY:${GIR},GIR_FILE_NAME>
 
 find_package (GirCompiler)
 include (GirCompiler)
-add_typelib (TYPELIB ${SHARED_LIBRARY_NAME} ${GIR})
+add_typelib (TYPELIB ${GIR})
 install (FILES $<TARGET_PROPERTY:${TYPELIB},TYPELIB_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
