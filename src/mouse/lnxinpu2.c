@@ -50,9 +50,6 @@
 
 #include "grxkeys.h"
 
-extern int _lnxfb_waiting_to_switch_console;
-extern void _LnxfbSwitchConsoleAndWait(void);
-
 /*
  * keyboard stuff
  */
@@ -303,9 +300,6 @@ static int validKey(int key, int valid)
 
 int _GrCheckKeyboardHit(void)
 {
-    if (_lnxfb_waiting_to_switch_console)
-        _LnxfbSwitchConsoleAndWait();
-
     if (!kbd_initted) {
         kbd_init();
     }
@@ -337,9 +331,6 @@ int _GrReadCharFromKeyboard(void)
         return (getc(stdin));
     }
     do {
-        if (_lnxfb_waiting_to_switch_console)
-            _LnxfbSwitchConsoleAndWait();
-
         if (kbd_lastchr != EOF) {
             key = kbd_lastchr;
             kbd_lastchr = EOF;
@@ -501,8 +492,6 @@ void _GrUpdateInputs(void)
 
     for (;;) {
         gotevt = FALSE;
-        if (_lnxfb_waiting_to_switch_console)
-            _LnxfbSwitchConsoleAndWait();
         if (mou_enabled && (MOUINFO->msstatus == 2)) {
             if (_GrReadPS2MouseData(&mb, &mx, &my)) {
                 update_coord(x, mx);

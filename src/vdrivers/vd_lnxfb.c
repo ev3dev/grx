@@ -57,8 +57,6 @@ static int ingraphicsmode = 0;
 static GrxContext *grc;
 static char* frame_addr[4];
 
-int _lnxfb_waiting_to_switch_console = 0;
-
 static int detect(void)
 {
     struct vt_stat vtstat;
@@ -181,68 +179,6 @@ static void reset(void)
         ingraphicsmode = 0;
     }
     initted = -1;
-}
-
-void _LnxfbSwitchToConsoleVt(unsigned short vt)
-{
-    struct vt_stat vtst;
-    unsigned short myvt;
-    GrxContext *grc;
-
-    if (!ingraphicsmode) return;
-    if (ttyfd < 0) return;
-    if (ioctl(ttyfd, VT_GETSTATE, &vtst) < 0) return;
-    myvt = vtst.v_active;
-    if (vt == myvt) return; 
-
-    grc = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
-    if (grc != NULL) {
-        grx_bit_blt(grc, 0, 0, grx_context_get_screen(), 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
-    }
-    ioctl(ttyfd, KDSETMODE, KD_TEXT);
-    if (ioctl(ttyfd, VT_ACTIVATE, vt) == 0) {
-        ioctl(ttyfd, VT_WAITACTIVE, vt);
-        ioctl(ttyfd, VT_WAITACTIVE, myvt);
-    }
-    ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
-    if (grc != NULL) {
-        grx_bit_blt(grx_context_get_screen(), 0, 0, grc, 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
-        grx_context_unref(grc);
-    }
-}
-
-void _LnxfbSwitchConsoleAndWait(void)
-{
-    struct vt_stat vtst;
-    unsigned short myvt;
-    GrxContext *grc;
-
-    _lnxfb_waiting_to_switch_console = 0;
-    if (!ingraphicsmode) return;
-    if (ttyfd < 0) return;
-    if (ioctl(ttyfd, VT_GETSTATE, &vtst) < 0) return;
-    myvt = vtst.v_active;
-
-    grc = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
-    if (grc != NULL) {
-        grx_bit_blt(grc, 0, 0, grx_context_get_screen(), 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
-    }
-
-    ioctl(ttyfd, KDSETMODE, KD_TEXT);
-
-    ioctl(ttyfd, VT_RELDISP, 1);
-    ioctl(ttyfd, VT_WAITACTIVE, myvt);
-
-    ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
-
-    if (grc != NULL) {
-        grx_bit_blt(grx_context_get_screen(), 0, 0, grc, 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
-        grx_context_unref(grc);
-    }
 }
 
 void _LnxfbAcqsigHandle(int sig);
