@@ -33,9 +33,14 @@ extern void  _GR_debug_printf(char *fmt,...);
 
 # ifdef __GNUC__
   extern const char *_GR_debug_function;
+
+// http://stackoverflow.com/a/8488201/1976323
+#define __FILENAME__ \
+    (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+
 #  define DBGPRINTF(tst,x) do {           \
      if ((tst)&_GR_debug_flags) {         \
-       _GR_debug_file = __FILE__;         \
+       _GR_debug_file = __FILENAME__;     \
        _GR_debug_line = __LINE__;         \
        _GR_debug_function = __FUNCTION__; \
        _GR_debug_printf x;                \

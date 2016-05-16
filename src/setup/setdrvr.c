@@ -38,7 +38,10 @@ int grx_set_driver(char *drvspec)
         static int firsttime = TRUE;
         GrxVideoDriver *drv = NULL;
         char options[100];
-        if(!drvspec) drvspec = getenv("GRX20DRV");
+        if(!drvspec) {
+            drvspec = getenv("GRX20DRV");
+            DBGPRINTF(DBG_DRIVER,("Checking GRX20DRV: %s\n",drvspec));
+        }
         options[0] = '\0';
         if(drvspec) {
             char t[100],name[100],*p = drvspec;
@@ -84,9 +87,12 @@ int grx_set_driver(char *drvspec)
                 }
             }
             if(name[0] != '\0') {
+                DBGPRINTF(DBG_DRIVER,("Looking for match: %s\n",name));
                 int ii = 0,found = FALSE;
                 while(!found && ((drv = _GrVideoDriverTable[ii++]) != NULL)) {
                     char *n = name;
+
+                    DBGPRINTF(DBG_DRIVER,("Trying: %s\n",drv->name));
                     for(p = drv->name; ; p++,n++) {
                         if(tolower(*p) != tolower(*n)) break;
                         if(*p == '\0') { found = TRUE; break; }
@@ -96,6 +102,7 @@ int grx_set_driver(char *drvspec)
             }
         }
         if(!drv) {
+            DBGPRINTF(DBG_DRIVER,("Trying detect\n"));
             GrxVideoDriver *dp;
             int ii,maxmodes = 0;
             for(ii = 0; (dp = _GrVideoDriverTable[ii]) != NULL; ii++) {
@@ -109,6 +116,7 @@ int grx_set_driver(char *drvspec)
                 }
             }
             if(!drv) return(FALSE);
+            DBGPRINTF(DBG_DRIVER,("Found %s\n", drv->name));
         }
         _GrCloseVideoDriver();
         if(firsttime) {

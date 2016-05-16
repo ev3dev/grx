@@ -6,10 +6,18 @@ set (GIR_NAME "Grx")
 set (GIR_VERSION "3.0")
 set (PACKAGE_NAME ${PROJECT_NAME}-${GIR_VERSION})
 
+# Configuration settings
+
 set (GRX_DEBUG "OFF" CACHE STRING "Debug message flags")
+set (GRX_LINUXFB "Yes" CACHE BOOL "Enable Linux framebuffer driver")
+
 if (GRX_DEBUG)
     add_definitions ("-DDEBUG=${GRX_DEBUG}")
 endif (GRX_DEBUG)
+
+if (GRX_LINUXFB)
+    add_definitions ("-DFRAMEBUFFER_DRIVER -DLFB_BY_NEAR_POINTER")
+endif (GRX_LINUXFB)
 
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 

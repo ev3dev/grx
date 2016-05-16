@@ -35,21 +35,34 @@ GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
         unsigned int cerr,serr,err[2];
         GrxVideoMode *best,*mp;
         GRX_ENTER();
+        DBGPRINTF(DBG_SETMD,("Attempting to set mode in %s\n", drv->name));
         best = NULL;
         mp = drv->modes;
         for(n = drv->n_modes; --n >= 0; mp++) {
-            if(!mp->present) continue;
-            if(!mp->extended_info) continue;
-            if((mp->extended_info->mode != GRX_FRAME_MODE_TEXT) ? txt : !txt) continue;
+            if (!mp->present) {
+                // DBGPRINTF(DBG_SETMD,("Mode %d not present\n", n));
+                continue;
+            }
+            if (!mp->extended_info) {
+                DBGPRINTF(DBG_SETMD,("Mode %d missing extended info\n", n));
+                continue;
+            }
+            if ((mp->extended_info->mode != GRX_FRAME_MODE_TEXT) ? txt : !txt) {
+                DBGPRINTF(DBG_SETMD,("Mode %d txt/grx mismatch\n", n));
+                continue;
+            }
             cerr = ERROR(bpp,mp->bpp);
             serr = ERROR(w,mp->width) + ERROR(h,mp->height);
             if(((ep) ? FALSE : ((ep = err),TRUE)) ||
                ((cerr <  ep[0])) ||
                ((cerr == ep[0]) && (serr < ep[1]))) {
+                DBGPRINTF(DBG_SETMD,("Mode %d OK!\n", n));
                 best  = mp;
                 if (!cerr && !serr) break;
                 ep[0] = cerr;
                 ep[1] = serr;
+            } else {
+                DBGPRINTF(DBG_SETMD,("Mode %d was not the best\n", n));
             }
         }
         if(drv->inherit) {
@@ -88,7 +101,11 @@ static int buildframedriver(GrxVideoMode *mp,GrxFrameDriver *drv)
                 memcpy(drv,d2,offsetof(GrxFrameDriver,readpixel));
                 goto done; /* TRUE */
             }
-            if(!d1) { res = FALSE; goto done; }
+            if (!d1) {
+                DBGPRINTF(DBG_SETMD,("Could not find framedriver\n"));
+                res = FALSE;
+                goto done;
+            }
             if((d2->mode == d1->mode) &&
                (d2->rmode == d1->rmode) &&
                (d1->is_video ? d2->is_video : !d2->is_video) &&
@@ -100,7 +117,11 @@ static int buildframedriver(GrxVideoMode *mp,GrxFrameDriver *drv)
                 goto done; /* TRUE */
             }
         }
-        if(!d1) { res = FALSE; goto done; }
+        if (!d1) {
+            DBGPRINTF(DBG_SETMD,("Could not find framedriver\n"));
+            res = FALSE;
+            goto done;
+        }
         sttcopy(drv,d1);
 done:   GRX_RETURN(res);
 }
