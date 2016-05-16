@@ -406,6 +406,7 @@ extern const struct _GR_driverInfo {
  */
 gboolean grx_set_driver(gchar *driver_spec);
 gboolean grx_set_mode(GrxGraphicsMode mode, ...);
+gboolean grx_set_mode_default_graphics(gboolean clear);
 gboolean grx_set_viewport(int xpos, int ypos);
 void grx_set_restore_mode(gboolean restore);
 void grx_set_error_handling(gboolean exit_if_error);

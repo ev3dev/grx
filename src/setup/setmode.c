@@ -424,3 +424,12 @@ int grx_set_mode(GrxGraphicsMode which,...)
 done:   GRX_RETURN(res);
 }
 
+/**
+ * grx_set_mode_default_graphics:
+ * @clear: If #TRUE, clear the screen after setting the mode.
+ */
+gboolean grx_set_mode_default_graphics(gboolean clear)
+{
+    grx_set_mode(clear ? GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT
+                       : GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC);
+}
