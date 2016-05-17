@@ -482,7 +482,7 @@ glong grx_get_context_size(gint w, gint h);
 #define grx_get_viewport_y()           (GrDriverInfo->vposy)
 
 #define grx_is_screen_virtual()        ((grx_get_screen_x() + grx_get_screen_y()) < (grx_get_virtual_x() + grx_get_virtual_y()))
-#define grx_is_screen_active()         (DRVINFO->screen_active)
+#define grx_is_screen_active()         (GrDriverInfo->screen_active)
 
 #define grx_get_n_planes()             grx_frame_mode_get_n_planes(grx_get_core_frame_mode())
 #define grx_get_line_offset(w)         grx_frame_mode_get_line_offset(grx_get_core_frame_mode(),w)
