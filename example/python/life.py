@@ -47,14 +47,26 @@ class Life:
     def update_state(self):
         for y in range(self.height):
             for x in range(self.width):
-                live_count = (self.old_state[(x - 1) % self.width][(y - 1) % self.height] +
-                              self.old_state[x][(y - 1) % self.height] +
-                              self.old_state[(x + 1) % self.width][(y - 1) % self.height] +
-                              self.old_state[(x - 1) % self.width][y] +
-                              self.old_state[(x + 1) % self.width][y] +
-                              self.old_state[(x - 1) % self.width][(y + 1) % self.height] +
-                              self.old_state[x][(y + 1) % self.height] +
-                              self.old_state[(x + 1) % self.width][(y + 1) % self.height])
+                px = x - 1
+                if px < 0:
+                    px += self.width
+                nx = x + 1
+                if nx >= self.width:
+                    nx -= self.width
+                py = y - 1
+                if py < 0:
+                    py += self.height
+                ny = y + 1
+                if ny >= self.height:
+                    ny -= self.height
+                live_count = (self.old_state[px][py] +
+                              self.old_state[x][py] +
+                              self.old_state[nx][py] +
+                              self.old_state[px][y] +
+                              self.old_state[nx][y] +
+                              self.old_state[px][ny] +
+                              self.old_state[x][ny] +
+                              self.old_state[nx][ny])
                 self.new_state[x][y] = (live_count | self.old_state[x][y]) == 3
 
         self.old_state, self.new_state = self.new_state, self.old_state
