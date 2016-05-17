@@ -269,48 +269,48 @@ static void setbank_dummy(int bk)
 }
 
 GrxVideoModeExt grtextext = {
-    GRX_FRAME_MODE_TEXT,         /* frame driver */
-    NULL,                        /* frame driver override */
-    NULL,                        /* frame buffer address */
-    {0, 0, 0},                        /* color precisions */
-    {0, 0, 0},                        /* color component bit positions */
-    0,                                /* mode flag bits */
-    setmode,                        /* mode set */
-    NULL,                        /* virtual size set */
-    NULL,                        /* virtual scroll */
-    NULL,                        /* bank set function */
-    NULL,                        /* double bank set function */
-    NULL                         /* color loader */
+    .mode             = GRX_FRAME_MODE_TEXT, /* frame driver */
+    .drv              = NULL,                /* frame driver override */
+    .frame            = NULL,                /* frame buffer address */
+    .cprec            = {0, 0, 0},           /* color precisions */
+    .cpos             = {0, 0, 0},           /* color component bit positions */
+    .flags            = 0,                   /* mode flag bits */
+    .setup            = setmode,             /* mode set */
+    .set_virtual_size = NULL,                /* virtual size set */
+    .scroll           = NULL,                /* virtual scroll */
+    .set_bank         = NULL,                /* bank set function */
+    .set_rw_banks     = NULL,                /* double bank set function */
+    .load_color       = NULL,                /* color loader */
 };
 
 static GrxVideoModeExt grxwinext8 = {
-    GR_frameWIN32_8,                /* frame driver */
-    NULL,                        /* frame driver override */
-    NULL,                        /* frame buffer address */
-    {8, 8, 8},                        /* color precisions */
-    {0, 8, 16},                 /* color component bit positions */
-    0,                                /* mode flag bits */
-    setmode,                        /* mode set */
-    NULL,                        /* virtual size set */
-    NULL,                        /* virtual scroll */
-    setbank_dummy,                /* bank set function */
-    NULL,                        /* double bank set function */
-    load_color                   /* color loader */
+    .mode             = GR_frameWIN32_8, /* frame driver */
+    .drv              = NULL,            /* frame driver override */
+    .frame            = NULL,            /* frame buffer address */
+    .cprec            = {8, 8, 8},       /* color precisions */
+    .cpos             = {0, 8, 16},      /* color component bit positions */
+    .flags            = 0,               /* mode flag bits */
+    .setup            = setmode,         /* mode set */
+    .set_virtual_size = NULL,            /* virtual size set */
+    .scroll           = NULL,            /* virtual scroll */
+    .set_bank         = setbank_dummy,   /* bank set function */
+    .set_rw_banks     = NULL,            /* double bank set function */
+    .load_color       = load_color,      /* color loader */
 };
 
 static GrxVideoModeExt grxwinext24 = {
-    GR_frameWIN32_24,                /* frame driver */
-    NULL,                        /* frame driver override */
-    NULL,                        /* frame buffer address */
-    {8, 8, 8},                        /* color precisions */
-    {16, 8, 0},                 /* color component bit positions */
-    0,                                /* mode flag bits */
-    setmode,                        /* mode set */
-    NULL,                        /* virtual size set */
-    NULL,                        /* virtual scroll */
-    setbank_dummy,                /* bank set function */
-    NULL,                        /* double bank set function */
-    NULL                         /* color loader */
+    .mode             = GR_frameWIN32_24, /* frame driver */
+    .drv              = NULL,             /* frame driver override */
+    .frame            = NULL,             /* frame buffer address */
+    .cprec            = {8, 8, 8},        /* color precisions */
+    .cpos             = {16, 8, 0},       /* color component bit positions */
+    .flags            = 0,                /* mode flag bits */
+    .setup            = setmode,          /* mode set */
+    .set_virtual_size = NULL,             /* virtual size set */
+    .scroll           = NULL,             /* virtual scroll */
+    .set_bank         = setbank_dummy,    /* bank set function */
+    .set_rw_banks     = NULL,             /* double bank set function */
+    .load_color       = NULL,             /* color loader */
 };
 
 static GrxVideoMode modes[] = {
@@ -468,16 +468,16 @@ done:
 }
 
 GrxVideoDriver _GrVideoDriverWIN32 = {
-    "win32",                        /* name */
-    GRX_VIDEO_ADAPTER_WIN32,        /* adapter type */
-    NULL,                        /* inherit modes from this driver */
-    modes,                        /* mode table */
-    itemsof(modes),                /* # of modes */
-    detect,                        /* detection routine */
-    init,                        /* initialization routine */
-    reset,                        /* reset routine */
-    _w32_selectmode,            /* special mode select routine */
-    GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION /* arbitrary resolution possible */
+    .name        = "win32",                 /* name */
+    .adapter     = GRX_VIDEO_ADAPTER_WIN32, /* adapter type */
+    .inherit     = NULL,                    /* inherit modes from this driver */
+    .modes       = modes,                   /* mode table */
+    .n_modes     = itemsof(modes),          /* # of modes */
+    .detect      = detect,                  /* detection routine */
+    .init        = init,                    /* initialization routine */
+    .reset       = reset,                   /* reset routine */
+    .select_mode = _w32_selectmode,         /* special mode select routine */
+    .flags       = GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION /* arbitrary resolution possible */
 };
 
 static DWORD WINAPI WndThread(void *param)

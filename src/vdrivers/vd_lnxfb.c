@@ -303,18 +303,18 @@ static int settext(GrxVideoMode * mp, int noclear)
 }
 
 GrxVideoModeExt grtextextfb = {
-    GRX_FRAME_MODE_TEXT,         /* frame driver */
-    NULL,                        /* frame driver override */
-    NULL,                        /* frame buffer address */
-    {6, 6, 6},                  /* color precisions */
-    {0, 0, 0},                  /* color component bit positions */
-    0,                                /* mode flag bits */
-    settext,                        /* mode set */
-    NULL,                        /* virtual size set */
-    NULL,                        /* virtual scroll */
-    NULL,                        /* bank set function */
-    NULL,                        /* double bank set function */
-    NULL,                        /* color loader */
+    .mode             = GRX_FRAME_MODE_TEXT, /* frame driver */
+    .drv              = NULL,                /* frame driver override */
+    .frame            = NULL,                /* frame buffer address */
+    .cprec            = {6, 6, 6},           /* color precisions */
+    .cpos             = {0, 0, 0},           /* color component bit positions */
+    .flags            = 0,                   /* mode flag bits */
+    .setup            = settext,             /* mode set */
+    .set_virtual_size = NULL,                /* virtual size set */
+    .scroll           = NULL,                /* virtual scroll */
+    .set_bank         = NULL,                /* bank set function */
+    .set_rw_banks     = NULL,                /* double bank set function */
+    .load_color       = NULL,                /* color loader */
 };
 
 static GrxVideoModeExt exts[NUM_EXTS];
@@ -422,14 +422,14 @@ static int init(char *options)
 }
 
 GrxVideoDriver _GrVideoDriverLINUXFB = {
-    "linuxfb",                        /* name */
-    GRX_VIDEO_ADAPTER_LINUX_FB,       /* adapter type */
-    NULL,                        /* inherit modes from this driver */
-    modes,                        /* mode table */
-    itemsof(modes),                /* # of modes */
-    detect,                        /* detection routine */
-    init,                        /* initialization routine */
-    reset,                        /* reset routine */
-    _gr_select_mode,                 /* standard mode select routine */
-    0                                /* no additional capabilities */
+    .name        = "linuxfb",                   /* name */
+    .adapter     = GRX_VIDEO_ADAPTER_LINUX_FB,  /* adapter type */
+    .inherit     = NULL,                        /* inherit modes from this driver */
+    .modes       = modes,                       /* mode table */
+    .n_modes     = itemsof(modes),              /* # of modes */
+    .detect      = detect,                      /* detection routine */
+    .init        = init,                        /* initialization routine */
+    .reset       = reset,                       /* reset routine */
+    .select_mode = _gr_select_mode,             /* standard mode select routine */
+    .flags       = 0,                           /* no additional capabilities */
 };
