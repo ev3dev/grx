@@ -20,35 +20,32 @@
 #include "memmode.h"
 #undef   GrContextInfo
 
-const
-struct _GR_contextInfo * const GrContextInfo = &_GrContextInfo;
+const struct _GR_contextInfo * const GrContextInfo = &_GrContextInfo;
 struct _GR_contextInfo _GrContextInfo = {
-    {                                   /* the current context */
-        {                               /* frame */
-            {                           /* frame start addresses */
-                NULL,NULL,NULL,NULL
+    .current = {
+        .frame = {
+            .base_address = {
+                NULL, NULL, NULL, NULL
             },
-            0,                          /* selector */
-            TRUE,                       /* onscreen */
-            0,                          /* memflags */
-            0,                          /* line_offset */
-            &DRVINFO->tdriver           /* frame driver */
+            .selector       = 0,
+            .is_on_screen   = TRUE,
+            .memory_flags   = 0,
+            .line_offset    = 0,
+            .driver         = &DRVINFO->tdriver,
         },
-        NULL                            /* root */
+        .root = NULL,
     },
-    {                                   /* the screen context */
-        {                               /* frame */
-            {                           /* frame start addresses */
-                NULL,NULL,NULL,NULL
+    .screen = {
+        .frame = {
+            .base_address = {
+                NULL, NULL, NULL, NULL
             },
-            0,                          /* selector */
-            TRUE,                       /* onscreen */
-            0,                          /* memflags */
-            0,                          /* line_offset */
-            &DRVINFO->tdriver           /* frame driver */
+            .selector       = 0,
+            .is_on_screen   = TRUE,
+            .memory_flags   = 0,
+            .line_offset    = 0,
+            .driver         = &DRVINFO->tdriver,
         },
-        NULL                            /* root */
-    }
+        .root = NULL,
+    },
 };
-
-
