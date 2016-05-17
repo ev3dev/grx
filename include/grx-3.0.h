@@ -1056,7 +1056,7 @@ typedef struct {                    /* font descriptor */
     gboolean  proportional;         /* characters have varying width */
     gboolean  scalable;             /* derived from a scalable font */
     gboolean  preloaded;            /* set when linked into program */
-    gboolean  modified;             /* "tweaked" font (resized, etc..) */
+    GrxFontConversionFlags modified;/* "tweaked" font (resized, etc..) */
     guint     width;                /* width (proportional=>average) */
     guint     height;               /* font height */
     guint     baseline;             /* baseline pixel pos (from top) */
