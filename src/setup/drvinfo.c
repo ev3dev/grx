@@ -29,76 +29,80 @@ struct _GR_driverInfo _GrDriverInfo = {
     .vdriver = NULL,                    /* video driver */
     .curmode = &DRVINFO->actmode,       /* current video mode pointer */
     .actmode = {                        /* current video mode struct */
-        FALSE,                          /* present */
-        4,                              /* bpp */
-        80,25,                          /* geometry */
-        3,                              /* BIOS mode */
-        160,                            /* line_offset */
-        0,                              /* private */
-        NULL
+        .present       = FALSE,         /* present */
+        .bpp           = 4,             /* bpp */
+        .width         = 80,            /* geometry */
+        .height        = 25,
+        .mode          = 3,             /* BIOS mode */
+        .line_offset   = 160,           /* line_offset */
+        .user_data     = NULL,          /* private */
+        .extended_info = NULL,
     },
-    .fdriver = {                        /* current frame driver */
-        GRX_FRAME_MODE_UNDEFINED,       /* frame mode */
-        GRX_FRAME_MODE_UNDEFINED,       /* compatible RAM frame mode */
-        FALSE,                          /* onscreen */
-        1,                              /* line width alignment */
-        1,                              /* number of planes */
-        0,                              /* bits per pixel */
-        0L,                             /* max plane size the code can handle */
-        NULL,
-        (GrxColor (*)(GrxFrame*,int,int))                               dummyframefn,
-        (void (*)(int,int,GrxColor))                                   dummyframefn,
-        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
-        (void (*)(int,int,int,GrxColor))                               dummyframefn,
-        (void (*)(int,int,int,GrxColor))                               dummyframefn,
-        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
-        (void (*)(int,int,int,int,unsigned char*,int,int,GrxColor,GrxColor)) dummyframefn,
-        (void (*)(int,int,int,unsigned char,GrxColor,GrxColor))        dummyframefn,
-        (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
-        (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
-        (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn
+    /* current frame driver */
+    .fdriver = {
+        .mode           = GRX_FRAME_MODE_UNDEFINED,
+        .rmode          = GRX_FRAME_MODE_UNDEFINED,
+        .is_video       = FALSE,
+        .row_align      = 1,
+        .num_planes     = 1,
+        .bits_per_pixel = 0,
+        .max_plane_size = 0L,
+        .init        = NULL,
+        .readpixel   = (GrxColor (*)(GrxFrame*,int,int))dummyframefn,
+        .drawpixel   = (void (*)(int,int,GrxColor))dummyframefn,
+        .drawline    = (void (*)(int,int,int,int,GrxColor))dummyframefn,
+        .drawhline   = (void (*)(int,int,int,GrxColor))dummyframefn,
+        .drawvline   = (void (*)(int,int,int,GrxColor))dummyframefn,
+        .drawblock   = (void (*)(int,int,int,int,GrxColor))dummyframefn,
+        .drawbitmap  = (void (*)(int,int,int,int,unsigned char*,int,int,GrxColor,GrxColor))dummyframefn,
+        .drawpattern = (void (*)(int,int,int,unsigned char,GrxColor,GrxColor))dummyframefn,
+        .bitblt      = (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
+        .bltv2r      = (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
+        .bltr2v      = (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn
     },
-    .sdriver = {                        /* screen frame driver */
-        GRX_FRAME_MODE_UNDEFINED,       /* frame mode */
-        GRX_FRAME_MODE_UNDEFINED,       /* compatible RAM frame mode */
-        FALSE,                          /* onscreen */
-        1,                              /* line width alignment */
-        1,                              /* number of planes */
-        0,                              /* bits per pixel */
-        0L,                             /* max plane size the code can handle */
-        NULL,
-        (GrxColor (*)(GrxFrame*,int,int))                               dummyframefn,
-        (void (*)(int,int,GrxColor))                                   dummyframefn,
-        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
-        (void (*)(int,int,int,GrxColor))                               dummyframefn,
-        (void (*)(int,int,int,GrxColor))                               dummyframefn,
-        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
-        (void (*)(int,int,int,int,unsigned char*,int,int,GrxColor,GrxColor)) dummyframefn,
-        (void (*)(int,int,int,unsigned char,GrxColor,GrxColor))        dummyframefn,
-        (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
-        (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
-        (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn
+    /* screen frame driver */
+    .sdriver = {
+        .mode           = GRX_FRAME_MODE_UNDEFINED,
+        .rmode          = GRX_FRAME_MODE_UNDEFINED,
+        .is_video       = FALSE,
+        .row_align      = 1,
+        .num_planes     = 1,
+        .bits_per_pixel = 0,
+        .max_plane_size = 0L,
+        .init        = NULL,
+        .readpixel   = (GrxColor (*)(GrxFrame*,int,int))dummyframefn,
+        .drawpixel   = (void (*)(int,int,GrxColor))dummyframefn,
+        .drawline    = (void (*)(int,int,int,int,GrxColor))dummyframefn,
+        .drawhline   = (void (*)(int,int,int,GrxColor))dummyframefn,
+        .drawvline   = (void (*)(int,int,int,GrxColor))dummyframefn,
+        .drawblock   = (void (*)(int,int,int,int,GrxColor))dummyframefn,
+        .drawbitmap  = (void (*)(int,int,int,int,unsigned char*,int,int,GrxColor,GrxColor))dummyframefn,
+        .drawpattern = (void (*)(int,int,int,unsigned char,GrxColor,GrxColor))dummyframefn,
+        .bitblt      = (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor))dummyframefn,
+        .bltv2r      = (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor))dummyframefn,
+        .bltr2v      = (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor))dummyframefn
     },
-    .tdriver = {                        /* dummy text mode frame driver */
-        GRX_FRAME_MODE_TEXT,            /* frame mode */
-        GRX_FRAME_MODE_UNDEFINED,       /* compatible RAM frame mode */
-        TRUE,                           /* onscreen */
-        1,                              /* line width alignment */
-        1,                              /* number of planes */
-        16,                             /* bits per pixel */
-        0L,                             /* max plane size the code can handle */
-        NULL,
-        (GrxColor (*)(GrxFrame*,int,int))                               dummyframefn,
-        (void (*)(int,int,GrxColor))                                   dummyframefn,
-        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
-        (void (*)(int,int,int,GrxColor))                               dummyframefn,
-        (void (*)(int,int,int,GrxColor))                               dummyframefn,
-        (void (*)(int,int,int,int,GrxColor))                           dummyframefn,
-        (void (*)(int,int,int,int,unsigned char*,int,int,GrxColor,GrxColor)) dummyframefn,
-        (void (*)(int,int,int,unsigned char,GrxColor,GrxColor))        dummyframefn,
-        (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
-        (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn,
-        (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor)) dummyframefn
+    /* dummy text mode frame driver */
+    .tdriver = {
+        .mode           = GRX_FRAME_MODE_TEXT,
+        .rmode          = GRX_FRAME_MODE_UNDEFINED,
+        .is_video       = TRUE,
+        .row_align      = 1,
+        .num_planes     = 1,
+        .bits_per_pixel = 16,
+        .max_plane_size = 0L,
+        .init        = NULL,
+        .readpixel   = (GrxColor (*)(GrxFrame*,int,int))dummyframefn,
+        .drawpixel   = (void (*)(int,int,GrxColor))dummyframefn,
+        .drawline    = (void (*)(int,int,int,int,GrxColor))dummyframefn,
+        .drawhline   = (void (*)(int,int,int,GrxColor))dummyframefn,
+        .drawvline   = (void (*)(int,int,int,GrxColor))dummyframefn,
+        .drawblock   = (void (*)(int,int,int,int,GrxColor))dummyframefn,
+        .drawbitmap  = (void (*)(int,int,int,int,unsigned char*,int,int,GrxColor,GrxColor))dummyframefn,
+        .drawpattern = (void (*)(int,int,int,unsigned char,GrxColor,GrxColor))dummyframefn,
+        .bitblt      = (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor))dummyframefn,
+        .bltv2r      = (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor))dummyframefn,
+        .bltr2v      = (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor))dummyframefn
     },
     .mcode = GRX_GRAPHICS_MODE_TEXT_DEFAULT,    /* current mode code */
     .deftw = 80,  .defth = 25,                  /* default text size */

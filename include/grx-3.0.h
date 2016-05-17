@@ -254,7 +254,7 @@ struct _GrxVideoMode {
     guint16  width,height;               /* video mode geometry */
     guint16  mode;                       /* BIOS mode number (if any) */
     gint     line_offset;                /* scan line length */
-    gint     user_data;                  /* driver can use it for anything */
+    gpointer user_data;                  /* driver can use it for anything */
     GrxVideoModeExt *extended_info;      /* extra info (maybe shared) */
 };
 
