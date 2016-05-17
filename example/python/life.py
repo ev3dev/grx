@@ -69,14 +69,14 @@ class Life:
                               self.old_state[nx][ny])
                 self.new_state[x][y] = (live_count | self.old_state[x][y]) == 3
 
-        self.old_state, self.new_state = self.new_state, self.old_state
-
     def draw(self):
-
         self.update_state()
         for y in range(self.height):
             for x in range(self.width):
-                Grx.draw_point_nc(x, y, self.color[self.old_state[x][y]])
+                if self.old_state[x][y] != self.new_state[x][y]:
+                    Grx.draw_point_nc(x, y, self.color[self.new_state[x][y]])
+
+        self.old_state, self.new_state = self.new_state, self.old_state
 
         return GLib.SOURCE_CONTINUE
 

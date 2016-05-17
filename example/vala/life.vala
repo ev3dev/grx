@@ -93,10 +93,12 @@ static void update_state () {
 
 static bool draw () {
     update_state ();
-
+    var prev_state = 1 - active_state;
     for (var y = 0; y < get_size_y (); y++) {
         for (var x = 0; x < get_size_x (); x++) {
-            draw_point_nc (x, y, color[state[active_state, x, y]]);
+            if (state[active_state, x, y] != state[prev_state, x, y]) {
+                draw_point_nc (x, y, color[state[active_state, x, y]]);
+            }
         }
     }
 
