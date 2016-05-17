@@ -265,25 +265,25 @@ static void bltr2r(GrxFrame *dst,int dx,int dy,
 }
 
 GrxFrameDriver _GrFrameDriverRAM4 = {
-    GRX_FRAME_MODE_RAM_4BPP,    /* frame mode */
-    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
-    FALSE,                      /* onscreen */
-    4,                          /* scan line width alignment */
-    4,                          /* number of planes */
-    4,                          /* bits per pixel */
-    16*1024L*1024L,             /* max plane size the code can handle */
-    NULL,
-    readpixel,
-    drawpixel,
-    drawline,
-    drawhline,
-    drawvline,
-    drawblock,
-    drawbitmap,
-    drawpattern,
-    bltr2r,
-    NULL,
-    NULL,
-    _GrFrDrvGenericGetIndexedScanline,
-    _GrFrDrvGenericPutScanline
+    .mode               = GRX_FRAME_MODE_RAM_4BPP,  /* frame mode */
+    .rmode              = GRX_FRAME_MODE_UNDEFINED, /* compatible RAM frame mode */
+    .is_video           = FALSE,                    /* onscreen */
+    .row_align          = 4,                        /* scan line width alignment */
+    .num_planes         = 4,                        /* number of planes */
+    .bits_per_pixel     = 4,                        /* bits per pixel */
+    .max_plane_size     = 16*1024L*1024L,           /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bltr2r,
+    .bltv2r             = NULL,
+    .bltr2v             = NULL,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = _GrFrDrvGenericPutScanline,
 };

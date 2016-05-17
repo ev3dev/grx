@@ -25,27 +25,27 @@
 #include "driver32.h"
 
 GrxFrameDriver _GrFrameDriverRAM32H = {
-    GRX_FRAME_MODE_RAM_32BPP_HIGH, /* frame mode */
-    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
-    FALSE,                      /* onscreen */
-    4,                          /* scan line width alignment */
-    1,                          /* number of planes */
-    32,                         /* bits per pixel */
-    32*16*1024L*1024L,          /* max plane size the code can handle */
-    NULL,
-    readpixel,
-    drawpixel,
-    drawline,
-    drawhline,
-    drawvline,
-    drawblock,
-    drawbitmap,
-    drawpattern,
-    bitblt,
-    NULL,
-    NULL,
-    _GrFrDrvGenericGetIndexedScanline,
-    _GrFrDrvGenericPutScanline
+    .mode               = GRX_FRAME_MODE_RAM_32BPP_HIGH, /* frame mode */
+    .rmode              = GRX_FRAME_MODE_UNDEFINED,      /* compatible RAM frame mode */
+    .is_video           = FALSE,                         /* onscreen */
+    .row_align          = 4,                             /* scan line width alignment */
+    .num_planes         = 1,                             /* number of planes */
+    .bits_per_pixel     = 32,                            /* bits per pixel */
+    .max_plane_size     = 32*16*1024L*1024L,             /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bitblt,
+    .bltv2r             = NULL,
+    .bltr2v             = NULL,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = _GrFrDrvGenericPutScanline,
 };
 
 /* some systems map LFB in normal user space (eg. Linux/svgalib) */
@@ -56,27 +56,27 @@ GrxFrameDriver _GrFrameDriverRAM32H = {
 ** bottom first blits but this shouldn't matter */
 
 GrxFrameDriver _GrFrameDriverSVGA32H_LFB = {
-    GRX_FRAME_MODE_LFB_32BPP_HIGH, /* frame mode */
-    GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
-    TRUE,                       /* onscreen */
-    4,                          /* line width alignment */
-    1,                          /* number of planes */
-    32,                         /* bits per pixel */
-    32*16*1024L*1024L,          /* max plane size the code can handle */
-    NULL,
-    readpixel,
-    drawpixel,
-    drawline,
-    drawhline,
-    drawvline,
-    drawblock,
-    drawbitmap,
-    drawpattern,
-    bitblt,
-    bitblt,
-    bitblt,
-    _GrFrDrvGenericGetIndexedScanline,
-    _GrFrDrvGenericPutScanline
+    .mode               = GRX_FRAME_MODE_LFB_32BPP_HIGH, /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
+    .is_video           = TRUE,                          /* onscreen */
+    .row_align          = 4,                             /* line width alignment */
+    .num_planes         = 1,                             /* number of planes */
+    .bits_per_pixel     = 32,                            /* bits per pixel */
+    .max_plane_size     = 32*16*1024L*1024L,             /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bitblt,
+    .bltv2r             = bitblt,
+    .bltr2v             = bitblt,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = _GrFrDrvGenericPutScanline,
 };
 
 #endif

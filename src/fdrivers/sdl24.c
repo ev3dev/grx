@@ -34,27 +34,27 @@ static
 /* -------------------------------------------------------------------- */
 
 GrxFrameDriver _GrFrameDriverSDL24 = {
-    GR_frameSDL24,              /* frame mode */
-    GRX_FRAME_MODE_RAM_24BPP,   /* compatible RAM frame mode */
-    TRUE,                       /* onscreen */
-    4,                          /* line width alignment */
-    1,                          /* number of planes */
-    24,                         /* bits per pixel */
-    24*16*1024L*1024L,          /* max plane size the code can handle */
-    NULL,
-    readpixel,
-    sdl_drawpixel,
-    sdl_drawline,
-    sdl_drawhline,
-    sdl_drawvline,
-    sdl_drawblock,
-    sdl_drawbitmap,
-    sdl_drawpattern,
-    sdl_bitblt,
-    bltv2r,
-    sdl_bltr2v,
-    _GrFrDrvGenericGetIndexedScanline,
-    sdl_putscanline
+    .mode               = GR_frameSDL24,            /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_24BPP, /* compatible RAM frame mode */
+    .is_video           = TRUE,                     /* onscreen */
+    .row_align          = 4,                        /* line width alignment */
+    .num_planes         = 1,                        /* number of planes */
+    .bits_per_pixel     = 24,                       /* bits per pixel */
+    .max_plane_size     = 24*16*1024L*1024L,        /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel,
+    .drawpixel          = sdl_drawpixel,
+    .drawline           = sdl_drawline,
+    .drawhline          = sdl_drawhline,
+    .drawvline          = sdl_drawvline,
+    .drawblock          = sdl_drawblock,
+    .drawbitmap         = sdl_drawbitmap,
+    .drawpattern        = sdl_drawpattern,
+    .bitblt             = sdl_bitblt,
+    .bltv2r             = bltv2r,
+    .bltr2v             = sdl_bltr2v,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = sdl_putscanline,
 };
 
 #endif /* !defined(LFB_BY_NEAR_POINTER) */

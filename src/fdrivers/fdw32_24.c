@@ -172,25 +172,25 @@ void w32_putscanline(int x, int y, int w,
 /* -------------------------------------------------------------------- */
 
 GrxFrameDriver _GrFrameDriverWIN32_24 = {
-    GR_frameWIN32_24,           /* frame mode */
-    GRX_FRAME_MODE_RAM_24BPP,   /* compatible RAM frame mode */
-    TRUE,                       /* onscreen */
-    4,                          /* line width alignment */
-    1,                          /* number of planes */
-    24,                         /* bits per pixel */
-    24 * 16 * 1024L * 1024L,    /* max plane size the code can handle */
-    NULL,
-    readpixel,
-    w32_drawpixel,
-    w32_drawline,
-    w32_drawhline,
-    w32_drawvline,
-    w32_drawblock,
-    w32_drawbitmap,
-    w32_drawpattern,
-    w32_bitblt,
-    bitblt,
-    w32_bitblt,
-    _GrFrDrvGenericGetIndexedScanline,
-    w32_putscanline
+    .mode               = GR_frameWIN32_24,         /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_24BPP, /* compatible RAM frame mode */
+    .is_video           = TRUE,                     /* onscreen */
+    .row_align          = 4,                        /* line width alignment */
+    .num_planes         = 1,                        /* number of planes */
+    .bits_per_pixel     = 24,                       /* bits per pixel */
+    .max_plane_size     = 24 * 16 * 1024L * 1024L,  /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel,
+    .drawpixel          = w32_drawpixel,
+    .drawline           = w32_drawline,
+    .drawhline          = w32_drawhline,
+    .drawvline          = w32_drawvline,
+    .drawblock          = w32_drawblock,
+    .drawbitmap         = w32_drawbitmap,
+    .drawpattern        = w32_drawpattern,
+    .bitblt             = w32_bitblt,
+    .bltv2r             = bitblt,
+    .bltr2v             = w32_bitblt,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = w32_putscanline,
 };

@@ -26,27 +26,27 @@
 /* -------------------------------------------------------------------- */
 
 GrxFrameDriver _GrFrameDriverRAM8 = {
-    GRX_FRAME_MODE_RAM_8BPP,    /* frame mode */
-    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
-    FALSE,                      /* onscreen */
-    4,                          /* line width alignment */
-    1,                          /* number of planes */
-    8,                          /* bits per pixel */
-    8*16*1024L*1024L,           /* max plane size the code can handle */
-    NULL,
-    readpixel,
-    drawpixel,
-    drawline,
-    drawhline,
-    drawvline,
-    drawblock,
-    drawbitmap,
-    drawpattern,
-    bitblit,
-    NULL,
-    NULL,
-    getindexedscanline,
-    putscanline
+    .mode               = GRX_FRAME_MODE_RAM_8BPP,  /* frame mode */
+    .rmode              = GRX_FRAME_MODE_UNDEFINED, /* compatible RAM frame mode */
+    .is_video           = FALSE,                    /* onscreen */
+    .row_align          = 4,                        /* line width alignment */
+    .num_planes         = 1,                        /* number of planes */
+    .bits_per_pixel     = 8,                        /* bits per pixel */
+    .max_plane_size     = 8*16*1024L*1024L,         /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bitblit,
+    .bltv2r             = NULL,
+    .bltr2v             = NULL,
+    .getindexedscanline = getindexedscanline,
+    .putscanline        = putscanline,
 };
 
 
@@ -59,27 +59,27 @@ GrxFrameDriver _GrFrameDriverRAM8 = {
 ** bottom first blits but this shouldn't matter */
 
 GrxFrameDriver _GrFrameDriverSVGA8_LFB = {
-    GRX_FRAME_MODE_LFB_8BPP,    /* frame mode */
-    GRX_FRAME_MODE_RAM_8BPP,    /* compatible RAM frame mode */
-    TRUE,                       /* onscreen */
-    4,                          /* scan line width alignment */
-    1,                          /* number of planes */
-    8,                          /* bits per pixel */
-    8*16*1024L*1024L,           /* max plane size the code can handle */
-    NULL,
-    readpixel,
-    drawpixel,
-    drawline,
-    drawhline,
-    drawvline,
-    drawblock,
-    drawbitmap,
-    drawpattern,
-    bitblit,
-    bitblit,
-    bitblit,
-    getindexedscanline,
-    putscanline
+    .mode               = GRX_FRAME_MODE_LFB_8BPP, /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_8BPP, /* compatible RAM frame mode */
+    .is_video           = TRUE,                    /* onscreen */
+    .row_align          = 4,                       /* scan line width alignment */
+    .num_planes         = 1,                       /* number of planes */
+    .bits_per_pixel     = 8,                       /* bits per pixel */
+    .max_plane_size     = 8*16*1024L*1024L,        /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bitblit,
+    .bltv2r             = bitblit,
+    .bltr2v             = bitblit,
+    .getindexedscanline = getindexedscanline,
+    .putscanline        = putscanline,
 };
 
 #endif

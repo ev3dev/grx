@@ -694,121 +694,121 @@ static int init(GrxVideoMode *mp)
 
 
 GrxFrameDriver _GrFrameDriverXWIN8 = {
-  GR_frameXWIN8,                /* frame mode */
-  GRX_FRAME_MODE_RAM_8BPP,      /* compatible RAM frame mode */
-  TRUE,                         /* onscreen */
-  4,                            /* line width alignment */
-  1,                            /* number of planes */
-  8,                            /* bits per pixel */
-  8*16*1024L*1024L,             /* max plane size the code can handle */
-  init,
-  readpixel,
-  drawpixel,
-  drawline,
-  drawhline,
-  drawvline,
-  drawblock,
-  drawbitmap,
-  drawpattern,
-  bitblt,
-  bltv2r,
-  bltr2v,
-  _GrFrDrvGenericGetIndexedScanline,
-  putscanline
+    .mode               = GR_frameXWIN8,           /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_8BPP, /* compatible RAM frame mode */
+    .is_video           = TRUE,                    /* onscreen */
+    .row_align          = 4,                       /* line width alignment */
+    .num_planes         = 1,                       /* number of planes */
+    .bits_per_pixel     = 8,                       /* bits per pixel */
+    .max_plane_size     = 8*16*1024L*1024L,        /* max plane size the code can handle */
+    .init               = init,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bitblt,
+    .bltv2r             = bltv2r,
+    .bltr2v             = bltr2v,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = putscanline,
 };
 
 GrxFrameDriver _GrFrameDriverXWIN16 = {
-  GR_frameXWIN16,               /* frame mode */
-  GRX_FRAME_MODE_RAM_16BPP,     /* compatible RAM frame mode */
-  TRUE,                         /* onscreen */
-  4,                            /* line width alignment */
-  1,                            /* number of planes */
-  16,                           /* bits per pixel */
-  16*16*1024L*1024L,            /* max plane size the code can handle */
-  init,
-  readpixel,
-  drawpixel,
-  drawline,
-  drawhline,
-  drawvline,
-  drawblock,
-  drawbitmap,
-  drawpattern,
-  bitblt,
-  bltv2r,
-  bltr2v,
-  _GrFrDrvGenericGetIndexedScanline,
-  putscanline
+    .mode               = GR_frameXWIN16,           /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_16BPP, /* compatible RAM frame mode */
+    .is_video           = TRUE,                     /* onscreen */
+    .row_align          = 4,                        /* line width alignment */
+    .num_planes         = 1,                        /* number of planes */
+    .bits_per_pixel     = 16,                       /* bits per pixel */
+    .max_plane_size     = 16*16*1024L*1024L,        /* max plane size the code can handle */
+    .init               = init,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bitblt,
+    .bltv2r             = bltv2r,
+    .bltr2v             = bltr2v,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = putscanline,
 };
 
 GrxFrameDriver _GrFrameDriverXWIN24 = {
-  GR_frameXWIN24,               /* frame mode */
-  GRX_FRAME_MODE_RAM_24BPP,     /* compatible RAM frame mode */
-  TRUE,                         /* onscreen */
-  4,                            /* line width alignment */
-  1,                            /* number of planes */
-  24,                           /* bits per pixel */
-  24*16*1024L*1024L,            /* max plane size the code can handle */
-  init,
-  readpixel,
-  drawpixel,
-  drawline,
-  drawhline,
-  drawvline,
-  drawblock,
-  drawbitmap,
-  drawpattern,
-  bitblt,
-  bltv2r,
-  bltr2v,
-  _GrFrDrvGenericGetIndexedScanline,
-  putscanline
+    .mode               = GR_frameXWIN24,           /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_24BPP, /* compatible RAM frame mode */
+    .is_video           = TRUE,                     /* onscreen */
+    .row_align          = 4,                        /* line width alignment */
+    .num_planes         = 1,                        /* number of planes */
+    .bits_per_pixel     = 24,                       /* bits per pixel */
+    .max_plane_size     = 24*16*1024L*1024L,        /* max plane size the code can handle */
+    .init               = init,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bitblt,
+    .bltv2r             = bltv2r,
+    .bltr2v             = bltr2v,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = putscanline,
 };
 
 GrxFrameDriver _GrFrameDriverXWIN32L = {
-  GR_frameXWIN32L,              /* frame mode */
-  GRX_FRAME_MODE_RAM_32BPP_LOW, /* compatible RAM frame mode */
-  TRUE,                         /* onscreen */
-  4,                            /* line width alignment */
-  1,                            /* number of planes */
-  32,                           /* bits per pixel */
-  32*16*1024L*1024L,            /* max plane size the code can handle */
-  init,
-  readpixel,
-  drawpixel,
-  drawline,
-  drawhline,
-  drawvline,
-  drawblock,
-  drawbitmap,
-  drawpattern,
-  bitblt,
-  bltv2r,
-  bltr2v,
-  _GrFrDrvGenericGetIndexedScanline,
-  putscanline
+    .mode               = GR_frameXWIN32L,              /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_32BPP_LOW, /* compatible RAM frame mode */
+    .is_video           = TRUE,                         /* onscreen */
+    .row_align          = 4,                            /* line width alignment */
+    .num_planes         = 1,                            /* number of planes */
+    .bits_per_pixel     = 32,                           /* bits per pixel */
+    .max_plane_size     = 32*16*1024L*1024L,            /* max plane size the code can handle */
+    .init               = init,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bitblt,
+    .bltv2r             = bltv2r,
+    .bltr2v             = bltr2v,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = putscanline,
 };
 
 GrxFrameDriver _GrFrameDriverXWIN32H = {
-  GR_frameXWIN32H,              /* frame mode */
-  GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
-  TRUE,                         /* onscreen */
-  4,                            /* line width alignment */
-  1,                            /* number of planes */
-  32,                           /* bits per pixel */
-  32*16*1024L*1024L,            /* max plane size the code can handle */
-  init,
-  readpixel,
-  drawpixel,
-  drawline,
-  drawhline,
-  drawvline,
-  drawblock,
-  drawbitmap,
-  drawpattern,
-  bitblt,
-  bltv2r,
-  bltr2v,
-  _GrFrDrvGenericGetIndexedScanline,
-  putscanline
+    .mode               = GR_frameXWIN32H,               /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
+    .is_video           = TRUE,                          /* onscreen */
+    .row_align          = 4,                             /* line width alignment */
+    .num_planes         = 1,                             /* number of planes */
+    .bits_per_pixel     = 32,                            /* bits per pixel */
+    .max_plane_size     = 32*16*1024L*1024L,             /* max plane size the code can handle */
+    .init               = init,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bitblt,
+    .bltv2r             = bltv2r,
+    .bltr2v             = bltr2v,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = putscanline,
 };

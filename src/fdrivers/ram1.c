@@ -217,73 +217,73 @@ static
 /* -------------------------------------------------------------------- */
 
 GrxFrameDriver _GrFrameDriverRAM1 = {
-    GRX_FRAME_MODE_RAM_1BPP,    /* frame mode */
-    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
-    FALSE,                      /* onscreen */
-    4,                          /* scan line width alignment */
-    1,                          /* number of planes */
-    1,                          /* bits per pixel */
-    16*1024L*1024L,             /* max plane size the code can handle */
-    NULL,
-    readpixel,
-    drawpixel,
-    drawline,
-    drawhline,
-    drawvline,
-    drawblock,
-    drawbitmap,
-    drawpattern,
-    bltr2r,
-    NULL,
-    NULL,
-    getindexedscanline,
-    _GrFrDrvGenericPutScanline
+    .mode               = GRX_FRAME_MODE_RAM_1BPP,  /* frame mode */
+    .rmode              = GRX_FRAME_MODE_UNDEFINED, /* compatible RAM frame mode */
+    .is_video           = FALSE,                    /* onscreen */
+    .row_align          = 4,                        /* scan line width alignment */
+    .num_planes         = 1,                        /* number of planes */
+    .bits_per_pixel     = 1,                        /* bits per pixel */
+    .max_plane_size     = 16*1024L*1024L,           /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bltr2r,
+    .bltv2r             = NULL,
+    .bltr2v             = NULL,
+    .getindexedscanline = getindexedscanline,
+    .putscanline        = _GrFrDrvGenericPutScanline,
 };
 
 GrxFrameDriver _GrFrameDriverMONO01_LFB = {
-    GRX_FRAME_MODE_LFB_MONO01,  /* frame mode */
-    GRX_FRAME_MODE_RAM_1BPP,    /* compatible RAM frame mode */
-    TRUE,                       /* onscreen */
-    4,                          /* scan line width alignment */
-    1,                          /* number of planes */
-    1,                          /* bits per pixel */
-    16*1024L*1024L,             /* max plane size the code can handle */
-    NULL,
-    readpixel_inv,
-    drawpixel_inv,
-    drawline,
-    drawhline_inv,
-    drawvline_inv,
-    drawblock,
-    drawbitmap,
-    drawpattern,
-    bltr2r,
-    bltr2r_inv,
-    bltr2r_inv,
-    getindexedscanline,
-    _GrFrDrvGenericPutScanline
+    .mode               = GRX_FRAME_MODE_LFB_MONO01, /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_1BPP,   /* compatible RAM frame mode */
+    .is_video           = TRUE,                      /* onscreen */
+    .row_align          = 4,                         /* scan line width alignment */
+    .num_planes         = 1,                         /* number of planes */
+    .bits_per_pixel     = 1,                         /* bits per pixel */
+    .max_plane_size     = 16*1024L*1024L,            /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel_inv,
+    .drawpixel          = drawpixel_inv,
+    .drawline           = drawline,
+    .drawhline          = drawhline_inv,
+    .drawvline          = drawvline_inv,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bltr2r,
+    .bltv2r             = bltr2r_inv,
+    .bltr2v             = bltr2r_inv,
+    .getindexedscanline = getindexedscanline,
+    .putscanline        = _GrFrDrvGenericPutScanline,
 };
 
 GrxFrameDriver _GrFrameDriverMONO10_LFB = {
-    GRX_FRAME_MODE_LFB_MONO10,  /* frame mode */
-    GRX_FRAME_MODE_RAM_1BPP,    /* compatible RAM frame mode */
-    TRUE,                       /* onscreen */
-    4,                          /* scan line width alignment */
-    1,                          /* number of planes */
-    1,                          /* bits per pixel */
-    16*1024L*1024L,             /* max plane size the code can handle */
-    NULL,
-    readpixel,
-    drawpixel,
-    drawline,
-    drawhline,
-    drawvline,
-    drawblock,
-    drawbitmap,
-    drawpattern,
-    bltr2r,
-    bltr2r,
-    bltr2r,
-    getindexedscanline,
-    _GrFrDrvGenericPutScanline
+    .mode               = GRX_FRAME_MODE_LFB_MONO10, /* frame mode */
+    .rmode              = GRX_FRAME_MODE_RAM_1BPP,   /* compatible RAM frame mode */
+    .is_video           = TRUE,                      /* onscreen */
+    .row_align          = 4,                         /* scan line width alignment */
+    .num_planes         = 1,                         /* number of planes */
+    .bits_per_pixel     = 1,                         /* bits per pixel */
+    .max_plane_size     = 16*1024L*1024L,            /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bltr2r,
+    .bltv2r             = bltr2r,
+    .bltr2v             = bltr2r,
+    .getindexedscanline = getindexedscanline,
+    .putscanline        = _GrFrDrvGenericPutScanline,
 };

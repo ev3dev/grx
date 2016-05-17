@@ -172,25 +172,25 @@ static void bitblit(GrxFrame *dst,int dx,int dy,
 /* -------------------------------------------------------------------- */
 
 GrxFrameDriver _GrFrameDriverRAM3x8 = {
-    GRX_FRAME_MODE_RAM_3X8BPP,  /* frame mode */
-    GRX_FRAME_MODE_UNDEFINED,   /* compatible RAM frame mode */
-    FALSE,                      /* onscreen */
-    4,                          /* scan line width alignment */
-    3,                          /* number of planes */
-    24,                         /* bits per pixel */
-    8*16*1024L*1024L,           /* max plane size the code can handle */
-    NULL,
-    readpixel,
-    drawpixel,
-    drawline,
-    drawhline,
-    drawvline,
-    drawblock,
-    drawbitmap,
-    drawpattern,
-    bitblit,
-    NULL,
-    NULL,
-    _GrFrDrvGenericGetIndexedScanline,
-    _GrFrDrvGenericPutScanline
+    .mode               = GRX_FRAME_MODE_RAM_3X8BPP, /* frame mode */
+    .rmode              = GRX_FRAME_MODE_UNDEFINED,  /* compatible RAM frame mode */
+    .is_video           = FALSE,                     /* onscreen */
+    .row_align          = 4,                         /* scan line width alignment */
+    .num_planes         = 3,                         /* number of planes */
+    .bits_per_pixel     = 24,                        /* bits per pixel */
+    .max_plane_size     = 8*16*1024L*1024L,          /* max plane size the code can handle */
+    .init               = NULL,
+    .readpixel          = readpixel,
+    .drawpixel          = drawpixel,
+    .drawline           = drawline,
+    .drawhline          = drawhline,
+    .drawvline          = drawvline,
+    .drawblock          = drawblock,
+    .drawbitmap         = drawbitmap,
+    .drawpattern        = drawpattern,
+    .bitblt             = bitblit,
+    .bltv2r             = NULL,
+    .bltr2v             = NULL,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline        = _GrFrDrvGenericPutScanline,
 };
