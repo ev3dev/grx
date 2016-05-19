@@ -21,10 +21,20 @@ class Life(Grx.LinuxConsoleApplication):
         self.new_state = [[0 for y in range(self.height)] for x in range(self.width)]
         self.color = (Grx.color_info_get_black(), Grx.color_info_get_white())
 
+    def on_notify_is_console_active(self, obj, gparamstring):
+        """
+        This is to handle console switching. Basically, it pauses the program when it is not the active console.
+        """
+        if self.is_console_active():
+            self.source_id = GLib.idle_add(self.draw)
+        else:
+            GLib.source_remove(self.source_id)
+
     def do_activate(self):
-        Grx.set_screen_active_callback(self.screen_active_handler)
-        self.screen_active_handler(Grx.is_screen_active())
         self.randomize()
+        self.connect("notify::is-console-active", self.on_notify_is_console_active)
+        if self.is_console_active():
+            self.notify("is-console-active")
 
     def randomize(self):
         for y in range(self.height):
@@ -69,17 +79,6 @@ class Life(Grx.LinuxConsoleApplication):
         self.old_state, self.new_state = self.new_state, self.old_state
 
         return GLib.SOURCE_CONTINUE
-
-    def screen_active_handler(self, active):
-        """
-        This is to handle console switching. It basically pauses the drawing loop when this is not the active console.
-
-        :param active: True if the screen is active and we can draw on it
-        """
-        if active:
-            self.source_id = GLib.idle_add(self.draw)
-        else:
-            GLib.source_remove(self.source_id)
 
 if __name__ == '__main__':
     life = Life()

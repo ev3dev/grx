@@ -63,4 +63,7 @@ struct _GrxLinuxConsoleApplicationClass
 GrxLinuxConsoleApplication *
 grx_linux_console_application_new (GCancellable *cancellable, GError **error);
 
+gboolean
+grx_linux_console_application_is_console_active (GrxLinuxConsoleApplication *application);
+
 #endif /* __GRX_LINUX_CONSOLE_APPLICATION_H__ */

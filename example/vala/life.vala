@@ -14,15 +14,20 @@ class LifeApplication : LinuxConsoleApplication {
     }
 
     public override void activate () {
-        set_screen_active_callback (screen_active_handler);
-        if (is_screen_active ()) {
-            screen_active_handler (true);
+        // handle console switching
+        notify["is-console-active"].connect (console_active_handler);
+        if (is_console_active) {
+            console_active_handler ();
         }
+
         randomize ();
     }
 
-    void screen_active_handler (bool active) {
-        if (active) {
+    void console_active_handler () {
+        // Only draw when the console is active. Basically, this will pause the
+        // application when we switch to a different console and resume the
+        // application when we return this console.
+        if (is_console_active) {
             source_id = Idle.add (draw);
         } else {
             Source.remove (source_id);

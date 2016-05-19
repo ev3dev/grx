@@ -54,7 +54,6 @@ static struct fb_fix_screeninfo fbfix;
 static struct fb_var_screeninfo fbvar;
 static char *fbuffer = NULL;
 static int ingraphicsmode = 0;
-static GrxContext *grc;
 static char* frame_addr[4];
 
 static int detect(void)
@@ -173,7 +172,6 @@ static void reset(void)
         vtm.relsig = 0;
         vtm.acqsig = 0;
         ioctl(ttyfd, VT_SETMODE, &vtm);
-        signal(SIGUSR1, SIG_IGN);
         close(ttyfd);
         ttyfd = -1;
         ingraphicsmode = 0;
@@ -181,56 +179,25 @@ static void reset(void)
     initted = -1;
 }
 
-void _LnxfbAcqsigHandle(int sig);
-void _LnxfbRelsigHandle(int sig)
+/* release control of the vt */
+void grx_linuxfb_release (void)
 {
-    if (!ingraphicsmode) return;
-    if (ttyfd < 0) return;
-
-    // Notify user program to stop using the framebuffer
-
-    /* create a new context from the screen */
-    grc = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
-    if (grc == NULL)
+    if (!ingraphicsmode) {
         return;
-    /* copy framebuffer to new context */
-    if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
-        /* Need to invert the colors on this one. */
-        grx_context_clear(grc, 1);
-        grx_bit_blt(grc, 0, 0, grx_context_get_screen(), 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_XOR);
-    } else {
-        grx_bit_blt(grc, 0, 0, grx_context_get_screen(), 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
     }
-
-    /* release control of the vt */
+    if (ttyfd < 0) {
+        return;
+    }
     ioctl(ttyfd, VT_RELDISP, 1);
-    signal(SIGUSR1, _LnxfbAcqsigHandle);
 }
 
-void _LnxfbAcqsigHandle(int sig)
+/* resume control of the vt */
+void grx_linuxfb_aquire (void)
 {
     if (!ingraphicsmode) return;
     if (ttyfd < 0) return;
-    /* resume control of the vt */
     ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
-
-    /* copy the temporary context back to the framebuffer */
-    if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
-        /* need to invert the colors on this one */
-        grx_clear_screen(1);
-        grx_bit_blt(grx_context_get_screen(), 0, 0, grc, 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_XOR);
-    } else {
-        grx_bit_blt(grx_context_get_screen(), 0, 0, grc, 0, 0,
-                 grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
-    }
-    grx_context_unref(grc);
-    signal(SIGUSR1, _LnxfbRelsigHandle);
-
-    // Notify user program it is OK to use the framebuffer
 }
 
 static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)
@@ -262,10 +229,12 @@ static int setmode(GrxVideoMode * mp, int noclear)
     if (mp->extended_info->frame && ttyfd > -1) {
         ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
         vtm.mode = VT_PROCESS;
+        // Setting SIGUSER1 here, but not a handler. It is to be handled via
+        // GrxLinuxConsoleApplication or user code by calling grx_linuxfb_release
+        // and grx_linuxfb_aquire.
         vtm.relsig = SIGUSR1;
         vtm.acqsig = SIGUSR1;
         ioctl(ttyfd, VT_SETMODE, &vtm);
-        signal(SIGUSR1, _LnxfbRelsigHandle);
         ingraphicsmode = 1;
     }
     if (mp->extended_info->frame && !noclear)
@@ -288,7 +257,6 @@ static int settext(GrxVideoMode * mp, int noclear)
         vtm.relsig = 0;
         vtm.acqsig = 0;
         ioctl(ttyfd, VT_SETMODE, &vtm);
-        signal(SIGUSR1, SIG_IGN);
         ingraphicsmode = 0;
     }
     return TRUE;

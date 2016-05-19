@@ -1504,5 +1504,6 @@ namespace Grx {
     public class LinuxConsoleApplication : GLib.Application, GLib.Initable {
         public LinuxConsoleApplication.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
         public bool init (GLib.Cancellable? cancellable = null) throws GLib.Error;
+        public bool is_console_active { [CCode (cname = "grx_linux_console_application_is_console_active")]get; }
     }
 }

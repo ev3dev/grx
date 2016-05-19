@@ -20,11 +20,68 @@
 
 #include "libgrx.h"
 
+typedef struct {
+    gboolean owns_fb;
+    GrxContext *save;
+} GrxLinuxConsoleApplicationPrivate;
+
 static void initable_interface_init (GInitableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GrxLinuxConsoleApplication,
     grx_linux_console_application, G_TYPE_APPLICATION,
+    G_ADD_PRIVATE (GrxLinuxConsoleApplication)
     G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_interface_init))
+
+/* Properties */
+
+enum {
+    PROP_0,
+    PROP_IS_CONSOLE_ACTIVE,
+    N_PROPERTIES
+};
+
+static GParamSpec *properties[N_PROPERTIES] = { NULL };
+
+gboolean
+grx_linux_console_application_is_console_active (GrxLinuxConsoleApplication *application)
+{
+    GrxLinuxConsoleApplicationPrivate *priv =
+        grx_linux_console_application_get_instance_private (application);
+
+    return priv->owns_fb;
+}
+
+static void
+set_property (GObject *object, guint property_id, const GValue *value,
+              GParamSpec *pspec)
+{
+    GrxLinuxConsoleApplication *self = GRX_LINUX_CONSOLE_APPLICATION (object);
+
+    switch (property_id) {
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
+get_property (GObject *object, guint property_id, GValue *value,
+              GParamSpec *pspec)
+{
+    GrxLinuxConsoleApplication *self = GRX_LINUX_CONSOLE_APPLICATION (object);
+    GrxLinuxConsoleApplicationPrivate *priv =
+        grx_linux_console_application_get_instance_private (self);
+
+    switch (property_id) {
+    case PROP_IS_CONSOLE_ACTIVE:
+        g_value_set_boolean (value, priv->owns_fb);
+        break;
+
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
 
 /* class implementation */
 
@@ -57,6 +114,19 @@ static void startup (GApplication *application)
 static void
 grx_linux_console_application_class_init (GrxLinuxConsoleApplicationClass *klass)
 {
+    G_OBJECT_CLASS (klass)->set_property = set_property;
+    G_OBJECT_CLASS (klass)->get_property = get_property;
+
+    properties[PROP_IS_CONSOLE_ACTIVE] =
+        g_param_spec_boolean ("is-console-active",
+                              "console is active",
+                              "Gets if the console is active",
+                              FALSE /* default value */,
+                              G_PARAM_READABLE);
+    g_object_class_install_properties (G_OBJECT_CLASS (klass),
+                                       N_PROPERTIES,
+                                       properties);
+
     G_APPLICATION_CLASS (klass)->startup = startup;
 }
 
@@ -67,19 +137,81 @@ grx_linux_console_application_init (GrxLinuxConsoleApplication *self)
 
 /* interface implementatation */
 
+// TODO: put these in a header file
+extern void grx_linuxfb_aquire (void);
+extern void grx_linuxfb_release (void);
+
+static gboolean console_switch_handler (gpointer user_data)
+{
+    GrxLinuxConsoleApplication *self = user_data;
+    GrxLinuxConsoleApplicationPrivate *priv =
+        grx_linux_console_application_get_instance_private (self);
+
+    if (priv->owns_fb) {
+        /* a well-behaved user program must listen for this property and stop
+         * drawing on the screen when it is FALSE */
+        priv->owns_fb = FALSE;
+        g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_IS_CONSOLE_ACTIVE]);
+
+        /* create a new context from the screen */
+        priv->save = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
+        if (priv->save == NULL) {
+            g_critical ("Could not allocate context for console switching.");
+        } else {
+            /* copy framebuffer to new context */
+            if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
+                /* Need to invert the colors on this one. */
+                grx_context_clear(priv->save, 1);
+                grx_bit_blt(priv->save, 0, 0, grx_context_get_screen(), 0, 0,
+                    grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_XOR);
+            } else {
+                grx_bit_blt(priv->save, 0, 0, grx_context_get_screen(), 0, 0,
+                    grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
+            }
+        }
+        grx_linuxfb_release ();
+    } else {
+        grx_linuxfb_aquire ();
+
+        /* copy the temporary context back to the framebuffer */
+        if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
+            /* need to invert the colors on this one */
+            grx_clear_screen(1);
+            grx_bit_blt(grx_context_get_screen(), 0, 0, priv->save, 0, 0,
+                     grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_XOR);
+        } else {
+            grx_bit_blt(grx_context_get_screen(), 0, 0, priv->save, 0, 0,
+                     grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
+        }
+        grx_context_unref(priv->save);
+
+        /* now it is OK for user program to start writing to the screen again */
+        priv->owns_fb = TRUE;
+        g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_IS_CONSOLE_ACTIVE]);
+    }
+
+    return G_SOURCE_CONTINUE;
+}
+
 static gboolean init (GInitable *initable, GCancellable *cancellable,
                       GError **error)
 {
+    GrxLinuxConsoleApplication *self = GRX_LINUX_CONSOLE_APPLICATION (initable);
+    GrxLinuxConsoleApplicationPrivate *priv =
+        grx_linux_console_application_get_instance_private (self);
     gboolean ret;
 
     grx_set_error_handling (FALSE);
     ret = grx_set_mode_default_graphics (TRUE);
-
     if (!ret) {
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
             "Could not set graphics mode.");
         return ret;
     }
+
+    priv->owns_fb = TRUE;
+    g_unix_signal_add (SIGUSR1, console_switch_handler, initable);
+    g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_IS_CONSOLE_ACTIVE]);
 
     return g_application_register (G_APPLICATION (initable), cancellable, error);
 }
@@ -89,7 +221,7 @@ static void initable_interface_init (GInitableIface *iface)
     iface->init = init;
 }
 
-/* methods */
+/* constructors */
 
 GrxLinuxConsoleApplication *
 grx_linux_console_application_new (GCancellable *cancellable, GError **error)
