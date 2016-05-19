@@ -41,8 +41,6 @@ typedef struct _GrxContext      GrxContext;
 /* need unsigned 32 bit integer for color stuff */
 typedef guint32 GrxColor;
 
-typedef void (*GrxScreenActiveFunc)(gboolean active, gpointer user_data);
-
 /* ================================================================== */
 /*                           MODE SETTING                             */
 /* ================================================================== */
@@ -389,10 +387,6 @@ extern const struct _GR_driverInfo {
         int     moderestore;                /* restore startup video mode if set */
         int     splitbanks;                 /* indicates separate R/W banks */
         int     curbank;                    /* currently mapped bank */
-        gboolean screen_active;
-        GrxScreenActiveFunc screen_active_func;
-        gpointer screen_active_func_user_data;
-        GDestroyNotify screen_active_func_notify;
         void  (*set_bank)(int bk);          /* banking routine */
         void  (*set_rw_banks)(int rb,int wb); /* split banking routine */
 } * const GrDriverInfo;
@@ -434,10 +428,6 @@ gint  grx_get_viewport_x(void);
 gint  grx_get_viewport_y(void);
 
 gboolean  grx_is_screen_virtual(void);
-gboolean grx_is_screen_active(void);
-void grx_set_screen_active_callback(GrxScreenActiveFunc func,
-                                    gpointer user_data,
-                                    GDestroyNotify notify);
 
 /*
  * RAM context geometry and memory allocation inquiry stuff
@@ -480,7 +470,6 @@ glong grx_get_context_size(gint w, gint h);
 #define grx_get_viewport_y()           (GrDriverInfo->vposy)
 
 #define grx_is_screen_virtual()        ((grx_get_screen_x() + grx_get_screen_y()) < (grx_get_virtual_x() + grx_get_virtual_y()))
-#define grx_is_screen_active()         (GrDriverInfo->screen_active)
 
 #define grx_get_n_planes()             grx_frame_mode_get_n_planes(grx_get_core_frame_mode())
 #define grx_get_line_offset(w)         grx_frame_mode_get_line_offset(grx_get_core_frame_mode(),w)

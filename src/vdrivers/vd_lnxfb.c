@@ -188,10 +188,6 @@ void _LnxfbRelsigHandle(int sig)
     if (ttyfd < 0) return;
 
     // Notify user program to stop using the framebuffer
-    DRVINFO->screen_active = FALSE;
-    if (DRVINFO->screen_active_func) {
-        DRVINFO->screen_active_func(FALSE, DRVINFO->screen_active_func_user_data);
-    }
 
     /* create a new context from the screen */
     grc = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
@@ -235,10 +231,6 @@ void _LnxfbAcqsigHandle(int sig)
     signal(SIGUSR1, _LnxfbRelsigHandle);
 
     // Notify user program it is OK to use the framebuffer
-    DRVINFO->screen_active = TRUE;
-    if (DRVINFO->screen_active_func) {
-        DRVINFO->screen_active_func(TRUE, DRVINFO->screen_active_func_user_data);
-    }
 }
 
 static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)
