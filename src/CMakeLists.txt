@@ -1,6 +1,7 @@
 include_directories (include)
 
 set (LINUX_SOURCE_FILES
+    application/linux_console.c
     draw/bitblt.c
     draw/bitbltnc.c
     draw/bitblt1b.c
@@ -249,17 +250,24 @@ install (TARGETS ${STATIC_LIBRARY_NAME} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBD
 
 get_property (INCLUDE_DIRS DIRECTORY .. PROPERTY INCLUDE_DIRECTORIES)
 
+# Generating .gir and .typelib does not work when cross compiling because it
+# uses host architecture.
+if (NOT CMAKE_CROSSCOMPILING)
+
 find_package (GirScanner REQUIRED)
 include (GirScanner)
 add_gir (GIR ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
     INCLUDES
         GLib-2.0
+        Gio-2.0
     INCLUDE_DIRS
         ${INCLUDE_DIRS}
     ARGS
         --warn-all
     FILES
         ${CMAKE_SOURCE_DIR}/include/grx-3.0.h
+        ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h
+        application/linux_console.c
         image/ibuild.c
         image/iinverse.c
         image/imginlne.c
@@ -278,3 +286,5 @@ include (GirCompiler)
 add_typelib (TYPELIB ${GIR})
 install (FILES $<TARGET_PROPERTY:${TYPELIB},TYPELIB_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
+
+endif (NOT CMAKE_CROSSCOMPILING)

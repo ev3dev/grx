@@ -27,7 +27,7 @@ set (CMAKE_INSTALL_PKGDATADIR ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
 find_package (JPEG REQUIRED)
 include_directories (${JPEG_INCLUDE_DIR})
 
-set (MODULES libpng12 glib-2.0 gobject-2.0)
+set (MODULES libpng12 glib-2.0 gio-2.0 gobject-2.0)
 find_package (PkgConfig REQUIRED)
 pkg_check_modules (DEPS REQUIRED ${MODULES})
 include_directories (${DEPS_INCLUDE_DIRS})

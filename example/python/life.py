@@ -10,31 +10,21 @@ from gi.repository import Grx
 from random import random
 
 
-class Life:
+class Life(Grx.LinuxConsoleApplication):
     def __init__(self):
+        super(Grx.LinuxConsoleApplication, self).__init__()
+        self.init()
         self.source_id = 0
-        self.width = 0
-        self.height = 0
-        self.old_state = None
-        self.new_state = None
-        self.color = None
-
-    def run(self):
-        main_loop = GLib.MainLoop()
-
-        if not Grx.set_mode_default_graphics(True):
-            raise IOError('Could not set graphics mode')
         self.width = Grx.get_size_x()
         self.height = Grx.get_size_y()
         self.old_state = [[0 for y in range(self.height)] for x in range(self.width)]
         self.new_state = [[0 for y in range(self.height)] for x in range(self.width)]
         self.color = (Grx.color_info_get_black(), Grx.color_info_get_white())
 
+    def do_activate(self):
         Grx.set_screen_active_callback(self.screen_active_handler)
         self.screen_active_handler(Grx.is_screen_active())
-
         self.randomize()
-        main_loop.run()
 
     def randomize(self):
         for y in range(self.height):

@@ -2,12 +2,13 @@
 include (ValaPrecompile)
 find_package(PkgConfig REQUIRED)
 
-pkg_check_modules (EXAMPLE_DEPS REQUIRED glib-2.0 gobject-2.0)
+pkg_check_modules (EXAMPLE_DEPS REQUIRED glib-2.0 gio-2.0 gobject-2.0)
 add_definitions (${EXAMPLE_DEPS})
 
 vala_precompile (LIFE_C LIFE_VALA life.vala
     PACKAGES
         grx-3.0
+        gio-2.0
         posix
     OPTIONS
         --vapidir=${CMAKE_SOURCE_DIR}/bindings/vala/

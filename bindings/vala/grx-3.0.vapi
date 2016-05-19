@@ -1500,4 +1500,9 @@ namespace Grx {
     /* ================================================================== */
 
     public void resize_gray_map (uchar *map, int pitch, int old_width, int old_height, int new_width, int new_height);
+
+    public class LinuxConsoleApplication : GLib.Application, GLib.Initable {
+        public LinuxConsoleApplication.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
+        public bool init (GLib.Cancellable? cancellable = null) throws GLib.Error;
+    }
 }

@@ -1734,6 +1734,8 @@ int grx_context_save_to_jpeg_grayscale(GrxContext *grc, gchar *jpegfn, gint qual
 
 void grx_resize_gray_map(unsigned char *map,int pitch,int ow,int oh,int nw,int nh);
 
+#include <grx/linux_console_application.h>
+
 #ifdef __cplusplus
 }
 #endif
