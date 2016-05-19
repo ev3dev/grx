@@ -24,9 +24,7 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+G_BEGIN_DECLS
 
 /* a couple of forward declarations ... */
 typedef struct _GrxFrameDriver  GrxFrameDriver;
@@ -1736,7 +1734,6 @@ void grx_resize_gray_map(unsigned char *map,int pitch,int ow,int oh,int nw,int n
 
 #include <grx/linux_console_application.h>
 
-#ifdef __cplusplus
-}
-#endif
+G_BEGIN_DECLS
+
 #endif  /* __GRX_3_0_H_INCLUDED__ */
