@@ -254,6 +254,21 @@ get_property (INCLUDE_DIRS DIRECTORY .. PROPERTY INCLUDE_DIRECTORIES)
 # uses host architecture.
 if (NOT CMAKE_CROSSCOMPILING)
 
+set (GTKDOC_SOURCE_FILES
+    ${CMAKE_SOURCE_DIR}/include/grx-3.0.h
+    ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h
+    application/linux_console.c
+    image/ibuild.c
+    image/iinverse.c
+    image/imginlne.c
+    image/istretch.c
+    pattern/makepat.c
+    setup/context.c
+    setup/fgeom.c
+    setup/hooks.c
+    text/type.c
+)
+
 find_package (GirScanner REQUIRED)
 include (GirScanner)
 add_gir (GIR ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
@@ -265,18 +280,7 @@ add_gir (GIR ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
     ARGS
         --warn-all
     FILES
-        ${CMAKE_SOURCE_DIR}/include/grx-3.0.h
-        ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h
-        application/linux_console.c
-        image/ibuild.c
-        image/iinverse.c
-        image/imginlne.c
-        image/istretch.c
-        pattern/makepat.c
-        setup/context.c
-        setup/fgeom.c
-        setup/hooks.c
-        text/type.c
+        ${GTKDOC_SOURCE_FILES}
 )
 install (FILES $<TARGET_PROPERTY:${GIR},GIR_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/)
@@ -288,3 +292,34 @@ install (FILES $<TARGET_PROPERTY:${TYPELIB},TYPELIB_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
 
 endif (NOT CMAKE_CROSSCOMPILING)
+
+find_package (GtkDoc REQUIRED)
+
+file (GLOB INTERNAL_HEADERS */*.h */*/*.h)
+
+configure_file (${CMAKE_SOURCE_DIR}/doc/reference/grx-docs.xml.in
+    grx-docs.xml @ONLY)
+
+gtk_doc_add_module (grx ${CMAKE_SOURCE_DIR}/src
+    XML
+        ${CMAKE_CURRENT_BINARY_DIR}/grx-docs.xml
+    SOURCE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/include/grx
+    SUFFIXES
+        "h"
+        "c"
+    IGNOREHEADERS
+        ${INTERNAL_HEADERS}
+    IGNOREFILES
+        ${INTERNAL_HEADERS}
+    LIBRARIES
+        ${SHARED_LIBRARY_NAME}
+    DEPENDS
+        ${GTKDOC_SOURCE_FILES}
+)
+
+add_custom_target (docs ALL DEPENDS doc-grx)
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/grx/html
+        DESTINATION ${CMAKE_INSTALL_DOCDIR})
