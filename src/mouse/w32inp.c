@@ -1,35 +1,35 @@
-/**
- ** w32inp.c ---- DOS (TCC/BCC/DJGPP: "conio.h") style keyboard utilities
- **
- ** Author:     Gernot Graeff
- ** E-mail:     gernot.graeff@t-online.de
- ** Date:       02-11-99
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Contributions by M.Alvarez (malfer@teleline.es) 18/11/2001
- **   - Better keys handling using translation tables (w32input.h).
- **
- ** Contributions by M.Alvarez (malfer@teleline.es) 02/02/2002
- **   - The w32 imput queue implemented as a circular queue.
- **   - All the input related code moved here from vd_win32.c
- **
- ** Contribution by M. Lombardi 05/08/2007
- ** Do not treat WM_PAINT messages here. They are delt with in vd_win32.c.
- ** This produced saturation of GRX event queue        and gobbling of
- ** keyboard/mouse events there (compare behavior of test/mousetst)
- **
- ** Contribution by Richard Sanders (richard@dogcreek.ca) 02/04/2009
- ** Synchronisation of windows and grx mouse cursors
- **/
+/*
+ * w32inp.c ---- DOS (TCC/BCC/DJGPP: "conio.h") style keyboard utilities
+ *
+ * Author:     Gernot Graeff
+ * E-mail:     gernot.graeff@t-online.de
+ * Date:       02-11-99
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Contributions by M.Alvarez (malfer@teleline.es) 18/11/2001
+ *   - Better keys handling using translation tables (w32input.h).
+ *
+ * Contributions by M.Alvarez (malfer@teleline.es) 02/02/2002
+ *   - The w32 imput queue implemented as a circular queue.
+ *   - All the input related code moved here from vd_win32.c
+ *
+ * Contribution by M. Lombardi 05/08/2007
+ * Do not treat WM_PAINT messages here. They are delt with in vd_win32.c.
+ * This produced saturation of GRX event queue        and gobbling of
+ * keyboard/mouse events there (compare behavior of test/mousetst)
+ *
+ * Contribution by Richard Sanders (richard@dogcreek.ca) 02/04/2009
+ * Synchronisation of windows and grx mouse cursors
+ */
 
 #include "libwin32.h"
 #include "libgrx.h"

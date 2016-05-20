@@ -1,23 +1,23 @@
-/**
- ** pnm2ctx.c ---- loads a context from a PNM file or PNM buffer
- **
- ** Copyright (C) 2000,2001 Mariano Alvarez Fernandez
- ** [e-mail: malfer@teleline.es]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Contributions by Josu Onandia (jonandia@fagorautomation.es) 10/03/2001
- **   _GrLoadContextFromPpm optimized (applied to Pbm and Pgm too)
- **
- **/
+/*
+ * pnm2ctx.c ---- loads a context from a PNM file or PNM buffer
+ *
+ * Copyright (C) 2000,2001 Mariano Alvarez Fernandez
+ * [e-mail: malfer@teleline.es]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Contributions by Josu Onandia (jonandia@fagorautomation.es) 10/03/2001
+ *   _GrLoadContextFromPpm optimized (applied to Pbm and Pgm too)
+ *
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -419,4 +419,3 @@ int grx_check_pnm_data(const unsigned char *pnmbuf, int *width, int *height, int
 
   return r;
 }
-

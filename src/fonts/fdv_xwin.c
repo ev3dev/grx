@@ -1,26 +1,26 @@
-/**
- ** fdv_xwin.c -- driver X Windows fonts
- **
- ** Author:     Ulrich Leodolter
- ** E-mail:     ulrich@lab1.psy.univie.ac.at
- ** Date:       Thu Sep 28 11:21:46 1995
- ** RCSId:      $Id$
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Contributions by Dimitar Zhekov (jimmy@is-vn.bg) May 11 2003
- **   - use the default underline height instead of font descent
- **   - use a separate X display and window (how costly is that?)
- **   - use the real font name and font family whenever possible
- **/
+/*
+ * fdv_xwin.c -- driver X Windows fonts
+ *
+ * Author:     Ulrich Leodolter
+ * E-mail:     ulrich@lab1.psy.univie.ac.at
+ * Date:       Thu Sep 28 11:21:46 1995
+ * RCSId:      $Id$
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Contributions by Dimitar Zhekov (jimmy@is-vn.bg) May 11 2003
+ *   - use the default underline height instead of font descent
+ *   - use a separate X display and window (how costly is that?)
+ *   - use the real font name and font family whenever possible
+ */
 
 #include <stdio.h>
 #include <string.h>
@@ -208,4 +208,3 @@ GrFontDriver _GrFontDriverXWIN = {
     bitmap,                             /* character bitmap reader routine */
     cleanup                             /* cleanup routine */
 };
-

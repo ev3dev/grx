@@ -1,20 +1,20 @@
-/**
- ** dumpfna.c ---- write an ascii font file from a font in memory
- **
- ** Copyright (C) 2002 Dimitar Zhekov
- ** E-Mail: jimmy@is-vn.bg
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * dumpfna.c ---- write an ascii font file from a font in memory
+ *
+ * Copyright (C) 2002 Dimitar Zhekov
+ * E-Mail: jimmy@is-vn.bg
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include <ctype.h>
 #include <stdio.h>

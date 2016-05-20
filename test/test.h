@@ -1,21 +1,21 @@
-/**
- ** test.h ---- common declarations for test programs
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu]
- **
- ** This is a test/demo file of the GRX graphics library.
- ** You can use GRX test/demo files as you want.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * test.h ---- common declarations for test programs
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu]
+ *
+ * This is a test/demo file of the GRX graphics library.
+ * You can use GRX test/demo files as you want.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #ifndef __TEST_H_INCLUDED__
 #define __TEST_H_INCLUDED__
@@ -88,4 +88,3 @@ int main(int argc,char **argv)
 }
 
 #endif /* _TEST_H_ */
-

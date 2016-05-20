@@ -1,36 +1,36 @@
-/**
- ** lnxinpu2.c ---- alternate mouse and keyboard interface for Linux
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Contributions by: (See "doc/credits.doc" for details)
- ** Mauro Condarelli (mc5686@mclink.it)
- ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
- ** Andris Pavenis (pavenis@acad.latnet.lv)
- **
- ** This version of lnxinput.c handles the mouse directly, not using
- ** the svgalib. Changes:
- **
- ** New mouse code. Try to open /dev/psaux. Only works with PS2 mice
- ** (M.Alvarez 07/02/2002).
- **
- ** Now works with PS2 and IMPS2 mice (the wheel is not used)
- ** (M.Alvarez 29/12/2002).
- **
- ** Now calls _LnxfbSwitchConsoleAndWait if _lnxfb_waiting_to_switch_console
- ** is true (M.Alvarez 1/3/2003).
- **/
+/*
+ * lnxinpu2.c ---- alternate mouse and keyboard interface for Linux
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Contributions by: (See "doc/credits.doc" for details)
+ * Mauro Condarelli (mc5686@mclink.it)
+ * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
+ * Andris Pavenis (pavenis@acad.latnet.lv)
+ *
+ * This version of lnxinput.c handles the mouse directly, not using
+ * the svgalib. Changes:
+ *
+ * New mouse code. Try to open /dev/psaux. Only works with PS2 mice
+ * (M.Alvarez 07/02/2002).
+ *
+ * Now works with PS2 and IMPS2 mice (the wheel is not used)
+ * (M.Alvarez 29/12/2002).
+ *
+ * Now calls _LnxfbSwitchConsoleAndWait if _lnxfb_waiting_to_switch_console
+ * is true (M.Alvarez 1/3/2003).
+ */
 
 #include <stdio.h>
 #include <termio.h>

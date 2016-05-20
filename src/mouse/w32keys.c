@@ -1,21 +1,21 @@
-/**
- ** w32keys.c ---- DOS (TCC/BCC/DJGPP: "conio.h") style keyboard utilities
- **
- ** Author:     Gernot Graeff
- ** E-mail:     gernot.graeff@t-online.de
- ** Date:       02-11-99
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * w32keys.c ---- DOS (TCC/BCC/DJGPP: "conio.h") style keyboard utilities
+ *
+ * Author:     Gernot Graeff
+ * E-mail:     gernot.graeff@t-online.de
+ * Date:       02-11-99
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include "libwin32.h"
 #include "libgrx.h"
@@ -96,4 +96,3 @@ int getkbstat(void)
 {
     return _GrKeyStat();
 }
-

@@ -1,24 +1,24 @@
-/**
- ** fdv_raw.c -- driver for raw font file format
- **
- ** Copyright (C) 2003 Dimitar Zhekov
- ** [e-mail: jimmy@is-vn.bg]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Changes by Dimitar Zhekov (jimmy@is-vn.bg) Nov 20 2003
- **   - Added psf2 support, raw and psf1 are now treated as pseudo-psf2.
- **   - Better support for RAW files: up to 16x32, assuming scale 1:2.
- **
- **/
+/*
+ * fdv_raw.c -- driver for raw font file format
+ *
+ * Copyright (C) 2003 Dimitar Zhekov
+ * [e-mail: jimmy@is-vn.bg]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Changes by Dimitar Zhekov (jimmy@is-vn.bg) Nov 20 2003
+ *   - Added psf2 support, raw and psf1 are now treated as pseudo-psf2.
+ *   - Better support for RAW files: up to 16x32, assuming scale 1:2.
+ *
+ */
 
 #include <ctype.h>
 #include <stdio.h>

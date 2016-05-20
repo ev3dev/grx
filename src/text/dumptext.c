@@ -1,20 +1,20 @@
-/**
- ** dumptext.c ---- optimized fixed font text drawing
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * dumptext.c ---- optimized fixed font text drawing
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include "libgrx.h"
 #include "arith.h"
@@ -153,4 +153,3 @@ void grx_text_region_dump_char(const GrxTextRegion *r,int chr,int col,int row)
         }
         grx_text_region_dump_text(r,col,row,1,1);
 }
-

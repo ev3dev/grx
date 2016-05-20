@@ -1,24 +1,24 @@
-/**
- ** driver16.h ---- the 32k/64k color padded SVGA linear frame buffer driver
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu].
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Contributions by: (See "doc/credits.doc" for details)
- ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
- ** Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77]
- **
- **/
+/*
+ * driver16.h ---- the 32k/64k color padded SVGA linear frame buffer driver
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu].
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Contributions by: (See "doc/credits.doc" for details)
+ * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
+ * Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77]
+ *
+ */
 
 #include "libgrx.h"
 #include "grdriver.h"
@@ -357,4 +357,3 @@ static void bltr2v(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w
         GRX_LEAVE();
 }
 #endif
-

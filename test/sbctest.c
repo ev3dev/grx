@@ -1,18 +1,18 @@
-/**
- ** sbctest.c ---- test subcontext
- **
- ** This is a test/demo file of the GRX graphics library.
- ** You can use GRX test/demo files as you want.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * sbctest.c ---- test subcontext
+ *
+ * This is a test/demo file of the GRX graphics library.
+ * You can use GRX test/demo files as you want.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include <string.h>
 #include "test.h"
@@ -194,4 +194,3 @@ static void drawp( int border, GrxLinePattern *grlp )
       ptaux[i][j] = pt2[i][j] + border;
   grx_draw_polyline_with_pattern( 4,ptaux,grlp );
 }
-

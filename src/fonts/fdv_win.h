@@ -1,20 +1,20 @@
-/**
- ** fdv_win.h -- driver for Windows resource font file format
- **
- ** Copyright (C) 2002 Dimitar Zhekov
- ** [e-mail: jimmy@is-vn.bg]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * fdv_win.h -- driver for Windows resource font file format
+ *
+ * Copyright (C) 2002 Dimitar Zhekov
+ * [e-mail: jimmy@is-vn.bg]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #ifndef __FDV_WIN_H_INCLUDED__
 #define __FDV_WIN_H_INCLUDED__

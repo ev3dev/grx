@@ -1,23 +1,23 @@
-/**
- ** vd_xfdga.c -- DGA2 driver (interface to X11 DGA2)
- **
- ** Copyright (C) 2003 Dimitar Zhekov
- ** [e-mail: jimmy@is-vn.bg]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Changes by Dimitar Zhekov (jimmy@is-vn.bg) Aug 27 2003
- **   - use Xlib for rendering unless defined XF86DGA_FRAMEBUFFER
- **
- **/
+/*
+ * vd_xfdga.c -- DGA2 driver (interface to X11 DGA2)
+ *
+ * Copyright (C) 2003 Dimitar Zhekov
+ * [e-mail: jimmy@is-vn.bg]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Changes by Dimitar Zhekov (jimmy@is-vn.bg) Aug 27 2003
+ *   - use Xlib for rendering unless defined XF86DGA_FRAMEBUFFER
+ *
+ */
 
 #include "libgrx.h"
 #include "libxwin.h"

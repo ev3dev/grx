@@ -1,20 +1,20 @@
-/**
- ** dumpfont.c ---- write a C source file from a font in memory
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * dumpfont.c ---- write a C source file from a font in memory
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include <string.h>
 #include <ctype.h>
@@ -25,9 +25,9 @@
 /* ----------------------------------------------------------------------- */
 static char bitmaphdr[] =
 
-"/**\n"
-" ** %s ---- GRX 2.0 font converted to C by 'grx_font_dump()'\n"
-" **/\n"
+"/*\n"
+" * %s ---- GRX 2.0 font converted to C by 'grx_font_dump()'\n"
+" */\n"
 "\n"
 "#define  %s     FONTNAME_TEMPORARY_REDIRECTION\n"
 "#include \"grx-3.0.h\"\n"

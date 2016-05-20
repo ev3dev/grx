@@ -1,20 +1,20 @@
-/**
- ** drwcpoly.c ---- draw the outline of a custom (wide and/or dashed) polygon
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * drwcpoly.c ---- draw the outline of a custom (wide and/or dashed) polygon
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include "libgrx.h"
 #include "shapes.h"
@@ -66,23 +66,24 @@ static void intersect(int l1s[2],int l1e[2],int l2s[2],int l2e[2])
                 }
             }
         }
-        {   /*
-            ** no good intersection point till now
-            ** Check mean point and its eight neighbours for
-            ** best compromise intersection point
-            **
-            **  y-y11   y12-y11           y-y21   y22-y21
-            **  ----- - ------- = 0  and  ----- - ------- = 0
-            **  x-x11   x12-x11           x-x21   x22-x21
-            **
-            ** should hold for intersection point (x,y)
-            ** Measuring the errors for both lines:
-            **
-            ** e1 = (x12-x11)(y-y11)-(x-x11)(y12-y11) = dx1(y-y11)-(x-x11)dy1
-            ** e2 = (x22-x21)(y-y21)-(x-x21)(y22-y21) = dx2(y-y21)-(x-x21)dy2
-            **
-            ** search minimal err = |e1| + |e2|
-            */
+        {
+            /*
+             * no good intersection point till now
+             * Check mean point and its eight neighbours for
+             * best compromise intersection point
+             *
+             *  y-y11   y12-y11           y-y21   y22-y21
+             *  ----- - ------- = 0  and  ----- - ------- = 0
+             *  x-x11   x12-x11           x-x21   x22-x21
+             *
+             * should hold for intersection point (x,y)
+             * Measuring the errors for both lines:
+             *
+             * e1 = (x12-x11)(y-y11)-(x-x11)(y12-y11) = dx1(y-y11)-(x-x11)dy1
+             * e2 = (x22-x21)(y-y21)-(x-x21)(y22-y21) = dx2(y-y21)-(x-x21)dy2
+             *
+             * search minimal err = |e1| + |e2|
+             */
             static int xr[9] = { 0, -1, 0, 1,  0, -1, 1,  1, -1};
             static int yr[9] = { 0,  0, 1, 0, -1,  1, 1, -1, -1};
             int xc = (x12+x21) >> 1;
@@ -433,5 +434,3 @@ void _GrDrawCustomPolygon(
 #       undef x2
 #       undef y2
 }
-
-

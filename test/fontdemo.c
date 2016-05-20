@@ -1,21 +1,21 @@
-/**
- ** fontdemo.c ---- demonstrate a font
- **
- ** Copyright (C) 2002 Dimitar Zhekov
- ** E-Mail: jimmy@is-vn.bg
- **
- ** This is a test/demo file of the GRX graphics library.
- ** You can use GRX test/demo files as you want.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * fontdemo.c ---- demonstrate a font
+ *
+ * Copyright (C) 2002 Dimitar Zhekov
+ * E-Mail: jimmy@is-vn.bg
+ *
+ * This is a test/demo file of the GRX graphics library.
+ * You can use GRX test/demo files as you want.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include <stdio.h>
 #include <stdlib.h>

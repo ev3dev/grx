@@ -1,23 +1,23 @@
-/**
- ** ram32h.c ---- the 16M color padded system RAM frame driver (high)
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu].
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Contributions by: (See "doc/credits.doc" for details)
- ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
- **
- **/
+/*
+ * ram32h.c ---- the 16M color padded system RAM frame driver (high)
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu].
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Contributions by: (See "doc/credits.doc" for details)
+ * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
+ *
+ */
 
 #define PIX2COL(col) ((col)>>8)
 #define COL2PIX(col) ((col)<<8)

@@ -1,29 +1,29 @@
-/**
- ** vd_xwin.c ---- the standard X Window driver
- **
- ** Author:     Ulrich Leodolter
- ** E-mail:     ulrich@lab1.psy.univie.ac.at
- ** Date:       Thu Sep 28 09:29:26 1995
- ** RCSId:      $Id: vd_xwin.c 1.2 1995/11/19 19:28:12 ulrich Exp $
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Contributions by:
- ** 070505 M.Alvarez, Using a Pixmap for BackingStore
- ** 071201 M.Alvarez, Added videomodes for wide monitors
- ** 071201 M.Alvarez, The modes higher than the X resolution 
- **                   are made 'non-present'
- ** 071201 M.Alvarez, go to fullscreen if w,h == X resolution
- **                   GR_biggest_graphics is honored
- **/
+/*
+ * vd_xwin.c ---- the standard X Window driver
+ *
+ * Author:     Ulrich Leodolter
+ * E-mail:     ulrich@lab1.psy.univie.ac.at
+ * Date:       Thu Sep 28 09:29:26 1995
+ * RCSId:      $Id: vd_xwin.c 1.2 1995/11/19 19:28:12 ulrich Exp $
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Contributions by:
+ * 070505 M.Alvarez, Using a Pixmap for BackingStore
+ * 071201 M.Alvarez, Added videomodes for wide monitors
+ * 071201 M.Alvarez, The modes higher than the X resolution
+ *                   are made 'non-present'
+ * 071201 M.Alvarez, go to fullscreen if w,h == X resolution
+ *                   GR_biggest_graphics is honored
+ */
 
 #include "libgrx.h"
 #include "libxwin.h"

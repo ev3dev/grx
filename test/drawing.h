@@ -1,9 +1,9 @@
-/**
- ** DRAWING.H ---- a stupid little drawing used all over in test programs
- **
- ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- ** [e-mail: csaba@vuse.vanderbilt.edu] See "copying.grx" for details.
- **/
+/*
+ * DRAWING.H ---- a stupid little drawing used all over in test programs
+ *
+ * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
+ * [e-mail: csaba@vuse.vanderbilt.edu] See "copying.grx" for details.
+ */
 
 #include "rand.h"
 
@@ -33,4 +33,3 @@ void drawing(int xpos,int ypos,int xsize,int ysize,long fg,long bg)
 
 #undef XP
 #undef YP
-

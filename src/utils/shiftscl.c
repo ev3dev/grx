@@ -1,20 +1,20 @@
-/**
- ** shiftscl.c ---- shift and copy an array (scanline)
- **                 for 1bpp and 4bpp frame driver blit operations
- **
- ** Copyright (c) 1998 Hartmut Schirmer
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * shiftscl.c ---- shift and copy an array (scanline)
+ *                 for 1bpp and 4bpp frame driver blit operations
+ *
+ * Copyright (c) 1998 Hartmut Schirmer
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include "libgrx.h"
 #include "highlow.h"
@@ -96,4 +96,3 @@ void _GR_shift_scanline(GR_int8u **dst,
   }
   GRX_LEAVE();
 }
-

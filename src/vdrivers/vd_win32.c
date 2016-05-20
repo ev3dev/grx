@@ -1,101 +1,101 @@
-/**
- ** vd_win32.c ---- the standard Win32-API driver
- **
- ** Author:        Gernot Graeff
- ** E-mail:        gernot.graeff@t-online.de
- ** Date:        13.11.98
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Changes by Josu Onandia (jonandia@fagorautomation.es) 21/02/2001
- **   - The colors loaded in the ColorList are guaranteed to be actually used
- **     by Windows (GetNearestColor), for the GR_frameWin32 to work.
- **   - When the window is created, it gets the maximum size allowed by the
- **     current mode. Indeed this size is stored (maxWindowWidth/
- **     maxWindowHeight).
- **     When the window is going to be resized (WM_GETMINMAXINFO) it's not
- **     allowed to grow bigger than this maximum size (it makes nosense).
- **   - Added some modes for 24bpp colors.
- **   - When changed to text-mode, the graphics window is hidden. If the
- **     application has a console (linked with -mconsole) it can use
- **     printf/scanf and the like.
- **     When changed again into graphics mode, the window reappears.
- **   - Inter-task synchronization. In some cases the two threads are
- **     manipulating at the same time the main window, and the on-memory
- **     bitmap. I guess this is causing trouble, so in some cases the main
- **     thread suspends the worker thread, make its operation, and then
- **     resumes it.
- **   - The window title is selectable with a define, at compile time.
- **     If not defined, it defaults to "GRX".
- **
- ** Changes by M.Alvarez (malfer@telefonica.net) 02/01/2002
- **   - Go to full screen if the framemode dimensions are equal to
- **     the screen dimensions (setting the client start area at 0,0).
- **
- ** Changes by M.Alvarez (malfer@telefonica.net) 02/02/2002
- **   - The w32 imput queue implemented as a circular queue.
- **   - All the input related code moved to w32inp.c
- **   - The main window is created in WinMain, so the grx program
- **     can use other videodrivers like the memory one.
- **
- ** Changes by M.Alvarez (malfer@telefonica.net) 11/02/2002
- **   - Now the GRX window is properly closed, so the previous app
- **     gets the focus.
- **
- ** Changes by M.Alvarez (malfer@telefonica.net) 31/03/2002
- **   - Accepts arbitrary (user defined) resolution.
- **
- ** Changes by Thomas Demmer (TDemmer@krafteurope.com)
- **   - Instead of begin with WinMain and start a thread with the main
- **     GRX program, do it backward: begin in main and start a thread to
- **     handle the Windows window. With this change we get rid of the
- **     awful GRXMain special entry point.
- **
- ** Changes by M.Alvarez (malfer@telefonica.net) 12/02/2003
- **   - Sanitize the Thomas changes.
- **
- ** Changes by Thomas Demmer (TDemmer@krafteurope.com) 18/03/2003
- **   - Use a DIB for the hDCMem.
- **
- ** Changes by Josu Onandia (jonandia@fagorautomation.es) 19/03/2003
- **   - With the Thomas idea of using a DIB, we can now use the DIB like
- **     a linear frame buffer, so the new win32 framedrivers can take
- **     advantage of the standard GRX frame drivers.
- **
- ** Changes by Peter Gerwinski 19/06/2004
- **   - more W32 events handling
- **
- ** Changes by Maurice Lombardi 21/08/2007
- **   - Corrections to WM_PAINT
- **     1 - revert the previous change: was saturating GrMouseInfo->queue
- **         for fast paintings
- **     2 - GetUpdateRect() gave wrong UpdateRect !!!
- **
- ** Changes by Peter Schauer <peterschauer@gmx.net> 12/05/2008
- **   - vdrivers/vd_win32.c has a race condition with the load_color
- **     SetDIBColorTable function call, which happens sometimes on
- **     fast multiprocessor machines. This affects only 8 bpp modes,
- **     as load_color is not called in 32 bpp modes.
- **     If the WndThread is currently executing its BitBlt during WM_PAINT
- **     processing and the GRX user thread is calling grx_color_info_alloc_color, the
- **     SetDIBColorTable function call fails, as the DC is locked by the BitBlt.
- **     This results in the color not being set, which could also happen
- **     during the initial setting of the VGA colors in _GrResetColors.
- **     My proposed fix delays the SetDIBColorTable call and moves it to
- **     the WM_PAINT processing, making it synchronous with the BitBlt call.
- **
- ** Changes by M.Alvarez (malfer@telefonica.net) 01/12/2007
- **   - Added videomodes for wide monitors
- **
- **/
+/*
+ * vd_win32.c ---- the standard Win32-API driver
+ *
+ * Author:        Gernot Graeff
+ * E-mail:        gernot.graeff@t-online.de
+ * Date:        13.11.98
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Changes by Josu Onandia (jonandia@fagorautomation.es) 21/02/2001
+ *   - The colors loaded in the ColorList are guaranteed to be actually used
+ *     by Windows (GetNearestColor), for the GR_frameWin32 to work.
+ *   - When the window is created, it gets the maximum size allowed by the
+ *     current mode. Indeed this size is stored (maxWindowWidth/
+ *     maxWindowHeight).
+ *     When the window is going to be resized (WM_GETMINMAXINFO) it's not
+ *     allowed to grow bigger than this maximum size (it makes nosense).
+ *   - Added some modes for 24bpp colors.
+ *   - When changed to text-mode, the graphics window is hidden. If the
+ *     application has a console (linked with -mconsole) it can use
+ *     printf/scanf and the like.
+ *     When changed again into graphics mode, the window reappears.
+ *   - Inter-task synchronization. In some cases the two threads are
+ *     manipulating at the same time the main window, and the on-memory
+ *     bitmap. I guess this is causing trouble, so in some cases the main
+ *     thread suspends the worker thread, make its operation, and then
+ *     resumes it.
+ *   - The window title is selectable with a define, at compile time.
+ *     If not defined, it defaults to "GRX".
+ *
+ * Changes by M.Alvarez (malfer@telefonica.net) 02/01/2002
+ *   - Go to full screen if the framemode dimensions are equal to
+ *     the screen dimensions (setting the client start area at 0,0).
+ *
+ * Changes by M.Alvarez (malfer@telefonica.net) 02/02/2002
+ *   - The w32 imput queue implemented as a circular queue.
+ *   - All the input related code moved to w32inp.c
+ *   - The main window is created in WinMain, so the grx program
+ *     can use other videodrivers like the memory one.
+ *
+ * Changes by M.Alvarez (malfer@telefonica.net) 11/02/2002
+ *   - Now the GRX window is properly closed, so the previous app
+ *     gets the focus.
+ *
+ * Changes by M.Alvarez (malfer@telefonica.net) 31/03/2002
+ *   - Accepts arbitrary (user defined) resolution.
+ *
+ * Changes by Thomas Demmer (TDemmer@krafteurope.com)
+ *   - Instead of begin with WinMain and start a thread with the main
+ *     GRX program, do it backward: begin in main and start a thread to
+ *     handle the Windows window. With this change we get rid of the
+ *     awful GRXMain special entry point.
+ *
+ * Changes by M.Alvarez (malfer@telefonica.net) 12/02/2003
+ *   - Sanitize the Thomas changes.
+ *
+ * Changes by Thomas Demmer (TDemmer@krafteurope.com) 18/03/2003
+ *   - Use a DIB for the hDCMem.
+ *
+ * Changes by Josu Onandia (jonandia@fagorautomation.es) 19/03/2003
+ *   - With the Thomas idea of using a DIB, we can now use the DIB like
+ *     a linear frame buffer, so the new win32 framedrivers can take
+ *     advantage of the standard GRX frame drivers.
+ *
+ * Changes by Peter Gerwinski 19/06/2004
+ *   - more W32 events handling
+ *
+ * Changes by Maurice Lombardi 21/08/2007
+ *   - Corrections to WM_PAINT
+ *     1 - revert the previous change: was saturating GrMouseInfo->queue
+ *         for fast paintings
+ *     2 - GetUpdateRect() gave wrong UpdateRect !!!
+ *
+ * Changes by Peter Schauer <peterschauer@gmx.net> 12/05/2008
+ *   - vdrivers/vd_win32.c has a race condition with the load_color
+ *     SetDIBColorTable function call, which happens sometimes on
+ *     fast multiprocessor machines. This affects only 8 bpp modes,
+ *     as load_color is not called in 32 bpp modes.
+ *     If the WndThread is currently executing its BitBlt during WM_PAINT
+ *     processing and the GRX user thread is calling grx_color_info_alloc_color, the
+ *     SetDIBColorTable function call fails, as the DC is locked by the BitBlt.
+ *     This results in the color not being set, which could also happen
+ *     during the initial setting of the VGA colors in _GrResetColors.
+ *     My proposed fix delays the SetDIBColorTable call and moves it to
+ *     the WM_PAINT processing, making it synchronous with the BitBlt call.
+ *
+ * Changes by M.Alvarez (malfer@telefonica.net) 01/12/2007
+ *   - Added videomodes for wide monitors
+ *
+ */
 
 #include "libwin32.h"
 #include "libgrx.h"

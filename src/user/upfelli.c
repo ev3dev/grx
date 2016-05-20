@@ -1,10 +1,10 @@
-/**
- ** upfelli.c
- **
- ** Copyright (C) 1997, Michael Goffioul
- ** [goffioul@emic.ucl.ac.be]
- **
- **/
+/*
+ * upfelli.c
+ *
+ * Copyright (C) 1997, Michael Goffioul
+ * [goffioul@emic.ucl.ac.be]
+ *
+ */
 
 #include "libgrx.h"
 #include "usercord.h"

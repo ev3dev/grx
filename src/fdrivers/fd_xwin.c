@@ -1,28 +1,28 @@
-/**
- ** fd_xwin.c - the X Window color frame driver
- **
- ** Author:     Ulrich Leodolter
- ** E-mail:     ulrich@lab1.psy.univie.ac.at
- ** Date:       Thu Sep 28 10:31:08 1995
- ** RCSId:      $Id: fd_xwin.c 1.1 1995/11/19 17:42:55 ulrich Exp $
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Contributions by: (See "doc/credits.doc" for details)
- ** Hartmut Schirmer (hsc@techfak.uni-kiel.de)
- ** 070505 M.Alvarez, Using a Pixmap for BackingStore
- ** 080801 M.Alvarez, Sanitized pixel cache code
- ** 080801 M.Alvarez, New faster and specific for X11 putscanline function
- **
- **/
+/*
+ * fd_xwin.c - the X Window color frame driver
+ *
+ * Author:     Ulrich Leodolter
+ * E-mail:     ulrich@lab1.psy.univie.ac.at
+ * Date:       Thu Sep 28 10:31:08 1995
+ * RCSId:      $Id: fd_xwin.c 1.1 1995/11/19 17:42:55 ulrich Exp $
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Contributions by: (See "doc/credits.doc" for details)
+ * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
+ * 070505 M.Alvarez, Using a Pixmap for BackingStore
+ * 080801 M.Alvarez, Sanitized pixel cache code
+ * 080801 M.Alvarez, New faster and specific for X11 putscanline function
+ *
+ */
 
 #include <string.h>
 #include "libgrx.h"

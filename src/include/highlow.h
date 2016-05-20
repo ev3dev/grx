@@ -1,19 +1,19 @@
-/**
- ** highlow.h ---- combining two BYTES into one WORD
- **
- ** Copyright (c) 1997 Hartmut Schirmer
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * highlow.h ---- combining two BYTES into one WORD
+ *
+ * Copyright (c) 1997 Hartmut Schirmer
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 /* combine two bytes into one word: generic version */
 #define __highlow__(hi,lo) ((((GR_int16u)(hi))<<8)|((GR_int8u)(lo)))

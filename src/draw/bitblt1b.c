@@ -1,20 +1,20 @@
-/**
- ** bitblt1b.c ---- bitblt from a 1bpp context
- **
- ** Copyright (c) 2001 Josu Onandia
- ** [e-mail: jonandia@fagorautomation.es].
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * bitblt1b.c ---- bitblt from a 1bpp context
+ *
+ * Copyright (c) 2001 Josu Onandia
+ * [e-mail: jonandia@fagorautomation.es].
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include "libgrx.h"
 #include "clipping.h"
@@ -55,4 +55,3 @@ void grx_bit_blt_1bpp(GrxContext *dst,int dx,int dy,
 
   mouse_unblock();
 }
-

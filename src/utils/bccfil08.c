@@ -1,19 +1,19 @@
-/**
- ** bccfil08.c ---- optimized BCC memory fill operations (8bit)
- **
- ** Copyright (c) 1998 Hartmut Schirmer
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * bccfil08.c ---- optimized BCC memory fill operations (8bit)
+ *
+ * Copyright (c) 1998 Hartmut Schirmer
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include "libgrx.h"
 #include "mempeek.h"
@@ -123,4 +123,3 @@ void *_GR_repfill_b(void *P,unsigned int V, unsigned int C) {
 REPFB_OP(_GR_repfill_b_xor,XOR_INS)
 REPFB_OP(_GR_repfill_b_or,OR_INS)
 REPFB_OP(_GR_repfill_b_and,AND_INS)
-

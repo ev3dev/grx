@@ -4,13 +4,13 @@ This document describes the terms for distributing the source code of and any
 derived work based on the GRX graphics library. Such source code is marked
 with the next text:
 
- ** Copyright (c) [year] [author], [author information]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
+ * Copyright (c) [year] [author], [author information]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
 
 Source code with the above copyright is distributed under the following terms:
 
@@ -43,7 +43,7 @@ Source code with the above copyright is distributed under the following terms:
 
 A copy of the GNU GPL (in the file "COPYING") and the GNU LGPL (in
 the file "COPYING.LIB") is included with this document. If you did
-not receive a copy of "COPYING" or "COPYING.LIB", you may obtain one 
+not receive a copy of "COPYING" or "COPYING.LIB", you may obtain one
 from where this document was obtained, or by writing to:
 
   Free Software Foundation

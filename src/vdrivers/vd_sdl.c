@@ -1,32 +1,32 @@
-/**
- ** vd_sdl.c -- SDL driver (interface to SDL)
- **
- ** Copyright (C) 2004 Dimitar Zhekov
- ** [e-mail: jimmy@is-vn.bg]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Passing SDL_SWSURFACE or SDL_HWSURFACE is a good wish only, the
- ** real value is only available in the flags of a surface returned
- ** from SDL_SetVideoMode().
- **
- ** We assume that any SDL_FULLSCREEN | SDL_HWSURFACE screen surface
- ** has pixels pointing to the screen and a dummy SDL_UpdateRect().
- ** This is true for WIN32 and DGA2.
- **
- ** We also assume that such pixels value, once locked, will remain
- ** valid after any number of subsequent unlocks-&-locks (sdlinp.c).
- ** FIXME: update frame after unlock?
- **
- **/
+/*
+ * vd_sdl.c -- SDL driver (interface to SDL)
+ *
+ * Copyright (C) 2004 Dimitar Zhekov
+ * [e-mail: jimmy@is-vn.bg]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Passing SDL_SWSURFACE or SDL_HWSURFACE is a good wish only, the
+ * real value is only available in the flags of a surface returned
+ * from SDL_SetVideoMode().
+ *
+ * We assume that any SDL_FULLSCREEN | SDL_HWSURFACE screen surface
+ * has pixels pointing to the screen and a dummy SDL_UpdateRect().
+ * This is true for WIN32 and DGA2.
+ *
+ * We also assume that such pixels value, once locked, will remain
+ * valid after any number of subsequent unlocks-&-locks (sdlinp.c).
+ * FIXME: update frame after unlock?
+ *
+ */
 
 #include "libsdl.h"
 #include "libgrx.h"

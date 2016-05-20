@@ -1,20 +1,20 @@
-/**
- ** w32dib24.c ---- the 256 color Win32 linear frame buffer driver using DIB
- **
- ** Copyright (c) 2003 Josu Onandia
- ** [e-mail: jonandia@fagorautomation.es]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * w32dib24.c ---- the 256 color Win32 linear frame buffer driver using DIB
+ *
+ * Copyright (c) 2003 Josu Onandia
+ * [e-mail: jonandia@fagorautomation.es]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 #include "libwin32.h"
 #include "driver8.h"
@@ -186,4 +186,3 @@ GrxFrameDriver _GrFrameDriverWIN32_8 = {
     .getindexedscanline = getindexedscanline,
     .putscanline        = w32_putscanline,
 };
-

@@ -1,22 +1,22 @@
-/**
- ** memcopy.h ---- inline assembly memory copy macros
- **
- ** Copyright (c) 1998 Hartmut Schirmer
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Basic and optimized memory block copy operations in byte, word and
- ** long sizes. The copys are available in WRITE, XOR, OR and AND modes.
- **
- **/
+/*
+ * memcopy.h ---- inline assembly memory copy macros
+ *
+ * Copyright (c) 1998 Hartmut Schirmer
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Basic and optimized memory block copy operations in byte, word and
+ * long sizes. The copys are available in WRITE, XOR, OR and AND modes.
+ *
+ */
 
 #ifndef __MEMCOPY_H_INCLUDED__
 #define __MEMCOPY_H_INCLUDED__

@@ -1,25 +1,25 @@
-/**
- ** libxwin.h - GRX library X Windows private include file
- **
- ** Author:     Ulrich Leodolter
- ** E-mail:     ulrich@lab1.psy.univie.ac.at
- ** Date:       Thu Sep 28 09:46:21 1995
- ** RCSId:      $Id$
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** Contributions by:
- ** 070505 M.Alvarez, Using a Pixmap for BackingStore
- **
- **/
+/*
+ * libxwin.h - GRX library X Windows private include file
+ *
+ * Author:     Ulrich Leodolter
+ * E-mail:     ulrich@lab1.psy.univie.ac.at
+ * Date:       Thu Sep 28 09:46:21 1995
+ * RCSId:      $Id$
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Contributions by:
+ * 070505 M.Alvarez, Using a Pixmap for BackingStore
+ *
+ */
 
 #ifndef _LIBXWIN_H_
 #define _LIBXWIN_H_

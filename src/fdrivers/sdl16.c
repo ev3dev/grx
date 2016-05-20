@@ -1,20 +1,20 @@
-/**
- ** sdl16.c ---- the 32768/65536 color SDL frame buffer driver
- **
- ** Copyright (C) 2004 Dimitar Zhekov
- ** [e-mail: jimmy@is-vn.bg]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
- **
- ** This library is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- **
- **/
+/*
+ * sdl16.c ---- the 32768/65536 color SDL frame buffer driver
+ *
+ * Copyright (C) 2004 Dimitar Zhekov
+ * [e-mail: jimmy@is-vn.bg]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 
 /* some systems map LFB in normal user space (eg. Linux/svgalib) */
 /* near pointer stuff is equal to ram stuff :)                   */

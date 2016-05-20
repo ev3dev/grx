@@ -9,13 +9,13 @@ License: GRX
  derived work based on the GRX graphics library. Such source code is marked
  with the next text:
  .
- ** Copyright (c) [year] [author], [author information]
- **
- ** This file is part of the GRX graphics library.
- **
- ** The GRX graphics library is free software; you can redistribute it
- ** and/or modify it under some conditions; see the "copying.grx" file
- ** for details.
+ * Copyright (c) [year] [author], [author information]
+ *
+ * This file is part of the GRX graphics library.
+ *
+ * The GRX graphics library is free software; you can redistribute it
+ * and/or modify it under some conditions; see the "copying.grx" file
+ * for details.
  .
  Source code with the above copyright is distributed under the following terms:
  .
@@ -45,13 +45,13 @@ License: GRX
  .
  A copy of the GNU GPL (in the file "COPYING") and the GNU LGPL (in
  the file "COPYING.LIB") is included with this document. If you did
- not receive a copy of "COPYING" or "COPYING.LIB", you may obtain one 
+ not receive a copy of "COPYING" or "COPYING.LIB", you may obtain one
  from where this document was obtained, or by writing to:
  .
    Free Software Foundation
    51 Franklin Street, Fifth Floor
    Boston, MA 02110-1301
-   USA 
+   USA
 
 Files: fonts/*
 Copyright: See Below
@@ -110,7 +110,7 @@ License: MIT/X11
   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL M.I.T.
   * BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
   * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
-  * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN 
+  * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
   * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
   *
   * Author:  Your Name, Name of your organization
