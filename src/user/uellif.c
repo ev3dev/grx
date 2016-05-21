@@ -20,6 +20,7 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
 

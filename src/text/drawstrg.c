@@ -17,8 +17,10 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "clipping.h"
+#include "mouse.h"
 #include "text.h"
 
 int _GR_textattrintensevideo = 0;

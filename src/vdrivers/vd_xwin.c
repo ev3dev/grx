@@ -25,6 +25,7 @@
  *                   GR_biggest_graphics is honored
  */
 
+#include "colors.h"
 #include "libgrx.h"
 #include "libxwin.h"
 #include "grdriver.h"

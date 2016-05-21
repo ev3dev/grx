@@ -21,6 +21,7 @@
  *
  */
 
+#include "colors.h"
 #include "libgrx.h"
 #include "grdriver.h"
 #include "arith.h"

@@ -30,6 +30,7 @@
  *        looks like a circle on the screen
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
 

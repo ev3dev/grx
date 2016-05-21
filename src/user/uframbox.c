@@ -17,6 +17,7 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "arith.h"
 #include "usercord.h"

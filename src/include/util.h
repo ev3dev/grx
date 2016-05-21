@@ -1,8 +1,8 @@
 /*
- * majorln1.c ---- lines parallel with the X axis
+ * util.h ---- GRX library private include file
  *
  * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- * [e-mail: csaba@vuse.vanderbilt.edu].
+ * [e-mail: csaba@vuse.vanderbilt.edu]
  *
  * This file is part of the GRX graphics library.
  *
@@ -13,23 +13,18 @@
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 
-#include "globals.h"
-#include "mouse.h"
-#include "libgrx.h"
-#include "clipping.h"
+#ifndef __INCLUDE_UTIL_H__
+#define __INCLUDE_UTIL_H__
 
-void grx_draw_hline(int x1,int x2,int yy,GrxColor c)
-{
-        clip_hline(CURC,x1,x2,yy);
-        mouse_block(CURC,x1,yy,x2,yy);
-        (*FDRV->drawhline)(
-            x1 + CURC->x_offset,
-            yy + CURC->y_offset,
-            x2 - x1 + 1,
-            c
-        );
-        mouse_unblock();
-}
+/*
+ * internal utility functions
+ */
+GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode);
+GrxFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode);
+
+void _GrCloseVideoDriver(void);
+void _GrDummyFunction(void);
+
+#endif /* __INCLUDE_UTIL_H__ */

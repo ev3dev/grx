@@ -19,6 +19,9 @@
  * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  */
 
+#include "banking.h"
+#include "globals.h"
+#include "colors.h"
 #include "libgrx.h"
 #include "grdriver.h"
 #include "arith.h"

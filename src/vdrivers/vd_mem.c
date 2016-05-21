@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 
+#include "globals.h"
 #include "libgrx.h"
 #include "grdriver.h"
 #include "allocate.h"

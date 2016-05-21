@@ -18,6 +18,8 @@
  *
  */
 
+#include "colors.h"
+#include "globals.h"
 #include "libgrx.h"
 #include "clipping.h"
 #include "mempeek.h"

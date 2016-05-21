@@ -18,6 +18,8 @@
  *
  */
 
+#include "globals.h"
+#include "mouse.h"
 #include "libgrx.h"
 #include "clipping.h"
 #include "image.h"

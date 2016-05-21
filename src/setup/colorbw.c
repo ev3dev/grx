@@ -17,6 +17,7 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 
 #ifdef grx_color_info_get_black

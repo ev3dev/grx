@@ -16,6 +16,8 @@
  *
  */
 
+#include "banking.h"
+#include "colors.h"
 #include "libgrx.h"
 #include "grdriver.h"
 #include "allocate.h"

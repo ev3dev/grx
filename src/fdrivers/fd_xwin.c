@@ -25,6 +25,8 @@
  */
 
 #include <string.h>
+#include "colors.h"
+#include "globals.h"
 #include "libgrx.h"
 #include "libxwin.h"
 #include "arith.h"

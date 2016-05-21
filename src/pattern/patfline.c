@@ -20,9 +20,11 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "clipping.h"
 #include "shapes.h"
+#include "mouse.h"
 
 void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p)
 {

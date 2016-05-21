@@ -20,8 +20,10 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "clipping.h"
+#include "mouse.h"
 
 void _GrPatternFilledPlot(int x,int y,GrxPattern *p)
 {

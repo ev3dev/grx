@@ -16,6 +16,7 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #undef   GrColorInfo
 

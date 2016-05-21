@@ -16,7 +16,9 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
+#include "mouse.h"
 #include "clipping.h"
 
 void grx_draw_line(int x1,int y1,int x2,int y2,GrxColor c)

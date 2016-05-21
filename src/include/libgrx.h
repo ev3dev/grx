@@ -13,7 +13,6 @@
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 
 #ifndef __LIBGRX_H_INCLUDED__
@@ -193,116 +192,5 @@ typedef unsigned GR_int64 GR_int64u;
 #ifndef INLINE
 #define INLINE
 #endif
-
-
-/*
- * global library data structures
- */
-extern  struct _GR_driverInfo  _GrDriverInfo;
-extern  struct _GR_contextInfo _GrContextInfo;
-extern  struct _GR_colorInfo   _GrColorInfo;
-extern  struct _GR_mouseInfo   _GrMouseInfo;
-
-#define GrDriverInfo    (&_GrDriverInfo)
-#define GrContextInfo   (&_GrContextInfo)
-#define GrColorInfo     (&_GrColorInfo)
-#define GrMouseInfo     (&_GrMouseInfo)
-
-#define DRVINFO         (&_GrDriverInfo)
-#define CXTINFO         (&_GrContextInfo)
-#define CLRINFO         (&_GrColorInfo)
-#define MOUINFO         (&_GrMouseInfo)
-
-#define CURC            (&(CXTINFO->current))
-#define SCRN            (&(CXTINFO->screen))
-#define FDRV            (&(DRVINFO->fdriver))
-#define SDRV            (&(DRVINFO->sdriver))
-#define VDRV            ( (DRVINFO->vdriver))
-
-/*
- * banking stuff
- */
-#ifndef BANKHOOK
-#define BANKHOOK
-#endif
-
-#ifndef RWBANKHOOK
-#define RWBANKHOOK
-#endif
-
-#ifndef BANKPOS
-#define BANKPOS(offs)   ((GR_int16u)(offs))
-#endif
-#ifndef BANKNUM
-#define BANKNUM(offs)   ((int)((GR_int32u)(offs) >> 16))
-#endif
-#ifndef BANKLFT
-#define BANKLFT(offs)   (0x10000 - BANKPOS(offs))
-#endif
-
-#define SETBANK(bk) do {                            \
-        register int _bankval_ = (bk);              \
-        DRVINFO->curbank = _bankval_;               \
-        (*DRVINFO->set_bank)(_bankval_);            \
-        BANKHOOK;                                   \
-} while(0)
-
-#define SRWBANK(rb,wb) do {                         \
-        DRVINFO->curbank = (-1);                    \
-        (*DRVINFO->set_rw_banks)((rb),(wb));        \
-        RWBANKHOOK;                                 \
-} while(0)
-
-#define CHKBANK(bk) do {                            \
-        register int _bankval_ = (bk);              \
-        if(_bankval_ != DRVINFO->curbank) {         \
-        DRVINFO->curbank = _bankval_;               \
-        (*DRVINFO->set_bank)(_bankval_);            \
-        BANKHOOK;                                   \
-        }                                           \
-} while(0)
-
-/*
- * color stuff
- */
-extern int _GR_firstFreeColor; /* can't access all colors on all systems */
-extern int _GR_lastFreeColor;  /* eg. X11 and other windowing systems    */
-int _GrResetColors(void);      /* like grx_color_info_reset_colors but return true on success */
-
-#ifndef C_OPER
-#define C_OPER(color)   (unsigned int)(((GrxColor)(color) >> 24) & 15)
-#endif
-#define C_WRITE         (int)(GRX_COLOR_MODE_WRITE >> 24)
-#define C_XOR           (int)(GRX_COLOR_MODE_XOR   >> 24)
-#define C_OR            (int)(GRX_COLOR_MODE_OR    >> 24)
-#define C_AND           (int)(GRX_COLOR_MODE_AND   >> 24)
-#define C_IMAGE         (int)(GRX_COLOR_MODE_IMAGE >> 24)
-#define C_COLOR         GRX_COLOR_VALUE_MASK
-
-/*
- * mouse stuff
- */
-#define mouse_block(c,x1,y1,x2,y2) {                                        \
-        int __mouse_block_flag = 0;                                         \
-        mouse_addblock(c,x1,y1,x2,y2);
-#define mouse_addblock(c,x1,y1,x2,y2)                                       \
-        if(MOUINFO->docheck && (c)->gc_is_on_screen) {                          \
-        __mouse_block_flag |= (*MOUINFO->block)((c),(x1),(y1),(x2),(y2));   \
-        }
-#define mouse_unblock()                                                     \
-        if(__mouse_block_flag) {                                            \
-        (*MOUINFO->unblock)(__mouse_block_flag);                            \
-        }                                                                       \
-}
-
-/*
- * internal utility functions
- */
-GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode);
-GrxFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode);
-
-void _GrCloseVideoDriver(void);
-void _GrDummyFunction(void);
-
 
 #endif  /* whole file */

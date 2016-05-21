@@ -18,8 +18,10 @@
 
 #include <setjmp.h>
 
+#include "globals.h"
 #include "libgrx.h"
 #include "memfill.h"
+#include "mouse.h"
 #include "shapes.h"
 
 static ScanFillFunc _filler;

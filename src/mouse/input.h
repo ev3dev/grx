@@ -16,6 +16,8 @@
  *
  */
 
+#include "mouse.h"
+
 #define update_coord(WHICH,MICKEYS) do {                                    \
         static int fract = 0;                                               \
         int delta,ddelta,pos;                                               \

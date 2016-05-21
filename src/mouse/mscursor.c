@@ -18,6 +18,7 @@
 
 #include <stdarg.h>
 
+#include "globals.h"
 #include "input.h"
 #include "libgrx.h"
 #include "clipping.h"

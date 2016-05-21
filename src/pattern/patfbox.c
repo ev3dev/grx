@@ -16,6 +16,8 @@
  *
  */
 
+#include "globals.h"
+#include "mouse.h"
 #include "libgrx.h"
 #include "arith.h"
 #include "clipping.h"

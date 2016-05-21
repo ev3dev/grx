@@ -16,11 +16,13 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "shapes.h"
 #include "clipping.h"
 #include "arith.h"
 #include "memcopy.h"
+#include "mouse.h"
 
 /*
  * update the end point of line #1 and the starting point of line #2

@@ -19,6 +19,7 @@
  *
  */
 
+#include "mouse.h"
 #include "libgrx.h"
 
 void grx_clear_context(GrxColor bg)

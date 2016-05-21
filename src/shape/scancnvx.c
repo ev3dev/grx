@@ -16,10 +16,12 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "shapes.h"
 #include "clipping.h"
 #include "arith.h"
+#include "mouse.h"
 #include "polyedge.h"
 
 typedef struct {

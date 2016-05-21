@@ -16,7 +16,9 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
+#include "mouse.h"
 #include "clipping.h"
 
 void grx_bit_blt(GrxContext *dst,int dx,int dy,

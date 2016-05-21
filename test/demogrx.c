@@ -24,6 +24,7 @@
 #include "grxkeys.h"
 #include "gfaz.h"
 #include "drawing.h"
+#include "util.h"
 
 /* default mode */
 

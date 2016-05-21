@@ -16,8 +16,10 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "arith.h"
+#include "mouse.h"
 
 void grx_text_region_dump_text(const GrxTextRegion *r,int col,int row,int wdt,int hgt)
 {

@@ -16,6 +16,7 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 
 void grx_set_restore_mode(int restoreFlag)

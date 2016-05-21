@@ -16,6 +16,7 @@
  *
  */
 
+#include "mouse.h"
 #include "libgrx.h"
 #undef         GrMouseInfo
 

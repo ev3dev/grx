@@ -15,6 +15,7 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "grdriver.h"
 

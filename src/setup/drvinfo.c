@@ -16,8 +16,10 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "grdriver.h"
+#include "util.h"
 
 #undef GrDriverInfo
 

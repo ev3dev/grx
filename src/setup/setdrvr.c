@@ -19,11 +19,13 @@
 #include <ctype.h>
 #include <string.h>
 
+#include "globals.h"
 #include "libgrx.h"
 #include "grdriver.h"
 #include "arith.h"
 #include "memcopy.h"
 #include "memfill.h"
+#include "util.h"
 
 static char *nxtoken(char *p,char *token)
 {

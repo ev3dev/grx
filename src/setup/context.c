@@ -19,11 +19,13 @@
 #include <glib-object.h>
 #include <string.h>
 
+#include "globals.h"
 #include "libgrx.h"
 #include "allocate.h"
 #include "clipping.h"
 #include "memcopy.h"
 #include "memfill.h"
+#include "util.h"
 
 #define  MYCONTEXT      1
 #define  MYFRAME        2

@@ -16,10 +16,12 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "allocate.h"
 #include "arith.h"
 #include "clipping.h"
+#include "mouse.h"
 #include "shapes.h"
 
 #define  MAXR   120             /* max radius for which Bresenham works */

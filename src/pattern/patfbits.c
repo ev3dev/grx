@@ -15,6 +15,7 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 #include "clipping.h"
 #include "shapes.h"

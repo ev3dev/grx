@@ -22,6 +22,8 @@
 
 #include <glib-object.h>
 
+#include "colors.h"
+#include "globals.h"
 #include "libgrx.h"
 #include "allocate.h"
 

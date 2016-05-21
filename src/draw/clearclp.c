@@ -16,6 +16,7 @@
  *
  */
 
+#include "globals.h"
 #include "libgrx.h"
 
 void grx_clear_clip_box(GrxColor bg)

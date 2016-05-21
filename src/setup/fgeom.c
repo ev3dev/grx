@@ -18,6 +18,7 @@
 
 #include "libgrx.h"
 #include "arith.h"
+#include "util.h"
 
 /**
  * grx_frame_mode_get_n_planes:

@@ -19,6 +19,7 @@
  *
  */
 
+#include "colors.h"
 #include "libgrx.h"
 #include "libxwin.h"
 #include "grdriver.h"

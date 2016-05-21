@@ -21,11 +21,14 @@
 #include <ctype.h>
 #include <stdarg.h>
 
+#include "colors.h"
+#include "globals.h"
 #include "libgrx.h"
 #include "arith.h"
 #include "memfill.h"
 #include "memcopy.h"
 #include "grdriver.h"
+#include "util.h"
 
 GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
                               int txt,unsigned int *ep)

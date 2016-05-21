@@ -16,6 +16,8 @@
  *
  */
 
+#include "globals.h"
+
 void bitblt(GrxFrame *dst,int dx,int dy,
             GrxFrame *src,int  x,int  y,int w,int h,GrxColor op)
 {

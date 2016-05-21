@@ -16,6 +16,8 @@
  *
  */
 
+#include "colors.h"
+#include "globals.h"
 #include "libgrx.h"
 #include "memcopy.h"
 #include "memfill.h"
