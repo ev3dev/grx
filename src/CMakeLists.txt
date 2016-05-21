@@ -255,8 +255,18 @@ get_property (INCLUDE_DIRS DIRECTORY .. PROPERTY INCLUDE_DIRECTORIES)
 if (NOT CMAKE_CROSSCOMPILING)
 
 set (GTKDOC_SOURCE_FILES
-    ${CMAKE_SOURCE_DIR}/include/grx-3.0.h
+    ${CMAKE_SOURCE_DIR}/include/grx/color.h
+    ${CMAKE_SOURCE_DIR}/include/grx/common.h
+    ${CMAKE_SOURCE_DIR}/include/grx/context.h
+    ${CMAKE_SOURCE_DIR}/include/grx/draw.h
+    ${CMAKE_SOURCE_DIR}/include/grx/gformats.h
+    ${CMAKE_SOURCE_DIR}/include/grx/image.h
     ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h
+    ${CMAKE_SOURCE_DIR}/include/grx/mode.h
+    ${CMAKE_SOURCE_DIR}/include/grx/pattern.h
+    ${CMAKE_SOURCE_DIR}/include/grx/text.h
+    ${CMAKE_SOURCE_DIR}/include/grx/user.h
+    ${CMAKE_SOURCE_DIR}/include/grx/wideline.h
     application/linux_console.c
     image/ibuild.c
     image/iinverse.c
