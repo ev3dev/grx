@@ -21,9 +21,9 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void grx_user_draw_point(int x,int y,GrxColor c)
+void grx_user_draw_pixel(int x,int y,GrxColor c)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);
-        grx_draw_point(x,y,c);
+        grx_draw_pixel(x,y,c);
 }

@@ -20,9 +20,9 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void grx_user_draw_filled_point_with_pattern(int x,int y,GrxPattern *p)
+void grx_user_draw_filled_pixel_with_pattern(int x,int y,GrxPattern *p)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);
-        grx_draw_filled_point_with_pattern(x,y,p);
+        grx_draw_filled_pixel_with_pattern(x,y,p);
 }

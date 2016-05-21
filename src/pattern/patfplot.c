@@ -47,7 +47,7 @@ void _GrPatternFilledPlot(int x,int y,GrxPattern *p)
         }
 }
 
-void grx_draw_filled_point_with_pattern(int x,int y,GrxPattern *p)
+void grx_draw_filled_pixel_with_pattern(int x,int y,GrxPattern *p)
 {
         clip_dot(CURC,x,y);
         mouse_block(CURC,x,y,x,y);

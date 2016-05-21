@@ -27,7 +27,7 @@ void drawing(int xpos,int ypos,int xsize,int ysize,long fg,long bg)
         grx_draw_filled_box(XP(10),YP(50),XP(60),YP(90),fg);
         grx_draw_box(XP(70),YP(50),XP(90),YP(90),fg);
         for(ii = 0; ii < 100; ii++) {
-                grx_draw_point(XP((RND() % 20U) + 70),YP((RND() % 40U) + 50),fg);
+                grx_draw_pixel(XP((RND() % 20U) + 70),YP((RND() % 40U) + 50),fg);
         }
 }
 

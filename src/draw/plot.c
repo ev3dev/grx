@@ -22,7 +22,7 @@
 #include "arith.h"
 #include "clipping.h"
 
-void grx_draw_point(int x,int y,GrxColor c)
+void grx_draw_pixel(int x,int y,GrxColor c)
 {
         clip_dot(CURC,x,y);
         mouse_block(CURC,x,y,x,y);

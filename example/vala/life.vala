@@ -41,7 +41,7 @@ class LifeApplication : LinuxConsoleApplication {
                 var alive = Random.int_range (0, 131) > 107;
                 state[active_state, x, y] = alive ? 1 : 0;
                 if (alive) {
-                    draw_point_nc (x, y, color[1]);
+                    draw_pixel_nc (x, y, color[1]);
                 }
             }
         }
@@ -90,7 +90,7 @@ class LifeApplication : LinuxConsoleApplication {
         for (var y = 0; y < get_size_y (); y++) {
             for (var x = 0; x < get_size_x (); x++) {
                 if (state[active_state, x, y] != state[prev_state, x, y]) {
-                    draw_point_nc (x, y, color[state[active_state, x, y]]);
+                    draw_pixel_nc (x, y, color[state[active_state, x, y]]);
                 }
             }
         }

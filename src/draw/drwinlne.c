@@ -30,9 +30,9 @@
  * These functions operate on the current context (or, occasionally, the screen).
  */
 
-void (grx_draw_point_nc)(int x,int y,GrxColor c)
+void (grx_draw_pixel_nc)(int x,int y,GrxColor c)
 {
-        grx_draw_point_nc(x,y,c);
+        grx_draw_pixel_nc(x,y,c);
 }
 
 GrxColor (grx_get_pixel_nc)(int x,int y)

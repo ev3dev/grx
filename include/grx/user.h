@@ -36,7 +36,7 @@ void grx_user_get_window(gint *x1, gint *y1, gint *x2, gint *y2);
 void grx_user_convert_user_to_screen(gint *x, gint *y);
 void grx_user_convert_screen_to_user(gint *x, gint *y);
 
-void grx_user_draw_point(gint x, gint y, GrxColor c);
+void grx_user_draw_pixel(gint x, gint y, GrxColor c);
 void grx_user_draw_line(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_user_draw_hline(gint x1, gint x2, gint y, GrxColor c);
 void grx_user_draw_vline(gint x, gint y1, gint y2, GrxColor c);
@@ -87,7 +87,7 @@ void grx_user_draw_ellipse_arc_with_pattern(gint xc, gint yc, gint xa, gint ya, 
 void grx_user_draw_polyline_with_pattern(gint numpts, gint points[][2], GrxLinePattern *lp);
 void grx_user_draw_polygon_with_pattern(gint numpts, gint points[][2], GrxLinePattern *lp);
 
-void grx_user_draw_filled_point_with_pattern(gint x, gint y, GrxPattern *p);
+void grx_user_draw_filled_pixel_with_pattern(gint x, gint y, GrxPattern *p);
 void grx_user_draw_filled_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxPattern *p);
 void grx_user_draw_filled_box_with_pattern(gint x1, gint y1, gint x2, int y2, GrxPattern *p);
 void grx_user_draw_filled_circle_with_pattern(gint xc, gint yc, gint r, GrxPattern *p);

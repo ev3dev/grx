@@ -736,7 +736,7 @@ namespace Grx {
     public void clear_screen (Color bg);
     public void clear_context (Color bg);
     public void clear_clip_box (Color bg);
-    public void draw_point (int x, int y, Color c);
+    public void draw_pixel (int x, int y, Color c);
     public void draw_line (int x1, int y1, int x2, int y2, Color c);
     public void draw_hline (int x1, int x2, int y, Color c);
     public void draw_vline (int x, int y1, int y2, Color c);
@@ -794,7 +794,7 @@ namespace Grx {
     /*                 NON CLIPPING DRAWING PRIMITIVES                    */
     /* ================================================================== */
 
-    public void draw_point_nc(int x, int y, Color c);
+    public void draw_pixel_nc(int x, int y, Color c);
     public void draw_line_nc(int x1, int y1, int x2, int y2, Color c);
     public void draw_hline_nc(int x1, int x2, int y, Color c);
     public void draw_vline_nc(int x, int y1, int y2, Color c);
@@ -1282,7 +1282,7 @@ namespace Grx {
     public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern line_pattern);
     public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern line_pattern);
 
-    public void draw_filled_point_with_pattern (int x, int y, Pattern pattern);
+    public void draw_filled_pixel_with_pattern (int x, int y, Pattern pattern);
     public void draw_filled_line_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
     public void draw_filled_box_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
     public void draw_filled_circle_with_pattern (int xc, int yc, int r, Pattern pattern);
@@ -1346,7 +1346,7 @@ namespace Grx {
     public void draw_image_tiled (int x1, int y1, int x2, int y2);
     public void draw_filled_box_with_image (int xo, int yo, int x1, int y1, int x2, int y2);
     public void draw_hline_with_image (int xo, int yo, int x, int y, int width);
-    public void draw_point_with_image (int xo, int yo, int x, int y);
+    public void draw_pixel_with_image (int xo, int yo, int x, int y);
 
     /* ================================================================== */
     /*               DRAWING IN USER WINDOW COORDINATES                   */
@@ -1359,7 +1359,7 @@ namespace Grx {
         public void convert_user_to_screen (ref int x, ref int y);
         public void convert_screen_to_user (ref int x, ref int y);
 
-        public void draw_point (int x, int y, Color c);
+        public void draw_pixel (int x, int y, Color c);
         public void draw_line (int x1, int y1, int x2, int y2, Color c);
         public void draw_hline (int x1, int x2, int y, Color c);
         public void draw_vline (int x, int y1, int y2, Color c);
@@ -1400,7 +1400,7 @@ namespace Grx {
         public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern pattern);
         public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern pattern);
 
-        public void draw_filled_point_with_pattern (int x, int y, Pattern pattern);
+        public void draw_filled_pixel_with_pattern (int x, int y, Pattern pattern);
         public void draw_filled_line_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
         public void draw_filled_box_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
         public void draw_filled_circle_with_pattern (int xc, int yc, int r, Pattern pattern);

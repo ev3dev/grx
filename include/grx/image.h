@@ -55,7 +55,7 @@ void grx_draw_image_tiled(gint x1, gint y1, gint x2, gint y2, GrxImage *image);
 void grx_draw_filled_box_with_image(gint xo, gint yo, gint x1, gint y1,
                                     gint x2, gint y2, GrxImage *image);
 void grx_draw_hline_with_image(gint xo, gint yo, gint x, gint y, gint width, GrxImage *image);
-void grx_draw_point_with_image(gint xo, gint yo, gint x, gint y, GrxImage *image);
+void grx_draw_pixel_with_image(gint xo, gint yo, gint x, gint y, GrxImage *image);
 
 GrxImage *grx_image_mirror(GrxImage *image, GrxImageMirrorFlags flags);
 GrxImage *grx_image_stretch(GrxImage *image, gint new_width, gint new_height);

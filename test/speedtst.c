@@ -258,10 +258,10 @@ void drawpixeltest(gvmode *gp, XY_PAIRS *pairs) {
 
   t1 = g_get_monotonic_time();
   for (i=0; i < DRAWPIX_loops; ++i) {
-    for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c1);
-    for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c2);
-    for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c3);
-    for (j=PAIRS-1; j >= 0; j--) grx_draw_point_nc(x[j],y[j],c4);
+    for (j=PAIRS-1; j >= 0; j--) grx_draw_pixel_nc(x[j],y[j],c1);
+    for (j=PAIRS-1; j >= 0; j--) grx_draw_pixel_nc(x[j],y[j],c2);
+    for (j=PAIRS-1; j >= 0; j--) grx_draw_pixel_nc(x[j],y[j],c3);
+    for (j=PAIRS-1; j >= 0; j--) grx_draw_pixel_nc(x[j],y[j],c4);
   }
   t2 = g_get_monotonic_time();
   seconds = (double)(t2 - t1) / 1000000.0;

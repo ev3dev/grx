@@ -50,7 +50,7 @@ typedef struct {                        /* framed box colors */
 void grx_clear_screen(GrxColor bg);
 void grx_clear_context(GrxColor bg);
 void grx_clear_clip_box(GrxColor bg);
-void grx_draw_point(gint x, gint y, GrxColor c);
+void grx_draw_pixel(gint x, gint y, GrxColor c);
 void grx_draw_line(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_draw_hline(gint x1, gint x2, gint y, GrxColor c);
 void grx_draw_vline(gint x, gint y1, gint y2,GrxColor c);
@@ -116,7 +116,7 @@ void grx_put_scanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op);
 /*                 NON CLIPPING DRAWING PRIMITIVES                    */
 /* ================================================================== */
 
-void grx_draw_point_nc(gint x, gint y, GrxColor c);
+void grx_draw_pixel_nc(gint x, gint y, GrxColor c);
 void grx_draw_line_nc(gint x1, gint y1, gint x2, gint y2,GrxColor c);
 void grx_draw_hline_nc(gint x1, gint x2, gint y, GrxColor c);
 void grx_draw_vline_nc(gint x, gint y1, gint y2, GrxColor c);
@@ -131,7 +131,7 @@ GrxColor grx_get_pixel_nc(gint x, gint y);
 GrxColor grx_context_get_pixel_nc(GrxContext *c, gint x, gint y);
 
 #ifndef GRX_SKIP_INLINES
-#define grx_draw_point_nc(x,y,c) (                                             \
+#define grx_draw_pixel_nc(x,y,c) (                                             \
         (*grx_get_current_frame_driver()->drawpixel)(                          \
         ((x) + grx_context_get_current()->x_offset),                           \
         ((y) + grx_context_get_current()->y_offset),                           \
