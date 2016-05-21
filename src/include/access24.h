@@ -29,7 +29,7 @@
 #include "mempeek.h"
 #endif
 
-#if BYTE_ORDER==LITTLE_ENDIAN
+#if G_BYTE_ORDER==G_LITTLE_ENDIAN
 /* read color component from 32bit variable */
 #define RD24BYTE(p,idx)    peek_b(((GR_int8u *)(&p))+idx)
 /* write color componet to 32bit variable */

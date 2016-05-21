@@ -21,6 +21,7 @@
  */
 
 #include <ctype.h>
+#include <glib.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,7 +44,7 @@ static int   nextch = 0;
 static char name[40], family[40];
 static GrFontFileHeaderPSF fhdr;
 
-#if BYTE_ORDER==BIG_ENDIAN
+#if G_BYTE_ORDER==G_BIG_ENDIAN
 #include "ordswap.h"
 static void swap_header(void) {
     GRX_ENTER();
@@ -103,7 +104,7 @@ static int openfile(char *fname)
         }
         else if(fhdr.id[0] == PSF2_MAGIC0 && fhdr.id[1] == PSF2_MAGIC1 && fhdr.mode == PSF2_MAGIC2 && fhdr.size == PSF2_MAGIC3)
         {
-#if BYTE_ORDER==BIG_ENDIAN
+#if G_BYTE_ORDER==G_BIG_ENDIAN
             DBGPRINTF(DBG_FONT, ("swapping header byte order\n"));
             swap_header();
 #endif

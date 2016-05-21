@@ -16,6 +16,7 @@
  *
  */
 
+#include <glib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -34,7 +35,7 @@ static GR_int16u *wtable = NULL;
 static unsigned int wtsize = 0;
 static int     nextch = 0;
 
-#if BYTE_ORDER==BIG_ENDIAN
+#if G_BYTE_ORDER==G_BIG_ENDIAN
 #include "ordswap.h"
 static void swap_header(void) {
     GRX_ENTER();
@@ -81,7 +82,7 @@ static void cleanup(void)
 static int openfile(char *fname)
 {
         int res;
-#if BYTE_ORDER==BIG_ENDIAN
+#if G_BYTE_ORDER==G_BIG_ENDIAN
         int swap;
 #endif
         GRX_ENTER();
@@ -96,7 +97,7 @@ static int openfile(char *fname)
             DBGPRINTF(DBG_FONT,("reading header failed\n"));
             goto done;
         }
-#if BYTE_ORDER==BIG_ENDIAN
+#if G_BYTE_ORDER==G_BIG_ENDIAN
         swap = 0;
         if(fhdr.magic == GRX_FONTMAGIC_SWAPPED) {
           swap = 1;
@@ -120,7 +121,7 @@ static int openfile(char *fname)
                 DBGPRINTF(DBG_FONT,("Loading wtable failed\n"));
                 goto done;
             }
-#if BYTE_ORDER==BIG_ENDIAN
+#if G_BYTE_ORDER==G_BIG_ENDIAN
             if (swap) {
               DBGPRINTF(DBG_FONT,("swaping wtable byte order\n"));
               swap_wtable();

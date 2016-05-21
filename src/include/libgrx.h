@@ -26,10 +26,6 @@
 #  define __USE_MISC
 #endif
 
-#ifdef _AIX
-#define _BIG_ENDIAN
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -114,51 +110,6 @@ typedef unsigned GR_int32 GR_int32u;
 #ifdef GR_int64
 typedef   signed GR_int64 GR_int64s;
 typedef unsigned GR_int64 GR_int64u;
-#endif
-
-
-/*
-** get system endian
-*/
-#if !defined(_BIG_ENDIAN) && !defined(_LITTLE_ENDIAN)
-#  if   defined(_MSC_VER) \
-     || defined(__alpha__) \
-     || (defined(__LCC__) && defined(__i386__)) \
-     || (defined(__GNUC__) && \
-          (defined(__i386__) || defined(__x86_64__)))
-#    define _LITTLE_ENDIAN
-#  else
-#    include <asm/byteorder.h>
-#    ifdef __LITTLE_ENDIAN
-#      define _LITTLE_ENDIAN
-#    endif
-#    ifdef __BIG_ENDIAN
-#      define _BIG_ENDIAN
-#    endif
-#  endif
-#endif
-
-#if defined(__BYTE_ORDER__) && !defined(BYTE_ORDER)
-#  define BYTE_ORDER    __BYTE_ORDER__
-#  define LITTLE_ENDIAN __LITTLE_ENDIAN__
-#  define BIG_ENDIAN    __BIG_ENDIAN__
-#endif
-#if !defined(BYTE_ORDER) && defined(_LITTLE_ENDIAN)
-#define LITTLE_ENDIAN 0x1234
-#define BIG_ENDIAN    0x4321
-#define BYTE_ORDER    LITTLE_ENDIAN
-#endif
-#if !defined(BYTE_ORDER) && defined(_BIG_ENDIAN)
-#define LITTLE_ENDIAN 0x1234
-#define BIG_ENDIAN    0x4321
-#define BYTE_ORDER    BIG_ENDIAN
-#endif
-#ifndef BYTE_ORDER
-#error Unknown byte ordering !
-#endif
-
-#ifndef HARDWARE_BYTE_ORDER
-#define HARDWARE_BYTE_ORDER BYTE_ORDER
 #endif
 
 /*

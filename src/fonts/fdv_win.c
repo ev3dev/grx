@@ -17,6 +17,7 @@
  */
 
 #include <ctype.h>
+#include <glib.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +38,7 @@ static GrResourceFileHeaderWIN rhdr;
 static GrFontFileHeaderWIN fhdr;
 static GrCharHeaderWIN *ctable = NULL;
 
-#if BYTE_ORDER==BIG_ENDIAN
+#if G_BYTE_ORDER==G_BIG_ENDIAN
 #include "ordswap.h"
 static void swap_resource(void)
 {
@@ -115,7 +116,7 @@ static int openfile(char *fname)
             goto done;
         }
         if(rhdr.type_ff == 0xFF) {
-#if BYTE_ORDER==BIG_ENDIAN
+#if G_BYTE_ORDER==G_BIG_ENDIAN
             DBGPRINTF(DBG_FONT, ("swapping resource byte order\n"));
             swap_resource();
 #endif
@@ -133,7 +134,7 @@ static int openfile(char *fname)
             DBGPRINTF(DBG_FONT, ("read header failed\n"));
             goto done;
         }
-#if BYTE_ORDER==BIG_ENDIAN
+#if G_BYTE_ORDER==G_BIG_ENDIAN
         DBGPRINTF(DBG_FONT, ("swapping header byte order\n"));
         swap_header();
 #endif
@@ -151,7 +152,7 @@ static int openfile(char *fname)
             DBGPRINTF(DBG_FONT, ("read ctable failed\n"));
             goto done;
         }
-#if BYTE_ORDER==BIG_ENDIAN
+#if G_BYTE_ORDER==G_BIG_ENDIAN
         DBGPRINTF(DBG_FONT, ("swapping ctable byte order\n"));
         swap_ctable();
 #endif
