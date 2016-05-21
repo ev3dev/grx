@@ -21,6 +21,19 @@
 #include "mouse.h"
 #include "clipping.h"
 
+/**
+ * grx_draw_line:
+ * @x1: starting X coordinate
+ * @y1: starting Y coordinate
+ * @x2: ending X coordinate
+ * @y2: ending Y coordinate
+ * @c: the color
+ *
+ * Draws a line from the starting coordinates to the ending coordinates using
+ * the specified color.
+ *
+ * For horizontal and vertical lines, see grx_draw_hline() and grx_draw_vline().
+ */
 void grx_draw_line(int x1,int y1,int x2,int y2,GrxColor c)
 {
         clip_line(CURC,x1,y1,x2,y2);

@@ -301,6 +301,26 @@ set (GTKDOC_SOURCE_FILES
     setup/context.c
     setup/fgeom.c
     setup/hooks.c
+    shape/circle1.c
+    shape/circle2.c
+    shape/circle3.c
+    shape/circle4.c
+    shape/drawpoly.c
+    shape/fillcir1.c
+    shape/fillcir2.c
+    shape/fillcnvx.c
+    shape/fillell1.c
+    shape/fillell2.c
+    shape/fillpoly.c
+    shape/flood.c
+    shape/floodfil.c
+    shape/genellip.c
+    shape/polygon.c
+    shape/polyline.c
+    shape/scancnvx.c
+    shape/scanellp.c
+    shape/scanpoly.c
+    shape/solidfil.c
     text/type.c
 )
 

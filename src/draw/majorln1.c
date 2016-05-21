@@ -21,6 +21,18 @@
 #include "libgrx.h"
 #include "clipping.h"
 
+/**
+ * grx_draw_hline:
+ * @x1: starting X coordinate
+ * @x2: ending X coordinate
+ * @y: Y coordinate
+ * @c: the color
+ *
+ * Draws a horizontal line from the starting coordinates to the ending
+ * coordinates using the specified color.
+ *
+ * This is more efficient that using grx_draw_line()
+ */
 void grx_draw_hline(int x1,int x2,int yy,GrxColor c)
 {
         clip_hline(CURC,x1,x2,yy);

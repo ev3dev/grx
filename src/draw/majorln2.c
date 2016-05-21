@@ -21,6 +21,18 @@
 #include "libgrx.h"
 #include "clipping.h"
 
+/**
+ * grx_draw_vline:
+ * @x: X coordinate
+ * @y1: starting Y coordinate
+ * @y2: ending Y coordinate
+ * @c: the color
+ *
+ * Draws a vertical line from the starting coordinates to the ending
+ * coordinates using the specified color.
+ *
+ * This is more efficient that using grx_draw_line()
+ */
 void grx_draw_vline(int xx,int y1,int y2,GrxColor c)
 {
         clip_vline(CURC,xx,y1,y2);

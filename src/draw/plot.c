@@ -22,6 +22,14 @@
 #include "arith.h"
 #include "clipping.h"
 
+/**
+ * grx_draw_pixel:
+ * @x: the X coordinate
+ * @y: the Y coordinate
+ * @c: the color (can include #GrxColorMode)
+ *
+ * Draw a single pixel on the current context at the specified coordinates.
+ */
 void grx_draw_pixel(int x,int y,GrxColor c)
 {
         clip_dot(CURC,x,y);
