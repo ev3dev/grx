@@ -17,8 +17,6 @@
  *
  */
 
-#include <grx/pattern.h>
-
 #include "globals.h"
 #include "libgrx.h"
 #include "clipping.h"

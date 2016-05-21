@@ -19,6 +19,8 @@
  *
  */
 
+#include <grx/pattern.h>
+
 #include "libgrx.h"
 #include "usercord.h"
 

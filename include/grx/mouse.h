@@ -23,7 +23,7 @@
 #ifndef __GI_SCANNER__
 
 #include <grx/color.h>
-#include <grx/context.h>
+#include <grx/common.h>
 
 /* ================================================================== */
 /*                    GRAPHICS CURSOR UTILITIES                       */

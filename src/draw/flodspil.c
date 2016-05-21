@@ -16,6 +16,7 @@
  *
  */
 
+#include <grx/context.h>
 #include <grx/draw.h>
 
 #include <stdlib.h>

@@ -16,7 +16,9 @@
  *
  */
 
+#include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/mode.h>
 
 #include "libgrx.h"
 

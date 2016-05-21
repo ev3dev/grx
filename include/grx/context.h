@@ -24,11 +24,20 @@
 #include <glib-object.h>
 
 #include <grx/color.h>
-#include <grx/mode.h>
+#include <grx/common.h>
 
 /* ================================================================== */
 /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */
 /* ================================================================== */
+
+struct _GrxFrame {
+    guint8         *base_address[4];    /* base address of frame memory */
+    gshort          selector;           /* frame memory segment selector */
+    gboolean        is_on_screen;       /* is it in video memory ? */
+    guint8          memory_flags;       /* memory allocation flags */
+    gint            line_offset;        /* offset to next scan line in bytes */
+    GrxFrameDriver *driver;             /* frame access functions */
+};
 
 struct _GrxContext {
     GrxFrame    frame;                  /* frame buffer info */
@@ -80,6 +89,8 @@ void  grx_context_unref(GrxContext *context);
 void  grx_context_resize_subcontext(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
 void  grx_context_set_current(const GrxContext *context);
 void  grx_context_clear(GrxContext *ctx, GrxColor bg);
+
+GrxColor grx_context_get_pixel_at(GrxContext *c, gint x, gint y);
 
 void  grx_set_clip_box(gint x1, gint y1, gint x2, gint y2);
 void  grx_context_set_clip_box(GrxContext *c, gint x1, gint y1, gint x2, gint y2);

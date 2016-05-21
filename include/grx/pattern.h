@@ -23,9 +23,9 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#include <grx/mode.h>
-#include <grx/text.h>
-#include <grx/wideline.h>
+#include <grx/color.h>
+#include <grx/common.h>
+#include <grx/context.h>
 
 /* ================================================================== */
 /*             PATTERNED DRAWING AND FILLING PRIMITIVES               */
@@ -54,20 +54,20 @@ typedef struct {
  * for filling using 'bitblt'-s. It is mode dependent, typically one
  * of the library functions is used to build it. SET is_pixmap TO TRUE!!!
  */
-typedef struct {
+struct _GrxPixmap {
     gboolean     is_pixmap;      /* type flag for pattern union */
     gint         width;          /* pixmap width (in pixels)  */
     gint         height;         /* pixmap height (in pixels) */
     GrxColorMode mode;           /* bitblt mode (SET, OR, XOR, AND, IMAGE) */
     GrxFrame     source;         /* source context for fill */
-} GrxPixmap;
+};
 
 /**
  * GrxPattern:
  *
  * Fill pattern union -- can either be a bitmap or a pixmap
  */
-typedef union {
+union _GrxPattern {
     gboolean  is_pixmap;              /* nonzero for pixmaps */
     GrxBitmap bitmap;                 /* fill bitmap */
     GrxPixmap pixmap;                 /* fill pixmap */
@@ -79,7 +79,7 @@ typedef union {
     #define gp_pxp_height             pixmap.height
     #define gp_pxp_oper               pixmap.mode
     #define gp_pxp_source             pixmap.source
-} GrxPattern;
+};
 
 
 /**
@@ -89,10 +89,10 @@ typedef union {
  *   (1) fill pattern, and the
  *   (2) custom line drawing option
  */
-typedef struct {
+struct _GrxLinePattern {
     GrxPattern     *pattern;         /* fill pattern */
     GrxLineOptions *options;         /* width + dash pattern */
-} GrxLinePattern;
+};
 
 GType grx_pattern_get_type(void);
 

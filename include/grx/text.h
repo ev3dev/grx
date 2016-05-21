@@ -24,6 +24,7 @@
 #include <glib-object.h>
 
 #include <grx/color.h>
+#include <grx/common.h>
 
 /* ================================================================== */
 /*                   FONTS AND TEXT PRIMITIVES                        */
@@ -214,7 +215,7 @@ typedef union {           /* text color union */
     GrxColorTable p;                    /* color table for attribute text */
 } GrxTextColor;
 
-typedef struct {                          /* text drawing option structure */
+struct _GrxTextOption {                   /* text drawing option structure */
     GrxFont                 *txo_font;    /* font to be used */
     GrxTextColor             txo_fgcolor; /* foreground color */
     GrxTextColor             txo_bgcolor; /* background color */
@@ -222,7 +223,7 @@ typedef struct {                          /* text drawing option structure */
     GrxTextDirection         txo_direct;  /* direction */
     GrxTextAlignment         txo_xalign;  /* X alignment */
     GrxTextVerticalAlignment txo_yalign;  /* Y alignment */
-} GrxTextOption;
+};
 
 typedef struct {                        /* fixed font text window desc. */
     GrxFont     *txr_font;              /* font to be used */

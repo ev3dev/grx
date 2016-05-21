@@ -15,6 +15,8 @@
  *
  */
 
+#include <grx/context.h>
+
 #include "libgrx.h"
 #include "grdriver.h"
 #include "allocate.h"

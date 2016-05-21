@@ -15,6 +15,9 @@
  *
  */
 
+#include <grx/pattern.h>
+#include <grx/text.h>
+
 typedef void (*TextDrawBitmapFunc)(int x,int y,int w,int h,int ox, int oy,
                                    char *bmp,int pitch,int start,
                                    GrxColor fg,GrxColor bg,GrxPattern *p);

@@ -19,6 +19,8 @@
  *
  */
 
+#include <grx/context.h>
+
 #ifdef GRX_USE_RAM3x8
 
 /* name of blit function to be created */

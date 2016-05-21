@@ -17,6 +17,7 @@
  */
 
 #include <grx/context.h>
+#include <grx/mode.h>
 
 #include "libgrx.h"
 

@@ -17,6 +17,8 @@
  *
  */
 
+#include <grx/context.h>
+
 #include "libgrx.h"
 #include "usercord.h"
 

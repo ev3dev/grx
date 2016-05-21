@@ -21,6 +21,7 @@
 #include <setjmp.h>
 #include <jpeglib.h>
 
+#include <grx/context.h>
 #include <grx/draw.h>
 
 /*

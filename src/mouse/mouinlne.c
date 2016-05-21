@@ -16,6 +16,7 @@
  *
  */
 
+#include <grx/context.h>
 #include <grx/mouse.h>
 
 void (GrMouseEventMode)(int dummy)

@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/draw.h>
+
 #include "libgrx.h"
 #include "allocate.h"
 #include "shapes.h"

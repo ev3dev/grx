@@ -23,6 +23,7 @@
  *
  */
 
+#include <grx/draw.h>
 #include <grx/pattern.h>
 
 #include "libgrx.h"

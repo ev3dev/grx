@@ -18,6 +18,8 @@
  *
  */
 
+#include <grx/mode.h>
+
 #include "libgrx.h"
 #include "allocate.h"
 #include "image.h"

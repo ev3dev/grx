@@ -15,6 +15,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  */
+#include <grx/context.h>
 
 #include "banking.h"
 #include "colors.h"

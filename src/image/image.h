@@ -21,7 +21,9 @@
 #ifndef __IMAGE_H_INCLUDED__
 #define __IMAGE_H_INCLUDED__
 
+#include <grx/context.h>
 #include <grx/image.h>
+#include <grx/pattern.h>
 
 int _GrImageTestSize(int wdt,int hgt);
 GrxImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight);

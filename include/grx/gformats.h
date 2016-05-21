@@ -22,7 +22,7 @@
 
 #include <glib.h>
 
-#include <grx/context.h>
+#include <grx/common.h>
 
 /* ================================================================== */
 /*                           PNM FUNCTIONS                            */

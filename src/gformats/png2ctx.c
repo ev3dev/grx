@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <png.h>
 
+#include <grx/context.h>
 #include <grx/draw.h>
 
 /*

@@ -23,8 +23,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <grx/context.h>
 #include <grx/draw.h>
 #include <grx/gformats.h>
+#include <grx/mode.h>
 
 typedef struct{
   int method;  /* 0=file, 1=buffer */

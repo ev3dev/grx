@@ -18,6 +18,11 @@
  *
  */
 
+#include <grx/draw.h>
+#ifndef USR_KEEP_SHAPE
+#include <grx/user.h>
+#endif
+
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"

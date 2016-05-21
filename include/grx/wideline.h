@@ -22,7 +22,8 @@
 
 #include <glib.h>
 
-#include <grx/draw.h>
+#include <grx/color.h>
+#include <grx/common.h>
 
 /* ================================================================== */
 /*            THICK AND DASHED LINE DRAWING PRIMITIVES                */
@@ -33,12 +34,12 @@
  *   zero or one dash pattern length means the line is continuous
  *   the dash pattern always begins with a drawn section
  */
-typedef struct {
+struct _GrxLineOptions {
     GrxColor color;                   /* color used to draw line */
     gint     width;                   /* width of the line */
     gint     n_dash_patterns;         /* length of the dash pattern */
     guint8  *dash_patterns;           /* draw/nodraw pattern */
-} GrxLineOptions;
+};
 
 void grx_draw_line_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
 void grx_draw_box_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);

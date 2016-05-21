@@ -22,7 +22,7 @@
 
 #include <glib.h>
 
-#include <grx/pattern.h>
+#include <grx/common.h>
 
 /* ================================================================== */
 /*                      IMAGE MANIPULATION                            */

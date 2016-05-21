@@ -17,6 +17,8 @@
  *
  */
 
+#include <grx/draw.h>
+
 #include "globals.h"
 #include "libgrx.h"
 #include "arith.h"

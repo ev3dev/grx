@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/context.h>
+
 #include "banking.h"
 #include "colors.h"
 #include "libgrx.h"

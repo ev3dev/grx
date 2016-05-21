@@ -23,9 +23,7 @@
 #include <glib.h>
 
 #include <grx/color.h>
-#include <grx/context.h>
-#include <grx/pattern.h>
-#include <grx/wideline.h>
+#include <grx/common.h>
 
 /* ================================================================== */
 /*               DRAWING IN USER WINDOW COORDINATES                   */

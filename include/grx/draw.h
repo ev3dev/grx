@@ -23,7 +23,7 @@
 #include <glib.h>
 
 #include <grx/color.h>
-#include <grx/context.h>
+#include <grx/common.h>
 
 /* ================================================================== */
 /*                       GRAPHICS PRIMITIVES                          */
@@ -42,19 +42,19 @@
  *                               along the radii connecting the ends of the arc
  *                               to the center of the circle/ellipse.
  */
-typedef enum {
+enum _GrxArcStyle {
     GRX_ARC_STYLE_OPEN           = 0,
     GRX_ARC_STYLE_CLOSED_CHORD   = 1,
     GRX_ARC_STYLE_CLOSED_RADIUS  = 2,
-} GrxArcStyle;
+};
 
-typedef struct {                        /* framed box colors */
+struct _GrxFramedBoxColors {                        /* framed box colors */
     GrxColor background;
     GrxColor border_top;
     GrxColor border_right;
     GrxColor border_bottom;
     GrxColor border_left;
-} GrxFramedBoxColors;
+};
 
 void grx_clear_screen(GrxColor bg);
 void grx_clear_context(GrxColor bg);
@@ -90,7 +90,6 @@ void grx_context_flood_spill(GrxContext *ctx, gint x1, gint y1, gint x2, gint y2
 void grx_context_flood_spill2(GrxContext *ctx, gint x1, gint y1, gint x2, gint y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
 
 GrxColor grx_get_pixel_at(gint x, gint y);
-GrxColor grx_context_get_pixel_at(GrxContext *c, gint x, gint y);
 
 const GrxColor *grx_get_scanline(int x1,int x2,int yy);
 const GrxColor *grx_context_get_scanline(GrxContext *ctx,int x1,int x2,int yy);

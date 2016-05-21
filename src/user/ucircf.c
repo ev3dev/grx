@@ -30,6 +30,12 @@
  *        looks like a circle on the screen
  */
 
+#ifdef USR_KEEP_SHAPE
+#include <grx/draw.h>
+#else
+#include <grx/user.h>
+#endif
+
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
