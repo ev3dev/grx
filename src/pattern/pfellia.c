@@ -34,7 +34,7 @@ void grx_draw_filled_ellipse_arc_with_pattern(int xc,int yc,int xa,int ya,int st
       int numpts = grx_generate_ellipse_arc(xc,yc,xa,ya,start,end,points);
       GrFillArg fa;
 
-      if (style == GRX_ARC_STYLE_CLOSE2) {
+      if (style == GRX_ARC_STYLE_CLOSED_RADIUS) {
               points[numpts][0] = xc;
               points[numpts][1] = yc;
               numpts++;

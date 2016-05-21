@@ -29,7 +29,7 @@ void grx_draw_filled_ellipse_arc(int xc,int yc,int xa,int ya,int start,int end,G
     {
         GrFillArg fval;
         int npts  = grx_generate_ellipse_arc(xc,yc,xa,ya,start,end,pnts);
-        if(style == GRX_ARC_STYLE_CLOSE2) {
+        if(style == GRX_ARC_STYLE_CLOSED_RADIUS) {
             pnts[npts][0] = xc;
             pnts[npts][1] = yc;
             npts++;

@@ -39,7 +39,7 @@ void grx_draw_ellipse_arc_with_pattern(int xc,int yc,int xa,int ya,int start,int
         int close;
 
         close = FALSE;
-        if (style == GRX_ARC_STYLE_CLOSE2) {
+        if (style == GRX_ARC_STYLE_CLOSED_RADIUS) {
                 points[numpts][0] = xc;
                 points[numpts][1] = yc;
                 numpts++;
@@ -48,7 +48,7 @@ void grx_draw_ellipse_arc_with_pattern(int xc,int yc,int xa,int ya,int start,int
                 numpts++;
                 close = TRUE;
         }
-        if (style == GRX_ARC_STYLE_CLOSE1) {
+        if (style == GRX_ARC_STYLE_CLOSED_CHORD) {
                 points[numpts][0] = points[0][0];
                 points[numpts][1] = points[0][1];
                 numpts++;

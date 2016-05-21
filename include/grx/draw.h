@@ -33,10 +33,19 @@
 #define GRX_MAX_ELLIPSE_POINTS   (1024 + 5)
 #define GRX_MAX_ANGLE_VALUE      (3600)
 
+/**
+ * GrxArcStyle:
+ * @GRX_ARC_STYLE_OPEN: Draws the arc only, leaving the ends open.
+ * @GRX_ARC_STYLE_CLOSED_CHORD: Draws the arc and closes it with a line that is
+ *                              the chord connecting the two endpoints.
+ * @GRX_ARC_STYLE_CLOSED_RADIUS: Draws the arc and closes it with two lines
+ *                               along the radii connecting the ends of the arc
+ *                               to the center of the circle/ellipse.
+ */
 typedef enum {
-    GRX_ARC_STYLE_OPEN       = 0,
-    GRX_ARC_STYLE_CLOSE1     = 1,
-    GRX_ARC_STYLE_CLOSE2     = 2,
+    GRX_ARC_STYLE_OPEN           = 0,
+    GRX_ARC_STYLE_CLOSED_CHORD   = 1,
+    GRX_ARC_STYLE_CLOSED_RADIUS  = 2,
 } GrxArcStyle;
 
 typedef struct {                        /* framed box colors */

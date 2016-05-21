@@ -149,9 +149,9 @@ static void drawpf( int border, GrxPattern *pat )
   grx_draw_filled_circle_with_pattern( 139+border,46+border,45,pat );
   grx_draw_filled_ellipse_with_pattern( 232+border,46+border,45,35,pat );
   grx_draw_filled_circle_arc_with_pattern( 46+border,139+border,45,-300,600,
-                            GRX_ARC_STYLE_CLOSE2,pat );
+                            GRX_ARC_STYLE_CLOSED_RADIUS,pat );
   grx_draw_filled_ellipse_arc_with_pattern( 139+border,139+border,45,35,-700,400,
-                             GRX_ARC_STYLE_CLOSE2,pat );
+                             GRX_ARC_STYLE_CLOSED_RADIUS,pat );
   grx_draw_filled_line_with_pattern( 188+border,139+border,278+border,139+border,pat );
   grx_draw_filled_pixel_with_pattern( 47+border,228+border,pat );
   grx_draw_filled_pixel_with_pattern( 47+border,229+border,pat );
@@ -181,9 +181,9 @@ static void drawp( int border, GrxLinePattern *grlp )
   grx_draw_circle_with_pattern( 139+border,46+border,45,grlp );
   grx_draw_ellipse_with_pattern( 232+border,46+border,45,35,grlp );
   grx_draw_circle_arc_with_pattern( 46+border,139+border,45,-300,600,
-                        GRX_ARC_STYLE_CLOSE2,grlp );
+                        GRX_ARC_STYLE_CLOSED_RADIUS,grlp );
   grx_draw_ellipse_arc_with_pattern( 139+border,139+border,45,35,-700,400,
-                         GRX_ARC_STYLE_CLOSE2,grlp );
+                         GRX_ARC_STYLE_CLOSED_RADIUS,grlp );
   grx_draw_line_with_pattern( 188+border,139+border,278+border,139+border,grlp );
   for( i=0; i<4; i++ )
     for( j=0; j<2; j++ )
