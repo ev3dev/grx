@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 David Lechner <david@lechnology.com>
+ * Copyright 2014-2016 David Lechner <david@lechnology.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -259,15 +259,11 @@ namespace Grx {
         USER_RESOLUTION
     }
 
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class VideoDriver {
-        [CCode (cname = "GrxVideoDriver", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct VideoDriver {
         public string name;
         public VideoAdapter adapter;
-        public VideoDriver inherit;
+        public VideoDriver *inherit;
         [CCode (array_length_cname = "n_modes", array_length_type = "int")]
         public VideoMode[] modes;
         public VideoDriverDetect detect;
@@ -275,10 +271,6 @@ namespace Grx {
         public VideoDriverReset reset;
         public VideoDriverSelectMode select_mode;
         public VideoDriverFlags flags;
-
-        [CCode (cname = "g_malloc0")]
-        public VideoDriver (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
     }
 
     [CCode (has_target = false, has_type_id = false)]
@@ -293,12 +285,8 @@ namespace Grx {
     /*
      * Video driver mode descriptor structure.
      */
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class VideoMode {
-        [CCode (cname = "GrxVideoMode", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct VideoMode {
         public char present;
         public char bpp;
         public short width;
@@ -306,11 +294,7 @@ namespace Grx {
         public short mode;
         public int line_offset;
         public int user_data;
-        public VideoModeExt extended_info;
-
-        [CCode (cname = "g_malloc0")]
-        public VideoMode (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
+        public VideoModeExt *extended_info;
     }
 
     /**
@@ -332,14 +316,10 @@ namespace Grx {
      * descriptor. The reason for this is that frequently several modes can
      * share the same extended info.
      */
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class VideoModeExt {
-        [CCode (cname = "GrxVideoModeExt", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct VideoModeExt {
         public FrameMode mode;
-        public FrameDriver driver;
+        public FrameDriver *driver;
         [CCode (cname = "frame")]
         public char *fb_data;
         [CCode (cname = "cpos", array_length_cexpr = "3")]
@@ -354,10 +334,6 @@ namespace Grx {
         public VideoModeSetRWBanks set_rw_banks;
         public VideoModeLoadColor load_color;
         public int lfb_selector;
-
-        [CCode (cname = "g_malloc0")]
-        public VideoModeExt (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
     }
 
     [CCode (has_target = false, has_type_id = false)]
@@ -376,12 +352,8 @@ namespace Grx {
     /**
      * The frame driver descriptor structure.
      */
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class FrameDriver {
-        [CCode (cname = "GrxFrameDriver", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct FrameDriver {
         public FrameMode mode;
         public FrameMode rmode;
         public int is_video;
@@ -413,10 +385,6 @@ namespace Grx {
         public FrameDriverGetIndexedScanLine get_indexed_scan_line;
         [CCode (cname = "putscanline")]
         public FrameDriverPutScanLine put_scan_line;
-
-        [CCode (cname = "g_malloc0")]
-        public FrameDriver (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
     }
 
     [CCode (has_target = false, has_type_id = false)]
@@ -451,14 +419,14 @@ namespace Grx {
     [CCode (cname = "struct _GR_driverInfo", has_type_id = false)]
     [Compact]
     public class DriverInfo {
-        public unowned VideoDriver vdriver;
+        public VideoDriver *vdriver;
         [CCode (cname = "curmode")]
-        public unowned VideoMode current_mode;
+        public VideoMode *current_mode;
         [CCode (cname = "actmode")]
-        public unowned VideoMode actual_mode;
-        public unowned FrameDriver fdriver;
-        public unowned FrameDriver sdriver;
-        public unowned FrameDriver tdriver;
+        public VideoMode actual_mode;
+        public FrameDriver fdriver;
+        public FrameDriver sdriver;
+        public FrameDriver tdriver;
         public GraphicsMode mcode;
         [CCode (cname = "deftw")]
         public int default_text_width;
@@ -551,23 +519,15 @@ namespace Grx {
     /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */
     /* ================================================================== */
 
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class Frame {
-        [CCode (cname = "GrxFrame", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct Frame {
         [CCode (array_length_cexpr = "4")]
         public uint8*[] base_address;
         public short selector;
         public bool is_on_screen;
         public uint8 memory_flags;
         public int line_offset;
-        public unowned FrameDriver driver;
-
-        [CCode (cname = "g_malloc0")]
-        public Frame (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
+        public FrameDriver *driver;
     }
 
     [CCode (copy_function = "grx_context_ref", free_function = "grx_context_unref")]
@@ -597,7 +557,7 @@ namespace Grx {
         [CCode (cname = "frame.line_offset")]
         public int line_offset;
         [CCode (cname = "frame.driver")]
-        public unowned FrameDriver driver;
+        public unowned FrameDriver *driver;
 
         public static Context? create (int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
         public static Context? create_full (FrameMode mode, int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
@@ -689,21 +649,13 @@ namespace Grx {
         CLOSE2
     }
 
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class FramedBoxColors {
-        [CCode (cname = "GrxFramedBoxColors", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct FramedBoxColors {
         public Color background;
         public Color border_top;
         public Color border_right;
         public Color border_bottom;
         public Color border_left;
-
-        [CCode (cname = "g_malloc0")]
-        public FramedBoxColors (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
     }
 
     /**
@@ -712,15 +664,8 @@ namespace Grx {
      * It is an array of colors with the first element being the number of
      * colors in the table
      */
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class ColorTable {
-        [CCode (cname = "g_malloc0")]
-        ColorTable.alloc (size_t size);
-        public ColorTable (uint size) {
-            this.alloc (get_alloc_size (size) * sizeof(Color));
-        }
-
+    [CCode (has_type_id = false)]
+    public struct ColorTable {
         public uint size { [CCode (cname = "GRX_COLOR_TABLE_GET_SIZE")]get; }
         [Ccode (cname = "GRX_COLOR_TABLE_GET_COLOR")]
         public Color get (uint index);
@@ -875,18 +820,10 @@ namespace Grx {
         PROPORTION
     }
 
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class FontCharInfo {
-        [CCode (cname = "GrxFontCharInfo", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct FontCharInfo {
         public uint width;
         public uint offset;
-
-        [CCode (cname = "g_malloc0")]
-        public FontCharInfo (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
     }
 
     [CCode (copy_function = "grx_font_ref", free_function = "grx_font_unref")]
@@ -987,12 +924,8 @@ namespace Grx {
         unowned ColorTable as_color_table;
     }
 
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class TextOptions {
-        [CCode (cname = "GrxTextOptions", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct TextOptions {
         [CCode (cname = "txo_font")]
         public unowned Font font;
         [CCode (cname = "txo_fgcolor")]
@@ -1007,10 +940,6 @@ namespace Grx {
         public TextAlignment x_align;
         [CCode (cname = "txo_yalign")]
         public TextVerticalAlignment y_align;
-
-        [CCode (cname = "g_malloc0")]
-        public TextOptions (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
 
         public int get_char_width (int chr);
         public int get_char_height (int chr);
@@ -1035,12 +964,8 @@ namespace Grx {
         }
     }
 
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class TextRegion {
-        [CCode (cname = "GrxTextRegion", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct TextRegion {
         [CCode (cname = "txr_font")]
         public unowned Font font;
         [CCode (cname = "txr_fgcolor")]
@@ -1063,10 +988,6 @@ namespace Grx {
         public int y_pos;
         [CCode (cname = "txr_chrtype")]
         public CharType chr_type;
-
-        [CCode (cname = "g_malloc0")]
-        public TextRegion (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
 
         public void dump_char (int chr, int col, int row);
         public void dump_text (int col, int row, int width, int height);
@@ -1092,12 +1013,8 @@ namespace Grx {
      * Zero or one dash pattern length means the line is continuous.
      * The dash pattern always begins with a drawn section.
      */
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class LineOptions {
-        [CCode (cname = "GrxLineOptions", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct LineOptions {
         /**
          * Color used to draw line.
          */
@@ -1108,9 +1025,6 @@ namespace Grx {
          */
         public int width;
 
-        [CCode (cname = "g_malloc0")]
-        public LineOptions (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
         /**
          * Draw/no-draw pattern.
          */
@@ -1143,12 +1057,8 @@ namespace Grx {
      * It is always 8 pixels wide (1 byte per scan line), its height is
      * user-defined. SET THE TYPE FLAG TO ZERO!!!
      */
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class Bitmap {
-        [CCode (cname = "GrxBitmap", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct Bitmap {
         /**
          * Type flag for pattern union.
          */
@@ -1174,14 +1084,10 @@ namespace Grx {
          */
         public Color bg_color;
 
-        [CCode (cname = "g_malloc0")]
-        public Bitmap (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
-
         /**
          * Set if dynamically allocated
          */
-        public int free_on_pattern_destroy;
+        public bool free_on_pattern_destroy;
     }
 
     /**
@@ -1191,12 +1097,8 @@ namespace Grx {
      * It is mode dependent, typically one of the library functions is used to
      * build it. KEEP THE TYPE FLAG NONZERO!!!
      */
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class Pixmap {
-        [CCode (cname = "GrxPixmap", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct Pixmap {
         /**
          * type flag for pattern union
          */
@@ -1217,20 +1119,10 @@ namespace Grx {
          */
         public ColorMode mode;
 
-        [CCode (cname = "&self->source")]
-        static Frame source_hack;
-
         /**
          * source context for fill
          */
-        [CCode (cname = "&self->source")]
-        public Frame source {
-            get { return source_hack; }
-        }
-
-        [CCode (cname = "g_malloc0")]
-        public Pixmap (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
+        public Frame source;
     }
 
     /**
@@ -1252,12 +1144,8 @@ namespace Grx {
      * 1. Fill pattern, and the
      * 2. Custom line drawing option
      */
-    [CCode (free_function = "g_free", has_type_id = false)]
-    [Compact]
-    public class LinePattern {
-        [CCode (cname = "GrxLinePattern", destroy_function = "", has_type_id = false)]
-        struct MallocStruct {}
-
+    [CCode (has_type_id = false)]
+    public struct LinePattern {
         /**
          * Fill pattern
          */
@@ -1266,11 +1154,7 @@ namespace Grx {
         /**
          * width + dash pattern
          */
-        LinePattern options;
-
-        [CCode (cname = "g_malloc0")]
-        public LinePattern (size_t size = sizeof(MallocStruct))
-            requires (size == sizeof(MallocStruct));
+        LinePattern *options;
     }
 
     public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LinePattern line_pattern);
