@@ -23,18 +23,20 @@
  *
  */
 
+#include <grx/draw.h>
+
 #include "libgrx.h"
 #include "shapes.h"
 
 void grx_draw_line_with_pattern(int x1,int y1,int x2,int y2,GrxLinePattern *lp)
 {
         GrFillArg fval;
-        int points[2][2];
+        GrxPoint points[2];
 
-        points[0][0] = x1;
-        points[0][1] = y1;
-        points[1][0] = x2;
-        points[1][1] = y2;
+        points[0].x = x1;
+        points[0].y = y1;
+        points[1].x = x2;
+        points[1].y = y2;
         fval.p = lp->pattern;
         _GrDrawCustomPolygon(2,points,lp->options,&_GrPatternFiller,fval,FALSE,FALSE);
 }

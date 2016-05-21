@@ -49,7 +49,7 @@ void grx_draw_circle_arc_with_options(gint xc, gint yc, gint r, gint start, gint
                                       GrxArcStyle style, const GrxLineOptions *o);
 void grx_draw_ellipse_arc_with_options(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
                                        GrxArcStyle style, const GrxLineOptions *o);
-void grx_draw_polyline_with_options(gint numpts, gint points[][2], const GrxLineOptions *o);
-void grx_draw_polygon_with_options(gint numpts, gint points[][2], const GrxLineOptions *o);
+void grx_draw_polyline_with_options(gint n_points, GrxPoint *points, const GrxLineOptions *o);
+void grx_draw_polygon_with_options(gint n_points, GrxPoint *points, const GrxLineOptions *o);
 
 #endif /* __GRX_WIDELINE_H__ */

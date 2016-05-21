@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/draw.h>
+
 #include "globals.h"
 #include "libgrx.h"
 #include "shapes.h"
@@ -31,44 +33,44 @@ typedef struct {
 } edge;
 
 #define next_edge(ed,n,pt) {                                        \
-    ed.index   = (ed.index + ed.dir) % (unsigned int)n;                \
+    ed.index   = (ed.index + ed.dir) % (unsigned int)n;             \
     ed.e.x     = ed.e.xlast;                                        \
     ed.e.y     = ed.e.ylast;                                        \
-    ed.e.xlast = pt[ed.index][0];                                \
-    ed.e.ylast = pt[ed.index][1];                                \
+    ed.e.xlast = pt[ed.index].x;                                    \
+    ed.e.ylast = pt[ed.index].y;                                    \
 }
 
-void _GrScanConvexPoly(int n,int pt[][2],GrFiller *f,GrFillArg c)
+void _GrScanConvexPoly(int n,GrxPoint *pt,GrFiller *f,GrFillArg c)
 {
         edge L,R;
         int  xmin,xmax;
         int  ymin,ymax;
         int  ypos,i;
         if((n > 1) &&
-           (pt[0][0] == pt[n - 1][0]) &&
-           (pt[0][1] == pt[n - 1][1])) {
+           (pt[0].x == pt[n - 1].x) &&
+           (pt[0].y == pt[n - 1].y)) {
             n--;
         }
         if(n < 1) {
             return;
         }
-        xmin = xmax = pt[0][0];
-        ymin = ymax = pt[0][1];
+        xmin = xmax = pt[0].x;
+        ymin = ymax = pt[0].y;
         ypos = 0;
         for(i = 1; i < n; i++) {
-            int *ppt = pt[i];
-            if(ymin > ppt[1]) ymin = ppt[1],ypos = i;
-            if(ymax < ppt[1]) ymax = ppt[1];
-            if(xmin > ppt[0]) xmin = ppt[0];
-            if(xmax < ppt[0]) xmax = ppt[0];
+            GrxPoint ppt = pt[i];
+            if(ymin > ppt.y) ymin = ppt.y,ypos = i;
+            if(ymax < ppt.y) ymax = ppt.y;
+            if(xmin > ppt.x) xmin = ppt.x;
+            if(xmax < ppt.x) xmax = ppt.x;
         }
         clip_ordbox(CURC,xmin,ymin,xmax,ymax);
         mouse_block(CURC,xmin,ymin,xmax,ymax);
         L.dir          = 1;
         R.dir          = n - 1;
         L.index          = R.index   = ypos;
-        L.e.xlast = R.e.xlast = pt[ypos][0];
-        L.e.ylast = R.e.ylast = pt[ypos][1];
+        L.e.xlast = R.e.xlast = pt[ypos].x;
+        L.e.ylast = R.e.ylast = pt[ypos].y;
         for( ; ; ) {
             next_edge(L,n,pt);
             if(L.e.ylast >= ymin) {

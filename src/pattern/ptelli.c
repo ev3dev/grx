@@ -30,9 +30,9 @@
 #include "shapes.h"
 
 void grx_draw_ellipse_with_pattern(int xc,int yc,int xa,int ya,GrxLinePattern *lp) {
-    int (*points)[2];
+    GrxPoint *points;
     setup_ALLOC();
-    points = ALLOC(sizeof(int) * 2 * GRX_MAX_ELLIPSE_POINTS);
+    points = ALLOC(sizeof(GrxPoint) * GRX_MAX_ELLIPSE_POINTS);
     if (points != NULL)
     {
         int numpts = grx_generate_ellipse(xc,yc,xa,ya,points);

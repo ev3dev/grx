@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/draw.h>
+
 #include "globals.h"
 #include "libgrx.h"
 #include "shapes.h"
@@ -23,29 +25,29 @@
 #include "arith.h"
 #include "mouse.h"
 
-void _GrDrawPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c,int doClose)
+void _GrDrawPolygon(int n,GrxPoint *pt,GrFiller *f,GrFillArg c,int doClose)
 {
         int i,px,py,x1,y1,x2,y2;
         if(n <= 0) return;
         if(n == 1) doClose = TRUE;
-        x1 = x2 = pt[0][0];
-        y1 = y2 = pt[0][1];
+        x1 = x2 = pt[0].x;
+        y1 = y2 = pt[0].y;
         for(i = 1; i < n; i++) {
-            int *ppt = pt[i];
-            if(x1 > ppt[0]) x1 = ppt[0];
-            if(x2 < ppt[0]) x2 = ppt[0];
-            if(y1 > ppt[1]) y1 = ppt[1];
-            if(y2 < ppt[1]) y2 = ppt[1];
+            GrxPoint ppt = pt[i];
+            if(x1 > ppt.x) x1 = ppt.x;
+            if(x2 < ppt.x) x2 = ppt.x;
+            if(y1 > ppt.y) y1 = ppt.y;
+            if(y2 < ppt.y) y2 = ppt.y;
         }
         clip_ordbox(CURC,x1,y1,x2,y2);
         mouse_block(CURC,x1,y1,x2,y2);
-        px = pt[n - 1][0];
-        py = pt[n - 1][1];
+        px = pt[n - 1].x;
+        py = pt[n - 1].y;
         for(i = 0; i < n; i++) {
             x1 = px;
             y1 = py;
-            x2 = px = pt[i][0];
-            y2 = py = pt[i][1];
+            x2 = px = pt[i].x;
+            y2 = py = pt[i].y;
             if(i | doClose) {
                 if(y1 > y2) {
                     iswap(x1,x2);

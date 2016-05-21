@@ -113,8 +113,8 @@ void grx_draw_circle_arc_with_pattern(gint xc, gint yc, gint r, gint start, gint
                                       GrxArcStyle style, GrxLinePattern *line_pattern);
 void grx_draw_ellipse_arc_with_pattern(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
                                        GrxArcStyle style, GrxLinePattern *line_pattern);
-void grx_draw_polyline_with_pattern(gint numpts, gint points[][2], GrxLinePattern *line_pattern);
-void grx_draw_polygon_with_pattern(gint numpts, gint points[][2], GrxLinePattern *line_pattern);
+void grx_draw_polyline_with_pattern(gint n_points, GrxPoint *points, GrxLinePattern *line_pattern);
+void grx_draw_polygon_with_pattern(gint n_points, GrxPoint *points, GrxLinePattern *line_pattern);
 
 void grx_draw_filled_pixel_with_pattern(gint x, gint y, GrxPattern *pattern);
 void grx_draw_filled_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxPattern *pattern);
@@ -125,8 +125,8 @@ void grx_draw_filled_circle_arc_with_pattern(gint xc, gint yc, gint r, gint star
                                              GrxArcStyle style, GrxPattern *pattern);
 void grx_draw_filled_ellipse_arc_with_pattern(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
                                               GrxArcStyle style,GrxPattern *pattern);
-void grx_draw_filled_convex_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *pattern);
-void grx_draw_filled_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *pattern);
+void grx_draw_filled_convex_polygon_with_pattern(gint n_points, GrxPoint *points, GrxPattern *pattern);
+void grx_draw_filled_polygon_with_pattern(gint n_points, GrxPoint *points, GrxPattern *pattern);
 void grx_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *pattern);
 
 void grx_draw_char_with_pattern(gint chr, gint x, gint y, const GrxTextOptions *opt, GrxPattern *pattern);

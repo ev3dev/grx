@@ -16,6 +16,7 @@
  *
  */
 
+#include <grx/draw.h>
 #include <grx/pattern.h>
 
 #include "globals.h"
@@ -23,19 +24,18 @@
 #include "allocate.h"
 #include "usercord.h"
 
-void grx_user_draw_polygon_with_pattern(int numpts,int points[][2],GrxLinePattern *lp)
+void grx_user_draw_polygon_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *lp)
 {
         int pt;
-        int (*tmp)[2];
+        GrxPoint *tmp;
         setup_ALLOC();
-        tmp = ALLOC(sizeof(int) * 2 * numpts);
+        tmp = ALLOC(sizeof(GrxPoint) * numpts);
 
         if (tmp != NULL) {
           for ( pt = 0;pt < numpts;pt++) {
-                tmp[pt][0] = points[pt][0];
-                tmp[pt][1] = points[pt][1];
-                U2SX(tmp[pt][0],CURC);
-                U2SY(tmp[pt][1],CURC);
+                tmp[pt] = points[pt];
+                U2SX(tmp[pt].x,CURC);
+                U2SY(tmp[pt].y,CURC);
           }
           grx_draw_polygon_with_pattern(numpts,tmp,lp);
           FREE(tmp);

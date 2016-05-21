@@ -23,10 +23,12 @@
  *
  */
 
+#include <grx/draw.h>
+
 #include "libgrx.h"
 #include "shapes.h"
 
-void grx_draw_polyline_with_pattern(int numpts,int points[][2],GrxLinePattern *lp)
+void grx_draw_polyline_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *lp)
 {
         GrFillArg fval;
 
@@ -35,7 +37,7 @@ void grx_draw_polyline_with_pattern(int numpts,int points[][2],GrxLinePattern *l
                              &_GrPatternFiller,fval,FALSE,FALSE);
 }
 
-void grx_draw_polygon_with_pattern(int numpts,int points[][2],GrxLinePattern *lp)
+void grx_draw_polygon_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *lp)
 {
         GrFillArg fval;
 
@@ -47,12 +49,12 @@ void grx_draw_polygon_with_pattern(int numpts,int points[][2],GrxLinePattern *lp
 void grx_draw_box_with_pattern(int x1,int y1,int x2,int y2,GrxLinePattern *lp)
 {
         GrFillArg fval;
-        int points[4][2];
+        GrxPoint points[4];
 
-        points[0][0] = x1; points[0][1] = y1;
-        points[1][0] = x1; points[1][1] = y2;
-        points[2][0] = x2; points[2][1] = y2;
-        points[3][0] = x2; points[3][1] = y1;
+        points[0].x = x1; points[0].y = y1;
+        points[1].x = x1; points[1].y = y2;
+        points[2].x = x2; points[2].y = y2;
+        points[3].x = x2; points[3].y = y1;
         fval.p = lp->pattern;
         _GrDrawCustomPolygon(4,points,lp->options,
                              &_GrPatternFiller,fval,TRUE,FALSE);

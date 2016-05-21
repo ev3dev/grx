@@ -68,7 +68,7 @@ static int last_xs = 0,last_ys = 0;
 static int last_xe = 0,last_ye = 0;
 static int last_xc = 0,last_yc = 0;
 
-static void GrSinCos(int n,int cx,int cy,int rx,int ry,int *pt)
+static void GrSinCos(int n,int cx,int cy,int rx,int ry,GrxPoint pt)
 {
         int cval,sval;
         switch((n &= (PERIOD - 1)) / PQUART) {
@@ -89,11 +89,11 @@ static void GrSinCos(int n,int cx,int cy,int rx,int ry,int *pt)
             cval =  sintab[n - PERIOD + PQUART];
             break;
         }
-        pt[0] = cx; pt[0] += irscale(rx,cval,TRIGMGN);
-        pt[1] = cy; pt[1] -= irscale(ry,sval,TRIGMGN);
+        pt.x = cx; pt.x += irscale(rx,cval,TRIGMGN);
+        pt.y = cy; pt.y -= irscale(ry,sval,TRIGMGN);
 }
 
-int grx_generate_ellipse_arc(int cx,int cy,int rx,int ry,int start,int end,int pt[][2])
+int grx_generate_ellipse_arc(int cx,int cy,int rx,int ry,int start,int end,GrxPoint *pt)
 {
         int npts = urscale((iabs(rx) + iabs(ry)),314,(SEGLEN * 100));
         int step,closed;
@@ -134,14 +134,14 @@ int grx_generate_ellipse_arc(int cx,int cy,int rx,int ry,int start,int end,int p
         }
         last_xc = cx;
         last_yc = cy;
-        last_xs = pt[0][0];
-        last_ys = pt[0][1];
-        last_xe = pt[npts - 1][0];
-        last_ye = pt[npts - 1][1];
+        last_xs = pt[0].x;
+        last_ys = pt[0].y;
+        last_xe = pt[npts - 1].x;
+        last_ye = pt[npts - 1].y;
         return(npts);
 }
 
-int grx_generate_ellipse(int xc,int yc,int rx,int ry,int pt[][2])
+int grx_generate_ellipse(int xc,int yc,int rx,int ry,GrxPoint *pt)
 {
         return(grx_generate_ellipse_arc(xc,yc,rx,ry,0,0,pt));
 }

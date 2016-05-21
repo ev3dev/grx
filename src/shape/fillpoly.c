@@ -19,7 +19,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void grx_draw_filled_polygon(int n,int pt[][2],GrxColor c)
+void grx_draw_filled_polygon(int n,GrxPoint *pt,GrxColor c)
 {
         GrFillArg fval;
         fval.color = c;

@@ -28,17 +28,17 @@
 
 void grx_draw_filled_ellipse_arc_with_pattern(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxPattern *p)
 {
-   int (*points)[2];
+   GrxPoint *points;
    setup_ALLOC();
-   points = ALLOC(sizeof(int) * 2 * (GRX_MAX_ELLIPSE_POINTS + 1));
+   points = ALLOC(sizeof(GrxPoint) * (GRX_MAX_ELLIPSE_POINTS + 1));
    if (points != NULL)
    {
       int numpts = grx_generate_ellipse_arc(xc,yc,xa,ya,start,end,points);
       GrFillArg fa;
 
       if (style == GRX_ARC_STYLE_CLOSED_RADIUS) {
-              points[numpts][0] = xc;
-              points[numpts][1] = yc;
+              points[numpts].x = xc;
+              points[numpts].y = yc;
               numpts++;
       }
       fa.p = p;

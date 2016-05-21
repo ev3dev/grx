@@ -217,7 +217,8 @@ void dboton( int x, int y, int an, int al,
 //           bit 1 0=no selec, 1=seleccionado
 
 {
-  int pol[7][2], prof, pulsd, selec, despl;
+  GrxPoint pol[7];
+  int prof, pulsd, selec, despl;
   GrxTextOptions grt;
   GrxLineOptions glo;
   int mouseblock;
@@ -232,22 +233,22 @@ void dboton( int x, int y, int an, int al,
   x = x + 1; y = y + 1;
   an = an - 2; al = al - 2;
 
-  pol[0][0] = x;                 pol[0][1] = y;
-  pol[1][0] = x + an - 1;        pol[1][1] = y;
-  pol[2][0] = x + an - 2 - prof; pol[2][1] = y + 1 + prof;
-  pol[3][0] = x + 1 + prof;      pol[3][1] = y + 1 + prof;
-  pol[4][0] = x + 1 + prof;      pol[4][1] = y + al - 2 - prof;
-  pol[5][0] = x;                 pol[5][1] = y + al - 1;
-  pol[6][0] = pol[0][0];         pol[6][1] = pol[0][1];
+  pol[0].x = x;                 pol[0].y = y;
+  pol[1].x = x + an - 1;        pol[1].y = y;
+  pol[2].x = x + an - 2 - prof; pol[2].y = y + 1 + prof;
+  pol[3].x = x + 1 + prof;      pol[3].y = y + 1 + prof;
+  pol[4].x = x + 1 + prof;      pol[4].y = y + al - 2 - prof;
+  pol[5].x = x;                 pol[5].y = y + al - 1;
+  pol[6].x = pol[0].x;          pol[6].y = pol[0].y;
   grx_draw_filled_polygon( 7,pol,pulsd ? DARKGRAY : LIGHTGRAY );
   grx_draw_polygon( 7,pol,BLACK );
-  grx_draw_line( pol[0][0],pol[0][1],pol[3][0],pol[3][1],BLACK );
-  pol[0][0] = x + an - 1;        pol[0][1] = y + al - 1;
-  pol[3][0] = x + an - 2 - prof; pol[3][1] = y + al - 2 - prof;
-  pol[6][0] = pol[0][0];         pol[6][1] = pol[0][1];
+  grx_draw_line( pol[0].x,pol[0].y,pol[3].x,pol[3].y,BLACK );
+  pol[0].x = x + an - 1;        pol[0].y = y + al - 1;
+  pol[3].x = x + an - 2 - prof; pol[3].y = y + al - 2 - prof;
+  pol[6].x = pol[0].x;          pol[6].y = pol[0].y;
   grx_draw_filled_polygon( 7,pol,pulsd ? LIGHTGRAY : DARKGRAY );
   grx_draw_polygon( 7,pol,BLACK );
-  grx_draw_line( pol[0][0],pol[0][1],pol[3][0],pol[3][1],BLACK );
+  grx_draw_line( pol[0].x,pol[0].y,pol[3].x,pol[3].y,BLACK );
   grx_draw_filled_box( x+2+prof,y+2+prof,x+an-3-prof,y+al-3-prof,c );
 
   grt.txo_font = &grx_font_pc8x14;

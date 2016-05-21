@@ -140,11 +140,11 @@ TESTFUNC(sbctest)
 
 static void drawpf( int border, GrxPattern *pat )
 {
-  int pt1[4][2] = {{130,200},{140,240},{150,250},{160,180}};
-  int pt2[4][2] = {{230,200},{235,240},{246,250},{258,180}};
-  int ptaux[4][2];
-  int i,j;
-  
+  GrxPoint pt1[4] = {{130,200},{140,240},{150,250},{160,180}};
+  GrxPoint pt2[4] = {{230,200},{235,240},{246,250},{258,180}};
+  GrxPoint ptaux[4];
+  int i;
+
   grx_draw_filled_box_with_pattern( 0+border,0+border,93+border,93+border,pat );
   grx_draw_filled_circle_with_pattern( 139+border,46+border,45,pat );
   grx_draw_filled_ellipse_with_pattern( 232+border,46+border,45,35,pat );
@@ -158,13 +158,15 @@ static void drawpf( int border, GrxPattern *pat )
   grx_draw_filled_pixel_with_pattern( 47+border,230+border,pat );
   grx_draw_filled_pixel_with_pattern( 47+border,231+border,pat );
   grx_draw_filled_pixel_with_pattern( 47+border,232+border,pat );
-  for( i=0; i<4; i++ )
-    for( j=0; j<2; j++ )
-      ptaux[i][j] = pt1[i][j] + border;
+  for( i=0; i<4; i++ ) {
+    ptaux[i].x = pt1[i].x + border;
+    ptaux[i].y = pt1[i].y + border;
+  }
   grx_draw_filled_polygon_with_pattern( 4,ptaux,pat );
-  for( i=0; i<4; i++ )
-    for( j=0; j<2; j++ )
-      ptaux[i][j] = pt2[i][j] + border;
+  for( i=0; i<4; i++ ) {
+    ptaux[i].x = pt2[i].x + border;
+    ptaux[i].y = pt2[i].y + border;
+  }
   grx_draw_filled_convex_polygon_with_pattern( 4,ptaux,pat );
 }
 
@@ -172,11 +174,11 @@ static void drawpf( int border, GrxPattern *pat )
 
 static void drawp( int border, GrxLinePattern *grlp )
 {
-  int pt1[4][2] = {{130,200},{140,240},{150,250},{160,180}};
-  int pt2[4][2] = {{230,200},{235,240},{246,250},{258,180}};
-  int ptaux[4][2];
-  int i,j;
-  
+  GrxPoint pt1[4] = {{130,200},{140,240},{150,250},{160,180}};
+  GrxPoint pt2[4] = {{230,200},{235,240},{246,250},{258,180}};
+  GrxPoint ptaux[4];
+  int i;
+
   grx_draw_box_with_pattern( 0+border,0+border,93+border,93+border,grlp );
   grx_draw_circle_with_pattern( 139+border,46+border,45,grlp );
   grx_draw_ellipse_with_pattern( 232+border,46+border,45,35,grlp );
@@ -185,12 +187,14 @@ static void drawp( int border, GrxLinePattern *grlp )
   grx_draw_ellipse_arc_with_pattern( 139+border,139+border,45,35,-700,400,
                          GRX_ARC_STYLE_CLOSED_RADIUS,grlp );
   grx_draw_line_with_pattern( 188+border,139+border,278+border,139+border,grlp );
-  for( i=0; i<4; i++ )
-    for( j=0; j<2; j++ )
-      ptaux[i][j] = pt1[i][j] + border;
+  for( i=0; i<4; i++ ) {
+    ptaux[i].x = pt1[i].x + border;
+    ptaux[i].y = pt1[i].y + border;
+  }
   grx_draw_polygon_with_pattern( 4,ptaux,grlp );
-  for( i=0; i<4; i++ )
-    for( j=0; j<2; j++ )
-      ptaux[i][j] = pt2[i][j] + border;
+  for( i=0; i<4; i++ ) {
+    ptaux[i].x = pt2[i].x + border;
+    ptaux[i].y = pt2[i].y + border;
+  }
   grx_draw_polyline_with_pattern( 4,ptaux,grlp );
 }

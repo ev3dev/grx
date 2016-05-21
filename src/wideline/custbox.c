@@ -16,6 +16,7 @@
  *
  */
 
+#include <grx/draw.h>
 #include <grx/wideline.h>
 
 #include "libgrx.h"
@@ -24,11 +25,11 @@
 void grx_draw_box_with_options(int x1,int y1,int x2,int y2,const GrxLineOptions *o)
 {
         GrFillArg fval;
-        int pt[4][2];
-        pt[0][0] = x1; pt[0][1] = y1;
-        pt[1][0] = x2; pt[1][1] = y1;
-        pt[2][0] = x2; pt[2][1] = y2;
-        pt[3][0] = x1; pt[3][1] = y2;
+        GrxPoint pt[4];
+        pt[0].x = x1; pt[0].y = y1;
+        pt[1].x = x2; pt[1].y = y1;
+        pt[2].x = x2; pt[2].y = y2;
+        pt[3].x = x1; pt[3].y = y2;
         fval.color = o->color;
         _GrDrawCustomPolygon(4,pt,o,&_GrSolidFiller,fval,TRUE,FALSE);
 }

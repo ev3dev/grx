@@ -28,7 +28,7 @@ static GrxColor *EGA;
 #define blue  EGA[1]
 #define white EGA[15]
 
-static void testpoly(int n,int points[][2],int convex)
+static void testpoly(int n,GrxPoint *points,int convex)
 {
         grx_clear_screen(black);
         grx_draw_polygon(n,points,white);
@@ -44,7 +44,7 @@ static void testpoly(int n,int points[][2],int convex)
 
 static void speedtest(void)
 {
-        int pts[4][2];
+        GrxPoint pts[4];
         int ww = grx_get_size_x() / 10;
         int hh = grx_get_size_y() / 10;
         int sx = (grx_get_size_x() - 2*ww) / 32;
@@ -52,56 +52,56 @@ static void speedtest(void)
         int  ii,jj;
         GrxColor color;
         gint64 t1,t2,t3;
-   char msg[81];
+        char msg[81];
 
         grx_clear_screen(black);
         t1 = g_get_monotonic_time();
-        pts[0][1] = 0;
-        pts[1][1] = hh;
-        pts[2][1] = 2*hh;
-        pts[3][1] = hh;
+        pts[0].y = 0;
+        pts[1].y = hh;
+        pts[2].y = 2*hh;
+        pts[3].y = hh;
         color = 0;
         for(ii = 0; ii < 32; ii++) {
-            pts[0][0] = ww;
-            pts[1][0] = 2*ww;
-            pts[2][0] = ww;
-            pts[3][0] = 0;
+            pts[0].x = ww;
+            pts[1].x = 2*ww;
+            pts[2].x = ww;
+            pts[3].x = 0;
             for(jj = 0; jj < 32; jj++) {
                 grx_draw_filled_polygon(4,pts, EGA[color] | GRX_COLOR_MODE_XOR);
                 color = (color + 1) & 15;
-                pts[0][0] += sx;
-                pts[1][0] += sx;
-                pts[2][0] += sx;
-                pts[3][0] += sx;
+                pts[0].x += sx;
+                pts[1].x += sx;
+                pts[2].x += sx;
+                pts[3].x += sx;
             }
-            pts[0][1] += sy;
-            pts[1][1] += sy;
-            pts[2][1] += sy;
-            pts[3][1] += sy;
+            pts[0].y += sy;
+            pts[1].y += sy;
+            pts[2].y += sy;
+            pts[3].y += sy;
         }
         t2 = g_get_monotonic_time();
-        pts[0][1] = 0;
-        pts[1][1] = hh;
-        pts[2][1] = 2*hh;
-        pts[3][1] = hh;
+        pts[0].y = 0;
+        pts[1].y = hh;
+        pts[2].y = 2*hh;
+        pts[3].y = hh;
         color = 0;
         for(ii = 0; ii < 32; ii++) {
-            pts[0][0] = ww;
-            pts[1][0] = 2*ww;
-            pts[2][0] = ww;
-            pts[3][0] = 0;
+            pts[0].x = ww;
+            pts[1].x = 2*ww;
+            pts[2].x = ww;
+            pts[3].x = 0;
             for(jj = 0; jj < 32; jj++) {
                 grx_draw_filled_convex_polygon(4,pts, EGA[color] | GRX_COLOR_MODE_XOR);
                 color = (color + 1) & 15;
-                pts[0][0] += sx;
-                pts[1][0] += sx;
-                pts[2][0] += sx;
-                pts[3][0] += sx;
+                pts[0].x += sx;
+                pts[1].x += sx;
+                pts[2].x += sx;
+                pts[3].x += sx;
             }
-            pts[0][1] += sy;
-            pts[1][1] += sy;
-            pts[2][1] += sy;
-            pts[3][1] += sy;
+            pts[0].y += sy;
+            pts[1].y += sy;
+            pts[2].y += sy;
+            pts[3].y += sy;
         }
         t3 = g_get_monotonic_time();
         grx_draw_text_xy(0, 0, "Times to scan 1024 polygons", white, black);
@@ -116,7 +116,7 @@ static void speedtest(void)
 TESTFUNC(ptest)
 {
         char buff[300];
-        int  pts[300][2];
+        GrxPoint pts[300];
         int  ii,collect;
         int  convex;
         FILE *fp;
@@ -139,7 +139,7 @@ TESTFUNC(ptest)
                 collect = 0;
                 continue;
             }
-            if(sscanf(buff,"%d %d",&pts[ii][0],&pts[ii][1]) == 2) ii++;
+            if(sscanf(buff,"%d %d",&pts[ii].x,&pts[ii].y) == 2) ii++;
         }
         fclose(fp);
         speedtest();

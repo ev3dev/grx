@@ -23,7 +23,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void grx_draw_filled_polygon_with_pattern(int n,int pt[][2],GrxPattern *p)
+void grx_draw_filled_polygon_with_pattern(int n,GrxPoint *pt,GrxPattern *p)
 {
         GrFillArg fa;
 

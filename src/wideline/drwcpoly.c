@@ -16,6 +16,7 @@
  *
  */
 
+#include <grx/draw.h>
 #include <grx/wideline.h>
 
 #include "globals.h"
@@ -30,16 +31,16 @@
  * update the end point of line #1 and the starting point of line #2
  * so that they intersect
  */
-static void intersect(int l1s[2],int l1e[2],int l2s[2],int l2e[2])
+static void intersect(GrxPoint l1s,GrxPoint l1e,GrxPoint l2s,GrxPoint l2e)
 {
-#   define x11 l1s[0]
-#   define y11 l1s[1]
-#   define x12 l1e[0]
-#   define y12 l1e[1]
-#   define x21 l2s[0]
-#   define y21 l2s[1]
-#   define x22 l2e[0]
-#   define y22 l2e[1]
+#   define x11 l1s.x
+#   define y11 l1s.y
+#   define x12 l1e.x
+#   define y12 l1e.y
+#   define x21 l2s.x
+#   define y21 l2s.y
+#   define x22 l2e.x
+#   define y22 l2e.y
     if(x12 != x21 || y12 != y21) {
         int  dx1 = x12 - x11;
         int  dy1 = y12 - y11;
@@ -64,8 +65,8 @@ static void intersect(int l1s[2],int l1e[2],int l2s[2],int l2e[2])
                 /* don't create triangles */
                 if ( xdif2 != x11 && xdif2 != x22 &&
                      ydif2 != y11 && ydif2 != y22    ) {
-                  l1e[0] = l2s[0] = xdif2;
-                  l1e[1] = l2s[1] = ydif2;
+                  l1e.x = l2s.x = xdif2;
+                  l1e.y = l2s.y = ydif2;
                   return;
                 }
             }
@@ -107,8 +108,8 @@ static void intersect(int l1s[2],int l1e[2],int l2s[2],int l2e[2])
                   if (minerr == 0) break;
                 }
             }
-            l1e[0] = l2s[0] = xc + xb;
-            l1e[1] = l2s[1] = yc + yb;
+            l1e.x = l2s.x = xc + xb;
+            l1e.y = l2s.y = yc + yb;
         }
     }
 #   undef x11
@@ -128,10 +129,10 @@ static void intersect(int l1s[2],int l1e[2],int l2s[2],int l2e[2])
  * p2 end : rect[2]  rect[3]
  *
  */
-static void genrect(int p1[2],int p2[2],int w,int rect[4][2])
+static void genrect(GrxPoint p1, GrxPoint p2, int w, GrxPoint rect[4])
 {
-        int dx  = p2[0] - p1[0];
-        int dy  = p2[1] - p1[1];
+        int dx  = p2.x - p1.x;
+        int dy  = p2.y - p1.y;
         int wx,wy,wx1,wy1,wx2,wy2;
 
         if(dx == 0) {
@@ -168,14 +169,14 @@ static void genrect(int p1[2],int p2[2],int w,int rect[4][2])
         wy2 = wy + wy1;
         if((wx1 + wx2) < 0) wx1++,wx2++;
         if((wy1 + wy2) < 0) wy1++,wy2++;
-        rect[0][0] = p1[0] + wx1;
-        rect[0][1] = p1[1] + wy1;
-        rect[1][0] = p1[0] + wx2;
-        rect[1][1] = p1[1] + wy2;
-        rect[2][0] = p2[0] + wx2;
-        rect[2][1] = p2[1] + wy2;
-        rect[3][0] = p2[0] + wx1;
-        rect[3][1] = p2[1] + wy1;
+        rect[0].x = p1.x + wx1;
+        rect[0].y = p1.y + wy1;
+        rect[1].x = p1.x + wx2;
+        rect[1].y = p1.y + wy2;
+        rect[2].x = p2.x + wx2;
+        rect[2].y = p2.y + wy2;
+        rect[3].x = p2.x + wx1;
+        rect[3].y = p2.y + wy1;
 }
 
 /*
@@ -192,13 +193,11 @@ typedef struct {
     GrFillArg c;                /* the filler argument */
 } linepatt;
 
-static void solidsegment1(
-    int p1[2],  int p2[2],
-    int prev[2],int next[2],
-    linepatt *p
-){
-        int x1 = p1[0], y1 = p1[1];
-        int x2 = p2[0], y2 = p2[1];
+static void solidsegment1(GrxPoint p1, GrxPoint p2, GrxPoint *prev,
+                          GrxPoint *next, linepatt *p)
+{
+        int x1 = p1.x, y1 = p1.y;
+        int x2 = p2.x, y2 = p2.y;
         (*p->f->line)(
             (x1 + CURC->x_offset),
             (y1 + CURC->y_offset),
@@ -208,23 +207,21 @@ static void solidsegment1(
         );
 }
 
-static void solidsegmentw(
-    int p1[2],  int p2[2],
-    int prev[2],int next[2],
-    linepatt *p
-){
-        int rect[4][2], prect[4][2], nrect[4][2];
+static void solidsegmentw(GrxPoint p1, GrxPoint p2, GrxPoint *prev,
+                          GrxPoint *next, linepatt *p)
+{
+        GrxPoint rect[4], prect[4], nrect[4];
         genrect(p1,p2,p->w,rect);
-        if(prev) genrect(prev,p1,p->w,prect);
-        if(next) genrect(p2,next,p->w,nrect);
+        if(prev) genrect(*prev,p1,p->w,prect);
+        if(next) genrect(p2,*next,p->w,nrect);
         if(prev && next) {
-            int points[2];
-            points[0] = rect[1][0]; points[1] = rect[1][1];
+            GrxPoint point;
+            point.x = rect[1].x; point.y = rect[1].y;
             intersect(prect[1],prect[2],rect[1],rect[2]);
-            intersect(points,rect[2],nrect[1],nrect[2]);
-            points[0] = rect[0][0]; points[1] = rect[0][1];
+            intersect(point,rect[2],nrect[1],nrect[2]);
+            point.y = rect[0].x; point.y = rect[0].y;
             intersect(prect[0],prect[3],rect[0],rect[3]);
-            intersect(points,rect[3],nrect[0],nrect[3]);
+            intersect(point,rect[3],nrect[0],nrect[3]);
         } else
         if(prev) {
             intersect(prect[1],prect[2],rect[1],rect[2]);
@@ -237,17 +234,15 @@ static void solidsegmentw(
         _GrScanConvexPoly(4,rect,p->f,p->c);
 }
 
-static void dashedsegment(
-    int p1[2],  int p2[2],
-    int prev[2],int next[2],
-    linepatt *p,
-    void (*doseg)(int[2],int[2],int[2],int[2],linepatt*)
-){
+static void dashedsegment(GrxPoint p1, GrxPoint p2, GrxPoint *prev, GrxPoint *next,
+    linepatt *p, void (*doseg)(GrxPoint,GrxPoint,GrxPoint*,GrxPoint*,linepatt*))
+{
         int on,pos,len,seg;
         int x,y,dx,dy;
         int error,erradd,errsub,count;
         int xinc1,xinc2,yinc1,yinc2;
-        int start[2],end[2], se_init;
+        GrxPoint start,end;
+        int se_init;
 
         /* find the current starting segment for the pattern */
         pos = (p->ppos %= p->plength);
@@ -261,8 +256,8 @@ static void dashedsegment(
         /* Can't have a zero length element here */
 
         /* set up line drawing */
-        x = p1[0]; dx = p2[0] - x;
-        y = p1[1]; dy = p2[1] - y;
+        x = p1.x; dx = p2.x - x;
+        y = p1.y; dy = p2.y - y;
         if(dx >= 0) { xinc2 =  1; }
         else        { xinc2 = -1; dx = -dx; }
         if(dy >= 0) { yinc2 =  1; }
@@ -285,8 +280,8 @@ static void dashedsegment(
         }
         se_init = 0;
         if(on) {
-            start[0] = x;
-            start[1] = y;
+            start.x = x;
+            start.y = y;
             se_init = 1;
         }
         else {
@@ -295,8 +290,8 @@ static void dashedsegment(
         /* go */
         while(--count >= 0) {
             if(on) {
-                end[0] = x;
-                end[1] = y;
+                end.x = x;
+                end.y = y;
                 se_init |= 2;
             }
             if((error -= errsub) < 0) {
@@ -317,8 +312,8 @@ static void dashedsegment(
                   on ^= 1;
                 } while (len == 0);
                 if ( !old_state &&  on && count > 0) {
-                    start[0] = x;
-                    start[1] = y;
+                    start.x = x;
+                    start.y = y;
                     se_init = 1;
                 } else
                 if (  old_state && !on) {
@@ -335,34 +330,28 @@ static void dashedsegment(
         p->on = on;
 }
 
-static void dashedsegment1(
-    int p1[2],  int p2[2],
-    int prev[2],int next[2],
-    linepatt *p
-){
+static void dashedsegment1(GrxPoint p1, GrxPoint p2, GrxPoint *prev,
+                           GrxPoint *next, linepatt *p)
+{
         dashedsegment(p1,p2,prev,next,p,solidsegment1);
 }
 
-static void dashedsegmentw(
-    int p1[2],  int p2[2],
-    int prev[2],int next[2],
-    linepatt *p
-){
+static void dashedsegmentw(GrxPoint p1, GrxPoint p2, GrxPoint *prev,
+                           GrxPoint *next, linepatt *p)
+{
         dashedsegment(p1,p2,prev,next,p,solidsegmentw);
 }
 
-void _GrDrawCustomPolygon(
-     int n,int pt[][2],
-     const GrxLineOptions *lp,
-     GrFiller *f,GrFillArg c,
-     int doClose,int circle
-){
-#       define x1 start[0]
-#       define y1 start[1]
-#       define x2 end[0]
-#       define y2 end[1]
-        int  i,start[2],end[2];
-        void (*doseg)(int[2],int[2],int[2],int[2],linepatt*);
+void _GrDrawCustomPolygon(int n, GrxPoint *pt, const GrxLineOptions *lp,
+                          GrFiller *f, GrFillArg c, int doClose, int circle)
+{
+#       define x1 start.x
+#       define y1 start.y
+#       define x2 end.x
+#       define y2 end.y
+        int  i;
+        GrxPoint start, end;
+        void (*doseg)(GrxPoint,GrxPoint,GrxPoint*,GrxPoint*,linepatt*);
         linepatt  p;
         GrxContext preclip;
         if(n < 2) return;
@@ -385,14 +374,14 @@ void _GrDrawCustomPolygon(
             doseg = p.w ? solidsegmentw : solidsegment1;
         }
         /* preclip */
-        x1 = x2 = pt[0][0];
-        y1 = y2 = pt[0][1];
+        x1 = x2 = pt[0].x;
+        y1 = y2 = pt[0].y;
         for(i = 1; i < n; i++) {
-            int *ppt = pt[i];
-            if(x1 > ppt[0]) x1 = ppt[0];
-            if(x2 < ppt[0]) x2 = ppt[0];
-            if(y1 > ppt[1]) y1 = ppt[1];
-            if(y2 < ppt[1]) y2 = ppt[1];
+            GrxPoint ppt = pt[i];
+            if(x1 > ppt.x) x1 = ppt.x;
+            if(x2 < ppt.x) x2 = ppt.x;
+            if(y1 > ppt.y) y1 = ppt.y;
+            if(y2 < ppt.y) y2 = ppt.y;
         }
         sttcopy(&preclip,CURC);
         preclip.x_clip_low -= p.w; preclip.y_clip_low -= p.w;
@@ -401,22 +390,23 @@ void _GrDrawCustomPolygon(
         mouse_block(CURC,x1,y1,x2,y2);
         /* do the polygon segments */
         if(doClose) {
-            int *p1 = pt[0], *p2 = pt[n - 1];
-            if((n > 1) && (p1[0] == p2[0]) && (p1[1] == p2[1])) n--;
+            GrxPoint p1 = pt[0], p2 = pt[n - 1];
+            if((n > 1) && (p1.x == p2.x) && (p1.y == p2.y)) n--;
             if(n < 3) doClose = FALSE;
         }
         for(i = 0; i < n; i++) {
             int clipped,xmajor,length;
-            int *p1,*p2,*prev,*next;
+            GrxPoint p1,p2,*prev,*next;
+
             if(!(i + doClose)) continue;
             p1 = pt[(i + n - 1) % n];
             p2 = pt[i];
-            prev = ((i > 1) || doClose) ? pt[(i + n - 2) % n] : NULL;
-            next = ((i < (n - 1)) || doClose) ? pt[(i + 1) % n] : NULL;
-            x1 = p1[0];
-            y1 = p1[1];
-            x2 = p2[0];
-            y2 = p2[1];
+            prev = ((i > 1) || doClose) ? &pt[(i + n - 2) % n] : NULL;
+            next = ((i < (n - 1)) || doClose) ? &pt[(i + 1) % n] : NULL;
+            x1 = p1.x;
+            y1 = p1.y;
+            x2 = p2.x;
+            y2 = p2.y;
             clipped = 0;
             xmajor  = iabs(x1 - x2);
             length  = iabs(y1 - y2);
@@ -424,7 +414,7 @@ void _GrDrawCustomPolygon(
             else xmajor = 0;
             clip_line_((&preclip),x1,y1,x2,y2,goto outside,clipped = p.plength);
             if(clipped) {
-                clipped = xmajor ? iabs(p1[0] - x1) : iabs(p1[1] - y1);
+                clipped = xmajor ? iabs(p1.x - x1) : iabs(p1.y - y1);
                 p.ppos += clipped;
                 length -= clipped;
             }

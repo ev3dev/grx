@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/draw.h>
+
 #include "globals.h"
 #include "libgrx.h"
 #include "shapes.h"
@@ -88,15 +90,13 @@ typedef struct _scan {
     }                                                           \
 }
 
-void _GrScanPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c)
+void _GrScanPolygon(int n,GrxPoint *pt,GrFiller *f,GrFillArg c)
 {
         edge *edges,*ep;
         scan *scans,*sp,*points,*segments;
         int  xmin,xmax,ymin,ymax;
         int  ypos,nedges;
-        if((n > 1) &&
-           (pt[0][0] == pt[n-1][0]) &&
-           (pt[0][1] == pt[n-1][1])) {
+        if((n > 1) && (pt[0].x == pt[n-1].x) && (pt[0].y == pt[n-1].y)) {
             n--;
         }
         if(n < 1) {
@@ -111,22 +111,21 @@ void _GrScanPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c)
              * valid Y region. Clip them in Y if necessary. Store them with
              * the endpoints ordered by Y in the edge table.
              */
-            int prevx = xmin = xmax = pt[0][0];
-            int prevy = ymin = ymax = pt[0][1];
+            int prevx = xmin = xmax = pt[0].x;
+            int prevy = ymin = ymax = pt[0].y;
             nedges = 0;
             ep     = edges;
             while(--n >= 0) {
-                if(pt[n][1] >= prevy) {
+                if(pt[n].y >= prevy) {
                     ep->e.x     = prevx;
                     ep->e.y     = prevy;
-                    ep->e.xlast = prevx = pt[n][0];
-                    ep->e.ylast = prevy = pt[n][1];
-                }
-                else {
+                    ep->e.xlast = prevx = pt[n].x;
+                    ep->e.ylast = prevy = pt[n].y;
+                } else {
                     ep->e.xlast = prevx;
                     ep->e.ylast = prevy;
-                    ep->e.x     = prevx = pt[n][0];
-                    ep->e.y     = prevy = pt[n][1];
+                    ep->e.x     = prevx = pt[n].x;
+                    ep->e.y     = prevy = pt[n].y;
                 }
                 if((ep->e.y > grx_get_high_y()) || (ep->e.ylast < grx_get_low_y())) continue;
                 clip_line_ymin(CURC,ep->e.x,ep->e.y,ep->e.xlast,ep->e.ylast);

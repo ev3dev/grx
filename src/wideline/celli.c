@@ -25,9 +25,9 @@
 
 void grx_draw_ellipse_with_options(int xc,int yc,int xa,int ya,const GrxLineOptions *o)
 {
-    int (*pnts)[2];
+    GrxPoint *pnts;
     setup_ALLOC();
-    pnts = ALLOC(sizeof(int) * 2 * GRX_MAX_ELLIPSE_POINTS);
+    pnts = ALLOC(sizeof(GrxPoint) * GRX_MAX_ELLIPSE_POINTS);
     if (pnts != NULL)
     {
         GrFillArg fval;

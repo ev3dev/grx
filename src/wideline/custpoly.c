@@ -21,7 +21,7 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void grx_draw_polygon_with_options(int n,int pt[][2],const GrxLineOptions *o)
+void grx_draw_polygon_with_options(int n,GrxPoint *pt,const GrxLineOptions *o)
 {
         GrFillArg fval;
         fval.color = o->color;

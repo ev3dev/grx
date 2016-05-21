@@ -7,6 +7,7 @@ typedef struct _GrxContext          GrxContext;
 /* draw.h */
 typedef enum   _GrxArcStyle         GrxArcStyle;
 typedef struct _GrxFramedBoxColors  GrxFramedBoxColors;
+typedef struct _GrxPoint            GrxPoint;
 /* mode.h */
 typedef struct _GrxFrameDriver      GrxFrameDriver;
 typedef struct _GrxVideoDriver      GrxVideoDriver;

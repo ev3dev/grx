@@ -47,10 +47,10 @@ extern GrFiller _GrBitmapFiller;
 extern GrFiller _GrPixmapFiller;
 */
 
-void _GrDrawPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c,int doClose);
-void _GrDrawCustomPolygon(int n,int pt[][2],const GrxLineOptions *lp,GrFiller *f,GrFillArg c,int doClose,int circle);
-void _GrScanConvexPoly(int n,int pt[][2],GrFiller *f,GrFillArg c);
-void _GrScanPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c);
+void _GrDrawPolygon(int n,GrxPoint *pt,GrFiller *f,GrFillArg c,int doClose);
+void _GrDrawCustomPolygon(int n,GrxPoint *pt,const GrxLineOptions *lp,GrFiller *f,GrFillArg c,int doClose,int circle);
+void _GrScanConvexPoly(int n,GrxPoint *pt,GrFiller *f,GrFillArg c);
+void _GrScanPolygon(int n,GrxPoint *pt,GrFiller *f,GrFillArg c);
 void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int filled);
 
 /* --- */
