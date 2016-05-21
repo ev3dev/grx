@@ -34,7 +34,7 @@ typedef guint32 GrxColor;
  *
  * Flags to 'OR' to colors for various operations
  */
-typedef enum /*< flags >*/ {
+typedef enum {
     GRX_COLOR_MODE_WRITE = 0UL,           /* write color */
     GRX_COLOR_MODE_XOR   = 0x01000000UL,  /* to "XOR" any color to the screen */
     GRX_COLOR_MODE_OR    = 0x02000000UL,  /* to "OR" to the screen */
