@@ -20,12 +20,7 @@
 #include <gio/gio.h>
 #include <glib-object.h>
 
-#define GRX_TYPE_LINUX_CONSOLE_APPLICATION \
-    grx_linux_console_application_get_type ()
-
-// This simplification requires GLib 2.44
-// G_DECLARE_DERIVABLE_TYPE (GrxLinuxConsoleApplication,
-//     grx_linux_console_application, GRX, LINUX_CONSOLE_APPLICATION, GApplication)
+#define GRX_TYPE_LINUX_CONSOLE_APPLICATION grx_linux_console_application_get_type()
 
 #define GRX_LINUX_CONSOLE_APPLICATION(obj) \
     (G_TYPE_CHECK_INSTANCE_CAST ((obj), GRX_TYPE_LINUX_CONSOLE_APPLICATION, \

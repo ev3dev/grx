@@ -20,6 +20,36 @@
 
 #include "libgrx.h"
 
+/**
+ * SECTION:linux_console_application
+ * @title: GrxLinuxConsoleApplication
+ * @short_description: Linux console application class
+ * @include: grx-3.0.h
+ *
+ * #GrxLinuxConsoleApplication extends #GApplication for Linux console
+ * applications using the Grx graphics library.
+ *
+ * #GrxLinuxConsoleApplication implements console switching, so programs that
+ * use #GrxLinuxConsoleApplication must use the
+ * #GrxLinuxConsoleApplication:is-console-active property to tell if the console
+ * is active. This property will be false if the user switches to another
+ * console. If you draw to the screen during this time, it will interfere with
+ * the application running on the active console.
+ */
+
+/**
+ * GrxLinuxConsoleApplication:
+ *
+ * #GrxLinuxConsoleApplication is an opaque data structure and can only be
+ * accessed using the following functions.
+ */
+
+/**
+ * GrxLinuxConsoleApplicationClass:
+ *
+ * Nothing here yet.
+ */
+
 typedef struct {
     gboolean owns_fb;
     GrxContext *save;
@@ -42,6 +72,15 @@ enum {
 
 static GParamSpec *properties[N_PROPERTIES] = { NULL };
 
+/**
+ * grx_linux_console_application_is_console_active:
+ * @application: a #GrxLinuxConsoleApplication
+ *
+ * Gets the status of the #GrxLinuxConsoleApplication:is-console-active property
+ *
+ * Returns: %TRUE if the console this application is running on is the active
+ * console.
+ */
 gboolean
 grx_linux_console_application_is_console_active (GrxLinuxConsoleApplication *application)
 {
@@ -120,7 +159,7 @@ grx_linux_console_application_class_init (GrxLinuxConsoleApplicationClass *klass
     properties[PROP_IS_CONSOLE_ACTIVE] =
         g_param_spec_boolean ("is-console-active",
                               "console is active",
-                              "Gets if the console is active",
+                              "Gets if the console this application is running on is the active console.",
                               FALSE /* default value */,
                               G_PARAM_READABLE);
     g_object_class_install_properties (G_OBJECT_CLASS (klass),
@@ -135,7 +174,7 @@ grx_linux_console_application_init (GrxLinuxConsoleApplication *self)
 {
 }
 
-/* interface implementatation */
+/* interface implementation */
 
 // TODO: put these in a header file
 extern void grx_linuxfb_aquire (void);
@@ -223,6 +262,18 @@ static void initable_interface_init (GInitableIface *iface)
 
 /* constructors */
 
+/**
+ * grx_linux_console_application_new:
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @error: a pointer to a NULL #GError, or %NULL
+ *
+ * Create a new instance of #GrxLinuxConsoleApplication. The console will be
+ * set to graphics mode or there will be an @error if setting graphics mode
+ * failed.
+ *
+ * Returns: (allow-none): New instance of #GrxLinuxConsoleApplication or %NULL
+ * if init() failed.
+ */
 GrxLinuxConsoleApplication *
 grx_linux_console_application_new (GCancellable *cancellable, GError **error)
 {

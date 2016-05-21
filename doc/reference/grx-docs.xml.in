@@ -7,11 +7,21 @@
       The latest version of this documentation can be found on-line at
       <ulink role="online-location" url="http://www.ev3dev.org/@PROJECT_NAME@/index.html">http://www.ev3dev.org/@PROJECT_NAME@/</ulink>.
     </releaseinfo>
+    <abstract>
+      <para>
+        Grx is a 2D graphics library originaly written by Csaba Biegl for DJ Delorie's DOS port of the GCC compiler.
+        This version has been adapted to be compatible with the GObject type system.
+      </para>
+    </abstract>
   </bookinfo>
 
-  <chapter id="grx">
-    <title>Title</title>
-  </chapter>
+  <part>
+    <title>API Reference</title>
+    <chapter id="linux-console">
+      <title>Title</title>
+      <xi:include href="xml/linux_console_application.xml"/>
+    </chapter>
+  </part>
 
   <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include>
 </book>
