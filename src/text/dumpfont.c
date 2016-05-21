@@ -20,6 +20,8 @@
 #include <ctype.h>
 #include <stdio.h>
 
+#include <grx/text.h>
+
 #include "libgrx.h"
 
 /* ----------------------------------------------------------------------- */
@@ -30,7 +32,7 @@ static char bitmaphdr[] =
 " */\n"
 "\n"
 "#define  %s     FONTNAME_TEMPORARY_REDIRECTION\n"
-"#include \"grx-3.0.h\"\n"
+"#include <grx/text.h>\n"
 "#undef   %s\n"
 "\n"
 "static unsigned char %s[] = {\n";

@@ -18,7 +18,9 @@
 #ifndef __INCLUDE_GLOBALS_H__
 #define __INCLUDE_GLOBALS_H__
 
-#include <grx-3.0.h>
+#include <grx/context.h>
+#include <grx/mouse.h>
+#include <grx/mode.h>
 
 /*
  * global library data structures

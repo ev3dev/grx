@@ -19,9 +19,7 @@
 #ifndef __GRDRIVER_H_INCLUDED__
 #define __GRDRIVER_H_INCLUDED__
 
-#ifndef __GRX20_H_INCLUDED__
-#include "grx-3.0.h"
-#endif
+#include <grx/mode.h>
 
 /*
 ** The following definitions shouldn't be used in portable

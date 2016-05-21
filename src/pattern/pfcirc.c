@@ -20,6 +20,8 @@
  *
  */
 
+#include <grx/pattern.h>
+
 #include "libgrx.h"
 
 void grx_draw_filled_circle_with_pattern(int xc,int yc,int r,GrxPattern *p)

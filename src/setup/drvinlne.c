@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/mode.h>
+
 #include "libgrx.h"
 
 GrxGraphicsMode (grx_get_current_graphics_mode)(void)

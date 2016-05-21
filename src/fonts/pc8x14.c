@@ -3,7 +3,7 @@
  */
 
 #define  grx_font_pc8x14  FONTNAME_TEMPORARY_REDIRECTION
-#include "grx-3.0.h"
+#include <grx/text.h>
 #undef   grx_font_pc8x14
 
 static unsigned char GrFont_PC8x14_bits[] = {

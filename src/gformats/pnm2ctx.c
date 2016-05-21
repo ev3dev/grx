@@ -22,7 +22,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "grx-3.0.h"
+
+#include <grx/draw.h>
+#include <grx/gformats.h>
 
 typedef struct{
   int method;  /* 0=file, 1=buffer */

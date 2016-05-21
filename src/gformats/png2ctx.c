@@ -19,7 +19,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <png.h>
-#include "grx-3.0.h"
+
+#include <grx/draw.h>
 
 /*
 ** grx_is_png_supported - Returns true

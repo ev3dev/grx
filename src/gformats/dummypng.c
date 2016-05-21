@@ -18,7 +18,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "grx-3.0.h"
 
 /*
 ** grx_is_png_supported - Returns false

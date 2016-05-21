@@ -19,16 +19,14 @@
 #ifndef __GRFONTDV_H_INCLUDED__
 #define __GRFONTDV_H_INCLUDED__
 
-#ifndef __GRX20_H_INCLUDED__
-#include "grx-3.0.h"
-#endif
-
 /*
 ** The following definitions shouldn't be used in portable
 ** or binary distributed programs for compatibility with
 ** future versions of GRX
 */
 #ifdef USE_GRX_INTERNAL_DEFINITIONS
+
+#include <grx/text.h>
 
 /*
  * Font driver header. Font drivers are used to load various font file

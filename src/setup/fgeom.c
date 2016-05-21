@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/mode.h>
+
 #include "libgrx.h"
 #include "arith.h"
 #include "util.h"

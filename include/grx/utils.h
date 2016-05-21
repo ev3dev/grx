@@ -1,12 +1,10 @@
 /*
- * pfcirca.c
+ * utils.h
+ *
+ * Copyright (c) 2015 David Lechner <david@lechnology.com>
  *
  * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  * [e-mail: csaba@vuse.vanderbilt.edu]
- *
- *  Copyright (C) 1992, Csaba Biegl
- *    820 Stirrup Dr, Nashville, TN, 37221
- *    csaba@vuse.vanderbilt.edu
  *
  * This file is part of the GRX graphics library.
  *
@@ -17,14 +15,15 @@
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 
-#include <grx/pattern.h>
+#ifndef __GRX_UTILS_H__
+#define __GRX_UTILS_H__
 
-#include "libgrx.h"
+/* ================================================================== */
+/*               MISCELLANEOUS UTILITIY FUNCTIONS                     */
+/* ================================================================== */
 
-void grx_draw_filled_circle_arc_with_pattern(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxPattern *p)
-{
-        grx_draw_filled_ellipse_arc_with_pattern(xc,yc,r,r,start,end,style,p);
-}
+void grx_resize_gray_map(unsigned char *map,int pitch,int ow,int oh,int nw,int nh);
+
+#endif /* __GRX_UTILS_H__ */

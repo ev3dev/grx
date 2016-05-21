@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/color.h>
+
 #include "libgrx.h"
 
 GrxColor (grx_color_get_value)(GrxColor c)

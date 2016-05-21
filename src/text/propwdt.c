@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/text.h>
+
 #include "libgrx.h"
 
 int grx_font_get_proportional_text_width(const GrxFont *font,const void *text,int len,GrxCharType type)

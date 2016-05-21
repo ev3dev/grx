@@ -3,7 +3,7 @@
  */
  
 #define  grx_font_pc6x8        FONTNAME_TEMPORARY_REDIRECTION
-#include "grx-3.0.h"
+#include <grx/text.h>
 #undef   grx_font_pc6x8
 
 static unsigned char GrFont_PC6x8_bits[] = {

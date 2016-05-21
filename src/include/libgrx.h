@@ -30,10 +30,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifndef __GRX20_H_INCLUDED__
-#include "grx-3.0.h"
-#endif
-
 /*
 ** identify the compiler / system
 ** and check for special restrictions

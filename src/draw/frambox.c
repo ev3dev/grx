@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/draw.h>
+
 #include "globals.h"
 #include "mouse.h"
 #include "libgrx.h"

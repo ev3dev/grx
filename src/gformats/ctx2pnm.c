@@ -19,7 +19,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "grx-3.0.h"
+
+#include <grx/context.h>
+#include <grx/draw.h>
 
 /*
 ** grx_context_save_to_pbm - Dump a context in a PBM file (bitmap)

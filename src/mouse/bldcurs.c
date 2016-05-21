@@ -21,6 +21,8 @@
 #include "memfill.h"
 #include "mouse.h"
 
+#include <grx/draw.h>
+
 GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const GrxColorTable C)
 {
         GrCursor  *curs;

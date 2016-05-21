@@ -21,7 +21,6 @@
 #define _LIBWIN32_H_
 
 #include <windows.h>
-#include "grx-3.0.h"
 
 typedef struct _W32Event {
     UINT uMsg;

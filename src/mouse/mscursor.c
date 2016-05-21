@@ -18,6 +18,8 @@
 
 #include <stdarg.h>
 
+#include <grx/draw.h>
+
 #include "globals.h"
 #include "input.h"
 #include "libgrx.h"

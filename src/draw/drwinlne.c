@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/draw.h>
+
 #include "libgrx.h"
 
 void (grx_draw_point_nc)(int x,int y,GrxColor c)

@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/text.h>
+
 #include "libgrx.h"
 
 int (grx_font_is_char_present)(const GrxFont *font,int chr)

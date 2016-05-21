@@ -23,6 +23,8 @@
  *
  */
 
+#include <grx/pattern.h>
+
 #include "libgrx.h"
 
 void grx_draw_circle_with_pattern(int xc,int yc,int r,GrxLinePattern *lp)

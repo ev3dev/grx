@@ -20,7 +20,8 @@
 #include <stdlib.h>
 #include <setjmp.h>
 #include <jpeglib.h>
-#include "grx-3.0.h"
+
+#include <grx/draw.h>
 
 static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale );
 

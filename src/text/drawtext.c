@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/text.h>
+
 #include <string.h>
 #include "libgrx.h"
 

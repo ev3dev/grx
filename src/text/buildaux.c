@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/text.h>
+
 #include "libgrx.h"
 #include "allocate.h"
 #include "arith.h"

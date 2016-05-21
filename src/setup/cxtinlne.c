@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/context.h>
+
 #include "libgrx.h"
 
 GrxContext *(grx_context_create)(int w,int h,unsigned char *memory[4],GrxContext *where)

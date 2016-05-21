@@ -19,6 +19,8 @@
 #ifndef __SHAPES_H_INCLUDED__
 #define __SHAPES_H_INCLUDED__
 
+#include <grx/pattern.h>
+
 #define USE_FDR_DRAWPATTERN 1
 
 typedef union _GR_fillArg {

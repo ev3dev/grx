@@ -20,11 +20,12 @@
 #ifndef __TEST_H_INCLUDED__
 #define __TEST_H_INCLUDED__
 
+#include <grx-3.0.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "grx-3.0.h"
 #include "grxkeys.h"
 #include "drawing.h"
 

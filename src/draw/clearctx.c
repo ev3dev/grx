@@ -19,6 +19,8 @@
  *
  */
 
+#include <grx/draw.h>
+
 #include "mouse.h"
 #include "libgrx.h"
 

@@ -15,6 +15,8 @@
  *
  */
 
+#include <grx/color.h>
+
 #include "libgrx.h"
 
 static struct {

@@ -17,6 +17,8 @@
  *
  */
 
+#include <grx/user.h>
+
 #include "usrscale.h"
 
 #define U2SX(x,c) \

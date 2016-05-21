@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/text.h>
+
 #include <ctype.h>
 #include <stdio.h>
 

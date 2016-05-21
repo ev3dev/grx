@@ -17,6 +17,8 @@
 
 #include <glib-object.h>
 
+#include <grx/text.h>
+
 #include "libgrx.h"
 
 G_DEFINE_BOXED_TYPE(GrxFont, grx_font, grx_font_ref, grx_font_unref);

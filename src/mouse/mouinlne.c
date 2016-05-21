@@ -16,7 +16,7 @@
  *
  */
 
-#include "libgrx.h"
+#include <grx/mouse.h>
 
 void (GrMouseEventMode)(int dummy)
 {
