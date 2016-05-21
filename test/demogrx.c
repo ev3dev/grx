@@ -184,8 +184,8 @@ static Board brdimg =
 
 static GrxFont *grf_std;
 static GrxFont *grf_big;
-GrxTextOption grt_centered;
-GrxTextOption grt_left;
+GrxTextOptions grt_centered;
+GrxTextOptions grt_left;
 
 static GrxContext *grcglob = NULL;
 static int worg = 0, horg = 0;

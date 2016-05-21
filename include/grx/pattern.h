@@ -129,10 +129,10 @@ void grx_draw_filled_convex_polygon_with_pattern(gint numpts, gint points[][2], 
 void grx_draw_filled_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *pattern);
 void grx_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *pattern);
 
-void grx_draw_char_with_pattern(gint chr, gint x, gint y, const GrxTextOption *opt, GrxPattern *pattern);
+void grx_draw_char_with_pattern(gint chr, gint x, gint y, const GrxTextOptions *opt, GrxPattern *pattern);
 void grx_draw_string_with_pattern(gpointer text, gint length, gint x, gint y,
-                                  const GrxTextOption *opt, GrxPattern *pattern);
+                                  const GrxTextOptions *opt, GrxPattern *pattern);
 void grx_draw_string_with_pattern_ext(gpointer text, gint length, gint x, gint y,
-                                      const GrxTextOption *opt, GrxPattern *pattern);
+                                      const GrxTextOptions *opt, GrxPattern *pattern);
 
 #endif /* __GRX_PATTERN_H__ */

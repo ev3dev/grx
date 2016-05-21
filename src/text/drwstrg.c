@@ -30,14 +30,14 @@ static void FdrvDrawBitmap(int x,int y,int w,int h,int ox, int oy,
   GRX_LEAVE();
 }
 
-void grx_draw_string_with_text_options(void *text,int length,int x,int y,const GrxTextOption *opt)
+void grx_draw_string_with_text_options(void *text,int length,int x,int y,const GrxTextOptions *opt)
 {
   GRX_ENTER();
   _GrDrawString(text,length,x,y,opt,NULL,FdrvDrawBitmap);
   GRX_LEAVE();
 }
 
-void grx_draw_char_with_text_options(int chr,int x,int y,const GrxTextOption *opt)
+void grx_draw_char_with_text_options(int chr,int x,int y,const GrxTextOptions *opt)
 {
     char  cbuff[2];
     short sbuff[2];

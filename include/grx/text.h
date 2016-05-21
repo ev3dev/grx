@@ -215,7 +215,7 @@ typedef union {           /* text color union */
     GrxColorTable p;                    /* color table for attribute text */
 } GrxTextColor;
 
-struct _GrxTextOption {                   /* text drawing option structure */
+struct _GrxTextOptions {                   /* text drawing option structure */
     GrxFont                 *txo_font;    /* font to be used */
     GrxTextColor             txo_fgcolor; /* foreground color */
     GrxTextColor             txo_bgcolor; /* background color */
@@ -239,15 +239,15 @@ typedef struct {                        /* fixed font text window desc. */
     GrxCharType  txr_chrtype;           /* character type */
 } GrxTextRegion;
 
-gint grx_text_option_get_char_width(const GrxTextOption *opt, gint chr);
-gint grx_text_option_get_char_height(const GrxTextOption *opt, gint chr);
-void grx_text_option_get_char_size(const GrxTextOption *opt, gint chr, gint *w, gint *h);
-gint grx_text_option_get_string_width(const GrxTextOption *opt, gpointer text, gint length);
-gint grx_text_option_get_string_height(const GrxTextOption *opt, gpointer text, gint length);
-void grx_text_option_get_string_size(const GrxTextOption *opt, gpointer text, gint length, gint *w, gint *h);
+gint grx_text_option_get_char_width(const GrxTextOptions *opt, gint chr);
+gint grx_text_option_get_char_height(const GrxTextOptions *opt, gint chr);
+void grx_text_option_get_char_size(const GrxTextOptions *opt, gint chr, gint *w, gint *h);
+gint grx_text_option_get_string_width(const GrxTextOptions *opt, gpointer text, gint length);
+gint grx_text_option_get_string_height(const GrxTextOptions *opt, gpointer text, gint length);
+void grx_text_option_get_string_size(const GrxTextOptions *opt, gpointer text, gint length, gint *w, gint *h);
 
-void grx_draw_char_with_text_options(gint chr, gint x, gint y, const GrxTextOption *opt);
-void grx_draw_string_with_text_options(gpointer text, gint length, gint x, gint y, const GrxTextOption *opt);
+void grx_draw_char_with_text_options(gint chr, gint x, gint y, const GrxTextOptions *opt);
+void grx_draw_string_with_text_options(gpointer text, gint length, gint x, gint y, const GrxTextOptions *opt);
 void grx_draw_text_xy(gint x, gint y, gchar *text, GrxColor fg, GrxColor bg);
 
 void grx_text_region_dump_char(const GrxTextRegion *r, gint chr, gint col, gint row);

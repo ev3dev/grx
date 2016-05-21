@@ -65,32 +65,32 @@ unsigned char *(grx_font_get_char_aux_bmp)(GrxFont *font,int chr,GrxTextDirectio
         return(grx_font_get_char_aux_bmp(font,chr,dir,ul));
 }
 
-int (grx_text_option_get_char_width)(const GrxTextOption *opt,int chr)
+int (grx_text_option_get_char_width)(const GrxTextOptions *opt,int chr)
 {
         return(grx_text_option_get_char_width(opt,chr));
 }
 
-int (grx_text_option_get_char_height)(const GrxTextOption *opt,int chr)
+int (grx_text_option_get_char_height)(const GrxTextOptions *opt,int chr)
 {
         return(grx_text_option_get_char_height(opt,chr));
 }
 
-void (grx_text_option_get_char_size)(const GrxTextOption *opt,int chr,int *w,int *h)
+void (grx_text_option_get_char_size)(const GrxTextOptions *opt,int chr,int *w,int *h)
 {
         grx_text_option_get_char_size(opt,chr,w,h);
 }
 
-int (grx_text_option_get_string_width)(const GrxTextOption *opt,void *text,int length)
+int (grx_text_option_get_string_width)(const GrxTextOptions *opt,void *text,int length)
 {
         return(grx_text_option_get_string_width(opt,text,length));
 }
 
-int (grx_text_option_get_string_height)(const GrxTextOption *opt,void *text,int length)
+int (grx_text_option_get_string_height)(const GrxTextOptions *opt,void *text,int length)
 {
         return(grx_text_option_get_string_height(opt,text,length));
 }
 
-void (grx_text_option_get_string_size)(const GrxTextOption *opt,void *text,int length,int *w,int *h)
+void (grx_text_option_get_string_size)(const GrxTextOptions *opt,void *text,int length,int *w,int *h)
 {
         grx_text_option_get_string_size(opt,text,length,w,h);
 }

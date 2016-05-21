@@ -28,7 +28,7 @@ TESTFUNC(sbctest)
   GrxLineOptions grl;
   GrxLinePattern grlp;
   GrxFont *grf;
-  GrxTextOption grt;
+  GrxTextOptions grt;
 
   grc = grx_context_create( 300,300,NULL,NULL );
   if( grc == NULL ) return;

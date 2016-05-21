@@ -18,7 +18,7 @@ typedef struct _GrxPixmap           GrxPixmap;
 typedef union  _GrxPattern          GrxPattern;
 typedef struct _GrxLinePattern      GrxLinePattern;
 /* text.h */
-typedef struct _GrxTextOption       GrxTextOption;
+typedef struct _GrxTextOptions       GrxTextOptions;
 /* wideline.h */
 typedef struct _GrxLineOptions      GrxLineOptions;
 

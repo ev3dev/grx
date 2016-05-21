@@ -182,7 +182,7 @@ void Message(int disp, char *txt, gvmode *gp) {
                 FrameDriverName(gp->fm), gp->w, gp->h, gp->bpp);
 
   if (disp) {
-    GrxTextOption to;
+    GrxTextOptions to;
     GrxContext save;
     grx_context_save(&save);
     grx_context_set_current(NULL);

@@ -23,7 +23,7 @@
 
 void grx_draw_text_xy(int x,int y,char *text,GrxColor fg,GrxColor bg)
 {
-        GrxTextOption opt;
+        GrxTextOptions opt;
         opt.txo_font      = &grx_font_default;
         opt.txo_fgcolor.v = fg;
         opt.txo_bgcolor.v = bg;

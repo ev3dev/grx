@@ -34,7 +34,7 @@ char test_text[] = {
 
 void displayfont(GrxFont *font,char *text,int len)
 {
-        GrxTextOption opt;
+        GrxTextOptions opt;
         int ww,hh;
         int bx,by;
         int bw,bh;

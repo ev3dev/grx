@@ -989,8 +989,8 @@ namespace Grx {
 
     [CCode (free_function = "g_free", has_type_id = false)]
     [Compact]
-    public class TextOption {
-        [CCode (cname = "GrxTextOption", destroy_function = "", has_type_id = false)]
+    public class TextOptions {
+        [CCode (cname = "GrxTextOptions", destroy_function = "", has_type_id = false)]
         struct MallocStruct {}
 
         [CCode (cname = "txo_font")]
@@ -1009,7 +1009,7 @@ namespace Grx {
         public TextVerticalAlignment y_align;
 
         [CCode (cname = "g_malloc0")]
-        public TextOption (size_t size = sizeof(MallocStruct))
+        public TextOptions (size_t size = sizeof(MallocStruct))
             requires (size == sizeof(MallocStruct));
 
         public int get_char_width (int chr);
@@ -1073,11 +1073,11 @@ namespace Grx {
         public void dump ();
     }
 
-    public void draw_char_with_text_options (int chr, int x, int y, TextOption opt);
+    public void draw_char_with_text_options (int chr, int x, int y, TextOptions opt);
     [CCode (cname = "grx_draw_string_with_text_options")]
-    void internal_draw_string_with_text_options (void *text, int length, int x, int y, TextOption opt);
+    void internal_draw_string_with_text_options (void *text, int length, int x, int y, TextOptions opt);
     [CCode (cname = "vala_grx_draw_string_with_text_options")]
-    public void draw_string_with_text_options (string text, int x, int y, TextOption opt) {
+    public void draw_string_with_text_options (string text, int x, int y, TextOptions opt) {
         internal_draw_string_with_text_options (text.data, text.length, x, y, opt);
     }
     public void draw_text_xy (int x, int y, string text, Color fg, Color bg);
@@ -1293,18 +1293,18 @@ namespace Grx {
     public void draw_filled_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
     public void flood_fill_with_pattern (int x, int y, Color border, Pattern pattern);
 
-    public void draw_char_with_pattern (int chr, int x, int y, TextOption opt, Pattern pattern);
+    public void draw_char_with_pattern (int chr, int x, int y, TextOptions opt, Pattern pattern);
     [CCode (cname = "grx_draw_string_with_pattern")]
-    void internal_draw_string_with_pattern (void *text, int length, int x, int y, TextOption opt, Pattern pattern);
+    void internal_draw_string_with_pattern (void *text, int length, int x, int y, TextOptions opt, Pattern pattern);
     [CCode (cname = "vala_grx_draw_string_with_pattern")]
 
-    public void draw_string_with_pattern (string text, int x, int y, TextOption opt, Pattern pattern) {
+    public void draw_string_with_pattern (string text, int x, int y, TextOptions opt, Pattern pattern) {
         internal_draw_string_with_pattern (text.data, text.length, x, y, opt, pattern);
     }
     [CCode (cname = "grx_draw_string_with_pattern_ext")]
-    void internal_draw_string_with_pattern_ext (void *text, int length, int x, int y, TextOption opt, Pattern pattern);
+    void internal_draw_string_with_pattern_ext (void *text, int length, int x, int y, TextOptions opt, Pattern pattern);
     [CCode (cname = "vala_grx_draw_string_with_pattern_ext")]
-    public void draw_string_with_pattern_ext (string text, int x, int y, TextOption opt, Pattern pattern) {
+    public void draw_string_with_pattern_ext (string text, int x, int y, TextOptions opt, Pattern pattern) {
         internal_draw_string_with_pattern_ext (text.data, text.length, x, y, opt, pattern);
     }
 
@@ -1411,11 +1411,11 @@ namespace Grx {
         public void draw_filled_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
         public void flood_fill_with_pattern (int x, int y, Color border, Pattern pattern);
 
-        public void draw_char_with_text_options (int chr, int x, int y, TextOption opt);
+        public void draw_char_with_text_options (int chr, int x, int y, TextOptions opt);
         [CCode (cname = "grx_user_draw_text_with_text_options")]
-        void _draw_text_with_text_options (char *text, int length, int x, int y, TextOption opt);
+        void _draw_text_with_text_options (char *text, int length, int x, int y, TextOptions opt);
         [CCode (cname = "vala_grx_user_draw_text_with_text_options")]
-        public void draw_text_with_text_options (string text, int x, int y, TextOption opt) {
+        public void draw_text_with_text_options (string text, int x, int y, TextOptions opt) {
             _draw_text_with_text_options (text.data, text.length, x, y, opt);
         }
         public void draw_text (string text, int x, int y, Color fg, Color bg);

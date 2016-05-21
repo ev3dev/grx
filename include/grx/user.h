@@ -98,9 +98,9 @@ void grx_user_draw_filled_convex_polygon_with_pattern(gint numpts, gint points[]
 void grx_user_draw_filled_polygon_with_pattern(gint numpts, gint points[][2], GrxPattern *p);
 void grx_user_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *p);
 
-void grx_user_draw_char_with_text_options(gint chr, gint x, gint y, const GrxTextOption *opt);
+void grx_user_draw_char_with_text_options(gint chr, gint x, gint y, const GrxTextOptions *opt);
 void grx_user_draw_text_with_text_options(gchar *text, gint length, gint x, gint y,
-                                          const GrxTextOption *opt);
+                                          const GrxTextOptions *opt);
 void grx_user_draw_text(gchar *text, gint x, gint y, GrxColor fg, GrxColor bg);
 
 #endif /* __GRX_USER_H__ */

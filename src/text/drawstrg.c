@@ -26,7 +26,7 @@
 int _GR_textattrintensevideo = 0;
 
 void _GrDrawString(const void *text,int length,int x,int y,
-                   const GrxTextOption *opt, GrxPattern *p, TextDrawBitmapFunc dbm)
+                   const GrxTextOptions *opt, GrxPattern *p, TextDrawBitmapFunc dbm)
 {
     GrxFont *f;
     int    x1;

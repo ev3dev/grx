@@ -347,7 +347,7 @@ static KeyEntry Keys[] = {
 
 #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
 
-static GrxTextOption opt;
+static GrxTextOptions opt;
 static int curx = 0, cury = 0;
 
 static void gputc(int c)

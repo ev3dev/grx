@@ -24,7 +24,7 @@
 #include "grx-3.0.h"
 #include "grxkeys.h"
 
-static GrxTextOption opt;
+static GrxTextOptions opt;
 static int curx = 0, cury = 0;
 /* deltax and deltay are the additional columns/lines between characters */
 static int deltax = 0, deltay = 0;

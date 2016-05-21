@@ -32,7 +32,7 @@ static void ExtPatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
 }
 
 void grx_draw_string_with_pattern_ext(void *text,int length,int x,int y,
-                               const GrxTextOption *opt,GrxPattern *p)
+                               const GrxTextOptions *opt,GrxPattern *p)
 {
   GRX_ENTER();
   _GrDrawString(text,length,x,y,opt,p,ExtPatternFilledBmp);

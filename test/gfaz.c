@@ -218,7 +218,7 @@ void dboton( int x, int y, int an, int al,
 
 {
   int pol[7][2], prof, pulsd, selec, despl;
-  GrxTextOption grt;
+  GrxTextOptions grt;
   GrxLineOptions glo;
   int mouseblock;
 
