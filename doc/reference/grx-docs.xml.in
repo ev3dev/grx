@@ -17,8 +17,13 @@
 
   <part>
     <title>API Reference</title>
-    <chapter id="linux-console">
-      <title>Title</title>
+    <chapter id="drawing">
+      <title>Drawing</title>
+      <xi:include href="xml/draw.xml"/>
+      <xi:include href="xml/context.xml"/>
+    </chapter>
+    <chapter id="applications">
+      <title>Applications</title>
       <xi:include href="xml/linux_console_application.xml"/>
     </chapter>
   </part>

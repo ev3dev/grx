@@ -21,6 +21,19 @@
 #include "globals.h"
 #include "libgrx.h"
 
+/**
+ * grx_clear_clip_box:
+ * @bg: the background color
+ *
+ * Clears the current clip box using the specified background color.
+ *
+ * Thanks to the special GrColor definition, you can do more than simple clear
+ * with this functions, by example with:
+ * |[<!-- language="C" -->
+ * grx_clear_clip_box (grx_color_to_xor_mode (grx_color_info_get_white ()));
+ * ]|
+ * the clip box is negativized, do it again and the clip box is restored.
+ */
 void grx_clear_clip_box(GrxColor bg)
 {
         grx_draw_filled_box(0,0,CURC->x_max,CURC->y_max,bg);

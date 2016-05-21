@@ -24,6 +24,19 @@
 #include "mouse.h"
 #include "libgrx.h"
 
+/**
+ * grx_clear_context:
+ * @bg: the background color
+ *
+ * Clears the current context using the specified background color.
+ *
+ * Thanks to the special GrColor definition, you can do more than simple clear
+ * with this functions, by example with:
+ * |[<!-- language="C" -->
+ * grx_clear_context (grx_color_to_xor_mode (grx_color_info_get_white ()));
+ * ]|
+ * the context is negativized, do it again and the context is restored.
+ */
 void grx_clear_context(GrxColor bg)
 {
   mouse_block(CURC,0,0,CURC->x_max,CURC->y_max);
@@ -31,6 +44,20 @@ void grx_clear_context(GrxColor bg)
   mouse_unblock();
 }
 
+/**
+ * grx_context_clear:
+ * @ctx: the context
+ * @bg: the background color
+ *
+ * Clears the specified context using the specified background color.
+ *
+ * Thanks to the special GrColor definition, you can do more than simple clear
+ * with this functions, by example with:
+ * |[<!-- language="C" -->
+ * grx_context_clear (ctx, grx_color_to_xor_mode (grx_color_info_get_white ()));
+ * ]|
+ * the context is negativized, do it again and the context is restored.
+ */
 void grx_context_clear(GrxContext *ctx, GrxColor bg)
 {
   GrxContext s;

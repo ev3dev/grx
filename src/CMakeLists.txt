@@ -268,6 +268,31 @@ set (GTKDOC_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/user.h
     ${CMAKE_SOURCE_DIR}/include/grx/wideline.h
     application/linux_console.c
+    draw/bitblt.c
+    draw/bitbltnc.c
+    draw/bitblt1b.c
+    draw/box.c
+    draw/boxnc.c
+    draw/clearclp.c
+    draw/clearctx.c
+    draw/clearscr.c
+    draw/drwinlne.c
+    draw/fillbox.c
+    draw/fillboxn.c
+    draw/frambox.c
+    draw/framboxn.c
+    draw/getscl.c
+    draw/line.c
+    draw/linenc.c
+    draw/majorln1.c
+    draw/majorln2.c
+    draw/majorln3.c
+    draw/majorln4.c
+    draw/pixel.c
+    draw/pixelc.c
+    draw/plot.c
+    draw/putscl.c
+    draw/flodspil.c
     image/ibuild.c
     image/iinverse.c
     image/imginlne.c
@@ -315,7 +340,6 @@ gtk_doc_add_module (grx ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_CURRENT_BINARY_DIR}/grx-docs.xml
     SOURCE
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/include/grx
     SUFFIXES
         "h"
