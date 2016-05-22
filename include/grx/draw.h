@@ -144,48 +144,6 @@ void grx_put_scanline(gint x1, gint x2, gint y, const GrxColor *scan_line, GrxCo
     grx_context_bit_blt_1bpp(NULL,(x),(y),(s),(x1),(y1),(x2),(y2),(f),(b))
 #define grx_get_scanline(x1,x2,yy,n) \
     grx_context_get_scanline(NULL,(x1),(x2),(yy),(n))
-#endif
-
-/* ================================================================== */
-/*                 NON CLIPPING DRAWING PRIMITIVES                    */
-/* ================================================================== */
-
-void grx_draw_pixel_nc(gint x, gint y, GrxColor c);
-void grx_draw_line_nc(gint x1, gint y1, gint x2, gint y2,GrxColor c);
-void grx_draw_hline_nc(gint x1, gint x2, gint y, GrxColor c);
-void grx_draw_vline_nc(gint x, gint y1, gint y2, GrxColor c);
-void grx_draw_box_nc(gint x1, gint y1, gint x2, gint y2, GrxColor c);
-void grx_draw_filled_box_nc(gint x1, gint y1, gint x2, gint y2, GrxColor c);
-void grx_draw_framed_box_nc(gint x1, gint y1, gint x2, gint y2, gint wdt,
-                            const GrxFramedBoxColors *c);
-void grx_bit_blt_nc(GrxContext *dst, gint x, gint y, GrxContext *src, gint x1,
-                    gint y1, gint x2, gint y2, GrxColor op);
-
-GrxColor grx_get_pixel_nc(gint x, gint y);
-GrxColor grx_context_get_pixel_nc(GrxContext *c, gint x, gint y);
-
-#ifndef GRX_SKIP_INLINES
-#define grx_draw_pixel_nc(x,y,c) (                                             \
-        (*grx_get_current_frame_driver()->drawpixel)(                          \
-        ((x) + grx_context_get_current()->x_offset),                           \
-        ((y) + grx_context_get_current()->y_offset),                           \
-        ((c))                                                                  \
-        )                                                                      \
-)
-#define grx_get_pixel_nc(x,y) (                                                \
-        (*grx_get_current_frame_driver()->readpixel)(                          \
-        (GrxFrame *)(&grx_context_get_current()->frame),                       \
-        ((x) + grx_context_get_current()->x_offset),                           \
-        ((y) + grx_context_get_current()->y_offset)                            \
-        )                                                                      \
-)
-#define grx_context_get_pixel_nc(c,x,y) (                                      \
-        (*(c)->gc_driver->readpixel)(                                          \
-        (&(c)->frame),                                                         \
-        ((x) + (c)->x_offset),                                                 \
-        ((y) + (c)->y_offset)                                                  \
-        )                                                                      \
-)
-#endif  /* GRX_SKIP_INLINES */
+#endif /* GRX_SKIP_INLINES */
 
 #endif /* __GRX_DRAW_H__ */

@@ -17,6 +17,7 @@
  */
 
 #include <grx/draw.h>
+#include <grx/draw_nc.h>
 
 #include "libgrx.h"
 #include "clipping.h"

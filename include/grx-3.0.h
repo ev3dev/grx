@@ -24,6 +24,7 @@
 #include <grx/mode.h>
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/draw_nc.h>
 #include <grx/text.h>
 #include <grx/wideline.h>
 #include <grx/pattern.h>
