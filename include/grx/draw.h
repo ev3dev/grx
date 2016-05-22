@@ -32,7 +32,7 @@
  * @section_id: draw
  * @include: grx-3.0.h
  *
- * These functions operate on the current context (or, occasionally, the screen).
+ * These functions operate on the current context.
  */
 
 /**
