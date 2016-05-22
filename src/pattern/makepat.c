@@ -75,7 +75,7 @@ GrxPattern *grx_pattern_create_pixmap(const unsigned char *pixels,int w,int h,co
         result = (GrxPixmap *)malloc(sizeof(GrxPixmap));
         if (result == NULL) return(NULL);
 
-        if (!grx_context_create(fullw,h,NULL,&cwork)) {
+        if (!grx_context_new(fullw,h,NULL,&cwork)) {
           free(result);
           return NULL;
         }
@@ -114,7 +114,7 @@ GrxPattern *grx_pattern_create_pixmap_from_bits(const unsigned char *bits,int w,
         result = (GrxPixmap *)malloc(sizeof(GrxPixmap));
         if(result == NULL) return(NULL);
 
-        if (!grx_context_create(fullw,h,NULL,&cwork)) {
+        if (!grx_context_new(fullw,h,NULL,&cwork)) {
           free(result);
           return NULL;
         }
@@ -178,7 +178,7 @@ void grx_pattern_free(GrxPattern *p)
     if ( p->gp_pxp_source.memory_flags & MY_MEMORY) {
       int ii;
       for ( ii = p->gp_pxp_source.driver->num_planes; ii > 0; ii-- )
-         free(p->gp_pxp_source.base_address[ii - 1]);
+         free(GRX_FRAME_MEMORY_PLANE(&p->gp_pxp_source.base_address,ii - 1));
     }
     if ( p->gp_pxp_source.memory_flags & MY_CONTEXT )
       free(p);

@@ -42,7 +42,7 @@ GrxImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight)
   GRX_ENTER();
   img = NULL;
   if ( _GrImageTestSize(nwidth, nheight) <= 0 ) goto done;
-  if (!grx_context_create(nwidth, nheight, NULL, ctx)) goto done;
+  if (!grx_context_new(nwidth, nheight, NULL, ctx)) goto done;
   img = (GrxImage *)malloc(sizeof(GrxImage));
   if ( !img ) {
     grx_context_unref(ctx);

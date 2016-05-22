@@ -39,7 +39,7 @@ GrxColor readpixel(GrxFrame *c,int x,int y)
         GRX_ENTER();
         offs = FOFS(x,y,SCRN->gc_line_offset);
         CHKBANK(BANKNUM(offs));
-        pp = &SCRN->gc_base_address[0][BANKPOS(offs)];
+        pp = &SCRN->gc_base_address.plane0[BANKPOS(offs)];
         setup_far_selector(SCRN->gc_selector);
         GRX_RETURN(PIX2COL(peek_l_f(pp)));
 }
@@ -53,7 +53,7 @@ void drawpixel(int x,int y,GrxColor color)
         GRX_ENTER();
         offs = FOFS(x,y,SCRN->gc_line_offset);
         CHKBANK(BANKNUM(offs));
-        ptr = &SCRN->gc_base_address[0][BANKPOS(offs)];
+        ptr = &SCRN->gc_base_address.plane0[BANKPOS(offs)];
         op = C_OPER(color);
         color = COL2PIX(color);
         setup_far_selector(CURC->gc_selector);
@@ -82,7 +82,7 @@ static void drawhline(int x,int y,int w,GrxColor color)
         cval = freplicate_l(color);
         setup_far_selector(CURC->gc_selector);
         do {
-            char *pp = &CURC->gc_base_address[0][BANKPOS(offs)];
+            char *pp = &CURC->gc_base_address.plane0[BANKPOS(offs)];
             CHKBANK(BANKNUM(offs));
             offs += (w1 << 2);
             switch(oper) {

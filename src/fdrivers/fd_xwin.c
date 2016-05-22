@@ -143,7 +143,7 @@ GrxColor readpixel(GrxFrame *c, int x, int y)
 {
   GrxColor col;
   GRX_ENTER();
-  if (_XGrPixelCacheDrawable != (Drawable) c->base_address[0]
+  if (_XGrPixelCacheDrawable != (Drawable) c->base_address.plane0
       || _XGrPixelCacheImage == NULL
       || !AREA_OVERLAP_PIXEL_CACHE(y,y)) {
 
@@ -151,7 +151,7 @@ GrxColor readpixel(GrxFrame *c, int x, int y)
       XDestroyImage (_XGrPixelCacheImage);
       _XGrPixelCacheImage = NULL;
     }
-    _XGrPixelCacheDrawable = (Drawable) c->base_address[0];
+    _XGrPixelCacheDrawable = (Drawable) c->base_address.plane0;
 
     _XGrPixelCacheWidth = grx_get_screen_x();
     _XGrPixelCacheY1 = y;
@@ -185,7 +185,7 @@ void drawpixel(int x,int y,GrxColor c)
   _XGrSetForeColor (c);
   _XGrSetColorOper (c);
   XDrawPoint (_XGrDisplay,
-              (Drawable) CURC->gc_base_address[0],
+              (Drawable) CURC->gc_base_address.plane0,
               _XGrGC,
               x,
               y);
@@ -205,7 +205,7 @@ void drawhline(int x,int y,int w,GrxColor c)
   _XGrSetColorOper (c);
   x2 = x + w - 1;
   XDrawLine (_XGrDisplay,
-             (Drawable) CURC->gc_base_address[0],
+             (Drawable) CURC->gc_base_address.plane0,
              _XGrGC,
              x,  y,
              x2, y);
@@ -225,7 +225,7 @@ void drawvline(int x,int y,int h,GrxColor c)
   _XGrSetColorOper (c);
   y2 = y + h - 1;
   XDrawLine (_XGrDisplay,
-             (Drawable) CURC->gc_base_address[0],
+             (Drawable) CURC->gc_base_address.plane0,
              _XGrGC,
              x, y,
              x, y2);
@@ -242,7 +242,7 @@ void drawblock(int x,int y,int w,int h,GrxColor c)
   _XGrSetForeColor (c);
   _XGrSetColorOper (c);
   XFillRectangle (_XGrDisplay,
-                  (Drawable) CURC->gc_base_address[0],
+                  (Drawable) CURC->gc_base_address.plane0,
                   _XGrGC,
                   x,
                   y,
@@ -264,7 +264,7 @@ void drawline(int x,int y,int dx,int dy,GrxColor c)
   dx += x;
   dy += y;
   XDrawLine (_XGrDisplay,
-             (Drawable) CURC->gc_base_address[0],
+             (Drawable) CURC->gc_base_address.plane0,
              _XGrGC,
              x, y,
              dx, dy);
@@ -313,7 +313,7 @@ void drawbitmap(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,G
       _XGrSetColorOper (fg);
       DBGPRINTF(DBG_DRIVER,("Calling XPutImage (1) ...\n"));
       XPutImage (_XGrDisplay,
-                 (Drawable) CURC->gc_base_address[0],
+                 (Drawable) CURC->gc_base_address.plane0,
                  _XGrGC,
                  &ximage,
                  0,
@@ -346,7 +346,7 @@ void drawbitmap(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,G
         _XGrSetForeColor (fg);
         _XGrSetColorOper (fg);
         XFillRectangle (_XGrDisplay,
-                        (Drawable) CURC->gc_base_address[0],
+                        (Drawable) CURC->gc_base_address.plane0,
                         _XGrGC,
                         x,
                         y,
@@ -374,7 +374,7 @@ void drawbitmap(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,G
         _XGrSetForeColor (bg);
         _XGrSetColorOper (bg);
         XFillRectangle (_XGrDisplay,
-                        (Drawable) CURC->gc_base_address[0],
+                        (Drawable) CURC->gc_base_address.plane0,
                         _XGrGC,
                         x,
                         y,
@@ -439,7 +439,7 @@ void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
       _XGrSetBackColor (bg);
       _XGrSetColorOper (fg);
       XFillRectangle (_XGrDisplay,
-                      (Drawable) CURC->gc_base_address[0],
+                      (Drawable) CURC->gc_base_address.plane0,
                       _XGrGC,
                       x,
                       y,
@@ -466,7 +466,7 @@ void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
         _XGrSetForeColor (fg);
         _XGrSetColorOper (fg);
         XFillRectangle (_XGrDisplay,
-                        (Drawable) CURC->gc_base_address[0],
+                        (Drawable) CURC->gc_base_address.plane0,
                         _XGrGC,
                         x,
                         y,
@@ -492,7 +492,7 @@ void drawpattern(int x,int y,int w,unsigned char patt,GrxColor fg,GrxColor bg)
         _XGrSetForeColor (bg);
         _XGrSetColorOper (bg);
         XFillRectangle (_XGrDisplay,
-                        (Drawable) CURC->gc_base_address[0],
+                        (Drawable) CURC->gc_base_address.plane0,
                         _XGrGC,
                         x,
                         y,
@@ -514,8 +514,8 @@ void bitblt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,Gr
   GRX_ENTER();
   _XGrSetColorOper (op);
   XCopyArea (_XGrDisplay,
-             (Drawable) src->base_address[0],
-             (Drawable) dst->base_address[0],
+             (Drawable) src->base_address.plane0,
+             (Drawable) dst->base_address.plane0,
              _XGrGC,
              x,
              y,
@@ -544,7 +544,7 @@ void bltv2r(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,
     XImage *ximage;
 
     ximage = XGetImage (_XGrDisplay,
-                        (Drawable) src->base_address[0],
+                        (Drawable) src->base_address.plane0,
                         sx,
                         sy,
                         w,
@@ -555,10 +555,10 @@ void bltv2r(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,
       int bytes_per_pixel = _XGrBitsPerPixel >> 3;
       GrxFrame tmp = *dst;
 
-      tmp.base_address[0] =
-        tmp.base_address[1] =
-          tmp.base_address[2] =
-            tmp.base_address[3] = ximage->data;
+      tmp.base_address.plane0 =
+        tmp.base_address.plane1 =
+          tmp.base_address.plane2 =
+            tmp.base_address.plane3 = ximage->data;
       tmp.line_offset = ximage->bytes_per_line;
 
       _GrFrDrvPackedBitBltR2R(dst, (dx * bytes_per_pixel), dy,
@@ -589,7 +589,7 @@ static void bltr2v(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w
     ximage.height       = sy + h;
     ximage.xoffset      = 0;
     ximage.format       = ZPixmap;
-    ximage.data         = src->base_address[0];
+    ximage.data         = src->base_address.plane0;
     ximage.byte_order   = LSBFirst;
     ximage.bitmap_unit  = BitmapUnit(_XGrDisplay);
     ximage.bitmap_bit_order = BitmapBitOrder(_XGrDisplay);
@@ -609,7 +609,7 @@ static void bltr2v(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w
     {
       _XGrSetColorOper (op);
       XPutImage (_XGrDisplay,
-                 (Drawable) dst->base_address[0],
+                 (Drawable) dst->base_address.plane0,
                  _XGrGC,
                  &ximage,
                  sx,
@@ -638,7 +638,7 @@ void putscanline(int x, int y, int w, const GrxColor *scl, GrxColor op)
     if (scl[ind] != skipc) {
       _XGrSetForeColor(scl[ind]);
       XDrawPoint (_XGrDisplay,
-                  (Drawable) CURC->gc_base_address[0],
+                  (Drawable) CURC->gc_base_address.plane0,
                   _XGrGC, x+ind, y);
     }
   }

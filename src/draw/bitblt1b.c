@@ -71,7 +71,7 @@ void grx_context_bit_blt_1bpp(GrxContext *dst,int dx,int dy,
   mouse_addblock(dst,dx,dy,dstx2,dsty2);
 
   (dst->gc_driver->drawbitmap)((dx + dst->x_offset),(dy + dst->y_offset),
-    (x2 - x1 + 1),(y2 - y1 + 1),src->gc_base_address[0],src->gc_line_offset,
+    (x2 - x1 + 1),(y2 - y1 + 1),src->gc_base_address.plane0,src->gc_line_offset,
     /*alex:the offset should anyway be the x1,y1 point in src, as clipped*/
     (x1 + (y1 * (src->gc_line_offset << 3))),fg,bg);
 

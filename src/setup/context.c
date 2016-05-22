@@ -32,12 +32,12 @@
 
 G_DEFINE_BOXED_TYPE(GrxContext, grx_context, grx_context_ref, grx_context_unref);
 
-GrxContext *grx_context_create_full(GrxFrameMode md, int w, int h,
-                                    unsigned char *memory[4], GrxContext *where)
+GrxContext *grx_context_new_full(GrxFrameMode md, int w, int h,
+                                 GrxFrameMemory *memory, GrxContext *where)
 {
         GrxFrameDriver *fd = _GrFindRAMframeDriver(md);
         int  ii,offset,flags = 0;
-        unsigned char *mymem[4];
+        GrxFrameMemory mymem;
         long psize;
 
         if(!fd) return(NULL);
@@ -53,23 +53,23 @@ GrxContext *grx_context_create_full(GrxFrameMode md, int w, int h,
         sttzero(where);
         if(!memory) {
             for(ii = 0; ii < fd->num_planes; ii++) {
-                mymem[ii] = malloc((size_t)psize);
-                if(!mymem[ii]) {
-                    while(--ii >= 0) free(mymem[ii]);
+                GRX_FRAME_MEMORY_PLANE(&mymem,ii) = malloc((size_t)psize);
+                if(!GRX_FRAME_MEMORY_PLANE(&mymem,ii)) {
+                    while(--ii >= 0) free(GRX_FRAME_MEMORY_PLANE(&mymem,ii));
                     if(flags) free(where);
                     return(NULL);
                 }
             }
-            while(ii < 4) mymem[ii++] = NULL;
-            memory = mymem;
+            while(ii < 4) GRX_FRAME_MEMORY_PLANE(&mymem,ii++) = NULL;
+            memory = &mymem;
             flags |= MYFRAME;
         }
         where->ref_count = 1;
         where->gc_driver      = fd;
-        where->gc_base_address[0] = memory[0];
-        where->gc_base_address[1] = memory[1];
-        where->gc_base_address[2] = memory[2];
-        where->gc_base_address[3] = memory[3];
+        where->gc_base_address.plane0 = memory->plane0;
+        where->gc_base_address.plane1 = memory->plane1;
+        where->gc_base_address.plane2 = memory->plane2;
+        where->gc_base_address.plane3 = memory->plane3;
         where->gc_line_offset  = offset;
         where->gc_memory_flags    = flags;
         where->x_clip_high     = where->x_max = w - 1;
@@ -77,7 +77,7 @@ GrxContext *grx_context_create_full(GrxFrameMode md, int w, int h,
         return(where);
 }
 
-GrxContext *grx_context_create_subcontext(int x1, int y1, int x2, int y2,
+GrxContext *grx_context_new_subcontext(int x1, int y1, int x2, int y2,
                                           const GrxContext *parent,
                                           GrxContext *where)
 {
@@ -144,7 +144,7 @@ static void grx_context_free(GrxContext *cxt)
         if(cxt && (cxt != CURC) && (cxt != SCRN)) {
             if(cxt->gc_memory_flags & MYFRAME) {
                 int ii = cxt->gc_driver->num_planes;
-                while(--ii >= 0) free(cxt->gc_base_address[ii]);
+                while(--ii >= 0) free(GRX_FRAME_MEMORY_PLANE(&cxt->gc_base_address,ii));
             }
             if(cxt->gc_memory_flags & MYCONTEXT) free(cxt);
         }

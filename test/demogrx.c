@@ -268,7 +268,7 @@ static void ini_graphics(void)
         grx_clear_screen(grx_color_info_alloc_color(120, 90, 60));
         worg = (gwidth - 640) / 2;
         horg = (gheight - 480) / 2;
-        grcglob = grx_context_create_subcontext(worg, horg, worg + 639, horg + 479,
+        grcglob = grx_context_new_subcontext(worg, horg, worg + 639, horg + 479,
                                      NULL, NULL);
         grx_context_set_current(grcglob);
     }
@@ -322,7 +322,7 @@ static void paint_screen(void)
     paint_board(&brd);
     paint_button_group(bgact);
     paint_board(&brdimg);
-    grc = grx_context_create_subcontext(brdimg.x + 4, brdimg.y + 4,
+    grc = grx_context_new_subcontext(brdimg.x + 4, brdimg.y + 4,
                              brdimg.x + brdimg.wide - 5,
                              brdimg.y + brdimg.high - 5, grcglob, NULL);
     if (bgact == &bgp1)
@@ -459,7 +459,7 @@ static void paint_animation(void)
     int ltext, wtext;
 
     if (!ini) {
-        grc = grx_context_create(620, 30, NULL, NULL);
+        grc = grx_context_new(620, 30, NULL, NULL);
         if (grc == NULL)
             return;
         ini = 1;

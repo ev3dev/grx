@@ -76,8 +76,8 @@ void BLITFUNC(GrxFrame *dst,int dx,int dy,
     oper  = C_OPER(op);
     cval  = (GR_int8u)op;
 
-    dptr = &dst->base_address[PLANE][umuladd32(dy,dst->line_offset,dx)];
-    sptr = &src->base_address[PLANE][umuladd32(sy,src->line_offset,sx)];
+    dptr = &GRX_FRAME_MEMORY_PLANE(&dst->base_address,PLANE)[umuladd32(dy,dst->line_offset,dx)];
+    sptr = &GRX_FRAME_MEMORY_PLANE(&src->base_address,PLANE)[umuladd32(sy,src->line_offset,sx)];
 
 #   ifdef BLITSEL
       setup_far_selector(BLITSEL);

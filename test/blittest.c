@@ -92,7 +92,7 @@ void blxtest(void)
 
         bltest(NULL,grx_get_screen_x()-BWW-8,grx_get_screen_y()-BHH);
         bltest(NULL,0,0);
-        grx_context_create(cw,ch,NULL,&memc);
+        grx_context_new(cw,ch,NULL,&memc);
         bltest(&memc,cw-BWW-8,ch-BHH);
 }
 
@@ -111,8 +111,8 @@ TESTFUNC(blittest)
         int  bx,by;
         int  cnt;
 
-        GrxContext *save = grx_context_create_subcontext(0,0,grx_get_max_x(),grx_get_max_y(),NULL,NULL);
-        GrxContext *tile = grx_context_create(bw,bh,NULL,NULL);
+        GrxContext *save = grx_context_new_subcontext(0,0,grx_get_max_x(),grx_get_max_y(),NULL,NULL);
+        GrxContext *tile = grx_context_new(bw,bh,NULL,NULL);
 
         blxtest();
         GrKeyRead();

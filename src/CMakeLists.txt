@@ -299,9 +299,24 @@ set (GTKDOC_SOURCE_FILES
     image/imginlne.c
     image/istretch.c
     pattern/makepat.c
+    setup/clip.c
+    setup/clrinfo.c
+    setup/clrinlne.c
+    setup/colorbw.c
+    setup/colorega.c
+    setup/colors.c
     setup/context.c
+    setup/cxtinfo.c
+    setup/cxtinlne.c
+    setup/drvinfo.c
+    setup/drvinlne.c
+    setup/fframe.c
     setup/fgeom.c
     setup/hooks.c
+    setup/modewalk.c
+    setup/setdrvr.c
+    setup/setmode.c
+    setup/viewport.c
     shape/circle1.c
     shape/circle2.c
     shape/circle3.c

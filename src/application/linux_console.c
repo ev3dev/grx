@@ -197,7 +197,7 @@ static gboolean console_switch_handler (gpointer user_data)
         g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_IS_CONSOLE_ACTIVE]);
 
         /* create a new context from the screen */
-        priv->save = grx_context_create(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
+        priv->save = grx_context_new(grx_get_screen_x(), grx_get_screen_y(), NULL, NULL);
         if (priv->save == NULL) {
             g_critical ("Could not allocate context for console switching.");
         } else {

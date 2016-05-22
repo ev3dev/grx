@@ -519,10 +519,16 @@ namespace Grx {
     /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */
     /* ================================================================== */
 
+    public struct FrameMemory {
+        public uint8 *plane0;
+        public uint8 *plane1;
+        public uint8 *plane2;
+        public uint8 *plane3;
+    }
+
     [CCode (has_type_id = false)]
     public struct Frame {
-        [CCode (array_length_cexpr = "4")]
-        public uint8*[] base_address;
+        public FrameMemory base_address;
         public short selector;
         public bool is_on_screen;
         public uint8 memory_flags;

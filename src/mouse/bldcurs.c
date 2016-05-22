@@ -34,7 +34,7 @@ GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const G
         curs = malloc(sizeof(GrCursor));
         if(!curs) return(NULL);
         sttzero(curs);
-        if(!grx_context_create(workw,((workh << 1) + h),NULL,&curs->work)) {
+        if(!grx_context_new(workw,((workh << 1) + h),NULL,&curs->work)) {
             free(curs);
             return(NULL);
         }

@@ -35,7 +35,7 @@ void imagen( char *nf, int scale )
   grx_clear_screen( grx_color_info_alloc_color( 0,0,200 ) );
 
   grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
-  grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
+  grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_jpeg( grc,nf,scale );
   grx_context_unref( grc );
 
@@ -83,10 +83,10 @@ int main()
   imagen( "jpeg2.jpg",8 );
 
   grx_clear_screen( grx_color_info_alloc_color( 0,100,0 ) );
-  grc = grx_context_create_subcontext( 10,40,10+400-1,40+300-1,NULL,NULL );
+  grc = grx_context_new_subcontext( 10,40,10+400-1,40+300-1,NULL,NULL );
   grx_context_load_from_jpeg( grc,"jpeg1.jpg",2 );
   grx_context_unref( grc );
-  grc = grx_context_create_subcontext( 210,150,210+400-1,150+300-1,NULL,NULL );
+  grc = grx_context_new_subcontext( 210,150,210+400-1,150+300-1,NULL,NULL );
   grx_context_load_from_jpeg( grc,"jpeg2.jpg",2 );
   grx_context_unref( grc );
 

@@ -40,10 +40,10 @@ GrxColor readpixel(GrxFrame *c,int x,int y)
         offs = FOFS(x,y,c->line_offset);
         mask = 0x80 >> (x &= 7);
         pix = (GrxColor)(
-            (((c->base_address[0][offs] & mask)     ) |
-             ((c->base_address[1][offs] & mask) << 1) |
-             ((c->base_address[2][offs] & mask) << 2) |
-             ((c->base_address[3][offs] & mask) << 3)
+            (((c->base_address.plane0[offs] & mask)     ) |
+             ((c->base_address.plane1[offs] & mask) << 1) |
+             ((c->base_address.plane2[offs] & mask) << 2) |
+             ((c->base_address.plane3[offs] & mask) << 3)
             ) >> (7 - x)
         );
         GRX_RETURN(pix);
@@ -63,22 +63,22 @@ void drawpixel(int x,int y,GrxColor color)
         switch(op = C_OPER(color) & 3) {
           case C_WRITE:
           case C_AND:
-            CURC->gc_base_address[0][offs] &= ((cval     ) | ~mask);
-            CURC->gc_base_address[1][offs] &= ((cval >> 1) | ~mask);
-            CURC->gc_base_address[2][offs] &= ((cval >> 2) | ~mask);
-            CURC->gc_base_address[3][offs] &= ((cval >> 3) | ~mask);
+            CURC->gc_base_address.plane0[offs] &= ((cval     ) | ~mask);
+            CURC->gc_base_address.plane1[offs] &= ((cval >> 1) | ~mask);
+            CURC->gc_base_address.plane2[offs] &= ((cval >> 2) | ~mask);
+            CURC->gc_base_address.plane3[offs] &= ((cval >> 3) | ~mask);
             if(op != C_WRITE) break;
           case C_OR:
-            CURC->gc_base_address[0][offs] |= ((cval     ) & mask);
-            CURC->gc_base_address[1][offs] |= ((cval >> 1) & mask);
-            CURC->gc_base_address[2][offs] |= ((cval >> 2) & mask);
-            CURC->gc_base_address[3][offs] |= ((cval >> 3) & mask);
+            CURC->gc_base_address.plane0[offs] |= ((cval     ) & mask);
+            CURC->gc_base_address.plane1[offs] |= ((cval >> 1) & mask);
+            CURC->gc_base_address.plane2[offs] |= ((cval >> 2) & mask);
+            CURC->gc_base_address.plane3[offs] |= ((cval >> 3) & mask);
             break;
           default:
-            CURC->gc_base_address[0][offs] ^= ((cval     ) & mask);
-            CURC->gc_base_address[1][offs] ^= ((cval >> 1) & mask);
-            CURC->gc_base_address[2][offs] ^= ((cval >> 2) & mask);
-            CURC->gc_base_address[3][offs] ^= ((cval >> 3) & mask);
+            CURC->gc_base_address.plane0[offs] ^= ((cval     ) & mask);
+            CURC->gc_base_address.plane1[offs] ^= ((cval >> 1) & mask);
+            CURC->gc_base_address.plane2[offs] ^= ((cval >> 2) & mask);
+            CURC->gc_base_address.plane3[offs] ^= ((cval >> 3) & mask);
             break;
         }
         GRX_LEAVE();
@@ -107,7 +107,7 @@ static void drawhline(int x,int y,int w,GrxColor color) {
     GR_int32u cv = cval & 1 ? ~0L : 0L;
     cval >>= 1;
     if (!( !cv && (oper==C_OR||oper==C_XOR)) && !(cv && oper==C_AND) ) {
-      GR_int8u *dptr = (GR_int8u *)&CURC->gc_base_address[pl][DO];
+      GR_int8u *dptr = (GR_int8u *)&GRX_FRAME_MEMORY_PLANE(&CURC->gc_base_address,pl)[DO];
       int ww = wd;
       if ( ((GR_int8u)(~lm)) ) {
           switch(oper) {
@@ -156,44 +156,44 @@ static void drawvline(int x,int y,int h,GrxColor color)
           case C_XOR:
               /* no need to xor anything with 0 */
               if (color&1) {
-                p = &CURC->gc_base_address[0][offs];
+                p = &CURC->gc_base_address.plane0[offs];
                 hh = h;
                 colfill_b_xor(p,lwdt,mask,hh);
               }
               if (color&2) {
-                p = &CURC->gc_base_address[1][offs];
+                p = &CURC->gc_base_address.plane1[offs];
                 hh = h;
                 colfill_b_xor(p,lwdt,mask,hh);
               }
               if (color&4) {
-                p = &CURC->gc_base_address[2][offs];
+                p = &CURC->gc_base_address.plane2[offs];
                 hh = h;
                 colfill_b_xor(p,lwdt,mask,hh);
               }
               if (color&8) {
-                p = &CURC->gc_base_address[3][offs];
+                p = &CURC->gc_base_address.plane3[offs];
                 colfill_b_xor(p,lwdt,mask,h);
               }
               break;
           case C_OR:
               /* no need to or anything with 0 */
               if (color&1) {
-                p = &CURC->gc_base_address[0][offs];
+                p = &CURC->gc_base_address.plane0[offs];
                 hh = h;
                 colfill_b_or(p,lwdt,mask,hh);
               }
               if (color&2) {
-                p = &CURC->gc_base_address[1][offs];
+                p = &CURC->gc_base_address.plane1[offs];
                 hh = h;
                 colfill_b_or(p,lwdt,mask,hh);
               }
               if (color&4) {
-                p = &CURC->gc_base_address[2][offs];
+                p = &CURC->gc_base_address.plane2[offs];
                 hh = h;
                 colfill_b_or(p,lwdt,mask,hh);
               }
               if (color&8) {
-                p = &CURC->gc_base_address[3][offs];
+                p = &CURC->gc_base_address.plane3[offs];
                 colfill_b_or(p,lwdt,mask,h);
               }
               break;
@@ -201,39 +201,39 @@ static void drawvline(int x,int y,int h,GrxColor color)
               /* no need to and anything with 1 */
               mask = ~mask; /* set up reset mask */
               if (!(color&1)) {
-                p = &CURC->gc_base_address[0][offs];
+                p = &CURC->gc_base_address.plane0[offs];
                 hh = h;
                 colfill_b_and(p,lwdt,mask,hh);
               }
               if (!(color&2)) {
-                p = &CURC->gc_base_address[1][offs];
+                p = &CURC->gc_base_address.plane1[offs];
                 hh = h;
                 colfill_b_and(p,lwdt,mask,hh);
               }
               if (!(color&4)) {
-                p = &CURC->gc_base_address[2][offs];
+                p = &CURC->gc_base_address.plane2[offs];
                 hh = h;
                 colfill_b_and(p,lwdt,mask,hh);
               }
               if (!(color&8)) {
-                p = &CURC->gc_base_address[3][offs];
+                p = &CURC->gc_base_address.plane3[offs];
                 colfill_b_and(p,lwdt,mask,h);
               }
               break;
           default: {
-              p = &CURC->gc_base_address[0][offs];
+              p = &CURC->gc_base_address.plane0[offs];
               hh = h;
               if (color&1) colfill_b_or(p,lwdt,mask,hh);
               else         colfill_b_and(p,lwdt,~mask,hh);
-              p = &CURC->gc_base_address[1][offs];
+              p = &CURC->gc_base_address.plane1[offs];
               hh = h;
               if (color&2) colfill_b_or(p,lwdt,mask,hh);
               else         colfill_b_and(p,lwdt,~mask,hh);
-              p = &CURC->gc_base_address[2][offs];
+              p = &CURC->gc_base_address.plane2[offs];
               hh = h;
               if (color&4) colfill_b_or(p,lwdt,mask,hh);
               else         colfill_b_and(p,lwdt,~mask,hh);
-              p = &CURC->gc_base_address[3][offs];
+              p = &CURC->gc_base_address.plane3[offs];
               if (color&8) colfill_b_or(p,lwdt,mask,h);
               else         colfill_b_and(p,lwdt,~mask,h);
               break;

@@ -32,7 +32,7 @@ int main(void)
 
   grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
   /* Create a 1bpp bitmap */
-  pContext = grx_context_create_full(GRX_FRAME_MODE_RAM_1BPP, sizex, sizey, NULL, NULL);
+  pContext = grx_context_new_full(GRX_FRAME_MODE_RAM_1BPP, sizex, sizey, NULL, NULL);
   /* draw something (black and white) into the bitmap */
   grx_context_set_current(pContext);
   grx_clear_context( grx_color_info_get_black() );

@@ -78,11 +78,11 @@ GrxColor readpixel(GrxFrame *c,int x,int y)
     GR_int16u *pp;
     GRX_ENTER();
 #ifdef FAR_ACCESS
-    pp = (GR_int16u *)&SCRN->gc_base_address[0][FOFS(x,y,SCRN->gc_line_offset)];
+    pp = (GR_int16u *)&SCRN->gc_base_address.plane0[FOFS(x,y,SCRN->gc_line_offset)];
     setup_far_selector(SCRN->gc_selector);
 #else
 /* problem with LFB_BY_NEAR_POINTER here? Does c always point to screen? */
-    pp = (GR_int16u *)&c->base_address[0][FOFS(x,y,c->line_offset)];
+    pp = (GR_int16u *)&c->base_address.plane0[FOFS(x,y,c->line_offset)];
 #endif
 #if defined(MISALIGNED_16bit_OK) && !defined(FAR_ACCESS)
     GRX_RETURN(*pp);
@@ -96,7 +96,7 @@ void drawpixel(int x,int y,GrxColor color)
 {
     char *ptr;
     GRX_ENTER();
-    ptr = &CURC->gc_base_address[0][FOFS(x,y,CURC->gc_line_offset)];
+    ptr = &CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
     SETFARSEL(CURC->gc_selector);
     switch(C_OPER(color)) {
         case C_XOR: poke16_xor(ptr,(GR_int16u)color); break;
@@ -112,7 +112,7 @@ static void drawhline(int x,int y,int w,GrxColor color)
     char *pp;
     GR_repl cval;
     GRX_ENTER();
-    pp = &CURC->gc_base_address[0][FOFS(x,y,CURC->gc_line_offset)];
+    pp = &CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
     cval = freplicate_w(color);
     SETFARSEL(CURC->gc_selector);
     switch(C_OPER(color)) {
@@ -130,7 +130,7 @@ static void drawvline(int x,int y,int h,GrxColor color)
     char *pp;
     GRX_ENTER();
     lwdt = CURC->gc_line_offset;
-    pp   = &CURC->gc_base_address[0][FOFS(x,y,lwdt)];
+    pp   = &CURC->gc_base_address.plane0[FOFS(x,y,lwdt)];
     SETFARSEL(CURC->gc_selector);
     switch(C_OPER(color)) {
         case C_XOR: colfill16_xor(pp,lwdt,(GR_int16u)color,h); break;
@@ -149,7 +149,7 @@ static void drawblock(int x,int y,int w,int h,GrxColor color)
 
     GRX_ENTER();
     skip = CURC->gc_line_offset;
-    ptr  = &CURC->gc_base_address[0][FOFS(x,y,skip)];
+    ptr  = &CURC->gc_base_address.plane0[FOFS(x,y,skip)];
     skip -= w<<1;
     cval = freplicate_w(color);
     SETFARSEL(CURC->gc_selector);
@@ -249,7 +249,7 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
     } else
         xstep = 2;
 
-    ptr = &CURC->gc_base_address[0][FOFS(x,y,CURC->gc_line_offset)];
+    ptr = &CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
     SETFARSEL(CURC->gc_selector);
     if(dx > dy) {
         npts  = dx +  1;

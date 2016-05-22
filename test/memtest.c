@@ -34,10 +34,10 @@ int main()
   y = grx_get_size_y();
   ww = (x / 2) - 10;
   wh = (y / 2) - 10;
-  w1 = grx_context_create_subcontext(5,5,ww+4,wh+4,NULL,NULL);
-  w2 = grx_context_create_subcontext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
-  w3 = grx_context_create_subcontext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
-  w4 = grx_context_create_subcontext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
+  w1 = grx_context_new_subcontext(5,5,ww+4,wh+4,NULL,NULL);
+  w2 = grx_context_new_subcontext(15+ww,5,ww+ww+14,wh+4,NULL,NULL);
+  w3 = grx_context_new_subcontext(5,15+wh,ww+4,wh+wh+14,NULL,NULL);
+  w4 = grx_context_new_subcontext(15+ww,15+wh,ww+ww+14,wh+wh+14,NULL,NULL);
 
   grx_context_set_current(w1);
   c = grx_color_info_alloc_color(200,100,100);

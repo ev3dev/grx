@@ -118,15 +118,15 @@ void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
       int wd      = ((dx+w+7) >> 3) - (dx >> 3);
       int dskip   = dst->line_offset;
       int sskip   = src->line_offset;
-      if ((dy>y) && (dst->base_address[0]==src->base_address[0])) {
+      if ((dy>y) && (dst->base_address.plane0==src->base_address.plane0)) {
         /* reverse */
         dy += h-1;
         y  += h-1;
         doffs = FOFS(dx,dy,dskip);
         soffs = FOFS( x, y,sskip);
         for (pl=0; pl < planes; ++pl) {
-          char *dptr = &dst->base_address[pl][doffs];
-          char *sptr = &src->base_address[pl][soffs];
+          char *dptr = &GRX_FRAME_MEMORY_PLANE(&dst->base_address,pl)[doffs];
+          char *sptr = &GRX_FRAME_MEMORY_PLANE(&src->base_address,pl)[soffs];
           int hh = h;
           if (shift) {
             while (hh-- > 0) {
@@ -153,8 +153,8 @@ void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
         doffs = FOFS(dx,dy,dst->line_offset);
         soffs = FOFS( x, y,src->line_offset);
         for (pl=0; pl < planes; ++pl) {
-          char *dptr = &dst->base_address[pl][doffs];
-          char *sptr = &src->base_address[pl][soffs];
+          char *dptr = &GRX_FRAME_MEMORY_PLANE(&dst->base_address,pl)[doffs];
+          char *sptr = &GRX_FRAME_MEMORY_PLANE(&src->base_address,pl)[soffs];
           int hh = h;
           if (shift) {
             while (hh-- > 0) {

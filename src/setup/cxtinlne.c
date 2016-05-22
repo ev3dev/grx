@@ -21,9 +21,28 @@
 
 #include "libgrx.h"
 
-GrxContext *(grx_context_create)(int w,int h,unsigned char *memory[4],GrxContext *where)
+/**
+ * grx_context_new:
+ * @w: the width of the context
+ * @h: the height of the context
+ * @memory: (nullable): memory location(s) or %NULL
+ * @where: (nullable): an unused #GrxContex struct or %NULL
+ *
+ * Creates a new context in system memory.
+ *
+ * @memory must contain grx_screen_n_planes() pointers (usually just one, but
+ * could be as many as 4) of size grx_screen_get_plane_size(). %NULL may also
+ * be passed to @memory, in which case the memory will be dynamically allocated.
+ *
+ * Likewise, @where can be an unused #GrxContext (e.g. you may want to do this
+ * if you want a stack allocated context) or it can be %NULL to dynamically
+ * allocate a new context.
+ *
+ * Returns: @where or a new context if @where was %NULL. Returns %NULL on error.
+ */
+GrxContext *(grx_context_new)(int w,int h,GrxFrameMemory *memory,GrxContext *where)
 {
-        return(grx_context_create(w,h,memory,where));
+        return(grx_context_new(w,h,memory,where));
 }
 
 GrxContext *(grx_context_get_current)(void)

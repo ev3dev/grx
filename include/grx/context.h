@@ -26,12 +26,38 @@
 #include <grx/color.h>
 #include <grx/common.h>
 
-/* ================================================================== */
-/*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */
-/* ================================================================== */
+/**
+ * SECTION:context
+ * @short_description: Drawing regions
+ * @title: Graphics Contexts
+ * @section_id: context
+ * @include: grx-3.0.h
+ *
+ * The library supports a set of drawing regions called contexts (#GrxContext).
+ * These can be in video memory or in system memory. Contexts in system memory
+ * always have the same memory organization as the video memory. When
+ * grx_set_mode() is called, a default context is created which maps to the
+ * whole graphics screen.
+ */
+
+typedef struct {
+    guint8 *plane0;
+    guint8 *plane1;
+    guint8 *plane2;
+    guint8 *plane3;
+} GrxFrameMemory;
+
+/**
+ * GRX_FRAME_MEMORY_PLANE:
+ * @f: pointer to #GrxFrameMemory
+ * @p: the index of the plane (0-3)
+ *
+ * Gets a plane from #GrxFrameMemory by its index.
+ */
+#define GRX_FRAME_MEMORY_PLANE(f,p) (((guint8**)f)[p])
 
 struct _GrxFrame {
-    guint8         *base_address[4];    /* base address of frame memory */
+    GrxFrameMemory  base_address;       /* base address of frame memory */
     gshort          selector;           /* frame memory segment selector */
     gboolean        is_on_screen;       /* is it in video memory ? */
     guint8          memory_flags;       /* memory allocation flags */
@@ -74,11 +100,11 @@ extern const struct _GR_contextInfo {
 #endif /* __GI_SCANNER__ */
 
 GType       grx_context_get_type(void);
-GrxContext *grx_context_create(gint w, gint h, guint8 *memory[4], GrxContext *where);
-GrxContext *grx_context_create_full(GrxFrameMode md, gint w, gint h,
-                                    guint8 *memory[4], GrxContext *where);
-GrxContext *grx_context_create_subcontext(gint x1, gint y1, gint x2, gint y2,
-                                          const GrxContext *parent, GrxContext *where);
+GrxContext *grx_context_new(gint w, gint h, GrxFrameMemory *memory, GrxContext *where);
+GrxContext *grx_context_new_full(GrxFrameMode md, gint w, gint h,
+                                 GrxFrameMemory *memory, GrxContext *where);
+GrxContext *grx_context_new_subcontext(gint x1, gint y1, gint x2, gint y2,
+                                       const GrxContext *parent, GrxContext *where);
 GrxContext *grx_context_save(GrxContext *where);
 
 GrxContext *grx_context_get_current(void);
@@ -115,7 +141,7 @@ int   grx_get_high_x(void);
 int   grx_get_high_y(void);
 
 #ifndef GRX_SKIP_INLINES
-#define grx_context_create(w,h,m,c) (grx_context_create_full(grx_get_core_frame_mode(),w,h,m,c))
+#define grx_context_new(w,h,m,c) (grx_context_new_full(grx_get_core_frame_mode(),w,h,m,c))
 #define grx_context_get_current()       ((GrxContext *)(&GrContextInfo->current))
 #define grx_context_get_screen()        ((GrxContext *)(&GrContextInfo->screen))
 #define grx_get_max_x()                 (grx_context_get_current()->x_max)

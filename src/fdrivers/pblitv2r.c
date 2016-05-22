@@ -42,7 +42,7 @@ void _GrFrDrvPackedBitBltV2R(GrxFrame *dst,int dx,int dy,
         GR_int8u cval;
 
         GRX_ENTER();
-        dptr  = &dst->base_address[0][FOFS(dx,dy,dst->line_offset)];
+        dptr  = &dst->base_address.plane0[FOFS(dx,dy,dst->line_offset)];
         soff  = FOFS(sx,sy,src->line_offset);
         dskip = dst->line_offset - w;
         sskip = src->line_offset - w;
@@ -56,7 +56,7 @@ void _GrFrDrvPackedBitBltV2R(GrxFrame *dst,int dx,int dy,
             unsigned w1 = BANKLFT(soff);
             unsigned w2 = w - (w1 = umin(w,w1));
             do {
-                sptr = &src->base_address[0][BANKPOS(soff)];
+                sptr = &src->base_address.plane0[BANKPOS(soff)];
                 CHKBANK(BANKNUM(soff));
                 soff += w1;
                 if (w1) switch(oper) {

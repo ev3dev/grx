@@ -143,10 +143,10 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
         if(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_LINEAR)
         {
             DBGPRINTF(DBG_SETMD,("buildcontext - Linear Mode\n"));
-            cxt->gc_base_address[0] =
-            cxt->gc_base_address[1] =
-            cxt->gc_base_address[2] =
-            cxt->gc_base_address[3] = LINP_PTR(mp->extended_info->frame);
+            cxt->gc_base_address.plane0 =
+            cxt->gc_base_address.plane1 =
+            cxt->gc_base_address.plane2 =
+            cxt->gc_base_address.plane3 = LINP_PTR(mp->extended_info->frame);
             cxt->gc_selector    = mp->extended_info->lfb_selector;
         } else
 #endif /* !(__XWIN__ && !XF86DGA_FRAMEBUFFER && !__SDL__) */
@@ -167,27 +167,27 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
             if (mp->bpp==24)
               {
                  int m_incr = mp->line_offset*mp->height;
-                 cxt->gc_base_address[0] = mp->extended_info->frame;
-                 cxt->gc_base_address[1] = cxt->gc_base_address[0] + m_incr;
-                 cxt->gc_base_address[2] = cxt->gc_base_address[1] + m_incr;
-                 cxt->gc_base_address[3] = NULL;
+                 cxt->gc_base_address.plane0 = mp->extended_info->frame;
+                 cxt->gc_base_address.plane1 = cxt->gc_base_address.plane0 + m_incr;
+                 cxt->gc_base_address.plane2 = cxt->gc_base_address.plane1 + m_incr;
+                 cxt->gc_base_address.plane3 = NULL;
               }
             else
 #endif
             if (mp->bpp==4)
               {
                  int m_incr = mp->line_offset*mp->height;
-                 cxt->gc_base_address[0] = mp->extended_info->frame;
-                 cxt->gc_base_address[1] = cxt->gc_base_address[0] + m_incr;
-                 cxt->gc_base_address[2] = cxt->gc_base_address[1] + m_incr;
-                 cxt->gc_base_address[3] = cxt->gc_base_address[2] + m_incr;
+                 cxt->gc_base_address.plane0 = mp->extended_info->frame;
+                 cxt->gc_base_address.plane1 = cxt->gc_base_address.plane0 + m_incr;
+                 cxt->gc_base_address.plane2 = cxt->gc_base_address.plane1 + m_incr;
+                 cxt->gc_base_address.plane3 = cxt->gc_base_address.plane2 + m_incr;
               }
             else
               {
-                 cxt->gc_base_address[0] =
-                 cxt->gc_base_address[1] =
-                 cxt->gc_base_address[2] =
-                 cxt->gc_base_address[3] = mp->extended_info->frame;
+                 cxt->gc_base_address.plane0 =
+                 cxt->gc_base_address.plane1 =
+                 cxt->gc_base_address.plane2 =
+                 cxt->gc_base_address.plane3 = mp->extended_info->frame;
               }
         }
         else
@@ -195,10 +195,10 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
             if(plsize > fdp->max_plane_size) goto done; /* FALSE */
             if(!mp->extended_info->set_bank && (plsize > 0x10000L)) goto done; /* FALSE */
             if(mp->line_offset % fdp->row_align) goto done; /* FALSE */
-            cxt->gc_base_address[0] =
-            cxt->gc_base_address[1] =
-            cxt->gc_base_address[2] =
-            cxt->gc_base_address[3] = LINP_PTR(mp->extended_info->frame);
+            cxt->gc_base_address.plane0 =
+            cxt->gc_base_address.plane1 =
+            cxt->gc_base_address.plane2 =
+            cxt->gc_base_address.plane3 = LINP_PTR(mp->extended_info->frame);
             cxt->gc_selector    = LINP_SEL(mp->extended_info->frame);
         }
         cxt->gc_is_on_screen    = !(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_MEMORY);
@@ -211,10 +211,10 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
 
         res = TRUE;
 
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 0 = 0x%x\n",cxt->gc_base_address[0]));
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 1 = 0x%x\n",cxt->gc_base_address[1]));
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 2 = 0x%x\n",cxt->gc_base_address[2]));
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 3 = 0x%x\n",cxt->gc_base_address[3]));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 0 = 0x%x\n",cxt->gc_base_address.plane0));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 1 = 0x%x\n",cxt->gc_base_address.plane1));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 2 = 0x%x\n",cxt->gc_base_address.plane2));
+        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 3 = 0x%x\n",cxt->gc_base_address.plane3));
 done:
         GRX_RETURN(res);
 }

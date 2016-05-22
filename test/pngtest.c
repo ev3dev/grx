@@ -35,12 +35,12 @@ void imagen( char *nf )
   grx_clear_screen( grx_color_info_alloc_color( 0,0,200 ) );
 
   grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
-  grc = grx_context_create_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
+  grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_png( grc,nf,0 );
   grx_context_unref( grc );
 
   grx_draw_box( 320,40,320+wide+1,40+high+1,grx_color_info_get_white() );
-  grc = grx_context_create_subcontext( 321,41,321+wide-1,41+high-1,NULL,NULL );
+  grc = grx_context_new_subcontext( 321,41,321+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_png( grc,nf,1 );
   grx_context_unref( grc );
 
@@ -84,10 +84,10 @@ int main()
   imagen( "pngred.png" );
 
   grx_clear_screen( grx_color_info_alloc_color( 0,100,0 ) );
-  grc = grx_context_create_subcontext( 191,121,191+256-1,121+240-1,NULL,NULL );
+  grc = grx_context_new_subcontext( 191,121,191+256-1,121+240-1,NULL,NULL );
   grx_context_load_from_png( grc,"pngred.png",1 );
   grx_context_unref( grc );
-  grc = grx_context_create_subcontext( 181,241,181+289-1,241+80-1,NULL,NULL );
+  grc = grx_context_new_subcontext( 181,241,181+289-1,241+80-1,NULL,NULL );
   grx_context_load_from_png( grc,"pngcompo.png",1 );
   grx_context_unref( grc );
 

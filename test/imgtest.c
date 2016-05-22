@@ -31,7 +31,7 @@ TESTFUNC(imgtest)
         GrxContext ctx;
         GrxImage *img1;
         GrxImage *img2;
-        if (! grx_context_create(ww,wh,NULL,&ctx)) return;
+        if (! grx_context_new(ww,wh,NULL,&ctx)) return;
 
         grx_context_set_current(&ctx);
         c1 = grx_color_info_alloc_color(255,100,0);
