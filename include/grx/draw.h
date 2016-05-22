@@ -25,9 +25,15 @@
 #include <grx/color.h>
 #include <grx/common.h>
 
-/* ================================================================== */
-/*                       GRAPHICS PRIMITIVES                          */
-/* ================================================================== */
+/**
+ * SECTION:draw
+ * @short_description: Basic drawing functions
+ * @title: Graphics Primitives
+ * @section_id: draw
+ * @include: grx-3.0.h
+ *
+ * These functions operate on the current context (or, occasionally, the screen).
+ */
 
 /**
  * GRX_MAX_POLYGON_POINTS:

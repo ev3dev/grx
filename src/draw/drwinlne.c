@@ -24,16 +24,6 @@
 #include "libgrx.h"
 
 /**
- * SECTION:draw
- * @short_description: Basic drawing functions
- * @title: Graphics Primitives
- * @section_id: draw
- * @include: grx-3.0.h
- *
- * These functions operate on the current context (or, occasionally, the screen).
- */
-
-/**
  * grx_bit_blt:
  * @x: the destination X coordinate
  * @y: the destination Y coordinate
