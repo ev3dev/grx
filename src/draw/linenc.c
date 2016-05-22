@@ -20,7 +20,7 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void grx_draw_line_nc(int x1,int y1,int x2,int y2,GrxColor c)
+void grx_fast_draw_line(int x1,int y1,int x2,int y2,GrxColor c)
 {
         (*FDRV->drawline)(
             x1 + CURC->x_offset,

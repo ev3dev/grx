@@ -42,7 +42,7 @@ class Life(Grx.LinuxConsoleApplication):
                 on = random() > 0.82
                 self.old_state[x][y] = on
                 if on:
-                    Grx.draw_pixel_nc(x, y, self.color[on])
+                    Grx.fast_draw_pixel(x, y, self.color[on])
 
     def update_state(self):
         for y in range(self.height):
@@ -74,7 +74,7 @@ class Life(Grx.LinuxConsoleApplication):
         for y in range(self.height):
             for x in range(self.width):
                 if self.old_state[x][y] != self.new_state[x][y]:
-                    Grx.draw_pixel_nc(x, y, self.color[self.new_state[x][y]])
+                    Grx.fast_draw_pixel(x, y, self.color[self.new_state[x][y]])
 
         self.old_state, self.new_state = self.new_state, self.old_state
 

@@ -18,6 +18,7 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/draw_nc.h>
 #include <grx/mode.h>
 
 #include "libgrx.h"
@@ -77,17 +78,17 @@ void (grx_bit_blt_1bpp)(int dx, int dy, GrxContext *src, int x1, int y1,
     grx_context_bit_blt_1bpp(NULL, dx, dy, src, x1, y1, x2, y2, fg, bg);
 }
 
-void (grx_draw_pixel_nc)(int x,int y,GrxColor c)
+void (grx_fast_draw_pixel)(int x,int y,GrxColor c)
 {
-        grx_draw_pixel_nc(x,y,c);
+        grx_fast_draw_pixel(x,y,c);
 }
 
-GrxColor (grx_get_pixel_nc)(int x,int y)
+GrxColor (grx_fast_get_pixel)(int x,int y)
 {
-        return(grx_get_pixel_nc(x,y));
+        return(grx_fast_get_pixel(x,y));
 }
 
-GrxColor (grx_context_get_pixel_nc)(GrxContext *c,int x,int y)
+GrxColor (grx_context_fast_get_pixel)(GrxContext *c,int x,int y)
 {
-        return(grx_context_get_pixel_nc(c,x,y));
+        return(grx_context_fast_get_pixel(c,x,y));
 }

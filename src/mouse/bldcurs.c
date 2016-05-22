@@ -46,12 +46,12 @@ GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const G
         curs->ywork = workh;
         grx_context_save(&save);
         grx_context_set_current(&curs->work);
-        grx_draw_filled_box_nc(0,0,(workw - 1),(h - 1),0L);
+        grx_fast_draw_filled_box(0,0,(workw - 1),(h - 1),0L);
         for(yy = 0; yy < h; yy++) {
             unsigned char *p = (unsigned char *)pixels + (yy * pitch);
             for(xx = 0; xx < w; xx++,p++) {
-                if(*p) grx_draw_pixel_nc(xx,yy,grx_color_get_value(GRX_COLOR_TABLE_GET_COLOR(C,(*p - 1))));
-                else   grx_draw_pixel_nc((xx + wrkw2),yy,grx_color_get_value(-1L));
+                if(*p) grx_fast_draw_pixel(xx,yy,grx_color_get_value(GRX_COLOR_TABLE_GET_COLOR(C,(*p - 1))));
+                else   grx_fast_draw_pixel((xx + wrkw2),yy,grx_color_get_value(-1L));
             }
         }
         grx_context_set_current(&save);

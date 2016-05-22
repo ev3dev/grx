@@ -41,7 +41,7 @@
 void grx_clear_context(GrxColor bg)
 {
   mouse_block(CURC,0,0,CURC->x_max,CURC->y_max);
-  grx_draw_filled_box_nc(0,0,CURC->x_max,CURC->y_max,bg);
+  grx_fast_draw_filled_box(0,0,CURC->x_max,CURC->y_max,bg);
   mouse_unblock();
 }
 

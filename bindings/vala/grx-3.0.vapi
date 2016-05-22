@@ -582,7 +582,7 @@ namespace Grx {
 
         public Color *get_scan_line (int x1, int x2, int yy);
 
-        public Color get_pixel_nc (int x, int y);
+        public Color fast_get_pixel (int x, int y);
 
         [CCode (cname = "grx_pattern_create_pixmap_from_context")]
         public Pattern to_pixmap ();
@@ -755,16 +755,16 @@ namespace Grx {
     /*                 NON CLIPPING DRAWING PRIMITIVES                    */
     /* ================================================================== */
 
-    public void draw_pixel_nc(int x, int y, Color c);
-    public void draw_line_nc(int x1, int y1, int x2, int y2, Color c);
-    public void draw_hline_nc(int x1, int x2, int y, Color c);
-    public void draw_vline_nc(int x, int y1, int y2, Color c);
-    public void draw_box_nc(int x1, int y1, int x2, int y2, Color c);
-    public void draw_filled_box_nc(int x1, int y1, int x2, int y2, Color c);
-    public void draw_framed_box_nc(int x1, int y1, int x2, int y2, int wdt, FramedBoxColors c);
-    public void bit_blt_nc(Context dest, int x, int y, Context src, int x1, int y1, int x2, int y2, ColorMode op = ColorMode.WRITE);
+    public void fast_draw_pixel(int x, int y, Color c);
+    public void fast_draw_line(int x1, int y1, int x2, int y2, Color c);
+    public void fast_draw_hline(int x1, int x2, int y, Color c);
+    public void fast_draw_vline(int x, int y1, int y2, Color c);
+    public void fast_draw_box(int x1, int y1, int x2, int y2, Color c);
+    public void fast_draw_filled_box(int x1, int y1, int x2, int y2, Color c);
+    public void fast_draw_framed_box(int x1, int y1, int x2, int y2, int wdt, FramedBoxColors c);
+    public void fast_bit_blt(Context dest, int x, int y, Context src, int x1, int y1, int x2, int y2, ColorMode op = ColorMode.WRITE);
 
-    public Color get_pixel_nc (int x, int y);
+    public Color fast_get_pixel (int x, int y);
 
     /* ================================================================== */
     /*                   FONTS AND TEXT PRIMITIVES                        */
