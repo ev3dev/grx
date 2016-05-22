@@ -20,17 +20,22 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-const GrxColor *grx_context_get_scanline(GrxContext *ctx,int x1,int x2,int yy)
-/* Input   ctx: source context, if NULL the current context is used */
-/*         x1 : first x coordinate read                             */
-/*         x2 : last  x coordinate read                             */
-/*         yy : y coordinate                                        */
-/* Output  NULL     : error / no data (clipping occured)            */
-/*         else                                                     */
-/*           p[0..w-1]: pixel values read                           */
-/*           p[w]     : GRX_COLOR_NONE end marker                        */
-/*                      (w = |x2-y1|+1)                             */
-/*           Output data is valid until next GRX call !             */
+/**
+ * grx_context_get_scanline:
+ * @context: the context
+ * @x1: the starting X coordinate
+ * @x2: the ending X coordinate
+ * @y: the Y coordinate
+ * @n: (out) (optional): the length of the array
+ *
+ * An efficient way to get pixels from a context. Important: the return value
+ * is only valid until the next Grx call!
+ *
+ * Returns: (array length=n) (nullable) (transfer none):
+ *     an array of color values from the scanned pixels or %NULL if there was
+ *     an error
+ */
+const GrxColor *grx_context_get_scanline(GrxContext *ctx,int x1,int x2,int yy,unsigned int *n)
 {
         GrxColor *res = NULL;
         if (ctx == NULL) ctx = CURC;
@@ -45,9 +50,26 @@ const GrxColor *grx_context_get_scanline(GrxContext *ctx,int x1,int x2,int yy)
             NULL
         );
         mouse_unblock();
+        if (n) {
+            *n = x2 - x1;
+        }
 done:   return res;
 }
 
-const GrxColor *(grx_get_scanline)(int x1,int x2,int yy) {
-  return grx_context_get_scanline(NULL, x1,x2,yy);
+/**
+ * grx_get_scanline:
+ * @x1: the starting X coordinate
+ * @x2: the ending X coordinate
+ * @y: the Y coordinate
+ * @n: (out) (optional): the length of the array
+ *
+ * An efficient way to get pixels from the current context. Important: the
+ * return value is only valid until the next Grx call!
+ *
+ * Returns: (array length=n) (nullable) (transfer none):
+ *     an array of color values from the scanned pixels or %NULL if there was
+ *     an error
+ */
+const GrxColor *(grx_get_scanline)(int x1,int x2,int yy, unsigned int *n) {
+  return grx_context_get_scanline(NULL, x1,x2,yy,n);
 }

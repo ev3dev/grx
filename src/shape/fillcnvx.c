@@ -19,6 +19,24 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_filled_convex_polygon:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @c: the color
+ *
+ * Draw a filled polygon on the current context that connects each point in
+ * the @points array using the specified color.
+ *
+ * Coordinate arrays can either contain or omit the closing edge of the polygon.
+ * It will be automatically appended to the list if it is missing.
+ *
+ * This version is slightly more efficient that grx_draw_filled_polygon() but
+ * requires that the polygon is convex. It can also be used to fill some concave
+ * polygons whose boundaries do not intersect any horizontal scan line more than
+ * twice. It can also be used to fill several disjoint non­overlapping polygons
+ * in a single operation.
+ */
 void grx_draw_filled_convex_polygon(int n,GrxPoint *pt,GrxColor c)
 {
         GrFillArg fval;

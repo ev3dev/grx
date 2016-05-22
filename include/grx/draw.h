@@ -29,8 +29,25 @@
 /*                       GRAPHICS PRIMITIVES                          */
 /* ================================================================== */
 
+/**
+ * GRX_MAX_POLYGON_POINTS:
+ *
+ * The maximum number of points that can be used for polylines and polygons.
+ */
 #define GRX_MAX_POLYGON_POINTS   (1000000)
+
+/**
+ * GRX_MAX_ELLIPSE_POINTS:
+ *
+ * The maximum number of points that can be used for ellipses and circles.
+ */
 #define GRX_MAX_ELLIPSE_POINTS   (1024 + 5)
+
+/**
+ * GRX_MAX_ANGLE_VALUE:
+ *
+ * The maximum allowable angle (360 degrees).
+ */
 #define GRX_MAX_ANGLE_VALUE      (3600)
 
 /**
@@ -48,7 +65,17 @@ enum _GrxArcStyle {
     GRX_ARC_STYLE_CLOSED_RADIUS  = 2,
 };
 
-struct _GrxFramedBoxColors {                        /* framed box colors */
+/**
+ * GrxFramedBoxColors:
+ * @background: the background fill color
+ * @border_top: the color for the top border
+ * @border_right: the color for the right border
+ * @border_bottom: the color for the bottom border
+ * @border_left: the color for the left border
+ *
+ * Struct to hold colors for a framed box.
+ */
+struct _GrxFramedBoxColors {
     GrxColor background;
     GrxColor border_top;
     GrxColor border_right;
@@ -56,6 +83,14 @@ struct _GrxFramedBoxColors {                        /* framed box colors */
     GrxColor border_left;
 };
 
+/**
+ * GrxPoint:
+ * @x: the X coordinate
+ * @y: the Y coordinate
+ *
+ * Struct that holds coordinates of a point for use in polyline/polygon
+ * functions.
+ */
 struct _GrxPoint {
     gint x;
     gint y;
@@ -64,65 +99,51 @@ struct _GrxPoint {
 void grx_clear_screen(GrxColor bg);
 void grx_clear_context(GrxColor bg);
 void grx_clear_clip_box(GrxColor bg);
+
 void grx_draw_pixel(gint x, gint y, GrxColor c);
 void grx_draw_line(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_draw_hline(gint x1, gint x2, gint y, GrxColor c);
 void grx_draw_vline(gint x, gint y1, gint y2,GrxColor c);
 void grx_draw_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
-void grx_draw_filled_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
-void grx_draw_framed_box(gint x1, gint y1, gint x2, gint y2, gint wdt, const GrxFramedBoxColors *c);
-gboolean grx_generate_ellipse(gint xc, gint yc, gint xa, gint ya, GrxPoint points[GRX_MAX_ELLIPSE_POINTS]);
-gboolean grx_generate_ellipse_arc(gint xc, gint yc, gint xa, gint ya, gint start, gint end, GrxPoint points[GRX_MAX_ELLIPSE_POINTS]);
-void grx_get_last_arc_coordinates(gint *xs, gint *ys, gint *xe, gint *ye, gint *xc, gint *yc);
 void grx_draw_circle(gint xc, gint yc, gint r, GrxColor c);
-void grx_draw_ellipse(gint xc, gint yc, gint xa, gint ya, GrxColor c);
+void grx_draw_ellipse(gint xc, gint yc, gint rx, gint ry, GrxColor c);
 void grx_draw_circle_arc(gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
-void grx_draw_ellipse_arc(gint xc, gint yc, gint xa, gint ya, gint start, gint end,GrxArcStyle style,GrxColor c);
-void grx_draw_filled_circle(gint xc, gint yc, gint r, GrxColor c);
-void grx_draw_filled_ellipse(gint xc, gint yc, gint xa, gint ya, GrxColor c);
-void grx_draw_filled_circle_arc(gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
-void grx_draw_filled_ellipse_arc(gint xc, gint yc, gint xa, gint ya, gint start, gint end, GrxArcStyle style, GrxColor c);
+void grx_draw_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end,GrxArcStyle style,GrxColor c);
 void grx_draw_polyline(gint n_points, GrxPoint *points, GrxColor c);
 void grx_draw_polygon(gint n_points, GrxPoint *points, GrxColor c);
-void grx_draw_filled_convex_polygon(gint n_points, GrxPoint *points, GrxColor c);
+
+void grx_get_last_arc_coordinates(gint *xs, gint *ys, gint *xe, gint *ye, gint *xc, gint *yc);
+gint grx_generate_ellipse(gint xc, gint yc, gint rx, gint ry, GrxPoint points[GRX_MAX_ELLIPSE_POINTS]);
+gint grx_generate_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end, GrxPoint points[GRX_MAX_ELLIPSE_POINTS]);
+
+void grx_draw_filled_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
+void grx_draw_framed_box(gint x1, gint y1, gint x2, gint y2, gint width, const GrxFramedBoxColors *c);
+void grx_draw_filled_circle(gint xc, gint yc, gint r, GrxColor c);
+void grx_draw_filled_ellipse(gint xc, gint yc, gint rx, gint ry, GrxColor c);
+void grx_draw_filled_circle_arc(gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
+void grx_draw_filled_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end, GrxArcStyle style, GrxColor c);
 void grx_draw_filled_polygon(gint n_points, GrxPoint *points, GrxColor c);
-void grx_bit_blt(GrxContext *dst, gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor op);
-void grx_bit_blt_1bpp(GrxContext *dst, gint dx, gint dy, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor fg, GrxColor bg);
+void grx_draw_filled_convex_polygon(gint n_points, GrxPoint *points, GrxColor c);
+
 void grx_flood_fill(gint x, gint y, GrxColor border, GrxColor c);
 void grx_flood_spill(gint x1, gint y1, gint x2, gint y2, GrxColor old_c, GrxColor new_c);
 void grx_flood_spill2(gint x1, gint y1, gint x2, gint y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
-void grx_context_flood_spill(GrxContext *ctx, gint x1, gint y1, gint x2, gint y2, GrxColor old_c, GrxColor new_c);
-void grx_context_flood_spill2(GrxContext *ctx, gint x1, gint y1, gint x2, gint y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
 
 GrxColor grx_get_pixel_at(gint x, gint y);
 
-const GrxColor *grx_get_scanline(int x1,int x2,int yy);
-const GrxColor *grx_context_get_scanline(GrxContext *ctx,int x1,int x2,int yy);
-/* Input   ctx: source context, if NULL the current context is used */
-/*         x1 : first x coordinate read                             */
-/*         x2 : last  x coordinate read                             */
-/*         yy : y coordinate                                        */
-/* Output  NULL     : error / no data (clipping occured)            */
-/*         else                                                     */
-/*           p[0..w]: pixel values read                             */
-/*                      (w = |x2-y1|)                               */
-/*           Output data is valid until next GRX call !             */
+void grx_bit_blt(gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor op);
+void grx_bit_blt_1bpp(gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor fg, GrxColor bg);
 
-void grx_put_scanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op);
-/* Input   x1 : first x coordinate to be set                        */
-/*         x2 : last  x coordinate to be set                        */
-/*         yy : y coordinate                                        */
-/*         c  : c[0..(|x2-x1|] hold the pixel data                  */
-/*         op : Operation (GRX_COLOR_MODE_WRITE/GRX_COLOR_MODE_XOR/GRX_COLOR_MODE_OR/GRX_COLOR_MODE_AND/GRX_COLOR_MODE_IMAGE)        */
-/*                                                                  */
-/* Note    c[..] data must fit GRX_COLOR_VALUE_MASK otherwise the results   */
-/*         are implementation dependend.                            */
-/*         => You can't supply operation code with the pixel data!  */
-
+const GrxColor *grx_get_scanline(gint x1, gint x2, gint y, guint *n);
+void grx_put_scanline(gint x1, gint x2, gint y, const GrxColor *scan_line, GrxColor op);
 
 #ifndef GRX_SKIP_INLINES
-#define grx_get_scanline(x1,x2,yy) \
-        grx_context_get_scanline(NULL,(x1),(x2),(yy))
+#define grx_bit_blt(x,y,s,x1,x2,y1,y2,o) \
+    grx_context_bit_blt(NULL,(x),(y),(s),(x1),(x2),(y1),(y2),(o))
+#define grx_bit_blt_1bpp(x,y,s,x1,y1,x2,y2,f,b) \
+    grx_context_bit_blt_1bpp(NULL,(x),(y),(s),(x1),(y1),(x2),(y2),(f),(b))
+#define grx_get_scanline(x1,x2,yy,n) \
+    grx_context_get_scanline(NULL,(x1),(x2),(yy),(n))
 #endif
 
 /* ================================================================== */

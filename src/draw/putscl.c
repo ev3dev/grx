@@ -20,16 +20,21 @@
 #include "libgrx.h"
 #include "clipping.h"
 
+/**
+ * grx_put_scanline:
+ * @x1: the starting X coordinate
+ * @x2: the ending X coordinate
+ * @y: the Y coordinate
+ * @scan_line: (array): the data to write
+ * @op: the color operation
+ *
+ * Writes @scan_data to the current context using the @op operation.
+ *
+ * Data values in @scan_data must fit #GRX_COLOR_VALUE_MASK otherwise the
+ * results are implementation dependent. So you can't supply operation code
+ * with the pixel data!
+ */
 void grx_put_scanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op)
-/* Input   x1 : first x coordinate to be set                        */
-/*         x2 : last  x coordinate to be set                        */
-/*         yy : y coordinate                                        */
-/*         c  : c[0..(|x2-x1|] hold the pixel data                  */
-/*         op : Operation (GRX_COLOR_MODE_WRITE/GRX_COLOR_MODE_XOR/GRX_COLOR_MODE_OR/GRX_COLOR_MODE_AND/GRX_COLOR_MODE_IMAGE)        */
-/*                                                                  */
-/* Note    c[..] data must fit GRX_COLOR_VALUE_MASK otherwise the results   */
-/*         are implementation dependend.                            */
-/*         => You can't supply operation code with the pixel data!  */
 {
         int xs;
         isort(x1,x2);

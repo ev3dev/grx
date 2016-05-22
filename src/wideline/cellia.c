@@ -23,7 +23,7 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void grx_draw_ellipse_arc_with_options(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,const GrxLineOptions *o)
+void grx_draw_ellipse_arc_with_options(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,const GrxLineOptions *o)
 {
     GrxPoint *pnts;
     setup_ALLOC();
@@ -31,7 +31,7 @@ void grx_draw_ellipse_arc_with_options(int xc,int yc,int xa,int ya,int start,int
     if (pnts != NULL)
     {
         GrFillArg fval;
-        int npts  = grx_generate_ellipse_arc(xc,yc,xa,ya,start,end,pnts);
+        int npts  = grx_generate_ellipse_arc(xc,yc,rx,ry,start,end,pnts);
         int close = FALSE;
         switch(style) {
           case GRX_ARC_STYLE_CLOSED_RADIUS:

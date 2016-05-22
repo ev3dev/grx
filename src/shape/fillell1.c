@@ -19,9 +19,22 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void grx_draw_filled_ellipse(int xc,int yc,int xa,int ya,GrxColor c)
+/**
+ * grx_draw_filled_ellipse:
+ * @xc: the X coordinate of the center of the ellipse
+ * @yc: the Y coordinate of the center of the ellipse
+ * @rx: the radius in the X direction
+ * @ry: the radius in the Y direction
+ * @c: the color
+ *
+ * Draws a filled ellipse on the current context using the specified color.
+ *
+ * The ellipse can only draw ellipses with its major axis parallel with either
+ * the X or Y coordinate axis
+ */
+void grx_draw_filled_ellipse(int xc,int yc,int rx,int ry,GrxColor c)
 {
         GrFillArg fval;
         fval.color = c;
-        _GrScanEllipse(xc,yc,xa,ya,&_GrSolidFiller,fval,TRUE);
+        _GrScanEllipse(xc,yc,rx,ry,&_GrSolidFiller,fval,TRUE);
 }

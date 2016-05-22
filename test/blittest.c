@@ -53,7 +53,7 @@ void doblits(GrxContext *src,int x,int y)
         int ii;
 
         for(ii = 0; ii < 8; ii++) {
-            grx_bit_blt(NULL,xx,yy,src,x,y,x+BWW-1,y+BHH-1,GRX_COLOR_MODE_WRITE);
+            grx_bit_blt(xx,yy,src,x,y,x+BWW-1,y+BHH-1,GRX_COLOR_MODE_WRITE);
             xx++;
             yy += (BHH + 2);
         }
@@ -168,7 +168,7 @@ TESTFUNC(blittest)
           for(ii = 0,by = -(bh/3); ii < 19; ii++) {
             for(jj = 0,bx = -(bw/2); jj < 19; jj++) {
                 if((ii != 15) || (jj != 15)) {
-                    grx_bit_blt(save,
+                    grx_context_bit_blt(save,
                         bx,by,
                         save,
                         -(bw/2) + 15*bw,
@@ -192,7 +192,7 @@ TESTFUNC(blittest)
         GrKeyRead();
 
 
-        grx_bit_blt(tile,
+        grx_context_bit_blt(tile,
             0,0,
             save,
             -(bw/2) + 15*bw,
@@ -209,7 +209,7 @@ TESTFUNC(blittest)
 
         for(ii = 0,by = -(bh/3); ii < 19; ii++) {
             for(jj = 0,bx = -(bw/2); jj < 19; jj++) {
-                grx_bit_blt(save,
+                grx_context_bit_blt(save,
                     bx,by,
                     tile,
                     0,0,
@@ -229,7 +229,7 @@ TESTFUNC(blittest)
 
         GrKeyRead();
         grx_reset_clip_box();
-        grx_bit_blt(NULL,
+        grx_bit_blt(
            60,60,
            NULL,
            20,20,
@@ -240,7 +240,7 @@ TESTFUNC(blittest)
 
         GrKeyRead();
 
-        grx_bit_blt(NULL,
+        grx_bit_blt(
            10,10,
            NULL,
            60,60,
@@ -254,7 +254,7 @@ TESTFUNC(blittest)
         grx_context_set_current(tile);
         grx_clear_context(0);
 
-        grx_bit_blt(tile,
+        grx_context_bit_blt(tile,
             0,0,
             save,
             -(bw/2),
@@ -269,7 +269,7 @@ TESTFUNC(blittest)
 
         for(ii = 0,by = -(bh/3); ii < 18; ii++) {
             for(jj = 0,bx = -(bw/2); jj < 18; jj++) {
-                grx_bit_blt(save,
+                grx_context_bit_blt(save,
                     bx,by,
                     tile,
                     0,0,

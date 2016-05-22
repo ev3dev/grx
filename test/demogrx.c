@@ -474,7 +474,7 @@ static void paint_animation(void)
     grx_clear_context(DARKGRAY);
     grx_draw_string_with_text_options(animatedtext, ltext, pos, 15, &grt_left);
     grx_context_set_current(grcglob);
-    grx_bit_blt(NULL, 10, 8, grc, 0, 0, 629, 29, GRX_COLOR_MODE_WRITE);
+    grx_bit_blt(10, 8, grc, 0, 0, 629, 29, GRX_COLOR_MODE_WRITE);
 
     pos -= 1;
     if (pos <= -wtext)

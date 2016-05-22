@@ -8,6 +8,15 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_polyline:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @c: the color
+ *
+ * Draw a multi-segment line on the current context that connects each point in
+ * the @points array using the specified color.
+ */
 void grx_draw_polyline(int n,GrxPoint *pt,GrxColor c)
 {
         GrFillArg fval;

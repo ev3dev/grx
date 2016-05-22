@@ -88,16 +88,22 @@ GrxContext *grx_context_ref(GrxContext *context);
 void  grx_context_unref(GrxContext *context);
 void  grx_context_resize_subcontext(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
 void  grx_context_set_current(const GrxContext *context);
-void  grx_context_clear(GrxContext *ctx, GrxColor bg);
+void  grx_context_clear(GrxContext *context, GrxColor bg);
 
-GrxColor grx_context_get_pixel_at(GrxContext *c, gint x, gint y);
+void grx_context_flood_spill(GrxContext *context, gint x1, gint y1, gint x2, gint y2, GrxColor old_c, GrxColor new_c);
+void grx_context_flood_spill2(GrxContext *context, gint x1, gint y1, gint x2, gint y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
+GrxColor grx_context_get_pixel_at(GrxContext *context, gint x, gint y);
+void grx_context_bit_blt(GrxContext *context, gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor op);
+void grx_context_bit_blt_1bpp(GrxContext *context, gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor fg, GrxColor bg);
+
+const GrxColor *grx_context_get_scanline(GrxContext *context, gint x1, gint x2, gint y, guint *n);
 
 void  grx_set_clip_box(gint x1, gint y1, gint x2, gint y2);
-void  grx_context_set_clip_box(GrxContext *c, gint x1, gint y1, gint x2, gint y2);
+void  grx_context_set_clip_box(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
 void  grx_get_clip_box(gint *x1p, gint *y1p, gint *x2p, gint *y2p);
-void  grx_context_get_clip_box(const GrxContext *c, gint *x1p, gint *y1p, gint *x2p, gint *y2p);
+void  grx_context_get_clip_box(const GrxContext *context, gint *x1p, gint *y1p, gint *x2p, gint *y2p);
 void  grx_reset_clip_box(void);
-void  grx_context_reset_clip_box(GrxContext *c);
+void  grx_context_reset_clip_box(GrxContext *context);
 
 int   grx_get_max_x(void);
 int   grx_get_max_y(void);
@@ -120,17 +126,17 @@ int   grx_get_high_y(void);
 #define grx_get_low_y()                 (grx_context_get_current()->y_clip_low)
 #define grx_get_high_x()                (grx_context_get_current()->x_clip_high)
 #define grx_get_high_y()                (grx_context_get_current()->y_clip_high)
-#define grx_context_get_clip_box(C,x1p,y1p,x2p,y2p) do {           \
-    *(x1p) = (C)->x_clip_low;                           \
-    *(y1p) = (C)->y_clip_low;                           \
-    *(x2p) = (C)->x_clip_high;                          \
-    *(y2p) = (C)->y_clip_high;                          \
+#define grx_context_get_clip_box(C,x1p,y1p,x2p,y2p) do {    \
+    *(x1p) = (C)->x_clip_low;                               \
+    *(y1p) = (C)->y_clip_low;                               \
+    *(x2p) = (C)->x_clip_high;                              \
+    *(y2p) = (C)->y_clip_high;                              \
 } while(0)
 #define grx_get_clip_box(x1p,y1p,x2p,y2p) do {              \
-    *(x1p) = grx_get_low_x();                                  \
-    *(y1p) = grx_get_low_y();                                  \
-    *(x2p) = grx_get_high_x();                                 \
-    *(y2p) = grx_get_high_y();                                 \
+    *(x1p) = grx_get_low_x();                               \
+    *(y1p) = grx_get_low_y();                               \
+    *(x2p) = grx_get_high_x();                              \
+    *(y2p) = grx_get_high_y();                              \
 } while(0)
 #endif  /* GRX_SKIP_INLINES */
 

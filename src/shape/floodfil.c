@@ -19,6 +19,16 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_flood_fill:
+ * @x: the starting X coordinate
+ * @y: the starting Y coordinate
+ * @border: the color of the border that contains the fill
+ * @c: the color of the fill
+ *
+ * Flood-fills the area of the current context bounded by the color @border
+ * using @x, @y as the starting point.
+ */
 void grx_flood_fill(int x, int y, GrxColor border, GrxColor c)
 {
         GrFillArg fval;

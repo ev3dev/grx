@@ -21,11 +21,11 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void grx_user_draw_filled_ellipse_arc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxColor c)
+void grx_user_draw_filled_ellipse_arc(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,GrxColor c)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);
-        SCALE(xa,xa,CURC->x_max,CURC->user_width);
-        SCALE(ya,ya,CURC->y_max,CURC->user_height);
-        grx_draw_filled_ellipse_arc(xc,yc,xa,ya,start,end,style,c);
+        SCALE(rx,rx,CURC->x_max,CURC->user_width);
+        SCALE(ry,ry,CURC->y_max,CURC->user_height);
+        grx_draw_filled_ellipse_arc(xc,yc,rx,ry,start,end,style,c);
 }

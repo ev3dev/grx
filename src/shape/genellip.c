@@ -22,14 +22,14 @@
 #include "arith.h"
 
 #define MAXPTS  (GRX_MAX_ELLIPSE_POINTS & (~15))
-#define SEGLEN  5                /* preferred lenght of line segments on arc */
-#define TRIGMGN 16384                /* scale factor for sine table */
-#define PERIOD  1024                /* number of points in sine table */
-#define PHALF        (PERIOD / 2)
+#define SEGLEN  5               /* preferred length of line segments on arc */
+#define TRIGMGN 16384           /* scale factor for sine table */
+#define PERIOD  1024            /* number of points in sine table */
+#define PHALF   (PERIOD / 2)
 #define PQUART  (PERIOD / 4)
 
 static int sintab[PQUART + 1] = {
-        0,   101,   201,   302,          402,         503,        603,   704,
+        0,   101,   201,   302,  402,   503,   603,   704,
       804,   904,  1005,  1105,  1205,  1306,  1406,  1506,
      1606,  1706,  1806,  1906,  2006,  2105,  2205,  2305,
      2404,  2503,  2603,  2702,  2801,  2900,  2999,  3098,
@@ -93,6 +93,25 @@ static void GrSinCos(int n,int cx,int cy,int rx,int ry,GrxPoint pt)
         pt.y = cy; pt.y -= irscale(ry,sval,TRIGMGN);
 }
 
+/**
+ * grx_generate_ellipse_arc:
+ * @xc: the center X coordinate
+ * @yc: the center Y coordinate
+ * @rx: the radius along the X axis
+ * @ry: the radius along the Y axis
+ * @start: the starting angle in 1/10ths of degrees
+ * @end: the ending angle in 1/10ths of degrees
+ * @points: (array fixed-size=1029) (out caller-allocates):
+ *      an array that will be filled with the calculated points
+ *
+ * Fills an array of points with points that describe the arc with the
+ * specified coordinates, radii, and starting and ending angles.
+ *
+ * These coordinates can be drawn using polyline functions. This is more
+ * efficient when drawing the same or similar arcs multiple times.
+ *
+ * Returns: the number of points actually used.
+ */
 int grx_generate_ellipse_arc(int cx,int cy,int rx,int ry,int start,int end,GrxPoint *pt)
 {
         int npts = urscale((iabs(rx) + iabs(ry)),314,(SEGLEN * 100));
@@ -141,11 +160,41 @@ int grx_generate_ellipse_arc(int cx,int cy,int rx,int ry,int start,int end,GrxPo
         return(npts);
 }
 
+/**
+ * grx_generate_ellipse:
+ * @xc: the center X coordinate
+ * @yc: the center Y coordinate
+ * @rx: the radius along the X axis
+ * @ry: the radius along the Y axis
+ * @points: (array fixed-size=1029) (out caller-allocates):
+ *      an array that will be filled with the calculated points
+ *
+ * Fills an array of points with points that describe the ellipse with the
+ * specified coordinates and radii.
+ *
+ * These coordinates can be drawn using polygon functions. This is more
+ * efficient when drawing the same or similar circles and ellipses multiple
+ * times.
+ *
+ * Returns: the number of points actually used.
+ */
 int grx_generate_ellipse(int xc,int yc,int rx,int ry,GrxPoint *pt)
 {
         return(grx_generate_ellipse_arc(xc,yc,rx,ry,0,0,pt));
 }
 
+/**
+ * grx_get_last_arc_coordinates:
+ * @xs: (out): the starting X coordinate
+ * @ys: (out): the starting Y coordinate
+ * @xe: (out): the ending X coordinate
+ * @ye: (out): the ending Y coordinate
+ * @xc: (out): the center X coordinate
+ * @yc: (out): the center Y coordinate
+ *
+ * Gets the starting, ending and center coordinates of the arc from the most
+ * recent call to an arc function.
+ */
 void grx_get_last_arc_coordinates(int *xs,int *ys,int *xe,int *ye,int *xc,int *yc)
 {
         *xs = last_xs; *ys = last_ys;

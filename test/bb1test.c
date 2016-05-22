@@ -47,7 +47,7 @@ int main(void)
   grx_set_clip_box(0, 40, grx_get_screen_x(), grx_get_screen_y());
 
   /* Put the bitmap into the screen */
-  grx_bit_blt_1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
+  grx_bit_blt_1bpp(x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
 
   while( 1 ){
     k = GrKeyRead();
@@ -73,7 +73,7 @@ int main(void)
     if(x > grx_get_screen_x()) x = grx_get_screen_x();
     if(y < 0) y = 0;
     if(y > grx_get_screen_y()) y = grx_get_screen_y();
-    grx_bit_blt_1bpp(NULL,x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
+    grx_bit_blt_1bpp(x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
     }
 
   /* Destroy */

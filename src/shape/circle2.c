@@ -22,7 +22,22 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void grx_draw_ellipse_arc(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxColor c)
+/**
+ * grx_draw_ellipse_arc:
+ * @xc: the X coordinate of the center of the arc
+ * @yc: the Y coordinate of the center of the arc
+ * @rx: the radius in the X direction
+ * @ry: the radius in the Y direction
+ * @start: the starting angle in 1/10ths of degrees
+ * @end: the ending angle in 1/10ths of degrees
+ * @style: the arc style
+ * @c: the color
+ *
+ * Draws an arc on the current context centered at the specified coordinates
+ * from the starting angle to the ending angle with the specified radii,
+ * arc style and color.
+ */
+void grx_draw_ellipse_arc(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,GrxColor c)
 {
     GrxPoint *pnts;
     setup_ALLOC();
@@ -30,7 +45,7 @@ void grx_draw_ellipse_arc(int xc,int yc,int xa,int ya,int start,int end,GrxArcSt
     if (pnts != NULL)
     {
         GrFillArg fval;
-        int npts  = grx_generate_ellipse_arc(xc,yc,xa,ya,start,end,pnts);
+        int npts  = grx_generate_ellipse_arc(xc,yc,rx,ry,start,end,pnts);
         int close = FALSE;
         switch(style) {
           case GRX_ARC_STYLE_CLOSED_RADIUS:

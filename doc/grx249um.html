@@ -821,9 +821,9 @@ with this functions, by example with:
      void GrVLine(int x,int y1,int y2,GrColor c);
      void GrBox(int x1,int y1,int x2,int y2,GrColor c);
      void GrCircle(int xc,int yc,int r,GrColor c);
-     void GrEllipse(int xc,int yc,int xa,int ya,GrColor c);
+     void GrEllipse(int xc,int yc,int rx,int ry,GrColor c);
      void GrCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c);
-     void GrEllipseArc(int xc,int yc,int xa,int ya,
+     void GrEllipseArc(int xc,int yc,int rx,int ry,
                        int start,int end,int style,GrColor c);
      void GrPolyLine(int numpts,int points[][2],GrColor c);
      void GrPolygon(int numpts,int points[][2],GrColor c);
@@ -834,7 +834,7 @@ primitives are for drawing horizontal and vertical lines. They have been
 included in the library because they are more efficient than the general line
 drawing provided by GrLine. The ellipse primitives can only draw ellipses with
 their major axis parallel with either the X or Y coordinate axis. They take the
-half X and Y axis length in the xa and ya arguments. The arc (circle and
+half X and Y axis length in the rx and ry arguments. The arc (circle and
 ellipse) drawing functions take the start and end angles in tenths of degrees
 (i.e. meaningful range: 0 ... 3600). The angles are interpreted
 counter-clockwise starting from the positive X axis. The style argument can be
@@ -867,9 +867,9 @@ the polygon &ndash; the primitive will append it to the list if it is missing.
 are two functions to pre-calculate the points, that can be used next with
 polyline and polygon primitives:
 
-<pre class="example">     int  GrGenerateEllipse(int xc,int yc,int xa,int ya,
+<pre class="example">     int  GrGenerateEllipse(int xc,int yc,int rx,int ry,
                             int points[GR_MAX_ELLIPSE_POINTS][2]);
-     int  GrGenerateEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
+     int  GrGenerateEllipseArc(int xc,int yc,int rx,int ry,int start,int end,
                                int points[GR_MAX_ELLIPSE_POINTS][2]);
 </pre>
 <p>The following filled primitives are available:
@@ -877,10 +877,10 @@ polyline and polygon primitives:
 <pre class="example">     void GrFilledBox(int x1,int y1,int x2,int y2,GrColor c);
      void GrFramedBox(int x1,int y1,int x2,int y2,int wdt,const GrFBoxColors *c);
      void GrFilledCircle(int xc,int yc,int r,GrColor c);
-     void GrFilledEllipse(int xc,int yc,int xa,int ya,GrColor c);
+     void GrFilledEllipse(int xc,int yc,int rx,int ry,GrColor c);
      void GrFilledCircleArc(int xc,int yc,int r,
                             int start,int end,int style,GrColor c);
-     void GrFilledEllipseArc(int xc,int yc,int xa,int ya,
+     void GrFilledEllipseArc(int xc,int yc,int rx,int ry,
                              int start,int end,int style,GrColor c);
      void GrFilledPolygon(int numpts,int points[][2],GrColor c);
      void GrFilledConvexPolygon(int numpts,int points[][2],GrColor c);
@@ -1067,10 +1067,10 @@ pattern length is equal to zero a continuous line is drawn.
 <pre class="example">     void GrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
      void GrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
      void GrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
-     void GrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
+     void GrCustomEllipse(int xc,int yc,int rx,int ry,const GrLineOption *o);
      void GrCustomCircleArc(int xc,int yc,int r,
                             int start,int end,int style,const GrLineOption *o);
-     void GrCustomEllipseArc(int xc,int yc,int xa,int ya,
+     void GrCustomEllipseArc(int xc,int yc,int rx,int ry,
                              int start,int end,int style,const GrLineOption *o);
      void GrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
      void GrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
@@ -1203,10 +1203,10 @@ argument is different:
      void GrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p);
      void GrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p);
      void GrPatternFilledCircle(int xc,int yc,int r,GrPattern *p);
-     void GrPatternFilledEllipse(int xc,int yc,int xa,int ya,GrPattern *p);
+     void GrPatternFilledEllipse(int xc,int yc,int rx,int ry,GrPattern *p);
      void GrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,
                                    int style,GrPattern *p);
-     void GrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
+     void GrPatternFilledEllipseArc(int xc,int yc,int rx,int ry,int start,int end,
                                     int style,GrPattern *p);
      void GrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
      void GrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
@@ -1245,10 +1245,10 @@ last argument. The list of available functions:
 <pre class="example">     void GrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
      void GrPatternedBox(int x1,int y1,int x2,int y2,GrLinePattern *lp);
      void GrPatternedCircle(int xc,int yc,int r,GrLinePattern *lp);
-     void GrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp);
+     void GrPatternedEllipse(int xc,int yc,int rx,int ry,GrLinePattern *lp);
      void GrPatternedCircleArc(int xc,int yc,int r,int start,int end,
                                int style,GrLinePattern *lp);
-     void GrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
+     void GrPatternedEllipseArc(int xc,int yc,int rx,int ry,int start,int end,
                                 int style,GrLinePattern *lp);
      void GrPatternedPolyLine(int numpts,int points[][2],GrLinePattern *lp);
      void GrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
@@ -1675,16 +1675,16 @@ The list of supported user coordinate drawing functions:
      void GrUsrFilledBox(int x1,int y1,int x2,int y2,GrColor c);
      void GrUsrFramedBox(int x1,int y1,int x2,int y2,int wdt,GrFBoxColors *c);
      void GrUsrCircle(int xc,int yc,int r,GrColor c);
-     void GrUsrEllipse(int xc,int yc,int xa,int ya,GrColor c);
+     void GrUsrEllipse(int xc,int yc,int rx,int ry,GrColor c);
      void GrUsrCircleArc(int xc,int yc,int r,int start,int end,
                          int style,GrColor c);
-     void GrUsrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
+     void GrUsrEllipseArc(int xc,int yc,int rx,int ry,int start,int end,
                           int style,GrColor c);
      void GrUsrFilledCircle(int xc,int yc,int r,GrColor c);
-     void GrUsrFilledEllipse(int xc,int yc,int xa,int ya,GrColor c);
+     void GrUsrFilledEllipse(int xc,int yc,int rx,int ry,GrColor c);
      void GrUsrFilledCircleArc(int xc,int yc,int r,int start,int end,
                                int style,GrColor c);
-     void GrUsrFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
+     void GrUsrFilledEllipseArc(int xc,int yc,int rx,int ry,int start,int end,
                                 int style,GrColor c);
      void GrUsrPolyLine(int numpts,int points[][2],GrColor c);
      void GrUsrPolygon(int numpts,int points[][2],GrColor c);
@@ -1696,20 +1696,20 @@ The list of supported user coordinate drawing functions:
      void GrUsrCustomLine(int x1,int y1,int x2,int y2,const GrLineOption *o);
      void GrUsrCustomBox(int x1,int y1,int x2,int y2,const GrLineOption *o);
      void GrUsrCustomCircle(int xc,int yc,int r,const GrLineOption *o);
-     void GrUsrCustomEllipse(int xc,int yc,int xa,int ya,const GrLineOption *o);
+     void GrUsrCustomEllipse(int xc,int yc,int rx,int ry,const GrLineOption *o);
      void GrUsrCustomCircleArc(int xc,int yc,int r,int start,int end,
                                int style,const GrLineOption *o);
-     void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
+     void GrUsrCustomEllipseArc(int xc,int yc,int rx,int ry,int start,int end,
                                 int style,const GrLineOption *o);
      void GrUsrCustomPolyLine(int numpts,int points[][2],const GrLineOption *o);
      void GrUsrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
      void GrUsrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp);
      void GrUsrPatternedBox(int x1,int y1,int x2,int y2,GrLinePattern *lp);
      void GrUsrPatternedCircle(int xc,int yc,int r,GrLinePattern *lp);
-     void GrUsrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp);
+     void GrUsrPatternedEllipse(int xc,int yc,int rx,int ry,GrLinePattern *lp);
      void GrUsrPatternedCircleArc(int xc,int yc,int r,int start,int end,
                                   int style,GrLinePattern *lp);
-     void GrUsrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
+     void GrUsrPatternedEllipseArc(int xc,int yc,int rx,int ry,int start,int end,
                                    int style,GrLinePattern *lp);
      void GrUsrPatternedPolyLine(int numpts,int points[][2],GrLinePattern *lp);
      void GrUsrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
@@ -1717,9 +1717,9 @@ The list of supported user coordinate drawing functions:
      void GrUsrPatternFilledLine(int x1,int y1,int x2,int y2,GrPattern *p);
      void GrUsrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p);
      void GrUsrPatternFilledCircle(int xc,int yc,int r,GrPattern *p);
-     void GrUsrPatternFilledEllipse(int xc,int yc,int xa,int ya,GrPattern *p);
+     void GrUsrPatternFilledEllipse(int xc,int yc,int rx,int ry,GrPattern *p);
      void GrUsrPatternFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrPattern *p);
-     void GrUsrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrPattern *p);
+     void GrUsrPatternFilledEllipseArc(int xc,int yc,int rx,int ry,int start,int end,int style,GrPattern *p);
      void GrUsrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
      void GrUsrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
      void GrUsrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);

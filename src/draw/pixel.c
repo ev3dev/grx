@@ -21,6 +21,14 @@
 #include "libgrx.h"
 #include "clipping.h"
 
+/**
+ * grx_get_pixel_at:
+ * @x: the X coordinate
+ * @y: the Y coordinate
+ *
+ * Gets the color value of the pixel in the current context at the specified
+ * coordinates.
+ */
 GrxColor grx_get_pixel_at(int x,int y)
 {
         GrxColor retval;

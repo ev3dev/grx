@@ -29,8 +29,8 @@
  * @y2: ending Y coordinate
  * @c: the color
  *
- * Draws a line from the starting coordinates to the ending coordinates using
- * the specified color.
+ * Draws a line on the current context from the starting coordinates to the
+ * ending coordinates using the specified color.
  *
  * For horizontal and vertical lines, see grx_draw_hline() and grx_draw_vline().
  */

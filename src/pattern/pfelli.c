@@ -23,10 +23,10 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-void grx_draw_filled_ellipse_with_pattern(int xc,int yc,int xa,int ya,GrxPattern *p)
+void grx_draw_filled_ellipse_with_pattern(int xc,int yc,int rx,int ry,GrxPattern *p)
 {
         GrFillArg fa;
 
         fa.p = p;
-        _GrScanEllipse(xc,yc,xa,ya,&_GrPatternFiller,fa,TRUE);
+        _GrScanEllipse(xc,yc,rx,ry,&_GrPatternFiller,fa,TRUE);
 }

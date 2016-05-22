@@ -205,10 +205,10 @@ static gboolean console_switch_handler (gpointer user_data)
             if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
                 /* Need to invert the colors on this one. */
                 grx_context_clear(priv->save, 1);
-                grx_bit_blt(priv->save, 0, 0, grx_context_get_screen(), 0, 0,
+                grx_context_bit_blt(priv->save, 0, 0, grx_context_get_screen(), 0, 0,
                     grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_XOR);
             } else {
-                grx_bit_blt(priv->save, 0, 0, grx_context_get_screen(), 0, 0,
+                grx_context_bit_blt(priv->save, 0, 0, grx_context_get_screen(), 0, 0,
                     grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
             }
         }
@@ -220,10 +220,10 @@ static gboolean console_switch_handler (gpointer user_data)
         if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
             /* need to invert the colors on this one */
             grx_clear_screen(1);
-            grx_bit_blt(grx_context_get_screen(), 0, 0, priv->save, 0, 0,
+            grx_context_bit_blt(grx_context_get_screen(), 0, 0, priv->save, 0, 0,
                      grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_XOR);
         } else {
-            grx_bit_blt(grx_context_get_screen(), 0, 0, priv->save, 0, 0,
+            grx_context_bit_blt(grx_context_get_screen(), 0, 0, priv->save, 0, 0,
                      grx_get_screen_x()-1, grx_get_screen_y()-1, GRX_COLOR_MODE_WRITE);
         }
         grx_context_unref(priv->save);
@@ -268,14 +268,14 @@ static void initable_interface_init (GInitableIface *iface)
 
 /**
  * grx_linux_console_application_new:
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: a pointer to a NULL #GError, or %NULL
  *
  * Create a new instance of #GrxLinuxConsoleApplication. The console will be
  * set to graphics mode or there will be an @error if setting graphics mode
  * failed.
  *
- * Returns: (allow-none): New instance of #GrxLinuxConsoleApplication or %NULL
+ * Returns: (nullable): New instance of #GrxLinuxConsoleApplication or %NULL
  * if init() failed.
  */
 GrxLinuxConsoleApplication *

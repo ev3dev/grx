@@ -20,21 +20,21 @@
 #include "test.h"
 #include <math.h>
 
-void drawellip(int xc,int yc,int xa,int ya,GrxColor c1,GrxColor c2,GrxColor c3)
+void drawellip(int xc,int yc,int rx,int ry,GrxColor c1,GrxColor c2,GrxColor c3)
 {
-        double ddx = (double)xa;
-        double ddy = (double)ya;
+        double ddx = (double)rx;
+        double ddy = (double)ry;
         double R2 = ddx*ddx*ddy*ddy;
         double SQ;
         int x1,x2,y1,y2;
         int dx,dy;
 
-        grx_draw_filled_box(xc-xa,yc-ya,xc+xa,yc+ya,c1);
-        dx = xa;
+        grx_draw_filled_box(xc-rx,yc-ry,xc+rx,yc+ry,c1);
+        dx = rx;
         dy = 0;
         grx_draw_pixel(xc-dx,yc,c3);
         grx_draw_pixel(xc+dx,yc,c3);
-        while(++dy <= ya) {
+        while(++dy <= ry) {
             SQ = R2 - (double)dy * (double)dy * ddx * ddx;
             dx = (int)(sqrt(SQ)/ddy + 0.5);
             x1 = xc - dx;
@@ -46,7 +46,7 @@ void drawellip(int xc,int yc,int xa,int ya,GrxColor c1,GrxColor c2,GrxColor c3)
             grx_draw_pixel(x1,y2,c3);
             grx_draw_pixel(x2,y2,c3);
         }
-        grx_draw_ellipse(xc,yc,xa,ya,c2);
+        grx_draw_ellipse(xc,yc,rx,ry,c2);
 }
 
 TESTFUNC(circtest)

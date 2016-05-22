@@ -46,7 +46,7 @@ void grx_clear_context(GrxColor bg)
 
 /**
  * grx_context_clear:
- * @ctx: the context
+ * @context: the context
  * @bg: the background color
  *
  * Clears the specified context using the specified background color.

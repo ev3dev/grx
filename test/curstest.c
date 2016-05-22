@@ -64,22 +64,22 @@ TESTFUNC(cursortest)
         GrDisplayCursor(cur);
         for( ; ; ) {
             grx_bit_blt(
-                NULL,10,10,
+                10,10,
                 &cur->work,cur->xwork/2,0,cur->xwork/2+cur->xsize-1,cur->ysize-1,
                 GRX_COLOR_MODE_WRITE
             );
             grx_bit_blt(
-                NULL,90,10,
+                90,10,
                 &cur->work,0,0,cur->xsize-1,cur->ysize-1,
                 GRX_COLOR_MODE_WRITE
             );
             grx_bit_blt(
-                NULL,170,10,
+                170,10,
                 &cur->work,0,cur->ysize,cur->xwork-1,cur->ysize+cur->ywork-1,
                 GRX_COLOR_MODE_WRITE
             );
             grx_bit_blt(
-                NULL,250,10,
+                250,10,
                 &cur->work,0,cur->ysize+cur->ywork,cur->xwork-1,cur->ysize+2*cur->ywork-1,
                 GRX_COLOR_MODE_WRITE
             );

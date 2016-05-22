@@ -28,10 +28,10 @@
  * @y: Y coordinate
  * @c: the color
  *
- * Draws a horizontal line from the starting coordinates to the ending
- * coordinates using the specified color.
+ * Draws a horizontal line on the current context from the starting coordinates
+ * to the ending coordinates using the specified color.
  *
- * This is more efficient that using grx_draw_line()
+ * This is more efficient that using grx_draw_line().
  */
 void grx_draw_hline(int x1,int x2,int yy,GrxColor c)
 {

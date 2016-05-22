@@ -29,14 +29,14 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void grx_draw_ellipse_arc_with_pattern(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxLinePattern *lp)
+void grx_draw_ellipse_arc_with_pattern(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,GrxLinePattern *lp)
 {
     GrxPoint *points;
     setup_ALLOC();
     points = ALLOC(sizeof(GrxPoint) * (GRX_MAX_ELLIPSE_POINTS + 2));
     if (points != NULL)
     {
-        int numpts = grx_generate_ellipse_arc(xc,yc,xa,ya,start,end,points);
+        int numpts = grx_generate_ellipse_arc(xc,yc,rx,ry,start,end,points);
         GrFillArg fval;
         int close;
 

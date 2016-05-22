@@ -706,17 +706,33 @@ namespace Grx {
         draw_filled_box (x1 + radius, y1, x2 - radius, y2, c);
         draw_filled_box (x1, y1 + radius, x2, y2 - radius, c);
     }
-    public int generate_ellipse (int xc, int yc, int xa, int ya, [CCode (array_length_cexpr = "MAX_POLYGON_POINTS")]Point[] points);
-    public int  generate_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, [CCode (array_length_cexpr = "MAX_POLYGON_POINTS")]Point[] points);
+    [CCode (cname = "grx_generate_ellipse")]
+    private int _generate_ellipse (int xc, int yc, int rx, int ry, [CCode (array_length_cexpr = "MAX_ELLIPSE_POINTS")]Point[] points);
+    [CCode (cname = "vala_generate_ellipse")]
+    public Point[] generate_ellipse (int xc, int yc, int rx, int ry) {
+        Point[] points = new Point[MAX_ELLIPSE_POINTS];
+        var length = _generate_ellipse (xc, yc, rx, ry, points);
+        points.length = length;
+        return (owned)points;
+    }
+    [CCode (cname = "grx_generate_ellipse_arc")]
+    private int _generate_ellipse_arc (int xc, int yc, int rx, int ry, int start, int end, [CCode (array_length_cexpr = "MAX_ELLIPSE_POINTS")]Point[] points);
+    [CCode (cname = "vala_generate_ellipse_arc")]
+    public Point[] generate_ellipse_arc (int xc, int yc, int rx, int ry, int start, int end) {
+        Point[] points = new Point[MAX_ELLIPSE_POINTS];
+        var length = _generate_ellipse_arc (xc, yc, rx, ry, start, end, points);
+        points.length = length;
+        return (owned)points;
+    }
     public void get_last_arc_coordinates (out int xs, out int ys, out int xe, out int ye, out int xc, out int yc);
     public void draw_circle (int xc, int yc, int r, Color c);
-    public void draw_ellipse (int xc, int yc, int xa, int ya, Color c);
+    public void draw_ellipse (int xc, int yc, int rx, int ry, Color c);
     public void draw_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
-    public void draw_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
+    public void draw_ellipse_arc (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, Color c);
     public void draw_filled_circle (int xc, int yc, int r, Color c);
-    public void draw_filled_ellipse (int xc, int yc, int xa, int ya, Color c);
+    public void draw_filled_ellipse (int xc, int yc, int rx, int ry, Color c);
     public void draw_filled_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
-    public void draw_filled_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
+    public void draw_filled_ellipse_arc (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, Color c);
     public void draw_poly_line ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
     public void draw_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
     public void draw_filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
@@ -1032,7 +1048,7 @@ namespace Grx {
         public uchar[] dash_patterns;
     }
 
-    [CCode (cname = "", destroy_function = "", has_type_id = false)]
+    [CCode (has_type_id = false)]
     public struct Point {
         int x;
         int y;
@@ -1041,9 +1057,9 @@ namespace Grx {
     public void draw_line_with_options(int x1, int y1, int x2, int y2, LineOptions o);
     public void draw_box_with_options(int x1, int y1, int x2, int y2, LineOptions o);
     public void draw_circle_with_options(int xc, int yc, int r, LineOptions o);
-    public void draw_ellipse_with_options(int xc, int yc, int xa, int ya, LineOptions o);
+    public void draw_ellipse_with_options(int xc, int yc, int rx, int ry, LineOptions o);
     public void draw_circle_arc_with_options(int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions o);
-    public void draw_ellipse_arc_with_options(int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LineOptions o);
+    public void draw_ellipse_arc_with_options(int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LineOptions o);
     public void draw_polyline_with_options([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o);
     public void draw_polygon_with_options([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o);
 
@@ -1160,9 +1176,9 @@ namespace Grx {
     public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LinePattern line_pattern);
     public void draw_box_with_pattern (int x1, int y1, int x2, int y2, LinePattern line_pattern);
     public void draw_circle_with_pattern (int xc, int yc, int r, LinePattern line_pattern);
-    public void draw_ellipse_with_pattern (int xc, int yc, int xa, int ya, LinePattern line_pattern);
+    public void draw_ellipse_with_pattern (int xc, int yc, int rx, int ry, LinePattern line_pattern);
     public void draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, ArcStyle style, LinePattern line_pattern);
-    public void draw_ellipse_arc_with_pattern (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LinePattern line_pattern);
+    public void draw_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LinePattern line_pattern);
     public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern line_pattern);
     public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern line_pattern);
 
@@ -1170,9 +1186,9 @@ namespace Grx {
     public void draw_filled_line_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
     public void draw_filled_box_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
     public void draw_filled_circle_with_pattern (int xc, int yc, int r, Pattern pattern);
-    public void draw_filled_ellipse_with_pattern (int xc, int yc, int xa, int ya, Pattern pattern);
+    public void draw_filled_ellipse_with_pattern (int xc, int yc, int rx, int ry, Pattern pattern);
     public void draw_filled_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, int style, Pattern pattern);
-    public void draw_filled_ellipse_arc_with_pattern (int xc, int yc, int xa, int ya, int start, int end, int style, Pattern pattern);
+    public void draw_filled_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, int style, Pattern pattern);
     public void draw_filled_convex_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
     public void draw_filled_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
     public void flood_fill_with_pattern (int x, int y, Color border, Pattern pattern);
@@ -1251,36 +1267,38 @@ namespace Grx {
         public void draw_filled_box (int x1, int y1, int x2, int y2, Color c);
         public void draw_framed_box (int x1, int y1, int x2, int y2, int wdt, FramedBoxColors c);
         public void draw_circle (int xc, int yc, int r, Color c);
-        public void draw_ellipse (int xc, int yc, int xa, int ya, Color c);
+        public void draw_ellipse (int xc, int yc, int rx, int ry, Color c);
         public void draw_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
-        public void draw_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
+        public void draw_ellipse_arc (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, Color c);
         public void draw_filled_circle (int xc, int yc, int r, Color c);
-        public void draw_filled_ellipse (int xc, int yc, int xa, int ya, Color c);
+        public void draw_filled_ellipse (int xc, int yc, int rx, int ry, Color c);
         public void draw_filled_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
-        public void draw_filled_ellipse_arc (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, Color c);
+        public void draw_filled_ellipse_arc (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, Color c);
         public void draw_polyline ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
         public void draw_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
         public void draw_filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
         public void draw_filled_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
         public void flood_fill (int x, int y, Color border, Color c);
+        public void bit_blt (int x, int y, Context src, int x1, int y1, int x2, int y2, Color oper);
+        public void bit_blt_1bpp (int x, int y, Context src, int x1, int y1, int x2, int y2, Color fg, Color bg);
 
         public Color get_pixel_at (int x, int y);
 
         public void draw_line_with_options (int x1, int y1, int x2, int y2, LineOptions options);
         public void draw_box_with_options (int x1, int y1, int x2, int y2, LineOptions options);
         public void draw_circle_with_options (int xc, int yc, int r, LineOptions options);
-        public void draw_ellipse_with_options (int xc, int yc, int xa, int ya, LineOptions options);
+        public void draw_ellipse_with_options (int xc, int yc, int rx, int ry, LineOptions options);
         public void draw_circle_arc_with_options (int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions options);
-        public void draw_ellipse_arc_with_options (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LineOptions options);
+        public void draw_ellipse_arc_with_options (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LineOptions options);
         public void draw_polyline_with_options ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions options);
         public void draw_polygon_with_options ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions options);
 
         public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LinePattern pattern);
         public void draw_box_with_pattern (int x1, int y1, int x2, int y2, LinePattern pattern);
         public void draw_circle_with_pattern (int xc, int yc, int r, LinePattern pattern);
-        public void draw_ellipse_with_pattern (int xc, int yc, int xa, int ya, LinePattern pattern);
+        public void draw_ellipse_with_pattern (int xc, int yc, int rx, int ry, LinePattern pattern);
         public void draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, ArcStyle style, LinePattern pattern);
-        public void draw_ellipse_arc_with_pattern (int xc, int yc, int xa, int ya, int start, int end, ArcStyle style, LinePattern pattern);
+        public void draw_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LinePattern pattern);
         public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern pattern);
         public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern pattern);
 
@@ -1288,9 +1306,9 @@ namespace Grx {
         public void draw_filled_line_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
         public void draw_filled_box_with_pattern (int x1, int y1, int x2, int y2, Pattern pattern);
         public void draw_filled_circle_with_pattern (int xc, int yc, int r, Pattern pattern);
-        public void draw_filled_ellipse_with_pattern (int xc, int yc, int xa, int ya, Pattern pattern);
+        public void draw_filled_ellipse_with_pattern (int xc, int yc, int rx, int ry, Pattern pattern);
         public void draw_filled_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, int style, Pattern pattern);
-        public void draw_filled_ellipse_arc_with_pattern (int xc, int yc, int xa, int ya, int start, int end, int style, Pattern pattern);
+        public void draw_filled_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, int style, Pattern pattern);
         public void draw_filled_convex_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
         public void draw_filled_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern pattern);
         public void flood_fill_with_pattern (int x, int y, Color border, Pattern pattern);

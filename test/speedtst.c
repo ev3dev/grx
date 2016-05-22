@@ -460,13 +460,13 @@ void blit_measure(gvmode *gp, perfm *p,
   t1 = g_get_monotonic_time();
   for (i=0; i < BLIT_loops; ++i) {
     for (j=PAIRS-3; j >= 0; j-=3)
-      grx_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_WRITE);
+      grx_context_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_WRITE);
     for (j=PAIRS-3; j >= 0; j-=3)
-      grx_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_XOR);
+      grx_context_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_XOR);
     for (j=PAIRS-3; j >= 0; j-=3)
-      grx_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_OR);
+      grx_context_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_OR);
     for (j=PAIRS-3; j >= 0; j-=3)
-      grx_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_AND);
+      grx_context_bit_blt(dst,xb[j+2],yb[j+2],src,xb[j+1],yb[j+1],xb[j],yb[j],GRX_COLOR_MODE_AND);
   }
   t2 = g_get_monotonic_time();
   seconds = (double)(t2 - t1) / 1000000.0;

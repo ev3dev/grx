@@ -44,10 +44,10 @@ struct _GrxLineOptions {
 void grx_draw_line_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
 void grx_draw_box_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
 void grx_draw_circle_with_options(gint xc, gint yc, gint r, const GrxLineOptions *o);
-void grx_draw_ellipse_with_options(gint xc, gint yc, gint xa, gint ya, const GrxLineOptions *o);
+void grx_draw_ellipse_with_options(gint xc, gint yc, gint rx, gint ry, const GrxLineOptions *o);
 void grx_draw_circle_arc_with_options(gint xc, gint yc, gint r, gint start, gint end,
                                       GrxArcStyle style, const GrxLineOptions *o);
-void grx_draw_ellipse_arc_with_options(gint xc, gint yc, gint xa, gint ya, gint start, gint end,
+void grx_draw_ellipse_arc_with_options(gint xc, gint yc, gint rx, gint ry, gint start, gint end,
                                        GrxArcStyle style, const GrxLineOptions *o);
 void grx_draw_polyline_with_options(gint n_points, GrxPoint *points, const GrxLineOptions *o);
 void grx_draw_polygon_with_options(gint n_points, GrxPoint *points, const GrxLineOptions *o);

@@ -24,11 +24,11 @@
 #include "usercord.h"
 
 
-void grx_user_draw_ellipse_arc_with_pattern(int xc,int yc,int xa,int ya,int start,int end,GrxArcStyle style,GrxLinePattern *lp)
+void grx_user_draw_ellipse_arc_with_pattern(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,GrxLinePattern *lp)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);
-        SCALE(xa,xa,CURC->x_max,CURC->user_width);
-        SCALE(ya,ya,CURC->y_max,CURC->user_height);
-        grx_draw_ellipse_arc_with_pattern(xc,yc,xa,ya,start,end,style,lp);
+        SCALE(rx,rx,CURC->x_max,CURC->user_width);
+        SCALE(ry,ry,CURC->y_max,CURC->user_height);
+        grx_draw_ellipse_arc_with_pattern(xc,yc,rx,ry,start,end,style,lp);
 }

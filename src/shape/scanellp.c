@@ -28,39 +28,39 @@
 
 #define  MAXR   120             /* max radius for which Bresenham works */
 
-void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int filled)
+void _GrScanEllipse(int xc,int yc,int rx,int ry,GrFiller *f,GrFillArg c,int filled)
 {
         int x1,x2,y1,y2;
-        if(xa < 0) xa = (-xa);
-        if(ya < 0) ya = (-ya);
-        x1 = xc - xa; y1 = yc - ya;
-        x2 = xc + xa; y2 = yc + ya;
+        if(rx < 0) rx = (-rx);
+        if(ry < 0) ry = (-ry);
+        x1 = xc - rx; y1 = yc - ry;
+        x2 = xc + rx; y2 = yc + ry;
         clip_ordbox(CURC,x1,y1,x2,y2);
         mouse_block(CURC,x1,y1,x2,y2);
         setup_ALLOC();
-        if((xa == 0) || (ya == 0)) (*f->line)(
+        if((rx == 0) || (ry == 0)) (*f->line)(
             (x1 + CURC->x_offset),
             (y1 + CURC->y_offset),
             (x2 - x1),
             (y2 - y1),
             c
         );
-        else if((xa > MAXR) || (ya > MAXR)) {   /* Bresenham would overflow !! */
+        else if((rx > MAXR) || (ry > MAXR)) {   /* Bresenham would overflow !! */
             GrxPoint *points = ALLOC(sizeof(GrxPoint) * GRX_MAX_ELLIPSE_POINTS);
             if(points != NULL) {
-                int count = grx_generate_ellipse(xc,yc,xa,ya,points);
+                int count = grx_generate_ellipse(xc,yc,rx,ry,points);
                 if(filled) _GrScanConvexPoly(count,points,f,c);
                 else       _GrDrawPolygon(count,points,f,c,TRUE);
                 FREE(points);
             }
         }
         else {
-            int *scans = ALLOC(sizeof(int) * (ya + 1));
-            int  row   = ya;
+            int *scans = ALLOC(sizeof(int) * (ry + 1));
+            int  row   = ry;
             int  col   = 0;
             if(scans != NULL) {
-                long yasq  = umul32(ya,ya);
-                long xasq  = umul32(xa,xa);
+                long yasq  = umul32(ry,ry);
+                long xasq  = umul32(rx,rx);
                 long xasq2 = xasq + xasq;
                 long yasq2 = yasq + yasq;
                 long xasq4 = xasq2 + xasq2;
@@ -91,7 +91,7 @@ void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int fill
                 }
                 for(row = y1; row <= y2; row++) {
                     col = iabs(yc - row);
-                    if(!filled && (col < ya)) {
+                    if(!filled && (col < ry)) {
                         x1 = xc - scans[col];
                         x2 = xc - scans[col + 1];
                         if(x1 < x2) x2--;

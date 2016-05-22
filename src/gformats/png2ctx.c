@@ -225,7 +225,7 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
   for( y=0; y<maxheight; y++ ){
     pix_ptr = row_pointers[y];
     if( alpha_present && use_alpha ){
-      memcpy( pColors,grx_get_scanline( 0,maxwidth-1,y ),
+      memcpy( pColors,grx_get_scanline( 0,maxwidth-1,y,NULL ),
               sizeof(GrxColor)*maxwidth );
       }
     for( x=0; x<width; x++ ){

@@ -23,7 +23,7 @@
 #include "allocate.h"
 #include "shapes.h"
 
-void grx_draw_ellipse_with_options(int xc,int yc,int xa,int ya,const GrxLineOptions *o)
+void grx_draw_ellipse_with_options(int xc,int yc,int rx,int ry,const GrxLineOptions *o)
 {
     GrxPoint *pnts;
     setup_ALLOC();
@@ -31,7 +31,7 @@ void grx_draw_ellipse_with_options(int xc,int yc,int xa,int ya,const GrxLineOpti
     if (pnts != NULL)
     {
         GrFillArg fval;
-        int npts  = grx_generate_ellipse(xc,yc,xa,ya,pnts);
+        int npts  = grx_generate_ellipse(xc,yc,rx,ry,pnts);
         fval.color = o->color;
         _GrDrawCustomPolygon(npts,pnts,o,&_GrSolidFiller,fval,TRUE,TRUE);
         FREE(pnts);

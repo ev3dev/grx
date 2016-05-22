@@ -48,7 +48,7 @@ TESTFUNC(imgtest)
         grx_draw_filled_box(0,0,ww+1,wh+1,c3);
         grx_draw_filled_box(ww+15,0,2*ww+16,wh+1,c3);
 
-        grx_bit_blt(NULL,1,1,&ctx,0,0,ww-1,wh-1,0);
+        grx_bit_blt(1,1,&ctx,0,0,ww-1,wh-1,0);
         grx_draw_image(ww+16,1,img1);
         grx_draw_image_tiled(0,wh+4,x-1,y-1, img1);
 
@@ -73,7 +73,7 @@ TESTFUNC(imgtest)
         for (d1 = 1; d1 < 32; ++d1) {
           for (m1 = wh; m1 < y-wh-d1-1; ++m1) {
             const GrxColor *cp;
-            cp = grx_get_scanline(ww+1,x-ww-d1,m1+1);
+            cp = grx_get_scanline(ww+1,x-ww-d1,m1+1,NULL);
             if (cp) {
               grx_put_scanline(ww,x-ww-d1-1,m1,cp,GRX_COLOR_MODE_IMAGE|c2);
             }

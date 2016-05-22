@@ -22,11 +22,11 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void grx_user_draw_ellipse_with_options(int xc,int yc,int xa,int ya,const GrxLineOptions *lo)
+void grx_user_draw_ellipse_with_options(int xc,int yc,int rx,int ry,const GrxLineOptions *lo)
 {
         U2SX(xc,CURC);
         U2SY(yc,CURC);
-        SCALE(xa,xa,CURC->x_max,CURC->user_width);
-        SCALE(ya,ya,CURC->y_max,CURC->user_height);
-        grx_draw_ellipse_with_options(xc,yc,xa,ya,lo);
+        SCALE(rx,rx,CURC->x_max,CURC->user_width);
+        SCALE(ry,ry,CURC->y_max,CURC->user_height);
+        grx_draw_ellipse_with_options(xc,yc,rx,ry,lo);
 }

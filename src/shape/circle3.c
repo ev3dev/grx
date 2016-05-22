@@ -21,6 +21,16 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_circle:
+ * @xc: the X coordinate of the center of the circle
+ * @yc: the Y coordinate of the center of the circle
+ * @r: the radius of the circle
+ * @c: the color
+ *
+ * Draws a circle on the current context centered at the specified coordinates
+ * with the specified radius and color.
+ */
 void grx_draw_circle(int xc,int yc,int r,GrxColor c)
 {
         grx_draw_ellipse(xc,yc,r,r,c);

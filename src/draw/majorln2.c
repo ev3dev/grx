@@ -28,10 +28,10 @@
  * @y2: ending Y coordinate
  * @c: the color
  *
- * Draws a vertical line from the starting coordinates to the ending
- * coordinates using the specified color.
+ * Draws a vertical line on the current context from the starting coordinates
+ * to the ending coordinates using the specified color.
  *
- * This is more efficient that using grx_draw_line()
+ * This is more efficient that using grx_draw_line().
  */
 void grx_draw_vline(int xx,int y1,int y2,GrxColor c)
 {
