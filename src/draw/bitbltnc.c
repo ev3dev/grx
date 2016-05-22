@@ -20,7 +20,27 @@
 #include "libgrx.h"
 #include "clipping.h"
 
-void grx_fast_bit_blt(GrxContext *dst,int dx,int dy,
+/**
+ * grx_context_fast_bit_blt:
+ * @context: the destination context
+ * @x: the destination X coordinate
+ * @y: the destination Y coordinate
+ * @src: (nullable): the source context or %NULL to use the current context
+ * @x1: the source bounding rectangle left coordinate
+ * @y1: the source bounding rectangle top coordinate
+ * @x2: the source bounding rectangle right coordinate
+ * @y2: the source bounding rectangle bottom coordinate
+ * @op: the #GrxColorMode operator and optional transparent color
+ *
+ * Copies an area bounded by x1, y2, x2, y2 in the source context to the
+ * destination context at the location specified by dx, dy using the specified
+ * operation.
+ *
+ * This function does not perform clipping. If you cannot ensure that the
+ * destination rectangle is within the bounds of the context, then use
+ * grx_context_bit_blt() instead.
+ */
+void grx_context_fast_bit_blt(GrxContext *dst,int dx,int dy,
                 GrxContext *src,int x1,int y1,int x2,int y2,GrxColor oper)
 {
         void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);

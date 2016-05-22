@@ -232,7 +232,7 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs,int loops) {
   t1 = g_get_monotonic_time();
   for (i=loops; i > 0; --i) {
     for (j=PAIRS-1; j >= 0; j--)
-       grx_fast_get_pixel(x[j],y[j]);
+       grx_fast_get_pixel_at(x[j],y[j]);
   }
   t2 = g_get_monotonic_time();
   seconds = (double)(t2 - t1) / 1000000.0;

@@ -582,7 +582,7 @@ namespace Grx {
 
         public Color *get_scan_line (int x1, int x2, int yy);
 
-        public Color fast_get_pixel (int x, int y);
+        public Color fast_get_pixel_at (int x, int y);
 
         [CCode (cname = "grx_pattern_create_pixmap_from_context")]
         public Pattern to_pixmap ();
@@ -764,7 +764,7 @@ namespace Grx {
     public void fast_draw_framed_box(int x1, int y1, int x2, int y2, int wdt, FramedBoxColors c);
     public void fast_bit_blt(Context dest, int x, int y, Context src, int x1, int y1, int x2, int y2, ColorMode op = ColorMode.WRITE);
 
-    public Color fast_get_pixel (int x, int y);
+    public Color fast_get_pixel_at (int x, int y);
 
     /* ================================================================== */
     /*                   FONTS AND TEXT PRIMITIVES                        */

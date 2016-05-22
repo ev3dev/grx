@@ -20,6 +20,22 @@
 #include "libgrx.h"
 #include "clipping.h"
 
+/**
+ * grx_fast_draw_vline:
+ * @x: X coordinate
+ * @y1: starting Y coordinate
+ * @y2: ending Y coordinate
+ * @c: the color
+ *
+ * Draws a vertical line on the current context from the starting coordinates
+ * to the ending coordinates using the specified color.
+ *
+ * This is more efficient that using grx_fast_draw_line().
+ *
+ * This function does not perform clipping. If you cannot ensure that the
+ * endpoints are within the bounds of the current context, then use
+ * grx_draw_hline() instead.
+ */
 void grx_fast_draw_vline(int xx,int y1,int y2,GrxColor c)
 {
         isort(y1,y2);
