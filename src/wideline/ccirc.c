@@ -21,6 +21,16 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_circle_with_options:
+ * @xc: the X coordinate of the center of the circle
+ * @yc: the Y coordinate of the center of the circle
+ * @r: the radius of the circle
+ * @o: the options
+ *
+ * Draws a circle on the current context centered at the specified coordinates
+ * with the specified radius and options.
+ */
 void grx_draw_circle_with_options(int xc,int yc,int r,const GrxLineOptions *o)
 {
         grx_draw_ellipse_with_options(xc,yc,r,r,o);

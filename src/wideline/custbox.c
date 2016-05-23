@@ -22,6 +22,17 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_box_with_options:
+ * @x1: the left X coordinate
+ * @y1: the top Y coordinate
+ * @x2: the right X coordinate
+ * @y2: the bottom Y coordinate
+ * @o: the options
+ *
+ * Draws a rectangle on the current context using the specified coordinates
+ * and options.
+ */
 void grx_draw_box_with_options(int x1,int y1,int x2,int y2,const GrxLineOptions *o)
 {
         GrFillArg fval;

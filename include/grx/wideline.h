@@ -25,20 +25,49 @@
 #include <grx/color.h>
 #include <grx/common.h>
 
-/* ================================================================== */
-/*            THICK AND DASHED LINE DRAWING PRIMITIVES                */
-/* ================================================================== */
+/**
+ * SECTION:wideline
+ * @short_description: Thick and dashed line drawing primitives
+ * @title: Customized line drawing
+ * @section_id: wideline
+ * @include: grx-3.0.h
+ *
+ * The basic line drawing graphics primitives described previously always draw
+ * continuous lines which are one pixel wide. This group of line drawing
+ * functions can be used to draw wide and/or patterned lines. These functions
+ * have similar parameter passing conventions as the basic ones with one
+ * difference: instead of the color value a #GrxLineOptions is passed instead.
+ */
 
-/*
- * custom line options structure
- *   zero or one dash pattern length means the line is continuous
- *   the dash pattern always begins with a drawn section
+/**
+ * GrxLineOptions:
+ * @color: color used to draw line
+ * @width: width of the line
+ * @n_dash_patterns: length of the dash pattern
+ * @dash_patterns: (array length=n_dash_patterns): draw/nodraw pattern
+ *
+ * Custom line options structure.
+ *
+ * Zero or one dash pattern length means the line is continuous. The dash
+ * pattern always begins with a drawn section.
+ *
+ * Example, a white line 3 pixels wide (thick) and pattern 6 pixels draw,
+ * 4 pixels nodraw:
+ * |[<!-- language="C" -->
+ * GrxLineOptions my_line_options;
+ * ...
+ * my_line_options.color = grx_color_info_get_white();
+ * my_line_options.width = 3;
+ * my_line_options.n_dash_patterns = 2;
+ * my_line_options.dash_patterns = "\x06\x04";
+ * ...
+ * ]|
  */
 struct _GrxLineOptions {
-    GrxColor color;                   /* color used to draw line */
-    gint     width;                   /* width of the line */
-    gint     n_dash_patterns;         /* length of the dash pattern */
-    guint8  *dash_patterns;           /* draw/nodraw pattern */
+    GrxColor color;
+    gint     width;
+    gint     n_dash_patterns;
+    guint8  *dash_patterns;
 };
 
 void grx_draw_line_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);

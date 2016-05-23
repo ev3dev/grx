@@ -21,6 +21,18 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_polygon_with_options:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @o: the options
+ *
+ * Draw a closed polygon on the current context that connects each point in
+ * the @points array using the specified options.
+ *
+ * Coordinate arrays can either contain or omit the closing edge of the polygon.
+ * It will be automatically appended to the list if it is missing.
+ */
 void grx_draw_polygon_with_options(int n,GrxPoint *pt,const GrxLineOptions *o)
 {
         GrFillArg fval;

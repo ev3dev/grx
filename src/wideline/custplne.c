@@ -21,6 +21,15 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_polyline_with_options:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @o: the options
+ *
+ * Draw a multi-segment line on the current context that connects each point in
+ * the @points array using the specified options.
+ */
 void grx_draw_polyline_with_options(int n,GrxPoint *pt,const GrxLineOptions *o)
 {
         GrFillArg fval;
