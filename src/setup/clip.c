@@ -20,6 +20,15 @@
 #include "libgrx.h"
 #include "clipping.h"
 
+/**
+ * grx_set_clip_box:
+ * @x1: the left bounds
+ * @y1: the top bounds
+ * @x2: the right bounds
+ * @y2: the bottom bounds
+ *
+ * Sets the clipping limits on the current context.
+ */
 void grx_set_clip_box(int x1,int y1,int x2,int y2)
 {
         cxclip_box(CURC,x1,y1,x2,y2);
@@ -29,6 +38,16 @@ void grx_set_clip_box(int x1,int y1,int x2,int y2)
         CURC->y_clip_high = y2;
 }
 
+/**
+ * grx_context_set_clip_box:
+ * @context: the context
+ * @x1: the left bounds
+ * @y1: the top bounds
+ * @x2: the right bounds
+ * @y2: the bottom bounds
+ *
+ * Sets the clipping limits on @context.
+ */
 void grx_context_set_clip_box(GrxContext *c,int x1,int y1,int x2,int y2)
 {
         cxclip_box(c,x1,y1,x2,y2);
@@ -38,6 +57,12 @@ void grx_context_set_clip_box(GrxContext *c,int x1,int y1,int x2,int y2)
         c->y_clip_high = y2;
 }
 
+/**
+ * grx_reset_clip_box:
+ *
+ * Resets the clipping limits of the current context to the size of the current
+ * context.
+ */
 void grx_reset_clip_box(void)
 {
         CURC->x_clip_low = 0;
@@ -46,6 +71,12 @@ void grx_reset_clip_box(void)
         CURC->y_clip_high = CURC->y_max;
 }
 
+/**
+ * grx_context_reset_clip_box:
+ * @context: the context
+ *
+ * Resets the clipping limits on @context to the size of @context.
+ */
 void grx_context_reset_clip_box(GrxContext *c)
 {
         c->x_clip_low = 0;

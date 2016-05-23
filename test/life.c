@@ -26,8 +26,8 @@
 
 TESTFUNC(life)
 {
-        int  W = grx_get_size_x();
-        int  H = grx_get_size_y();
+        int  W = grx_get_width();
+        int  H = grx_get_height();
         char **map[2],**old,**cur;
         int  *xp,*xn,*yp,*yn;
         int  which,x,y,gen;

@@ -36,6 +36,8 @@
  * Copies an area bounded by x1, y2, x2, y2 in the source context to the
  * destination context at the location specified by dx, dy using the specified
  * operation.
+ *
+ * Also see grx_bit_blt() for operating on the current context.
  */
 void grx_context_bit_blt(GrxContext *dst,int dx,int dy,GrxContext *src,
                          int x1,int y1,int x2,int y2,GrxColor oper)

@@ -33,7 +33,7 @@ static void gnewl(void)
 {
         cury += grx_text_option_get_char_height(&opt, 'A') + deltay;
         curx = 0;
-        if(cury + grx_text_option_get_char_height(&opt, 'A') > grx_get_size_y() + deltay) {
+        if(cury + grx_text_option_get_char_height(&opt, 'A') > grx_get_height() + deltay) {
             if(GrKeyRead() == GrKey_F10) {
                 grx_font_unref(opt.txo_font);
                 exit(0);
@@ -46,7 +46,7 @@ static void gnewl(void)
 /* all control characters are displayed 1:1 */
 static void gputc(int c)
 {
-        if(curx + grx_text_option_get_char_width(&opt, c) + deltax > grx_get_size_x()) gnewl();
+        if(curx + grx_text_option_get_char_width(&opt, c) + deltax > grx_get_width()) gnewl();
         grx_draw_char_with_text_options(c, curx, cury, &opt);
         curx += grx_text_option_get_char_width(&opt, c) + deltax;
 }
@@ -169,7 +169,7 @@ int main(int argc, char **argv)
 
         sprintf(buffer, "%s %dx%d", hdr->name, grx_text_option_get_char_width(&opt, 'A'), grx_text_option_get_char_height(&opt, 'A'));
         gputs(buffer);
-        sprintf(buffer, "%dx%d@%lu", grx_get_size_x(), grx_get_size_y(), (unsigned long) grx_color_info_n_colors());
+        sprintf(buffer, "%dx%d@%lu", grx_get_width(), grx_get_height(), (unsigned long) grx_color_info_n_colors());
         gputs(buffer);
         gnewl();
 

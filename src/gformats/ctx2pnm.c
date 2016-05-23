@@ -22,6 +22,7 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/extents.h>
 
 /*
 ** grx_context_save_to_pbm - Dump a context in a PBM file (bitmap)
@@ -53,10 +54,10 @@ int grx_context_save_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
   sprintf( cab,"P4\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
-  sprintf( cab,"\n%d %d\n",grx_get_size_x(),grx_get_size_y() );
+  sprintf( cab,"\n%d %d\n",grx_get_width(),grx_get_height() );
   fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<grx_get_size_y(); y++ ){
-    for( x=0; x<grx_get_size_x(); x++ ){
+  for( y=0; y<grx_get_height(); y++ ){
+    for( x=0; x<grx_get_width(); x++ ){
       if( grx_get_pixel_at( x,y ) == grx_color_info_get_black() )
         currentbyte |= 1 << currentbit;
       currentbit--;
@@ -109,10 +110,10 @@ int grx_context_save_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
   sprintf( cab,"P5\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
-  sprintf( cab,"\n%d %d\n255\n",grx_get_size_x(),grx_get_size_y() );
+  sprintf( cab,"\n%d %d\n255\n",grx_get_width(),grx_get_height() );
   fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<grx_get_size_y(); y++ )
-    for( x=0; x<grx_get_size_x(); x++ ){
+  for( y=0; y<grx_get_height(); y++ )
+    for( x=0; x<grx_get_width(); x++ ){
       grx_color_info_query_color( grx_get_pixel_at( x,y ),&rgb[0],&rgb[1],&rgb[2] );
       grey = (0.229 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2]);
       fwrite( &grey,1,1,f );
@@ -152,10 +153,10 @@ int grx_context_save_to_ppm( GrxContext *grc, char *ppmfn, char *docn )
   sprintf( cab,"P6\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
-  sprintf( cab,"\n%d %d\n255\n",grx_get_size_x(),grx_get_size_y() );
+  sprintf( cab,"\n%d %d\n255\n",grx_get_width(),grx_get_height() );
   fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<grx_get_size_y(); y++ )
-    for( x=0; x<grx_get_size_x(); x++ ){
+  for( y=0; y<grx_get_height(); y++ )
+    for( x=0; x<grx_get_width(); x++ ){
       grx_color_info_query_color( grx_get_pixel_at( x,y ),&r,&g,&b );
       brgb[0] = r;
       brgb[1] = g;

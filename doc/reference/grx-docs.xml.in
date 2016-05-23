@@ -17,11 +17,15 @@
 
   <part>
     <title>API Reference</title>
+    <chapter id="drivers">
+      <title>Drivers, Modes and Contexts</title>
+      <xi:include href="xml/context.xml"/>
+      <xi:include href="xml/extents.xml"/>
+    </chapter>
     <chapter id="drawing">
       <title>Drawing</title>
       <xi:include href="xml/draw.xml"/>
       <xi:include href="xml/draw_nc.xml"/>
-      <xi:include href="xml/context.xml"/>
     </chapter>
     <chapter id="applications">
       <title>Applications</title>

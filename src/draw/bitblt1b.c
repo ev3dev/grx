@@ -40,6 +40,8 @@
  *
  * The source must be a 1 bit per pixel bitmap. The foreground color is used
  * for bits = 1 and the background color is used for bits = 0.
+ *
+ * Also see grx_bit_blt_1bpp() for operating on the current context.
  */
 void grx_context_bit_blt_1bpp(GrxContext *dst,int dx,int dy,
                   GrxContext *src,int x1,int y1,int x2,int y2,

@@ -17,6 +17,7 @@
  */
 
 #include <grx/draw.h>
+#include <grx/extents.h>
 
 #include "globals.h"
 #include "libgrx.h"
@@ -127,7 +128,7 @@ void _GrScanPolygon(int n,GrxPoint *pt,GrFiller *f,GrFillArg c)
                     ep->e.x     = prevx = pt[n].x;
                     ep->e.y     = prevy = pt[n].y;
                 }
-                if((ep->e.y > grx_get_high_y()) || (ep->e.ylast < grx_get_low_y())) continue;
+                if((ep->e.y > grx_get_clip_box_max_y()) || (ep->e.ylast < grx_get_clip_box_min_y())) continue;
                 clip_line_ymin(CURC,ep->e.x,ep->e.y,ep->e.xlast,ep->e.ylast);
                 if(ymin > ep->e.y)     ymin = ep->e.y;
                 if(ymax < ep->e.ylast) ymax = ep->e.ylast;
@@ -138,11 +139,11 @@ void _GrScanPolygon(int n,GrxPoint *pt,GrFiller *f,GrFillArg c)
                 nedges++;
                 ep++;
             }
-            if((nedges > 0) && (xmin <= grx_get_high_x()) && (xmax >= grx_get_low_x())) {
-                if(xmin < grx_get_low_x())  xmin = grx_get_low_x();
-                if(ymin < grx_get_low_y())  ymin = grx_get_low_y();
-                if(xmax > grx_get_high_x()) xmax = grx_get_high_x();
-                if(ymax > grx_get_high_y()) ymax = grx_get_high_y();
+            if((nedges > 0) && (xmin <= grx_get_clip_box_max_x()) && (xmax >= grx_get_clip_box_min_x())) {
+                if(xmin < grx_get_clip_box_min_x())  xmin = grx_get_clip_box_min_x();
+                if(ymin < grx_get_clip_box_min_y())  ymin = grx_get_clip_box_min_y();
+                if(xmax > grx_get_clip_box_max_x()) xmax = grx_get_clip_box_max_x();
+                if(ymax > grx_get_clip_box_max_y()) ymax = grx_get_clip_box_max_y();
                 mouse_block(CURC,xmin,ymin,xmax,ymax);
                 /*
                  * Scan for every row between ymin and ymax.

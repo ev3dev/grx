@@ -58,6 +58,9 @@ void grx_clear_context(GrxColor bg)
  * grx_context_clear (ctx, grx_color_to_xor_mode (grx_color_info_get_white ()));
  * ]|
  * the context is negativized, do it again and the context is restored.
+ *
+ * Also see grx_clear_context() for clearing the current context and
+ * grx_clear_screen() for clearing the screen.
  */
 void grx_context_clear(GrxContext *ctx, GrxColor bg)
 {

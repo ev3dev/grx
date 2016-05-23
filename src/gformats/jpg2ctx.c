@@ -23,6 +23,7 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/extents.h>
 
 /*
 ** grx_is_jpeg_supported - Returns true
@@ -155,10 +156,10 @@ static int readjpeg( FILE *f, GrxContext *grc, int scale )
   buffer = (*cinfo.mem->alloc_sarray)
            ( (j_common_ptr)&cinfo,JPOOL_IMAGE,row_stride,1 );
 
-  maxwidth = (cinfo.output_width > grx_get_size_x()) ?
-             grx_get_size_x() : cinfo.output_width;
-  maxheight = (cinfo.output_height > grx_get_size_y()) ?
-             grx_get_size_y() : cinfo.output_height;
+  maxwidth = (cinfo.output_width > grx_get_width()) ?
+             grx_get_width() : cinfo.output_width;
+  maxheight = (cinfo.output_height > grx_get_height()) ?
+             grx_get_height() : cinfo.output_height;
   pColors = malloc( maxwidth * sizeof(GrxColor) );
   if( pColors == NULL ) longjmp( jerr.setjmp_buffer,1 );
 

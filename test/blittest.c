@@ -48,7 +48,7 @@ void drbox(GrxContext *src,int x,int y)
 
 void doblits(GrxContext *src,int x,int y)
 {
-        int xx = (grx_get_size_x() - BWW)/ 2;
+        int xx = (grx_get_width() - BWW)/ 2;
         int yy = 2;
         int ii;
 
@@ -61,7 +61,7 @@ void doblits(GrxContext *src,int x,int y)
   {
         GrxColor xc = grx_color_info_alloc_color(255,255,255) | GRX_COLOR_MODE_XOR;
         GrKeyRead();
-        xx = (grx_get_size_x() - BWW)/ 2;
+        xx = (grx_get_width() - BWW)/ 2;
         yy = 2;
         for(ii = 0; ii < 8; ii++) {
             grx_draw_filled_box(xx,yy,xx+BWW-1,yy+BHH-1,xc);
@@ -100,8 +100,8 @@ TESTFUNC(blittest)
 {
         GrxFramedBoxColors bcolors,ocolors,icolors;
         GrxColor c,bg;
-        int  x = grx_get_size_x();
-        int  y = grx_get_size_y();
+        int  x = grx_get_width();
+        int  y = grx_get_height();
         int  ww = (x * 2) / 3;
         int  wh = (y * 2) / 3;
         int  ii,jj;
@@ -233,8 +233,8 @@ TESTFUNC(blittest)
            60,60,
            NULL,
            20,20,
-           grx_get_size_x() - 40,
-           grx_get_size_y() - 40,
+           grx_get_width() - 40,
+           grx_get_height() - 40,
            GRX_COLOR_MODE_WRITE
         );
 
@@ -244,8 +244,8 @@ TESTFUNC(blittest)
            10,10,
            NULL,
            60,60,
-           grx_get_size_x() - 40,
-           grx_get_size_y() - 40,
+           grx_get_width() - 40,
+           grx_get_height() - 40,
            GRX_COLOR_MODE_WRITE
         );
 

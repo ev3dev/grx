@@ -627,12 +627,12 @@ namespace Grx {
 
     public int get_max_x ();
     public int get_max_y ();
-    public int get_size_x ();
-    public int get_size_y ();
-    public int get_low_x ();
-    public int get_low_y ();
-    public int get_high_x ();
-    public int get_high_y ();
+    public int get_width ();
+    public int get_height ();
+    public int get_clip_box_min_x ();
+    public int get_clip_box_min_y ();
+    public int get_clip_box_max_x ();
+    public int get_clip_box_max_y ();
 
     [CCode (cprefix = "GRX_COLOR_MODE_", has_type_id = false)]
     [Flags]

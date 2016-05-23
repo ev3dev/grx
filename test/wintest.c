@@ -21,8 +21,8 @@
 
 TESTFUNC(wintest)
 {
-        int  x = grx_get_size_x();
-        int  y = grx_get_size_y();
+        int  x = grx_get_width();
+        int  y = grx_get_height();
         int  ww = (x / 2) - 10;
         int  wh = (y / 2) - 10;
         GrxColor c;

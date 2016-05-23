@@ -43,7 +43,7 @@ void displayfont(GrxFont *font,char *text,int len)
         opt.txo_font   = font;
         opt.txo_xalign = GRX_TEXT_ALIGN_LEFT;
         opt.txo_yalign = GRX_TEXT_VALIGN_TOP;
-        grx_draw_filled_box(0,0,grx_get_size_x(),grx_get_size_y(),grx_color_info_get_black());
+        grx_draw_filled_box(0,0,grx_get_width(),grx_get_height(),grx_color_info_get_black());
         opt.txo_direct    = GRX_TEXT_DIRECTION_RIGHT;
         opt.txo_fgcolor.v = grx_color_info_get_black();
         opt.txo_bgcolor.v = c1;
@@ -68,10 +68,10 @@ void displayfont(GrxFont *font,char *text,int len)
         opt.txo_direct    = GRX_TEXT_DIRECTION_RIGHT;
         opt.txo_fgcolor.v = c1;
         opt.txo_bgcolor.v = grx_color_info_get_black();
-        bx = grx_get_size_x() / 16;
-        by = grx_get_size_y() / 16;
+        bx = grx_get_width() / 16;
+        by = grx_get_height() / 16;
         bx = (bx + 7) & ~7;
-        while(by < grx_get_size_y()) {
+        while(by < grx_get_height()) {
             grx_draw_string_with_text_options(test_text,strlen(test_text),bx,by,&opt);
             opt.txo_fgcolor.v ^= GRX_UNDERLINE_TEXT;
             by += hh;
@@ -84,22 +84,22 @@ TESTFUNC(fonttest)
         GrxFont *f;
         int i;
         char buff[100];
-        cx = grx_get_size_x() / 2;
-        cy = grx_get_size_y() / 2;
+        cx = grx_get_width() / 2;
+        cy = grx_get_height() / 2;
         c1 = grx_color_info_alloc_color(100,200,100);
         c2 = grx_color_info_alloc_color(150,150,100);
         c3 = grx_color_info_alloc_color(100,100,200);
         c4 = grx_color_info_alloc_color(100,180,180);
-        grx_draw_box(grx_get_size_x()/16 - 2,
-            grx_get_size_y()/16 - 2,
-            grx_get_size_x() - grx_get_size_x()/16 + 1,
-            grx_get_size_y() - grx_get_size_y()/16 + 1,
+        grx_draw_box(grx_get_width()/16 - 2,
+            grx_get_height()/16 - 2,
+            grx_get_width() - grx_get_width()/16 + 1,
+            grx_get_height() - grx_get_height()/16 + 1,
             grx_color_info_alloc_color(250,100,100)
         );
-        grx_set_clip_box(grx_get_size_x()/16,
-            grx_get_size_y()/16,
-            grx_get_size_x() - grx_get_size_x()/16 - 1,
-            grx_get_size_y() - grx_get_size_y()/16 - 1
+        grx_set_clip_box(grx_get_width()/16,
+            grx_get_height()/16,
+            grx_get_width() - grx_get_width()/16 - 1,
+            grx_get_height() - grx_get_height()/16 - 1
         );
         strcpy(buff,"Default GRX font");
         displayfont(&grx_font_default,buff,strlen(buff));

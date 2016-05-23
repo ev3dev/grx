@@ -58,8 +58,8 @@ TESTFUNC(circtest)
         c1 = grx_color_info_alloc_color(64,64,255);
         c2 = grx_color_info_alloc_color(255,255,64);
         c3 = grx_color_info_alloc_color(255,64,64);
-        xc = grx_get_size_x() / 2;
-        yc = grx_get_size_y() / 2;
+        xc = grx_get_width() / 2;
+        yc = grx_get_height() / 2;
         xr = 1;
         yr = 1;
         while((xr < 1000) || (yr < 1000)) {

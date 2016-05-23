@@ -15,8 +15,8 @@ class Life(Grx.LinuxConsoleApplication):
         super(Grx.LinuxConsoleApplication, self).__init__()
         self.init()
         self.source_id = 0
-        self.width = Grx.get_size_x()
-        self.height = Grx.get_size_y()
+        self.width = Grx.get_width()
+        self.height = Grx.get_height()
         self.old_state = [[0 for y in range(self.height)] for x in range(self.width)]
         self.new_state = [[0 for y in range(self.height)] for x in range(self.width)]
         self.color = (Grx.color_info_get_black(), Grx.color_info_get_white())

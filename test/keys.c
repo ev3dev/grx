@@ -352,10 +352,10 @@ static int curx = 0, cury = 0;
 
 static void gputc(int c)
 {
-        if(c == '\n' || curx + grx_text_option_get_char_width(&opt, c) > grx_get_size_x()) {
+        if(c == '\n' || curx + grx_text_option_get_char_width(&opt, c) > grx_get_width()) {
             cury += grx_text_option_get_char_height(&opt, 'A');
             curx = 0;
-            if(cury + grx_text_option_get_char_height(&opt, 'A') > grx_get_size_y()) {
+            if(cury + grx_text_option_get_char_height(&opt, 'A') > grx_get_height()) {
                 grx_clear_screen(opt.txo_bgcolor.v);
                 cury = 0;
             }

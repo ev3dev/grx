@@ -25,6 +25,7 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/extents.h>
 #include <grx/gformats.h>
 #include <grx/mode.h>
 
@@ -149,8 +150,8 @@ static int _GrLoadContextFromPbm( inputstruct *is, int width, int height )
   GrxColor *pColors=NULL;
   int res = 0;
 
-  maxwidth = (width > grx_get_size_x()) ? grx_get_size_x() : width;
-  maxheight = (height > grx_get_size_y()) ? grx_get_size_y() : height;
+  maxwidth = (width > grx_get_width()) ? grx_get_width() : width;
+  maxheight = (height > grx_get_height()) ? grx_get_height() : height;
 
   pColors = malloc( maxwidth * sizeof(GrxColor) );
   if(pColors == NULL) { res = -1; goto salida; }
@@ -191,8 +192,8 @@ static int _GrLoadContextFromPgm( inputstruct *is, int width,
   unsigned char *pData=NULL, *pCursor;
   int res = 0;
 
-  maxwidth = (width > grx_get_size_x()) ? grx_get_size_x() : width;
-  maxheight = (height > grx_get_size_y()) ? grx_get_size_y() : height;
+  maxwidth = (width > grx_get_width()) ? grx_get_width() : width;
+  maxheight = (height > grx_get_height()) ? grx_get_height() : height;
 
   if( maxval < 255 ){
     needcoloradjust = 1;
@@ -236,8 +237,8 @@ static int _GrLoadContextFromPpm( inputstruct *is, int width,
   unsigned char *pRGB=NULL, *pCursor;
   int res = 0;
 
-  maxwidth = (width > grx_get_size_x()) ? grx_get_size_x() : width;
-  maxheight = (height > grx_get_size_y()) ? grx_get_size_y() : height;
+  maxwidth = (width > grx_get_width()) ? grx_get_width() : width;
+  maxheight = (height > grx_get_height()) ? grx_get_height() : height;
 
   if( maxval < 255 ){
     needcoloradjust = 1;

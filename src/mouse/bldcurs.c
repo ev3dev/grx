@@ -17,6 +17,7 @@
  */
 
 #include <grx/draw_nc.h>
+#include <grx/extents.h>
 
 #include "libgrx.h"
 #include "allocate.h"

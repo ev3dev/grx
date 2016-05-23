@@ -260,6 +260,7 @@ set (GTKDOC_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/context.h
     ${CMAKE_SOURCE_DIR}/include/grx/draw.h
     ${CMAKE_SOURCE_DIR}/include/grx/draw_nc.h
+    ${CMAKE_SOURCE_DIR}/include/grx/extents.h
     ${CMAKE_SOURCE_DIR}/include/grx/gformats.h
     ${CMAKE_SOURCE_DIR}/include/grx/image.h
     ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h

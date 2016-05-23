@@ -40,7 +40,13 @@
  * whole graphics screen.
  */
 
+/**
+ * GrxFrameMemory:
+ *
+ * Private data structure used by #GrxFrame.
+ */
 typedef struct {
+    /*<private>*/
     guint8 *plane0;
     guint8 *plane1;
     guint8 *plane2;
@@ -48,15 +54,12 @@ typedef struct {
 } GrxFrameMemory;
 
 /**
- * GRX_FRAME_MEMORY_PLANE:
- * @f: pointer to #GrxFrameMemory
- * @p: the index of the plane (0-3)
+ * GrxFrame:
  *
- * Gets a plane from #GrxFrameMemory by its index.
+ * Private data structure used by #GrxContext.
  */
-#define GRX_FRAME_MEMORY_PLANE(f,p) (((guint8**)f)[p])
-
 struct _GrxFrame {
+    /*<private>*/
     GrxFrameMemory  base_address;       /* base address of frame memory */
     gshort          selector;           /* frame memory segment selector */
     gboolean        is_on_screen;       /* is it in video memory ? */
@@ -65,7 +68,13 @@ struct _GrxFrame {
     GrxFrameDriver *driver;             /* frame access functions */
 };
 
+/**
+ * GrxContext:
+ *
+ * Private data structure used by #GrxContext.
+ */
 struct _GrxContext {
+    /*<private>*/
     GrxFrame    frame;                  /* frame buffer info */
     GrxContext *root;                   /* context which owns frame */
     guint  ref_count;                   /* private reference count */
@@ -101,68 +110,52 @@ extern const struct _GR_contextInfo {
 
 GType       grx_context_get_type(void);
 GrxContext *grx_context_new(gint w, gint h, GrxFrameMemory *memory, GrxContext *where);
-GrxContext *grx_context_new_full(GrxFrameMode md, gint w, gint h,
+GrxContext *grx_context_new_full(GrxFrameMode mode, gint w, gint h,
                                  GrxFrameMemory *memory, GrxContext *where);
 GrxContext *grx_context_new_subcontext(gint x1, gint y1, gint x2, gint y2,
                                        const GrxContext *parent, GrxContext *where);
-GrxContext *grx_context_save(GrxContext *where);
+void  grx_context_resize_subcontext(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
 
+void  grx_context_set_current(const GrxContext *context);
 GrxContext *grx_context_get_current(void);
 GrxContext *grx_context_get_screen(void);
 
-GrxContext *grx_context_ref(GrxContext *context);
-void  grx_context_unref(GrxContext *context);
-void  grx_context_resize_subcontext(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
-void  grx_context_set_current(const GrxContext *context);
-void  grx_context_clear(GrxContext *context, GrxColor bg);
+GrxContext *grx_context_save(GrxContext *where);
 
+GrxContext *grx_context_ref(GrxContext *context);
+void grx_context_unref(GrxContext *context);
+
+void grx_context_clear(GrxContext *context, GrxColor bg);
 void grx_context_flood_spill(GrxContext *context, gint x1, gint y1, gint x2, gint y2, GrxColor old_c, GrxColor new_c);
 void grx_context_flood_spill2(GrxContext *context, gint x1, gint y1, gint x2, gint y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
 GrxColor grx_context_get_pixel_at(GrxContext *context, gint x, gint y);
 void grx_context_bit_blt(GrxContext *context, gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor op);
 void grx_context_bit_blt_1bpp(GrxContext *context, gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor fg, GrxColor bg);
-
 const GrxColor *grx_context_get_scanline(GrxContext *context, gint x1, gint x2, gint y, guint *n);
 
-void  grx_set_clip_box(gint x1, gint y1, gint x2, gint y2);
-void  grx_context_set_clip_box(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
-void  grx_get_clip_box(gint *x1p, gint *y1p, gint *x2p, gint *y2p);
-void  grx_context_get_clip_box(const GrxContext *context, gint *x1p, gint *y1p, gint *x2p, gint *y2p);
-void  grx_reset_clip_box(void);
-void  grx_context_reset_clip_box(GrxContext *context);
+void grx_context_set_clip_box(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
+void grx_context_get_clip_box(const GrxContext *context, gint *x1, gint *y1, gint *x2, gint *y2);
+void grx_context_reset_clip_box(GrxContext *context);
 
-int   grx_get_max_x(void);
-int   grx_get_max_y(void);
-int   grx_get_size_x(void);
-int   grx_get_size_y(void);
-int   grx_get_low_x(void);
-int   grx_get_low_y(void);
-int   grx_get_high_x(void);
-int   grx_get_high_y(void);
+/**
+ * GRX_FRAME_MEMORY_PLANE:
+ * @f: pointer to #GrxFrameMemory
+ * @i: the index of the plane (0-3)
+ *
+ * Gets a plane from #GrxFrameMemory by its index.
+ */
+#define GRX_FRAME_MEMORY_PLANE(f,i) (((guint8**)f)[i])
 
 #ifndef GRX_SKIP_INLINES
-#define grx_context_new(w,h,m,c) (grx_context_new_full(grx_get_core_frame_mode(),w,h,m,c))
-#define grx_context_get_current()       ((GrxContext *)(&GrContextInfo->current))
-#define grx_context_get_screen()        ((GrxContext *)(&GrContextInfo->screen))
-#define grx_get_max_x()                 (grx_context_get_current()->x_max)
-#define grx_get_max_y()                 (grx_context_get_current()->y_max)
-#define grx_get_size_x()                (grx_get_max_x() + 1)
-#define grx_get_size_y()                (grx_get_max_y() + 1)
-#define grx_get_low_x()                 (grx_context_get_current()->x_clip_low)
-#define grx_get_low_y()                 (grx_context_get_current()->y_clip_low)
-#define grx_get_high_x()                (grx_context_get_current()->x_clip_high)
-#define grx_get_high_y()                (grx_context_get_current()->y_clip_high)
+#define grx_context_new(w,h,m,c) \
+    (grx_context_new_full(grx_get_core_frame_mode(),w,h,m,c))
+#define grx_context_get_current()   ((GrxContext *)(&GrContextInfo->current))
+#define grx_context_get_screen()    ((GrxContext *)(&GrContextInfo->screen))
 #define grx_context_get_clip_box(C,x1p,y1p,x2p,y2p) do {    \
     *(x1p) = (C)->x_clip_low;                               \
     *(y1p) = (C)->y_clip_low;                               \
     *(x2p) = (C)->x_clip_high;                              \
     *(y2p) = (C)->y_clip_high;                              \
-} while(0)
-#define grx_get_clip_box(x1p,y1p,x2p,y2p) do {              \
-    *(x1p) = grx_get_low_x();                               \
-    *(y1p) = grx_get_low_y();                               \
-    *(x2p) = grx_get_high_x();                              \
-    *(y2p) = grx_get_high_y();                              \
 } while(0)
 #endif  /* GRX_SKIP_INLINES */
 

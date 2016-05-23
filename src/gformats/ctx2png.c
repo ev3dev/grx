@@ -22,6 +22,7 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/extents.h>
 
 #ifndef png_jmpbuf
 #  define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
@@ -98,8 +99,8 @@ static int writepng( FILE *f, GrxContext *grc )
   png_init_io( png_ptr,f );
 
   /* Set the image information  */
-  width = grx_get_size_x();
-  height = grx_get_size_y();
+  width = grx_get_width();
+  height = grx_get_height();
   png_set_IHDR( png_ptr,info_ptr,width,height,8,PNG_COLOR_TYPE_RGB,
                 PNG_INTERLACE_NONE,PNG_COMPRESSION_TYPE_BASE,
                 PNG_FILTER_TYPE_BASE );

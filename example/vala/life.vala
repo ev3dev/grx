@@ -9,7 +9,7 @@ class LifeApplication : LinuxConsoleApplication {
     public LifeApplication () throws Error {
         Object ();
         init ();
-        state = new char[2, get_size_x (), get_size_y ()];
+        state = new char[2, get_width (), get_height ()];
         color = { Color.black, Color.white };
     }
 
@@ -36,8 +36,8 @@ class LifeApplication : LinuxConsoleApplication {
 
     void randomize () {
         active_state = 0;
-        for (var y = 0; y < get_size_y (); y++) {
-            for (var x = 0; x < get_size_x (); x++) {
+        for (var y = 0; y < get_height (); y++) {
+            for (var x = 0; x < get_width (); x++) {
                 var alive = Random.int_range (0, 131) > 107;
                 state[active_state, x, y] = alive ? 1 : 0;
                 if (alive) {
@@ -48,8 +48,8 @@ class LifeApplication : LinuxConsoleApplication {
     }
 
     void update_state () {
-        var width = get_size_x ();
-        var height = get_size_y ();
+        var width = get_width ();
+        var height = get_height ();
         var next_state = 1 - active_state;
         for (var y = 0; y < height; y++) {
             for (var x = 0; x < width; x++) {
@@ -87,8 +87,8 @@ class LifeApplication : LinuxConsoleApplication {
     bool draw () {
         update_state ();
         var prev_state = 1 - active_state;
-        for (var y = 0; y < get_size_y (); y++) {
-            for (var x = 0; x < get_size_x (); x++) {
+        for (var y = 0; y < get_height (); y++) {
+            for (var x = 0; x < get_width (); x++) {
                 if (state[active_state, x, y] != state[prev_state, x, y]) {
                     fast_draw_pixel (x, y, color[state[active_state, x, y]]);
                 }

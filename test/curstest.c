@@ -55,7 +55,7 @@ TESTFUNC(cursortest)
         GrMoveCursor(cur,x,y);
         grx_clear_screen(bgc);
         grx_color_info_set_color((grx_color_info_n_colors() - 1),255,255,255);
-        drawing(0,0,grx_get_size_x(),grx_get_size_y(),fgc,GRX_COLOR_NONE);
+        drawing(0,0,grx_get_width(),grx_get_height(),fgc,GRX_COLOR_NONE);
         grx_draw_filled_box(0,0,320,120,grx_color_info_alloc_color(0,255,255));
         grx_draw_text_xy( 10,90,"ANDmask",grx_color_info_get_black(),GRX_COLOR_NONE);
         grx_draw_text_xy( 90,90,"ORmask", grx_color_info_get_black(),GRX_COLOR_NONE);

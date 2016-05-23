@@ -31,6 +31,8 @@
  * An efficient way to get pixels from a context. Important: the return value
  * is only valid until the next Grx call!
  *
+ * Also see grx_get_scanline() for operating on the current context.
+ *
  * Returns: (array length=n) (nullable) (transfer none):
  *     an array of color values from the scanned pixels or %NULL if there was
  *     an error

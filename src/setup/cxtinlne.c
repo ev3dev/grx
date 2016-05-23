@@ -17,6 +17,7 @@
  */
 
 #include <grx/context.h>
+#include <grx/extents.h>
 #include <grx/mode.h>
 
 #include "libgrx.h"
@@ -28,7 +29,8 @@
  * @memory: (nullable): memory location(s) or %NULL
  * @where: (nullable): an unused #GrxContex struct or %NULL
  *
- * Creates a new context in system memory.
+ * Creates a new context in system memory using the memory layout specified by
+ * grx_get_core_frame_mode().
  *
  * @memory must contain grx_screen_n_planes() pointers (usually just one, but
  * could be as many as 4) of size grx_screen_get_plane_size(). %NULL may also
@@ -38,69 +40,163 @@
  * if you want a stack allocated context) or it can be %NULL to dynamically
  * allocate a new context.
  *
- * Returns: @where or a new context if @where was %NULL. Returns %NULL on error.
+ * Returns: (nullable): @where or a new context if @where was %NULL. Returns
+ *      %NULL on error.
  */
 GrxContext *(grx_context_new)(int w,int h,GrxFrameMemory *memory,GrxContext *where)
 {
         return(grx_context_new(w,h,memory,where));
 }
 
+/**
+ * grx_context_get_current:
+ *
+ * Gets the current context.
+ *
+ * Returns: (transfer none): the current context
+ */
 GrxContext *(grx_context_get_current)(void)
 {
         return(grx_context_get_current());
 }
 
+/**
+ * grx_context_get_screen:
+ *
+ * Gets the screen context.
+ *
+ * Returns: (transfer none): the screen context
+ */
 GrxContext *(grx_context_get_screen)(void)
 {
         return(grx_context_get_screen());
 }
 
+/**
+ * grx_get_clip_box:
+ * @x1: (out): the left bounds
+ * @y1: (out): the top bounds
+ * @x2: (out): the right bounds
+ * @y2: (out): the bottom bounds
+ *
+ * Gets the clipping limits of the current context.
+ */
 void (grx_get_clip_box)(int *x1p,int *y1p,int *x2p,int *y2p)
 {
         grx_get_clip_box(x1p,y1p,x2p,y2p);
 }
 
+/**
+ * grx_context_get_clip_box:
+ * @context: the context
+ * @x1: (out): the left bounds
+ * @y1: (out): the top bounds
+ * @x2: (out): the right bounds
+ * @y2: (out): the bottom bounds
+ *
+ * Gets the clipping limits of @context.
+ */
 void (grx_context_get_clip_box)(const GrxContext *c,int *x1p,int *y1p,int *x2p,int *y2p)
 {
         grx_context_get_clip_box(c,x1p,y1p,x2p,y2p);
 }
 
+/**
+ * grx_get_max_x:
+ *
+ * Gets the index of the last pixel of the current context in the X direction.
+ *
+ * In other words, this is grx_get_width() -1.
+ *
+ * Returns: the index
+ */
 int (grx_get_max_x)(void)
 {
         return(grx_get_max_x());
 }
 
+/**
+ * grx_get_max_y:
+ *
+ * Gets the index of the last pixel of the current context in the Y direction.
+ *
+ * In other words, this is grx_get_height() -1.
+ *
+ * Returns: the index
+ */
 int (grx_get_max_y)(void)
 {
         return(grx_get_max_y());
 }
 
-int (grx_get_size_x)(void)
+/**
+ * grx_get_width:
+ *
+ * Gets the width of the current context in pixels.
+ *
+ * Returns: the width
+ */
+int (grx_get_width)(void)
 {
-        return(grx_get_size_x());
+        return(grx_get_width());
 }
 
-int (grx_get_size_y)(void)
+/**
+ * grx_get_height:
+ *
+ * Gets the height of the current context in pixels.
+ *
+ * Returns: the height
+ */
+int (grx_get_height)(void)
 {
-        return(grx_get_size_y());
+        return(grx_get_height());
 }
 
-int (grx_get_low_x)(void)
+/**
+ * grx_get_clip_box_min_x:
+ *
+ * Gets the left bounds of the clipping limits of the current context.
+ *
+ * Returns: the current value
+ */
+int (grx_get_clip_box_min_x)(void)
 {
-        return(grx_get_low_x());
+        return(grx_get_clip_box_min_x());
 }
 
-int (grx_get_low_y)(void)
+/**
+ * grx_get_clip_box_min_y:
+ *
+ * Gets the top bounds of the clipping limits of the current context.
+ *
+ * Returns: the current value
+ */
+int (grx_get_clip_box_min_y)(void)
 {
-        return(grx_get_low_y());
+        return(grx_get_clip_box_min_y());
 }
 
-int (grx_get_high_x)(void)
+/**
+ * grx_get_clip_box_max_x:
+ *
+ * Gets the right bounds of the clipping limits of the current context.
+ *
+ * Returns: the current value
+ */
+int (grx_get_clip_box_max_x)(void)
 {
-        return(grx_get_high_x());
+        return(grx_get_clip_box_max_x());
 }
 
-int (grx_get_high_y)(void)
+/**
+ * grx_get_clip_box_max_y:
+ *
+ * Gets the bottom bounds of the clipping limits of the current context.
+ *
+ * Returns: the current value
+ */
+int (grx_get_clip_box_max_y)(void)
 {
-        return(grx_get_high_y());
+        return(grx_get_clip_box_max_y());
 }

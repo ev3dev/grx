@@ -23,6 +23,7 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/extents.h>
 
 static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale );
 
@@ -137,8 +138,8 @@ static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale )
   jpeg_create_compress( &cinfo );
   jpeg_stdio_dest( &cinfo,f );
 
-  cinfo.image_width = grx_get_size_x();
-  cinfo.image_height = grx_get_size_y();
+  cinfo.image_width = grx_get_width();
+  cinfo.image_height = grx_get_height();
   if( grayscale ){
     cinfo.input_components = 1;
     cinfo.in_color_space = JCS_GRAYSCALE;

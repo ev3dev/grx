@@ -102,6 +102,24 @@ void grx_flood_spill2(int x1, int y1, int x2, int y2,
   }
 }
 
+/**
+ * grx_context_flood_spill:
+ * @context: the context
+ * @x1: the left edge of the bounding rectangle
+ * @y1: the top edge of the bounding rectangle
+ * @x2: the right edge of the bounding rectangle
+ * @y2: the bottom edge of the bounding rectangle
+ * @old_c: the color to be replaced
+ * @new_c: the new color
+ *
+ * Replaces old color with new color in the context in the area bounded
+ * by the rectangle x1, y1, x2, y2.
+ *
+ * This is quite useful for highlighting a selected item in a list, or changing
+ * a selected color(s) in a multi colored area.
+ *
+ * Also see grx_flood_spill() for operating on the current context.
+ */
 void grx_context_flood_spill(GrxContext *ctx, int x1, int y1, int x2, int y2,
                    GrxColor old_c, GrxColor new_c)
 {
@@ -128,6 +146,27 @@ void grx_context_flood_spill(GrxContext *ctx, int x1, int y1, int x2, int y2,
   grx_context_set_current(&ctx_save);
 }
 
+/**
+ * grx_context_flood_spill2:
+ * @context: the context
+ * @x1: the left edge of the bounding rectangle
+ * @y1: the top edge of the bounding rectangle
+ * @x2: the right edge of the bounding rectangle
+ * @y2: the bottom edge of the bounding rectangle
+ * @old_c1: the first color to be replaced
+ * @new_c1: the first new color
+ * @old_c2: the second color to be replaced
+ * @new_c2: the second new color
+ *
+ * Replaces two old colors with two new colors in the context in the
+ * area bounded by the rectangle x1, y1, x2, y2. @old_c1 is replaced with
+ * @new_c1 and @old_c2 is replaced with @new_c2.
+ *
+ * This is quite useful for highlighting a selected item in a list, or changing
+ * a selected color(s) in a multi colored area.
+ *
+ * Also see grx_flood_spill2() for operating on the current context.
+ */
 void grx_context_flood_spill2(GrxContext *ctx, int x1, int y1, int x2, int y2,
                   GrxColor old_c1, GrxColor new_c1,
                   GrxColor old_c2, GrxColor new_c2)

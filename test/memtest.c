@@ -30,8 +30,8 @@ int main()
   grx_set_driver( "memory gw 400 gh 400 nc 256" );
   grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
 
-  x = grx_get_size_x();
-  y = grx_get_size_y();
+  x = grx_get_width();
+  y = grx_get_height();
   ww = (x / 2) - 10;
   wh = (y / 2) - 10;
   w1 = grx_context_new_subcontext(5,5,ww+4,wh+4,NULL,NULL);

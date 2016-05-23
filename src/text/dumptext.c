@@ -16,6 +16,7 @@
  *
  */
 
+#include <grx/extents.h>
 #include <grx/text.h>
 
 #include "globals.h"
@@ -49,24 +50,24 @@ void grx_text_region_dump_text(const GrxTextRegion *r,int col,int row,int wdt,in
         bmpw = (chrw + 7) >> 3;
         xpos = r->txr_xpos + (chrw * col);
         ypos = r->txr_ypos + (chrh * row);
-        if(xpos < grx_get_low_x()) {
-            int clip = (grx_get_low_x() - xpos + chrw - 1) / chrw;
+        if(xpos < grx_get_clip_box_min_x()) {
+            int clip = (grx_get_clip_box_min_x() - xpos + chrw - 1) / chrw;
             if((wdt -= clip) <= 0) return;
             col += clip;
         }
-        if(ypos < grx_get_low_y()) {
-            int clip = (grx_get_low_y() - ypos + chrh - 1) / chrh;
+        if(ypos < grx_get_clip_box_min_y()) {
+            int clip = (grx_get_clip_box_min_y() - ypos + chrh - 1) / chrh;
             if((hgt -= clip) <= 0) return;
             row += clip;
         }
         xpos = r->txr_xpos + (chrw * (col + wdt)) - 1;
         ypos = r->txr_ypos + (chrh * (row + hgt)) - 1;
-        if(xpos > grx_get_high_x()) {
-            int clip = (xpos - grx_get_high_x() + chrw - 1) / chrw;
+        if(xpos > grx_get_clip_box_max_x()) {
+            int clip = (xpos - grx_get_clip_box_max_x() + chrw - 1) / chrw;
             if((wdt -= clip) <= 0) return;
         }
-        if(ypos > grx_get_high_y()) {
-            int clip = (ypos - grx_get_high_y() + chrh - 1) / chrh;
+        if(ypos > grx_get_clip_box_max_y()) {
+            int clip = (ypos - grx_get_clip_box_max_y() + chrh - 1) / chrh;
             if((hgt -= clip) <= 0) return;
         }
         ptr += (row * offs) + (col * cofs);

@@ -22,6 +22,7 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/extents.h>
 
 /*
 ** grx_is_png_supported - Returns true
@@ -210,8 +211,8 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
   png_destroy_read_struct( &png_ptr,&info_ptr,NULL );
 
   /* write data to context */
-  maxwidth = (width > grx_get_size_x()) ? grx_get_size_x() : width;
-  maxheight = (height > grx_get_size_y()) ? grx_get_size_y() : height;
+  maxwidth = (width > grx_get_width()) ? grx_get_width() : width;
+  maxheight = (height > grx_get_height()) ? grx_get_height() : height;
 
   pColors = malloc( maxwidth * sizeof(GrxColor) );
   if( pColors == NULL ){

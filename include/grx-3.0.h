@@ -23,6 +23,7 @@
 #include <grx/color.h>
 #include <grx/mode.h>
 #include <grx/context.h>
+#include <grx/extents.h>
 #include <grx/draw.h>
 #include <grx/draw_nc.h>
 #include <grx/text.h>

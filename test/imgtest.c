@@ -22,8 +22,8 @@
 
 TESTFUNC(imgtest)
 {
-        int  x = grx_get_size_x();
-        int  y = grx_get_size_y();
+        int  x = grx_get_width();
+        int  y = grx_get_height();
         int  ww = (x / PARTS)-1;
         int  wh = (y / PARTS)-1;
         int m1, m2, d1, d2;

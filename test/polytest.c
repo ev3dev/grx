@@ -45,10 +45,10 @@ static void testpoly(int n,GrxPoint *points,int convex)
 static void speedtest(void)
 {
         GrxPoint pts[4];
-        int ww = grx_get_size_x() / 10;
-        int hh = grx_get_size_y() / 10;
-        int sx = (grx_get_size_x() - 2*ww) / 32;
-        int sy = (grx_get_size_y() - 2*hh) / 32;
+        int ww = grx_get_width() / 10;
+        int hh = grx_get_height() / 10;
+        int sx = (grx_get_width() - 2*ww) / 32;
+        int sy = (grx_get_height() - 2*hh) / 32;
         int  ii,jj;
         GrxColor color;
         gint64 t1,t2,t3;
