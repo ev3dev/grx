@@ -261,8 +261,8 @@ int main(int argc, char **argv)
 static void ini_graphics(void)
 {
     gfaz_ini(gwidth, gheight, gbpp);
-    gwidth = grx_get_screen_x();
-    gheight = grx_get_screen_y();
+    gwidth = grx_get_screen_width();
+    gheight = grx_get_screen_height();
     grcglob = NULL;
     if (gwidth > 640 || gheight > 480) {
         grx_clear_screen(grx_color_info_alloc_color(120, 90, 60));

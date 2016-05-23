@@ -21,8 +21,8 @@
 
 TESTFUNC(scrolltest)
 {
-        int  wdt = grx_get_screen_x();
-        int  hgt = grx_get_screen_y();
+        int  wdt = grx_get_screen_width();
+        int  hgt = grx_get_screen_height();
         GrxColor nc  = grx_color_info_n_colors();
         int  txh = grx_font_default.h.height + 2;
         for( ; ; ) {
@@ -36,8 +36,8 @@ TESTFUNC(scrolltest)
             GrxColor bgc = grx_color_info_alloc_color(0,0,128);
             GrxColor fgc = grx_color_info_alloc_color(200,200,0);
             GrxColor txc = grx_color_info_alloc_color(255,0,255);
-            int vw = grx_get_virtual_x();
-            int vh = grx_get_virtual_y();
+            int vw = grx_get_virtual_width();
+            int vh = grx_get_virtual_height();
             int vx = grx_get_viewport_x();
             int vy = grx_get_viewport_y();
             int x  = (vw / 3) - (strlen(l6) * grx_font_default.h.width / 2);

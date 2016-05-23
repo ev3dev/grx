@@ -50,8 +50,8 @@ TESTFUNC(cursortest)
         msc[1] = grx_color_info_get_white();
         msc[2] = grx_color_info_alloc_color(255,0,0);
         cur = GrBuildCursor(p16d,16,16,16,1,1,msc);
-        x = grx_get_screen_x() / 2;
-        y = grx_get_screen_y() / 2;
+        x = grx_get_screen_width() / 2;
+        y = grx_get_screen_height() / 2;
         GrMoveCursor(cur,x,y);
         grx_clear_screen(bgc);
         grx_color_info_set_color((grx_color_info_n_colors() - 1),255,255,255);
@@ -97,9 +97,9 @@ TESTFUNC(cursortest)
                 default:  continue;
             }
             if(x < 0) x = 0;
-            if(x > grx_get_screen_x()) x = grx_get_screen_x();
+            if(x > grx_get_screen_width()) x = grx_get_screen_width();
             if(y < 100) y = 100;
-            if(y > grx_get_screen_y()) y = grx_get_screen_y();
+            if(y > grx_get_screen_height()) y = grx_get_screen_height();
             GrMoveCursor(cur,x,y);
         }
 }

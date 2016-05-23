@@ -383,7 +383,6 @@ extern const struct _GR_driverInfo {
 gboolean grx_set_driver(gchar *driver_spec);
 gboolean grx_set_mode(GrxGraphicsMode mode, ...);
 gboolean grx_set_mode_default_graphics(gboolean clear);
-gboolean grx_set_viewport(int xpos, int ypos);
 void grx_set_restore_mode(gboolean restore);
 void grx_set_error_handling(gboolean exit_if_error);
 
@@ -403,15 +402,6 @@ const GrxFrameDriver *grx_get_current_frame_driver(void);
 const GrxFrameDriver *grx_get_screen_frame_driver(void);
 const GrxVideoMode   *grx_get_first_video_mode(GrxFrameMode mode);
 const GrxVideoMode   *grx_get_next_video_mode(const GrxVideoMode *prev);
-
-gint  grx_get_screen_x(void);
-gint  grx_get_screen_y(void);
-gint  grx_get_virtual_x(void);
-gint  grx_get_virtual_y(void);
-gint  grx_get_viewport_x(void);
-gint  grx_get_viewport_y(void);
-
-gboolean  grx_is_screen_virtual(void);
 
 /*
  * RAM context geometry and memory allocation inquiry stuff
@@ -445,15 +435,6 @@ glong grx_get_context_size(gint w, gint h);
 
 #define GrIsFixedMode()      (!(  grx_get_current_video_driver()->flags \
                                    & GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION))
-
-#define grx_get_screen_x()             (grx_get_current_video_mode()->width)
-#define grx_get_screen_y()             (grx_get_current_video_mode()->height)
-#define grx_get_virtual_x()            (grx_get_virtual_video_mode()->width)
-#define grx_get_virtual_y()            (grx_get_virtual_video_mode()->height)
-#define grx_get_viewport_x()           (GrDriverInfo->vposx)
-#define grx_get_viewport_y()           (GrDriverInfo->vposy)
-
-#define grx_is_screen_virtual()        ((grx_get_screen_x() + grx_get_screen_y()) < (grx_get_virtual_x() + grx_get_virtual_y()))
 
 #define grx_get_n_planes()             grx_frame_mode_get_n_planes(grx_get_core_frame_mode())
 #define grx_get_line_offset(w)         grx_frame_mode_get_line_offset(grx_get_core_frame_mode(),w)

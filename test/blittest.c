@@ -22,7 +22,7 @@
 
 #include "test.h"
 
-#define BHH     (grx_get_screen_y() / 10)
+#define BHH     (grx_get_screen_height() / 10)
 int     BWW =   83;
 
 void drbox(GrxContext *src,int x,int y)
@@ -90,7 +90,7 @@ void blxtest(void)
         int cw = (BWW + 28) & ~7;
         int ch = BHH + 20;
 
-        bltest(NULL,grx_get_screen_x()-BWW-8,grx_get_screen_y()-BHH);
+        bltest(NULL,grx_get_screen_width()-BWW-8,grx_get_screen_height()-BHH);
         bltest(NULL,0,0);
         grx_context_new(cw,ch,NULL,&memc);
         bltest(&memc,cw-BWW-8,ch-BHH);

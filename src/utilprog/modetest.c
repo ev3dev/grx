@@ -191,8 +191,8 @@ int main(void)
                 grmodes[i].bpp
             );
             if(grmodes[i].bpp<15) {
-                w = grx_get_screen_x() >> 1;
-                h = grx_get_screen_y() >> 1;
+                w = grx_get_screen_width() >> 1;
+                h = grx_get_screen_height() >> 1;
                 px = w + 5;
                 py = h + 5;
                 w -= 10;
@@ -219,8 +219,8 @@ int main(void)
                 );
             } else {
                 int y,sx;
-                sx=grx_get_screen_x()>>2;
-                for(y=0;y<grx_get_screen_y();y++) {
+                sx=grx_get_screen_width()>>2;
+                for(y=0;y<grx_get_screen_height();y++) {
                     int yy = y & 255;
                     grx_draw_hline(0,sx-1,y,grx_color_info_build_rgb_color_t(yy,0,0));
                     grx_draw_hline(sx,2*sx-1,y,grx_color_info_build_rgb_color_t(0,yy,0));

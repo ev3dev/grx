@@ -154,8 +154,8 @@ void GrMouseWarp(int x,int y)
                       _XGrWindow,
                       0,
                       0,
-                      grx_get_screen_x(),
-                      grx_get_screen_y(),
+                      grx_get_screen_width(),
+                      grx_get_screen_height(),
                       MOUINFO->xpos,
                       MOUINFO->ypos);
     }

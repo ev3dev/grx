@@ -16,6 +16,8 @@
  *
  */
 
+#include <grx/extents.h>
+
 #include "input.h"
 #include "mouse.h"
 #include "libgrx.h"
@@ -40,8 +42,8 @@ void GrDisplayCursor(GrCursor *C)
         ywrk = ypos & ~7;
         if(xwrk < 0) xwrk = 0;
         if(ywrk < 0) ywrk = 0;
-        if(xwrk > (grx_get_virtual_x() - xsiz)) xwrk = grx_get_virtual_x() - xsiz;
-        if(ywrk > (grx_get_virtual_y() - ysiz)) ywrk = grx_get_virtual_y() - ysiz;
+        if(xwrk > (grx_get_virtual_width() - xsiz)) xwrk = grx_get_virtual_width() - xsiz;
+        if(ywrk > (grx_get_virtual_height() - ysiz)) ywrk = grx_get_virtual_height() - ysiz;
         C->xwpos = xwrk;
         C->ywpos = ywrk;
         mouse_block(SCRN,xwrk,ywrk,(xwrk + xsiz - 1),(ywrk + ysiz - 1));

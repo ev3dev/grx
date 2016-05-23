@@ -44,7 +44,7 @@ int main(void)
   bcolor = grx_color_info_alloc_color( 0,0,255 );
   grx_draw_text_xy(0,0,"Type u d l r U D L R to move, 1 2 to change color, q to quit",
            grx_color_info_get_white(),GRX_COLOR_NONE);
-  grx_set_clip_box(0, 40, grx_get_screen_x(), grx_get_screen_y());
+  grx_set_clip_box(0, 40, grx_get_screen_width(), grx_get_screen_height());
 
   /* Put the bitmap into the screen */
   grx_bit_blt_1bpp(x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
@@ -70,9 +70,9 @@ int main(void)
       default:  continue;
       }
     if(x < -40) x = -40;
-    if(x > grx_get_screen_x()) x = grx_get_screen_x();
+    if(x > grx_get_screen_width()) x = grx_get_screen_width();
     if(y < 0) y = 0;
-    if(y > grx_get_screen_y()) y = grx_get_screen_y();
+    if(y > grx_get_screen_height()) y = grx_get_screen_height();
     grx_bit_blt_1bpp(x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
     }
 

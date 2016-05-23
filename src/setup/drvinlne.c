@@ -16,6 +16,7 @@
  *
  */
 
+#include <grx/extents.h>
 #include <grx/mode.h>
 
 #include "libgrx.h"
@@ -70,36 +71,86 @@ const GrxFrameDriver *(grx_get_screen_frame_driver)(void)
         return(grx_get_screen_frame_driver());
 }
 
-int (grx_get_screen_x)(void)
+/**
+ * grx_get_screen_width:
+ *
+ * Gets the width of the physical screen in pixels.
+ *
+ * Returns: the width
+ */
+int (grx_get_screen_width)(void)
 {
-        return(grx_get_screen_x());
+        return(grx_get_screen_width());
 }
 
-int (grx_get_screen_y)(void)
+/**
+ * grx_get_screen_height:
+ *
+ * Gets the height of the physical screen in pixels.
+ *
+ * Returns: the height
+ */
+int (grx_get_screen_height)(void)
 {
-        return(grx_get_screen_y());
+        return(grx_get_screen_height());
 }
 
-int (grx_get_virtual_x)(void)
+/**
+ * grx_get_virtual_width:
+ *
+ * Gets the width of the virtual screen in pixels.
+ *
+ * Returns: the width
+ */
+int (grx_get_virtual_width)(void)
 {
-        return(grx_get_virtual_x());
+        return(grx_get_virtual_width());
 }
 
-int (grx_get_virtual_y)(void)
+/**
+ * grx_get_virtual_height:
+ *
+ * Gets the height of the virtual screen in pixels.
+ *
+ * Returns: the height
+ */
+int (grx_get_virtual_height)(void)
 {
-        return(grx_get_virtual_y());
+        return(grx_get_virtual_height());
 }
 
+/**
+ * grx_get_viewport_x:
+ *
+ * Gets the starting X coordinate of the current viewport.
+ *
+ * Returns: the X coordinate
+ */
 int (grx_get_viewport_x)(void)
 {
         return(grx_get_viewport_x());
 }
 
+/**
+ * grx_get_viewport_y:
+ *
+ * Gets the starting Y coordinate of the current viewport.
+ *
+ * Returns: the Y coordinate
+ */
 int (grx_get_viewport_y)(void)
 {
         return(grx_get_viewport_y());
 }
 
+/**
+ * grx_is_screen_virtual:
+ *
+ * Checks if the current screen is a virtual screen (i.e. the virtual size is
+ * larger than the physical size).
+ *
+ * Returns: %TRUE if the screen is a virtual screen
+ */
 int (grx_is_screen_virtual)(void)
 {
         return(grx_is_screen_virtual());

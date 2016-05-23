@@ -472,7 +472,6 @@ namespace Grx {
     public bool set_driver (string driver_spec);
     public bool set_mode (GraphicsMode mode, ...);
     public bool set_mode_default_graphics (bool clear);
-    public bool set_viewport (int xpos, int ypos);
     public void set_restore_mode (bool restore_flag);
     public void set_error_handling (bool exit_if_error);
 
@@ -493,19 +492,17 @@ namespace Grx {
     public unowned VideoMode get_first_video_mode (FrameMode mode);
     public unowned VideoMode get_next_video_mode (VideoMode prev);
 
-    public int get_screen_x ();
-    public int get_screen_y ();
-    public int get_virtual_x ();
-    public int get_virtual_y ();
+    /*
+     * screen extents
+     */
+    public int get_screen_width ();
+    public int get_screen_height ();
+    public int get_virtual_width ();
+    public int get_virtual_height ();
+    public bool is_screen_virtual ();
+    public bool set_viewport (int xpos, int ypos);
     public int get_viewport_x ();
     public int get_viewport_y ();
-
-    public bool is_screen_virtual ();
-    public bool is_screen_active ();
-    public void set_screen_active_callback (owned ScreenActiveFunc func);
-
-    [CCode (scope = "notified")]
-    public delegate void ScreenActiveFunc (bool active);
 
     /*
      * RAM context geometry and memory allocation inquiry stuff
