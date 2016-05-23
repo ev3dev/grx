@@ -23,6 +23,17 @@
 #include "clipping.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_filled_box_with_pattern:
+ * @x1: the left X coordinate
+ * @y1: the top Y coordinate
+ * @x2: the right X coordinate
+ * @y2: the bottom Y coordinate
+ * @pattern: the pattern
+ *
+ * Draws a filled rectangle on the current context using the specified
+ * coordinates and pattern.
+ */
 void grx_draw_filled_box_with_pattern(int x1,int y1,int x2,int y2,GrxPattern *p)
 {
         int width,height;

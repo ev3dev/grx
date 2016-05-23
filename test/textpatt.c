@@ -29,8 +29,8 @@ int main(void)
   GrxTextOptions opt;
 
   grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR, 320, 200, (GrxColor)256);
-  p1 = grx_pattern_create_pixmap_from_bits(bits, 8, 8, 11,  3);
-  p2 = grx_pattern_create_pixmap_from_bits(bits, 8, 8,  3, 11);
+  p1 = grx_pattern_new_pixmap_from_bits(bits, 8, 8, 11,  3);
+  p2 = grx_pattern_new_pixmap_from_bits(bits, 8, 8,  3, 11);
   font = grx_font_load(FONT);
   if (font && p1 && p2) {
     memset(&opt, 0, sizeof(GrxTextOptions));

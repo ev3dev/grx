@@ -25,6 +25,20 @@
 
 #include "libgrx.h"
 
+/**
+ * grx_draw_filled_circle_arc_with_pattern:
+ * @xc: the X coordinate of the center of the arc
+ * @yc: the Y coordinate of the center of the arc
+ * @r: the radius of the arc
+ * @start: the starting angle in 1/10ths of degrees
+ * @end: the ending angle in 1/10ths of degrees
+ * @style: the arc style
+ * @pattern: the pattern
+ *
+ * Draws a filled arc on the current context centered at the specified
+ * coordinates from the starting angle to the ending angle with the specified
+ * radius, arc style and pattern.
+ */
 void grx_draw_filled_circle_arc_with_pattern(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxPattern *p)
 {
         grx_draw_filled_ellipse_arc_with_pattern(xc,yc,r,r,start,end,style,p);

@@ -587,9 +587,6 @@ namespace Grx {
 
         public Color fast_get_pixel_at (int x, int y);
 
-        [CCode (cname = "grx_pattern_create_pixmap_from_context")]
-        public Pattern to_pixmap ();
-
         public Color get_pixel_at_user (int x, int y);
 
         public Result save_to_pbm (string file_name, string? comment = null);
@@ -1152,8 +1149,9 @@ namespace Grx {
     public class Pattern {
         public bool is_pixmap;               /* true for pixmaps */
 
-        public static Pattern create_pixmap ([CCode (array_length = false)]char *pixels, int w, int h, ColorTable colors);
-        public Pattern create_pixmap_from_bits ([CCode (array_length = false)]char *bits, int w, int h, Color fgc, Color bgc);
+        public static Pattern new_pixmap ([CCode (array_length = false)]char *pixels, int w, int h, ColorTable colors);
+        public static Pattern new_pixmap_from_bits ([CCode (array_length = false)]char *bits, int w, int h, Color fgc, Color bgc);
+        public static Pattern new_pixmap_from_context (GrxContext context);
     }
 
     /**
@@ -1168,7 +1166,7 @@ namespace Grx {
         /**
          * Fill pattern
          */
-        Pattern pattern;
+        Pattern *pattern;
 
         /**
          * width + dash pattern
@@ -1241,7 +1239,7 @@ namespace Grx {
         public static Image create_from_pattern (Pattern pattern);
         public static Image create_from_context (Context context);
 
-        [CCode (cname = "grx_pattern_create_from_image")]
+        [CCode (cname = "grx_pattern_new_from_image")]
         public Pattern to_pattern ();
     }
 

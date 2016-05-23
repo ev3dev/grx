@@ -29,6 +29,19 @@
 #include "allocate.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_ellipse_with_pattern:
+ * @xc: the X coordinate of the center of the ellipse
+ * @yc: the Y coordinate of the center of the ellipse
+ * @rx: the radius in the X direction
+ * @ry: the radius in the Y direction
+ * @line_pattern: the line pattern
+ *
+ * Draws an ellipse on the current context using the specified line pattern.
+ *
+ * The ellipse can only draw ellipses with its major axis parallel with either
+ * the X or Y coordinate axis
+ */
 void grx_draw_ellipse_with_pattern(int xc,int yc,int rx,int ry,GrxLinePattern *lp) {
     GrxPoint *points;
     setup_ALLOC();

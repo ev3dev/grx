@@ -23,6 +23,18 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_filled_polygon_with_pattern:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @pattern: the pattern
+ *
+ * Draw a filled polygon on the current context that connects each point in
+ * the @points array using the specified pattern.
+ *
+ * Coordinate arrays can either contain or omit the closing edge of the polygon.
+ * It will be automatically appended to the list if it is missing.
+ */
 void grx_draw_filled_polygon_with_pattern(int n,GrxPoint *pt,GrxPattern *p)
 {
         GrFillArg fa;

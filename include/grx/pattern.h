@@ -27,50 +27,86 @@
 #include <grx/common.h>
 #include <grx/context.h>
 
-/* ================================================================== */
-/*             PATTERNED DRAWING AND FILLING PRIMITIVES               */
-/* ================================================================== */
+/**
+ * SECTION:pattern
+ * @short_description: Patterned drawing and filling primitives
+ * @title: Pattern filled graphics primitives
+ * @section_id: pattern
+ * @include: grx-3.0.h
+ *
+ * The library also supports a pattern filled version of the basic filled
+ * primitives described above. These functions have similar parameter passing
+ * conventions as the basic ones with one difference: instead of the color
+ * value a #GrxPattern has to be passed to them. The #GrxPattern union can
+ * contain either a bitmap or a pixmap fill pattern. Bitmap fill patterns are
+ * rectangular arrays of bits, each set bit representing the foreground color
+ * of the fill operation, and each zero bit representing the background. Both
+ * the foreground and background colors can be combined with any of the
+ * supported logical operations. Bitmap fill patterns have one restriction:
+ * their width must be eight pixels. Pixmap fill patterns are very similar to
+ * contexts.
+ */
 
 /**
  * GrxBitmap:
+ * @is_pixmap: Must be set to %FALSE!
+ * @height: bitmap height
+ * @data: pointer to the bit pattern
+ * @fg_color: foreground fill color
+ * @bg_color: background fill color
+ * @free_on_pattern_destroy: set to %TRUE if @data should be freed
  *
- * A mode independent way to specify a fill pattern of two
- * colors. It is always 8 pixels wide (1 byte per scan line), its
- * height is user-defined. SET is_pixmap TO FALSE!!!
+ * A mode independent way to specify a fill pattern of two colors.
+ * The width is always 8 pixels but the height is user-defined.
+ *
+ * Bitmap patterns can be easily built from initialized character arrays and
+ * static structures by the C compiler, thus no special support is included in
+ * the library for creating them. The only action required from the application
+ * program might be changing the foreground and background colors as needed.
  */
 typedef struct {
-    gboolean is_pixmap;               /* type flag for pattern union */
-    gint     height;                  /* bitmap height */
-    guint8  *data;                    /* pointer to the bit pattern */
-    GrxColor fg_color;                /* foreground color for fill */
-    GrxColor bg_color;                /* background color for fill */
-    gboolean free_on_pattern_destroy; /* set if dynamically allocated */
+    gboolean  is_pixmap;
+    gint      height;
+    guint8   *data;
+    GrxColor  fg_color;
+    GrxColor  bg_color;
+    gboolean  free_on_pattern_destroy;
 } GrxBitmap;
 
 /**
  * GrxPixmap:
+ * @is_pixmap: Must be set to %TRUE!
+ * @width: pixmap width in pixels
+ * @height: pixmap height in pixels
+ * @mode: bitblt mode
+ * @source: source context for fill
  *
  * A fill pattern stored in a layout identical to the video RAM
  * for filling using 'bitblt'-s. It is mode dependent, typically one
- * of the library functions is used to build it. SET is_pixmap TO TRUE!!!
+ * of the library functions is used to build it.
  */
 struct _GrxPixmap {
-    gboolean     is_pixmap;      /* type flag for pattern union */
-    gint         width;          /* pixmap width (in pixels)  */
-    gint         height;         /* pixmap height (in pixels) */
-    GrxColorMode mode;           /* bitblt mode (SET, OR, XOR, AND, IMAGE) */
-    GrxFrame     source;         /* source context for fill */
+    gboolean      is_pixmap;
+    gint          width;
+    gint          height;
+    GrxColorMode  mode;
+    GrxFrame      source;
 };
 
 /**
  * GrxPattern:
+ * @is_pixmap: %TRUE if this is a #GrxPixmap
+ * @bitmap: the bitmap
+ * @pixmap: the pixmap
  *
- * Fill pattern union -- can either be a bitmap or a pixmap
+ * Fill pattern union.
+ *
+ * Can either be a #GrxBitmap or a #GrxPixmap.
  */
 union _GrxPattern {
-    gboolean  is_pixmap;              /* nonzero for pixmaps */
-    GrxBitmap bitmap;                 /* fill bitmap */
-    GrxPixmap pixmap;                 /* fill pixmap */
+    gboolean  is_pixmap;
+    GrxBitmap bitmap;
+    GrxPixmap pixmap;
     #define gp_bmp_data               bitmap.data
     #define gp_bmp_height             bitmap.height
     #define gp_bmp_fgcolor            bitmap.fg_color
@@ -81,26 +117,25 @@ union _GrxPattern {
     #define gp_pxp_source             pixmap.source
 };
 
-
 /**
  * GrxLinePattern:
+ * @pattern: fill pattern
+ * @options: custom line drawing options
  *
- * Draw pattern for line drawings -- specifies both the:
- *   (1) fill pattern, and the
- *   (2) custom line drawing option
+ * Draw pattern for line drawings.
  */
 struct _GrxLinePattern {
-    GrxPattern     *pattern;         /* fill pattern */
-    GrxLineOptions *options;         /* width + dash pattern */
+    GrxPattern     *pattern;
+    GrxLineOptions *options;
 };
 
 GType grx_pattern_get_type(void);
 
-GrxPattern *grx_pattern_create_pixmap(const guint8 *pixels, gint w, gint h,
-                                      const GrxColorTable colors);
-GrxPattern *grx_pattern_create_pixmap_from_bits(const guint8 *bits, gint w, gint h,
-                                                GrxColor fgc, GrxColor bgc);
-GrxPattern *grx_pattern_create_pixmap_from_context(GrxContext *src);
+GrxPattern *grx_pattern_new_pixmap(const guint8 *pixels, gint w, gint h,
+                                   const GrxColorTable colors);
+GrxPattern *grx_pattern_new_pixmap_from_bits(const guint8 *bits, gint w, gint h,
+                                             GrxColor fg, GrxColor bg);
+GrxPattern *grx_pattern_new_pixmap_from_context(GrxContext *src);
 
 GrxPattern *grx_pattern_copy(GrxPattern *pattern);
 void grx_pattern_free(GrxPattern *pattern);
@@ -125,8 +160,8 @@ void grx_draw_filled_circle_arc_with_pattern(gint xc, gint yc, gint r, gint star
                                              GrxArcStyle style, GrxPattern *pattern);
 void grx_draw_filled_ellipse_arc_with_pattern(gint xc, gint yc, gint rx, gint ry, gint start, gint end,
                                               GrxArcStyle style,GrxPattern *pattern);
-void grx_draw_filled_convex_polygon_with_pattern(gint n_points, GrxPoint *points, GrxPattern *pattern);
 void grx_draw_filled_polygon_with_pattern(gint n_points, GrxPoint *points, GrxPattern *pattern);
+void grx_draw_filled_convex_polygon_with_pattern(gint n_points, GrxPoint *points, GrxPattern *pattern);
 void grx_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *pattern);
 
 void grx_draw_char_with_pattern(gint chr, gint x, gint y, const GrxTextOptions *opt, GrxPattern *pattern);

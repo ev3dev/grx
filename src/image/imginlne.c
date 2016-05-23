@@ -46,13 +46,13 @@ GrxImage *(grx_image_create_from_context)(GrxContext *context) {
 }
 
 /**
- * grx_pattern_create_from_image:
+ * grx_pattern_new_from_image:
  * @image:
  *
  * Returns: (transfer full):
  */
-GrxPattern *(grx_pattern_create_from_image)(GrxImage *image) {
-    return grx_pattern_create_from_image(image);
+GrxPattern *(grx_pattern_new_from_image)(GrxImage *image) {
+    return grx_pattern_new_from_image(image);
 }
 
 /**

@@ -34,7 +34,7 @@
  * This version is slightly more efficient that grx_draw_filled_polygon() but
  * requires that the polygon is convex. It can also be used to fill some concave
  * polygons whose boundaries do not intersect any horizontal scan line more than
- * twice. It can also be used to fill several disjoint non­overlapping polygons
+ * twice. It can also be used to fill several disjoint nonoverlapping polygons
  * in a single operation.
  */
 void grx_draw_filled_convex_polygon(int n,GrxPoint *pt,GrxColor c)

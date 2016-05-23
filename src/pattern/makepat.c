@@ -62,7 +62,23 @@ static int _GrBestPixmapWidth(int wdt,int hgt)
         return(wdt);
 }
 
-GrxPattern *grx_pattern_create_pixmap(const unsigned char *pixels,int w,int h,const GrxColorTable ct)
+/**
+ * grx_pattern_new_pixmap:
+ * @pixels: (array): a two dimentional array of bytes
+ * @w: the width of the pixel array
+ * @h: the height of the pixel array
+ * @colors: color table for the pixel array
+ *
+ * Build a pixmap from @pixels.
+ *
+ * The elements of the @pixels array are used as indices in @colors. This means
+ * that pixmaps created this way can use at most 256 colors. NOTE: any color
+ * modifiers (GrXOR, GrOR, GrAND) OR-ed to the elements of the color table are
+ * ignored.
+ *
+ * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
+ */
+GrxPattern *grx_pattern_new_pixmap(const unsigned char *pixels,int w,int h,const GrxColorTable ct)
 {
         GrxContext csave,cwork;
         GrxPixmap  *result;
@@ -102,7 +118,21 @@ GrxPattern *grx_pattern_create_pixmap(const unsigned char *pixels,int w,int h,co
         return((GrxPattern *)result);
 }
 
-GrxPattern *grx_pattern_create_pixmap_from_bits(const unsigned char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
+/**
+ * grx_pattern_new_pixmap_from_bits:
+ * @bits: the bitmap data
+ * @w: the width of the bitmap data
+ * @h: the height of the bitmap data
+ * @fg: the forground color
+ * @bg: the background color
+ *
+ * Builds a pixmap fill pattern from bitmap data. It is useful if the width of
+ * the bitmap pattern is not eight as such bitmap patterns can not be used to
+ * build a GrBitmap structure.
+ *
+ * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
+ */
+GrxPattern *grx_pattern_new_pixmap_from_bits(const unsigned char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
 {
         GrxContext csave,cwork;
         GrxPixmap  *result;
@@ -143,7 +173,19 @@ GrxPattern *grx_pattern_create_pixmap_from_bits(const unsigned char *bits,int w,
         return((GrxPattern *)result);
 }
 
-GrxPattern *grx_pattern_create_pixmap_from_context(GrxContext *src)
+/**
+ * grx_pattern_new_pixmap_from_context:
+ * @src: the context
+ *
+ * Converts a graphics context to a pixmap fill pattern.
+ *
+ * This is useful when the pattern can be created with graphics drawing
+ * operations. NOTE: the pixmap pattern and the original context share the
+ * drawing RAM, thus if the context is redrawn the fill pattern changes as well.
+ *
+ * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
+ */
+GrxPattern *grx_pattern_new_pixmap_from_context(GrxContext *src)
 {
         GrxPixmap *result;
 
@@ -161,7 +203,7 @@ GrxPattern *grx_pattern_create_pixmap_from_context(GrxContext *src)
 
 /**
  * grx_pattern_copy:
- * @pattern:
+ * @pattern: the pattern
  *
  * FIXME: This is not implemented and calling it will cause the program to abort.
  */
@@ -171,6 +213,12 @@ GrxPattern *grx_pattern_copy(GrxPattern *p)
     return p;
 }
 
+/**
+ * grx_pattern_free:
+ * @pattern: the pattern
+ *
+ * Frees any dynamiaclly allocated memory associated with the pattern.
+ */
 void grx_pattern_free(GrxPattern *p)
 {
   if (!p) return;

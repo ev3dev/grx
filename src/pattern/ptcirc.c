@@ -27,6 +27,16 @@
 
 #include "libgrx.h"
 
+/**
+ * grx_draw_circle_with_pattern:
+ * @xc: the X coordinate of the center of the circle
+ * @yc: the Y coordinate of the center of the circle
+ * @r: the radius of the circle
+ * @line_pattern: the line pattern
+ *
+ * Draws a circle on the current context centered at the specified coordinates
+ * with the specified radius and line pattern.
+ */
 void grx_draw_circle_with_pattern(int xc,int yc,int r,GrxLinePattern *lp)
 {
         grx_draw_ellipse_with_pattern(xc,yc,r,r,lp);

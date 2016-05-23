@@ -65,18 +65,18 @@ GrxImage *grx_image_create_from_context(GrxContext *context);
 GrxImage *grx_image_create_from_data(const guint8 *pixels, gint width, gint height,
                                      const GrxColorTable colors);
 
-GrxPattern *grx_pattern_create_from_image(GrxImage *image);
+GrxPattern *grx_pattern_new_from_image(GrxImage *image);
 
 
 #ifndef GRX_SKIP_INLINES
 #define grx_image_create_from_pattern(p) \
         (((p) && (p)->is_pixmap) ? (&(p)->pixmap) : NULL)
 #define grx_image_create_from_context(c) \
-        (GrxImage *)grx_pattern_create_pixmap_from_context(c)
-#define grx_pattern_create_from_image(p) \
+        (GrxImage *)grx_pattern_new_pixmap_from_context(c)
+#define grx_pattern_new_from_image(p) \
         (GrxPattern *)(p)
 #define grx_image_create_from_data(pixels,w,h,colors) \
-        (GrxImage *)grx_pattern_create_pixmap(pixels,w,h,colors);
+        (GrxImage *)grx_pattern_new_pixmap(pixels,w,h,colors);
 #define grx_image_copy(i)   \
         grx_pattern_copy((GrxPattern *)(i));
 #define grx_image_free(i)   \

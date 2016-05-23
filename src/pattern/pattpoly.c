@@ -28,6 +28,15 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_polyline_with_pattern:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @line_pattern: the line pattern
+ *
+ * Draw a multi-segment line on the current context that connects each point in
+ * the @points array using the specified line pattern.
+ */
 void grx_draw_polyline_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *lp)
 {
         GrFillArg fval;
@@ -37,6 +46,18 @@ void grx_draw_polyline_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *
                              &_GrPatternFiller,fval,FALSE,FALSE);
 }
 
+/**
+ * grx_draw_polygon_with_pattern:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @line_pattern: the line pattern
+ *
+ * Draw a closed polygon on the current context that connects each point in
+ * the @points array using the specified line pattern.
+ *
+ * Coordinate arrays can either contain or omit the closing edge of the polygon.
+ * It will be automatically appended to the list if it is missing.
+ */
 void grx_draw_polygon_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *lp)
 {
         GrFillArg fval;
@@ -46,6 +67,17 @@ void grx_draw_polygon_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *l
                              &_GrPatternFiller,fval,TRUE,FALSE);
 }
 
+/**
+ * grx_draw_box_with_pattern:
+ * @x1: the left X coordinate
+ * @y1: the top Y coordinate
+ * @x2: the right X coordinate
+ * @y2: the bottom Y coordinate
+ * @line_pattern: the line pattern
+ *
+ * Draws a rectangle on the current context using the specified coordinates
+ * and line pattern.
+ */
 void grx_draw_box_with_pattern(int x1,int y1,int x2,int y2,GrxLinePattern *lp)
 {
         GrFillArg fval;

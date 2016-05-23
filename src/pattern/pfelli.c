@@ -23,6 +23,19 @@
 #include "libgrx.h"
 #include "shapes.h"
 
+/**
+ * grx_draw_filled_ellipse_with_pattern:
+ * @xc: the X coordinate of the center of the ellipse
+ * @yc: the Y coordinate of the center of the ellipse
+ * @rx: the radius in the X direction
+ * @ry: the radius in the Y direction
+ * @pattern: the pattern
+ *
+ * Draws a filled ellipse on the current context using the specified pattern.
+ *
+ * The ellipse can only draw ellipses with its major axis parallel with either
+ * the X or Y coordinate axis
+ */
 void grx_draw_filled_ellipse_with_pattern(int xc,int yc,int rx,int ry,GrxPattern *p)
 {
         GrFillArg fa;
