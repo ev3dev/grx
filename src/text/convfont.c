@@ -43,6 +43,20 @@ static int bitmap(int chr,int w,int h,char *buffer)
         return(TRUE);
 }
 
+/**
+ * grx_font_build_converted:
+ * @from: the source font
+ * @flags: the conversion flags
+ * @width: the width of the converted font
+ * @height: the height of the converted font
+ * @min_ch: the first character to convert
+ * @max_ch: the last character to convert
+ *
+ * Converts the font @from to a new style and/or size. The
+ * changes are determined by @flags. @width and @height are only used when
+ * #GRX_FONT_CONV_FLAG_RESIZE is set in @flags. @min_ch and @max_ch are only
+ * used when #GRX_FONT_CONV_FLAG_SKIP_CHARS is set in @flags.
+ */
 GrxFont *grx_font_build_converted(const GrxFont *from,GrxFontConversionFlags cvt,int w,int h,int minch,int maxch)
 {
         cvfont = from;

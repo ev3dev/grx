@@ -86,6 +86,14 @@ static char fontend[] =
 
 /* ----------------------------------------------------------------------- */
 
+/**
+ * grx_font_dump:
+ * @font: the font
+ * @c_symbol_name: the C identifier name
+ * @filename: (type filename): the file name
+ *
+ * Generates a C source code file for the font.
+ */
 void grx_font_dump(const GrxFont *f,char *CsymbolName,char *fileName)
 {
         unsigned int i;
@@ -166,4 +174,3 @@ void grx_font_dump(const GrxFont *f,char *CsymbolName,char *fileName)
         fputs(fontend,fp);
         fclose(fp);
 }
-

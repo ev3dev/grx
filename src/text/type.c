@@ -23,6 +23,14 @@
 
 G_DEFINE_BOXED_TYPE(GrxFont, grx_font, grx_font_ref, grx_font_unref);
 
+/**
+ * grx_font_ref:
+ * @font: the font
+ *
+ * Increases the reference count to @font.
+ *
+ * Returns: (transfer full): @font
+ */
 GrxFont *grx_font_ref(GrxFont *font)
 {
     g_return_val_if_fail(font == NULL, NULL);
@@ -34,6 +42,14 @@ GrxFont *grx_font_ref(GrxFont *font)
 
 extern void grx_font_free(GrxFont *f);
 
+/**
+ * grx_font_unref:
+ * @font: (transfer full): the font
+ *
+ * Decreases the reference count on @font.
+ *
+ * When the reference count reaches 0, @font is freed.
+ */
 void grx_font_unref(GrxFont *font)
 {
     g_return_if_fail(font == NULL);

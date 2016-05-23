@@ -72,7 +72,29 @@ static GrxFont *doit(char *fname,char *path,GrxFontConversionFlags cvt,int w,int
     GRX_RETURN(res);
 }
 
-GrxFont *grx_font_load_converted(char *name,GrxFontConversionFlags cvt,int w,int h,int minc,int maxc)
+/**
+ * grx_font_load_converted:
+ * @filename: (type filename): the file path
+ * @flags: the conversion flags
+ * @width: the width of the converted font
+ * @height: the height of the converted font
+ * @min_ch: the first character to convert
+ * @max_ch: the last character to convert
+ *
+ * Loads a font from a file and converts it to a new style and/or size. The
+ * changes are determined by @flags. @width and @height are only used when
+ * #GRX_FONT_CONV_FLAG_RESIZE is set in @flags. @min_ch and @max_ch are only
+ * used when #GRX_FONT_CONV_FLAG_SKIP_CHARS is set in @flags.
+ *
+ * If @filename starts with any path separator character or character
+ * sequence (':', '/' or '\') then it is loaded from the specified directory,
+ * otherwise the library try load the font first from the current directory and
+ * next from the default font path (see grx_font_set_path()).
+ *
+ * Returns: (transfer full) (nullable): the font or %NULL if there was an error
+ * such as the font was not found.
+ */
+GrxFont *grx_font_load_converted(const char *name,GrxFontConversionFlags cvt,int w,int h,int minc,int maxc)
 {
     GrxFont *f;
     int  chr,len,abspath,dc;
@@ -125,8 +147,21 @@ GrxFont *grx_font_load_converted(char *name,GrxFontConversionFlags cvt,int w,int
     GRX_RETURN(f);
 }
 
-GrxFont *grx_font_load(char *name)
+/**
+ * grx_font_load:
+ * @filename: (type filename): the file path
+ *
+ * Loads a font from a file.
+ *
+ * If @filename starts with any path separator character or character
+ * sequence (':', '/' or '\') then it is loaded from the specified directory,
+ * otherwise the library try load the font first from the current directory and
+ * next from the default font path (see grx_font_set_path()).
+ *
+ * Returns: (transfer full) (nullable): the font or %NULL if there was an error
+ * such as the font was not found.
+ */
+GrxFont *grx_font_load(const char *name)
 {
     return(grx_font_load_converted(name,GRX_FONT_CONV_FLAG_NONE,0,0,0,0));
 }
-

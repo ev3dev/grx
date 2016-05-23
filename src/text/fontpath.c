@@ -23,6 +23,17 @@
 #include "allocate.h"
 #include "arith.h"
 
+/**
+ * grx_font_set_path:
+ * @path: (type filename): the search path(s)
+ *
+ * Sets the font search path(s).
+ *
+ * Multiple paths are separated by #G_SEARCHPATH_SEPARATOR.
+ *
+ * If the font path is not set then the value of the 'GRXFONT' environment
+ * variable is used as the font path.
+ */
 void grx_font_set_path(char *p)
 {
         int  chr,totlen = 0,npath,plen = 0,dc = TRUE;

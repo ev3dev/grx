@@ -23,6 +23,13 @@
 
 #include "libgrx.h"
 
+/**
+ * grx_font_dump_fna:
+ * @font: the font
+ * @filename: (type filename): the file name
+ *
+ * Generates an ASCII file for the font for easy editing.
+ */
 void grx_font_dump_fna(const GrxFont *f, char *fileName)
 {
         int chr;

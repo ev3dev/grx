@@ -41,7 +41,7 @@ void grx_context_unref(GrxContext *ctx);
  * @w: the width of the context
  * @h: the height of the context
  * @memory: (nullable): memory location(s) or %NULL
- * @where: (nullable): an unused #GrxContex struct or %NULL
+ * @where: (nullable): an unused #GrxContext struct or %NULL
  *
  * Creates a new context in system memory using the memory layout specified by
  * @mode.

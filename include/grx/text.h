@@ -26,16 +26,52 @@
 #include <grx/color.h>
 #include <grx/common.h>
 
-/* ================================================================== */
-/*                   FONTS AND TEXT PRIMITIVES                        */
-/* ================================================================== */
+/**
+ * SECTION:text
+ * @short_description: Fonts and text primitives
+ * @title: Text Drawing
+ * @section_id: text
+ * @include: grx-3.0.h
+ *
+ * The library supports loadable fonts. When in memory they are bit-mapped (i.e.
+ * not scalable!) fonts.
+ *
+ * The GRX distribution comes with a font collection in the GRX format. Some
+ * of these fonts were converted from VGA fonts. These fonts have all 256
+ * characters from the PC-437 codepage. Some additional fonts were converted
+ * from fonts in the MIT X11 distribution. Most of these are ISO-8859-1 coded.
+ * Fonts also have family names. The following font families are included:
+ * |[
+ *    Font file name       Family  Description
+ *    -----------------------------------------------------------------------
+ *    pc<W>x<H>[t].fnt     pc      VGA font, fixed
+ *    xm<W>x<H>[b][i].fnt  X_misc  X11, fixed, miscellaneous group
+ *    char<H>[b][i].fnt    char    X11, proportional, charter family
+ *    cour<H>[b][i].fnt    cour    X11, fixed, courier
+ *    helve<H>[b][i].fnt   helve   X11, proportional, helvetica
+ *    lucb<H>[b][i].fnt    lucb    X11, proportional, lucida bright
+ *    lucs<H>[b][i].fnt    lucs    X11, proportional, lucida sans serif
+ *    luct<H>[b][i].fnt    luct    X11, fixed, lucida typewriter
+ *    ncen<H>[b][i].fnt    ncen    X11, proportional, new century schoolbook
+ *    symb<H>.fnt          symbol  X11, proportional, greek letters, symbols
+ *    tms<H>[b][i].fnt     times   X11, proportional, times
+ * ]|
+ * In the font names <W> means the font width, <H> the font height. Many font
+ * families have bold and/or italic variants. The files containing these fonts
+ * contain a 'b' and/or 'i' character in their name just before the extension.
+ * Additionally, the strings "_bold" and/or "_ital" are appended to the font
+ * family names. Some of the pc VGA fonts come in thin formats also, these are
+ * denoted by a 't' in their file names and the string "_thin" in their family
+ * names.
+ */
 
 /**
  * GrxTextDirection:
  * @GRX_TEXT_DIRECTION_RIGHT: normal
  * @GRX_TEXT_DIRECTION_DOWN: downward
- * @GRX_TEXT_DIRECTION_LEFT: upsidedown, right to left
+ * @GRX_TEXT_DIRECTION_LEFT: upside-down, right to left
  * @GRX_TEXT_DIRECTION_UP: upward
+ * @GRX_TEXT_DIRECTION_DEFAULT: alias for @GRX_TEXT_DIRECTION_RIGHT
  *
  * text drawing directions
  */
@@ -177,25 +213,55 @@ typedef struct {                    /* the complete font */
     GrxFontCharInfo chrinfo[1];     /* character info (not act. size) */
 } GrxFont;
 
+/**
+ * grx_font_pc6x8:
+ *
+ * Built-in 6x8 font.
+ */
 extern  GrxFont            grx_font_pc6x8;
+
+/**
+ * grx_font_pc8x8:
+ *
+ * Built-in 8x8 font.
+ */
 extern  GrxFont            grx_font_pc8x8;
+
+/**
+ * grx_font_pc8x14:
+ *
+ * Built-in 8x14 font.
+ */
 extern  GrxFont            grx_font_pc8x14;
+
+/**
+ * grx_font_pc8x16:
+ *
+ * Built-in 8x16 font.
+ */
 extern  GrxFont            grx_font_pc8x16;
+
+/**
+ * grx_font_default:
+ *
+ * Alias for #grx_font_pc8x14.
+ */
 #define grx_font_default   grx_font_pc8x14
 
 GType grx_font_get_type(void);
 
-GrxFont *grx_font_load(gchar *name);
-GrxFont *grx_font_load_converted(gchar *name, GrxFontConversionFlags cvt,
-                                 gint w, gint h, gint minch, gint maxch);
-GrxFont *grx_font_build_converted(const GrxFont *from, GrxFontConversionFlags cvt,
-                                  gint w, gint h, gint minch, gint maxch);
+GrxFont *grx_font_load(const gchar *filename);
+GrxFont *grx_font_load_converted(const gchar *filename, GrxFontConversionFlags flags,
+                                 gint width, gint height, gint min_ch, gint max_ch);
+GrxFont *grx_font_build_converted(const GrxFont *from, GrxFontConversionFlags flags,
+                                  gint width, gint height, gint min_ch, gint max_ch);
+void grx_font_set_path(gchar *path);
 
 GrxFont *grx_font_ref(GrxFont *font);
 void grx_font_unref(GrxFont *font);
-void grx_font_dump(const GrxFont *f,char *CsymbolName,char *fileName);
-void grx_font_dump_fna(const GrxFont *f, char *fileName);
-void grx_font_set_path(char *path_list);
+
+void grx_font_dump(const GrxFont *font, gchar *c_symbol_name, gchar *filename);
+void grx_font_dump_fna(const GrxFont *font, gchar *filename);
 
 gboolean grx_font_is_char_present(const GrxFont *font, gint chr);
 gint grx_font_get_char_width(const GrxFont *font, gint chr);
