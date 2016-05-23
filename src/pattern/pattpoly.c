@@ -32,7 +32,7 @@
  * grx_draw_polyline_with_pattern:
  * @n_points: the number of points in @points
  * @points: (array length=n_points): an array of #GrxPoint
- * @line_pattern: the line pattern
+ * @lp: the line pattern
  *
  * Draw a multi-segment line on the current context that connects each point in
  * the @points array using the specified line pattern.
@@ -50,7 +50,7 @@ void grx_draw_polyline_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *
  * grx_draw_polygon_with_pattern:
  * @n_points: the number of points in @points
  * @points: (array length=n_points): an array of #GrxPoint
- * @line_pattern: the line pattern
+ * @lp: the line pattern
  *
  * Draw a closed polygon on the current context that connects each point in
  * the @points array using the specified line pattern.
@@ -73,7 +73,7 @@ void grx_draw_polygon_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *l
  * @y1: the top Y coordinate
  * @x2: the right X coordinate
  * @y2: the bottom Y coordinate
- * @line_pattern: the line pattern
+ * @lp: the line pattern
  *
  * Draws a rectangle on the current context using the specified coordinates
  * and line pattern.

@@ -29,7 +29,7 @@
  * @yc: the Y coordinate of the center of the ellipse
  * @rx: the radius in the X direction
  * @ry: the radius in the Y direction
- * @pattern: the pattern
+ * @p: the pattern
  *
  * Draws a filled ellipse on the current context using the specified pattern.
  *

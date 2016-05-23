@@ -51,7 +51,7 @@ void _GrPatternFilledPlot(int x,int y,GrxPattern *p)
  * grx_draw_filled_pixel_with_pattern:
  * @x: the X coordinate
  * @y: the Y coordinate
- * @pattern: the pattern
+ * @p: the pattern
  *
  * Draw a single pixel on the current context at the specified coordinates.
  */

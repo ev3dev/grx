@@ -140,34 +140,34 @@ GrxPattern *grx_pattern_new_pixmap_from_context(GrxContext *src);
 GrxPattern *grx_pattern_copy(GrxPattern *pattern);
 void grx_pattern_free(GrxPattern *pattern);
 
-void grx_draw_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *line_pattern);
-void grx_draw_box_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *line_pattern);
-void grx_draw_circle_with_pattern(gint xc, gint yc, gint r, GrxLinePattern *line_pattern);
-void grx_draw_ellipse_with_pattern(gint xc, gint yc, gint rx, gint ry, GrxLinePattern *line_pattern);
+void grx_draw_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *lp);
+void grx_draw_box_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *lp);
+void grx_draw_circle_with_pattern(gint xc, gint yc, gint r, GrxLinePattern *lp);
+void grx_draw_ellipse_with_pattern(gint xc, gint yc, gint rx, gint ry, GrxLinePattern *lp);
 void grx_draw_circle_arc_with_pattern(gint xc, gint yc, gint r, gint start, gint end,
-                                      GrxArcStyle style, GrxLinePattern *line_pattern);
+                                      GrxArcStyle style, GrxLinePattern *lp);
 void grx_draw_ellipse_arc_with_pattern(gint xc, gint yc, gint rx, gint ry, gint start, gint end,
-                                       GrxArcStyle style, GrxLinePattern *line_pattern);
-void grx_draw_polyline_with_pattern(gint n_points, GrxPoint *points, GrxLinePattern *line_pattern);
-void grx_draw_polygon_with_pattern(gint n_points, GrxPoint *points, GrxLinePattern *line_pattern);
+                                       GrxArcStyle style, GrxLinePattern *lp);
+void grx_draw_polyline_with_pattern(gint n_points, GrxPoint *points, GrxLinePattern *lp);
+void grx_draw_polygon_with_pattern(gint n_points, GrxPoint *points, GrxLinePattern *lp);
 
-void grx_draw_filled_pixel_with_pattern(gint x, gint y, GrxPattern *pattern);
-void grx_draw_filled_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxPattern *pattern);
-void grx_draw_filled_box_with_pattern(gint x1, gint y1, gint x2, gint y2,GrxPattern *pattern);
-void grx_draw_filled_circle_with_pattern(gint xc, gint yc, gint r,GrxPattern *pattern);
-void grx_draw_filled_ellipse_with_pattern(gint xc, gint yc, gint rx, gint ry, GrxPattern *pattern);
+void grx_draw_filled_pixel_with_pattern(gint x, gint y, GrxPattern *p);
+void grx_draw_filled_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxPattern *p);
+void grx_draw_filled_box_with_pattern(gint x1, gint y1, gint x2, gint y2,GrxPattern *p);
+void grx_draw_filled_circle_with_pattern(gint xc, gint yc, gint r,GrxPattern *p);
+void grx_draw_filled_ellipse_with_pattern(gint xc, gint yc, gint rx, gint ry, GrxPattern *p);
 void grx_draw_filled_circle_arc_with_pattern(gint xc, gint yc, gint r, gint start, gint end,
-                                             GrxArcStyle style, GrxPattern *pattern);
+                                             GrxArcStyle style, GrxPattern *p);
 void grx_draw_filled_ellipse_arc_with_pattern(gint xc, gint yc, gint rx, gint ry, gint start, gint end,
-                                              GrxArcStyle style,GrxPattern *pattern);
-void grx_draw_filled_polygon_with_pattern(gint n_points, GrxPoint *points, GrxPattern *pattern);
-void grx_draw_filled_convex_polygon_with_pattern(gint n_points, GrxPoint *points, GrxPattern *pattern);
-void grx_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *pattern);
+                                              GrxArcStyle style,GrxPattern *p);
+void grx_draw_filled_polygon_with_pattern(gint n_points, GrxPoint *points, GrxPattern *p);
+void grx_draw_filled_convex_polygon_with_pattern(gint n_points, GrxPoint *points, GrxPattern *p);
+void grx_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *p);
 
-void grx_draw_char_with_pattern(gint chr, gint x, gint y, const GrxTextOptions *opt, GrxPattern *pattern);
+void grx_draw_char_with_pattern(gint chr, gint x, gint y, const GrxTextOptions *opt, GrxPattern *p);
 void grx_draw_string_with_pattern(gpointer text, gint length, gint x, gint y,
-                                  const GrxTextOptions *opt, GrxPattern *pattern);
+                                  const GrxTextOptions *opt, GrxPattern *p);
 void grx_draw_string_with_pattern_ext(gpointer text, gint length, gint x, gint y,
-                                      const GrxTextOptions *opt, GrxPattern *pattern);
+                                      const GrxTextOptions *opt, GrxPattern *p);
 
 #endif /* __GRX_PATTERN_H__ */

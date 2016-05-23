@@ -25,7 +25,7 @@
  * @x: the starting X coordinate
  * @y: the starting Y coordinate
  * @border: the color of the border that contains the fill
- * @pattern: the pattern of the fill
+ * @p: the pattern of the fill
  *
  * Flood-fills the area of the current context bounded by the color @border
  * using @x, @y as the starting point.

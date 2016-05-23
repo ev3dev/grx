@@ -35,7 +35,7 @@
  * @start: the starting angle in 1/10ths of degrees
  * @end: the ending angle in 1/10ths of degrees
  * @style: the arc style
- * @pattern: the pattern
+ * @p: the pattern
  *
  * Draws a filled arc on the current context centered at the specified
  * coordinates from the starting angle to the ending angle with the specified

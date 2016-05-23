@@ -106,7 +106,7 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p)
  * @y1: starting Y coordinate
  * @x2: ending X coordinate
  * @y2: ending Y coordinate
- * @pattern: the pattern
+ * @p: the pattern
  *
  * Draws a line on the current context from the starting coordinates to the
  * ending coordinates using the specified pattern.

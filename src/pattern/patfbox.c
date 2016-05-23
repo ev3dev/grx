@@ -29,7 +29,7 @@
  * @y1: the top Y coordinate
  * @x2: the right X coordinate
  * @y2: the bottom Y coordinate
- * @pattern: the pattern
+ * @p: the pattern
  *
  * Draws a filled rectangle on the current context using the specified
  * coordinates and pattern.

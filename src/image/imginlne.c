@@ -32,8 +32,7 @@ G_DEFINE_BOXED_TYPE(GrxImage, grx_image, grx_image_copy, grx_image_free);
  *
  * Casts a #GrxPattern to a #GrxImage.
  *
- * Returns: (transfer none) (nullable): %NULL if the @pattern given is not a
- *     #GrxPixmap
+ * Returns: (transfer none) (nullable): %NULL if @pattern is not a #GrxPixmap
  */
 GrxImage *(grx_pattern_as_image)(GrxPattern *pattern) {
     return grx_pattern_as_image(pattern);

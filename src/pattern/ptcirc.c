@@ -32,7 +32,7 @@
  * @xc: the X coordinate of the center of the circle
  * @yc: the Y coordinate of the center of the circle
  * @r: the radius of the circle
- * @line_pattern: the line pattern
+ * @lp: the line pattern
  *
  * Draws a circle on the current context centered at the specified coordinates
  * with the specified radius and line pattern.

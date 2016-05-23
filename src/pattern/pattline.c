@@ -34,7 +34,7 @@
  * @y1: starting Y coordinate
  * @x2: ending X coordinate
  * @y2: ending Y coordinate
- * @line_pattern: the line pattern
+ * @lp: the line pattern
  *
  * Draws a line on the current context from the starting coordinates to the
  * ending coordinates using the specified line pattern.

@@ -35,7 +35,7 @@
  * @yc: the Y coordinate of the center of the ellipse
  * @rx: the radius in the X direction
  * @ry: the radius in the Y direction
- * @line_pattern: the line pattern
+ * @lp: the line pattern
  *
  * Draws an ellipse on the current context using the specified line pattern.
  *

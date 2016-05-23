@@ -27,7 +27,7 @@
  * grx_draw_filled_convex_polygon_with_pattern:
  * @n_points: the number of points in @points
  * @points: (array length=n_points): an array of #GrxPoint
- * @pattern: the pattern
+ * @p: the pattern
  *
  * Draw a filled polygon on the current context that connects each point in
  * the @points array using the specified pattern.
