@@ -24,6 +24,18 @@
 #include "allocate.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_polygon_with_pattern:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @lp: the line pattern
+ *
+ * Draw a closed polygon on the current context that connects each point in
+ * the @points array using the specified line pattern.
+ *
+ * Coordinate arrays can either contain or omit the closing edge of the polygon.
+ * It will be automatically appended to the list if it is missing.
+ */
 void grx_user_draw_polygon_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *lp)
 {
         int pt;

@@ -22,7 +22,17 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-
+/**
+ * grx_user_draw_line_with_options:
+ * @x1: starting X coordinate
+ * @y1: starting Y coordinate
+ * @x2: ending X coordinate
+ * @y2: ending Y coordinate
+ * @o: the options
+ *
+ * Draws a line on the current context from the starting coordinates to the
+ * ending coordinates using the specified options.
+ */
 void grx_user_draw_line_with_options(int x1,int y1,int x2,int y2,const GrxLineOptions *lo)
 {
         U2SX(x1,CURC);

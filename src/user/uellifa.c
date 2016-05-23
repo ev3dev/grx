@@ -21,6 +21,21 @@
 #include "libgrx.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_filled_ellipse_arc:
+ * @xc: the X coordinate of the center of the arc
+ * @yc: the Y coordinate of the center of the arc
+ * @rx: the radius in the X direction
+ * @ry: the radius in the Y direction
+ * @start: the starting angle in 1/10ths of degrees
+ * @end: the ending angle in 1/10ths of degrees
+ * @style: the arc style
+ * @c: the color
+ *
+ * Draws a filled arc on the current context centered at the specified
+ * coordinates from the starting angle to the ending angle with the specified
+ * radii, arc style and color.
+ */
 void grx_user_draw_filled_ellipse_arc(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,GrxColor c)
 {
         U2SX(xc,CURC);

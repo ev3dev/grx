@@ -23,6 +23,18 @@
 #include "libgrx.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_vline:
+ * @x: X coordinate
+ * @y1: starting Y coordinate
+ * @y2: ending Y coordinate
+ * @c: the color
+ *
+ * Draws a vertical line on the current context from the starting coordinates
+ * to the ending coordinates using the specified color.
+ *
+ * This is more efficient that using grx_user_draw_line().
+ */
 void grx_user_draw_vline(int x,int y1,int y2,GrxColor c)
 {
         U2SX(x,CURC);

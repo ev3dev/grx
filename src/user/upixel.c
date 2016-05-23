@@ -23,6 +23,14 @@
 #include "libgrx.h"
 #include "usercord.h"
 
+/**
+ * grx_user_get_pixel_at:
+ * @x: the X coordinate
+ * @y: the Y coordinate
+ *
+ * Gets the color value of the pixel in the current context at the specified
+ * coordinates.
+ */
 GrxColor grx_user_get_pixel_at(int x,int y)
 {
         U2SX(x,CURC);

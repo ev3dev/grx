@@ -22,6 +22,17 @@
 #include "libgrx.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_box_with_pattern:
+ * @x1: the left X coordinate
+ * @y1: the top Y coordinate
+ * @x2: the right X coordinate
+ * @y2: the bottom Y coordinate
+ * @lp: the line pattern
+ *
+ * Draws a rectangle on the current context using the specified coordinates
+ * and line pattern.
+ */
 void grx_user_draw_box_with_pattern(int x1,int y1,int x2,int y2,GrxLinePattern *lp)
 {
         U2SX(x1,CURC);

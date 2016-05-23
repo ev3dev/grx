@@ -23,6 +23,21 @@
 #include "libgrx.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_ellipse_arc_with_options:
+ * @xc: the X coordinate of the center of the arc
+ * @yc: the Y coordinate of the center of the arc
+ * @rx: the radius in the X direction
+ * @ry: the radius in the Y direction
+ * @start: the starting angle in 1/10ths of degrees
+ * @end: the ending angle in 1/10ths of degrees
+ * @style: the arc style
+ * @o: the options
+ *
+ * Draws an arc on the current context centered at the specified coordinates
+ * from the starting angle to the ending angle with the specified radii,
+ * arc style and options.
+ */
 void grx_user_draw_ellipse_arc_with_options(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,const GrxLineOptions *lo)
 {
         U2SX(xc,CURC);

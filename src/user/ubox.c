@@ -23,6 +23,17 @@
 #include "libgrx.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_box:
+ * @x1: the left X coordinate
+ * @y1: the top Y coordinate
+ * @x2: the right X coordinate
+ * @y2: the bottom Y coordinate
+ * @c: the color
+ *
+ * Draws a rectangle on the current context using the specified coordinates
+ * and color.
+ */
 void grx_user_draw_box(int x1,int y1,int x2,int y2,GrxColor c)
 {
         U2SX(x1,CURC);

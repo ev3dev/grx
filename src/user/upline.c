@@ -22,6 +22,17 @@
 #include "libgrx.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_line_with_pattern:
+ * @x1: starting X coordinate
+ * @y1: starting Y coordinate
+ * @x2: ending X coordinate
+ * @y2: ending Y coordinate
+ * @lp: the line pattern
+ *
+ * Draws a line on the current context from the starting coordinates to the
+ * ending coordinates using the specified line pattern.
+ */
 void grx_user_draw_line_with_pattern(int x1,int y1,int x2,int y2,GrxLinePattern *lp)
 {
         U2SX(x1,CURC);

@@ -23,6 +23,18 @@
 #include "allocate.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_polygon:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @c: the color
+ *
+ * Draw a closed polygon on the current context that connects each point in
+ * the @points array using the specified color.
+ *
+ * Coordinate arrays can either contain or omit the closing edge of the polygon.
+ * It will be automatically appended to the list if it is missing.
+ */
 void grx_user_draw_polygon(int numpts,GrxPoint *points,GrxColor c)
 {
         int pt;

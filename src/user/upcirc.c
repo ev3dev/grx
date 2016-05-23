@@ -25,6 +25,16 @@
 #include "libgrx.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_circle_with_pattern:
+ * @xc: the X coordinate of the center of the circle
+ * @yc: the Y coordinate of the center of the circle
+ * @r: the radius of the circle
+ * @lp: the line pattern
+ *
+ * Draws a circle on the current context centered at the specified coordinates
+ * with the specified radius and line pattern.
+ */
 void grx_user_draw_circle_with_pattern(int xc,int yc,int r,GrxLinePattern *lp)
 {
 #ifdef USR_KEEP_SHAPE

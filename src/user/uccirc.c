@@ -25,6 +25,16 @@
 #include "libgrx.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_circle_with_options:
+ * @xc: the X coordinate of the center of the circle
+ * @yc: the Y coordinate of the center of the circle
+ * @r: the radius of the circle
+ * @o: the options
+ *
+ * Draws a circle on the current context centered at the specified coordinates
+ * with the specified radius and options.
+ */
 void grx_user_draw_circle_with_options(int xc,int yc,int r,const GrxLineOptions *lo)
 {
 #ifdef USR_KEEP_SHAPE

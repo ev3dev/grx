@@ -20,6 +20,15 @@
 #include "globals.h"
 #include "libgrx.h"
 
+/**
+ * grx_user_get_window:
+ * @x1: (out): the left X coordinate
+ * @y1: (out): the top Y coordinate
+ * @x2: (out): the right X coordinate
+ * @y2: (out): the bottom Y coordinate
+ *
+ * Gets the user window of the current context.
+ */
 void grx_user_get_window(int *x1,int *y1,int *x2,int *y2)
 {
         *x1 = CURC->user_x_base;

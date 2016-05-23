@@ -30,6 +30,7 @@
       <xi:include href="xml/pattern.xml"/>
       <xi:include href="xml/image.xml"/>
       <xi:include href="xml/text.xml"/>
+      <xi:include href="xml/user.xml"/>
     </chapter>
     <chapter id="applications">
       <title>Applications</title>

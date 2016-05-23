@@ -23,6 +23,15 @@
 #include "allocate.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_polyline:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @c: the color
+ *
+ * Draw a multi-segment line on the current context that connects each point in
+ * the @points array using the specified color.
+ */
 void grx_user_draw_polyline(int numpts,GrxPoint *points,GrxColor c)
 {
         int pt;

@@ -24,6 +24,19 @@
 #include "arith.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_framed_box:
+ * @x1: the left X coordinate
+ * @y1: the top Y coordinate
+ * @x2: the right X coordinate
+ * @y2: the bottom Y coordinate
+ * @width: the width of the frame
+ * @c: the colors
+ *
+ * Draws a framed rectangle on the current context using the specified
+ * coordinates and colors. The coordinates specify the interior box. The border
+ * extends outside of the box using the given @width.
+ */
 void grx_user_draw_framed_box(int x1,int y1,int x2,int y2,int wdt,GrxFramedBoxColors *c)
 {
         int w1,w2;

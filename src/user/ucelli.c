@@ -22,6 +22,19 @@
 #include "libgrx.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_ellipse_with_options:
+ * @xc: the X coordinate of the center of the ellipse
+ * @yc: the Y coordinate of the center of the ellipse
+ * @rx: the radius in the X direction
+ * @ry: the radius in the Y direction
+ * @o: the options
+ *
+ * Draws an ellipse on the current context using the specified options.
+ *
+ * The ellipse can only draw ellipses with its major axis parallel with either
+ * the X or Y coordinate axis
+ */
 void grx_user_draw_ellipse_with_options(int xc,int yc,int rx,int ry,const GrxLineOptions *lo)
 {
         U2SX(xc,CURC);

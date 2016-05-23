@@ -24,6 +24,15 @@
 #include "allocate.h"
 #include "usercord.h"
 
+/**
+ * grx_user_draw_polyline_with_pattern:
+ * @n_points: the number of points in @points
+ * @points: (array length=n_points): an array of #GrxPoint
+ * @lp: the line pattern
+ *
+ * Draw a multi-segment line on the current context that connects each point in
+ * the @points array using the specified line pattern.
+ */
 void grx_user_draw_polyline_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *lp)
 {
         int pt;
