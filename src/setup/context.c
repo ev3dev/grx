@@ -222,7 +222,7 @@ static void grx_context_free(GrxContext *cxt)
 
 /**
  * grx_context_unref:
- * @context: the context
+ * @context: (transfer full): the context
  *
  * Decreases the reference count to @context.
  *

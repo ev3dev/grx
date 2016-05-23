@@ -18,61 +18,58 @@
 
 #include <glib-object.h>
 
+#include <grx/color.h>
+#include <grx/image.h>
+
 #include "libgrx.h"
 #include "image.h"
 
 G_DEFINE_BOXED_TYPE(GrxImage, grx_image, grx_image_copy, grx_image_free);
 
 /**
- * grx_image_create_from_pattern:
- * @pattern:
+ * grx_pattern_as_image:
+ * @pattern: (transfer none): the pattern
  *
- * Converts a #GrxPattern to a #GrxImage.
+ * Casts a #GrxPattern to a #GrxImage.
  *
- * Returns: (transfer full): #NULL if the @pattern given is not a #GrxPixmap
+ * Returns: (transfer none) (nullable): %NULL if the @pattern given is not a
+ *     #GrxPixmap
  */
-GrxImage *(grx_image_create_from_pattern)(GrxPattern *pattern) {
-    return grx_image_create_from_pattern(pattern);
+GrxImage *(grx_pattern_as_image)(GrxPattern *pattern) {
+    return grx_pattern_as_image(pattern);
 }
 
 /**
- * grx_image_create_from_context:
- * @context:
+ * grx_image_new_from_context:
+ * @context: (transfer none): the context
  *
- * Returns: (transfer full):
+ * Creates a new image using @context.
+ *
+ * The image and the original context share the drawing RAM.
+ *
+ * Returns: (transfer full): the new image or %NULL if there was an error
  */
-GrxImage *(grx_image_create_from_context)(GrxContext *context) {
-    return grx_image_create_from_context(context);
+GrxImage *(grx_image_new_from_context)(GrxContext *context) {
+    return grx_image_new_from_context(context);
 }
 
 /**
- * grx_pattern_new_from_image:
- * @image:
+ * grx_image_as_pattern:
+ * @image: (transfer none): the image
  *
- * Returns: (transfer full):
- */
-GrxPattern *(grx_pattern_new_from_image)(GrxImage *image) {
-    return grx_pattern_new_from_image(image);
-}
-
-/**
- * grx_image_create_from_data:
- * @pixels: (array):
- * @width:
- * @height:
- * @colors:
+ * Casts a #GrxImage to a #GrxPattern.
  *
- * Returns: (transfer full):
+ * Returns: (transfer none): the #GrxImage cast as a #GrxPattern
  */
-GrxImage *(grx_image_create_from_data)(const unsigned char *pixels, int width,
-                                       int height, const GrxColorTable colors)
-{
-    return grx_image_create_from_data(pixels, width, height, colors);
+GrxPattern *(grx_image_as_pattern)(GrxImage *image) {
+    return grx_image_as_pattern(image);
 }
 
 /**
  * grx_image_copy:
  * @image: (transfer none): the image to copy
+ *
+ * FIXME: this is not implemented and calling will cause the program to abort.
  *
  * Returns: (transfer full): a copy of the image
  */
@@ -83,6 +80,8 @@ GrxImage *(grx_image_copy)(GrxImage *image) {
 /**
  * grx_image_free:
  * @image: (transfer full): the image to free
+ *
+ * Frees all memory allocated by the image.
  */
 void (grx_image_free)(GrxImage *image) {
     grx_image_free(image);

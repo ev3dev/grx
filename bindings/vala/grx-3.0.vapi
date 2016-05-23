@@ -1157,6 +1157,8 @@ namespace Grx {
         public static Pattern new_pixmap ([CCode (array_length = false)]char *pixels, int w, int h, ColorTable colors);
         public static Pattern new_pixmap_from_bits ([CCode (array_length = false)]char *bits, int w, int h, Color fgc, Color bgc);
         public static Pattern new_pixmap_from_context (Context context);
+
+        public unowned Image as_image ();
     }
 
     /**
@@ -1232,20 +1234,13 @@ namespace Grx {
     [CCode (copy_function = "grx_image_copy", free_function = "grx_image_free", has_type_id = false)]
     [Compact]
     public class Image {
-        Pattern pattern;         /* fill pattern */
-        LineOptions options;          /* width + dash pattern */
-
-        public static Image create ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
-        public static Image create_from_data ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
+        public static Image new ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
+        public static Image new_from_context (Context context);
 
         public Image mirror (ImageMirrorFlags flags);
         public Image stretch (int width, int height);
 
-        public static Image create_from_pattern (Pattern pattern);
-        public static Image create_from_context (Context context);
-
-        [CCode (cname = "grx_pattern_new_from_image")]
-        public Pattern to_pattern ();
+        public unowned Pattern as_pattern ();
     }
 
     public void draw_image (int x, int y);

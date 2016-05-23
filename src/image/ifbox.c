@@ -24,6 +24,20 @@
 #include "image.h"
 #include "mouse.h"
 
+/**
+ * grx_draw_filled_box_with_image:
+ * @xo: the alignment X coordinate
+ * @yo: the alignment Y coordinate
+ * @x1: the top X coordinate
+ * @y1: the left Y coordinate
+ * @x2: the right X coordinate
+ * @y2: the bottom Y coordinate
+ * @image: the image
+ *
+ * Fills the rectangle @x1, @y1, @x2, @y2 in the current context with the image.
+ * This image can be offset from the rectangle by specifying @xo, @yo different
+ * from @x1, @y1. The image is tiled if needed to fill the rectangle.
+ */
 void grx_draw_filled_box_with_image(int xo,int yo,int x1,int y1,int x2,int y2,GrxImage *p)
 {
   int iwdt, ihgt, xoff, yoff, yy, xx, copyh, copyw;
@@ -62,6 +76,15 @@ void grx_draw_filled_box_with_image(int xo,int yo,int x1,int y1,int x2,int y2,Gr
   mouse_unblock();
 }
 
+/**
+ * grx_draw_image:
+ * @x: the left edge
+ * @y: the top edge
+ * @image: the image
+ *
+ * Draws the entire image on the current context with the top, left corner at
+ * @x, @y.
+ */
 void  grx_draw_image(int x,int y,GrxImage *p)
 {
   GRX_ENTER();
@@ -69,6 +92,17 @@ void  grx_draw_image(int x,int y,GrxImage *p)
   GRX_LEAVE();
 }
 
+/**
+ * grx_draw_image_tiled:
+ * @x1: the left edge
+ * @y1: the top edge
+ * @x2: the right edge
+ * @y2: the bottom edge
+ * @image: the image
+ *
+ * Draws as much of the image as possible (repeating if necessary) on the
+ * current in the rectangle defined by @x1, @y1 and @x2, @y2
+ */
 void  grx_draw_image_tiled(int x1,int y1,int x2,int y2,GrxImage* p)
 {
   GRX_ENTER();

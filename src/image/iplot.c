@@ -24,6 +24,18 @@
 #include "clipping.h"
 #include "image.h"
 
+/**
+ * grx_draw_pixel_with_image:
+ * @xo: the alignment X coordinate
+ * @yo: the alignment Y coordinate
+ * @x: the X coordinate
+ * @y: the Y coordinate
+ * @image: the image
+ *
+ * Draws a single pixel of an image on the current context at @x, @y.
+ * The image can be offset from the point by specifying @xo, @yo different from
+ * @x, @y.
+ */
 void grx_draw_pixel_with_image(int xo,int yo,int x,int y,GrxImage *p)
 {
    int xp, yp;

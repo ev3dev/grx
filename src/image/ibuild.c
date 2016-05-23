@@ -26,23 +26,20 @@
 #include "image.h"
 
 /**
- * grx_image_create:
- * @pixels: (array):
- * @width:
- * @height:
- * @colors: an array of integers with the first element being the number of
- *          colors in the table and the color values themselves starting with
- *          the second element. NOTE: any color modifiers (GrXOR, GrOR, GrAND)
- *          OR-ed to the elements of the color table are ignored.
+ * grx_image_new:
+ * @pixels: (array): array of pixel data
+ * @width: the width of the array
+ * @height: the height of the array
+ * @colors: the color table
  *
  * Builds a pixmap from a two dimensional (width by height) array of characters.
  * The elements in this array are used as indices into the color table specified
  * with the argument @colors. (This means that pixmaps created this way can use
  * at most 256 colors.)
  *
- * Returns: (transfer full):
+ * Returns: (transfer full) (nullable): the new image or %NULL if there was an error.
  */
-GrxImage *grx_image_create(const unsigned char *pixels, int width, int height,
+GrxImage *grx_image_new(const unsigned char *pixels, int width, int height,
                            const GrxColorTable colors)
 {
   GrxImage   *img;

@@ -42,7 +42,7 @@ TESTFUNC(imgtest)
 
         grx_set_current_context(NULL);
 
-        img1 = grx_image_create_from_context(&ctx);
+        img1 = grx_image_new_from_context(&ctx);
         if (!img1) return;
 
         grx_draw_filled_box(0,0,ww+1,wh+1,c3);

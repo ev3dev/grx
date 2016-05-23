@@ -24,6 +24,20 @@
 #include "clipping.h"
 #include "image.h"
 
+/**
+ * grx_draw_hline_with_image:
+ * @xo: the alignment X coordinate
+ * @yo: the alignment Y coordinate
+ * @x: the top X coordinate
+ * @y: the left Y coordinate
+ * @width: the width of the line
+ * @image: the image
+ *
+ * Draws a single line of an image on the current context starting at @x, @y.
+ * The image can be offset from the line by specifying @xo, @yo different from
+ * @x, @y. The image is repeated if the width of the line is greater than the
+ * width of the image.
+ */
 void grx_draw_hline_with_image(int xo,int yo,int x,int y,int width,GrxImage *p)
 {
   int x2, widthimg, yimg, ximg, xdest, ydest, cpysize;

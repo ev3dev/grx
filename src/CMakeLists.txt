@@ -295,9 +295,13 @@ set (GTKDOC_SOURCE_FILES
     draw/plot.c
     draw/putscl.c
     draw/flodspil.c
+    image/ialloc.c
     image/ibuild.c
+    image/ifbox.c
+    image/ihline.c
     image/iinverse.c
     image/imginlne.c
+    image/iplot.c
     image/istretch.c
     pattern/makepat.c
     setup/clip.c

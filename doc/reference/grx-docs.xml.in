@@ -28,6 +28,7 @@
       <xi:include href="xml/draw_nc.xml"/>
       <xi:include href="xml/wideline.xml"/>
       <xi:include href="xml/pattern.xml"/>
+      <xi:include href="xml/image.xml"/>
     </chapter>
     <chapter id="applications">
       <title>Applications</title>

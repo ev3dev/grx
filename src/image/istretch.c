@@ -22,13 +22,13 @@
 
 /**
  * grx_image_stretch:
- * @image:
- * @new_width:
- * @new_height:
+ * @image: the source image
+ * @new_width: the new width
+ * @new_height: the new height
  *
- * Creates a new image stretching p to @new_width by @new_height.
+ * Creates a new image stretching @image to @new_width by @new_height.
  *
- * Returns: (transfer full):
+ * Returns: (transfer full): the new image
  */
 GrxImage *grx_image_stretch(GrxImage *p,int nwidth,int nheight)
 {

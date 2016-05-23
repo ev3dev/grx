@@ -25,12 +25,13 @@
 
 /**
  * grx_image_mirror:
- * @image:
- * @flags:
+ * @image: the source image
+ * @flags: the mirror flags
  *
- * Creates a new image, flipping left-right or top-bottom as indicated by @flags
+ * Creates a new image, flipping left-right and/or top-bottom as indicated by
+ * @flags.
  *
- * Returns: (transfer full):
+ * Returns: (transfer full): the new image
  */
 GrxImage *grx_image_mirror(GrxImage *p, GrxImageMirrorFlags flag)
 {

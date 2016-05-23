@@ -13,11 +13,11 @@ int main ( void )
   p256 = GrConvertBmpImageToPattern(bmp256);
   p = GrConvertBmpImageToPattern(bmp);
   if ( p ) {
-    grx_draw_image(0, 0, grx_image_create_from_pattern(p));
+    grx_draw_image(0, 0, grx_pattern_as_image(p));
     getkey();
   }
   if ( p256 ) {
-    grx_draw_image(300, 300, grx_image_create_from_pattern(p256));
+    grx_draw_image(300, 300, grx_pattern_as_image(p256));
     getkey();
   }
   if ( p ) grx_pattern_free(p);
