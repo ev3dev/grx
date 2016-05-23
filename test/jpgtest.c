@@ -94,8 +94,8 @@ int main()
     grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
-  grx_context_save_to_jpeg( NULL,"p.jpg",75 );
-  grx_context_save_to_jpeg_grayscale( NULL,"pgray.jpg",75 );
+  grx_save_current_context_to_jpeg( NULL,"p.jpg",75 );
+  grx_save_current_context_to_jpeg_grayscale( NULL,"pgray.jpg",75 );
 
   grx_clear_screen( grx_color_info_get_black() );
   grx_draw_text_xy( 10,10,"Press any key to reload color screen       ",

@@ -231,7 +231,7 @@ int main(int argc, char **argv)
         if ((ev.type == EV_KEY) && (ev.p1 == GrKey_Escape))
             break;
         if ((ev.type == EV_KEY) && (ev.p1 == 's')) {
-            grx_context_save_to_ppm(NULL, "demogrx.ppm", "DemoGRX");
+            grx_save_current_context_to_ppm(NULL, "demogrx.ppm", "DemoGRX");
             continue;
         }
         if (pev_button_group(&ev, bgact))
@@ -270,7 +270,7 @@ static void ini_graphics(void)
         horg = (gheight - 480) / 2;
         grcglob = grx_context_new_subcontext(worg, horg, worg + 639, horg + 479,
                                      NULL, NULL);
-        grx_context_set_current(grcglob);
+        grx_set_current_context(grcglob);
     }
 }
 
@@ -470,10 +470,10 @@ static void paint_animation(void)
     ltext = strlen(animatedtext);
     wtext = grx_text_option_get_string_width(&grt_left, animatedtext, ltext);
 
-    grx_context_set_current(grc);
+    grx_set_current_context(grc);
     grx_clear_context(DARKGRAY);
     grx_draw_string_with_text_options(animatedtext, ltext, pos, 15, &grt_left);
-    grx_context_set_current(grcglob);
+    grx_set_current_context(grcglob);
     grx_bit_blt(10, 8, grc, 0, 0, 629, 29, GRX_COLOR_MODE_WRITE);
 
     pos -= 1;

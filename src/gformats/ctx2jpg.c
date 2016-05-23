@@ -28,7 +28,7 @@
 static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale );
 
 /*
-** grx_context_save_to_jpeg - Dump a context in a JPEG file
+** grx_save_current_context_to_jpeg - Dump a context in a JPEG file
 **
 ** This routine works both in RGB and palette modes
 **
@@ -41,7 +41,7 @@ static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale );
 **         -1 on error
 */
 
-int grx_context_save_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
+int grx_save_current_context_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
 {
   GrxContext grcaux;
   FILE *f;
@@ -50,10 +50,10 @@ int grx_context_save_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
   f = fopen( jpegfn,"wb" );
   if( f == NULL ) return -1;
 
-  grx_context_save( &grcaux );
-  if( grc != NULL ) grx_context_set_current( grc );
+  grx_save_current_context( &grcaux );
+  if( grc != NULL ) grx_set_current_context( grc );
   r = writejpeg( f,grc,quality,0 );
-  grx_context_set_current( &grcaux );
+  grx_set_current_context( &grcaux );
 
   fclose( f );
 
@@ -61,7 +61,7 @@ int grx_context_save_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
 }
 
 /*
-** grx_context_save_to_jpeg_grayscale - Dump a context in a Gray JPEG file
+** grx_save_current_context_to_jpeg_grayscale - Dump a context in a Gray JPEG file
 **
 ** This routine works both in RGB and palette modes
 **
@@ -74,7 +74,7 @@ int grx_context_save_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
 **         -1 on error
 */
 
-int grx_context_save_to_jpeg_grayscale( GrxContext *grc, char *jpegfn, int quality )
+int grx_save_current_context_to_jpeg_grayscale( GrxContext *grc, char *jpegfn, int quality )
 {
   GrxContext grcaux;
   FILE *f;
@@ -83,10 +83,10 @@ int grx_context_save_to_jpeg_grayscale( GrxContext *grc, char *jpegfn, int quali
   f = fopen( jpegfn,"wb" );
   if( f == NULL ) return -1;
 
-  grx_context_save( &grcaux );
-  if( grc != NULL ) grx_context_set_current( grc );
+  grx_save_current_context( &grcaux );
+  if( grc != NULL ) grx_set_current_context( grc );
   r = writejpeg( f,grc,quality,1 );
-  grx_context_set_current( &grcaux );
+  grx_set_current_context( &grcaux );
 
   fclose( f );
 

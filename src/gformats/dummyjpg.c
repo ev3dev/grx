@@ -29,19 +29,19 @@ int grx_is_jpeg_supported( void )
 }
 
 /*
-** grx_context_save_to_jpeg - Returns error
+** grx_save_current_context_to_jpeg - Returns error
 */
 
-int grx_context_save_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
+int grx_save_current_context_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
 {
   return -1;
 }
 
 /*
-** grx_context_save_to_jpeg_grayscale - Returns error
+** grx_save_current_context_to_jpeg_grayscale - Returns error
 */
 
-int grx_context_save_to_jpeg_grayscale( GrxContext *grc, char *jpegfn, int quality )
+int grx_save_current_context_to_jpeg_grayscale( GrxContext *grc, char *jpegfn, int quality )
 {
   return -1;
 }

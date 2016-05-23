@@ -186,7 +186,7 @@ void GrMouseUnBlock(int return_value_from_GrMouseBlock);
         *(x2p) = GrMouseInfo->xmax; *(y2p) = GrMouseInfo->ymax;                \
 } while(0)
 #define GrMouseBlock(c,x1,y1,x2,y2) (                                          \
-        (((c) ? (const GrxContext*)(c) : grx_context_get_current())->gc_is_on_screen && \
+        (((c) ? (const GrxContext*)(c) : grx_get_current_context())->gc_is_on_screen && \
          (GrMouseInfo->docheck)) ?                                             \
         (*GrMouseInfo->block)((c),(x1),(y1),(x2),(y2)) :                       \
         0                                                                      \

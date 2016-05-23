@@ -45,9 +45,9 @@ typedef enum {
 
 /* The PNM functions */
 
-int grx_context_save_to_pbm(GrxContext *grc, gchar *pbmfn, gchar *docn);
-int grx_context_save_to_pgm(GrxContext *grc, gchar *pgmfn, gchar *docn);
-int grx_context_save_to_ppm(GrxContext *grc, gchar *ppmfn, gchar *docn);
+int grx_save_current_context_to_pbm(GrxContext *grc, gchar *pbmfn, gchar *docn);
+int grx_save_current_context_to_pgm(GrxContext *grc, gchar *pgmfn, gchar *docn);
+int grx_save_current_context_to_ppm(GrxContext *grc, gchar *ppmfn, gchar *docn);
 int grx_context_load_from_pnm(GrxContext *grc, gchar *pnmfn);
 int grx_check_pnm_file(gchar *pnmfn, gint *width, gint *height, gint *maxval);
 int grx_context_load_from_pnm_data(GrxContext *grc, const guint8 *buffer);
@@ -59,7 +59,7 @@ int grx_check_pnm_data(const guint8 *buffer, gint *width, gint *height, gint *ma
 /* ================================================================== */
 
 int grx_is_png_supported(void);
-int grx_context_save_to_png(GrxContext *grc, gchar *pngfn);
+int grx_save_current_context_to_png(GrxContext *grc, gchar *pngfn);
 int grx_context_load_from_png(GrxContext *grc, gchar *pngfn, gboolean use_alpha);
 int grx_check_png_file(gchar *pngfn, gint *width, gint *height);
 
@@ -71,7 +71,7 @@ int grx_check_png_file(gchar *pngfn, gint *width, gint *height);
 int grx_is_jpeg_supported(void);
 int grx_context_load_from_jpeg(GrxContext *grc, gchar *jpegfn, gint scale);
 int grx_check_jpeg_file(gchar *jpegfn, gint *width, gint *height);
-int grx_context_save_to_jpeg(GrxContext *grc, gchar *jpegfn, gint quality);
-int grx_context_save_to_jpeg_grayscale(GrxContext *grc, gchar *jpegfn, gint quality);
+int grx_save_current_context_to_jpeg(GrxContext *grc, gchar *jpegfn, gint quality);
+int grx_save_current_context_to_jpeg_grayscale(GrxContext *grc, gchar *jpegfn, gint quality);
 
 #endif /* __GRX_GFORMATS_H__ */

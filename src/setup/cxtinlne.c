@@ -49,27 +49,27 @@ GrxContext *(grx_context_new)(int w,int h,GrxFrameMemory *memory,GrxContext *whe
 }
 
 /**
- * grx_context_get_current:
+ * grx_get_current_context:
  *
  * Gets the current context.
  *
  * Returns: (transfer none): the current context
  */
-GrxContext *(grx_context_get_current)(void)
+GrxContext *(grx_get_current_context)(void)
 {
-        return(grx_context_get_current());
+        return(grx_get_current_context());
 }
 
 /**
- * grx_context_get_screen:
+ * grx_get_screen_context:
  *
  * Gets the screen context.
  *
  * Returns: (transfer none): the screen context
  */
-GrxContext *(grx_context_get_screen)(void)
+GrxContext *(grx_get_screen_context)(void)
 {
-        return(grx_context_get_screen());
+        return(grx_get_screen_context());
 }
 
 /**

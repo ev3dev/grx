@@ -65,8 +65,8 @@ void grx_clear_context(GrxColor bg)
 void grx_context_clear(GrxContext *ctx, GrxColor bg)
 {
   GrxContext s;
-  grx_context_save(&s);
-  grx_context_set_current(ctx);
+  grx_save_current_context(&s);
+  grx_set_current_context(ctx);
   grx_clear_context(bg);
-  grx_context_set_current(&s);
+  grx_set_current_context(&s);
 }

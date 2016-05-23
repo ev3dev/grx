@@ -93,7 +93,7 @@ int main()
 
   grx_draw_text_xy( 10,10,"Press any key to save screen",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
-  grx_context_save_to_png( NULL,"output.png" );
+  grx_save_current_context_to_png( NULL,"output.png" );
 
   grx_clear_screen( grx_color_info_get_black() );
   grx_draw_text_xy( 10,10,"Press any key to reload screen",grx_color_info_get_black(),grx_color_info_get_white() );

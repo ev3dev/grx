@@ -67,10 +67,10 @@ int grx_context_load_from_png( GrxContext *grc, char *pngfn, int use_alpha )
   f = fopen( pngfn,"rb" );
   if( f == NULL ) return -1;
 
-  grx_context_save( &grcaux );
-  if( grc != NULL ) grx_context_set_current( grc );
+  grx_save_current_context( &grcaux );
+  if( grc != NULL ) grx_set_current_context( grc );
   r = readpng( f,grc,use_alpha );
-  grx_context_set_current( &grcaux );
+  grx_set_current_context( &grcaux );
 
   fclose( f );
 

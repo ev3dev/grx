@@ -206,10 +206,10 @@ static gboolean console_switch_handler (gpointer user_data)
             if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
                 /* Need to invert the colors on this one. */
                 grx_context_clear(priv->save, 1);
-                grx_context_bit_blt(priv->save, 0, 0, grx_context_get_screen(), 0, 0,
+                grx_context_bit_blt(priv->save, 0, 0, grx_get_screen_context(), 0, 0,
                     grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_XOR);
             } else {
-                grx_context_bit_blt(priv->save, 0, 0, grx_context_get_screen(), 0, 0,
+                grx_context_bit_blt(priv->save, 0, 0, grx_get_screen_context(), 0, 0,
                     grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_WRITE);
             }
         }
@@ -221,10 +221,10 @@ static gboolean console_switch_handler (gpointer user_data)
         if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
             /* need to invert the colors on this one */
             grx_clear_screen(1);
-            grx_context_bit_blt(grx_context_get_screen(), 0, 0, priv->save, 0, 0,
+            grx_context_bit_blt(grx_get_screen_context(), 0, 0, priv->save, 0, 0,
                      grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_XOR);
         } else {
-            grx_context_bit_blt(grx_context_get_screen(), 0, 0, priv->save, 0, 0,
+            grx_context_bit_blt(grx_get_screen_context(), 0, 0, priv->save, 0, 0,
                      grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_WRITE);
         }
         grx_context_unref(priv->save);

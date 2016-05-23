@@ -39,8 +39,8 @@ static void draw_special(void)
         int check = MOUINFO->docheck;
         GrxContext csave;
         MOUINFO->docheck = FALSE;
-        grx_context_save(&csave);
-        grx_context_set_current(SCRN);
+        grx_save_current_context(&csave);
+        grx_set_current_context(SCRN);
         switch(CURSORMODE) {
           case GR_M_CUR_RUBBER:
             grx_draw_box(xpos,ypos,MOUINFO->x1,MOUINFO->y1,MOUINFO->curscolor);
@@ -56,7 +56,7 @@ static void draw_special(void)
             );
             break;
         }
-        grx_context_set_current(&csave);
+        grx_set_current_context(&csave);
         MOUINFO->docheck = check;
 }
 

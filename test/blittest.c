@@ -32,7 +32,7 @@ void drbox(GrxContext *src,int x,int y)
         int  xx;
 
         grx_clear_screen(c1);
-        grx_context_set_current(src);
+        grx_set_current_context(src);
         grx_set_clip_box(x-10,y-10,x+BWW-1+10,y+BHH-1+10);
         grx_clear_clip_box(c2);
         grx_set_clip_box(x,y,x+BWW-1,y+BHH-1);
@@ -42,7 +42,7 @@ void drbox(GrxContext *src,int x,int y)
             grx_draw_line(xx,y,xx+BHH,y+BHH,grx_color_info_get_white());
             grx_draw_line(xx,y,xx-BHH,y+BHH,grx_color_info_get_white());
         }
-        grx_context_set_current(NULL);
+        grx_set_current_context(NULL);
         grx_reset_clip_box();
 }
 
@@ -157,7 +157,7 @@ TESTFUNC(blittest)
         GrKeyRead();
 
         grx_clear_screen(0);
-        grx_context_set_current(save);
+        grx_set_current_context(save);
 
         bx = -(bw/2) + 15*bw;
         by = -(bh/3) + 15*bh;
@@ -201,11 +201,11 @@ TESTFUNC(blittest)
             -(bh/3) + 15*bh + bh - 1,
             GRX_COLOR_MODE_WRITE
         );
-        grx_context_set_current(tile);
+        grx_set_current_context(tile);
         grx_draw_framed_box(2*wdt,2*wdt,bw-2*wdt-1,bh-2*wdt-1,2*wdt,&bcolors);
 
         grx_clear_screen(0);
-        grx_context_set_current(save);
+        grx_set_current_context(save);
 
         for(ii = 0,by = -(bh/3); ii < 19; ii++) {
             for(jj = 0,bx = -(bw/2); jj < 19; jj++) {
@@ -251,7 +251,7 @@ TESTFUNC(blittest)
 
         GrKeyRead();
 
-        grx_context_set_current(tile);
+        grx_set_current_context(tile);
         grx_clear_context(0);
 
         grx_context_bit_blt(tile,
@@ -264,7 +264,7 @@ TESTFUNC(blittest)
             GRX_COLOR_MODE_WRITE
         );
 
-        grx_context_set_current(save);
+        grx_set_current_context(save);
         grx_clear_screen(0);
 
         for(ii = 0,by = -(bh/3); ii < 18; ii++) {

@@ -34,12 +34,12 @@ int main(void)
   /* Create a 1bpp bitmap */
   pContext = grx_context_new_full(GRX_FRAME_MODE_RAM_1BPP, sizex, sizey, NULL, NULL);
   /* draw something (black and white) into the bitmap */
-  grx_context_set_current(pContext);
+  grx_set_current_context(pContext);
   grx_clear_context( grx_color_info_get_black() );
   grx_draw_line(0, 0, sizex-1, sizey-1, grx_color_info_get_white());
   grx_draw_line(0, sizey-1, sizex-1, 0, grx_color_info_get_white());
 
-  grx_context_set_current(NULL);
+  grx_set_current_context(NULL);
   fcolor = grx_color_info_alloc_color( 255,0,0 );
   bcolor = grx_color_info_alloc_color( 0,0,255 );
   grx_draw_text_xy(0,0,"Type u d l r U D L R to move, 1 2 to change color, q to quit",

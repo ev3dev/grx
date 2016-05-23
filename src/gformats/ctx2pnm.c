@@ -25,7 +25,7 @@
 #include <grx/extents.h>
 
 /*
-** grx_context_save_to_pbm - Dump a context in a PBM file (bitmap)
+** grx_save_current_context_to_pbm - Dump a context in a PBM file (bitmap)
 **
 ** This routine works both in RGB and palette modes
 ** If the pixel color isn't Black it asumes White
@@ -39,7 +39,7 @@
 **         -1 on error
 */
 
-int grx_context_save_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
+int grx_save_current_context_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
 {
   FILE *f;
   GrxContext grcaux;
@@ -49,8 +49,8 @@ int grx_context_save_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
 
   if( (f = fopen( pbmfn,"wb" )) == NULL ) return -1;
   
-  grx_context_save( &grcaux );
-  if( grc != NULL ) grx_context_set_current( grc );
+  grx_save_current_context( &grcaux );
+  if( grc != NULL ) grx_set_current_context( grc );
   sprintf( cab,"P4\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
@@ -73,14 +73,14 @@ int grx_context_save_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
       currentbit = 7;
       }
     }
-  grx_context_set_current( &grcaux );
+  grx_set_current_context( &grcaux );
   fclose( f );
 
   return 0;
 }
 
 /*
-** grx_context_save_to_pgm - Dump a context in a PGM file (gray scale)
+** grx_save_current_context_to_pgm - Dump a context in a PGM file (gray scale)
 **
 ** This routine works both in RGB and palette modes
 ** The colors are quantized to gray scale using .299r + .587g + .114b
@@ -94,7 +94,7 @@ int grx_context_save_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
 **         -1 on error
 */
 
-int grx_context_save_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
+int grx_save_current_context_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
 {
   FILE *f;
   GrxContext grcaux;
@@ -105,8 +105,8 @@ int grx_context_save_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
 
   if( (f = fopen( pgmfn,"wb" )) == NULL ) return -1;
   
-  grx_context_save( &grcaux );
-  if( grc != NULL ) grx_context_set_current( grc );
+  grx_save_current_context( &grcaux );
+  if( grc != NULL ) grx_set_current_context( grc );
   sprintf( cab,"P5\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
@@ -118,14 +118,14 @@ int grx_context_save_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
       grey = (0.229 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2]);
       fwrite( &grey,1,1,f );
       }
-  grx_context_set_current( &grcaux );
+  grx_set_current_context( &grcaux );
   fclose( f );
 
   return 0;
 }
 
 /*
-** grx_context_save_to_ppm - Dump a context in a PPM file (real color)
+** grx_save_current_context_to_ppm - Dump a context in a PPM file (real color)
 **
 ** This routine works both in RGB and palette modes
 **
@@ -138,7 +138,7 @@ int grx_context_save_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
 **         -1 on error
 */
 
-int grx_context_save_to_ppm( GrxContext *grc, char *ppmfn, char *docn )
+int grx_save_current_context_to_ppm( GrxContext *grc, char *ppmfn, char *docn )
 {
   FILE *f;
   GrxContext grcaux;
@@ -148,8 +148,8 @@ int grx_context_save_to_ppm( GrxContext *grc, char *ppmfn, char *docn )
 
   if( (f = fopen( ppmfn,"wb" )) == NULL ) return -1;
   
-  grx_context_save( &grcaux );
-  if( grc != NULL ) grx_context_set_current( grc );
+  grx_save_current_context( &grcaux );
+  if( grc != NULL ) grx_set_current_context( grc );
   sprintf( cab,"P6\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
@@ -163,7 +163,7 @@ int grx_context_save_to_ppm( GrxContext *grc, char *ppmfn, char *docn )
       brgb[2] = b;
       fwrite( brgb,1,3,f );
       }
-  grx_context_set_current( &grcaux );
+  grx_set_current_context( &grcaux );
   fclose( f );
 
   return 0;

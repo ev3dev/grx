@@ -65,10 +65,10 @@ int grx_context_load_from_jpeg( GrxContext *grc, char *jpegfn, int scale )
   f = fopen( jpegfn,"rb" );
   if( f == NULL ) return -1;
 
-  grx_context_save( &grcaux );
-  if( grc != NULL ) grx_context_set_current( grc );
+  grx_save_current_context( &grcaux );
+  if( grc != NULL ) grx_set_current_context( grc );
   r = readjpeg( f,grc,scale );
-  grx_context_set_current( &grcaux );
+  grx_set_current_context( &grcaux );
 
   fclose( f );
 

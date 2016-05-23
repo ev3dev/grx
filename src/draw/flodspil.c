@@ -128,8 +128,8 @@ void grx_context_flood_spill(GrxContext *ctx, int x1, int y1, int x2, int y2,
   GrxContext ctx_save;
   GrxColor *scanline;
 
-  grx_context_save(&ctx_save);
-  grx_context_set_current(ctx);
+  grx_save_current_context(&ctx_save);
+  grx_set_current_context(ctx);
 
   for(y = y1; y <= y2; ++y)
   {
@@ -143,7 +143,7 @@ void grx_context_flood_spill(GrxContext *ctx, int x1, int y1, int x2, int y2,
       grx_put_scanline(x1, x2, y, scanline, GRX_COLOR_MODE_WRITE);
     }
   }
-  grx_context_set_current(&ctx_save);
+  grx_set_current_context(&ctx_save);
 }
 
 /**
@@ -176,8 +176,8 @@ void grx_context_flood_spill2(GrxContext *ctx, int x1, int y1, int x2, int y2,
   GrxContext ctx_save;
   GrxColor *scanline;
 
-  grx_context_save(&ctx_save);
-  grx_context_set_current(ctx);
+  grx_save_current_context(&ctx_save);
+  grx_set_current_context(ctx);
 
   for(y = y1; y <= y2; ++y)
   {
@@ -193,5 +193,5 @@ void grx_context_flood_spill2(GrxContext *ctx, int x1, int y1, int x2, int y2,
       grx_put_scanline(x1, x2, y, scanline, GRX_COLOR_MODE_WRITE);
     }
   }
-  grx_context_set_current(&ctx_save);
+  grx_set_current_context(&ctx_save);
 }

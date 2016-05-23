@@ -509,7 +509,7 @@ int  GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y1, int _x2
   GrxColor colors, i;
   GrxContext safe;
 
-  if ( !_c ) _c = (GrxContext *)grx_context_get_current();
+  if ( !_c ) _c = (GrxContext *)grx_get_current_context();
 
 /*
   handle = creat(_filename, S_IWRITE);
@@ -527,10 +527,10 @@ int  GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y1, int _x2
   width = _x2 - _x1;
   height = _y2 - _y1;
 
-  grx_context_save(&safe);
-  grx_context_set_current(_c);
+  grx_save_current_context(&safe);
+  grx_set_current_context(_c);
   colors = grx_color_info_n_colors();
-  grx_context_set_current(&safe);
+  grx_set_current_context(&safe);
 
   if ( width % 4 ) width += 4 - (width % 4);
 

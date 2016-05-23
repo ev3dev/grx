@@ -184,8 +184,8 @@ void Message(int disp, char *txt, gvmode *gp) {
   if (disp) {
     GrxTextOptions to;
     GrxContext save;
-    grx_context_save(&save);
-    grx_context_set_current(NULL);
+    grx_save_current_context(&save);
+    grx_set_current_context(NULL);
     to.txo_font = &grx_font_pc6x8;
     to.txo_fgcolor.v = grx_color_info_get_white();
     to.txo_bgcolor.v = grx_color_info_get_black();
@@ -195,7 +195,7 @@ void Message(int disp, char *txt, gvmode *gp) {
     to.txo_yalign  = GRX_TEXT_VALIGN_TOP;
     grx_draw_string_with_text_options(msg,strlen(msg),0,0,&to);
     grx_draw_string_with_text_options(txt,strlen(txt),0,10,&to);
-    grx_context_set_current(&save);
+    grx_set_current_context(&save);
   }
 }
 
@@ -424,13 +424,13 @@ void xor_draw_blocks(GrxContext *c) {
   GrxContext save;
   int i;
 
-  grx_context_save(&save);
-  grx_context_set_current(c);
+  grx_save_current_context(&save);
+  grx_set_current_context(c);
   grx_clear_context(grx_color_info_get_black());
   for (i=28; i > 1; --i)
     grx_draw_filled_box(grx_get_max_x()/i,grx_get_max_y()/i,
                 (i-1)*grx_get_max_x()/i,(i-1)*grx_get_max_y()/i,grx_color_info_get_white()|GRX_COLOR_MODE_XOR);
-  grx_context_set_current(&save);
+  grx_set_current_context(&save);
 }
 
 void blit_measure(gvmode *gp, perfm *p,
@@ -441,13 +441,13 @@ void blit_measure(gvmode *gp, perfm *p,
   double seconds;
   GrxContext save;
 
-  grx_context_save(&save);
+  grx_save_current_context(&save);
   if (dst != src) {
-    grx_context_set_current(dst);
+    grx_set_current_context(dst);
     grx_clear_context(grx_color_info_get_black());
   }
   xor_draw_blocks(src);
-  grx_context_set_current(&save);
+  grx_set_current_context(&save);
 
   if (dst != NULL) {
     char *s = src != NULL ? "ram" : "video";
@@ -507,8 +507,8 @@ void blittest(gvmode *gp, XY_PAIRS *pairs, int ram) {
 
 #if BLIT_loops-0
   blit_measure(gp, &gp->blitv2v, xb, yb,
-               (GrxContext *)(RAMMODE(gp) ? grx_context_get_current() : NULL),
-               (GrxContext *)(RAMMODE(gp) ? grx_context_get_current() : NULL));
+               (GrxContext *)(RAMMODE(gp) ? grx_get_current_context() : NULL),
+               (GrxContext *)(RAMMODE(gp) ? grx_get_current_context() : NULL));
   if (!BLIT_FAIL(gp) && !ram) {
     GrxContext rc;
     GrxContext *rcp = grx_context_new(gp->w,gp->h,NULL,&rc);
@@ -611,10 +611,10 @@ void speedcheck(gvmode *gp, int print, int wait) {
   if (!MEASURED(rp) && !identical_measured(rp)) {
     GrxContext rc;
     if (grx_context_new_full(rp->fm,gp->w,gp->h,NULL,&rc)) {
-      grx_context_set_current(&rc);
+      grx_set_current_context(&rc);
       measure_one(rp, 1);
       grx_context_unref(&rc);
-      grx_context_set_current(NULL);
+      grx_set_current_context(NULL);
     }
   }
 #endif

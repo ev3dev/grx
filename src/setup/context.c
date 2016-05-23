@@ -241,7 +241,7 @@ void grx_context_unref(GrxContext *ctx)
 }
 
 /**
- * grx_context_set_current:
+ * grx_set_current_context:
  * @context: the context
  *
  * Sets the current context to @context.
@@ -251,7 +251,7 @@ void grx_context_unref(GrxContext *ctx)
  * pointer dereferencing is necessary.) The context stores all relevant
  * information about the video organization, coordinate limits, etc...
  */
-void grx_context_set_current(const GrxContext *context)
+void grx_set_current_context(const GrxContext *context)
 {
         if(!context) context = SCRN;
         sttcopy(CURC,context);
@@ -259,7 +259,7 @@ void grx_context_set_current(const GrxContext *context)
 }
 
 /**
- * grx_context_save: (skip)
+ * grx_save_current_context:
  * @where: (nullable): unused #GrxContext where the context will be saved or %NULL
  *
  * Saves a copy of the current context.
@@ -270,17 +270,17 @@ void grx_context_set_current(const GrxContext *context)
  * {
  *     GrxContext save;
  *
- *     grx_context_save (&save);
- *     grx_context_set_current (my_context);
+ *     grx_save_current_context (&save);
+ *     grx_set_current_context (my_context);
  *     // call some drawing functions
- *     grx_context_set_current (&save);
+ *     grx_set_current_context (&save);
  * }
  * ]|
  *
  * Returns: (nullable): @where or a new context if @where was %NULL. Returns
  *      %NULL on error.
  */
-GrxContext *grx_context_save(GrxContext *where)
+GrxContext *grx_save_current_context(GrxContext *where)
 {
         int flags = 0;
 

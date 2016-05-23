@@ -42,7 +42,7 @@ int main(void)
   grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPPM );
-  grx_context_save_to_pgm( grc,FIMAGEPGM,"TestPnm" );
+  grx_save_current_context_to_pgm( grc,FIMAGEPGM,"TestPnm" );
   grx_context_unref( grc );
   grx_draw_text_xy( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
@@ -65,7 +65,7 @@ int main(void)
   grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPBM );
-  grx_context_save_to_pbm( grc,FIMAGEPBM2,"TestPnm" );
+  grx_save_current_context_to_pbm( grc,FIMAGEPBM2,"TestPnm" );
   grx_context_unref( grc );
   grx_draw_text_xy( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
@@ -89,7 +89,7 @@ int main(void)
   grx_draw_text_xy( 10,20,"Press any key to save screen",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
-  grx_context_save_to_ppm( NULL,FSCREEN,"TestPnm" );
+  grx_save_current_context_to_ppm( NULL,FSCREEN,"TestPnm" );
   grx_clear_screen( grx_color_info_get_white() );
   grx_draw_text_xy( 10,20,"Press any key to reload screen",grx_color_info_get_white(),grx_color_info_get_black() );
   GrKeyRead();

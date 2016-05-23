@@ -108,6 +108,11 @@ extern const struct _GR_contextInfo {
 
 #endif /* __GI_SCANNER__ */
 
+GrxContext *grx_get_screen_context(void);
+GrxContext *grx_get_current_context(void);
+void  grx_set_current_context(const GrxContext *context);
+GrxContext *grx_save_current_context(GrxContext *where);
+
 GType       grx_context_get_type(void);
 GrxContext *grx_context_new(gint w, gint h, GrxFrameMemory *memory, GrxContext *where);
 GrxContext *grx_context_new_full(GrxFrameMode mode, gint w, gint h,
@@ -115,12 +120,6 @@ GrxContext *grx_context_new_full(GrxFrameMode mode, gint w, gint h,
 GrxContext *grx_context_new_subcontext(gint x1, gint y1, gint x2, gint y2,
                                        const GrxContext *parent, GrxContext *where);
 void  grx_context_resize_subcontext(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
-
-void  grx_context_set_current(const GrxContext *context);
-GrxContext *grx_context_get_current(void);
-GrxContext *grx_context_get_screen(void);
-
-GrxContext *grx_context_save(GrxContext *where);
 
 GrxContext *grx_context_ref(GrxContext *context);
 void grx_context_unref(GrxContext *context);
@@ -149,8 +148,8 @@ void grx_context_reset_clip_box(GrxContext *context);
 #ifndef GRX_SKIP_INLINES
 #define grx_context_new(w,h,m,c) \
     (grx_context_new_full(grx_get_core_frame_mode(),w,h,m,c))
-#define grx_context_get_current()   ((GrxContext *)(&GrContextInfo->current))
-#define grx_context_get_screen()    ((GrxContext *)(&GrContextInfo->screen))
+#define grx_get_current_context()   ((GrxContext *)(&GrContextInfo->current))
+#define grx_get_screen_context()    ((GrxContext *)(&GrContextInfo->screen))
 #define grx_context_get_clip_box(C,x1p,y1p,x2p,y2p) do {    \
     *(x1p) = (C)->x_clip_low;                               \
     *(y1p) = (C)->y_clip_low;                               \

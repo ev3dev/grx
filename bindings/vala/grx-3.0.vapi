@@ -567,8 +567,13 @@ namespace Grx {
         public static Context? create_subcontext (int x1, int y1, int x2, int y2, Context parent, out Context? where = null);
         public static Context? save (out Context? where = null);
 
-        public static unowned Context current { get; set; }
-        public static unowned Context screen { get; }
+        public static unowned Context current {
+            [CCode (cname = "grx_get_current_context")]get;
+            [CCode (cname = "grx_set_current_context")]set;
+        }
+        public static unowned Context screen {
+            [CCode (cname = "grx_get_screen_context")]get;
+        }
 
         public void resize_subcontext (int x1, int y1, int x2, int y2);
 
@@ -1151,7 +1156,7 @@ namespace Grx {
 
         public static Pattern new_pixmap ([CCode (array_length = false)]char *pixels, int w, int h, ColorTable colors);
         public static Pattern new_pixmap_from_bits ([CCode (array_length = false)]char *bits, int w, int h, Color fgc, Color bgc);
-        public static Pattern new_pixmap_from_context (GrxContext context);
+        public static Pattern new_pixmap_from_context (Context context);
     }
 
     /**
