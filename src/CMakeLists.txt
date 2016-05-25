@@ -62,6 +62,8 @@ set (LINUX_SOURCE_FILES
     image/imginlne.c
     image/iplot.c
     image/istretch.c
+    input/libinput_device.c
+    input/libinput_device_manager.c
     gformats/ctx2pnm.c
     gformats/pnm2ctx.c
     mouse/bldcurs.c
@@ -263,6 +265,9 @@ set (GTKDOC_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/extents.h
     ${CMAKE_SOURCE_DIR}/include/grx/gformats.h
     ${CMAKE_SOURCE_DIR}/include/grx/image.h
+    ${CMAKE_SOURCE_DIR}/include/grx/input.h
+    ${CMAKE_SOURCE_DIR}/include/grx/libinput_device.h
+    ${CMAKE_SOURCE_DIR}/include/grx/libinput_device_manager.h
     ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h
     ${CMAKE_SOURCE_DIR}/include/grx/mode.h
     ${CMAKE_SOURCE_DIR}/include/grx/pattern.h

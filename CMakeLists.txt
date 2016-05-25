@@ -19,7 +19,11 @@ if (GRX_LINUXFB)
     add_definitions ("-DFRAMEBUFFER_DRIVER -DLFB_BY_NEAR_POINTER")
 endif (GRX_LINUXFB)
 
+# we have local cmake modules
+
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
+# dependencies
 
 include(GNUInstallDirs)
 set (CMAKE_INSTALL_PKGDATADIR ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
@@ -27,10 +31,12 @@ set (CMAKE_INSTALL_PKGDATADIR ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
 find_package (JPEG REQUIRED)
 include_directories (${JPEG_INCLUDE_DIR})
 
-set (MODULES libpng12 glib-2.0 gio-2.0 gobject-2.0)
+set (MODULES libudev libinput libpng12 glib-2.0 gio-2.0 gobject-2.0)
 find_package (PkgConfig REQUIRED)
 pkg_check_modules (DEPS REQUIRED ${MODULES})
 include_directories (${DEPS_INCLUDE_DIRS})
+
+# global stuff
 
 include_directories (include)
 

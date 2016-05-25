@@ -937,8 +937,7 @@ namespace Grx {
     }
 
     [CCode (has_type_id = false)]
-    [SimpleType]
-    public struct TextColor : uint32 {
+    public struct TextColor {
         [CCode (cname = "v")]
         public Color as_color;
         [CCode (cname = "p")]
@@ -1403,6 +1402,80 @@ namespace Grx {
     /* ================================================================== */
 
     public void resize_gray_map (uchar *map, int pitch, int old_width, int old_height, int new_width, int new_height);
+
+    /* Input */
+
+    [CCode (has_type_id = false)]
+    public enum InputEventType {
+        NONE,
+        KEY_UP,
+        KEY_DOWN,
+        BUTTON_PRESS,
+        BUTTON_RELEASE,
+        BUTTON_DOUBLE_PRESS,
+        TOUCH_DOWN,
+        TOUCH_MOTION,
+        TOUCH_UP,
+        TOUCH_CANCEL,
+    }
+
+    [CCode (has_type_id = false)]
+    public struct AnyEvent {
+        InputEventType type;
+        LibinputDevice *device;
+    }
+
+    [CCode (has_type_id = false)]
+    public struct KeyEvent {
+        InputEventType type;
+        LibinputDevice *device;
+        uint key;
+    }
+
+    [CCode (has_type_id = false)]
+    public struct ButtonEvent {
+        InputEventType type;
+        LibinputDevice *device;
+        uint button;
+    }
+
+    [CCode (has_type_id = false)]
+    public struct TouchEvent {
+        InputEventType type;
+        LibinputDevice *device;
+        int id;
+        int x;
+        int y;
+    }
+
+    [CCode (has_type_id = false)]
+    public struct InputEvent {
+        InputEventType type;
+        AnyEvent any;
+        KeyEvent key;
+        ButtonEvent button;
+        TouchEvent touch;
+    }
+
+    public class LibinputDeviceManagerSource : GLib.Source {
+    }
+
+    public delegate void LibinputDeviceManagerSourceFunc (InputEvent event);
+
+    public class LibinputDeviceManager : GLib.Object, GLib.Initable {
+        public LibinputDeviceManager (GLib.Cancellable? cancellable = null) throws GLib.Error;
+        public void event_add (owned LibinputDeviceManagerSourceFunc func);
+        public signal void device_added (LibinputDevice device);
+        public signal void device_removed (LibinputDevice device);
+    }
+
+    public class LibinputDevice : GLib.Object {
+        public string name { get; }
+        public string sysname { get; }
+        public bool has_keyboard { get; }
+        public bool has_pointer { get; }
+        public bool has_touch { get; }
+    }
 
     public class LinuxConsoleApplication : GLib.Application, GLib.Initable {
         public LinuxConsoleApplication.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
