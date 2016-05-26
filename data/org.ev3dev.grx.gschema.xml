@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<schemalist>
+  <schema id="org.ev3dev.grx.input.device">
+    <key name='calibration' type='(dddddd)'>
+      <default>(1, 0 ,0, 0, 1, 0)</default>
+      <summary>Calibration matrix</summary>
+      <description>
+        See libinput_device_config_calibration_set_matrix() docs for a
+        description of this matrix.
+      </description>
+    </key>
+  </schema>
+</schemalist>

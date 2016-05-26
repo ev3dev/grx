@@ -39,8 +39,15 @@
 typedef struct _GrxLinuxConsoleApplication GrxLinuxConsoleApplication;
 typedef struct _GrxLinuxConsoleApplicationClass GrxLinuxConsoleApplicationClass;
 
+/**
+ * GrxLinuxConsoleApplication:
+ *
+ * #GrxLinuxConsoleApplication is an opaque data structure and can only be
+ * accessed using the following functions.
+ */
 struct _GrxLinuxConsoleApplication
 {
+    /*<private>*/
     GApplication parent_instance;
 };
 
@@ -48,11 +55,18 @@ GType grx_linux_console_application_get_type (void);
 
 // end of code that could be replaced with G_DECLARE_DERIVABLE_TYPE
 
-struct _GrxLinuxConsoleApplicationClass
-{
-    /*< private >*/
+/**
+ * GrxLinuxConsoleApplicationClass:
+ * @parent_class: the parent class struct
+ * @input_event: The input event handler. Subclasses should override this method
+ *               if they are interested in input events. No need to chain up as
+ *               the default implementation does nothing.
+ * @reserved: for future use
+ */
+struct _GrxLinuxConsoleApplicationClass {
     GApplicationClass parent_class;
-    gpointer reserved[12];
+    void (*input_event) (GrxLinuxConsoleApplication *application, GrxInputEvent *event);
+    gpointer reserved[6];
 };
 
 GrxLinuxConsoleApplication *

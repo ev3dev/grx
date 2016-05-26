@@ -1464,7 +1464,7 @@ namespace Grx {
 
     public class LibinputDeviceManager : GLib.Object, GLib.Initable {
         public LibinputDeviceManager (GLib.Cancellable? cancellable = null) throws GLib.Error;
-        public void event_add (owned LibinputDeviceManagerSourceFunc func);
+        public uint event_add (owned LibinputDeviceManagerSourceFunc func);
         public signal void device_added (LibinputDevice device);
         public signal void device_removed (LibinputDevice device);
     }
@@ -1475,11 +1475,14 @@ namespace Grx {
         public bool has_keyboard { get; }
         public bool has_pointer { get; }
         public bool has_touch { get; }
+        public bool calibrate ([CCode (array_length = 6)]float matrix[]);
     }
 
     public class LinuxConsoleApplication : GLib.Application, GLib.Initable {
         public LinuxConsoleApplication.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
         public bool init (GLib.Cancellable? cancellable = null) throws GLib.Error;
+        public virtual void input_event (InputEvent event);
+        public LibinputDeviceManager device_manager { get; }
         public bool is_console_active { [CCode (cname = "grx_linux_console_application_is_console_active")]get; }
     }
 }

@@ -451,15 +451,18 @@ GSource *grx_libinput_device_manager_source_new (GrxLibinputDeviceManager *conte
     return source;
 }
 
-void grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context,
+guint grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context,
                                      GrxLibinputDeviceManagerSourceFunc func,
                                      gpointer user_data, GDestroyNotify notify)
 {
     GrxLibinputDeviceManagerPrivate *priv = context->private;
     GSource *source;
+    guint id;
 
     source = grx_libinput_device_manager_source_new (context);
     g_source_set_callback (source, (GSourceFunc)func, user_data, notify);
-    g_source_attach (source, g_main_context_default ());
+    id = g_source_attach (source, g_main_context_default ());
     g_source_unref (source);
+
+    return id;
 }

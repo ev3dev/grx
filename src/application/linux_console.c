@@ -16,10 +16,14 @@
 
 #include <glib.h>
 #include <glib-unix.h>
+#include <gio/gio.h>
+#define G_SETTINGS_ENABLE_BACKEND
+#include <gio/gsettingsbackend.h>
 
 #include <grx/context.h>
 #include <grx/draw.h>
 #include <grx/extents.h>
+#include <grx/libinput_device_manager.h>
 #include <grx/linux_console_application.h>
 #include <grx/mode.h>
 
@@ -42,22 +46,14 @@
  * the application running on the active console.
  */
 
-/**
- * GrxLinuxConsoleApplication:
- *
- * #GrxLinuxConsoleApplication is an opaque data structure and can only be
- * accessed using the following functions.
- */
-
-/**
- * GrxLinuxConsoleApplicationClass:
- *
- * Nothing here yet.
- */
-
 typedef struct {
     gboolean owns_fb;
     GrxContext *save;
+    GSettingsBackend *settings_backend;
+    GrxLibinputDeviceManager *device_manager;
+    gulong device_added_signal_id;
+    guint device_manager_event_id;
+    guint sigusr1_id;
 } GrxLinuxConsoleApplicationPrivate;
 
 static void initable_interface_init (GInitableIface *iface);
@@ -71,11 +67,29 @@ G_DEFINE_TYPE_WITH_CODE (GrxLinuxConsoleApplication,
 
 enum {
     PROP_0,
+    PROP_DEVICE_MANAGER,
     PROP_IS_CONSOLE_ACTIVE,
     N_PROPERTIES
 };
 
 static GParamSpec *properties[N_PROPERTIES] = { NULL };
+
+/**
+ * grx_linux_console_application_get_device_manager:
+ * @application: a #GrxLinuxConsoleApplication
+ *
+ * Gets the #GrxLibinputDeviceManager for this application.
+ *
+ * Returns: (transfer none): the #GrxLibinputDeviceManager
+ */
+GrxLibinputDeviceManager *
+grx_linux_console_application_get_device_manager (GrxLinuxConsoleApplication *application)
+{
+    GrxLinuxConsoleApplicationPrivate *priv =
+        grx_linux_console_application_get_instance_private (application);
+
+    return priv->device_manager;
+}
 
 /**
  * grx_linux_console_application_is_console_active:
@@ -117,10 +131,12 @@ get_property (GObject *object, guint property_id, GValue *value,
         grx_linux_console_application_get_instance_private (self);
 
     switch (property_id) {
+    case PROP_DEVICE_MANAGER:
+        g_value_set_object (value, priv->device_manager);
+        break;
     case PROP_IS_CONSOLE_ACTIVE:
         g_value_set_boolean (value, priv->owns_fb);
         break;
-
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         break;
@@ -156,11 +172,35 @@ static void startup (GApplication *application)
 }
 
 static void
+input_event (GrxLinuxConsoleApplication *application, GrxInputEvent *event)
+{
+}
+
+static void finalize (GObject *object)
+{
+    GrxLinuxConsoleApplication *self = GRX_LINUX_CONSOLE_APPLICATION (object);
+    GrxLinuxConsoleApplicationPrivate *priv =
+            grx_linux_console_application_get_instance_private (self);
+
+    g_source_remove (priv->sigusr1_id);
+    g_source_remove (priv->device_manager_event_id);
+    g_signal_handler_disconnect (priv->device_manager, priv->device_added_signal_id);
+    g_object_unref (priv->device_manager);
+    g_object_unref (priv->settings_backend);
+}
+
+static void
 grx_linux_console_application_class_init (GrxLinuxConsoleApplicationClass *klass)
 {
     G_OBJECT_CLASS (klass)->set_property = set_property;
     G_OBJECT_CLASS (klass)->get_property = get_property;
 
+    properties[PROP_DEVICE_MANAGER] =
+        g_param_spec_object ("device-manager",
+                             "input device manager",
+                             "the input device manager for this application.",
+                             GRX_TYPE_LIBINPUT_DEVICE_MANAGER,
+                             G_PARAM_READABLE);
     properties[PROP_IS_CONSOLE_ACTIVE] =
         g_param_spec_boolean ("is-console-active",
                               "console is active",
@@ -172,11 +212,25 @@ grx_linux_console_application_class_init (GrxLinuxConsoleApplicationClass *klass
                                        properties);
 
     G_APPLICATION_CLASS (klass)->startup = startup;
+    G_OBJECT_CLASS (klass)->finalize = finalize;
+
+    klass->input_event = input_event;
 }
 
 static void
 grx_linux_console_application_init (GrxLinuxConsoleApplication *self)
 {
+    GrxLinuxConsoleApplicationPrivate *priv =
+        grx_linux_console_application_get_instance_private (self);
+    const gchar *file_path;
+
+    file_path = g_getenv ("GRX_CONF");
+    if (!file_path) {
+        file_path = "/etc/grx.conf";
+    }
+    priv->settings_backend = g_keyfile_settings_backend_new (file_path,
+        "/org/ev3dev/grx/", "grx");
+    priv->device_manager = g_object_new (GRX_TYPE_LIBINPUT_DEVICE_MANAGER, NULL);
 }
 
 /* interface implementation */
@@ -237,6 +291,51 @@ static gboolean console_switch_handler (gpointer user_data)
     return G_SOURCE_CONTINUE;
 }
 
+static void on_input_event (GrxInputEvent *event, gpointer user_data)
+{
+    GrxLinuxConsoleApplication *self = GRX_LINUX_CONSOLE_APPLICATION (user_data);
+    GrxLinuxConsoleApplicationClass *klass =
+        GRX_LINUX_CONSOLE_APPLICATION_GET_CLASS (self);
+
+    klass->input_event (self, event);
+}
+
+static void on_device_added (GrxLibinputDeviceManager *device_manager,
+                             GrxLibinputDevice *device,
+                             GrxLinuxConsoleApplication *self)
+{
+    GrxLinuxConsoleApplicationPrivate *priv =
+        grx_linux_console_application_get_instance_private (self);
+    gchar path[256];
+    GSettings *settings;
+    GVariant *value;
+
+    /* Get settings for this specific device */
+    g_snprintf (path, 256, "/org/ev3dev/grx/input/device/%s/",
+                grx_libinput_device_get_name (device));
+    settings = g_settings_new_with_backend_and_path (
+        "org.ev3dev.grx.input.device", priv->settings_backend, path);
+
+    /* load calibration only if it is set */
+    value = g_settings_get_user_value (settings, "calibration");
+    if (value) {
+        gdouble a, b, c, d, e, f;
+        gfloat matrix[6];
+
+        g_variant_get (value, "(dddddd)", &a, &b, &c, &d, &e, &f);
+        matrix[0] = a;
+        matrix[1] = b;
+        matrix[2] = c;
+        matrix[3] = d;
+        matrix[4] = e;
+        matrix[5] = f;
+        grx_libinput_device_calibrate (device, matrix);
+        g_variant_unref (value);
+    }
+
+    g_object_unref (settings);
+}
+
 static gboolean init (GInitable *initable, GCancellable *cancellable,
                       GError **error)
 {
@@ -244,6 +343,15 @@ static gboolean init (GInitable *initable, GCancellable *cancellable,
     GrxLinuxConsoleApplicationPrivate *priv =
         grx_linux_console_application_get_instance_private (self);
     gboolean ret;
+
+    ret = g_initable_init (G_INITABLE (priv->device_manager), cancellable, error);
+    if (!ret) {
+        return ret;
+    }
+    priv->device_manager_event_id = grx_libinput_device_manager_event_add (
+        priv->device_manager, on_input_event, self, NULL);
+    priv->device_added_signal_id = g_signal_connect (priv->device_manager,
+        "device-added", G_CALLBACK (on_device_added), self);
 
     grx_set_error_handling (FALSE);
     ret = grx_set_mode_default_graphics (TRUE);
@@ -254,7 +362,7 @@ static gboolean init (GInitable *initable, GCancellable *cancellable,
     }
 
     priv->owns_fb = TRUE;
-    g_unix_signal_add (SIGUSR1, console_switch_handler, initable);
+    priv->sigusr1_id = g_unix_signal_add (SIGUSR1, console_switch_handler, initable);
     g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_IS_CONSOLE_ACTIVE]);
 
     return g_application_register (G_APPLICATION (initable), cancellable, error);

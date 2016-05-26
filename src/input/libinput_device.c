@@ -225,17 +225,34 @@ grx_libinput_device_new (struct libinput_device *device)
     priv->device = libinput_device_ref (device);
     libinput_device_set_user_data (device, instance);
 
-    if (libinput_device_config_calibration_has_matrix (device)) {
-        enum libinput_config_status status;
-        const float matrix[6] = { 0, -1.141, 1.025, 1.161, -0.021, -0.076 };
+    return instance;
+}
 
-        status = libinput_device_config_calibration_set_matrix (device,
+/* methods */
+
+/**
+ * grx_libinput_device_calibrate:
+ * @device: the device
+ * @matrix: (array fixed-size=6): calibration matrix
+ *
+ * Calibrates the device
+ *
+ * Returns: %TRUE if calibration was successful
+ */
+gboolean
+grx_libinput_device_calibrate (GrxLibinputDevice *device, float matrix[6])
+{
+    GrxLibinputDevicePrivate *priv = device->private;
+
+    if (libinput_device_config_calibration_has_matrix (priv->device)) {
+        enum libinput_config_status status;
+
+        status = libinput_device_config_calibration_set_matrix (priv->device,
                                                                 matrix);
-        if (status == LIBINPUT_CONFIG_STATUS_INVALID) {
-            g_critical ("Failed to load calibration data for '%s'",
-                        libinput_device_get_name (device));
+        if (status == LIBINPUT_CONFIG_STATUS_SUCCESS) {
+            return TRUE;
         }
     }
-
-    return instance;
+    // TODO: this method could return a GError to provide more info on why it failed
+    return FALSE;
 }

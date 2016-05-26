@@ -93,7 +93,7 @@ GType grx_libinput_device_manager_get_type (void);
 GrxLibinputDeviceManager *
 grx_libinput_device_manager_new (GCancellable *cancellable, GError **error);
 GSource *grx_libinput_device_manager_source_new (GrxLibinputDeviceManager *context);
-void grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context,
+guint grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context,
                                      GrxLibinputDeviceManagerSourceFunc func,
                                      gpointer user_data, GDestroyNotify notify);
 

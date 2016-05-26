@@ -30,7 +30,6 @@ public class CalibrateApplication : LinuxConsoleApplication {
         ERROR
     }
 
-    LibinputDeviceManager input_device_manager;
     int width;
     int height;
     int half_line_length;
@@ -48,6 +47,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
     Point screen_points[4];
     Point touch_points[4];
     string error_message;
+    LibinputDevice? device;
 
     public CalibrateApplication () throws Error {
         Object ();
@@ -69,8 +69,6 @@ public class CalibrateApplication : LinuxConsoleApplication {
             bg_color = (TextColor)Color.black,
             x_align = TextAlignment.CENTER
         };
-        input_device_manager = new LibinputDeviceManager ();
-        input_device_manager.event_add (on_event);
     }
 
     public signal void key_pressed ();
@@ -85,7 +83,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
 
     async void calibrate (Cancellable cancellable) {
 
-        ulong device_added_id = input_device_manager.device_added.connect ((device) => {
+        ulong device_added_id = device_manager.device_added.connect ((device) => {
             message ("Added: %s (%s)", device.name, device.sysname);
             if (device.has_keyboard) {
                 keyboard_device_count++;
@@ -96,7 +94,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
             Idle.add (calibrate.callback);
         });
 
-        ulong device_removed_id = input_device_manager.device_removed.connect ((device) => {
+        ulong device_removed_id = device_manager.device_removed.connect ((device) => {
             message ("Removed: %s (%s)", device.name, device.sysname);
             if (device.has_keyboard) {
                 keyboard_device_count--;
@@ -118,6 +116,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
             case InputEventType.TOUCH_DOWN:
                 waiting_for_touch = false;
                 if (is_accumulating) {
+                    device = event.device;
                     min_x = max_x = event.x;
                     min_y = max_y = event.y;
                     Timeout.add (500, () => {
@@ -249,6 +248,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
                         message ("Touch point 4 min/max - x: %d/%d - y: %d/%d",
                             min_x, max_x, min_y, max_y);
                         message ("screen\ttouch");
+                        message ("----------------");
                         for (int i = 0; i < 4; i++) {
                             message ("%d,%d\t%d,%d",
                                 screen_points[i].x, screen_points[i].y,
@@ -277,8 +277,8 @@ public class CalibrateApplication : LinuxConsoleApplication {
             }
         }
 
-        input_device_manager.disconnect (device_added_id);
-        input_device_manager.disconnect (device_removed_id);
+        device_manager.disconnect (device_added_id);
+        device_manager.disconnect (device_removed_id);
         disconnect (key_pressed_id);
         disconnect (touched_id);
     }
@@ -404,7 +404,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
         clear_timeout_text ();
     }
 
-    void on_event (InputEvent event) {
+    public override void input_event (InputEvent event) {
         switch (event.type) {
         case InputEventType.KEY_UP:
             key_pressed ();
@@ -483,6 +483,10 @@ public class CalibrateApplication : LinuxConsoleApplication {
         message ("[ % 0.6f % 0.6f % 0.6f ]", a, b, c);
         message ("[ % 0.6f % 0.6f % 0.6f ]", d, e, f);
         message ("[ % 0.6f % 0.6f % 0.6f ]", 0, 0, 1);
+
+        var device_settings = new Settings.with_backend_and_path ("org.ev3dev.grx.input.device",
+            settings_backend, "/org/ev3dev/grx/input/device/%s/".printf (device.name));
+        device_settings.set ("calibration", "(dddddd)", a, b, c, d, e, f);
     }
 
     /*
