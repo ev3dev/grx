@@ -543,10 +543,12 @@ public class CalibrateApplication : LinuxConsoleApplication {
 public static int main (string [] argv) {
     try {
         var app = new CalibrateApplication ();
-        app.run ();
+        // TODO: this will return exit status of 0 even if the calibration
+        // failed/the program timed out, etc. There is not way to override the
+        // return value of the run method other than an early exit when using
+        // command line options.
+        return app.run (argv);
     } catch (Error err) {
         error ("%s", err.message);
     }
-
-    return 0;
 }
