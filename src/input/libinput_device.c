@@ -157,23 +157,23 @@ grx_libinput_device_class_init (GrxLibinputDeviceClass *klass)
                              NULL /* default value */,
                              G_PARAM_READABLE);
     properties[PROP_HAS_KEYBOARD] =
-        g_param_spec_string ("has-keyboard",
-                             "device has keyboard",
-                             "Gets if the device has keyboard keys",
-                             FALSE /* default value */,
-                             G_PARAM_READABLE);
+        g_param_spec_boolean ("has-keyboard",
+                              "device has keyboard",
+                              "Gets if the device has keyboard keys",
+                              FALSE /* default value */,
+                              G_PARAM_READABLE);
     properties[PROP_HAS_POINTER] =
-        g_param_spec_string ("has-pointer",
-                             "device has pointer",
-                             "Gets if the device has a pointing device and/or buttons",
-                             FALSE /* default value */,
-                             G_PARAM_READABLE);
+        g_param_spec_boolean ("has-pointer",
+                              "device has pointer",
+                              "Gets if the device has a pointing device and/or buttons",
+                              FALSE /* default value */,
+                              G_PARAM_READABLE);
     properties[PROP_HAS_TOUCH] =
-        g_param_spec_string ("has-touch",
-                             "device has touch",
-                             "Gets if the device has a touchscreen",
-                             FALSE /* default value */,
-                             G_PARAM_READABLE);
+        g_param_spec_boolean ("has-touch",
+                              "device has touch",
+                              "Gets if the device has a touchscreen",
+                              FALSE /* default value */,
+                              G_PARAM_READABLE);
     g_object_class_install_properties (G_OBJECT_CLASS (klass),
                                        N_PROPERTIES,
                                        properties);
