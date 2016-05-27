@@ -44,6 +44,7 @@ set (LIBRARY_NAME ${PROJECT_NAME}-${GIR_VERSION})
 set (SHARED_LIBRARY_NAME ${LIBRARY_NAME}-shared)
 set (STATIC_LIBRARY_NAME ${LIBRARY_NAME}-static)
 add_subdirectory (src)
+add_subdirectory (tools)
 add_subdirectory (example EXCLUDE_FROM_ALL)
 add_subdirectory (test EXCLUDE_FROM_ALL)
 
