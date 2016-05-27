@@ -1,11 +1,12 @@
 GRX 3
 =====
 
-GRX 3 is a graphics library for simple graphics displays.
+GRX 3 is a graphics library for simple graphics displays. It also includes
+keyboard, mouse, joystick and touchscreen input support.
 
 It is developed and maintained by [ev3dev.org](http://www.ev3dev.org) for use
 with [LEGO MINDSTORMS EV3](http://mindstorms.lego.com). It also works great
-with other displays like Adafruit's PiFTF displays.
+with other displays like Adafruit's PiTFT displays.
 
 
 About/FAQ
