@@ -88,7 +88,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
     async void calibrate (Cancellable cancellable) {
 
         ulong device_added_id = device_manager.device_added.connect ((device) => {
-            message ("Added: %s (%s)", device.name, device.sysname);
+            debug ("Added: %s (%s)", device.name, device.sysname);
             if (device.has_keyboard) {
                 keyboard_device_count++;
             }
@@ -100,7 +100,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
         });
 
         ulong device_removed_id = device_manager.device_removed.connect ((device) => {
-            message ("Removed: %s (%s)", device.name, device.sysname);
+            debug ("Removed: %s (%s)", device.name, device.sysname);
             if (device.has_keyboard) {
                 keyboard_device_count--;
             }
@@ -111,7 +111,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
         });
 
         ulong key_pressed_id = key_pressed.connect (() => {
-            message ("Key pressed");
+            debug ("Key pressed");
             cancellable.cancel ();
             Idle.add (calibrate.callback);
         });
@@ -205,7 +205,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
                     } else {
                         state = State.TOUCH_POINT_2;
                         is_accumulating = true;
-                        message ("Touch point 1 min/max - x: %d/%d - y: %d/%d",
+                        debug ("Touch point 1 min/max - x: %d/%d - y: %d/%d",
                             min_x, max_x, min_y, max_y);
                     }
                 }
@@ -220,7 +220,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
                     } else {
                         state = State.TOUCH_POINT_3;
                         is_accumulating = true;
-                        message ("Touch point 2 min/max - x: %d/%d - y: %d/%d",
+                        debug ("Touch point 2 min/max - x: %d/%d - y: %d/%d",
                             min_x, max_x, min_y, max_y);
                     }
                 }
@@ -235,7 +235,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
                     } else {
                         state = State.TOUCH_POINT_4;
                         is_accumulating = true;
-                        message ("Touch point 3 min/max - x: %d/%d - y: %d/%d",
+                        debug ("Touch point 3 min/max - x: %d/%d - y: %d/%d",
                             min_x, max_x, min_y, max_y);
                     }
                 }
@@ -250,12 +250,12 @@ public class CalibrateApplication : LinuxConsoleApplication {
                     } else {
                         state = State.SUCCESS;
                         waiting_for_touch = true;
-                        message ("Touch point 4 min/max - x: %d/%d - y: %d/%d",
+                        debug ("Touch point 4 min/max - x: %d/%d - y: %d/%d",
                             min_x, max_x, min_y, max_y);
-                        message ("screen\ttouch");
-                        message ("----------------");
+                        debug ("screen\ttouch");
+                        debug ("----------------");
                         for (int i = 0; i < 4; i++) {
-                            message ("%d,%d\t%d,%d",
+                            debug ("%d,%d\t%d,%d",
                                 screen_points[i].x, screen_points[i].y,
                                 touch_points[i].x, touch_points[i].y);
                         }
@@ -517,10 +517,10 @@ public class CalibrateApplication : LinuxConsoleApplication {
         var e = determinant (tx1, sy1, 1,   tx2, sy2, 1,   tx3, sy3, 1) / det;
         var f = determinant (tx1, ty1, sy1, tx2, ty2, sy2, tx3, ty3, sy3) / det;
 
-        message ("calibration matrix:");
-        message ("[ % 0.6f % 0.6f % 0.6f ]", a, b, c);
-        message ("[ % 0.6f % 0.6f % 0.6f ]", d, e, f);
-        message ("[ % 0.6f % 0.6f % 0.6f ]", 0, 0, 1);
+        debug ("calibration matrix:");
+        debug ("[ % 0.6f % 0.6f % 0.6f ]", a, b, c);
+        debug ("[ % 0.6f % 0.6f % 0.6f ]", d, e, f);
+        debug ("[ % 0.6f % 0.6f % 0.6f ]", 0, 0, 1);
 
         return { a, b, c, d, e, f };
     }
