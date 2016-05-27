@@ -265,7 +265,7 @@ set (GTKDOC_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/extents.h
     ${CMAKE_SOURCE_DIR}/include/grx/gformats.h
     ${CMAKE_SOURCE_DIR}/include/grx/image.h
-    ${CMAKE_SOURCE_DIR}/include/grx/input.h
+    ${CMAKE_SOURCE_DIR}/include/grx/input_event.h
     ${CMAKE_SOURCE_DIR}/include/grx/libinput_device.h
     ${CMAKE_SOURCE_DIR}/include/grx/libinput_device_manager.h
     ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h

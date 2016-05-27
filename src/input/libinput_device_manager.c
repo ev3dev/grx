@@ -29,18 +29,6 @@
 
 #include "libinput_device_internal.h"
 
-/**
- * GrxLibinputDeviceManager:
- *
- * #GrxLibinputDeviceManager is an opaque data structure and can only be
- * accessed using the following functions.
- */
-
-/**
- * GrxLibinputDeviceManagerClass:
- *
- * Nothing here yet.
- */
 
 // TODO: make double press time configurable
 #define DOUBLE_PRESS_TIME 500

@@ -23,19 +23,6 @@
 
 #include <grx/libinput_device.h>
 
-/**
- * GrxLibinputDevice:
- *
- * #GrxLibinputDevice is an opaque data structure and can only be
- * accessed using the following functions.
- */
-
-/**
- * GrxLibinputDeviceClass:
- *
- * Nothing here yet.
- */
-
 typedef struct {
     struct libinput_device *device;
 } GrxLibinputDevicePrivate;

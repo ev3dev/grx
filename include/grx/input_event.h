@@ -1,5 +1,5 @@
 /*
- * input.h
+ * input_event.h
  *
  * Copyright (c) 2016 David Lechner <david@lechnology.com>
  * This file is part of the GRX graphics library.
@@ -13,8 +13,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#ifndef __GRX_INPUT_CONTEXT_H__
-#define __GRX_INPUT_CONTEXT_H__
+#ifndef __GRX_INPUT_EVENT_H__
+#define __GRX_INPUT_EVENT_H__
 
 #include <glib.h>
 #include <glib-object.h>
@@ -23,10 +23,10 @@
 #include <grx/libinput_device.h>
 
 /**
- * SECTION:input
- * @short_description: Common input framework
- * @title: Input
- * @section_id: input
+ * SECTION:input_event
+ * @short_description: TODO
+ * @title: Input Events
+ * @section_id: input_event
  * @include: grx-3.0.h
  *
  * TODO
@@ -93,4 +93,4 @@ typedef union {
     GrxTouchEvent touch;
 } GrxInputEvent;
 
-#endif /* __GRX_INPUT_CONTEXT_H__ */
+#endif /* __GRX_INPUT_EVENT_H__ */

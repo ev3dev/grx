@@ -32,10 +32,14 @@
       <xi:include href="xml/text.xml"/>
       <xi:include href="xml/user.xml"/>
     </chapter>
+    <chapter id="input">
+      <title>Keyboard, Mouse and Touchscreen Input</title>
+      <xi:include href="xml/input_event.xml"/>
+      <xi:include href="xml/libinput_device_manager.xml"/>
+      <xi:include href="xml/libinput_device.xml"/>
+    </chapter>
     <chapter id="applications">
       <title>Applications</title>
-      <xi:include href="xml/input.xml"/>
-      <xi:include href="xml/libinput.xml"/>
       <xi:include href="xml/linux_console_application.xml"/>
     </chapter>
   </part>

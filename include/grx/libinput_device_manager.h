@@ -20,13 +20,13 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
-#include <grx/input.h>
+#include <grx/input_event.h>
 
 /**
- * SECTION:libinput
- * @short_description: Linux input driver using libinput
- * @title: Libinput
- * @section_id: libinput
+ * SECTION:libinput_device_manager
+ * @short_description: Device manager for Linux input devices using libinput
+ * @title: Libinput Device Manager
+ * @section_id: libinput_device_manager
  * @include: grx-3.0.h
  *
  * TODO
@@ -51,6 +51,12 @@
 typedef struct _GrxLibinputDeviceManager GrxLibinputDeviceManager;
 typedef struct _GrxLibinputDeviceManagerClass GrxLibinputDeviceManagerClass;
 
+/**
+ * GrxLibinputDeviceManager:
+ *
+ * #GrxLibinputDeviceManager is an opaque data structure and can only be
+ * accessed using the following functions.
+ */
 struct _GrxLibinputDeviceManager
 {
     /* private */
@@ -58,9 +64,15 @@ struct _GrxLibinputDeviceManager
     gpointer private;
 };
 
+/**
+ * GrxLibinputDeviceManagerClass:
+ * @parent_class: the parent class struct
+ * @reserved: for future use
+ *
+ * The class type struct for #GrxLibinputDeviceManager.
+ */
 struct _GrxLibinputDeviceManagerClass
 {
-    /*< private >*/
     GObjectClass parent_class;
     gpointer reserved[6];
 };

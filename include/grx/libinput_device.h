@@ -22,8 +22,8 @@
 
 /**
  * SECTION:libinput_device
- * @short_description: Keyboards, mice, touchscreens, etc.
- * @title: Input Device
+ * @short_description: Object that represents individual input devices
+ * @title: Input Devices
  * @section_id: libinput_device
  * @include: grx-3.0.h
  *
@@ -45,13 +45,24 @@
 #define GRX_LIBINPUT_DEVICE_GET_CLASS(obj) \
     (G_TYPE_INSTANCE_GET_CLASS ((obj), GRX_TYPE_LIBINPUT_DEVICE, \
         GrxLibinputDeviceClass))
-
+/**
+ * GrxLibinputDeviceClass:
+ * @parent_class: the inherited struct
+ * @reserved: for future use
+ *
+ * The type class struct for #GrxLibinputDevice.
+ */
 typedef struct {
-    /*< private >*/
     GObjectClass parent_class;
     gpointer reserved[6];
 } GrxLibinputDeviceClass;
 
+/**
+ * GrxLibinputDevice:
+ *
+ * #GrxLibinputDevice is an opaque data structure and can only be
+ * accessed using the following functions.
+ */
 typedef struct {
     /* private */
     GObject parent_instance;
