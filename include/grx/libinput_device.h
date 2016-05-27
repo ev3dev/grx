@@ -64,9 +64,6 @@ const gchar *grx_libinput_device_get_sysname (GrxLibinputDevice *device);
 gboolean grx_libinput_device_get_has_keyboard (GrxLibinputDevice *device);
 gboolean grx_libinput_device_get_has_pointer (GrxLibinputDevice *device);
 gboolean grx_libinput_device_get_has_touch (GrxLibinputDevice *device);
-gfloat matrix[6]
-grx_libinput_device_get_calibration (GrxLibinputDevice *device);
-gboolean
-grx_libinput_device_set_calibration (GrxLibinputDevice *device, gfloat matrix[6]);
+gboolean grx_libinput_device_uncalibrate (GrxLibinputDevice *device);
 
 #endif /* __GRX_LIBINPUT_DEVICE_H__ */

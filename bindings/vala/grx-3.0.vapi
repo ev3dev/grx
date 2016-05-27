@@ -1475,7 +1475,7 @@ namespace Grx {
         public bool has_keyboard { get; }
         public bool has_pointer { get; }
         public bool has_touch { get; }
-        public bool calibrate ([CCode (array_length = 6)]float matrix[]);
+        public bool uncalibrate ();
     }
 
     public class LinuxConsoleApplication : GLib.Application, GLib.Initable {

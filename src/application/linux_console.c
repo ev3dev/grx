@@ -51,7 +51,6 @@ typedef struct {
     GrxContext *save;
     GSettingsBackend *settings_backend;
     GrxLibinputDeviceManager *device_manager;
-    gulong device_added_signal_id;
     guint device_manager_event_id;
     guint sigusr1_id;
 } GrxLinuxConsoleApplicationPrivate;
@@ -184,7 +183,6 @@ static void finalize (GObject *object)
 
     g_source_remove (priv->sigusr1_id);
     g_source_remove (priv->device_manager_event_id);
-    g_signal_handler_disconnect (priv->device_manager, priv->device_added_signal_id);
     g_object_unref (priv->device_manager);
     g_object_unref (priv->settings_backend);
 }
@@ -300,42 +298,6 @@ static void on_input_event (GrxInputEvent *event, gpointer user_data)
     klass->input_event (self, event);
 }
 
-static void on_device_added (GrxLibinputDeviceManager *device_manager,
-                             GrxLibinputDevice *device,
-                             GrxLinuxConsoleApplication *self)
-{
-    GrxLinuxConsoleApplicationPrivate *priv =
-        grx_linux_console_application_get_instance_private (self);
-    gchar path[256];
-    GSettings *settings;
-    GVariant *value;
-
-    /* Get settings for this specific device */
-    g_snprintf (path, 256, "/org/ev3dev/grx/input/device/%s/",
-                grx_libinput_device_get_name (device));
-    settings = g_settings_new_with_backend_and_path (
-        "org.ev3dev.grx.input.device", priv->settings_backend, path);
-
-    /* load calibration only if it is set */
-    value = g_settings_get_user_value (settings, "calibration");
-    if (value) {
-        gdouble a, b, c, d, e, f;
-        gfloat matrix[6];
-
-        g_variant_get (value, "(dddddd)", &a, &b, &c, &d, &e, &f);
-        matrix[0] = a;
-        matrix[1] = b;
-        matrix[2] = c;
-        matrix[3] = d;
-        matrix[4] = e;
-        matrix[5] = f;
-        grx_libinput_device_calibrate (device, matrix);
-        g_variant_unref (value);
-    }
-
-    g_object_unref (settings);
-}
-
 static gboolean init (GInitable *initable, GCancellable *cancellable,
                       GError **error)
 {
@@ -350,8 +312,6 @@ static gboolean init (GInitable *initable, GCancellable *cancellable,
     }
     priv->device_manager_event_id = grx_libinput_device_manager_event_add (
         priv->device_manager, on_input_event, self, NULL);
-    priv->device_added_signal_id = g_signal_connect (priv->device_manager,
-        "device-added", G_CALLBACK (on_device_added), self);
 
     grx_set_error_handling (FALSE);
     ret = grx_set_mode_default_graphics (TRUE);

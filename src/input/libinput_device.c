@@ -218,6 +218,7 @@ grx_libinput_device_new (struct libinput_device *device)
 {
     GrxLibinputDevice *instance = g_object_new (GRX_TYPE_LIBINPUT_DEVICE, NULL);
     GrxLibinputDevicePrivate *priv = instance->private;
+    float matrix[6];
 
     g_return_val_if_fail (device != NULL, NULL);
     g_return_val_if_fail (libinput_device_get_user_data (device) == NULL, NULL);
@@ -225,34 +226,36 @@ grx_libinput_device_new (struct libinput_device *device)
     priv->device = libinput_device_ref (device);
     libinput_device_set_user_data (device, instance);
 
+    if (libinput_device_config_calibration_get_default_matrix (device, matrix)) {
+        libinput_device_config_calibration_set_matrix (device, matrix);
+    }
+
     return instance;
 }
 
 /* methods */
 
 /**
- * grx_libinput_device_calibrate:
+ * grx_libinput_device_uncalibrate:
  * @device: the device
- * @matrix: (array fixed-size=6): calibration matrix
  *
- * Calibrates the device
+ * Resets the calibration of the device.
  *
- * Returns: %TRUE if calibration was successful
+ * This function is probably only useful to programs that are calibrating the
+ * device and need to remove the existing calibration.
+ *
+ * Returns: %TRUE if this device can be calibrated and reseting the calibration
+ * was successful.
  */
-gboolean
-grx_libinput_device_calibrate (GrxLibinputDevice *device, float matrix[6])
+gboolean grx_libinput_device_uncalibrate (GrxLibinputDevice *device)
 {
     GrxLibinputDevicePrivate *priv = device->private;
+    float identity_matrix[6] = { 1, 0, 0, 0, 1, 0 };
+    enum libinput_config_status ret;
 
-    if (libinput_device_config_calibration_has_matrix (priv->device)) {
-        enum libinput_config_status status;
 
-        status = libinput_device_config_calibration_set_matrix (priv->device,
-                                                                matrix);
-        if (status == LIBINPUT_CONFIG_STATUS_SUCCESS) {
-            return TRUE;
-        }
-    }
-    // TODO: this method could return a GError to provide more info on why it failed
-    return FALSE;
+    ret = libinput_device_config_calibration_set_matrix (priv->device,
+                                                         identity_matrix);
+
+    return ret == LIBINPUT_CONFIG_STATUS_SUCCESS;
 }
