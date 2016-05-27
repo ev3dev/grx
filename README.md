@@ -40,20 +40,20 @@ Getting Around
 
 Source code directories:
 
-    addons/   Last remains of some code from GRX 2.x. Not used (but might be useful).
-    bindings/ Bindings for other programming languages
-    cmake/    Some cmake modules (this is a git submodule)
-    debian/   Debian packaging stuff
-    doc/      Documentation
-    example/  Examples of how to use GRX 3
-    fonts/    Font data
-    include/  Public header files
-    src/      The main library source code
-    test/     Old demo program from GRX 2.x
+    addons/     Last remains of some code from GRX 2.x - not used (but might be useful)
+    bindings/   Bindings for other programming languages
+    cmake/      Some CMake modules (this is a git submodule)
+    debian/     Debian packaging stuff
+    doc/        Documentation
+    example/    Examples of how to use GRX 3
+    fonts/      Font data
+    include/    Public header files
+    src/        The main library source code
+    test/       Old demo program from GRX 2.x
 
 Docs, bugs, support, etc.:
 
-* We're on GitHub. https://github.com/ev3dev.org/grx
+* We're on GitHub. https://github.com/ev3dev/grx
 
 
 License
@@ -67,8 +67,8 @@ License
 History
 -------
 
-GRX is a 2D graphics C library originaly written by Csaba Biegl for
-DJ Delorie's DOS port of the GCC compiler in the 1990s.
+GRX was originally written in the 1990s by Csaba Biegl for
+DJ Delorie's DOS port of the GCC compiler.
 
 [GRX 2.x](http://grx.gnu.de/) was actively maintained until about 2012 and was
 ported to many different platforms.
