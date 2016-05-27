@@ -18,7 +18,6 @@
  *
  * Contributions by:
  * 070505 M.Alvarez, Using a Pixmap for BackingStore
- *
  */
 
 #ifndef _LIBXWIN_H_

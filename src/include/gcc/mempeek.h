@@ -17,7 +17,6 @@
  *
  * Basic memory peek and poke operations in byte, word and long sizes.
  * The poke operations are available in WRITE, XOR, OR and AND versions.
- *
  */
 
 /* ================================================================ */

@@ -16,7 +16,6 @@
  *
  * Basic and optimized memory block fill operations in byte, word and
  * long sizes. The fills are available in WRITE, XOR, OR and AND modes.
- *
  */
 
 #ifndef __MEMFILL_H_INCLUDED__

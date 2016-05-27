@@ -15,7 +15,6 @@
  *
  * Basic and optimized memory block copy operations in byte, word and
  * long sizes. The copys are available in WRITE, XOR, OR and AND modes.
- *
  */
 
 #ifndef __MEMCOPY_H_INCLUDED__

@@ -16,7 +16,6 @@
  *
  * Intel CPU specific input/output instructions. This file
  * supports i386 GCC and Turbo C.
- *
  */
 
 #ifndef __IOPORT_H_INCLUDED__

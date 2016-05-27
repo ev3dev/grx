@@ -16,7 +16,6 @@
  *
  * Contributions by:
  * 081105 Richard, grx_context_clear
- *
  */
 
 #include <grx/draw.h>

@@ -16,7 +16,6 @@
  *
  * FIXME: sdlinp/xwininp: the i18n (cyrillic etc.) keys don't work.
  * FIXME: win32: Alt-Tab-Alt-Shift-Tab nails the Alt state to unset.
- *
  */
 
 #include "libsdl.h"

@@ -19,7 +19,6 @@
  * Intel CPU specific support is provided for the Turbo C and GNU C
  * compilers. The i386 GCC version supports segment overrides. May
  * work with other compilers and CPU-s, but is not optimized for them.
- *
  */
 
 #ifndef __MEMPEEK_H_INCLUDED__

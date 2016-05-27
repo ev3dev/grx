@@ -25,7 +25,6 @@
  * We also assume that such pixels value, once locked, will remain
  * valid after any number of subsequent unlocks-&-locks (sdlinp.c).
  * FIXME: update frame after unlock?
- *
  */
 
 #include "libsdl.h"

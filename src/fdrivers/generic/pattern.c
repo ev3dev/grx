@@ -13,7 +13,6 @@
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 
 void drawpattern(int x, int y, int w, unsigned char patt, GrxColor fg, GrxColor bg)

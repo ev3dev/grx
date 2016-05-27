@@ -13,7 +13,6 @@
  *
  * Changes by D.Zhekov (jimmy@is-vn.bg) 16/02/2004
  *   - converted to a standard test program [GRX I/O only].
- *
  */
 
 #include <stdio.h>

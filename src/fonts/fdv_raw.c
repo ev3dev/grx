@@ -17,7 +17,6 @@
  * Changes by Dimitar Zhekov (jimmy@is-vn.bg) Nov 20 2003
  *   - Added psf2 support, raw and psf1 are now treated as pseudo-psf2.
  *   - Better support for RAW files: up to 16x32, assuming scale 1:2.
- *
  */
 
 #include <ctype.h>

@@ -15,7 +15,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * modifications by Hartmut Schirmer Copyright (c) 1998
- *
  */
 
 #include <grx/mode.h>

@@ -21,7 +21,6 @@
  *
  * Contributions by:
  * 070505 M.Alvarez, Using a Pixmap for BackingStore.
- *
  */
 
 #include <stdlib.h>

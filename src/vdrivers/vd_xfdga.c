@@ -16,7 +16,6 @@
  *
  * Changes by Dimitar Zhekov (jimmy@is-vn.bg) Aug 27 2003
  *   - use Xlib for rendering unless defined XF86DGA_FRAMEBUFFER
- *
  */
 
 #include "colors.h"

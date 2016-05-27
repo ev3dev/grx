@@ -18,7 +18,6 @@
  * Mauro Condarelli (mc5686@mclink.it)
  * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  * Andris Pavenis (pavenis@acad.latnet.lv)
- *
  */
 
 #include <stdio.h>

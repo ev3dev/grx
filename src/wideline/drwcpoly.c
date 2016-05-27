@@ -13,7 +13,6 @@
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 
 #include <grx/draw.h>
@@ -127,7 +126,6 @@ static void intersect(GrxPoint l1s,GrxPoint l1e,GrxPoint l2s,GrxPoint l2e)
  *
  * p1 end : rect[0]  rect[1]
  * p2 end : rect[2]  rect[3]
- *
  */
 static void genrect(GrxPoint p1, GrxPoint p2, int w, GrxPoint rect[4])
 {

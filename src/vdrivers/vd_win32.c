@@ -94,7 +94,6 @@
  *
  * Changes by M.Alvarez (malfer@telefonica.net) 01/12/2007
  *   - Added videomodes for wide monitors
- *
  */
 
 #include "libwin32.h"

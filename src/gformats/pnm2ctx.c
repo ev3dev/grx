@@ -16,7 +16,6 @@
  *
  * Contributions by Josu Onandia (jonandia@fagorautomation.es) 10/03/2001
  *   _GrLoadContextFromPpm optimized (applied to Pbm and Pgm too)
- *
  */
 
 #include <stdlib.h>

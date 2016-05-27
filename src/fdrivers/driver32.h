@@ -18,7 +18,6 @@
  * Contributions by: (See "doc/credits.doc" for details)
  * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  * Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77]
- *
  */
 
 #include "colors.h"

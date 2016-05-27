@@ -21,7 +21,6 @@
  * 070505 M.Alvarez, Using a Pixmap for BackingStore
  * 080801 M.Alvarez, Sanitized pixel cache code
  * 080801 M.Alvarez, New faster and specific for X11 putscanline function
- *
  */
 
 #include <string.h>

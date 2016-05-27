@@ -3,7 +3,6 @@
  *
  * Copyright (C) 1997, Michael Goffioul
  * [goffioul@emic.ucl.ac.be]
- *
  */
 
 #include <grx/pattern.h>

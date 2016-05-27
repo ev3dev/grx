@@ -17,7 +17,6 @@
  * Using SDL_FillRect() does not provide any speedup above the margin
  * of error. Our main problem is sdl_drawpixel() and sdl_drawline()
  * being too slow in windowed modes.
- *
  */
 
 #include "libsdl.h"

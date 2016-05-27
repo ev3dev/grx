@@ -16,7 +16,6 @@
  *
  * Contributions by: (See "doc/credits.doc" for details)
  * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
- *
  */
 
 

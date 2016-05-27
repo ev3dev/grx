@@ -15,7 +15,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * modifications by Hartmut Schirmer (c) 1998
- *
  */
 
 #ifndef __IMAGE_H_INCLUDED__

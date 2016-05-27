@@ -16,7 +16,6 @@
  *
  * Intel CPU specific support is provided for the Turbo C and GNU C. May
  * work with other compilers and CPU-s, but is not optimized for them.
- *
  */
 
 #ifndef __ARITH_H_INCLUDED__

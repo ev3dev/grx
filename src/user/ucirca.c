@@ -15,7 +15,6 @@
  *
  * Note : compiling the library with -DUSR_KEEP_SHAPE makes a circle
  *        looks like a circle on the screen
- *
  */
 
 #include <grx/draw.h>
