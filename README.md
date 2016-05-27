@@ -35,42 +35,6 @@ What display managers does it work with (X11, Wayland, etc.)?
 * It doesn't. It currently is used for Linux console applications.
 
 
-Compiling
----------
-
-Get the code (be aware of the submodule):
-
-    git clone --recursive https://github.com/ev3dev/grx
-
-Get the build dependencies:
-
-    * For now, you have to do this manually:
-
-            head grx/debian/control
-            # look for Build-Depends:
-            # install the packages listed
-            sudo apt-get install <package> <package> ...
-
-    * TODO: once we publish a package, you can use the ev3dev.org package repository:
-
-            sudo apt-add-repository --enable-source "deb http://archive.ev3dev.org/debian jessie main"
-            sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 2B210565
-            sudo apt-get udpate
-            sudo apt-get builddep grx
-
-Now create a build directory, preferably outside of the source directory:
-
-        mkdir build
-        cd build
-
-Then build it:
-
-        # If the build directory is not a sibling of the source code directory,
-        # replace .. with the actual path to the source code.
-        cmake ../grx
-        make
-
-
 Getting Around
 --------------
 
@@ -87,7 +51,7 @@ Source code directories:
     src/      The main library source code
     test/     Old demo program from GRX 2.x
 
-Bugs, support, etc.:
+Docs, bugs, support, etc.:
 
 * We're on GitHub. https://github.com/ev3dev.org/grx
 
