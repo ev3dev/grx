@@ -95,7 +95,9 @@ Bugs, support, etc.:
 License
 -------
 
-* The library itself is LGPL. See copying.grx for details.
+* See copying.grx for details!
+* The library itself is LGPL.
+* The tools and examples are GPL.
 * Most of the fonts come from X11 and are MIT licensed.
 
 History
