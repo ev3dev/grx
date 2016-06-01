@@ -54,7 +54,7 @@ static struct fb_fix_screeninfo fbfix;
 static struct fb_var_screeninfo fbvar;
 static char *fbuffer = NULL;
 static int ingraphicsmode = 0;
-static char* frame_addr[4];
+static int original_keyboard_mode;
 
 static int detect(void)
 {
@@ -98,6 +98,12 @@ static int detect(void)
         sprintf(ttyname, "/dev/tty%d", vtstat.v_active);
         ttyfd = open(ttyname, O_RDONLY);
         if (ttyfd == -1) {
+            return FALSE;
+        }
+
+        err = ioctl(ttyfd, KDGKBMODE, &original_keyboard_mode);
+        if (err < 0) {
+            close(ttyfd);
             return FALSE;
         }
 
@@ -167,6 +173,7 @@ static void reset(void)
         fbfd = -1;
     }
     if (ttyfd > -1) {
+        ioctl(ttyfd, KDSKBMODE, original_keyboard_mode);
         ioctl(ttyfd, KDSETMODE, KD_TEXT);
         vtm.mode = VT_AUTO;
         vtm.relsig = 0;
@@ -197,6 +204,7 @@ void grx_linuxfb_aquire (void)
     if (!ingraphicsmode) return;
     if (ttyfd < 0) return;
     ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
+    ioctl(ttyfd, KDSKBMODE, K_OFF);
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
 }
 
@@ -227,6 +235,7 @@ static int setmode(GrxVideoMode * mp, int noclear)
                                         PROT_READ | PROT_WRITE,
                                         MAP_SHARED, fbfd, 0);
     if (mp->extended_info->frame && ttyfd > -1) {
+        ioctl(ttyfd, KDSKBMODE, K_OFF);
         ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
         vtm.mode = VT_PROCESS;
         // Setting SIGUSER1 here, but not a handler. It is to be handled via
