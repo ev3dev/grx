@@ -34,6 +34,8 @@
 #include <grx/mouse.h>
 #include <grx/gformats.h>
 #include <grx/utils.h>
+#include <grx/input_event.h>
+#include <grx/input_keys.h>
 #include <grx/libinput_device.h>
 #include <grx/libinput_device_manager.h>
 #include <grx/linux_console_application.h>

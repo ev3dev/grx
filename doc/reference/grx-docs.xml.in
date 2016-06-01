@@ -35,6 +35,7 @@
     <chapter id="input">
       <title>Keyboard, Mouse and Touchscreen Input</title>
       <xi:include href="xml/input_event.xml"/>
+      <xi:include href="xml/input_keys.xml"/>
       <xi:include href="xml/libinput_device_manager.xml"/>
       <xi:include href="xml/libinput_device.xml"/>
     </chapter>
