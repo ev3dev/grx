@@ -366,7 +366,7 @@ file (GLOB INTERNAL_HEADERS */*.h */*/*.h)
 configure_file (${CMAKE_SOURCE_DIR}/doc/reference/grx-docs.xml.in
     grx-docs.xml @ONLY)
 
-gtk_doc_add_module (grx ${CMAKE_SOURCE_DIR}/src
+gtk_doc_add_module (grx
     XML
         ${CMAKE_CURRENT_BINARY_DIR}/grx-docs.xml
     SOURCE
