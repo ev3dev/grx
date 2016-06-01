@@ -1,6 +1,20 @@
+find_package (PkgConfig)
+pkg_check_modules (TEST_DEPS REQUIRED
+    glib-2.0
+    gobject-2.0
+    gio-2.0
+)
 
 add_executable (demogrx demogrx.c gfaz.c)
-target_link_libraries (demogrx ${LIBRARY_NAME}-shared m)
+target_include_directories (demogrx PUBLIC
+    ${CMAKE_SOURCE_DIR}/include
+    ${TEST_DEPS_INCLUDE_DIRS}
+)
+target_link_libraries (demogrx
+    ${LIBRARY_NAME}-shared
+    m
+    ${TEST_DEPS_LIBRARIES}
+)
 
 set (PROGRAMS
     arctest
@@ -34,6 +48,14 @@ set (PROGRAMS
 
 foreach (PROG ${PROGRAMS})
     add_executable (${PROG} ${PROG}.c)
-    target_link_libraries (${PROG} ${SHARED_LIBRARY_NAME} m)
+    target_include_directories (${PROG} PUBLIC
+        ${CMAKE_SOURCE_DIR}/include
+        ${TEST_DEPS_INCLUDE_DIRS}
+    )
+    target_link_libraries (${PROG}
+        ${SHARED_LIBRARY_NAME}
+        m
+        ${TEST_DEPS_LIBRARIES}
+    )
     add_dependencies (demogrx ${PROG})
 endforeach ()

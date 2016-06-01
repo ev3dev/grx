@@ -22,7 +22,10 @@ vala_precompile (GRX_CALIBRATE_C GRX_CALIBRATE_VALA calibrate.vala
 
 add_executable (grx-calibrate ${GRX_CALIBRATE_C})
 target_compile_options (grx-calibrate PUBLIC "-w")
-target_include_directories (grx-calibrate PUBLIC ${GRX_CALIBRATE_DEPS_INCLUDE_DIRS})
+target_include_directories (grx-calibrate PUBLIC
+    ${CMAKE_SOURCE_DIR}/include
+    ${GRX_CALIBRATE_DEPS_INCLUDE_DIRS}
+)
 target_link_libraries (grx-calibrate ${GRX_CALIBRATE_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
 
 install (TARGETS grx-calibrate RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

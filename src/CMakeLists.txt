@@ -1,4 +1,4 @@
-include_directories (include)
+# source files
 
 set (LINUX_SOURCE_FILES
     application/linux_console.c
@@ -229,13 +229,47 @@ if (GRX_DEBUG)
     list (APPEND LINUX_SOURCE_FILES utils/dbgprint.c)
 endif (GRX_DEBUG)
 
+
+# dependencies
+
+find_package (JPEG REQUIRED)
+
+set (PUBLIC_MODULES glib-2.0 gobject-2.0 gio-2.0)
+set (PRIVATE_MODULES libudev libinput libpng12)
+find_package (PkgConfig REQUIRED)
+pkg_check_modules (GRX_DEPS REQUIRED ${PUBLIC_MODULES} ${PRIVATE_MODULES})
+
+
+# declare the libraries
+
 add_library (${LIBRARY_NAME} OBJECT ${LINUX_SOURCE_FILES})
 set_target_properties (${LIBRARY_NAME} PROPERTIES POSITION_INDEPENDENT_CODE 1)
 target_compile_definitions (${LIBRARY_NAME} PUBLIC
     "GRX_DEFAULT_FONT_PATH=\"${CMAKE_INSTALL_PKGDATADIR}/fonts\"")
+if (GRX_DEBUG)
+    target_compile_definitions (${LIBRARY_NAME} PUBLIC "DEBUG=${GRX_DEBUG}")
+endif (GRX_DEBUG)
+if (GRX_LINUXFB)
+    target_compile_definitions (${LIBRARY_NAME}
+        PUBLIC
+            "FRAMEBUFFER_DRIVER"
+            "LFB_BY_NEAR_POINTER"
+    )
+endif (GRX_LINUXFB)
+target_include_directories (${LIBRARY_NAME}
+    PUBLIC
+        ${CMAKE_SOURCE_DIR}/include
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${JPEG_INCLUDE_DIR}
+        ${GRX_DEPS_INCLUDE_DIRS}
+)
 
 add_library (${SHARED_LIBRARY_NAME} SHARED $<TARGET_OBJECTS:${LIBRARY_NAME}>)
-target_link_libraries (${SHARED_LIBRARY_NAME} ${DEPS_LIBRARIES} ${JPEG_LIBRARIES})
+target_link_libraries (${SHARED_LIBRARY_NAME}
+    ${GRX_DEPS_LIBRARIES}
+    ${JPEG_LIBRARIES}
+)
 set_target_properties (${SHARED_LIBRARY_NAME} PROPERTIES
     VERSION "${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
     SOVERSION "${PROJECT_VERSION_MINOR}"
@@ -244,13 +278,30 @@ set_target_properties (${SHARED_LIBRARY_NAME} PROPERTIES
 install (TARGETS ${SHARED_LIBRARY_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 add_library (${STATIC_LIBRARY_NAME} STATIC $<TARGET_OBJECTS:${LIBRARY_NAME}>)
-target_link_libraries (${STATIC_LIBRARY_NAME} ${DEPS_LIBRARIES} ${JPEG_LIBRARIES})
+target_link_libraries (${STATIC_LIBRARY_NAME}
+    ${GRX_DEPS_LIBRARIES}
+    ${JPEG_LIBRARIES}
+)
 set_target_properties (${STATIC_LIBRARY_NAME} PROPERTIES
     OUTPUT_NAME ${LIBRARY_NAME}
 )
 install (TARGETS ${STATIC_LIBRARY_NAME} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-get_property (INCLUDE_DIRS DIRECTORY .. PROPERTY INCLUDE_DIRECTORIES)
+
+# pkg-config
+
+# convert CMake list to space separated string for pkgconfig file
+string (REPLACE ";" ", " PKGCONFIG_PUBLIC_DEPS "${PUBLIC_MODULES}")
+string (REPLACE ";" ", " PKGCONFIG_PRIVATE_DEPS "${PRIVATE_MODULES}")
+configure_file (grx.pc.in ${PACKAGE_NAME}.pc @ONLY)
+add_custom_target (grx-pkg-config ALL
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}.pc
+)
+install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}.pc
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
+
+
+# gobject introspection
 
 # Generating .gir and .typelib does not work when cross compiling because it
 # uses host architecture.
@@ -288,7 +339,7 @@ add_gir (GIR ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
         GLib-2.0
         Gio-2.0
     INCLUDE_DIRS
-        ${INCLUDE_DIRS}
+        ${CMAKE_SOURCE_DIR}/include
     ARGS
         --warn-all
     FILES
@@ -304,6 +355,9 @@ install (FILES $<TARGET_PROPERTY:${TYPELIB},TYPELIB_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
 
 endif (NOT CMAKE_CROSSCOMPILING)
+
+
+# documentation (gtkdoc)
 
 find_package (GtkDoc REQUIRED)
 

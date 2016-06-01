@@ -9,6 +9,7 @@ pkgdatadir=${prefix}/@CMAKE_INSTALL_PKGDATADIR@
 Name: GRX
 Description: 2D graphics library
 Version: @PROJECT_VERSION@
-Requires: @PKGCONFIG_DEPS@
+Requires: @PKGCONFIG_PUBLIC_DEPS@
+Requires.private: @PKGCONFIG_PUBLIC_DEPS@, @PKGCONFIG_PRIVATE_DEPS@
 Cflags: -I${includedir}
 Libs: -L${libdir} -l@PROJECT_NAME@-@GIR_VERSION@
