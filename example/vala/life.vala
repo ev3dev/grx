@@ -42,6 +42,10 @@ class LifeApplication : LinuxConsoleApplication {
         randomize ();
     }
 
+    public override void input_event (InputEvent event) {
+        quit ();
+    }
+
     void console_active_handler () {
         // Only draw when the console is active. Basically, this will pause the
         // application when we switch to a different console and resume the

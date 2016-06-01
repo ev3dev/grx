@@ -52,6 +52,9 @@ class Life(Grx.LinuxConsoleApplication):
         if self.is_console_active():
             self.notify("is-console-active")
 
+    def do_input_event(self, event):
+        self.quit()
+
     def randomize(self):
         for y in range(self.height):
             for x in range(self.width):
