@@ -1,8 +1,10 @@
 /*
  * vd_lnxfb.c ---- Linux framebuffer driver
  *
- * Copyright (c) 2001 Mariano Alvarez Fernandez
- * [e-mail: malfer@telefonica.net]
+ * Copyright (c) 2001 Mariano Alvarez Fernandez <malfer@telefonica.net>
+ * Copyright (c) 2015-2016 David Lechner <david@lechnology.com>
+ *
+ * Contributions by Josu Onandia <jonandia@fagorautomation.es>
  *
  * This file is part of the GRX graphics library.
  *
@@ -13,19 +15,6 @@
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * Contributions by Josu Onandia (jonandia@fagorautomation.es) 13/12/2002
- *   - Added the 8bpp paletted mode.
- * Modifications by Mariano Alvarez Fernandez 21/12/2002
- *   - Added function to change virtual terminals, _SwitchConsoleLnxfbDriver
- *     to be called from the input driver.
- *   - Some cleanups, now the text screen shows ok on exit.
- * Modifications by Mariano Alvarez Fernandez 1/3/2002
- *   - Added code to catch a signal when user wants to change virtual
- *     terminals. The driver sets _lnxfb_waiting_to_switch_console and the
- *     input driver must calls _LnxfbSwitchConsoleAndWait then.
- *   - _SwitchConsoleLnxfbDriver renamed to _LnxfbSwitchConsoleVt, not used,
- *     is here only for possible future use.
  */
 
 #include <string.h>
