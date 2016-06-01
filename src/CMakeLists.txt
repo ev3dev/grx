@@ -274,8 +274,12 @@ set (GTKDOC_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/text.h
     ${CMAKE_SOURCE_DIR}/include/grx/user.h
     ${CMAKE_SOURCE_DIR}/include/grx/wideline.h
-    ${LINUX_SOURCE_FILES}
 )
+
+foreach (file ${LINUX_SOURCE_FILES})
+    get_filename_component (file ${file} ABSOLUTE)
+    list (APPEND GTKDOC_SOURCE_FILES ${file})
+endforeach ()
 
 find_package (GirScanner REQUIRED)
 include (GirScanner)
@@ -323,8 +327,6 @@ gtk_doc_add_module (grx ${CMAKE_SOURCE_DIR}/src
         ${INTERNAL_HEADERS}
     LIBRARIES
         ${SHARED_LIBRARY_NAME}
-    DEPENDS
-        ${GTKDOC_SOURCE_FILES}
 )
 
 add_custom_target (docs ALL DEPENDS doc-grx)
