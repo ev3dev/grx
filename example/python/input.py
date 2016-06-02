@@ -38,7 +38,8 @@ class InputApplication(Grx.LinuxConsoleApplication):
         if t == Grx.InputEventType.KEY_DOWN or t == Grx.InputEventType.KEY_UP:
             key_event = event.key
             print ("key", key_event.key)
-            quit()
+            if key_event.key in (Grx.Key.Q, Grx.Key.BACKSPACE, Grx.Key.ESCAPE):
+                quit()
         elif t == Grx.InputEventType.BUTTON_PRESS or t == Grx.InputEventType.BUTTON_RELEASE:
             button_event = event.button
             print ("button", button_event.button)

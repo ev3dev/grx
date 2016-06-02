@@ -1546,7 +1546,8 @@ namespace Grx {
     public struct KeyEvent {
         InputEventType type;
         LibinputDevice *device;
-        uint key;
+        Key key;
+        uint code;
     }
 
     [CCode (has_type_id = false)]
