@@ -1,7 +1,6 @@
 # source files
 
-set (LINUX_SOURCE_FILES
-    application/linux_console.c
+set (LIBRARY_SOURCE_FILES
     draw/bitblt.c
     draw/bitbltnc.c
     draw/bitblt1b.c
@@ -62,14 +61,10 @@ set (LINUX_SOURCE_FILES
     image/imginlne.c
     image/iplot.c
     image/istretch.c
-    input/libinput_device.c
-    input/libinput_device_manager.c
     gformats/ctx2pnm.c
     gformats/pnm2ctx.c
     mouse/bldcurs.c
     mouse/drawcurs.c
-    mouse/lnxinpu2.c
-    mouse/lnxkeys.c
     mouse/mouinfo.c
     mouse/mouinlne.c
     mouse/mscursor.c
@@ -207,7 +202,6 @@ set (LINUX_SOURCE_FILES
     utils/ordswap.c
     utils/shiftscl.c
     utils/tmpbuff.c
-    vdrivers/vd_lnxfb.c
     vdrivers/vd_mem.c
     vdrivers/vtable.c
     wideline/ccirc.c
@@ -226,8 +220,19 @@ set (LINUX_SOURCE_FILES
 )
 
 if (GRX_DEBUG)
-    list (APPEND LINUX_SOURCE_FILES utils/dbgprint.c)
+    list (APPEND LIBRARY_SOURCE_FILES utils/dbgprint.c)
 endif (GRX_DEBUG)
+
+if (GRX_LINUXFB)
+    list (APPEND LIBRARY_SOURCE_FILES
+        application/linux_console.c
+        input/libinput_device.c
+        input/libinput_device_manager.c
+        mouse/lnxinpu2.c
+        mouse/lnxkeys.c
+        vdrivers/vd_lnxfb.c
+    )
+endif (GRX_LINUXFB)
 
 
 # dependencies
@@ -235,7 +240,10 @@ endif (GRX_DEBUG)
 find_package (JPEG REQUIRED)
 
 set (PUBLIC_MODULES glib-2.0 gobject-2.0 gio-2.0)
-set (PRIVATE_MODULES libudev libinput libpng12 xkbcommon)
+set (PRIVATE_MODULES libpng12 xkbcommon)
+if (GRX_LINUXFB)
+    LIST (APPEND PRIVATE_MODULES libudev libinput)
+endif (GRX_LINUXFB)
 find_package (PkgConfig REQUIRED)
 pkg_check_modules (GRX_DEPS REQUIRED ${PUBLIC_MODULES} ${PRIVATE_MODULES})
 
@@ -256,7 +264,7 @@ install (FILES ${GRX_KEYSYMS_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/grx)
 
 # declare the libraries
 
-add_library (${LIBRARY_NAME} OBJECT ${LINUX_SOURCE_FILES})
+add_library (${LIBRARY_NAME} OBJECT ${LIBRARY_SOURCE_FILES})
 set_target_properties (${LIBRARY_NAME} PROPERTIES POSITION_INDEPENDENT_CODE 1)
 target_compile_options (${LIBRARY_NAME} PUBLIC "-Wall")
 target_compile_definitions (${LIBRARY_NAME} PUBLIC
@@ -333,9 +341,6 @@ set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/image.h
     ${CMAKE_SOURCE_DIR}/include/grx/input_event.h
     ${CMAKE_SOURCE_DIR}/include/grx/input_keys.h
-    ${CMAKE_SOURCE_DIR}/include/grx/libinput_device.h
-    ${CMAKE_SOURCE_DIR}/include/grx/libinput_device_manager.h
-    ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h
     ${CMAKE_SOURCE_DIR}/include/grx/mode.h
     ${CMAKE_SOURCE_DIR}/include/grx/pattern.h
     ${CMAKE_SOURCE_DIR}/include/grx/text.h
@@ -344,7 +349,15 @@ set (GIR_SOURCE_FILES
     ${GRX_KEYSYMS_H}
 )
 
-foreach (file ${LINUX_SOURCE_FILES})
+if (GRX_LINUXFB)
+    LIST (APPEND GIR_SOURCE_FILES
+        ${CMAKE_SOURCE_DIR}/include/grx/libinput_device.h
+        ${CMAKE_SOURCE_DIR}/include/grx/libinput_device_manager.h
+        ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h
+    )
+endif (GRX_LINUXFB)
+
+foreach (file ${LIBRARY_SOURCE_FILES})
     get_filename_component (file ${file} ABSOLUTE)
     list (APPEND GIR_SOURCE_FILES ${file})
 endforeach ()
