@@ -58,7 +58,8 @@ void dualpageblt(GrxFrame *dst,int dx,int dy,
         do {
             unsigned w1 = BANKLFT(doff);
             unsigned w2 = BANKLFT(soff);
-            unsigned w3,ww;
+            unsigned w3;
+
             w1 = umin(w,w1);
             w2 = umin(w,w2);
             usort(w1,w2);
@@ -66,8 +67,8 @@ void dualpageblt(GrxFrame *dst,int dx,int dy,
             w2 = w2 - w1;
             if(w2 == 0) w2=w3 , w3=0;
             do {
-                char *dptr = &dst->base_address.plane0[BANKPOS(doff)];
-                char *sptr = &src->base_address.plane0[BANKPOS(soff)];
+                unsigned char *dptr = &dst->base_address.plane0[BANKPOS(doff)];
+                unsigned char *sptr = &src->base_address.plane0[BANKPOS(soff)];
                 wb = BANKNUM(doff);
                 rb = BANKNUM(soff);
                 if((rbb - rb) | (wbb - wb)) SRWBANK((rbb = rb),(wbb = wb));
@@ -80,6 +81,8 @@ void dualpageblt(GrxFrame *dst,int dx,int dy,
                 } while (w1--);
 #else
                 if(w1 >= 3) {
+                    unsigned ww;
+
                     if((GR_PtrInt)(dptr) & 1) {
                         poke_b_f(dptr,peek_b_f(sptr));
                         dptr++; sptr++; w1--;

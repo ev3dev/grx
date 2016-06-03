@@ -25,7 +25,7 @@
 #include "memfill.h"
 
 
-static  char * MemBuf = NULL;
+static  unsigned char *MemBuf = NULL;
 static  unsigned long MemBufSze = 0;
 
 static void FreeMemBuf(void) {

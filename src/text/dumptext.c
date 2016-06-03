@@ -86,7 +86,7 @@ void grx_text_region_dump_text(const GrxTextRegion *r,int col,int row,int wdt,in
             int   xp2 = xpos;
             for( ; --wd2 >= 0; pt2 += cofs,bp2 += cofs,xp2 += chrw) {
                 int  chr,attr;
-                char *bmp;
+                unsigned char *bmp;
                 switch(r->txr_chrtype) {
                   case GRX_CHAR_TYPE_WORD:
                     chr = *((unsigned short *)(pt2));

@@ -36,7 +36,7 @@
 #define maskset(d,c,msk) \
     poke_b((d),(peek_b(d) & ~(msk)) | ((c) & (msk)))
 
-static char *LineBuff = NULL;
+static unsigned char *LineBuff = NULL;
 
 static int do_alloc(int width) {
     size_t bytes;
@@ -47,13 +47,13 @@ static int do_alloc(int width) {
 }
 
 
-static void get_scanline(char *dptr, char *sptr, int w) {
+static void get_scanline(unsigned char *dptr, unsigned char *sptr, int w) {
     GRX_ENTER();
     fwdcopy_set(sptr,dptr,sptr,w);
     GRX_LEAVE();
 }
 
-static void put_scanline(char *dptr,char *sptr,int w,
+static void put_scanline(unsigned char *dptr,unsigned char *sptr,int w,
                          GR_int8u lm, GR_int8u rm, int op    ) {
   GRX_ENTER();
   if (w==1) lm &= rm;
@@ -86,7 +86,7 @@ done:
   GRX_LEAVE();
 }
 
-void invert_scanline(char *sptr,int w)
+void invert_scanline(unsigned char *sptr,int w)
 {
   GRX_ENTER();
   while (w--)
@@ -124,8 +124,8 @@ void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
         doffs = FOFS(dx,dy,dskip);
         soffs = FOFS( x, y,sskip);
         for (pl=0; pl < planes; ++pl) {
-          char *dptr = &GRX_FRAME_MEMORY_PLANE(&dst->base_address,pl)[doffs];
-          char *sptr = &GRX_FRAME_MEMORY_PLANE(&src->base_address,pl)[soffs];
+          unsigned char *dptr = &GRX_FRAME_MEMORY_PLANE(&dst->base_address,pl)[doffs];
+          unsigned char *sptr = &GRX_FRAME_MEMORY_PLANE(&src->base_address,pl)[soffs];
           int hh = h;
           if (shift) {
             while (hh-- > 0) {
@@ -152,8 +152,8 @@ void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
         doffs = FOFS(dx,dy,dst->line_offset);
         soffs = FOFS( x, y,src->line_offset);
         for (pl=0; pl < planes; ++pl) {
-          char *dptr = &GRX_FRAME_MEMORY_PLANE(&dst->base_address,pl)[doffs];
-          char *sptr = &GRX_FRAME_MEMORY_PLANE(&src->base_address,pl)[soffs];
+          unsigned char *dptr = &GRX_FRAME_MEMORY_PLANE(&dst->base_address,pl)[doffs];
+          unsigned char *sptr = &GRX_FRAME_MEMORY_PLANE(&src->base_address,pl)[soffs];
           int hh = h;
           if (shift) {
             while (hh-- > 0) {

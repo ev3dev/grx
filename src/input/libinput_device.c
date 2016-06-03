@@ -91,8 +91,6 @@ static void
 set_property (GObject *object, guint property_id, const GValue *value,
               GParamSpec *pspec)
 {
-    GrxLibinputDevice *self = GRX_LIBINPUT_DEVICE (object);
-
     switch (property_id) {
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -105,7 +103,6 @@ get_property (GObject *object, guint property_id, GValue *value,
               GParamSpec *pspec)
 {
     GrxLibinputDevice *self = GRX_LIBINPUT_DEVICE (object);
-    GrxLibinputDevicePrivate *priv = self->private;
 
     switch (property_id) {
     case PROP_NAME:

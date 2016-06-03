@@ -67,10 +67,10 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p);
 void _GrPatternFilledPlot(int x,int y,GrxPattern *p);
 
 void _GrFillBitmapPattern(int x,int y,int w,int h,
-                          char *bmp,int pitch,int start,
+                          unsigned char *bmp,int pitch,int start,
                           GrxPattern* p,GrxColor bg);
 void _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
-                             char *bmp,int pitch,int start,
+                             unsigned char *bmp,int pitch,int start,
                              GrxPattern* p,GrxColor bg);
 
 #endif

@@ -93,7 +93,7 @@ GrxColor readpixel(GrxFrame *c,int x,int y)
 static INLINE
 void drawpixel(int x,int y,GrxColor color)
 {
-    char *ptr;
+    unsigned char *ptr;
     GRX_ENTER();
     ptr = &CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
     SETFARSEL(CURC->gc_selector);
@@ -108,7 +108,7 @@ void drawpixel(int x,int y,GrxColor color)
 
 static void drawhline(int x,int y,int w,GrxColor color)
 {
-    char *pp;
+    unsigned char *pp;
     GR_repl cval;
     GRX_ENTER();
     pp = &CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
@@ -126,7 +126,7 @@ static void drawhline(int x,int y,int w,GrxColor color)
 static void drawvline(int x,int y,int h,GrxColor color)
 {
     unsigned lwdt;
-    char *pp;
+    unsigned char *pp;
     GRX_ENTER();
     lwdt = CURC->gc_line_offset;
     pp   = &CURC->gc_base_address.plane0[FOFS(x,y,lwdt)];
@@ -143,7 +143,7 @@ static void drawvline(int x,int y,int h,GrxColor color)
 static void drawblock(int x,int y,int w,int h,GrxColor color)
 {
     int  skip;
-    char *ptr;
+    unsigned char *ptr;
     GR_repl cval;
 
     GRX_ENTER();
@@ -191,7 +191,7 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
         int offset2;        /* add to pointer if carry / banking dir */
     } lndata;
     int  npts,error,xstep;
-    char *ptr;
+    unsigned char *ptr;
 
     GRX_ENTER();
 

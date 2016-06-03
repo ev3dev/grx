@@ -27,7 +27,7 @@ unsigned char *grx_font_build_aux_bmp(GrxFont *f,int chr,GrxTextDirection dir,in
         unsigned int idx = (unsigned int)chr - f->h.minchar;
         unsigned int bpos,rbpos,size,rsize,w,h;
         int  boff,rboff,rbinc;
-        char *stdmap,*cvtmap;
+        unsigned char *stdmap,*cvtmap;
         if(idx >= f->h.numchars) return(NULL);
         stdmap = &f->bitmap[f->chrinfo[idx].offset];
         dir = (dir & 3) + ((ul && (f->h.ulheight > 0)) ? 4 : 0);
@@ -46,6 +46,10 @@ unsigned char *grx_font_build_aux_bmp(GrxFont *f,int chr,GrxTextDirection dir,in
         w     = f->chrinfo[idx].width;
         size  = h * (boff  = (w + 7) & ~7);
         rsize = w * (rboff = (h + 7) & ~7);
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch"
+
         switch(dir) {
           case (GRX_TEXT_DIRECTION_RIGHT - 1 + 4):
             rboff = boff;
@@ -76,6 +80,9 @@ unsigned char *grx_font_build_aux_bmp(GrxFont *f,int chr,GrxTextDirection dir,in
           default:
             return(NULL);
         }
+
+#pragma GCC diagnostic pop
+
         if((rsize >>= 3) == 0) return(NULL);
         if(rsize > (f->auxsize - f->auxnext)) {
             /* add space for 32 (average) characters */

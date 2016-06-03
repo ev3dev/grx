@@ -133,7 +133,7 @@ static void drawhline_inv(int x,int y,int h, GrxColor color)
 static void drawvline(int x,int y,int h,GrxColor color)
 {
         unsigned int lwdt, mask, oper;
-        char *p;
+        unsigned char *p;
         GRX_ENTER();
         oper = C_OPER(color);
         color &= 1;

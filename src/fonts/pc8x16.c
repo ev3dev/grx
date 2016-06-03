@@ -797,7 +797,7 @@ struct {
             .minchar      = 0,       /* lowest character code in font */
             .numchars     = 256,     /* number of characters in font */
         },
-        .bitmap = (char *)GrFont_PC8x16_bits, /* character bitmap array */
+        .bitmap = GrFont_PC8x16_bits, /* character bitmap array */
         .auxmap = NULL,                            /* auxiliary bitmap */
         .ref_count = 1,                            /* reference count */
         .minwidth = 8,                            /* width of narrowest character */

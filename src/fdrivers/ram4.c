@@ -144,7 +144,7 @@ static void drawhline(int x,int y,int w,GrxColor color) {
 static void drawvline(int x,int y,int h,GrxColor color)
 {
         unsigned int lwdt, mask, oper, hh;
-        char *p;
+        unsigned char *p;
         GR_int32u offs;
         GRX_ENTER();
         oper = C_OPER(color);

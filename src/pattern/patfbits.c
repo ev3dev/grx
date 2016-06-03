@@ -20,7 +20,7 @@
 #include "shapes.h"
 
 void  _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
-                                char *bmp,int pitch,int start,
+                                unsigned char *bmp,int pitch,int start,
                                 GrxPattern* p,GrxColor bg)
 {
    GR_int8u *bits, *dptr;
@@ -90,7 +90,7 @@ void  _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
    GRX_LEAVE();
 }
 
-void  _GrFillBitmapPattern(int x,int y,int w,int h,char *bmp,int pitch,int start,GrxPattern* p,GrxColor bg)
+void  _GrFillBitmapPattern(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,GrxPattern* p,GrxColor bg)
 {
    GRX_ENTER();
    _GrFillBitmapPatternExt(x, y, w, h, 0, 0, bmp, pitch, start, p, bg);

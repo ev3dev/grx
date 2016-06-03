@@ -96,12 +96,11 @@ static GrxFont *doit(char *fname,char *path,GrxFontConversionFlags cvt,int w,int
 GrxFont *grx_font_load_converted(const char *name,GrxFontConversionFlags cvt,int w,int h,int minc,int maxc)
 {
     GrxFont *f;
-    int  chr,len,abspath,dc;
+    int  chr,len,abspath;
     char fname[200];
     GRX_ENTER();
     len = 0;
     abspath = FALSE;
-    dc = TRUE;
     while((chr = *name++) != '\0') {
         switch(chr) {
 #if defined(__WIN32__)
@@ -112,7 +111,6 @@ GrxFont *grx_font_load_converted(const char *name,GrxFontConversionFlags cvt,int
             chr = '/';
 #endif
           case '/':
-            dc = TRUE;
             if(len == 0) abspath = TRUE;
             break;
           default:

@@ -31,7 +31,7 @@ static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)
         if(DACload) (*DACload)(c,r,g,b);
 }
 
-static void setbits(char *prec,char *pos)
+static void setbits(unsigned char *prec, unsigned char *pos)
 {
         int i,tmp;
         CLRINFO->norm = 0;
@@ -139,9 +139,14 @@ void grx_color_info_set_rgb_color_mode(void)
         if(!CLRINFO->RGBmode) {
             GrxColor c;
             switch(CLRINFO->ncolors) {
-                case 16L:  setbits("\1\2\1","\3\1\0"); break;
-                case 256L: setbits("\3\3\2","\5\2\0"); break;
-                default:   return;
+                case 16L:
+                    setbits((unsigned char*)"\1\2\1", (unsigned char*)"\3\1\0");
+                    break;
+                case 256L:
+                    setbits((unsigned char*)"\3\3\2",(unsigned char*)"\5\2\0");
+                    break;
+                default:
+                    return;
             }
             CLRINFO->RGBmode = TRUE;
             CLRINFO->nfree   = 0L;

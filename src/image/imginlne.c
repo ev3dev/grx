@@ -72,7 +72,7 @@ GrxPattern *(grx_image_as_pattern)(GrxImage *image) {
  * Returns: (transfer full): a copy of the image
  */
 GrxImage *(grx_image_copy)(GrxImage *image) {
-    grx_image_copy(image);
+    return grx_image_copy(image);
 }
 
 /**

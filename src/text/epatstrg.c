@@ -24,7 +24,7 @@
 #include "text.h"
 
 static void ExtPatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
-                                char *bmp,int pitch,int start,
+                                unsigned char *bmp,int pitch,int start,
                                 GrxColor fg,GrxColor bg,GrxPattern *p)
 {
   GRX_ENTER();

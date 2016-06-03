@@ -61,7 +61,7 @@ static char fonthdr[] =
 "            %d,  \t\t    "         "/* lowest character code in font */\n"
 "            %d   \t\t    "         "/* number of characters in font */\n"
 "        },\n"
-"        (char *)%-20s"             "/* character bitmap array */\n"
+"        %-20s"                     "/* character bitmap array */\n"
 "        0,                          /* auxiliary bitmap */\n"
 "        %d,\t\t\t    "             "/* width of narrowest character */\n"
 "        %d,\t\t\t    "             "/* width of widest character */\n"
@@ -123,7 +123,7 @@ void grx_font_dump(const GrxFont *f,char *CsymbolName,char *fileName)
             int  chr = i + f->h.minchar;
             int  len = grx_font_get_char_bmp_size(f,chr);
             int  pos = 0,j;
-            char *bmp = grx_font_get_char_bmp(f,chr);
+            unsigned char *bmp = grx_font_get_char_bmp(f,chr);
             fprintf(fp,"\t/* character %d */\n\t",chr);
             for(j = 0; j < len; j++) {
                 fprintf(fp,"0x%02x",(bmp[j] & 0xff));

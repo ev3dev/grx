@@ -51,39 +51,34 @@ G_DEFINE_TYPE_WITH_CODE (GrxLibinputDeviceManager,
 
 /* Properties */
 
-enum {
-    PROP_0,
-    N_PROPERTIES
-};
+// enum {
+//     PROP_0,
+//     N_PROPERTIES
+// };
 
-static GParamSpec *properties[N_PROPERTIES] = { NULL };
+// static GParamSpec *properties[N_PROPERTIES] = { NULL };
 
-static void
-set_property (GObject *object, guint property_id, const GValue *value,
-              GParamSpec *pspec)
-{
-    GrxLibinputDeviceManager *self = GRX_LIBINPUT_DEVICE_MANAGER (object);
+// static void
+// set_property (GObject *object, guint property_id, const GValue *value,
+//               GParamSpec *pspec)
+// {
+//     switch (property_id) {
+//     default:
+//         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+//         break;
+//     }
+// }
 
-    switch (property_id) {
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
-}
-
-static void
-get_property (GObject *object, guint property_id, GValue *value,
-              GParamSpec *pspec)
-{
-    GrxLibinputDeviceManager *self = GRX_LIBINPUT_DEVICE_MANAGER (object);
-    GrxLibinputDeviceManagerPrivate *priv = self->private;
-
-    switch (property_id) {
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
-}
+// static void
+// get_property (GObject *object, guint property_id, GValue *value,
+//               GParamSpec *pspec)
+// {
+//     switch (property_id) {
+//     default:
+//         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+//         break;
+//     }
+// }
 
 /* signals */
 
@@ -113,8 +108,8 @@ static void finalize (GObject *object)
 static void
 grx_libinput_device_manager_class_init (GrxLibinputDeviceManagerClass *klass)
 {
-    G_OBJECT_CLASS (klass)->set_property = set_property;
-    G_OBJECT_CLASS (klass)->get_property = get_property;
+    // G_OBJECT_CLASS (klass)->set_property = set_property;
+    // G_OBJECT_CLASS (klass)->get_property = get_property;
 
     signals[SIG_DEVICE_ADDED] =
         g_signal_new ("device-added",
@@ -311,6 +306,10 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
     }
     grx_event.any.device = grx_device;
 
+// we do not handle all cases of the enum and that is OK
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch"
+
     grx_event.type = GRX_INPUT_EVENT_TYPE_NONE;
     switch (type) {
     case LIBINPUT_EVENT_DEVICE_ADDED:
@@ -428,6 +427,8 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
         break;
     }
 
+#pragma GCC diagnostic pop
+
     if (grx_event.type != GRX_INPUT_EVENT_TYPE_NONE) {
         real_callback (&grx_event, user_data);
     }
@@ -484,7 +485,6 @@ guint grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context,
                                      GrxLibinputDeviceManagerSourceFunc func,
                                      gpointer user_data, GDestroyNotify notify)
 {
-    GrxLibinputDeviceManagerPrivate *priv = context->private;
     GSource *source;
     guint id;
 

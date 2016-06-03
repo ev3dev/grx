@@ -64,7 +64,7 @@ void BLITFUNC(GrxFrame *dst,int dx,int dy,
 #endif
               )
 {
-    char *dptr, *sptr;
+    unsigned char *dptr, *sptr;
     unsigned  dskip, sskip;
     int       oper, ww;
     GR_int8u  cval;

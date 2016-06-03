@@ -71,7 +71,7 @@ static INLINE
 GrxColor readpixel(GrxFrame *c,int x,int y)
 {
         GrxColor col;
-        char *p;
+        unsigned char *p;
         GRX_ENTER();
 #ifdef FAR_ACCESS
         p = &SCRN->gc_base_address.plane0[FOFS(x,y,SCRN->gc_line_offset)];
@@ -87,7 +87,7 @@ GrxColor readpixel(GrxFrame *c,int x,int y)
 static INLINE
 void drawpixel(int x,int y,GrxColor color)
 {
-        char *p;
+        unsigned char *p;
         GRX_ENTER();
         p = &CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
         SETFARSEL(CURC->gc_selector);
@@ -103,7 +103,7 @@ void drawpixel(int x,int y,GrxColor color)
 
 static void drawhline(int x,int y,int w,GrxColor color)
 {
-        char *p;
+        unsigned char *p;
         GRX_ENTER();
         p  = &CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
 

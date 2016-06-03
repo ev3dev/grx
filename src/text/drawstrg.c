@@ -50,6 +50,8 @@ void _GrDrawString(const void *text,int length,int x,int y,
         int     hh    = (x1 &  rotat) | (y1 & ~rotat);
         int type, step, x2, y2;
         switch(opt->txo_xalign) {
+          case GRX_TEXT_ALIGN_LEFT:
+            break;
           case GRX_TEXT_ALIGN_RIGHT:
             x -= ww - 1;
             break;
@@ -66,6 +68,8 @@ void _GrDrawString(const void *text,int length,int x,int y,
             break;
           case GRX_TEXT_VALIGN_MIDDLE:
             y -= (hh >> 1);
+            break;
+          case GRX_TEXT_VALIGN_TOP:
             break;
         }
         mouse_block(CURC,x,y,(x + ww - 1),(y + hh - 1));
@@ -90,7 +94,7 @@ void _GrDrawString(const void *text,int length,int x,int y,
         while(--length >= 0) {
             int  chr = GRX_CHAR_TYPE_GET_CODE_STR(type, text);
             int  attr,xx,yy,cw,ch;
-            char *bmp;
+            unsigned char *bmp;
             if(type == GRX_CHAR_TYPE_ATTR) {
                 attr = GRX_CHAR_TYPE_GET_ATTR_STR(GRX_CHAR_TYPE_ATTR, text);
                 fgcv = GRX_COLOR_TABLE_GET_COLOR(fgcp,GR_ATTR_FGCOLOR(attr));

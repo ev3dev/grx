@@ -432,6 +432,6 @@ done:   GRX_RETURN(res);
  */
 gboolean grx_set_mode_default_graphics(gboolean clear)
 {
-    grx_set_mode(clear ? GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT
-                       : GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC);
+    return grx_set_mode(clear ? GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT
+                              : GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC);
 }

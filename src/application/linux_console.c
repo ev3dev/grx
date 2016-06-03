@@ -112,8 +112,6 @@ static void
 set_property (GObject *object, guint property_id, const GValue *value,
               GParamSpec *pspec)
 {
-    GrxLinuxConsoleApplication *self = GRX_LINUX_CONSOLE_APPLICATION (object);
-
     switch (property_id) {
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);

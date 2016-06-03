@@ -41,7 +41,7 @@ static int fbfd = -1;
 static int ttyfd = -1;
 static struct fb_fix_screeninfo fbfix;
 static struct fb_var_screeninfo fbvar;
-static char *fbuffer = NULL;
+static unsigned char *fbuffer = NULL;
 static int ingraphicsmode = 0;
 static int original_keyboard_mode;
 

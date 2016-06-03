@@ -33,7 +33,7 @@ void grx_font_dump_fna(const GrxFont *f, char *fileName)
 {
         int chr;
         int x, y, width, bytes;
-        char *buffer;
+        unsigned char *buffer;
         FILE *fp = fopen(fileName, "w");
         if(!fp) return;
         /* write header */

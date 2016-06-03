@@ -31,7 +31,7 @@
 typedef struct{
   int method;  /* 0=file, 1=buffer */
   FILE *file;
-  const char *buffer;
+  const unsigned char *buffer;
   int bufferpointer;
   } inputstruct;
 

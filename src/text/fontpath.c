@@ -35,7 +35,7 @@
  */
 void grx_font_set_path(char *p)
 {
-        int  chr,totlen = 0,npath,plen = 0,dc = TRUE;
+        int  chr,totlen = 0,npath,plen = 0;
         char path[200],*plist[100];
         if(!p || (*p == '\0')) return;
         for (npath = 0; npath < itemsof(plist); ++npath)
@@ -60,8 +60,6 @@ void grx_font_set_path(char *p)
 #if defined(__WIN32__)
               case '\\':
                 chr = '/';
-              case '/':
-                dc = TRUE;
                 break;
 #endif
               default:

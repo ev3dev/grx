@@ -33,7 +33,7 @@ void _GrFrDrvPackedBitBltR2V(GrxFrame *dst,int dx,int dy,
                              int w,int h,GrxColor op)
 {
         GR_int32u doff;
-        char *dptr, *sptr;
+        unsigned char *dptr, *sptr;
         unsigned int dskip, sskip;
         int oper;
         GR_int8u cval;

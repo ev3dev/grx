@@ -47,6 +47,8 @@ void grx_draw_ellipse_arc(int xc,int yc,int rx,int ry,int start,int end,GrxArcSt
         int npts  = grx_generate_ellipse_arc(xc,yc,rx,ry,start,end,pnts);
         int close = FALSE;
         switch(style) {
+          case GRX_ARC_STYLE_OPEN:
+            break;
           case GRX_ARC_STYLE_CLOSED_RADIUS:
             pnts[npts].x = xc;
             pnts[npts].y = yc;
