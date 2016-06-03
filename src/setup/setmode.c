@@ -37,20 +37,20 @@ GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
         unsigned int cerr,serr,err[2];
         GrxVideoMode *best,*mp;
         GRX_ENTER();
-        DBGPRINTF(DBG_SETMD,("Attempting to set mode in %s\n", drv->name));
+        g_debug ("Attempting to set mode in %s", drv->name);
         best = NULL;
         mp = drv->modes;
         for(n = drv->n_modes; --n >= 0; mp++) {
             if (!mp->present) {
-                // DBGPRINTF(DBG_SETMD,("Mode %d not present\n", n));
+                g_debug ("Mode %d not present", n);
                 continue;
             }
             if (!mp->extended_info) {
-                DBGPRINTF(DBG_SETMD,("Mode %d missing extended info\n", n));
+                g_debug ("Mode %d missing extended info", n);
                 continue;
             }
             if ((mp->extended_info->mode != GRX_FRAME_MODE_TEXT) ? txt : !txt) {
-                DBGPRINTF(DBG_SETMD,("Mode %d txt/grx mismatch\n", n));
+                g_debug ("Mode %d txt/grx mismatch", n);
                 continue;
             }
             cerr = ERROR(bpp,mp->bpp);
@@ -58,13 +58,13 @@ GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
             if(((ep) ? FALSE : ((ep = err),TRUE)) ||
                ((cerr <  ep[0])) ||
                ((cerr == ep[0]) && (serr < ep[1]))) {
-                DBGPRINTF(DBG_SETMD,("Mode %d OK!\n", n));
+                g_debug ("Mode %d OK!", n);
                 best  = mp;
                 if (!cerr && !serr) break;
                 ep[0] = cerr;
                 ep[1] = serr;
             } else {
-                DBGPRINTF(DBG_SETMD,("Mode %d was not the best\n", n));
+                g_debug ("Mode %d was not the best", n);
             }
         }
         if(drv->inherit) {
@@ -104,7 +104,7 @@ static int buildframedriver(GrxVideoMode *mp,GrxFrameDriver *drv)
                 goto done; /* TRUE */
             }
             if (!d1) {
-                DBGPRINTF(DBG_SETMD,("Could not find framedriver\n"));
+                g_debug ("Could not find framedriver");
                 res = FALSE;
                 goto done;
             }
@@ -120,7 +120,7 @@ static int buildframedriver(GrxVideoMode *mp,GrxFrameDriver *drv)
             }
         }
         if (!d1) {
-            DBGPRINTF(DBG_SETMD,("Could not find framedriver\n"));
+            g_debug ("Could not find framedriver");
             res = FALSE;
             goto done;
         }
@@ -135,13 +135,15 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
         GRX_ENTER();
         res = FALSE;
         plsize = umul32(mp->line_offset,mp->height);
-        DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame buffer = 0x%x\n",mp->extended_info->frame));
-        DBGPRINTF(DBG_SETMD,("buildcontext - Mode Frame selector = 0x%x\n",mp->extended_info->lfb_selector));
+        g_debug ("buildcontext - Mode Frame buffer = %p",
+                 mp->extended_info->frame);
+        g_debug ("buildcontext - Mode Frame selector = 0x%x",
+                 mp->extended_info->lfb_selector);
         sttzero(cxt);
 #if !(defined(__XWIN__) && !defined(XF86DGA_FRAMEBUFFER) && !defined(__SDL__))
         if(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_LINEAR)
         {
-            DBGPRINTF(DBG_SETMD,("buildcontext - Linear Mode\n"));
+            g_debug ("buildcontext - Linear Mode");
             cxt->gc_base_address.plane0 =
             cxt->gc_base_address.plane1 =
             cxt->gc_base_address.plane2 =
@@ -151,17 +153,17 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
 #endif /* !(__XWIN__ && !XF86DGA_FRAMEBUFFER && !__SDL__) */
         if (mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_MEMORY)
         {
-            DBGPRINTF(DBG_SETMD,("buildcontext - Memory Mode\n"));
+            g_debug ("buildcontext - Memory Mode");
             if(plsize > fdp->max_plane_size) goto done; /* FALSE */
             if(mp->line_offset % fdp->row_align) goto done; /* FALSE */
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->present    = %d\n",mp->present));
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->bpp        = %d\n",mp->bpp));
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->width      = %d\n",mp->width));
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->height     = %d\n",mp->height));
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->mode       = %d\n",mp->mode));
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->line_offset = %d\n",mp->line_offset));
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->ext->mode  = %d\n",mp->extended_info->mode));
-            DBGPRINTF(DBG_SETMD,("buildcontext - mp->ext->flags = %x\n",mp->extended_info->flags));
+            g_debug ("buildcontext - mp->present     = %d",mp->present);
+            g_debug ("buildcontext - mp->bpp         = %d",mp->bpp);
+            g_debug ("buildcontext - mp->width       = %d",mp->width);
+            g_debug ("buildcontext - mp->height      = %d",mp->height);
+            g_debug ("buildcontext - mp->mode        = %d",mp->mode);
+            g_debug ("buildcontext - mp->line_offset = %d",mp->line_offset);
+            g_debug ("buildcontext - mp->ext->mode   = %d",mp->extended_info->mode);
+            g_debug ("buildcontext - mp->ext->flags  = 0x%x",mp->extended_info->flags);
 #ifdef GRX_USE_RAM3x8
             if (mp->bpp==24)
               {
@@ -210,23 +212,25 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
 
         res = TRUE;
 
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 0 = 0x%x\n",cxt->gc_base_address.plane0));
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 1 = 0x%x\n",cxt->gc_base_address.plane1));
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 2 = 0x%x\n",cxt->gc_base_address.plane2));
-        DBGPRINTF(DBG_SETMD,("buildcontext - context buffer 3 = 0x%x\n",cxt->gc_base_address.plane3));
+        g_debug ("buildcontext - context buffer 0 = %p",cxt->gc_base_address.plane0);
+        g_debug ("buildcontext - context buffer 1 = %p",cxt->gc_base_address.plane1);
+        g_debug ("buildcontext - context buffer 2 = %p",cxt->gc_base_address.plane2);
+        g_debug ("buildcontext - context buffer 3 = %p",cxt->gc_base_address.plane3);
 done:
         GRX_RETURN(res);
 }
 
-static int errhdlr(char *msg)
+static int errhdlr(gchar *msg)
 {
-        if(DRVINFO->errsfatal) {
-            DRVINFO->moderestore = TRUE;
-            _GrCloseVideoDriver();
-            fprintf(stderr,"grx_set_mode: %s\n",msg);
-            exit(1);
-        }
-        return(FALSE);
+    if(DRVINFO->errsfatal) {
+        DRVINFO->moderestore = TRUE;
+        _GrCloseVideoDriver();
+        g_error ("grx_set_mode: %s", msg);
+    } else {
+        g_debug ("%s", msg);
+    }
+
+    return FALSE;
 }
 
 int grx_set_mode(GrxGraphicsMode which,...)
@@ -243,7 +247,7 @@ int grx_set_mode(GrxGraphicsMode which,...)
         noclear = FALSE;
         c = 0;
         res = FALSE;
-        DBGPRINTF(DBG_SETMD,("Mode: %d\n",(int)which));
+        g_debug ("Mode: %d",(int)which);
         if(DRVINFO->vdriver == NULL) {
             grx_set_driver(NULL);
             if(DRVINFO->vdriver == NULL) {
@@ -373,9 +377,9 @@ int grx_set_mode(GrxGraphicsMode which,...)
                         (*vmd.extended_info->setup)(&vmd,noclear);
                     }
                 }
-                DBGPRINTF(DBG_SETMD,("GrMouseUnInit ...\n"));
+                g_debug ("GrMouseUnInit ...");
                 GrMouseUnInit();
-                DBGPRINTF(DBG_SETMD,("GrMouseUnInit done\n"));
+                g_debug ("GrMouseUnInit done");
                 DRVINFO->set_bank    = (void (*)(int    ))_GrDummyFunction;
                 DRVINFO->set_rw_banks = (void (*)(int,int))_GrDummyFunction;
                 DRVINFO->curbank    = (-1);
@@ -406,18 +410,18 @@ int grx_set_mode(GrxGraphicsMode which,...)
                 DRVINFO->mcode   = which;
                 DRVINFO->vposx   = 0;
                 DRVINFO->vposy   = 0;
-                DBGPRINTF(DBG_SETMD,("grx_color_info_reset_colors ...\n"));
+                g_debug ("grx_color_info_reset_colors ...");
                 if ( !_GrResetColors() ) {
                     res = errhdlr("could not set color mode");
                     goto done;
                 }
-                DBGPRINTF(DBG_SETMD,("grx_color_info_reset_colors done\n"));
+                g_debug ("grx_color_info_reset_colors done");
                 if(fdr.init) {
-                    DBGPRINTF(DBG_SETMD,("fdr.init ...\n"));
+                    g_debug ("fdr.init ...");
                     (*fdr.init)(&DRVINFO->actmode);
-                    DBGPRINTF(DBG_SETMD,("fdr.init done\n"));
+                    g_debug ("fdr.init done");
                 }
-                DBGPRINTF(DBG_SETMD,("grx_set_mode complete\n"));
+                g_debug ("grx_set_mode complete");
                 res = TRUE;
                 goto done;
             }

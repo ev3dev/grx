@@ -20,7 +20,6 @@
 #define DBG_ENTER          0x8000
 #define DBG_LEAVE          DBG_ENTER
 #define DBG_FONT           0x4000
-#define DBG_SETMD          0x2000
 #define DBG_DRIVER         0x1000
 #define DBG_COLOR          0x0800
 #define DBG_COPYFILL       0x0400
