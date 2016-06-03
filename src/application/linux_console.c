@@ -17,8 +17,6 @@
 #include <glib.h>
 #include <glib-unix.h>
 #include <gio/gio.h>
-#define G_SETTINGS_ENABLE_BACKEND
-#include <gio/gsettingsbackend.h>
 
 #include <grx/context.h>
 #include <grx/draw.h>
@@ -28,7 +26,6 @@
 #include <grx/linux_console_application.h>
 #include <grx/mode.h>
 
-#include "libgrx.h"
 
 /**
  * SECTION:linux_console_application
@@ -51,7 +48,6 @@
 typedef struct {
     gboolean owns_fb;
     GrxContext *save;
-    GSettingsBackend *settings_backend;
     GrxLibinputDeviceManager *device_manager;
     guint device_manager_event_id;
     guint sigusr1_id;
@@ -205,7 +201,6 @@ static void finalize (GObject *object)
     g_source_remove (priv->sigusr1_id);
     g_source_remove (priv->device_manager_event_id);
     g_object_unref (priv->device_manager);
-    g_object_unref (priv->settings_backend);
 }
 
 static void
@@ -241,14 +236,7 @@ grx_linux_console_application_init (GrxLinuxConsoleApplication *self)
 {
     GrxLinuxConsoleApplicationPrivate *priv =
         grx_linux_console_application_get_instance_private (self);
-    const gchar *file_path;
 
-    file_path = g_getenv ("GRX_CONF");
-    if (!file_path) {
-        file_path = "/etc/grx.conf";
-    }
-    priv->settings_backend = g_keyfile_settings_backend_new (file_path,
-        "/org/ev3dev/grx/", "grx");
     priv->device_manager = g_object_new (GRX_TYPE_LIBINPUT_DEVICE_MANAGER, NULL);
 }
 
