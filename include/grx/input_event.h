@@ -20,7 +20,6 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
-#include <grx/input_keys.h>
 #include <grx/libinput_device.h>
 
 /**
@@ -70,30 +69,32 @@ typedef struct {
  * GrxKeyEvent:
  * @type: @GRX_INPUT_EVENT_TYPE_KEY_DOWN or @GRX_INPUT_EVENT_TYPE_KEY_UP
  * @device: the originating device
- * @key: the platform independent key code
- * @code: the platform dependent key code
+ * @keysym: the XKB keysym (translated using keymap)
+ * @unichar: the UTF-32 character
+ * @code: the platform dependent raw key code
  *
  * Structure that holds information about a keyboard key event.
  */
 typedef struct {
     GrxInputEventType type;
     GrxLibinputDevice *device;
-    GrxKey key;
-    guint code;
+    guint32 keysym;
+    gunichar unichar;
+    guint32 code;
 } GrxKeyEvent;
 
 typedef struct {
     GrxInputEventType type;
     GrxLibinputDevice *device;
-    guint button;
+    guint32 button;
 } GrxButtonEvent;
 
 typedef struct {
     GrxInputEventType type;
     GrxLibinputDevice *device;
-    gint id;
-    gint x;
-    gint y;
+    gint32 id;
+    gint32 x;
+    gint32 y;
 } GrxTouchEvent;
 
 typedef union {

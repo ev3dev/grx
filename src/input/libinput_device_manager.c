@@ -16,7 +16,6 @@
 #include <fcntl.h>
 #include <libinput.h>
 #include <libudev.h>
-#include <linux/input.h>
 
 #include <glib.h>
 #include <glib-object.h>
@@ -36,139 +35,10 @@
 // TODO: make double press time configurable
 #define DOUBLE_PRESS_TIME 500
 
-/* translates linux key codes to GRX key codes */
-static const GrxKey keymap[KEY_CNT] = {
-    [KEY_RESERVED]          = GRX_KEY_NONE,
-    [KEY_ESC]               = GRX_KEY_ESCAPE,
-    [KEY_1]                 = GRX_KEY_1,
-    [KEY_2]                 = GRX_KEY_2,
-    [KEY_3]                 = GRX_KEY_3,
-    [KEY_4]                 = GRX_KEY_4,
-    [KEY_5]                 = GRX_KEY_5,
-    [KEY_6]                 = GRX_KEY_6,
-    [KEY_7]                 = GRX_KEY_7,
-    [KEY_8]                 = GRX_KEY_8,
-    [KEY_9]                 = GRX_KEY_9,
-    [KEY_0]                 = GRX_KEY_0,
-    [KEY_MINUS]             = GRX_KEY_MINUS,
-    [KEY_EQUAL]             = GRX_KEY_EQUAL,
-    [KEY_BACKSPACE]         = GRX_KEY_BACKSPACE,
-    [KEY_TAB]               = GRX_KEY_TAB,
-    [KEY_Q]                 = GRX_KEY_Q,
-    [KEY_W]                 = GRX_KEY_W,
-    [KEY_E]                 = GRX_KEY_E,
-    [KEY_R]                 = GRX_KEY_R,
-    [KEY_T]                 = GRX_KEY_T,
-    [KEY_Y]                 = GRX_KEY_Y,
-    [KEY_U]                 = GRX_KEY_U,
-    [KEY_I]                 = GRX_KEY_I,
-    [KEY_O]                 = GRX_KEY_O,
-    [KEY_P]                 = GRX_KEY_P,
-    [KEY_LEFTBRACE]         = GRX_KEY_LEFT_BRACKET,
-    [KEY_RIGHTBRACE]        = GRX_KEY_RIGHT_BRACKET,
-    [KEY_ENTER]             = GRX_KEY_ENTER,
-    [KEY_LEFTCTRL]          = GRX_KEY_LEFT_CTRL,
-    [KEY_A]                 = GRX_KEY_A,
-    [KEY_S]                 = GRX_KEY_S,
-    [KEY_D]                 = GRX_KEY_D,
-    [KEY_F]                 = GRX_KEY_F,
-    [KEY_G]                 = GRX_KEY_G,
-    [KEY_H]                 = GRX_KEY_H,
-    [KEY_J]                 = GRX_KEY_J,
-    [KEY_K]                 = GRX_KEY_K,
-    [KEY_L]                 = GRX_KEY_L,
-    [KEY_SEMICOLON]         = GRX_KEY_SEMICOLON,
-    [KEY_APOSTROPHE]        = GRX_KEY_APOSTROPHE,
-    [KEY_GRAVE]             = GRX_KEY_GRAVE_ACCENT,
-    [KEY_LEFTSHIFT]         = GRX_KEY_LEFT_SHIFT,
-    [KEY_BACKSLASH]         = GRX_KEY_BACKSLASH,
-    [KEY_Z]                 = GRX_KEY_Z,
-    [KEY_X]                 = GRX_KEY_X,
-    [KEY_C]                 = GRX_KEY_C,
-    [KEY_V]                 = GRX_KEY_V,
-    [KEY_B]                 = GRX_KEY_B,
-    [KEY_N]                 = GRX_KEY_N,
-    [KEY_M]                 = GRX_KEY_M,
-    [KEY_COMMA]             = GRX_KEY_COMMA,
-    [KEY_DOT]               = GRX_KEY_PERIOD,
-    [KEY_SLASH]             = GRX_KEY_SLASH,
-    [KEY_RIGHTSHIFT]        = GRX_KEY_RIGHT_SHIFT,
-    [KEY_KPASTERISK]        = GRX_KEY_KP_ASTERISK,
-    [KEY_LEFTALT]           = GRX_KEY_LEFT_ALT,
-    [KEY_SPACE]             = GRX_KEY_SPACE,
-    [KEY_CAPSLOCK]          = GRX_KEY_CAPS_LOCK,
-    [KEY_F1]                = GRX_KEY_F1,
-    [KEY_F2]                = GRX_KEY_F2,
-    [KEY_F3]                = GRX_KEY_F3,
-    [KEY_F4]                = GRX_KEY_F4,
-    [KEY_F5]                = GRX_KEY_F5,
-    [KEY_F6]                = GRX_KEY_F6,
-    [KEY_F7]                = GRX_KEY_F7,
-    [KEY_F8]                = GRX_KEY_F8,
-    [KEY_F9]                = GRX_KEY_F9,
-    [KEY_F10]               = GRX_KEY_F10,
-    [KEY_NUMLOCK]           = GRX_KEY_KP_NUM_LOCK,
-    [KEY_SCROLLLOCK]        = GRX_KEY_SCROLL_LOCK,
-    [KEY_KP7]               = GRX_KEY_KP_7,
-    [KEY_KP8]               = GRX_KEY_KP_8,
-    [KEY_KP9]               = GRX_KEY_KP_9,
-    [KEY_KPMINUS]           = GRX_KEY_KP_MINUS,
-    [KEY_KP4]               = GRX_KEY_KP_4,
-    [KEY_KP5]               = GRX_KEY_KP_5,
-    [KEY_KP6]               = GRX_KEY_KP_6,
-    [KEY_KPPLUS]            = GRX_KEY_KP_PLUS,
-    [KEY_KP1]               = GRX_KEY_KP_1,
-    [KEY_KP2]               = GRX_KEY_KP_2,
-    [KEY_KP3]               = GRX_KEY_KP_3,
-    [KEY_KP0]               = GRX_KEY_KP_0,
-    [KEY_KPDOT]             = GRX_KEY_KP_PERIOD,
-    [KEY_ZENKAKUHANKAKU]    = GRX_KEY_NONE,
-    [KEY_102ND]             = GRX_KEY_NONE,
-    [KEY_F11]               = GRX_KEY_F11,
-    [KEY_F12]               = GRX_KEY_F12,
-    [KEY_RO]                = GRX_KEY_NONE,
-    [KEY_KATAKANA]          = GRX_KEY_NONE,
-    [KEY_HIRAGANA]          = GRX_KEY_NONE,
-    [KEY_HENKAN]            = GRX_KEY_NONE,
-    [KEY_KATAKANAHIRAGANA]  = GRX_KEY_NONE,
-    [KEY_MUHENKAN]          = GRX_KEY_NONE,
-    [KEY_KPJPCOMMA]         = GRX_KEY_NONE,
-    [KEY_KPENTER]           = GRX_KEY_KP_ENTER,
-    [KEY_RIGHTCTRL]         = GRX_KEY_RIGHT_CTRL,
-    [KEY_KPSLASH]           = GRX_KEY_KP_SLASH,
-    [KEY_SYSRQ]             = GRX_KEY_PRINT_SCREEN,
-    [KEY_RIGHTALT]          = GRX_KEY_RIGHT_ALT,
-    [KEY_LINEFEED]          = GRX_KEY_NONE,
-    [KEY_HOME]              = GRX_KEY_HOME,
-    [KEY_UP]                = GRX_KEY_UP_ARROW,
-    [KEY_PAGEUP]            = GRX_KEY_PAGE_UP,
-    [KEY_LEFT]              = GRX_KEY_LEFT_ARROW,
-    [KEY_RIGHT]             = GRX_KEY_RIGHT_ARROW,
-    [KEY_END]               = GRX_KEY_END,
-    [KEY_DOWN]              = GRX_KEY_DOWN_ARROW,
-    [KEY_PAGEDOWN]          = GRX_KEY_PAGE_DOWN,
-    [KEY_INSERT]            = GRX_KEY_INSERT,
-    [KEY_DELETE]            = GRX_KEY_DELETE,
-    [KEY_MACRO]             = GRX_KEY_NONE,
-    [KEY_MUTE]              = GRX_KEY_NONE,
-    [KEY_VOLUMEDOWN]        = GRX_KEY_NONE,
-    [KEY_VOLUMEUP]          = GRX_KEY_NONE,
-    [KEY_POWER]             = GRX_KEY_NONE,
-    [KEY_KPEQUAL]           = GRX_KEY_NONE,
-    [KEY_KPPLUSMINUS]       = GRX_KEY_NONE,
-    [KEY_PAUSE]             = GRX_KEY_PAUSE,
-    [KEY_SCALE]             = GRX_KEY_NONE,
-    [KEY_KPCOMMA]           = GRX_KEY_NONE,
-    [KEY_HANGEUL]           = GRX_KEY_NONE,
-    [KEY_HANJA]             = GRX_KEY_NONE,
-    [KEY_YEN]               = GRX_KEY_NONE,
-    [KEY_LEFTMETA]          = GRX_KEY_LEFT_SUPER,
-    [KEY_RIGHTMETA]         = GRX_KEY_RIGHT_SUPER,
-    [KEY_COMPOSE]           = GRX_KEY_NONE,
-};
-
 typedef struct {
-    struct libinput *context;
+    struct libinput *libinput;
+    struct xkb_context *xkb;
+    struct xkb_keymap *keymap;
     GList *devices;
 } GrxLibinputDeviceManagerPrivate;
 
@@ -234,7 +104,10 @@ static void finalize (GObject *object)
     GrxLibinputDeviceManagerPrivate *priv = self->private;
 
     G_OBJECT_CLASS (grx_libinput_device_manager_parent_class)->finalize (object);
-    priv->context = libinput_unref (priv->context);
+
+    xkb_keymap_unref (priv->keymap);
+    xkb_context_unref (priv->xkb);
+    priv->libinput = libinput_unref (priv->libinput);
 }
 
 static void
@@ -303,22 +176,50 @@ init (GInitable *initable, GCancellable *cancellable, GError **error)
     struct udev *udev;
 
     udev = udev_new ();
-    priv->context = libinput_udev_create_context (&libinput_interface_impl, self, udev);
+    priv->libinput = libinput_udev_create_context (&libinput_interface_impl, self, udev);
     udev_unref (udev);
-    if (!priv->context) {
+    if (!priv->libinput) {
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                      "Failed to create libinput context.");
         return FALSE;
     }
 
-    if (libinput_udev_assign_seat (priv->context, "seat0") < 0) {
-        priv->context = libinput_unref (priv->context);
+    if (libinput_udev_assign_seat (priv->libinput, "seat0") < 0) {
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                      "Failed to assign seat.");
-        return FALSE;
+        goto err1;
+    }
+
+    priv->xkb = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
+    if (!priv->xkb) {
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                     "Failed to create xkb context.");
+        goto err1;
+    }
+
+    priv->xkb = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
+    if (!priv->xkb) {
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                     "Failed to create xkb context.");
+        goto err1;
+    }
+
+    priv->keymap = xkb_keymap_new_from_names (priv->xkb, NULL,
+                                              XKB_KEYMAP_COMPILE_NO_FLAGS);
+    if (!priv->keymap) {
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                     "Failed to create xkb keymap.");
+        goto err2;
     }
 
     return TRUE;
+
+err2:
+    xkb_context_unref (priv->xkb);
+err1:
+    priv->libinput = libinput_unref (priv->libinput);
+
+    return FALSE;
 }
 
 static void initable_interface_init (GInitableIface *iface)
@@ -358,7 +259,7 @@ static gboolean source_prepare (GSource *source, gint *timeout)
     GrxLibinputDeviceManagerPrivate *priv = instance->private;
     enum libinput_event_type type;
 
-    type = libinput_next_event_type (priv->context);
+    type = libinput_next_event_type (priv->libinput);
     *timeout = -1;
 
     return type != LIBINPUT_EVENT_NONE;
@@ -371,8 +272,8 @@ static gboolean source_check (GSource *source)
     GrxLibinputDeviceManagerPrivate *priv = instance->private;
     enum libinput_event_type type;
 
-    libinput_dispatch (priv->context);
-    type = libinput_next_event_type (priv->context);
+    libinput_dispatch (priv->libinput);
+    type = libinput_next_event_type (priv->libinput);
 
     return type != LIBINPUT_EVENT_NONE;
 }
@@ -391,7 +292,7 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
     enum libinput_event_type type;
     GrxInputEvent grx_event;
 
-    event = libinput_get_event (priv->context);
+    event = libinput_get_event (priv->libinput);
     if (!event) {
         return G_SOURCE_CONTINUE;
     }
@@ -401,7 +302,7 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
     device = libinput_event_get_device (event);
     grx_device = libinput_device_get_user_data (device);
     if (!grx_device) {
-        grx_device = grx_libinput_device_new (device);
+        grx_device = grx_libinput_device_new (device, priv->keymap);
         if (type != LIBINPUT_EVENT_DEVICE_ADDED) {
             // we are making the assumption that the priv->devices list will
             // take ownership of the reference to grx_device
@@ -427,18 +328,23 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
         {
             struct libinput_event_keyboard *keyboard;
             uint32_t key;
+            xkb_keycode_t keycode;
 
             keyboard = libinput_event_get_keyboard_event (event);
             key = libinput_event_keyboard_get_key (keyboard);
+            keycode = key + 8; // xkb keymaps are usually offset by 8
             switch (libinput_event_keyboard_get_key_state (keyboard)) {
             case LIBINPUT_KEY_STATE_PRESSED:
                 grx_event.type = GRX_INPUT_EVENT_TYPE_KEY_DOWN;
+                grx_libinput_device_update_state (grx_device, keycode,
+                    XKB_KEY_DOWN, &grx_event.key.keysym, &grx_event.key.unichar);
                 break;
             case LIBINPUT_KEY_STATE_RELEASED:
                 grx_event.type = GRX_INPUT_EVENT_TYPE_KEY_UP;
+                grx_libinput_device_update_state (grx_device, keycode,
+                    XKB_KEY_UP, &grx_event.key.keysym, &grx_event.key.unichar);
                 break;
             }
-            grx_event.key.key = keymap[key];
             grx_event.key.code = key;
         }
         break;
@@ -569,7 +475,7 @@ GSource *grx_libinput_device_manager_source_new (GrxLibinputDeviceManager *conte
 
     source = g_source_new (&source_funcs, sizeof(GrxLibinputDeviceManagerSource));
     ((GrxLibinputDeviceManagerSource*)source)->instance = g_object_ref(G_OBJECT (context));
-    g_source_add_unix_fd (source, libinput_get_fd (priv->context), G_IO_IN);
+    g_source_add_unix_fd (source, libinput_get_fd (priv->libinput), G_IO_IN);
 
     return source;
 }

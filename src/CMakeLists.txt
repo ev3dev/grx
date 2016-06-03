@@ -235,9 +235,23 @@ endif (GRX_DEBUG)
 find_package (JPEG REQUIRED)
 
 set (PUBLIC_MODULES glib-2.0 gobject-2.0 gio-2.0)
-set (PRIVATE_MODULES libudev libinput libpng12)
+set (PRIVATE_MODULES libudev libinput libpng12 xkbcommon)
 find_package (PkgConfig REQUIRED)
 pkg_check_modules (GRX_DEPS REQUIRED ${PUBLIC_MODULES} ${PRIVATE_MODULES})
+
+
+# copy and modify xkbcommon-keysyms.h
+
+find_file (XKBCOMMON_KEYSYMS_H xkbcommon-keysyms.h
+    HINTS ${GRX_DEPS_xkbcommon_INCLUDE_DIRS}
+    PATH_SUFFIXES xkbcommon)
+file (READ ${XKBCOMMON_KEYSYMS_H} GRX_KEYSYMS)
+# better than maintaining a copy of X11 keysyms by hand
+string (REPLACE "XKBCOMMON" "GRX_INPUT" GRX_KEYSYMS ${GRX_KEYSYMS})
+string (REPLACE "XKB" "GRX" GRX_KEYSYMS ${GRX_KEYSYMS})
+set (GRX_KEYSYMS_H ${CMAKE_CURRENT_BINARY_DIR}/include/grx/input_keysyms.h)
+file (WRITE ${GRX_KEYSYMS_H} ${GRX_KEYSYMS})
+install (FILES ${GRX_KEYSYMS_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/grx)
 
 
 # declare the libraries
@@ -259,6 +273,7 @@ endif (GRX_LINUXFB)
 target_include_directories (${LIBRARY_NAME}
     PUBLIC
         ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_BINARY_DIR}/include
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${JPEG_INCLUDE_DIR}
@@ -326,6 +341,7 @@ set (GTKDOC_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/text.h
     ${CMAKE_SOURCE_DIR}/include/grx/user.h
     ${CMAKE_SOURCE_DIR}/include/grx/wideline.h
+    ${GRX_KEYSYMS_H}
 )
 
 foreach (file ${LINUX_SOURCE_FILES})

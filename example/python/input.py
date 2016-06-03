@@ -34,11 +34,14 @@ class InputApplication(Grx.LinuxConsoleApplication):
         print("application started")
 
     def do_input_event(self, event):
+        Grx.LinuxConsoleApplication.do_input_event(self, event)
         t = event.type
         if t == Grx.InputEventType.KEY_DOWN or t == Grx.InputEventType.KEY_UP:
             key_event = event.key
-            print ("key", key_event.key)
-            if key_event.key in (Grx.Key.Q, Grx.Key.BACKSPACE, Grx.Key.ESCAPE):
+            print ("key keysym", key_event.keysym)
+            print ("key unichar", key_event.unichar)
+            print ("key code", key_event.code)
+            if key_event.keysym in (Grx.KEY_q, Grx.KEY_BackSpace, Grx.KEY_Escape):
                 quit()
         elif t == Grx.InputEventType.BUTTON_PRESS or t == Grx.InputEventType.BUTTON_RELEASE:
             button_event = event.button

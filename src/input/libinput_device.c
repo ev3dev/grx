@@ -15,6 +15,7 @@
 
 #include <libinput.h>
 #include <libudev.h>
+#include <xkbcommon/xkbcommon.h>
 
 #include <glib.h>
 #include <glib-object.h>
@@ -23,8 +24,11 @@
 
 #include <grx/libinput_device.h>
 
+#include "libinput_device_internal.h"
+
 typedef struct {
     struct libinput_device *device;
+    struct xkb_state *state;
 } GrxLibinputDevicePrivate;
 
 G_DEFINE_TYPE_WITH_CODE (GrxLibinputDevice,
@@ -134,6 +138,7 @@ static void finalize (GObject *object)
 
     G_OBJECT_CLASS (grx_libinput_device_parent_class)->finalize (object);
 
+    xkb_state_unref (priv->state);
     libinput_device_set_user_data (priv->device, NULL);
     priv->device = libinput_device_unref (priv->device);
 }
@@ -201,7 +206,8 @@ grx_libinput_device_init (GrxLibinputDevice *self)
  * Returns: the new instance
  */
 GrxLibinputDevice *
-grx_libinput_device_new (struct libinput_device *device)
+grx_libinput_device_new (struct libinput_device *device,
+                         struct xkb_keymap *keymap)
 {
     GrxLibinputDevice *instance = g_object_new (GRX_TYPE_LIBINPUT_DEVICE, NULL);
     GrxLibinputDevicePrivate *priv = instance->private;
@@ -209,6 +215,7 @@ grx_libinput_device_new (struct libinput_device *device)
 
     g_return_val_if_fail (device != NULL, NULL);
     g_return_val_if_fail (libinput_device_get_user_data (device) == NULL, NULL);
+    g_return_val_if_fail (keymap != NULL, NULL);
 
     priv->device = libinput_device_ref (device);
     libinput_device_set_user_data (device, instance);
@@ -216,6 +223,8 @@ grx_libinput_device_new (struct libinput_device *device)
     if (libinput_device_config_calibration_get_default_matrix (device, matrix)) {
         libinput_device_config_calibration_set_matrix (device, matrix);
     }
+
+    priv->state = xkb_state_new (keymap);
 
     return instance;
 }
@@ -245,4 +254,45 @@ gboolean grx_libinput_device_uncalibrate (GrxLibinputDevice *device)
                                                          identity_matrix);
 
     return ret == LIBINPUT_CONFIG_STATUS_SUCCESS;
+}
+
+/**
+ * grx_libinput_device_update_state:
+ * @device: the device instance
+ * @keycode: the XKB key code
+ * @direction: the key press direction
+ * @keysym: (out): the resulting keysym
+ * @unichar: the resulting UTF-32 character
+ *
+ * Updates the state of a device when a key event occurs.
+ */
+void grx_libinput_device_update_state (GrxLibinputDevice *device,
+                                       xkb_keycode_t keycode,
+                                       enum xkb_key_direction direction,
+                                       xkb_keysym_t *keysym,
+                                       gunichar *unichar)
+{
+    GrxLibinputDevicePrivate *priv = device->private;
+    enum xkb_state_component changed;
+
+    // according to the libxkbcommon docs, it is conventional to get the symbol
+    // and then update (in case you were wondering about the ordering here)
+    *keysym = xkb_state_key_get_one_sym (priv->state, keycode);
+    *unichar = xkb_state_key_get_utf32 (priv->state, keycode);
+    changed = xkb_state_update_key (priv->state, keycode, direction);
+
+    if (changed & XKB_STATE_LEDS) {
+        enum libinput_led leds = 0;
+
+        if (xkb_state_led_name_is_active (priv->state, XKB_LED_NAME_CAPS) == 1) {
+            leds |= LIBINPUT_LED_CAPS_LOCK;
+        }
+        if (xkb_state_led_name_is_active (priv->state, XKB_LED_NAME_NUM) == 1) {
+            leds |= LIBINPUT_LED_NUM_LOCK;
+        }
+        if (xkb_state_led_name_is_active (priv->state, XKB_LED_NAME_SCROLL) == 1) {
+            leds |= LIBINPUT_LED_SCROLL_LOCK;
+        }
+        libinput_device_led_update (priv->device, leds);
+    }
 }
