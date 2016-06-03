@@ -306,7 +306,6 @@ install (TARGETS ${STATIC_LIBRARY_NAME} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBD
 
 # pkg-config
 
-# convert CMake list to space separated string for pkgconfig file
 string (REPLACE ";" ", " PKGCONFIG_PUBLIC_DEPS "${PUBLIC_MODULES}")
 string (REPLACE ";" ", " PKGCONFIG_PRIVATE_DEPS "${PRIVATE_MODULES}")
 configure_file (grx.pc.in ${PACKAGE_NAME}.pc @ONLY)
