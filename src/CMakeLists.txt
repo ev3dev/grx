@@ -322,7 +322,7 @@ install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}.pc
 # uses host architecture.
 if (NOT CMAKE_CROSSCOMPILING)
 
-set (GTKDOC_SOURCE_FILES
+set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/color.h
     ${CMAKE_SOURCE_DIR}/include/grx/common.h
     ${CMAKE_SOURCE_DIR}/include/grx/context.h
@@ -346,7 +346,7 @@ set (GTKDOC_SOURCE_FILES
 
 foreach (file ${LINUX_SOURCE_FILES})
     get_filename_component (file ${file} ABSOLUTE)
-    list (APPEND GTKDOC_SOURCE_FILES ${file})
+    list (APPEND GIR_SOURCE_FILES ${file})
 endforeach ()
 
 find_package (GirScanner REQUIRED)
@@ -360,7 +360,7 @@ add_gir (GIR ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
     ARGS
         --warn-all
     FILES
-        ${GTKDOC_SOURCE_FILES}
+        ${GIR_SOURCE_FILES}
 )
 install (FILES $<TARGET_PROPERTY:${GIR},GIR_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/)
