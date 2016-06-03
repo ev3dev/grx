@@ -197,6 +197,17 @@ void grx_linuxfb_aquire (void)
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
 }
 
+void grx_linuxfb_chvt (int vt_num)
+{
+    if (!ingraphicsmode) {
+        return;
+    }
+    if (ttyfd < 0) {
+        return;
+    }
+    ioctl(ttyfd, VT_ACTIVATE, vt_num);
+}
+
 static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)
 {
     __u16 red, green, blue, transp;

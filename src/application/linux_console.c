@@ -23,6 +23,7 @@
 #include <grx/context.h>
 #include <grx/draw.h>
 #include <grx/extents.h>
+#include <grx/input_keysyms.h>
 #include <grx/libinput_device_manager.h>
 #include <grx/linux_console_application.h>
 #include <grx/mode.h>
@@ -43,7 +44,8 @@
  * #GrxLinuxConsoleApplication:is-console-active property to tell if the console
  * is active. This property will be false if the user switches to another
  * console. If you draw to the screen during this time, it will interfere with
- * the application running on the active console.
+ * the application running on the active console. Additionally, input events
+ * are ignored when #GrxLinuxConsoleApplication:is-console-active is #FALSE.
  */
 
 typedef struct {
@@ -168,9 +170,30 @@ static void startup (GApplication *application)
     g_unix_signal_add (SIGTERM, term_signal_handler, self);
 }
 
+// TODO: put this in a header file
+extern void grx_linuxfb_chvt (int vt_num);
+
 static void
 input_event (GrxLinuxConsoleApplication *application, GrxInputEvent *event)
 {
+    if (event->type == GRX_INPUT_EVENT_TYPE_KEY_DOWN) {
+        switch (event->key.keysym) {
+        case GRX_KEY_XF86Switch_VT_1:
+        case GRX_KEY_XF86Switch_VT_2:
+        case GRX_KEY_XF86Switch_VT_3:
+        case GRX_KEY_XF86Switch_VT_4:
+        case GRX_KEY_XF86Switch_VT_5:
+        case GRX_KEY_XF86Switch_VT_6:
+        case GRX_KEY_XF86Switch_VT_7:
+        case GRX_KEY_XF86Switch_VT_8:
+        case GRX_KEY_XF86Switch_VT_9:
+        case GRX_KEY_XF86Switch_VT_10:
+        case GRX_KEY_XF86Switch_VT_11:
+        case GRX_KEY_XF86Switch_VT_12:
+            grx_linuxfb_chvt (event->key.keysym & 0xf);
+            break;
+        }
+    }
 }
 
 static void finalize (GObject *object)
@@ -292,8 +315,13 @@ static void on_input_event (GrxInputEvent *event, gpointer user_data)
     GrxLinuxConsoleApplication *self = GRX_LINUX_CONSOLE_APPLICATION (user_data);
     GrxLinuxConsoleApplicationClass *klass =
         GRX_LINUX_CONSOLE_APPLICATION_GET_CLASS (self);
+    GrxLinuxConsoleApplicationPrivate *priv =
+        grx_linux_console_application_get_instance_private (self);
 
-    klass->input_event (self, event);
+    // only propagate events if the console is active
+    if (priv->owns_fb) {
+        klass->input_event (self, event);
+    }
 }
 
 static gboolean init (GInitable *initable, GCancellable *cancellable,

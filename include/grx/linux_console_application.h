@@ -59,8 +59,7 @@ GType grx_linux_console_application_get_type (void);
  * GrxLinuxConsoleApplicationClass:
  * @parent_class: the parent class struct
  * @input_event: The input event handler. Subclasses should override this method
- *               if they are interested in input events. No need to chain up as
- *               the default implementation does nothing.
+ *               if they are interested in input events.
  * @reserved: for future use
  */
 struct _GrxLinuxConsoleApplicationClass {
