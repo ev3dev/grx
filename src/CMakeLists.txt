@@ -2,8 +2,8 @@
 
 set (LIBRARY_SOURCE_FILES
     draw/bitblt.c
-    draw/bitbltnc.c
     draw/bitblt1b.c
+    draw/bitbltnc.c
     draw/box.c
     draw/boxnc.c
     draw/clearclp.c
@@ -12,6 +12,7 @@ set (LIBRARY_SOURCE_FILES
     draw/drwinlne.c
     draw/fillbox.c
     draw/fillboxn.c
+    draw/flodspil.c
     draw/frambox.c
     draw/framboxn.c
     draw/getscl.c
@@ -25,7 +26,6 @@ set (LIBRARY_SOURCE_FILES
     draw/pixelc.c
     draw/plot.c
     draw/putscl.c
-    draw/flodspil.c
     fdrivers/dotab8.c
     fdrivers/ftable.c
     fdrivers/genblit.c
@@ -37,22 +37,28 @@ set (LIBRARY_SOURCE_FILES
     fdrivers/pblitv2r.c
     fdrivers/pblitv2v.c
     fdrivers/ram1.c
-    fdrivers/ram4.c
-    fdrivers/ram8.c
     fdrivers/ram16.c
     fdrivers/ram24.c
-    fdrivers/ram32l.c
     fdrivers/ram32h.c
+    fdrivers/ram32l.c
+    fdrivers/ram4.c
+    fdrivers/ram8.c
     fdrivers/rblit_14.c
+    fonts/fdtable.c
+    fonts/fdv_fna.c
     fonts/fdv_grx.c
     fonts/fdv_raw.c
-    fonts/fdv_fna.c
     fonts/fdv_win.c
-    fonts/fdtable.c
     fonts/pc6x8.c
-    fonts/pc8x8.c
     fonts/pc8x14.c
     fonts/pc8x16.c
+    fonts/pc8x8.c
+    gformats/ctx2jpg.c
+    gformats/ctx2png.c
+    gformats/ctx2pnm.c
+    gformats/jpg2ctx.c
+    gformats/png2ctx.c
+    gformats/pnm2ctx.c
     image/ialloc.c
     image/ibuild.c
     image/ifbox.c
@@ -61,8 +67,6 @@ set (LIBRARY_SOURCE_FILES
     image/imginlne.c
     image/iplot.c
     image/istretch.c
-    gformats/ctx2pnm.c
-    gformats/pnm2ctx.c
     mouse/bldcurs.c
     mouse/drawcurs.c
     mouse/mouinfo.c
@@ -198,8 +202,8 @@ set (LIBRARY_SOURCE_FILES
     user/usetwin.c
     user/utextxy.c
     user/uvline.c
-    utils/resize.c
     utils/ordswap.c
+    utils/resize.c
     utils/shiftscl.c
     utils/tmpbuff.c
     vdrivers/vd_mem.c
@@ -213,10 +217,6 @@ set (LIBRARY_SOURCE_FILES
     wideline/custplne.c
     wideline/custpoly.c
     wideline/drwcpoly.c
-    gformats/ctx2jpg.c
-    gformats/jpg2ctx.c
-    gformats/ctx2png.c
-    gformats/png2ctx.c
 )
 
 if (GRX_DEBUG)
