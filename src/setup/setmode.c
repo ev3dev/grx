@@ -139,6 +139,7 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
                  mp->extended_info->frame);
         g_debug ("buildcontext - Mode Frame selector = 0x%x",
                  mp->extended_info->lfb_selector);
+        g_debug ("plane size: %ld", plsize);
         sttzero(cxt);
 #if !(defined(__XWIN__) && !defined(XF86DGA_FRAMEBUFFER) && !defined(__SDL__))
         if(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_LINEAR)
@@ -154,8 +155,14 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
         if (mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_MEMORY)
         {
             g_debug ("buildcontext - Memory Mode");
-            if(plsize > fdp->max_plane_size) goto done; /* FALSE */
-            if(mp->line_offset % fdp->row_align) goto done; /* FALSE */
+            if (plsize > fdp->max_plane_size) {
+                g_debug ("plane size too big");
+                goto done; /* FALSE */
+            }
+            if (mp->line_offset % fdp->row_align) {
+                g_debug ("offset does not match alignment");
+                goto done; /* FALSE */
+            }
             g_debug ("buildcontext - mp->present     = %d",mp->present);
             g_debug ("buildcontext - mp->bpp         = %d",mp->bpp);
             g_debug ("buildcontext - mp->width       = %d",mp->width);
@@ -190,12 +197,19 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
                  cxt->gc_base_address.plane2 =
                  cxt->gc_base_address.plane3 = mp->extended_info->frame;
               }
-        }
-        else
-        {
-            if(plsize > fdp->max_plane_size) goto done; /* FALSE */
-            if(!mp->extended_info->set_bank && (plsize > 0x10000L)) goto done; /* FALSE */
-            if(mp->line_offset % fdp->row_align) goto done; /* FALSE */
+        } else {
+            if (plsize > fdp->max_plane_size) {
+                g_debug ("plane size too big");
+                goto done; /* FALSE */
+            }
+            if (!mp->extended_info->set_bank && (plsize > 0x10000L)) {
+                g_debug ("plane size exceeds 64KiB");
+                goto done; /* FALSE */
+            }
+            if (mp->line_offset % fdp->row_align) {
+                g_debug ("offset does not match alignment");
+                goto done; /* FALSE */
+            }
             cxt->gc_base_address.plane0 =
             cxt->gc_base_address.plane1 =
             cxt->gc_base_address.plane2 =
@@ -425,6 +439,7 @@ int grx_set_mode(GrxGraphicsMode which,...)
                 res = TRUE;
                 goto done;
             }
+            g_debug ("disabling mode due to failed setup");
             mdp->present = FALSE;
         }
 done:   GRX_RETURN(res);
