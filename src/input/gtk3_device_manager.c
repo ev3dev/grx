@@ -240,3 +240,16 @@ grx_gtk3_device_manager_new (GCancellable *cancellable, GError **error)
 
     return instance;
 }
+
+GrxGtk3Device *
+grx_gtk3_device_lookup (GrxGtk3DeviceManager *manager, GdkDevice *device)
+{
+    GrxGtk3DeviceManagerPrivate *priv;
+
+    g_return_val_if_fail (manager != NULL, NULL);
+    g_return_val_if_fail (device != NULL, NULL);
+
+    priv = manager->private;
+
+    return GRX_GTK3_DEVICE (g_hash_table_lookup (priv->device_map, device));
+}

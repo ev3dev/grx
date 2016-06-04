@@ -19,7 +19,10 @@
 #include <gtk/gtk.h>
 
 #include <grx/gtk3_device.h>
+#include <grx/gtk3_device_manager.h>
 
 GrxGtk3Device *grx_gtk3_device_new (GdkDevice *device);
+GrxGtk3Device *
+grx_gtk3_device_lookup (GrxGtk3DeviceManager *manager, GdkDevice *device);
 
 #endif /* __INPUT_GTK3_DEVICE_INTERNAL_H__ */

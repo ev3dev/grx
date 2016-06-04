@@ -62,7 +62,7 @@ typedef enum {
 
 typedef struct {
     GrxInputEventType type;
-    GrxLibinputDevice *device;
+    void *device;
 } GrxAnyEvent;
 
 /**
@@ -77,7 +77,7 @@ typedef struct {
  */
 typedef struct {
     GrxInputEventType type;
-    GrxLibinputDevice *device;
+    void *device;
     guint32 keysym;
     gunichar unichar;
     guint32 code;
@@ -85,13 +85,13 @@ typedef struct {
 
 typedef struct {
     GrxInputEventType type;
-    GrxLibinputDevice *device;
+    void *device;
     guint32 button;
 } GrxButtonEvent;
 
 typedef struct {
     GrxInputEventType type;
-    GrxLibinputDevice *device;
+    void *device;
     gint32 id;
     gint32 x;
     gint32 y;

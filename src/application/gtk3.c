@@ -21,9 +21,12 @@
 #include <grx/context.h>
 #include <grx/draw.h>
 #include <grx/extents.h>
+#include <grx/gtk3_device.h>
 #include <grx/gtk3_device_manager.h>
 #include <grx/gtk3_application.h>
 #include <grx/mode.h>
+
+#include <../input/gtk3_device_internal.h>
 
 /**
  * SECTION:gtk3_application
@@ -215,19 +218,69 @@ grx_gtk3_application_init (GrxGtk3Application *self)
 
 /* interface implementation */
 
-// static void on_input_event (GrxInputEvent *event, gpointer user_data)
-// {
-//     GrxGtk3Application *self = GRX_GTK3_APPLICATION (user_data);
-//     GrxGtk3ApplicationClass *klass =
-//         GRX_GTK3_APPLICATION_GET_CLASS (self);
-//     // GrxGtk3ApplicationPrivate *priv =
-//     //     grx_gtk3_application_get_instance_private (self);
+// map GDK events to GRX events
+static const GrxInputEventType event_type_map[GDK_EVENT_LAST] = {
+    [GDK_KEY_PRESS]         = GRX_INPUT_EVENT_TYPE_KEY_DOWN,
+    [GDK_KEY_RELEASE]       = GRX_INPUT_EVENT_TYPE_KEY_UP,
+    [GDK_BUTTON_PRESS]      = GRX_INPUT_EVENT_TYPE_BUTTON_PRESS,
+    [GDK_BUTTON_RELEASE]    = GRX_INPUT_EVENT_TYPE_BUTTON_RELEASE,
+    [GDK_2BUTTON_PRESS]     = GRX_INPUT_EVENT_TYPE_BUTTON_DOUBLE_PRESS,
+    [GDK_TOUCH_BEGIN]       = GRX_INPUT_EVENT_TYPE_TOUCH_DOWN,
+    [GDK_TOUCH_UPDATE]      = GRX_INPUT_EVENT_TYPE_TOUCH_MOTION,
+    [GDK_TOUCH_END]         = GRX_INPUT_EVENT_TYPE_TOUCH_UP,
+    [GDK_TOUCH_CANCEL]      = GRX_INPUT_EVENT_TYPE_TOUCH_CANCEL,
+};
 
-//     // only propagate events if the console is active
-//     // if (priv->owns_fb) {
-//         klass->input_event (self, event);
-//     // }
-// }
+static gboolean on_event (GtkWidget *widget, GdkEvent *event, gpointer user_data)
+{
+    GrxGtk3Application *self = GRX_GTK3_APPLICATION (user_data);
+    GrxGtk3ApplicationClass *klass = GRX_GTK3_APPLICATION_GET_CLASS (self);
+    GrxGtk3ApplicationPrivate *priv =
+        grx_gtk3_application_get_instance_private (self);
+
+    // only propagate GRX events if the window is active
+    if (gtk_window_is_active (GTK_WINDOW (priv->window))) {
+        GrxInputEvent grx_event;
+
+        grx_event.type = event_type_map[event->type];
+        switch (event->type) {
+        case GDK_KEY_PRESS:
+        case GDK_KEY_RELEASE:
+            // GDK does not provide a device for keyboard events
+            grx_event.key.device = NULL;
+            grx_event.key.keysym = event->key.keyval;
+            grx_event.key.unichar = gdk_keyval_to_unicode (event->key.keyval);
+            grx_event.key.code = event->key.hardware_keycode;
+            break;
+        case GDK_BUTTON_PRESS:
+        case GDK_BUTTON_RELEASE:
+        case GDK_2BUTTON_PRESS:
+            grx_event.button.device = grx_gtk3_device_lookup
+                (priv->device_manager, event->button.device);
+            grx_event.button.button = event->button.button;
+            break;
+        case GDK_TOUCH_BEGIN:
+        case GDK_TOUCH_UPDATE:
+        case GDK_TOUCH_END:
+        case GDK_TOUCH_CANCEL:
+            grx_event.touch.device = grx_gtk3_device_lookup
+                (priv->device_manager, event->button.device);
+            grx_event.touch.id = 0;
+            grx_event.touch.x = event->touch.x;
+            grx_event.touch.y = event->touch.y;
+            break;
+        default:
+            return FALSE;
+        }
+
+        klass->input_event (self, &grx_event);
+
+        // we have handled the GDK event, so don't propagate it.
+        return TRUE;
+    }
+
+    return FALSE;
+}
 
 /*
  * set_cursor:
@@ -283,6 +336,11 @@ static gboolean init (GInitable *initable, GCancellable *cancellable,
     // Have to have a GtkEventBox to handle events since GtkImage doesn't have
     // a GdkWindow.
     event_box = gtk_event_box_new ();
+    gtk_widget_set_can_focus (event_box, TRUE); // for keyboard input
+    gtk_widget_set_events (event_box, GDK_BUTTON_PRESS_MASK |
+                           GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK |
+                           GDK_KEY_RELEASE_MASK | GDK_TOUCH_MASK);
+    g_signal_connect (G_OBJECT (event_box), "event", (GCallback)on_event, self);
     g_signal_connect (G_OBJECT (event_box), "enter-notify-event",
                       (GCallback)set_cursor, "none");
     g_signal_connect (G_OBJECT (event_box), "leave-notify-event",
