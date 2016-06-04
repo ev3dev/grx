@@ -32,7 +32,7 @@ G_DEFINE_BOXED_TYPE(GrxFont, grx_font, grx_font_ref, grx_font_unref);
  */
 GrxFont *grx_font_ref(GrxFont *font)
 {
-    g_return_val_if_fail(font == NULL, NULL);
+    g_return_val_if_fail(font != NULL, NULL);
 
     font->ref_count++;
 
