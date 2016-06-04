@@ -21,6 +21,7 @@
 #include <grx/context.h>
 #include <grx/draw.h>
 #include <grx/extents.h>
+#include <grx/gtk3_device_manager.h>
 #include <grx/gtk3_application.h>
 #include <grx/mode.h>
 
@@ -36,6 +37,7 @@
 
 typedef struct {
     GtkWidget *window;
+    GrxGtk3DeviceManager *device_manager;
 } GrxGtk3ApplicationPrivate;
 
 static void initable_interface_init (GInitableIface *iface);
@@ -49,29 +51,29 @@ G_DEFINE_TYPE_WITH_CODE (GrxGtk3Application,
 
 enum {
     PROP_0,
-    // PROP_DEVICE_MANAGER,
+    PROP_DEVICE_MANAGER,
     PROP_IS_CONSOLE_ACTIVE,
     N_PROPERTIES
 };
 
 static GParamSpec *properties[N_PROPERTIES] = { NULL };
 
-// /**
-//  * grx_gtk3_application_get_device_manager:
-//  * @application: a #GrxGtk3Application
-//  *
-//  * Gets the #GrxLibinputDeviceManager for this application.
-//  *
-//  * Returns: (transfer none): the #GrxLibinputDeviceManager
-//  */
-// GrxLibinputDeviceManager *
-// grx_gtk3_application_get_device_manager (GrxGtk3Application *application)
-// {
-//     GrxGtk3ApplicationPrivate *priv =
-//         grx_gtk3_application_get_instance_private (application);
+/**
+ * grx_gtk3_application_get_device_manager:
+ * @application: a #GrxGtk3Application
+ *
+ * Gets the #GrxGtk3DeviceManager for this application.
+ *
+ * Returns: (transfer none): the #GrxGtk3DeviceManager
+ */
+GrxGtk3DeviceManager *
+grx_gtk3_application_get_device_manager (GrxGtk3Application *application)
+{
+    GrxGtk3ApplicationPrivate *priv =
+        grx_gtk3_application_get_instance_private (application);
 
-//     return priv->device_manager;
-// }
+    return priv->device_manager;
+}
 
 /**
  * grx_gtk3_application_is_console_active:
@@ -111,9 +113,9 @@ get_property (GObject *object, guint property_id, GValue *value,
         grx_gtk3_application_get_instance_private (self);
 
     switch (property_id) {
-    // case PROP_DEVICE_MANAGER:
-    //     g_value_set_object (value, priv->device_manager);
-    //     break;
+    case PROP_DEVICE_MANAGER:
+        g_value_set_object (value, priv->device_manager);
+        break;
     case PROP_IS_CONSOLE_ACTIVE:
         g_value_set_boolean (value,
                              gtk_window_is_active (GTK_WINDOW (priv->window)));
@@ -165,9 +167,15 @@ input_event (GrxGtk3Application *application, GrxInputEvent *event)
 
 static void finalize (GObject *object)
 {
-    // GrxGtk3Application *self = GRX_GTK3_APPLICATION (object);
-    // GrxGtk3ApplicationPrivate *priv =
-    //         grx_gtk3_application_get_instance_private (self);
+    GrxGtk3Application *self = GRX_GTK3_APPLICATION (object);
+    GrxGtk3ApplicationPrivate *priv =
+            grx_gtk3_application_get_instance_private (self);
+
+    G_OBJECT_CLASS (grx_gtk3_application_parent_class)->finalize (object);
+
+    if (G_OBJECT (priv->device_manager)) {
+        g_object_unref (G_OBJECT (priv->device_manager));
+    }
 }
 
 static void
@@ -176,12 +184,12 @@ grx_gtk3_application_class_init (GrxGtk3ApplicationClass *klass)
     G_OBJECT_CLASS (klass)->set_property = set_property;
     G_OBJECT_CLASS (klass)->get_property = get_property;
 
-    // properties[PROP_DEVICE_MANAGER] =
-    //     g_param_spec_object ("device-manager",
-    //                          "input device manager",
-    //                          "the input device manager for this application.",
-    //                          GRX_TYPE_LIBINPUT_DEVICE_MANAGER,
-    //                          G_PARAM_READABLE);
+    properties[PROP_DEVICE_MANAGER] =
+        g_param_spec_object ("device-manager",
+                             "input device manager",
+                             "the input device manager for this application.",
+                             GRX_TYPE_GTK3_DEVICE_MANAGER,
+                             G_PARAM_READABLE);
     properties[PROP_IS_CONSOLE_ACTIVE] =
         g_param_spec_boolean ("is-console-active",
                               "console is active",
@@ -282,6 +290,13 @@ static gboolean init (GInitable *initable, GCancellable *cancellable,
 
     gtk_container_add (GTK_CONTAINER (priv->window), event_box);
     gtk_container_add (GTK_CONTAINER (event_box), image);
+
+    // It is important to call this after setting the graphics mode, otherwise
+    // it could fail because GTK is not initialized.
+    priv->device_manager = grx_gtk3_device_manager_new (cancellable, error);
+    if (!priv->device_manager) {
+        return FALSE;
+    }
 
     return g_application_register (G_APPLICATION (initable), cancellable, error);
 }

@@ -237,6 +237,8 @@ endif (GRX_LINUXFB)
 if (GRX_GTK3)
     list (APPEND LIBRARY_SOURCE_FILES
         application/gtk3.c
+        input/gtk3_device.c
+        input/gtk3_device_manager.c
         vdrivers/vd_gtk3.c
     )
 endif (GRX_GTK3)
@@ -374,6 +376,8 @@ endif (GRX_LINUXFB)
 if (GRX_GTK3)
     LIST (APPEND GIR_SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/include/grx/gtk3_application.h
+        ${CMAKE_SOURCE_DIR}/include/grx/gtk3_device.h
+        ${CMAKE_SOURCE_DIR}/include/grx/gtk3_device_manager.h
     )
 endif (GRX_GTK3)
 
