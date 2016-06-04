@@ -3778,6 +3778,6 @@ namespace Grx {
         public bool init (GLib.Cancellable? cancellable = null) throws GLib.Error;
         public virtual void input_event (InputEvent event);
         public LibinputDeviceManager device_manager { get; }
-        public bool is_console_active { [CCode (cname = "grx_linux_console_application_is_console_active")]get; }
+        public bool is_console_active { [CCode (cname = "grx_gtk3_application_is_console_active")]get; }
     }
 }

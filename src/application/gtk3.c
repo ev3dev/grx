@@ -47,14 +47,14 @@ G_DEFINE_TYPE_WITH_CODE (GrxGtk3Application,
 
 /* Properties */
 
-// enum {
-//     PROP_0,
-//     PROP_DEVICE_MANAGER,
-//     PROP_IS_CONSOLE_ACTIVE,
-//     N_PROPERTIES
-// };
+enum {
+    PROP_0,
+    // PROP_DEVICE_MANAGER,
+    PROP_IS_CONSOLE_ACTIVE,
+    N_PROPERTIES
+};
 
-// static GParamSpec *properties[N_PROPERTIES] = { NULL };
+static GParamSpec *properties[N_PROPERTIES] = { NULL };
 
 // /**
 //  * grx_gtk3_application_get_device_manager:
@@ -73,57 +73,66 @@ G_DEFINE_TYPE_WITH_CODE (GrxGtk3Application,
 //     return priv->device_manager;
 // }
 
-// /**
-//  * grx_gtk3_application_is_console_active:
-//  * @application: a #GrxGtk3Application
-//  *
-//  * Gets the status of the #GrxGtk3Application:is-console-active property
-//  *
-//  * Returns: %TRUE if the console this application is running on is the active
-//  * console.
-//  */
-// gboolean
-// grx_gtk3_application_is_console_active (GrxGtk3Application *application)
-// {
-//     GrxGtk3ApplicationPrivate *priv =
-//         grx_gtk3_application_get_instance_private (application);
+/**
+ * grx_gtk3_application_is_console_active:
+ * @application: a #GrxGtk3Application
+ *
+ * Gets the status of the #GrxGtk3Application:is-console-active property
+ *
+ * Returns: %TRUE if the console this application is running on is the active
+ * console.
+ */
+gboolean
+grx_gtk3_application_is_console_active (GrxGtk3Application *application)
+{
+    GrxGtk3ApplicationPrivate *priv =
+        grx_gtk3_application_get_instance_private (application);
 
-//     return priv->owns_fb;
-// }
+    return gtk_window_is_active (GTK_WINDOW (priv->window));
+}
 
-// static void
-// set_property (GObject *object, guint property_id, const GValue *value,
-//               GParamSpec *pspec)
-// {
-//     switch (property_id) {
-//     default:
-//         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-//         break;
-//     }
-// }
+static void
+set_property (GObject *object, guint property_id, const GValue *value,
+              GParamSpec *pspec)
+{
+    switch (property_id) {
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
 
-// static void
-// get_property (GObject *object, guint property_id, GValue *value,
-//               GParamSpec *pspec)
-// {
-//     GrxGtk3Application *self = GRX_GTK3_APPLICATION (object);
-//     GrxGtk3ApplicationPrivate *priv =
-//         grx_gtk3_application_get_instance_private (self);
+static void
+get_property (GObject *object, guint property_id, GValue *value,
+              GParamSpec *pspec)
+{
+    GrxGtk3Application *self = GRX_GTK3_APPLICATION (object);
+    GrxGtk3ApplicationPrivate *priv =
+        grx_gtk3_application_get_instance_private (self);
 
-//     switch (property_id) {
-//     case PROP_DEVICE_MANAGER:
-//         g_value_set_object (value, priv->device_manager);
-//         break;
-//     case PROP_IS_CONSOLE_ACTIVE:
-//         g_value_set_boolean (value, priv->owns_fb);
-//         break;
-//     default:
-//         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-//         break;
-//     }
-// }
+    switch (property_id) {
+    // case PROP_DEVICE_MANAGER:
+    //     g_value_set_object (value, priv->device_manager);
+    //     break;
+    case PROP_IS_CONSOLE_ACTIVE:
+        g_value_set_boolean (value,
+                             gtk_window_is_active (GTK_WINDOW (priv->window)));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
 
 /* class implementation */
+
+static void on_window_is_active (GObject *window, GParamSpec *pspec,
+                                 gpointer user_data)
+{
+    GObject *self = G_OBJECT (user_data);
+
+    g_object_notify_by_pspec (self, properties[PROP_IS_CONSOLE_ACTIVE]);
+}
 
 static void on_window_destroy (GtkWidget *widget, gpointer user_data)
 {
@@ -143,6 +152,8 @@ static void startup (GApplication *application)
 
     g_application_hold (application);
     gtk_widget_show_all (priv->window);
+    g_signal_connect (priv->window, "notify::is-active",
+                      (GCallback)on_window_is_active, self);
     g_signal_connect (priv->window, "destroy", (GCallback)on_window_destroy,
                       application);
 }
@@ -162,8 +173,8 @@ static void finalize (GObject *object)
 static void
 grx_gtk3_application_class_init (GrxGtk3ApplicationClass *klass)
 {
-    // G_OBJECT_CLASS (klass)->set_property = set_property;
-    // G_OBJECT_CLASS (klass)->get_property = get_property;
+    G_OBJECT_CLASS (klass)->set_property = set_property;
+    G_OBJECT_CLASS (klass)->get_property = get_property;
 
     // properties[PROP_DEVICE_MANAGER] =
     //     g_param_spec_object ("device-manager",
@@ -171,15 +182,15 @@ grx_gtk3_application_class_init (GrxGtk3ApplicationClass *klass)
     //                          "the input device manager for this application.",
     //                          GRX_TYPE_LIBINPUT_DEVICE_MANAGER,
     //                          G_PARAM_READABLE);
-    // properties[PROP_IS_CONSOLE_ACTIVE] =
-    //     g_param_spec_boolean ("is-console-active",
-    //                           "console is active",
-    //                           "Gets if the console this application is running on is the active console.",
-    //                           FALSE /* default value */,
-    //                           G_PARAM_READABLE);
-    // g_object_class_install_properties (G_OBJECT_CLASS (klass),
-    //                                    N_PROPERTIES,
-    //                                    properties);
+    properties[PROP_IS_CONSOLE_ACTIVE] =
+        g_param_spec_boolean ("is-console-active",
+                              "console is active",
+                              "Gets if the console this application is running on is the active console.",
+                              FALSE /* default value */,
+                              G_PARAM_READABLE);
+    g_object_class_install_properties (G_OBJECT_CLASS (klass),
+                                       N_PROPERTIES,
+                                       properties);
 
     G_APPLICATION_CLASS (klass)->startup = startup;
     G_OBJECT_CLASS (klass)->finalize = finalize;
