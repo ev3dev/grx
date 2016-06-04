@@ -19,6 +19,9 @@
 #include "grdriver.h"
 
 GrxVideoDriver *_GrVideoDriverTable[] = {
+#ifdef GTK3_DRIVER
+    &_GrVideoDriverGtk3,
+#endif /* GTK3_DRIVER */
 #if defined(__XWIN__) && !defined(__SDL__)
 #if defined(XF86DGA_DRIVER)
     &_GrVideoDriverXF86DGA,

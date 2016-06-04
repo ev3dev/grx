@@ -39,6 +39,7 @@
 #include <grx/input_keysyms.h>
 #include <grx/libinput_device.h>
 #include <grx/libinput_device_manager.h>
+#include <grx/gtk3_application.h>
 #include <grx/linux_console_application.h>
 
 #endif  /* __GRX_3_0_H_INCLUDED__ */

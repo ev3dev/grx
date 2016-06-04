@@ -158,21 +158,23 @@ enum _GrxFrameMode {
 /**
  * GrxVideoAdapter:
  * @GRX_VIDEO_ADAPTER_UNKNOWN: Unknown (default state before driver is set)
+ * @GRX_VIDEO_ADAPTER_MEMORY: Memory-only adapter
  * @GRX_VIDEO_ADAPTER_XWIN: X11 adapter
  * @GRX_VIDEO_ADAPTER_WIN32: Windows adapter
  * @GRX_VIDEO_ADAPTER_LINUX_FB: Linux framebuffer
  * @GRX_VIDEO_ADAPTER_SDL: Simple DirectMedia Layer adapter
- * @GRX_VIDEO_ADAPTER_MEMORY: Memory-only adapter
+ * @GRX_VIDEO_ADAPTER_GTK3: Gtk+ 3 adapter
  *
  * supported video adapter types
  */
 typedef enum {
-    GRX_VIDEO_ADAPTER_UNKNOWN = (-1),  /* not known (before driver set) */
-    GRX_VIDEO_ADAPTER_XWIN,            /* X11 driver */
-    GRX_VIDEO_ADAPTER_WIN32,           /* WIN32 driver */
-    GRX_VIDEO_ADAPTER_LINUX_FB,        /* Linux framebuffer */
-    GRX_VIDEO_ADAPTER_SDL,             /* SDL driver */
-    GRX_VIDEO_ADAPTER_MEMORY           /* memory only driver */
+    GRX_VIDEO_ADAPTER_UNKNOWN = (-1),
+    GRX_VIDEO_ADAPTER_MEMORY,
+    GRX_VIDEO_ADAPTER_XWIN,
+    GRX_VIDEO_ADAPTER_WIN32,
+    GRX_VIDEO_ADAPTER_LINUX_FB,
+    GRX_VIDEO_ADAPTER_SDL,
+    GRX_VIDEO_ADAPTER_GTK3,
 } GrxVideoAdapter;
 
 /**

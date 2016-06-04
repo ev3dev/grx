@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "grx-3.0.h"
+#include <grx-3.0.h>
 #include "grxkeys.h"
 #include "gfaz.h"
 #include "drawing.h"
@@ -208,6 +208,7 @@ int main(int argc, char **argv)
 {
     Event ev;
     char buffer[100];
+    GrxGtk3Application *app;
 
     if (argc >= 4) {
         gwidth = atoi(argv[1]);
@@ -215,11 +216,14 @@ int main(int argc, char **argv)
         gbpp = atoi(argv[3]);
     }
 
+    app = grx_gtk3_application_new (NULL, NULL);
+
     ini_graphics();
     ini_objects();
     paint_screen();
 
     while (1) {
+        g_main_context_iteration (g_main_context_default (), FALSE);
         event_read(&ev);
         if (ev.type == EV_MOUSE) {
             ev.p2 -= worg;
@@ -252,6 +256,9 @@ int main(int argc, char **argv)
     }
 
     gfaz_fin();
+
+    g_object_unref (app);
+
     return 0;
 }
 

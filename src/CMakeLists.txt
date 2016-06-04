@@ -234,6 +234,14 @@ if (GRX_LINUXFB)
     )
 endif (GRX_LINUXFB)
 
+if (GRX_GTK3)
+    list (APPEND LIBRARY_SOURCE_FILES
+        application/gtk3.c
+        vdrivers/vd_gtk3.c
+    )
+endif (GRX_GTK3)
+
+list (SORT LIBRARY_SOURCE_FILES)
 
 # dependencies
 
@@ -244,6 +252,9 @@ set (PRIVATE_MODULES libpng12 xkbcommon)
 if (GRX_LINUXFB)
     LIST (APPEND PRIVATE_MODULES libudev libinput)
 endif (GRX_LINUXFB)
+if (GRX_GTK3)
+    LIST (APPEND PRIVATE_MODULES gtk+-3.0)
+endif (GRX_GTK3)
 find_package (PkgConfig REQUIRED)
 pkg_check_modules (GRX_DEPS REQUIRED ${PUBLIC_MODULES} ${PRIVATE_MODULES})
 
@@ -279,6 +290,9 @@ if (GRX_LINUXFB)
             "LFB_BY_NEAR_POINTER"
     )
 endif (GRX_LINUXFB)
+if (GRX_GTK3)
+    target_compile_definitions (${LIBRARY_NAME} PUBLIC "GTK3_DRIVER")
+endif (GRX_GTK3)
 target_include_directories (${LIBRARY_NAME}
     PUBLIC
         ${CMAKE_SOURCE_DIR}/include
@@ -357,10 +371,18 @@ if (GRX_LINUXFB)
     )
 endif (GRX_LINUXFB)
 
+if (GRX_GTK3)
+    LIST (APPEND GIR_SOURCE_FILES
+        ${CMAKE_SOURCE_DIR}/include/grx/gtk3_application.h
+    )
+endif (GRX_GTK3)
+
 foreach (file ${LIBRARY_SOURCE_FILES})
     get_filename_component (file ${file} ABSOLUTE)
     list (APPEND GIR_SOURCE_FILES ${file})
 endforeach ()
+
+LIST (SORT GIR_SOURCE_FILES)
 
 find_package (GirScanner REQUIRED)
 include (GirScanner)

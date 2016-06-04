@@ -3772,4 +3772,12 @@ namespace Grx {
         public LibinputDeviceManager device_manager { get; }
         public bool is_console_active { [CCode (cname = "grx_linux_console_application_is_console_active")]get; }
     }
+
+    public class Gtk3Application : GLib.Application, GLib.Initable {
+        public Gtk3Application.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
+        public bool init (GLib.Cancellable? cancellable = null) throws GLib.Error;
+        public virtual void input_event (InputEvent event);
+        public LibinputDeviceManager device_manager { get; }
+        public bool is_console_active { [CCode (cname = "grx_linux_console_application_is_console_active")]get; }
+    }
 }
