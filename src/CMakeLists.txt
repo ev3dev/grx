@@ -67,6 +67,7 @@ set (LIBRARY_SOURCE_FILES
     image/imginlne.c
     image/iplot.c
     image/istretch.c
+    input/device.c
     mouse/bldcurs.c
     mouse/drawcurs.c
     mouse/mouinfo.c
@@ -350,6 +351,7 @@ set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/color.h
     ${CMAKE_SOURCE_DIR}/include/grx/common.h
     ${CMAKE_SOURCE_DIR}/include/grx/context.h
+    ${CMAKE_SOURCE_DIR}/include/grx/device.h
     ${CMAKE_SOURCE_DIR}/include/grx/draw.h
     ${CMAKE_SOURCE_DIR}/include/grx/draw_nc.h
     ${CMAKE_SOURCE_DIR}/include/grx/extents.h
@@ -367,7 +369,6 @@ set (GIR_SOURCE_FILES
 
 if (GRX_LINUXFB)
     LIST (APPEND GIR_SOURCE_FILES
-        ${CMAKE_SOURCE_DIR}/include/grx/libinput_device.h
         ${CMAKE_SOURCE_DIR}/include/grx/libinput_device_manager.h
         ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h
     )
@@ -376,7 +377,6 @@ endif (GRX_LINUXFB)
 if (GRX_GTK3)
     LIST (APPEND GIR_SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/include/grx/gtk3_application.h
-        ${CMAKE_SOURCE_DIR}/include/grx/gtk3_device.h
         ${CMAKE_SOURCE_DIR}/include/grx/gtk3_device_manager.h
     )
 endif (GRX_GTK3)
@@ -435,6 +435,7 @@ gtk_doc_add_module (grx
         ${INTERNAL_HEADERS}
     IGNOREFILES
         ${INTERNAL_HEADERS}
+        ${UNUSED_FILES}
     LIBRARIES
         ${SHARED_LIBRARY_NAME}
 )

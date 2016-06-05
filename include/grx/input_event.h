@@ -20,7 +20,7 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
-#include <grx/libinput_device.h>
+#include <grx/device.h>
 
 /**
  * SECTION:input_event
@@ -77,7 +77,7 @@ typedef struct {
  */
 typedef struct {
     GrxInputEventType type;
-    void *device;
+    GrxDevice *device;
     guint32 keysym;
     gunichar unichar;
     guint32 code;
@@ -85,13 +85,13 @@ typedef struct {
 
 typedef struct {
     GrxInputEventType type;
-    void *device;
+    GrxDevice *device;
     guint32 button;
 } GrxButtonEvent;
 
 typedef struct {
     GrxInputEventType type;
-    void *device;
+    GrxDevice *device;
     gint32 id;
     gint32 x;
     gint32 y;

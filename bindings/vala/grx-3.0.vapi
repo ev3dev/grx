@@ -3707,13 +3707,13 @@ namespace Grx {
     [CCode (has_type_id = false)]
     public struct AnyEvent {
         InputEventType type;
-        LibinputDevice *device;
+        Device *device;
     }
 
     [CCode (has_type_id = false)]
     public struct KeyEvent {
         InputEventType type;
-        LibinputDevice *device;
+        Device *device;
         uint keysym;
         unichar unichar;
         uint code;
@@ -3722,14 +3722,14 @@ namespace Grx {
     [CCode (has_type_id = false)]
     public struct ButtonEvent {
         InputEventType type;
-        LibinputDevice *device;
+        Device *device;
         uint button;
     }
 
     [CCode (has_type_id = false)]
     public struct TouchEvent {
         InputEventType type;
-        LibinputDevice *device;
+        Device *device;
         int id;
         int x;
         int y;
@@ -3744,6 +3744,15 @@ namespace Grx {
         TouchEvent touch;
     }
 
+    public abstract class Device : GLib.Object {
+        public string name { get; }
+        public string sysname { get; }
+        public bool has_keyboard { get; }
+        public bool has_pointer { get; }
+        public bool has_touch { get; }
+        public bool uncalibrate ();
+    }
+
     public class LibinputDeviceManagerSource : GLib.Source {
     }
 
@@ -3752,17 +3761,8 @@ namespace Grx {
     public class LibinputDeviceManager : GLib.Object, GLib.Initable {
         public LibinputDeviceManager (GLib.Cancellable? cancellable = null) throws GLib.Error;
         public uint event_add (owned LibinputDeviceManagerSourceFunc func);
-        public signal void device_added (LibinputDevice device);
-        public signal void device_removed (LibinputDevice device);
-    }
-
-    public class LibinputDevice : GLib.Object {
-        public string name { get; }
-        public string sysname { get; }
-        public bool has_keyboard { get; }
-        public bool has_pointer { get; }
-        public bool has_touch { get; }
-        public bool uncalibrate ();
+        public signal void device_added (Device device);
+        public signal void device_removed (Device device);
     }
 
     public class LinuxConsoleApplication : GLib.Application, GLib.Initable {

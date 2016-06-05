@@ -22,14 +22,14 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
+#include <grx/device.h>
 #include <grx/extents.h>
-#include <grx/input_keys.h>
 #include <grx/input_event.h>
-#include <grx/libinput_device.h>
+#include <grx/input_keys.h>
 #include <grx/libinput_device_manager.h>
 #include <grx/mode.h>
 
-#include "libinput_device_internal.h"
+#include "libinput_device.h"
 
 
 // TODO: make double press time configurable
@@ -121,7 +121,7 @@ grx_libinput_device_manager_class_init (GrxLibinputDeviceManagerClass *klass)
                       NULL, /* C marshaller */
                       G_TYPE_NONE, /* return type */
                       1, /* n_params */
-                      GRX_TYPE_LIBINPUT_DEVICE /* types */);
+                      GRX_TYPE_DEVICE /* types */);
     signals[SIG_DEVICE_REMOVED] =
         g_signal_new ("device-removed",
                       G_TYPE_FROM_CLASS (klass),
@@ -132,7 +132,7 @@ grx_libinput_device_manager_class_init (GrxLibinputDeviceManagerClass *klass)
                       NULL, /* C marshaller */
                       G_TYPE_NONE, /* return type */
                       1, /* n_params */
-                      GRX_TYPE_LIBINPUT_DEVICE /* types */);
+                      GRX_TYPE_DEVICE /* types */);
 
     G_OBJECT_CLASS (klass)->finalize = finalize;
 }

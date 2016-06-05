@@ -51,7 +51,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
     Point screen_points[4];
     Point touch_points[4];
     string error_message;
-    LibinputDevice? device;
+    Device? device;
 
     public CalibrateApplication () throws Error {
         Object ();

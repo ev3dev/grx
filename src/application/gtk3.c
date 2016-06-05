@@ -19,14 +19,14 @@
 #include <gtk/gtk.h>
 
 #include <grx/context.h>
+#include <grx/device.h>
 #include <grx/draw.h>
 #include <grx/extents.h>
-#include <grx/gtk3_device.h>
-#include <grx/gtk3_device_manager.h>
 #include <grx/gtk3_application.h>
+#include <grx/gtk3_device_manager.h>
 #include <grx/mode.h>
 
-#include <../input/gtk3_device_internal.h>
+#include "gtk3_device.h"
 
 /**
  * SECTION:gtk3_application
@@ -255,16 +255,16 @@ static gboolean on_event (GtkWidget *widget, GdkEvent *event, gpointer user_data
         case GDK_BUTTON_PRESS:
         case GDK_BUTTON_RELEASE:
         case GDK_2BUTTON_PRESS:
-            grx_event.button.device = grx_gtk3_device_lookup
-                (priv->device_manager, event->button.device);
+            grx_event.button.device = GRX_DEVICE (grx_gtk3_device_lookup
+                (priv->device_manager, event->button.device));
             grx_event.button.button = event->button.button;
             break;
         case GDK_TOUCH_BEGIN:
         case GDK_TOUCH_UPDATE:
         case GDK_TOUCH_END:
         case GDK_TOUCH_CANCEL:
-            grx_event.touch.device = grx_gtk3_device_lookup
-                (priv->device_manager, event->button.device);
+            grx_event.touch.device = GRX_DEVICE (grx_gtk3_device_lookup
+                (priv->device_manager, event->button.device));
             grx_event.touch.id = 0;
             grx_event.touch.x = event->touch.x;
             grx_event.touch.y = event->touch.y;

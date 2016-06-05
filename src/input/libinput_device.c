@@ -22,9 +22,9 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
-#include <grx/libinput_device.h>
+#include <grx/device.h>
 
-#include "libinput_device_internal.h"
+#include "libinput_device.h"
 
 typedef struct {
     struct libinput_device *device;
@@ -32,7 +32,7 @@ typedef struct {
 } GrxLibinputDevicePrivate;
 
 G_DEFINE_TYPE_WITH_CODE (GrxLibinputDevice,
-    grx_libinput_device, G_TYPE_OBJECT,
+    grx_libinput_device, GRX_TYPE_DEVICE,
     G_ADD_PRIVATE (GrxLibinputDevice))
 
 /* Properties */
@@ -46,46 +46,6 @@ enum {
     PROP_HAS_TOUCH,
     N_PROPERTIES
 };
-
-static GParamSpec *properties[N_PROPERTIES] = { NULL };
-
-const gchar *grx_libinput_device_get_name (GrxLibinputDevice *device)
-{
-    GrxLibinputDevicePrivate *priv = device->private;
-
-    return libinput_device_get_name (priv->device);
-}
-
-const gchar *grx_libinput_device_get_sysname (GrxLibinputDevice *device)
-{
-    GrxLibinputDevicePrivate *priv = device->private;
-
-    return libinput_device_get_sysname (priv->device);
-}
-
-gboolean grx_libinput_device_get_has_keyboard (GrxLibinputDevice *device)
-{
-    GrxLibinputDevicePrivate *priv = device->private;
-
-    return libinput_device_has_capability (priv->device,
-                                           LIBINPUT_DEVICE_CAP_KEYBOARD);
-}
-
-gboolean grx_libinput_device_get_has_pointer (GrxLibinputDevice *device)
-{
-    GrxLibinputDevicePrivate *priv = device->private;
-
-    return libinput_device_has_capability (priv->device,
-                                           LIBINPUT_DEVICE_CAP_POINTER);
-}
-
-gboolean grx_libinput_device_get_has_touch (GrxLibinputDevice *device)
-{
-    GrxLibinputDevicePrivate *priv = device->private;
-
-    return libinput_device_has_capability (priv->device,
-                                           LIBINPUT_DEVICE_CAP_TOUCH);
-}
 
 static void
 set_property (GObject *object, guint property_id, const GValue *value,
@@ -103,22 +63,29 @@ get_property (GObject *object, guint property_id, GValue *value,
               GParamSpec *pspec)
 {
     GrxLibinputDevice *self = GRX_LIBINPUT_DEVICE (object);
+    GrxLibinputDevicePrivate *priv = self->private;
 
     switch (property_id) {
     case PROP_NAME:
-        g_value_set_string (value, grx_libinput_device_get_name (self));
+        g_value_set_string (value, libinput_device_get_name (priv->device));
         break;
     case PROP_SYSNAME:
-        g_value_set_string (value, grx_libinput_device_get_sysname (self));
+        g_value_set_string (value, libinput_device_get_sysname (priv->device));
         break;
     case PROP_HAS_KEYBOARD:
-        g_value_set_boolean (value, grx_libinput_device_get_has_keyboard (self));
+        g_value_set_boolean (value,
+            libinput_device_has_capability (priv->device,
+                                            LIBINPUT_DEVICE_CAP_KEYBOARD));
         break;
     case PROP_HAS_POINTER:
-        g_value_set_boolean (value, grx_libinput_device_get_has_pointer (self));
+        g_value_set_boolean (value,
+            libinput_device_has_capability (priv->device,
+                                            LIBINPUT_DEVICE_CAP_POINTER));
         break;
     case PROP_HAS_TOUCH:
-        g_value_set_boolean (value, grx_libinput_device_get_has_touch (self));
+        g_value_set_boolean (value,
+            libinput_device_has_capability (priv->device,
+                                            LIBINPUT_DEVICE_CAP_TOUCH));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -127,6 +94,19 @@ get_property (GObject *object, guint property_id, GValue *value,
 }
 
 /* class implementation */
+
+static gboolean uncalibrate (GrxDevice *device)
+{
+    GrxLibinputDevicePrivate *priv = GRX_LIBINPUT_DEVICE (device)->private;
+    float identity_matrix[6] = { 1, 0, 0, 0, 1, 0 };
+    enum libinput_config_status ret;
+
+
+    ret = libinput_device_config_calibration_set_matrix (priv->device,
+                                                         identity_matrix);
+
+    return ret == LIBINPUT_CONFIG_STATUS_SUCCESS;
+}
 
 static void finalize (GObject *object)
 {
@@ -143,44 +123,22 @@ static void finalize (GObject *object)
 static void
 grx_libinput_device_class_init (GrxLibinputDeviceClass *klass)
 {
+    GRX_DEVICE_CLASS (klass)->uncalibrate = uncalibrate;
+
     G_OBJECT_CLASS (klass)->set_property = set_property;
     G_OBJECT_CLASS (klass)->get_property = get_property;
-
-    properties[PROP_NAME] =
-        g_param_spec_string ("name",
-                             "device name",
-                             "Gets a descriptive name of the device",
-                             NULL /* default value */,
-                             G_PARAM_READABLE);
-    properties[PROP_SYSNAME] =
-        g_param_spec_string ("sysname",
-                             "sysfs device name",
-                             "Gets the sysfs name of the device",
-                             NULL /* default value */,
-                             G_PARAM_READABLE);
-    properties[PROP_HAS_KEYBOARD] =
-        g_param_spec_boolean ("has-keyboard",
-                              "device has keyboard",
-                              "Gets if the device has keyboard keys",
-                              FALSE /* default value */,
-                              G_PARAM_READABLE);
-    properties[PROP_HAS_POINTER] =
-        g_param_spec_boolean ("has-pointer",
-                              "device has pointer",
-                              "Gets if the device has a pointing device and/or buttons",
-                              FALSE /* default value */,
-                              G_PARAM_READABLE);
-    properties[PROP_HAS_TOUCH] =
-        g_param_spec_boolean ("has-touch",
-                              "device has touch",
-                              "Gets if the device has a touchscreen",
-                              FALSE /* default value */,
-                              G_PARAM_READABLE);
-    g_object_class_install_properties (G_OBJECT_CLASS (klass),
-                                       N_PROPERTIES,
-                                       properties);
-
     G_OBJECT_CLASS (klass)->finalize = finalize;
+
+    g_object_class_override_property (G_OBJECT_CLASS (klass),
+                                      PROP_NAME, "name");
+    g_object_class_override_property (G_OBJECT_CLASS (klass),
+                                      PROP_SYSNAME, "sysname");
+    g_object_class_override_property (G_OBJECT_CLASS (klass),
+                                      PROP_HAS_KEYBOARD, "has-keyboard");
+    g_object_class_override_property (G_OBJECT_CLASS (klass),
+                                      PROP_HAS_POINTER, "has-pointer");
+    g_object_class_override_property (G_OBJECT_CLASS (klass),
+                                      PROP_HAS_TOUCH, "has-touch");
 }
 
 static void
@@ -227,31 +185,6 @@ grx_libinput_device_new (struct libinput_device *device,
 }
 
 /* methods */
-
-/**
- * grx_libinput_device_uncalibrate:
- * @device: the device
- *
- * Resets the calibration of the device.
- *
- * This function is probably only useful to programs that are calibrating the
- * device and need to remove the existing calibration.
- *
- * Returns: %TRUE if this device can be calibrated and reseting the calibration
- * was successful.
- */
-gboolean grx_libinput_device_uncalibrate (GrxLibinputDevice *device)
-{
-    GrxLibinputDevicePrivate *priv = device->private;
-    float identity_matrix[6] = { 1, 0, 0, 0, 1, 0 };
-    enum libinput_config_status ret;
-
-
-    ret = libinput_device_config_calibration_set_matrix (priv->device,
-                                                         identity_matrix);
-
-    return ret == LIBINPUT_CONFIG_STATUS_SUCCESS;
-}
 
 /**
  * grx_libinput_device_update_state:

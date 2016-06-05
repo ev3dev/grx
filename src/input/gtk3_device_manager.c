@@ -19,14 +19,14 @@
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 
+#include <grx/device.h>
 #include <grx/extents.h>
-#include <grx/input_keys.h>
-#include <grx/input_event.h>
-#include <grx/gtk3_device.h>
 #include <grx/gtk3_device_manager.h>
+#include <grx/input_event.h>
+#include <grx/input_keys.h>
 #include <grx/mode.h>
 
-#include "gtk3_device_internal.h"
+#include "gtk3_device.h"
 
 
 
@@ -129,7 +129,7 @@ grx_gtk3_device_manager_class_init (GrxGtk3DeviceManagerClass *klass)
                       NULL, /* C marshaller */
                       G_TYPE_NONE, /* return type */
                       1, /* n_params */
-                      GRX_TYPE_GTK3_DEVICE /* types */);
+                      GRX_TYPE_DEVICE /* types */);
     signals[SIG_DEVICE_REMOVED] =
         g_signal_new ("device-removed",
                       G_TYPE_FROM_CLASS (klass),
@@ -140,7 +140,7 @@ grx_gtk3_device_manager_class_init (GrxGtk3DeviceManagerClass *klass)
                       NULL, /* C marshaller */
                       G_TYPE_NONE, /* return type */
                       1, /* n_params */
-                      GRX_TYPE_GTK3_DEVICE /* types */);
+                      GRX_TYPE_DEVICE /* types */);
 
     G_OBJECT_CLASS (klass)->finalize = finalize;
 }

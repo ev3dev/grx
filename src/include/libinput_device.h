@@ -20,15 +20,6 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
-/**
- * SECTION:libinput_device
- * @short_description: Object that represents individual input devices
- * @title: Input Devices
- * @section_id: libinput_device
- * @include: grx-3.0.h
- *
- * TODO
- */
 
 #define GRX_TYPE_LIBINPUT_DEVICE grx_libinput_device_get_type()
 
@@ -53,7 +44,7 @@
  * The type class struct for #GrxLibinputDevice.
  */
 typedef struct {
-    GObjectClass parent_class;
+    GrxDeviceClass parent_class;
     gpointer reserved[6];
 } GrxLibinputDeviceClass;
 
@@ -65,16 +56,23 @@ typedef struct {
  */
 typedef struct {
     /* private */
-    GObject parent_instance;
+    GrxDevice parent_instance;
     gpointer private;
 } GrxLibinputDevice;
 
 GType grx_libinput_device_get_type (void);
-const gchar *grx_libinput_device_get_name (GrxLibinputDevice *device);
-const gchar *grx_libinput_device_get_sysname (GrxLibinputDevice *device);
-gboolean grx_libinput_device_get_has_keyboard (GrxLibinputDevice *device);
-gboolean grx_libinput_device_get_has_pointer (GrxLibinputDevice *device);
-gboolean grx_libinput_device_get_has_touch (GrxLibinputDevice *device);
-gboolean grx_libinput_device_uncalibrate (GrxLibinputDevice *device);
+
+/* internal */
+
+#include <libinput.h>
+#include <xkbcommon/xkbcommon.h>
+
+GrxLibinputDevice *grx_libinput_device_new (struct libinput_device *device,
+                                            struct xkb_keymap *keymap);
+void grx_libinput_device_update_state (GrxLibinputDevice *device,
+                                       xkb_keycode_t keycode,
+                                       enum xkb_key_direction direction,
+                                       xkb_keysym_t *keysym,
+                                       gunichar *unichar);
 
 #endif /* __GRX_LIBINPUT_DEVICE_H__ */
