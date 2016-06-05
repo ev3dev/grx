@@ -219,8 +219,8 @@ namespace Grx {
     /**
      * Supported video adapter types.
      */
-    [CCode (cprefix = "GRX_VIDEO_ADAPTER_", has_type_id = false)]
-    public enum VideoAdapter {
+    [CCode (has_type_id = false)]
+    public enum VideoAdapterType {
 
         /**
          * not known (before driver set)
@@ -262,7 +262,7 @@ namespace Grx {
     [CCode (has_type_id = false)]
     public struct VideoDriver {
         public string name;
-        public VideoAdapter adapter;
+        public VideoAdapterType adapter;
         public VideoDriver *inherit;
         [CCode (array_length_cname = "n_modes", array_length_type = "int")]
         public VideoMode[] modes;
@@ -479,7 +479,7 @@ namespace Grx {
      * inquiry stuff
      */
     public GraphicsMode get_current_graphics_mode ();
-    public VideoAdapter get_adapter_type ();
+    public VideoAdapterType get_adapter_type ();
     public FrameMode get_current_frame_mode ();
     public FrameMode get_screen_frame_mode ();
     public FrameMode get_core_frame_mode ();

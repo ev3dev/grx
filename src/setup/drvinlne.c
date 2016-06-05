@@ -25,7 +25,7 @@ GrxGraphicsMode (grx_get_current_graphics_mode)(void)
         return(grx_get_current_graphics_mode());
 }
 
-GrxVideoAdapter (grx_get_adapter_type)(void)
+GrxVideoAdapterType (grx_get_adapter_type)(void)
 {
         return(grx_get_adapter_type());
 }

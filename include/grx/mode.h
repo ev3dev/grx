@@ -156,26 +156,26 @@ enum _GrxFrameMode {
 };
 
 /**
- * GrxVideoAdapter:
- * @GRX_VIDEO_ADAPTER_UNKNOWN: Unknown (default state before driver is set)
- * @GRX_VIDEO_ADAPTER_MEMORY: Memory-only adapter
- * @GRX_VIDEO_ADAPTER_XWIN: X11 adapter
- * @GRX_VIDEO_ADAPTER_WIN32: Windows adapter
- * @GRX_VIDEO_ADAPTER_LINUX_FB: Linux framebuffer
- * @GRX_VIDEO_ADAPTER_SDL: Simple DirectMedia Layer adapter
- * @GRX_VIDEO_ADAPTER_GTK3: Gtk+ 3 adapter
+ * GrxVideoAdapterType:
+ * @GRX_VIDEO_ADAPTER_TYPE_UNKNOWN: Unknown (default state before driver is set)
+ * @GRX_VIDEO_ADAPTER_TYPE_MEMORY: Memory-only adapter
+ * @GRX_VIDEO_ADAPTER_TYPE_XWIN: X11 adapter
+ * @GRX_VIDEO_ADAPTER_TYPE_WIN32: Windows adapter
+ * @GRX_VIDEO_ADAPTER_TYPE_LINUX_FB: Linux framebuffer
+ * @GRX_VIDEO_ADAPTER_TYPE_SDL: Simple DirectMedia Layer adapter
+ * @GRX_VIDEO_ADAPTER_TYPE_GTK3: Gtk+ 3 adapter
  *
- * supported video adapter types
+ * Supported video adapter types.
  */
 typedef enum {
-    GRX_VIDEO_ADAPTER_UNKNOWN = (-1),
-    GRX_VIDEO_ADAPTER_MEMORY,
-    GRX_VIDEO_ADAPTER_XWIN,
-    GRX_VIDEO_ADAPTER_WIN32,
-    GRX_VIDEO_ADAPTER_LINUX_FB,
-    GRX_VIDEO_ADAPTER_SDL,
-    GRX_VIDEO_ADAPTER_GTK3,
-} GrxVideoAdapter;
+    GRX_VIDEO_ADAPTER_TYPE_UNKNOWN = (-1),
+    GRX_VIDEO_ADAPTER_TYPE_MEMORY,
+    GRX_VIDEO_ADAPTER_TYPE_XWIN,
+    GRX_VIDEO_ADAPTER_TYPE_WIN32,
+    GRX_VIDEO_ADAPTER_TYPE_LINUX_FB,
+    GRX_VIDEO_ADAPTER_TYPE_SDL,
+    GRX_VIDEO_ADAPTER_TYPE_GTK3,
+} GrxVideoAdapterType;
 
 /**
  * GrxVideoDriverFlags:
@@ -205,7 +205,7 @@ typedef enum /*< flags >*/ {
  */
 struct _GrxVideoDriver {
     gchar *name;                        /* driver name */
-    GrxVideoAdapter adapter;            /* adapter type */
+    GrxVideoAdapterType adapter;        /* adapter type */
     struct _GrxVideoDriver  *inherit;   /* inherit video modes from this */
     GrxVideoMode   *modes;              /* table of supported modes */
     gint    n_modes;                    /* number of modes */
@@ -392,7 +392,7 @@ void grx_set_error_handling(gboolean exit_if_error);
  * inquiry stuff ---- many of these are actually macros (see below)
  */
 GrxGraphicsMode grx_get_current_graphics_mode(void);
-GrxVideoAdapter grx_get_adapter_type(void);
+GrxVideoAdapterType grx_get_adapter_type(void);
 GrxFrameMode    grx_get_current_frame_mode(void);
 GrxFrameMode    grx_get_screen_frame_mode(void);
 GrxFrameMode    grx_get_core_frame_mode(void);
@@ -423,7 +423,8 @@ glong grx_get_context_size(gint w, gint h);
  * inline implementation for some of the above
  */
 #ifndef GRX_SKIP_INLINES
-#define grx_get_adapter_type()          (GrDriverInfo->vdriver ? GrDriverInfo->vdriver->adapter : GRX_VIDEO_ADAPTER_UNKNOWN)
+#define grx_get_adapter_type() \
+    (GrDriverInfo->vdriver ? GrDriverInfo->vdriver->adapter : GRX_VIDEO_ADAPTER_TYPE_UNKNOWN)
 #define grx_get_current_graphics_mode() (GrDriverInfo->mcode)
 #define grx_get_current_frame_mode()    (GrDriverInfo->fdriver.mode)
 #define grx_get_screen_frame_mode()     (GrDriverInfo->sdriver.mode)

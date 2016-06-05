@@ -232,7 +232,7 @@ static void mem_reset (void)
 
 GrxVideoDriver _GrDriverMEM = {
     .name        = "memory",                 /* name */
-    .adapter     = GRX_VIDEO_ADAPTER_MEMORY, /* adapter type */
+    .adapter     = GRX_VIDEO_ADAPTER_TYPE_MEMORY,
     .inherit     = NULL,                     /* inherit modes from this driver */
     .modes       = modes,                    /* mode table */
     .n_modes     = itemsof(modes),           /* # of modes */
