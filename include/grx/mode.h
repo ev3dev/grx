@@ -209,8 +209,8 @@ struct _GrxVideoDriver {
     struct _GrxVideoDriver  *inherit;   /* inherit video modes from this */
     GrxVideoMode   *modes;              /* table of supported modes */
     gint    n_modes;                    /* number of modes */
-    gint  (*detect)(void);
-    gint  (*init)(gchar *options);
+    gboolean (*detect)(void);
+    gboolean (*init)(const gchar *options);
     void  (*reset)(void);
     GrxVideoMode *(*select_mode)(GrxVideoDriver *drv, gint w, gint h,
                                  gint bpp, gboolean txt, guint *ep);

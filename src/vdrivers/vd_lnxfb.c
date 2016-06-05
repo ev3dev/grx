@@ -376,7 +376,7 @@ static void add_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep,
     }
 }
 
-static int init(char *options)
+static int init(const char *options)
 {
     if (detect()) {
         GrxVideoMode mode, *modep = &modes[1];

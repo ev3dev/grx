@@ -312,7 +312,7 @@ static int detect(void)
   GRX_RETURN(res);
 }
 
-static int init(char *options)
+static int init(const char *options)
 {
   Window root;
   XSetWindowAttributes attr;

@@ -147,7 +147,7 @@ static GrxVideoMode video_modes[] = {
     },
 };
 
-static gboolean init(char *options)
+static gboolean init (const gchar *options)
 {
     return TRUE;
 }
