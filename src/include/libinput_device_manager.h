@@ -20,17 +20,9 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
+#include <grx/device_manager.h>
 #include <grx/input_event.h>
 
-/**
- * SECTION:libinput_device_manager
- * @short_description: Device manager for Linux input devices using libinput
- * @title: Libinput Device Manager
- * @section_id: libinput_device_manager
- * @include: grx-3.0.h
- *
- * TODO
- */
 
 #define GRX_TYPE_LIBINPUT_DEVICE_MANAGER grx_libinput_device_manager_get_type()
 
@@ -60,7 +52,7 @@ typedef struct _GrxLibinputDeviceManagerClass GrxLibinputDeviceManagerClass;
 struct _GrxLibinputDeviceManager
 {
     /* private */
-    GObject parent_instance;
+    GrxDeviceManager parent_instance;
     gpointer private;
 };
 
@@ -73,9 +65,13 @@ struct _GrxLibinputDeviceManager
  */
 struct _GrxLibinputDeviceManagerClass
 {
-    GObjectClass parent_class;
+    GrxDeviceManagerClass parent_class;
     gpointer reserved[6];
 };
+
+GType grx_libinput_device_manager_get_type (void);
+
+
 
 /**
  * GrxLibinputDeviceManagerSource:
@@ -101,9 +97,6 @@ typedef struct {
 typedef void (*GrxLibinputDeviceManagerSourceFunc)(GrxInputEvent *event,
                                              gpointer user_data);
 
-GType grx_libinput_device_manager_get_type (void);
-GrxLibinputDeviceManager *
-grx_libinput_device_manager_new (GCancellable *cancellable, GError **error);
 GSource *grx_libinput_device_manager_source_new (GrxLibinputDeviceManager *context);
 guint grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context,
                                      GrxLibinputDeviceManagerSourceFunc func,

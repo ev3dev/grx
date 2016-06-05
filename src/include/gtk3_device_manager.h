@@ -20,17 +20,9 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
+#include <grx/device_manager.h>
 #include <grx/input_event.h>
 
-/**
- * SECTION:gtk3_device_manager
- * @short_description: Device manager for input devices using GTK+ 3
- * @title: GTK+ 3 Device Manager
- * @section_id: gtk3_device_manager
- * @include: grx-3.0.h
- *
- * TODO
- */
 
 #define GRX_TYPE_GTK3_DEVICE_MANAGER grx_gtk3_device_manager_get_type()
 
@@ -60,7 +52,7 @@ typedef struct _GrxGtk3DeviceManagerClass GrxGtk3DeviceManagerClass;
 struct _GrxGtk3DeviceManager
 {
     /* private */
-    GObject parent_instance;
+    GrxDeviceManager parent_instance;
     gpointer private;
 };
 
@@ -73,40 +65,9 @@ struct _GrxGtk3DeviceManager
  */
 struct _GrxGtk3DeviceManagerClass
 {
-    GObjectClass parent_class;
-    gpointer reserved[6];
+    GrxDeviceManagerClass parent_class;
 };
 
-/**
- * GrxGtk3DeviceManagerSource:
- *
- * The #GrxGtk3DeviceManagerSource struct is an opaque data type representing a
- * #GrxGtk3DeviceManager event source.
- */
-typedef struct {
-    /*<private>*/
-    GSource source;
-    GrxGtk3DeviceManager *instance;
-    guint last_button;
-    guint last_button_time;
-} GrxGtk3DeviceManagerSource;
-
-/**
- * GrxGtk3DeviceManagerSourceFunc:
- * @event: pointer to the event
- * @user_data: data passed to the function, set when the source was created
- *
- * Specifies the type of function passed to grx_gtk3_device_manager_event_add().
- */
-typedef void (*GrxGtk3DeviceManagerSourceFunc)(GrxInputEvent *event,
-                                             gpointer user_data);
-
 GType grx_gtk3_device_manager_get_type (void);
-GrxGtk3DeviceManager *
-grx_gtk3_device_manager_new (GCancellable *cancellable, GError **error);
-GSource *grx_gtk3_device_manager_source_new (GrxGtk3DeviceManager *context);
-guint grx_gtk3_device_manager_event_add (GrxGtk3DeviceManager *context,
-                                     GrxGtk3DeviceManagerSourceFunc func,
-                                     gpointer user_data, GDestroyNotify notify);
 
 #endif /* __GRX_GTK3_DEVICE_MANAGER_H__ */

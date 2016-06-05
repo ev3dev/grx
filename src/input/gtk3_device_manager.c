@@ -21,13 +21,12 @@
 
 #include <grx/device.h>
 #include <grx/extents.h>
-#include <grx/gtk3_device_manager.h>
 #include <grx/input_event.h>
 #include <grx/input_keys.h>
 #include <grx/mode.h>
 
 #include "gtk3_device.h"
-
+#include "gtk3_device_manager.h"
 
 
 typedef struct {
@@ -218,28 +217,7 @@ static void initable_interface_init (GInitableIface *iface)
     iface->init = init;
 }
 
-/* constructors */
-
-/**
- * grx_gtk3_device_manager_new:
- * @cancellable: (nullable): not used - pass %NULL
- * @error: a pointer to a #GError
- *
- * Creates a new instance of #GrxGtk3DeviceManager
- *
- * Returns: the new instance or %NULL if initialization failed
- */
-GrxGtk3DeviceManager *
-grx_gtk3_device_manager_new (GCancellable *cancellable, GError **error)
-{
-    GrxGtk3DeviceManager *instance = g_object_new (GRX_TYPE_GTK3_DEVICE_MANAGER, NULL);
-    if (!g_initable_init (G_INITABLE (instance), cancellable, error)) {
-        g_object_unref (G_OBJECT (instance));
-        return NULL;
-    }
-
-    return instance;
-}
+/* methods */
 
 GrxGtk3Device *
 grx_gtk3_device_lookup (GrxGtk3DeviceManager *manager, GdkDevice *device)

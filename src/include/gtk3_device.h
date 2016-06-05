@@ -63,7 +63,7 @@ GType grx_gtk3_device_get_type (void);
 
 /* internal */
 
-#include <grx/gtk3_device_manager.h>
+#include "gtk3_device_manager.h"
 
 GrxGtk3Device *grx_gtk3_device_new (GdkDevice *device);
 GrxGtk3Device *

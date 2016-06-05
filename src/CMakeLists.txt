@@ -68,6 +68,7 @@ set (LIBRARY_SOURCE_FILES
     image/iplot.c
     image/istretch.c
     input/device.c
+    input/device_manager.c
     mouse/bldcurs.c
     mouse/drawcurs.c
     mouse/mouinfo.c
@@ -369,7 +370,6 @@ set (GIR_SOURCE_FILES
 
 if (GRX_LINUXFB)
     LIST (APPEND GIR_SOURCE_FILES
-        ${CMAKE_SOURCE_DIR}/include/grx/libinput_device_manager.h
         ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h
     )
 endif (GRX_LINUXFB)
@@ -377,7 +377,6 @@ endif (GRX_LINUXFB)
 if (GRX_GTK3)
     LIST (APPEND GIR_SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/include/grx/gtk3_application.h
-        ${CMAKE_SOURCE_DIR}/include/grx/gtk3_device_manager.h
     )
 endif (GRX_GTK3)
 

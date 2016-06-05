@@ -23,10 +23,10 @@
 #include <grx/draw.h>
 #include <grx/extents.h>
 #include <grx/gtk3_application.h>
-#include <grx/gtk3_device_manager.h>
 #include <grx/mode.h>
 
 #include "gtk3_device.h"
+#include "gtk3_device_manager.h"
 
 /**
  * SECTION:gtk3_application
@@ -176,9 +176,7 @@ static void finalize (GObject *object)
 
     G_OBJECT_CLASS (grx_gtk3_application_parent_class)->finalize (object);
 
-    if (G_OBJECT (priv->device_manager)) {
-        g_object_unref (G_OBJECT (priv->device_manager));
-    }
+    g_object_unref (G_OBJECT (priv->device_manager));
 }
 
 static void
@@ -212,8 +210,10 @@ grx_gtk3_application_class_init (GrxGtk3ApplicationClass *klass)
 static void
 grx_gtk3_application_init (GrxGtk3Application *self)
 {
-    // GrxGtk3ApplicationPrivate *priv =
-    //     grx_gtk3_application_get_instance_private (self);
+    GrxGtk3ApplicationPrivate *priv =
+        grx_gtk3_application_get_instance_private (self);
+
+    priv->device_manager = g_object_new (GRX_TYPE_GTK3_DEVICE_MANAGER, NULL);
 }
 
 /* interface implementation */
@@ -351,8 +351,7 @@ static gboolean init (GInitable *initable, GCancellable *cancellable,
 
     // It is important to call this after setting the graphics mode, otherwise
     // it could fail because GTK is not initialized.
-    priv->device_manager = grx_gtk3_device_manager_new (cancellable, error);
-    if (!priv->device_manager) {
+    if (!g_initable_init (G_INITABLE (priv->device_manager), cancellable, error)) {
         return FALSE;
     }
 

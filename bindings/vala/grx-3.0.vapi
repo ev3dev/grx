@@ -3753,14 +3753,7 @@ namespace Grx {
         public bool uncalibrate ();
     }
 
-    public class LibinputDeviceManagerSource : GLib.Source {
-    }
-
-    public delegate void LibinputDeviceManagerSourceFunc (InputEvent event);
-
-    public class LibinputDeviceManager : GLib.Object, GLib.Initable {
-        public LibinputDeviceManager (GLib.Cancellable? cancellable = null) throws GLib.Error;
-        public uint event_add (owned LibinputDeviceManagerSourceFunc func);
+    public abstract class DeviceManager : GLib.Object {
         public signal void device_added (Device device);
         public signal void device_removed (Device device);
     }
@@ -3769,7 +3762,7 @@ namespace Grx {
         public LinuxConsoleApplication.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
         public bool init (GLib.Cancellable? cancellable = null) throws GLib.Error;
         public virtual void input_event (InputEvent event);
-        public LibinputDeviceManager device_manager { get; }
+        public DeviceManager device_manager { get; }
         public bool is_console_active { [CCode (cname = "grx_linux_console_application_is_console_active")]get; }
     }
 
@@ -3777,7 +3770,7 @@ namespace Grx {
         public Gtk3Application.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
         public bool init (GLib.Cancellable? cancellable = null) throws GLib.Error;
         public virtual void input_event (InputEvent event);
-        public LibinputDeviceManager device_manager { get; }
+        public DeviceManager device_manager { get; }
         public bool is_console_active { [CCode (cname = "grx_gtk3_application_is_console_active")]get; }
     }
 }

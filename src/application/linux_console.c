@@ -21,11 +21,12 @@
 #include <grx/context.h>
 #include <grx/draw.h>
 #include <grx/extents.h>
+#include <grx/input_event.h>
 #include <grx/input_keysyms.h>
-#include <grx/libinput_device_manager.h>
 #include <grx/linux_console_application.h>
 #include <grx/mode.h>
 
+#include "libinput_device_manager.h"
 
 /**
  * SECTION:linux_console_application

@@ -26,10 +26,10 @@
 #include <grx/extents.h>
 #include <grx/input_event.h>
 #include <grx/input_keys.h>
-#include <grx/libinput_device_manager.h>
 #include <grx/mode.h>
 
 #include "libinput_device.h"
+#include "libinput_device_manager.h"
 
 
 // TODO: make double press time configurable
@@ -220,29 +220,6 @@ err1:
 static void initable_interface_init (GInitableIface *iface)
 {
     iface->init = init;
-}
-
-/* constructors */
-
-/**
- * grx_libinput_device_manager_new:
- * @cancellable: (nullable): not used - pass %NULL
- * @error: a pointer to a #GError
- *
- * Creates a new instance of #GrxLibinputDeviceManager
- *
- * Returns: the new instance or %NULL if initialization failed
- */
-GrxLibinputDeviceManager *
-grx_libinput_device_manager_new (GCancellable *cancellable, GError **error)
-{
-    GrxLibinputDeviceManager *instance = g_object_new (GRX_TYPE_LIBINPUT_DEVICE_MANAGER, NULL);
-    if (!g_initable_init (G_INITABLE (instance), cancellable, error)) {
-        g_object_unref (G_OBJECT (instance));
-        return NULL;
-    }
-
-    return instance;
 }
 
 /* source implementation */
