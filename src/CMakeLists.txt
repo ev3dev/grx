@@ -1,6 +1,7 @@
 # source files
 
 set (LIBRARY_SOURCE_FILES
+    application/application.c
     draw/bitblt.c
     draw/bitblt1b.c
     draw/bitbltnc.c
@@ -26,6 +27,7 @@ set (LIBRARY_SOURCE_FILES
     draw/pixelc.c
     draw/plot.c
     draw/putscl.c
+    events/events.c
     fdrivers/dotab8.c
     fdrivers/ftable.c
     fdrivers/genblit.c
@@ -227,7 +229,6 @@ endif (GRX_DEBUG)
 
 if (GRX_LINUXFB)
     list (APPEND LIBRARY_SOURCE_FILES
-        application/linux_console.c
         input/libinput_device.c
         input/libinput_device_manager.c
         mouse/lnxinpu2.c
@@ -238,7 +239,6 @@ endif (GRX_LINUXFB)
 
 if (GRX_GTK3)
     list (APPEND LIBRARY_SOURCE_FILES
-        application/gtk3.c
         input/gtk3_device.c
         input/gtk3_device_manager.c
         vdrivers/vd_gtk3.c
@@ -349,16 +349,17 @@ install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}.pc
 if (NOT CMAKE_CROSSCOMPILING)
 
 set (GIR_SOURCE_FILES
+    ${CMAKE_SOURCE_DIR}/include/grx/application.h
     ${CMAKE_SOURCE_DIR}/include/grx/color.h
     ${CMAKE_SOURCE_DIR}/include/grx/common.h
     ${CMAKE_SOURCE_DIR}/include/grx/context.h
     ${CMAKE_SOURCE_DIR}/include/grx/device.h
     ${CMAKE_SOURCE_DIR}/include/grx/draw.h
     ${CMAKE_SOURCE_DIR}/include/grx/draw_nc.h
+    ${CMAKE_SOURCE_DIR}/include/grx/events.h
     ${CMAKE_SOURCE_DIR}/include/grx/extents.h
     ${CMAKE_SOURCE_DIR}/include/grx/gformats.h
     ${CMAKE_SOURCE_DIR}/include/grx/image.h
-    ${CMAKE_SOURCE_DIR}/include/grx/input_event.h
     ${CMAKE_SOURCE_DIR}/include/grx/input_keys.h
     ${CMAKE_SOURCE_DIR}/include/grx/mode.h
     ${CMAKE_SOURCE_DIR}/include/grx/pattern.h
@@ -367,18 +368,6 @@ set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/wideline.h
     ${GRX_KEYSYMS_H}
 )
-
-if (GRX_LINUXFB)
-    LIST (APPEND GIR_SOURCE_FILES
-        ${CMAKE_SOURCE_DIR}/include/grx/linux_console_application.h
-    )
-endif (GRX_LINUXFB)
-
-if (GRX_GTK3)
-    LIST (APPEND GIR_SOURCE_FILES
-        ${CMAKE_SOURCE_DIR}/include/grx/gtk3_application.h
-    )
-endif (GRX_GTK3)
 
 foreach (file ${LIBRARY_SOURCE_FILES})
     get_filename_component (file ${file} ABSOLUTE)

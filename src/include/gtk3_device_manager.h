@@ -21,7 +21,7 @@
 #include <gio/gio.h>
 
 #include <grx/device_manager.h>
-#include <grx/input_event.h>
+#include <grx/events.h>
 
 
 #define GRX_TYPE_GTK3_DEVICE_MANAGER grx_gtk3_device_manager_get_type()

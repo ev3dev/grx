@@ -26,9 +26,9 @@ from random import random
 # FIXME: This program works, but it is *really* slow!
 #
 
-class Life(Grx.LinuxConsoleApplication):
+class Life(Grx.Application):
     def __init__(self):
-        super(Grx.LinuxConsoleApplication, self).__init__()
+        super(Grx.Application, self).__init__()
         self.init()
         self.source_id = 0
         self.width = Grx.get_width()
@@ -36,21 +36,19 @@ class Life(Grx.LinuxConsoleApplication):
         self.old_state = [[0 for y in range(self.height)] for x in range(self.width)]
         self.new_state = [[0 for y in range(self.height)] for x in range(self.width)]
         self.color = (Grx.color_info_get_black(), Grx.color_info_get_white())
+        self.connect("notify::is-active", self.on_notify_is_active)
 
-    def on_notify_is_console_active(self, obj, gparamstring):
+    def on_notify_is_active(self, obj, gparamstring):
         """
         This is to handle console switching. Basically, it pauses the program when it is not the active console.
         """
-        if self.is_console_active():
+        if self.is_active():
             self.source_id = GLib.idle_add(self.draw)
         else:
             GLib.source_remove(self.source_id)
 
     def do_activate(self):
         self.randomize()
-        self.connect("notify::is-console-active", self.on_notify_is_console_active)
-        if self.is_console_active():
-            self.notify("is-console-active")
 
     def do_input_event(self, event):
         self.quit()

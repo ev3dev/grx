@@ -204,17 +204,17 @@ typedef enum /*< flags >*/ {
  * The video driver descriptor structure
  */
 struct _GrxVideoDriver {
-    gchar *name;                        /* driver name */
-    GrxVideoAdapterType adapter;        /* adapter type */
-    struct _GrxVideoDriver  *inherit;   /* inherit video modes from this */
-    GrxVideoMode   *modes;              /* table of supported modes */
-    gint    n_modes;                    /* number of modes */
-    gboolean (*detect)(void);
-    gboolean (*init)(const gchar *options);
-    void  (*reset)(void);
-    GrxVideoMode *(*select_mode)(GrxVideoDriver *drv, gint w, gint h,
-                                 gint bpp, gboolean txt, guint *ep);
-    GrxVideoDriverFlags flags;
+    gchar                   *name;
+    GrxVideoAdapterType     adapter;
+    GrxVideoDriver          *inherit;
+    GrxVideoMode            *modes;
+    gint                    n_modes;
+    gboolean                (*detect)(void);
+    gboolean                (*init)(const gchar *options);
+    void                    (*reset)(void);
+    GrxVideoMode            *(*select_mode)(GrxVideoDriver *drv, gint w, gint h,
+                                            gint bpp, gboolean txt, guint *ep);
+    GrxVideoDriverFlags     flags;
 };
 
 /**
@@ -365,6 +365,7 @@ extern const struct _GR_driverInfo {
         GrxFrameDriver      sdriver;        /* frame driver for the screen */
         GrxFrameDriver      tdriver;        /* a dummy driver for text modes */
         GrxGraphicsMode     mcode;          /* code for the current mode */
+        GrxDeviceManager   *device_manager; /* device manager for current video driver */
         int     deftw,defth;                /* default text mode size */
         int     defgw,defgh;                /* default graphics mode size */
         GrxColor deftc,defgc;               /* default text and graphics colors */
@@ -429,6 +430,7 @@ glong grx_get_context_size(gint w, gint h);
 #define grx_get_current_frame_mode()    (GrDriverInfo->fdriver.mode)
 #define grx_get_screen_frame_mode()     (GrDriverInfo->sdriver.mode)
 #define grx_get_core_frame_mode()       (GrDriverInfo->sdriver.rmode)
+#define grx_get_device_manager()        (GrDriverInfo->device_manager)
 
 #define grx_get_current_video_driver()  ((const GrxVideoDriver *)( GrDriverInfo->vdriver))
 #define grx_get_current_video_mode()    ((const GrxVideoMode   *)( GrDriverInfo->curmode))

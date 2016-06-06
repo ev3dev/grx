@@ -8,6 +8,10 @@ typedef struct _GrxContext          GrxContext;
 typedef enum   _GrxArcStyle         GrxArcStyle;
 typedef struct _GrxFramedBoxColors  GrxFramedBoxColors;
 typedef struct _GrxPoint            GrxPoint;
+/* device_manager.h */
+typedef struct _GrxDeviceManager    GrxDeviceManager;
+/* events.h */
+typedef union _GrxEvent             GrxEvent;
 /* mode.h */
 typedef struct _GrxFrameDriver      GrxFrameDriver;
 typedef struct _GrxVideoDriver      GrxVideoDriver;

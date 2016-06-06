@@ -23,9 +23,10 @@
 #include <gio/gio.h>
 
 #include <grx/device.h>
+#include <grx/events.h>
 #include <grx/extents.h>
-#include <grx/input_event.h>
 #include <grx/input_keys.h>
+#include <grx/input_keysyms.h>
 #include <grx/mode.h>
 
 #include "libinput_device.h"
@@ -45,51 +46,9 @@ typedef struct {
 static void initable_interface_init (GInitableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GrxLibinputDeviceManager,
-    grx_libinput_device_manager, G_TYPE_OBJECT,
+    grx_libinput_device_manager, GRX_TYPE_DEVICE_MANAGER,
     G_ADD_PRIVATE (GrxLibinputDeviceManager)
     G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_interface_init))
-
-/* Properties */
-
-// enum {
-//     PROP_0,
-//     N_PROPERTIES
-// };
-
-// static GParamSpec *properties[N_PROPERTIES] = { NULL };
-
-// static void
-// set_property (GObject *object, guint property_id, const GValue *value,
-//               GParamSpec *pspec)
-// {
-//     switch (property_id) {
-//     default:
-//         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-//         break;
-//     }
-// }
-
-// static void
-// get_property (GObject *object, guint property_id, GValue *value,
-//               GParamSpec *pspec)
-// {
-//     switch (property_id) {
-//     default:
-//         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-//         break;
-//     }
-// }
-
-/* signals */
-
-enum {
-    SIG_0,
-    SIG_DEVICE_ADDED,
-    SIG_DEVICE_REMOVED,
-    N_SIGNALS
-};
-
-static uint signals[N_SIGNALS] = { 0 };
 
 /* class implementation */
 
@@ -108,32 +67,6 @@ static void finalize (GObject *object)
 static void
 grx_libinput_device_manager_class_init (GrxLibinputDeviceManagerClass *klass)
 {
-    // G_OBJECT_CLASS (klass)->set_property = set_property;
-    // G_OBJECT_CLASS (klass)->get_property = get_property;
-
-    signals[SIG_DEVICE_ADDED] =
-        g_signal_new ("device-added",
-                      G_TYPE_FROM_CLASS (klass),
-                      G_SIGNAL_RUN_LAST,
-                      0, /* class offset */
-                      NULL, /* accumulator */
-                      NULL, /* accumulator data */
-                      NULL, /* C marshaller */
-                      G_TYPE_NONE, /* return type */
-                      1, /* n_params */
-                      GRX_TYPE_DEVICE /* types */);
-    signals[SIG_DEVICE_REMOVED] =
-        g_signal_new ("device-removed",
-                      G_TYPE_FROM_CLASS (klass),
-                      G_SIGNAL_RUN_LAST,
-                      0, /* class offset */
-                      NULL, /* accumulator */
-                      NULL, /* accumulator data */
-                      NULL, /* C marshaller */
-                      G_TYPE_NONE, /* return type */
-                      1, /* n_params */
-                      GRX_TYPE_DEVICE /* types */);
-
     G_OBJECT_CLASS (klass)->finalize = finalize;
 }
 
@@ -250,19 +183,20 @@ static gboolean source_check (GSource *source)
     return type != LIBINPUT_EVENT_NONE;
 }
 
+// TODO: put this in a header file
+extern void grx_linuxfb_chvt (int vt_num);
+
 static gboolean
 source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
 {
     GrxLibinputDeviceManagerSource *real_source =
         (GrxLibinputDeviceManagerSource*)source;
-    GrxLibinputDeviceManagerSourceFunc real_callback =
-        (GrxLibinputDeviceManagerSourceFunc)callback;
     GrxLibinputDeviceManagerPrivate *priv = real_source->instance->private;
     struct libinput_event *event;
     struct libinput_device *device;
     GrxLibinputDevice *grx_device;
     enum libinput_event_type type;
-    GrxInputEvent grx_event;
+    GrxEvent grx_event = { 0 };
 
     event = libinput_get_event (priv->libinput);
     if (!event) {
@@ -281,23 +215,22 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
             g_critical ("New device without LIBINPUT_EVENT_DEVICE_ADDED event");
         }
     }
-    grx_event.any.device = grx_device;
 
 // we do not handle all cases of the enum and that is OK
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch"
 
-    grx_event.type = GRX_INPUT_EVENT_TYPE_NONE;
+    grx_event.type = GRX_EVENT_TYPE_NONE;
     switch (type) {
     case LIBINPUT_EVENT_DEVICE_ADDED:
         priv->devices = g_list_append (priv->devices, grx_device);
-        g_signal_emit (real_source->instance, signals[SIG_DEVICE_ADDED], 0,
-                       grx_device);
+        g_signal_emit_by_name (real_source->instance, "device-added",
+                               grx_device);
         break;
     case LIBINPUT_EVENT_DEVICE_REMOVED:
         priv->devices = g_list_remove (priv->devices, grx_device);
-        g_signal_emit (real_source->instance, signals[SIG_DEVICE_REMOVED], 0,
-                       grx_device);
+        g_signal_emit_by_name (real_source->instance, "device-removed",
+                               grx_device);
         g_object_unref (grx_device);
         break;
     case LIBINPUT_EVENT_KEYBOARD_KEY:
@@ -311,17 +244,38 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
             keycode = key + 8; // xkb keymaps are usually offset by 8
             switch (libinput_event_keyboard_get_key_state (keyboard)) {
             case LIBINPUT_KEY_STATE_PRESSED:
-                grx_event.type = GRX_INPUT_EVENT_TYPE_KEY_DOWN;
+                grx_event.type = GRX_EVENT_TYPE_KEY_DOWN;
                 grx_libinput_device_update_state (grx_device, keycode,
                     XKB_KEY_DOWN, &grx_event.key.keysym, &grx_event.key.unichar);
                 break;
             case LIBINPUT_KEY_STATE_RELEASED:
-                grx_event.type = GRX_INPUT_EVENT_TYPE_KEY_UP;
+                grx_event.type = GRX_EVENT_TYPE_KEY_UP;
                 grx_libinput_device_update_state (grx_device, keycode,
                     XKB_KEY_UP, &grx_event.key.keysym, &grx_event.key.unichar);
                 break;
             }
+            switch (grx_event.key.keysym) {
+            case GRX_KEY_XF86Switch_VT_1:
+            case GRX_KEY_XF86Switch_VT_2:
+            case GRX_KEY_XF86Switch_VT_3:
+            case GRX_KEY_XF86Switch_VT_4:
+            case GRX_KEY_XF86Switch_VT_5:
+            case GRX_KEY_XF86Switch_VT_6:
+            case GRX_KEY_XF86Switch_VT_7:
+            case GRX_KEY_XF86Switch_VT_8:
+            case GRX_KEY_XF86Switch_VT_9:
+            case GRX_KEY_XF86Switch_VT_10:
+            case GRX_KEY_XF86Switch_VT_11:
+            case GRX_KEY_XF86Switch_VT_12:
+                if (grx_event.type == GRX_EVENT_TYPE_KEY_DOWN) {
+                    grx_linuxfb_chvt (grx_event.key.keysym & 0xf);
+                }
+                // prevent these key presses/releases from being queued
+                grx_event.type = GRX_EVENT_TYPE_NONE;
+                break;
+            }
             grx_event.key.code = key;
+            grx_event.key.device = GRX_DEVICE (grx_device);
         }
         break;
     case LIBINPUT_EVENT_POINTER_MOTION:
@@ -339,17 +293,17 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
             button = libinput_event_pointer_get_button (pointer);
             switch (libinput_event_pointer_get_button_state (pointer)) {
             case LIBINPUT_BUTTON_STATE_PRESSED:
-                grx_event.type = GRX_INPUT_EVENT_TYPE_BUTTON_PRESS;
+                grx_event.type = GRX_EVENT_TYPE_BUTTON_PRESS;
                 // double press detection
                 time = libinput_event_pointer_get_time (pointer);
                 if (button == real_source->last_button &&
                     (time - real_source->last_button_time) < DOUBLE_PRESS_TIME)
                 {
                     // double press does two callbacks, one here for
-                    // GRX_INPUT_EVENT_BUTTON_PRESS and one in the usual way
-                    // for GRX_INPUT_EVENT_BUTTON_DOUBLE_PRESS
-                    real_callback (&grx_event, user_data);
-                    grx_event.type = GRX_INPUT_EVENT_TYPE_BUTTON_DOUBLE_PRESS;
+                    // GRX_EVENT_BUTTON_PRESS and one in the usual way
+                    // for GRX_EVENT_BUTTON_DOUBLE_PRESS
+                    grx_event_put (&grx_event);
+                    grx_event.type = GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS;
                     real_source->last_button = 0;
                     real_source->last_button_time = 0;
                 } else {
@@ -358,10 +312,11 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
                 }
                 break;
             case LIBINPUT_BUTTON_STATE_RELEASED:
-                grx_event.type = GRX_INPUT_EVENT_TYPE_BUTTON_RELEASE;
+                grx_event.type = GRX_EVENT_TYPE_BUTTON_RELEASE;
                 break;
             }
             grx_event.button.button = button;
+            grx_event.button.device = GRX_DEVICE (grx_device);
         }
         break;
     case LIBINPUT_EVENT_TOUCH_DOWN:
@@ -385,29 +340,30 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
             }
             switch (type) {
             case LIBINPUT_EVENT_TOUCH_DOWN:
-                grx_event.type = GRX_INPUT_EVENT_TYPE_TOUCH_DOWN;
+                grx_event.type = GRX_EVENT_TYPE_TOUCH_DOWN;
                 break;
             case LIBINPUT_EVENT_TOUCH_UP:
-                grx_event.type = GRX_INPUT_EVENT_TYPE_TOUCH_UP;
+                grx_event.type = GRX_EVENT_TYPE_TOUCH_UP;
                 break;
             case LIBINPUT_EVENT_TOUCH_MOTION:
-                grx_event.type = GRX_INPUT_EVENT_TYPE_TOUCH_MOTION;
+                grx_event.type = GRX_EVENT_TYPE_TOUCH_MOTION;
                 break;
             case LIBINPUT_EVENT_TOUCH_CANCEL:
-                grx_event.type = GRX_INPUT_EVENT_TYPE_TOUCH_CANCEL;
+                grx_event.type = GRX_EVENT_TYPE_TOUCH_CANCEL;
                 break;
             }
             grx_event.touch.id = slot;
             grx_event.touch.x = x;
             grx_event.touch.y = y;
+            grx_event.touch.device = GRX_DEVICE (grx_device);
         }
         break;
     }
 
 #pragma GCC diagnostic pop
 
-    if (grx_event.type != GRX_INPUT_EVENT_TYPE_NONE) {
-        real_callback (&grx_event, user_data);
+    if (grx_event.type != GRX_EVENT_TYPE_NONE) {
+        grx_event_put (&grx_event);
     }
 
     libinput_event_destroy (event);
@@ -458,15 +414,12 @@ GSource *grx_libinput_device_manager_source_new (GrxLibinputDeviceManager *conte
     return source;
 }
 
-guint grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context,
-                                     GrxLibinputDeviceManagerSourceFunc func,
-                                     gpointer user_data, GDestroyNotify notify)
+guint grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context)
 {
     GSource *source;
     guint id;
 
     source = grx_libinput_device_manager_source_new (context);
-    g_source_set_callback (source, (GSourceFunc)func, user_data, notify);
     id = g_source_attach (source, g_main_context_default ());
     g_source_unref (source);
 

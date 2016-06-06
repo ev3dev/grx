@@ -485,6 +485,7 @@ namespace Grx {
     public FrameMode get_core_frame_mode ();
 
     public unowned VideoDriver get_current_video_driver ();
+    public unowned DeviceManager get_device_manager ();
     public unowned VideoMode get_current_video_mode ();
     public unowned VideoMode get_virtual_video_mode ();
     public unowned FrameDriver get_current_frame_driver ();
@@ -3691,7 +3692,7 @@ namespace Grx {
     }
 
     [CCode (has_type_id = false)]
-    public enum InputEventType {
+    public enum EventType {
         NONE,
         KEY_UP,
         KEY_DOWN,
@@ -3706,13 +3707,13 @@ namespace Grx {
 
     [CCode (has_type_id = false)]
     public struct AnyEvent {
-        InputEventType type;
+        EventType type;
         Device *device;
     }
 
     [CCode (has_type_id = false)]
     public struct KeyEvent {
-        InputEventType type;
+        EventType type;
         Device *device;
         uint keysym;
         unichar unichar;
@@ -3721,14 +3722,14 @@ namespace Grx {
 
     [CCode (has_type_id = false)]
     public struct ButtonEvent {
-        InputEventType type;
+        EventType type;
         Device *device;
         uint button;
     }
 
     [CCode (has_type_id = false)]
     public struct TouchEvent {
-        InputEventType type;
+        EventType type;
         Device *device;
         int id;
         int x;
@@ -3736,8 +3737,8 @@ namespace Grx {
     }
 
     [CCode (has_type_id = false)]
-    public struct InputEvent {
-        InputEventType type;
+    public struct Event {
+        EventType type;
         AnyEvent any;
         KeyEvent key;
         ButtonEvent button;
@@ -3758,19 +3759,10 @@ namespace Grx {
         public signal void device_removed (Device device);
     }
 
-    public class LinuxConsoleApplication : GLib.Application, GLib.Initable {
-        public LinuxConsoleApplication.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
+    public class Application : GLib.Application, GLib.Initable {
+        public Application.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
         public bool init (GLib.Cancellable? cancellable = null) throws GLib.Error;
-        public virtual void input_event (InputEvent event);
-        public DeviceManager device_manager { get; }
-        public bool is_console_active { [CCode (cname = "grx_linux_console_application_is_console_active")]get; }
-    }
-
-    public class Gtk3Application : GLib.Application, GLib.Initable {
-        public Gtk3Application.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
-        public bool init (GLib.Cancellable? cancellable = null) throws GLib.Error;
-        public virtual void input_event (InputEvent event);
-        public DeviceManager device_manager { get; }
-        public bool is_console_active { [CCode (cname = "grx_gtk3_application_is_console_active")]get; }
+        public virtual void input_event (Event event);
+        public bool is_active { [CCode (cname = "grx_application_is_active")]get; }
     }
 }

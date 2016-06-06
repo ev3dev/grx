@@ -34,12 +34,11 @@
 #include <grx/mouse.h>
 #include <grx/gformats.h>
 #include <grx/utils.h>
-#include <grx/input_event.h>
+#include <grx/events.h>
 #include <grx/input_keys.h>
 #include <grx/input_keysyms.h>
 #include <grx/device.h>
 #include <grx/device_manager.h>
-#include <grx/gtk3_application.h>
-#include <grx/linux_console_application.h>
+#include <grx/application.h>
 
 #endif  /* __GRX_3_0_H_INCLUDED__ */

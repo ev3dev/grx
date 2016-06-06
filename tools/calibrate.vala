@@ -19,7 +19,7 @@
 
 using Grx;
 
-public class CalibrateApplication : LinuxConsoleApplication {
+public class CalibrateApplication : Grx.Application {
 
     const int TIMEOUT = 15; // seconds
     const int MAX_JITTER = 10; // pixels
@@ -51,11 +51,13 @@ public class CalibrateApplication : LinuxConsoleApplication {
     Point screen_points[4];
     Point touch_points[4];
     string error_message;
+    DeviceManager device_manager;
     Device? device;
 
     public CalibrateApplication () throws Error {
         Object ();
         init ();
+        device_manager = get_device_manager ();
         width = get_screen_width ();
         height = get_screen_height ();
         half_line_length = int.min (width, height) / 20;
@@ -118,7 +120,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
 
         ulong touched_id = touched.connect ((event) => {
             switch (event.type) {
-            case InputEventType.TOUCH_DOWN:
+            case EventType.TOUCH_DOWN:
                 waiting_for_touch = false;
                 if (is_accumulating) {
                     device = event.device;
@@ -133,7 +135,7 @@ public class CalibrateApplication : LinuxConsoleApplication {
                     Idle.add (calibrate.callback);
                 }
                 break;
-            case InputEventType.TOUCH_MOTION:
+            case EventType.TOUCH_MOTION:
                 if (is_accumulating) {
                     min_x = int.min (min_x, event.x);
                     min_y = int.min (min_y, event.y);
@@ -141,8 +143,8 @@ public class CalibrateApplication : LinuxConsoleApplication {
                     max_y = int.max (max_y, event.y);
                 }
                 break;
-            case InputEventType.TOUCH_UP:
-            case InputEventType.TOUCH_CANCEL:
+            case EventType.TOUCH_UP:
+            case EventType.TOUCH_CANCEL:
                 Idle.add (calibrate.callback);
                 break;
             }
@@ -409,15 +411,15 @@ public class CalibrateApplication : LinuxConsoleApplication {
         clear_timeout_text ();
     }
 
-    public override void input_event (InputEvent event) {
+    public override void input_event (Event event) {
         switch (event.type) {
-        case InputEventType.KEY_UP:
+        case EventType.KEY_UP:
             key_pressed ();
             break;
-        case InputEventType.TOUCH_DOWN:
-        case InputEventType.TOUCH_MOTION:
-        case InputEventType.TOUCH_UP:
-        case InputEventType.TOUCH_CANCEL:
+        case EventType.TOUCH_DOWN:
+        case EventType.TOUCH_MOTION:
+        case EventType.TOUCH_UP:
+        case EventType.TOUCH_CANCEL:
             touched (event.touch);
             break;
         }

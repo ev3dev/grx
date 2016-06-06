@@ -21,7 +21,7 @@
 #include <gio/gio.h>
 
 #include <grx/device_manager.h>
-#include <grx/input_event.h>
+#include <grx/events.h>
 
 
 #define GRX_TYPE_LIBINPUT_DEVICE_MANAGER grx_libinput_device_manager_get_type()
@@ -87,19 +87,7 @@ typedef struct {
     guint last_button_time;
 } GrxLibinputDeviceManagerSource;
 
-/**
- * GrxLibinputDeviceManagerSourceFunc:
- * @event: pointer to the event
- * @user_data: data passed to the function, set when the source was created
- *
- * Specifies the type of function passed to grx_libinput_device_manager_event_add().
- */
-typedef void (*GrxLibinputDeviceManagerSourceFunc)(GrxInputEvent *event,
-                                             gpointer user_data);
-
 GSource *grx_libinput_device_manager_source_new (GrxLibinputDeviceManager *context);
-guint grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context,
-                                     GrxLibinputDeviceManagerSourceFunc func,
-                                     gpointer user_data, GDestroyNotify notify);
+guint grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context);
 
 #endif /* __GRX_LIBINPUT_DEVICE_MANAGER_H__ */

@@ -20,7 +20,8 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
-#include <grx/input_event.h>
+#include <grx/common.h>
+#include <grx/events.h>
 
 /**
  * SECTION:device_manager
@@ -48,7 +49,6 @@
     (G_TYPE_INSTANCE_GET_CLASS ((obj), GRX_TYPE_DEVICE_MANAGER, \
         GrxDeviceManagerClass))
 
-typedef struct _GrxDeviceManager GrxDeviceManager;
 typedef struct _GrxDeviceManagerClass GrxDeviceManagerClass;
 
 /**

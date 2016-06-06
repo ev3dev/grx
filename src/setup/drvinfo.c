@@ -106,6 +106,7 @@ struct _GR_driverInfo _GrDriverInfo = {
         .bltr2v      = (void (*)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor))dummyframefn
     },
     .mcode = GRX_GRAPHICS_MODE_TEXT_DEFAULT,    /* current mode code */
+    .device_manager = NULL,                     /* device manager for current video driver */
     .deftw = 80,  .defth = 25,                  /* default text size */
     .defgw = 640, .defgh = 480,                 /* default graphics size */
     .deftc = 16L, .defgc = 16L,                 /* default txt and gr colors */

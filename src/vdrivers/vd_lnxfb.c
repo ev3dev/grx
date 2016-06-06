@@ -27,7 +27,17 @@
 #include <linux/kd.h>
 #include <linux/vt.h>
 
+#include <glib.h>
+#include <glib-unix.h>
+
+#include <grx/context.h>
+#include <grx/draw.h>
+#include <grx/events.h>
+#include <grx/extents.h>
+
+#include "libinput_device_manager.h"
 #include "libgrx.h"
+#include "globals.h"
 #include "grdriver.h"
 #include "arith.h"
 #include "memcopy.h"
@@ -42,8 +52,9 @@ static int ttyfd = -1;
 static struct fb_fix_screeninfo fbfix;
 static struct fb_var_screeninfo fbvar;
 static unsigned char *fbuffer = NULL;
-static int ingraphicsmode = 0;
+static gboolean in_graphics_mode = FALSE;
 static int original_keyboard_mode;
+static GrxContext *save;
 
 static int detect(void)
 {
@@ -170,36 +181,42 @@ static void reset(void)
         ioctl(ttyfd, VT_SETMODE, &vtm);
         close(ttyfd);
         ttyfd = -1;
-        ingraphicsmode = 0;
+        in_graphics_mode = FALSE;
     }
     initted = -1;
 }
 
 /* release control of the vt */
-void grx_linuxfb_release (void)
+static void grx_linuxfb_release (void)
 {
-    if (!ingraphicsmode) {
+    if (!in_graphics_mode) {
         return;
     }
     if (ttyfd < 0) {
         return;
     }
     ioctl(ttyfd, VT_RELDISP, 1);
+    in_graphics_mode = FALSE;
 }
 
 /* resume control of the vt */
-void grx_linuxfb_aquire (void)
+static void grx_linuxfb_aquire (void)
 {
-    if (!ingraphicsmode) return;
-    if (ttyfd < 0) return;
+    if (in_graphics_mode) {
+        return;
+    }
+    if (ttyfd < 0) {
+        return;
+    }
     ioctl(ttyfd, VT_RELDISP, VT_ACKACQ);
     ioctl(ttyfd, KDSKBMODE, K_OFF);
     ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
+    in_graphics_mode = TRUE;
 }
 
 void grx_linuxfb_chvt (int vt_num)
 {
-    if (!ingraphicsmode) {
+    if (!in_graphics_mode) {
         return;
     }
     if (ttyfd < 0) {
@@ -238,13 +255,10 @@ static int setmode(GrxVideoMode * mp, int noclear)
         ioctl(ttyfd, KDSKBMODE, K_OFF);
         ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
         vtm.mode = VT_PROCESS;
-        // Setting SIGUSER1 here, but not a handler. It is to be handled via
-        // GrxLinuxConsoleApplication or user code by calling grx_linuxfb_release
-        // and grx_linuxfb_aquire.
         vtm.relsig = SIGUSR1;
         vtm.acqsig = SIGUSR1;
         ioctl(ttyfd, VT_SETMODE, &vtm);
-        ingraphicsmode = 1;
+        in_graphics_mode = TRUE;
     }
     if (mp->extended_info->frame && !noclear)
         memzero(mp->extended_info->frame, fbvar.yres * fbfix.line_length);
@@ -266,7 +280,7 @@ static int settext(GrxVideoMode * mp, int noclear)
         vtm.relsig = 0;
         vtm.acqsig = 0;
         ioctl(ttyfd, VT_SETMODE, &vtm);
-        ingraphicsmode = 0;
+        in_graphics_mode = FALSE;
     }
     return TRUE;
 }
@@ -376,18 +390,108 @@ static void add_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep,
     }
 }
 
+static gboolean term_signal_handler (gpointer user_data)
+{
+    GrxEvent event;
+
+    event.type = GRX_EVENT_TYPE_APP_QUIT;
+    grx_event_put (&event);
+
+    return G_SOURCE_CONTINUE;
+}
+
+static gboolean console_switch_handler (gpointer user_data)
+{
+    GrxEvent event;
+
+    if (in_graphics_mode) {
+        // A well-behaved user program must listen for GRX_EVENT_TYPE_APP_DEACTIVATE
+        // and stop drawing on the screen until GRX_EVENT_TYPE_APP_ACTIVATE is received.
+        event.type = GRX_EVENT_TYPE_APP_DEACTIVATE;
+        grx_event_put (&event);
+
+        /* create a new context from the screen */
+        save = grx_context_new(grx_get_screen_width(), grx_get_screen_height(), NULL, NULL);
+        if (save == NULL) {
+            g_critical ("Could not allocate context for console switching.");
+        } else {
+            /* copy framebuffer to new context */
+            if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
+                /* Need to invert the colors on this one. */
+                grx_context_clear(save, 1);
+                grx_context_bit_blt(save, 0, 0, grx_get_screen_context(), 0, 0,
+                    grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_XOR);
+            } else {
+                grx_context_bit_blt(save, 0, 0, grx_get_screen_context(), 0, 0,
+                    grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_WRITE);
+            }
+        }
+        grx_linuxfb_release ();
+    } else {
+        grx_linuxfb_aquire ();
+
+        /* copy the temporary context back to the framebuffer */
+        if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
+            /* need to invert the colors on this one */
+            grx_clear_screen(1);
+            grx_context_bit_blt(grx_get_screen_context(), 0, 0, save, 0, 0,
+                     grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_XOR);
+        } else {
+            grx_context_bit_blt(grx_get_screen_context(), 0, 0, save, 0, 0,
+                     grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_WRITE);
+        }
+        grx_context_unref(save);
+
+        // now it is OK for the user program to start writing to the screen again
+        event.type = GRX_EVENT_TYPE_APP_ACTIVATE;
+        grx_event_put (&event);
+    }
+
+    return G_SOURCE_CONTINUE;
+}
+
 static int init(const char *options)
 {
     if (detect()) {
+        GrxLibinputDeviceManager *device_manager;
         GrxVideoMode mode, *modep = &modes[1];
         GrxVideoModeExt ext, *extp = &exts[0];
+        GrxEvent event;
+        GError *err;
+
+        device_manager = g_initable_new (GRX_TYPE_LIBINPUT_DEVICE_MANAGER, NULL,
+                                         &err, NULL);
+        if (!device_manager) {
+            g_debug ("%s", err->message);
+            g_error_free (err);
+            return FALSE;
+        }
+
         memzero(modep, (sizeof(modes) - sizeof(modes[0])));
         if ((build_video_mode(&mode, &ext))) {
             add_video_mode(&mode, &ext, &modep, &extp);
         }
-        return (TRUE);
+
+        // Gracefully handle application termination via signal. This reduces
+        // the chance of getting the virtual console stuck in graphics mode
+        // with keyboard disabled.
+        g_unix_signal_add (SIGHUP, term_signal_handler, NULL);
+        g_unix_signal_add (SIGINT, term_signal_handler, NULL);
+        g_unix_signal_add (SIGTERM, term_signal_handler, NULL);
+
+        // Handle console switching
+        g_unix_signal_add (SIGUSR1, console_switch_handler, NULL);
+
+        event.type = GRX_EVENT_TYPE_APP_ACTIVATE;
+        grx_event_put (&event);
+
+        DRVINFO->device_manager = GRX_DEVICE_MANAGER (device_manager);
+        grx_libinput_device_manager_event_add (device_manager);
+
+        return TRUE;
     }
-    return (FALSE);
+
+    return FALSE;
 }
 
 GrxVideoDriver _GrVideoDriverLINUXFB = {

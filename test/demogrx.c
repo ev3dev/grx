@@ -208,7 +208,6 @@ int main(int argc, char **argv)
 {
     Event ev;
     char buffer[100];
-    GrxGtk3Application *app;
 
     if (argc >= 4) {
         gwidth = atoi(argv[1]);
@@ -216,14 +215,49 @@ int main(int argc, char **argv)
         gbpp = atoi(argv[3]);
     }
 
-    app = grx_gtk3_application_new (NULL, NULL);
-
     ini_graphics();
     ini_objects();
     paint_screen();
 
     while (1) {
+        // hack to translate new events to old
         g_main_context_iteration (g_main_context_default (), FALSE);
+        while (grx_events_pending ()) {
+            GrxEvent *event = grx_event_get ();
+            switch (event->type) {
+            case GRX_EVENT_TYPE_APP_QUIT:
+                par_event_queue (EV_END, 0, 0, 0);
+                break;
+            case GRX_EVENT_TYPE_KEY_DOWN:
+                switch (event->key.keysym) {
+                case GRX_KEY_Escape:
+                    par_event_queue (EV_KEY, GrKey_Escape, 0, 0);
+                    break;
+                case GRX_KEY_Up:
+                    par_event_queue (EV_KEY, GrKey_Up, 0, 0);
+                    break;
+                case GRX_KEY_Down:
+                    par_event_queue (EV_KEY, GrKey_Down, 0, 0);
+                    break;
+                case GRX_KEY_Left:
+                    par_event_queue (EV_KEY, GrKey_Left, 0, 0);
+                    break;
+                case GRX_KEY_Right:
+                    par_event_queue (EV_KEY, GrKey_Right, 0, 0);
+                    break;
+                case GRX_KEY_Return:
+                    par_event_queue (EV_KEY, GrKey_Return, 0, 0);
+                    break;
+                default:
+                    break;
+                }
+                break;
+            default:
+                break;
+            }
+            grx_event_free (event);
+        }
+
         event_read(&ev);
         if (ev.type == EV_MOUSE) {
             ev.p2 -= worg;
@@ -256,8 +290,6 @@ int main(int argc, char **argv)
     }
 
     gfaz_fin();
-
-    g_object_unref (app);
 
     return 0;
 }

@@ -17,8 +17,12 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
+#include <grx/events.h>
+
 #include "libgrx.h"
+#include "globals.h"
 #include "grdriver.h"
+#include "gtk3_device.h"
 
 // We want to make sure the line_length will match the rowstride of the GtkPixbuf.
 // Since we are defining modes statically, we need to do the same calculation
@@ -27,7 +31,7 @@
 #define ROWSTRIDE(w) (((w) * 3 + 3) & ~3)
 
 static gboolean gtk_init_ok = FALSE;
-static GdkPixbuf *pixbuf = NULL;
+static GtkWidget *image;
 
 static gboolean detect(void)
 {
@@ -46,8 +50,6 @@ static gboolean detect(void)
 
 static void reset(void)
 {
-    g_object_unref (G_OBJECT (pixbuf));
-    pixbuf = NULL;
 }
 
 // static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)
@@ -61,11 +63,14 @@ static gboolean setup_text_mode (GrxVideoMode *mode, gboolean noclear)
 
 static gboolean setup_grapics_mode (GrxVideoMode *mode, gboolean noclear)
 {
+    GdkPixbuf *pixbuf;
+    GdkPixbufSimpleAnim *animation;
+
     if (!detect ()) {
         return FALSE;
     }
 
-    g_return_val_if_fail (pixbuf == NULL, FALSE);
+    g_return_val_if_fail (image != NULL, FALSE);
 
     pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, mode->width,
                              mode->height);
@@ -79,7 +84,14 @@ static gboolean setup_grapics_mode (GrxVideoMode *mode, gboolean noclear)
     }
 
     mode->extended_info->frame = gdk_pixbuf_get_pixels (pixbuf);
-    mode->user_data = pixbuf;
+
+    // Using an animation get the pixbuf to automatically refresh on the screen.
+    // GRX does not have a way of notifying that a context is "dirty".
+    animation = gdk_pixbuf_simple_anim_new (mode->width, mode->height, 25);
+    gdk_pixbuf_simple_anim_add_frame (animation, pixbuf);
+    gdk_pixbuf_simple_anim_set_loop (animation, TRUE);
+    gtk_image_set_from_animation (GTK_IMAGE (image),
+                                  GDK_PIXBUF_ANIMATION (animation));
 
     return TRUE;
 }
@@ -147,9 +159,157 @@ static GrxVideoMode video_modes[] = {
     },
 };
 
+// map GDK events to GRX events
+static const GrxEventType event_type_map[GDK_EVENT_LAST] = {
+    [GDK_KEY_PRESS]         = GRX_EVENT_TYPE_KEY_DOWN,
+    [GDK_KEY_RELEASE]       = GRX_EVENT_TYPE_KEY_UP,
+    [GDK_BUTTON_PRESS]      = GRX_EVENT_TYPE_BUTTON_PRESS,
+    [GDK_BUTTON_RELEASE]    = GRX_EVENT_TYPE_BUTTON_RELEASE,
+    [GDK_2BUTTON_PRESS]     = GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS,
+    [GDK_TOUCH_BEGIN]       = GRX_EVENT_TYPE_TOUCH_DOWN,
+    [GDK_TOUCH_UPDATE]      = GRX_EVENT_TYPE_TOUCH_MOTION,
+    [GDK_TOUCH_END]         = GRX_EVENT_TYPE_TOUCH_UP,
+    [GDK_TOUCH_CANCEL]      = GRX_EVENT_TYPE_TOUCH_CANCEL,
+};
+
+static gboolean on_event (GtkWidget *widget, GdkEvent *event, gpointer user_data)
+{
+    // only propagate GRX events if the window is active
+    if (gtk_window_is_active (GTK_WINDOW (gtk_widget_get_toplevel (widget)))) {
+        GrxEvent grx_event = { 0 };
+
+        grx_event.type = event_type_map[event->type];
+        switch (event->type) {
+        case GDK_KEY_PRESS:
+        case GDK_KEY_RELEASE:
+            // GDK does not provide a device for keyboard events
+            grx_event.key.device = NULL;
+            grx_event.key.keysym = event->key.keyval;
+            grx_event.key.unichar = gdk_keyval_to_unicode (event->key.keyval);
+            grx_event.key.code = event->key.hardware_keycode;
+            break;
+        case GDK_BUTTON_PRESS:
+        case GDK_BUTTON_RELEASE:
+        case GDK_2BUTTON_PRESS:
+            // grx_event.button.device = GRX_DEVICE (grx_gtk3_device_lookup
+            //     (device_manager, event->button.device));
+            grx_event.button.button = event->button.button;
+            break;
+        case GDK_TOUCH_BEGIN:
+        case GDK_TOUCH_UPDATE:
+        case GDK_TOUCH_END:
+        case GDK_TOUCH_CANCEL:
+            // grx_event.touch.device = GRX_DEVICE (grx_gtk3_device_lookup
+            //     (device_manager, event->button.device));
+            grx_event.touch.id = 0;
+            grx_event.touch.x = event->touch.x;
+            grx_event.touch.y = event->touch.y;
+            break;
+        default:
+            return FALSE;
+        }
+
+        grx_event_put (&grx_event);
+
+        // we have handled the GDK event, so don't propagate it.
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static void on_window_notify_is_active (GObject *object, GParamSpec *pspec,
+                                        gpointer user_data)
+{
+    GrxEvent event;
+
+    event.type = gtk_window_is_active (GTK_WINDOW (object)) ?
+        GRX_EVENT_TYPE_APP_ACTIVATE : GRX_EVENT_TYPE_APP_DEACTIVATE;
+
+    grx_event_put (&event);
+}
+
+static void on_window_destroy (GtkWidget *widget, gpointer user_data)
+{
+    GrxEvent event;
+
+    event.type = GRX_EVENT_TYPE_APP_QUIT;
+
+    grx_event_put (&event);
+}
+
+/*
+ * set_cursor:
+ *
+ * Sets the cursor for the specified widget.
+ *
+ * The @event parameter is needed because this is a handler for
+ * GtkWidget::enter-notify-event and GtkWidget::enter-leave-event
+ */
+static void set_cursor (GtkWidget *widget, GdkEvent *event, gchar *name)
+{
+    GdkCursor *mouse_cursor;
+
+    mouse_cursor = gdk_cursor_new_from_name (gtk_widget_get_display (widget),
+                                             name);
+    gdk_window_set_cursor (gtk_widget_get_window (widget), mouse_cursor);
+    g_object_unref (G_OBJECT (mouse_cursor));
+}
+
 static gboolean init (const gchar *options)
 {
+    GrxGtk3DeviceManager *device_manager;
+    GError *err;
+    GtkWidget *window;
+    GtkWidget *event_box;
+
+    g_return_val_if_fail (gtk_init_ok, FALSE);
+    g_return_val_if_fail (image == NULL, FALSE);
+
+    device_manager = g_initable_new (GRX_TYPE_GTK3_DEVICE_MANAGER, NULL, &err, NULL);
+    if (!device_manager) {
+        g_debug ("%s", err->message);
+        g_error_free (err);
+
+        return FALSE;
+    }
+
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
+    gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
+    g_signal_connect (window, "notify::is-active",
+                      (GCallback)on_window_notify_is_active, NULL);
+    g_signal_connect (window, "destroy", (GCallback)on_window_destroy, NULL);
+
+    // Have to have a GtkEventBox to handle events since GtkImage doesn't have
+    // a GdkWindow.
+    event_box = gtk_event_box_new ();
+    gtk_widget_set_can_focus (event_box, TRUE); // for keyboard input
+    gtk_widget_set_events (event_box, GDK_BUTTON_PRESS_MASK |
+                           GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK |
+                           GDK_KEY_RELEASE_MASK | GDK_TOUCH_MASK);
+    g_signal_connect (G_OBJECT (event_box), "event", (GCallback)on_event, NULL);
+    g_signal_connect (G_OBJECT (event_box), "enter-notify-event",
+                      (GCallback)set_cursor, "none");
+    g_signal_connect (G_OBJECT (event_box), "leave-notify-event",
+                      (GCallback)set_cursor, "default");
+
+    image = gtk_image_new ();
+
+    gtk_container_add (GTK_CONTAINER (window), event_box);
+    gtk_container_add (GTK_CONTAINER (event_box), image);
+    gtk_widget_show_all (window);
+
+    DRVINFO->device_manager = GRX_DEVICE_MANAGER (device_manager);
+
     return TRUE;
+}
+
+static GrxVideoMode *
+select_mode (GrxVideoDriver *driver, gint width, gint height, gint bpp,
+             gboolean text, guint *ep)
+{
+    return _gr_select_mode (driver, width, height, bpp, text, ep);
 }
 
 GrxVideoDriver _GrVideoDriverGtk3 = {
@@ -161,6 +321,6 @@ GrxVideoDriver _GrVideoDriverGtk3 = {
     .detect         = detect,
     .init           = init,
     .reset          = reset,
-    .select_mode    = _gr_select_mode,
+    .select_mode    = select_mode,
     .flags          = 0,
 };
