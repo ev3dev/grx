@@ -262,7 +262,7 @@ install (FILES ${GRX_KEYSYMS_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/grx)
 
 add_library (${LIBRARY_NAME} OBJECT ${LIBRARY_SOURCE_FILES})
 set_target_properties (${LIBRARY_NAME} PROPERTIES POSITION_INDEPENDENT_CODE 1)
-target_compile_options (${LIBRARY_NAME} PUBLIC "-Wall")
+target_compile_options (${LIBRARY_NAME} PUBLIC "-Wall" "-Werror")
 target_compile_definitions (${LIBRARY_NAME} PUBLIC
     "GRX_DEFAULT_FONT_PATH=\"${CMAKE_INSTALL_PKGDATADIR}/fonts\""
     "LFB_BY_NEAR_POINTER"
