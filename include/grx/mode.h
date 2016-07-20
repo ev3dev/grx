@@ -379,7 +379,6 @@ extern const struct _GR_driverInfo {
         GrxColor deftc,defgc;               /* default text and graphics colors */
         int     vposx,vposy;                /* current virtual viewport position */
         int     errsfatal;                  /* if set, exit upon errors */
-        int     moderestore;                /* restore startup video mode if set */
         int     splitbanks;                 /* indicates separate R/W banks */
         int     curbank;                    /* currently mapped bank */
         void  (*set_bank)(int bk);          /* banking routine */
@@ -395,7 +394,6 @@ extern const struct _GR_driverInfo {
 gboolean grx_set_driver(const gchar *driver_spec, GError **error);
 gboolean grx_set_mode(GrxGraphicsMode mode, ...);
 gboolean grx_set_mode_default_graphics(gboolean clear);
-void grx_set_restore_mode(gboolean restore);
 void grx_set_error_handling(gboolean exit_if_error);
 
 /*

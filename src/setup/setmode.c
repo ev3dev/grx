@@ -237,7 +237,6 @@ done:
 static int errhdlr(const gchar *msg)
 {
     if(DRVINFO->errsfatal) {
-        DRVINFO->moderestore = TRUE;
         _GrCloseVideoDriver();
         g_error ("grx_set_mode: %s", msg);
     } else {

@@ -18,11 +18,6 @@
 #include "globals.h"
 #include "libgrx.h"
 
-void grx_set_restore_mode(int restoreFlag)
-{
-    DRVINFO->moderestore = restoreFlag;
-}
-
 void grx_set_error_handling(int exitIfError)
 {
     DRVINFO->errsfatal = exitIfError;

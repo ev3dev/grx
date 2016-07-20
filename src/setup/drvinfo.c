@@ -112,7 +112,6 @@ struct _GR_driverInfo _GrDriverInfo = {
     .deftc = 16L, .defgc = 16L,                 /* default txt and gr colors */
     .vposx = 0,   .vposy = 0,                   /* virtual position */
     .errsfatal   = TRUE,                        /* exit upon errors */
-    .moderestore = TRUE,                        /* restore startup mode */
     .splitbanks  = FALSE,                       /* split banks */
     .curbank     = (-1),                        /* current bank */
     .set_bank = (void (*)(int))_GrDummyFunction,/* banking func */

@@ -226,9 +226,7 @@ static int detect (void)
 
 static void mem_reset (void)
 {
-    if(DRVINFO->moderestore) {
-      FreeMemBuf();
-    }
+    FreeMemBuf();
 }
 
 G_MODULE_EXPORT GrxVideoDriver grx_memory_video_driver = {
