@@ -422,51 +422,6 @@ namespace Grx {
     [CCode (has_target = false, has_type_id = false)]
     public delegate void FrameDriverPutScanLine (int x, int y, int w, Color scl[], ColorMode op);
 
-    [CCode (cname = "struct _GR_driverInfo", has_type_id = false)]
-    [Compact]
-    public class DriverInfo {
-        public VideoDriver *vdriver;
-        [CCode (cname = "curmode")]
-        public VideoMode *current_mode;
-        [CCode (cname = "actmode")]
-        public VideoMode actual_mode;
-        public FrameDriver fdriver;
-        public FrameDriver sdriver;
-        public FrameDriver tdriver;
-        public GraphicsMode mcode;
-        [CCode (cname = "deftw")]
-        public int default_text_width;
-        [CCode (cname = "defth")]
-        public int default_text_height;
-        [CCode (cname = "defgw")]
-        public int default_graphics_width;
-        [CCode (cname = "defgh")]
-        public int default_graphics_height;
-        [CCode (cname = "deftc")]
-        public Color default_text_color;
-        [CCode (cname = "defgc")]
-        public Color default_graphics_color;
-        [CCode (cname = "vposx")]
-        public int virt_pos_x;
-        [CCode (cname = "vposy")]
-        public int virt_pos_y;
-        [CCode (cname = "errsfatal")]
-        public int errors_are_fatal;
-        [CCode (cname = "moderestore")]
-        public int mode_restore;
-        [CCode (cname = "splitbanks")]
-        public int split_banks;
-        [CCode (cname = "curbank")]
-        public int current_bank;
-        [CCode (cname = "set_bank")]
-        public DriverInfoSetBank set_bank;
-        [CCode (cname = "set_rw_banks")]
-        public DriverInfoSetRWBanks set_rw_banks;
-    }
-
-    [CCode (cname = "GrDriverInfo")]
-    public DriverInfo driver_info;
-
     [CCode (has_target = false, has_type_id = false)]
     public delegate void DriverInfoSetBank (int bank);
     [CCode (has_target = false, has_type_id = false)]
@@ -615,17 +570,6 @@ namespace Grx {
         public Result save_to_jpeg (string file_name, int quality = 90);
         public Result save_to_jpeg_grayscale (string file_name, int quality = 90);
     }
-
-    [CCode (cname = "const struct _GR_contextInfo", has_type_id = false)]
-    public struct ContextInfo {
-        [CCode (cname = "&self.current")]
-        public static Context current;
-        [CCode (cname = "&self.screen")]
-        public static Context screen;
-    }
-
-    [CCode (cname = "GrContextInfo")]
-    public ContextInfo context_info;
 
     public void set_clip_box (int x1, int y1, int x2, int y2);
     public void get_clip_box (out int x1, out int y1, out int x2, out int y2);
