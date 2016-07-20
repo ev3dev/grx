@@ -18,6 +18,7 @@ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # global stuff
 
+find_package (PkgConfig REQUIRED)
 include(GNUInstallDirs)
 set (CMAKE_INSTALL_PKGDATADIR ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
 
@@ -27,6 +28,7 @@ set (STATIC_LIBRARY_NAME ${LIBRARY_NAME}-static)
 
 # subdirectories
 
+add_subdirectory (plugins)
 add_subdirectory (src)
 add_subdirectory (tools)
 add_subdirectory (example EXCLUDE_FROM_ALL)

@@ -16,6 +16,7 @@
  */
 
 #include <stdio.h>
+#include <gmodule.h>
 
 #include "globals.h"
 #include "libgrx.h"
@@ -230,7 +231,7 @@ static void mem_reset (void)
     }
 }
 
-GrxVideoDriver _GrDriverMEM = {
+G_MODULE_EXPORT GrxVideoDriver grx_memory_video_driver = {
     .name        = "memory",                 /* name */
     .adapter     = GRX_VIDEO_ADAPTER_TYPE_MEMORY,
     .inherit     = NULL,                     /* inherit modes from this driver */

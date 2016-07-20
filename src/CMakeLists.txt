@@ -210,8 +210,6 @@ set (LIBRARY_SOURCE_FILES
     utils/resize.c
     utils/shiftscl.c
     utils/tmpbuff.c
-    vdrivers/vd_mem.c
-    vdrivers/vtable.c
     wideline/ccirc.c
     wideline/ccirca.c
     wideline/celli.c
@@ -229,21 +227,10 @@ endif (GRX_DEBUG)
 
 if (GRX_LINUXFB)
     list (APPEND LIBRARY_SOURCE_FILES
-        input/libinput_device.c
-        input/libinput_device_manager.c
         mouse/lnxinpu2.c
         mouse/lnxkeys.c
-        vdrivers/vd_lnxfb.c
     )
 endif (GRX_LINUXFB)
-
-if (GRX_GTK3)
-    list (APPEND LIBRARY_SOURCE_FILES
-        input/gtk3_device.c
-        input/gtk3_device_manager.c
-        vdrivers/vd_gtk3.c
-    )
-endif (GRX_GTK3)
 
 list (SORT LIBRARY_SOURCE_FILES)
 
@@ -252,21 +239,15 @@ list (SORT LIBRARY_SOURCE_FILES)
 find_package (JPEG REQUIRED)
 
 set (PUBLIC_MODULES glib-2.0 gobject-2.0 gio-2.0)
-set (PRIVATE_MODULES libpng12 xkbcommon)
-if (GRX_LINUXFB)
-    LIST (APPEND PRIVATE_MODULES libudev libinput)
-endif (GRX_LINUXFB)
-if (GRX_GTK3)
-    LIST (APPEND PRIVATE_MODULES gtk+-3.0)
-endif (GRX_GTK3)
-find_package (PkgConfig REQUIRED)
+set (PRIVATE_MODULES gmodule-2.0 libpng12)
 pkg_check_modules (GRX_DEPS REQUIRED ${PUBLIC_MODULES} ${PRIVATE_MODULES})
 
 
 # copy and modify xkbcommon-keysyms.h
 
+pkg_check_modules (XKB_DEPS REQUIRED xkbcommon)
 find_file (XKBCOMMON_KEYSYMS_H xkbcommon-keysyms.h
-    HINTS ${GRX_DEPS_xkbcommon_INCLUDE_DIRS}
+    HINTS ${XKB_DEPS_INCLUDE_DIRS}
     PATH_SUFFIXES xkbcommon)
 file (READ ${XKBCOMMON_KEYSYMS_H} GRX_KEYSYMS)
 # better than maintaining a copy of X11 keysyms by hand
@@ -283,7 +264,9 @@ add_library (${LIBRARY_NAME} OBJECT ${LIBRARY_SOURCE_FILES})
 set_target_properties (${LIBRARY_NAME} PROPERTIES POSITION_INDEPENDENT_CODE 1)
 target_compile_options (${LIBRARY_NAME} PUBLIC "-Wall")
 target_compile_definitions (${LIBRARY_NAME} PUBLIC
-    "GRX_DEFAULT_FONT_PATH=\"${CMAKE_INSTALL_PKGDATADIR}/fonts\"")
+    "GRX_DEFAULT_FONT_PATH=\"${CMAKE_INSTALL_PKGDATADIR}/fonts\""
+    "LFB_BY_NEAR_POINTER"
+)
 if (GRX_DEBUG)
     target_compile_definitions (${LIBRARY_NAME} PUBLIC "DEBUG=${GRX_DEBUG}")
 endif (GRX_DEBUG)

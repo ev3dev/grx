@@ -29,6 +29,7 @@
 
 #include <glib.h>
 #include <glib-unix.h>
+#include <gmodule.h>
 
 #include <grx/context.h>
 #include <grx/draw.h>
@@ -494,7 +495,7 @@ static int init(const char *options)
     return FALSE;
 }
 
-GrxVideoDriver _GrVideoDriverLINUXFB = {
+G_MODULE_EXPORT GrxVideoDriver grx_linuxfb_video_driver = {
     .name        = "linuxfb",                   /* name */
     .adapter     = GRX_VIDEO_ADAPTER_TYPE_LINUX_FB,
     .inherit     = NULL,                        /* inherit modes from this driver */

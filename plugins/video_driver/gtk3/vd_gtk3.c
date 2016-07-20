@@ -15,6 +15,7 @@
  */
 
 #include <glib.h>
+#include <gmodule.h>
 #include <gtk/gtk.h>
 
 #include <grx/events.h>
@@ -263,6 +264,7 @@ static gboolean init (const gchar *options)
     GtkWidget *window;
     GtkWidget *event_box;
 
+    detect ();
     g_return_val_if_fail (gtk_init_ok, FALSE);
     g_return_val_if_fail (image == NULL, FALSE);
 
@@ -312,7 +314,7 @@ select_mode (GrxVideoDriver *driver, gint width, gint height, gint bpp,
     return _gr_select_mode (driver, width, height, bpp, text, ep);
 }
 
-GrxVideoDriver _GrVideoDriverGtk3 = {
+G_MODULE_EXPORT GrxVideoDriver grx_gtk3_video_driver = {
     .name           = "gtk3",
     .adapter        = GRX_VIDEO_ADAPTER_TYPE_GTK3,
     .inherit        = NULL,

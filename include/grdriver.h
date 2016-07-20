@@ -72,27 +72,6 @@ _GrFrameDriverRAM3x8,                   /* 16M color planar (image mode) */
  */
 *_GrFrameDriverTable[];
 
-
-extern GrxVideoDriver
-/*
- * Standard video drivers in GRX
- */
-_GrVideoDriverGtk3,                     /* GTK+ 3 interface */
-_GrVideoDriverXWIN,                     /* X11 interface */
-_GrVideoDriverXF86DGA,                  /* XFree86 DGA interface */
-_GrVideoDriverLINUXFB,                  /* Linux framebuffer */
-_GrVideoDriverWIN32,                    /* WIN32 interface */
-_GrVideoDriverSDL,                      /* SDL intrercace */
-_GrDriverMEM,                           /* memory screen driver */
-
-/*
- * This is a NULL-terminated table of video driver descriptor pointers. Users
- * can provide their own table with only the desired (or additional) drivers.
- * Otherwise the table from the GRX library is linked, which includes ALL
- * currently available drivers (i.e. the ones above).
- */
-*_GrVideoDriverTable[];
-
 /*
  * frame driver function types used inside GRX
  */

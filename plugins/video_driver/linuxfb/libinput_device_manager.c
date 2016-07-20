@@ -326,7 +326,8 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
         {
             struct libinput_event_touch *touch;
             int32_t slot;
-            double x, y;
+            double x = 0.0;
+            double y = 0.0;
 
             touch = libinput_event_get_touch_event (event);
             slot = libinput_event_touch_get_slot (touch);

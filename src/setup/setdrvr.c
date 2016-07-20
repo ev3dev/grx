@@ -18,6 +18,8 @@
 #include <ctype.h>
 #include <string.h>
 
+#include <gmodule.h>
+
 #include "globals.h"
 #include "libgrx.h"
 #include "grdriver.h"
@@ -25,6 +27,14 @@
 #include "memcopy.h"
 #include "memfill.h"
 #include "util.h"
+
+// List of video driver plugin file names
+static const gchar * const driver_names[] = {
+    "gtk3",
+    "linuxfb",
+    "memory",
+    NULL
+};
 
 static char *nxtoken(char *p,char *token)
 {
@@ -87,37 +97,67 @@ int grx_set_driver(char *drvspec)
                     break;
                 }
             }
-            if(name[0] != '\0') {
-                DBGPRINTF(DBG_DRIVER,("Looking for match: %s\n",name));
-                int ii = 0,found = FALSE;
-                while(!found && ((drv = _GrVideoDriverTable[ii++]) != NULL)) {
-                    char *n = name;
+            if (name[0] != '\0') {
+                GModule *plugin;
+                gchar *file_name, module_name[128];
 
-                    DBGPRINTF(DBG_DRIVER,("Trying: %s\n",drv->name));
-                    for(p = drv->name; ; p++,n++) {
-                        if(tolower(*p) != tolower(*n)) break;
-                        if(*p == '\0') { found = TRUE; break; }
-                    }
+                g_snprintf(module_name, 128, "grx-3.0-plugin-%s", name);
+                file_name = g_module_build_path(NULL, module_name);
+                g_debug("Looking for plugin: %s", file_name);
+                plugin = g_module_open(file_name, G_MODULE_BIND_LAZY);
+                g_free(file_name);
+                if (!plugin) {
+                    g_debug("Failed to open plugin");
+                    return FALSE;
                 }
-                if(!found) return(FALSE);
+                g_snprintf(module_name, 128, "grx_%s_video_driver", name);
+                if (!g_module_symbol(plugin, module_name, (gpointer *)&drv)) {
+                    g_debug("Failed to load 'video_driver' symbol");
+                    return FALSE;
+                }
             }
         }
-        if(!drv) {
-            DBGPRINTF(DBG_DRIVER,("Trying detect\n"));
+        if (!drv) {
             GrxVideoDriver *dp;
-            int ii,maxmodes = 0;
-            for(ii = 0; (dp = _GrVideoDriverTable[ii]) != NULL; ii++) {
-                if(dp->detect && (*dp->detect)()) {
+            GModule *plugin;
+            gchar *file_name, module_name[128];
+            int i, maxmodes = 0;
+
+            g_debug("Trying detect");
+            // Try to load each video driver plugin
+            for (i = 0; driver_names[i]; i++) {
+                g_snprintf(module_name, 128, "grx-3.0-plugin-%s", driver_names[i]);
+                file_name = g_module_build_path(NULL, module_name);
+                g_debug("Looking for plugin: %s", file_name);
+                plugin = g_module_open(file_name, G_MODULE_BIND_LAZY);
+                g_free(file_name);
+                if (!plugin) {
+                    continue;
+                }
+                g_snprintf(module_name, 128, "grx_%s_video_driver", driver_names[i]);
+                if (!g_module_symbol(plugin, module_name, (gpointer *)&dp)) {
+                    continue;
+                }
+                // Use the plugin with the higest number of modes
+                if (dp->detect && dp->detect()) {
+                    GrxVideoDriver *dp2;
                     int nm = 0;
-                    for( ; dp; dp = dp->inherit) nm += dp->n_modes;
-                    if(nm > maxmodes) {
-                        drv = _GrVideoDriverTable[ii];
+
+                    for (dp2 = dp; dp2; dp2 = dp2->inherit) {
+                        nm += dp2->n_modes;
+                    }
+                    if (nm > maxmodes) {
+                        drv = dp;
                         maxmodes = nm;
                     }
                 }
             }
-            if(!drv) return(FALSE);
-            DBGPRINTF(DBG_DRIVER,("Found %s\n", drv->name));
+            if (drv) {
+                g_debug("Found %s", drv->name);
+            }
+        }
+        if (!drv) {
+            return FALSE;
         }
         _GrCloseVideoDriver();
         if(firsttime) {

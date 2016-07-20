@@ -49,6 +49,7 @@ Source code directories:
     example/    Examples of how to use GRX 3
     fonts/      Font data
     include/    Public header files
+    plugins/    Optional components, such as video drivers
     src/        The main library source code
     test/       Old demo program from GRX 2.x
 
