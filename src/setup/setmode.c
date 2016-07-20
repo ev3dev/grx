@@ -21,6 +21,7 @@
 #include <stdarg.h>
 
 #include "colors.h"
+#include "grx/error.h"
 #include "globals.h"
 #include "libgrx.h"
 #include "arith.h"
@@ -234,19 +235,7 @@ done:
         GRX_RETURN(res);
 }
 
-static int errhdlr(const gchar *msg)
-{
-    if(DRVINFO->errsfatal) {
-        _GrCloseVideoDriver();
-        g_error ("grx_set_mode: %s", msg);
-    } else {
-        g_debug ("%s", msg);
-    }
-
-    return FALSE;
-}
-
-int grx_set_mode(GrxGraphicsMode which,...)
+int grx_set_mode(GrxGraphicsMode which, GError **error, ...)
 {
         int  w,h,pl,vw,vh;
         int  t,noclear,res;
@@ -262,15 +251,12 @@ int grx_set_mode(GrxGraphicsMode which,...)
         res = FALSE;
         g_debug ("Mode: %d",(int)which);
         if (!DRVINFO->vdriver) {
-            GError *error = NULL;
-
-            if (!grx_set_driver(NULL, &error)) {
-                res = errhdlr(error->message);
-                g_error_free(error);
+            res = grx_set_driver(NULL, error);
+            if (!res) {
                 goto done;
             }
         }
-        va_start(ap,which);
+        va_start(ap,error);
         switch(which) {
           case GRX_GRAPHICS_MODE_TEXT_80X25_NC:
             noclear = TRUE;
@@ -360,7 +346,8 @@ int grx_set_mode(GrxGraphicsMode which,...)
             break;
           default:
             va_end(ap);
-            res = errhdlr("unknown video mode");
+            res = FALSE;
+            g_set_error(error, GRX_ERROR, GRX_ERROR_FAILED, "unknown video mode");
             goto done;
         }
         va_end(ap);
@@ -372,7 +359,9 @@ int grx_set_mode(GrxGraphicsMode which,...)
             GrxVideoMode  *mdp,vmd;
             mdp = (DRVINFO->vdriver->select_mode)(DRVINFO->vdriver,w,h,pl,t,NULL);
             if(!mdp) {
-                res = errhdlr("could not find suitable video mode");
+                res = FALSE;
+                g_set_error(error, GRX_ERROR, GRX_ERROR_FAILED,
+                            "could not find suitable video mode");
                 goto done;
             }
             sttcopy(&vmd,mdp);
@@ -427,7 +416,9 @@ int grx_set_mode(GrxGraphicsMode which,...)
                 DRVINFO->vposy   = 0;
                 g_debug ("grx_color_info_reset_colors ...");
                 if ( !_GrResetColors() ) {
-                    res = errhdlr("could not set color mode");
+                    res = FALSE;
+                    g_set_error(error, GRX_ERROR, GRX_ERROR_FAILED,
+                                "could not set color mode");
                     goto done;
                 }
                 g_debug ("grx_color_info_reset_colors done");
@@ -450,8 +441,8 @@ done:   GRX_RETURN(res);
  * grx_set_mode_default_graphics:
  * @clear: If #TRUE, clear the screen after setting the mode.
  */
-gboolean grx_set_mode_default_graphics(gboolean clear)
+gboolean grx_set_mode_default_graphics(gboolean clear, GError **error)
 {
     return grx_set_mode(clear ? GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT
-                              : GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC);
+                              : GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC, error);
 }

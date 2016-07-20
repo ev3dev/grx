@@ -25,9 +25,12 @@ int main()
   int x, y, ww, wh;
   GrxColor c;
   GrxContext *w1, *w2, *w3, *w4;
+  GError *error = NULL;
 
   grx_set_driver("memory gw 400 gh 400 nc 256", NULL);
-  grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
+  if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT, &error)) {
+    g_error("%s", error->message);
+  }
 
   x = grx_get_width();
   y = grx_get_height();

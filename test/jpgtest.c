@@ -64,12 +64,15 @@ void nojpegsupport( void )
 int main()
 {
   GrxContext *grc;
+  GError *error = NULL;
 
-  grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,640,480,24 );
+  if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,&error,640,480,24)) {
+    g_error("%s", error->message);
+  }
 
   if( !grx_is_jpeg_supported() ){
     nojpegsupport();
-    grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+    grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
     exit( 1 );
     }
 
@@ -113,6 +116,6 @@ int main()
     grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
-  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
   return 0;
 }

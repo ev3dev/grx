@@ -190,10 +190,7 @@ static gboolean init (GInitable *initable, GCancellable *cancellable,
 {
     GrxApplication *self = GRX_APPLICATION (initable);
 
-    grx_set_error_handling (FALSE);
-    if (!grx_set_mode_default_graphics (TRUE)) {
-        g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-            "Could not set graphics mode.");
+    if (!grx_set_mode_default_graphics (TRUE, error)) {
         return FALSE;
     }
 

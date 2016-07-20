@@ -378,7 +378,6 @@ extern const struct _GR_driverInfo {
         int     defgw,defgh;                /* default graphics mode size */
         GrxColor deftc,defgc;               /* default text and graphics colors */
         int     vposx,vposy;                /* current virtual viewport position */
-        int     errsfatal;                  /* if set, exit upon errors */
         int     splitbanks;                 /* indicates separate R/W banks */
         int     curbank;                    /* currently mapped bank */
         void  (*set_bank)(int bk);          /* banking routine */
@@ -392,9 +391,8 @@ extern const struct _GR_driverInfo {
  * setup stuff
  */
 gboolean grx_set_driver(const gchar *driver_spec, GError **error);
-gboolean grx_set_mode(GrxGraphicsMode mode, ...);
-gboolean grx_set_mode_default_graphics(gboolean clear);
-void grx_set_error_handling(gboolean exit_if_error);
+gboolean grx_set_mode(GrxGraphicsMode mode, GError **error, ...);
+gboolean grx_set_mode_default_graphics(gboolean clear, GError **error);
 
 /*
  * inquiry stuff ---- many of these are actually macros (see below)

@@ -66,7 +66,7 @@ TESTFUNC(scrolltest)
                     case 'Q': return;
                     default:  continue;
                 }
-                grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM,wdt,hgt,nc,vw,vh);
+                grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM,NULL,wdt,hgt,nc,vw,vh);
                 break;
             }
         }

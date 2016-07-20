@@ -26,8 +26,11 @@ int main(void)
   GrxPattern *p1, *p2;
   GrxFont *font;
   GrxTextOptions opt;
+  GError *error = NULL;
 
-  grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR, 320, 200, (GrxColor)256);
+  if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR, &error, 320, 200, (GrxColor)256)) {
+    g_error("%s", error->message);
+  }
   p1 = grx_pattern_new_pixmap_from_bits(bits, 8, 8, 11,  3);
   p2 = grx_pattern_new_pixmap_from_bits(bits, 8, 8,  3, 11);
   font = grx_font_load(FONT);
@@ -56,7 +59,7 @@ int main(void)
   if (p1)   grx_pattern_free(p1);
   if (p2)   grx_pattern_free(p2);
   if (font) grx_font_unref(font);
-  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
   if (!p1) fprintf(stderr, "Couldn't create first pattern\n");
   if (!p2) fprintf(stderr, "Couldn't create second pattern\n");
   if (!font) fprintf(stderr, "Couldn't load font %s\n", FONT);

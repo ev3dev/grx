@@ -111,7 +111,6 @@ struct _GR_driverInfo _GrDriverInfo = {
     .defgw = 640, .defgh = 480,                 /* default graphics size */
     .deftc = 16L, .defgc = 16L,                 /* default txt and gr colors */
     .vposx = 0,   .vposy = 0,                   /* virtual position */
-    .errsfatal   = TRUE,                        /* exit upon errors */
     .splitbanks  = FALSE,                       /* split banks */
     .curbank     = (-1),                        /* current bank */
     .set_bank = (void (*)(int))_GrDummyFunction,/* banking func */
@@ -120,19 +119,9 @@ struct _GR_driverInfo _GrDriverInfo = {
 
 static GrxColor dummyframefn(void)
 {
-        if(DRVINFO->errsfatal) {
-            _GrCloseVideoDriver();
-            fprintf(stderr,
-                "GRX Error: graphics operation attempted %s\n",
-                (DRVINFO->fdriver.mode == GRX_FRAME_MODE_TEXT)
-                    ? "in text mode" : "before mode set"
-            );
-            exit(1);
-        }
-        return(GRX_COLOR_NONE);
+    return GRX_COLOR_NONE;
 }
 
 void _GrDummyFunction(void)
 {
-        return;
 }

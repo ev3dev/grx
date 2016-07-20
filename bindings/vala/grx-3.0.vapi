@@ -431,9 +431,8 @@ namespace Grx {
      * setup stuff
      */
     public bool set_driver (string driver_spec) throws Grx.Error;
-    public bool set_mode (GraphicsMode mode, ...);
-    public bool set_mode_default_graphics (bool clear);
-    public void set_error_handling (bool exit_if_error);
+    public bool set_mode (GraphicsMode mode, ...) throws Grx.Error;
+    public bool set_mode_default_graphics (bool clear) throws Grx.Error;
 
     /*
      * inquiry stuff

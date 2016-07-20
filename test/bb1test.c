@@ -29,8 +29,11 @@ int main(void)
   int y = 40;
   GrxColor fcolor, bcolor;
   GrKeyType k;
+  GError *error = NULL;
 
-  grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT );
+  if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT, &error)) {
+    g_error("%s", error->message);
+  }
   /* Create a 1bpp bitmap */
   pContext = grx_context_new_full(GRX_FRAME_MODE_RAM_1BPP, sizex, sizey, NULL, NULL);
   /* draw something (black and white) into the bitmap */
@@ -79,6 +82,6 @@ int main(void)
   /* Destroy */
   grx_context_unref(pContext);
 
-  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
   return 0;
 }

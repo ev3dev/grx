@@ -109,7 +109,6 @@ set (LIBRARY_SOURCE_FILES
     setup/drvinlne.c
     setup/fframe.c
     setup/fgeom.c
-    setup/hooks.c
     setup/modewalk.c
     setup/setdrvr.c
     setup/setmode.c

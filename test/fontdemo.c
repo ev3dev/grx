@@ -81,6 +81,7 @@ int main(int argc, char **argv)
         FILE *f;
         char buffer[0x20];
         GrKeyType key;
+        GError *error = NULL;
 
         /* unfortunately not all systems support getopt() */
         for(i = 1; i < argc; i++) {
@@ -156,7 +157,9 @@ int main(int argc, char **argv)
         }
         if(width == 0) width = height == 400 ? 640 : height * 4 / 3;
 
-        grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, width, height, bpp);
+        if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, &error, width, height, bpp)) {
+            g_error("%s", error->message);
+        }
         if(!gray || (opt.txo_fgcolor.v = grx_color_info_alloc_color(gray, gray, gray)) == GRX_COLOR_NONE) opt.txo_fgcolor.v = grx_color_info_get_white();
         if(attributes & 0x02) opt.txo_fgcolor.v |= GRX_UNDERLINE_TEXT;
         opt.txo_bgcolor.v = grx_color_info_get_black();

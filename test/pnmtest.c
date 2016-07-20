@@ -33,9 +33,11 @@ int main(void)
   GrxContext *grc;
   int wide, high, maxval;
   char s[81];
+  GError *error = NULL;
   
-/* grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT ); */
-  grx_set_mode( GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,640,480,32768 );
+  if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,&error,640,480,32768)) {
+    g_error("%s", error->message);
+  }
   grx_check_pnm_file( FIMAGEPPM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPPM,wide,high );
   grx_draw_text_xy( 10,20,s,grx_color_info_get_black(),grx_color_info_get_white() );
@@ -98,6 +100,6 @@ int main(void)
   grx_draw_text_xy( 10,20,"Press any key to end        ",grx_color_info_get_black(),grx_color_info_get_white() );
   GrKeyRead();
 
-  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+  grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
   return 0;
 }

@@ -145,10 +145,13 @@ int main(void)
             exit(1);
         }
         for( ; ; ) {
+            GError *error = NULL;
             int  i,w,h,px,py;
             char m1[41];
             n_modes = (int)(collectmodes(grx_get_current_video_driver(),grmodes) - grmodes);
-            grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT);
+            if (!grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, &error)) {
+                g_error("%s", error->message);
+            }
             if(n_modes == 0) {
                 printf("No graphics modes found\n");
                 exit(1);
@@ -185,6 +188,7 @@ int main(void)
             i--;
             grx_set_mode(
                 GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,
+                NULL,
                 grmodes[i].w,
                 grmodes[i].h,
                 grmodes[i].bpp
