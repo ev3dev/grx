@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 9.0.0), libjpeg-dev, libpng12-dev, pkg-config,
     libgudev-1.0-dev, libxkbcommon-dev, valac, libgtk-3-dev
 Standards-Version: 3.9.5
 Section: libs
-Homepage: http://grx.gnu.de/
+Homepage: https://github.com/ev3dev/grx
 Vcs-Git: git://github.com/ev3dev/grx.git
 Vcs-Browser: https://github.com/ev3dev/grx
 
