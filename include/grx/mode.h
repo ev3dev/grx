@@ -25,9 +25,15 @@
 #include <grx/color.h>
 #include <grx/common.h>
 
-/* ================================================================== */
-/*                           MODE SETTING                             */
-/* ================================================================== */
+/**
+ * SECTION:mode
+ * @short_description: Video drivers and modes
+ * @title: Video drivers and modes
+ * @section_id: mode
+ * @include: grx-3.0.h
+ *
+ * TODO
+ */
 
 /**
  * GrxGraphicsMode:
@@ -231,13 +237,14 @@ struct _GrxVideoDriver {
  * Video driver mode descriptor structure
  */
 struct _GrxVideoMode {
-    gboolean present;                    /* is it really available? */
-    guint8   bpp;                        /* log2 of # of colors */
-    guint16  width,height;               /* video mode geometry */
-    guint16  mode;                       /* BIOS mode number (if any) */
-    gint     line_offset;                /* scan line length */
-    gpointer user_data;                  /* driver can use it for anything */
-    GrxVideoModeExt *extended_info;      /* extra info (maybe shared) */
+    gboolean         present;
+    guint8           bpp;
+    guint16          width;
+    guint16          height;
+    guint16          mode;
+    gint             line_offset;
+    gpointer         user_data;
+    GrxVideoModeExt *extended_info;
 };
 
 /**

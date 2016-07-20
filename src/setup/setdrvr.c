@@ -3,6 +3,7 @@
  *
  * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  * [e-mail: csaba@vuse.vanderbilt.edu]
+ * Copyright (c) 2016 David Lechner <david@lechnology.com>
  *
  * This file is part of the GRX graphics library.
  *
@@ -46,6 +47,27 @@ static const char *nxtoken(const char *p, char *token)
         return(p);
 }
 
+/**
+ * grx_set_driver:
+ * @driver_spec: (nullable): The driver spec.
+ * @error: (nullable): Error pointer.
+ *
+ * The driver spec is of the format "<name>\[::<flag>\] \[gw <width>\]
+ * \[gh <height>\] \[gc <colors>\]".
+ *
+ * - "<name>" is the name of a video driver plugin.
+ * - "<flag>" is "fs" for fullscreen or "ww" for windowed (not supported by all
+ *   drivers)
+ * - "<width>" is the default width
+ * - "<height>" is the default height
+ * - "<colors>" is the default color depth. "K" and "M" suffixes are recognized.
+ *
+ * If @driver_spec is #NULL, then it will first check the GRX_DRIVER environment
+ * variable for a driver spec. If the environment variable is not present, then
+ * it will uses the driver with the highest number of modes.
+ *
+ * Returns: #TRUE on success, otherwise #FALSE.
+ */
 int grx_set_driver(const char *drvspec, GError **error)
 {
         static int firsttime = TRUE;
