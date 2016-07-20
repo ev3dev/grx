@@ -741,7 +741,7 @@ int main(int argc, char **argv)
         assert(rammodes!=NULL);
 #endif
 
-        grx_set_driver(NULL);
+        grx_set_driver(NULL, NULL);
         if(grx_get_current_video_driver() == NULL) {
             printf("No graphics driver found\n");
             exit(1);

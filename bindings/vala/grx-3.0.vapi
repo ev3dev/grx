@@ -26,6 +26,12 @@
  */
 [CCode (cheader_filename = "grx-3.0.h", cprefix = "Grx", lower_case_cprefix = "grx_")]
 namespace Grx {
+    public errordomain Error {
+        FAILED,
+        PLUGIN_FILE_NOT_FOUND,
+        PLUGIN_SYMBOL_NOT_FOUND,
+    }
+
     [CCode (cname = "int", has_type_id = false)]
     public enum Result {
         [CCode (cname = "0")]
@@ -469,7 +475,7 @@ namespace Grx {
     /*
      * setup stuff
      */
-    public bool set_driver (string driver_spec);
+    public bool set_driver (string driver_spec) throws Grx.Error;
     public bool set_mode (GraphicsMode mode, ...);
     public bool set_mode_default_graphics (bool clear);
     public void set_restore_mode (bool restore_flag);

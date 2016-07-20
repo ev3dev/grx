@@ -206,6 +206,7 @@ set (LIBRARY_SOURCE_FILES
     user/usetwin.c
     user/utextxy.c
     user/uvline.c
+    utils/error.c
     utils/ordswap.c
     utils/resize.c
     utils/shiftscl.c
@@ -339,6 +340,7 @@ set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/device.h
     ${CMAKE_SOURCE_DIR}/include/grx/draw.h
     ${CMAKE_SOURCE_DIR}/include/grx/draw_nc.h
+    ${CMAKE_SOURCE_DIR}/include/grx/error.h
     ${CMAKE_SOURCE_DIR}/include/grx/events.h
     ${CMAKE_SOURCE_DIR}/include/grx/extents.h
     ${CMAKE_SOURCE_DIR}/include/grx/gformats.h

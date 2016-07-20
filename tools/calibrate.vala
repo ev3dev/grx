@@ -54,7 +54,7 @@ public class CalibrateApplication : Grx.Application {
     DeviceManager device_manager;
     Device? device;
 
-    public CalibrateApplication () throws Error {
+    public CalibrateApplication () throws GLib.Error {
         Object ();
         init ();
         device_manager = get_device_manager ();
@@ -550,7 +550,7 @@ public static int main (string [] argv) {
         // return value of the run method other than an early exit when using
         // command line options.
         return app.run (argv);
-    } catch (Error err) {
+    } catch (GLib.Error err) {
         error ("%s", err.message);
     }
 }

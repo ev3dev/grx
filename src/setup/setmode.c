@@ -234,7 +234,7 @@ done:
         GRX_RETURN(res);
 }
 
-static int errhdlr(gchar *msg)
+static int errhdlr(const gchar *msg)
 {
     if(DRVINFO->errsfatal) {
         DRVINFO->moderestore = TRUE;
@@ -262,10 +262,12 @@ int grx_set_mode(GrxGraphicsMode which,...)
         c = 0;
         res = FALSE;
         g_debug ("Mode: %d",(int)which);
-        if(DRVINFO->vdriver == NULL) {
-            grx_set_driver(NULL);
-            if(DRVINFO->vdriver == NULL) {
-                res = errhdlr("could not find suitable video driver");
+        if (!DRVINFO->vdriver) {
+            GError *error = NULL;
+
+            if (!grx_set_driver(NULL, &error)) {
+                res = errhdlr(error->message);
+                g_error_free(error);
                 goto done;
             }
         }

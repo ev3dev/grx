@@ -139,7 +139,7 @@ void PrintModes(void) {
 int main(void)
 {
         static int firstgr = 1;
-        grx_set_driver(NULL);
+        grx_set_driver(NULL, NULL);
         if(grx_get_current_video_driver() == NULL) {
             printf("No graphics driver found\n");
             exit(1);

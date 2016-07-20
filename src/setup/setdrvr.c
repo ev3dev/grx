@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <gmodule.h>
 
+#include "grx/error.h"
 #include "globals.h"
 #include "libgrx.h"
 #include "grdriver.h"
@@ -45,7 +46,7 @@ static const char *nxtoken(const char *p, char *token)
         return(p);
 }
 
-int grx_set_driver(const char *drvspec)
+int grx_set_driver(const char *drvspec, GError **error)
 {
         static int firsttime = TRUE;
         GrxVideoDriver *drv = NULL;
@@ -109,12 +110,15 @@ int grx_set_driver(const char *drvspec)
                 plugin = g_module_open(file_name, G_MODULE_BIND_LAZY);
                 g_free(file_name);
                 if (!plugin) {
-                    g_debug("Failed to open plugin");
+                    g_set_error(error, GRX_ERROR, GRX_ERROR_PLUGIN_FILE_NOT_FOUND,
+                                "Could not find video driver plugin '%s'", module_name);
                     return FALSE;
                 }
                 g_snprintf(module_name, 128, "grx_%s_video_driver", name);
                 if (!g_module_symbol(plugin, module_name, (gpointer *)&drv)) {
-                    g_debug("Failed to load 'video_driver' symbol");
+                    g_set_error(error, GRX_ERROR, GRX_ERROR_PLUGIN_SYMBOL_NOT_FOUND,
+                                "Could not symbol '%s' in plugin '%s'",
+                                module_name, name);
                     return FALSE;
                 }
             }
@@ -154,12 +158,13 @@ int grx_set_driver(const char *drvspec)
                     }
                 }
             }
-            if (drv) {
-                g_debug("Found %s", drv->name);
+            if (!drv) {
+                g_set_error(error, GRX_ERROR, GRX_ERROR_FAILED,
+                            "No supported video driver plugins found");
+
+                return FALSE;
             }
-        }
-        if (!drv) {
-            return FALSE;
+            g_debug("Found %s", drv->name);
         }
         _GrCloseVideoDriver();
         if(firsttime) {
@@ -168,9 +173,13 @@ int grx_set_driver(const char *drvspec)
         }
         if(!drv->init || drv->init(options)) {
             DRVINFO->vdriver = drv;
-            return(TRUE);
+            return TRUE;
         }
-        return(FALSE);
+
+        g_set_error(error, GRX_ERROR, GRX_ERROR_FAILED,
+                    "Driver '%s' failed to init", drv->name);
+
+        return FALSE;
 }
 
 void _GrCloseVideoDriver(void)

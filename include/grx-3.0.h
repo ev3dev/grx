@@ -40,5 +40,6 @@
 #include <grx/device.h>
 #include <grx/device_manager.h>
 #include <grx/application.h>
+#include <grx/error.h>
 
 #endif  /* __GRX_3_0_H_INCLUDED__ */
