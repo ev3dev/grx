@@ -359,6 +359,7 @@ struct _GrxFrameDriver {
 };
 
 #ifndef __GI_SCANNER__
+#ifndef __GTK_DOC_IGNORE__
 /* TODO: This struct should probably be private */
 
 /*
@@ -385,6 +386,7 @@ extern const struct _GR_driverInfo {
         void  (*set_rw_banks)(int rb,int wb); /* split banking routine */
 } * const GrDriverInfo;
 
+#endif /* __GTK_DOC_IGNORE__ */
 #endif /* __GI_SCANNER__ */
 
 /*
