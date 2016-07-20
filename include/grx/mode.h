@@ -383,7 +383,7 @@ extern const struct _GR_driverInfo {
 /*
  * setup stuff
  */
-gboolean grx_set_driver(gchar *driver_spec);
+gboolean grx_set_driver(const gchar *driver_spec);
 gboolean grx_set_mode(GrxGraphicsMode mode, ...);
 gboolean grx_set_mode_default_graphics(gboolean clear);
 void grx_set_restore_mode(gboolean restore);

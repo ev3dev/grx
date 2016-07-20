@@ -18,6 +18,7 @@
 #include <ctype.h>
 #include <string.h>
 
+#include <glib.h>
 #include <gmodule.h>
 
 #include "globals.h"
@@ -36,7 +37,7 @@ static const gchar * const driver_names[] = {
     NULL
 };
 
-static char *nxtoken(char *p,char *token)
+static const char *nxtoken(const char *p, char *token)
 {
         while(*p == ' ') p++;
         while(*p && (*p != ' ')) *token++ = *p++;
@@ -44,18 +45,19 @@ static char *nxtoken(char *p,char *token)
         return(p);
 }
 
-int grx_set_driver(char *drvspec)
+int grx_set_driver(const char *drvspec)
 {
         static int firsttime = TRUE;
         GrxVideoDriver *drv = NULL;
         char options[100];
-        if(!drvspec) {
-            drvspec = getenv("GRX20DRV");
-            DBGPRINTF(DBG_DRIVER,("Checking GRX20DRV: %s\n",drvspec));
+        if (!drvspec) {
+            drvspec = g_getenv("GRX_DRIVER");
+            g_debug("Checking GRX_DRIVER environment variable: %s",drvspec);
         }
         options[0] = '\0';
         if(drvspec) {
-            char t[100],name[100],*p = drvspec;
+            char t[100],name[100], *p2;
+            const char *p = drvspec;
             name[0] = '\0';
             while(p = nxtoken(p,t),t[0] != '\0') {
                 if(strlen(t) == 2) {
@@ -90,10 +92,10 @@ int grx_set_driver(char *drvspec)
                 }
                 strcpy(name,t);
             }
-            for(p = name; (p = strchr(p,':')) != NULL; p++) {
-                if(p[1] == ':') {
-                    strcpy(options,&p[2]);
-                    *p = '\0';
+            for (p2 = name; (p2 = strchr(p,':')) != NULL; p2++) {
+                if (p[1] == ':') {
+                    strcpy(options, &p2[2]);
+                    *p2 = '\0';
                     break;
                 }
             }
