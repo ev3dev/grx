@@ -321,8 +321,6 @@ const GrxVideoMode   *grx_get_next_video_mode(const GrxVideoMode *prev);
 #define grx_get_current_frame_driver()  ((const GrxFrameDriver *)(&GrDriverInfo->fdriver))
 #define grx_get_screen_frame_driver()   ((const GrxFrameDriver *)(&GrDriverInfo->sdriver))
 
-#define GrIsFixedMode()      (!(  grx_get_current_video_driver()->flags \
-                                   & GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION))
 #endif  /* GRX_SKIP_INLINES */
 
 #endif /* __GRX_MODE_H__ */
