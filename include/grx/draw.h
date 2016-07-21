@@ -65,11 +65,11 @@
  *                               along the radii connecting the ends of the arc
  *                               to the center of the circle/ellipse.
  */
-enum _GrxArcStyle {
+typedef enum {
     GRX_ARC_STYLE_OPEN           = 0,
     GRX_ARC_STYLE_CLOSED_CHORD   = 1,
     GRX_ARC_STYLE_CLOSED_RADIUS  = 2,
-};
+} GrxArcStyle;
 
 /**
  * GrxFramedBoxColors:

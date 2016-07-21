@@ -24,6 +24,7 @@
 
 #include <grx/color.h>
 #include <grx/common.h>
+#include <grx/draw.h>
 
 /**
  * SECTION:user
