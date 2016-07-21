@@ -222,43 +222,6 @@ namespace Grx {
         public long get_context_size (int width, int height);
     }
 
-    /**
-     * Supported video adapter types.
-     */
-    [CCode (has_type_id = false)]
-    public enum VideoAdapterType {
-
-        /**
-         * not known (before driver set)
-         */
-        UNKNOWN,
-
-        /**
-         * X11 driver
-         */
-        XWIN,
-
-        /**
-         * WIN32 driver
-         */
-        WIN32,
-
-        /**
-         * Linux framebuffer
-         */
-        LINUX_FB,
-
-        /**
-         * SDL driver
-         */
-        SDL,
-
-        /**
-         * memory only driver
-         */
-        MEMORY
-    }
-
     [CCode (cprefix = "GRX_VIDEO_DRIVER_FLAG_", has_type_id = false)]
     [Flags]
     public enum VideoDriverFlags {
@@ -268,7 +231,6 @@ namespace Grx {
     [CCode (has_type_id = false)]
     public struct VideoDriver {
         public string name;
-        public VideoAdapterType adapter;
         public VideoDriver *inherit;
         [CCode (array_length_cname = "n_modes", array_length_type = "int")]
         public VideoMode[] modes;
@@ -438,7 +400,6 @@ namespace Grx {
      * inquiry stuff
      */
     public GraphicsMode get_mode ();
-    public VideoAdapterType get_adapter_type ();
     public FrameMode get_current_frame_mode ();
     public FrameMode get_screen_frame_mode ();
     public FrameMode get_core_frame_mode ();

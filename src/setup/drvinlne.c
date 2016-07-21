@@ -32,11 +32,6 @@ GrxGraphicsMode (grx_get_mode)(void)
         return(grx_get_mode());
 }
 
-GrxVideoAdapterType (grx_get_adapter_type)(void)
-{
-        return(grx_get_adapter_type());
-}
-
 GrxFrameMode (grx_get_current_frame_mode)(void)
 {
         return(grx_get_current_frame_mode());

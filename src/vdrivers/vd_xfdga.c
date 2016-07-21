@@ -383,7 +383,6 @@ done:        if(modev != NULL) XFree(modev);
 
 GrxVideoDriver _GrVideoDriverXF86DGA = {
     .name        = "xf86dga",              /* name */
-    .adapter     = GRX_VIDEO_ADAPTER_XWIN, /* adapter type */
     .inherit     = NULL,                   /* inherit modes from this driver */
     .modes       = modes,                  /* mode table */
     .n_modes     = itemsof(modes),         /* # of modes */

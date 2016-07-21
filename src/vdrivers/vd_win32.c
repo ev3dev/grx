@@ -468,7 +468,6 @@ done:
 
 GrxVideoDriver _GrVideoDriverWIN32 = {
     .name        = "win32",                 /* name */
-    .adapter     = GRX_VIDEO_ADAPTER_TYPE_WIN32,
     .inherit     = NULL,                    /* inherit modes from this driver */
     .modes       = modes,                   /* mode table */
     .n_modes     = itemsof(modes),          /* # of modes */

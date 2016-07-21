@@ -316,7 +316,6 @@ select_mode (GrxVideoDriver *driver, gint width, gint height, gint bpp,
 
 G_MODULE_EXPORT GrxVideoDriver grx_gtk3_video_driver = {
     .name           = "gtk3",
-    .adapter        = GRX_VIDEO_ADAPTER_TYPE_GTK3,
     .inherit        = NULL,
     .modes          = video_modes,
     .n_modes        = G_N_ELEMENTS (video_modes),

@@ -497,7 +497,6 @@ static int init(const char *options)
 
 G_MODULE_EXPORT GrxVideoDriver grx_linuxfb_video_driver = {
     .name        = "linuxfb",                   /* name */
-    .adapter     = GRX_VIDEO_ADAPTER_TYPE_LINUX_FB,
     .inherit     = NULL,                        /* inherit modes from this driver */
     .modes       = modes,                       /* mode table */
     .n_modes     = itemsof(modes),              /* # of modes */

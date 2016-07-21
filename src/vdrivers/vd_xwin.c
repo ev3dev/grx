@@ -535,7 +535,6 @@ static void reset(void)
 
 GrxVideoDriver _GrVideoDriverXWIN = {
     .name        = "xwin",                 /* name */
-    .adapter     = GRX_VIDEO_ADAPTER_TYPE_XWIN,
     .inherit     = NULL,                   /* inherit modes from this driver */
     .modes       = modes,                  /* mode table */
     .n_modes     = itemsof(modes),         /* # of modes */
