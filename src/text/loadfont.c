@@ -130,8 +130,9 @@ GrxFont *grx_font_load_converted(const char *name,GrxFontConversionFlags cvt,int
     f = doit(fname,"",cvt,w,h,minc,maxc);
     if((f == NULL) && !abspath) {
         if(_GrFontFileInfo.npath < 0) {
-            char *fPath = getenv("GRXFONT");
+            char *fPath = getenv("GRX_FONT_PATH");
 #ifdef GRX_DEFAULT_FONT_PATH
+            // TODO: Use XDG_DATA_DIRS to search for fonts
             if (!fPath) fPath = GRX_DEFAULT_FONT_PATH;
 #endif            
             grx_font_set_path(fPath);
