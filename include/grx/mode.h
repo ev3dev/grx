@@ -352,6 +352,7 @@ GrxGraphicsMode grx_get_mode(void);
 GrxFrameMode    grx_get_current_frame_mode(void);
 GrxFrameMode    grx_get_screen_frame_mode(void);
 GrxFrameMode    grx_get_core_frame_mode(void);
+GrxDeviceManager *grx_get_device_manager(void);
 
 const GrxVideoDriver *grx_get_current_video_driver(void);
 const GrxVideoMode   *grx_get_current_video_mode(void);
