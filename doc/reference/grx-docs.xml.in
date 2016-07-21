@@ -20,6 +20,7 @@
     <chapter id="drivers">
       <title>Drivers, Modes and Contexts</title>
       <xi:include href="xml/mode.xml"/>
+      <xi:include href="xml/frame_mode.xml"/>
       <xi:include href="xml/context.xml"/>
       <xi:include href="xml/extents.xml"/>
     </chapter>

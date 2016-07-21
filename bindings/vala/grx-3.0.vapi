@@ -216,6 +216,9 @@ namespace Grx {
          */
         RAM_32BPP_HIGH;
 
+        public static FrameMode get_current ();
+        public static FrameMode get_screen ();
+        public static FrameMode get_screen_core ();
         public int get_n_planes ();
         public int get_line_offset (int width);
         public long get_plane_size (int width, int height);
@@ -400,9 +403,6 @@ namespace Grx {
      * inquiry stuff
      */
     public GraphicsMode get_mode ();
-    public FrameMode get_current_frame_mode ();
-    public FrameMode get_screen_frame_mode ();
-    public FrameMode get_core_frame_mode ();
 
     public unowned VideoDriver get_current_video_driver ();
     public unowned DeviceManager get_device_manager ();
@@ -428,10 +428,10 @@ namespace Grx {
     /*
      * RAM context geometry and memory allocation inquiry stuff
      */
-    public int get_n_planes ();
-    public int get_line_offset (int width);
-    public long get_plane_size (int width, int height);
-    public long get_context_size (int width, int height);
+    public int screen_get_n_planes ();
+    public int screen_get_line_offset (int width);
+    public long screen_get_plane_size (int width, int height);
+    public long screen_get_context_size (int width, int height);
 
     /* ================================================================== */
     /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */

@@ -25,6 +25,8 @@
  * grx_frame_mode_get_n_planes:
  * @mode: a #GrxFrameMode
  *
+ * Gets the number of planes for a frame mode.
+ *
  * Returns: The number of planes.
  */
 gint grx_frame_mode_get_n_planes(GrxFrameMode mode)
@@ -33,6 +35,15 @@ gint grx_frame_mode_get_n_planes(GrxFrameMode mode)
     return(dp ? dp->num_planes : 0);
 }
 
+/**
+ * grx_frame_mode_get_line_offset:
+ * @mode: a #GrxFrameMode
+ * @width: the width in pixels
+ *
+ * Gets the offset in bytes for a row of @width pixels.
+ *
+ * Returns: the number of bytes per row.
+ */
 gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width)
 {
     GrxFrameDriver *dp = _GrFindRAMframeDriver(mode);
@@ -46,11 +57,33 @@ gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width)
     return(0);
 }
 
+/**
+ * grx_frame_mode_get_plane_size:
+ * @mode: a #GrxFrameMode
+ * @width: the width in pixels
+ * @height: the height in pixels
+ *
+ * Gets the plane size in bytes required to store an image of @width x @height
+ * for this frame mode.
+ *
+ * Returns: the size in bytes.
+ */
 glong grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height)
 {
         return(umul32(grx_frame_mode_get_line_offset(mode, width), height));
 }
 
+/**
+ * grx_frame_mode_get_context_size:
+ * @mode: a #GrxFrameMode
+ * @width: the width in pixels
+ * @height: the height in pixels
+ *
+ * Gets the total size in bytes required to store an image of @width x @height
+ * for this frame mode.
+ *
+ * Returns: the size in bytes.
+ */
 glong grx_frame_mode_get_context_size(GrxFrameMode mode, gint width, gint height)
 {
     return(umul32(grx_frame_mode_get_line_offset(mode, width),

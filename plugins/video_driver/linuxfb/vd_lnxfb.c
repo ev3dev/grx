@@ -417,7 +417,7 @@ static gboolean console_switch_handler (gpointer user_data)
             g_critical ("Could not allocate context for console switching.");
         } else {
             /* copy framebuffer to new context */
-            if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
+            if (grx_frame_mode_get_screen() == GRX_FRAME_MODE_LFB_MONO01) {
                 /* Need to invert the colors on this one. */
                 grx_context_clear(save, 1);
                 grx_context_bit_blt(save, 0, 0, grx_get_screen_context(), 0, 0,
@@ -432,7 +432,7 @@ static gboolean console_switch_handler (gpointer user_data)
         grx_linuxfb_aquire ();
 
         /* copy the temporary context back to the framebuffer */
-        if (grx_get_screen_frame_mode() == GRX_FRAME_MODE_LFB_MONO01) {
+        if (grx_frame_mode_get_screen() == GRX_FRAME_MODE_LFB_MONO01) {
             /* need to invert the colors on this one */
             grx_clear_screen(1);
             grx_context_bit_blt(grx_get_screen_context(), 0, 0, save, 0, 0,

@@ -43,8 +43,8 @@ G_DEFINE_BOXED_TYPE(GrxPattern, grx_pattern, grx_pattern_copy, grx_pattern_free)
  */
 static int _GrBestPixmapWidth(int wdt,int hgt)
 {
-        long total   = grx_get_context_size(wdt,hgt);
-        int  linelen = grx_get_line_offset(wdt);
+        long total   = grx_screen_get_context_size(wdt,hgt);
+        int  linelen = grx_screen_get_line_offset(wdt);
         int  factor  = 1;
         int  test;
 

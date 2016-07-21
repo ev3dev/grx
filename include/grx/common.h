@@ -17,7 +17,6 @@ typedef struct _GrxFrameDriver      GrxFrameDriver;
 typedef struct _GrxVideoDriver      GrxVideoDriver;
 typedef struct _GrxVideoMode        GrxVideoMode;
 typedef struct _GrxVideoModeExt     GrxVideoModeExt;
-typedef enum   _GrxFrameMode        GrxFrameMode;
 /* pattern.h */
 typedef struct _GrxPixmap           GrxPixmap;
 typedef union  _GrxPattern          GrxPattern;

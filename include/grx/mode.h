@@ -1,7 +1,7 @@
 /*
  * mode.h
  *
- * Copyright (c) 2015 David Lechner <david@lechnology.com>
+ * Copyright (c) 2015-2016 David Lechner <david@lechnology.com>
  *
  * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  * [e-mail: csaba@vuse.vanderbilt.edu]
@@ -24,6 +24,7 @@
 
 #include <grx/color.h>
 #include <grx/common.h>
+#include <grx/frame_mode.h>
 
 /**
  * SECTION:mode
@@ -108,58 +109,6 @@ typedef enum {
     GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_NC,             /* int w,int h,GrxColor nc,int vx,int vy */
     GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC          /* int w,int h,int bpp,int vx,int vy */
 } GrxGraphicsMode;
-
-/**
- * GrxFrameMode:
- * @GRX_FRAME_MODE_UNDEFINED: Undefined
- * @GRX_FRAME_MODE_TEXT: Text mode
- * @GRX_FRAME_MODE_LFB_MONO01: Linear frame buffer, 1bpp, 0 = white, 1 = black
- * @GRX_FRAME_MODE_LFB_MONO10: Linear frame buffer, 1bpp, 0 = black, 1 = white
- * @GRX_FRAME_MODE_LFB_8BPP: Linear frame buffer, 8bpp, 256 color
- * @GRX_FRAME_MODE_LFB_16BPP: Linear frame buffer, 16bpp, 32768/65536 color
- * @GRX_FRAME_MODE_LFB_24BPP: Linear frame buffer, 24bpp, 16M color
- * @GRX_FRAME_MODE_LFB_32BPP_LOW: Linear frame buffer, 32bpp, 16M color using lower 24 bits
- * @GRX_FRAME_MODE_LFB_32BPP_HIGH: Linear frame buffer, 32bpp, 16M color using upper 24 bits
- * @GRX_FRAME_MODE_RAM_1BPP: RAM frame buffer, 1bpp, monochome
- * @GRX_FRAME_MODE_RAM_4BPP: RAM frame buffer, 4bpp, 16 color
- * @GRX_FRAME_MODE_RAM_8BPP: RAM frame buffer, 8bpp, 256 color
- * @GRX_FRAME_MODE_RAM_16BPP: RAM frame buffer, 16bpp, 32768/65536 color
- * @GRX_FRAME_MODE_RAM_24BPP: RAM frame buffer, 24bpp, 16M color
- * @GRX_FRAME_MODE_RAM_32BPP_LOW: RAM frame buffer, 32bpp, 16M color using lower 24 bits
- * @GRX_FRAME_MODE_RAM_32BPP_HIGH: RAM frame buffer, 32bpp, 16M color using upper 24 bits
- * @GRX_FRAME_MODE_RAM_3X8BPP: RAM frame buffer, 3x8bpp, 16M color in 3 planes
- *
- * Available frame modes (video memory layouts)
- */
-enum _GrxFrameMode {
-    GRX_FRAME_MODE_UNDEFINED,           /* undefined */
-    GRX_FRAME_MODE_TEXT,                /* text modes */
-    /* ==== linear frame buffer modes  ====== */
-    GRX_FRAME_MODE_LFB_MONO01,          /* mono, 0 = white, 1 = black */
-    GRX_FRAME_MODE_LFB_MONO10,          /* mono, 0 = black, 1 = white */
-    GRX_FRAME_MODE_LFB_8BPP,            /* (Super) VGA 256 color */
-    GRX_FRAME_MODE_LFB_16BPP,           /* Super VGA 32768/65536 color */
-    GRX_FRAME_MODE_LFB_24BPP,           /* Super VGA 16M color */
-    GRX_FRAME_MODE_LFB_32BPP_LOW,       /* Super VGA 16M color padded #1 */
-    GRX_FRAME_MODE_LFB_32BPP_HIGH,      /* Super VGA 16M color padded #2 */
-    /* ====== system RAM frame buffer modes ====== */
-    GRX_FRAME_MODE_RAM_1BPP,            /* mono */
-    GRX_FRAME_MODE_RAM_4BPP,            /* 16 color planar */
-    GRX_FRAME_MODE_RAM_8BPP,            /* 256 color */
-    GRX_FRAME_MODE_RAM_16BPP,           /* 32768/65536 color */
-    GRX_FRAME_MODE_RAM_24BPP,           /* 16M color */
-    GRX_FRAME_MODE_RAM_32BPP_LOW,       /* 16M color padded #1 */
-    GRX_FRAME_MODE_RAM_32BPP_HIGH,      /* 16M color padded #2 */
-    GRX_FRAME_MODE_RAM_3X8BPP,          /* 16M color planar (image mode) */
-    /*< private >*/
-    /* ====== markers for scanning modes ====== */
-    GRX_FRAME_MODE_FIRST_TEXT     = GRX_FRAME_MODE_TEXT,
-    GRX_FRAME_MODE_LAST_TEXT      = GRX_FRAME_MODE_TEXT,
-    GRX_FRAME_MODE_FIRST_GRAPHICS = GRX_FRAME_MODE_LFB_MONO01,
-    GRX_FRAME_MODE_LAST_GRAPHICS  = GRX_FRAME_MODE_LFB_32BPP_HIGH,
-    GRX_FRAME_MODE_FIRST_RAM      = GRX_FRAME_MODE_RAM_1BPP,
-    GRX_FRAME_MODE_LAST_RAM       = GRX_FRAME_MODE_RAM_3X8BPP
-};
 
 /**
  * GrxVideoDriverFlags:
@@ -349,9 +298,6 @@ gboolean grx_set_mode_default_graphics(gboolean clear, GError **error);
  * inquiry stuff ---- many of these are actually macros (see below)
  */
 GrxGraphicsMode grx_get_mode(void);
-GrxFrameMode    grx_get_current_frame_mode(void);
-GrxFrameMode    grx_get_screen_frame_mode(void);
-GrxFrameMode    grx_get_core_frame_mode(void);
 GrxDeviceManager *grx_get_device_manager(void);
 
 const GrxVideoDriver *grx_get_current_video_driver(void);
@@ -363,27 +309,10 @@ const GrxVideoMode   *grx_get_first_video_mode(GrxFrameMode mode);
 const GrxVideoMode   *grx_get_next_video_mode(const GrxVideoMode *prev);
 
 /*
- * RAM context geometry and memory allocation inquiry stuff
- */
-
-gint  grx_frame_mode_get_n_planes(GrxFrameMode mode);
-gint  grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width);
-glong grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height);
-glong grx_frame_mode_get_context_size(GrxFrameMode mode, gint w, gint h);
-
-gint  grx_get_n_planes(void);
-gint  grx_get_line_offset(gint width);
-glong grx_get_plane_size(gint w, gint h);
-glong grx_get_context_size(gint w, gint h);
-
-/*
  * inline implementation for some of the above
  */
 #ifndef GRX_SKIP_INLINES
 #define grx_get_mode() (GrDriverInfo->mcode)
-#define grx_get_current_frame_mode()    (GrDriverInfo->fdriver.mode)
-#define grx_get_screen_frame_mode()     (GrDriverInfo->sdriver.mode)
-#define grx_get_core_frame_mode()       (GrDriverInfo->sdriver.rmode)
 #define grx_get_device_manager()        (GrDriverInfo->device_manager)
 
 #define grx_get_current_video_driver()  ((const GrxVideoDriver *)( GrDriverInfo->vdriver))
@@ -394,11 +323,6 @@ glong grx_get_context_size(gint w, gint h);
 
 #define GrIsFixedMode()      (!(  grx_get_current_video_driver()->flags \
                                    & GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION))
-
-#define grx_get_n_planes()             grx_frame_mode_get_n_planes(grx_get_core_frame_mode())
-#define grx_get_line_offset(w)         grx_frame_mode_get_line_offset(grx_get_core_frame_mode(),w)
-#define grx_get_plane_size(w,h)        grx_frame_mode_get_plane_size(grx_get_core_frame_mode(),w,h)
-#define grx_get_context_size(w,h)      grx_frame_mode_get_context_size(grx_get_core_frame_mode(),w,h)
 #endif  /* GRX_SKIP_INLINES */
 
 #endif /* __GRX_MODE_H__ */

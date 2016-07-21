@@ -32,19 +32,40 @@ GrxGraphicsMode (grx_get_mode)(void)
         return(grx_get_mode());
 }
 
-GrxFrameMode (grx_get_current_frame_mode)(void)
+/**
+ * grx_frame_mode_get_current:
+ *
+ * Get the frame mode of the current context.
+ *
+ * Returns: the frame mode.
+ */
+GrxFrameMode (grx_frame_mode_get_current)(void)
 {
-        return(grx_get_current_frame_mode());
+        return(grx_frame_mode_get_current());
 }
 
-GrxFrameMode (grx_get_screen_frame_mode)(void)
+/**
+ * grx_frame_mode_get_screen:
+ *
+ * Get the frame mode of the screen.
+ *
+ * Returns: the frame mode.
+ */
+GrxFrameMode (grx_frame_mode_get_screen)(void)
 {
-        return(grx_get_screen_frame_mode());
+        return(grx_frame_mode_get_screen());
 }
 
-GrxFrameMode (grx_get_core_frame_mode)(void)
+/**
+ * grx_frame_mode_get_screen_core:
+ *
+ * Get the compatible RAM frame mode of the screen.
+ *
+ * Returns: the frame mode.
+ */
+GrxFrameMode (grx_frame_mode_get_screen_core)(void)
 {
-        return(grx_get_core_frame_mode());
+        return(grx_frame_mode_get_screen_core());
 }
 
 const GrxVideoDriver *(grx_get_current_video_driver)(void)
@@ -171,22 +192,57 @@ int (grx_is_screen_virtual)(void)
         return(grx_is_screen_virtual());
 }
 
-int (grx_get_n_planes)(void)
+/**
+ * grx_screen_get_n_planes:
+ *
+ * Gets the number of planes for the screen's RAM frame mode.
+ *
+ * Returns: The number of planes.
+ */
+int (grx_screen_get_n_planes)(void)
 {
-        return(grx_get_n_planes());
+    return(grx_screen_get_n_planes());
 }
 
-int (grx_get_line_offset)(int width)
+/**
+ * grx_screen_get_line_offset:
+ * @width: the width in pixels
+ *
+ * Gets the offset in bytes for a row of @width pixels on the screen.
+ *
+ * Returns: the number of bytes per row.
+ */
+int (grx_screen_get_line_offset)(int width)
 {
-        return(grx_get_line_offset(width));
+    return(grx_screen_get_line_offset(width));
 }
 
-long (grx_get_plane_size)(int w,int h)
+/**
+ * grx_screen_get_plane_size:
+ * @width: the width in pixels
+ * @height: the height in pixels
+ *
+ * Gets the plane size in bytes required to store an image of @width x @height
+ * for the screen.
+ *
+ * Returns: the size in bytes.
+ */
+long (grx_screen_get_plane_size)(int w,int h)
 {
-        return(grx_get_plane_size(w,h));
+    return(grx_screen_get_plane_size(w,h));
 }
 
-long (grx_get_context_size)(int w,int h)
+/**
+ * grx_screen_get_context_size:
+ * @width: the width in pixels
+ * @height: the height in pixels
+ *
+ * Gets the total size in bytes required to store an image of @width x @height
+ * for the screen.
+ *
+ * Returns: the size in bytes.
+ */
+long (grx_screen_get_context_size)(int w,int h)
 {
-        return(grx_get_context_size(w,h));
+    return(grx_screen_get_context_size(w,h));
 }

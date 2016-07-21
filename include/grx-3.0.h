@@ -41,5 +41,6 @@
 #include <grx/device_manager.h>
 #include <grx/application.h>
 #include <grx/error.h>
+#include <grx/frame_mode.h>
 
 #endif  /* __GRX_3_0_H_INCLUDED__ */

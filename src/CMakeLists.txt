@@ -342,6 +342,7 @@ set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/error.h
     ${CMAKE_SOURCE_DIR}/include/grx/events.h
     ${CMAKE_SOURCE_DIR}/include/grx/extents.h
+    ${CMAKE_SOURCE_DIR}/include/grx/frame_mode.h
     ${CMAKE_SOURCE_DIR}/include/grx/gformats.h
     ${CMAKE_SOURCE_DIR}/include/grx/image.h
     ${CMAKE_SOURCE_DIR}/include/grx/input_keys.h

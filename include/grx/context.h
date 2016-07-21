@@ -25,6 +25,7 @@
 
 #include <grx/color.h>
 #include <grx/common.h>
+#include <grx/frame_mode.h>
 
 /**
  * SECTION:context
@@ -147,7 +148,7 @@ void grx_context_reset_clip_box(GrxContext *context);
 
 #ifndef GRX_SKIP_INLINES
 #define grx_context_new(w,h,m,c) \
-    (grx_context_new_full(grx_get_core_frame_mode(),w,h,m,c))
+    (grx_context_new_full(grx_frame_mode_get_screen_core(),w,h,m,c))
 #define grx_get_current_context()   ((GrxContext *)(&GrContextInfo->current))
 #define grx_get_screen_context()    ((GrxContext *)(&GrContextInfo->screen))
 #define grx_context_get_clip_box(C,x1p,y1p,x2p,y2p) do {    \

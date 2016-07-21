@@ -592,8 +592,8 @@ void speedcheck(gvmode *gp, int print, int wait) {
     first = 0;
   }
 
-  if ( grx_get_screen_frame_mode() != gp->fm) {
-    GrxFrameMode act = grx_get_screen_frame_mode();
+  if ( grx_frame_mode_get_screen() != gp->fm) {
+    GrxFrameMode act = grx_frame_mode_get_screen();
     grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
     printf("Setup failed : %s != %s\n",
     FrameDriverName(act),
@@ -607,7 +607,7 @@ void speedcheck(gvmode *gp, int print, int wait) {
 
 #if MEASURE_RAM_MODES
   rp = &rammodes[(unsigned)(gp-grmodes)];
-  rp->fm = grx_get_core_frame_mode();
+  rp->fm = grx_frame_mode_get_screen_core();
   if (!MEASURED(rp) && !identical_measured(rp)) {
     GrxContext rc;
     if (grx_context_new_full(rp->fm,gp->w,gp->h,NULL,&rc)) {
