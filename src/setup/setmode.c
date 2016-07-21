@@ -235,6 +235,21 @@ done:
         GRX_RETURN(res);
 }
 
+/**
+ * grx_set_mode: (skip)
+ * @mode: The graphics mode.
+ * @error: Error pointer.
+ * @...: Extra parameters determined by @mode.
+ *
+ * Set the graphics mode.
+ *
+ * If a driver has not already been set, this will attempt to load the best
+ * available driver (the one with the most modes). The driver will then try to
+ * find the mode that best fits the size and color depth parameters. The exact
+ * behavior will depend on the video driver.
+ *
+ * Returns: #TRUE on success, otherwise #FALSE.
+ */
 int grx_set_mode(GrxGraphicsMode which, GError **error, ...)
 {
         int  w,h,pl,vw,vh;
@@ -440,6 +455,13 @@ done:   GRX_RETURN(res);
 /**
  * grx_set_mode_default_graphics:
  * @clear: If #TRUE, clear the screen after setting the mode.
+ * @error: Error pointer.
+ *
+ * Set the mode to the default graphics mode.
+ *
+ * This is 640x480x16 by default but can be changed by grx_set_driver().
+ *
+ * Returns: #TRUE on success, otherwise #FALSE.
  */
 gboolean grx_set_mode_default_graphics(gboolean clear, GError **error)
 {

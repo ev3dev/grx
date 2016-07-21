@@ -38,8 +38,8 @@
 /**
  * GrxGraphicsMode:
  * @GRX_GRAPHICS_MODE_UNKNOWN: Unknown mode / initial state
- * @GRX_GRAPHICS_MODE_TEXT_80X25: Standard 80x25 text mode
  * @GRX_GRAPHICS_MODE_TEXT_DEFAULT: Default text mode
+ * @GRX_GRAPHICS_MODE_TEXT_80X25: Standard 80x25 text mode
  * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT: Text mode with parameters int w, int h
  * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR: Text mode with parameters int w,
  *     int h, GrxColor nc
@@ -56,9 +56,9 @@
  *     int w, int h, GrxColor nc, int vx, int vy
  * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP: Graphics mode with parameters
  *     int w, int h, int bpp, int vx, int vy
- * @GRX_GRAPHICS_MODE_TEXT_80X25_NC: Same as #GRX_GRAPHICS_MODE_TEXT_80X25
- *     but does not clear video memory
  * @GRX_GRAPHICS_MODE_TEXT_DEFAULT_NC: Same as #GRX_GRAPHICS_MODE_TEXT_DEFAULT
+ *     but does not clear video memory
+ * @GRX_GRAPHICS_MODE_TEXT_80X25_NC: Same as #GRX_GRAPHICS_MODE_TEXT_80X25
  *     but does not clear video memory
  * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_NC: Same as #GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT
  *     but does not clear video memory
@@ -79,29 +79,29 @@
  * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP
  *     but does not clear video memory
  *
- * available video modes (for 'grx_set_mode')
+ * available video modes (for grx_set_mode())
  */
 typedef enum {
     GRX_GRAPHICS_MODE_UNKNOWN = (-1),   /* initial state */
     /* ============= modes which clear the video memory ============= */
-    GRX_GRAPHICS_MODE_TEXT_80X25 = 0,                 /* Extra parameters for grx_set_mode: */
-    GRX_GRAPHICS_MODE_TEXT_DEFAULT,
+    GRX_GRAPHICS_MODE_TEXT_DEFAULT = 0,               /* Extra parameters for grx_set_mode: */
+    GRX_GRAPHICS_MODE_TEXT_80X25,
     GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT,              /* int w,int h */
     GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR,        /* int w,int h,GrxColor nc */
     GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP,          /* int w,int h,int bpp */
-    GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT,
+    GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT = GRX_GRAPHICS_MODE_TEXT_DEFAULT + 64,
     GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT,          /* int w,int h */
     GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,    /* int w,int h,GrxColor nc */
     GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,      /* int w,int h,int bpp */
     GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM,                /* int w,int h,GrxColor nc,int vx,int vy */
     GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP,            /* int w,int h,int bpp,int vx,int vy */
     /* ==== equivalent modes which do not clear the video memory ==== */
+    GRX_GRAPHICS_MODE_TEXT_DEFAULT_NC = GRX_GRAPHICS_MODE_TEXT_DEFAULT + 32,
     GRX_GRAPHICS_MODE_TEXT_80X25_NC,
-    GRX_GRAPHICS_MODE_TEXT_DEFAULT_NC,
     GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_NC,           /* int w,int h */
     GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR_NC,     /* int w,int h,GrxColor nc */
     GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP_NC,       /* int w,int h,int bpp */
-    GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC,
+    GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC = GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT + 32,
     GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_NC,       /* int w,int h */
     GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR_NC, /* int w,int h,GrxColor nc */
     GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP_NC,   /* int w,int h,int bpp */
@@ -196,6 +196,10 @@ typedef enum /*< flags >*/ {
 
 /**
  * GrxVideoDriver:
+ *
+ * The video driver descriptor structure.
+ */
+/*
  * @name: The name of the driver
  * @adapter: The adapter type
  * @inherit: Video modes from this driver will be inherited
@@ -206,10 +210,9 @@ typedef enum /*< flags >*/ {
  * @reset: Function to reset the driver
  * @select_mode: Function to select the video mode of the driver
  * @flags: Driver flags
- *
- * The video driver descriptor structure
  */
 struct _GrxVideoDriver {
+    /*<private>*/
     gchar                   *name;
     GrxVideoAdapterType     adapter;
     GrxVideoDriver          *inherit;
@@ -225,6 +228,10 @@ struct _GrxVideoDriver {
 
 /**
  * GrxVideoMode:
+ *
+ * Video driver mode descriptor structure.
+ */
+/*
  * @present: Indicates if the video mode is actually present
  * @bpp: Bits per pixel
  * @width: Width in pixels
@@ -233,10 +240,9 @@ struct _GrxVideoDriver {
  * @line_offset: Scan line length
  * @user_data: Can be used by the driver for anything.
  * @extended_info: Extra info (may be shared with other video modes)
- * 
- * Video driver mode descriptor structure
  */
 struct _GrxVideoMode {
+    /*<private>*/
     gboolean         present;
     guint8           bpp;
     guint16          width;
@@ -265,19 +271,6 @@ typedef enum /*< flags >*/ {
 
 /**
  * GrxVideoModeExt:
- * @mode: Frame driver mode for this video mode
- * @drv: Optional frame driver override
- * @frame: Frame buffer address
- * @cprec: Color component precisions
- * @cpos: Color component positions
- * @flags: Video mode flags
- * @setup: Setup function
- * @set_virtual_size: Set virtual size function
- * @scroll: Scroll function
- * @set_bank: Set bank function
- * @set_rw_banks: Set read/write banks function
- * @load_color: Load color pallet function
- * @lfb_selector: Linear frame buffer selector
  *
  * Video driver mode descriptor extension structure. This is a separate
  * structure accessed via a pointer from the main mode descriptor. The
@@ -285,6 +278,7 @@ typedef enum /*< flags >*/ {
  * extended info.
  */
 struct _GrxVideoModeExt {
+    /*<private>*/
     GrxFrameMode mode;                  /* frame driver for this video mode */
     GrxFrameDriver *drv;                /* optional frame driver override */
     guint8 *frame;                      /* frame buffer address */
@@ -302,30 +296,11 @@ struct _GrxVideoModeExt {
 
 /**
  * GrxFrameDriver:
- * @mode: The supported frame access mode.
- * @rmode: The compatible ram frame mode (only if this is a video driver)
- * @is_video: Indicates that this is a video driver
- * @row_align: Scan line size alignment
- * @num_planes: Number of planes
- * @max_plane_size: The maximum plan size in bytes
- * @init:
- * @readpixel:
- * @drawpixel:
- * @drawline:
- * @drawhline:
- * @drawvline:
- * @drawblock:
- * @drawbitmap:
- * @drawpattern:
- * @bitblt:
- * @bltv2r:
- * @bltr2v:
- * @getindexedscanline:
- * @putscanline:
  *
  * The frame driver descriptor structure.
  */
 struct _GrxFrameDriver {
+    /*<private>*/
     GrxFrameMode mode;                   /* supported frame access mode */
     GrxFrameMode rmode;                  /* matching RAM frame (if video) */
     gboolean is_video;                   /* video RAM frame driver ? */
@@ -397,7 +372,7 @@ gboolean grx_set_mode_default_graphics(gboolean clear, GError **error);
 /*
  * inquiry stuff ---- many of these are actually macros (see below)
  */
-GrxGraphicsMode grx_get_current_graphics_mode(void);
+GrxGraphicsMode grx_get_mode(void);
 GrxVideoAdapterType grx_get_adapter_type(void);
 GrxFrameMode    grx_get_current_frame_mode(void);
 GrxFrameMode    grx_get_screen_frame_mode(void);
@@ -431,7 +406,7 @@ glong grx_get_context_size(gint w, gint h);
 #ifndef GRX_SKIP_INLINES
 #define grx_get_adapter_type() \
     (GrDriverInfo->vdriver ? GrDriverInfo->vdriver->adapter : GRX_VIDEO_ADAPTER_TYPE_UNKNOWN)
-#define grx_get_current_graphics_mode() (GrDriverInfo->mcode)
+#define grx_get_mode() (GrDriverInfo->mcode)
 #define grx_get_current_frame_mode()    (GrDriverInfo->fdriver.mode)
 #define grx_get_screen_frame_mode()     (GrDriverInfo->sdriver.mode)
 #define grx_get_core_frame_mode()       (GrDriverInfo->sdriver.rmode)

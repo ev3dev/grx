@@ -437,7 +437,7 @@ namespace Grx {
     /*
      * inquiry stuff
      */
-    public GraphicsMode get_current_graphics_mode ();
+    public GraphicsMode get_mode ();
     public VideoAdapterType get_adapter_type ();
     public FrameMode get_current_frame_mode ();
     public FrameMode get_screen_frame_mode ();

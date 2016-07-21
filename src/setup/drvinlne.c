@@ -20,9 +20,16 @@
 
 #include "libgrx.h"
 
-GrxGraphicsMode (grx_get_current_graphics_mode)(void)
+/**
+ * grx_get_mode:
+ *
+ * Gets the current graphics mode.
+ *
+ * Returns: the mode.
+ */
+GrxGraphicsMode (grx_get_mode)(void)
 {
-        return(grx_get_current_graphics_mode());
+        return(grx_get_mode());
 }
 
 GrxVideoAdapterType (grx_get_adapter_type)(void)
