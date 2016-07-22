@@ -19,6 +19,15 @@
 #include "globals.h"
 #include "libgrx.h"
 
+/**
+ * grx_color_info_get_black:
+ *
+ * Gets the color value for black.
+ *
+ * This is guaranteed to be 0.
+ *
+ * Returns: the color value.
+ */
 #ifdef grx_color_info_get_black
 #undef grx_color_info_get_black
 #endif
@@ -29,6 +38,13 @@ GrxColor grx_color_info_get_black(void)
                GRX_RETURN(CLRINFO->black);
 }
 
+/**
+ * grx_color_info_get_white:
+ *
+ * Gets the color value for white.
+ *
+ * Returns: the color value.
+ */
 #ifdef grx_color_info_get_white
 #undef grx_color_info_get_white
 #endif

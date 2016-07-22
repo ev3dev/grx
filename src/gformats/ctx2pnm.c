@@ -99,7 +99,7 @@ int grx_save_current_context_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
   GrxContext grcaux;
   char cab[81];
   unsigned char grey;
-  int rgb[3];
+  unsigned char rgb[3];
   int x, y;
 
   if( (f = fopen( pgmfn,"wb" )) == NULL ) return -1;
@@ -143,7 +143,8 @@ int grx_save_current_context_to_ppm( GrxContext *grc, char *ppmfn, char *docn )
   GrxContext grcaux;
   char cab[81];
   unsigned char brgb[3];
-  int x, y, r, g, b;
+  int x, y;
+  unsigned char r, g, b;
 
   if( (f = fopen( ppmfn,"wb" )) == NULL ) return -1;
   

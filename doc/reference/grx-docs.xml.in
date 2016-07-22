@@ -26,6 +26,7 @@
     </chapter>
     <chapter id="drawing">
       <title>Drawing</title>
+      <xi:include href="xml/color.xml"/>
       <xi:include href="xml/draw.xml"/>
       <xi:include href="xml/draw_nc.xml"/>
       <xi:include href="xml/wideline.xml"/>

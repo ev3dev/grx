@@ -48,6 +48,14 @@ static void setbits(unsigned char *prec, unsigned char *pos)
         CLRINFO->shift[2] += CLRINFO->norm;
 }
 
+/**
+ * grx_color_info_refresh_colors:
+ *
+ * Reloads the currently allocated color values into the video hardware.
+ *
+ * This function is not needed in typical applications, unless the display
+ * adapter is programmed directly by the application.
+ */
 void grx_color_info_refresh_colors(void)
 {
         int i;
@@ -128,12 +136,30 @@ int _GrResetColors(void)
         }
         return ((CLRINFO->ncolors-1)&GRX_COLOR_VALUE_MASK) == CLRINFO->ncolors-1;
 }
- 
+
+/**
+ * grx_color_info_reset_colors:
+ *
+ * Frees all colors (except for black and white).
+ *
+ * If grx_color_info_set_rgb_color_mode() was called, this will also change the
+ * color system back to using a color table.
+ */
 void grx_color_info_reset_colors(void)
 {
         _GrResetColors();
 }
 
+/**
+ * grx_color_info_set_rgb_color_mode:
+ *
+ * Changes the graphics mode to RGB color mode instead of using a color table.
+ *
+ * Initially, graphics modes with 256 colors or less use a color table.
+ * Currently, this function only works for modes with 16 or 256 colors.
+ *
+ * This has no effect if the color mode is already RGB.
+ */
 void grx_color_info_set_rgb_color_mode(void)
 {
         if(!CLRINFO->RGBmode) {
@@ -167,7 +193,18 @@ void grx_color_info_set_rgb_color_mode(void)
         (((x) + CLRINFO->round[n]) & CLRINFO->mask[n])          \
 )
 
-GrxColor grx_color_info_alloc_color(int r,int g,int b)
+/**
+ * grx_color_info_alloc_color:
+ * @r: the red component value
+ * @g: the green component value
+ * @b: the blue component value
+ *
+ * Allocates a color in the color table based on the RGB value.
+ *
+ * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
+ *          free colors.
+ */
+GrxColor grx_color_info_alloc_color(unsigned char r, unsigned char g, unsigned char b)
 {
         GrxColor res;
 
@@ -177,7 +214,7 @@ GrxColor grx_color_info_alloc_color(int r,int g,int b)
         g = ROUNDCOLORCOMP(g,1);
         b = ROUNDCOLORCOMP(b,2);
         if(CLRINFO->RGBmode) {
-            res = grx_color_info_build_rgb_color_t(r,g,b);
+            res = grx_color_info_build_rgb_color(r,g,b);
         }
         else {
             GR_int32u minerr = 1000;
@@ -246,6 +283,18 @@ GrxColor grx_color_info_alloc_color(int r,int g,int b)
 done:   GRX_RETURN(res);
 }
 
+/**
+ * grx_color_info_alloc_cell:
+ *
+ * Allocates a new color that can be changed with grx_color_info_set_cell().
+ *
+ * The color must be freed with grx_color_info_free_cell().
+ *
+ * RGB graphics modes will always return #GRX_COLOR_NONE.
+ *
+ * Returns: a newly allocated color cell or #GRX_COLOR_NONE if there are no more
+ *          free cells.
+ */
 GrxColor grx_color_info_alloc_cell(void)
 {
         if(!CLRINFO->RGBmode && CLRINFO->nfree) {
@@ -271,6 +320,14 @@ GrxColor grx_color_info_alloc_cell(void)
         return(GRX_COLOR_NONE);
 }
 
+/**
+ * grx_color_info_free_color:
+ * @c: the color
+ *
+ * Frees a color that was allocated by grx_color_info_alloc_color() and friends.
+ *
+ * This has no effect in RGB graphics modes.
+ */
 void grx_color_info_free_color(GrxColor c)
 {
         if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors) &&
@@ -284,6 +341,12 @@ void grx_color_info_free_color(GrxColor c)
             }
 }
 
+/**
+ * grx_color_info_free_cell:
+ * @c: the color
+ *
+ * Frees a cell that was allocated with grx_color_info_alloc_cell().
+ */
 void grx_color_info_free_cell(GrxColor c)
 {
         GRX_ENTER();
@@ -298,7 +361,16 @@ void grx_color_info_free_cell(GrxColor c)
         GRX_LEAVE();
 }
 
-void grx_color_info_set_color(GrxColor c,int r,int g,int b)
+/**
+ * grx_color_info_set_cell:
+ * @c: a color that was allocated by grx_color_info_alloc_cell()
+ * @r: the red component
+ * @g: the green component
+ * @b: the blue component
+ *
+ * Sets/changes the color of a cell after it was allocated.
+ */
+void grx_color_info_set_cell(GrxColor c,unsigned char r,unsigned char g,unsigned char b)
 {
         GRX_ENTER();
         if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors)) {
@@ -321,17 +393,33 @@ void grx_color_info_set_color(GrxColor c,int r,int g,int b)
         GRX_LEAVE();
 }
 
-void grx_color_info_query_color(GrxColor c,int *r,int *g,int *b)
+/**
+ * grx_color_info_query_color:
+ * @c: the color
+ * @r: (out): the red component
+ * @g: (out): the green component
+ * @b: (out): the blue component
+ *
+ * Gets the RGB color components of a color.
+ */
+void grx_color_info_query_color(GrxColor c,unsigned char *r,unsigned char *g,unsigned char *b)
 {
         GRX_ENTER();
-        grx_color_info_query_color_id(c,r,g,b);
+        grx_color_info_query_color_inline(c,r,g,b);
         GRX_LEAVE();
 }
 
-void grx_color_info_query_color2(GrxColor c,long *hcolor)
+/**
+ * grx_color_info_query_color2:
+ * @c: the color
+ * @hcolor: (out): the components in 0xRRGGBB format
+ *
+ * Gets the RGB color components of a color.
+ */
+void grx_color_info_query_color2(GrxColor c,unsigned int *hcolor)
 {
         GRX_ENTER();
-        grx_color_info_query_color2_id(c,hcolor);
+        grx_color_info_query_color2_inline(c,hcolor);
         GRX_LEAVE();
 }
 

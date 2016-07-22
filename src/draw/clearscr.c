@@ -26,7 +26,7 @@
  *
  * Clears the screen using the specified background color.
  *
- * Thanks to the special GrColor definition, you can do more than simple clear
+ * Thanks to the special #GrxColor definition, you can do more than simple clear
  * with this functions, by example with:
  * |[<!-- language="C" -->
  * grx_clear_screen (grx_color_to_xor_mode (grx_color_info_get_white ()));

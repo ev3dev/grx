@@ -22,18 +22,18 @@
 const
 struct _GR_colorInfo * const GrColorInfo = &_GrColorInfo;
 struct _GR_colorInfo _GrColorInfo = {
-    16,                         /* ncolors: initted for 16 color VGA modes */
-    0,                          /* nfree */
-    0,                          /* black */
-    15,                         /* white */
-    FALSE,                      /* RBG   */
-    { 6,    6,    6     },      /* precision */
-    { 5,    5,    5     },      /* bit position */
-    { 0xfc, 0xfc, 0xfc  },      /* mask */
-    { 2,    2,    2     },      /* round */
-    { 2,    2,    2     },      /* shift */
-    2,                          /* normalization */
-    {                           /* first 16 EGA/VGA colors */
+    .ncolors    = 16,                         /* ncolors: initted for 16 color VGA modes */
+    .nfree      = 0,                          /* nfree */
+    .black      = 0,                          /* black */
+    .white      = 15,                         /* white */
+    .RGBmode    = FALSE,                      /* RBG   */
+    .prec       = { 6,    6,    6     },      /* precision */
+    .pos        = { 5,    5,    5     },      /* bit position */
+    .mask       = { 0xfc, 0xfc, 0xfc  },      /* mask */
+    .round      = { 2,    2,    2     },      /* round */
+    .shift      = { 2,    2,    2     },      /* shift */
+    .norm       = 2,                          /* normalization */
+    .ctable     = {                           /* first 16 EGA/VGA colors */
         { 0,   0,   0   },      /* black */
         { 0,   0,   170 },      /* blue */
         { 0,   170, 0   },      /* green */

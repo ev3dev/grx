@@ -72,7 +72,8 @@ static int writepng( FILE *f, GrxContext *grc )
   png_byte *png_pixels = NULL;
   png_byte **row_pointers = NULL;
   png_byte *pix_ptr = NULL;
-  int x, y, r, g, b;
+  int x, y;
+  unsigned char r, g, b;
   GrxColor *pColors = NULL;
 
   /* Create and initialize the png_struct */

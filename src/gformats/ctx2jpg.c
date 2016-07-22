@@ -124,7 +124,8 @@ static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale )
   unsigned char *pix_ptr;
   const GrxColor *pColors;
   int row_stride;
-  int x, y, r, g, b;
+  int x, y;
+  unsigned char r, g, b;
 
   cinfo.err = jpeg_std_error( &jerr.pub );
   jerr.pub.error_exit = my_error_exit;

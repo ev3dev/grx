@@ -119,8 +119,10 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
   int bit_depth;
   int color_type;
   int alpha_present;
-  int i, x, y, r, g, b;
-  int alpha = 0, ro, go, bo;
+  int i, x, y;
+  unsigned char r, g, b;
+  int alpha = 0;
+  unsigned char ro, go, bo;
   int maxwidth, maxheight;
   GrxColor *pColors = NULL;
 

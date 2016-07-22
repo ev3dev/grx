@@ -45,11 +45,11 @@ namespace Grx {
     public struct Color : uint32 {
         public Color value { get; }
         public ColorMode mode { get; }
-        public ColorMode to_write_mode ();
-        public ColorMode to_xor_mode ();
-        public ColorMode to_or_mode ();
-        public ColorMode to_and_mode ();
-        public ColorMode to_image_mode ();
+        public Color to_write_mode ();
+        public Color to_xor_mode ();
+        public Color to_or_mode ();
+        public Color to_and_mode ();
+        public Color to_image_mode ();
 
         public static Color black { [CCode (cname = "grx_color_info_get_black")]get; }
         public static Color white { [CCode (cname = "grx_color_info_get_white")]get; }
@@ -67,33 +67,53 @@ namespace Grx {
         public static int n_colors ();
         public static int n_free_colors ();
 
-        public static Color build_rgb_color_t (int r, int g, int b);
-        public static Color build_rgb_color_r (int r, int g, int b);
-        public static int get_red_value (Color c);
-        public static int get_green_value (Color c);
-        public static int get_blue_value (Color c);
+        public static Color build_rgb_color (uchar r, uchar g, uchar b);
+        public static Color build_rgb_color_round (uchar r, uchar g, uchar b);
+        public static uchar get_red_value (Color c);
+        public static uchar get_green_value (Color c);
+        public static uchar get_blue_value (Color c);
 
-        public static Color alloc_color (int r, int g, int b);    /* shared, read-only */
-        public static Color alloc_color_id (int r, int g, int b); /* potentially inlined version */
-        public static Color alloc_color2 (long hcolor);           /* shared, read-only, 0xRRGGBB */
-        public static Color alloc_color2_id (long hcolor);        /* potentially inlined version */
-        public static Color alloc_cell ();                        /* unshared, read-write */
-
-        [CCode (array_length_cexpr = "16")]
-        public static Color[] alloc_ega_colors (); /* shared, read-only standard EGA colors */
-
-        public static void set_color (Color c, int r, int g, int b);
+        public static Color alloc_color (uchar r, uchar g, uchar b);
+        public static Color alloc_color_inline (uchar r, uchar g, uchar b);
+        public static Color alloc_color2 (uint hcolor);
+        public static Color alloc_color2_inline (uint hcolor);
         public static void free_color (Color c);
+
+        public static Color alloc_cell ();
+        public static void set_cell (Color c, uchar r, uchar g, uchar b);
         public static void free_cell (Color c);
 
-        public static void query_color (Color c, out int r, out int g, out int b);
-        public static void query_color_id (Color c, out int r, out int g, out int b);
-        public static void query_color2 (Color c, out long hcolor);
-        public static void query_color2_id (Color c, out long hcolor);
+        [CCode (array_length_cexpr = "16")]
+        public static Color[] alloc_ega_colors ();
+
+        public static void query_color (Color c, out uchar r, out uchar g, out uchar b);
+        public static void query_color_inline (Color c, out uchar r, out uchar g, out uchar b);
+        public static void query_color2 (Color c, out uint hcolor);
+        public static void query_color2_inline (Color c, out uint hcolor);
 
         public static int get_save_buffer_size ();
         public static void save_colors (void *buffer);
         public static void restore_colors (void *buffer);
+    }
+
+    [CCode (has_type_id = false)]
+    public enum EgaColorIndex {
+        BLACK,
+        BLUE,
+        GREEN,
+        CYAN,
+        RED,
+        MAGENTA,
+        BROWN,
+        LIGHT_GRAY,
+        DARK_GRAY,
+        LIGHT_BLUE,
+        LIGHT_GREEN,
+        LIGHT_CYAN,
+        LIGHT_RED,
+        LIGHT_MAGENTA,
+        YELLOW,
+        WHITE,
     }
 
     /**

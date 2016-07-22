@@ -53,7 +53,7 @@ TESTFUNC(cursortest)
         y = grx_get_screen_height() / 2;
         GrMoveCursor(cur,x,y);
         grx_clear_screen(bgc);
-        grx_color_info_set_color((grx_color_info_n_colors() - 1),255,255,255);
+        grx_color_info_set_cell((grx_color_info_n_colors() - 1),255,255,255);
         drawing(0,0,grx_get_width(),grx_get_height(),fgc,GRX_COLOR_NONE);
         grx_draw_filled_box(0,0,320,120,grx_color_info_alloc_color(0,255,255));
         grx_draw_text_xy( 10,90,"ANDmask",grx_color_info_get_black(),GRX_COLOR_NONE);

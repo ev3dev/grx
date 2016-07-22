@@ -225,10 +225,10 @@ int main(void)
                 sx=grx_get_screen_width()>>2;
                 for(y=0;y<grx_get_screen_height();y++) {
                     int yy = y & 255;
-                    grx_draw_hline(0,sx-1,y,grx_color_info_build_rgb_color_t(yy,0,0));
-                    grx_draw_hline(sx,2*sx-1,y,grx_color_info_build_rgb_color_t(0,yy,0));
-                    grx_draw_hline(2*sx,3*sx-1,y,grx_color_info_build_rgb_color_t(0,0,yy));
-                    grx_draw_hline(3*sx,4*sx-1,y,grx_color_info_build_rgb_color_t(yy,yy,yy));
+                    grx_draw_hline(0,sx-1,y,grx_color_info_build_rgb_color(yy,0,0));
+                    grx_draw_hline(sx,2*sx-1,y,grx_color_info_build_rgb_color(0,yy,0));
+                    grx_draw_hline(2*sx,3*sx-1,y,grx_color_info_build_rgb_color(0,0,yy));
+                    grx_draw_hline(3*sx,4*sx-1,y,grx_color_info_build_rgb_color(yy,yy,yy));
                 }
             }
             PrintInfo();
