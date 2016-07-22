@@ -24,3 +24,7 @@ target_include_directories (vala-life PUBLIC
     ${EXAMPLE_DEPS_INCLUDE_DIRS}
 )
 target_link_libraries (vala-life ${EXAMPLE_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
+if (CMAKE_CROSSCOMPILING)
+    # Cross compiling misses a few automatic dependencies for some reason
+    target_link_libraries(vala-life "-pthread" "-lresolv")
+endif (CMAKE_CROSSCOMPILING)

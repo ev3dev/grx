@@ -25,7 +25,7 @@ class LifeApplication : Grx.Application {
     Color[] color;
     uint source_id;
 
-    public LifeApplication () throws Error {
+    public LifeApplication () throws GLib.Error {
         Object ();
         init ();
         state = new char[2, get_width (), get_height ()];
@@ -123,7 +123,7 @@ static int main(string [] argv) {
     try {
         var app = new LifeApplication ();
         return app.run ();
-    } catch (Error err) {
+    } catch (GLib.Error err) {
         error ("%s", err.message);
     }
 }
