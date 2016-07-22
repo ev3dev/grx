@@ -72,6 +72,7 @@ static int detect(void)
 
         ttyfd = open("/dev/tty", O_RDONLY);
         if (ttyfd == -1) {
+            g_debug("Failed to open /dev/tty: %s", strerror(errno));
             err = ttyfd;
         } else {
             // This will fail if we are not on a virtual console
@@ -83,11 +84,13 @@ static int detect(void)
             // then we will take over the current virtual console (tty0).
             ttyfd = open("/dev/tty0", O_RDONLY);
             if (ttyfd == -1) {
+                g_debug("Failed top open /dev/tty0: %s", strerror(errno));
                 return FALSE;
             }
             err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
             close(ttyfd);
             if (err < 0) {
+                g_debug("VT_GETSTATE failed on /dev/tty0: %s", strerror(-err));
                 return FALSE;
             }
         }
@@ -99,12 +102,15 @@ static int detect(void)
         sprintf(ttyname, "/dev/tty%d", vtstat.v_active);
         ttyfd = open(ttyname, O_RDONLY);
         if (ttyfd == -1) {
+            g_debug("Failed top open /dev/tty%d: %s", vtstat.v_active,
+                    strerror(errno));
             return FALSE;
         }
 
         err = ioctl(ttyfd, KDGKBMODE, &original_keyboard_mode);
         if (err < 0) {
             close(ttyfd);
+            g_debug("KDGKBMODE failed: %s", strerror(-err));
             return FALSE;
         }
 
@@ -113,11 +119,14 @@ static int detect(void)
 
         fbfd = open("/dev/fb0", O_RDWR);
         if (fbfd == -1) {
+            g_debug("Failed to open /dev/fb0: %s", strerror(errno));
             close(ttyfd);
             return FALSE;
         }
         con2fb_map.console = vtstat.v_active;
-        if (ioctl(fbfd, FBIOGET_CON2FBMAP, &con2fb_map) < 0) {
+        err = ioctl(fbfd, FBIOGET_CON2FBMAP, &con2fb_map);
+        if (err < 0) {
+            g_debug("FBIOGET_CON2FBMAP failed: %s", strerror(-err));
             close(fbfd);
             close(ttyfd);
             return FALSE;
@@ -126,6 +135,7 @@ static int detect(void)
         // Make sure there is actually a framebuffer for this console.
 
         if (con2fb_map.framebuffer < 0) {
+            g_debug("No framebuffer device for this console");
             close(fbfd);
             close(ttyfd);
             return FALSE;
@@ -138,7 +148,9 @@ static int detect(void)
             close(fbfd);
             sprintf(fbname, "/dev/fb%d", con2fb_map.framebuffer);
             fbfd = open(fbname, O_RDWR);
-            if (fbfd < 0) {
+            if (fbfd == -1) {
+                g_debug("Failed to open /dev/fb%d: %s", con2fb_map.framebuffer,
+                        strerror(errno));
                 close(ttyfd);
                 return FALSE;
             }
@@ -149,6 +161,7 @@ static int detect(void)
         ioctl(fbfd, FBIOGET_FSCREENINFO, &fbfix);
         ioctl(fbfd, FBIOGET_VSCREENINFO, &fbvar);
         if (fbfix.type != FB_TYPE_PACKED_PIXELS) {
+            g_debug("framebuffer is not FB_TYPE_PACKED_PIXELS");
             close(fbfd);
             close(ttyfd);
             return FALSE;
