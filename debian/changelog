@@ -1,8 +1,8 @@
-grx (2.99.0~1) UNRELEASED; urgency=medium
+grx (2.99.0) jessie; urgency=medium
 
-  * 
+  * First pre-release of GRX 3.
 
- -- David Lechner <david@lechnology.com>  Mon, 16 Nov 2015 18:22:38 -0600
+ -- David Lechner <david@lechnology.com>  Fri, 22 Jul 2016 12:16:32 -0500
 
 grx (2.4.9-0ev3dev7) stable; urgency=medium
 
@@ -19,7 +19,7 @@ grx (2.4.9-0ev3dev6) testing; urgency=medium
 
 grx (2.4.9-0ev3dev5) testing; urgency=medium
 
-  * Fix not useable by non-root users.
+  * Fix not usable by non-root users.
 
  -- David Lechner <david@lechnology.com>  Sat, 31 Jan 2015 23:51:42 -0600
 
