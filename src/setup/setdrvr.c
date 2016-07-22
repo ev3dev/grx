@@ -62,11 +62,11 @@ static const char *nxtoken(const char *p, char *token)
  * - "<height>" is the default height
  * - "<colors>" is the default color depth. "K" and "M" suffixes are recognized.
  *
- * If @driver_spec is #NULL, then it will first check the GRX_DRIVER environment
+ * If @driver_spec is %NULL, then it will first check the GRX_DRIVER environment
  * variable for a driver spec. If the environment variable is not present, then
  * it will uses the driver with the highest number of modes.
  *
- * Returns: #TRUE on success, otherwise #FALSE.
+ * Returns: %TRUE on success, otherwise %FALSE.
  */
 int grx_set_driver(const char *drvspec, GError **error)
 {
