@@ -28,5 +28,9 @@ target_include_directories (grx-calibrate PUBLIC
     ${GRX_CALIBRATE_DEPS_INCLUDE_DIRS}
 )
 target_link_libraries (grx-calibrate ${GRX_CALIBRATE_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
+if (CMAKE_CROSSCOMPILING)
+    # not sure why we need to do this when cross compiling
+    target_link_libraries (grx-calibrate "-pthread" "-lresolv")
+endif (CMAKE_CROSSCOMPILING)
 
 install (TARGETS grx-calibrate RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
