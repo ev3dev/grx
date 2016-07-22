@@ -54,6 +54,7 @@ static struct fb_fix_screeninfo fbfix;
 static struct fb_var_screeninfo fbvar;
 static unsigned char *fbuffer = NULL;
 static gboolean in_graphics_mode = FALSE;
+static int graphics_vt, original_vt;
 static int original_keyboard_mode;
 static GrxContext *save;
 
@@ -88,27 +89,50 @@ static int detect(void)
                 return FALSE;
             }
             err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
-            close(ttyfd);
             if (err < 0) {
+                close(ttyfd);
                 g_debug("VT_GETSTATE failed on /dev/tty0: %s", strerror(-err));
                 return FALSE;
             }
         }
 
-        // Now, open the specific tty file for this console. We do this instead
-        // of using /dev/tty because if we switch active consoles, /dev/tty is
-        // no longer the one we started with.
+        // Get the next open console. The graphics will be run on this console
+        // rather than the current console (which we may already be in use in
+        // the case of /dev/tty0).
 
-        sprintf(ttyname, "/dev/tty%d", vtstat.v_active);
+        err = ioctl(ttyfd, VT_OPENQRY, &graphics_vt);
+        close(ttyfd);
+        if (err < 0) {
+            g_debug("Could not get unused VT: %s", strerror(-err));
+            return FALSE;
+        }
+
+        sprintf(ttyname, "/dev/tty%d", graphics_vt);
         ttyfd = open(ttyname, O_RDONLY);
         if (ttyfd == -1) {
-            g_debug("Failed top open /dev/tty%d: %s", vtstat.v_active,
+            g_debug("Failed top open /dev/tty%d: %s", graphics_vt,
                     strerror(errno));
+            return FALSE;
+        }
+
+        original_vt = vtstat.v_active;
+        err = ioctl(ttyfd, VT_ACTIVATE, graphics_vt);
+        if (err < 0) {
+            close(ttyfd);
+            g_debug("VT_ACTIVATE failed: %s", strerror(-err));
+            return FALSE;
+        }
+
+        err = ioctl(ttyfd, VT_WAITACTIVE, graphics_vt);
+        if (err < 0) {
+            close(ttyfd);
+            g_debug("VT_WAITACTIVE failed: %s", strerror(-err));
             return FALSE;
         }
 
         err = ioctl(ttyfd, KDGKBMODE, &original_keyboard_mode);
         if (err < 0) {
+            ioctl(ttyfd, VT_ACTIVATE, original_vt);
             close(ttyfd);
             g_debug("KDGKBMODE failed: %s", strerror(-err));
             return FALSE;
@@ -120,6 +144,7 @@ static int detect(void)
         fbfd = open("/dev/fb0", O_RDWR);
         if (fbfd == -1) {
             g_debug("Failed to open /dev/fb0: %s", strerror(errno));
+            ioctl(ttyfd, VT_ACTIVATE, original_vt);
             close(ttyfd);
             return FALSE;
         }
@@ -127,6 +152,7 @@ static int detect(void)
         err = ioctl(fbfd, FBIOGET_CON2FBMAP, &con2fb_map);
         if (err < 0) {
             g_debug("FBIOGET_CON2FBMAP failed: %s", strerror(-err));
+            ioctl(ttyfd, VT_ACTIVATE, original_vt);
             close(fbfd);
             close(ttyfd);
             return FALSE;
@@ -136,6 +162,7 @@ static int detect(void)
 
         if (con2fb_map.framebuffer < 0) {
             g_debug("No framebuffer device for this console");
+            ioctl(ttyfd, VT_ACTIVATE, original_vt);
             close(fbfd);
             close(ttyfd);
             return FALSE;
@@ -151,6 +178,7 @@ static int detect(void)
             if (fbfd == -1) {
                 g_debug("Failed to open /dev/fb%d: %s", con2fb_map.framebuffer,
                         strerror(errno));
+                ioctl(ttyfd, VT_ACTIVATE, original_vt);
                 close(ttyfd);
                 return FALSE;
             }
@@ -162,6 +190,7 @@ static int detect(void)
         ioctl(fbfd, FBIOGET_VSCREENINFO, &fbvar);
         if (fbfix.type != FB_TYPE_PACKED_PIXELS) {
             g_debug("framebuffer is not FB_TYPE_PACKED_PIXELS");
+            ioctl(ttyfd, VT_ACTIVATE, original_vt);
             close(fbfd);
             close(ttyfd);
             return FALSE;
@@ -176,6 +205,7 @@ static int detect(void)
 static void reset(void)
 {
     struct vt_mode vtm;
+    struct vt_stat vtstat;
 
     if (fbuffer) {
         memzero(fbuffer, fbvar.yres * fbfix.line_length);
@@ -186,13 +216,19 @@ static void reset(void)
         close(fbfd);
         fbfd = -1;
     }
-    if (ttyfd > -1) {
-        ioctl(ttyfd, KDSKBMODE, original_keyboard_mode);
-        ioctl(ttyfd, KDSETMODE, KD_TEXT);
-        vtm.mode = VT_AUTO;
-        vtm.relsig = 0;
-        vtm.acqsig = 0;
-        ioctl(ttyfd, VT_SETMODE, &vtm);
+    if (ttyfd != -1) {
+        // if we are still on the graphics vt, restore the original vt.
+        ioctl(ttyfd, VT_GETSTATE, &vtstat);
+        if (vtstat.v_active == graphics_vt) {
+            ioctl(ttyfd, KDSKBMODE, original_keyboard_mode);
+            ioctl(ttyfd, KDSETMODE, KD_TEXT);
+            vtm.mode = VT_AUTO;
+            vtm.relsig = 0;
+            vtm.acqsig = 0;
+            ioctl(ttyfd, VT_SETMODE, &vtm);
+            ioctl(ttyfd, VT_ACTIVATE, original_vt);
+        }
+
         close(ttyfd);
         ttyfd = -1;
         in_graphics_mode = FALSE;
