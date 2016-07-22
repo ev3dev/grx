@@ -98,7 +98,7 @@ const GrxFrameDriver *(grx_get_screen_frame_driver)(void)
  *
  * Gets the device manager for the current video driver
  *
- * Returns: (transfer none) (nullable): the #GrxLibinputDeviceManager or %NULL
+ * Returns: (transfer none) (nullable): the #GrxDeviceManager or %NULL
  * if a video driver has not be loaded yet
  */
 GrxDeviceManager *(grx_get_device_manager)(void)
