@@ -143,6 +143,20 @@ gint     grx_color_info_n_free_colors(void);
 GrxColor grx_color_info_get_black(void);
 GrxColor grx_color_info_get_white(void);
 
+/**
+ * GRX_COLOR_BLACK:
+ *
+ * Convenience macro for grx_color_info_get_black().
+ */
+#define GRX_COLOR_BLACK grx_color_info_get_black()
+
+/**
+ * GRX_COLOR_WHITE:
+ *
+ * Convenience macro for grx_color_info_get_white().
+ */
+#define GRX_COLOR_WHITE grx_color_info_get_white()
+
 GrxColor grx_color_info_build_rgb_color(guint8 r, guint8 g, guint8 b);
 GrxColor grx_color_info_build_rgb_color_round(guint8 r, guint8 g, guint8 b);
 guint8   grx_color_info_get_red_value(GrxColor c);

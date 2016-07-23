@@ -36,7 +36,7 @@ static void PrintInfo(void)
         grx_font_get_string_width(&grx_font_default, aux, strlen(aux), GRX_CHAR_TYPE_BYTE)) / 2;
     y = (grx_get_max_y() -
         grx_font_get_string_height(&grx_font_default, aux, strlen(aux), GRX_CHAR_TYPE_BYTE)) / 2;
-    grx_draw_text_xy(x, y, aux, grx_color_info_get_white(), grx_color_info_get_black());
+    grx_draw_text_xy(x, y, aux, GRX_COLOR_WHITE, GRX_COLOR_BLACK);
 }
 
 typedef struct {
@@ -202,8 +202,8 @@ int main(void)
                 h -= 10;
                 drawing(
                     5,5,w,h,
-                    grx_color_info_get_black(),
-                    grx_color_info_get_white()
+                    GRX_COLOR_BLACK,
+                    GRX_COLOR_WHITE
                 );
                 drawing(
                     px,5,w,h,

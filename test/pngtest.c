@@ -34,18 +34,18 @@ void imagen( char *nf )
   high = (h > 400) ? 400 : h;
   grx_clear_screen( grx_color_info_alloc_color( 0,0,200 ) );
 
-  grx_draw_box( 10,40,10+wide+1,40+high+1,grx_color_info_get_white() );
+  grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_png( grc,nf,0 );
   grx_context_unref( grc );
 
-  grx_draw_box( 320,40,320+wide+1,40+high+1,grx_color_info_get_white() );
+  grx_draw_box( 320,40,320+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 321,41,321+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_png( grc,nf,1 );
   grx_context_unref( grc );
 
-  grx_draw_text_xy( 10,10,s,grx_color_info_get_black(),grx_color_info_get_white() );
-  grx_draw_text_xy( 10,50+high,"Press any key to continue",grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_draw_text_xy( 10,10,s,GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text_xy( 10,50+high,"Press any key to continue",GRX_COLOR_BLACK,GRX_COLOR_WHITE );
   GrKeyRead();
 }
 
@@ -62,7 +62,7 @@ void nopngsupport( void )
 
   grx_clear_screen( grx_color_info_alloc_color( 0,0,100 ) );
   for( i=0; i<6; i++ )
-    grx_draw_text_xy( 90,160+i*18,s[i],grx_color_info_get_white(),GRX_COLOR_NONE );
+    grx_draw_text_xy( 90,160+i*18,s[i],GRX_COLOR_WHITE,GRX_COLOR_NONE );
   GrKeyRead();
 }
 
@@ -94,16 +94,16 @@ int main()
   grx_context_load_from_png( grc,"pngcompo.png",1 );
   grx_context_unref( grc );
 
-  grx_draw_text_xy( 10,10,"Press any key to save screen",grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_draw_text_xy( 10,10,"Press any key to save screen",GRX_COLOR_BLACK,GRX_COLOR_WHITE );
   GrKeyRead();
   grx_save_current_context_to_png( NULL,"output.png" );
 
-  grx_clear_screen( grx_color_info_get_black() );
-  grx_draw_text_xy( 10,10,"Press any key to reload screen",grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_clear_screen( GRX_COLOR_BLACK );
+  grx_draw_text_xy( 10,10,"Press any key to reload screen",GRX_COLOR_BLACK,GRX_COLOR_WHITE );
   GrKeyRead();
   grx_context_load_from_png( NULL,"output.png",0 );
 
-  grx_draw_text_xy( 10,10,"Press any key to end          ",grx_color_info_get_black(),grx_color_info_get_white() );
+  grx_draw_text_xy( 10,10,"Press any key to end          ",GRX_COLOR_BLACK,GRX_COLOR_WHITE );
   GrKeyRead();
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
   return 0;

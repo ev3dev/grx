@@ -42,9 +42,9 @@ void displayfont(GrxFont *font,char *text,int len)
         opt.txo_font   = font;
         opt.txo_xalign = GRX_TEXT_ALIGN_LEFT;
         opt.txo_yalign = GRX_TEXT_VALIGN_TOP;
-        grx_draw_filled_box(0,0,grx_get_width(),grx_get_height(),grx_color_info_get_black());
+        grx_draw_filled_box(0,0,grx_get_width(),grx_get_height(),GRX_COLOR_BLACK);
         opt.txo_direct    = GRX_TEXT_DIRECTION_RIGHT;
-        opt.txo_fgcolor.v = grx_color_info_get_black();
+        opt.txo_fgcolor.v = GRX_COLOR_BLACK;
         opt.txo_bgcolor.v = c1;
         ww = grx_text_option_get_string_width(&opt,text,len);
         hh = grx_text_option_get_string_height(&opt,text,len);
@@ -63,10 +63,10 @@ void displayfont(GrxFont *font,char *text,int len)
         opt.txo_bgcolor.v = c4;
         grx_draw_string_with_text_options(text,len,bx,by+bh-ww,&opt);
         GrKeyRead();
-        grx_clear_clip_box(grx_color_info_get_black());
+        grx_clear_clip_box(GRX_COLOR_BLACK);
         opt.txo_direct    = GRX_TEXT_DIRECTION_RIGHT;
         opt.txo_fgcolor.v = c1;
-        opt.txo_bgcolor.v = grx_color_info_get_black();
+        opt.txo_bgcolor.v = GRX_COLOR_BLACK;
         bx = grx_get_width() / 16;
         by = grx_get_height() / 16;
         bx = (bx + 7) & ~7;

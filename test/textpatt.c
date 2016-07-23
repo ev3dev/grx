@@ -49,7 +49,7 @@ int main(void)
     grx_draw_string_with_pattern_ext(" Hello world !!", 16, 40, 100, &opt, p1);
     grx_draw_string_with_pattern_ext(" Hello world !!", 16, 44, 140, &opt, p2);
     GrKeyRead();
-    opt.txo_bgcolor.v = grx_color_info_get_black();
+    opt.txo_bgcolor.v = GRX_COLOR_BLACK;
     grx_draw_string_with_pattern(" Hello world !", 15, 40, 10, &opt, p1);
     grx_draw_string_with_pattern(" Hello world !", 15, 44, 50, &opt, p2);
     grx_draw_string_with_pattern_ext(" Hello world !!", 16, 40, 100, &opt, p1);

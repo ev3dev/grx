@@ -40,18 +40,18 @@ TESTFUNC(arctest)
             if(sscanf(buff,
                       "arc xc=%d yc=%d rx=%d ry=%d start=%d end=%d",
                       &xc,&yc,&rx,&ry,&start,&end) == 6) {
-                grx_clear_screen(grx_color_info_get_black());
+                grx_clear_screen(GRX_COLOR_BLACK);
                 grx_draw_ellipse(xc,yc,rx,ry,red);
                 grx_draw_filled_ellipse(xc,yc,rx,ry,blue);
-                grx_draw_ellipse_arc(xc,yc,rx,ry,start,end,GRX_ARC_STYLE_CLOSED_RADIUS,grx_color_info_get_white());
-                grx_draw_text_xy(0,0,buff,grx_color_info_get_white(),GRX_COLOR_NONE);
-                grx_draw_text_xy(0,20,"press any key to continue",grx_color_info_get_white(),GRX_COLOR_NONE);
+                grx_draw_ellipse_arc(xc,yc,rx,ry,start,end,GRX_ARC_STYLE_CLOSED_RADIUS,GRX_COLOR_WHITE);
+                grx_draw_text_xy(0,0,buff,GRX_COLOR_WHITE,GRX_COLOR_NONE);
+                grx_draw_text_xy(0,20,"press any key to continue",GRX_COLOR_WHITE,GRX_COLOR_NONE);
                 GrKeyRead();
-                grx_clear_screen(grx_color_info_get_black());
+                grx_clear_screen(GRX_COLOR_BLACK);
                 grx_draw_ellipse_arc(xc,yc,rx,ry,start,end,GRX_ARC_STYLE_CLOSED_RADIUS,red);
                 grx_draw_filled_ellipse_arc(xc,yc,rx,ry,start,end,GRX_ARC_STYLE_CLOSED_RADIUS,green);
-                grx_draw_text_xy(0,0,buff,grx_color_info_get_white(),GRX_COLOR_NONE);
-                grx_draw_text_xy(0,20,"press any key to continue",grx_color_info_get_white(),GRX_COLOR_NONE);
+                grx_draw_text_xy(0,0,buff,GRX_COLOR_WHITE,GRX_COLOR_NONE);
+                grx_draw_text_xy(0,20,"press any key to continue",GRX_COLOR_WHITE,GRX_COLOR_NONE);
                 GrKeyRead();
             }
         }

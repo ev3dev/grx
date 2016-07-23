@@ -24,7 +24,7 @@
  *
  * Gets the color value for black.
  *
- * This is guaranteed to be 0.
+ * This is guaranteed to be 0. In C code, you can use #GRX_COLOR_BLACK for short.
  *
  * Returns: the color value.
  */
@@ -42,6 +42,8 @@ GrxColor grx_color_info_get_black(void)
  * grx_color_info_get_white:
  *
  * Gets the color value for white.
+ *
+ * In C code, you can use #GRX_COLOR_WHITE for short.
  *
  * Returns: the color value.
  */

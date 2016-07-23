@@ -39,7 +39,7 @@ TESTFUNC(test1)
             o4.width   = 4;
             o4.n_dash_patterns = 6 * i;
             o4.dash_patterns = "\2\2\2\2\10\10";
-            grx_clear_screen(grx_color_info_get_black());
+            grx_clear_screen(GRX_COLOR_BLACK);
             grx_draw_line_with_options(10,10,100,100,&o1);
             grx_draw_line_with_options(10,50,100,140,&o1);
             grx_draw_line_with_options(10,90,100,180,&o1);
@@ -57,7 +57,7 @@ TESTFUNC(test1)
             grx_draw_line_with_options(480,100,460,300,&o4);
             grx_draw_line_with_options(600,200,500,300,&o4);
             GrKeyRead();
-            grx_clear_screen(grx_color_info_get_black());
+            grx_clear_screen(GRX_COLOR_BLACK);
             grx_draw_box_with_options(50,50,550,350,&o3);
             grx_draw_circle_with_options(300,200,50,&o2);
             GrKeyRead();

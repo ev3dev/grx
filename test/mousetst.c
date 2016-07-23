@@ -32,7 +32,7 @@ TESTFUNC(mousetest)
         if(GrMouseDetect()) {
             GrMouseEventMode(1);
             GrMouseInit();
-            GrMouseSetColors(grx_color_info_alloc_color(255,0,0),grx_color_info_get_black());
+            GrMouseSetColors(grx_color_info_alloc_color(255,0,0),GRX_COLOR_BLACK);
             GrMouseDisplayCursor();
             grx_clear_screen(bgc);
             ii = 0;

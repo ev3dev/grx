@@ -163,7 +163,7 @@ static int _GrLoadContextFromPbm( inputstruct *is, int width, int height )
         currentbit = 7;
         }
       if( x < maxwidth ){
-        color = currentbyte & (1 << currentbit) ? grx_color_info_get_black() : grx_color_info_get_white();
+        color = currentbyte & (1 << currentbit) ? GRX_COLOR_BLACK : GRX_COLOR_WHITE;
         pColors[x] = color;
         }
       currentbit--;

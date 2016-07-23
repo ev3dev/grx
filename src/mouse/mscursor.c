@@ -276,7 +276,7 @@ void _GrInitMouseCursor(void)
             MOUINFO->cursor = NULL;
         }
         if(MSCURSOR == NULL) {
-            GrMouseSetColors(grx_color_info_alloc_color(255,0,0),grx_color_info_get_black());
+            GrMouseSetColors(grx_color_info_alloc_color(255,0,0),GRX_COLOR_BLACK);
         }
         if(MSCURSOR && MSCURSOR->displayed) {
             GrEraseCursor(MSCURSOR);

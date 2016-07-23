@@ -57,7 +57,7 @@
  * |[<!-- language="C" -->
  * GrxLineOptions my_line_options;
  * ...
- * my_line_options.color = grx_color_info_get_white();
+ * my_line_options.color = GRX_COLOR_WHITE;
  * my_line_options.width = 3;
  * my_line_options.n_dash_patterns = 2;
  * my_line_options.dash_patterns = "\x06\x04";

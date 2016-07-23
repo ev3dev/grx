@@ -50,27 +50,27 @@ int main()
 
     grx_set_current_context(w1);
     c = grx_color_info_alloc_color(200,100,100);
-    drawing(0,0,ww,wh,c,grx_color_info_get_black());
+    drawing(0,0,ww,wh,c,GRX_COLOR_BLACK);
     grx_draw_box(0,0,ww-1,wh-1,c);
 
     grx_set_current_context(w2);
     c = grx_color_info_alloc_color(100,200,200);
-    drawing(0,0,ww,wh,c,grx_color_info_get_black());
+    drawing(0,0,ww,wh,c,GRX_COLOR_BLACK);
     grx_draw_box(0,0,ww-1,wh-1,c);
 
     grx_set_current_context(w3);
     c = grx_color_info_alloc_color(200,200,0);
-    drawing(0,0,ww,wh,c,grx_color_info_get_black());
+    drawing(0,0,ww,wh,c,GRX_COLOR_BLACK);
     grx_draw_box(0,0,ww-1,wh-1,c);
 
     grx_set_current_context(w4);
     c = grx_color_info_alloc_color(0,100,200);
-    drawing(0,0,ww,wh,c,grx_color_info_get_black());
+    drawing(0,0,ww,wh,c,GRX_COLOR_BLACK);
     grx_draw_box(0,0,ww-1,wh-1,c);
 
     grx_set_current_context( NULL );
 
-    grx_draw_text_xy(10,wh,"press any key to toggle full screen / windowed modes, escape to end",grx_color_info_get_white(),grx_color_info_get_black());
+    grx_draw_text_xy(10,wh,"press any key to toggle full screen / windowed modes, escape to end",GRX_COLOR_WHITE,GRX_COLOR_BLACK);
 
   } while ( GrKeyRead() != GrKey_Escape );
   return 0;

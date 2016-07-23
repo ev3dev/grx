@@ -55,7 +55,7 @@ int gfaz_ini( int width, int height, int bpp )
   if( GrMouseDetect() ){
     mouse_found = 1;
     GrMouseInit();
-    GrMouseSetColors( grx_color_info_get_white(),grx_color_info_get_black() );
+    GrMouseSetColors(GRX_COLOR_WHITE,GRX_COLOR_BLACK);
     show_mouse();
     }
   GrMouseEventEnable( 1,mouse_found );

@@ -42,7 +42,7 @@ void drawellip(int xc,int yc,int rx,int ry,GrxColor c1,GrxColor c2,GrxColor c3)
 
         for (idx = 0, l = *Patterns; l != NULL; l = Patterns[++idx])
             for (wdt=widths; *wdt != 0; ++wdt) {
-                grx_clear_screen(grx_color_info_get_black());
+                grx_clear_screen(GRX_COLOR_BLACK);
 
                 grx_draw_filled_box(xc-rx,yc-ry,xc+rx,yc+ry,c1);
                 dx = rx;

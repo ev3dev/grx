@@ -35,11 +35,11 @@ void drbox(GrxContext *src,int x,int y)
         grx_set_clip_box(x-10,y-10,x+BWW-1+10,y+BHH-1+10);
         grx_clear_clip_box(c2);
         grx_set_clip_box(x,y,x+BWW-1,y+BHH-1);
-        grx_clear_clip_box(grx_color_info_get_black());
-        grx_draw_box(x,y,x+BWW-1,y+BHH-1,grx_color_info_get_white());
+        grx_clear_clip_box(GRX_COLOR_BLACK);
+        grx_draw_box(x,y,x+BWW-1,y+BHH-1,GRX_COLOR_WHITE);
         for(xx = x; xx < x+BWW; xx += 5) {
-            grx_draw_line(xx,y,xx+BHH,y+BHH,grx_color_info_get_white());
-            grx_draw_line(xx,y,xx-BHH,y+BHH,grx_color_info_get_white());
+            grx_draw_line(xx,y,xx+BHH,y+BHH,GRX_COLOR_WHITE);
+            grx_draw_line(xx,y,xx-BHH,y+BHH,GRX_COLOR_WHITE);
         }
         grx_set_current_context(NULL);
         grx_reset_clip_box();

@@ -160,9 +160,9 @@ int main(int argc, char **argv)
         if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, &error, width, height, bpp)) {
             g_error("%s", error->message);
         }
-        if(!gray || (opt.txo_fgcolor.v = grx_color_info_alloc_color(gray, gray, gray)) == GRX_COLOR_NONE) opt.txo_fgcolor.v = grx_color_info_get_white();
+        if(!gray || (opt.txo_fgcolor.v = grx_color_info_alloc_color(gray, gray, gray)) == GRX_COLOR_NONE) opt.txo_fgcolor.v = GRX_COLOR_WHITE;
         if(attributes & 0x02) opt.txo_fgcolor.v |= GRX_UNDERLINE_TEXT;
-        opt.txo_bgcolor.v = grx_color_info_get_black();
+        opt.txo_bgcolor.v = GRX_COLOR_BLACK;
         if(attributes & 0x01) revert();
         opt.txo_chrtype = GRX_CHAR_TYPE_BYTE;
         opt.txo_direct = GRX_TEXT_DIRECTION_RIGHT;

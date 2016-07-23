@@ -32,22 +32,22 @@ TESTFUNC(wintest)
 
         grx_set_current_context(w1);
         c = grx_color_info_alloc_color(200,100,100);
-        drawing(0,0,ww,wh,c,grx_color_info_get_black());
+        drawing(0,0,ww,wh,c,GRX_COLOR_BLACK);
         grx_draw_box(0,0,ww-1,wh-1,c);
 
         grx_set_current_context(w2);
         c = grx_color_info_alloc_color(100,200,200);
-        drawing(0,0,ww,wh,c,grx_color_info_get_black());
+        drawing(0,0,ww,wh,c,GRX_COLOR_BLACK);
         grx_draw_box(0,0,ww-1,wh-1,c);
 
         grx_set_current_context(w3);
         c = grx_color_info_alloc_color(200,200,0);
-        drawing(0,0,ww,wh,c,grx_color_info_get_black());
+        drawing(0,0,ww,wh,c,GRX_COLOR_BLACK);
         grx_draw_box(0,0,ww-1,wh-1,c);
 
         grx_set_current_context(w4);
         c = grx_color_info_alloc_color(0,100,200);
-        drawing(0,0,ww,wh,c,grx_color_info_get_black());
+        drawing(0,0,ww,wh,c,GRX_COLOR_BLACK);
         grx_draw_box(0,0,ww-1,wh-1,c);
 
         GrKeyRead();

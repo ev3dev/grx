@@ -385,8 +385,8 @@ TESTFUNC(keys) {
   int ok;
 
   opt.txo_font = &grx_font_pc8x16;
-  opt.txo_fgcolor.v = grx_color_info_get_white();
-  opt.txo_bgcolor.v = grx_color_info_get_black();
+  opt.txo_fgcolor.v = GRX_COLOR_WHITE;
+  opt.txo_bgcolor.v = GRX_COLOR_BLACK;
   opt.txo_chrtype = GRX_CHAR_TYPE_BYTE;
   opt.txo_direct = GRX_TEXT_DIRECTION_RIGHT;
   opt.txo_xalign = GRX_TEXT_ALIGN_LEFT;

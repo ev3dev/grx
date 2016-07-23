@@ -57,8 +57,9 @@ int grx_save_current_context_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
   fwrite( cab,1,strlen( cab ),f );
   for( y=0; y<grx_get_height(); y++ ){
     for( x=0; x<grx_get_width(); x++ ){
-      if( grx_get_pixel_at( x,y ) == grx_color_info_get_black() )
+      if (grx_get_pixel_at(x, y) == GRX_COLOR_BLACK) {
         currentbyte |= 1 << currentbit;
+      }
       currentbit--;
       if( currentbit < 0 ){
         fwrite( &currentbyte,1,1,f );

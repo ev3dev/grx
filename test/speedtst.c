@@ -187,8 +187,8 @@ void Message(int disp, char *txt, gvmode *gp) {
     grx_save_current_context(&save);
     grx_set_current_context(NULL);
     to.txo_font = &grx_font_pc6x8;
-    to.txo_fgcolor.v = grx_color_info_get_white();
-    to.txo_bgcolor.v = grx_color_info_get_black();
+    to.txo_fgcolor.v = GRX_COLOR_WHITE;
+    to.txo_bgcolor.v = GRX_COLOR_BLACK;
     to.txo_chrtype = GRX_CHAR_TYPE_BYTE;
     to.txo_direct  = GRX_TEXT_DIRECTION_RIGHT;
     to.txo_xalign  = GRX_TEXT_ALIGN_LEFT;
@@ -242,10 +242,10 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs,int loops) {
 
 void drawpixeltest(gvmode *gp, XY_PAIRS *pairs) {
   int i, j;
-  GrxColor c1 = grx_color_info_get_white();
-  GrxColor c2 = grx_color_info_get_white() | GRX_COLOR_MODE_XOR;
-  GrxColor c3 = grx_color_info_get_white() | GRX_COLOR_MODE_OR;
-  GrxColor c4 = grx_color_info_get_black() | GRX_COLOR_MODE_AND;
+  GrxColor c1 = GRX_COLOR_WHITE;
+  GrxColor c2 = GRX_COLOR_WHITE | GRX_COLOR_MODE_XOR;
+  GrxColor c3 = GRX_COLOR_WHITE | GRX_COLOR_MODE_OR;
+  GrxColor c4 = GRX_COLOR_BLACK | GRX_COLOR_MODE_AND;
   long t1,t2;
   double seconds;
   int *x = pairs->x;
@@ -273,10 +273,10 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
   int i, j;
   int *x = pairs->x;
   int *y = pairs->y;
-  GrxColor c1 = grx_color_info_get_white();
-  GrxColor c2 = grx_color_info_get_white() | GRX_COLOR_MODE_XOR;
-  GrxColor c3 = grx_color_info_get_white() | GRX_COLOR_MODE_OR;
-  GrxColor c4 = grx_color_info_get_black() | GRX_COLOR_MODE_AND;
+  GrxColor c1 = GRX_COLOR_WHITE;
+  GrxColor c2 = GRX_COLOR_WHITE | GRX_COLOR_MODE_XOR;
+  GrxColor c3 = GRX_COLOR_WHITE | GRX_COLOR_MODE_OR;
+  GrxColor c4 = GRX_COLOR_BLACK | GRX_COLOR_MODE_AND;
   long t1,t2;
   double seconds;
 
@@ -309,10 +309,10 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs) {
   int  i, j;
   int *x = pairs->x;
   int *y = pairs->y;
-  GrxColor c1 = grx_color_info_get_white();
-  GrxColor c2 = grx_color_info_get_white() | GRX_COLOR_MODE_XOR;
-  GrxColor c3 = grx_color_info_get_white() | GRX_COLOR_MODE_OR;
-  GrxColor c4 = grx_color_info_get_black() | GRX_COLOR_MODE_AND;
+  GrxColor c1 = GRX_COLOR_WHITE;
+  GrxColor c2 = GRX_COLOR_WHITE | GRX_COLOR_MODE_XOR;
+  GrxColor c3 = GRX_COLOR_WHITE | GRX_COLOR_MODE_OR;
+  GrxColor c4 = GRX_COLOR_BLACK | GRX_COLOR_MODE_AND;
   long t1,t2;
   double seconds;
 
@@ -345,10 +345,10 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
   int i, j;
   int *x = pairs->x;
   int *y = pairs->y;
-  GrxColor c1 = grx_color_info_get_white();
-  GrxColor c2 = grx_color_info_get_white() | GRX_COLOR_MODE_XOR;
-  GrxColor c3 = grx_color_info_get_white() | GRX_COLOR_MODE_OR;
-  GrxColor c4 = grx_color_info_get_black() | GRX_COLOR_MODE_AND;
+  GrxColor c1 = GRX_COLOR_WHITE;
+  GrxColor c2 = GRX_COLOR_WHITE | GRX_COLOR_MODE_XOR;
+  GrxColor c3 = GRX_COLOR_WHITE | GRX_COLOR_MODE_OR;
+  GrxColor c4 = GRX_COLOR_BLACK | GRX_COLOR_MODE_AND;
   long t1,t2;
   double seconds;
 
@@ -379,10 +379,10 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs) {
 
 void drawblocktest(gvmode *gp, XY_PAIRS *pairs) {
   int i, j;
-  GrxColor c1 = grx_color_info_get_white();
-  GrxColor c2 = grx_color_info_get_white() | GRX_COLOR_MODE_XOR;
-  GrxColor c3 = grx_color_info_get_white() | GRX_COLOR_MODE_OR;
-  GrxColor c4 = grx_color_info_get_black() | GRX_COLOR_MODE_AND;
+  GrxColor c1 = GRX_COLOR_WHITE;
+  GrxColor c2 = GRX_COLOR_WHITE | GRX_COLOR_MODE_XOR;
+  GrxColor c3 = GRX_COLOR_WHITE | GRX_COLOR_MODE_OR;
+  GrxColor c4 = GRX_COLOR_BLACK | GRX_COLOR_MODE_AND;
   long t1,t2;
   double seconds;
 
@@ -426,10 +426,10 @@ void xor_draw_blocks(GrxContext *c) {
 
   grx_save_current_context(&save);
   grx_set_current_context(c);
-  grx_clear_context(grx_color_info_get_black());
+  grx_clear_context(GRX_COLOR_BLACK);
   for (i=28; i > 1; --i)
     grx_draw_filled_box(grx_get_max_x()/i,grx_get_max_y()/i,
-                (i-1)*grx_get_max_x()/i,(i-1)*grx_get_max_y()/i,grx_color_info_get_white()|GRX_COLOR_MODE_XOR);
+                (i-1)*grx_get_max_x()/i,(i-1)*grx_get_max_y()/i,GRX_COLOR_WHITE|GRX_COLOR_MODE_XOR);
   grx_set_current_context(&save);
 }
 
@@ -444,7 +444,7 @@ void blit_measure(gvmode *gp, perfm *p,
   grx_save_current_context(&save);
   if (dst != src) {
     grx_set_current_context(dst);
-    grx_clear_context(grx_color_info_get_black());
+    grx_clear_context(GRX_COLOR_BLACK);
   }
   xor_draw_blocks(src);
   grx_set_current_context(&save);
@@ -526,27 +526,27 @@ void measure_one(gvmode *gp, int ram) {
 
   if (MEASURED(gp)) return;
   pairs = checkpairs(gp->w, gp->h);
-  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, GRX_COLOR_BLACK);
   Message(RAMMODE(gp),"read pixel test", gp);
 
-  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, GRX_COLOR_BLACK);
   Message(RAMMODE(gp),"draw pixel test", gp);
   drawpixeltest(gp,pairs);
-  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, GRX_COLOR_BLACK);
   Message(RAMMODE(gp),"draw line test ", gp);
   drawlinetest(gp,pairs);
-  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, GRX_COLOR_BLACK);
   Message(RAMMODE(gp),"draw hline test", gp);
   drawhlinetest(gp,pairs);
-  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, GRX_COLOR_BLACK);
   Message(RAMMODE(gp),"draw vline test", gp);
   drawvlinetest(gp,pairs);
-  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, GRX_COLOR_BLACK);
   Message(RAMMODE(gp),"draw block test", gp);
   drawblocktest(gp,pairs);
-  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, GRX_COLOR_BLACK);
   blittest(gp, pairs, ram);
-  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, grx_color_info_get_black());
+  grx_draw_filled_box( 0, 0, gp->w-1, gp->h-1, GRX_COLOR_BLACK);
   SET_MEASURED(gp);
   measured_any = 1;
 }
