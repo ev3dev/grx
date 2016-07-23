@@ -45,8 +45,8 @@ void grx_context_unref(GrxContext *ctx);
  * Creates a new context in system memory using the memory layout specified by
  * @mode.
  *
- * @memory must contain grx_screen_get_n_planes() pointers (usually just one, but
- * could be as many as 4) of size grx_screen_get_plane_size(). %NULL may also
+ * @memory must contain grx_frame_mode_get_n_planes() pointers (usually just one, but
+ * could be as many as 4) of size grx_frame_mode_get_plane_size(). %NULL may also
  * be passed to @memory, in which case the memory will be dynamically allocated.
  *
  * Likewise, @where can be an unused #GrxContext (e.g. you may want to do this
