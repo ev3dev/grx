@@ -14,7 +14,7 @@ before_install:
 - "/tmp/pbuilder-ev3dev deps"
 before_script:
 - "/tmp/pbuilder-ev3dev base"
-- git checkout -b ev3dev-$DIST
+- git checkout -B ev3dev-$DIST
 script:
 - "/tmp/pbuilder-ev3dev build"
 before_deploy:
