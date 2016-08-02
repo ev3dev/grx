@@ -2,6 +2,7 @@ sudo: required
 dist: trusty
 env:
 - OS=debian ARCH=amd64 DIST=jessie
+- OS=debian ARCH=i386 DIST=jessie
 - OS=debian ARCH=armhf DIST=jessie
 - OS=raspbian ARCH=armhf DIST=jessie
 - OS=debian ARCH=armel DIST=jessie
