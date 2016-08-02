@@ -1,3 +1,9 @@
+grx (2.99.3) stable; urgency=medium
+
+  * Fix i386 build
+
+ -- David Lechner <david@lechnology.com>  Tue, 02 Aug 2016 13:16:58 -0500
+
 grx (2.99.2) stable; urgency=medium
 
   * Fix libgrx-3.0-dev depends
