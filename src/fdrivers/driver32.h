@@ -220,7 +220,7 @@ static void drawline(int x,int y,int dx,int dy,GrxColor color)
             int offset2;        /* add to pointer if carry / banking dir */
         } lndata;
         int  op,npts,error,xstep;
-        char *ptr;
+        unsigned char *ptr;
 
         GRX_ENTER();
         op = C_OPER(color);
