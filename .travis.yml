@@ -19,7 +19,7 @@ before_script:
 script:
 - "/tmp/pbuilder-ev3dev build"
 before_deploy:
-- LICENSES='"LGPL-2.1", "GPL-2.0", "MIT"'
+- export LICENSES='"LGPL-2.1", "GPL-2.0", "MIT"'
 - "/tmp/pbuilder-ev3dev dpl"
 deploy:
   on:
