@@ -1,0 +1,4 @@
+# Plugins are not regular libraries
+
+grx libgrx-3.0-plugin-linuxfb: no-shlibs-control-file *
+grx libgrx-3.0-plugin-linuxfb: postinst-must-call-ldconfig *

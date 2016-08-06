@@ -1,0 +1,4 @@
+# Plugins are not regular libraries
+
+grx libgrx-3.0-plugin-memory: no-shlibs-control-file *
+grx libgrx-3.0-plugin-memory: postinst-must-call-ldconfig *

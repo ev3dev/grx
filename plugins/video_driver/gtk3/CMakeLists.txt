@@ -24,8 +24,6 @@ target_include_directories (grx_gtk3
 )
 target_link_libraries (grx_gtk3 ${GTK3_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
 set_target_properties (grx_gtk3 PROPERTIES
-    VERSION "${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
-    SOVERSION "${PROJECT_VERSION_MINOR}"
     OUTPUT_NAME ${LIBRARY_NAME}-plugin-gtk3
 )
 install (TARGETS grx_gtk3 LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})

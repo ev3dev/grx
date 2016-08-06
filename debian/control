@@ -36,14 +36,14 @@ Package: libgrx-3.0-0
 Section: libs
 Architecture: any
 Depends: libgrx-fonts, ${shlibs:Depends}, ${misc:Depends}
-Recommends: libgrx-3.0-plugin-gtk3-0,
-            libgrx-3.0-plugin-linuxfb0,
-            libgrx-3.0-plugin-memory0
+Recommends: libgrx-3.0-plugin-gtk3,
+            libgrx-3.0-plugin-linuxfb,
+            libgrx-3.0-plugin-memory
 Description: 2D graphics library
  A simple 2D graphics library similar to the old Borland Graphics Interface
  (BGI).
 
-Package: libgrx-3.0-plugin-gtk3-0
+Package: libgrx-3.0-plugin-gtk3
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -53,7 +53,7 @@ Description: 2D graphics library
  .
  This package contains the GTK+3 video driver plugin.
 
-Package: libgrx-3.0-plugin-linuxfb0
+Package: libgrx-3.0-plugin-linuxfb
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -63,7 +63,7 @@ Description: 2D graphics library
  .
  This package contains the Linux framebuffer video driver plugin.
 
-Package: libgrx-3.0-plugin-memory0
+Package: libgrx-3.0-plugin-memory
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}

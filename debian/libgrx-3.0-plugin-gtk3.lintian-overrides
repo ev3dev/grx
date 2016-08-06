@@ -1,0 +1,4 @@
+# Plugins are not regular libraries
+
+grx libgrx-3.0-plugin-gtk3: no-shlibs-control-file *
+grx libgrx-3.0-plugin-gtk3: postinst-must-call-ldconfig *

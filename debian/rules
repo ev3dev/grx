@@ -9,3 +9,6 @@
 
 override_dh_strip:
 	dh_strip --keep-debug
+
+override_dh_makeshlibs:
+	dh_makeshlibs --exclude plugin

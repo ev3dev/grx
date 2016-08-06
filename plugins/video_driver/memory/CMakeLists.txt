@@ -21,8 +21,6 @@ target_include_directories (grx_memory
 )
 target_link_libraries (grx_memory ${MEMORY_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
 set_target_properties (grx_memory PROPERTIES
-    VERSION "${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
-    SOVERSION "${PROJECT_VERSION_MINOR}"
     OUTPUT_NAME ${LIBRARY_NAME}-plugin-memory
 )
 install (TARGETS grx_memory LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})

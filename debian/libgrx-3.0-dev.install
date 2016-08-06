@@ -1,5 +1,5 @@
 usr/include/*
-usr/lib/*/libgrx*.a
-usr/lib/*/libgrx*.so
+usr/lib/*/libgrx-3.0.a
+usr/lib/*/libgrx-3.0.so
 usr/lib/*/pkgconfig/grx*.pc
 usr/share/vala/vapi/*
