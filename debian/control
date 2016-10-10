@@ -38,7 +38,7 @@ Package: libgrx-3.0-0
 Section: libs
 Architecture: any
 Multi-Arch: same
-Depends: libgrx-fonts, ${shlibs:Depends}, ${misc:Depends}
+Depends: libgrx-3.0-fonts, ${shlibs:Depends}, ${misc:Depends}
 Recommends: libgrx-3.0-plugin-gtk3,
             libgrx-3.0-plugin-linuxfb,
             libgrx-3.0-plugin-memory
