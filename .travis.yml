@@ -1,3 +1,4 @@
+language: bash
 sudo: required
 dist: trusty
 env:
@@ -10,22 +11,12 @@ cache:
   directories:
   - "$HOME/cache"
 before_install:
-- wget --directory-prefix=/tmp https://raw.githubusercontent.com/ev3dev/ev3dev-buildscripts/master/pbuilder-ev3dev
-- chmod +x /tmp/pbuilder-ev3dev
-- "/tmp/pbuilder-ev3dev deps"
+- sudo apt-add-repository "deb http://archive.ev3dev.org/ubuntu trusty main"
+- sudo apt-key adv --keyserver pgp.mit.edu --recv-keys D57D95AF93178A7C
+- sudo apt-get update
+- sudo apt-get install --yes pbuilder-ev3dev
 before_script:
-- "/tmp/pbuilder-ev3dev base"
+- pbuilder-ev3dev base
 - git checkout -B ev3dev-$DIST
 script:
-- "/tmp/pbuilder-ev3dev build"
-before_deploy:
-- export LICENSES='"LGPL-2.1", "GPL-2.0", "MIT"'
-- "/tmp/pbuilder-ev3dev dpl"
-deploy:
-  on:
-    tags: true
-  provider: bintray
-  file: "$HOME/bintray.json"
-  user: dlech
-  key:
-    secure: BqVjdNKi3+EKlrc6vmCGTfI5U4VSiDKj3uhsEyRrxERm/ojvIbEfu3YtG2FX4Ug8wJcsHcg6D3+07KsH9HUvgL5JrJ8bxmCAXIAm5MfiMwyfjRoDBOXE0awpn5J4SyfFk/vxk+bVlvSp+fsjWvUrPjuqx7FdA1N4fR/2nEepzkw=
+- pbuilder-ev3dev build
