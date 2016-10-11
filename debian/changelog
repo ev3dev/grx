@@ -1,3 +1,9 @@
+grx (2.99.7) stable; urgency=medium
+
+  * Change package data dir to prevent conflict with grx2
+
+ -- David Lechner <david@lechnology.com>  Mon, 10 Oct 2016 21:43:36 -0500
+
 grx (2.99.6) stable; urgency=medium
 
   * Fix broken dependency on libgrx-fonts
