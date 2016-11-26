@@ -239,7 +239,7 @@ list (SORT LIBRARY_SOURCE_FILES)
 find_package (JPEG REQUIRED)
 
 set (PUBLIC_MODULES glib-2.0 gobject-2.0 gio-2.0)
-set (PRIVATE_MODULES gmodule-2.0 libpng12)
+set (PRIVATE_MODULES gmodule-2.0 libpng)
 pkg_check_modules (GRX_DEPS REQUIRED ${PUBLIC_MODULES} ${PRIVATE_MODULES})
 
 
