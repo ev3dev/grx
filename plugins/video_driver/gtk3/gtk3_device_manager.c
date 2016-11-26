@@ -123,7 +123,12 @@ init (GInitable *initable, GCancellable *cancellable, GError **error)
         return FALSE;
     }
 
+// this function is deprecated in GDK 3.20, but we want to be able to build on
+// both 3.18 (Ubuntu xenial) and 3.20 (Debian stretch)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     priv->gdk_device_manager = gdk_display_get_device_manager (display);
+#pragma GCC diagnostic pop
     if (!priv->gdk_device_manager) {
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                      "Failed to get default GDK device manager");
