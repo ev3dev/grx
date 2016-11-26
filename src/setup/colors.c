@@ -15,6 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <string.h>
+
 #include "colors.h"
 #include "globals.h"
 #include "libgrx.h"

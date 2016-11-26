@@ -15,6 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <string.h>
+
 #include <grx/text.h>
 
 #include "libgrx.h"

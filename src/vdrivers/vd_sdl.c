@@ -27,6 +27,8 @@
  * FIXME: update frame after unlock?
  */
 
+#include <string.h>
+
 #include "libsdl.h"
 #include "libgrx.h"
 #include "grdriver.h"

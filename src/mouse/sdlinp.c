@@ -18,6 +18,8 @@
  * FIXME: win32: Alt-Tab-Alt-Shift-Tab nails the Alt state to unset.
  */
 
+#include <string.h>
+
 #include "libsdl.h"
 #include "libgrx.h"
 #include "grxkeys.h"

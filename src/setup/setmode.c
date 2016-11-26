@@ -19,6 +19,7 @@
 
 #include <ctype.h>
 #include <stdarg.h>
+#include <string.h>
 
 #include "colors.h"
 #include "grx/error.h"
