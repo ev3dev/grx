@@ -21,6 +21,6 @@ target_include_directories (grx_memory
 )
 target_link_libraries (grx_memory ${MEMORY_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
 set_target_properties (grx_memory PROPERTIES
-    OUTPUT_NAME ${LIBRARY_NAME}-plugin-memory
+    OUTPUT_NAME ${LIBRARY_NAME}-vdriver-memory
 )
-install (TARGETS grx_memory LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS grx_memory LIBRARY DESTINATION ${CMAKE_INSTALL_PKGPLUGINDIR})

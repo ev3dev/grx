@@ -27,6 +27,6 @@ target_include_directories (grx_linuxfb
 )
 target_link_libraries (grx_linuxfb ${LINUXFB_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
 set_target_properties (grx_linuxfb PROPERTIES
-    OUTPUT_NAME ${LIBRARY_NAME}-plugin-linuxfb
+    OUTPUT_NAME ${LIBRARY_NAME}-vdriver-linuxfb
 )
-install (TARGETS grx_linuxfb LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS grx_linuxfb LIBRARY DESTINATION ${CMAKE_INSTALL_PKGPLUGINDIR})

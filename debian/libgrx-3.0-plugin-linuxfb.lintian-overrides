@@ -1,4 +1,0 @@
-# Plugins are not regular libraries:
-no-shlibs-control-file
-no-symbols-control-file
-postinst-must-call-ldconfig

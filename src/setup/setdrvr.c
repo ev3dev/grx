@@ -126,18 +126,20 @@ int grx_set_driver(const char *drvspec, GError **error)
                 GModule *plugin;
                 gchar *file_name, module_name[128];
 
-                g_snprintf(module_name, 128, "grx-3.0-plugin-%s", name);
-                file_name = g_module_build_path(NULL, module_name);
+                g_snprintf(module_name, 128, "grx-3.0-vdriver-%s", name);
+                file_name = g_module_build_path(GRX_PLUGIN_PATH, module_name);
                 g_debug("Looking for plugin: %s", file_name);
                 plugin = g_module_open(file_name, G_MODULE_BIND_LAZY);
                 g_free(file_name);
                 if (!plugin) {
+                    g_debug("%s", g_module_error());
                     g_set_error(error, GRX_ERROR, GRX_ERROR_PLUGIN_FILE_NOT_FOUND,
                                 "Could not find video driver plugin '%s'", module_name);
                     return FALSE;
                 }
                 g_snprintf(module_name, 128, "grx_%s_video_driver", name);
                 if (!g_module_symbol(plugin, module_name, (gpointer *)&drv)) {
+                    g_debug("%s", g_module_error());
                     g_set_error(error, GRX_ERROR, GRX_ERROR_PLUGIN_SYMBOL_NOT_FOUND,
                                 "Could not symbol '%s' in plugin '%s'",
                                 module_name, name);
@@ -154,16 +156,18 @@ int grx_set_driver(const char *drvspec, GError **error)
             g_debug("Trying detect");
             // Try to load each video driver plugin
             for (i = 0; driver_names[i]; i++) {
-                g_snprintf(module_name, 128, "grx-3.0-plugin-%s", driver_names[i]);
-                file_name = g_module_build_path(NULL, module_name);
+                g_snprintf(module_name, 128, "grx-3.0-vdriver-%s", driver_names[i]);
+                file_name = g_module_build_path(GRX_PLUGIN_PATH, module_name);
                 g_debug("Looking for plugin: %s", file_name);
                 plugin = g_module_open(file_name, G_MODULE_BIND_LAZY);
                 g_free(file_name);
                 if (!plugin) {
+                    g_debug("%s", g_module_error());
                     continue;
                 }
                 g_snprintf(module_name, 128, "grx_%s_video_driver", driver_names[i]);
                 if (!g_module_symbol(plugin, module_name, (gpointer *)&dp)) {
+                    g_debug("%s", g_module_error());
                     continue;
                 }
                 // Use the plugin with the higest number of modes
