@@ -18,7 +18,10 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
+import gi
+gi.require_version('GLib', '2.0')
 from gi.repository import GLib
+gi.require_version('Grx', '3.0')
 from gi.repository import Grx
 
 
