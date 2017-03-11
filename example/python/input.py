@@ -19,8 +19,6 @@
 #
 
 import gi
-gi.require_version('GLib', '2.0')
-from gi.repository import GLib
 gi.require_version('Grx', '3.0')
 from gi.repository import Grx
 
@@ -40,28 +38,28 @@ class InputApplication(Grx.Application):
         t = event.type
         if t == Grx.EventType.KEY_DOWN or t == Grx.EventType.KEY_UP:
             key_event = event.key
-            print ("key keysym", key_event.keysym)
-            print ("key unichar", key_event.unichar)
-            print ("key code", key_event.code)
+            print("key keysym", key_event.keysym)
+            print("key unichar", key_event.unichar)
+            print("key code", key_event.code)
             if key_event.keysym in (Grx.KEY_q, Grx.KEY_BackSpace, Grx.KEY_Escape):
                 quit()
         elif t == Grx.EventType.BUTTON_PRESS or t == Grx.EventType.BUTTON_RELEASE:
             button_event = event.button
-            print ("button", button_event.button)
+            print("button", button_event.button)
             Grx.clear_screen(Grx.color_info_get_black())
         elif t == Grx.EventType.BUTTON_DOUBLE_PRESS:
             button_event = event.button
-            print ("button double-press", button_event.button)
+            print("button double-press", button_event.button)
         elif t == Grx.EventType.TOUCH_DOWN:
             touch_event = event.touch
             Grx.draw_pixel(touch_event.x, touch_event.y, self.color)
             self.last_touch = (touch_event.x, touch_event.y)
-            print ("touch", touch_event.x, touch_event.y)
+            print("touch", touch_event.x, touch_event.y)
         elif t == Grx.EventType.TOUCH_MOTION:
             touch_event = event.touch
             Grx.draw_line(self.last_touch[0], self.last_touch[1], touch_event.x, touch_event.y, self.color)
             self.last_touch = (touch_event.x, touch_event.y)
 
 if __name__ == '__main__':
-    app = InputApplication();
+    app = InputApplication()
     app.run()
