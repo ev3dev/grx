@@ -390,7 +390,7 @@ find_package (GtkDoc REQUIRED)
 
 file (GLOB INTERNAL_HEADERS */*.h */*/*.h)
 
-configure_file (${CMAKE_SOURCE_DIR}/doc/reference/grx-docs.xml.in
+configure_file (${CMAKE_SOURCE_DIR}/doc/gtkdoc/grx-docs.xml.in
     grx-docs.xml @ONLY)
 
 gtk_doc_add_module (grx
