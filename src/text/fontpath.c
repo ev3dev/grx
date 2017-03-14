@@ -30,7 +30,7 @@
  *
  * Multiple paths are separated by #G_SEARCHPATH_SEPARATOR.
  *
- * If the font path is not set then the value of the 'GRXFONT' environment
+ * If the font path is not set then the value of the 'GRX_FONT_PATH' environment
  * variable is used as the font path.
  */
 void grx_font_set_path(char *p)
