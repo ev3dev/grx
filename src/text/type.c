@@ -51,7 +51,7 @@ extern void grx_font_free(GrxFont *f);
  */
 void grx_font_unref(GrxFont *font)
 {
-    g_return_if_fail(font == NULL);
+    g_return_if_fail(font != NULL);
     g_return_if_fail(font->ref_count == 0);
 
     font->ref_count--;
