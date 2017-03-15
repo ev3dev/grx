@@ -53,7 +53,7 @@ FT_Library grx_get_global_freetype_library(GError **err)
  * Returns: (transfer full) (nullable): the font or %NULL if there was an error
  * such as the font was not found.
  */
-GrxFont *grx_font_load_from_file(const char *name, GError **err)
+GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
 {
     FT_Library library;
     GrxFont *font;

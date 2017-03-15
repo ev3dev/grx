@@ -72,7 +72,7 @@ void grx_font_unref(GrxFont *font)
  *
  * Returns: (transfer none) (nullable): the name
  */
-const gchar *grx_font_get_family(const GrxFont *font)
+const gchar *grx_font_get_family(GrxFont *font)
 {
     g_return_val_if_fail(font != NULL, NULL);
 
@@ -87,7 +87,7 @@ const gchar *grx_font_get_family(const GrxFont *font)
  *
  * Returns: (transfer none) (nullable): the name
  */
-const gchar *grx_font_get_style(const GrxFont *font)
+const gchar *grx_font_get_style(GrxFont *font)
 {
     g_return_val_if_fail(font != NULL, NULL);
 
@@ -102,7 +102,7 @@ const gchar *grx_font_get_style(const GrxFont *font)
  *
  * Returns: the height
  */
-gint grx_font_get_height(const GrxFont *font)
+gint grx_font_get_height(GrxFont *font)
 {
     g_return_val_if_fail(font != NULL, 0);
 
@@ -117,7 +117,7 @@ gint grx_font_get_height(const GrxFont *font)
  *
  * Returns: the width
  */
-gint grx_font_get_width(const GrxFont *font)
+gint grx_font_get_width(GrxFont *font)
 {
     g_return_val_if_fail(font != NULL, 0);
 

@@ -71,25 +71,25 @@ typedef struct _GrxFont GrxFont;
 
 GType grx_font_get_type(void);
 
-GrxFont *grx_font_load_from_file(const char *filename, GError **err);
+GrxFont *grx_font_load_from_file(const gchar *filename, GError **err);
 GrxFont *grx_font_load_full(const gchar *family, gint size, const gchar *style, const gchar *lang, gint dpi, GError **err);
 GrxFont *grx_font_load(const gchar *family, gint size, GError **err);
 
 GrxFont *grx_font_ref(GrxFont *font);
 void grx_font_unref(GrxFont *font);
 
-const gchar *grx_font_get_family(const GrxFont *font);
-const gchar *grx_font_get_style(const GrxFont *font);
-gint grx_font_get_height(const GrxFont *font);
-gint grx_font_get_width(const GrxFont *font);
+const gchar *grx_font_get_family(GrxFont *font);
+const gchar *grx_font_get_style(GrxFont *font);
+gint grx_font_get_height(GrxFont *font);
+gint grx_font_get_width(GrxFont *font);
 
-gint grx_font_dump(const GrxFont *font, GrxContext *context, gint start, GrxColor fg, GrxColor bg);
+gint grx_font_dump(GrxFont *font, GrxContext *context, gint start, GrxColor fg, GrxColor bg);
 
-gint grx_font_get_char_width(const GrxFont *font, gunichar c);
-gint grx_font_get_char_height(const GrxFont *font, gunichar c);
-gint grx_font_get_text_width(const GrxFont *font, const gchar *text);
-gint grx_font_get_text_height(const GrxFont *font, const gchar *text);
+gint grx_font_get_char_width(GrxFont *font, gunichar c);
+gint grx_font_get_char_height(GrxFont *font, gunichar c);
+gint grx_font_get_text_width(GrxFont *font, const gchar *text);
+gint grx_font_get_text_height(GrxFont *font, const gchar *text);
 
-void grx_draw_text(const gchar *text, gint x, gint y, const GrxFont *font, GrxColor fg, GrxColor bg, GrxTextHAlign halign, GrxTextVAlign valign);
+void grx_draw_text(const gchar *text, gint x, gint y, GrxFont *font, GrxColor fg, GrxColor bg, GrxTextHAlign halign, GrxTextVAlign valign);
 
 #endif /* __GRX_TEXT_H__ */

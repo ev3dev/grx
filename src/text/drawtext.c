@@ -29,7 +29,7 @@
 #include "text.h"
 
 
-void grx_draw_text(const gchar *text, gint x, gint y, const GrxFont *font,
+void grx_draw_text(const gchar *text, gint x, gint y, GrxFont *font,
                    GrxColor fg, GrxColor bg,
                    GrxTextHAlign halign, GrxTextVAlign valign)
 {

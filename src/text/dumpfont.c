@@ -42,7 +42,7 @@
  * Returns: the index of the first glyph that was not drawn or -1 if all of the
  * glyphs were drawn
  */
-gint grx_font_dump(const GrxFont *font, GrxContext *context, gint start, GrxColor fg, GrxColor bg)
+gint grx_font_dump(GrxFont *font, GrxContext *context, gint start, GrxColor fg, GrxColor bg)
 {
     FT_Size_Metrics metrics;
     FT_GlyphSlot slot;

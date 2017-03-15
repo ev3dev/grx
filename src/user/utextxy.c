@@ -22,7 +22,7 @@
 #include "libgrx.h"
 #include "usercord.h"
 
-void grx_user_draw_text(const char *text, int x, int y, const GrxFont *font,
+void grx_user_draw_text(const char *text, int x, int y, GrxFont *font,
     GrxColor fg, GrxColor bg, GrxTextHAlign h_align, GrxTextVAlign v_align)
 {
     U2SX(x, CURC);

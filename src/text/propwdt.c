@@ -33,7 +33,7 @@
  *
  * Returns: the width
  */
-gint grx_font_get_char_width(const GrxFont *font, gunichar c)
+gint grx_font_get_char_width(GrxFont *font, gunichar c)
 {
     FT_UInt index;
     FT_Error ret;
@@ -58,7 +58,7 @@ gint grx_font_get_char_width(const GrxFont *font, gunichar c)
  *
  * Returns: the height
  */
-gint grx_font_get_char_height(const GrxFont *font, gunichar c)
+gint grx_font_get_char_height(GrxFont *font, gunichar c)
 {
     FT_UInt index;
     FT_Error ret;
@@ -86,7 +86,7 @@ gint grx_font_get_char_height(const GrxFont *font, gunichar c)
  *
  * Returns: the width
  */
-gint grx_font_get_text_width(const GrxFont *font, const gchar *text)
+gint grx_font_get_text_width(GrxFont *font, const gchar *text)
 {
     FT_UInt index;
     FT_Error ret;
@@ -123,7 +123,7 @@ gint grx_font_get_text_width(const GrxFont *font, const gchar *text)
  *
  * Returns: the height
  */
-gint grx_font_get_text_height(const GrxFont *font, const gchar *text)
+gint grx_font_get_text_height(GrxFont *font, const gchar *text)
 {
     g_return_val_if_fail(font != NULL, 0);
 
