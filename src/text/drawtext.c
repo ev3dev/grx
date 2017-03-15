@@ -29,9 +29,7 @@
 #include "text.h"
 
 
-void grx_draw_text(const gchar *text, gint x, gint y, GrxFont *font,
-                   GrxColor fg, GrxColor bg,
-                   GrxTextHAlign halign, GrxTextVAlign valign)
+void grx_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options)
 {
     FT_GlyphSlot slot;
     GrxContext ctx;
@@ -42,45 +40,46 @@ void grx_draw_text(const gchar *text, gint x, gint y, GrxFont *font,
     FT_Error ret;
 
     g_return_if_fail(text != NULL);
-    g_return_if_fail(font != NULL);
+    g_return_if_fail(options != NULL);
+    g_return_if_fail(options->font != NULL);
 
-    slot = font->face->glyph;
+    slot = options->font->face->glyph;
 
     // FIXME: we are iterating the text multiple times here
-    switch (halign) {
+    switch (options->h_align) {
     case GRX_TEXT_HALIGN_LEFT:
         x_offset = 0;
         break;
     case GRX_TEXT_HALIGN_CENTER:
-        x_offset = grx_font_get_text_width(font, text) / 2;
+        x_offset = grx_font_get_text_width(options->font, text) / 2;
         break;
     case GRX_TEXT_HALIGN_RIGHT:
-        x_offset = grx_font_get_text_width(font, text);
+        x_offset = grx_font_get_text_width(options->font, text);
         break;
     default:
         g_return_if_reached();
     }
 
-    switch (valign) {
+    switch (options->v_align) {
     case GRX_TEXT_VALIGN_TOP:
-        y_offset = font->face->size->metrics.ascender >> 6;
+        y_offset = options->font->face->size->metrics.ascender >> 6;
         break;
     case GRX_TEXT_VALIGN_MIDDLE:
-        y_offset = (font->face->size->metrics.height >> 6) / 2;
+        y_offset = (options->font->face->size->metrics.height >> 6) / 2;
         break;
     case GRX_TEXT_VALIGN_BASELINE:
         y_offset = 0;
         break;
     case GRX_TEXT_VALIGN_BOTTOM:
-        y_offset = font->face->size->metrics.descender >> 6;
+        y_offset = options->font->face->size->metrics.descender >> 6;
         break;
     default:
         g_return_if_reached();
     }
 
     for (; (c = g_utf8_get_char(text)) != '\0'; text = g_utf8_next_char(text)) {
-        index = FT_Get_Char_Index(font->face, c);
-        ret = FT_Load_Glyph(font->face, index, FT_LOAD_DEFAULT);
+        index = FT_Get_Char_Index(options->font->face, c);
+        ret = FT_Load_Glyph(options->font->face, index, FT_LOAD_DEFAULT);
         if (ret) {
             continue;
         }
@@ -99,7 +98,8 @@ void grx_draw_text(const gchar *text, gint x, gint y, GrxFont *font,
                              slot->bitmap.rows, &mem, &ctx);
         grx_bit_blt_1bpp(x + slot->bitmap_left - x_offset,
                          y - slot->bitmap_top + y_offset,  &ctx, 0, 0,
-                         slot->bitmap.width, slot->bitmap.rows,  fg, bg);
+                         slot->bitmap.width, slot->bitmap.rows,
+                         options->fg_color, options->bg_color);
         x += slot->advance.x >> 6;
         y += slot->advance.y >> 6;
     }

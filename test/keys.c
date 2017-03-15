@@ -350,7 +350,10 @@ static int curx = 0, cury = 0;
 
 static void gputc(int c)
 {
+        GrxFont *font;
         char c2[2];
+
+        font = grx_text_options_get_font(white_text_black_bg);
 
         if(c == '\n' || curx + grx_font_get_width(font) > grx_get_width()) {
             cury += grx_font_get_height(font);
@@ -364,8 +367,7 @@ static void gputc(int c)
         if(c != '\n') {
             c2[0] = c;
             c2[1] = 0;
-            grx_draw_text(c2, curx, cury, font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
-                GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+            grx_draw_text(c2, curx, cury, white_text_black_bg);
             curx += grx_font_get_width(font);
         }
 }

@@ -32,7 +32,9 @@ extern void (*testfunc)(void);
 char   exit_message[2000] = { "" };
 int    Argc;
 char **Argv;
-GrxFont *font;
+GrxTextOptions *black_text;
+GrxTextOptions *white_text;
+GrxTextOptions *white_text_black_bg;
 
 #define TESTFUNC(name)      \
 void name(void);        \
@@ -41,6 +43,7 @@ void name(void)
 
 int main(int argc,char **argv)
 {
+        GrxFont *font;
         int  x = 0;
         int  y = 0;
         long c = 0;
@@ -53,6 +56,14 @@ int main(int argc,char **argv)
         if (!font) {
             g_error("%s", error->message);
         }
+
+        black_text = grx_text_options_new(font, GRX_COLOR_BLACK, GRX_COLOR_NONE,
+            GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        white_text = grx_text_options_new(font, GRX_COLOR_WHITE, GRX_COLOR_NONE,
+            GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        white_text_black_bg = grx_text_options_new(font, GRX_COLOR_WHITE,
+            GRX_COLOR_BLACK, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        grx_font_unref(font);
 
         Argc = argc - 1;
         Argv = argv + 1;
@@ -96,7 +107,8 @@ int main(int argc,char **argv)
         if(strlen(exit_message) > 0) {
                 puts(exit_message);
         }
-        grx_font_unref(font);
+        grx_text_options_unref(white_text_black_bg);
+        grx_text_options_unref(white_text);
 
         return 0;
 }

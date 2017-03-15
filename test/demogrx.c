@@ -130,46 +130,46 @@ static ProgTable ptable[NDEMOS] = {
 #define NBUTTONSP1 26
 
 static Button bp1[NBUTTONSP1] = {
-    {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, NULL, "ArcTest", BSTATUS_SELECTED, ID_ARCTEST},
-    {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, NULL, "Bb1Test", 0, ID_BB1TEST},
-    {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, NULL, "BlitTest", 0, ID_BLITTEST},
-    {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, NULL, "CircTest", 0, ID_CIRCTEST},
-    {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, NULL, "ClipTest", 0, ID_CLIPTEST},
-    {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, NULL, "Colorops", 0, ID_COLOROPS},
-    {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, NULL, "CursTest", 0, ID_CURSTEST},
-    {PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, NULL, "ImgTest", 0, ID_IMGTEST},
-    {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, NULL, "JpgTest", 0, ID_JPGTEST},
-    {PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, NULL, "Keys", 0, ID_KEYS},
-    {PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, NULL, "Life", 0, ID_LIFE},
-    {PX1, PY2, 100, 40, IND_BLUE, IND_YELLOW, NULL, "LineTest", 0, ID_LINETEST},
-    {PX1, PY3, 100, 40, IND_BLUE, IND_YELLOW, NULL, "MouseTst", 0, ID_MOUSETST},
-    {PX1, PY4, 100, 40, IND_BLUE, IND_YELLOW, NULL, "PcircTst", 0, ID_PCIRCTST},
-    {PX1, PY5, 100, 40, IND_BLUE, IND_YELLOW, NULL, "PnmTest", 0, ID_PNMTEST},
-    {PX1, PY6, 100, 40, IND_BLUE, IND_YELLOW, NULL, "PngTest", 0, ID_PNGTEST},
-    {PX1, PY7, 100, 40, IND_BLUE, IND_YELLOW, NULL, "PolyTest", 0, ID_POLYTEST},
-    {PX1, PY8, 100, 40, IND_BLUE, IND_YELLOW, NULL, "RgbTest", 0, ID_RGBTEST},
-    {PX2, PY0, 100, 40, IND_BLUE, IND_YELLOW, NULL, "SbcTest", 0, ID_SBCTEST},
-    {PX2, PY1, 100, 40, IND_BLUE, IND_YELLOW, NULL, "ScrolTst", 0, ID_SCROLTST},
-    {PX2, PY2, 100, 40, IND_BLUE, IND_YELLOW, NULL, "SpeedTst", 0, ID_SPEEDTST},
-    {PX2, PY3, 100, 40, IND_BLUE, IND_YELLOW, NULL, "WinClip", 0, ID_WINCLIP},
-    {PX2, PY4, 100, 40, IND_BLUE, IND_YELLOW, NULL, "WinTest", 0, ID_WINTEST},
-    {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, NULL, "Page 2", 0, ID_PAGE2},
-    {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, NULL, "ModeTest", 0, ID_MODETEST},
-    {PX2, PY8, 100, 40, IND_RED, IND_WHITE, NULL, "Exit", 0, ID_EXIT}
+    {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "ArcTest", BSTATUS_SELECTED, ID_ARCTEST},
+    {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Bb1Test", 0, ID_BB1TEST},
+    {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "BlitTest", 0, ID_BLITTEST},
+    {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "CircTest", 0, ID_CIRCTEST},
+    {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "ClipTest", 0, ID_CLIPTEST},
+    {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "Colorops", 0, ID_COLOROPS},
+    {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "CursTest", 0, ID_CURSTEST},
+    {PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, "ImgTest", 0, ID_IMGTEST},
+    {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "JpgTest", 0, ID_JPGTEST},
+    {PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, "Keys", 0, ID_KEYS},
+    {PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Life", 0, ID_LIFE},
+    {PX1, PY2, 100, 40, IND_BLUE, IND_YELLOW, "LineTest", 0, ID_LINETEST},
+    {PX1, PY3, 100, 40, IND_BLUE, IND_YELLOW, "MouseTst", 0, ID_MOUSETST},
+    {PX1, PY4, 100, 40, IND_BLUE, IND_YELLOW, "PcircTst", 0, ID_PCIRCTST},
+    {PX1, PY5, 100, 40, IND_BLUE, IND_YELLOW, "PnmTest", 0, ID_PNMTEST},
+    {PX1, PY6, 100, 40, IND_BLUE, IND_YELLOW, "PngTest", 0, ID_PNGTEST},
+    {PX1, PY7, 100, 40, IND_BLUE, IND_YELLOW, "PolyTest", 0, ID_POLYTEST},
+    {PX1, PY8, 100, 40, IND_BLUE, IND_YELLOW, "RgbTest", 0, ID_RGBTEST},
+    {PX2, PY0, 100, 40, IND_BLUE, IND_YELLOW, "SbcTest", 0, ID_SBCTEST},
+    {PX2, PY1, 100, 40, IND_BLUE, IND_YELLOW, "ScrolTst", 0, ID_SCROLTST},
+    {PX2, PY2, 100, 40, IND_BLUE, IND_YELLOW, "SpeedTst", 0, ID_SPEEDTST},
+    {PX2, PY3, 100, 40, IND_BLUE, IND_YELLOW, "WinClip", 0, ID_WINCLIP},
+    {PX2, PY4, 100, 40, IND_BLUE, IND_YELLOW, "WinTest", 0, ID_WINTEST},
+    {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 2", 0, ID_PAGE2},
+    {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
+    {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
 };
 
 #define NBUTTONSP2  9
 
 static Button bp2[NBUTTONSP2] = {
-    {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, NULL, "FontTest", BSTATUS_SELECTED, ID_FONTTEST},
-    {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, NULL, "TextPatt", 0, ID_TEXTPATT},
-    {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, NULL, "FontDemo1", 0, ID_FNTDEMO1},
-    {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, NULL, "FontDemo2", 0, ID_FNTDEMO2},
-    {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, NULL, "FontDemo3", 0, ID_FNTDEMO3},
-    {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, NULL, "FontDemo4", 0, ID_FNTDEMO4},
-    {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, NULL, "Page 1", 0, ID_PAGE1},
-    {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, NULL, "ModeTest", 0, ID_MODETEST},
-    {PX2, PY8, 100, 40, IND_RED, IND_WHITE, NULL, "Exit", 0, ID_EXIT}
+    {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "FontTest", BSTATUS_SELECTED, ID_FONTTEST},
+    {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "TextPatt", 0, ID_TEXTPATT},
+    {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo1", 0, ID_FNTDEMO1},
+    {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo2", 0, ID_FNTDEMO2},
+    {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo3", 0, ID_FNTDEMO3},
+    {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo4", 0, ID_FNTDEMO4},
+    {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 1", 0, ID_PAGE1},
+    {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
+    {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
 };
 
 static Button_Group bgp1 = { 20, 30, bp1, NBUTTONSP1, 0, 0 };
@@ -317,26 +317,30 @@ static void ini_objects(void)
 {
     int i;
 
-    grf_std = grx_font_load("lucida", 21, NULL);
+    grf_std = grx_font_load("lucida", 16, NULL);
     if (grf_std == NULL) {
-        disaster("lucida 21 not found");
+        disaster("lucida 16 not found");
     }
 
-    grf_big = grx_font_load("lucida", 40, NULL);
+    grf_big = grx_font_load("lucida", 24, NULL);
     if (grf_big == NULL) {
-        disaster("lucida 40 not found");
+        disaster("lucida 24 not found");
     }
 
-    grf_btn = grx_font_load("lucida", 14, NULL);
+    grf_btn = grx_font_load("lucida", 12, NULL);
     if (grf_btn == NULL) {
-        disaster("lucida 14 not found");
+        disaster("lucida 12 not found");
     }
 
     for (i = 0; i < NBUTTONSP1; i++) {
-        bp1[i].font = grf_btn;
+        bp1[i].text_opt = grx_text_options_new(grf_btn,
+            egacolors[bp1[i].tfcolor], egacolors[bp1[i].tbcolor],
+            GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
     for (i = 0; i < NBUTTONSP2; i++) {
-        bp2[i].font = grf_btn;
+        bp2[i].text_opt = grx_text_options_new(grf_btn,
+            egacolors[bp2[i].tfcolor], egacolors[bp2[i].tbcolor],
+            GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
 }
 
@@ -367,30 +371,37 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
+    static GrxTextOptions *text_opt;
     char *t1 = "GRX 2.4.9";
     char *t2 = "test programs launcher";
 
-    grx_draw_text(t1, 0 + x, 0 + y, grf_big, LIGHTGREEN, GRX_COLOR_NONE,
-        GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
+    if (!text_opt) {
+        text_opt = grx_text_options_new(grf_big, LIGHTGREEN, GRX_COLOR_NONE,
+            GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
+    }
 
-    grx_draw_text(t2, 0 + x, 40 + y, grf_std, LIGHTGREEN, GRX_COLOR_NONE,
-        GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
+    grx_draw_text(t1, 0 + x, 0 + y, text_opt);
+    grx_draw_text(t2, 0 + x, 40 + y, text_opt);
 }
 
 /************************************************************************/
 
 static void the_info(int x, int y)
 {
+    static GrxTextOptions *text_opt;
     char aux[81];
 
+    if (!text_opt) {
+        text_opt = grx_text_options_new(grf_std, CYAN, GRX_COLOR_NONE,
+            GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
+    }
+
     sprintf(aux, "VideoDriver: %s", grx_get_current_video_driver()->name);
-    grx_draw_text(aux, 0 + x, 25 + y, grf_std, CYAN, GRX_COLOR_NONE,
-        GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
+    grx_draw_text(aux, 0 + x, 25 + y, text_opt);
 
     sprintf(aux, "Mode: %dx%d %d bpp", grx_get_current_video_mode()->width,
             grx_get_current_video_mode()->height, grx_get_current_video_mode()->bpp);
-    grx_draw_text(aux, 0 + x, 50 + y, grf_std, CYAN, GRX_COLOR_NONE,
-        GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
+    grx_draw_text(aux, 0 + x, 50 + y, text_opt);
 }
 
 /************************************************************************/
@@ -464,10 +475,16 @@ static int pev_select(Event * ev)
 
 static void paint_foot(char *s)
 {
+    static GrxTextOptions *text_opt;
+
+    if (!text_opt) {
+        text_opt  = grx_text_options_new(grf_std, LIGHTGREEN, GRX_COLOR_NONE,
+            GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
+    }
+
     grx_set_clip_box(10, 440, 630, 470);
     grx_clear_clip_box(CYAN);
-    grx_draw_text(s, 320, 455, grf_std, LIGHTGREEN, GRX_COLOR_NONE,
-        GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
+    grx_draw_text(s, 320, 455, text_opt);
     grx_reset_clip_box();
 }
 
@@ -477,10 +494,13 @@ static void paint_animation(void)
 {
     static int pos = 620;
     static int ini = 0;
+    static GrxTextOptions *text_opt;
     static GrxContext *grc;
     int wtext;
 
     if (!ini) {
+        text_opt = grx_text_options_new(grf_std, CYAN, GRX_COLOR_NONE,
+            GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_MIDDLE);
         grc = grx_context_new(620, 30, NULL, NULL);
         if (grc == NULL)
             return;
@@ -491,8 +511,7 @@ static void paint_animation(void)
 
     grx_set_current_context(grc);
     grx_clear_context(DARKGRAY);
-    grx_draw_text(animatedtext, pos, 15, grf_std, CYAN, GRX_COLOR_NONE,
-        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_MIDDLE);
+    grx_draw_text(animatedtext, pos, 15, text_opt);
     grx_set_current_context(grcglob);
     grx_bit_blt(10, 8, grc, 0, 0, 629, 29, GRX_COLOR_MODE_WRITE);
 

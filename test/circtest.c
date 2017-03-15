@@ -93,6 +93,6 @@ TESTFUNC(circtest)
             g_usleep(200*1000);
         }
 
-        grx_draw_text("press any key to continue",0,0,font,GRX_COLOR_WHITE,GRX_COLOR_BLACK,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
+        grx_draw_text("press any key to continue",0,0,white_text_black_bg);
         GrKeyRead();
 }

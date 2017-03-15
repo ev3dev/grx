@@ -30,15 +30,22 @@
 
 int main(void)
 {
-  GrxFont *font;
+  GrxTextOptions *text_opt;
   GrxContext *grc;
   int wide, high, maxval;
   char s[81];
   GError *error = NULL;
 
-  font = grx_font_load(NULL, -1, &error);
-  if (!font) {
-    g_error("%s", error->message);
+  {
+    GrxFont *font;
+
+    font = grx_font_load(NULL, -1, &error);
+    if (!font) {
+        g_error("%s", error->message);
+    }
+    text_opt = grx_text_options_new(font, GRX_COLOR_BLACK, GRX_COLOR_WHITE,
+        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+    grx_font_unref(font);
   }
 
   if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,&error,640,480,32768)) {
@@ -46,39 +53,36 @@ int main(void)
   }
   grx_check_pnm_file( FIMAGEPPM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPPM,wide,high );
-  grx_draw_text(s, 10,20,font,GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text(s, 10, 20, text_opt);
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPPM );
   grx_save_current_context_to_pgm( grc,FIMAGEPGM,"TestPnm" );
   grx_context_unref( grc );
-  grx_draw_text("Press any key to continue", 10,50+high,font,
-      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text("Press any key to continue", 10, 50+high, text_opt);
   GrKeyRead();
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_check_pnm_file( FIMAGEPGM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPGM,wide,high );
-  grx_draw_text(s, 10,20,font,GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text(s, 10, 20, text_opt);
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPGM );
   grx_context_unref( grc );
-  grx_draw_text("Press any key to continue", 10,50+high,font,
-      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text("Press any key to continue", 10, 50+high, text_opt);
   GrKeyRead();
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_check_pnm_file( FIMAGEPBM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPBM,wide,high );
-  grx_draw_text(s, 10,20,font,GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text(s, 10, 20, text_opt);
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPBM );
   grx_save_current_context_to_pbm( grc,FIMAGEPBM2,"TestPnm" );
   grx_context_unref( grc );
-  grx_draw_text("Press any key to continue", 10,50+high,font,
-      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text("Press any key to continue", 10, 50+high, text_opt);
   GrKeyRead();
 
   grx_clear_screen( GRX_COLOR_BLACK );
@@ -97,23 +101,21 @@ int main(void)
   grc = grx_context_new_subcontext( 211,241,211+wide-1,241+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPBM2 );
   grx_context_unref( grc );
-  grx_draw_text("Press any key to save screen", 10,20,font,
-      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text("Press any key to save screen", 10, 20, text_opt);
   GrKeyRead();
 
   grx_save_current_context_to_ppm( NULL,FSCREEN,"TestPnm" );
   grx_clear_screen( GRX_COLOR_WHITE );
-  grx_draw_text("Press any key to reload screen", 10,20,font,
-      GRX_COLOR_WHITE,GRX_COLOR_BLACK,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text("Press any key to reload screen", 10, 20, text_opt);
   GrKeyRead();
 
   grx_context_load_from_pnm( NULL,FSCREEN );
-  grx_draw_text("Press any key to end        ", 10,20,font,
-      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text("Press any key to end        ", 10, 20, text_opt);
   GrKeyRead();
 
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
-  grx_font_unref(font);
+
+  grx_text_options_unref(text_opt);
 
   return 0;
 }

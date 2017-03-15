@@ -23,11 +23,15 @@
 
 TESTFUNC(mousetest)
 {
+        GrxTextOptions *text_opt;
         GrMouseEvent evt;
         GrxColor bgc = grx_color_info_alloc_color(0,0,128);
         GrxColor fgc = grx_color_info_alloc_color(255,255,0);
         int  testmotion = 0;
         int  ii,mode;
+
+        text_opt = grx_text_options_new(grx_text_options_get_font(white_text),
+            GRX_COLOR_WHITE, bgc, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
 
         if(GrMouseDetect()) {
             GrMouseEventMode(1);
@@ -39,9 +43,7 @@ TESTFUNC(mousetest)
             mode = GR_M_CUR_NORMAL;
             grx_draw_text(
                 "Commands: 'N' -- next mouse mode, 'Q' -- exit",
-                10,(grx_get_screen_height() - 20), font,
-                grx_color_info_get_white(), bgc,
-                GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP
+                10,(grx_get_screen_height() - 20), text_opt
             );
             for( ; ; ) {
                 char msg[200];
@@ -71,8 +73,7 @@ TESTFUNC(mousetest)
                     );
                     sprintf(mend,"deltaT=%ld (ms)",evt.dtime);
                     strcpy (mend,"                         ");
-                    grx_draw_text(msg,10,(grx_get_screen_height() - 40),font,
-                        grx_color_info_get_white(),bgc,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
+                    grx_draw_text(msg,10,(grx_get_screen_height() - 40),text_opt);
                     testmotion = evt.buttons ? GR_M_MOTION : 0;
                 }
                 if(evt.flags & GR_M_KEYPRESS) {
@@ -103,11 +104,9 @@ TESTFUNC(mousetest)
             grx_clear_screen(bgc);
             ii = 0;
             mode = GR_M_CUR_NORMAL;
-            grx_draw_text(
-                "Sorry, no mouse found !",
-                (grx_get_screen_width()/3),(grx_get_screen_height() - 20), font,
-                grx_color_info_get_white(), bgc,
-                GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP
-            );
+            grx_draw_text("Sorry, no mouse found !",grx_get_screen_width()/3,
+                grx_get_screen_height() - 20, text_opt);
         }
+
+        grx_text_options_unref(text_opt);
 }

@@ -30,6 +30,15 @@ struct _GrxFont {
     guint ref_count;
 };
 
+struct _GrxTextOptions {
+    GrxFont *font;
+    GrxColor fg_color;
+    GrxColor bg_color;
+    GrxTextHAlign h_align;
+    GrxTextVAlign v_align;
+    guint ref_count;
+};
+
 typedef void (*TextDrawBitmapFunc)(int x,int y,int w,int h,int ox, int oy,
                                    unsigned char *bmp,int pitch,int start,
                                    GrxColor fg,GrxColor bg,GrxPattern *p);

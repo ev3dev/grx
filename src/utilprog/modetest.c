@@ -25,7 +25,7 @@
 
 #include "../../test/drawing.h"
 
-static GrxFont *font;
+static GrxTextOptions *text_opt;
 
 static void PrintInfo(void)
 {
@@ -38,7 +38,7 @@ static void PrintInfo(void)
         grx_font_get_string_width(&grx_font_default, aux, strlen(aux), GRX_CHAR_TYPE_BYTE)) / 2;
     y = (grx_get_max_y() -
         grx_font_get_string_height(&grx_font_default, aux, strlen(aux), GRX_CHAR_TYPE_BYTE)) / 2;
-    grx_draw_text(aux, x, y, font, GRX_COLOR_WHITE, GRX_COLOR_BLACK, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+    grx_draw_text(aux, x, y, text_opt);
 }
 
 typedef struct {
@@ -140,6 +140,7 @@ void PrintModes(void) {
 
 int main(void)
 {
+        GrxFont *font;
         static int firstgr = 1;
         GError *error = NULL;
 
@@ -147,6 +148,10 @@ int main(void)
         if (!font) {
             g_error("%s", error->message);
         }
+
+        text_opt = grx_text_options_new(font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
+                                        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        grx_font_unref(font);
 
         grx_set_driver(NULL, NULL);
         if(grx_get_current_video_driver() == NULL) {
@@ -244,7 +249,7 @@ int main(void)
             GrKeyRead();
         }
 
-        grx_font_unref(font);
+        grx_text_options_unref(text_opt);
 
         return 0;
 }

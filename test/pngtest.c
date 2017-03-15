@@ -21,7 +21,7 @@
 #include "grx-3.0.h"
 #include "grxkeys.h"
 
-static GrxFont *font;
+static GrxTextOptions *text_opt;
 
 void imagen( char *nf )
 {
@@ -46,14 +46,14 @@ void imagen( char *nf )
   grx_context_load_from_png( grc,nf,1 );
   grx_context_unref( grc );
 
-  grx_draw_text( s,10,10,font,GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
-  grx_draw_text( "Press any key to continue",10,50+high,font,
-      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text( s,10,10,text_opt );
+  grx_draw_text( "Press any key to continue",10,50+high,text_opt );
   GrKeyRead();
 }
 
 void nopngsupport( void )
 {
+  GrxTextOptions *text_opt2;
   char *s[6] = {
     "Warning!",
     "You need libpng (http://www.libpng.org/pub/png/libpng.html)",
@@ -64,9 +64,12 @@ void nopngsupport( void )
   int i;
 
   grx_clear_screen( grx_color_info_alloc_color( 0,0,100 ) );
+  text_opt = grx_text_options_new( grx_text_options_get_font( text_opt ),
+      GRX_COLOR_WHITE,GRX_COLOR_NONE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   for( i=0; i<6; i++ )
-    grx_draw_text( s[i],90,160+i*18,font,GRX_COLOR_WHITE,GRX_COLOR_NONE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+    grx_draw_text( s[i],90,160+i*18,text_opt2 );
   GrKeyRead();
+  grx_text_options_unref(text_opt2);
 }
 
 
@@ -75,9 +78,16 @@ int main()
   GrxContext *grc;
   GError *error = NULL;
 
-  font = grx_font_load(NULL, -1, &error);
-  if (!font) {
-    g_error("%s", error->message);
+  {
+    GrxFont *font;
+
+    font = grx_font_load(NULL, -1, &error);
+    if (!font) {
+      g_error("%s", error->message);
+    }
+    text_opt = grx_text_options_new(font,GRX_COLOR_BLACK,GRX_COLOR_WHITE,
+        GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
+    grx_font_unref(font);
   }
 
   if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,&error,640,480,24)) {
@@ -102,21 +112,20 @@ int main()
   grx_context_load_from_png( grc,"pngcompo.png",1 );
   grx_context_unref( grc );
 
-  grx_draw_text( "Press any key to save screen",10,10,font,
-      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text( "Press any key to save screen",10,10,text_opt );
   GrKeyRead();
   grx_save_current_context_to_png( NULL,"output.png" );
 
   grx_clear_screen( GRX_COLOR_BLACK );
-  grx_draw_text( "Press any key to reload screen",10,10,font,
-      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text( "Press any key to reload screen",10,10,text_opt );
   GrKeyRead();
   grx_context_load_from_png( NULL,"output.png",0 );
 
-  grx_draw_text( "Press any key to end          ",10,10,font,
-      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text( "Press any key to end          ",10,10,text_opt );
   GrKeyRead();
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
-  grx_font_unref(font);
+
+  grx_text_options_unref(text_opt);
+
   return 0;
 }

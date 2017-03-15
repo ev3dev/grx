@@ -24,6 +24,7 @@ int main(void)
 {
   GrxContext *pContext;
   GrxFont *font;
+  GrxTextOptions *text_opt;
   int sizex = 40;
   int sizey = 40;
   int x = 0;
@@ -36,6 +37,9 @@ int main(void)
   if (!font) {
     g_error("%s", error->message);
   }
+  text_opt = grx_text_options_new(font,GRX_COLOR_WHITE,GRX_COLOR_NONE,
+      GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
+
   if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT, &error)) {
     g_error("%s", error->message);
   }
@@ -51,7 +55,7 @@ int main(void)
   fcolor = grx_color_info_alloc_color( 255,0,0 );
   bcolor = grx_color_info_alloc_color( 0,0,255 );
   grx_draw_text("Type u d l r U D L R to move, 1 2 to change color, q to quit",
-           0,0,font,GRX_COLOR_WHITE,GRX_COLOR_NONE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
+      0,0,text_opt);
   grx_set_clip_box(0, 40, grx_get_screen_width(), grx_get_screen_height());
 
   /* Put the bitmap into the screen */
@@ -86,6 +90,7 @@ int main(void)
 
   /* Destroy */
   grx_context_unref(pContext);
+  grx_text_options_unref(text_opt);
   grx_font_unref(font);
 
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);

@@ -756,7 +756,18 @@ namespace Grx {
         public int get_text_height (string? text);
     }
 
-    public void draw_text (string text, int x, int y, Font font, Color fg, Color bg, TextHAlign h_align, TextVAlign v_align);
+    [CCode (copy_function = "grx_text_options_ref", free_function = "grx_text_options_unref")]
+    [Compact]
+    public class TextOptions {
+        public static TextOptions new(Font font, Color fg, Color bg, TextHAlign h_align, TextVAlign v_align);
+        public Font font { get; }
+        public Color fg_color { get; }
+        public Color bg_color { get; }
+        public TextHAlign h_align { get; }
+        public TextVAlign v_align { get; }
+    }
+
+    public void draw_text (string text, int x, int y, TextOptions options);
 
     /* ================================================================== */
     /*            THICK AND DASHED LINE DRAWING PRIMITIVES                */

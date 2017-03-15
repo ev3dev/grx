@@ -127,6 +127,7 @@ set (LIBRARY_SOURCE_FILES
     text/drawtext.c
     text/dumpfont.c
     text/loadfont.c
+    text/options.c
     text/propwdt.c
     text/type.c
     user/ubox.c

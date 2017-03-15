@@ -80,6 +80,8 @@ gvmode *grmodes = NULL;
 gvmode *rammodes = NULL;
 #endif
 
+static GrxTextOptions *text_opt;
+
 /* No of Points [(x,y) pairs]. Must be multiple of 2*3=6 */
 #define PAIRS 4200
 
@@ -183,17 +185,11 @@ void Message(int disp, char *txt, gvmode *gp) {
 
   if (disp) {
     GrxContext save;
-    GrxFont *font;
 
     grx_save_current_context(&save);
     grx_set_current_context(NULL);
-    font = grx_font_load(NULL, -1, NULL);
-    // FIXME: should handle error here
-    grx_draw_text(msg, 0, 0, font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
-        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
-    grx_draw_text(txt, 0, 10, font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
-        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
-    grx_font_unref(font);
+    grx_draw_text(msg, 0, 0, text_opt);
+    grx_draw_text(txt, 0, 10, text_opt);
     grx_set_current_context(&save);
   }
 }
@@ -731,7 +727,17 @@ void PrintModes(void) {
 
 int main(int argc, char **argv)
 {
+        GrxFont *font;
+        GError *err = NULL;
         int  i;
+
+        font = grx_font_load(NULL, -1, &err);
+        if (!font) {
+          g_error("%s", err->message);
+        }
+        text_opt = grx_text_options_new(font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
+                                        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        grx_font_unref(font);
 
         grmodes = malloc(MAX_MODES*sizeof(gvmode));
         assert(grmodes!=NULL);
@@ -831,5 +837,8 @@ done:
 #endif
             fclose(log);
         }
+
+        grx_text_options_unref(text_opt);
+
         return(0);
 }

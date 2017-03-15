@@ -114,6 +114,7 @@ typedef enum {
 } GrxTextVAlign;
 
 typedef struct _GrxFont GrxFont;
+typedef struct _GrxTextOptions GrxTextOptions;
 
 GType grx_font_get_type(void);
 
@@ -137,6 +138,16 @@ gint grx_font_get_char_height(GrxFont *font, gunichar c);
 gint grx_font_get_text_width(GrxFont *font, const gchar *text);
 gint grx_font_get_text_height(GrxFont *font, const gchar *text);
 
-void grx_draw_text(const gchar *text, gint x, gint y, GrxFont *font, GrxColor fg, GrxColor bg, GrxTextHAlign halign, GrxTextVAlign valign);
+void grx_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options);
+
+GType grx_text_options_get_type(void);
+GrxTextOptions *grx_text_options_new(GrxFont *font, GrxColor fg, GrxColor bg, GrxTextHAlign h_align, GrxTextVAlign v_align);
+GrxTextOptions *grx_text_options_ref(GrxTextOptions *options);
+void grx_text_options_unref(GrxTextOptions *options);
+GrxFont *grx_text_options_get_font(GrxTextOptions *options);
+GrxColor grx_text_options_get_fg_color(GrxTextOptions *options);
+GrxColor grx_text_options_get_bg_color(GrxTextOptions *options);
+GrxTextHAlign grx_text_options_get_h_align(GrxTextOptions *options);
+GrxTextVAlign grx_text_options_get_v_align(GrxTextOptions *options);
 
 #endif /* __GRX_TEXT_H__ */

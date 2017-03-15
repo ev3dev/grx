@@ -208,8 +208,7 @@ void hide_mouse( void )
 
 /**************************************************************************/
 
-void dboton( int x, int y, int an, int al,
-             GrxColor c, GrxColor ct, GrxFont * font, char * s, int t )
+void dboton(int x, int y, int an, int al, GrxTextOptions *to, char *s, int t)
 
 //   x, y posici�n de la esquina izquierda
 //   an, al ancho y alto
@@ -249,15 +248,16 @@ void dboton( int x, int y, int an, int al,
   grx_draw_filled_polygon( 7,pol,pulsd ? LIGHTGRAY : DARKGRAY );
   grx_draw_polygon( 7,pol,BLACK );
   grx_draw_line( pol[0].x,pol[0].y,pol[3].x,pol[3].y,BLACK );
-  grx_draw_filled_box( x+2+prof,y+2+prof,x+an-3-prof,y+al-3-prof,c );
+  grx_draw_filled_box( x+2+prof,y+2+prof,x+an-3-prof,y+al-3-prof,
+    grx_text_options_get_bg_color(to) );
 
   if( despl )
-    grx_draw_text( s,x+an/2+1,y+al/2+1,font,ct,GRX_COLOR_NONE,GRX_TEXT_HALIGN_CENTER,GRX_TEXT_VALIGN_MIDDLE );
+    grx_draw_text( s,x+an/2+1,y+al/2+1,to );
   else
-    grx_draw_text( s,x+an/2,y+al/2,font,ct,GRX_COLOR_NONE,GRX_TEXT_HALIGN_CENTER,GRX_TEXT_VALIGN_MIDDLE );
+    grx_draw_text( s,x+an/2,y+al/2,to );
 
   if( selec ){
-    glo.color = ct;
+    glo.color = grx_text_options_get_fg_color( to );
     glo.width = 1;
     glo.n_dash_patterns = 2;
     glo.dash_patterns = "\2\1";
@@ -271,9 +271,7 @@ void dboton( int x, int y, int an, int al,
 
 void paint_button( int x, int y, Button *b )
 {
-  dboton( x+b->x,y+b->y,b->wide,b->high,
-          egacolors[b->tbcolor],egacolors[b->tfcolor],b->font,
-          b->text,b->status );
+  dboton( x+b->x,y+b->y,b->wide,b->high,b->text_opt,b->text,b->status );
 }
 
 /**************************************************************************/

@@ -90,10 +90,11 @@ typedef struct{
   int x, y;                   // left upper coordinates
   int wide, high;             // what do you mean
   int tbcolor, tfcolor;       // text background, foreground, ind colors
-  GrxFont *font;             // the font
   char *text;                 // the text
   int status;                 // see BSTATUS defs
   int bid;                    // button id
+  // fields below are dynamically assigned
+  GrxTextOptions *text_opt;   // text options
   } Button;
 
 void paint_button( int x, int y, Button *b );

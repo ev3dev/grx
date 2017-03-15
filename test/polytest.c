@@ -103,14 +103,13 @@ static void speedtest(void)
             pts[3].y += sy;
         }
         t3 = g_get_monotonic_time();
-        grx_draw_text( "Times to scan 1024 polygons",0, 0,font, white, black,
-                           GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        grx_draw_text("Times to scan 1024 polygons", 0, 0, white_text_black_bg);
         sprintf(msg, "   with 'grx_draw_filled_polygon': %.2f (s)",
                (double)(t2 - t1) / (double)1000000);
-        grx_draw_text( msg,0, 18,font, white, black, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        grx_draw_text(msg, 0, 18, white_text_black_bg);
         sprintf(msg, "   with 'grx_draw_filled_convex_polygon': %.2f (s)",
                (double)(t3 - t2) / (double)1000000);
-        grx_draw_text( msg,0, 36,font, white, black, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        grx_draw_text(msg, 0, 36, white_text_black_bg);
 }
 
 TESTFUNC(ptest)
