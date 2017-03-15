@@ -185,21 +185,21 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, const gchar *style,
     }
 
     pattern = FcPatternCreate();
-    FcPatternAddBool(pattern, "scalable", FcFalse);
+    FcPatternAddBool(pattern, FC_SCALABLE, FcFalse);
     if (family) {
-        FcPatternAddString(pattern, "family", (FcChar8 *)family);
+        FcPatternAddString(pattern, FC_FAMILY, (FcChar8 *)family);
     }
     if (size >= 0) {
-        FcPatternAddInteger(pattern, "pixelsize", size);
+        FcPatternAddInteger(pattern, FC_PIXEL_SIZE, size);
     }
     if (style) {
-        FcPatternAddString(pattern, "style", (FcChar8 *)style);
+        FcPatternAddString(pattern, FC_STYLE, (FcChar8 *)style);
     }
     if (lang) {
-        FcPatternAddString(pattern, "lang", (FcChar8 *)lang);
+        FcPatternAddString(pattern, FC_LANG, (FcChar8 *)lang);
     }
     if (dpi >= 0) {
-        FcPatternAddInteger(pattern, "dpi", dpi);
+        FcPatternAddInteger(pattern, FC_DPI, dpi);
     }
     g_debug("searching for pattern: %s", FcNameUnparse(pattern));
 
