@@ -57,6 +57,8 @@ void grx_draw_text(const gchar *text, gint x, gint y, const GrxFont *font,
     case GRX_TEXT_HALIGN_RIGHT:
         x_offset = grx_font_get_text_width(font, text);
         break;
+    default:
+        g_return_if_reached();
     }
 
     switch (valign) {
@@ -72,6 +74,8 @@ void grx_draw_text(const gchar *text, gint x, gint y, const GrxFont *font,
     case GRX_TEXT_VALIGN_BOTTOM:
         y_offset = font->face->size->metrics.descender >> 6;
         break;
+    default:
+        g_return_if_reached();
     }
 
     for (; (c = g_utf8_get_char(text)) != '\0'; text = g_utf8_next_char(text)) {
