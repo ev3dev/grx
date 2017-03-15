@@ -46,6 +46,44 @@
  */
 
 /**
+ * GrxFontWeight:
+ * GRX_FONT_WEIGHT_REGULAR: regular font
+ * GRX_FONT_WEIGHT_BOLD: bold font
+ *
+ * Describes the weight of the font.
+ */
+typedef enum {
+    GRX_FONT_WEIGHT_REGULAR,
+    GRX_FONT_WEIGHT_BOLD,
+} GrxFontWeight;
+
+/**
+ * GrxFontSlant:
+ * GRX_FONT_SLANT_REGULAR: regular font
+ * GRX_FONT_SLANT_ITALIC: italic font
+ *
+ * Describes the slant of the font.
+ */
+typedef enum {
+    GRX_FONT_SLANT_REGULAR,
+    GRX_FONT_SLANT_ITALIC,
+} GrxFontSlant;
+
+/**
+ * GrxFontWidth:
+ * GRX_FONT_WIDTH_NARROW: narrow font
+ * GRX_FONT_WIDTH_REGULAR: regular font
+ * GRX_FONT_WIDTH_WIDE: wide font
+ *
+ * Describes the slant of the font.
+ */
+typedef enum {
+    GRX_FONT_WIDTH_NARROW,
+    GRX_FONT_WIDTH_REGULAR,
+    GRX_FONT_WIDTH_WIDE,
+} GrxFontWidth;
+
+/**
  * GrxTextHAlign:
  * @GRX_TEXT_HALIGN_LEFT: align text on the left
  * @GRX_TEXT_HALIGN_CENTER: align text in the center
@@ -80,7 +118,8 @@ typedef struct _GrxFont GrxFont;
 GType grx_font_get_type(void);
 
 GrxFont *grx_font_load_from_file(const gchar *filename, GError **err);
-GrxFont *grx_font_load_full(const gchar *family, gint size, const gchar *style, const gchar *lang, gint dpi, GError **err);
+GrxFont *grx_font_load_full(const gchar *family, gint size, GrxFontWeight weight,
+    GrxFontSlant slant, GrxFontWidth width, gboolean monospace, const gchar *lang, GError **err);
 GrxFont *grx_font_load(const gchar *family, gint size, GError **err);
 
 GrxFont *grx_font_ref(GrxFont *font);

@@ -720,22 +720,43 @@ namespace Grx {
         BASELINE
     }
 
+    [CCode (has_type_id = false)]
+    public enum FontWeight {
+        REGULAR,
+        BOLD
+    }
+
+    [CCode (has_type_id = false)]
+    public enum FontSlant {
+        REGULAR,
+        ITALIC
+    }
+
+    [CCode (has_type_id = false)]
+    public enum FontWidth {
+        NARROW,
+        REGULAR,
+        WIDE
+    }
+
     [CCode (copy_function = "grx_font_ref", free_function = "grx_font_unref")]
     [Compact]
     public class Font {
-        public static Font load_from_file(string filename) throws GLib.Error;
+        public static Font load_from_file (string filename) throws GLib.Error;
         [CCode (cname = "grx_font_load_full")]
-        public static Font load(string? family = null, int size = -1, string? style = null, string? lang = null, int dpi = -1) throws GLib.Error;
+        public static Font load (string? family = null, int size = -1, FontWeight weight = FontWeight.REGULAR,
+            FontSlant slant = FontSlant.REGULAR, FontWidth width = FontWidth.REGULAR, bool monospace = false,
+            string? lang = null) throws GLib.Error;
         public unowned string family { get; }
         public unowned string style { get; }
-        public int dump(Context context, int start, Color fg, Color bg);
-        public int get_char_width(uint32 c);
-        public int get_char_height(uint32 c);
-        public int get_text_width(string? text);
-        public int get_text_height(string? text);
+        public int dump (Context context, int start, Color fg, Color bg);
+        public int get_char_width (uint32 c);
+        public int get_char_height (uint32 c);
+        public int get_text_width (string? text);
+        public int get_text_height (string? text);
     }
 
-    public void draw_text (string text, int x, int y, Font font, Color fg, Color bg, TextHAlign hAlign, TextVAlign vAlign);
+    public void draw_text (string text, int x, int y, Font font, Color fg, Color bg, TextHAlign h_align, TextVAlign v_align);
 
     /* ================================================================== */
     /*            THICK AND DASHED LINE DRAWING PRIMITIVES                */

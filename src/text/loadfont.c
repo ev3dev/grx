@@ -159,10 +159,12 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
 /**
  * grx_font_load_full:
  * @family: (nullable): the font family name or %NULL
- * @style: (nullable): the font style or %NULL
+ * @size: the preferred size in points or -1 for any size
+ * @weight: the font weight (e.g. bold) or -1 for any weight
+ * @slant: the font slant (e.g. italic) or -1 for any slant
+ * @width: the font width (e.g. narrow) or -1 for any width
+ * @monospace: set to %TRUE to prefer a monospace font
  * @lang: (nullable): the language or %NULL
- * @size: the preferred size or -1 for any size
- * @dpi: the preferred dpi or -1 for any dpi
  * @err: pointer to hold an error
  *
  * Loads the font that best matches the parameters.
@@ -171,8 +173,9 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
  *
  * Returns: (transfer full) (nullable): the font or %NULL if there was an error
  */
-GrxFont *grx_font_load_full(const gchar *family, gint size, const gchar *style,
-                            const gchar *lang, gint dpi, GError **err)
+GrxFont *grx_font_load_full(const gchar *family, gint size, GrxFontWeight weight,
+                            GrxFontSlant slant, GrxFontWidth width,
+                            gboolean monospace, const gchar *lang, GError **err)
 {
     FcPattern *pattern, *match;
     FcResult result;
@@ -190,16 +193,40 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, const gchar *style,
         FcPatternAddString(pattern, FC_FAMILY, (FcChar8 *)family);
     }
     if (size >= 0) {
-        FcPatternAddInteger(pattern, FC_PIXEL_SIZE, size);
+        FcPatternAddInteger(pattern, FC_SIZE, size);
     }
-    if (style) {
-        FcPatternAddString(pattern, FC_STYLE, (FcChar8 *)style);
+    switch (weight) {
+    case GRX_FONT_WEIGHT_REGULAR:
+        FcPatternAddInteger(pattern, FC_WEIGHT, 80);
+        break;
+    case GRX_FONT_WEIGHT_BOLD:
+        FcPatternAddInteger(pattern, FC_WEIGHT, 200);
+        break;
+    }
+    switch (slant) {
+    case GRX_FONT_SLANT_REGULAR:
+        FcPatternAddInteger(pattern, FC_SLANT, 0);
+        break;
+    case GRX_FONT_SLANT_ITALIC:
+        FcPatternAddInteger(pattern, FC_SLANT, 100);
+        break;
+    }
+    switch (width) {
+    case GRX_FONT_WIDTH_NARROW:
+        FcPatternAddInteger(pattern, FC_WIDTH, 75);
+        break;
+    case GRX_FONT_WIDTH_REGULAR:
+        FcPatternAddInteger(pattern, FC_WIDTH, 100);
+        break;
+    case GRX_FONT_WIDTH_WIDE:
+        FcPatternAddInteger(pattern, FC_WIDTH, 125);
+        break;
+    }
+    if (monospace) {
+        FcPatternAddInteger(pattern, FC_SPACING, 100);
     }
     if (lang) {
         FcPatternAddString(pattern, FC_LANG, (FcChar8 *)lang);
-    }
-    if (dpi >= 0) {
-        FcPatternAddInteger(pattern, FC_DPI, dpi);
     }
     g_debug("searching for pattern: %s", FcNameUnparse(pattern));
 
@@ -244,5 +271,7 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, const gchar *style,
  */
 GrxFont *grx_font_load(const gchar *family, gint size, GError **err)
 {
-    return grx_font_load_full(family, size, NULL, NULL, -1, err);
+    return grx_font_load_full(family, size, GRX_FONT_WEIGHT_REGULAR,
+                              GRX_FONT_SLANT_REGULAR, GRX_FONT_WIDTH_REGULAR,
+                              FALSE, NULL, err);
 }

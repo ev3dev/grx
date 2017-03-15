@@ -83,7 +83,7 @@ class App(Grx.Application):
         Grx.draw_text('file: ' + file_name, 10, 10, self.default_font, self.BLACK, self.WHITE, Grx.TextHAlign.LEFT, Grx.TextVAlign.TOP)
         try:
             font = Grx.font_load_from_file(file_name)
-            font_info = 'family: {}, style: {}'.format(font.get_family(), font.get_style())
+            font_info = 'family: {}, style: {}, width: {}, height {}'.format(font.get_family(), font.get_style(), font.get_width(), font.get_height())
             Grx.draw_text(font_info, 10, 30, self.default_font, self.BLACK, self.WHITE, Grx.TextHAlign.LEFT, Grx.TextVAlign.TOP)
             dump_context = Grx.Context.new_subcontext(10, 50, Grx.get_width() - 10, Grx.get_height() - 10)
             self.next_index = font.dump(dump_context, start_index, self.BLACK, self.WHITE)
