@@ -25,8 +25,6 @@ set (PROGRAMS
     cliptest
     colorops
     curstest
-    fontdemo
-    fonttest
     imgtest
     jpgtest
     keys
@@ -42,7 +40,6 @@ set (PROGRAMS
     sbctest
     scroltst
     speedtst
-    textpatt
     winclip
     wintest
 )

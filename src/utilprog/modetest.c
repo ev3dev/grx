@@ -25,6 +25,8 @@
 
 #include "../../test/drawing.h"
 
+static GrxFont *font;
+
 static void PrintInfo(void)
 {
     char aux[81];
@@ -36,7 +38,7 @@ static void PrintInfo(void)
         grx_font_get_string_width(&grx_font_default, aux, strlen(aux), GRX_CHAR_TYPE_BYTE)) / 2;
     y = (grx_get_max_y() -
         grx_font_get_string_height(&grx_font_default, aux, strlen(aux), GRX_CHAR_TYPE_BYTE)) / 2;
-    grx_draw_text_xy(x, y, aux, GRX_COLOR_WHITE, GRX_COLOR_BLACK);
+    grx_draw_text(aux, x, y, font, GRX_COLOR_WHITE, GRX_COLOR_BLACK, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
 }
 
 typedef struct {
@@ -139,13 +141,20 @@ void PrintModes(void) {
 int main(void)
 {
         static int firstgr = 1;
+        GError *error = NULL;
+
+        font = grx_font_load(NULL, -1, &error);
+        if (!font) {
+            g_error("%s", error->message);
+        }
+
         grx_set_driver(NULL, NULL);
         if(grx_get_current_video_driver() == NULL) {
             printf("No graphics driver found\n");
             exit(1);
         }
+
         for( ; ; ) {
-            GError *error = NULL;
             int  i,w,h,px,py;
             char m1[41];
             n_modes = (int)(collectmodes(grx_get_current_video_driver(),grmodes) - grmodes);
@@ -234,5 +243,8 @@ int main(void)
             PrintInfo();
             GrKeyRead();
         }
+
+        grx_font_unref(font);
+
         return 0;
 }

@@ -14,12 +14,26 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#ifndef __GRX_TEXT_TEXT_H
+#define __GRX_TEXT_TEXT_H
+
+#include <glib.h>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #include <grx/pattern.h>
 #include <grx/text.h>
+
+struct _GrxFont {
+    FT_Face face;
+    guint ref_count;
+};
 
 typedef void (*TextDrawBitmapFunc)(int x,int y,int w,int h,int ox, int oy,
                                    unsigned char *bmp,int pitch,int start,
                                    GrxColor fg,GrxColor bg,GrxPattern *p);
 
-void _GrDrawString(const void *text,int length,int x,int y,
-                   const GrxTextOptions *opt, GrxPattern *p, TextDrawBitmapFunc dbm);
+FT_Library grx_get_global_freetype_library(GError **err);
+
+#endif /* __GRX_TEXT_TEXT_H */

@@ -1,8 +1,7 @@
 /*
- * loadfont.c ---- load a font from a disk file
+ * loadfont.c - load a font from a disk file
  *
- * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- * [e-mail: csaba@vuse.vanderbilt.edu]
+ * Copyright (c) 2017 David Lechner <david@lechnology.com>
  *
  * This file is part of the GRX graphics library.
  *
@@ -15,151 +14,235 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include <glib.h>
 
-#include "libgrx.h"
-#include "grfontdv.h"
+#include <fontconfig/fontconfig.h>
 
-static GrxFont *doit(char *fname,char *path,GrxFontConversionFlags cvt,int w,int h,int lo,int hi)
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_TYPES_H
+
+#include "text.h"
+
+G_DEFINE_QUARK(ft-error-quark, ft_error)
+#define FT_ERROR_QUARK ft_error_quark()
+
+static gboolean freetype_initalized;
+static FT_Library library;
+
+FT_Library grx_get_global_freetype_library(GError **err)
 {
-    GrFontDriver **fd;
-    GrxFontHeader hdr;
-    GrxFont *f, *res;
-    char pathname[200];
-    char tempstring[200];
-    int  plen;
-    GRX_ENTER();
-    res = NULL;
-    strcpy(pathname,path);
-    strcat(pathname,fname);
-    DBGPRINTF(DBG_FONT,("searching font %s\n", pathname));
-    plen = strlen(pathname);
-    hdr.name   = &tempstring[0];
-    hdr.family = &tempstring[100];
-    for(fd = _GrFontDriverTable; (*fd) != NULL; fd++) {
-        DBGPRINTF(DBG_FONT,("Driver \"%s\", extension \"%s\"\n", (*fd)->name, (*fd)->ext));
-        pathname[plen] = '\0';
-        if(!((*fd)->openfile)(pathname)) {
-            strcpy(&pathname[plen],(*fd)->ext);
-            if(!((*fd)->openfile)(pathname)) continue;
+    if (!freetype_initalized) {
+        FT_Error ret = FT_Init_FreeType(&library);
+        if (ret) {
+            g_set_error_literal(err, FT_ERROR_QUARK, ret, "Error initializing freetype");
+            return NULL;
         }
-        if(!((*fd)->header)(&hdr)) {
-            DBGPRINTF(DBG_FONT,("fd->header failed for %s\n", pathname));
-            (*fd)->cleanup();
-            continue;
-        }
-        f = _GrBuildFont(
-            &hdr,
-            cvt,
-            w,h,
-            lo,hi,
-            (*fd)->charwdt,
-            (*fd)->bitmap,
-            (*fd)->scalable
-        );
-        if(!f) {
-            DBGPRINTF(DBG_FONT,("_GrBuildFont failed for %s\n", pathname));
-            (*fd)->cleanup();
-            continue;
-        }
-        (*fd)->cleanup();
-        res = f;
-        break;
+        freetype_initalized = TRUE;
     }
-    GRX_RETURN(res);
+    return library;
 }
 
 /**
- * grx_font_load_converted:
+ * grx_font_load_from_file:
  * @filename: (type filename): the file path
- * @flags: the conversion flags
- * @width: the width of the converted font
- * @height: the height of the converted font
- * @min_ch: the first character to convert
- * @max_ch: the last character to convert
+ * @err: Pointer to hold an error
  *
- * Loads a font from a file and converts it to a new style and/or size. The
- * changes are determined by @flags. @width and @height are only used when
- * #GRX_FONT_CONV_FLAG_RESIZE is set in @flags. @min_ch and @max_ch are only
- * used when #GRX_FONT_CONV_FLAG_SKIP_CHARS is set in @flags.
- *
- * If @filename starts with any path separator character or character
- * sequence (':', '/' or '\') then it is loaded from the specified directory,
- * otherwise the library try load the font first from the current directory and
- * next from the default font path (see grx_font_set_path()).
+ * Loads a font from a file. Only loads the first font face in the file.
  *
  * Returns: (transfer full) (nullable): the font or %NULL if there was an error
  * such as the font was not found.
  */
-GrxFont *grx_font_load_converted(const char *name,GrxFontConversionFlags cvt,int w,int h,int minc,int maxc)
+GrxFont *grx_font_load_from_file(const char *name, GError **err)
 {
-    GrxFont *f;
-    int  chr,len,abspath;
-    char fname[200];
-    GRX_ENTER();
-    len = 0;
-    abspath = FALSE;
-    while((chr = *name++) != '\0') {
-        switch(chr) {
-#if defined(__WIN32__)
-          case ':':
-            abspath = TRUE;
-            break;
-          case '\\':
-            chr = '/';
-#endif
-          case '/':
-            if(len == 0) abspath = TRUE;
-            break;
-          default:
-            if(isspace(chr)) {
-                if(len == 0) continue;
-                name = "";
-                chr  = '\0';
-            }
-#if defined(__WIN32__)
-                chr = tolower(chr);
-#endif
-            break;
-        }
-        fname[len++] = chr;
+    FT_Library library;
+    GrxFont *font;
+    FT_Error ret;
+
+    g_return_val_if_fail(name != NULL, NULL);
+
+    library = grx_get_global_freetype_library(err);
+    if (!library) {
+        return NULL;
     }
-    fname[len] = '\0';
-    f = doit(fname,"",cvt,w,h,minc,maxc);
-    if((f == NULL) && !abspath) {
-        if(_GrFontFileInfo.npath < 0) {
-            char *fPath = getenv("GRX_FONT_PATH");
-#ifdef GRX_DEFAULT_FONT_PATH
-            // TODO: Use XDG_DATA_DIRS to search for fonts
-            if (!fPath) fPath = GRX_DEFAULT_FONT_PATH;
-#endif            
-            grx_font_set_path(fPath);
-        }
-        for(len = 0; len < _GrFontFileInfo.npath; len++) {
-            f = doit(fname,_GrFontFileInfo.path[len],cvt,w,h,minc,maxc);
-            if(f != NULL) break;
-        }
+
+    font = g_malloc0(sizeof(*font));
+
+    ret = FT_New_Face(library, name, 0, &font->face);
+    if (ret) {
+        g_set_error_literal(err, FT_ERROR_QUARK, ret, "Error getting font face");
+        g_free(font);
+        return NULL;
     }
-    GRX_RETURN(f);
+    if (font->face->num_fixed_sizes == 0) {
+        g_set_error_literal(err, FT_ERROR_QUARK, 0, "Only bitmap fonts are supported");
+        g_free(font);
+        return NULL;
+    }
+    // TODO: are there fonts with more than one available_sizes?
+    ret = FT_Set_Pixel_Sizes(font->face, font->face->available_sizes[0].x_ppem >> 6,
+        font->face->available_sizes[0].y_ppem >> 6);
+    if (ret) {
+        g_set_error_literal(err, FT_ERROR_QUARK, ret, "Error setting size");
+        g_free(font);
+        return NULL;
+    }
+
+    ret = FT_Select_Charmap(font->face, FT_ENCODING_UNICODE);
+    if (ret) {
+        g_set_error_literal(err, FT_ERROR_QUARK, ret, "Only unicode fonts are supported");
+        g_free(font);
+        return NULL;
+    }
+
+    g_debug("Loaded: %s", name);
+    g_debug("num_faces: %ld", font->face->num_faces);
+    g_debug("face_index: %ld", font->face->face_index);
+    g_debug("face_flags: 0x%08lx", font->face->face_flags);
+    g_debug("style_flags: 0x%08lx", font->face->style_flags);
+    g_debug("num_glyphs: %ld", font->face->num_glyphs);
+    g_debug("family_name: %s", font->face->family_name);
+    g_debug("style_name: %s", font->face->style_name);
+    g_debug("num_fixed_sizes: %d", font->face->num_fixed_sizes);
+    g_debug("available_sizes:");
+    for (int i = 0; i < font->face->num_fixed_sizes; i++) {
+        FT_Bitmap_Size *size = &font->face->available_sizes[i];
+        g_debug("\t" "height: %d, width: %d, size: %ld-%ld/64, "
+                "x_ppem: %ld-%ld/64, y_ppem: %ld-%ld/64",
+            size->height, size->width,
+            size->size >> 6, size->size & 0x3f,
+            size->x_ppem >> 6, size->x_ppem & 0x3f,
+            size->y_ppem >> 6, size->y_ppem & 0x3f);
+    }
+    g_debug("num_charmaps: %d", font->face->num_charmaps);
+    g_debug("charmaps:");
+    for (int i = 0; i < font->face->num_charmaps; i++) {
+        FT_CharMap map = font->face->charmaps[i];
+        // FIXME: string gets cut off is map->encoding == FT_ENCODING_NONE
+        g_debug("\t" "encoding: %c%c%c%c, platform_id: %d, encoding_id: %d",
+            map->encoding >> 24, (map->encoding >> 16) & 0xff,
+            (map->encoding >> 8) & 0xff, map->encoding & 0xff,
+            map->platform_id, map->encoding_id);
+    }
+    g_debug("units_per_EM: %d", font->face->units_per_EM);
+    g_debug("ascender: %d", font->face->ascender);
+    g_debug("descender: %d", font->face->descender);
+    g_debug("height: %d", font->face->height);
+    g_debug("max_advance_width: %d", font->face->max_advance_width);
+    g_debug("max_advance_height: %d", font->face->max_advance_height);
+    g_debug("underline_position: %d", font->face->underline_position);
+    g_debug("underline_thickness: %d", font->face->underline_thickness);
+    g_debug("size->metrics.x_ppem: %d", font->face->size->metrics.x_ppem);
+    g_debug("size->metrics.y_ppem: %d", font->face->size->metrics.y_ppem);
+    g_debug("size->metrics.x_scale: %ld-%ld/256",
+        font->face->size->metrics.x_scale >> 16,
+        font->face->size->metrics.x_scale & 0xff);
+    g_debug("size->metrics.y_scale: %ld-%ld/256",
+        font->face->size->metrics.y_scale >> 16,
+        font->face->size->metrics.y_scale & 0xff);
+    g_debug("size->metrics.ascender: %ld-%ld/64",
+        font->face->size->metrics.ascender >> 6,
+        font->face->size->metrics.ascender & 0x3f);
+    g_debug("size->metrics.descender: %ld-%ld/64",
+        font->face->size->metrics.descender >> 6,
+        font->face->size->metrics.descender & 0x3f);
+    g_debug("size->metrics.height: %ld-%ld/64",
+        font->face->size->metrics.height >> 6,
+        font->face->size->metrics.height & 0x3f);
+    g_debug("size->metrics.max_advance: %ld-%ld/64",
+        font->face->size->metrics.max_advance >> 6,
+        font->face->size->metrics.max_advance & 0x3f);
+
+    return grx_font_ref(font);
+}
+
+/**
+ * grx_font_load_full:
+ * @family: (nullable): the font family name or %NULL
+ * @style: (nullable): the font style or %NULL
+ * @lang: (nullable): the language or %NULL
+ * @size: the preferred size or -1
+ * @dpi: the preferred dpi or -1
+ * @err: pointer to hold an error
+ *
+ * Loads the font that best matches the parameters.
+ *
+ * Uses fontconfig for font matching.
+ *
+ * Returns: (transfer full) (nullable): the font or %NULL if there was an error
+ */
+GrxFont *grx_font_load_full(const gchar *family, gint size, const gchar *style,
+                            const gchar *lang, gint dpi, GError **err)
+{
+    FcPattern *pattern, *match;
+    FcResult result;
+    GrxFont *font;
+    FcChar8 *file;
+
+    if (!FcInit()) {
+        g_set_error_literal(err, FT_ERROR_QUARK, 0, "Failed to init fontconfig");
+        return NULL;
+    }
+
+    pattern = FcPatternCreate();
+    FcPatternAddBool(pattern, "scalable", FcFalse);
+    if (family) {
+        FcPatternAddString(pattern, "family", (FcChar8 *)family);
+    }
+    if (size >= 0) {
+        FcPatternAddInteger(pattern, "size", size);
+    }
+    if (style) {
+        FcPatternAddString(pattern, "style", (FcChar8 *)style);
+    }
+    if (lang) {
+        FcPatternAddString(pattern, "lang", (FcChar8 *)lang);
+    }
+    if (dpi >= 0) {
+        FcPatternAddInteger(pattern, "dpi", dpi);
+    }
+    g_debug("searching for pattern: %s", FcNameUnparse(pattern));
+
+    FcConfigSubstitute(NULL, pattern, FcMatchPattern);
+    FcDefaultSubstitute(pattern);
+    match = FcFontMatch(NULL, pattern, &result);
+
+    if (!match) {
+        // TODO: use result for better error
+        g_set_error_literal(err, FT_ERROR_QUARK, 0, "Failed to find match");
+        FcPatternDestroy(pattern);
+        return NULL;
+    }
+    g_debug("found pattern: %s", FcNameUnparse(pattern));
+
+    if (FcPatternGetString(match, FC_FILE, 0, &file) != FcResultMatch) {
+        g_set_error_literal(err, FT_ERROR_QUARK, 0, "Failed to get file name");
+        FcPatternDestroy(match);
+        FcPatternDestroy(pattern);
+        return NULL;
+    }
+
+    font = grx_font_load_from_file((gchar *)file, err);
+
+    FcPatternDestroy(match);
+    FcPatternDestroy(pattern);
+
+    return font;
 }
 
 /**
  * grx_font_load:
- * @filename: (type filename): the file path
+ * @family: (nullable): the font family name or %NULL
+ * @size: the preferred size or -1
+ * @err: pointer to hold an error
  *
- * Loads a font from a file.
+ * Loads the font that best matches the parameters.
  *
- * If @filename starts with any path separator character or character
- * sequence (':', '/' or '\') then it is loaded from the specified directory,
- * otherwise the library try load the font first from the current directory and
- * next from the default font path (see grx_font_set_path()).
+ * Uses fontconfig for font matching.
  *
  * Returns: (transfer full) (nullable): the font or %NULL if there was an error
- * such as the font was not found.
  */
-GrxFont *grx_font_load(const char *name)
+GrxFont *grx_font_load(const gchar *family, gint size, GError **err)
 {
-    return(grx_font_load_converted(name,GRX_FONT_CONV_FLAG_NONE,0,0,0,0));
+    return grx_font_load_full(family, size, NULL, NULL, -1, err);
 }

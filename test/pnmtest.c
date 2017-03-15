@@ -30,46 +30,55 @@
 
 int main(void)
 {
+  GrxFont *font;
   GrxContext *grc;
   int wide, high, maxval;
   char s[81];
   GError *error = NULL;
-  
+
+  font = grx_font_load(NULL, -1, &error);
+  if (!font) {
+    g_error("%s", error->message);
+  }
+
   if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,&error,640,480,32768)) {
     g_error("%s", error->message);
   }
   grx_check_pnm_file( FIMAGEPPM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPPM,wide,high );
-  grx_draw_text_xy( 10,20,s,GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text(s, 10,20,font,GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPPM );
   grx_save_current_context_to_pgm( grc,FIMAGEPGM,"TestPnm" );
   grx_context_unref( grc );
-  grx_draw_text_xy( 10,50+high,"Press any key to continue",GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text("Press any key to continue", 10,50+high,font,
+      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_check_pnm_file( FIMAGEPGM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPGM,wide,high );
-  grx_draw_text_xy( 10,20,s,GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text(s, 10,20,font,GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPGM );
   grx_context_unref( grc );
-  grx_draw_text_xy( 10,50+high,"Press any key to continue",GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text("Press any key to continue", 10,50+high,font,
+      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_check_pnm_file( FIMAGEPBM, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPBM,wide,high );
-  grx_draw_text_xy( 10,20,s,GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text(s, 10,20,font,GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPBM );
   grx_save_current_context_to_pbm( grc,FIMAGEPBM2,"TestPnm" );
   grx_context_unref( grc );
-  grx_draw_text_xy( 10,50+high,"Press any key to continue",GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text("Press any key to continue", 10,50+high,font,
+      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
 
   grx_clear_screen( GRX_COLOR_BLACK );
@@ -88,18 +97,23 @@ int main(void)
   grc = grx_context_new_subcontext( 211,241,211+wide-1,241+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPBM2 );
   grx_context_unref( grc );
-  grx_draw_text_xy( 10,20,"Press any key to save screen",GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text("Press any key to save screen", 10,20,font,
+      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
 
   grx_save_current_context_to_ppm( NULL,FSCREEN,"TestPnm" );
   grx_clear_screen( GRX_COLOR_WHITE );
-  grx_draw_text_xy( 10,20,"Press any key to reload screen",GRX_COLOR_WHITE,GRX_COLOR_BLACK );
+  grx_draw_text("Press any key to reload screen", 10,20,font,
+      GRX_COLOR_WHITE,GRX_COLOR_BLACK,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
 
   grx_context_load_from_pnm( NULL,FSCREEN );
-  grx_draw_text_xy( 10,20,"Press any key to end        ",GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text("Press any key to end        ", 10,20,font,
+      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
 
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
+  grx_font_unref(font);
+
   return 0;
 }

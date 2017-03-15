@@ -1,8 +1,7 @@
 /*
- * dumpfont.c ---- write a C source file from a font in memory
+ * dumpfont.c - Draw all glyphs of a font
  *
- * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- * [e-mail: csaba@vuse.vanderbilt.edu]
+ * Copyright (c) 2017 David Lechner <david@lechnology.com>
  *
  * This file is part of the GRX graphics library.
  *
@@ -15,161 +14,81 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <string.h>
-#include <ctype.h>
-#include <stdio.h>
+#include <glib.h>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+#include <grx/context.h>
+#include <grx/draw.h>
+#include <grx/frame_mode.h>
 #include <grx/text.h>
 
-#include "libgrx.h"
-
-/* ----------------------------------------------------------------------- */
-static char bitmaphdr[] =
-
-"/*\n"
-" * %s ---- GRX 2.0 font converted to C by 'grx_font_dump()'\n"
-" */\n"
-"\n"
-"#define  %s     FONTNAME_TEMPORARY_REDIRECTION\n"
-"#include <grx/text.h>\n"
-"#undef   %s\n"
-"\n"
-"static unsigned char %s[] = {\n";
-
-/* ----------------------------------------------------------------------- */
-static char fonthdr[] =
-
-"};\n"
-"\n"
-"struct {\n"
-"    GrxFont        theFont;\n"
-"    GrxFontCharInfo rest[%d];\n"
-"} %s = {\n"
-"    {\n"
-"        {                           /* font header */\n"
-"            %-24s"                 "/* font name */\n"
-"            %-24s"                 "/* font family name */\n"
-"            %d,  \t\t    "         "/* characters have varying width */\n"
-"            0,                      /* derived from a scalable font */\n"
-"            1,                      /* font permanently linked into program */\n"
-"            GRX_FONT_CONV_FLAG_NONE,        /* 'tweaked' font (resized, etc..) */\n"
-"            %d,  \t\t    "         "/* width (average when proportional) */\n"
-"            %d,  \t\t    "         "/* font height */\n"
-"            %d,  \t\t    "         "/* baseline pixel pos (from top) */\n"
-"            %d,  \t\t    "         "/* underline pixel pos (from top) */\n"
-"            %d,  \t\t    "         "/* underline width */\n"
-"            %d,  \t\t    "         "/* lowest character code in font */\n"
-"            %d   \t\t    "         "/* number of characters in font */\n"
-"        },\n"
-"        %-20s"                     "/* character bitmap array */\n"
-"        0,                          /* auxiliary bitmap */\n"
-"        %d,\t\t\t    "             "/* width of narrowest character */\n"
-"        %d,\t\t\t    "             "/* width of widest character */\n"
-"        0,                          /* allocated size of auxiliary bitmap */\n"
-"        0,                          /* free space in auxiliary bitmap */\n"
-"        {  0\t\t"      "},          /* converted character bitmap offsets */\n"
-"        {{ %d,\t0\t"   "}}          /* first character info */\n"
-"    },\n"
-"    {\n";
-
-/* ----------------------------------------------------------------------- */
-static char charinfo[] =
-
-"        {  %d,\t%d\t"  "}%c         /* info for character %-3d */\n";
-
-/* ----------------------------------------------------------------------- */
-static char fontend[] =
-
-"    }\n"
-"};\n\n";
-
-/* ----------------------------------------------------------------------- */
+#include "text.h"
 
 /**
  * grx_font_dump:
  * @font: the font
- * @c_symbol_name: the C identifier name
- * @filename: (type filename): the file name
+ * @context: the drawing context
+ * @start: the starting glyph index
+ * @fg: the forground color
+ * @bg: the background color
  *
- * Generates a C source code file for the font.
+ * Draws as many glyphs as possible in the clip box of the specified context.
+ *
+ * If all of the glyphs do no fit, an index will be returned. This index can
+ * be passed to @start to draw the next "page" of glyphs.
+ *
+ * Returns: the index of the first glyph that was not drawn or -1 if all of the
+ * glyphs were drawn
  */
-void grx_font_dump(const GrxFont *f,char *CsymbolName,char *fileName)
+gint grx_font_dump(const GrxFont *font, GrxContext *context, gint start, GrxColor fg, GrxColor bg)
 {
-        unsigned int i;
-        int  offset;
-        char filname[200];
-        char fntname[200];
-        char famname[200];
-        char bitname[200];
-        char *p;
-        FILE *fp = fopen(fileName,"w");
-        if(!fp) return;
-        strcpy(filname,fileName);
-        for(p = filname; *p; p++) *p = toupper(*p);
-        sprintf(fntname,"\"%s",f->h.name);
-        if((p = strrchr(fntname,'.')) != 0) *p = '\0';
-        strcat(fntname,"\",");
-        sprintf(famname,"\"%s\",",f->h.family);
-        sprintf(bitname,"%s_bits",CsymbolName);
-        fprintf(
-            fp,
-            bitmaphdr,
-            filname,
-            CsymbolName,
-            CsymbolName,
-            bitname
-        );
-        for(i = 0; i < f->h.numchars; i++) {
-            int  chr = i + f->h.minchar;
-            int  len = grx_font_get_char_bmp_size(f,chr);
-            int  pos = 0,j;
-            unsigned char *bmp = grx_font_get_char_bmp(f,chr);
-            fprintf(fp,"\t/* character %d */\n\t",chr);
-            for(j = 0; j < len; j++) {
-                fprintf(fp,"0x%02x",(bmp[j] & 0xff));
-                if((j + 1) != len) {
-                    putc(',',fp);
-                    if(++pos != 12) continue;
-                    fputs("\n\t",fp);
-                    pos = 0;
-                }
-            }
-            if((i + 1) != f->h.numchars) {
-                fputs(",\n",fp);
-            }
+    FT_Size_Metrics metrics;
+    FT_GlyphSlot slot;
+    FT_Error ret;
+    GrxContext ctx;
+    GrxFrameMemory mem;
+    gint i, x, y, x0, y0, x1, y1, height, width, ascender;
+
+    g_return_val_if_fail(font != NULL, 0);
+    g_return_val_if_fail(context != NULL, 0);
+
+    metrics = font->face->size->metrics;
+    ascender = metrics.ascender >> 6;
+
+    grx_context_get_clip_box(context, &x0, &y0, &x1, &y1);
+    for (i = start, x = 0, y = 0; i < font->face->num_glyphs; i++) {
+        height = metrics.height >> 6;
+        width = metrics.max_advance >> 6;
+        if (x + width > x1) {
+            x = 0;
+            y += height;
         }
-        fprintf(fp,
-            fonthdr,
-            f->h.numchars - 1,
-            CsymbolName,
-            fntname,
-            famname,
-            f->h.proportional,
-            f->h.width,
-            f->h.height,
-            f->h.baseline,
-            f->h.ulpos,
-            f->h.ulheight,
-            f->h.minchar,
-            f->h.numchars,
-            (strcat(bitname,","),bitname),
-            f->minwidth,
-            f->maxwidth,
-            grx_font_get_char_width(f,f->h.minchar)
-        );
-        offset = grx_font_get_char_bmp_size(f,f->h.minchar);
-        for(i = 1; i < f->h.numchars; i++) {
-            int chr = i + f->h.minchar;
-            fprintf(
-                fp,
-                charinfo,
-                grx_font_get_char_width(f,chr),
-                offset,
-                ((i == (f->h.numchars - 1)) ? ' ' : ','),
-                chr
-            );
-            offset += grx_font_get_char_bmp_size(f,chr);
+        if (y + height > y1) {
+            // we ran out of room
+            return i;
         }
-        fputs(fontend,fp);
-        fclose(fp);
+        ret = FT_Load_Glyph(font->face, i, FT_LOAD_DEFAULT);
+        if (ret) {
+            continue;
+        }
+        slot = font->face->glyph;
+        if (slot->format != FT_GLYPH_FORMAT_BITMAP) {
+            continue;
+        }
+        if (slot->bitmap.pixel_mode != FT_PIXEL_MODE_MONO) {
+            continue;
+        }
+        mem.plane0 = slot->bitmap.buffer;
+        grx_context_new_full(GRX_FRAME_MODE_RAM_1BPP,
+            slot->bitmap.pitch * 8, slot->bitmap.rows, &mem, &ctx);
+        grx_context_bit_blt_1bpp(context, x + slot->bitmap_left,
+            y - slot->bitmap_top + ascender, &ctx, 0, 0,
+            slot->bitmap.width, slot->bitmap.rows, fg, bg);
+        x += slot->advance.x >> 6;
+        y += slot->advance.y >> 6;
+    }
+
+    return -1;
 }

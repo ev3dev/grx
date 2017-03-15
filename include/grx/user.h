@@ -25,6 +25,7 @@
 #include <grx/color.h>
 #include <grx/common.h>
 #include <grx/draw.h>
+#include <grx/text.h>
 
 /**
  * SECTION:user
@@ -117,9 +118,7 @@ void grx_user_draw_filled_polygon_with_pattern(gint n_points, GrxPoint *points, 
 void grx_user_draw_filled_convex_polygon_with_pattern(gint n_points, GrxPoint *points, GrxPattern *p);
 void grx_user_flood_fill_with_pattern(gint x, gint y, GrxColor border, GrxPattern *p);
 
-void grx_user_draw_text(gchar *text, gint x, gint y, GrxColor fg, GrxColor bg);
-void grx_user_draw_char_with_text_options(gint chr, gint x, gint y, const GrxTextOptions *opt);
-void grx_user_draw_text_with_text_options(gchar *text, gint length, gint x, gint y,
-                                          const GrxTextOptions *opt);
+void grx_user_draw_text(const gchar *text, gint x, gint y, const GrxFont *font,
+    GrxColor fg, GrxColor bg, GrxTextHAlign h_align, GrxTextVAlign v_align);
 
 #endif /* __GRX_USER_H__ */

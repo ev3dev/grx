@@ -507,7 +507,7 @@ static int init(const char *options)
         GrxVideoMode mode, *modep = &modes[1];
         GrxVideoModeExt ext, *extp = &exts[0];
         GrxEvent event;
-        GError *err;
+        GError *err = NULL;
 
         device_manager = g_initable_new (GRX_TYPE_LIBINPUT_DEVICE_MANAGER, NULL,
                                          &err, NULL);

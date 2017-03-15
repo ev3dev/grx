@@ -37,11 +37,11 @@ TESTFUNC(mousetest)
             grx_clear_screen(bgc);
             ii = 0;
             mode = GR_M_CUR_NORMAL;
-            grx_draw_text_xy(
-                10,(grx_get_screen_height() - 20),
+            grx_draw_text(
                 "Commands: 'N' -- next mouse mode, 'Q' -- exit",
-                grx_color_info_get_white(),
-                bgc
+                10,(grx_get_screen_height() - 20), font,
+                grx_color_info_get_white(), bgc,
+                GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP
             );
             for( ; ; ) {
                 char msg[200];
@@ -71,7 +71,8 @@ TESTFUNC(mousetest)
                     );
                     sprintf(mend,"deltaT=%ld (ms)",evt.dtime);
                     strcpy (mend,"                         ");
-                    grx_draw_text_xy(10,(grx_get_screen_height() - 40),msg,grx_color_info_get_white(),bgc);
+                    grx_draw_text(msg,10,(grx_get_screen_height() - 40),font,
+                        grx_color_info_get_white(),bgc,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
                     testmotion = evt.buttons ? GR_M_MOTION : 0;
                 }
                 if(evt.flags & GR_M_KEYPRESS) {
@@ -102,11 +103,11 @@ TESTFUNC(mousetest)
             grx_clear_screen(bgc);
             ii = 0;
             mode = GR_M_CUR_NORMAL;
-            grx_draw_text_xy(
-                (grx_get_screen_width()/3),(grx_get_screen_height() - 20),
+            grx_draw_text(
                 "Sorry, no mouse found !",
-                grx_color_info_get_white(),
-                bgc
+                (grx_get_screen_width()/3),(grx_get_screen_height() - 20), font,
+                grx_color_info_get_white(), bgc,
+                GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP
             );
         }
 }

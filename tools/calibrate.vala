@@ -37,7 +37,7 @@ public class CalibrateApplication : Grx.Application {
     int width;
     int height;
     int half_line_length;
-    TextOptions center_options;
+    Font font;
     int timeout;
     string? timeout_message;
     int keyboard_device_count;
@@ -69,12 +69,7 @@ public class CalibrateApplication : Grx.Application {
         screen_points[2].y = height - screen_points[1].y;
         screen_points[3].x = screen_points[0].x;
         screen_points[3].y = screen_points[2].y;
-        center_options = TextOptions () {
-            font = Font.default,
-            fg_color = (TextColor)Color.white,
-            bg_color = (TextColor)Color.black,
-            x_align = TextAlignment.CENTER
-        };
+        font = Font.load("lucida", 14);
     }
 
     public signal void key_pressed ();
@@ -323,24 +318,24 @@ public class CalibrateApplication : Grx.Application {
     void draw_no_devices_screen () {
         clear_context (Color.black);
 
-        draw_string_with_text_options ("No devices found",
-            width / 2, height / 2 - 32, center_options);
-        draw_string_with_text_options ("Please connect a device",
-            width / 2, height / 2 - 16, center_options);
+        draw_text ("No devices found", width / 2, height / 2 - 32, font,
+            Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
+        draw_text ("Please connect a device", width / 2, height / 2 - 16,
+            font, Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
         if (keyboard_device_count > 0) {
-            draw_string_with_text_options ("Press any key to cancel",
-                width / 2, height / 2 + 32, center_options);
+            draw_text ("Press any key to cancel", width / 2, height / 2 + 32,
+                font, Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
         }
     }
 
     void draw_touch_point_screen (int index) {
         clear_context (Color.black);
 
-        draw_string_with_text_options ("Touch cross-hairs to calibrate",
-            width / 2, height / 2 - 16, center_options);
+        draw_text ("Touch cross-hairs to calibrate", width / 2, height / 2 - 16,
+            font, Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
         if (keyboard_device_count > 0) {
-            draw_string_with_text_options ("Press any key to cancel",
-                width / 2, height / 2 + 16, center_options);
+            draw_text ("Press any key to cancel", width / 2, height / 2 + 16,
+                font, Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
         }
 
         draw_hline (screen_points[index].x - half_line_length,
@@ -355,24 +350,24 @@ public class CalibrateApplication : Grx.Application {
     void draw_success_screen () {
         clear_context (Color.black);
 
-        draw_string_with_text_options ("Calibration was successful",
-            width / 2, height / 2 - 16, center_options);
-        draw_string_with_text_options ("Touch to quit",
-            width / 2, height / 2 + 16, center_options);
+        draw_text ("Calibration was successful", width / 2, height / 2 - 16,
+            font, Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
+        draw_text ("Touch to quit", width / 2, height / 2 + 16, font,
+            Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
     }
 
     void draw_error_screen () {
         clear_context (Color.black);
 
-        draw_string_with_text_options ("Calibration failed",
-            width / 2, height / 2 - 32, center_options);
-        draw_string_with_text_options ("%s".printf (error_message),
-            width / 2, height / 2 - 16, center_options);
-        draw_string_with_text_options ("Touch to try again",
-            width / 2, height / 2 + 16, center_options);
+        draw_text ("Calibration failed", width / 2, height / 2 - 32, font,
+            Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
+        draw_text ("%s".printf (error_message), width / 2, height / 2 - 16,
+            font, Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
+        draw_text ("Touch to try again", width / 2, height / 2 + 16, font,
+            Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
         if (keyboard_device_count > 0) {
-            draw_string_with_text_options ("Press any key to cancel",
-                width / 2, height / 2 + 32, center_options);
+            draw_text ("Press any key to cancel", width / 2, height / 2 + 32,
+                font, Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
         }
     }
 
@@ -382,12 +377,12 @@ public class CalibrateApplication : Grx.Application {
             return;
         }
 
-        var string_width = center_options.font.get_string_width (timeout_message);
-        var string_height = center_options.font.get_string_height (timeout_message);
+        var text_width = font.get_text_width (timeout_message);
+        var text_height = font.get_text_height (timeout_message);
 
-        draw_filled_box (width / 2 - string_width / 2, height - 16,
-                         width / 2 + string_width / 2, height - 16 + string_height,
-                         center_options.bg_color.as_color);
+        draw_filled_box (width / 2 - text_width / 2, height - 16,
+                         width / 2 + text_width / 2, height - 16 + text_height,
+                         Color.black);
     }
 
     void update_inactivity_timer () {
@@ -401,8 +396,8 @@ public class CalibrateApplication : Grx.Application {
         if (timeout <= 10) {
             clear_timeout_text ();
             timeout_message = "Exiting in %d".printf (timeout);
-            draw_string_with_text_options (timeout_message, width / 2,
-                height - 16, center_options);
+            draw_text (timeout_message, width / 2, height - 16, font,
+                Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
         }
     }
 

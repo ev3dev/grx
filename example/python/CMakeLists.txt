@@ -1,9 +1,9 @@
 
 set (PROGRAMS
+    fonts
     input
     life
 )
-
 
 foreach (PROG ${PROGRAMS})
     add_custom_target (run-python-${PROG}
@@ -14,6 +14,6 @@ foreach (PROG ${PROGRAMS})
         DEPENDS
             ${CMAKE_CURRENT_SOURCE_DIR}/${PROG}.py
             ${SHARED_LIBRARY_NAME}
-            ${TYPELIB}
+            ${TYPELIB_TARGET}
     )
 endforeach (PROG ${PROGRAMS})

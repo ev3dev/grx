@@ -1,8 +1,7 @@
 /*
- * propwdt.c ---- calculate the width of a string using a proportional font
+ * propwdt.c - calculate the width of a string using a proportional font
  *
- * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
- * [e-mail: csaba@vuse.vanderbilt.edu]
+ * Copyright (c) 2017 David Lechner <david@lechnology.com>
  *
  * This file is part of the GRX graphics library.
  *
@@ -15,17 +14,140 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <glib.h>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #include <grx/text.h>
 
 #include "libgrx.h"
+#include "text.h"
 
-int grx_font_get_proportional_text_width(const GrxFont *font,const void *text,int len,GrxCharType type)
+/**
+ * grx_font_get_char_width:
+ * @font: the font
+ * @c: the character
+ *
+ * Gets the width of a character using the specified font.
+ *
+ * Returns: the width
+ */
+gint grx_font_get_char_width(const GrxFont *font, gunichar c)
 {
-        char *txp = (char *)text;
-        int   wdt = 0;
-        while(--len >= 0) {
-            wdt += grx_font_get_char_width(font,GRX_CHAR_TYPE_GET_CODE_STR(type, txp));
-            txp += GRX_CHAR_TYPE_GET_SIZE(type);
+    FT_UInt index;
+    FT_Error ret;
+
+    g_return_val_if_fail(font != NULL, 0);
+
+    index = FT_Get_Char_Index(font->face, c);
+    ret = FT_Load_Glyph(font->face, index, FT_LOAD_DEFAULT);
+    if (ret) {
+        return 0;
+    }
+
+    return font->face->glyph->bitmap.width;
+}
+
+/**
+ * grx_font_get_char_height:
+ * @font: the font
+ * @c: the character
+ *
+ * Gets the height of a character using the specified font.
+ *
+ * Returns: the height
+ */
+gint grx_font_get_char_height(const GrxFont *font, gunichar c)
+{
+    FT_UInt index;
+    FT_Error ret;
+
+    g_return_val_if_fail(font != NULL, 0);
+
+    index = FT_Get_Char_Index(font->face, c);
+    ret = FT_Load_Glyph(font->face, index, FT_LOAD_DEFAULT);
+    if (ret) {
+        return 0;
+    }
+
+    return font->face->glyph->bitmap.rows;
+}
+
+/**
+ * grx_font_get_text_width:
+ * @font: the font
+ * @text: (nullable): the text
+ *
+ * Gets the width of a string using the specified font.
+ *
+ * The string must contain valid UTF-8. Check using g_utf8_validate() first if
+ * @text is from an unknown source.
+ *
+ * Returns: the width
+ */
+gint grx_font_get_text_width(const GrxFont *font, const gchar *text)
+{
+    FT_UInt index;
+    FT_Error ret;
+    gunichar c;
+    gint width = 0;
+
+    g_return_val_if_fail(font != NULL, 0);
+
+    if (!text) {
+        return 0;
+    }
+
+    for (; (c = g_utf8_get_char(text)) != '\0'; text = g_utf8_next_char(text)) {
+        index = FT_Get_Char_Index(font->face, c);
+        ret = FT_Load_Glyph(font->face, index, FT_LOAD_DEFAULT);
+        if (ret) {
+            continue;
         }
-        return(wdt);
+        width += font->face->glyph->advance.x >> 6;
+    }
+
+    return width;
+}
+
+/**
+ * grx_font_get_text_height:
+ * @font: the font
+ * @text: (nullable): the text
+ *
+ * Gets the height of a string using the specified font.
+ *
+ * The string must contain valid UTF-8. Check using g_utf8_validate() first if
+ * @text is from an unknown source.
+ *
+ * Returns: the height
+ */
+gint grx_font_get_text_height(const GrxFont *font, const gchar *text)
+{
+    g_return_val_if_fail(font != NULL, 0);
+
+    if (!text) {
+        return 0;
+    }
+
+    return font->face->size->metrics.height >> 6;
+
+#if 0 // TODO: Handle vertical layout
+    FT_UInt index;
+    FT_Error ret;
+    gunichar c;
+    gint height = 0;
+
+    for (; (c = g_utf8_get_char(text)) != '\0'; text = g_utf8_next_char(text)) {
+        index = FT_Get_Char_Index(font->face, c);
+        ret = FT_Load_Glyph(font->face, index, FT_LOAD_DEFAULT);
+        if (ret) {
+            continue;
+        }
+        height += slot->advance.y >> 6;
+    }
+
+    return height;
+#endif
 }

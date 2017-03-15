@@ -46,15 +46,6 @@ set (LIBRARY_SOURCE_FILES
     fdrivers/ram4.c
     fdrivers/ram8.c
     fdrivers/rblit_14.c
-    fonts/fdtable.c
-    fonts/fdv_fna.c
-    fonts/fdv_grx.c
-    fonts/fdv_raw.c
-    fonts/fdv_win.c
-    fonts/pc6x8.c
-    fonts/pc8x14.c
-    fonts/pc8x16.c
-    fonts/pc8x8.c
     gformats/ctx2jpg.c
     gformats/ctx2png.c
     gformats/ctx2pnm.c
@@ -133,24 +124,11 @@ set (LIBRARY_SOURCE_FILES
     shape/scanellp.c
     shape/scanpoly.c
     shape/solidfil.c
-    text/buildaux.c
-    text/buildfnt.c
-    text/convfont.c
-    text/drawstrg.c
     text/drawtext.c
-    text/drwstrg.c
-    text/dumpfna.c
     text/dumpfont.c
-    text/dumptext.c
-    text/epatstrg.c
-    text/fntinlne.c
-    text/fontinfo.c
-    text/fontpath.c
     text/loadfont.c
-    text/pattstrg.c
     text/propwdt.c
     text/type.c
-    text/unloadfn.c
     user/ubox.c
     user/ucbox.c
     user/uccirc.c
@@ -164,8 +142,6 @@ set (LIBRARY_SOURCE_FILES
     user/ucline.c
     user/ucpolyg.c
     user/ucpolyl.c
-    user/udrwchar.c
-    user/udrwstrg.c
     user/uelli.c
     user/uellia.c
     user/uellif.c
@@ -239,7 +215,7 @@ list (SORT LIBRARY_SOURCE_FILES)
 find_package (JPEG REQUIRED)
 
 set (PUBLIC_MODULES glib-2.0 gobject-2.0 gio-2.0)
-set (PRIVATE_MODULES gmodule-2.0 libpng)
+set (PRIVATE_MODULES gmodule-2.0 libpng freetype2 fontconfig)
 pkg_check_modules (GRX_DEPS REQUIRED ${PUBLIC_MODULES} ${PRIVATE_MODULES})
 
 
@@ -380,8 +356,8 @@ install (FILES $<TARGET_PROPERTY:${GIR},GIR_FILE_NAME>
 
 find_package (GirCompiler)
 include (GirCompiler)
-add_typelib (TYPELIB ${GIR})
-install (FILES $<TARGET_PROPERTY:${TYPELIB},TYPELIB_FILE_NAME>
+add_typelib (${TYPELIB_TARGET} ${GIR})
+install (FILES $<TARGET_PROPERTY:${TYPELIB_TARGET},TYPELIB_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
 
 

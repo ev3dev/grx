@@ -44,14 +44,14 @@ TESTFUNC(arctest)
                 grx_draw_ellipse(xc,yc,rx,ry,red);
                 grx_draw_filled_ellipse(xc,yc,rx,ry,blue);
                 grx_draw_ellipse_arc(xc,yc,rx,ry,start,end,GRX_ARC_STYLE_CLOSED_RADIUS,GRX_COLOR_WHITE);
-                grx_draw_text_xy(0,0,buff,GRX_COLOR_WHITE,GRX_COLOR_NONE);
-                grx_draw_text_xy(0,20,"press any key to continue",GRX_COLOR_WHITE,GRX_COLOR_NONE);
+                grx_draw_text(buff,0,0,font,GRX_COLOR_WHITE,GRX_COLOR_NONE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
+                grx_draw_text("press any key to continue",0,20,font,GRX_COLOR_WHITE,GRX_COLOR_NONE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
                 GrKeyRead();
                 grx_clear_screen(GRX_COLOR_BLACK);
                 grx_draw_ellipse_arc(xc,yc,rx,ry,start,end,GRX_ARC_STYLE_CLOSED_RADIUS,red);
                 grx_draw_filled_ellipse_arc(xc,yc,rx,ry,start,end,GRX_ARC_STYLE_CLOSED_RADIUS,green);
-                grx_draw_text_xy(0,0,buff,GRX_COLOR_WHITE,GRX_COLOR_NONE);
-                grx_draw_text_xy(0,20,"press any key to continue",GRX_COLOR_WHITE,GRX_COLOR_NONE);
+                grx_draw_text(buff,0,0,font,GRX_COLOR_WHITE,GRX_COLOR_NONE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
+                grx_draw_text("press any key to continue",0,20,font,GRX_COLOR_WHITE,GRX_COLOR_NONE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
                 GrKeyRead();
             }
         }

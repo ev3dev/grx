@@ -32,6 +32,7 @@ extern void (*testfunc)(void);
 char   exit_message[2000] = { "" };
 int    Argc;
 char **Argv;
+GrxFont *font;
 
 #define TESTFUNC(name)      \
 void name(void);        \
@@ -47,6 +48,11 @@ int main(int argc,char **argv)
         int yv = 0;
         int ret;
         GError *error = NULL;
+
+        font = grx_font_load(NULL, -1, &error);
+        if (!font) {
+            g_error("%s", error->message);
+        }
 
         Argc = argc - 1;
         Argv = argv + 1;
@@ -90,7 +96,9 @@ int main(int argc,char **argv)
         if(strlen(exit_message) > 0) {
                 puts(exit_message);
         }
-        return(0);
+        grx_font_unref(font);
+
+        return 0;
 }
 
 #endif /* _TEST_H_ */

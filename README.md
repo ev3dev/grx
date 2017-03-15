@@ -47,7 +47,6 @@ Source code directories:
     debian/     Debian packaging stuff
     doc/        Documentation
     example/    Examples of how to use GRX 3
-    fonts/      Font data
     include/    Public header files
     plugins/    Optional components, such as video drivers
     src/        The main library source code
@@ -64,7 +63,6 @@ License
 * See copying.grx for details!
 * The library itself is LGPL.
 * The tools and examples are GPL.
-* Most of the fonts come from X11 and are MIT licensed.
 
 History
 -------

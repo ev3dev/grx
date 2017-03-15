@@ -22,8 +22,10 @@ TESTFUNC(scrolltest)
 {
         int  wdt = grx_get_screen_width();
         int  hgt = grx_get_screen_height();
+        GrxTextHAlign tha = GRX_TEXT_HALIGN_LEFT;
+        GrxTextVAlign tva = GRX_TEXT_VALIGN_TOP;
         GrxColor nc  = grx_color_info_n_colors();
-        int  txh = grx_font_default.h.height + 2;
+        int  txh = grx_font_get_height(font) + 2;
         for( ; ; ) {
             char buff[100];
             char *l1 = "Screen resolution: %dx%d";
@@ -39,20 +41,20 @@ TESTFUNC(scrolltest)
             int vh = grx_get_virtual_height();
             int vx = grx_get_viewport_x();
             int vy = grx_get_viewport_y();
-            int x  = (vw / 3) - (strlen(l6) * grx_font_default.h.width / 2);
+            int x  = (vw / 3) - (strlen(l6) * grx_font_get_width(font) / 2);
             int y  = (vh / 3) - (3 * txh);
             grx_clear_screen(bgc);
             drawing(0,0,vw,vh,fgc,bgc);
-            sprintf(buff,l1,wdt,hgt); grx_draw_text_xy(x,y,buff,txc,bgc); y += txh;
-            sprintf(buff,l2,vw, vh ); grx_draw_text_xy(x,y,buff,txc,bgc); y += txh;
+            sprintf(buff,l1,wdt,hgt); grx_draw_text(buff,x,y,font,txc,bgc,tha,tva); y += txh;
+            sprintf(buff,l2,vw, vh ); grx_draw_text(buff,x,y,font,txc,bgc,tha,tva); y += txh;
             for( ; ; grx_set_viewport(vx,vy)) {
                 int yy = y;
                 vx = grx_get_viewport_x();
                 vy = grx_get_viewport_y();
-                sprintf(buff,l3,vx,vy); grx_draw_text_xy(x,yy,buff,txc,bgc); yy += txh;
-                grx_draw_text_xy(x,yy,l4,txc,bgc); yy += txh;
-                grx_draw_text_xy(x,yy,l5,txc,bgc); yy += txh;
-                grx_draw_text_xy(x,yy,l6,txc,bgc); yy += txh;
+                sprintf(buff,l3,vx,vy); grx_draw_text(buff,x,yy,font,txc,bgc,tha,tva); yy += txh;
+                grx_draw_text(l4,x,yy,font,txc,bgc,tha,tva); yy += txh;
+                grx_draw_text(l5,x,yy,font,txc,bgc,tha,tva); yy += txh;
+                grx_draw_text(l6,x,yy,font,txc,bgc,tha,tva); yy += txh;
                 switch(GrKeyRead()) {
                     case 'w': vw -= 8; break;
                     case 'W': vw += 8; break;
@@ -62,6 +64,7 @@ TESTFUNC(scrolltest)
                     case 'X': vx++; continue;
                     case 'y': vy--; continue;
                     case 'Y': vy++; continue;
+                    // FIXME: return does not unref font
                     case 'q': return;
                     case 'Q': return;
                     default:  continue;

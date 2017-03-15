@@ -209,9 +209,9 @@ void hide_mouse( void )
 /**************************************************************************/
 
 void dboton( int x, int y, int an, int al,
-             GrxColor c, GrxColor ct, char * s, int t )
+             GrxColor c, GrxColor ct, GrxFont * font, char * s, int t )
 
-//   x, y posici¢n de la esquina izquierda
+//   x, y posiciï¿½n de la esquina izquierda
 //   an, al ancho y alto
 //   c, ct color del fondo y del texto
 //   t, tipo bit 0 0=normal, 1=apretado
@@ -220,7 +220,6 @@ void dboton( int x, int y, int an, int al,
 {
   GrxPoint pol[7];
   int prof, pulsd, selec, despl;
-  GrxTextOptions grt;
   GrxLineOptions glo;
   int mouseblock;
 
@@ -252,17 +251,10 @@ void dboton( int x, int y, int an, int al,
   grx_draw_line( pol[0].x,pol[0].y,pol[3].x,pol[3].y,BLACK );
   grx_draw_filled_box( x+2+prof,y+2+prof,x+an-3-prof,y+al-3-prof,c );
 
-  grt.txo_font = &grx_font_pc8x14;
-  grt.txo_fgcolor.v = ct;
-  grt.txo_bgcolor.v = GRX_COLOR_NONE;
-  grt.txo_direct = GRX_TEXT_DIRECTION_RIGHT;
-  grt.txo_xalign = GRX_TEXT_ALIGN_CENTER;
-  grt.txo_yalign = GRX_TEXT_VALIGN_MIDDLE;
-  grt.txo_chrtype = GRX_CHAR_TYPE_BYTE;
   if( despl )
-    grx_draw_string_with_text_options( s,strlen( s ),x+an/2+1,y+al/2+1,&grt );
+    grx_draw_text( s,x+an/2+1,y+al/2+1,font,ct,GRX_COLOR_NONE,GRX_TEXT_HALIGN_CENTER,GRX_TEXT_VALIGN_MIDDLE );
   else
-    grx_draw_string_with_text_options( s,strlen( s ),x+an/2,y+al/2,&grt );
+    grx_draw_text( s,x+an/2,y+al/2,font,ct,GRX_COLOR_NONE,GRX_TEXT_HALIGN_CENTER,GRX_TEXT_VALIGN_MIDDLE );
 
   if( selec ){
     glo.color = ct;
@@ -280,7 +272,7 @@ void dboton( int x, int y, int an, int al,
 void paint_button( int x, int y, Button *b )
 {
   dboton( x+b->x,y+b->y,b->wide,b->high,
-          egacolors[b->tbcolor],egacolors[b->tfcolor],
+          egacolors[b->tbcolor],egacolors[b->tfcolor],b->font,
           b->text,b->status );
 }
 

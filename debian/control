@@ -11,16 +11,6 @@ Homepage: https://github.com/ev3dev/grx
 Vcs-Git: git://github.com/ev3dev/grx.git
 Vcs-Browser: https://github.com/ev3dev/grx
 
-Package: libgrx-3.0-fonts
-Architecture: all
-Multi-Arch: foreign
-Depends: ${misc:Depends}
-Description: 2D graphics library
- A simple 2D graphics library similar to the old Borland Graphics Interface
- (BGI).
- .
- This package contains the fonts used by libgrx-3.0.
-
 Package: libgrx-3.0-dev
 Section: libdevel
 Architecture: any
@@ -36,7 +26,7 @@ Description: 2D graphics library
 Package: libgrx-3.0-0
 Architecture: any
 Multi-Arch: same
-Depends: libgrx-3.0-fonts, ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: libgrx-3.0-plugin-gtk3,
             libgrx-3.0-plugin-linuxfb,
             libgrx-3.0-plugin-memory

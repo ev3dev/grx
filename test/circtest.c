@@ -50,9 +50,16 @@ void drawellip(int xc,int yc,int rx,int ry,GrxColor c1,GrxColor c2,GrxColor c3)
 
 TESTFUNC(circtest)
 {
+        GrxFont *font;
         int     xc,yc;
         int     xr,yr;
         GrxColor c1,c2,c3;
+        GError *err = NULL;
+
+        font = grx_font_load(NULL, -1, &err);
+        if (!font) {
+            g_error("%s", err->message);
+        }
 
         c1 = grx_color_info_alloc_color(64,64,255);
         c2 = grx_color_info_alloc_color(255,255,64);
@@ -86,6 +93,6 @@ TESTFUNC(circtest)
             g_usleep(200*1000);
         }
 
-        grx_draw_text_xy(0,0,"press any key to continue",GRX_COLOR_WHITE,GRX_COLOR_BLACK);
+        grx_draw_text("press any key to continue",0,0,font,GRX_COLOR_WHITE,GRX_COLOR_BLACK,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
         GrKeyRead();
 }

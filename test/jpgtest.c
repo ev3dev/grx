@@ -21,6 +21,8 @@
 #include "grx-3.0.h"
 #include "grxkeys.h"
 
+static GrxFont *font;
+
 void imagen( char *nf, int scale )
 {
   GrxContext *grc;
@@ -39,8 +41,10 @@ void imagen( char *nf, int scale )
   grx_context_load_from_jpeg( grc,nf,scale );
   grx_context_unref( grc );
 
-  grx_draw_text_xy( 10,10,s,GRX_COLOR_BLACK,GRX_COLOR_WHITE );
-  grx_draw_text_xy( 10,50+high,"Press any key to continue",GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text( s,10,10,font,
+      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  grx_draw_text( "Press any key to continue",10,50+high,font,
+      GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
 }
 
@@ -57,7 +61,8 @@ void nojpegsupport( void )
 
   grx_clear_screen( grx_color_info_alloc_color( 0,0,100 ) );
   for( i=0; i<6; i++ )
-    grx_draw_text_xy( 90,160+i*18,s[i],GRX_COLOR_WHITE,GRX_COLOR_NONE );
+    grx_draw_text( s[i],90,160+i*18,font,
+        GRX_COLOR_WHITE,GRX_COLOR_NONE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
 }
 
@@ -74,7 +79,12 @@ int main()
     nojpegsupport();
     grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
     exit( 1 );
-    }
+  }
+
+  font = grx_font_load(NULL, -1, &error);
+  if (!font) {
+    g_error("%s", error->message);
+  }
 
   imagen( "jpeg1.jpg",1 );
   imagen( "jpeg1.jpg",2 );
@@ -93,29 +103,32 @@ int main()
   grx_context_load_from_jpeg( grc,"jpeg2.jpg",2 );
   grx_context_unref( grc );
 
-  grx_draw_text_xy( 10,10,"Press any key to save color and gray screen",
-    GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text( "Press any key to save color and gray screen",10,10,font,
+    GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
 
   grx_save_current_context_to_jpeg( NULL,"p.jpg",75 );
   grx_save_current_context_to_jpeg_grayscale( NULL,"pgray.jpg",75 );
 
   grx_clear_screen( GRX_COLOR_BLACK );
-  grx_draw_text_xy( 10,10,"Press any key to reload color screen       ",
-    GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text( "Press any key to reload color screen       ",10,10,font,
+    GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
   grx_context_load_from_jpeg( NULL,"p.jpg",1 );
 
-  grx_draw_text_xy( 10,10,"Press any key to reload gray screen        ",
-    GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text( "Press any key to reload gray screen        ",10,10,font,
+    GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_context_load_from_jpeg( NULL,"pgray.jpg",1 );
 
-  grx_draw_text_xy( 10,10,"Press any key to end                       ",
-    GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  grx_draw_text( "Press any key to end                       ",10,10,font,
+    GRX_COLOR_BLACK,GRX_COLOR_WHITE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
   GrKeyRead();
 
+  grx_font_unref(font);
+
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
+
   return 0;
 }

@@ -90,6 +90,7 @@ typedef struct{
   int x, y;                   // left upper coordinates
   int wide, high;             // what do you mean
   int tbcolor, tfcolor;       // text background, foreground, ind colors
+  GrxFont *font;             // the font
   char *text;                 // the text
   int status;                 // see BSTATUS defs
   int bid;                    // button id

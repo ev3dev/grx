@@ -260,7 +260,7 @@ static void set_cursor (GtkWidget *widget, GdkEvent *event, gchar *name)
 static gboolean init (const gchar *options)
 {
     GrxGtk3DeviceManager *device_manager;
-    GError *err;
+    GError *err = NULL;
     GtkWidget *window;
     GtkWidget *event_box;
 

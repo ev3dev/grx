@@ -24,6 +24,7 @@
 
 int main()
 {
+  GrxFont *font;
   int x, y, ww, wh, i = 0;
   GrxColor c;
   GrxContext *w1, *w2, *w3, *w4;
@@ -36,6 +37,11 @@ int main()
     i = ! i;
 
     if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT, &error)) {
+      g_error("%s", error->message);
+    }
+
+    font = grx_font_load(NULL, -1, &error);
+    if (!font) {
       g_error("%s", error->message);
     }
 
@@ -70,8 +76,12 @@ int main()
 
     grx_set_current_context( NULL );
 
-    grx_draw_text_xy(10,wh,"press any key to toggle full screen / windowed modes, escape to end",GRX_COLOR_WHITE,GRX_COLOR_BLACK);
+    grx_draw_text("press any key to toggle full screen / windowed modes, escape to end",
+        10,wh,font,GRX_COLOR_WHITE,GRX_COLOR_BLACK,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
 
   } while ( GrKeyRead() != GrKey_Escape );
+
+  grx_font_unref(font);
+
   return 0;
 }

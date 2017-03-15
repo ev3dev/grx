@@ -182,19 +182,18 @@ void Message(int disp, char *txt, gvmode *gp) {
                 FrameDriverName(gp->fm), gp->w, gp->h, gp->bpp);
 
   if (disp) {
-    GrxTextOptions to;
     GrxContext save;
+    GrxFont *font;
+
     grx_save_current_context(&save);
     grx_set_current_context(NULL);
-    to.txo_font = &grx_font_pc6x8;
-    to.txo_fgcolor.v = GRX_COLOR_WHITE;
-    to.txo_bgcolor.v = GRX_COLOR_BLACK;
-    to.txo_chrtype = GRX_CHAR_TYPE_BYTE;
-    to.txo_direct  = GRX_TEXT_DIRECTION_RIGHT;
-    to.txo_xalign  = GRX_TEXT_ALIGN_LEFT;
-    to.txo_yalign  = GRX_TEXT_VALIGN_TOP;
-    grx_draw_string_with_text_options(msg,strlen(msg),0,0,&to);
-    grx_draw_string_with_text_options(txt,strlen(txt),0,10,&to);
+    font = grx_font_load(NULL, -1, NULL);
+    // FIXME: should handle error here
+    grx_draw_text(msg, 0, 0, font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
+        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+    grx_draw_text(txt, 0, 10, font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
+        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+    grx_font_unref(font);
     grx_set_current_context(&save);
   }
 }

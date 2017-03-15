@@ -346,23 +346,27 @@ static KeyEntry Keys[] = {
 
 #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
 
-static GrxTextOptions opt;
 static int curx = 0, cury = 0;
 
 static void gputc(int c)
 {
-        if(c == '\n' || curx + grx_text_option_get_char_width(&opt, c) > grx_get_width()) {
-            cury += grx_text_option_get_char_height(&opt, 'A');
+        char c2[2];
+
+        if(c == '\n' || curx + grx_font_get_width(font) > grx_get_width()) {
+            cury += grx_font_get_height(font);
             curx = 0;
-            if(cury + grx_text_option_get_char_height(&opt, 'A') > grx_get_height()) {
-                grx_clear_screen(opt.txo_bgcolor.v);
+            if(cury + grx_font_get_height(font) > grx_get_height()) {
+                grx_clear_screen(GRX_COLOR_BLACK);
                 cury = 0;
             }
         }
 
         if(c != '\n') {
-            grx_draw_char_with_text_options(c, curx, cury, &opt);
-            curx += grx_text_option_get_char_width(&opt, c);
+            c2[0] = c;
+            c2[1] = 0;
+            grx_draw_text(c2, curx, cury, font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
+                GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+            curx += grx_font_get_width(font);
         }
 }
 
@@ -383,14 +387,6 @@ TESTFUNC(keys) {
   KeyEntry *kp;
   GrKeyType k;
   int ok;
-
-  opt.txo_font = &grx_font_pc8x16;
-  opt.txo_fgcolor.v = GRX_COLOR_WHITE;
-  opt.txo_bgcolor.v = GRX_COLOR_BLACK;
-  opt.txo_chrtype = GRX_CHAR_TYPE_BYTE;
-  opt.txo_direct = GRX_TEXT_DIRECTION_RIGHT;
-  opt.txo_xalign = GRX_TEXT_ALIGN_LEFT;
-  opt.txo_yalign = GRX_TEXT_VALIGN_TOP;
 
   gprintf("\n\n Checking GrKey... style interface"
            "\n Type 3 spaces to quit the test\n\n");
