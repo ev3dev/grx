@@ -161,8 +161,8 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
  * @family: (nullable): the font family name or %NULL
  * @style: (nullable): the font style or %NULL
  * @lang: (nullable): the language or %NULL
- * @size: the preferred size or -1
- * @dpi: the preferred dpi or -1
+ * @size: the preferred size or -1 for any size
+ * @dpi: the preferred dpi or -1 for any dpi
  * @err: pointer to hold an error
  *
  * Loads the font that best matches the parameters.
@@ -233,7 +233,7 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, const gchar *style,
 /**
  * grx_font_load:
  * @family: (nullable): the font family name or %NULL
- * @size: the preferred size or -1
+ * @size: the preferred size or -1 for any size
  * @err: pointer to hold an error
  *
  * Loads the font that best matches the parameters.

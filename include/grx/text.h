@@ -1,7 +1,7 @@
 /*
  * text.h
  *
- * Copyright (c) 2015 David Lechner <david@lechnology.com>
+ * Copyright (c) 2015,2017 David Lechner <david@lechnology.com>
  *
  * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  * [e-mail: csaba@vuse.vanderbilt.edu]
@@ -33,8 +33,16 @@
  * @section_id: text
  * @include: grx-3.0.h
  *
- * The library supports loadable fonts. When in memory they are bit-mapped (i.e.
+ * The library supports loadable fonts. When in memory they are bitmapped (i.e.
  * not scalable!) fonts.
+ *
+ * Under the hood, it uses fontconfig and freetype2. This means than fontconfig
+ * must be configured to allow using bitmap fonts, otherwise grx_font_load()
+ * will not be able to find any fonts. You can also use the fontconfig command
+ * line tools to help find availble fonts. For example, `fc-list ":scalable=False"`
+ * will list all bitmap fonts.
+ *
+ * To bypass fontconfig, use grx_font_load_from_file() instead.
  */
 
 /**
