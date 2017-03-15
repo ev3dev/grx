@@ -190,7 +190,7 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, const gchar *style,
         FcPatternAddString(pattern, "family", (FcChar8 *)family);
     }
     if (size >= 0) {
-        FcPatternAddInteger(pattern, "size", size);
+        FcPatternAddInteger(pattern, "pixelsize", size);
     }
     if (style) {
         FcPatternAddString(pattern, "style", (FcChar8 *)style);
