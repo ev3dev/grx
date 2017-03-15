@@ -99,6 +99,10 @@ gint grx_font_get_text_width(GrxFont *font, const gchar *text)
         return 0;
     }
 
+    if (FT_IS_FIXED_WIDTH(font->face)) {
+        return strlen(text) * (font->face->size->metrics.max_advance >> 6);
+    }
+
     for (; (c = g_utf8_get_char(text)) != '\0'; text = g_utf8_next_char(text)) {
         index = FT_Get_Char_Index(font->face, c);
         ret = FT_Load_Glyph(font->face, index, FT_LOAD_DEFAULT);
