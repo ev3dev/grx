@@ -34,7 +34,7 @@ set (TYPELIB_TARGET ${LIBRARY_NAME}-typelib)
 add_subdirectory (plugins)
 add_subdirectory (src)
 add_subdirectory (tools)
-add_subdirectory (example EXCLUDE_FROM_ALL)
+add_subdirectory (example)
 add_subdirectory (test EXCLUDE_FROM_ALL)
 
 # these should probably be move do subdirectories too

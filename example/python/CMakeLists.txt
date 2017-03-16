@@ -19,4 +19,5 @@ foreach (FILE_NAME ${PROGRAMS})
             ${SHARED_LIBRARY_NAME}
             ${TYPELIB_TARGET}
     )
+    install(PROGRAMS ${FILE_NAME} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/python)
 endforeach (FILE_NAME ${PROGRAMS})

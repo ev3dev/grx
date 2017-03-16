@@ -28,3 +28,5 @@ if (CMAKE_CROSSCOMPILING)
     # Cross compiling misses a few automatic dependencies for some reason
     target_link_libraries(vala-life "-pthread" "-lresolv")
 endif (CMAKE_CROSSCOMPILING)
+
+install(TARGETS vala-life DESTINATION ${CMAKE_INSTALL_PKGLIBDIR}/examples/vala)
