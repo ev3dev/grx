@@ -535,6 +535,7 @@ public static int main (string [] argv) {
         // command line options.
         return app.run (argv);
     } catch (GLib.Error err) {
-        error ("%s", err.message);
+        critical ("%s", err.message);
+        return 1;
     }
 }
