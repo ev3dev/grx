@@ -69,31 +69,19 @@ static int detect(void)
     if (initted < 0) {
         initted = 0;
 
-        // first, open the current console
-
-        ttyfd = open("/dev/tty", O_RDONLY);
+        // try the boss tty first (probably won't work unless we are root)
+        ttyfd = open("/dev/tty0", O_WRONLY);
         if (ttyfd == -1) {
-            g_debug("Failed to open /dev/tty: %s", strerror(errno));
-            err = ttyfd;
-        } else {
-            // This will fail if we are not on a virtual console
-            err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
-            close(ttyfd);
+            g_debug("Failed top open /dev/tty0: %s", strerror(errno));
+            // fall back to stdin
+            ttyfd = dup(0);
         }
+        // this fails if we are not a vt
+        err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
         if (err < 0) {
-            // If we are not currently on a virtual console and we are root,
-            // then we will take over the current virtual console (tty0).
-            ttyfd = open("/dev/tty0", O_RDONLY);
-            if (ttyfd == -1) {
-                g_debug("Failed top open /dev/tty0: %s", strerror(errno));
-                return FALSE;
-            }
-            err = ioctl(ttyfd, VT_GETSTATE, &vtstat);
-            if (err < 0) {
-                close(ttyfd);
-                g_debug("VT_GETSTATE failed on /dev/tty0: %s", strerror(-err));
-                return FALSE;
-            }
+            close(ttyfd);
+            g_debug("VT_GETSTATE failed: %s", strerror(-err));
+            return FALSE;
         }
 
         // Get the next open console. The graphics will be run on this console
@@ -108,11 +96,19 @@ static int detect(void)
         }
 
         sprintf(ttyname, "/dev/tty%d", graphics_vt);
-        ttyfd = open(ttyname, O_RDONLY);
+        ttyfd = open(ttyname, O_WRONLY);
         if (ttyfd == -1) {
             g_debug("Failed top open /dev/tty%d: %s", graphics_vt,
                     strerror(errno));
-            return FALSE;
+            // fall back to current console
+            graphics_vt = vtstat.v_active;
+            sprintf(ttyname, "/dev/tty%d", graphics_vt);
+            ttyfd = open(ttyname, O_RDWR);
+            if (ttyfd == -1) {
+                g_debug("Failed top open /dev/tty%d: %s", graphics_vt,
+                        strerror(errno));
+                return FALSE;
+            }
         }
 
         original_vt = vtstat.v_active;
@@ -207,6 +203,7 @@ static void reset(void)
     struct vt_mode vtm;
     struct vt_stat vtstat;
 
+    g_debug("closing vd_lnxfb");
     if (fbuffer) {
         memzero(fbuffer, fbvar.yres * fbfix.line_length);
         munmap(fbuffer, fbfix.smem_len);
@@ -220,6 +217,7 @@ static void reset(void)
         // if we are still on the graphics vt, restore the original vt.
         ioctl(ttyfd, VT_GETSTATE, &vtstat);
         if (vtstat.v_active == graphics_vt) {
+            g_debug("restoring tty");
             ioctl(ttyfd, KDSKBMODE, original_keyboard_mode);
             ioctl(ttyfd, KDSETMODE, KD_TEXT);
             vtm.mode = VT_AUTO;
