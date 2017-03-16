@@ -3,6 +3,8 @@ set (PROGRAMS
     fonts
     input
     life
+    lines
+    pixels
 )
 
 foreach (PROG ${PROGRAMS})
