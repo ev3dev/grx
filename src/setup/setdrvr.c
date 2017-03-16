@@ -71,8 +71,16 @@ static const char *nxtoken(const char *p, char *token)
 int grx_set_driver(const char *drvspec, GError **error)
 {
         static int firsttime = TRUE;
+        const char *plugin_path;
         GrxVideoDriver *drv = NULL;
         char options[100];
+
+        plugin_path = g_getenv("GRX_PLUGIN_PATH");
+        if (!plugin_path) {
+            plugin_path = GRX_DEFAULT_PLUGIN_PATH;
+        }
+        g_debug("GRX_PLUGIN_PATH=%s", plugin_path);
+
         if (!drvspec) {
             drvspec = g_getenv("GRX_DRIVER");
             g_debug("Checking GRX_DRIVER environment variable: %s",drvspec);
@@ -126,8 +134,10 @@ int grx_set_driver(const char *drvspec, GError **error)
                 GModule *plugin;
                 gchar *file_name, module_name[128];
 
+
+
                 g_snprintf(module_name, 128, "grx-3.0-vdriver-%s", name);
-                file_name = g_module_build_path(GRX_PLUGIN_PATH, module_name);
+                file_name = g_module_build_path(plugin_path, module_name);
                 g_debug("Looking for plugin: %s", file_name);
                 plugin = g_module_open(file_name, G_MODULE_BIND_LAZY);
                 g_free(file_name);
@@ -157,7 +167,7 @@ int grx_set_driver(const char *drvspec, GError **error)
             // Try to load each video driver plugin
             for (i = 0; driver_names[i]; i++) {
                 g_snprintf(module_name, 128, "grx-3.0-vdriver-%s", driver_names[i]);
-                file_name = g_module_build_path(GRX_PLUGIN_PATH, module_name);
+                file_name = g_module_build_path(plugin_path, module_name);
                 g_debug("Looking for plugin: %s", file_name);
                 plugin = g_module_open(file_name, G_MODULE_BIND_LAZY);
                 g_free(file_name);
