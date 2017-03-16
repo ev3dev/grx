@@ -11,6 +11,7 @@ set (PACKAGE_NAME ${PROJECT_NAME}-${GIR_VERSION})
 set (GRX_DEBUG "OFF" CACHE STRING "Debug message flags")
 set (GRX_LINUXFB "Yes" CACHE BOOL "Enable Linux framebuffer video driver")
 set (GRX_GTK3 "Yes" CACHE BOOL "Enable GTK+ 3 video driver")
+set (GRX_SKIP_GTKDOC "No" CACHE BOOL "Disable building docs")
 
 # we have local cmake modules
 
