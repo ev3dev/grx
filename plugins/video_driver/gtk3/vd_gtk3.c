@@ -133,29 +133,39 @@ static GrxVideoMode video_modes[] = {
         .bpp            = 4,
         .width          = 80,
         .height         = 25,
-        .mode           = 0,
         .line_offset    = 168,
-        .user_data      = NULL,
         .extended_info  = &text_mode_ext
-    },
-    {
-        .present        = TRUE,
-        .bpp            = 24,
-        .width          = 640,
-        .height         = 480,
-        .mode           = 0,
-        .line_offset    = ROWSTRIDE (640),
-        .user_data      = NULL,
-        .extended_info  = &graphics_mode_ext
     },
     {
         .present        = TRUE,
         .bpp            = 24,
         .width          = 320,
         .height         = 240,
-        .mode           = 0,
         .line_offset    = ROWSTRIDE (320),
-        .user_data      = NULL,
+        .extended_info  = &graphics_mode_ext
+    },
+    {
+        .present        = TRUE,
+        .bpp            = 24,
+        .width          = 640,
+        .height         = 480,
+        .line_offset    = ROWSTRIDE (640),
+        .extended_info  = &graphics_mode_ext
+    },
+    {
+        .present        = TRUE,
+        .bpp            = 24,
+        .width          = 800,
+        .height         = 600,
+        .line_offset    = ROWSTRIDE (800),
+        .extended_info  = &graphics_mode_ext
+    },
+    {
+        .present        = TRUE,
+        .bpp            = 24,
+        .width          = 1024,
+        .height         = 768,
+        .line_offset    = ROWSTRIDE (1024),
         .extended_info  = &graphics_mode_ext
     },
 };
