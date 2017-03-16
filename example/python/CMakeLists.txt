@@ -1,21 +1,22 @@
 
 set (PROGRAMS
-    fonts
-    input
-    life
-    lines
-    pixels
+    fonts.py
+    input.py
+    life.py
+    lines.py
+    pixels.py
 )
 
-foreach (PROG ${PROGRAMS})
-    add_custom_target (run-python-${PROG}
+foreach (FILE_NAME ${PROGRAMS})
+    get_filename_component(TARGET_SUFFIX ${FILE_NAME} NAME_WE)
+    add_custom_target (run-python-${TARGET_SUFFIX}
         ${CMAKE_COMMAND} -E env
             LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/src
             GI_TYPELIB_PATH=${CMAKE_BINARY_DIR}/src
-            ${CMAKE_CURRENT_SOURCE_DIR}/${PROG}.py
+            ${CMAKE_CURRENT_SOURCE_DIR}/${FILE_NAME}
         DEPENDS
-            ${CMAKE_CURRENT_SOURCE_DIR}/${PROG}.py
+            ${CMAKE_CURRENT_SOURCE_DIR}/${FILE_NAME}
             ${SHARED_LIBRARY_NAME}
             ${TYPELIB_TARGET}
     )
-endforeach (PROG ${PROGRAMS})
+endforeach (FILE_NAME ${PROGRAMS})
