@@ -181,7 +181,7 @@ struct _GrxVideoMode {
 /**
  * GrxVideoModeFlags:
  * @GRX_VIDEO_MODE_FLAG_LINEAR: Uses linear memory mapping
- * @GRX_VIDEO_MODE_FLAG_ACCEL: Uses an acellerated video mode
+ * @GRX_VIDEO_MODE_FLAG_ACCEL: Uses an accelerated video mode
  * @GRX_VIDEO_MODE_FLAG_FAST_SVGA8: Uses faster mixed-planar access
  * @GRX_VIDEO_MODE_FLAG_MEMORY: Uses memory only (virtual screen)
  *
