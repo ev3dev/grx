@@ -236,7 +236,13 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
     if (lang) {
         FcPatternAddString(pattern, FC_LANG, (FcChar8 *)lang);
     }
-    g_debug("searching for pattern: %s", FcNameUnparse(pattern));
+    {
+        FcChar8 *pattern_str;
+
+        pattern_str = FcNameUnparse(pattern);
+        g_debug("searching for pattern: %s", pattern_str);
+        free(pattern_str);
+    }
 
     FcConfigSubstitute(NULL, pattern, FcMatchPattern);
     FcDefaultSubstitute(pattern);
