@@ -90,14 +90,17 @@ class App(Grx.Application):
         Grx.draw_text('file: ' + file_name, 10, 10, self.default_font)
         try:
             font = Grx.font_load_from_file(file_name)
-            font_info = 'family: {}, style: {}, width: {}, height {}'.format(font.get_family(), font.get_style(), font.get_width(), font.get_height())
+            font_info = 'family: {}, style: {}, width: {}, height {}'.format(
+                font.get_family(), font.get_style(), font.get_width(), font.get_height())
             Grx.draw_text(font_info, 10, 10 + self.v_offset, self.default_font)
-            dump_context = Grx.Context.new_subcontext(10, 10 + self.v_offset * 2, Grx.get_width() - 10, Grx.get_height() - 10)
+            dump_context = Grx.Context.new_subcontext(
+                10, 10 + self.v_offset * 2, Grx.get_width() - 10, Grx.get_height() - 10)
             self.next_index = font.dump(dump_context, start_index, self.BLACK, self.WHITE)
             if self.next_index != -1 and self.next_index != start_index:
                 self.prev_index.append(start_index)
         except GLib.Error as err:
-            Grx.draw_text(str(err), 10, 10 + self.v_offset, self.default_font, self.BLACK, self.WHITE, Grx.TextHAlign.LEFT, Grx.TextVAlign.TOP)
+            Grx.draw_text(str(err), 10, 10 + self.v_offset, self.default_font,
+                          self.BLACK, self.WHITE, Grx.TextHAlign.LEFT, Grx.TextVAlign.TOP)
 
 if __name__ == '__main__':
     app = App()
