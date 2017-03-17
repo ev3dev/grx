@@ -28,6 +28,10 @@
  */
 guint grx_get_dpi(void)
 {
+    if (GrDriverInfo->dpi) {
+        return GrDriverInfo->dpi;
+    }
+
     if (!GrDriverInfo->vdriver || !GrDriverInfo->vdriver->get_dpi) {
         return GRX_DEFAULT_DPI;
     }

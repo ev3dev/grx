@@ -281,11 +281,13 @@ extern const struct _GR_driverInfo {
         int     deftw,defth;                /* default text mode size */
         int     defgw,defgh;                /* default graphics mode size */
         GrxColor deftc,defgc;               /* default text and graphics colors */
+        int     dpi;                        /* override vdriver get_dpi */
         int     vposx,vposy;                /* current virtual viewport position */
         int     splitbanks;                 /* indicates separate R/W banks */
         int     curbank;                    /* currently mapped bank */
         void  (*set_bank)(int bk);          /* banking routine */
         void  (*set_rw_banks)(int rb,int wb); /* split banking routine */
+        void  *reserved[6];                 /* for future use */
 } * const GrDriverInfo;
 
 #endif /* __GTK_DOC_IGNORE__ */

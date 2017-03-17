@@ -103,6 +103,7 @@ int grx_set_driver(const char *drvspec, GError **error)
                         case CH16('t','w'): oaddr = &DRVINFO->deftw; break;
                         case CH16('g','h'): oaddr = &DRVINFO->defgh; break;
                         case CH16('t','h'): oaddr = &DRVINFO->defth; break;
+                        case CH16('d','p'): oaddr = &DRVINFO->dpi; break;
                     }
                     if(oaddr) {
                         long optval;
