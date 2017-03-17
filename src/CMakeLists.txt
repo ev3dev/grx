@@ -96,6 +96,7 @@ set (LIBRARY_SOURCE_FILES
     setup/context.c
     setup/cxtinfo.c
     setup/cxtinlne.c
+    setup/dpi.c
     setup/drvinfo.c
     setup/drvinlne.c
     setup/fframe.c

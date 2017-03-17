@@ -119,7 +119,7 @@ typedef struct _GrxTextOptions GrxTextOptions;
 GType grx_font_get_type(void);
 
 GrxFont *grx_font_load_from_file(const gchar *filename, GError **err);
-GrxFont *grx_font_load_full(const gchar *family, gint size, GrxFontWeight weight,
+GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi, GrxFontWeight weight,
     GrxFontSlant slant, GrxFontWidth width, gboolean monospace, const gchar *lang, GError **err);
 GrxFont *grx_font_load(const gchar *family, gint size, GError **err);
 

@@ -69,7 +69,7 @@ public class CalibrateApplication : Grx.Application {
         screen_points[2].y = height - screen_points[1].y;
         screen_points[3].x = screen_points[0].x;
         screen_points[3].y = screen_points[2].y;
-        var font = Font.load("lucida", 14);
+        var font = Font.load("lucida", 8);
         text_opts = TextOptions.new(font, Color.white, Color.black, TextHAlign.CENTER, TextVAlign.TOP);
     }
 

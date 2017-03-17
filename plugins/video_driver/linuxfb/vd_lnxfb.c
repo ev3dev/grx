@@ -46,6 +46,7 @@
 
 #define  NUM_MODES    80        /* max # of supported modes */
 #define  NUM_EXTS     15        /* max # of mode extensions */
+#define  MM_PER_IN    25        /* millimeters per inch */
 
 static int initted = -1;
 static int fbfd = -1;
@@ -542,14 +543,23 @@ static int init(const char *options)
     return FALSE;
 }
 
+static guint get_dpi(GrxVideoDriver *driver)
+{
+    if (fbvar.width == 0 || fbvar.height == 0) {
+        return GRX_DEFAULT_DPI;
+    }
+
+    return (fbvar.xres * MM_PER_IN / fbvar.width +
+            fbvar.yres * MM_PER_IN / fbvar.height) / 2;
+}
+
 G_MODULE_EXPORT GrxVideoDriver grx_linuxfb_video_driver = {
     .name        = "linuxfb",                   /* name */
-    .inherit     = NULL,                        /* inherit modes from this driver */
     .modes       = modes,                       /* mode table */
     .n_modes     = itemsof(modes),              /* # of modes */
     .detect      = detect,                      /* detection routine */
     .init        = init,                        /* initialization routine */
     .reset       = reset,                       /* reset routine */
     .select_mode = _gr_select_mode,             /* standard mode select routine */
-    .flags       = 0,                           /* no additional capabilities */
+    .get_dpi     = get_dpi,
 };

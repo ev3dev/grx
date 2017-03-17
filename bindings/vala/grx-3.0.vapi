@@ -742,11 +742,11 @@ namespace Grx {
     [CCode (copy_function = "grx_font_ref", free_function = "grx_font_unref")]
     [Compact]
     public class Font {
+        public static Font load (string? family = null, int size = -1) throws GLib.Error;
+        public static Font load_full (string? family = null, int size = -1, int dpi = -1,
+            FontWeight weight = FontWeight.REGULAR, FontSlant slant = FontSlant.REGULAR,
+            FontWidth width = FontWidth.REGULAR, bool monospace = false, string? lang = null) throws GLib.Error;
         public static Font load_from_file (string filename) throws GLib.Error;
-        [CCode (cname = "grx_font_load_full")]
-        public static Font load (string? family = null, int size = -1, FontWeight weight = FontWeight.REGULAR,
-            FontSlant slant = FontSlant.REGULAR, FontWidth width = FontWidth.REGULAR, bool monospace = false,
-            string? lang = null) throws GLib.Error;
         public unowned string family { get; }
         public unowned string style { get; }
         public int dump (Context context, int start, Color fg, Color bg);

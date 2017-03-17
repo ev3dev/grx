@@ -22,6 +22,9 @@
 #include FT_FREETYPE_H
 #include FT_TYPES_H
 
+#include <grx/mode.h>
+#include <grx/text.h>
+
 #include "text.h"
 
 G_DEFINE_QUARK(ft-error-quark, ft_error)
@@ -160,6 +163,7 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
  * grx_font_load_full:
  * @family: (nullable): the font family name or %NULL
  * @size: the preferred size in points or -1 for any size
+ * @dpi: the screen resolution or -1 to ignore dpi
  * @weight: the font weight (e.g. bold) or -1 for any weight
  * @slant: the font slant (e.g. italic) or -1 for any slant
  * @width: the font width (e.g. narrow) or -1 for any width
@@ -173,9 +177,10 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
  *
  * Returns: (transfer full) (nullable): the font or %NULL if there was an error
  */
-GrxFont *grx_font_load_full(const gchar *family, gint size, GrxFontWeight weight,
-                            GrxFontSlant slant, GrxFontWidth width,
-                            gboolean monospace, const gchar *lang, GError **err)
+GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
+                            GrxFontWeight weight, GrxFontSlant slant,
+                            GrxFontWidth width, gboolean monospace,
+                            const gchar *lang, GError **err)
 {
     FcPattern *pattern, *match;
     FcResult result;
@@ -194,6 +199,9 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, GrxFontWeight weight
     }
     if (size >= 0) {
         FcPatternAddInteger(pattern, FC_SIZE, size);
+    }
+    if (dpi >= 0) {
+        FcPatternAddInteger(pattern, FC_DPI, dpi);
     }
     switch (weight) {
     case GRX_FONT_WEIGHT_REGULAR:
@@ -265,13 +273,14 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, GrxFontWeight weight
  *
  * Loads the font that best matches the parameters.
  *
- * Uses fontconfig for font matching.
+ * Uses fontconfig for font matching. This function is dpi aware, so the result
+ * depends on the currently selected video driver and possibly the video mode.
  *
  * Returns: (transfer full) (nullable): the font or %NULL if there was an error
  */
 GrxFont *grx_font_load(const gchar *family, gint size, GError **err)
 {
-    return grx_font_load_full(family, size, GRX_FONT_WEIGHT_REGULAR,
+    return grx_font_load_full(family, size, grx_get_dpi(), GRX_FONT_WEIGHT_REGULAR,
                               GRX_FONT_SLANT_REGULAR, GRX_FONT_WIDTH_REGULAR,
                               FALSE, NULL, err);
 }

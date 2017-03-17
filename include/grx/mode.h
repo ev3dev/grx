@@ -128,6 +128,7 @@ typedef enum /*< flags >*/ {
  */
 /*
  * @name: The name of the driver
+ * @flags: Driver flags
  * @inherit: Video modes from this driver will be inherited
  * @modes: Table of supported modes
  * @n_modes: Number of modes in @modes
@@ -135,11 +136,13 @@ typedef enum /*< flags >*/ {
  * @init: Function to initialize the driver
  * @reset: Function to reset the driver
  * @select_mode: Function to select the video mode of the driver
- * @flags: Driver flags
+ * @get_dpi: Function to get the display resolution from the video driver
+ * @reserved: For future use
  */
 struct _GrxVideoDriver {
     /*<private>*/
     gchar                   *name;
+    GrxVideoDriverFlags     flags;
     GrxVideoDriver          *inherit;
     GrxVideoMode            *modes;
     gint                    n_modes;
@@ -148,7 +151,8 @@ struct _GrxVideoDriver {
     void                    (*reset)(void);
     GrxVideoMode            *(*select_mode)(GrxVideoDriver *drv, gint w, gint h,
                                             gint bpp, gboolean txt, guint *ep);
-    GrxVideoDriverFlags     flags;
+    guint                   (*get_dpi)(GrxVideoDriver *drv);
+    gpointer                reserved[6];
 };
 
 /**
@@ -298,6 +302,7 @@ gboolean grx_set_mode_default_graphics(gboolean clear, GError **error);
  * inquiry stuff ---- many of these are actually macros (see below)
  */
 GrxGraphicsMode grx_get_mode(void);
+guint grx_get_dpi(void);
 GrxDeviceManager *grx_get_device_manager(void);
 
 const GrxVideoDriver *grx_get_current_video_driver(void);
@@ -307,6 +312,15 @@ const GrxFrameDriver *grx_get_current_frame_driver(void);
 const GrxFrameDriver *grx_get_screen_frame_driver(void);
 const GrxVideoMode   *grx_get_first_video_mode(GrxFrameMode mode);
 const GrxVideoMode   *grx_get_next_video_mode(const GrxVideoMode *prev);
+
+/**
+ * GRX_DEFAULT_DPI:
+ *
+ * The default screen resolution (dots per inch).
+ *
+ * Used when graphics drivers do not support getting the actual screen resolution.
+ */
+#define GRX_DEFAULT_DPI 100
 
 /*
  * inline implementation for some of the above

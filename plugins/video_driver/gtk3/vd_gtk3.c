@@ -324,14 +324,32 @@ select_mode (GrxVideoDriver *driver, gint width, gint height, gint bpp,
     return _gr_select_mode (driver, width, height, bpp, text, ep);
 }
 
+static guint get_dpi(GrxVideoDriver *driver)
+{
+    GdkScreen *screen;
+    gdouble res;
+
+    screen = gdk_screen_get_default();
+    if (!screen) {
+        return 0;
+    }
+
+    res = gdk_screen_get_resolution(screen);
+    if (res < 0) {
+        return 0;
+    }
+
+    return (guint)res;
+}
+
 G_MODULE_EXPORT GrxVideoDriver grx_gtk3_video_driver = {
     .name           = "gtk3",
-    .inherit        = NULL,
+    .flags          = 0,
     .modes          = video_modes,
     .n_modes        = G_N_ELEMENTS (video_modes),
     .detect         = detect,
     .init           = init,
     .reset          = reset,
     .select_mode    = select_mode,
-    .flags          = 0,
+    .get_dpi        = get_dpi,
 };
