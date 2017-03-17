@@ -331,12 +331,12 @@ static guint get_dpi(GrxVideoDriver *driver)
 
     screen = gdk_screen_get_default();
     if (!screen) {
-        return 0;
+        return GRX_DEFAULT_DPI;
     }
 
     res = gdk_screen_get_resolution(screen);
     if (res < 0) {
-        return 0;
+        return GRX_DEFAULT_DPI;
     }
 
     return (guint)res;
