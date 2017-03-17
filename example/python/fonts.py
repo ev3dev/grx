@@ -99,8 +99,7 @@ class App(Grx.Application):
             if self.next_index != -1 and self.next_index != start_index:
                 self.prev_index.append(start_index)
         except GLib.Error as err:
-            Grx.draw_text(str(err), 10, 10 + self.v_offset, self.default_font,
-                          self.BLACK, self.WHITE, Grx.TextHAlign.LEFT, Grx.TextVAlign.TOP)
+            Grx.draw_text(str(err), 10, 10 + self.v_offset, self.default_font)
 
 if __name__ == '__main__':
     app = App()
