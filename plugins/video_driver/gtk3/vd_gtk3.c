@@ -168,6 +168,11 @@ static GrxVideoMode video_modes[] = {
         .line_offset    = ROWSTRIDE (1024),
         .extended_info  = &graphics_mode_ext
     },
+    {
+        // dynamic mode (keep as last element of array)
+        .bpp            = 24,
+        .extended_info  = &graphics_mode_ext
+    }
 };
 
 // map GDK events to GRX events
@@ -321,6 +326,25 @@ static GrxVideoMode *
 select_mode (GrxVideoDriver *driver, gint width, gint height, gint bpp,
              gboolean text, guint *ep)
 {
+    if (!text) {
+        int i;
+
+        for (i = 0; i < G_N_ELEMENTS(video_modes) - 1; i++) {
+            GrxVideoMode *mode = &video_modes[i];
+
+            if (mode->extended_info == &text_mode_ext) {
+                continue;
+            }
+            if (mode->present && mode->width == width && mode->height == height) {
+                goto out;
+            }
+        }
+        video_modes[i].present = TRUE;
+        video_modes[i].width = width;
+        video_modes[i].height = height;
+        video_modes[i].line_offset = ROWSTRIDE(width);
+    }
+out:
     return _gr_select_mode (driver, width, height, bpp, text, ep);
 }
 
@@ -344,7 +368,7 @@ static guint get_dpi(GrxVideoDriver *driver)
 
 G_MODULE_EXPORT GrxVideoDriver grx_gtk3_video_driver = {
     .name           = "gtk3",
-    .flags          = 0,
+    .flags          = GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION,
     .modes          = video_modes,
     .n_modes        = G_N_ELEMENTS (video_modes),
     .detect         = detect,
