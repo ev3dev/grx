@@ -119,11 +119,12 @@ class LifeApplication : Grx.Application {
     }
 }
 
-static int main(string [] argv) {
+static int main (string [] argv) {
     try {
         var app = new LifeApplication ();
         return app.run ();
     } catch (GLib.Error err) {
-        error ("%s", err.message);
+        critical ("%s", err.message);
+        return 1;
     }
 }
