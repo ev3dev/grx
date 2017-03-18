@@ -18,4 +18,5 @@ RUN sudo apt-get update && \
         libudev-dev \
         libxkbcommon-dev \
         pkg-config \
+        python3 \
         valac

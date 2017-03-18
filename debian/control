@@ -18,6 +18,7 @@ Build-Depends: debhelper (>= 9.20160114),
     libudev-dev,
     libxkbcommon-dev,
     pkg-config,
+    python3,
     valac,
 Standards-Version: 3.9.8
 Section: libs

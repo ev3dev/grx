@@ -125,6 +125,7 @@ set (LIBRARY_SOURCE_FILES
     shape/scanellp.c
     shape/scanpoly.c
     shape/solidfil.c
+    ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
     text/drawtext.c
     text/dumpfont.c
     text/loadfont.c
@@ -197,6 +198,17 @@ set (LIBRARY_SOURCE_FILES
     wideline/custplne.c
     wideline/custpoly.c
     wideline/drwcpoly.c
+)
+
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
+    COMMAND ${CMAKE_SOURCE_DIR}/tools/unicode_codegen.py
+        ${CMAKE_SOURCE_DIR}/data/unicode/Blocks.txt
+        ${CMAKE_SOURCE_DIR}/data/unicode/PropertyValueAliases.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
+    DEPENDS
+        ${CMAKE_SOURCE_DIR}/tools/unicode_codegen.py
+        ${CMAKE_SOURCE_DIR}/data/unicode/Blocks.txt
+        ${CMAKE_SOURCE_DIR}/data/unicode/PropertyValueAliases.txt
 )
 
 if (GRX_DEBUG)

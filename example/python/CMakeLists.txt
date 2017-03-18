@@ -2,6 +2,7 @@
 set (PROGRAMS
     fonts.py
     input.py
+    intl.py
     life.py
     lines.py
     pixels.py

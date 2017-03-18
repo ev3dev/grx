@@ -19,6 +19,8 @@
 
 #include <glib.h>
 
+#include <fontconfig/fontconfig.h>
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -44,5 +46,6 @@ typedef void (*TextDrawBitmapFunc)(int x,int y,int w,int h,int ox, int oy,
                                    GrxColor fg,GrxColor bg,GrxPattern *p);
 
 FT_Library grx_get_global_freetype_library(GError **err);
+FcCharSet *script_to_charset(const gchar *script);
 
 #endif /* __GRX_TEXT_TEXT_H */

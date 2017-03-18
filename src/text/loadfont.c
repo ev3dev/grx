@@ -168,7 +168,8 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
  * @slant: the font slant (e.g. italic) or -1 for any slant
  * @width: the font width (e.g. narrow) or -1 for any width
  * @monospace: set to %TRUE to prefer a monospace font
- * @lang: (nullable): the language or %NULL
+ * @lang: (nullable): a RFC-3066-style language code or %NULL
+ * @script: (nullable): an ISO 15924 script code or %NULL
  * @err: pointer to hold an error
  *
  * Loads the font that best matches the parameters.
@@ -180,7 +181,7 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
 GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
                             GrxFontWeight weight, GrxFontSlant slant,
                             GrxFontWidth width, gboolean monospace,
-                            const gchar *lang, GError **err)
+                            const gchar *lang, const gchar *script, GError **err)
 {
     FcPattern *pattern, *match;
     FcResult result;
@@ -194,14 +195,16 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
 
     pattern = FcPatternCreate();
     FcPatternAddBool(pattern, FC_SCALABLE, FcFalse);
+    FcPatternAddBool(pattern, FC_OUTLINE, FcFalse);
+    FcPatternAddString(pattern, FC_FONTFORMAT, (FcChar8 *)"PCF");
     if (family) {
         FcPatternAddString(pattern, FC_FAMILY, (FcChar8 *)family);
     }
     if (size >= 0) {
-        FcPatternAddInteger(pattern, FC_SIZE, size);
+        FcPatternAddDouble(pattern, FC_SIZE, size);
     }
     if (dpi >= 0) {
-        FcPatternAddInteger(pattern, FC_DPI, dpi);
+        FcPatternAddDouble(pattern, FC_DPI, dpi);
     }
     switch (weight) {
     case GRX_FONT_WEIGHT_REGULAR:
@@ -235,6 +238,9 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
     }
     if (lang) {
         FcPatternAddString(pattern, FC_LANG, (FcChar8 *)lang);
+    }
+    if (script) {
+        FcPatternAddCharSet(pattern, FC_CHARSET, script_to_charset(script));
     }
     {
         FcChar8 *pattern_str;
@@ -288,5 +294,5 @@ GrxFont *grx_font_load(const gchar *family, gint size, GError **err)
 {
     return grx_font_load_full(family, size, grx_get_dpi(), GRX_FONT_WEIGHT_REGULAR,
                               GRX_FONT_SLANT_REGULAR, GRX_FONT_WIDTH_REGULAR,
-                              FALSE, NULL, err);
+                              FALSE, NULL, NULL, err);
 }
