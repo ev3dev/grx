@@ -5,7 +5,7 @@
     <releaseinfo>
       for @GIR_NAME@ @PROJECT_VERSION@
       The latest version of this documentation can be found on-line at
-      <ulink role="online-location" url="http://www.ev3dev.org/@PROJECT_NAME@/index.html">http://www.ev3dev.org/@PROJECT_NAME@/</ulink>.
+      <ulink role="online-location" url="http://docs.ev3dev.org/projects/@PROJECT_NAME@/en/latest/c-api/index.html">http://docs.ev3dev.org/projects/@PROJECT_NAME@/en/latest/c-api</ulink>.
     </releaseinfo>
     <abstract>
       <para>
