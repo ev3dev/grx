@@ -28,6 +28,7 @@ class LifeApplication : Grx.Application {
     public LifeApplication () throws GLib.Error {
         Object ();
         init ();
+        Mouse.set_cursor(null);
         state = new char[2, get_width (), get_height ()];
         color = { Color.black, Color.white };
         // handle console switching
@@ -39,7 +40,9 @@ class LifeApplication : Grx.Application {
     }
 
     public override void input_event (Event event) {
-        quit ();
+        if (event.type != EventType.POINTER_MOTION) {
+            quit ();
+        }
     }
 
     void console_active_handler () {

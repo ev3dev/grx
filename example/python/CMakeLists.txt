@@ -5,6 +5,7 @@ set (PROGRAMS
     intl.py
     life.py
     lines.py
+    paint.py
     pixels.py
 )
 

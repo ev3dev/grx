@@ -1,8 +1,8 @@
 /*
- * vd_lnxfb.c ---- Linux framebuffer driver
+ * vd_lnxfb.c - Linux framebuffer driver
  *
  * Copyright (c) 2001 Mariano Alvarez Fernandez <malfer@telefonica.net>
- * Copyright (c) 2015-2016 David Lechner <david@lechnology.com>
+ * Copyright (c) 2015-2017 David Lechner <david@lechnology.com>
  *
  * Contributions by Josu Onandia <jonandia@fagorautomation.es>
  *
@@ -58,6 +58,7 @@ static gboolean in_graphics_mode = FALSE;
 static int graphics_vt, original_vt;
 static int original_keyboard_mode;
 static GrxContext *save;
+static gint32 pointer_x, pointer_y;
 
 static int detect(void)
 {
@@ -193,6 +194,10 @@ static int detect(void)
             return FALSE;
         }
 
+        // start with pointer in center of screen
+        pointer_x = fbvar.xres / 2;
+        pointer_y = fbvar.yres / 2;
+
         initted = 1;
     }
 
@@ -273,6 +278,29 @@ void grx_linuxfb_chvt (int vt_num)
     }
     ioctl(ttyfd, VT_ACTIVATE, vt_num);
 }
+
+void grx_linuxfb_update_pointer (gint32 dx, gint32 dy, gint32 *x, gint32 *y)
+{
+    *x = pointer_x + dx;
+    *y = pointer_y + dy;
+
+    if (*x < 0) {
+        *x = 0;
+    }
+    if (*x >= grx_get_screen_width ()) {
+        *x = grx_get_screen_width () - 1;
+    }
+    if (*y < 0) {
+        *y = 0;
+    }
+    if (*y >= grx_get_screen_height ()) {
+        *y = grx_get_screen_height () - 1;
+    }
+
+    pointer_x = *x;
+    pointer_y = *y;
+}
+
 
 static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)
 {

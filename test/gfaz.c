@@ -54,8 +54,7 @@ int gfaz_ini( int width, int height, int bpp )
 
   if( GrMouseDetect() ){
     mouse_found = 1;
-    GrMouseInit();
-    GrMouseSetColors(GRX_COLOR_WHITE,GRX_COLOR_BLACK);
+    grx_mouse_set_cursor_default(GRX_COLOR_WHITE,GRX_COLOR_BLACK);
     show_mouse();
     }
   GrMouseEventEnable( 1,mouse_found );
@@ -69,7 +68,6 @@ int gfaz_fin( void )
 {
   if( mouse_found ){
     hide_mouse();
-    GrMouseUnInit();
     }
     
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
@@ -191,7 +189,7 @@ static int read_input( void )
 void show_mouse( void )
 {
   if( (mouse_count == 0) && mouse_found )
-    GrMouseDisplayCursor();
+    _grx_mouse_show_cursor();
 
   mouse_count++;
 }
@@ -203,7 +201,7 @@ void hide_mouse( void )
   mouse_count--;
   
   if( (mouse_count == 0) && mouse_found )
-    GrMouseEraseCursor();
+    _grx_mouse_hide_cursor();
 }
 
 /**************************************************************************/
@@ -227,7 +225,7 @@ void dboton(int x, int y, int an, int al, GrxTextOptions *to, char *s, int t)
   selec = (t & 0x2) ? 1 : 0;
   despl = (t & 0x1) ? 1 : 0;
 
-  mouseblock = GrMouseBlock( NULL,x,y,x+an-1,y+al-1 );
+  mouseblock = grx_mouse_block( NULL,x,y,x+an-1,y+al-1 );
   grx_draw_box( x,y,x+an-1,y+al-1,BLACK );
   x = x + 1; y = y + 1;
   an = an - 2; al = al - 2;
@@ -264,7 +262,7 @@ void dboton(int x, int y, int an, int al, GrxTextOptions *to, char *s, int t)
     grx_draw_box_with_options( x+8,y+al/2-6,x+an-8,y+al/2+5,&glo );
     }
 
-  GrMouseUnBlock( mouseblock );
+  grx_mouse_unblock( mouseblock );
 }
 
 /**************************************************************************/

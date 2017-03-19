@@ -1,7 +1,7 @@
 /*
- * vd_gtk3.c ---- Linux framebuffer driver
+ * vd_gtk3.c - Linux framebuffer driver
  *
- * Copyright (c) 2016 David Lechner <david@lechnology.com>
+ * Copyright (c) 2016-2017 David Lechner <david@lechnology.com>
  *
  * This file is part of the GRX graphics library.
  *
@@ -179,6 +179,7 @@ static GrxVideoMode video_modes[] = {
 static const GrxEventType event_type_map[GDK_EVENT_LAST] = {
     [GDK_KEY_PRESS]         = GRX_EVENT_TYPE_KEY_DOWN,
     [GDK_KEY_RELEASE]       = GRX_EVENT_TYPE_KEY_UP,
+    [GDK_MOTION_NOTIFY]     = GRX_EVENT_TYPE_POINTER_MOTION,
     [GDK_BUTTON_PRESS]      = GRX_EVENT_TYPE_BUTTON_PRESS,
     [GDK_BUTTON_RELEASE]    = GRX_EVENT_TYPE_BUTTON_RELEASE,
     [GDK_2BUTTON_PRESS]     = GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS,
@@ -203,6 +204,16 @@ static gboolean on_event (GtkWidget *widget, GdkEvent *event, gpointer user_data
             grx_event.key.keysym = event->key.keyval;
             grx_event.key.unichar = gdk_keyval_to_unicode (event->key.keyval);
             grx_event.key.code = event->key.hardware_keycode;
+            break;
+        case GDK_MOTION_NOTIFY:
+            // grx_event.button.device = GRX_DEVICE (grx_gtk3_device_lookup
+            //     (device_manager, event->button.device));
+            grx_event.motion.x = event->motion.x;
+            grx_event.motion.y = event->motion.y;
+
+            MOUINFO->xpos = grx_event.motion.x;
+            MOUINFO->ypos = grx_event.motion.y;
+            _grx_mouse_update_cursor();
             break;
         case GDK_BUTTON_PRESS:
         case GDK_BUTTON_RELEASE:
@@ -302,7 +313,7 @@ static gboolean init (const gchar *options)
     // a GdkWindow.
     event_box = gtk_event_box_new ();
     gtk_widget_set_can_focus (event_box, TRUE); // for keyboard input
-    gtk_widget_set_events (event_box, GDK_BUTTON_PRESS_MASK |
+    gtk_widget_set_events (event_box, GDK_POINTER_MOTION_MASK | GDK_BUTTON_PRESS_MASK |
                            GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK |
                            GDK_KEY_RELEASE_MASK | GDK_TOUCH_MASK);
     g_signal_connect (G_OBJECT (event_box), "event", (GCallback)on_event, NULL);

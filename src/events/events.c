@@ -22,6 +22,7 @@
  * @type: the type of the event
  * @any: the event as #GrxAnyEvent
  * @key: the event as #GrxKeyEvent
+ * @motion: the event as #GrxMotionEvent
  * @button: the event as #GrxButtonEvent
  * @touch: the event as #GrxTouchEvent
  */
@@ -129,6 +130,11 @@ GrxEvent *grx_event_copy (GrxEvent *event)
             g_object_ref (new_event->key.device);
         }
         break;
+    case GRX_EVENT_TYPE_POINTER_MOTION:
+        if (new_event->motion.device) {
+            g_object_ref (new_event->motion.device);
+        }
+        break;
     case GRX_EVENT_TYPE_BUTTON_PRESS:
     case GRX_EVENT_TYPE_BUTTON_RELEASE:
     case GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS:
@@ -167,6 +173,11 @@ void grx_event_free (GrxEvent *event)
     case GRX_EVENT_TYPE_KEY_DOWN:
         if (event->key.device) {
             g_object_unref (event->key.device);
+        }
+        break;
+    case GRX_EVENT_TYPE_POINTER_MOTION:
+        if (event->motion.device) {
+            g_object_unref (event->motion.device);
         }
         break;
     case GRX_EVENT_TYPE_BUTTON_PRESS:

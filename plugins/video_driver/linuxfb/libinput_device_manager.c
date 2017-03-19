@@ -31,6 +31,7 @@
 
 #include "libinput_device.h"
 #include "libinput_device_manager.h"
+#include "globals.h"
 
 
 // TODO: make double press time configurable
@@ -185,6 +186,7 @@ static gboolean source_check (GSource *source)
 
 // TODO: put this in a header file
 extern void grx_linuxfb_chvt (int vt_num);
+extern void grx_linuxfb_update_pointer (gint32 dx, gint32 dy, gint32 *x, gint32 *y);
 
 static gboolean
 source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
@@ -279,10 +281,33 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
         }
         break;
     case LIBINPUT_EVENT_POINTER_MOTION:
-        // TODO: handle event
-        break;
     case LIBINPUT_EVENT_POINTER_MOTION_ABSOLUTE:
-        // TODO: handle event
+        {
+            struct libinput_event_pointer *pointer;
+            double dx, dy;
+            gint32 x, y;
+
+            pointer = libinput_event_get_pointer_event (event);
+            if (type == LIBINPUT_EVENT_POINTER_MOTION) {
+                dx = libinput_event_pointer_get_dx (pointer);
+                dy = libinput_event_pointer_get_dy (pointer);
+                grx_linuxfb_update_pointer(dx, dy, &x, &y);
+            } else /* LIBINPUT_EVENT_POINTER_MOTION_ABSOLUTE */ {
+                x = libinput_event_pointer_get_absolute_x_transformed (pointer,
+                                                    grx_get_screen_width ());
+                y = libinput_event_pointer_get_absolute_y_transformed (pointer,
+                                                    grx_get_screen_height ());
+            }
+
+            grx_event.type = GRX_EVENT_TYPE_POINTER_MOTION;
+            grx_event.motion.x = x;
+            grx_event.motion.y = y;
+            grx_event.motion.device = GRX_DEVICE (grx_device);
+
+            MOUINFO->xpos = grx_event.motion.x;
+            MOUINFO->ypos = grx_event.motion.y;
+            _grx_mouse_update_cursor();
+        }
         break;
     case LIBINPUT_EVENT_POINTER_BUTTON:
         {

@@ -30,10 +30,12 @@ from random import random
 # FIXME: This program works, but it is *really* slow!
 #
 
+
 class Life(Grx.Application):
     def __init__(self):
         super(Grx.Application, self).__init__()
         self.init()
+        Grx.mouse_set_cursor(None)
         self.source_id = 0
         self.width = Grx.get_width()
         self.height = Grx.get_height()
@@ -55,7 +57,8 @@ class Life(Grx.Application):
         self.randomize()
 
     def do_input_event(self, event):
-        self.quit()
+        if event.type != Grx.EventType.POINTER_MOTION:
+            self.quit()
 
     def randomize(self):
         for y in range(self.height):

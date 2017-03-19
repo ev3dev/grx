@@ -50,6 +50,7 @@
  * the window is closed in a desktop application
  * @GRX_EVENT_TYPE_KEY_DOWN: key press event
  * @GRX_EVENT_TYPE_KEY_UP: key release event
+ * @GRX_EVENT_TYPE_POINTER_MOTION: pointer (mouse) motion event
  * @GRX_EVENT_TYPE_BUTTON_PRESS: button press event
  * @GRX_EVENT_TYPE_BUTTON_RELEASE: button release event
  * @GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS: button double-press event
@@ -67,6 +68,7 @@ typedef enum {
     GRX_EVENT_TYPE_APP_QUIT,
     GRX_EVENT_TYPE_KEY_DOWN,
     GRX_EVENT_TYPE_KEY_UP,
+    GRX_EVENT_TYPE_POINTER_MOTION,
     GRX_EVENT_TYPE_BUTTON_PRESS,
     GRX_EVENT_TYPE_BUTTON_RELEASE,
     GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS,
@@ -103,6 +105,22 @@ typedef struct {
     guint32 code;
     GrxDevice *device;
 } GrxKeyEvent;
+
+/**
+ * GrxMotionEvent:
+ * @type: @GRX_EVENT_TYPE_POINTER_MOTION
+ * @x: the pointer position along the x axis
+ * @y: the pointer position along the y axis
+ * @device: the originating device
+ *
+ * Structure that holds information about a pointer motion event.
+ */
+typedef struct {
+    GrxEventType type;
+    gint32 x;
+    gint32 y;
+    GrxDevice *device;
+} GrxMotionEvent;
 
 /**
  * GrxButtonEvent:
@@ -142,6 +160,7 @@ union _GrxEvent {
     GrxEventType type;
     GrxAnyEvent any;
     GrxKeyEvent key;
+    GrxMotionEvent motion;
     GrxButtonEvent button;
     GrxTouchEvent touch;
 };

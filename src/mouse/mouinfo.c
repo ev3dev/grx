@@ -17,8 +17,8 @@
 
 #include "mouse.h"
 #include "libgrx.h"
-#undef         GrMouseInfo
+#undef         GrxMouseInfo
 
 const
-struct _GR_mouseInfo * const GrMouseInfo = &_GrMouseInfo;
+struct _GR_mouseInfo * const GrxMouseInfo = &_GrMouseInfo;
 struct _GR_mouseInfo _GrMouseInfo = { 0 };

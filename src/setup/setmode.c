@@ -30,6 +30,7 @@
 #include "memcopy.h"
 #include "grdriver.h"
 #include "util.h"
+#include "../mouse/input.h"
 
 GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
                               int txt,unsigned int *ep)
@@ -397,9 +398,6 @@ int grx_set_mode(GrxGraphicsMode which, GError **error, ...)
                         (*vmd.extended_info->setup)(&vmd,noclear);
                     }
                 }
-                g_debug ("GrMouseUnInit ...");
-                GrMouseUnInit();
-                g_debug ("GrMouseUnInit done");
                 DRVINFO->set_bank    = (void (*)(int    ))_GrDummyFunction;
                 DRVINFO->set_rw_banks = (void (*)(int,int))_GrDummyFunction;
                 DRVINFO->curbank    = (-1);
@@ -445,6 +443,9 @@ int grx_set_mode(GrxGraphicsMode which, GError **error, ...)
                 }
                 g_debug ("grx_set_mode complete");
                 res = TRUE;
+                g_debug ("_GrInitMouseCursor ...");
+                _GrInitMouseCursor();
+                g_debug ("_GrInitMouseCursor done");
                 goto done;
             }
             g_debug ("disabling mode due to failed setup");

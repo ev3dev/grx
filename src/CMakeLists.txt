@@ -215,13 +215,6 @@ if (GRX_DEBUG)
     list (APPEND LIBRARY_SOURCE_FILES utils/dbgprint.c)
 endif (GRX_DEBUG)
 
-if (GRX_LINUXFB)
-    list (APPEND LIBRARY_SOURCE_FILES
-        mouse/lnxinpu2.c
-        mouse/lnxkeys.c
-    )
-endif (GRX_LINUXFB)
-
 list (SORT LIBRARY_SOURCE_FILES)
 
 # dependencies
@@ -337,6 +330,7 @@ set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/image.h
     ${CMAKE_SOURCE_DIR}/include/grx/input_keys.h
     ${CMAKE_SOURCE_DIR}/include/grx/mode.h
+    ${CMAKE_SOURCE_DIR}/include/grx/mouse.h
     ${CMAKE_SOURCE_DIR}/include/grx/pattern.h
     ${CMAKE_SOURCE_DIR}/include/grx/text.h
     ${CMAKE_SOURCE_DIR}/include/grx/user.h

@@ -20,6 +20,18 @@
 
 #include "globals.h"
 
+struct _GrxCursor {
+    /* <private> */
+    GrxContext work;                    /* work areas (4) */
+    int     xcord,ycord;                /* cursor position on screen */
+    int     xsize,ysize;                /* cursor size */
+    int     xoffs,yoffs;                /* LU corner to hot point offset */
+    int     xwork,ywork;                /* save/work area sizes */
+    int     xwpos,ywpos;                /* save/work area position on screen */
+    int     displayed;                  /* set if displayed */
+    unsigned int ref_count;
+};
+
 /*
  * mouse stuff
  */

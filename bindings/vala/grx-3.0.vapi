@@ -1053,33 +1053,34 @@ namespace Grx {
     /*                    GRAPHICS CURSOR UTILITIES                       */
     /* ================================================================== */
 
-    [CCode (cname = "struct _GR_cursor", free_function = "GrDestroyCursor", has_type_id = false)]
+    [CCode (has_type_id = false)]
+    public enum CursorModes {
+        NORMAL,
+        RUBBER,
+        LINE,
+        BOX
+    }
+
+    [CCode (copy_function = "grx_cursor_ref", free_function = "grx_cursor_unref")]
     [Compact]
     public class Cursor {
-
-        [CCode (cname = "&self->work")]
-        public static Context work;                    /* work areas (4) */
-        public int xcord;                        /* cursor position on screen */
-        public int ycord;
-        public int xsize;                        /* cursor size */
-        public int ysize;
-        public int xoffs;                        /* LU corner to hot point offset */
-        public int yoffs;
-        public int xwork;                        /* save/work area sizes */
-        public int ywork;
-        public int xwpos;                        /* save/work area position on screen */
-        public int ywpos;
-        public int displayed;                          /* set if displayed */
-
-        [CCode (cname = "GrBuildCursor")]
         public Cursor ([CCode (array_length = false)]char[] pixels, int pitch, int w, int h, int xo, int yo, ColorTable table);
 
-        [CCode (cname = "GrDisplayCursor")]
+        [CCode (cname = "grx_cursor_show")]
         public void display ();
-        [CCode (cname = "GrEraseCursor")]
+        [CCode (cname = "grx_cursor_hide")]
         public void erase ();
-        [CCode (cname = "GrMoveCursor")]
+        [CCode (cname = "grx_cursor_move")]
         public void move (int x, int y);
+    }
+
+    namespace Mouse {
+        public static Cursor? get_cursor ();
+        public static void set_cursor (Cursor? cursor);
+        public static void set_cursor_default (Color fill, Color outline);
+        public static bool is_cursor_shown ();
+        public static uint block (Context? context, int x1, int y1, int x2, int y2);
+        public static void unblock (uint flags);
     }
 
     /* ================================================================== */
@@ -3421,6 +3422,7 @@ namespace Grx {
         NONE,
         KEY_UP,
         KEY_DOWN,
+        POINTER_MOTION,
         BUTTON_PRESS,
         BUTTON_RELEASE,
         BUTTON_DOUBLE_PRESS,

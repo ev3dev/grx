@@ -42,16 +42,16 @@ TESTFUNC(cursortest)
         GrxColor bgc = grx_color_info_alloc_color(0,0,128);
         GrxColor fgc = grx_color_info_alloc_color(255,255,0);
         GrxColor msc[3];
-        GrCursor *cur;
+        GrxCursor *cur;
         int x,y;
 
         msc[0] = 2;
         msc[1] = GRX_COLOR_WHITE;
         msc[2] = grx_color_info_alloc_color(255,0,0);
-        cur = GrBuildCursor(p16d,16,16,16,1,1,msc);
+        cur = grx_cursor_new(p16d,16,16,16,1,1,msc);
         x = grx_get_screen_width() / 2;
         y = grx_get_screen_height() / 2;
-        GrMoveCursor(cur,x,y);
+        grx_cursor_move(cur,x,y);
         grx_clear_screen(bgc);
         grx_color_info_set_cell((grx_color_info_n_colors() - 1),255,255,255);
         drawing(0,0,grx_get_width(),grx_get_height(),fgc,GRX_COLOR_NONE);
@@ -60,7 +60,7 @@ TESTFUNC(cursortest)
         grx_draw_text("ORmask",  90,90,black_text);
         grx_draw_text("Save",   170,90,black_text);
         grx_draw_text("Work",   250,90,black_text);
-        GrDisplayCursor(cur);
+        grx_cursor_show(cur);
         for( ; ; ) {
             grx_bit_blt(
                 10,10,
@@ -99,6 +99,6 @@ TESTFUNC(cursortest)
             if(x > grx_get_screen_width()) x = grx_get_screen_width();
             if(y < 100) y = 100;
             if(y > grx_get_screen_height()) y = grx_get_screen_height();
-            GrMoveCursor(cur,x,y);
+            grx_cursor_move(cur,x,y);
         }
 }

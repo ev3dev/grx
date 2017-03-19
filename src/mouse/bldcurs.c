@@ -15,6 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <glib.h>
+
 #include <grx/draw_nc.h>
 #include <grx/extents.h>
 
@@ -23,15 +25,37 @@
 #include "memfill.h"
 #include "mouse.h"
 
-GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const GrxColorTable C)
+G_DEFINE_BOXED_TYPE (GrxCursor, grx_cursor, grx_cursor_ref, grx_cursor_unref);
+
+/**
+ * grx_cursor_new:
+ * @pixels: cursor bitmap data
+ * @pitch: width of pixel data rows in bytes
+ * @width: width of cursor in pixels
+ * @height: height of cursor in pixels
+ * @x0: hot point of cursor x coordinate
+ * @y0: hot point of cursor y coordinate
+ * @colors: color table for pixel data
+ *
+ * Create a new cursor using the data provided.
+ *
+ * Pixel data values of 0 are treated as transparent, 1 is the first color in
+ * @colors and so on.
+ *
+ * The hot point @x0, @y0 is relative to the top left of the cursor.
+ *
+ * Returns: (transfer full) (nullable): the new cursor or %NULL if creating the
+ * cursor failed.
+ */
+GrxCursor *grx_cursor_new(unsigned char *pixels,int pitch,int w,int h,int xo,int yo,const GrxColorTable C)
 {
-        GrCursor  *curs;
+        GrxCursor  *curs;
         GrxContext  save;
         int  wrkw2 = (w + 7) & ~7;
         int  workw = wrkw2 << 1;
         int  workh = ((h + 7) & ~7) << 1;
         int  xx,yy;
-        curs = malloc(sizeof(GrCursor));
+        curs = malloc(sizeof(GrxCursor));
         if(!curs) return(NULL);
         sttzero(curs);
         if(!grx_context_new(workw,((workh << 1) + h),NULL,&curs->work)) {
@@ -55,14 +79,45 @@ GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,int xo,int yo,const G
             }
         }
         grx_set_current_context(&save);
-        return(curs);
+
+        return grx_cursor_ref(curs);
 }
 
-void GrDestroyCursor(GrCursor *cursor)
+/**
+ * grx_cursor_ref:
+ * @cursor: the cursor
+ *
+ * Increase the reference count by 1.
+ *
+ * Returns: (transfer none): the cursor
+ */
+GrxCursor *grx_cursor_ref(GrxCursor *cursor)
 {
-        if(cursor && (cursor != MOUINFO->cursor)) {
-            GrEraseCursor(cursor);
-            grx_context_unref(&cursor->work);
-            free(cursor);
-        }
+    g_return_val_if_fail(cursor != NULL, NULL);
+
+    cursor->ref_count++;
+
+    return cursor;
+}
+
+/**
+ * grx_cursor_unref:
+ * @cursor: the cursor
+ *
+ * Decrease the reference count by 1. If there are no more references, the
+ * cursor is freed.
+ */
+void grx_cursor_unref(GrxCursor *cursor)
+{
+    g_return_if_fail(cursor != NULL);
+    g_return_if_fail(cursor->ref_count != 0);
+
+    cursor->ref_count--;
+    if (cursor->ref_count) {
+        return;
+    }
+
+    grx_cursor_hide(cursor);
+    grx_context_unref(&cursor->work);
+    free(cursor);
 }

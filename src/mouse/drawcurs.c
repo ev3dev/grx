@@ -26,7 +26,13 @@
 #define SAVECXT(c,x,y)  &(c)->work.frame,(x),((y) + (c)->ysize)
 #define WORKCXT(c,x,y)  &(c)->work.frame,(x),((y) + (c)->ysize + (c)->ywork)
 
-void GrDisplayCursor(GrCursor *C)
+/**
+ * grx_cursor_show:
+ * @cursor: the cursor
+ *
+ * Draws the cursor at it's current position.
+ */
+void grx_cursor_show(GrxCursor *C)
 {
         int xpos,ypos;
         int xwrk,ywrk;
@@ -89,7 +95,13 @@ void GrDisplayCursor(GrCursor *C)
         mouse_unblock();
 }
 
-void GrEraseCursor(GrCursor *C)
+/**
+ * grx_cursor_hide:
+ * @cursor: the cursor
+ *
+ * Erase the cursor. The saved data is restored.
+ */
+void grx_cursor_hide(GrxCursor *C)
 {
         if(C && COMPATIBLE(C) && C->displayed) {
             mouse_block(SCRN,
@@ -107,7 +119,15 @@ void GrEraseCursor(GrCursor *C)
         }
 }
 
-void GrMoveCursor(GrCursor *C,int x,int y)
+/**
+ * grx_cursor_move:
+ * @cursor: the cursor
+ * @x: the new x coordinate
+ * @y: the new y coordinate
+ *
+ * Move the cursor to a new position.
+ */
+void grx_cursor_move(GrxCursor *C,int x,int y)
 {
         int xpos,ypos;
         int xsiz,ysiz;
@@ -152,6 +172,6 @@ void GrMoveCursor(GrCursor *C,int x,int y)
             mouse_unblock();
             return;
         }
-        GrEraseCursor(C);
-        GrDisplayCursor(C);
+        grx_cursor_hide(C);
+        grx_cursor_show(C);
 }

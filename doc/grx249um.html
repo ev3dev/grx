@@ -1744,10 +1744,10 @@ of graphics cursors. An application can use these cursors for any purpose.
 Cursors always save the area they occupy before they are drawn. When moved or
 erased they restore this area. As a general rule of thumb, an application should
 erase a cursor before making changes to an area it occupies and redraw the
-cursor after finishing the drawing. Cursors are created with the GrBuildCursor
+cursor after finishing the drawing. Cursors are created with the grx_cursor_new
 function:
 
-<pre class="example">     GrCursor *GrBuildCursor(char *pixels,int pitch,int w,int h,
+<pre class="example">     GrxCursor *grx_cursor_new(char *pixels,int pitch,int w,int h,
                              int xo,int yo,const GrColorTableP c);
 </pre>
 <p>The pixels, w (=width), h (=height) and c (= color table) arguments are
@@ -1762,9 +1762,9 @@ byte with value = 1 will refer to the first color in the table, and so on.
 <p>The xo (= X offset) and yo (= Y offset) arguments specify the position (from
 the top left corner of the cursor pattern) of the cursor's "hot point".
 
-<p>The GrCursor data structure:
+<p>The GrxCursor data structure:
 
-<pre class="example">     typedef struct _GR_cursor {
+<pre class="example">     typedef struct _GrxCursor {
        struct _GR_context work;            /* work areas (4) */
        int     xcord,ycord;                /* cursor position on screen */
        int     xsize,ysize;                /* cursor size */
@@ -1772,16 +1772,16 @@ the top left corner of the cursor pattern) of the cursor's "hot point".
        int     xwork,ywork;                /* save/work area sizes */
        int     xwpos,ywpos;                /* save/work area position on screen */
        int     displayed;                  /* set if displayed */
-     } GrCursor;
+     } GrxCursor;
 </pre>
 <p>is typically not used (i.e. read or changed) by the application program, it
 should just pass pointers to these structures to the appropriate library
 functions. Other cursor manipulation functions:
 
-<pre class="example">     void GrDisplayCursor(GrCursor *cursor);
-     void GrEraseCursor(GrCursor *cursor);
-     void GrMoveCursor(GrCursor *cursor,int x,int y);
-     void GrDestroyCursor(GrCursor *cursor);
+<pre class="example">     void grx_cursor_show(GrxCursor *cursor);
+     void grx_cursor_hide(GrxCursor *cursor);
+     void grx_cursor_move(GrxCursor *cursor,int x,int y);
+     void grx_cursor_unref(GrxCursor *cursor);
 </pre>
 <p>See the <strong>test/curstest.c</strong> example.
 
@@ -1911,19 +1911,19 @@ GrMouseWarp sets the mouse cursor to the specified position.
 resolution graphics modes, the mouse cursor is drawn by the library. The mouse
 cursor can be set with:
 
-<pre class="example">     void GrMouseSetCursor(GrCursor *cursor);
-     void GrMouseSetColors(GrColor fg,GrColor bg);
+<pre class="example">     void grx_mouse_set_cursor(GrxCursor *cursor);
+     void grx_mouse_set_cursor_default(GrColor fg,GrColor bg);
 </pre>
-<p>GrMouseSetColors uses an internal arrow pattern, the color fg will be used as
+<p>grx_mouse_set_cursor_default uses an internal arrow pattern, the color fg will be used as
 the interior of it and bg will be the border. The current mouse cursor can be
 obtained with:
 
-<pre class="example">     GrCursor *GrMouseGetCursor(void);
+<pre class="example">     GrxCursor *grx_mouse_get_cursor(void);
 </pre>
 <p>The mouse cursor can be displayed/erased with:
 
-<pre class="example">     void GrMouseDisplayCursor(void);
-     void GrMouseEraseCursor(void);
+<pre class="example">     void _grx_mouse_show_cursor(void);
+     void _grx_mouse_hide_cursor(void);
 </pre>
 <p>The mouse cursor can be left permanently displayed. All graphics primitives
 except for the few non-clipping functions check for conflicts with the mouse
@@ -1932,41 +1932,41 @@ efficient to erase the cursor manually before a long drawing sequence and redraw
 it after completion. The library provides an alternative pair of calls for this
 purpose which will erase the cursor only if it interferes with the drawing:
 
-<pre class="example">     int  GrMouseBlock(GrContext *c,int x1,int y1,int x2,int y2);
-     void GrMouseUnBlock(int return_value_from_GrMouseBlock);
+<pre class="example">     int  grx_mouse_block(GrContext *c,int x1,int y1,int x2,int y2);
+     void grx_mouse_unblock(int return_value_from_GrMouseBlock);
 </pre>
-<p>GrMouseBlock should be passed the context in which the drawing will take place
+<p>grx_mouse_block should be passed the context in which the drawing will take place
 (the usual convention of NULL meaning the current context is supported) and the
 limits of the affected area. It will erase the cursor only if it interferes with
-the drawing. When the drawing is finished GrMouseUnBlock must be called with the
-argument returned by GrMouseBlock.
+the drawing. When the drawing is finished grx_mouse_unblock must be called with the
+argument returned by grx_mouse_block.
 
 <p>The status of the mouse cursor can be obtained with calling
-GrMouseCursorIsDisplayed. This function will return non-zero if the cursor is
+grx_mouse_is_cursor_shown. This function will return non-zero if the cursor is
 displayed, zero if it is erased.
 
-<pre class="example">     int  GrMouseCursorIsDisplayed(void);
+<pre class="example">     int  grx_mouse_is_cursor_shown(void);
 </pre>
 <p>The library supports (beside the simple cursor drawing) three types of
-"rubberband" attached to the mouse cursor. The GrMouseSetCursorMode function is
+"rubberband" attached to the mouse cursor. The grx_mouse_set_cursor_mode function is
 used to select the cursor drawing mode.
 
-<pre class="example">     void GrMouseSetCursorMode(int mode,...);
+<pre class="example">     void grx_mouse_set_cursor_mode(int mode,...);
 </pre>
 <p>The parameter mode can have the following values:
 
-<pre class="example">     #define GR_M_CUR_NORMAL   0    /* MOUSE CURSOR modes: just the cursor */
-     #define GR_M_CUR_RUBBER   1    /* rect. rubber band (XOR-d to the screen) */
-     #define GR_M_CUR_LINE     2    /* line attached to the cursor */
-     #define GR_M_CUR_BOX      3    /* rectangular box dragged by the cursor */
+<pre class="example">     #define GRX_CURSOR_MODE_NORMAL   0    /* MOUSE CURSOR modes: just the cursor */
+     #define GRX_CURSOR_MODE_RUBBER   1    /* rect. rubber band (XOR-d to the screen) */
+     #define GRX_CURSOR_MODE_LINE     2    /* line attached to the cursor */
+     #define GRX_CURSOR_MODE_BOX      3    /* rectangular box dragged by the cursor */
 </pre>
-<p>GrMouseSetCursorMode takes different parameters depending on the cursor
+<p>grx_mouse_set_cursor_mode takes different parameters depending on the cursor
 drawing mode selected. The accepted call formats are:
 
-<pre class="example">     GrMouseSetCursorMode(M_CUR_NORMAL);
-     GrMouseSetCursorMode(M_CUR_RUBBER,xanchor,yanchor,GrColor);
-     GrMouseSetCursorMode(M_CUR_LINE,xanchor,yanchor,GrColor);
-     GrMouseSetCursorMode(M_CUR_BOX,dx1,dy1,dx2,dy2,GrColor);
+<pre class="example">     grx_mouse_set_cursor_mode(M_CUR_NORMAL);
+     grx_mouse_set_cursor_mode(M_CUR_RUBBER,xanchor,yanchor,GrColor);
+     grx_mouse_set_cursor_mode(M_CUR_LINE,xanchor,yanchor,GrColor);
+     grx_mouse_set_cursor_mode(M_CUR_BOX,dx1,dy1,dx2,dy2,GrColor);
 </pre>
 <p>The anchor parameters for the rubberband and rubberline modes specify a fixed
 screen location to which the other corner of the primitive is bound. The dx1
@@ -1974,7 +1974,7 @@ through dy2 parameters define the offsets of the corners of the dragged box from
 the hotpoint of the mouse cursor. The color value passed is always XOR-ed to the
 screen, i.e. if an application wants the rubberband to appear in a given color
 on a given background then it has to pass the XOR of these two colors to
-GrMouseSetCursorMode.
+grx_mouse_set_cursor_mode.
 
 <p>The GrMouseGetEvent function is used to obtain the next mouse or keyboard
 event. It takes a flag with various bits encoding the type of event needed. It

@@ -31,7 +31,6 @@ set (PROGRAMS
     life
     linetest
     memtest
-    mousetst
     pcirctst
     pnmtest
     pngtest

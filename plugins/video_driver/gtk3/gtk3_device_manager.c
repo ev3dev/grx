@@ -90,6 +90,12 @@ static void on_device_added (GdkDeviceManager *device_manager,
         grx_gtk3_device_manager_get_instance_private (self);
     GrxGtk3Device *grx_device;
 
+    // For now we only care about master devices. If there is a use case, we
+    // can handle other types.
+    if (gdk_device_get_device_type(device) != GDK_DEVICE_TYPE_MASTER) {
+        return;
+    }
+
     grx_device = grx_gtk3_device_new (device);
     g_hash_table_insert (priv->device_map, device, grx_device);
     g_signal_emit_by_name (self, "device-added", grx_device);
@@ -103,11 +109,41 @@ static void on_device_removed (GdkDeviceManager *device_manager,
         grx_gtk3_device_manager_get_instance_private (self);
     GrxGtk3Device *grx_device;
 
+    // For now we only care about master devices. If there is a use case, we
+    // can handle other types.
+    if (gdk_device_get_device_type(device) != GDK_DEVICE_TYPE_MASTER) {
+        return;
+    }
+
     grx_device = GRX_GTK3_DEVICE (g_hash_table_lookup (priv->device_map, device));
     g_hash_table_remove (priv->device_map, device);
     g_signal_emit_by_name (self, "device-removed", grx_device);
     g_object_unref (grx_device);
 }
+
+typedef struct {
+    GrxDeviceManager *grx_device_manager;
+    GdkDeviceManager *gdk_device_manager;
+    GdkDevice *device;
+} AddDeviceData;
+
+static gboolean add_device (gpointer user_data)
+{
+    AddDeviceData *data = user_data;
+
+    on_device_added (data->gdk_device_manager, data->device, data->grx_device_manager);
+    g_object_unref (data->gdk_device_manager);
+    g_object_unref (data->grx_device_manager);
+    g_object_unref (data->device);
+    g_free (data);
+
+    return G_SOURCE_REMOVE;
+}
+
+// We are using a couple of functions that are deprecated in GDK 3.20, but we
+// want to be able to build on both 3.18 (Ubuntu xenial) and 3.20 (Debian stretch)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 static gboolean
 init (GInitable *initable, GCancellable *cancellable, GError **error)
@@ -115,6 +151,7 @@ init (GInitable *initable, GCancellable *cancellable, GError **error)
     GrxGtk3DeviceManager *self = GRX_GTK3_DEVICE_MANAGER (initable);
     GrxGtk3DeviceManagerPrivate *priv = self->private;
     GdkDisplay *display;
+    GList *devices, *item;
 
     display = gdk_display_get_default ();
     if (!display) {
@@ -123,12 +160,7 @@ init (GInitable *initable, GCancellable *cancellable, GError **error)
         return FALSE;
     }
 
-// this function is deprecated in GDK 3.20, but we want to be able to build on
-// both 3.18 (Ubuntu xenial) and 3.20 (Debian stretch)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     priv->gdk_device_manager = gdk_display_get_device_manager (display);
-#pragma GCC diagnostic pop
     if (!priv->gdk_device_manager) {
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                      "Failed to get default GDK device manager");
@@ -140,8 +172,23 @@ init (GInitable *initable, GCancellable *cancellable, GError **error)
     priv->device_removed_signal_id = g_signal_connect (priv->gdk_device_manager,
         "device-removed", (GCallback)on_device_removed, self);
 
+    // defer initial "device-added" signals until main loop is started
+    devices = gdk_device_manager_list_devices (priv->gdk_device_manager, GDK_DEVICE_TYPE_MASTER);
+    for (item = devices; item != NULL; item = g_list_next (item)) {
+        AddDeviceData *data;
+
+        data = g_malloc (sizeof(*data));
+        data->grx_device_manager = g_object_ref (self);
+        data->gdk_device_manager = g_object_ref (priv->gdk_device_manager);
+        data->device = g_object_ref (item->data);
+        g_idle_add (add_device, data);
+    }
+    g_list_free (devices);
+
     return TRUE;
 }
+
+#pragma GCC diagnostic pop
 
 static void initable_interface_init (GInitableIface *iface)
 {

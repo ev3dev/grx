@@ -18,6 +18,7 @@
 #include <stdarg.h>
 
 #include <grx/draw.h>
+#include <grx/device.h>
 
 #include "globals.h"
 #include "input.h"
@@ -27,7 +28,7 @@
 
 #define  MSCURSOR       (MOUINFO->cursor)
 #define  CURSORMODE     (MOUINFO->cursmode)
-#define  SPECIALMODE    (MOUINFO->cursmode != GR_M_CUR_NORMAL)
+#define  SPECIALMODE    (MOUINFO->cursmode != GRX_CURSOR_MODE_NORMAL)
 #define  BLOCKED        1
 #define  ERASED         2
 
@@ -41,13 +42,13 @@ static void draw_special(void)
         grx_save_current_context(&csave);
         grx_set_current_context(SCRN);
         switch(CURSORMODE) {
-          case GR_M_CUR_RUBBER:
+          case GRX_CURSOR_MODE_RUBBER:
             grx_draw_box(xpos,ypos,MOUINFO->x1,MOUINFO->y1,MOUINFO->curscolor);
             break;
-          case GR_M_CUR_LINE:
+          case GRX_CURSOR_MODE_LINE:
             grx_draw_line(xpos,ypos,MOUINFO->x1,MOUINFO->y1,MOUINFO->curscolor);
             break;
-          case GR_M_CUR_BOX:
+          case GRX_CURSOR_MODE_BOX:
             grx_draw_box(
                 (xpos + MOUINFO->x1),(ypos + MOUINFO->y1),
                 (xpos + MOUINFO->x2),(ypos + MOUINFO->y2),
@@ -67,7 +68,7 @@ static void move_mouse(void)
             int dospec = SPECIALMODE && MSCURSOR->displayed;
             MOUINFO->docheck = FALSE;
             if(dospec) draw_special();
-            GrMoveCursor(MSCURSOR,MOUINFO->xpos,MOUINFO->ypos);
+            grx_cursor_move(MSCURSOR,MOUINFO->xpos,MOUINFO->ypos);
             if(dospec) draw_special();
             MOUINFO->docheck = check;
         }
@@ -77,7 +78,7 @@ static void draw_mouse(void)
 {
         int check = MOUINFO->docheck;
         MOUINFO->docheck = FALSE;
-        GrDisplayCursor(MSCURSOR);
+        grx_cursor_show(MSCURSOR);
         if(SPECIALMODE) draw_special();
         MOUINFO->docheck = check;
 }
@@ -87,14 +88,12 @@ static void erase_mouse(void)
         int check = MOUINFO->docheck;
         MOUINFO->docheck = FALSE;
         if(SPECIALMODE) draw_special();
-        GrEraseCursor(MSCURSOR);
+        grx_cursor_hide(MSCURSOR);
         MOUINFO->docheck = check;
 }
 
-void GrMouseDisplayCursor(void)
+void _grx_mouse_show_cursor(void)
 {
-        if(MOUINFO->msstatus  != 2)     GrMouseInit();
-        if(MOUINFO->msstatus  != 2)     return;
         if(MOUINFO->cursor    == NULL)  return;
         if(MOUINFO->displayed != FALSE) return;
         move_mouse();
@@ -104,9 +103,8 @@ void GrMouseDisplayCursor(void)
         MOUINFO->blockflag = 0;
 }
 
-void GrMouseEraseCursor(void)
+void _grx_mouse_hide_cursor(void)
 {
-        if(MOUINFO->msstatus  != 2)     return;
         if(MOUINFO->cursor    == NULL)  return;
         if(MOUINFO->displayed == FALSE) return;
         if(MOUINFO->blockflag != 0)     return;
@@ -115,67 +113,103 @@ void GrMouseEraseCursor(void)
         erase_mouse();
 }
 
-void GrMouseSetCursor(GrCursor *C)
+/**
+ * grx_mouse_set_cursor:
+ * @cursor: (nullable): the cursor
+ *
+ * Sets the mouse cursor to the specified cursor.
+ */
+void grx_mouse_set_cursor(GrxCursor *cursor)
 {
-        if(!MOUINFO->displayed && C && (C != MSCURSOR) && COMPATIBLE(C)) {
-            GrCursor *oldcursor  = MSCURSOR;
-            if(C->displayed)       GrEraseCursor(C);
-            MOUINFO->cursor      = C;
-            if(MOUINFO->owncursor) GrDestroyCursor(oldcursor);
-            MOUINFO->owncursor   = FALSE;
+    if (cursor == MSCURSOR) {
+        return;
+    }
+
+    if (MOUINFO->cursor) {
+        grx_cursor_unref(MOUINFO->cursor);
+        MOUINFO->cursor = NULL;
+    }
+
+    if (cursor) {
+        g_return_if_fail(COMPATIBLE(cursor));
+
+        if (cursor->displayed) {
+            grx_cursor_hide(cursor);
         }
+        MOUINFO->cursor = grx_cursor_ref(cursor);
+    }
 }
 
-void GrMouseSetColors(GrxColor fg,GrxColor bg)
+/**
+ * grx_mouse_set_cursor_default:
+ * @fill_color: the cursor fill color
+ * @border_color: the cursor border color
+ *
+ * Sets the mouse cursor to a default pointer shape.
+ */
+void grx_mouse_set_cursor_default(GrxColor fill_color, GrxColor border_color)
 {
-        static char ptr12x16bits[] = {
-            0,1,0,0,0,0,0,0,0,0,0,0,
-            1,2,1,0,0,0,0,0,0,0,0,0,
-            1,2,2,1,0,0,0,0,0,0,0,0,
-            1,2,2,2,1,0,0,0,0,0,0,0,
-            1,2,2,2,2,1,0,0,0,0,0,0,
-            1,2,2,2,2,2,1,0,0,0,0,0,
-            1,2,2,2,2,2,2,1,0,0,0,0,
-            1,2,2,2,2,2,2,2,1,0,0,0,
-            1,2,2,2,2,2,2,2,2,1,0,0,
-            1,2,2,2,2,2,2,2,2,2,1,0,
-            1,2,2,2,2,2,2,2,2,2,2,1,
-            1,2,2,2,2,1,1,1,1,1,1,0,
-            1,2,2,2,1,0,0,0,0,0,0,0,
-            1,2,2,1,0,0,0,0,0,0,0,0,
-            1,2,1,0,0,0,0,0,0,0,0,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,
-        };
-        GrCursor *newc;
-        GrxColor cols[3];
-        if(MOUINFO->displayed) return;
-        cols[0] = 2;
-        cols[1] = bg;
-        cols[2] = fg;
-        newc = GrBuildCursor(ptr12x16bits,12,12,16,1,1,cols);
-        if(!newc) return;
-        GrMouseSetCursor(newc);
-        MOUINFO->owncursor = TRUE;
+    static unsigned char ptr12x16bits[] = {
+        1,1,0,0,0,0,0,0,0,0,0,0,
+        1,2,1,0,0,0,0,0,0,0,0,0,
+        1,2,2,1,0,0,0,0,0,0,0,0,
+        1,2,2,2,1,0,0,0,0,0,0,0,
+        1,2,2,2,2,1,0,0,0,0,0,0,
+        1,2,2,2,2,2,1,0,0,0,0,0,
+        1,2,2,2,2,2,2,1,0,0,0,0,
+        1,2,2,2,2,2,2,2,1,0,0,0,
+        1,2,2,2,2,2,2,2,2,1,0,0,
+        1,2,2,2,2,2,2,2,2,2,1,0,
+        1,2,2,2,2,2,2,2,2,2,2,1,
+        1,2,2,2,2,1,1,1,1,1,1,1,
+        1,2,2,2,1,0,0,0,0,0,0,0,
+        1,2,2,1,0,0,0,0,0,0,0,0,
+        1,2,1,0,0,0,0,0,0,0,0,0,
+        1,1,0,0,0,0,0,0,0,0,0,0,
+    };
+
+    GrxCursor *newc;
+    GrxColor cols[3];
+
+    if (MOUINFO->displayed) {
+        return;
+    }
+    cols[0] = 2;
+    cols[1] = border_color;
+    cols[2] = fill_color;
+    newc = grx_cursor_new(ptr12x16bits, 12, 12, 16, 1, 1, cols);
+    if (!newc) {
+        return;
+    }
+    grx_mouse_set_cursor(newc);
+    grx_cursor_unref(newc);
 }
 
-void GrMouseSetCursorMode(int mode,...)
+/**
+ * grx_mouse_set_cursor_mode: (skip)
+ * @mode: the mode
+ * @...: mode specific aguments
+ *
+ * Sets the mouse cursor mode.
+ */
+void grx_mouse_set_cursor_mode(int mode,...)
 {
         va_list ap;
         if(MOUINFO->displayed) return;
         va_start(ap,mode);
         switch(mode) {
-          case GR_M_CUR_BOX:
+          case GRX_CURSOR_MODE_BOX:
             MOUINFO->x2        = va_arg(ap,int);
             MOUINFO->y2        = va_arg(ap,int);
-          case GR_M_CUR_RUBBER:
-          case GR_M_CUR_LINE:
+          case GRX_CURSOR_MODE_RUBBER:
+          case GRX_CURSOR_MODE_LINE:
             MOUINFO->cursmode  = mode;
             MOUINFO->x1        = va_arg(ap,int);
             MOUINFO->y1        = va_arg(ap,int);
             MOUINFO->curscolor = grx_color_to_xor_mode(va_arg(ap,GrxColor));
             break;
           default:
-            MOUINFO->cursmode  = GR_M_CUR_NORMAL;
+            MOUINFO->cursmode  = GRX_CURSOR_MODE_NORMAL;
             break;
         }
         va_end(ap);
@@ -199,14 +233,14 @@ static int block(GrxContext *c,int x1,int y1,int x2,int y2)
         if(SPECIALMODE) {
             int cx1,cy1,cx2,cy2;
             switch(CURSORMODE) {
-              case GR_M_CUR_RUBBER:
-              case GR_M_CUR_LINE:
+              case GRX_CURSOR_MODE_RUBBER:
+              case GRX_CURSOR_MODE_LINE:
                 cx1 = MSCURSOR->xcord;
                 cy1 = MSCURSOR->ycord;
                 cx2 = MOUINFO->x1;
                 cy2 = MOUINFO->y1;
                 break;
-              case GR_M_CUR_BOX:
+              case GRX_CURSOR_MODE_BOX:
                 cx1 = MSCURSOR->xcord + MOUINFO->x1;
                 cy1 = MSCURSOR->ycord + MOUINFO->y1;
                 cx2 = MSCURSOR->xcord + MOUINFO->x2;
@@ -229,12 +263,11 @@ static int block(GrxContext *c,int x1,int y1,int x2,int y2)
         return((oldblock & BLOCKED) ? 0 : BLOCKED);
 }
 
-static void unblock(int flags)
+static void unblock(unsigned int flags)
 {
         if(!MOUINFO->displayed) return;
         if(flags & MOUINFO->blockflag & ERASED) {
             if(!(MOUINFO->blockflag & BLOCKED) || (flags & BLOCKED)) {
-                _GrUpdateInputs();
                 move_mouse();
                 MOUINFO->blockflag &= ~BLOCKED;
             }
@@ -248,7 +281,6 @@ static void unblock(int flags)
                 int updflag;
                 test_unblock(updflag);
                 if(updflag) {
-                    _GrUpdateInputs();
                     move_mouse();
                 }
             }
@@ -256,35 +288,72 @@ static void unblock(int flags)
         }
 }
 
-void GrMouseUpdateCursor(void)
+void _grx_mouse_update_cursor(void)
 {
         if(MOUINFO->displayed && !MOUINFO->blockflag) {
-            _GrUpdateInputs();
             move_mouse();
         }
 }
 
+static void handle_device_added(GrxDeviceManager *device_manager,
+                                GrxDevice *device,
+                                gpointer user_data)
+{
+    if (grx_device_get_has_pointer(device)) {
+        if (!MOUINFO->pointer_device_count) {
+            _grx_mouse_show_cursor();
+        }
+        MOUINFO->pointer_device_count++;
+    }
+}
+
+static void handle_device_removed(GrxDeviceManager *device_manager,
+                                  GrxDevice *device,
+                                  gpointer user_data)
+{
+    if (grx_device_get_has_pointer(device)) {
+        MOUINFO->pointer_device_count--;
+        if (!MOUINFO->pointer_device_count) {
+            _grx_mouse_hide_cursor();
+        }
+    }
+}
+
 void _GrInitMouseCursor(void)
 {
-        if(MSCURSOR && !COMPATIBLE(MSCURSOR)) {
-            if(MOUINFO->owncursor) {
-                GrCursor *obsolete = MSCURSOR;
-                MOUINFO->cursor    = NULL;
-                MOUINFO->owncursor = FALSE;
-                GrDestroyCursor(obsolete);
-            }
+        if (MSCURSOR && !COMPATIBLE(MSCURSOR)) {
+            GrxCursor *obsolete = MSCURSOR;
             MOUINFO->cursor = NULL;
+            grx_cursor_unref(obsolete);
         }
-        if(MSCURSOR == NULL) {
-            GrMouseSetColors(grx_color_info_alloc_color(255,0,0),GRX_COLOR_BLACK);
+        if (MSCURSOR == NULL) {
+            grx_mouse_set_cursor_default(GRX_COLOR_WHITE, GRX_COLOR_BLACK);
         }
-        if(MSCURSOR && MSCURSOR->displayed) {
-            GrEraseCursor(MSCURSOR);
+        if (MSCURSOR && MSCURSOR->displayed) {
+            grx_cursor_hide(MSCURSOR);
         }
-        MOUINFO->cursmode  = GR_M_CUR_NORMAL;
+        if (MOUINFO->device_manager) {
+            g_signal_handler_disconnect(MOUINFO->device_manager,
+                                        MOUINFO->device_added_handler);
+            g_signal_handler_disconnect(MOUINFO->device_manager,
+                                        MOUINFO->device_removed_handler);
+            g_object_unref(MOUINFO->device_manager);
+            MOUINFO->device_added_handler = 0;
+            MOUINFO->device_removed_handler = 0;
+            MOUINFO->device_manager = NULL;
+        }
+        MOUINFO->cursmode  = GRX_CURSOR_MODE_NORMAL;
         MOUINFO->displayed = FALSE;
         MOUINFO->blockflag = 0;
         MOUINFO->docheck   = FALSE;
         MOUINFO->block     = block;
         MOUINFO->unblock   = unblock;
+        MOUINFO->device_manager = g_object_ref(grx_get_device_manager());
+        MOUINFO->pointer_device_count = 0;
+        MOUINFO->device_added_handler = g_signal_connect(
+            G_OBJECT(MOUINFO->device_manager), "device-added",
+            (GCallback)handle_device_added, NULL);
+        MOUINFO->device_removed_handler = g_signal_connect(
+            G_OBJECT(MOUINFO->device_manager), "device-removed",
+            (GCallback)handle_device_removed, NULL);
 }

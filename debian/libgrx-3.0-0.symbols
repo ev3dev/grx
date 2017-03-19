@@ -1,40 +1,40 @@
 libgrx-3.0.so.0 libgrx-3.0-0 #MINVER#
- GrBuildCursor@Base 2.99.7
+ grx_cursor_new@Base 2.99.7
  GrColorInfo@Base 2.99.7
  GrContextInfo@Base 2.99.7
- GrDestroyCursor@Base 2.99.7
- GrDisplayCursor@Base 2.99.7
+ grx_cursor_unref@Base 2.99.7
+ grx_cursor_show@Base 2.99.7
  GrDriverInfo@Base 2.99.7
- GrEraseCursor@Base 2.99.7
+ grx_cursor_hide@Base 2.99.7
  GrKeyPressed@Base 2.99.7
  GrKeyRead@Base 2.99.7
  GrKeyStat@Base 2.99.7
- GrMouseBlock@Base 2.99.7
- GrMouseCursorIsDisplayed@Base 2.99.7
+ grx_mouse_block@Base 2.99.7
+ grx_mouse_is_cursor_shown@Base 2.99.7
  GrMouseDetect@Base 2.99.7
- GrMouseDisplayCursor@Base 2.99.7
- GrMouseEraseCursor@Base 2.99.7
+ _grx_mouse_show_cursor@Base 2.99.7
+ _grx_mouse_hide_cursor@Base 2.99.7
  GrMouseEventEnable@Base 2.99.7
  GrMouseEventMode@Base 2.99.7
- GrMouseGetCursor@Base 2.99.7
+ grx_mouse_get_cursor@Base 2.99.7
  GrMouseGetEvent@Base 2.99.7
  GrMouseGetEventT@Base 2.99.7
  GrMouseGetLimits@Base 2.99.7
- GrMouseInfo@Base 2.99.7
+ GrxMouseInfo@Base 2.99.7
  GrMouseInit@Base 2.99.7
  GrMouseInitN@Base 2.99.7
  GrMousePendingEvent@Base 2.99.7
  GrMouseSetAccel@Base 2.99.7
- GrMouseSetColors@Base 2.99.7
- GrMouseSetCursor@Base 2.99.7
- GrMouseSetCursorMode@Base 2.99.7
+ grx_mouse_set_cursor_default@Base 2.99.7
+ grx_mouse_set_cursor@Base 2.99.7
+ grx_mouse_set_cursor_mode@Base 2.99.7
  GrMouseSetLimits@Base 2.99.7
  GrMouseSetSpeed@Base 2.99.7
- GrMouseUnBlock@Base 2.99.7
+ grx_mouse_unblock@Base 2.99.7
  GrMouseUnInit@Base 2.99.7
- GrMouseUpdateCursor@Base 2.99.7
+ _grx_mouse_update_cursor@Base 2.99.7
  GrMouseWarp@Base 2.99.7
- GrMoveCursor@Base 2.99.7
+ grx_cursor_move@Base 2.99.7
  _GR_rblit_14@Base 2.99.7
  _GR_shift_scanline@Base 2.99.7
  _GR_swap16@Base 2.99.7
