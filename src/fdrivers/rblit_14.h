@@ -15,8 +15,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <glib.h>
+
 #include <grx/context.h>
 
-void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
-                  GrxFrame *src,int x,int y,int w,int h,
-                  GrxColor op, int planes, _GR_blitFunc bitblt, int invert);
+G_GNUC_INTERNAL void
+_GR_rblit_14(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,
+             GrxColor op, int planes, _GR_blitFunc bitblt,int invert);

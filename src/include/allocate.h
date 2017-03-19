@@ -16,6 +16,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <glib.h>
+
 #if defined(__alpha__) || (GRX_VERSION==GRX_VERSION_GENERIC_X11) && !defined(_AIX)
 #  include <alloca.h>
 #elif defined(_MSC_VER) && defined(_WIN32)
@@ -50,10 +52,10 @@
 #endif
 
 /* temp buffer for blits etc. */
-extern void *_GrTempBuffer;
-extern unsigned  _GrTempBufferBytes;
+G_GNUC_INTERNAL extern void *_GrTempBuffer;
+G_GNUC_INTERNAL extern unsigned  _GrTempBufferBytes;
 #define _GrTempBufferAlloc(b) (                                     \
     ((unsigned)(b) <= _GrTempBufferBytes) ? _GrTempBuffer           \
                                           : _GrTempBufferAlloc_(b) )
-extern void *_GrTempBufferAlloc_(size_t bytes);
-extern void _GrTempBufferFree(void);
+G_GNUC_INTERNAL extern void *_GrTempBufferAlloc_(size_t bytes);
+G_GNUC_INTERNAL extern void _GrTempBufferFree(void);

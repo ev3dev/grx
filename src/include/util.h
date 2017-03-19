@@ -18,13 +18,15 @@
 #ifndef __INCLUDE_UTIL_H__
 #define __INCLUDE_UTIL_H__
 
+#include <glib.h>
+
 /*
  * internal utility functions
  */
-GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode);
-GrxFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode);
+G_GNUC_INTERNAL GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode);
+G_GNUC_INTERNAL GrxFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode);
 
-void _GrCloseVideoDriver(void);
-void _GrDummyFunction(void);
+G_GNUC_INTERNAL void _GrCloseVideoDriver(void);
+G_GNUC_INTERNAL void _GrDummyFunction(void);
 
 #endif /* __INCLUDE_UTIL_H__ */

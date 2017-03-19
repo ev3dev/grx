@@ -15,6 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <glib.h>
+
 #include "colors.h"
 #include "libgrx.h"
 #include "grdriver.h"
@@ -86,7 +88,7 @@ done:
   GRX_LEAVE();
 }
 
-void invert_scanline(unsigned char *sptr,int w)
+static void invert_scanline(unsigned char *sptr,int w)
 {
   GRX_ENTER();
   while (w--)
@@ -94,9 +96,9 @@ void invert_scanline(unsigned char *sptr,int w)
   GRX_LEAVE();
 }
 
-extern void _GR_shift_scanline(GR_int8u **dst,
-                               GR_int8u **src,
-                               int ws, int shift, int planes );
+G_GNUC_INTERNAL extern void _GR_shift_scanline(GR_int8u **dst,
+                                               GR_int8u **src,
+                                               int ws, int shift, int planes );
 #define shift_scanline(dst,src,w,sh) \
     _GR_shift_scanline((GR_int8u **)&(dst),(GR_int8u **)&(src),(w),(sh),1)
 

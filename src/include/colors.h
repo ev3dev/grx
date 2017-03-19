@@ -18,14 +18,16 @@
 #ifndef __INCLUDE_COLORS_H__
 #define __INCLUDE_COLORS_H__
 
+#include <glib.h>
+
 #include <grx/color.h>
 
 /*
  * color stuff
  */
-extern int _GR_firstFreeColor; /* can't access all colors on all systems */
-extern int _GR_lastFreeColor;  /* eg. X11 and other windowing systems    */
-int _GrResetColors(void);      /* like grx_color_info_reset_colors but return true on success */
+G_GNUC_INTERNAL extern int _GR_firstFreeColor; /* can't access all colors on all systems */
+G_GNUC_INTERNAL extern int _GR_lastFreeColor;  /* eg. X11 and other windowing systems    */
+G_GNUC_INTERNAL int _GrResetColors(void);      /* like grx_color_info_reset_colors but return true on success */
 
 #ifndef C_OPER
 #define C_OPER(color)   (unsigned int)(((GrxColor)(color) >> 24) & 15)

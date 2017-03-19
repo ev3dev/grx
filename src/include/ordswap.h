@@ -14,8 +14,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-extern void _GR_swap16(GR_int16 *w);
-extern void _GR_swap32(GR_int32 *l);
+#include <glib.h>
+
+G_GNUC_INTERNAL extern void _GR_swap16(GR_int16 *w);
+G_GNUC_INTERNAL extern void _GR_swap32(GR_int32 *l);
 
 #define _GR_swap16s(w) _GR_swap16((GR_int16 *)(w))
 #define _GR_swap16u(w) _GR_swap16((GR_int16 *)(w))
@@ -23,7 +25,7 @@ extern void _GR_swap32(GR_int32 *l);
 #define _GR_swap32u(l) _GR_swap32((GR_int32 *)(l))
 
 #ifdef GR_int64
-extern void _GR_swap64(GR_int64 *h);
+G_GNUC_INTERNAL extern void _GR_swap64(GR_int64 *h);
 #define _GR_swap64s(h) _GR_swap64((GR_int64 *)(h))
 #define _GR_swap64u(h) _GR_swap64((GR_int64 *)(h))
 #endif

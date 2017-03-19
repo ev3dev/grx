@@ -18,6 +18,8 @@
 #ifndef __INCLUDE_GLOBALS_H__
 #define __INCLUDE_GLOBALS_H__
 
+#include <glib.h>
+
 #include <grx/context.h>
 #include <grx/mouse.h>
 #include <grx/mode.h>

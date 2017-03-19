@@ -18,6 +18,8 @@
 #ifndef __GRDRIVER_H_INCLUDED__
 #define __GRDRIVER_H_INCLUDED__
 
+#include <glib.h>
+
 #include <grx/mode.h>
 
 /*
@@ -27,7 +29,7 @@
 */
 #ifdef USE_GRX_INTERNAL_DEFINITIONS
 
-extern GrxFrameDriver
+G_GNUC_INTERNAL extern GrxFrameDriver
 /*
  * Standard frame drivers in GRX
  */
@@ -88,29 +90,29 @@ typedef void     (*_GR_putScanline)(int x,int y,int w,
 /*
  * Frame driver utility functions
  */
-void _GrFrDrvGenericBitBlt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltR2R(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltR2V(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltV2R(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltV2V(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltR2V_LFB(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltV2R_LFB(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
-void _GrFrDrvPackedBitBltV2V_LFB(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvGenericBitBlt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvPackedBitBltR2R(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvPackedBitBltR2V(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvPackedBitBltV2R(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvPackedBitBltV2V(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvPackedBitBltR2V_LFB(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvPackedBitBltV2R_LFB(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvPackedBitBltV2V_LFB(GrxFrame *dst,int dx,int dy,GrxFrame *src,int x,int y,int w,int h,GrxColor op);
 
-void _GrFrDrvGenericPutScanline(int x,int y,int w,const GrxColor *scl, GrxColor op );
-GrxColor *_GrFrDrvGenericGetIndexedScanline(GrxFrame *c,
+G_GNUC_INTERNAL void _GrFrDrvGenericPutScanline(int x,int y,int w,const GrxColor *scl, GrxColor op );
+G_GNUC_INTERNAL GrxColor *_GrFrDrvGenericGetIndexedScanline(GrxFrame *c,
                                            int x,int y,int w,
                                            int *indx         );
 
-void _GrFrDrvGenericStretchBlt(GrxFrame *dst,int dx,int dy,int dw,int dh,
+G_GNUC_INTERNAL void _GrFrDrvGenericStretchBlt(GrxFrame *dst,int dx,int dy,int dw,int dh,
                                GrxFrame *src,int sx,int sy,int sw,int sh,
                                GrxColor op);
 
 /*
  * Commonly used video driver data structures
  */
-extern GrxVideoModeExt _GrViDrvEGAVGAtextModeExt;
-extern GrxVideoModeExt _GrViDrvEGAVGAcustomTextModeExt;
+G_GNUC_INTERNAL extern GrxVideoModeExt _GrViDrvEGAVGAtextModeExt;
+G_GNUC_INTERNAL extern GrxVideoModeExt _GrViDrvEGAVGAcustomTextModeExt;
 
 GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
                               int txt,unsigned int *ep);

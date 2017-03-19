@@ -18,6 +18,13 @@
  * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  */
 
-extern unsigned int _GrFDdotable8[];
+#ifndef DOCOLOR_H
+#define DOCOLOR_H
+
+#include <glib.h>
+
+G_GNUC_INTERNAL extern unsigned int _GrFDdotable8[];
 
 #define DOCOLOR8(c,op) (_GrFDdotable8[(op)] ^ (unsigned int)(unsigned char)(c))
+
+#endif /* DOCOLOR_H */

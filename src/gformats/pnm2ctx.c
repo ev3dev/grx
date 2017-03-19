@@ -61,7 +61,7 @@ static int inputgetc( inputstruct *is )
 
 /**/
 
-int inputungetc( int c, inputstruct *is )
+static int inputungetc( int c, inputstruct *is )
 {
   if( is->method == 0 )
     return ungetc( c,is->file );
