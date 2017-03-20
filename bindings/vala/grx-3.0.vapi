@@ -556,11 +556,11 @@ namespace Grx {
     public const int MAX_POLYGON_POINTS;
     public const int MAX_ELLIPSE_POINTS;
 
-    [CCode (cprefix = "GRX_ARC_STYLE_", has_type_id = false)]
+    [CCode (has_type_id = false)]
     public enum ArcStyle {
         OPEN,
-        CLOSE1,
-        CLOSE2
+        CLOSED_CHORD,
+        CLOSED_RADIUS
     }
 
     [CCode (has_type_id = false)]
@@ -613,10 +613,10 @@ namespace Grx {
         draw_vline (x2, y1 + radius, y2 - radius, c);
     }
     public void draw_filled_rounded_box (int x1, int y1, int x2, int y2, int radius, Color c) {
-        draw_filled_circle_arc (x1 + radius, y1 + radius, radius, 900, 1800, ArcStyle.CLOSE2, c);
-        draw_filled_circle_arc (x2 - radius, y1 + radius, radius, 0, 900, ArcStyle.CLOSE2, c);
-        draw_filled_circle_arc (x1 + radius, y2 - radius, radius, 1800, 2700, ArcStyle.CLOSE2, c);
-        draw_filled_circle_arc (x2 - radius, y2 - radius, radius, 2700, 3600, ArcStyle.CLOSE2, c);
+        draw_filled_circle_arc (x1 + radius, y1 + radius, radius, 900, 1800, ArcStyle.CLOSED_RADIUS, c);
+        draw_filled_circle_arc (x2 - radius, y1 + radius, radius, 0, 900, ArcStyle.CLOSED_RADIUS, c);
+        draw_filled_circle_arc (x1 + radius, y2 - radius, radius, 1800, 2700, ArcStyle.CLOSED_RADIUS, c);
+        draw_filled_circle_arc (x2 - radius, y2 - radius, radius, 2700, 3600, ArcStyle.CLOSED_RADIUS, c);
         draw_filled_box (x1 + radius, y1, x2 - radius, y2, c);
         draw_filled_box (x1, y1 + radius, x2, y2 - radius, c);
     }
