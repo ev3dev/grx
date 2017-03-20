@@ -510,6 +510,10 @@ namespace Grx {
 
         public Color get_pixel_at_user (int x, int y);
 
+        public void bit_blt (int x, int y, Context src, int x1, int y1, int x2, int y2, Color op = (Color)ColorMode.WRITE);
+        public void bit_blt_1bpp (int dx, int dy, Context src, int x1, int y1, int x2, int y2, Color fg, Color bg);
+        public void fast_bit_blt(int x, int y, Context src, int x1, int y1, int x2, int y2, Color op = (Color)ColorMode.WRITE);
+
         public bool save_to_pbm (string file_name, string? comment = null) throws GLib.Error;
         public bool save_to_pgm (string file_name, string? comment = null) throws GLib.Error;
         public bool save_to_ppm (string file_name, string? comment = null) throws GLib.Error;
@@ -647,8 +651,8 @@ namespace Grx {
     public void draw_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
     public void draw_filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
     public void draw_filled_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
-    public void bit_blt (Context dest, int x, int y, Context src, int x1, int y1, int x2, int y2, ColorMode op = ColorMode.WRITE);
-    public void bit_blt_1bpp (Context dest, int dx, int dy, Context src, int x1, int y1, int x2, int y2, Color fg, Color bg);
+    public void bit_blt (int x, int y, Context src, int x1, int y1, int x2, int y2, Color op = (Color)ColorMode.WRITE);
+    public void bit_blt_1bpp (int dx, int dy, Context src, int x1, int y1, int x2, int y2, Color fg, Color bg);
     public void flood_fill (int x, int y, Color border, Color c);
     public void flood_spill (int x1, int y1, int x2, int y2, Color old_c, Color new_c);
     public void flood_spill_2 (int x1,  int y1, int x2, int y2, Color old_c1, Color new_c1, Color old_c2, Color new_c2);
@@ -672,7 +676,7 @@ namespace Grx {
     public void fast_draw_box(int x1, int y1, int x2, int y2, Color c);
     public void fast_draw_filled_box(int x1, int y1, int x2, int y2, Color c);
     public void fast_draw_framed_box(int x1, int y1, int x2, int y2, int wdt, FramedBoxColors c);
-    public void fast_bit_blt(Context dest, int x, int y, Context src, int x1, int y1, int x2, int y2, ColorMode op = ColorMode.WRITE);
+    public void fast_bit_blt(int x, int y, Context src, int x1, int y1, int x2, int y2, Color op = (Color)ColorMode.WRITE);
 
     public Color fast_get_pixel_at (int x, int y);
 
@@ -990,7 +994,7 @@ namespace Grx {
         public void draw_filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
         public void draw_filled_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
         public void flood_fill (int x, int y, Color border, Color c);
-        public void bit_blt (int x, int y, Context src, int x1, int y1, int x2, int y2, Color oper);
+        public void bit_blt (int x, int y, Context src, int x1, int y1, int x2, int y2, Color oper = (Color)ColorMode.WRITE);
         public void bit_blt_1bpp (int x, int y, Context src, int x1, int y1, int x2, int y2, Color fg, Color bg);
 
         public Color get_pixel_at (int x, int y);
