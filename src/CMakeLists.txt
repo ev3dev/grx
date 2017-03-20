@@ -128,6 +128,7 @@ set (LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
     text/drawtext.c
     text/dumpfont.c
+    text/error.c
     text/loadfont.c
     text/options.c
     text/propwdt.c

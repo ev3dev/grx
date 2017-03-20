@@ -47,5 +47,6 @@ typedef void (*TextDrawBitmapFunc)(int x,int y,int w,int h,int ox, int oy,
 
 G_GNUC_INTERNAL FT_Library grx_get_global_freetype_library(GError **err);
 G_GNUC_INTERNAL FcCharSet *script_to_charset(const gchar *script);
+G_GNUC_INTERNAL const gchar *get_ft_error_msg(gint code);
 
 #endif /* __GRX_TEXT_TEXT_H */

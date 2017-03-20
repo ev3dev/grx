@@ -22,13 +22,11 @@
 #include FT_FREETYPE_H
 #include FT_TYPES_H
 
+#include <grx/error.h>
 #include <grx/mode.h>
 #include <grx/text.h>
 
 #include "text.h"
-
-G_DEFINE_QUARK(ft-error-quark, ft_error)
-#define FT_ERROR_QUARK ft_error_quark()
 
 static gboolean freetype_initalized;
 static FT_Library library;
@@ -38,7 +36,8 @@ FT_Library grx_get_global_freetype_library(GError **err)
     if (!freetype_initalized) {
         FT_Error ret = FT_Init_FreeType(&library);
         if (ret) {
-            g_set_error_literal(err, FT_ERROR_QUARK, ret, "Error initializing freetype");
+            g_set_error(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
+                "Error initializing freetype: %s", get_ft_error_msg(ret));
             return NULL;
         }
         freetype_initalized = TRUE;
@@ -73,12 +72,14 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
 
     ret = FT_New_Face(library, name, 0, &font->face);
     if (ret) {
-        g_set_error_literal(err, FT_ERROR_QUARK, ret, "Error getting font face");
+        g_set_error(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
+            "Error getting font face: %s", get_ft_error_msg(ret));
         g_free(font);
         return NULL;
     }
     if (font->face->num_fixed_sizes == 0) {
-        g_set_error_literal(err, FT_ERROR_QUARK, 0, "Only bitmap fonts are supported");
+        g_set_error_literal(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
+            "Only bitmap fonts are supported");
         g_free(font);
         return NULL;
     }
@@ -86,14 +87,16 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
     ret = FT_Set_Pixel_Sizes(font->face, font->face->available_sizes[0].x_ppem >> 6,
         font->face->available_sizes[0].y_ppem >> 6);
     if (ret) {
-        g_set_error_literal(err, FT_ERROR_QUARK, ret, "Error setting size");
+        g_set_error(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
+            "Error setting size: %s", get_ft_error_msg(ret));
         g_free(font);
         return NULL;
     }
 
     ret = FT_Select_Charmap(font->face, FT_ENCODING_UNICODE);
     if (ret) {
-        g_set_error_literal(err, FT_ERROR_QUARK, ret, "Only unicode fonts are supported");
+        g_set_error(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
+            "Only unicode fonts are supported: %s", get_ft_error_msg(ret));
         g_free(font);
         return NULL;
     }
@@ -189,7 +192,8 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
     FcChar8 *file;
 
     if (!FcInit()) {
-        g_set_error_literal(err, FT_ERROR_QUARK, 0, "Failed to init fontconfig");
+        g_set_error_literal(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
+            "Failed to init fontconfig");
         return NULL;
     }
 
@@ -256,14 +260,16 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
 
     if (!match) {
         // TODO: use result for better error
-        g_set_error_literal(err, FT_ERROR_QUARK, 0, "Failed to find match");
+        g_set_error_literal(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
+            "Failed to find match");
         FcPatternDestroy(pattern);
         return NULL;
     }
     g_debug("found pattern: %s", FcNameUnparse(pattern));
 
     if (FcPatternGetString(match, FC_FILE, 0, &file) != FcResultMatch) {
-        g_set_error_literal(err, FT_ERROR_QUARK, 0, "Failed to get file name");
+        g_set_error_literal(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
+            "Failed to get file name");
         FcPatternDestroy(match);
         FcPatternDestroy(pattern);
         return NULL;

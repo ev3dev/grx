@@ -40,6 +40,7 @@ GQuark grx_error_quark(void);
  * @GRX_ERROR_FAILED: Generic error.
  * @GRX_ERROR_PLUGIN_FILE_NOT_FOUND: Plugin file was not found in search paths.
  * @GRX_ERROR_PLUGIN_SYMBOL_NOT_FOUND: A required symbol in a plugin was not found.
+ * @GRX_ERROR_FONT_ERROR: An error occurred while attempting a font operation.
  *
  * Error codes returned by GRX functions.
  */
@@ -47,6 +48,7 @@ typedef enum {
     GRX_ERROR_FAILED,
     GRX_ERROR_PLUGIN_FILE_NOT_FOUND,
     GRX_ERROR_PLUGIN_SYMBOL_NOT_FOUND,
+    GRX_ERROR_FONT_ERROR,
 } GrxError;
 
 #endif /* __GRX_ERROR_H__ */
