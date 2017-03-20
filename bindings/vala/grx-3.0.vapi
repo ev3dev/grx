@@ -728,6 +728,8 @@ namespace Grx {
         public static Font load_from_file (string filename) throws GLib.Error;
         public unowned string family { get; }
         public unowned string style { get; }
+        public int width { get; }
+        public int height { get; }
         public int dump (Context context, int start, Color fg, Color bg);
         public int get_char_width (uint32 c);
         public int get_char_height (uint32 c);
