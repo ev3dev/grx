@@ -319,7 +319,7 @@ public class CalibrateApplication : Grx.Application {
     void draw_no_devices_screen () {
         clear_context (text_opts.bg_color);
 
-        draw_text ("No devices found", width / 2, height / 2 - 32, text_opts);
+        draw_text ("No touch devices found", width / 2, height / 2 - 32, text_opts);
         draw_text ("Please connect a device", width / 2, height / 2 - 16, text_opts);
         if (keyboard_device_count > 0) {
             draw_text ("Press any key to cancel", width / 2, height / 2 + 32, text_opts);

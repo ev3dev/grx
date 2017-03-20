@@ -9,7 +9,7 @@ pkg_check_modules (GRX_CALIBRATE_DEPS REQUIRED
     gudev-1.0
 )
 
-vala_precompile (GRX_CALIBRATE_C GRX_CALIBRATE_VALA calibrate.vala
+vala_precompile (GRX_CALIBRATE_C GRX_CALIBRATE_VALA calibrate-touch.vala
     PACKAGES
         grx-3.0
         gio-2.0
@@ -20,17 +20,17 @@ vala_precompile (GRX_CALIBRATE_C GRX_CALIBRATE_VALA calibrate.vala
         ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi
 )
 
-add_executable (grx-calibrate ${GRX_CALIBRATE_C})
-target_compile_options (grx-calibrate PUBLIC "-w")
-target_include_directories (grx-calibrate PUBLIC
+add_executable (grx-calibrate-touch ${GRX_CALIBRATE_C})
+target_compile_options (grx-calibrate-touch PUBLIC "-w")
+target_include_directories (grx-calibrate-touch PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/src/include
     ${GRX_CALIBRATE_DEPS_INCLUDE_DIRS}
 )
-target_link_libraries (grx-calibrate ${GRX_CALIBRATE_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
+target_link_libraries (grx-calibrate-touch ${GRX_CALIBRATE_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
 if (CMAKE_CROSSCOMPILING)
     # not sure why we need to do this when cross compiling
-    target_link_libraries (grx-calibrate "-pthread" "-lresolv")
+    target_link_libraries (grx-calibrate-touch "-pthread" "-lresolv")
 endif (CMAKE_CROSSCOMPILING)
 
-install (TARGETS grx-calibrate RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install (TARGETS grx-calibrate-touch RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
