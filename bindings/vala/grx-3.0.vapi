@@ -477,35 +477,9 @@ namespace Grx {
     [CCode (copy_function = "grx_context_ref", free_function = "grx_context_unref")]
     [Compact]
     public class Context {
-        public unowned Context root;
-        public int x_max;
-        public int y_max;
-        public int x_offset;
-        public int y_offset;
-        public int x_clip_low;
-        public int y_clip_low;
-        public int x_clip_high;
-        public int y_clip_high;
-        public int user_x_base;
-        public int user_y_base;
-        public int user_width;
-        public int user_height;
-        [CCode (cname = "frame.base_address", array_length_cexpr = "4")]
-        public char*[] base_address;
-        [CCode (cname = "frame.selector")]
-        public short selector;
-        [CCode (cname = "frame.is_on_screen")]
-        public bool is_on_screen;
-        [CCode (cname = "frame.memory_flags")]
-        public uint8 flags;
-        [CCode (cname = "frame.line_offset")]
-        public int line_offset;
-        [CCode (cname = "frame.driver")]
-        public unowned FrameDriver *driver;
-
-        public static Context? create (int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
-        public static Context? create_full (FrameMode mode, int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
-        public static Context? create_subcontext (int x1, int y1, int x2, int y2, Context parent, out Context? where = null);
+        public static Context? new (int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
+        public static Context? new_full (FrameMode mode, int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
+        public static Context? new_subcontext (int x1, int y1, int x2, int y2, Context parent, out Context? where = null);
         public static Context? save (out Context? where = null);
 
         public static unowned Context current {
