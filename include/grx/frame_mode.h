@@ -91,6 +91,7 @@ GrxFrameMode grx_frame_mode_get_current(void);
 GrxFrameMode grx_frame_mode_get_screen(void);
 GrxFrameMode grx_frame_mode_get_screen_core(void);
 
+gint grx_frame_mode_get_bpp(GrxFrameMode mode);
 gint grx_frame_mode_get_n_planes(GrxFrameMode mode);
 gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width);
 glong grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height);

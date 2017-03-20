@@ -243,6 +243,7 @@ namespace Grx {
         public static FrameMode get_current ();
         public static FrameMode get_screen ();
         public static FrameMode get_screen_core ();
+        public int get_bpp ();
         public int get_n_planes ();
         public int get_line_offset (int width);
         public long get_plane_size (int width, int height);

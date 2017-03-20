@@ -22,6 +22,43 @@
 #include "util.h"
 
 /**
+ * grx_frame_mode_get_bpp:
+ * @mode: a #GrxFrameMode
+ *
+ * Gets the color depth of the frame mode in bits per pixel.
+ *
+ * Returns: the color depth or -1 if the frame mode was not valid
+ */
+gint grx_frame_mode_get_bpp(GrxFrameMode mode)
+{
+    switch (mode) {
+    case GRX_FRAME_MODE_LFB_MONO01:
+    case GRX_FRAME_MODE_LFB_MONO10:
+    case GRX_FRAME_MODE_RAM_1BPP:
+        return 1;
+    case GRX_FRAME_MODE_RAM_4BPP:
+        return 4;
+    case GRX_FRAME_MODE_LFB_8BPP:
+    case GRX_FRAME_MODE_RAM_8BPP:
+        return 8;
+    case GRX_FRAME_MODE_LFB_16BPP:
+    case GRX_FRAME_MODE_RAM_16BPP:
+        return 16;
+    case GRX_FRAME_MODE_LFB_24BPP:
+    case GRX_FRAME_MODE_RAM_24BPP:
+    case GRX_FRAME_MODE_RAM_3X8BPP:
+        return 24;
+    case GRX_FRAME_MODE_LFB_32BPP_LOW:
+    case GRX_FRAME_MODE_LFB_32BPP_HIGH:
+    case GRX_FRAME_MODE_RAM_32BPP_LOW:
+    case GRX_FRAME_MODE_RAM_32BPP_HIGH:
+        return 32;
+    default:
+        return -1;
+    }
+}
+
+/**
  * grx_frame_mode_get_n_planes:
  * @mode: a #GrxFrameMode
  *
