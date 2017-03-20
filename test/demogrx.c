@@ -267,7 +267,7 @@ int main(int argc, char **argv)
         if ((ev.type == EV_KEY) && (ev.p1 == GrKey_Escape))
             break;
         if ((ev.type == EV_KEY) && (ev.p1 == 's')) {
-            grx_save_current_context_to_ppm(NULL, "demogrx.ppm", "DemoGRX");
+            grx_context_save_to_ppm(NULL, "demogrx.ppm", "DemoGRX", NULL);
             continue;
         }
         if (pev_button_group(&ev, bgact))
@@ -357,9 +357,9 @@ static void paint_screen(void)
                              brdimg.x + brdimg.wide - 5,
                              brdimg.y + brdimg.high - 5, grcglob, NULL);
     if (bgact == &bgp1)
-        grx_context_load_from_pnm(grc, "pnmtest.ppm");
+        grx_context_load_from_pnm(grc, "pnmtest.ppm", NULL);
     else
-        grx_context_load_from_pnm(grc, "pnmtest2.ppm");
+        grx_context_load_from_pnm(grc, "pnmtest2.ppm", NULL);
     grx_context_unref(grc);
     the_info(500, 215);
     drawing(400, 280, 200, 150, BROWN, DARKGRAY);

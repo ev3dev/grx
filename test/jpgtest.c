@@ -38,7 +38,7 @@ void imagen( char *nf, int scale )
 
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
-  grx_context_load_from_jpeg( grc,nf,scale );
+  grx_context_load_from_jpeg( grc,nf,scale,NULL );
   grx_context_unref( grc );
 
   grx_draw_text( s,10,10,text_opt );
@@ -96,27 +96,27 @@ int main()
 
   grx_clear_screen( grx_color_alloc( 0,100,0 ) );
   grc = grx_context_new_subcontext( 10,40,10+400-1,40+300-1,NULL,NULL );
-  grx_context_load_from_jpeg( grc,"jpeg1.jpg",2 );
+  grx_context_load_from_jpeg( grc,"jpeg1.jpg",2,NULL );
   grx_context_unref( grc );
   grc = grx_context_new_subcontext( 210,150,210+400-1,150+300-1,NULL,NULL );
-  grx_context_load_from_jpeg( grc,"jpeg2.jpg",2 );
+  grx_context_load_from_jpeg( grc,"jpeg2.jpg",2,NULL );
   grx_context_unref( grc );
 
   grx_draw_text( "Press any key to save color and gray screen",10,10,text_opt );
   GrKeyRead();
 
-  grx_save_current_context_to_jpeg( NULL,"p.jpg",75 );
-  grx_save_current_context_to_jpeg_grayscale( NULL,"pgray.jpg",75 );
+  grx_context_save_to_jpeg( NULL,"p.jpg",75,NULL );
+  grx_context_save_to_jpeg_grayscale( NULL,"pgray.jpg",75,NULL );
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_draw_text( "Press any key to reload color screen       ",10,10,text_opt );
   GrKeyRead();
-  grx_context_load_from_jpeg( NULL,"p.jpg",1 );
+  grx_context_load_from_jpeg( NULL,"p.jpg",1,NULL );
 
   grx_draw_text( "Press any key to reload gray screen        ",10,10,text_opt );
   GrKeyRead();
   grx_clear_screen( GRX_COLOR_BLACK );
-  grx_context_load_from_jpeg( NULL,"pgray.jpg",1 );
+  grx_context_load_from_jpeg( NULL,"pgray.jpg",1,NULL );
 
   grx_draw_text( "Press any key to end                       ",10,10,text_opt );
   GrKeyRead();

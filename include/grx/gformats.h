@@ -1,7 +1,7 @@
 /*
  * gformats.h
  *
- * Copyright (c) 2015 David Lechner <david@lechnology.com>
+ * Copyright (c) 2015,2017 David Lechner <david@lechnology.com>
  *
  * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  * [e-mail: csaba@vuse.vanderbilt.edu]
@@ -17,6 +17,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+/**
+ * SECTION:gformats
+ * @short_description: Loading and saving image data to standard formats (JPEG, PNG, PNM)
+ * @title: Image File Formats
+ * @section_id: gformats
+ * @include: grx-3.0.h
+ *
+ * These functions are used to load data from disk and store data to disk using
+ * standard file formats.
+ */
+
 #ifndef __GRX_GFORMATS_H__
 #define __GRX_GFORMATS_H__
 
@@ -24,15 +35,18 @@
 
 #include <grx/common.h>
 
-/* ================================================================== */
-/*                           PNM FUNCTIONS                            */
-/* ================================================================== */
-
 /**
  * GrxPnmFormat:
+ * @GRX_PNM_FORMAT_ASCII_PBM: P1: black and white (1bpp) ascii file format
+ * @GRX_PNM_FORMAT_ASCII_PGM: P2: grayscale ascii file format
+ * @GRX_PNM_FORMAT_ASCII_PPM: P3: RGB ascii file format
+ * @GRX_PNM_FORMAT_BINARY_PBM: P4: black and white (1bpp) binary file format
+ * @GRX_PNM_FORMAT_BINARY_PGM: P5: grayscale binary file format
+ * @GRX_PNM_FORMAT_BINARY_PPM: P6: RGB binary file format
  *
- *  The PNM formats, grx support load/save of
- *  binaries formats (4,5,6) only
+ * PNM file formats.
+ *
+ * Note: GRX supports load/save of binaries formats (4,5,6) only.
  */
 typedef enum {
     GRX_PNM_FORMAT_ASCII_PBM  = 1,
@@ -45,31 +59,21 @@ typedef enum {
 
 /* The PNM functions */
 
-int grx_save_current_context_to_pbm(GrxContext *grc, gchar *pbmfn, gchar *docn);
-int grx_save_current_context_to_pgm(GrxContext *grc, gchar *pgmfn, gchar *docn);
-int grx_save_current_context_to_ppm(GrxContext *grc, gchar *ppmfn, gchar *docn);
-int grx_context_load_from_pnm(GrxContext *grc, gchar *pnmfn);
-int grx_check_pnm_file(gchar *pnmfn, gint *width, gint *height, gint *maxval);
-int grx_context_load_from_pnm_data(GrxContext *grc, const guint8 *buffer);
-int grx_check_pnm_data(const guint8 *buffer, gint *width, gint *height, gint *maxval);
+gboolean grx_context_save_to_pbm(GrxContext *context, const gchar *filename, const gchar *comment, GError **error);
+gboolean grx_context_save_to_pgm(GrxContext *context, const gchar *filename, const gchar *comment, GError **error);
+gboolean grx_context_save_to_ppm(GrxContext *context, const gchar *filename, const gchar *comment, GError **error);
+gboolean grx_context_load_from_pnm(GrxContext *context, const gchar *filename, GError **error);
+gboolean grx_check_pnm_file(const gchar *filename, GrxPnmFormat *format, gint *width, gint *height, gint *maxval);
+gboolean grx_context_load_from_pnm_data(GrxContext *context, const guint8 *buffer);
+gboolean grx_check_pnm_data(const guint8 *buffer, GrxPnmFormat *format, gint *width, gint *height, gint *maxval);
 
-/* ================================================================== */
-/*                           PNG FUNCTIONS                            */
-/*  these functions may not be installed or available on all system   */
-/* ================================================================== */
+gboolean grx_context_save_to_png(GrxContext *context, const gchar *filename, GError **error);
+gboolean grx_context_load_from_png(GrxContext *context, const gchar *filename, gboolean use_alpha, GError **error);
+gboolean grx_check_png_file(const gchar *filename, gint *width, gint *height);
 
-int grx_save_current_context_to_png(GrxContext *grc, gchar *pngfn);
-int grx_context_load_from_png(GrxContext *grc, gchar *pngfn, gboolean use_alpha);
-int grx_check_png_file(gchar *pngfn, gint *width, gint *height);
-
-/* ================================================================== */
-/*                          JPEG FUNCTIONS                            */
-/*  these functions may not be installed or available on all system   */
-/* ================================================================== */
-
-int grx_context_load_from_jpeg(GrxContext *grc, gchar *jpegfn, gint scale);
-int grx_check_jpeg_file(gchar *jpegfn, gint *width, gint *height);
-int grx_save_current_context_to_jpeg(GrxContext *grc, gchar *jpegfn, gint quality);
-int grx_save_current_context_to_jpeg_grayscale(GrxContext *grc, gchar *jpegfn, gint quality);
+gboolean grx_context_load_from_jpeg(GrxContext *context, const gchar *filename, gint scale, GError **error);
+gboolean grx_check_jpeg_file(const gchar *filename, gint *width, gint *height);
+gboolean grx_context_save_to_jpeg(GrxContext *context, const gchar *filename, gint quality, GError **error);
+gboolean grx_context_save_to_jpeg_grayscale(GrxContext *context, const gchar *filename, gint quality, GError **error);
 
 #endif /* __GRX_GFORMATS_H__ */

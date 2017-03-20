@@ -18,12 +18,17 @@
  *   _GrLoadContextFromPpm optimized (applied to Pbm and Pgm too)
  */
 
+#include <glib.h>
+#include <gio/gio.h>
+
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/error.h>
 #include <grx/extents.h>
 #include <grx/gformats.h>
 #include <grx/mode.h>
@@ -33,9 +38,7 @@ typedef struct{
   FILE *file;
   const unsigned char *buffer;
   int bufferpointer;
-  } inputstruct;
-
-/**/
+} inputstruct;
 
 static size_t inputread( void *buffer, size_t size, size_t number,
                          inputstruct *is )
@@ -49,8 +52,6 @@ static size_t inputread( void *buffer, size_t size, size_t number,
     }
 }
 
-/**/
-
 static int inputgetc( inputstruct *is )
 {
   if( is->method == 0 )
@@ -58,8 +59,6 @@ static int inputgetc( inputstruct *is )
   else
     return is->buffer[is->bufferpointer++];
 }
-
-/**/
 
 static int inputungetc( int c, inputstruct *is )
 {
@@ -71,27 +70,23 @@ static int inputungetc( int c, inputstruct *is )
     }
 }
 
-/**/
-
-static int skipspaces( inputstruct *is )
+static gboolean skipspaces( inputstruct *is )
 {
   int c;
   
   while( 1 ){
-    if( (c = inputgetc( is )) == EOF ) return -1;
+    if( (c = inputgetc( is )) == EOF ) return FALSE;
     if( c == '#' ) // it's a comment
       while( 1 ){
-        if( (c = inputgetc( is )) == EOF ) return -1;
+        if( (c = inputgetc( is )) == EOF ) return FALSE;
         if( c == '\n' ) break;
         }
     if( c != ' ' && c != '\t' && c != '\n' && c != '\r' ){
       inputungetc( c,is );
-      return 0;
+      return TRUE;
       }
     }
 }
-
-/**/
 
 static int readnumber( inputstruct *is )
 {
@@ -112,34 +107,55 @@ static int readnumber( inputstruct *is )
   return atoi( buf );
 }
 
-/**/
-
-static int loaddata( inputstruct *is, int *width, int *height, int *maxval )
+static gboolean loaddata(inputstruct *is, GrxPnmFormat *format, int *width, int *height, int *maxval)
 {
-  unsigned char buf[10];
-  int r;
+    unsigned char buf[10];
+    GrxPnmFormat r;
 
-  if( inputread( buf,1,2,is ) != 2 ) return -1;
-  if( buf[0] != 'P' ) return -1;
-  r = buf[1] - '0';
-  if( (r < GRX_PNM_FORMAT_ASCII_PBM) || (r > GRX_PNM_FORMAT_BINARY_PPM) ) return -1;
-  if( skipspaces( is ) != 0 ) return -1;
-  if( (*width = readnumber( is )) < 0 ) return -1;
-  if( skipspaces( is ) != 0 ) return -1;
-  if( (*height = readnumber( is )) < 0 ) return -1;
-  if( (r == GRX_PNM_FORMAT_ASCII_PBM) || (r == GRX_PNM_FORMAT_BINARY_PBM) )
-    *maxval = 1;
-  else{
-    if( skipspaces( is ) != 0 ) return -1;
-    if( (*maxval = readnumber( is )) < 0 ) return -1;
+    if (inputread(buf,1,2,is) != 2) {
+        return FALSE;
     }
-  inputgetc( is );  // skip \n
-  return r;
+    if (buf[0] != 'P') {
+        return FALSE;
+    }
+
+    r = buf[1] - '0';
+    if ((r < GRX_PNM_FORMAT_ASCII_PBM) || (r > GRX_PNM_FORMAT_BINARY_PPM)) {
+        return FALSE;
+    }
+    if (!skipspaces(is)) {
+        return FALSE;
+    }
+    if ((*width = readnumber(is)) < 0) {
+        return FALSE;
+    }
+    if (!skipspaces(is)) {
+        return FALSE;
+    }
+    if ((*height = readnumber(is)) < 0) {
+        return FALSE;
+    }
+    if ((r == GRX_PNM_FORMAT_ASCII_PBM) || (r == GRX_PNM_FORMAT_BINARY_PBM)) {
+        *maxval = 1;
+    }
+    else {
+        if (!skipspaces(is)) {
+            return FALSE;
+        }
+        if ((*maxval = readnumber(is)) < 0) {
+            return FALSE;
+        }
+    }
+
+    // skip \n
+    inputgetc(is);
+
+    *format = r;
+
+    return TRUE;
 }
 
-/**/
-
-static int _GrLoadContextFromPbm( inputstruct *is, int width, int height )
+static gboolean _GrLoadContextFromPbm( inputstruct *is, int width, int height )
 {
   int x, y;
   int maxwidth, maxheight;
@@ -147,18 +163,18 @@ static int _GrLoadContextFromPbm( inputstruct *is, int width, int height )
   int currentbyte, isbyteread = 0;
   int currentbit = 0;
   GrxColor *pColors=NULL;
-  int res = 0;
+  gboolean res = TRUE;
 
   maxwidth = (width > grx_get_width()) ? grx_get_width() : width;
   maxheight = (height > grx_get_height()) ? grx_get_height() : height;
 
   pColors = malloc( maxwidth * sizeof(GrxColor) );
-  if(pColors == NULL) { res = -1; goto salida; }
+  if(pColors == NULL) { res = FALSE; goto out; }
 
   for( y=0; y<maxheight; y++ ){
     for( x=0; x<width; x++ ){
       if( !isbyteread ){
-        if( inputread( &currentbyte,1,1,is ) != 1 ) { res = -1; goto salida; }
+        if( inputread( &currentbyte,1,1,is ) != 1 ) { res = FALSE; goto out; }
         isbyteread = 1;
         currentbit = 7;
         }
@@ -173,15 +189,13 @@ static int _GrLoadContextFromPbm( inputstruct *is, int width, int height )
     isbyteread = 0;
     }
 
-salida:
+out:
   if( pColors != NULL ) free( pColors );
   return res;
 }
 
-/**/
-
-static int _GrLoadContextFromPgm( inputstruct *is, int width,
-                                  int height, int maxval )
+static gboolean _GrLoadContextFromPgm( inputstruct *is, int width,
+                                       int height, int maxval )
 {
   int x, y;
   int needcoloradjust = 0;
@@ -189,7 +203,7 @@ static int _GrLoadContextFromPgm( inputstruct *is, int width,
   double coloradjust = 255.0;
   GrxColor *pColors=NULL;
   unsigned char *pData=NULL, *pCursor;
-  int res = 0;
+  gboolean res = TRUE;
 
   maxwidth = (width > grx_get_width()) ? grx_get_width() : width;
   maxheight = (height > grx_get_height()) ? grx_get_height() : height;
@@ -201,12 +215,12 @@ static int _GrLoadContextFromPgm( inputstruct *is, int width,
 
   pData = NULL;
   pColors = malloc( maxwidth * sizeof(GrxColor) );
-  if(pColors == NULL) { res = -1; goto salida; }
+  if(pColors == NULL) { res = FALSE; goto out; }
   pData = malloc( width * sizeof(char) );
-  if(pData == NULL) { res = -1; goto salida; }
+  if(pData == NULL) { res = FALSE; goto out; }
 
   for( y=0; y<maxheight; y++ ){
-    if( inputread( pData,1,width,is ) != width ) { res = -1; goto salida; }
+    if( inputread( pData,1,width,is ) != width ) { res = FALSE; goto out; }
     pCursor = pData;
     for( x=0; x<maxwidth; x++ ){
       if( needcoloradjust )
@@ -217,16 +231,14 @@ static int _GrLoadContextFromPgm( inputstruct *is, int width,
     grx_put_scanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
     }
 
-salida:
+out:
   if( pColors != NULL ) free( pColors );
   if( pData != NULL ) free( pData );
   return res;
 }
 
-/**/
-
-static int _GrLoadContextFromPpm( inputstruct *is, int width,
-                                  int height, int maxval )
+static gboolean _GrLoadContextFromPpm( inputstruct *is, int width,
+                                       int height, int maxval )
 {
   int x, y;
   int needcoloradjust = 0;
@@ -234,7 +246,7 @@ static int _GrLoadContextFromPpm( inputstruct *is, int width,
   double coloradjust = 255.0;
   GrxColor *pColors=NULL;
   unsigned char *pRGB=NULL, *pCursor;
-  int res = 0;
+  gboolean res = TRUE;
 
   maxwidth = (width > grx_get_width()) ? grx_get_width() : width;
   maxheight = (height > grx_get_height()) ? grx_get_height() : height;
@@ -246,12 +258,12 @@ static int _GrLoadContextFromPpm( inputstruct *is, int width,
 
   pRGB = NULL;
   pColors = malloc( maxwidth * sizeof(GrxColor) );
-  if(pColors == NULL) { res = -1; goto salida; }
+  if(pColors == NULL) { res = FALSE; goto out; }
   pRGB = malloc( width * 3 * sizeof(char) );
-  if(pRGB == NULL) { res = -1; goto salida; }
+  if(pRGB == NULL) { res = FALSE; goto out; }
 
   for( y=0; y<maxheight; y++ ){
-    if( inputread( pRGB,3,width,is ) != width ) { res = -1; goto salida; }
+    if( inputread( pRGB,3,width,is ) != width ) { res = FALSE; goto out; }
     pCursor = pRGB;
     for( x=0; x<maxwidth; x++ ){
       if( needcoloradjust ){
@@ -265,46 +277,58 @@ static int _GrLoadContextFromPpm( inputstruct *is, int width,
     grx_put_scanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
     }
 
-salida:
+out:
   if( pColors != NULL ) free( pColors );
   if( pRGB != NULL ) free( pRGB );
   return res;
 }
 
-/*
-** grx_context_load_from_pnm - Load a context from a PNM file
-**
-** Support only PBM, PGM and PPM binary files with maxval < 256
-**
-** If context dimensions are lesser than pnm dimensions,
-** the routine loads as much as it can
-**
-** If color mode is not in RGB mode, the routine allocates as
-** much colors as it can
-**
-** Arguments:
-**   ctx:   Context to be loaded (NULL -> use current context)
-**   pnmfn: Name of pnm file
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_context_load_from_pnm( GrxContext *grc, char *pnmfn )
+/**
+ * grx_context_load_from_pnm:
+ * @context: (nullable): Context to be loaded or %NULL to use the global context
+ * @filename: (type filename): Name of pnm file
+ * @error: pointer to hold an error or %NULL to ignore
+ *
+ * Load a context from a PNM file.
+ *
+ * Support only PBM, PGM and PPM binary files with maxval < 256
+ *
+ * If context dimensions are less than pnm dimensions,
+ * the routine loads as much as it can
+ *
+ * If color mode is not in RGB mode, the routine allocates as
+ * many colors as it can
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_load_from_pnm(GrxContext *grc, const char *pnmfn, GError **error)
 {
   inputstruct is = {0, NULL, NULL, 0};
   GrxContext grcaux;
-  int r = -1;
-  int format, width, height, maxval;
+  gboolean r;
+  GrxPnmFormat format;
+  int width, height, maxval;
 
-  if( (is.file = fopen( pnmfn,"rb" )) == NULL ) return -1;
+  if ((is.file = fopen( pnmfn,"rb" )) == NULL) {
+    g_set_error(error, G_IO_ERROR, g_io_error_from_errno(errno),
+      "Failed to open '%s'", pnmfn);
+    return FALSE;
+  }
 
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );
 
-  format = loaddata( &is,&width,&height,&maxval );
-  if( maxval > 255 ) goto ENDFUNCTION;
-  if( (format < GRX_PNM_FORMAT_BINARY_PBM) || (format > GRX_PNM_FORMAT_BINARY_PPM) ) goto ENDFUNCTION;
+  r = loaddata(&is, &format, &width, &height, &maxval);
+  if (!r) {
+    goto out;
+  }
+  r = FALSE;
+  if( maxval > 255 ) {
+    goto out;
+  }
+  if ((format < GRX_PNM_FORMAT_BINARY_PBM) || (format > GRX_PNM_FORMAT_BINARY_PPM)) {
+    goto out;
+  }
 
   switch( format ){
     case GRX_PNM_FORMAT_BINARY_PBM: r = _GrLoadContextFromPbm( &is,width,height );
@@ -313,76 +337,89 @@ int grx_context_load_from_pnm( GrxContext *grc, char *pnmfn )
                     break;
     case GRX_PNM_FORMAT_BINARY_PPM: r = _GrLoadContextFromPpm( &is,width,height,maxval );
                     break;
-    }
+    default:
+      break;
+  }
 
-ENDFUNCTION:
+out:
   grx_set_current_context( &grcaux );
   fclose( is.file );
 
+  if (!r) {
+    g_set_error(error, GRX_ERROR, GRX_ERROR_PNM_ERROR,
+      "Problem with PNM data in '%s'", pnmfn);
+  }
+
   return r;
 }
 
-/*
-** grx_check_pnm_file - Query format, width and height data from a PNM file
-**
-** Arguments:
-**   pnmfn:   Name of pnm file
-**   width:   return pnm width
-**   height:  return pnm height
-**   maxval:  max color component value
-**
-** Returns  1 to 6 on success (PNM FORMAT)
-**         -1 on error
-*/
-
-int grx_check_pnm_file( char *pnmfn, int *width, int *height, int *maxval )
+/**
+ * grx_check_pnm_file:
+ * @filename: (type filename): Name of pnm file
+ * @format: (out): the #GrxPnmFormat of the file
+ * @width: (out): return pnm width
+ * @height: (out): return pnm height
+ * @maxval: (out): max color component value
+ *
+ * Query format, width and height data from a PNM file
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_check_pnm_file(const char *pnmfn, GrxPnmFormat *format, int *width, int *height, int *maxval)
 {
   inputstruct is = {0, NULL, NULL, 0};
-  int r;
+  GrxPnmFormat r;
 
-  if( (is.file = fopen( pnmfn,"rb" )) == NULL ) return -1;
+  if( (is.file = fopen( pnmfn,"rb" )) == NULL ) return FALSE;
 
-  r = loaddata( &is,width,height,maxval );
+  r = loaddata( &is,format,width,height,maxval );
 
   fclose( is.file );
 
   return r;
 }
 
-/*
-** grx_context_load_from_pnm_data - Load a context from a PNM buffer
-**
-** Support only PBM, PGM and PPM binary buffers with maxval < 256
-**
-** If context dimensions are lesser than pnm dimensions,
-** the routine loads as much as it can
-**
-** If color mode is not in RGB mode, the routine allocates as
-** much colors as it can
-**
-** Arguments:
-**   ctx:    Context to be loaded (NULL -> use current context)
-**   pnmbuf: Buffer that holds data
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_context_load_from_pnm_data(GrxContext *grc, const unsigned char *pnmbuf)
+/**
+ * grx_context_load_from_pnm_data:
+ * @context: (nullable): Context to be loaded or %NULL to use the global context
+ * @buffer: Buffer that holds data
+ *
+ * Load a context from a PNM buffer
+ *
+ * Support only PBM, PGM and PPM binary buffers with maxval < 256
+ *
+ * If context dimensions are lesser than pnm dimensions,
+ * the routine loads as much as it can
+ *
+ * If color mode is not in RGB mode, the routine allocates as
+ * much colors as it can
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_load_from_pnm_data(GrxContext *grc, const unsigned char *pnmbuf)
 {
   inputstruct is = {1, NULL, NULL, 0};
   GrxContext grcaux;
-  int r = -1;
-  int format, width, height, maxval;
+  gboolean r;
+  GrxPnmFormat format;
+  int width, height, maxval;
 
   is.buffer = pnmbuf;
   
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );
 
-  format = loaddata( &is,&width,&height,&maxval );
-  if( maxval > 255 ) goto ENDFUNCTION;
-  if( (format < GRX_PNM_FORMAT_BINARY_PBM) || (format > GRX_PNM_FORMAT_BINARY_PPM) ) goto ENDFUNCTION;
+  r = loaddata( &is,&format,&width,&height,&maxval );
+  if (!r) {
+    goto out;
+  }
+  r = FALSE;
+  if (maxval > 255) {
+    goto out;
+  }
+  if ((format < GRX_PNM_FORMAT_BINARY_PBM) || (format > GRX_PNM_FORMAT_BINARY_PPM)) {
+    goto out;
+  }
 
   switch( format ){
     case GRX_PNM_FORMAT_BINARY_PBM: r = _GrLoadContextFromPbm( &is,width,height );
@@ -391,35 +428,36 @@ int grx_context_load_from_pnm_data(GrxContext *grc, const unsigned char *pnmbuf)
                     break;
     case GRX_PNM_FORMAT_BINARY_PPM: r = _GrLoadContextFromPpm( &is,width,height,maxval );
                     break;
-    }
+    default:
+      break;
+  }
 
-ENDFUNCTION:
+out:
   grx_set_current_context( &grcaux );
 
   return r;
 }
 
-/*
-** grx_check_pnm_data - Query format, width and height data from a PNM buffer
-**
-** Arguments:
-**   pnmbuf:  Buffer that holds data
-**   width:   return pnm width
-**   height:  return pnm height
-**   maxval:  max color component value
-**
-** Returns  1 to 6 on success (PNM FORMAT)
-**         -1 on error
-*/
-
-int grx_check_pnm_data(const unsigned char *pnmbuf, int *width, int *height, int *maxval)
+/**
+ * grx_check_pnm_data:
+ * @buffer: Buffer that holds data
+ * @format: (out): the #GrxPnmFormat of the file
+ * @width: (out): return pnm width
+ * @height: (out): return pnm height
+ * @maxval: (out): max color component value
+ *
+ * Query format, width and height data from a PNM buffer
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_check_pnm_data(const unsigned char *pnmbuf, GrxPnmFormat *format, int *width, int *height, int *maxval)
 {
   inputstruct is = {1, NULL, NULL, 0};
-  int r;
+  gboolean r;
 
   is.buffer = pnmbuf;
 
-  r = loaddata( &is,width,height,maxval );
+  r = loaddata(&is, format, width, height, maxval);
 
   return r;
 }

@@ -15,6 +15,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <glib.h>
+#include <gio/gio.h>
+
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,6 +26,7 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/error.h>
 #include <grx/extents.h>
 
 #ifndef png_jmpbuf
@@ -30,27 +35,30 @@
 
 static int writepng( FILE *f, GrxContext *grc );
 
-/*
-** grx_save_current_context_to_png - Dump a context in a PNG file
-**
-** This routine works both in RGB and palette modes
-**
-** Arguments:
-**   grc:   Context to be saved (NULL -> use current context)
-**   pngfn: Name of png file
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_save_current_context_to_png( GrxContext *grc, char *pngfn )
+/**
+ * grx_context_save_to_png:
+ * @context: (nullable): Context to be saved or %NULL to use the global context
+ * @filename: (type filename): Name of png file
+ * @error: pointer to hold an error or %NULL to ignore
+ *
+ * Dump a context in a PNG file
+ *
+ * This routine works both in RGB and palette modes
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_save_to_png(GrxContext *grc, char *pngfn, GError **error)
 {
   GrxContext grcaux;
   FILE *f;
-  int r;
+  gboolean r;
   
   f = fopen( pngfn,"wb" );
-  if( f == NULL ) return -1;
+  if (f == NULL) {
+    g_set_error(error, G_IO_ERROR, g_io_error_from_errno(errno),
+      "Failed to open '%s'", pngfn);
+    return FALSE;
+  }
 
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );
@@ -59,12 +67,15 @@ int grx_save_current_context_to_png( GrxContext *grc, char *pngfn )
 
   fclose( f );
 
+  if (!r) {
+    g_set_error(error, GRX_ERROR, GRX_ERROR_PNG_ERROR,
+      "Problem with PNG data in '%s'", pngfn);
+  }
+
   return r;
 }
 
-/**/
-
-static int writepng( FILE *f, GrxContext *grc )
+static gboolean writepng( FILE *f, GrxContext *grc )
 {
   png_structp png_ptr;
   png_infop info_ptr;
@@ -80,20 +91,20 @@ static int writepng( FILE *f, GrxContext *grc )
   /* Create and initialize the png_struct */
   png_ptr = png_create_write_struct( PNG_LIBPNG_VER_STRING,NULL,NULL,NULL );
   if( png_ptr == NULL )
-    return -1;
+    return FALSE;
 
   /* Allocate/initialize the image information data */
   info_ptr = png_create_info_struct( png_ptr );
   if( info_ptr == NULL ){
     png_destroy_write_struct( &png_ptr,(png_infopp)NULL );
-    return -1;
+    return FALSE;
     }
 
   /* Set error handling */
   if( setjmp( png_jmpbuf(png_ptr) ) ){
     /* If we get here, we had a problem reading the file */
     png_destroy_write_struct( &png_ptr,&info_ptr );
-    return -1;
+    return FALSE;
     }
 
   /* set up the output control we are using standard C streams */
@@ -127,14 +138,14 @@ static int writepng( FILE *f, GrxContext *grc )
   png_pixels = (png_byte *) malloc( width * 3 * sizeof(png_byte) );
   if( png_pixels == NULL ){
     png_destroy_write_struct( &png_ptr,&info_ptr );
-    return -1;
+    return FALSE;
     }
 
   row_pointers = (png_byte **) malloc( 1 * sizeof(png_bytep) );
   if( row_pointers == NULL ){
     png_destroy_write_struct( &png_ptr,&info_ptr );
     free( png_pixels );
-    return -1;
+    return FALSE;
     }
 
   pColors = malloc( width * sizeof(GrxColor) );
@@ -142,7 +153,7 @@ static int writepng( FILE *f, GrxContext *grc )
     png_destroy_write_struct( &png_ptr,&info_ptr );
     free( row_pointers );
     free( png_pixels );
-    return -1;
+    return FALSE;
     }
 
   row_pointers[0] = png_pixels;
@@ -168,5 +179,5 @@ static int writepng( FILE *f, GrxContext *grc )
   free( row_pointers );
   free( png_pixels );
 
-  return 0;
+  return TRUE;
 }

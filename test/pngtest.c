@@ -38,12 +38,12 @@ void imagen( char *nf )
 
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
-  grx_context_load_from_png( grc,nf,0 );
+  grx_context_load_from_png( grc,nf,0,NULL );
   grx_context_unref( grc );
 
   grx_draw_box( 320,40,320+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 321,41,321+wide-1,41+high-1,NULL,NULL );
-  grx_context_load_from_png( grc,nf,1 );
+  grx_context_load_from_png( grc,nf,1,NULL );
   grx_context_unref( grc );
 
   grx_draw_text( s,10,10,text_opt );
@@ -99,20 +99,20 @@ int main()
 
   grx_clear_screen( grx_color_alloc( 0,100,0 ) );
   grc = grx_context_new_subcontext( 191,121,191+256-1,121+240-1,NULL,NULL );
-  grx_context_load_from_png( grc,"pngred.png",1 );
+  grx_context_load_from_png( grc,"pngred.png",1,NULL );
   grx_context_unref( grc );
   grc = grx_context_new_subcontext( 181,241,181+289-1,241+80-1,NULL,NULL );
-  grx_context_load_from_png( grc,"pngcompo.png",1 );
+  grx_context_load_from_png( grc,"pngcompo.png",1,NULL );
   grx_context_unref( grc );
 
   grx_draw_text( "Press any key to save screen",10,10,text_opt );
   GrKeyRead();
-  grx_save_current_context_to_png( NULL,"output.png" );
+  grx_context_save_to_png( NULL,"output.png",NULL );
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_draw_text( "Press any key to reload screen",10,10,text_opt );
   GrKeyRead();
-  grx_context_load_from_png( NULL,"output.png",0 );
+  grx_context_load_from_png( NULL,"output.png",0,NULL );
 
   grx_draw_text( "Press any key to end          ",10,10,text_opt );
   GrKeyRead();

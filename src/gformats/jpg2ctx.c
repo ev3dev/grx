@@ -15,6 +15,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <glib.h>
+#include <gio/gio.h>
+
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <setjmp.h>
@@ -22,38 +26,41 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/error.h>
 #include <grx/extents.h>
 
-static int readjpeg( FILE *f, GrxContext *grc, int scale );
-static int queryjpeg( FILE *f, int *w, int *h );
+static gboolean readjpeg(FILE *f, GrxContext *grc, int scale);
+static gboolean queryjpeg(FILE *f, int *w, int *h);
 
-/*
-** grx_context_load_from_jpeg - Load a context from a JPEG file
-**
-** If context dimensions are lesser than jpeg dimensions,
-** the routine loads as much as it can
-**
-** If color mode is not in RGB mode, the routine allocates as
-** much colors as it can
-**
-** Arguments:
-**   grc:      Context to be loaded (NULL -> use current context)
-**   jpegfn:   Name of jpeg file
-**   scale:    scale the image to 1/scale, actually libjpeg support
-**             1, 2, 4 and 8 noly
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_context_load_from_jpeg( GrxContext *grc, char *jpegfn, int scale )
+/**
+ * grx_context_load_from_jpeg:
+ * @context: (nullable): Context to be loaded or %NULL to use the global context
+ * @filename: (type filename): Name of jpeg file
+ * @scale: scale the image to 1/scale, only 1, 2, 4 and 8 are supported
+ * @error: pointer to hold an error or %NULL to ignore
+ *
+ * Load a context from a JPEG file.
+ *
+ * If context dimensions are less than jpeg dimensions, the function loads as
+ * much of the image as it can.
+ *
+ * If color mode is not in RGB mode, the functions allocates as many colors as
+ * it can.
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_load_from_jpeg(GrxContext *grc, const char *jpegfn, int scale, GError **error)
 {
   GrxContext grcaux;
   FILE *f;
-  int r;
-  
+  gboolean r;
+
   f = fopen( jpegfn,"rb" );
-  if( f == NULL ) return -1;
+  if (f == NULL) {
+    g_set_error(error, G_IO_ERROR, g_io_error_from_errno(errno),
+      "Failed to open '%s'", jpegfn);
+    return FALSE;
+  }
 
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );
@@ -62,28 +69,31 @@ int grx_context_load_from_jpeg( GrxContext *grc, char *jpegfn, int scale )
 
   fclose( f );
 
+  if (!r) {
+    g_set_error(error, GRX_ERROR, GRX_ERROR_JPEG_ERROR,
+      "Error while reading '%s'", jpegfn);
+  }
+
   return r;
 }
 
-/*
-** grx_check_jpeg_file - Query width and height data from a JPEG file
-**
-** Arguments:
-**   jpegfn:  Name of jpeg file
-**   width:   return pnm width
-**   height:  return pnm height
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_check_jpeg_file( char *jpegfn, int *width, int *height )
+/**
+ * grx_check_jpeg_file:
+ * @filename: (type filename): Name of jpeg file
+ * @width: (out): return image width
+ * @height: (out): return image height
+ *
+ * Query width and height data from a JPEG file
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_check_jpeg_file(const char *jpegfn, int *width, int *height)
 {
   FILE *f;
   int r;
   
   f = fopen( jpegfn,"rb" );
-  if( f == NULL ) return -1;
+  if( f == NULL ) return FALSE;
 
   r = queryjpeg( f,width,height );
 
@@ -92,16 +102,12 @@ int grx_check_jpeg_file( char *jpegfn, int *width, int *height )
   return r;
 }
 
-/**/
-
 struct my_error_mgr{
   struct jpeg_error_mgr pub;
   jmp_buf setjmp_buffer;
-  };
+};
 
 typedef struct my_error_mgr *my_error_ptr;
-
-/**/
 
 METHODDEF(void) my_error_exit( j_common_ptr cinfo )
 {
@@ -112,9 +118,7 @@ METHODDEF(void) my_error_exit( j_common_ptr cinfo )
   longjmp( myerr->setjmp_buffer,1 );
 }
 
-/**/
-
-static int readjpeg( FILE *f, GrxContext *grc, int scale )
+static gboolean readjpeg(FILE *f, GrxContext *grc, int scale)
 {
   struct jpeg_decompress_struct cinfo;
   struct my_error_mgr jerr;
@@ -130,7 +134,7 @@ static int readjpeg( FILE *f, GrxContext *grc, int scale )
   if( setjmp( jerr.setjmp_buffer ) ) {
     if( pColors) free( pColors );
     jpeg_destroy_decompress( &cinfo );
-    return -1;
+    return FALSE;
   }
 
   jpeg_create_decompress( &cinfo );
@@ -176,12 +180,10 @@ static int readjpeg( FILE *f, GrxContext *grc, int scale )
   jpeg_finish_decompress( &cinfo );
   jpeg_destroy_decompress( &cinfo );
   
-  return 0;
+  return TRUE;
 }
 
-/**/
-
-static int queryjpeg( FILE *f, int *w, int *h )
+static gboolean queryjpeg( FILE *f, int *w, int *h )
 {
   struct jpeg_decompress_struct cinfo;
   struct my_error_mgr jerr;
@@ -190,7 +192,7 @@ static int queryjpeg( FILE *f, int *w, int *h )
   jerr.pub.error_exit = my_error_exit;
   if( setjmp( jerr.setjmp_buffer ) ) {
     jpeg_destroy_decompress( &cinfo );
-    return -1;
+    return FALSE;
   }
 
   jpeg_create_decompress( &cinfo );
@@ -202,5 +204,5 @@ static int queryjpeg( FILE *f, int *w, int *h )
 
   jpeg_destroy_decompress( &cinfo );
   
-  return 0;
+  return TRUE;
 }

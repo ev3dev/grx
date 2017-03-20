@@ -19,10 +19,10 @@
 #include <stdlib.h>
 
 /*
-** grx_save_current_context_to_png - Returns error
+** grx_context_save_to_png - Returns error
 */
 
-int grx_save_current_context_to_png( GrxContext *grc, char *pngfn )
+int grx_context_save_to_png( GrxContext *grc, char *pngfn )
 {
   return -1;
 }

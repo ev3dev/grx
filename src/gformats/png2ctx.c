@@ -15,6 +15,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <glib.h>
+#include <gio/gio.h>
+
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,41 +26,45 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/error.h>
 #include <grx/extents.h>
 
 #ifndef png_jmpbuf
 #  define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
 #endif
 
-static int readpng( FILE *f, GrxContext *grc, int use_alpha );
-static int querypng( FILE *f, int *w, int *h );
+static gboolean readpng(FILE *f, GrxContext *grc, int use_alpha);
+static gboolean querypng(FILE *f, int *w, int *h);
 
-/*
-** grx_context_load_from_png - Load a context from a PNG file
-**
-** If context dimensions are lesser than png dimensions,
-** the routine loads as much as it can
-**
-** If color mode is not in RGB mode, the routine allocates as
-** much colors as it can
-**
-** Arguments:
-**   grc:      Context to be loaded (NULL -> use current context)
-**   pngfn:    Name of pnm file
-**   use_alpha: if true, use alpha channel if available
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_context_load_from_png( GrxContext *grc, char *pngfn, int use_alpha )
+/**
+ * grx_context_load_from_png:
+ * @context: (nullable): Context to be loaded or %NULL to use the global context
+ * @filename: (type filename): Name of jpeg file
+ * @use_alpha: if %TRUE, use alpha channel if available
+ * @error: pointer to hold an error or %NULL to ignore
+ *
+ * Load a context from a PNG file
+ *
+ * If context dimensions are less than png dimensions,
+ * the routine loads as much as it can
+ *
+ * If color mode is not in RGB mode, the routine allocates as
+ * many colors as it can
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_load_from_png(GrxContext *grc, const char *pngfn, int use_alpha, GError **error)
 {
   GrxContext grcaux;
   FILE *f;
-  int r;
+  gboolean r;
   
   f = fopen( pngfn,"rb" );
-  if( f == NULL ) return -1;
+  if (f == NULL) {
+    g_set_error(error, G_IO_ERROR, g_io_error_from_errno(errno),
+      "Failed to open '%s'", pngfn);
+    return FALSE;
+  }
 
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );
@@ -65,28 +73,33 @@ int grx_context_load_from_png( GrxContext *grc, char *pngfn, int use_alpha )
 
   fclose( f );
 
+  if (!r) {
+    g_set_error(error, GRX_ERROR, GRX_ERROR_PNG_ERROR,
+      "Error while reading '%s'", pngfn);
+  }
+
   return r;
 }
 
-/*
-** grx_check_pnm_file - Query width and height data from a PNG file
-**
-** Arguments:
-**   pngfn:   Name of png file
-**   width:   return pnm width
-**   height:  return pnm height
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_check_png_file( char *pngfn, int *width, int *height )
+/**
+ * grx_check_png_file:
+ * @filename: (type filename): Name of jpeg file
+ * @width: (out): return pnm width
+ * @height: (out): return pnm height
+ *
+ * Query width and height data from a PNG file
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_check_png_file(const char *pngfn, int *width, int *height)
 {
   FILE *f;
   int r;
   
   f = fopen( pngfn,"rb" );
-  if( f == NULL ) return -1;
+  if (f == NULL) {
+    return FALSE;
+  }
 
   r = querypng( f,width,height );
 
@@ -95,9 +108,7 @@ int grx_check_png_file( char *pngfn, int *width, int *height )
   return r;
 }
 
-/**/
-
-static int readpng( FILE *f, GrxContext *grc, int use_alpha )
+static gboolean readpng(FILE *f, GrxContext *grc, int use_alpha)
 {
   png_struct *png_ptr = NULL;
   png_info *info_ptr = NULL;
@@ -119,23 +130,23 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
   GrxColor *pColors = NULL;
 
   /* is it a PNG file? */
-  if( fread( buf,1,8,f ) != 8 ) return -1;
-  if( ! png_check_sig( buf,8 ) ) return -1;
+  if( fread( buf,1,8,f ) != 8 ) return FALSE;
+  if( ! png_check_sig( buf,8 ) ) return FALSE;
 
   png_ptr = png_create_read_struct( PNG_LIBPNG_VER_STRING,NULL,NULL,NULL);
   if( !png_ptr ){
-    return -1;
+    return FALSE;
     }
 
   info_ptr = png_create_info_struct( png_ptr );
   if( !info_ptr ){
     png_destroy_read_struct( &png_ptr,NULL,NULL );
-    return -1;
+    return FALSE;
     }
 
   if( setjmp( png_jmpbuf(png_ptr) ) ){
     png_destroy_read_struct( &png_ptr,&info_ptr,NULL );
-    return -1;
+    return FALSE;
     }
 
   png_init_io( png_ptr,f );
@@ -175,7 +186,7 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
     alpha_present = 1;
   else{
     png_destroy_read_struct( &png_ptr,&info_ptr,NULL );
-    return -1;
+    return FALSE;
     }
 
   row_bytes = png_get_rowbytes( png_ptr,info_ptr );
@@ -183,7 +194,7 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
   png_pixels = (png_byte *) malloc( row_bytes * height * sizeof(png_byte) );
   if( png_pixels == NULL ){
     png_destroy_read_struct( &png_ptr,&info_ptr,NULL );
-    return -1;
+    return FALSE;
     }
 
   row_pointers = (png_byte **) malloc( height * sizeof(png_bytep) );
@@ -191,7 +202,7 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
     png_destroy_read_struct( &png_ptr,&info_ptr,NULL );
     free( png_pixels );
     png_pixels = NULL;
-    return -1;
+    return FALSE;
     }
 
   for( i=0; i<height; i++ )
@@ -213,7 +224,7 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
     row_pointers = NULL;
     free( png_pixels );
     png_pixels = NULL;
-    return -1;
+    return FALSE;
     }
 
   for( y=0; y<maxheight; y++ ){
@@ -246,12 +257,10 @@ static int readpng( FILE *f, GrxContext *grc, int use_alpha )
   if( row_pointers ) free( row_pointers );
   if( png_pixels ) free( png_pixels );
 
-  return 0;
+  return TRUE;
 }
 
-/**/
-
-static int querypng( FILE *f, int *w, int *h )
+static gboolean querypng(FILE *f, int *w, int *h)
 {
   png_struct *png_ptr = NULL;
   png_info *info_ptr = NULL;
@@ -262,21 +271,21 @@ static int querypng( FILE *f, int *w, int *h )
   int color_type;
 
   /* is it a PNG file? */
-  if( fread( buf,1,8,f ) != 8 ) return -1;
-  if( ! png_check_sig( buf,8 ) ) return -1;
+  if( fread( buf,1,8,f ) != 8 ) return FALSE;
+  if( ! png_check_sig( buf,8 ) ) return FALSE;
 
   png_ptr = png_create_read_struct( PNG_LIBPNG_VER_STRING,NULL,NULL,NULL);
-  if( !png_ptr ) return -1;
+  if( !png_ptr ) return FALSE;
 
   info_ptr = png_create_info_struct( png_ptr );
   if( !info_ptr ){
     png_destroy_read_struct( &png_ptr,NULL,NULL );
-    return -1;
+    return FALSE;
     }
 
   if( setjmp( png_jmpbuf(png_ptr) ) ){
     png_destroy_read_struct( &png_ptr,&info_ptr,NULL );
-    return -1;
+    return FALSE;
     }
 
   png_init_io( png_ptr,f );
@@ -289,5 +298,5 @@ static int querypng( FILE *f, int *w, int *h )
   *h = height;
 
   png_destroy_read_struct( &png_ptr,&info_ptr,NULL );
-  return 0;
+  return TRUE;
 }

@@ -32,14 +32,6 @@ namespace Grx {
         PLUGIN_SYMBOL_NOT_FOUND,
     }
 
-    [CCode (cname = "int", has_type_id = false)]
-    public enum Result {
-        [CCode (cname = "0")]
-        OK,
-        [CCode (cname = "-1")]
-        ERROR;
-    }
-
     [CCode (has_destroy_function = false, has_copy_function = false, has_type_id = false)]
     [SimpleType]
     public struct Color : uint32 {
@@ -514,19 +506,19 @@ namespace Grx {
 
         public Color get_pixel_at_user (int x, int y);
 
-        public Result save_to_pbm (string file_name, string? comment = null);
-        public Result save_to_pgm (string file_name, string? comment = null);
-        public Result save_to_ppm (string file_name, string? comment = null);
-        public Result load_from_pnm (string file_name);
+        public bool save_to_pbm (string file_name, string? comment = null) throws GLib.Error;
+        public bool save_to_pgm (string file_name, string? comment = null) throws GLib.Error;
+        public bool save_to_ppm (string file_name, string? comment = null) throws GLib.Error;
+        public bool load_from_pnm (string file_name);
 
-        public Result load_from_pnm_data (char *buffer);
+        public bool load_from_pnm_data (uint8 *buffer) throws GLib.Error;
 
-        public Result save_to_png (string file_name);
-        public Result load_from_png(string file_name, bool use_alpha = true);
+        public bool save_to_png (string file_name) throws GLib.Error;
+        public bool load_from_png(string file_name, bool use_alpha = true) throws GLib.Error;
 
-        public Result load_from_jpeg (string file_name, int scale);
-        public Result save_to_jpeg (string file_name, int quality = 90);
-        public Result save_to_jpeg_grayscale (string file_name, int quality = 90);
+        public bool load_from_jpeg (string file_name, int scale = 1) throws GLib.Error;
+        public bool save_to_jpeg (string file_name, int quality = 90) throws GLib.Error;
+        public bool save_to_jpeg_grayscale (string file_name, int quality = 90) throws GLib.Error;
     }
 
     public void set_clip_box (int x1, int y1, int x2, int y2);
@@ -1083,17 +1075,19 @@ namespace Grx {
         BINARY_PPM
     }
 
+    public const int PNM_FORMAT_ERROR;
+
     /* The PNM functions */
 
-    public PnmFormat check_pnm_file (string file_name, out int width, out int height, out int maxval);
-    public PnmFormat check_pnm_data (char *buffer, out int width, out int height, out int maxval);
+    public bool check_pnm_file (string file_name, out PnmFormat format, out int width, out int height, out int maxval);
+    public bool check_pnm_data (uint8 *buffer, out PnmFormat format, out int width, out int height, out int maxval);
 
     /* ================================================================== */
     /*                           PNG FUNCTIONS                            */
     /*  these functions may not be installed or available on all system   */
     /* ================================================================== */
 
-    public Result check_png_file (string file_name, out int width, out int height);
+    public bool check_png_file (string file_name, out int width, out int height);
 
     /* ================================================================== */
     /*                          JPEG FUNCTIONS                            */
@@ -1101,7 +1095,7 @@ namespace Grx {
     /* ================================================================== */
 
     [CCode (cname = "grx_check_jpeg_file")]
-    public Result query_jpeg (string file_name, out int width, out int height);
+    public bool query_jpeg (string file_name, out int width, out int height);
 
     /* ================================================================== */
     /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */

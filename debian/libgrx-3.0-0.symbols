@@ -354,12 +354,12 @@ libgrx-3.0.so.0 libgrx-3.0-0 #MINVER#
  grx_reset_clip_box@Base 2.99.7
  grx_resize_gray_map@Base 2.99.7
  grx_save_current_context@Base 2.99.7
- grx_save_current_context_to_jpeg@Base 2.99.7
- grx_save_current_context_to_jpeg_grayscale@Base 2.99.7
- grx_save_current_context_to_pbm@Base 2.99.7
- grx_save_current_context_to_pgm@Base 2.99.7
- grx_save_current_context_to_png@Base 2.99.7
- grx_save_current_context_to_ppm@Base 2.99.7
+ grx_context_save_to_jpeg@Base 2.99.7
+ grx_context_save_to_jpeg_grayscale@Base 2.99.7
+ grx_context_save_to_pbm@Base 2.99.7
+ grx_context_save_to_pgm@Base 2.99.7
+ grx_context_save_to_png@Base 2.99.7
+ grx_context_save_to_ppm@Base 2.99.7
  grx_screen_get_context_size@Base 2.99.7
  grx_screen_get_line_offset@Base 2.99.7
  grx_screen_get_n_planes@Base 2.99.7

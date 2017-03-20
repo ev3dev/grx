@@ -47,6 +47,7 @@
     <chapter id="misc">
       <title>Miscellaneous</title>
       <xi:include href="xml/error.xml"/>
+      <xi:include href="xml/gformats.xml"/>
     </chapter>
     <chapter id="applications">
       <title>Applications</title>

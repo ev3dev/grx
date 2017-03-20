@@ -15,30 +15,34 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <glib.h>
+#include <gio/gio.h>
+
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/error.h>
 #include <grx/extents.h>
 
-/*
-** grx_save_current_context_to_pbm - Dump a context in a PBM file (bitmap)
-**
-** This routine works both in RGB and palette modes
-** If the pixel color isn't Black it asumes White
-**
-** Arguments:
-**   ctx:   Context to be saved (NULL -> use current context)
-**   pbmfn: Name of pbm file
-**   docn:  string saved like a comment in the pbm file (can be NULL)
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_save_current_context_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
+/**
+ * grx_context_save_to_pbm:
+ * @context: (nullable): Context to be saved or %NULL to use the global context
+ * @filename: (type filename): Name of pbm file
+ * @comment: (nullable): string saved like a comment in the pbm file
+ * @error: pointer to hold an error or %NULL to ignore
+ *
+ * Dump a context in a PBM file (black and white)
+ *
+ * This routine works both in RGB and palette modes
+ * If the pixel color isn't Black it asumes White
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_save_to_pbm(GrxContext *grc, const char *pbmfn, const char *docn, GError **error)
 {
   FILE *f;
   GrxContext grcaux;
@@ -46,7 +50,11 @@ int grx_save_current_context_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
   int currentbyte = 0, currentbit = 7;
   int x, y;
 
-  if( (f = fopen( pbmfn,"wb" )) == NULL ) return -1;
+  if ((f = fopen(pbmfn, "wb")) == NULL) {
+    g_set_error(error, G_IO_ERROR, g_io_error_from_errno(errno),
+      "Failed to open '%s'", pbmfn);
+    return FALSE;
+  }
   
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );
@@ -76,25 +84,24 @@ int grx_save_current_context_to_pbm( GrxContext *grc, char *pbmfn, char *docn )
   grx_set_current_context( &grcaux );
   fclose( f );
 
-  return 0;
+  return TRUE;
 }
 
-/*
-** grx_save_current_context_to_pgm - Dump a context in a PGM file (gray scale)
-**
-** This routine works both in RGB and palette modes
-** The colors are quantized to gray scale using .299r + .587g + .114b
-**
-** Arguments:
-**   ctx:   Context to be saved (NULL -> use current context)
-**   pgmfn: Name of pgm file
-**   docn:  string saved like a comment in the pgm file (can be NULL)
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_save_current_context_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
+/**
+ * grx_context_save_to_pgm:
+ * @context: (nullable): Context to be saved or %NULL to use the global context
+ * @filename: (type filename): Name of pgm file
+ * @comment: (nullable): string saved like a comment in the pgm file
+ * @error: pointer to hold an error or %NULL to ignore
+ *
+ * Dump a context in a PGM file (gray scale)
+ *
+ * This routine works both in RGB and palette modes
+ * The colors are quantized to gray scale using .299r + .587g + .114b
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_save_to_pgm(GrxContext *grc, char *pgmfn, char *docn, GError **error)
 {
   FILE *f;
   GrxContext grcaux;
@@ -103,7 +110,11 @@ int grx_save_current_context_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
   unsigned char rgb[3];
   int x, y;
 
-  if( (f = fopen( pgmfn,"wb" )) == NULL ) return -1;
+  if ((f = fopen(pgmfn, "wb")) == NULL)  {
+    g_set_error(error, G_IO_ERROR, g_io_error_from_errno(errno),
+      "Failed to open '%s'", pgmfn);
+    return FALSE;
+  }
   
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );
@@ -124,21 +135,20 @@ int grx_save_current_context_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
   return 0;
 }
 
-/*
-** grx_save_current_context_to_ppm - Dump a context in a PPM file (real color)
-**
-** This routine works both in RGB and palette modes
-**
-** Arguments:
-**   ctx:   Context to be saved (NULL -> use current context)
-**   ppmfn: Name of ppm file
-**   docn:  string saved like a comment in the ppm file (can be NULL)
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_save_current_context_to_ppm( GrxContext *grc, char *ppmfn, char *docn )
+/**
+ * grx_context_save_to_ppm:
+ * @context: (nullable): Context to be saved or %NULL to use the global context
+ * @filename: (type filename): Name of ppm file
+ * @comment: (nullable): string saved like a comment in the ppm file
+ * @error: pointer to hold an error or %NULL to ignore
+ *
+ * Dump a context in a PPM file (real color)
+ *
+ * This routine works both in RGB and palette modes
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_save_to_ppm(GrxContext *grc, char *ppmfn, char *docn, GError **error)
 {
   FILE *f;
   GrxContext grcaux;
@@ -147,7 +157,11 @@ int grx_save_current_context_to_ppm( GrxContext *grc, char *ppmfn, char *docn )
   int x, y;
   unsigned char r, g, b;
 
-  if( (f = fopen( ppmfn,"wb" )) == NULL ) return -1;
+  if ((f = fopen(ppmfn, "wb")) == NULL)  {
+    g_set_error(error, G_IO_ERROR, g_io_error_from_errno(errno),
+      "Failed to open '%s'", ppmfn);
+    return FALSE;
+  }
   
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );

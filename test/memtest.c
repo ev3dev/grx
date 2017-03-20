@@ -63,7 +63,7 @@ int main()
 
   grx_set_current_context( NULL );
 //  GrSaveBmpImage( "memtest.bmp",NULL,0,0,639,479 );
-  grx_save_current_context_to_ppm( NULL,"memtest.ppm","GRX MemTest" );
+  grx_context_save_to_ppm( NULL,"memtest.ppm","GRX MemTest",NULL );
 
   return 0;
 }

@@ -15,6 +15,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <glib.h>
+#include <gio/gio.h>
+
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <setjmp.h>
@@ -22,32 +26,36 @@
 
 #include <grx/context.h>
 #include <grx/draw.h>
+#include <grx/error.h>
 #include <grx/extents.h>
 
-static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale );
+static gboolean writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale );
 
-/*
-** grx_save_current_context_to_jpeg - Dump a context in a JPEG file
-**
-** This routine works both in RGB and palette modes
-**
-** Arguments:
-**   grc:     Context to be saved (NULL -> use current context)
-**   jpegfn:  Name of jpeg file
-**   quality: quality scaling (1 to 100) the normal value is 75
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_save_current_context_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
+/**
+ * grx_context_save_to_jpeg:
+ * @context: (nullable): Context to be saved or %NULL to use the global context
+ * @filename: (type filename): Name of jpeg file
+ * @quality: quality scaling (1 to 100) the normal value is 75
+ * @error: pointer to hold an error or %NULL to ignore
+ *
+ * Dump a context in a JPEG file
+ *
+ * This routine works both in RGB and palette modes
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_save_to_jpeg(GrxContext *grc, const char *jpegfn, int quality, GError **error)
 {
   GrxContext grcaux;
   FILE *f;
-  int r;
+  gboolean r;
   
   f = fopen( jpegfn,"wb" );
-  if( f == NULL ) return -1;
+  if (f == NULL) {
+    g_set_error(error, G_IO_ERROR, g_io_error_from_errno(errno),
+      "Failed to open '%s'", jpegfn);
+    return FALSE;
+  }
 
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );
@@ -56,31 +64,39 @@ int grx_save_current_context_to_jpeg( GrxContext *grc, char *jpegfn, int quality
 
   fclose( f );
 
+  if (!r) {
+    g_set_error(error, GRX_ERROR, GRX_ERROR_JPEG_ERROR,
+      "Error while writing '%s'", jpegfn);
+  }
+
   return r;
 }
 
-/*
-** grx_save_current_context_to_jpeg_grayscale - Dump a context in a Gray JPEG file
-**
-** This routine works both in RGB and palette modes
-**
-** Arguments:
-**   grc:     Context to be saved (NULL -> use current context)
-**   jpegfn:  Name of jpeg file
-**   quality: quality scaling (1 to 100) the normal value is 75
-**
-** Returns  0 on success
-**         -1 on error
-*/
-
-int grx_save_current_context_to_jpeg_grayscale( GrxContext *grc, char *jpegfn, int quality )
+/**
+ * grx_context_save_to_jpeg_grayscale:
+ * @context: (nullable): Context to be saved or %NULL to use the global context
+ * @filename: (type filename): Name of jpeg file
+ * @quality: quality scaling (1 to 100) the normal value is 75
+ * @error: pointer to hold an error or %NULL to ignore
+ *
+ * Dump a context in a Gray JPEG file
+ *
+ * This routine works both in RGB and palette modes
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_save_to_jpeg_grayscale(GrxContext *grc, const char *jpegfn, int quality, GError **error)
 {
   GrxContext grcaux;
   FILE *f;
-  int r;
+  gboolean r;
   
   f = fopen( jpegfn,"wb" );
-  if( f == NULL ) return -1;
+  if (f == NULL) {
+    g_set_error(error, G_IO_ERROR, g_io_error_from_errno(errno),
+      "Failed to open '%s'", jpegfn);
+    return FALSE;
+  }
 
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );
@@ -89,11 +105,13 @@ int grx_save_current_context_to_jpeg_grayscale( GrxContext *grc, char *jpegfn, i
 
   fclose( f );
 
+  if (!r) {
+    g_set_error(error, GRX_ERROR, GRX_ERROR_JPEG_ERROR,
+      "Error while writing '%s'", jpegfn);
+  }
+
   return r;
 }
-
-/**/
-/**/
 
 struct my_error_mgr{
   struct jpeg_error_mgr pub;
@@ -101,8 +119,6 @@ struct my_error_mgr{
   };
 
 typedef struct my_error_mgr *my_error_ptr;
-
-/**/
 
 METHODDEF(void) my_error_exit( j_common_ptr cinfo )
 {
@@ -113,9 +129,7 @@ METHODDEF(void) my_error_exit( j_common_ptr cinfo )
   longjmp( myerr->setjmp_buffer,1 );
 }
 
-/**/
-
-static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale )
+static gboolean writejpeg(FILE *f, GrxContext *grc, int quality, int grayscale)
 {
   struct jpeg_compress_struct cinfo;
   struct my_error_mgr jerr;
@@ -132,7 +146,7 @@ static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale )
   if( setjmp( jerr.setjmp_buffer ) ) {
     if( buffer ) free( buffer );
     jpeg_destroy_compress( &cinfo );
-    return -1;
+    return FALSE;
   }
 
   jpeg_create_compress( &cinfo );
@@ -182,5 +196,5 @@ static int writejpeg( FILE *f, GrxContext *grc, int quality, int grayscale )
   jpeg_finish_compress( &cinfo );
   jpeg_destroy_compress( &cinfo );
 
-  return 0;
+  return TRUE;
 }
