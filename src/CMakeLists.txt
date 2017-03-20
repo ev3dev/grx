@@ -237,7 +237,7 @@ file (READ ${XKBCOMMON_KEYSYMS_H} GRX_KEYSYMS)
 string (REPLACE "XKBCOMMON" "GRX_INPUT" GRX_KEYSYMS ${GRX_KEYSYMS})
 string (REPLACE "XKB" "GRX" GRX_KEYSYMS ${GRX_KEYSYMS})
 set (GRX_KEYSYMS_H ${CMAKE_CURRENT_BINARY_DIR}/include/grx/input_keysyms.h)
-file (WRITE ${GRX_KEYSYMS_H} ${GRX_KEYSYMS})
+configure_file (${CMAKE_SOURCE_DIR}/include/grx/input_keysyms.h.in ${GRX_KEYSYMS_H})
 install (FILES ${GRX_KEYSYMS_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/grx)
 
 
@@ -384,6 +384,7 @@ gtk_doc_add_module (grx
     SOURCE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/include/grx
+        ${CMAKE_CURRENT_BINARY_DIR}/include/grx
     SUFFIXES
         "h"
         "c"
