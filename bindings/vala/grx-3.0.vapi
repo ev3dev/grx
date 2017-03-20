@@ -474,6 +474,10 @@ namespace Grx {
     [CCode (copy_function = "grx_context_ref", free_function = "grx_context_unref")]
     [Compact]
     public class Context {
+        public int width { get; }
+        public int height { get; }
+        public int max_x { get; }
+        public int max_y { get; }
         public static Context? new (int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
         public static Context? new_full (FrameMode mode, int width, int height, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
         public static Context? new_subcontext (int x1, int y1, int x2, int y2, Context parent, out Context? where = null);

@@ -125,6 +125,11 @@ void  grx_context_resize_subcontext(GrxContext *context, gint x1, gint y1, gint 
 GrxContext *grx_context_ref(GrxContext *context);
 void grx_context_unref(GrxContext *context);
 
+gint grx_context_get_width(GrxContext *context);
+gint grx_context_get_height(GrxContext *context);
+gint grx_context_get_max_x(GrxContext *context);
+gint grx_context_get_max_y(GrxContext *context);
+
 void grx_context_clear(GrxContext *context, GrxColor bg);
 void grx_context_flood_spill(GrxContext *context, gint x1, gint y1, gint x2, gint y2, GrxColor old_c, GrxColor new_c);
 void grx_context_flood_spill2(GrxContext *context, gint x1, gint y1, gint x2, gint y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
@@ -157,6 +162,10 @@ void grx_context_reset_clip_box(GrxContext *context);
     *(x2p) = (C)->x_clip_high;                              \
     *(y2p) = (C)->y_clip_high;                              \
 } while(0)
+#define grx_context_get_width(c) ((c)->x_max - 1)
+#define grx_context_get_height(c) ((c)->y_max - 1)
+#define grx_context_get_max_x(c) ((c)->x_max)
+#define grx_context_get_max_y(c) ((c)->y_max)
 #endif  /* GRX_SKIP_INLINES */
 
 #endif /* __GRX_CONTEXT_H__ */

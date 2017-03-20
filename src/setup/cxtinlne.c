@@ -199,3 +199,55 @@ int (grx_get_clip_box_max_y)(void)
 {
         return(grx_get_clip_box_max_y());
 }
+
+/**
+ * grx_context_get_width:
+ * @context: a #GrxContext
+ *
+ * Gets the width of @context.
+ *
+ * Returns: the width
+ */
+gint (grx_context_get_width)(GrxContext *context)
+{
+        return (grx_context_get_width(context));
+}
+
+/**
+ * grx_context_get_height:
+ * @context: a #GrxContext
+ *
+ * Gets the height of @context.
+ *
+ * Returns: the height
+ */
+gint (grx_context_get_height)(GrxContext *context)
+{
+        return (grx_context_get_height(context));
+}
+
+/**
+ * grx_context_get_max_x:
+ * @context: a #GrxContext
+ *
+ * Gets the right bounds of @context.
+ *
+ * Returns: the value
+ */
+gint (grx_context_get_max_x)(GrxContext *context)
+{
+        return (grx_context_get_max_x(context));
+}
+
+/**
+ * grx_context_get_max_y:
+ * @context: a #GrxContext
+ *
+ * Gets the bottom bounds of @context.
+ *
+ * Returns: the value
+ */
+gint (grx_context_get_max_y)(GrxContext *context)
+{
+        return (grx_context_get_max_y(context));
+}
