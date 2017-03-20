@@ -50,7 +50,7 @@ static const char *nxtoken(const char *p, char *token)
 /**
  * grx_set_driver:
  * @driver_spec: (nullable): The driver spec.
- * @error: (nullable): Error pointer.
+ * @error: Error pointer.
  *
  * The driver spec is of the format "<name>\[::<flag>\] \[gw <width>\]
  * \[gh <height>\] \[gc <colors>\]".
