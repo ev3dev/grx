@@ -64,8 +64,7 @@ void nopngsupport( void )
   int i;
 
   grx_clear_screen( grx_color_info_alloc_color( 0,0,100 ) );
-  text_opt = grx_text_options_new( grx_text_options_get_font( text_opt ),
-      GRX_COLOR_WHITE,GRX_COLOR_NONE,GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP );
+  text_opt = grx_text_options_new( grx_text_options_get_font( text_opt ),GRX_COLOR_WHITE );
   for( i=0; i<6; i++ )
     grx_draw_text( s[i],90,160+i*18,text_opt2 );
   GrKeyRead();
@@ -85,7 +84,7 @@ int main()
     if (!font) {
       g_error("%s", error->message);
     }
-    text_opt = grx_text_options_new(font,GRX_COLOR_BLACK,GRX_COLOR_WHITE,
+    text_opt = grx_text_options_new_full(font,GRX_COLOR_BLACK,GRX_COLOR_WHITE,
         GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
     grx_font_unref(font);
   }

@@ -42,7 +42,7 @@ TESTFUNC(scrolltest)
             int vy = grx_get_viewport_y();
             int x  = (vw / 3) - (strlen(l6) * grx_font_get_width(font) / 2);
             int y  = (vh / 3) - (3 * txh);
-            GrxTextOptions *text_opt = grx_text_options_new(font, txc, bgc,
+            GrxTextOptions *text_opt = grx_text_options_new_full(font, txc, bgc,
                 GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
             grx_clear_screen(bgc);
             drawing(0,0,vw,vh,fgc,bgc);

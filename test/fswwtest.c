@@ -36,7 +36,7 @@ int main()
     g_error("%s", error->message);
   }
 
-  text_opt = grx_text_options_new(font,GRX_COLOR_WHITE,GRX_COLOR_BLACK,
+  text_opt = grx_text_options_new_full(font,GRX_COLOR_WHITE,GRX_COLOR_BLACK,
                                   GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
 
   do {

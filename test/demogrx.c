@@ -333,12 +333,12 @@ static void ini_objects(void)
     }
 
     for (i = 0; i < NBUTTONSP1; i++) {
-        bp1[i].text_opt = grx_text_options_new(grf_btn,
+        bp1[i].text_opt = grx_text_options_new_full(grf_btn,
             egacolors[bp1[i].tfcolor], egacolors[bp1[i].tbcolor],
             GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
     for (i = 0; i < NBUTTONSP2; i++) {
-        bp2[i].text_opt = grx_text_options_new(grf_btn,
+        bp2[i].text_opt = grx_text_options_new_full(grf_btn,
             egacolors[bp2[i].tfcolor], egacolors[bp2[i].tbcolor],
             GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
@@ -376,7 +376,7 @@ static void the_title(int x, int y)
     char *t2 = "test programs launcher";
 
     if (!text_opt) {
-        text_opt = grx_text_options_new(grf_big, LIGHTGREEN, GRX_COLOR_NONE,
+        text_opt = grx_text_options_new_full(grf_big, LIGHTGREEN, GRX_COLOR_NONE,
             GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
 
@@ -392,7 +392,7 @@ static void the_info(int x, int y)
     char aux[81];
 
     if (!text_opt) {
-        text_opt = grx_text_options_new(grf_std, CYAN, GRX_COLOR_NONE,
+        text_opt = grx_text_options_new_full(grf_std, CYAN, GRX_COLOR_NONE,
             GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
 
@@ -478,7 +478,7 @@ static void paint_foot(char *s)
     static GrxTextOptions *text_opt;
 
     if (!text_opt) {
-        text_opt  = grx_text_options_new(grf_std, LIGHTGREEN, GRX_COLOR_NONE,
+        text_opt  = grx_text_options_new_full(grf_std, LIGHTGREEN, GRX_COLOR_NONE,
             GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
 
@@ -499,7 +499,7 @@ static void paint_animation(void)
     int wtext;
 
     if (!ini) {
-        text_opt = grx_text_options_new(grf_std, CYAN, GRX_COLOR_NONE,
+        text_opt = grx_text_options_new_full(grf_std, CYAN, GRX_COLOR_NONE,
             GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_MIDDLE);
         grc = grx_context_new(620, 30, NULL, NULL);
         if (grc == NULL)

@@ -57,11 +57,9 @@ int main(int argc,char **argv)
             g_error("%s", error->message);
         }
 
-        black_text = grx_text_options_new(font, GRX_COLOR_BLACK, GRX_COLOR_NONE,
-            GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
-        white_text = grx_text_options_new(font, GRX_COLOR_WHITE, GRX_COLOR_NONE,
-            GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
-        white_text_black_bg = grx_text_options_new(font, GRX_COLOR_WHITE,
+        black_text = grx_text_options_new(font, GRX_COLOR_BLACK);
+        white_text = grx_text_options_new(font, GRX_COLOR_WHITE);
+        white_text_black_bg = grx_text_options_new_full(font, GRX_COLOR_WHITE,
             GRX_COLOR_BLACK, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
         grx_font_unref(font);
 

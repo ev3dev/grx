@@ -43,7 +43,7 @@ int main(void)
     if (!font) {
         g_error("%s", error->message);
     }
-    text_opt = grx_text_options_new(font, GRX_COLOR_BLACK, GRX_COLOR_WHITE,
+    text_opt = grx_text_options_new_full(font, GRX_COLOR_BLACK, GRX_COLOR_WHITE,
         GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
     grx_font_unref(font);
   }

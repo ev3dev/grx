@@ -37,8 +37,7 @@ int main(void)
   if (!font) {
     g_error("%s", error->message);
   }
-  text_opt = grx_text_options_new(font,GRX_COLOR_WHITE,GRX_COLOR_NONE,
-      GRX_TEXT_HALIGN_LEFT,GRX_TEXT_VALIGN_TOP);
+  text_opt = grx_text_options_new(font,GRX_COLOR_WHITE);
 
   if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT, &error)) {
     g_error("%s", error->message);
