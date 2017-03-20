@@ -30,7 +30,7 @@ void imagen( char *nf )
   char s[81];
   int w, h;
 
-  grx_check_png_file( nf,&w,&h );
+  grx_query_png_file( nf,&w,&h );
   sprintf( s,"%s %dx%d",nf,w,h );
   wide = (w > 300) ? 300 : w;
   high = (h > 400) ? 400 : h;

@@ -46,10 +46,10 @@ int grx_context_load_from_jpeg( GrxContext *grc, char *jpegfn, int scale )
 }
 
 /*
-** grx_check_jpeg_file - Returns error
+** grx_query_jpeg_file - Returns error
 */
 
-int grx_check_jpeg_file( char *jpegfn, int *width, int *height )
+int grx_query_jpeg_file( char *jpegfn, int *width, int *height )
 {
   return -1;
 }

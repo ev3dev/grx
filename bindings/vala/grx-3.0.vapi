@@ -1079,23 +1079,22 @@ namespace Grx {
 
     /* The PNM functions */
 
-    public bool check_pnm_file (string file_name, out PnmFormat format, out int width, out int height, out int maxval);
-    public bool check_pnm_data (uint8 *buffer, out PnmFormat format, out int width, out int height, out int maxval);
+    public bool query_pnm_file (string file_name, out PnmFormat format, out int width, out int height, out int maxval);
+    public bool query_pnm_data (uint8 *buffer, out PnmFormat format, out int width, out int height, out int maxval);
 
     /* ================================================================== */
     /*                           PNG FUNCTIONS                            */
     /*  these functions may not be installed or available on all system   */
     /* ================================================================== */
 
-    public bool check_png_file (string file_name, out int width, out int height);
+    public bool query_png_file (string file_name, out int width, out int height);
 
     /* ================================================================== */
     /*                          JPEG FUNCTIONS                            */
     /*  these functions may not be installed or available on all system   */
     /* ================================================================== */
 
-    [CCode (cname = "grx_check_jpeg_file")]
-    public bool query_jpeg (string file_name, out int width, out int height);
+    public bool query_jpeg_file (string file_name, out int width, out int height);
 
     /* ================================================================== */
     /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */

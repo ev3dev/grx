@@ -37,10 +37,10 @@ int grx_context_load_from_png( GrxContext *grc, char *pngfn, int use_alpha )
 }
 
 /*
-** grx_check_pnm_file - Returns error
+** grx_query_pnm_file - Returns error
 */
 
-int grx_check_png_file( char *pngfn, int *width, int *height )
+int grx_query_png_file( char *pngfn, int *width, int *height )
 {
   return -1;
 }

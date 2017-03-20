@@ -116,10 +116,10 @@ libgrx-3.0.so.0 libgrx-3.0-0 #MINVER#
  grx_application_new@Base 2.99.7
  grx_bit_blt@Base 2.99.7
  grx_bit_blt_1bpp@Base 2.99.7
- grx_check_jpeg_file@Base 2.99.7
- grx_check_png_file@Base 2.99.7
- grx_check_pnm_data@Base 2.99.7
- grx_check_pnm_file@Base 2.99.7
+ grx_query_jpeg_file@Base 2.99.7
+ grx_query_png_file@Base 2.99.7
+ grx_query_pnm_data@Base 2.99.7
+ grx_query_pnm_file@Base 2.99.7
  grx_clear_clip_box@Base 2.99.7
  grx_clear_context@Base 2.99.7
  grx_clear_screen@Base 2.99.7

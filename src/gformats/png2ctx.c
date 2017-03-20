@@ -82,7 +82,7 @@ gboolean grx_context_load_from_png(GrxContext *grc, const char *pngfn, int use_a
 }
 
 /**
- * grx_check_png_file:
+ * grx_query_png_file:
  * @filename: (type filename): Name of jpeg file
  * @width: (out): return pnm width
  * @height: (out): return pnm height
@@ -91,7 +91,7 @@ gboolean grx_context_load_from_png(GrxContext *grc, const char *pngfn, int use_a
  *
  * Returns: %TRUE on success, otherwise %FALSE
  */
-gboolean grx_check_png_file(const char *pngfn, int *width, int *height)
+gboolean grx_query_png_file(const char *pngfn, int *width, int *height)
 {
   FILE *f;
   int r;

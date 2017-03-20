@@ -30,7 +30,7 @@ void imagen( char *nf, int scale )
   char s[81];
   int w, h;
 
-  grx_check_jpeg_file( nf,&w,&h );
+  grx_query_jpeg_file( nf,&w,&h );
   sprintf( s,"%s %dx%d scale 1/%d",nf,w,h,scale );
   wide = (w/scale > 600) ? 600 : w/scale;
   high = (h/scale > 400) ? 400 : h/scale;

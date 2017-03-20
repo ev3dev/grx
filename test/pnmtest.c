@@ -52,7 +52,7 @@ int main(void)
   if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,&error,640,480,32768)) {
     g_error("%s", error->message);
   }
-  grx_check_pnm_file( FIMAGEPPM, &format, &wide, &high, &maxval );
+  grx_query_pnm_file( FIMAGEPPM, &format, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPPM,wide,high );
   grx_draw_text(s, 10, 20, text_opt);
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
@@ -64,7 +64,7 @@ int main(void)
   GrKeyRead();
 
   grx_clear_screen( GRX_COLOR_BLACK );
-  grx_check_pnm_file( FIMAGEPGM, &format, &wide, &high, &maxval );
+  grx_query_pnm_file( FIMAGEPGM, &format, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPGM,wide,high );
   grx_draw_text(s, 10, 20, text_opt);
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
@@ -75,7 +75,7 @@ int main(void)
   GrKeyRead();
 
   grx_clear_screen( GRX_COLOR_BLACK );
-  grx_check_pnm_file( FIMAGEPBM, &format, &wide, &high, &maxval );
+  grx_query_pnm_file( FIMAGEPBM, &format, &wide, &high, &maxval );
   sprintf( s,"%s %d x %d pixels",FIMAGEPBM,wide,high );
   grx_draw_text(s, 10, 20, text_opt);
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
@@ -87,17 +87,17 @@ int main(void)
   GrKeyRead();
 
   grx_clear_screen( GRX_COLOR_BLACK );
-  grx_check_pnm_file( FIMAGEPPM, &format, &wide, &high, &maxval );
+  grx_query_pnm_file( FIMAGEPPM, &format, &wide, &high, &maxval );
   grx_draw_box( 10,40,10+wide+1,40+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 11,41,11+wide-1,41+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPPM,NULL );
   grx_context_unref( grc );
-  grx_check_pnm_file( FIMAGEPGM, &format, &wide, &high, &maxval );
+  grx_query_pnm_file( FIMAGEPGM, &format, &wide, &high, &maxval );
   grx_draw_box( 110,140,110+wide+1,140+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 111,141,111+wide-1,141+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPGM,NULL );
   grx_context_unref( grc );
-  grx_check_pnm_file( FIMAGEPBM, &format, &wide, &high, &maxval );
+  grx_query_pnm_file( FIMAGEPBM, &format, &wide, &high, &maxval );
   grx_draw_box( 210,240,210+wide+1,240+high+1,GRX_COLOR_WHITE );
   grc = grx_context_new_subcontext( 211,241,211+wide-1,241+high-1,NULL,NULL );
   grx_context_load_from_pnm( grc,FIMAGEPBM2,NULL );

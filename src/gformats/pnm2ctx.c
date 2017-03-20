@@ -354,7 +354,7 @@ out:
 }
 
 /**
- * grx_check_pnm_file:
+ * grx_query_pnm_file:
  * @filename: (type filename): Name of pnm file
  * @format: (out): the #GrxPnmFormat of the file
  * @width: (out): return pnm width
@@ -365,7 +365,7 @@ out:
  *
  * Returns: %TRUE on success, otherwise %FALSE
  */
-gboolean grx_check_pnm_file(const char *pnmfn, GrxPnmFormat *format, int *width, int *height, int *maxval)
+gboolean grx_query_pnm_file(const char *pnmfn, GrxPnmFormat *format, int *width, int *height, int *maxval)
 {
   inputstruct is = {0, NULL, NULL, 0};
   GrxPnmFormat r;
@@ -439,7 +439,7 @@ out:
 }
 
 /**
- * grx_check_pnm_data:
+ * grx_query_pnm_data:
  * @buffer: Buffer that holds data
  * @format: (out): the #GrxPnmFormat of the file
  * @width: (out): return pnm width
@@ -450,7 +450,7 @@ out:
  *
  * Returns: %TRUE on success, otherwise %FALSE
  */
-gboolean grx_check_pnm_data(const unsigned char *pnmbuf, GrxPnmFormat *format, int *width, int *height, int *maxval)
+gboolean grx_query_pnm_data(const unsigned char *pnmbuf, GrxPnmFormat *format, int *width, int *height, int *maxval)
 {
   inputstruct is = {1, NULL, NULL, 0};
   gboolean r;

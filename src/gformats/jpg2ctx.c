@@ -78,7 +78,7 @@ gboolean grx_context_load_from_jpeg(GrxContext *grc, const char *jpegfn, int sca
 }
 
 /**
- * grx_check_jpeg_file:
+ * grx_query_jpeg_file:
  * @filename: (type filename): Name of jpeg file
  * @width: (out): return image width
  * @height: (out): return image height
@@ -87,7 +87,7 @@ gboolean grx_context_load_from_jpeg(GrxContext *grc, const char *jpegfn, int sca
  *
  * Returns: %TRUE on success, otherwise %FALSE
  */
-gboolean grx_check_jpeg_file(const char *jpegfn, int *width, int *height)
+gboolean grx_query_jpeg_file(const char *jpegfn, int *width, int *height)
 {
   FILE *f;
   int r;
