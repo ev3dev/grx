@@ -114,7 +114,7 @@ int grx_save_current_context_to_pgm( GrxContext *grc, char *pgmfn, char *docn )
   fwrite( cab,1,strlen( cab ),f );
   for( y=0; y<grx_get_height(); y++ )
     for( x=0; x<grx_get_width(); x++ ){
-      grx_color_info_query_color( grx_get_pixel_at( x,y ),&rgb[0],&rgb[1],&rgb[2] );
+      grx_color_query( grx_get_pixel_at( x,y ),&rgb[0],&rgb[1],&rgb[2] );
       grey = (0.229 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2]);
       fwrite( &grey,1,1,f );
       }
@@ -158,7 +158,7 @@ int grx_save_current_context_to_ppm( GrxContext *grc, char *ppmfn, char *docn )
   fwrite( cab,1,strlen( cab ),f );
   for( y=0; y<grx_get_height(); y++ )
     for( x=0; x<grx_get_width(); x++ ){
-      grx_color_info_query_color( grx_get_pixel_at( x,y ),&r,&g,&b );
+      grx_color_query( grx_get_pixel_at( x,y ),&r,&g,&b );
       brgb[0] = r;
       brgb[1] = g;
       brgb[2] = b;

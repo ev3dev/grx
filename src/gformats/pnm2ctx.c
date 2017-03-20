@@ -211,7 +211,7 @@ static int _GrLoadContextFromPgm( inputstruct *is, int width,
     for( x=0; x<maxwidth; x++ ){
       if( needcoloradjust )
         *pCursor *= coloradjust;
-      pColors[x] = grx_color_info_alloc_color( *pCursor,*pCursor,*pCursor );
+      pColors[x] = grx_color_alloc( *pCursor,*pCursor,*pCursor );
       pCursor += 1;
       }
     grx_put_scanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );
@@ -259,7 +259,7 @@ static int _GrLoadContextFromPpm( inputstruct *is, int width,
         pCursor[1] *= coloradjust;
         pCursor[2] *= coloradjust;
         }
-      pColors[x] = grx_color_info_alloc_color( pCursor[0],pCursor[1],pCursor[2] );
+      pColors[x] = grx_color_alloc( pCursor[0],pCursor[1],pCursor[2] );
       pCursor += 3;
       }
     grx_put_scanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );

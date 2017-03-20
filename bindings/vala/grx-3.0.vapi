@@ -51,12 +51,40 @@ namespace Grx {
         public Color to_and_mode ();
         public Color to_image_mode ();
 
-        public static Color black { [CCode (cname = "grx_color_info_get_black")]get; }
-        public static Color white { [CCode (cname = "grx_color_info_get_white")]get; }
-
         public const Color VALUE_MASK;
         public const Color MODE_MASK;
+
+        public const Color BLACK;
+        public const Color WHITE;
         public const Color NONE;
+
+        public static Color build_rgb (uchar r, uchar g, uchar b);
+        public static Color build_rgb_round (uchar r, uchar g, uchar b);
+        public uchar red { get; }
+        public uchar green { get; }
+        public uchar blue { get; }
+
+        public static Color alloc (uchar r, uchar g, uchar b);
+        public static Color alloc_inline (uchar r, uchar g, uchar b);
+        public static Color alloc2 (uint hcolor);
+        public static Color alloc2_inline (uint hcolor);
+        public void free ();
+
+        [CCode (array_length_cexpr = "16")]
+        public static Color[] alloc_ega_colors ();
+
+        public void query (Color c, out uchar r, out uchar g, out uchar b);
+        public void query_inline (Color c, out uchar r, out uchar g, out uchar b);
+        public void query2 (Color c, out uint hcolor);
+        public void query2_inline (Color c, out uint hcolor);
+    }
+
+    [CCode (has_destroy_function = false, has_copy_function = false, has_type_id = false)]
+    [SimpleType]
+    public struct ColorCell : Color {
+        public static ColorCell alloc ();
+        public void set (uchar r, uchar g, uchar b);
+        public void free ();
     }
 
     namespace ColorInfo {
@@ -66,30 +94,6 @@ namespace Grx {
 
         public static int n_colors ();
         public static int n_free_colors ();
-
-        public static Color build_rgb_color (uchar r, uchar g, uchar b);
-        public static Color build_rgb_color_round (uchar r, uchar g, uchar b);
-        public static uchar get_red_value (Color c);
-        public static uchar get_green_value (Color c);
-        public static uchar get_blue_value (Color c);
-
-        public static Color alloc_color (uchar r, uchar g, uchar b);
-        public static Color alloc_color_inline (uchar r, uchar g, uchar b);
-        public static Color alloc_color2 (uint hcolor);
-        public static Color alloc_color2_inline (uint hcolor);
-        public static void free_color (Color c);
-
-        public static Color alloc_cell ();
-        public static void set_cell (Color c, uchar r, uchar g, uchar b);
-        public static void free_cell (Color c);
-
-        [CCode (array_length_cexpr = "16")]
-        public static Color[] alloc_ega_colors ();
-
-        public static void query_color (Color c, out uchar r, out uchar g, out uchar b);
-        public static void query_color_inline (Color c, out uchar r, out uchar g, out uchar b);
-        public static void query_color2 (Color c, out uint hcolor);
-        public static void query_color2_inline (Color c, out uint hcolor);
 
         public static int get_save_buffer_size ();
         public static void save_colors (void *buffer);

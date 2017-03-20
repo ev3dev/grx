@@ -30,7 +30,7 @@ class LifeApplication : Grx.Application {
         init ();
         Mouse.set_cursor(null);
         state = new char[2, get_width (), get_height ()];
-        color = { Color.black, Color.white };
+        color = { Color.BLACK, Color.WHITE };
         // handle console switching
         notify["is-active"].connect (console_active_handler);
     }

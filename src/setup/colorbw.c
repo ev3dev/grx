@@ -20,7 +20,7 @@
 #include "libgrx.h"
 
 /**
- * grx_color_info_get_black:
+ * grx_color_get_black:
  *
  * Gets the color value for black.
  *
@@ -28,18 +28,18 @@
  *
  * Returns: the color value.
  */
-#ifdef grx_color_info_get_black
-#undef grx_color_info_get_black
+#ifdef grx_color_get_black
+#undef grx_color_get_black
 #endif
-GrxColor grx_color_info_get_black(void)
+GrxColor grx_color_get_black(void)
 {
         GRX_ENTER();
-        if(CLRINFO->black == GRX_COLOR_NONE) CLRINFO->black = grx_color_info_alloc_color(0,0,0);
+        if(CLRINFO->black == GRX_COLOR_NONE) CLRINFO->black = grx_color_alloc(0,0,0);
                GRX_RETURN(CLRINFO->black);
 }
 
 /**
- * grx_color_info_get_white:
+ * grx_color_get_white:
  *
  * Gets the color value for white.
  *
@@ -47,12 +47,12 @@ GrxColor grx_color_info_get_black(void)
  *
  * Returns: the color value.
  */
-#ifdef grx_color_info_get_white
-#undef grx_color_info_get_white
+#ifdef grx_color_get_white
+#undef grx_color_get_white
 #endif
-GrxColor grx_color_info_get_white(void)
+GrxColor grx_color_get_white(void)
 {
         GRX_ENTER();
-        if(CLRINFO->white == GRX_COLOR_NONE) CLRINFO->white = grx_color_info_alloc_color(255,255,255);
+        if(CLRINFO->white == GRX_COLOR_NONE) CLRINFO->white = grx_color_alloc(255,255,255);
         GRX_RETURN(CLRINFO->white);
 }

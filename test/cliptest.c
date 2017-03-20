@@ -28,7 +28,7 @@ TESTFUNC(cliptest)
         int wh = (y * 2) / 3;
         GrxColor c;
 
-        c = grx_color_info_alloc_color(200,100,100);
+        c = grx_color_alloc(200,100,100);
         grx_draw_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,GRX_COLOR_WHITE);
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
 

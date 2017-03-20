@@ -221,28 +221,28 @@ int main(void)
                 );
                 drawing(
                     px,5,w,h,
-                    grx_color_info_alloc_color(255,0,0),
-                    grx_color_info_alloc_color(0,255,0)
+                    grx_color_alloc(255,0,0),
+                    grx_color_alloc(0,255,0)
                 );
                 drawing(
                     5,py,w,h,
-                    grx_color_info_alloc_color(0,0,255),
-                    grx_color_info_alloc_color(255,255,0)
+                    grx_color_alloc(0,0,255),
+                    grx_color_alloc(255,255,0)
                 );
                 drawing(
                     px,py,w,h,
-                    grx_color_info_alloc_color(255,0,255),
-                    grx_color_info_alloc_color(0,255,255)
+                    grx_color_alloc(255,0,255),
+                    grx_color_alloc(0,255,255)
                 );
             } else {
                 int y,sx;
                 sx=grx_get_screen_width()>>2;
                 for(y=0;y<grx_get_screen_height();y++) {
                     int yy = y & 255;
-                    grx_draw_hline(0,sx-1,y,grx_color_info_build_rgb_color(yy,0,0));
-                    grx_draw_hline(sx,2*sx-1,y,grx_color_info_build_rgb_color(0,yy,0));
-                    grx_draw_hline(2*sx,3*sx-1,y,grx_color_info_build_rgb_color(0,0,yy));
-                    grx_draw_hline(3*sx,4*sx-1,y,grx_color_info_build_rgb_color(yy,yy,yy));
+                    grx_draw_hline(0,sx-1,y,grx_color_build_rgb(yy,0,0));
+                    grx_draw_hline(sx,2*sx-1,y,grx_color_build_rgb(0,yy,0));
+                    grx_draw_hline(2*sx,3*sx-1,y,grx_color_build_rgb(0,0,yy));
+                    grx_draw_hline(3*sx,4*sx-1,y,grx_color_build_rgb(yy,yy,yy));
                 }
             }
             PrintInfo();

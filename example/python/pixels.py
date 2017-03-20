@@ -37,7 +37,7 @@ class App(Grx.Application):
         for _ in range(0, Grx.get_max_x()*Grx.get_max_y()//4):
             x = random.randint(0, Grx.get_max_x())
             y = random.randint(0, Grx.get_max_y())
-            c = Grx.color_info_alloc_color(
+            c = Grx.color_alloc(
                 random.randint(0, 255),
                 random.randint(0, 255),
                 random.randint(0, 255))

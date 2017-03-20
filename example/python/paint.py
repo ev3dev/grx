@@ -31,14 +31,14 @@ class App(Grx.Application):
         super(Grx.Application, self).__init__()
         self.init()  # sets up graphics driver/mode
         self.colors = OrderedDict([
-            ('red', Grx.color_info_alloc_color(255, 0, 0)),
-            ('green', Grx.color_info_alloc_color(0, 255, 0)),
-            ('blue', Grx.color_info_alloc_color(0, 0, 255)),
-            ('yellow', Grx.color_info_alloc_color(255, 255, 0)),
-            ('cyan', Grx.color_info_alloc_color(0, 255, 255)),
-            ('magenta', Grx.color_info_alloc_color(255, 0, 255)),
-            ('black', Grx.color_info_get_black()),
-            ('white', Grx.color_info_get_white()),
+            ('red', Grx.color_alloc(255, 0, 0)),
+            ('green', Grx.color_alloc(0, 255, 0)),
+            ('blue', Grx.color_alloc(0, 0, 255)),
+            ('yellow', Grx.color_alloc(255, 255, 0)),
+            ('cyan', Grx.color_alloc(0, 255, 255)),
+            ('magenta', Grx.color_alloc(255, 0, 255)),
+            ('black', Grx.color_get_black()),
+            ('white', Grx.color_get_white()),
         ])
         self.color_lookup = []
         self.fg_color = self.colors['white']

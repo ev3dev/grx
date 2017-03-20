@@ -27,7 +27,7 @@ class InputApplication(Grx.Application):
     def __init__(self):
         super(Grx.Application, self).__init__()
         self.init()
-        self.color = Grx.color_info_get_white()
+        self.color = Grx.color_get_white()
         self.last_touch = None
 
     def do_activate(self):
@@ -46,7 +46,7 @@ class InputApplication(Grx.Application):
         elif t == Grx.EventType.BUTTON_PRESS or t == Grx.EventType.BUTTON_RELEASE:
             button_event = event.button
             print("button", button_event.button)
-            Grx.clear_screen(Grx.color_info_get_black())
+            Grx.clear_screen(Grx.color_get_black())
         elif t == Grx.EventType.BUTTON_DOUBLE_PRESS:
             button_event = event.button
             print("button double-press", button_event.button)

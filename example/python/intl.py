@@ -49,8 +49,8 @@ class App(Grx.Application):
     def __init__(self):
         super(Grx.Application, self).__init__()
         self.init()
-        self.WHITE = Grx.color_info_get_white()
-        self.BLACK = Grx.color_info_get_black()
+        self.WHITE = Grx.color_get_white()
+        self.BLACK = Grx.color_get_black()
         self.font_index = 0
         self.next_index = 0
         self.prev_index = []
@@ -71,7 +71,7 @@ class App(Grx.Application):
                 font = Grx.font_load_full(
                     None, self.FONT_SIZE, Grx.get_dpi(), Grx.FontWeight.REGULAR,
                     Grx.FontSlant.REGULAR, Grx.FontWidth.REGULAR, False, item[0], item[1])
-                text_opt = Grx.TextOptions.new(
+                text_opt = Grx.TextOptions.new_full(
                     font, self.BLACK, self.WHITE, Grx.TextHAlign.CENTER, Grx.TextVAlign.TOP)
                 Grx.draw_text(item[2], Grx.get_width() / 2, offset, text_opt)
                 offset += font.get_height() + 0

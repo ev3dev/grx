@@ -51,8 +51,8 @@ int main(void)
   grx_draw_line(0, sizey-1, sizex-1, 0, GRX_COLOR_WHITE);
 
   grx_set_current_context(NULL);
-  fcolor = grx_color_info_alloc_color( 255,0,0 );
-  bcolor = grx_color_info_alloc_color( 0,0,255 );
+  fcolor = grx_color_alloc( 255,0,0 );
+  bcolor = grx_color_alloc( 0,0,255 );
   grx_draw_text("Type u d l r U D L R to move, 1 2 to change color, q to quit",
       0,0,text_opt);
   grx_set_clip_box(0, 40, grx_get_screen_width(), grx_get_screen_height());
@@ -72,11 +72,11 @@ int main(void)
       case 'D': y += 10; break;
       case 'L': x -= 10; break;
       case 'R': x += 10; break;
-      case '1': fcolor = grx_color_info_alloc_color( 255,0,0 );
-                bcolor = grx_color_info_alloc_color( 0,0,255 );
+      case '1': fcolor = grx_color_alloc( 255,0,0 );
+                bcolor = grx_color_alloc( 0,0,255 );
                 break;
-      case '2': fcolor = grx_color_info_alloc_color( 0,255,255 );
-                bcolor = grx_color_info_alloc_color( 255,255,0 );
+      case '2': fcolor = grx_color_alloc( 0,255,255 );
+                bcolor = grx_color_alloc( 255,255,0 );
                 break;
       default:  continue;
       }

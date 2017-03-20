@@ -41,7 +41,7 @@ class Life(Grx.Application):
         self.height = Grx.get_height()
         self.old_state = [[0 for y in range(self.height)] for x in range(self.width)]
         self.new_state = [[0 for y in range(self.height)] for x in range(self.width)]
-        self.color = (Grx.color_info_get_black(), Grx.color_info_get_white())
+        self.color = (Grx.color_get_black(), Grx.color_get_white())
         self.connect("notify::is-active", self.on_notify_is_active)
 
     def on_notify_is_active(self, obj, gparamstring):

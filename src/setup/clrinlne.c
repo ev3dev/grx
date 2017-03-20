@@ -137,7 +137,7 @@ int (grx_color_info_n_free_colors)(void)
 }
 
 /**
- * grx_color_info_build_rgb_color:
+ * grx_color_build_rgb:
  * @r: the red component value
  * @g: the green component value
  * @b: the blue component value
@@ -148,99 +148,99 @@ int (grx_color_info_n_free_colors)(void)
  *
  * Returns: a new color value.
  */
-GrxColor (grx_color_info_build_rgb_color)(unsigned char r,unsigned char g,unsigned char b)
+GrxColor (grx_color_build_rgb)(unsigned char r,unsigned char g,unsigned char b)
 {
-        return(grx_color_info_build_rgb_color(r,g,b));
+        return(grx_color_build_rgb(r,g,b));
 }
 
 /**
- * grx_color_info_build_rgb_color_round:
+ * grx_color_build_rgb_round:
  * @r: the red component value
  * @g: the green component value
  * @b: the blue component value
  *
  * Build a RGB color value based on the current graphics mode.
  *
- * This function is similar to grx_color_info_build_rgb_color(), but will limit
+ * This function is similar to grx_color_build_rgb(), but will limit
  * the RGB components to 255 during the scaling.
  *
  * This will not allocate a new color even if a color table is being used.
  *
  * Returns: a new color value.
  */
-GrxColor (grx_color_info_build_rgb_color_round)(unsigned char r,unsigned char g,unsigned char b)
+GrxColor (grx_color_build_rgb_round)(unsigned char r,unsigned char g,unsigned char b)
 {
-        return(grx_color_info_build_rgb_color_round(r,g,b));
+        return(grx_color_build_rgb_round(r,g,b));
 }
 
 /**
- * grx_color_info_get_red_value:
+ * grx_color_get_red:
  * @c: the source color value.
  *
  * Gets the red component of a color value.
  *
  * This function only works on RGB colors and not color table values. For color
- * table values, use grx_color_info_query_color() instead.
+ * table values, use grx_color_query() instead.
  *
  * Returns: the red component.
  */
-unsigned char (grx_color_info_get_red_value)(GrxColor c)
+unsigned char (grx_color_get_red)(GrxColor c)
 {
-        return(grx_color_info_get_red_value(c));
+        return(grx_color_get_red(c));
 }
 
 /**
- * grx_color_info_get_green_value:
+ * grx_color_get_green:
  * @c: the source color value.
  *
  * Gets the green component of a color value.
  *
  * This function only works on RGB colors and not color table values. For color
- * table values, use grx_color_info_query_color() instead.
+ * table values, use grx_color_query() instead.
  *
  * Returns: the green component.
  */
-unsigned char (grx_color_info_get_green_value)(GrxColor c)
+unsigned char (grx_color_get_green)(GrxColor c)
 {
-        return(grx_color_info_get_green_value(c));
+        return(grx_color_get_green(c));
 }
 
 /**
- * grx_color_info_get_blue_value:
+ * grx_color_get_blue:
  * @c: the source color value.
  *
  * Gets the blue component of a color value.
  *
  * This function only works on RGB colors and not color table values. For color
- * table values, use grx_color_info_query_color() instead.
+ * table values, use grx_color_query() instead.
  *
  * Returns: the blue component.
  */
-unsigned char (grx_color_info_get_blue_value)(GrxColor c)
+unsigned char (grx_color_get_blue)(GrxColor c)
 {
-        return(grx_color_info_get_blue_value(c));
+        return(grx_color_get_blue(c));
 }
 
 /**
- * grx_color_info_alloc_color_inline: (skip)
+ * grx_color_alloc_inline: (skip)
  * @r: the red component value
  * @g: the green component value
  * @b: the blue component value
  *
  * Allocates a color in the color table based on the RGB value.
  *
- * This is the same as grx_color_info_alloc_color(), but inlined in C code.
+ * This is the same as grx_color_alloc(), but inlined in C code.
  *
  * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
  *          free colors.
  */
-GrxColor (grx_color_info_alloc_color_inline)(unsigned char r,unsigned char g,unsigned char b)
+GrxColor (grx_color_alloc_inline)(unsigned char r,unsigned char g,unsigned char b)
 {
-        return(grx_color_info_alloc_color_inline(r,g,b));
+        return(grx_color_alloc_inline(r,g,b));
 }
 
 /**
- * grx_color_info_alloc_color2:
+ * grx_color_alloc2:
  * @hcolor: the color in 0xRRGGBB format.
  *
  * Allocates a color in the color table based on @hcolor.
@@ -248,29 +248,29 @@ GrxColor (grx_color_info_alloc_color_inline)(unsigned char r,unsigned char g,uns
  * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
  *          free colors.
  */
-GrxColor (grx_color_info_alloc_color2)(unsigned int hcolor)
+GrxColor (grx_color_alloc2)(unsigned int hcolor)
 {
-        return(grx_color_info_alloc_color2(hcolor));
+        return(grx_color_alloc2(hcolor));
 }
 
 /**
- * grx_color_info_alloc_color2_inline: (skip)
+ * grx_color_alloc2_inline: (skip)
  * @hcolor: the color in 0xRRGGBB format.
  *
  * Allocates a color in the color table based on @hcolor.
  *
- * This is the same as grx_color_info_alloc_color2(), but inlined in C code.
+ * This is the same as grx_color_alloc2(), but inlined in C code.
  *
  * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
  *          free colors.
  */
-GrxColor (grx_color_info_alloc_color2_inline)(unsigned int hcolor)
+GrxColor (grx_color_alloc2_inline)(unsigned int hcolor)
 {
-        return(grx_color_info_alloc_color2_inline(hcolor));
+        return(grx_color_alloc2_inline(hcolor));
 }
 
 /**
- * grx_color_info_query_color_inline: (skip)
+ * grx_color_query_inline: (skip)
  * @c: the color
  * @r: (out): the red component
  * @g: (out): the green component
@@ -278,23 +278,23 @@ GrxColor (grx_color_info_alloc_color2_inline)(unsigned int hcolor)
  *
  * Gets the RGB color components of a color.
  *
- * This is the same as grx_color_info_query_color(), but inlined in C code.
+ * This is the same as grx_color_query(), but inlined in C code.
  */
-void (grx_color_info_query_color_inline)(GrxColor c,unsigned char *r,unsigned char *g,unsigned char *b)
+void (grx_color_query_inline)(GrxColor c,unsigned char *r,unsigned char *g,unsigned char *b)
 {
-        grx_color_info_query_color_inline(c,r,g,b);
+        grx_color_query_inline(c,r,g,b);
 }
 
 /**
- * grx_color_info_query_color2_inline: (skip)
+ * grx_color_query2_inline: (skip)
  * @c: the color
  * @hcolor: (out): the components in 0xRRGGBB format
  *
  * Gets the RGB color components of a color.
  *
- * This is the same as grx_color_info_query_color2(), but inlined in C code.
+ * This is the same as grx_color_query2(), but inlined in C code.
  */
-void (grx_color_info_query_color2_inline)(GrxColor c,unsigned int *hcolor)
+void (grx_color_query2_inline)(GrxColor c,unsigned int *hcolor)
 {
-        grx_color_info_query_color2_inline(c,hcolor);
+        grx_color_query2_inline(c,hcolor);
 }

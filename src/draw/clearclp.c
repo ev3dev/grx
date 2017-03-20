@@ -29,7 +29,7 @@
  * Thanks to the special #GrxColor definition, you can do more than simple clear
  * with this functions, by example with:
  * |[<!-- language="C" -->
- * grx_clear_clip_box (grx_color_to_xor_mode (grx_color_info_get_white ()));
+ * grx_clear_clip_box (grx_color_to_xor_mode (grx_color_get_white ()));
  * ]|
  * the clip box is negativized, do it again and the clip box is restored.
  */

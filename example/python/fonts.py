@@ -32,12 +32,12 @@ class App(Grx.Application):
     def __init__(self):
         super(Grx.Application, self).__init__()
         self.init()
-        self.WHITE = Grx.color_info_get_white()
-        self.BLACK = Grx.color_info_get_black()
+        self.WHITE = Grx.color_get_white()
+        self.BLACK = Grx.color_get_black()
         fc_list = check_output(['fc-list', '--format=%{file}\n', ':scalable=False'])
         self.font_files = [f for f in fc_list.decode().splitlines()]
         self.font_files.sort()
-        self.default_font = Grx.TextOptions.new(
+        self.default_font = Grx.TextOptions.new_full(
             # Grx.font_load('lucida', 10),
             # Don't want to use the dpi-aware font here so we can cram info on to small screens
             Grx.font_load_full('lucida', 10, -1, Grx.FontWeight.REGULAR,

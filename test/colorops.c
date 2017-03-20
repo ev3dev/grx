@@ -38,25 +38,25 @@ TESTFUNC(colorops)
          * color map. The missing colors break RGB mode      */
         grx_color_info_set_rgb_color_mode();
 
-        bcolors.background = grx_color_info_alloc_color(160,100,30);
-        bcolors.border_top = grx_color_info_alloc_color(240,150,45);
-        bcolors.border_left = grx_color_info_alloc_color(240,150,45);
-        bcolors.border_right = grx_color_info_alloc_color(80,50,15);
-        bcolors.border_bottom = grx_color_info_alloc_color(80,50,15);
+        bcolors.background = grx_color_alloc(160,100,30);
+        bcolors.border_top = grx_color_alloc(240,150,45);
+        bcolors.border_left = grx_color_alloc(240,150,45);
+        bcolors.border_right = grx_color_alloc(80,50,15);
+        bcolors.border_bottom = grx_color_alloc(80,50,15);
 
-        ocolors.background = grx_color_info_alloc_color(0,120,100);
-        ocolors.border_top = grx_color_info_alloc_color(0,180,150);
-        ocolors.border_left = grx_color_info_alloc_color(0,180,150);
-        ocolors.border_right = grx_color_info_alloc_color(0,90,60);
-        ocolors.border_bottom = grx_color_info_alloc_color(0,90,60);
+        ocolors.background = grx_color_alloc(0,120,100);
+        ocolors.border_top = grx_color_alloc(0,180,150);
+        ocolors.border_left = grx_color_alloc(0,180,150);
+        ocolors.border_right = grx_color_alloc(0,90,60);
+        ocolors.border_bottom = grx_color_alloc(0,90,60);
 
-        icolors.background = grx_color_info_alloc_color(30,30,30);
-        icolors.border_bottom = grx_color_info_alloc_color(0,180,150);
-        icolors.border_right = grx_color_info_alloc_color(0,180,150);
-        icolors.border_left = grx_color_info_alloc_color(0,90,60);
-        icolors.border_top = grx_color_info_alloc_color(0,90,60);
+        icolors.background = grx_color_alloc(30,30,30);
+        icolors.border_bottom = grx_color_alloc(0,180,150);
+        icolors.border_right = grx_color_alloc(0,180,150);
+        icolors.border_left = grx_color_alloc(0,90,60);
+        icolors.border_top = grx_color_alloc(0,90,60);
 
-        c  = grx_color_info_alloc_color(250,250,0);
+        c  = grx_color_alloc(250,250,0);
         bg = GRX_COLOR_NONE;
 
         for(ii = 0,by = -(bh / 3); ii < 17; ii++) {

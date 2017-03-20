@@ -42,7 +42,7 @@ class App(Grx.Application):
             y1 = random.randint(-BOUNDS, Grx.get_max_y() + BOUNDS)
             x2 = random.randint(-BOUNDS, Grx.get_max_x() + BOUNDS)
             y2 = random.randint(-BOUNDS, Grx.get_max_y() + BOUNDS)
-            c = Grx.color_info_alloc_color(
+            c = Grx.color_alloc(
                 random.randint(0, 255),
                 random.randint(0, 255),
                 random.randint(0, 255))

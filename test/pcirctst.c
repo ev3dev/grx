@@ -78,9 +78,9 @@ TESTFUNC(circtest)
         int  xr,yr;
         GrxColor c1,c2,c3;
 
-        c1 = grx_color_info_alloc_color(64,64,255);
-        c2 = grx_color_info_alloc_color(255,255,64);
-        c3 = grx_color_info_alloc_color(255,64,64);
+        c1 = grx_color_alloc(64,64,255);
+        c2 = grx_color_alloc(255,255,64);
+        c3 = grx_color_alloc(255,64,64);
         xc = grx_get_width() / 2;
         yc = grx_get_height() / 2;
         xr = 1;

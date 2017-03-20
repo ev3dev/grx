@@ -97,6 +97,12 @@ typedef enum {
  */
 #define GRX_COLOR_NONE ((GrxColor)(GRX_COLOR_MODE_XOR | 0))
 
+GrxColor grx_color_alloc(guint8 r, guint8 g, guint8 b);
+GrxColor grx_color_alloc_inline(guint8 r, guint8 g, guint8 b);
+GrxColor grx_color_alloc2(guint32 hcolor);
+GrxColor grx_color_alloc2_inline(guint32 hcolor);
+void grx_color_free(GrxColor c);
+
 GrxColor grx_color_get_value(GrxColor c);
 GrxColorMode grx_color_get_mode(GrxColor c);
 GrxColor grx_color_to_write_mode(GrxColor c);
@@ -126,48 +132,40 @@ extern const struct _GR_colorInfo {
     struct {                            /* color table for non-RGB modes */
         unsigned char r,g,b;            /* loaded components */
         unsigned int  defined:1;        /* r,g,b values are valid if set */
-        unsigned int  writable:1;       /* can be changed by 'grx_color_info_set_cell' */
+        unsigned int  writable:1;       /* can be changed by 'grx_color_cell_set' */
         unsigned long int nused;        /* usage count */
     } ctable[256];
 } * const GrColorInfo;
 
 #endif /* __GI_SCANNER__ */
 
-void     grx_color_info_reset_colors(void);
-void     grx_color_info_set_rgb_color_mode(void);
-void     grx_color_info_refresh_colors(void);
-
-gint     grx_color_info_n_colors(void);
-gint     grx_color_info_n_free_colors(void);
-
-GrxColor grx_color_info_get_black(void);
-GrxColor grx_color_info_get_white(void);
+GrxColor grx_color_get_black(void);
+GrxColor grx_color_get_white(void);
 
 /**
  * GRX_COLOR_BLACK:
  *
- * Convenience macro for grx_color_info_get_black().
+ * Convenience macro for grx_color_get_black().
  */
-#define GRX_COLOR_BLACK grx_color_info_get_black()
+#define GRX_COLOR_BLACK grx_color_get_black()
 
 /**
  * GRX_COLOR_WHITE:
  *
- * Convenience macro for grx_color_info_get_white().
+ * Convenience macro for grx_color_get_white().
  */
-#define GRX_COLOR_WHITE grx_color_info_get_white()
+#define GRX_COLOR_WHITE grx_color_get_white()
 
-GrxColor grx_color_info_build_rgb_color(guint8 r, guint8 g, guint8 b);
-GrxColor grx_color_info_build_rgb_color_round(guint8 r, guint8 g, guint8 b);
-guint8   grx_color_info_get_red_value(GrxColor c);
-guint8   grx_color_info_get_green_value(GrxColor c);
-guint8   grx_color_info_get_blue_value(GrxColor c);
+GrxColor grx_color_build_rgb(guint8 r, guint8 g, guint8 b);
+GrxColor grx_color_build_rgb_round(guint8 r, guint8 g, guint8 b);
+guint8 grx_color_get_red(GrxColor c);
+guint8 grx_color_get_green(GrxColor c);
+guint8 grx_color_get_blue(GrxColor c);
 
-GrxColor grx_color_info_alloc_color(guint8 r, guint8 g, guint8 b);
-GrxColor grx_color_info_alloc_color_inline(guint8 r, guint8 g, guint8 b);
-GrxColor grx_color_info_alloc_color2(guint32 hcolor);
-GrxColor grx_color_info_alloc_color2_inline(guint32 hcolor);
-void     grx_color_info_free_color(GrxColor c);
+void grx_color_query(GrxColor c, guint8 *r, guint8 *g, guint8 *b);
+void grx_color_query_inline(GrxColor c, guint8 *r, guint8 *g, guint8 *b);
+void grx_color_query2(GrxColor c, guint32 *hcolor);
+void grx_color_query2_inline(GrxColor c, guint32 *hcolor);
 
 /**
  * GrxEgaColorIndex:
@@ -188,7 +186,7 @@ void     grx_color_info_free_color(GrxColor c);
  * @GRX_EGA_COLOR_INDEX_YELLOW: yellow
  * @GRX_EGA_COLOR_INDEX_WHITE: white
  *
- * Indexes for use with the array returned by grx_color_info_alloc_ega_colors().
+ * Indexes for use with the array returned by grx_color_alloc_ega_colors().
  */
 typedef enum {
     GRX_EGA_COLOR_INDEX_BLACK,
@@ -209,16 +207,28 @@ typedef enum {
     GRX_EGA_COLOR_INDEX_WHITE,
 } GrxEgaColorIndex;
 
-GrxColor *grx_color_info_alloc_ega_colors(void);
+GrxColor *grx_color_alloc_ega_colors(void);
 
-GrxColor grx_color_info_alloc_cell(void);
-void     grx_color_info_set_cell(GrxColor c, guint8 r, guint8 g, guint8 b);
-void     grx_color_info_free_cell(GrxColor c);
+/**
+ * GrxColorCell:
+ *
+ * A mutable color value.
+ */
+typedef GrxColor GrxColorCell;
 
-void     grx_color_info_query_color(GrxColor c, guint8 *r, guint8 *g, guint8 *b);
-void     grx_color_info_query_color_inline(GrxColor c, guint8 *r, guint8 *g, guint8 *b);
-void     grx_color_info_query_color2(GrxColor c, guint32 *hcolor);
-void     grx_color_info_query_color2_inline(GrxColor c, guint32 *hcolor);
+GrxColorCell grx_color_cell_alloc(void);
+void grx_color_cell_set(GrxColorCell c, guint8 r, guint8 g, guint8 b);
+void grx_color_cell_free(GrxColorCell c);
+
+/* color info */
+
+void     grx_color_info_reset_colors(void);
+void     grx_color_info_set_rgb_color_mode(void);
+void     grx_color_info_refresh_colors(void);
+
+gint     grx_color_info_n_colors(void);
+gint     grx_color_info_n_free_colors(void);
+
 
 gint     grx_color_info_get_save_buffer_size(void);
 void     grx_color_info_save_colors(gpointer buffer);
@@ -234,58 +244,58 @@ void     grx_color_info_restore_colors(gpointer buffer);
 #define grx_color_to_image_mode(c)     (grx_color_get_value(c) | GRX_COLOR_MODE_IMAGE)
 #define grx_color_info_n_colors()      (GrColorInfo->ncolors)
 #define grx_color_info_n_free_colors() (GrColorInfo->nfree)
-#define grx_color_info_get_black() (                                           \
+#define grx_color_get_black() (                                           \
     (GrColorInfo->black == GRX_COLOR_NONE) ?                                   \
-    (grx_color_info_get_black)() :                                             \
+    (grx_color_get_black)() :                                             \
     GrColorInfo->black                                                         \
 )
-#define grx_color_info_get_white() (                                           \
+#define grx_color_get_white() (                                           \
     (GrColorInfo->white == GRX_COLOR_NONE) ?                                   \
-    (grx_color_info_get_white)() :                                             \
+    (grx_color_get_white)() :                                             \
     GrColorInfo->white                                                         \
 )
-#define grx_color_info_build_rgb_color(r,g,b) ((                             \
+#define grx_color_build_rgb(r,g,b) ((                             \
     ((GrxColor)((int)(r) & GrColorInfo->mask[0]) << GrColorInfo->shift[0]) |   \
     ((GrxColor)((int)(g) & GrColorInfo->mask[1]) << GrColorInfo->shift[1]) |   \
     ((GrxColor)((int)(b) & GrColorInfo->mask[2]) << GrColorInfo->shift[2])     \
     ) >> GrColorInfo->norm                                                     \
 )
-#define grx_color_info_build_rgb_color_round(r,g,b) grx_color_info_build_rgb_color( \
+#define grx_color_build_rgb_round(r,g,b) grx_color_build_rgb( \
     (((unsigned int)(r)) > GrColorInfo->mask[0]) ? 255 : (unsigned int)(r) + GrColorInfo->round[0], \
     (((unsigned int)(g)) > GrColorInfo->mask[1]) ? 255 : (unsigned int)(g) + GrColorInfo->round[1], \
     (((unsigned int)(b)) > GrColorInfo->mask[2]) ? 255 : (unsigned int)(b) + GrColorInfo->round[2]  \
 )
-#define grx_color_info_get_red_value(c) (                                      \
+#define grx_color_get_red(c) (                                      \
     (int)(((GrxColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[0]) &     \
     (GrColorInfo->mask[0])                                                     \
 )
-#define grx_color_info_get_green_value(c) (                                    \
+#define grx_color_get_green(c) (                                    \
     (int)(((GrxColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[1]) &     \
     (GrColorInfo->mask[1])                                                     \
 )
-#define grx_color_info_get_blue_value(c) (                                     \
+#define grx_color_get_blue(c) (                                     \
     (int)(((GrxColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[2]) &     \
     (GrColorInfo->mask[2])                                                     \
 )
-#define grx_color_info_alloc_color_inline(r,g,b) (GrColorInfo->RGBmode ?           \
-    grx_color_info_build_rgb_color_round(r,g,b) :                                  \
-    grx_color_info_alloc_color(r,g,b)                                          \
+#define grx_color_alloc_inline(r,g,b) (GrColorInfo->RGBmode ?           \
+    grx_color_build_rgb_round(r,g,b) :                                  \
+    grx_color_alloc(r,g,b)                                          \
 )
-#define grx_color_info_alloc_color2(hcolor) (grx_color_info_alloc_color(       \
+#define grx_color_alloc2(hcolor) (grx_color_alloc(       \
     ((hcolor & 0xff0000) >> 16),                                               \
     ((hcolor & 0x00ff00) >> 8),                                                \
     (hcolor & 0x0000ff))                                                       \
 )
-#define grx_color_info_alloc_color2_inline(hcolor) (grx_color_info_alloc_color_inline( \
+#define grx_color_alloc2_inline(hcolor) (grx_color_alloc_inline( \
     ((hcolor & 0xff0000) >> 16),                                               \
     ((hcolor & 0x00ff00) >> 8),                                                \
     (hcolor & 0x0000ff))                                                       \
 )
-#define grx_color_info_query_color_inline(c,r,g,b) do {                            \
+#define grx_color_query_inline(c,r,g,b) do {                            \
     if(GrColorInfo->RGBmode) {                                                 \
-    *(r) = grx_color_info_get_red_value(c);                                    \
-    *(g) = grx_color_info_get_green_value(c);                                  \
-    *(b) = grx_color_info_get_blue_value(c);                                   \
+    *(r) = grx_color_get_red(c);                                    \
+    *(g) = grx_color_get_green(c);                                  \
+    *(b) = grx_color_get_blue(c);                                   \
     break;                                                                     \
     }                                                                          \
     if(((GrxColor)(c) < GrColorInfo->ncolors) &&                               \
@@ -297,11 +307,11 @@ void     grx_color_info_restore_colors(gpointer buffer);
     }                                                                          \
     *(r) = *(g) = *(b) = 0;                                                    \
 } while(0)
-#define grx_color_info_query_color2_inline(c,hcolor) do {                          \
+#define grx_color_query2_inline(c,hcolor) do {                          \
     if(GrColorInfo->RGBmode) {                                                 \
-    *(hcolor) = grx_color_info_get_red_value(c) << 16;                         \
-    *(hcolor) |= grx_color_info_get_green_value(c) << 8;                       \
-    *(hcolor) |= grx_color_info_get_blue_value(c);                             \
+    *(hcolor) = grx_color_get_red(c) << 16;                         \
+    *(hcolor) |= grx_color_get_green(c) << 8;                       \
+    *(hcolor) |= grx_color_get_blue(c);                             \
     break;                                                                     \
     }                                                                          \
     if(((GrxColor)(c) < GrColorInfo->ncolors) &&                               \

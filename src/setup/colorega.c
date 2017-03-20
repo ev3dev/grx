@@ -40,17 +40,17 @@ static struct {
 };
 
 /**
- * grx_color_info_alloc_ega_colors:
+ * grx_color_alloc_ega_colors:
  *
  * Allocates an array of the 16 classic EGA colors. Use #GrxEgaColorIndex to
  * determine the color at each index of the array.
  *
  * Returns: (array fixed-size=16): array of color indexes
  */
-GrxColor *grx_color_info_alloc_ega_colors(void) {
+GrxColor *grx_color_alloc_ega_colors(void) {
   static GrxColor egapal[16];
   int i;
   for (i=0; i < 16; ++i)
-    egapal[i] = grx_color_info_alloc_color(EGArgb[i].r,EGArgb[i].g,EGArgb[i].b);
+    egapal[i] = grx_color_alloc(EGArgb[i].r,EGArgb[i].g,EGArgb[i].b);
   return egapal;
 }

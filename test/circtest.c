@@ -61,9 +61,9 @@ TESTFUNC(circtest)
             g_error("%s", err->message);
         }
 
-        c1 = grx_color_info_alloc_color(64,64,255);
-        c2 = grx_color_info_alloc_color(255,255,64);
-        c3 = grx_color_info_alloc_color(255,64,64);
+        c1 = grx_color_alloc(64,64,255);
+        c2 = grx_color_alloc(255,255,64);
+        c3 = grx_color_alloc(255,64,64);
         xc = grx_get_width() / 2;
         yc = grx_get_height() / 2;
         xr = 1;
@@ -74,7 +74,7 @@ TESTFUNC(circtest)
             yr += yr/4+1;
             g_usleep(200*1000);
         }
-        c1 = grx_color_info_alloc_color(64,64,128);
+        c1 = grx_color_alloc(64,64,128);
         xr = 4;
         yr = 1;
         while((xr < 1000) || (yr < 1000)) {
@@ -83,7 +83,7 @@ TESTFUNC(circtest)
             xr = yr * 4;
             g_usleep(200*1000);
         }
-        c1 = grx_color_info_alloc_color(64,64,64);
+        c1 = grx_color_alloc(64,64,64);
         xr = 1;
         yr = 4;
         while((xr < 1000) || (yr < 1000)) {
