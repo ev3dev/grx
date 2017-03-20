@@ -741,7 +741,7 @@ namespace Grx {
     [Compact]
     public class TextOptions {
         [CCode (cname = "grx_text_options_new_full")]
-        public static TextOptions new (Font font, Color fg, Color bg = Color.NONE, TextHAlign h_align = TextHAlign.LEFT, TextVAlign v_align = TextVAlign.TOP);
+        public TextOptions (Font font, Color fg, Color bg = Color.NONE, TextHAlign h_align = TextHAlign.LEFT, TextVAlign v_align = TextVAlign.TOP);
         public Font font { get; set; }
         public Color fg_color { get; set; }
         public Color bg_color { get; set; }

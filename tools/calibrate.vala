@@ -70,7 +70,7 @@ public class CalibrateApplication : Grx.Application {
         screen_points[3].x = screen_points[0].x;
         screen_points[3].y = screen_points[2].y;
         var font = Font.load("lucida", 8);
-        text_opts = TextOptions.new(font, Color.WHITE, Color.BLACK, TextHAlign.CENTER, TextVAlign.TOP);
+        text_opts = new TextOptions (font, Color.WHITE, Color.BLACK, TextHAlign.CENTER, TextVAlign.TOP);
     }
 
     public signal void key_pressed ();
