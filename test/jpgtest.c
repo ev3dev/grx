@@ -85,12 +85,6 @@ int main()
     g_error("%s", error->message);
   }
 
-  if( !grx_is_jpeg_supported() ){
-    nojpegsupport();
-    grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
-    exit( 1 );
-  }
-
   imagen( "jpeg1.jpg",1 );
   imagen( "jpeg1.jpg",2 );
   imagen( "jpeg1.jpg",4 );

@@ -24,15 +24,6 @@
 #include <grx/draw.h>
 #include <grx/extents.h>
 
-/*
-** grx_is_jpeg_supported - Returns true
-*/
-
-int grx_is_jpeg_supported( void )
-{
-  return 1;
-}
-
 static int readjpeg( FILE *f, GrxContext *grc, int scale );
 static int queryjpeg( FILE *f, int *w, int *h );
 

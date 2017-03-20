@@ -19,15 +19,6 @@
 #include <stdlib.h>
 
 /*
-** grx_is_jpeg_supported - Returns false
-*/
-
-int grx_is_jpeg_supported( void )
-{
-  return 0;
-}
-
-/*
 ** grx_save_current_context_to_jpeg - Returns error
 */
 

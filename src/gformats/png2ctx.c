@@ -24,15 +24,6 @@
 #include <grx/draw.h>
 #include <grx/extents.h>
 
-/*
-** grx_is_png_supported - Returns true
-*/
-
-int grx_is_png_supported( void )
-{
-  return 1;
-}
-
 #ifndef png_jmpbuf
 #  define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
 #endif

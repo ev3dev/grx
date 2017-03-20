@@ -93,12 +93,6 @@ int main()
     g_error("%s", error->message);
   }
 
-  if( !grx_is_png_supported() ){
-    nopngsupport();
-    grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
-    exit( 1 );
-  }
-
   imagen( "pngcompo.png" );
   imagen( "pngowl.png" );
   imagen( "pngred.png" );

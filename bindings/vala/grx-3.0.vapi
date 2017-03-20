@@ -1093,7 +1093,6 @@ namespace Grx {
     /*  these functions may not be installed or available on all system   */
     /* ================================================================== */
 
-    public bool is_png_supported ();
     public Result check_png_file (string file_name, out int width, out int height);
 
     /* ================================================================== */
@@ -1101,8 +1100,6 @@ namespace Grx {
     /*  these functions may not be installed or available on all system   */
     /* ================================================================== */
 
-    [CCode (cname = "grx_is_jpeg_supported")]
-    public bool jpeg_support ();
     [CCode (cname = "grx_check_jpeg_file")]
     public Result query_jpeg (string file_name, out int width, out int height);
 

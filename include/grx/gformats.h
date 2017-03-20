@@ -58,7 +58,6 @@ int grx_check_pnm_data(const guint8 *buffer, gint *width, gint *height, gint *ma
 /*  these functions may not be installed or available on all system   */
 /* ================================================================== */
 
-int grx_is_png_supported(void);
 int grx_save_current_context_to_png(GrxContext *grc, gchar *pngfn);
 int grx_context_load_from_png(GrxContext *grc, gchar *pngfn, gboolean use_alpha);
 int grx_check_png_file(gchar *pngfn, gint *width, gint *height);
@@ -68,7 +67,6 @@ int grx_check_png_file(gchar *pngfn, gint *width, gint *height);
 /*  these functions may not be installed or available on all system   */
 /* ================================================================== */
 
-int grx_is_jpeg_supported(void);
 int grx_context_load_from_jpeg(GrxContext *grc, gchar *jpegfn, gint scale);
 int grx_check_jpeg_file(gchar *jpegfn, gint *width, gint *height);
 int grx_save_current_context_to_jpeg(GrxContext *grc, gchar *jpegfn, gint quality);
