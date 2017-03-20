@@ -659,10 +659,7 @@ namespace Grx {
 
     public Color get_pixel_at (int x, int y);
 
-    [CCode  (cname = "GrGetScanLine")]
     public Color *get_scan_line (int  x1, int x2, int yy);
-
-    [CCode  (cname = "grx_put_scanline")]
     public void put_scan_line (int x1, int x2, int yy, [CCode (array_length = false)]Color[] c, ColorMode op = ColorMode.WRITE);
 
     /* ================================================================== */
