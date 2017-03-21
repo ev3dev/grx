@@ -30,16 +30,16 @@
  * update the end point of line #1 and the starting point of line #2
  * so that they intersect
  */
-static void intersect(GrxPoint l1s,GrxPoint l1e,GrxPoint l2s,GrxPoint l2e)
+static void intersect(GrxPoint *l1s,GrxPoint *l1e,GrxPoint *l2s,GrxPoint *l2e)
 {
-#   define x11 l1s.x
-#   define y11 l1s.y
-#   define x12 l1e.x
-#   define y12 l1e.y
-#   define x21 l2s.x
-#   define y21 l2s.y
-#   define x22 l2e.x
-#   define y22 l2e.y
+#   define x11 l1s->x
+#   define y11 l1s->y
+#   define x12 l1e->x
+#   define y12 l1e->y
+#   define x21 l2s->x
+#   define y21 l2s->y
+#   define x22 l2e->x
+#   define y22 l2e->y
     if(x12 != x21 || y12 != y21) {
         int  dx1 = x12 - x11;
         int  dy1 = y12 - y11;
@@ -64,8 +64,8 @@ static void intersect(GrxPoint l1s,GrxPoint l1e,GrxPoint l2s,GrxPoint l2e)
                 /* don't create triangles */
                 if ( xdif2 != x11 && xdif2 != x22 &&
                      ydif2 != y11 && ydif2 != y22    ) {
-                  l1e.x = l2s.x = xdif2;
-                  l1e.y = l2s.y = ydif2;
+                  l1e->x = l2s->x = xdif2;
+                  l1e->y = l2s->y = ydif2;
                   return;
                 }
             }
@@ -107,8 +107,8 @@ static void intersect(GrxPoint l1s,GrxPoint l1e,GrxPoint l2s,GrxPoint l2e)
                   if (minerr == 0) break;
                 }
             }
-            l1e.x = l2s.x = xc + xb;
-            l1e.y = l2s.y = yc + yb;
+            l1e->x = l2s->x = xc + xb;
+            l1e->y = l2s->y = yc + yb;
         }
     }
 #   undef x11
@@ -215,19 +215,19 @@ static void solidsegmentw(GrxPoint p1, GrxPoint p2, GrxPoint *prev,
         if(prev && next) {
             GrxPoint point;
             point.x = rect[1].x; point.y = rect[1].y;
-            intersect(prect[1],prect[2],rect[1],rect[2]);
-            intersect(point,rect[2],nrect[1],nrect[2]);
+            intersect(&prect[1],&prect[2],&rect[1],&rect[2]);
+            intersect(&point,&rect[2],&nrect[1],&nrect[2]);
             point.y = rect[0].x; point.y = rect[0].y;
-            intersect(prect[0],prect[3],rect[0],rect[3]);
-            intersect(point,rect[3],nrect[0],nrect[3]);
+            intersect(&prect[0],&prect[3],&rect[0],&rect[3]);
+            intersect(&point,&rect[3],&nrect[0],&nrect[3]);
         } else
         if(prev) {
-            intersect(prect[1],prect[2],rect[1],rect[2]);
-            intersect(prect[0],prect[3],rect[0],rect[3]);
+            intersect(&prect[1],&prect[2],&rect[1],&rect[2]);
+            intersect(&prect[0],&prect[3],&rect[0],&rect[3]);
         } else
         if(next) {
-            intersect(rect[1],rect[2],nrect[1],nrect[2]);
-            intersect(rect[0],rect[3],nrect[0],nrect[3]);
+            intersect(&rect[1],&rect[2],&nrect[1],&nrect[2]);
+            intersect(&rect[0],&rect[3],&nrect[0],&nrect[3]);
         }
         _GrScanConvexPoly(4,rect,p->f,p->c);
 }

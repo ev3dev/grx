@@ -67,7 +67,7 @@ static int last_xs = 0,last_ys = 0;
 static int last_xe = 0,last_ye = 0;
 static int last_xc = 0,last_yc = 0;
 
-static void GrSinCos(int n,int cx,int cy,int rx,int ry,GrxPoint pt)
+static void GrSinCos(int n,int cx,int cy,int rx,int ry,GrxPoint *pt)
 {
         int cval,sval;
         switch((n &= (PERIOD - 1)) / PQUART) {
@@ -88,8 +88,8 @@ static void GrSinCos(int n,int cx,int cy,int rx,int ry,GrxPoint pt)
             cval =  sintab[n - PERIOD + PQUART];
             break;
         }
-        pt.x = cx; pt.x += irscale(rx,cval,TRIGMGN);
-        pt.y = cy; pt.y -= irscale(ry,sval,TRIGMGN);
+        pt->x = cx; pt->x += irscale(rx,cval,TRIGMGN);
+        pt->y = cy; pt->y -= irscale(ry,sval,TRIGMGN);
 }
 
 /**
@@ -140,13 +140,13 @@ int grx_generate_ellipse_arc(int cx,int cy,int rx,int ry,int start,int end,GrxPo
             start2 = end - (((end - start) / step) * step);
             npts = 0;
             if(start2 > start) {
-                GrSinCos(start,cx,cy,rx,ry,pt[0]);
+                GrSinCos(start,cx,cy,rx,ry,&pt[0]);
                 start = start2;
                 npts++;
             }
         }
         while(start <= end) {
-            GrSinCos(start,cx,cy,rx,ry,pt[npts]);
+            GrSinCos(start,cx,cy,rx,ry,&pt[npts]);
             start += step;
             npts++;
         }
