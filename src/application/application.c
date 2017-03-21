@@ -185,16 +185,25 @@ static void event_handler (GrxEvent *event, gpointer user_data)
     }
 }
 
+static void weak_notify (gpointer data, GObject *self)
+{
+    guint source_id = GPOINTER_TO_UINT (data);
+
+    g_source_remove (source_id);
+}
+
 static gboolean init (GInitable *initable, GCancellable *cancellable,
                       GError **error)
 {
     GrxApplication *self = GRX_APPLICATION (initable);
+    guint source_id;
 
     if (!grx_set_mode_default_graphics (TRUE, error)) {
         return FALSE;
     }
 
-    grx_events_add (event_handler, g_object_ref (self), g_object_unref);
+    source_id = grx_events_add (event_handler, self, NULL);
+    g_object_weak_ref (G_OBJECT (self), weak_notify, GUINT_TO_POINTER (source_id));
 
     return g_application_register (G_APPLICATION (initable), cancellable, error);
 }
