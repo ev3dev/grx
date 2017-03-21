@@ -19,6 +19,7 @@
 #
 
 import random
+import time
 
 import gi
 gi.require_version('Grx', '3.0')
@@ -34,14 +35,22 @@ class App(Grx.Application):
         """called when the application starts
         overrides Grx.Application.do_activate
         """
-        for _ in range(0, Grx.get_max_x()*Grx.get_max_y()//4):
-            x = random.randint(0, Grx.get_max_x())
-            y = random.randint(0, Grx.get_max_y())
-            c = Grx.color_alloc(
-                random.randint(0, 255),
-                random.randint(0, 255),
-                random.randint(0, 255))
-            Grx.draw_pixel(x, y, c)
+        w = Grx.get_width()
+        h = Grx.get_height()
+        t = time.monotonic()
+        for n in range(0, w*h//4):
+            x = int(random.random() * w)
+            y = int(random.random() * h)
+            if (n & 0xff) == 0:
+                # don't change the color so often to speed things up (random is slow)
+                c = Grx.color_alloc(
+                    int(random.random() * 256),
+                    int(random.random() * 256),
+                    int(random.random() * 256))
+            # fast_draw_* is only safe when we are sure x and y are in bounds
+            Grx.fast_draw_pixel(x, y, c)
+        t = time.monotonic() - t
+        print('drew', n, 'pixels in', round(t, 3), 'sec')
 
     def do_input_event(self, event):
         """called when an input event occurs
