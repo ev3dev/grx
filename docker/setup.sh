@@ -39,7 +39,7 @@ mkdir -p ${build_dir}
 
 docker rm --force ${container_name} >/dev/null 2>&1 || true
 docker run \
-    --volume "${build_dir}:/build" \
+    --volume "$(readlink -f ${build_dir}):/build" \
     --volume "$(pwd):/src" \
     --workdir /build \
     --name ${container_name} \
