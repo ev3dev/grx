@@ -13,7 +13,7 @@ typedef struct {
 #define FT_ERRORDEF(e, v, s)  { e, s },
 #define FT_ERROR_END_LIST     { 0, NULL }
 
-const FtError ft_errors[] = {
+G_GNUC_INTERNAL const FtError ft_errors[] = {
 
 #include FT_ERRORS_H
 
