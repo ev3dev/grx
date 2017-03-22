@@ -239,7 +239,8 @@ static void dashedsegment(GrxPoint p1, GrxPoint p2, GrxPoint *prev, GrxPoint *ne
         int x,y,dx,dy;
         int error,erradd,errsub,count;
         int xinc1,xinc2,yinc1,yinc2;
-        GrxPoint start,end;
+        GrxPoint start = { 0, 0 };
+        GrxPoint end = { 0, 0 };
         int se_init;
 
         /* find the current starting segment for the pattern */
