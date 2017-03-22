@@ -75,7 +75,7 @@
  *
  * Changes by Maurice Lombardi 21/08/2007
  *   - Corrections to WM_PAINT
- *     1 - revert the previous change: was saturating GrxMouseInfo->queue
+ *     1 - revert the previous change: was saturating GrMouseInfo->queue
  *         for fast paintings
  *     2 - GetUpdateRect() gave wrong UpdateRect !!!
  *

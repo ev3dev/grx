@@ -35,7 +35,7 @@ extern  struct _GR_mouseInfo   _GrMouseInfo;
 #define GrDriverInfo    (&_GrDriverInfo)
 #define GrContextInfo   (&_GrContextInfo)
 #define GrColorInfo     (&_GrColorInfo)
-#define GrxMouseInfo     (&_GrMouseInfo)
+#define GrMouseInfo     (&_GrMouseInfo)
 
 #define DRVINFO         (&_GrDriverInfo)
 #define CXTINFO         (&_GrContextInfo)

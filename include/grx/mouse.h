@@ -97,7 +97,7 @@ extern const struct _GR_mouseInfo {
     gulong device_added_handler;
     gulong device_removed_handler;
     guint  pointer_device_count;
-} * const GrxMouseInfo;
+} * const GrMouseInfo;
 
 #endif /* __GTK_DOC_IGNORE__ */
 #endif /* __GI_SCANNER__ */
@@ -115,17 +115,17 @@ guint grx_mouse_block(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
 void grx_mouse_unblock(guint flags);
 
 #ifndef GRX_SKIP_INLINES
-#define grx_mouse_get_cursor()       (GrxMouseInfo->cursor)
-#define grx_mouse_is_cursor_shown()  (GrxMouseInfo->displayed)
+#define grx_mouse_get_cursor()       (GrMouseInfo->cursor)
+#define grx_mouse_is_cursor_shown()  (GrMouseInfo->displayed)
 #define grx_mouse_block(c,x1,y1,x2,y2) (                                            \
     (((c) ? (const GrxContext*)(c) : grx_get_current_context())->gc_is_on_screen && \
-        (GrxMouseInfo->docheck)) ?                                                  \
-    (*GrxMouseInfo->block)((c),(x1),(y1),(x2),(y2)) :                               \
+        (GrMouseInfo->docheck)) ?                                                  \
+    (*GrMouseInfo->block)((c),(x1),(y1),(x2),(y2)) :                               \
     0                                                                               \
 )
 #define grx_mouse_unblock(f) do {                                              \
-    if((f) && GrxMouseInfo->displayed) {                                       \
-        (*GrxMouseInfo->unblock)((f));                                         \
+    if((f) && GrMouseInfo->displayed) {                                       \
+        (*GrMouseInfo->unblock)((f));                                         \
     }                                                                          \
 } while(0)
 #endif  /* GRX_SKIP_INLINES */
