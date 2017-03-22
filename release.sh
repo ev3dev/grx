@@ -7,6 +7,8 @@ set -e
 source=$(dpkg-parsechangelog -S Source)
 version=$(dpkg-parsechangelog -S Version)
 
+./release-doc.sh ${version} ev3dev-testing
+
 OS=debian DIST=stretch ARCH=amd64 pbuilder-ev3dev build
 OS=debian DIST=stretch ARCH=i386 PBUILDER_OPTIONS="--binary-arch" pbuilder-ev3dev build
 OS=debian DIST=stretch ARCH=armhf PBUILDER_OPTIONS="--binary-arch" pbuilder-ev3dev build
