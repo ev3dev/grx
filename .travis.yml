@@ -12,7 +12,7 @@ cache:
   - "$HOME/cache"
 before_install:
 - sudo apt-add-repository "deb http://archive.ev3dev.org/ubuntu trusty main"
-- sudo apt-key adv --keyserver pgp.mit.edu --recv-keys D57D95AF93178A7C
+- sudo cp .travis/ev3dev-archive-keyring.gpg /etc/apt/trusted.gpg.d/
 - sudo apt-get update
 - sudo apt-get install --yes pbuilder-ev3dev gobject-introspection
 - sudo ln -s /usr/share/debootstrap/scripts/sid /usr/share/debootstrap/scripts/stretch
