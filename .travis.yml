@@ -14,7 +14,7 @@ before_install:
 - sudo apt-add-repository "deb http://archive.ev3dev.org/ubuntu trusty main"
 - sudo apt-key adv --keyserver pgp.mit.edu --recv-keys D57D95AF93178A7C
 - sudo apt-get update
-- sudo apt-get install --yes pbuilder-ev3dev
+- sudo apt-get install --yes pbuilder-ev3dev gobject-introspection
 - sudo ln -s /usr/share/debootstrap/scripts/sid /usr/share/debootstrap/scripts/stretch
 before_script:
 - pbuilder-ev3dev base
