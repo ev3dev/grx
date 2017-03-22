@@ -1,4 +1,4 @@
-grx (2.99.8~1) testing; urgency=medium
+grx (2.99.8) testing; urgency=medium
 
   * Major breakage: cleanup and rearranging of many functions and types
   * Using FreeType2/FontConfig for font handling
