@@ -66,7 +66,9 @@ License: GPL-2+
 
 Files: data/unicode/*
 Copyright: 1991-2017 Unicode, Inc. All rights reserved.
-License: UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
+License: unicode
+ UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
+ .
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of the Unicode data files and any associated documentation
  (the "Data Files") or Unicode software and any associated documentation

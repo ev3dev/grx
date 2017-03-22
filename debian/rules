@@ -5,7 +5,10 @@
 #export DH_VERBOSE=1
 
 %:
-	dh $@
+	dh $@ --with gir
 
 override_dh_makeshlibs:
 	dh_makeshlibs --exclude plugin
+
+override_dh_install:
+	dh_install --list-missing

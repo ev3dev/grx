@@ -1,3 +1,11 @@
+grx (2.99.8~1) testing; urgency=medium
+
+  * Major breakage: cleanup and rearranging of many functions and types
+  * Using FreeType2/FontConfig for font handling
+  * Add packages for GIR typelib, examples and tools
+
+ -- David Lechner <david@lechnology.com>  Tue, 21 Mar 2017 22:36:50 -0500
+
 grx (2.99.7) stable; urgency=medium
 
   * Change package data dir to prevent conflict with grx2
