@@ -50,6 +50,18 @@ Description: 2D graphics library
  .
  This package contains the development files.
 
+Package: libgrx-3.0-doc
+Section: libdevel
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}
+Suggests: devhelp
+Description: 2D graphics library
+ A simple 2D graphics library similar to the old Borland Graphics Interface
+ (BGI).
+ .
+ This package contains the documentation.
+
 Package: libgrx-3.0-bin
 Architecture: any
 Multi-Arch: foreign
