@@ -398,7 +398,7 @@ gtk_doc_add_module (grx
         ${SHARED_LIBRARY_NAME}
 )
 
-add_custom_target (docs ALL DEPENDS doc-grx)
+add_custom_target (doc ALL DEPENDS doc-grx)
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/grx/html
         DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
