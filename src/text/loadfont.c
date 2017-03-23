@@ -265,7 +265,6 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
         FcPatternDestroy(pattern);
         return NULL;
     }
-    g_debug("found pattern: %s", FcNameUnparse(pattern));
 
     if (FcPatternGetString(match, FC_FILE, 0, &file) != FcResultMatch) {
         g_set_error_literal(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
