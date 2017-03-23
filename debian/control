@@ -52,7 +52,7 @@ Description: 2D graphics library
  This package contains the development files.
 
 Package: libgrx-3.0-doc
-Section: libdevel
+Section: doc
 Architecture: all
 Multi-Arch: foreign
 Depends: ${misc:Depends}
