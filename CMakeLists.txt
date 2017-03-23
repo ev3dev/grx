@@ -32,6 +32,7 @@ set (TYPELIB_TARGET ${LIBRARY_NAME}-typelib)
 
 # subdirectories
 
+add_subdirectory (doc)
 add_subdirectory (plugins)
 add_subdirectory (src)
 add_subdirectory (tools)
