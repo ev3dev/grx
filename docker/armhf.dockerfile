@@ -1,4 +1,4 @@
-FROM ev3dev/debian-jessie-armhf-cross
+FROM ev3dev/debian-stretch-armhf-cross
 
 RUN sudo apt-get update && \
     DEBIAN_FRONTEND=noninteractive sudo apt-get install --yes --no-install-recommends \

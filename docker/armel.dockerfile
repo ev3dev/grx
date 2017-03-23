@@ -1,4 +1,4 @@
-FROM ev3dev/debian-jessie-armel-cross
+FROM ev3dev/debian-stretch-armel-cross
 
 RUN sudo apt-get update && \
     DEBIAN_FRONTEND=noninteractive sudo apt-get install --yes --no-install-recommends \
