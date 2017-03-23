@@ -18,6 +18,6 @@ before_install:
 - sudo ln -s /usr/share/debootstrap/scripts/sid /usr/share/debootstrap/scripts/stretch
 before_script:
 - pbuilder-ev3dev base
-- git checkout -B ev3dev-testing
+- git checkout -B ev3dev-stretch
 script:
 - pbuilder-ev3dev build
