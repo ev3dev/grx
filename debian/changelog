@@ -1,3 +1,12 @@
+grx (2.99.8.1) testing; urgency=medium
+
+  * Add a man page for grx-calibrate-touch
+  * Add -dev package dependenices from pkg-config Requires.private
+  * -dev package needs to depend on typelib package
+  * -doc package goes in doc section
+
+ -- David Lechner <david@lechnology.com>  Wed, 22 Mar 2017 21:40:22 -0500
+
 grx (2.99.8) testing; urgency=medium
 
   * Major breakage: cleanup and rearranging of many functions and types
