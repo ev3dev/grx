@@ -17,6 +17,7 @@ RUN sudo apt-get update && \
         libpng-dev \
         libudev-dev \
         libxkbcommon-dev \
+        pandoc \
         pkg-config \
         python3 \
         valac
