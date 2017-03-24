@@ -1,3 +1,10 @@
+grx (2.99.8.2) testing; urgency=medium
+
+  * remove "found pattern..." debug print
+  * debian: add postinst script to enable bitmap fonts in fontconfig
+
+ -- David Lechner <david@lechnology.com>  Thu, 23 Mar 2017 19:30:09 -0500
+
 grx (2.99.8.1) testing; urgency=medium
 
   * Add a man page for grx-calibrate-touch
