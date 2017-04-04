@@ -51,6 +51,7 @@ docker run \
 
 docker exec --tty ${container_name} cmake /src \
     -DCMAKE_BUILD_TYPE=Debug \
-    -DCMAKE_TOOLCHAIN_FILE=/home/compiler/toolchain.cmake
+    -DCMAKE_TOOLCHAIN_FILE=/home/compiler/toolchain.cmake \
+    -DGRX_SKIP_GTKDOC=Yes
 
 echo "Done. You can now compile by running 'docker exec --tty ${container_name} make'"
