@@ -205,7 +205,7 @@ namespace Grx {
         /**
          * 16 color planar
          */
-        RAM_4BPP,
+        RAM_4XBPP,
 
         /**
          * 256 color

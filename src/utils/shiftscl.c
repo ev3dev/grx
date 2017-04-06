@@ -1,6 +1,6 @@
 /*
  * shiftscl.c ---- shift and copy an array (scanline)
- *                 for 1bpp and 4bpp frame driver blit operations
+ *                 for 1bpp and 4x1bpp frame driver blit operations
  *
  * Copyright (c) 1998 Hartmut Schirmer
  *

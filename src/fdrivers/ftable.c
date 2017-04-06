@@ -52,7 +52,7 @@ GrxFrameDriver *_GrFrameDriverTable[] = {
 #endif
 /* now the drivers for RAM based context */
     &_GrFrameDriverRAM1,
-    &_GrFrameDriverRAM4,
+    &_GrFrameDriverRAM4x1,
     &_GrFrameDriverRAM8,
     &_GrFrameDriverRAM16,
 #ifdef GRX_USE_RAM3x8

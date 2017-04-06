@@ -36,7 +36,7 @@ gint grx_frame_mode_get_bpp(GrxFrameMode mode)
     case GRX_FRAME_MODE_LFB_MONO10:
     case GRX_FRAME_MODE_RAM_1BPP:
         return 1;
-    case GRX_FRAME_MODE_RAM_4BPP:
+    case GRX_FRAME_MODE_RAM_4X1BPP:
         return 4;
     case GRX_FRAME_MODE_LFB_8BPP:
     case GRX_FRAME_MODE_RAM_8BPP:

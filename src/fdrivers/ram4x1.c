@@ -1,5 +1,5 @@
 /*
- * ram4.c ---- the 16 color RAM frame driver
+ * ram4x1.c ---- the 16 color RAM frame driver
  *
  * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  * [e-mail: csaba@vuse.vanderbilt.edu].
@@ -265,8 +265,8 @@ static void bltr2r(GrxFrame *dst,int dx,int dy,
     GRX_LEAVE();
 }
 
-GrxFrameDriver _GrFrameDriverRAM4 = {
-    .mode               = GRX_FRAME_MODE_RAM_4BPP,  /* frame mode */
+GrxFrameDriver _GrFrameDriverRAM4x1 = {
+    .mode               = GRX_FRAME_MODE_RAM_4X1BPP,  /* frame mode */
     .rmode              = GRX_FRAME_MODE_UNDEFINED, /* compatible RAM frame mode */
     .is_video           = FALSE,                    /* onscreen */
     .row_align          = 4,                        /* scan line width alignment */

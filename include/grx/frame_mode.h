@@ -42,7 +42,7 @@
  * @GRX_FRAME_MODE_LFB_32BPP_LOW: Linear frame buffer, 32bpp, 16M color using lower 24 bits
  * @GRX_FRAME_MODE_LFB_32BPP_HIGH: Linear frame buffer, 32bpp, 16M color using upper 24 bits
  * @GRX_FRAME_MODE_RAM_1BPP: RAM frame buffer, 1bpp, monochome
- * @GRX_FRAME_MODE_RAM_4BPP: RAM frame buffer, 4bpp, 16 color
+ * @GRX_FRAME_MODE_RAM_4X1BPP: RAM frame buffer, 4bpp, 16 color planar
  * @GRX_FRAME_MODE_RAM_8BPP: RAM frame buffer, 8bpp, 256 color
  * @GRX_FRAME_MODE_RAM_16BPP: RAM frame buffer, 16bpp, 32768/65536 color
  * @GRX_FRAME_MODE_RAM_24BPP: RAM frame buffer, 24bpp, 16M color
@@ -71,7 +71,7 @@ typedef enum {
     GRX_FRAME_MODE_LFB_32BPP_HIGH,      /* Super VGA 16M color padded #2 */
     /* ====== system RAM frame buffer modes ====== */
     GRX_FRAME_MODE_RAM_1BPP = 64,       /* mono */
-    GRX_FRAME_MODE_RAM_4BPP,            /* 16 color planar */
+    GRX_FRAME_MODE_RAM_4X1BPP,          /* 16 color planar */
     GRX_FRAME_MODE_RAM_8BPP,            /* 256 color */
     GRX_FRAME_MODE_RAM_16BPP,           /* 32768/65536 color */
     GRX_FRAME_MODE_RAM_24BPP,           /* 16M color */

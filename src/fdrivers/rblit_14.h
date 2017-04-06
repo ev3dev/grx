@@ -1,6 +1,6 @@
 /*
  * rblit_14.h ---- ram to ram blit support functions for 1bpp and
- *                 4bpp RAM frame drivers
+ *                 4x1bpp RAM frame drivers
  *
  * Copyright (c) 1998 Hartmut Schirmer
  *

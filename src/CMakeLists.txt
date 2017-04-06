@@ -43,7 +43,7 @@ set (LIBRARY_SOURCE_FILES
     fdrivers/ram24.c
     fdrivers/ram32h.c
     fdrivers/ram32l.c
-    fdrivers/ram4.c
+    fdrivers/ram4x1.c
     fdrivers/ram8.c
     fdrivers/rblit_14.c
     gformats/ctx2jpg.c

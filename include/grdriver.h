@@ -59,7 +59,7 @@ _GrFrameDriverSDL32L,                   /* SDL 32 bpp padded #2 */
 _GrFrameDriverSDL32H,                   /* SDL 32 bpp padded #2 */
 
 _GrFrameDriverRAM1,                     /* mono */
-_GrFrameDriverRAM4,                     /* 16 color planar */
+_GrFrameDriverRAM4x1,                   /* 16 color planar */
 _GrFrameDriverRAM8,                     /* 256 color */
 _GrFrameDriverRAM16,                    /* 32768/65536 color */
 _GrFrameDriverRAM24,                    /* 16M color */

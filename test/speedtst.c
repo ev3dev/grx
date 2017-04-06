@@ -166,7 +166,7 @@ char *FrameDriverName(GrxFrameMode m) {
     case GRX_FRAME_MODE_LFB_32BPP_LOW: return "LFB32L";
     case GRX_FRAME_MODE_LFB_32BPP_HIGH: return "LFB32H";
     case GRX_FRAME_MODE_RAM_1BPP: return "RAM1";
-    case GRX_FRAME_MODE_RAM_4BPP: return "RAM4";
+    case GRX_FRAME_MODE_RAM_4X1BPP: return "RAM4";
     case GRX_FRAME_MODE_RAM_8BPP: return "RAM8";
     case GRX_FRAME_MODE_RAM_16BPP: return "RAM16";
     case GRX_FRAME_MODE_RAM_24BPP: return "RAM24";

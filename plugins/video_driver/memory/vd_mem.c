@@ -70,7 +70,7 @@ static GrxVideoModeExt gr1ext = {
 };
 
 static GrxVideoModeExt gr4ext = {
-    .mode             = GRX_FRAME_MODE_RAM_4BPP,    /* frame driver */
+    .mode             = GRX_FRAME_MODE_RAM_4X1BPP,  /* frame driver */
     .drv              = NULL,                       /* frame driver override */
     .frame            = NULL,                       /* frame buffer address */
     .cprec            = { 8, 8, 8 },                /* color precisions */
