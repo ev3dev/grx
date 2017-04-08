@@ -26,6 +26,7 @@ GrxFrameDriver *_GrFrameDriverTable[] = {
   || ( defined(LFB_BY_NEAR_POINTER) && !defined(__WIN32__) )
     &_GrFrameDriverMONO01_LFB,
     &_GrFrameDriverMONO10_LFB,
+    &_GrFrameDriverCFB2_LFB,
     &_GrFrameDriverSVGA8_LFB,
     &_GrFrameDriverSVGA16_LFB,
     &_GrFrameDriverSVGA24_LFB,
@@ -52,6 +53,7 @@ GrxFrameDriver *_GrFrameDriverTable[] = {
 #endif
 /* now the drivers for RAM based context */
     &_GrFrameDriverRAM1,
+    &_GrFrameDriverRAM2,
     &_GrFrameDriverRAM4x1,
     &_GrFrameDriverRAM8,
     &_GrFrameDriverRAM16,

@@ -36,7 +36,7 @@ TESTFUNC(colorops)
         /* This won't work very well under X11 in pseudocolor
          * mode (256 colors or less) if not using a private
          * color map. The missing colors break RGB mode      */
-        grx_color_info_set_rgb_color_mode();
+        grx_color_info_set_palette_type_rgb();
 
         bcolors.background = grx_color_alloc(160,100,30);
         bcolors.border_top = grx_color_alloc(240,150,45);

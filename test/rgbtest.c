@@ -26,7 +26,7 @@ TESTFUNC(rgbtest)
         int wh = (y-10)/8;
         int ii,jj;
 
-        grx_color_info_set_rgb_color_mode();
+        grx_color_info_set_palette_type_rgb();
         for(ii = 0; ii < 8; ii++) {
             for(jj = 0; jj < 32; jj++) {
                 grx_draw_filled_box(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,ii*32+jj);

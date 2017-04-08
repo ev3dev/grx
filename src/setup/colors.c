@@ -112,8 +112,13 @@ int _GrResetColors(void)
             DRVINFO->actmode.extended_info->cpos
         );
         switch(DRVINFO->actmode.bpp) {
+          case 1:
+          case 2:
+            CLRINFO->palette_type = GRX_COLOR_PALETTE_TYPE_GRAYSCALE;
+            break;
           case 4:
           case 8:
+            CLRINFO->palette_type = GRX_COLOR_PALETTE_TYPE_COLOR_TABLE;
 #ifdef __XWIN__
             if (_GR_lastFreeColor >= _GR_firstFreeColor)
               CLRINFO->nfree = _GR_lastFreeColor - _GR_firstFreeColor + 1;
@@ -133,7 +138,7 @@ int _GrResetColors(void)
             }
             break;
           default:
-            CLRINFO->RGBmode = TRUE;
+            CLRINFO->palette_type = GRX_COLOR_PALETTE_TYPE_RGB;
             break;
         }
         return ((CLRINFO->ncolors-1)&GRX_COLOR_VALUE_MASK) == CLRINFO->ncolors-1;
@@ -144,8 +149,8 @@ int _GrResetColors(void)
  *
  * Frees all colors (except for black and white).
  *
- * If grx_color_info_set_rgb_color_mode() was called, this will also change the
- * color system back to using a color table.
+ * If grx_color_info_set_palette_type_rgb() was called, this will also change
+ * the color system back to using a color table.
  */
 void grx_color_info_reset_colors(void)
 {
@@ -153,18 +158,18 @@ void grx_color_info_reset_colors(void)
 }
 
 /**
- * grx_color_info_set_rgb_color_mode:
+ * grx_color_info_set_palette_type_rgb:
  *
- * Changes the graphics mode to RGB color mode instead of using a color table.
+ * Changes the graphics mode to RGB color values instead of using a color table.
  *
  * Initially, graphics modes with 256 colors or less use a color table.
  * Currently, this function only works for modes with 16 or 256 colors.
  *
- * This has no effect if the color mode is already RGB.
+ * This has no effect if the color mode is already RGB or if it is grayscale.
  */
-void grx_color_info_set_rgb_color_mode(void)
+void grx_color_info_set_palette_type_rgb(void)
 {
-        if(!CLRINFO->RGBmode) {
+        if (CLRINFO->palette_type == GRX_COLOR_PALETTE_TYPE_COLOR_TABLE) {
             GrxColor c;
             switch(CLRINFO->ncolors) {
                 case 16L:
@@ -176,7 +181,7 @@ void grx_color_info_set_rgb_color_mode(void)
                 default:
                     return;
             }
-            CLRINFO->RGBmode = TRUE;
+            CLRINFO->palette_type = GRX_COLOR_PALETTE_TYPE_RGB;
             CLRINFO->nfree   = 0L;
             CLRINFO->black   = 0L;
             CLRINFO->white   = CLRINFO->ncolors - 1L;
@@ -215,8 +220,11 @@ GrxColor grx_color_alloc(unsigned char r, unsigned char g, unsigned char b)
         r = ROUNDCOLORCOMP(r,0);
         g = ROUNDCOLORCOMP(g,1);
         b = ROUNDCOLORCOMP(b,2);
-        if(CLRINFO->RGBmode) {
+        if (CLRINFO->palette_type == GRX_COLOR_PALETTE_TYPE_RGB) {
             res = grx_color_build_rgb(r,g,b);
+        }
+        else if (CLRINFO->palette_type == GRX_COLOR_PALETTE_TYPE_GRAYSCALE) {
+            res = grx_color_build_grayscale(r,g,b);
         }
         else {
             GR_int32u minerr = 1000;
@@ -292,14 +300,17 @@ done:   GRX_RETURN(res);
  *
  * The color must be freed with grx_color_cell_free().
  *
- * RGB graphics modes will always return #GRX_COLOR_NONE.
+ * RGB and grayscale graphics modes will always return #GRX_COLOR_NONE.
  *
  * Returns: a newly allocated color cell or #GRX_COLOR_NONE if there are no more
  *          free cells.
  */
 GrxColorCell grx_color_cell_alloc(void)
 {
-        if(!CLRINFO->RGBmode && CLRINFO->nfree) {
+        if (CLRINFO->palette_type != GRX_COLOR_PALETTE_TYPE_COLOR_TABLE) {
+            return GRX_COLOR_NONE;
+        }
+        if (CLRINFO->nfree) {
             int i,free_ = (-1);
             for(i = 0; i < (int)CLRINFO->ncolors; i++) {
                 if(!CLRINFO->ctable[i].defined) {
@@ -328,11 +339,15 @@ GrxColorCell grx_color_cell_alloc(void)
  *
  * Frees a color that was allocated by grx_color_alloc() and friends.
  *
- * This has no effect in RGB graphics modes.
+ * This has no effect in RGB or grayscale graphics modes.
  */
 void grx_color_free(GrxColor c)
 {
-        if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors) &&
+        if (CLRINFO->palette_type != GRX_COLOR_PALETTE_TYPE_COLOR_TABLE) {
+            return;
+        }
+
+        if ((GrxColor)(c) < CLRINFO->ncolors &&
             !CLRINFO->ctable[(int)(c)].writable &&
             CLRINFO->ctable[(int)(c)].defined &&
             (--CLRINFO->ctable[(int)(c)].nused == 0)) {
@@ -352,7 +367,11 @@ void grx_color_free(GrxColor c)
 void grx_color_cell_free(GrxColor c)
 {
         GRX_ENTER();
-        if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors)) {
+        if (CLRINFO->palette_type != GRX_COLOR_PALETTE_TYPE_COLOR_TABLE) {
+            GRX_LEAVE();
+            return;
+        }
+        if ((GrxColor)(c) < CLRINFO->ncolors) {
             if(CLRINFO->ctable[(int)(c)].writable) {
                 CLRINFO->nfree++;
                 CLRINFO->ctable[(int)(c)].defined  = FALSE;
@@ -375,7 +394,11 @@ void grx_color_cell_free(GrxColor c)
 void grx_color_cell_set(GrxColor c,unsigned char r,unsigned char g,unsigned char b)
 {
         GRX_ENTER();
-        if(!CLRINFO->RGBmode && ((GrxColor)(c) < CLRINFO->ncolors)) {
+        if (CLRINFO->palette_type != GRX_COLOR_PALETTE_TYPE_COLOR_TABLE) {
+            GRX_LEAVE();
+            return;
+        }
+        if ((GrxColor)(c) < CLRINFO->ncolors) {
             if(!CLRINFO->ctable[(int)(c)].defined) {
                 CLRINFO->ctable[(int)(c)].defined  = TRUE;
                 CLRINFO->ctable[(int)(c)].nused    = 0;

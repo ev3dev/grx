@@ -1,6 +1,7 @@
 /*
  * clrinlne.c ---- the color inline functions
  *
+ * Copyright (c) 2016-2017 David Lechner <david@lechnology.com>
  * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  * [e-mail: csaba@vuse.vanderbilt.edu]
  *
@@ -137,6 +138,18 @@ int (grx_color_info_n_free_colors)(void)
 }
 
 /**
+ * grx_color_info_get_palette_type:
+ *
+ * Gets the current color palette type.
+ *
+ * Returns: a #GrxColorPaletteType.
+ */
+GrxColorPaletteType (grx_color_info_get_palette_type)(void)
+{
+        return(grx_color_info_get_palette_type());
+}
+
+/**
  * grx_color_build_rgb:
  * @r: the red component value
  * @g: the green component value
@@ -171,6 +184,23 @@ GrxColor (grx_color_build_rgb)(unsigned char r,unsigned char g,unsigned char b)
 GrxColor (grx_color_build_rgb_round)(unsigned char r,unsigned char g,unsigned char b)
 {
         return(grx_color_build_rgb_round(r,g,b));
+}
+
+/**
+ * grx_color_build_grayscale:
+ * @r: the red component value
+ * @g: the green component value
+ * @b: the blue component value
+ *
+ * Build a grayscale color value based on the current graphics mode.
+ *
+ * This will not allocate a new color even if a color table is being used.
+ *
+ * Returns: a new color value.
+ */
+GrxColor (grx_color_build_grayscale)(unsigned char r,unsigned char g,unsigned char b)
+{
+        return((grx_color_build_grayscale)(r,g,b));
 }
 
 /**

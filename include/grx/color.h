@@ -1,7 +1,7 @@
 /*
  * color.h
  *
- * Copyright (c) 2015-2016 David Lechner <david@lechnology.com>
+ * Copyright (c) 2015-2017 David Lechner <david@lechnology.com>
  *
  * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  * [e-mail: csaba@vuse.vanderbilt.edu]
@@ -111,6 +111,18 @@ GrxColor grx_color_to_or_mode(GrxColor c);
 GrxColor grx_color_to_and_mode(GrxColor c);
 GrxColor grx_color_to_image_mode(GrxColor c);
 
+/**
+ * GrxColorPaletteType:
+ * @GRX_COLOR_PALETTE_TYPE_GRAYSCALE: RGB color values will be converted to grayscale.
+ * @GRX_COLOR_PALETTE_TYPE_COLOR_TABLE: Colors use a lookup table.
+ * @GRX_COLOR_PALETTE_TYPE_RGB: RGB values are used directly.
+ */
+typedef enum {
+    GRX_COLOR_PALETTE_TYPE_GRAYSCALE,
+    GRX_COLOR_PALETTE_TYPE_COLOR_TABLE,
+    GRX_COLOR_PALETTE_TYPE_RGB,
+} GrxColorPaletteType;
+
 #ifndef __GI_SCANNER__
 /* TODO: This struct should probably be private */
 
@@ -122,7 +134,7 @@ extern const struct _GR_colorInfo {
     GrxColor       nfree;               /* number of unallocated colors */
     GrxColor       black;               /* the black color */
     GrxColor       white;               /* the white color */
-    unsigned int  RGBmode;              /* set when RGB mode */
+    GrxColorPaletteType palette_type;
     unsigned int  prec[3];              /* color field precisions */
     unsigned int  pos[3];               /* color field positions */
     unsigned int  mask[3];              /* masks for significant bits */
@@ -158,6 +170,7 @@ GrxColor grx_color_get_white(void);
 
 GrxColor grx_color_build_rgb(guint8 r, guint8 g, guint8 b);
 GrxColor grx_color_build_rgb_round(guint8 r, guint8 g, guint8 b);
+GrxColor grx_color_build_grayscale(guint8 r, guint8 g, guint8 b);
 guint8 grx_color_get_red(GrxColor c);
 guint8 grx_color_get_green(GrxColor c);
 guint8 grx_color_get_blue(GrxColor c);
@@ -223,7 +236,8 @@ void grx_color_cell_free(GrxColorCell c);
 /* color info */
 
 void     grx_color_info_reset_colors(void);
-void     grx_color_info_set_rgb_color_mode(void);
+void     grx_color_info_set_palette_type_rgb(void);
+GrxColorPaletteType grx_color_info_get_palette_type(void);
 void     grx_color_info_refresh_colors(void);
 
 gint     grx_color_info_n_colors(void);
@@ -244,6 +258,7 @@ void     grx_color_info_restore_colors(gpointer buffer);
 #define grx_color_to_image_mode(c)     (grx_color_get_value(c) | GRX_COLOR_MODE_IMAGE)
 #define grx_color_info_n_colors()      (GrColorInfo->ncolors)
 #define grx_color_info_n_free_colors() (GrColorInfo->nfree)
+#define grx_color_info_get_pallete_type() (GrxColorInfo->palette_type)
 #define grx_color_get_black() (                                           \
     (GrColorInfo->black == GRX_COLOR_NONE) ?                                   \
     (grx_color_get_black)() :                                             \
@@ -265,6 +280,9 @@ void     grx_color_info_restore_colors(gpointer buffer);
     (((unsigned int)(g)) > GrColorInfo->mask[1]) ? 255 : (unsigned int)(g) + GrColorInfo->round[1], \
     (((unsigned int)(b)) > GrColorInfo->mask[2]) ? 255 : (unsigned int)(b) + GrColorInfo->round[2]  \
 )
+#define grx_color_build_grayscale(r,g,b) \
+    ((((r) * 19595 + (g) * 38470 + (b) * 7471) >> 16) >> (8 - g_bit_nth_lsf(GrColorInfo->ncolors, 0)))
+
 #define grx_color_get_red(c) (                                      \
     (int)(((GrxColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[0]) &     \
     (GrColorInfo->mask[0])                                                     \
@@ -277,9 +295,10 @@ void     grx_color_info_restore_colors(gpointer buffer);
     (int)(((GrxColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[2]) &     \
     (GrColorInfo->mask[2])                                                     \
 )
-#define grx_color_alloc_inline(r,g,b) (GrColorInfo->RGBmode ?           \
-    grx_color_build_rgb_round(r,g,b) :                                  \
-    grx_color_alloc(r,g,b)                                          \
+#define grx_color_alloc_inline(r,g,b) (                                        \
+    (GrColorInfo->palette_type == GRX_COLOR_PALETTE_TYPE_RGB) ?                \
+    grx_color_build_rgb_round(r,g,b) :                                         \
+    grx_color_alloc(r,g,b)                                                     \
 )
 #define grx_color_alloc2(hcolor) (grx_color_alloc(       \
     ((hcolor & 0xff0000) >> 16),                                               \
@@ -292,7 +311,7 @@ void     grx_color_info_restore_colors(gpointer buffer);
     (hcolor & 0x0000ff))                                                       \
 )
 #define grx_color_query_inline(c,r,g,b) do {                            \
-    if(GrColorInfo->RGBmode) {                                                 \
+    if (GrColorInfo->palette_type != GRX_COLOR_PALETTE_TYPE_COLOR_TABLE) {     \
     *(r) = grx_color_get_red(c);                                    \
     *(g) = grx_color_get_green(c);                                  \
     *(b) = grx_color_get_blue(c);                                   \
@@ -308,7 +327,7 @@ void     grx_color_info_restore_colors(gpointer buffer);
     *(r) = *(g) = *(b) = 0;                                                    \
 } while(0)
 #define grx_color_query2_inline(c,hcolor) do {                          \
-    if(GrColorInfo->RGBmode) {                                                 \
+    if (GrColorInfo->palette_type != GRX_COLOR_PALETTE_TYPE_COLOR_TABLE) {     \
     *(hcolor) = grx_color_get_red(c) << 16;                         \
     *(hcolor) |= grx_color_get_green(c) << 8;                       \
     *(hcolor) |= grx_color_get_blue(c);                             \

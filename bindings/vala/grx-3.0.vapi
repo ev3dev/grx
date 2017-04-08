@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 David Lechner <david@lechnology.com>
+ * Copyright 2014-2017 David Lechner <david@lechnology.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@ namespace Grx {
 
         public static Color build_rgb (uchar r, uchar g, uchar b);
         public static Color build_rgb_round (uchar r, uchar g, uchar b);
+        public static Color build_grayscale (uchar r, uchar g, uchar b);
         public uchar red { get; }
         public uchar green { get; }
         public uchar blue { get; }
@@ -79,9 +80,17 @@ namespace Grx {
         public void free ();
     }
 
+    [CCode (has_type_id = false)]
+    public enum ColorPaletteType {
+        GRAYSCALE,
+        COLOR_TABLE,
+        RGB,
+    }
+
     namespace ColorInfo {
         public static void reset_colors ();
-        public static void set_rgb_color_mode ();
+        public static void set_palette_type_rgb ();
+        public static ColorPaletteType get_palette_type ();
         public static void refresh_colors ();
 
         public static int n_colors ();
@@ -172,6 +181,11 @@ namespace Grx {
         LFB_MONO10,
 
         /**
+         * 4 color
+         */
+        LFB_2BPP,
+
+        /**
          * (Super) VGA 256 color
          */
         LFB_8BPP,
@@ -201,6 +215,11 @@ namespace Grx {
          * mono
          */
         RAM_1BPP,
+
+        /**
+         * 4 color
+         */
+        RAM_2BPP,
 
         /**
          * 16 color planar

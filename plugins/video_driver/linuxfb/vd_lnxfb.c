@@ -409,7 +409,13 @@ static int build_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep)
             ep->mode = GRX_FRAME_MODE_LFB_MONO10;
         else
             return FALSE;
-    break;
+        break;
+    case 2:
+        if (fbfix.visual != FB_VISUAL_STATIC_PSEUDOCOLOR && !fbvar.grayscale) {
+            return FALSE;
+        }
+        ep->mode = GRX_FRAME_MODE_LFB_2BPP;
+        break;
     case 8:
         if (fbfix.visual != FB_VISUAL_PSEUDOCOLOR)
             return FALSE;

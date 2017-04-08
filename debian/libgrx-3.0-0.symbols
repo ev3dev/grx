@@ -45,7 +45,7 @@ libgrx-3.0.so.0 libgrx-3.0-0 #MINVER#
  grx_color_info_reset_colors@Base 2.99.8
  grx_color_info_restore_colors@Base 2.99.8
  grx_color_info_save_colors@Base 2.99.8
- grx_color_info_set_rgb_color_mode@Base 2.99.8
+ grx_color_info_set_palette_type_rgb@Base 2.99.8
  grx_color_query2@Base 2.99.8
  grx_color_query2_inline@Base 2.99.8
  grx_color_query@Base 2.99.8

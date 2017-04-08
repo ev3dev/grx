@@ -69,6 +69,21 @@ static GrxVideoModeExt gr1ext = {
     .load_color       = NULL,                       /* color loader */
 };
 
+static GrxVideoModeExt gr2ext = {
+    .mode             = GRX_FRAME_MODE_RAM_2BPP,    /* frame driver */
+    .drv              = NULL,                       /* frame driver override */
+    .frame            = NULL,                       /* frame buffer address */
+    .cprec            = { 2, 2, 2 },                /* color precisions */
+    .cpos             = { 0, 0, 0 },                /* color component bit positions */
+    .flags            = GRX_VIDEO_MODE_FLAG_MEMORY, /* mode flag bits */
+    .setup            = mem_setmode,                /* mode set */
+    .set_virtual_size = NULL,                       /* virtual size set */
+    .scroll           = NULL,                       /* virtual scroll */
+    .set_bank         = NULL,                       /* bank set function */
+    .set_rw_banks     = NULL,                       /* double bank set function */
+    .load_color       = NULL,                       /* color loader */
+};
+
 static GrxVideoModeExt gr4ext = {
     .mode             = GRX_FRAME_MODE_RAM_4X1BPP,  /* frame driver */
     .drv              = NULL,                       /* frame driver override */
@@ -146,6 +161,7 @@ GrxVideoModeExt   dummyExt = {
 static GrxVideoMode modes[] = {
     /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext                             */
     {  TRUE,  1,  640,  480,  0x00,   80,    0,  &gr1ext                          },
+    {  TRUE,  2,  640,  480,  0x00,  160,    0,  &gr2ext                          },
     {  TRUE,  4,  640,  480,  0x00,  320,    0,  &gr4ext                          },
     {  TRUE,  8,  640,  480,  0x00,  640,    0,  &gr8ext                          },
     {  TRUE, 24,  640,  480,  0x00, 1920,    0,  &gr24ext                         },

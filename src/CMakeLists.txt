@@ -40,6 +40,7 @@ set (LIBRARY_SOURCE_FILES
     fdrivers/pblitv2v.c
     fdrivers/ram1.c
     fdrivers/ram16.c
+    fdrivers/ram2.c
     fdrivers/ram24.c
     fdrivers/ram32h.c
     fdrivers/ram32l.c

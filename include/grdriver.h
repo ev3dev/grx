@@ -36,6 +36,7 @@ G_GNUC_INTERNAL extern GrxFrameDriver
                                         /* Linear Framebuffer Modes : */
 _GrFrameDriverMONO01_LFB,               /* mono, 0 = white, 1 = black */
 _GrFrameDriverMONO10_LFB,               /* mono, 1 = white, 0 = black */
+_GrFrameDriverCFB2_LFB,                 /* 4 color packed pixels */
 _GrFrameDriverSVGA8_LFB,                /* (Super) VGA 256 color */
 _GrFrameDriverSVGA16_LFB,               /* Super VGA 32768/65536 color */
 _GrFrameDriverSVGA24_LFB,               /* Super VGA 16M color */
@@ -59,6 +60,7 @@ _GrFrameDriverSDL32L,                   /* SDL 32 bpp padded #2 */
 _GrFrameDriverSDL32H,                   /* SDL 32 bpp padded #2 */
 
 _GrFrameDriverRAM1,                     /* mono */
+_GrFrameDriverRAM2,                     /* 4 color */
 _GrFrameDriverRAM4x1,                   /* 16 color planar */
 _GrFrameDriverRAM8,                     /* 256 color */
 _GrFrameDriverRAM16,                    /* 32768/65536 color */
