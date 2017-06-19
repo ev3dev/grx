@@ -24,7 +24,10 @@
  * Gets the display resolution of the current graphics mode or #GRX_DEFAULT_DPI
  * if the current driver does not support getting the resolution.
  *
- * Returns: the resolution
+ * The display resolution can also be manually specified using grx_set_driver()
+ * or the GRX_DRIVER environment variable.
+ *
+ * Returns: the resolution in dots per inch
  */
 guint grx_get_dpi(void)
 {

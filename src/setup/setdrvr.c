@@ -53,7 +53,7 @@ static const char *nxtoken(const char *p, char *token)
  * @error: Error pointer.
  *
  * The driver spec is of the format "\[<name>\[::<flag>\]\] \[gw <width>\]
- * \[gh <height>\] \[gc <colors>\]".
+ * \[gh <height>\] \[gc <colors>\] \[dp <dpi>\]".
  *
  * - "<name>" is the name of a video driver plugin.
  * - "<flag>" is "fs" for fullscreen or "ww" for windowed (not supported by all
@@ -61,6 +61,7 @@ static const char *nxtoken(const char *p, char *token)
  * - "<width>" is the default width
  * - "<height>" is the default height
  * - "<colors>" is the default color depth. "K" and "M" suffixes are recognized.
+ * - "<dpi>" the display resolution in dots per inch.
  *
  * If @driver_spec is %NULL, then it will first check the GRX_DRIVER environment
  * variable for a driver spec. If the environment variable is not present, then
