@@ -473,16 +473,6 @@ static void add_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep,
     }
 }
 
-static gboolean term_signal_handler (gpointer user_data)
-{
-    GrxEvent event;
-
-    event.type = GRX_EVENT_TYPE_APP_QUIT;
-    grx_event_put (&event);
-
-    return G_SOURCE_CONTINUE;
-}
-
 static gboolean console_switch_handler (gpointer user_data)
 {
     GrxEvent event;
@@ -554,13 +544,6 @@ static int init(const char *options)
         if ((build_video_mode(&mode, &ext))) {
             add_video_mode(&mode, &ext, &modep, &extp);
         }
-
-        // Gracefully handle application termination via signal. This reduces
-        // the chance of getting the virtual console stuck in graphics mode
-        // with keyboard disabled.
-        g_unix_signal_add (SIGHUP, term_signal_handler, NULL);
-        g_unix_signal_add (SIGINT, term_signal_handler, NULL);
-        g_unix_signal_add (SIGTERM, term_signal_handler, NULL);
 
         // Handle console switching
         g_unix_signal_add (SIGUSR1, console_switch_handler, NULL);

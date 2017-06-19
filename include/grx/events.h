@@ -46,8 +46,7 @@
  * using a graphical desktop driver such as gtk3, this is triggered when the
  * window is no longer the active window on the desktop
  * @GRX_EVENT_TYPE_APP_QUIT: application request to quit event, for example,
- * this is triggered by SIGINT/SIGHUP/SIGTERM in a console application or when
- * the window is closed in a desktop application
+ * this is triggered the window is closed in a desktop application
  * @GRX_EVENT_TYPE_KEY_DOWN: key press event
  * @GRX_EVENT_TYPE_KEY_UP: key release event
  * @GRX_EVENT_TYPE_POINTER_MOTION: pointer (mouse) motion event
