@@ -219,7 +219,6 @@ libgrx-3.0.so.0 libgrx-3.0-0 #MINVER#
  grx_get_last_arc_coordinates@Base 2.99.8
  grx_get_max_x@Base 2.99.8
  grx_get_max_y@Base 2.99.8
- grx_get_mode@Base 2.99.8
  grx_get_next_video_mode@Base 2.99.8
  grx_get_pixel_at@Base 2.99.8
  grx_get_scanline@Base 2.99.8

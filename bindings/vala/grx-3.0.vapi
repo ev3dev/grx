@@ -438,7 +438,6 @@ namespace Grx {
     /*
      * inquiry stuff
      */
-    public GraphicsMode get_mode ();
 
     public unowned VideoDriver get_current_video_driver ();
     public unowned DeviceManager get_device_manager ();

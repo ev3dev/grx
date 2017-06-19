@@ -21,18 +21,6 @@
 #include "libgrx.h"
 
 /**
- * grx_get_mode:
- *
- * Gets the current graphics mode.
- *
- * Returns: the mode.
- */
-GrxGraphicsMode (grx_get_mode)(void)
-{
-        return(grx_get_mode());
-}
-
-/**
  * grx_frame_mode_get_current:
  *
  * Get the frame mode of the current context.

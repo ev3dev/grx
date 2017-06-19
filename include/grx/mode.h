@@ -316,7 +316,6 @@ gboolean grx_set_mode_default_graphics(gboolean clear, GError **error);
 /*
  * inquiry stuff ---- many of these are actually macros (see below)
  */
-GrxGraphicsMode grx_get_mode(void);
 guint grx_get_dpi(void);
 GrxDeviceManager *grx_get_device_manager(void);
 
@@ -341,7 +340,6 @@ const GrxVideoMode   *grx_get_next_video_mode(const GrxVideoMode *prev);
  * inline implementation for some of the above
  */
 #ifndef GRX_SKIP_INLINES
-#define grx_get_mode() (GrDriverInfo->mcode)
 #define grx_get_device_manager()        (GrDriverInfo->device_manager)
 
 #define grx_get_current_video_driver()  ((const GrxVideoDriver *)( GrDriverInfo->vdriver))
