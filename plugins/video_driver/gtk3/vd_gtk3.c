@@ -256,13 +256,15 @@ static void on_window_notify_is_active (GObject *object, GParamSpec *pspec,
     grx_event_put (&event);
 }
 
-static void on_window_destroy (GtkWidget *widget, gpointer user_data)
+static gboolean on_window_delete_event (GtkWidget *widget, GdkEvent *event_, gpointer user_data)
 {
     GrxEvent event;
 
     event.type = GRX_EVENT_TYPE_APP_QUIT;
 
     grx_event_put (&event);
+
+    return TRUE;
 }
 
 /*
@@ -307,7 +309,7 @@ static gboolean init (const gchar *options)
     gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
     g_signal_connect (window, "notify::is-active",
                       (GCallback)on_window_notify_is_active, NULL);
-    g_signal_connect (window, "destroy", (GCallback)on_window_destroy, NULL);
+    g_signal_connect (window, "delete-event", (GCallback)on_window_delete_event, NULL);
 
     // Have to have a GtkEventBox to handle events since GtkImage doesn't have
     // a GdkWindow.
