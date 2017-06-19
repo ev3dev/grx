@@ -30,3 +30,5 @@ if (CMAKE_CROSSCOMPILING)
 endif (CMAKE_CROSSCOMPILING)
 
 install(TARGETS vala-life DESTINATION ${CMAKE_INSTALL_PKGLIBDIR}/examples/vala)
+
+add_custom_target(run-vala-life DEPENDS vala-life COMMAND vala-life)
