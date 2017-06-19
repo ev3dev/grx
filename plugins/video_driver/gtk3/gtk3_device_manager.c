@@ -13,6 +13,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#define GDK_VERSION_MIN_REQUIRED (GDK_VERSION_3_18)
+
 #include <glib.h>
 #include <glib-object.h>
 #include <glib/gstdio.h>
@@ -140,11 +142,6 @@ static gboolean add_device (gpointer user_data)
     return G_SOURCE_REMOVE;
 }
 
-// We are using a couple of functions that are deprecated in GDK 3.20, but we
-// want to be able to build on both 3.18 (Ubuntu xenial) and 3.20 (Debian stretch)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
 static gboolean
 init (GInitable *initable, GCancellable *cancellable, GError **error)
 {
@@ -187,8 +184,6 @@ init (GInitable *initable, GCancellable *cancellable, GError **error)
 
     return TRUE;
 }
-
-#pragma GCC diagnostic pop
 
 static void initable_interface_init (GInitableIface *iface)
 {

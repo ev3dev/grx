@@ -13,6 +13,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#define GDK_VERSION_MIN_REQUIRED (GDK_VERSION_3_18)
+
 #include <glib.h>
 #include <glib-object.h>
 #include <glib/gstdio.h>
