@@ -52,7 +52,7 @@ static const char *nxtoken(const char *p, char *token)
  * @driver_spec: (nullable): The driver spec.
  * @error: Error pointer.
  *
- * The driver spec is of the format "<name>\[::<flag>\] \[gw <width>\]
+ * The driver spec is of the format "\[<name>\[::<flag>\]\] \[gw <width>\]
  * \[gh <height>\] \[gc <colors>\]".
  *
  * - "<name>" is the name of a video driver plugin.

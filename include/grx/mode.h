@@ -33,7 +33,20 @@
  * @section_id: mode
  * @include: grx-3.0.h
  *
- * TODO
+ * GRX3 uses video "driver" plugins to provide the graphics back end. For most
+ * programs using GRX3, the driver and it's parameters will be automatically
+ * selected. The driver and parameters can be manually specified using the
+ * GRX_DRIVER environment variable (see @grx_set_driver() for details). The
+ * search path for the video driver plugins can also be manually specified using
+ * the GRX_PLUGIN_PATH enviornment variable (useful for development).
+ *
+ * Each video driver can have mutiple video modes. Video modes specify the
+ * resolution (width and height in pixels) and the color depth (bits per pixel).
+ * Most programs will just call grx_set_mode_default_graphics() to automatically
+ * select the default mode of the video driver.
+ *
+ * Each video driver also has an associated device manager for interacting with
+ * input devices such as keyboards, mice and touchscreens.
  */
 
 /**
