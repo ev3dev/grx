@@ -169,15 +169,17 @@ void grx_mouse_set_cursor_default(GrxColor fill_color, GrxColor border_color)
     };
 
     GrxCursor *newc;
-    GrxColor cols[3];
+    GArray *cols;
 
     if (MOUINFO->displayed) {
         return;
     }
-    cols[0] = 2;
-    cols[1] = border_color;
-    cols[2] = fill_color;
+
+    cols = g_array_sized_new(FALSE, FALSE, sizeof(GrxColor), 2);
+    g_array_append_val(cols, border_color);
+    g_array_append_val(cols, fill_color);
     newc = grx_cursor_new(ptr12x16bits, 12, 12, 16, 1, 1, cols);
+    g_array_unref(cols);
     if (!newc) {
         return;
     }
@@ -188,7 +190,7 @@ void grx_mouse_set_cursor_default(GrxColor fill_color, GrxColor border_color)
 /**
  * grx_mouse_set_cursor_mode: (skip)
  * @mode: the mode
- * @...: mode specific aguments
+ * @...: mode specific arguments
  *
  * Sets the mouse cursor mode.
  */

@@ -133,7 +133,7 @@ struct _GrxLinePattern {
 GType grx_pattern_get_type(void);
 
 GrxPattern *grx_pattern_new_pixmap(const guint8 *pixels, gint w, gint h,
-                                   const GrxColorTable colors);
+                                   const GArray *colors);
 GrxPattern *grx_pattern_new_pixmap_from_bits(const guint8 *bits, gint w, gint h,
                                              GrxColor fg, GrxColor bg);
 GrxPattern *grx_pattern_new_pixmap_from_context(GrxContext *src);

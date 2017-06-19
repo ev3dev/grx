@@ -63,6 +63,8 @@ namespace Grx {
         public static Color alloc2_inline (uint hcolor);
         public void free ();
 
+        public static Color lookup (GLib.Array<Color> table, uint index);
+
         [CCode (array_length_cexpr = "16")]
         public static Color[] alloc_ega_colors ();
 
@@ -590,22 +592,6 @@ namespace Grx {
         public Color border_left;
     }
 
-    /**
-     * Color table (for primitives using several colors).
-     *
-     * It is an array of colors with the first element being the number of
-     * colors in the table
-     */
-    [CCode (has_type_id = false)]
-    public struct ColorTable {
-        public uint size { [CCode (cname = "GRX_COLOR_TABLE_GET_SIZE")]get; }
-        [Ccode (cname = "GRX_COLOR_TABLE_GET_COLOR")]
-        public Color get (uint index);
-
-        [CCode (cname = "GRX_COLOR_TABLE_GET_ALLOC_SIZE")]
-        static int get_alloc_size (uint num_colors);
-    }
-
     /* ================================================================== */
     /*                       GRAPHICS PRIMITIVES                          */
     /* ================================================================== */
@@ -897,7 +883,7 @@ namespace Grx {
     public class Pattern {
         public bool is_pixmap;               /* true for pixmaps */
 
-        public static Pattern new_pixmap ([CCode (array_length = false)]char *pixels, int w, int h, ColorTable colors);
+        public static Pattern new_pixmap ([CCode (array_length = false)]char *pixels, int w, int h, GLib.Array<Color>? colors);
         public static Pattern new_pixmap_from_bits ([CCode (array_length = false)]char *bits, int w, int h, Color fgc, Color bgc);
         public static Pattern new_pixmap_from_context (Context context);
 
@@ -963,7 +949,7 @@ namespace Grx {
     [CCode (copy_function = "grx_image_copy", free_function = "grx_image_free", has_type_id = false)]
     [Compact]
     public class Image {
-        public static Image new ([CCode (array_length = false)]char[] pixels, int w, int h, ColorTable colors);
+        public static Image new ([CCode (array_length = false)]char[] pixels, int w, int h, GLib.Array<Color> colors);
         public static Image new_from_context (Context context);
 
         public Image mirror (ImageMirrorFlags flags);
@@ -1061,7 +1047,7 @@ namespace Grx {
     [CCode (copy_function = "grx_cursor_ref", free_function = "grx_cursor_unref")]
     [Compact]
     public class Cursor {
-        public Cursor ([CCode (array_length = false)]char[] pixels, int pitch, int w, int h, int xo, int yo, ColorTable table);
+        public Cursor ([CCode (array_length = false)]char[] pixels, int pitch, int w, int h, int xo, int yo, GLib.Array<Color> table);
 
         [CCode (cname = "grx_cursor_show")]
         public void display ();

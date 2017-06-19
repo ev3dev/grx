@@ -56,7 +56,7 @@ typedef enum /*< flags >*/ {
 
 GType grx_image_get_type(void);
 GrxImage *grx_image_new(const guint8 *pixels, gint width, gint height,
-                        const GrxColorTable colors);
+                        const GArray *colors);
 GrxImage *grx_image_new_from_context(GrxContext *context);
 
 GrxImage *grx_image_copy(GrxImage *image);

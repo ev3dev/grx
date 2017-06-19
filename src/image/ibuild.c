@@ -29,7 +29,7 @@
  * @pixels: (array): array of pixel data
  * @width: the width of the array
  * @height: the height of the array
- * @colors: the color table
+ * @colors: (element-type GrxColor): the color table
  *
  * Builds a pixmap from a two dimensional (width by height) array of characters.
  * The elements in this array are used as indices into the color table specified
@@ -39,7 +39,7 @@
  * Returns: (transfer full) (nullable): the new image or %NULL if there was an error.
  */
 GrxImage *grx_image_new(const unsigned char *pixels, int width, int height,
-                           const GrxColorTable colors)
+                           const GArray *colors)
 {
   GrxImage   *img;
   GRX_ENTER();
@@ -57,7 +57,7 @@ GrxImage *grx_image_new(const unsigned char *pixels, int width, int height,
       do {
         col = peek_b(pixels);
         ptrinc(pixels,1);
-        if ( colors ) col = GRX_COLOR_TABLE_GET_COLOR(colors,col);
+        if ( colors ) col = grx_color_lookup(colors,col);
         (*CURC->gc_driver->drawpixel)(xx, yy, (col & C_COLOR));
       } while(++xx < width);
     } while(++yy < height);

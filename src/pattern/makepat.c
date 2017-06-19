@@ -63,10 +63,10 @@ static int _GrBestPixmapWidth(int wdt,int hgt)
 
 /**
  * grx_pattern_new_pixmap:
- * @pixels: (array): a two dimentional array of bytes
+ * @pixels: (array): a two dimensional array of bytes
  * @w: the width of the pixel array
  * @h: the height of the pixel array
- * @colors: color table for the pixel array
+ * @colors: (element-type GrxColor) (nullable): color table for the pixel array
  *
  * Build a pixmap from @pixels.
  *
@@ -77,7 +77,7 @@ static int _GrBestPixmapWidth(int wdt,int hgt)
  *
  * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
  */
-GrxPattern *grx_pattern_new_pixmap(const unsigned char *pixels,int w,int h,const GrxColorTable ct)
+GrxPattern *grx_pattern_new_pixmap(const unsigned char *pixels,int w,int h,const GArray *ct)
 {
         GrxContext csave,cwork;
         GrxPixmap  *result;
@@ -101,7 +101,9 @@ GrxPattern *grx_pattern_new_pixmap(const unsigned char *pixels,int w,int h,const
                 src = (unsigned char *)pixels;
                 for(wdt = 0; wdt < w; wdt++) {
                     color = *src++;
-                    if(ct != NULL) color = GRX_COLOR_TABLE_GET_COLOR(ct,color);
+                    if (ct != NULL) {
+                        color = grx_color_lookup(ct, color);
+                    }
                     (*CURC->gc_driver->drawpixel)(wdt2+wdt,hgt,(color & C_COLOR));
                 }
             }

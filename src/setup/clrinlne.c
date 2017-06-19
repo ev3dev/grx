@@ -21,6 +21,20 @@
 #include "libgrx.h"
 
 /**
+ * grx_color_lookup:
+ * @table: (element-type GrxColor): the color table
+ * @index: the index in the color table
+ *
+ * Looks up a color in the color table.
+ *
+ * Returns: the color or %GRX_COLOR_NONE if @index is out of range
+ */
+GrxColor (grx_color_lookup)(GArray *table, guint index)
+{
+        return(grx_color_lookup(table, index));
+}
+
+/**
  * grx_color_get_value:
  * @c: the source color value
  *

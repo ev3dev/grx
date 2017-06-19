@@ -102,6 +102,7 @@ GrxColor grx_color_alloc_inline(guint8 r, guint8 g, guint8 b);
 GrxColor grx_color_alloc2(guint32 hcolor);
 GrxColor grx_color_alloc2_inline(guint32 hcolor);
 void grx_color_free(GrxColor c);
+GrxColor grx_color_lookup(GArray *table, guint index);
 
 GrxColor grx_color_get_value(GrxColor c);
 GrxColorMode grx_color_get_mode(GrxColor c);
@@ -249,6 +250,7 @@ void     grx_color_info_save_colors(gpointer buffer);
 void     grx_color_info_restore_colors(gpointer buffer);
 
 #ifndef GRX_SKIP_INLINES
+#define grx_color_lookup(t,i)          (((i) < (t)->len) ? g_array_index((t), GrxColor, (i)) : GRX_COLOR_NONE)
 #define grx_color_get_value(c)         ((GrxColor)(c) & GRX_COLOR_VALUE_MASK)
 #define grx_color_get_mode(c)          ((GrxColor)(c) & GRX_COLOR_MODE_MASK)
 #define grx_color_to_write_mode(c)     (grx_color_get_value(c) | GRX_COLOR_MODE_WRITE)
@@ -343,22 +345,5 @@ void     grx_color_info_restore_colors(gpointer buffer);
     *(hcolor) = 0;                                                             \
 } while(0)
 #endif  /* GRX_SKIP_INLINES */
-
-/*
- * color table (for primitives using several colors):
- *   it is an array of colors with the first element being
- *   the number of colors in the table
- */
-typedef GrxColor *GrxColorTable;
-
-#define GRX_COLOR_TABLE_GET_SIZE(table) (                                      \
-        (table) ? (unsigned int)((table)[0]) : 0U                              \
-)
-#define GRX_COLOR_TABLE_GET_COLOR(table,index) (                               \
-        ((unsigned)(index) < GRX_COLOR_TABLE_GET_SIZE(table)) ?                \
-        (table)[((unsigned)(index)) + 1] :                                     \
-        GRX_COLOR_NONE                                                         \
-)
-#define GRX_COLOR_TABLE_GET_ALLOC_SIZE(ncolors)    ((ncolors) + 1)
 
 #endif /* __GRX_COLOR_H__ */

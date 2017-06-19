@@ -35,7 +35,7 @@ G_DEFINE_BOXED_TYPE (GrxCursor, grx_cursor, grx_cursor_ref, grx_cursor_unref);
  * @height: height of cursor in pixels
  * @x0: hot point of cursor x coordinate
  * @y0: hot point of cursor y coordinate
- * @colors: color table for pixel data
+ * @colors: (element-type GrxColor): color table for pixel data
  *
  * Create a new cursor using the data provided.
  *
@@ -47,7 +47,7 @@ G_DEFINE_BOXED_TYPE (GrxCursor, grx_cursor, grx_cursor_ref, grx_cursor_unref);
  * Returns: (transfer full) (nullable): the new cursor or %NULL if creating the
  * cursor failed.
  */
-GrxCursor *grx_cursor_new(unsigned char *pixels,int pitch,int w,int h,int xo,int yo,const GrxColorTable C)
+GrxCursor *grx_cursor_new(unsigned char *pixels,int pitch,int w,int h,int xo,int yo,const GArray *C)
 {
         GrxCursor  *curs;
         GrxContext  save;
@@ -74,7 +74,7 @@ GrxCursor *grx_cursor_new(unsigned char *pixels,int pitch,int w,int h,int xo,int
         for(yy = 0; yy < h; yy++) {
             unsigned char *p = (unsigned char *)pixels + (yy * pitch);
             for(xx = 0; xx < w; xx++,p++) {
-                if(*p) grx_fast_draw_pixel(xx,yy,grx_color_get_value(GRX_COLOR_TABLE_GET_COLOR(C,(*p - 1))));
+                if(*p) grx_fast_draw_pixel(xx,yy,grx_color_get_value(grx_color_lookup(C,(*p - 1))));
                 else   grx_fast_draw_pixel((xx + wrkw2),yy,grx_color_get_value(-1L));
             }
         }
