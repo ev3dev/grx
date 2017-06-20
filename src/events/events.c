@@ -199,6 +199,21 @@ void grx_event_free (GrxEvent *event)
     g_slice_free (GrxEvent, event);
 }
 
+/**
+ * grx_event_get_event_type:
+ * @event: the event
+ *
+ * Gets the type of event.
+ *
+ * Returns: the event type
+ */
+GrxEventType grx_event_get_event_type(GrxEvent *event)
+{
+    g_return_val_if_fail (event != NULL, GRX_EVENT_TYPE_NONE);
+
+    return event->type;
+}
+
 /* source implementation */
 
 static gboolean source_prepare (GSource *source, gint *timeout)

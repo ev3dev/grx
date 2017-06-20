@@ -173,6 +173,8 @@ void grx_event_put (GrxEvent *event);
 GrxEvent *grx_event_copy (GrxEvent *event);
 void grx_event_free (GrxEvent *event);
 
+GrxEventType grx_event_get_event_type(GrxEvent *event);
+
 /**
  * GrxEventSourceFunc:
  * @event: pointer to the event
