@@ -3401,6 +3401,9 @@ namespace Grx {
     [CCode (has_type_id = false)]
     public enum EventType {
         NONE,
+        APP_ACTIVATE,
+        APP_DEACTIVATE,
+        APP_QUIT,
         KEY_UP,
         KEY_DOWN,
         POINTER_MOTION,
