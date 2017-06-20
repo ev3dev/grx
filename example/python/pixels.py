@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# lines.py - Draws random pixels
+# pixels.py - Draws random pixels
 #
 # Copyright (c) 2017 David Lechner <david@lechnology.com>
 # This file is part of the GRX graphics library.
