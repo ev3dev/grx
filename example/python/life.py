@@ -35,6 +35,7 @@ class Life(Grx.Application):
     def __init__(self):
         super(Grx.Application, self).__init__()
         self.init()
+        self.hold()
         Grx.mouse_set_cursor(None)
         self.source_id = 0
         self.width = Grx.get_width()

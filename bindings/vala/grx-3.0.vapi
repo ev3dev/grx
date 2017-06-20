@@ -3468,7 +3468,8 @@ namespace Grx {
     }
 
     public class Application : GLib.Application, GLib.Initable {
-        public Application.new (GLib.Cancellable? cancellable = null) throws GLib.Error;
+        [CCode (cname = "grx_application_new_full")]
+        public Application (string? id = null, GLib.ApplicationFlags flags = GLib.ApplicationFlags.FLAGS_NONE) throws GLib.Error;
         public bool init (GLib.Cancellable? cancellable = null) throws GLib.Error;
         public virtual void input_event (Event event);
         public bool is_active { [CCode (cname = "grx_application_is_active")]get; }

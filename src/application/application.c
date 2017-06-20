@@ -1,7 +1,7 @@
 /*
  * application.c - GRX Application
  *
- * Copyright (c) 2016 David Lechner <david@lechnology.com>
+ * Copyright (c) 2016-2017 David Lechner <david@lechnology.com>
  *
  * This file is part of the GRX graphics library.
  *
@@ -42,6 +42,7 @@
 
 typedef struct {
     gboolean active;
+    guint event_source_id;
 } GrxApplicationPrivate;
 
 static void initable_interface_init (GInitableIface *iface);
@@ -109,48 +110,6 @@ get_property (GObject *object, guint property_id, GValue *value,
 
 /* class implementation */
 
-static void startup (GApplication *application)
-{
-    G_APPLICATION_CLASS (grx_application_parent_class)->
-        startup (application);
-
-    /* We aren't using the hold count feature, so this is never released */
-    g_application_hold (application);
-}
-
-static void
-input_event (GrxApplication *application, GrxEvent *event)
-{
-}
-
-static void
-grx_application_class_init (GrxApplicationClass *klass)
-{
-    G_OBJECT_CLASS (klass)->set_property = set_property;
-    G_OBJECT_CLASS (klass)->get_property = get_property;
-
-    properties[PROP_IS_ACTIVE] =
-        g_param_spec_boolean ("is-active",
-                              "application is active",
-                              "Gets if the application is active.",
-                              FALSE /* default value */,
-                              G_PARAM_READABLE);
-    g_object_class_install_properties (G_OBJECT_CLASS (klass),
-                                       N_PROPERTIES,
-                                       properties);
-
-    G_APPLICATION_CLASS (klass)->startup = startup;
-
-    klass->input_event = input_event;
-}
-
-static void
-grx_application_init (GrxApplication *self)
-{
-}
-
-/* interface implementation */
-
 static void event_handler (GrxEvent *event, gpointer user_data)
 {
     GrxApplication *self = user_data;
@@ -185,27 +144,64 @@ static void event_handler (GrxEvent *event, gpointer user_data)
     }
 }
 
-static void weak_notify (gpointer data, GObject *self)
+static void startup (GApplication *application)
 {
-    guint source_id = GPOINTER_TO_UINT (data);
+    GrxApplicationPrivate *priv =
+        grx_application_get_instance_private (GRX_APPLICATION (application));
 
-    g_source_remove (source_id);
+    G_APPLICATION_CLASS (grx_application_parent_class)->startup (application);
+
+    priv->event_source_id = grx_events_add (event_handler, application, NULL);
 }
+
+static void shutdown (GApplication *application)
+{
+    GrxApplicationPrivate *priv =
+        grx_application_get_instance_private (GRX_APPLICATION (application));
+
+    G_APPLICATION_CLASS (grx_application_parent_class)->shutdown (application);
+
+    g_source_remove (priv->event_source_id);
+}
+
+static void
+input_event (GrxApplication *application, GrxEvent *event)
+{
+}
+
+static void
+grx_application_class_init (GrxApplicationClass *klass)
+{
+    G_OBJECT_CLASS (klass)->set_property = set_property;
+    G_OBJECT_CLASS (klass)->get_property = get_property;
+
+    properties[PROP_IS_ACTIVE] =
+        g_param_spec_boolean ("is-active",
+                              "application is active",
+                              "Gets if the application is active.",
+                              FALSE /* default value */,
+                              G_PARAM_READABLE);
+    g_object_class_install_properties (G_OBJECT_CLASS (klass),
+                                       N_PROPERTIES,
+                                       properties);
+
+    G_APPLICATION_CLASS (klass)->startup = startup;
+    G_APPLICATION_CLASS (klass)->shutdown = shutdown;
+
+    klass->input_event = input_event;
+}
+
+static void
+grx_application_init (GrxApplication *self)
+{
+}
+
+/* interface implementation */
 
 static gboolean init (GInitable *initable, GCancellable *cancellable,
                       GError **error)
 {
-    GrxApplication *self = GRX_APPLICATION (initable);
-    guint source_id;
-
-    if (!grx_set_mode_default_graphics (TRUE, error)) {
-        return FALSE;
-    }
-
-    source_id = grx_events_add (event_handler, self, NULL);
-    g_object_weak_ref (G_OBJECT (self), weak_notify, GUINT_TO_POINTER (source_id));
-
-    return g_application_register (G_APPLICATION (initable), cancellable, error);
+    return grx_set_mode_default_graphics (TRUE, error);
 }
 
 static void initable_interface_init (GInitableIface *iface)
@@ -217,7 +213,6 @@ static void initable_interface_init (GInitableIface *iface)
 
 /**
  * grx_application_new:
- * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: a pointer to a NULL #GError, or %NULL
  *
  * Create a new instance of #GrxApplication. The console will be
@@ -228,7 +223,29 @@ static void initable_interface_init (GInitableIface *iface)
  * if init() failed.
  */
 GrxApplication *
-grx_application_new (GCancellable *cancellable, GError **error)
+grx_application_new (GError **error)
 {
-    return g_initable_new (GRX_TYPE_APPLICATION, cancellable, error, NULL);
+    return g_initable_new (GRX_TYPE_APPLICATION, NULL, error, NULL);
+}
+
+/**
+ * grx_application_new_full:
+ * @id: (nullable): the application id or %NULL
+ * @flags: the application flags
+ * @error: a pointer to a NULL #GError, or %NULL
+ *
+ * Create a new instance of #GrxApplication. The console will be
+ * set to graphics mode or there will be an @error if setting graphics mode
+ * failed.
+ *
+ * Returns: (nullable): New instance of #GrxApplication or %NULL
+ * if init() failed.
+ */
+GrxApplication *
+grx_application_new_full (const gchar *id, GApplicationFlags flags, GError **error)
+{
+    g_return_val_if_fail(id != NULL && !g_application_id_is_valid(id), NULL);
+
+    return g_initable_new (GRX_TYPE_APPLICATION, NULL, error, "application-id",
+                           id, "flags", flags, NULL);
 }

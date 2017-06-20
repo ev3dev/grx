@@ -30,6 +30,7 @@ class App(Grx.Application):
     def __init__(self):
         super(Grx.Application, self).__init__()
         self.init()  # sets up graphics driver/mode
+        self.hold()  # keeps the application running
         self.colors = OrderedDict([
             ('red', Grx.color_alloc(255, 0, 0)),
             ('green', Grx.color_alloc(0, 255, 0)),

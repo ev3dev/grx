@@ -1,7 +1,7 @@
 /*
  * application.h - GRX Application
  *
- * Copyright (c) 2016 David Lechner <david@lechnology.com>
+ * Copyright (c) 2016-2017 David Lechner <david@lechnology.com>
  *
  * This file is part of the GRX graphics library.
  *
@@ -68,7 +68,9 @@ struct _GrxApplicationClass {
 };
 
 GrxApplication *
-grx_application_new (GCancellable *cancellable, GError **error);
+grx_application_new (GError **error);
+GrxApplication *
+grx_application_new_full (const gchar *id, GApplicationFlags flags, GError **error);
 
 gboolean
 grx_application_is_active (GrxApplication *application);

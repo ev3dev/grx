@@ -28,6 +28,7 @@ class LifeApplication : Grx.Application {
     public LifeApplication () throws GLib.Error {
         Object ();
         init ();
+        hold ();
         Mouse.set_cursor(null);
         state = new char[2, get_width (), get_height ()];
         color = { Color.BLACK, Color.WHITE };

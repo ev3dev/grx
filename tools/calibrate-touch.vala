@@ -57,6 +57,7 @@ public class CalibrateApplication : Grx.Application {
     public CalibrateApplication () throws GLib.Error {
         Object ();
         init ();
+        hold ();
         device_manager = get_device_manager ();
         width = get_screen_width ();
         height = get_screen_height ();

@@ -32,6 +32,7 @@ class App(Grx.Application):
     def __init__(self):
         super(Grx.Application, self).__init__()
         self.init()
+        self.hold()
 
     def do_activate(self):
         """called when the application starts

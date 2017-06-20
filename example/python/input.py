@@ -27,6 +27,7 @@ class InputApplication(Grx.Application):
     def __init__(self):
         super(Grx.Application, self).__init__()
         self.init()
+        self.hold()
         self.color = Grx.color_get_white()
         self.last_touch = None
 
@@ -42,7 +43,7 @@ class InputApplication(Grx.Application):
             print("key unichar", key_event.unichar)
             print("key code", key_event.code)
             if key_event.keysym in (Grx.KEY_q, Grx.KEY_BackSpace, Grx.KEY_Escape):
-                quit()
+                self.quit()
         elif t == Grx.EventType.BUTTON_PRESS or t == Grx.EventType.BUTTON_RELEASE:
             button_event = event.button
             print("button", button_event.button)

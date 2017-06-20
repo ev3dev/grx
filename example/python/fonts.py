@@ -32,6 +32,7 @@ class App(Grx.Application):
     def __init__(self):
         super(Grx.Application, self).__init__()
         self.init()
+        self.hold()
         self.WHITE = Grx.color_get_white()
         self.BLACK = Grx.color_get_black()
         fc_list = check_output(['fc-list', '--format=%{file}\n', ':scalable=False'])
