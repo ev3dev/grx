@@ -14,7 +14,7 @@ fi
 
 mkdir build-doc
 cd build-doc
-cmake -D CMAKE_BUILD_TYPE=Release ..
+cmake -D CMAKE_BUILD_TYPE=Release -D GTKDOC_REBASE_ONLINE=Yes ..
 make doc
 mkdir git
 cd git
