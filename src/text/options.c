@@ -42,7 +42,7 @@ GrxTextOptions *grx_text_options_new(GrxFont *font, GrxColor fg)
 }
 
 /**
- * grx_text_options_new_full_full:
+ * grx_text_options_new_full:
  * @font: the font
  * @fg: the forground color
  * @bg: the background color

@@ -39,9 +39,8 @@ class App(Grx.Application):
         self.font_files = [f for f in fc_list.decode().splitlines()]
         self.font_files.sort()
         self.default_font = Grx.TextOptions.new_full(
-            # Grx.font_load('lucida', 10),
             # Don't want to use the dpi-aware font here so we can cram info on to small screens
-            Grx.font_load_full('lucida', 10, -1, Grx.FontWeight.REGULAR,
+            Grx.Font.load_full('lucida', 10, -1, Grx.FontWeight.REGULAR,
                                Grx.FontSlant.REGULAR, Grx.FontWidth.REGULAR, False, None),
             self.BLACK, self.WHITE,
             Grx.TextHAlign.LEFT, Grx.TextVAlign.TOP)

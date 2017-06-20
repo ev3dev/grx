@@ -440,7 +440,7 @@ namespace Grx {
     /*
      * inquiry stuff
      */
-
+    public uint get_dpi ();
     public unowned VideoDriver get_current_video_driver ();
     public unowned DeviceManager get_device_manager ();
     public unowned VideoMode get_current_video_mode ();
@@ -722,8 +722,8 @@ namespace Grx {
     [CCode (copy_function = "grx_font_ref", free_function = "grx_font_unref")]
     [Compact]
     public class Font {
-        public static Font load (string? family = null, int size = -1) throws GLib.Error;
-        public static Font load_full (string? family = null, int size = -1, int dpi = -1,
+        [CCode (cname = "grx_font_load_full")]
+        public static Font load (string? family = null, int size = -1, int dpi = (int)get_dpi (),
             FontWeight weight = FontWeight.REGULAR, FontSlant slant = FontSlant.REGULAR,
             FontWidth width = FontWidth.REGULAR, bool monospace = false, string? lang = null,
             string? script = null) throws GLib.Error;

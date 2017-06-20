@@ -55,6 +55,7 @@ class App(Grx.Application):
         self.font_index = 0
         self.next_index = 0
         self.prev_index = []
+        self.default_font = Grx.TextOptions.new(Grx.font_load('lucida', 10), self.BLACK)
 
     def do_activate(self):
         self.show_next_font(0)
@@ -69,7 +70,7 @@ class App(Grx.Application):
         offset = 0
         try:
             for item in self.FONT_TABLE:
-                font = Grx.font_load_full(
+                font = Grx.Font.load_full(
                     None, self.FONT_SIZE, Grx.get_dpi(), Grx.FontWeight.REGULAR,
                     Grx.FontSlant.REGULAR, Grx.FontWidth.REGULAR, False, item[0], item[1])
                 text_opt = Grx.TextOptions.new_full(
