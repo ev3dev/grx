@@ -160,9 +160,9 @@ libgrx-3.0.so.0 libgrx-3.0-0 #MINVER#
  grx_event_new@Base 2.99.8
  grx_event_peek@Base 2.99.8
  grx_event_put@Base 2.99.8
- grx_events_add@Base 2.99.8
+ grx_event_handler_add@Base 2.99.8
  grx_events_pending@Base 2.99.8
- grx_events_source_new@Base 2.99.8
+ grx_event_handler_source_new@Base 2.99.8
  grx_fast_bit_blt@Base 2.99.8
  grx_fast_draw_box@Base 2.99.8
  grx_fast_draw_filled_box@Base 2.99.8

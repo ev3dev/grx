@@ -176,16 +176,16 @@ void grx_event_free (GrxEvent *event);
 GrxEventType grx_event_get_event_type(GrxEvent *event);
 
 /**
- * GrxEventSourceFunc:
+ * GrxEventHandlerFunc:
  * @event: pointer to the event
  * @user_data: data passed to the function, set when the source was created
  *
- * Specifies the type of function passed to grx_events_add().
+ * Specifies the type of function passed to grx_event_handler_add().
  */
-typedef void (*GrxEventSourceFunc)(GrxEvent *event, gpointer user_data);
+typedef void (*GrxEventHandlerFunc)(GrxEvent *event, gpointer user_data);
 
-GSource *grx_events_source_new ();
-guint grx_events_add (GrxEventSourceFunc callback, gpointer user_data,
-                      GDestroyNotify notify);
+GSource *grx_event_handler_source_new (void);
+guint grx_event_handler_add (GrxEventHandlerFunc callback, gpointer user_data,
+                             GDestroyNotify notify);
 
 #endif /* __GRX_EVENT_H__ */

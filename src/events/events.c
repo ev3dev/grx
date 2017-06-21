@@ -238,7 +238,7 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
     }
 
     if (callback) {
-        ((GrxEventSourceFunc)callback) (event, user_data);
+        ((GrxEventHandlerFunc)callback) (event, user_data);
     }
 
     grx_event_free (event);
@@ -254,24 +254,26 @@ static GSourceFuncs source_funcs = {
 };
 
 /**
- * grx_events_source_new:
+ * grx_event_handler_source_new:
  *
  * Creates a new source that will be dispatched when events occur.
  *
  * The source will not initially be associated with any #GMainContext and must
- * be added to one with g_source_attach() before it will be executed.
+ * be added to one with g_source_attach() before it will be executed. The
+ * callback function (set with g_source_set_callback()) is expected to be a
+ * #GrxEventHandlerFunc.
  *
- * Generally, you will want to use grx_events_add() instead.
+ * Generally, you will want to use grx_event_handler_add() instead.
  *
  * Returns: a new #GSource
  */
-GSource *grx_events_source_new ()
+GSource *grx_event_handler_source_new (void)
 {
     return g_source_new (&source_funcs, sizeof (GSource));
 }
 
 /**
- * grx_events_add:
+ * grx_event_handler_add:
  * @callback: the function to be called when an event occurs
  * @user_data: (transfer full) (nullable): user data passed to @callback
  * @notify: (nullable): callback to destroy @user_data when source is removed
@@ -280,13 +282,13 @@ GSource *grx_events_source_new ()
  *
  * Returns: the source id
  */
-guint grx_events_add (GrxEventSourceFunc callback, gpointer user_data,
+guint grx_event_handler_add (GrxEventHandlerFunc callback, gpointer user_data,
                       GDestroyNotify notify)
 {
     GSource *source;
     guint id;
 
-    source = grx_events_source_new ();
+    source = grx_event_handler_source_new ();
     g_source_set_callback (source, (GSourceFunc)callback, user_data, notify);
     id = g_source_attach (source, g_main_context_default ());
     g_source_unref (source);

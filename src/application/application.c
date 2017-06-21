@@ -222,7 +222,7 @@ static void startup (GApplication *application)
 
     G_APPLICATION_CLASS (grx_application_parent_class)->startup (application);
 
-    priv->event_source_id = grx_events_add (event_handler, application, NULL);
+    priv->event_source_id = grx_event_handler_add (event_handler, application, NULL);
 }
 
 static void shutdown (GApplication *application)
