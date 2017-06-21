@@ -27,8 +27,7 @@
 #include "mempeek.h"
 
 #define  MSCURSOR       (MOUINFO->cursor)
-#define  CURSORMODE     (MOUINFO->cursmode)
-#define  SPECIALMODE    (MOUINFO->cursmode != GRX_CURSOR_MODE_NORMAL)
+#define  SPECIALMODE    (MOUINFO->cursor_mode != GRX_CURSOR_MODE_NORMAL)
 #define  BLOCKED        1
 #define  ERASED         2
 
@@ -41,7 +40,7 @@ static void draw_special(void)
         MOUINFO->docheck = FALSE;
         grx_save_current_context(&csave);
         grx_set_current_context(SCRN);
-        switch(CURSORMODE) {
+        switch(MOUINFO->cursor_mode) {
           case GRX_CURSOR_MODE_RUBBER:
             grx_draw_box(xpos,ypos,MOUINFO->x1,MOUINFO->y1,MOUINFO->curscolor);
             break;
@@ -54,6 +53,8 @@ static void draw_special(void)
                 (xpos + MOUINFO->x2),(ypos + MOUINFO->y2),
                 MOUINFO->curscolor
             );
+            break;
+          default:
             break;
         }
         grx_set_current_context(&csave);
@@ -92,25 +93,40 @@ static void erase_mouse(void)
         MOUINFO->docheck = check;
 }
 
-void _grx_mouse_show_cursor(void)
+static void enable_mouse_cursor(void)
 {
-        if(MOUINFO->cursor    == NULL)  return;
-        if(MOUINFO->displayed != FALSE) return;
-        move_mouse();
-        draw_mouse();
-        MOUINFO->displayed = TRUE;
-        MOUINFO->docheck   = TRUE;
-        MOUINFO->blockflag = 0;
+    if (!MOUINFO->cursor) {
+        return;
+    }
+    if (MOUINFO->enabled) {
+        return;
+    }
+    MOUINFO->enabled = TRUE;
+    if (MOUINFO->displayed) {
+        return;
+    }
+    MOUINFO->docheck = TRUE;
+    MOUINFO->blockflag = 0;
 }
 
-void _grx_mouse_hide_cursor(void)
+static void disable_mouse_cursor(void)
 {
-        if(MOUINFO->cursor    == NULL)  return;
-        if(MOUINFO->displayed == FALSE) return;
-        if(MOUINFO->blockflag != 0)     return;
-        MOUINFO->displayed = FALSE;
-        MOUINFO->docheck   = FALSE;
-        erase_mouse();
+    if (!MOUINFO->cursor) {
+        return;
+    }
+    if (!MOUINFO->enabled) {
+        return;
+    }
+    if (MOUINFO->blockflag) {
+        return;
+    }
+    MOUINFO->enabled = FALSE;
+    if (!MOUINFO->displayed) {
+        return;
+    }
+    MOUINFO->displayed = FALSE;
+    MOUINFO->docheck = FALSE;
+    erase_mouse();
 }
 
 /**
@@ -205,13 +221,13 @@ void grx_mouse_set_cursor_mode(int mode,...)
             MOUINFO->y2        = va_arg(ap,int);
           case GRX_CURSOR_MODE_RUBBER:
           case GRX_CURSOR_MODE_LINE:
-            MOUINFO->cursmode  = mode;
+            MOUINFO->cursor_mode  = mode;
             MOUINFO->x1        = va_arg(ap,int);
             MOUINFO->y1        = va_arg(ap,int);
             MOUINFO->curscolor = grx_color_to_xor_mode(va_arg(ap,GrxColor));
             break;
           default:
-            MOUINFO->cursmode  = GRX_CURSOR_MODE_NORMAL;
+            MOUINFO->cursor_mode  = GRX_CURSOR_MODE_NORMAL;
             break;
         }
         va_end(ap);
@@ -234,7 +250,7 @@ static int block(GrxContext *c,int x1,int y1,int x2,int y2)
         my2 = MSCURSOR->ywork + my1 - 1;
         if(SPECIALMODE) {
             int cx1,cy1,cx2,cy2;
-            switch(CURSORMODE) {
+            switch(MOUINFO->cursor_mode) {
               case GRX_CURSOR_MODE_RUBBER:
               case GRX_CURSOR_MODE_LINE:
                 cx1 = MSCURSOR->xcord;
@@ -292,9 +308,16 @@ static void unblock(unsigned int flags)
 
 void _grx_mouse_update_cursor(void)
 {
-        if(MOUINFO->displayed && !MOUINFO->blockflag) {
-            move_mouse();
-        }
+    if (MOUINFO->blockflag) {
+        return;
+    }
+    if G_UNLIKELY(MOUINFO->enabled && !MOUINFO->displayed) {
+        MOUINFO->displayed = TRUE;
+        draw_mouse();
+    }
+    if (MOUINFO->displayed) {
+        move_mouse();
+    }
 }
 
 static void handle_device_added(GrxDeviceManager *device_manager,
@@ -302,8 +325,8 @@ static void handle_device_added(GrxDeviceManager *device_manager,
                                 gpointer user_data)
 {
     if (grx_device_get_has_pointer(device)) {
-        if (!MOUINFO->pointer_device_count) {
-            _grx_mouse_show_cursor();
+        if (MOUINFO->pointer_device_count == 0) {
+            enable_mouse_cursor();
         }
         MOUINFO->pointer_device_count++;
     }
@@ -315,8 +338,8 @@ static void handle_device_removed(GrxDeviceManager *device_manager,
 {
     if (grx_device_get_has_pointer(device)) {
         MOUINFO->pointer_device_count--;
-        if (!MOUINFO->pointer_device_count) {
-            _grx_mouse_hide_cursor();
+        if (MOUINFO->pointer_device_count == 0) {
+            disable_mouse_cursor();
         }
     }
 }
@@ -344,7 +367,7 @@ void _GrInitMouseCursor(void)
             MOUINFO->device_removed_handler = 0;
             MOUINFO->device_manager = NULL;
         }
-        MOUINFO->cursmode  = GRX_CURSOR_MODE_NORMAL;
+        MOUINFO->cursor_mode  = GRX_CURSOR_MODE_NORMAL;
         MOUINFO->displayed = FALSE;
         MOUINFO->blockflag = 0;
         MOUINFO->docheck   = FALSE;

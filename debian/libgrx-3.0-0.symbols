@@ -9,8 +9,6 @@ libgrx-3.0.so.0 libgrx-3.0-0 #MINVER#
  (optional)_GrInitMouseCursor@Base 2.99.8
  (optional)_GrMouseInfo@Base 2.99.8
  (optional)_gr_select_mode@Base 2.99.8
- (optional)_grx_mouse_hide_cursor@Base 2.99.8
- (optional)_grx_mouse_show_cursor@Base 2.99.8
  (optional)_grx_mouse_update_cursor@Base 2.99.8
  grx_application_get_type@Base 2.99.8
  grx_application_is_active@Base 2.99.8

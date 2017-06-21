@@ -86,10 +86,11 @@ extern const struct _GR_mouseInfo {
     gint   (*block)(GrxContext*,gint,gint,gint,gint); /* mouse block function */
     void  (*unblock)(guint flags); /* mouse unblock function */
     GrxCursor *cursor;             /* the mouse cursor */
+    gboolean enabled;              /* the cursor is enabled, but possibly not displayed */
     gboolean displayed;            /* cursor is (generally) drawn */
     guint    blockflag;            /* cursor temp. erase/block flag */
     gboolean docheck;              /* need to check before gr. op. to screen */
-    guint    cursmode;             /* mouse cursor draw mode */
+    GrxCursorMode cursor_mode;     /* mouse cursor draw mode */
     gint     x1,y1,x2,y2;          /* auxiliary params for some cursor draw modes */
     GrxColor curscolor;            /* color for some cursor draw modes */
     gint     xpos,ypos;            /* current mouse position */
@@ -106,8 +107,6 @@ GrxCursor *grx_mouse_get_cursor(void);
 void grx_mouse_set_cursor(GrxCursor *cursor);
 void grx_mouse_set_cursor_default(GrxColor fill_color, GrxColor border_color);
 void grx_mouse_set_cursor_mode(int mode, ...);
-void _grx_mouse_show_cursor(void);
-void _grx_mouse_hide_cursor(void);
 void _grx_mouse_update_cursor(void);
 gboolean grx_mouse_is_cursor_shown(void);
 
