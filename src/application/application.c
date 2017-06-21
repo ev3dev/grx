@@ -15,6 +15,7 @@
  */
 
 #include <glib.h>
+#include <glib-unix.h>
 #include <gio/gio.h>
 
 #include <grx/context.h>
@@ -43,6 +44,9 @@
 typedef struct {
     gboolean active;
     guint event_source_id;
+    guint sighup_source_id;
+    guint sigint_source_id;
+    guint sigterm_source_id;
 } GrxApplicationPrivate;
 
 static void initable_interface_init (GInitableIface *iface);
@@ -57,6 +61,7 @@ G_DEFINE_TYPE_WITH_CODE (GrxApplication,
 enum {
     PROP_0,
     PROP_IS_ACTIVE,
+    PROP_QUIT_ON_SIGNAL,
     N_PROPERTIES
 };
 
@@ -79,11 +84,74 @@ grx_application_is_active (GrxApplication *application)
     return priv->active;
 }
 
+/**
+ * grx_application_get_quit_on_signal:
+ * @application: a #GrxApplication
+ *
+ * Gets the "quit-on-signal" property value.
+ *
+ * Returns: %TRUE if the @application will quit when SIGHUP, SIGINT or SIGTERM
+ * is received, otherwise %FALSE.
+ */
+gboolean
+grx_application_get_quit_on_signal (GrxApplication *application)
+{
+    GrxApplicationPrivate *priv = grx_application_get_instance_private (application);
+
+    return priv->sighup_source_id != 0;
+}
+
+/**
+ * grx_application_set_quit_on_signal:
+ * @application: a #GrxApplication
+ * @value: %TRUE will cause the application to queue a %GRX_EVENT_TYPE_APP_QUIT
+ * event when SIGHUP, SIGINT or SIGTERM is received. %FALSE will remove the
+ * signal handlers.
+ *
+ * Sets the "quit-on-signal" property value.
+ */
+void
+grx_application_set_quit_on_signal (GrxApplication *application, gboolean value)
+{
+    static GrxEvent quit_event = { .type = GRX_EVENT_TYPE_APP_QUIT };
+
+    GrxApplicationPrivate *priv = grx_application_get_instance_private (application);
+
+    if (value) {
+        if (priv->sighup_source_id == 0) {
+            priv->sighup_source_id = g_unix_signal_add (SIGHUP, (GSourceFunc)grx_event_put, &quit_event);
+        }
+        if (priv->sigint_source_id == 0) {
+            priv->sigint_source_id = g_unix_signal_add (SIGINT, (GSourceFunc)grx_event_put, &quit_event);
+        }
+        if (priv->sigterm_source_id == 0) {
+            priv->sigterm_source_id = g_unix_signal_add (SIGTERM, (GSourceFunc)grx_event_put, &quit_event);
+        }
+    }
+    else {
+        if (priv->sighup_source_id != 0) {
+            g_source_remove (priv->sighup_source_id);
+            priv->sighup_source_id = 0;
+        }
+        if (priv->sigint_source_id != 0) {
+            g_source_remove (priv->sigint_source_id);
+            priv->sigint_source_id = 0;
+        }
+        if (priv->sigterm_source_id != 0) {
+            g_source_remove (priv->sigterm_source_id);
+            priv->sigterm_source_id = 0;
+        }
+    }
+}
+
 static void
 set_property (GObject *object, guint property_id, const GValue *value,
               GParamSpec *pspec)
 {
     switch (property_id) {
+    case PROP_QUIT_ON_SIGNAL:
+        grx_application_set_quit_on_signal (GRX_APPLICATION (object), g_value_get_boolean (value));
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         break;
@@ -101,6 +169,9 @@ get_property (GObject *object, guint property_id, GValue *value,
     switch (property_id) {
     case PROP_IS_ACTIVE:
         g_value_set_boolean (value, priv->active);
+        break;
+    case PROP_QUIT_ON_SIGNAL:
+        g_value_set_boolean (value, grx_application_get_quit_on_signal (GRX_APPLICATION (object)));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -180,7 +251,13 @@ grx_application_class_init (GrxApplicationClass *klass)
                               "application is active",
                               "Gets if the application is active.",
                               FALSE /* default value */,
-                              G_PARAM_READABLE);
+                              G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+    properties[PROP_QUIT_ON_SIGNAL] =
+        g_param_spec_boolean ("quit-on-signal",
+                              "application will quit on signal",
+                              "Gets or sets if the application will queue a GRX_EVENT_TYPE_APP_QUIT event when SIGHUP, SIGINT or SIGTERM is received.",
+                              TRUE /* default value */,
+                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
     g_object_class_install_properties (G_OBJECT_CLASS (klass),
                                        N_PROPERTIES,
                                        properties);

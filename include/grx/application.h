@@ -74,5 +74,9 @@ grx_application_new_full (const gchar *id, GApplicationFlags flags, GError **err
 
 gboolean
 grx_application_is_active (GrxApplication *application);
+gboolean
+grx_application_get_quit_on_signal (GrxApplication *application);
+void
+grx_application_set_quit_on_signal (GrxApplication *application, gboolean value);
 
 #endif /* __GRX_APPLICATION_H__ */
