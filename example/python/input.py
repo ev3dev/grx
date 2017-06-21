@@ -19,6 +19,8 @@
 #
 
 import gi
+gi.require_version('GLib', '2.0')
+from gi.repository import GLib
 gi.require_version('Grx', '3.0')
 from gi.repository import Grx
 
@@ -62,5 +64,7 @@ class InputApplication(Grx.Application):
             self.last_touch = (touch_event.x, touch_event.y)
 
 if __name__ == '__main__':
+    GLib.set_prgname('input.py')
+    GLib.set_application_name('GRX3 Input Demo')
     app = InputApplication()
     app.run()

@@ -21,6 +21,8 @@
 import random
 
 import gi
+gi.require_version('GLib', '2.0')
+from gi.repository import GLib
 gi.require_version('Grx', '3.0')
 from gi.repository import Grx
 
@@ -57,5 +59,7 @@ class App(Grx.Application):
             self.quit()
 
 if __name__ == '__main__':
+    GLib.set_prgname('lines.py')
+    GLib.set_application_name('GRX3 Line Drawing Demo')
     app = App()
     app.run()

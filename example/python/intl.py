@@ -29,57 +29,55 @@ from gi.repository import GLib
 gi.require_version('Grx', '3.0')
 from gi.repository import Grx
 
+FONT_TABLE = (
+    # (<language code>, <script code>, <hello world>)
+    ('en', None, 'Hello world'),
+    ('zh-cn', None, '你好，世界'),
+    ('ja', None, 'こんにちは世界'),
+    ('ko', None, '안녕 세상'),
+    ('ru', None, 'Привет мир'),
+    ('el', None, 'Γειά σου Κόσμε'),
+    ('vi', None, 'Chào thế giới'),
+    ('hi', None, 'नमस्ते दुनिया'),
+    ('ka', None, 'გამარჯობა მსოფლიო'),
+    (None, 'Runr', 'ᚻᛖᛚᛚᚩ ᚹᚩᚱᛚᛞ'),
+)
+FONT_SIZE = 12
+
 
 class App(Grx.Application):
-    FONT_TABLE = (
-        # (<language code>, <script code>, <hello world>)
-        ('en', None, 'Hello world'),
-        ('zh-cn', None, '你好，世界'),
-        ('ja', None, 'こんにちは世界'),
-        ('ko', None, '안녕 세상'),
-        ('ru', None, 'Привет мир'),
-        ('el', None, 'Γειά σου Κόσμε'),
-        ('vi', None, 'Chào thế giới'),
-        ('hi', None, 'नमस्ते दुनिया'),
-        ('ka', None, 'გამარჯობა მსოფლიო'),
-        (None, 'Runr', 'ᚻᛖᛚᛚᚩ ᚹᚩᚱᛚᛞ'),
-    )
-    FONT_SIZE = 12
-
     def __init__(self):
         super(Grx.Application, self).__init__()
         self.init()
         self.hold()
         self.WHITE = Grx.color_get_white()
         self.BLACK = Grx.color_get_black()
-        self.font_index = 0
-        self.next_index = 0
-        self.prev_index = []
         self.default_font = Grx.TextOptions.new(Grx.font_load('lucida', 10), self.BLACK)
 
     def do_activate(self):
-        self.show_next_font(0)
+        Grx.clear_screen(self.WHITE)
+        offset = 0
+        try:
+            for item in FONT_TABLE:
+                font = Grx.Font.load_full(
+                    None, FONT_SIZE, Grx.get_dpi(), Grx.FontWeight.REGULAR,
+                    Grx.FontSlant.REGULAR, Grx.FontWidth.REGULAR, False, item[0], item[1])
+                text_opt = Grx.TextOptions.new_full(
+                    font, self.BLACK, self.WHITE, Grx.TextHAlign.CENTER, Grx.TextVAlign.TOP)
+                Grx.draw_text(item[2], Grx.get_width() / 2, offset, text_opt)
+                offset += font.get_height()
+        except GLib.Error as err:
+            Grx.draw_text(str(err), 10, 10, self.default_font)
+            print(err)
 
     def do_input_event(self, event):
         if event.type == Grx.EventType.KEY_DOWN:
             if event.key.keysym in (Grx.KEY_q, Grx.KEY_BackSpace, Grx.KEY_Escape):
                 self.quit()
 
-    def show_next_font(self, start_index):
-        Grx.clear_screen(self.WHITE)
-        offset = 0
-        try:
-            for item in self.FONT_TABLE:
-                font = Grx.Font.load_full(
-                    None, self.FONT_SIZE, Grx.get_dpi(), Grx.FontWeight.REGULAR,
-                    Grx.FontSlant.REGULAR, Grx.FontWidth.REGULAR, False, item[0], item[1])
-                text_opt = Grx.TextOptions.new_full(
-                    font, self.BLACK, self.WHITE, Grx.TextHAlign.CENTER, Grx.TextVAlign.TOP)
-                Grx.draw_text(item[2], Grx.get_width() / 2, offset, text_opt)
-                offset += font.get_height() + 0
-        except GLib.Error as err:
-            Grx.draw_text(str(err), 10, 10, self.default_font)
 
 if __name__ == '__main__':
+    GLib.set_prgname('intl.py')
+    GLib.set_application_name('GRX3 International Text Demo')
     app = App()
     app.run()

@@ -101,6 +101,9 @@ class App(Grx.Application):
         except GLib.Error as err:
             Grx.draw_text(str(err), 10, 10 + self.v_offset, self.default_font)
 
+
 if __name__ == '__main__':
+    GLib.set_prgname('fonts.py')
+    GLib.set_application_name('GRX3 Font Demo')
     app = App()
     app.run()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# life.vala - Conway's Game of Life
+# life.py - Conway's Game of Life
 #
 # Copyright (c) 2016 David Lechner <david@lechnology.com>
 # This file is part of the GRX graphics library.
@@ -47,64 +47,75 @@ class Life(Grx.Application):
 
     def on_notify_is_active(self, obj, gparamstring):
         """
-        This is to handle console switching. Basically, it pauses the program when it is not the active console.
+        This is to handle console switching. Basically, it pauses the program
+        when it is not the active console.
         """
         if self.is_active():
-            self.source_id = GLib.idle_add(self.draw)
+            self.source_id = GLib.idle_add(self._draw)
         else:
             GLib.source_remove(self.source_id)
 
     def do_activate(self):
-        self.randomize()
-
-    def do_input_event(self, event):
-        if event.type != Grx.EventType.POINTER_MOTION:
-            self.quit()
-
-    def randomize(self):
-        for y in range(self.height):
-            for x in range(self.width):
+        """This function overrides Grx.Application.activate"""
+        for x in range(self.width):
+            for y in range(self.height):
                 on = random() > 0.82
                 self.old_state[x][y] = on
                 if on:
                     Grx.fast_draw_pixel(x, y, self.color[on])
 
-    def update_state(self):
-        for y in range(self.height):
-            for x in range(self.width):
-                px = x - 1
-                if px < 0:
-                    px += self.width
-                nx = x + 1
-                if nx >= self.width:
-                    nx -= self.width
+    def do_input_event(self, event):
+        """This function overrides Grx.Application.input_event"""
+        if event.type != Grx.EventType.POINTER_MOTION:
+            self.quit()
+
+    def _update_state(self):
+        for x in range(self.width):
+            px = x - 1
+            if px < 0:
+                px += self.width
+            nx = x + 1
+            if nx >= self.width:
+                nx -= self.width
+
+            old_row_prev = self.old_state[px]
+            old_row_next = self.old_state[nx]
+            old_row = self.old_state[x]
+            new_row = self.new_state[x]
+
+            for y in range(self.height):
                 py = y - 1
                 if py < 0:
                     py += self.height
                 ny = y + 1
                 if ny >= self.height:
                     ny -= self.height
-                live_count = (self.old_state[px][py] +
-                              self.old_state[x][py] +
-                              self.old_state[nx][py] +
-                              self.old_state[px][y] +
-                              self.old_state[nx][y] +
-                              self.old_state[px][ny] +
-                              self.old_state[x][ny] +
-                              self.old_state[nx][ny])
-                self.new_state[x][y] = (live_count | self.old_state[x][y]) == 3
 
-    def draw(self):
-        self.update_state()
-        for y in range(self.height):
-            for x in range(self.width):
-                if self.old_state[x][y] != self.new_state[x][y]:
-                    Grx.fast_draw_pixel(x, y, self.color[self.new_state[x][y]])
+                live_count = (old_row_prev[py] +
+                              old_row[py] +
+                              old_row_next[py] +
+                              old_row_prev[y] +
+                              old_row_next[y] +
+                              old_row_prev[ny] +
+                              old_row[ny] +
+                              old_row_next[ny])
+                new_row[y] = (live_count | old_row[y]) == 3
+
+    def _draw(self):
+        self._update_state()
+        for x in range(self.width):
+            new_row = self.new_state[x]
+            old_row = self.old_state[x]
+            for y in range(self.height):
+                if old_row[y] != new_row[y]:
+                    Grx.fast_draw_pixel(x, y, self.color[new_row[y]])
 
         self.old_state, self.new_state = self.new_state, self.old_state
 
         return GLib.SOURCE_CONTINUE
 
 if __name__ == '__main__':
+    GLib.set_prgname('life.py')
+    GLib.set_application_name('GRX3 Game of Life Demo')
     life = Life()
     life.run()

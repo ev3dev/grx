@@ -22,6 +22,8 @@ import random
 from collections import OrderedDict
 
 import gi
+gi.require_version('GLib', '2.0')
+from gi.repository import GLib
 gi.require_version('Grx', '3.0')
 from gi.repository import Grx
 
@@ -106,5 +108,7 @@ class App(Grx.Application):
         self.pen_down = False
 
 if __name__ == '__main__':
+    GLib.set_prgname('paint.py')
+    GLib.set_application_name('GRX3 Paint Program Demo')
     app = App()
     app.run()
