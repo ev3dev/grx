@@ -70,10 +70,16 @@ class App(Grx.Application):
             self.color_lookup.append(c)
         Grx.set_clip_box(0, y1 + 1, Grx.get_max_x(), Grx.get_max_y())
 
-    def do_input_event(self, event):
+    def do_event(self, event):
         """called when an input event occurs
         overrides Grx.Application.do_input_event
         """
+
+        # First call the base method to handle APP_* events.
+        if Grx.Application.do_event(self, event):
+            return True
+
+        # If the event was not handled by the base method, then handle it here
         if event.type == Grx.EventType.KEY_DOWN:
             self.quit()
         elif event.type == Grx.EventType.TOUCH_DOWN:
@@ -89,6 +95,12 @@ class App(Grx.Application):
             self.handle_pen_up()
         elif event.type == Grx.EventType.POINTER_MOTION:
             self.handle_pen_move(event.motion.x, event.motion.y)
+        else:
+            return False
+
+        # If there were any other signal handlers, returning True would prevent
+        # them from being called (but there aren't any in this app).
+        return True
 
     def handle_pen_down(self, x, y):
         if y <= self.color_picker_y:

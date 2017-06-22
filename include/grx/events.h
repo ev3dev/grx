@@ -164,6 +164,9 @@ union _GrxEvent {
     GrxTouchEvent touch;
 };
 
+
+#define GRX_TYPE_EVENT grx_event_get_type()
+
 GType grx_event_get_type (void);
 GrxEvent *grx_event_new (GrxEventType type);
 gboolean grx_events_pending (void);

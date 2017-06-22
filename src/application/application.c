@@ -26,6 +26,8 @@
 #include <grx/application.h>
 #include <grx/mode.h>
 
+#include "marshal.h"
+
 /**
  * SECTION:application
  * @title: GrxApplication
@@ -179,40 +181,69 @@ get_property (GObject *object, guint property_id, GValue *value,
     }
 }
 
-/* class implementation */
+/* signals */
 
-static void event_handler (GrxEvent *event, gpointer user_data)
+enum {
+    SIG_0,
+    SIG_EVENT,
+    N_SIGNALS
+};
+
+static uint signals[N_SIGNALS] = { 0 };
+
+/**
+ * GrxApplication::event:
+ * @application: the object that received the signal
+ * @event: the event that triggered the signal
+ *
+ * This signal is emitted when an event occurs. Handlers can return %TRUE to
+ * prevent any further handlers from running.
+ *
+ * Returns: %TRUE if the handler handled the event, or %FALSE to continue
+ *          propagating the event.
+ */
+static gboolean
+event (GrxApplication *application, GrxEvent *event)
 {
-    GrxApplication *self = user_data;
     GrxApplicationPrivate *priv =
-        grx_application_get_instance_private (self);
+        grx_application_get_instance_private (application);
 
-    // Handle application events here. Other events are passed on only if the
-    // application "is-active"
     switch (event->type) {
     case GRX_EVENT_TYPE_APP_ACTIVATE:
         if (!priv->active) {
             priv->active = TRUE;
-            g_object_notify_by_pspec (G_OBJECT (self),
+            g_object_notify_by_pspec (G_OBJECT (application),
                                       properties[PROP_IS_ACTIVE]);
         }
         break;
     case GRX_EVENT_TYPE_APP_DEACTIVATE:
         if (priv->active) {
             priv->active = FALSE;
-            g_object_notify_by_pspec (G_OBJECT (self),
+            g_object_notify_by_pspec (G_OBJECT (application),
                                       properties[PROP_IS_ACTIVE]);
         }
         break;
     case GRX_EVENT_TYPE_APP_QUIT:
-        g_application_quit (G_APPLICATION (self));
+        g_application_quit (G_APPLICATION (application));
         break;
     default:
         if (priv->active) {
-            GRX_APPLICATION_GET_CLASS (self)->input_event (self, event);
+            return FALSE;
         }
         break;
     }
+
+    return TRUE;
+}
+
+/* class implementation */
+
+static void event_handler (GrxEvent *event, gpointer user_data)
+{
+    GrxApplication *application = GRX_APPLICATION (user_data);
+    gboolean handled;
+
+    g_signal_emit (application, signals[SIG_EVENT], 0, event, &handled);
 }
 
 static void startup (GApplication *application)
@@ -233,11 +264,6 @@ static void shutdown (GApplication *application)
     G_APPLICATION_CLASS (grx_application_parent_class)->shutdown (application);
 
     g_source_remove (priv->event_source_id);
-}
-
-static void
-input_event (GrxApplication *application, GrxEvent *event)
-{
 }
 
 static void
@@ -262,10 +288,21 @@ grx_application_class_init (GrxApplicationClass *klass)
                                        N_PROPERTIES,
                                        properties);
 
+    signals[SIG_EVENT] = g_signal_new ("event",
+                                       G_TYPE_FROM_CLASS (klass),
+                                       G_SIGNAL_RUN_LAST,
+                                       G_STRUCT_OFFSET (GrxApplicationClass, event),
+                                       g_signal_accumulator_true_handled,
+                                       NULL, /* accumulator data */
+                                       _grx_marshal_BOOL__BOXED,
+                                       G_TYPE_BOOLEAN, /* return type */
+                                       1, /* n_params */
+                                       GRX_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
     G_APPLICATION_CLASS (klass)->startup = startup;
     G_APPLICATION_CLASS (klass)->shutdown = shutdown;
 
-    klass->input_event = input_event;
+    klass->event = event;
 }
 
 static void

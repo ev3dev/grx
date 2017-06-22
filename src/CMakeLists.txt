@@ -1,6 +1,7 @@
 # source files
 
 set (LIBRARY_SOURCE_FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/marshal.c
     application/application.c
     draw/bitblt.c
     draw/bitblt1b.c
@@ -201,6 +202,14 @@ set (LIBRARY_SOURCE_FILES
     wideline/custpoly.c
     wideline/drwcpoly.c
 )
+
+# Generate glib marshal code
+find_package (GLibGenMarshal REQUIRED)
+glib_genmarshal (HEADER_FILE include/marshal.h CODE_FILE marshal.c
+    PREFIX _grx_marshal INTERNAL FATAL_WARNINGS
+    LIST_FILES marshal.list)
+set_source_files_properties (${LIBRARY_SOURCE_FILES}
+    PROPERTIES OBJECT_DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/include/marshal.h")
 
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
     COMMAND ${CMAKE_SOURCE_DIR}/tools/unicode_codegen.py

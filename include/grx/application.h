@@ -57,13 +57,14 @@ GType grx_application_get_type (void);
 /**
  * GrxApplicationClass:
  * @parent_class: the parent class struct
- * @input_event: The input event handler. Subclasses should override this method
- * if they are interested in input events.
+ * @event: The default #GrxApplication::event signal handler. This handles all
+ *         GRX_EVENT_TYPE_APP_* events and suppresses other events with the
+ *         application is not active (#GrxApplication:is-active property is %FALSE).
  * @reserved: for future use
  */
 struct _GrxApplicationClass {
     GApplicationClass parent_class;
-    void (*input_event) (GrxApplication *application, GrxEvent *event);
+    gboolean (*event) (GrxApplication *application, GrxEvent *event);
     gpointer reserved[6];
 };
 

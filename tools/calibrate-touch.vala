@@ -396,7 +396,11 @@ public class CalibrateApplication : Grx.Application {
         clear_timeout_text ();
     }
 
-    public override void input_event (Event event) {
+    public override bool event (Event event) {
+        if (base.event (event)) {
+            return true;
+        }
+
         switch (event.type) {
         case EventType.KEY_UP:
             key_pressed ();
@@ -407,7 +411,11 @@ public class CalibrateApplication : Grx.Application {
         case EventType.TOUCH_CANCEL:
             touched (event.touch);
             break;
+        default:
+            return false;
         }
+
+        return true;
     }
 
     void output_udev_rule (double[] matrix) {

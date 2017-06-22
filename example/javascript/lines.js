@@ -47,10 +47,17 @@ const DemoApp = new Lang.Class({
         }
     },
 
-    vfunc_input_event: function(event) {
+    vfunc_event: function(event) {
+        if (this.parent(event)) {
+            return true;
+        }
+
         if (event.get_event_type() == Grx.EventType.KEY_DOWN) {
             this.quit();
+            return true;
         }
+
+        return false;
     }
 });
 

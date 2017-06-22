@@ -70,10 +70,16 @@ class App(Grx.Application):
             Grx.draw_text(str(err), 10, 10, self.default_font)
             print(err)
 
-    def do_input_event(self, event):
+    def do_event(self, event):
+        if Grx.Application.do_event(self, event):
+            return True
+
         if event.type == Grx.EventType.KEY_DOWN:
             if event.key.keysym in (Grx.KEY_q, Grx.KEY_BackSpace, Grx.KEY_Escape):
                 self.quit()
+                return True
+
+        return False
 
 
 if __name__ == '__main__':

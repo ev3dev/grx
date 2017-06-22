@@ -52,7 +52,10 @@ class App(Grx.Application):
     def do_activate(self):
         self.show_next_font(0, 0)
 
-    def do_input_event(self, event):
+    def do_event(self, event):
+        if Grx.Application.do_event(self, event):
+            return True
+
         if event.type == Grx.EventType.KEY_DOWN:
             if event.key.keysym in (Grx.KEY_q, Grx.KEY_BackSpace, Grx.KEY_Escape):
                 self.quit()
@@ -76,6 +79,9 @@ class App(Grx.Application):
                 self.show_next_font(-1, 0)
             else:
                 self.show_next_font(1, 0)
+            return True
+
+        return False
 
     def show_next_font(self, step, start_index):
         if step:

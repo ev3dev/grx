@@ -64,10 +64,16 @@ class Life(Grx.Application):
                 if on:
                     Grx.fast_draw_pixel(x, y, self.color[on])
 
-    def do_input_event(self, event):
-        """This function overrides Grx.Application.input_event"""
+    def do_event(self, event):
+        """This function overrides Grx.Application.do_event"""
+        if Grx.Application.do_event(self, event):
+            return True
+
         if event.type != Grx.EventType.POINTER_MOTION:
             self.quit()
+            return True
+
+        return False
 
     def _update_state(self):
         for x in range(self.width):

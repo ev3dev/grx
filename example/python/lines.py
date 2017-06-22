@@ -51,12 +51,18 @@ class App(Grx.Application):
                 random.randint(0, 255))
             Grx.draw_line(x1, y1, x2, y2, c)
 
-    def do_input_event(self, event):
+    def do_event(self, event):
         """called when an input event occurs
-        overrides Grx.Application.do_input_event
+        overrides Grx.Application.do_event
         """
+        if Grx.Application.do_event(self, event):
+            return True
+
         if event.type == Grx.EventType.KEY_DOWN:
             self.quit()
+            return True
+
+        return False
 
 if __name__ == '__main__':
     GLib.set_prgname('lines.py')

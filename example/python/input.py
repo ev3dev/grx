@@ -36,8 +36,10 @@ class InputApplication(Grx.Application):
     def do_activate(self):
         print("application started")
 
-    def do_input_event(self, event):
-        Grx.Application.do_input_event(self, event)
+    def do_event(self, event):
+        if Grx.Application.do_event(self, event):
+            return True
+
         t = event.type
         if t == Grx.EventType.KEY_DOWN or t == Grx.EventType.KEY_UP:
             key_event = event.key
@@ -62,6 +64,10 @@ class InputApplication(Grx.Application):
             touch_event = event.touch
             Grx.draw_line(self.last_touch[0], self.last_touch[1], touch_event.x, touch_event.y, self.color)
             self.last_touch = (touch_event.x, touch_event.y)
+        else:
+            return False
+
+        return True
 
 if __name__ == '__main__':
     GLib.set_prgname('input.py')

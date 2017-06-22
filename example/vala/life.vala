@@ -40,10 +40,21 @@ class LifeApplication : Grx.Application {
         randomize ();
     }
 
-    public override void input_event (Event event) {
-        if (event.type != EventType.POINTER_MOTION) {
-            quit ();
+    public override bool event (Event event) {
+        if (base.event (event)) {
+            return true;
         }
+        switch (event.type) {
+        case EventType.KEY_DOWN: // TODO: don't quit on modifier keys
+        case EventType.BUTTON_PRESS:
+        case EventType.TOUCH_DOWN:
+            quit ();
+            break;
+        default:
+            return false;
+        }
+
+        return true;
     }
 
     void console_active_handler () {
