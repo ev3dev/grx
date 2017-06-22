@@ -3,7 +3,7 @@ find_package (GirDocTool REQUIRED)
 
 macro (add_yelp_doc LANGUAGE)
     add_gir_doc (doc-${LANGUAGE}-yelp ${LANGUAGE}
-        GIR_FILE $<TARGET_PROPERTY:${GIR_TARGET},GIR_FILE_NAME>
+        GIR_TARGET ${GIR_TARGET}
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE})
 
     add_dependencies(doc doc-${LANGUAGE}-yelp)
