@@ -358,7 +358,7 @@ LIST (SORT GIR_SOURCE_FILES)
 
 find_package (GirScanner REQUIRED)
 include (GirScanner)
-add_gir (GIR ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
+add_gir (${GIR_TARGET} ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
     INCLUDES
         GLib-2.0
         Gio-2.0
@@ -369,12 +369,12 @@ add_gir (GIR ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
     FILES
         ${GIR_SOURCE_FILES}
 )
-install (FILES $<TARGET_PROPERTY:${GIR},GIR_FILE_NAME>
+install (FILES $<TARGET_PROPERTY:${GIR_TARGET},GIR_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/)
 
 find_package (GirCompiler)
 include (GirCompiler)
-add_typelib (${TYPELIB_TARGET} ${GIR})
+add_typelib (${TYPELIB_TARGET} ${GIR_TARGET})
 install (FILES $<TARGET_PROPERTY:${TYPELIB_TARGET},TYPELIB_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
 
