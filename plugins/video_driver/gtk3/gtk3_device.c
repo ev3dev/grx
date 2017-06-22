@@ -25,12 +25,12 @@
 
 #include "gtk3_device.h"
 
-typedef struct {
+struct _GrxGtk3Device {
+    GrxDevice parent_instance;
     GdkDevice *gdk_device;
-} GrxGtk3DevicePrivate;
+};
 
-G_DEFINE_TYPE_WITH_CODE (GrxGtk3Device, grx_gtk3_device, GRX_TYPE_DEVICE,
-    G_ADD_PRIVATE (GrxGtk3Device))
+G_DEFINE_TYPE (GrxGtk3Device, grx_gtk3_device, GRX_TYPE_DEVICE)
 
 /* Properties */
 
@@ -59,23 +59,22 @@ get_property (GObject *object, guint property_id, GValue *value,
               GParamSpec *pspec)
 {
     GrxGtk3Device *self = GRX_GTK3_DEVICE (object);
-    GrxGtk3DevicePrivate *priv = self->private;
 
     switch (property_id) {
     case PROP_NAME:
-        g_value_set_string (value, gdk_device_get_name (priv->gdk_device));
+        g_value_set_string (value, gdk_device_get_name (self->gdk_device));
         break;
     case PROP_HAS_KEYBOARD:
         g_value_set_boolean (value,
-            gdk_device_get_source (priv->gdk_device) == GDK_SOURCE_KEYBOARD);
+            gdk_device_get_source (self->gdk_device) == GDK_SOURCE_KEYBOARD);
         break;
     case PROP_HAS_POINTER:
         g_value_set_boolean (value,
-            gdk_device_get_source (priv->gdk_device) == GDK_SOURCE_MOUSE);
+            gdk_device_get_source (self->gdk_device) == GDK_SOURCE_MOUSE);
         break;
     case PROP_HAS_TOUCH:
         g_value_set_boolean (value,
-            gdk_device_get_source (priv->gdk_device) == GDK_SOURCE_TOUCHSCREEN);
+            gdk_device_get_source (self->gdk_device) == GDK_SOURCE_TOUCHSCREEN);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -88,11 +87,10 @@ get_property (GObject *object, guint property_id, GValue *value,
 static void finalize (GObject *object)
 {
     GrxGtk3Device *self = GRX_GTK3_DEVICE (object);
-    GrxGtk3DevicePrivate *priv = self->private;
 
     G_OBJECT_CLASS (grx_gtk3_device_parent_class)->finalize (object);
 
-    g_object_unref (G_OBJECT (priv->gdk_device));
+    g_object_unref (G_OBJECT (self->gdk_device));
 }
 
 static void
@@ -115,10 +113,6 @@ grx_gtk3_device_class_init (GrxGtk3DeviceClass *klass)
 static void
 grx_gtk3_device_init (GrxGtk3Device *self)
 {
-    GrxGtk3DevicePrivate *priv =
-        grx_gtk3_device_get_instance_private (self);
-
-    self->private = priv;
 }
 
 /* constructors */
@@ -135,11 +129,10 @@ GrxGtk3Device *
 grx_gtk3_device_new (GdkDevice *device)
 {
     GrxGtk3Device *instance = g_object_new (GRX_TYPE_GTK3_DEVICE, NULL);
-    GrxGtk3DevicePrivate *priv = instance->private;
 
     g_return_val_if_fail (device != NULL, NULL);
 
-    priv->gdk_device = GDK_DEVICE (g_object_ref (G_OBJECT (device)));
+    instance->gdk_device = GDK_DEVICE (g_object_ref (G_OBJECT (device)));
 
     return instance;
 }

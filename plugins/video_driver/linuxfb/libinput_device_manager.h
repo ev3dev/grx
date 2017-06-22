@@ -25,53 +25,7 @@
 
 
 #define GRX_TYPE_LIBINPUT_DEVICE_MANAGER grx_libinput_device_manager_get_type()
-
-#define GRX_LIBINPUT_DEVICE_MANAGER(obj) \
-    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GRX_TYPE_LIBINPUT_DEVICE_MANAGER, \
-        GrxLibinputDeviceManager))
-#define GRX_IS_LIBINPUT_DEVICE_MANAGER(obj) \
-    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GRX_TYPE_LIBINPUT_DEVICE_MANAGER))
-#define GRX_LIBINPUT_DEVICE_MANAGER_CLASS(klass) \
-    (G_TYPE_CHECK_CLASS_CAST ((klass), GRX_TYPE_LIBINPUT_DEVICE_MANAGER, \
-        GrxLibinputDeviceManagerClass))
-#define GRX_IS_LIBINPUT_DEVICE_MANAGER_CLASS(klass) \
-    (G_TYPE_CHECK_CLASS_TYPE ((klass), GRX_TYPE_LIBINPUT_DEVICE_MANAGER))
-#define GRX_LIBINPUT_DEVICE_MANAGER_GET_CLASS(obj) \
-    (G_TYPE_INSTANCE_GET_CLASS ((obj), GRX_TYPE_LIBINPUT_DEVICE_MANAGER, \
-        GrxLibinputDeviceManagerClass))
-
-typedef struct _GrxLibinputDeviceManager GrxLibinputDeviceManager;
-typedef struct _GrxLibinputDeviceManagerClass GrxLibinputDeviceManagerClass;
-
-/**
- * GrxLibinputDeviceManager:
- *
- * #GrxLibinputDeviceManager is an opaque data structure and can only be
- * accessed using the following functions.
- */
-struct _GrxLibinputDeviceManager
-{
-    /* private */
-    GrxDeviceManager parent_instance;
-    gpointer private;
-};
-
-/**
- * GrxLibinputDeviceManagerClass:
- * @parent_class: the parent class struct
- * @reserved: for future use
- *
- * The class type struct for #GrxLibinputDeviceManager.
- */
-struct _GrxLibinputDeviceManagerClass
-{
-    GrxDeviceManagerClass parent_class;
-    gpointer reserved[6];
-};
-
-GType grx_libinput_device_manager_get_type (void);
-
-
+G_DECLARE_FINAL_TYPE(GrxLibinputDeviceManager, grx_libinput_device_manager, GRX, LIBINPUT_DEVICE_MANAGER, GrxDeviceManager)
 
 /**
  * GrxLibinputDeviceManagerSource:

@@ -22,45 +22,7 @@
 
 
 #define GRX_TYPE_LIBINPUT_DEVICE grx_libinput_device_get_type()
-
-#define GRX_LIBINPUT_DEVICE(obj) \
-    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GRX_TYPE_LIBINPUT_DEVICE, \
-        GrxLibinputDevice))
-#define GRX_IS_LIBINPUT_DEVICE(obj) \
-    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GRX_TYPE_LIBINPUT_DEVICE))
-#define GRX_LIBINPUT_DEVICE_CLASS(klass) \
-    (G_TYPE_CHECK_CLASS_CAST ((klass), GRX_TYPE_LIBINPUT_DEVICE, \
-        GrxLibinputDeviceClass))
-#define GRX_IS_LIBINPUT_DEVICE_CLASS(klass) \
-    (G_TYPE_CHECK_CLASS_TYPE ((klass), GRX_TYPE_LIBINPUT_DEVICE))
-#define GRX_LIBINPUT_DEVICE_GET_CLASS(obj) \
-    (G_TYPE_INSTANCE_GET_CLASS ((obj), GRX_TYPE_LIBINPUT_DEVICE, \
-        GrxLibinputDeviceClass))
-/**
- * GrxLibinputDeviceClass:
- * @parent_class: the inherited struct
- * @reserved: for future use
- *
- * The type class struct for #GrxLibinputDevice.
- */
-typedef struct {
-    GrxDeviceClass parent_class;
-    gpointer reserved[6];
-} GrxLibinputDeviceClass;
-
-/**
- * GrxLibinputDevice:
- *
- * #GrxLibinputDevice is an opaque data structure and can only be
- * accessed using the following functions.
- */
-typedef struct {
-    /* private */
-    GrxDevice parent_instance;
-    gpointer private;
-} GrxLibinputDevice;
-
-GType grx_libinput_device_get_type (void);
+G_DECLARE_FINAL_TYPE(GrxLibinputDevice, grx_libinput_device, GRX, LIBINPUT_DEVICE, GrxDevice)
 
 /* internal */
 

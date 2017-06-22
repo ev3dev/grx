@@ -34,36 +34,7 @@
  */
 
 #define GRX_TYPE_DEVICE_MANAGER grx_device_manager_get_type()
-
-#define GRX_DEVICE_MANAGER(obj) \
-    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GRX_TYPE_DEVICE_MANAGER, \
-        GrxDeviceManager))
-#define GRX_IS_DEVICE_MANAGER(obj) \
-    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GRX_TYPE_DEVICE_MANAGER))
-#define GRX_DEVICE_MANAGER_CLASS(klass) \
-    (G_TYPE_CHECK_CLASS_CAST ((klass), GRX_TYPE_DEVICE_MANAGER, \
-        GrxDeviceManagerClass))
-#define GRX_IS_DEVICE_MANAGER_CLASS(klass) \
-    (G_TYPE_CHECK_CLASS_TYPE ((klass), GRX_TYPE_DEVICE_MANAGER))
-#define GRX_DEVICE_MANAGER_GET_CLASS(obj) \
-    (G_TYPE_INSTANCE_GET_CLASS ((obj), GRX_TYPE_DEVICE_MANAGER, \
-        GrxDeviceManagerClass))
-
-typedef struct _GrxDeviceManagerClass GrxDeviceManagerClass;
-
-/**
- * GrxDeviceManager:
- *
- * #GrxDeviceManager is an opaque data structure and can only be
- * accessed using the following functions.
- */
-struct _GrxDeviceManager
-{
-    /* private */
-    GObject parent_instance;
-    gpointer private;
-    gpointer reserved[6];
-};
+G_DECLARE_DERIVABLE_TYPE(GrxDeviceManager, grx_device_manager, GRX, DEVICE_MANAGER, GObject)
 
 /**
  * GrxDeviceManagerClass:

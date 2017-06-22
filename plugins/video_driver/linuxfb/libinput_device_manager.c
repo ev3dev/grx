@@ -37,18 +37,19 @@
 // TODO: make double press time configurable
 #define DOUBLE_PRESS_TIME 500
 
-typedef struct {
+struct _GrxLibinputDeviceManager
+{
+    GrxDeviceManager parent_instance;
     struct libinput *libinput;
     struct xkb_context *xkb;
     struct xkb_keymap *keymap;
     GList *devices;
-} GrxLibinputDeviceManagerPrivate;
+};
 
 static void initable_interface_init (GInitableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GrxLibinputDeviceManager,
     grx_libinput_device_manager, GRX_TYPE_DEVICE_MANAGER,
-    G_ADD_PRIVATE (GrxLibinputDeviceManager)
     G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_interface_init))
 
 /* class implementation */
@@ -56,13 +57,12 @@ G_DEFINE_TYPE_WITH_CODE (GrxLibinputDeviceManager,
 static void finalize (GObject *object)
 {
     GrxLibinputDeviceManager *self = GRX_LIBINPUT_DEVICE_MANAGER (object);
-    GrxLibinputDeviceManagerPrivate *priv = self->private;
 
     G_OBJECT_CLASS (grx_libinput_device_manager_parent_class)->finalize (object);
 
-    xkb_keymap_unref (priv->keymap);
-    xkb_context_unref (priv->xkb);
-    priv->libinput = libinput_unref (priv->libinput);
+    xkb_keymap_unref (self->keymap);
+    xkb_context_unref (self->xkb);
+    self->libinput = libinput_unref (self->libinput);
 }
 
 static void
@@ -89,10 +89,6 @@ static const struct libinput_interface libinput_interface_impl = {
 static void
 grx_libinput_device_manager_init (GrxLibinputDeviceManager *self)
 {
-    GrxLibinputDeviceManagerPrivate *priv =
-        grx_libinput_device_manager_get_instance_private (self);
-
-    self->private = priv;
 }
 
 /* interface implementation */
@@ -101,41 +97,40 @@ static gboolean
 init (GInitable *initable, GCancellable *cancellable, GError **error)
 {
     GrxLibinputDeviceManager *self = GRX_LIBINPUT_DEVICE_MANAGER (initable);
-    GrxLibinputDeviceManagerPrivate *priv = self->private;
     struct udev *udev;
 
     udev = udev_new ();
-    priv->libinput = libinput_udev_create_context (&libinput_interface_impl, self, udev);
+    self->libinput = libinput_udev_create_context (&libinput_interface_impl, self, udev);
     udev_unref (udev);
-    if (!priv->libinput) {
+    if (!self->libinput) {
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                      "Failed to create libinput context.");
         return FALSE;
     }
 
-    if (libinput_udev_assign_seat (priv->libinput, "seat0") < 0) {
+    if (libinput_udev_assign_seat (self->libinput, "seat0") < 0) {
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                      "Failed to assign seat.");
         goto err1;
     }
 
-    priv->xkb = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
-    if (!priv->xkb) {
+    self->xkb = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
+    if (!self->xkb) {
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                      "Failed to create xkb context.");
         goto err1;
     }
 
-    priv->xkb = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
-    if (!priv->xkb) {
+    self->xkb = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
+    if (!self->xkb) {
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                      "Failed to create xkb context.");
         goto err1;
     }
 
-    priv->keymap = xkb_keymap_new_from_names (priv->xkb, NULL,
+    self->keymap = xkb_keymap_new_from_names (self->xkb, NULL,
                                               XKB_KEYMAP_COMPILE_NO_FLAGS);
-    if (!priv->keymap) {
+    if (!self->keymap) {
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                      "Failed to create xkb keymap.");
         goto err2;
@@ -144,9 +139,9 @@ init (GInitable *initable, GCancellable *cancellable, GError **error)
     return TRUE;
 
 err2:
-    xkb_context_unref (priv->xkb);
+    xkb_context_unref (self->xkb);
 err1:
-    priv->libinput = libinput_unref (priv->libinput);
+    self->libinput = libinput_unref (self->libinput);
 
     return FALSE;
 }
@@ -161,11 +156,10 @@ static void initable_interface_init (GInitableIface *iface)
 static gboolean source_prepare (GSource *source, gint *timeout)
 {
     GrxLibinputDeviceManager *instance =
-        ((GrxLibinputDeviceManagerSource*)source)->instance;
-    GrxLibinputDeviceManagerPrivate *priv = instance->private;
+        ((GrxLibinputDeviceManagerSource *)source)->instance;
     enum libinput_event_type type;
 
-    type = libinput_next_event_type (priv->libinput);
+    type = libinput_next_event_type (instance->libinput);
     *timeout = -1;
 
     return type != LIBINPUT_EVENT_NONE;
@@ -174,12 +168,11 @@ static gboolean source_prepare (GSource *source, gint *timeout)
 static gboolean source_check (GSource *source)
 {
     GrxLibinputDeviceManager *instance =
-        ((GrxLibinputDeviceManagerSource*)source)->instance;
-    GrxLibinputDeviceManagerPrivate *priv = instance->private;
+        ((GrxLibinputDeviceManagerSource *)source)->instance;
     enum libinput_event_type type;
 
-    libinput_dispatch (priv->libinput);
-    type = libinput_next_event_type (priv->libinput);
+    libinput_dispatch (instance->libinput);
+    type = libinput_next_event_type (instance->libinput);
 
     return type != LIBINPUT_EVENT_NONE;
 }
@@ -191,16 +184,15 @@ extern void grx_linuxfb_update_pointer (gint32 dx, gint32 dy, gint32 *x, gint32 
 static gboolean
 source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
 {
-    GrxLibinputDeviceManagerSource *real_source =
-        (GrxLibinputDeviceManagerSource*)source;
-    GrxLibinputDeviceManagerPrivate *priv = real_source->instance->private;
+    GrxLibinputDeviceManager *instance =
+        ((GrxLibinputDeviceManagerSource *)source)->instance;
     struct libinput_event *event;
     struct libinput_device *device;
     GrxLibinputDevice *grx_device;
     enum libinput_event_type type;
     GrxEvent grx_event = { 0 };
 
-    event = libinput_get_event (priv->libinput);
+    event = libinput_get_event (instance->libinput);
     if (!event) {
         return G_SOURCE_CONTINUE;
     }
@@ -210,9 +202,9 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
     device = libinput_event_get_device (event);
     grx_device = libinput_device_get_user_data (device);
     if (!grx_device) {
-        grx_device = grx_libinput_device_new (device, priv->keymap);
+        grx_device = grx_libinput_device_new (device, instance->keymap);
         if (type != LIBINPUT_EVENT_DEVICE_ADDED) {
-            // we are making the assumption that the priv->devices list will
+            // we are making the assumption that the instance->devices list will
             // take ownership of the reference to grx_device
             g_critical ("New device without LIBINPUT_EVENT_DEVICE_ADDED event");
         }
@@ -225,13 +217,13 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
     grx_event.type = GRX_EVENT_TYPE_NONE;
     switch (type) {
     case LIBINPUT_EVENT_DEVICE_ADDED:
-        priv->devices = g_list_append (priv->devices, grx_device);
-        g_signal_emit_by_name (real_source->instance, "device-added",
+        instance->devices = g_list_append (instance->devices, grx_device);
+        g_signal_emit_by_name (instance, "device-added",
                                grx_device);
         break;
     case LIBINPUT_EVENT_DEVICE_REMOVED:
-        priv->devices = g_list_remove (priv->devices, grx_device);
-        g_signal_emit_by_name (real_source->instance, "device-removed",
+        instance->devices = g_list_remove (instance->devices, grx_device);
+        g_signal_emit_by_name (instance, "device-removed",
                                grx_device);
         g_object_unref (grx_device);
         break;
@@ -321,19 +313,19 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
                 grx_event.type = GRX_EVENT_TYPE_BUTTON_PRESS;
                 // double press detection
                 time = libinput_event_pointer_get_time (pointer);
-                if (button == real_source->last_button &&
-                    (time - real_source->last_button_time) < DOUBLE_PRESS_TIME)
+                if (button == ((GrxLibinputDeviceManagerSource *)source)->last_button &&
+                    (time - ((GrxLibinputDeviceManagerSource *)source)->last_button_time) < DOUBLE_PRESS_TIME)
                 {
                     // double press does two callbacks, one here for
                     // GRX_EVENT_BUTTON_PRESS and one in the usual way
                     // for GRX_EVENT_BUTTON_DOUBLE_PRESS
                     grx_event_put (&grx_event);
                     grx_event.type = GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS;
-                    real_source->last_button = 0;
-                    real_source->last_button_time = 0;
+                    ((GrxLibinputDeviceManagerSource *)source)->last_button = 0;
+                    ((GrxLibinputDeviceManagerSource *)source)->last_button_time = 0;
                 } else {
-                    real_source->last_button = button;
-                    real_source->last_button_time = time;
+                    ((GrxLibinputDeviceManagerSource *)source)->last_button = button;
+                    ((GrxLibinputDeviceManagerSource *)source)->last_button_time = time;
                 }
                 break;
             case LIBINPUT_BUTTON_STATE_RELEASED:
@@ -400,10 +392,9 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
 static void source_finalize (GSource *source)
 {
     GrxLibinputDeviceManager *instance =
-        ((GrxLibinputDeviceManagerSource*)source)->instance;
-    GrxLibinputDeviceManagerPrivate *priv = instance->private;
+        ((GrxLibinputDeviceManagerSource *)source)->instance;
 
-    g_list_free_full (priv->devices, (GDestroyNotify)g_object_unref);
+    g_list_free_full (instance->devices, (GDestroyNotify)g_object_unref);
 
     g_object_unref(G_OBJECT (instance));
 }
@@ -430,12 +421,11 @@ static GSourceFuncs source_funcs = {
  */
 GSource *grx_libinput_device_manager_source_new (GrxLibinputDeviceManager *context)
 {
-    GrxLibinputDeviceManagerPrivate *priv = context->private;
     GSource *source;
 
     source = g_source_new (&source_funcs, sizeof(GrxLibinputDeviceManagerSource));
-    ((GrxLibinputDeviceManagerSource*)source)->instance = g_object_ref(G_OBJECT (context));
-    g_source_add_unix_fd (source, libinput_get_fd (priv->libinput), G_IO_IN);
+    ((GrxLibinputDeviceManagerSource *)source)->instance = g_object_ref(G_OBJECT (context));
+    g_source_add_unix_fd (source, libinput_get_fd (context->libinput), G_IO_IN);
 
     return source;
 }

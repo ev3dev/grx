@@ -23,36 +23,7 @@
 #include <grx/common.h>
 
 #define GRX_TYPE_APPLICATION grx_application_get_type()
-
-#define GRX_APPLICATION(obj) \
-    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GRX_TYPE_APPLICATION, GrxApplication))
-#define GRX_IS_APPLICATION(obj) \
-    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GRX_TYPE_APPLICATION))
-#define GRX_APPLICATION_CLASS(klass) \
-    (G_TYPE_CHECK_CLASS_CAST ((klass), GRX_TYPE_APPLICATION, GrxApplicationClass))
-#define GRX_IS_APPLICATION_CLASS(klass) \
-    (G_TYPE_CHECK_CLASS_TYPE ((klass), GRX_TYPE_APPLICATION))
-#define GRX_APPLICATION_GET_CLASS(obj) \
-    (G_TYPE_INSTANCE_GET_CLASS ((obj), GRX_TYPE_APPLICATION, GrxApplicationClass))
-
-typedef struct _GrxApplication GrxApplication;
-typedef struct _GrxApplicationClass GrxApplicationClass;
-
-/**
- * GrxApplication:
- *
- * #GrxApplication is an opaque data structure and can only be
- * accessed using the following functions.
- */
-struct _GrxApplication
-{
-    /*<private>*/
-    GApplication parent_instance;
-};
-
-GType grx_application_get_type (void);
-
-// end of code that could be replaced with G_DECLARE_DERIVABLE_TYPE
+G_DECLARE_DERIVABLE_TYPE(GrxApplication, grx_application, GRX, APPLICATION, GApplication)
 
 /**
  * GrxApplicationClass:

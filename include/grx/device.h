@@ -31,29 +31,7 @@
  */
 
 #define GRX_TYPE_DEVICE grx_device_get_type()
-
-#define GRX_DEVICE(obj) \
-    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GRX_TYPE_DEVICE, GrxDevice))
-#define GRX_IS_DEVICE(obj) \
-    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GRX_TYPE_DEVICE))
-#define GRX_DEVICE_CLASS(klass) \
-    (G_TYPE_CHECK_CLASS_CAST ((klass), GRX_TYPE_DEVICE, GrxDeviceClass))
-#define GRX_IS_DEVICE_CLASS(klass) \
-    (G_TYPE_CHECK_CLASS_TYPE ((klass), GRX_TYPE_DEVICE))
-#define GRX_DEVICE_GET_CLASS(obj) \
-    (G_TYPE_INSTANCE_GET_CLASS ((obj), GRX_TYPE_DEVICE, GrxDeviceClass))
-
-/**
- * GrxDevice:
- *
- * #GrxDevice is an opaque data structure and can only be
- * accessed using the following functions.
- */
-typedef struct {
-    /* private */
-    GObject parent_instance;
-    gpointer private;
-} GrxDevice;
+G_DECLARE_DERIVABLE_TYPE(GrxDevice, grx_device, GRX, DEVICE, GObject)
 
 /**
  * GrxDeviceClass:
@@ -62,14 +40,12 @@ typedef struct {
  *
  * The type class struct for #GrxDevice.
  */
-typedef struct {
+struct _GrxDeviceClass {
     GObjectClass parent_class;
     gboolean (*uncalibrate) (GrxDevice *device);
     gpointer reserved[6];
-} GrxDeviceClass;
+};
 
-
-GType grx_device_get_type (void);
 const gchar *grx_device_get_name (GrxDevice *device);
 const gchar *grx_device_get_sysname (GrxDevice *device);
 gboolean grx_device_get_has_keyboard (GrxDevice *device);
