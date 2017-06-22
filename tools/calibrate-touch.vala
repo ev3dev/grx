@@ -92,7 +92,7 @@ public class CalibrateApplication : Grx.Application {
                 keyboard_device_count++;
             }
             if (device.has_touch) {
-                device.uncalibrate ();
+                device.reset_calibration ();
                 touch_device_count++;
             }
             Idle.add (calibrate.callback);

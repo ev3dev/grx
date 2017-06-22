@@ -93,7 +93,7 @@ get_property (GObject *object, guint property_id, GValue *value,
 
 /* class implementation */
 
-static gboolean uncalibrate (GrxDevice *device)
+static gboolean reset_calibration (GrxDevice *device)
 {
     GrxLibinputDevice *self = GRX_LIBINPUT_DEVICE (device);
     float identity_matrix[6] = { 1, 0, 0, 0, 1, 0 };
@@ -118,7 +118,7 @@ static void finalize (GObject *object)
 static void
 grx_libinput_device_class_init (GrxLibinputDeviceClass *klass)
 {
-    GRX_DEVICE_CLASS (klass)->uncalibrate = uncalibrate;
+    GRX_DEVICE_CLASS (klass)->reset_calibration = reset_calibration;
 
     G_OBJECT_CLASS (klass)->set_property = set_property;
     G_OBJECT_CLASS (klass)->get_property = get_property;

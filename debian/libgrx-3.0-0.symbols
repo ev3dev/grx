@@ -101,7 +101,7 @@ libgrx-3.0.so.0 libgrx-3.0-0 #MINVER#
  grx_device_get_sysname@Base 2.99.8
  grx_device_get_type@Base 2.99.8
  grx_device_manager_get_type@Base 2.99.8
- grx_device_uncalibrate@Base 2.99.8
+ grx_device_reset_calibration@Base 2.99.8
  grx_draw_box@Base 2.99.8
  grx_draw_box_with_options@Base 2.99.8
  grx_draw_box_with_pattern@Base 2.99.8

@@ -3462,7 +3462,7 @@ namespace Grx {
         public bool has_keyboard { get; }
         public bool has_pointer { get; }
         public bool has_touch { get; }
-        public bool uncalibrate ();
+        public bool reset_calibration ();
     }
 
     public abstract class DeviceManager : GLib.Object {

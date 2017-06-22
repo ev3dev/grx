@@ -36,13 +36,15 @@ G_DECLARE_DERIVABLE_TYPE(GrxDevice, grx_device, GRX, DEVICE, GObject)
 /**
  * GrxDeviceClass:
  * @parent_class: the inherited struct
+ * @reset_calibration: Overriding classes should implement this method if possible.
+ *                     The default implementation simply returns %FALSE.
  * @reserved: for future use
  *
  * The type class struct for #GrxDevice.
  */
 struct _GrxDeviceClass {
     GObjectClass parent_class;
-    gboolean (*uncalibrate) (GrxDevice *device);
+    gboolean (*reset_calibration) (GrxDevice *device);
     gpointer reserved[6];
 };
 
@@ -51,6 +53,6 @@ const gchar *grx_device_get_sysname (GrxDevice *device);
 gboolean grx_device_get_has_keyboard (GrxDevice *device);
 gboolean grx_device_get_has_pointer (GrxDevice *device);
 gboolean grx_device_get_has_touch (GrxDevice *device);
-gboolean grx_device_uncalibrate (GrxDevice *device);
+gboolean grx_device_reset_calibration (GrxDevice *device);
 
 #endif /* __GRX_DEVICE_H__ */

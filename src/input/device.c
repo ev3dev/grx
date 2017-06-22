@@ -118,7 +118,7 @@ get_property (GObject *object, guint property_id, GValue *value,
 
 /* class init */
 
-static gboolean uncalibrate (GrxDevice *device)
+static gboolean reset_calibration (GrxDevice *device)
 {
     return FALSE;
 }
@@ -126,7 +126,7 @@ static gboolean uncalibrate (GrxDevice *device)
 static void
 grx_device_class_init (GrxDeviceClass *klass)
 {
-    klass->uncalibrate = uncalibrate;
+    klass->reset_calibration = reset_calibration;
 
     G_OBJECT_CLASS (klass)->set_property = set_property;
     G_OBJECT_CLASS (klass)->get_property = get_property;
@@ -173,7 +173,7 @@ static void grx_device_init (GrxDevice *self)
 /* methods */
 
 /**
- * grx_device_uncalibrate:
+ * grx_device_reset_calibration: (virtual reset_calibration)
  * @device: the device
  *
  * Resets the calibration of the device.
@@ -182,14 +182,14 @@ static void grx_device_init (GrxDevice *self)
  * device and need to remove the existing calibration.
  *
  * Returns: %TRUE if this device can be calibrated and reseting the calibration
- * was successful.
+ * was successful, otherwise %FALSE.
  */
-gboolean grx_device_uncalibrate (GrxDevice *device)
+gboolean grx_device_reset_calibration (GrxDevice *device)
 {
     GrxDeviceClass *klass;
 
     g_return_val_if_fail (device != NULL, FALSE);
     klass = GRX_DEVICE_GET_CLASS (device);
 
-    return klass->uncalibrate (device);
+    return klass->reset_calibration (device);
 }
