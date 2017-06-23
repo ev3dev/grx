@@ -29,20 +29,6 @@ import requests
 
 on_rtd = os.getenv('READTHEDOCS') == 'True'
 
-if on_rtd:
-    # Download and extract non-sphinx docs
-    rtd_version=os.getenv('READTHEDOCS_VERSION')
-    if os.path.exists('_extra'):
-        shutil.rmtree('_extra')
-    os.mkdir('_extra')
-    r = requests.get('https://github.com/ev3dev/grx/archive/c-api-docs/' + rtd_version + '.tar.gz')
-    r.raise_for_status()
-    t = tarfile.open(fileobj=StringIO.StringIO(r.content))
-    t.extractall('_extra')
-    os.rename('_extra/grx-c-api-docs-' + rtd_version, '_extra/c-api')
-
-    html_extra_path = ['_extra']
-
 
 # -- General configuration ------------------------------------------------
 
@@ -122,6 +108,8 @@ else:
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
+
+html_extra_path = ['_html_extra']
 
 
 # -- Options for HTMLHelp output ------------------------------------------

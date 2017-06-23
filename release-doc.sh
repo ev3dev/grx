@@ -4,29 +4,21 @@
 
 set -e
 
-RTD_VERSION=$1
-RTD_VERSION2=$2
+base_dir=$(dirname $(readlink -f $0))
+build_dir=${base_dir}/build
 
-if [ ! -n "$RTD_VERSION" ]; then
-    echo "must specify version for readthedocs.org"
-    exit 1
-fi
+rm -rf ${base_dir}/doc/sphinx/_html_extra/c-api
+rm -rf ${base_dir}/doc/sphinx/_html_extra/gjs-api
+rm -rf ${base_dir}/doc/sphinx/_html_extra/python-api
 
-mkdir build-doc
-cd build-doc
-cmake -D CMAKE_BUILD_TYPE=Release -D GTKDOC_REBASE_ONLINE=Yes ..
-make doc
-mkdir git
-cd git
-git init
-git remote add origin git@github.com:ev3dev/grx
-git checkout -b c-api-docs/$RTD_VERSION
-cp -R ../src/grx/html/* .
-git add .
-git commit -m "documentation"
-git push --force origin c-api-docs/$RTD_VERSION
-if [ -n "$RTD_VERSION2" ]; then
-    git push --force origin HEAD:c-api-docs/$RTD_VERSION2
-fi
-cd ../..
-rm -rf build-doc
+mkdir -p ${base_dir}/doc/sphinx/_html_extra/c-api
+mkdir -p ${base_dir}/doc/sphinx/_html_extra/gjs-api
+mkdir -p ${base_dir}/doc/sphinx/_html_extra/python-api
+
+rm -rf ${build_dir}
+cmake -D CMAKE_BUILD_TYPE=Release -D GTKDOC_REBASE_ONLINE=Yes -B${build_dir} -H${base_dir}
+make -C ${build_dir} doc
+
+cp -R ${build_dir}/src/grx/html/* ${base_dir}/doc/sphinx/_html_extra/c-api
+yelp-build html -o ${base_dir}/doc/sphinx/_html_extra/gjs-api ${build_dir}/doc/yelp/gjs
+yelp-build html -o ${base_dir}/doc/sphinx/_html_extra/python-api ${build_dir}/doc/yelp/python
