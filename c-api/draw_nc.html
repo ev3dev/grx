@@ -1,0 +1,731 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Non-clipping Graphics Primitives: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="drawing.html" title="Drawing">
+<link rel="prev" href="draw.html" title="Graphics Primitives">
+<link rel="next" href="wideline.html" title="Customized line drawing">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#draw_nc.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="drawing.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="draw.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="wideline.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="draw_nc"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="draw_nc.top_of_page"></a>Non-clipping Graphics Primitives</span></h2>
+<p>Non-clipping Graphics Primitives — Slightly faster, less safe drawing functions</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="draw_nc.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-fast-draw-pixel" title="grx_fast_draw_pixel ()">grx_fast_draw_pixel</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-fast-draw-line" title="grx_fast_draw_line ()">grx_fast_draw_line</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-fast-draw-hline" title="grx_fast_draw_hline ()">grx_fast_draw_hline</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-fast-draw-vline" title="grx_fast_draw_vline ()">grx_fast_draw_vline</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-fast-draw-box" title="grx_fast_draw_box ()">grx_fast_draw_box</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-fast-draw-filled-box" title="grx_fast_draw_filled_box ()">grx_fast_draw_filled_box</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-fast-draw-framed-box" title="grx_fast_draw_framed_box ()">grx_fast_draw_framed_box</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-fast-bit-blt" title="grx_fast_bit_blt ()">grx_fast_bit_blt</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-context-fast-bit-blt" title="grx_context_fast_bit_blt ()">grx_context_fast_bit_blt</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-fast-get-pixel-at" title="grx_fast_get_pixel_at ()">grx_fast_get_pixel_at</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="draw_nc.html#grx-context-fast-get-pixel-at" title="grx_context_fast_get_pixel_at ()">grx_context_fast_get_pixel_at</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="draw_nc.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="draw_nc.description"></a><h2>Description</h2>
+<p>Like the other graphics primitives, these functions operate on the current
+context. These are somewhat more efficient than the regular versions. These
+are to be used only in situations when it is absolutely certain that no
+drawing will be performed beyond the boundaries of the current context.
+Otherwise the program will almost certainly crash! ALSO NOTE: These function
+do not check for conflicts with the mouse cursor. (See the explanation about
+the mouse cursor handling later in this document.)</p>
+</div>
+<div class="refsect1">
+<a name="draw_nc.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-fast-draw-pixel"></a><h3>grx_fast_draw_pixel ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_fast_draw_pixel (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                     <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Draw a single pixel on the current context at the specified coordinates.</p>
+<p>This function does not perform clipping. If you are not sure <em class="parameter"><code>x</code></em>
+ and <em class="parameter"><code>y</code></em>
+ are
+within the bounds of the current context, use <a class="link" href="draw.html#grx-draw-pixel" title="grx_draw_pixel ()"><code class="function">grx_draw_pixel()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-fast-draw-pixel.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color (can include <a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="type">GrxColorMode</span></a>)</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-fast-draw-line"></a><h3>grx_fast_draw_line ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_fast_draw_line (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                    <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Draws a line on the current context from the starting coordinates to the
+ending coordinates using the specified color.</p>
+<p>For horizontal and vertical lines, see <a class="link" href="draw_nc.html#grx-fast-draw-hline" title="grx_fast_draw_hline ()"><code class="function">grx_fast_draw_hline()</code></a> and
+<a class="link" href="draw_nc.html#grx-fast-draw-vline" title="grx_fast_draw_vline ()"><code class="function">grx_fast_draw_vline()</code></a>.</p>
+<p>This function does not perform clipping. If you cannot ensure that the
+endpoints are within the bounds of the current context, then use
+<a class="link" href="draw.html#grx-draw-line" title="grx_draw_line ()"><code class="function">grx_draw_line()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-fast-draw-line.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>starting X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>starting Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>ending X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>ending Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-fast-draw-hline"></a><h3>grx_fast_draw_hline ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_fast_draw_hline (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                     <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Draws a horizontal line on the current context from the starting coordinates
+to the ending coordinates using the specified color.</p>
+<p>This is more efficient that using <a class="link" href="draw_nc.html#grx-fast-draw-line" title="grx_fast_draw_line ()"><code class="function">grx_fast_draw_line()</code></a>.</p>
+<p>This function does not perform clipping. If you cannot ensure that the
+endpoints are within the bounds of the current context, then use
+<a class="link" href="draw.html#grx-draw-hline" title="grx_draw_hline ()"><code class="function">grx_draw_hline()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-fast-draw-hline.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>starting X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>ending X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-fast-draw-vline"></a><h3>grx_fast_draw_vline ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_fast_draw_vline (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                     <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Draws a vertical line on the current context from the starting coordinates
+to the ending coordinates using the specified color.</p>
+<p>This is more efficient that using <a class="link" href="draw_nc.html#grx-fast-draw-line" title="grx_fast_draw_line ()"><code class="function">grx_fast_draw_line()</code></a>.</p>
+<p>This function does not perform clipping. If you cannot ensure that the
+endpoints are within the bounds of the current context, then use
+<a class="link" href="draw.html#grx-draw-hline" title="grx_draw_hline ()"><code class="function">grx_draw_hline()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-fast-draw-vline.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>starting Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>ending Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-fast-draw-box"></a><h3>grx_fast_draw_box ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_fast_draw_box (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                   <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Draws a rectangle on the current context using the specified coordinates
+and color.</p>
+<p>This function does not perform clipping. If you cannot ensure that the
+box is within the bounds of the current context, then use <a class="link" href="draw.html#grx-draw-box" title="grx_draw_box ()"><code class="function">grx_draw_box()</code></a>
+instead.</p>
+<div class="refsect3">
+<a name="grx-fast-draw-box.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-fast-draw-filled-box"></a><h3>grx_fast_draw_filled_box ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_fast_draw_filled_box (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                          <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Draws a filled rectangle on the current context using the specified
+coordinates and color.</p>
+<p>This function does not perform clipping. If you cannot ensure that the
+box is within the bounds of the current context, then use
+<a class="link" href="draw.html#grx-draw-filled-box" title="grx_draw_filled_box ()"><code class="function">grx_draw_filled_box()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-fast-draw-filled-box.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-fast-draw-framed-box"></a><h3>grx_fast_draw_framed_box ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_fast_draw_framed_box (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                          <em class="parameter"><code>const <a class="link" href="draw.html#GrxFramedBoxColors" title="GrxFramedBoxColors"><span class="type">GrxFramedBoxColors</span></a> *c</code></em>);</pre>
+<p>Draws a framed rectangle on the current context using the specified
+coordinates and colors. The coordinates specify the interior box. The border
+extends outside of the box using the given <em class="parameter"><code>width</code></em>
+.</p>
+<p>This function does not perform clipping. If you cannot ensure that the
+box, including the frame, is within the bounds of the current context, then
+use <a class="link" href="draw.html#grx-draw-framed-box" title="grx_draw_framed_box ()"><code class="function">grx_draw_framed_box()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-fast-draw-framed-box.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width of the frame</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the colors</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-fast-bit-blt"></a><h3>grx_fast_bit_blt ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_fast_bit_blt (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                  <em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *src</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                  <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> op</code></em>);</pre>
+<p>Copies an area bounded by x1, y2, x2, y2 in the source context to the current
+context at the location specified by dx, dy using the specified operation.</p>
+<p>This function does not perform clipping. If you cannot ensure that the
+destination rectangle is within the bounds of the context, then use
+<a class="link" href="draw.html#grx-bit-blt" title="grx_bit_blt ()"><code class="function">grx_bit_blt()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-fast-bit-blt.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the destination X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the destination Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>src</p></td>
+<td class="parameter_description"><p> the source context or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the current context. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the source bounding rectangle left coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the source bounding rectangle top coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the source bounding rectangle right coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the source bounding rectangle bottom coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>op</p></td>
+<td class="parameter_description"><p>the <a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="type">GrxColorMode</span></a> operator and optional transparent color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-fast-bit-blt"></a><h3>grx_context_fast_bit_blt ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_fast_bit_blt (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                          <em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *src</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                          <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> op</code></em>);</pre>
+<p>Copies an area bounded by x1, y2, x2, y2 in the source context to the
+destination context at the location specified by dx, dy using the specified
+operation.</p>
+<p>This function does not perform clipping. If you cannot ensure that the
+destination rectangle is within the bounds of the context, then use
+<a class="link" href="context.html#grx-context-bit-blt" title="grx_context_bit_blt ()"><code class="function">grx_context_bit_blt()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-context-fast-bit-blt.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the destination context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the destination X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the destination Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>src</p></td>
+<td class="parameter_description"><p> the source context or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the current context. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the source bounding rectangle left coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the source bounding rectangle top coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the source bounding rectangle right coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the source bounding rectangle bottom coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>op</p></td>
+<td class="parameter_description"><p>the <a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="type">GrxColorMode</span></a> operator and optional transparent color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-fast-get-pixel-at"></a><h3>grx_fast_get_pixel_at ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_fast_get_pixel_at (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);</pre>
+<p>Gets the color value of the pixel in the current context at the specified
+coordinates.</p>
+<p>This function does not perform clipping. If you are not sure <em class="parameter"><code>x</code></em>
+ and <em class="parameter"><code>y</code></em>
+ are
+within the bounds of the current context, use <a class="link" href="draw.html#grx-get-pixel-at" title="grx_get_pixel_at ()"><code class="function">grx_get_pixel_at()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-fast-get-pixel-at.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-fast-get-pixel-at"></a><h3>grx_context_fast_get_pixel_at ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_context_fast_get_pixel_at (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);</pre>
+<p>Gets the color value of the pixel in the context at the specified coordinates.</p>
+<p>This function does not perform clipping. If you are not sure <em class="parameter"><code>x</code></em>
+ and <em class="parameter"><code>y</code></em>
+ are
+within the bounds of the context, use <a class="link" href="context.html#grx-context-get-pixel-at" title="grx_context_get_pixel_at ()"><code class="function">grx_context_get_pixel_at()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-context-fast-get-pixel-at.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="draw_nc.other_details"></a><h2>Types and Values</h2>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

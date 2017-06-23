@@ -1,0 +1,681 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Frame Modes: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="drivers.html" title="Drivers, Modes and Contexts">
+<link rel="prev" href="mode.html" title="Video drivers and modes">
+<link rel="next" href="context.html" title="Graphics Contexts">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#frame_mode.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="drivers.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="mode.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="context.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="frame_mode"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="frame_mode.top_of_page"></a>Frame Modes</span></h2>
+<p>Frame Modes — Graphics memory layouts</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="frame_mode.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="returnvalue">GrxFrameMode</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-frame-mode-get-current" title="grx_frame_mode_get_current ()">grx_frame_mode_get_current</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="returnvalue">GrxFrameMode</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-frame-mode-get-screen" title="grx_frame_mode_get_screen ()">grx_frame_mode_get_screen</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="returnvalue">GrxFrameMode</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-frame-mode-get-screen-core" title="grx_frame_mode_get_screen_core ()">grx_frame_mode_get_screen_core</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-frame-mode-get-bpp" title="grx_frame_mode_get_bpp ()">grx_frame_mode_get_bpp</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-frame-mode-get-n-planes" title="grx_frame_mode_get_n_planes ()">grx_frame_mode_get_n_planes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-frame-mode-get-line-offset" title="grx_frame_mode_get_line_offset ()">grx_frame_mode_get_line_offset</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#glong"><span class="returnvalue">glong</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-frame-mode-get-plane-size" title="grx_frame_mode_get_plane_size ()">grx_frame_mode_get_plane_size</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#glong"><span class="returnvalue">glong</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-frame-mode-get-context-size" title="grx_frame_mode_get_context_size ()">grx_frame_mode_get_context_size</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-screen-get-n-planes" title="grx_screen_get_n_planes ()">grx_screen_get_n_planes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-screen-get-line-offset" title="grx_screen_get_line_offset ()">grx_screen_get_line_offset</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#glong"><span class="returnvalue">glong</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-screen-get-plane-size" title="grx_screen_get_plane_size ()">grx_screen_get_plane_size</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#glong"><span class="returnvalue">glong</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="frame_mode.html#grx-screen-get-context-size" title="grx_screen_get_context_size ()">grx_screen_get_context_size</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="frame_mode.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode">GrxFrameMode</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="frame_mode.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="frame_mode.description"></a><h2>Description</h2>
+<p>Frame modes describe how graphics are stored in memory.</p>
+</div>
+<div class="refsect1">
+<a name="frame_mode.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-frame-mode-get-current"></a><h3>grx_frame_mode_get_current ()</h3>
+<pre class="programlisting"><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="returnvalue">GrxFrameMode</span></a>
+grx_frame_mode_get_current (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Get the frame mode of the current context.</p>
+<div class="refsect3">
+<a name="grx-frame-mode-get-current.returns"></a><h4>Returns</h4>
+<p> the frame mode.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-frame-mode-get-screen"></a><h3>grx_frame_mode_get_screen ()</h3>
+<pre class="programlisting"><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="returnvalue">GrxFrameMode</span></a>
+grx_frame_mode_get_screen (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Get the frame mode of the screen.</p>
+<div class="refsect3">
+<a name="grx-frame-mode-get-screen.returns"></a><h4>Returns</h4>
+<p> the frame mode.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-frame-mode-get-screen-core"></a><h3>grx_frame_mode_get_screen_core ()</h3>
+<pre class="programlisting"><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="returnvalue">GrxFrameMode</span></a>
+grx_frame_mode_get_screen_core (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Get the compatible RAM frame mode of the screen.</p>
+<div class="refsect3">
+<a name="grx-frame-mode-get-screen-core.returns"></a><h4>Returns</h4>
+<p> the frame mode.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-frame-mode-get-bpp"></a><h3>grx_frame_mode_get_bpp ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_frame_mode_get_bpp (<em class="parameter"><code><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a> mode</code></em>);</pre>
+<p>Gets the color depth of the frame mode in bits per pixel.</p>
+<div class="refsect3">
+<a name="grx-frame-mode-get-bpp.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>mode</p></td>
+<td class="parameter_description"><p>a <a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-frame-mode-get-bpp.returns"></a><h4>Returns</h4>
+<p> the color depth or -1 if the frame mode was not valid</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-frame-mode-get-n-planes"></a><h3>grx_frame_mode_get_n_planes ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_frame_mode_get_n_planes (<em class="parameter"><code><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a> mode</code></em>);</pre>
+<p>Gets the number of planes for a frame mode.</p>
+<div class="refsect3">
+<a name="grx-frame-mode-get-n-planes.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>mode</p></td>
+<td class="parameter_description"><p>a <a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-frame-mode-get-n-planes.returns"></a><h4>Returns</h4>
+<p> The number of planes.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-frame-mode-get-line-offset"></a><h3>grx_frame_mode_get_line_offset ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_frame_mode_get_line_offset (<em class="parameter"><code><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a> mode</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>);</pre>
+<p>Gets the offset in bytes for a row of <em class="parameter"><code>width</code></em>
+ pixels.</p>
+<div class="refsect3">
+<a name="grx-frame-mode-get-line-offset.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mode</p></td>
+<td class="parameter_description"><p>a <a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-frame-mode-get-line-offset.returns"></a><h4>Returns</h4>
+<p> the number of bytes per row.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-frame-mode-get-plane-size"></a><h3>grx_frame_mode_get_plane_size ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#glong"><span class="returnvalue">glong</span></a>
+grx_frame_mode_get_plane_size (<em class="parameter"><code><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a> mode</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);</pre>
+<p>Gets the plane size in bytes required to store an image of <em class="parameter"><code>width</code></em>
+ x <em class="parameter"><code>height</code></em>
+
+for this frame mode.</p>
+<div class="refsect3">
+<a name="grx-frame-mode-get-plane-size.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mode</p></td>
+<td class="parameter_description"><p>a <a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p>the height in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-frame-mode-get-plane-size.returns"></a><h4>Returns</h4>
+<p> the size in bytes.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-frame-mode-get-context-size"></a><h3>grx_frame_mode_get_context_size ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#glong"><span class="returnvalue">glong</span></a>
+grx_frame_mode_get_context_size (<em class="parameter"><code><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a> mode</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);</pre>
+<p>Gets the total size in bytes required to store an image of <em class="parameter"><code>width</code></em>
+ x <em class="parameter"><code>height</code></em>
+
+for this frame mode.</p>
+<div class="refsect3">
+<a name="grx-frame-mode-get-context-size.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mode</p></td>
+<td class="parameter_description"><p>a <a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p>the height in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-frame-mode-get-context-size.returns"></a><h4>Returns</h4>
+<p> the size in bytes.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-screen-get-n-planes"></a><h3>grx_screen_get_n_planes ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_screen_get_n_planes (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the number of planes for the screen's RAM frame mode.</p>
+<div class="refsect3">
+<a name="grx-screen-get-n-planes.returns"></a><h4>Returns</h4>
+<p> The number of planes.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-screen-get-line-offset"></a><h3>grx_screen_get_line_offset ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_screen_get_line_offset (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>);</pre>
+<p>Gets the offset in bytes for a row of <em class="parameter"><code>width</code></em>
+ pixels on the screen.</p>
+<div class="refsect3">
+<a name="grx-screen-get-line-offset.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-screen-get-line-offset.returns"></a><h4>Returns</h4>
+<p> the number of bytes per row.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-screen-get-plane-size"></a><h3>grx_screen_get_plane_size ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#glong"><span class="returnvalue">glong</span></a>
+grx_screen_get_plane_size (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);</pre>
+<p>Gets the plane size in bytes required to store an image of <em class="parameter"><code>width</code></em>
+ x <em class="parameter"><code>height</code></em>
+
+for the screen.</p>
+<div class="refsect3">
+<a name="grx-screen-get-plane-size.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p>the height in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-screen-get-plane-size.returns"></a><h4>Returns</h4>
+<p> the size in bytes.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-screen-get-context-size"></a><h3>grx_screen_get_context_size ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#glong"><span class="returnvalue">glong</span></a>
+grx_screen_get_context_size (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>);</pre>
+<p>Gets the total size in bytes required to store an image of <em class="parameter"><code>width</code></em>
+ x <em class="parameter"><code>height</code></em>
+
+for the screen.</p>
+<div class="refsect3">
+<a name="grx-screen-get-context-size.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p>the height in pixels</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-screen-get-context-size.returns"></a><h4>Returns</h4>
+<p> the size in bytes.</p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="frame_mode.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GrxFrameMode"></a><h3>enum GrxFrameMode</h3>
+<p>Available frame modes (video memory layouts)</p>
+<div class="refsect3">
+<a name="GrxFrameMode.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-UNDEFINED:CAPS"></a>GRX_FRAME_MODE_UNDEFINED</p></td>
+<td class="enum_member_description">
+<p>Undefined</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-TEXT:CAPS"></a>GRX_FRAME_MODE_TEXT</p></td>
+<td class="enum_member_description">
+<p>Text mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LFB-MONO01:CAPS"></a>GRX_FRAME_MODE_LFB_MONO01</p></td>
+<td class="enum_member_description">
+<p>Linear frame buffer, 1bpp, 0 = white, 1 = black</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LFB-MONO10:CAPS"></a>GRX_FRAME_MODE_LFB_MONO10</p></td>
+<td class="enum_member_description">
+<p>Linear frame buffer, 1bpp, 0 = black, 1 = white</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LFB-2BPP:CAPS"></a>GRX_FRAME_MODE_LFB_2BPP</p></td>
+<td class="enum_member_description">
+<p>Linear frame buffer, 2bpp, 4 color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LFB-8BPP:CAPS"></a>GRX_FRAME_MODE_LFB_8BPP</p></td>
+<td class="enum_member_description">
+<p>Linear frame buffer, 8bpp, 256 color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LFB-16BPP:CAPS"></a>GRX_FRAME_MODE_LFB_16BPP</p></td>
+<td class="enum_member_description">
+<p>Linear frame buffer, 16bpp, 32768/65536 color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LFB-24BPP:CAPS"></a>GRX_FRAME_MODE_LFB_24BPP</p></td>
+<td class="enum_member_description">
+<p>Linear frame buffer, 24bpp, 16M color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LFB-32BPP-LOW:CAPS"></a>GRX_FRAME_MODE_LFB_32BPP_LOW</p></td>
+<td class="enum_member_description">
+<p>Linear frame buffer, 32bpp, 16M color using lower 24 bits</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LFB-32BPP-HIGH:CAPS"></a>GRX_FRAME_MODE_LFB_32BPP_HIGH</p></td>
+<td class="enum_member_description">
+<p>Linear frame buffer, 32bpp, 16M color using upper 24 bits</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-RAM-1BPP:CAPS"></a>GRX_FRAME_MODE_RAM_1BPP</p></td>
+<td class="enum_member_description">
+<p>RAM frame buffer, 1bpp, monochome</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-RAM-2BPP:CAPS"></a>GRX_FRAME_MODE_RAM_2BPP</p></td>
+<td class="enum_member_description">
+<p>RAM frame buffer, 2bpp, 4 color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-RAM-4X1BPP:CAPS"></a>GRX_FRAME_MODE_RAM_4X1BPP</p></td>
+<td class="enum_member_description">
+<p>RAM frame buffer, 4bpp, 16 color planar</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-RAM-8BPP:CAPS"></a>GRX_FRAME_MODE_RAM_8BPP</p></td>
+<td class="enum_member_description">
+<p>RAM frame buffer, 8bpp, 256 color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-RAM-16BPP:CAPS"></a>GRX_FRAME_MODE_RAM_16BPP</p></td>
+<td class="enum_member_description">
+<p>RAM frame buffer, 16bpp, 32768/65536 color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-RAM-24BPP:CAPS"></a>GRX_FRAME_MODE_RAM_24BPP</p></td>
+<td class="enum_member_description">
+<p>RAM frame buffer, 24bpp, 16M color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-RAM-32BPP-LOW:CAPS"></a>GRX_FRAME_MODE_RAM_32BPP_LOW</p></td>
+<td class="enum_member_description">
+<p>RAM frame buffer, 32bpp, 16M color using lower 24 bits</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-RAM-32BPP-HIGH:CAPS"></a>GRX_FRAME_MODE_RAM_32BPP_HIGH</p></td>
+<td class="enum_member_description">
+<p>RAM frame buffer, 32bpp, 16M color using upper 24 bits</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-RAM-3X8BPP:CAPS"></a>GRX_FRAME_MODE_RAM_3X8BPP</p></td>
+<td class="enum_member_description">
+<p>RAM frame buffer, 3x8bpp, 16M color in 3 planes</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-FIRST-TEXT:CAPS"></a>GRX_FRAME_MODE_FIRST_TEXT</p></td>
+<td class="enum_member_description">
+<p>The first text mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LAST-TEXT:CAPS"></a>GRX_FRAME_MODE_LAST_TEXT</p></td>
+<td class="enum_member_description">
+<p>The last text mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-FIRST-GRAPHICS:CAPS"></a>GRX_FRAME_MODE_FIRST_GRAPHICS</p></td>
+<td class="enum_member_description">
+<p>The first graphics mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LAST-GRAPHICS:CAPS"></a>GRX_FRAME_MODE_LAST_GRAPHICS</p></td>
+<td class="enum_member_description">
+<p>The last graphics mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-FIRST-RAM:CAPS"></a>GRX_FRAME_MODE_FIRST_RAM</p></td>
+<td class="enum_member_description">
+<p>The first RAM mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FRAME-MODE-LAST-RAM:CAPS"></a>GRX_FRAME_MODE_LAST_RAM</p></td>
+<td class="enum_member_description">
+<p>The last RAM mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

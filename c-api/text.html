@@ -1,0 +1,1466 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Text Drawing: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="drawing.html" title="Drawing">
+<link rel="prev" href="image.html" title="Image Manipulation">
+<link rel="next" href="user.html" title="Drawing in user coordinates">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#text.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#text.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="drawing.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="image.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="user.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="text"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="text.top_of_page"></a>Text Drawing</span></h2>
+<p>Text Drawing — Fonts and text primitives</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="text.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="text.html#GrxFont"><span class="returnvalue">GrxFont</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-load-from-file" title="grx_font_load_from_file ()">grx_font_load_from_file</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="text.html#GrxFont"><span class="returnvalue">GrxFont</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-load-full" title="grx_font_load_full ()">grx_font_load_full</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="text.html#GrxFont"><span class="returnvalue">GrxFont</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-load" title="grx_font_load ()">grx_font_load</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="text.html#GrxFont"><span class="returnvalue">GrxFont</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-ref" title="grx_font_ref ()">grx_font_ref</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-unref" title="grx_font_unref ()">grx_font_unref</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-get-family" title="grx_font_get_family ()">grx_font_get_family</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-get-style" title="grx_font_get_style ()">grx_font_get_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-get-height" title="grx_font_get_height ()">grx_font_get_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-get-width" title="grx_font_get_width ()">grx_font_get_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-dump" title="grx_font_dump ()">grx_font_dump</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-get-char-width" title="grx_font_get_char_width ()">grx_font_get_char_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-get-char-height" title="grx_font_get_char_height ()">grx_font_get_char_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-get-text-width" title="grx_font_get_text_width ()">grx_font_get_text_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-font-get-text-height" title="grx_font_get_text_height ()">grx_font_get_text_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-draw-text" title="grx_draw_text ()">grx_draw_text</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="text.html#GrxTextOptions"><span class="returnvalue">GrxTextOptions</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-new" title="grx_text_options_new ()">grx_text_options_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="text.html#GrxTextOptions"><span class="returnvalue">GrxTextOptions</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-new-full" title="grx_text_options_new_full ()">grx_text_options_new_full</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="text.html#GrxTextOptions"><span class="returnvalue">GrxTextOptions</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-ref" title="grx_text_options_ref ()">grx_text_options_ref</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-unref" title="grx_text_options_unref ()">grx_text_options_unref</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="text.html#GrxFont"><span class="returnvalue">GrxFont</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-get-font" title="grx_text_options_get_font ()">grx_text_options_get_font</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-set-font" title="grx_text_options_set_font ()">grx_text_options_set_font</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-get-fg-color" title="grx_text_options_get_fg_color ()">grx_text_options_get_fg_color</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-set-fg-color" title="grx_text_options_set_fg_color ()">grx_text_options_set_fg_color</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-get-bg-color" title="grx_text_options_get_bg_color ()">grx_text_options_get_bg_color</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-set-bg-color" title="grx_text_options_set_bg_color ()">grx_text_options_set_bg_color</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="text.html#GrxTextHAlign" title="enum GrxTextHAlign"><span class="returnvalue">GrxTextHAlign</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-get-h-align" title="grx_text_options_get_h_align ()">grx_text_options_get_h_align</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-set-h-align" title="grx_text_options_set_h_align ()">grx_text_options_set_h_align</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="text.html#GrxTextVAlign" title="enum GrxTextVAlign"><span class="returnvalue">GrxTextVAlign</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-get-v-align" title="grx_text_options_get_v_align ()">grx_text_options_get_v_align</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="text.html#grx-text-options-set-v-align" title="grx_text_options_set_v_align ()">grx_text_options_set_v_align</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<a name="GrxFont"></a><a name="GrxTextOptions"></a><div class="refsect1">
+<a name="text.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="text.html#GrxFontWeight" title="enum GrxFontWeight">GrxFontWeight</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="text.html#GrxFontSlant" title="enum GrxFontSlant">GrxFontSlant</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="text.html#GrxFontWidth" title="enum GrxFontWidth">GrxFontWidth</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="text.html#GrxTextHAlign" title="enum GrxTextHAlign">GrxTextHAlign</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="text.html#GrxTextVAlign" title="enum GrxTextVAlign">GrxTextVAlign</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="text.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-Boxed-Types.html">GBoxed</a>
+    <span class="lineart">├──</span> GrxFont
+    <span class="lineart">╰──</span> GrxTextOptions
+</pre>
+</div>
+<div class="refsect1">
+<a name="text.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="text.description"></a><h2>Description</h2>
+<p>The library supports loadable fonts. When in memory they are bitmapped (i.e.
+not scalable!) fonts.</p>
+<p>Under the hood, it uses fontconfig and freetype2. This means than fontconfig
+must be configured to allow using bitmap fonts, otherwise <a class="link" href="text.html#grx-font-load" title="grx_font_load ()"><code class="function">grx_font_load()</code></a>
+will not be able to find any fonts. You can also use the fontconfig command
+line tools to help find availble fonts. For example, <code class="literal">fc-list ":scalable=False"</code>
+will list all bitmap fonts.</p>
+<p>To bypass fontconfig, use <a class="link" href="text.html#grx-font-load-from-file" title="grx_font_load_from_file ()"><code class="function">grx_font_load_from_file()</code></a> instead.</p>
+</div>
+<div class="refsect1">
+<a name="text.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-font-load-from-file"></a><h3>grx_font_load_from_file ()</h3>
+<pre class="programlisting"><a class="link" href="text.html#GrxFont"><span class="returnvalue">GrxFont</span></a> *
+grx_font_load_from_file (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filename</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **err</code></em>);</pre>
+<p>Loads a font from a file. Only loads the first font face in the file.</p>
+<div class="refsect3">
+<a name="grx-font-load-from-file.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p> the file path. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> filename]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>Pointer to hold an error</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-load-from-file.returns"></a><h4>Returns</h4>
+<p> the font or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there was an error
+such as the font was not found. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-load-full"></a><h3>grx_font_load_full ()</h3>
+<pre class="programlisting"><a class="link" href="text.html#GrxFont"><span class="returnvalue">GrxFont</span></a> *
+grx_font_load_full (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *family</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> size</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> dpi</code></em>,
+                    <em class="parameter"><code><a class="link" href="text.html#GrxFontWeight" title="enum GrxFontWeight"><span class="type">GrxFontWeight</span></a> weight</code></em>,
+                    <em class="parameter"><code><a class="link" href="text.html#GrxFontSlant" title="enum GrxFontSlant"><span class="type">GrxFontSlant</span></a> slant</code></em>,
+                    <em class="parameter"><code><a class="link" href="text.html#GrxFontWidth" title="enum GrxFontWidth"><span class="type">GrxFontWidth</span></a> width</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> monospace</code></em>,
+                    <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *lang</code></em>,
+                    <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *script</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **err</code></em>);</pre>
+<p>Loads the font that best matches the parameters.</p>
+<p>Uses fontconfig for font matching.</p>
+<div class="refsect3">
+<a name="grx-font-load-full.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>family</p></td>
+<td class="parameter_description"><p> the font family name or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>size</p></td>
+<td class="parameter_description"><p>the preferred size in points or -1 for any size</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>dpi</p></td>
+<td class="parameter_description"><p>the screen resolution or -1 to ignore dpi</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>weight</p></td>
+<td class="parameter_description"><p>the font weight (e.g. bold) or -1 for any weight</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>slant</p></td>
+<td class="parameter_description"><p>the font slant (e.g. italic) or -1 for any slant</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the font width (e.g. narrow) or -1 for any width</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>monospace</p></td>
+<td class="parameter_description"><p>set to <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> to prefer a monospace font</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>lang</p></td>
+<td class="parameter_description"><p> a RFC-3066-style language code or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>script</p></td>
+<td class="parameter_description"><p> an ISO 15924 script code or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>pointer to hold an error</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-load-full.returns"></a><h4>Returns</h4>
+<p> the font or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there was an error. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-load"></a><h3>grx_font_load ()</h3>
+<pre class="programlisting"><a class="link" href="text.html#GrxFont"><span class="returnvalue">GrxFont</span></a> *
+grx_font_load (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *family</code></em>,
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> size</code></em>,
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **err</code></em>);</pre>
+<p>Loads the font that best matches the parameters.</p>
+<p>Uses fontconfig for font matching. This function is dpi aware, so the result
+depends on the currently selected video driver and possibly the video mode.</p>
+<div class="refsect3">
+<a name="grx-font-load.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>family</p></td>
+<td class="parameter_description"><p> the font family name or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>size</p></td>
+<td class="parameter_description"><p>the preferred size or -1 for any size</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>pointer to hold an error</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-load.returns"></a><h4>Returns</h4>
+<p> the font or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there was an error. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-ref"></a><h3>grx_font_ref ()</h3>
+<pre class="programlisting"><a class="link" href="text.html#GrxFont"><span class="returnvalue">GrxFont</span></a> *
+grx_font_ref (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>);</pre>
+<p>Increases the reference count to <em class="parameter"><code>font</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-font-ref.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-ref.returns"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>font</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-unref"></a><h3>grx_font_unref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_font_unref (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>);</pre>
+<p>Decreases the reference count on <em class="parameter"><code>font</code></em>
+.</p>
+<p>When the reference count reaches 0, <em class="parameter"><code>font</code></em>
+ is freed.</p>
+<div class="refsect3">
+<a name="grx-font-unref.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p> the font. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-get-family"></a><h3>grx_font_get_family ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+grx_font_get_family (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>);</pre>
+<p>Gets the name of the font family.</p>
+<div class="refsect3">
+<a name="grx-font-get-family.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-get-family.returns"></a><h4>Returns</h4>
+<p> the name. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-get-style"></a><h3>grx_font_get_style ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+grx_font_get_style (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>);</pre>
+<p>Gets the name of the font style.</p>
+<div class="refsect3">
+<a name="grx-font-get-style.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-get-style.returns"></a><h4>Returns</h4>
+<p> the name. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-get-height"></a><h3>grx_font_get_height ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_font_get_height (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>);</pre>
+<p>Gets the height of the font in pixels.</p>
+<div class="refsect3">
+<a name="grx-font-get-height.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-get-height.returns"></a><h4>Returns</h4>
+<p> the height</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-get-width"></a><h3>grx_font_get_width ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_font_get_width (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>);</pre>
+<p>Gets the width of the font in pixels.</p>
+<div class="refsect3">
+<a name="grx-font-get-width.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-get-width.returns"></a><h4>Returns</h4>
+<p> the width</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-dump"></a><h3>grx_font_dump ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_font_dump (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>,
+               <em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> start</code></em>,
+               <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> fg</code></em>,
+               <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> bg</code></em>);</pre>
+<p>Draws as many glyphs as possible in the clip box of the specified context.</p>
+<p>If all of the glyphs do no fit, an index will be returned. This index can
+be passed to <em class="parameter"><code>start</code></em>
+ to draw the next "page" of glyphs.</p>
+<div class="refsect3">
+<a name="grx-font-dump.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the drawing context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>start</p></td>
+<td class="parameter_description"><p>the starting glyph index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>fg</p></td>
+<td class="parameter_description"><p>the forground color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bg</p></td>
+<td class="parameter_description"><p>the background color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-dump.returns"></a><h4>Returns</h4>
+<p> the index of the first glyph that was not drawn or -1 if all of the
+glyphs were drawn</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-get-char-width"></a><h3>grx_font_get_char_width ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_font_get_char_width (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Unicode-Manipulation.html#gunichar"><span class="type">gunichar</span></a> c</code></em>);</pre>
+<p>Gets the width of a character using the specified font.</p>
+<div class="refsect3">
+<a name="grx-font-get-char-width.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the character</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-get-char-width.returns"></a><h4>Returns</h4>
+<p> the width</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-get-char-height"></a><h3>grx_font_get_char_height ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_font_get_char_height (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Unicode-Manipulation.html#gunichar"><span class="type">gunichar</span></a> c</code></em>);</pre>
+<p>Gets the height of a character using the specified font.</p>
+<div class="refsect3">
+<a name="grx-font-get-char-height.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the character</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-get-char-height.returns"></a><h4>Returns</h4>
+<p> the height</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-get-text-width"></a><h3>grx_font_get_text_width ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_font_get_text_width (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>,
+                         <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>);</pre>
+<p>Gets the width of a string using the specified font.</p>
+<p>The string must contain valid UTF-8. Check using <a href="https://developer.gnome.org/glib/unstable/glib-Unicode-Manipulation.html#g-utf8-validate"><code class="function">g_utf8_validate()</code></a> first if
+<em class="parameter"><code>text</code></em>
+ is from an unknown source.</p>
+<div class="refsect3">
+<a name="grx-font-get-text-width.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>text</p></td>
+<td class="parameter_description"><p> the text. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-get-text-width.returns"></a><h4>Returns</h4>
+<p> the width</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-font-get-text-height"></a><h3>grx_font_get_text_height ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_font_get_text_height (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>,
+                          <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>);</pre>
+<p>Gets the height of a string using the specified font.</p>
+<p>The string must contain valid UTF-8. Check using <a href="https://developer.gnome.org/glib/unstable/glib-Unicode-Manipulation.html#g-utf8-validate"><code class="function">g_utf8_validate()</code></a> first if
+<em class="parameter"><code>text</code></em>
+ is from an unknown source.</p>
+<div class="refsect3">
+<a name="grx-font-get-text-height.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>text</p></td>
+<td class="parameter_description"><p> the text. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-font-get-text-height.returns"></a><h4>Returns</h4>
+<p> the height</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-text"></a><h3>grx_draw_text ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_text (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+               <em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-new"></a><h3>grx_text_options_new ()</h3>
+<pre class="programlisting"><a class="link" href="text.html#GrxTextOptions"><span class="returnvalue">GrxTextOptions</span></a> *
+grx_text_options_new (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>,
+                      <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> fg</code></em>);</pre>
+<p>Allocate a text options structure with background color set to <a class="link" href="color.html#GRX-COLOR-NONE:CAPS" title="GRX_COLOR_NONE"><span class="type">GRX_COLOR_NONE</span></a>,
+horizontal alignment of <a class="link" href="text.html#GRX-TEXT-HALIGN-LEFT:CAPS"><span class="type">GRX_TEXT_HALIGN_LEFT</span></a> and vertival alignment of
+<a class="link" href="text.html#GRX-TEXT-VALIGN-TOP:CAPS"><span class="type">GRX_TEXT_VALIGN_TOP</span></a>.</p>
+<p>This structure is passed to text drawing functions to provide information on
+how to draw the text.</p>
+<div class="refsect3">
+<a name="grx-text-options-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>fg</p></td>
+<td class="parameter_description"><p>the forground color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-text-options-new.returns"></a><h4>Returns</h4>
+<p> the new <a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> structure. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-new-full"></a><h3>grx_text_options_new_full ()</h3>
+<pre class="programlisting"><a class="link" href="text.html#GrxTextOptions"><span class="returnvalue">GrxTextOptions</span></a> *
+grx_text_options_new_full (<em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>,
+                           <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> fg</code></em>,
+                           <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> bg</code></em>,
+                           <em class="parameter"><code><a class="link" href="text.html#GrxTextHAlign" title="enum GrxTextHAlign"><span class="type">GrxTextHAlign</span></a> h_align</code></em>,
+                           <em class="parameter"><code><a class="link" href="text.html#GrxTextVAlign" title="enum GrxTextVAlign"><span class="type">GrxTextVAlign</span></a> v_align</code></em>);</pre>
+<p>Allocate a text options structure.</p>
+<p>This structure is passed to text drawing functions to provide information on
+how to draw the text.</p>
+<div class="refsect3">
+<a name="grx-text-options-new-full.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>fg</p></td>
+<td class="parameter_description"><p>the forground color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bg</p></td>
+<td class="parameter_description"><p>the background color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>h_align</p></td>
+<td class="parameter_description"><p>the horizontal alignment</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>v_align</p></td>
+<td class="parameter_description"><p>the vertical alignment</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-text-options-new-full.returns"></a><h4>Returns</h4>
+<p> the new <a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> structure. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-ref"></a><h3>grx_text_options_ref ()</h3>
+<pre class="programlisting"><a class="link" href="text.html#GrxTextOptions"><span class="returnvalue">GrxTextOptions</span></a> *
+grx_text_options_ref (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>);</pre>
+<p>Increases the reference count to <em class="parameter"><code>options</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-text-options-ref.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-text-options-ref.returns"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>options</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-unref"></a><h3>grx_text_options_unref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_text_options_unref (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>);</pre>
+<p>Decreases the reference count on <em class="parameter"><code>options</code></em>
+.</p>
+<p>When the reference count reaches 0, <em class="parameter"><code>options</code></em>
+ is freed.</p>
+<div class="refsect3">
+<a name="grx-text-options-unref.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p> the options. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-get-font"></a><h3>grx_text_options_get_font ()</h3>
+<pre class="programlisting"><a class="link" href="text.html#GrxFont"><span class="returnvalue">GrxFont</span></a> *
+grx_text_options_get_font (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>);</pre>
+<p>Gets the font.</p>
+<div class="refsect3">
+<a name="grx-text-options-get-font.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-text-options-get-font.returns"></a><h4>Returns</h4>
+<p> the font. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-set-font"></a><h3>grx_text_options_set_font ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_text_options_set_font (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>,
+                           <em class="parameter"><code><a class="link" href="text.html#GrxFont"><span class="type">GrxFont</span></a> *font</code></em>);</pre>
+<p>Sets the font.</p>
+<div class="refsect3">
+<a name="grx-text-options-set-font.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>font</p></td>
+<td class="parameter_description"><p>the font</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-get-fg-color"></a><h3>grx_text_options_get_fg_color ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_text_options_get_fg_color (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>);</pre>
+<p>Gets the forground color.</p>
+<div class="refsect3">
+<a name="grx-text-options-get-fg-color.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-text-options-get-fg-color.returns"></a><h4>Returns</h4>
+<p> the color</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-set-fg-color"></a><h3>grx_text_options_set_fg_color ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_text_options_set_fg_color (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>,
+                               <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> fg</code></em>);</pre>
+<p>Sets the forground color.</p>
+<div class="refsect3">
+<a name="grx-text-options-set-fg-color.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>fg</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-get-bg-color"></a><h3>grx_text_options_get_bg_color ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_text_options_get_bg_color (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>);</pre>
+<p>Gets the background color.</p>
+<div class="refsect3">
+<a name="grx-text-options-get-bg-color.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-text-options-get-bg-color.returns"></a><h4>Returns</h4>
+<p> the color</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-set-bg-color"></a><h3>grx_text_options_set_bg_color ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_text_options_set_bg_color (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>,
+                               <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> bg</code></em>);</pre>
+<p>Sets the background color.</p>
+<div class="refsect3">
+<a name="grx-text-options-set-bg-color.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bg</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-get-h-align"></a><h3>grx_text_options_get_h_align ()</h3>
+<pre class="programlisting"><a class="link" href="text.html#GrxTextHAlign" title="enum GrxTextHAlign"><span class="returnvalue">GrxTextHAlign</span></a>
+grx_text_options_get_h_align (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>);</pre>
+<p>Gets the horizontal alignment.</p>
+<div class="refsect3">
+<a name="grx-text-options-get-h-align.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-text-options-get-h-align.returns"></a><h4>Returns</h4>
+<p> the alignment</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-set-h-align"></a><h3>grx_text_options_set_h_align ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_text_options_set_h_align (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>,
+                              <em class="parameter"><code><a class="link" href="text.html#GrxTextHAlign" title="enum GrxTextHAlign"><span class="type">GrxTextHAlign</span></a> h_align</code></em>);</pre>
+<p>Sets the horizontal alignment.</p>
+<div class="refsect3">
+<a name="grx-text-options-set-h-align.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>h_align</p></td>
+<td class="parameter_description"><p>the alignment</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-get-v-align"></a><h3>grx_text_options_get_v_align ()</h3>
+<pre class="programlisting"><a class="link" href="text.html#GrxTextVAlign" title="enum GrxTextVAlign"><span class="returnvalue">GrxTextVAlign</span></a>
+grx_text_options_get_v_align (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>);</pre>
+<p>Gets the vertical alignment.</p>
+<div class="refsect3">
+<a name="grx-text-options-get-v-align.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-text-options-get-v-align.returns"></a><h4>Returns</h4>
+<p> the alignment</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-text-options-set-v-align"></a><h3>grx_text_options_set_v_align ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_text_options_set_v_align (<em class="parameter"><code><a class="link" href="text.html#GrxTextOptions"><span class="type">GrxTextOptions</span></a> *options</code></em>,
+                              <em class="parameter"><code><a class="link" href="text.html#GrxTextVAlign" title="enum GrxTextVAlign"><span class="type">GrxTextVAlign</span></a> v_align</code></em>);</pre>
+<p>Sets the vertical alignment.</p>
+<div class="refsect3">
+<a name="grx-text-options-set-v-align.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>v_align</p></td>
+<td class="parameter_description"><p>the alignment</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="text.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GrxFontWeight"></a><h3>enum GrxFontWeight</h3>
+<p>Describes the weight of the font.</p>
+<div class="refsect3">
+<a name="GrxFontWeight.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FONT-WEIGHT-REGULAR:CAPS"></a>GRX_FONT_WEIGHT_REGULAR</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FONT-WEIGHT-BOLD:CAPS"></a>GRX_FONT_WEIGHT_BOLD</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxFontSlant"></a><h3>enum GrxFontSlant</h3>
+<p>Describes the slant of the font.</p>
+<div class="refsect3">
+<a name="GrxFontSlant.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FONT-SLANT-REGULAR:CAPS"></a>GRX_FONT_SLANT_REGULAR</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FONT-SLANT-ITALIC:CAPS"></a>GRX_FONT_SLANT_ITALIC</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxFontWidth"></a><h3>enum GrxFontWidth</h3>
+<p>Describes the slant of the font.</p>
+<div class="refsect3">
+<a name="GrxFontWidth.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FONT-WIDTH-NARROW:CAPS"></a>GRX_FONT_WIDTH_NARROW</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FONT-WIDTH-REGULAR:CAPS"></a>GRX_FONT_WIDTH_REGULAR</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-FONT-WIDTH-WIDE:CAPS"></a>GRX_FONT_WIDTH_WIDE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxTextHAlign"></a><h3>enum GrxTextHAlign</h3>
+<p>Horizontal text alignment</p>
+<div class="refsect3">
+<a name="GrxTextHAlign.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-TEXT-HALIGN-LEFT:CAPS"></a>GRX_TEXT_HALIGN_LEFT</p></td>
+<td class="enum_member_description">
+<p>align text on the left</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-TEXT-HALIGN-CENTER:CAPS"></a>GRX_TEXT_HALIGN_CENTER</p></td>
+<td class="enum_member_description">
+<p>align text in the center</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-TEXT-HALIGN-RIGHT:CAPS"></a>GRX_TEXT_HALIGN_RIGHT</p></td>
+<td class="enum_member_description">
+<p>align text on the right</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxTextVAlign"></a><h3>enum GrxTextVAlign</h3>
+<p>Vertical text alignment</p>
+<div class="refsect3">
+<a name="GrxTextVAlign.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-TEXT-VALIGN-TOP:CAPS"></a>GRX_TEXT_VALIGN_TOP</p></td>
+<td class="enum_member_description">
+<p>align text on the top</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-TEXT-VALIGN-MIDDLE:CAPS"></a>GRX_TEXT_VALIGN_MIDDLE</p></td>
+<td class="enum_member_description">
+<p>align text in the middle</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-TEXT-VALIGN-BOTTOM:CAPS"></a>GRX_TEXT_VALIGN_BOTTOM</p></td>
+<td class="enum_member_description">
+<p>align text on the bottom</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-TEXT-VALIGN-BASELINE:CAPS"></a>GRX_TEXT_VALIGN_BASELINE</p></td>
+<td class="enum_member_description">
+<p>align text on the baseline</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

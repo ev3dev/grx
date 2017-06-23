@@ -1,0 +1,513 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Extents, viewports and clipping: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="drivers.html" title="Drivers, Modes and Contexts">
+<link rel="prev" href="context.html" title="Graphics Contexts">
+<link rel="next" href="drawing.html" title="Drawing">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#extents.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="drivers.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="context.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="drawing.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="extents"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="extents.top_of_page"></a>Extents, viewports and clipping</span></h2>
+<p>Extents, viewports and clipping — Size information about the current context and the screen</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="extents.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-width" title="grx_get_width ()">grx_get_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-height" title="grx_get_height ()">grx_get_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-max-x" title="grx_get_max_x ()">grx_get_max_x</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-max-y" title="grx_get_max_y ()">grx_get_max_y</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-screen-width" title="grx_get_screen_width ()">grx_get_screen_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-screen-height" title="grx_get_screen_height ()">grx_get_screen_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-virtual-width" title="grx_get_virtual_width ()">grx_get_virtual_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-virtual-height" title="grx_get_virtual_height ()">grx_get_virtual_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-is-screen-virtual" title="grx_is_screen_virtual ()">grx_is_screen_virtual</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-viewport-x" title="grx_get_viewport_x ()">grx_get_viewport_x</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-viewport-y" title="grx_get_viewport_y ()">grx_get_viewport_y</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-set-viewport" title="grx_set_viewport ()">grx_set_viewport</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-set-clip-box" title="grx_set_clip_box ()">grx_set_clip_box</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-clip-box" title="grx_get_clip_box ()">grx_get_clip_box</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-reset-clip-box" title="grx_reset_clip_box ()">grx_reset_clip_box</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-clip-box-min-x" title="grx_get_clip_box_min_x ()">grx_get_clip_box_min_x</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-clip-box-min-y" title="grx_get_clip_box_min_y ()">grx_get_clip_box_min_y</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-clip-box-max-x" title="grx_get_clip_box_max_x ()">grx_get_clip_box_max_x</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="extents.html#grx-get-clip-box-max-y" title="grx_get_clip_box_max_y ()">grx_get_clip_box_max_y</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="extents.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="extents.description"></a><h2>Description</h2>
+<p>These functions are used to get information about the extents of the current
+context and the screen. Additionally, the clipping limits used by drawing
+functions can be set to an arbitrary area of the current context.</p>
+</div>
+<div class="refsect1">
+<a name="extents.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-get-width"></a><h3>grx_get_width ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_width (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the width of the current context in pixels.</p>
+<div class="refsect3">
+<a name="grx-get-width.returns"></a><h4>Returns</h4>
+<p> the width</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-height"></a><h3>grx_get_height ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_height (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the height of the current context in pixels.</p>
+<div class="refsect3">
+<a name="grx-get-height.returns"></a><h4>Returns</h4>
+<p> the height</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-max-x"></a><h3>grx_get_max_x ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_max_x (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the index of the last pixel of the current context in the X direction.</p>
+<p>In other words, this is <a class="link" href="extents.html#grx-get-width" title="grx_get_width ()"><code class="function">grx_get_width()</code></a> -1.</p>
+<div class="refsect3">
+<a name="grx-get-max-x.returns"></a><h4>Returns</h4>
+<p> the index</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-max-y"></a><h3>grx_get_max_y ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_max_y (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the index of the last pixel of the current context in the Y direction.</p>
+<p>In other words, this is <a class="link" href="extents.html#grx-get-height" title="grx_get_height ()"><code class="function">grx_get_height()</code></a> -1.</p>
+<div class="refsect3">
+<a name="grx-get-max-y.returns"></a><h4>Returns</h4>
+<p> the index</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-screen-width"></a><h3>grx_get_screen_width ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_screen_width (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the width of the physical screen in pixels.</p>
+<div class="refsect3">
+<a name="grx-get-screen-width.returns"></a><h4>Returns</h4>
+<p> the width</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-screen-height"></a><h3>grx_get_screen_height ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_screen_height (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the height of the physical screen in pixels.</p>
+<div class="refsect3">
+<a name="grx-get-screen-height.returns"></a><h4>Returns</h4>
+<p> the height</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-virtual-width"></a><h3>grx_get_virtual_width ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_virtual_width (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the width of the virtual screen in pixels.</p>
+<div class="refsect3">
+<a name="grx-get-virtual-width.returns"></a><h4>Returns</h4>
+<p> the width</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-virtual-height"></a><h3>grx_get_virtual_height ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_virtual_height (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the height of the virtual screen in pixels.</p>
+<div class="refsect3">
+<a name="grx-get-virtual-height.returns"></a><h4>Returns</h4>
+<p> the height</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-is-screen-virtual"></a><h3>grx_is_screen_virtual ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+grx_is_screen_virtual (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Checks if the current screen is a virtual screen (i.e. the virtual size is
+larger than the physical size).</p>
+<div class="refsect3">
+<a name="grx-is-screen-virtual.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the screen is a virtual screen</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-viewport-x"></a><h3>grx_get_viewport_x ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_viewport_x (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the starting X coordinate of the current viewport.</p>
+<div class="refsect3">
+<a name="grx-get-viewport-x.returns"></a><h4>Returns</h4>
+<p> the X coordinate</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-viewport-y"></a><h3>grx_get_viewport_y ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_viewport_y (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the starting Y coordinate of the current viewport.</p>
+<div class="refsect3">
+<a name="grx-get-viewport-y.returns"></a><h4>Returns</h4>
+<p> the Y coordinate</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-set-viewport"></a><h3>grx_set_viewport ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+grx_set_viewport (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);</pre>
+<p>Sets the viewport on a virtual screen. The width and height of the viewport
+are determined by the physical screen size (<a class="link" href="extents.html#grx-get-screen-width" title="grx_get_screen_width ()"><code class="function">grx_get_screen_width()</code></a> and
+<a class="link" href="extents.html#grx-get-screen-height" title="grx_get_screen_height ()"><code class="function">grx_get_screen_height()</code></a>).</p>
+<div class="refsect3">
+<a name="grx-set-viewport.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the left X coordinate of the viewport</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the top Y coordinate of the viewport</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-set-viewport.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if setting the viewport was successful</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-set-clip-box"></a><h3>grx_set_clip_box ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_set_clip_box (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>);</pre>
+<p>Sets the clipping limits on the current context.</p>
+<div class="refsect3">
+<a name="grx-set-clip-box.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-clip-box"></a><h3>grx_get_clip_box ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_get_clip_box (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *x1</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *y1</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *x2</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *y2</code></em>);</pre>
+<p>Gets the clipping limits of the current context.</p>
+<div class="refsect3">
+<a name="grx-get-clip-box.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p> the left bounds. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p> the top bounds. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p> the right bounds. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p> the bottom bounds. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-reset-clip-box"></a><h3>grx_reset_clip_box ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_reset_clip_box (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Resets the clipping limits of the current context to the size of the current
+context.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-clip-box-min-x"></a><h3>grx_get_clip_box_min_x ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_clip_box_min_x (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the left bounds of the clipping limits of the current context.</p>
+<div class="refsect3">
+<a name="grx-get-clip-box-min-x.returns"></a><h4>Returns</h4>
+<p> the current value</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-clip-box-min-y"></a><h3>grx_get_clip_box_min_y ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_clip_box_min_y (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the top bounds of the clipping limits of the current context.</p>
+<div class="refsect3">
+<a name="grx-get-clip-box-min-y.returns"></a><h4>Returns</h4>
+<p> the current value</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-clip-box-max-x"></a><h3>grx_get_clip_box_max_x ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_clip_box_max_x (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the right bounds of the clipping limits of the current context.</p>
+<div class="refsect3">
+<a name="grx-get-clip-box-max-x.returns"></a><h4>Returns</h4>
+<p> the current value</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-clip-box-max-y"></a><h3>grx_get_clip_box_max_y ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_get_clip_box_max_y (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the bottom bounds of the clipping limits of the current context.</p>
+<div class="refsect3">
+<a name="grx-get-clip-box-max-y.returns"></a><h4>Returns</h4>
+<p> the current value</p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="extents.other_details"></a><h2>Types and Values</h2>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

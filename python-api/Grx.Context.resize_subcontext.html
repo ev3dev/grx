@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Grx.Context.resize_subcontext</title>
+<link rel="stylesheet" type="text/css" href="C.css">
+<script type="text/javascript" src="jquery.js"></script><script type="text/javascript" src="jquery.syntax.js"></script><script type="text/javascript" src="yelp.js"></script>
+</head>
+<body><div class="page" role="main">
+<div class="header"><div class="trails" role="navigation"><div class="trail">
+<a class="trail" href="index.html" title="Grx">Grx</a> » <a class="trail" href="Grx.Context.html" title="Grx.Context">Grx.Context</a> » </div></div></div>
+<div class="body">
+<div class="hgroup"><h1 class="title"><span class="title">Grx.Context.resize_subcontext</span></h1></div>
+<div class="region">
+<div class="contents">
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(Grx.Context, int, int, int, int)
+@returns(none)
+def resize_subcontext(self, x1, y1, x2, y2):
+    # Python wrapper for grx_context_resize_subcontext()
+  </pre></div></div></div></div></div>
+<p class="p">Sub-contexts can be resized, but not their parents (i.e. anything returned
+by <span class="link"><a href="Grx.Context.new.html" title="Grx.Context.new">Grx.Context.new</a></span> or set up by <span class="link"><a href="Grx.set_mode.html" title="Grx.set_mode">Grx.set_mode</a></span> cannot be resized – because
+this could lead to irrecoverable "loss" of drawing memory.</p>
+<p class="p">The coordinate arguments (x1 through y2) are interpreted relative to the
+parent context's limits.</p>
+<div class="terms"><div class="inner"><div class="region"><dl class="terms">
+<dt class="terms"><span class="code">self</span></dt>
+<dd class="terms"><p class="p">the context</p></dd>
+<dt class="terms"><span class="code">x1</span></dt>
+<dd class="terms"><p class="p">the new left bounds</p></dd>
+<dt class="terms"><span class="code">y1</span></dt>
+<dd class="terms"><p class="p">the new top bounds</p></dd>
+<dt class="terms"><span class="code">x2</span></dt>
+<dd class="terms"><p class="p">the new right bounds</p></dd>
+<dt class="terms"><span class="code">y2</span></dt>
+<dd class="terms"><p class="p">the new bottom bounds</p></dd>
+</dl></div></div></div>
+</div>
+<div class="sect sect-links" role="navigation">
+<div class="hgroup"></div>
+<div class="contents"><div class="links guidelinks"><div class="inner">
+<div class="title"><h2><span class="title">More Information</span></h2></div>
+<div class="region"><ul><li class="links "><a href="Grx.Context.html" title="Grx.Context">Grx.Context</a></li></ul></div>
+</div></div></div>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+<div class="footer"></div>
+</div></body>
+</html>

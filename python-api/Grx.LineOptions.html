@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Grx.LineOptions</title>
+<link rel="stylesheet" type="text/css" href="C.css">
+<script type="text/javascript" src="jquery.js"></script><script type="text/javascript" src="jquery.syntax.js"></script><script type="text/javascript" src="yelp.js"></script>
+</head>
+<body><div class="page" role="main">
+<div class="header"><div class="trails" role="navigation"><div class="trail">
+<a class="trail" href="index.html" title="Grx">Grx</a> » </div></div></div>
+<div class="body">
+<div class="hgroup"><h1 class="title"><span class="title">Grx.LineOptions</span></h1></div>
+<div class="region">
+<div class="contents">
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">from gi.repository import Grx
+
+line_options = Grx.LineOptions()
+  </pre></div></div></div></div></div>
+<p class="p">Custom line options structure.</p>
+<p class="p">Zero or one dash pattern length means the line is continuous. The dash
+pattern always begins with a drawn section.</p>
+<p class="p">Example, a white line 3 pixels wide (thick) and pattern 6 pixels draw,
+4 pixels nodraw:
+|[&lt;!-- language="C" --&gt;
+GrxLineOptions my_line_options;
+...
+my_line_options.color = GRX_COLOR_WHITE;
+my_line_options.width = 3;
+my_line_options.n_dash_patterns = 2;
+my_line_options.dash_patterns = "\x06\x04";
+...
+]|</p>
+<div class="links topiclinks"><div class="inner">
+<div class="title title-links"><h2><span class="title">Fields</span></h2></div>
+<div class="region"><ul>
+<li class="links "><a href="Grx.LineOptions-color.html" title="Grx.LineOptions-&gt;color">Grx.LineOptions-&gt;color</a></li>
+<li class="links "><a href="Grx.LineOptions-dash_patterns.html" title="Grx.LineOptions-&gt;dash_patterns">Grx.LineOptions-&gt;dash_patterns</a></li>
+<li class="links "><a href="Grx.LineOptions-n_dash_patterns.html" title="Grx.LineOptions-&gt;n_dash_patterns">Grx.LineOptions-&gt;n_dash_patterns</a></li>
+<li class="links "><a href="Grx.LineOptions-width.html" title="Grx.LineOptions-&gt;width">Grx.LineOptions-&gt;width</a></li>
+</ul></div>
+</div></div>
+</div>
+<div class="sect sect-links" role="navigation">
+<div class="hgroup"></div>
+<div class="contents"><div class="links guidelinks"><div class="inner">
+<div class="title"><h2><span class="title">More Information</span></h2></div>
+<div class="region"><ul><li class="links "><a href="index.html" title="Grx">Grx</a></li></ul></div>
+</div></div></div>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+<div class="footer"></div>
+</div></body>
+</html>

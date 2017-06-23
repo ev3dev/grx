@@ -1,0 +1,775 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Image Manipulation: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="drawing.html" title="Drawing">
+<link rel="prev" href="pattern.html" title="Pattern filled graphics primitives">
+<link rel="next" href="text.html" title="Text Drawing">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#image.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#image.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="drawing.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="pattern.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="text.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="image"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="image.top_of_page"></a>Image Manipulation</span></h2>
+<p>Image Manipulation — Image manipulation</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="image.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-image-new" title="grx_image_new ()">grx_image_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-image-new-from-context" title="grx_image_new_from_context ()">grx_image_new_from_context</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-image-copy" title="grx_image_copy ()">grx_image_copy</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-image-free" title="grx_image_free ()">grx_image_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-image-mirror" title="grx_image_mirror ()">grx_image_mirror</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-image-stretch" title="grx_image_stretch ()">grx_image_stretch</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="pattern.html#GrxPattern"><span class="returnvalue">GrxPattern</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-image-as-pattern" title="grx_image_as_pattern ()">grx_image_as_pattern</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-pattern-as-image" title="grx_pattern_as_image ()">grx_pattern_as_image</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-draw-image" title="grx_draw_image ()">grx_draw_image</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-draw-image-tiled" title="grx_draw_image_tiled ()">grx_draw_image_tiled</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-draw-filled-box-with-image" title="grx_draw_filled_box_with_image ()">grx_draw_filled_box_with_image</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-draw-hline-with-image" title="grx_draw_hline_with_image ()">grx_draw_hline_with_image</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="image.html#grx-draw-pixel-with-image" title="grx_draw_pixel_with_image ()">grx_draw_pixel_with_image</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<a name="GrxImage"></a><div class="refsect1">
+<a name="image.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="typedef_keyword">typedef</td>
+<td class="function_name"><a class="link" href="image.html#GrxImage">GrxImage</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="image.html#GrxImageMirrorFlags" title="enum GrxImageMirrorFlags">GrxImageMirrorFlags</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="image.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-Boxed-Types.html">GBoxed</a>
+    <span class="lineart">╰──</span> GrxImage
+</pre>
+</div>
+<div class="refsect1">
+<a name="image.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="image.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="image.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-image-new"></a><h3>grx_image_new ()</h3>
+<pre class="programlisting"><a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+grx_image_new (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *pixels</code></em>,
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+               <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Arrays.html#GArray"><span class="type">GArray</span></a> *colors</code></em>);</pre>
+<p>Builds a pixmap from a two dimensional (width by height) array of characters.
+The elements in this array are used as indices into the color table specified
+with the argument <em class="parameter"><code>colors</code></em>
+. (This means that pixmaps created this way can use
+at most 256 colors.)</p>
+<div class="refsect3">
+<a name="grx-image-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pixels</p></td>
+<td class="parameter_description"><p> array of pixel data. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width of the array</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p>the height of the array</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>colors</p></td>
+<td class="parameter_description"><p> the color table. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GrxColor]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-image-new.returns"></a><h4>Returns</h4>
+<p> the new image or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there was an error. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-image-new-from-context"></a><h3>grx_image_new_from_context ()</h3>
+<pre class="programlisting"><a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+grx_image_new_from_context (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
+<p>Creates a new image using <em class="parameter"><code>context</code></em>
+.</p>
+<p>The image and the original context share the drawing RAM.</p>
+<div class="refsect3">
+<a name="grx-image-new-from-context.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p> the context. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-image-new-from-context.returns"></a><h4>Returns</h4>
+<p> the new image or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there was an error. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-image-copy"></a><h3>grx_image_copy ()</h3>
+<pre class="programlisting"><a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+grx_image_copy (<em class="parameter"><code><a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> *image</code></em>);</pre>
+<p>FIXME: this is not implemented and calling will cause the program to abort.</p>
+<div class="refsect3">
+<a name="grx-image-copy.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>image</p></td>
+<td class="parameter_description"><p> the image to copy. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-image-copy.returns"></a><h4>Returns</h4>
+<p> a copy of the image. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-image-free"></a><h3>grx_image_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_image_free (<em class="parameter"><code><a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> *image</code></em>);</pre>
+<p>Frees all memory allocated by the image.</p>
+<div class="refsect3">
+<a name="grx-image-free.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>image</p></td>
+<td class="parameter_description"><p> the image to free. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-image-mirror"></a><h3>grx_image_mirror ()</h3>
+<pre class="programlisting"><a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+grx_image_mirror (<em class="parameter"><code><a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> *image</code></em>,
+                  <em class="parameter"><code><a class="link" href="image.html#GrxImageMirrorFlags" title="enum GrxImageMirrorFlags"><span class="type">GrxImageMirrorFlags</span></a> flags</code></em>);</pre>
+<p>Creates a new image, flipping left-right and/or top-bottom as indicated by
+<em class="parameter"><code>flags</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-image-mirror.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>image</p></td>
+<td class="parameter_description"><p>the source image</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>flags</p></td>
+<td class="parameter_description"><p>the mirror flags</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-image-mirror.returns"></a><h4>Returns</h4>
+<p> the new image. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-image-stretch"></a><h3>grx_image_stretch ()</h3>
+<pre class="programlisting"><a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+grx_image_stretch (<em class="parameter"><code><a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> *image</code></em>,
+                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_width</code></em>,
+                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_height</code></em>);</pre>
+<p>Creates a new image stretching <em class="parameter"><code>image</code></em>
+ to <em class="parameter"><code>new_width</code></em>
+ by <em class="parameter"><code>new_height</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-image-stretch.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>image</p></td>
+<td class="parameter_description"><p>the source image</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_width</p></td>
+<td class="parameter_description"><p>the new width</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_height</p></td>
+<td class="parameter_description"><p>the new height</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-image-stretch.returns"></a><h4>Returns</h4>
+<p> the new image. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-image-as-pattern"></a><h3>grx_image_as_pattern ()</h3>
+<pre class="programlisting"><a class="link" href="pattern.html#GrxPattern"><span class="returnvalue">GrxPattern</span></a> *
+grx_image_as_pattern (<em class="parameter"><code><a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> *image</code></em>);</pre>
+<p>Casts a <a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> to a <a class="link" href="pattern.html#GrxPattern"><span class="type">GrxPattern</span></a>.</p>
+<div class="refsect3">
+<a name="grx-image-as-pattern.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>image</p></td>
+<td class="parameter_description"><p> the image. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-image-as-pattern.returns"></a><h4>Returns</h4>
+<p> the <a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> cast as a <a class="link" href="pattern.html#GrxPattern"><span class="type">GrxPattern</span></a>. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-pattern-as-image"></a><h3>grx_pattern_as_image ()</h3>
+<pre class="programlisting"><a class="link" href="image.html#GrxImage"><span class="returnvalue">GrxImage</span></a> *
+grx_pattern_as_image (<em class="parameter"><code><a class="link" href="pattern.html#GrxPattern"><span class="type">GrxPattern</span></a> *pattern</code></em>);</pre>
+<p>Casts a <a class="link" href="pattern.html#GrxPattern"><span class="type">GrxPattern</span></a> to a <a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a>.</p>
+<div class="refsect3">
+<a name="grx-pattern-as-image.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>pattern</p></td>
+<td class="parameter_description"><p> the pattern. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-pattern-as-image.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>pattern</code></em>
+is not a <a class="link" href="pattern.html#GrxPixmap" title="GrxPixmap"><span class="type">GrxPixmap</span></a>. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-image"></a><h3>grx_draw_image ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_image (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                <em class="parameter"><code><a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> *image</code></em>);</pre>
+<p>Draws the entire image on the current context with the top, left corner at
+<em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-draw-image.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the left edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the top edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>image</p></td>
+<td class="parameter_description"><p>the image</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-image-tiled"></a><h3>grx_draw_image_tiled ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_image_tiled (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                      <em class="parameter"><code><a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> *image</code></em>);</pre>
+<p>Draws as much of the image as possible (repeating if necessary) on the
+current in the rectangle defined by <em class="parameter"><code>x1</code></em>
+, <em class="parameter"><code>y1</code></em>
+ and <em class="parameter"><code>x2</code></em>
+, <em class="parameter"><code>y2</code></em>
+</p>
+<div class="refsect3">
+<a name="grx-draw-image-tiled.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>image</p></td>
+<td class="parameter_description"><p>the image</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-box-with-image"></a><h3>grx_draw_filled_box_with_image ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_box_with_image (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xo</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yo</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                                <em class="parameter"><code><a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> *image</code></em>);</pre>
+<p>Fills the rectangle <em class="parameter"><code>x1</code></em>
+, <em class="parameter"><code>y1</code></em>
+, <em class="parameter"><code>x2</code></em>
+, <em class="parameter"><code>y2</code></em>
+ in the current context with the image.
+This image can be offset from the rectangle by specifying <em class="parameter"><code>xo</code></em>
+, <em class="parameter"><code>yo</code></em>
+ different
+from <em class="parameter"><code>x1</code></em>
+, <em class="parameter"><code>y1</code></em>
+. The image is tiled if needed to fill the rectangle.</p>
+<div class="refsect3">
+<a name="grx-draw-filled-box-with-image.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xo</p></td>
+<td class="parameter_description"><p>the alignment X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yo</p></td>
+<td class="parameter_description"><p>the alignment Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the top X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the left Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>image</p></td>
+<td class="parameter_description"><p>the image</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-hline-with-image"></a><h3>grx_draw_hline_with_image ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_hline_with_image (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xo</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yo</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                           <em class="parameter"><code><a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> *image</code></em>);</pre>
+<p>Draws a single line of an image on the current context starting at <em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+.
+The image can be offset from the line by specifying <em class="parameter"><code>xo</code></em>
+, <em class="parameter"><code>yo</code></em>
+ different from
+<em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+. The image is repeated if the width of the line is greater than the
+width of the image.</p>
+<div class="refsect3">
+<a name="grx-draw-hline-with-image.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xo</p></td>
+<td class="parameter_description"><p>the alignment X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yo</p></td>
+<td class="parameter_description"><p>the alignment Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the top X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the left Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width of the line</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>image</p></td>
+<td class="parameter_description"><p>the image</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-pixel-with-image"></a><h3>grx_draw_pixel_with_image ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_pixel_with_image (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xo</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yo</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                           <em class="parameter"><code><a class="link" href="image.html#GrxImage"><span class="type">GrxImage</span></a> *image</code></em>);</pre>
+<p>Draws a single pixel of an image on the current context at <em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+.
+The image can be offset from the point by specifying <em class="parameter"><code>xo</code></em>
+, <em class="parameter"><code>yo</code></em>
+ different from
+<em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-draw-pixel-with-image.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xo</p></td>
+<td class="parameter_description"><p>the alignment X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yo</p></td>
+<td class="parameter_description"><p>the alignment Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>image</p></td>
+<td class="parameter_description"><p>the image</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="image.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GrxImage"></a><h3>GrxImage</h3>
+<pre class="programlisting">typedef GrxPixmap GrxImage;
+</pre>
+<p>Like pixmap patterns images are dependent on the actual video mode set.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxImageMirrorFlags"></a><h3>enum GrxImageMirrorFlags</h3>
+<p>Flags used by <a class="link" href="image.html#grx-image-mirror" title="grx_image_mirror ()"><code class="function">grx_image_mirror()</code></a>.</p>
+<div class="refsect3">
+<a name="GrxImageMirrorFlags.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-IMAGE-MIRROR-HORIZONTAL:CAPS"></a>GRX_IMAGE_MIRROR_HORIZONTAL</p></td>
+<td class="enum_member_description">
+<p>inverse left-right</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-IMAGE-MIRROR-VERTICAL:CAPS"></a>GRX_IMAGE_MIRROR_VERTICAL</p></td>
+<td class="enum_member_description">
+<p>inverse top-bottom</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

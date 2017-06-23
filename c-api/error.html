@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Errors: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="misc.html" title="Miscellaneous">
+<link rel="prev" href="misc.html" title="Miscellaneous">
+<link rel="next" href="gformats.html" title="Image File Formats">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#error.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="misc.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="misc.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="gformats.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="error"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="error.top_of_page"></a>Errors</span></h2>
+<p>Errors — GRX error domain</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="error.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody><tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="error.html#grx-error-quark" title="grx_error_quark ()">grx_error_quark</a> <span class="c_punctuation">()</span>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="error.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="error.html#GRX-ERROR:CAPS" title="GRX_ERROR">GRX_ERROR</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="error.html#GrxError" title="enum GrxError">GrxError</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="error.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="error.description"></a><h2>Description</h2>
+<p>TODO</p>
+</div>
+<div class="refsect1">
+<a name="error.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-error-quark"></a><h3>grx_error_quark ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>
+grx_error_quark (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the GRX Error Quark.</p>
+<div class="refsect3">
+<a name="grx-error-quark.returns"></a><h4>Returns</h4>
+<p> a <a href="https://developer.gnome.org/glib/unstable/glib-Quarks.html#GQuark"><span class="type">GQuark</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="error.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GRX-ERROR:CAPS"></a><h3>GRX_ERROR</h3>
+<pre class="programlisting">#define GRX_ERROR grx_error_quark()
+</pre>
+<p>Error domain for GRX. Errors in this domain will be from <a class="link" href="error.html#GrxError" title="enum GrxError"><span class="type">GrxError</span></a>.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxError"></a><h3>enum GrxError</h3>
+<p>Error codes returned by GRX functions.</p>
+<div class="refsect3">
+<a name="GrxError.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-ERROR-FAILED:CAPS"></a>GRX_ERROR_FAILED</p></td>
+<td class="enum_member_description">
+<p>Generic error.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-ERROR-PLUGIN-FILE-NOT-FOUND:CAPS"></a>GRX_ERROR_PLUGIN_FILE_NOT_FOUND</p></td>
+<td class="enum_member_description">
+<p>Plugin file was not found in search paths.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-ERROR-PLUGIN-SYMBOL-NOT-FOUND:CAPS"></a>GRX_ERROR_PLUGIN_SYMBOL_NOT_FOUND</p></td>
+<td class="enum_member_description">
+<p>A required symbol in a plugin was not found.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-ERROR-FONT-ERROR:CAPS"></a>GRX_ERROR_FONT_ERROR</p></td>
+<td class="enum_member_description">
+<p>An error occurred while attempting a font operation.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-ERROR-JPEG-ERROR:CAPS"></a>GRX_ERROR_JPEG_ERROR</p></td>
+<td class="enum_member_description">
+<p>An error occurred while attempting a JPEG operation.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-ERROR-PNG-ERROR:CAPS"></a>GRX_ERROR_PNG_ERROR</p></td>
+<td class="enum_member_description">
+<p>An error occurred while attempting a PNG operation.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-ERROR-PNM-ERROR:CAPS"></a>GRX_ERROR_PNM_ERROR</p></td>
+<td class="enum_member_description">
+<p>An error occurred while attempting a PNM operation.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

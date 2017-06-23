@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Grx Reference Manual: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="description" content="Grx is a 2D graphics library originaly written by Csaba Biegl for DJ Delorie's DOS port of the GCC compiler. This version has been adapted to be compatible with the GObject type system.">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="next" href="pt01.html" title="Part I. API Reference">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="book">
+<div class="titlepage">
+<div>
+<div><table class="navigation" id="top" width="100%" cellpadding="2" cellspacing="0"><tr><th valign="middle"><p class="title">Grx Reference Manual</p></th></tr></table></div>
+<div><p class="releaseinfo">
+      for Grx 3.0.0
+      The latest version of this documentation can be found on-line at
+      <a class="ulink" href="http://docs.ev3dev.org/projects/grx/en/latest/c-api/index.html" target="_top">http://docs.ev3dev.org/projects/grx/en/latest/c-api</a>.
+    </p></div>
+<div><div class="abstract">
+<p class="title"><b>Abstract</b></p>
+<p>
+        Grx is a 2D graphics library originaly written by Csaba Biegl for DJ Delorie's DOS port of the GCC compiler.
+        This version has been adapted to be compatible with the GObject type system.
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc"><dl class="toc">
+<dt><span class="part"><a href="pt01.html">I. API Reference</a></span></dt>
+<dd><dl>
+<dt><span class="chapter"><a href="drivers.html">Drivers, Modes and Contexts</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="mode.html">Video drivers and modes</a></span><span class="refpurpose"> — Video drivers and modes</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="frame_mode.html">Frame Modes</a></span><span class="refpurpose"> — Graphics memory layouts</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="context.html">Graphics Contexts</a></span><span class="refpurpose"> — Drawing regions</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="extents.html">Extents, viewports and clipping</a></span><span class="refpurpose"> — Size information about the current context and the screen</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="drawing.html">Drawing</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="color.html">Color Management</a></span><span class="refpurpose"> — Colors and color tables</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="draw.html">Graphics Primitives</a></span><span class="refpurpose"> — Basic drawing functions</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="draw_nc.html">Non-clipping Graphics Primitives</a></span><span class="refpurpose"> — Slightly faster, less safe drawing functions</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="wideline.html">Customized line drawing</a></span><span class="refpurpose"> — Thick and dashed line drawing primitives</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="pattern.html">Pattern filled graphics primitives</a></span><span class="refpurpose"> — Patterned drawing and filling primitives</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="image.html">Image Manipulation</a></span><span class="refpurpose"> — Image manipulation</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="text.html">Text Drawing</a></span><span class="refpurpose"> — Fonts and text primitives</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="user.html">Drawing in user coordinates</a></span><span class="refpurpose"> — Drawing in user window coordinates</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="input.html">Keyboard, Mouse and Touchscreen Input</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="events.html">Events</a></span><span class="refpurpose"> — Event handling</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="input_keys.html">Keyboard Keys</a></span><span class="refpurpose"> — TODO</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="input_keysyms.html">Key Symbols</a></span><span class="refpurpose"> — Key Symbols</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="device_manager.html">Input Device Manager</a></span><span class="refpurpose"> — Device manager for input devices</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="device.html">Input Devices</a></span><span class="refpurpose"> — Object that represents individual input devices</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="mouse.html">Graphics cursors</a></span><span class="refpurpose"> — Cursors</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="misc.html">Miscellaneous</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="error.html">Errors</a></span><span class="refpurpose"> — GRX error domain</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gformats.html">Image File Formats</a></span><span class="refpurpose"> — Loading and saving image data to standard formats (JPEG, PNG, PNM)</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="applications.html">Applications</a></span></dt>
+<dd><dl><dt>
+<span class="refentrytitle"><a href="GrxApplication.html">GrxApplication</a></span><span class="refpurpose"> — Linux console application class</span>
+</dt></dl></dd>
+</dl></dd>
+<dt><span class="glossary"><a href="annotation-glossary.html">Annotation Glossary</a></span></dt>
+</dl></div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

@@ -1,0 +1,1643 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Color Management: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="drawing.html" title="Drawing">
+<link rel="prev" href="drawing.html" title="Drawing">
+<link rel="next" href="draw.html" title="Graphics Primitives">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#color.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="drawing.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="drawing.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="draw.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="color"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="color.top_of_page"></a>Color Management</span></h2>
+<p>Color Management — Colors and color tables</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="color.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-alloc" title="grx_color_alloc ()">grx_color_alloc</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-alloc-inline" title="grx_color_alloc_inline ()">grx_color_alloc_inline</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-alloc2" title="grx_color_alloc2 ()">grx_color_alloc2</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-alloc2-inline" title="grx_color_alloc2_inline ()">grx_color_alloc2_inline</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-free" title="grx_color_free ()">grx_color_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-lookup" title="grx_color_lookup ()">grx_color_lookup</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-get-value" title="grx_color_get_value ()">grx_color_get_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="returnvalue">GrxColorMode</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-get-mode" title="grx_color_get_mode ()">grx_color_get_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-to-write-mode" title="grx_color_to_write_mode ()">grx_color_to_write_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-to-xor-mode" title="grx_color_to_xor_mode ()">grx_color_to_xor_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-to-or-mode" title="grx_color_to_or_mode ()">grx_color_to_or_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-to-and-mode" title="grx_color_to_and_mode ()">grx_color_to_and_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-to-image-mode" title="grx_color_to_image_mode ()">grx_color_to_image_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-get-black" title="grx_color_get_black ()">grx_color_get_black</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-get-white" title="grx_color_get_white ()">grx_color_get_white</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-build-rgb" title="grx_color_build_rgb ()">grx_color_build_rgb</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-build-rgb-round" title="grx_color_build_rgb_round ()">grx_color_build_rgb_round</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-build-grayscale" title="grx_color_build_grayscale ()">grx_color_build_grayscale</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-get-red" title="grx_color_get_red ()">grx_color_get_red</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-get-green" title="grx_color_get_green ()">grx_color_get_green</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-get-blue" title="grx_color_get_blue ()">grx_color_get_blue</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-query" title="grx_color_query ()">grx_color_query</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-query-inline" title="grx_color_query_inline ()">grx_color_query_inline</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-query2" title="grx_color_query2 ()">grx_color_query2</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-query2-inline" title="grx_color_query2_inline ()">grx_color_query2_inline</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-alloc-ega-colors" title="grx_color_alloc_ega_colors ()">grx_color_alloc_ega_colors</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColorCell" title="GrxColorCell"><span class="returnvalue">GrxColorCell</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-cell-alloc" title="grx_color_cell_alloc ()">grx_color_cell_alloc</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-cell-set" title="grx_color_cell_set ()">grx_color_cell_set</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-cell-free" title="grx_color_cell_free ()">grx_color_cell_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-info-reset-colors" title="grx_color_info_reset_colors ()">grx_color_info_reset_colors</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-info-set-palette-type-rgb" title="grx_color_info_set_palette_type_rgb ()">grx_color_info_set_palette_type_rgb</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColorPaletteType" title="enum GrxColorPaletteType"><span class="returnvalue">GrxColorPaletteType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-info-get-palette-type" title="grx_color_info_get_palette_type ()">grx_color_info_get_palette_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-info-refresh-colors" title="grx_color_info_refresh_colors ()">grx_color_info_refresh_colors</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-info-n-colors" title="grx_color_info_n_colors ()">grx_color_info_n_colors</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-info-n-free-colors" title="grx_color_info_n_free_colors ()">grx_color_info_n_free_colors</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-info-get-save-buffer-size" title="grx_color_info_get_save_buffer_size ()">grx_color_info_get_save_buffer_size</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-info-save-colors" title="grx_color_info_save_colors ()">grx_color_info_save_colors</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="color.html#grx-color-info-restore-colors" title="grx_color_info_restore_colors ()">grx_color_info_restore_colors</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="color.html#grx-color-info-get-pallete-type" title="grx_color_info_get_pallete_type">grx_color_info_get_pallete_type</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="color.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="typedef_keyword">typedef</td>
+<td class="function_name"><a class="link" href="color.html#GrxColor" title="GrxColor">GrxColor</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode">GrxColorMode</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="color.html#GRX-COLOR-VALUE-MASK:CAPS" title="GRX_COLOR_VALUE_MASK">GRX_COLOR_VALUE_MASK</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="color.html#GRX-COLOR-MODE-MASK:CAPS" title="GRX_COLOR_MODE_MASK">GRX_COLOR_MODE_MASK</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="color.html#GRX-COLOR-NONE:CAPS" title="GRX_COLOR_NONE">GRX_COLOR_NONE</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="color.html#GrxColorPaletteType" title="enum GrxColorPaletteType">GrxColorPaletteType</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="color.html#GRX-COLOR-BLACK:CAPS" title="GRX_COLOR_BLACK">GRX_COLOR_BLACK</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="color.html#GRX-COLOR-WHITE:CAPS" title="GRX_COLOR_WHITE">GRX_COLOR_WHITE</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="color.html#GrxEgaColorIndex" title="enum GrxEgaColorIndex">GrxEgaColorIndex</a></td>
+</tr>
+<tr>
+<td class="typedef_keyword">typedef</td>
+<td class="function_name"><a class="link" href="color.html#GrxColorCell" title="GrxColorCell">GrxColorCell</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="color.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="color.description"></a><h2>Description</h2>
+<p>The library supports two models for color management. In the 'indirect' (or
+color table) model, color values are indices to a color table. The color
+table slots will be allocated with the highest resolution supported by the
+hardware with respect to the component color intensities. In the 'direct'
+(or RGB) model, color values map directly into component color intensities
+with non-overlapping bitfields of the color index representing the component
+colors.</p>
+<p>The color table model is supported up to 256 colors. The RGB model is
+supported for 256 colors and up.</p>
+<p>In the RGB model the color index map to component color intensities depend
+on the video mode set, so it can't be assumed the component color bitfields.</p>
+</div>
+<div class="refsect1">
+<a name="color.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-color-alloc"></a><h3>grx_color_alloc ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_alloc (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> r</code></em>,
+                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> g</code></em>,
+                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> b</code></em>);</pre>
+<p>Allocates a color in the color table based on the RGB value.</p>
+<div class="refsect3">
+<a name="grx-color-alloc.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the red component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>g</p></td>
+<td class="parameter_description"><p>the green component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>b</p></td>
+<td class="parameter_description"><p>the blue component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-alloc.returns"></a><h4>Returns</h4>
+<p> the composite color value or <a class="link" href="color.html#GRX-COLOR-NONE:CAPS" title="GRX_COLOR_NONE"><span class="type">GRX_COLOR_NONE</span></a> if there are no more
+free colors.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-alloc-inline"></a><h3>grx_color_alloc_inline ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_alloc_inline (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> r</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> g</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> b</code></em>);</pre>
+<p>Allocates a color in the color table based on the RGB value.</p>
+<p>This is the same as <a class="link" href="color.html#grx-color-alloc" title="grx_color_alloc ()"><code class="function">grx_color_alloc()</code></a>, but inlined in C code.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="grx-color-alloc-inline.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the red component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>g</p></td>
+<td class="parameter_description"><p>the green component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>b</p></td>
+<td class="parameter_description"><p>the blue component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-alloc-inline.returns"></a><h4>Returns</h4>
+<p> the composite color value or <a class="link" href="color.html#GRX-COLOR-NONE:CAPS" title="GRX_COLOR_NONE"><span class="type">GRX_COLOR_NONE</span></a> if there are no more
+free colors.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-alloc2"></a><h3>grx_color_alloc2 ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_alloc2 (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> hcolor</code></em>);</pre>
+<p>Allocates a color in the color table based on <em class="parameter"><code>hcolor</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-color-alloc2.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>hcolor</p></td>
+<td class="parameter_description"><p>the color in 0xRRGGBB format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-alloc2.returns"></a><h4>Returns</h4>
+<p> the composite color value or <a class="link" href="color.html#GRX-COLOR-NONE:CAPS" title="GRX_COLOR_NONE"><span class="type">GRX_COLOR_NONE</span></a> if there are no more
+free colors.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-alloc2-inline"></a><h3>grx_color_alloc2_inline ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_alloc2_inline (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> hcolor</code></em>);</pre>
+<p>Allocates a color in the color table based on <em class="parameter"><code>hcolor</code></em>
+.</p>
+<p>This is the same as <a class="link" href="color.html#grx-color-alloc2" title="grx_color_alloc2 ()"><code class="function">grx_color_alloc2()</code></a>, but inlined in C code.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="grx-color-alloc2-inline.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>hcolor</p></td>
+<td class="parameter_description"><p>the color in 0xRRGGBB format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-alloc2-inline.returns"></a><h4>Returns</h4>
+<p> the composite color value or <a class="link" href="color.html#GRX-COLOR-NONE:CAPS" title="GRX_COLOR_NONE"><span class="type">GRX_COLOR_NONE</span></a> if there are no more
+free colors.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-free"></a><h3>grx_color_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_free (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Frees a color that was allocated by <a class="link" href="color.html#grx-color-alloc" title="grx_color_alloc ()"><code class="function">grx_color_alloc()</code></a> and friends.</p>
+<p>This has no effect in RGB or grayscale graphics modes.</p>
+<div class="refsect3">
+<a name="grx-color-free.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-lookup"></a><h3>grx_color_lookup ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_lookup (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Arrays.html#GArray"><span class="type">GArray</span></a> *table</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> index</code></em>);</pre>
+<p>Looks up a color in the color table.</p>
+<div class="refsect3">
+<a name="grx-color-lookup.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>table</p></td>
+<td class="parameter_description"><p> the color table. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GrxColor]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>index</p></td>
+<td class="parameter_description"><p>the index in the color table</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-lookup.returns"></a><h4>Returns</h4>
+<p> the color or <a class="link" href="color.html#GRX-COLOR-NONE:CAPS" title="GRX_COLOR_NONE"><code class="literal">GRX_COLOR_NONE</code></a> if <em class="parameter"><code>index</code></em>
+is out of range</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-get-value"></a><h3>grx_color_get_value ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_get_value (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Gets the color component of a color value.</p>
+<div class="refsect3">
+<a name="grx-color-get-value.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the source color value</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-get-value.returns"></a><h4>Returns</h4>
+<p> the color component.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-get-mode"></a><h3>grx_color_get_mode ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="returnvalue">GrxColorMode</span></a>
+grx_color_get_mode (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Gets the <a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="type">GrxColorMode</span></a> component of a color value.</p>
+<div class="refsect3">
+<a name="grx-color-get-mode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the source color value</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-get-mode.returns"></a><h4>Returns</h4>
+<p> the <a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="type">GrxColorMode</span></a> component.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-to-write-mode"></a><h3>grx_color_to_write_mode ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_to_write_mode (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Sets the color to <a class="link" href="color.html#GRX-COLOR-MODE-WRITE:CAPS"><span class="type">GRX_COLOR_MODE_WRITE</span></a>.</p>
+<div class="refsect3">
+<a name="grx-color-to-write-mode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the source color value</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-to-write-mode.returns"></a><h4>Returns</h4>
+<p> the modified color value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-to-xor-mode"></a><h3>grx_color_to_xor_mode ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_to_xor_mode (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Sets the color to <a class="link" href="color.html#GRX-COLOR-MODE-XOR:CAPS"><span class="type">GRX_COLOR_MODE_XOR</span></a>.</p>
+<div class="refsect3">
+<a name="grx-color-to-xor-mode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the source color value</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-to-xor-mode.returns"></a><h4>Returns</h4>
+<p> the modified color value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-to-or-mode"></a><h3>grx_color_to_or_mode ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_to_or_mode (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Sets the color to <a class="link" href="color.html#GRX-COLOR-MODE-OR:CAPS"><span class="type">GRX_COLOR_MODE_OR</span></a>.</p>
+<div class="refsect3">
+<a name="grx-color-to-or-mode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the source color value</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-to-or-mode.returns"></a><h4>Returns</h4>
+<p> the modified color value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-to-and-mode"></a><h3>grx_color_to_and_mode ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_to_and_mode (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Sets the color to <a class="link" href="color.html#GRX-COLOR-MODE-AND:CAPS"><span class="type">GRX_COLOR_MODE_AND</span></a>.</p>
+<div class="refsect3">
+<a name="grx-color-to-and-mode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the source color value</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-to-and-mode.returns"></a><h4>Returns</h4>
+<p> the modified color value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-to-image-mode"></a><h3>grx_color_to_image_mode ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_to_image_mode (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Sets the color to <a class="link" href="color.html#GRX-COLOR-MODE-IMAGE:CAPS"><span class="type">GRX_COLOR_MODE_IMAGE</span></a>.</p>
+<div class="refsect3">
+<a name="grx-color-to-image-mode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the source color value</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-to-image-mode.returns"></a><h4>Returns</h4>
+<p> the modified color value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-get-black"></a><h3>grx_color_get_black ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_get_black (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the color value for black.</p>
+<p>This is guaranteed to be 0. In C code, you can use <a class="link" href="color.html#GRX-COLOR-BLACK:CAPS" title="GRX_COLOR_BLACK"><span class="type">GRX_COLOR_BLACK</span></a> for short.</p>
+<div class="refsect3">
+<a name="grx-color-get-black.returns"></a><h4>Returns</h4>
+<p> the color value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-get-white"></a><h3>grx_color_get_white ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_get_white (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the color value for white.</p>
+<p>In C code, you can use <a class="link" href="color.html#GRX-COLOR-WHITE:CAPS" title="GRX_COLOR_WHITE"><span class="type">GRX_COLOR_WHITE</span></a> for short.</p>
+<div class="refsect3">
+<a name="grx-color-get-white.returns"></a><h4>Returns</h4>
+<p> the color value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-build-rgb"></a><h3>grx_color_build_rgb ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_build_rgb (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> r</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> g</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> b</code></em>);</pre>
+<p>Build a RGB color value based on the current graphics mode.</p>
+<p>This will not allocate a new color even if a color table is being used.</p>
+<div class="refsect3">
+<a name="grx-color-build-rgb.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the red component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>g</p></td>
+<td class="parameter_description"><p>the green component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>b</p></td>
+<td class="parameter_description"><p>the blue component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-build-rgb.returns"></a><h4>Returns</h4>
+<p> a new color value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-build-rgb-round"></a><h3>grx_color_build_rgb_round ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_build_rgb_round (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> r</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> g</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> b</code></em>);</pre>
+<p>Build a RGB color value based on the current graphics mode.</p>
+<p>This function is similar to <a class="link" href="color.html#grx-color-build-rgb" title="grx_color_build_rgb ()"><code class="function">grx_color_build_rgb()</code></a>, but will limit
+the RGB components to 255 during the scaling.</p>
+<p>This will not allocate a new color even if a color table is being used.</p>
+<div class="refsect3">
+<a name="grx-color-build-rgb-round.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the red component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>g</p></td>
+<td class="parameter_description"><p>the green component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>b</p></td>
+<td class="parameter_description"><p>the blue component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-build-rgb-round.returns"></a><h4>Returns</h4>
+<p> a new color value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-build-grayscale"></a><h3>grx_color_build_grayscale ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_color_build_grayscale (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> r</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> g</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> b</code></em>);</pre>
+<p>Build a grayscale color value based on the current graphics mode.</p>
+<p>This will not allocate a new color even if a color table is being used.</p>
+<div class="refsect3">
+<a name="grx-color-build-grayscale.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the red component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>g</p></td>
+<td class="parameter_description"><p>the green component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>b</p></td>
+<td class="parameter_description"><p>the blue component value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-build-grayscale.returns"></a><h4>Returns</h4>
+<p> a new color value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-get-red"></a><h3>grx_color_get_red ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+grx_color_get_red (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Gets the red component of a color value.</p>
+<p>This function only works on RGB colors and not color table values. For color
+table values, use <a class="link" href="color.html#grx-color-query" title="grx_color_query ()"><code class="function">grx_color_query()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-color-get-red.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the source color value.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-get-red.returns"></a><h4>Returns</h4>
+<p> the red component.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-get-green"></a><h3>grx_color_get_green ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+grx_color_get_green (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Gets the green component of a color value.</p>
+<p>This function only works on RGB colors and not color table values. For color
+table values, use <a class="link" href="color.html#grx-color-query" title="grx_color_query ()"><code class="function">grx_color_query()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-color-get-green.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the source color value.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-get-green.returns"></a><h4>Returns</h4>
+<p> the green component.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-get-blue"></a><h3>grx_color_get_blue ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a>
+grx_color_get_blue (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>);</pre>
+<p>Gets the blue component of a color value.</p>
+<p>This function only works on RGB colors and not color table values. For color
+table values, use <a class="link" href="color.html#grx-color-query" title="grx_color_query ()"><code class="function">grx_color_query()</code></a> instead.</p>
+<div class="refsect3">
+<a name="grx-color-get-blue.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the source color value.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-color-get-blue.returns"></a><h4>Returns</h4>
+<p> the blue component.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-query"></a><h3>grx_color_query ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_query (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>,
+                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *r</code></em>,
+                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *g</code></em>,
+                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *b</code></em>);</pre>
+<p>Gets the RGB color components of a color.</p>
+<div class="refsect3">
+<a name="grx-color-query.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p> the red component. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>g</p></td>
+<td class="parameter_description"><p> the green component. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>b</p></td>
+<td class="parameter_description"><p> the blue component. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-query-inline"></a><h3>grx_color_query_inline ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_query_inline (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *r</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *g</code></em>,
+                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *b</code></em>);</pre>
+<p>Gets the RGB color components of a color.</p>
+<p>This is the same as <a class="link" href="color.html#grx-color-query" title="grx_color_query ()"><code class="function">grx_color_query()</code></a>, but inlined in C code.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="grx-color-query-inline.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p> the red component. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>g</p></td>
+<td class="parameter_description"><p> the green component. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>b</p></td>
+<td class="parameter_description"><p> the blue component. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-query2"></a><h3>grx_color_query2 ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_query2 (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>,
+                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *hcolor</code></em>);</pre>
+<p>Gets the RGB color components of a color.</p>
+<div class="refsect3">
+<a name="grx-color-query2.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>hcolor</p></td>
+<td class="parameter_description"><p> the components in 0xRRGGBB format. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-query2-inline"></a><h3>grx_color_query2_inline ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_query2_inline (<em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> c</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *hcolor</code></em>);</pre>
+<p>Gets the RGB color components of a color.</p>
+<p>This is the same as <a class="link" href="color.html#grx-color-query2" title="grx_color_query2 ()"><code class="function">grx_color_query2()</code></a>, but inlined in C code.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="grx-color-query2-inline.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>hcolor</p></td>
+<td class="parameter_description"><p> the components in 0xRRGGBB format. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-alloc-ega-colors"></a><h3>grx_color_alloc_ega_colors ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a> *
+grx_color_alloc_ega_colors (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Allocates an array of the 16 classic EGA colors. Use <a class="link" href="color.html#GrxEgaColorIndex" title="enum GrxEgaColorIndex"><span class="type">GrxEgaColorIndex</span></a> to
+determine the color at each index of the array.</p>
+<div class="refsect3">
+<a name="grx-color-alloc-ega-colors.returns"></a><h4>Returns</h4>
+<p> array of color indexes. </p>
+<p><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> fixed-size=16]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-cell-alloc"></a><h3>grx_color_cell_alloc ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColorCell" title="GrxColorCell"><span class="returnvalue">GrxColorCell</span></a>
+grx_color_cell_alloc (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Allocates a new color that can be changed with <a class="link" href="color.html#grx-color-cell-set" title="grx_color_cell_set ()"><code class="function">grx_color_cell_set()</code></a>.</p>
+<p>The color must be freed with <a class="link" href="color.html#grx-color-cell-free" title="grx_color_cell_free ()"><code class="function">grx_color_cell_free()</code></a>.</p>
+<p>RGB and grayscale graphics modes will always return <a class="link" href="color.html#GRX-COLOR-NONE:CAPS" title="GRX_COLOR_NONE"><span class="type">GRX_COLOR_NONE</span></a>.</p>
+<div class="refsect3">
+<a name="grx-color-cell-alloc.returns"></a><h4>Returns</h4>
+<p> a newly allocated color cell or <a class="link" href="color.html#GRX-COLOR-NONE:CAPS" title="GRX_COLOR_NONE"><span class="type">GRX_COLOR_NONE</span></a> if there are no more
+free cells.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-cell-set"></a><h3>grx_color_cell_set ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_cell_set (<em class="parameter"><code><a class="link" href="color.html#GrxColorCell" title="GrxColorCell"><span class="type">GrxColorCell</span></a> c</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> r</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> g</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> b</code></em>);</pre>
+<p>Sets/changes the color of a cell after it was allocated.</p>
+<div class="refsect3">
+<a name="grx-color-cell-set.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>a color that was allocated by <a class="link" href="color.html#grx-color-cell-alloc" title="grx_color_cell_alloc ()"><code class="function">grx_color_cell_alloc()</code></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the red component</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>g</p></td>
+<td class="parameter_description"><p>the green component</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>b</p></td>
+<td class="parameter_description"><p>the blue component</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-cell-free"></a><h3>grx_color_cell_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_cell_free (<em class="parameter"><code><a class="link" href="color.html#GrxColorCell" title="GrxColorCell"><span class="type">GrxColorCell</span></a> c</code></em>);</pre>
+<p>Frees a cell that was allocated with <a class="link" href="color.html#grx-color-cell-alloc" title="grx_color_cell_alloc ()"><code class="function">grx_color_cell_alloc()</code></a>.</p>
+<div class="refsect3">
+<a name="grx-color-cell-free.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>c</p></td>
+<td class="parameter_description"><p>the color</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-info-reset-colors"></a><h3>grx_color_info_reset_colors ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_info_reset_colors (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Frees all colors (except for black and white).</p>
+<p>If <a class="link" href="color.html#grx-color-info-set-palette-type-rgb" title="grx_color_info_set_palette_type_rgb ()"><code class="function">grx_color_info_set_palette_type_rgb()</code></a> was called, this will also change
+the color system back to using a color table.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-info-set-palette-type-rgb"></a><h3>grx_color_info_set_palette_type_rgb ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_info_set_palette_type_rgb (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Changes the graphics mode to RGB color values instead of using a color table.</p>
+<p>Initially, graphics modes with 256 colors or less use a color table.
+Currently, this function only works for modes with 16 or 256 colors.</p>
+<p>This has no effect if the color mode is already RGB or if it is grayscale.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-info-get-palette-type"></a><h3>grx_color_info_get_palette_type ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColorPaletteType" title="enum GrxColorPaletteType"><span class="returnvalue">GrxColorPaletteType</span></a>
+grx_color_info_get_palette_type (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the current color palette type.</p>
+<div class="refsect3">
+<a name="grx-color-info-get-palette-type.returns"></a><h4>Returns</h4>
+<p> a <a class="link" href="color.html#GrxColorPaletteType" title="enum GrxColorPaletteType"><span class="type">GrxColorPaletteType</span></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-info-refresh-colors"></a><h3>grx_color_info_refresh_colors ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_info_refresh_colors (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Reloads the currently allocated color values into the video hardware.</p>
+<p>This function is not needed in typical applications, unless the display
+adapter is programmed directly by the application.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-info-n-colors"></a><h3>grx_color_info_n_colors ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_color_info_n_colors (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the number of colors supported by the current graphics mode.</p>
+<div class="refsect3">
+<a name="grx-color-info-n-colors.returns"></a><h4>Returns</h4>
+<p> the number of colors.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-info-n-free-colors"></a><h3>grx_color_info_n_free_colors ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_color_info_n_free_colors (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the number of unallocated colors remaining for the current graphics mode.</p>
+<p>For RGB graphics modes, this will always return 0.</p>
+<div class="refsect3">
+<a name="grx-color-info-n-free-colors.returns"></a><h4>Returns</h4>
+<p> the number of unallocated colors.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-info-get-save-buffer-size"></a><h3>grx_color_info_get_save_buffer_size ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_color_info_get_save_buffer_size (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-info-save-colors"></a><h3>grx_color_info_save_colors ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_info_save_colors (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> buffer</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-info-restore-colors"></a><h3>grx_color_info_restore_colors ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_color_info_restore_colors (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> buffer</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-color-info-get-pallete-type"></a><h3>grx_color_info_get_pallete_type</h3>
+<pre class="programlisting">#define grx_color_info_get_pallete_type() (GrxColorInfo-&gt;palette_type)
+</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="color.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GrxColor"></a><h3>GrxColor</h3>
+<pre class="programlisting">typedef guint32 GrxColor;
+</pre>
+<p>32-bit integer for storing color information.</p>
+<p>The lower 24 bits are the actual color value and the upper 8 bits are the
+<a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="type">GrxColorMode</span></a>.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxColorMode"></a><h3>enum GrxColorMode</h3>
+<p>Values added to a <a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> to affect how the color is used in drawing
+operations.</p>
+<div class="refsect3">
+<a name="GrxColorMode.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-COLOR-MODE-WRITE:CAPS"></a>GRX_COLOR_MODE_WRITE</p></td>
+<td class="enum_member_description">
+<p>Overwrite any existing color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-COLOR-MODE-XOR:CAPS"></a>GRX_COLOR_MODE_XOR</p></td>
+<td class="enum_member_description">
+<p>XOR this color with the existing color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-COLOR-MODE-OR:CAPS"></a>GRX_COLOR_MODE_OR</p></td>
+<td class="enum_member_description">
+<p>OR this color with the existing color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-COLOR-MODE-AND:CAPS"></a>GRX_COLOR_MODE_AND</p></td>
+<td class="enum_member_description">
+<p>AND this color with the existing color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-COLOR-MODE-IMAGE:CAPS"></a>GRX_COLOR_MODE_IMAGE</p></td>
+<td class="enum_member_description">
+<p>Overwrite existing color unless this color is <a class="link" href="color.html#GRX-COLOR-NONE:CAPS" title="GRX_COLOR_NONE"><span class="type">GRX_COLOR_NONE</span></a>.
+                       Only works with bitblt operations.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GRX-COLOR-VALUE-MASK:CAPS"></a><h3>GRX_COLOR_VALUE_MASK</h3>
+<pre class="programlisting">#define GRX_COLOR_VALUE_MASK 0x00ffffffUL
+</pre>
+<p>Used to get the color portion of a <a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a>.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GRX-COLOR-MODE-MASK:CAPS"></a><h3>GRX_COLOR_MODE_MASK</h3>
+<pre class="programlisting">#define GRX_COLOR_MODE_MASK 0xff000000UL
+</pre>
+<p>Used to get the <a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="type">GrxColorMode</span></a> portion of a <a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a>.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GRX-COLOR-NONE:CAPS"></a><h3>GRX_COLOR_NONE</h3>
+<pre class="programlisting">#define GRX_COLOR_NONE ((GrxColor)(GRX_COLOR_MODE_XOR | 0))
+</pre>
+<p>Used to indicate transparency in bitblt operations.</p>
+<p>See <a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="type">GrxColorMode</span></a>.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxColorPaletteType"></a><h3>enum GrxColorPaletteType</h3>
+<div class="refsect3">
+<a name="GrxColorPaletteType.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-COLOR-PALETTE-TYPE-GRAYSCALE:CAPS"></a>GRX_COLOR_PALETTE_TYPE_GRAYSCALE</p></td>
+<td class="enum_member_description">
+<p>RGB color values will be converted to grayscale.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-COLOR-PALETTE-TYPE-COLOR-TABLE:CAPS"></a>GRX_COLOR_PALETTE_TYPE_COLOR_TABLE</p></td>
+<td class="enum_member_description">
+<p>Colors use a lookup table.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-COLOR-PALETTE-TYPE-RGB:CAPS"></a>GRX_COLOR_PALETTE_TYPE_RGB</p></td>
+<td class="enum_member_description">
+<p>RGB values are used directly.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GRX-COLOR-BLACK:CAPS"></a><h3>GRX_COLOR_BLACK</h3>
+<pre class="programlisting">#define GRX_COLOR_BLACK grx_color_get_black()
+</pre>
+<p>Convenience macro for <a class="link" href="color.html#grx-color-get-black" title="grx_color_get_black ()"><code class="function">grx_color_get_black()</code></a>.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GRX-COLOR-WHITE:CAPS"></a><h3>GRX_COLOR_WHITE</h3>
+<pre class="programlisting">#define GRX_COLOR_WHITE grx_color_get_white()
+</pre>
+<p>Convenience macro for <a class="link" href="color.html#grx-color-get-white" title="grx_color_get_white ()"><code class="function">grx_color_get_white()</code></a>.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxEgaColorIndex"></a><h3>enum GrxEgaColorIndex</h3>
+<p>Indexes for use with the array returned by <a class="link" href="color.html#grx-color-alloc-ega-colors" title="grx_color_alloc_ega_colors ()"><code class="function">grx_color_alloc_ega_colors()</code></a>.</p>
+<div class="refsect3">
+<a name="GrxEgaColorIndex.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-BLACK:CAPS"></a>GRX_EGA_COLOR_INDEX_BLACK</p></td>
+<td class="enum_member_description">
+<p>black</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-BLUE:CAPS"></a>GRX_EGA_COLOR_INDEX_BLUE</p></td>
+<td class="enum_member_description">
+<p>blue</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-GREEN:CAPS"></a>GRX_EGA_COLOR_INDEX_GREEN</p></td>
+<td class="enum_member_description">
+<p>green</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-CYAN:CAPS"></a>GRX_EGA_COLOR_INDEX_CYAN</p></td>
+<td class="enum_member_description">
+<p>cyan</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-RED:CAPS"></a>GRX_EGA_COLOR_INDEX_RED</p></td>
+<td class="enum_member_description">
+<p>red</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-MAGENTA:CAPS"></a>GRX_EGA_COLOR_INDEX_MAGENTA</p></td>
+<td class="enum_member_description">
+<p>magenta</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-BROWN:CAPS"></a>GRX_EGA_COLOR_INDEX_BROWN</p></td>
+<td class="enum_member_description">
+<p>brown</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-LIGHT-GRAY:CAPS"></a>GRX_EGA_COLOR_INDEX_LIGHT_GRAY</p></td>
+<td class="enum_member_description">
+<p>light gray</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-DARK-GRAY:CAPS"></a>GRX_EGA_COLOR_INDEX_DARK_GRAY</p></td>
+<td class="enum_member_description">
+<p>dark gray</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-LIGHT-BLUE:CAPS"></a>GRX_EGA_COLOR_INDEX_LIGHT_BLUE</p></td>
+<td class="enum_member_description">
+<p>light blue</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-LIGHT-GREEN:CAPS"></a>GRX_EGA_COLOR_INDEX_LIGHT_GREEN</p></td>
+<td class="enum_member_description">
+<p>light green</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-LIGHT-CYAN:CAPS"></a>GRX_EGA_COLOR_INDEX_LIGHT_CYAN</p></td>
+<td class="enum_member_description">
+<p>light cyan</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-LIGHT-RED:CAPS"></a>GRX_EGA_COLOR_INDEX_LIGHT_RED</p></td>
+<td class="enum_member_description">
+<p>light red</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-LIGHT-MAGENTA:CAPS"></a>GRX_EGA_COLOR_INDEX_LIGHT_MAGENTA</p></td>
+<td class="enum_member_description">
+<p>light magenta</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-YELLOW:CAPS"></a>GRX_EGA_COLOR_INDEX_YELLOW</p></td>
+<td class="enum_member_description">
+<p>yellow</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-EGA-COLOR-INDEX-WHITE:CAPS"></a>GRX_EGA_COLOR_INDEX_WHITE</p></td>
+<td class="enum_member_description">
+<p>white</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxColorCell"></a><h3>GrxColorCell</h3>
+<pre class="programlisting">typedef GrxColor GrxColorCell;
+</pre>
+<p>A mutable color value.</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

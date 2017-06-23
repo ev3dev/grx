@@ -1,0 +1,1403 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Graphics Contexts: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="drivers.html" title="Drivers, Modes and Contexts">
+<link rel="prev" href="frame_mode.html" title="Frame Modes">
+<link rel="next" href="extents.html" title="Extents, viewports and clipping">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#context.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#context.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="drivers.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="frame_mode.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="extents.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="context"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="context.top_of_page"></a>Graphics Contexts</span></h2>
+<p>Graphics Contexts — Drawing regions</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="context.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-get-screen-context" title="grx_get_screen_context ()">grx_get_screen_context</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-get-current-context" title="grx_get_current_context ()">grx_get_current_context</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-set-current-context" title="grx_set_current_context ()">grx_set_current_context</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-save-current-context" title="grx_save_current_context ()">grx_save_current_context</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-new" title="grx_context_new ()">grx_context_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-new-full" title="grx_context_new_full ()">grx_context_new_full</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-new-subcontext" title="grx_context_new_subcontext ()">grx_context_new_subcontext</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-resize-subcontext" title="grx_context_resize_subcontext ()">grx_context_resize_subcontext</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-ref" title="grx_context_ref ()">grx_context_ref</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-unref" title="grx_context_unref ()">grx_context_unref</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-get-width" title="grx_context_get_width ()">grx_context_get_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-get-height" title="grx_context_get_height ()">grx_context_get_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-get-max-x" title="grx_context_get_max_x ()">grx_context_get_max_x</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-get-max-y" title="grx_context_get_max_y ()">grx_context_get_max_y</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-clear" title="grx_context_clear ()">grx_context_clear</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-flood-spill" title="grx_context_flood_spill ()">grx_context_flood_spill</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-flood-spill2" title="grx_context_flood_spill2 ()">grx_context_flood_spill2</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-get-pixel-at" title="grx_context_get_pixel_at ()">grx_context_get_pixel_at</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-bit-blt" title="grx_context_bit_blt ()">grx_context_bit_blt</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-bit-blt-1bpp" title="grx_context_bit_blt_1bpp ()">grx_context_bit_blt_1bpp</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-get-scanline" title="grx_context_get_scanline ()">grx_context_get_scanline</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-set-clip-box" title="grx_context_set_clip_box ()">grx_context_set_clip_box</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-get-clip-box" title="grx_context_get_clip_box ()">grx_context_get_clip_box</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="context.html#grx-context-reset-clip-box" title="grx_context_reset_clip_box ()">grx_context_reset_clip_box</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="context.html#GRX-FRAME-MEMORY-PLANE:CAPS" title="GRX_FRAME_MEMORY_PLANE()">GRX_FRAME_MEMORY_PLANE</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<a name="GrxContext"></a><div class="refsect1">
+<a name="context.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="context.html#GrxFrameMemory" title="GrxFrameMemory">GrxFrameMemory</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="context.html#GrxFrame" title="GrxFrame">GrxFrame</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="context.html#GrxContext-struct" title="GrxContext">GrxContext</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="context.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-Boxed-Types.html">GBoxed</a>
+    <span class="lineart">╰──</span> GrxContext
+</pre>
+</div>
+<div class="refsect1">
+<a name="context.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="context.description"></a><h2>Description</h2>
+<p>The library supports a set of drawing regions called contexts (<a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a>).
+These can be in video memory or in system memory. Contexts in system memory
+always have the same memory organization as the video memory. When
+<a class="link" href="mode.html#grx-set-mode" title="grx_set_mode ()"><code class="function">grx_set_mode()</code></a> is called, a default context is created which maps to the
+whole graphics screen.</p>
+</div>
+<div class="refsect1">
+<a name="context.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-get-screen-context"></a><h3>grx_get_screen_context ()</h3>
+<pre class="programlisting"><a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+grx_get_screen_context (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the screen context.</p>
+<div class="refsect3">
+<a name="grx-get-screen-context.returns"></a><h4>Returns</h4>
+<p> the screen context. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-current-context"></a><h3>grx_get_current_context ()</h3>
+<pre class="programlisting"><a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+grx_get_current_context (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the current context.</p>
+<div class="refsect3">
+<a name="grx-get-current-context.returns"></a><h4>Returns</h4>
+<p> the current context. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-set-current-context"></a><h3>grx_set_current_context ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_set_current_context (<em class="parameter"><code>const <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
+<p>Sets the current context to <em class="parameter"><code>context</code></em>
+.</p>
+<p>The current context structure is stored in a static location in the library.
+(For efficiency reasons – it is used quite frequently, and this way no
+pointer dereferencing is necessary.) The context stores all relevant
+information about the video organization, coordinate limits, etc...</p>
+<div class="refsect3">
+<a name="grx-set-current-context.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-save-current-context"></a><h3>grx_save_current_context ()</h3>
+<pre class="programlisting"><a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+grx_save_current_context (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *where</code></em>);</pre>
+<p>Saves a copy of the current context.</p>
+<p>This is generally used to temporarily save and restore a context. Example:</p>
+<div class="informalexample"><pre class="programlisting">
+void my_function (GrxContext *my_context)
+{
+    GrxContext save;
+
+    grx_save_current_context (&amp;save);
+    grx_set_current_context (my_context);
+    // call some drawing functions
+    grx_set_current_context (&amp;save);
+}
+</pre></div>
+<p></p>
+<div class="refsect3">
+<a name="grx-save-current-context.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>where</p></td>
+<td class="parameter_description"><p> unused <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> where the context will be saved or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-save-current-context.returns"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>where</code></em>
+or a new context if <em class="parameter"><code>where</code></em>
+was <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. Returns
+<a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on error. </p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-new"></a><h3>grx_context_new ()</h3>
+<pre class="programlisting"><a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+grx_context_new (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> w</code></em>,
+                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> h</code></em>,
+                 <em class="parameter"><code><a class="link" href="context.html#GrxFrameMemory" title="GrxFrameMemory"><span class="type">GrxFrameMemory</span></a> *memory</code></em>,
+                 <em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *where</code></em>);</pre>
+<p>Creates a new context in system memory using the memory layout specified by
+<a class="link" href="frame_mode.html#grx-frame-mode-get-screen-core" title="grx_frame_mode_get_screen_core ()"><code class="function">grx_frame_mode_get_screen_core()</code></a>.</p>
+<p><em class="parameter"><code>memory</code></em>
+ must contain <a class="link" href="frame_mode.html#grx-screen-get-n-planes" title="grx_screen_get_n_planes ()"><code class="function">grx_screen_get_n_planes()</code></a> pointers (usually just one, but
+could be as many as 4) of size <a class="link" href="frame_mode.html#grx-screen-get-plane-size" title="grx_screen_get_plane_size ()"><code class="function">grx_screen_get_plane_size()</code></a>. <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> may also
+be passed to <em class="parameter"><code>memory</code></em>
+, in which case the memory will be dynamically allocated.</p>
+<p>Likewise, <em class="parameter"><code>where</code></em>
+ can be an unused <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> (e.g. you may want to do this
+if you want a stack allocated context) or it can be <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to dynamically
+allocate a new context.</p>
+<div class="refsect3">
+<a name="grx-context-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>w</p></td>
+<td class="parameter_description"><p>the width of the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>h</p></td>
+<td class="parameter_description"><p>the height of the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>memory</p></td>
+<td class="parameter_description"><p> memory location(s) or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>where</p></td>
+<td class="parameter_description"><p> an unused <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> struct or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-context-new.returns"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>where</code></em>
+or a new context if <em class="parameter"><code>where</code></em>
+was <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. Returns
+<a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on error. </p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-new-full"></a><h3>grx_context_new_full ()</h3>
+<pre class="programlisting"><a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+grx_context_new_full (<em class="parameter"><code><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a> mode</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> w</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> h</code></em>,
+                      <em class="parameter"><code><a class="link" href="context.html#GrxFrameMemory" title="GrxFrameMemory"><span class="type">GrxFrameMemory</span></a> *memory</code></em>,
+                      <em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *where</code></em>);</pre>
+<p>Creates a new context in system memory using the memory layout specified by
+<em class="parameter"><code>mode</code></em>
+.</p>
+<p><em class="parameter"><code>memory</code></em>
+ must contain <a class="link" href="frame_mode.html#grx-frame-mode-get-n-planes" title="grx_frame_mode_get_n_planes ()"><code class="function">grx_frame_mode_get_n_planes()</code></a> pointers (usually just one, but
+could be as many as 4) of size <a class="link" href="frame_mode.html#grx-frame-mode-get-plane-size" title="grx_frame_mode_get_plane_size ()"><code class="function">grx_frame_mode_get_plane_size()</code></a>. <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> may also
+be passed to <em class="parameter"><code>memory</code></em>
+, in which case the memory will be dynamically allocated.</p>
+<p>Likewise, <em class="parameter"><code>where</code></em>
+ can be an unused <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> (e.g. you may want to do this
+if you want a stack allocated context) or it can be <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to dynamically
+allocate a new context.</p>
+<div class="refsect3">
+<a name="grx-context-new-full.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mode</p></td>
+<td class="parameter_description"><p>the frame mode</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>w</p></td>
+<td class="parameter_description"><p>the width of the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>h</p></td>
+<td class="parameter_description"><p>the height of the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>memory</p></td>
+<td class="parameter_description"><p> memory location(s) or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>where</p></td>
+<td class="parameter_description"><p> an unused <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> struct or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-context-new-full.returns"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>where</code></em>
+or a new context if <em class="parameter"><code>where</code></em>
+was <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. Returns
+<a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on error. </p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-new-subcontext"></a><h3>grx_context_new_subcontext ()</h3>
+<pre class="programlisting"><a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+grx_context_new_subcontext (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                            <em class="parameter"><code>const <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *parent</code></em>,
+                            <em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *where</code></em>);</pre>
+<p>Creates a new sub-context which maps to a part of an existing context.</p>
+<p>The coordinate arguments (x1 through y2) are interpreted relative to the
+parent context's limits. Pixel addressing is zero-based even in sub-contexts,
+i.e. the address of the top left pixel is (0,0) even in a sub-context which
+has been mapped onto the interior of its parent context.</p>
+<div class="refsect3">
+<a name="grx-context-new-subcontext.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>parent</p></td>
+<td class="parameter_description"><p> the parent context or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the screen. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>where</p></td>
+<td class="parameter_description"><p> an unused <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> struct to hold the subcontext or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-context-new-subcontext.returns"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>where</code></em>
+or a new context if <em class="parameter"><code>where</code></em>
+was <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. Return <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on error. </p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-resize-subcontext"></a><h3>grx_context_resize_subcontext ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_resize_subcontext (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>);</pre>
+<p>Sub-contexts can be resized, but not their parents (i.e. anything returned
+by <a class="link" href="context.html#grx-context-new" title="grx_context_new ()"><code class="function">grx_context_new()</code></a> or set up by <a class="link" href="mode.html#grx-set-mode" title="grx_set_mode ()"><code class="function">grx_set_mode()</code></a> cannot be resized – because
+this could lead to irrecoverable "loss" of drawing memory.</p>
+<p>The coordinate arguments (x1 through y2) are interpreted relative to the
+parent context's limits.</p>
+<div class="refsect3">
+<a name="grx-context-resize-subcontext.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the new left bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the new top bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the new right bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the new bottom bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-ref"></a><h3>grx_context_ref ()</h3>
+<pre class="programlisting"><a class="link" href="context.html#GrxContext"><span class="returnvalue">GrxContext</span></a> *
+grx_context_ref (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
+<p>Increases the reference count to <em class="parameter"><code>context</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-context-ref.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-context-ref.returns"></a><h4>Returns</h4>
+<p> the <em class="parameter"><code>context</code></em>
+</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-unref"></a><h3>grx_context_unref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_unref (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
+<p>Decreases the reference count to <em class="parameter"><code>context</code></em>
+.</p>
+<p>When the reference count drops to 0, the context and any dynamically
+allocated memory of the context will be freed.</p>
+<div class="refsect3">
+<a name="grx-context-unref.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p> the context. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-get-width"></a><h3>grx_context_get_width ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_context_get_width (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
+<p>Gets the width of <em class="parameter"><code>context</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-context-get-width.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>a <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-context-get-width.returns"></a><h4>Returns</h4>
+<p> the width</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-get-height"></a><h3>grx_context_get_height ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_context_get_height (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
+<p>Gets the height of <em class="parameter"><code>context</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-context-get-height.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>a <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-context-get-height.returns"></a><h4>Returns</h4>
+<p> the height</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-get-max-x"></a><h3>grx_context_get_max_x ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_context_get_max_x (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
+<p>Gets the right bounds of <em class="parameter"><code>context</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-context-get-max-x.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>a <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-context-get-max-x.returns"></a><h4>Returns</h4>
+<p> the value</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-get-max-y"></a><h3>grx_context_get_max_y ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+grx_context_get_max_y (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
+<p>Gets the bottom bounds of <em class="parameter"><code>context</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-context-get-max-y.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>a <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-context-get-max-y.returns"></a><h4>Returns</h4>
+<p> the value</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-clear"></a><h3>grx_context_clear ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_clear (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                   <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> bg</code></em>);</pre>
+<p>Clears the specified context using the specified background color.</p>
+<p>Thanks to the special <a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> definition, you can do more than simple clear
+with this functions, by example with:</p>
+<div class="informalexample"><pre class="programlisting">
+grx_context_clear (ctx, grx_color_to_xor_mode (grx_color_get_white ()));
+</pre></div>
+<p>
+the context is negativized, do it again and the context is restored.</p>
+<p>Also see <a class="link" href="draw.html#grx-clear-context" title="grx_clear_context ()"><code class="function">grx_clear_context()</code></a> for clearing the current context and
+<a class="link" href="draw.html#grx-clear-screen" title="grx_clear_screen ()"><code class="function">grx_clear_screen()</code></a> for clearing the screen.</p>
+<div class="refsect3">
+<a name="grx-context-clear.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bg</p></td>
+<td class="parameter_description"><p>the background color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-flood-spill"></a><h3>grx_context_flood_spill ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_flood_spill (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                         <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> old_c</code></em>,
+                         <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> new_c</code></em>);</pre>
+<p>Replaces old color with new color in the context in the area bounded
+by the rectangle x1, y1, x2, y2.</p>
+<p>This is quite useful for highlighting a selected item in a list, or changing
+a selected color(s) in a multi colored area.</p>
+<p>Also see <a class="link" href="draw.html#grx-flood-spill" title="grx_flood_spill ()"><code class="function">grx_flood_spill()</code></a> for operating on the current context.</p>
+<div class="refsect3">
+<a name="grx-context-flood-spill.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left edge of the bounding rectangle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top edge of the bounding rectangle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right edge of the bounding rectangle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom edge of the bounding rectangle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>old_c</p></td>
+<td class="parameter_description"><p>the color to be replaced</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_c</p></td>
+<td class="parameter_description"><p>the new color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-flood-spill2"></a><h3>grx_context_flood_spill2 ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_flood_spill2 (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                          <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> old_c1</code></em>,
+                          <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> new_c1</code></em>,
+                          <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> old_c2</code></em>,
+                          <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> new_c2</code></em>);</pre>
+<p>Replaces two old colors with two new colors in the context in the
+area bounded by the rectangle x1, y1, x2, y2. <em class="parameter"><code>old_c1</code></em>
+ is replaced with
+<em class="parameter"><code>new_c1</code></em>
+ and <em class="parameter"><code>old_c2</code></em>
+ is replaced with <em class="parameter"><code>new_c2</code></em>
+.</p>
+<p>This is quite useful for highlighting a selected item in a list, or changing
+a selected color(s) in a multi colored area.</p>
+<p>Also see <a class="link" href="draw.html#grx-flood-spill2" title="grx_flood_spill2 ()"><code class="function">grx_flood_spill2()</code></a> for operating on the current context.</p>
+<div class="refsect3">
+<a name="grx-context-flood-spill2.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left edge of the bounding rectangle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top edge of the bounding rectangle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right edge of the bounding rectangle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom edge of the bounding rectangle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>old_c1</p></td>
+<td class="parameter_description"><p>the first color to be replaced</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_c1</p></td>
+<td class="parameter_description"><p>the first new color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>old_c2</p></td>
+<td class="parameter_description"><p>the second color to be replaced</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_c2</p></td>
+<td class="parameter_description"><p>the second new color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-get-pixel-at"></a><h3>grx_context_get_pixel_at ()</h3>
+<pre class="programlisting"><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a>
+grx_context_get_pixel_at (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>);</pre>
+<p>Gets the color value of the pixel in the context at the specified
+coordinates.</p>
+<p>Also see <a class="link" href="draw.html#grx-get-pixel-at" title="grx_get_pixel_at ()"><code class="function">grx_get_pixel_at()</code></a> for operating on the current context.</p>
+<div class="refsect3">
+<a name="grx-context-get-pixel-at.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-bit-blt"></a><h3>grx_context_bit_blt ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_bit_blt (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                     <em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *src</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                     <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> op</code></em>);</pre>
+<p>Copies an area bounded by x1, y2, x2, y2 in the source context to the
+destination context at the location specified by dx, dy using the specified
+operation.</p>
+<p>Also see <a class="link" href="draw.html#grx-bit-blt" title="grx_bit_blt ()"><code class="function">grx_bit_blt()</code></a> for operating on the current context.</p>
+<div class="refsect3">
+<a name="grx-context-bit-blt.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the destination context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the destination X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the destination Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>src</p></td>
+<td class="parameter_description"><p> the source context or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the current context. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the source bounding rectangle left coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the source bounding rectangle top coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the source bounding rectangle right coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the source bounding rectangle bottom coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>op</p></td>
+<td class="parameter_description"><p>the <a class="link" href="color.html#GrxColorMode" title="enum GrxColorMode"><span class="type">GrxColorMode</span></a> operator and optional transparent color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-bit-blt-1bpp"></a><h3>grx_context_bit_blt_1bpp ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_bit_blt_1bpp (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                          <em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *src</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                          <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> fg</code></em>,
+                          <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> bg</code></em>);</pre>
+<p>Copies an area bounded by x1, y2, x2, y2 in the source context to the
+destination context at the location specified by dx, dy using the specified
+operation.</p>
+<p>The source must be a 1 bit per pixel bitmap. The foreground color is used
+for bits = 1 and the background color is used for bits = 0.</p>
+<p>Also see <a class="link" href="draw.html#grx-bit-blt-1bpp" title="grx_bit_blt_1bpp ()"><code class="function">grx_bit_blt_1bpp()</code></a> for operating on the current context.</p>
+<div class="refsect3">
+<a name="grx-context-bit-blt-1bpp.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the destination context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the destination X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the destination Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>src</p></td>
+<td class="parameter_description"><p> the source context or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to use the current context. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the source bounding rectangle left coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the source bounding rectangle top coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the source bounding rectangle right coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the source bounding rectangle bottom coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>fg</p></td>
+<td class="parameter_description"><p>the foreground color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bg</p></td>
+<td class="parameter_description"><p>the background color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-get-scanline"></a><h3>grx_context_get_scanline ()</h3>
+<pre class="programlisting">const <a class="link" href="color.html#GrxColor" title="GrxColor"><span class="returnvalue">GrxColor</span></a> *
+grx_context_get_scanline (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n</code></em>);</pre>
+<p>An efficient way to get pixels from a context. Important: the return value
+is only valid until the next Grx call!</p>
+<p>Also see <a class="link" href="draw.html#grx-get-scanline" title="grx_get_scanline ()"><code class="function">grx_get_scanline()</code></a> for operating on the current context.</p>
+<div class="refsect3">
+<a name="grx-context-get-scanline.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the starting X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the ending X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>n</p></td>
+<td class="parameter_description"><p> the length of the array. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL may be passed instead of a pointer to a location."><span class="acronym">optional</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-context-get-scanline.returns"></a><h4>Returns</h4>
+<p>    an array of color values from the scanned pixels or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there was
+an error. </p>
+<p><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>][<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-set-clip-box"></a><h3>grx_context_set_clip_box ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_set_clip_box (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>);</pre>
+<p>Sets the clipping limits on <em class="parameter"><code>context</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-context-set-clip-box.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom bounds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-get-clip-box"></a><h3>grx_context_get_clip_box ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_get_clip_box (<em class="parameter"><code>const <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *x1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *y1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *x2</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *y2</code></em>);</pre>
+<p>Gets the clipping limits of <em class="parameter"><code>context</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-context-get-clip-box.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p> the left bounds. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p> the top bounds. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p> the right bounds. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p> the bottom bounds. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-context-reset-clip-box"></a><h3>grx_context_reset_clip_box ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_context_reset_clip_box (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
+<p>Resets the clipping limits on <em class="parameter"><code>context</code></em>
+ to the size of <em class="parameter"><code>context</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-context-reset-clip-box.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GRX-FRAME-MEMORY-PLANE:CAPS"></a><h3>GRX_FRAME_MEMORY_PLANE()</h3>
+<pre class="programlisting">#define GRX_FRAME_MEMORY_PLANE(f,i) (((guint8**)f)[i])
+</pre>
+<p>Gets a plane from <a class="link" href="context.html#GrxFrameMemory" title="GrxFrameMemory"><span class="type">GrxFrameMemory</span></a> by its index.</p>
+<div class="refsect3">
+<a name="GRX-FRAME-MEMORY-PLANE.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>f</p></td>
+<td class="parameter_description"><p>pointer to <a class="link" href="context.html#GrxFrameMemory" title="GrxFrameMemory"><span class="type">GrxFrameMemory</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>i</p></td>
+<td class="parameter_description"><p>the index of the plane (0-3)</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="context.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GrxFrameMemory"></a><h3>GrxFrameMemory</h3>
+<pre class="programlisting">typedef struct {
+} GrxFrameMemory;
+</pre>
+<p>Private data structure used by <a class="link" href="context.html#GrxFrame" title="GrxFrame"><span class="type">GrxFrame</span></a>.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxFrame"></a><h3>GrxFrame</h3>
+<pre class="programlisting">typedef struct {
+} GrxFrame;
+</pre>
+<p>Private data structure used by <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a>.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxContext-struct"></a><h3>GrxContext</h3>
+<pre class="programlisting">typedef struct {
+} GrxContext;
+</pre>
+<p>Private data structure used by <a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

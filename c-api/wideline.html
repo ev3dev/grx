@@ -1,0 +1,602 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Customized line drawing: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="drawing.html" title="Drawing">
+<link rel="prev" href="draw_nc.html" title="Non-clipping Graphics Primitives">
+<link rel="next" href="pattern.html" title="Pattern filled graphics primitives">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#wideline.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="drawing.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="draw_nc.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="pattern.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="wideline"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="wideline.top_of_page"></a>Customized line drawing</span></h2>
+<p>Customized line drawing — Thick and dashed line drawing primitives</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="wideline.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="wideline.html#grx-draw-line-with-options" title="grx_draw_line_with_options ()">grx_draw_line_with_options</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="wideline.html#grx-draw-box-with-options" title="grx_draw_box_with_options ()">grx_draw_box_with_options</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="wideline.html#grx-draw-circle-with-options" title="grx_draw_circle_with_options ()">grx_draw_circle_with_options</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="wideline.html#grx-draw-ellipse-with-options" title="grx_draw_ellipse_with_options ()">grx_draw_ellipse_with_options</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="wideline.html#grx-draw-circle-arc-with-options" title="grx_draw_circle_arc_with_options ()">grx_draw_circle_arc_with_options</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="wideline.html#grx-draw-ellipse-arc-with-options" title="grx_draw_ellipse_arc_with_options ()">grx_draw_ellipse_arc_with_options</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="wideline.html#grx-draw-polyline-with-options" title="grx_draw_polyline_with_options ()">grx_draw_polyline_with_options</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="wideline.html#grx-draw-polygon-with-options" title="grx_draw_polygon_with_options ()">grx_draw_polygon_with_options</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="wideline.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions">GrxLineOptions</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="wideline.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="wideline.description"></a><h2>Description</h2>
+<p>The basic line drawing graphics primitives described previously always draw
+continuous lines which are one pixel wide. This group of line drawing
+functions can be used to draw wide and/or patterned lines. These functions
+have similar parameter passing conventions as the basic ones with one
+difference: instead of the color value a <a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> is passed instead.</p>
+</div>
+<div class="refsect1">
+<a name="wideline.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-draw-line-with-options"></a><h3>grx_draw_line_with_options ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_line_with_options (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                            <em class="parameter"><code>const <a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>);</pre>
+<p>Draws a line on the current context from the starting coordinates to the
+ending coordinates using the specified options.</p>
+<div class="refsect3">
+<a name="grx-draw-line-with-options.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>starting X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>starting Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>ending X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>ending Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-box-with-options"></a><h3>grx_draw_box_with_options ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_box_with_options (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                           <em class="parameter"><code>const <a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>);</pre>
+<p>Draws a rectangle on the current context using the specified coordinates
+and options.</p>
+<div class="refsect3">
+<a name="grx-draw-box-with-options.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-circle-with-options"></a><h3>grx_draw_circle_with_options ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_circle_with_options (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> r</code></em>,
+                              <em class="parameter"><code>const <a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>);</pre>
+<p>Draws a circle on the current context centered at the specified coordinates
+with the specified radius and options.</p>
+<div class="refsect3">
+<a name="grx-draw-circle-with-options.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the circle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the circle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the radius of the circle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-ellipse-with-options"></a><h3>grx_draw_ellipse_with_options ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_ellipse_with_options (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rx</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> ry</code></em>,
+                               <em class="parameter"><code>const <a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>);</pre>
+<p>Draws an ellipse on the current context using the specified options.</p>
+<p>The ellipse can only draw ellipses with its major axis parallel with either
+the X or Y coordinate axis</p>
+<div class="refsect3">
+<a name="grx-draw-ellipse-with-options.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the ellipse</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the ellipse</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>rx</p></td>
+<td class="parameter_description"><p>the radius in the X direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>ry</p></td>
+<td class="parameter_description"><p>the radius in the Y direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-circle-arc-with-options"></a><h3>grx_draw_circle_arc_with_options ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_circle_arc_with_options (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> r</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> start</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> end</code></em>,
+                                  <em class="parameter"><code><a class="link" href="draw.html#GrxArcStyle" title="enum GrxArcStyle"><span class="type">GrxArcStyle</span></a> style</code></em>,
+                                  <em class="parameter"><code>const <a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>);</pre>
+<p>Draws an arc on the current context centered at the specified coordinates
+from the starting angle to the ending angle with the specified radius,
+arc style and options.</p>
+<div class="refsect3">
+<a name="grx-draw-circle-arc-with-options.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the radius of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>start</p></td>
+<td class="parameter_description"><p>the starting angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>end</p></td>
+<td class="parameter_description"><p>the ending angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>style</p></td>
+<td class="parameter_description"><p>the arc style</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-ellipse-arc-with-options"></a><h3>grx_draw_ellipse_arc_with_options ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_ellipse_arc_with_options (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rx</code></em>,
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> ry</code></em>,
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> start</code></em>,
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> end</code></em>,
+                                   <em class="parameter"><code><a class="link" href="draw.html#GrxArcStyle" title="enum GrxArcStyle"><span class="type">GrxArcStyle</span></a> style</code></em>,
+                                   <em class="parameter"><code>const <a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>);</pre>
+<p>Draws an arc on the current context centered at the specified coordinates
+from the starting angle to the ending angle with the specified radii,
+arc style and options.</p>
+<div class="refsect3">
+<a name="grx-draw-ellipse-arc-with-options.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>rx</p></td>
+<td class="parameter_description"><p>the radius in the X direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>ry</p></td>
+<td class="parameter_description"><p>the radius in the Y direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>start</p></td>
+<td class="parameter_description"><p>the starting angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>end</p></td>
+<td class="parameter_description"><p>the ending angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>style</p></td>
+<td class="parameter_description"><p>the arc style</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-polyline-with-options"></a><h3>grx_draw_polyline_with_options ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_polyline_with_options (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_points</code></em>,
+                                <em class="parameter"><code><a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a> *points</code></em>,
+                                <em class="parameter"><code>const <a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>);</pre>
+<p>Draw a multi-segment line on the current context that connects each point in
+the <em class="parameter"><code>points</code></em>
+ array using the specified options.</p>
+<div class="refsect3">
+<a name="grx-draw-polyline-with-options.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>n_points</p></td>
+<td class="parameter_description"><p>the number of points in <em class="parameter"><code>points</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>points</p></td>
+<td class="parameter_description"><p> an array of <a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_points]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-polygon-with-options"></a><h3>grx_draw_polygon_with_options ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_polygon_with_options (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_points</code></em>,
+                               <em class="parameter"><code><a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a> *points</code></em>,
+                               <em class="parameter"><code>const <a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>);</pre>
+<p>Draw a closed polygon on the current context that connects each point in
+the <em class="parameter"><code>points</code></em>
+ array using the specified options.</p>
+<p>Coordinate arrays can either contain or omit the closing edge of the polygon.
+It will be automatically appended to the list if it is missing.</p>
+<div class="refsect3">
+<a name="grx-draw-polygon-with-options.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>n_points</p></td>
+<td class="parameter_description"><p>the number of points in <em class="parameter"><code>points</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>points</p></td>
+<td class="parameter_description"><p> an array of <a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_points]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="wideline.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GrxLineOptions"></a><h3>GrxLineOptions</h3>
+<pre class="programlisting">typedef struct {
+    GrxColor color;
+    gint     width;
+    gint     n_dash_patterns;
+    guint8  *dash_patterns;
+} GrxLineOptions;
+</pre>
+<p>Custom line options structure.</p>
+<p>Zero or one dash pattern length means the line is continuous. The dash
+pattern always begins with a drawn section.</p>
+<p>Example, a white line 3 pixels wide (thick) and pattern 6 pixels draw,
+4 pixels nodraw:</p>
+<div class="informalexample"><pre class="programlisting">
+GrxLineOptions my_line_options;
+...
+my_line_options.color = GRX_COLOR_WHITE;
+my_line_options.width = 3;
+my_line_options.n_dash_patterns = 2;
+my_line_options.dash_patterns = "\x06\x04";
+...
+</pre></div>
+<p></p>
+<div class="refsect3">
+<a name="GrxLineOptions.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> <em class="structfield"><code><a name="GrxLineOptions.color"></a>color</code></em>;</p></td>
+<td class="struct_member_description"><p>color used to draw line</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GrxLineOptions.width"></a>width</code></em>;</p></td>
+<td class="struct_member_description"><p>width of the line</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="GrxLineOptions.n-dash-patterns"></a>n_dash_patterns</code></em>;</p></td>
+<td class="struct_member_description"><p>length of the dash pattern</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *<em class="structfield"><code><a name="GrxLineOptions.dash-patterns"></a>dash_patterns</code></em>;</p></td>
+<td class="struct_member_description"><p> draw/nodraw pattern. </p></td>
+<td class="struct_member_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_dash_patterns]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Video drivers and modes: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="drivers.html" title="Drivers, Modes and Contexts">
+<link rel="prev" href="drivers.html" title="Drivers, Modes and Contexts">
+<link rel="next" href="frame_mode.html" title="Frame Modes">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#mode.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="drivers.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="drivers.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="frame_mode.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="mode"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="mode.top_of_page"></a>Video drivers and modes</span></h2>
+<p>Video drivers and modes — Video drivers and modes</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="mode.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-set-driver" title="grx_set_driver ()">grx_set_driver</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-set-mode" title="grx_set_mode ()">grx_set_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-set-mode-default-graphics" title="grx_set_mode_default_graphics ()">grx_set_mode_default_graphics</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-get-dpi" title="grx_get_dpi ()">grx_get_dpi</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="device_manager.html#GrxDeviceManager"><span class="returnvalue">GrxDeviceManager</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-get-device-manager" title="grx_get_device_manager ()">grx_get_device_manager</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a class="link" href="mode.html#GrxVideoDriver" title="GrxVideoDriver"><span class="returnvalue">GrxVideoDriver</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-get-current-video-driver" title="grx_get_current_video_driver ()">grx_get_current_video_driver</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a class="link" href="mode.html#GrxVideoMode" title="GrxVideoMode"><span class="returnvalue">GrxVideoMode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-get-current-video-mode" title="grx_get_current_video_mode ()">grx_get_current_video_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a class="link" href="mode.html#GrxVideoMode" title="GrxVideoMode"><span class="returnvalue">GrxVideoMode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-get-virtual-video-mode" title="grx_get_virtual_video_mode ()">grx_get_virtual_video_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a class="link" href="mode.html#GrxFrameDriver" title="GrxFrameDriver"><span class="returnvalue">GrxFrameDriver</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-get-current-frame-driver" title="grx_get_current_frame_driver ()">grx_get_current_frame_driver</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a class="link" href="mode.html#GrxFrameDriver" title="GrxFrameDriver"><span class="returnvalue">GrxFrameDriver</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-get-screen-frame-driver" title="grx_get_screen_frame_driver ()">grx_get_screen_frame_driver</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a class="link" href="mode.html#GrxVideoMode" title="GrxVideoMode"><span class="returnvalue">GrxVideoMode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-get-first-video-mode" title="grx_get_first_video_mode ()">grx_get_first_video_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a class="link" href="mode.html#GrxVideoMode" title="GrxVideoMode"><span class="returnvalue">GrxVideoMode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="mode.html#grx-get-next-video-mode" title="grx_get_next_video_mode ()">grx_get_next_video_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="mode.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="mode.html#GrxGraphicsMode" title="enum GrxGraphicsMode">GrxGraphicsMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="mode.html#GrxVideoDriverFlags" title="enum GrxVideoDriverFlags">GrxVideoDriverFlags</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="mode.html#GrxVideoDriver" title="GrxVideoDriver">GrxVideoDriver</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="mode.html#GrxVideoMode" title="GrxVideoMode">GrxVideoMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="mode.html#GrxVideoModeFlags" title="enum GrxVideoModeFlags">GrxVideoModeFlags</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="mode.html#GrxVideoModeExt" title="GrxVideoModeExt">GrxVideoModeExt</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="mode.html#GrxFrameDriver" title="GrxFrameDriver">GrxFrameDriver</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="mode.html#GRX-DEFAULT-DPI:CAPS" title="GRX_DEFAULT_DPI">GRX_DEFAULT_DPI</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="mode.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="mode.description"></a><h2>Description</h2>
+<p>GRX3 uses video "driver" plugins to provide the graphics back end. For most
+programs using GRX3, the driver and it's parameters will be automatically
+selected. The driver and parameters can be manually specified using the
+GRX_DRIVER environment variable (see <em class="parameter"><code><a class="link" href="mode.html#grx-set-driver" title="grx_set_driver ()"><code class="function">grx_set_driver()</code></a></code></em>
+ for details). The
+search path for the video driver plugins can also be manually specified using
+the GRX_PLUGIN_PATH enviornment variable (useful for development).</p>
+<p>Each video driver can have mutiple video modes. Video modes specify the
+resolution (width and height in pixels) and the color depth (bits per pixel).
+Most programs will just call <a class="link" href="mode.html#grx-set-mode-default-graphics" title="grx_set_mode_default_graphics ()"><code class="function">grx_set_mode_default_graphics()</code></a> to automatically
+select the default mode of the video driver.</p>
+<p>Each video driver also has an associated device manager for interacting with
+input devices such as keyboards, mice and touchscreens.</p>
+</div>
+<div class="refsect1">
+<a name="mode.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-set-driver"></a><h3>grx_set_driver ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+grx_set_driver (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *driver_spec</code></em>,
+                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>The driver spec is of the format "[&lt;name&gt;[::&lt;flag&gt;]] [gw &lt;width&gt;]
+[gh &lt;height&gt;] [gc &lt;colors&gt;] [dp &lt;dpi&gt;]".</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>"&lt;name&gt;" is the name of a video driver plugin.</p></li>
+<li class="listitem"><p>"&lt;flag&gt;" is "fs" for fullscreen or "ww" for windowed (not supported by all
+drivers)</p></li>
+<li class="listitem"><p>"&lt;width&gt;" is the default width</p></li>
+<li class="listitem"><p>"&lt;height&gt;" is the default height</p></li>
+<li class="listitem"><p>"&lt;colors&gt;" is the default color depth. "K" and "M" suffixes are recognized.</p></li>
+<li class="listitem"><p>"&lt;dpi&gt;" the display resolution in dots per inch.</p></li>
+</ul></div>
+<p>If <em class="parameter"><code>driver_spec</code></em>
+ is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, then it will first check the GRX_DRIVER environment
+variable for a driver spec. If the environment variable is not present, then
+it will uses the driver with the highest number of modes.</p>
+<div class="refsect3">
+<a name="grx-set-driver.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>driver_spec</p></td>
+<td class="parameter_description"><p> The driver spec. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Error pointer.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-set-driver.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-set-mode"></a><h3>grx_set_mode ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+grx_set_mode (<em class="parameter"><code><a class="link" href="mode.html#GrxGraphicsMode" title="enum GrxGraphicsMode"><span class="type">GrxGraphicsMode</span></a> mode</code></em>,
+              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>,
+              <em class="parameter"><code>...</code></em>);</pre>
+<p>Set the graphics mode.</p>
+<p>If a driver has not already been set, this will attempt to load the best
+available driver (the one with the most modes). The driver will then try to
+find the mode that best fits the size and color depth parameters. The exact
+behavior will depend on the video driver.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="grx-set-mode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mode</p></td>
+<td class="parameter_description"><p>The graphics mode.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Error pointer.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>...</p></td>
+<td class="parameter_description"><p>Extra parameters determined by <em class="parameter"><code>mode</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-set-mode.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-set-mode-default-graphics"></a><h3>grx_set_mode_default_graphics ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+grx_set_mode_default_graphics (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> clear</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Set the mode to the default graphics mode.</p>
+<p>This is 640x480x16 by default but can be changed by <a class="link" href="mode.html#grx-set-driver" title="grx_set_driver ()"><code class="function">grx_set_driver()</code></a>.</p>
+<div class="refsect3">
+<a name="grx-set-mode-default-graphics.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>clear</p></td>
+<td class="parameter_description"><p>If <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, clear the screen after setting the mode.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Error pointer.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-set-mode-default-graphics.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-dpi"></a><h3>grx_get_dpi ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+grx_get_dpi (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the display resolution of the current graphics mode or <a class="link" href="mode.html#GRX-DEFAULT-DPI:CAPS" title="GRX_DEFAULT_DPI"><span class="type">GRX_DEFAULT_DPI</span></a>
+if the current driver does not support getting the resolution.</p>
+<p>The display resolution can also be manually specified using <a class="link" href="mode.html#grx-set-driver" title="grx_set_driver ()"><code class="function">grx_set_driver()</code></a>
+or the GRX_DRIVER environment variable.</p>
+<div class="refsect3">
+<a name="grx-get-dpi.returns"></a><h4>Returns</h4>
+<p> the resolution in dots per inch</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-device-manager"></a><h3>grx_get_device_manager ()</h3>
+<pre class="programlisting"><a class="link" href="device_manager.html#GrxDeviceManager"><span class="returnvalue">GrxDeviceManager</span></a> *
+grx_get_device_manager (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the device manager for the current video driver</p>
+<div class="refsect3">
+<a name="grx-get-device-manager.returns"></a><h4>Returns</h4>
+<p> the <a class="link" href="device_manager.html#GrxDeviceManager"><span class="type">GrxDeviceManager</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+if a video driver has not be loaded yet. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-current-video-driver"></a><h3>grx_get_current_video_driver ()</h3>
+<pre class="programlisting">const <a class="link" href="mode.html#GrxVideoDriver" title="GrxVideoDriver"><span class="returnvalue">GrxVideoDriver</span></a> *
+grx_get_current_video_driver (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-current-video-mode"></a><h3>grx_get_current_video_mode ()</h3>
+<pre class="programlisting">const <a class="link" href="mode.html#GrxVideoMode" title="GrxVideoMode"><span class="returnvalue">GrxVideoMode</span></a> *
+grx_get_current_video_mode (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-virtual-video-mode"></a><h3>grx_get_virtual_video_mode ()</h3>
+<pre class="programlisting">const <a class="link" href="mode.html#GrxVideoMode" title="GrxVideoMode"><span class="returnvalue">GrxVideoMode</span></a> *
+grx_get_virtual_video_mode (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-current-frame-driver"></a><h3>grx_get_current_frame_driver ()</h3>
+<pre class="programlisting">const <a class="link" href="mode.html#GrxFrameDriver" title="GrxFrameDriver"><span class="returnvalue">GrxFrameDriver</span></a> *
+grx_get_current_frame_driver (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-screen-frame-driver"></a><h3>grx_get_screen_frame_driver ()</h3>
+<pre class="programlisting">const <a class="link" href="mode.html#GrxFrameDriver" title="GrxFrameDriver"><span class="returnvalue">GrxFrameDriver</span></a> *
+grx_get_screen_frame_driver (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-first-video-mode"></a><h3>grx_get_first_video_mode ()</h3>
+<pre class="programlisting">const <a class="link" href="mode.html#GrxVideoMode" title="GrxVideoMode"><span class="returnvalue">GrxVideoMode</span></a> *
+grx_get_first_video_mode (<em class="parameter"><code><a class="link" href="frame_mode.html#GrxFrameMode" title="enum GrxFrameMode"><span class="type">GrxFrameMode</span></a> mode</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-get-next-video-mode"></a><h3>grx_get_next_video_mode ()</h3>
+<pre class="programlisting">const <a class="link" href="mode.html#GrxVideoMode" title="GrxVideoMode"><span class="returnvalue">GrxVideoMode</span></a> *
+grx_get_next_video_mode (<em class="parameter"><code>const <a class="link" href="mode.html#GrxVideoMode" title="GrxVideoMode"><span class="type">GrxVideoMode</span></a> *prev</code></em>);</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="mode.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GrxGraphicsMode"></a><h3>enum GrxGraphicsMode</h3>
+<p>available video modes (for <a class="link" href="mode.html#grx-set-mode" title="grx_set_mode ()"><code class="function">grx_set_mode()</code></a>)</p>
+<div class="refsect3">
+<a name="GrxGraphicsMode.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-UNKNOWN:CAPS"></a>GRX_GRAPHICS_MODE_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>Unknown mode / initial state</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-TEXT-DEFAULT:CAPS"></a>GRX_GRAPHICS_MODE_TEXT_DEFAULT</p></td>
+<td class="enum_member_description">
+<p>Default text mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-TEXT-80X25:CAPS"></a>GRX_GRAPHICS_MODE_TEXT_80X25</p></td>
+<td class="enum_member_description">
+<p>Standard 80x25 text mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-TEXT-WIDTH-HEIGHT:CAPS"></a>GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT</p></td>
+<td class="enum_member_description">
+<p>Text mode with parameters int w, int h</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-TEXT-WIDTH-HEIGHT-COLOR:CAPS"></a>GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR</p></td>
+<td class="enum_member_description">
+<p>Text mode with parameters int w,
+    int h, GrxColor nc</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-TEXT-WIDTH-HEIGHT-BPP:CAPS"></a>GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP</p></td>
+<td class="enum_member_description">
+<p>Text mode with parameters int w,
+    int h, int bpp</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-DEFAULT:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT</p></td>
+<td class="enum_member_description">
+<p>Default graphics mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-WIDTH-HEIGHT:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT</p></td>
+<td class="enum_member_description">
+<p>Graphics mode with parameters
+    int w, int h</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-WIDTH-HEIGHT-COLOR:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR</p></td>
+<td class="enum_member_description">
+<p>Graphics mode with parameters
+    int w, int h, GrxColor nc</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-WIDTH-HEIGHT-BPP:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP</p></td>
+<td class="enum_member_description">
+<p>Graphics mode with parameters
+    int w, int h, int bpp</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-CUSTOM:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM</p></td>
+<td class="enum_member_description">
+<p>Graphics mode with parameters
+    int w, int h, GrxColor nc, int vx, int vy</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-CUSTOM-BPP:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP</p></td>
+<td class="enum_member_description">
+<p>Graphics mode with parameters
+    int w, int h, int bpp, int vx, int vy</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-TEXT-DEFAULT-NC:CAPS"></a>GRX_GRAPHICS_MODE_TEXT_DEFAULT_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-TEXT-DEFAULT:CAPS"><span class="type">GRX_GRAPHICS_MODE_TEXT_DEFAULT</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-TEXT-80X25-NC:CAPS"></a>GRX_GRAPHICS_MODE_TEXT_80X25_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-TEXT-80X25:CAPS"><span class="type">GRX_GRAPHICS_MODE_TEXT_80X25</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-TEXT-WIDTH-HEIGHT-NC:CAPS"></a>GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-TEXT-WIDTH-HEIGHT:CAPS"><span class="type">GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-TEXT-WIDTH-HEIGHT-COLOR-NC:CAPS"></a>GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-TEXT-WIDTH-HEIGHT-COLOR:CAPS"><span class="type">GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-TEXT-WIDTH-HEIGHT-BPP-NC:CAPS"></a>GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-TEXT-WIDTH-HEIGHT-BPP:CAPS"><span class="type">GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-DEFAULT-NC:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-GRAPHICS-DEFAULT:CAPS"><span class="type">GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-WIDTH-HEIGHT-NC:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-GRAPHICS-WIDTH-HEIGHT:CAPS"><span class="type">GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-WIDTH-HEIGHT-COLOR-NC:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-GRAPHICS-WIDTH-HEIGHT-COLOR:CAPS"><span class="type">GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-WIDTH-HEIGHT-BPP-NC:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-GRAPHICS-WIDTH-HEIGHT-BPP:CAPS"><span class="type">GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-CUSTOM-NC:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-GRAPHICS-CUSTOM:CAPS"><span class="type">GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-GRAPHICS-MODE-GRAPHICS-CUSTOM-BPP-NC:CAPS"></a>GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC</p></td>
+<td class="enum_member_description">
+<p>Same as <a class="link" href="mode.html#GRX-GRAPHICS-MODE-GRAPHICS-CUSTOM-BPP:CAPS"><span class="type">GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP</span></a>
+    but does not clear video memory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxVideoDriverFlags"></a><h3>enum GrxVideoDriverFlags</h3>
+<p>Flags used by <a class="link" href="mode.html#GrxVideoDriver" title="GrxVideoDriver"><span class="type">GrxVideoDriver</span></a>.</p>
+<div class="refsect3">
+<a name="GrxVideoDriverFlags.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody><tr>
+<td class="enum_member_name"><p><a name="GRX-VIDEO-DRIVER-FLAG-USER-RESOLUTION:CAPS"></a>GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION</p></td>
+<td class="enum_member_description">
+<p>Driver supports arbitrary
+   user-specified resolution.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxVideoDriver"></a><h3>GrxVideoDriver</h3>
+<pre class="programlisting">typedef struct {
+} GrxVideoDriver;
+</pre>
+<p>The video driver descriptor structure.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxVideoMode"></a><h3>GrxVideoMode</h3>
+<pre class="programlisting">typedef struct {
+} GrxVideoMode;
+</pre>
+<p>Video driver mode descriptor structure.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxVideoModeFlags"></a><h3>enum GrxVideoModeFlags</h3>
+<p>Video mode flag bits (in the <a class="link" href="mode.html#GrxVideoModeExt" title="GrxVideoModeExt"><span class="type">GrxVideoModeExt</span></a> structure)</p>
+<div class="refsect3">
+<a name="GrxVideoModeFlags.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-VIDEO-MODE-FLAG-LINEAR:CAPS"></a>GRX_VIDEO_MODE_FLAG_LINEAR</p></td>
+<td class="enum_member_description">
+<p>Uses linear memory mapping</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-VIDEO-MODE-FLAG-ACCEL:CAPS"></a>GRX_VIDEO_MODE_FLAG_ACCEL</p></td>
+<td class="enum_member_description">
+<p>Uses an accelerated video mode</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-VIDEO-MODE-FLAG-FAST-SVGA8:CAPS"></a>GRX_VIDEO_MODE_FLAG_FAST_SVGA8</p></td>
+<td class="enum_member_description">
+<p>Uses faster mixed-planar access</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-VIDEO-MODE-FLAG-MEMORY:CAPS"></a>GRX_VIDEO_MODE_FLAG_MEMORY</p></td>
+<td class="enum_member_description">
+<p>Uses memory only (virtual screen)</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxVideoModeExt"></a><h3>GrxVideoModeExt</h3>
+<pre class="programlisting">typedef struct {
+} GrxVideoModeExt;
+</pre>
+<p>Video driver mode descriptor extension structure. This is a separate
+structure accessed via a pointer from the main mode descriptor. The
+reason for this is that frequently several modes can share the same
+extended info.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxFrameDriver"></a><h3>GrxFrameDriver</h3>
+<pre class="programlisting">typedef struct {
+} GrxFrameDriver;
+</pre>
+<p>The frame driver descriptor structure.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GRX-DEFAULT-DPI:CAPS"></a><h3>GRX_DEFAULT_DPI</h3>
+<pre class="programlisting">#define GRX_DEFAULT_DPI 100
+</pre>
+<p>The default screen resolution (dots per inch).</p>
+<p>Used when graphics drivers do not support getting the actual screen resolution.</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>
