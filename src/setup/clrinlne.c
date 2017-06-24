@@ -214,7 +214,7 @@ GrxColor (grx_color_build_rgb_round)(unsigned char r,unsigned char g,unsigned ch
  */
 GrxColor (grx_color_build_grayscale)(unsigned char r,unsigned char g,unsigned char b)
 {
-        return((grx_color_build_grayscale)(r,g,b));
+        return(grx_color_build_grayscale(r,g,b));
 }
 
 /**
