@@ -260,7 +260,7 @@ void     grx_color_info_restore_colors(gpointer buffer);
 #define grx_color_to_image_mode(c)     (grx_color_get_value(c) | GRX_COLOR_MODE_IMAGE)
 #define grx_color_info_n_colors()      (GrColorInfo->ncolors)
 #define grx_color_info_n_free_colors() (GrColorInfo->nfree)
-#define grx_color_info_get_pallete_type() (GrxColorInfo->palette_type)
+#define grx_color_info_get_palette_type() (GrColorInfo->palette_type)
 #define grx_color_get_black() (                                           \
     (GrColorInfo->black == GRX_COLOR_NONE) ?                                   \
     (grx_color_get_black)() :                                             \
