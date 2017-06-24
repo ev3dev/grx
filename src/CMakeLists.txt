@@ -398,7 +398,7 @@ add_typelib (${TYPELIB_TARGET} ${GIR_TARGET})
 install (FILES $<TARGET_PROPERTY:${TYPELIB_TARGET},TYPELIB_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
 
-if (NOT GRX_SKIP_GTKDOC)
+if (GRX_ENABLE_DOC)
 
 # documentation (gtkdoc)
 
@@ -433,6 +433,6 @@ add_dependencies (doc doc-grx)
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/grx/html
         DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
-endif (NOT GRX_SKIP_GTKDOC)
+endif (GRX_ENABLE_DOC)
 
 endif (NOT CMAKE_CROSSCOMPILING)
