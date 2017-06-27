@@ -264,16 +264,6 @@ target_compile_definitions (${LIBRARY_NAME} PUBLIC
 if (GRX_DEBUG)
     target_compile_definitions (${LIBRARY_NAME} PUBLIC "DEBUG=${GRX_DEBUG}")
 endif (GRX_DEBUG)
-if (GRX_LINUXFB)
-    target_compile_definitions (${LIBRARY_NAME}
-        PUBLIC
-            "FRAMEBUFFER_DRIVER"
-            "LFB_BY_NEAR_POINTER"
-    )
-endif (GRX_LINUXFB)
-if (GRX_GTK3)
-    target_compile_definitions (${LIBRARY_NAME} PUBLIC "GTK3_DRIVER")
-endif (GRX_GTK3)
 target_include_directories (${LIBRARY_NAME}
     PUBLIC
         ${CMAKE_SOURCE_DIR}/include
