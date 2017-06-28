@@ -589,7 +589,7 @@ this is triggered the window is closed in a desktop application</p>
 <a name="GrxKeyEvent"></a><h3>GrxKeyEvent</h3>
 <pre class="programlisting">typedef struct {
     GrxEventType type;
-    guint32 keysym;
+    GrxKey keysym;
     gunichar unichar;
     guint32 code;
     GrxDevice *device;
@@ -613,8 +613,8 @@ or <em class="parameter"><code>GRX_EVENT_TYPE_KEY_UP</code></em>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="GrxKeyEvent.keysym"></a>keysym</code></em>;</p></td>
-<td class="struct_member_description"><p>the XKB keysym (translated using keymap)</p></td>
+<td class="struct_member_name"><p><a class="link" href="input_keysyms.html#GrxKey" title="enum GrxKey"><span class="type">GrxKey</span></a> <em class="structfield"><code><a name="GrxKeyEvent.keysym"></a>keysym</code></em>;</p></td>
+<td class="struct_member_description"><p>the key symbol (translated using keymap)</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
