@@ -24,7 +24,7 @@ Build-Depends: debhelper (>= 10),
 Standards-Version: 3.9.8
 Section: libs
 Homepage: https://github.com/ev3dev/grx
-Vcs-Git: git://github.com/ev3dev/grx.git
+Vcs-Git: https://github.com/ev3dev/grx.git
 Vcs-Browser: https://github.com/ev3dev/grx
 
 Package: libgrx-3.0-1
