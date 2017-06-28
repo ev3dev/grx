@@ -203,7 +203,15 @@ set (LIBRARY_SOURCE_FILES
     wideline/drwcpoly.c
 )
 
+if (GRX_DEBUG)
+    list (APPEND LIBRARY_SOURCE_FILES utils/dbgprint.c)
+endif (GRX_DEBUG)
+
+list (SORT LIBRARY_SOURCE_FILES)
+
+
 # Generate glib marshal code
+
 find_package (GLibGenMarshal REQUIRED)
 glib_genmarshal (HEADER_FILE include/marshal.h CODE_FILE marshal.c
     PREFIX _grx_marshal INTERNAL FATAL_WARNINGS
@@ -219,20 +227,6 @@ add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
         ${CMAKE_SOURCE_DIR}/data/unicode/Blocks.txt
         ${CMAKE_SOURCE_DIR}/data/unicode/PropertyValueAliases.txt
 )
-
-if (GRX_DEBUG)
-    list (APPEND LIBRARY_SOURCE_FILES utils/dbgprint.c)
-endif (GRX_DEBUG)
-
-list (SORT LIBRARY_SOURCE_FILES)
-
-# dependencies
-
-find_package (JPEG REQUIRED)
-
-set (PUBLIC_MODULES glib-2.0 gobject-2.0 gio-2.0)
-set (PRIVATE_MODULES gmodule-2.0 libpng freetype2 fontconfig)
-pkg_check_modules (GRX_DEPS REQUIRED ${PUBLIC_MODULES} ${PRIVATE_MODULES})
 
 
 # use xkbcommon-keysyms.h to create our own key symbols enumeration
@@ -264,6 +258,16 @@ list (APPEND _generated_headers
 set_source_files_properties (${LIBRARY_SOURCE_FILES} PROPERTIES
     OBJECT_DEPENDS "${_generated_headers}"
 )
+
+
+# dependencies
+
+find_package (JPEG REQUIRED)
+
+set (PUBLIC_MODULES glib-2.0 gobject-2.0 gio-2.0)
+set (PRIVATE_MODULES gmodule-2.0 libpng freetype2 fontconfig)
+pkg_check_modules (GRX_DEPS REQUIRED ${PUBLIC_MODULES} ${PRIVATE_MODULES})
+
 
 # declare the libraries
 
