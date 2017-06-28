@@ -27,7 +27,7 @@ target_include_directories (grx-calibrate-touch PUBLIC
     ${CMAKE_BINARY_DIR}/src/include
     ${GRX_CALIBRATE_DEPS_INCLUDE_DIRS}
 )
-target_link_libraries (grx-calibrate-touch ${GRX_CALIBRATE_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
+target_link_libraries (grx-calibrate-touch ${GRX_CALIBRATE_DEPS_LIBRARIES} ${SHARED_LIBRARY_TARGET})
 if (CMAKE_CROSSCOMPILING)
     # not sure why we need to do this when cross compiling
     target_link_libraries (grx-calibrate-touch "-pthread" "-lresolv")

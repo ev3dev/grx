@@ -1,4 +1,4 @@
-libgrx-3.0.so.0 libgrx-3.0-0 #MINVER#
+libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  (optional)GrColorInfo@Base 2.99.8
  (optional)GrContextInfo@Base 2.99.8
  (optional)GrDriverInfo@Base 2.99.8

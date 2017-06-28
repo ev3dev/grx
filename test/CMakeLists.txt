@@ -12,7 +12,7 @@ target_include_directories (demogrx PUBLIC
     ${TEST_DEPS_INCLUDE_DIRS}
 )
 target_link_libraries (demogrx
-    ${LIBRARY_NAME}-shared
+    ${SHARED_LIBRARY_TARGET}
     m
     ${TEST_DEPS_LIBRARIES}
 )
@@ -51,7 +51,7 @@ foreach (PROG ${PROGRAMS})
         ${TEST_DEPS_INCLUDE_DIRS}
     )
     target_link_libraries (${PROG}
-        ${SHARED_LIBRARY_NAME}
+        ${SHARED_LIBRARY_TARGET}
         m
         ${TEST_DEPS_LIBRARIES}
     )

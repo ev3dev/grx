@@ -14,7 +14,7 @@ set (LINUXFB_MODULES
 )
 pkg_check_modules (LINUXFB_DEPS REQUIRED ${LINUXFB_MODULES})
 
-add_library (grx_linuxfb SHARED ${LINUXFB_SOURCE_FILES})
+add_library (grx_linuxfb MODULE ${LINUXFB_SOURCE_FILES})
 target_compile_options (grx_linuxfb PUBLIC "-Wall" "-Werror")
 target_include_directories (grx_linuxfb
     PUBLIC
@@ -25,8 +25,10 @@ target_include_directories (grx_linuxfb
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${LINUXFB_DEPS_INCLUDE_DIRS}
 )
-target_link_libraries (grx_linuxfb ${LINUXFB_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
+target_link_libraries (grx_linuxfb ${LINUXFB_DEPS_LIBRARIES} ${SHARED_LIBRARY_TARGET})
 set_target_properties (grx_linuxfb PROPERTIES
-    OUTPUT_NAME ${LIBRARY_NAME}-vdriver-linuxfb
+    OUTPUT_NAME ${PACKAGE_NAME}-vdriver-linuxfb
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
 )
+add_dependencies (plugins grx_linuxfb)
 install (TARGETS grx_linuxfb LIBRARY DESTINATION ${CMAKE_INSTALL_PKGPLUGINDIR})

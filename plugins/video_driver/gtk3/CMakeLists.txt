@@ -11,7 +11,7 @@ set (GTK3_MODULES
 )
 pkg_check_modules (GTK3_DEPS REQUIRED ${GTK3_MODULES})
 
-add_library (grx_gtk3 SHARED ${GTK3_SOURCE_FILES})
+add_library (grx_gtk3 MODULE ${GTK3_SOURCE_FILES})
 target_compile_options (grx_gtk3 PUBLIC "-Wall" "-Werror")
 target_include_directories (grx_gtk3
     PUBLIC
@@ -22,8 +22,10 @@ target_include_directories (grx_gtk3
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${GTK3_DEPS_INCLUDE_DIRS}
 )
-target_link_libraries (grx_gtk3 ${GTK3_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
+target_link_libraries (grx_gtk3 ${GTK3_DEPS_LIBRARIES} ${SHARED_LIBRARY_TARGET})
 set_target_properties (grx_gtk3 PROPERTIES
-    OUTPUT_NAME ${LIBRARY_NAME}-vdriver-gtk3
+    OUTPUT_NAME ${PACKAGE_NAME}-vdriver-gtk3
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
 )
+add_dependencies (plugins grx_gtk3)
 install (TARGETS grx_gtk3 LIBRARY DESTINATION ${CMAKE_INSTALL_PKGPLUGINDIR})

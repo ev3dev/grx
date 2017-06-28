@@ -23,7 +23,7 @@ target_include_directories (vala-life PUBLIC
     ${CMAKE_BINARY_DIR}/src/include
     ${EXAMPLE_DEPS_INCLUDE_DIRS}
 )
-target_link_libraries (vala-life ${EXAMPLE_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
+target_link_libraries (vala-life ${EXAMPLE_DEPS_LIBRARIES} ${SHARED_LIBRARY_TARGET})
 if (CMAKE_CROSSCOMPILING)
     # Cross compiling misses a few automatic dependencies for some reason
     target_link_libraries(vala-life "-pthread" "-lresolv")
@@ -31,4 +31,11 @@ endif (CMAKE_CROSSCOMPILING)
 
 install(TARGETS vala-life DESTINATION ${CMAKE_INSTALL_PKGLIBDIR}/examples/vala)
 
-add_custom_target(run-vala-life DEPENDS vala-life COMMAND vala-life)
+add_custom_target (run-vala-life
+    COMMAND ${CMAKE_COMMAND} -E env
+        GRX_PLUGIN_PATH="${CMAKE_BINARY_DIR}/plugins"
+        "$<TARGET_FILE:vala-life>"
+    DEPENDS
+        vala-life
+        plugins
+)

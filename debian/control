@@ -27,7 +27,7 @@ Homepage: https://github.com/ev3dev/grx
 Vcs-Git: git://github.com/ev3dev/grx.git
 Vcs-Browser: https://github.com/ev3dev/grx
 
-Package: libgrx-3.0-0
+Package: libgrx-3.0-1
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -43,7 +43,7 @@ Package: libgrx-3.0-dev
 Section: libdevel
 Architecture: any
 Multi-Arch: same
-Depends: libgrx-3.0-0 (= ${binary:Version}), gir1.2-grx-3.0, ${misc:Depends},
+Depends: libgrx-3.0-1 (= ${binary:Version}), gir1.2-grx-3.0, ${misc:Depends},
     pkg-config, libglib2.0-dev, libpng-dev, libfontconfig1-dev, libfreetype6-dev
 Description: 2D graphics library
  A simple 2D graphics library similar to the old Borland Graphics Interface
@@ -74,7 +74,7 @@ Package: gir1.2-grx-3.0
 Section: introspection
 Architecture: any
 Multi-Arch: same
-Depends: libgrx-3.0-0 (= ${binary:Version}), ${gir:Depends}, ${misc:Depends}
+Depends: libgrx-3.0-1 (= ${binary:Version}), ${gir:Depends}, ${misc:Depends}
 Description: 2D graphics library
  A simple 2D graphics library similar to the old Borland Graphics Interface
  (BGI).

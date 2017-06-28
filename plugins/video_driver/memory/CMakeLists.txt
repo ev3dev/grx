@@ -8,7 +8,7 @@ set (MEMORY_MODULES
 )
 pkg_check_modules (MEMORY_DEPS REQUIRED ${MEMORY_MODULES})
 
-add_library (grx_memory SHARED ${MEMORY_SOURCE_FILES})
+add_library (grx_memory MODULE ${MEMORY_SOURCE_FILES})
 target_compile_options (grx_memory PUBLIC "-Wall" "-Werror")
 target_include_directories (grx_memory
     PUBLIC
@@ -19,8 +19,10 @@ target_include_directories (grx_memory
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${MEMORY_DEPS_INCLUDE_DIRS}
 )
-target_link_libraries (grx_memory ${MEMORY_DEPS_LIBRARIES} ${SHARED_LIBRARY_NAME})
+target_link_libraries (grx_memory ${MEMORY_DEPS_LIBRARIES} ${SHARED_LIBRARY_TARGET})
 set_target_properties (grx_memory PROPERTIES
-    OUTPUT_NAME ${LIBRARY_NAME}-vdriver-memory
+    OUTPUT_NAME ${PACKAGE_NAME}-vdriver-memory
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
 )
+add_dependencies (plugins grx_memory)
 install (TARGETS grx_memory LIBRARY DESTINATION ${CMAKE_INSTALL_PKGPLUGINDIR})
