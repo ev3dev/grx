@@ -74,7 +74,7 @@ Package: gir1.2-grx-3.0
 Section: introspection
 Architecture: any
 Multi-Arch: same
-Depends: libgrx-3.0-1 (= ${binary:Version}), ${gir:Depends}, ${misc:Depends}
+Depends: ${gir:Depends}, ${misc:Depends}
 Description: 2D graphics library
  A simple 2D graphics library similar to the old Borland Graphics Interface
  (BGI).
