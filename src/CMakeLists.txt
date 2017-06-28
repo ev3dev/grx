@@ -208,8 +208,6 @@ find_package (GLibGenMarshal REQUIRED)
 glib_genmarshal (HEADER_FILE include/marshal.h CODE_FILE marshal.c
     PREFIX _grx_marshal INTERNAL FATAL_WARNINGS
     LIST_FILES marshal.list)
-set_source_files_properties (${LIBRARY_SOURCE_FILES}
-    PROPERTIES OBJECT_DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/include/marshal.h")
 
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
     COMMAND ${CMAKE_SOURCE_DIR}/tools/unicode_codegen.py
@@ -237,20 +235,35 @@ set (PRIVATE_MODULES gmodule-2.0 libpng freetype2 fontconfig)
 pkg_check_modules (GRX_DEPS REQUIRED ${PUBLIC_MODULES} ${PRIVATE_MODULES})
 
 
-# copy and modify xkbcommon-keysyms.h
+# use xkbcommon-keysyms.h to create our own key symbols enumeration
 
 pkg_check_modules (XKB_DEPS REQUIRED xkbcommon)
 find_file (XKBCOMMON_KEYSYMS_H xkbcommon-keysyms.h
     HINTS ${XKB_DEPS_INCLUDE_DIRS}
     PATH_SUFFIXES xkbcommon)
-file (READ ${XKBCOMMON_KEYSYMS_H} GRX_KEYSYMS)
-# better than maintaining a copy of X11 keysyms by hand
-string (REPLACE "XKBCOMMON" "GRX_INPUT" GRX_KEYSYMS ${GRX_KEYSYMS})
-string (REPLACE "XKB" "GRX" GRX_KEYSYMS ${GRX_KEYSYMS})
 set (GRX_KEYSYMS_H ${CMAKE_CURRENT_BINARY_DIR}/include/grx/input_keysyms.h)
-configure_file (${CMAKE_SOURCE_DIR}/include/grx/input_keysyms.h.in ${GRX_KEYSYMS_H})
+add_custom_command (OUTPUT ${GRX_KEYSYMS_H}
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+        ${CMAKE_CURRENT_BINARY_DIR}/include/grx
+    COMMAND ${CMAKE_SOURCE_DIR}/tools/keysyms_codegen.py
+        ${XKBCOMMON_KEYSYMS_H}
+        ${GRX_KEYSYMS_H}
+    DEPENDS
+        ${XKBCOMMON_KEYSYMS_H}
+        ${CMAKE_SOURCE_DIR}/tools/keysyms_codegen.py
+)
 install (FILES ${GRX_KEYSYMS_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/grx)
 
+
+# cmake automatic header dependencies don't seem to be working with generated
+# headers for some reason
+list (APPEND _generated_headers
+    "${CMAKE_CURRENT_BINARY_DIR}/include/marshal.h"
+    "${GRX_KEYSYMS_H}"
+)
+set_source_files_properties (${LIBRARY_SOURCE_FILES} PROPERTIES
+    OBJECT_DEPENDS "${_generated_headers}"
+)
 
 # declare the libraries
 
@@ -354,6 +367,7 @@ add_gir (${GIR_TARGET} ${SHARED_LIBRARY_NAME} ${GIR_NAME} ${GIR_VERSION}
         Gio-2.0
     INCLUDE_DIRS
         ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_BINARY_DIR}/include
     ARGS
         --warn-all
     FILES

@@ -57,25 +57,25 @@ class App(Grx.Application):
             return True
 
         if event.type == Grx.EventType.KEY_DOWN:
-            if event.key.keysym in (Grx.KEY_q, Grx.KEY_BackSpace, Grx.KEY_Escape):
+            if event.key.keysym in (Grx.Key.LCASE_Q, Grx.Key.BACK_SPACE, Grx.Key.ESCAPE):
                 self.quit()
-            elif event.key.keysym in (Grx.KEY_Down, Grx.KEY_m):
+            elif event.key.keysym in (Grx.Key.DOWN, Grx.Key.LCASE_M):
                 if self.next_index != -1:
                     self.show_next_font(0, self.next_index)
-            elif event.key.keysym == Grx.KEY_Up:
+            elif event.key.keysym == Grx.Key.UP:
                 if len(self.prev_index) >= 2 or (len(self.prev_index) == 1 and self.next_index == -1):
                     if self.next_index != -1:
                         self.prev_index.pop()
                     self.show_next_font(0, self.prev_index.pop())
-            elif event.key.keysym == Grx.KEY_Home:
+            elif event.key.keysym == Grx.Key.HOME:
                 self.show_next_font(-len(self.font_files), 0)
-            elif event.key.keysym == Grx.KEY_End:
+            elif event.key.keysym == Grx.Key.END:
                 self.show_next_font(len(self.font_files), 0)
-            elif event.key.keysym == Grx.KEY_Page_Up:
+            elif event.key.keysym == Grx.Key.PAGE_UP:
                 self.show_next_font(-10, 0)
-            elif event.key.keysym == Grx.KEY_Page_Down:
+            elif event.key.keysym == Grx.Key.PAGE_DOWN:
                 self.show_next_font(10, 0)
-            elif event.key.keysym == Grx.KEY_Left:
+            elif event.key.keysym == Grx.Key.LEFT:
                 self.show_next_font(-1, 0)
             else:
                 self.show_next_font(1, 0)

@@ -22,6 +22,7 @@
 
 #include <grx/common.h>
 #include <grx/device.h>
+#include <grx/input_keysyms.h>
 
 /**
  * SECTION:events
@@ -90,7 +91,7 @@ typedef struct {
 /**
  * GrxKeyEvent:
  * @type: @GRX_EVENT_TYPE_KEY_DOWN or @GRX_EVENT_TYPE_KEY_UP
- * @keysym: the XKB keysym (translated using keymap)
+ * @keysym: the key symbol (translated using keymap)
  * @unichar: the UTF-32 character
  * @code: the platform dependent raw key code
  * @device: the originating device
@@ -99,7 +100,7 @@ typedef struct {
  */
 typedef struct {
     GrxEventType type;
-    guint32 keysym;
+    GrxKey keysym;
     gunichar unichar;
     guint32 code;
     GrxDevice *device;

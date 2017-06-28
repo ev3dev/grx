@@ -1115,2279 +1115,6 @@ namespace Grx {
     /*                              INPUT                                 */
     /* ================================================================== */
 
-    namespace Key {
-        public const int @0;
-        public const int @1;
-        public const int @2;
-        public const int @3;
-        public const int @3270_AltCursor;
-        public const int @3270_Attn;
-        public const int @3270_BackTab;
-        public const int @3270_ChangeScreen;
-        public const int @3270_Copy;
-        public const int @3270_CursorBlink;
-        public const int @3270_CursorSelect;
-        public const int @3270_DeleteWord;
-        public const int @3270_Duplicate;
-        public const int @3270_Enter;
-        public const int @3270_EraseEOF;
-        public const int @3270_EraseInput;
-        public const int @3270_ExSelect;
-        public const int @3270_FieldMark;
-        public const int @3270_Ident;
-        public const int @3270_Jump;
-        public const int @3270_KeyClick;
-        public const int @3270_Left2;
-        public const int @3270_PA1;
-        public const int @3270_PA2;
-        public const int @3270_PA3;
-        public const int @3270_Play;
-        public const int @3270_PrintScreen;
-        public const int @3270_Quit;
-        public const int @3270_Record;
-        public const int @3270_Reset;
-        public const int @3270_Right2;
-        public const int @3270_Rule;
-        public const int @3270_Setup;
-        public const int @3270_Test;
-        public const int @4;
-        public const int @5;
-        public const int @6;
-        public const int @7;
-        public const int @8;
-        public const int @9;
-        public const int A;
-        public const int AE;
-        public const int Aacute;
-        public const int Abelowdot;
-        public const int Abreve;
-        public const int Abreveacute;
-        public const int Abrevebelowdot;
-        public const int Abrevegrave;
-        public const int Abrevehook;
-        public const int Abrevetilde;
-        public const int AccessX_Enable;
-        public const int AccessX_Feedback_Enable;
-        public const int Acircumflex;
-        public const int Acircumflexacute;
-        public const int Acircumflexbelowdot;
-        public const int Acircumflexgrave;
-        public const int Acircumflexhook;
-        public const int Acircumflextilde;
-        public const int AddFavorite;
-        public const int Adiaeresis;
-        public const int Agrave;
-        public const int Ahook;
-        public const int Alt_L;
-        public const int Alt_R;
-        public const int Amacron;
-        public const int Aogonek;
-        public const int ApplicationLeft;
-        public const int ApplicationRight;
-        public const int Arabic_0;
-        public const int Arabic_1;
-        public const int Arabic_2;
-        public const int Arabic_3;
-        public const int Arabic_4;
-        public const int Arabic_5;
-        public const int Arabic_6;
-        public const int Arabic_7;
-        public const int Arabic_8;
-        public const int Arabic_9;
-        public const int Arabic_ain;
-        public const int Arabic_alef;
-        public const int Arabic_alefmaksura;
-        public const int Arabic_beh;
-        public const int Arabic_comma;
-        public const int Arabic_dad;
-        public const int Arabic_dal;
-        public const int Arabic_damma;
-        public const int Arabic_dammatan;
-        public const int Arabic_ddal;
-        public const int Arabic_farsi_yeh;
-        public const int Arabic_fatha;
-        public const int Arabic_fathatan;
-        public const int Arabic_feh;
-        public const int Arabic_fullstop;
-        public const int Arabic_gaf;
-        public const int Arabic_ghain;
-        public const int Arabic_ha;
-        public const int Arabic_hah;
-        public const int Arabic_hamza;
-        public const int Arabic_hamza_above;
-        public const int Arabic_hamza_below;
-        public const int Arabic_hamzaonalef;
-        public const int Arabic_hamzaonwaw;
-        public const int Arabic_hamzaonyeh;
-        public const int Arabic_hamzaunderalef;
-        public const int Arabic_heh;
-        public const int Arabic_heh_doachashmee;
-        public const int Arabic_heh_goal;
-        public const int Arabic_jeem;
-        public const int Arabic_jeh;
-        public const int Arabic_kaf;
-        public const int Arabic_kasra;
-        public const int Arabic_kasratan;
-        public const int Arabic_keheh;
-        public const int Arabic_khah;
-        public const int Arabic_lam;
-        public const int Arabic_madda_above;
-        public const int Arabic_maddaonalef;
-        public const int Arabic_meem;
-        public const int Arabic_noon;
-        public const int Arabic_noon_ghunna;
-        public const int Arabic_peh;
-        public const int Arabic_percent;
-        public const int Arabic_qaf;
-        public const int Arabic_question_mark;
-        public const int Arabic_ra;
-        public const int Arabic_rreh;
-        public const int Arabic_sad;
-        public const int Arabic_seen;
-        public const int Arabic_semicolon;
-        public const int Arabic_shadda;
-        public const int Arabic_sheen;
-        public const int Arabic_sukun;
-        public const int Arabic_superscript_alef;
-        public const int Arabic_switch;
-        public const int Arabic_tah;
-        public const int Arabic_tatweel;
-        public const int Arabic_tcheh;
-        public const int Arabic_teh;
-        public const int Arabic_tehmarbuta;
-        public const int Arabic_thal;
-        public const int Arabic_theh;
-        public const int Arabic_tteh;
-        public const int Arabic_veh;
-        public const int Arabic_waw;
-        public const int Arabic_yeh;
-        public const int Arabic_yeh_baree;
-        public const int Arabic_zah;
-        public const int Arabic_zain;
-        public const int Aring;
-        public const int Armenian_AT;
-        public const int Armenian_AYB;
-        public const int Armenian_BEN;
-        public const int Armenian_CHA;
-        public const int Armenian_DA;
-        public const int Armenian_DZA;
-        public const int Armenian_E;
-        public const int Armenian_FE;
-        public const int Armenian_GHAT;
-        public const int Armenian_GIM;
-        public const int Armenian_HI;
-        public const int Armenian_HO;
-        public const int Armenian_INI;
-        public const int Armenian_JE;
-        public const int Armenian_KE;
-        public const int Armenian_KEN;
-        public const int Armenian_KHE;
-        public const int Armenian_LYUN;
-        public const int Armenian_MEN;
-        public const int Armenian_NU;
-        public const int Armenian_O;
-        public const int Armenian_PE;
-        public const int Armenian_PYUR;
-        public const int Armenian_RA;
-        public const int Armenian_RE;
-        public const int Armenian_SE;
-        public const int Armenian_SHA;
-        public const int Armenian_TCHE;
-        public const int Armenian_TO;
-        public const int Armenian_TSA;
-        public const int Armenian_TSO;
-        public const int Armenian_TYUN;
-        public const int Armenian_VEV;
-        public const int Armenian_VO;
-        public const int Armenian_VYUN;
-        public const int Armenian_YECH;
-        public const int Armenian_ZA;
-        public const int Armenian_ZHE;
-        public const int Armenian_accent;
-        public const int Armenian_amanak;
-        public const int Armenian_apostrophe;
-        public const int Armenian_at;
-        public const int Armenian_ayb;
-        public const int Armenian_ben;
-        public const int Armenian_but;
-        public const int Armenian_cha;
-        public const int Armenian_da;
-        public const int Armenian_dza;
-        public const int Armenian_e;
-        public const int Armenian_exclam;
-        public const int Armenian_fe;
-        public const int Armenian_full_stop;
-        public const int Armenian_ghat;
-        public const int Armenian_gim;
-        public const int Armenian_hi;
-        public const int Armenian_ho;
-        public const int Armenian_hyphen;
-        public const int Armenian_ini;
-        public const int Armenian_je;
-        public const int Armenian_ke;
-        public const int Armenian_ken;
-        public const int Armenian_khe;
-        public const int Armenian_ligature_ew;
-        public const int Armenian_lyun;
-        public const int Armenian_men;
-        public const int Armenian_nu;
-        public const int Armenian_o;
-        public const int Armenian_paruyk;
-        public const int Armenian_pe;
-        public const int Armenian_pyur;
-        public const int Armenian_question;
-        public const int Armenian_ra;
-        public const int Armenian_re;
-        public const int Armenian_se;
-        public const int Armenian_separation_mark;
-        public const int Armenian_sha;
-        public const int Armenian_shesht;
-        public const int Armenian_tche;
-        public const int Armenian_to;
-        public const int Armenian_tsa;
-        public const int Armenian_tso;
-        public const int Armenian_tyun;
-        public const int Armenian_verjaket;
-        public const int Armenian_vev;
-        public const int Armenian_vo;
-        public const int Armenian_vyun;
-        public const int Armenian_yech;
-        public const int Armenian_yentamna;
-        public const int Armenian_za;
-        public const int Armenian_zhe;
-        public const int Atilde;
-        public const int AudibleBell_Enable;
-        public const int AudioCycleTrack;
-        public const int AudioForward;
-        public const int AudioLowerVolume;
-        public const int AudioMedia;
-        public const int AudioMicMute;
-        public const int AudioMute;
-        public const int AudioNext;
-        public const int AudioPause;
-        public const int AudioPlay;
-        public const int AudioPrev;
-        public const int AudioRaiseVolume;
-        public const int AudioRandomPlay;
-        public const int AudioRecord;
-        public const int AudioRepeat;
-        public const int AudioRewind;
-        public const int AudioStop;
-        public const int Away;
-        public const int B;
-        public const int Babovedot;
-        public const int Back;
-        public const int BackForward;
-        public const int BackSpace;
-        public const int Battery;
-        public const int Begin;
-        public const int Blue;
-        public const int Bluetooth;
-        public const int Book;
-        public const int BounceKeys_Enable;
-        public const int Break;
-        public const int BrightnessAdjust;
-        public const int Byelorussian_SHORTU;
-        public const int Byelorussian_shortu;
-        public const int C;
-        public const int CD;
-        public const int CH;
-        public const int C_H;
-        public const int C_h;
-        public const int Cabovedot;
-        public const int Cacute;
-        public const int Calculator;
-        public const int Calendar;
-        public const int Cancel;
-        public const int Caps_Lock;
-        public const int Ccaron;
-        public const int Ccedilla;
-        public const int Ccircumflex;
-        public const int Ch;
-        public const int Clear;
-        public const int ClearGrab;
-        public const int Close;
-        public const int Codeinput;
-        public const int ColonSign;
-        public const int Community;
-        public const int ContrastAdjust;
-        public const int Control_L;
-        public const int Control_R;
-        public const int Copy;
-        public const int CruzeiroSign;
-        public const int Cut;
-        public const int CycleAngle;
-        public const int Cyrillic_A;
-        public const int Cyrillic_BE;
-        public const int Cyrillic_CHE;
-        public const int Cyrillic_CHE_descender;
-        public const int Cyrillic_CHE_vertstroke;
-        public const int Cyrillic_DE;
-        public const int Cyrillic_DZHE;
-        public const int Cyrillic_E;
-        public const int Cyrillic_EF;
-        public const int Cyrillic_EL;
-        public const int Cyrillic_EM;
-        public const int Cyrillic_EN;
-        public const int Cyrillic_EN_descender;
-        public const int Cyrillic_ER;
-        public const int Cyrillic_ES;
-        public const int Cyrillic_GHE;
-        public const int Cyrillic_GHE_bar;
-        public const int Cyrillic_HA;
-        public const int Cyrillic_HARDSIGN;
-        public const int Cyrillic_HA_descender;
-        public const int Cyrillic_I;
-        public const int Cyrillic_IE;
-        public const int Cyrillic_IO;
-        public const int Cyrillic_I_macron;
-        public const int Cyrillic_JE;
-        public const int Cyrillic_KA;
-        public const int Cyrillic_KA_descender;
-        public const int Cyrillic_KA_vertstroke;
-        public const int Cyrillic_LJE;
-        public const int Cyrillic_NJE;
-        public const int Cyrillic_O;
-        public const int Cyrillic_O_bar;
-        public const int Cyrillic_PE;
-        public const int Cyrillic_SCHWA;
-        public const int Cyrillic_SHA;
-        public const int Cyrillic_SHCHA;
-        public const int Cyrillic_SHHA;
-        public const int Cyrillic_SHORTI;
-        public const int Cyrillic_SOFTSIGN;
-        public const int Cyrillic_TE;
-        public const int Cyrillic_TSE;
-        public const int Cyrillic_U;
-        public const int Cyrillic_U_macron;
-        public const int Cyrillic_U_straight;
-        public const int Cyrillic_U_straight_bar;
-        public const int Cyrillic_VE;
-        public const int Cyrillic_YA;
-        public const int Cyrillic_YERU;
-        public const int Cyrillic_YU;
-        public const int Cyrillic_ZE;
-        public const int Cyrillic_ZHE;
-        public const int Cyrillic_ZHE_descender;
-        public const int Cyrillic_a;
-        public const int Cyrillic_be;
-        public const int Cyrillic_che;
-        public const int Cyrillic_che_descender;
-        public const int Cyrillic_che_vertstroke;
-        public const int Cyrillic_de;
-        public const int Cyrillic_dzhe;
-        public const int Cyrillic_e;
-        public const int Cyrillic_ef;
-        public const int Cyrillic_el;
-        public const int Cyrillic_em;
-        public const int Cyrillic_en;
-        public const int Cyrillic_en_descender;
-        public const int Cyrillic_er;
-        public const int Cyrillic_es;
-        public const int Cyrillic_ghe;
-        public const int Cyrillic_ghe_bar;
-        public const int Cyrillic_ha;
-        public const int Cyrillic_ha_descender;
-        public const int Cyrillic_hardsign;
-        public const int Cyrillic_i;
-        public const int Cyrillic_i_macron;
-        public const int Cyrillic_ie;
-        public const int Cyrillic_io;
-        public const int Cyrillic_je;
-        public const int Cyrillic_ka;
-        public const int Cyrillic_ka_descender;
-        public const int Cyrillic_ka_vertstroke;
-        public const int Cyrillic_lje;
-        public const int Cyrillic_nje;
-        public const int Cyrillic_o;
-        public const int Cyrillic_o_bar;
-        public const int Cyrillic_pe;
-        public const int Cyrillic_schwa;
-        public const int Cyrillic_sha;
-        public const int Cyrillic_shcha;
-        public const int Cyrillic_shha;
-        public const int Cyrillic_shorti;
-        public const int Cyrillic_softsign;
-        public const int Cyrillic_te;
-        public const int Cyrillic_tse;
-        public const int Cyrillic_u;
-        public const int Cyrillic_u_macron;
-        public const int Cyrillic_u_straight;
-        public const int Cyrillic_u_straight_bar;
-        public const int Cyrillic_ve;
-        public const int Cyrillic_ya;
-        public const int Cyrillic_yeru;
-        public const int Cyrillic_yu;
-        public const int Cyrillic_ze;
-        public const int Cyrillic_zhe;
-        public const int Cyrillic_zhe_descender;
-        public const int D;
-        public const int DOS;
-        public const int Dabovedot;
-        public const int Dcaron;
-        public const int Delete;
-        public const int Display;
-        public const int Documents;
-        public const int DongSign;
-        public const int Down;
-        public const int Dstroke;
-        public const int E;
-        public const int ENG;
-        public const int ETH;
-        public const int EZH;
-        public const int Eabovedot;
-        public const int Eacute;
-        public const int Ebelowdot;
-        public const int Ecaron;
-        public const int Ecircumflex;
-        public const int Ecircumflexacute;
-        public const int Ecircumflexbelowdot;
-        public const int Ecircumflexgrave;
-        public const int Ecircumflexhook;
-        public const int Ecircumflextilde;
-        public const int EcuSign;
-        public const int Ediaeresis;
-        public const int Egrave;
-        public const int Ehook;
-        public const int Eisu_Shift;
-        public const int Eisu_toggle;
-        public const int Eject;
-        public const int Emacron;
-        public const int End;
-        public const int Eogonek;
-        public const int Escape;
-        public const int Eth;
-        public const int Etilde;
-        public const int EuroSign;
-        public const int Excel;
-        public const int Execute;
-        public const int Explorer;
-        public const int F;
-        public const int F1;
-        public const int F10;
-        public const int F11;
-        public const int F12;
-        public const int F13;
-        public const int F14;
-        public const int F15;
-        public const int F16;
-        public const int F17;
-        public const int F18;
-        public const int F19;
-        public const int F2;
-        public const int F20;
-        public const int F21;
-        public const int F22;
-        public const int F23;
-        public const int F24;
-        public const int F25;
-        public const int F26;
-        public const int F27;
-        public const int F28;
-        public const int F29;
-        public const int F3;
-        public const int F30;
-        public const int F31;
-        public const int F32;
-        public const int F33;
-        public const int F34;
-        public const int F35;
-        public const int F4;
-        public const int F5;
-        public const int F6;
-        public const int F7;
-        public const int F8;
-        public const int F9;
-        public const int FFrancSign;
-        public const int Fabovedot;
-        public const int Farsi_0;
-        public const int Farsi_1;
-        public const int Farsi_2;
-        public const int Farsi_3;
-        public const int Farsi_4;
-        public const int Farsi_5;
-        public const int Farsi_6;
-        public const int Farsi_7;
-        public const int Farsi_8;
-        public const int Farsi_9;
-        public const int Farsi_yeh;
-        public const int Favorites;
-        public const int Finance;
-        public const int Find;
-        public const int First_Virtual_Screen;
-        public const int Forward;
-        public const int FrameBack;
-        public const int FrameForward;
-        public const int G;
-        public const int Gabovedot;
-        public const int Game;
-        public const int Gbreve;
-        public const int Gcaron;
-        public const int Gcedilla;
-        public const int Gcircumflex;
-        public const int Georgian_an;
-        public const int Georgian_ban;
-        public const int Georgian_can;
-        public const int Georgian_char;
-        public const int Georgian_chin;
-        public const int Georgian_cil;
-        public const int Georgian_don;
-        public const int Georgian_en;
-        public const int Georgian_fi;
-        public const int Georgian_gan;
-        public const int Georgian_ghan;
-        public const int Georgian_hae;
-        public const int Georgian_har;
-        public const int Georgian_he;
-        public const int Georgian_hie;
-        public const int Georgian_hoe;
-        public const int Georgian_in;
-        public const int Georgian_jhan;
-        public const int Georgian_jil;
-        public const int Georgian_kan;
-        public const int Georgian_khar;
-        public const int Georgian_las;
-        public const int Georgian_man;
-        public const int Georgian_nar;
-        public const int Georgian_on;
-        public const int Georgian_par;
-        public const int Georgian_phar;
-        public const int Georgian_qar;
-        public const int Georgian_rae;
-        public const int Georgian_san;
-        public const int Georgian_shin;
-        public const int Georgian_tan;
-        public const int Georgian_tar;
-        public const int Georgian_un;
-        public const int Georgian_vin;
-        public const int Georgian_we;
-        public const int Georgian_xan;
-        public const int Georgian_zen;
-        public const int Georgian_zhar;
-        public const int Go;
-        public const int Greek_ALPHA;
-        public const int Greek_ALPHAaccent;
-        public const int Greek_BETA;
-        public const int Greek_CHI;
-        public const int Greek_DELTA;
-        public const int Greek_EPSILON;
-        public const int Greek_EPSILONaccent;
-        public const int Greek_ETA;
-        public const int Greek_ETAaccent;
-        public const int Greek_GAMMA;
-        public const int Greek_IOTA;
-        public const int Greek_IOTAaccent;
-        public const int Greek_IOTAdiaeresis;
-        public const int Greek_IOTAdieresis;
-        public const int Greek_KAPPA;
-        public const int Greek_LAMBDA;
-        public const int Greek_LAMDA;
-        public const int Greek_MU;
-        public const int Greek_NU;
-        public const int Greek_OMEGA;
-        public const int Greek_OMEGAaccent;
-        public const int Greek_OMICRON;
-        public const int Greek_OMICRONaccent;
-        public const int Greek_PHI;
-        public const int Greek_PI;
-        public const int Greek_PSI;
-        public const int Greek_RHO;
-        public const int Greek_SIGMA;
-        public const int Greek_TAU;
-        public const int Greek_THETA;
-        public const int Greek_UPSILON;
-        public const int Greek_UPSILONaccent;
-        public const int Greek_UPSILONdieresis;
-        public const int Greek_XI;
-        public const int Greek_ZETA;
-        public const int Greek_accentdieresis;
-        public const int Greek_alpha;
-        public const int Greek_alphaaccent;
-        public const int Greek_beta;
-        public const int Greek_chi;
-        public const int Greek_delta;
-        public const int Greek_epsilon;
-        public const int Greek_epsilonaccent;
-        public const int Greek_eta;
-        public const int Greek_etaaccent;
-        public const int Greek_finalsmallsigma;
-        public const int Greek_gamma;
-        public const int Greek_horizbar;
-        public const int Greek_iota;
-        public const int Greek_iotaaccent;
-        public const int Greek_iotaaccentdieresis;
-        public const int Greek_iotadieresis;
-        public const int Greek_kappa;
-        public const int Greek_lambda;
-        public const int Greek_lamda;
-        public const int Greek_mu;
-        public const int Greek_nu;
-        public const int Greek_omega;
-        public const int Greek_omegaaccent;
-        public const int Greek_omicron;
-        public const int Greek_omicronaccent;
-        public const int Greek_phi;
-        public const int Greek_pi;
-        public const int Greek_psi;
-        public const int Greek_rho;
-        public const int Greek_sigma;
-        public const int Greek_switch;
-        public const int Greek_tau;
-        public const int Greek_theta;
-        public const int Greek_upsilon;
-        public const int Greek_upsilonaccent;
-        public const int Greek_upsilonaccentdieresis;
-        public const int Greek_upsilondieresis;
-        public const int Greek_xi;
-        public const int Greek_zeta;
-        public const int Green;
-        public const int H;
-        public const int Hangul;
-        public const int Hangul_A;
-        public const int Hangul_AE;
-        public const int Hangul_AraeA;
-        public const int Hangul_AraeAE;
-        public const int Hangul_Banja;
-        public const int Hangul_Cieuc;
-        public const int Hangul_Codeinput;
-        public const int Hangul_Dikeud;
-        public const int Hangul_E;
-        public const int Hangul_EO;
-        public const int Hangul_EU;
-        public const int Hangul_End;
-        public const int Hangul_Hanja;
-        public const int Hangul_Hieuh;
-        public const int Hangul_I;
-        public const int Hangul_Ieung;
-        public const int Hangul_J_Cieuc;
-        public const int Hangul_J_Dikeud;
-        public const int Hangul_J_Hieuh;
-        public const int Hangul_J_Ieung;
-        public const int Hangul_J_Jieuj;
-        public const int Hangul_J_Khieuq;
-        public const int Hangul_J_Kiyeog;
-        public const int Hangul_J_KiyeogSios;
-        public const int Hangul_J_KkogjiDalrinIeung;
-        public const int Hangul_J_Mieum;
-        public const int Hangul_J_Nieun;
-        public const int Hangul_J_NieunHieuh;
-        public const int Hangul_J_NieunJieuj;
-        public const int Hangul_J_PanSios;
-        public const int Hangul_J_Phieuf;
-        public const int Hangul_J_Pieub;
-        public const int Hangul_J_PieubSios;
-        public const int Hangul_J_Rieul;
-        public const int Hangul_J_RieulHieuh;
-        public const int Hangul_J_RieulKiyeog;
-        public const int Hangul_J_RieulMieum;
-        public const int Hangul_J_RieulPhieuf;
-        public const int Hangul_J_RieulPieub;
-        public const int Hangul_J_RieulSios;
-        public const int Hangul_J_RieulTieut;
-        public const int Hangul_J_Sios;
-        public const int Hangul_J_SsangKiyeog;
-        public const int Hangul_J_SsangSios;
-        public const int Hangul_J_Tieut;
-        public const int Hangul_J_YeorinHieuh;
-        public const int Hangul_Jamo;
-        public const int Hangul_Jeonja;
-        public const int Hangul_Jieuj;
-        public const int Hangul_Khieuq;
-        public const int Hangul_Kiyeog;
-        public const int Hangul_KiyeogSios;
-        public const int Hangul_KkogjiDalrinIeung;
-        public const int Hangul_Mieum;
-        public const int Hangul_MultipleCandidate;
-        public const int Hangul_Nieun;
-        public const int Hangul_NieunHieuh;
-        public const int Hangul_NieunJieuj;
-        public const int Hangul_O;
-        public const int Hangul_OE;
-        public const int Hangul_PanSios;
-        public const int Hangul_Phieuf;
-        public const int Hangul_Pieub;
-        public const int Hangul_PieubSios;
-        public const int Hangul_PostHanja;
-        public const int Hangul_PreHanja;
-        public const int Hangul_PreviousCandidate;
-        public const int Hangul_Rieul;
-        public const int Hangul_RieulHieuh;
-        public const int Hangul_RieulKiyeog;
-        public const int Hangul_RieulMieum;
-        public const int Hangul_RieulPhieuf;
-        public const int Hangul_RieulPieub;
-        public const int Hangul_RieulSios;
-        public const int Hangul_RieulTieut;
-        public const int Hangul_RieulYeorinHieuh;
-        public const int Hangul_Romaja;
-        public const int Hangul_SingleCandidate;
-        public const int Hangul_Sios;
-        public const int Hangul_Special;
-        public const int Hangul_SsangDikeud;
-        public const int Hangul_SsangJieuj;
-        public const int Hangul_SsangKiyeog;
-        public const int Hangul_SsangPieub;
-        public const int Hangul_SsangSios;
-        public const int Hangul_Start;
-        public const int Hangul_SunkyeongeumMieum;
-        public const int Hangul_SunkyeongeumPhieuf;
-        public const int Hangul_SunkyeongeumPieub;
-        public const int Hangul_Tieut;
-        public const int Hangul_U;
-        public const int Hangul_WA;
-        public const int Hangul_WAE;
-        public const int Hangul_WE;
-        public const int Hangul_WEO;
-        public const int Hangul_WI;
-        public const int Hangul_YA;
-        public const int Hangul_YAE;
-        public const int Hangul_YE;
-        public const int Hangul_YEO;
-        public const int Hangul_YI;
-        public const int Hangul_YO;
-        public const int Hangul_YU;
-        public const int Hangul_YeorinHieuh;
-        public const int Hangul_switch;
-        public const int Hankaku;
-        public const int Hcircumflex;
-        public const int Hebrew_switch;
-        public const int Help;
-        public const int Henkan;
-        public const int Henkan_Mode;
-        public const int Hibernate;
-        public const int Hiragana;
-        public const int Hiragana_Katakana;
-        public const int History;
-        public const int Home;
-        public const int HomePage;
-        public const int HotLinks;
-        public const int Hstroke;
-        public const int Hyper_L;
-        public const int Hyper_R;
-        public const int I;
-        public const int ISO_Center_Object;
-        public const int ISO_Continuous_Underline;
-        public const int ISO_Discontinuous_Underline;
-        public const int ISO_Emphasize;
-        public const int ISO_Enter;
-        public const int ISO_Fast_Cursor_Down;
-        public const int ISO_Fast_Cursor_Left;
-        public const int ISO_Fast_Cursor_Right;
-        public const int ISO_Fast_Cursor_Up;
-        public const int ISO_First_Group;
-        public const int ISO_First_Group_Lock;
-        public const int ISO_Group_Latch;
-        public const int ISO_Group_Lock;
-        public const int ISO_Group_Shift;
-        public const int ISO_Last_Group;
-        public const int ISO_Last_Group_Lock;
-        public const int ISO_Left_Tab;
-        public const int ISO_Level2_Latch;
-        public const int ISO_Level3_Latch;
-        public const int ISO_Level3_Lock;
-        public const int ISO_Level3_Shift;
-        public const int ISO_Level5_Latch;
-        public const int ISO_Level5_Lock;
-        public const int ISO_Level5_Shift;
-        public const int ISO_Lock;
-        public const int ISO_Move_Line_Down;
-        public const int ISO_Move_Line_Up;
-        public const int ISO_Next_Group;
-        public const int ISO_Next_Group_Lock;
-        public const int ISO_Partial_Line_Down;
-        public const int ISO_Partial_Line_Up;
-        public const int ISO_Partial_Space_Left;
-        public const int ISO_Partial_Space_Right;
-        public const int ISO_Prev_Group;
-        public const int ISO_Prev_Group_Lock;
-        public const int ISO_Release_Both_Margins;
-        public const int ISO_Release_Margin_Left;
-        public const int ISO_Release_Margin_Right;
-        public const int ISO_Set_Margin_Left;
-        public const int ISO_Set_Margin_Right;
-        public const int Iabovedot;
-        public const int Iacute;
-        public const int Ibelowdot;
-        public const int Ibreve;
-        public const int Icircumflex;
-        public const int Idiaeresis;
-        public const int Igrave;
-        public const int Ihook;
-        public const int Imacron;
-        public const int Insert;
-        public const int Iogonek;
-        public const int Itilde;
-        public const int J;
-        public const int Jcircumflex;
-        public const int K;
-        public const int KP_0;
-        public const int KP_1;
-        public const int KP_2;
-        public const int KP_3;
-        public const int KP_4;
-        public const int KP_5;
-        public const int KP_6;
-        public const int KP_7;
-        public const int KP_8;
-        public const int KP_9;
-        public const int KP_Add;
-        public const int KP_Begin;
-        public const int KP_Decimal;
-        public const int KP_Delete;
-        public const int KP_Divide;
-        public const int KP_Down;
-        public const int KP_End;
-        public const int KP_Enter;
-        public const int KP_Equal;
-        public const int KP_F1;
-        public const int KP_F2;
-        public const int KP_F3;
-        public const int KP_F4;
-        public const int KP_Home;
-        public const int KP_Insert;
-        public const int KP_Left;
-        public const int KP_Multiply;
-        public const int KP_Next;
-        public const int KP_Page_Down;
-        public const int KP_Page_Up;
-        public const int KP_Prior;
-        public const int KP_Right;
-        public const int KP_Separator;
-        public const int KP_Space;
-        public const int KP_Subtract;
-        public const int KP_Tab;
-        public const int KP_Up;
-        public const int Kana_Lock;
-        public const int Kana_Shift;
-        public const int Kanji;
-        public const int Kanji_Bangou;
-        public const int Katakana;
-        public const int KbdBrightnessDown;
-        public const int KbdBrightnessUp;
-        public const int KbdLightOnOff;
-        public const int Kcedilla;
-        public const int Korean_Won;
-        public const int L;
-        public const int L1;
-        public const int L10;
-        public const int L2;
-        public const int L3;
-        public const int L4;
-        public const int L5;
-        public const int L6;
-        public const int L7;
-        public const int L8;
-        public const int L9;
-        public const int Lacute;
-        public const int Last_Virtual_Screen;
-        public const int Launch0;
-        public const int Launch1;
-        public const int Launch2;
-        public const int Launch3;
-        public const int Launch4;
-        public const int Launch5;
-        public const int Launch6;
-        public const int Launch7;
-        public const int Launch8;
-        public const int Launch9;
-        public const int LaunchA;
-        public const int LaunchB;
-        public const int LaunchC;
-        public const int LaunchD;
-        public const int LaunchE;
-        public const int LaunchF;
-        public const int Lbelowdot;
-        public const int Lcaron;
-        public const int Lcedilla;
-        public const int Left;
-        public const int LightBulb;
-        public const int Linefeed;
-        public const int LiraSign;
-        public const int LogGrabInfo;
-        public const int LogOff;
-        public const int LogWindowTree;
-        public const int Lstroke;
-        public const int M;
-        public const int Mabovedot;
-        public const int Macedonia_DSE;
-        public const int Macedonia_GJE;
-        public const int Macedonia_KJE;
-        public const int Macedonia_dse;
-        public const int Macedonia_gje;
-        public const int Macedonia_kje;
-        public const int Mae_Koho;
-        public const int Mail;
-        public const int MailForward;
-        public const int Market;
-        public const int Massyo;
-        public const int Meeting;
-        public const int Memo;
-        public const int Menu;
-        public const int MenuKB;
-        public const int MenuPB;
-        public const int Messenger;
-        public const int Meta_L;
-        public const int Meta_R;
-        public const int MillSign;
-        public const int ModeLock;
-        public const int Mode_switch;
-        public const int MonBrightnessDown;
-        public const int MonBrightnessUp;
-        public const int MouseKeys_Accel_Enable;
-        public const int MouseKeys_Enable;
-        public const int Muhenkan;
-        public const int Multi_key;
-        public const int MultipleCandidate;
-        public const int Music;
-        public const int MyComputer;
-        public const int MySites;
-        public const int N;
-        public const int Nacute;
-        public const int NairaSign;
-        public const int Ncaron;
-        public const int Ncedilla;
-        public const int New;
-        public const int NewSheqelSign;
-        public const int News;
-        public const int Next;
-        public const int Next_VMode;
-        public const int Next_Virtual_Screen;
-        public const int Ntilde;
-        public const int Num_Lock;
-        public const int O;
-        public const int OE;
-        public const int Oacute;
-        public const int Obarred;
-        public const int Obelowdot;
-        public const int Ocaron;
-        public const int Ocircumflex;
-        public const int Ocircumflexacute;
-        public const int Ocircumflexbelowdot;
-        public const int Ocircumflexgrave;
-        public const int Ocircumflexhook;
-        public const int Ocircumflextilde;
-        public const int Odiaeresis;
-        public const int Odoubleacute;
-        public const int OfficeHome;
-        public const int Ograve;
-        public const int Ohook;
-        public const int Ohorn;
-        public const int Ohornacute;
-        public const int Ohornbelowdot;
-        public const int Ohorngrave;
-        public const int Ohornhook;
-        public const int Ohorntilde;
-        public const int Omacron;
-        public const int Ooblique;
-        public const int Open;
-        public const int OpenURL;
-        public const int Option;
-        public const int Oslash;
-        public const int Otilde;
-        public const int Overlay1_Enable;
-        public const int Overlay2_Enable;
-        public const int P;
-        public const int Pabovedot;
-        public const int Page_Down;
-        public const int Page_Up;
-        public const int Paste;
-        public const int Pause;
-        public const int PesetaSign;
-        public const int Phone;
-        public const int Pictures;
-        public const int Pointer_Accelerate;
-        public const int Pointer_Button1;
-        public const int Pointer_Button2;
-        public const int Pointer_Button3;
-        public const int Pointer_Button4;
-        public const int Pointer_Button5;
-        public const int Pointer_Button_Dflt;
-        public const int Pointer_DblClick1;
-        public const int Pointer_DblClick2;
-        public const int Pointer_DblClick3;
-        public const int Pointer_DblClick4;
-        public const int Pointer_DblClick5;
-        public const int Pointer_DblClick_Dflt;
-        public const int Pointer_DfltBtnNext;
-        public const int Pointer_DfltBtnPrev;
-        public const int Pointer_Down;
-        public const int Pointer_DownLeft;
-        public const int Pointer_DownRight;
-        public const int Pointer_Drag1;
-        public const int Pointer_Drag2;
-        public const int Pointer_Drag3;
-        public const int Pointer_Drag4;
-        public const int Pointer_Drag5;
-        public const int Pointer_Drag_Dflt;
-        public const int Pointer_EnableKeys;
-        public const int Pointer_Left;
-        public const int Pointer_Right;
-        public const int Pointer_Up;
-        public const int Pointer_UpLeft;
-        public const int Pointer_UpRight;
-        public const int PowerDown;
-        public const int PowerOff;
-        public const int Prev_VMode;
-        public const int Prev_Virtual_Screen;
-        public const int PreviousCandidate;
-        public const int Print;
-        public const int Prior;
-        public const int Q;
-        public const int R;
-        public const int R1;
-        public const int R10;
-        public const int R11;
-        public const int R12;
-        public const int R13;
-        public const int R14;
-        public const int R15;
-        public const int R2;
-        public const int R3;
-        public const int R4;
-        public const int R5;
-        public const int R6;
-        public const int R7;
-        public const int R8;
-        public const int R9;
-        public const int Racute;
-        public const int Rcaron;
-        public const int Rcedilla;
-        public const int Red;
-        public const int Redo;
-        public const int Refresh;
-        public const int Reload;
-        public const int RepeatKeys_Enable;
-        public const int Reply;
-        public const int Return;
-        public const int Right;
-        public const int RockerDown;
-        public const int RockerEnter;
-        public const int RockerUp;
-        public const int Romaji;
-        public const int RotateWindows;
-        public const int RotationKB;
-        public const int RotationPB;
-        public const int RupeeSign;
-        public const int S;
-        public const int SCHWA;
-        public const int Sabovedot;
-        public const int Sacute;
-        public const int Save;
-        public const int Scaron;
-        public const int Scedilla;
-        public const int Scircumflex;
-        public const int ScreenSaver;
-        public const int ScrollClick;
-        public const int ScrollDown;
-        public const int ScrollUp;
-        public const int Scroll_Lock;
-        public const int Search;
-        public const int Select;
-        public const int SelectButton;
-        public const int Send;
-        public const int Serbian_DJE;
-        public const int Serbian_DZE;
-        public const int Serbian_JE;
-        public const int Serbian_LJE;
-        public const int Serbian_NJE;
-        public const int Serbian_TSHE;
-        public const int Serbian_dje;
-        public const int Serbian_dze;
-        public const int Serbian_je;
-        public const int Serbian_lje;
-        public const int Serbian_nje;
-        public const int Serbian_tshe;
-        public const int Shift_L;
-        public const int Shift_Lock;
-        public const int Shift_R;
-        public const int Shop;
-        public const int SingleCandidate;
-        public const int Sinh_a;
-        public const int Sinh_aa;
-        public const int Sinh_aa2;
-        public const int Sinh_ae;
-        public const int Sinh_ae2;
-        public const int Sinh_aee;
-        public const int Sinh_aee2;
-        public const int Sinh_ai;
-        public const int Sinh_ai2;
-        public const int Sinh_al;
-        public const int Sinh_au;
-        public const int Sinh_au2;
-        public const int Sinh_ba;
-        public const int Sinh_bha;
-        public const int Sinh_ca;
-        public const int Sinh_cha;
-        public const int Sinh_dda;
-        public const int Sinh_ddha;
-        public const int Sinh_dha;
-        public const int Sinh_dhha;
-        public const int Sinh_e;
-        public const int Sinh_e2;
-        public const int Sinh_ee;
-        public const int Sinh_ee2;
-        public const int Sinh_fa;
-        public const int Sinh_ga;
-        public const int Sinh_gha;
-        public const int Sinh_h2;
-        public const int Sinh_ha;
-        public const int Sinh_i;
-        public const int Sinh_i2;
-        public const int Sinh_ii;
-        public const int Sinh_ii2;
-        public const int Sinh_ja;
-        public const int Sinh_jha;
-        public const int Sinh_jnya;
-        public const int Sinh_ka;
-        public const int Sinh_kha;
-        public const int Sinh_kunddaliya;
-        public const int Sinh_la;
-        public const int Sinh_lla;
-        public const int Sinh_lu;
-        public const int Sinh_lu2;
-        public const int Sinh_luu;
-        public const int Sinh_luu2;
-        public const int Sinh_ma;
-        public const int Sinh_mba;
-        public const int Sinh_na;
-        public const int Sinh_ndda;
-        public const int Sinh_ndha;
-        public const int Sinh_ng;
-        public const int Sinh_ng2;
-        public const int Sinh_nga;
-        public const int Sinh_nja;
-        public const int Sinh_nna;
-        public const int Sinh_nya;
-        public const int Sinh_o;
-        public const int Sinh_o2;
-        public const int Sinh_oo;
-        public const int Sinh_oo2;
-        public const int Sinh_pa;
-        public const int Sinh_pha;
-        public const int Sinh_ra;
-        public const int Sinh_ri;
-        public const int Sinh_rii;
-        public const int Sinh_ru2;
-        public const int Sinh_ruu2;
-        public const int Sinh_sa;
-        public const int Sinh_sha;
-        public const int Sinh_ssha;
-        public const int Sinh_tha;
-        public const int Sinh_thha;
-        public const int Sinh_tta;
-        public const int Sinh_ttha;
-        public const int Sinh_u;
-        public const int Sinh_u2;
-        public const int Sinh_uu;
-        public const int Sinh_uu2;
-        public const int Sinh_va;
-        public const int Sinh_ya;
-        public const int Sleep;
-        public const int SlowKeys_Enable;
-        public const int Spell;
-        public const int SplitScreen;
-        public const int Standby;
-        public const int Start;
-        public const int StickyKeys_Enable;
-        public const int Stop;
-        public const int Subtitle;
-        public const int Super_L;
-        public const int Super_R;
-        public const int Support;
-        public const int Suspend;
-        public const int Switch_VT_1;
-        public const int Switch_VT_10;
-        public const int Switch_VT_11;
-        public const int Switch_VT_12;
-        public const int Switch_VT_2;
-        public const int Switch_VT_3;
-        public const int Switch_VT_4;
-        public const int Switch_VT_5;
-        public const int Switch_VT_6;
-        public const int Switch_VT_7;
-        public const int Switch_VT_8;
-        public const int Switch_VT_9;
-        public const int Sys_Req;
-        public const int T;
-        public const int THORN;
-        public const int Tab;
-        public const int Tabovedot;
-        public const int TaskPane;
-        public const int Tcaron;
-        public const int Tcedilla;
-        public const int Terminal;
-        public const int Terminate_Server;
-        public const int Thai_baht;
-        public const int Thai_bobaimai;
-        public const int Thai_chochan;
-        public const int Thai_chochang;
-        public const int Thai_choching;
-        public const int Thai_chochoe;
-        public const int Thai_dochada;
-        public const int Thai_dodek;
-        public const int Thai_fofa;
-        public const int Thai_fofan;
-        public const int Thai_hohip;
-        public const int Thai_honokhuk;
-        public const int Thai_khokhai;
-        public const int Thai_khokhon;
-        public const int Thai_khokhuat;
-        public const int Thai_khokhwai;
-        public const int Thai_khorakhang;
-        public const int Thai_kokai;
-        public const int Thai_lakkhangyao;
-        public const int Thai_lekchet;
-        public const int Thai_lekha;
-        public const int Thai_lekhok;
-        public const int Thai_lekkao;
-        public const int Thai_leknung;
-        public const int Thai_lekpaet;
-        public const int Thai_leksam;
-        public const int Thai_leksi;
-        public const int Thai_leksong;
-        public const int Thai_leksun;
-        public const int Thai_lochula;
-        public const int Thai_loling;
-        public const int Thai_lu;
-        public const int Thai_maichattawa;
-        public const int Thai_maiek;
-        public const int Thai_maihanakat;
-        public const int Thai_maihanakat_maitho;
-        public const int Thai_maitaikhu;
-        public const int Thai_maitho;
-        public const int Thai_maitri;
-        public const int Thai_maiyamok;
-        public const int Thai_moma;
-        public const int Thai_ngongu;
-        public const int Thai_nikhahit;
-        public const int Thai_nonen;
-        public const int Thai_nonu;
-        public const int Thai_oang;
-        public const int Thai_paiyannoi;
-        public const int Thai_phinthu;
-        public const int Thai_phophan;
-        public const int Thai_phophung;
-        public const int Thai_phosamphao;
-        public const int Thai_popla;
-        public const int Thai_rorua;
-        public const int Thai_ru;
-        public const int Thai_saraa;
-        public const int Thai_saraaa;
-        public const int Thai_saraae;
-        public const int Thai_saraaimaimalai;
-        public const int Thai_saraaimaimuan;
-        public const int Thai_saraam;
-        public const int Thai_sarae;
-        public const int Thai_sarai;
-        public const int Thai_saraii;
-        public const int Thai_sarao;
-        public const int Thai_sarau;
-        public const int Thai_saraue;
-        public const int Thai_sarauee;
-        public const int Thai_sarauu;
-        public const int Thai_sorusi;
-        public const int Thai_sosala;
-        public const int Thai_soso;
-        public const int Thai_sosua;
-        public const int Thai_thanthakhat;
-        public const int Thai_thonangmontho;
-        public const int Thai_thophuthao;
-        public const int Thai_thothahan;
-        public const int Thai_thothan;
-        public const int Thai_thothong;
-        public const int Thai_thothung;
-        public const int Thai_topatak;
-        public const int Thai_totao;
-        public const int Thai_wowaen;
-        public const int Thai_yoyak;
-        public const int Thai_yoying;
-        public const int Thorn;
-        public const int Time;
-        public const int ToDoList;
-        public const int Tools;
-        public const int TopMenu;
-        public const int TouchpadOff;
-        public const int TouchpadOn;
-        public const int TouchpadToggle;
-        public const int Touroku;
-        public const int Travel;
-        public const int Tslash;
-        public const int U;
-        public const int UWB;
-        public const int Uacute;
-        public const int Ubelowdot;
-        public const int Ubreve;
-        public const int Ucircumflex;
-        public const int Udiaeresis;
-        public const int Udoubleacute;
-        public const int Ugrave;
-        public const int Uhook;
-        public const int Uhorn;
-        public const int Uhornacute;
-        public const int Uhornbelowdot;
-        public const int Uhorngrave;
-        public const int Uhornhook;
-        public const int Uhorntilde;
-        public const int Ukrainian_GHE_WITH_UPTURN;
-        public const int Ukrainian_I;
-        public const int Ukrainian_IE;
-        public const int Ukrainian_YI;
-        public const int Ukrainian_ghe_with_upturn;
-        public const int Ukrainian_i;
-        public const int Ukrainian_ie;
-        public const int Ukrainian_yi;
-        public const int Ukranian_I;
-        public const int Ukranian_JE;
-        public const int Ukranian_YI;
-        public const int Ukranian_i;
-        public const int Ukranian_je;
-        public const int Ukranian_yi;
-        public const int Umacron;
-        public const int Undo;
-        public const int Ungrab;
-        public const int Uogonek;
-        public const int Up;
-        public const int Uring;
-        public const int User1KB;
-        public const int User2KB;
-        public const int UserPB;
-        public const int Utilde;
-        public const int V;
-        public const int VendorHome;
-        public const int Video;
-        public const int View;
-        public const int VoidSymbol;
-        public const int W;
-        public const int WLAN;
-        public const int WWW;
-        public const int Wacute;
-        public const int WakeUp;
-        public const int Wcircumflex;
-        public const int Wdiaeresis;
-        public const int WebCam;
-        public const int Wgrave;
-        public const int WheelButton;
-        public const int WindowClear;
-        public const int WonSign;
-        public const int Word;
-        public const int X;
-        public const int Xabovedot;
-        public const int Xfer;
-        public const int Y;
-        public const int Yacute;
-        public const int Ybelowdot;
-        public const int Ycircumflex;
-        public const int Ydiaeresis;
-        public const int Yellow;
-        public const int Ygrave;
-        public const int Yhook;
-        public const int Ytilde;
-        public const int Z;
-        public const int Zabovedot;
-        public const int Zacute;
-        public const int Zcaron;
-        public const int Zen_Koho;
-        public const int Zenkaku;
-        public const int Zenkaku_Hankaku;
-        public const int ZoomIn;
-        public const int ZoomOut;
-        public const int Zstroke;
-        public const int a;
-        public const int aacute;
-        public const int abelowdot;
-        public const int abovedot;
-        public const int abreve;
-        public const int abreveacute;
-        public const int abrevebelowdot;
-        public const int abrevegrave;
-        public const int abrevehook;
-        public const int abrevetilde;
-        public const int acircumflex;
-        public const int acircumflexacute;
-        public const int acircumflexbelowdot;
-        public const int acircumflexgrave;
-        public const int acircumflexhook;
-        public const int acircumflextilde;
-        public const int acute;
-        public const int adiaeresis;
-        public const int ae;
-        public const int agrave;
-        public const int ahook;
-        public const int amacron;
-        public const int ampersand;
-        public const int aogonek;
-        public const int apostrophe;
-        public const int approxeq;
-        public const int approximate;
-        public const int aring;
-        public const int asciicircum;
-        public const int asciitilde;
-        public const int asterisk;
-        public const int at;
-        public const int atilde;
-        public const int b;
-        public const int babovedot;
-        public const int backslash;
-        public const int ballotcross;
-        public const int bar;
-        public const int because;
-        public const int blank;
-        public const int botintegral;
-        public const int botleftparens;
-        public const int botleftsqbracket;
-        public const int botleftsummation;
-        public const int botrightparens;
-        public const int botrightsqbracket;
-        public const int botrightsummation;
-        public const int bott;
-        public const int botvertsummationconnector;
-        public const int braceleft;
-        public const int braceright;
-        public const int bracketleft;
-        public const int bracketright;
-        public const int braille_blank;
-        public const int braille_dot_1;
-        public const int braille_dot_10;
-        public const int braille_dot_2;
-        public const int braille_dot_3;
-        public const int braille_dot_4;
-        public const int braille_dot_5;
-        public const int braille_dot_6;
-        public const int braille_dot_7;
-        public const int braille_dot_8;
-        public const int braille_dot_9;
-        public const int braille_dots_1;
-        public const int braille_dots_12;
-        public const int braille_dots_123;
-        public const int braille_dots_1234;
-        public const int braille_dots_12345;
-        public const int braille_dots_123456;
-        public const int braille_dots_1234567;
-        public const int braille_dots_12345678;
-        public const int braille_dots_1234568;
-        public const int braille_dots_123457;
-        public const int braille_dots_1234578;
-        public const int braille_dots_123458;
-        public const int braille_dots_12346;
-        public const int braille_dots_123467;
-        public const int braille_dots_1234678;
-        public const int braille_dots_123468;
-        public const int braille_dots_12347;
-        public const int braille_dots_123478;
-        public const int braille_dots_12348;
-        public const int braille_dots_1235;
-        public const int braille_dots_12356;
-        public const int braille_dots_123567;
-        public const int braille_dots_1235678;
-        public const int braille_dots_123568;
-        public const int braille_dots_12357;
-        public const int braille_dots_123578;
-        public const int braille_dots_12358;
-        public const int braille_dots_1236;
-        public const int braille_dots_12367;
-        public const int braille_dots_123678;
-        public const int braille_dots_12368;
-        public const int braille_dots_1237;
-        public const int braille_dots_12378;
-        public const int braille_dots_1238;
-        public const int braille_dots_124;
-        public const int braille_dots_1245;
-        public const int braille_dots_12456;
-        public const int braille_dots_124567;
-        public const int braille_dots_1245678;
-        public const int braille_dots_124568;
-        public const int braille_dots_12457;
-        public const int braille_dots_124578;
-        public const int braille_dots_12458;
-        public const int braille_dots_1246;
-        public const int braille_dots_12467;
-        public const int braille_dots_124678;
-        public const int braille_dots_12468;
-        public const int braille_dots_1247;
-        public const int braille_dots_12478;
-        public const int braille_dots_1248;
-        public const int braille_dots_125;
-        public const int braille_dots_1256;
-        public const int braille_dots_12567;
-        public const int braille_dots_125678;
-        public const int braille_dots_12568;
-        public const int braille_dots_1257;
-        public const int braille_dots_12578;
-        public const int braille_dots_1258;
-        public const int braille_dots_126;
-        public const int braille_dots_1267;
-        public const int braille_dots_12678;
-        public const int braille_dots_1268;
-        public const int braille_dots_127;
-        public const int braille_dots_1278;
-        public const int braille_dots_128;
-        public const int braille_dots_13;
-        public const int braille_dots_134;
-        public const int braille_dots_1345;
-        public const int braille_dots_13456;
-        public const int braille_dots_134567;
-        public const int braille_dots_1345678;
-        public const int braille_dots_134568;
-        public const int braille_dots_13457;
-        public const int braille_dots_134578;
-        public const int braille_dots_13458;
-        public const int braille_dots_1346;
-        public const int braille_dots_13467;
-        public const int braille_dots_134678;
-        public const int braille_dots_13468;
-        public const int braille_dots_1347;
-        public const int braille_dots_13478;
-        public const int braille_dots_1348;
-        public const int braille_dots_135;
-        public const int braille_dots_1356;
-        public const int braille_dots_13567;
-        public const int braille_dots_135678;
-        public const int braille_dots_13568;
-        public const int braille_dots_1357;
-        public const int braille_dots_13578;
-        public const int braille_dots_1358;
-        public const int braille_dots_136;
-        public const int braille_dots_1367;
-        public const int braille_dots_13678;
-        public const int braille_dots_1368;
-        public const int braille_dots_137;
-        public const int braille_dots_1378;
-        public const int braille_dots_138;
-        public const int braille_dots_14;
-        public const int braille_dots_145;
-        public const int braille_dots_1456;
-        public const int braille_dots_14567;
-        public const int braille_dots_145678;
-        public const int braille_dots_14568;
-        public const int braille_dots_1457;
-        public const int braille_dots_14578;
-        public const int braille_dots_1458;
-        public const int braille_dots_146;
-        public const int braille_dots_1467;
-        public const int braille_dots_14678;
-        public const int braille_dots_1468;
-        public const int braille_dots_147;
-        public const int braille_dots_1478;
-        public const int braille_dots_148;
-        public const int braille_dots_15;
-        public const int braille_dots_156;
-        public const int braille_dots_1567;
-        public const int braille_dots_15678;
-        public const int braille_dots_1568;
-        public const int braille_dots_157;
-        public const int braille_dots_1578;
-        public const int braille_dots_158;
-        public const int braille_dots_16;
-        public const int braille_dots_167;
-        public const int braille_dots_1678;
-        public const int braille_dots_168;
-        public const int braille_dots_17;
-        public const int braille_dots_178;
-        public const int braille_dots_18;
-        public const int braille_dots_2;
-        public const int braille_dots_23;
-        public const int braille_dots_234;
-        public const int braille_dots_2345;
-        public const int braille_dots_23456;
-        public const int braille_dots_234567;
-        public const int braille_dots_2345678;
-        public const int braille_dots_234568;
-        public const int braille_dots_23457;
-        public const int braille_dots_234578;
-        public const int braille_dots_23458;
-        public const int braille_dots_2346;
-        public const int braille_dots_23467;
-        public const int braille_dots_234678;
-        public const int braille_dots_23468;
-        public const int braille_dots_2347;
-        public const int braille_dots_23478;
-        public const int braille_dots_2348;
-        public const int braille_dots_235;
-        public const int braille_dots_2356;
-        public const int braille_dots_23567;
-        public const int braille_dots_235678;
-        public const int braille_dots_23568;
-        public const int braille_dots_2357;
-        public const int braille_dots_23578;
-        public const int braille_dots_2358;
-        public const int braille_dots_236;
-        public const int braille_dots_2367;
-        public const int braille_dots_23678;
-        public const int braille_dots_2368;
-        public const int braille_dots_237;
-        public const int braille_dots_2378;
-        public const int braille_dots_238;
-        public const int braille_dots_24;
-        public const int braille_dots_245;
-        public const int braille_dots_2456;
-        public const int braille_dots_24567;
-        public const int braille_dots_245678;
-        public const int braille_dots_24568;
-        public const int braille_dots_2457;
-        public const int braille_dots_24578;
-        public const int braille_dots_2458;
-        public const int braille_dots_246;
-        public const int braille_dots_2467;
-        public const int braille_dots_24678;
-        public const int braille_dots_2468;
-        public const int braille_dots_247;
-        public const int braille_dots_2478;
-        public const int braille_dots_248;
-        public const int braille_dots_25;
-        public const int braille_dots_256;
-        public const int braille_dots_2567;
-        public const int braille_dots_25678;
-        public const int braille_dots_2568;
-        public const int braille_dots_257;
-        public const int braille_dots_2578;
-        public const int braille_dots_258;
-        public const int braille_dots_26;
-        public const int braille_dots_267;
-        public const int braille_dots_2678;
-        public const int braille_dots_268;
-        public const int braille_dots_27;
-        public const int braille_dots_278;
-        public const int braille_dots_28;
-        public const int braille_dots_3;
-        public const int braille_dots_34;
-        public const int braille_dots_345;
-        public const int braille_dots_3456;
-        public const int braille_dots_34567;
-        public const int braille_dots_345678;
-        public const int braille_dots_34568;
-        public const int braille_dots_3457;
-        public const int braille_dots_34578;
-        public const int braille_dots_3458;
-        public const int braille_dots_346;
-        public const int braille_dots_3467;
-        public const int braille_dots_34678;
-        public const int braille_dots_3468;
-        public const int braille_dots_347;
-        public const int braille_dots_3478;
-        public const int braille_dots_348;
-        public const int braille_dots_35;
-        public const int braille_dots_356;
-        public const int braille_dots_3567;
-        public const int braille_dots_35678;
-        public const int braille_dots_3568;
-        public const int braille_dots_357;
-        public const int braille_dots_3578;
-        public const int braille_dots_358;
-        public const int braille_dots_36;
-        public const int braille_dots_367;
-        public const int braille_dots_3678;
-        public const int braille_dots_368;
-        public const int braille_dots_37;
-        public const int braille_dots_378;
-        public const int braille_dots_38;
-        public const int braille_dots_4;
-        public const int braille_dots_45;
-        public const int braille_dots_456;
-        public const int braille_dots_4567;
-        public const int braille_dots_45678;
-        public const int braille_dots_4568;
-        public const int braille_dots_457;
-        public const int braille_dots_4578;
-        public const int braille_dots_458;
-        public const int braille_dots_46;
-        public const int braille_dots_467;
-        public const int braille_dots_4678;
-        public const int braille_dots_468;
-        public const int braille_dots_47;
-        public const int braille_dots_478;
-        public const int braille_dots_48;
-        public const int braille_dots_5;
-        public const int braille_dots_56;
-        public const int braille_dots_567;
-        public const int braille_dots_5678;
-        public const int braille_dots_568;
-        public const int braille_dots_57;
-        public const int braille_dots_578;
-        public const int braille_dots_58;
-        public const int braille_dots_6;
-        public const int braille_dots_67;
-        public const int braille_dots_678;
-        public const int braille_dots_68;
-        public const int braille_dots_7;
-        public const int braille_dots_78;
-        public const int braille_dots_8;
-        public const int breve;
-        public const int brokenbar;
-        public const int c;
-        public const int c_h;
-        public const int cabovedot;
-        public const int cacute;
-        public const int careof;
-        public const int caret;
-        public const int caron;
-        public const int ccaron;
-        public const int ccedilla;
-        public const int ccircumflex;
-        public const int cedilla;
-        public const int cent;
-        public const int ch;
-        public const int checkerboard;
-        public const int checkmark;
-        public const int circle;
-        public const int club;
-        public const int colon;
-        public const int comma;
-        public const int containsas;
-        public const int copyright;
-        public const int cr;
-        public const int crossinglines;
-        public const int cuberoot;
-        public const int currency;
-        public const int cursor;
-        public const int d;
-        public const int dabovedot;
-        public const int dagger;
-        public const int dcaron;
-        public const int dead_A;
-        public const int dead_E;
-        public const int dead_I;
-        public const int dead_O;
-        public const int dead_U;
-        public const int dead_a;
-        public const int dead_abovecomma;
-        public const int dead_abovedot;
-        public const int dead_abovereversedcomma;
-        public const int dead_abovering;
-        public const int dead_acute;
-        public const int dead_belowbreve;
-        public const int dead_belowcircumflex;
-        public const int dead_belowcomma;
-        public const int dead_belowdiaeresis;
-        public const int dead_belowdot;
-        public const int dead_belowmacron;
-        public const int dead_belowring;
-        public const int dead_belowtilde;
-        public const int dead_breve;
-        public const int dead_capital_schwa;
-        public const int dead_caron;
-        public const int dead_cedilla;
-        public const int dead_circumflex;
-        public const int dead_currency;
-        public const int dead_dasia;
-        public const int dead_diaeresis;
-        public const int dead_doubleacute;
-        public const int dead_doublegrave;
-        public const int dead_e;
-        public const int dead_grave;
-        public const int dead_greek;
-        public const int dead_hook;
-        public const int dead_horn;
-        public const int dead_i;
-        public const int dead_invertedbreve;
-        public const int dead_iota;
-        public const int dead_macron;
-        public const int dead_o;
-        public const int dead_ogonek;
-        public const int dead_perispomeni;
-        public const int dead_psili;
-        public const int dead_semivoiced_sound;
-        public const int dead_small_schwa;
-        public const int dead_stroke;
-        public const int dead_tilde;
-        public const int dead_u;
-        public const int dead_voiced_sound;
-        public const int decimalpoint;
-        public const int degree;
-        public const int diaeresis;
-        public const int diamond;
-        public const int digitspace;
-        public const int dintegral;
-        public const int division;
-        public const int dollar;
-        public const int doubbaselinedot;
-        public const int doubleacute;
-        public const int doubledagger;
-        public const int doublelowquotemark;
-        public const int downarrow;
-        public const int downcaret;
-        public const int downshoe;
-        public const int downstile;
-        public const int downtack;
-        public const int dstroke;
-        public const int e;
-        public const int eabovedot;
-        public const int eacute;
-        public const int ebelowdot;
-        public const int ecaron;
-        public const int ecircumflex;
-        public const int ecircumflexacute;
-        public const int ecircumflexbelowdot;
-        public const int ecircumflexgrave;
-        public const int ecircumflexhook;
-        public const int ecircumflextilde;
-        public const int ediaeresis;
-        public const int egrave;
-        public const int ehook;
-        public const int eightsubscript;
-        public const int eightsuperior;
-        public const int elementof;
-        public const int ellipsis;
-        public const int em3space;
-        public const int em4space;
-        public const int emacron;
-        public const int emdash;
-        public const int emfilledcircle;
-        public const int emfilledrect;
-        public const int emopencircle;
-        public const int emopenrectangle;
-        public const int emptyset;
-        public const int emspace;
-        public const int endash;
-        public const int enfilledcircbullet;
-        public const int enfilledsqbullet;
-        public const int eng;
-        public const int enopencircbullet;
-        public const int enopensquarebullet;
-        public const int enspace;
-        public const int eogonek;
-        public const int equal;
-        public const int eth;
-        public const int etilde;
-        public const int exclam;
-        public const int exclamdown;
-        public const int ezh;
-        public const int f;
-        public const int fabovedot;
-        public const int femalesymbol;
-        public const int ff;
-        public const int figdash;
-        public const int filledlefttribullet;
-        public const int filledrectbullet;
-        public const int filledrighttribullet;
-        public const int filledtribulletdown;
-        public const int filledtribulletup;
-        public const int fiveeighths;
-        public const int fivesixths;
-        public const int fivesubscript;
-        public const int fivesuperior;
-        public const int fourfifths;
-        public const int foursubscript;
-        public const int foursuperior;
-        public const int fourthroot;
-        public const int function;
-        public const int g;
-        public const int gabovedot;
-        public const int gbreve;
-        public const int gcaron;
-        public const int gcedilla;
-        public const int gcircumflex;
-        public const int grave;
-        public const int greater;
-        public const int greaterthanequal;
-        public const int guillemotleft;
-        public const int guillemotright;
-        public const int h;
-        public const int hairspace;
-        public const int hcircumflex;
-        public const int heart;
-        public const int hebrew_aleph;
-        public const int hebrew_ayin;
-        public const int hebrew_bet;
-        public const int hebrew_beth;
-        public const int hebrew_chet;
-        public const int hebrew_dalet;
-        public const int hebrew_daleth;
-        public const int hebrew_doublelowline;
-        public const int hebrew_finalkaph;
-        public const int hebrew_finalmem;
-        public const int hebrew_finalnun;
-        public const int hebrew_finalpe;
-        public const int hebrew_finalzade;
-        public const int hebrew_finalzadi;
-        public const int hebrew_gimel;
-        public const int hebrew_gimmel;
-        public const int hebrew_he;
-        public const int hebrew_het;
-        public const int hebrew_kaph;
-        public const int hebrew_kuf;
-        public const int hebrew_lamed;
-        public const int hebrew_mem;
-        public const int hebrew_nun;
-        public const int hebrew_pe;
-        public const int hebrew_qoph;
-        public const int hebrew_resh;
-        public const int hebrew_samech;
-        public const int hebrew_samekh;
-        public const int hebrew_shin;
-        public const int hebrew_taf;
-        public const int hebrew_taw;
-        public const int hebrew_tet;
-        public const int hebrew_teth;
-        public const int hebrew_waw;
-        public const int hebrew_yod;
-        public const int hebrew_zade;
-        public const int hebrew_zadi;
-        public const int hebrew_zain;
-        public const int hebrew_zayin;
-        public const int hexagram;
-        public const int horizconnector;
-        public const int horizlinescan1;
-        public const int horizlinescan3;
-        public const int horizlinescan5;
-        public const int horizlinescan7;
-        public const int horizlinescan9;
-        public const int hstroke;
-        public const int ht;
-        public const int hyphen;
-        public const int i;
-        public const int iTouch;
-        public const int iacute;
-        public const int ibelowdot;
-        public const int ibreve;
-        public const int icircumflex;
-        public const int identical;
-        public const int idiaeresis;
-        public const int idotless;
-        public const int ifonlyif;
-        public const int igrave;
-        public const int ihook;
-        public const int imacron;
-        public const int implies;
-        public const int includedin;
-        public const int includes;
-        public const int infinity;
-        public const int integral;
-        public const int intersection;
-        public const int iogonek;
-        public const int itilde;
-        public const int j;
-        public const int jcircumflex;
-        public const int jot;
-        public const int k;
-        public const int kana_A;
-        public const int kana_CHI;
-        public const int kana_E;
-        public const int kana_FU;
-        public const int kana_HA;
-        public const int kana_HE;
-        public const int kana_HI;
-        public const int kana_HO;
-        public const int kana_HU;
-        public const int kana_I;
-        public const int kana_KA;
-        public const int kana_KE;
-        public const int kana_KI;
-        public const int kana_KO;
-        public const int kana_KU;
-        public const int kana_MA;
-        public const int kana_ME;
-        public const int kana_MI;
-        public const int kana_MO;
-        public const int kana_MU;
-        public const int kana_N;
-        public const int kana_NA;
-        public const int kana_NE;
-        public const int kana_NI;
-        public const int kana_NO;
-        public const int kana_NU;
-        public const int kana_O;
-        public const int kana_RA;
-        public const int kana_RE;
-        public const int kana_RI;
-        public const int kana_RO;
-        public const int kana_RU;
-        public const int kana_SA;
-        public const int kana_SE;
-        public const int kana_SHI;
-        public const int kana_SO;
-        public const int kana_SU;
-        public const int kana_TA;
-        public const int kana_TE;
-        public const int kana_TI;
-        public const int kana_TO;
-        public const int kana_TSU;
-        public const int kana_TU;
-        public const int kana_U;
-        public const int kana_WA;
-        public const int kana_WO;
-        public const int kana_YA;
-        public const int kana_YO;
-        public const int kana_YU;
-        public const int kana_a;
-        public const int kana_closingbracket;
-        public const int kana_comma;
-        public const int kana_conjunctive;
-        public const int kana_e;
-        public const int kana_fullstop;
-        public const int kana_i;
-        public const int kana_middledot;
-        public const int kana_o;
-        public const int kana_openingbracket;
-        public const int kana_switch;
-        public const int kana_tsu;
-        public const int kana_tu;
-        public const int kana_u;
-        public const int kana_ya;
-        public const int kana_yo;
-        public const int kana_yu;
-        public const int kappa;
-        public const int kcedilla;
-        public const int kra;
-        public const int l;
-        public const int lacute;
-        public const int latincross;
-        public const int lbelowdot;
-        public const int lcaron;
-        public const int lcedilla;
-        public const int leftanglebracket;
-        public const int leftarrow;
-        public const int leftcaret;
-        public const int leftdoublequotemark;
-        public const int leftmiddlecurlybrace;
-        public const int leftopentriangle;
-        public const int leftpointer;
-        public const int leftradical;
-        public const int leftshoe;
-        public const int leftsinglequotemark;
-        public const int leftt;
-        public const int lefttack;
-        public const int less;
-        public const int lessthanequal;
-        public const int lf;
-        public const int logicaland;
-        public const int logicalor;
-        public const int lowleftcorner;
-        public const int lowrightcorner;
-        public const int lstroke;
-        public const int m;
-        public const int mabovedot;
-        public const int macron;
-        public const int malesymbol;
-        public const int maltesecross;
-        public const int marker;
-        public const int masculine;
-        public const int minus;
-        public const int minutes;
-        public const int mu;
-        public const int multiply;
-        public const int musicalflat;
-        public const int musicalsharp;
-        public const int n;
-        public const int nabla;
-        public const int nacute;
-        public const int ncaron;
-        public const int ncedilla;
-        public const int ninesubscript;
-        public const int ninesuperior;
-        public const int nl;
-        public const int nobreakspace;
-        public const int notapproxeq;
-        public const int notelementof;
-        public const int notequal;
-        public const int notidentical;
-        public const int notsign;
-        public const int ntilde;
-        public const int numbersign;
-        public const int numerosign;
-        public const int o;
-        public const int oacute;
-        public const int obarred;
-        public const int obelowdot;
-        public const int ocaron;
-        public const int ocircumflex;
-        public const int ocircumflexacute;
-        public const int ocircumflexbelowdot;
-        public const int ocircumflexgrave;
-        public const int ocircumflexhook;
-        public const int ocircumflextilde;
-        public const int odiaeresis;
-        public const int odoubleacute;
-        public const int oe;
-        public const int ogonek;
-        public const int ograve;
-        public const int ohook;
-        public const int ohorn;
-        public const int ohornacute;
-        public const int ohornbelowdot;
-        public const int ohorngrave;
-        public const int ohornhook;
-        public const int ohorntilde;
-        public const int omacron;
-        public const int oneeighth;
-        public const int onefifth;
-        public const int onehalf;
-        public const int onequarter;
-        public const int onesixth;
-        public const int onesubscript;
-        public const int onesuperior;
-        public const int onethird;
-        public const int ooblique;
-        public const int openrectbullet;
-        public const int openstar;
-        public const int opentribulletdown;
-        public const int opentribulletup;
-        public const int ordfeminine;
-        public const int oslash;
-        public const int otilde;
-        public const int overbar;
-        public const int overline;
-        public const int p;
-        public const int pabovedot;
-        public const int paragraph;
-        public const int parenleft;
-        public const int parenright;
-        public const int partdifferential;
-        public const int partialderivative;
-        public const int percent;
-        public const int period;
-        public const int periodcentered;
-        public const int permille;
-        public const int phonographcopyright;
-        public const int plus;
-        public const int plusminus;
-        public const int prescription;
-        public const int prolongedsound;
-        public const int punctspace;
-        public const int q;
-        public const int quad;
-        public const int question;
-        public const int questiondown;
-        public const int quotedbl;
-        public const int quoteleft;
-        public const int quoteright;
-        public const int r;
-        public const int racute;
-        public const int radical;
-        public const int rcaron;
-        public const int rcedilla;
-        public const int registered;
-        public const int rightanglebracket;
-        public const int rightarrow;
-        public const int rightcaret;
-        public const int rightdoublequotemark;
-        public const int rightmiddlecurlybrace;
-        public const int rightmiddlesummation;
-        public const int rightopentriangle;
-        public const int rightpointer;
-        public const int rightshoe;
-        public const int rightsinglequotemark;
-        public const int rightt;
-        public const int righttack;
-        public const int s;
-        public const int sabovedot;
-        public const int sacute;
-        public const int scaron;
-        public const int scedilla;
-        public const int schwa;
-        public const int scircumflex;
-        public const int script_switch;
-        public const int seconds;
-        public const int section;
-        public const int semicolon;
-        public const int semivoicedsound;
-        public const int seveneighths;
-        public const int sevensubscript;
-        public const int sevensuperior;
-        public const int signaturemark;
-        public const int signifblank;
-        public const int similarequal;
-        public const int singlelowquotemark;
-        public const int sixsubscript;
-        public const int sixsuperior;
-        public const int slash;
-        public const int soliddiamond;
-        public const int space;
-        public const int squareroot;
-        public const int ssharp;
-        public const int sterling;
-        public const int stricteq;
-        public const int t;
-        public const int tabovedot;
-        public const int tcaron;
-        public const int tcedilla;
-        public const int telephone;
-        public const int telephonerecorder;
-        public const int therefore;
-        public const int thinspace;
-        public const int thorn;
-        public const int threeeighths;
-        public const int threefifths;
-        public const int threequarters;
-        public const int threesubscript;
-        public const int threesuperior;
-        public const int tintegral;
-        public const int topintegral;
-        public const int topleftparens;
-        public const int topleftradical;
-        public const int topleftsqbracket;
-        public const int topleftsummation;
-        public const int toprightparens;
-        public const int toprightsqbracket;
-        public const int toprightsummation;
-        public const int topt;
-        public const int topvertsummationconnector;
-        public const int trademark;
-        public const int trademarkincircle;
-        public const int tslash;
-        public const int twofifths;
-        public const int twosubscript;
-        public const int twosuperior;
-        public const int twothirds;
-        public const int u;
-        public const int uacute;
-        public const int ubelowdot;
-        public const int ubreve;
-        public const int ucircumflex;
-        public const int udiaeresis;
-        public const int udoubleacute;
-        public const int ugrave;
-        public const int uhook;
-        public const int uhorn;
-        public const int uhornacute;
-        public const int uhornbelowdot;
-        public const int uhorngrave;
-        public const int uhornhook;
-        public const int uhorntilde;
-        public const int umacron;
-        public const int underbar;
-        public const int underscore;
-        public const int union;
-        public const int uogonek;
-        public const int uparrow;
-        public const int upcaret;
-        public const int upleftcorner;
-        public const int uprightcorner;
-        public const int upshoe;
-        public const int upstile;
-        public const int uptack;
-        public const int uring;
-        public const int utilde;
-        public const int v;
-        public const int variation;
-        public const int vertbar;
-        public const int vertconnector;
-        public const int voicedsound;
-        public const int vt;
-        public const int w;
-        public const int wacute;
-        public const int wcircumflex;
-        public const int wdiaeresis;
-        public const int wgrave;
-        public const int x;
-        public const int xabovedot;
-        public const int y;
-        public const int yacute;
-        public const int ybelowdot;
-        public const int ycircumflex;
-        public const int ydiaeresis;
-        public const int yen;
-        public const int ygrave;
-        public const int yhook;
-        public const int ytilde;
-        public const int z;
-        public const int zabovedot;
-        public const int zacute;
-        public const int zcaron;
-        public const int zerosubscript;
-        public const int zerosuperior;
-        public const int zstroke;
-    }
-
     [CCode (has_type_id = false)]
     [Flags]
     public enum GrxKeyModifier {
@@ -3426,7 +1153,7 @@ namespace Grx {
     public struct KeyEvent {
         EventType type;
         Device *device;
-        uint keysym;
+        Key keysym;
         unichar unichar;
         uint code;
     }
@@ -3476,5 +1203,12018 @@ namespace Grx {
         public virtual signal bool event (Event event);
         public bool is_active { [CCode (cname = "grx_application_is_active")]get; }
         public bool quit_on_signal;
+    }
+
+    [CCode (has_type_id = false)]
+    public enum Key {
+        /**
+         * U+02D9 DOT ABOVE
+         */
+        ABOVEDOT,
+
+        /**
+         * Access X Enable
+         */
+        ACCESS_X_ENABLE,
+
+        /**
+         * Access X Feedback Enable
+         */
+        ACCESS_X_FEEDBACK_ENABLE,
+
+        /**
+         * U+00B4 ACUTE ACCENT
+         */
+        ACUTE,
+
+        /**
+         * Left alt
+         */
+        ALT_L,
+
+        /**
+         * Right alt
+         */
+        ALT_R,
+
+        /**
+         * U+0026 AMPERSAND
+         */
+        AMPERSAND,
+
+        /**
+         * U+0027 APOSTROPHE
+         */
+        APOSTROPHE,
+
+        /**
+         * U+2245 ALMOST EQUAL TO
+         */
+        APPROXEQ,
+
+        /**
+         * U+223C TILDE OPERATOR
+         */
+        APPROXIMATE,
+
+        /**
+         * U+0660 ARABIC-INDIC DIGIT ZERO
+         */
+        ARABIC_0,
+
+        /**
+         * U+0661 ARABIC-INDIC DIGIT ONE
+         */
+        ARABIC_1,
+
+        /**
+         * U+0662 ARABIC-INDIC DIGIT TWO
+         */
+        ARABIC_2,
+
+        /**
+         * U+0663 ARABIC-INDIC DIGIT THREE
+         */
+        ARABIC_3,
+
+        /**
+         * U+0664 ARABIC-INDIC DIGIT FOUR
+         */
+        ARABIC_4,
+
+        /**
+         * U+0665 ARABIC-INDIC DIGIT FIVE
+         */
+        ARABIC_5,
+
+        /**
+         * U+0666 ARABIC-INDIC DIGIT SIX
+         */
+        ARABIC_6,
+
+        /**
+         * U+0667 ARABIC-INDIC DIGIT SEVEN
+         */
+        ARABIC_7,
+
+        /**
+         * U+0668 ARABIC-INDIC DIGIT EIGHT
+         */
+        ARABIC_8,
+
+        /**
+         * U+0669 ARABIC-INDIC DIGIT NINE
+         */
+        ARABIC_9,
+
+        /**
+         * U+0639 ARABIC LETTER AIN
+         */
+        ARABIC_AIN,
+
+        /**
+         * U+0627 ARABIC LETTER ALEF
+         */
+        ARABIC_ALEF,
+
+        /**
+         * U+0649 ARABIC LETTER ALEF MAKSURA
+         */
+        ARABIC_ALEFMAKSURA,
+
+        /**
+         * U+0628 ARABIC LETTER BEH
+         */
+        ARABIC_BEH,
+
+        /**
+         * U+060C ARABIC COMMA
+         */
+        ARABIC_COMMA,
+
+        /**
+         * U+0636 ARABIC LETTER DAD
+         */
+        ARABIC_DAD,
+
+        /**
+         * U+062F ARABIC LETTER DAL
+         */
+        ARABIC_DAL,
+
+        /**
+         * U+064F ARABIC DAMMA
+         */
+        ARABIC_DAMMA,
+
+        /**
+         * U+064C ARABIC DAMMATAN
+         */
+        ARABIC_DAMMATAN,
+
+        /**
+         * U+0688 ARABIC LETTER DDAL
+         */
+        ARABIC_DDAL,
+
+        /**
+         * U+06CC ARABIC LETTER FARSI YEH
+         */
+        ARABIC_FARSI_YEH,
+
+        /**
+         * U+064E ARABIC FATHA
+         */
+        ARABIC_FATHA,
+
+        /**
+         * U+064B ARABIC FATHATAN
+         */
+        ARABIC_FATHATAN,
+
+        /**
+         * U+0641 ARABIC LETTER FEH
+         */
+        ARABIC_FEH,
+
+        /**
+         * U+06D4 ARABIC FULL STOP
+         */
+        ARABIC_FULLSTOP,
+
+        /**
+         * U+06AF ARABIC LETTER GAF
+         */
+        ARABIC_GAF,
+
+        /**
+         * U+063A ARABIC LETTER GHAIN
+         */
+        ARABIC_GHAIN,
+
+        /**
+         * U+0647 ARABIC LETTER HEH
+         */
+        ARABIC_HA,
+
+        /**
+         * U+062D ARABIC LETTER HAH
+         */
+        ARABIC_HAH,
+
+        /**
+         * U+0621 ARABIC LETTER HAMZA
+         */
+        ARABIC_HAMZA,
+
+        /**
+         * U+0623 ARABIC LETTER ALEF WITH HAMZA ABOVE
+         */
+        ARABIC_HAMZAONALEF,
+
+        /**
+         * U+0624 ARABIC LETTER WAW WITH HAMZA ABOVE
+         */
+        ARABIC_HAMZAONWAW,
+
+        /**
+         * U+0626 ARABIC LETTER YEH WITH HAMZA ABOVE
+         */
+        ARABIC_HAMZAONYEH,
+
+        /**
+         * U+0625 ARABIC LETTER ALEF WITH HAMZA BELOW
+         */
+        ARABIC_HAMZAUNDERALEF,
+
+        /**
+         * U+0654 ARABIC HAMZA ABOVE
+         */
+        ARABIC_HAMZA_ABOVE,
+
+        /**
+         * U+0655 ARABIC HAMZA BELOW
+         */
+        ARABIC_HAMZA_BELOW,
+
+        /**
+         * deprecated
+         */
+        ARABIC_HEH,
+
+        /**
+         * U+06BE ARABIC LETTER HEH DOACHASHMEE
+         */
+        ARABIC_HEH_DOACHASHMEE,
+
+        /**
+         * U+06C1 ARABIC LETTER HEH GOAL
+         */
+        ARABIC_HEH_GOAL,
+
+        /**
+         * U+062C ARABIC LETTER JEEM
+         */
+        ARABIC_JEEM,
+
+        /**
+         * U+0698 ARABIC LETTER JEH
+         */
+        ARABIC_JEH,
+
+        /**
+         * U+0643 ARABIC LETTER KAF
+         */
+        ARABIC_KAF,
+
+        /**
+         * U+0650 ARABIC KASRA
+         */
+        ARABIC_KASRA,
+
+        /**
+         * U+064D ARABIC KASRATAN
+         */
+        ARABIC_KASRATAN,
+
+        /**
+         * U+06A9 ARABIC LETTER KEHEH
+         */
+        ARABIC_KEHEH,
+
+        /**
+         * U+062E ARABIC LETTER KHAH
+         */
+        ARABIC_KHAH,
+
+        /**
+         * U+0644 ARABIC LETTER LAM
+         */
+        ARABIC_LAM,
+
+        /**
+         * U+0622 ARABIC LETTER ALEF WITH MADDA ABOVE
+         */
+        ARABIC_MADDAONALEF,
+
+        /**
+         * U+0653 ARABIC MADDAH ABOVE
+         */
+        ARABIC_MADDA_ABOVE,
+
+        /**
+         * U+0645 ARABIC LETTER MEEM
+         */
+        ARABIC_MEEM,
+
+        /**
+         * U+0646 ARABIC LETTER NOON
+         */
+        ARABIC_NOON,
+
+        /**
+         * U+06BA ARABIC LETTER NOON GHUNNA
+         */
+        ARABIC_NOON_GHUNNA,
+
+        /**
+         * U+067E ARABIC LETTER PEH
+         */
+        ARABIC_PEH,
+
+        /**
+         * U+066A ARABIC PERCENT SIGN
+         */
+        ARABIC_PERCENT,
+
+        /**
+         * U+0642 ARABIC LETTER QAF
+         */
+        ARABIC_QAF,
+
+        /**
+         * U+061F ARABIC QUESTION MARK
+         */
+        ARABIC_QUESTION_MARK,
+
+        /**
+         * U+0631 ARABIC LETTER REH
+         */
+        ARABIC_RA,
+
+        /**
+         * U+0691 ARABIC LETTER RREH
+         */
+        ARABIC_RREH,
+
+        /**
+         * U+0635 ARABIC LETTER SAD
+         */
+        ARABIC_SAD,
+
+        /**
+         * U+0633 ARABIC LETTER SEEN
+         */
+        ARABIC_SEEN,
+
+        /**
+         * U+061B ARABIC SEMICOLON
+         */
+        ARABIC_SEMICOLON,
+
+        /**
+         * U+0651 ARABIC SHADDA
+         */
+        ARABIC_SHADDA,
+
+        /**
+         * U+0634 ARABIC LETTER SHEEN
+         */
+        ARABIC_SHEEN,
+
+        /**
+         * U+0652 ARABIC SUKUN
+         */
+        ARABIC_SUKUN,
+
+        /**
+         * U+0670 ARABIC LETTER SUPERSCRIPT ALEF
+         */
+        ARABIC_SUPERSCRIPT_ALEF,
+
+        /**
+         * Alias for mode_switch
+         */
+        ARABIC_SWITCH,
+
+        /**
+         * U+0637 ARABIC LETTER TAH
+         */
+        ARABIC_TAH,
+
+        /**
+         * U+0640 ARABIC TATWEEL
+         */
+        ARABIC_TATWEEL,
+
+        /**
+         * U+0686 ARABIC LETTER TCHEH
+         */
+        ARABIC_TCHEH,
+
+        /**
+         * U+062A ARABIC LETTER TEH
+         */
+        ARABIC_TEH,
+
+        /**
+         * U+0629 ARABIC LETTER TEH MARBUTA
+         */
+        ARABIC_TEHMARBUTA,
+
+        /**
+         * U+0630 ARABIC LETTER THAL
+         */
+        ARABIC_THAL,
+
+        /**
+         * U+062B ARABIC LETTER THEH
+         */
+        ARABIC_THEH,
+
+        /**
+         * U+0679 ARABIC LETTER TTEH
+         */
+        ARABIC_TTEH,
+
+        /**
+         * U+06A4 ARABIC LETTER VEH
+         */
+        ARABIC_VEH,
+
+        /**
+         * U+0648 ARABIC LETTER WAW
+         */
+        ARABIC_WAW,
+
+        /**
+         * U+064A ARABIC LETTER YEH
+         */
+        ARABIC_YEH,
+
+        /**
+         * U+06D2 ARABIC LETTER YEH BARREE
+         */
+        ARABIC_YEH_BAREE,
+
+        /**
+         * U+0638 ARABIC LETTER ZAH
+         */
+        ARABIC_ZAH,
+
+        /**
+         * U+0632 ARABIC LETTER ZAIN
+         */
+        ARABIC_ZAIN,
+
+        /**
+         * U+055B ARMENIAN EMPHASIS MARK
+         */
+        ARMENIAN_ACCENT,
+
+        /**
+         * U+055C ARMENIAN EXCLAMATION MARK
+         */
+        ARMENIAN_AMANAK,
+
+        /**
+         * U+055A ARMENIAN APOSTROPHE
+         */
+        ARMENIAN_APOSTROPHE,
+
+        /**
+         * U+055D ARMENIAN COMMA
+         */
+        ARMENIAN_BUT,
+
+        /**
+         * U+055C ARMENIAN EXCLAMATION MARK
+         */
+        ARMENIAN_EXCLAM,
+
+        /**
+         * U+0589 ARMENIAN FULL STOP
+         */
+        ARMENIAN_FULL_STOP,
+
+        /**
+         * U+058A ARMENIAN HYPHEN
+         */
+        ARMENIAN_HYPHEN,
+
+        /**
+         * U+0568 ARMENIAN SMALL LETTER ET
+         */
+        ARMENIAN_LCASE_AT,
+
+        /**
+         * U+0561 ARMENIAN SMALL LETTER AYB
+         */
+        ARMENIAN_LCASE_AYB,
+
+        /**
+         * U+0562 ARMENIAN SMALL LETTER BEN
+         */
+        ARMENIAN_LCASE_BEN,
+
+        /**
+         * U+0579 ARMENIAN SMALL LETTER CHA
+         */
+        ARMENIAN_LCASE_CHA,
+
+        /**
+         * U+0564 ARMENIAN SMALL LETTER DA
+         */
+        ARMENIAN_LCASE_DA,
+
+        /**
+         * U+0571 ARMENIAN SMALL LETTER JA
+         */
+        ARMENIAN_LCASE_DZA,
+
+        /**
+         * U+0567 ARMENIAN SMALL LETTER EH
+         */
+        ARMENIAN_LCASE_E,
+
+        /**
+         * U+0586 ARMENIAN SMALL LETTER FEH
+         */
+        ARMENIAN_LCASE_FE,
+
+        /**
+         * U+0572 ARMENIAN SMALL LETTER GHAD
+         */
+        ARMENIAN_LCASE_GHAT,
+
+        /**
+         * U+0563 ARMENIAN SMALL LETTER GIM
+         */
+        ARMENIAN_LCASE_GIM,
+
+        /**
+         * U+0575 ARMENIAN SMALL LETTER YI
+         */
+        ARMENIAN_LCASE_HI,
+
+        /**
+         * U+0570 ARMENIAN SMALL LETTER HO
+         */
+        ARMENIAN_LCASE_HO,
+
+        /**
+         * U+056B ARMENIAN SMALL LETTER INI
+         */
+        ARMENIAN_LCASE_INI,
+
+        /**
+         * U+057B ARMENIAN SMALL LETTER JHEH
+         */
+        ARMENIAN_LCASE_JE,
+
+        /**
+         * U+0584 ARMENIAN SMALL LETTER KEH
+         */
+        ARMENIAN_LCASE_KE,
+
+        /**
+         * U+056F ARMENIAN SMALL LETTER KEN
+         */
+        ARMENIAN_LCASE_KEN,
+
+        /**
+         * U+056D ARMENIAN SMALL LETTER XEH
+         */
+        ARMENIAN_LCASE_KHE,
+
+        /**
+         * U+056C ARMENIAN SMALL LETTER LIWN
+         */
+        ARMENIAN_LCASE_LYUN,
+
+        /**
+         * U+0574 ARMENIAN SMALL LETTER MEN
+         */
+        ARMENIAN_LCASE_MEN,
+
+        /**
+         * U+0576 ARMENIAN SMALL LETTER NOW
+         */
+        ARMENIAN_LCASE_NU,
+
+        /**
+         * U+0585 ARMENIAN SMALL LETTER OH
+         */
+        ARMENIAN_LCASE_O,
+
+        /**
+         * U+057A ARMENIAN SMALL LETTER PEH
+         */
+        ARMENIAN_LCASE_PE,
+
+        /**
+         * U+0583 ARMENIAN SMALL LETTER PIWR
+         */
+        ARMENIAN_LCASE_PYUR,
+
+        /**
+         * U+057C ARMENIAN SMALL LETTER RA
+         */
+        ARMENIAN_LCASE_RA,
+
+        /**
+         * U+0580 ARMENIAN SMALL LETTER REH
+         */
+        ARMENIAN_LCASE_RE,
+
+        /**
+         * U+057D ARMENIAN SMALL LETTER SEH
+         */
+        ARMENIAN_LCASE_SE,
+
+        /**
+         * U+0577 ARMENIAN SMALL LETTER SHA
+         */
+        ARMENIAN_LCASE_SHA,
+
+        /**
+         * U+0573 ARMENIAN SMALL LETTER CHEH
+         */
+        ARMENIAN_LCASE_TCHE,
+
+        /**
+         * U+0569 ARMENIAN SMALL LETTER TO
+         */
+        ARMENIAN_LCASE_TO,
+
+        /**
+         * U+056E ARMENIAN SMALL LETTER CA
+         */
+        ARMENIAN_LCASE_TSA,
+
+        /**
+         * U+0581 ARMENIAN SMALL LETTER CO
+         */
+        ARMENIAN_LCASE_TSO,
+
+        /**
+         * U+057F ARMENIAN SMALL LETTER TIWN
+         */
+        ARMENIAN_LCASE_TYUN,
+
+        /**
+         * U+057E ARMENIAN SMALL LETTER VEW
+         */
+        ARMENIAN_LCASE_VEV,
+
+        /**
+         * U+0578 ARMENIAN SMALL LETTER VO
+         */
+        ARMENIAN_LCASE_VO,
+
+        /**
+         * U+0582 ARMENIAN SMALL LETTER YIWN
+         */
+        ARMENIAN_LCASE_VYUN,
+
+        /**
+         * U+0565 ARMENIAN SMALL LETTER ECH
+         */
+        ARMENIAN_LCASE_YECH,
+
+        /**
+         * U+0566 ARMENIAN SMALL LETTER ZA
+         */
+        ARMENIAN_LCASE_ZA,
+
+        /**
+         * U+056A ARMENIAN SMALL LETTER ZHE
+         */
+        ARMENIAN_LCASE_ZHE,
+
+        /**
+         * U+0587 ARMENIAN SMALL LIGATURE ECH YIWN
+         */
+        ARMENIAN_LIGATURE_EW,
+
+        /**
+         * U+055E ARMENIAN QUESTION MARK
+         */
+        ARMENIAN_PARUYK,
+
+        /**
+         * U+055E ARMENIAN QUESTION MARK
+         */
+        ARMENIAN_QUESTION,
+
+        /**
+         * U+055D ARMENIAN COMMA
+         */
+        ARMENIAN_SEPARATION_MARK,
+
+        /**
+         * U+055B ARMENIAN EMPHASIS MARK
+         */
+        ARMENIAN_SHESHT,
+
+        /**
+         * U+0538 ARMENIAN CAPITAL LETTER ET
+         */
+        ARMENIAN_UCASE_AT,
+
+        /**
+         * U+0531 ARMENIAN CAPITAL LETTER AYB
+         */
+        ARMENIAN_UCASE_AYB,
+
+        /**
+         * U+0532 ARMENIAN CAPITAL LETTER BEN
+         */
+        ARMENIAN_UCASE_BEN,
+
+        /**
+         * U+0549 ARMENIAN CAPITAL LETTER CHA
+         */
+        ARMENIAN_UCASE_CHA,
+
+        /**
+         * U+0534 ARMENIAN CAPITAL LETTER DA
+         */
+        ARMENIAN_UCASE_DA,
+
+        /**
+         * U+0541 ARMENIAN CAPITAL LETTER JA
+         */
+        ARMENIAN_UCASE_DZA,
+
+        /**
+         * U+0537 ARMENIAN CAPITAL LETTER EH
+         */
+        ARMENIAN_UCASE_E,
+
+        /**
+         * U+0556 ARMENIAN CAPITAL LETTER FEH
+         */
+        ARMENIAN_UCASE_FE,
+
+        /**
+         * U+0542 ARMENIAN CAPITAL LETTER GHAD
+         */
+        ARMENIAN_UCASE_GHAT,
+
+        /**
+         * U+0533 ARMENIAN CAPITAL LETTER GIM
+         */
+        ARMENIAN_UCASE_GIM,
+
+        /**
+         * U+0545 ARMENIAN CAPITAL LETTER YI
+         */
+        ARMENIAN_UCASE_HI,
+
+        /**
+         * U+0540 ARMENIAN CAPITAL LETTER HO
+         */
+        ARMENIAN_UCASE_HO,
+
+        /**
+         * U+053B ARMENIAN CAPITAL LETTER INI
+         */
+        ARMENIAN_UCASE_INI,
+
+        /**
+         * U+054B ARMENIAN CAPITAL LETTER JHEH
+         */
+        ARMENIAN_UCASE_JE,
+
+        /**
+         * U+0554 ARMENIAN CAPITAL LETTER KEH
+         */
+        ARMENIAN_UCASE_KE,
+
+        /**
+         * U+053F ARMENIAN CAPITAL LETTER KEN
+         */
+        ARMENIAN_UCASE_KEN,
+
+        /**
+         * U+053D ARMENIAN CAPITAL LETTER XEH
+         */
+        ARMENIAN_UCASE_KHE,
+
+        /**
+         * U+053C ARMENIAN CAPITAL LETTER LIWN
+         */
+        ARMENIAN_UCASE_LYUN,
+
+        /**
+         * U+0544 ARMENIAN CAPITAL LETTER MEN
+         */
+        ARMENIAN_UCASE_MEN,
+
+        /**
+         * U+0546 ARMENIAN CAPITAL LETTER NOW
+         */
+        ARMENIAN_UCASE_NU,
+
+        /**
+         * U+0555 ARMENIAN CAPITAL LETTER OH
+         */
+        ARMENIAN_UCASE_O,
+
+        /**
+         * U+054A ARMENIAN CAPITAL LETTER PEH
+         */
+        ARMENIAN_UCASE_PE,
+
+        /**
+         * U+0553 ARMENIAN CAPITAL LETTER PIWR
+         */
+        ARMENIAN_UCASE_PYUR,
+
+        /**
+         * U+054C ARMENIAN CAPITAL LETTER RA
+         */
+        ARMENIAN_UCASE_RA,
+
+        /**
+         * U+0550 ARMENIAN CAPITAL LETTER REH
+         */
+        ARMENIAN_UCASE_RE,
+
+        /**
+         * U+054D ARMENIAN CAPITAL LETTER SEH
+         */
+        ARMENIAN_UCASE_SE,
+
+        /**
+         * U+0547 ARMENIAN CAPITAL LETTER SHA
+         */
+        ARMENIAN_UCASE_SHA,
+
+        /**
+         * U+0543 ARMENIAN CAPITAL LETTER CHEH
+         */
+        ARMENIAN_UCASE_TCHE,
+
+        /**
+         * U+0539 ARMENIAN CAPITAL LETTER TO
+         */
+        ARMENIAN_UCASE_TO,
+
+        /**
+         * U+053E ARMENIAN CAPITAL LETTER CA
+         */
+        ARMENIAN_UCASE_TSA,
+
+        /**
+         * U+0551 ARMENIAN CAPITAL LETTER CO
+         */
+        ARMENIAN_UCASE_TSO,
+
+        /**
+         * U+054F ARMENIAN CAPITAL LETTER TIWN
+         */
+        ARMENIAN_UCASE_TYUN,
+
+        /**
+         * U+054E ARMENIAN CAPITAL LETTER VEW
+         */
+        ARMENIAN_UCASE_VEV,
+
+        /**
+         * U+0548 ARMENIAN CAPITAL LETTER VO
+         */
+        ARMENIAN_UCASE_VO,
+
+        /**
+         * U+0552 ARMENIAN CAPITAL LETTER YIWN
+         */
+        ARMENIAN_UCASE_VYUN,
+
+        /**
+         * U+0535 ARMENIAN CAPITAL LETTER ECH
+         */
+        ARMENIAN_UCASE_YECH,
+
+        /**
+         * U+0536 ARMENIAN CAPITAL LETTER ZA
+         */
+        ARMENIAN_UCASE_ZA,
+
+        /**
+         * U+053A ARMENIAN CAPITAL LETTER ZHE
+         */
+        ARMENIAN_UCASE_ZHE,
+
+        /**
+         * U+0589 ARMENIAN FULL STOP
+         */
+        ARMENIAN_VERJAKET,
+
+        /**
+         * U+058A ARMENIAN HYPHEN
+         */
+        ARMENIAN_YENTAMNA,
+
+        /**
+         * U+005E CIRCUMFLEX ACCENT
+         */
+        ASCIICIRCUM,
+
+        /**
+         * U+007E TILDE
+         */
+        ASCIITILDE,
+
+        /**
+         * U+002A ASTERISK
+         */
+        ASTERISK,
+
+        /**
+         * U+0040 COMMERCIAL AT
+         */
+        AT,
+
+        /**
+         * Audible Bell Enable
+         */
+        AUDIBLE_BELL_ENABLE,
+
+        /**
+         * U+005C REVERSE SOLIDUS
+         */
+        BACKSLASH,
+
+        /**
+         * Back space, back char
+         */
+        BACK_SPACE,
+
+        /**
+         * Back Tab
+         */
+        BACK_TAB,
+
+        /**
+         * U+2717 BALLOT X
+         */
+        BALLOTCROSS,
+
+        /**
+         * U+007C VERTICAL LINE
+         */
+        BAR,
+
+        /**
+         * U+2235 BECAUSE
+         */
+        BECAUSE,
+
+        /**
+         * BOL
+         */
+        BEGIN,
+
+        /**
+         * Blank
+         */
+        BLANK,
+
+        /**
+         * Block
+         */
+        BLOCK,
+
+        /**
+         * U+2321 BOTTOM HALF INTEGRAL
+         */
+        BOTINTEGRAL,
+
+        /**
+         * U+239D LEFT PARENTHESIS LOWER HOOK
+         */
+        BOTLEFTPARENS,
+
+        /**
+         * U+23A3 LEFT SQUARE BRACKET LOWER CORNER
+         */
+        BOTLEFTSQBRACKET,
+
+        /**
+         * Botleftsummation
+         */
+        BOTLEFTSUMMATION,
+
+        /**
+         * U+23A0 RIGHT PARENTHESIS LOWER HOOK
+         */
+        BOTRIGHTPARENS,
+
+        /**
+         * U+23A6 RIGHT SQUARE BRACKET LOWER CORNER
+         */
+        BOTRIGHTSQBRACKET,
+
+        /**
+         * Botrightsummation
+         */
+        BOTRIGHTSUMMATION,
+
+        /**
+         * U+2534 BOX DRAWINGS LIGHT UP AND HORIZONTAL
+         */
+        BOTT,
+
+        /**
+         * Botvertsummationconnector
+         */
+        BOTVERTSUMMATIONCONNECTOR,
+
+        /**
+         * Bounce Keys Enable
+         */
+        BOUNCE_KEYS_ENABLE,
+
+        /**
+         * U+007B LEFT CURLY BRACKET
+         */
+        BRACELEFT,
+
+        /**
+         * U+007D RIGHT CURLY BRACKET
+         */
+        BRACERIGHT,
+
+        /**
+         * U+005B LEFT SQUARE BRACKET
+         */
+        BRACKETLEFT,
+
+        /**
+         * U+005D RIGHT SQUARE BRACKET
+         */
+        BRACKETRIGHT,
+
+        /**
+         * U+2800 BRAILLE PATTERN BLANK
+         */
+        BRAILLE_BLANK,
+
+        /**
+         * U+2801 BRAILLE PATTERN DOTS-1
+         */
+        BRAILLE_DOTS_1,
+
+        /**
+         * U+2803 BRAILLE PATTERN DOTS-12
+         */
+        BRAILLE_DOTS_12,
+
+        /**
+         * U+2807 BRAILLE PATTERN DOTS-123
+         */
+        BRAILLE_DOTS_123,
+
+        /**
+         * U+280f BRAILLE PATTERN DOTS-1234
+         */
+        BRAILLE_DOTS_1234,
+
+        /**
+         * U+281f BRAILLE PATTERN DOTS-12345
+         */
+        BRAILLE_DOTS_12345,
+
+        /**
+         * U+283f BRAILLE PATTERN DOTS-123456
+         */
+        BRAILLE_DOTS_123456,
+
+        /**
+         * U+287f BRAILLE PATTERN DOTS-1234567
+         */
+        BRAILLE_DOTS_1234567,
+
+        /**
+         * U+28ff BRAILLE PATTERN DOTS-12345678
+         */
+        BRAILLE_DOTS_12345678,
+
+        /**
+         * U+28bf BRAILLE PATTERN DOTS-1234568
+         */
+        BRAILLE_DOTS_1234568,
+
+        /**
+         * U+285f BRAILLE PATTERN DOTS-123457
+         */
+        BRAILLE_DOTS_123457,
+
+        /**
+         * U+28df BRAILLE PATTERN DOTS-1234578
+         */
+        BRAILLE_DOTS_1234578,
+
+        /**
+         * U+289f BRAILLE PATTERN DOTS-123458
+         */
+        BRAILLE_DOTS_123458,
+
+        /**
+         * U+282f BRAILLE PATTERN DOTS-12346
+         */
+        BRAILLE_DOTS_12346,
+
+        /**
+         * U+286f BRAILLE PATTERN DOTS-123467
+         */
+        BRAILLE_DOTS_123467,
+
+        /**
+         * U+28ef BRAILLE PATTERN DOTS-1234678
+         */
+        BRAILLE_DOTS_1234678,
+
+        /**
+         * U+28af BRAILLE PATTERN DOTS-123468
+         */
+        BRAILLE_DOTS_123468,
+
+        /**
+         * U+284f BRAILLE PATTERN DOTS-12347
+         */
+        BRAILLE_DOTS_12347,
+
+        /**
+         * U+28cf BRAILLE PATTERN DOTS-123478
+         */
+        BRAILLE_DOTS_123478,
+
+        /**
+         * U+288f BRAILLE PATTERN DOTS-12348
+         */
+        BRAILLE_DOTS_12348,
+
+        /**
+         * U+2817 BRAILLE PATTERN DOTS-1235
+         */
+        BRAILLE_DOTS_1235,
+
+        /**
+         * U+2837 BRAILLE PATTERN DOTS-12356
+         */
+        BRAILLE_DOTS_12356,
+
+        /**
+         * U+2877 BRAILLE PATTERN DOTS-123567
+         */
+        BRAILLE_DOTS_123567,
+
+        /**
+         * U+28f7 BRAILLE PATTERN DOTS-1235678
+         */
+        BRAILLE_DOTS_1235678,
+
+        /**
+         * U+28b7 BRAILLE PATTERN DOTS-123568
+         */
+        BRAILLE_DOTS_123568,
+
+        /**
+         * U+2857 BRAILLE PATTERN DOTS-12357
+         */
+        BRAILLE_DOTS_12357,
+
+        /**
+         * U+28d7 BRAILLE PATTERN DOTS-123578
+         */
+        BRAILLE_DOTS_123578,
+
+        /**
+         * U+2897 BRAILLE PATTERN DOTS-12358
+         */
+        BRAILLE_DOTS_12358,
+
+        /**
+         * U+2827 BRAILLE PATTERN DOTS-1236
+         */
+        BRAILLE_DOTS_1236,
+
+        /**
+         * U+2867 BRAILLE PATTERN DOTS-12367
+         */
+        BRAILLE_DOTS_12367,
+
+        /**
+         * U+28e7 BRAILLE PATTERN DOTS-123678
+         */
+        BRAILLE_DOTS_123678,
+
+        /**
+         * U+28a7 BRAILLE PATTERN DOTS-12368
+         */
+        BRAILLE_DOTS_12368,
+
+        /**
+         * U+2847 BRAILLE PATTERN DOTS-1237
+         */
+        BRAILLE_DOTS_1237,
+
+        /**
+         * U+28c7 BRAILLE PATTERN DOTS-12378
+         */
+        BRAILLE_DOTS_12378,
+
+        /**
+         * U+2887 BRAILLE PATTERN DOTS-1238
+         */
+        BRAILLE_DOTS_1238,
+
+        /**
+         * U+280b BRAILLE PATTERN DOTS-124
+         */
+        BRAILLE_DOTS_124,
+
+        /**
+         * U+281b BRAILLE PATTERN DOTS-1245
+         */
+        BRAILLE_DOTS_1245,
+
+        /**
+         * U+283b BRAILLE PATTERN DOTS-12456
+         */
+        BRAILLE_DOTS_12456,
+
+        /**
+         * U+287b BRAILLE PATTERN DOTS-124567
+         */
+        BRAILLE_DOTS_124567,
+
+        /**
+         * U+28fb BRAILLE PATTERN DOTS-1245678
+         */
+        BRAILLE_DOTS_1245678,
+
+        /**
+         * U+28bb BRAILLE PATTERN DOTS-124568
+         */
+        BRAILLE_DOTS_124568,
+
+        /**
+         * U+285b BRAILLE PATTERN DOTS-12457
+         */
+        BRAILLE_DOTS_12457,
+
+        /**
+         * U+28db BRAILLE PATTERN DOTS-124578
+         */
+        BRAILLE_DOTS_124578,
+
+        /**
+         * U+289b BRAILLE PATTERN DOTS-12458
+         */
+        BRAILLE_DOTS_12458,
+
+        /**
+         * U+282b BRAILLE PATTERN DOTS-1246
+         */
+        BRAILLE_DOTS_1246,
+
+        /**
+         * U+286b BRAILLE PATTERN DOTS-12467
+         */
+        BRAILLE_DOTS_12467,
+
+        /**
+         * U+28eb BRAILLE PATTERN DOTS-124678
+         */
+        BRAILLE_DOTS_124678,
+
+        /**
+         * U+28ab BRAILLE PATTERN DOTS-12468
+         */
+        BRAILLE_DOTS_12468,
+
+        /**
+         * U+284b BRAILLE PATTERN DOTS-1247
+         */
+        BRAILLE_DOTS_1247,
+
+        /**
+         * U+28cb BRAILLE PATTERN DOTS-12478
+         */
+        BRAILLE_DOTS_12478,
+
+        /**
+         * U+288b BRAILLE PATTERN DOTS-1248
+         */
+        BRAILLE_DOTS_1248,
+
+        /**
+         * U+2813 BRAILLE PATTERN DOTS-125
+         */
+        BRAILLE_DOTS_125,
+
+        /**
+         * U+2833 BRAILLE PATTERN DOTS-1256
+         */
+        BRAILLE_DOTS_1256,
+
+        /**
+         * U+2873 BRAILLE PATTERN DOTS-12567
+         */
+        BRAILLE_DOTS_12567,
+
+        /**
+         * U+28f3 BRAILLE PATTERN DOTS-125678
+         */
+        BRAILLE_DOTS_125678,
+
+        /**
+         * U+28b3 BRAILLE PATTERN DOTS-12568
+         */
+        BRAILLE_DOTS_12568,
+
+        /**
+         * U+2853 BRAILLE PATTERN DOTS-1257
+         */
+        BRAILLE_DOTS_1257,
+
+        /**
+         * U+28d3 BRAILLE PATTERN DOTS-12578
+         */
+        BRAILLE_DOTS_12578,
+
+        /**
+         * U+2893 BRAILLE PATTERN DOTS-1258
+         */
+        BRAILLE_DOTS_1258,
+
+        /**
+         * U+2823 BRAILLE PATTERN DOTS-126
+         */
+        BRAILLE_DOTS_126,
+
+        /**
+         * U+2863 BRAILLE PATTERN DOTS-1267
+         */
+        BRAILLE_DOTS_1267,
+
+        /**
+         * U+28e3 BRAILLE PATTERN DOTS-12678
+         */
+        BRAILLE_DOTS_12678,
+
+        /**
+         * U+28a3 BRAILLE PATTERN DOTS-1268
+         */
+        BRAILLE_DOTS_1268,
+
+        /**
+         * U+2843 BRAILLE PATTERN DOTS-127
+         */
+        BRAILLE_DOTS_127,
+
+        /**
+         * U+28c3 BRAILLE PATTERN DOTS-1278
+         */
+        BRAILLE_DOTS_1278,
+
+        /**
+         * U+2883 BRAILLE PATTERN DOTS-128
+         */
+        BRAILLE_DOTS_128,
+
+        /**
+         * U+2805 BRAILLE PATTERN DOTS-13
+         */
+        BRAILLE_DOTS_13,
+
+        /**
+         * U+280d BRAILLE PATTERN DOTS-134
+         */
+        BRAILLE_DOTS_134,
+
+        /**
+         * U+281d BRAILLE PATTERN DOTS-1345
+         */
+        BRAILLE_DOTS_1345,
+
+        /**
+         * U+283d BRAILLE PATTERN DOTS-13456
+         */
+        BRAILLE_DOTS_13456,
+
+        /**
+         * U+287d BRAILLE PATTERN DOTS-134567
+         */
+        BRAILLE_DOTS_134567,
+
+        /**
+         * U+28fd BRAILLE PATTERN DOTS-1345678
+         */
+        BRAILLE_DOTS_1345678,
+
+        /**
+         * U+28bd BRAILLE PATTERN DOTS-134568
+         */
+        BRAILLE_DOTS_134568,
+
+        /**
+         * U+285d BRAILLE PATTERN DOTS-13457
+         */
+        BRAILLE_DOTS_13457,
+
+        /**
+         * U+28dd BRAILLE PATTERN DOTS-134578
+         */
+        BRAILLE_DOTS_134578,
+
+        /**
+         * U+289d BRAILLE PATTERN DOTS-13458
+         */
+        BRAILLE_DOTS_13458,
+
+        /**
+         * U+282d BRAILLE PATTERN DOTS-1346
+         */
+        BRAILLE_DOTS_1346,
+
+        /**
+         * U+286d BRAILLE PATTERN DOTS-13467
+         */
+        BRAILLE_DOTS_13467,
+
+        /**
+         * U+28ed BRAILLE PATTERN DOTS-134678
+         */
+        BRAILLE_DOTS_134678,
+
+        /**
+         * U+28ad BRAILLE PATTERN DOTS-13468
+         */
+        BRAILLE_DOTS_13468,
+
+        /**
+         * U+284d BRAILLE PATTERN DOTS-1347
+         */
+        BRAILLE_DOTS_1347,
+
+        /**
+         * U+28cd BRAILLE PATTERN DOTS-13478
+         */
+        BRAILLE_DOTS_13478,
+
+        /**
+         * U+288d BRAILLE PATTERN DOTS-1348
+         */
+        BRAILLE_DOTS_1348,
+
+        /**
+         * U+2815 BRAILLE PATTERN DOTS-135
+         */
+        BRAILLE_DOTS_135,
+
+        /**
+         * U+2835 BRAILLE PATTERN DOTS-1356
+         */
+        BRAILLE_DOTS_1356,
+
+        /**
+         * U+2875 BRAILLE PATTERN DOTS-13567
+         */
+        BRAILLE_DOTS_13567,
+
+        /**
+         * U+28f5 BRAILLE PATTERN DOTS-135678
+         */
+        BRAILLE_DOTS_135678,
+
+        /**
+         * U+28b5 BRAILLE PATTERN DOTS-13568
+         */
+        BRAILLE_DOTS_13568,
+
+        /**
+         * U+2855 BRAILLE PATTERN DOTS-1357
+         */
+        BRAILLE_DOTS_1357,
+
+        /**
+         * U+28d5 BRAILLE PATTERN DOTS-13578
+         */
+        BRAILLE_DOTS_13578,
+
+        /**
+         * U+2895 BRAILLE PATTERN DOTS-1358
+         */
+        BRAILLE_DOTS_1358,
+
+        /**
+         * U+2825 BRAILLE PATTERN DOTS-136
+         */
+        BRAILLE_DOTS_136,
+
+        /**
+         * U+2865 BRAILLE PATTERN DOTS-1367
+         */
+        BRAILLE_DOTS_1367,
+
+        /**
+         * U+28e5 BRAILLE PATTERN DOTS-13678
+         */
+        BRAILLE_DOTS_13678,
+
+        /**
+         * U+28a5 BRAILLE PATTERN DOTS-1368
+         */
+        BRAILLE_DOTS_1368,
+
+        /**
+         * U+2845 BRAILLE PATTERN DOTS-137
+         */
+        BRAILLE_DOTS_137,
+
+        /**
+         * U+28c5 BRAILLE PATTERN DOTS-1378
+         */
+        BRAILLE_DOTS_1378,
+
+        /**
+         * U+2885 BRAILLE PATTERN DOTS-138
+         */
+        BRAILLE_DOTS_138,
+
+        /**
+         * U+2809 BRAILLE PATTERN DOTS-14
+         */
+        BRAILLE_DOTS_14,
+
+        /**
+         * U+2819 BRAILLE PATTERN DOTS-145
+         */
+        BRAILLE_DOTS_145,
+
+        /**
+         * U+2839 BRAILLE PATTERN DOTS-1456
+         */
+        BRAILLE_DOTS_1456,
+
+        /**
+         * U+2879 BRAILLE PATTERN DOTS-14567
+         */
+        BRAILLE_DOTS_14567,
+
+        /**
+         * U+28f9 BRAILLE PATTERN DOTS-145678
+         */
+        BRAILLE_DOTS_145678,
+
+        /**
+         * U+28b9 BRAILLE PATTERN DOTS-14568
+         */
+        BRAILLE_DOTS_14568,
+
+        /**
+         * U+2859 BRAILLE PATTERN DOTS-1457
+         */
+        BRAILLE_DOTS_1457,
+
+        /**
+         * U+28d9 BRAILLE PATTERN DOTS-14578
+         */
+        BRAILLE_DOTS_14578,
+
+        /**
+         * U+2899 BRAILLE PATTERN DOTS-1458
+         */
+        BRAILLE_DOTS_1458,
+
+        /**
+         * U+2829 BRAILLE PATTERN DOTS-146
+         */
+        BRAILLE_DOTS_146,
+
+        /**
+         * U+2869 BRAILLE PATTERN DOTS-1467
+         */
+        BRAILLE_DOTS_1467,
+
+        /**
+         * U+28e9 BRAILLE PATTERN DOTS-14678
+         */
+        BRAILLE_DOTS_14678,
+
+        /**
+         * U+28a9 BRAILLE PATTERN DOTS-1468
+         */
+        BRAILLE_DOTS_1468,
+
+        /**
+         * U+2849 BRAILLE PATTERN DOTS-147
+         */
+        BRAILLE_DOTS_147,
+
+        /**
+         * U+28c9 BRAILLE PATTERN DOTS-1478
+         */
+        BRAILLE_DOTS_1478,
+
+        /**
+         * U+2889 BRAILLE PATTERN DOTS-148
+         */
+        BRAILLE_DOTS_148,
+
+        /**
+         * U+2811 BRAILLE PATTERN DOTS-15
+         */
+        BRAILLE_DOTS_15,
+
+        /**
+         * U+2831 BRAILLE PATTERN DOTS-156
+         */
+        BRAILLE_DOTS_156,
+
+        /**
+         * U+2871 BRAILLE PATTERN DOTS-1567
+         */
+        BRAILLE_DOTS_1567,
+
+        /**
+         * U+28f1 BRAILLE PATTERN DOTS-15678
+         */
+        BRAILLE_DOTS_15678,
+
+        /**
+         * U+28b1 BRAILLE PATTERN DOTS-1568
+         */
+        BRAILLE_DOTS_1568,
+
+        /**
+         * U+2851 BRAILLE PATTERN DOTS-157
+         */
+        BRAILLE_DOTS_157,
+
+        /**
+         * U+28d1 BRAILLE PATTERN DOTS-1578
+         */
+        BRAILLE_DOTS_1578,
+
+        /**
+         * U+2891 BRAILLE PATTERN DOTS-158
+         */
+        BRAILLE_DOTS_158,
+
+        /**
+         * U+2821 BRAILLE PATTERN DOTS-16
+         */
+        BRAILLE_DOTS_16,
+
+        /**
+         * U+2861 BRAILLE PATTERN DOTS-167
+         */
+        BRAILLE_DOTS_167,
+
+        /**
+         * U+28e1 BRAILLE PATTERN DOTS-1678
+         */
+        BRAILLE_DOTS_1678,
+
+        /**
+         * U+28a1 BRAILLE PATTERN DOTS-168
+         */
+        BRAILLE_DOTS_168,
+
+        /**
+         * U+2841 BRAILLE PATTERN DOTS-17
+         */
+        BRAILLE_DOTS_17,
+
+        /**
+         * U+28c1 BRAILLE PATTERN DOTS-178
+         */
+        BRAILLE_DOTS_178,
+
+        /**
+         * U+2881 BRAILLE PATTERN DOTS-18
+         */
+        BRAILLE_DOTS_18,
+
+        /**
+         * U+2802 BRAILLE PATTERN DOTS-2
+         */
+        BRAILLE_DOTS_2,
+
+        /**
+         * U+2806 BRAILLE PATTERN DOTS-23
+         */
+        BRAILLE_DOTS_23,
+
+        /**
+         * U+280e BRAILLE PATTERN DOTS-234
+         */
+        BRAILLE_DOTS_234,
+
+        /**
+         * U+281e BRAILLE PATTERN DOTS-2345
+         */
+        BRAILLE_DOTS_2345,
+
+        /**
+         * U+283e BRAILLE PATTERN DOTS-23456
+         */
+        BRAILLE_DOTS_23456,
+
+        /**
+         * U+287e BRAILLE PATTERN DOTS-234567
+         */
+        BRAILLE_DOTS_234567,
+
+        /**
+         * U+28fe BRAILLE PATTERN DOTS-2345678
+         */
+        BRAILLE_DOTS_2345678,
+
+        /**
+         * U+28be BRAILLE PATTERN DOTS-234568
+         */
+        BRAILLE_DOTS_234568,
+
+        /**
+         * U+285e BRAILLE PATTERN DOTS-23457
+         */
+        BRAILLE_DOTS_23457,
+
+        /**
+         * U+28de BRAILLE PATTERN DOTS-234578
+         */
+        BRAILLE_DOTS_234578,
+
+        /**
+         * U+289e BRAILLE PATTERN DOTS-23458
+         */
+        BRAILLE_DOTS_23458,
+
+        /**
+         * U+282e BRAILLE PATTERN DOTS-2346
+         */
+        BRAILLE_DOTS_2346,
+
+        /**
+         * U+286e BRAILLE PATTERN DOTS-23467
+         */
+        BRAILLE_DOTS_23467,
+
+        /**
+         * U+28ee BRAILLE PATTERN DOTS-234678
+         */
+        BRAILLE_DOTS_234678,
+
+        /**
+         * U+28ae BRAILLE PATTERN DOTS-23468
+         */
+        BRAILLE_DOTS_23468,
+
+        /**
+         * U+284e BRAILLE PATTERN DOTS-2347
+         */
+        BRAILLE_DOTS_2347,
+
+        /**
+         * U+28ce BRAILLE PATTERN DOTS-23478
+         */
+        BRAILLE_DOTS_23478,
+
+        /**
+         * U+288e BRAILLE PATTERN DOTS-2348
+         */
+        BRAILLE_DOTS_2348,
+
+        /**
+         * U+2816 BRAILLE PATTERN DOTS-235
+         */
+        BRAILLE_DOTS_235,
+
+        /**
+         * U+2836 BRAILLE PATTERN DOTS-2356
+         */
+        BRAILLE_DOTS_2356,
+
+        /**
+         * U+2876 BRAILLE PATTERN DOTS-23567
+         */
+        BRAILLE_DOTS_23567,
+
+        /**
+         * U+28f6 BRAILLE PATTERN DOTS-235678
+         */
+        BRAILLE_DOTS_235678,
+
+        /**
+         * U+28b6 BRAILLE PATTERN DOTS-23568
+         */
+        BRAILLE_DOTS_23568,
+
+        /**
+         * U+2856 BRAILLE PATTERN DOTS-2357
+         */
+        BRAILLE_DOTS_2357,
+
+        /**
+         * U+28d6 BRAILLE PATTERN DOTS-23578
+         */
+        BRAILLE_DOTS_23578,
+
+        /**
+         * U+2896 BRAILLE PATTERN DOTS-2358
+         */
+        BRAILLE_DOTS_2358,
+
+        /**
+         * U+2826 BRAILLE PATTERN DOTS-236
+         */
+        BRAILLE_DOTS_236,
+
+        /**
+         * U+2866 BRAILLE PATTERN DOTS-2367
+         */
+        BRAILLE_DOTS_2367,
+
+        /**
+         * U+28e6 BRAILLE PATTERN DOTS-23678
+         */
+        BRAILLE_DOTS_23678,
+
+        /**
+         * U+28a6 BRAILLE PATTERN DOTS-2368
+         */
+        BRAILLE_DOTS_2368,
+
+        /**
+         * U+2846 BRAILLE PATTERN DOTS-237
+         */
+        BRAILLE_DOTS_237,
+
+        /**
+         * U+28c6 BRAILLE PATTERN DOTS-2378
+         */
+        BRAILLE_DOTS_2378,
+
+        /**
+         * U+2886 BRAILLE PATTERN DOTS-238
+         */
+        BRAILLE_DOTS_238,
+
+        /**
+         * U+280a BRAILLE PATTERN DOTS-24
+         */
+        BRAILLE_DOTS_24,
+
+        /**
+         * U+281a BRAILLE PATTERN DOTS-245
+         */
+        BRAILLE_DOTS_245,
+
+        /**
+         * U+283a BRAILLE PATTERN DOTS-2456
+         */
+        BRAILLE_DOTS_2456,
+
+        /**
+         * U+287a BRAILLE PATTERN DOTS-24567
+         */
+        BRAILLE_DOTS_24567,
+
+        /**
+         * U+28fa BRAILLE PATTERN DOTS-245678
+         */
+        BRAILLE_DOTS_245678,
+
+        /**
+         * U+28ba BRAILLE PATTERN DOTS-24568
+         */
+        BRAILLE_DOTS_24568,
+
+        /**
+         * U+285a BRAILLE PATTERN DOTS-2457
+         */
+        BRAILLE_DOTS_2457,
+
+        /**
+         * U+28da BRAILLE PATTERN DOTS-24578
+         */
+        BRAILLE_DOTS_24578,
+
+        /**
+         * U+289a BRAILLE PATTERN DOTS-2458
+         */
+        BRAILLE_DOTS_2458,
+
+        /**
+         * U+282a BRAILLE PATTERN DOTS-246
+         */
+        BRAILLE_DOTS_246,
+
+        /**
+         * U+286a BRAILLE PATTERN DOTS-2467
+         */
+        BRAILLE_DOTS_2467,
+
+        /**
+         * U+28ea BRAILLE PATTERN DOTS-24678
+         */
+        BRAILLE_DOTS_24678,
+
+        /**
+         * U+28aa BRAILLE PATTERN DOTS-2468
+         */
+        BRAILLE_DOTS_2468,
+
+        /**
+         * U+284a BRAILLE PATTERN DOTS-247
+         */
+        BRAILLE_DOTS_247,
+
+        /**
+         * U+28ca BRAILLE PATTERN DOTS-2478
+         */
+        BRAILLE_DOTS_2478,
+
+        /**
+         * U+288a BRAILLE PATTERN DOTS-248
+         */
+        BRAILLE_DOTS_248,
+
+        /**
+         * U+2812 BRAILLE PATTERN DOTS-25
+         */
+        BRAILLE_DOTS_25,
+
+        /**
+         * U+2832 BRAILLE PATTERN DOTS-256
+         */
+        BRAILLE_DOTS_256,
+
+        /**
+         * U+2872 BRAILLE PATTERN DOTS-2567
+         */
+        BRAILLE_DOTS_2567,
+
+        /**
+         * U+28f2 BRAILLE PATTERN DOTS-25678
+         */
+        BRAILLE_DOTS_25678,
+
+        /**
+         * U+28b2 BRAILLE PATTERN DOTS-2568
+         */
+        BRAILLE_DOTS_2568,
+
+        /**
+         * U+2852 BRAILLE PATTERN DOTS-257
+         */
+        BRAILLE_DOTS_257,
+
+        /**
+         * U+28d2 BRAILLE PATTERN DOTS-2578
+         */
+        BRAILLE_DOTS_2578,
+
+        /**
+         * U+2892 BRAILLE PATTERN DOTS-258
+         */
+        BRAILLE_DOTS_258,
+
+        /**
+         * U+2822 BRAILLE PATTERN DOTS-26
+         */
+        BRAILLE_DOTS_26,
+
+        /**
+         * U+2862 BRAILLE PATTERN DOTS-267
+         */
+        BRAILLE_DOTS_267,
+
+        /**
+         * U+28e2 BRAILLE PATTERN DOTS-2678
+         */
+        BRAILLE_DOTS_2678,
+
+        /**
+         * U+28a2 BRAILLE PATTERN DOTS-268
+         */
+        BRAILLE_DOTS_268,
+
+        /**
+         * U+2842 BRAILLE PATTERN DOTS-27
+         */
+        BRAILLE_DOTS_27,
+
+        /**
+         * U+28c2 BRAILLE PATTERN DOTS-278
+         */
+        BRAILLE_DOTS_278,
+
+        /**
+         * U+2882 BRAILLE PATTERN DOTS-28
+         */
+        BRAILLE_DOTS_28,
+
+        /**
+         * U+2804 BRAILLE PATTERN DOTS-3
+         */
+        BRAILLE_DOTS_3,
+
+        /**
+         * U+280c BRAILLE PATTERN DOTS-34
+         */
+        BRAILLE_DOTS_34,
+
+        /**
+         * U+281c BRAILLE PATTERN DOTS-345
+         */
+        BRAILLE_DOTS_345,
+
+        /**
+         * U+283c BRAILLE PATTERN DOTS-3456
+         */
+        BRAILLE_DOTS_3456,
+
+        /**
+         * U+287c BRAILLE PATTERN DOTS-34567
+         */
+        BRAILLE_DOTS_34567,
+
+        /**
+         * U+28fc BRAILLE PATTERN DOTS-345678
+         */
+        BRAILLE_DOTS_345678,
+
+        /**
+         * U+28bc BRAILLE PATTERN DOTS-34568
+         */
+        BRAILLE_DOTS_34568,
+
+        /**
+         * U+285c BRAILLE PATTERN DOTS-3457
+         */
+        BRAILLE_DOTS_3457,
+
+        /**
+         * U+28dc BRAILLE PATTERN DOTS-34578
+         */
+        BRAILLE_DOTS_34578,
+
+        /**
+         * U+289c BRAILLE PATTERN DOTS-3458
+         */
+        BRAILLE_DOTS_3458,
+
+        /**
+         * U+282c BRAILLE PATTERN DOTS-346
+         */
+        BRAILLE_DOTS_346,
+
+        /**
+         * U+286c BRAILLE PATTERN DOTS-3467
+         */
+        BRAILLE_DOTS_3467,
+
+        /**
+         * U+28ec BRAILLE PATTERN DOTS-34678
+         */
+        BRAILLE_DOTS_34678,
+
+        /**
+         * U+28ac BRAILLE PATTERN DOTS-3468
+         */
+        BRAILLE_DOTS_3468,
+
+        /**
+         * U+284c BRAILLE PATTERN DOTS-347
+         */
+        BRAILLE_DOTS_347,
+
+        /**
+         * U+28cc BRAILLE PATTERN DOTS-3478
+         */
+        BRAILLE_DOTS_3478,
+
+        /**
+         * U+288c BRAILLE PATTERN DOTS-348
+         */
+        BRAILLE_DOTS_348,
+
+        /**
+         * U+2814 BRAILLE PATTERN DOTS-35
+         */
+        BRAILLE_DOTS_35,
+
+        /**
+         * U+2834 BRAILLE PATTERN DOTS-356
+         */
+        BRAILLE_DOTS_356,
+
+        /**
+         * U+2874 BRAILLE PATTERN DOTS-3567
+         */
+        BRAILLE_DOTS_3567,
+
+        /**
+         * U+28f4 BRAILLE PATTERN DOTS-35678
+         */
+        BRAILLE_DOTS_35678,
+
+        /**
+         * U+28b4 BRAILLE PATTERN DOTS-3568
+         */
+        BRAILLE_DOTS_3568,
+
+        /**
+         * U+2854 BRAILLE PATTERN DOTS-357
+         */
+        BRAILLE_DOTS_357,
+
+        /**
+         * U+28d4 BRAILLE PATTERN DOTS-3578
+         */
+        BRAILLE_DOTS_3578,
+
+        /**
+         * U+2894 BRAILLE PATTERN DOTS-358
+         */
+        BRAILLE_DOTS_358,
+
+        /**
+         * U+2824 BRAILLE PATTERN DOTS-36
+         */
+        BRAILLE_DOTS_36,
+
+        /**
+         * U+2864 BRAILLE PATTERN DOTS-367
+         */
+        BRAILLE_DOTS_367,
+
+        /**
+         * U+28e4 BRAILLE PATTERN DOTS-3678
+         */
+        BRAILLE_DOTS_3678,
+
+        /**
+         * U+28a4 BRAILLE PATTERN DOTS-368
+         */
+        BRAILLE_DOTS_368,
+
+        /**
+         * U+2844 BRAILLE PATTERN DOTS-37
+         */
+        BRAILLE_DOTS_37,
+
+        /**
+         * U+28c4 BRAILLE PATTERN DOTS-378
+         */
+        BRAILLE_DOTS_378,
+
+        /**
+         * U+2884 BRAILLE PATTERN DOTS-38
+         */
+        BRAILLE_DOTS_38,
+
+        /**
+         * U+2808 BRAILLE PATTERN DOTS-4
+         */
+        BRAILLE_DOTS_4,
+
+        /**
+         * U+2818 BRAILLE PATTERN DOTS-45
+         */
+        BRAILLE_DOTS_45,
+
+        /**
+         * U+2838 BRAILLE PATTERN DOTS-456
+         */
+        BRAILLE_DOTS_456,
+
+        /**
+         * U+2878 BRAILLE PATTERN DOTS-4567
+         */
+        BRAILLE_DOTS_4567,
+
+        /**
+         * U+28f8 BRAILLE PATTERN DOTS-45678
+         */
+        BRAILLE_DOTS_45678,
+
+        /**
+         * U+28b8 BRAILLE PATTERN DOTS-4568
+         */
+        BRAILLE_DOTS_4568,
+
+        /**
+         * U+2858 BRAILLE PATTERN DOTS-457
+         */
+        BRAILLE_DOTS_457,
+
+        /**
+         * U+28d8 BRAILLE PATTERN DOTS-4578
+         */
+        BRAILLE_DOTS_4578,
+
+        /**
+         * U+2898 BRAILLE PATTERN DOTS-458
+         */
+        BRAILLE_DOTS_458,
+
+        /**
+         * U+2828 BRAILLE PATTERN DOTS-46
+         */
+        BRAILLE_DOTS_46,
+
+        /**
+         * U+2868 BRAILLE PATTERN DOTS-467
+         */
+        BRAILLE_DOTS_467,
+
+        /**
+         * U+28e8 BRAILLE PATTERN DOTS-4678
+         */
+        BRAILLE_DOTS_4678,
+
+        /**
+         * U+28a8 BRAILLE PATTERN DOTS-468
+         */
+        BRAILLE_DOTS_468,
+
+        /**
+         * U+2848 BRAILLE PATTERN DOTS-47
+         */
+        BRAILLE_DOTS_47,
+
+        /**
+         * U+28c8 BRAILLE PATTERN DOTS-478
+         */
+        BRAILLE_DOTS_478,
+
+        /**
+         * U+2888 BRAILLE PATTERN DOTS-48
+         */
+        BRAILLE_DOTS_48,
+
+        /**
+         * U+2810 BRAILLE PATTERN DOTS-5
+         */
+        BRAILLE_DOTS_5,
+
+        /**
+         * U+2830 BRAILLE PATTERN DOTS-56
+         */
+        BRAILLE_DOTS_56,
+
+        /**
+         * U+2870 BRAILLE PATTERN DOTS-567
+         */
+        BRAILLE_DOTS_567,
+
+        /**
+         * U+28f0 BRAILLE PATTERN DOTS-5678
+         */
+        BRAILLE_DOTS_5678,
+
+        /**
+         * U+28b0 BRAILLE PATTERN DOTS-568
+         */
+        BRAILLE_DOTS_568,
+
+        /**
+         * U+2850 BRAILLE PATTERN DOTS-57
+         */
+        BRAILLE_DOTS_57,
+
+        /**
+         * U+28d0 BRAILLE PATTERN DOTS-578
+         */
+        BRAILLE_DOTS_578,
+
+        /**
+         * U+2890 BRAILLE PATTERN DOTS-58
+         */
+        BRAILLE_DOTS_58,
+
+        /**
+         * U+2820 BRAILLE PATTERN DOTS-6
+         */
+        BRAILLE_DOTS_6,
+
+        /**
+         * U+2860 BRAILLE PATTERN DOTS-67
+         */
+        BRAILLE_DOTS_67,
+
+        /**
+         * U+28e0 BRAILLE PATTERN DOTS-678
+         */
+        BRAILLE_DOTS_678,
+
+        /**
+         * U+28a0 BRAILLE PATTERN DOTS-68
+         */
+        BRAILLE_DOTS_68,
+
+        /**
+         * U+2840 BRAILLE PATTERN DOTS-7
+         */
+        BRAILLE_DOTS_7,
+
+        /**
+         * U+28c0 BRAILLE PATTERN DOTS-78
+         */
+        BRAILLE_DOTS_78,
+
+        /**
+         * U+2880 BRAILLE PATTERN DOTS-8
+         */
+        BRAILLE_DOTS_8,
+
+        /**
+         * Braille Dot 1
+         */
+        BRAILLE_DOT_1,
+
+        /**
+         * Braille Dot 10
+         */
+        BRAILLE_DOT_10,
+
+        /**
+         * Braille Dot 2
+         */
+        BRAILLE_DOT_2,
+
+        /**
+         * Braille Dot 3
+         */
+        BRAILLE_DOT_3,
+
+        /**
+         * Braille Dot 4
+         */
+        BRAILLE_DOT_4,
+
+        /**
+         * Braille Dot 5
+         */
+        BRAILLE_DOT_5,
+
+        /**
+         * Braille Dot 6
+         */
+        BRAILLE_DOT_6,
+
+        /**
+         * Braille Dot 7
+         */
+        BRAILLE_DOT_7,
+
+        /**
+         * Braille Dot 8
+         */
+        BRAILLE_DOT_8,
+
+        /**
+         * Braille Dot 9
+         */
+        BRAILLE_DOT_9,
+
+        /**
+         * Break
+         */
+        BREAK,
+
+        /**
+         * U+02D8 BREVE
+         */
+        BREVE,
+
+        /**
+         * U+00A6 BROKEN BAR
+         */
+        BROKENBAR,
+
+        /**
+         * U+045E CYRILLIC SMALL LETTER SHORT U
+         */
+        BYELORUSSIAN_LCASE_SHORTU,
+
+        /**
+         * U+040E CYRILLIC CAPITAL LETTER SHORT U
+         */
+        BYELORUSSIAN_UCASE_SHORTU,
+
+        /**
+         * Cancel, stop, abort, exit
+         */
+        CANCEL,
+
+        /**
+         * Caps lock
+         */
+        CAPS_LOCK,
+
+        /**
+         * U+2105 CARE OF
+         */
+        CAREOF,
+
+        /**
+         * U+2038 CARET
+         */
+        CARET,
+
+        /**
+         * U+02C7 CARON
+         */
+        CARON,
+
+        /**
+         * U+00B8 CEDILLA
+         */
+        CEDILLA,
+
+        /**
+         * U+00A2 CENT SIGN
+         */
+        CENT,
+
+        /**
+         * U+2592 MEDIUM SHADE
+         */
+        CHECKERBOARD,
+
+        /**
+         * U+2713 CHECK MARK
+         */
+        CHECKMARK,
+
+        /**
+         * U+25CB WHITE CIRCLE
+         */
+        CIRCLE,
+
+        /**
+         * Clear
+         */
+        CLEAR,
+
+        /**
+         * Clear Line
+         */
+        CLEAR_LINE,
+
+        /**
+         * U+2663 BLACK CLUB SUIT
+         */
+        CLUB,
+
+        /**
+         * Codeinput
+         */
+        CODEINPUT,
+
+        /**
+         * U+003A COLON
+         */
+        COLON,
+
+        /**
+         * U+20A1 COLON SIGN
+         */
+        COLON_SIGN,
+
+        /**
+         * U+002C COMMA
+         */
+        COMMA,
+
+        /**
+         * U+220B CONTAINS AS MEMBER
+         */
+        CONTAINSAS,
+
+        /**
+         * Left control
+         */
+        CONTROL_L,
+
+        /**
+         * Right control
+         */
+        CONTROL_R,
+
+        /**
+         * U+00A9 COPYRIGHT SIGN
+         */
+        COPYRIGHT,
+
+        /**
+         * U+240D SYMBOL FOR CARRIAGE RETURN
+         */
+        CR,
+
+        /**
+         * U+253C BOX DRAWINGS LIGHT VERTICAL AND HORIZONTAL
+         */
+        CROSSINGLINES,
+
+        /**
+         * U+20A2 CRUZEIRO SIGN
+         */
+        CRUZEIRO_SIGN,
+
+        /**
+         * U+221B CUBE ROOT
+         */
+        CUBEROOT,
+
+        /**
+         * U+00A4 CURRENCY SIGN
+         */
+        CURRENCY,
+
+        /**
+         * Cursor
+         */
+        CURSOR,
+
+        /**
+         * U+0430 CYRILLIC SMALL LETTER A
+         */
+        CYRILLIC_LCASE_A,
+
+        /**
+         * U+0431 CYRILLIC SMALL LETTER BE
+         */
+        CYRILLIC_LCASE_BE,
+
+        /**
+         * U+0447 CYRILLIC SMALL LETTER CHE
+         */
+        CYRILLIC_LCASE_CHE,
+
+        /**
+         * U+04B7 CYRILLIC SMALL LETTER CHE WITH DESCENDER
+         */
+        CYRILLIC_LCASE_CHE_DESCENDER,
+
+        /**
+         * U+04B9 CYRILLIC SMALL LETTER CHE WITH VERTICAL STROKE
+         */
+        CYRILLIC_LCASE_CHE_VERTSTROKE,
+
+        /**
+         * U+0434 CYRILLIC SMALL LETTER DE
+         */
+        CYRILLIC_LCASE_DE,
+
+        /**
+         * U+045F CYRILLIC SMALL LETTER DZHE
+         */
+        CYRILLIC_LCASE_DZHE,
+
+        /**
+         * U+044D CYRILLIC SMALL LETTER E
+         */
+        CYRILLIC_LCASE_E,
+
+        /**
+         * U+0444 CYRILLIC SMALL LETTER EF
+         */
+        CYRILLIC_LCASE_EF,
+
+        /**
+         * U+043B CYRILLIC SMALL LETTER EL
+         */
+        CYRILLIC_LCASE_EL,
+
+        /**
+         * U+043C CYRILLIC SMALL LETTER EM
+         */
+        CYRILLIC_LCASE_EM,
+
+        /**
+         * U+043D CYRILLIC SMALL LETTER EN
+         */
+        CYRILLIC_LCASE_EN,
+
+        /**
+         * U+04A3 CYRILLIC SMALL LETTER EN WITH DESCENDER
+         */
+        CYRILLIC_LCASE_EN_DESCENDER,
+
+        /**
+         * U+0440 CYRILLIC SMALL LETTER ER
+         */
+        CYRILLIC_LCASE_ER,
+
+        /**
+         * U+0441 CYRILLIC SMALL LETTER ES
+         */
+        CYRILLIC_LCASE_ES,
+
+        /**
+         * U+0433 CYRILLIC SMALL LETTER GHE
+         */
+        CYRILLIC_LCASE_GHE,
+
+        /**
+         * U+0493 CYRILLIC SMALL LETTER GHE WITH STROKE
+         */
+        CYRILLIC_LCASE_GHE_BAR,
+
+        /**
+         * U+0445 CYRILLIC SMALL LETTER HA
+         */
+        CYRILLIC_LCASE_HA,
+
+        /**
+         * U+044A CYRILLIC SMALL LETTER HARD SIGN
+         */
+        CYRILLIC_LCASE_HARDSIGN,
+
+        /**
+         * U+04B3 CYRILLIC SMALL LETTER HA WITH DESCENDER
+         */
+        CYRILLIC_LCASE_HA_DESCENDER,
+
+        /**
+         * U+0438 CYRILLIC SMALL LETTER I
+         */
+        CYRILLIC_LCASE_I,
+
+        /**
+         * U+0435 CYRILLIC SMALL LETTER IE
+         */
+        CYRILLIC_LCASE_IE,
+
+        /**
+         * U+0451 CYRILLIC SMALL LETTER IO
+         */
+        CYRILLIC_LCASE_IO,
+
+        /**
+         * U+04E3 CYRILLIC SMALL LETTER I WITH MACRON
+         */
+        CYRILLIC_LCASE_I_MACRON,
+
+        /**
+         * U+0458 CYRILLIC SMALL LETTER JE
+         */
+        CYRILLIC_LCASE_JE,
+
+        /**
+         * U+043A CYRILLIC SMALL LETTER KA
+         */
+        CYRILLIC_LCASE_KA,
+
+        /**
+         * U+049B CYRILLIC SMALL LETTER KA WITH DESCENDER
+         */
+        CYRILLIC_LCASE_KA_DESCENDER,
+
+        /**
+         * U+049D CYRILLIC SMALL LETTER KA WITH VERTICAL STROKE
+         */
+        CYRILLIC_LCASE_KA_VERTSTROKE,
+
+        /**
+         * U+0459 CYRILLIC SMALL LETTER LJE
+         */
+        CYRILLIC_LCASE_LJE,
+
+        /**
+         * U+045A CYRILLIC SMALL LETTER NJE
+         */
+        CYRILLIC_LCASE_NJE,
+
+        /**
+         * U+043E CYRILLIC SMALL LETTER O
+         */
+        CYRILLIC_LCASE_O,
+
+        /**
+         * U+04E9 CYRILLIC SMALL LETTER BARRED O
+         */
+        CYRILLIC_LCASE_O_BAR,
+
+        /**
+         * U+043F CYRILLIC SMALL LETTER PE
+         */
+        CYRILLIC_LCASE_PE,
+
+        /**
+         * U+04D9 CYRILLIC SMALL LETTER SCHWA
+         */
+        CYRILLIC_LCASE_SCHWA,
+
+        /**
+         * U+0448 CYRILLIC SMALL LETTER SHA
+         */
+        CYRILLIC_LCASE_SHA,
+
+        /**
+         * U+0449 CYRILLIC SMALL LETTER SHCHA
+         */
+        CYRILLIC_LCASE_SHCHA,
+
+        /**
+         * U+04BB CYRILLIC SMALL LETTER SHHA
+         */
+        CYRILLIC_LCASE_SHHA,
+
+        /**
+         * U+0439 CYRILLIC SMALL LETTER SHORT I
+         */
+        CYRILLIC_LCASE_SHORTI,
+
+        /**
+         * U+044C CYRILLIC SMALL LETTER SOFT SIGN
+         */
+        CYRILLIC_LCASE_SOFTSIGN,
+
+        /**
+         * U+0442 CYRILLIC SMALL LETTER TE
+         */
+        CYRILLIC_LCASE_TE,
+
+        /**
+         * U+0446 CYRILLIC SMALL LETTER TSE
+         */
+        CYRILLIC_LCASE_TSE,
+
+        /**
+         * U+0443 CYRILLIC SMALL LETTER U
+         */
+        CYRILLIC_LCASE_U,
+
+        /**
+         * U+04EF CYRILLIC SMALL LETTER U WITH MACRON
+         */
+        CYRILLIC_LCASE_U_MACRON,
+
+        /**
+         * U+04AF CYRILLIC SMALL LETTER STRAIGHT U
+         */
+        CYRILLIC_LCASE_U_STRAIGHT,
+
+        /**
+         * U+04B1 CYRILLIC SMALL LETTER STRAIGHT U WITH STROKE
+         */
+        CYRILLIC_LCASE_U_STRAIGHT_BAR,
+
+        /**
+         * U+0432 CYRILLIC SMALL LETTER VE
+         */
+        CYRILLIC_LCASE_VE,
+
+        /**
+         * U+044F CYRILLIC SMALL LETTER YA
+         */
+        CYRILLIC_LCASE_YA,
+
+        /**
+         * U+044B CYRILLIC SMALL LETTER YERU
+         */
+        CYRILLIC_LCASE_YERU,
+
+        /**
+         * U+044E CYRILLIC SMALL LETTER YU
+         */
+        CYRILLIC_LCASE_YU,
+
+        /**
+         * U+0437 CYRILLIC SMALL LETTER ZE
+         */
+        CYRILLIC_LCASE_ZE,
+
+        /**
+         * U+0436 CYRILLIC SMALL LETTER ZHE
+         */
+        CYRILLIC_LCASE_ZHE,
+
+        /**
+         * U+0497 CYRILLIC SMALL LETTER ZHE WITH DESCENDER
+         */
+        CYRILLIC_LCASE_ZHE_DESCENDER,
+
+        /**
+         * U+0410 CYRILLIC CAPITAL LETTER A
+         */
+        CYRILLIC_UCASE_A,
+
+        /**
+         * U+0411 CYRILLIC CAPITAL LETTER BE
+         */
+        CYRILLIC_UCASE_BE,
+
+        /**
+         * U+0427 CYRILLIC CAPITAL LETTER CHE
+         */
+        CYRILLIC_UCASE_CHE,
+
+        /**
+         * U+04B6 CYRILLIC CAPITAL LETTER CHE WITH DESCENDER
+         */
+        CYRILLIC_UCASE_CHE_DESCENDER,
+
+        /**
+         * U+04B8 CYRILLIC CAPITAL LETTER CHE WITH VERTICAL STROKE
+         */
+        CYRILLIC_UCASE_CHE_VERTSTROKE,
+
+        /**
+         * U+0414 CYRILLIC CAPITAL LETTER DE
+         */
+        CYRILLIC_UCASE_DE,
+
+        /**
+         * U+040F CYRILLIC CAPITAL LETTER DZHE
+         */
+        CYRILLIC_UCASE_DZHE,
+
+        /**
+         * U+042D CYRILLIC CAPITAL LETTER E
+         */
+        CYRILLIC_UCASE_E,
+
+        /**
+         * U+0424 CYRILLIC CAPITAL LETTER EF
+         */
+        CYRILLIC_UCASE_EF,
+
+        /**
+         * U+041B CYRILLIC CAPITAL LETTER EL
+         */
+        CYRILLIC_UCASE_EL,
+
+        /**
+         * U+041C CYRILLIC CAPITAL LETTER EM
+         */
+        CYRILLIC_UCASE_EM,
+
+        /**
+         * U+041D CYRILLIC CAPITAL LETTER EN
+         */
+        CYRILLIC_UCASE_EN,
+
+        /**
+         * U+04A2 CYRILLIC CAPITAL LETTER EN WITH DESCENDER
+         */
+        CYRILLIC_UCASE_EN_DESCENDER,
+
+        /**
+         * U+0420 CYRILLIC CAPITAL LETTER ER
+         */
+        CYRILLIC_UCASE_ER,
+
+        /**
+         * U+0421 CYRILLIC CAPITAL LETTER ES
+         */
+        CYRILLIC_UCASE_ES,
+
+        /**
+         * U+0413 CYRILLIC CAPITAL LETTER GHE
+         */
+        CYRILLIC_UCASE_GHE,
+
+        /**
+         * U+0492 CYRILLIC CAPITAL LETTER GHE WITH STROKE
+         */
+        CYRILLIC_UCASE_GHE_BAR,
+
+        /**
+         * U+0425 CYRILLIC CAPITAL LETTER HA
+         */
+        CYRILLIC_UCASE_HA,
+
+        /**
+         * U+042A CYRILLIC CAPITAL LETTER HARD SIGN
+         */
+        CYRILLIC_UCASE_HARDSIGN,
+
+        /**
+         * U+04B2 CYRILLIC CAPITAL LETTER HA WITH DESCENDER
+         */
+        CYRILLIC_UCASE_HA_DESCENDER,
+
+        /**
+         * U+0418 CYRILLIC CAPITAL LETTER I
+         */
+        CYRILLIC_UCASE_I,
+
+        /**
+         * U+0415 CYRILLIC CAPITAL LETTER IE
+         */
+        CYRILLIC_UCASE_IE,
+
+        /**
+         * U+0401 CYRILLIC CAPITAL LETTER IO
+         */
+        CYRILLIC_UCASE_IO,
+
+        /**
+         * U+04E2 CYRILLIC CAPITAL LETTER I WITH MACRON
+         */
+        CYRILLIC_UCASE_I_MACRON,
+
+        /**
+         * U+0408 CYRILLIC CAPITAL LETTER JE
+         */
+        CYRILLIC_UCASE_JE,
+
+        /**
+         * U+041A CYRILLIC CAPITAL LETTER KA
+         */
+        CYRILLIC_UCASE_KA,
+
+        /**
+         * U+049A CYRILLIC CAPITAL LETTER KA WITH DESCENDER
+         */
+        CYRILLIC_UCASE_KA_DESCENDER,
+
+        /**
+         * U+049C CYRILLIC CAPITAL LETTER KA WITH VERTICAL STROKE
+         */
+        CYRILLIC_UCASE_KA_VERTSTROKE,
+
+        /**
+         * U+0409 CYRILLIC CAPITAL LETTER LJE
+         */
+        CYRILLIC_UCASE_LJE,
+
+        /**
+         * U+040A CYRILLIC CAPITAL LETTER NJE
+         */
+        CYRILLIC_UCASE_NJE,
+
+        /**
+         * U+041E CYRILLIC CAPITAL LETTER O
+         */
+        CYRILLIC_UCASE_O,
+
+        /**
+         * U+04E8 CYRILLIC CAPITAL LETTER BARRED O
+         */
+        CYRILLIC_UCASE_O_BAR,
+
+        /**
+         * U+041F CYRILLIC CAPITAL LETTER PE
+         */
+        CYRILLIC_UCASE_PE,
+
+        /**
+         * U+04D8 CYRILLIC CAPITAL LETTER SCHWA
+         */
+        CYRILLIC_UCASE_SCHWA,
+
+        /**
+         * U+0428 CYRILLIC CAPITAL LETTER SHA
+         */
+        CYRILLIC_UCASE_SHA,
+
+        /**
+         * U+0429 CYRILLIC CAPITAL LETTER SHCHA
+         */
+        CYRILLIC_UCASE_SHCHA,
+
+        /**
+         * U+04BA CYRILLIC CAPITAL LETTER SHHA
+         */
+        CYRILLIC_UCASE_SHHA,
+
+        /**
+         * U+0419 CYRILLIC CAPITAL LETTER SHORT I
+         */
+        CYRILLIC_UCASE_SHORTI,
+
+        /**
+         * U+042C CYRILLIC CAPITAL LETTER SOFT SIGN
+         */
+        CYRILLIC_UCASE_SOFTSIGN,
+
+        /**
+         * U+0422 CYRILLIC CAPITAL LETTER TE
+         */
+        CYRILLIC_UCASE_TE,
+
+        /**
+         * U+0426 CYRILLIC CAPITAL LETTER TSE
+         */
+        CYRILLIC_UCASE_TSE,
+
+        /**
+         * U+0423 CYRILLIC CAPITAL LETTER U
+         */
+        CYRILLIC_UCASE_U,
+
+        /**
+         * U+04EE CYRILLIC CAPITAL LETTER U WITH MACRON
+         */
+        CYRILLIC_UCASE_U_MACRON,
+
+        /**
+         * U+04AE CYRILLIC CAPITAL LETTER STRAIGHT U
+         */
+        CYRILLIC_UCASE_U_STRAIGHT,
+
+        /**
+         * U+04B0 CYRILLIC CAPITAL LETTER STRAIGHT U WITH STROKE
+         */
+        CYRILLIC_UCASE_U_STRAIGHT_BAR,
+
+        /**
+         * U+0412 CYRILLIC CAPITAL LETTER VE
+         */
+        CYRILLIC_UCASE_VE,
+
+        /**
+         * U+042F CYRILLIC CAPITAL LETTER YA
+         */
+        CYRILLIC_UCASE_YA,
+
+        /**
+         * U+042B CYRILLIC CAPITAL LETTER YERU
+         */
+        CYRILLIC_UCASE_YERU,
+
+        /**
+         * U+042E CYRILLIC CAPITAL LETTER YU
+         */
+        CYRILLIC_UCASE_YU,
+
+        /**
+         * U+0417 CYRILLIC CAPITAL LETTER ZE
+         */
+        CYRILLIC_UCASE_ZE,
+
+        /**
+         * U+0416 CYRILLIC CAPITAL LETTER ZHE
+         */
+        CYRILLIC_UCASE_ZHE,
+
+        /**
+         * U+0496 CYRILLIC CAPITAL LETTER ZHE WITH DESCENDER
+         */
+        CYRILLIC_UCASE_ZHE_DESCENDER,
+
+        /**
+         * U+0030 DIGIT ZERO
+         */
+        D0,
+
+        /**
+         * U+0031 DIGIT ONE
+         */
+        D1,
+
+        /**
+         * U+0032 DIGIT TWO
+         */
+        D2,
+
+        /**
+         * U+0033 DIGIT THREE
+         */
+        D3,
+
+        /**
+         * U+0034 DIGIT FOUR
+         */
+        D4,
+
+        /**
+         * U+0035 DIGIT FIVE
+         */
+        D5,
+
+        /**
+         * U+0036 DIGIT SIX
+         */
+        D6,
+
+        /**
+         * U+0037 DIGIT SEVEN
+         */
+        D7,
+
+        /**
+         * U+0038 DIGIT EIGHT
+         */
+        D8,
+
+        /**
+         * U+0039 DIGIT NINE
+         */
+        D9,
+
+        /**
+         * Dacute Accent
+         */
+        DACUTE_ACCENT,
+
+        /**
+         * U+2020 DAGGER
+         */
+        DAGGER,
+
+        /**
+         * Dcedilla Accent
+         */
+        DCEDILLA_ACCENT,
+
+        /**
+         * Dcircumflex Accent
+         */
+        DCIRCUMFLEX_ACCENT,
+
+        /**
+         * Ddiaeresis
+         */
+        DDIAERESIS,
+
+        /**
+         * Dead Abovecomma
+         */
+        DEAD_ABOVECOMMA,
+
+        /**
+         * Dead Abovedot
+         */
+        DEAD_ABOVEDOT,
+
+        /**
+         * Dead Abovereversedcomma
+         */
+        DEAD_ABOVEREVERSEDCOMMA,
+
+        /**
+         * Dead Abovering
+         */
+        DEAD_ABOVERING,
+
+        /**
+         * Dead Aboveverticalline
+         */
+        DEAD_ABOVEVERTICALLINE,
+
+        /**
+         * Dead Acute
+         */
+        DEAD_ACUTE,
+
+        /**
+         * Dead Belowbreve
+         */
+        DEAD_BELOWBREVE,
+
+        /**
+         * Dead Belowcircumflex
+         */
+        DEAD_BELOWCIRCUMFLEX,
+
+        /**
+         * Dead Belowcomma
+         */
+        DEAD_BELOWCOMMA,
+
+        /**
+         * Dead Belowdiaeresis
+         */
+        DEAD_BELOWDIAERESIS,
+
+        /**
+         * Dead Belowdot
+         */
+        DEAD_BELOWDOT,
+
+        /**
+         * Dead Belowmacron
+         */
+        DEAD_BELOWMACRON,
+
+        /**
+         * Dead Belowring
+         */
+        DEAD_BELOWRING,
+
+        /**
+         * Dead Belowtilde
+         */
+        DEAD_BELOWTILDE,
+
+        /**
+         * Dead Belowverticalline
+         */
+        DEAD_BELOWVERTICALLINE,
+
+        /**
+         * Dead Breve
+         */
+        DEAD_BREVE,
+
+        /**
+         * Dead Capital Schwa
+         */
+        DEAD_CAPITAL_SCHWA,
+
+        /**
+         * Dead Caron
+         */
+        DEAD_CARON,
+
+        /**
+         * Dead Cedilla
+         */
+        DEAD_CEDILLA,
+
+        /**
+         * Dead Circumflex
+         */
+        DEAD_CIRCUMFLEX,
+
+        /**
+         * Dead Currency
+         */
+        DEAD_CURRENCY,
+
+        /**
+         * alias for dead_abovereversedcomma
+         */
+        DEAD_DASIA,
+
+        /**
+         * Dead Diaeresis
+         */
+        DEAD_DIAERESIS,
+
+        /**
+         * Dead Doubleacute
+         */
+        DEAD_DOUBLEACUTE,
+
+        /**
+         * Dead Doublegrave
+         */
+        DEAD_DOUBLEGRAVE,
+
+        /**
+         * Dead Grave
+         */
+        DEAD_GRAVE,
+
+        /**
+         * Dead Greek
+         */
+        DEAD_GREEK,
+
+        /**
+         * Dead Hook
+         */
+        DEAD_HOOK,
+
+        /**
+         * Dead Horn
+         */
+        DEAD_HORN,
+
+        /**
+         * Dead Invertedbreve
+         */
+        DEAD_INVERTEDBREVE,
+
+        /**
+         * Dead Iota
+         */
+        DEAD_IOTA,
+
+        /**
+         * Dead Lcase A
+         */
+        DEAD_LCASE_A,
+
+        /**
+         * Dead Lcase E
+         */
+        DEAD_LCASE_E,
+
+        /**
+         * Dead Lcase I
+         */
+        DEAD_LCASE_I,
+
+        /**
+         * Dead Lcase O
+         */
+        DEAD_LCASE_O,
+
+        /**
+         * Dead Lcase U
+         */
+        DEAD_LCASE_U,
+
+        /**
+         * Dead Longsolidusoverlay
+         */
+        DEAD_LONGSOLIDUSOVERLAY,
+
+        /**
+         * Dead Lowline
+         */
+        DEAD_LOWLINE,
+
+        /**
+         * Dead Macron
+         */
+        DEAD_MACRON,
+
+        /**
+         * Dead Ogonek
+         */
+        DEAD_OGONEK,
+
+        /**
+         * alias for dead_tilde
+         */
+        DEAD_PERISPOMENI,
+
+        /**
+         * alias for dead_abovecomma
+         */
+        DEAD_PSILI,
+
+        /**
+         * Dead Semivoiced Sound
+         */
+        DEAD_SEMIVOICED_SOUND,
+
+        /**
+         * Dead Small Schwa
+         */
+        DEAD_SMALL_SCHWA,
+
+        /**
+         * Dead Stroke
+         */
+        DEAD_STROKE,
+
+        /**
+         * Dead Tilde
+         */
+        DEAD_TILDE,
+
+        /**
+         * Dead Ucase A
+         */
+        DEAD_UCASE_A,
+
+        /**
+         * Dead Ucase E
+         */
+        DEAD_UCASE_E,
+
+        /**
+         * Dead Ucase I
+         */
+        DEAD_UCASE_I,
+
+        /**
+         * Dead Ucase O
+         */
+        DEAD_UCASE_O,
+
+        /**
+         * Dead Ucase U
+         */
+        DEAD_UCASE_U,
+
+        /**
+         * Dead Voiced Sound
+         */
+        DEAD_VOICED_SOUND,
+
+        /**
+         * U+002E FULL STOP
+         */
+        DECIMALPOINT,
+
+        /**
+         * U+00B0 DEGREE SIGN
+         */
+        DEGREE,
+
+        /**
+         * Delete, rubout
+         */
+        DELETE,
+
+        /**
+         * Delete Char
+         */
+        DELETE_CHAR,
+
+        /**
+         * Delete Line
+         */
+        DELETE_LINE,
+
+        /**
+         * Dgrave Accent
+         */
+        DGRAVE_ACCENT,
+
+        /**
+         * U+00A8 DIAERESIS
+         */
+        DIAERESIS,
+
+        /**
+         * U+2666 BLACK DIAMOND SUIT
+         */
+        DIAMOND,
+
+        /**
+         * U+2007 FIGURE SPACE
+         */
+        DIGITSPACE,
+
+        /**
+         * U+222C DOUBLE INTEGRAL
+         */
+        DINTEGRAL,
+
+        /**
+         * U+00F7 DIVISION SIGN
+         */
+        DIVISION,
+
+        /**
+         * U+0024 DOLLAR SIGN
+         */
+        DOLLAR,
+
+        /**
+         * U+20AB DONG SIGN
+         */
+        DONG_SIGN,
+
+        /**
+         * U+2025 TWO DOT LEADER
+         */
+        DOUBBASELINEDOT,
+
+        /**
+         * U+02DD DOUBLE ACUTE ACCENT
+         */
+        DOUBLEACUTE,
+
+        /**
+         * U+2021 DOUBLE DAGGER
+         */
+        DOUBLEDAGGER,
+
+        /**
+         * U+201E DOUBLE LOW-9 QUOTATION MARK
+         */
+        DOUBLELOWQUOTEMARK,
+
+        /**
+         * Move down, down arrow
+         */
+        DOWN,
+
+        /**
+         * U+2193 DOWNWARDS ARROW
+         */
+        DOWNARROW,
+
+        /**
+         * U+2228 LOGICAL OR
+         */
+        DOWNCARET,
+
+        /**
+         * U+222A UNION
+         */
+        DOWNSHOE,
+
+        /**
+         * U+230A LEFT FLOOR
+         */
+        DOWNSTILE,
+
+        /**
+         * U+22A4 DOWN TACK
+         */
+        DOWNTACK,
+
+        /**
+         * Remove
+         */
+        DREMOVE,
+
+        /**
+         * Dring Accent
+         */
+        DRING_ACCENT,
+
+        /**
+         * Dtilde
+         */
+        DTILDE,
+
+        /**
+         * U+20A0 EURO-CURRENCY SIGN
+         */
+        ECU_SIGN,
+
+        /**
+         * U+2088 SUBSCRIPT EIGHT
+         */
+        EIGHTSUBSCRIPT,
+
+        /**
+         * U+2078 SUPERSCRIPT EIGHT
+         */
+        EIGHTSUPERIOR,
+
+        /**
+         * Alphanumeric Shift
+         */
+        EISU_SHIFT,
+
+        /**
+         * Alphanumeric toggle
+         */
+        EISU_TOGGLE,
+
+        /**
+         * U+2208 ELEMENT OF
+         */
+        ELEMENTOF,
+
+        /**
+         * U+2026 HORIZONTAL ELLIPSIS
+         */
+        ELLIPSIS,
+
+        /**
+         * U+2004 THREE-PER-EM SPACE
+         */
+        EM3SPACE,
+
+        /**
+         * U+2005 FOUR-PER-EM SPACE
+         */
+        EM4SPACE,
+
+        /**
+         * U+2014 EM DASH
+         */
+        EMDASH,
+
+        /**
+         * U+25CF BLACK CIRCLE
+         */
+        EMFILLEDCIRCLE,
+
+        /**
+         * U+25AE BLACK VERTICAL RECTANGLE
+         */
+        EMFILLEDRECT,
+
+        /**
+         * U+25CB WHITE CIRCLE
+         */
+        EMOPENCIRCLE,
+
+        /**
+         * U+25AF WHITE VERTICAL RECTANGLE
+         */
+        EMOPENRECTANGLE,
+
+        /**
+         * U+2205 NULL SET
+         */
+        EMPTYSET,
+
+        /**
+         * U+2003 EM SPACE
+         */
+        EMSPACE,
+
+        /**
+         * EOL
+         */
+        END,
+
+        /**
+         * U+2013 EN DASH
+         */
+        ENDASH,
+
+        /**
+         * U+2022 BULLET
+         */
+        ENFILLEDCIRCBULLET,
+
+        /**
+         * U+25AA BLACK SMALL SQUARE
+         */
+        ENFILLEDSQBULLET,
+
+        /**
+         * U+25E6 WHITE BULLET
+         */
+        ENOPENCIRCBULLET,
+
+        /**
+         * U+25AB WHITE SMALL SQUARE
+         */
+        ENOPENSQUAREBULLET,
+
+        /**
+         * U+2002 EN SPACE
+         */
+        ENSPACE,
+
+        /**
+         * U+003D EQUALS SIGN
+         */
+        EQUAL,
+
+        /**
+         * Escape
+         */
+        ESCAPE,
+
+        /**
+         * U+20AC EURO SIGN
+         */
+        EURO_SIGN,
+
+        /**
+         * U+0021 EXCLAMATION MARK
+         */
+        EXCLAM,
+
+        /**
+         * U+00A1 INVERTED EXCLAMATION MARK
+         */
+        EXCLAMDOWN,
+
+        /**
+         * Execute, run, do
+         */
+        EXECUTE,
+
+        /**
+         * Ext16Bit L
+         */
+        EXT16BIT_L,
+
+        /**
+         * Ext16Bit R
+         */
+        EXT16BIT_R,
+
+        /**
+         * F1
+         */
+        F1,
+
+        /**
+         * F10
+         */
+        F10,
+
+        /**
+         * F11
+         */
+        F11,
+
+        /**
+         * F12
+         */
+        F12,
+
+        /**
+         * F13
+         */
+        F13,
+
+        /**
+         * F14
+         */
+        F14,
+
+        /**
+         * F15
+         */
+        F15,
+
+        /**
+         * F16
+         */
+        F16,
+
+        /**
+         * F17
+         */
+        F17,
+
+        /**
+         * F18
+         */
+        F18,
+
+        /**
+         * F19
+         */
+        F19,
+
+        /**
+         * F2
+         */
+        F2,
+
+        /**
+         * F20
+         */
+        F20,
+
+        /**
+         * F21
+         */
+        F21,
+
+        /**
+         * F22
+         */
+        F22,
+
+        /**
+         * F23
+         */
+        F23,
+
+        /**
+         * F24
+         */
+        F24,
+
+        /**
+         * F25
+         */
+        F25,
+
+        /**
+         * F26
+         */
+        F26,
+
+        /**
+         * F27
+         */
+        F27,
+
+        /**
+         * F28
+         */
+        F28,
+
+        /**
+         * F29
+         */
+        F29,
+
+        /**
+         * F3
+         */
+        F3,
+
+        /**
+         * F30
+         */
+        F30,
+
+        /**
+         * F31
+         */
+        F31,
+
+        /**
+         * F32
+         */
+        F32,
+
+        /**
+         * F33
+         */
+        F33,
+
+        /**
+         * F34
+         */
+        F34,
+
+        /**
+         * F35
+         */
+        F35,
+
+        /**
+         * F4
+         */
+        F4,
+
+        /**
+         * F5
+         */
+        F5,
+
+        /**
+         * F6
+         */
+        F6,
+
+        /**
+         * F7
+         */
+        F7,
+
+        /**
+         * F8
+         */
+        F8,
+
+        /**
+         * F9
+         */
+        F9,
+
+        /**
+         * U+06F0 EXTENDED ARABIC-INDIC DIGIT ZERO
+         */
+        FARSI_0,
+
+        /**
+         * U+06F1 EXTENDED ARABIC-INDIC DIGIT ONE
+         */
+        FARSI_1,
+
+        /**
+         * U+06F2 EXTENDED ARABIC-INDIC DIGIT TWO
+         */
+        FARSI_2,
+
+        /**
+         * U+06F3 EXTENDED ARABIC-INDIC DIGIT THREE
+         */
+        FARSI_3,
+
+        /**
+         * U+06F4 EXTENDED ARABIC-INDIC DIGIT FOUR
+         */
+        FARSI_4,
+
+        /**
+         * U+06F5 EXTENDED ARABIC-INDIC DIGIT FIVE
+         */
+        FARSI_5,
+
+        /**
+         * U+06F6 EXTENDED ARABIC-INDIC DIGIT SIX
+         */
+        FARSI_6,
+
+        /**
+         * U+06F7 EXTENDED ARABIC-INDIC DIGIT SEVEN
+         */
+        FARSI_7,
+
+        /**
+         * U+06F8 EXTENDED ARABIC-INDIC DIGIT EIGHT
+         */
+        FARSI_8,
+
+        /**
+         * U+06F9 EXTENDED ARABIC-INDIC DIGIT NINE
+         */
+        FARSI_9,
+
+        /**
+         * U+06CC ARABIC LETTER FARSI YEH
+         */
+        FARSI_YEH,
+
+        /**
+         * U+2640 FEMALE SIGN
+         */
+        FEMALESYMBOL,
+
+        /**
+         * U+240C SYMBOL FOR FORM FEED
+         */
+        FF,
+
+        /**
+         * U+20A3 FRENCH FRANC SIGN
+         */
+        FFRANC_SIGN,
+
+        /**
+         * U+2012 FIGURE DASH
+         */
+        FIGDASH,
+
+        /**
+         * U+25C0 BLACK LEFT-POINTING TRIANGLE
+         */
+        FILLEDLEFTTRIBULLET,
+
+        /**
+         * U+25AC BLACK RECTANGLE
+         */
+        FILLEDRECTBULLET,
+
+        /**
+         * U+25B6 BLACK RIGHT-POINTING TRIANGLE
+         */
+        FILLEDRIGHTTRIBULLET,
+
+        /**
+         * U+25BC BLACK DOWN-POINTING TRIANGLE
+         */
+        FILLEDTRIBULLETDOWN,
+
+        /**
+         * U+25B2 BLACK UP-POINTING TRIANGLE
+         */
+        FILLEDTRIBULLETUP,
+
+        /**
+         * Find, search
+         */
+        FIND,
+
+        /**
+         * First Virtual Screen
+         */
+        FIRST_VIRTUAL_SCREEN,
+
+        /**
+         * U+215D VULGAR FRACTION FIVE EIGHTHS
+         */
+        FIVEEIGHTHS,
+
+        /**
+         * U+215A VULGAR FRACTION FIVE SIXTHS
+         */
+        FIVESIXTHS,
+
+        /**
+         * U+2085 SUBSCRIPT FIVE
+         */
+        FIVESUBSCRIPT,
+
+        /**
+         * U+2075 SUPERSCRIPT FIVE
+         */
+        FIVESUPERIOR,
+
+        /**
+         * U+2158 VULGAR FRACTION FOUR FIFTHS
+         */
+        FOURFIFTHS,
+
+        /**
+         * U+2084 SUBSCRIPT FOUR
+         */
+        FOURSUBSCRIPT,
+
+        /**
+         * U+2074 SUPERSCRIPT FOUR
+         */
+        FOURSUPERIOR,
+
+        /**
+         * U+221C FOURTH ROOT
+         */
+        FOURTHROOT,
+
+        /**
+         * U+0192 LATIN SMALL LETTER F WITH HOOK
+         */
+        FUNCTION,
+
+        /**
+         * U+10D0 GEORGIAN LETTER AN
+         */
+        GEORGIAN_AN,
+
+        /**
+         * U+10D1 GEORGIAN LETTER BAN
+         */
+        GEORGIAN_BAN,
+
+        /**
+         * U+10EA GEORGIAN LETTER CAN
+         */
+        GEORGIAN_CAN,
+
+        /**
+         * U+10ED GEORGIAN LETTER CHAR
+         */
+        GEORGIAN_CHAR,
+
+        /**
+         * U+10E9 GEORGIAN LETTER CHIN
+         */
+        GEORGIAN_CHIN,
+
+        /**
+         * U+10EC GEORGIAN LETTER CIL
+         */
+        GEORGIAN_CIL,
+
+        /**
+         * U+10D3 GEORGIAN LETTER DON
+         */
+        GEORGIAN_DON,
+
+        /**
+         * U+10D4 GEORGIAN LETTER EN
+         */
+        GEORGIAN_EN,
+
+        /**
+         * U+10F6 GEORGIAN LETTER FI
+         */
+        GEORGIAN_FI,
+
+        /**
+         * U+10D2 GEORGIAN LETTER GAN
+         */
+        GEORGIAN_GAN,
+
+        /**
+         * U+10E6 GEORGIAN LETTER GHAN
+         */
+        GEORGIAN_GHAN,
+
+        /**
+         * U+10F0 GEORGIAN LETTER HAE
+         */
+        GEORGIAN_HAE,
+
+        /**
+         * U+10F4 GEORGIAN LETTER HAR
+         */
+        GEORGIAN_HAR,
+
+        /**
+         * U+10F1 GEORGIAN LETTER HE
+         */
+        GEORGIAN_HE,
+
+        /**
+         * U+10F2 GEORGIAN LETTER HIE
+         */
+        GEORGIAN_HIE,
+
+        /**
+         * U+10F5 GEORGIAN LETTER HOE
+         */
+        GEORGIAN_HOE,
+
+        /**
+         * U+10D8 GEORGIAN LETTER IN
+         */
+        GEORGIAN_IN,
+
+        /**
+         * U+10EF GEORGIAN LETTER JHAN
+         */
+        GEORGIAN_JHAN,
+
+        /**
+         * U+10EB GEORGIAN LETTER JIL
+         */
+        GEORGIAN_JIL,
+
+        /**
+         * U+10D9 GEORGIAN LETTER KAN
+         */
+        GEORGIAN_KAN,
+
+        /**
+         * U+10E5 GEORGIAN LETTER KHAR
+         */
+        GEORGIAN_KHAR,
+
+        /**
+         * U+10DA GEORGIAN LETTER LAS
+         */
+        GEORGIAN_LAS,
+
+        /**
+         * U+10DB GEORGIAN LETTER MAN
+         */
+        GEORGIAN_MAN,
+
+        /**
+         * U+10DC GEORGIAN LETTER NAR
+         */
+        GEORGIAN_NAR,
+
+        /**
+         * U+10DD GEORGIAN LETTER ON
+         */
+        GEORGIAN_ON,
+
+        /**
+         * U+10DE GEORGIAN LETTER PAR
+         */
+        GEORGIAN_PAR,
+
+        /**
+         * U+10E4 GEORGIAN LETTER PHAR
+         */
+        GEORGIAN_PHAR,
+
+        /**
+         * U+10E7 GEORGIAN LETTER QAR
+         */
+        GEORGIAN_QAR,
+
+        /**
+         * U+10E0 GEORGIAN LETTER RAE
+         */
+        GEORGIAN_RAE,
+
+        /**
+         * U+10E1 GEORGIAN LETTER SAN
+         */
+        GEORGIAN_SAN,
+
+        /**
+         * U+10E8 GEORGIAN LETTER SHIN
+         */
+        GEORGIAN_SHIN,
+
+        /**
+         * U+10D7 GEORGIAN LETTER TAN
+         */
+        GEORGIAN_TAN,
+
+        /**
+         * U+10E2 GEORGIAN LETTER TAR
+         */
+        GEORGIAN_TAR,
+
+        /**
+         * U+10E3 GEORGIAN LETTER UN
+         */
+        GEORGIAN_UN,
+
+        /**
+         * U+10D5 GEORGIAN LETTER VIN
+         */
+        GEORGIAN_VIN,
+
+        /**
+         * U+10F3 GEORGIAN LETTER WE
+         */
+        GEORGIAN_WE,
+
+        /**
+         * U+10EE GEORGIAN LETTER XAN
+         */
+        GEORGIAN_XAN,
+
+        /**
+         * U+10D6 GEORGIAN LETTER ZEN
+         */
+        GEORGIAN_ZEN,
+
+        /**
+         * U+10DF GEORGIAN LETTER ZHAR
+         */
+        GEORGIAN_ZHAR,
+
+        /**
+         * U+0060 GRAVE ACCENT
+         */
+        GRAVE,
+
+        /**
+         * U+003E GREATER-THAN SIGN
+         */
+        GREATER,
+
+        /**
+         * U+2265 GREATER-THAN OR EQUAL TO
+         */
+        GREATERTHANEQUAL,
+
+        /**
+         * U+0385 GREEK DIALYTIKA TONOS
+         */
+        GREEK_ACCENTDIERESIS,
+
+        /**
+         * U+03C2 GREEK SMALL LETTER FINAL SIGMA
+         */
+        GREEK_FINALSMALLSIGMA,
+
+        /**
+         * U+2015 HORIZONTAL BAR
+         */
+        GREEK_HORIZBAR,
+
+        /**
+         * U+0390 GREEK SMALL LETTER IOTA WITH DIALYTIKA AND TONOS
+         */
+        GREEK_IOTAACCENTDIERESIS,
+
+        /**
+         * old typo
+         */
+        GREEK_IOTADIAERESIS,
+
+        /**
+         * U+03B1 GREEK SMALL LETTER ALPHA
+         */
+        GREEK_LCASE_ALPHA,
+
+        /**
+         * U+03AC GREEK SMALL LETTER ALPHA WITH TONOS
+         */
+        GREEK_LCASE_ALPHAACCENT,
+
+        /**
+         * U+03B2 GREEK SMALL LETTER BETA
+         */
+        GREEK_LCASE_BETA,
+
+        /**
+         * U+03C7 GREEK SMALL LETTER CHI
+         */
+        GREEK_LCASE_CHI,
+
+        /**
+         * U+03B4 GREEK SMALL LETTER DELTA
+         */
+        GREEK_LCASE_DELTA,
+
+        /**
+         * U+03B5 GREEK SMALL LETTER EPSILON
+         */
+        GREEK_LCASE_EPSILON,
+
+        /**
+         * U+03AD GREEK SMALL LETTER EPSILON WITH TONOS
+         */
+        GREEK_LCASE_EPSILONACCENT,
+
+        /**
+         * U+03B7 GREEK SMALL LETTER ETA
+         */
+        GREEK_LCASE_ETA,
+
+        /**
+         * U+03AE GREEK SMALL LETTER ETA WITH TONOS
+         */
+        GREEK_LCASE_ETAACCENT,
+
+        /**
+         * U+03B3 GREEK SMALL LETTER GAMMA
+         */
+        GREEK_LCASE_GAMMA,
+
+        /**
+         * U+03B9 GREEK SMALL LETTER IOTA
+         */
+        GREEK_LCASE_IOTA,
+
+        /**
+         * U+03AF GREEK SMALL LETTER IOTA WITH TONOS
+         */
+        GREEK_LCASE_IOTAACCENT,
+
+        /**
+         * U+03CA GREEK SMALL LETTER IOTA WITH DIALYTIKA
+         */
+        GREEK_LCASE_IOTADIERESIS,
+
+        /**
+         * U+03BA GREEK SMALL LETTER KAPPA
+         */
+        GREEK_LCASE_KAPPA,
+
+        /**
+         * U+03BB GREEK SMALL LETTER LAMDA
+         */
+        GREEK_LCASE_LAMBDA,
+
+        /**
+         * U+03BB GREEK SMALL LETTER LAMDA
+         */
+        GREEK_LCASE_LAMDA,
+
+        /**
+         * U+03BC GREEK SMALL LETTER MU
+         */
+        GREEK_LCASE_MU,
+
+        /**
+         * U+03BD GREEK SMALL LETTER NU
+         */
+        GREEK_LCASE_NU,
+
+        /**
+         * U+03C9 GREEK SMALL LETTER OMEGA
+         */
+        GREEK_LCASE_OMEGA,
+
+        /**
+         * U+03CE GREEK SMALL LETTER OMEGA WITH TONOS
+         */
+        GREEK_LCASE_OMEGAACCENT,
+
+        /**
+         * U+03BF GREEK SMALL LETTER OMICRON
+         */
+        GREEK_LCASE_OMICRON,
+
+        /**
+         * U+03CC GREEK SMALL LETTER OMICRON WITH TONOS
+         */
+        GREEK_LCASE_OMICRONACCENT,
+
+        /**
+         * U+03C6 GREEK SMALL LETTER PHI
+         */
+        GREEK_LCASE_PHI,
+
+        /**
+         * U+03C0 GREEK SMALL LETTER PI
+         */
+        GREEK_LCASE_PI,
+
+        /**
+         * U+03C8 GREEK SMALL LETTER PSI
+         */
+        GREEK_LCASE_PSI,
+
+        /**
+         * U+03C1 GREEK SMALL LETTER RHO
+         */
+        GREEK_LCASE_RHO,
+
+        /**
+         * U+03C3 GREEK SMALL LETTER SIGMA
+         */
+        GREEK_LCASE_SIGMA,
+
+        /**
+         * U+03C4 GREEK SMALL LETTER TAU
+         */
+        GREEK_LCASE_TAU,
+
+        /**
+         * U+03B8 GREEK SMALL LETTER THETA
+         */
+        GREEK_LCASE_THETA,
+
+        /**
+         * U+03C5 GREEK SMALL LETTER UPSILON
+         */
+        GREEK_LCASE_UPSILON,
+
+        /**
+         * U+03CD GREEK SMALL LETTER UPSILON WITH TONOS
+         */
+        GREEK_LCASE_UPSILONACCENT,
+
+        /**
+         * U+03CB GREEK SMALL LETTER UPSILON WITH DIALYTIKA
+         */
+        GREEK_LCASE_UPSILONDIERESIS,
+
+        /**
+         * U+03BE GREEK SMALL LETTER XI
+         */
+        GREEK_LCASE_XI,
+
+        /**
+         * U+03B6 GREEK SMALL LETTER ZETA
+         */
+        GREEK_LCASE_ZETA,
+
+        /**
+         * Alias for mode_switch
+         */
+        GREEK_SWITCH,
+
+        /**
+         * U+0391 GREEK CAPITAL LETTER ALPHA
+         */
+        GREEK_UCASE_ALPHA,
+
+        /**
+         * U+0386 GREEK CAPITAL LETTER ALPHA WITH TONOS
+         */
+        GREEK_UCASE_ALPHAACCENT,
+
+        /**
+         * U+0392 GREEK CAPITAL LETTER BETA
+         */
+        GREEK_UCASE_BETA,
+
+        /**
+         * U+03A7 GREEK CAPITAL LETTER CHI
+         */
+        GREEK_UCASE_CHI,
+
+        /**
+         * U+0394 GREEK CAPITAL LETTER DELTA
+         */
+        GREEK_UCASE_DELTA,
+
+        /**
+         * U+0395 GREEK CAPITAL LETTER EPSILON
+         */
+        GREEK_UCASE_EPSILON,
+
+        /**
+         * U+0388 GREEK CAPITAL LETTER EPSILON WITH TONOS
+         */
+        GREEK_UCASE_EPSILONACCENT,
+
+        /**
+         * U+0397 GREEK CAPITAL LETTER ETA
+         */
+        GREEK_UCASE_ETA,
+
+        /**
+         * U+0389 GREEK CAPITAL LETTER ETA WITH TONOS
+         */
+        GREEK_UCASE_ETAACCENT,
+
+        /**
+         * U+0393 GREEK CAPITAL LETTER GAMMA
+         */
+        GREEK_UCASE_GAMMA,
+
+        /**
+         * U+0399 GREEK CAPITAL LETTER IOTA
+         */
+        GREEK_UCASE_IOTA,
+
+        /**
+         * U+038A GREEK CAPITAL LETTER IOTA WITH TONOS
+         */
+        GREEK_UCASE_IOTAACCENT,
+
+        /**
+         * U+03AA GREEK CAPITAL LETTER IOTA WITH DIALYTIKA
+         */
+        GREEK_UCASE_IOTADIERESIS,
+
+        /**
+         * U+039A GREEK CAPITAL LETTER KAPPA
+         */
+        GREEK_UCASE_KAPPA,
+
+        /**
+         * U+039B GREEK CAPITAL LETTER LAMDA
+         */
+        GREEK_UCASE_LAMBDA,
+
+        /**
+         * U+039B GREEK CAPITAL LETTER LAMDA
+         */
+        GREEK_UCASE_LAMDA,
+
+        /**
+         * U+039C GREEK CAPITAL LETTER MU
+         */
+        GREEK_UCASE_MU,
+
+        /**
+         * U+039D GREEK CAPITAL LETTER NU
+         */
+        GREEK_UCASE_NU,
+
+        /**
+         * U+03A9 GREEK CAPITAL LETTER OMEGA
+         */
+        GREEK_UCASE_OMEGA,
+
+        /**
+         * U+038F GREEK CAPITAL LETTER OMEGA WITH TONOS
+         */
+        GREEK_UCASE_OMEGAACCENT,
+
+        /**
+         * U+039F GREEK CAPITAL LETTER OMICRON
+         */
+        GREEK_UCASE_OMICRON,
+
+        /**
+         * U+038C GREEK CAPITAL LETTER OMICRON WITH TONOS
+         */
+        GREEK_UCASE_OMICRONACCENT,
+
+        /**
+         * U+03A6 GREEK CAPITAL LETTER PHI
+         */
+        GREEK_UCASE_PHI,
+
+        /**
+         * U+03A0 GREEK CAPITAL LETTER PI
+         */
+        GREEK_UCASE_PI,
+
+        /**
+         * U+03A8 GREEK CAPITAL LETTER PSI
+         */
+        GREEK_UCASE_PSI,
+
+        /**
+         * U+03A1 GREEK CAPITAL LETTER RHO
+         */
+        GREEK_UCASE_RHO,
+
+        /**
+         * U+03A3 GREEK CAPITAL LETTER SIGMA
+         */
+        GREEK_UCASE_SIGMA,
+
+        /**
+         * U+03A4 GREEK CAPITAL LETTER TAU
+         */
+        GREEK_UCASE_TAU,
+
+        /**
+         * U+0398 GREEK CAPITAL LETTER THETA
+         */
+        GREEK_UCASE_THETA,
+
+        /**
+         * U+03A5 GREEK CAPITAL LETTER UPSILON
+         */
+        GREEK_UCASE_UPSILON,
+
+        /**
+         * U+038E GREEK CAPITAL LETTER UPSILON WITH TONOS
+         */
+        GREEK_UCASE_UPSILONACCENT,
+
+        /**
+         * U+03AB GREEK CAPITAL LETTER UPSILON WITH DIALYTIKA
+         */
+        GREEK_UCASE_UPSILONDIERESIS,
+
+        /**
+         * U+039E GREEK CAPITAL LETTER XI
+         */
+        GREEK_UCASE_XI,
+
+        /**
+         * U+0396 GREEK CAPITAL LETTER ZETA
+         */
+        GREEK_UCASE_ZETA,
+
+        /**
+         * U+03B0 GREEK SMALL LETTER UPSILON WITH DIALYTIKA AND TONOS
+         */
+        GREEK_UPSILONACCENTDIERESIS,
+
+        /**
+         * Guilder
+         */
+        GUILDER,
+
+        /**
+         * U+00AB LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+         */
+        GUILLEMOTLEFT,
+
+        /**
+         * U+00BB RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
+         */
+        GUILLEMOTRIGHT,
+
+        /**
+         * U+200A HAIR SPACE
+         */
+        HAIRSPACE,
+
+        /**
+         * Hangul start/stop(toggle)
+         */
+        HANGUL,
+
+        /**
+         * Hangul A
+         */
+        HANGUL_A,
+
+        /**
+         * Hangul Ae
+         */
+        HANGUL_AE,
+
+        /**
+         * Hangul Arae A
+         */
+        HANGUL_ARAE_A,
+
+        /**
+         * Hangul Arae Ae
+         */
+        HANGUL_ARAE_AE,
+
+        /**
+         * Banja mode
+         */
+        HANGUL_BANJA,
+
+        /**
+         * Hangul Cieuc
+         */
+        HANGUL_CIEUC,
+
+        /**
+         * Hangul code input mode
+         */
+        HANGUL_CODEINPUT,
+
+        /**
+         * Hangul Dikeud
+         */
+        HANGUL_DIKEUD,
+
+        /**
+         * Hangul E
+         */
+        HANGUL_E,
+
+        /**
+         * Hangul end, English start
+         */
+        HANGUL_END,
+
+        /**
+         * Hangul Eo
+         */
+        HANGUL_EO,
+
+        /**
+         * Hangul Eu
+         */
+        HANGUL_EU,
+
+        /**
+         * Start Hangul->Hanja Conversion
+         */
+        HANGUL_HANJA,
+
+        /**
+         * Hangul Hieuh
+         */
+        HANGUL_HIEUH,
+
+        /**
+         * Hangul I
+         */
+        HANGUL_I,
+
+        /**
+         * Hangul Ieung
+         */
+        HANGUL_IEUNG,
+
+        /**
+         * Hangul Jamo mode
+         */
+        HANGUL_JAMO,
+
+        /**
+         * Jeonja mode
+         */
+        HANGUL_JEONJA,
+
+        /**
+         * Hangul Jieuj
+         */
+        HANGUL_JIEUJ,
+
+        /**
+         * Hangul J Cieuc
+         */
+        HANGUL_J_CIEUC,
+
+        /**
+         * Hangul J Dikeud
+         */
+        HANGUL_J_DIKEUD,
+
+        /**
+         * Hangul J Hieuh
+         */
+        HANGUL_J_HIEUH,
+
+        /**
+         * Hangul J Ieung
+         */
+        HANGUL_J_IEUNG,
+
+        /**
+         * Hangul J Jieuj
+         */
+        HANGUL_J_JIEUJ,
+
+        /**
+         * Hangul J Khieuq
+         */
+        HANGUL_J_KHIEUQ,
+
+        /**
+         * Hangul J Kiyeog
+         */
+        HANGUL_J_KIYEOG,
+
+        /**
+         * Hangul J Kiyeog Sios
+         */
+        HANGUL_J_KIYEOG_SIOS,
+
+        /**
+         * Hangul J Kkogji Dalrin Ieung
+         */
+        HANGUL_J_KKOGJI_DALRIN_IEUNG,
+
+        /**
+         * Hangul J Mieum
+         */
+        HANGUL_J_MIEUM,
+
+        /**
+         * Hangul J Nieun
+         */
+        HANGUL_J_NIEUN,
+
+        /**
+         * Hangul J Nieun Hieuh
+         */
+        HANGUL_J_NIEUN_HIEUH,
+
+        /**
+         * Hangul J Nieun Jieuj
+         */
+        HANGUL_J_NIEUN_JIEUJ,
+
+        /**
+         * Hangul J Pan Sios
+         */
+        HANGUL_J_PAN_SIOS,
+
+        /**
+         * Hangul J Phieuf
+         */
+        HANGUL_J_PHIEUF,
+
+        /**
+         * Hangul J Pieub
+         */
+        HANGUL_J_PIEUB,
+
+        /**
+         * Hangul J Pieub Sios
+         */
+        HANGUL_J_PIEUB_SIOS,
+
+        /**
+         * Hangul J Rieul
+         */
+        HANGUL_J_RIEUL,
+
+        /**
+         * Hangul J Rieul Hieuh
+         */
+        HANGUL_J_RIEUL_HIEUH,
+
+        /**
+         * Hangul J Rieul Kiyeog
+         */
+        HANGUL_J_RIEUL_KIYEOG,
+
+        /**
+         * Hangul J Rieul Mieum
+         */
+        HANGUL_J_RIEUL_MIEUM,
+
+        /**
+         * Hangul J Rieul Phieuf
+         */
+        HANGUL_J_RIEUL_PHIEUF,
+
+        /**
+         * Hangul J Rieul Pieub
+         */
+        HANGUL_J_RIEUL_PIEUB,
+
+        /**
+         * Hangul J Rieul Sios
+         */
+        HANGUL_J_RIEUL_SIOS,
+
+        /**
+         * Hangul J Rieul Tieut
+         */
+        HANGUL_J_RIEUL_TIEUT,
+
+        /**
+         * Hangul J Sios
+         */
+        HANGUL_J_SIOS,
+
+        /**
+         * Hangul J Ssang Kiyeog
+         */
+        HANGUL_J_SSANG_KIYEOG,
+
+        /**
+         * Hangul J Ssang Sios
+         */
+        HANGUL_J_SSANG_SIOS,
+
+        /**
+         * Hangul J Tieut
+         */
+        HANGUL_J_TIEUT,
+
+        /**
+         * Hangul J Yeorin Hieuh
+         */
+        HANGUL_J_YEORIN_HIEUH,
+
+        /**
+         * Hangul Khieuq
+         */
+        HANGUL_KHIEUQ,
+
+        /**
+         * Hangul Kiyeog
+         */
+        HANGUL_KIYEOG,
+
+        /**
+         * Hangul Kiyeog Sios
+         */
+        HANGUL_KIYEOG_SIOS,
+
+        /**
+         * Hangul Kkogji Dalrin Ieung
+         */
+        HANGUL_KKOGJI_DALRIN_IEUNG,
+
+        /**
+         * Hangul Mieum
+         */
+        HANGUL_MIEUM,
+
+        /**
+         * Multiple candidate
+         */
+        HANGUL_MULTIPLE_CANDIDATE,
+
+        /**
+         * Hangul Nieun
+         */
+        HANGUL_NIEUN,
+
+        /**
+         * Hangul Nieun Hieuh
+         */
+        HANGUL_NIEUN_HIEUH,
+
+        /**
+         * Hangul Nieun Jieuj
+         */
+        HANGUL_NIEUN_JIEUJ,
+
+        /**
+         * Hangul O
+         */
+        HANGUL_O,
+
+        /**
+         * Hangul Oe
+         */
+        HANGUL_OE,
+
+        /**
+         * Hangul Pan Sios
+         */
+        HANGUL_PAN_SIOS,
+
+        /**
+         * Hangul Phieuf
+         */
+        HANGUL_PHIEUF,
+
+        /**
+         * Hangul Pieub
+         */
+        HANGUL_PIEUB,
+
+        /**
+         * Hangul Pieub Sios
+         */
+        HANGUL_PIEUB_SIOS,
+
+        /**
+         * Post Hanja conversion
+         */
+        HANGUL_POST_HANJA,
+
+        /**
+         * Previous candidate
+         */
+        HANGUL_PREVIOUS_CANDIDATE,
+
+        /**
+         * Pre Hanja conversion
+         */
+        HANGUL_PRE_HANJA,
+
+        /**
+         * Hangul Rieul
+         */
+        HANGUL_RIEUL,
+
+        /**
+         * Hangul Rieul Hieuh
+         */
+        HANGUL_RIEUL_HIEUH,
+
+        /**
+         * Hangul Rieul Kiyeog
+         */
+        HANGUL_RIEUL_KIYEOG,
+
+        /**
+         * Hangul Rieul Mieum
+         */
+        HANGUL_RIEUL_MIEUM,
+
+        /**
+         * Hangul Rieul Phieuf
+         */
+        HANGUL_RIEUL_PHIEUF,
+
+        /**
+         * Hangul Rieul Pieub
+         */
+        HANGUL_RIEUL_PIEUB,
+
+        /**
+         * Hangul Rieul Sios
+         */
+        HANGUL_RIEUL_SIOS,
+
+        /**
+         * Hangul Rieul Tieut
+         */
+        HANGUL_RIEUL_TIEUT,
+
+        /**
+         * Hangul Rieul Yeorin Hieuh
+         */
+        HANGUL_RIEUL_YEORIN_HIEUH,
+
+        /**
+         * Hangul Romaja mode
+         */
+        HANGUL_ROMAJA,
+
+        /**
+         * Single candidate
+         */
+        HANGUL_SINGLE_CANDIDATE,
+
+        /**
+         * Hangul Sios
+         */
+        HANGUL_SIOS,
+
+        /**
+         * Special symbols
+         */
+        HANGUL_SPECIAL,
+
+        /**
+         * Hangul Ssang Dikeud
+         */
+        HANGUL_SSANG_DIKEUD,
+
+        /**
+         * Hangul Ssang Jieuj
+         */
+        HANGUL_SSANG_JIEUJ,
+
+        /**
+         * Hangul Ssang Kiyeog
+         */
+        HANGUL_SSANG_KIYEOG,
+
+        /**
+         * Hangul Ssang Pieub
+         */
+        HANGUL_SSANG_PIEUB,
+
+        /**
+         * Hangul Ssang Sios
+         */
+        HANGUL_SSANG_SIOS,
+
+        /**
+         * Hangul start
+         */
+        HANGUL_START,
+
+        /**
+         * Hangul Sunkyeongeum Mieum
+         */
+        HANGUL_SUNKYEONGEUM_MIEUM,
+
+        /**
+         * Hangul Sunkyeongeum Phieuf
+         */
+        HANGUL_SUNKYEONGEUM_PHIEUF,
+
+        /**
+         * Hangul Sunkyeongeum Pieub
+         */
+        HANGUL_SUNKYEONGEUM_PIEUB,
+
+        /**
+         * Alias for mode_switch
+         */
+        HANGUL_SWITCH,
+
+        /**
+         * Hangul Tieut
+         */
+        HANGUL_TIEUT,
+
+        /**
+         * Hangul U
+         */
+        HANGUL_U,
+
+        /**
+         * Hangul Wa
+         */
+        HANGUL_WA,
+
+        /**
+         * Hangul Wae
+         */
+        HANGUL_WAE,
+
+        /**
+         * Hangul We
+         */
+        HANGUL_WE,
+
+        /**
+         * Hangul Weo
+         */
+        HANGUL_WEO,
+
+        /**
+         * Hangul Wi
+         */
+        HANGUL_WI,
+
+        /**
+         * Hangul Ya
+         */
+        HANGUL_YA,
+
+        /**
+         * Hangul Yae
+         */
+        HANGUL_YAE,
+
+        /**
+         * Hangul Ye
+         */
+        HANGUL_YE,
+
+        /**
+         * Hangul Yeo
+         */
+        HANGUL_YEO,
+
+        /**
+         * Hangul Yeorin Hieuh
+         */
+        HANGUL_YEORIN_HIEUH,
+
+        /**
+         * Hangul Yi
+         */
+        HANGUL_YI,
+
+        /**
+         * Hangul Yo
+         */
+        HANGUL_YO,
+
+        /**
+         * Hangul Yu
+         */
+        HANGUL_YU,
+
+        /**
+         * to Hankaku
+         */
+        HANKAKU,
+
+        /**
+         * U+2665 BLACK HEART SUIT
+         */
+        HEART,
+
+        /**
+         * U+05D0 HEBREW LETTER ALEF
+         */
+        HEBREW_ALEPH,
+
+        /**
+         * U+05E2 HEBREW LETTER AYIN
+         */
+        HEBREW_AYIN,
+
+        /**
+         * U+05D1 HEBREW LETTER BET
+         */
+        HEBREW_BET,
+
+        /**
+         * deprecated
+         */
+        HEBREW_BETH,
+
+        /**
+         * U+05D7 HEBREW LETTER HET
+         */
+        HEBREW_CHET,
+
+        /**
+         * U+05D3 HEBREW LETTER DALET
+         */
+        HEBREW_DALET,
+
+        /**
+         * deprecated
+         */
+        HEBREW_DALETH,
+
+        /**
+         * U+2017 DOUBLE LOW LINE
+         */
+        HEBREW_DOUBLELOWLINE,
+
+        /**
+         * U+05DA HEBREW LETTER FINAL KAF
+         */
+        HEBREW_FINALKAPH,
+
+        /**
+         * U+05DD HEBREW LETTER FINAL MEM
+         */
+        HEBREW_FINALMEM,
+
+        /**
+         * U+05DF HEBREW LETTER FINAL NUN
+         */
+        HEBREW_FINALNUN,
+
+        /**
+         * U+05E3 HEBREW LETTER FINAL PE
+         */
+        HEBREW_FINALPE,
+
+        /**
+         * U+05E5 HEBREW LETTER FINAL TSADI
+         */
+        HEBREW_FINALZADE,
+
+        /**
+         * deprecated
+         */
+        HEBREW_FINALZADI,
+
+        /**
+         * U+05D2 HEBREW LETTER GIMEL
+         */
+        HEBREW_GIMEL,
+
+        /**
+         * deprecated
+         */
+        HEBREW_GIMMEL,
+
+        /**
+         * U+05D4 HEBREW LETTER HE
+         */
+        HEBREW_HE,
+
+        /**
+         * deprecated
+         */
+        HEBREW_HET,
+
+        /**
+         * U+05DB HEBREW LETTER KAF
+         */
+        HEBREW_KAPH,
+
+        /**
+         * deprecated
+         */
+        HEBREW_KUF,
+
+        /**
+         * U+05DC HEBREW LETTER LAMED
+         */
+        HEBREW_LAMED,
+
+        /**
+         * U+05DE HEBREW LETTER MEM
+         */
+        HEBREW_MEM,
+
+        /**
+         * U+05E0 HEBREW LETTER NUN
+         */
+        HEBREW_NUN,
+
+        /**
+         * U+05E4 HEBREW LETTER PE
+         */
+        HEBREW_PE,
+
+        /**
+         * U+05E7 HEBREW LETTER QOF
+         */
+        HEBREW_QOPH,
+
+        /**
+         * U+05E8 HEBREW LETTER RESH
+         */
+        HEBREW_RESH,
+
+        /**
+         * U+05E1 HEBREW LETTER SAMEKH
+         */
+        HEBREW_SAMECH,
+
+        /**
+         * deprecated
+         */
+        HEBREW_SAMEKH,
+
+        /**
+         * U+05E9 HEBREW LETTER SHIN
+         */
+        HEBREW_SHIN,
+
+        /**
+         * Alias for mode_switch
+         */
+        HEBREW_SWITCH,
+
+        /**
+         * deprecated
+         */
+        HEBREW_TAF,
+
+        /**
+         * U+05EA HEBREW LETTER TAV
+         */
+        HEBREW_TAW,
+
+        /**
+         * U+05D8 HEBREW LETTER TET
+         */
+        HEBREW_TET,
+
+        /**
+         * deprecated
+         */
+        HEBREW_TETH,
+
+        /**
+         * U+05D5 HEBREW LETTER VAV
+         */
+        HEBREW_WAW,
+
+        /**
+         * U+05D9 HEBREW LETTER YOD
+         */
+        HEBREW_YOD,
+
+        /**
+         * U+05E6 HEBREW LETTER TSADI
+         */
+        HEBREW_ZADE,
+
+        /**
+         * deprecated
+         */
+        HEBREW_ZADI,
+
+        /**
+         * U+05D6 HEBREW LETTER ZAYIN
+         */
+        HEBREW_ZAIN,
+
+        /**
+         * deprecated
+         */
+        HEBREW_ZAYIN,
+
+        /**
+         * Help
+         */
+        HELP,
+
+        /**
+         * Alias for Henkan_Mode
+         */
+        HENKAN,
+
+        /**
+         * Start/Stop Conversion
+         */
+        HENKAN_MODE,
+
+        /**
+         * Hexagram
+         */
+        HEXAGRAM,
+
+        /**
+         * to Hiragana
+         */
+        HIRAGANA,
+
+        /**
+         * Hiragana/Katakana toggle
+         */
+        HIRAGANA_KATAKANA,
+
+        /**
+         * Home
+         */
+        HOME,
+
+        /**
+         * U+2500 BOX DRAWINGS LIGHT HORIZONTAL
+         */
+        HORIZCONNECTOR,
+
+        /**
+         * U+23BA HORIZONTAL SCAN LINE-1
+         */
+        HORIZLINESCAN1,
+
+        /**
+         * U+23BB HORIZONTAL SCAN LINE-3
+         */
+        HORIZLINESCAN3,
+
+        /**
+         * U+2500 BOX DRAWINGS LIGHT HORIZONTAL
+         */
+        HORIZLINESCAN5,
+
+        /**
+         * U+23BC HORIZONTAL SCAN LINE-7
+         */
+        HORIZLINESCAN7,
+
+        /**
+         * U+23BD HORIZONTAL SCAN LINE-9
+         */
+        HORIZLINESCAN9,
+
+        /**
+         * Hpblock
+         */
+        HPBLOCK,
+
+        /**
+         * Hpguilder
+         */
+        HPGUILDER,
+
+        /**
+         * Hplira
+         */
+        HPLIRA,
+
+        /**
+         * Hplongminus
+         */
+        HPLONGMINUS,
+
+        /**
+         * Hpmute Acute
+         */
+        HPMUTE_ACUTE,
+
+        /**
+         * Hpmute Asciicircum
+         */
+        HPMUTE_ASCIICIRCUM,
+
+        /**
+         * Hpmute Asciitilde
+         */
+        HPMUTE_ASCIITILDE,
+
+        /**
+         * Hpmute Diaeresis
+         */
+        HPMUTE_DIAERESIS,
+
+        /**
+         * Hpmute Grave
+         */
+        HPMUTE_GRAVE,
+
+        /**
+         * Hp Back Tab
+         */
+        HP_BACK_TAB,
+
+        /**
+         * Hp Clear Line
+         */
+        HP_CLEAR_LINE,
+
+        /**
+         * Hp Delete Char
+         */
+        HP_DELETE_CHAR,
+
+        /**
+         * Hp Delete Line
+         */
+        HP_DELETE_LINE,
+
+        /**
+         * Hp Insert Char
+         */
+        HP_INSERT_CHAR,
+
+        /**
+         * Hp Insert Line
+         */
+        HP_INSERT_LINE,
+
+        /**
+         * Hp Io
+         */
+        HP_IO,
+
+        /**
+         * Hp Kp Back Tab
+         */
+        HP_KP_BACK_TAB,
+
+        /**
+         * Hp Modelock1
+         */
+        HP_MODELOCK1,
+
+        /**
+         * Hp Modelock2
+         */
+        HP_MODELOCK2,
+
+        /**
+         * Hp Reset
+         */
+        HP_RESET,
+
+        /**
+         * Hp System
+         */
+        HP_SYSTEM,
+
+        /**
+         * Hp User
+         */
+        HP_USER,
+
+        /**
+         * Hp Ydiaeresis
+         */
+        HP_YDIAERESIS,
+
+        /**
+         * U+2409 SYMBOL FOR HORIZONTAL TABULATION
+         */
+        HT,
+
+        /**
+         * Left hyper
+         */
+        HYPER_L,
+
+        /**
+         * Right hyper
+         */
+        HYPER_R,
+
+        /**
+         * U+00AD SOFT HYPHEN
+         */
+        HYPHEN,
+
+        /**
+         * U+0130 LATIN CAPITAL LETTER I WITH DOT ABOVE
+         */
+        IABOVEDOT,
+
+        /**
+         * U+2261 IDENTICAL TO
+         */
+        IDENTICAL,
+
+        /**
+         * U+0131 LATIN SMALL LETTER DOTLESS I
+         */
+        IDOTLESS,
+
+        /**
+         * U+21D4 LEFT RIGHT DOUBLE ARROW
+         */
+        IFONLYIF,
+
+        /**
+         * U+21D2 RIGHTWARDS DOUBLE ARROW
+         */
+        IMPLIES,
+
+        /**
+         * U+2282 SUBSET OF
+         */
+        INCLUDEDIN,
+
+        /**
+         * U+2283 SUPERSET OF
+         */
+        INCLUDES,
+
+        /**
+         * U+221E INFINITY
+         */
+        INFINITY,
+
+        /**
+         * Insert, insert here
+         */
+        INSERT,
+
+        /**
+         * Insert Char
+         */
+        INSERT_CHAR,
+
+        /**
+         * Insert Line
+         */
+        INSERT_LINE,
+
+        /**
+         * U+222B INTEGRAL
+         */
+        INTEGRAL,
+
+        /**
+         * U+2229 INTERSECTION
+         */
+        INTERSECTION,
+
+        /**
+         * Io
+         */
+        IO,
+
+        /**
+         * Iso Center Object
+         */
+        ISO_CENTER_OBJECT,
+
+        /**
+         * Iso Continuous Underline
+         */
+        ISO_CONTINUOUS_UNDERLINE,
+
+        /**
+         * Iso Discontinuous Underline
+         */
+        ISO_DISCONTINUOUS_UNDERLINE,
+
+        /**
+         * Iso Emphasize
+         */
+        ISO_EMPHASIZE,
+
+        /**
+         * Iso Enter
+         */
+        ISO_ENTER,
+
+        /**
+         * Iso Fast Cursor Down
+         */
+        ISO_FAST_CURSOR_DOWN,
+
+        /**
+         * Iso Fast Cursor Left
+         */
+        ISO_FAST_CURSOR_LEFT,
+
+        /**
+         * Iso Fast Cursor Right
+         */
+        ISO_FAST_CURSOR_RIGHT,
+
+        /**
+         * Iso Fast Cursor Up
+         */
+        ISO_FAST_CURSOR_UP,
+
+        /**
+         * Iso First Group
+         */
+        ISO_FIRST_GROUP,
+
+        /**
+         * Iso First Group Lock
+         */
+        ISO_FIRST_GROUP_LOCK,
+
+        /**
+         * Iso Group Latch
+         */
+        ISO_GROUP_LATCH,
+
+        /**
+         * Iso Group Lock
+         */
+        ISO_GROUP_LOCK,
+
+        /**
+         * Alias for mode_switch
+         */
+        ISO_GROUP_SHIFT,
+
+        /**
+         * Iso Last Group
+         */
+        ISO_LAST_GROUP,
+
+        /**
+         * Iso Last Group Lock
+         */
+        ISO_LAST_GROUP_LOCK,
+
+        /**
+         * Iso Left Tab
+         */
+        ISO_LEFT_TAB,
+
+        /**
+         * Iso Level2 Latch
+         */
+        ISO_LEVEL2_LATCH,
+
+        /**
+         * Iso Level3 Latch
+         */
+        ISO_LEVEL3_LATCH,
+
+        /**
+         * Iso Level3 Lock
+         */
+        ISO_LEVEL3_LOCK,
+
+        /**
+         * Iso Level3 Shift
+         */
+        ISO_LEVEL3_SHIFT,
+
+        /**
+         * Iso Level5 Latch
+         */
+        ISO_LEVEL5_LATCH,
+
+        /**
+         * Iso Level5 Lock
+         */
+        ISO_LEVEL5_LOCK,
+
+        /**
+         * Iso Level5 Shift
+         */
+        ISO_LEVEL5_SHIFT,
+
+        /**
+         * Iso Lock
+         */
+        ISO_LOCK,
+
+        /**
+         * Iso Move Line Down
+         */
+        ISO_MOVE_LINE_DOWN,
+
+        /**
+         * Iso Move Line Up
+         */
+        ISO_MOVE_LINE_UP,
+
+        /**
+         * Iso Next Group
+         */
+        ISO_NEXT_GROUP,
+
+        /**
+         * Iso Next Group Lock
+         */
+        ISO_NEXT_GROUP_LOCK,
+
+        /**
+         * Iso Partial Line Down
+         */
+        ISO_PARTIAL_LINE_DOWN,
+
+        /**
+         * Iso Partial Line Up
+         */
+        ISO_PARTIAL_LINE_UP,
+
+        /**
+         * Iso Partial Space Left
+         */
+        ISO_PARTIAL_SPACE_LEFT,
+
+        /**
+         * Iso Partial Space Right
+         */
+        ISO_PARTIAL_SPACE_RIGHT,
+
+        /**
+         * Iso Prev Group
+         */
+        ISO_PREV_GROUP,
+
+        /**
+         * Iso Prev Group Lock
+         */
+        ISO_PREV_GROUP_LOCK,
+
+        /**
+         * Iso Release Both Margins
+         */
+        ISO_RELEASE_BOTH_MARGINS,
+
+        /**
+         * Iso Release Margin Left
+         */
+        ISO_RELEASE_MARGIN_LEFT,
+
+        /**
+         * Iso Release Margin Right
+         */
+        ISO_RELEASE_MARGIN_RIGHT,
+
+        /**
+         * Iso Set Margin Left
+         */
+        ISO_SET_MARGIN_LEFT,
+
+        /**
+         * Iso Set Margin Right
+         */
+        ISO_SET_MARGIN_RIGHT,
+
+        /**
+         * U+2218 RING OPERATOR
+         */
+        JOT,
+
+        /**
+         * U+30C1 KATAKANA LETTER TI
+         */
+        KANA_CHI,
+
+        /**
+         * U+300D RIGHT CORNER BRACKET
+         */
+        KANA_CLOSINGBRACKET,
+
+        /**
+         * U+3001 IDEOGRAPHIC COMMA
+         */
+        KANA_COMMA,
+
+        /**
+         * U+30FB KATAKANA MIDDLE DOT
+         */
+        KANA_CONJUNCTIVE,
+
+        /**
+         * U+30D5 KATAKANA LETTER HU
+         */
+        KANA_FU,
+
+        /**
+         * U+3002 IDEOGRAPHIC FULL STOP
+         */
+        KANA_FULLSTOP,
+
+        /**
+         * U+30CF KATAKANA LETTER HA
+         */
+        KANA_HA,
+
+        /**
+         * U+30D8 KATAKANA LETTER HE
+         */
+        KANA_HE,
+
+        /**
+         * U+30D2 KATAKANA LETTER HI
+         */
+        KANA_HI,
+
+        /**
+         * U+30DB KATAKANA LETTER HO
+         */
+        KANA_HO,
+
+        /**
+         * deprecated
+         */
+        KANA_HU,
+
+        /**
+         * U+30AB KATAKANA LETTER KA
+         */
+        KANA_KA,
+
+        /**
+         * U+30B1 KATAKANA LETTER KE
+         */
+        KANA_KE,
+
+        /**
+         * U+30AD KATAKANA LETTER KI
+         */
+        KANA_KI,
+
+        /**
+         * U+30B3 KATAKANA LETTER KO
+         */
+        KANA_KO,
+
+        /**
+         * U+30AF KATAKANA LETTER KU
+         */
+        KANA_KU,
+
+        /**
+         * U+30A1 KATAKANA LETTER SMALL A
+         */
+        KANA_LCASE_A,
+
+        /**
+         * U+30A7 KATAKANA LETTER SMALL E
+         */
+        KANA_LCASE_E,
+
+        /**
+         * U+30A3 KATAKANA LETTER SMALL I
+         */
+        KANA_LCASE_I,
+
+        /**
+         * U+30A9 KATAKANA LETTER SMALL O
+         */
+        KANA_LCASE_O,
+
+        /**
+         * U+30C3 KATAKANA LETTER SMALL TU
+         */
+        KANA_LCASE_TSU,
+
+        /**
+         * deprecated
+         */
+        KANA_LCASE_TU,
+
+        /**
+         * U+30A5 KATAKANA LETTER SMALL U
+         */
+        KANA_LCASE_U,
+
+        /**
+         * U+30E3 KATAKANA LETTER SMALL YA
+         */
+        KANA_LCASE_YA,
+
+        /**
+         * U+30E7 KATAKANA LETTER SMALL YO
+         */
+        KANA_LCASE_YO,
+
+        /**
+         * U+30E5 KATAKANA LETTER SMALL YU
+         */
+        KANA_LCASE_YU,
+
+        /**
+         * Kana Lock
+         */
+        KANA_LOCK,
+
+        /**
+         * U+30DE KATAKANA LETTER MA
+         */
+        KANA_MA,
+
+        /**
+         * U+30E1 KATAKANA LETTER ME
+         */
+        KANA_ME,
+
+        /**
+         * U+30DF KATAKANA LETTER MI
+         */
+        KANA_MI,
+
+        /**
+         * deprecated
+         */
+        KANA_MIDDLEDOT,
+
+        /**
+         * U+30E2 KATAKANA LETTER MO
+         */
+        KANA_MO,
+
+        /**
+         * U+30E0 KATAKANA LETTER MU
+         */
+        KANA_MU,
+
+        /**
+         * U+30F3 KATAKANA LETTER N
+         */
+        KANA_N,
+
+        /**
+         * U+30CA KATAKANA LETTER NA
+         */
+        KANA_NA,
+
+        /**
+         * U+30CD KATAKANA LETTER NE
+         */
+        KANA_NE,
+
+        /**
+         * U+30CB KATAKANA LETTER NI
+         */
+        KANA_NI,
+
+        /**
+         * U+30CE KATAKANA LETTER NO
+         */
+        KANA_NO,
+
+        /**
+         * U+30CC KATAKANA LETTER NU
+         */
+        KANA_NU,
+
+        /**
+         * U+300C LEFT CORNER BRACKET
+         */
+        KANA_OPENINGBRACKET,
+
+        /**
+         * U+30E9 KATAKANA LETTER RA
+         */
+        KANA_RA,
+
+        /**
+         * U+30EC KATAKANA LETTER RE
+         */
+        KANA_RE,
+
+        /**
+         * U+30EA KATAKANA LETTER RI
+         */
+        KANA_RI,
+
+        /**
+         * U+30ED KATAKANA LETTER RO
+         */
+        KANA_RO,
+
+        /**
+         * U+30EB KATAKANA LETTER RU
+         */
+        KANA_RU,
+
+        /**
+         * U+30B5 KATAKANA LETTER SA
+         */
+        KANA_SA,
+
+        /**
+         * U+30BB KATAKANA LETTER SE
+         */
+        KANA_SE,
+
+        /**
+         * U+30B7 KATAKANA LETTER SI
+         */
+        KANA_SHI,
+
+        /**
+         * Kana Shift
+         */
+        KANA_SHIFT,
+
+        /**
+         * U+30BD KATAKANA LETTER SO
+         */
+        KANA_SO,
+
+        /**
+         * U+30B9 KATAKANA LETTER SU
+         */
+        KANA_SU,
+
+        /**
+         * Alias for mode_switch
+         */
+        KANA_SWITCH,
+
+        /**
+         * U+30BF KATAKANA LETTER TA
+         */
+        KANA_TA,
+
+        /**
+         * U+30C6 KATAKANA LETTER TE
+         */
+        KANA_TE,
+
+        /**
+         * deprecated
+         */
+        KANA_TI,
+
+        /**
+         * U+30C8 KATAKANA LETTER TO
+         */
+        KANA_TO,
+
+        /**
+         * U+30A2 KATAKANA LETTER A
+         */
+        KANA_UCASE_A,
+
+        /**
+         * U+30A8 KATAKANA LETTER E
+         */
+        KANA_UCASE_E,
+
+        /**
+         * U+30A4 KATAKANA LETTER I
+         */
+        KANA_UCASE_I,
+
+        /**
+         * U+30AA KATAKANA LETTER O
+         */
+        KANA_UCASE_O,
+
+        /**
+         * U+30C4 KATAKANA LETTER TU
+         */
+        KANA_UCASE_TSU,
+
+        /**
+         * deprecated
+         */
+        KANA_UCASE_TU,
+
+        /**
+         * U+30A6 KATAKANA LETTER U
+         */
+        KANA_UCASE_U,
+
+        /**
+         * U+30E4 KATAKANA LETTER YA
+         */
+        KANA_UCASE_YA,
+
+        /**
+         * U+30E8 KATAKANA LETTER YO
+         */
+        KANA_UCASE_YO,
+
+        /**
+         * U+30E6 KATAKANA LETTER YU
+         */
+        KANA_UCASE_YU,
+
+        /**
+         * U+30EF KATAKANA LETTER WA
+         */
+        KANA_WA,
+
+        /**
+         * U+30F2 KATAKANA LETTER WO
+         */
+        KANA_WO,
+
+        /**
+         * Kanji, Kanji convert
+         */
+        KANJI,
+
+        /**
+         * Codeinput
+         */
+        KANJI_BANGOU,
+
+        /**
+         * deprecated
+         */
+        KAPPA,
+
+        /**
+         * to Katakana
+         */
+        KATAKANA,
+
+        /**
+         * U+20A9 WON SIGN
+         */
+        KOREAN_WON,
+
+        /**
+         * Kp 0
+         */
+        KP_0,
+
+        /**
+         * Kp 1
+         */
+        KP_1,
+
+        /**
+         * Kp 2
+         */
+        KP_2,
+
+        /**
+         * Kp 3
+         */
+        KP_3,
+
+        /**
+         * Kp 4
+         */
+        KP_4,
+
+        /**
+         * Kp 5
+         */
+        KP_5,
+
+        /**
+         * Kp 6
+         */
+        KP_6,
+
+        /**
+         * Kp 7
+         */
+        KP_7,
+
+        /**
+         * Kp 8
+         */
+        KP_8,
+
+        /**
+         * Kp 9
+         */
+        KP_9,
+
+        /**
+         * Kp Add
+         */
+        KP_ADD,
+
+        /**
+         * Kp Back Tab
+         */
+        KP_BACK_TAB,
+
+        /**
+         * Kp Begin
+         */
+        KP_BEGIN,
+
+        /**
+         * Kp Decimal
+         */
+        KP_DECIMAL,
+
+        /**
+         * Kp Delete
+         */
+        KP_DELETE,
+
+        /**
+         * Kp Divide
+         */
+        KP_DIVIDE,
+
+        /**
+         * Kp Down
+         */
+        KP_DOWN,
+
+        /**
+         * Kp End
+         */
+        KP_END,
+
+        /**
+         * Enter
+         */
+        KP_ENTER,
+
+        /**
+         * Equals
+         */
+        KP_EQUAL,
+
+        /**
+         * PF1, KP_A, ...
+         */
+        KP_F1,
+
+        /**
+         * Kp F2
+         */
+        KP_F2,
+
+        /**
+         * Kp F3
+         */
+        KP_F3,
+
+        /**
+         * Kp F4
+         */
+        KP_F4,
+
+        /**
+         * Kp Home
+         */
+        KP_HOME,
+
+        /**
+         * Kp Insert
+         */
+        KP_INSERT,
+
+        /**
+         * Kp Left
+         */
+        KP_LEFT,
+
+        /**
+         * Kp Multiply
+         */
+        KP_MULTIPLY,
+
+        /**
+         * Kp Next
+         */
+        KP_NEXT,
+
+        /**
+         * Kp Page Down
+         */
+        KP_PAGE_DOWN,
+
+        /**
+         * Kp Page Up
+         */
+        KP_PAGE_UP,
+
+        /**
+         * Kp Prior
+         */
+        KP_PRIOR,
+
+        /**
+         * Kp Right
+         */
+        KP_RIGHT,
+
+        /**
+         * Separator, often comma
+         */
+        KP_SEPARATOR,
+
+        /**
+         * Space
+         */
+        KP_SPACE,
+
+        /**
+         * Kp Subtract
+         */
+        KP_SUBTRACT,
+
+        /**
+         * Kp Tab
+         */
+        KP_TAB,
+
+        /**
+         * Kp Up
+         */
+        KP_UP,
+
+        /**
+         * U+0138 LATIN SMALL LETTER KRA
+         */
+        KRA,
+
+        /**
+         * L1
+         */
+        L1,
+
+        /**
+         * L10
+         */
+        L10,
+
+        /**
+         * L2
+         */
+        L2,
+
+        /**
+         * L3
+         */
+        L3,
+
+        /**
+         * L4
+         */
+        L4,
+
+        /**
+         * L5
+         */
+        L5,
+
+        /**
+         * L6
+         */
+        L6,
+
+        /**
+         * L7
+         */
+        L7,
+
+        /**
+         * L8
+         */
+        L8,
+
+        /**
+         * L9
+         */
+        L9,
+
+        /**
+         * Last Virtual Screen
+         */
+        LAST_VIRTUAL_SCREEN,
+
+        /**
+         * U+271D LATIN CROSS
+         */
+        LATINCROSS,
+
+        /**
+         * U+0061 LATIN SMALL LETTER A
+         */
+        LCASE_A,
+
+        /**
+         * U+00E1 LATIN SMALL LETTER A WITH ACUTE
+         */
+        LCASE_AACUTE,
+
+        /**
+         * U+1EA1 LATIN SMALL LETTER A WITH DOT BELOW
+         */
+        LCASE_ABELOWDOT,
+
+        /**
+         * U+0103 LATIN SMALL LETTER A WITH BREVE
+         */
+        LCASE_ABREVE,
+
+        /**
+         * U+1EAF LATIN SMALL LETTER A WITH BREVE AND ACUTE
+         */
+        LCASE_ABREVEACUTE,
+
+        /**
+         * U+1EB7 LATIN SMALL LETTER A WITH BREVE AND DOT BELOW
+         */
+        LCASE_ABREVEBELOWDOT,
+
+        /**
+         * U+1EB1 LATIN SMALL LETTER A WITH BREVE AND GRAVE
+         */
+        LCASE_ABREVEGRAVE,
+
+        /**
+         * U+1EB3 LATIN SMALL LETTER A WITH BREVE AND HOOK ABOVE
+         */
+        LCASE_ABREVEHOOK,
+
+        /**
+         * U+1EB5 LATIN SMALL LETTER A WITH BREVE AND TILDE
+         */
+        LCASE_ABREVETILDE,
+
+        /**
+         * U+00E2 LATIN SMALL LETTER A WITH CIRCUMFLEX
+         */
+        LCASE_ACIRCUMFLEX,
+
+        /**
+         * U+1EA5 LATIN SMALL LETTER A WITH CIRCUMFLEX AND ACUTE
+         */
+        LCASE_ACIRCUMFLEXACUTE,
+
+        /**
+         * U+1EAD LATIN SMALL LETTER A WITH CIRCUMFLEX AND DOT BELOW
+         */
+        LCASE_ACIRCUMFLEXBELOWDOT,
+
+        /**
+         * U+1EA7 LATIN SMALL LETTER A WITH CIRCUMFLEX AND GRAVE
+         */
+        LCASE_ACIRCUMFLEXGRAVE,
+
+        /**
+         * U+1EA9 LATIN SMALL LETTER A WITH CIRCUMFLEX AND HOOK ABOVE
+         */
+        LCASE_ACIRCUMFLEXHOOK,
+
+        /**
+         * U+1EAB LATIN SMALL LETTER A WITH CIRCUMFLEX AND TILDE
+         */
+        LCASE_ACIRCUMFLEXTILDE,
+
+        /**
+         * U+00E4 LATIN SMALL LETTER A WITH DIAERESIS
+         */
+        LCASE_ADIAERESIS,
+
+        /**
+         * U+00E6 LATIN SMALL LETTER AE
+         */
+        LCASE_AE,
+
+        /**
+         * U+00E0 LATIN SMALL LETTER A WITH GRAVE
+         */
+        LCASE_AGRAVE,
+
+        /**
+         * U+1EA3 LATIN SMALL LETTER A WITH HOOK ABOVE
+         */
+        LCASE_AHOOK,
+
+        /**
+         * U+0101 LATIN SMALL LETTER A WITH MACRON
+         */
+        LCASE_AMACRON,
+
+        /**
+         * U+0105 LATIN SMALL LETTER A WITH OGONEK
+         */
+        LCASE_AOGONEK,
+
+        /**
+         * U+00E5 LATIN SMALL LETTER A WITH RING ABOVE
+         */
+        LCASE_ARING,
+
+        /**
+         * U+00E3 LATIN SMALL LETTER A WITH TILDE
+         */
+        LCASE_ATILDE,
+
+        /**
+         * U+0062 LATIN SMALL LETTER B
+         */
+        LCASE_B,
+
+        /**
+         * U+1E03 LATIN SMALL LETTER B WITH DOT ABOVE
+         */
+        LCASE_BABOVEDOT,
+
+        /**
+         * U+0063 LATIN SMALL LETTER C
+         */
+        LCASE_C,
+
+        /**
+         * U+010B LATIN SMALL LETTER C WITH DOT ABOVE
+         */
+        LCASE_CABOVEDOT,
+
+        /**
+         * U+0107 LATIN SMALL LETTER C WITH ACUTE
+         */
+        LCASE_CACUTE,
+
+        /**
+         * U+010D LATIN SMALL LETTER C WITH CARON
+         */
+        LCASE_CCARON,
+
+        /**
+         * U+00E7 LATIN SMALL LETTER C WITH CEDILLA
+         */
+        LCASE_CCEDILLA,
+
+        /**
+         * U+0109 LATIN SMALL LETTER C WITH CIRCUMFLEX
+         */
+        LCASE_CCIRCUMFLEX,
+
+        /**
+         * Lcase Ch
+         */
+        LCASE_CH,
+
+        /**
+         * Lcase C H
+         */
+        LCASE_C_H,
+
+        /**
+         * U+0064 LATIN SMALL LETTER D
+         */
+        LCASE_D,
+
+        /**
+         * U+1E0B LATIN SMALL LETTER D WITH DOT ABOVE
+         */
+        LCASE_DABOVEDOT,
+
+        /**
+         * U+010F LATIN SMALL LETTER D WITH CARON
+         */
+        LCASE_DCARON,
+
+        /**
+         * U+0111 LATIN SMALL LETTER D WITH STROKE
+         */
+        LCASE_DSTROKE,
+
+        /**
+         * U+0065 LATIN SMALL LETTER E
+         */
+        LCASE_E,
+
+        /**
+         * U+0117 LATIN SMALL LETTER E WITH DOT ABOVE
+         */
+        LCASE_EABOVEDOT,
+
+        /**
+         * U+00E9 LATIN SMALL LETTER E WITH ACUTE
+         */
+        LCASE_EACUTE,
+
+        /**
+         * U+1EB9 LATIN SMALL LETTER E WITH DOT BELOW
+         */
+        LCASE_EBELOWDOT,
+
+        /**
+         * U+011B LATIN SMALL LETTER E WITH CARON
+         */
+        LCASE_ECARON,
+
+        /**
+         * U+00EA LATIN SMALL LETTER E WITH CIRCUMFLEX
+         */
+        LCASE_ECIRCUMFLEX,
+
+        /**
+         * U+1EBF LATIN SMALL LETTER E WITH CIRCUMFLEX AND ACUTE
+         */
+        LCASE_ECIRCUMFLEXACUTE,
+
+        /**
+         * U+1EC7 LATIN SMALL LETTER E WITH CIRCUMFLEX AND DOT BELOW
+         */
+        LCASE_ECIRCUMFLEXBELOWDOT,
+
+        /**
+         * U+1EC1 LATIN SMALL LETTER E WITH CIRCUMFLEX AND GRAVE
+         */
+        LCASE_ECIRCUMFLEXGRAVE,
+
+        /**
+         * U+1EC3 LATIN SMALL LETTER E WITH CIRCUMFLEX AND HOOK ABOVE
+         */
+        LCASE_ECIRCUMFLEXHOOK,
+
+        /**
+         * U+1EC5 LATIN SMALL LETTER E WITH CIRCUMFLEX AND TILDE
+         */
+        LCASE_ECIRCUMFLEXTILDE,
+
+        /**
+         * U+00EB LATIN SMALL LETTER E WITH DIAERESIS
+         */
+        LCASE_EDIAERESIS,
+
+        /**
+         * U+00E8 LATIN SMALL LETTER E WITH GRAVE
+         */
+        LCASE_EGRAVE,
+
+        /**
+         * U+1EBB LATIN SMALL LETTER E WITH HOOK ABOVE
+         */
+        LCASE_EHOOK,
+
+        /**
+         * U+0113 LATIN SMALL LETTER E WITH MACRON
+         */
+        LCASE_EMACRON,
+
+        /**
+         * U+014B LATIN SMALL LETTER ENG
+         */
+        LCASE_ENG,
+
+        /**
+         * U+0119 LATIN SMALL LETTER E WITH OGONEK
+         */
+        LCASE_EOGONEK,
+
+        /**
+         * U+00F0 LATIN SMALL LETTER ETH
+         */
+        LCASE_ETH,
+
+        /**
+         * U+1EBD LATIN SMALL LETTER E WITH TILDE
+         */
+        LCASE_ETILDE,
+
+        /**
+         * U+0292 LATIN SMALL LETTER EZH
+         */
+        LCASE_EZH,
+
+        /**
+         * U+0066 LATIN SMALL LETTER F
+         */
+        LCASE_F,
+
+        /**
+         * U+1E1F LATIN SMALL LETTER F WITH DOT ABOVE
+         */
+        LCASE_FABOVEDOT,
+
+        /**
+         * U+0067 LATIN SMALL LETTER G
+         */
+        LCASE_G,
+
+        /**
+         * U+0121 LATIN SMALL LETTER G WITH DOT ABOVE
+         */
+        LCASE_GABOVEDOT,
+
+        /**
+         * U+011F LATIN SMALL LETTER G WITH BREVE
+         */
+        LCASE_GBREVE,
+
+        /**
+         * U+01E7 LATIN SMALL LETTER G WITH CARON
+         */
+        LCASE_GCARON,
+
+        /**
+         * U+0123 LATIN SMALL LETTER G WITH CEDILLA
+         */
+        LCASE_GCEDILLA,
+
+        /**
+         * U+011D LATIN SMALL LETTER G WITH CIRCUMFLEX
+         */
+        LCASE_GCIRCUMFLEX,
+
+        /**
+         * U+0068 LATIN SMALL LETTER H
+         */
+        LCASE_H,
+
+        /**
+         * U+0125 LATIN SMALL LETTER H WITH CIRCUMFLEX
+         */
+        LCASE_HCIRCUMFLEX,
+
+        /**
+         * U+0127 LATIN SMALL LETTER H WITH STROKE
+         */
+        LCASE_HSTROKE,
+
+        /**
+         * U+0069 LATIN SMALL LETTER I
+         */
+        LCASE_I,
+
+        /**
+         * U+00ED LATIN SMALL LETTER I WITH ACUTE
+         */
+        LCASE_IACUTE,
+
+        /**
+         * U+1ECB LATIN SMALL LETTER I WITH DOT BELOW
+         */
+        LCASE_IBELOWDOT,
+
+        /**
+         * U+012D LATIN SMALL LETTER I WITH BREVE
+         */
+        LCASE_IBREVE,
+
+        /**
+         * U+00EE LATIN SMALL LETTER I WITH CIRCUMFLEX
+         */
+        LCASE_ICIRCUMFLEX,
+
+        /**
+         * U+00EF LATIN SMALL LETTER I WITH DIAERESIS
+         */
+        LCASE_IDIAERESIS,
+
+        /**
+         * U+00EC LATIN SMALL LETTER I WITH GRAVE
+         */
+        LCASE_IGRAVE,
+
+        /**
+         * U+1EC9 LATIN SMALL LETTER I WITH HOOK ABOVE
+         */
+        LCASE_IHOOK,
+
+        /**
+         * U+012B LATIN SMALL LETTER I WITH MACRON
+         */
+        LCASE_IMACRON,
+
+        /**
+         * U+012F LATIN SMALL LETTER I WITH OGONEK
+         */
+        LCASE_IOGONEK,
+
+        /**
+         * U+0129 LATIN SMALL LETTER I WITH TILDE
+         */
+        LCASE_ITILDE,
+
+        /**
+         * U+006A LATIN SMALL LETTER J
+         */
+        LCASE_J,
+
+        /**
+         * U+0135 LATIN SMALL LETTER J WITH CIRCUMFLEX
+         */
+        LCASE_JCIRCUMFLEX,
+
+        /**
+         * U+006B LATIN SMALL LETTER K
+         */
+        LCASE_K,
+
+        /**
+         * U+0137 LATIN SMALL LETTER K WITH CEDILLA
+         */
+        LCASE_KCEDILLA,
+
+        /**
+         * U+006C LATIN SMALL LETTER L
+         */
+        LCASE_L,
+
+        /**
+         * U+013A LATIN SMALL LETTER L WITH ACUTE
+         */
+        LCASE_LACUTE,
+
+        /**
+         * U+1E37 LATIN SMALL LETTER L WITH DOT BELOW
+         */
+        LCASE_LBELOWDOT,
+
+        /**
+         * U+013E LATIN SMALL LETTER L WITH CARON
+         */
+        LCASE_LCARON,
+
+        /**
+         * U+013C LATIN SMALL LETTER L WITH CEDILLA
+         */
+        LCASE_LCEDILLA,
+
+        /**
+         * U+0142 LATIN SMALL LETTER L WITH STROKE
+         */
+        LCASE_LSTROKE,
+
+        /**
+         * U+006D LATIN SMALL LETTER M
+         */
+        LCASE_M,
+
+        /**
+         * U+1E41 LATIN SMALL LETTER M WITH DOT ABOVE
+         */
+        LCASE_MABOVEDOT,
+
+        /**
+         * U+006E LATIN SMALL LETTER N
+         */
+        LCASE_N,
+
+        /**
+         * U+0144 LATIN SMALL LETTER N WITH ACUTE
+         */
+        LCASE_NACUTE,
+
+        /**
+         * U+0148 LATIN SMALL LETTER N WITH CARON
+         */
+        LCASE_NCARON,
+
+        /**
+         * U+0146 LATIN SMALL LETTER N WITH CEDILLA
+         */
+        LCASE_NCEDILLA,
+
+        /**
+         * U+00F1 LATIN SMALL LETTER N WITH TILDE
+         */
+        LCASE_NTILDE,
+
+        /**
+         * U+006F LATIN SMALL LETTER O
+         */
+        LCASE_O,
+
+        /**
+         * U+00F3 LATIN SMALL LETTER O WITH ACUTE
+         */
+        LCASE_OACUTE,
+
+        /**
+         * U+0275 LATIN SMALL LETTER BARRED O
+         */
+        LCASE_OBARRED,
+
+        /**
+         * U+1ECD LATIN SMALL LETTER O WITH DOT BELOW
+         */
+        LCASE_OBELOWDOT,
+
+        /**
+         * U+01D2 LATIN SMALL LETTER O WITH CARON
+         */
+        LCASE_OCARON,
+
+        /**
+         * U+00F4 LATIN SMALL LETTER O WITH CIRCUMFLEX
+         */
+        LCASE_OCIRCUMFLEX,
+
+        /**
+         * U+1ED1 LATIN SMALL LETTER O WITH CIRCUMFLEX AND ACUTE
+         */
+        LCASE_OCIRCUMFLEXACUTE,
+
+        /**
+         * U+1ED9 LATIN SMALL LETTER O WITH CIRCUMFLEX AND DOT BELOW
+         */
+        LCASE_OCIRCUMFLEXBELOWDOT,
+
+        /**
+         * U+1ED3 LATIN SMALL LETTER O WITH CIRCUMFLEX AND GRAVE
+         */
+        LCASE_OCIRCUMFLEXGRAVE,
+
+        /**
+         * U+1ED5 LATIN SMALL LETTER O WITH CIRCUMFLEX AND HOOK ABOVE
+         */
+        LCASE_OCIRCUMFLEXHOOK,
+
+        /**
+         * U+1ED7 LATIN SMALL LETTER O WITH CIRCUMFLEX AND TILDE
+         */
+        LCASE_OCIRCUMFLEXTILDE,
+
+        /**
+         * U+00F6 LATIN SMALL LETTER O WITH DIAERESIS
+         */
+        LCASE_ODIAERESIS,
+
+        /**
+         * U+0151 LATIN SMALL LETTER O WITH DOUBLE ACUTE
+         */
+        LCASE_ODOUBLEACUTE,
+
+        /**
+         * U+0153 LATIN SMALL LIGATURE OE
+         */
+        LCASE_OE,
+
+        /**
+         * U+00F2 LATIN SMALL LETTER O WITH GRAVE
+         */
+        LCASE_OGRAVE,
+
+        /**
+         * U+1ECF LATIN SMALL LETTER O WITH HOOK ABOVE
+         */
+        LCASE_OHOOK,
+
+        /**
+         * U+01A1 LATIN SMALL LETTER O WITH HORN
+         */
+        LCASE_OHORN,
+
+        /**
+         * U+1EDB LATIN SMALL LETTER O WITH HORN AND ACUTE
+         */
+        LCASE_OHORNACUTE,
+
+        /**
+         * U+1EE3 LATIN SMALL LETTER O WITH HORN AND DOT BELOW
+         */
+        LCASE_OHORNBELOWDOT,
+
+        /**
+         * U+1EDD LATIN SMALL LETTER O WITH HORN AND GRAVE
+         */
+        LCASE_OHORNGRAVE,
+
+        /**
+         * U+1EDF LATIN SMALL LETTER O WITH HORN AND HOOK ABOVE
+         */
+        LCASE_OHORNHOOK,
+
+        /**
+         * U+1EE1 LATIN SMALL LETTER O WITH HORN AND TILDE
+         */
+        LCASE_OHORNTILDE,
+
+        /**
+         * U+014D LATIN SMALL LETTER O WITH MACRON
+         */
+        LCASE_OMACRON,
+
+        /**
+         * U+00F8 LATIN SMALL LETTER O WITH STROKE
+         */
+        LCASE_OOBLIQUE,
+
+        /**
+         * U+00F8 LATIN SMALL LETTER O WITH STROKE
+         */
+        LCASE_OSLASH,
+
+        /**
+         * U+00F5 LATIN SMALL LETTER O WITH TILDE
+         */
+        LCASE_OTILDE,
+
+        /**
+         * U+0070 LATIN SMALL LETTER P
+         */
+        LCASE_P,
+
+        /**
+         * U+1E57 LATIN SMALL LETTER P WITH DOT ABOVE
+         */
+        LCASE_PABOVEDOT,
+
+        /**
+         * U+0071 LATIN SMALL LETTER Q
+         */
+        LCASE_Q,
+
+        /**
+         * U+0072 LATIN SMALL LETTER R
+         */
+        LCASE_R,
+
+        /**
+         * U+0155 LATIN SMALL LETTER R WITH ACUTE
+         */
+        LCASE_RACUTE,
+
+        /**
+         * U+0159 LATIN SMALL LETTER R WITH CARON
+         */
+        LCASE_RCARON,
+
+        /**
+         * U+0157 LATIN SMALL LETTER R WITH CEDILLA
+         */
+        LCASE_RCEDILLA,
+
+        /**
+         * U+0073 LATIN SMALL LETTER S
+         */
+        LCASE_S,
+
+        /**
+         * U+1E61 LATIN SMALL LETTER S WITH DOT ABOVE
+         */
+        LCASE_SABOVEDOT,
+
+        /**
+         * U+015B LATIN SMALL LETTER S WITH ACUTE
+         */
+        LCASE_SACUTE,
+
+        /**
+         * U+0161 LATIN SMALL LETTER S WITH CARON
+         */
+        LCASE_SCARON,
+
+        /**
+         * U+015F LATIN SMALL LETTER S WITH CEDILLA
+         */
+        LCASE_SCEDILLA,
+
+        /**
+         * U+0259 LATIN SMALL LETTER SCHWA
+         */
+        LCASE_SCHWA,
+
+        /**
+         * U+015D LATIN SMALL LETTER S WITH CIRCUMFLEX
+         */
+        LCASE_SCIRCUMFLEX,
+
+        /**
+         * U+0074 LATIN SMALL LETTER T
+         */
+        LCASE_T,
+
+        /**
+         * U+1E6B LATIN SMALL LETTER T WITH DOT ABOVE
+         */
+        LCASE_TABOVEDOT,
+
+        /**
+         * U+0165 LATIN SMALL LETTER T WITH CARON
+         */
+        LCASE_TCARON,
+
+        /**
+         * U+0163 LATIN SMALL LETTER T WITH CEDILLA
+         */
+        LCASE_TCEDILLA,
+
+        /**
+         * U+00FE LATIN SMALL LETTER THORN
+         */
+        LCASE_THORN,
+
+        /**
+         * U+0167 LATIN SMALL LETTER T WITH STROKE
+         */
+        LCASE_TSLASH,
+
+        /**
+         * U+0075 LATIN SMALL LETTER U
+         */
+        LCASE_U,
+
+        /**
+         * U+00FA LATIN SMALL LETTER U WITH ACUTE
+         */
+        LCASE_UACUTE,
+
+        /**
+         * U+1EE5 LATIN SMALL LETTER U WITH DOT BELOW
+         */
+        LCASE_UBELOWDOT,
+
+        /**
+         * U+016D LATIN SMALL LETTER U WITH BREVE
+         */
+        LCASE_UBREVE,
+
+        /**
+         * U+00FB LATIN SMALL LETTER U WITH CIRCUMFLEX
+         */
+        LCASE_UCIRCUMFLEX,
+
+        /**
+         * U+00FC LATIN SMALL LETTER U WITH DIAERESIS
+         */
+        LCASE_UDIAERESIS,
+
+        /**
+         * U+0171 LATIN SMALL LETTER U WITH DOUBLE ACUTE
+         */
+        LCASE_UDOUBLEACUTE,
+
+        /**
+         * U+00F9 LATIN SMALL LETTER U WITH GRAVE
+         */
+        LCASE_UGRAVE,
+
+        /**
+         * U+1EE7 LATIN SMALL LETTER U WITH HOOK ABOVE
+         */
+        LCASE_UHOOK,
+
+        /**
+         * U+01B0 LATIN SMALL LETTER U WITH HORN
+         */
+        LCASE_UHORN,
+
+        /**
+         * U+1EE9 LATIN SMALL LETTER U WITH HORN AND ACUTE
+         */
+        LCASE_UHORNACUTE,
+
+        /**
+         * U+1EF1 LATIN SMALL LETTER U WITH HORN AND DOT BELOW
+         */
+        LCASE_UHORNBELOWDOT,
+
+        /**
+         * U+1EEB LATIN SMALL LETTER U WITH HORN AND GRAVE
+         */
+        LCASE_UHORNGRAVE,
+
+        /**
+         * U+1EED LATIN SMALL LETTER U WITH HORN AND HOOK ABOVE
+         */
+        LCASE_UHORNHOOK,
+
+        /**
+         * U+1EEF LATIN SMALL LETTER U WITH HORN AND TILDE
+         */
+        LCASE_UHORNTILDE,
+
+        /**
+         * U+016B LATIN SMALL LETTER U WITH MACRON
+         */
+        LCASE_UMACRON,
+
+        /**
+         * U+0173 LATIN SMALL LETTER U WITH OGONEK
+         */
+        LCASE_UOGONEK,
+
+        /**
+         * U+016F LATIN SMALL LETTER U WITH RING ABOVE
+         */
+        LCASE_URING,
+
+        /**
+         * U+0169 LATIN SMALL LETTER U WITH TILDE
+         */
+        LCASE_UTILDE,
+
+        /**
+         * U+0076 LATIN SMALL LETTER V
+         */
+        LCASE_V,
+
+        /**
+         * U+0077 LATIN SMALL LETTER W
+         */
+        LCASE_W,
+
+        /**
+         * U+1E83 LATIN SMALL LETTER W WITH ACUTE
+         */
+        LCASE_WACUTE,
+
+        /**
+         * U+0175 LATIN SMALL LETTER W WITH CIRCUMFLEX
+         */
+        LCASE_WCIRCUMFLEX,
+
+        /**
+         * U+1E85 LATIN SMALL LETTER W WITH DIAERESIS
+         */
+        LCASE_WDIAERESIS,
+
+        /**
+         * U+1E81 LATIN SMALL LETTER W WITH GRAVE
+         */
+        LCASE_WGRAVE,
+
+        /**
+         * U+0078 LATIN SMALL LETTER X
+         */
+        LCASE_X,
+
+        /**
+         * U+1E8B LATIN SMALL LETTER X WITH DOT ABOVE
+         */
+        LCASE_XABOVEDOT,
+
+        /**
+         * U+0079 LATIN SMALL LETTER Y
+         */
+        LCASE_Y,
+
+        /**
+         * U+00FD LATIN SMALL LETTER Y WITH ACUTE
+         */
+        LCASE_YACUTE,
+
+        /**
+         * U+1EF5 LATIN SMALL LETTER Y WITH DOT BELOW
+         */
+        LCASE_YBELOWDOT,
+
+        /**
+         * U+0177 LATIN SMALL LETTER Y WITH CIRCUMFLEX
+         */
+        LCASE_YCIRCUMFLEX,
+
+        /**
+         * U+00FF LATIN SMALL LETTER Y WITH DIAERESIS
+         */
+        LCASE_YDIAERESIS,
+
+        /**
+         * U+1EF3 LATIN SMALL LETTER Y WITH GRAVE
+         */
+        LCASE_YGRAVE,
+
+        /**
+         * U+1EF7 LATIN SMALL LETTER Y WITH HOOK ABOVE
+         */
+        LCASE_YHOOK,
+
+        /**
+         * U+1EF9 LATIN SMALL LETTER Y WITH TILDE
+         */
+        LCASE_YTILDE,
+
+        /**
+         * U+007A LATIN SMALL LETTER Z
+         */
+        LCASE_Z,
+
+        /**
+         * U+017C LATIN SMALL LETTER Z WITH DOT ABOVE
+         */
+        LCASE_ZABOVEDOT,
+
+        /**
+         * U+017A LATIN SMALL LETTER Z WITH ACUTE
+         */
+        LCASE_ZACUTE,
+
+        /**
+         * U+017E LATIN SMALL LETTER Z WITH CARON
+         */
+        LCASE_ZCARON,
+
+        /**
+         * U+01B6 LATIN SMALL LETTER Z WITH STROKE
+         */
+        LCASE_ZSTROKE,
+
+        /**
+         * Move left, left arrow
+         */
+        LEFT,
+
+        /**
+         * U+27E8 MATHEMATICAL LEFT ANGLE BRACKET
+         */
+        LEFTANGLEBRACKET,
+
+        /**
+         * U+2190 LEFTWARDS ARROW
+         */
+        LEFTARROW,
+
+        /**
+         * U+003C LESS-THAN SIGN
+         */
+        LEFTCARET,
+
+        /**
+         * U+201C LEFT DOUBLE QUOTATION MARK
+         */
+        LEFTDOUBLEQUOTEMARK,
+
+        /**
+         * U+23A8 LEFT CURLY BRACKET MIDDLE PIECE
+         */
+        LEFTMIDDLECURLYBRACE,
+
+        /**
+         * U+25C1 WHITE LEFT-POINTING TRIANGLE
+         */
+        LEFTOPENTRIANGLE,
+
+        /**
+         * U+261C WHITE LEFT POINTING INDEX
+         */
+        LEFTPOINTER,
+
+        /**
+         * U+23B7 RADICAL SYMBOL BOTTOM
+         */
+        LEFTRADICAL,
+
+        /**
+         * U+2282 SUBSET OF
+         */
+        LEFTSHOE,
+
+        /**
+         * U+2018 LEFT SINGLE QUOTATION MARK
+         */
+        LEFTSINGLEQUOTEMARK,
+
+        /**
+         * U+251C BOX DRAWINGS LIGHT VERTICAL AND RIGHT
+         */
+        LEFTT,
+
+        /**
+         * U+22A3 LEFT TACK
+         */
+        LEFTTACK,
+
+        /**
+         * U+003C LESS-THAN SIGN
+         */
+        LESS,
+
+        /**
+         * U+2264 LESS-THAN OR EQUAL TO
+         */
+        LESSTHANEQUAL,
+
+        /**
+         * U+240A SYMBOL FOR LINE FEED
+         */
+        LF,
+
+        /**
+         * Linefeed, LF
+         */
+        LINEFEED,
+
+        /**
+         * Lira
+         */
+        LIRA,
+
+        /**
+         * U+20A4 LIRA SIGN
+         */
+        LIRA_SIGN,
+
+        /**
+         * U+2227 LOGICAL AND
+         */
+        LOGICALAND,
+
+        /**
+         * U+2228 LOGICAL OR
+         */
+        LOGICALOR,
+
+        /**
+         * Longminus
+         */
+        LONGMINUS,
+
+        /**
+         * U+2514 BOX DRAWINGS LIGHT UP AND RIGHT
+         */
+        LOWLEFTCORNER,
+
+        /**
+         * U+2518 BOX DRAWINGS LIGHT UP AND LEFT
+         */
+        LOWRIGHTCORNER,
+
+        /**
+         * U+0455 CYRILLIC SMALL LETTER DZE
+         */
+        MACEDONIA_LCASE_DSE,
+
+        /**
+         * U+0453 CYRILLIC SMALL LETTER GJE
+         */
+        MACEDONIA_LCASE_GJE,
+
+        /**
+         * U+045C CYRILLIC SMALL LETTER KJE
+         */
+        MACEDONIA_LCASE_KJE,
+
+        /**
+         * U+0405 CYRILLIC CAPITAL LETTER DZE
+         */
+        MACEDONIA_UCASE_DSE,
+
+        /**
+         * U+0403 CYRILLIC CAPITAL LETTER GJE
+         */
+        MACEDONIA_UCASE_GJE,
+
+        /**
+         * U+040C CYRILLIC CAPITAL LETTER KJE
+         */
+        MACEDONIA_UCASE_KJE,
+
+        /**
+         * U+00AF MACRON
+         */
+        MACRON,
+
+        /**
+         * Previous Candidate
+         */
+        MAE_KOHO,
+
+        /**
+         * U+2642 MALE SIGN
+         */
+        MALESYMBOL,
+
+        /**
+         * U+2720 MALTESE CROSS
+         */
+        MALTESECROSS,
+
+        /**
+         * Marker
+         */
+        MARKER,
+
+        /**
+         * U+00BA MASCULINE ORDINAL INDICATOR
+         */
+        MASCULINE,
+
+        /**
+         * Delete from Dictionary
+         */
+        MASSYO,
+
+        /**
+         * Menu
+         */
+        MENU,
+
+        /**
+         * Left meta
+         */
+        META_L,
+
+        /**
+         * Right meta
+         */
+        META_R,
+
+        /**
+         * U+20A5 MILL SIGN
+         */
+        MILL_SIGN,
+
+        /**
+         * U+002D HYPHEN-MINUS
+         */
+        MINUS,
+
+        /**
+         * U+2032 PRIME
+         */
+        MINUTES,
+
+        /**
+         * Character set switch
+         */
+        MODE_SWITCH,
+
+        /**
+         * Mouse Keys Accel Enable
+         */
+        MOUSE_KEYS_ACCEL_ENABLE,
+
+        /**
+         * Mouse Keys Enable
+         */
+        MOUSE_KEYS_ENABLE,
+
+        /**
+         * U+00B5 MICRO SIGN
+         */
+        MU,
+
+        /**
+         * Cancel Conversion
+         */
+        MUHENKAN,
+
+        /**
+         * Multiple Candidate
+         */
+        MULTIPLE_CANDIDATE,
+
+        /**
+         * U+00D7 MULTIPLICATION SIGN
+         */
+        MULTIPLY,
+
+        /**
+         * Multi-key character compose
+         */
+        MULTI_KEY,
+
+        /**
+         * U+266D MUSIC FLAT SIGN
+         */
+        MUSICALFLAT,
+
+        /**
+         * U+266F MUSIC SHARP SIGN
+         */
+        MUSICALSHARP,
+
+        /**
+         * Mute Acute
+         */
+        MUTE_ACUTE,
+
+        /**
+         * Mute Asciicircum
+         */
+        MUTE_ASCIICIRCUM,
+
+        /**
+         * Mute Asciitilde
+         */
+        MUTE_ASCIITILDE,
+
+        /**
+         * Mute Diaeresis
+         */
+        MUTE_DIAERESIS,
+
+        /**
+         * Mute Grave
+         */
+        MUTE_GRAVE,
+
+        /**
+         * U+2207 NABLA
+         */
+        NABLA,
+
+        /**
+         * U+20A6 NAIRA SIGN
+         */
+        NAIRA_SIGN,
+
+        /**
+         * U+20AA NEW SHEQEL SIGN
+         */
+        NEW_SHEQEL_SIGN,
+
+        /**
+         * Next
+         */
+        NEXT,
+
+        /**
+         * Next Virtual Screen
+         */
+        NEXT_VIRTUAL_SCREEN,
+
+        /**
+         * U+2089 SUBSCRIPT NINE
+         */
+        NINESUBSCRIPT,
+
+        /**
+         * U+2079 SUPERSCRIPT NINE
+         */
+        NINESUPERIOR,
+
+        /**
+         * U+2424 SYMBOL FOR NEWLINE
+         */
+        NL,
+
+        /**
+         * U+00A0 NO-BREAK SPACE
+         */
+        NOBREAKSPACE,
+
+        /**
+         * U+2247 NOT ALMOST EQUAL TO
+         */
+        NOTAPPROXEQ,
+
+        /**
+         * U+2209 NOT AN ELEMENT OF
+         */
+        NOTELEMENTOF,
+
+        /**
+         * U+2260 NOT EQUAL TO
+         */
+        NOTEQUAL,
+
+        /**
+         * U+2262 NOT IDENTICAL TO
+         */
+        NOTIDENTICAL,
+
+        /**
+         * U+00AC NOT SIGN
+         */
+        NOTSIGN,
+
+        /**
+         * Special KeySym
+         */
+        NO_SYMBOL,
+
+        /**
+         * U+0023 NUMBER SIGN
+         */
+        NUMBERSIGN,
+
+        /**
+         * U+2116 NUMERO SIGN
+         */
+        NUMEROSIGN,
+
+        /**
+         * Num Lock
+         */
+        NUM_LOCK,
+
+        /**
+         * U+02DB OGONEK
+         */
+        OGONEK,
+
+        /**
+         * U+215B VULGAR FRACTION ONE EIGHTH
+         */
+        ONEEIGHTH,
+
+        /**
+         * U+2155 VULGAR FRACTION ONE FIFTH
+         */
+        ONEFIFTH,
+
+        /**
+         * U+00BD VULGAR FRACTION ONE HALF
+         */
+        ONEHALF,
+
+        /**
+         * U+00BC VULGAR FRACTION ONE QUARTER
+         */
+        ONEQUARTER,
+
+        /**
+         * U+2159 VULGAR FRACTION ONE SIXTH
+         */
+        ONESIXTH,
+
+        /**
+         * U+2081 SUBSCRIPT ONE
+         */
+        ONESUBSCRIPT,
+
+        /**
+         * U+00B9 SUPERSCRIPT ONE
+         */
+        ONESUPERIOR,
+
+        /**
+         * U+2153 VULGAR FRACTION ONE THIRD
+         */
+        ONETHIRD,
+
+        /**
+         * U+25AD WHITE RECTANGLE
+         */
+        OPENRECTBULLET,
+
+        /**
+         * U+2606 WHITE STAR
+         */
+        OPENSTAR,
+
+        /**
+         * U+25BD WHITE DOWN-POINTING TRIANGLE
+         */
+        OPENTRIBULLETDOWN,
+
+        /**
+         * U+25B3 WHITE UP-POINTING TRIANGLE
+         */
+        OPENTRIBULLETUP,
+
+        /**
+         * U+00AA FEMININE ORDINAL INDICATOR
+         */
+        ORDFEMININE,
+
+        /**
+         * Osf Activate
+         */
+        OSF_ACTIVATE,
+
+        /**
+         * Osf Add Mode
+         */
+        OSF_ADD_MODE,
+
+        /**
+         * Osf Back Space
+         */
+        OSF_BACK_SPACE,
+
+        /**
+         * Osf Back Tab
+         */
+        OSF_BACK_TAB,
+
+        /**
+         * Osf Begin Data
+         */
+        OSF_BEGIN_DATA,
+
+        /**
+         * Osf Begin Line
+         */
+        OSF_BEGIN_LINE,
+
+        /**
+         * Osf Cancel
+         */
+        OSF_CANCEL,
+
+        /**
+         * Osf Clear
+         */
+        OSF_CLEAR,
+
+        /**
+         * Osf Copy
+         */
+        OSF_COPY,
+
+        /**
+         * Osf Cut
+         */
+        OSF_CUT,
+
+        /**
+         * Osf Delete
+         */
+        OSF_DELETE,
+
+        /**
+         * Osf Deselect All
+         */
+        OSF_DESELECT_ALL,
+
+        /**
+         * Osf Down
+         */
+        OSF_DOWN,
+
+        /**
+         * Osf End Data
+         */
+        OSF_END_DATA,
+
+        /**
+         * Osf End Line
+         */
+        OSF_END_LINE,
+
+        /**
+         * Osf Escape
+         */
+        OSF_ESCAPE,
+
+        /**
+         * Osf Extend
+         */
+        OSF_EXTEND,
+
+        /**
+         * Osf Help
+         */
+        OSF_HELP,
+
+        /**
+         * Osf Insert
+         */
+        OSF_INSERT,
+
+        /**
+         * Osf Left
+         */
+        OSF_LEFT,
+
+        /**
+         * Osf Menu
+         */
+        OSF_MENU,
+
+        /**
+         * Osf Menu Bar
+         */
+        OSF_MENU_BAR,
+
+        /**
+         * Osf Next Field
+         */
+        OSF_NEXT_FIELD,
+
+        /**
+         * Osf Next Menu
+         */
+        OSF_NEXT_MENU,
+
+        /**
+         * Osf Page Down
+         */
+        OSF_PAGE_DOWN,
+
+        /**
+         * Osf Page Left
+         */
+        OSF_PAGE_LEFT,
+
+        /**
+         * Osf Page Right
+         */
+        OSF_PAGE_RIGHT,
+
+        /**
+         * Osf Page Up
+         */
+        OSF_PAGE_UP,
+
+        /**
+         * Osf Paste
+         */
+        OSF_PASTE,
+
+        /**
+         * Osf Prev Field
+         */
+        OSF_PREV_FIELD,
+
+        /**
+         * Osf Prev Menu
+         */
+        OSF_PREV_MENU,
+
+        /**
+         * Osf Primary Paste
+         */
+        OSF_PRIMARY_PASTE,
+
+        /**
+         * Osf Quick Paste
+         */
+        OSF_QUICK_PASTE,
+
+        /**
+         * Osf Reselect
+         */
+        OSF_RESELECT,
+
+        /**
+         * Osf Restore
+         */
+        OSF_RESTORE,
+
+        /**
+         * Osf Right
+         */
+        OSF_RIGHT,
+
+        /**
+         * Osf Select
+         */
+        OSF_SELECT,
+
+        /**
+         * Osf Select All
+         */
+        OSF_SELECT_ALL,
+
+        /**
+         * Osf Undo
+         */
+        OSF_UNDO,
+
+        /**
+         * Osf Up
+         */
+        OSF_UP,
+
+        /**
+         * U+00AF MACRON
+         */
+        OVERBAR,
+
+        /**
+         * Overlay1 Enable
+         */
+        OVERLAY1_ENABLE,
+
+        /**
+         * Overlay2 Enable
+         */
+        OVERLAY2_ENABLE,
+
+        /**
+         * U+203E OVERLINE
+         */
+        OVERLINE,
+
+        /**
+         * Page Down
+         */
+        PAGE_DOWN,
+
+        /**
+         * Page Up
+         */
+        PAGE_UP,
+
+        /**
+         * U+00B6 PILCROW SIGN
+         */
+        PARAGRAPH,
+
+        /**
+         * U+0028 LEFT PARENTHESIS
+         */
+        PARENLEFT,
+
+        /**
+         * U+0029 RIGHT PARENTHESIS
+         */
+        PARENRIGHT,
+
+        /**
+         * U+2202 PARTIAL DIFFERENTIAL
+         */
+        PARTDIFFERENTIAL,
+
+        /**
+         * U+2202 PARTIAL DIFFERENTIAL
+         */
+        PARTIALDERIVATIVE,
+
+        /**
+         * Pause, hold
+         */
+        PAUSE,
+
+        /**
+         * U+0025 PERCENT SIGN
+         */
+        PERCENT,
+
+        /**
+         * U+002E FULL STOP
+         */
+        PERIOD,
+
+        /**
+         * U+00B7 MIDDLE DOT
+         */
+        PERIODCENTERED,
+
+        /**
+         * U+2030 PER MILLE SIGN
+         */
+        PERMILLE,
+
+        /**
+         * U+20A7 PESETA SIGN
+         */
+        PESETA_SIGN,
+
+        /**
+         * U+2117 SOUND RECORDING COPYRIGHT
+         */
+        PHONOGRAPHCOPYRIGHT,
+
+        /**
+         * U+002B PLUS SIGN
+         */
+        PLUS,
+
+        /**
+         * U+00B1 PLUS-MINUS SIGN
+         */
+        PLUSMINUS,
+
+        /**
+         * Pointer Accelerate
+         */
+        POINTER_ACCELERATE,
+
+        /**
+         * Pointer Button1
+         */
+        POINTER_BUTTON1,
+
+        /**
+         * Pointer Button2
+         */
+        POINTER_BUTTON2,
+
+        /**
+         * Pointer Button3
+         */
+        POINTER_BUTTON3,
+
+        /**
+         * Pointer Button4
+         */
+        POINTER_BUTTON4,
+
+        /**
+         * Pointer Button5
+         */
+        POINTER_BUTTON5,
+
+        /**
+         * Pointer Button Dflt
+         */
+        POINTER_BUTTON_DFLT,
+
+        /**
+         * Pointer Dbl Click1
+         */
+        POINTER_DBL_CLICK1,
+
+        /**
+         * Pointer Dbl Click2
+         */
+        POINTER_DBL_CLICK2,
+
+        /**
+         * Pointer Dbl Click3
+         */
+        POINTER_DBL_CLICK3,
+
+        /**
+         * Pointer Dbl Click4
+         */
+        POINTER_DBL_CLICK4,
+
+        /**
+         * Pointer Dbl Click5
+         */
+        POINTER_DBL_CLICK5,
+
+        /**
+         * Pointer Dbl Click Dflt
+         */
+        POINTER_DBL_CLICK_DFLT,
+
+        /**
+         * Pointer Dflt Btn Next
+         */
+        POINTER_DFLT_BTN_NEXT,
+
+        /**
+         * Pointer Dflt Btn Prev
+         */
+        POINTER_DFLT_BTN_PREV,
+
+        /**
+         * Pointer Down
+         */
+        POINTER_DOWN,
+
+        /**
+         * Pointer Down Left
+         */
+        POINTER_DOWN_LEFT,
+
+        /**
+         * Pointer Down Right
+         */
+        POINTER_DOWN_RIGHT,
+
+        /**
+         * Pointer Drag1
+         */
+        POINTER_DRAG1,
+
+        /**
+         * Pointer Drag2
+         */
+        POINTER_DRAG2,
+
+        /**
+         * Pointer Drag3
+         */
+        POINTER_DRAG3,
+
+        /**
+         * Pointer Drag4
+         */
+        POINTER_DRAG4,
+
+        /**
+         * Pointer Drag5
+         */
+        POINTER_DRAG5,
+
+        /**
+         * Pointer Drag Dflt
+         */
+        POINTER_DRAG_DFLT,
+
+        /**
+         * Pointer Enable Keys
+         */
+        POINTER_ENABLE_KEYS,
+
+        /**
+         * Pointer Left
+         */
+        POINTER_LEFT,
+
+        /**
+         * Pointer Right
+         */
+        POINTER_RIGHT,
+
+        /**
+         * Pointer Up
+         */
+        POINTER_UP,
+
+        /**
+         * Pointer Up Left
+         */
+        POINTER_UP_LEFT,
+
+        /**
+         * Pointer Up Right
+         */
+        POINTER_UP_RIGHT,
+
+        /**
+         * U+211E PRESCRIPTION TAKE
+         */
+        PRESCRIPTION,
+
+        /**
+         * Previous Candidate
+         */
+        PREVIOUS_CANDIDATE,
+
+        /**
+         * Prev Virtual Screen
+         */
+        PREV_VIRTUAL_SCREEN,
+
+        /**
+         * Print
+         */
+        PRINT,
+
+        /**
+         * Prior, previous
+         */
+        PRIOR,
+
+        /**
+         * U+30FC KATAKANA-HIRAGANA PROLONGED SOUND MARK
+         */
+        PROLONGEDSOUND,
+
+        /**
+         * U+2008 PUNCTUATION SPACE
+         */
+        PUNCTSPACE,
+
+        /**
+         * U+2395 APL FUNCTIONAL SYMBOL QUAD
+         */
+        QUAD,
+
+        /**
+         * U+003F QUESTION MARK
+         */
+        QUESTION,
+
+        /**
+         * U+00BF INVERTED QUESTION MARK
+         */
+        QUESTIONDOWN,
+
+        /**
+         * U+0022 QUOTATION MARK
+         */
+        QUOTEDBL,
+
+        /**
+         * deprecated
+         */
+        QUOTELEFT,
+
+        /**
+         * deprecated
+         */
+        QUOTERIGHT,
+
+        /**
+         * R1
+         */
+        R1,
+
+        /**
+         * R10
+         */
+        R10,
+
+        /**
+         * R11
+         */
+        R11,
+
+        /**
+         * R12
+         */
+        R12,
+
+        /**
+         * R13
+         */
+        R13,
+
+        /**
+         * R14
+         */
+        R14,
+
+        /**
+         * R15
+         */
+        R15,
+
+        /**
+         * R2
+         */
+        R2,
+
+        /**
+         * R3
+         */
+        R3,
+
+        /**
+         * R4
+         */
+        R4,
+
+        /**
+         * R5
+         */
+        R5,
+
+        /**
+         * R6
+         */
+        R6,
+
+        /**
+         * R7
+         */
+        R7,
+
+        /**
+         * R8
+         */
+        R8,
+
+        /**
+         * R9
+         */
+        R9,
+
+        /**
+         * U+221A SQUARE ROOT
+         */
+        RADICAL,
+
+        /**
+         * Redo, again
+         */
+        REDO,
+
+        /**
+         * U+00AE REGISTERED SIGN
+         */
+        REGISTERED,
+
+        /**
+         * Repeat Keys Enable
+         */
+        REPEAT_KEYS_ENABLE,
+
+        /**
+         * Reset
+         */
+        RESET,
+
+        /**
+         * Return, enter
+         */
+        RETURN,
+
+        /**
+         * Move right, right arrow
+         */
+        RIGHT,
+
+        /**
+         * U+27E9 MATHEMATICAL RIGHT ANGLE BRACKET
+         */
+        RIGHTANGLEBRACKET,
+
+        /**
+         * U+2192 RIGHTWARDS ARROW
+         */
+        RIGHTARROW,
+
+        /**
+         * U+003E GREATER-THAN SIGN
+         */
+        RIGHTCARET,
+
+        /**
+         * U+201D RIGHT DOUBLE QUOTATION MARK
+         */
+        RIGHTDOUBLEQUOTEMARK,
+
+        /**
+         * U+23AC RIGHT CURLY BRACKET MIDDLE PIECE
+         */
+        RIGHTMIDDLECURLYBRACE,
+
+        /**
+         * Rightmiddlesummation
+         */
+        RIGHTMIDDLESUMMATION,
+
+        /**
+         * U+25B7 WHITE RIGHT-POINTING TRIANGLE
+         */
+        RIGHTOPENTRIANGLE,
+
+        /**
+         * U+261E WHITE RIGHT POINTING INDEX
+         */
+        RIGHTPOINTER,
+
+        /**
+         * U+2283 SUPERSET OF
+         */
+        RIGHTSHOE,
+
+        /**
+         * U+2019 RIGHT SINGLE QUOTATION MARK
+         */
+        RIGHTSINGLEQUOTEMARK,
+
+        /**
+         * U+2524 BOX DRAWINGS LIGHT VERTICAL AND LEFT
+         */
+        RIGHTT,
+
+        /**
+         * U+22A2 RIGHT TACK
+         */
+        RIGHTTACK,
+
+        /**
+         * to Romaji
+         */
+        ROMAJI,
+
+        /**
+         * U+20A8 RUPEE SIGN
+         */
+        RUPEE_SIGN,
+
+        /**
+         * Alias for mode_switch
+         */
+        SCRIPT_SWITCH,
+
+        /**
+         * Scroll Lock
+         */
+        SCROLL_LOCK,
+
+        /**
+         * U+2033 DOUBLE PRIME
+         */
+        SECONDS,
+
+        /**
+         * U+00A7 SECTION SIGN
+         */
+        SECTION,
+
+        /**
+         * Select, mark
+         */
+        SELECT,
+
+        /**
+         * U+003B SEMICOLON
+         */
+        SEMICOLON,
+
+        /**
+         * U+309C KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK
+         */
+        SEMIVOICEDSOUND,
+
+        /**
+         * U+0452 CYRILLIC SMALL LETTER DJE
+         */
+        SERBIAN_LCASE_DJE,
+
+        /**
+         * deprecated
+         */
+        SERBIAN_LCASE_DZE,
+
+        /**
+         * deprecated
+         */
+        SERBIAN_LCASE_JE,
+
+        /**
+         * deprecated
+         */
+        SERBIAN_LCASE_LJE,
+
+        /**
+         * deprecated
+         */
+        SERBIAN_LCASE_NJE,
+
+        /**
+         * U+045B CYRILLIC SMALL LETTER TSHE
+         */
+        SERBIAN_LCASE_TSHE,
+
+        /**
+         * U+0402 CYRILLIC CAPITAL LETTER DJE
+         */
+        SERBIAN_UCASE_DJE,
+
+        /**
+         * deprecated
+         */
+        SERBIAN_UCASE_DZE,
+
+        /**
+         * deprecated
+         */
+        SERBIAN_UCASE_JE,
+
+        /**
+         * deprecated
+         */
+        SERBIAN_UCASE_LJE,
+
+        /**
+         * deprecated
+         */
+        SERBIAN_UCASE_NJE,
+
+        /**
+         * U+040B CYRILLIC CAPITAL LETTER TSHE
+         */
+        SERBIAN_UCASE_TSHE,
+
+        /**
+         * U+215E VULGAR FRACTION SEVEN EIGHTHS
+         */
+        SEVENEIGHTHS,
+
+        /**
+         * U+2087 SUBSCRIPT SEVEN
+         */
+        SEVENSUBSCRIPT,
+
+        /**
+         * U+2077 SUPERSCRIPT SEVEN
+         */
+        SEVENSUPERIOR,
+
+        /**
+         * Left shift
+         */
+        SHIFT_L,
+
+        /**
+         * Shift lock
+         */
+        SHIFT_LOCK,
+
+        /**
+         * Right shift
+         */
+        SHIFT_R,
+
+        /**
+         * U+2613 SALTIRE
+         */
+        SIGNATUREMARK,
+
+        /**
+         * U+2423 OPEN BOX
+         */
+        SIGNIFBLANK,
+
+        /**
+         * U+2243 ASYMPTOTICALLY EQUAL TO
+         */
+        SIMILAREQUAL,
+
+        /**
+         * U+201A SINGLE LOW-9 QUOTATION MARK
+         */
+        SINGLELOWQUOTEMARK,
+
+        /**
+         * Single Candidate
+         */
+        SINGLE_CANDIDATE,
+
+        /**
+         * U+0D85 SINHALA AYANNA
+         */
+        SINH_A,
+
+        /**
+         * U+0D86 SINHALA AAYANNA
+         */
+        SINH_AA,
+
+        /**
+         * U+0DCF SINHALA AELA-PILLA
+         */
+        SINH_AA2,
+
+        /**
+         * U+0D87 SINHALA AEYANNA
+         */
+        SINH_AE,
+
+        /**
+         * U+0DD0 SINHALA AEDA-PILLA
+         */
+        SINH_AE2,
+
+        /**
+         * U+0D88 SINHALA AEEYANNA
+         */
+        SINH_AEE,
+
+        /**
+         * U+0DD1 SINHALA DIGA AEDA-PILLA
+         */
+        SINH_AEE2,
+
+        /**
+         * U+0D93 SINHALA AIYANNA
+         */
+        SINH_AI,
+
+        /**
+         * U+0DDB SINHALA KOMBU DEKA
+         */
+        SINH_AI2,
+
+        /**
+         * U+0DCA SINHALA AL-LAKUNA
+         */
+        SINH_AL,
+
+        /**
+         * U+0D96 SINHALA AUYANNA
+         */
+        SINH_AU,
+
+        /**
+         * U+0DDE SINHALA KOMBUVA HAA GAYANUKITTA
+         */
+        SINH_AU2,
+
+        /**
+         * U+0DB6 SINHALA BAYANNA
+         */
+        SINH_BA,
+
+        /**
+         * U+0DB7 SINHALA MAHA. BAYANNA
+         */
+        SINH_BHA,
+
+        /**
+         * U+0DA0 SINHALA CAYANNA
+         */
+        SINH_CA,
+
+        /**
+         * U+0DA1 SINHALA MAHA. CAYANNA
+         */
+        SINH_CHA,
+
+        /**
+         * U+0DA9 SINHALA DDAYANNA
+         */
+        SINH_DDA,
+
+        /**
+         * U+0DAA SINHALA MAHA. DDAYANNA
+         */
+        SINH_DDHA,
+
+        /**
+         * U+0DAF SINHALA DAYANNA
+         */
+        SINH_DHA,
+
+        /**
+         * U+0DB0 SINHALA MAHA. DAYANNA
+         */
+        SINH_DHHA,
+
+        /**
+         * U+0D91 SINHALA EYANNA
+         */
+        SINH_E,
+
+        /**
+         * U+0DD9 SINHALA KOMBUVA
+         */
+        SINH_E2,
+
+        /**
+         * U+0D92 SINHALA EEYANNA
+         */
+        SINH_EE,
+
+        /**
+         * U+0DDA SINHALA DIGA KOMBUVA
+         */
+        SINH_EE2,
+
+        /**
+         * U+0DC6 SINHALA FAYANNA
+         */
+        SINH_FA,
+
+        /**
+         * U+0D9C SINHALA GAYANNA
+         */
+        SINH_GA,
+
+        /**
+         * U+0D9D SINHALA MAHA. GAYANNA
+         */
+        SINH_GHA,
+
+        /**
+         * U+0D83 SINHALA VISARGAYA
+         */
+        SINH_H2,
+
+        /**
+         * U+0DC4 SINHALA HAYANNA
+         */
+        SINH_HA,
+
+        /**
+         * U+0D89 SINHALA IYANNA
+         */
+        SINH_I,
+
+        /**
+         * U+0DD2 SINHALA IS-PILLA
+         */
+        SINH_I2,
+
+        /**
+         * U+0D8A SINHALA IIYANNA
+         */
+        SINH_II,
+
+        /**
+         * U+0DD3 SINHALA DIGA IS-PILLA
+         */
+        SINH_II2,
+
+        /**
+         * U+0DA2 SINHALA JAYANNA
+         */
+        SINH_JA,
+
+        /**
+         * U+0DA3 SINHALA MAHA. JAYANNA
+         */
+        SINH_JHA,
+
+        /**
+         * U+0DA5 SINHALA TAALUJA SANYOOGA NAASIKYAYA
+         */
+        SINH_JNYA,
+
+        /**
+         * U+0D9A SINHALA KAYANNA
+         */
+        SINH_KA,
+
+        /**
+         * U+0D9B SINHALA MAHA. KAYANNA
+         */
+        SINH_KHA,
+
+        /**
+         * U+0DF4 SINHALA KUNDDALIYA
+         */
+        SINH_KUNDDALIYA,
+
+        /**
+         * U+0DBD SINHALA DANTAJA LAYANNA
+         */
+        SINH_LA,
+
+        /**
+         * U+0DC5 SINHALA MUURDHAJA LAYANNA
+         */
+        SINH_LLA,
+
+        /**
+         * U+0D8F SINHALA ILUYANNA
+         */
+        SINH_LU,
+
+        /**
+         * U+0DDF SINHALA GAYANUKITTA
+         */
+        SINH_LU2,
+
+        /**
+         * U+0D90 SINHALA ILUUYANNA
+         */
+        SINH_LUU,
+
+        /**
+         * U+0DF3 SINHALA DIGA GAYANUKITTA
+         */
+        SINH_LUU2,
+
+        /**
+         * U+0DB8 SINHALA MAYANNA
+         */
+        SINH_MA,
+
+        /**
+         * U+0DB9 SINHALA AMBA BAYANNA
+         */
+        SINH_MBA,
+
+        /**
+         * U+0DB1 SINHALA DANTAJA NAYANNA
+         */
+        SINH_NA,
+
+        /**
+         * U+0DAC SINHALA SANYAKA DDAYANNA
+         */
+        SINH_NDDA,
+
+        /**
+         * U+0DB3 SINHALA SANYAKA DAYANNA
+         */
+        SINH_NDHA,
+
+        /**
+         * U+0D82 SINHALA ANUSVARAYA
+         */
+        SINH_NG,
+
+        /**
+         * U+0D9E SINHALA KANTAJA NAASIKYAYA
+         */
+        SINH_NG2,
+
+        /**
+         * U+0D9F SINHALA SANYAKA GAYANNA
+         */
+        SINH_NGA,
+
+        /**
+         * U+0DA6 SINHALA SANYAKA JAYANNA
+         */
+        SINH_NJA,
+
+        /**
+         * U+0DAB SINHALA MUURDHAJA NAYANNA
+         */
+        SINH_NNA,
+
+        /**
+         * U+0DA4 SINHALA TAALUJA NAASIKYAYA
+         */
+        SINH_NYA,
+
+        /**
+         * U+0D94 SINHALA OYANNA
+         */
+        SINH_O,
+
+        /**
+         * U+0DDC SINHALA KOMBUVA HAA AELA-PILLA
+         */
+        SINH_O2,
+
+        /**
+         * U+0D95 SINHALA OOYANNA
+         */
+        SINH_OO,
+
+        /**
+         * U+0DDD SINHALA KOMBUVA HAA DIGA AELA-PILLA
+         */
+        SINH_OO2,
+
+        /**
+         * U+0DB4 SINHALA PAYANNA
+         */
+        SINH_PA,
+
+        /**
+         * U+0DB5 SINHALA MAHA. PAYANNA
+         */
+        SINH_PHA,
+
+        /**
+         * U+0DBB SINHALA RAYANNA
+         */
+        SINH_RA,
+
+        /**
+         * U+0D8D SINHALA IRUYANNA
+         */
+        SINH_RI,
+
+        /**
+         * U+0D8E SINHALA IRUUYANNA
+         */
+        SINH_RII,
+
+        /**
+         * U+0DD8 SINHALA GAETTA-PILLA
+         */
+        SINH_RU2,
+
+        /**
+         * U+0DF2 SINHALA DIGA GAETTA-PILLA
+         */
+        SINH_RUU2,
+
+        /**
+         * U+0DC3 SINHALA DANTAJA SAYANNA
+         */
+        SINH_SA,
+
+        /**
+         * U+0DC1 SINHALA TAALUJA SAYANNA
+         */
+        SINH_SHA,
+
+        /**
+         * U+0DC2 SINHALA MUURDHAJA SAYANNA
+         */
+        SINH_SSHA,
+
+        /**
+         * U+0DAD SINHALA TAYANNA
+         */
+        SINH_THA,
+
+        /**
+         * U+0DAE SINHALA MAHA. TAYANNA
+         */
+        SINH_THHA,
+
+        /**
+         * U+0DA7 SINHALA TTAYANNA
+         */
+        SINH_TTA,
+
+        /**
+         * U+0DA8 SINHALA MAHA. TTAYANNA
+         */
+        SINH_TTHA,
+
+        /**
+         * U+0D8B SINHALA UYANNA
+         */
+        SINH_U,
+
+        /**
+         * U+0DD4 SINHALA PAA-PILLA
+         */
+        SINH_U2,
+
+        /**
+         * U+0D8C SINHALA UUYANNA
+         */
+        SINH_UU,
+
+        /**
+         * U+0DD6 SINHALA DIGA PAA-PILLA
+         */
+        SINH_UU2,
+
+        /**
+         * U+0DC0 SINHALA VAYANNA
+         */
+        SINH_VA,
+
+        /**
+         * U+0DBA SINHALA YAYANNA
+         */
+        SINH_YA,
+
+        /**
+         * U+2086 SUBSCRIPT SIX
+         */
+        SIXSUBSCRIPT,
+
+        /**
+         * U+2076 SUPERSCRIPT SIX
+         */
+        SIXSUPERIOR,
+
+        /**
+         * U+002F SOLIDUS
+         */
+        SLASH,
+
+        /**
+         * Slow Keys Enable
+         */
+        SLOW_KEYS_ENABLE,
+
+        /**
+         * U+25C6 BLACK DIAMOND
+         */
+        SOLIDDIAMOND,
+
+        /**
+         * U+0020 SPACE
+         */
+        SPACE,
+
+        /**
+         * U+221A SQUARE ROOT
+         */
+        SQUAREROOT,
+
+        /**
+         * U+00DF LATIN SMALL LETTER SHARP S
+         */
+        SSHARP,
+
+        /**
+         * U+00A3 POUND SIGN
+         */
+        STERLING,
+
+        /**
+         * Sticky Keys Enable
+         */
+        STICKY_KEYS_ENABLE,
+
+        /**
+         * U+2263 STRICTLY EQUIVALENT TO
+         */
+        STRICTEQ,
+
+        /**
+         * Same as XK_Redo
+         */
+        SUN_AGAIN,
+
+        /**
+         * Same as XK_Mode_switch
+         */
+        SUN_ALT_GRAPH,
+
+        /**
+         * Sun Audio Lower Volume
+         */
+        SUN_AUDIO_LOWER_VOLUME,
+
+        /**
+         * Sun Audio Mute
+         */
+        SUN_AUDIO_MUTE,
+
+        /**
+         * Sun Audio Raise Volume
+         */
+        SUN_AUDIO_RAISE_VOLUME,
+
+        /**
+         * Same as XK_Multi_key
+         */
+        SUN_COMPOSE,
+
+        /**
+         * Sun Copy
+         */
+        SUN_COPY,
+
+        /**
+         * Sun Cut
+         */
+        SUN_CUT,
+
+        /**
+         * Labeled F11
+         */
+        SUN_F36,
+
+        /**
+         * Labeled F12
+         */
+        SUN_F37,
+
+        /**
+         * Sun Fa Acute
+         */
+        SUN_FA_ACUTE,
+
+        /**
+         * Sun Fa Cedilla
+         */
+        SUN_FA_CEDILLA,
+
+        /**
+         * Sun Fa Circum
+         */
+        SUN_FA_CIRCUM,
+
+        /**
+         * Sun Fa Diaeresis
+         */
+        SUN_FA_DIAERESIS,
+
+        /**
+         * Sun Fa Grave
+         */
+        SUN_FA_GRAVE,
+
+        /**
+         * Sun Fa Tilde
+         */
+        SUN_FA_TILDE,
+
+        /**
+         * Same as XK_Find
+         */
+        SUN_FIND,
+
+        /**
+         * Sun Front
+         */
+        SUN_FRONT,
+
+        /**
+         * Sun Open
+         */
+        SUN_OPEN,
+
+        /**
+         * Same as XK_Next
+         */
+        SUN_PAGE_DOWN,
+
+        /**
+         * Same as XK_Prior
+         */
+        SUN_PAGE_UP,
+
+        /**
+         * Sun Paste
+         */
+        SUN_PASTE,
+
+        /**
+         * Sun Power Switch
+         */
+        SUN_POWER_SWITCH,
+
+        /**
+         * Sun Power Switch Shift
+         */
+        SUN_POWER_SWITCH_SHIFT,
+
+        /**
+         * Same as XK_Print
+         */
+        SUN_PRINT_SCREEN,
+
+        /**
+         * Sun Props
+         */
+        SUN_PROPS,
+
+        /**
+         * Same as XK_Cancel
+         */
+        SUN_STOP,
+
+        /**
+         * Sun Sys Req
+         */
+        SUN_SYS_REQ,
+
+        /**
+         * Same as XK_Undo
+         */
+        SUN_UNDO,
+
+        /**
+         * Sun Video Degauss
+         */
+        SUN_VIDEO_DEGAUSS,
+
+        /**
+         * Sun Video Lower Brightness
+         */
+        SUN_VIDEO_LOWER_BRIGHTNESS,
+
+        /**
+         * Sun Video Raise Brightness
+         */
+        SUN_VIDEO_RAISE_BRIGHTNESS,
+
+        /**
+         * Left super
+         */
+        SUPER_L,
+
+        /**
+         * Right super
+         */
+        SUPER_R,
+
+        /**
+         * System
+         */
+        SYSTEM,
+
+        /**
+         * Sys Req
+         */
+        SYS_REQ,
+
+        /**
+         * T3270 Alt Cursor
+         */
+        T3270_ALT_CURSOR,
+
+        /**
+         * T3270 Attn
+         */
+        T3270_ATTN,
+
+        /**
+         * T3270 Back Tab
+         */
+        T3270_BACK_TAB,
+
+        /**
+         * T3270 Change Screen
+         */
+        T3270_CHANGE_SCREEN,
+
+        /**
+         * T3270 Copy
+         */
+        T3270_COPY,
+
+        /**
+         * T3270 Cursor Blink
+         */
+        T3270_CURSOR_BLINK,
+
+        /**
+         * T3270 Cursor Select
+         */
+        T3270_CURSOR_SELECT,
+
+        /**
+         * T3270 Delete Word
+         */
+        T3270_DELETE_WORD,
+
+        /**
+         * T3270 Duplicate
+         */
+        T3270_DUPLICATE,
+
+        /**
+         * T3270 Enter
+         */
+        T3270_ENTER,
+
+        /**
+         * T3270 Erase Eof
+         */
+        T3270_ERASE_EOF,
+
+        /**
+         * T3270 Erase Input
+         */
+        T3270_ERASE_INPUT,
+
+        /**
+         * T3270 Ex Select
+         */
+        T3270_EX_SELECT,
+
+        /**
+         * T3270 Field Mark
+         */
+        T3270_FIELD_MARK,
+
+        /**
+         * T3270 Ident
+         */
+        T3270_IDENT,
+
+        /**
+         * T3270 Jump
+         */
+        T3270_JUMP,
+
+        /**
+         * T3270 Key Click
+         */
+        T3270_KEY_CLICK,
+
+        /**
+         * T3270 Left2
+         */
+        T3270_LEFT2,
+
+        /**
+         * T3270 Pa1
+         */
+        T3270_PA1,
+
+        /**
+         * T3270 Pa2
+         */
+        T3270_PA2,
+
+        /**
+         * T3270 Pa3
+         */
+        T3270_PA3,
+
+        /**
+         * T3270 Play
+         */
+        T3270_PLAY,
+
+        /**
+         * T3270 Print Screen
+         */
+        T3270_PRINT_SCREEN,
+
+        /**
+         * T3270 Quit
+         */
+        T3270_QUIT,
+
+        /**
+         * T3270 Record
+         */
+        T3270_RECORD,
+
+        /**
+         * T3270 Reset
+         */
+        T3270_RESET,
+
+        /**
+         * T3270 Right2
+         */
+        T3270_RIGHT2,
+
+        /**
+         * T3270 Rule
+         */
+        T3270_RULE,
+
+        /**
+         * T3270 Setup
+         */
+        T3270_SETUP,
+
+        /**
+         * T3270 Test
+         */
+        T3270_TEST,
+
+        /**
+         * Tab
+         */
+        TAB,
+
+        /**
+         * Tcase Ch
+         */
+        TCASE_CH,
+
+        /**
+         * Tcase C H
+         */
+        TCASE_C_H,
+
+        /**
+         * deprecated
+         */
+        TCASE_ETH,
+
+        /**
+         * deprecated
+         */
+        TCASE_THORN,
+
+        /**
+         * U+260E BLACK TELEPHONE
+         */
+        TELEPHONE,
+
+        /**
+         * U+2315 TELEPHONE RECORDER
+         */
+        TELEPHONERECORDER,
+
+        /**
+         * Terminate Server
+         */
+        TERMINATE_SERVER,
+
+        /**
+         * U+0E3F THAI CURRENCY SYMBOL BAHT
+         */
+        THAI_BAHT,
+
+        /**
+         * U+0E1A THAI CHARACTER BO BAIMAI
+         */
+        THAI_BOBAIMAI,
+
+        /**
+         * U+0E08 THAI CHARACTER CHO CHAN
+         */
+        THAI_CHOCHAN,
+
+        /**
+         * U+0E0A THAI CHARACTER CHO CHANG
+         */
+        THAI_CHOCHANG,
+
+        /**
+         * U+0E09 THAI CHARACTER CHO CHING
+         */
+        THAI_CHOCHING,
+
+        /**
+         * U+0E0C THAI CHARACTER CHO CHOE
+         */
+        THAI_CHOCHOE,
+
+        /**
+         * U+0E0E THAI CHARACTER DO CHADA
+         */
+        THAI_DOCHADA,
+
+        /**
+         * U+0E14 THAI CHARACTER DO DEK
+         */
+        THAI_DODEK,
+
+        /**
+         * U+0E1D THAI CHARACTER FO FA
+         */
+        THAI_FOFA,
+
+        /**
+         * U+0E1F THAI CHARACTER FO FAN
+         */
+        THAI_FOFAN,
+
+        /**
+         * U+0E2B THAI CHARACTER HO HIP
+         */
+        THAI_HOHIP,
+
+        /**
+         * U+0E2E THAI CHARACTER HO NOKHUK
+         */
+        THAI_HONOKHUK,
+
+        /**
+         * U+0E02 THAI CHARACTER KHO KHAI
+         */
+        THAI_KHOKHAI,
+
+        /**
+         * U+0E05 THAI CHARACTER KHO KHON
+         */
+        THAI_KHOKHON,
+
+        /**
+         * U+0E03 THAI CHARACTER KHO KHUAT
+         */
+        THAI_KHOKHUAT,
+
+        /**
+         * U+0E04 THAI CHARACTER KHO KHWAI
+         */
+        THAI_KHOKHWAI,
+
+        /**
+         * U+0E06 THAI CHARACTER KHO RAKHANG
+         */
+        THAI_KHORAKHANG,
+
+        /**
+         * U+0E01 THAI CHARACTER KO KAI
+         */
+        THAI_KOKAI,
+
+        /**
+         * U+0E45 THAI CHARACTER LAKKHANGYAO
+         */
+        THAI_LAKKHANGYAO,
+
+        /**
+         * U+0E57 THAI DIGIT SEVEN
+         */
+        THAI_LEKCHET,
+
+        /**
+         * U+0E55 THAI DIGIT FIVE
+         */
+        THAI_LEKHA,
+
+        /**
+         * U+0E56 THAI DIGIT SIX
+         */
+        THAI_LEKHOK,
+
+        /**
+         * U+0E59 THAI DIGIT NINE
+         */
+        THAI_LEKKAO,
+
+        /**
+         * U+0E51 THAI DIGIT ONE
+         */
+        THAI_LEKNUNG,
+
+        /**
+         * U+0E58 THAI DIGIT EIGHT
+         */
+        THAI_LEKPAET,
+
+        /**
+         * U+0E53 THAI DIGIT THREE
+         */
+        THAI_LEKSAM,
+
+        /**
+         * U+0E54 THAI DIGIT FOUR
+         */
+        THAI_LEKSI,
+
+        /**
+         * U+0E52 THAI DIGIT TWO
+         */
+        THAI_LEKSONG,
+
+        /**
+         * U+0E50 THAI DIGIT ZERO
+         */
+        THAI_LEKSUN,
+
+        /**
+         * U+0E2C THAI CHARACTER LO CHULA
+         */
+        THAI_LOCHULA,
+
+        /**
+         * U+0E25 THAI CHARACTER LO LING
+         */
+        THAI_LOLING,
+
+        /**
+         * U+0E26 THAI CHARACTER LU
+         */
+        THAI_LU,
+
+        /**
+         * U+0E4B THAI CHARACTER MAI CHATTAWA
+         */
+        THAI_MAICHATTAWA,
+
+        /**
+         * U+0E48 THAI CHARACTER MAI EK
+         */
+        THAI_MAIEK,
+
+        /**
+         * U+0E31 THAI CHARACTER MAI HAN-AKAT
+         */
+        THAI_MAIHANAKAT,
+
+        /**
+         * Thai Maihanakat Maitho
+         */
+        THAI_MAIHANAKAT_MAITHO,
+
+        /**
+         * U+0E47 THAI CHARACTER MAITAIKHU
+         */
+        THAI_MAITAIKHU,
+
+        /**
+         * U+0E49 THAI CHARACTER MAI THO
+         */
+        THAI_MAITHO,
+
+        /**
+         * U+0E4A THAI CHARACTER MAI TRI
+         */
+        THAI_MAITRI,
+
+        /**
+         * U+0E46 THAI CHARACTER MAIYAMOK
+         */
+        THAI_MAIYAMOK,
+
+        /**
+         * U+0E21 THAI CHARACTER MO MA
+         */
+        THAI_MOMA,
+
+        /**
+         * U+0E07 THAI CHARACTER NGO NGU
+         */
+        THAI_NGONGU,
+
+        /**
+         * U+0E4D THAI CHARACTER NIKHAHIT
+         */
+        THAI_NIKHAHIT,
+
+        /**
+         * U+0E13 THAI CHARACTER NO NEN
+         */
+        THAI_NONEN,
+
+        /**
+         * U+0E19 THAI CHARACTER NO NU
+         */
+        THAI_NONU,
+
+        /**
+         * U+0E2D THAI CHARACTER O ANG
+         */
+        THAI_OANG,
+
+        /**
+         * U+0E2F THAI CHARACTER PAIYANNOI
+         */
+        THAI_PAIYANNOI,
+
+        /**
+         * U+0E3A THAI CHARACTER PHINTHU
+         */
+        THAI_PHINTHU,
+
+        /**
+         * U+0E1E THAI CHARACTER PHO PHAN
+         */
+        THAI_PHOPHAN,
+
+        /**
+         * U+0E1C THAI CHARACTER PHO PHUNG
+         */
+        THAI_PHOPHUNG,
+
+        /**
+         * U+0E20 THAI CHARACTER PHO SAMPHAO
+         */
+        THAI_PHOSAMPHAO,
+
+        /**
+         * U+0E1B THAI CHARACTER PO PLA
+         */
+        THAI_POPLA,
+
+        /**
+         * U+0E23 THAI CHARACTER RO RUA
+         */
+        THAI_RORUA,
+
+        /**
+         * U+0E24 THAI CHARACTER RU
+         */
+        THAI_RU,
+
+        /**
+         * U+0E30 THAI CHARACTER SARA A
+         */
+        THAI_SARAA,
+
+        /**
+         * U+0E32 THAI CHARACTER SARA AA
+         */
+        THAI_SARAAA,
+
+        /**
+         * U+0E41 THAI CHARACTER SARA AE
+         */
+        THAI_SARAAE,
+
+        /**
+         * U+0E44 THAI CHARACTER SARA AI MAIMALAI
+         */
+        THAI_SARAAIMAIMALAI,
+
+        /**
+         * U+0E43 THAI CHARACTER SARA AI MAIMUAN
+         */
+        THAI_SARAAIMAIMUAN,
+
+        /**
+         * U+0E33 THAI CHARACTER SARA AM
+         */
+        THAI_SARAAM,
+
+        /**
+         * U+0E40 THAI CHARACTER SARA E
+         */
+        THAI_SARAE,
+
+        /**
+         * U+0E34 THAI CHARACTER SARA I
+         */
+        THAI_SARAI,
+
+        /**
+         * U+0E35 THAI CHARACTER SARA II
+         */
+        THAI_SARAII,
+
+        /**
+         * U+0E42 THAI CHARACTER SARA O
+         */
+        THAI_SARAO,
+
+        /**
+         * U+0E38 THAI CHARACTER SARA U
+         */
+        THAI_SARAU,
+
+        /**
+         * U+0E36 THAI CHARACTER SARA UE
+         */
+        THAI_SARAUE,
+
+        /**
+         * U+0E37 THAI CHARACTER SARA UEE
+         */
+        THAI_SARAUEE,
+
+        /**
+         * U+0E39 THAI CHARACTER SARA UU
+         */
+        THAI_SARAUU,
+
+        /**
+         * U+0E29 THAI CHARACTER SO RUSI
+         */
+        THAI_SORUSI,
+
+        /**
+         * U+0E28 THAI CHARACTER SO SALA
+         */
+        THAI_SOSALA,
+
+        /**
+         * U+0E0B THAI CHARACTER SO SO
+         */
+        THAI_SOSO,
+
+        /**
+         * U+0E2A THAI CHARACTER SO SUA
+         */
+        THAI_SOSUA,
+
+        /**
+         * U+0E4C THAI CHARACTER THANTHAKHAT
+         */
+        THAI_THANTHAKHAT,
+
+        /**
+         * U+0E11 THAI CHARACTER THO NANGMONTHO
+         */
+        THAI_THONANGMONTHO,
+
+        /**
+         * U+0E12 THAI CHARACTER THO PHUTHAO
+         */
+        THAI_THOPHUTHAO,
+
+        /**
+         * U+0E17 THAI CHARACTER THO THAHAN
+         */
+        THAI_THOTHAHAN,
+
+        /**
+         * U+0E10 THAI CHARACTER THO THAN
+         */
+        THAI_THOTHAN,
+
+        /**
+         * U+0E18 THAI CHARACTER THO THONG
+         */
+        THAI_THOTHONG,
+
+        /**
+         * U+0E16 THAI CHARACTER THO THUNG
+         */
+        THAI_THOTHUNG,
+
+        /**
+         * U+0E0F THAI CHARACTER TO PATAK
+         */
+        THAI_TOPATAK,
+
+        /**
+         * U+0E15 THAI CHARACTER TO TAO
+         */
+        THAI_TOTAO,
+
+        /**
+         * U+0E27 THAI CHARACTER WO WAEN
+         */
+        THAI_WOWAEN,
+
+        /**
+         * U+0E22 THAI CHARACTER YO YAK
+         */
+        THAI_YOYAK,
+
+        /**
+         * U+0E0D THAI CHARACTER YO YING
+         */
+        THAI_YOYING,
+
+        /**
+         * U+2234 THEREFORE
+         */
+        THEREFORE,
+
+        /**
+         * U+2009 THIN SPACE
+         */
+        THINSPACE,
+
+        /**
+         * U+215C VULGAR FRACTION THREE EIGHTHS
+         */
+        THREEEIGHTHS,
+
+        /**
+         * U+2157 VULGAR FRACTION THREE FIFTHS
+         */
+        THREEFIFTHS,
+
+        /**
+         * U+00BE VULGAR FRACTION THREE QUARTERS
+         */
+        THREEQUARTERS,
+
+        /**
+         * U+2083 SUBSCRIPT THREE
+         */
+        THREESUBSCRIPT,
+
+        /**
+         * U+00B3 SUPERSCRIPT THREE
+         */
+        THREESUPERIOR,
+
+        /**
+         * U+222D TRIPLE INTEGRAL
+         */
+        TINTEGRAL,
+
+        /**
+         * U+2320 TOP HALF INTEGRAL
+         */
+        TOPINTEGRAL,
+
+        /**
+         * U+239B LEFT PARENTHESIS UPPER HOOK
+         */
+        TOPLEFTPARENS,
+
+        /**
+         * U+250C BOX DRAWINGS LIGHT DOWN AND RIGHT
+         */
+        TOPLEFTRADICAL,
+
+        /**
+         * U+23A1 LEFT SQUARE BRACKET UPPER CORNER
+         */
+        TOPLEFTSQBRACKET,
+
+        /**
+         * Topleftsummation
+         */
+        TOPLEFTSUMMATION,
+
+        /**
+         * U+239E RIGHT PARENTHESIS UPPER HOOK
+         */
+        TOPRIGHTPARENS,
+
+        /**
+         * U+23A4 RIGHT SQUARE BRACKET UPPER CORNER
+         */
+        TOPRIGHTSQBRACKET,
+
+        /**
+         * Toprightsummation
+         */
+        TOPRIGHTSUMMATION,
+
+        /**
+         * U+252C BOX DRAWINGS LIGHT DOWN AND HORIZONTAL
+         */
+        TOPT,
+
+        /**
+         * Topvertsummationconnector
+         */
+        TOPVERTSUMMATIONCONNECTOR,
+
+        /**
+         * Add to Dictionary
+         */
+        TOUROKU,
+
+        /**
+         * U+2122 TRADE MARK SIGN
+         */
+        TRADEMARK,
+
+        /**
+         * Trademarkincircle
+         */
+        TRADEMARKINCIRCLE,
+
+        /**
+         * U+2156 VULGAR FRACTION TWO FIFTHS
+         */
+        TWOFIFTHS,
+
+        /**
+         * U+2082 SUBSCRIPT TWO
+         */
+        TWOSUBSCRIPT,
+
+        /**
+         * U+00B2 SUPERSCRIPT TWO
+         */
+        TWOSUPERIOR,
+
+        /**
+         * U+2154 VULGAR FRACTION TWO THIRDS
+         */
+        TWOTHIRDS,
+
+        /**
+         * U+0041 LATIN CAPITAL LETTER A
+         */
+        UCASE_A,
+
+        /**
+         * U+00C1 LATIN CAPITAL LETTER A WITH ACUTE
+         */
+        UCASE_AACUTE,
+
+        /**
+         * U+1EA0 LATIN CAPITAL LETTER A WITH DOT BELOW
+         */
+        UCASE_ABELOWDOT,
+
+        /**
+         * U+0102 LATIN CAPITAL LETTER A WITH BREVE
+         */
+        UCASE_ABREVE,
+
+        /**
+         * U+1EAE LATIN CAPITAL LETTER A WITH BREVE AND ACUTE
+         */
+        UCASE_ABREVEACUTE,
+
+        /**
+         * U+1EB6 LATIN CAPITAL LETTER A WITH BREVE AND DOT BELOW
+         */
+        UCASE_ABREVEBELOWDOT,
+
+        /**
+         * U+1EB0 LATIN CAPITAL LETTER A WITH BREVE AND GRAVE
+         */
+        UCASE_ABREVEGRAVE,
+
+        /**
+         * U+1EB2 LATIN CAPITAL LETTER A WITH BREVE AND HOOK ABOVE
+         */
+        UCASE_ABREVEHOOK,
+
+        /**
+         * U+1EB4 LATIN CAPITAL LETTER A WITH BREVE AND TILDE
+         */
+        UCASE_ABREVETILDE,
+
+        /**
+         * U+00C2 LATIN CAPITAL LETTER A WITH CIRCUMFLEX
+         */
+        UCASE_ACIRCUMFLEX,
+
+        /**
+         * U+1EA4 LATIN CAPITAL LETTER A WITH CIRCUMFLEX AND ACUTE
+         */
+        UCASE_ACIRCUMFLEXACUTE,
+
+        /**
+         * U+1EAC LATIN CAPITAL LETTER A WITH CIRCUMFLEX AND DOT BELOW
+         */
+        UCASE_ACIRCUMFLEXBELOWDOT,
+
+        /**
+         * U+1EA6 LATIN CAPITAL LETTER A WITH CIRCUMFLEX AND GRAVE
+         */
+        UCASE_ACIRCUMFLEXGRAVE,
+
+        /**
+         * U+1EA8 LATIN CAPITAL LETTER A WITH CIRCUMFLEX AND HOOK ABOVE
+         */
+        UCASE_ACIRCUMFLEXHOOK,
+
+        /**
+         * U+1EAA LATIN CAPITAL LETTER A WITH CIRCUMFLEX AND TILDE
+         */
+        UCASE_ACIRCUMFLEXTILDE,
+
+        /**
+         * U+00C4 LATIN CAPITAL LETTER A WITH DIAERESIS
+         */
+        UCASE_ADIAERESIS,
+
+        /**
+         * U+00C6 LATIN CAPITAL LETTER AE
+         */
+        UCASE_AE,
+
+        /**
+         * U+00C0 LATIN CAPITAL LETTER A WITH GRAVE
+         */
+        UCASE_AGRAVE,
+
+        /**
+         * U+1EA2 LATIN CAPITAL LETTER A WITH HOOK ABOVE
+         */
+        UCASE_AHOOK,
+
+        /**
+         * U+0100 LATIN CAPITAL LETTER A WITH MACRON
+         */
+        UCASE_AMACRON,
+
+        /**
+         * U+0104 LATIN CAPITAL LETTER A WITH OGONEK
+         */
+        UCASE_AOGONEK,
+
+        /**
+         * U+00C5 LATIN CAPITAL LETTER A WITH RING ABOVE
+         */
+        UCASE_ARING,
+
+        /**
+         * U+00C3 LATIN CAPITAL LETTER A WITH TILDE
+         */
+        UCASE_ATILDE,
+
+        /**
+         * U+0042 LATIN CAPITAL LETTER B
+         */
+        UCASE_B,
+
+        /**
+         * U+1E02 LATIN CAPITAL LETTER B WITH DOT ABOVE
+         */
+        UCASE_BABOVEDOT,
+
+        /**
+         * U+0043 LATIN CAPITAL LETTER C
+         */
+        UCASE_C,
+
+        /**
+         * U+010A LATIN CAPITAL LETTER C WITH DOT ABOVE
+         */
+        UCASE_CABOVEDOT,
+
+        /**
+         * U+0106 LATIN CAPITAL LETTER C WITH ACUTE
+         */
+        UCASE_CACUTE,
+
+        /**
+         * U+010C LATIN CAPITAL LETTER C WITH CARON
+         */
+        UCASE_CCARON,
+
+        /**
+         * U+00C7 LATIN CAPITAL LETTER C WITH CEDILLA
+         */
+        UCASE_CCEDILLA,
+
+        /**
+         * U+0108 LATIN CAPITAL LETTER C WITH CIRCUMFLEX
+         */
+        UCASE_CCIRCUMFLEX,
+
+        /**
+         * Ucase Ch
+         */
+        UCASE_CH,
+
+        /**
+         * Ucase C H
+         */
+        UCASE_C_H,
+
+        /**
+         * U+0044 LATIN CAPITAL LETTER D
+         */
+        UCASE_D,
+
+        /**
+         * U+1E0A LATIN CAPITAL LETTER D WITH DOT ABOVE
+         */
+        UCASE_DABOVEDOT,
+
+        /**
+         * U+010E LATIN CAPITAL LETTER D WITH CARON
+         */
+        UCASE_DCARON,
+
+        /**
+         * U+0110 LATIN CAPITAL LETTER D WITH STROKE
+         */
+        UCASE_DSTROKE,
+
+        /**
+         * U+0045 LATIN CAPITAL LETTER E
+         */
+        UCASE_E,
+
+        /**
+         * U+0116 LATIN CAPITAL LETTER E WITH DOT ABOVE
+         */
+        UCASE_EABOVEDOT,
+
+        /**
+         * U+00C9 LATIN CAPITAL LETTER E WITH ACUTE
+         */
+        UCASE_EACUTE,
+
+        /**
+         * U+1EB8 LATIN CAPITAL LETTER E WITH DOT BELOW
+         */
+        UCASE_EBELOWDOT,
+
+        /**
+         * U+011A LATIN CAPITAL LETTER E WITH CARON
+         */
+        UCASE_ECARON,
+
+        /**
+         * U+00CA LATIN CAPITAL LETTER E WITH CIRCUMFLEX
+         */
+        UCASE_ECIRCUMFLEX,
+
+        /**
+         * U+1EBE LATIN CAPITAL LETTER E WITH CIRCUMFLEX AND ACUTE
+         */
+        UCASE_ECIRCUMFLEXACUTE,
+
+        /**
+         * U+1EC6 LATIN CAPITAL LETTER E WITH CIRCUMFLEX AND DOT BELOW
+         */
+        UCASE_ECIRCUMFLEXBELOWDOT,
+
+        /**
+         * U+1EC0 LATIN CAPITAL LETTER E WITH CIRCUMFLEX AND GRAVE
+         */
+        UCASE_ECIRCUMFLEXGRAVE,
+
+        /**
+         * U+1EC2 LATIN CAPITAL LETTER E WITH CIRCUMFLEX AND HOOK ABOVE
+         */
+        UCASE_ECIRCUMFLEXHOOK,
+
+        /**
+         * U+1EC4 LATIN CAPITAL LETTER E WITH CIRCUMFLEX AND TILDE
+         */
+        UCASE_ECIRCUMFLEXTILDE,
+
+        /**
+         * U+00CB LATIN CAPITAL LETTER E WITH DIAERESIS
+         */
+        UCASE_EDIAERESIS,
+
+        /**
+         * U+00C8 LATIN CAPITAL LETTER E WITH GRAVE
+         */
+        UCASE_EGRAVE,
+
+        /**
+         * U+1EBA LATIN CAPITAL LETTER E WITH HOOK ABOVE
+         */
+        UCASE_EHOOK,
+
+        /**
+         * U+0112 LATIN CAPITAL LETTER E WITH MACRON
+         */
+        UCASE_EMACRON,
+
+        /**
+         * U+014A LATIN CAPITAL LETTER ENG
+         */
+        UCASE_ENG,
+
+        /**
+         * U+0118 LATIN CAPITAL LETTER E WITH OGONEK
+         */
+        UCASE_EOGONEK,
+
+        /**
+         * U+00D0 LATIN CAPITAL LETTER ETH
+         */
+        UCASE_ETH,
+
+        /**
+         * U+1EBC LATIN CAPITAL LETTER E WITH TILDE
+         */
+        UCASE_ETILDE,
+
+        /**
+         * U+01B7 LATIN CAPITAL LETTER EZH
+         */
+        UCASE_EZH,
+
+        /**
+         * U+0046 LATIN CAPITAL LETTER F
+         */
+        UCASE_F,
+
+        /**
+         * U+1E1E LATIN CAPITAL LETTER F WITH DOT ABOVE
+         */
+        UCASE_FABOVEDOT,
+
+        /**
+         * U+0047 LATIN CAPITAL LETTER G
+         */
+        UCASE_G,
+
+        /**
+         * U+0120 LATIN CAPITAL LETTER G WITH DOT ABOVE
+         */
+        UCASE_GABOVEDOT,
+
+        /**
+         * U+011E LATIN CAPITAL LETTER G WITH BREVE
+         */
+        UCASE_GBREVE,
+
+        /**
+         * U+01E6 LATIN CAPITAL LETTER G WITH CARON
+         */
+        UCASE_GCARON,
+
+        /**
+         * U+0122 LATIN CAPITAL LETTER G WITH CEDILLA
+         */
+        UCASE_GCEDILLA,
+
+        /**
+         * U+011C LATIN CAPITAL LETTER G WITH CIRCUMFLEX
+         */
+        UCASE_GCIRCUMFLEX,
+
+        /**
+         * U+0048 LATIN CAPITAL LETTER H
+         */
+        UCASE_H,
+
+        /**
+         * U+0124 LATIN CAPITAL LETTER H WITH CIRCUMFLEX
+         */
+        UCASE_HCIRCUMFLEX,
+
+        /**
+         * U+0126 LATIN CAPITAL LETTER H WITH STROKE
+         */
+        UCASE_HSTROKE,
+
+        /**
+         * U+0049 LATIN CAPITAL LETTER I
+         */
+        UCASE_I,
+
+        /**
+         * U+00CD LATIN CAPITAL LETTER I WITH ACUTE
+         */
+        UCASE_IACUTE,
+
+        /**
+         * U+1ECA LATIN CAPITAL LETTER I WITH DOT BELOW
+         */
+        UCASE_IBELOWDOT,
+
+        /**
+         * U+012C LATIN CAPITAL LETTER I WITH BREVE
+         */
+        UCASE_IBREVE,
+
+        /**
+         * U+00CE LATIN CAPITAL LETTER I WITH CIRCUMFLEX
+         */
+        UCASE_ICIRCUMFLEX,
+
+        /**
+         * U+00CF LATIN CAPITAL LETTER I WITH DIAERESIS
+         */
+        UCASE_IDIAERESIS,
+
+        /**
+         * U+00CC LATIN CAPITAL LETTER I WITH GRAVE
+         */
+        UCASE_IGRAVE,
+
+        /**
+         * U+1EC8 LATIN CAPITAL LETTER I WITH HOOK ABOVE
+         */
+        UCASE_IHOOK,
+
+        /**
+         * U+012A LATIN CAPITAL LETTER I WITH MACRON
+         */
+        UCASE_IMACRON,
+
+        /**
+         * U+012E LATIN CAPITAL LETTER I WITH OGONEK
+         */
+        UCASE_IOGONEK,
+
+        /**
+         * U+0128 LATIN CAPITAL LETTER I WITH TILDE
+         */
+        UCASE_ITILDE,
+
+        /**
+         * U+004A LATIN CAPITAL LETTER J
+         */
+        UCASE_J,
+
+        /**
+         * U+0134 LATIN CAPITAL LETTER J WITH CIRCUMFLEX
+         */
+        UCASE_JCIRCUMFLEX,
+
+        /**
+         * U+004B LATIN CAPITAL LETTER K
+         */
+        UCASE_K,
+
+        /**
+         * U+0136 LATIN CAPITAL LETTER K WITH CEDILLA
+         */
+        UCASE_KCEDILLA,
+
+        /**
+         * U+004C LATIN CAPITAL LETTER L
+         */
+        UCASE_L,
+
+        /**
+         * U+0139 LATIN CAPITAL LETTER L WITH ACUTE
+         */
+        UCASE_LACUTE,
+
+        /**
+         * U+1E36 LATIN CAPITAL LETTER L WITH DOT BELOW
+         */
+        UCASE_LBELOWDOT,
+
+        /**
+         * U+013D LATIN CAPITAL LETTER L WITH CARON
+         */
+        UCASE_LCARON,
+
+        /**
+         * U+013B LATIN CAPITAL LETTER L WITH CEDILLA
+         */
+        UCASE_LCEDILLA,
+
+        /**
+         * U+0141 LATIN CAPITAL LETTER L WITH STROKE
+         */
+        UCASE_LSTROKE,
+
+        /**
+         * U+004D LATIN CAPITAL LETTER M
+         */
+        UCASE_M,
+
+        /**
+         * U+1E40 LATIN CAPITAL LETTER M WITH DOT ABOVE
+         */
+        UCASE_MABOVEDOT,
+
+        /**
+         * U+004E LATIN CAPITAL LETTER N
+         */
+        UCASE_N,
+
+        /**
+         * U+0143 LATIN CAPITAL LETTER N WITH ACUTE
+         */
+        UCASE_NACUTE,
+
+        /**
+         * U+0147 LATIN CAPITAL LETTER N WITH CARON
+         */
+        UCASE_NCARON,
+
+        /**
+         * U+0145 LATIN CAPITAL LETTER N WITH CEDILLA
+         */
+        UCASE_NCEDILLA,
+
+        /**
+         * U+00D1 LATIN CAPITAL LETTER N WITH TILDE
+         */
+        UCASE_NTILDE,
+
+        /**
+         * U+004F LATIN CAPITAL LETTER O
+         */
+        UCASE_O,
+
+        /**
+         * U+00D3 LATIN CAPITAL LETTER O WITH ACUTE
+         */
+        UCASE_OACUTE,
+
+        /**
+         * U+019F LATIN CAPITAL LETTER O WITH MIDDLE TILDE
+         */
+        UCASE_OBARRED,
+
+        /**
+         * U+1ECC LATIN CAPITAL LETTER O WITH DOT BELOW
+         */
+        UCASE_OBELOWDOT,
+
+        /**
+         * U+01D2 LATIN CAPITAL LETTER O WITH CARON
+         */
+        UCASE_OCARON,
+
+        /**
+         * U+00D4 LATIN CAPITAL LETTER O WITH CIRCUMFLEX
+         */
+        UCASE_OCIRCUMFLEX,
+
+        /**
+         * U+1ED0 LATIN CAPITAL LETTER O WITH CIRCUMFLEX AND ACUTE
+         */
+        UCASE_OCIRCUMFLEXACUTE,
+
+        /**
+         * U+1ED8 LATIN CAPITAL LETTER O WITH CIRCUMFLEX AND DOT BELOW
+         */
+        UCASE_OCIRCUMFLEXBELOWDOT,
+
+        /**
+         * U+1ED2 LATIN CAPITAL LETTER O WITH CIRCUMFLEX AND GRAVE
+         */
+        UCASE_OCIRCUMFLEXGRAVE,
+
+        /**
+         * U+1ED4 LATIN CAPITAL LETTER O WITH CIRCUMFLEX AND HOOK ABOVE
+         */
+        UCASE_OCIRCUMFLEXHOOK,
+
+        /**
+         * U+1ED6 LATIN CAPITAL LETTER O WITH CIRCUMFLEX AND TILDE
+         */
+        UCASE_OCIRCUMFLEXTILDE,
+
+        /**
+         * U+00D6 LATIN CAPITAL LETTER O WITH DIAERESIS
+         */
+        UCASE_ODIAERESIS,
+
+        /**
+         * U+0150 LATIN CAPITAL LETTER O WITH DOUBLE ACUTE
+         */
+        UCASE_ODOUBLEACUTE,
+
+        /**
+         * U+0152 LATIN CAPITAL LIGATURE OE
+         */
+        UCASE_OE,
+
+        /**
+         * U+00D2 LATIN CAPITAL LETTER O WITH GRAVE
+         */
+        UCASE_OGRAVE,
+
+        /**
+         * U+1ECE LATIN CAPITAL LETTER O WITH HOOK ABOVE
+         */
+        UCASE_OHOOK,
+
+        /**
+         * U+01A0 LATIN CAPITAL LETTER O WITH HORN
+         */
+        UCASE_OHORN,
+
+        /**
+         * U+1EDA LATIN CAPITAL LETTER O WITH HORN AND ACUTE
+         */
+        UCASE_OHORNACUTE,
+
+        /**
+         * U+1EE2 LATIN CAPITAL LETTER O WITH HORN AND DOT BELOW
+         */
+        UCASE_OHORNBELOWDOT,
+
+        /**
+         * U+1EDC LATIN CAPITAL LETTER O WITH HORN AND GRAVE
+         */
+        UCASE_OHORNGRAVE,
+
+        /**
+         * U+1EDE LATIN CAPITAL LETTER O WITH HORN AND HOOK ABOVE
+         */
+        UCASE_OHORNHOOK,
+
+        /**
+         * U+1EE0 LATIN CAPITAL LETTER O WITH HORN AND TILDE
+         */
+        UCASE_OHORNTILDE,
+
+        /**
+         * U+014C LATIN CAPITAL LETTER O WITH MACRON
+         */
+        UCASE_OMACRON,
+
+        /**
+         * U+00D8 LATIN CAPITAL LETTER O WITH STROKE
+         */
+        UCASE_OOBLIQUE,
+
+        /**
+         * U+00D8 LATIN CAPITAL LETTER O WITH STROKE
+         */
+        UCASE_OSLASH,
+
+        /**
+         * U+00D5 LATIN CAPITAL LETTER O WITH TILDE
+         */
+        UCASE_OTILDE,
+
+        /**
+         * U+0050 LATIN CAPITAL LETTER P
+         */
+        UCASE_P,
+
+        /**
+         * U+1E56 LATIN CAPITAL LETTER P WITH DOT ABOVE
+         */
+        UCASE_PABOVEDOT,
+
+        /**
+         * U+0051 LATIN CAPITAL LETTER Q
+         */
+        UCASE_Q,
+
+        /**
+         * U+0052 LATIN CAPITAL LETTER R
+         */
+        UCASE_R,
+
+        /**
+         * U+0154 LATIN CAPITAL LETTER R WITH ACUTE
+         */
+        UCASE_RACUTE,
+
+        /**
+         * U+0158 LATIN CAPITAL LETTER R WITH CARON
+         */
+        UCASE_RCARON,
+
+        /**
+         * U+0156 LATIN CAPITAL LETTER R WITH CEDILLA
+         */
+        UCASE_RCEDILLA,
+
+        /**
+         * U+0053 LATIN CAPITAL LETTER S
+         */
+        UCASE_S,
+
+        /**
+         * U+1E60 LATIN CAPITAL LETTER S WITH DOT ABOVE
+         */
+        UCASE_SABOVEDOT,
+
+        /**
+         * U+015A LATIN CAPITAL LETTER S WITH ACUTE
+         */
+        UCASE_SACUTE,
+
+        /**
+         * U+0160 LATIN CAPITAL LETTER S WITH CARON
+         */
+        UCASE_SCARON,
+
+        /**
+         * U+015E LATIN CAPITAL LETTER S WITH CEDILLA
+         */
+        UCASE_SCEDILLA,
+
+        /**
+         * U+018F LATIN CAPITAL LETTER SCHWA
+         */
+        UCASE_SCHWA,
+
+        /**
+         * U+015C LATIN CAPITAL LETTER S WITH CIRCUMFLEX
+         */
+        UCASE_SCIRCUMFLEX,
+
+        /**
+         * U+0054 LATIN CAPITAL LETTER T
+         */
+        UCASE_T,
+
+        /**
+         * U+1E6A LATIN CAPITAL LETTER T WITH DOT ABOVE
+         */
+        UCASE_TABOVEDOT,
+
+        /**
+         * U+0164 LATIN CAPITAL LETTER T WITH CARON
+         */
+        UCASE_TCARON,
+
+        /**
+         * U+0162 LATIN CAPITAL LETTER T WITH CEDILLA
+         */
+        UCASE_TCEDILLA,
+
+        /**
+         * U+00DE LATIN CAPITAL LETTER THORN
+         */
+        UCASE_THORN,
+
+        /**
+         * U+0166 LATIN CAPITAL LETTER T WITH STROKE
+         */
+        UCASE_TSLASH,
+
+        /**
+         * U+0055 LATIN CAPITAL LETTER U
+         */
+        UCASE_U,
+
+        /**
+         * U+00DA LATIN CAPITAL LETTER U WITH ACUTE
+         */
+        UCASE_UACUTE,
+
+        /**
+         * U+1EE4 LATIN CAPITAL LETTER U WITH DOT BELOW
+         */
+        UCASE_UBELOWDOT,
+
+        /**
+         * U+016C LATIN CAPITAL LETTER U WITH BREVE
+         */
+        UCASE_UBREVE,
+
+        /**
+         * U+00DB LATIN CAPITAL LETTER U WITH CIRCUMFLEX
+         */
+        UCASE_UCIRCUMFLEX,
+
+        /**
+         * U+00DC LATIN CAPITAL LETTER U WITH DIAERESIS
+         */
+        UCASE_UDIAERESIS,
+
+        /**
+         * U+0170 LATIN CAPITAL LETTER U WITH DOUBLE ACUTE
+         */
+        UCASE_UDOUBLEACUTE,
+
+        /**
+         * U+00D9 LATIN CAPITAL LETTER U WITH GRAVE
+         */
+        UCASE_UGRAVE,
+
+        /**
+         * U+1EE6 LATIN CAPITAL LETTER U WITH HOOK ABOVE
+         */
+        UCASE_UHOOK,
+
+        /**
+         * U+01AF LATIN CAPITAL LETTER U WITH HORN
+         */
+        UCASE_UHORN,
+
+        /**
+         * U+1EE8 LATIN CAPITAL LETTER U WITH HORN AND ACUTE
+         */
+        UCASE_UHORNACUTE,
+
+        /**
+         * U+1EF0 LATIN CAPITAL LETTER U WITH HORN AND DOT BELOW
+         */
+        UCASE_UHORNBELOWDOT,
+
+        /**
+         * U+1EEA LATIN CAPITAL LETTER U WITH HORN AND GRAVE
+         */
+        UCASE_UHORNGRAVE,
+
+        /**
+         * U+1EEC LATIN CAPITAL LETTER U WITH HORN AND HOOK ABOVE
+         */
+        UCASE_UHORNHOOK,
+
+        /**
+         * U+1EEE LATIN CAPITAL LETTER U WITH HORN AND TILDE
+         */
+        UCASE_UHORNTILDE,
+
+        /**
+         * U+016A LATIN CAPITAL LETTER U WITH MACRON
+         */
+        UCASE_UMACRON,
+
+        /**
+         * U+0172 LATIN CAPITAL LETTER U WITH OGONEK
+         */
+        UCASE_UOGONEK,
+
+        /**
+         * U+016E LATIN CAPITAL LETTER U WITH RING ABOVE
+         */
+        UCASE_URING,
+
+        /**
+         * U+0168 LATIN CAPITAL LETTER U WITH TILDE
+         */
+        UCASE_UTILDE,
+
+        /**
+         * U+0056 LATIN CAPITAL LETTER V
+         */
+        UCASE_V,
+
+        /**
+         * U+0057 LATIN CAPITAL LETTER W
+         */
+        UCASE_W,
+
+        /**
+         * U+1E82 LATIN CAPITAL LETTER W WITH ACUTE
+         */
+        UCASE_WACUTE,
+
+        /**
+         * U+0174 LATIN CAPITAL LETTER W WITH CIRCUMFLEX
+         */
+        UCASE_WCIRCUMFLEX,
+
+        /**
+         * U+1E84 LATIN CAPITAL LETTER W WITH DIAERESIS
+         */
+        UCASE_WDIAERESIS,
+
+        /**
+         * U+1E80 LATIN CAPITAL LETTER W WITH GRAVE
+         */
+        UCASE_WGRAVE,
+
+        /**
+         * U+0058 LATIN CAPITAL LETTER X
+         */
+        UCASE_X,
+
+        /**
+         * U+1E8A LATIN CAPITAL LETTER X WITH DOT ABOVE
+         */
+        UCASE_XABOVEDOT,
+
+        /**
+         * U+0059 LATIN CAPITAL LETTER Y
+         */
+        UCASE_Y,
+
+        /**
+         * U+00DD LATIN CAPITAL LETTER Y WITH ACUTE
+         */
+        UCASE_YACUTE,
+
+        /**
+         * U+1EF4 LATIN CAPITAL LETTER Y WITH DOT BELOW
+         */
+        UCASE_YBELOWDOT,
+
+        /**
+         * U+0176 LATIN CAPITAL LETTER Y WITH CIRCUMFLEX
+         */
+        UCASE_YCIRCUMFLEX,
+
+        /**
+         * U+0178 LATIN CAPITAL LETTER Y WITH DIAERESIS
+         */
+        UCASE_YDIAERESIS,
+
+        /**
+         * U+1EF2 LATIN CAPITAL LETTER Y WITH GRAVE
+         */
+        UCASE_YGRAVE,
+
+        /**
+         * U+1EF6 LATIN CAPITAL LETTER Y WITH HOOK ABOVE
+         */
+        UCASE_YHOOK,
+
+        /**
+         * U+1EF8 LATIN CAPITAL LETTER Y WITH TILDE
+         */
+        UCASE_YTILDE,
+
+        /**
+         * U+005A LATIN CAPITAL LETTER Z
+         */
+        UCASE_Z,
+
+        /**
+         * U+017B LATIN CAPITAL LETTER Z WITH DOT ABOVE
+         */
+        UCASE_ZABOVEDOT,
+
+        /**
+         * U+0179 LATIN CAPITAL LETTER Z WITH ACUTE
+         */
+        UCASE_ZACUTE,
+
+        /**
+         * U+017D LATIN CAPITAL LETTER Z WITH CARON
+         */
+        UCASE_ZCARON,
+
+        /**
+         * U+01B5 LATIN CAPITAL LETTER Z WITH STROKE
+         */
+        UCASE_ZSTROKE,
+
+        /**
+         * U+0491 CYRILLIC SMALL LETTER GHE WITH UPTURN
+         */
+        UKRAINIAN_LCASE_GHE_WITH_UPTURN,
+
+        /**
+         * U+0456 CYRILLIC SMALL LETTER BYELORUSSIAN-UKRAINIAN I
+         */
+        UKRAINIAN_LCASE_I,
+
+        /**
+         * U+0454 CYRILLIC SMALL LETTER UKRAINIAN IE
+         */
+        UKRAINIAN_LCASE_IE,
+
+        /**
+         * U+0457 CYRILLIC SMALL LETTER YI
+         */
+        UKRAINIAN_LCASE_YI,
+
+        /**
+         * U+0490 CYRILLIC CAPITAL LETTER GHE WITH UPTURN
+         */
+        UKRAINIAN_UCASE_GHE_WITH_UPTURN,
+
+        /**
+         * U+0406 CYRILLIC CAPITAL LETTER BYELORUSSIAN-UKRAINIAN I
+         */
+        UKRAINIAN_UCASE_I,
+
+        /**
+         * U+0404 CYRILLIC CAPITAL LETTER UKRAINIAN IE
+         */
+        UKRAINIAN_UCASE_IE,
+
+        /**
+         * U+0407 CYRILLIC CAPITAL LETTER YI
+         */
+        UKRAINIAN_UCASE_YI,
+
+        /**
+         * deprecated
+         */
+        UKRANIAN_LCASE_I,
+
+        /**
+         * deprecated
+         */
+        UKRANIAN_LCASE_JE,
+
+        /**
+         * deprecated
+         */
+        UKRANIAN_LCASE_YI,
+
+        /**
+         * deprecated
+         */
+        UKRANIAN_UCASE_I,
+
+        /**
+         * deprecated
+         */
+        UKRANIAN_UCASE_JE,
+
+        /**
+         * deprecated
+         */
+        UKRANIAN_UCASE_YI,
+
+        /**
+         * U+005F LOW LINE
+         */
+        UNDERBAR,
+
+        /**
+         * U+005F LOW LINE
+         */
+        UNDERSCORE,
+
+        /**
+         * Undo
+         */
+        UNDO,
+
+        /**
+         * U+222A UNION
+         */
+        UNION,
+
+        /**
+         * Move up, up arrow
+         */
+        UP,
+
+        /**
+         * U+2191 UPWARDS ARROW
+         */
+        UPARROW,
+
+        /**
+         * U+2227 LOGICAL AND
+         */
+        UPCARET,
+
+        /**
+         * U+250C BOX DRAWINGS LIGHT DOWN AND RIGHT
+         */
+        UPLEFTCORNER,
+
+        /**
+         * U+2510 BOX DRAWINGS LIGHT DOWN AND LEFT
+         */
+        UPRIGHTCORNER,
+
+        /**
+         * U+2229 INTERSECTION
+         */
+        UPSHOE,
+
+        /**
+         * U+2308 LEFT CEILING
+         */
+        UPSTILE,
+
+        /**
+         * U+22A5 UP TACK
+         */
+        UPTACK,
+
+        /**
+         * User
+         */
+        USER,
+
+        /**
+         * U+221D PROPORTIONAL TO
+         */
+        VARIATION,
+
+        /**
+         * U+2502 BOX DRAWINGS LIGHT VERTICAL
+         */
+        VERTBAR,
+
+        /**
+         * U+2502 BOX DRAWINGS LIGHT VERTICAL
+         */
+        VERTCONNECTOR,
+
+        /**
+         * U+309B KATAKANA-HIRAGANA VOICED SOUND MARK
+         */
+        VOICEDSOUND,
+
+        /**
+         * Void symbol
+         */
+        VOID_SYMBOL,
+
+        /**
+         * U+240B SYMBOL FOR VERTICAL TABULATION
+         */
+        VT,
+
+        /**
+         * U+20A9 WON SIGN
+         */
+        WON_SIGN,
+
+        /**
+         * Logitch iTouch- don't use
+         */
+        XF86I_TOUCH,
+
+        /**
+         * Add URL to favorites list
+         */
+        XF86_ADD_FAVORITE,
+
+        /**
+         * switch to application, left
+         */
+        XF86_APPLICATION_LEFT,
+
+        /**
+         * switch to application, right
+         */
+        XF86_APPLICATION_RIGHT,
+
+        /**
+         * cycle through audio tracks
+         */
+        XF86_AUDIO_CYCLE_TRACK,
+
+        /**
+         * fast-forward audio track
+         */
+        XF86_AUDIO_FORWARD,
+
+        /**
+         * Volume control down
+         */
+        XF86_AUDIO_LOWER_VOLUME,
+
+        /**
+         * Launch media collection app
+         */
+        XF86_AUDIO_MEDIA,
+
+        /**
+         * Mute the Mic from the system
+         */
+        XF86_AUDIO_MIC_MUTE,
+
+        /**
+         * Mute sound from the system
+         */
+        XF86_AUDIO_MUTE,
+
+        /**
+         * Next track
+         */
+        XF86_AUDIO_NEXT,
+
+        /**
+         * Pause audio playing
+         */
+        XF86_AUDIO_PAUSE,
+
+        /**
+         * Start playing of audio >
+         */
+        XF86_AUDIO_PLAY,
+
+        /**
+         * Previous track
+         */
+        XF86_AUDIO_PREV,
+
+        /**
+         * Volume control up
+         */
+        XF86_AUDIO_RAISE_VOLUME,
+
+        /**
+         * toggle shuffle mode
+         */
+        XF86_AUDIO_RANDOM_PLAY,
+
+        /**
+         * Record audio application
+         */
+        XF86_AUDIO_RECORD,
+
+        /**
+         * toggle repeat mode
+         */
+        XF86_AUDIO_REPEAT,
+
+        /**
+         * "rewind" audio track
+         */
+        XF86_AUDIO_REWIND,
+
+        /**
+         * Stop playing audio
+         */
+        XF86_AUDIO_STOP,
+
+        /**
+         * mark yourself as away
+         */
+        XF86_AWAY,
+
+        /**
+         * Like back on a browser
+         */
+        XF86_BACK,
+
+        /**
+         * ???
+         */
+        XF86_BACK_FORWARD,
+
+        /**
+         * Display battery information
+         */
+        XF86_BATTERY,
+
+        /**
+         * Blue button
+         */
+        XF86_BLUE,
+
+        /**
+         * Enable/disable Bluetooth
+         */
+        XF86_BLUETOOTH,
+
+        /**
+         * Launch bookreader
+         */
+        XF86_BOOK,
+
+        /**
+         * Invoke brightness adj. UI
+         */
+        XF86_BRIGHTNESS_ADJUST,
+
+        /**
+         * Launch Calculater
+         */
+        XF86_CALCULATER,
+
+        /**
+         * Invoke calculator program
+         */
+        XF86_CALCULATOR,
+
+        /**
+         * Invoke Calendar program
+         */
+        XF86_CALENDAR,
+
+        /**
+         * Launch CD/DVD player
+         */
+        XF86_CD,
+
+        /**
+         * Clear window, screen
+         */
+        XF86_CLEAR,
+
+        /**
+         * kill application with grab
+         */
+        XF86_CLEAR_GRAB,
+
+        /**
+         * Close window
+         */
+        XF86_CLOSE,
+
+        /**
+         * Display user's community
+         */
+        XF86_COMMUNITY,
+
+        /**
+         * Adjust screen contrast
+         */
+        XF86_CONTRAST_ADJUST,
+
+        /**
+         * Copy selection
+         */
+        XF86_COPY,
+
+        /**
+         * Cut selection
+         */
+        XF86_CUT,
+
+        /**
+         * cycle through angles
+         */
+        XF86_CYCLE_ANGLE,
+
+        /**
+         * Output switch key
+         */
+        XF86_DISPLAY,
+
+        /**
+         * Open documents window
+         */
+        XF86_DOCUMENTS,
+
+        /**
+         * Launch DOS (emulation)
+         */
+        XF86_DOS,
+
+        /**
+         * Eject device (e.g. DVD)
+         */
+        XF86_EJECT,
+
+        /**
+         * Launch spread sheet
+         */
+        XF86_EXCEL,
+
+        /**
+         * Launch file explorer
+         */
+        XF86_EXPLORER,
+
+        /**
+         * Show favorite locations
+         */
+        XF86_FAVORITES,
+
+        /**
+         * Display financial site
+         */
+        XF86_FINANCE,
+
+        /**
+         * Like forward on a browser
+         */
+        XF86_FORWARD,
+
+        /**
+         * video: go one frame back
+         */
+        XF86_FRAME_BACK,
+
+        /**
+         * video: go one frame forward
+         */
+        XF86_FRAME_FORWARD,
+
+        /**
+         * Launch game
+         */
+        XF86_GAME,
+
+        /**
+         * Go to URL
+         */
+        XF86_GO,
+
+        /**
+         * Green button
+         */
+        XF86_GREEN,
+
+        /**
+         * Sleep to disk
+         */
+        XF86_HIBERNATE,
+
+        /**
+         * Show history of web surfing
+         */
+        XF86_HISTORY,
+
+        /**
+         * Display user's home page
+         */
+        XF86_HOME_PAGE,
+
+        /**
+         * Show "hot" links
+         */
+        XF86_HOT_LINKS,
+
+        /**
+         * Keyboards may be lit
+         */
+        XF86_KBD_BRIGHTNESS_DOWN,
+
+        /**
+         * Keyboards may be lit
+         */
+        XF86_KBD_BRIGHTNESS_UP,
+
+        /**
+         * Keyboards may be lit
+         */
+        XF86_KBD_LIGHT_ON_OFF,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH0,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH1,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH2,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH3,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH4,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH5,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH6,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH7,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH8,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH9,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH_A,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH_B,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH_C,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH_D,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH_E,
+
+        /**
+         * Launch Application
+         */
+        XF86_LAUNCH_F,
+
+        /**
+         * Light bulb keys exist
+         */
+        XF86_LIGHT_BULB,
+
+        /**
+         * print all active grabs to log
+         */
+        XF86_LOG_GRAB_INFO,
+
+        /**
+         * Log off system
+         */
+        XF86_LOG_OFF,
+
+        /**
+         * print window tree to log
+         */
+        XF86_LOG_WINDOW_TREE,
+
+        /**
+         * Invoke user's mail program
+         */
+        XF86_MAIL,
+
+        /**
+         * Forward in mail
+         */
+        XF86_MAIL_FORWARD,
+
+        /**
+         * ??
+         */
+        XF86_MARKET,
+
+        /**
+         * enter meeting in calendar
+         */
+        XF86_MEETING,
+
+        /**
+         * Invoke Memo taking program
+         */
+        XF86_MEMO,
+
+        /**
+         * distingush keyboard from PB
+         */
+        XF86_MENU_KB,
+
+        /**
+         * distinuish PB from keyboard
+         */
+        XF86_MENU_PB,
+
+        /**
+         * as in instant messaging
+         */
+        XF86_MESSENGER,
+
+        /**
+         * Mode Switch Lock
+         */
+        XF86_MODE_LOCK,
+
+        /**
+         * Monitor/panel brightness
+         */
+        XF86_MON_BRIGHTNESS_DOWN,
+
+        /**
+         * Monitor/panel brightness
+         */
+        XF86_MON_BRIGHTNESS_UP,
+
+        /**
+         * Launch music application
+         */
+        XF86_MUSIC,
+
+        /**
+         * Display "My Computer" window
+         */
+        XF86_MY_COMPUTER,
+
+        /**
+         * Favourites
+         */
+        XF86_MY_SITES,
+
+        /**
+         * New (folder, document...)
+         */
+        XF86_NEW,
+
+        /**
+         * News
+         */
+        XF86_NEWS,
+
+        /**
+         * next video mode available
+         */
+        XF86_NEXT_VMODE,
+
+        /**
+         * Office home (old Staroffice)
+         */
+        XF86_OFFICE_HOME,
+
+        /**
+         * Open
+         */
+        XF86_OPEN,
+
+        /**
+         * Open selected URL
+         */
+        XF86_OPEN_URL,
+
+        /**
+         * ??
+         */
+        XF86_OPTION,
+
+        /**
+         * Paste
+         */
+        XF86_PASTE,
+
+        /**
+         * Launch phone; dial number
+         */
+        XF86_PHONE,
+
+        /**
+         * Show pictures
+         */
+        XF86_PICTURES,
+
+        /**
+         * Deep sleep the system
+         */
+        XF86_POWER_DOWN,
+
+        /**
+         * Power off system entirely
+         */
+        XF86_POWER_OFF,
+
+        /**
+         * prev. video mode available
+         */
+        XF86_PREV_VMODE,
+
+        /**
+         * Compaq's Q - don't use
+         */
+        XF86_Q,
+
+        /**
+         * Red button
+         */
+        XF86_RED,
+
+        /**
+         * Refresh the page
+         */
+        XF86_REFRESH,
+
+        /**
+         * Reload web page, file, etc.
+         */
+        XF86_RELOAD,
+
+        /**
+         * Reply e.g., mail
+         */
+        XF86_REPLY,
+
+        /**
+         * and down
+         */
+        XF86_ROCKER_DOWN,
+
+        /**
+         * and let you press them
+         */
+        XF86_ROCKER_ENTER,
+
+        /**
+         * Rocker switches exist up
+         */
+        XF86_ROCKER_UP,
+
+        /**
+         * Rotate windows e.g. xrandr
+         */
+        XF86_ROTATE_WINDOWS,
+
+        /**
+         * don't use
+         */
+        XF86_ROTATION_KB,
+
+        /**
+         * don't use
+         */
+        XF86_ROTATION_PB,
+
+        /**
+         * Save (file, document, state)
+         */
+        XF86_SAVE,
+
+        /**
+         * Invoke screensaver
+         */
+        XF86_SCREEN_SAVER,
+
+        /**
+         * Use XKB mousekeys instead
+         */
+        XF86_SCROLL_CLICK,
+
+        /**
+         * Scrool window/contentd down
+         */
+        XF86_SCROLL_DOWN,
+
+        /**
+         * Scroll window/contents up
+         */
+        XF86_SCROLL_UP,
+
+        /**
+         * Search
+         */
+        XF86_SEARCH,
+
+        /**
+         * Select button on joypads and remotes
+         */
+        XF86_SELECT,
+
+        /**
+         * Send mail, file, object
+         */
+        XF86_SEND,
+
+        /**
+         * Display shopping web site
+         */
+        XF86_SHOP,
+
+        /**
+         * Put system to sleep
+         */
+        XF86_SLEEP,
+
+        /**
+         * Spell checker
+         */
+        XF86_SPELL,
+
+        /**
+         * Split window or screen
+         */
+        XF86_SPLIT_SCREEN,
+
+        /**
+         * System into standby mode
+         */
+        XF86_STANDBY,
+
+        /**
+         * Start application
+         */
+        XF86_START,
+
+        /**
+         * Stop current operation
+         */
+        XF86_STOP,
+
+        /**
+         * cycle through subtitle
+         */
+        XF86_SUBTITLE,
+
+        /**
+         * Get support (??)
+         */
+        XF86_SUPPORT,
+
+        /**
+         * Sleep to RAM
+         */
+        XF86_SUSPEND,
+
+        /**
+         * Xf86 Switch Vt 1
+         */
+        XF86_SWITCH_VT_1,
+
+        /**
+         * Xf86 Switch Vt 10
+         */
+        XF86_SWITCH_VT_10,
+
+        /**
+         * Xf86 Switch Vt 11
+         */
+        XF86_SWITCH_VT_11,
+
+        /**
+         * Xf86 Switch Vt 12
+         */
+        XF86_SWITCH_VT_12,
+
+        /**
+         * Xf86 Switch Vt 2
+         */
+        XF86_SWITCH_VT_2,
+
+        /**
+         * Xf86 Switch Vt 3
+         */
+        XF86_SWITCH_VT_3,
+
+        /**
+         * Xf86 Switch Vt 4
+         */
+        XF86_SWITCH_VT_4,
+
+        /**
+         * Xf86 Switch Vt 5
+         */
+        XF86_SWITCH_VT_5,
+
+        /**
+         * Xf86 Switch Vt 6
+         */
+        XF86_SWITCH_VT_6,
+
+        /**
+         * Xf86 Switch Vt 7
+         */
+        XF86_SWITCH_VT_7,
+
+        /**
+         * Xf86 Switch Vt 8
+         */
+        XF86_SWITCH_VT_8,
+
+        /**
+         * Xf86 Switch Vt 9
+         */
+        XF86_SWITCH_VT_9,
+
+        /**
+         * Show tasks
+         */
+        XF86_TASK_PANE,
+
+        /**
+         * Launch terminal emulator
+         */
+        XF86_TERMINAL,
+
+        /**
+         * display, or shows an entry for time seeking
+         */
+        XF86_TIME,
+
+        /**
+         * toolbox of desktop/app.
+         */
+        XF86_TOOLS,
+
+        /**
+         * Go to a top-level menu in a video
+         */
+        XF86_TOP_MENU,
+
+        /**
+         * The touchpad got switched off
+         */
+        XF86_TOUCHPAD_OFF,
+
+        /**
+         * The touchpad got switched on
+         */
+        XF86_TOUCHPAD_ON,
+
+        /**
+         * Toggle between touchpad/trackstick
+         */
+        XF86_TOUCHPAD_TOGGLE,
+
+        /**
+         * Invoke To Do List program
+         */
+        XF86_TO_DO_LIST,
+
+        /**
+         * ??
+         */
+        XF86_TRAVEL,
+
+        /**
+         * force ungrab
+         */
+        XF86_UNGRAB,
+
+        /**
+         * ??
+         */
+        XF86_USER1_KB,
+
+        /**
+         * ??
+         */
+        XF86_USER2_KB,
+
+        /**
+         * ??
+         */
+        XF86_USER_PB,
+
+        /**
+         * Enable/disable UWB
+         */
+        XF86_UWB,
+
+        /**
+         * Display vendor home web site
+         */
+        XF86_VENDOR_HOME,
+
+        /**
+         * Launch video player
+         */
+        XF86_VIDEO,
+
+        /**
+         * Show a view options/properties
+         */
+        XF86_VIEW,
+
+        /**
+         * Wake up system from sleep
+         */
+        XF86_WAKE_UP,
+
+        /**
+         * Launch web camera app.
+         */
+        XF86_WEB_CAM,
+
+        /**
+         * button from a mouse wheel
+         */
+        XF86_WHEEL_BUTTON,
+
+        /**
+         * Enable/disable WLAN
+         */
+        XF86_WLAN,
+
+        /**
+         * Launch word processor
+         */
+        XF86_WORD,
+
+        /**
+         * Invoke web browser
+         */
+        XF86_WWW,
+
+        /**
+         * Xf86 Xfer
+         */
+        XF86_XFER,
+
+        /**
+         * Yellow button
+         */
+        XF86_YELLOW,
+
+        /**
+         * zoom in view, map, etc.
+         */
+        XF86_ZOOM_IN,
+
+        /**
+         * zoom out view, map, etc.
+         */
+        XF86_ZOOM_OUT,
+
+        /**
+         * U+00A5 YEN SIGN
+         */
+        YEN,
+
+        /**
+         * to Zenkaku
+         */
+        ZENKAKU,
+
+        /**
+         * Zenkaku/Hankaku toggle
+         */
+        ZENKAKU_HANKAKU,
+
+        /**
+         * Multiple/All Candidate(s)
+         */
+        ZEN_KOHO,
+
+        /**
+         * U+2080 SUBSCRIPT ZERO
+         */
+        ZEROSUBSCRIPT,
+
+        /**
+         * U+2070 SUPERSCRIPT ZERO
+         */
+        ZEROSUPERIOR,
     }
 }

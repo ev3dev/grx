@@ -249,18 +249,18 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
                 break;
             }
             switch (grx_event.key.keysym) {
-            case GRX_KEY_XF86Switch_VT_1:
-            case GRX_KEY_XF86Switch_VT_2:
-            case GRX_KEY_XF86Switch_VT_3:
-            case GRX_KEY_XF86Switch_VT_4:
-            case GRX_KEY_XF86Switch_VT_5:
-            case GRX_KEY_XF86Switch_VT_6:
-            case GRX_KEY_XF86Switch_VT_7:
-            case GRX_KEY_XF86Switch_VT_8:
-            case GRX_KEY_XF86Switch_VT_9:
-            case GRX_KEY_XF86Switch_VT_10:
-            case GRX_KEY_XF86Switch_VT_11:
-            case GRX_KEY_XF86Switch_VT_12:
+            case GRX_KEY_XF86_SWITCH_VT_1:
+            case GRX_KEY_XF86_SWITCH_VT_2:
+            case GRX_KEY_XF86_SWITCH_VT_3:
+            case GRX_KEY_XF86_SWITCH_VT_4:
+            case GRX_KEY_XF86_SWITCH_VT_5:
+            case GRX_KEY_XF86_SWITCH_VT_6:
+            case GRX_KEY_XF86_SWITCH_VT_7:
+            case GRX_KEY_XF86_SWITCH_VT_8:
+            case GRX_KEY_XF86_SWITCH_VT_9:
+            case GRX_KEY_XF86_SWITCH_VT_10:
+            case GRX_KEY_XF86_SWITCH_VT_11:
+            case GRX_KEY_XF86_SWITCH_VT_12:
                 if (grx_event.type == GRX_EVENT_TYPE_KEY_DOWN) {
                     grx_linuxfb_chvt (grx_event.key.keysym & 0xf);
                 }

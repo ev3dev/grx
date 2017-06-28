@@ -46,7 +46,7 @@ class InputApplication(Grx.Application):
             print("key keysym", key_event.keysym)
             print("key unichar", key_event.unichar)
             print("key code", key_event.code)
-            if key_event.keysym in (Grx.KEY_q, Grx.KEY_BackSpace, Grx.KEY_Escape):
+            if key_event.keysym in (Grx.Key.LCASE_Q, Grx.Key.BACK_SPACE, Grx.Key.ESCAPE):
                 self.quit()
         elif t == Grx.EventType.BUTTON_PRESS or t == Grx.EventType.BUTTON_RELEASE:
             button_event = event.button

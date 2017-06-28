@@ -75,7 +75,7 @@ class App(Grx.Application):
             return True
 
         if event.type == Grx.EventType.KEY_DOWN:
-            if event.key.keysym in (Grx.KEY_q, Grx.KEY_BackSpace, Grx.KEY_Escape):
+            if event.key.keysym in (Grx.Key.LCASE_Q, Grx.Key.BACK_SPACE, Grx.Key.ESCAPE):
                 self.quit()
                 return True
 
