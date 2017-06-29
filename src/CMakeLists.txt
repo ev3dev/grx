@@ -238,6 +238,7 @@ pkg_check_modules (XKB_DEPS REQUIRED xkbcommon)
 find_file (XKBCOMMON_KEYSYMS_H xkbcommon-keysyms.h
     HINTS ${XKB_DEPS_INCLUDE_DIRS}
     PATH_SUFFIXES xkbcommon)
+mark_as_advanced (XKBCOMMON_KEYSYMS_H)
 set (GRX_KEYSYMS_H ${CMAKE_CURRENT_BINARY_DIR}/include/grx/input_keysyms.h)
 add_custom_command (OUTPUT ${GRX_KEYSYMS_H}
     COMMAND ${CMAKE_COMMAND} -E make_directory

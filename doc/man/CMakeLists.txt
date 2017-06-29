@@ -1,5 +1,6 @@
 
 find_program (PANDOC pandoc)
+mark_as_advanced (PANDOC)
 
 macro (add_man_page MAN_PAGE)
     set (one_value_args SOURCE SECTION HEADER)
