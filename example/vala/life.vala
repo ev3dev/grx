@@ -135,6 +135,7 @@ class LifeApplication : Grx.Application {
 }
 
 static int main (string [] argv) {
+    Environment.set_application_name ("GRX3 Game of Life Demo");
     try {
         var app = new LifeApplication ();
         return app.run ();
