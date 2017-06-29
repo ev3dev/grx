@@ -1,0 +1,40 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "command": "make",
+    "isShellCommand": true,
+    "args": ["-s", "-C", "${workspaceRoot}/build"],
+    "showOutput": "always",
+    "tasks": [
+        {
+            "taskName": "build",
+            "suppressTaskName": true,
+            "isBuildCommand": true,
+            "problemMatcher": "$valac"
+        },
+        {
+            "taskName": "edit_cache"
+        },
+        {
+            "taskName": "reload_cache"
+        },
+        {
+            "taskName": "clean"
+        },
+        {
+            "taskName": "vala-life",
+            "args": ["plugins"],
+            "problemMatcher": "$valac"
+        },
+        {
+            "taskName": "grx-calibrate-touch",
+            "args": ["plugins"],
+            "problemMatcher": "$valac"
+        },
+        {
+            "taskName": "grx-3.0-gir",
+            "args": ["plugins"]
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "*.h": "c"
+    },
+    "search.exclude": {
+        "build": true,
+        "doc/sphinx/_build": true,
+        "doc/sphinx/_html_extra": true
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "build": true,
+        "doc/sphinx/_build": true,
+        "doc/sphinx/_html_extra": true
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+}

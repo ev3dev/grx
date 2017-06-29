@@ -48,13 +48,15 @@ Source code directories:
     doc/        Documentation
     example/    Examples of how to use GRX 3
     include/    Public header files
-    plugins/    Optional components, such as video drivers
+    plugins/    Pluggable components, such as video drivers
     src/        The main library source code
     test/       Old demo program from GRX 2.x
 
-Docs, bugs, support, etc.:
+On the web:
 
-* We're on GitHub. https://github.com/ev3dev/grx
+* Docs: http://docs.ev3dev.org/projects/grx
+* Bugs/Questions: https://github.com/ev3dev/grx/issues
+* Wiki: https://github.com/ev3dev/grx/wiki
 
 
 License

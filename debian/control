@@ -20,7 +20,7 @@ Build-Depends: debhelper (>= 10),
     pandoc,
     pkg-config,
     python3,
-    valac,
+    valac
 Standards-Version: 3.9.8
 Section: libs
 Homepage: https://github.com/ev3dev/grx

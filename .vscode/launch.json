@@ -1,0 +1,60 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run python file",
+            "type": "python",
+            "request": "launch",
+            "preLaunchTask": "grx-3.0-gir",
+            "stopOnEntry": false,
+            "pythonPath": "${config:python.pythonPath}",
+            "program": "${file}",
+            "cwd": "${fileDirname}",
+            "env": { 
+                "GRX_PLUGIN_PATH": "${workspaceRoot}/build/plugins",
+                "LD_LIBRARY_PATH": "${workspaceRoot}/build/src",
+                "GI_TYPELIB_PATH": "${workspaceRoot}/build/src"
+            },
+            "debugOptions": [
+                "WaitOnAbnormalExit",
+                "WaitOnNormalExit",
+                "RedirectOutput"
+            ]
+        },
+        {
+            "name": "Run vala life",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/build/example/vala/life",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [{"name": "GRX_PLUGIN_PATH", "value": "${workspaceRoot}/build/plugins"}],
+            "externalConsole": false,
+            "preLaunchTask": "vala-life",
+            "linux": {
+                "MIMode": "gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+                ]
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+                ]
+            }
+        }
+    ]
+}
