@@ -15,7 +15,7 @@ set (LINUXFB_MODULES
 pkg_check_modules (LINUXFB_DEPS REQUIRED ${LINUXFB_MODULES})
 
 add_library (grx_linuxfb MODULE ${LINUXFB_SOURCE_FILES})
-target_compile_options (grx_linuxfb PUBLIC "-Wall" "-Werror")
+target_compile_options (grx_linuxfb PRIVATE "-Wall" "-Werror")
 target_include_directories (grx_linuxfb
     PUBLIC
         ${CMAKE_SOURCE_DIR}/include

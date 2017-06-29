@@ -6,7 +6,7 @@ pkg_check_modules (TEST_DEPS REQUIRED
 )
 
 add_executable (demogrx demogrx.c gfaz.c)
-target_include_directories (demogrx PUBLIC
+target_include_directories (demogrx PRIVATE
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/src/include
     ${TEST_DEPS_INCLUDE_DIRS}
@@ -45,7 +45,7 @@ set (PROGRAMS
 
 foreach (PROG ${PROGRAMS})
     add_executable (${PROG} ${PROG}.c)
-    target_include_directories (${PROG} PUBLIC
+    target_include_directories (${PROG} PRIVATE
         ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_BINARY_DIR}/src/include
         ${TEST_DEPS_INCLUDE_DIRS}

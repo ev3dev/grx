@@ -9,7 +9,7 @@ set (MEMORY_MODULES
 pkg_check_modules (MEMORY_DEPS REQUIRED ${MEMORY_MODULES})
 
 add_library (grx_memory MODULE ${MEMORY_SOURCE_FILES})
-target_compile_options (grx_memory PUBLIC "-Wall" "-Werror")
+target_compile_options (grx_memory PRIVATE "-Wall" "-Werror")
 target_include_directories (grx_memory
     PUBLIC
         ${CMAKE_SOURCE_DIR}/include

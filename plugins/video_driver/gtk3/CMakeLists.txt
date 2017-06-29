@@ -12,7 +12,7 @@ set (GTK3_MODULES
 pkg_check_modules (GTK3_DEPS REQUIRED ${GTK3_MODULES})
 
 add_library (grx_gtk3 MODULE ${GTK3_SOURCE_FILES})
-target_compile_options (grx_gtk3 PUBLIC "-Wall" "-Werror")
+target_compile_options (grx_gtk3 PRIVATE "-Wall" "-Werror")
 target_include_directories (grx_gtk3
     PUBLIC
         ${CMAKE_SOURCE_DIR}/include

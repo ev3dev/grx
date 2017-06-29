@@ -18,7 +18,7 @@ vala_precompile (LIFE_C LIFE_VALA life.vala
 
 add_executable (vala-life ${LIFE_C})
 set_property (TARGET vala-life PROPERTY OUTPUT_NAME life)
-target_include_directories (vala-life PUBLIC
+target_include_directories (vala-life PRIVATE
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/src/include
     ${EXAMPLE_DEPS_INCLUDE_DIRS}

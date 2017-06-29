@@ -279,13 +279,13 @@ pkg_check_modules (GRX_PRIVATE_DEPS REQUIRED ${PRIVATE_MODULES})
 set (LIBRARY_OBJECT_TARGET ${PACKAGE_NAME}-object)
 add_library (${LIBRARY_OBJECT_TARGET} OBJECT ${LIBRARY_SOURCE_FILES})
 set_target_properties (${LIBRARY_OBJECT_TARGET} PROPERTIES POSITION_INDEPENDENT_CODE 1)
-target_compile_options (${LIBRARY_OBJECT_TARGET} PUBLIC "-Wall" "-Werror")
-target_compile_definitions (${LIBRARY_OBJECT_TARGET} PUBLIC
+target_compile_options (${LIBRARY_OBJECT_TARGET} PRIVATE "-Wall" "-Werror")
+target_compile_definitions (${LIBRARY_OBJECT_TARGET} PRIVATE
     "GRX_DEFAULT_PLUGIN_PATH=\"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_PKGPLUGINDIR}\""
     "LFB_BY_NEAR_POINTER"
 )
 if (GRX_DEBUG)
-    target_compile_definitions (${LIBRARY_OBJECT_TARGET} PUBLIC "DEBUG=${GRX_DEBUG}")
+    target_compile_definitions (${LIBRARY_OBJECT_TARGET} PRIVATE "DEBUG=${GRX_DEBUG}")
 endif (GRX_DEBUG)
 target_include_directories (${LIBRARY_OBJECT_TARGET}
     PUBLIC

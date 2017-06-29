@@ -21,8 +21,8 @@ vala_precompile (GRX_CALIBRATE_C GRX_CALIBRATE_VALA calibrate-touch.vala
 )
 
 add_executable (grx-calibrate-touch ${GRX_CALIBRATE_C})
-target_compile_options (grx-calibrate-touch PUBLIC "-w")
-target_include_directories (grx-calibrate-touch PUBLIC
+target_compile_options (grx-calibrate-touch PRIVATE "-w")
+target_include_directories (grx-calibrate-touch PRIVATE
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_BINARY_DIR}/src/include
     ${GRX_CALIBRATE_DEPS_INCLUDE_DIRS}
