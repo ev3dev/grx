@@ -217,6 +217,9 @@ glib_genmarshal (HEADER_FILE include/marshal.h CODE_FILE marshal.c
     PREFIX _grx_marshal INTERNAL FATAL_WARNINGS
     LIST_FILES marshal.list)
 
+
+# Generate unicode source file
+
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
     COMMAND ${CMAKE_SOURCE_DIR}/tools/unicode_codegen.py
         ${CMAKE_SOURCE_DIR}/data/unicode/Blocks.txt
