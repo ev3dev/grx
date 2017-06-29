@@ -2,6 +2,7 @@
 
 set (LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_BINARY_DIR}/marshal.c
+    ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
     application/application.c
     draw/bitblt.c
     draw/bitblt1b.c
@@ -62,8 +63,8 @@ set (LIBRARY_SOURCE_FILES
     image/imginlne.c
     image/iplot.c
     image/istretch.c
-    input/device.c
     input/device_manager.c
+    input/device.c
     mouse/bldcurs.c
     mouse/drawcurs.c
     mouse/mouinfo.c
@@ -127,7 +128,6 @@ set (LIBRARY_SOURCE_FILES
     shape/scanellp.c
     shape/scanpoly.c
     shape/solidfil.c
-    ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
     text/drawtext.c
     text/dumpfont.c
     text/error.c
