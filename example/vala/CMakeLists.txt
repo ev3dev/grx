@@ -12,6 +12,7 @@ vala_precompile (LIFE_C LIFE_VALA life.vala
         posix
     OPTIONS
         --vapidir=${CMAKE_SOURCE_DIR}/bindings/vala/
+        --target-glib=2.48
     DEPENDS
         ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi
 )

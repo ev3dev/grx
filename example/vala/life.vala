@@ -129,8 +129,7 @@ class LifeApplication : Grx.Application {
             }
         }
 
-        //return Source.CONTINUE;
-        return true;
+        return Source.CONTINUE;
     }
 }
 
