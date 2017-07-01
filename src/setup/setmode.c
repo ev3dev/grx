@@ -45,7 +45,7 @@ GrxVideoMode * _gr_select_mode(GrxVideoDriver *drv,int w,int h,int bpp,
         mp = drv->modes;
         for(n = drv->n_modes; --n >= 0; mp++) {
             if (!mp->present) {
-                g_debug ("Mode %d not present", n);
+                // g_debug ("Mode %d not present", n);
                 continue;
             }
             if (!mp->extended_info) {
