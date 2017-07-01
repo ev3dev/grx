@@ -98,7 +98,7 @@ static int detect(void)
         }
 
         sprintf(ttyname, "/dev/tty%d", graphics_vt);
-        ttyfd = open(ttyname, O_WRONLY);
+        ttyfd = open(ttyname, O_RDWR);
         if (ttyfd == -1) {
             g_debug("Failed top open /dev/tty%d: %s", graphics_vt,
                     strerror(errno));
