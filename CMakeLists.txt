@@ -18,6 +18,13 @@ set (GRX_ENABLE_DOC "Yes" CACHE BOOL "Enable building docs")
 
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
+# macOS/brew stuff
+if (APPLE)
+    # see `brew info gettext` caveats
+    link_directories (/usr/local/opt/gettext/lib)
+    include_directories (/usr/local/opt/gettext/include)
+endif (APPLE)
+
 # global stuff
 
 find_package (PkgConfig REQUIRED)
