@@ -10,7 +10,11 @@ set (PACKAGE_NAME ${PROJECT_NAME}-${GIR_VERSION})
 # Configuration settings
 
 set (GRX_DEBUG "OFF" CACHE STRING "Debug message flags")
-set (GRX_LINUXFB "Yes" CACHE BOOL "Enable Linux framebuffer video driver")
+if (${CMAKE_HOST_SYSTEM_NAME} EQUAL "Linux")
+    set (GRX_LINUXFB "Yes" CACHE BOOL "Enable Linux framebuffer video driver")
+else ()
+    set (GRX_LINUXFV "No")
+endif ()
 set (GRX_GTK3 "Yes" CACHE BOOL "Enable GTK+ 3 video driver")
 set (GRX_ENABLE_DOC "Yes" CACHE BOOL "Enable building docs")
 
