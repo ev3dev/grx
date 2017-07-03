@@ -27,6 +27,8 @@ if (APPLE)
     # see `brew info gettext` caveats
     link_directories (/usr/local/opt/gettext/lib)
     include_directories (/usr/local/opt/gettext/include)
+    # .typelib does not work without this
+    set (CMAKE_MACOSX_RPATH No)
 endif (APPLE)
 
 # global stuff
