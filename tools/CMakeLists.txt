@@ -1,8 +1,8 @@
 
+if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+
 include (ValaPrecompile)
 find_package(PkgConfig REQUIRED)
-
-if (${CMAKE_HOST_SYSTEM_NAME} EQUAL "Linux")
 
 pkg_check_modules (GRX_CALIBRATE_DEPS REQUIRED
     glib-2.0
@@ -37,5 +37,5 @@ endif (CMAKE_CROSSCOMPILING)
 
 install (TARGETS grx-calibrate-touch RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-endif (${CMAKE_HOST_SYSTEM_NAME} EQUAL "Linux")
+endif (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
 
