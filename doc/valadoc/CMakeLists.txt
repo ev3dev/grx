@@ -1,7 +1,7 @@
 
 find_package (ValaDoc REQUIRED)
 
-valadoc (doc-vala
+add_valadoc (doc-vala
     PACKAGES
         glib-2.0
         gio-2.0
