@@ -11,11 +11,11 @@ set (PACKAGE_NAME ${PROJECT_NAME}-${GIR_VERSION})
 
 set (GRX_DEBUG "OFF" CACHE STRING "Debug message flags")
 if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-    set (GRX_LINUXFB "Yes" CACHE BOOL "Enable Linux framebuffer video driver")
+    set (GRX_PLUGIN_LINUXFB "Yes" CACHE BOOL "Enable Linux framebuffer video driver plugin")
 else ()
-    set (GRX_LINUXFB "No")
+    set (GRX_PLUGIN_LINUXFB "No")
 endif ()
-set (GRX_GTK3 "Yes" CACHE BOOL "Enable GTK+ 3 video driver")
+set (GRX_PLUGIN_GTK3 "Yes" CACHE BOOL "Enable GTK+ 3 video driver plugin")
 set (GRX_ENABLE_DOC "Yes" CACHE BOOL "Enable building docs")
 
 # we have local cmake modules
