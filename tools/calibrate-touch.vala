@@ -539,7 +539,7 @@ public static int main (string [] argv) {
     try {
         var app = new CalibrateApplication ();
         // TODO: this will return exit status of 0 even if the calibration
-        // failed/the program timed out, etc. There is not way to override the
+        // failed/the program timed out, etc. There is no way to override the
         // return value of the run method other than an early exit when using
         // command line options.
         return app.run (argv);
