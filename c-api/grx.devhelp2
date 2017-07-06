@@ -155,7 +155,6 @@
     <keyword type="function" name="grx_color_info_get_save_buffer_size ()" link="color.html#grx-color-info-get-save-buffer-size"/>
     <keyword type="function" name="grx_color_info_save_colors ()" link="color.html#grx-color-info-save-colors"/>
     <keyword type="function" name="grx_color_info_restore_colors ()" link="color.html#grx-color-info-restore-colors"/>
-    <keyword type="macro" name="grx_color_info_get_pallete_type" link="color.html#grx-color-info-get-pallete-type"/>
     <keyword type="typedef" name="GrxColor" link="color.html#GrxColor"/>
     <keyword type="enum" name="enum GrxColorMode" link="color.html#GrxColorMode"/>
     <keyword type="macro" name="GRX_COLOR_VALUE_MASK" link="color.html#GRX-COLOR-VALUE-MASK:CAPS"/>
