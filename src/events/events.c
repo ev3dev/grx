@@ -284,112 +284,64 @@ GrxDevice *grx_event_get_device (GrxEvent *event)
 /**
  * grx_event_get_keysym:
  * @event: the event
- * @keysym: (out): the key symbol
  *
  * Gets the key symbol for a key event.
  *
- * Returns: %TRUE if the event is a key event, otherwise %FALSE
+ * Returns: the key symbol or #GRX_KEY_VOID_SYMBOL if @event is not a #GrxKeyEvent
  */
-gboolean grx_event_get_keysym( GrxEvent *event, GrxKey *keysym)
+GrxKey grx_event_get_keysym (GrxEvent *event)
 {
-    g_return_val_if_fail (event != NULL, FALSE);
-    g_return_val_if_fail (keysym != NULL, FALSE);
+    g_return_val_if_fail (event != NULL, GRX_KEY_VOID_SYMBOL);
 
     switch (event->type) {
     case GRX_EVENT_TYPE_KEY_DOWN:
     case GRX_EVENT_TYPE_KEY_UP:
-        *keysym = event->key.keysym;
-        return TRUE;
-    case GRX_EVENT_TYPE_NONE:
-    case GRX_EVENT_TYPE_APP_ACTIVATE:
-    case GRX_EVENT_TYPE_APP_DEACTIVATE:
-    case GRX_EVENT_TYPE_APP_QUIT:
-    case GRX_EVENT_TYPE_POINTER_MOTION:
-    case GRX_EVENT_TYPE_BUTTON_PRESS:
-    case GRX_EVENT_TYPE_BUTTON_RELEASE:
-    case GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS:
-    case GRX_EVENT_TYPE_TOUCH_DOWN:
-    case GRX_EVENT_TYPE_TOUCH_MOTION:
-    case GRX_EVENT_TYPE_TOUCH_UP:
-    case GRX_EVENT_TYPE_TOUCH_CANCEL:
-        return FALSE;
+        return event->key.keysym;
+    default:
+        return GRX_KEY_VOID_SYMBOL;
     }
-
-    g_assert_not_reached ();
 }
 
 /**
  * grx_event_get_keychar:
  * @event: the event
- * @keychar: (out): the unicode character
  *
  * Gets the unicode character for a key event.
  *
- * Returns: %TRUE if the event is a key event, otherwise %FALSE
+ * Returns: the unicode character or 0 if @event is not a #GrxKeyEvent
  */
-gboolean grx_event_get_keychar (GrxEvent *event, gunichar *keychar)
+gunichar grx_event_get_keychar (GrxEvent *event)
 {
-    g_return_val_if_fail (event != NULL, FALSE);
-    g_return_val_if_fail (keychar != NULL, FALSE);
+    g_return_val_if_fail (event != NULL, 0);
 
     switch (event->type) {
     case GRX_EVENT_TYPE_KEY_DOWN:
     case GRX_EVENT_TYPE_KEY_UP:
-        *keychar = event->key.unichar;
-        return TRUE;
-    case GRX_EVENT_TYPE_NONE:
-    case GRX_EVENT_TYPE_APP_ACTIVATE:
-    case GRX_EVENT_TYPE_APP_DEACTIVATE:
-    case GRX_EVENT_TYPE_APP_QUIT:
-    case GRX_EVENT_TYPE_POINTER_MOTION:
-    case GRX_EVENT_TYPE_BUTTON_PRESS:
-    case GRX_EVENT_TYPE_BUTTON_RELEASE:
-    case GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS:
-    case GRX_EVENT_TYPE_TOUCH_DOWN:
-    case GRX_EVENT_TYPE_TOUCH_MOTION:
-    case GRX_EVENT_TYPE_TOUCH_UP:
-    case GRX_EVENT_TYPE_TOUCH_CANCEL:
-        return FALSE;
+        return event->key.unichar;
+    default:
+        return 0;
     }
-
-    g_assert_not_reached ();
 }
 
 /**
  * grx_event_get_keycode:
  * @event: the event
- * @keycode: (out): the key code
  *
  * Gets the platform dependant key code for the event.
  *
- * Returns: %TRUE if the event is a key event, otherwise %FALSE
+ * Returns: the key code or 0 if @event is not a #GrxKeyEvent
  */
-gboolean grx_event_get_keycode (GrxEvent *event, guint32 *keycode)
+guint32 grx_event_get_keycode (GrxEvent *event)
 {
-    g_return_val_if_fail (event != NULL, FALSE);
-    g_return_val_if_fail (keycode != NULL, FALSE);
+    g_return_val_if_fail (event != NULL, 0);
 
     switch (event->type) {
     case GRX_EVENT_TYPE_KEY_DOWN:
     case GRX_EVENT_TYPE_KEY_UP:
-        *keycode = event->key.code;
-        return TRUE;
-    case GRX_EVENT_TYPE_NONE:
-    case GRX_EVENT_TYPE_APP_ACTIVATE:
-    case GRX_EVENT_TYPE_APP_DEACTIVATE:
-    case GRX_EVENT_TYPE_APP_QUIT:
-    case GRX_EVENT_TYPE_POINTER_MOTION:
-    case GRX_EVENT_TYPE_BUTTON_PRESS:
-    case GRX_EVENT_TYPE_BUTTON_RELEASE:
-    case GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS:
-    case GRX_EVENT_TYPE_TOUCH_DOWN:
-    case GRX_EVENT_TYPE_TOUCH_MOTION:
-    case GRX_EVENT_TYPE_TOUCH_UP:
-    case GRX_EVENT_TYPE_TOUCH_CANCEL:
-        return FALSE;
+        return event->key.code;
+    default:
+        return 0;
     }
-
-    g_assert_not_reached ();
 }
 
 /**
@@ -400,76 +352,53 @@ gboolean grx_event_get_keycode (GrxEvent *event, guint32 *keycode)
  *
  * Gets the screen coordinates of an event.
  *
- * Returns: %TRUE if the event is a motion or touch event, otherwise %FALSE
+ * @x and @y are set to -1 if @event is not a #GrxMotionEvent or #GrxTouchEvent.
  */
-gboolean grx_event_get_coords (GrxEvent *event, guint32 *x, guint32 *y)
+void grx_event_get_coords (GrxEvent *event, guint32 *x, guint32 *y)
 {
-    g_return_val_if_fail (event != NULL, FALSE);
-    g_return_val_if_fail (x != NULL, FALSE);
-    g_return_val_if_fail (y != NULL, FALSE);
+    g_return_if_fail (event != NULL);
+    g_return_if_fail (x != NULL);
+    g_return_if_fail (y != NULL);
 
     switch (event->type) {
     case GRX_EVENT_TYPE_POINTER_MOTION:
         *x = event->motion.x;
         *y = event->motion.y;
-        return TRUE;
+        break;
     case GRX_EVENT_TYPE_TOUCH_DOWN:
     case GRX_EVENT_TYPE_TOUCH_MOTION:
     case GRX_EVENT_TYPE_TOUCH_UP:
     case GRX_EVENT_TYPE_TOUCH_CANCEL:
         *x = event->touch.x;
         *y = event->touch.y;
-        return TRUE;
-    case GRX_EVENT_TYPE_NONE:
-    case GRX_EVENT_TYPE_APP_ACTIVATE:
-    case GRX_EVENT_TYPE_APP_DEACTIVATE:
-    case GRX_EVENT_TYPE_APP_QUIT:
-    case GRX_EVENT_TYPE_KEY_DOWN:
-    case GRX_EVENT_TYPE_KEY_UP:
-    case GRX_EVENT_TYPE_BUTTON_PRESS:
-    case GRX_EVENT_TYPE_BUTTON_RELEASE:
-    case GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS:
-        return FALSE;
+        break;
+    default:
+        *x = -1;
+        *y = -1;
+        break;
     }
-
-    g_assert_not_reached ();
 }
 
 /**
  * grx_event_get_button:
  * @event: the event
- * @button: (out): the button index
  *
  * Gets the button for a button event
  *
- * Returns: %TRUE if the event is a button event, otherwise %FALSE
+ * Returns: the button index or 0 if @event is not a #GrxButtonEvent.
  */
-gboolean grx_event_get_button (GrxEvent *event, guint32 *button)
+guint32 grx_event_get_button (GrxEvent *event)
 {
-    g_return_val_if_fail (event != NULL, FALSE);
-    g_return_val_if_fail (button != NULL, FALSE);
+    g_return_val_if_fail (event != NULL, 0);
 
     switch (event->type) {
     case GRX_EVENT_TYPE_BUTTON_PRESS:
     case GRX_EVENT_TYPE_BUTTON_RELEASE:
     case GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS:
-        *button = event->button.button;
-        return TRUE;
-    case GRX_EVENT_TYPE_NONE:
-    case GRX_EVENT_TYPE_APP_ACTIVATE:
-    case GRX_EVENT_TYPE_APP_DEACTIVATE:
-    case GRX_EVENT_TYPE_APP_QUIT:
-    case GRX_EVENT_TYPE_KEY_DOWN:
-    case GRX_EVENT_TYPE_KEY_UP:
-    case GRX_EVENT_TYPE_POINTER_MOTION:
-    case GRX_EVENT_TYPE_TOUCH_DOWN:
-    case GRX_EVENT_TYPE_TOUCH_MOTION:
-    case GRX_EVENT_TYPE_TOUCH_UP:
-    case GRX_EVENT_TYPE_TOUCH_CANCEL:
-        return FALSE;
+        return event->button.button;
+    default:
+        return 0;
     }
-
-    g_assert_not_reached ();
 }
 
 /* source implementation */

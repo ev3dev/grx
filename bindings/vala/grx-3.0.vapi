@@ -1222,44 +1222,31 @@ namespace Grx {
 
         /**
          * Gets the key symbol for a key event.
-         *
-         * @param keysym    the key symbol
-         * @return          true if the event is a key event, otherwise false
          */
-        public bool get_keysym (out Key keysym);
+        public Key keysym { get; }
 
         /**
          * Gets the unicode character for a key event.
-         *
-         * @param keychar   the unicode character
-         * @return          true if the event is a key event, otherwise false
          */
-        public bool get_keychar (out unichar keychar);
+        public unichar keychar { get; }
 
         /**
          * Gets the platform dependant key code for the event.
-         *
-         * @param keycode   the key code
-         * @return          true if the event is a key event, otherwise false
          */
-        public bool get_keycode (out uint32 keycode);
+        public uint32 keycode { get; }
 
         /**
          * Gets the screen coordinates of an event.
          *
          * @param x         the x coordinate
          * @param y         the y coordinate
-         * @return          true if the event is a motion or touch event, otherwise false
          */
-        public bool get_coords (out uint32 x, out uint32 y);
+        public void get_coords (out uint32 x, out uint32 y);
 
         /**
          * Gets the button for a button event
-         *
-         * @param button    the button index
-         * @return          true if the event is a button event, otherwise false
          */
-        public bool get_button (out uint32 button);
+        public uint32 button_code { [CCode (cname="grx_event_get_button")] get; }
     }
 
     public abstract class Device : GLib.Object {

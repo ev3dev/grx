@@ -204,11 +204,11 @@ void grx_event_free (GrxEvent *event);
 GrxEventType grx_event_get_event_type (GrxEvent *event);
 GrxModifierFlags grx_event_get_modifiers (GrxEvent *event);
 GrxDevice *grx_event_get_device (GrxEvent *event);
-gboolean grx_event_get_keysym( GrxEvent *event, GrxKey *keysym);
-gboolean grx_event_get_keychar (GrxEvent *event, gunichar *keychar);
-gboolean grx_event_get_keycode (GrxEvent *event, guint32 *keycode);
-gboolean grx_event_get_coords (GrxEvent *event, guint32 *x, guint32 *y);
-gboolean grx_event_get_button (GrxEvent *event, guint32 *button);
+GrxKey grx_event_get_keysym (GrxEvent *event);
+gunichar grx_event_get_keychar (GrxEvent *event);
+guint32 grx_event_get_keycode (GrxEvent *event);
+void grx_event_get_coords (GrxEvent *event, guint32 *x, guint32 *y);
+guint32 grx_event_get_button (GrxEvent *event);
 
 /**
  * GrxEventHandlerFunc:
