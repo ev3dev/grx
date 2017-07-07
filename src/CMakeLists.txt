@@ -397,41 +397,4 @@ add_typelib (${TYPELIB_TARGET} ${GIR_TARGET})
 install (FILES $<TARGET_PROPERTY:${TYPELIB_TARGET},TYPELIB_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
 
-if (GRX_ENABLE_DOC)
-
-# documentation (gtkdoc)
-
-find_package (GtkDoc REQUIRED)
-
-file (GLOB INTERNAL_HEADERS */*.h */*/*.h)
-
-configure_file (${CMAKE_SOURCE_DIR}/doc/gtkdoc/grx-docs.xml.in
-    grx-docs.xml @ONLY)
-
-gtk_doc_add_module (grx
-    XML
-        ${CMAKE_CURRENT_BINARY_DIR}/grx-docs.xml
-    SOURCE
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR}/include/grx
-        ${CMAKE_CURRENT_BINARY_DIR}/include/grx
-    SUFFIXES
-        "h"
-        "c"
-    IGNOREHEADERS
-        ${INTERNAL_HEADERS}
-    IGNOREFILES
-        ${INTERNAL_HEADERS}
-        ${UNUSED_FILES}
-    LIBRARIES
-        ${SHARED_LIBRARY_TARGET}
-)
-
-add_dependencies (doc doc-grx)
-
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/grx/html
-        DESTINATION ${CMAKE_INSTALL_DOCDIR})
-
-endif (GRX_ENABLE_DOC)
-
 endif (NOT CMAKE_CROSSCOMPILING)

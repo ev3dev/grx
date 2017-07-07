@@ -22,7 +22,7 @@ rm -rf ${build_dir}
 cmake -D CMAKE_BUILD_TYPE=Release -D GTKDOC_REBASE_ONLINE=Yes -B${build_dir} -H${base_dir}
 make -s -C ${build_dir} doc
 
-cp -R ${build_dir}/src/grx/html/* ${html_extra_dir}/c-api
+cp -R ${build_dir}/doc/gtkdoc/grx/html/* ${html_extra_dir}/c-api
 yelp-build html -o ${html_extra_dir}/gjs-api ${build_dir}/doc/yelp/gjs
 yelp-build html -o ${html_extra_dir}/python-api ${build_dir}/doc/yelp/python
 cp -R ${build_dir}/doc/valadoc/valadoc/* ${html_extra_dir}/vala-api

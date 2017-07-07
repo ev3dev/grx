@@ -46,9 +46,11 @@ set (TYPELIB_TARGET ${PACKAGE_NAME}-typelib)
 
 # subdirectories
 
+# src goes first for depedency reasons
+add_subdirectory (src)
+
 add_subdirectory (doc)
 add_subdirectory (plugins)
-add_subdirectory (src)
 add_subdirectory (tools)
 add_subdirectory (example)
 add_subdirectory (test EXCLUDE_FROM_ALL)
