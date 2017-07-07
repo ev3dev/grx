@@ -248,16 +248,6 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
                 break;
             }
             switch (grx_event.key.keysym) {
-            case GRX_KEY_SHIFT_L:
-            case GRX_KEY_SHIFT_R:
-            case GRX_KEY_CONTROL_L:
-            case GRX_KEY_CONTROL_R:
-            case GRX_KEY_ALT_L:
-            case GRX_KEY_ALT_R:
-            case GRX_KEY_SUPER_L:
-            case GRX_KEY_SUPER_R:
-                grx_event.key.is_modifier = TRUE;
-                break;
             case GRX_KEY_XF86_SWITCH_VT_1:
             case GRX_KEY_XF86_SWITCH_VT_2:
             case GRX_KEY_XF86_SWITCH_VT_3:

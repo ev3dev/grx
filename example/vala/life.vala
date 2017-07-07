@@ -46,8 +46,12 @@ class LifeApplication : Grx.Application {
         }
         switch (event.type) {
         case EventType.KEY_DOWN:
-            if (!event.key.is_modifier) {
+            switch (event.key.keysym) {
+            case Key.LCASE_Q:
+            case Key.BACK_SPACE:
+            case Key.ESCAPE:
                 quit ();
+                break;
             }
             break;
         case EventType.BUTTON_PRESS:

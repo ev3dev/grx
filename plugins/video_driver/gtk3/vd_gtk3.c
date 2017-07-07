@@ -226,7 +226,6 @@ static gboolean on_event (GtkWidget *widget, GdkEvent *event, gpointer user_data
             grx_event.key.keysym = event->key.keyval;
             grx_event.key.unichar = gdk_keyval_to_unicode (event->key.keyval);
             grx_event.key.code = event->key.hardware_keycode;
-            grx_event.key.is_modifier = event->key.is_modifier;
             grx_event.key.modifiers = map_modifiers (event->key.state);
             break;
         case GDK_MOTION_NOTIFY:

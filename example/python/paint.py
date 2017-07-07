@@ -80,14 +80,14 @@ class App(Grx.Application):
             return True
 
         # If the event was not handled by the base method, then handle it here
-        if event.type == Grx.EventType.KEY_DOWN:
+        ok, key = event.get_keysym()
+        if ok and key in (Grx.Key.LCASE_Q, Grx.Key.BACK_SPACE, Grx.Key.ESCAPE):
             self.quit()
         elif event.type == Grx.EventType.TOUCH_DOWN:
             self.handle_pen_down(event.touch.x, event.touch.y)
         elif event.type == Grx.EventType.TOUCH_MOTION:
             self.handle_pen_move(event.touch.x, event.touch.y)
-        elif (event.type == Grx.EventType.TOUCH_UP or
-              event.type == Grx.EventType.TOUCH_CANCEL):
+        elif event.type in (Grx.EventType.TOUCH_UP, Grx.EventType.TOUCH_CANCEL):
             self.handle_pen_up()
         elif event.type == Grx.EventType.BUTTON_PRESS:
             self.handle_pen_down(self.pen_x, self.pen_y)

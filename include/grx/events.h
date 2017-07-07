@@ -96,22 +96,11 @@ typedef enum {
 } GrxEventType;
 
 /**
- * GrxAnyEvent:
- * @type: the event type
- *
- * Common structure shared by all events.
- */
-typedef struct {
-    GrxEventType type;
-} GrxAnyEvent;
-
-/**
  * GrxKeyEvent:
  * @type: @GRX_EVENT_TYPE_KEY_DOWN or @GRX_EVENT_TYPE_KEY_UP
  * @keysym: the key symbol (translated using keymap)
  * @unichar: the UTF-32 character
  * @code: the platform dependent raw key code
- * @is_modifier: the key is a modifier key
  * @modifiers: modifier key flags
  * @device: the originating device
  *
@@ -122,7 +111,6 @@ typedef struct {
     GrxKey keysym;
     gunichar unichar;
     guint32 code;
-    gboolean is_modifier;
     GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxKeyEvent;
@@ -183,9 +171,18 @@ typedef struct {
     GrxDevice *device;
 } GrxTouchEvent;
 
+/**
+ * GrxEvent:
+ * @type: the type of the event
+ * @key: the event as #GrxKeyEvent
+ * @motion: the event as #GrxMotionEvent
+ * @button: the event as #GrxButtonEvent
+ * @touch: the event as #GrxTouchEvent
+ *
+ * A union of all event types.
+ */
 union _GrxEvent {
     GrxEventType type;
-    GrxAnyEvent any;
     GrxKeyEvent key;
     GrxMotionEvent motion;
     GrxButtonEvent button;
@@ -204,7 +201,14 @@ void grx_event_put (GrxEvent *event);
 GrxEvent *grx_event_copy (GrxEvent *event);
 void grx_event_free (GrxEvent *event);
 
-GrxEventType grx_event_get_event_type(GrxEvent *event);
+GrxEventType grx_event_get_event_type (GrxEvent *event);
+GrxModifierFlags grx_event_get_modifiers (GrxEvent *event);
+GrxDevice *grx_event_get_device (GrxEvent *event);
+gboolean grx_event_get_keysym( GrxEvent *event, GrxKey *keysym);
+gboolean grx_event_get_keychar (GrxEvent *event, gunichar *keychar);
+gboolean grx_event_get_keycode (GrxEvent *event, guint32 *keycode);
+gboolean grx_event_get_coords (GrxEvent *event, guint32 *x, guint32 *y);
+gboolean grx_event_get_button (GrxEvent *event, guint32 *button);
 
 /**
  * GrxEventHandlerFunc:

@@ -41,16 +41,15 @@ class InputApplication(Grx.Application):
             return True
 
         t = event.type
-        if t == Grx.EventType.KEY_DOWN or t == Grx.EventType.KEY_UP:
+        if t in (Grx.EventType.KEY_DOWN, Grx.EventType.KEY_UP):
             key_event = event.key
             print("key keysym", key_event.keysym)
             print("key unichar", key_event.unichar)
             print("key code", key_event.code)
-            print("is modifier?", key_event.is_modifier)
             print("modifiers", key_event.modifiers)
             if key_event.keysym in (Grx.Key.LCASE_Q, Grx.Key.BACK_SPACE, Grx.Key.ESCAPE):
                 self.quit()
-        elif t == Grx.EventType.BUTTON_PRESS or t == Grx.EventType.BUTTON_RELEASE:
+        elif t in (Grx.EventType.BUTTON_PRESS, Grx.EventType.BUTTON_RELEASE):
             button_event = event.button
             print("button", button_event.button)
             print("modifiers", button_event.modifiers)

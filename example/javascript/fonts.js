@@ -66,7 +66,8 @@ const DemoApp = new Lang.Class({
         }
 
         const event_type = event.get_event_type();
-        if (event_type == Grx.EventType.KEY_DOWN ||
+        const [ok, key] = event.get_keysym();
+        if ((ok && (key == Grx.Key.LCASE_Q || key == Grx.Key.BACK_SPACE || key == Grx.Key.ESCAPE)) ||
                 event_type == Grx.EventType.BUTTON_PRESS ||
                 event_type == Grx.EventType.TOUCH_DOWN) {
             this.quit();

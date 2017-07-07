@@ -1143,17 +1143,20 @@ namespace Grx {
     }
 
     [CCode (has_type_id = false)]
-    public struct AnyEvent {
-        EventType type;
-    }
-
-    [CCode (has_type_id = false)]
     public struct KeyEvent {
         EventType type;
         Key keysym;
         unichar unichar;
         uint code;
-        bool is_modifier;
+        ModifierFlags modifiers;
+        Device *device;
+    }
+
+    [CCode (has_type_id = false)]
+    public struct MotionEvent {
+        EventType type;
+        int32 x;
+        int32 y;
         ModifierFlags modifiers;
         Device *device;
     }
@@ -1176,13 +1179,89 @@ namespace Grx {
         Device *device;
     }
 
+    /**
+     * A union of all event types.
+     */
     [CCode (has_type_id = false)]
-    public struct Event {
-        EventType type;
-        AnyEvent any;
-        KeyEvent key;
-        ButtonEvent button;
-        TouchEvent touch;
+    [Compact]
+    public class Event {
+        /**
+         * The type of event.
+         */
+        public EventType type;
+
+        /**
+         * The event as a {@link KeyEvent}.
+         */
+        public KeyEvent key;
+
+        /**
+         * The event as a {@link MotionEvent}.
+         */
+        public MotionEvent motion;
+
+        /**
+         * The event as a {@link ButtonEvent}.
+         */
+        public ButtonEvent button;
+
+        /**
+         * The event as a {@link TouchEvent}.
+         */
+        public TouchEvent touch;
+
+        /**
+         * Gets the modifier keys for the event.
+         *
+         * Events that do not support modifier keys will always return `0`.
+         */
+        public ModifierFlags modifiers { get; }
+
+        /**
+         * Gets the device associated with the event.
+         */
+        public unowned Device? device { get; }
+
+        /**
+         * Gets the key symbol for a key event.
+         *
+         * @param keysym    the key symbol
+         * @return          true if the event is a key event, otherwise false
+         */
+        public bool get_keysym (out Key keysym);
+
+        /**
+         * Gets the unicode character for a key event.
+         *
+         * @param keychar   the unicode character
+         * @return          true if the event is a key event, otherwise false
+         */
+        public bool get_keychar (out unichar keychar);
+
+        /**
+         * Gets the platform dependant key code for the event.
+         *
+         * @param keycode   the key code
+         * @return          true if the event is a key event, otherwise false
+         */
+        public bool get_keycode (out uint32 keycode);
+
+        /**
+         * Gets the screen coordinates of an event.
+         *
+         * @param x         the x coordinate
+         * @param y         the y coordinate
+         * @return          true if the event is a motion or touch event, otherwise false
+         */
+        public bool get_coords (out uint32 x, out uint32 y);
+
+        /**
+         * Gets the button for a button event
+         *
+         * @param button    the button index
+         * @return          true if the event is a button event, otherwise false
+         */
+        public bool get_button (out uint32 button);
     }
 
     public abstract class Device : GLib.Object {
