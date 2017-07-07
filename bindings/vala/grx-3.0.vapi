@@ -48,15 +48,15 @@ namespace Grx {
         public const Color WHITE;
         public const Color NONE;
 
-        public static Color build_rgb (uchar r, uchar g, uchar b);
-        public static Color build_rgb_round (uchar r, uchar g, uchar b);
-        public static Color build_grayscale (uchar r, uchar g, uchar b);
-        public uchar red { get; }
-        public uchar green { get; }
-        public uchar blue { get; }
+        public static Color build_rgb (uint8 r, uint8 g, uint8 b);
+        public static Color build_rgb_round (uint8 r, uint8 g, uint8 b);
+        public static Color build_grayscale (uint8 r, uint8 g, uint8 b);
+        public uint8 red { get; }
+        public uint8 green { get; }
+        public uint8 blue { get; }
 
-        public static Color alloc (uchar r, uchar g, uchar b);
-        public static Color alloc_inline (uchar r, uchar g, uchar b);
+        public static Color alloc (uint8 r, uint8 g, uint8 b);
+        public static Color alloc_inline (uint8 r, uint8 g, uint8 b);
         public static Color alloc2 (uint hcolor);
         public static Color alloc2_inline (uint hcolor);
         public void free ();
@@ -66,8 +66,8 @@ namespace Grx {
         [CCode (array_length_cexpr = "16")]
         public static Color[] alloc_ega_colors ();
 
-        public void query (Color c, out uchar r, out uchar g, out uchar b);
-        public void query_inline (Color c, out uchar r, out uchar g, out uchar b);
+        public void query (Color c, out uint8 r, out uint8 g, out uint8 b);
+        public void query_inline (Color c, out uint8 r, out uint8 g, out uint8 b);
         public void query2 (Color c, out uint hcolor);
         public void query2_inline (Color c, out uint hcolor);
     }
@@ -76,7 +76,7 @@ namespace Grx {
     [SimpleType]
     public struct ColorCell : Color {
         public static ColorCell alloc ();
-        public void set (uchar r, uchar g, uchar b);
+        public void set (uint8 r, uint8 g, uint8 b);
         public void free ();
     }
 
@@ -777,7 +777,7 @@ namespace Grx {
          * Draw/no-draw pattern.
          */
         [CCode (array_length_cname = "n_dash_patterns")]
-        public uchar[] dash_patterns;
+        public uint8[] dash_patterns;
     }
 
     [CCode (has_type_id = false)]
@@ -1107,7 +1107,7 @@ namespace Grx {
     /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */
     /* ================================================================== */
 
-    public void resize_gray_map (uchar *map, int pitch, int old_width, int old_height, int new_width, int new_height);
+    public void resize_gray_map (uint8 *map, int pitch, int old_width, int old_height, int new_width, int new_height);
 
     /* ================================================================== */
     /*                              INPUT                                 */
