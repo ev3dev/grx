@@ -66,25 +66,61 @@ const DemoApp = new Lang.Class({
         }
 
         const event_type = event.get_event_type();
-        if (this._quit_event_types.indexOf(event_type) >= 0) {
-            this.quit();
+        switch (event_type) {
+        case Grx.EventType.KEY_DOWN:
+            switch (event.get_keysym()) {
+                case Grx.Key.LCASE_Q:
+                case Grx.Key.BACK_SPACE:
+                case Grx.Key.ESCAPE:
+                    this.quit();
+                    break;
+                case Grx.Key.DOWN:
+                    if (this.next_index != -1) {
+                        this._show_next_font(0, this.next_index);
+                    }
+                    break;
+                case Grx.Key.UP:
+                    if (this.prev_index.length >= 2 || (this.prev_index.length == 1 && this.next_index == -1)) {
+                        if (this.next_index != -1) {
+                            this.prev_index.pop();
+                        }
+                        this._show_next_font(0, this.prev_index.pop());
+                    }
+                    break;
+                case Grx.Key.HOME:
+                    this._show_next_font(-this.font_files.length, 0);
+                    break;
+                case Grx.Key.END:
+                    this._show_next_font(this.font_files.length, 0);
+                    break;
+                case Grx.Key.PAGE_UP:
+                    this._show_next_font(-10, 0);
+                    break;
+                case Grx.Key.PAGE_DOWN:
+                    this._show_next_font(10, 0);
+                    break;
+                case Grx.Key.LEFT:
+                    this._show_next_font(-1, 0);
+                    break;
+                default:
+                    this._show_next_font(1, 0);
+                    break;
+            }
             return true;
         }
 
         return false;
     },
 
-    _quit_event_types: [Grx.EventType.KEY_DOWN, Grx.EventType.BUTTON_PRESS, Grx.EventType.TOUCH_DOWN],
-
     _show_next_font: function(step, start_index) {
         if (step) {
-            this.prev_index.clear();
+            this.prev_index.length = 0;
             this.font_index += step;
             if (this.font_index < 0) {
                 this.font_index = 0;
             }
-            else if (this.font_index >= len(this.font_files)) {
-                this.font_index = len(this.font_files) - 1;
+            else if (this.font_index >= this.font_files.length) {
+                this.font_index = this.font_files.length - 1;
             }
         }
         Grx.clear_screen(this.WHITE);
@@ -99,7 +135,7 @@ const DemoApp = new Lang.Class({
                 Grx.get_width() - 10, Grx.get_height() - 10, null, null);
             this.next_index = font.dump(dump_context, start_index, this.BLACK, this.WHITE);
             if (this.next_index != -1 && this.next_index != start_index) {
-                this.prev_index.append(start_index);
+                this.prev_index.push(start_index);
             }
         } catch (e) {
             Grx.draw_text(e.message, 10, 30 + this.v_offset, this.default_font);
