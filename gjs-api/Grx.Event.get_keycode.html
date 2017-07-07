@@ -14,16 +14,14 @@
 <div class="hgroup"><h1 class="title"><span class="title">Grx.Event.prototype.get_keycode</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function get_keycode(): [ok: Boolean, keycode: Number(guint32)] {
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function get_keycode(): Number(guint32) {
     // Gjs wrapper for grx_event_get_keycode()
 }
   </pre></div></div></div></div></div>
 <p class="p">Gets the platform dependant key code for the event.</p>
 <div class="terms"><div class="inner"><div class="region"><dl class="terms">
-<dt class="terms"><span class="code">ok</span></dt>
-<dd class="terms"><p class="p"><span class="code">true</span> if the event is a key event, otherwise <span class="code">false</span></p></dd>
-<dt class="terms"><span class="code">keycode</span></dt>
-<dd class="terms"><p class="p">the key code</p></dd>
+<dt class="terms"><span class="code">Returns</span></dt>
+<dd class="terms"><p class="p">the key code or 0 if <span class="code">event</span> is not a <span class="link"><a href="Grx.KeyEvent.html" title="Grx.KeyEvent">Grx.KeyEvent</a></span></p></dd>
 </dl></div></div></div>
 </div>
 <div class="sect sect-links" role="navigation">

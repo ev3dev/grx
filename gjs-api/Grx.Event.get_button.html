@@ -14,16 +14,14 @@
 <div class="hgroup"><h1 class="title"><span class="title">Grx.Event.prototype.get_button</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function get_button(): [ok: Boolean, button: Number(guint32)] {
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function get_button(): Number(guint32) {
     // Gjs wrapper for grx_event_get_button()
 }
   </pre></div></div></div></div></div>
 <p class="p">Gets the button for a button event</p>
 <div class="terms"><div class="inner"><div class="region"><dl class="terms">
-<dt class="terms"><span class="code">ok</span></dt>
-<dd class="terms"><p class="p"><span class="code">true</span> if the event is a button event, otherwise <span class="code">false</span></p></dd>
-<dt class="terms"><span class="code">button</span></dt>
-<dd class="terms"><p class="p">the button index</p></dd>
+<dt class="terms"><span class="code">Returns</span></dt>
+<dd class="terms"><p class="p">the button index or 0 if <span class="code">event</span> is not a <span class="link"><a href="Grx.ButtonEvent.html" title="Grx.ButtonEvent">Grx.ButtonEvent</a></span>.</p></dd>
 </dl></div></div></div>
 </div>
 <div class="sect sect-links" role="navigation">

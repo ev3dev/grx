@@ -14,17 +14,15 @@
 <div class="hgroup"><h1 class="title"><span class="title">Grx.Event.get_keycode</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(Grx.Event, guint32)
-@returns(bool)
-def get_keycode(self, keycode):
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(Grx.Event)
+@returns(guint32)
+def get_keycode(self):
     # Python wrapper for grx_event_get_keycode()
   </pre></div></div></div></div></div>
 <p class="p">Gets the platform dependant key code for the event.</p>
 <div class="terms"><div class="inner"><div class="region"><dl class="terms">
 <dt class="terms"><span class="code">self</span></dt>
 <dd class="terms"><p class="p">the event</p></dd>
-<dt class="terms"><span class="code">keycode</span></dt>
-<dd class="terms"><p class="p">the key code</p></dd>
 <dt class="terms"><span class="code">Returns</span></dt>
 <dd class="terms"></dd>
 </dl></div></div></div>

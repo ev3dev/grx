@@ -14,16 +14,14 @@
 <div class="hgroup"><h1 class="title"><span class="title">Grx.Event.prototype.get_keychar</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function get_keychar(): [ok: Boolean, keychar: String] {
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function get_keychar(): String {
     // Gjs wrapper for grx_event_get_keychar()
 }
   </pre></div></div></div></div></div>
 <p class="p">Gets the unicode character for a key event.</p>
 <div class="terms"><div class="inner"><div class="region"><dl class="terms">
-<dt class="terms"><span class="code">ok</span></dt>
-<dd class="terms"><p class="p"><span class="code">true</span> if the event is a key event, otherwise <span class="code">false</span></p></dd>
-<dt class="terms"><span class="code">keychar</span></dt>
-<dd class="terms"><p class="p">the unicode character</p></dd>
+<dt class="terms"><span class="code">Returns</span></dt>
+<dd class="terms"><p class="p">the unicode character or 0 if <span class="code">event</span> is not a <span class="link"><a href="Grx.KeyEvent.html" title="Grx.KeyEvent">Grx.KeyEvent</a></span></p></dd>
 </dl></div></div></div>
 </div>
 <div class="sect sect-links" role="navigation">

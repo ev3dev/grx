@@ -27,13 +27,13 @@
         </ul>
         <hr class="navi_hr"/>
         <ul class="navi_main">
+          <li class="property"><a href="Grx.Event.button_code.html">button_code</a></li>
           <li class="property"><a href="Grx.Event.device.html">device</a></li>
+          <li class="property"><a href="Grx.Event.keychar.html">keychar</a></li>
+          <li class="property"><a href="Grx.Event.keycode.html">keycode</a></li>
+          <li class="property"><a href="Grx.Event.keysym.html">keysym</a></li>
           <li class="property"><a href="Grx.Event.modifiers.html">modifiers</a></li>
-          <li class="method"><a href="Grx.Event.get_button.html">get_button</a></li>
           <li class="method"><a href="Grx.Event.get_coords.html">get_coords</a></li>
-          <li class="method"><a href="Grx.Event.get_keychar.html">get_keychar</a></li>
-          <li class="method"><a href="Grx.Event.get_keycode.html">get_keycode</a></li>
-          <li class="method"><a href="Grx.Event.get_keysym.html">get_keysym</a></li>
           <li class="field"><a href="Grx.Event.button.html">button</a></li>
           <li class="field"><a href="Grx.Event.key.html">key</a></li>
           <li class="field"><a href="Grx.Event.motion.html">motion</a></li>
@@ -72,28 +72,28 @@
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Gets the device associated with the event.</span>
             </div></li>
-        </ul>
-        <h3 class="main_title">Methods:</h3>
-        <ul class="navi_inline">
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Event.get_keysym.html" class="method">get_keysym</a></b> (<span class="main_keyword">out</span> <span class="main_type"><a href="Grx.Key.html" class="enum">Key</a></span> keysym)
+          <li class="property"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.Key.html" class="enum">Key</a></span> <b><a href="Grx.Event.keysym.html" class="property">keysym</a></b> { <span class="main_keyword">get</span>; }
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Gets the key symbol for a key event.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Event.get_keychar.html" class="method">get_keychar</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">unichar</span></span> keychar)
+          <li class="property"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">unichar</span></span> <b><a href="Grx.Event.keychar.html" class="property">keychar</a></b> { <span class="main_keyword">get</span>; }
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Gets the unicode character for a key event.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Event.get_keycode.html" class="method">get_keycode</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> keycode)
+          <li class="property"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint32</span></span> <b><a href="Grx.Event.keycode.html" class="property">keycode</a></b> { <span class="main_keyword">get</span>; }
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Gets the platform dependant key code for the event.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Event.get_coords.html" class="method">get_coords</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> x, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> y)
-            </span>
-            <div class="leaf_brief_description"><span class="brief_description">Gets the screen coordinates of an event.</span>
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Event.get_button.html" class="method">get_button</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> button)
+          <li class="property"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint32</span></span> <b><a href="Grx.Event.button_code.html" class="property">button_code</a></b> { <span class="main_keyword">get</span>; }
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Gets the button for a button event</span>
+            </div></li>
+        </ul>
+        <h3 class="main_title">Methods:</h3>
+        <ul class="navi_inline">
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Event.get_coords.html" class="method">get_coords</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> x, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> y)
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Gets the screen coordinates of an event.</span>
             </div></li>
         </ul>
         <h3 class="main_title">Fields:</h3>

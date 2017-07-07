@@ -27,13 +27,13 @@
         </ul>
         <hr class="navi_hr"/>
         <ul class="navi_main">
+          <li class="property"><a href="Grx.Event.button_code.html">button_code</a></li>
           <li class="property"><a href="Grx.Event.device.html">device</a></li>
+          <li class="property"><a href="Grx.Event.keychar.html">keychar</a></li>
+          <li class="property"><a href="Grx.Event.keycode.html">keycode</a></li>
+          <li class="property"><a href="Grx.Event.keysym.html">keysym</a></li>
           <li class="property"><a href="Grx.Event.modifiers.html">modifiers</a></li>
-          <li class="method"><a href="Grx.Event.get_button.html">get_button</a></li>
           <li class="method">get_coords</li>
-          <li class="method"><a href="Grx.Event.get_keychar.html">get_keychar</a></li>
-          <li class="method"><a href="Grx.Event.get_keycode.html">get_keycode</a></li>
-          <li class="method"><a href="Grx.Event.get_keysym.html">get_keysym</a></li>
           <li class="field"><a href="Grx.Event.button.html">button</a></li>
           <li class="field"><a href="Grx.Event.key.html">key</a></li>
           <li class="field"><a href="Grx.Event.motion.html">motion</a></li>
@@ -45,7 +45,7 @@
         <h1 class="main_title">get_coords</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><span class="method">get_coords</span></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> x, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> y)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">get_coords</span></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> x, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> y)
         </div>
         <div class="description">
           <p>Gets the screen coordinates of an event.</p>
@@ -61,14 +61,6 @@
               <td class="main_parameter_table_name">y</td>
               <td>
                 <p>the y coordinate </p>
-              </td>
-            </tr>
-          </table>
-          <h2 class="main_title">Returns:</h2>
-          <table class="main_parameter_table">
-            <tr>
-              <td>
-                <p>true if the event is a motion or touch event, otherwise false </p>
               </td>
             </tr>
           </table>

@@ -14,16 +14,14 @@
 <div class="hgroup"><h1 class="title"><span class="title">Grx.Event.prototype.get_keysym</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function get_keysym(): [ok: Boolean, keysym: <span class="link"><a href="Grx.Key.html" title="Grx.Key">Grx.Key</a></span>] {
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function get_keysym(): <span class="link"><a href="Grx.Key.html" title="Grx.Key">Grx.Key</a></span> {
     // Gjs wrapper for grx_event_get_keysym()
 }
   </pre></div></div></div></div></div>
 <p class="p">Gets the key symbol for a key event.</p>
 <div class="terms"><div class="inner"><div class="region"><dl class="terms">
-<dt class="terms"><span class="code">ok</span></dt>
-<dd class="terms"><p class="p"><span class="code">true</span> if the event is a key event, otherwise <span class="code">false</span></p></dd>
-<dt class="terms"><span class="code">keysym</span></dt>
-<dd class="terms"><p class="p">the key symbol</p></dd>
+<dt class="terms"><span class="code">Returns</span></dt>
+<dd class="terms"><p class="p">the key symbol or #GRX_KEY_VOID_SYMBOL if <span class="code">event</span> is not a <span class="link"><a href="Grx.KeyEvent.html" title="Grx.KeyEvent">Grx.KeyEvent</a></span></p></dd>
 </dl></div></div></div>
 </div>
 <div class="sect sect-links" role="navigation">
