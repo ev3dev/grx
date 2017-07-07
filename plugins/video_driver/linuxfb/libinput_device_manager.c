@@ -25,7 +25,6 @@
 #include <grx/device.h>
 #include <grx/events.h>
 #include <grx/extents.h>
-#include <grx/input_keys.h>
 #include <grx/input_keysyms.h>
 #include <grx/mode.h>
 
@@ -249,6 +248,16 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
                 break;
             }
             switch (grx_event.key.keysym) {
+            case GRX_KEY_SHIFT_L:
+            case GRX_KEY_SHIFT_R:
+            case GRX_KEY_CONTROL_L:
+            case GRX_KEY_CONTROL_R:
+            case GRX_KEY_ALT_L:
+            case GRX_KEY_ALT_R:
+            case GRX_KEY_SUPER_L:
+            case GRX_KEY_SUPER_R:
+                grx_event.key.is_modifier = TRUE;
+                break;
             case GRX_KEY_XF86_SWITCH_VT_1:
             case GRX_KEY_XF86_SWITCH_VT_2:
             case GRX_KEY_XF86_SWITCH_VT_3:
@@ -269,6 +278,7 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
                 break;
             }
             grx_event.key.code = key;
+            grx_event.key.modifiers = grx_libinput_device_get_modifier_flags (grx_device);
             grx_event.key.device = GRX_DEVICE (grx_device);
         }
         break;
@@ -294,6 +304,7 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
             grx_event.type = GRX_EVENT_TYPE_POINTER_MOTION;
             grx_event.motion.x = x;
             grx_event.motion.y = y;
+            grx_event.motion.modifiers = grx_libinput_device_get_modifier_flags (grx_device);
             grx_event.motion.device = GRX_DEVICE (grx_device);
 
             MOUINFO->xpos = grx_event.motion.x;
@@ -333,6 +344,7 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
                 break;
             }
             grx_event.button.button = button;
+            grx_event.button.modifiers = grx_libinput_device_get_modifier_flags (grx_device);
             grx_event.button.device = GRX_DEVICE (grx_device);
         }
         break;
@@ -373,6 +385,7 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
             grx_event.touch.id = slot;
             grx_event.touch.x = x;
             grx_event.touch.y = y;
+            grx_event.touch.modifiers = grx_libinput_device_get_modifier_flags (grx_device);
             grx_event.touch.device = GRX_DEVICE (grx_device);
         }
         break;

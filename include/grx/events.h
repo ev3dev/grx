@@ -35,6 +35,23 @@
  */
 
 /**
+ * GrxModifierFlags:
+ * @GRX_MODIFIER_SHIFT: shift modifier
+ * @GRX_MODIFIER_CTRL: control modifier
+ * @GRX_MODIFIER_ALT: alt (option) modifier
+ * @GRX_MODIFIER_SUPER: super (windows/command key) modifier
+ *
+ * Keyboard key modifier flags.
+ */
+typedef enum /*<flags>*/ {
+    GRX_MODIFIER_SHIFT  = 0x01,
+    GRX_MODIFIER_CTRL   = 0x02,
+    GRX_MODIFIER_ALT    = 0x04,
+    GRX_MODIFIER_SUPER  = 0x08,
+} GrxModifierFlags;
+
+
+/**
  * GrxEventType:
  * @GRX_EVENT_TYPE_NONE: indicates there is no event
  * @GRX_EVENT_TYPE_APP_ACTIVATE: application activated event, for example,
@@ -94,6 +111,8 @@ typedef struct {
  * @keysym: the key symbol (translated using keymap)
  * @unichar: the UTF-32 character
  * @code: the platform dependent raw key code
+ * @is_modifier: the key is a modifier key
+ * @modifiers: modifier key flags
  * @device: the originating device
  *
  * Structure that holds information about a keyboard key event.
@@ -103,6 +122,8 @@ typedef struct {
     GrxKey keysym;
     gunichar unichar;
     guint32 code;
+    gboolean is_modifier;
+    GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxKeyEvent;
 
@@ -111,6 +132,7 @@ typedef struct {
  * @type: @GRX_EVENT_TYPE_POINTER_MOTION
  * @x: the pointer position along the x axis
  * @y: the pointer position along the y axis
+ * @modifiers: modifier key flags
  * @device: the originating device
  *
  * Structure that holds information about a pointer motion event.
@@ -119,6 +141,7 @@ typedef struct {
     GrxEventType type;
     gint32 x;
     gint32 y;
+    GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxMotionEvent;
 
@@ -127,6 +150,7 @@ typedef struct {
  * @type: @GRX_EVENT_TYPE_BUTTON_PRESS, @GRX_EVENT_TYPE_BUTTON_RELEASE
  * or @GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS
  * @button: the platform dependent button code
+ * @modifiers: modifier key flags
  * @device: the originating device
  *
  * Structure that holds information about a pointer button press event.
@@ -134,6 +158,7 @@ typedef struct {
 typedef struct {
     GrxEventType type;
     guint32 button;
+    GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxButtonEvent;
 
@@ -144,6 +169,7 @@ typedef struct {
  * @id: the touch point id (for multi-touch devices)
  * @x: the X coordinate of the touch event
  * @y: the Y coordinate of the touch event
+ * @modifiers: modifier key flags
  * @device: the originating device
  *
  * Structure that holds information about a touch event.
@@ -153,6 +179,7 @@ typedef struct {
     gint32 id;
     gint32 x;
     gint32 y;
+    GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxTouchEvent;
 

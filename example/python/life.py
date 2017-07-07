@@ -69,7 +69,9 @@ class Life(Grx.Application):
         if Grx.Application.do_event(self, event):
             return True
 
-        if event.type != Grx.EventType.POINTER_MOTION:
+        if (event.type == Grx.EventType.KEY_DOWN or
+                event.type == Grx.EventType.BUTTON_PRESS or
+                event.type == Grx.EventType.TOUCH_DOWN):
             self.quit()
             return True
 

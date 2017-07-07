@@ -45,7 +45,11 @@ class LifeApplication : Grx.Application {
             return true;
         }
         switch (event.type) {
-        case EventType.KEY_DOWN: // TODO: don't quit on modifier keys
+        case EventType.KEY_DOWN:
+            if (!event.key.is_modifier) {
+                quit ();
+            }
+            break;
         case EventType.BUTTON_PRESS:
         case EventType.TOUCH_DOWN:
             quit ();

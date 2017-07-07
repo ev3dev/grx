@@ -358,7 +358,6 @@ set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/frame_mode.h
     ${CMAKE_SOURCE_DIR}/include/grx/gformats.h
     ${CMAKE_SOURCE_DIR}/include/grx/image.h
-    ${CMAKE_SOURCE_DIR}/include/grx/input_keys.h
     ${CMAKE_SOURCE_DIR}/include/grx/mode.h
     ${CMAKE_SOURCE_DIR}/include/grx/mouse.h
     ${CMAKE_SOURCE_DIR}/include/grx/pattern.h

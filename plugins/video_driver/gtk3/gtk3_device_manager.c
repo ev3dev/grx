@@ -24,7 +24,6 @@
 #include <grx/device.h>
 #include <grx/events.h>
 #include <grx/extents.h>
-#include <grx/input_keys.h>
 #include <grx/mode.h>
 
 #include "gtk3_device.h"

@@ -68,9 +68,10 @@ for emulating OOP with Javascript.
             }
 
             // Quit the application on any key press, button click or touch
-            if (event.get_event_type() == Grx.EventType.KEY_DOWN ||
-                    event.get_event_type() == Grx.EventType.BUTTON_PRESS ||
-                    event.get_event_type() == Grx.EventType.TOUCH_DOWN) {
+            const event_type = event.get_event_type();
+            if (event_type == Grx.EventType.KEY_DOWN ||
+                    event_type == Grx.EventType.BUTTON_PRESS ||
+                    event_type == Grx.EventType.TOUCH_DOWN) {
                 this.quit();
                 return true;
             }

@@ -54,7 +54,10 @@ const DemoApp = new Lang.Class({
             return true;
         }
 
-        if (event.get_event_type() == Grx.EventType.KEY_DOWN) {
+        const event_type = event.get_event_type();
+        if (event_type == Grx.EventType.KEY_DOWN ||
+                event_type == Grx.EventType.BUTTON_PRESS ||
+                event_type == Grx.EventType.TOUCH_DOWN) {
             this.quit();
             return true;
         }

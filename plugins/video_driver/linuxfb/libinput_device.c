@@ -23,6 +23,7 @@
 #include <gio/gio.h>
 
 #include <grx/device.h>
+#include <grx/events.h>
 
 #include "libinput_device.h"
 
@@ -30,6 +31,10 @@ struct _GrxLibinputDevice {
     GrxDevice parent_instance;
     struct libinput_device *device;
     struct xkb_state *state;
+    xkb_mod_index_t shift_idx;
+    xkb_mod_index_t ctrl_idx;
+    xkb_mod_index_t alt_idx;
+    xkb_mod_index_t logo_idx;
 };
 
 G_DEFINE_TYPE (GrxLibinputDevice, grx_libinput_device, GRX_TYPE_DEVICE)
@@ -171,6 +176,11 @@ grx_libinput_device_new (struct libinput_device *device,
 
     self->state = xkb_state_new (keymap);
 
+    self->shift_idx = xkb_map_mod_get_index (keymap, XKB_MOD_NAME_SHIFT);
+    self->ctrl_idx  = xkb_map_mod_get_index (keymap, XKB_MOD_NAME_CTRL);
+    self->alt_idx   = xkb_map_mod_get_index (keymap, XKB_MOD_NAME_ALT);
+    self->logo_idx  = xkb_map_mod_get_index (keymap, XKB_MOD_NAME_LOGO);
+
     return self;
 }
 
@@ -214,4 +224,26 @@ void grx_libinput_device_update_state (GrxLibinputDevice *device,
         }
         libinput_device_led_update (device->device, leds);
     }
+}
+
+GrxModifierFlags grx_libinput_device_get_modifier_flags (GrxLibinputDevice *device)
+{
+    GrxModifierFlags flags = 0;
+
+    g_return_val_if_fail (device != NULL, flags);
+
+    if (xkb_state_mod_index_is_active (device->state, device->shift_idx, XKB_STATE_MODS_EFFECTIVE) == 1) {
+        flags |= GRX_MODIFIER_SHIFT;
+    }
+    if (xkb_state_mod_index_is_active (device->state, device->ctrl_idx, XKB_STATE_MODS_EFFECTIVE) == 1) {
+        flags |= GRX_MODIFIER_CTRL;
+    }
+    if (xkb_state_mod_index_is_active (device->state, device->alt_idx, XKB_STATE_MODS_EFFECTIVE) == 1) {
+        flags |= GRX_MODIFIER_ALT;
+    }
+    if (xkb_state_mod_index_is_active (device->state, device->logo_idx, XKB_STATE_MODS_EFFECTIVE) == 1) {
+        flags |= GRX_MODIFIER_SUPER;
+    }
+
+    return flags;
 }

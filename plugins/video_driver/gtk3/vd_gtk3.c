@@ -191,6 +191,26 @@ static const GrxEventType event_type_map[GDK_EVENT_LAST] = {
     [GDK_TOUCH_CANCEL]      = GRX_EVENT_TYPE_TOUCH_CANCEL,
 };
 
+static GrxModifierFlags map_modifiers (GdkModifierType state)
+{
+    GrxModifierFlags flags = 0;
+
+    if (state & GDK_SHIFT_MASK) {
+        flags |= GRX_MODIFIER_SHIFT;
+    }
+    if (state & GDK_CONTROL_MASK) {
+        flags |= GRX_MODIFIER_CTRL;
+    }
+    if (state & GDK_MOD1_MASK) {
+        flags |= GRX_MODIFIER_ALT;
+    }
+    if (state & GDK_SUPER_MASK) {
+        flags |= GRX_MODIFIER_SUPER;
+    }
+
+    return flags;
+}
+
 static gboolean on_event (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
     // only propagate GRX events if the window is active
@@ -206,12 +226,15 @@ static gboolean on_event (GtkWidget *widget, GdkEvent *event, gpointer user_data
             grx_event.key.keysym = event->key.keyval;
             grx_event.key.unichar = gdk_keyval_to_unicode (event->key.keyval);
             grx_event.key.code = event->key.hardware_keycode;
+            grx_event.key.is_modifier = event->key.is_modifier;
+            grx_event.key.modifiers = map_modifiers (event->key.state);
             break;
         case GDK_MOTION_NOTIFY:
             // grx_event.button.device = GRX_DEVICE (grx_gtk3_device_lookup
             //     (device_manager, event->button.device));
             grx_event.motion.x = event->motion.x;
             grx_event.motion.y = event->motion.y;
+            grx_event.motion.modifiers = map_modifiers (event->motion.state);
 
             MOUINFO->xpos = grx_event.motion.x;
             MOUINFO->ypos = grx_event.motion.y;
@@ -223,6 +246,7 @@ static gboolean on_event (GtkWidget *widget, GdkEvent *event, gpointer user_data
             // grx_event.button.device = GRX_DEVICE (grx_gtk3_device_lookup
             //     (device_manager, event->button.device));
             grx_event.button.button = event->button.button;
+            grx_event.button.modifiers = map_modifiers (event->button.state);
             break;
         case GDK_TOUCH_BEGIN:
         case GDK_TOUCH_UPDATE:
@@ -233,6 +257,7 @@ static gboolean on_event (GtkWidget *widget, GdkEvent *event, gpointer user_data
             grx_event.touch.id = 0;
             grx_event.touch.x = event->touch.x;
             grx_event.touch.y = event->touch.y;
+            grx_event.touch.modifiers = map_modifiers (event->touch.state);
             break;
         default:
             return FALSE;

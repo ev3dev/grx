@@ -46,20 +46,25 @@ class InputApplication(Grx.Application):
             print("key keysym", key_event.keysym)
             print("key unichar", key_event.unichar)
             print("key code", key_event.code)
+            print("is modifier?", key_event.is_modifier)
+            print("modifiers", key_event.modifiers)
             if key_event.keysym in (Grx.Key.LCASE_Q, Grx.Key.BACK_SPACE, Grx.Key.ESCAPE):
                 self.quit()
         elif t == Grx.EventType.BUTTON_PRESS or t == Grx.EventType.BUTTON_RELEASE:
             button_event = event.button
             print("button", button_event.button)
+            print("modifiers", button_event.modifiers)
             Grx.clear_screen(Grx.color_get_black())
         elif t == Grx.EventType.BUTTON_DOUBLE_PRESS:
             button_event = event.button
             print("button double-press", button_event.button)
+            print("modifiers", button_event.modifiers)
         elif t == Grx.EventType.TOUCH_DOWN:
             touch_event = event.touch
             Grx.draw_pixel(touch_event.x, touch_event.y, self.color)
             self.last_touch = (touch_event.x, touch_event.y)
             print("touch", touch_event.x, touch_event.y)
+            print("modifiers", touch_event.modifiers)
         elif t == Grx.EventType.TOUCH_MOTION:
             touch_event = event.touch
             Grx.draw_line(self.last_touch[0], self.last_touch[1], touch_event.x, touch_event.y, self.color)

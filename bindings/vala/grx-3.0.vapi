@@ -1117,8 +1117,7 @@ namespace Grx {
 
     [CCode (has_type_id = false)]
     [Flags]
-    public enum GrxKeyModifier {
-        LOCK,
+    public enum ModifierFlags {
         SHIFT,
         CTRL,
         ALT,
@@ -1146,32 +1145,35 @@ namespace Grx {
     [CCode (has_type_id = false)]
     public struct AnyEvent {
         EventType type;
-        Device *device;
     }
 
     [CCode (has_type_id = false)]
     public struct KeyEvent {
         EventType type;
-        Device *device;
         Key keysym;
         unichar unichar;
         uint code;
+        bool is_modifier;
+        ModifierFlags modifiers;
+        Device *device;
     }
 
     [CCode (has_type_id = false)]
     public struct ButtonEvent {
         EventType type;
-        Device *device;
         uint button;
+        ModifierFlags modifiers;
+        Device *device;
     }
 
     [CCode (has_type_id = false)]
     public struct TouchEvent {
         EventType type;
-        Device *device;
         int id;
         int x;
         int y;
+        ModifierFlags modifiers;
+        Device *device;
     }
 
     [CCode (has_type_id = false)]

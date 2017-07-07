@@ -36,5 +36,6 @@ void grx_libinput_device_update_state (GrxLibinputDevice *device,
                                        enum xkb_key_direction direction,
                                        xkb_keysym_t *keysym,
                                        gunichar *unichar);
+GrxModifierFlags grx_libinput_device_get_modifier_flags (GrxLibinputDevice *device);
 
 #endif /* __GRX_LIBINPUT_DEVICE_H__ */
