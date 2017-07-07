@@ -1,8 +1,8 @@
 
 if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
 
-include (ValaPrecompile)
-find_package(PkgConfig REQUIRED)
+find_package (PkgConfig REQUIRED)
+find_package (Valac REQUIRED)
 
 pkg_check_modules (GRX_CALIBRATE_DEPS REQUIRED
     glib-2.0
@@ -11,16 +11,18 @@ pkg_check_modules (GRX_CALIBRATE_DEPS REQUIRED
     gudev-1.0
 )
 
-vala_precompile (GRX_CALIBRATE_C GRX_CALIBRATE_VALA calibrate-touch.vala
+vala2c (GRX_CALIBRATE_C
+    SOURCE_FILES
+        calibrate-touch.vala
     PACKAGES
         grx-3.0
         gio-2.0
         gudev-1.0
-    OPTIONS
-        --vapidir=${CMAKE_SOURCE_DIR}/bindings/vala/
-    DEPENDS
-        ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi
+    VAPI_DIRS
+        ${CMAKE_SOURCE_DIR}/bindings/vala/
 )
+set_property (SOURCE ${GRX_CALIBRATE_C}
+    PROPERTY OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi)
 
 add_executable (grx-calibrate-touch ${GRX_CALIBRATE_C})
 target_compile_options (grx-calibrate-touch PRIVATE "-w")
@@ -38,4 +40,3 @@ endif (CMAKE_CROSSCOMPILING)
 install (TARGETS grx-calibrate-touch RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 endif (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-
