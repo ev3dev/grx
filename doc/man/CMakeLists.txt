@@ -7,7 +7,7 @@ add_man_page (grx-calibrate-touch.1
     FOOTER "${PROJECT_VERSION}"
     grx-calibrate-touch.rst
 )
-list (APPEND MAN_PAGES grx-calibrate-touch.1)
+list (APPEND MAN_PAGES ${CMAKE_CURRENT_BINARY_DIR}/grx-calibrate-touch.1)
 
 install (FILES ${MAN_PAGES} DESTINATION ${CMAKE_INSTALL_DOCDIR}/man)
 
