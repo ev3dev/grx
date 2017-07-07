@@ -48,4 +48,5 @@ macro (add_demo name)
 endmacro ()
 
 add_demo (life)
+add_demo (lines)
 add_demo (pixels)
