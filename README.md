@@ -29,11 +29,7 @@ Why use GLib?
 
 What OSes does it run on?
 
-* Currently, it only runs on Linux.
-
-What display managers does it work with (X11, Wayland, etc.)?
-
-* It doesn't. It currently is used for Linux console applications.
+* Currently, it runs on Linux and macOS.
 
 
 Getting Around
@@ -44,13 +40,17 @@ Source code directories:
     addons/     Last remains of some code from GRX 2.x - not used (but might be useful)
     bindings/   Bindings for other programming languages
     cmake/      Some CMake modules (this is a git submodule)
+    data/       Various data files
     debian/     Debian packaging stuff
     doc/        Documentation
+    docker/     Dockerfiles for cross-compiling
     example/    Examples of how to use GRX 3
     include/    Public header files
     plugins/    Pluggable components, such as video drivers
+    scripts/    Scripts used during build
     src/        The main library source code
     test/       Old demo program from GRX 2.x
+    tools/      Utility programs
 
 On the web:
 
