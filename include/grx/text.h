@@ -47,8 +47,8 @@
 
 /**
  * GrxFontWeight:
- * GRX_FONT_WEIGHT_REGULAR: regular font
- * GRX_FONT_WEIGHT_BOLD: bold font
+ * @GRX_FONT_WEIGHT_REGULAR: regular font
+ * @GRX_FONT_WEIGHT_BOLD: bold font
  *
  * Describes the weight of the font.
  */
@@ -59,8 +59,8 @@ typedef enum {
 
 /**
  * GrxFontSlant:
- * GRX_FONT_SLANT_REGULAR: regular font
- * GRX_FONT_SLANT_ITALIC: italic font
+ * @GRX_FONT_SLANT_REGULAR: regular font
+ * @GRX_FONT_SLANT_ITALIC: italic font
  *
  * Describes the slant of the font.
  */
@@ -71,9 +71,9 @@ typedef enum {
 
 /**
  * GrxFontWidth:
- * GRX_FONT_WIDTH_NARROW: narrow font
- * GRX_FONT_WIDTH_REGULAR: regular font
- * GRX_FONT_WIDTH_WIDE: wide font
+ * @GRX_FONT_WIDTH_NARROW: narrow font
+ * @GRX_FONT_WIDTH_REGULAR: regular font
+ * @GRX_FONT_WIDTH_WIDE: wide font
  *
  * Describes the slant of the font.
  */
