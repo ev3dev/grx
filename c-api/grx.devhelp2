@@ -20,7 +20,6 @@
       </sub>
       <sub name="Keyboard, Mouse and Touchscreen Input" link="input.html">
         <sub name="Events" link="events.html"/>
-        <sub name="Keyboard Keys" link="input_keys.html"/>
         <sub name="Key Symbols" link="input_keysyms.html"/>
         <sub name="Input Device Manager" link="device_manager.html"/>
         <sub name="Input Devices" link="device.html"/>
@@ -361,16 +360,23 @@
     <keyword type="function" name="grx_event_copy ()" link="events.html#grx-event-copy"/>
     <keyword type="function" name="grx_event_free ()" link="events.html#grx-event-free"/>
     <keyword type="function" name="grx_event_get_event_type ()" link="events.html#grx-event-get-event-type"/>
+    <keyword type="function" name="grx_event_get_modifiers ()" link="events.html#grx-event-get-modifiers"/>
+    <keyword type="function" name="grx_event_get_device ()" link="events.html#grx-event-get-device"/>
+    <keyword type="function" name="grx_event_get_keysym ()" link="events.html#grx-event-get-keysym"/>
+    <keyword type="function" name="grx_event_get_keychar ()" link="events.html#grx-event-get-keychar"/>
+    <keyword type="function" name="grx_event_get_keycode ()" link="events.html#grx-event-get-keycode"/>
+    <keyword type="function" name="grx_event_get_coords ()" link="events.html#grx-event-get-coords"/>
+    <keyword type="function" name="grx_event_get_button ()" link="events.html#grx-event-get-button"/>
     <keyword type="function" name="GrxEventHandlerFunc ()" link="events.html#GrxEventHandlerFunc"/>
     <keyword type="function" name="grx_event_handler_source_new ()" link="events.html#grx-event-handler-source-new"/>
     <keyword type="function" name="grx_event_handler_add ()" link="events.html#grx-event-handler-add"/>
+    <keyword type="enum" name="enum GrxModifierFlags" link="events.html#GrxModifierFlags"/>
     <keyword type="enum" name="enum GrxEventType" link="events.html#GrxEventType"/>
-    <keyword type="struct" name="GrxAnyEvent" link="events.html#GrxAnyEvent"/>
     <keyword type="struct" name="GrxKeyEvent" link="events.html#GrxKeyEvent"/>
     <keyword type="struct" name="GrxMotionEvent" link="events.html#GrxMotionEvent"/>
     <keyword type="struct" name="GrxButtonEvent" link="events.html#GrxButtonEvent"/>
     <keyword type="struct" name="GrxTouchEvent" link="events.html#GrxTouchEvent"/>
-    <keyword type="enum" name="enum GrxKeyModifier" link="input_keys.html#GrxKeyModifier"/>
+    <keyword type="union" name="GrxEvent" link="events.html#GrxEvent-union"/>
     <keyword type="enum" name="enum GrxKey" link="input_keysyms.html#GrxKey"/>
     <keyword type="struct" name="struct GrxDeviceManagerClass" link="device_manager.html#GrxDeviceManagerClass"/>
     <keyword type="signal" name="The “device-added” signal" link="device_manager.html#GrxDeviceManager-device-added"/>
@@ -531,6 +537,10 @@
     <keyword type="constant" name="GRX_TEXT_VALIGN_MIDDLE" link="text.html#GRX-TEXT-VALIGN-MIDDLE:CAPS"/>
     <keyword type="constant" name="GRX_TEXT_VALIGN_BOTTOM" link="text.html#GRX-TEXT-VALIGN-BOTTOM:CAPS"/>
     <keyword type="constant" name="GRX_TEXT_VALIGN_BASELINE" link="text.html#GRX-TEXT-VALIGN-BASELINE:CAPS"/>
+    <keyword type="constant" name="GRX_MODIFIER_SHIFT" link="events.html#GRX-MODIFIER-SHIFT:CAPS"/>
+    <keyword type="constant" name="GRX_MODIFIER_CTRL" link="events.html#GRX-MODIFIER-CTRL:CAPS"/>
+    <keyword type="constant" name="GRX_MODIFIER_ALT" link="events.html#GRX-MODIFIER-ALT:CAPS"/>
+    <keyword type="constant" name="GRX_MODIFIER_SUPER" link="events.html#GRX-MODIFIER-SUPER:CAPS"/>
     <keyword type="constant" name="GRX_EVENT_TYPE_NONE" link="events.html#GRX-EVENT-TYPE-NONE:CAPS"/>
     <keyword type="constant" name="GRX_EVENT_TYPE_APP_ACTIVATE" link="events.html#GRX-EVENT-TYPE-APP-ACTIVATE:CAPS"/>
     <keyword type="constant" name="GRX_EVENT_TYPE_APP_DEACTIVATE" link="events.html#GRX-EVENT-TYPE-APP-DEACTIVATE:CAPS"/>
@@ -545,11 +555,6 @@
     <keyword type="constant" name="GRX_EVENT_TYPE_TOUCH_MOTION" link="events.html#GRX-EVENT-TYPE-TOUCH-MOTION:CAPS"/>
     <keyword type="constant" name="GRX_EVENT_TYPE_TOUCH_UP" link="events.html#GRX-EVENT-TYPE-TOUCH-UP:CAPS"/>
     <keyword type="constant" name="GRX_EVENT_TYPE_TOUCH_CANCEL" link="events.html#GRX-EVENT-TYPE-TOUCH-CANCEL:CAPS"/>
-    <keyword type="constant" name="GRX_KEY_MODIFIER_LOCK" link="input_keys.html#GRX-KEY-MODIFIER-LOCK:CAPS"/>
-    <keyword type="constant" name="GRX_KEY_MODIFIER_SHIFT" link="input_keys.html#GRX-KEY-MODIFIER-SHIFT:CAPS"/>
-    <keyword type="constant" name="GRX_KEY_MODIFIER_CTRL" link="input_keys.html#GRX-KEY-MODIFIER-CTRL:CAPS"/>
-    <keyword type="constant" name="GRX_KEY_MODIFIER_ALT" link="input_keys.html#GRX-KEY-MODIFIER-ALT:CAPS"/>
-    <keyword type="constant" name="GRX_KEY_MODIFIER_SUPER" link="input_keys.html#GRX-KEY-MODIFIER-SUPER:CAPS"/>
     <keyword type="constant" name="GRX_KEY_NO_SYMBOL" link="input_keysyms.html#GRX-KEY-NO-SYMBOL:CAPS"/>
     <keyword type="constant" name="GRX_KEY_VOID_SYMBOL" link="input_keysyms.html#GRX-KEY-VOID-SYMBOL:CAPS"/>
     <keyword type="constant" name="GRX_KEY_BACK_SPACE" link="input_keysyms.html#GRX-KEY-BACK-SPACE:CAPS"/>
@@ -2993,23 +2998,26 @@
     <keyword type="member" name="GrxPixmap.source" link="pattern.html#GrxPixmap.source"/>
     <keyword type="member" name="GrxLinePattern.pattern" link="pattern.html#GrxLinePattern.pattern"/>
     <keyword type="member" name="GrxLinePattern.options" link="pattern.html#GrxLinePattern.options"/>
-    <keyword type="member" name="GrxAnyEvent.type" link="events.html#GrxAnyEvent.type"/>
     <keyword type="member" name="GrxKeyEvent.type" link="events.html#GrxKeyEvent.type"/>
     <keyword type="member" name="GrxKeyEvent.keysym" link="events.html#GrxKeyEvent.keysym"/>
     <keyword type="member" name="GrxKeyEvent.unichar" link="events.html#GrxKeyEvent.unichar"/>
     <keyword type="member" name="GrxKeyEvent.code" link="events.html#GrxKeyEvent.code"/>
+    <keyword type="member" name="GrxKeyEvent.modifiers" link="events.html#GrxKeyEvent.modifiers"/>
     <keyword type="member" name="GrxKeyEvent.device" link="events.html#GrxKeyEvent.device"/>
     <keyword type="member" name="GrxMotionEvent.type" link="events.html#GrxMotionEvent.type"/>
     <keyword type="member" name="GrxMotionEvent.x" link="events.html#GrxMotionEvent.x"/>
     <keyword type="member" name="GrxMotionEvent.y" link="events.html#GrxMotionEvent.y"/>
+    <keyword type="member" name="GrxMotionEvent.modifiers" link="events.html#GrxMotionEvent.modifiers"/>
     <keyword type="member" name="GrxMotionEvent.device" link="events.html#GrxMotionEvent.device"/>
     <keyword type="member" name="GrxButtonEvent.type" link="events.html#GrxButtonEvent.type"/>
     <keyword type="member" name="GrxButtonEvent.button" link="events.html#GrxButtonEvent.button"/>
+    <keyword type="member" name="GrxButtonEvent.modifiers" link="events.html#GrxButtonEvent.modifiers"/>
     <keyword type="member" name="GrxButtonEvent.device" link="events.html#GrxButtonEvent.device"/>
     <keyword type="member" name="GrxTouchEvent.type" link="events.html#GrxTouchEvent.type"/>
     <keyword type="member" name="GrxTouchEvent.id" link="events.html#GrxTouchEvent.id"/>
     <keyword type="member" name="GrxTouchEvent.x" link="events.html#GrxTouchEvent.x"/>
     <keyword type="member" name="GrxTouchEvent.y" link="events.html#GrxTouchEvent.y"/>
+    <keyword type="member" name="GrxTouchEvent.modifiers" link="events.html#GrxTouchEvent.modifiers"/>
     <keyword type="member" name="GrxTouchEvent.device" link="events.html#GrxTouchEvent.device"/>
     <keyword type="member" name="GrxDeviceManagerClass.reserved" link="device_manager.html#GrxDeviceManagerClass.reserved"/>
     <keyword type="member" name="GrxDeviceClass.reset-calibration" link="device.html#GrxDeviceClass.reset-calibration"/>

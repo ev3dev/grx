@@ -23,13 +23,20 @@
         </ul>
         <hr class="navi_hr"/>
         <ul class="navi_main">
-          <li class="struct">Event</li>
+          <li class="class">Event</li>
         </ul>
         <hr class="navi_hr"/>
         <ul class="navi_main">
-          <li class="field"><a href="Grx.Event.any.html">any</a></li>
+          <li class="property"><a href="Grx.Event.device.html">device</a></li>
+          <li class="property"><a href="Grx.Event.modifiers.html">modifiers</a></li>
+          <li class="method"><a href="Grx.Event.get_button.html">get_button</a></li>
+          <li class="method"><a href="Grx.Event.get_coords.html">get_coords</a></li>
+          <li class="method"><a href="Grx.Event.get_keychar.html">get_keychar</a></li>
+          <li class="method"><a href="Grx.Event.get_keycode.html">get_keycode</a></li>
+          <li class="method"><a href="Grx.Event.get_keysym.html">get_keysym</a></li>
           <li class="field"><a href="Grx.Event.button.html">button</a></li>
           <li class="field"><a href="Grx.Event.key.html">key</a></li>
+          <li class="field"><a href="Grx.Event.motion.html">motion</a></li>
           <li class="field"><a href="Grx.Event.touch.html">touch</a></li>
           <li class="field"><a href="Grx.Event.type.html">type</a></li>
         </ul>
@@ -45,34 +52,75 @@
 </map>
 
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">struct</span> <b><span class="struct">Event</span></b>
+        <div class="main_code_definition">[ <span class="main_type">Compact</span> ]<br/><span class="main_keyword">public</span> <span class="main_keyword">class</span> <b><span class="class">Event</span></b>
+        </div>
+        <div class="description">
+          <p>A union of all event types.</p>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>
         <div class="package_note"><b>Package:</b> <a href="index.htm">grx-3.0</a>
         </div>
         <h2 class="main_title">Content:</h2>
+        <h3 class="main_title">Properties:</h3>
+        <ul class="navi_inline">
+          <li class="property"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.ModifierFlags.html" class="enum">ModifierFlags</a></span> <b><a href="Grx.Event.modifiers.html" class="property">modifiers</a></b> { <span class="main_keyword">get</span>; }
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Gets the modifier keys for the event.</span>
+            </div></li>
+          <li class="property"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">weak</span> <span class="main_type"><a href="Grx.Device.html" class="abstract_class">Device</a></span>? <b><a href="Grx.Event.device.html" class="property">device</a></b> { <span class="main_keyword">get</span>; }
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Gets the device associated with the event.</span>
+            </div></li>
+        </ul>
+        <h3 class="main_title">Methods:</h3>
+        <ul class="navi_inline">
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Event.get_keysym.html" class="method">get_keysym</a></b> (<span class="main_keyword">out</span> <span class="main_type"><a href="Grx.Key.html" class="enum">Key</a></span> keysym)
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Gets the key symbol for a key event.</span>
+            </div></li>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Event.get_keychar.html" class="method">get_keychar</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">unichar</span></span> keychar)
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Gets the unicode character for a key event.</span>
+            </div></li>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Event.get_keycode.html" class="method">get_keycode</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> keycode)
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Gets the platform dependant key code for the event.</span>
+            </div></li>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Event.get_coords.html" class="method">get_coords</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> x, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> y)
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Gets the screen coordinates of an event.</span>
+            </div></li>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Event.get_button.html" class="method">get_button</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint32</span></span> button)
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Gets the button for a button event</span>
+            </div></li>
+        </ul>
         <h3 class="main_title">Fields:</h3>
         <ul class="navi_inline">
           <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.EventType.html" class="enum">EventType</a></span> <b><a href="Grx.Event.type.html" class="field">type</a></b>
             </span>
-            <div class="leaf_brief_description">
-            </div></li>
-          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.AnyEvent.html" class="struct">AnyEvent</a></span> <b><a href="Grx.Event.any.html" class="field">any</a></b>
-            </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">The type of event.</span>
             </div></li>
           <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.KeyEvent.html" class="struct">KeyEvent</a></span> <b><a href="Grx.Event.key.html" class="field">key</a></b>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">The event as a <a href="Grx.KeyEvent.html" class="struct">KeyEvent</a>
+                .</span>
+            </div></li>
+          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.MotionEvent.html" class="struct">MotionEvent</a></span> <b><a href="Grx.Event.motion.html" class="field">motion</a></b>
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">The event as a <a href="Grx.MotionEvent.html" class="struct">
+                  MotionEvent</a>.</span>
             </div></li>
           <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.ButtonEvent.html" class="struct">ButtonEvent</a></span> <b><a href="Grx.Event.button.html" class="field">button</a></b>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">The event as a <a href="Grx.ButtonEvent.html" class="struct">
+                  ButtonEvent</a>.</span>
             </div></li>
           <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.TouchEvent.html" class="struct">TouchEvent</a></span> <b><a href="Grx.Event.touch.html" class="field">touch</a></b>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">The event as a <a href="Grx.TouchEvent.html" class="struct">TouchEvent
+                </a>.</span>
             </div></li>
         </ul>
       </div>

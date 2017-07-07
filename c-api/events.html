@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="Grx Reference Manual">
 <link rel="up" href="input.html" title="Keyboard, Mouse and Touchscreen Input">
 <link rel="prev" href="input.html" title="Keyboard, Mouse and Touchscreen Input">
-<link rel="next" href="input_keys.html" title="Keyboard Keys">
+<link rel="next" href="input_keysyms.html" title="Key Symbols">
 <meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -21,7 +21,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="input.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="input.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="input_keys.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="input_keysyms.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="events"></a><div class="titlepage"></div>
@@ -106,6 +106,62 @@
 </tr>
 <tr>
 <td class="function_type">
+<a class="link" href="events.html#GrxModifierFlags" title="enum GrxModifierFlags"><span class="returnvalue">GrxModifierFlags</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="events.html#grx-event-get-modifiers" title="grx_event_get_modifiers ()">grx_event_get_modifiers</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="device.html#GrxDevice"><span class="returnvalue">GrxDevice</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="events.html#grx-event-get-device" title="grx_event_get_device ()">grx_event_get_device</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="events.html#grx-event-get-keysym" title="grx_event_get_keysym ()">grx_event_get_keysym</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="events.html#grx-event-get-keychar" title="grx_event_get_keychar ()">grx_event_get_keychar</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="events.html#grx-event-get-keycode" title="grx_event_get_keycode ()">grx_event_get_keycode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="events.html#grx-event-get-coords" title="grx_event_get_coords ()">grx_event_get_coords</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="events.html#grx-event-get-button" title="grx_event_get_button ()">grx_event_get_button</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <span class="returnvalue">void</span>
 </td>
 <td class="function_name">
@@ -141,11 +197,11 @@
 <tbody>
 <tr>
 <td class="datatype_keyword">enum</td>
-<td class="function_name"><a class="link" href="events.html#GrxEventType" title="enum GrxEventType">GrxEventType</a></td>
+<td class="function_name"><a class="link" href="events.html#GrxModifierFlags" title="enum GrxModifierFlags">GrxModifierFlags</a></td>
 </tr>
 <tr>
-<td class="datatype_keyword"> </td>
-<td class="function_name"><a class="link" href="events.html#GrxAnyEvent" title="GrxAnyEvent">GrxAnyEvent</a></td>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="events.html#GrxEventType" title="enum GrxEventType">GrxEventType</a></td>
 </tr>
 <tr>
 <td class="datatype_keyword"> </td>
@@ -162,6 +218,10 @@
 <tr>
 <td class="datatype_keyword"> </td>
 <td class="function_name"><a class="link" href="events.html#GrxTouchEvent" title="GrxTouchEvent">GrxTouchEvent</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="events.html#GrxEvent-union" title="GrxEvent">GrxEvent</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -349,6 +409,236 @@ grx_event_get_event_type (<em class="parameter"><code><a class="link" href="even
 </div>
 <hr>
 <div class="refsect2">
+<a name="grx-event-get-modifiers"></a><h3>grx_event_get_modifiers ()</h3>
+<pre class="programlisting"><a class="link" href="events.html#GrxModifierFlags" title="enum GrxModifierFlags"><span class="returnvalue">GrxModifierFlags</span></a>
+grx_event_get_modifiers (<em class="parameter"><code><a class="link" href="events.html#GrxEvent"><span class="type">GrxEvent</span></a> *event</code></em>);</pre>
+<p>Gets the modifier keys for the event.</p>
+<p>Events that do not support modifier keys will always return <code class="literal">0</code>.</p>
+<div class="refsect3">
+<a name="grx-event-get-modifiers.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>event</p></td>
+<td class="parameter_description"><p>the event</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-event-get-modifiers.returns"></a><h4>Returns</h4>
+<p> the modifier keys (as bit flags)</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-event-get-device"></a><h3>grx_event_get_device ()</h3>
+<pre class="programlisting"><a class="link" href="device.html#GrxDevice"><span class="returnvalue">GrxDevice</span></a> *
+grx_event_get_device (<em class="parameter"><code><a class="link" href="events.html#GrxEvent"><span class="type">GrxEvent</span></a> *event</code></em>);</pre>
+<p>Gets the device associated with the event.</p>
+<div class="refsect3">
+<a name="grx-event-get-device.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>event</p></td>
+<td class="parameter_description"><p>the event</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-event-get-device.returns"></a><h4>Returns</h4>
+<p> the device or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-event-get-keysym"></a><h3>grx_event_get_keysym ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+grx_event_get_keysym (<em class="parameter"><code><a class="link" href="events.html#GrxEvent"><span class="type">GrxEvent</span></a> *event</code></em>,
+                      <em class="parameter"><code><a class="link" href="input_keysyms.html#GrxKey" title="enum GrxKey"><span class="type">GrxKey</span></a> *keysym</code></em>);</pre>
+<p>Gets the key symbol for a key event.</p>
+<div class="refsect3">
+<a name="grx-event-get-keysym.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>event</p></td>
+<td class="parameter_description"><p>the event</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keysym</p></td>
+<td class="parameter_description"><p> the key symbol. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-event-get-keysym.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a key event, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-event-get-keychar"></a><h3>grx_event_get_keychar ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+grx_event_get_keychar (<em class="parameter"><code><a class="link" href="events.html#GrxEvent"><span class="type">GrxEvent</span></a> *event</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Unicode-Manipulation.html#gunichar"><span class="type">gunichar</span></a> *keychar</code></em>);</pre>
+<p>Gets the unicode character for a key event.</p>
+<div class="refsect3">
+<a name="grx-event-get-keychar.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>event</p></td>
+<td class="parameter_description"><p>the event</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keychar</p></td>
+<td class="parameter_description"><p> the unicode character. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-event-get-keychar.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a key event, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-event-get-keycode"></a><h3>grx_event_get_keycode ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+grx_event_get_keycode (<em class="parameter"><code><a class="link" href="events.html#GrxEvent"><span class="type">GrxEvent</span></a> *event</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *keycode</code></em>);</pre>
+<p>Gets the platform dependant key code for the event.</p>
+<div class="refsect3">
+<a name="grx-event-get-keycode.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>event</p></td>
+<td class="parameter_description"><p>the event</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keycode</p></td>
+<td class="parameter_description"><p> the key code. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-event-get-keycode.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a key event, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-event-get-coords"></a><h3>grx_event_get_coords ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+grx_event_get_coords (<em class="parameter"><code><a class="link" href="events.html#GrxEvent"><span class="type">GrxEvent</span></a> *event</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *x</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *y</code></em>);</pre>
+<p>Gets the screen coordinates of an event.</p>
+<div class="refsect3">
+<a name="grx-event-get-coords.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>event</p></td>
+<td class="parameter_description"><p>the event</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p> the x coordinate. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p> the y coordinate. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-event-get-coords.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a motion or touch event, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-event-get-button"></a><h3>grx_event_get_button ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+grx_event_get_button (<em class="parameter"><code><a class="link" href="events.html#GrxEvent"><span class="type">GrxEvent</span></a> *event</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *button</code></em>);</pre>
+<p>Gets the button for a button event</p>
+<div class="refsect3">
+<a name="grx-event-get-button.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>event</p></td>
+<td class="parameter_description"><p>the event</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>button</p></td>
+<td class="parameter_description"><p> the button index. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-event-get-button.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the event is a button event, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="GrxEventHandlerFunc"></a><h3>GrxEventHandlerFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*GrxEventHandlerFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="events.html#GrxEvent"><span class="type">GrxEvent</span></a> *event</code></em>,
@@ -438,6 +728,51 @@ when source is removed. </p></td>
 </div>
 <div class="refsect1">
 <a name="events.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GrxModifierFlags"></a><h3>enum GrxModifierFlags</h3>
+<p>Keyboard key modifier flags.</p>
+<div class="refsect3">
+<a name="GrxModifierFlags.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-MODIFIER-SHIFT:CAPS"></a>GRX_MODIFIER_SHIFT</p></td>
+<td class="enum_member_description">
+<p>shift modifier</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-MODIFIER-CTRL:CAPS"></a>GRX_MODIFIER_CTRL</p></td>
+<td class="enum_member_description">
+<p>control modifier</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-MODIFIER-ALT:CAPS"></a>GRX_MODIFIER_ALT</p></td>
+<td class="enum_member_description">
+<p>alt (option) modifier</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-MODIFIER-SUPER:CAPS"></a>GRX_MODIFIER_SUPER</p></td>
+<td class="enum_member_description">
+<p>super (windows/command key) modifier</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
 <div class="refsect2">
 <a name="GrxEventType"></a><h3>enum GrxEventType</h3>
 <p>Indicates the type of event.</p>
@@ -562,36 +897,13 @@ this is triggered the window is closed in a desktop application</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="GrxAnyEvent"></a><h3>GrxAnyEvent</h3>
-<pre class="programlisting">typedef struct {
-    GrxEventType type;
-} GrxAnyEvent;
-</pre>
-<p>Common structure shared by all events.</p>
-<div class="refsect3">
-<a name="GrxAnyEvent.members"></a><h4>Members</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col width="300px" class="struct_members_name">
-<col class="struct_members_description">
-<col width="200px" class="struct_members_annotations">
-</colgroup>
-<tbody><tr>
-<td class="struct_member_name"><p><a class="link" href="events.html#GrxEventType" title="enum GrxEventType"><span class="type">GrxEventType</span></a> <em class="structfield"><code><a name="GrxAnyEvent.type"></a>type</code></em>;</p></td>
-<td class="struct_member_description"><p>the event type</p></td>
-<td class="struct_member_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="GrxKeyEvent"></a><h3>GrxKeyEvent</h3>
 <pre class="programlisting">typedef struct {
     GrxEventType type;
     GrxKey keysym;
     gunichar unichar;
     guint32 code;
+    GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxKeyEvent;
 </pre>
@@ -628,6 +940,11 @@ or <em class="parameter"><code>GRX_EVENT_TYPE_KEY_UP</code></em>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
+<td class="struct_member_name"><p><a class="link" href="events.html#GrxModifierFlags" title="enum GrxModifierFlags"><span class="type">GrxModifierFlags</span></a> <em class="structfield"><code><a name="GrxKeyEvent.modifiers"></a>modifiers</code></em>;</p></td>
+<td class="struct_member_description"><p>modifier key flags</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
 <td class="struct_member_name"><p><a class="link" href="device.html#GrxDevice"><span class="type">GrxDevice</span></a> *<em class="structfield"><code><a name="GrxKeyEvent.device"></a>device</code></em>;</p></td>
 <td class="struct_member_description"><p>the originating device</p></td>
 <td class="struct_member_annotations"> </td>
@@ -643,6 +960,7 @@ or <em class="parameter"><code>GRX_EVENT_TYPE_KEY_UP</code></em>
     GrxEventType type;
     gint32 x;
     gint32 y;
+    GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxMotionEvent;
 </pre>
@@ -673,6 +991,11 @@ or <em class="parameter"><code>GRX_EVENT_TYPE_KEY_UP</code></em>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
+<td class="struct_member_name"><p><a class="link" href="events.html#GrxModifierFlags" title="enum GrxModifierFlags"><span class="type">GrxModifierFlags</span></a> <em class="structfield"><code><a name="GrxMotionEvent.modifiers"></a>modifiers</code></em>;</p></td>
+<td class="struct_member_description"><p>modifier key flags</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
 <td class="struct_member_name"><p><a class="link" href="device.html#GrxDevice"><span class="type">GrxDevice</span></a> *<em class="structfield"><code><a name="GrxMotionEvent.device"></a>device</code></em>;</p></td>
 <td class="struct_member_description"><p>the originating device</p></td>
 <td class="struct_member_annotations"> </td>
@@ -687,6 +1010,7 @@ or <em class="parameter"><code>GRX_EVENT_TYPE_KEY_UP</code></em>
 <pre class="programlisting">typedef struct {
     GrxEventType type;
     guint32 button;
+    GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxButtonEvent;
 </pre>
@@ -714,6 +1038,11 @@ or <em class="parameter"><code>GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS</code></em>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
+<td class="struct_member_name"><p><a class="link" href="events.html#GrxModifierFlags" title="enum GrxModifierFlags"><span class="type">GrxModifierFlags</span></a> <em class="structfield"><code><a name="GrxButtonEvent.modifiers"></a>modifiers</code></em>;</p></td>
+<td class="struct_member_description"><p>modifier key flags</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
 <td class="struct_member_name"><p><a class="link" href="device.html#GrxDevice"><span class="type">GrxDevice</span></a> *<em class="structfield"><code><a name="GrxButtonEvent.device"></a>device</code></em>;</p></td>
 <td class="struct_member_description"><p>the originating device</p></td>
 <td class="struct_member_annotations"> </td>
@@ -730,6 +1059,7 @@ or <em class="parameter"><code>GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS</code></em>
     gint32 id;
     gint32 x;
     gint32 y;
+    GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxTouchEvent;
 </pre>
@@ -769,9 +1099,56 @@ or <em class="parameter"><code>GRX_EVENT_TYPE_TOUCH_CANCEL</code></em>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
+<td class="struct_member_name"><p><a class="link" href="events.html#GrxModifierFlags" title="enum GrxModifierFlags"><span class="type">GrxModifierFlags</span></a> <em class="structfield"><code><a name="GrxTouchEvent.modifiers"></a>modifiers</code></em>;</p></td>
+<td class="struct_member_description"><p>modifier key flags</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
 <td class="struct_member_name"><p><a class="link" href="device.html#GrxDevice"><span class="type">GrxDevice</span></a> *<em class="structfield"><code><a name="GrxTouchEvent.device"></a>device</code></em>;</p></td>
 <td class="struct_member_description"><p>the originating device</p></td>
 <td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxEvent-union"></a><h3>GrxEvent</h3>
+<p>A union of all event types.</p>
+<div class="refsect3">
+<a name="GrxEvent.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="union_members_name">
+<col class="union_members_description">
+<col width="200px" class="union_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="union_member_name"><p><a class="link" href="events.html#GrxEventType" title="enum GrxEventType"><span class="type">GrxEventType</span></a> <em class="structfield"><code><a name="GrxEvent-union.type"></a>type</code></em>;</p></td>
+<td class="union_member_description"><p>the type of the event</p></td>
+<td class="union_member_annotations"> </td>
+</tr>
+<tr>
+<td class="union_member_name"><p><a class="link" href="events.html#GrxKeyEvent" title="GrxKeyEvent"><span class="type">GrxKeyEvent</span></a> <em class="structfield"><code><a name="GrxEvent-union.key"></a>key</code></em>;</p></td>
+<td class="union_member_description"><p>the event as <a class="link" href="events.html#GrxKeyEvent" title="GrxKeyEvent"><span class="type">GrxKeyEvent</span></a></p></td>
+<td class="union_member_annotations"> </td>
+</tr>
+<tr>
+<td class="union_member_name"><p><a class="link" href="events.html#GrxMotionEvent" title="GrxMotionEvent"><span class="type">GrxMotionEvent</span></a> <em class="structfield"><code><a name="GrxEvent-union.motion"></a>motion</code></em>;</p></td>
+<td class="union_member_description"><p>the event as <a class="link" href="events.html#GrxMotionEvent" title="GrxMotionEvent"><span class="type">GrxMotionEvent</span></a></p></td>
+<td class="union_member_annotations"> </td>
+</tr>
+<tr>
+<td class="union_member_name"><p><a class="link" href="events.html#GrxButtonEvent" title="GrxButtonEvent"><span class="type">GrxButtonEvent</span></a> <em class="structfield"><code><a name="GrxEvent-union.button"></a>button</code></em>;</p></td>
+<td class="union_member_description"><p>the event as <a class="link" href="events.html#GrxButtonEvent" title="GrxButtonEvent"><span class="type">GrxButtonEvent</span></a></p></td>
+<td class="union_member_annotations"> </td>
+</tr>
+<tr>
+<td class="union_member_name"><p><a class="link" href="events.html#GrxTouchEvent" title="GrxTouchEvent"><span class="type">GrxTouchEvent</span></a> <em class="structfield"><code><a name="GrxEvent-union.touch"></a>touch</code></em>;</p></td>
+<td class="union_member_description"><p>the event as <a class="link" href="events.html#GrxTouchEvent" title="GrxTouchEvent"><span class="type">GrxTouchEvent</span></a></p></td>
+<td class="union_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
