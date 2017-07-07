@@ -221,12 +221,12 @@ glib_genmarshal (HEADER_FILE include/marshal.h CODE_FILE marshal.c
 # Generate unicode source file
 
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
-    COMMAND ${CMAKE_SOURCE_DIR}/tools/unicode_codegen.py
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/unicode_codegen.py
         ${CMAKE_SOURCE_DIR}/data/unicode/Blocks.txt
         ${CMAKE_SOURCE_DIR}/data/unicode/PropertyValueAliases.txt
         ${CMAKE_CURRENT_BINARY_DIR}/unicode.c
     DEPENDS
-        ${CMAKE_SOURCE_DIR}/tools/unicode_codegen.py
+        ${CMAKE_SOURCE_DIR}/scripts/unicode_codegen.py
         ${CMAKE_SOURCE_DIR}/data/unicode/Blocks.txt
         ${CMAKE_SOURCE_DIR}/data/unicode/PropertyValueAliases.txt
 )
@@ -243,12 +243,12 @@ set (GRX_KEYSYMS_H ${CMAKE_CURRENT_BINARY_DIR}/include/grx/input_keysyms.h)
 add_custom_command (OUTPUT ${GRX_KEYSYMS_H}
     COMMAND ${CMAKE_COMMAND} -E make_directory
         ${CMAKE_CURRENT_BINARY_DIR}/include/grx
-    COMMAND ${CMAKE_SOURCE_DIR}/tools/keysyms_codegen.py
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/keysyms_codegen.py
         ${XKBCOMMON_KEYSYMS_H}
         ${GRX_KEYSYMS_H}
     DEPENDS
         ${XKBCOMMON_KEYSYMS_H}
-        ${CMAKE_SOURCE_DIR}/tools/keysyms_codegen.py
+        ${CMAKE_SOURCE_DIR}/scripts/keysyms_codegen.py
 )
 install (FILES ${GRX_KEYSYMS_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/grx)
 
