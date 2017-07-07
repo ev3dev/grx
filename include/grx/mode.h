@@ -249,7 +249,7 @@ struct _GrxFrameDriver {
     gint     row_align;                  /* scan line size alignment */
     gint     num_planes;                 /* number of planes */
     gint     bits_per_pixel;             /* bits per pixel */
-    glong    max_plane_size;             /* maximum plane size in bytes */
+    gint     max_plane_size;             /* maximum plane size in bytes */
     gboolean (*init)(GrxVideoMode *md);
     GrxColor (*readpixel)(GrxFrame *c, gint x, gint y);
     void     (*drawpixel)(gint x, gint y, GrxColor c);

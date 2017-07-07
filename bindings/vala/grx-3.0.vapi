@@ -257,8 +257,8 @@ namespace Grx {
         public int get_bpp ();
         public int get_n_planes ();
         public int get_line_offset (int width);
-        public long get_plane_size (int width, int height);
-        public long get_context_size (int width, int height);
+        public int get_plane_size (int width, int height);
+        public int get_context_size (int width, int height);
     }
 
     [CCode (cprefix = "GRX_VIDEO_DRIVER_FLAG_", has_type_id = false)]
@@ -367,7 +367,7 @@ namespace Grx {
         public int row_align;
         public int num_planes;
         public int bits_per_pixel;
-        public long max_plane_size;
+        public int max_plane_size;
         public FrameDriverInit init;
         [CCode (cname = "readpixel")]
         public FrameDriverReadPixel read_pixel;
@@ -465,8 +465,8 @@ namespace Grx {
      */
     public int screen_get_n_planes ();
     public int screen_get_line_offset (int width);
-    public long screen_get_plane_size (int width, int height);
-    public long screen_get_context_size (int width, int height);
+    public int screen_get_plane_size (int width, int height);
+    public int screen_get_context_size (int width, int height);
 
     /* ================================================================== */
     /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */

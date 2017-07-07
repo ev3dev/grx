@@ -215,7 +215,7 @@ int (grx_screen_get_line_offset)(int width)
  *
  * Returns: the size in bytes.
  */
-long (grx_screen_get_plane_size)(int w,int h)
+int (grx_screen_get_plane_size)(int w,int h)
 {
     return(grx_screen_get_plane_size(w,h));
 }
@@ -230,7 +230,7 @@ long (grx_screen_get_plane_size)(int w,int h)
  *
  * Returns: the size in bytes.
  */
-long (grx_screen_get_context_size)(int w,int h)
+int (grx_screen_get_context_size)(int w,int h)
 {
     return(grx_screen_get_context_size(w,h));
 }

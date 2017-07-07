@@ -108,7 +108,7 @@ gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width)
  *
  * Returns: the size in bytes.
  */
-glong grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height)
+gint grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height)
 {
         return(umul32(grx_frame_mode_get_line_offset(mode, width), height));
 }
@@ -124,7 +124,7 @@ glong grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height)
  *
  * Returns: the size in bytes.
  */
-glong grx_frame_mode_get_context_size(GrxFrameMode mode, gint width, gint height)
+gint grx_frame_mode_get_context_size(GrxFrameMode mode, gint width, gint height)
 {
     return(umul32(grx_frame_mode_get_line_offset(mode, width),
                   (grx_frame_mode_get_n_planes(mode) * height)));

@@ -98,13 +98,13 @@ GrxFrameMode grx_frame_mode_get_screen_core(void);
 gint grx_frame_mode_get_bpp(GrxFrameMode mode);
 gint grx_frame_mode_get_n_planes(GrxFrameMode mode);
 gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width);
-glong grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height);
-glong grx_frame_mode_get_context_size(GrxFrameMode mode, gint width, gint height);
+gint grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height);
+gint grx_frame_mode_get_context_size(GrxFrameMode mode, gint width, gint height);
 
 gint grx_screen_get_n_planes(void);
 gint grx_screen_get_line_offset(gint width);
-glong grx_screen_get_plane_size(gint width, gint height);
-glong grx_screen_get_context_size(gint width, gint height);
+gint grx_screen_get_plane_size(gint width, gint height);
+gint grx_screen_get_context_size(gint width, gint height);
 
 /*
  * inline implementation for some of the above

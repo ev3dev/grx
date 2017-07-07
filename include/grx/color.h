@@ -146,7 +146,7 @@ extern const struct _GR_colorInfo {
         unsigned char r,g,b;            /* loaded components */
         unsigned int  defined:1;        /* r,g,b values are valid if set */
         unsigned int  writable:1;       /* can be changed by 'grx_color_cell_set' */
-        unsigned long int nused;        /* usage count */
+        unsigned int  nused;            /* usage count */
     } ctable[256];
 } * const GrColorInfo;
 
