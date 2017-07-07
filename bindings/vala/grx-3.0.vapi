@@ -21,8 +21,6 @@
 
 /**
  * Old school (circa 1992-2000) 2-D graphics library.
- *
- * Find out more at [[http://grx.gnu.de]].
  */
 [CCode (cheader_filename = "grx-3.0.h", cprefix = "Grx", lower_case_cprefix = "grx_", gir_namespace = "Grx", gir_version = "3.0")]
 namespace Grx {
