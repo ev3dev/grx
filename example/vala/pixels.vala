@@ -50,14 +50,6 @@ class DemoApp : Grx.Application {
 
         switch (event.type) {
         case EventType.KEY_DOWN:
-            switch (event.key.keysym) {
-            case Key.LCASE_Q:
-            case Key.BACK_SPACE:
-            case Key.ESCAPE:
-                quit ();
-                break;
-            }
-            break;
         case EventType.BUTTON_PRESS:
         case EventType.TOUCH_DOWN:
             quit ();

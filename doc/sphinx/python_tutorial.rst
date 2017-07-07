@@ -75,11 +75,8 @@ that dispatches events.
                 return True
 
             # Exit the program on key press, mouse button click or touch
-            ok, key = event.get_keysym()
-            if ok and key in (Grx.Key.LCASE_Q, Grx.Key.BACK_SPACE, Grx.Key.ESCAPE):
-                    self.quit()
-                    return True
-            if event.type in (Grx.EventType.BUTTON_PRESS, Grx.EventType.TOUCH_DOWN):
+            if event.type in (Grx.EventType.KEY_DOWN, Grx.EventType.BUTTON_PRESS,
+                              Grx.EventType.TOUCH_DOWN):
                 self.quit()
                 return True
 

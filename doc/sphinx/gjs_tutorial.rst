@@ -69,16 +69,15 @@ for emulating OOP with Javascript.
 
             // Quit the application on key press, button click or touch
             const event_type = event.get_event_type();
-            const [ok, key] = event.get_keysym();
-            if ((ok && (key == Grx.Key.LCASE_Q || key == Grx.Key.BACK_SPACE || key == Grx.Key.ESCAPE)) ||
-                    event_type == Grx.EventType.BUTTON_PRESS ||
-                    event_type == Grx.EventType.TOUCH_DOWN) {
+            if (this._quit_event_types.indexOf(event_type) >= 0) {
                 this.quit();
                 return true;
             }
 
             return false;
-        }
+        },
+
+        _quit_event_types: [Grx.EventType.KEY_DOWN, Grx.EventType.BUTTON_PRESS, Grx.EventType.TOUCH_DOWN]
     });
 
     // Set the program name, otherwise it will use 'gjs'
