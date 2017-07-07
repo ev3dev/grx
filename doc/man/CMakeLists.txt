@@ -1,5 +1,5 @@
 
-find_package (Pandoc)
+find_package (Pandoc REQUIRED)
 
 add_man_page (grx-calibrate-touch.1
     SECTION 1
