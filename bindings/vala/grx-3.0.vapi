@@ -199,21 +199,8 @@ namespace Grx {
         public VideoDriver *inherit;
         [CCode (array_length_cname = "n_modes", array_length_type = "int")]
         public VideoMode[] modes;
-        public VideoDriverDetect detect;
-        public VideoDriverInit init;
-        public VideoDriverReset reset;
-        public VideoDriverSelectMode select_mode;
         public VideoDriverFlags flags;
     }
-
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate int VideoDriverDetect ();
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate int VideoDriverInit (string options);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void VideoDriverReset ();
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate VideoMode VideoDriverSelectMode (VideoDriver driver, int width, int height, int bpp, int text, ref uint ep);
 
     /*
      * Video driver mode descriptor structure.
@@ -250,27 +237,8 @@ namespace Grx {
         [CCode (cname = "cprec", array_length_cexpr = "3")]
         public char[] color_position;
         public VideoModeFlags flags;
-        public VideoModeSetup setup;
-        public VideoModeSetSize set_virtual_size;
-        public VideoModeScroll scroll;
-        public VideoModeSetBank set_bank;
-        public VideoModeSetRWBanks set_rw_banks;
-        public VideoModeLoadColor load_color;
         public int lfb_selector;
     }
-
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate bool VideoModeSetup (VideoMode mode, bool no_clear);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate bool VideoModeSetSize (VideoMode mode, uint width, uint height, out VideoMode result);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate bool VideoModeScroll (VideoMode mode, int x, int y, [CCode (array_length = false)]out int[] result);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void VideoModeSetBank (uint bank);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void VideoModeSetRWBanks (uint read_bank, uint write_bank);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void VideoModeLoadColor (Color color_index, Color red, Color green, Color blue);
 
     [CCode (has_type_id = false)]
     public struct FrameDriver {
@@ -281,65 +249,7 @@ namespace Grx {
         public int num_planes;
         public int bits_per_pixel;
         public int max_plane_size;
-        public FrameDriverInit init;
-        [CCode (cname = "readpixel")]
-        public FrameDriverReadPixel read_pixel;
-        [CCode (cname = "drawpixel")]
-        public FrameDriverDrawPixel draw_pixel;
-        [CCode (cname = "drawline")]
-        public FrameDriverDrawLine draw_line;
-        [CCode (cname = "drawhline")]
-        public FrameDriverDrawHLine draw_horiz_line;
-        [CCode (cname = "drawvline")]
-        public FrameDriverDrawVLine draw_vert_line;
-        [CCode (cname = "drawblock")]
-        public FrameDriverDrawBlock draw_block;
-        [CCode (cname = "drawbitmap")]
-        public FrameDriverDrawBitmap draw_bitmap;
-        [CCode (cname = "drawpattern")]
-        public FrameDriverDrawPattern draw_pattern;
-        public FrameDriverBitBlt bitblt;
-        public FrameDriverBltV2R bltv2r;
-        public FrameDriverBltR2V bltr2v;
-        [CCode (cname = "getindexedscanline")]
-        public FrameDriverGetIndexedScanLine get_indexed_scan_line;
-        [CCode (cname = "putscanline")]
-        public FrameDriverPutScanLine put_scan_line;
     }
-
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate int FrameDriverInit (VideoMode mode);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate Color FrameDriverReadPixel (Frame frame, int x, int y);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void  FrameDriverDrawPixel (int x, int y, Color c);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverDrawLine (int x, int y, int dx, int dy, Color c);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverDrawHLine (int x, int y, int w, Color c);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverDrawVLine (int x, int y, int h, Color c);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverDrawBlock (int x, int y, int w, int h, Color c);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverDrawBitmap (int x, int y, int w, int h, uint8 bmp[], int pitch, int start, Color fg, Color bg);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverDrawPattern (int x, int y, int w, uint8 patt, Color fg, Color bg);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverBitBlt (Frame dest, int dx, int dy, Frame src, int x, int y, int w, int h, ColorMode op);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverBltV2R (Frame dest, int dx, int dy, Frame src, int x, int y, int w, int h, ColorMode op);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverBltR2V (Frame dest, int dx, int dy, Frame src, int x, int y, int w, int h, ColorMode op);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate Color *FrameDriverGetIndexedScanLine (Frame frame, int x, int y, int w, int index[]);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void FrameDriverPutScanLine (int x, int y, int w, Color scl[], ColorMode op);
-
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void DriverInfoSetBank (int bank);
-    [CCode (has_target = false, has_type_id = false)]
-    public delegate void DriverInfoSetRWBanks (int read_bank, int write_bank);
 
     /*
      * setup stuff
