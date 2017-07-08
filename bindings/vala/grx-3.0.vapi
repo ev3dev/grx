@@ -63,8 +63,18 @@ namespace Grx {
 
         public static Color lookup (GLib.Array<Color> table, uint index);
 
-        [CCode (array_length_cexpr = "16")]
-        public static Color[] alloc_ega_colors ();
+        //  [CCode (array_length_cexpr = "16")]
+        //  public static unowned Color[] alloc_ega_colors ();
+
+        [CCode (cname = "grx_color_alloc_ega_colors", array_length = false)]
+        static unowned Color[] _alloc_ega_colors ();
+        [CCode (cname = "vala_grx_color_alloc_ega_colors")]
+        public static unowned Color[] alloc_ega_colors () {
+            // work around https://bugzilla.gnome.org/show_bug.cgi?id=784691
+            unowned Color[] colors = _alloc_ega_colors ();
+            colors.length = 16;
+            return colors;
+        }
 
         public void query (Color c, out uint8 r, out uint8 g, out uint8 b);
         public void query_inline (Color c, out uint8 r, out uint8 g, out uint8 b);
