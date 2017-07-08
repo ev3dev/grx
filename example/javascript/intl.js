@@ -49,7 +49,7 @@ const DemoApp = new Lang.Class({
 
         this.WHITE = Grx.color_get_white();
         this.BLACK = Grx.color_get_black();
-        this.default_font = new Grx.TextOptions(Grx.font_load('lucida', 10), this.BLACK);
+        this.default_text_opt = new Grx.TextOptions(Grx.font_load('lucida', 10), this.BLACK);
     },
 
     vfunc_activate: function() {
@@ -66,7 +66,7 @@ const DemoApp = new Lang.Class({
             }
         }
         catch (e) {
-            Grx.draw_text(e.message, 10, 10, this.default_font);
+            Grx.draw_text(e.message, 10, 10, this.default_text_opt);
             logError(e);
         }
     },

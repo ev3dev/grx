@@ -52,7 +52,7 @@ class App(Grx.Application):
         self.hold()
         self.WHITE = Grx.color_get_white()
         self.BLACK = Grx.color_get_black()
-        self.default_font = Grx.TextOptions.new(Grx.font_load('lucida', 10), self.BLACK)
+        self.default_text_opt = Grx.TextOptions.new(Grx.font_load('lucida', 10), self.BLACK)
 
     def do_activate(self):
         Grx.clear_screen(self.WHITE)
@@ -67,7 +67,7 @@ class App(Grx.Application):
                 Grx.draw_text(item[2], Grx.get_width() / 2, offset, text_opt)
                 offset += font.get_height()
         except GLib.Error as err:
-            Grx.draw_text(str(err), 10, 10, self.default_font)
+            Grx.draw_text(str(err), 10, 10, self.default_text_opt)
             print(err)
 
     def do_event(self, event):

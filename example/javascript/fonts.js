@@ -32,7 +32,6 @@ const DemoApp = new Lang.Class({
     next_index: 0,
     prev_index: [],
     font_files: undefined,
-    default_font: undefined,
     v_offset: undefined,
 
     _init: function() {
@@ -48,12 +47,12 @@ const DemoApp = new Lang.Class({
             GLib.SpawnFlags.SEARCH_PATH, null);
         this.font_files = stdout.toString().trim().split(/[\r\n]+/);
         this.font_files.sort();
-        this.default_font = Grx.TextOptions.new_full(
+        this.default_text_opt = Grx.TextOptions.new_full(
             // Don't want to use the dpi-aware font here so we can cram info on to small screens
             Grx.Font.load_full('lucida', 10, -1, Grx.FontWeight.REGULAR,
                 Grx.FontSlant.REGULAR, Grx.FontWidth.REGULAR, false, null, null),
             this.BLACK, this.WHITE, Grx.TextHAlign.LEFT, Grx.TextVAlign.TOP);
-        this.v_offset = this.default_font.get_font().get_height();
+        this.v_offset = this.default_text_opt.get_font().get_height();
     },
 
     vfunc_activate: function() {
@@ -125,12 +124,12 @@ const DemoApp = new Lang.Class({
         }
         Grx.clear_screen(this.WHITE);
         let file_name = this.font_files[this.font_index];
-        Grx.draw_text('file: ' + file_name, 10, 10, this.default_font);
+        Grx.draw_text('file: ' + file_name, 10, 10, this.default_text_opt);
         try {
             let font = Grx.font_load_from_file(file_name);
             let font_info = Format.vprintf('family: %s, style: %s, width: %d, height %d',
                 [font.get_family(), font.get_style(), font.get_width(), font.get_height()]);
-            Grx.draw_text(font_info, 10, 10 + this.v_offset, this.default_font);
+            Grx.draw_text(font_info, 10, 10 + this.v_offset, this.default_text_opt);
             let dump_context = Grx.Context.new_subcontext(10, 10 + this.v_offset * 2,
                 Grx.get_width() - 10, Grx.get_height() - 10, null, null);
             this.next_index = font.dump(dump_context, start_index, this.BLACK, this.WHITE);
@@ -138,7 +137,7 @@ const DemoApp = new Lang.Class({
                 this.prev_index.push(start_index);
             }
         } catch (e) {
-            Grx.draw_text(e.message, 10, 30 + this.v_offset, this.default_font);
+            Grx.draw_text(e.message, 10, 30 + this.v_offset, this.default_text_opt);
             logError(e);
         }
     }

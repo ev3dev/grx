@@ -38,13 +38,13 @@ class App(Grx.Application):
         fc_list = check_output(['fc-list', '--format=%{file}\n', ':scalable=False'])
         self.font_files = [f for f in fc_list.decode().splitlines()]
         self.font_files.sort()
-        self.default_font = Grx.TextOptions.new_full(
+        self.default_text_opt = Grx.TextOptions.new_full(
             # Don't want to use the dpi-aware font here so we can cram info on to small screens
             Grx.Font.load_full('lucida', 10, -1, Grx.FontWeight.REGULAR,
                                Grx.FontSlant.REGULAR, Grx.FontWidth.REGULAR, False, None),
             self.BLACK, self.WHITE,
             Grx.TextHAlign.LEFT, Grx.TextVAlign.TOP)
-        self.v_offset = self.default_font.get_font().get_height()
+        self.v_offset = self.default_text_opt.get_font().get_height()
         self.font_index = 0
         self.next_index = 0
         self.prev_index = []
@@ -93,19 +93,19 @@ class App(Grx.Application):
                 self.font_index = len(self.font_files) - 1
         Grx.clear_screen(self.WHITE)
         file_name = self.font_files[self.font_index]
-        Grx.draw_text('file: ' + file_name, 10, 10, self.default_font)
+        Grx.draw_text('file: ' + file_name, 10, 10, self.default_text_opt)
         try:
             font = Grx.font_load_from_file(file_name)
             font_info = 'family: {}, style: {}, width: {}, height {}'.format(
                 font.get_family(), font.get_style(), font.get_width(), font.get_height())
-            Grx.draw_text(font_info, 10, 10 + self.v_offset, self.default_font)
+            Grx.draw_text(font_info, 10, 10 + self.v_offset, self.default_text_opt)
             dump_context = Grx.Context.new_subcontext(
                 10, 10 + self.v_offset * 2, Grx.get_width() - 10, Grx.get_height() - 10)
             self.next_index = font.dump(dump_context, start_index, self.BLACK, self.WHITE)
             if self.next_index != -1 and self.next_index != start_index:
                 self.prev_index.append(start_index)
         except GLib.Error as err:
-            Grx.draw_text(str(err), 10, 10 + self.v_offset, self.default_font)
+            Grx.draw_text(str(err), 10, 10 + self.v_offset, self.default_text_opt)
 
 
 if __name__ == '__main__':
