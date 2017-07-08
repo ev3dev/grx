@@ -375,7 +375,7 @@ int  GrFreeBmpImageColors ( GrBmpImageColors *_pal )
     GrxColor *colors = _pal->bp_colormap;
     colors[0] = _pal->bp_numcolors;
     for ( i = 0; i < _pal->bp_numcolors; i++ )
-      grx_color_free(colors[i+1]);
+      grx_color_put(colors[i+1]);
     free(_pal->bp_palette);
     _pal->bp_palette = NULL;
     _pal->bp_numcolors = 0;
@@ -398,7 +398,7 @@ int  GrAllocBmpImageColors ( GrBmpImage *_bmp, GrBmpImageColors *_pal )
     if ( !colors ) return FALSE;
     colors[0] = _bmp->bi_numcolors;
     for ( i = 0; i < _bmp->bi_numcolors; i++ )
-      colors[i+1] = grx_color_alloc(_bmp->bi_palette[i*4+2], _bmp->bi_palette[i*4+1], _bmp->bi_palette[i*4+0]);
+      colors[i+1] = grx_color_get(_bmp->bi_palette[i*4+2], _bmp->bi_palette[i*4+1], _bmp->bi_palette[i*4+0]);
     _bmp->bi_colormap = colors;
     if ( _pal )
     {

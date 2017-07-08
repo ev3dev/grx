@@ -247,7 +247,7 @@ static gboolean readpng(FILE *f, GrxContext *grc, int use_alpha)
           g = g * (alpha/255.0) + go * ((255-alpha)/255.0);
           b = b * (alpha/255.0) + bo * ((255-alpha)/255.0);
           }
-        pColors[x] = grx_color_alloc( r,g,b );
+        pColors[x] = grx_color_get( r,g,b );
         }
       }
     grx_put_scanline( 0,maxwidth-1,y,pColors,GRX_COLOR_MODE_WRITE );

@@ -302,7 +302,7 @@ static void ini_graphics(void)
     gheight = grx_get_screen_height();
     grcglob = NULL;
     if (gwidth > 640 || gheight > 480) {
-        grx_clear_screen(grx_color_alloc(120, 90, 60));
+        grx_clear_screen(grx_color_get(120, 90, 60));
         worg = (gwidth - 640) / 2;
         horg = (gheight - 480) / 2;
         grcglob = grx_context_new_subcontext(worg, horg, worg + 639, horg + 479,

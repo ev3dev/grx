@@ -97,11 +97,11 @@ typedef enum {
  */
 #define GRX_COLOR_NONE ((GrxColor)(GRX_COLOR_MODE_XOR | 0))
 
-GrxColor grx_color_alloc(guint8 r, guint8 g, guint8 b);
-GrxColor grx_color_alloc_inline(guint8 r, guint8 g, guint8 b);
-GrxColor grx_color_alloc2(guint32 hcolor);
-GrxColor grx_color_alloc2_inline(guint32 hcolor);
-void grx_color_free(GrxColor c);
+GrxColor grx_color_get(guint8 r, guint8 g, guint8 b);
+GrxColor grx_color_get_inline(guint8 r, guint8 g, guint8 b);
+GrxColor grx_color_get2(guint32 hcolor);
+GrxColor grx_color_get2_inline(guint32 hcolor);
+void grx_color_put(GrxColor c);
 GrxColor grx_color_lookup(GArray *table, guint index);
 
 GrxColor grx_color_get_value(GrxColor c);
@@ -230,9 +230,9 @@ GrxColor *grx_color_get_ega_colors(void);
  */
 typedef GrxColor GrxColorCell;
 
-GrxColorCell grx_color_cell_alloc(void);
+GrxColorCell grx_color_cell_get(void);
 void grx_color_cell_set(GrxColorCell c, guint8 r, guint8 g, guint8 b);
-void grx_color_cell_free(GrxColorCell c);
+void grx_color_cell_put(GrxColorCell c);
 
 /* color info */
 
@@ -297,17 +297,17 @@ void     grx_color_info_restore_colors(gpointer buffer);
     (int)(((GrxColor)(c) << GrColorInfo->norm) >> GrColorInfo->shift[2]) &     \
     (GrColorInfo->mask[2])                                                     \
 )
-#define grx_color_alloc_inline(r,g,b) (                                        \
+#define grx_color_get_inline(r,g,b) (                                        \
     (GrColorInfo->palette_type == GRX_COLOR_PALETTE_TYPE_RGB) ?                \
     grx_color_build_rgb_round(r,g,b) :                                         \
-    grx_color_alloc(r,g,b)                                                     \
+    grx_color_get(r,g,b)                                                     \
 )
-#define grx_color_alloc2(hcolor) (grx_color_alloc(       \
+#define grx_color_get2(hcolor) (grx_color_get(       \
     ((hcolor & 0xff0000) >> 16),                                               \
     ((hcolor & 0x00ff00) >> 8),                                                \
     (hcolor & 0x0000ff))                                                       \
 )
-#define grx_color_alloc2_inline(hcolor) (grx_color_alloc_inline( \
+#define grx_color_get2_inline(hcolor) (grx_color_get_inline( \
     ((hcolor & 0xff0000) >> 16),                                               \
     ((hcolor & 0x00ff00) >> 8),                                                \
     (hcolor & 0x0000ff))                                                       \

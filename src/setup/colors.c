@@ -201,17 +201,21 @@ void grx_color_info_set_palette_type_rgb(void)
 )
 
 /**
- * grx_color_alloc:
+ * grx_color_get:
  * @r: the red component value
  * @g: the green component value
  * @b: the blue component value
  *
- * Allocates a color in the color table based on the RGB value.
+ * Gets a color based on the RGB value.
+ *
+ * A new color is allocated in the color table if needed.
+ *
+ * The color should be released with grx_color_put() when it is no longer used.
  *
  * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
  *          free colors.
  */
-GrxColor grx_color_alloc(unsigned char r, unsigned char g, unsigned char b)
+GrxColor grx_color_get(unsigned char r, unsigned char g, unsigned char b)
 {
         GrxColor res;
 
@@ -294,18 +298,18 @@ done:   GRX_RETURN(res);
 }
 
 /**
- * grx_color_cell_alloc:
+ * grx_color_cell_get:
  *
  * Allocates a new color that can be changed with grx_color_cell_set().
  *
- * The color must be freed with grx_color_cell_free().
+ * The color must be freed with grx_color_cell_put().
  *
  * RGB and grayscale graphics modes will always return #GRX_COLOR_NONE.
  *
  * Returns: a newly allocated color cell or #GRX_COLOR_NONE if there are no more
  *          free cells.
  */
-GrxColorCell grx_color_cell_alloc(void)
+GrxColorCell grx_color_cell_get(void)
 {
         if (CLRINFO->palette_type != GRX_COLOR_PALETTE_TYPE_COLOR_TABLE) {
             return GRX_COLOR_NONE;
@@ -334,14 +338,14 @@ GrxColorCell grx_color_cell_alloc(void)
 }
 
 /**
- * grx_color_free:
+ * grx_color_put:
  * @c: the color
  *
- * Frees a color that was allocated by grx_color_alloc() and friends.
+ * Releases a color that was obtained by grx_color_get() and friends.
  *
  * This has no effect in RGB or grayscale graphics modes.
  */
-void grx_color_free(GrxColor c)
+void grx_color_put(GrxColor c)
 {
         if (CLRINFO->palette_type != GRX_COLOR_PALETTE_TYPE_COLOR_TABLE) {
             return;
@@ -359,12 +363,12 @@ void grx_color_free(GrxColor c)
 }
 
 /**
- * grx_color_cell_free:
+ * grx_color_cell_put:
  * @c: the color
  *
- * Frees a cell that was allocated with grx_color_cell_alloc().
+ * Releases a cell that was obtained with grx_color_cell_get().
  */
-void grx_color_cell_free(GrxColor c)
+void grx_color_cell_put(GrxColor c)
 {
         GRX_ENTER();
         if (CLRINFO->palette_type != GRX_COLOR_PALETTE_TYPE_COLOR_TABLE) {
@@ -384,7 +388,7 @@ void grx_color_cell_free(GrxColor c)
 
 /**
  * grx_color_cell_set:
- * @c: a color that was allocated by grx_color_cell_alloc()
+ * @c: a color that was allocated by grx_color_cell_get()
  * @r: the red component
  * @g: the green component
  * @b: the blue component

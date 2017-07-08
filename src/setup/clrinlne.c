@@ -266,51 +266,55 @@ unsigned char (grx_color_get_blue)(GrxColor c)
 }
 
 /**
- * grx_color_alloc_inline: (skip)
+ * grx_color_get_inline: (skip)
  * @r: the red component value
  * @g: the green component value
  * @b: the blue component value
  *
- * Allocates a color in the color table based on the RGB value.
+ * Gets a color in the color table based on the RGB value.
  *
- * This is the same as grx_color_alloc(), but inlined in C code.
+ * This is the same as grx_color_get(), but inlined in C code.
  *
  * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
  *          free colors.
  */
-GrxColor (grx_color_alloc_inline)(unsigned char r,unsigned char g,unsigned char b)
+GrxColor (grx_color_get_inline)(unsigned char r,unsigned char g,unsigned char b)
 {
-        return(grx_color_alloc_inline(r,g,b));
+        return(grx_color_get_inline(r,g,b));
 }
 
 /**
- * grx_color_alloc2:
+ * grx_color_get2:
  * @hcolor: the color in 0xRRGGBB format.
  *
- * Allocates a color in the color table based on @hcolor.
+ * Gets a color in the color table based on @hcolor.
+ *
+ * A new color is allocated in the color table if needed.
+ *
+ * The color should be released with grx_color_put() when it is no longer used.
  *
  * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
  *          free colors.
  */
-GrxColor (grx_color_alloc2)(unsigned int hcolor)
+GrxColor (grx_color_get2)(unsigned int hcolor)
 {
-        return(grx_color_alloc2(hcolor));
+        return(grx_color_get2(hcolor));
 }
 
 /**
- * grx_color_alloc2_inline: (skip)
+ * grx_color_get2_inline: (skip)
  * @hcolor: the color in 0xRRGGBB format.
  *
- * Allocates a color in the color table based on @hcolor.
+ * Gets a color in the color table based on @hcolor.
  *
- * This is the same as grx_color_alloc2(), but inlined in C code.
+ * This is the same as grx_color_get2(), but inlined in C code.
  *
  * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
  *          free colors.
  */
-GrxColor (grx_color_alloc2_inline)(unsigned int hcolor)
+GrxColor (grx_color_get2_inline)(unsigned int hcolor)
 {
-        return(grx_color_alloc2_inline(hcolor));
+        return(grx_color_get2_inline(hcolor));
 }
 
 /**

@@ -33,9 +33,9 @@ TESTFUNC(scrolltest)
             char *l4 = "Commands: q -- exit program,";
             char *l5 = "w W h H -- shrink/GROW screen width or height,";
             char *l6 = "x X y Y -- decrease/INCREASE screen start position";
-            GrxColor bgc = grx_color_alloc(0,0,128);
-            GrxColor fgc = grx_color_alloc(200,200,0);
-            GrxColor txc = grx_color_alloc(255,0,255);
+            GrxColor bgc = grx_color_get(0,0,128);
+            GrxColor fgc = grx_color_get(200,200,0);
+            GrxColor txc = grx_color_get(255,0,255);
             int vw = grx_get_virtual_width();
             int vh = grx_get_virtual_height();
             int vx = grx_get_viewport_x();

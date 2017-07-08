@@ -18,16 +18,16 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_clear_clip_box@Base 2.99.8
  grx_clear_context@Base 2.99.8
  grx_clear_screen@Base 2.99.8
- grx_color_alloc2@Base 2.99.8
- grx_color_alloc2_inline@Base 2.99.8
- grx_color_alloc@Base 2.99.8
- grx_color_alloc_inline@Base 2.99.8
+ grx_color_get2@Base 2.99.8
+ grx_color_get2_inline@Base 2.99.8
+ grx_color_get@Base 2.99.8
+ grx_color_get_inline@Base 2.99.8
  grx_color_build_rgb@Base 2.99.8
  grx_color_build_rgb_round@Base 2.99.8
- grx_color_cell_alloc@Base 2.99.8
- grx_color_cell_free@Base 2.99.8
+ grx_color_cell_get@Base 2.99.8
+ grx_color_cell_put@Base 2.99.8
  grx_color_cell_set@Base 2.99.8
- grx_color_free@Base 2.99.8
+ grx_color_put@Base 2.99.8
  grx_color_get_black@Base 2.99.8
  grx_color_get_blue@Base 2.99.8
  grx_color_get_ega_colors@Base 2.99.8

@@ -51,11 +51,11 @@ namespace Grx {
         public uint8 green { get; }
         public uint8 blue { get; }
 
-        public static Color alloc (uint8 r, uint8 g, uint8 b);
-        public static Color alloc_inline (uint8 r, uint8 g, uint8 b);
-        public static Color alloc2 (uint hcolor);
-        public static Color alloc2_inline (uint hcolor);
-        public void free ();
+        public static Color get (uint8 r, uint8 g, uint8 b);
+        public static Color get_inline (uint8 r, uint8 g, uint8 b);
+        public static Color get2 (uint hcolor);
+        public static Color get2_inline (uint hcolor);
+        public void put ();
 
         public static Color lookup (GLib.Array<Color> table, uint index);
 
@@ -80,9 +80,9 @@ namespace Grx {
     [CCode (has_destroy_function = false, has_copy_function = false, has_type_id = false)]
     [SimpleType]
     public struct ColorCell : Color {
-        public static ColorCell alloc ();
+        public static ColorCell get ();
         public void set (uint8 r, uint8 g, uint8 b);
-        public void free ();
+        public void put ();
     }
 
     [CCode (has_type_id = false)]

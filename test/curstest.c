@@ -39,15 +39,15 @@ char p16d[] = {
 
 TESTFUNC(cursortest)
 {
-        GrxColor bgc = grx_color_alloc(0,0,128);
-        GrxColor fgc = grx_color_alloc(255,255,0);
+        GrxColor bgc = grx_color_get(0,0,128);
+        GrxColor fgc = grx_color_get(255,255,0);
         GrxColor msc[3];
         GrxCursor *cur;
         int x,y;
 
         msc[0] = 2;
         msc[1] = GRX_COLOR_WHITE;
-        msc[2] = grx_color_alloc(255,0,0);
+        msc[2] = grx_color_get(255,0,0);
         cur = grx_cursor_new(p16d,16,16,16,1,1,msc);
         x = grx_get_screen_width() / 2;
         y = grx_get_screen_height() / 2;
@@ -55,7 +55,7 @@ TESTFUNC(cursortest)
         grx_clear_screen(bgc);
         grx_color_cell_set((grx_color_info_n_colors() - 1),255,255,255);
         drawing(0,0,grx_get_width(),grx_get_height(),fgc,GRX_COLOR_NONE);
-        grx_draw_filled_box(0,0,320,120,grx_color_alloc(0,255,255));
+        grx_draw_filled_box(0,0,320,120,grx_color_get(0,255,255));
         grx_draw_text("ANDmask", 10,90,black_text);
         grx_draw_text("ORmask",  90,90,black_text);
         grx_draw_text("Save",   170,90,black_text);

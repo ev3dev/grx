@@ -53,6 +53,6 @@ GrxColor *grx_color_get_ega_colors(void) {
   static GrxColor egapal[16];
   int i;
   for (i=0; i < 16; ++i)
-    egapal[i] = grx_color_alloc(EGArgb[i].r,EGArgb[i].g,EGArgb[i].b);
+    egapal[i] = grx_color_get(EGArgb[i].r,EGArgb[i].g,EGArgb[i].b);
   return egapal;
 }

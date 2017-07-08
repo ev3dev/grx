@@ -34,12 +34,12 @@ class App(Grx.Application):
         self.init()  # sets up graphics driver/mode
         self.hold()  # keeps the application running
         self.colors = OrderedDict([
-            ('red', Grx.color_alloc(255, 0, 0)),
-            ('green', Grx.color_alloc(0, 255, 0)),
-            ('blue', Grx.color_alloc(0, 0, 255)),
-            ('yellow', Grx.color_alloc(255, 255, 0)),
-            ('cyan', Grx.color_alloc(0, 255, 255)),
-            ('magenta', Grx.color_alloc(255, 0, 255)),
+            ('red', Grx.color_get(255, 0, 0)),
+            ('green', Grx.color_get(0, 255, 0)),
+            ('blue', Grx.color_get(0, 0, 255)),
+            ('yellow', Grx.color_get(255, 255, 0)),
+            ('cyan', Grx.color_get(0, 255, 255)),
+            ('magenta', Grx.color_get(255, 0, 255)),
             ('black', Grx.color_get_black()),
             ('white', Grx.color_get_white()),
         ])

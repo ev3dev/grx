@@ -221,18 +221,18 @@ int main(void)
                 );
                 drawing(
                     px,5,w,h,
-                    grx_color_alloc(255,0,0),
-                    grx_color_alloc(0,255,0)
+                    grx_color_get(255,0,0),
+                    grx_color_get(0,255,0)
                 );
                 drawing(
                     5,py,w,h,
-                    grx_color_alloc(0,0,255),
-                    grx_color_alloc(255,255,0)
+                    grx_color_get(0,0,255),
+                    grx_color_get(255,255,0)
                 );
                 drawing(
                     px,py,w,h,
-                    grx_color_alloc(255,0,255),
-                    grx_color_alloc(0,255,255)
+                    grx_color_get(255,0,255),
+                    grx_color_get(0,255,255)
                 );
             } else {
                 int y,sx;

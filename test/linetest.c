@@ -23,19 +23,19 @@ TESTFUNC(test1)
         GrxLineOptions o1,o2,o3,o4;
         int i;
         for(i = 0; i < 2; i++) {
-            o1.color   = grx_color_alloc(255,0,0);
+            o1.color   = grx_color_get(255,0,0);
             o1.width   = 1;
             o1.n_dash_patterns = 4 * i;
             o1.dash_patterns = "\5\5\24\24";
-            o2.color   = grx_color_alloc(255,255,0);
+            o2.color   = grx_color_get(255,255,0);
             o2.width   = 2;
             o2.n_dash_patterns = 6 * i;
             o2.dash_patterns = "\5\5\24\24\2\2";
-            o3.color   = grx_color_alloc(0,255,255);
+            o3.color   = grx_color_get(0,255,255);
             o3.width   = 30;
             o3.n_dash_patterns = 8 * i;
             o3.dash_patterns = "\5\5\24\24\2\2\40\40";
-            o4.color   = grx_color_alloc(255,0,255);
+            o4.color   = grx_color_get(255,0,255);
             o4.width   = 4;
             o4.n_dash_patterns = 6 * i;
             o4.dash_patterns = "\2\2\2\2\10\10";

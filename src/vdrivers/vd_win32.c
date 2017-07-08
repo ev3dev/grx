@@ -85,7 +85,7 @@
  *     fast multiprocessor machines. This affects only 8 bpp modes,
  *     as load_color is not called in 32 bpp modes.
  *     If the WndThread is currently executing its BitBlt during WM_PAINT
- *     processing and the GRX user thread is calling grx_color_alloc, the
+ *     processing and the GRX user thread is calling grx_color_get, the
  *     SetDIBColorTable function call fails, as the DC is locked by the BitBlt.
  *     This results in the color not being set, which could also happen
  *     during the initial setting of the VGA colors in _GrResetColors.
