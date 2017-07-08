@@ -777,7 +777,7 @@ namespace Grx {
     /* ================================================================== */
 
     [CCode (has_type_id = false)]
-    public enum CursorModes {
+    public enum CursorMode {
         NORMAL,
         RUBBER,
         LINE,

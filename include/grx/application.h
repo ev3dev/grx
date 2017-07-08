@@ -22,6 +22,11 @@
 
 #include <grx/common.h>
 
+/**
+ * GrxApplication:
+ *
+ * Class for managing the application lifecycle.
+ */
 #define GRX_TYPE_APPLICATION grx_application_get_type()
 G_DECLARE_DERIVABLE_TYPE(GrxApplication, grx_application, GRX, APPLICATION, GApplication)
 

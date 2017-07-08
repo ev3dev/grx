@@ -350,6 +350,7 @@ set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/common.h
     ${CMAKE_SOURCE_DIR}/include/grx/context.h
     ${CMAKE_SOURCE_DIR}/include/grx/device.h
+    ${CMAKE_SOURCE_DIR}/include/grx/device_manager.h
     ${CMAKE_SOURCE_DIR}/include/grx/draw.h
     ${CMAKE_SOURCE_DIR}/include/grx/draw_nc.h
     ${CMAKE_SOURCE_DIR}/include/grx/error.h

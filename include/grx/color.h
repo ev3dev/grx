@@ -117,6 +117,8 @@ GrxColor grx_color_to_image_mode(GrxColor c);
  * @GRX_COLOR_PALETTE_TYPE_GRAYSCALE: RGB color values will be converted to grayscale.
  * @GRX_COLOR_PALETTE_TYPE_COLOR_TABLE: Colors use a lookup table.
  * @GRX_COLOR_PALETTE_TYPE_RGB: RGB values are used directly.
+ *
+ * Indicates the type of color palette that is in use.
  */
 typedef enum {
     GRX_COLOR_PALETTE_TYPE_GRAYSCALE,

@@ -64,6 +64,8 @@
  * @GRX_ARC_STYLE_CLOSED_RADIUS: Draws the arc and closes it with two lines
  *                               along the radii connecting the ends of the arc
  *                               to the center of the circle/ellipse.
+ *
+ * Indicates how an arc should be drawn.
  */
 typedef enum {
     GRX_ARC_STYLE_OPEN           = 0,

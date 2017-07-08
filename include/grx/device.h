@@ -30,6 +30,11 @@
  * TODO
  */
 
+/**
+ * GrxDevice:
+ *
+ * Base class for objects that represents in input device.
+ */
 #define GRX_TYPE_DEVICE grx_device_get_type()
 G_DECLARE_DERIVABLE_TYPE(GrxDevice, grx_device, GRX, DEVICE, GObject)
 

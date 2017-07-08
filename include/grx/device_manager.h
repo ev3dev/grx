@@ -33,6 +33,11 @@
  * TODO
  */
 
+/**
+ * GrxDeviceManager:
+ *
+ * Base class for device managers.
+ */
 #define GRX_TYPE_DEVICE_MANAGER grx_device_manager_get_type()
 G_DECLARE_DERIVABLE_TYPE(GrxDeviceManager, grx_device_manager, GRX, DEVICE_MANAGER, GObject)
 
@@ -48,7 +53,5 @@ struct _GrxDeviceManagerClass
     GObjectClass parent_class;
     gpointer reserved[6];
 };
-
-GType grx_device_manager_get_type (void);
 
 #endif /* __GRX_DEVICE_MANAGER_H__ */

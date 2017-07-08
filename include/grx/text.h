@@ -113,8 +113,12 @@ typedef enum {
     GRX_TEXT_VALIGN_BASELINE,
 } GrxTextVAlign;
 
+/**
+ * GrxFont:
+ *
+ * Data structure that represents a font.
+ */
 typedef struct _GrxFont GrxFont;
-typedef struct _GrxTextOptions GrxTextOptions;
 
 GType grx_font_get_type(void);
 
@@ -138,6 +142,14 @@ gint grx_font_get_char_width(GrxFont *font, gunichar c);
 gint grx_font_get_char_height(GrxFont *font, gunichar c);
 gint grx_font_get_text_width(GrxFont *font, const gchar *text);
 gint grx_font_get_text_height(GrxFont *font, const gchar *text);
+
+
+/**
+ * GrxTextOptions:
+ *
+ * Data structure that contains text drawing options.
+ */
+typedef struct _GrxTextOptions GrxTextOptions;
 
 void grx_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options);
 
