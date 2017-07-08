@@ -17,9 +17,9 @@ macro (add_demo name)
             ${CMAKE_SOURCE_DIR}/bindings/vala/
         TARGET_GLIB
             2.48
+        DEPENDS
+            ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi
     )
-    set_property (SOURCE ${${name}C}
-        PROPERTY OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi)
 
     add_executable (vala-${name} ${${name}C})
     set_property (TARGET vala-${name} PROPERTY OUTPUT_NAME ${name})

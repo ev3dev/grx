@@ -20,9 +20,9 @@ vala2c (GRX_CALIBRATE_C
         gudev-1.0
     VAPI_DIRS
         ${CMAKE_SOURCE_DIR}/bindings/vala/
+    DEPENDS
+        ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi
 )
-set_property (SOURCE ${GRX_CALIBRATE_C}
-    PROPERTY OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi)
 
 add_executable (grx-calibrate-touch ${GRX_CALIBRATE_C})
 target_compile_options (grx-calibrate-touch PRIVATE "-w")
