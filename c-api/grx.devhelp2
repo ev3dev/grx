@@ -116,11 +116,11 @@
     <keyword type="function" name="grx_get_clip_box_min_y ()" link="extents.html#grx-get-clip-box-min-y"/>
     <keyword type="function" name="grx_get_clip_box_max_x ()" link="extents.html#grx-get-clip-box-max-x"/>
     <keyword type="function" name="grx_get_clip_box_max_y ()" link="extents.html#grx-get-clip-box-max-y"/>
-    <keyword type="function" name="grx_color_alloc ()" link="color.html#grx-color-alloc"/>
-    <keyword type="function" name="grx_color_alloc_inline ()" link="color.html#grx-color-alloc-inline"/>
-    <keyword type="function" name="grx_color_alloc2 ()" link="color.html#grx-color-alloc2"/>
-    <keyword type="function" name="grx_color_alloc2_inline ()" link="color.html#grx-color-alloc2-inline"/>
-    <keyword type="function" name="grx_color_free ()" link="color.html#grx-color-free"/>
+    <keyword type="function" name="grx_color_get ()" link="color.html#grx-color-get"/>
+    <keyword type="function" name="grx_color_get_inline ()" link="color.html#grx-color-get-inline"/>
+    <keyword type="function" name="grx_color_get2 ()" link="color.html#grx-color-get2"/>
+    <keyword type="function" name="grx_color_get2_inline ()" link="color.html#grx-color-get2-inline"/>
+    <keyword type="function" name="grx_color_put ()" link="color.html#grx-color-put"/>
     <keyword type="function" name="grx_color_lookup ()" link="color.html#grx-color-lookup"/>
     <keyword type="function" name="grx_color_get_value ()" link="color.html#grx-color-get-value"/>
     <keyword type="function" name="grx_color_get_mode ()" link="color.html#grx-color-get-mode"/>
@@ -141,10 +141,10 @@
     <keyword type="function" name="grx_color_query_inline ()" link="color.html#grx-color-query-inline"/>
     <keyword type="function" name="grx_color_query2 ()" link="color.html#grx-color-query2"/>
     <keyword type="function" name="grx_color_query2_inline ()" link="color.html#grx-color-query2-inline"/>
-    <keyword type="function" name="grx_color_alloc_ega_colors ()" link="color.html#grx-color-alloc-ega-colors"/>
-    <keyword type="function" name="grx_color_cell_alloc ()" link="color.html#grx-color-cell-alloc"/>
+    <keyword type="function" name="grx_color_get_ega_colors ()" link="color.html#grx-color-get-ega-colors"/>
+    <keyword type="function" name="grx_color_cell_get ()" link="color.html#grx-color-cell-get"/>
     <keyword type="function" name="grx_color_cell_set ()" link="color.html#grx-color-cell-set"/>
-    <keyword type="function" name="grx_color_cell_free ()" link="color.html#grx-color-cell-free"/>
+    <keyword type="function" name="grx_color_cell_put ()" link="color.html#grx-color-cell-put"/>
     <keyword type="function" name="grx_color_info_reset_colors ()" link="color.html#grx-color-info-reset-colors"/>
     <keyword type="function" name="grx_color_info_set_palette_type_rgb ()" link="color.html#grx-color-info-set-palette-type-rgb"/>
     <keyword type="function" name="grx_color_info_get_palette_type ()" link="color.html#grx-color-info-get-palette-type"/>
@@ -299,6 +299,8 @@
     <keyword type="enum" name="enum GrxFontWidth" link="text.html#GrxFontWidth"/>
     <keyword type="enum" name="enum GrxTextHAlign" link="text.html#GrxTextHAlign"/>
     <keyword type="enum" name="enum GrxTextVAlign" link="text.html#GrxTextVAlign"/>
+    <keyword type="struct" name="GrxFont" link="text.html#GrxFont-struct"/>
+    <keyword type="struct" name="GrxTextOptions" link="text.html#GrxTextOptions-struct"/>
     <keyword type="function" name="grx_user_set_window ()" link="user.html#grx-user-set-window"/>
     <keyword type="function" name="grx_user_get_window ()" link="user.html#grx-user-get-window"/>
     <keyword type="function" name="grx_user_convert_user_to_screen ()" link="user.html#grx-user-convert-user-to-screen"/>
@@ -378,9 +380,9 @@
     <keyword type="struct" name="GrxTouchEvent" link="events.html#GrxTouchEvent"/>
     <keyword type="union" name="GrxEvent" link="events.html#GrxEvent-union"/>
     <keyword type="enum" name="enum GrxKey" link="input_keysyms.html#GrxKey"/>
+    <keyword type="macro" name="GRX_TYPE_DEVICE_MANAGER" link="device_manager.html#GRX-TYPE-DEVICE-MANAGER:CAPS"/>
     <keyword type="struct" name="struct GrxDeviceManagerClass" link="device_manager.html#GrxDeviceManagerClass"/>
-    <keyword type="signal" name="The “device-added” signal" link="device_manager.html#GrxDeviceManager-device-added"/>
-    <keyword type="signal" name="The “device-removed” signal" link="device_manager.html#GrxDeviceManager-device-removed"/>
+    <keyword type="struct" name="GrxDeviceManager" link="device_manager.html#GrxDeviceManager-struct"/>
     <keyword type="signal" name="The “device-added” signal" link="device_manager.html#GrxDeviceManager-device-added"/>
     <keyword type="signal" name="The “device-removed” signal" link="device_manager.html#GrxDeviceManager-device-removed"/>
     <keyword type="function" name="grx_device_get_name ()" link="device.html#grx-device-get-name"/>

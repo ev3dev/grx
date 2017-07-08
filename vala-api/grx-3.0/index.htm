@@ -32,21 +32,25 @@
         <h2 class="main_title">Content:</h2>
         <h3 class="main_title">Namespaces:</h3>
         <ul class="navi_inline">
-          <li class="namespace"><a href="Grx.html">Grx</a> - </li>
+          <li class="namespace"><a href="Grx.html">Grx</a> - <span class="brief_description">The GRX3 graphics library.</span></li>
           <h3 class="main_title">Classes:</h3>
           <ul class="navi_inline">
             <li class="class"><a href="Grx.Context.html">Context</a> - <span class="brief_description">Private data structure used by 
                 <span class="class">Context</span>.</span></li>
-            <li class="class"><a href="Grx.Font.html">Font</a> - </li>
-            <li class="class"><a href="Grx.TextOptions.html">TextOptions</a> - </li>
+            <li class="class"><a href="Grx.Font.html">Font</a> - <span class="brief_description">Data structure that represents a font.</span></li>
+            <li class="class"><a href="Grx.TextOptions.html">TextOptions</a> - <span class="brief_description">Data structure that contains text 
+                drawing options.</span></li>
             <li class="class"><a href="Grx.Pattern.html">Pattern</a> - <span class="brief_description">Fill pattern union.</span></li>
             <li class="class"><a href="Grx.Image.html">Image</a> - <span class="brief_description">Like pixmap patterns images are dependent on the 
                 actual video mode set.</span></li>
             <li class="class"><a href="Grx.Cursor.html">Cursor</a> - <span class="brief_description">Structure to hold cursor state.</span></li>
             <li class="class"><a href="Grx.Event.html">Event</a> - <span class="brief_description">A union of all event types.</span></li>
-            <li class="abstract_class"><a href="Grx.Device.html">Device</a> - </li>
-            <li class="abstract_class"><a href="Grx.DeviceManager.html">DeviceManager</a> - </li>
-            <li class="class"><a href="Grx.Application.html">Application</a> - </li>
+            <li class="abstract_class"><a href="Grx.Device.html">Device</a> - <span class="brief_description">Base class for objects that represents 
+                in input device.</span></li>
+            <li class="abstract_class"><a href="Grx.DeviceManager.html">DeviceManager</a> - <span class="brief_description">Base class for device 
+                managers.</span></li>
+            <li class="class"><a href="Grx.Application.html">Application</a> - <span class="brief_description">Class for managing the application 
+                lifecycle.</span></li>
           </ul>
           <h3 class="main_title">Structs:</h3>
           <ul class="navi_inline">
@@ -88,9 +92,10 @@
           </ul>
           <h3 class="main_title">Enums:</h3>
           <ul class="navi_inline">
-            <li class="enum"><a href="Grx.ColorPaletteType.html">ColorPaletteType</a> - </li>
+            <li class="enum"><a href="Grx.ColorPaletteType.html">ColorPaletteType</a> - <span class="brief_description">Indicates the type of color 
+                palette that is in use.</span></li>
             <li class="enum"><a href="Grx.EgaColorIndex.html">EgaColorIndex</a> - <span class="brief_description">Indexes for use with the array 
-                returned by <span class="static_method">_alloc_ega_colors</span>.</span></li>
+                returned by <span class="static_method">_get_ega_colors</span>.</span></li>
             <li class="enum"><a href="Grx.GraphicsMode.html">GraphicsMode</a> - <span class="brief_description">available video modes (for 
                 <a href="Grx.set_mode.html" class="method">set_mode</a>)</span></li>
             <li class="enum"><a href="Grx.FrameMode.html">FrameMode</a> - <span class="brief_description">Available frame modes (video memory layouts)
@@ -101,7 +106,8 @@
                 <a href="Grx.VideoModeExt.html" class="struct">VideoModeExt</a> structure)</span></li>
             <li class="enum"><a href="Grx.ColorMode.html">ColorMode</a> - <span class="brief_description">Values added to a 
                 <a href="Grx.Color.html" class="struct">Color</a> to affect how the color is used in drawing operations.</span></li>
-            <li class="enum"><a href="Grx.ArcStyle.html">ArcStyle</a> - </li>
+            <li class="enum"><a href="Grx.ArcStyle.html">ArcStyle</a> - <span class="brief_description">Indicates how an arc should be drawn.</span>
+            </li>
             <li class="enum"><a href="Grx.TextHAlign.html">TextHAlign</a> - <span class="brief_description">Horizontal text alignment</span></li>
             <li class="enum"><a href="Grx.TextVAlign.html">TextVAlign</a> - <span class="brief_description">Vertical text alignment</span></li>
             <li class="enum"><a href="Grx.FontWeight.html">FontWeight</a> - <span class="brief_description">Describes the weight of the font.</span>
@@ -110,7 +116,7 @@
             <li class="enum"><a href="Grx.FontWidth.html">FontWidth</a> - <span class="brief_description">Describes the slant of the font.</span></li>
             <li class="enum"><a href="Grx.ImageMirrorFlags.html">ImageMirrorFlags</a> - <span class="brief_description">Flags used by 
                 <a href="Grx.Image.mirror.html" class="method">mirror</a>.</span></li>
-            <li class="enum"><a href="Grx.CursorModes.html">CursorModes</a> - </li>
+            <li class="enum"><a href="Grx.CursorMode.html">CursorMode</a> - <span class="brief_description">Mouse cursor modes.</span></li>
             <li class="enum"><a href="Grx.PnmFormat.html">PnmFormat</a> - <span class="brief_description">PNM file formats.</span></li>
             <li class="enum"><a href="Grx.ModifierFlags.html">ModifierFlags</a> - <span class="brief_description">Keyboard key modifier flags.</span>
             </li>
@@ -139,113 +145,6 @@
                   circles.</span>
               </div></li>
             <li class="constant"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">const</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.PNM_FORMAT_ERROR.html" class="constant">PNM_FORMAT_ERROR</a></b>
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-          </ul>
-          <h3 class="main_title">Delegates:</h3>
-          <ul class="navi_inline">
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.VideoDriverDetect.html" class="delegate">VideoDriverDetect</a></b> ()
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.VideoDriverInit.html" class="delegate">VideoDriverInit</a></b> (<span class="main_basic_type"><span class="class">string</span></span> options)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.VideoDriverReset.html" class="delegate">VideoDriverReset</a></b> ()
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_type"><a href="Grx.VideoMode.html" class="struct">VideoMode</a></span> <b><a href="Grx.VideoDriverSelectMode.html" class="delegate">VideoDriverSelectMode</a></b> (<span class="main_type"><a href="Grx.VideoDriver.html" class="struct">VideoDriver</a></span> driver, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_basic_type"><span class="struct">int</span></span> height, <span class="main_basic_type"><span class="struct">int</span></span> bpp, <span class="main_basic_type"><span class="struct">int</span></span> text, <span class="main_keyword">ref</span> <span class="main_basic_type"><span class="struct">uint</span></span> ep)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.VideoModeSetup.html" class="delegate">VideoModeSetup</a></b> (<span class="main_type"><a href="Grx.VideoMode.html" class="struct">VideoMode</a></span> mode, <span class="main_basic_type"><span class="struct">bool</span></span> no_clear)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.VideoModeSetSize.html" class="delegate">VideoModeSetSize</a></b> (<span class="main_type"><a href="Grx.VideoMode.html" class="struct">VideoMode</a></span> mode, <span class="main_basic_type"><span class="struct">uint</span></span> width, <span class="main_basic_type"><span class="struct">uint</span></span> height, <span class="main_keyword">out</span> <span class="main_type"><a href="Grx.VideoMode.html" class="struct">VideoMode</a></span> result)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.VideoModeScroll.html" class="delegate">VideoModeScroll</a></b> (<span class="main_type"><a href="Grx.VideoMode.html" class="struct">VideoMode</a></span> mode, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span>[] result)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.VideoModeSetBank.html" class="delegate">VideoModeSetBank</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> bank)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.VideoModeSetRWBanks.html" class="delegate">VideoModeSetRWBanks</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> read_bank, <span class="main_basic_type"><span class="struct">uint</span></span> write_bank)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.VideoModeLoadColor.html" class="delegate">VideoModeLoadColor</a></b> (<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> color_index, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> red, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> green, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> blue)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.FrameDriverInit.html" class="delegate">FrameDriverInit</a></b> (<span class="main_type"><a href="Grx.VideoMode.html" class="struct">VideoMode</a></span> mode)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> <b><a href="Grx.FrameDriverReadPixel.html" class="delegate">FrameDriverReadPixel</a></b> (<span class="main_type"><a href="Grx.Frame.html" class="struct">Frame</a></span> frame, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverDrawPixel.html" class="delegate">FrameDriverDrawPixel</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverDrawLine.html" class="delegate">FrameDriverDrawLine</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> dx, <span class="main_basic_type"><span class="struct">int</span></span> dy, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverDrawHLine.html" class="delegate">FrameDriverDrawHLine</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverDrawVLine.html" class="delegate">FrameDriverDrawVLine</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverDrawBlock.html" class="delegate">FrameDriverDrawBlock</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverDrawBitmap.html" class="delegate">FrameDriverDrawBitmap</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_basic_type"><span class="struct">uint8</span></span>[] bmp, <span class="main_basic_type"><span class="struct">int</span></span> pitch, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> fg, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverDrawPattern.html" class="delegate">FrameDriverDrawPattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">uint8</span></span> patt, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> fg, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverBitBlt.html" class="delegate">FrameDriverBitBlt</a></b> (<span class="main_type"><a href="Grx.Frame.html" class="struct">Frame</a></span> dest, <span class="main_basic_type"><span class="struct">int</span></span> dx, <span class="main_basic_type"><span class="struct">int</span></span> dy, <span class="main_type"><a href="Grx.Frame.html" class="struct">Frame</a></span> src, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><a href="Grx.ColorMode.html" class="enum">ColorMode</a></span> op)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverBltV2R.html" class="delegate">FrameDriverBltV2R</a></b> (<span class="main_type"><a href="Grx.Frame.html" class="struct">Frame</a></span> dest, <span class="main_basic_type"><span class="struct">int</span></span> dx, <span class="main_basic_type"><span class="struct">int</span></span> dy, <span class="main_type"><a href="Grx.Frame.html" class="struct">Frame</a></span> src, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><a href="Grx.ColorMode.html" class="enum">ColorMode</a></span> op)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverBltR2V.html" class="delegate">FrameDriverBltR2V</a></b> (<span class="main_type"><a href="Grx.Frame.html" class="struct">Frame</a></span> dest, <span class="main_basic_type"><span class="struct">int</span></span> dx, <span class="main_basic_type"><span class="struct">int</span></span> dy, <span class="main_type"><a href="Grx.Frame.html" class="struct">Frame</a></span> src, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><a href="Grx.ColorMode.html" class="enum">ColorMode</a></span> op)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>* <b><a href="Grx.FrameDriverGetIndexedScanLine.html" class="delegate">FrameDriverGetIndexedScanLine</a></b> (<span class="main_type"><a href="Grx.Frame.html" class="struct">Frame</a></span> frame, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span>[] index)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.FrameDriverPutScanLine.html" class="delegate">FrameDriverPutScanLine</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>[] scl, <span class="main_type"><a href="Grx.ColorMode.html" class="enum">ColorMode</a></span> op)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.DriverInfoSetBank.html" class="delegate">DriverInfoSetBank</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> bank)
-              </span>
-              <div class="leaf_brief_description">
-              </div></li>
-            <li class="delegate"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">delegate</span> <span class="main_keyword">void</span> <b><a href="Grx.DriverInfoSetRWBanks.html" class="delegate">DriverInfoSetRWBanks</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> read_bank, <span class="main_basic_type"><span class="struct">int</span></span> write_bank)
               </span>
               <div class="leaf_brief_description">
               </div></li>
@@ -796,7 +695,8 @@
               <div class="leaf_brief_description">
               </div></li>
           </ul>
-          <li class="namespace"><a href="Grx.ColorInfo.html">ColorInfo</a> - </li>
+          <li class="namespace"><a href="Grx.ColorInfo.html">ColorInfo</a> - <span class="brief_description">Functions for manipulating the color 
+              table.</span></li>
           <h3 class="main_title">Methods:</h3>
           <ul class="navi_inline">
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.ColorInfo.reset_colors.html" class="method">reset_colors</a></b> ()
@@ -840,7 +740,8 @@
               <div class="leaf_brief_description">
               </div></li>
           </ul>
-          <li class="namespace"><a href="Grx.Mouse.html">Mouse</a> - </li>
+          <li class="namespace"><a href="Grx.Mouse.html">Mouse</a> - <span class="brief_description">Functions for manipulating the mouse cursor.
+            </span></li>
           <h3 class="main_title">Methods:</h3>
           <ul class="navi_inline">
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.Cursor.html" class="class">Cursor</a></span>? <b><a href="Grx.Mouse.get_cursor.html" class="method">get_cursor</a></b> ()
@@ -869,7 +770,8 @@
                   <a href="Grx.Mouse.block.html" class="method">block</a>.</span>
               </div></li>
           </ul>
-          <li class="namespace"><a href="Grx.User.html">User</a> - </li>
+          <li class="namespace"><a href="Grx.User.html">User</a> - <span class="brief_description">Functions for drawing using user-defined coordinate
+              systems.</span></li>
           <h3 class="main_title">Methods:</h3>
           <ul class="navi_inline">
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.set_window.html" class="method">set_window</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2)
