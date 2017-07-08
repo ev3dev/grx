@@ -136,7 +136,7 @@ GrxPattern *grx_pattern_new_pixmap(const guint8 *pixels, gint w, gint h,
                                    const GArray *colors);
 GrxPattern *grx_pattern_new_pixmap_from_bits(const guint8 *bits, gint w, gint h,
                                              GrxColor fg, GrxColor bg);
-GrxPattern *grx_pattern_new_pixmap_from_context(GrxContext *src);
+GrxPattern *grx_pattern_new_pixmap_from_context(GrxContext *context);
 
 GrxPattern *grx_pattern_copy(GrxPattern *pattern);
 void grx_pattern_free(GrxPattern *pattern);

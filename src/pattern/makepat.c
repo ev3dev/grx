@@ -176,7 +176,7 @@ GrxPattern *grx_pattern_new_pixmap_from_bits(const unsigned char *bits,int w,int
 
 /**
  * grx_pattern_new_pixmap_from_context:
- * @src: the context
+ * @context: the context
  *
  * Converts a graphics context to a pixmap fill pattern.
  *
@@ -186,20 +186,24 @@ GrxPattern *grx_pattern_new_pixmap_from_bits(const unsigned char *bits,int w,int
  *
  * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
  */
-GrxPattern *grx_pattern_new_pixmap_from_context(GrxContext *src)
+GrxPattern *grx_pattern_new_pixmap_from_context(GrxContext *context)
 {
-        GrxPixmap *result;
+    GrxPixmap *result;
 
-        if(src->gc_is_on_screen) return(NULL);
-        result = malloc(sizeof(GrxPixmap));
-        if(result == NULL) return(NULL);
-        result->source = src->frame;
-        result->source.memory_flags = MY_CONTEXT;
-        result->is_pixmap = TRUE;
-        result->width  = src->x_max + 1;
-        result->height = src->y_max + 1;
-        result->mode   = 0;
-        return((GrxPattern *)result);
+    if (context->gc_is_on_screen) {
+        return NULL;
+    }
+    result = malloc(sizeof(*result));
+    if (!result) {
+        return NULL;
+    }
+    result->source = context->frame;
+    result->source.memory_flags = MY_CONTEXT;
+    result->is_pixmap = TRUE;
+    result->width = context->x_max + 1;
+    result->height = context->y_max + 1;
+    result->mode = 0;
+    return (GrxPattern *)result;
 }
 
 /**
