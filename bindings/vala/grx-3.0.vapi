@@ -18,6 +18,10 @@
  */
 
 /* grx-3.0.vapi - Bindings to the GRX graphics library */
+
+/**
+ * The GRX3 graphics library.
+ */
 [CCode (cheader_filename = "grx-3.0.h", cprefix = "Grx", lower_case_cprefix = "grx_", gir_namespace = "Grx", gir_version = "3.0")]
 namespace Grx {
     public errordomain Error {
@@ -92,6 +96,9 @@ namespace Grx {
         RGB,
     }
 
+    /**
+     * Functions for manipulating the color table.
+     */
     namespace ColorInfo {
         public static void reset_colors ();
         public static void set_palette_type_rgb ();
@@ -698,6 +705,9 @@ namespace Grx {
     /*               DRAWING IN USER WINDOW COORDINATES                   */
     /* ================================================================== */
 
+    /**
+     * Functions for drawing using user-defined coordinate systems.
+     */
     namespace User {
 
         public void set_window (int x1, int y1, int x2, int y2);
@@ -784,6 +794,9 @@ namespace Grx {
         public void move (int x, int y);
     }
 
+    /**
+     * Functions for manipulating the mouse cursor.
+     */
     namespace Mouse {
         public static Cursor? get_cursor ();
         public static void set_cursor (Cursor? cursor);
