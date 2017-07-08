@@ -11,11 +11,7 @@ add_valadoc (doc-vala
         ${PACKAGE_VERSION}
     SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi
-    IMPORT_DIRS
-        ${CMAKE_BINARY_DIR}/src
     IMPORTS
-        Grx-3.0
-    DEPENDS
         ${GIR_TARGET}
 )
 add_dependencies (doc doc-vala)

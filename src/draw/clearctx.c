@@ -54,7 +54,7 @@ void grx_clear_context(GrxColor bg)
  * Thanks to the special #GrxColor definition, you can do more than simple clear
  * with this functions, by example with:
  * |[<!-- language="C" -->
- * grx_context_clear (ctx, grx_color_to_xor_mode (grx_color_get_white ()));
+ * grx_context_clear (ctx, grx_color_to_xor_mode (GRX_COLOR_WHITE));
  * ]|
  * the context is negativized, do it again and the context is restored.
  *
