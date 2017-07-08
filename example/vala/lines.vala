@@ -23,10 +23,13 @@ class DemoApp : Grx.Application {
     const int BOUNDS = 200; // How far out of bounds to draw lines
     const int COUNT = 1000; // number of lines to draw
 
+    unowned Color[] colors;
+
     public DemoApp () throws GLib.Error {
         Object ();
         init ();
         hold ();
+        colors = Color.alloc_ega_colors ();
     }
 
     public override void activate () {
@@ -37,10 +40,7 @@ class DemoApp : Grx.Application {
             var y1 = Random.int_range (-BOUNDS, h + BOUNDS);
             var x2 = Random.int_range (-BOUNDS, w + BOUNDS);
             var y2 = Random.int_range (-BOUNDS, h + BOUNDS);
-            var r = (uint8)Random.int_range (0, 256);
-            var g = (uint8)Random.int_range (0, 256);
-            var b = (uint8)Random.int_range (0, 256);
-            var c = Color.alloc(r, g, b);
+            var c = colors[Random.int_range (0, 16)];
             draw_line (x1, y1, x2, y2, c);
         }
     }

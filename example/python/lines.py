@@ -35,6 +35,7 @@ class App(Grx.Application):
         super(Grx.Application, self).__init__()
         self.init()
         self.hold()
+        self._colors = Grx.color_alloc_ega_colors()
 
     def do_activate(self):
         """called when the application starts
@@ -45,10 +46,7 @@ class App(Grx.Application):
             y1 = random.randint(-BOUNDS, Grx.get_max_y() + BOUNDS)
             x2 = random.randint(-BOUNDS, Grx.get_max_x() + BOUNDS)
             y2 = random.randint(-BOUNDS, Grx.get_max_y() + BOUNDS)
-            c = Grx.color_alloc(
-                random.randint(0, 255),
-                random.randint(0, 255),
-                random.randint(0, 255))
+            c = self._colors[random.randint(0, 15)]
             Grx.draw_line(x1, y1, x2, y2, c)
 
     def do_event(self, event):

@@ -33,6 +33,7 @@ class App(Grx.Application):
         super(Grx.Application, self).__init__()
         self.init()
         self.hold()
+        self._colors = Grx.color_alloc_ega_colors()
 
     def do_activate(self):
         """called when the application starts
@@ -46,10 +47,7 @@ class App(Grx.Application):
             y = int(random.random() * h)
             if (n & 0xff) == 0:
                 # don't change the color so often to speed things up (random is slow)
-                c = Grx.color_alloc(
-                    int(random.random() * 256),
-                    int(random.random() * 256),
-                    int(random.random() * 256))
+                c = self._colors[random.randint(0, 15)]
             # fast_draw_* is only safe when we are sure x and y are in bounds
             Grx.fast_draw_pixel(x, y, c)
         t = time.monotonic() - t

@@ -31,6 +31,8 @@ const DemoApp = new Lang.Class({
         this.parent();
         this.init(null);
         this.hold();
+
+        this._colors = Grx.color_alloc_ega_colors();
     },
 
     vfunc_activate: function() {
@@ -42,7 +44,7 @@ const DemoApp = new Lang.Class({
             const y = Math.random() * h;
             if ((n & 0xff) == 0) {
                 // don't change the color so often to speed things up (random is slow)
-                const c = Grx.color_alloc(Math.random() * 256, Math.random() * 256, Math.random() * 256);
+                const c = this._colors[(Math.floor(Math.random() * 16))];
             }
             // fast_draw_* is only safe when we are sure x and y are in bounds
             Grx.fast_draw_pixel(x, y, c);

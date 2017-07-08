@@ -20,11 +20,13 @@
 using Grx;
 
 class DemoApp : Grx.Application {
+    unowned Color[] colors;
 
     public DemoApp () throws GLib.Error {
         Object ();
         init ();
         hold ();
+        colors = Color.alloc_ega_colors ();
     }
 
     public override void activate () {
@@ -34,10 +36,7 @@ class DemoApp : Grx.Application {
         for (var n = 0; n < count; n++) {
             var x = Random.int_range (0, w);
             var y = Random.int_range (0, h);
-            var r = (uint8)Random.int_range (0, 256);
-            var g = (uint8)Random.int_range (0, 256);
-            var b = (uint8)Random.int_range (0, 256);
-            var c = Color.alloc(r, g, b);
+            var c = colors[Random.int_range (0, 16)];
             // fast_draw_* is only safe when we are sure x and y are in bounds
             fast_draw_pixel (x, y, c);
         }

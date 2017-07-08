@@ -34,6 +34,11 @@ const DemoApp = new Lang.Class({
         this.parent();
         this.init(null);
         this.hold();
+
+        this._colors = Grx.color_alloc_ega_colors();
+        print(this._colors);
+        print(this._colors.length);
+        print(this._colors[1]);
     },
 
     vfunc_activate: function() {
@@ -42,7 +47,7 @@ const DemoApp = new Lang.Class({
             const y1 = Math.random() * (Grx.get_max_y() + (BOUNDS * 2)) - BOUNDS;
             const x2 = Math.random() * (Grx.get_max_x() + (BOUNDS * 2)) - BOUNDS;
             const y2 = Math.random() * (Grx.get_max_y() + (BOUNDS * 2)) - BOUNDS;
-            const c = Grx.color_alloc(Math.random() * 256, Math.random() * 256, Math.random() * 256);
+            const c = this._colors[Math.floor(Math.random() * 16)];
             Grx.draw_line(x1, y1, x2, y2, c);
         }
     },
