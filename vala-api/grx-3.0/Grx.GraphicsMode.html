@@ -33,7 +33,7 @@
           <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_CUSTOM_NC.html">GRAPHICS_CUSTOM_NC</a></li>
           <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_DEFAULT.html">GRAPHICS_DEFAULT</a></li>
           <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_DEFAULT_NC.html">GRAPHICS_DEFAULT_NC</a></li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDHT_HEIGHT.html">GRAPHICS_WIDHT_HEIGHT</a></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT.html">GRAPHICS_WIDTH_HEIGHT</a></li>
           <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_BPP.html">GRAPHICS_WIDTH_HEIGHT_BPP</a></li>
           <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_BPP_NC.html">GRAPHICS_WIDTH_HEIGHT_BPP_NC</a></li>
           <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_COLOR.html">GRAPHICS_WIDTH_HEIGHT_COLOR</a></li>
@@ -59,7 +59,7 @@
         <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">enum</span> <b><span class="enum">GraphicsMode</span></b>
         </div>
         <div class="description">
-          <p>Available video modes (for <a href="Grx.set_mode.html" class="method">set_mode</a>)</p>
+          <p>available video modes (for <a href="Grx.set_mode.html" class="method">set_mode</a>)</p>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>
@@ -69,28 +69,56 @@
         <h3 class="main_title">Enum values:</h3>
         <ul class="navi_inline">
           <li class="enumvalue"><a href="Grx.GraphicsMode.UNKNOWN_MODE.html">UNKNOWN_MODE</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_80X25.html">TEXT_80X25</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_DEFAULT.html">TEXT_DEFAULT</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT.html">TEXT_WIDTH_HEIGHT</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_COLOR.html">TEXT_WIDTH_HEIGHT_COLOR</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_BPP.html">TEXT_WIDTH_HEIGHT_BPP</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_DEFAULT.html">GRAPHICS_DEFAULT</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDHT_HEIGHT.html">GRAPHICS_WIDHT_HEIGHT</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_COLOR.html">GRAPHICS_WIDTH_HEIGHT_COLOR</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_BPP.html">GRAPHICS_WIDTH_HEIGHT_BPP</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_CUSTOM.html">GRAPHICS_CUSTOM</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_CUSTOM_BPP.html">GRAPHICS_CUSTOM_BPP</a> - </li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_80X25.html">TEXT_80X25</a> - <span class="brief_description">Standard 80x25 text mode
+            </span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_DEFAULT.html">TEXT_DEFAULT</a> - <span class="brief_description">Default text mode
+            </span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT.html">TEXT_WIDTH_HEIGHT</a> - <span class="brief_description">Text mode 
+              with parameters int w, int h</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_COLOR.html">TEXT_WIDTH_HEIGHT_COLOR</a> - <span class="brief_description">
+              Text mode with parameters int w,  int h, GrxColor nc</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_BPP.html">TEXT_WIDTH_HEIGHT_BPP</a> - <span class="brief_description">Text
+               mode with parameters int w,  int h, int bpp</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_DEFAULT.html">GRAPHICS_DEFAULT</a> - <span class="brief_description">Default 
+              graphics mode</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT.html">GRAPHICS_WIDTH_HEIGHT</a> - <span class="brief_description">
+              Graphics mode with parameters  int w, int h</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_COLOR.html">GRAPHICS_WIDTH_HEIGHT_COLOR</a> - 
+            <span class="brief_description">Graphics mode with parameters  int w, int h, GrxColor nc</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_BPP.html">GRAPHICS_WIDTH_HEIGHT_BPP</a> - 
+            <span class="brief_description">Graphics mode with parameters  int w, int h, int bpp</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_CUSTOM.html">GRAPHICS_CUSTOM</a> - <span class="brief_description">Graphics mode 
+              with parameters  int w, int h, GrxColor nc, int vx, int vy</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_CUSTOM_BPP.html">GRAPHICS_CUSTOM_BPP</a> - <span class="brief_description">Graphics
+               mode with parameters  int w, int h, int bpp, int vx, int vy</span></li>
           <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_80_25_NC.html">TEXT_80_25_NC</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_DEFAULT_NC.html">TEXT_DEFAULT_NC</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_NC.html">TEXT_WIDTH_HEIGHT_NC</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_COLOR_NC.html">TEXT_WIDTH_HEIGHT_COLOR_NC</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_BPP_NC.html">TEXT_WIDTH_HEIGHT_BPP_NC</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_DEFAULT_NC.html">GRAPHICS_DEFAULT_NC</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_NC.html">GRAPHICS_WIDTH_HEIGHT_NC</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_COLOR_NC.html">GRAPHICS_WIDTH_HEIGHT_COLOR_NC</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_BPP_NC.html">GRAPHICS_WIDTH_HEIGHT_BPP_NC</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_CUSTOM_NC.html">GRAPHICS_CUSTOM_NC</a> - </li>
-          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_CUSTOM_BPP_NC.html">GRAPHICS_CUSTOM_BPP_NC</a> - </li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_DEFAULT_NC.html">TEXT_DEFAULT_NC</a> - <span class="brief_description">Same as 
+              <a href="Grx.GraphicsMode.TEXT_DEFAULT.html" class="enumvalue">TEXT_DEFAULT</a>  but does not clear video memory</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_NC.html">TEXT_WIDTH_HEIGHT_NC</a> - <span class="brief_description">Same 
+              as <a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT.html" class="enumvalue">TEXT_WIDTH_HEIGHT</a>  but does not clear video memory</span>
+          </li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_COLOR_NC.html">TEXT_WIDTH_HEIGHT_COLOR_NC</a> - 
+            <span class="brief_description">Same as <a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_COLOR.html" class="enumvalue">TEXT_WIDTH_HEIGHT_COLOR
+              </a>  but does not clear video memory</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_BPP_NC.html">TEXT_WIDTH_HEIGHT_BPP_NC</a> - 
+            <span class="brief_description">Same as <a href="Grx.GraphicsMode.TEXT_WIDTH_HEIGHT_BPP.html" class="enumvalue">TEXT_WIDTH_HEIGHT_BPP</a> 
+               but does not clear video memory</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_DEFAULT_NC.html">GRAPHICS_DEFAULT_NC</a> - <span class="brief_description">Same as 
+              <a href="Grx.GraphicsMode.GRAPHICS_DEFAULT.html" class="enumvalue">GRAPHICS_DEFAULT</a>  but does not clear video memory</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_NC.html">GRAPHICS_WIDTH_HEIGHT_NC</a> - 
+            <span class="brief_description">Same as <a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT.html" class="enumvalue">GRAPHICS_WIDTH_HEIGHT</a> 
+               but does not clear video memory</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_COLOR_NC.html">GRAPHICS_WIDTH_HEIGHT_COLOR_NC</a> - 
+            <span class="brief_description">Same as <a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_COLOR.html" class="enumvalue">
+                GRAPHICS_WIDTH_HEIGHT_COLOR</a>  but does not clear video memory</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_BPP_NC.html">GRAPHICS_WIDTH_HEIGHT_BPP_NC</a> - 
+            <span class="brief_description">Same as <a href="Grx.GraphicsMode.GRAPHICS_WIDTH_HEIGHT_BPP.html" class="enumvalue">
+                GRAPHICS_WIDTH_HEIGHT_BPP</a>  but does not clear video memory</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_CUSTOM_NC.html">GRAPHICS_CUSTOM_NC</a> - <span class="brief_description">Same as 
+              <a href="Grx.GraphicsMode.GRAPHICS_CUSTOM.html" class="enumvalue">GRAPHICS_CUSTOM</a>  but does not clear video memory</span></li>
+          <li class="enumvalue"><a href="Grx.GraphicsMode.GRAPHICS_CUSTOM_BPP_NC.html">GRAPHICS_CUSTOM_BPP_NC</a> - <span class="brief_description">
+              Same as <a href="Grx.GraphicsMode.GRAPHICS_CUSTOM_BPP.html" class="enumvalue">GRAPHICS_CUSTOM_BPP</a>  but does not clear video memory
+            </span></li>
         </ul>
       </div>
     </div><br/>

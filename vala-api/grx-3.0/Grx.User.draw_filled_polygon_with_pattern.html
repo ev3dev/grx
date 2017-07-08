@@ -87,7 +87,33 @@
         <h1 class="main_title">draw_filled_polygon_with_pattern</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">draw_filled_polygon_with_pattern</span></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">draw_filled_polygon_with_pattern</span></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
+        </div>
+        <div class="description">
+          <p>Draw a filled polygon on the current context that connects each point in the <code>points</code> array using the specified pattern.</p>
+          <p>Coordinate arrays can either contain or omit the closing edge of the polygon. It will be automatically appended to the list if it is 
+            missing.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">points</td>
+              <td>
+                <p>an array of <a href="Grx.Point.html" class="struct">Point</a></p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">p</td>
+              <td>
+                <p>the pattern</p>
+              </td>
+            </tr>
+            <tr class="main_parameter_table_unknown_parameter">
+              <td class="main_parameter_table_name">n_points</td>
+              <td>
+                <p>the number of points in <code>points</code></p>
+              </td>
+            </tr>
+          </table>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.User.html">Grx.User</a>
         </div>

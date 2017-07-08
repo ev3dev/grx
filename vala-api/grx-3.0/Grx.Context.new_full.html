@@ -67,7 +67,58 @@
         <h1 class="main_title">new_full</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><a href="Grx.Context.html" class="class">Context</a></span>? <b><span class="static_method">new_full</span></b> (<span class="main_type"><a href="Grx.FrameMode.html" class="enum">FrameMode</a></span> mode, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_basic_type"><span class="struct">int</span></span> height, <span class="main_basic_type"><span class="struct">char</span></span>*[]? memory = <span class="main_optional_parameter">null</span>, <span class="main_keyword">out</span> <span class="main_type"><a href="Grx.Context.html" class="class">Context</a></span>? where = <span class="main_optional_parameter">null</span>)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><a href="Grx.Context.html" class="class">Context</a></span>? <b><span class="static_method">new_full</span></b> (<span class="main_type"><a href="Grx.FrameMode.html" class="enum">FrameMode</a></span> mode, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_basic_type"><span class="struct">char</span></span>*[]? memory = <span class="main_optional_parameter">null</span>, <span class="main_keyword">out</span> <span class="main_type"><a href="Grx.Context.html" class="class">Context</a></span>? where = <span class="main_optional_parameter">null</span>)
+        </div>
+        <div class="description">
+          <p>Creates a new context in system memory using the memory layout specified by <code>mode</code>.</p>
+          <p><code>memory</code> must contain <a href="Grx.FrameMode.get_n_planes.html" class="method">get_n_planes</a> pointers (usually just one, 
+            but could be as many as 4) of size <a href="Grx.FrameMode.get_plane_size.html" class="method">get_plane_size</a>. 
+            <span class="main_optional_parameter">null</span> may also be passed to <code>memory</code>, in which case the memory will be dynamically 
+            allocated.</p>
+          <p>Likewise, <code>where</code> can be an unused <a href="Grx.Context.html" class="class">Context</a> (e.g. you may want to do this if you 
+            want a stack allocated context) or it can be <span class="main_optional_parameter">null</span> to dynamically allocate a new context.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">mode</td>
+              <td>
+                <p>the frame mode</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">w</td>
+              <td>
+                <p>the width of the context</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">h</td>
+              <td>
+                <p>the height of the context</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">memory</td>
+              <td>
+                <p>memory location(s) or <span class="main_optional_parameter">null</span></p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">where</td>
+              <td>
+                <p>an unused <a href="Grx.Context.html" class="class">Context</a> struct or <span class="main_optional_parameter">null</span></p>
+              </td>
+            </tr>
+          </table>
+          <h2 class="main_title">Returns:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td>
+                <p><code>where</code> or a new context if <code>where</code> was <span class="main_optional_parameter">null</span>. Returns  
+                  <span class="main_optional_parameter">null</span> on error.</p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div><br/>

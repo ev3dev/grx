@@ -71,6 +71,10 @@
         <h2 class="main_title">Description:</h2>
         <div class="main_code_definition">[ <span class="main_type">SimpleType</span> ]<br/><span class="main_keyword">public</span> <span class="main_keyword">struct</span> <b><span class="struct">Color</span></b> : <span class="main_basic_type"><span class="struct">uint32</span></span>
         </div>
+        <div class="description">
+          <p>32-bit integer for storing color information.</p>
+          <p>The lower 24 bits are the actual color value and the upper 8 bits are the <a href="Grx.ColorMode.html" class="enum">ColorMode</a>.</p>
+        </div>
         <div class="box">
           <div class="headline">
             <div class="text">All known sub-structs:</div>
@@ -102,11 +106,13 @@
           <ul class="navi_inline">
             <li class="constant"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">const</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.VALUE_MASK.html" class="constant">VALUE_MASK</a></b>
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Used to get the color portion of a <span class="struct">Color</span>
+                  .</span>
               </div></li>
             <li class="constant"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">const</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.MODE_MASK.html" class="constant">MODE_MASK</a></b>
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Used to get the <a href="Grx.ColorMode.html" class="enum">ColorMode
+                  </a> portion of a <span class="struct">Color</span>.</span>
               </div></li>
             <li class="constant"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">const</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.BLACK.html" class="constant">BLACK</a></b>
               </span>
@@ -118,7 +124,7 @@
               </div></li>
             <li class="constant"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">const</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.NONE.html" class="constant">NONE</a></b>
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Used to indicate transparency in bitblt operations.</span>
               </div></li>
           </ul>
           <h3 class="main_title">Properties:</h3>
@@ -148,37 +154,40 @@
           <ul class="navi_inline">
             <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.build_rgb.html" class="static_method">build_rgb</a></b> (<span class="main_basic_type"><span class="struct">uint8</span></span> r, <span class="main_basic_type"><span class="struct">uint8</span></span> g, <span class="main_basic_type"><span class="struct">uint8</span></span> b)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Build a RGB color value based on the current graphics mode.</span>
               </div></li>
             <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.build_rgb_round.html" class="static_method">build_rgb_round</a></b> (<span class="main_basic_type"><span class="struct">uint8</span></span> r, <span class="main_basic_type"><span class="struct">uint8</span></span> g, <span class="main_basic_type"><span class="struct">uint8</span></span> b)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Build a RGB color value based on the current graphics mode.</span>
               </div></li>
             <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.build_grayscale.html" class="static_method">build_grayscale</a></b> (<span class="main_basic_type"><span class="struct">uint8</span></span> r, <span class="main_basic_type"><span class="struct">uint8</span></span> g, <span class="main_basic_type"><span class="struct">uint8</span></span> b)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Build a grayscale color value based on the current graphics mode.
+                </span>
               </div></li>
             <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.alloc.html" class="static_method">alloc</a></b> (<span class="main_basic_type"><span class="struct">uint8</span></span> r, <span class="main_basic_type"><span class="struct">uint8</span></span> g, <span class="main_basic_type"><span class="struct">uint8</span></span> b)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Allocates a color in the color table based on the RGB value.</span>
               </div></li>
             <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.alloc_inline.html" class="static_method">alloc_inline</a></b> (<span class="main_basic_type"><span class="struct">uint8</span></span> r, <span class="main_basic_type"><span class="struct">uint8</span></span> g, <span class="main_basic_type"><span class="struct">uint8</span></span> b)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Allocates a color in the color table based on the RGB value.</span>
               </div></li>
             <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.alloc2.html" class="static_method">alloc2</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> hcolor)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Allocates a color in the color table based on <code>hcolor</code>.
+                </span>
               </div></li>
             <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.alloc2_inline.html" class="static_method">alloc2_inline</a></b> (<span class="main_basic_type"><span class="struct">uint</span></span> hcolor)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Allocates a color in the color table based on <code>hcolor</code>.
+                </span>
               </div></li>
             <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.lookup.html" class="static_method">lookup</a></b> (<span class="main_type"><span class="class">Array</span></span>&lt;<span class="main_type"><span class="struct">Color</span></span>&gt; table, <span class="main_basic_type"><span class="struct">uint</span></span> index)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Looks up a color in the color table.</span>
               </div></li>
-            <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="struct">Color</span></span>[] <b><a href="Grx.Color.alloc_ega_colors.html" class="static_method">alloc_ega_colors</a></b> ()
+            <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_keyword">unowned</span> <span class="main_type"><span class="struct">Color</span></span>[] <b><a href="Grx.Color.alloc_ega_colors.html" class="static_method">alloc_ega_colors</a></b> ()
               </span>
               <div class="leaf_brief_description">
               </div></li>
@@ -187,43 +196,49 @@
           <ul class="navi_inline">
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.to_write_mode.html" class="method">to_write_mode</a></b> ()
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Sets the color to 
+                  <a href="Grx.ColorMode.WRITE.html" class="enumvalue">WRITE</a>.</span>
               </div></li>
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.to_xor_mode.html" class="method">to_xor_mode</a></b> ()
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Sets the color to 
+                  <a href="Grx.ColorMode.XOR.html" class="enumvalue">XOR</a>.</span>
               </div></li>
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.to_or_mode.html" class="method">to_or_mode</a></b> ()
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Sets the color to <a href="Grx.ColorMode.OR.html" class="enumvalue">
+                    OR</a>.</span>
               </div></li>
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.to_and_mode.html" class="method">to_and_mode</a></b> ()
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Sets the color to 
+                  <a href="Grx.ColorMode.AND.html" class="enumvalue">AND</a>.</span>
               </div></li>
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="struct">Color</span></span> <b><a href="Grx.Color.to_image_mode.html" class="method">to_image_mode</a></b> ()
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Sets the color to 
+                  <a href="Grx.ColorMode.IMAGE.html" class="enumvalue">IMAGE</a>.</span>
               </div></li>
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Color.free.html" class="method">free</a></b> ()
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Frees a color that was allocated by 
+                  <a href="Grx.Color.alloc.html" class="static_method">alloc</a> and friends.</span>
               </div></li>
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Color.query.html" class="method">query</a></b> (<span class="main_type"><span class="struct">Color</span></span> c, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint8</span></span> r, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint8</span></span> g, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint8</span></span> b)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Gets the RGB color components of a color.</span>
               </div></li>
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Color.query_inline.html" class="method">query_inline</a></b> (<span class="main_type"><span class="struct">Color</span></span> c, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint8</span></span> r, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint8</span></span> g, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint8</span></span> b)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Gets the RGB color components of a color.</span>
               </div></li>
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Color.query2.html" class="method">query2</a></b> (<span class="main_type"><span class="struct">Color</span></span> c, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint</span></span> hcolor)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Gets the RGB color components of a color.</span>
               </div></li>
             <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Color.query2_inline.html" class="method">query2_inline</a></b> (<span class="main_type"><span class="struct">Color</span></span> c, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">uint</span></span> hcolor)
               </span>
-              <div class="leaf_brief_description">
+              <div class="leaf_brief_description"><span class="brief_description">Gets the RGB color components of a color.</span>
               </div></li>
           </ul>
           <h3 class="main_title">Inherited Members:</h3>

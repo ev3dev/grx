@@ -14,7 +14,7 @@
 <div class="hgroup"><h1 class="title"><span class="title">Grx.Pattern.new_pixmap_from_context</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function new_pixmap_from_context(src: <span class="link"><a href="Grx.Context.html" title="Grx.Context">Grx.Context</a></span>): <span class="link"><a href="Grx.Pattern.html" title="Grx.Pattern">Grx.Pattern</a></span> {
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function new_pixmap_from_context(context: <span class="link"><a href="Grx.Context.html" title="Grx.Context">Grx.Context</a></span>): <span class="link"><a href="Grx.Pattern.html" title="Grx.Pattern">Grx.Pattern</a></span> {
     // Gjs wrapper for grx_pattern_new_pixmap_from_context()
 }
   </pre></div></div></div></div></div>
@@ -23,7 +23,7 @@
 operations. NOTE: the pixmap pattern and the original context share the
 drawing RAM, thus if the context is redrawn the fill pattern changes as well.</p>
 <div class="terms"><div class="inner"><div class="region"><dl class="terms">
-<dt class="terms"><span class="code">src</span></dt>
+<dt class="terms"><span class="code">context</span></dt>
 <dd class="terms"><p class="p">the context</p></dd>
 <dt class="terms"><span class="code">Returns</span></dt>
 <dd class="terms"><p class="p">a new <span class="link"><a href="Grx.Pixmap.html" title="Grx.Pixmap">Grx.Pixmap</a></span> (casted as <span class="link"><a href="Grx.Pattern.html" title="Grx.Pattern">Grx.Pattern</a></span>) or <span class="code">null</span> if there was an error.</p></dd>

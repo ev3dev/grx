@@ -67,7 +67,36 @@
         <h1 class="main_title">load_from_pnm</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><span class="method">load_from_pnm</span></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><span class="method">load_from_pnm</span></b> (<span class="main_basic_type"><span class="class">string</span></span> filename)
+        </div>
+        <div class="description">
+          <p>Load a context from a PNM file.</p>
+          <p>Support only PBM, PGM and PPM binary files with maxval &lt; 256</p>
+          <p>If context dimensions are less than pnm dimensions, the routine loads as much as it can</p>
+          <p>If color mode is not in RGB mode, the routine allocates as many colors as it can</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">this</td>
+              <td>
+                <p>Context to be loaded or <span class="main_optional_parameter">null</span> to use the global context</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">filename</td>
+              <td>
+                <p>Name of pnm file</p>
+              </td>
+            </tr>
+          </table>
+          <h2 class="main_title">Returns:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td>
+                <p><span class="main_optional_parameter">true</span> on success, otherwise <span class="main_optional_parameter">false</span></p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div><br/>

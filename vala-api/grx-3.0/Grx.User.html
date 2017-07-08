@@ -92,99 +92,121 @@
         <ul class="navi_inline">
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.set_window.html" class="method">set_window</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Specifies the user window.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.get_window.html" class="method">get_window</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span> y2)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Gets the user window of the current context.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.convert_user_to_screen.html" class="method">convert_user_to_screen</a></b> (<span class="main_keyword">ref</span> <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_keyword">ref</span> <span class="main_basic_type"><span class="struct">int</span></span> y)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Converts <code>x</code> and <code>y</code> from coordinates in the 
+                user window to coordinates in the current context.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.convert_screen_to_user.html" class="method">convert_screen_to_user</a></b> (<span class="main_keyword">ref</span> <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_keyword">ref</span> <span class="main_basic_type"><span class="struct">int</span></span> y)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Converts <code>x</code> and <code>y</code> from coordinates in the 
+                current context to coordinates in the user window.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_pixel.html" class="method">draw_pixel</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a single pixel on the current context at the specified user 
+                coordinates.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_line.html" class="method">draw_line</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a line on the current context from the starting coordinates to 
+                the ending coordinates using the specified color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_hline.html" class="method">draw_hline</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a horizontal line on the current context from the starting 
+                coordinates to the ending coordinates using the specified color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_vline.html" class="method">draw_vline</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a vertical line on the current context from the starting 
+                coordinates to the ending coordinates using the specified color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_box.html" class="method">draw_box</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a rectangle on the current context using the specified 
+                coordinates and color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_box.html" class="method">draw_filled_box</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a filled rectangle on the current context using the specified 
+                coordinates and color.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_framed_box.html" class="method">draw_framed_box</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_basic_type"><span class="struct">int</span></span> wdt, <span class="main_type"><a href="Grx.FramedBoxColors.html" class="struct">FramedBoxColors</a></span> c)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_framed_box.html" class="method">draw_framed_box</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_type"><a href="Grx.FramedBoxColors.html" class="struct">FramedBoxColors</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a framed rectangle on the current context using the specified 
+                coordinates and colors.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_circle.html" class="method">draw_circle</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a circle on the current context centered at the specified 
+                coordinates with the specified radius and color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_ellipse.html" class="method">draw_ellipse</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws an ellipse on the current context using the specified color.
+              </span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_circle_arc.html" class="method">draw_circle_arc</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws an arc on the current context centered at the specified 
+                coordinates from the starting angle to the ending angle with the specified radius, arc style and color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_ellipse_arc.html" class="method">draw_ellipse_arc</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws an arc on the current context centered at the specified 
+                coordinates from the starting angle to the ending angle with the specified radii, arc style and color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_circle.html" class="method">draw_filled_circle</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a filled circle on the current context centered at the specified
+                 coordinates with the specified radius and color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_ellipse.html" class="method">draw_filled_ellipse</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a filled ellipse on the current context using the specified 
+                color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_circle_arc.html" class="method">draw_filled_circle_arc</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a filled arc on the current context centered at the specified 
+                coordinates from the starting angle to the ending angle with the specified radius, arc style and color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_ellipse_arc.html" class="method">draw_filled_ellipse_arc</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a filled arc on the current context centered at the specified 
+                coordinates from the starting angle to the ending angle with the specified radii, arc style and color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_polyline.html" class="method">draw_polyline</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a multi-segment line on the current context that connects each 
+                point in the <code>points</code> array using the specified color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_polygon.html" class="method">draw_polygon</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a closed polygon on the current context that connects each point 
+                in the <code>points</code> array using the specified color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_convex_polygon.html" class="method">draw_filled_convex_polygon</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a filled polygon on the current context that connects each point 
+                in the <code>points</code> array using the specified color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_polygon.html" class="method">draw_filled_polygon</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a filled polygon on the current context that connects each point 
+                in the <code>points</code> array using the specified color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.flood_fill.html" class="method">flood_fill</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> border, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Flood-fills the area of the current context bounded by the color 
+                <code>border</code> using <code>x</code>, <code>y</code> as the starting point.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.bit_blt.html" class="method">bit_blt</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Context.html" class="class">Context</a></span> src, <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> oper = ( <b><a href="Grx.Color.html" class="struct">Color</a></b>) <b><a href="Grx.ColorMode.WRITE.html" class="enumvalue">WRITE</a></b>)
             </span>
@@ -196,111 +218,138 @@
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> <b><a href="Grx.User.get_pixel_at.html" class="method">get_pixel_at</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Gets the color value of the pixel in the current context at the 
+                specified coordinates.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_line_with_options.html" class="method">draw_line_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> options)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_line_with_options.html" class="method">draw_line_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a line on the current context from the starting coordinates to 
+                the ending coordinates using the specified options.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_box_with_options.html" class="method">draw_box_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> options)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_box_with_options.html" class="method">draw_box_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a rectangle on the current context using the specified 
+                coordinates and options.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_circle_with_options.html" class="method">draw_circle_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> options)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_circle_with_options.html" class="method">draw_circle_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a circle on the current context centered at the specified 
+                coordinates with the specified radius and options.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_ellipse_with_options.html" class="method">draw_ellipse_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> options)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_ellipse_with_options.html" class="method">draw_ellipse_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws an ellipse on the current context using the specified options.
+              </span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_circle_arc_with_options.html" class="method">draw_circle_arc_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> options)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_circle_arc_with_options.html" class="method">draw_circle_arc_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws an arc on the current context centered at the specified 
+                coordinates from the starting angle to the ending angle with the specified radius, arc style and options.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_ellipse_arc_with_options.html" class="method">draw_ellipse_arc_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> options)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_ellipse_arc_with_options.html" class="method">draw_ellipse_arc_with_options</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws an arc on the current context centered at the specified 
+                coordinates from the starting angle to the ending angle with the specified radii, arc style and options.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_polyline_with_options.html" class="method">draw_polyline_with_options</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> options)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_polyline_with_options.html" class="method">draw_polyline_with_options</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a multi-segment line on the current context that connects each 
+                point in the <code>points</code> array using the specified options.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_polygon_with_options.html" class="method">draw_polygon_with_options</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> options)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_polygon_with_options.html" class="method">draw_polygon_with_options</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a closed polygon on the current context that connects each point 
+                in the <code>points</code> array using the specified options.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_line_with_pattern.html" class="method">draw_line_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_line_with_pattern.html" class="method">draw_line_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> lp)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a line on the current context from the starting coordinates to 
+                the ending coordinates using the specified line pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_box_with_pattern.html" class="method">draw_box_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_box_with_pattern.html" class="method">draw_box_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> lp)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a rectangle on the current context using the specified 
+                coordinates and line pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_circle_with_pattern.html" class="method">draw_circle_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_circle_with_pattern.html" class="method">draw_circle_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> lp)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a circle on the current context centered at the specified 
+                coordinates with the specified radius and line pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_ellipse_with_pattern.html" class="method">draw_ellipse_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_ellipse_with_pattern.html" class="method">draw_ellipse_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> lp)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws an ellipse on the current context using the specified line 
+                pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_circle_arc_with_pattern.html" class="method">draw_circle_arc_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_circle_arc_with_pattern.html" class="method">draw_circle_arc_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> lp)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws an arc on the current context centered at the specified 
+                coordinates from the starting angle to the ending angle with the specified radius, arc style and line pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_ellipse_arc_with_pattern.html" class="method">draw_ellipse_arc_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_ellipse_arc_with_pattern.html" class="method">draw_ellipse_arc_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_type"><a href="Grx.ArcStyle.html" class="enum">ArcStyle</a></span> style, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> lp)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws an arc on the current context centered at the specified 
+                coordinates from the starting angle to the ending angle with the specified radii, arc style and line pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_polyline_with_pattern.html" class="method">draw_polyline_with_pattern</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_polyline_with_pattern.html" class="method">draw_polyline_with_pattern</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> lp)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a multi-segment line on the current context that connects each 
+                point in the <code>points</code> array using the specified line pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_polygon_with_pattern.html" class="method">draw_polygon_with_pattern</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_polygon_with_pattern.html" class="method">draw_polygon_with_pattern</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.LinePattern.html" class="struct">LinePattern</a></span> lp)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a closed polygon on the current context that connects each point 
+                in the <code>points</code> array using the specified line pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_pixel_with_pattern.html" class="method">draw_filled_pixel_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_pixel_with_pattern.html" class="method">draw_filled_pixel_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a single pixel on the current context at the specified 
+                coordinates.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_line_with_pattern.html" class="method">draw_filled_line_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_line_with_pattern.html" class="method">draw_filled_line_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a line on the current context from the starting coordinates to 
+                the ending coordinates using the specified pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_box_with_pattern.html" class="method">draw_filled_box_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_box_with_pattern.html" class="method">draw_filled_box_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a filled rectangle on the current context using the specified 
+                coordinates and pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_circle_with_pattern.html" class="method">draw_filled_circle_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_circle_with_pattern.html" class="method">draw_filled_circle_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a filled circle on the current context centered at the specified
+                 coordinates with the specified radius and pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_ellipse_with_pattern.html" class="method">draw_filled_ellipse_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_ellipse_with_pattern.html" class="method">draw_filled_ellipse_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a filled ellipse on the current context using the specified 
+                pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_circle_arc_with_pattern.html" class="method">draw_filled_circle_arc_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_basic_type"><span class="struct">int</span></span> style, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_circle_arc_with_pattern.html" class="method">draw_filled_circle_arc_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> r, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_basic_type"><span class="struct">int</span></span> style, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a filled arc on the current context centered at the specified 
+                coordinates from the starting angle to the ending angle with the specified radius, arc style and pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_ellipse_arc_with_pattern.html" class="method">draw_filled_ellipse_arc_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_basic_type"><span class="struct">int</span></span> style, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_ellipse_arc_with_pattern.html" class="method">draw_filled_ellipse_arc_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_basic_type"><span class="struct">int</span></span> start, <span class="main_basic_type"><span class="struct">int</span></span> end, <span class="main_basic_type"><span class="struct">int</span></span> style, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws a filled arc on the current context centered at the specified 
+                coordinates from the starting angle to the ending angle with the specified radii, arc style and pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_convex_polygon_with_pattern.html" class="method">draw_filled_convex_polygon_with_pattern</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_convex_polygon_with_pattern.html" class="method">draw_filled_convex_polygon_with_pattern</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a filled polygon on the current context that connects each point 
+                in the <code>points</code> array using the specified pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_polygon_with_pattern.html" class="method">draw_filled_polygon_with_pattern</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_filled_polygon_with_pattern.html" class="method">draw_filled_polygon_with_pattern</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a filled polygon on the current context that connects each point 
+                in the <code>points</code> array using the specified pattern.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.flood_fill_with_pattern.html" class="method">flood_fill_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> border, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> pattern)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.flood_fill_with_pattern.html" class="method">flood_fill_with_pattern</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> border, <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> p)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Flood-fills the area of the current context bounded by the color 
+                <code>border</code> using <code>x</code>, <code>y</code> as the starting point.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.User.draw_text.html" class="method">draw_text</a></b> (<span class="main_basic_type"><span class="class">string</span></span> text, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> fg, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
             </span>

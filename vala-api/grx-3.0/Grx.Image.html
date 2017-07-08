@@ -46,6 +46,9 @@
 
         <h2 class="main_title">Description:</h2>
         <div class="main_code_definition">[ <span class="main_type">Compact</span> ]<br/><span class="main_keyword">public</span> <span class="main_keyword">class</span> <b><span class="class">Image</span></b>
+        </div>
+        <div class="description">
+          <p>Like pixmap patterns images are dependent on the actual video mode set.</p>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>
@@ -54,28 +57,32 @@
         <h2 class="main_title">Content:</h2>
         <h3 class="main_title">Static methods:</h3>
         <ul class="navi_inline">
-          <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Image</span></span> <b><a href="Grx.Image.@new.html" class="static_method">@new</a></b> (<span class="main_basic_type"><span class="struct">char</span></span>[] pixels, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><span class="class">Array</span></span>&lt;<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>&gt; colors)
+          <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Image</span></span> <b><a href="Grx.Image.@new.html" class="static_method">@new</a></b> (<span class="main_basic_type"><span class="struct">char</span></span>[] pixels, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_basic_type"><span class="struct">int</span></span> height, <span class="main_type"><span class="class">Array</span></span>&lt;<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>&gt; colors)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Builds a pixmap from a two dimensional (width by height) array of 
+                characters.</span>
             </div></li>
           <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Image</span></span> <b><a href="Grx.Image.new_from_context.html" class="static_method">new_from_context</a></b> (<span class="main_type"><a href="Grx.Context.html" class="class">Context</a></span> context)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates a new image using <code>context</code>.</span>
             </div></li>
         </ul>
         <h3 class="main_title">Methods:</h3>
         <ul class="navi_inline">
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="class">Image</span></span> <b><a href="Grx.Image.mirror.html" class="method">mirror</a></b> (<span class="main_type"><a href="Grx.ImageMirrorFlags.html" class="enum">ImageMirrorFlags</a></span> flags)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates a new image, flipping left-right and/or top-bottom as 
+                indicated by <code>flags</code>.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="class">Image</span></span> <b><a href="Grx.Image.stretch.html" class="method">stretch</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_basic_type"><span class="struct">int</span></span> height)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="class">Image</span></span> <b><a href="Grx.Image.stretch.html" class="method">stretch</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> new_width, <span class="main_basic_type"><span class="struct">int</span></span> new_height)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates a new image stretching <code>image</code> to <code>new_width
+                </code> by <code>new_height</code>.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">unowned</span> <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> <b><a href="Grx.Image.as_pattern.html" class="method">as_pattern</a></b> ()
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Casts a <span class="class">Image</span> to a 
+                <a href="Grx.Pattern.html" class="class">Pattern</a>.</span>
             </div></li>
         </ul>
       </div>

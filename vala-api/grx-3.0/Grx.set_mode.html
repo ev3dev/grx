@@ -73,6 +73,7 @@
           <li class="struct"><a href="Grx.VideoDriver.html">VideoDriver</a></li>
           <li class="struct"><a href="Grx.VideoMode.html">VideoMode</a></li>
           <li class="struct"><a href="Grx.VideoModeExt.html">VideoModeExt</a></li>
+          <li class="constant"><a href="Grx.DEFAULT_DPI.html">DEFAULT_DPI</a></li>
           <li class="constant"><a href="Grx.MAX_ELLIPSE_POINTS.html">MAX_ELLIPSE_POINTS</a></li>
           <li class="constant"><a href="Grx.MAX_POLYGON_POINTS.html">MAX_POLYGON_POINTS</a></li>
           <li class="constant"><a href="Grx.PNM_FORMAT_ERROR.html">PNM_FORMAT_ERROR</a></li>
@@ -225,6 +226,40 @@
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
         <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><span class="method">set_mode</span></b> (<span class="main_type"><a href="Grx.GraphicsMode.html" class="enum">GraphicsMode</a></span> mode, ...) <span class="main_keyword">throws</span> <span class="main_type"><a href="Grx.Error.html" class="errordomain">Error</a></span>
+        </div>
+        <div class="description">
+          <p>Set the graphics mode.</p>
+          <p>If a driver has not already been set, this will attempt to load the best available driver (the one with the most modes). The driver will 
+            then try to find the mode that best fits the size and color depth parameters. The exact behavior will depend on the video driver.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">mode</td>
+              <td>
+                <p>The graphics mode.</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">...</td>
+              <td>
+                <p>Extra parameters determined by <code>mode</code>.</p>
+              </td>
+            </tr>
+            <tr class="main_parameter_table_unknown_parameter">
+              <td class="main_parameter_table_name">error</td>
+              <td>
+                <p>Error pointer.</p>
+              </td>
+            </tr>
+          </table>
+          <h2 class="main_title">Returns:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td>
+                <p><span class="main_optional_parameter">true</span> on success, otherwise <span class="main_optional_parameter">false</span>.</p>
+              </td>
+            </tr>
+          </table>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>

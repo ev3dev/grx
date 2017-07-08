@@ -73,6 +73,7 @@
           <li class="struct"><a href="Grx.VideoDriver.html">VideoDriver</a></li>
           <li class="struct"><a href="Grx.VideoMode.html">VideoMode</a></li>
           <li class="struct"><a href="Grx.VideoModeExt.html">VideoModeExt</a></li>
+          <li class="constant"><a href="Grx.DEFAULT_DPI.html">DEFAULT_DPI</a></li>
           <li class="constant"><a href="Grx.MAX_ELLIPSE_POINTS.html">MAX_ELLIPSE_POINTS</a></li>
           <li class="constant"><a href="Grx.MAX_POLYGON_POINTS.html">MAX_POLYGON_POINTS</a></li>
           <li class="constant"><a href="Grx.PNM_FORMAT_ERROR.html">PNM_FORMAT_ERROR</a></li>
@@ -224,7 +225,51 @@
         <h1 class="main_title">draw_hline_with_image</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">draw_hline_with_image</span></b> (<span class="main_basic_type"><span class="struct">int</span></span> xo, <span class="main_basic_type"><span class="struct">int</span></span> yo, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> width)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">draw_hline_with_image</span></b> (<span class="main_basic_type"><span class="struct">int</span></span> xo, <span class="main_basic_type"><span class="struct">int</span></span> yo, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_type"><a href="Grx.Image.html" class="class">Image</a></span> image)
+        </div>
+        <div class="description">
+          <p>Draws a single line of an image on the current context starting at <code>x</code>, <code>y</code>.</p>
+          <p> The image can be offset from the line by specifying <code>xo</code>, <code>yo</code> different from <code>x</code>, <code>y</code>. The 
+            image is repeated if the width of the line is greater than the width of the image.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">xo</td>
+              <td>
+                <p>the alignment X coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">yo</td>
+              <td>
+                <p>the alignment Y coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">x</td>
+              <td>
+                <p>the top X coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">y</td>
+              <td>
+                <p>the left Y coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">width</td>
+              <td>
+                <p>the width of the line</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">image</td>
+              <td>
+                <p>the image</p>
+              </td>
+            </tr>
+          </table>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>

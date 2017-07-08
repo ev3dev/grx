@@ -73,6 +73,7 @@
           <li class="struct"><a href="Grx.VideoDriver.html">VideoDriver</a></li>
           <li class="struct"><a href="Grx.VideoMode.html">VideoMode</a></li>
           <li class="struct"><a href="Grx.VideoModeExt.html">VideoModeExt</a></li>
+          <li class="constant"><a href="Grx.DEFAULT_DPI.html">DEFAULT_DPI</a></li>
           <li class="constant"><a href="Grx.MAX_ELLIPSE_POINTS.html">MAX_ELLIPSE_POINTS</a></li>
           <li class="constant"><a href="Grx.MAX_POLYGON_POINTS.html">MAX_POLYGON_POINTS</a></li>
           <li class="constant"><a href="Grx.PNM_FORMAT_ERROR.html">PNM_FORMAT_ERROR</a></li>
@@ -225,6 +226,37 @@
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
         <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><span class="method">set_driver</span></b> (<span class="main_basic_type"><span class="class">string</span></span> driver_spec) <span class="main_keyword">throws</span> <span class="main_type"><a href="Grx.Error.html" class="errordomain">Error</a></span>
+        </div>
+        <div class="description">
+          <p>The driver spec is of the format "\[&lt;name&gt;\[::&lt;flag&gt;\]\] \[gw &lt;width&gt;\] \[gh &lt;height&gt;\] \[gc &lt;colors&gt;\] \[
+            dp &lt;dpi&gt;\]".</p>
+          <ul>
+            <li>"&lt;name&gt;" is the name of a video driver plugin.</li>
+            <li>"&lt;flag&gt;" is "fs" for fullscreen or "ww" for windowed (not supported by all  drivers)</li>
+            <li>"&lt;width&gt;" is the default width</li>
+            <li>"&lt;height&gt;" is the default height</li>
+            <li>"&lt;colors&gt;" is the default color depth. "K" and "M" suffixes are recognized.</li>
+            <li>"&lt;dpi&gt;" the display resolution in dots per inch.</li>
+          </ul>
+          <p>If <code>driver_spec</code> is <span class="main_optional_parameter">null</span>, then it will first check the GRX_DRIVER environment 
+            variable for a driver spec. If the environment variable is not present, then it will uses the driver with the highest number of modes.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">driver_spec</td>
+              <td>
+                <p>The driver spec.</p>
+              </td>
+            </tr>
+          </table>
+          <h2 class="main_title">Returns:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td>
+                <p><span class="main_optional_parameter">true</span> on success, otherwise <span class="main_optional_parameter">false</span>.</p>
+              </td>
+            </tr>
+          </table>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>

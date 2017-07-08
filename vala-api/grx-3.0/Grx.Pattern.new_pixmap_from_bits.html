@@ -38,7 +38,53 @@
         <h1 class="main_title">new_pixmap_from_bits</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> <b><span class="static_method">new_pixmap_from_bits</span></b> (<span class="main_basic_type"><span class="struct">char</span></span>* bits, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> fgc, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bgc)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><a href="Grx.Pattern.html" class="class">Pattern</a></span> <b><span class="static_method">new_pixmap_from_bits</span></b> (<span class="main_basic_type"><span class="struct">char</span></span>* bits, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> fg, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
+        </div>
+        <div class="description">
+          <p>Builds a pixmap fill pattern from bitmap data.</p>
+          <p> It is useful if the width of the bitmap pattern is not eight as such bitmap patterns can not be used to build a GrBitmap structure.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">bits</td>
+              <td>
+                <p>the bitmap data</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">w</td>
+              <td>
+                <p>the width of the bitmap data</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">h</td>
+              <td>
+                <p>the height of the bitmap data</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">fg</td>
+              <td>
+                <p>the forground color</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">bg</td>
+              <td>
+                <p>the background color</p>
+              </td>
+            </tr>
+          </table>
+          <h2 class="main_title">Returns:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td>
+                <p>a new <a href="Grx.Pixmap.html" class="struct">Pixmap</a> (casted as <a href="Grx.Pattern.html" class="class">Pattern</a>) or 
+                  <span class="main_optional_parameter">null</span> if there was an error.</p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div><br/>

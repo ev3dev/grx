@@ -28,16 +28,74 @@
         <hr class="navi_hr"/>
         <ul class="navi_main">
           <li class="creation_method">Cursor</li>
-          <li class="method"><a href="Grx.Cursor.display.html">display</a></li>
-          <li class="method"><a href="Grx.Cursor.erase.html">erase</a></li>
+          <li class="method"><a href="Grx.Cursor.hide.html">hide</a></li>
           <li class="method"><a href="Grx.Cursor.move.html">move</a></li>
+          <li class="method"><a href="Grx.Cursor.show.html">show</a></li>
         </ul>
       </div>
       <div class="site_content">
         <h1 class="main_title">Cursor</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <b><span class="creation_method">Cursor</span></b> (<span class="main_basic_type"><span class="struct">char</span></span>[] pixels, <span class="main_basic_type"><span class="struct">int</span></span> pitch, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_basic_type"><span class="struct">int</span></span> xo, <span class="main_basic_type"><span class="struct">int</span></span> yo, <span class="main_type"><span class="class">Array</span></span>&lt;<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>&gt; table)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <b><span class="creation_method">Cursor</span></b> (<span class="main_basic_type"><span class="struct">char</span></span>[] pixels, <span class="main_basic_type"><span class="struct">int</span></span> pitch, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_basic_type"><span class="struct">int</span></span> height, <span class="main_basic_type"><span class="struct">int</span></span> x0, <span class="main_basic_type"><span class="struct">int</span></span> y0, <span class="main_type"><span class="class">Array</span></span>&lt;<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>&gt; colors)
+        </div>
+        <div class="description">
+          <p>Create a new cursor using the data provided.</p>
+          <p>Pixel data values of 0 are treated as transparent, 1 is the first color in <code>colors</code> and so on.</p>
+          <p>The hot point <code>x0</code>, <code>y0</code> is relative to the top left of the cursor.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">pixels</td>
+              <td>
+                <p>cursor bitmap data</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">pitch</td>
+              <td>
+                <p>width of pixel data rows in bytes</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">width</td>
+              <td>
+                <p>width of cursor in pixels</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">height</td>
+              <td>
+                <p>height of cursor in pixels</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">x0</td>
+              <td>
+                <p>hot point of cursor x coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">y0</td>
+              <td>
+                <p>hot point of cursor y coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">colors</td>
+              <td>
+                <p>color table for pixel data</p>
+              </td>
+            </tr>
+          </table>
+          <h2 class="main_title">Returns:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td>
+                <p>the new cursor or <span class="main_optional_parameter">null</span> if creating the cursor failed.</p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div><br/>

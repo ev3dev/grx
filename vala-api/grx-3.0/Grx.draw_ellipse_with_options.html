@@ -73,6 +73,7 @@
           <li class="struct"><a href="Grx.VideoDriver.html">VideoDriver</a></li>
           <li class="struct"><a href="Grx.VideoMode.html">VideoMode</a></li>
           <li class="struct"><a href="Grx.VideoModeExt.html">VideoModeExt</a></li>
+          <li class="constant"><a href="Grx.DEFAULT_DPI.html">DEFAULT_DPI</a></li>
           <li class="constant"><a href="Grx.MAX_ELLIPSE_POINTS.html">MAX_ELLIPSE_POINTS</a></li>
           <li class="constant"><a href="Grx.MAX_POLYGON_POINTS.html">MAX_POLYGON_POINTS</a></li>
           <li class="constant"><a href="Grx.PNM_FORMAT_ERROR.html">PNM_FORMAT_ERROR</a></li>
@@ -225,6 +226,43 @@
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
         <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">draw_ellipse_with_options</span></b> (<span class="main_basic_type"><span class="struct">int</span></span> xc, <span class="main_basic_type"><span class="struct">int</span></span> yc, <span class="main_basic_type"><span class="struct">int</span></span> rx, <span class="main_basic_type"><span class="struct">int</span></span> ry, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o)
+        </div>
+        <div class="description">
+          <p>Draws an ellipse on the current context using the specified options.</p>
+          <p>The ellipse can only draw ellipses with its major axis parallel with either the X or Y coordinate axis</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">xc</td>
+              <td>
+                <p>the X coordinate of the center of the ellipse</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">yc</td>
+              <td>
+                <p>the Y coordinate of the center of the ellipse</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">rx</td>
+              <td>
+                <p>the radius in the X direction</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">ry</td>
+              <td>
+                <p>the radius in the Y direction</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">o</td>
+              <td>
+                <p>the options</p>
+              </td>
+            </tr>
+          </table>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>

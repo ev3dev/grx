@@ -393,7 +393,7 @@ build a GrBitmap structure.</p>
 <div class="refsect2">
 <a name="grx-pattern-new-pixmap-from-context"></a><h3>grx_pattern_new_pixmap_from_context ()</h3>
 <pre class="programlisting"><a class="link" href="pattern.html#GrxPattern"><span class="returnvalue">GrxPattern</span></a> *
-grx_pattern_new_pixmap_from_context (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *src</code></em>);</pre>
+grx_pattern_new_pixmap_from_context (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
 <p>Converts a graphics context to a pixmap fill pattern.</p>
 <p>This is useful when the pattern can be created with graphics drawing
 operations. NOTE: the pixmap pattern and the original context share the
@@ -407,7 +407,7 @@ drawing RAM, thus if the context is redrawn the fill pattern changes as well.</p
 <col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
-<td class="parameter_name"><p>src</p></td>
+<td class="parameter_name"><p>context</p></td>
 <td class="parameter_description"><p>the context</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>

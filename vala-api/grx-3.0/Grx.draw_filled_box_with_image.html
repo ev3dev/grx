@@ -73,6 +73,7 @@
           <li class="struct"><a href="Grx.VideoDriver.html">VideoDriver</a></li>
           <li class="struct"><a href="Grx.VideoMode.html">VideoMode</a></li>
           <li class="struct"><a href="Grx.VideoModeExt.html">VideoModeExt</a></li>
+          <li class="constant"><a href="Grx.DEFAULT_DPI.html">DEFAULT_DPI</a></li>
           <li class="constant"><a href="Grx.MAX_ELLIPSE_POINTS.html">MAX_ELLIPSE_POINTS</a></li>
           <li class="constant"><a href="Grx.MAX_POLYGON_POINTS.html">MAX_POLYGON_POINTS</a></li>
           <li class="constant"><a href="Grx.PNM_FORMAT_ERROR.html">PNM_FORMAT_ERROR</a></li>
@@ -224,7 +225,57 @@
         <h1 class="main_title">draw_filled_box_with_image</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">draw_filled_box_with_image</span></b> (<span class="main_basic_type"><span class="struct">int</span></span> xo, <span class="main_basic_type"><span class="struct">int</span></span> yo, <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">draw_filled_box_with_image</span></b> (<span class="main_basic_type"><span class="struct">int</span></span> xo, <span class="main_basic_type"><span class="struct">int</span></span> yo, <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Image.html" class="class">Image</a></span> image)
+        </div>
+        <div class="description">
+          <p>Fills the rectangle <code>x1</code>, <code>y1</code>, <code>x2</code>, <code>y2</code> in the current context with the image.</p>
+          <p> This image can be offset from the rectangle by specifying <code>xo</code>, <code>yo</code> different from <code>x1</code>, <code>y1
+            </code>. The image is tiled if needed to fill the rectangle.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">xo</td>
+              <td>
+                <p>the alignment X coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">yo</td>
+              <td>
+                <p>the alignment Y coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">x1</td>
+              <td>
+                <p>the top X coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">y1</td>
+              <td>
+                <p>the left Y coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">x2</td>
+              <td>
+                <p>the right X coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">y2</td>
+              <td>
+                <p>the bottom Y coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">image</td>
+              <td>
+                <p>the image</p>
+              </td>
+            </tr>
+          </table>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>

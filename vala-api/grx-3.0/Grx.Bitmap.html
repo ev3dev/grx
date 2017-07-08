@@ -50,7 +50,10 @@
         </div>
         <div class="description">
           <p>A mode independent way to specify a fill pattern of two colors.</p>
-          <p>It is always 8 pixels wide (1 byte per scan line), its height is user-defined. SET THE TYPE FLAG TO ZERO!!!</p>
+          <p> The width is always 8 pixels but the height is user-defined.</p>
+          <p>Bitmap patterns can be easily built from initialized character arrays and static structures by the C compiler, thus no special support is
+             included in the library for creating them. The only action required from the application program might be changing the foreground and 
+            background colors as needed.</p>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>
@@ -61,27 +64,27 @@
         <ul class="navi_inline">
           <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Bitmap.is_pixmap.html" class="field">is_pixmap</a></b>
             </span>
-            <div class="leaf_brief_description"><span class="brief_description">Type flag for pattern union.</span>
+            <div class="leaf_brief_description">
             </div></li>
           <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.Bitmap.height.html" class="field">height</a></b>
             </span>
-            <div class="leaf_brief_description"><span class="brief_description">Bitmap height</span>
+            <div class="leaf_brief_description">
             </div></li>
           <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">char</span></span>* <b><a href="Grx.Bitmap.data.html" class="field">data</a></b>
             </span>
-            <div class="leaf_brief_description"><span class="brief_description">Pointer to the bit pattern</span>
+            <div class="leaf_brief_description">
             </div></li>
           <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> <b><a href="Grx.Bitmap.fg_color.html" class="field">fg_color</a></b>
             </span>
-            <div class="leaf_brief_description"><span class="brief_description">Foreground color for fill</span>
+            <div class="leaf_brief_description">
             </div></li>
           <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> <b><a href="Grx.Bitmap.bg_color.html" class="field">bg_color</a></b>
             </span>
-            <div class="leaf_brief_description"><span class="brief_description">background color for fill</span>
+            <div class="leaf_brief_description">
             </div></li>
           <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Bitmap.free_on_pattern_destroy.html" class="field">free_on_pattern_destroy</a></b>
             </span>
-            <div class="leaf_brief_description"><span class="brief_description">Set if dynamically allocated</span>
+            <div class="leaf_brief_description">
             </div></li>
         </ul>
       </div>

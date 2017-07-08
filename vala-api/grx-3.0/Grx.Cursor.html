@@ -28,9 +28,9 @@
         <hr class="navi_hr"/>
         <ul class="navi_main">
           <li class="creation_method"><a href="Grx.Cursor.Cursor.html">Cursor</a></li>
-          <li class="method"><a href="Grx.Cursor.display.html">display</a></li>
-          <li class="method"><a href="Grx.Cursor.erase.html">erase</a></li>
+          <li class="method"><a href="Grx.Cursor.hide.html">hide</a></li>
           <li class="method"><a href="Grx.Cursor.move.html">move</a></li>
+          <li class="method"><a href="Grx.Cursor.show.html">show</a></li>
         </ul>
       </div>
       <div class="site_content">
@@ -45,6 +45,9 @@
 
         <h2 class="main_title">Description:</h2>
         <div class="main_code_definition">[ <span class="main_type">Compact</span> ]<br/><span class="main_keyword">public</span> <span class="main_keyword">class</span> <b><span class="class">Cursor</span></b>
+        </div>
+        <div class="description">
+          <p>Structure to hold cursor state.</p>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>
@@ -53,24 +56,24 @@
         <h2 class="main_title">Content:</h2>
         <h3 class="main_title">Creation methods:</h3>
         <ul class="navi_inline">
-          <li class="creation_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <b><a href="Grx.Cursor.Cursor.html" class="creation_method">Cursor</a></b> (<span class="main_basic_type"><span class="struct">char</span></span>[] pixels, <span class="main_basic_type"><span class="struct">int</span></span> pitch, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_basic_type"><span class="struct">int</span></span> xo, <span class="main_basic_type"><span class="struct">int</span></span> yo, <span class="main_type"><span class="class">Array</span></span>&lt;<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>&gt; table)
+          <li class="creation_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <b><a href="Grx.Cursor.Cursor.html" class="creation_method">Cursor</a></b> (<span class="main_basic_type"><span class="struct">char</span></span>[] pixels, <span class="main_basic_type"><span class="struct">int</span></span> pitch, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_basic_type"><span class="struct">int</span></span> height, <span class="main_basic_type"><span class="struct">int</span></span> x0, <span class="main_basic_type"><span class="struct">int</span></span> y0, <span class="main_type"><span class="class">Array</span></span>&lt;<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>&gt; colors)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Create a new cursor using the data provided.</span>
             </div></li>
         </ul>
         <h3 class="main_title">Methods:</h3>
         <ul class="navi_inline">
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Cursor.display.html" class="method">display</a></b> ()
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Cursor.show.html" class="method">show</a></b> ()
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draws the cursor at it's current position.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Cursor.erase.html" class="method">erase</a></b> ()
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Cursor.hide.html" class="method">hide</a></b> ()
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Erase the cursor.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Cursor.move.html" class="method">move</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Move the cursor to a new position.</span>
             </div></li>
         </ul>
       </div>

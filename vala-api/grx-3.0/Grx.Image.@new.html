@@ -38,7 +38,47 @@
         <h1 class="main_title">@new</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><a href="Grx.Image.html" class="class">Image</a></span> <b><span class="static_method">@new</span></b> (<span class="main_basic_type"><span class="struct">char</span></span>[] pixels, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><span class="class">Array</span></span>&lt;<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>&gt; colors)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><a href="Grx.Image.html" class="class">Image</a></span> <b><span class="static_method">@new</span></b> (<span class="main_basic_type"><span class="struct">char</span></span>[] pixels, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_basic_type"><span class="struct">int</span></span> height, <span class="main_type"><span class="class">Array</span></span>&lt;<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>&gt; colors)
+        </div>
+        <div class="description">
+          <p>Builds a pixmap from a two dimensional (width by height) array of characters.</p>
+          <p> The elements in this array are used as indices into the color table specified with the argument <code>colors</code>. (This means that 
+            pixmaps created this way can use at most 256 colors.)</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">pixels</td>
+              <td>
+                <p>array of pixel data</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">width</td>
+              <td>
+                <p>the width of the array</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">height</td>
+              <td>
+                <p>the height of the array</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">colors</td>
+              <td>
+                <p>the color table</p>
+              </td>
+            </tr>
+          </table>
+          <h2 class="main_title">Returns:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td>
+                <p>the new image or <span class="main_optional_parameter">null</span> if there was an error.</p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div><br/>

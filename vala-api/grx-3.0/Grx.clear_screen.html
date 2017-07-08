@@ -73,6 +73,7 @@
           <li class="struct"><a href="Grx.VideoDriver.html">VideoDriver</a></li>
           <li class="struct"><a href="Grx.VideoMode.html">VideoMode</a></li>
           <li class="struct"><a href="Grx.VideoModeExt.html">VideoModeExt</a></li>
+          <li class="constant"><a href="Grx.DEFAULT_DPI.html">DEFAULT_DPI</a></li>
           <li class="constant"><a href="Grx.MAX_ELLIPSE_POINTS.html">MAX_ELLIPSE_POINTS</a></li>
           <li class="constant"><a href="Grx.MAX_POLYGON_POINTS.html">MAX_POLYGON_POINTS</a></li>
           <li class="constant"><a href="Grx.PNM_FORMAT_ERROR.html">PNM_FORMAT_ERROR</a></li>
@@ -225,6 +226,21 @@
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
         <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">clear_screen</span></b> (<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
+        </div>
+        <div class="description">
+          <p>Clears the screen using the specified background color.</p>
+          <p>Thanks to the special <a href="Grx.Color.html" class="struct">Color</a> definition, you can do more than simple clear with this 
+            functions, by example with: <pre class="main_source">grx_clear_screen (grx_color_to_xor_mode (grx_color_get_white ()));</pre> the screen 
+            is negativized, do it again and the screen is restored.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">bg</td>
+              <td>
+                <p>the background color</p>
+              </td>
+            </tr>
+          </table>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>

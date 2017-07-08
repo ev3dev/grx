@@ -67,7 +67,40 @@
         <h1 class="main_title">save_to_jpeg_grayscale</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><span class="method">save_to_jpeg_grayscale</span></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name, <span class="main_basic_type"><span class="struct">int</span></span> quality = <span class="main_optional_parameter">90</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><span class="method">save_to_jpeg_grayscale</span></b> (<span class="main_basic_type"><span class="class">string</span></span> filename, <span class="main_basic_type"><span class="struct">int</span></span> quality = <span class="main_optional_parameter">90</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
+        </div>
+        <div class="description">
+          <p>Dump a context in a Gray JPEG file</p>
+          <p>This routine works both in RGB and palette modes</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">this</td>
+              <td>
+                <p>Context to be saved or <span class="main_optional_parameter">null</span> to use the global context</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">filename</td>
+              <td>
+                <p>Name of jpeg file</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">quality</td>
+              <td>
+                <p>quality scaling (1 to 100) the normal value is 75</p>
+              </td>
+            </tr>
+          </table>
+          <h2 class="main_title">Returns:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td>
+                <p><span class="main_optional_parameter">true</span> on success, otherwise <span class="main_optional_parameter">false</span></p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div><br/>

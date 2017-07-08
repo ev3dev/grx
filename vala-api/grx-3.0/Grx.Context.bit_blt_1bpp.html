@@ -67,7 +67,76 @@
         <h1 class="main_title">bit_blt_1bpp</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">bit_blt_1bpp</span></b> (<span class="main_basic_type"><span class="struct">int</span></span> dx, <span class="main_basic_type"><span class="struct">int</span></span> dy, <span class="main_type"><a href="Grx.Context.html" class="class">Context</a></span> src, <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> fg, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">bit_blt_1bpp</span></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Context.html" class="class">Context</a></span> src, <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> fg, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
+        </div>
+        <div class="description">
+          <p>Copies an area bounded by x1, y2, x2, y2 in the source context to the destination context at the location specified by dx, dy using the 
+            specified operation.</p>
+          <p>The source must be a 1 bit per pixel bitmap. The foreground color is used for bits = 1 and the background color is used for bits = 0.</p>
+          <p>Also see <a href="Grx.bit_blt_1bpp.html" class="method">bit_blt_1bpp</a> for operating on the current context.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">this</td>
+              <td>
+                <p>the destination context</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">x</td>
+              <td>
+                <p>the destination X coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">y</td>
+              <td>
+                <p>the destination Y coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">src</td>
+              <td>
+                <p>the source context or <span class="main_optional_parameter">null</span> to use the current context</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">x1</td>
+              <td>
+                <p>the source bounding rectangle left coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">y1</td>
+              <td>
+                <p>the source bounding rectangle top coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">x2</td>
+              <td>
+                <p>the source bounding rectangle right coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">y2</td>
+              <td>
+                <p>the source bounding rectangle bottom coordinate</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">fg</td>
+              <td>
+                <p>the foreground color</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="main_parameter_table_name">bg</td>
+              <td>
+                <p>the background color</p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div><br/>

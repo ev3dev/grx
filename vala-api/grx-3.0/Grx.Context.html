@@ -75,6 +75,9 @@
 
         <h2 class="main_title">Description:</h2>
         <div class="main_code_definition">[ <span class="main_type">Compact</span> ]<br/><span class="main_keyword">public</span> <span class="main_keyword">class</span> <b><span class="class">Context</span></b>
+        </div>
+        <div class="description">
+          <p>Private data structure used by <span class="class">Context</span>.</p>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
         </div>
@@ -110,17 +113,20 @@
         </ul>
         <h3 class="main_title">Static methods:</h3>
         <ul class="navi_inline">
-          <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Context</span></span>? <b><a href="Grx.Context.@new.html" class="static_method">@new</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_basic_type"><span class="struct">int</span></span> height, <span class="main_basic_type"><span class="struct">char</span></span>*[]? memory = <span class="main_optional_parameter">null</span>, <span class="main_keyword">out</span> <span class="main_type"><span class="class">Context</span></span>? where = <span class="main_optional_parameter">null</span>)
+          <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Context</span></span>? <b><a href="Grx.Context.@new.html" class="static_method">@new</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_basic_type"><span class="struct">char</span></span>*[]? memory = <span class="main_optional_parameter">null</span>, <span class="main_keyword">out</span> <span class="main_type"><span class="class">Context</span></span>? where = <span class="main_optional_parameter">null</span>)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates a new context in system memory using the memory layout 
+                specified by <a href="Grx.FrameMode.get_screen_core.html" class="static_method">get_screen_core</a>.</span>
             </div></li>
-          <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Context</span></span>? <b><a href="Grx.Context.new_full.html" class="static_method">new_full</a></b> (<span class="main_type"><a href="Grx.FrameMode.html" class="enum">FrameMode</a></span> mode, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_basic_type"><span class="struct">int</span></span> height, <span class="main_basic_type"><span class="struct">char</span></span>*[]? memory = <span class="main_optional_parameter">null</span>, <span class="main_keyword">out</span> <span class="main_type"><span class="class">Context</span></span>? where = <span class="main_optional_parameter">null</span>)
+          <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Context</span></span>? <b><a href="Grx.Context.new_full.html" class="static_method">new_full</a></b> (<span class="main_type"><a href="Grx.FrameMode.html" class="enum">FrameMode</a></span> mode, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_basic_type"><span class="struct">char</span></span>*[]? memory = <span class="main_optional_parameter">null</span>, <span class="main_keyword">out</span> <span class="main_type"><span class="class">Context</span></span>? where = <span class="main_optional_parameter">null</span>)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates a new context in system memory using the memory layout 
+                specified by <code>mode</code>.</span>
             </div></li>
           <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Context</span></span>? <b><a href="Grx.Context.new_subcontext.html" class="static_method">new_subcontext</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><span class="class">Context</span></span> parent, <span class="main_keyword">out</span> <span class="main_type"><span class="class">Context</span></span>? where = <span class="main_optional_parameter">null</span>)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates a new sub-context which maps to a part of an existing context.
+              </span>
             </div></li>
           <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Context</span></span>? <b><a href="Grx.Context.save.html" class="static_method">save</a></b> (<span class="main_keyword">out</span> <span class="main_type"><span class="class">Context</span></span>? where = <span class="main_optional_parameter">null</span>)
             </span>
@@ -131,27 +137,32 @@
         <ul class="navi_inline">
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.resize_subcontext.html" class="method">resize_subcontext</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Sub-contexts can be resized, but not their parents (i.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.set_clip_box.html" class="method">set_clip_box</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Sets the clipping limits on <span class="main_keyword">this</span>.
+              </span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.get_clip_box.html" class="method">get_clip_box</a></b> (<span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span> y2)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Gets the clipping limits of <span class="main_keyword">this</span>.
+              </span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.reset_clip_box.html" class="method">reset_clip_box</a></b> ()
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Resets the clipping limits on <span class="main_keyword">this</span> 
+                to the size of <span class="main_keyword">this</span>.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.clear.html" class="method">clear</a></b> (<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Clears the specified context using the specified background color.
+              </span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.flood_spill.html" class="method">flood_spill</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> old_c, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> new_c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Replaces old color with new color in the context in the area bounded 
+                by the rectangle x1, y1, x2, y2.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.flood_spill_2.html" class="method">flood_spill_2</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> old_c1, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> new_c1, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> old_c2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> new_c2)
             </span>
@@ -159,7 +170,8 @@
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> <b><a href="Grx.Context.get_pixel_at.html" class="method">get_pixel_at</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Gets the color value of the pixel in the context at the specified 
+                coordinates.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>* <b><a href="Grx.Context.get_scan_line.html" class="method">get_scan_line</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> yy)
             </span>
@@ -167,63 +179,68 @@
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> <b><a href="Grx.Context.fast_get_pixel_at.html" class="method">fast_get_pixel_at</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Gets the color value of the pixel in the context at the specified 
+                coordinates.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> <b><a href="Grx.Context.get_pixel_at_user.html" class="method">get_pixel_at_user</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Gets the color value of the pixel in the context at the specified 
+                coordinates.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.bit_blt.html" class="method">bit_blt</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><span class="class">Context</span></span> src, <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> op = ( <b><a href="Grx.Color.html" class="struct">Color</a></b>) <b><a href="Grx.ColorMode.WRITE.html" class="enumvalue">WRITE</a></b>)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Copies an area bounded by x1, y2, x2, y2 in the source context to the 
+                destination context at the location specified by dx, dy using the specified operation.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.bit_blt_1bpp.html" class="method">bit_blt_1bpp</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> dx, <span class="main_basic_type"><span class="struct">int</span></span> dy, <span class="main_type"><span class="class">Context</span></span> src, <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> fg, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.bit_blt_1bpp.html" class="method">bit_blt_1bpp</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><span class="class">Context</span></span> src, <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> fg, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Copies an area bounded by x1, y2, x2, y2 in the source context to the 
+                destination context at the location specified by dx, dy using the specified operation.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.Context.fast_bit_blt.html" class="method">fast_bit_blt</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><span class="class">Context</span></span> src, <span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> op = ( <b><a href="Grx.Color.html" class="struct">Color</a></b>) <b><a href="Grx.ColorMode.WRITE.html" class="enumvalue">WRITE</a></b>)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Copies an area bounded by x1, y2, x2, y2 in the source context to the 
+                destination context at the location specified by dx, dy using the specified operation.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_pbm.html" class="method">save_to_pbm</a></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name, <span class="main_basic_type"><span class="class">string</span></span>? comment = <span class="main_optional_parameter">null</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_pbm.html" class="method">save_to_pbm</a></b> (<span class="main_basic_type"><span class="class">string</span></span> filename, <span class="main_basic_type"><span class="class">string</span></span>? comment = <span class="main_optional_parameter">null</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Dump a context in a PBM file (black and white)</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_pgm.html" class="method">save_to_pgm</a></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name, <span class="main_basic_type"><span class="class">string</span></span>? comment = <span class="main_optional_parameter">null</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_pgm.html" class="method">save_to_pgm</a></b> (<span class="main_basic_type"><span class="class">string</span></span> filename, <span class="main_basic_type"><span class="class">string</span></span>? comment = <span class="main_optional_parameter">null</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Dump a context in a PGM file (gray scale)</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_ppm.html" class="method">save_to_ppm</a></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name, <span class="main_basic_type"><span class="class">string</span></span>? comment = <span class="main_optional_parameter">null</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_ppm.html" class="method">save_to_ppm</a></b> (<span class="main_basic_type"><span class="class">string</span></span> filename, <span class="main_basic_type"><span class="class">string</span></span>? comment = <span class="main_optional_parameter">null</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Dump a context in a PPM file (real color)</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.load_from_pnm.html" class="method">load_from_pnm</a></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.load_from_pnm.html" class="method">load_from_pnm</a></b> (<span class="main_basic_type"><span class="class">string</span></span> filename)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Load a context from a PNM file.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.load_from_pnm_data.html" class="method">load_from_pnm_data</a></b> (<span class="main_basic_type"><span class="struct">uint8</span></span>* buffer) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Load a context from a PNM buffer</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_png.html" class="method">save_to_png</a></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_png.html" class="method">save_to_png</a></b> (<span class="main_basic_type"><span class="class">string</span></span> filename) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Dump a context in a PNG file</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.load_from_png.html" class="method">load_from_png</a></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name, <span class="main_basic_type"><span class="struct">bool</span></span> use_alpha = <span class="main_optional_parameter">true</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.load_from_png.html" class="method">load_from_png</a></b> (<span class="main_basic_type"><span class="class">string</span></span> filename, <span class="main_basic_type"><span class="struct">bool</span></span> use_alpha = <span class="main_optional_parameter">true</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Load a context from a PNG file</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.load_from_jpeg.html" class="method">load_from_jpeg</a></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name, <span class="main_basic_type"><span class="struct">int</span></span> scale = <span class="main_optional_parameter">1</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.load_from_jpeg.html" class="method">load_from_jpeg</a></b> (<span class="main_basic_type"><span class="class">string</span></span> filename, <span class="main_basic_type"><span class="struct">int</span></span> scale = <span class="main_optional_parameter">1</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Load a context from a JPEG file.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_jpeg.html" class="method">save_to_jpeg</a></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name, <span class="main_basic_type"><span class="struct">int</span></span> quality = <span class="main_optional_parameter">90</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_jpeg.html" class="method">save_to_jpeg</a></b> (<span class="main_basic_type"><span class="class">string</span></span> filename, <span class="main_basic_type"><span class="struct">int</span></span> quality = <span class="main_optional_parameter">90</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Dump a context in a JPEG file</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_jpeg_grayscale.html" class="method">save_to_jpeg_grayscale</a></b> (<span class="main_basic_type"><span class="class">string</span></span> file_name, <span class="main_basic_type"><span class="struct">int</span></span> quality = <span class="main_optional_parameter">90</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Context.save_to_jpeg_grayscale.html" class="method">save_to_jpeg_grayscale</a></b> (<span class="main_basic_type"><span class="class">string</span></span> filename, <span class="main_basic_type"><span class="struct">int</span></span> quality = <span class="main_optional_parameter">90</span>) <span class="main_keyword">throws</span> <span class="main_type"><span class="class">Error</span></span>
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Dump a context in a Gray JPEG file</span>
             </div></li>
         </ul>
       </div>
