@@ -34,6 +34,20 @@ enum {
 
 static GParamSpec *properties[N_PROPERTIES] = { NULL };
 
+/**
+ * GrxDevice:name:
+ *
+ * A descriptive name of the device, suitable for displaying to the user.
+ */
+
+/**
+ * grx_device_get_name:
+ * @device: the device
+ *
+ * Gets the #GrxDevice:name of the device.
+ *
+ * Returns: (transfer full) (nullable): the name or %NULL
+ */
 const gchar *grx_device_get_name (GrxDevice *device)
 {
     gchar *name;
@@ -43,6 +57,20 @@ const gchar *grx_device_get_name (GrxDevice *device)
     return name;
 }
 
+/**
+ * GrxDevice:sysname:
+ *
+ * The sysfs name of the device.
+ */
+
+/**
+ * grx_device_get_sysname:
+ * @device: the device
+ *
+ * Gets the #GrxDevice:sysname of the device.
+ *
+ * Returns: (transfer full) (nullable): the name or %NULL
+ */
 const gchar *grx_device_get_sysname (GrxDevice *device)
 {
     gchar *sysname;
@@ -52,6 +80,20 @@ const gchar *grx_device_get_sysname (GrxDevice *device)
     return sysname;
 }
 
+/**
+ * GrxDevice:has-keyboard:
+ *
+ * Indicates that a device can produce key events.
+ */
+
+/**
+ * grx_device_get_has_keyboard:
+ * @device: the device
+ *
+ * Gets if the device has keyboard capabilities.
+ *
+ * Returns: %TRUE if the device can generate key events, otherwise %FALSE.
+ */
 gboolean grx_device_get_has_keyboard (GrxDevice *device)
 {
     gboolean has_keyboard;
@@ -61,6 +103,20 @@ gboolean grx_device_get_has_keyboard (GrxDevice *device)
     return has_keyboard;
 }
 
+/**
+ * GrxDevice:has-pointer:
+ *
+ * Indicates that a device can produce button/motion events.
+ */
+
+/**
+ * grx_device_get_has_pointer:
+ * @device: the device
+ *
+ * Gets if the device has mouse capabilities.
+ *
+ * Returns: %TRUE if the device can generate button/motion events, otherwise %FALSE.
+ */
 gboolean grx_device_get_has_pointer (GrxDevice *device)
 {
     gboolean has_pointer;
@@ -70,6 +126,20 @@ gboolean grx_device_get_has_pointer (GrxDevice *device)
     return has_pointer;
 }
 
+/**
+ * GrxDevice:has-touch:
+ *
+ * Indicates that a device can produce touch events.
+ */
+
+/**
+ * grx_device_get_has_touch:
+ * @device: the device
+ *
+ * Gets if the device has touch capabilities.
+ *
+ * Returns: %TRUE if the device can generate touch events, otherwise %FALSE.
+ */
 gboolean grx_device_get_has_touch (GrxDevice *device)
 {
     gboolean has_touch;

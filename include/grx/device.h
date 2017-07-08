@@ -27,7 +27,12 @@
  * @section_id: device
  * @include: grx-3.0.h
  *
- * TODO
+ * #GrxDevice is an abstract class the represents an input device such as a
+ * keyboard, mouse or touchscreen. Devices are normally handled internally
+ * in the library. So, this class is normally not used unless you need to
+ * differentiate between input events between individual devices (e.g. a
+ * a calibration program where you only want input from the device you are
+ * calibrating).
  */
 
 /**

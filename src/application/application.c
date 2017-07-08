@@ -70,6 +70,13 @@ enum {
 static GParamSpec *properties[N_PROPERTIES] = { NULL };
 
 /**
+ * GrxApplication:is-active:
+ *
+ * Gets if the application is active. Applications should not draw to the screen
+ * when this property is %FALSE.
+ */
+
+/**
  * grx_application_is_active:
  * @application: a #GrxApplication
  *
@@ -85,6 +92,16 @@ grx_application_is_active (GrxApplication *application)
 
     return priv->active;
 }
+
+/**
+ * GrxApplication:quit-on-signal:
+ *
+ * Gets or sets if the application should queue a %GRX_EVENT_TYPE_APP_QUIT
+ * event when SIGHUP, SIGINT or SIGTERM is received.
+ *
+ * The default behavior is for an application to quit when any of these signals
+ * are received.
+ */
 
 /**
  * grx_application_get_quit_on_signal:
