@@ -29,7 +29,7 @@ class DemoApp : Grx.Application {
         Object ();
         init ();
         hold ();
-        colors = Color.alloc_ega_colors ();
+        colors = Color.get_ega_colors ();
     }
 
     public override void activate () {

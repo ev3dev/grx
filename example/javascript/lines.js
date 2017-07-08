@@ -35,7 +35,7 @@ const DemoApp = new Lang.Class({
         this.init(null);
         this.hold();
 
-        this._colors = Grx.color_alloc_ega_colors();
+        this._colors = Grx.color_get_ega_colors();
         print(this._colors);
         print(this._colors.length);
         print(this._colors[1]);

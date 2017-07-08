@@ -59,14 +59,14 @@ namespace Grx {
 
         public static Color lookup (GLib.Array<Color> table, uint index);
 
-        //  public static unowned Color[16] alloc_ega_colors ();
+        //  public static unowned Color[16] get_ega_colors ();
 
-        [CCode (cname = "grx_color_alloc_ega_colors", array_length = false)]
-        static unowned Color[] _alloc_ega_colors ();
-        [CCode (cname = "vala_grx_color_alloc_ega_colors")]
-        public static unowned Color[] alloc_ega_colors () {
+        [CCode (cname = "grx_color_get_ega_colors", array_length = false)]
+        static unowned Color[] _get_ega_colors ();
+        [CCode (cname = "vala_grx_color_get_ega_colors")]
+        public static unowned Color[] get_ega_colors () {
             // work around https://bugzilla.gnome.org/show_bug.cgi?id=784691
-            unowned Color[] colors = _alloc_ega_colors ();
+            unowned Color[] colors = _get_ega_colors ();
             colors.length = 16;
             return colors;
         }

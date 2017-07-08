@@ -200,7 +200,7 @@ void grx_color_query2_inline(GrxColor c, guint32 *hcolor);
  * @GRX_EGA_COLOR_INDEX_YELLOW: yellow
  * @GRX_EGA_COLOR_INDEX_WHITE: white
  *
- * Indexes for use with the array returned by grx_color_alloc_ega_colors().
+ * Indexes for use with the array returned by grx_color_get_ega_colors().
  */
 typedef enum {
     GRX_EGA_COLOR_INDEX_BLACK,
@@ -221,7 +221,7 @@ typedef enum {
     GRX_EGA_COLOR_INDEX_WHITE,
 } GrxEgaColorIndex;
 
-GrxColor *grx_color_alloc_ega_colors(void);
+GrxColor *grx_color_get_ega_colors(void);
 
 /**
  * GrxColorCell:

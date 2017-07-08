@@ -35,7 +35,7 @@ class App(Grx.Application):
         super(Grx.Application, self).__init__()
         self.init()
         self.hold()
-        self._colors = Grx.color_alloc_ega_colors()
+        self._colors = Grx.color_get_ega_colors()
 
     def do_activate(self):
         """called when the application starts

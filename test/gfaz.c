@@ -50,7 +50,7 @@ int gfaz_ini( int width, int height, int bpp )
     g_error("%s", error->message);
   }
   
-  egacolors = grx_color_alloc_ega_colors();
+  egacolors = grx_color_get_ega_colors();
 
   if( GrMouseDetect() ){
     mouse_found = 1;
