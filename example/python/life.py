@@ -69,8 +69,10 @@ class Life(Grx.Application):
         if Grx.Application.do_event(self, event):
             return True
 
-        if event.type in (Grx.EventType.KEY_DOWN, Grx.EventType.BUTTON_PRESS,
-                          Grx.EventType.TOUCH_DOWN):
+        if (event.get_keysym() in (Grx.Key.LCASE_Q, Grx.Key.ESCAPE,
+                                   Grx.Key.BACK_SPACE) or
+                event.type in (Grx.EventType.BUTTON_PRESS,
+                               Grx.EventType.TOUCH_DOWN)):
             self.quit()
             return True
 

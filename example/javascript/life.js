@@ -64,8 +64,9 @@ const DemoApp = new Lang.Class({
             return true;
         }
 
+        const key = event.get_keysym();
         const event_type = event.get_event_type();
-        if (this._quit_event_types.indexOf(event_type) >= 0) {
+        if (this._quit_keys.indexOf(key) >= 0 || this._quit_event_types.indexOf(event_type) >= 0) {
             this.quit();
             return true;
         }
@@ -73,7 +74,8 @@ const DemoApp = new Lang.Class({
         return false;
     },
 
-    _quit_event_types: [Grx.EventType.KEY_DOWN, Grx.EventType.BUTTON_PRESS, Grx.EventType.TOUCH_DOWN],
+    _quit_keys: [Grx.Key.LCASE_Q, Grx.Key.ESCAPE, Grx.Key.BACK_SPACE],
+    _quit_event_types: [Grx.EventType.BUTTON_PRESS, Grx.EventType.TOUCH_DOWN],
 
     on_notify_is_active: function() {
          if (this.is_active) {
