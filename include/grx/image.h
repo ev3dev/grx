@@ -84,9 +84,9 @@ void grx_draw_pixel_with_image(gint xo, gint yo, gint x, gint y, GrxImage *image
 #define grx_image_as_pattern(p) \
         (GrxPattern *)(p)
 #define grx_image_copy(i)   \
-        (GrxImage *)grx_pattern_copy((GrxPattern *)(i));
+        (GrxImage *)grx_pattern_copy((GrxPattern *)(i))
 #define grx_image_free(i)   \
-        grx_pattern_free((GrxPattern *)(i));
+        grx_pattern_free((GrxPattern *)(i))
 #endif
 
 #endif /* __GRX_IMAGE_H__ */
