@@ -186,7 +186,7 @@ typedef struct {
     int       plength;          /* total length of pattern in pixels */
     int       ppos;             /* current pattern position (modulo plength) */
     int       on;               /* is the pattern currently on ? */
-    unsigned char *patt;        /* the pattern bits */
+    const unsigned char *patt;  /* the pattern bits */
     GrFiller *f;                /* the filler functions */
     GrFillArg c;                /* the filler argument */
 } linepatt;
@@ -359,8 +359,8 @@ void _GrDrawCustomPolygon(int n, GrxPoint *pt, const GrxLineOptions *lp,
         p.c       = c;
         p.w       = imax((lp->width - 1),0);
         p.ppos    = 0;
-        p.patt    = lp->dash_patterns;
-        p.psegs   = p.patt ? imax(lp->n_dash_patterns,0) : 0;
+        p.patt    = &lp->dash_pattern0;
+        p.psegs   = imin(imax(lp->n_dash_patterns, 0), 8);
         p.plength = 0;
         for(i = 0; i < p.psegs; i++) {
 /*          if(!p.patt[i]) { p.plength = 0; break; } */

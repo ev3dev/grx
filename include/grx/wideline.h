@@ -45,7 +45,14 @@
  * @color: color used to draw line
  * @width: width of the line
  * @n_dash_patterns: length of the dash pattern
- * @dash_patterns: (array length=n_dash_patterns): draw/nodraw pattern
+ * @dash_pattern0: draw/nodraw pattern
+ * @dash_pattern1: draw/nodraw pattern
+ * @dash_pattern2: draw/nodraw pattern
+ * @dash_pattern3: draw/nodraw pattern
+ * @dash_pattern4: draw/nodraw pattern
+ * @dash_pattern5: draw/nodraw pattern
+ * @dash_pattern6: draw/nodraw pattern
+ * @dash_pattern7: draw/nodraw pattern
  *
  * Custom line options structure.
  *
@@ -60,7 +67,8 @@
  * my_line_options.color = GRX_COLOR_WHITE;
  * my_line_options.width = 3;
  * my_line_options.n_dash_patterns = 2;
- * my_line_options.dash_patterns = "\x06\x04";
+ * my_line_options.dash_pattern0 = 6;
+ * my_line_options.dash_pattern1 = 4;
  * ...
  * ]|
  */
@@ -68,7 +76,14 @@ struct _GrxLineOptions {
     GrxColor color;
     gint     width;
     gint     n_dash_patterns;
-    guint8  *dash_patterns;
+    guint8   dash_pattern0;
+    guint8   dash_pattern1;
+    guint8   dash_pattern2;
+    guint8   dash_pattern3;
+    guint8   dash_pattern4;
+    guint8   dash_pattern5;
+    guint8   dash_pattern6;
+    guint8   dash_pattern7;
 };
 
 void grx_draw_line_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);

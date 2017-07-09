@@ -587,12 +587,19 @@ namespace Grx {
     /*            THICK AND DASHED LINE DRAWING PRIMITIVES                */
     /* ================================================================== */
 
-    [CCode (has_type_id = false)]
+    [CCode (has_type_id = false, has_destroy_function = false)]
     public struct LineOptions {
         public Color color;
         public int width;
-        [CCode (array_length_cname = "n_dash_patterns")]
-        public uint8[] dash_patterns;
+        public int n_dash_patterns;
+        public uint8 dash_pattern0;
+        public uint8 dash_pattern1;
+        public uint8 dash_pattern2;
+        public uint8 dash_pattern3;
+        public uint8 dash_pattern4;
+        public uint8 dash_pattern5;
+        public uint8 dash_pattern6;
+        public uint8 dash_pattern7;
     }
 
     [CCode (has_type_id = false)]
