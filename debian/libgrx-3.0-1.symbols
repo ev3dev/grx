@@ -250,9 +250,9 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_pattern_copy@Base 2.99.8
  grx_pattern_free@Base 2.99.8
  grx_pattern_get_type@Base 2.99.8
- grx_pattern_new_pixmap@Base 2.99.8
- grx_pattern_new_pixmap_from_bits@Base 2.99.8
- grx_pattern_new_pixmap_from_context@Base 2.99.8
+ grx_pixmap_new@Base 2.99.8
+ grx_pixmap_new_from_bits@Base 2.99.8
+ grx_pixmap_new_from_context@Base 2.99.8
  grx_put_scanline@Base 2.99.8
  grx_query_jpeg_file@Base 2.99.8
  grx_query_png_file@Base 2.99.8

@@ -31,9 +31,9 @@ TESTFUNC(sbctest)
   if( grc == NULL ) return;
   grsc = grx_context_new_subcontext( 10,10,290,290,grc,NULL );
   if( grsc == NULL ) return;
-  pat1 = grx_pattern_new_pixmap_from_bits( bits,8,8,GRX_COLOR_WHITE,GRX_COLOR_BLACK );
+  pat1 = grx_pixmap_new_from_bits( bits,8,8,GRX_COLOR_WHITE,GRX_COLOR_BLACK );
   if( pat1 == NULL ) return;
-  pat2 = grx_pattern_new_pixmap_from_bits( bits,8,8,GRX_COLOR_BLACK,GRX_COLOR_WHITE );
+  pat2 = grx_pixmap_new_from_bits( bits,8,8,GRX_COLOR_BLACK,GRX_COLOR_WHITE );
   if( pat2 == NULL ) return;
   grf = grx_font_load("lucida", 40, NULL);
   if( grf == NULL ){

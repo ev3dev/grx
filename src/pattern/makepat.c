@@ -62,7 +62,7 @@ static int _GrBestPixmapWidth(int wdt,int hgt)
 }
 
 /**
- * grx_pattern_new_pixmap:
+ * grx_pixmap_new:
  * @pixels: (array): a two dimensional array of bytes
  * @w: the width of the pixel array
  * @h: the height of the pixel array
@@ -77,7 +77,7 @@ static int _GrBestPixmapWidth(int wdt,int hgt)
  *
  * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
  */
-GrxPattern *grx_pattern_new_pixmap(const unsigned char *pixels,int w,int h,const GArray *ct)
+GrxPattern *grx_pixmap_new(const unsigned char *pixels,int w,int h,const GArray *ct)
 {
         GrxContext csave,cwork;
         GrxPixmap  *result;
@@ -120,7 +120,7 @@ GrxPattern *grx_pattern_new_pixmap(const unsigned char *pixels,int w,int h,const
 }
 
 /**
- * grx_pattern_new_pixmap_from_bits:
+ * grx_pixmap_new_from_bits:
  * @bits: the bitmap data
  * @w: the width of the bitmap data
  * @h: the height of the bitmap data
@@ -133,7 +133,7 @@ GrxPattern *grx_pattern_new_pixmap(const unsigned char *pixels,int w,int h,const
  *
  * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
  */
-GrxPattern *grx_pattern_new_pixmap_from_bits(const unsigned char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
+GrxPattern *grx_pixmap_new_from_bits(const unsigned char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
 {
         GrxContext csave,cwork;
         GrxPixmap  *result;
@@ -175,7 +175,7 @@ GrxPattern *grx_pattern_new_pixmap_from_bits(const unsigned char *bits,int w,int
 }
 
 /**
- * grx_pattern_new_pixmap_from_context:
+ * grx_pixmap_new_from_context:
  * @context: the context
  *
  * Converts a graphics context to a pixmap fill pattern.
@@ -186,7 +186,7 @@ GrxPattern *grx_pattern_new_pixmap_from_bits(const unsigned char *bits,int w,int
  *
  * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
  */
-GrxPattern *grx_pattern_new_pixmap_from_context(GrxContext *context)
+GrxPattern *grx_pixmap_new_from_context(GrxContext *context)
 {
     GrxPixmap *result;
 

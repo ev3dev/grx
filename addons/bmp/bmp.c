@@ -463,7 +463,7 @@ GrxPattern *GrConvertBmpImageToPattern ( GrBmpImage *_bmp )
 /* ************************************************************************ */
 {
   if (( !_bmp ) || ( !_bmp->bi_map )) return NULL;
-  return grx_pattern_new_pixmap(_bmp->bi_map, _bmp->bi_width, _bmp->bi_height, _bmp->bi_colormap);
+  return grx_pixmap_new(_bmp->bi_map, _bmp->bi_width, _bmp->bi_height, _bmp->bi_colormap);
 }
 
 /* ************************************************************************ */
@@ -473,7 +473,7 @@ GrxPattern *GrConvertBmpImageToStaticPattern ( GrBmpImage *_bmp )
   GrxPattern *p = NULL;
   if ( _bmp && _bmp->bi_map )
   {
-    p = grx_pattern_new_pixmap(_bmp->bi_map, _bmp->bi_width, _bmp->bi_height, _bmp->bi_colormap);
+    p = grx_pixmap_new(_bmp->bi_map, _bmp->bi_width, _bmp->bi_height, _bmp->bi_colormap);
     if ( p ) GrUnloadBmpImage(_bmp);
   }
   return p;

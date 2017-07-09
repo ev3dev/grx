@@ -80,7 +80,7 @@ void grx_draw_pixel_with_image(gint xo, gint yo, gint x, gint y, GrxImage *image
 #define grx_pattern_as_image(p) \
         (((p) && (p)->is_pixmap) ? (&(p)->pixmap) : NULL)
 #define grx_image_new_from_context(c) \
-        (GrxImage *)grx_pattern_new_pixmap_from_context(c)
+        (GrxImage *)grx_pixmap_new_from_context(c)
 #define grx_image_as_pattern(p) \
         (GrxPattern *)(p)
 #define grx_image_copy(i)   \

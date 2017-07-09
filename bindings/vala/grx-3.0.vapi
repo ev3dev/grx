@@ -621,34 +621,17 @@ namespace Grx {
     /*             PATTERNED DRAWING AND FILLING PRIMITIVES               */
     /* ================================================================== */
 
-    [CCode (has_type_id = false)]
-    public struct Bitmap {
-        public bool is_pixmap;
-        public int height;
-        public uint8 *data;
-        public Color fg_color;
-        public Color bg_color;
-        public bool free_on_pattern_destroy;
-    }
-
-    [CCode (has_type_id = false)]
-    public struct Pixmap {
-        public bool is_pixmap;
-        public int width;
-        public int height;
-        public ColorMode mode;
-        public Frame source;
+    [Compact]
+    public class Pixmap : Pattern {
+        public static Pattern new ([CCode (array_length = false)]uint8 *pixels, int w, int h, GLib.Array<Color>? colors);
+        public static Pattern new_from_bits ([CCode (array_length = false)]uint8 *bits, int w, int h, Color fg, Color bg);
+        public static Pattern new_from_context (Context context);
     }
 
     [CCode (copy_function = "grx_pattern_copy", free_function = "grx_pattern_free", has_type_id = false)]
     [Compact]
     public class Pattern {
         public bool is_pixmap;               /* true for pixmaps */
-
-        public static Pattern new_pixmap ([CCode (array_length = false)]uint8 *pixels, int w, int h, GLib.Array<Color>? colors);
-        public static Pattern new_pixmap_from_bits ([CCode (array_length = false)]uint8 *bits, int w, int h, Color fg, Color bg);
-        public static Pattern new_pixmap_from_context (Context context);
-
         public unowned Image as_image ();
     }
 
