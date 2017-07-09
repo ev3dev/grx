@@ -5,10 +5,17 @@ find_package (Valac REQUIRED)
 pkg_check_modules (EXAMPLE_DEPS REQUIRED glib-2.0 gio-2.0 gobject-2.0)
 
 macro (add_demo name)
+    # optionally include demo.vala
+    if ("${ARGV1}" STREQUAL "SIMPLE")
+        set (simpleSource "demo.vala")
+    else ()
+        unset (simpleSource)
+    endif ()
 
     vala2c (${name}C
         SOURCE_FILES
             ${name}.vala
+            ${simpleSource}
         PACKAGES
             grx-3.0
             gio-2.0
@@ -17,6 +24,8 @@ macro (add_demo name)
             ${CMAKE_SOURCE_DIR}/bindings/vala/
         TARGET_GLIB
             2.48
+        OUTPUT_DIR
+            ${name}.dir
         DEPENDS
             ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi
     )
@@ -48,5 +57,5 @@ macro (add_demo name)
 endmacro ()
 
 add_demo (life)
-add_demo (lines)
-add_demo (pixels)
+add_demo (lines SIMPLE)
+add_demo (pixels SIMPLE)

@@ -27,48 +27,28 @@ from gi.repository import GLib
 gi.require_version('Grx', '3.0')
 from gi.repository import Grx
 
+from demo import SimpleDemoApp
 
-class App(Grx.Application):
-    def __init__(self):
-        super(Grx.Application, self).__init__()
-        self.init()
-        self.hold()
-        self._colors = Grx.color_get_ega_colors()
 
-    def do_activate(self):
-        """called when the application starts
-        overrides Grx.Application.do_activate
-        """
-        w = Grx.get_width()
-        h = Grx.get_height()
-        t = time.monotonic()
-        for n in range(0, w*h//4):
-            x = int(random.random() * w)
-            y = int(random.random() * h)
-            if (n & 0xff) == 0:
-                # don't change the color so often to speed things up (random is slow)
-                c = self._colors[random.randint(0, 15)]
-            # fast_draw_* is only safe when we are sure x and y are in bounds
-            Grx.fast_draw_pixel(x, y, c)
-        t = time.monotonic() - t
-        print('drew', n, 'pixels in', round(t, 3), 'sec')
-
-    def do_event(self, event):
-        """called when an input event occurs
-        overrides Grx.Application.do_event
-        """
-        if Grx.Application.do_event(self, event):
-            return True
-
-        if event.type in (Grx.EventType.KEY_DOWN, Grx.EventType.BUTTON_PRESS,
-                          Grx.EventType.TOUCH_DOWN):
-            self.quit()
-            return True
-
-        return False
+def activate(app):
+    colors = Grx.color_get_ega_colors()
+    w = Grx.get_width()
+    h = Grx.get_height()
+    t = time.monotonic()
+    for n in range(0, w*h//4):
+        x = int(random.random() * w)
+        y = int(random.random() * h)
+        if (n & 0xff) == 0:
+            # don't change the color so often to speed things up (random is slow)
+            c = colors[random.randint(0, 15)]
+        # fast_draw_* is only safe when we are sure x and y are in bounds
+        Grx.fast_draw_pixel(x, y, c)
+    t = time.monotonic() - t
+    print('drew', n, 'pixels in', round(t, 3), 'sec')
 
 if __name__ == '__main__':
     GLib.set_prgname('pixels.py')
     GLib.set_application_name('GRX3 Pixel Drawing Demo')
-    app = App()
+    app = SimpleDemoApp()
+    app.connect('activate', activate)
     app.run()

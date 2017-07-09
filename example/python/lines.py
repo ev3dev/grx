@@ -18,6 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
+
 import random
 
 import gi
@@ -26,45 +27,28 @@ from gi.repository import GLib
 gi.require_version('Grx', '3.0')
 from gi.repository import Grx
 
+from demo import SimpleDemoApp
+
 BOUNDS = 200
 """How far out of bounds to draw lines"""
 
 
-class App(Grx.Application):
-    def __init__(self):
-        super(Grx.Application, self).__init__()
-        self.init()
-        self.hold()
-        self._colors = Grx.color_get_ega_colors()
-
-    def do_activate(self):
-        """called when the application starts
-        overrides Grx.Application.do_activate
-        """
-        for _ in range(0, 1000):
-            x1 = random.randint(-BOUNDS, Grx.get_max_x() + BOUNDS)
-            y1 = random.randint(-BOUNDS, Grx.get_max_y() + BOUNDS)
-            x2 = random.randint(-BOUNDS, Grx.get_max_x() + BOUNDS)
-            y2 = random.randint(-BOUNDS, Grx.get_max_y() + BOUNDS)
-            c = self._colors[random.randint(0, 15)]
-            Grx.draw_line(x1, y1, x2, y2, c)
-
-    def do_event(self, event):
-        """called when an input event occurs
-        overrides Grx.Application.do_event
-        """
-        if Grx.Application.do_event(self, event):
-            return True
-
-        if event.type in (Grx.EventType.KEY_DOWN, Grx.EventType.BUTTON_PRESS,
-                          Grx.EventType.TOUCH_DOWN):
-            self.quit()
-            return True
-
-        return False
+def activate(app):
+    """called when the application starts
+    overrides Grx.Application.do_activate
+    """
+    colors = Grx.color_get_ega_colors()
+    for _ in range(0, 1000):
+        x1 = random.randint(-BOUNDS, Grx.get_max_x() + BOUNDS)
+        y1 = random.randint(-BOUNDS, Grx.get_max_y() + BOUNDS)
+        x2 = random.randint(-BOUNDS, Grx.get_max_x() + BOUNDS)
+        y2 = random.randint(-BOUNDS, Grx.get_max_y() + BOUNDS)
+        c = colors[random.randint(0, 15)]
+        Grx.draw_line(x1, y1, x2, y2, c)
 
 if __name__ == '__main__':
     GLib.set_prgname('lines.py')
     GLib.set_application_name('GRX3 Line Drawing Demo')
-    app = App()
+    app = SimpleDemoApp()
+    app.connect('activate', activate)
     app.run()

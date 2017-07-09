@@ -19,52 +19,25 @@
 
 using Grx;
 
-class DemoApp : Grx.Application {
-    unowned Color[] colors;
-
-    public DemoApp () throws GLib.Error {
-        Object ();
-        init ();
-        hold ();
-        colors = Color.get_ega_colors ();
-    }
-
-    public override void activate () {
-        var w = get_width ();
-        var h = get_height ();
-        var count = w * h / 4;
-        for (var n = 0; n < count; n++) {
-            var x = Random.int_range (0, w);
-            var y = Random.int_range (0, h);
-            var c = colors[Random.int_range (0, 16)];
-            // fast_draw_* is only safe when we are sure x and y are in bounds
-            fast_draw_pixel (x, y, c);
-        }
-    }
-
-    public override bool event (Event event) {
-        if (base.event (event)) {
-            return true;
-        }
-
-        switch (event.type) {
-        case EventType.KEY_DOWN:
-        case EventType.BUTTON_PRESS:
-        case EventType.TOUCH_DOWN:
-            quit ();
-            break;
-        default:
-            return false;
-        }
-
-        return true;
+static void activate () {
+    unowned Color[] colors = Color.get_ega_colors ();
+    var w = get_width ();
+    var h = get_height ();
+    var count = w * h / 4;
+    for (var n = 0; n < count; n++) {
+        var x = Random.int_range (0, w);
+        var y = Random.int_range (0, h);
+        var c = colors[Random.int_range (0, 16)];
+        // fast_draw_* is only safe when we are sure x and y are in bounds
+        fast_draw_pixel (x, y, c);
     }
 }
 
 static int main (string [] args) {
     Environment.set_application_name ("GRX3 Pixels Demo");
     try {
-        var app = new DemoApp ();
+        var app = new SimpleDemoApp ();
+        app.activate.connect (activate);
         return app.run (args);
     } catch (GLib.Error err) {
         critical ("%s", err.message);

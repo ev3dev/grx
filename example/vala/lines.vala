@@ -19,55 +19,28 @@
 
 using Grx;
 
-class DemoApp : Grx.Application {
-    const int BOUNDS = 200; // How far out of bounds to draw lines
-    const int COUNT = 1000; // number of lines to draw
+const int BOUNDS = 200; // How far out of bounds to draw lines
+const int COUNT = 1000; // number of lines to draw
 
-    unowned Color[] colors;
-
-    public DemoApp () throws GLib.Error {
-        Object ();
-        init ();
-        hold ();
-        colors = Color.get_ega_colors ();
-    }
-
-    public override void activate () {
-        var w = get_width ();
-        var h = get_height ();
-        for (var n = 0; n < COUNT; n++) {
-            var x1 = Random.int_range (-BOUNDS, w + BOUNDS);
-            var y1 = Random.int_range (-BOUNDS, h + BOUNDS);
-            var x2 = Random.int_range (-BOUNDS, w + BOUNDS);
-            var y2 = Random.int_range (-BOUNDS, h + BOUNDS);
-            var c = colors[Random.int_range (0, 16)];
-            draw_line (x1, y1, x2, y2, c);
-        }
-    }
-
-    public override bool event (Event event) {
-        if (base.event (event)) {
-            return true;
-        }
-
-        switch (event.type) {
-        case EventType.KEY_DOWN:
-        case EventType.BUTTON_PRESS:
-        case EventType.TOUCH_DOWN:
-            quit ();
-            break;
-        default:
-            return false;
-        }
-
-        return true;
+static void activate () {
+    unowned Color[] colors = Color.get_ega_colors ();
+    var w = get_width ();
+    var h = get_height ();
+    for (var n = 0; n < COUNT; n++) {
+        var x1 = Random.int_range (-BOUNDS, w + BOUNDS);
+        var y1 = Random.int_range (-BOUNDS, h + BOUNDS);
+        var x2 = Random.int_range (-BOUNDS, w + BOUNDS);
+        var y2 = Random.int_range (-BOUNDS, h + BOUNDS);
+        var c = colors[Random.int_range (0, 16)];
+        draw_line (x1, y1, x2, y2, c);
     }
 }
 
 static int main (string [] args) {
     Environment.set_application_name ("GRX3 Lines Demo");
     try {
-        var app = new DemoApp ();
+        var app = new SimpleDemoApp ();
+        app.activate.connect (activate);
         return app.run (args);
     } catch (GLib.Error err) {
         critical ("%s", err.message);
