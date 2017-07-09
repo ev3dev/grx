@@ -47,8 +47,8 @@ void grx_draw_filled_box_with_pattern(int x1,int y1,int x2,int y2,GrxPattern *p)
             while(--height >= 0) _GrFillPattern(x1,y1++,width,p);
         else {
             void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
-            int pwdt = p->gp_pxp_width;
-            int phgt = p->gp_pxp_height;
+            int pwdt = p->pixmap.width;
+            int phgt = p->pixmap.height;
             int xoff = x1 % pwdt;
             int ypos = y1;
             int yoff = ypos % phgt;
@@ -63,8 +63,8 @@ void grx_draw_filled_box_with_pattern(int x1,int y1,int x2,int y2,GrxPattern *p)
                     int fillw = min(linewdt,(pwdt - xcuroff));
                     (*bltfun)(
                         &CURC->frame,xpos,ypos,
-                        &p->gp_pxp_source,xcuroff,yoff,fillw,fillh,
-                        p->gp_pxp_oper
+                        &p->pixmap.source,xcuroff,yoff,fillw,fillh,
+                        p->pixmap.mode
                     );
                     linewdt -= fillw;
                     xpos += fillw;

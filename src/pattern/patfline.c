@@ -51,20 +51,20 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p)
             sy = (-1);
         }
         if((ispixmap = p->is_pixmap) != FALSE) {
-            pw = p->gp_pxp_width;
-            ph = p->gp_pxp_height;
+            pw = p->pixmap.width;
+            ph = p->pixmap.height;
             px = x1 % pw;
             py = y1 % ph;
-            src.c = &p->gp_pxp_source;
+            src.c = &p->pixmap.source;
         }
         else {
             pw = 8;
-            ph = p->gp_bmp_height;
+            ph = p->bitmap.height;
             px = x1 & 7;
             py = y1 % ph;
-            src.b = (unsigned char *) p->gp_bmp_data;
-            fgc = p->gp_bmp_fgcolor;
-            bgc = p->gp_bmp_bgcolor;
+            src.b = (unsigned char *) p->bitmap.data;
+            fgc = p->bitmap.fg_color;
+            bgc = p->bitmap.bg_color;
         }
         if(dy > dx) {
             points = dy + 1;

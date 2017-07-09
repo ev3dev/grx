@@ -28,13 +28,13 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrxPattern *p)
     GRX_ENTER();
     if (p->is_pixmap) {
         void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
-        int pattwdt = p->gp_pxp_width;
+        int pattwdt = p->pixmap.width;
         int xdest = x;
         int ydest = y;
-        int ypatt = (y-sy) % p->gp_pxp_height;
+        int ypatt = (y-sy) % p->pixmap.height;
         int xpatt = (x-sx) % pattwdt;
         int cpysize = pattwdt - xpatt;
-        GrxColor optype = p->gp_pxp_oper;
+        GrxColor optype = p->pixmap.mode;
 
         if (CURC->gc_is_on_screen) bltfun = CURC->gc_driver->bltr2v;
         else                   bltfun = CURC->gc_driver->bitblt;
@@ -42,7 +42,7 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrxPattern *p)
                 if (cpysize > width) cpysize = width;
                 (*bltfun)(
                         &CURC->frame,xdest,ydest,
-                        &p->gp_pxp_source,xpatt,ypatt,cpysize,1,
+                        &p->pixmap.source,xpatt,ypatt,cpysize,1,
                         optype
                 );
                 width -= cpysize;
@@ -53,14 +53,14 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrxPattern *p)
     }
     else {
 
-        char bits = p->gp_bmp_data[y % p->gp_bmp_height];
+        char bits = p->bitmap.data[y % p->bitmap.height];
         if (bits == 0)
-          (*CURC->gc_driver->drawhline)(x,y,width,p->gp_bmp_bgcolor);
+          (*CURC->gc_driver->drawhline)(x,y,width,p->bitmap.bg_color);
         else if ((GR_int8u)bits == 0xff)
-          (*CURC->gc_driver->drawhline)(x,y,width,p->gp_bmp_fgcolor);
+          (*CURC->gc_driver->drawhline)(x,y,width,p->bitmap.fg_color);
         else {
-          GrxColor fg = p->gp_bmp_fgcolor;
-          GrxColor bg = p->gp_bmp_bgcolor;
+          GrxColor fg = p->bitmap.fg_color;
+          GrxColor bg = p->bitmap.bg_color;
           int xoffs = x & 7;
 #         if USE_FDR_DRAWPATTERN-0
               GR_int8u pp = replicate_b2w(bits) >> (8-xoffs);

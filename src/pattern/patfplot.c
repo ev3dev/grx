@@ -31,17 +31,17 @@ void _GrPatternFilledPlot(int x,int y,GrxPattern *p)
         int xp,yp;
 
         if(p->is_pixmap) {
-            xp = x % p->gp_pxp_width;
-            yp = y % p->gp_pxp_height;
+            xp = x % p->pixmap.width;
+            yp = y % p->pixmap.height;
             (*CURC->gc_driver->drawpixel)(x,y,
-                (*p->gp_pxp_source.driver->readpixel)(&p->gp_pxp_source,xp,yp)
+                (*p->pixmap.source.driver->readpixel)(&p->pixmap.source,xp,yp)
             );
         }
         else {
             xp = x & 7;
-            yp = y % p->gp_bmp_height;
+            yp = y % p->bitmap.height;
             (*CURC->gc_driver->drawpixel)(x,y,
-                (p->gp_bmp_data[yp] & (0x80U >> xp)) ? p->gp_bmp_fgcolor : p->gp_bmp_bgcolor
+                (p->bitmap.data[yp] & (0x80U >> xp)) ? p->bitmap.fg_color : p->bitmap.bg_color
             );
         }
 }

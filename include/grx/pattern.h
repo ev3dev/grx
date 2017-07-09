@@ -108,14 +108,6 @@ union _GrxPattern {
     gboolean  is_pixmap;
     GrxBitmap bitmap;
     GrxPixmap pixmap;
-    #define gp_bmp_data               bitmap.data
-    #define gp_bmp_height             bitmap.height
-    #define gp_bmp_fgcolor            bitmap.fg_color
-    #define gp_bmp_bgcolor            bitmap.bg_color
-    #define gp_pxp_width              pixmap.width
-    #define gp_pxp_height             pixmap.height
-    #define gp_pxp_oper               pixmap.mode
-    #define gp_pxp_source             pixmap.source
 };
 
 GType grx_pattern_get_type(void);

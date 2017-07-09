@@ -228,12 +228,12 @@ void grx_pattern_free(GrxPattern *p)
 {
   if (!p) return;
   if (p->is_pixmap) {
-    if ( p->gp_pxp_source.memory_flags & MY_MEMORY) {
+    if ( p->pixmap.source.memory_flags & MY_MEMORY) {
       int ii;
-      for ( ii = p->gp_pxp_source.driver->num_planes; ii > 0; ii-- )
-         free(GRX_FRAME_MEMORY_PLANE(&p->gp_pxp_source.base_address,ii - 1));
+      for ( ii = p->pixmap.source.driver->num_planes; ii > 0; ii-- )
+         free(GRX_FRAME_MEMORY_PLANE(&p->pixmap.source.base_address,ii - 1));
     }
-    if ( p->gp_pxp_source.memory_flags & MY_CONTEXT )
+    if ( p->pixmap.source.memory_flags & MY_CONTEXT )
       free(p);
     return;
   }
