@@ -214,8 +214,8 @@ namespace Grx {
      */
     [CCode (has_type_id = false)]
     public struct VideoMode {
-        public char present;
-        public char bpp;
+        public bool present;
+        public uint8 bpp;
         public short width;
         public short height;
         public short mode;
@@ -238,11 +238,11 @@ namespace Grx {
         public FrameMode mode;
         public FrameDriver *driver;
         [CCode (cname = "frame")]
-        public char *fb_data;
+        public uint8 *fb_data;
         [CCode (cname = "cpos", array_length_cexpr = "3")]
-        public char[] color_precision;
+        public uint8[] color_precision;
         [CCode (cname = "cprec", array_length_cexpr = "3")]
-        public char[] color_position;
+        public uint8[] color_position;
         public VideoModeFlags flags;
         public int lfb_selector;
     }
@@ -328,8 +328,8 @@ namespace Grx {
         public int height { get; }
         public int max_x { get; }
         public int max_y { get; }
-        public static Context? new (int w, int h, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
-        public static Context? new_full (FrameMode mode, int w, int h, [CCode (array_length = false)]char*[]? memory = null, out Context? where = null);
+        public static Context? new (int w, int h, [CCode (array_length = false)]uint8*[]? memory = null, out Context? where = null);
+        public static Context? new_full (FrameMode mode, int w, int h, [CCode (array_length = false)]uint8*[]? memory = null, out Context? where = null);
         public static Context? new_subcontext (int x1, int y1, int x2, int y2, Context parent, out Context? where = null);
         public static Context? save (out Context? where = null);
 
@@ -618,7 +618,7 @@ namespace Grx {
     public struct Bitmap {
         public bool is_pixmap;
         public int height;
-        public char *data;
+        public uint8 *data;
         public Color fg_color;
         public Color bg_color;
         public bool free_on_pattern_destroy;
@@ -638,8 +638,8 @@ namespace Grx {
     public class Pattern {
         public bool is_pixmap;               /* true for pixmaps */
 
-        public static Pattern new_pixmap ([CCode (array_length = false)]char *pixels, int w, int h, GLib.Array<Color>? colors);
-        public static Pattern new_pixmap_from_bits ([CCode (array_length = false)]char *bits, int w, int h, Color fg, Color bg);
+        public static Pattern new_pixmap ([CCode (array_length = false)]uint8 *pixels, int w, int h, GLib.Array<Color>? colors);
+        public static Pattern new_pixmap_from_bits ([CCode (array_length = false)]uint8 *bits, int w, int h, Color fg, Color bg);
         public static Pattern new_pixmap_from_context (Context context);
 
         public unowned Image as_image ();
@@ -686,7 +686,7 @@ namespace Grx {
     [CCode (copy_function = "grx_image_copy", free_function = "grx_image_free", has_type_id = false)]
     [Compact]
     public class Image {
-        public static Image new ([CCode (array_length = false)]char[] pixels, int width, int height, GLib.Array<Color> colors);
+        public static Image new ([CCode (array_length = false)]uint8[] pixels, int width, int height, GLib.Array<Color> colors);
         public static Image new_from_context (Context context);
 
         public Image mirror (ImageMirrorFlags flags);
@@ -787,7 +787,7 @@ namespace Grx {
     [CCode (copy_function = "grx_cursor_ref", free_function = "grx_cursor_unref")]
     [Compact]
     public class Cursor {
-        public Cursor ([CCode (array_length = false)]char[] pixels, int pitch, int width, int height, int x0, int y0, GLib.Array<Color> colors);
+        public Cursor ([CCode (array_length = false)]uint8[] pixels, int pitch, int width, int height, int x0, int y0, GLib.Array<Color> colors);
 
         public void show ();
         public void hide ();
