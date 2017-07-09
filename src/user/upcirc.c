@@ -29,19 +29,20 @@
  * @xc: the X coordinate of the center of the circle
  * @yc: the Y coordinate of the center of the circle
  * @r: the radius of the circle
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
  * Draws a circle on the current context centered at the specified coordinates
- * with the specified radius and line pattern.
+ * with the specified radius and line options and pattern.
  */
-void grx_user_draw_circle_with_pattern(int xc,int yc,int r,GrxLinePattern *lp)
+void grx_user_draw_circle_with_pattern (int xc, int yc, int r, GrxLineOptions *o, GrxPattern *p)
 {
 #ifdef USR_KEEP_SHAPE
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(r,r,CURC->x_max,CURC->user_width);
-        grx_draw_circle_with_pattern(xc,yc,r,lp);
+    U2SX (xc, CURC);
+    U2SY (yc, CURC);
+    SCALE (r, r, CURC->x_max, CURC->user_width);
+    grx_draw_circle_with_pattern (xc, yc, r, o, p);
 #else
-        grx_user_draw_ellipse_with_pattern(xc,yc,r,r,lp);
+    grx_user_draw_ellipse_with_pattern (xc, yc, r, r, o, p);
 #endif /* USR_KEEP_SHAPE */
 }

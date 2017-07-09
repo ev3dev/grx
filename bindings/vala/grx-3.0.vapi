@@ -652,20 +652,14 @@ namespace Grx {
         public unowned Image as_image ();
     }
 
-    [CCode (has_type_id = false)]
-    public struct LinePattern {
-        Pattern *pattern;
-        LinePattern *options;
-    }
-
-    public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LinePattern lp);
-    public void draw_box_with_pattern (int x1, int y1, int x2, int y2, LinePattern lp);
-    public void draw_circle_with_pattern (int xc, int yc, int r, LinePattern lp);
-    public void draw_ellipse_with_pattern (int xc, int yc, int rx, int ry, LinePattern lp);
-    public void draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, ArcStyle style, LinePattern lp);
-    public void draw_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LinePattern lp);
-    public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern lp);
-    public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern lp);
+    public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LineOptions o, Pattern p);
+    public void draw_box_with_pattern (int x1, int y1, int x2, int y2, LineOptions o, Pattern p);
+    public void draw_circle_with_pattern (int xc, int yc, int r, LineOptions o, Pattern p);
+    public void draw_ellipse_with_pattern (int xc, int yc, int rx, int ry, LineOptions o, Pattern p);
+    public void draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions o, Pattern p);
+    public void draw_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LineOptions o, Pattern p);
+    public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pattern p);
+    public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pattern p);
 
     public void draw_filled_pixel_with_pattern (int x, int y, Pattern p);
     public void draw_filled_line_with_pattern (int x1, int y1, int x2, int y2, Pattern p);
@@ -756,14 +750,14 @@ namespace Grx {
         public void draw_polyline_with_options ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o);
         public void draw_polygon_with_options ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o);
 
-        public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LinePattern lp);
-        public void draw_box_with_pattern (int x1, int y1, int x2, int y2, LinePattern lp);
-        public void draw_circle_with_pattern (int xc, int yc, int r, LinePattern lp);
-        public void draw_ellipse_with_pattern (int xc, int yc, int rx, int ry, LinePattern lp);
-        public void draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, ArcStyle style, LinePattern lp);
-        public void draw_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LinePattern lp);
-        public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern lp);
-        public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LinePattern lp);
+        public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LineOptions o, Pattern p);
+        public void draw_box_with_pattern (int x1, int y1, int x2, int y2, LineOptions o, Pattern p);
+        public void draw_circle_with_pattern (int xc, int yc, int r, LineOptions o, Pattern p);
+        public void draw_ellipse_with_pattern (int xc, int yc, int rx, int ry, LineOptions o, Pattern p);
+        public void draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions o, Pattern p);
+        public void draw_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LineOptions o, Pattern p);
+        public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pattern p);
+        public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pattern p);
 
         public void draw_filled_pixel_with_pattern (int x, int y, Pattern p);
         public void draw_filled_line_with_pattern (int x1, int y1, int x2, int y2, Pattern p);

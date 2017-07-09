@@ -28,18 +28,20 @@
  * @yc: the Y coordinate of the center of the ellipse
  * @rx: the radius in the X direction
  * @ry: the radius in the Y direction
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
- * Draws an ellipse on the current context using the specified line pattern.
+ * Draws an ellipse on the current context using the specified line options and
+ * pattern.
  *
  * The ellipse can only draw ellipses with its major axis parallel with either
  * the X or Y coordinate axis
  */
-void grx_user_draw_ellipse_with_pattern(int xc,int yc,int rx,int ry,GrxLinePattern *lp)
+void grx_user_draw_ellipse_with_pattern (int xc, int yc, int rx, int ry, GrxLineOptions *o, GrxPattern *p)
 {
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(rx,rx,CURC->x_max,CURC->user_width);
-        SCALE(ry,ry,CURC->y_max,CURC->user_height);
-        grx_draw_ellipse_with_pattern(xc,yc,rx,ry,lp);
+    U2SX (xc, CURC);
+    U2SY (yc, CURC);
+    SCALE (rx, rx, CURC->x_max, CURC->user_width);
+    SCALE (ry, ry, CURC->y_max, CURC->user_height);
+    grx_draw_ellipse_with_pattern (xc, yc, rx, ry, o, p);
 }

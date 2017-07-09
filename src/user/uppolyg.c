@@ -27,29 +27,31 @@
  * grx_user_draw_polygon_with_pattern:
  * @n_points: the number of points in @points
  * @points: (array length=n_points): an array of #GrxPoint
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
  * Draw a closed polygon on the current context that connects each point in
- * the @points array using the specified line pattern.
+ * the @points array using the specified line options and pattern.
  *
  * Coordinate arrays can either contain or omit the closing edge of the polygon.
  * It will be automatically appended to the list if it is missing.
  */
-void grx_user_draw_polygon_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *lp)
+void grx_user_draw_polygon_with_pattern (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPattern *p)
 {
-        int pt;
-        GrxPoint *tmp;
-        setup_ALLOC();
-        tmp = ALLOC(sizeof(GrxPoint) * numpts);
+    int pt;
+    GrxPoint *tmp;
 
-        if (tmp != NULL) {
-          for ( pt = 0;pt < numpts;pt++) {
-                tmp[pt] = points[pt];
-                U2SX(tmp[pt].x,CURC);
-                U2SY(tmp[pt].y,CURC);
-          }
-          grx_draw_polygon_with_pattern(numpts,tmp,lp);
-          FREE(tmp);
+    setup_ALLOC ();
+    tmp = ALLOC (sizeof(GrxPoint) * numpts);
+
+    if (tmp) {
+        for (pt = 0; pt < numpts; pt++) {
+            tmp[pt] = points[pt];
+            U2SX (tmp[pt].x, CURC);
+            U2SY (tmp[pt].y, CURC);
         }
-        reset_ALLOC();
+        grx_draw_polygon_with_pattern (numpts, tmp, o, p);
+        FREE (tmp);
+    }
+    reset_ALLOC ();
 }

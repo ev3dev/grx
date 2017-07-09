@@ -31,12 +31,13 @@
  * @xc: the X coordinate of the center of the circle
  * @yc: the Y coordinate of the center of the circle
  * @r: the radius of the circle
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
  * Draws a circle on the current context centered at the specified coordinates
- * with the specified radius and line pattern.
+ * with the specified radius and line options and pattern.
  */
-void grx_draw_circle_with_pattern(int xc,int yc,int r,GrxLinePattern *lp)
+void grx_draw_circle_with_pattern (int xc, int yc, int r, GrxLineOptions *o, GrxPattern *p)
 {
-        grx_draw_ellipse_with_pattern(xc,yc,r,r,lp);
+    grx_draw_ellipse_with_pattern (xc, yc, r, r, o, p);
 }

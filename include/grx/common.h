@@ -19,7 +19,6 @@ typedef struct _GrxVideoModeExt     GrxVideoModeExt;
 /* pattern.h */
 typedef struct _GrxPixmap           GrxPixmap;
 typedef union  _GrxPattern          GrxPattern;
-typedef struct _GrxLinePattern      GrxLinePattern;
 /* wideline.h */
 typedef struct _GrxLineOptions      GrxLineOptions;
 

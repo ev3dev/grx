@@ -33,20 +33,21 @@
  * @start: the starting angle in 1/10ths of degrees
  * @end: the ending angle in 1/10ths of degrees
  * @style: the arc style
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
  * Draws an arc on the current context centered at the specified coordinates
  * from the starting angle to the ending angle with the specified radius,
- * arc style and line pattern.
+ * arc style and line options and pattern.
  */
-void grx_user_draw_circle_arc_with_pattern(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxLinePattern *lp)
+void grx_user_draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, GrxArcStyle style, GrxLineOptions *o, GrxPattern *p)
 {
 #ifdef USR_KEEP_SHAPE
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(r,r,CURC->x_max,CURC->user_width);
-        grx_draw_circle_arc_with_pattern(xc,yc,r,start,end,style,lp);
+    U2SX (xc, CURC);
+    U2SY (yc, CURC);
+    SCALE(r, r, CURC->x_max, CURC->user_width);
+    grx_draw_circle_arc_with_pattern (xc, yc, r, start, end, style, o, p);
 #else
-        grx_user_draw_ellipse_arc_with_pattern(xc,yc,r,r,start,end,style,lp);
+    grx_user_draw_ellipse_arc_with_pattern (xc, yc, r, r, start, end, style, o, p);
 #endif /* USR_KEEP_SHAPE */
 }

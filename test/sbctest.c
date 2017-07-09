@@ -17,7 +17,7 @@
 #include "test.h"
 
 static void drawpf( int border, GrxPattern *pat );
-static void drawp( int border, GrxLinePattern *grlp );
+static void drawp( int border, GrxLineOptions *o, GRxPattern *p );
 
 TESTFUNC(sbctest)
 {
@@ -25,7 +25,6 @@ TESTFUNC(sbctest)
   GrxContext *grc, *grsc;
   GrxPattern *pat1, *pat2;
   GrxLineOptions grl;
-  GrxLinePattern grlp;
   GrxFont *grf;
 
   grc = grx_context_new( 300,300,NULL,NULL );
@@ -77,14 +76,11 @@ TESTFUNC(sbctest)
   grl.color = GRX_COLOR_WHITE;
   grl.width = 3;
   grl.n_dash_patterns = 0;
-  grlp.pattern = pat1;
-  grlp.options = &grl;
 
   grx_draw_text("Patterned drawing on context   ", 0,0,white_text_black_bg );
   grx_set_current_context( grc );
   grx_clear_context( GRX_COLOR_BLACK );
-  grlp.pattern = pat1;
-  drawp( 10,&grlp );
+  drawp( 10,&grl, pat1 );
   grx_set_current_context( NULL );
   grx_bit_blt( 20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
   GrKeyRead();
@@ -92,8 +88,7 @@ TESTFUNC(sbctest)
   grx_draw_text("Patterned drawing on subcontext", 0,0,white_text_black_bg );
   grx_set_current_context( grsc );
   grx_clear_context( GRX_COLOR_BLACK );
-  grlp.pattern = pat2;
-  drawp( 0,&grlp );
+  drawp( 0,&grl,pat2 );
   grx_set_current_context( NULL );
   grx_bit_blt( 20,20,grc,0,0,299,299,GRX_COLOR_MODE_XOR );
   GrKeyRead();
@@ -169,29 +164,29 @@ static void drawpf( int border, GrxPattern *pat )
 
 /***/
 
-static void drawp( int border, GrxLinePattern *grlp )
+static void drawp( int border, GrxLineOptions *o, GrxPattern *p )
 {
   GrxPoint pt1[4] = {{130,200},{140,240},{150,250},{160,180}};
   GrxPoint pt2[4] = {{230,200},{235,240},{246,250},{258,180}};
   GrxPoint ptaux[4];
   int i;
 
-  grx_draw_box_with_pattern( 0+border,0+border,93+border,93+border,grlp );
-  grx_draw_circle_with_pattern( 139+border,46+border,45,grlp );
-  grx_draw_ellipse_with_pattern( 232+border,46+border,45,35,grlp );
+  grx_draw_box_with_pattern( 0+border,0+border,93+border,93+border,o,p );
+  grx_draw_circle_with_pattern( 139+border,46+border,45,o,p );
+  grx_draw_ellipse_with_pattern( 232+border,46+border,45,35,o,p );
   grx_draw_circle_arc_with_pattern( 46+border,139+border,45,-300,600,
-                        GRX_ARC_STYLE_CLOSED_RADIUS,grlp );
+                        GRX_ARC_STYLE_CLOSED_RADIUS,o,p );
   grx_draw_ellipse_arc_with_pattern( 139+border,139+border,45,35,-700,400,
-                         GRX_ARC_STYLE_CLOSED_RADIUS,grlp );
-  grx_draw_line_with_pattern( 188+border,139+border,278+border,139+border,grlp );
+                         GRX_ARC_STYLE_CLOSED_RADIUS,o,p );
+  grx_draw_line_with_pattern( 188+border,139+border,278+border,139+border,o,p );
   for( i=0; i<4; i++ ) {
     ptaux[i].x = pt1[i].x + border;
     ptaux[i].y = pt1[i].y + border;
   }
-  grx_draw_polygon_with_pattern( 4,ptaux,grlp );
+  grx_draw_polygon_with_pattern( 4,ptaux,o,p );
   for( i=0; i<4; i++ ) {
     ptaux[i].x = pt2[i].x + border;
     ptaux[i].y = pt2[i].y + border;
   }
-  grx_draw_polyline_with_pattern( 4,ptaux,grlp );
+  grx_draw_polyline_with_pattern( 4,ptaux,o,p );
 }

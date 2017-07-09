@@ -31,39 +31,39 @@
  * grx_draw_polyline_with_pattern:
  * @n_points: the number of points in @points
  * @points: (array length=n_points): an array of #GrxPoint
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
  * Draw a multi-segment line on the current context that connects each point in
- * the @points array using the specified line pattern.
+ * the @points array using the specified line options and pattern.
  */
-void grx_draw_polyline_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *lp)
+void grx_draw_polyline_with_pattern (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPattern *p)
 {
-        GrFillArg fval;
+    GrFillArg fval;
 
-        fval.p = lp->pattern;
-        _GrDrawCustomPolygon(numpts,points,lp->options,
-                             &_GrPatternFiller,fval,FALSE,FALSE);
+    fval.p = p;
+    _GrDrawCustomPolygon (numpts, points, o, &_GrPatternFiller, fval, FALSE, FALSE);
 }
 
 /**
  * grx_draw_polygon_with_pattern:
  * @n_points: the number of points in @points
  * @points: (array length=n_points): an array of #GrxPoint
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
  * Draw a closed polygon on the current context that connects each point in
- * the @points array using the specified line pattern.
+ * the @points array using the specified line options and pattern.
  *
  * Coordinate arrays can either contain or omit the closing edge of the polygon.
  * It will be automatically appended to the list if it is missing.
  */
-void grx_draw_polygon_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *lp)
+void grx_draw_polygon_with_pattern (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPattern *p)
 {
-        GrFillArg fval;
+    GrFillArg fval;
 
-        fval.p = lp->pattern;
-        _GrDrawCustomPolygon(numpts,points,lp->options,
-                             &_GrPatternFiller,fval,TRUE,FALSE);
+    fval.p = p;
+    _GrDrawCustomPolygon (numpts, points, o, &_GrPatternFiller, fval, TRUE, FALSE);
 }
 
 /**
@@ -72,21 +72,21 @@ void grx_draw_polygon_with_pattern(int numpts,GrxPoint *points,GrxLinePattern *l
  * @y1: the top Y coordinate
  * @x2: the right X coordinate
  * @y2: the bottom Y coordinate
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
  * Draws a rectangle on the current context using the specified coordinates
- * and line pattern.
+ * and line options and pattern.
  */
-void grx_draw_box_with_pattern(int x1,int y1,int x2,int y2,GrxLinePattern *lp)
+void grx_draw_box_with_pattern (int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPattern *p)
 {
-        GrFillArg fval;
-        GrxPoint points[4];
+    GrFillArg fval;
+    GrxPoint points[4];
 
-        points[0].x = x1; points[0].y = y1;
-        points[1].x = x1; points[1].y = y2;
-        points[2].x = x2; points[2].y = y2;
-        points[3].x = x2; points[3].y = y1;
-        fval.p = lp->pattern;
-        _GrDrawCustomPolygon(4,points,lp->options,
-                             &_GrPatternFiller,fval,TRUE,FALSE);
+    points[0].x = x1; points[0].y = y1;
+    points[1].x = x1; points[1].y = y2;
+    points[2].x = x2; points[2].y = y2;
+    points[3].x = x2; points[3].y = y1;
+    fval.p = p;
+    _GrDrawCustomPolygon(4, points, o, &_GrPatternFiller, fval, TRUE, FALSE);
 }

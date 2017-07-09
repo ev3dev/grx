@@ -33,20 +33,21 @@
  * @y1: starting Y coordinate
  * @x2: ending X coordinate
  * @y2: ending Y coordinate
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
  * Draws a line on the current context from the starting coordinates to the
- * ending coordinates using the specified line pattern.
+ * ending coordinates using the specified line options and pattern.
  */
-void grx_draw_line_with_pattern(int x1,int y1,int x2,int y2,GrxLinePattern *lp)
+void grx_draw_line_with_pattern (int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPattern *p)
 {
-        GrFillArg fval;
-        GrxPoint points[2];
+    GrFillArg fval;
+    GrxPoint points[2];
 
-        points[0].x = x1;
-        points[0].y = y1;
-        points[1].x = x2;
-        points[1].y = y2;
-        fval.p = lp->pattern;
-        _GrDrawCustomPolygon(2,points,lp->options,&_GrPatternFiller,fval,FALSE,FALSE);
+    points[0].x = x1;
+    points[0].y = y1;
+    points[1].x = x2;
+    points[1].y = y2;
+    fval.p = p;
+    _GrDrawCustomPolygon (2, points, o, &_GrPatternFiller, fval, FALSE, FALSE);
 }

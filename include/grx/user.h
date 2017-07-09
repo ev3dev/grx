@@ -94,16 +94,16 @@ void grx_user_draw_ellipse_arc_with_options(gint xc, gint yc, gint rx, gint ry, 
 void grx_user_draw_polyline_with_options(gint n_points, GrxPoint *points, const GrxLineOptions *o);
 void grx_user_draw_polygon_with_options(gint n_points, GrxPoint *points, const GrxLineOptions *o);
 
-void grx_user_draw_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *lp);
-void grx_user_draw_box_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLinePattern *lp);
-void grx_user_draw_circle_with_pattern(gint xc, gint yc, gint r, GrxLinePattern *lp);
-void grx_user_draw_ellipse_with_pattern(gint xc, gint yc, gint rx, gint ry, GrxLinePattern *lp);
+void grx_user_draw_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLineOptions *o, GrxPattern *p);
+void grx_user_draw_box_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxLineOptions *o, GrxPattern *p);
+void grx_user_draw_circle_with_pattern(gint xc, gint yc, gint r, GrxLineOptions *o, GrxPattern *p);
+void grx_user_draw_ellipse_with_pattern(gint xc, gint yc, gint rx, gint ry, GrxLineOptions *o, GrxPattern *p);
 void grx_user_draw_circle_arc_with_pattern(gint xc, gint yc, gint r, gint start, gint end,
-                                           GrxArcStyle style, GrxLinePattern *lp);
+                                           GrxArcStyle style, GrxLineOptions *o, GrxPattern *p);
 void grx_user_draw_ellipse_arc_with_pattern(gint xc, gint yc, gint rx, gint ry, gint start, gint end,
-                                            GrxArcStyle style, GrxLinePattern *lp);
-void grx_user_draw_polyline_with_pattern(gint n_points, GrxPoint *points, GrxLinePattern *lp);
-void grx_user_draw_polygon_with_pattern(gint n_points, GrxPoint *points, GrxLinePattern *lp);
+                                            GrxArcStyle style, GrxLineOptions *o, GrxPattern *p);
+void grx_user_draw_polyline_with_pattern(gint n_points, GrxPoint *points, GrxLineOptions *o, GrxPattern *p);
+void grx_user_draw_polygon_with_pattern(gint n_points, GrxPoint *points, GrxLineOptions *o, GrxPattern *p);
 
 void grx_user_draw_filled_pixel_with_pattern(gint x, gint y, GrxPattern *p);
 void grx_user_draw_filled_line_with_pattern(gint x1, gint y1, gint x2, gint y2, GrxPattern *p);

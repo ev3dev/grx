@@ -37,20 +37,22 @@
  * @start: the starting angle in 1/10ths of degrees
  * @end: the ending angle in 1/10ths of degrees
  * @style: the arc style
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
  * Draws an arc on the current context centered at the specified coordinates
  * from the starting angle to the ending angle with the specified radii,
- * arc style and line pattern.
+ * arc style and line options and pattern.
  */
-void grx_draw_ellipse_arc_with_pattern(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,GrxLinePattern *lp)
+void grx_draw_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, GrxArcStyle style, GrxLineOptions *o, GrxPattern *p)
 {
     GrxPoint *points;
+
     setup_ALLOC();
     points = ALLOC(sizeof(GrxPoint) * (GRX_MAX_ELLIPSE_POINTS + 2));
     if (points != NULL)
     {
-        int numpts = grx_generate_ellipse_arc(xc,yc,rx,ry,start,end,points);
+        int numpts = grx_generate_ellipse_arc (xc, yc, rx, ry, start, end, points);
         GrFillArg fval;
         int close;
 
@@ -70,9 +72,8 @@ void grx_draw_ellipse_arc_with_pattern(int xc,int yc,int rx,int ry,int start,int
                 numpts++;
                 close = TRUE;
         }
-        fval.p = lp->pattern;
-        _GrDrawCustomPolygon(numpts,points,lp->options,
-                             &_GrPatternFiller,fval,close,TRUE);
+        fval.p = p;
+        _GrDrawCustomPolygon (numpts, points, o, &_GrPatternFiller, fval, close, TRUE);
         FREE(points);
     }
     reset_ALLOC();

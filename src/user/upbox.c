@@ -27,16 +27,17 @@
  * @y1: the top Y coordinate
  * @x2: the right X coordinate
  * @y2: the bottom Y coordinate
- * @lp: the line pattern
+ * @o: the line options
+ * @p: the pattern
  *
  * Draws a rectangle on the current context using the specified coordinates
- * and line pattern.
+ * and line options and pattern.
  */
-void grx_user_draw_box_with_pattern(int x1,int y1,int x2,int y2,GrxLinePattern *lp)
+void grx_user_draw_box_with_pattern(int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPattern *p)
 {
-        U2SX(x1,CURC);
-        U2SX(x2,CURC);
-        U2SY(y1,CURC);
-        U2SY(y2,CURC);
-        grx_draw_box_with_pattern(x1,y1,x2,y2,lp);
+    U2SX (x1, CURC);
+    U2SX (x2, CURC);
+    U2SY (y1, CURC);
+    U2SY (y2, CURC);
+    grx_draw_box_with_pattern (x1 ,y1, x2, y2, o, p);
 }
