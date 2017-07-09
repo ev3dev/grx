@@ -76,22 +76,19 @@ typedef struct {
 
 /**
  * GrxPixmap:
- * @is_pixmap: Must be set to %TRUE!
- * @width: pixmap width in pixels
- * @height: pixmap height in pixels
- * @mode: bitblt mode
- * @source: source context for fill
  *
  * A fill pattern stored in a layout identical to the video RAM
  * for filling using 'bitblt'-s. It is mode dependent, typically one
  * of the library functions is used to build it.
  */
 struct _GrxPixmap {
-    gboolean      is_pixmap;
-    gint          width;
-    gint          height;
-    GrxColorMode  mode;
-    GrxFrame      source;
+    /*<private>*/
+    gboolean      is_pixmap;    // Must be set to TRUE!
+    gint          width;        // pixmap width in pixels
+    gint          height;       // pixmap height in pixels
+    GrxColorMode  mode;         // bitblt mode
+    GrxFrame      source;       // source context for fill
+    GrxContext   *context;      // to hold a reference
 };
 
 /**

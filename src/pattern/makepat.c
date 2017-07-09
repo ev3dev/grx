@@ -116,7 +116,9 @@ GrxPattern *grx_pixmap_new(const unsigned char *pixels,int w,int h,const GArray 
         result->width  = fullw;
         result->height = h;
         result->mode   = 0;
-        return((GrxPattern *)result);
+        result->context = NULL;
+
+        return (GrxPattern *)result;
 }
 
 /**
@@ -171,7 +173,9 @@ GrxPattern *grx_pixmap_new_from_bits(const unsigned char *bits,int w,int h,GrxCo
         result->width  = fullw;
         result->height = h;
         result->mode   = 0;
-        return((GrxPattern *)result);
+        result->context = NULL;
+
+        return (GrxPattern *)result;
 }
 
 /**
@@ -203,6 +207,8 @@ GrxPattern *grx_pixmap_new_from_context(GrxContext *context)
     result->width = context->x_max + 1;
     result->height = context->y_max + 1;
     result->mode = 0;
+    result->context = grx_context_ref (context);
+
     return (GrxPattern *)result;
 }
 
@@ -222,7 +228,7 @@ GrxPattern *grx_pattern_copy(GrxPattern *p)
  * grx_pattern_free:
  * @pattern: the pattern
  *
- * Frees any dynamiaclly allocated memory associated with the pattern.
+ * Frees any dynamically allocated memory associated with the pattern.
  */
 void grx_pattern_free(GrxPattern *p)
 {
@@ -232,6 +238,9 @@ void grx_pattern_free(GrxPattern *p)
       int ii;
       for ( ii = p->pixmap.source.driver->num_planes; ii > 0; ii-- )
          free(GRX_FRAME_MEMORY_PLANE(&p->pixmap.source.base_address,ii - 1));
+    }
+    if (p->pixmap.context) {
+        grx_context_unref (p->pixmap.context);
     }
     if ( p->pixmap.source.memory_flags & MY_CONTEXT )
       free(p);

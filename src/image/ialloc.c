@@ -53,6 +53,7 @@ GrxImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight)
   img->mode   = 0;
   img->source = ctx->frame;
   img->source.memory_flags =  3;/* MY_CONTEXT & MY_MEMORY */
+  img->context = NULL;
 done:
   GRX_RETURN(img);
 }
