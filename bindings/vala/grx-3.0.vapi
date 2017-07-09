@@ -331,15 +331,6 @@ namespace Grx {
         public static Context? new (int w, int h, [CCode (array_length = false)]uint8*[]? memory = null, out Context? where = null);
         public static Context? new_full (FrameMode mode, int w, int h, [CCode (array_length = false)]uint8*[]? memory = null, out Context? where = null);
         public static Context? new_subcontext (int x1, int y1, int x2, int y2, Context parent, out Context? where = null);
-        public static Context? save (out Context? where = null);
-
-        public static unowned Context current {
-            [CCode (cname = "grx_get_current_context")]get;
-            [CCode (cname = "grx_set_current_context")]set;
-        }
-        public static unowned Context screen {
-            [CCode (cname = "grx_get_screen_context")]get;
-        }
 
         public void resize_subcontext (int x1, int y1, int x2, int y2);
 
@@ -369,7 +360,7 @@ namespace Grx {
         public bool save_to_ppm (string filename, string? comment = null) throws GLib.Error;
         public bool load_from_pnm (string filename);
 
-        public bool load_from_pnm_data (uint8 *buffer) throws GLib.Error;
+        public bool load_from_pnm_data (uint8 *buffer);
 
         public bool save_to_png (string filename) throws GLib.Error;
         public bool load_from_png(string filename, bool use_alpha = true) throws GLib.Error;
@@ -378,6 +369,11 @@ namespace Grx {
         public bool save_to_jpeg (string filename, int quality = 90) throws GLib.Error;
         public bool save_to_jpeg_grayscale (string filename, int quality = 90) throws GLib.Error;
     }
+
+    public Context save_current_context (out Context? where = null);
+    public unowned Context get_current_context ();
+    public void set_current_context (Context? context);
+    public unowned Context get_screen_context ();
 
     public void set_clip_box (int x1, int y1, int x2, int y2);
     public void get_clip_box (out int x1, out int y1, out int x2, out int y2);
