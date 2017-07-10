@@ -130,19 +130,19 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_draw_filled_ellipse_arc_with_pixmap@Base 2.99.8
  grx_draw_filled_ellipse_with_pixmap@Base 2.99.8
  grx_draw_filled_line_with_pixmap@Base 2.99.8
- grx_draw_filled_pixel_with_pixmap@Base 2.99.8
+ grx_draw_pixel_with_pixmap@Base 2.99.8
  grx_draw_filled_polygon@Base 2.99.8
  grx_draw_filled_polygon_with_pixmap@Base 2.99.8
  grx_draw_framed_box@Base 2.99.8
  grx_draw_hline@Base 2.99.8
- grx_draw_hline_with_pixmap@Base 2.99.8
+ grx_draw_hline_with_offset_pixmap@Base 2.99.8
  grx_draw_pixmap@Base 2.99.8
  grx_draw_pixmap_tiled@Base 2.99.8
  grx_draw_line@Base 2.99.8
  grx_draw_line_with_options@Base 2.99.8
  grx_draw_line_with_pixmap@Base 2.99.8
  grx_draw_pixel@Base 2.99.8
- grx_draw_pixel_with_pixmap@Base 2.99.8
+ grx_draw_pixel_with_offset_pixmap@Base 2.99.8
  grx_draw_polygon@Base 2.99.8
  grx_draw_polygon_with_options@Base 2.99.8
  grx_draw_polygon_with_pixmap@Base 2.99.8
@@ -311,7 +311,7 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_user_draw_filled_ellipse_arc_with_pixmap@Base 2.99.8
  grx_user_draw_filled_ellipse_with_pixmap@Base 2.99.8
  grx_user_draw_filled_line_with_pixmap@Base 2.99.8
- grx_user_draw_filled_pixel_with_pixmap@Base 2.99.8
+ grx_user_draw_pixel_with_pixmap@Base 2.99.8
  grx_user_draw_filled_polygon@Base 2.99.8
  grx_user_draw_filled_polygon_with_pixmap@Base 2.99.8
  grx_user_draw_framed_box@Base 2.99.8

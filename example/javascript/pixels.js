@@ -26,19 +26,26 @@ const Lang = imports.lang;
 const Demo = imports.demo;
 
 function activate() {
-    const colors = Grx.color_get_ega_colors();
     const w = Grx.get_width();
-    const h = Grx.get_height();
-    const count = w * h / 4;
-    for (let n = 0; n < count; n++) {
-        const x = Math.random() * w;
-        const y = Math.random() * h;
-        if ((n & 0xff) == 0) {
-            // don't change the color so often to speed things up (random is slow)
-            const c = colors[(Math.floor(Math.random() * 16))];
+    const colors = Grx.color_get_ega_colors();
+    const smile = Demo.get_smiley_pixmap(32, 32);
+
+    // draw the full width of the screen
+    for (let x = 0; x < w; x += 3) {
+        // draw a band with colored pixels
+        for (let y = 10; y < 30; y += 2) {
+            Grx.draw_pixel(x + y % 3, y, colors[(y - 1) % 16]);
         }
-        // fast_draw_* is only safe when we are sure x and y are in bounds
-        Grx.fast_draw_pixel(x, y, c);
+
+        // draw a band with pixels from a pixmap
+        for (let y = 40; y < 60; y += 2) {
+            Grx.draw_pixel_with_pixmap(x + y % 3, y, smile);
+        }
+
+        // draw a band with pixels from a pixmap, but offset this time
+        for (let y = 70; y < 90; y += 2) {
+            Grx.draw_pixel_with_offset_pixmap(16, 0, x + y % 3, y, smile);
+        }
     }
 }
 

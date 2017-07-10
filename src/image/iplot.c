@@ -24,7 +24,7 @@
 #include "image.h"
 
 /**
- * grx_draw_pixel_with_pixmap:
+ * grx_draw_pixel_with_offset_pixmap:
  * @x0: the alignment X coordinate
  * @y0: the alignment Y coordinate
  * @x: the X coordinate
@@ -32,10 +32,11 @@
  * @p: the pixmap
  *
  * Draws a single pixel of an pixmap on the current context at @x, @y.
- * The pixmap can be offset from the point by specifying @x0, @y0 different from
- * @x, @y.
+ *
+ * The color of the pixel comes from the pixmap as if @p was tiled over the
+ * entrire context starting with the top/left of the pixmap at @x0, @y0.
  */
-void grx_draw_pixel_with_pixmap(int xo,int yo,int x,int y,GrxPixmap *p)
+void grx_draw_pixel_with_offset_pixmap(int xo,int yo,int x,int y,GrxPixmap *p)
 {
    int xp, yp;
    GrxColor col;

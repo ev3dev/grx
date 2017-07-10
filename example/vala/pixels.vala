@@ -20,16 +20,26 @@
 using Grx;
 
 static void activate () {
-    unowned Color[] colors = Color.get_ega_colors ();
     var w = get_width ();
-    var h = get_height ();
-    var count = w * h / 4;
-    for (var n = 0; n < count; n++) {
-        var x = Random.int_range (0, w);
-        var y = Random.int_range (0, h);
-        var c = colors[Random.int_range (0, 16)];
-        // fast_draw_* is only safe when we are sure x and y are in bounds
-        fast_draw_pixel (x, y, c);
+    unowned Color[] colors = Color.get_ega_colors ();
+    var smile = get_smiley_pixmap (32, 32);
+
+    // draw the full width of the screen
+    for (var x = 0; x < w; x += 3) {
+        // draw a band with colored pixels
+        for (var y = 10; y < 30; y += 2) {
+            draw_pixel (x + y % 3, y, colors[(y - 1) % 16]);
+        }
+
+        // draw a band with pixels from a pixmap
+        for (var y = 40; y < 60; y += 2) {
+            draw_pixel_with_pixmap (x + y % 3, y, smile);
+        }
+
+        // draw a band with pixels from a pixmap, but offset this time
+        for (var y = 70; y < 90; y += 2) {
+            draw_pixel_with_offset_pixmap (16, 0, x + y % 3, y, smile);
+        }
     }
 }
 

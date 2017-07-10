@@ -621,9 +621,10 @@ namespace Grx {
     public void draw_pixmap (int x, int y, Pixmap p);
     public void draw_pixmap_tiled (int x1, int y1, int x2, int y2, Pixmap p);
 
+    public void draw_pixel_with_pixmap (int x, int y, Pixmap p);
+    public void draw_pixel_with_offset_pixmap (int x0, int y0, int x, int y, Pixmap p);
     public void draw_line_with_pixmap (int x1, int y1, int x2, int y2, LineOptions o, Pixmap p);
-    public void draw_hline_with_pixmap (int x0, int y0, int x, int y, int width, Pixmap p);
-    public void draw_pixel_with_pixmap (int x0, int y0, int x, int y, Pixmap p);
+    public void draw_hline_with_offset_pixmap (int x0, int y0, int x, int y, int width, Pixmap p);
     public void draw_box_with_pixmap (int x1, int y1, int x2, int y2, LineOptions o, Pixmap p);
     public void draw_circle_with_pixmap (int xc, int yc, int r, LineOptions o, Pixmap p);
     public void draw_ellipse_with_pixmap (int xc, int yc, int rx, int ry, LineOptions o, Pixmap p);
@@ -632,7 +633,6 @@ namespace Grx {
     public void draw_polyline_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pixmap p);
     public void draw_polygon_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pixmap p);
 
-    public void draw_filled_pixel_with_pixmap (int x, int y, Pixmap p);
     public void draw_filled_line_with_pixmap (int x1, int y1, int x2, int y2, Pixmap p);
     public void draw_filled_box_with_pixmap (int x1, int y1, int x2, int y2, Pixmap p);
     public void draw_filled_box_with_offset_pixmap (int x0, int y0, int x1, int y1, int x2, int y2, Pixmap p);
@@ -702,7 +702,7 @@ namespace Grx {
         public void draw_polyline_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pixmap p);
         public void draw_polygon_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pixmap p);
 
-        public void draw_filled_pixel_with_pixmap (int x, int y, Pixmap p);
+        public void draw_pixel_with_pixmap (int x, int y, Pixmap p);
         public void draw_filled_line_with_pixmap (int x1, int y1, int x2, int y2, Pixmap p);
         public void draw_filled_box_with_pixmap (int x1, int y1, int x2, int y2, Pixmap p);
         public void draw_filled_circle_with_pixmap (int xc, int yc, int r, Pixmap p);

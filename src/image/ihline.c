@@ -24,7 +24,7 @@
 #include "image.h"
 
 /**
- * grx_draw_hline_with_pixmap:
+ * grx_draw_hline_with_offset_pixmap:
  * @x0: the alignment X coordinate
  * @y0: the alignment Y coordinate
  * @x: the top X coordinate
@@ -37,7 +37,7 @@
  * @x, @y. The pixmap is repeated if the width of the line is greater than the
  * width of the pixmap.
  */
-void grx_draw_hline_with_pixmap(int xo,int yo,int x,int y,int width,GrxPixmap *p)
+void grx_draw_hline_with_offset_pixmap(int xo,int yo,int x,int y,int width,GrxPixmap *p)
 {
   int x2, widthimg, yimg, ximg, xdest, ydest, cpysize;
   GrxColor optype;
