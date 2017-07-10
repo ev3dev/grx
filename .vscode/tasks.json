@@ -23,6 +23,11 @@
             "taskName": "clean"
         },
         {
+            "taskName": "vala-boxes",
+            "args": ["plugins"],
+            "problemMatcher": "$valac"
+        },
+        {
             "taskName": "vala-life",
             "args": ["plugins"],
             "problemMatcher": "$valac"
@@ -33,7 +38,7 @@
             "problemMatcher": "$valac"
         },
         {
-            "taskName": "grx-3.0-gir",
+            "taskName": "grx-3.0-typelib",
             "args": ["plugins"]
         }
     ]

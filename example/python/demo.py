@@ -42,3 +42,50 @@ class SimpleDemoApp(Grx.Application):
             return True
 
         return False
+
+
+_demo_pattern_context = None
+
+
+def get_checkerboard_pixmap():
+    """Gets a blue/red checkerboard pattern"""
+    global _demo_pattern_context
+    if not _demo_pattern_context:
+        _demo_pattern_context = Grx.Context.new(32, 32)
+        save = Grx.save_current_context()
+        Grx.set_current_context(_demo_pattern_context)
+        Grx.clear_context(Grx.color_get(0, 0, 255))
+        Grx.draw_filled_box(0, 0, 16, 16, Grx.color_get(255, 0, 0))
+        Grx.draw_filled_box(17, 17, 32, 32, Grx.color_get(255, 0, 0))
+        Grx.set_current_context(save)
+
+    return Grx.Pixmap.new_from_context(_demo_pattern_context)
+
+
+_demo_image = None
+
+
+def get_smiley_pixmap(width, height):
+    """Gets a smiley face image
+
+    Arguments:
+    width: the width of the pixmap
+    height: the height of the pixmap
+    """
+    global _demo_image
+    if not _demo_image:
+        demo_image_context = Grx.Context.new(27, 27)
+        save = Grx.save_current_context()
+        Grx.set_current_context(demo_image_context)
+        Grx.clear_context(Grx.color_get(0, 0, 255))
+        Grx.draw_filled_circle(13, 13, 13, Grx.color_get(255, 255, 0))
+        Grx.draw_filled_circle(8, 8, 2, Grx.color_get_black())
+        Grx.draw_filled_circle(18, 8, 2, Grx.color_get_black())
+        Grx.draw_filled_ellipse_arc(13, 16, 7, 5, 1800, 3600,
+                                    Grx.ArcStyle.CLOSED_CHORD,
+                                    Grx.color_get_black())
+        Grx.set_current_context(save)
+
+        _demo_image = Grx.Pixmap.new_from_context(demo_image_context)
+
+    return _demo_image.stretch(width, height)

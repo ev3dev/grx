@@ -1,5 +1,6 @@
 
 set (PROGRAMS
+    boxes.py
     fonts.py
     input.py
     intl.py

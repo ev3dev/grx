@@ -5,7 +5,7 @@
             "name": "Run python file",
             "type": "python",
             "request": "launch",
-            "preLaunchTask": "grx-3.0-gir",
+            "preLaunchTask": "grx-3.0-typelib",
             "stopOnEntry": false,
             "pythonPath": "${config:python.pythonPath}",
             "program": "${file}",
@@ -22,16 +22,16 @@
             ]
         },
         {
-            "name": "Run vala life",
+            "name": "Run vala file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/build/example/vala/life",
+            "program": "${workspaceRoot}/build/example/vala/${fileBasenameNoExtension}",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [{"name": "GRX_PLUGIN_PATH", "value": "${workspaceRoot}/build/plugins"}],
             "externalConsole": false,
-            "preLaunchTask": "vala-life",
+            "preLaunchTask": "vala-${fileBasenameNoExtension}",
             "linux": {
                 "MIMode": "gdb",
                 "setupCommands": [

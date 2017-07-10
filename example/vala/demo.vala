@@ -47,3 +47,49 @@ class SimpleDemoApp : Grx.Application {
         return true;
     }
 }
+
+static Context? checkerboard_context;
+
+/**
+ * Gets a 16x16 pixel checkerboard pattern.
+ * 
+ * @return      A new pixmap
+ */
+public Pixmap get_checkerboard_pixmap () {
+    if (checkerboard_context == null) {
+        checkerboard_context = Context.new (32, 32);
+        var save = save_current_context ();
+        set_current_context (checkerboard_context);
+        clear_context (Color.get (0, 0, 255));
+        draw_filled_box (0, 0, 16, 16, Color.get (255, 0, 0));
+        draw_filled_box (17, 17, 32, 32, Color.get (255, 0, 0));
+        set_current_context (save);
+    }
+    return Pixmap.new_from_context (checkerboard_context);
+}
+
+static Pixmap smiley_image;
+
+/**
+ * Gets a smiley face image.
+ *
+ * @param width     The width of the image
+ * @param height    The height of the image
+ * @return          A new pixmap
+ */
+public Pixmap get_smiley_pixmap (int width, int height) {
+    if (smiley_image == null) {
+        var smiley_image_context = Context.new (27, 27);
+        var save = save_current_context ();
+        set_current_context (smiley_image_context);
+        clear_context (Color.get (0, 0, 255));
+        draw_filled_circle (13, 13, 13, Color.get (255, 255, 0));
+        draw_filled_circle (8, 8, 2, Color.BLACK);
+        draw_filled_circle (18, 8, 2, Color.BLACK);
+        draw_filled_ellipse_arc (13, 16, 7, 5, 1800, 3600, ArcStyle.CLOSED_CHORD, Color.BLACK);
+        set_current_context (save);
+
+        smiley_image = Pixmap.new_from_context (smiley_image_context);
+    }
+    return smiley_image.stretch (width, height);
+}
