@@ -24,18 +24,18 @@
 #include "image.h"
 
 /**
- * grx_draw_pixel_with_image:
- * @xo: the alignment X coordinate
- * @yo: the alignment Y coordinate
+ * grx_draw_pixel_with_pixmap:
+ * @x0: the alignment X coordinate
+ * @y0: the alignment Y coordinate
  * @x: the X coordinate
  * @y: the Y coordinate
- * @image: the image
+ * @p: the pixmap
  *
- * Draws a single pixel of an image on the current context at @x, @y.
- * The image can be offset from the point by specifying @xo, @yo different from
+ * Draws a single pixel of an pixmap on the current context at @x, @y.
+ * The pixmap can be offset from the point by specifying @x0, @y0 different from
  * @x, @y.
  */
-void grx_draw_pixel_with_image(int xo,int yo,int x,int y,GrxImage *p)
+void grx_draw_pixel_with_pixmap(int xo,int yo,int x,int y,GrxPixmap *p)
 {
    int xp, yp;
    GrxColor col;

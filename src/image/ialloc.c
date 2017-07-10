@@ -34,15 +34,15 @@ int _GrImageTestSize(int wdt,int hgt)
   GRX_RETURN(total);
 }
 
-GrxImage *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight)
+GrxPixmap *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight)
 {
-  GrxImage   *img;
+  GrxPixmap   *img;
 
   GRX_ENTER();
   img = NULL;
   if ( _GrImageTestSize(nwidth, nheight) <= 0 ) goto done;
   if (!grx_context_new(nwidth, nheight, NULL, ctx)) goto done;
-  img = (GrxImage *)malloc(sizeof(GrxImage));
+  img = malloc(sizeof(GrxPixmap));
   if ( !img ) {
     grx_context_unref(ctx);
     goto done;

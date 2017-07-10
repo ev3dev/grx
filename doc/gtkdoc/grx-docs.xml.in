@@ -31,7 +31,6 @@
       <xi:include href="xml/draw_nc.xml"/>
       <xi:include href="xml/wideline.xml"/>
       <xi:include href="xml/pixmap.xml"/>
-      <xi:include href="xml/image.xml"/>
       <xi:include href="xml/text.xml"/>
       <xi:include href="xml/user.xml"/>
     </chapter>

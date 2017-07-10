@@ -23,20 +23,20 @@
 #include "image.h"
 
 /**
- * grx_image_mirror:
- * @image: the source image
+ * grx_pixmap_mirror:
+ * @pixmap: the source pixmap
  * @flags: the mirror flags
  *
- * Creates a new image, flipping left-right and/or top-bottom as indicated by
+ * Creates a new pixmap, flipping left-right and/or top-bottom as indicated by
  * @flags.
  *
- * Returns: (transfer full): the new image
+ * Returns: (transfer full): the new pixmap
  */
-GrxImage *grx_image_mirror(GrxImage *p, GrxImageMirrorFlags flag)
+GrxPixmap *grx_pixmap_mirror(GrxPixmap *p, GrxPixmapMirrorFlags flag)
 {
   GrxContext  ctx, save;
   GrxColor    col;
-  GrxImage   *img;
+  GrxPixmap   *img;
   int yy, xx, sidex, sidey, width, height, xs, ys = 0;
   width = p->width;
   height = p->height;
@@ -44,11 +44,11 @@ GrxImage *grx_image_mirror(GrxImage *p, GrxImageMirrorFlags flag)
   if ( !img ) return(NULL);
   save = *CURC;
   *CURC = ctx;
-  sidex  = ( flag & GRX_IMAGE_MIRROR_HORIZONTAL ) ? -1 : 1;
-  sidey  = ( flag & GRX_IMAGE_MIRROR_VERTICAL ) ? -1 : 1;
-  yy     = ( flag & GRX_IMAGE_MIRROR_VERTICAL ) ? height-1 : 0;
+  sidex  = ( flag & GRX_PIXMAP_MIRROR_HORIZONTAL ) ? -1 : 1;
+  sidey  = ( flag & GRX_PIXMAP_MIRROR_VERTICAL ) ? -1 : 1;
+  yy     = ( flag & GRX_PIXMAP_MIRROR_VERTICAL ) ? height-1 : 0;
   do {
-    xx = ( flag & GRX_IMAGE_MIRROR_HORIZONTAL ) ? width-1 : 0;
+    xx = ( flag & GRX_PIXMAP_MIRROR_HORIZONTAL ) ? width-1 : 0;
     xs = 0;
     do {
       col = (*p->source.driver->readpixel)(&p->source,xs,ys);

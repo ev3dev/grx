@@ -24,20 +24,20 @@
 #include "mouse.h"
 
 /**
- * grx_draw_filled_box_with_image:
- * @xo: the alignment X coordinate
- * @yo: the alignment Y coordinate
+ * grx_draw_filled_box_with_offset_pixmap:
+ * @x0: the alignment X coordinate
+ * @y0: the alignment Y coordinate
  * @x1: the top X coordinate
  * @y1: the left Y coordinate
  * @x2: the right X coordinate
  * @y2: the bottom Y coordinate
- * @image: the image
+ * @p: the pixmap
  *
- * Fills the rectangle @x1, @y1, @x2, @y2 in the current context with the image.
- * This image can be offset from the rectangle by specifying @xo, @yo different
- * from @x1, @y1. The image is tiled if needed to fill the rectangle.
+ * Fills the rectangle @x1, @y1, @x2, @y2 in the current context with the pixmap.
+ * This pixmap can be offset from the rectangle by specifying @x0, @y0 different
+ * from @x1, @y1. The pixmap is tiled if needed to fill the rectangle.
  */
-void grx_draw_filled_box_with_image(int xo,int yo,int x1,int y1,int x2,int y2,GrxImage *p)
+void grx_draw_filled_box_with_offset_pixmap(int xo,int yo,int x1,int y1,int x2,int y2,GrxPixmap *p)
 {
   int iwdt, ihgt, xoff, yoff, yy, xx, copyh, copyw;
   void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
@@ -76,35 +76,35 @@ void grx_draw_filled_box_with_image(int xo,int yo,int x1,int y1,int x2,int y2,Gr
 }
 
 /**
- * grx_draw_image:
+ * grx_draw_pixmap:
  * @x: the left edge
  * @y: the top edge
- * @image: the image
+ * @p: the pixmap
  *
  * Draws the entire image on the current context with the top, left corner at
  * @x, @y.
  */
-void  grx_draw_image(int x,int y,GrxImage *p)
+void  grx_draw_pixmap(int x,int y,GrxPixmap *p)
 {
   GRX_ENTER();
-  grx_draw_filled_box_with_image(x,y,x,y,x+p->width-1,y+p->height-1,p);
+  grx_draw_filled_box_with_offset_pixmap(x,y,x,y,x+p->width-1,y+p->height-1,p);
   GRX_LEAVE();
 }
 
 /**
- * grx_draw_image_tiled:
+ * grx_draw_pixmap_tiled:
  * @x1: the left edge
  * @y1: the top edge
  * @x2: the right edge
  * @y2: the bottom edge
- * @image: the image
+ * @p: the pixmap
  *
  * Draws as much of the image as possible (repeating if necessary) on the
  * current in the rectangle defined by @x1, @y1 and @x2, @y2
  */
-void  grx_draw_image_tiled(int x1,int y1,int x2,int y2,GrxImage* p)
+void  grx_draw_pixmap_tiled(int x1,int y1,int x2,int y2,GrxPixmap* p)
 {
   GRX_ENTER();
-  grx_draw_filled_box_with_image(x1,y1,x1,y1,x2,y2,p);
+  grx_draw_filled_box_with_offset_pixmap(x1,y1,x1,y1,x2,y2,p);
   GRX_LEAVE();
 }

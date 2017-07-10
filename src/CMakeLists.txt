@@ -56,11 +56,9 @@ set (LIBRARY_SOURCE_FILES
     gformats/png2ctx.c
     gformats/pnm2ctx.c
     image/ialloc.c
-    image/ibuild.c
     image/ifbox.c
     image/ihline.c
     image/iinverse.c
-    image/imginlne.c
     image/iplot.c
     image/istretch.c
     input/device_manager.c
@@ -358,7 +356,6 @@ set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/extents.h
     ${CMAKE_SOURCE_DIR}/include/grx/frame_mode.h
     ${CMAKE_SOURCE_DIR}/include/grx/gformats.h
-    ${CMAKE_SOURCE_DIR}/include/grx/image.h
     ${CMAKE_SOURCE_DIR}/include/grx/mode.h
     ${CMAKE_SOURCE_DIR}/include/grx/mouse.h
     ${CMAKE_SOURCE_DIR}/include/grx/pixmap.h

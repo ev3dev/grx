@@ -118,7 +118,6 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_draw_ellipse_with_options@Base 2.99.8
  grx_draw_ellipse_with_pixmap@Base 2.99.8
  grx_draw_filled_box@Base 2.99.8
- grx_draw_filled_box_with_image@Base 2.99.8
  grx_draw_filled_box_with_pixmap@Base 2.99.8
  grx_draw_filled_circle@Base 2.99.8
  grx_draw_filled_circle_arc@Base 2.99.8
@@ -136,14 +135,14 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_draw_filled_polygon_with_pixmap@Base 2.99.8
  grx_draw_framed_box@Base 2.99.8
  grx_draw_hline@Base 2.99.8
- grx_draw_hline_with_image@Base 2.99.8
- grx_draw_image@Base 2.99.8
- grx_draw_image_tiled@Base 2.99.8
+ grx_draw_hline_with_pixmap@Base 2.99.8
+ grx_draw_pixmap@Base 2.99.8
+ grx_draw_pixmap_tiled@Base 2.99.8
  grx_draw_line@Base 2.99.8
  grx_draw_line_with_options@Base 2.99.8
  grx_draw_line_with_pixmap@Base 2.99.8
  grx_draw_pixel@Base 2.99.8
- grx_draw_pixel_with_image@Base 2.99.8
+ grx_draw_pixel_with_pixmap@Base 2.99.8
  grx_draw_polygon@Base 2.99.8
  grx_draw_polygon_with_options@Base 2.99.8
  grx_draw_polygon_with_pixmap@Base 2.99.8
@@ -230,13 +229,11 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_get_virtual_video_mode@Base 2.99.8
  grx_get_virtual_width@Base 2.99.8
  grx_get_width@Base 2.99.8
- grx_image_copy@Base 2.99.8
- grx_image_free@Base 2.99.8
- grx_image_get_type@Base 2.99.8
- grx_image_mirror@Base 2.99.8
- grx_image_new@Base 2.99.8
- grx_image_new_from_context@Base 2.99.8
- grx_image_stretch@Base 2.99.8
+ grx_pixmap_copy@Base 2.99.8
+ grx_pixmap_free@Base 2.99.8
+ grx_pixmap_get_type@Base 2.99.8
+ grx_pixmap_mirror@Base 2.99.8
+ grx_pixmap_stretch@Base 2.99.8
  grx_is_screen_virtual@Base 2.99.8
  grx_mouse_block@Base 2.99.8
  grx_mouse_get_cursor@Base 2.99.8

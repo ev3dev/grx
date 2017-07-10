@@ -617,15 +617,29 @@ namespace Grx {
     /*             PATTERNED DRAWING AND FILLING PRIMITIVES               */
     /* ================================================================== */
 
+    [CCode (cprefix = "GRX_PIXMAP_MIRROR_", has_type_id = false)]
+    [Flags]
+    public enum PixmapMirrorFlags {
+        HORIZONTAL, /* inverse left right */
+        VERTICAL /* inverse top down */
+    }
+
     [CCode (copy_function = "grx_pixmap_copy", free_function = "grx_pixmap_free", has_type_id = false)]
     [Compact]
     public class Pixmap {
         public static Pixmap new ([CCode (array_length = false)]uint8 *pixels, int w, int h, GLib.Array<Color>? colors);
         public static Pixmap new_from_bits ([CCode (array_length = false)]uint8 *bits, int w, int h, Color fg, Color bg);
         public static Pixmap new_from_context (Context context);
+        public Pixmap mirror (PixmapMirrorFlags flags);
+        public Pixmap stretch (int new_width, int new_height);
     }
 
+    public void draw_pixmap (int x, int y, Pixmap p);
+    public void draw_pixmap_tiled (int x1, int y1, int x2, int y2, Pixmap p);
+
     public void draw_line_with_pixmap (int x1, int y1, int x2, int y2, LineOptions o, Pixmap p);
+    public void draw_hline_with_pixmap (int x0, int y0, int x, int y, int width, Pixmap p);
+    public void draw_pixel_with_pixmap (int x0, int y0, int x, int y, Pixmap p);
     public void draw_box_with_pixmap (int x1, int y1, int x2, int y2, LineOptions o, Pixmap p);
     public void draw_circle_with_pixmap (int xc, int yc, int r, LineOptions o, Pixmap p);
     public void draw_ellipse_with_pixmap (int xc, int yc, int rx, int ry, LineOptions o, Pixmap p);
@@ -637,6 +651,7 @@ namespace Grx {
     public void draw_filled_pixel_with_pixmap (int x, int y, Pixmap p);
     public void draw_filled_line_with_pixmap (int x1, int y1, int x2, int y2, Pixmap p);
     public void draw_filled_box_with_pixmap (int x1, int y1, int x2, int y2, Pixmap p);
+    public void draw_filled_box_with_offset_pixmap (int x0, int y0, int x1, int y1, int x2, int y2, Pixmap p);
     public void draw_filled_circle_with_pixmap (int xc, int yc, int r, Pixmap p);
     public void draw_filled_ellipse_with_pixmap (int xc, int yc, int rx, int ry, Pixmap p);
     public void draw_filled_circle_arc_with_pixmap (int xc, int yc, int r, int start, int end, int style, Pixmap p);
@@ -645,33 +660,6 @@ namespace Grx {
     public void draw_filled_polygon_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, Pixmap p);
     public void flood_fill_with_pixmap (int x, int y, Color border, Pixmap p);
 
-
-    /* ================================================================== */
-    /*                      IMAGE MANIPULATION                            */
-    /* ================================================================== */
-
-    [CCode (cprefix = "GRX_IMAGE_MIRROR_", has_type_id = false)]
-    [Flags]
-    public enum ImageMirrorFlags {
-        HORIZONTAL, /* inverse left right */
-        VERTICAL /* inverse top down */
-    }
-
-    [CCode (copy_function = "grx_image_copy", free_function = "grx_image_free", has_type_id = false)]
-    [Compact]
-    public class Image : Pixmap {
-        public static Image new ([CCode (array_length = false)]uint8[] pixels, int width, int height, GLib.Array<Color> colors);
-        public static Image new_from_context (Context context);
-
-        public Image mirror (ImageMirrorFlags flags);
-        public Image stretch (int new_width, int new_height);
-    }
-
-    public void draw_image (int x, int y, Image image);
-    public void draw_image_tiled (int x1, int y1, int x2, int y2, Image image);
-    public void draw_filled_box_with_image (int xo, int yo, int x1, int y1, int x2, int y2, Image image);
-    public void draw_hline_with_image (int xo, int yo, int x, int y, int width, Image image);
-    public void draw_pixel_with_image (int xo, int yo, int x, int y, Image image);
 
     /* ================================================================== */
     /*               DRAWING IN USER WINDOW COORDINATES                   */

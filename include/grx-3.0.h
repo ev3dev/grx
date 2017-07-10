@@ -32,7 +32,6 @@
 #include <grx/extents.h>
 #include <grx/frame_mode.h>
 #include <grx/gformats.h>
-#include <grx/image.h>
 #include <grx/input_keysyms.h>
 #include <grx/mode.h>
 #include <grx/mouse.h>

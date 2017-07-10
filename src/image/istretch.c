@@ -20,19 +20,19 @@
 #include "image.h"
 
 /**
- * grx_image_stretch:
- * @image: the source image
+ * grx_pixmap_stretch:
+ * @pixmap: the source pixmap
  * @new_width: the new width
  * @new_height: the new height
  *
- * Creates a new image stretching @image to @new_width by @new_height.
+ * Creates a new pixmap stretching @pixmap to @new_width by @new_height.
  *
- * Returns: (transfer full): the new image
+ * Returns: (transfer full): the new pixmap
  */
-GrxImage *grx_image_stretch(GrxImage *p,int nwidth,int nheight)
+GrxPixmap *grx_pixmap_stretch(GrxPixmap *p,int nwidth,int nheight)
 {
   GrxContext  ctx;
-  GrxImage   *img;
+  GrxPixmap   *img;
 
   GRX_ENTER();
   img = _GrImageAllocate(&ctx,nwidth,nheight);
