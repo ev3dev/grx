@@ -121,6 +121,7 @@ set (LIBRARY_SOURCE_FILES
     shape/flood.c
     shape/floodfil.c
     shape/genellip.c
+    shape/genpoints.c
     shape/polygon.c
     shape/polyline.c
     shape/scancnvx.c

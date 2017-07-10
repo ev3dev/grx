@@ -124,6 +124,7 @@ void grx_draw_polygon(gint n_points, GrxPoint *points, GrxColor c);
 void grx_get_last_arc_coordinates(gint *xs, gint *ys, gint *xe, gint *ye, gint *xc, gint *yc);
 gint grx_generate_ellipse(gint xc, gint yc, gint rx, gint ry, GrxPoint points[GRX_MAX_ELLIPSE_POINTS]);
 gint grx_generate_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end, GrxPoint points[GRX_MAX_ELLIPSE_POINTS]);
+GArray *grx_generate_points(GArray *coords);
 
 void grx_draw_filled_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_draw_filled_rounded_box(gint x1, gint y1, gint x2, gint y2, gint r, GrxColor c);
