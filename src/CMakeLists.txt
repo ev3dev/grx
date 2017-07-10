@@ -29,6 +29,7 @@ set (LIBRARY_SOURCE_FILES
     draw/pixelc.c
     draw/plot.c
     draw/putscl.c
+    draw/roundbox.c
     events/events.c
     fdrivers/dotab8.c
     fdrivers/ftable.c

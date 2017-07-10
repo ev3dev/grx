@@ -432,24 +432,8 @@ namespace Grx {
     public void draw_box (int x1, int y1, int x2, int y2, Color c);
     public void draw_filled_box (int x1, int y1, int x2, int y2, Color c);
     public void draw_framed_box (int x1, int y1, int x2, int y2, int width, FramedBoxColors c);
-    public void draw_rounded_box (int x1, int y1, int x2, int y2, int radius, Color c) {
-        draw_circle_arc (x1 + radius, y1 + radius, radius, 900, 1800, ArcStyle.OPEN, c);
-        draw_circle_arc (x2 - radius, y1 + radius, radius, 0, 900, ArcStyle.OPEN, c);
-        draw_circle_arc (x1 + radius, y2 - radius, radius, 1800, 2700, ArcStyle.OPEN, c);
-        draw_circle_arc (x2 - radius, y2 - radius, radius, 2700, 3600, ArcStyle.OPEN, c);
-        draw_hline (x1 + radius, x2 - radius, y1, c);
-        draw_hline (x1 + radius, x2 - radius, y2, c);
-        draw_vline (x1, y1 + radius, y2 - radius, c);
-        draw_vline (x2, y1 + radius, y2 - radius, c);
-    }
-    public void draw_filled_rounded_box (int x1, int y1, int x2, int y2, int radius, Color c) {
-        draw_filled_circle_arc (x1 + radius, y1 + radius, radius, 900, 1800, ArcStyle.CLOSED_RADIUS, c);
-        draw_filled_circle_arc (x2 - radius, y1 + radius, radius, 0, 900, ArcStyle.CLOSED_RADIUS, c);
-        draw_filled_circle_arc (x1 + radius, y2 - radius, radius, 1800, 2700, ArcStyle.CLOSED_RADIUS, c);
-        draw_filled_circle_arc (x2 - radius, y2 - radius, radius, 2700, 3600, ArcStyle.CLOSED_RADIUS, c);
-        draw_filled_box (x1 + radius, y1, x2 - radius, y2, c);
-        draw_filled_box (x1, y1 + radius, x2, y2 - radius, c);
-    }
+    public void draw_rounded_box (int x1, int y1, int x2, int y2, int r, Color c);
+    public void draw_filled_rounded_box (int x1, int y1, int x2, int y2, int r, Color c);
     [CCode (cname = "grx_generate_ellipse")]
     private int _generate_ellipse (int xc, int yc, int rx, int ry, [CCode (array_length_cexpr = "MAX_ELLIPSE_POINTS")]Point[] points);
     [CCode (cname = "vala_generate_ellipse")]

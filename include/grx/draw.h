@@ -113,6 +113,7 @@ void grx_draw_line(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_draw_hline(gint x1, gint x2, gint y, GrxColor c);
 void grx_draw_vline(gint x, gint y1, gint y2,GrxColor c);
 void grx_draw_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
+void grx_draw_rounded_box(gint x1, gint y1, gint x2, gint y2, gint r, GrxColor c);
 void grx_draw_circle(gint xc, gint yc, gint r, GrxColor c);
 void grx_draw_ellipse(gint xc, gint yc, gint rx, gint ry, GrxColor c);
 void grx_draw_circle_arc(gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
@@ -125,6 +126,7 @@ gint grx_generate_ellipse(gint xc, gint yc, gint rx, gint ry, GrxPoint points[GR
 gint grx_generate_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end, GrxPoint points[GRX_MAX_ELLIPSE_POINTS]);
 
 void grx_draw_filled_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
+void grx_draw_filled_rounded_box(gint x1, gint y1, gint x2, gint y2, gint r, GrxColor c);
 void grx_draw_framed_box(gint x1, gint y1, gint x2, gint y2, gint width, const GrxFramedBoxColors *c);
 void grx_draw_filled_circle(gint xc, gint yc, gint r, GrxColor c);
 void grx_draw_filled_ellipse(gint xc, gint yc, gint rx, gint ry, GrxColor c);
