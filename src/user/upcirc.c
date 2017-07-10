@@ -18,31 +18,31 @@
  *        looks like a circle on the screen
  */
 
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
 
 /**
- * grx_user_draw_circle_with_pattern:
+ * grx_user_draw_circle_with_pixmap:
  * @xc: the X coordinate of the center of the circle
  * @yc: the Y coordinate of the center of the circle
  * @r: the radius of the circle
  * @o: the line options
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draws a circle on the current context centered at the specified coordinates
- * with the specified radius and line options and pattern.
+ * with the specified radius and line options and pixmap.
  */
-void grx_user_draw_circle_with_pattern (int xc, int yc, int r, GrxLineOptions *o, GrxPattern *p)
+void grx_user_draw_circle_with_pixmap (int xc, int yc, int r, GrxLineOptions *o, GrxPixmap *p)
 {
 #ifdef USR_KEEP_SHAPE
     U2SX (xc, CURC);
     U2SY (yc, CURC);
     SCALE (r, r, CURC->x_max, CURC->user_width);
-    grx_draw_circle_with_pattern (xc, yc, r, o, p);
+    grx_draw_circle_with_pixmap (xc, yc, r, o, p);
 #else
-    grx_user_draw_ellipse_with_pattern (xc, yc, r, r, o, p);
+    grx_user_draw_ellipse_with_pixmap (xc, yc, r, r, o, p);
 #endif /* USR_KEEP_SHAPE */
 }

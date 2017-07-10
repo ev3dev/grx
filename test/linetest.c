@@ -1,5 +1,5 @@
 /*
- * linetest.c ---- test wide and patterned lines
+ * linetest.c ---- test wide and pixmaped lines
  *
  * Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  * [e-mail: csaba@vuse.vanderbilt.edu]

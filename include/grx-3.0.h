@@ -36,7 +36,7 @@
 #include <grx/input_keysyms.h>
 #include <grx/mode.h>
 #include <grx/mouse.h>
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 #include <grx/text.h>
 #include <grx/user.h>
 #include <grx/utils.h>

@@ -20,7 +20,7 @@
 
 #include <glib.h>
 
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #define USE_FDR_DRAWPATTERN 1
 
@@ -28,7 +28,7 @@ typedef union _GR_fillArg {
     GrxColor color;
     struct _GR_bitmap *bmp;
     struct _GR_pixmap *pxp;
-    GrxPattern *p;
+    GrxPixmap *p;
 } GrFillArg;
 
 typedef void (*PixelFillFunc)(int x,int y,GrFillArg fval);
@@ -60,16 +60,16 @@ G_GNUC_INTERNAL void _GrFillPatternedScanLine(int x,int y,int w,GrFillArg arg);
 
 G_GNUC_INTERNAL void _GrFloodFill(int x,int y,GrxColor border,GrFiller *f,GrFillArg fa);
 
-G_GNUC_INTERNAL void _GrFillPattern(int x,int y,int width,GrxPattern *p);
-G_GNUC_INTERNAL void _GrFillPatternExt(int x,int y,int sx, int sy,int width,GrxPattern *p);
-G_GNUC_INTERNAL void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p);
-G_GNUC_INTERNAL void _GrPatternFilledPlot(int x,int y,GrxPattern *p);
+G_GNUC_INTERNAL void _GrFillPattern(int x,int y,int width,GrxPixmap *p);
+G_GNUC_INTERNAL void _GrFillPatternExt(int x,int y,int sx, int sy,int width,GrxPixmap *p);
+G_GNUC_INTERNAL void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPixmap *p);
+G_GNUC_INTERNAL void _GrPatternFilledPlot(int x,int y,GrxPixmap *p);
 
 G_GNUC_INTERNAL void _GrFillBitmapPattern(int x,int y,int w,int h,
                                           unsigned char *bmp,int pitch,int start,
-                                          GrxPattern* p,GrxColor bg);
+                                          GrxPixmap* p,GrxColor bg);
 G_GNUC_INTERNAL void _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
                                              unsigned char *bmp,int pitch,int start,
-                                             GrxPattern* p,GrxColor bg);
+                                             GrxPixmap* p,GrxColor bg);
 
 #endif

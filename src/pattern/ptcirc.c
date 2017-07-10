@@ -22,22 +22,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #include "libgrx.h"
 
 /**
- * grx_draw_circle_with_pattern:
+ * grx_draw_circle_with_pixmap:
  * @xc: the X coordinate of the center of the circle
  * @yc: the Y coordinate of the center of the circle
  * @r: the radius of the circle
  * @o: the line options
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draws a circle on the current context centered at the specified coordinates
- * with the specified radius and line options and pattern.
+ * with the specified radius and line options and pixmap.
  */
-void grx_draw_circle_with_pattern (int xc, int yc, int r, GrxLineOptions *o, GrxPattern *p)
+void grx_draw_circle_with_pixmap (int xc, int yc, int r, GrxLineOptions *o, GrxPixmap *p)
 {
-    grx_draw_ellipse_with_pattern (xc, yc, r, r, o, p);
+    grx_draw_ellipse_with_pixmap (xc, yc, r, r, o, p);
 }

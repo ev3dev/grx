@@ -21,7 +21,7 @@
 
 #include <glib-object.h>
 
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #include "colors.h"
 #include "globals.h"
@@ -34,7 +34,7 @@
 #define  BEST_MAX_LINE         128
 #define  BEST_MAX_CONTEXT      2048L
 
-G_DEFINE_BOXED_TYPE(GrxPattern, grx_pattern, grx_pattern_copy, grx_pattern_free);
+G_DEFINE_BOXED_TYPE(GrxPixmap, grx_pixmap, grx_pixmap_copy, grx_pixmap_free);
 
 /*
  * try to replicate a pixmap for faster bitblt-s
@@ -75,9 +75,9 @@ static int _GrBestPixmapWidth(int wdt,int hgt)
  * modifiers (GrXOR, GrOR, GrAND) OR-ed to the elements of the color table are
  * ignored.
  *
- * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
+ * Returns: (nullable): a new #GrxPixmap or %NULL if there was an error.
  */
-GrxPattern *grx_pixmap_new(const unsigned char *pixels,int w,int h,const GArray *ct)
+GrxPixmap *grx_pixmap_new(const unsigned char *pixels,int w,int h,const GArray *ct)
 {
         GrxContext csave,cwork;
         GrxPixmap  *result;
@@ -118,7 +118,7 @@ GrxPattern *grx_pixmap_new(const unsigned char *pixels,int w,int h,const GArray 
         result->mode   = 0;
         result->context = NULL;
 
-        return (GrxPattern *)result;
+        return result;
 }
 
 /**
@@ -133,9 +133,9 @@ GrxPattern *grx_pixmap_new(const unsigned char *pixels,int w,int h,const GArray 
  * the bitmap pattern is not eight as such bitmap patterns can not be used to
  * build a GrBitmap structure.
  *
- * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
+ * Returns: (nullable): a new #GrxPixmap or %NULL if there was an error.
  */
-GrxPattern *grx_pixmap_new_from_bits(const unsigned char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
+GrxPixmap *grx_pixmap_new_from_bits(const unsigned char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
 {
         GrxContext csave,cwork;
         GrxPixmap  *result;
@@ -175,7 +175,7 @@ GrxPattern *grx_pixmap_new_from_bits(const unsigned char *bits,int w,int h,GrxCo
         result->mode   = 0;
         result->context = NULL;
 
-        return (GrxPattern *)result;
+        return result;
 }
 
 /**
@@ -184,13 +184,13 @@ GrxPattern *grx_pixmap_new_from_bits(const unsigned char *bits,int w,int h,GrxCo
  *
  * Converts a graphics context to a pixmap fill pattern.
  *
- * This is useful when the pattern can be created with graphics drawing
+ * This is useful when the pixmap can be created with graphics drawing
  * operations. NOTE: the pixmap pattern and the original context share the
  * drawing RAM, thus if the context is redrawn the fill pattern changes as well.
  *
- * Returns: (nullable): a new #GrxPixmap (casted as #GrxPattern) or %NULL if there was an error.
+ * Returns: (nullable): a new #GrxPixmap or %NULL if there was an error.
  */
-GrxPattern *grx_pixmap_new_from_context(GrxContext *context)
+GrxPixmap *grx_pixmap_new_from_context(GrxContext *context)
 {
     GrxPixmap *result;
 
@@ -207,44 +207,58 @@ GrxPattern *grx_pixmap_new_from_context(GrxContext *context)
     result->width = context->x_max + 1;
     result->height = context->y_max + 1;
     result->mode = 0;
-    result->context = grx_context_ref (context);
+    if (context->gc_memory_flags & 1 /*MYCONTEXT*/) {
+        result->context = grx_context_ref(context);
+    }
 
-    return (GrxPattern *)result;
+    return result;
 }
 
 /**
- * grx_pattern_copy:
- * @pattern: the pattern
+ * grx_pixmap_copy:
+ * @pixmap: the pixmap
  *
- * FIXME: This is not implemented and calling it will cause the program to abort.
+ * Make a copy of @pixmap.
+ *
+ * Returns: a new #GrxPixmap.
  */
-GrxPattern *grx_pattern_copy(GrxPattern *p)
+GrxPixmap *grx_pixmap_copy(GrxPixmap *p)
 {
-    g_error("grx_pattern_copy is not implemented.\n");
-    return p;
+    GrxContext src_ctx, *copy_ctx;
+    GrxPixmap *copy;
+
+    grx_context_new_full(p->source.driver->mode, p->width, p->height, &p->source.base_address, &src_ctx);
+    copy_ctx = grx_context_new_full(p->source.driver->mode, p->width, p->height, NULL, NULL);
+    g_return_val_if_fail(copy_ctx != NULL, NULL);
+
+    grx_context_bit_blt(copy_ctx, 0, 0, &src_ctx, 0, 0, p->width - 1, p->height - 1, GRX_COLOR_MODE_WRITE);
+    copy = grx_pixmap_new_from_context(copy_ctx);
+    grx_context_unref(copy_ctx);
+
+    return copy;
 }
 
 /**
- * grx_pattern_free:
- * @pattern: the pattern
+ * grx_pixmap_free:
+ * @pixmap: the pixmap
  *
- * Frees any dynamically allocated memory associated with the pattern.
+ * Frees any dynamically allocated memory associated with the pixmap.
  */
-void grx_pattern_free(GrxPattern *p)
+void grx_pixmap_free(GrxPixmap *p)
 {
-  if (!p) return;
-  if (p->is_pixmap) {
-    if ( p->pixmap.source.memory_flags & MY_MEMORY) {
-      int ii;
-      for ( ii = p->pixmap.source.driver->num_planes; ii > 0; ii-- )
-         free(GRX_FRAME_MEMORY_PLANE(&p->pixmap.source.base_address,ii - 1));
+    if (!p) {
+        return;
     }
-    if (p->pixmap.context) {
-        grx_context_unref (p->pixmap.context);
+    if (p->source.memory_flags & MY_MEMORY) {
+        int ii;
+        for (ii = p->source.driver->num_planes; ii > 0; ii--) {
+            free(GRX_FRAME_MEMORY_PLANE(&p->source.base_address, ii - 1));
+        }
     }
-    if ( p->pixmap.source.memory_flags & MY_CONTEXT )
-      free(p);
-    return;
-  }
-  if ( p->bitmap.free_on_pattern_destroy ) free(p);
+    if (p->context) {
+        grx_context_unref (p->context);
+    }
+    if (p->source.memory_flags & MY_CONTEXT) {
+        free(p);
+    }
 }

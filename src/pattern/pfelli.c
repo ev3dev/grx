@@ -23,19 +23,19 @@
 #include "shapes.h"
 
 /**
- * grx_draw_filled_ellipse_with_pattern:
+ * grx_draw_filled_ellipse_with_pixmap:
  * @xc: the X coordinate of the center of the ellipse
  * @yc: the Y coordinate of the center of the ellipse
  * @rx: the radius in the X direction
  * @ry: the radius in the Y direction
- * @p: the pattern
+ * @p: the pixmap
  *
- * Draws a filled ellipse on the current context using the specified pattern.
+ * Draws a filled ellipse on the current context using the specified pixmap.
  *
  * The ellipse can only draw ellipses with its major axis parallel with either
  * the X or Y coordinate axis
  */
-void grx_draw_filled_ellipse_with_pattern(int xc,int yc,int rx,int ry,GrxPattern *p)
+void grx_draw_filled_ellipse_with_pixmap(int xc,int yc,int rx,int ry,GrxPixmap *p)
 {
         GrFillArg fa;
 

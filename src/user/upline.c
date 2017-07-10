@@ -15,29 +15,29 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
 
 /**
- * grx_user_draw_line_with_pattern:
+ * grx_user_draw_line_with_pixmap:
  * @x1: starting X coordinate
  * @y1: starting Y coordinate
  * @x2: ending X coordinate
  * @y2: ending Y coordinate
  * @o: the line options
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draws a line on the current context from the starting coordinates to the
- * ending coordinates using the specified line options and pattern.
+ * ending coordinates using the specified line options and pixmap.
  */
-void grx_user_draw_line_with_pattern (int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPattern *p)
+void grx_user_draw_line_with_pixmap (int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
 {
     U2SX (x1 ,CURC);
     U2SX (x2, CURC);
     U2SY (y1, CURC);
     U2SY (y2, CURC);
-    grx_draw_line_with_pattern (x1, y1, x2, y2, o, p);
+    grx_draw_line_with_pixmap (x1, y1, x2, y2, o, p);
 }

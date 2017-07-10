@@ -68,8 +68,8 @@ int            GrSaveBmpImage ( char *_filename, GrxContext *_c, int _x1, int _y
 void           GrUnloadBmpImage ( GrBmpImage *_bmp );
 int            GrAllocBmpImageColors ( GrBmpImage *_bmp, GrBmpImageColors *_pal );
 int            GrFreeBmpImageColors ( GrBmpImageColors *_pal );
-GrxPattern     *GrConvertBmpImageToPattern ( GrBmpImage *_bmp );
-GrxPattern     *GrConvertBmpImageToStaticPattern ( GrBmpImage *_bmp );
+GrxPixmap     *GrConvertBmpImageToPattern ( GrBmpImage *_bmp );
+GrxPixmap     *GrConvertBmpImageToStaticPattern ( GrBmpImage *_bmp );
 unsigned long  GrBmpImageWidth ( GrBmpImage* _bmp );
 unsigned long  GrBmpImageHeight ( GrBmpImage* _bmp );
 char          *GrBmpImagePalette ( GrBmpImage* _bmp );

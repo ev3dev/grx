@@ -19,34 +19,34 @@
  */
 
 #include <grx/draw.h>
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
 
 /**
- * grx_user_draw_filled_circle_arc_with_pattern:
+ * grx_user_draw_filled_circle_arc_with_pixmap:
  * @xc: the X coordinate of the center of the arc
  * @yc: the Y coordinate of the center of the arc
  * @r: the radius of the arc
  * @start: the starting angle in 1/10ths of degrees
  * @end: the ending angle in 1/10ths of degrees
  * @style: the arc style
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draws a filled arc on the current context centered at the specified
  * coordinates from the starting angle to the ending angle with the specified
- * radius, arc style and pattern.
+ * radius, arc style and pixmap.
  */
-void grx_user_draw_filled_circle_arc_with_pattern(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxPattern *p)
+void grx_user_draw_filled_circle_arc_with_pixmap(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxPixmap *p)
 {
 #ifdef USR_KEEP_SHAPE
         U2SX(xc,CURC);
         U2SY(yc,CURC);
         SCALE(r,r,CURC->x_max,CURC->user_width);
-        grx_draw_filled_circle_arc_with_pattern(xc,yc,r,start,end,style,p);
+        grx_draw_filled_circle_arc_with_pixmap(xc,yc,r,start,end,style,p);
 #else
-        grx_user_draw_filled_ellipse_arc_with_pattern(xc,yc,r,r,start,end,style,p);
+        grx_user_draw_filled_ellipse_arc_with_pixmap(xc,yc,r,r,start,end,style,p);
 #endif /* USR_KEEP_SHAPE */
 }

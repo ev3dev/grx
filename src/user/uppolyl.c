@@ -16,7 +16,7 @@
  */
 
 #include <grx/draw.h>
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #include "globals.h"
 #include "libgrx.h"
@@ -24,16 +24,16 @@
 #include "usercord.h"
 
 /**
- * grx_user_draw_polyline_with_pattern:
+ * grx_user_draw_polyline_with_pixmap:
  * @n_points: the number of points in @points
  * @points: (array length=n_points): an array of #GrxPoint
  * @o: the line options
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draw a multi-segment line on the current context that connects each point in
  * the @points array using the specified line options and  pattern.
  */
-void grx_user_draw_polyline_with_pattern (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPattern *p)
+void grx_user_draw_polyline_with_pixmap (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
 {
     int pt;
     GrxPoint *tmp;
@@ -47,7 +47,7 @@ void grx_user_draw_polyline_with_pattern (int numpts, GrxPoint *points, GrxLineO
             U2SX (tmp[pt].x, CURC);
             U2SY (tmp[pt].y, CURC);
         }
-        grx_draw_polyline_with_pattern (numpts, tmp, o, p);
+        grx_draw_polyline_with_pixmap (numpts, tmp, o, p);
         FREE (tmp);
     }
     reset_ALLOC ();

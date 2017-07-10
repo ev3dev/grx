@@ -19,21 +19,21 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #include "libgrx.h"
 
 /**
- * grx_draw_filled_circle_with_pattern:
+ * grx_draw_filled_circle_with_pixmap:
  * @xc: the X coordinate of the center of the circle
  * @yc: the Y coordinate of the center of the circle
  * @r: the radius of the circle
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draws a filled circle on the current context centered at the specified
- * coordinates with the specified radius and pattern.
+ * coordinates with the specified radius and pixmap.
  */
-void grx_draw_filled_circle_with_pattern(int xc,int yc,int r,GrxPattern *p)
+void grx_draw_filled_circle_with_pixmap(int xc,int yc,int r,GrxPixmap *p)
 {
-        grx_draw_filled_ellipse_with_pattern(xc,yc,r,r,p);
+        grx_draw_filled_ellipse_with_pixmap(xc,yc,r,r,p);
 }

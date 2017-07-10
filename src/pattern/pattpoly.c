@@ -28,16 +28,16 @@
 #include "shapes.h"
 
 /**
- * grx_draw_polyline_with_pattern:
+ * grx_draw_polyline_with_pixmap:
  * @n_points: the number of points in @points
  * @points: (array length=n_points): an array of #GrxPoint
  * @o: the line options
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draw a multi-segment line on the current context that connects each point in
- * the @points array using the specified line options and pattern.
+ * the @points array using the specified line options and pixmap.
  */
-void grx_draw_polyline_with_pattern (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPattern *p)
+void grx_draw_polyline_with_pixmap (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
 
@@ -46,19 +46,19 @@ void grx_draw_polyline_with_pattern (int numpts, GrxPoint *points, GrxLineOption
 }
 
 /**
- * grx_draw_polygon_with_pattern:
+ * grx_draw_polygon_with_pixmap:
  * @n_points: the number of points in @points
  * @points: (array length=n_points): an array of #GrxPoint
  * @o: the line options
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draw a closed polygon on the current context that connects each point in
- * the @points array using the specified line options and pattern.
+ * the @points array using the specified line options and pixmap.
  *
  * Coordinate arrays can either contain or omit the closing edge of the polygon.
  * It will be automatically appended to the list if it is missing.
  */
-void grx_draw_polygon_with_pattern (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPattern *p)
+void grx_draw_polygon_with_pixmap (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
 
@@ -67,18 +67,18 @@ void grx_draw_polygon_with_pattern (int numpts, GrxPoint *points, GrxLineOptions
 }
 
 /**
- * grx_draw_box_with_pattern:
+ * grx_draw_box_with_pixmap:
  * @x1: the left X coordinate
  * @y1: the top Y coordinate
  * @x2: the right X coordinate
  * @y2: the bottom Y coordinate
  * @o: the line options
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draws a rectangle on the current context using the specified coordinates
- * and line options and pattern.
+ * and line options and pixmap.
  */
-void grx_draw_box_with_pattern (int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPattern *p)
+void grx_draw_box_with_pixmap (int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
     GrxPoint points[4];

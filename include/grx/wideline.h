@@ -59,7 +59,7 @@
  * Zero or one dash pattern length means the line is continuous. The dash
  * pattern always begins with a drawn section.
  *
- * Example, a white line 3 pixels wide (thick) and pattern 6 pixels draw,
+ * Example, a white line 3 pixels wide (thick) and pixmap 6 pixels draw,
  * 4 pixels nodraw:
  * |[<!-- language="C" -->
  * GrxLineOptions my_line_options;

@@ -65,9 +65,6 @@ void grx_image_free(GrxImage *image);
 GrxImage *grx_image_mirror(GrxImage *image, GrxImageMirrorFlags flags);
 GrxImage *grx_image_stretch(GrxImage *image, gint new_width, gint new_height);
 
-GrxPattern *grx_image_as_pattern(GrxImage *image);
-GrxImage *grx_pattern_as_image(GrxPattern *pattern);
-
 void grx_draw_image(gint x, gint y, GrxImage *image);
 void grx_draw_image_tiled(gint x1, gint y1, gint x2, gint y2, GrxImage *image);
 void grx_draw_filled_box_with_image(gint xo, gint yo, gint x1, gint y1,
@@ -77,16 +74,12 @@ void grx_draw_pixel_with_image(gint xo, gint yo, gint x, gint y, GrxImage *image
 
 
 #ifndef GRX_SKIP_INLINES
-#define grx_pattern_as_image(p) \
-        (((p) && (p)->is_pixmap) ? (&(p)->pixmap) : NULL)
 #define grx_image_new_from_context(c) \
         (GrxImage *)grx_pixmap_new_from_context(c)
-#define grx_image_as_pattern(p) \
-        (GrxPattern *)(p)
 #define grx_image_copy(i)   \
-        (GrxImage *)grx_pattern_copy((GrxPattern *)(i))
+        (GrxImage *)grx_pixmap_copy((GrxPixmap *)(i))
 #define grx_image_free(i)   \
-        grx_pattern_free((GrxPattern *)(i))
+        grx_pixmap_free((GrxPixmap *)(i))
 #endif
 
 #endif /* __GRX_IMAGE_H__ */

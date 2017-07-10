@@ -104,36 +104,36 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_device_reset_calibration@Base 2.99.8
  grx_draw_box@Base 2.99.8
  grx_draw_box_with_options@Base 2.99.8
- grx_draw_box_with_pattern@Base 2.99.8
+ grx_draw_box_with_pixmap@Base 2.99.8
  grx_draw_circle@Base 2.99.8
  grx_draw_circle_arc@Base 2.99.8
  grx_draw_circle_arc_with_options@Base 2.99.8
- grx_draw_circle_arc_with_pattern@Base 2.99.8
+ grx_draw_circle_arc_with_pixmap@Base 2.99.8
  grx_draw_circle_with_options@Base 2.99.8
- grx_draw_circle_with_pattern@Base 2.99.8
+ grx_draw_circle_with_pixmap@Base 2.99.8
  grx_draw_ellipse@Base 2.99.8
  grx_draw_ellipse_arc@Base 2.99.8
  grx_draw_ellipse_arc_with_options@Base 2.99.8
- grx_draw_ellipse_arc_with_pattern@Base 2.99.8
+ grx_draw_ellipse_arc_with_pixmap@Base 2.99.8
  grx_draw_ellipse_with_options@Base 2.99.8
- grx_draw_ellipse_with_pattern@Base 2.99.8
+ grx_draw_ellipse_with_pixmap@Base 2.99.8
  grx_draw_filled_box@Base 2.99.8
  grx_draw_filled_box_with_image@Base 2.99.8
- grx_draw_filled_box_with_pattern@Base 2.99.8
+ grx_draw_filled_box_with_pixmap@Base 2.99.8
  grx_draw_filled_circle@Base 2.99.8
  grx_draw_filled_circle_arc@Base 2.99.8
- grx_draw_filled_circle_arc_with_pattern@Base 2.99.8
- grx_draw_filled_circle_with_pattern@Base 2.99.8
+ grx_draw_filled_circle_arc_with_pixmap@Base 2.99.8
+ grx_draw_filled_circle_with_pixmap@Base 2.99.8
  grx_draw_filled_convex_polygon@Base 2.99.8
- grx_draw_filled_convex_polygon_with_pattern@Base 2.99.8
+ grx_draw_filled_convex_polygon_with_pixmap@Base 2.99.8
  grx_draw_filled_ellipse@Base 2.99.8
  grx_draw_filled_ellipse_arc@Base 2.99.8
- grx_draw_filled_ellipse_arc_with_pattern@Base 2.99.8
- grx_draw_filled_ellipse_with_pattern@Base 2.99.8
- grx_draw_filled_line_with_pattern@Base 2.99.8
- grx_draw_filled_pixel_with_pattern@Base 2.99.8
+ grx_draw_filled_ellipse_arc_with_pixmap@Base 2.99.8
+ grx_draw_filled_ellipse_with_pixmap@Base 2.99.8
+ grx_draw_filled_line_with_pixmap@Base 2.99.8
+ grx_draw_filled_pixel_with_pixmap@Base 2.99.8
  grx_draw_filled_polygon@Base 2.99.8
- grx_draw_filled_polygon_with_pattern@Base 2.99.8
+ grx_draw_filled_polygon_with_pixmap@Base 2.99.8
  grx_draw_framed_box@Base 2.99.8
  grx_draw_hline@Base 2.99.8
  grx_draw_hline_with_image@Base 2.99.8
@@ -141,15 +141,15 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_draw_image_tiled@Base 2.99.8
  grx_draw_line@Base 2.99.8
  grx_draw_line_with_options@Base 2.99.8
- grx_draw_line_with_pattern@Base 2.99.8
+ grx_draw_line_with_pixmap@Base 2.99.8
  grx_draw_pixel@Base 2.99.8
  grx_draw_pixel_with_image@Base 2.99.8
  grx_draw_polygon@Base 2.99.8
  grx_draw_polygon_with_options@Base 2.99.8
- grx_draw_polygon_with_pattern@Base 2.99.8
+ grx_draw_polygon_with_pixmap@Base 2.99.8
  grx_draw_polyline@Base 2.99.8
  grx_draw_polyline_with_options@Base 2.99.8
- grx_draw_polyline_with_pattern@Base 2.99.8
+ grx_draw_polyline_with_pixmap@Base 2.99.8
  grx_draw_text@Base 2.99.8
  grx_draw_vline@Base 2.99.8
  grx_error_quark@Base 2.99.8
@@ -173,7 +173,7 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_fast_draw_vline@Base 2.99.8
  grx_fast_get_pixel_at@Base 2.99.8
  grx_flood_fill@Base 2.99.8
- grx_flood_fill_with_pattern@Base 2.99.8
+ grx_flood_fill_with_pixmap@Base 2.99.8
  grx_flood_spill2@Base 2.99.8
  grx_flood_spill@Base 2.99.8
  grx_font_dump@Base 2.99.8
@@ -230,7 +230,6 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_get_virtual_video_mode@Base 2.99.8
  grx_get_virtual_width@Base 2.99.8
  grx_get_width@Base 2.99.8
- grx_image_as_pattern@Base 2.99.8
  grx_image_copy@Base 2.99.8
  grx_image_free@Base 2.99.8
  grx_image_get_type@Base 2.99.8
@@ -246,10 +245,9 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_mouse_set_cursor_default@Base 2.99.8
  grx_mouse_set_cursor_mode@Base 2.99.8
  grx_mouse_unblock@Base 2.99.8
- grx_pattern_as_image@Base 2.99.8
- grx_pattern_copy@Base 2.99.8
- grx_pattern_free@Base 2.99.8
- grx_pattern_get_type@Base 2.99.8
+ grx_pixmap_copy@Base 2.99.8
+ grx_pixmap_free@Base 2.99.8
+ grx_pixmap_get_type@Base 2.99.8
  grx_pixmap_new@Base 2.99.8
  grx_pixmap_new_from_bits@Base 2.99.8
  grx_pixmap_new_from_context@Base 2.99.8
@@ -290,51 +288,51 @@ libgrx-3.0.so.1 libgrx-3.0-1 #MINVER#
  grx_user_convert_user_to_screen@Base 2.99.8
  grx_user_draw_box@Base 2.99.8
  grx_user_draw_box_with_options@Base 2.99.8
- grx_user_draw_box_with_pattern@Base 2.99.8
+ grx_user_draw_box_with_pixmap@Base 2.99.8
  grx_user_draw_circle@Base 2.99.8
  grx_user_draw_circle_arc@Base 2.99.8
  grx_user_draw_circle_arc_with_options@Base 2.99.8
- grx_user_draw_circle_arc_with_pattern@Base 2.99.8
+ grx_user_draw_circle_arc_with_pixmap@Base 2.99.8
  grx_user_draw_circle_with_options@Base 2.99.8
- grx_user_draw_circle_with_pattern@Base 2.99.8
+ grx_user_draw_circle_with_pixmap@Base 2.99.8
  grx_user_draw_ellipse@Base 2.99.8
  grx_user_draw_ellipse_arc@Base 2.99.8
  grx_user_draw_ellipse_arc_with_options@Base 2.99.8
- grx_user_draw_ellipse_arc_with_pattern@Base 2.99.8
+ grx_user_draw_ellipse_arc_with_pixmap@Base 2.99.8
  grx_user_draw_ellipse_with_options@Base 2.99.8
- grx_user_draw_ellipse_with_pattern@Base 2.99.8
+ grx_user_draw_ellipse_with_pixmap@Base 2.99.8
  grx_user_draw_filled_box@Base 2.99.8
- grx_user_draw_filled_box_with_pattern@Base 2.99.8
+ grx_user_draw_filled_box_with_pixmap@Base 2.99.8
  grx_user_draw_filled_circle@Base 2.99.8
  grx_user_draw_filled_circle_arc@Base 2.99.8
- grx_user_draw_filled_circle_arc_with_pattern@Base 2.99.8
- grx_user_draw_filled_circle_with_pattern@Base 2.99.8
+ grx_user_draw_filled_circle_arc_with_pixmap@Base 2.99.8
+ grx_user_draw_filled_circle_with_pixmap@Base 2.99.8
  grx_user_draw_filled_convex_polygon@Base 2.99.8
- grx_user_draw_filled_convex_polygon_with_pattern@Base 2.99.8
+ grx_user_draw_filled_convex_polygon_with_pixmap@Base 2.99.8
  grx_user_draw_filled_ellipse@Base 2.99.8
  grx_user_draw_filled_ellipse_arc@Base 2.99.8
- grx_user_draw_filled_ellipse_arc_with_pattern@Base 2.99.8
- grx_user_draw_filled_ellipse_with_pattern@Base 2.99.8
- grx_user_draw_filled_line_with_pattern@Base 2.99.8
- grx_user_draw_filled_pixel_with_pattern@Base 2.99.8
+ grx_user_draw_filled_ellipse_arc_with_pixmap@Base 2.99.8
+ grx_user_draw_filled_ellipse_with_pixmap@Base 2.99.8
+ grx_user_draw_filled_line_with_pixmap@Base 2.99.8
+ grx_user_draw_filled_pixel_with_pixmap@Base 2.99.8
  grx_user_draw_filled_polygon@Base 2.99.8
- grx_user_draw_filled_polygon_with_pattern@Base 2.99.8
+ grx_user_draw_filled_polygon_with_pixmap@Base 2.99.8
  grx_user_draw_framed_box@Base 2.99.8
  grx_user_draw_hline@Base 2.99.8
  grx_user_draw_line@Base 2.99.8
  grx_user_draw_line_with_options@Base 2.99.8
- grx_user_draw_line_with_pattern@Base 2.99.8
+ grx_user_draw_line_with_pixmap@Base 2.99.8
  grx_user_draw_pixel@Base 2.99.8
  grx_user_draw_polygon@Base 2.99.8
  grx_user_draw_polygon_with_options@Base 2.99.8
- grx_user_draw_polygon_with_pattern@Base 2.99.8
+ grx_user_draw_polygon_with_pixmap@Base 2.99.8
  grx_user_draw_polyline@Base 2.99.8
  grx_user_draw_polyline_with_options@Base 2.99.8
- grx_user_draw_polyline_with_pattern@Base 2.99.8
+ grx_user_draw_polyline_with_pixmap@Base 2.99.8
  grx_user_draw_text@Base 2.99.8
  grx_user_draw_vline@Base 2.99.8
  grx_user_flood_fill@Base 2.99.8
- grx_user_flood_fill_with_pattern@Base 2.99.8
+ grx_user_flood_fill_with_pixmap@Base 2.99.8
  grx_user_get_pixel_at@Base 2.99.8
  grx_user_get_window@Base 2.99.8
  grx_user_set_window@Base 2.99.8

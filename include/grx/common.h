@@ -16,9 +16,8 @@ typedef struct _GrxFrameDriver      GrxFrameDriver;
 typedef struct _GrxVideoDriver      GrxVideoDriver;
 typedef struct _GrxVideoMode        GrxVideoMode;
 typedef struct _GrxVideoModeExt     GrxVideoModeExt;
-/* pattern.h */
+/* pixmap.h */
 typedef struct _GrxPixmap           GrxPixmap;
-typedef union  _GrxPattern          GrxPattern;
 /* wideline.h */
 typedef struct _GrxLineOptions      GrxLineOptions;
 

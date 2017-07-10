@@ -23,57 +23,59 @@
 #include "shapes.h"
 
 /**
- * grx_draw_filled_box_with_pattern:
+ * grx_draw_filled_box_with_pixmap:
  * @x1: the left X coordinate
  * @y1: the top Y coordinate
  * @x2: the right X coordinate
  * @y2: the bottom Y coordinate
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draws a filled rectangle on the current context using the specified
- * coordinates and pattern.
+ * coordinates and pixmap.
  */
-void grx_draw_filled_box_with_pattern(int x1,int y1,int x2,int y2,GrxPattern *p)
+void grx_draw_filled_box_with_pixmap(int x1, int y1, int x2, int y2, GrxPixmap *p)
 {
-        int width,height;
+    int width, height;
 
-        clip_box(CURC,x1,y1,x2,y2);
-        mouse_block(CURC,x1,y1,x2,y2);
-        width  = x2 - x1 + 1;
-        height = y2 - y1 + 1;
-        x1 += CURC->x_offset;
-        y1 += CURC->y_offset;
-        if(!p->is_pixmap)
-            while(--height >= 0) _GrFillPattern(x1,y1++,width,p);
-        else {
-            void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
-            int pwdt = p->pixmap.width;
-            int phgt = p->pixmap.height;
-            int xoff = x1 % pwdt;
-            int ypos = y1;
-            int yoff = ypos % phgt;
-            if (CURC->gc_is_on_screen) bltfun = CURC->gc_driver->bltr2v;
-            else                   bltfun = CURC->gc_driver->bitblt;
-            while(height > 0) {
-                int fillh   = min(height,(phgt - yoff));
-                int linewdt = width;
-                int xpos    = x1;
-                int xcuroff = xoff;
-                while(linewdt > 0) {
-                    int fillw = min(linewdt,(pwdt - xcuroff));
-                    (*bltfun)(
-                        &CURC->frame,xpos,ypos,
-                        &p->pixmap.source,xcuroff,yoff,fillw,fillh,
-                        p->pixmap.mode
-                    );
-                    linewdt -= fillw;
-                    xpos += fillw;
-                    xcuroff = 0;
-                }
-                height -= fillh;
-                ypos += fillh;
-                yoff = 0;
-            }
+    clip_box(CURC,x1,y1,x2,y2);
+    mouse_block(CURC,x1,y1,x2,y2);
+    width  = x2 - x1 + 1;
+    height = y2 - y1 + 1;
+    x1 += CURC->x_offset;
+    y1 += CURC->y_offset;
+
+    void (*bltfun)(GrxFrame*, int, int, GrxFrame*, int, int, int, int, GrxColor);
+    int pwdt = p->width;
+    int phgt = p->height;
+    int xoff = x1 % pwdt;
+    int ypos = y1;
+    int yoff = ypos % phgt;
+    if (CURC->gc_is_on_screen) {
+        bltfun = CURC->gc_driver->bltr2v;
+    }
+    else {
+        bltfun = CURC->gc_driver->bitblt;
+    }
+    while (height > 0) {
+        int fillh   = min(height,(phgt - yoff));
+        int linewdt = width;
+        int xpos    = x1;
+        int xcuroff = xoff;
+        while (linewdt > 0) {
+            int fillw = min(linewdt,(pwdt - xcuroff));
+            (*bltfun)(
+                &CURC->frame, xpos, ypos,
+                &p->source, xcuroff, yoff, fillw, fillh,
+                p->mode
+            );
+            linewdt -= fillw;
+            xpos += fillw;
+            xcuroff = 0;
         }
-        mouse_unblock();
+        height -= fillh;
+        ypos += fillh;
+        yoff = 0;
+    }
+
+    mouse_unblock();
 }

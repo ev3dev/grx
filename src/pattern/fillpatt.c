@@ -23,63 +23,38 @@
 #include "arith.h"
 #include "shapes.h"
 
-void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrxPattern *p)
+void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrxPixmap *p)
 {
     GRX_ENTER();
-    if (p->is_pixmap) {
-        void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
-        int pattwdt = p->pixmap.width;
-        int xdest = x;
-        int ydest = y;
-        int ypatt = (y-sy) % p->pixmap.height;
-        int xpatt = (x-sx) % pattwdt;
-        int cpysize = pattwdt - xpatt;
-        GrxColor optype = p->pixmap.mode;
+    void (*bltfun)(GrxFrame*, int, int, GrxFrame*, int, int, int, int, GrxColor);
+    int pattwdt = p->width;
+    int xdest = x;
+    int ydest = y;
+    int ypatt = (y-sy) % p->height;
+    int xpatt = (x-sx) % pattwdt;
+    int cpysize = pattwdt - xpatt;
+    GrxColor optype = p->mode;
 
-        if (CURC->gc_is_on_screen) bltfun = CURC->gc_driver->bltr2v;
-        else                   bltfun = CURC->gc_driver->bitblt;
-        while (width > 0) {
-                if (cpysize > width) cpysize = width;
-                (*bltfun)(
-                        &CURC->frame,xdest,ydest,
-                        &p->pixmap.source,xpatt,ypatt,cpysize,1,
-                        optype
-                );
-                width -= cpysize;
-                xpatt = 0;
-                xdest += cpysize;
-                cpysize = pattwdt;
-        }
+    if (CURC->gc_is_on_screen) {
+        bltfun = CURC->gc_driver->bltr2v;
     }
     else {
-
-        char bits = p->bitmap.data[y % p->bitmap.height];
-        if (bits == 0)
-          (*CURC->gc_driver->drawhline)(x,y,width,p->bitmap.bg_color);
-        else if ((GR_int8u)bits == 0xff)
-          (*CURC->gc_driver->drawhline)(x,y,width,p->bitmap.fg_color);
-        else {
-          GrxColor fg = p->bitmap.fg_color;
-          GrxColor bg = p->bitmap.bg_color;
-          int xoffs = x & 7;
-#         if USE_FDR_DRAWPATTERN-0
-              GR_int8u pp = replicate_b2w(bits) >> (8-xoffs);
-              (*CURC->gc_driver->drawpattern)(x,y,width,pp,fg,bg);
-#         else
-              unsigned char mask = 0x80;
-              mask >>= xoffs;
-              width += x;
-              do {
-                  (*CURC->gc_driver->drawpixel)(x,y,(bits & mask) ? fg : bg);
-                  if((mask >>= 1) == 0) mask = 0x80;
-              } while(++x != width);
-#         endif
+        bltfun = CURC->gc_driver->bitblt;
+    }
+    while (width > 0) {
+        if (cpysize > width) {
+            cpysize = width;
         }
+        (*bltfun)(&CURC->frame, xdest, ydest, &p->source, xpatt, ypatt, cpysize, 1, optype);
+        width -= cpysize;
+        xpatt = 0;
+        xdest += cpysize;
+        cpysize = pattwdt;
     }
     GRX_LEAVE();
 }
 
-void _GrFillPattern(int x, int y, int width, GrxPattern *p)
+void _GrFillPattern(int x, int y, int width, GrxPixmap *p)
 {
   GRX_ENTER();
   _GrFillPatternExt(x,y,0,0,width,p);

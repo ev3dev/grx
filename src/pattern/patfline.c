@@ -25,13 +25,11 @@
 #include "shapes.h"
 #include "mouse.h"
 
-void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p)
+void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPixmap *p)
 {
         union { GrxFrame *c; unsigned char *b; } src;
         int sy,ymajor;
         int pw,ph,px,py;
-        int ispixmap;
-        GrxColor fgc = 0, bgc = 0;
         int points,error;
 
         if (dx < 0) {
@@ -50,22 +48,13 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p)
             dy = (-dy);
             sy = (-1);
         }
-        if((ispixmap = p->is_pixmap) != FALSE) {
-            pw = p->pixmap.width;
-            ph = p->pixmap.height;
-            px = x1 % pw;
-            py = y1 % ph;
-            src.c = &p->pixmap.source;
-        }
-        else {
-            pw = 8;
-            ph = p->bitmap.height;
-            px = x1 & 7;
-            py = y1 % ph;
-            src.b = (unsigned char *) p->bitmap.data;
-            fgc = p->bitmap.fg_color;
-            bgc = p->bitmap.bg_color;
-        }
+
+        pw = p->width;
+        ph = p->height;
+        px = x1 % pw;
+        py = y1 % ph;
+        src.c = &p->source;
+
         if(dy > dx) {
             points = dy + 1;
             error  = dy >> 1;
@@ -78,10 +67,7 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p)
         }
         while(--points >= 0) {
             (*CURC->gc_driver->drawpixel)(
-                x1,y1,
-                ispixmap ?
-                    (*src.c->driver->readpixel)(src.c,px,py) :
-                    (src.b[py] & (0x80U >> px)) ? fgc : bgc
+                x1, y1, (*src.c->driver->readpixel)(src.c,px,py)
             );
             if(ymajor) {
                 if((error -= dx) < 0) error += dy,x1++,px++;
@@ -100,19 +86,19 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPattern *p)
 }
 
 /**
- * grx_draw_filled_line_with_pattern:
+ * grx_draw_filled_line_with_pixmap:
  * @x1: starting X coordinate
  * @y1: starting Y coordinate
  * @x2: ending X coordinate
  * @y2: ending Y coordinate
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draws a line on the current context from the starting coordinates to the
- * ending coordinates using the specified pattern.
+ * ending coordinates using the specified pixmap.
  *
  * For horizontal and vertical lines, see grx_draw_hline() and grx_draw_vline().
  */
-void grx_draw_filled_line_with_pattern(int x1,int y1,int x2,int y2,GrxPattern *p)
+void grx_draw_filled_line_with_pixmap(int x1,int y1,int x2,int y2,GrxPixmap *p)
 {
         clip_line(CURC,x1,y1,x2,y2);
         mouse_block(CURC,x1,y1,x2,y2);

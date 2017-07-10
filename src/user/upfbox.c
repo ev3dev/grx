@@ -15,28 +15,28 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
 
 /**
- * grx_user_draw_filled_box_with_pattern:
+ * grx_user_draw_filled_box_with_pixmap:
  * @x1: the left X coordinate
  * @y1: the top Y coordinate
  * @x2: the right X coordinate
  * @y2: the bottom Y coordinate
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draws a filled rectangle on the current context using the specified
- * coordinates and pattern.
+ * coordinates and pixmap.
  */
-void grx_user_draw_filled_box_with_pattern(int x1,int y1,int x2,int y2,GrxPattern *p)
+void grx_user_draw_filled_box_with_pixmap(int x1,int y1,int x2,int y2,GrxPixmap *p)
 {
         U2SX(x1,CURC);
         U2SX(x2,CURC);
         U2SY(y1,CURC);
         U2SY(y2,CURC);
-        grx_draw_filled_box_with_pattern(x1,y1,x2,y2,p);
+        grx_draw_filled_box_with_pixmap(x1,y1,x2,y2,p);
 }

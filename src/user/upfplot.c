@@ -15,23 +15,23 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
 
 /**
- * grx_user_draw_filled_pixel_with_pattern:
+ * grx_user_draw_filled_pixel_with_pixmap:
  * @x: the X coordinate
  * @y: the Y coordinate
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draw a single pixel on the current context at the specified coordinates.
  */
-void grx_user_draw_filled_pixel_with_pattern(int x,int y,GrxPattern *p)
+void grx_user_draw_filled_pixel_with_pixmap(int x,int y,GrxPixmap *p)
 {
         U2SX(x,CURC);
         U2SY(y,CURC);
-        grx_draw_filled_pixel_with_pattern(x,y,p);
+        grx_draw_filled_pixel_with_pixmap(x,y,p);
 }

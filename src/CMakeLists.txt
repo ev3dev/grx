@@ -361,7 +361,7 @@ set (GIR_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/include/grx/image.h
     ${CMAKE_SOURCE_DIR}/include/grx/mode.h
     ${CMAKE_SOURCE_DIR}/include/grx/mouse.h
-    ${CMAKE_SOURCE_DIR}/include/grx/pattern.h
+    ${CMAKE_SOURCE_DIR}/include/grx/pixmap.h
     ${CMAKE_SOURCE_DIR}/include/grx/text.h
     ${CMAKE_SOURCE_DIR}/include/grx/user.h
     ${CMAKE_SOURCE_DIR}/include/grx/wideline.h

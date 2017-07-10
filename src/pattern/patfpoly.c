@@ -23,18 +23,18 @@
 #include "shapes.h"
 
 /**
- * grx_draw_filled_polygon_with_pattern:
+ * grx_draw_filled_polygon_with_pixmap:
  * @n_points: the number of points in @points
  * @points: (array length=n_points): an array of #GrxPoint
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draw a filled polygon on the current context that connects each point in
- * the @points array using the specified pattern.
+ * the @points array using the specified pixmap.
  *
  * Coordinate arrays can either contain or omit the closing edge of the polygon.
  * It will be automatically appended to the list if it is missing.
  */
-void grx_draw_filled_polygon_with_pattern(int n,GrxPoint *pt,GrxPattern *p)
+void grx_draw_filled_polygon_with_pixmap(int n,GrxPoint *pt,GrxPixmap *p)
 {
         GrFillArg fa;
 

@@ -28,18 +28,18 @@
 #include "shapes.h"
 
 /**
- * grx_draw_line_with_pattern:
+ * grx_draw_line_with_pixmap:
  * @x1: starting X coordinate
  * @y1: starting Y coordinate
  * @x2: ending X coordinate
  * @y2: ending Y coordinate
  * @o: the line options
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draws a line on the current context from the starting coordinates to the
- * ending coordinates using the specified line options and pattern.
+ * ending coordinates using the specified line options and pixmap.
  */
-void grx_draw_line_with_pattern (int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPattern *p)
+void grx_draw_line_with_pixmap (int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
     GrxPoint points[2];

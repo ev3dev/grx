@@ -20,16 +20,16 @@
 #include "shapes.h"
 
 /**
- * grx_flood_fill_with_pattern:
+ * grx_flood_fill_with_pixmap:
  * @x: the starting X coordinate
  * @y: the starting Y coordinate
  * @border: the color of the border that contains the fill
- * @p: the pattern of the fill
+ * @p: the pixmap of the fill
  *
  * Flood-fills the area of the current context bounded by the color @border
  * using @x, @y as the starting point.
  */
-void grx_flood_fill_with_pattern(int x, int y, GrxColor border, GrxPattern *p)
+void grx_flood_fill_with_pixmap(int x, int y, GrxColor border, GrxPixmap *p)
 {
         GrFillArg fval;
 

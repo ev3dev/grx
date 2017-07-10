@@ -19,42 +19,33 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 
 #include "globals.h"
 #include "libgrx.h"
 #include "clipping.h"
 #include "mouse.h"
 
-void _GrPatternFilledPlot(int x,int y,GrxPattern *p)
+void _GrPatternFilledPlot(int x,int y,GrxPixmap *p)
 {
-        int xp,yp;
+    int xp, yp;
 
-        if(p->is_pixmap) {
-            xp = x % p->pixmap.width;
-            yp = y % p->pixmap.height;
-            (*CURC->gc_driver->drawpixel)(x,y,
-                (*p->pixmap.source.driver->readpixel)(&p->pixmap.source,xp,yp)
-            );
-        }
-        else {
-            xp = x & 7;
-            yp = y % p->bitmap.height;
-            (*CURC->gc_driver->drawpixel)(x,y,
-                (p->bitmap.data[yp] & (0x80U >> xp)) ? p->bitmap.fg_color : p->bitmap.bg_color
-            );
-        }
+    xp = x % p->width;
+    yp = y % p->height;
+    (*CURC->gc_driver->drawpixel)(x, y,
+        (*p->source.driver->readpixel)(&p->source,xp, yp)
+    );
 }
 
 /**
- * grx_draw_filled_pixel_with_pattern:
+ * grx_draw_filled_pixel_with_pixmap:
  * @x: the X coordinate
  * @y: the Y coordinate
- * @p: the pattern
+ * @p: the pixmap
  *
  * Draw a single pixel on the current context at the specified coordinates.
  */
-void grx_draw_filled_pixel_with_pattern(int x,int y,GrxPattern *p)
+void grx_draw_filled_pixel_with_pixmap(int x,int y,GrxPixmap *p)
 {
         clip_dot(CURC,x,y);
         mouse_block(CURC,x,y,x,y);

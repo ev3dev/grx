@@ -24,7 +24,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include <grx/pattern.h>
+#include <grx/pixmap.h>
 #include <grx/text.h>
 
 struct _GrxFont {
@@ -43,7 +43,7 @@ struct _GrxTextOptions {
 
 typedef void (*TextDrawBitmapFunc)(int x,int y,int w,int h,int ox, int oy,
                                    unsigned char *bmp,int pitch,int start,
-                                   GrxColor fg,GrxColor bg,GrxPattern *p);
+                                   GrxColor fg,GrxColor bg,GrxPixmap *p);
 
 G_GNUC_INTERNAL FT_Library grx_get_global_freetype_library(GError **err);
 G_GNUC_INTERNAL FcCharSet *script_to_charset(const gchar *script);

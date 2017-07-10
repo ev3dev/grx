@@ -617,39 +617,33 @@ namespace Grx {
     /*             PATTERNED DRAWING AND FILLING PRIMITIVES               */
     /* ================================================================== */
 
+    [CCode (copy_function = "grx_pixmap_copy", free_function = "grx_pixmap_free", has_type_id = false)]
     [Compact]
-    public class Pixmap : Pattern {
-        public static Pattern new ([CCode (array_length = false)]uint8 *pixels, int w, int h, GLib.Array<Color>? colors);
-        public static Pattern new_from_bits ([CCode (array_length = false)]uint8 *bits, int w, int h, Color fg, Color bg);
-        public static Pattern new_from_context (Context context);
+    public class Pixmap {
+        public static Pixmap new ([CCode (array_length = false)]uint8 *pixels, int w, int h, GLib.Array<Color>? colors);
+        public static Pixmap new_from_bits ([CCode (array_length = false)]uint8 *bits, int w, int h, Color fg, Color bg);
+        public static Pixmap new_from_context (Context context);
     }
 
-    [CCode (copy_function = "grx_pattern_copy", free_function = "grx_pattern_free", has_type_id = false)]
-    [Compact]
-    public class Pattern {
-        public bool is_pixmap;               /* true for pixmaps */
-        public unowned Image as_image ();
-    }
+    public void draw_line_with_pixmap (int x1, int y1, int x2, int y2, LineOptions o, Pixmap p);
+    public void draw_box_with_pixmap (int x1, int y1, int x2, int y2, LineOptions o, Pixmap p);
+    public void draw_circle_with_pixmap (int xc, int yc, int r, LineOptions o, Pixmap p);
+    public void draw_ellipse_with_pixmap (int xc, int yc, int rx, int ry, LineOptions o, Pixmap p);
+    public void draw_circle_arc_with_pixmap (int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions o, Pixmap p);
+    public void draw_ellipse_arc_with_pixmap (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LineOptions o, Pixmap p);
+    public void draw_polyline_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pixmap p);
+    public void draw_polygon_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pixmap p);
 
-    public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LineOptions o, Pattern p);
-    public void draw_box_with_pattern (int x1, int y1, int x2, int y2, LineOptions o, Pattern p);
-    public void draw_circle_with_pattern (int xc, int yc, int r, LineOptions o, Pattern p);
-    public void draw_ellipse_with_pattern (int xc, int yc, int rx, int ry, LineOptions o, Pattern p);
-    public void draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions o, Pattern p);
-    public void draw_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LineOptions o, Pattern p);
-    public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pattern p);
-    public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pattern p);
-
-    public void draw_filled_pixel_with_pattern (int x, int y, Pattern p);
-    public void draw_filled_line_with_pattern (int x1, int y1, int x2, int y2, Pattern p);
-    public void draw_filled_box_with_pattern (int x1, int y1, int x2, int y2, Pattern p);
-    public void draw_filled_circle_with_pattern (int xc, int yc, int r, Pattern p);
-    public void draw_filled_ellipse_with_pattern (int xc, int yc, int rx, int ry, Pattern p);
-    public void draw_filled_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, int style, Pattern p);
-    public void draw_filled_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, int style, Pattern p);
-    public void draw_filled_convex_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern p);
-    public void draw_filled_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern p);
-    public void flood_fill_with_pattern (int x, int y, Color border, Pattern p);
+    public void draw_filled_pixel_with_pixmap (int x, int y, Pixmap p);
+    public void draw_filled_line_with_pixmap (int x1, int y1, int x2, int y2, Pixmap p);
+    public void draw_filled_box_with_pixmap (int x1, int y1, int x2, int y2, Pixmap p);
+    public void draw_filled_circle_with_pixmap (int xc, int yc, int r, Pixmap p);
+    public void draw_filled_ellipse_with_pixmap (int xc, int yc, int rx, int ry, Pixmap p);
+    public void draw_filled_circle_arc_with_pixmap (int xc, int yc, int r, int start, int end, int style, Pixmap p);
+    public void draw_filled_ellipse_arc_with_pixmap (int xc, int yc, int rx, int ry, int start, int end, int style, Pixmap p);
+    public void draw_filled_convex_polygon_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, Pixmap p);
+    public void draw_filled_polygon_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, Pixmap p);
+    public void flood_fill_with_pixmap (int x, int y, Color border, Pixmap p);
 
 
     /* ================================================================== */
@@ -665,14 +659,12 @@ namespace Grx {
 
     [CCode (copy_function = "grx_image_copy", free_function = "grx_image_free", has_type_id = false)]
     [Compact]
-    public class Image {
+    public class Image : Pixmap {
         public static Image new ([CCode (array_length = false)]uint8[] pixels, int width, int height, GLib.Array<Color> colors);
         public static Image new_from_context (Context context);
 
         public Image mirror (ImageMirrorFlags flags);
         public Image stretch (int new_width, int new_height);
-
-        public unowned Pattern as_pattern ();
     }
 
     public void draw_image (int x, int y, Image image);
@@ -729,25 +721,25 @@ namespace Grx {
         public void draw_polyline_with_options ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o);
         public void draw_polygon_with_options ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o);
 
-        public void draw_line_with_pattern (int x1, int y1, int x2, int y2, LineOptions o, Pattern p);
-        public void draw_box_with_pattern (int x1, int y1, int x2, int y2, LineOptions o, Pattern p);
-        public void draw_circle_with_pattern (int xc, int yc, int r, LineOptions o, Pattern p);
-        public void draw_ellipse_with_pattern (int xc, int yc, int rx, int ry, LineOptions o, Pattern p);
-        public void draw_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions o, Pattern p);
-        public void draw_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LineOptions o, Pattern p);
-        public void draw_polyline_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pattern p);
-        public void draw_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pattern p);
+        public void draw_line_with_pixmap (int x1, int y1, int x2, int y2, LineOptions o, Pixmap p);
+        public void draw_box_with_pixmap (int x1, int y1, int x2, int y2, LineOptions o, Pixmap p);
+        public void draw_circle_with_pixmap (int xc, int yc, int r, LineOptions o, Pixmap p);
+        public void draw_ellipse_with_pixmap (int xc, int yc, int rx, int ry, LineOptions o, Pixmap p);
+        public void draw_circle_arc_with_pixmap (int xc, int yc, int r, int start, int end, ArcStyle style, LineOptions o, Pixmap p);
+        public void draw_ellipse_arc_with_pixmap (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, LineOptions o, Pixmap p);
+        public void draw_polyline_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pixmap p);
+        public void draw_polygon_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, LineOptions o, Pixmap p);
 
-        public void draw_filled_pixel_with_pattern (int x, int y, Pattern p);
-        public void draw_filled_line_with_pattern (int x1, int y1, int x2, int y2, Pattern p);
-        public void draw_filled_box_with_pattern (int x1, int y1, int x2, int y2, Pattern p);
-        public void draw_filled_circle_with_pattern (int xc, int yc, int r, Pattern p);
-        public void draw_filled_ellipse_with_pattern (int xc, int yc, int rx, int ry, Pattern p);
-        public void draw_filled_circle_arc_with_pattern (int xc, int yc, int r, int start, int end, int style, Pattern p);
-        public void draw_filled_ellipse_arc_with_pattern (int xc, int yc, int rx, int ry, int start, int end, int style, Pattern p);
-        public void draw_filled_convex_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern p);
-        public void draw_filled_polygon_with_pattern ([CCode (array_length_pos = 0.9)]Point[] points, Pattern p);
-        public void flood_fill_with_pattern (int x, int y, Color border, Pattern p);
+        public void draw_filled_pixel_with_pixmap (int x, int y, Pixmap p);
+        public void draw_filled_line_with_pixmap (int x1, int y1, int x2, int y2, Pixmap p);
+        public void draw_filled_box_with_pixmap (int x1, int y1, int x2, int y2, Pixmap p);
+        public void draw_filled_circle_with_pixmap (int xc, int yc, int r, Pixmap p);
+        public void draw_filled_ellipse_with_pixmap (int xc, int yc, int rx, int ry, Pixmap p);
+        public void draw_filled_circle_arc_with_pixmap (int xc, int yc, int r, int start, int end, int style, Pixmap p);
+        public void draw_filled_ellipse_arc_with_pixmap (int xc, int yc, int rx, int ry, int start, int end, int style, Pixmap p);
+        public void draw_filled_convex_polygon_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, Pixmap p);
+        public void draw_filled_polygon_with_pixmap ([CCode (array_length_pos = 0.9)]Point[] points, Pixmap p);
+        public void flood_fill_with_pixmap (int x, int y, Color border, Pixmap p);
 
         public void draw_text (string text, int x, int y, Color fg, Color bg);
     }

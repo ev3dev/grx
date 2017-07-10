@@ -91,7 +91,7 @@ static ProgTable ptable[NDEMOS] = {
     {ID_JPGTEST, "jpgtest", "jpgtext.c -> text context to jpeg functions"},
     {ID_KEYS, "keys", "keys.c -> test keyboard input"},
     {ID_LIFE, "life", "life.c -> Conway's life program"},
-    {ID_LINETEST, "linetest", "linetest.c -> test wide and patterned lines"},
+    {ID_LINETEST, "linetest", "linetest.c -> test wide and pixmaped lines"},
     {ID_MOUSETST, "mousetst", "mousetst.c -> test mouse cursor and mouse/keyboard input"},
     {ID_PCIRCTST, "pcirctst", "pcirctst.c -> test custom circle and ellipse rendering"},
     {ID_PNMTEST, "pnmtest", "pnmtext.c -> text context to pnm functions"},
