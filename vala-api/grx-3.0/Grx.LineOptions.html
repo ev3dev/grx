@@ -28,7 +28,15 @@
         <hr class="navi_hr"/>
         <ul class="navi_main">
           <li class="field"><a href="Grx.LineOptions.color.html">color</a></li>
-          <li class="field"><a href="Grx.LineOptions.dash_patterns.html">dash_patterns</a></li>
+          <li class="field"><a href="Grx.LineOptions.dash_pattern0.html">dash_pattern0</a></li>
+          <li class="field"><a href="Grx.LineOptions.dash_pattern1.html">dash_pattern1</a></li>
+          <li class="field"><a href="Grx.LineOptions.dash_pattern2.html">dash_pattern2</a></li>
+          <li class="field"><a href="Grx.LineOptions.dash_pattern3.html">dash_pattern3</a></li>
+          <li class="field"><a href="Grx.LineOptions.dash_pattern4.html">dash_pattern4</a></li>
+          <li class="field"><a href="Grx.LineOptions.dash_pattern5.html">dash_pattern5</a></li>
+          <li class="field"><a href="Grx.LineOptions.dash_pattern6.html">dash_pattern6</a></li>
+          <li class="field"><a href="Grx.LineOptions.dash_pattern7.html">dash_pattern7</a></li>
+          <li class="field"><a href="Grx.LineOptions.n_dash_patterns.html">n_dash_patterns</a></li>
           <li class="field"><a href="Grx.LineOptions.width.html">width</a></li>
         </ul>
       </div>
@@ -48,7 +56,7 @@
         <div class="description">
           <p>Custom line options structure.</p>
           <p>Zero or one dash pattern length means the line is continuous. The dash pattern always begins with a drawn section.</p>
-          <p>Example, a white line 3 pixels wide (thick) and pattern 6 pixels draw, 4 pixels nodraw: <pre class="main_source">GrxLineOptions my_line_options;<br/>...<br/>my_line_options.color = GRX_COLOR_WHITE;<br/>my_line_options.width = 3;<br/>my_line_options.n_dash_patterns = 2;<br/>my_line_options.dash_patterns = "\x06\x04";<br/>...</pre>
+          <p>Example, a white line 3 pixels wide (thick) and pixmap 6 pixels draw, 4 pixels nodraw: <pre class="main_source">GrxLineOptions my_line_options;<br/>...<br/>my_line_options.color = GRX_COLOR_WHITE;<br/>my_line_options.width = 3;<br/>my_line_options.n_dash_patterns = 2;<br/>my_line_options.dash_pattern0 = 6;<br/>my_line_options.dash_pattern1 = 4;<br/>...</pre>
           </p>
         </div><br/>
         <div class="namespace_note"><b>Namespace:</b> <a href="Grx.html">Grx</a>
@@ -66,7 +74,39 @@
             </span>
             <div class="leaf_brief_description">
             </div></li>
-          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint8</span></span>[] <b><a href="Grx.LineOptions.dash_patterns.html" class="field">dash_patterns</a></b>
+          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.LineOptions.n_dash_patterns.html" class="field">n_dash_patterns</a></b>
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
+          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint8</span></span> <b><a href="Grx.LineOptions.dash_pattern0.html" class="field">dash_pattern0</a></b>
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
+          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint8</span></span> <b><a href="Grx.LineOptions.dash_pattern1.html" class="field">dash_pattern1</a></b>
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
+          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint8</span></span> <b><a href="Grx.LineOptions.dash_pattern2.html" class="field">dash_pattern2</a></b>
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
+          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint8</span></span> <b><a href="Grx.LineOptions.dash_pattern3.html" class="field">dash_pattern3</a></b>
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
+          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint8</span></span> <b><a href="Grx.LineOptions.dash_pattern4.html" class="field">dash_pattern4</a></b>
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
+          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint8</span></span> <b><a href="Grx.LineOptions.dash_pattern5.html" class="field">dash_pattern5</a></b>
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
+          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint8</span></span> <b><a href="Grx.LineOptions.dash_pattern6.html" class="field">dash_pattern6</a></b>
+            </span>
+            <div class="leaf_brief_description">
+            </div></li>
+          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">uint8</span></span> <b><a href="Grx.LineOptions.dash_pattern7.html" class="field">dash_pattern7</a></b>
             </span>
             <div class="leaf_brief_description">
             </div></li>

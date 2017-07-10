@@ -16,24 +16,26 @@
 <div class="contents">
 <div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">const Grx = imports.gi.Grx;
 
-let pixmap = new Grx.Pixmap({
-    <span class="link"><a href="Grx.Pixmap-is_pixmap.html" title="Grx.Pixmap.is_pixmap">is_pixmap</a></span>: value
-    <span class="link"><a href="Grx.Pixmap-width.html" title="Grx.Pixmap.width">width</a></span>: value
-    <span class="link"><a href="Grx.Pixmap-height.html" title="Grx.Pixmap.height">height</a></span>: value
-    <span class="link"><a href="Grx.Pixmap-mode.html" title="Grx.Pixmap.mode">mode</a></span>: value
-});
+let pixmap = new Grx.Pixmap(pixels: ByteArray, w: Number(gint), h: Number(gint), colors: Array(Grx.Color));
   </pre></div></div></div></div></div>
 <p class="p">A fill pattern stored in a layout identical to the video RAM
 for filling using 'bitblt'-s. It is mode dependent, typically one
 of the library functions is used to build it.</p>
 <div class="links topiclinks"><div class="inner">
-<div class="title title-links"><h2><span class="title">Fields</span></h2></div>
+<div class="title title-links"><h2><span class="title">Constructors</span></h2></div>
 <div class="region"><ul>
-<li class="links "><a href="Grx.Pixmap-height.html" title="Grx.Pixmap.height">height</a></li>
-<li class="links "><a href="Grx.Pixmap-is_pixmap.html" title="Grx.Pixmap.is_pixmap">is_pixmap</a></li>
-<li class="links "><a href="Grx.Pixmap-mode.html" title="Grx.Pixmap.mode">mode</a></li>
-<li class="links "><a href="Grx.Pixmap-source.html" title="Grx.Pixmap.source">source</a></li>
-<li class="links "><a href="Grx.Pixmap-width.html" title="Grx.Pixmap.width">width</a></li>
+<li class="links "><a href="Grx.Pixmap.new.html" title="Grx.Pixmap.new">Grx.Pixmap.new</a></li>
+<li class="links "><a href="Grx.Pixmap.new_from_bits.html" title="Grx.Pixmap.new_from_bits">Grx.Pixmap.new_from_bits</a></li>
+<li class="links "><a href="Grx.Pixmap.new_from_context.html" title="Grx.Pixmap.new_from_context">Grx.Pixmap.new_from_context</a></li>
+</ul></div>
+</div></div>
+<div class="links topiclinks"><div class="inner">
+<div class="title title-links"><h2><span class="title">Methods</span></h2></div>
+<div class="region"><ul>
+<li class="links "><a href="Grx.Pixmap.copy.html" title="Grx.Pixmap.prototype.copy">Grx.Pixmap.prototype.copy</a></li>
+<li class="links "><a href="Grx.Pixmap.free.html" title="Grx.Pixmap.prototype.free">Grx.Pixmap.prototype.free</a></li>
+<li class="links "><a href="Grx.Pixmap.mirror.html" title="Grx.Pixmap.prototype.mirror">Grx.Pixmap.prototype.mirror</a></li>
+<li class="links "><a href="Grx.Pixmap.stretch.html" title="Grx.Pixmap.prototype.stretch">Grx.Pixmap.prototype.stretch</a></li>
 </ul></div>
 </div></div>
 </div>

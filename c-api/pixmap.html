@@ -1,0 +1,1867 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Pattern filled graphics primitives: Grx Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Grx Reference Manual">
+<link rel="up" href="drawing.html" title="Drawing">
+<link rel="prev" href="wideline.html" title="Customized line drawing">
+<link rel="next" href="text.html" title="Text Drawing">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#pixmap.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#pixmap.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="drawing.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="wideline.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="text.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="pixmap"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="pixmap.top_of_page"></a>Pattern filled graphics primitives</span></h2>
+<p>Pattern filled graphics primitives — Patterned drawing and filling primitives</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="pixmap.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-pixmap-new" title="grx_pixmap_new ()">grx_pixmap_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-pixmap-new-from-bits" title="grx_pixmap_new_from_bits ()">grx_pixmap_new_from_bits</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-pixmap-new-from-context" title="grx_pixmap_new_from_context ()">grx_pixmap_new_from_context</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-pixmap-copy" title="grx_pixmap_copy ()">grx_pixmap_copy</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-pixmap-free" title="grx_pixmap_free ()">grx_pixmap_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-pixmap-mirror" title="grx_pixmap_mirror ()">grx_pixmap_mirror</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-pixmap-stretch" title="grx_pixmap_stretch ()">grx_pixmap_stretch</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-pixmap" title="grx_draw_pixmap ()">grx_draw_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-pixmap-tiled" title="grx_draw_pixmap_tiled ()">grx_draw_pixmap_tiled</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-line-with-pixmap" title="grx_draw_line_with_pixmap ()">grx_draw_line_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-hline-with-pixmap" title="grx_draw_hline_with_pixmap ()">grx_draw_hline_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-pixel-with-pixmap" title="grx_draw_pixel_with_pixmap ()">grx_draw_pixel_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-box-with-pixmap" title="grx_draw_box_with_pixmap ()">grx_draw_box_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-circle-with-pixmap" title="grx_draw_circle_with_pixmap ()">grx_draw_circle_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-ellipse-with-pixmap" title="grx_draw_ellipse_with_pixmap ()">grx_draw_ellipse_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-circle-arc-with-pixmap" title="grx_draw_circle_arc_with_pixmap ()">grx_draw_circle_arc_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-ellipse-arc-with-pixmap" title="grx_draw_ellipse_arc_with_pixmap ()">grx_draw_ellipse_arc_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-polyline-with-pixmap" title="grx_draw_polyline_with_pixmap ()">grx_draw_polyline_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-polygon-with-pixmap" title="grx_draw_polygon_with_pixmap ()">grx_draw_polygon_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-filled-pixel-with-pixmap" title="grx_draw_filled_pixel_with_pixmap ()">grx_draw_filled_pixel_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-filled-line-with-pixmap" title="grx_draw_filled_line_with_pixmap ()">grx_draw_filled_line_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-filled-box-with-pixmap" title="grx_draw_filled_box_with_pixmap ()">grx_draw_filled_box_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-filled-box-with-offset-pixmap" title="grx_draw_filled_box_with_offset_pixmap ()">grx_draw_filled_box_with_offset_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-filled-circle-with-pixmap" title="grx_draw_filled_circle_with_pixmap ()">grx_draw_filled_circle_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-filled-ellipse-with-pixmap" title="grx_draw_filled_ellipse_with_pixmap ()">grx_draw_filled_ellipse_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-filled-circle-arc-with-pixmap" title="grx_draw_filled_circle_arc_with_pixmap ()">grx_draw_filled_circle_arc_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-filled-ellipse-arc-with-pixmap" title="grx_draw_filled_ellipse_arc_with_pixmap ()">grx_draw_filled_ellipse_arc_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-filled-polygon-with-pixmap" title="grx_draw_filled_polygon_with_pixmap ()">grx_draw_filled_polygon_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-draw-filled-convex-polygon-with-pixmap" title="grx_draw_filled_convex_polygon_with_pixmap ()">grx_draw_filled_convex_polygon_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="pixmap.html#grx-flood-fill-with-pixmap" title="grx_flood_fill_with_pixmap ()">grx_flood_fill_with_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<a name="GrxPixmap"></a><div class="refsect1">
+<a name="pixmap.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="pixmap.html#GrxPixmapMirrorFlags" title="enum GrxPixmapMirrorFlags">GrxPixmapMirrorFlags</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="pixmap.html#GrxPixmap-struct" title="GrxPixmap">GrxPixmap</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="pixmap.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-Boxed-Types.html">GBoxed</a>
+    <span class="lineart">╰──</span> GrxPixmap
+</pre>
+</div>
+<div class="refsect1">
+<a name="pixmap.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;grx-3.0.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="pixmap.description"></a><h2>Description</h2>
+<p>The library also supports a pattern filled version of the basic filled
+primitives described above. These functions have similar parameter passing
+conventions as the basic ones with one difference: instead of the color
+value a <a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> has to be passed to them.</p>
+</div>
+<div class="refsect1">
+<a name="pixmap.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="grx-pixmap-new"></a><h3>grx_pixmap_new ()</h3>
+<pre class="programlisting"><a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+grx_pixmap_new (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *pixels</code></em>,
+                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> w</code></em>,
+                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> h</code></em>,
+                <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Arrays.html#GArray"><span class="type">GArray</span></a> *colors</code></em>);</pre>
+<p>Build a pixmap from <em class="parameter"><code>pixels</code></em>
+.</p>
+<p>The elements of the <em class="parameter"><code>pixels</code></em>
+ array are used as indices in <em class="parameter"><code>colors</code></em>
+. This means
+that pixmaps created this way can use at most 256 colors. NOTE: any color
+modifiers (GrXOR, GrOR, GrAND) OR-ed to the elements of the color table are
+ignored.</p>
+<div class="refsect3">
+<a name="grx-pixmap-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pixels</p></td>
+<td class="parameter_description"><p> a two dimensional array of bytes. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>w</p></td>
+<td class="parameter_description"><p>the width of the pixel array</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>h</p></td>
+<td class="parameter_description"><p>the height of the pixel array</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>colors</p></td>
+<td class="parameter_description"><p> color table for the pixel array. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GrxColor][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-pixmap-new.returns"></a><h4>Returns</h4>
+<p> a new <a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there was an error. </p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-pixmap-new-from-bits"></a><h3>grx_pixmap_new_from_bits ()</h3>
+<pre class="programlisting"><a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+grx_pixmap_new_from_bits (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *bits</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> w</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> h</code></em>,
+                          <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> fg</code></em>,
+                          <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> bg</code></em>);</pre>
+<p>Builds a pixmap fill pattern from bitmap data. It is useful if the width of
+the bitmap pattern is not eight as such bitmap patterns can not be used to
+build a GrBitmap structure.</p>
+<div class="refsect3">
+<a name="grx-pixmap-new-from-bits.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>bits</p></td>
+<td class="parameter_description"><p>the bitmap data</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>w</p></td>
+<td class="parameter_description"><p>the width of the bitmap data</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>h</p></td>
+<td class="parameter_description"><p>the height of the bitmap data</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>fg</p></td>
+<td class="parameter_description"><p>the forground color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bg</p></td>
+<td class="parameter_description"><p>the background color</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-pixmap-new-from-bits.returns"></a><h4>Returns</h4>
+<p> a new <a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there was an error. </p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-pixmap-new-from-context"></a><h3>grx_pixmap_new_from_context ()</h3>
+<pre class="programlisting"><a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+grx_pixmap_new_from_context (<em class="parameter"><code><a class="link" href="context.html#GrxContext"><span class="type">GrxContext</span></a> *context</code></em>);</pre>
+<p>Converts a graphics context to a pixmap fill pattern.</p>
+<p>This is useful when the pixmap can be created with graphics drawing
+operations. NOTE: the pixmap pattern and the original context share the
+drawing RAM, thus if the context is redrawn the fill pattern changes as well.</p>
+<div class="refsect3">
+<a name="grx-pixmap-new-from-context.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>context</p></td>
+<td class="parameter_description"><p>the context</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-pixmap-new-from-context.returns"></a><h4>Returns</h4>
+<p> a new <a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there was an error. </p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-pixmap-copy"></a><h3>grx_pixmap_copy ()</h3>
+<pre class="programlisting"><a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+grx_pixmap_copy (<em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *pixmap</code></em>);</pre>
+<p>Make a copy of <em class="parameter"><code>pixmap</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-pixmap-copy.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>pixmap</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-pixmap-copy.returns"></a><h4>Returns</h4>
+<p> a new <a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-pixmap-free"></a><h3>grx_pixmap_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_pixmap_free (<em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *pixmap</code></em>);</pre>
+<p>Frees any dynamically allocated memory associated with the pixmap.</p>
+<div class="refsect3">
+<a name="grx-pixmap-free.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>pixmap</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-pixmap-mirror"></a><h3>grx_pixmap_mirror ()</h3>
+<pre class="programlisting"><a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+grx_pixmap_mirror (<em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *pixmap</code></em>,
+                   <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmapMirrorFlags" title="enum GrxPixmapMirrorFlags"><span class="type">GrxPixmapMirrorFlags</span></a> flags</code></em>);</pre>
+<p>Creates a new pixmap, flipping left-right and/or top-bottom as indicated by
+<em class="parameter"><code>flags</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-pixmap-mirror.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pixmap</p></td>
+<td class="parameter_description"><p>the source pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>flags</p></td>
+<td class="parameter_description"><p>the mirror flags</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-pixmap-mirror.returns"></a><h4>Returns</h4>
+<p> the new pixmap. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-pixmap-stretch"></a><h3>grx_pixmap_stretch ()</h3>
+<pre class="programlisting"><a class="link" href="pixmap.html#GrxPixmap"><span class="returnvalue">GrxPixmap</span></a> *
+grx_pixmap_stretch (<em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *pixmap</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_width</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> new_height</code></em>);</pre>
+<p>Creates a new pixmap stretching <em class="parameter"><code>pixmap</code></em>
+ to <em class="parameter"><code>new_width</code></em>
+ by <em class="parameter"><code>new_height</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-pixmap-stretch.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pixmap</p></td>
+<td class="parameter_description"><p>the source pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_width</p></td>
+<td class="parameter_description"><p>the new width</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_height</p></td>
+<td class="parameter_description"><p>the new height</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-pixmap-stretch.returns"></a><h4>Returns</h4>
+<p> the new pixmap. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-pixmap"></a><h3>grx_draw_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                 <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws the entire image on the current context with the top, left corner at
+<em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-draw-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the left edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the top edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-pixmap-tiled"></a><h3>grx_draw_pixmap_tiled ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_pixmap_tiled (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                       <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws as much of the image as possible (repeating if necessary) on the
+current in the rectangle defined by <em class="parameter"><code>x1</code></em>
+, <em class="parameter"><code>y1</code></em>
+ and <em class="parameter"><code>x2</code></em>
+, <em class="parameter"><code>y2</code></em>
+</p>
+<div class="refsect3">
+<a name="grx-draw-pixmap-tiled.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom edge</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-line-with-pixmap"></a><h3>grx_draw_line_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_line_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                           <em class="parameter"><code><a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>,
+                           <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a line on the current context from the starting coordinates to the
+ending coordinates using the specified line options and pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-line-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>starting X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>starting Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>ending X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>ending Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the line options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-hline-with-pixmap"></a><h3>grx_draw_hline_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_hline_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x0</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y0</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                            <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a single line of an pixmap on the current context starting at <em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+.
+The pixmap can be offset from the line by specifying <em class="parameter"><code>x0</code></em>
+, <em class="parameter"><code>y0</code></em>
+ different from
+<em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+. The pixmap is repeated if the width of the line is greater than the
+width of the pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-hline-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x0</p></td>
+<td class="parameter_description"><p>the alignment X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y0</p></td>
+<td class="parameter_description"><p>the alignment Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the top X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the left Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width of the line</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-pixel-with-pixmap"></a><h3>grx_draw_pixel_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_pixel_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x0</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y0</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                            <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a single pixel of an pixmap on the current context at <em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+.
+The pixmap can be offset from the point by specifying <em class="parameter"><code>x0</code></em>
+, <em class="parameter"><code>y0</code></em>
+ different from
+<em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+.</p>
+<div class="refsect3">
+<a name="grx-draw-pixel-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x0</p></td>
+<td class="parameter_description"><p>the alignment X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y0</p></td>
+<td class="parameter_description"><p>the alignment Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-box-with-pixmap"></a><h3>grx_draw_box_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_box_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                          <em class="parameter"><code><a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>,
+                          <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a rectangle on the current context using the specified coordinates
+and line options and pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-box-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the line options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-circle-with-pixmap"></a><h3>grx_draw_circle_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_circle_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> r</code></em>,
+                             <em class="parameter"><code><a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>,
+                             <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a circle on the current context centered at the specified coordinates
+with the specified radius and line options and pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-circle-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the circle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the circle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the radius of the circle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the line options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-ellipse-with-pixmap"></a><h3>grx_draw_ellipse_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_ellipse_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rx</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> ry</code></em>,
+                              <em class="parameter"><code><a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>,
+                              <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws an ellipse on the current context using the specified line options and
+pattern.</p>
+<p>The ellipse can only draw ellipses with its major axis parallel with either
+the X or Y coordinate axis.</p>
+<div class="refsect3">
+<a name="grx-draw-ellipse-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the ellipse</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the ellipse</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>rx</p></td>
+<td class="parameter_description"><p>the radius in the X direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>ry</p></td>
+<td class="parameter_description"><p>the radius in the Y direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the line options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-circle-arc-with-pixmap"></a><h3>grx_draw_circle_arc_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_circle_arc_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> r</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> start</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> end</code></em>,
+                                 <em class="parameter"><code><a class="link" href="draw.html#GrxArcStyle" title="enum GrxArcStyle"><span class="type">GrxArcStyle</span></a> style</code></em>,
+                                 <em class="parameter"><code><a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>,
+                                 <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws an arc on the current context centered at the specified coordinates
+from the starting angle to the ending angle with the specified radius,
+arc style and line options and pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-circle-arc-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the radius of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>start</p></td>
+<td class="parameter_description"><p>the starting angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>end</p></td>
+<td class="parameter_description"><p>the ending angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>style</p></td>
+<td class="parameter_description"><p>the arc style</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the line options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-ellipse-arc-with-pixmap"></a><h3>grx_draw_ellipse_arc_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_ellipse_arc_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rx</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> ry</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> start</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> end</code></em>,
+                                  <em class="parameter"><code><a class="link" href="draw.html#GrxArcStyle" title="enum GrxArcStyle"><span class="type">GrxArcStyle</span></a> style</code></em>,
+                                  <em class="parameter"><code><a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>,
+                                  <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws an arc on the current context centered at the specified coordinates
+from the starting angle to the ending angle with the specified radii,
+arc style and line options and pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-ellipse-arc-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>rx</p></td>
+<td class="parameter_description"><p>the radius in the X direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>ry</p></td>
+<td class="parameter_description"><p>the radius in the Y direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>start</p></td>
+<td class="parameter_description"><p>the starting angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>end</p></td>
+<td class="parameter_description"><p>the ending angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>style</p></td>
+<td class="parameter_description"><p>the arc style</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the line options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-polyline-with-pixmap"></a><h3>grx_draw_polyline_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_polyline_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_points</code></em>,
+                               <em class="parameter"><code><a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a> *points</code></em>,
+                               <em class="parameter"><code><a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>,
+                               <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draw a multi-segment line on the current context that connects each point in
+the <em class="parameter"><code>points</code></em>
+ array using the specified line options and pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-polyline-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>n_points</p></td>
+<td class="parameter_description"><p>the number of points in <em class="parameter"><code>points</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>points</p></td>
+<td class="parameter_description"><p> an array of <a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_points]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the line options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-polygon-with-pixmap"></a><h3>grx_draw_polygon_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_polygon_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_points</code></em>,
+                              <em class="parameter"><code><a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a> *points</code></em>,
+                              <em class="parameter"><code><a class="link" href="wideline.html#GrxLineOptions" title="GrxLineOptions"><span class="type">GrxLineOptions</span></a> *o</code></em>,
+                              <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draw a closed polygon on the current context that connects each point in
+the <em class="parameter"><code>points</code></em>
+ array using the specified line options and pixmap.</p>
+<p>Coordinate arrays can either contain or omit the closing edge of the polygon.
+It will be automatically appended to the list if it is missing.</p>
+<div class="refsect3">
+<a name="grx-draw-polygon-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>n_points</p></td>
+<td class="parameter_description"><p>the number of points in <em class="parameter"><code>points</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>points</p></td>
+<td class="parameter_description"><p> an array of <a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_points]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>o</p></td>
+<td class="parameter_description"><p>the line options</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-pixel-with-pixmap"></a><h3>grx_draw_filled_pixel_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_pixel_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                   <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draw a single pixel on the current context at the specified coordinates.</p>
+<div class="refsect3">
+<a name="grx-draw-filled-pixel-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-line-with-pixmap"></a><h3>grx_draw_filled_line_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_line_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                                  <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a line on the current context from the starting coordinates to the
+ending coordinates using the specified pixmap.</p>
+<p>For horizontal and vertical lines, see <a class="link" href="draw.html#grx-draw-hline" title="grx_draw_hline ()"><code class="function">grx_draw_hline()</code></a> and <a class="link" href="draw.html#grx-draw-vline" title="grx_draw_vline ()"><code class="function">grx_draw_vline()</code></a>.</p>
+<div class="refsect3">
+<a name="grx-draw-filled-line-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>starting X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>starting Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>ending X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>ending Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-box-with-pixmap"></a><h3>grx_draw_filled_box_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_box_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                                 <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a filled rectangle on the current context using the specified
+coordinates and pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-filled-box-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the left X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the top Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-box-with-offset-pixmap"></a><h3>grx_draw_filled_box_with_offset_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_box_with_offset_pixmap
+                               (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x0</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y0</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                                <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Fills the rectangle <em class="parameter"><code>x1</code></em>
+, <em class="parameter"><code>y1</code></em>
+, <em class="parameter"><code>x2</code></em>
+, <em class="parameter"><code>y2</code></em>
+ in the current context with the pixmap.
+This pixmap can be offset from the rectangle by specifying <em class="parameter"><code>x0</code></em>
+, <em class="parameter"><code>y0</code></em>
+ different
+from <em class="parameter"><code>x1</code></em>
+, <em class="parameter"><code>y1</code></em>
+. The pixmap is tiled if needed to fill the rectangle.</p>
+<div class="refsect3">
+<a name="grx-draw-filled-box-with-offset-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x0</p></td>
+<td class="parameter_description"><p>the alignment X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y0</p></td>
+<td class="parameter_description"><p>the alignment Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x1</p></td>
+<td class="parameter_description"><p>the top X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y1</p></td>
+<td class="parameter_description"><p>the left Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x2</p></td>
+<td class="parameter_description"><p>the right X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y2</p></td>
+<td class="parameter_description"><p>the bottom Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-circle-with-pixmap"></a><h3>grx_draw_filled_circle_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_circle_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> r</code></em>,
+                                    <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a filled circle on the current context centered at the specified
+coordinates with the specified radius and pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-filled-circle-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the circle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the circle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the radius of the circle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-ellipse-with-pixmap"></a><h3>grx_draw_filled_ellipse_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_ellipse_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rx</code></em>,
+                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> ry</code></em>,
+                                     <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a filled ellipse on the current context using the specified pixmap.</p>
+<p>The ellipse can only draw ellipses with its major axis parallel with either
+the X or Y coordinate axis</p>
+<div class="refsect3">
+<a name="grx-draw-filled-ellipse-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the ellipse</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the ellipse</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>rx</p></td>
+<td class="parameter_description"><p>the radius in the X direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>ry</p></td>
+<td class="parameter_description"><p>the radius in the Y direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-circle-arc-with-pixmap"></a><h3>grx_draw_filled_circle_arc_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_circle_arc_with_pixmap
+                               (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> r</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> start</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> end</code></em>,
+                                <em class="parameter"><code><a class="link" href="draw.html#GrxArcStyle" title="enum GrxArcStyle"><span class="type">GrxArcStyle</span></a> style</code></em>,
+                                <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a filled arc on the current context centered at the specified
+coordinates from the starting angle to the ending angle with the specified
+radius, arc style and pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-filled-circle-arc-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>r</p></td>
+<td class="parameter_description"><p>the radius of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>start</p></td>
+<td class="parameter_description"><p>the starting angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>end</p></td>
+<td class="parameter_description"><p>the ending angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>style</p></td>
+<td class="parameter_description"><p>the arc style</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-ellipse-arc-with-pixmap"></a><h3>grx_draw_filled_ellipse_arc_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_ellipse_arc_with_pixmap
+                               (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> xc</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> yc</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> rx</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> ry</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> start</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> end</code></em>,
+                                <em class="parameter"><code><a class="link" href="draw.html#GrxArcStyle" title="enum GrxArcStyle"><span class="type">GrxArcStyle</span></a> style</code></em>,
+                                <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draws a filled arc on the current context centered at the specified
+coordinates from the starting angle to the ending angle with the specified
+radii, arc style and pixmap.</p>
+<div class="refsect3">
+<a name="grx-draw-filled-ellipse-arc-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>xc</p></td>
+<td class="parameter_description"><p>the X coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>yc</p></td>
+<td class="parameter_description"><p>the Y coordinate of the center of the arc</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>rx</p></td>
+<td class="parameter_description"><p>the radius in the X direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>ry</p></td>
+<td class="parameter_description"><p>the radius in the Y direction</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>start</p></td>
+<td class="parameter_description"><p>the starting angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>end</p></td>
+<td class="parameter_description"><p>the ending angle in 1/10ths of degrees</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>style</p></td>
+<td class="parameter_description"><p>the arc style</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-polygon-with-pixmap"></a><h3>grx_draw_filled_polygon_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_polygon_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_points</code></em>,
+                                     <em class="parameter"><code><a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a> *points</code></em>,
+                                     <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draw a filled polygon on the current context that connects each point in
+the <em class="parameter"><code>points</code></em>
+ array using the specified pixmap.</p>
+<p>Coordinate arrays can either contain or omit the closing edge of the polygon.
+It will be automatically appended to the list if it is missing.</p>
+<div class="refsect3">
+<a name="grx-draw-filled-polygon-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>n_points</p></td>
+<td class="parameter_description"><p>the number of points in <em class="parameter"><code>points</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>points</p></td>
+<td class="parameter_description"><p> an array of <a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_points]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-draw-filled-convex-polygon-with-pixmap"></a><h3>grx_draw_filled_convex_polygon_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_draw_filled_convex_polygon_with_pixmap
+                               (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_points</code></em>,
+                                <em class="parameter"><code><a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a> *points</code></em>,
+                                <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Draw a filled polygon on the current context that connects each point in
+the <em class="parameter"><code>points</code></em>
+ array using the specified pixmap.</p>
+<p>Coordinate arrays can either contain or omit the closing edge of the polygon.
+It will be automatically appended to the list if it is missing.</p>
+<p>This version is slightly more efficient that <a class="link" href="draw.html#grx-draw-filled-polygon" title="grx_draw_filled_polygon ()"><code class="function">grx_draw_filled_polygon()</code></a> but
+requires that the polygon is convex. It can also be used to fill some concave
+polygons whose boundaries do not intersect any horizontal scan line more than
+twice. It can also be used to fill several disjoint nonoverlapping polygons
+in a single operation.</p>
+<div class="refsect3">
+<a name="grx-draw-filled-convex-polygon-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>n_points</p></td>
+<td class="parameter_description"><p>the number of points in <em class="parameter"><code>points</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>points</p></td>
+<td class="parameter_description"><p> an array of <a class="link" href="draw.html#GrxPoint" title="GrxPoint"><span class="type">GrxPoint</span></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_points]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="grx-flood-fill-with-pixmap"></a><h3>grx_flood_fill_with_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+grx_flood_fill_with_pixmap (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                            <em class="parameter"><code><a class="link" href="color.html#GrxColor" title="GrxColor"><span class="type">GrxColor</span></a> border</code></em>,
+                            <em class="parameter"><code><a class="link" href="pixmap.html#GrxPixmap"><span class="type">GrxPixmap</span></a> *p</code></em>);</pre>
+<p>Flood-fills the area of the current context bounded by the color <em class="parameter"><code>border</code></em>
+
+using <em class="parameter"><code>x</code></em>
+, <em class="parameter"><code>y</code></em>
+ as the starting point.</p>
+<div class="refsect3">
+<a name="grx-flood-fill-with-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>the starting X coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>the starting Y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>border</p></td>
+<td class="parameter_description"><p>the color of the border that contains the fill</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>p</p></td>
+<td class="parameter_description"><p>the pixmap of the fill</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="pixmap.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GrxPixmapMirrorFlags"></a><h3>enum GrxPixmapMirrorFlags</h3>
+<p>Flags used by <a class="link" href="pixmap.html#grx-pixmap-mirror" title="grx_pixmap_mirror ()"><code class="function">grx_pixmap_mirror()</code></a>.</p>
+<div class="refsect3">
+<a name="GrxPixmapMirrorFlags.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-PIXMAP-MIRROR-HORIZONTAL:CAPS"></a>GRX_PIXMAP_MIRROR_HORIZONTAL</p></td>
+<td class="enum_member_description">
+<p>inverse left-right</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="GRX-PIXMAP-MIRROR-VERTICAL:CAPS"></a>GRX_PIXMAP_MIRROR_VERTICAL</p></td>
+<td class="enum_member_description">
+<p>inverse top-bottom</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GrxPixmap-struct"></a><h3>GrxPixmap</h3>
+<pre class="programlisting">typedef struct {
+} GrxPixmap;
+</pre>
+<p>A fill pattern stored in a layout identical to the video RAM
+for filling using 'bitblt'-s. It is mode dependent, typically one
+of the library functions is used to build it.</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

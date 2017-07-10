@@ -13,8 +13,14 @@
 <div class="body">
 <div class="hgroup"><h1 class="title"><span class="title">Grx.Application:quit-on-signal</span></h1></div>
 <div class="region">
-<div class="contents"><div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">"quit-on-signal"             bool                : Read / Write / Construct
-  </pre></div></div></div></div></div></div>
+<div class="contents">
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">"quit-on-signal"             bool                : Read / Write / Construct
+  </pre></div></div></div></div></div>
+<p class="p">Gets or sets if the application should queue a <span class="link"><a href="Grx.EventType.html" title="Grx.EventType">Grx.EventType</a></span>.app_quit
+event when SIGHUP, SIGINT or SIGTERM is received.</p>
+<p class="p">The default behavior is for an application to quit when any of these signals
+are received.</p>
+</div>
 <div class="sect sect-links" role="navigation">
 <div class="hgroup"></div>
 <div class="contents"><div class="links guidelinks"><div class="inner">

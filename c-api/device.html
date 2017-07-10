@@ -165,7 +165,12 @@
 </div>
 <div class="refsect1">
 <a name="device.description"></a><h2>Description</h2>
-<p>TODO</p>
+<p><a class="link" href="device.html#GrxDevice"><span class="type">GrxDevice</span></a> is an abstract class the represents an input device such as a
+keyboard, mouse or touchscreen. Devices are normally handled internally
+in the library. So, this class is normally not used unless you need to
+differentiate between input events between individual devices (e.g. a
+a calibration program where you only want input from the device you are
+calibrating).</p>
 </div>
 <div class="refsect1">
 <a name="device.functions_details"></a><h2>Functions</h2>
@@ -173,30 +178,132 @@
 <a name="grx-device-get-name"></a><h3>grx_device_get_name ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 grx_device_get_name (<em class="parameter"><code><a class="link" href="device.html#GrxDevice"><span class="type">GrxDevice</span></a> *device</code></em>);</pre>
+<p>Gets the <a class="link" href="device.html#GrxDevice--name" title="The “name” property"><span class="type">“name”</span></a> of the device.</p>
+<div class="refsect3">
+<a name="grx-device-get-name.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>device</p></td>
+<td class="parameter_description"><p>the device</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-device-get-name.returns"></a><h4>Returns</h4>
+<p> the name or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="grx-device-get-sysname"></a><h3>grx_device_get_sysname ()</h3>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 grx_device_get_sysname (<em class="parameter"><code><a class="link" href="device.html#GrxDevice"><span class="type">GrxDevice</span></a> *device</code></em>);</pre>
+<p>Gets the <a class="link" href="device.html#GrxDevice--sysname" title="The “sysname” property"><span class="type">“sysname”</span></a> of the device.</p>
+<div class="refsect3">
+<a name="grx-device-get-sysname.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>device</p></td>
+<td class="parameter_description"><p>the device</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-device-get-sysname.returns"></a><h4>Returns</h4>
+<p> the name or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="grx-device-get-has-keyboard"></a><h3>grx_device_get_has_keyboard ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 grx_device_get_has_keyboard (<em class="parameter"><code><a class="link" href="device.html#GrxDevice"><span class="type">GrxDevice</span></a> *device</code></em>);</pre>
+<p>Gets if the device has keyboard capabilities.</p>
+<div class="refsect3">
+<a name="grx-device-get-has-keyboard.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>device</p></td>
+<td class="parameter_description"><p>the device</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-device-get-has-keyboard.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the device can generate key events, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="grx-device-get-has-pointer"></a><h3>grx_device_get_has_pointer ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 grx_device_get_has_pointer (<em class="parameter"><code><a class="link" href="device.html#GrxDevice"><span class="type">GrxDevice</span></a> *device</code></em>);</pre>
+<p>Gets if the device has mouse capabilities.</p>
+<div class="refsect3">
+<a name="grx-device-get-has-pointer.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>device</p></td>
+<td class="parameter_description"><p>the device</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-device-get-has-pointer.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the device can generate button/motion events, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="grx-device-get-has-touch"></a><h3>grx_device_get_has_touch ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 grx_device_get_has_touch (<em class="parameter"><code><a class="link" href="device.html#GrxDevice"><span class="type">GrxDevice</span></a> *device</code></em>);</pre>
+<p>Gets if the device has touch capabilities.</p>
+<div class="refsect3">
+<a name="grx-device-get-has-touch.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>device</p></td>
+<td class="parameter_description"><p>the device</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="grx-device-get-has-touch.returns"></a><h4>Returns</h4>
+<p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the device can generate touch events, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -282,7 +389,7 @@ The default implementation simply returns <a href="https://developer.gnome.org/g
 <div class="refsect2">
 <a name="GrxDevice--has-keyboard"></a><h3>The <code class="literal">“has-keyboard”</code> property</h3>
 <pre class="programlisting">  “has-keyboard”             <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
-<p>Gets if the device has keyboard keys.</p>
+<p>Indicates that a device can produce key events.</p>
 <p>Flags: Read</p>
 <p>Default value: FALSE</p>
 </div>
@@ -290,7 +397,7 @@ The default implementation simply returns <a href="https://developer.gnome.org/g
 <div class="refsect2">
 <a name="GrxDevice--has-pointer"></a><h3>The <code class="literal">“has-pointer”</code> property</h3>
 <pre class="programlisting">  “has-pointer”              <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
-<p>Gets if the device has a pointing device and/or buttons.</p>
+<p>Indicates that a device can produce button/motion events.</p>
 <p>Flags: Read</p>
 <p>Default value: FALSE</p>
 </div>
@@ -298,7 +405,7 @@ The default implementation simply returns <a href="https://developer.gnome.org/g
 <div class="refsect2">
 <a name="GrxDevice--has-touch"></a><h3>The <code class="literal">“has-touch”</code> property</h3>
 <pre class="programlisting">  “has-touch”                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
-<p>Gets if the device has a touchscreen.</p>
+<p>Indicates that a device can produce touch events.</p>
 <p>Flags: Read</p>
 <p>Default value: FALSE</p>
 </div>
@@ -306,7 +413,7 @@ The default implementation simply returns <a href="https://developer.gnome.org/g
 <div class="refsect2">
 <a name="GrxDevice--name"></a><h3>The <code class="literal">“name”</code> property</h3>
 <pre class="programlisting">  “name”                     <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
-<p>Gets a descriptive name of the device.</p>
+<p>A descriptive name of the device, suitable for displaying to the user.</p>
 <p>Flags: Read</p>
 <p>Default value: NULL</p>
 </div>
@@ -314,7 +421,7 @@ The default implementation simply returns <a href="https://developer.gnome.org/g
 <div class="refsect2">
 <a name="GrxDevice--sysname"></a><h3>The <code class="literal">“sysname”</code> property</h3>
 <pre class="programlisting">  “sysname”                  <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
-<p>Gets the sysfs name of the device.</p>
+<p>The sysfs name of the device.</p>
 <p>Flags: Read</p>
 <p>Default value: NULL</p>
 </div>

@@ -23,15 +23,15 @@
         </ul>
         <hr class="navi_hr"/>
         <ul class="navi_main">
-          <li class="struct">Pixmap</li>
+          <li class="class">Pixmap</li>
         </ul>
         <hr class="navi_hr"/>
         <ul class="navi_main">
-          <li class="field"><a href="Grx.Pixmap.height.html">height</a></li>
-          <li class="field"><a href="Grx.Pixmap.is_pixmap.html">is_pixmap</a></li>
-          <li class="field"><a href="Grx.Pixmap.mode.html">mode</a></li>
-          <li class="field"><a href="Grx.Pixmap.source.html">source</a></li>
-          <li class="field"><a href="Grx.Pixmap.width.html">width</a></li>
+          <li class="static_method"><a href="Grx.Pixmap.@new.html">@new</a></li>
+          <li class="static_method"><a href="Grx.Pixmap.new_from_bits.html">new_from_bits</a></li>
+          <li class="static_method"><a href="Grx.Pixmap.new_from_context.html">new_from_context</a></li>
+          <li class="method"><a href="Grx.Pixmap.mirror.html">mirror</a></li>
+          <li class="method"><a href="Grx.Pixmap.stretch.html">stretch</a></li>
         </ul>
       </div>
       <div class="site_content">
@@ -45,7 +45,7 @@
 </map>
 
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">struct</span> <b><span class="struct">Pixmap</span></b>
+        <div class="main_code_definition">[ <span class="main_type">Compact</span> ]<br/><span class="main_keyword">public</span> <span class="main_keyword">class</span> <b><span class="class">Pixmap</span></b>
         </div>
         <div class="description">
           <p>A fill pattern stored in a layout identical to the video RAM for filling using 'bitblt'-s.</p>
@@ -56,27 +56,32 @@
         <div class="package_note"><b>Package:</b> <a href="index.htm">grx-3.0</a>
         </div>
         <h2 class="main_title">Content:</h2>
-        <h3 class="main_title">Fields:</h3>
+        <h3 class="main_title">Static methods:</h3>
         <ul class="navi_inline">
-          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><a href="Grx.Pixmap.is_pixmap.html" class="field">is_pixmap</a></b>
+          <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Pixmap</span></span> <b><a href="Grx.Pixmap.@new.html" class="static_method">@new</a></b> (<span class="main_basic_type"><span class="struct">uint8</span></span>* pixels, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><span class="class">Array</span></span>&lt;<span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span>&gt;? colors)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Build a pixmap from <code>pixels</code>.</span>
             </div></li>
-          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.Pixmap.width.html" class="field">width</a></b>
+          <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Pixmap</span></span> <b><a href="Grx.Pixmap.new_from_bits.html" class="static_method">new_from_bits</a></b> (<span class="main_basic_type"><span class="struct">uint8</span></span>* bits, <span class="main_basic_type"><span class="struct">int</span></span> w, <span class="main_basic_type"><span class="struct">int</span></span> h, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> fg, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> bg)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Builds a pixmap fill pattern from bitmap data.</span>
             </div></li>
-          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.Pixmap.height.html" class="field">height</a></b>
+          <li class="static_method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">static</span> <span class="main_type"><span class="class">Pixmap</span></span> <b><a href="Grx.Pixmap.new_from_context.html" class="static_method">new_from_context</a></b> (<span class="main_type"><a href="Grx.Context.html" class="class">Context</a></span> context)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Converts a graphics context to a pixmap fill pattern.</span>
             </div></li>
-          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.ColorMode.html" class="enum">ColorMode</a></span> <b><a href="Grx.Pixmap.mode.html" class="field">mode</a></b>
+        </ul>
+        <h3 class="main_title">Methods:</h3>
+        <ul class="navi_inline">
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="class">Pixmap</span></span> <b><a href="Grx.Pixmap.mirror.html" class="method">mirror</a></b> (<span class="main_type"><a href="Grx.PixmapMirrorFlags.html" class="enum">PixmapMirrorFlags</a></span> flags)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates a new pixmap, flipping left-right and/or top-bottom as 
+                indicated by <code>flags</code>.</span>
             </div></li>
-          <li class="field"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.Frame.html" class="struct">Frame</a></span> <b><a href="Grx.Pixmap.source.html" class="field">source</a></b>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_type"><span class="class">Pixmap</span></span> <b><a href="Grx.Pixmap.stretch.html" class="method">stretch</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> new_width, <span class="main_basic_type"><span class="struct">int</span></span> new_height)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Creates a new pixmap stretching <span class="main_keyword">this</span>
+                 to <code>new_width</code> by <code>new_height</code>.</span>
             </div></li>
         </ul>
       </div>

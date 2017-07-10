@@ -13,8 +13,7 @@
         <sub name="Graphics Primitives" link="draw.html"/>
         <sub name="Non-clipping Graphics Primitives" link="draw_nc.html"/>
         <sub name="Customized line drawing" link="wideline.html"/>
-        <sub name="Pattern filled graphics primitives" link="pattern.html"/>
-        <sub name="Image Manipulation" link="image.html"/>
+        <sub name="Pattern filled graphics primitives" link="pixmap.html"/>
         <sub name="Text Drawing" link="text.html"/>
         <sub name="Drawing in user coordinates" link="user.html"/>
       </sub>
@@ -172,6 +171,7 @@
     <keyword type="function" name="grx_draw_hline ()" link="draw.html#grx-draw-hline"/>
     <keyword type="function" name="grx_draw_vline ()" link="draw.html#grx-draw-vline"/>
     <keyword type="function" name="grx_draw_box ()" link="draw.html#grx-draw-box"/>
+    <keyword type="function" name="grx_draw_rounded_box ()" link="draw.html#grx-draw-rounded-box"/>
     <keyword type="function" name="grx_draw_circle ()" link="draw.html#grx-draw-circle"/>
     <keyword type="function" name="grx_draw_ellipse ()" link="draw.html#grx-draw-ellipse"/>
     <keyword type="function" name="grx_draw_circle_arc ()" link="draw.html#grx-draw-circle-arc"/>
@@ -182,6 +182,7 @@
     <keyword type="function" name="grx_generate_ellipse ()" link="draw.html#grx-generate-ellipse"/>
     <keyword type="function" name="grx_generate_ellipse_arc ()" link="draw.html#grx-generate-ellipse-arc"/>
     <keyword type="function" name="grx_draw_filled_box ()" link="draw.html#grx-draw-filled-box"/>
+    <keyword type="function" name="grx_draw_filled_rounded_box ()" link="draw.html#grx-draw-filled-rounded-box"/>
     <keyword type="function" name="grx_draw_framed_box ()" link="draw.html#grx-draw-framed-box"/>
     <keyword type="function" name="grx_draw_filled_circle ()" link="draw.html#grx-draw-filled-circle"/>
     <keyword type="function" name="grx_draw_filled_ellipse ()" link="draw.html#grx-draw-filled-ellipse"/>
@@ -223,48 +224,38 @@
     <keyword type="function" name="grx_draw_polyline_with_options ()" link="wideline.html#grx-draw-polyline-with-options"/>
     <keyword type="function" name="grx_draw_polygon_with_options ()" link="wideline.html#grx-draw-polygon-with-options"/>
     <keyword type="struct" name="GrxLineOptions" link="wideline.html#GrxLineOptions"/>
-    <keyword type="function" name="grx_pattern_new_pixmap ()" link="pattern.html#grx-pattern-new-pixmap"/>
-    <keyword type="function" name="grx_pattern_new_pixmap_from_bits ()" link="pattern.html#grx-pattern-new-pixmap-from-bits"/>
-    <keyword type="function" name="grx_pattern_new_pixmap_from_context ()" link="pattern.html#grx-pattern-new-pixmap-from-context"/>
-    <keyword type="function" name="grx_pattern_copy ()" link="pattern.html#grx-pattern-copy"/>
-    <keyword type="function" name="grx_pattern_free ()" link="pattern.html#grx-pattern-free"/>
-    <keyword type="function" name="grx_draw_line_with_pattern ()" link="pattern.html#grx-draw-line-with-pattern"/>
-    <keyword type="function" name="grx_draw_box_with_pattern ()" link="pattern.html#grx-draw-box-with-pattern"/>
-    <keyword type="function" name="grx_draw_circle_with_pattern ()" link="pattern.html#grx-draw-circle-with-pattern"/>
-    <keyword type="function" name="grx_draw_ellipse_with_pattern ()" link="pattern.html#grx-draw-ellipse-with-pattern"/>
-    <keyword type="function" name="grx_draw_circle_arc_with_pattern ()" link="pattern.html#grx-draw-circle-arc-with-pattern"/>
-    <keyword type="function" name="grx_draw_ellipse_arc_with_pattern ()" link="pattern.html#grx-draw-ellipse-arc-with-pattern"/>
-    <keyword type="function" name="grx_draw_polyline_with_pattern ()" link="pattern.html#grx-draw-polyline-with-pattern"/>
-    <keyword type="function" name="grx_draw_polygon_with_pattern ()" link="pattern.html#grx-draw-polygon-with-pattern"/>
-    <keyword type="function" name="grx_draw_filled_pixel_with_pattern ()" link="pattern.html#grx-draw-filled-pixel-with-pattern"/>
-    <keyword type="function" name="grx_draw_filled_line_with_pattern ()" link="pattern.html#grx-draw-filled-line-with-pattern"/>
-    <keyword type="function" name="grx_draw_filled_box_with_pattern ()" link="pattern.html#grx-draw-filled-box-with-pattern"/>
-    <keyword type="function" name="grx_draw_filled_circle_with_pattern ()" link="pattern.html#grx-draw-filled-circle-with-pattern"/>
-    <keyword type="function" name="grx_draw_filled_ellipse_with_pattern ()" link="pattern.html#grx-draw-filled-ellipse-with-pattern"/>
-    <keyword type="function" name="grx_draw_filled_circle_arc_with_pattern ()" link="pattern.html#grx-draw-filled-circle-arc-with-pattern"/>
-    <keyword type="function" name="grx_draw_filled_ellipse_arc_with_pattern ()" link="pattern.html#grx-draw-filled-ellipse-arc-with-pattern"/>
-    <keyword type="function" name="grx_draw_filled_polygon_with_pattern ()" link="pattern.html#grx-draw-filled-polygon-with-pattern"/>
-    <keyword type="function" name="grx_draw_filled_convex_polygon_with_pattern ()" link="pattern.html#grx-draw-filled-convex-polygon-with-pattern"/>
-    <keyword type="function" name="grx_flood_fill_with_pattern ()" link="pattern.html#grx-flood-fill-with-pattern"/>
-    <keyword type="struct" name="GrxBitmap" link="pattern.html#GrxBitmap"/>
-    <keyword type="struct" name="GrxPixmap" link="pattern.html#GrxPixmap"/>
-    <keyword type="union" name="GrxPattern" link="pattern.html#GrxPattern-union"/>
-    <keyword type="struct" name="GrxLinePattern" link="pattern.html#GrxLinePattern"/>
-    <keyword type="function" name="grx_image_new ()" link="image.html#grx-image-new"/>
-    <keyword type="function" name="grx_image_new_from_context ()" link="image.html#grx-image-new-from-context"/>
-    <keyword type="function" name="grx_image_copy ()" link="image.html#grx-image-copy"/>
-    <keyword type="function" name="grx_image_free ()" link="image.html#grx-image-free"/>
-    <keyword type="function" name="grx_image_mirror ()" link="image.html#grx-image-mirror"/>
-    <keyword type="function" name="grx_image_stretch ()" link="image.html#grx-image-stretch"/>
-    <keyword type="function" name="grx_image_as_pattern ()" link="image.html#grx-image-as-pattern"/>
-    <keyword type="function" name="grx_pattern_as_image ()" link="image.html#grx-pattern-as-image"/>
-    <keyword type="function" name="grx_draw_image ()" link="image.html#grx-draw-image"/>
-    <keyword type="function" name="grx_draw_image_tiled ()" link="image.html#grx-draw-image-tiled"/>
-    <keyword type="function" name="grx_draw_filled_box_with_image ()" link="image.html#grx-draw-filled-box-with-image"/>
-    <keyword type="function" name="grx_draw_hline_with_image ()" link="image.html#grx-draw-hline-with-image"/>
-    <keyword type="function" name="grx_draw_pixel_with_image ()" link="image.html#grx-draw-pixel-with-image"/>
-    <keyword type="typedef" name="GrxImage" link="image.html#GrxImage"/>
-    <keyword type="enum" name="enum GrxImageMirrorFlags" link="image.html#GrxImageMirrorFlags"/>
+    <keyword type="function" name="grx_pixmap_new ()" link="pixmap.html#grx-pixmap-new"/>
+    <keyword type="function" name="grx_pixmap_new_from_bits ()" link="pixmap.html#grx-pixmap-new-from-bits"/>
+    <keyword type="function" name="grx_pixmap_new_from_context ()" link="pixmap.html#grx-pixmap-new-from-context"/>
+    <keyword type="function" name="grx_pixmap_copy ()" link="pixmap.html#grx-pixmap-copy"/>
+    <keyword type="function" name="grx_pixmap_free ()" link="pixmap.html#grx-pixmap-free"/>
+    <keyword type="function" name="grx_pixmap_mirror ()" link="pixmap.html#grx-pixmap-mirror"/>
+    <keyword type="function" name="grx_pixmap_stretch ()" link="pixmap.html#grx-pixmap-stretch"/>
+    <keyword type="function" name="grx_draw_pixmap ()" link="pixmap.html#grx-draw-pixmap"/>
+    <keyword type="function" name="grx_draw_pixmap_tiled ()" link="pixmap.html#grx-draw-pixmap-tiled"/>
+    <keyword type="function" name="grx_draw_line_with_pixmap ()" link="pixmap.html#grx-draw-line-with-pixmap"/>
+    <keyword type="function" name="grx_draw_hline_with_pixmap ()" link="pixmap.html#grx-draw-hline-with-pixmap"/>
+    <keyword type="function" name="grx_draw_pixel_with_pixmap ()" link="pixmap.html#grx-draw-pixel-with-pixmap"/>
+    <keyword type="function" name="grx_draw_box_with_pixmap ()" link="pixmap.html#grx-draw-box-with-pixmap"/>
+    <keyword type="function" name="grx_draw_circle_with_pixmap ()" link="pixmap.html#grx-draw-circle-with-pixmap"/>
+    <keyword type="function" name="grx_draw_ellipse_with_pixmap ()" link="pixmap.html#grx-draw-ellipse-with-pixmap"/>
+    <keyword type="function" name="grx_draw_circle_arc_with_pixmap ()" link="pixmap.html#grx-draw-circle-arc-with-pixmap"/>
+    <keyword type="function" name="grx_draw_ellipse_arc_with_pixmap ()" link="pixmap.html#grx-draw-ellipse-arc-with-pixmap"/>
+    <keyword type="function" name="grx_draw_polyline_with_pixmap ()" link="pixmap.html#grx-draw-polyline-with-pixmap"/>
+    <keyword type="function" name="grx_draw_polygon_with_pixmap ()" link="pixmap.html#grx-draw-polygon-with-pixmap"/>
+    <keyword type="function" name="grx_draw_filled_pixel_with_pixmap ()" link="pixmap.html#grx-draw-filled-pixel-with-pixmap"/>
+    <keyword type="function" name="grx_draw_filled_line_with_pixmap ()" link="pixmap.html#grx-draw-filled-line-with-pixmap"/>
+    <keyword type="function" name="grx_draw_filled_box_with_pixmap ()" link="pixmap.html#grx-draw-filled-box-with-pixmap"/>
+    <keyword type="function" name="grx_draw_filled_box_with_offset_pixmap ()" link="pixmap.html#grx-draw-filled-box-with-offset-pixmap"/>
+    <keyword type="function" name="grx_draw_filled_circle_with_pixmap ()" link="pixmap.html#grx-draw-filled-circle-with-pixmap"/>
+    <keyword type="function" name="grx_draw_filled_ellipse_with_pixmap ()" link="pixmap.html#grx-draw-filled-ellipse-with-pixmap"/>
+    <keyword type="function" name="grx_draw_filled_circle_arc_with_pixmap ()" link="pixmap.html#grx-draw-filled-circle-arc-with-pixmap"/>
+    <keyword type="function" name="grx_draw_filled_ellipse_arc_with_pixmap ()" link="pixmap.html#grx-draw-filled-ellipse-arc-with-pixmap"/>
+    <keyword type="function" name="grx_draw_filled_polygon_with_pixmap ()" link="pixmap.html#grx-draw-filled-polygon-with-pixmap"/>
+    <keyword type="function" name="grx_draw_filled_convex_polygon_with_pixmap ()" link="pixmap.html#grx-draw-filled-convex-polygon-with-pixmap"/>
+    <keyword type="function" name="grx_flood_fill_with_pixmap ()" link="pixmap.html#grx-flood-fill-with-pixmap"/>
+    <keyword type="enum" name="enum GrxPixmapMirrorFlags" link="pixmap.html#GrxPixmapMirrorFlags"/>
+    <keyword type="struct" name="GrxPixmap" link="pixmap.html#GrxPixmap-struct"/>
     <keyword type="function" name="grx_font_load_from_file ()" link="text.html#grx-font-load-from-file"/>
     <keyword type="function" name="grx_font_load_full ()" link="text.html#grx-font-load-full"/>
     <keyword type="function" name="grx_font_load ()" link="text.html#grx-font-load"/>
@@ -335,24 +326,24 @@
     <keyword type="function" name="grx_user_draw_ellipse_arc_with_options ()" link="user.html#grx-user-draw-ellipse-arc-with-options"/>
     <keyword type="function" name="grx_user_draw_polyline_with_options ()" link="user.html#grx-user-draw-polyline-with-options"/>
     <keyword type="function" name="grx_user_draw_polygon_with_options ()" link="user.html#grx-user-draw-polygon-with-options"/>
-    <keyword type="function" name="grx_user_draw_line_with_pattern ()" link="user.html#grx-user-draw-line-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_box_with_pattern ()" link="user.html#grx-user-draw-box-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_circle_with_pattern ()" link="user.html#grx-user-draw-circle-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_ellipse_with_pattern ()" link="user.html#grx-user-draw-ellipse-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_circle_arc_with_pattern ()" link="user.html#grx-user-draw-circle-arc-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_ellipse_arc_with_pattern ()" link="user.html#grx-user-draw-ellipse-arc-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_polyline_with_pattern ()" link="user.html#grx-user-draw-polyline-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_polygon_with_pattern ()" link="user.html#grx-user-draw-polygon-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_filled_pixel_with_pattern ()" link="user.html#grx-user-draw-filled-pixel-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_filled_line_with_pattern ()" link="user.html#grx-user-draw-filled-line-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_filled_box_with_pattern ()" link="user.html#grx-user-draw-filled-box-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_filled_circle_with_pattern ()" link="user.html#grx-user-draw-filled-circle-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_filled_ellipse_with_pattern ()" link="user.html#grx-user-draw-filled-ellipse-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_filled_circle_arc_with_pattern ()" link="user.html#grx-user-draw-filled-circle-arc-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_filled_ellipse_arc_with_pattern ()" link="user.html#grx-user-draw-filled-ellipse-arc-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_filled_polygon_with_pattern ()" link="user.html#grx-user-draw-filled-polygon-with-pattern"/>
-    <keyword type="function" name="grx_user_draw_filled_convex_polygon_with_pattern ()" link="user.html#grx-user-draw-filled-convex-polygon-with-pattern"/>
-    <keyword type="function" name="grx_user_flood_fill_with_pattern ()" link="user.html#grx-user-flood-fill-with-pattern"/>
+    <keyword type="function" name="grx_user_draw_line_with_pixmap ()" link="user.html#grx-user-draw-line-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_box_with_pixmap ()" link="user.html#grx-user-draw-box-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_circle_with_pixmap ()" link="user.html#grx-user-draw-circle-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_ellipse_with_pixmap ()" link="user.html#grx-user-draw-ellipse-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_circle_arc_with_pixmap ()" link="user.html#grx-user-draw-circle-arc-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_ellipse_arc_with_pixmap ()" link="user.html#grx-user-draw-ellipse-arc-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_polyline_with_pixmap ()" link="user.html#grx-user-draw-polyline-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_polygon_with_pixmap ()" link="user.html#grx-user-draw-polygon-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_filled_pixel_with_pixmap ()" link="user.html#grx-user-draw-filled-pixel-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_filled_line_with_pixmap ()" link="user.html#grx-user-draw-filled-line-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_filled_box_with_pixmap ()" link="user.html#grx-user-draw-filled-box-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_filled_circle_with_pixmap ()" link="user.html#grx-user-draw-filled-circle-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_filled_ellipse_with_pixmap ()" link="user.html#grx-user-draw-filled-ellipse-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_filled_circle_arc_with_pixmap ()" link="user.html#grx-user-draw-filled-circle-arc-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_filled_ellipse_arc_with_pixmap ()" link="user.html#grx-user-draw-filled-ellipse-arc-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_filled_polygon_with_pixmap ()" link="user.html#grx-user-draw-filled-polygon-with-pixmap"/>
+    <keyword type="function" name="grx_user_draw_filled_convex_polygon_with_pixmap ()" link="user.html#grx-user-draw-filled-convex-polygon-with-pixmap"/>
+    <keyword type="function" name="grx_user_flood_fill_with_pixmap ()" link="user.html#grx-user-flood-fill-with-pixmap"/>
     <keyword type="function" name="grx_user_draw_text ()" link="user.html#grx-user-draw-text"/>
     <keyword type="function" name="grx_event_new ()" link="events.html#grx-event-new"/>
     <keyword type="function" name="grx_events_pending ()" link="events.html#grx-events-pending"/>
@@ -523,8 +514,8 @@
     <keyword type="constant" name="GRX_ARC_STYLE_OPEN" link="draw.html#GRX-ARC-STYLE-OPEN:CAPS"/>
     <keyword type="constant" name="GRX_ARC_STYLE_CLOSED_CHORD" link="draw.html#GRX-ARC-STYLE-CLOSED-CHORD:CAPS"/>
     <keyword type="constant" name="GRX_ARC_STYLE_CLOSED_RADIUS" link="draw.html#GRX-ARC-STYLE-CLOSED-RADIUS:CAPS"/>
-    <keyword type="constant" name="GRX_IMAGE_MIRROR_HORIZONTAL" link="image.html#GRX-IMAGE-MIRROR-HORIZONTAL:CAPS"/>
-    <keyword type="constant" name="GRX_IMAGE_MIRROR_VERTICAL" link="image.html#GRX-IMAGE-MIRROR-VERTICAL:CAPS"/>
+    <keyword type="constant" name="GRX_PIXMAP_MIRROR_HORIZONTAL" link="pixmap.html#GRX-PIXMAP-MIRROR-HORIZONTAL:CAPS"/>
+    <keyword type="constant" name="GRX_PIXMAP_MIRROR_VERTICAL" link="pixmap.html#GRX-PIXMAP-MIRROR-VERTICAL:CAPS"/>
     <keyword type="constant" name="GRX_FONT_WEIGHT_REGULAR" link="text.html#GRX-FONT-WEIGHT-REGULAR:CAPS"/>
     <keyword type="constant" name="GRX_FONT_WEIGHT_BOLD" link="text.html#GRX-FONT-WEIGHT-BOLD:CAPS"/>
     <keyword type="constant" name="GRX_FONT_SLANT_REGULAR" link="text.html#GRX-FONT-SLANT-REGULAR:CAPS"/>
@@ -2986,20 +2977,14 @@
     <keyword type="member" name="GrxLineOptions.color" link="wideline.html#GrxLineOptions.color"/>
     <keyword type="member" name="GrxLineOptions.width" link="wideline.html#GrxLineOptions.width"/>
     <keyword type="member" name="GrxLineOptions.n-dash-patterns" link="wideline.html#GrxLineOptions.n-dash-patterns"/>
-    <keyword type="member" name="GrxLineOptions.dash-patterns" link="wideline.html#GrxLineOptions.dash-patterns"/>
-    <keyword type="member" name="GrxBitmap.is-pixmap" link="pattern.html#GrxBitmap.is-pixmap"/>
-    <keyword type="member" name="GrxBitmap.height" link="pattern.html#GrxBitmap.height"/>
-    <keyword type="member" name="GrxBitmap.data" link="pattern.html#GrxBitmap.data"/>
-    <keyword type="member" name="GrxBitmap.fg-color" link="pattern.html#GrxBitmap.fg-color"/>
-    <keyword type="member" name="GrxBitmap.bg-color" link="pattern.html#GrxBitmap.bg-color"/>
-    <keyword type="member" name="GrxBitmap.free-on-pattern-destroy" link="pattern.html#GrxBitmap.free-on-pattern-destroy"/>
-    <keyword type="member" name="GrxPixmap.is-pixmap" link="pattern.html#GrxPixmap.is-pixmap"/>
-    <keyword type="member" name="GrxPixmap.width" link="pattern.html#GrxPixmap.width"/>
-    <keyword type="member" name="GrxPixmap.height" link="pattern.html#GrxPixmap.height"/>
-    <keyword type="member" name="GrxPixmap.mode" link="pattern.html#GrxPixmap.mode"/>
-    <keyword type="member" name="GrxPixmap.source" link="pattern.html#GrxPixmap.source"/>
-    <keyword type="member" name="GrxLinePattern.pattern" link="pattern.html#GrxLinePattern.pattern"/>
-    <keyword type="member" name="GrxLinePattern.options" link="pattern.html#GrxLinePattern.options"/>
+    <keyword type="member" name="GrxLineOptions.dash-pattern0" link="wideline.html#GrxLineOptions.dash-pattern0"/>
+    <keyword type="member" name="GrxLineOptions.dash-pattern1" link="wideline.html#GrxLineOptions.dash-pattern1"/>
+    <keyword type="member" name="GrxLineOptions.dash-pattern2" link="wideline.html#GrxLineOptions.dash-pattern2"/>
+    <keyword type="member" name="GrxLineOptions.dash-pattern3" link="wideline.html#GrxLineOptions.dash-pattern3"/>
+    <keyword type="member" name="GrxLineOptions.dash-pattern4" link="wideline.html#GrxLineOptions.dash-pattern4"/>
+    <keyword type="member" name="GrxLineOptions.dash-pattern5" link="wideline.html#GrxLineOptions.dash-pattern5"/>
+    <keyword type="member" name="GrxLineOptions.dash-pattern6" link="wideline.html#GrxLineOptions.dash-pattern6"/>
+    <keyword type="member" name="GrxLineOptions.dash-pattern7" link="wideline.html#GrxLineOptions.dash-pattern7"/>
     <keyword type="member" name="GrxKeyEvent.type" link="events.html#GrxKeyEvent.type"/>
     <keyword type="member" name="GrxKeyEvent.keysym" link="events.html#GrxKeyEvent.keysym"/>
     <keyword type="member" name="GrxKeyEvent.unichar" link="events.html#GrxKeyEvent.unichar"/>
