@@ -58,7 +58,8 @@ Section: doc
 Architecture: all
 Multi-Arch: foreign
 Depends: ${misc:Depends}
-Suggests: devhelp
+Recommends: libglib2.0-doc
+Suggests: devhelp, yelp
 Description: 2D graphics library
  A simple 2D graphics library similar to the old Borland Graphics Interface
  (BGI).
