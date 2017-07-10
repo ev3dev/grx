@@ -25,3 +25,9 @@ foreach (FILE_NAME ${PROGRAMS})
     )
     install (PROGRAMS ${FILE_NAME} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/javascript)
 endforeach (FILE_NAME ${PROGRAMS})
+
+set (MODULES
+    demo.js
+)
+
+install (FILES ${MODULES} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/javascript)
