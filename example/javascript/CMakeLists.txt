@@ -1,6 +1,7 @@
 
 set (PROGRAMS
     boxes.js
+    circles.js
     fonts.js
     intl.js
     life.js
