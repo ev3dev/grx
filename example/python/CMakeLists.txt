@@ -2,6 +2,7 @@
 set (PROGRAMS
     boxes.py
     circles.py
+    ellipses.py
     fonts.py
     input.py
     intl.py

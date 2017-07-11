@@ -2,6 +2,7 @@
 set (PROGRAMS
     boxes.js
     circles.js
+    ellipses.js
     fonts.js
     intl.js
     life.js

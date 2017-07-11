@@ -59,6 +59,7 @@ endmacro ()
 
 add_demo (boxes SIMPLE)
 add_demo (circles SIMPLE)
+add_demo (ellipses SIMPLE)
 add_demo (life)
 add_demo (lines SIMPLE)
 add_demo (pixels SIMPLE)
