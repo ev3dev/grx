@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# lines.py - Draws random lines
+# lines.py - Draws lines
 #
 # Copyright (c) 2017 David Lechner <david@lechnology.com>
 # This file is part of the GRX graphics library.
@@ -17,9 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-
-
-import random
 
 import gi
 gi.require_version('GLib', '2.0')

@@ -1,6 +1,6 @@
 #!/usr/bin/env gjs
 
-// lines.js - Draws random lines
+// lines.js - Draws lines
 //
 // Copyright (c) 2017 David Lechner <david@lechnology.com>
 // This file is part of the GRX graphics library.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# pixels.py - Draws random pixels
+# pixels.py - Draws pixels
 #
 # Copyright (c) 2017 David Lechner <david@lechnology.com>
 # This file is part of the GRX graphics library.
@@ -17,8 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-
-import time
 
 import gi
 gi.require_version('GLib', '2.0')

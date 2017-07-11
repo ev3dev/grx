@@ -18,7 +18,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-import random
 from collections import OrderedDict
 
 import gi

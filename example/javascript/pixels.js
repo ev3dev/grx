@@ -1,6 +1,6 @@
 #!/usr/bin/env gjs
 
-// pixels.js - Draws random pixels
+// pixels.js - Draws pixels
 //
 // Copyright (c) 2017 David Lechner <david@lechnology.com>
 // This file is part of the GRX graphics library.
