@@ -39,7 +39,7 @@ function activate() {
 
         // draw a band with pixels from a pixmap
         for (let y = 40; y < 60; y += 2) {
-            Grx.draw_pixel_with_pixmap(x + y % 3, y, smile);
+            Grx.draw_filled_pixel_with_pixmap(x + y % 3, y, smile);
         }
 
         // draw a band with pixels from a pixmap, but offset this time

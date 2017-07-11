@@ -145,11 +145,11 @@ static void drawpf( int border, GrxPixmap *pat )
   grx_draw_filled_ellipse_arc_with_pixmap( 139+border,139+border,45,35,-700,400,
                              GRX_ARC_STYLE_CLOSED_RADIUS,pat );
   grx_draw_filled_line_with_pixmap( 188+border,139+border,278+border,139+border,pat );
-  grx_draw_pixel_with_pixmap( 47+border,228+border,pat );
-  grx_draw_pixel_with_pixmap( 47+border,229+border,pat );
-  grx_draw_pixel_with_pixmap( 47+border,230+border,pat );
-  grx_draw_pixel_with_pixmap( 47+border,231+border,pat );
-  grx_draw_pixel_with_pixmap( 47+border,232+border,pat );
+  grx_draw_filled_pixel_with_pixmap( 47+border,228+border,pat );
+  grx_draw_filled_pixel_with_pixmap( 47+border,229+border,pat );
+  grx_draw_filled_pixel_with_pixmap( 47+border,230+border,pat );
+  grx_draw_filled_pixel_with_pixmap( 47+border,231+border,pat );
+  grx_draw_filled_pixel_with_pixmap( 47+border,232+border,pat );
   for( i=0; i<4; i++ ) {
     ptaux[i].x = pt1[i].x + border;
     ptaux[i].y = pt1[i].y + border;

@@ -38,7 +38,7 @@ void _GrPatternFilledPlot(int x,int y,GrxPixmap *p)
 }
 
 /**
- * grx_draw_pixel_with_pixmap:
+ * grx_draw_filled_pixel_with_pixmap:
  * @x: the X coordinate
  * @y: the Y coordinate
  * @p: the pixmap
@@ -48,7 +48,7 @@ void _GrPatternFilledPlot(int x,int y,GrxPixmap *p)
  * The color of the pixel comes from the pixmap as if @p was tiled over the
  * entrire context starting with the top/left of the pixmap at 0, 0.
  */
-void grx_draw_pixel_with_pixmap(int x,int y,GrxPixmap *p)
+void grx_draw_filled_pixel_with_pixmap(int x,int y,GrxPixmap *p)
 {
         clip_dot(CURC,x,y);
         mouse_block(CURC,x,y,x,y);

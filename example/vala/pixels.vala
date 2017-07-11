@@ -33,7 +33,7 @@ static void activate () {
 
         // draw a band with pixels from a pixmap
         for (var y = 40; y < 60; y += 2) {
-            draw_pixel_with_pixmap (x + y % 3, y, smile);
+            draw_filled_pixel_with_pixmap (x + y % 3, y, smile);
         }
 
         // draw a band with pixels from a pixmap, but offset this time

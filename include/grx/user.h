@@ -105,7 +105,7 @@ void grx_user_draw_ellipse_arc_with_pixmap(gint xc, gint yc, gint rx, gint ry, g
 void grx_user_draw_polyline_with_pixmap(gint n_points, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p);
 void grx_user_draw_polygon_with_pixmap(gint n_points, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p);
 
-void grx_user_draw_pixel_with_pixmap(gint x, gint y, GrxPixmap *p);
+void grx_user_draw_filled_pixel_with_pixmap(gint x, gint y, GrxPixmap *p);
 void grx_user_draw_filled_line_with_pixmap(gint x1, gint y1, gint x2, gint y2, GrxPixmap *p);
 void grx_user_draw_filled_box_with_pixmap(gint x1, gint y1, gint x2, int y2, GrxPixmap *p);
 void grx_user_draw_filled_circle_with_pixmap(gint xc, gint yc, gint r, GrxPixmap *p);

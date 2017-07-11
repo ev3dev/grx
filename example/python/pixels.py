@@ -42,7 +42,7 @@ def activate(app):
 
         # draw a band with pixels from a pixmap
         for y in range(40, 60, 2):
-            Grx.draw_pixel_with_pixmap(x + y % 3, y, smile)
+            Grx.draw_filled_pixel_with_pixmap(x + y % 3, y, smile)
 
         # draw a band with pixels from a pixmap, but offset this time
         for y in range(70, 90, 2):
