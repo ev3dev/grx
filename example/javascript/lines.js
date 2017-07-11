@@ -25,18 +25,62 @@ const Lang = imports.lang;
 
 const Demo = imports.demo;
 
-const BOUNDS = 200; // How far out of bounds to draw lines
-const COUNT = 1000; // number of lines to draw
-
 function activate() {
+    const max_x = Grx.get_max_x();
+    const max_y = Grx.get_max_y();
     const colors = Grx.color_get_ega_colors();
-    for (let n = 0; n < COUNT; n++) {
-        const x1 = Math.random() * (Grx.get_max_x() + (BOUNDS * 2)) - BOUNDS;
-        const y1 = Math.random() * (Grx.get_max_y() + (BOUNDS * 2)) - BOUNDS;
-        const x2 = Math.random() * (Grx.get_max_x() + (BOUNDS * 2)) - BOUNDS;
-        const y2 = Math.random() * (Grx.get_max_y() + (BOUNDS * 2)) - BOUNDS;
-        const c = colors[Math.floor(Math.random() * 16)];
-        Grx.draw_line(x1, y1, x2, y2, c);
+
+    // draw some horizontal lines
+    for (let y = 10; y < 20; y++) {
+        Grx.draw_hline(0, max_x, y, colors[y % 16]);
+    }
+
+    // and some vertical lines
+    for (let x = 10; x < 20; x++) {
+        Grx.draw_vline(x, 0, max_y, colors[x % 16]);
+    }
+
+    // and angled lines
+    for (let x = 30; x < 40; x++) {
+        Grx.draw_line(20, x, x, 20, colors[x % 16]);
+    }
+
+    // then two connected lines at right angles
+    for (let x = 50; x < 60; x++) {
+        let p0 = new Grx.Point();
+        [p0.x, p0.y] = [20, x];
+        let p1 = new Grx.Point();
+        [p1.x, p1.y] = [x, x];
+        let p2 = new Grx.Point();
+        [p2.x, p2.y] = [x, 20];
+        // FIXME: there seems to be a gjs bug that prevents this from actually
+        // drawing something
+        Grx.draw_polyline([p0, p1, p2], colors[x % 16]);
+    }
+
+    // try out line options
+    let line_opt = new Grx.LineOptions();
+    line_opt.color = Grx.color_get_white();
+    line_opt.width = 3;
+    line_opt.n_dash_patterns = 3;
+    line_opt.dash_pattern0 = 3;
+    line_opt.dash_pattern1 = 6;
+    Grx.draw_line_with_options(70, 30, 110, 30, line_opt);
+    // FIXME: gjs array bug - this crashes
+    // let points = Grx.generate_points([
+    //     70, 40,
+    //     90, 40,
+    //     90, 50,
+    //     110, 50
+    // ]);
+    // Grx.draw_polyline_with_options(points, line_opt);
+
+    // and pixmaps
+    let checker = Demo.get_checkerboard_pixmap();
+    let line_opt0 = new Grx.LineOptions();
+    Grx.draw_line_with_pixmap(70, 60, 110, 60, line_opt0, checker);
+    for (let y = 65; y < 70; y ++) {
+        Grx.draw_hline_with_offset_pixmap(y, 0, 70, y, 40, checker);
     }
 }
 

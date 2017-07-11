@@ -32,6 +32,7 @@ macro (add_demo name)
 
     add_executable (vala-${name} ${${name}C})
     set_property (TARGET vala-${name} PROPERTY OUTPUT_NAME ${name})
+    target_compile_options (vala-${name} PRIVATE "-w")
     target_include_directories (vala-${name} PRIVATE
         ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_BINARY_DIR}/src/include

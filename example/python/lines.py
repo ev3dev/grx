@@ -27,28 +27,62 @@ from gi.repository import GLib
 gi.require_version('Grx', '3.0')
 from gi.repository import Grx
 
-from demo import SimpleDemoApp
-
-BOUNDS = 200
-"""How far out of bounds to draw lines"""
+import demo
 
 
 def activate(app):
-    """called when the application starts
-    overrides Grx.Application.do_activate
-    """
+    max_x = Grx.get_max_x()
+    max_y = Grx.get_max_y()
     colors = Grx.color_get_ega_colors()
-    for _ in range(0, 1000):
-        x1 = random.randint(-BOUNDS, Grx.get_max_x() + BOUNDS)
-        y1 = random.randint(-BOUNDS, Grx.get_max_y() + BOUNDS)
-        x2 = random.randint(-BOUNDS, Grx.get_max_x() + BOUNDS)
-        y2 = random.randint(-BOUNDS, Grx.get_max_y() + BOUNDS)
-        c = colors[random.randint(0, 15)]
-        Grx.draw_line(x1, y1, x2, y2, c)
+
+    # draw some horizontal lines
+    for y in range(10, 20):
+        Grx.draw_hline(0, max_x, y, colors[y % 16])
+
+    # and some vertical lines
+    for x in range(10, 20):
+        Grx.draw_vline(x, 0, max_y, colors[x % 16])
+
+    # and angled lines
+    for x in range(30, 40):
+        Grx.draw_line(20, x, x, 20, colors[x % 16])
+
+    # then two connected lines at right angles
+    for x in range(50, 60):
+        points = Grx.generate_points((
+            20, x,
+            x, x,
+            x, 20
+        ))
+        Grx.draw_polyline(points, colors[x % 16])
+
+    # try out line options
+    line_opt = Grx.LineOptions()
+    line_opt.color = Grx.color_get_white()
+    line_opt.width = 3
+    line_opt.n_dash_patterns = 3
+    line_opt.dash_pattern0 = 3
+    line_opt.dash_pattern1 = 6
+    Grx.draw_line_with_options(70, 30, 110, 30, line_opt)
+    points = Grx.generate_points((
+        70, 40,
+        90, 40,
+        90, 50,
+        110, 50
+    ))
+    Grx.draw_polyline_with_options(points, line_opt)
+
+    # and pixmaps
+    checker = demo.get_checkerboard_pixmap()
+    line_opt0 = Grx.LineOptions()
+    Grx.draw_line_with_pixmap(70, 60, 110, 60, line_opt0, checker)
+    for y in range(65, 70):
+        Grx.draw_hline_with_offset_pixmap(y, 0, 70, y, 40, checker)
+
 
 if __name__ == '__main__':
     GLib.set_prgname('lines.py')
     GLib.set_application_name('GRX3 Line Drawing Demo')
-    app = SimpleDemoApp()
+    app = demo.SimpleDemoApp()
     app.connect('activate', activate)
     app.run()

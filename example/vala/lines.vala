@@ -19,20 +19,57 @@
 
 using Grx;
 
-const int BOUNDS = 200; // How far out of bounds to draw lines
-const int COUNT = 1000; // number of lines to draw
-
 static void activate () {
+    var max_x = get_max_x ();
+    var max_y = get_max_y ();
     unowned Color[] colors = Color.get_ega_colors ();
-    var w = get_width ();
-    var h = get_height ();
-    for (var n = 0; n < COUNT; n++) {
-        var x1 = Random.int_range (-BOUNDS, w + BOUNDS);
-        var y1 = Random.int_range (-BOUNDS, h + BOUNDS);
-        var x2 = Random.int_range (-BOUNDS, w + BOUNDS);
-        var y2 = Random.int_range (-BOUNDS, h + BOUNDS);
-        var c = colors[Random.int_range (0, 16)];
-        draw_line (x1, y1, x2, y2, c);
+    
+    // draw some horizontal lines
+    for (var y = 10; y < 20; y++) {
+        draw_hline(0, max_x, y, colors[y % 16]);
+    }
+
+    // and some vertical lines
+    for (var x = 10; x < 20; x++) {
+        draw_vline(x, 0, max_y, colors[x % 16]);
+    }
+
+    // and angled lines
+    for (var x = 30; x < 40; x++) {
+        draw_line(20, x, x, 20, colors[x % 16]);
+    }
+
+    // then two connected lines at right angles
+    for (var x = 50; x < 60; x++) {
+        var p0 = Point() { x = 20, y = x };
+        var p1 = Point() { x = x,  y = x };
+        var p2 = Point() { x = x,  y = 20 };
+        draw_polyline({ p0, p1, p2 }, colors[x % 16]);
+    }
+
+    // try out line options
+    var line_opt = LineOptions () {
+        color = Color.WHITE,
+        width = 3,
+        n_dash_patterns = 3,
+        dash_pattern0 = 3,
+        dash_pattern1 = 6
+    };
+    draw_line_with_options (70, 30, 110, 30, line_opt);
+    const Point[] points = {
+        { 70,  40 },
+        { 90,  40 },
+        { 90,  50 },
+        { 110, 50 }
+    };
+    draw_polyline_with_options (points, line_opt);
+
+    // and pixmaps
+    var checker = get_checkerboard_pixmap ();
+    var line_opt0 = LineOptions ();
+    draw_line_with_pixmap (70, 60, 110, 60, line_opt0, checker);
+    for (var y = 65; y < 70; y ++) {
+        draw_hline_with_offset_pixmap (y, 0, 70, y, 40, checker);
     }
 }
 

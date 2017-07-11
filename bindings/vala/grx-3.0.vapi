@@ -461,7 +461,7 @@ namespace Grx {
     public void draw_filled_ellipse (int xc, int yc, int rx, int ry, Color c);
     public void draw_filled_circle_arc (int xc, int yc, int r, int start, int end, ArcStyle style, Color c);
     public void draw_filled_ellipse_arc (int xc, int yc, int rx, int ry, int start, int end, ArcStyle style, Color c);
-    public void draw_poly_line ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
+    public void draw_polyline ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
     public void draw_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
     public void draw_filled_convex_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
     public void draw_filled_polygon ([CCode (array_length_pos = 0.9)]Point[] points, Color c);
