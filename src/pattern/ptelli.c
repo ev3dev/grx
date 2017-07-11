@@ -45,17 +45,12 @@
  */
 void grx_draw_ellipse_with_pixmap (int xc, int yc, int rx, int ry, GrxLineOptions *o, GrxPixmap *p)
 {
-    GrxPoint *points;
-    setup_ALLOC ();
-    points = ALLOC (sizeof(GrxPoint) * GRX_MAX_ELLIPSE_POINTS);
-    if (points)
-    {
-        int numpts = grx_generate_ellipse (xc, yc, rx, ry, points);
-        GrFillArg fval;
+    GArray *points;
 
-        fval.p = p;
-        _GrDrawCustomPolygon (numpts, points, o, &_GrPatternFiller, fval, TRUE, TRUE);
-        FREE (points);
-    }
-    reset_ALLOC ();
+    points = grx_generate_ellipse (xc, yc, rx, ry);
+    GrFillArg fval;
+
+    fval.p = p;
+    _GrDrawCustomPolygon (points->len, (GrxPoint *)points->data, o, &_GrPatternFiller, fval, TRUE, TRUE);
+    g_array_unref (points);
 }

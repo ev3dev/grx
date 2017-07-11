@@ -45,13 +45,16 @@ void _GrScanEllipse(int xc,int yc,int rx,int ry,GrFiller *f,GrFillArg c,int fill
             c
         );
         else if((rx > MAXR) || (ry > MAXR)) {   /* Bresenham would overflow !! */
-            GrxPoint *points = ALLOC(sizeof(GrxPoint) * GRX_MAX_ELLIPSE_POINTS);
-            if(points != NULL) {
-                int count = grx_generate_ellipse(xc,yc,rx,ry,points);
-                if(filled) _GrScanConvexPoly(count,points,f,c);
-                else       _GrDrawPolygon(count,points,f,c,TRUE);
-                FREE(points);
+            GArray *points;
+            
+            points = grx_generate_ellipse(xc, yc, rx, ry);
+            if (filled) {
+                _GrScanConvexPoly(points->len, (GrxPoint *)points->data, f, c);
             }
+            else {
+                _GrDrawPolygon(points->len, (GrxPoint *)points->data, f, c, TRUE);
+            }
+            g_array_unref(points);
         }
         else {
             int *scans = ALLOC(sizeof(int) * (ry + 1));

@@ -399,9 +399,6 @@ namespace Grx {
         UNDERLINE_TEXT
     }
 
-    public const int MAX_POLYGON_POINTS;
-    public const int MAX_ELLIPSE_POINTS;
-
     [CCode (has_type_id = false)]
     public enum ArcStyle {
         OPEN,
@@ -416,6 +413,14 @@ namespace Grx {
         public Color border_right;
         public Color border_bottom;
         public Color border_left;
+    }
+
+    [CCode (cname = "GArray", copy_function = "g_array_ref", free_function = "g_array_unref")]
+    [Compact]
+    private class PointArray {
+        public int len;
+        [CCode (cname = "g_array_free", array_length = false)]
+        public Point[] free (bool free_segment = false);
     }
 
     /* ================================================================== */
@@ -435,21 +440,23 @@ namespace Grx {
     public void draw_rounded_box (int x1, int y1, int x2, int y2, int r, Color c);
     public void draw_filled_rounded_box (int x1, int y1, int x2, int y2, int r, Color c);
     [CCode (cname = "grx_generate_ellipse")]
-    private int _generate_ellipse (int xc, int yc, int rx, int ry, [CCode (array_length_cexpr = "MAX_ELLIPSE_POINTS")]Point[] points);
-    [CCode (cname = "vala_generate_ellipse")]
+    private PointArray _generate_ellipse (int xc, int yc, int rx, int ry);
+    [CCode (cname = "vala_grx_generate_ellipse")]
     public Point[] generate_ellipse (int xc, int yc, int rx, int ry) {
-        Point[] points = new Point[MAX_ELLIPSE_POINTS];
-        var length = _generate_ellipse (xc, yc, rx, ry, points);
-        points.length = length;
+        var array = _generate_ellipse (xc, yc, rx, ry);
+        var len = array.len;
+        var points = array.free ();
+        points.length = len;
         return (owned)points;
     }
     [CCode (cname = "grx_generate_ellipse_arc")]
-    private int _generate_ellipse_arc (int xc, int yc, int rx, int ry, int start, int end, [CCode (array_length_cexpr = "MAX_ELLIPSE_POINTS")]Point[] points);
-    [CCode (cname = "vala_generate_ellipse_arc")]
+    private PointArray _generate_ellipse_arc (int xc, int yc, int rx, int ry, int start, int end);
+    [CCode (cname = "vala_grx_generate_ellipse_arc")]
     public Point[] generate_ellipse_arc (int xc, int yc, int rx, int ry, int start, int end) {
-        Point[] points = new Point[MAX_ELLIPSE_POINTS];
-        var length = _generate_ellipse_arc (xc, yc, rx, ry, start, end, points);
-        points.length = length;
+        var array = _generate_ellipse_arc (xc, yc, rx, ry, start, end);
+        var len = array.len;
+        var points = array.free ();
+        points.length = len;
         return (owned)points;
     }
     public void get_last_arc_coordinates (out int xs, out int ys, out int xe, out int ye, out int xc, out int yc);

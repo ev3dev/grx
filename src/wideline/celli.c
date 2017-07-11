@@ -37,16 +37,11 @@
  */
 void grx_draw_ellipse_with_options(int xc,int yc,int rx,int ry,const GrxLineOptions *o)
 {
-    GrxPoint *pnts;
-    setup_ALLOC();
-    pnts = ALLOC(sizeof(GrxPoint) * GRX_MAX_ELLIPSE_POINTS);
-    if (pnts != NULL)
-    {
-        GrFillArg fval;
-        int npts  = grx_generate_ellipse(xc,yc,rx,ry,pnts);
-        fval.color = o->color;
-        _GrDrawCustomPolygon(npts,pnts,o,&_GrSolidFiller,fval,TRUE,TRUE);
-        FREE(pnts);
-    }
-    reset_ALLOC();
+    GArray *points;
+    GrFillArg fval;
+
+    points = grx_generate_ellipse (xc, yc, rx, ry);
+    fval.color = o->color;
+    _GrDrawCustomPolygon (points->len, (GrxPoint *)points->data, o, &_GrSolidFiller, fval, TRUE, TRUE);
+    g_array_unref (points);
 }

@@ -36,20 +36,6 @@
  */
 
 /**
- * GRX_MAX_POLYGON_POINTS:
- *
- * The maximum number of points that can be used for polylines and polygons.
- */
-#define GRX_MAX_POLYGON_POINTS   (1000000)
-
-/**
- * GRX_MAX_ELLIPSE_POINTS:
- *
- * The maximum number of points that can be used for ellipses and circles.
- */
-#define GRX_MAX_ELLIPSE_POINTS   (1024 + 5)
-
-/**
  * GRX_MAX_ANGLE_VALUE:
  *
  * The maximum allowable angle (360 degrees).
@@ -122,8 +108,8 @@ void grx_draw_polyline(gint n_points, GrxPoint *points, GrxColor c);
 void grx_draw_polygon(gint n_points, GrxPoint *points, GrxColor c);
 
 void grx_get_last_arc_coordinates(gint *xs, gint *ys, gint *xe, gint *ye, gint *xc, gint *yc);
-gint grx_generate_ellipse(gint xc, gint yc, gint rx, gint ry, GrxPoint points[GRX_MAX_ELLIPSE_POINTS]);
-gint grx_generate_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end, GrxPoint points[GRX_MAX_ELLIPSE_POINTS]);
+GArray *grx_generate_ellipse(gint xc, gint yc, gint rx, gint ry);
+GArray *grx_generate_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end);
 GArray *grx_generate_points(GArray *coords);
 
 void grx_draw_filled_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);

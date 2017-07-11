@@ -39,28 +39,25 @@
  */
 void grx_draw_ellipse_arc_with_options(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,const GrxLineOptions *o)
 {
-    GrxPoint *pnts;
-    setup_ALLOC();
-    pnts = ALLOC(sizeof(GrxPoint) * (GRX_MAX_ELLIPSE_POINTS+1));
-    if (pnts != NULL)
-    {
-        GrFillArg fval;
-        int npts  = grx_generate_ellipse_arc(xc,yc,rx,ry,start,end,pnts);
-        int close = FALSE;
-        switch(style) {
-          case GRX_ARC_STYLE_OPEN:
-            break;
-          case GRX_ARC_STYLE_CLOSED_RADIUS:
-            pnts[npts].x = xc;
-            pnts[npts].y = yc;
-            npts++;
-          case GRX_ARC_STYLE_CLOSED_CHORD:
-            close = TRUE;
-            break;
-        }
-        fval.color = o->color;
-        _GrDrawCustomPolygon(npts,pnts,o,&_GrSolidFiller,fval,close,TRUE);
-        FREE(pnts);
+    GArray *points;
+    GrFillArg fval;
+    GrxPoint pt;
+    gboolean close = FALSE;
+
+    points = grx_generate_ellipse_arc (xc, yc, rx, ry, start, end);
+    switch (style) {
+    case GRX_ARC_STYLE_OPEN:
+        break;
+    case GRX_ARC_STYLE_CLOSED_RADIUS:
+        pt.x = xc;
+        pt.y = yc;
+        g_array_append_val (points, pt);
+        /* fallthrough */
+    case GRX_ARC_STYLE_CLOSED_CHORD:
+        close = TRUE;
+        break;
     }
-    reset_ALLOC();
+    fval.color = o->color;
+    _GrDrawCustomPolygon (points->len, (GrxPoint *)points->data, o, &_GrSolidFiller, fval, close,TRUE);
+    g_array_unref (points);
 }

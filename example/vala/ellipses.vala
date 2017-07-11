@@ -61,6 +61,10 @@ static void activate () {
     draw_ellipse_with_options (x * 7, y, r1, r2, line_opt);
     draw_ellipse_arc_with_options (x * 7, y * 3, r1, r2, 2250, 1350, ArcStyle.CLOSED_RADIUS, line_opt);
     draw_ellipse_arc_with_pixmap (x * 7, y * 5, r1, r2, 2250, 1350, ArcStyle.CLOSED_RADIUS, line_opt, checker);
+
+    // reusable points
+    var points = generate_ellipse (x * 7, y * 7, r1, r2);
+    draw_polygon (points, white);
 }
 
 static int main (string [] args) {

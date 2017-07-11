@@ -42,23 +42,25 @@
  */
 void grx_draw_filled_ellipse_arc_with_pixmap(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,GrxPixmap *p)
 {
-   GrxPoint *points;
-   setup_ALLOC();
-   points = ALLOC(sizeof(GrxPoint) * (GRX_MAX_ELLIPSE_POINTS + 1));
-   if (points != NULL)
-   {
-      int numpts = grx_generate_ellipse_arc(xc,yc,rx,ry,start,end,points);
-      GrFillArg fa;
+    GArray *points;
+    GrFillArg fa;
 
-      if (style == GRX_ARC_STYLE_CLOSED_RADIUS) {
-              points[numpts].x = xc;
-              points[numpts].y = yc;
-              numpts++;
-      }
-      fa.p = p;
-      if(numpts < 0) _GrScanConvexPoly((-numpts),points,&_GrPatternFiller,fa);
-      else           _GrScanPolygon(     numpts, points,&_GrPatternFiller,fa);
-      FREE(points);
-   }
-   reset_ALLOC();
+    points = grx_generate_ellipse_arc (xc, yc, rx, ry, start, end);
+
+    if (style == GRX_ARC_STYLE_CLOSED_RADIUS) {
+        GrxPoint pt = {
+            .x = xc,
+            .y = yc,
+        };
+        g_array_append_val (points, pt);
+    }
+
+    fa.p = p;
+    if (points->len < 0) {
+        _GrScanConvexPoly (-points->len, (GrxPoint *)points->data, &_GrPatternFiller, fa);
+    }
+    else {
+        _GrScanPolygon (points->len, (GrxPoint *)points->data, &_GrPatternFiller, fa);
+    }
+    g_array_unref (points);
 }

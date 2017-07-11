@@ -90,6 +90,10 @@ def activate(app):
                                      Grx.ArcStyle.CLOSED_RADIUS, line_opt,
                                      checker)
 
+    # reusable points
+    points = Grx.generate_ellipse(x * 7, y * 7, r1, r2)
+    Grx.draw_polygon(points, white)
+
 
 if __name__ == '__main__':
     GLib.set_prgname('ellipses.py')

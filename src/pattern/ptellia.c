@@ -46,35 +46,29 @@
  */
 void grx_draw_ellipse_arc_with_pixmap (int xc, int yc, int rx, int ry, int start, int end, GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p)
 {
-    GrxPoint *points;
+    GArray *points;
+    GrFillArg fval;
+    GrxPoint pt;
+    gboolean close = FALSE;
 
-    setup_ALLOC();
-    points = ALLOC(sizeof(GrxPoint) * (GRX_MAX_ELLIPSE_POINTS + 2));
-    if (points != NULL)
-    {
-        int numpts = grx_generate_ellipse_arc (xc, yc, rx, ry, start, end, points);
-        GrFillArg fval;
-        int close;
+    points = grx_generate_ellipse_arc (xc, yc, rx, ry, start, end);
 
-        close = FALSE;
-        if (style == GRX_ARC_STYLE_CLOSED_RADIUS) {
-                points[numpts].x = xc;
-                points[numpts].y = yc;
-                numpts++;
-                points[numpts].x = points[0].x;
-                points[numpts].y = points[0].y;
-                numpts++;
-                close = TRUE;
-        }
-        if (style == GRX_ARC_STYLE_CLOSED_CHORD) {
-                points[numpts].x = points[0].x;
-                points[numpts].y = points[0].y;
-                numpts++;
-                close = TRUE;
-        }
-        fval.p = p;
-        _GrDrawCustomPolygon (numpts, points, o, &_GrPatternFiller, fval, close, TRUE);
-        FREE(points);
+    switch (style) {
+    case GRX_ARC_STYLE_CLOSED_RADIUS:
+        pt.x = xc;
+        pt.y = yc;
+        g_array_append_val (points, pt);
+        /* fallthough */
+    case GRX_ARC_STYLE_CLOSED_CHORD:
+        pt.x = g_array_index (points, GrxPoint, 0).x;
+        pt.y = g_array_index (points, GrxPoint, 0).y;
+        g_array_append_val (points, pt);
+        close = TRUE;
+        break;
+    default:
+        break;
     }
-    reset_ALLOC();
+    fval.p = p;
+    _GrDrawCustomPolygon (points->len, (GrxPoint *)points->data, o, &_GrPatternFiller, fval, close, TRUE);
+    g_array_unref (points);
 }

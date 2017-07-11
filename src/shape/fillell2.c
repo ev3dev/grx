@@ -38,21 +38,16 @@
  */
 void grx_draw_filled_ellipse_arc(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,GrxColor c)
 {
-    GrxPoint *pnts;
-    setup_ALLOC();
-    pnts = ALLOC(sizeof(GrxPoint) * (GRX_MAX_ELLIPSE_POINTS + 1));
-    if (pnts != NULL)
-    {
-        GrFillArg fval;
-        int npts  = grx_generate_ellipse_arc(xc,yc,rx,ry,start,end,pnts);
-        if(style == GRX_ARC_STYLE_CLOSED_RADIUS) {
-            pnts[npts].x = xc;
-            pnts[npts].y = yc;
-            npts++;
-        }
-        fval.color = c;
-        _GrScanPolygon(npts,pnts,&_GrSolidFiller,fval);
-        FREE(pnts);
+    GArray *points;
+    GrFillArg fval;
+    
+    points = grx_generate_ellipse_arc (xc, yc, rx, ry, start, end);
+    if (style == GRX_ARC_STYLE_CLOSED_RADIUS) {
+        GrxPoint pt = { .x = xc, .y = yc };
+
+        g_array_append_val (points, pt);
     }
-    reset_ALLOC();
+    fval.color = c;
+    _GrScanPolygon (points->len, (GrxPoint *)points->data, &_GrSolidFiller, fval);
+    g_array_unref (points);
 }

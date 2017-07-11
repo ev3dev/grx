@@ -20,7 +20,7 @@
 #include "libgrx.h"
 #include "arith.h"
 
-#define MAXPTS  (GRX_MAX_ELLIPSE_POINTS & (~15))
+#define MAXPTS  1024
 #define SEGLEN  5               /* preferred length of line segments on arc */
 #define TRIGMGN 16384           /* scale factor for sine table */
 #define PERIOD  1024            /* number of points in sine table */
@@ -100,63 +100,74 @@ static void GrSinCos(int n,int cx,int cy,int rx,int ry,GrxPoint *pt)
  * @ry: the radius along the Y axis
  * @start: the starting angle in 1/10ths of degrees
  * @end: the ending angle in 1/10ths of degrees
- * @points: (array fixed-size=1029) (out caller-allocates):
- *      an array that will be filled with the calculated points
  *
- * Fills an array of points with points that describe the arc with the
+ * Creates an array with points that describe the arc with the
  * specified coordinates, radii, and starting and ending angles.
  *
  * These coordinates can be drawn using polyline functions. This is more
  * efficient when drawing the same or similar arcs multiple times.
  *
- * Returns: the number of points actually used.
+ * Returns: (element-type GrxPoint) (transfer full): array containing the calculated points
  */
-int grx_generate_ellipse_arc(int cx,int cy,int rx,int ry,int start,int end,GrxPoint *pt)
+GArray *grx_generate_ellipse_arc(int cx, int cy, int rx, int ry, int start, int end)
 {
-        int npts = urscale((iabs(rx) + iabs(ry)),314,(SEGLEN * 100));
-        int step,closed;
-        start = irscale(start,PERIOD,GRX_MAX_ANGLE_VALUE) & (PERIOD - 1);
-        end   = irscale(end,  PERIOD,GRX_MAX_ANGLE_VALUE) & (PERIOD - 1);
-        if(start == end) {
-            closed = TRUE;
+    GArray *points;
+    GrxPoint pt;
+    int npts = urscale(iabs(rx) + iabs(ry), 314, SEGLEN * 100);
+    int step,closed;
+
+    points = g_array_new(FALSE, FALSE, sizeof(GrxPoint));
+
+    start = irscale(start, PERIOD, GRX_MAX_ANGLE_VALUE) & (PERIOD - 1);
+    end = irscale(end, PERIOD, GRX_MAX_ANGLE_VALUE) & (PERIOD - 1);
+    if (start == end) {
+        closed = TRUE;
+        end += PERIOD;
+    }
+    else {
+        if (start > end) {
             end += PERIOD;
         }
-        else {
-            if(start > end) end += PERIOD;
-            closed = FALSE;
+        closed = FALSE;
+    }
+    npts = urscale(npts, end - start, PERIOD);
+    npts = umax(npts, 16);
+    npts = umin(npts, MAXPTS);
+    if (closed) {
+        for (step = 1; (PERIOD / step) > npts; step <<= 1);
+        end -= step;
+        npts = 0;
+    }
+    else {
+        int start2 = end - start - 1;
+
+        step = umax(1, (end - start) / npts);
+        while (((start2 + step) / step) >= MAXPTS) {
+            step++;
         }
-        npts = urscale(npts,(end - start),PERIOD);
-        npts = umax(npts,16);
-        npts = umin(npts,MAXPTS);
-        if(closed) {
-            for(step = 1; (PERIOD / step) > npts; step <<= 1);
-            end -= step;
-            npts = 0;
-        }
-        else {
-            int start2 = end - start - 1;
-            step = umax(1,((end - start) / npts));
-            while(((start2 + step) / step) >= MAXPTS) step++;
-            start2 = end - (((end - start) / step) * step);
-            npts = 0;
-            if(start2 > start) {
-                GrSinCos(start,cx,cy,rx,ry,&pt[0]);
-                start = start2;
-                npts++;
-            }
-        }
-        while(start <= end) {
-            GrSinCos(start,cx,cy,rx,ry,&pt[npts]);
-            start += step;
+        start2 = end - (((end - start) / step) * step);
+        npts = 0;
+        if (start2 > start) {
+            GrSinCos(start, cx, cy, rx, ry, &pt);
+            g_array_append_val(points, pt);
+            start = start2;
             npts++;
         }
-        last_xc = cx;
-        last_yc = cy;
-        last_xs = pt[0].x;
-        last_ys = pt[0].y;
-        last_xe = pt[npts - 1].x;
-        last_ye = pt[npts - 1].y;
-        return(npts);
+    }
+    while (start <= end) {
+        GrSinCos(start, cx, cy, rx, ry, &pt);
+        g_array_append_val(points, pt);
+        start += step;
+        npts++;
+    }
+    last_xc = cx;
+    last_yc = cy;
+    last_xs = g_array_index(points, GrxPoint, 0).x;
+    last_ys = g_array_index(points, GrxPoint, 0).y;
+    last_xe = g_array_index(points, GrxPoint, npts - 1).x;
+    last_ye = g_array_index(points, GrxPoint, npts - 1).y;
+
+    return points;
 }
 
 /**
@@ -165,21 +176,19 @@ int grx_generate_ellipse_arc(int cx,int cy,int rx,int ry,int start,int end,GrxPo
  * @yc: the center Y coordinate
  * @rx: the radius along the X axis
  * @ry: the radius along the Y axis
- * @points: (array fixed-size=1029) (out caller-allocates):
- *      an array that will be filled with the calculated points
  *
- * Fills an array of points with points that describe the ellipse with the
+ * Creates an array of points that describe the ellipse with the
  * specified coordinates and radii.
  *
  * These coordinates can be drawn using polygon functions. This is more
  * efficient when drawing the same or similar circles and ellipses multiple
  * times.
  *
- * Returns: the number of points actually used.
+ * Returns: (element-type GrxPoint) (transfer full): array containing the calculated points
  */
-int grx_generate_ellipse(int xc,int yc,int rx,int ry,GrxPoint *pt)
+GArray *grx_generate_ellipse(int xc, int yc, int rx, int ry)
 {
-        return(grx_generate_ellipse_arc(xc,yc,rx,ry,0,0,pt));
+    return(grx_generate_ellipse_arc(xc, yc, rx, ry, 0, 0));
 }
 
 /**
