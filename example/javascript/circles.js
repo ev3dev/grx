@@ -57,12 +57,13 @@ function activate() {
     Grx.draw_filled_circle_arc_with_pixmap(x * 5, y * 7, r, 450, 3150, Grx.ArcStyle.CLOSED_RADIUS, checker);
 
     // line options
-    const line_opt = new Grx.LineOptions();
-    line_opt.color = colors[Grx.EgaColorIndex.GREEN];
-    line_opt.width = 1;
-    line_opt.n_dash_patterns = 2;
-    line_opt.dash_pattern0 = 2;
-    line_opt.dash_pattern1 = 2;
+    const line_opt = new Grx.LineOptions({
+        color: colors[Grx.EgaColorIndex.GREEN],
+        width: 1,
+        n_dash_patterns: 2,
+        dash_pattern0: 2,
+        dash_pattern1: 2
+    });
     Grx.draw_circle_with_options(x * 7, y, r, line_opt);
     Grx.draw_circle_arc_with_options(x * 7, y * 3, r, 2250, 1350, Grx.ArcStyle.CLOSED_RADIUS, line_opt);
     Grx.draw_circle_arc_with_pixmap(x * 7, y * 5, r, 2250, 1350, Grx.ArcStyle.CLOSED_RADIUS, line_opt, checker);

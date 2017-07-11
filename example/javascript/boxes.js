@@ -33,12 +33,13 @@ function activate() {
     let x = Grx.get_width() / 10;
     let y = Grx.get_height() / 10;
 
-    let line_opts = new Grx.LineOptions();
-    line_opts.color = white;
-    line_opts.width = 3;
-    line_opts.n_dash_patterns = 2;
-    line_opts.dash_pattern0 = 6;
-    line_opts.dash_pattern1 = 4;
+    let line_opts = new Grx.LineOptions({
+        color: white,
+        width: 3,
+        n_dash_patterns: 2,
+        dash_pattern0: 6,
+        dash_pattern1: 4
+    });
     let line_opts0 = new Grx.LineOptions();
     let pat = Demo.get_checkerboard_pixmap();
     Grx.draw_box(x * 1, y * 1, x * 3, y * 3, white);
@@ -50,12 +51,13 @@ function activate() {
     Grx.draw_filled_box_with_pixmap(x * 4, y * 4, x * 6, y * 6, img);
     Grx.draw_filled_box_with_offset_pixmap(x * 2, y, x * 7, y * 4, x * 9, y * 6, img);
 
-    let frame_colors = new Grx.FramedBoxColors();
-    frame_colors.background = Grx.color_get(224, 223, 228);
-    frame_colors.border_top = Grx.color_get(255, 255, 255);
-    frame_colors.border_right = Grx.color_get(155, 157, 154);
-    frame_colors.border_bottom = Grx.color_get(110, 110, 100);
-    frame_colors.border_left = Grx.color_get(241, 239, 226);
+    let frame_colors = new Grx.FramedBoxColors({
+        background: Grx.color_get(224, 223, 228),
+        border_top: Grx.color_get(255, 255, 255),
+        border_right: Grx.color_get(155, 157, 154),
+        border_bottom: Grx.color_get(110, 110, 100),
+        border_left: Grx.color_get(241, 239, 226)
+    });
     Grx.draw_framed_box(x * 1, y * 7, x * 3, y * 9, y / 4, frame_colors);
     Grx.draw_rounded_box(x * 4, y * 7, x * 6, y * 9, y / 4, white);
     Grx.draw_filled_rounded_box(x * 7, y * 7, x * 9, y * 9, y / 4, white);

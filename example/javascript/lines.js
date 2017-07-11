@@ -56,12 +56,13 @@ function activate() {
     }
 
     // try out line options
-    let line_opt = new Grx.LineOptions();
-    line_opt.color = Grx.color_get_white();
-    line_opt.width = 3;
-    line_opt.n_dash_patterns = 3;
-    line_opt.dash_pattern0 = 3;
-    line_opt.dash_pattern1 = 6;
+    let line_opt = new Grx.LineOptions({
+        color: Grx.color_get_white(),
+        width: 3,
+        n_dash_patterns: 3,
+        dash_pattern0: 3,
+        dash_pattern1: 6
+    });
     Grx.draw_line_with_options(70, 30, 110, 30, line_opt);
     // FIXME: gjs array bug - this crashes
     // let points = Grx.generate_points([
