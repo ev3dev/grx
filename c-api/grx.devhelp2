@@ -181,6 +181,7 @@
     <keyword type="function" name="grx_get_last_arc_coordinates ()" link="draw.html#grx-get-last-arc-coordinates"/>
     <keyword type="function" name="grx_generate_ellipse ()" link="draw.html#grx-generate-ellipse"/>
     <keyword type="function" name="grx_generate_ellipse_arc ()" link="draw.html#grx-generate-ellipse-arc"/>
+    <keyword type="function" name="grx_generate_points ()" link="draw.html#grx-generate-points"/>
     <keyword type="function" name="grx_draw_filled_box ()" link="draw.html#grx-draw-filled-box"/>
     <keyword type="function" name="grx_draw_filled_rounded_box ()" link="draw.html#grx-draw-filled-rounded-box"/>
     <keyword type="function" name="grx_draw_framed_box ()" link="draw.html#grx-draw-framed-box"/>
@@ -198,8 +199,6 @@
     <keyword type="function" name="grx_bit_blt_1bpp ()" link="draw.html#grx-bit-blt-1bpp"/>
     <keyword type="function" name="grx_get_scanline ()" link="draw.html#grx-get-scanline"/>
     <keyword type="function" name="grx_put_scanline ()" link="draw.html#grx-put-scanline"/>
-    <keyword type="macro" name="GRX_MAX_POLYGON_POINTS" link="draw.html#GRX-MAX-POLYGON-POINTS:CAPS"/>
-    <keyword type="macro" name="GRX_MAX_ELLIPSE_POINTS" link="draw.html#GRX-MAX-ELLIPSE-POINTS:CAPS"/>
     <keyword type="macro" name="GRX_MAX_ANGLE_VALUE" link="draw.html#GRX-MAX-ANGLE-VALUE:CAPS"/>
     <keyword type="enum" name="enum GrxArcStyle" link="draw.html#GrxArcStyle"/>
     <keyword type="struct" name="GrxFramedBoxColors" link="draw.html#GrxFramedBoxColors"/>
@@ -233,9 +232,9 @@
     <keyword type="function" name="grx_pixmap_stretch ()" link="pixmap.html#grx-pixmap-stretch"/>
     <keyword type="function" name="grx_draw_pixmap ()" link="pixmap.html#grx-draw-pixmap"/>
     <keyword type="function" name="grx_draw_pixmap_tiled ()" link="pixmap.html#grx-draw-pixmap-tiled"/>
+    <keyword type="function" name="grx_draw_pixel_with_offset_pixmap ()" link="pixmap.html#grx-draw-pixel-with-offset-pixmap"/>
     <keyword type="function" name="grx_draw_line_with_pixmap ()" link="pixmap.html#grx-draw-line-with-pixmap"/>
-    <keyword type="function" name="grx_draw_hline_with_pixmap ()" link="pixmap.html#grx-draw-hline-with-pixmap"/>
-    <keyword type="function" name="grx_draw_pixel_with_pixmap ()" link="pixmap.html#grx-draw-pixel-with-pixmap"/>
+    <keyword type="function" name="grx_draw_hline_with_offset_pixmap ()" link="pixmap.html#grx-draw-hline-with-offset-pixmap"/>
     <keyword type="function" name="grx_draw_box_with_pixmap ()" link="pixmap.html#grx-draw-box-with-pixmap"/>
     <keyword type="function" name="grx_draw_circle_with_pixmap ()" link="pixmap.html#grx-draw-circle-with-pixmap"/>
     <keyword type="function" name="grx_draw_ellipse_with_pixmap ()" link="pixmap.html#grx-draw-ellipse-with-pixmap"/>

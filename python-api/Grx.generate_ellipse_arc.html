@@ -14,12 +14,12 @@
 <div class="hgroup"><h1 class="title"><span class="title">Grx.generate_ellipse_arc</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(int, int, int, int, int, int, [Grx.Point])
-@returns(int)
-def generate_ellipse_arc(xc, yc, rx, ry, start, end, points):
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(int, int, int, int, int, int)
+@returns([Grx.Point])
+def generate_ellipse_arc(xc, yc, rx, ry, start, end):
     # Python wrapper for grx_generate_ellipse_arc()
   </pre></div></div></div></div></div>
-<p class="p">Fills an array of points with points that describe the arc with the
+<p class="p">Creates an array with points that describe the arc with the
 specified coordinates, radii, and starting and ending angles.</p>
 <p class="p">These coordinates can be drawn using polyline functions. This is more
 efficient when drawing the same or similar arcs multiple times.</p>
@@ -36,9 +36,6 @@ efficient when drawing the same or similar arcs multiple times.</p>
 <dd class="terms"><p class="p">the starting angle in 1/10ths of degrees</p></dd>
 <dt class="terms"><span class="code">end</span></dt>
 <dd class="terms"><p class="p">the ending angle in 1/10ths of degrees</p></dd>
-<dt class="terms"><span class="code">points</span></dt>
-<dd class="terms"><p class="p">
-     an array that will be filled with the calculated points</p></dd>
 <dt class="terms"><span class="code">Returns</span></dt>
 <dd class="terms"></dd>
 </dl></div></div></div>

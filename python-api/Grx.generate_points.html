@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Grx.MAX_POLYGON_POINTS</title>
+<title>Grx.generate_points</title>
 <link rel="stylesheet" type="text/css" href="C.css">
 <script type="text/javascript" src="jquery.js"></script><script type="text/javascript" src="jquery.syntax.js"></script><script type="text/javascript" src="yelp.js"></script>
 </head>
@@ -11,9 +11,26 @@
 <div class="header"><div class="trails" role="navigation"><div class="trail">
 <a class="trail" href="index.html" title="Grx">Grx</a> » </div></div></div>
 <div class="body">
-<div class="hgroup"><h1 class="title"><span class="title">Grx.MAX_POLYGON_POINTS</span></h1></div>
+<div class="hgroup"><h1 class="title"><span class="title">Grx.generate_points</span></h1></div>
 <div class="region">
-<div class="contents"><p class="p">The maximum number of points that can be used for polylines and polygons.</p></div>
+<div class="contents">
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts([int])
+@returns([Grx.Point])
+def generate_points(coords):
+    # Python wrapper for grx_generate_points()
+  </pre></div></div></div></div></div>
+<p class="p">Creates an array of points.</p>
+<p class="p">This function is intended for use with language bindings that don't have
+an elegant way to create an array of points. Each pair of coordinates is
+converted into a point, so the returned array will be 1/2 the length of
+<span class="code">coords</span>.</p>
+<div class="terms"><div class="inner"><div class="region"><dl class="terms">
+<dt class="terms"><span class="code">coords</span></dt>
+<dd class="terms"><p class="p">the coordinate pairs</p></dd>
+<dt class="terms"><span class="code">Returns</span></dt>
+<dd class="terms"></dd>
+</dl></div></div></div>
+</div>
 <div class="sect sect-links" role="navigation">
 <div class="hgroup"></div>
 <div class="contents"><div class="links guidelinks"><div class="inner">

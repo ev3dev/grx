@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Grx.draw_hline_with_pixmap</title>
+<title>Grx.draw_hline_with_offset_pixmap</title>
 <link rel="stylesheet" type="text/css" href="C.css">
 <script type="text/javascript" src="jquery.js"></script><script type="text/javascript" src="jquery.syntax.js"></script><script type="text/javascript" src="yelp.js"></script>
 </head>
@@ -11,12 +11,13 @@
 <div class="header"><div class="trails" role="navigation"><div class="trail">
 <a class="trail" href="index.html" title="Grx">Grx</a> » </div></div></div>
 <div class="body">
-<div class="hgroup"><h1 class="title"><span class="title">Grx.draw_hline_with_pixmap</span></h1></div>
+<div class="hgroup"><h1 class="title"><span class="title">Grx.draw_hline_with_offset_pixmap</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function draw_hline_with_pixmap(x0: Number(gint), y0: Number(gint), x: Number(gint), y: Number(gint), width: Number(gint), p: <span class="link"><a href="Grx.Pixmap.html" title="Grx.Pixmap">Grx.Pixmap</a></span>): void {
-    // Gjs wrapper for grx_draw_hline_with_pixmap()
-}
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(int, int, int, int, int, Grx.Pixmap)
+@returns(none)
+def draw_hline_with_offset_pixmap(x0, y0, x, y, width, p):
+    # Python wrapper for grx_draw_hline_with_offset_pixmap()
   </pre></div></div></div></div></div>
 <p class="p">Draws a single line of an pixmap on the current context starting at <span class="code">x</span>, <span class="code">y</span>.
 The pixmap can be offset from the line by specifying <span class="code">x0</span>, <span class="code">y0</span> different from

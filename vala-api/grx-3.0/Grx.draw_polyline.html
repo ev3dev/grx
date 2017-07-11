@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8"/>
-    <title>Grx.draw_hline_with_pixmap &ndash; grx-3.0 &ndash; Vala Binding Reference</title>
+    <title>Grx.draw_polyline &ndash; grx-3.0 &ndash; Vala Binding Reference</title>
     <link href="../style.css" rel="stylesheet" type="text/css"/><script src="../scripts.js" type="text/javascript">
     </script>
   </head>
   <body>
-    <div class="site_header">Grx.draw_hline_with_pixmap &ndash; grx-3.0 Reference Manual</div>
+    <div class="site_header">Grx.draw_polyline &ndash; grx-3.0 Reference Manual</div>
     <div class="site_body">
       <div class="site_navigation">
         <ul class="navi_main">
@@ -70,8 +70,6 @@
           <li class="struct"><a href="Grx.VideoMode.html">VideoMode</a></li>
           <li class="struct"><a href="Grx.VideoModeExt.html">VideoModeExt</a></li>
           <li class="constant"><a href="Grx.DEFAULT_DPI.html">DEFAULT_DPI</a></li>
-          <li class="constant"><a href="Grx.MAX_ELLIPSE_POINTS.html">MAX_ELLIPSE_POINTS</a></li>
-          <li class="constant"><a href="Grx.MAX_POLYGON_POINTS.html">MAX_POLYGON_POINTS</a></li>
           <li class="constant"><a href="Grx.PNM_FORMAT_ERROR.html">PNM_FORMAT_ERROR</a></li>
           <li class="method"><a href="Grx.bit_blt.html">bit_blt</a></li>
           <li class="method"><a href="Grx.bit_blt_1bpp.html">bit_blt_1bpp</a></li>
@@ -113,18 +111,18 @@
           <li class="method"><a href="Grx.draw_filled_rounded_box.html">draw_filled_rounded_box</a></li>
           <li class="method"><a href="Grx.draw_framed_box.html">draw_framed_box</a></li>
           <li class="method"><a href="Grx.draw_hline.html">draw_hline</a></li>
-          <li class="method">draw_hline_with_pixmap</li>
+          <li class="method"><a href="Grx.draw_hline_with_offset_pixmap.html">draw_hline_with_offset_pixmap</a></li>
           <li class="method"><a href="Grx.draw_line.html">draw_line</a></li>
           <li class="method"><a href="Grx.draw_line_with_options.html">draw_line_with_options</a></li>
           <li class="method"><a href="Grx.draw_line_with_pixmap.html">draw_line_with_pixmap</a></li>
           <li class="method"><a href="Grx.draw_pixel.html">draw_pixel</a></li>
-          <li class="method"><a href="Grx.draw_pixel_with_pixmap.html">draw_pixel_with_pixmap</a></li>
+          <li class="method"><a href="Grx.draw_pixel_with_offset_pixmap.html">draw_pixel_with_offset_pixmap</a></li>
           <li class="method"><a href="Grx.draw_pixmap.html">draw_pixmap</a></li>
           <li class="method"><a href="Grx.draw_pixmap_tiled.html">draw_pixmap_tiled</a></li>
-          <li class="method"><a href="Grx.draw_poly_line.html">draw_poly_line</a></li>
           <li class="method"><a href="Grx.draw_polygon.html">draw_polygon</a></li>
           <li class="method"><a href="Grx.draw_polygon_with_options.html">draw_polygon_with_options</a></li>
           <li class="method"><a href="Grx.draw_polygon_with_pixmap.html">draw_polygon_with_pixmap</a></li>
+          <li class="method">draw_polyline</li>
           <li class="method"><a href="Grx.draw_polyline_with_options.html">draw_polyline_with_options</a></li>
           <li class="method"><a href="Grx.draw_polyline_with_pixmap.html">draw_polyline_with_pixmap</a></li>
           <li class="method"><a href="Grx.draw_rounded_box.html">draw_rounded_box</a></li>
@@ -196,51 +194,31 @@
         </ul>
       </div>
       <div class="site_content">
-        <h1 class="main_title">draw_hline_with_pixmap</h1>
+        <h1 class="main_title">draw_polyline</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">draw_hline_with_pixmap</span></b> (<span class="main_basic_type"><span class="struct">int</span></span> x0, <span class="main_basic_type"><span class="struct">int</span></span> y0, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_type"><a href="Grx.Pixmap.html" class="class">Pixmap</a></span> p)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">draw_polyline</span></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
         </div>
         <div class="description">
-          <p>Draws a single line of an pixmap on the current context starting at <code>x</code>, <code>y</code>.</p>
-          <p> The pixmap can be offset from the line by specifying <code>x0</code>, <code>y0</code> different from <code>x</code>, <code>y</code>. The
-             pixmap is repeated if the width of the line is greater than the width of the pixmap.</p>
+          <p>Draw a multi-segment line on the current context that connects each point in the <code>points</code> array using the specified color.</p>
           <h2 class="main_title">Parameters:</h2>
           <table class="main_parameter_table">
             <tr>
-              <td class="main_parameter_table_name">x0</td>
+              <td class="main_parameter_table_name">points</td>
               <td>
-                <p>the alignment X coordinate</p>
+                <p>an array of <a href="Grx.Point.html" class="struct">Point</a></p>
               </td>
             </tr>
             <tr>
-              <td class="main_parameter_table_name">y0</td>
+              <td class="main_parameter_table_name">c</td>
               <td>
-                <p>the alignment Y coordinate</p>
+                <p>the color</p>
               </td>
             </tr>
-            <tr>
-              <td class="main_parameter_table_name">x</td>
+            <tr class="main_parameter_table_unknown_parameter">
+              <td class="main_parameter_table_name">n_points</td>
               <td>
-                <p>the top X coordinate</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="main_parameter_table_name">y</td>
-              <td>
-                <p>the left Y coordinate</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="main_parameter_table_name">width</td>
-              <td>
-                <p>the width of the line</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="main_parameter_table_name">p</td>
-              <td>
-                <p>the pixmap</p>
+                <p>the number of points in <code>points</code></p>
               </td>
             </tr>
           </table>

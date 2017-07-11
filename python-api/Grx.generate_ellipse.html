@@ -14,12 +14,12 @@
 <div class="hgroup"><h1 class="title"><span class="title">Grx.generate_ellipse</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(int, int, int, int, [Grx.Point])
-@returns(int)
-def generate_ellipse(xc, yc, rx, ry, points):
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(int, int, int, int)
+@returns([Grx.Point])
+def generate_ellipse(xc, yc, rx, ry):
     # Python wrapper for grx_generate_ellipse()
   </pre></div></div></div></div></div>
-<p class="p">Fills an array of points with points that describe the ellipse with the
+<p class="p">Creates an array of points that describe the ellipse with the
 specified coordinates and radii.</p>
 <p class="p">These coordinates can be drawn using polygon functions. This is more
 efficient when drawing the same or similar circles and ellipses multiple
@@ -33,9 +33,6 @@ times.</p>
 <dd class="terms"><p class="p">the radius along the X axis</p></dd>
 <dt class="terms"><span class="code">ry</span></dt>
 <dd class="terms"><p class="p">the radius along the Y axis</p></dd>
-<dt class="terms"><span class="code">points</span></dt>
-<dd class="terms"><p class="p">
-     an array that will be filled with the calculated points</p></dd>
 <dt class="terms"><span class="code">Returns</span></dt>
 <dd class="terms"></dd>
 </dl></div></div></div>

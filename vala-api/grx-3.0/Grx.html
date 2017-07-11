@@ -70,8 +70,6 @@
           <li class="struct"><a href="Grx.VideoMode.html">VideoMode</a></li>
           <li class="struct"><a href="Grx.VideoModeExt.html">VideoModeExt</a></li>
           <li class="constant"><a href="Grx.DEFAULT_DPI.html">DEFAULT_DPI</a></li>
-          <li class="constant"><a href="Grx.MAX_ELLIPSE_POINTS.html">MAX_ELLIPSE_POINTS</a></li>
-          <li class="constant"><a href="Grx.MAX_POLYGON_POINTS.html">MAX_POLYGON_POINTS</a></li>
           <li class="constant"><a href="Grx.PNM_FORMAT_ERROR.html">PNM_FORMAT_ERROR</a></li>
           <li class="method"><a href="Grx.bit_blt.html">bit_blt</a></li>
           <li class="method"><a href="Grx.bit_blt_1bpp.html">bit_blt_1bpp</a></li>
@@ -113,18 +111,18 @@
           <li class="method"><a href="Grx.draw_filled_rounded_box.html">draw_filled_rounded_box</a></li>
           <li class="method"><a href="Grx.draw_framed_box.html">draw_framed_box</a></li>
           <li class="method"><a href="Grx.draw_hline.html">draw_hline</a></li>
-          <li class="method"><a href="Grx.draw_hline_with_pixmap.html">draw_hline_with_pixmap</a></li>
+          <li class="method"><a href="Grx.draw_hline_with_offset_pixmap.html">draw_hline_with_offset_pixmap</a></li>
           <li class="method"><a href="Grx.draw_line.html">draw_line</a></li>
           <li class="method"><a href="Grx.draw_line_with_options.html">draw_line_with_options</a></li>
           <li class="method"><a href="Grx.draw_line_with_pixmap.html">draw_line_with_pixmap</a></li>
           <li class="method"><a href="Grx.draw_pixel.html">draw_pixel</a></li>
-          <li class="method"><a href="Grx.draw_pixel_with_pixmap.html">draw_pixel_with_pixmap</a></li>
+          <li class="method"><a href="Grx.draw_pixel_with_offset_pixmap.html">draw_pixel_with_offset_pixmap</a></li>
           <li class="method"><a href="Grx.draw_pixmap.html">draw_pixmap</a></li>
           <li class="method"><a href="Grx.draw_pixmap_tiled.html">draw_pixmap_tiled</a></li>
-          <li class="method"><a href="Grx.draw_poly_line.html">draw_poly_line</a></li>
           <li class="method"><a href="Grx.draw_polygon.html">draw_polygon</a></li>
           <li class="method"><a href="Grx.draw_polygon_with_options.html">draw_polygon_with_options</a></li>
           <li class="method"><a href="Grx.draw_polygon_with_pixmap.html">draw_polygon_with_pixmap</a></li>
+          <li class="method"><a href="Grx.draw_polyline.html">draw_polyline</a></li>
           <li class="method"><a href="Grx.draw_polyline_with_options.html">draw_polyline_with_options</a></li>
           <li class="method"><a href="Grx.draw_polyline_with_pixmap.html">draw_polyline_with_pixmap</a></li>
           <li class="method"><a href="Grx.draw_rounded_box.html">draw_rounded_box</a></li>
@@ -305,16 +303,6 @@
           <li class="constant"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">const</span> <span class="main_basic_type"><span class="struct">uint</span></span> <b><a href="Grx.DEFAULT_DPI.html" class="constant">DEFAULT_DPI</a></b>
             </span>
             <div class="leaf_brief_description"><span class="brief_description">The default screen resolution (dots per inch).</span>
-            </div></li>
-          <li class="constant"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">const</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.MAX_POLYGON_POINTS.html" class="constant">MAX_POLYGON_POINTS</a></b>
-            </span>
-            <div class="leaf_brief_description"><span class="brief_description">The maximum number of points that can be used for polylines and 
-                polygons.</span>
-            </div></li>
-          <li class="constant"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">const</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.MAX_ELLIPSE_POINTS.html" class="constant">MAX_ELLIPSE_POINTS</a></b>
-            </span>
-            <div class="leaf_brief_description"><span class="brief_description">The maximum number of points that can be used for ellipses and 
-                circles.</span>
             </div></li>
           <li class="constant"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">const</span> <span class="main_basic_type"><span class="struct">int</span></span> <b><a href="Grx.PNM_FORMAT_ERROR.html" class="constant">PNM_FORMAT_ERROR</a></b>
             </span>
@@ -603,9 +591,10 @@
             <div class="leaf_brief_description"><span class="brief_description">Draws a filled arc on the current context centered at the specified 
                 coordinates from the starting angle to the ending angle with the specified radii, arc style and color.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.draw_poly_line.html" class="method">draw_poly_line</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.draw_polyline.html" class="method">draw_polyline</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
-            <div class="leaf_brief_description">
+            <div class="leaf_brief_description"><span class="brief_description">Draw a multi-segment line on the current context that connects each 
+                point in the <code>points</code> array using the specified color.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.draw_polygon.html" class="method">draw_polygon</a></b> (<span class="main_type"><a href="Grx.Point.html" class="struct">Point</a></span>[] points, <span class="main_type"><a href="Grx.Color.html" class="struct">Color</a></span> c)
             </span>
@@ -758,20 +747,20 @@
             <div class="leaf_brief_description"><span class="brief_description">Draws as much of the image as possible (repeating if necessary) on the
                  current in the rectangle defined by <code>x1</code>, <code>y1</code> and <code>x2</code>, <code>y2</code></span>
             </div></li>
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.draw_pixel_with_offset_pixmap.html" class="method">draw_pixel_with_offset_pixmap</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x0, <span class="main_basic_type"><span class="struct">int</span></span> y0, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Pixmap.html" class="class">Pixmap</a></span> p)
+            </span>
+            <div class="leaf_brief_description"><span class="brief_description">Draws a single pixel of an pixmap on the current context at <code>x
+                </code>, <code>y</code>.</span>
+            </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.draw_line_with_pixmap.html" class="method">draw_line_with_pixmap</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o, <span class="main_type"><a href="Grx.Pixmap.html" class="class">Pixmap</a></span> p)
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Draws a line on the current context from the starting coordinates to 
                 the ending coordinates using the specified line options and pixmap.</span>
             </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.draw_hline_with_pixmap.html" class="method">draw_hline_with_pixmap</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x0, <span class="main_basic_type"><span class="struct">int</span></span> y0, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_type"><a href="Grx.Pixmap.html" class="class">Pixmap</a></span> p)
+          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.draw_hline_with_offset_pixmap.html" class="method">draw_hline_with_offset_pixmap</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x0, <span class="main_basic_type"><span class="struct">int</span></span> y0, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_type"><a href="Grx.Pixmap.html" class="class">Pixmap</a></span> p)
             </span>
             <div class="leaf_brief_description"><span class="brief_description">Draws a single line of an pixmap on the current context starting at 
                 <code>x</code>, <code>y</code>.</span>
-            </div></li>
-          <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.draw_pixel_with_pixmap.html" class="method">draw_pixel_with_pixmap</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x0, <span class="main_basic_type"><span class="struct">int</span></span> y0, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Pixmap.html" class="class">Pixmap</a></span> p)
-            </span>
-            <div class="leaf_brief_description"><span class="brief_description">Draws a single pixel of an pixmap on the current context at <code>x
-                </code>, <code>y</code>.</span>
             </div></li>
           <li class="method"><span class="leaf_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><a href="Grx.draw_box_with_pixmap.html" class="method">draw_box_with_pixmap</a></b> (<span class="main_basic_type"><span class="struct">int</span></span> x1, <span class="main_basic_type"><span class="struct">int</span></span> y1, <span class="main_basic_type"><span class="struct">int</span></span> x2, <span class="main_basic_type"><span class="struct">int</span></span> y2, <span class="main_type"><a href="Grx.LineOptions.html" class="struct">LineOptions</a></span> o, <span class="main_type"><a href="Grx.Pixmap.html" class="class">Pixmap</a></span> p)
             </span>
