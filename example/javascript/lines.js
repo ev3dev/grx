@@ -47,12 +47,9 @@ function activate() {
 
     // then two connected lines at right angles
     for (let x = 50; x < 60; x++) {
-        let p0 = new Grx.Point();
-        [p0.x, p0.y] = [20, x];
-        let p1 = new Grx.Point();
-        [p1.x, p1.y] = [x, x];
-        let p2 = new Grx.Point();
-        [p2.x, p2.y] = [x, 20];
+        let p0 = new Grx.Point({ x: 20, y: x });
+        let p1 = new Grx.Point({ x: x, y: x });
+        let p2 = new Grx.Point({ x: x, y: 20 });
         // FIXME: there seems to be a gjs bug that prevents this from actually
         // drawing something
         Grx.draw_polyline([p0, p1, p2], colors[x % 16]);
