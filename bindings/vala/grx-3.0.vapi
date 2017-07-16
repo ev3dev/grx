@@ -791,6 +791,7 @@ namespace Grx {
     /* ================================================================== */
 
     public bool query_jpeg_file (string filename, out int width, out int height);
+    public bool query_jpeg_data (GLib.ByteArray data, out int width, out int height);
 
     /* ================================================================== */
     /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */

@@ -29,8 +29,17 @@
 #include <grx/error.h>
 #include <grx/extents.h>
 
-static gboolean readjpeg(FILE *f, GrxContext *grc, int scale);
-static gboolean queryjpeg(FILE *f, int *w, int *h);
+typedef void(*grx_jpeg_src_func)(j_decompress_ptr cinfo, void * data);
+
+static gboolean readjpeg(grx_jpeg_src_func src_func, void *src_func_data, GrxContext *grc, int scale);
+static gboolean queryjpeg(grx_jpeg_src_func src_func, void *src_func_data, int *w, int *h);
+
+static void grx_jpeg_stdio_src_func(j_decompress_ptr cinfo, void * data)
+{
+    FILE *f = data;
+
+    jpeg_stdio_src(cinfo, f);
+}
 
 /**
  * grx_context_load_from_jpeg:
@@ -64,7 +73,7 @@ gboolean grx_context_load_from_jpeg(GrxContext *grc, const char *jpegfn, int sca
 
   grx_save_current_context( &grcaux );
   if( grc != NULL ) grx_set_current_context( grc );
-  r = readjpeg( f,grc,scale );
+  r = readjpeg( grx_jpeg_stdio_src_func, f, grc, scale );
   grx_set_current_context( &grcaux );
 
   fclose( f );
@@ -72,6 +81,48 @@ gboolean grx_context_load_from_jpeg(GrxContext *grc, const char *jpegfn, int sca
   if (!r) {
     g_set_error(error, GRX_ERROR, GRX_ERROR_JPEG_ERROR,
       "Error while reading '%s'", jpegfn);
+  }
+
+  return r;
+}
+
+static void grx_jpeg_stdio_mem_func(j_decompress_ptr cinfo, void * data)
+{
+    GByteArray *bytes = data;
+
+    jpeg_mem_src(cinfo, bytes->data, bytes->len);
+}
+
+/**
+ * grx_context_load_from_jpeg_data:
+ * @context: (nullable): Context to be loaded or %NULL to use the global context
+ * @data: The jpeg data
+ * @scale: scale the image to 1/scale, only 1, 2, 4 and 8 are supported
+ * @error: pointer to hold an error or %NULL to ignore
+ *
+ * Load a context from JPEG data.
+ *
+ * If context dimensions are less than jpeg dimensions, the function loads as
+ * much of the image as it can.
+ *
+ * If color mode is not in RGB mode, the functions allocates as many colors as
+ * it can.
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_context_load_from_jpeg_data(GrxContext *grc, GByteArray *data, int scale, GError **error)
+{
+  GrxContext grcaux;
+  gboolean r;
+
+  grx_save_current_context( &grcaux );
+  if( grc != NULL ) grx_set_current_context( grc );
+  r = readjpeg( grx_jpeg_stdio_mem_func, data, grc, scale );
+  grx_set_current_context( &grcaux );
+
+  if (!r) {
+    g_set_error(error, GRX_ERROR, GRX_ERROR_JPEG_ERROR,
+      "Error while reading jpeg data");
   }
 
   return r;
@@ -95,11 +146,26 @@ gboolean grx_query_jpeg_file(const char *jpegfn, int *width, int *height)
   f = fopen( jpegfn,"rb" );
   if( f == NULL ) return FALSE;
 
-  r = queryjpeg( f,width,height );
+  r = queryjpeg(grx_jpeg_stdio_src_func, f, width, height);
 
   fclose( f );
 
   return r;
+}
+
+/**
+ * grx_query_jpeg_data:
+ * @data: The image data
+ * @width: (out): return image width
+ * @height: (out): return image height
+ *
+ * Query width and height data from a JPEG file
+ *
+ * Returns: %TRUE on success, otherwise %FALSE
+ */
+gboolean grx_query_jpeg_data(GByteArray *data, int *width, int *height)
+{
+  return queryjpeg(grx_jpeg_stdio_mem_func, data, width, height);
 }
 
 struct my_error_mgr{
@@ -118,7 +184,7 @@ METHODDEF(void) my_error_exit( j_common_ptr cinfo )
   longjmp( myerr->setjmp_buffer,1 );
 }
 
-static gboolean readjpeg(FILE *f, GrxContext *grc, int scale)
+static gboolean readjpeg(grx_jpeg_src_func src_func, void *src_func_data, GrxContext *grc, int scale)
 {
   struct jpeg_decompress_struct cinfo;
   struct my_error_mgr jerr;
@@ -138,7 +204,7 @@ static gboolean readjpeg(FILE *f, GrxContext *grc, int scale)
   }
 
   jpeg_create_decompress( &cinfo );
-  jpeg_stdio_src( &cinfo,f );
+  src_func( &cinfo, src_func_data );
   jpeg_read_header( &cinfo,TRUE );
 
   cinfo.scale_denom = scale;
@@ -183,7 +249,7 @@ static gboolean readjpeg(FILE *f, GrxContext *grc, int scale)
   return TRUE;
 }
 
-static gboolean queryjpeg( FILE *f, int *w, int *h )
+static gboolean queryjpeg(grx_jpeg_src_func src_func, void *src_func_data, int *w, int *h)
 {
   struct jpeg_decompress_struct cinfo;
   struct my_error_mgr jerr;
@@ -196,7 +262,7 @@ static gboolean queryjpeg( FILE *f, int *w, int *h )
   }
 
   jpeg_create_decompress( &cinfo );
-  jpeg_stdio_src( &cinfo,f );
+  src_func( &cinfo, src_func_data );
   jpeg_read_header( &cinfo,TRUE );
 
   *w = cinfo.image_width;

@@ -72,7 +72,9 @@ gboolean grx_context_load_from_png(GrxContext *context, const gchar *filename, g
 gboolean grx_query_png_file(const gchar *filename, gint *width, gint *height);
 
 gboolean grx_context_load_from_jpeg(GrxContext *context, const gchar *filename, gint scale, GError **error);
+gboolean grx_context_load_from_jpeg_data(GrxContext *context, GByteArray *data, gint scale, GError **error);
 gboolean grx_query_jpeg_file(const gchar *filename, gint *width, gint *height);
+gboolean grx_query_jpeg_data(GByteArray *data, gint *width, gint *height);
 gboolean grx_context_save_to_jpeg(GrxContext *context, const gchar *filename, gint quality, GError **error);
 gboolean grx_context_save_to_jpeg_grayscale(GrxContext *context, const gchar *filename, gint quality, GError **error);
 
