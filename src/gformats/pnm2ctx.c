@@ -440,7 +440,7 @@ out:
 
 /**
  * grx_query_pnm_data:
- * @buffer: Buffer that holds data
+ * @data: The image data
  * @format: (out): the #GrxPnmFormat of the file
  * @width: (out): return pnm width
  * @height: (out): return pnm height
@@ -450,12 +450,12 @@ out:
  *
  * Returns: %TRUE on success, otherwise %FALSE
  */
-gboolean grx_query_pnm_data(const unsigned char *pnmbuf, GrxPnmFormat *format, int *width, int *height, int *maxval)
+gboolean grx_query_pnm_data(GByteArray *pnmbuf, GrxPnmFormat *format, int *width, int *height, int *maxval)
 {
   inputstruct is = {1, NULL, NULL, 0};
   gboolean r;
 
-  is.buffer = pnmbuf;
+  is.buffer = pnmbuf->data;
 
   r = loaddata(&is, format, width, height, maxval);
 

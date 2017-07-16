@@ -776,7 +776,7 @@ namespace Grx {
     /* The PNM functions */
 
     public bool query_pnm_file (string filename, out PnmFormat format, out int width, out int height, out int maxval);
-    public bool query_pnm_data (uint8 *buffer, out PnmFormat format, out int width, out int height, out int maxval);
+    public bool query_pnm_data (GLib.ByteArray data, out PnmFormat format, out int width, out int height, out int maxval);
 
     /* ================================================================== */
     /*                           PNG FUNCTIONS                            */

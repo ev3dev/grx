@@ -65,7 +65,7 @@ gboolean grx_context_save_to_ppm(GrxContext *context, const gchar *filename, con
 gboolean grx_context_load_from_pnm(GrxContext *context, const gchar *filename, GError **error);
 gboolean grx_query_pnm_file(const gchar *filename, GrxPnmFormat *format, gint *width, gint *height, gint *maxval);
 gboolean grx_context_load_from_pnm_data(GrxContext *context, const guint8 *buffer);
-gboolean grx_query_pnm_data(const guint8 *buffer, GrxPnmFormat *format, gint *width, gint *height, gint *maxval);
+gboolean grx_query_pnm_data(GByteArray *data, GrxPnmFormat *format, gint *width, gint *height, gint *maxval);
 
 gboolean grx_context_save_to_png(GrxContext *context, const gchar *filename, GError **error);
 gboolean grx_context_load_from_png(GrxContext *context, const gchar *filename, gboolean use_alpha, GError **error);
