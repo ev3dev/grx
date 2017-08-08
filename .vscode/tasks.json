@@ -29,22 +29,65 @@
         },
         {
             "taskName": "vala-boxes",
-            "args": ["plugins"],
+            "args": [
+                "plugins"
+            ],
             "problemMatcher": "$valac"
         },
         {
             "taskName": "vala-life",
-            "args": ["plugins"],
+            "args": [
+                "plugins"
+            ],
             "problemMatcher": "$valac"
         },
         {
             "taskName": "grx-calibrate-touch",
-            "args": ["plugins"],
+            "args": [
+                "plugins"
+            ],
             "problemMatcher": "$valac"
         },
         {
             "taskName": "grx-3.0-typelib",
-            "args": ["plugins"]
+            "args": [
+                "plugins"
+            ]
+        },
+        {
+            "taskName": "armel - start",
+            "command": "docker",
+            "args": [
+                "start",
+                "grx_armel"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "taskName": "armel - stop",
+            "command": "docker",
+            "args": [
+                "stop",
+                "--time",
+                "0",
+                "grx_armel"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "taskName": "armel - build",
+            "command": "docker",
+            "args": [
+                "exec",
+                "--tty",
+                "grx_armel",
+                "make",
+                "install"
+            ],
+            "problemMatcher": [
+                "$gcc",
+                "$valac"
+            ]
         }
     ]
 }
