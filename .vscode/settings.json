@@ -8,5 +8,6 @@
         "doc/sphinx/_html_extra": true
     },
     "editor.tabSize": 4,
-    "editor.insertSpaces": true
+    "editor.insertSpaces": true,
+    "C_Cpp.intelliSenseEngine": "Default"
 }
