@@ -433,6 +433,11 @@ static int build_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep)
             return FALSE;
         ep->mode = GRX_FRAME_MODE_LFB_24BPP;
         break;
+    case 32:
+        if (fbfix.visual != FB_VISUAL_TRUECOLOR)
+            return FALSE;
+        ep->mode = GRX_FRAME_MODE_LFB_32BPP_LOW;
+        break;
     default:
         return (FALSE);
     }
