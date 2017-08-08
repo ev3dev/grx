@@ -3,15 +3,20 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "command": "make",
-    "isShellCommand": true,
+    "type": "shell",
     "args": ["-s", "-C", "${workspaceRoot}/build"],
-    "showOutput": "always",
     "tasks": [
         {
             "taskName": "build",
             "suppressTaskName": true,
-            "isBuildCommand": true,
-            "problemMatcher": "$valac"
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$valac",
+                "$gcc"
+            ]
         },
         {
             "taskName": "edit_cache"
