@@ -1,4 +1,4 @@
-grx (3.0.0) testing; urgency=medium
+grx (3.0.0) xenial; urgency=medium
 
   * Rename a bunch functions and remove some others
   * Add support for 2bpp grayscale

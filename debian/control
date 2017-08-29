@@ -23,7 +23,7 @@ Build-Depends: debhelper (>= 10),
     python3,
     valac,
     valadoc
-Standards-Version: 3.9.8
+Standards-Version: 3.9.7
 Section: libs
 Homepage: https://github.com/ev3dev/grx
 Vcs-Git: https://github.com/ev3dev/grx.git
