@@ -9,8 +9,6 @@ version=$(dpkg-parsechangelog -S Version)
 distribution=$(dpkg-parsechangelog -S Distribution)
 codename=$(debian-distro-info --codename --${distribution})
 
-./release-doc.sh ${version} stable
-
 OS=debian DIST=${codename} ARCH=amd64 pbuilder-ev3dev build
 OS=debian DIST=${codename} ARCH=i386 PBUILDER_OPTIONS="--binary-arch" pbuilder-ev3dev build
 OS=debian DIST=${codename} ARCH=armhf PBUILDER_OPTIONS="--binary-arch" pbuilder-ev3dev build
