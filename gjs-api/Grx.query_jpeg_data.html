@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Grx.query_pnm_data</title>
+<title>Grx.query_jpeg_data</title>
 <link rel="stylesheet" type="text/css" href="C.css">
 <script type="text/javascript" src="jquery.js"></script><script type="text/javascript" src="jquery.syntax.js"></script><script type="text/javascript" src="yelp.js"></script>
 </head>
@@ -11,27 +11,23 @@
 <div class="header"><div class="trails" role="navigation"><div class="trail">
 <a class="trail" href="index.html" title="Grx">Grx</a> » </div></div></div>
 <div class="body">
-<div class="hgroup"><h1 class="title"><span class="title">Grx.query_pnm_data</span></h1></div>
+<div class="hgroup"><h1 class="title"><span class="title">Grx.query_jpeg_data</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function query_pnm_data(data: ByteArray): [ok: Boolean, format: <span class="link"><a href="Grx.PnmFormat.html" title="Grx.PnmFormat">Grx.PnmFormat</a></span>, width: Number(gint), height: Number(gint), maxval: Number(gint)] {
-    // Gjs wrapper for grx_query_pnm_data()
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents ">function query_jpeg_data(data: ByteArray): [ok: Boolean, width: Number(gint), height: Number(gint)] {
+    // Gjs wrapper for grx_query_jpeg_data()
 }
   </pre></div></div></div></div></div>
-<p class="p">Query format, width and height data from a PNM buffer</p>
+<p class="p">Query width and height data from a JPEG file</p>
 <div class="terms"><div class="inner"><div class="region"><dl class="terms">
 <dt class="terms"><span class="code">data</span></dt>
 <dd class="terms"><p class="p">The image data</p></dd>
 <dt class="terms"><span class="code">ok</span></dt>
 <dd class="terms"><p class="p"><span class="code">true</span> on success, otherwise <span class="code">false</span></p></dd>
-<dt class="terms"><span class="code">format</span></dt>
-<dd class="terms"><p class="p">the <span class="link"><a href="Grx.PnmFormat.html" title="Grx.PnmFormat">Grx.PnmFormat</a></span> of the file</p></dd>
 <dt class="terms"><span class="code">width</span></dt>
-<dd class="terms"><p class="p">return pnm width</p></dd>
+<dd class="terms"><p class="p">return image width</p></dd>
 <dt class="terms"><span class="code">height</span></dt>
-<dd class="terms"><p class="p">return pnm height</p></dd>
-<dt class="terms"><span class="code">maxval</span></dt>
-<dd class="terms"><p class="p">max color component value</p></dd>
+<dd class="terms"><p class="p">return image height</p></dd>
 </dl></div></div></div>
 </div>
 <div class="sect sect-links" role="navigation">

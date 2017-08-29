@@ -14,15 +14,15 @@
 <div class="hgroup"><h1 class="title"><span class="title">Grx.query_pnm_data</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(guint8, Grx.PnmFormat, int, int, int)
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts([guint8], Grx.PnmFormat, int, int, int)
 @returns(bool)
-def query_pnm_data(buffer, format, width, height, maxval):
+def query_pnm_data(data, format, width, height, maxval):
     # Python wrapper for grx_query_pnm_data()
   </pre></div></div></div></div></div>
 <p class="p">Query format, width and height data from a PNM buffer</p>
 <div class="terms"><div class="inner"><div class="region"><dl class="terms">
-<dt class="terms"><span class="code">buffer</span></dt>
-<dd class="terms"><p class="p">Buffer that holds data</p></dd>
+<dt class="terms"><span class="code">data</span></dt>
+<dd class="terms"><p class="p">The image data</p></dd>
 <dt class="terms"><span class="code">format</span></dt>
 <dd class="terms"><p class="p">the <span class="link"><a href="Grx.PnmFormat.html" title="Grx.PnmFormat">Grx.PnmFormat</a></span> of the file</p></dd>
 <dt class="terms"><span class="code">width</span></dt>

@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8"/>
-    <title>Grx.draw_pixel_with_offset_pixmap &ndash; grx-3.0 &ndash; Vala Binding Reference</title>
+    <title>Grx.query_jpeg_data &ndash; grx-3.0 &ndash; Vala Binding Reference</title>
     <link href="../style.css" rel="stylesheet" type="text/css"/><script src="../scripts.js" type="text/javascript">
     </script>
   </head>
   <body>
-    <div class="site_header">Grx.draw_pixel_with_offset_pixmap &ndash; grx-3.0 Reference Manual</div>
+    <div class="site_header">Grx.query_jpeg_data &ndash; grx-3.0 Reference Manual</div>
     <div class="site_body">
       <div class="site_navigation">
         <ul class="navi_main">
@@ -116,7 +116,7 @@
           <li class="method"><a href="Grx.draw_line_with_options.html">draw_line_with_options</a></li>
           <li class="method"><a href="Grx.draw_line_with_pixmap.html">draw_line_with_pixmap</a></li>
           <li class="method"><a href="Grx.draw_pixel.html">draw_pixel</a></li>
-          <li class="method">draw_pixel_with_offset_pixmap</li>
+          <li class="method"><a href="Grx.draw_pixel_with_offset_pixmap.html">draw_pixel_with_offset_pixmap</a></li>
           <li class="method"><a href="Grx.draw_pixmap.html">draw_pixmap</a></li>
           <li class="method"><a href="Grx.draw_pixmap_tiled.html">draw_pixmap_tiled</a></li>
           <li class="method"><a href="Grx.draw_polygon.html">draw_polygon</a></li>
@@ -174,7 +174,7 @@
           <li class="method"><a href="Grx.get_width.html">get_width</a></li>
           <li class="method"><a href="Grx.is_screen_virtual.html">is_screen_virtual</a></li>
           <li class="method"><a href="Grx.put_scan_line.html">put_scan_line</a></li>
-          <li class="method"><a href="Grx.query_jpeg_data.html">query_jpeg_data</a></li>
+          <li class="method">query_jpeg_data</li>
           <li class="method"><a href="Grx.query_jpeg_file.html">query_jpeg_file</a></li>
           <li class="method"><a href="Grx.query_png_file.html">query_png_file</a></li>
           <li class="method"><a href="Grx.query_pnm_data.html">query_pnm_data</a></li>
@@ -195,45 +195,39 @@
         </ul>
       </div>
       <div class="site_content">
-        <h1 class="main_title">draw_pixel_with_offset_pixmap</h1>
+        <h1 class="main_title">query_jpeg_data</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_keyword">void</span> <b><span class="method">draw_pixel_with_offset_pixmap</span></b> (<span class="main_basic_type"><span class="struct">int</span></span> x0, <span class="main_basic_type"><span class="struct">int</span></span> y0, <span class="main_basic_type"><span class="struct">int</span></span> x, <span class="main_basic_type"><span class="struct">int</span></span> y, <span class="main_type"><a href="Grx.Pixmap.html" class="class">Pixmap</a></span> p)
+        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_basic_type"><span class="struct">bool</span></span> <b><span class="method">query_jpeg_data</span></b> (<span class="main_type"><span class="class">ByteArray</span></span> data, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span> width, <span class="main_keyword">out</span> <span class="main_basic_type"><span class="struct">int</span></span> height)
         </div>
         <div class="description">
-          <p>Draws a single pixel of an pixmap on the current context at <code>x</code>, <code>y</code>.</p>
-          <p>The color of the pixel comes from the pixmap as if <code>p</code> was tiled over the entrire context starting with the top/left of the 
-            pixmap at <code>x0</code>, <code>y0</code>.</p>
+          <p>Query width and height data from a JPEG file</p>
           <h2 class="main_title">Parameters:</h2>
           <table class="main_parameter_table">
             <tr>
-              <td class="main_parameter_table_name">x0</td>
+              <td class="main_parameter_table_name">data</td>
               <td>
-                <p>the alignment X coordinate</p>
+                <p>The image data</p>
               </td>
             </tr>
             <tr>
-              <td class="main_parameter_table_name">y0</td>
+              <td class="main_parameter_table_name">width</td>
               <td>
-                <p>the alignment Y coordinate</p>
+                <p>return image width</p>
               </td>
             </tr>
             <tr>
-              <td class="main_parameter_table_name">x</td>
+              <td class="main_parameter_table_name">height</td>
               <td>
-                <p>the X coordinate</p>
+                <p>return image height</p>
               </td>
             </tr>
+          </table>
+          <h2 class="main_title">Returns:</h2>
+          <table class="main_parameter_table">
             <tr>
-              <td class="main_parameter_table_name">y</td>
               <td>
-                <p>the Y coordinate</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="main_parameter_table_name">p</td>
-              <td>
-                <p>the pixmap</p>
+                <p><span class="main_optional_parameter">true</span> on success, otherwise <span class="main_optional_parameter">false</span></p>
               </td>
             </tr>
           </table>

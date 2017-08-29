@@ -418,7 +418,9 @@
     <keyword type="function" name="grx_context_load_from_png ()" link="gformats.html#grx-context-load-from-png"/>
     <keyword type="function" name="grx_query_png_file ()" link="gformats.html#grx-query-png-file"/>
     <keyword type="function" name="grx_context_load_from_jpeg ()" link="gformats.html#grx-context-load-from-jpeg"/>
+    <keyword type="function" name="grx_context_load_from_jpeg_data ()" link="gformats.html#grx-context-load-from-jpeg-data"/>
     <keyword type="function" name="grx_query_jpeg_file ()" link="gformats.html#grx-query-jpeg-file"/>
+    <keyword type="function" name="grx_query_jpeg_data ()" link="gformats.html#grx-query-jpeg-data"/>
     <keyword type="function" name="grx_context_save_to_jpeg ()" link="gformats.html#grx-context-save-to-jpeg"/>
     <keyword type="function" name="grx_context_save_to_jpeg_grayscale ()" link="gformats.html#grx-context-save-to-jpeg-grayscale"/>
     <keyword type="enum" name="enum GrxPnmFormat" link="gformats.html#GrxPnmFormat"/>
