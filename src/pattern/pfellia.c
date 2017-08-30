@@ -56,11 +56,6 @@ void grx_draw_filled_ellipse_arc_with_pixmap(int xc,int yc,int rx,int ry,int sta
     }
 
     fa.p = p;
-    if (points->len < 0) {
-        _GrScanConvexPoly (-points->len, (GrxPoint *)points->data, &_GrPatternFiller, fa);
-    }
-    else {
-        _GrScanPolygon (points->len, (GrxPoint *)points->data, &_GrPatternFiller, fa);
-    }
+    _GrScanPolygon (points->len, (GrxPoint *)points->data, &_GrPatternFiller, fa);
     g_array_unref (points);
 }
