@@ -400,7 +400,11 @@ include (GirCompiler)
 add_typelib (${TYPELIB_TARGET} ${GIR_TARGET})
 if (APPLE)
     # have to regenerate .typelib file to get the shared library name correct
-    install (CODE "execute_process(COMMAND ${G_IR_COMPILER_EXECUTABLE} --output=\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/girepository-1.0/${GIR_NAME}-${GIR_VERSION}.typelib \$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/${GIR_NAME}-${GIR_VERSION}.gir)")
+    set (girDir "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0")
+    set (girFile "${girDir}/${GIR_NAME}-${GIR_VERSION}.gir")
+    set (typelibDir "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/girepository-1.0")
+    set (typelibFile "${typelibDir}/${GIR_NAME}-${GIR_VERSION}.typelib")
+    install (CODE "message(\"-- Installing: ${typelibFile}\")\n  file(MAKE_DIRECTORY \"${typelibDir}\")\n  execute_process(COMMAND ${G_IR_COMPILER_EXECUTABLE} \"--output=${typelibFile}\" \"${girFile}\")")
 else (APPLE)
     install (FILES $<TARGET_PROPERTY:${TYPELIB_TARGET},TYPELIB_FILE_NAME>
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
