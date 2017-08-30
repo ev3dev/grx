@@ -1,7 +1,7 @@
 Source: grx
 Priority: optional
 Maintainer: David Lechner <david@lechnology.com>
-Build-Depends: debhelper (>= 9),
+Build-Depends: debhelper (>= 10),
     cmake (>= 3),
     gir1.2-glib-2.0,
     gobject-introspection,
