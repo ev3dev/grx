@@ -390,11 +390,20 @@ add_gir (${GIR_TARGET} ${SHARED_LIBRARY_TARGET} ${GIR_NAME} ${GIR_VERSION}
 )
 install (FILES $<TARGET_PROPERTY:${GIR_TARGET},GIR_FILE_NAME>
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/)
+if (APPLE)
+    # need to fix shared library name - this is the equivelent of install_name_tool for .gir files
+    install (CODE "execute_process(COMMAND sed -e \"s`\\\\(shared-library=\\\"\\\\).*/\\\\(.*\\\"\\\\)`\\\\1${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/\\\\2`\" -i \\\"\\\" \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/${GIR_NAME}-${GIR_VERSION}.gir\")")
+endif (APPLE)
 
 find_package (GirCompiler)
 include (GirCompiler)
 add_typelib (${TYPELIB_TARGET} ${GIR_TARGET})
-install (FILES $<TARGET_PROPERTY:${TYPELIB_TARGET},TYPELIB_FILE_NAME>
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
+if (APPLE)
+    # have to regenerate .typelib file to get the shared library name correct
+    install (CODE "execute_process(COMMAND ${G_IR_COMPILER_EXECUTABLE} --output=\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/girepository-1.0/${GIR_NAME}-${GIR_VERSION}.typelib \$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/${GIR_NAME}-${GIR_VERSION}.gir)")
+else (APPLE)
+    install (FILES $<TARGET_PROPERTY:${TYPELIB_TARGET},TYPELIB_FILE_NAME>
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
+endif (APPLE)
 
 endif (NOT CMAKE_CROSSCOMPILING)
