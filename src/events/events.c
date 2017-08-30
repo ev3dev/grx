@@ -217,7 +217,7 @@ GrxEventType grx_event_get_event_type (GrxEvent *event)
  */
 GrxModifierFlags grx_event_get_modifiers (GrxEvent *event)
 {
-    g_return_val_if_fail (event != NULL, GRX_EVENT_TYPE_NONE);
+    g_return_val_if_fail (event != NULL, 0);
 
     switch (event->type) {
     case GRX_EVENT_TYPE_NONE:
@@ -254,7 +254,7 @@ GrxModifierFlags grx_event_get_modifiers (GrxEvent *event)
  */
 GrxDevice *grx_event_get_device (GrxEvent *event)
 {
-    g_return_val_if_fail (event != NULL, GRX_EVENT_TYPE_NONE);
+    g_return_val_if_fail (event != NULL, NULL);
 
     switch (event->type) {
     case GRX_EVENT_TYPE_NONE:
