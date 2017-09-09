@@ -21,7 +21,7 @@
 
 void GrFloodFill(int x, int y, GrColor border, GrColor c)
 {
-        GrFillArg fval;
-        fval.color = c;
-        _GrFloodFill(x,y,border,&_GrSolidFiller,fval);
+	GrFillArg fval;
+	fval.color = c;
+	_GrFloodFill(x,y,border,&_GrSolidFiller,fval);
 }

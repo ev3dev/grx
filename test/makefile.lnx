@@ -9,7 +9,7 @@ include  ../makedefs.grx
 
 INCDIR=  -I../include
 
-CCOPT += -pipe
+CCOPT +=
 
 # Enable this line for static linked test progs (default)
 MGRX = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a

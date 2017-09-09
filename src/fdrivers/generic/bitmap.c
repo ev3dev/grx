@@ -17,23 +17,23 @@
  **/
 
 void drawbitmap(int x,int y,int w,int h,
-                char *bmp,int pitch,int start,GrColor fg,GrColor bg)
+		char *bmp,int pitch,int start,GrColor fg,GrColor bg)
 {
-        GRX_ENTER();
-        w += x; h += y;
-        bmp += (unsigned int)start >> 3;
-        start &= 7;
-        do {
-            unsigned char *bitp = (unsigned char *)bmp;
-            unsigned char bits = *bitp;
-            unsigned char mask = 0x80 >> start;
-            int   xx = x;
-            do {
-                drawpixel(xx,y,(bits & mask) ? fg : bg);
-                if((mask >>= 1) == 0) bits = *++bitp,mask = 0x80;
-            } while(++xx != w);
-            bmp += pitch;
-        } while(++y != h);
-        GRX_LEAVE();
+	GRX_ENTER();
+	w += x; h += y;
+	bmp += (unsigned int)start >> 3;
+	start &= 7;
+	do {
+	    unsigned char *bitp = (unsigned char *)bmp;
+	    unsigned char bits = *bitp;
+	    unsigned char mask = 0x80 >> start;
+	    int   xx = x;
+	    do {
+		drawpixel(xx,y,(bits & mask) ? fg : bg);
+		if((mask >>= 1) == 0) bits = *++bitp,mask = 0x80;
+	    } while(++xx != w);
+	    bmp += pitch;
+	} while(++y != h);
+	GRX_LEAVE();
 }
 

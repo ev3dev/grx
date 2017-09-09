@@ -20,8 +20,8 @@
 #include "shapes.h"
 
 void  _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
-                                char *bmp,int pitch,int start,
-                                GrPattern* p,GrColor bg)
+				char *bmp,int pitch,int start,
+				GrPattern* p,GrColor bg)
 {
    GR_int8u *bits, *dptr;
    GR_int8u mask;
@@ -38,15 +38,15 @@ void  _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
        oldx = xx = x;
        width = 0;
        do {
-         if ( *dptr & mask ) {
-           if ( width == 0 ) oldx = xx;
-           width++;
-         }
-         else if ( width ) {
-           _GrFillPatternExt(oldx, y, sx, sy, width, p);
-           width = 0;
-         }
-         if((mask >>= 1) == 0) { mask = 0x80; ++dptr; }
+	 if ( *dptr & mask ) {
+	   if ( width == 0 ) oldx = xx;
+	   width++;
+	 }
+	 else if ( width ) {
+	   _GrFillPatternExt(oldx, y, sx, sy, width, p);
+	   width = 0;
+	 }
+	 if((mask >>= 1) == 0) { mask = 0x80; ++dptr; }
        } while ( ++xx < w );
        if ( width ) _GrFillPatternExt(oldx, y, sx, sy, width, p);
        bits += pitch;
@@ -61,26 +61,26 @@ void  _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
        oldx = xx = x;
        widthbg = width = 0;
        do {
-         if ( *dptr & mask ) {
-           if ( widthbg )
-           {
-             (*FDRV->drawhline)(oldx, y, widthbg, bg);
-             widthbg = 0;
-             oldx = xx;
-           }
-           width++;
-         }
-         else
-         {
-           if ( width )
-           {
-             _GrFillPatternExt(oldx, y, sx, sy, width, p);
-             width = 0;
-             oldx = xx;
-           }
-           widthbg++;
-         }
-         if((mask >>= 1) == 0) { mask = 0x80; ++dptr; }
+	 if ( *dptr & mask ) {
+	   if ( widthbg )
+	   {
+	     (*FDRV->drawhline)(oldx, y, widthbg, bg);
+	     widthbg = 0;
+	     oldx = xx;
+	   }
+	   width++;
+	 }
+	 else
+	 {
+	   if ( width )
+	   {
+	     _GrFillPatternExt(oldx, y, sx, sy, width, p);
+	     width = 0;
+	     oldx = xx;
+	   }
+	   widthbg++;
+	 }
+	 if((mask >>= 1) == 0) { mask = 0x80; ++dptr; }
        } while ( ++xx < w );
        if ( width   ) _GrFillPatternExt(oldx, y, sx, sy, width, p); else
        if ( widthbg ) (*FDRV->drawhline)(oldx, y, widthbg, bg);

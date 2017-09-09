@@ -1,9 +1,9 @@
 /**
  ** vd_win32.c ---- the standard Win32-API driver
  **
- ** Author:        Gernot Graeff
- ** E-mail:        gernot.graeff@t-online.de
- ** Date:        13.11.98
+ ** Author: Gernot Graeff
+ ** E-mail: gernot.graeff@t-online.de
+ ** Date:   13.11.98
  **
  ** This file is part of the GRX graphics library.
  **
@@ -79,6 +79,9 @@
  ** Changes by M.Alvarez (malfer@telefonica.net) 25/01/2009
  **   - Simplified the WM_PAINT proccess to solve a race condition
  **     found in Vista running in multiple core cpu's.
+ **
+ ** Changes by M.Alvarez (malfer@telefonica.net) 06/09/2017
+ **   - Workarround to loadcolor fail in W7 for the 256 color driver
  **/
 
 #include "libwin32.h"
@@ -118,11 +121,22 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 static void loadcolor(int c, int r, int g, int b)
 {
     RGBQUAD color;
+    int i;
+    
     color.rgbBlue = b;
     color.rgbGreen = g;
     color.rgbRed = r;
     color.rgbReserved = 0;
-    SetDIBColorTable(hDCMem, c, 1, &color);
+    
+    /* Workarround to SetDIBColorTable fail in W7, probably a race condition,
+     * this seems to work without disturbing the driver a lot */
+    i = 0;
+    do {
+        if (SetDIBColorTable(hDCMem, c, 1, &color) > 0) break;
+        i++;
+        GrSleep(5);
+    } while (i < 5);
+    
     InvalidateRect(hGRXWnd, NULL, FALSE);
 }
 
@@ -233,45 +247,45 @@ GrVideoModeExt grtextext = {
     GR_frameText,                /* frame driver */
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
-    {0, 0, 0},                        /* color precisions */
-    {0, 0, 0},                        /* color component bit positions */
-    0,                                /* mode flag bits */
-    setmode,                        /* mode set */
+    {0, 0, 0},                   /* color precisions */
+    {0, 0, 0},                   /* color component bit positions */
+    0,                           /* mode flag bits */
+    setmode,                     /* mode set */
     NULL,                        /* virtual size set */
     NULL,                        /* virtual scroll */
     NULL,                        /* bank set function */
     NULL,                        /* double bank set function */
-    NULL                        /* color loader */
+    NULL                         /* color loader */
 };
 
 static GrVideoModeExt grxwinext8 = {
-    GR_frameWIN32_8,                /* frame driver */
+    GR_frameWIN32_8,             /* frame driver */
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
-    {8, 8, 8},                        /* color precisions */
-    {0, 8, 16},                 /* color component bit positions */
-    0,                                /* mode flag bits */
-    setmode,                        /* mode set */
+    {8, 8, 8},                   /* color precisions */
+    {0, 8, 16},                  /* color component bit positions */
+    0,                           /* mode flag bits */
+    setmode,                     /* mode set */
     NULL,                        /* virtual size set */
     NULL,                        /* virtual scroll */
-    setbank_dummy,                /* bank set function */
+    setbank_dummy,               /* bank set function */
     NULL,                        /* double bank set function */
-    loadcolor                        /* color loader */
+    loadcolor                    /* color loader */
 };
 
 static GrVideoModeExt grxwinext24 = {
-    GR_frameWIN32_24,                /* frame driver */
+    GR_frameWIN32_24,            /* frame driver */
     NULL,                        /* frame driver override */
     NULL,                        /* frame buffer address */
-    {8, 8, 8},                        /* color precisions */
-    {16, 8, 0},                 /* color component bit positions */
-    0,                                /* mode flag bits */
-    setmode,                        /* mode set */
+    {8, 8, 8},                   /* color precisions */
+    {16, 8, 0},                  /* color component bit positions */
+    0,                           /* mode flag bits */
+    setmode,                     /* mode set */
     NULL,                        /* virtual size set */
     NULL,                        /* virtual scroll */
-    setbank_dummy,                /* bank set function */
+    setbank_dummy,               /* bank set function */
     NULL,                        /* double bank set function */
-    NULL                        /* color loader */
+    NULL                         /* color loader */
 };
 
 static GrVideoMode modes[] = {
@@ -284,8 +298,10 @@ static GrVideoMode modes[] = {
     {TRUE, 8, 1024, 768, 0x00, 1024, 0, &grxwinext8},
     {TRUE, 8, 1280, 1024, 0x00, 1280, 0, &grxwinext8},
     {TRUE, 8, 1600, 1200, 0x00, 1600, 0, &grxwinext8},
+    {TRUE, 8, 1366, 768, 0x00, 1368, 0, &grxwinext8},
     {TRUE, 8, 1440, 900, 0x00, 1440, 0, &grxwinext8},
     {TRUE, 8, 1680, 1050, 0x00, 1680, 0, &grxwinext8},
+    {TRUE, 8, 1920, 1080, 0x00, 1920, 0, &grxwinext8},
     {TRUE, 8, 1920, 1200, 0x00, 1920, 0, &grxwinext8},
     {TRUE, 8, 2560, 1600, 0x00, 2560, 0, &grxwinext8},
 
@@ -295,8 +311,10 @@ static GrVideoMode modes[] = {
     {TRUE, 24, 1024, 768, 0x00, 3072, 0, &grxwinext24},
     {TRUE, 24, 1280, 1024, 0x00, 3840, 0, &grxwinext24},
     {TRUE, 24, 1600, 1200, 0x00, 4800, 0, &grxwinext24},
+    {TRUE, 24, 1366, 768, 0x00, 4100, 0, &grxwinext24},
     {TRUE, 24, 1440, 900, 0x00, 4320, 0, &grxwinext24},
     {TRUE, 24, 1680, 1050, 0x00, 5040, 0, &grxwinext24},
+    {TRUE, 24, 1920, 1080, 0x00, 5760, 0, &grxwinext24},
     {TRUE, 24, 1920, 1200, 0x00, 5760, 0, &grxwinext24},
     {TRUE, 24, 2560, 1600, 0x00, 7680, 0, &grxwinext24},
 
@@ -427,14 +445,14 @@ done:
 }
 
 GrVideoDriver _GrVideoDriverWIN32 = {
-    "win32",                        /* name */
-    GR_WIN32,                        /* adapter type */
-    NULL,                        /* inherit modes from this driver */
-    modes,                        /* mode table */
-    itemsof(modes),                /* # of modes */
-    detect,                        /* detection routine */
-    init,                        /* initialization routine */
-    reset,                        /* reset routine */
+    "win32",                    /* name */
+    GR_WIN32,                   /* adapter type */
+    NULL,                       /* inherit modes from this driver */
+    modes,                      /* mode table */
+    itemsof(modes),             /* # of modes */
+    detect,                     /* detection routine */
+    init,                       /* initialization routine */
+    reset,                      /* reset routine */
     _w32_selectmode,            /* special mode select routine */
     GR_DRIVERF_USER_RESOLUTION  /* arbitrary resolution possible */
 };

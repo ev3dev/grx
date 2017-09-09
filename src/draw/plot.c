@@ -22,13 +22,13 @@
 
 void GrPlot(int x,int y,GrColor c)
 {
-        clip_dot(CURC,x,y);
-        mouse_block(CURC,x,y,x,y);
-        (*FDRV->drawpixel)(
-            x + CURC->gc_xoffset,
-            y + CURC->gc_yoffset,
-            c
-        );
-        mouse_unblock();
+	clip_dot(CURC,x,y);
+	mouse_block(CURC,x,y,x,y);
+	(*FDRV->drawpixel)(
+	    x + CURC->gc_xoffset,
+	    y + CURC->gc_yoffset,
+	    c
+	);
+	mouse_unblock();
 }
 

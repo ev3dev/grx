@@ -22,34 +22,34 @@
 
 TESTFUNC(cliptest)
 {
-        long delay;
-        int x = GrSizeX();
-        int y = GrSizeY();
-        int ww = (x * 2) / 3;
-        int wh = (y * 2) / 3;
-        GrColor c;
-        GrEvent ev;
+	long delay;
+	int x = GrSizeX();
+	int y = GrSizeY();
+	int ww = (x * 2) / 3;
+	int wh = (y * 2) / 3;
+	GrColor c;
+	GrEvent ev;
 
-        c = GrAllocColor(200,100,100);
-        GrBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,GrWhite());
-        GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
+	c = GrAllocColor(200,100,100);
+	GrBox(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,GrWhite());
+	GrSetClipBox(ww/4,wh/4,ww/4+ww,wh/4+wh);
 
-        drawing(0,0,ww,wh,c,GrBlack());
-        GrEventWaitKeyOrClick(&ev);
+	drawing(0,0,ww,wh,c,GrBlack());
+	GrEventWaitKeyOrClick(&ev);
 
-        while(!GrEventCheck()) {
-            GrFilledBox(0,0,x,y,GrBlack());
-            drawing(-(RND()%(2*ww))+ww/2,
-                -(RND()%(2*wh))+wh/2,
-                RND()%(3*ww)+10,
-                RND()%(3*wh)+10,
-                c,
-                GrNOCOLOR
-            );
-            for(delay = 200000L; delay > 0L; delay--);
-        }
-        GrSleep(300);
-        GrEventFlush();
-        GrEventWaitKeyOrClick(&ev);
+	while(!GrEventCheck()) {
+	    GrFilledBox(0,0,x,y,GrBlack());
+	    drawing(-(RND()%(2*ww))+ww/2,
+		-(RND()%(2*wh))+wh/2,
+		RND()%(3*ww)+10,
+		RND()%(3*wh)+10,
+		c,
+		GrNOCOLOR
+	    );
+	    for(delay = 200000L; delay > 0L; delay--);
+	}
+	GrSleep(300);
+	GrEventFlush();
+	GrEventWaitKeyOrClick(&ev);
 }
 

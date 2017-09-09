@@ -31,6 +31,7 @@ static GrFont *doit(char *fname,char *path,int cvt,int w,int h,int lo,int hi)
     char pathname[200];
     char tempstring[200];
     int  plen;
+    
     GRX_ENTER();
     res = NULL;
     strcpy(pathname,path);
@@ -80,6 +81,7 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
     GRX_ENTER();
     len = 0;
     abspath = FALSE;
+
     while((chr = *name++) != '\0') {
         switch(chr) {
 #ifdef __MSDOS__
@@ -127,4 +129,3 @@ GrFont *GrLoadFont(char *name)
 {
     return(GrLoadConvertedFont(name,GR_FONTCVT_NONE,0,0,0,0));
 }
-

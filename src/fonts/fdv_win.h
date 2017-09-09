@@ -19,11 +19,8 @@
 #ifndef __FDV_WIN_H_INCLUDED__
 #define __FDV_WIN_H_INCLUDED__
 
-#ifdef __GNUC__
-#define PACKED __attribute__((packed))
-#else
-#define PACKED
-#endif
+#pragma pack(push)
+#pragma pack(1)
 
 typedef struct _GR_resourceFileHeaderWIN
 {
@@ -33,7 +30,7 @@ typedef struct _GR_resourceFileHeaderWIN
     GR_int16u name_id;
     GR_int16u flags;
     GR_int32u size;
-} PACKED GrResourceFileHeaderWIN;
+} GrResourceFileHeaderWIN;
 
 typedef struct _GR_fontFileHeaderWIN {  /* the header */
     GR_int16u version;
@@ -66,12 +63,14 @@ typedef struct _GR_fontFileHeaderWIN {  /* the header */
     GR_int32u bits_pointer;
     GR_int32u bits_offset;
     GR_int8u  reserved;
-} PACKED GrFontFileHeaderWIN;
+} GrFontFileHeaderWIN;
 
 typedef struct _GR_charHeaderWIN
 {
     GR_int16u width;
     GR_int16u offset;
-} PACKED GrCharHeaderWIN;
+} GrCharHeaderWIN;
+
+#pragma pack(pop)
 
 #endif

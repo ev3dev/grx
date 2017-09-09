@@ -36,27 +36,27 @@
 #define __INLINE_386_PEEK__(P,SIZE,T,SEL) ({            \
     unsigned T _peekvalue;                              \
     if(sizeof(T) == 1) __asm__ volatile(                \
-        "mov"#SIZE" "#SEL"(%1),%0"                      \
-        : "=q" (_peekvalue)                             \
-        : "r"  (((unsigned T *)(P)))                    \
+	"mov"#SIZE" "#SEL"(%1),%0"                      \
+	: "=q" (_peekvalue)                             \
+	: "r"  (((unsigned T *)(P)))                    \
     );                                                  \
     else __asm__ volatile(                              \
-        "mov"#SIZE" "#SEL"(%1),%0"                      \
-        : "=r" (_peekvalue)                             \
-        : "r"  (((unsigned T *)(P)))                    \
+	"mov"#SIZE" "#SEL"(%1),%0"                      \
+	: "=r" (_peekvalue)                             \
+	: "r"  (((unsigned T *)(P)))                    \
     );                                                  \
     _peekvalue;                                         \
 })
 #define __INLINE_386_POKE__(P,V,INS,SIZE,T,SEL) ({      \
     if(sizeof(T) == 1) __asm__ volatile(                \
-        ""#INS""#SIZE" %1,"#SEL"%0"                     \
-        : "=m" (*((unsigned T *)(P)))                   \
-        : "qn" ((unsigned T)(V))                        \
+	""#INS""#SIZE" %1,"#SEL"%0"                     \
+	: "=m" (*((unsigned T *)(P)))                   \
+	: "qn" ((unsigned T)(V))                        \
     );                                                  \
     else __asm__ volatile(                              \
-        ""#INS""#SIZE" %1,"#SEL"%0"                     \
-        : "=m" (*((unsigned T *)(P)))                   \
-        : "rn" ((unsigned T)(V))                        \
+	""#INS""#SIZE" %1,"#SEL"%0"                     \
+	: "=m" (*((unsigned T *)(P)))                   \
+	: "rn" ((unsigned T)(V))                        \
     );                                                  \
 })
 
@@ -68,9 +68,9 @@
 #define __INLINE_FAR_POKE__(P,V,OP,I,S,T) __INLINE_386_POKE__(P,V,I,S,T,%%fs:)
 #define setup_far_selector(S) ({                        \
     __asm__ volatile(                                   \
-        "movw %0,%%fs"                                  \
-        : /* no outputs */                              \
-        : "r" ((unsigned short)(S))                     \
+	"movw %0,%%fs"                                  \
+	: /* no outputs */                              \
+	: "r" ((unsigned short)(S))                     \
     );                                                  \
 })
 #endif  /* I386_GCC_FAR_MEMORY */
@@ -80,38 +80,38 @@
 #endif  /* I386_GCC_FAR_SELECTOR */
 
 #define __INLINE_386_PEEK24__(P,SEL) ({                                 \
-          register GR_int32u _pix_;                                     \
-          __asm__ volatile(                              "\n"           \
-                "    xorl    %%eax,%%eax                  \n"           \
-                "    movb   " SEL "2(%1),%%ah             \n"           \
-                "    sall    $8,%%eax                     \n"           \
-                "    movw    " SEL "(%1),%%ax               "           \
-                : "=&a" ((GR_int32u)_pix_)                              \
-                : "r" ((void *)(P))                                     \
-          );                                                            \
-          (GrColor)_pix_;                                               \
+	  register GR_int32u _pix_;                                     \
+	  __asm__ volatile(                              "\n"           \
+		"    xorl    %%eax,%%eax                  \n"           \
+		"    movb   " SEL "2(%1),%%ah             \n"           \
+		"    sall    $8,%%eax                     \n"           \
+		"    movw    " SEL "(%1),%%ax               "           \
+		: "=&a" ((GR_int32u)_pix_)                              \
+		: "r" ((void *)(P))                                     \
+	  );                                                            \
+	  (GrColor)_pix_;                                               \
 })
 
 #define __INLINE_386_POKE24__(P,C,INS,SEL) do {                         \
           int _dummy_;                                                  \
-          __asm__ volatile(                              "\n"           \
-                "    "#INS"w %%ax," SEL "(%2)             \n"           \
-                "    shrl    $8,%%eax                     \n"           \
-                "    "#INS"b %%ah," SEL "2(%2)            \n"           \
-                : "=a" (_dummy_)                                        \
-                : "0" (C), "r" ((void *)(P))                            \
-          );                                                            \
+	  __asm__ volatile(                              "\n"           \
+		"    "#INS"w %%ax," SEL "(%2)             \n"           \
+		"    shrl    $8,%%eax                     \n"           \
+		"    "#INS"b %%ah," SEL "2(%2)            \n"           \
+		: "=a" (_dummy_)                                        \
+		: "0" (C), "r" ((void *)(P))                            \
+	  );                                                            \
 } while (0)
 
 #define __INLINE_24_PEEK__(p) \
-        __INLINE_386_PEEK24__(p,)
+	__INLINE_386_PEEK24__(p,)
 
 #define __INLINE_24_FAR_PEEK__(p) (peek_l_f(p) & 0xffffff)
 #define PEEK_24_F_READS_ONE_MORE
 
 #define __INLINE_24_POKE__(p,c,op,INS) \
-        __INLINE_386_POKE24__(p,c,INS,)
+	__INLINE_386_POKE24__(p,c,INS,)
 #define __INLINE_24_FAR_POKE__(p,c,op,INS) \
-        __INLINE_386_POKE24__(p,c,INS,I386_GCC_FAR_SELECTOR)
+	__INLINE_386_POKE24__(p,c,INS,I386_GCC_FAR_SELECTOR)
 
 #endif  /* __i386__ */

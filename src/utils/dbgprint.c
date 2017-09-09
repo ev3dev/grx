@@ -35,20 +35,20 @@ int   _GR_debug_flags = DEBUG-0;
 
 void _GR_debug_printf(char *fmt,...)
 {
-        FILE *dfp = NULL;
-        va_list ap;
-        dfp = fopen(DBG_LOGFILE,"at");
-        if(!dfp) return;
+	FILE *dfp = NULL;
+	va_list ap;
+	dfp = fopen(DBG_LOGFILE,"at");
+	if(!dfp) return;
 #ifdef __GNUC__
-        fprintf(dfp,"%s|%s|%d: ",
-                _GR_debug_file, _GR_debug_function, _GR_debug_line);
+	fprintf(dfp,"%s|%s|%d: ",
+		_GR_debug_file, _GR_debug_function, _GR_debug_line);
 #else
-        fprintf(dfp,"%s/%d: ", _GR_debug_file, _GR_debug_line);
+	fprintf(dfp,"%s/%d: ", _GR_debug_file, _GR_debug_line);
 #endif
-        va_start(ap,fmt);
-        vfprintf(dfp,fmt,ap);
-        va_end(ap);
-        fclose(dfp);
+	va_start(ap,fmt);
+	vfprintf(dfp,fmt,ap);
+	va_end(ap);
+	fclose(dfp);
 }
 
 #endif

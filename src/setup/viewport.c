@@ -21,18 +21,18 @@
 
 int GrSetViewport(int x,int y)
 {
-        int res[2];
-        if(!GrScreenIsVirtual())              return(FALSE);
-        if(!DRVINFO->actmode.extinfo->scroll) return(FALSE);
-        x = imax(0,imin((GrVirtualX() - GrScreenX()),x));
-        y = imax(0,imin((GrVirtualY() - GrScreenY()),y));
-        if((x == GrViewportX()) && (y == GrViewportY())) return(TRUE);
-        if((*DRVINFO->actmode.extinfo->scroll)(&DRVINFO->actmode,x,y,res)) {
-            DRVINFO->vposx = res[0];
-            DRVINFO->vposy = res[1];
-            return(TRUE);
-        }
-        return(FALSE);
+	int res[2];
+	if(!GrScreenIsVirtual())	      return(FALSE);
+	if(!DRVINFO->actmode.extinfo->scroll) return(FALSE);
+	x = imax(0,imin((GrVirtualX() - GrScreenX()),x));
+	y = imax(0,imin((GrVirtualY() - GrScreenY()),y));
+	if((x == GrViewportX()) && (y == GrViewportY())) return(TRUE);
+	if((*DRVINFO->actmode.extinfo->scroll)(&DRVINFO->actmode,x,y,res)) {
+	    DRVINFO->vposx = res[0];
+	    DRVINFO->vposy = res[1];
+	    return(TRUE);
+	}
+	return(FALSE);
 }
 
 

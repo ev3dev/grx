@@ -21,9 +21,9 @@
 
 void GrUsrPatternFilledBox(int x1,int y1,int x2,int y2,GrPattern *p)
 {
-        U2SX(x1,CURC);
-        U2SX(x2,CURC);
-        U2SY(y1,CURC);
-        U2SY(y2,CURC);
-        GrPatternFilledBox(x1,y1,x2,y2,p);
+	U2SX(x1,CURC);
+	U2SX(x2,CURC);
+	U2SY(y1,CURC);
+	U2SY(y2,CURC);
+	GrPatternFilledBox(x1,y1,x2,y2,p);
 }

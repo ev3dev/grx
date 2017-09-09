@@ -32,8 +32,8 @@
 
 #ifndef MK_FP
 #define  MK_FP(s,o)      (void *)(                  \
-        ((GR_int32u)(GR_int16u)(s) << 4) +          \
-        (GR_int16u)(o)                              \
+	((GR_int32u)(GR_int16u)(s) << 4) +          \
+	(GR_int16u)(o)                              \
 )
 #endif
 

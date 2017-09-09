@@ -35,7 +35,7 @@
 #define MEASURE_RAM_MODES 1
 
 #define READPIX_loops      (384*1)
-#define READPIX_X11_loops  (8*1)
+#define READPIX_X11_loops  (128*1)
 #define DRAWPIX_loops      (256*1)
 #define DRAWLIN_loops      (12*1)
 #define DRAWHLIN_loops     (16*1)
@@ -239,7 +239,7 @@ char *FrameDriverName(GrFrameMode m) {
 void Message(int disp, char *txt, gvmode *gp) {
   char msg[200];
   sprintf(msg, "%s: %d x %d x %dbpp",
-                FrameDriverName(gp->fm), gp->w, gp->h, gp->bpp);
+		FrameDriverName(gp->fm), gp->w, gp->h, gp->bpp);
 #if defined(__XWIN__)
   fprintf(stderr,"%s\t%s\n", msg, txt);
 #endif
@@ -249,8 +249,8 @@ void Message(int disp, char *txt, gvmode *gp) {
     GrSaveContext(&save);
     GrSetContext(NULL);
     to.txo_font = &GrFont_PC6x8;
-    to.txo_fgcolor.v = GrWhite();
-    to.txo_bgcolor.v = GrBlack();
+    to.txo_fgcolor = GrWhite();
+    to.txo_bgcolor = GrBlack();
     to.txo_chrtype = GR_BYTE_TEXT;
     to.txo_direct  = GR_TEXT_RIGHT;
     to.txo_xalign  = GR_ALIGN_LEFT;
@@ -262,20 +262,21 @@ void Message(int disp, char *txt, gvmode *gp) {
 }
 
 void printresultheader(FILE *f) {
-  fprintf(f, "Driver               readp drawp line   hline vline  block  v2v    v2r    r2v\n");
+  fprintf(f, "Driver    dimension readp   drawp   line    hline   vline   block   v2v     v2r     r2v\n");
+  fprintf(f, "--------- --------- ------- ------- ------- ------- ------- ------- ------- ------- -------\n");
 }
 
 void printresultline(FILE *f, gvmode * gp) {
-  fprintf(f, "%-9s %4dx%4d ", FrameDriverName(gp->fm), gp->w, gp->h);
-  fprintf(f, "%6.2f", gp->readpix.rate  / (1024.0 * 1024.0));
-  fprintf(f, "%6.2f", gp->drawpix.rate  / (1024.0 * 1024.0));
-  fprintf(f, "%6.2f", gp->drawlin.rate  / (1024.0 * 1024.0));
-  fprintf(f, "%7.2f", gp->drawhlin.rate / (1024.0 * 1024.0));
-  fprintf(f, "%6.2f", gp->drawvlin.rate / (1024.0 * 1024.0));
-  fprintf(f, "%7.2f", gp->drawblk.rate  / (1024.0 * 1024.0));
-  fprintf(f, "%7.2f", gp->blitv2v.rate  / (1024.0 * 1024.0));
-  fprintf(f, "%7.2f", gp->blitv2r.rate  / (1024.0 * 1024.0));
-  fprintf(f, "%7.2f", gp->blitr2v.rate  / (1024.0 * 1024.0));
+  fprintf(f, "%-9s %4dx%4d", FrameDriverName(gp->fm), gp->w, gp->h);
+  fprintf(f, " %7.2f", gp->readpix.rate  / (1024.0 * 1024.0));
+  fprintf(f, " %7.2f", gp->drawpix.rate  / (1024.0 * 1024.0));
+  fprintf(f, " %7.2f", gp->drawlin.rate  / (1024.0 * 1024.0));
+  fprintf(f, " %7.2f", gp->drawhlin.rate / (1024.0 * 1024.0));
+  fprintf(f, " %7.2f", gp->drawvlin.rate / (1024.0 * 1024.0));
+  fprintf(f, " %7.2f", gp->drawblk.rate  / (1024.0 * 1024.0));
+  fprintf(f, " %7.2f", gp->blitv2v.rate  / (1024.0 * 1024.0));
+  fprintf(f, " %7.2f", gp->blitv2r.rate  / (1024.0 * 1024.0));
+  fprintf(f, " %7.2f", gp->blitr2v.rate  / (1024.0 * 1024.0));
   fprintf(f, "\n");
 }
 
@@ -353,13 +354,13 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs) {
   t1 = GrMsecTime();
   for (i=0; i < DRAWLIN_loops; ++i) {
     for (j=PAIRS-2; j >= 0; j-=2)
-        GrLineNC(x[j],y[j],x[j+1],y[j+1],c1);
+	GrLineNC(x[j],y[j],x[j+1],y[j+1],c1);
     for (j=PAIRS-2; j >= 0; j-=2)
-        GrLineNC(x[j],y[j],x[j+1],y[j+1],c2);
+	GrLineNC(x[j],y[j],x[j+1],y[j+1],c2);
     for (j=PAIRS-2; j >= 0; j-=2)
-        GrLineNC(x[j],y[j],x[j+1],y[j+1],c3);
+	GrLineNC(x[j],y[j],x[j+1],y[j+1],c3);
     for (j=PAIRS-2; j >= 0; j-=2)
-        GrLineNC(x[j],y[j],x[j+1],y[j+1],c4);
+	GrLineNC(x[j],y[j],x[j+1],y[j+1],c4);
   }
   t2 = GrMsecTime();
   seconds = (double)(t2 - t1) / 1000.0;
@@ -491,13 +492,13 @@ void xor_draw_blocks(GrContext *c) {
   GrClearContext(GrBlack());
   for (i=28; i > 1; --i)
     GrFilledBox(GrMaxX()/i,GrMaxY()/i,
-                (i-1)*GrMaxX()/i,(i-1)*GrMaxY()/i,GrWhite()|GrXOR);
+		(i-1)*GrMaxX()/i,(i-1)*GrMaxY()/i,GrWhite()|GrXOR);
   GrSetContext(&save);
 }
 
 void blit_measure(gvmode *gp, perfm *p,
-                  int *xb, int *yb,
-                  GrContext *dst,GrContext *src) {
+		  int *xb, int *yb,
+		  GrContext *dst,GrContext *src) {
   int i, j;
   long t1,t2;
   double seconds;
@@ -567,8 +568,8 @@ void blittest(gvmode *gp, XY_PAIRS *pairs, int ram) {
 
 #if BLIT_loops-0
   blit_measure(gp, &gp->blitv2v, xb, yb,
-               (GrContext *)(RAMMODE(gp) ? GrCurrentContext() : NULL),
-               (GrContext *)(RAMMODE(gp) ? GrCurrentContext() : NULL));
+	       (GrContext *)(RAMMODE(gp) ? GrCurrentContext() : NULL),
+	       (GrContext *)(RAMMODE(gp) ? GrCurrentContext() : NULL));
   if (!BLIT_FAIL(gp) && !ram) {
     GrContext rc;
     GrContext *rcp = GrCreateContext(gp->w,gp->h,NULL,&rc);
@@ -621,11 +622,11 @@ int identical_measured(gvmode *tm) {
   int i;
   for (i=0; i < nmodes; ++i) {
     if (tm      != &rammodes[i]    &&
-        tm->fm  == rammodes[i].fm  &&
-        tm->w   == rammodes[i].w   &&
-        tm->h   == rammodes[i].h   &&
-        tm->bpp == rammodes[i].bpp &&
-        MEASURED(&rammodes[i])        ) return (1);
+	tm->fm  == rammodes[i].fm  &&
+	tm->w   == rammodes[i].w   &&
+	tm->h   == rammodes[i].h   &&
+	tm->bpp == rammodes[i].bpp &&
+	MEASURED(&rammodes[i])        ) return (1);
   }
   return 0;
 }
@@ -692,64 +693,64 @@ void speedcheck(gvmode *gp, int wait) {
 
 int collectmodes(const GrVideoDriver *drv)
 {
-        gvmode *gp = grmodes;
-        GrFrameMode fm;
-        const GrVideoMode *mp;
-        for(fm =GR_firstGraphicsFrameMode;
-              fm <= GR_lastGraphicsFrameMode; fm++) {
-            for(mp = GrFirstVideoMode(fm); mp; mp = GrNextVideoMode(mp)) {
-                gp->fm    = fm;
-                gp->w     = mp->width;
-                gp->h     = mp->height;
-                gp->bpp   = mp->bpp;
-                gp->flags = 0;
-                gp++;
-                if (gp-grmodes >= MAX_MODES) return MAX_MODES;
-            }
-        }
-        return(int)(gp-grmodes);
+	gvmode *gp = grmodes;
+	GrFrameMode fm;
+	const GrVideoMode *mp;
+	for(fm =GR_firstGraphicsFrameMode;
+	      fm <= GR_lastGraphicsFrameMode; fm++) {
+	    for(mp = GrFirstVideoMode(fm); mp; mp = GrNextVideoMode(mp)) {
+		gp->fm    = fm;
+		gp->w     = mp->width;
+		gp->h     = mp->height;
+		gp->bpp   = mp->bpp;
+		gp->flags = 0;
+		gp++;
+		if (gp-grmodes >= MAX_MODES) return MAX_MODES;
+	    }
+	}
+	return(int)(gp-grmodes);
 }
 
 int vmcmp(const void *m1,const void *m2)
 {
-        gvmode *md1 = (gvmode *)m1;
-        gvmode *md2 = (gvmode *)m2;
-        if(md1->bpp != md2->bpp) return(md1->bpp - md2->bpp);
-        if(md1->w   != md2->w  ) return(md1->w   - md2->w  );
-        if(md1->h   != md2->h  ) return(md1->h   - md2->h  );
-        return(0);
+	gvmode *md1 = (gvmode *)m1;
+	gvmode *md2 = (gvmode *)m2;
+	if(md1->bpp != md2->bpp) return(md1->bpp - md2->bpp);
+	if(md1->w   != md2->w  ) return(md1->w   - md2->w  );
+	if(md1->h   != md2->h  ) return(md1->h   - md2->h  );
+	return(0);
 }
 
 #define LINES   20
 #define COLUMNS 80
 
 void ModeText(int i, int shrt,char *mdtxt) {
-        char *flg;
+	char *flg;
 
-        if (MEASURED(&grmodes[i])) flg = " #"; else
-        if (TAGGED(&grmodes[i]))   flg = " *"; else
-                                   flg = ") ";
-        switch (shrt) {
-          case 2 : sprintf(mdtxt,"%2d%s %dx%d ", i+1, flg, grmodes[i].w, grmodes[i].h);
-                   break;
-          case 1 : sprintf(mdtxt,"%2d%s %4dx%-4d ", i+1, flg, grmodes[i].w, grmodes[i].h);
-                   break;
-          default: sprintf(mdtxt,"  %2d%s  %4dx%-4d ", i+1, flg, grmodes[i].w, grmodes[i].h);
-                   break;
-        }
-        mdtxt += strlen(mdtxt);
+	if (MEASURED(&grmodes[i])) flg = " #"; else
+	if (TAGGED(&grmodes[i]))   flg = " *"; else
+				   flg = ") ";
+	switch (shrt) {
+	  case 2 : sprintf(mdtxt,"%2d%s %dx%d ", i+1, flg, grmodes[i].w, grmodes[i].h);
+		   break;
+	  case 1 : sprintf(mdtxt,"%2d%s %4dx%-4d ", i+1, flg, grmodes[i].w, grmodes[i].h);
+		   break;
+	  default: sprintf(mdtxt,"  %2d%s  %4dx%-4d ", i+1, flg, grmodes[i].w, grmodes[i].h);
+		   break;
+	}
+	mdtxt += strlen(mdtxt);
 
-        if (grmodes[i].bpp > 20)
-          sprintf(mdtxt, "%ldM", 1L << (grmodes[i].bpp-20));
-        else  if (grmodes[i].bpp > 10)
-          sprintf(mdtxt, "%ldk", 1L << (grmodes[i].bpp-10));
-        else
-          sprintf(mdtxt, "%ld", 1L << grmodes[i].bpp);
-        switch (shrt) {
-          case 2 : break;
-          case 1 : strcat(mdtxt, " col"); break;
-          default: strcat(mdtxt, " colors"); break;
-        }
+	if (grmodes[i].bpp > 20)
+	  sprintf(mdtxt, "%ldM", 1L << (grmodes[i].bpp-20));
+	else  if (grmodes[i].bpp > 10)
+	  sprintf(mdtxt, "%ldk", 1L << (grmodes[i].bpp-10));
+	else
+	  sprintf(mdtxt, "%ld", 1L << grmodes[i].bpp);
+	switch (shrt) {
+	  case 2 : break;
+	  case 1 : strcat(mdtxt, " col"); break;
+	  default: strcat(mdtxt, " colors"); break;
+	}
 }
 
 int ColsCheck(int cols, int ml, int sep) {
@@ -760,137 +761,137 @@ int ColsCheck(int cols, int ml, int sep) {
 }
 
 void PrintModes(void) {
-        char mdtxt[100];
-        unsigned int maxlen;
-        int i, n, shrt, c, cols;
+	char mdtxt[100];
+	unsigned int maxlen;
+	int i, n, shrt, c, cols;
 
-        cols = (nmodes+LINES-1) / LINES;
-        do {
-          for (shrt = 0; shrt <= 2; ++shrt) {
-            maxlen = 0;
-            for (i = 0; i < nmodes; ++i) {
-              ModeText(i,shrt,mdtxt);
-              if (strlen(mdtxt) > maxlen) maxlen = strlen(mdtxt);
-            }
-            n = 2;
-            if (cols>1 || shrt<2) {
-              if (!ColsCheck(cols, maxlen, n)) continue;
-              while (ColsCheck(cols, maxlen, n+1) && n < 4) ++n;
-            }
-            c = 0;
-            for (i = 0; i < nmodes; ++i) {
-              if (++c == cols) c = 0;
-              ModeText(i,shrt,mdtxt);
-              printf("%*s%s", (c ? -((int)(maxlen+n)) : -((int)maxlen)), mdtxt, (c || (i+1==nmodes) ? "" : "\n") );
-            }
-            return;
-          }
-          --cols;
-        } while (1);
+	cols = (nmodes+LINES-1) / LINES;
+	do {
+	  for (shrt = 0; shrt <= 2; ++shrt) {
+	    maxlen = 0;
+	    for (i = 0; i < nmodes; ++i) {
+	      ModeText(i,shrt,mdtxt);
+	      if (strlen(mdtxt) > maxlen) maxlen = strlen(mdtxt);
+	    }
+	    n = 2;
+	    if (cols>1 || shrt<2) {
+	      if (!ColsCheck(cols, maxlen, n)) continue;
+	      while (ColsCheck(cols, maxlen, n+1) && n < 4) ++n;
+	    }
+	    c = 0;
+	    for (i = 0; i < nmodes; ++i) {
+	      if (++c == cols) c = 0;
+	      ModeText(i,shrt,mdtxt);
+	      printf("%*s%s", (c ? -((int)(maxlen+n)) : -((int)maxlen)), mdtxt, (c || (i+1==nmodes) ? "" : "\n") );
+	    }
+	    return;
+	  }
+	  --cols;
+	} while (1);
 }
 
 int main(int argc, char **argv)
 {
-        int  i;
+	int  i;
 
-        grmodes = malloc(MAX_MODES*sizeof(gvmode));
-        assert(grmodes!=NULL);
+	grmodes = malloc(MAX_MODES*sizeof(gvmode));
+	assert(grmodes!=NULL);
 #if MEASURE_RAM_MODES
-        rammodes = malloc(MAX_MODES*sizeof(gvmode));
-        assert(rammodes!=NULL);
+	rammodes = malloc(MAX_MODES*sizeof(gvmode));
+	assert(rammodes!=NULL);
 #endif
 
-        GrSetDriver(NULL);
-        if(GrCurrentVideoDriver() == NULL) {
-            printf("No graphics driver found\n");
-            exit(1);
-        }
+	GrSetDriver(NULL);
+	if(GrCurrentVideoDriver() == NULL) {
+	    printf("No graphics driver found\n");
+	    exit(1);
+	}
 
-        nmodes = collectmodes(GrCurrentVideoDriver());
-        if(nmodes == 0) {
-            printf("No graphics modes found\n");
-            exit(1);
-        }
-        qsort(grmodes,nmodes,sizeof(grmodes[0]),vmcmp);
+	nmodes = collectmodes(GrCurrentVideoDriver());
+	if(nmodes == 0) {
+	    printf("No graphics modes found\n");
+	    exit(1);
+	}
+	qsort(grmodes,nmodes,sizeof(grmodes[0]),vmcmp);
 #if MEASURE_RAM_MODES
-        for (i=0; i < nmodes; ++i) {
-          rammodes[i].fm    = GR_frameUndef;      /* filled in later */
-          rammodes[i].w     = grmodes[i].w;
-          rammodes[i].h     = grmodes[i].h;
-          rammodes[i].bpp   = grmodes[i].bpp;
-          rammodes[i].flags = FLG_rammode;
-        }
+	for (i=0; i < nmodes; ++i) {
+	  rammodes[i].fm    = GR_frameUndef;      /* filled in later */
+	  rammodes[i].w     = grmodes[i].w;
+	  rammodes[i].h     = grmodes[i].h;
+	  rammodes[i].bpp   = grmodes[i].bpp;
+	  rammodes[i].flags = FLG_rammode;
+	}
 #endif
 
-        if(argc >= 2 && (i = atoi(argv[1])) >= 1 && i <= nmodes) {
-            speedcheck(&grmodes[i - 1], 0);
-            return(0);
-        }
+	if(argc >= 2 && (i = atoi(argv[1])) >= 1 && i <= nmodes) {
+	    speedcheck(&grmodes[i - 1], 0);
+	    return(0);
+	}
 
-        first_speedcheck = 1;
-        for( ; ; ) {
-            char mb[41], *m = mb;
-            int tflag = 0;
-            GrSetMode(GR_default_text);
-            printf(
-                "Graphics driver: \"%s\"\t"
-                "graphics defaults: %dx%d %ld colors\n",
-                GrCurrentVideoDriver()->name,
-                GrDriverInfo->defgw,
-                GrDriverInfo->defgh,
-                (long)GrDriverInfo->defgc
-            );
-            PrintModes();
-            printf("\nEnter #, 't#' toggels tag, 'm' measure tagged and 'q' to quit> ");
-            fflush(stdout);
-            if(!fgets(m,40,stdin)) continue;
-            switch (*m) {
-              case 't':
-              case 'T': tflag = 1;
-                        ++m;
-                        break;
-              case 'A':
-              case 'a': for (i=0; i < nmodes; ++i)
-                          SET_TAGGED(&grmodes[i]);
-                        break;
-              case 'M':
-              case 'm': for (i=0; i < nmodes; ++i)
-                          if (TAGGED(&grmodes[i])) {
-                            speedcheck(&grmodes[i], 0);
-                            TOGGLE_TAGGED(&grmodes[i]);
-                          }
-                        break;
-              case 'Q':
-              case 'q': goto done;
-            }
-            if ((sscanf(m,"%d",&i) != 1) || (i < 1) || (i > nmodes))
-                continue;
-            i--;
-            if (tflag) TOGGLE_TAGGED(&grmodes[i]);
-                  else speedcheck(&grmodes[i], 1);
-        }
+	first_speedcheck = 1;
+	for( ; ; ) {
+	    char mb[41], *m = mb;
+	    int tflag = 0;
+	    GrSetMode(GR_default_text);
+	    printf(
+		"Graphics driver: \"%s\"\t"
+		"graphics defaults: %dx%d %ld colors\n",
+		GrCurrentVideoDriver()->name,
+		GrDriverInfo->defgw,
+		GrDriverInfo->defgh,
+		(long)GrDriverInfo->defgc
+	    );
+	    PrintModes();
+	    printf("\nEnter #, 't#' toggels tag, 'm' measure tagged and 'q' to quit> ");
+	    fflush(stdout);
+	    if(!fgets(m,40,stdin)) continue;
+	    switch (*m) {
+	      case 't':
+	      case 'T': tflag = 1;
+			++m;
+			break;
+	      case 'A':
+	      case 'a': for (i=0; i < nmodes; ++i)
+			  SET_TAGGED(&grmodes[i]);
+			break;
+	      case 'M':
+	      case 'm': for (i=0; i < nmodes; ++i)
+			  if (TAGGED(&grmodes[i])) {
+			    speedcheck(&grmodes[i], 0);
+			    TOGGLE_TAGGED(&grmodes[i]);
+			  }
+			break;
+	      case 'Q':
+	      case 'q': goto done;
+	    }
+	    if ((sscanf(m,"%d",&i) != 1) || (i < 1) || (i > nmodes))
+		continue;
+	    i--;
+	    if (tflag) TOGGLE_TAGGED(&grmodes[i]);
+		  else speedcheck(&grmodes[i], 1);
+	}
 done:
-        if (measured_any) {
-            int i;
-            FILE *log = fopen("speedtst.log", "a");
+	if (measured_any) {
+	    int i;
+	    FILE *log = fopen("speedtst.log", "a");
 
-            if (!log) exit(1);
+	    if (!log) exit(1);
 
-            fprintf( log, "\nGraphics driver: \"%s\"\n\n",
-                                               GrCurrentVideoDriver()->name);
-            printf("Results: \n");
-            printresultheader(log);
+	    fprintf( log, "\nGraphics driver: \"%s\"\n\n",
+					       GrCurrentVideoDriver()->name);
+	    printf("Results: \n");
+	    printresultheader(log);
 
-            for (i=0; i < nmodes; ++i)
-              if (MEASURED(&grmodes[i]))
-                printresultline(log, &grmodes[i]);
+	    for (i=0; i < nmodes; ++i)
+	      if (MEASURED(&grmodes[i]))
+		printresultline(log, &grmodes[i]);
 #if MEASURE_RAM_MODES
-            for (i=0; i < nmodes; ++i)
-              if (MEASURED(&rammodes[i]))
-                printresultline(log, &rammodes[i]);
+	    for (i=0; i < nmodes; ++i)
+	      if (MEASURED(&rammodes[i]))
+		printresultline(log, &rammodes[i]);
 #endif
-            fclose(log);
-        }
-        return(0);
+	    fclose(log);
+	}
+	return(0);
 }
 

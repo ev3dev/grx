@@ -39,10 +39,10 @@ GrImage *GrImageBuild(const char *pixels,int w,int h,const GrColorTableP colors)
     do {
       xx = 0;
       do {
-        col = peek_b(pixels);
-        ptrinc(pixels,1);
-        if ( colors ) col = GR_CTABLE_COLOR(colors,col);
-        (*CURC->gc_driver->drawpixel)(xx, yy, (col & C_COLOR));
+	col = peek_b(pixels);
+	ptrinc(pixels,1);
+	if ( colors ) col = GR_CTABLE_COLOR(colors,col);
+	(*CURC->gc_driver->drawpixel)(xx, yy, (col & C_COLOR));
       } while(++xx < w);
     } while(++yy < h);
     *CURC = save;

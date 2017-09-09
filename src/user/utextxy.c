@@ -22,7 +22,7 @@
 
 void GrUsrTextXY(int x,int y,char *text,GrColor fg,GrColor bg)
 {
-        U2SX(x,CURC);
-        U2SY(y,CURC);
-        GrTextXY(x,y,text,fg,bg);
+	U2SX(x,CURC);
+	U2SY(y,CURC);
+	GrTextXY(x,y,text,fg,bg);
 }

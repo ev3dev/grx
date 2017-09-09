@@ -45,7 +45,7 @@ typedef struct _GR_fontFileHeaderGRX {  /* the header */
     GR_int16u minchar;                /* lowest character code in font */
     GR_int16u maxchar;                /* highest character code in font */
     GR_int16u isfixed;                /* nonzero if fixed font */
-    GR_int16u reserved;               /* ??? */
+    GR_int16u encoding;               /* font encoding (0=unknown) */
     GR_int16u baseline;               /* baseline from top of font */
     GR_int16u undwidth;               /* underline width (at bottom) */
     char      fnname[GRX_NAMEWIDTH];  /* font file name (w/o path) */

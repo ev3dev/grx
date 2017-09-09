@@ -18,7 +18,7 @@
  **
  ** Contributions by:
  ** 070505 M.Alvarez, Using a Pixmap for BackingStore
- **
+ ** 170714 Use BStore only if not generated GREV_EXPOSE events
  **/
 
 #ifndef _LIBXWIN_H_
@@ -29,8 +29,6 @@
 #include <X11/Xutil.h>
 #include <string.h>
 #include <unistd.h>
-
-#define USE_PIXMAP_FOR_BS 1  // 1 = use a pixmap for backing store
 
 #if defined(XF86DGA_DRIVER)
 #include <X11/extensions/xf86dga.h>
@@ -46,9 +44,11 @@ extern Window           _XGrWindow;
 extern Pixmap           _XGrBitmap;
 extern Pixmap           _XGrPattern;
 extern Pixmap           _XGrBStore;
+extern Drawable         _XGRActDrawable;
 extern GC               _XGrGC;
 extern GC               _XGrBitmapGC;
 extern GC               _XGrPatternGC;
+extern GC               _XGrDefaultGC;
 extern XIM              _XGrXim;
 extern XIC              _XGrXic;
 extern unsigned long    _XGrForeColor;
@@ -60,6 +60,7 @@ extern unsigned int     _XGrMaxWidth;
 extern unsigned int     _XGrMaxHeight;
 extern int              _XGrBStoreInited;
 extern int              _XGrFullScreen;
+extern int              _XGrGenExposeEvents;
 
 extern unsigned long   _XGrColorPlanes[8];
 extern unsigned int    _XGrColorNumPlanes;

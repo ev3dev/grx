@@ -34,7 +34,7 @@ static element **done  = NULL;       /* bitmap of already processed pixel */
 static element **start = NULL;       /* pixel that need to be processed */
 static unsigned elements;            /* no. bytes in each bitmap line */
 static line_index *start_flg = NULL; /* !=0: index+1 of first start element !=0 */
-                                     /* ==0: nothing to do */
+				     /* ==0: nothing to do */
 
 #define bits_per_element  (sizeof(element)*8)
 #define offset_div        (bits_per_element)
@@ -113,7 +113,7 @@ static INLINE
 void SetStartFlag(int x, int y) {
     int _x = calc_ofs(x);
     if (   !start_flg[y]
-        || _x<start_flg[y] ) start_flg[y] = _x+1;
+	|| _x<start_flg[y] ) start_flg[y] = _x+1;
 }
 
 /* -------- screen & buffer fill functions
@@ -133,9 +133,9 @@ static void fill(int x, int y) {
   (*_filler)(sx+lxo,y+lyo,x-sx+1,_fa);
   mark_line( done, sx, x, y);
   if (y>0)  { mark_line( start, sx, x, y-1);
-              SetStartFlag(sx,y-1);          }
+	      SetStartFlag(sx,y-1);          }
   if (y<my) { mark_line( start, sx, x, y+1);
-              SetStartFlag(sx,y+1);          }
+	      SetStartFlag(sx,y+1);          }
 }
 
 /* -------- find fill area
@@ -154,32 +154,32 @@ static void work(void) {
     while (0 <= top && top <= my) {
 ThisLine:
       if ( (s=start[top]) != NULL && start_flg[top]) {
-        unsigned i;
-        if ( (d=done[top]) != NULL) {
-          i= start_flg[top]-1; /* start_flg[top] > 1 here */
-          s += i; d += i;
-          for ( ; i < elements ; ++i)
-             *(s++) &= ~*(d++);
-          s = start[top];
-        }
-        i=start_flg[top]-1; start_flg[top] = 0;
-        for ( s += i; i < elements ; ++i, ++s)
-          if (*s) {
-            element b = 1;
-            int x = i*offset_div;
-            do {
-              while ( !(*s&b)) { ++x; b <<= 1; }
-              if (test_screen(x,top)) {
-                set_pix(done,x,top);
-                *s ^= b;
-              } else {
-                SetStartFlag(x,top);
-                fill(x,top);
-                rescan = 1;
-                goto ThisLine;
-              }
-            } while (*s);
-          }
+	unsigned i;
+	if ( (d=done[top]) != NULL) {
+	  i= start_flg[top]-1; /* start_flg[top] > 1 here */
+	  s += i; d += i;
+	  for ( ; i < elements ; ++i)
+	     *(s++) &= ~*(d++);
+	  s = start[top];
+	}
+	i=start_flg[top]-1; start_flg[top] = 0;
+	for ( s += i; i < elements ; ++i, ++s)
+	  if (*s) {
+	    element b = 1;
+	    int x = i*offset_div;
+	    do {
+	      while ( !(*s&b)) { ++x; b <<= 1; }
+	      if (test_screen(x,top)) {
+		set_pix(done,x,top);
+		*s ^= b;
+	      } else {
+		SetStartFlag(x,top);
+		fill(x,top);
+		rescan = 1;
+		goto ThisLine;
+	      }
+	    } while (*s);
+	  }
       }
       top += dir;
     }
@@ -232,7 +232,7 @@ FreeMem:
     int i;
     for (i=my; i >= 0; --i)
       if (done[i] != NULL)
-        free(done[i]);
+	free(done[i]);
     free(done);
     done = NULL;
   }
@@ -240,7 +240,7 @@ FreeMem:
     int i;
     for (i=my; i >= 0; --i)
       if (start[i] != NULL)
-        free(start[i]);
+	free(start[i]);
     free(start);
     start = NULL;
   }

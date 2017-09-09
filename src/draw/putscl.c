@@ -29,17 +29,17 @@ void GrPutScanline(int x1,int x2,int yy,const GrColor *c, GrColor op)
 /*         are implementation dependend.                            */
 /*         => You can't supply operation code with the pixel data!  */
 {
-        int xs;
-        isort(x1,x2);
-        xs = x1;
-        clip_hline(CURC,x1,x2,yy);
-        mouse_block(CURC,x1,yy,x2,yy);
-        (*FDRV->putscanline)(
-            x1 + CURC->gc_xoffset,
-            yy + CURC->gc_yoffset,
-            x2 - x1 + 1,
-            &c[x1-xs],  /* adjust pixel pointer when clipped */
-            op
-        );
-        mouse_unblock();
+	int xs;
+	isort(x1,x2);
+	xs = x1;
+	clip_hline(CURC,x1,x2,yy);
+	mouse_block(CURC,x1,yy,x2,yy);
+	(*FDRV->putscanline)(
+	    x1 + CURC->gc_xoffset,
+	    yy + CURC->gc_yoffset,
+	    x2 - x1 + 1,
+	    &c[x1-xs],  /* adjust pixel pointer when clipped */
+	    op
+	);
+	mouse_unblock();
 }

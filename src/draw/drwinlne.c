@@ -20,17 +20,17 @@
 
 void (GrPlotNC)(int x,int y,GrColor c)
 {
-        GrPlotNC(x,y,c);
+	GrPlotNC(x,y,c);
 }
 
 GrColor (GrPixelNC)(int x,int y)
 {
-        return(GrPixelNC(x,y));
+	return(GrPixelNC(x,y));
 }
 
 GrColor (GrPixelCNC)(GrContext *c,int x,int y)
 {
-        return(GrPixelCNC(c,x,y));
+	return(GrPixelCNC(c,x,y));
 }
 
 

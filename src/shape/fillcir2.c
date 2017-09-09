@@ -21,6 +21,6 @@
 
 void GrFilledCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c)
 {
-        GrFilledEllipseArc(xc,yc,r,r,start,end,style,c);
+	GrFilledEllipseArc(xc,yc,r,r,start,end,style,c);
 }
 

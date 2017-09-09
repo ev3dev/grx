@@ -40,44 +40,44 @@ void name(void)
 
 int main(int argc,char **argv)
 {
-        int  x = 0;
-        int  y = 0;
-        long c = 0;
+	int  x = 0;
+	int  y = 0;
+	long c = 0;
 
-        Argc = argc - 1;
-        Argv = argv + 1;
-        if((Argc >= 2) &&
-           (sscanf(Argv[0],"%d",&x) == 1) && (x >= 320) &&
-           (sscanf(Argv[1],"%d",&y) == 1) && (y >= 200)) {
-                Argc -= 2;
-                Argv += 2;
-                if (Argc > 0) {
-                   char *endp;
-                   c = strtol(Argv[0], &endp, 0);
-                   switch (*endp) {
-                     case 'k':
-                     case 'K': c <<= 10; break;
-                     case 'm':
-                     case 'M': c <<= 20; break;
-                   }
-                   Argc--;
-                   Argv++;
-                }
-        }
-        if(c >= 2)
-                GrSetMode(GR_width_height_color_graphics,x,y,c);
-        else if((x >= 320) && (y >= 200))
-                GrSetMode(GR_width_height_graphics,x,y);
-        else GrSetMode(GR_default_graphics);
-        GrEventInit();
-        GrMouseDisplayCursor();
-        (*testfunc)();
-        GrEventUnInit();
-        GrSetMode(GR_default_text);
-        if(strlen(exit_message) > 0) {
-                puts(exit_message);
-        }
-        return(0);
+	Argc = argc - 1;
+	Argv = argv + 1;
+	if((Argc >= 2) &&
+	   (sscanf(Argv[0],"%d",&x) == 1) && (x >= 320) &&
+	   (sscanf(Argv[1],"%d",&y) == 1) && (y >= 200)) {
+		Argc -= 2;
+		Argv += 2;
+		if (Argc > 0) {
+		   char *endp;
+		   c = strtol(Argv[0], &endp, 0);
+		   switch (*endp) {
+		     case 'k':
+		     case 'K': c <<= 10; break;
+		     case 'm':
+		     case 'M': c <<= 20; break;
+		   }
+		   Argc--;
+		   Argv++;
+		}
+	}
+	if(c >= 2)
+		GrSetMode(GR_width_height_color_graphics,x,y,c);
+	else if((x >= 320) && (y >= 200))
+		GrSetMode(GR_width_height_graphics,x,y);
+	else GrSetMode(GR_default_graphics);
+	GrEventInit();
+	GrMouseDisplayCursor();
+	(*testfunc)();
+	GrEventUnInit();
+	GrSetMode(GR_default_text);
+	if(strlen(exit_message) > 0) {
+		puts(exit_message);
+	}
+	return(0);
 }
 
 #endif /* _TEST_H_ */

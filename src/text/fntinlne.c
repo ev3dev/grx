@@ -18,63 +18,38 @@
 
 #include "libgrx.h"
 
-int (GrFontCharPresent)(const GrFont *font,int chr)
+int (GrFontCharPresent)(const GrFont *font,unsigned int chr)
 {
-        return(GrFontCharPresent(font,chr));
+	return(GrFontCharPresent(font,chr));
 }
 
-int (GrFontCharWidth)(const GrFont *font,int chr)
+int (GrFontCharWidth)(const GrFont *font,unsigned int chr)
 {
-        return(GrFontCharWidth(font,chr));
+	return(GrFontCharWidth(font,chr));
 }
 
-int (GrFontCharHeight)(const GrFont *font,int chr)
+int (GrFontCharHeight)(const GrFont *font,unsigned int chr)
 {
-        return(GrFontCharHeight(font,chr));
+	return(GrFontCharHeight(font,chr));
 }
 
-int (GrFontCharBmpRowSize)(const GrFont *font,int chr)
+int (GrFontCharBmpRowSize)(const GrFont *font,unsigned int chr)
 {
-        return(GrFontCharBmpRowSize(font,chr));
+	return(GrFontCharBmpRowSize(font,chr));
 }
 
-int (GrFontCharBitmapSize)(const GrFont *font,int chr)
+int (GrFontCharBitmapSize)(const GrFont *font,unsigned int chr)
 {
-        return(GrFontCharBitmapSize(font,chr));
+	return(GrFontCharBitmapSize(font,chr));
 }
 
-int (GrFontStringWidth)(const GrFont *font,void *text,int len,int type)
+char *(GrFontCharBitmap)(const GrFont *font,unsigned int chr)
 {
-        return(GrFontStringWidth(font,text,len,type));
+	return(GrFontCharBitmap(font,chr));
 }
 
-int (GrFontStringHeight)(const GrFont *font,void *text,int len,int type)
+char *(GrFontCharAuxBmp)(GrFont *font,unsigned int chr,int dir,int ul)
 {
-        return(GrFontStringHeight(font,text,len,type));
-}
-
-char *(GrFontCharBitmap)(const GrFont *font,int chr)
-{
-        return(GrFontCharBitmap(font,chr));
-}
-
-char *(GrFontCharAuxBmp)(GrFont *font,int chr,int dir,int ul)
-{
-        return(GrFontCharAuxBmp(font,chr,dir,ul));
-}
-
-int (GrStringWidth)(void *text,int length,const GrTextOption *opt)
-{
-        return(GrStringWidth(text,length,opt));
-}
-
-int (GrStringHeight)(void *text,int length,const GrTextOption *opt)
-{
-        return(GrStringHeight(text,length,opt));
-}
-
-void (GrStringSize)(void *text,int length,const GrTextOption *opt,int *w,int *h)
-{
-        GrStringSize(text,length,opt,w,h);
+	return(GrFontCharAuxBmp(font,chr,dir,ul));
 }
 

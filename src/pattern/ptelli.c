@@ -33,13 +33,13 @@ void GrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp) {
     points = ALLOC(sizeof(int) * 2 * GR_MAX_ELLIPSE_POINTS);
     if (points != NULL)
     {
-        int numpts = GrGenerateEllipse(xc,yc,xa,ya,points);
-        GrFillArg fval;
+	int numpts = GrGenerateEllipse(xc,yc,xa,ya,points);
+	GrFillArg fval;
 
-        fval.p = lp->lnp_pattern;
-        _GrDrawCustomPolygon(numpts,points,lp->lnp_option,
-                             &_GrPatternFiller,fval,TRUE,TRUE);
-        FREE(points);
+	fval.p = lp->lnp_pattern;
+	_GrDrawCustomPolygon(numpts,points,lp->lnp_option,
+			     &_GrPatternFiller,fval,TRUE,TRUE);
+	FREE(points);
     }
     reset_ALLOC();
 }

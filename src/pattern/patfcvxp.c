@@ -25,9 +25,9 @@
 
 void GrPatternFilledConvexPolygon(int n,int pt[][2],GrPattern *p)
 {
-        GrFillArg fa;
+	GrFillArg fa;
 
-        fa.p = p;
-        _GrScanConvexPoly(n,pt,&_GrPatternFiller,fa);
+	fa.p = p;
+	_GrScanConvexPoly(n,pt,&_GrPatternFiller,fa);
 }
 

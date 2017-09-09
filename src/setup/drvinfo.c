@@ -29,80 +29,80 @@ struct _GR_driverInfo _GrDriverInfo = {
     NULL,                               /* video driver */
     &DRVINFO->actmode,                  /* current video mode pointer */
     {                                   /* current video mode struct */
-        FALSE,                          /* present */
-        4,                              /* bpp */
-        80,25,                          /* geometry */
-        3,                              /* BIOS mode */
-        160,                            /* lineoffset */
-        0,                              /* private */
+	FALSE,                          /* present */
+	4,                              /* bpp */
+	80,25,                          /* geometry */
+	3,                              /* BIOS mode */
+	160,                            /* lineoffset */
+	0,                              /* private */
 #ifdef __MSDOS__
-        &_GrViDrvEGAVGAtextModeExt      /* extended info */
+	&_GrViDrvEGAVGAtextModeExt      /* extended info */
 #else
         NULL
 #endif
     },
     {                                   /* current frame driver */
-        GR_frameUndef,                  /* frame mode */
-        GR_frameUndef,                  /* compatible RAM frame mode */
-        FALSE,                          /* onscreen */
-        1,                              /* line width alignment */
-        1,                              /* number of planes */
-        0,                              /* bits per pixel */
-        0L,                             /* max plane size the code can handle */
-        NULL,
-        (GrColor (*)(GrFrame*,int,int))                               dummyframefn,
-        (void (*)(int,int,GrColor))                                   dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,int,char*,int,int,GrColor,GrColor))     dummyframefn,
-        (void (*)(int,int,int,char,GrColor,GrColor))                  dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
+	GR_frameUndef,                  /* frame mode */
+	GR_frameUndef,                  /* compatible RAM frame mode */
+	FALSE,                          /* onscreen */
+	1,                              /* line width alignment */
+	1,                              /* number of planes */
+	0,                              /* bits per pixel */
+	0L,                             /* max plane size the code can handle */
+	NULL,
+	(GrColor (*)(GrFrame*,int,int))                               dummyframefn,
+	(void (*)(int,int,GrColor))                                   dummyframefn,
+	(void (*)(int,int,int,int,GrColor))                           dummyframefn,
+	(void (*)(int,int,int,GrColor))                               dummyframefn,
+	(void (*)(int,int,int,GrColor))                               dummyframefn,
+	(void (*)(int,int,int,int,GrColor))                           dummyframefn,
+	(void (*)(int,int,int,int,char*,int,int,GrColor,GrColor))     dummyframefn,
+	(void (*)(int,int,int,char,GrColor,GrColor))                  dummyframefn,
+	(void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
+	(void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
+	(void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
     },
     {                                   /* screen frame driver */
-        GR_frameUndef,                  /* frame mode */
-        GR_frameUndef,                  /* compatible RAM frame mode */
-        FALSE,                          /* onscreen */
-        1,                              /* line width alignment */
-        1,                              /* number of planes */
-        0,                              /* bits per pixel */
-        0L,                             /* max plane size the code can handle */
-        NULL,
-        (GrColor (*)(GrFrame*,int,int))                               dummyframefn,
-        (void (*)(int,int,GrColor))                                   dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,int,char*,int,int,GrColor,GrColor))     dummyframefn,
-        (void (*)(int,int,int,char,GrColor,GrColor))                  dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
+	GR_frameUndef,                  /* frame mode */
+	GR_frameUndef,                  /* compatible RAM frame mode */
+	FALSE,                          /* onscreen */
+	1,                              /* line width alignment */
+	1,                              /* number of planes */
+	0,                              /* bits per pixel */
+	0L,                             /* max plane size the code can handle */
+	NULL,
+	(GrColor (*)(GrFrame*,int,int))                               dummyframefn,
+	(void (*)(int,int,GrColor))                                   dummyframefn,
+	(void (*)(int,int,int,int,GrColor))                           dummyframefn,
+	(void (*)(int,int,int,GrColor))                               dummyframefn,
+	(void (*)(int,int,int,GrColor))                               dummyframefn,
+	(void (*)(int,int,int,int,GrColor))                           dummyframefn,
+	(void (*)(int,int,int,int,char*,int,int,GrColor,GrColor))     dummyframefn,
+	(void (*)(int,int,int,char,GrColor,GrColor))                  dummyframefn,
+	(void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
+	(void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
+	(void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
     },
     {                                   /* dummy text mode frame driver */
-        GR_frameText,                   /* frame mode */
-        GR_frameUndef,                  /* compatible RAM frame mode */
-        TRUE,                           /* onscreen */
-        1,                              /* line width alignment */
-        1,                              /* number of planes */
-        16,                             /* bits per pixel */
-        0L,                             /* max plane size the code can handle */
-        NULL,
-        (GrColor (*)(GrFrame*,int,int))                               dummyframefn,
-        (void (*)(int,int,GrColor))                                   dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,GrColor))                               dummyframefn,
-        (void (*)(int,int,int,int,GrColor))                           dummyframefn,
-        (void (*)(int,int,int,int,char*,int,int,GrColor,GrColor))     dummyframefn,
-        (void (*)(int,int,int,char,GrColor,GrColor))                  dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
-        (void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
+	GR_frameText,                   /* frame mode */
+	GR_frameUndef,                  /* compatible RAM frame mode */
+	TRUE,                           /* onscreen */
+	1,                              /* line width alignment */
+	1,                              /* number of planes */
+	16,                             /* bits per pixel */
+	0L,                             /* max plane size the code can handle */
+	NULL,
+	(GrColor (*)(GrFrame*,int,int))                               dummyframefn,
+	(void (*)(int,int,GrColor))                                   dummyframefn,
+	(void (*)(int,int,int,int,GrColor))                           dummyframefn,
+	(void (*)(int,int,int,GrColor))                               dummyframefn,
+	(void (*)(int,int,int,GrColor))                               dummyframefn,
+	(void (*)(int,int,int,int,GrColor))                           dummyframefn,
+	(void (*)(int,int,int,int,char*,int,int,GrColor,GrColor))     dummyframefn,
+	(void (*)(int,int,int,char,GrColor,GrColor))                  dummyframefn,
+	(void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
+	(void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn,
+	(void (*)(GrFrame*,int,int,GrFrame*,int,int,int,int,GrColor)) dummyframefn
     },
     GR_default_text,                            /* current mode code */
     80,25,                                      /* default text size */
@@ -121,19 +121,19 @@ struct _GR_driverInfo _GrDriverInfo = {
 
 static GrColor dummyframefn(void)
 {
-        if(DRVINFO->errsfatal) {
-            _GrCloseVideoDriver();
-            fprintf(stderr,
-                "GRX Error: graphics operation attempted %s\n",
-                (DRVINFO->fdriver.mode == GR_frameText) ? "in text mode" : "before mode set"
-            );
-            exit(1);
-        }
-        return(GrNOCOLOR);
+	if(DRVINFO->errsfatal) {
+	    _GrCloseVideoDriver();
+	    fprintf(stderr,
+		"GRX Error: graphics operation attempted %s\n",
+		(DRVINFO->fdriver.mode == GR_frameText) ? "in text mode" : "before mode set"
+	    );
+	    exit(1);
+	}
+	return(GrNOCOLOR);
 }
 
 void _GrDummyFunction(void)
 {
-        return;
+	return;
 }
 

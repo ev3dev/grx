@@ -97,10 +97,10 @@ void drawpixel(int x,int y,GrColor color)
     ptr = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
     SETFARSEL(CURC->gc_selector);
     switch(C_OPER(color)) {
-        case C_XOR: poke16_xor(ptr,(GR_int16u)color); break;
-        case C_OR:  poke16_or( ptr,(GR_int16u)color); break;
-        case C_AND: poke16_and(ptr,(GR_int16u)color); break;
-        default:    poke16(    ptr,(GR_int16u)color); break;
+	case C_XOR: poke16_xor(ptr,(GR_int16u)color); break;
+	case C_OR:  poke16_or( ptr,(GR_int16u)color); break;
+	case C_AND: poke16_and(ptr,(GR_int16u)color); break;
+	default:    poke16(    ptr,(GR_int16u)color); break;
     }
     GRX_LEAVE();
 }
@@ -114,10 +114,10 @@ static void drawhline(int x,int y,int w,GrColor color)
     cval = freplicate_w(color);
     SETFARSEL(CURC->gc_selector);
     switch(C_OPER(color)) {
-        case C_XOR: repfill16_xor(pp,cval,w); break;
-        case C_OR:  repfill16_or( pp,cval,w); break;
-        case C_AND: repfill16_and(pp,cval,w); break;
-        default:    repfill16(    pp,cval,w); break;
+	case C_XOR: repfill16_xor(pp,cval,w); break;
+	case C_OR:  repfill16_or( pp,cval,w); break;
+	case C_AND: repfill16_and(pp,cval,w); break;
+	default:    repfill16(    pp,cval,w); break;
     }
     GRX_LEAVE();
 }
@@ -131,10 +131,10 @@ static void drawvline(int x,int y,int h,GrColor color)
     pp   = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
     SETFARSEL(CURC->gc_selector);
     switch(C_OPER(color)) {
-        case C_XOR: colfill16_xor(pp,lwdt,(GR_int16u)color,h); break;
-        case C_OR:  colfill16_or( pp,lwdt,(GR_int16u)color,h); break;
-        case C_AND: colfill16_and(pp,lwdt,(GR_int16u)color,h); break;
-        default:    colfill16(    pp,lwdt,(GR_int16u)color,h); break;
+	case C_XOR: colfill16_xor(pp,lwdt,(GR_int16u)color,h); break;
+	case C_OR:  colfill16_or( pp,lwdt,(GR_int16u)color,h); break;
+	case C_AND: colfill16_and(pp,lwdt,(GR_int16u)color,h); break;
+	default:    colfill16(    pp,lwdt,(GR_int16u)color,h); break;
     }
     GRX_LEAVE();
 }
@@ -153,29 +153,29 @@ static void drawblock(int x,int y,int w,int h,GrColor color)
     SETFARSEL(CURC->gc_selector);
     switch (C_OPER(color)) {
       case C_XOR: while (h-- != 0) {
-                    int ww = w;
-                    repfill16_xor(ptr,cval,ww);
-                    ptr += skip;
-                  }
-                  break;
+		    int ww = w;
+		    repfill16_xor(ptr,cval,ww);
+		    ptr += skip;
+		  }
+		  break;
       case C_OR:  while (h-- != 0) {
-                    int ww = w;
-                    repfill16_or(ptr,cval,ww);
-                    ptr += skip;
-                  }
-                  break;
+		    int ww = w;
+		    repfill16_or(ptr,cval,ww);
+		    ptr += skip;
+		  }
+		  break;
       case C_AND: while (h-- != 0) {
-                    int ww = w;
-                    repfill16_and(ptr,cval,ww);
-                    ptr += skip;
-                  }
-                  break;
+		    int ww = w;
+		    repfill16_and(ptr,cval,ww);
+		    ptr += skip;
+		  }
+		  break;
       default:    while (h-- != 0) {
-                    int ww = w;
-                    repfill16(ptr,cval,ww);
-                    ptr += skip;
-                  }
-                  break;
+		    int ww = w;
+		    repfill16(ptr,cval,ww);
+		    ptr += skip;
+		  }
+		  break;
     }
     GRX_LEAVE();
 }
@@ -184,10 +184,10 @@ static void drawblock(int x,int y,int w,int h,GrColor color)
 static void drawline(int x,int y,int dx,int dy,GrColor color)
 {
     struct {
-        int errsub;         /* subtract from error term */
-        int erradd;         /* add to error term when carry */
-        int offset1;        /* add to pointer if no carry on error term */
-        int offset2;        /* add to pointer if carry / banking dir */
+	int errsub;         /* subtract from error term */
+	int erradd;         /* add to error term when carry */
+	int offset1;        /* add to pointer if no carry on error term */
+	int offset2;        /* add to pointer if carry / banking dir */
     } lndata;
     int  npts,error,xstep;
     char *ptr;
@@ -197,89 +197,89 @@ static void drawline(int x,int y,int dx,int dy,GrColor color)
 #   ifdef __GNUC__
 #   ifdef __i386__
 #   define ASM_LINE1(OPC) asm volatile(""              \
-        "   .align 2,0x90                      \n"     \
-        "0: "#OPC"w %6,"ASM_386_SEL"(%0)       \n"     \
-        "   subl %7,%2                         \n"     \
-        "   jb   1f                            \n"     \
-        "   leal -2(%3),%3                     \n"     \
-        "   decl %1                            \n"     \
-        "   jne  0b                            \n"     \
-        "   jmp  2f                            \n"     \
-        "   .align 2,0x90                      \n"     \
-        "1: addl 4  + %7,%2                    \n"     \
-        "   addl 12 + %7,%3                    \n"     \
-        "   decl %1                            \n"     \
-        "   jne  0b                            \n"     \
-        "2: "                                          \
-         : "=r" (ptr), "=r" (npts), "=r" (error)       \
-         : "0" ((long)(ptr)), "1" (npts), "2" (error), \
-           "r" ((short)(color)), "o" (lndata)          \
-        )
+	"   .align 2,0x90                      \n"     \
+	"0: "#OPC"w %6,"ASM_386_SEL"(%0)       \n"     \
+	"   subl %7,%2                         \n"     \
+	"   jb   1f                            \n"     \
+	"   leal -2(%3),%3                     \n"     \
+	"   decl %1                            \n"     \
+	"   jne  0b                            \n"     \
+	"   jmp  2f                            \n"     \
+	"   .align 2,0x90                      \n"     \
+	"1: addl 4  + %7,%2                    \n"     \
+	"   addl 12 + %7,%3                    \n"     \
+	"   decl %1                            \n"     \
+	"   jne  0b                            \n"     \
+	"2: "                                          \
+	 : "=r" (ptr), "=r" (npts), "=r" (error)       \
+	 : "0" ((long)(ptr)), "1" (npts), "2" (error), \
+	   "r" ((short)(color)), "o" (lndata)          \
+	)
 #   define ASM_LINE2(OPC) asm volatile(""              \
-        "   .align 2,0x90                      \n"     \
-        "0: "#OPC"w %6,"ASM_386_SEL"(%0)       \n"     \
-        "   subl %7,%2                         \n"     \
-        "   jb   1f                            \n"     \
-        "   addl 8 + %7,%3                     \n"     \
-        "   decl %1                            \n"     \
-        "   jne  0b                            \n"     \
-        "   jmp  2f                            \n"     \
-        "   .align 2,0x90                      \n"     \
-        "1: addl 4  + %7,%2                    \n"     \
-        "   addl 12 + %7,%3                    \n"     \
-        "   decl %1                            \n"     \
-        "   jne  0b                            \n"     \
-        "2: "                                          \
-         : "=r" (ptr), "=r" (npts), "=r" (error)       \
-         : "0" ((long)(ptr)), "1" (npts), "2" (error), \
-           "r" ((short)(color)), "o" (lndata)          \
-        )
+	"   .align 2,0x90                      \n"     \
+	"0: "#OPC"w %6,"ASM_386_SEL"(%0)       \n"     \
+	"   subl %7,%2                         \n"     \
+	"   jb   1f                            \n"     \
+	"   addl 8 + %7,%3                     \n"     \
+	"   decl %1                            \n"     \
+	"   jne  0b                            \n"     \
+	"   jmp  2f                            \n"     \
+	"   .align 2,0x90                      \n"     \
+	"1: addl 4  + %7,%2                    \n"     \
+	"   addl 12 + %7,%3                    \n"     \
+	"   decl %1                            \n"     \
+	"   jne  0b                            \n"     \
+	"2: "                                          \
+	 : "=r" (ptr), "=r" (npts), "=r" (error)       \
+	 : "0" ((long)(ptr)), "1" (npts), "2" (error), \
+	   "r" ((short)(color)), "o" (lndata)          \
+	)
 #   endif
 #   endif
 
     if(dy < 0) {
-        y -= (dy = (-dy));
-        x -= (dx = (-dx));
+	y -= (dy = (-dy));
+	x -= (dx = (-dx));
     }
     if(dx < 0) {
-        xstep = (-2);
-        dx    = (-dx);
+	xstep = (-2);
+	dx    = (-dx);
     } else
-        xstep = 2;
+	xstep = 2;
 
     ptr = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
     SETFARSEL(CURC->gc_selector);
     if(dx > dy) {
-        npts  = dx +  1;
-        error = dx >> 1;
-        lndata.errsub  = dy;
-        lndata.erradd  = dx;
-        lndata.offset1 = xstep;
-        lndata.offset2 = CURC->gc_lineoffset + xstep;
-        if(xstep < 0) {
-            lndata.offset1 = 1;
-            switch(C_OPER(color)) {
-                case C_XOR: ASM_LINE1(xor); break;
-                case C_OR:  ASM_LINE1(or);  break;
-                case C_AND: ASM_LINE1(and); break;
-                default:    ASM_LINE1(mov); break;
-            }
-            goto done;
-        }
+	npts  = dx +  1;
+	error = dx >> 1;
+	lndata.errsub  = dy;
+	lndata.erradd  = dx;
+	lndata.offset1 = xstep;
+	lndata.offset2 = CURC->gc_lineoffset + xstep;
+	if(xstep < 0) {
+	    lndata.offset1 = 1;
+	    switch(C_OPER(color)) {
+		case C_XOR: ASM_LINE1(xor); break;
+		case C_OR:  ASM_LINE1(or);  break;
+		case C_AND: ASM_LINE1(and); break;
+		default:    ASM_LINE1(mov); break;
+	    }
+	    goto done;
+	}
     }
     else {
-        npts  = dy +  1;
-        error = dy >> 1;
-        lndata.errsub  = dx;
-        lndata.erradd  = dy;
-        lndata.offset1 = CURC->gc_lineoffset;
-        lndata.offset2 = CURC->gc_lineoffset + xstep;
+	npts  = dy +  1;
+	error = dy >> 1;
+	lndata.errsub  = dx;
+	lndata.erradd  = dy;
+	lndata.offset1 = CURC->gc_lineoffset;
+	lndata.offset2 = CURC->gc_lineoffset + xstep;
     }
     switch(C_OPER(color)) {
-        case C_XOR: ASM_LINE2(xor); break;
-        case C_OR:  ASM_LINE2(or);  break;
-        case C_AND: ASM_LINE2(and); break;
-        default:    ASM_LINE2(mov); break;
+	case C_XOR: ASM_LINE2(xor); break;
+	case C_OR:  ASM_LINE2(or);  break;
+	case C_AND: ASM_LINE2(and); break;
+	default:    ASM_LINE2(mov); break;
     }
   done:
     GRX_LEAVE();
@@ -296,65 +296,65 @@ static
 #include "fdrivers/generic/pattern.c"
 
 static void bitblt(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+		   GrFrame *src,int sx,int sy,
+		   int w,int h,GrColor op)
 {
-        GRX_ENTER();
-        if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else
+	GRX_ENTER();
+	if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
+	    dst,dx,dy,
+	    src,sx,sy,
+	    w,h,
+	    op
+	);
+	else
 #ifdef FAR_ACCESS
-          _GrFrDrvPackedBitBltV2V_LFB(
+	  _GrFrDrvPackedBitBltV2V_LFB(
 #else
-          _GrFrDrvPackedBitBltR2R(
+	  _GrFrDrvPackedBitBltR2R(
 #endif
-            dst,(dx << 1),dy,
-            src,(sx << 1),sy,
-            (w << 1),h,
-            op
-        );
-        GRX_LEAVE();
+	    dst,(dx << 1),dy,
+	    src,(sx << 1),sy,
+	    (w << 1),h,
+	    op
+	);
+	GRX_LEAVE();
 }
 
 #ifdef FAR_ACCESS
 static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
-        GRX_ENTER();
-        if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else _GrFrDrvPackedBitBltV2R_LFB(
-            dst,(dx << 1),dy,
-            src,(sx << 1),sy,
-            (w << 1),h,
-            op
-        );
-        GRX_LEAVE();
+	GRX_ENTER();
+	if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
+	    dst,dx,dy,
+	    src,sx,sy,
+	    w,h,
+	    op
+	);
+	else _GrFrDrvPackedBitBltV2R_LFB(
+	    dst,(dx << 1),dy,
+	    src,(sx << 1),sy,
+	    (w << 1),h,
+	    op
+	);
+	GRX_LEAVE();
 }
 
 static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
-        GRX_ENTER();
-        if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else _GrFrDrvPackedBitBltR2V_LFB(
-            dst,(dx << 1),dy,
-            src,(sx << 1),sy,
-            (w << 1),h,
-            op
-        );
-        GRX_LEAVE();
+	GRX_ENTER();
+	if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
+	    dst,dx,dy,
+	    src,sx,sy,
+	    w,h,
+	    op
+	);
+	else _GrFrDrvPackedBitBltR2V_LFB(
+	    dst,(dx << 1),dy,
+	    src,(sx << 1),sy,
+	    (w << 1),h,
+	    op
+	);
+	GRX_LEAVE();
 }
 #endif
 

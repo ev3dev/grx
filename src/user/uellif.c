@@ -25,9 +25,9 @@
 
 void GrUsrFilledEllipse(int xc,int yc,int xa,int ya,GrColor c)
 {
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(xa,xa,CURC->gc_xmax,CURC->gc_usrwidth);
-        SCALE(ya,ya,CURC->gc_ymax,CURC->gc_usrheight);
-        GrFilledEllipse(xc,yc,xa,ya,c);
+	U2SX(xc,CURC);
+	U2SY(yc,CURC);
+	SCALE(xa,xa,CURC->gc_xmax,CURC->gc_usrwidth);
+	SCALE(ya,ya,CURC->gc_ymax,CURC->gc_usrheight);
+	GrFilledEllipse(xc,yc,xa,ya,c);
 }

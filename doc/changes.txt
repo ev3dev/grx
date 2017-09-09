@@ -1,3 +1,101 @@
+2017-09-09 ----------- mGRX 1.1.0 released
+2017-09-08 Fix a proglem in jpeg read with new version 9 of libjpeg, they have 
+           changed the default for cinfo.scale_denom = scale and cinfo.scale_num.
+           Fix warnings with DJGPP 2.05 in src/include/vesa.h.
+2017-09-07 Changed __attribute__((packed)) by #pragma pack in fdv_win.h, to
+           workarround a bug in mingw gcc.
+           Fix a problem with GR_UNDERLINE_TEXT and C_OPER.
+           Workarround to SetDIBColorTable fail seems on W7 with the 256 color
+           driver, probably a race condition.
+           Added some usual modes to the windows video driver.
+           No restart test/demomgrx.c in X11 an WIN32 after running a demo.
+           Some improvements to test/fontdemo.c.
+2017-09-02 Setting the encoding field to the fonts provided with MGRX.
+           Updated the programmer's manual.
+2017-08-31 New function to save a font in own MGRX font format
+             void GrDumpGrxFont(const GrFont *font,char *fileName);
+2017-08-09 Corrected a very old bug in GrClearContextC and GrFloodSpillC and
+           GrFloodSpillC2. They didn't restore the original context.
+           Updated test/fontdemo.c
+           Fixed an error in test/keys.c
+2017-08-05 Fixed a warning en src/input/grev_x11.c, XKeycodeToKeysym is deprecated
+           replaced by XkbKeycodeToKeysym.
+2017-07-22 New function to get the real strlen of a text string of type chrtype
+             int GrStrLen(const void *text, int chrtype);
+           Now GrDrawString (and friends) calculates the text length (using GrStrLen)
+           if the length parameter is equal to zero.
+           Begining update of the programmer manual.
+2017-07-16 Now the xwin driver generates GREV_EXPOSE and stop using backingstore if
+           requested by the user.
+           Modified the test/life.c to request GREV_EXPOSE events (and handle them). It
+           is now much faster under the xwin driver.
+2017-07-13 Preparation for the new GREV_EXPOSE event, added p4 to the GrEvent struct, new
+           function "void GrEventGenExpose(int when)", when can be GR_GEN_EXPOSE_NO (the
+           default) or GR_GEN_EXPOSE_YES.
+           Updated the readme file.
+2017-07-11 Replaced the GrDefaultFont define by two functions GrGetDefaultFont() and
+           GrSetDefaultFont, now you can set the default font you want (set to 
+           built-in GrFont_PC8x14 by default).
+           New GrNextUTF8Char function.
+           Added recode capacity for GR_FONTENC_MGRX512.
+           Expanded test/demointl.c to test the new capacities.
+2017-07-08 Setted the font encoding field to 1 in built-in pc fonts.
+           New function to set the font encoding field:
+             void GrFontSetEncoding(GrFont *font,int fontencoding);
+           Deleted the GrProportionalTextWidth function because GrFontStringWidth works
+           for both proportional and fixed fonts.
+           GrFontStringWidth, GrFontStringHeight, GrCharWidth, GrCharHeight, GrCharSize,
+           GrStringWidth, GrStringHeight, GrStringSize, GrDrawChar, GrDrawString (and friends)
+           now recode form chrtype to font encoding if nedded (fon encoding != GR_FONTENC_UNKNOWN,
+           chrtype != (GR_BYTE_TEXT || GR_WORD_TEXT) and font encoding not equivalent to chrtype.
+           New function to get a chrtype equivalent to user encoding:
+             char GrGetChrtypeForUserEncoding(void);
+           Added maxlen parameter to GrUTF8StrToUCS2Str.
+           Fixed a warning, really a bug, in src/setup/colors.c.
+           GrDumpFont writes the font encoding field too.
+           Changes in test/demointl and test/fontdemo to work properly.
+           Added 16 new fonts "ter-mgrxNNS.psf" converted from terminus fonts, 512 glyps using
+           the GR_FONTENC_MGRX512 encoding, NN can be 14, 16, 18, 20, 22, 24, 28, 32 and S b or n.
+2017-07-04 Added encoding to GrFontHeader struct, it can be
+             GR_FONTENC_UNKNOWN     0     /* unknow encoding (no recode) */
+             GR_FONTENC_CP437       1     /* standard dos encoding */
+             GR_FONTENC_CP850       2     /* standard dos encoding */
+             GR_FONTENC_CP1252      3     /* standard Win encoding */
+             GR_FONTENC_ISO_8859_1  4     /* standard latin encoding */
+             GR_FONTENC_UNICODE     5     /* direct UNICODE encoding */
+             GR_FONTENC_MGRX512     6     /* custom MGRX 512 char encoding */
+             GR_FONTENC_LASTENC     6     /* last encoding, for checks */
+           The new possible values of GrTextOption.txo_chrtype:
+             GR_BYTE_TEXT            0   /* 1 byte per character, unknow encoding */
+             GR_WORD_TEXT            1   /* 2 bytes per character, unknow encoding */
+             GR_CP437_TEXT           2   /* 1 bpc standard DOS encoding */
+             GR_CP850_TEXT           3   /* 1 bpc latin1 DOS encoding */
+             GR_CP1252_TEXT          4   /* 1 bpc standard Win encoding */
+             GR_ISO_8859_1_TEXT      5   /* 1 bpc latin1 standard in some Linux */
+             GR_UTF8_TEXT            6   /* multibyte UTF-8 Unicode, restricted to 4 bytes */
+             GR_UCS2_TEXT            7   /* 2 bpc restricted Unicode, only BMP range */
+           New utility functions to deal with recode from GrTextOption.txo_chrtype to
+           GrFontHeader.encoding:
+             int  GrFontNeedRecode(const GrFont *font,int chrtype);
+             unsigned int GrFontCharRecode(const GrFont *font,long chr,int chrtype);
+             unsigned short *GrFontTextRecode(const GrFont *font,const void *text,int length,int chrtype);
+           GrTextOption.fgcv and GrTextOption.bgcv are now GrColor values.
+           Added two new fonts pc850-14.psf and pc850-16.psf, now test/demointl has a real
+           CP850 coded font.
+2017-07-03 Deleted the GR_ATTR_TEXT char type.
+           Hided for now GrTextRegion and functions.
+2017-07-02 Replaced GrGetKbEncoding and GrSetKbEncoding with
+           GrGetUserEncoding and GrSetUserEncoding, these functions exists even
+           if not input driver is ebabled (like with the memory driver). User
+           enconding default to GRENC_UTF_8 in linux and X11, GRENC_PC437 in
+           DJGPP and GRENC_PC1252 in WIn32, but the programmer can set it like
+           he wants. Now key events are recoded to the user encoding.
+           Changes in test/demointl and test/fontdemo to work properly.
+           Small change in fd_xwin.c, accel a bit drawpixel.
+           Added 32 bpp mode to vd_lnxfb.
+2017-06-19 Make x86_64 the default in linux and X11.
+           Fix a warning in newer versions of libPNG.
+           Output format changes in test/speedtst.c.
 2009-01-29 ----------- mGRX 1.0.0 released
 2009-01-25 Simplified the WM_PAINT proccess to solve a race condition
            found in Vista running in multiple core cpu's.
@@ -153,7 +251,7 @@
            built, and the install target go to the lib64 subdir
 2006-02-09 Some clean-up in mgrx.h, libgrx.h, etc
 2006-02-05 ----------- mGRX 0.9.3 released
-2006-01-30 Updated the porgrammer's manual from the GRX user's manual
+2006-01-30 Updated the programmer's manual from the GRX user's manual
 2005-01-20 Changed GRX20DRV to MGRXDRV and GRXFONT to MGRXFONT
 2005-01-20 Changed main include file from grxkeys.h to mgrxkeys.h
 2005-01-20 Removed old Dos video drivers (herc, ati, etc)

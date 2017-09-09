@@ -152,7 +152,7 @@ static int mem_setmode (GrVideoMode *mp,int noclear)
 }
 
 static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
-                                      int bpp, int txt, unsigned int * ep )
+				      int bpp, int txt, unsigned int * ep )
 {
     int  index;
     unsigned long  size;
@@ -167,28 +167,28 @@ static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
 
     switch (bpp)
       {
-         case 1:   index = 0;
-                   LineOffset = (w + 7) >> 3;
-                   size = h;
-                   break;
-         case 4:   index = 1;
-                   LineOffset = (w + 7) >> 3;
-                   size = 4*h;
-                   break;
-         case 8:   index = 2;
-                   LineOffset = w;
-                   size = h;
-                   break;
-         case 24:  index = 3;
+	 case 1:   index = 0;
+		   LineOffset = (w + 7) >> 3;
+		   size = h;
+		   break;
+	 case 4:   index = 1;
+		   LineOffset = (w + 7) >> 3;
+		   size = 4*h;
+		   break;
+	 case 8:   index = 2;
+		   LineOffset = w;
+		   size = h;
+		   break;
+	 case 24:  index = 3;
 #ifdef GRX_USE_RAM3x8
                    LineOffset = w;
-                   size = 3*h;
+		   size = 3*h;
 #else
-                   LineOffset = 3*w;
-                   size = h;
+		   LineOffset = 3*w;
+		   size = h;
 #endif
-                   break;
-         default:  return NULL;
+		   break;
+	 default:  return NULL;
       }
 
     LineOffset = (LineOffset+7) & (~7); /* align rows to 64bit boundary */
@@ -196,14 +196,14 @@ static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
 
     if (((size_t)size) != size) return NULL;
 
-                               /* why ???       */
+			       /* why ???       */
     modes[index].width       = /* w<320 ? 320 : */ w;
     modes[index].height      = /* h<200 ? 200 : */ h;
     modes[index].bpp         = bpp;
     modes[index].lineoffset  = LineOffset;
 
     if ( AllocMemBuf(size) ) {
-        modes[index].extinfo->frame = MemBuf;
+	modes[index].extinfo->frame = MemBuf;
         return _gr_selectmode (drv,w,h,bpp,txt,ep);
     }
     return FALSE;
@@ -212,7 +212,7 @@ static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
 /*
 static int detect (void)
 {
-        return TRUE;
+	return TRUE;
 }
 */
 

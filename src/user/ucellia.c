@@ -21,9 +21,9 @@
 
 void GrUsrCustomEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,const GrLineOption *lo)
 {
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(xa,xa,CURC->gc_xmax,CURC->gc_usrwidth);
-        SCALE(ya,ya,CURC->gc_ymax,CURC->gc_usrheight);
-        GrCustomEllipseArc(xc,yc,xa,ya,start,end,style,lo);
+	U2SX(xc,CURC);
+	U2SY(yc,CURC);
+	SCALE(xa,xa,CURC->gc_xmax,CURC->gc_usrwidth);
+	SCALE(ya,ya,CURC->gc_ymax,CURC->gc_usrheight);
+	GrCustomEllipseArc(xc,yc,xa,ya,start,end,style,lo);
 }

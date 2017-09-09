@@ -32,28 +32,28 @@
 static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
-        GR_int8u *ptr;
-        GRX_ENTER();
-        ptr = (GR_int8u *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
-        GRX_RETURN((GrColor)( (*ptr >> (7 - (x & 7)) ) & 1));
+	GR_int8u *ptr;
+	GRX_ENTER();
+	ptr = (GR_int8u *)&c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+	GRX_RETURN((GrColor)( (*ptr >> (7 - (x & 7)) ) & 1));
 }
 
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        GR_int8u *ptr;
-        GR_int8u cval;
+	GR_int8u *ptr;
+	GR_int8u cval;
 
-        GRX_ENTER();
-        ptr = (GR_int8u *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
-        cval = (color & 1) << (7 - (x &= 7));
-        switch(C_OPER(color)) {
-            case C_XOR: *ptr ^=  cval; break;
-            case C_OR:  *ptr |=  cval; break;
-            case C_AND: *ptr &= ~cval; break;
-            default:    *ptr  = (*ptr & (~0x80 >> x)) | cval; break;
-        }
-        GRX_LEAVE();
+	GRX_ENTER();
+	ptr = (GR_int8u *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+	cval = (color & 1) << (7 - (x &= 7));
+	switch(C_OPER(color)) {
+	    case C_XOR: *ptr ^=  cval; break;
+	    case C_OR:  *ptr |=  cval; break;
+	    case C_AND: *ptr &= ~cval; break;
+	    default:    *ptr  = (*ptr & (~0x80 >> x)) | cval; break;
+	}
+	GRX_LEAVE();
 }
 
 #define maskoper(d,op,s,msk,SF,DF) do {                       \
@@ -78,31 +78,31 @@ static void drawhline(int x,int y,int w,GrColor color) {
     w = ((x+w+7) >> 3) - (x >> 3);
     if (w==1) lm &= rm;
     if ( ((GR_int8u)(~lm)) ) {
-        switch(oper) {
-          case C_XOR: maskoper(p,^,(GR_int8u)cv,lm,_set,_n); break;
-          case C_OR:  maskoper(p,|,(GR_int8u)cv,lm,_set,_n); break;
-          case C_AND: maskoper(p,&,(GR_int8u)cv,lm,_set,_n); break;
-          default:    maskset(p,(GR_int8u)cv,lm,_n);         break;
-        }
-        if (!(--w)) goto done;
-        ++p;
+	switch(oper) {
+	  case C_XOR: maskoper(p,^,(GR_int8u)cv,lm,_set,_n); break;
+	  case C_OR:  maskoper(p,|,(GR_int8u)cv,lm,_set,_n); break;
+	  case C_AND: maskoper(p,&,(GR_int8u)cv,lm,_set,_n); break;
+	  default:    maskset(p,(GR_int8u)cv,lm,_n);         break;
+	}
+	if (!(--w)) goto done;
+	++p;
     }
     if ( ((GR_int8u)(~rm)) ) --w;
     if (w) {
-        switch(oper) {
-          case C_XOR: repfill_b_xor(p,cv,w); break;
-          case C_OR:  repfill_b_or(p,cv,w);  break;
-          case C_AND: repfill_b_and(p,cv,w); break;
-          default:    repfill_b(p,cv,w);     break;
-        }
+	switch(oper) {
+	  case C_XOR: repfill_b_xor(p,cv,w); break;
+	  case C_OR:  repfill_b_or(p,cv,w);  break;
+	  case C_AND: repfill_b_and(p,cv,w); break;
+	  default:    repfill_b(p,cv,w);     break;
+	}
     }
     if ( ((GR_int8u)(~rm)) ) {
-        switch(oper) {
-          case C_XOR: maskoper(p,^,(GR_int8u)cv,rm,_set,_n); break;
-          case C_OR:  maskoper(p,|,(GR_int8u)cv,rm,_set,_n); break;
-          case C_AND: maskoper(p,&,(GR_int8u)cv,rm,_set,_n); break;
-          default:    maskset(p,(GR_int8u)cv,rm,_n);         break;
-        }
+	switch(oper) {
+	  case C_XOR: maskoper(p,^,(GR_int8u)cv,rm,_set,_n); break;
+	  case C_OR:  maskoper(p,|,(GR_int8u)cv,rm,_set,_n); break;
+	  case C_AND: maskoper(p,&,(GR_int8u)cv,rm,_set,_n); break;
+	  default:    maskset(p,(GR_int8u)cv,rm,_n);         break;
+	}
     }
   }
 done:
@@ -111,43 +111,43 @@ done:
 
 static void drawvline(int x,int y,int h,GrColor color)
 {
-        unsigned int lwdt, mask, oper;
-        char *p;
-        GRX_ENTER();
-        oper = C_OPER(color);
-        color &= 1;
-        lwdt = CURC->gc_lineoffset;
-        mask = 0x80 >> (x & 7);
-        switch (oper) {
-          case C_XOR:
-              /* no need to xor anything with 0 */
-              if (color) {
-                p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
-                colfill_b_xor(p,lwdt,mask,h);
-              }
-              break;
-          case C_OR:
-              /* no need to or anything with 0 */
-              if (color) {
-            do_OR:
-                p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
-                colfill_b_or(p,lwdt,mask,h);
-              }
-              break;
-          case C_AND:
-              /* no need to and anything with 1 */
-              if (!color) {
-            do_AND:
-                mask = ~mask;
-                p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
-                colfill_b_and(p,lwdt,mask,h);
-              }
-              break;
-          default:
-              if (color) goto do_OR;
-              goto do_AND;
-        }
-        GRX_LEAVE();
+	unsigned int lwdt, mask, oper;
+	char *p;
+	GRX_ENTER();
+	oper = C_OPER(color);
+	color &= 1;
+	lwdt = CURC->gc_lineoffset;
+	mask = 0x80 >> (x & 7);
+	switch (oper) {
+	  case C_XOR:
+	      /* no need to xor anything with 0 */
+	      if (color) {
+		p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
+		colfill_b_xor(p,lwdt,mask,h);
+	      }
+	      break;
+	  case C_OR:
+	      /* no need to or anything with 0 */
+	      if (color) {
+	    do_OR:
+		p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
+		colfill_b_or(p,lwdt,mask,h);
+	      }
+	      break;
+	  case C_AND:
+	      /* no need to and anything with 1 */
+	      if (!color) {
+	    do_AND:
+		mask = ~mask;
+		p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
+		colfill_b_and(p,lwdt,mask,h);
+	      }
+	      break;
+	  default:
+	      if (color) goto do_OR;
+	      goto do_AND;
+	}
+	GRX_LEAVE();
 }
 
 static
@@ -166,8 +166,8 @@ static
 #include "fdrivers/generic/bitblt.c"
 
 static void bltr2r(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int x,int y,int w,int h,
-                   GrColor op)
+		   GrFrame *src,int x,int y,int w,int h,
+		   GrColor op)
 {
     GRX_ENTER();
     _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt);

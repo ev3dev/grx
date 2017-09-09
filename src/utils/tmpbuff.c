@@ -31,7 +31,7 @@ void *_GrTempBufferAlloc_(size_t bytes) {
     }
   }
   GRX_RETURN( (bytes<=_GrTempBufferBytes && _GrTempBuffer)
-             ? _GrTempBuffer : NULL);
+	     ? _GrTempBuffer : NULL);
 }
 
 void _GrTempBufferFree(void) {

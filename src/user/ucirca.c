@@ -24,11 +24,11 @@
 void GrUsrCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c)
 {
 #ifdef USR_KEEP_SHAPE
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(r,r,CURC->gc_xmax,CURC->gc_usrwidth);
-        GrCircleArc(xc,yc,r,start,end,style,c);
+	U2SX(xc,CURC);
+	U2SY(yc,CURC);
+	SCALE(r,r,CURC->gc_xmax,CURC->gc_usrwidth);
+	GrCircleArc(xc,yc,r,start,end,style,c);
 #else
-        GrUsrEllipseArc(xc,yc,r,r,start,end,style,c);
+	GrUsrEllipseArc(xc,yc,r,r,start,end,style,c);
 #endif /* USR_KEEP_SHAPE */
 }

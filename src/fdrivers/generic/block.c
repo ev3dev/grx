@@ -18,9 +18,9 @@
 
 void drawblock(int x,int y,int w,int h,GrColor c)
 {
-        GRX_ENTER();
-        h += y;
-        do { drawhline(x,y,w,c); } while(++y != h);
-        GRX_LEAVE();
+	GRX_ENTER();
+	h += y;
+	do { drawhline(x,y,w,c); } while(++y != h);
+	GRX_LEAVE();
 }
 

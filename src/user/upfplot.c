@@ -21,7 +21,7 @@
 
 void GrUsrPatternFilledPlot(int x,int y,GrPattern *p)
 {
-        U2SX(x,CURC);
-        U2SY(y,CURC);
-        GrPatternFilledPlot(x,y,p);
+	U2SX(x,CURC);
+	U2SY(y,CURC);
+	GrPatternFilledPlot(x,y,p);
 }

@@ -27,6 +27,7 @@ GrColor *egacolors;
 
 static int mouse_found = 1;
 static int mouse_count = 0;
+static GrTextOption grt;
 
 /* Internal routines */
 
@@ -48,6 +49,14 @@ int gfaz_ini( int width, int height, int bpp )
   GrMouseSetInternalCursor( GR_MCUR_TYPE_ARROW,GrWhite(),GrBlack() );
   show_mouse();
 
+  grt.txo_font = &GrFont_PC8x14;
+  grt.txo_fgcolor = GrWhite();
+  grt.txo_bgcolor = GrNOCOLOR;
+  grt.txo_direct = GR_TEXT_RIGHT;
+  grt.txo_xalign = GR_ALIGN_CENTER;
+  grt.txo_yalign = GR_ALIGN_CENTER;
+  grt.txo_chrtype = GR_BYTE_TEXT;
+
   return 0;
 }
 
@@ -61,6 +70,13 @@ int gfaz_fin( void )
   GrSetMode( GR_default_text );
 
   return 0;
+}
+
+/**************************************************************************/
+
+void gfaz_setfont(GrFont *f)
+{
+  grt.txo_font = f;
 }
 
 /**************************************************************************/
@@ -109,7 +125,6 @@ void dboton( int x, int y, int an, int al,
 
 {
   int pol[7][2], prof, pulsd, selec, despl;
-  GrTextOption grt;
   GrLineOption glo;
   int mouseblock;
 
@@ -141,13 +156,7 @@ void dboton( int x, int y, int an, int al,
   GrLine( pol[0][0],pol[0][1],pol[3][0],pol[3][1],BLACK );
   GrFilledBox( x+2+prof,y+2+prof,x+an-3-prof,y+al-3-prof,c );
 
-  grt.txo_font = &GrFont_PC8x14;
-  grt.txo_fgcolor.v = ct;
-  grt.txo_bgcolor.v = GrNOCOLOR;
-  grt.txo_direct = GR_TEXT_RIGHT;
-  grt.txo_xalign = GR_ALIGN_CENTER;
-  grt.txo_yalign = GR_ALIGN_CENTER;
-  grt.txo_chrtype = GR_BYTE_TEXT;
+  grt.txo_fgcolor = ct;
   if( despl )
     GrDrawString( s,strlen( s ),x+an/2+1,y+al/2+1,&grt );
   else

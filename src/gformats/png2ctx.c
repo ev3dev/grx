@@ -14,10 +14,12 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 170320 M.Alvarez, Fix a warning in newer versions of libPNG
  **/
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <png.h>
 #include "mgrx.h"
 
@@ -168,6 +170,9 @@ static int readpng( FILE *f, GrContext *grc, int use_alpha )
     png_set_gray_to_rgb( png_ptr );
 
   /* we don't do gamma correction by now */
+
+  /* nedeed t ofix a warning in newer versions of libPNG */
+  png_set_interlace_handling( png_ptr );
 
   png_read_update_info( png_ptr,info_ptr );
   png_get_IHDR( png_ptr,info_ptr,&width,&height,&bit_depth,

@@ -24,5 +24,5 @@
 
 void GrPatternFilledCircle(int xc,int yc,int r,GrPattern *p)
 {
-        GrPatternFilledEllipse(xc,yc,r,r,p);
+	GrPatternFilledEllipse(xc,yc,r,r,p);
 }

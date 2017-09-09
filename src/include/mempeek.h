@@ -41,7 +41,7 @@
 #define __INLINE_STD_POKE__(P,V,OP,I,S,T) do {                \
             register unsigned T *_ISPptr = (void *)(P);       \
             *_ISPptr OP (unsigned T)(V);                      \
-        } while (0)
+	} while (0)
 #endif
 
 /* the volatile modifier ensures the video ram access is really done */
@@ -53,7 +53,7 @@
 #define __INLINE_FAR_POKE__(P,V,OP,I,S,T) do {                \
             register unsigned T *_ISPptr = (void *)(P);       \
             *_ISPptr OP (V);                                  \
-        } while (0)
+	} while (0)
 #endif
 
 
@@ -72,9 +72,9 @@
 /* some processors (eg. DEC alpha) need special handling for word access */
 #ifndef MISALIGNED_16bit_OK
 #define peek_w(p) ( ((GR_int16u)(*((GR_int8u *)(p)  ))   )               \
-                  | ((GR_int16u)(*((GR_int8u *)(p)+1))<<8) )
+		  | ((GR_int16u)(*((GR_int8u *)(p)+1))<<8) )
 #define __SPLIT_16_POKE__(P,V,OP) ( (*((GR_int8u *)(P)  ) OP ((V)   )),  \
-                                    (*((GR_int8u *)(P)+1) OP ((V)>>8)) )
+				    (*((GR_int8u *)(P)+1) OP ((V)>>8)) )
 #define poke_w(p,v)       __SPLIT_16_POKE__(p,v,=)
 #define poke_w_xor(p,v)   __SPLIT_16_POKE__(p,v,^=)
 #define poke_w_or(p,v)    __SPLIT_16_POKE__(p,v,|=)
@@ -236,33 +236,33 @@
 /* ------------------------------------------- special 24bpp handling --- */
 
 #define __INTERN_24_PEEK__(P,F)                                             \
-         ( peek_b##F(P)                                                     \
-         | ((GR_int16u)peek_b##F(((GR_int8 *)(P))+1)<<8)                    \
-         | ((GR_int32u)peek_b##F(((GR_int8 *)(P))+2)<<16))
+	 ( peek_b##F(P)                                                     \
+	 | ((GR_int16u)peek_b##F(((GR_int8 *)(P))+1)<<8)                    \
+	 | ((GR_int32u)peek_b##F(((GR_int8 *)(P))+2)<<16))
 
 #define __INTERN_24_POKE__(P,C,F,OP) do {                                   \
-                poke_b##F##OP((P),(GR_int8)(C));                            \
-                poke_b##F##OP(((GR_int8 *)(P))+1,(GR_int8)((C)>>8));        \
-                poke_b##F##OP(((GR_int8 *)(P))+2,(GR_int8)((C)>>16));       \
-        } while (0)
+		poke_b##F##OP((P),(GR_int8)(C));                            \
+		poke_b##F##OP(((GR_int8 *)(P))+1,(GR_int8)((C)>>8));        \
+		poke_b##F##OP(((GR_int8 *)(P))+2,(GR_int8)((C)>>16));       \
+	} while (0)
 
 #ifndef __INLINE_24_PEEK__
 #define __INLINE_24_PEEK__(p) \
-        __INTERN_24_PEEK__(p,_n)
+	__INTERN_24_PEEK__(p,_n)
 #endif
 #ifndef __INLINE_24_FAR_PEEK__
 #define __INLINE_24_FAR_PEEK__(p) \
-        __INTERN_24_PEEK__(p,_f)
+	__INTERN_24_PEEK__(p,_f)
 #endif
 
 #ifndef __INLINE_24_POKE__
 #define __INLINE_24_POKE__(p,c,op,INS) \
-        __INTERN_24_POKE__(p,c,_n,op)
+	__INTERN_24_POKE__(p,c,_n,op)
 #endif
 
 #ifndef __INLINE_24_FAR_POKE__
 #define __INLINE_24_FAR_POKE__(p,c,op,INS) \
-        __INTERN_24_POKE__(p,c,_f,op)
+	__INTERN_24_POKE__(p,c,_f,op)
 #endif
 
 #ifndef peek_24

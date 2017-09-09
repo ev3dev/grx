@@ -25,8 +25,8 @@
 
 void GrPatternFilledEllipse(int xc,int yc,int xa,int ya,GrPattern *p)
 {
-        GrFillArg fa;
+	GrFillArg fa;
 
-        fa.p = p;
-        _GrScanEllipse(xc,yc,xa,ya,&_GrPatternFiller,fa,TRUE);
+	fa.p = p;
+	_GrScanEllipse(xc,yc,xa,ya,&_GrPatternFiller,fa,TRUE);
 }

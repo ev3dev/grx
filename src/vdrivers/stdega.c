@@ -24,14 +24,14 @@
 
 void _GrViDrvLoadColorEGA4(int c,int r,int g,int b)
 {
-        Int86Regs rg;
-        sttzero(&rg);
-        IREG_AX(rg)  = 0x1000;
-        IREG_BX(rg)  = c & 0x0f;
-        IREG_BX(rg) |= ((r & 0x40) << 7) | ((r & 0x80) << 3);
-        IREG_BX(rg) |= ((g & 0x40) << 6) | ((g & 0x80) << 2);
-        IREG_BX(rg) |= ((b & 0x40) << 5) | ((b & 0x80) << 1);
-        int10(&rg);
+	Int86Regs rg;
+	sttzero(&rg);
+	IREG_AX(rg)  = 0x1000;
+	IREG_BX(rg)  = c & 0x0f;
+	IREG_BX(rg) |= ((r & 0x40) << 7) | ((r & 0x80) << 3);
+	IREG_BX(rg) |= ((g & 0x40) << 6) | ((g & 0x80) << 2);
+	IREG_BX(rg) |= ((b & 0x40) << 5) | ((b & 0x80) << 1);
+	int10(&rg);
 }
 
 static GrVideoModeExt gr1ext = {

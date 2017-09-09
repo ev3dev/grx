@@ -52,7 +52,7 @@ static void *PM_palette_ptr = NULL;
 /* ------------------------------------------------------------- */
 /* memory access helper functions */
 static int map_linear(unsigned long adr, unsigned long len,
-              int *sel, unsigned long *la ) {
+	      int *sel, unsigned long *la ) {
   DBGPRINTF(DBG_DRIVER, (WHO_AM_I " map_linear\n"));
   if(*sel<0) {
     *sel = __dpmi_allocate_ldt_descriptors(1);
@@ -194,7 +194,7 @@ static void VBE2ProtMode(void) {
   if (PMinfo->SubTable_off != 0x0000) {
     GR_int16u *subtab = ptradd(&PMinfo->SetWindow_off,PMinfo->SubTable_off);
     long bytes_left = (long)PMinfo->PhysicalLength
-                    - (long)PMinfo->SubTable_off;
+		    - (long)PMinfo->SubTable_off;
     /* Skip over port info but don't leave VBE2PM data */
     while (bytes_left >= 2 && peek_w(subtab) != 0xffff) {
       ptrinc(subtab,2);
@@ -243,8 +243,8 @@ static int _SETUP(GrVideoMode *mp,int noclear) {
      sttzero(&r);
      IREG_AX(r) = VESA_FUNC + VESA_SET_MODE;
      IREG_BX(r) = (mp->mode & 0x7fff)
-        | (noclear ? 0x8000U : 0)
-        | 0x4000U;
+	| (noclear ? 0x8000U : 0)
+	| 0x4000U;
      DBGPRINTF(DBG_DRIVER, (WHO_AM_I " _SETUP calling int10\n"));
      int10(&r);
      DBGPRINTF(DBG_DRIVER, (WHO_AM_I " _SETUP int10 called\n"));

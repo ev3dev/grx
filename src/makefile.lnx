@@ -9,7 +9,7 @@ GRXVLNX=y
 include ../makedefs.grx
 
 INCDIR= -I. -I./include -I../include
-CCOPT += -DLFB_BY_NEAR_POINTER -pipe
+CCOPT +=
 ADDON_LIBS =
 
 ifdef MGRX_DEFAULT_FONT_PATH
@@ -66,11 +66,14 @@ O=      $(STD_O)                \
 	fdrivers/ram24.o        \
 	fdrivers/ram32l.o       \
 	fdrivers/ram32h.o       \
-	fdrivers/svga16.o       \
-	fdrivers/svga24.o       \
-	fdrivers/svga32h.o      \
-	fdrivers/svga32l.o      \
-	fdrivers/svga8.o        \
+	fdrivers/lfb8.o         \
+	fdrivers/lfb16.o        \
+	fdrivers/lfb24.o        \
+	fdrivers/lfb32h.o       \
+	fdrivers/lfb32l.o       \
+	fdrivers/lfbbltrv.o     \
+	fdrivers/lfbbltvr.o     \
+	fdrivers/lfbbltvv.o     \
 	input/grev_lnx.o        \
 	misc/lnxmisc.o          \
 	vdrivers/vd_lnxfb.o

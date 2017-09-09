@@ -21,20 +21,32 @@
 
 TESTFUNC(rgbtest)
 {
-        int x, y, ww, wh;
-        int ii, jj;
-        GrEvent ev;
+	int x, y, ww, wh;
+	int ii, jj;
+	GrEvent ev;
 
-        x = GrSizeX();
-        y = GrSizeY();
-        ww = (x-10)/32;
-        wh = (y-10)/8;
-        GrSetRGBcolorMode();
-        for(ii = 0; ii < 8; ii++) {
-            for(jj = 0; jj < 32; jj++) {
-                GrFilledBox(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,ii*32+jj);
-            }
-        }
-        GrEventWaitKeyOrClick(&ev);
+	x = GrSizeX();
+	y = GrSizeY();
+	ww = (x-10)/32;
+	wh = (y-10)/8;
+	GrSetRGBcolorMode();
+	for(ii = 0; ii < 8; ii++) {
+	    for(jj = 0; jj < 32; jj++) {
+		GrFilledBox(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,ii*32+jj);
+	    }
+	}
+	GrEventWaitKeyOrClick(&ev);
+	for(ii = 0; ii < 8; ii++) {
+	    for(jj = 0; jj < 32; jj++) {
+		GrFilledBox(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,(ii*32+jj)<<8);
+	    }
+	}
+	GrEventWaitKeyOrClick(&ev);
+	for(ii = 0; ii < 8; ii++) {
+	    for(jj = 0; jj < 32; jj++) {
+		GrFilledBox(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,(ii*32+jj)<<16);
+	    }
+	}
+	GrEventWaitKeyOrClick(&ev);
 }
 

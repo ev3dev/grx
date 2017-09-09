@@ -50,12 +50,12 @@ static GR_int8u _GrPXRmaskTable[] = { 0, 0x01, 0x03, 0x07 };
 
 #define _SetNoPlane_
 #define POKEX(P,C,OP,SRP) do {                                \
-           switch(OP) {                                       \
-              case C_XOR: SRP; poke_b_f_xor((P),(C)); break;  \
-              case C_OR:  SRP; poke_b_f_or( (P),(C)); break;  \
-              case C_AND: SRP; poke_b_f_and((P),(C)); break;  \
-              default:         poke_b_f(    (P),(C)); break;  \
-           }                                                  \
+	   switch(OP) {                                       \
+	      case C_XOR: SRP; poke_b_f_xor((P),(C)); break;  \
+	      case C_OR:  SRP; poke_b_f_or( (P),(C)); break;  \
+	      case C_AND: SRP; poke_b_f_and((P),(C)); break;  \
+	      default:         poke_b_f(    (P),(C)); break;  \
+	   }                                                  \
        } while (0)
 #define POKEFAST(P,C,OP) POKEX((P),(C),(OP),_SetNoPlane_)
 
@@ -63,26 +63,26 @@ static GR_int8u _GrPXRmaskTable[] = { 0, 0x01, 0x03, 0x07 };
 static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
-        GRX_ENTER();
-        _SetVGAReadPlane(x&3);
-        setup_far_selector(SCRN->gc_selector);
-        GRX_RETURN((GR_int8u)
-          peek_b_f(&SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)])
-        );
+	GRX_ENTER();
+	_SetVGAReadPlane(x&3);
+	setup_far_selector(SCRN->gc_selector);
+	GRX_RETURN((GR_int8u)
+	  peek_b_f(&SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)])
+	);
 }
 
 
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        char *ptr;
-        GRX_ENTER();
-        ptr = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
-        x &= 3;
-        _SetVGAWritePlane(x);
-        setup_far_selector(CURC->gc_selector);
-        POKEX(ptr,color,C_OPER(color),_SetVGAReadPlane(x));
-        GRX_LEAVE();
+	char *ptr;
+	GRX_ENTER();
+	ptr = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+	x &= 3;
+	_SetVGAWritePlane(x);
+	setup_far_selector(CURC->gc_selector);
+	POKEX(ptr,color,C_OPER(color),_SetVGAReadPlane(x));
+	GRX_LEAVE();
 }
 
 
@@ -96,43 +96,43 @@ static void drawhline(int x,int y,int w,GrColor color) {
     char *p = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
     setup_far_selector(CURC->gc_selector);
     if ((opr == C_WRITE) && (w >= 10)) {  /* 10 = 3(left) + 1*4 + 3(right) */
-        int rmask = (x + w) & 3;
-        int lmask =  x      & 3;
-        if(lmask) {
-          _SetVGAWritePlanes(_GrPXLmaskTable[lmask]);
-          poke_b_f(p,(GR_int8u)cval);
-          ++p;
-          w -= (4 - lmask);
-        }
-        w >>= 2;
-        if(rmask) {
-          _SetVGAWritePlanes(_GrPXRmaskTable[rmask]);
-          poke_b_f(p+w,(GR_int8u)cval);
-        }
-        _SetVGAWriteAllPlanes();
-        repfill_b_f(p,cval,w);
+	int rmask = (x + w) & 3;
+	int lmask =  x      & 3;
+	if(lmask) {
+	  _SetVGAWritePlanes(_GrPXLmaskTable[lmask]);
+	  poke_b_f(p,(GR_int8u)cval);
+	  ++p;
+	  w -= (4 - lmask);
+	}
+	w >>= 2;
+	if(rmask) {
+	  _SetVGAWritePlanes(_GrPXRmaskTable[rmask]);
+	  poke_b_f(p+w,(GR_int8u)cval);
+	}
+	_SetVGAWriteAllPlanes();
+	repfill_b_f(p,cval,w);
     } else {
       int i, plane = x & 3;
       for (i=0; i < 4; ++i) {
-        GR_int8u *pp = (GR_int8u *)p;
-        int ww = (w+3) >> 2;
-        if ( !ww ) break;
-        _SetVGAWritePlane(plane);
-        switch (opr) {
-          case C_XOR: _SetVGAReadPlane(plane);
-                      repfill_b_f_xor(pp,cval,ww);
-                      break;
-          case C_OR:  _SetVGAReadPlane(plane);
-                      repfill_b_f_or(pp,cval,ww);
-                      break;
-          case C_AND: _SetVGAReadPlane(plane);
-                      repfill_b_f_and(pp,cval,ww);
-                      break;
-          default   : repfill_b_f(pp,cval,ww);
-                      break;
-        }
-        --w;
-        if (++plane == 4) { plane = 0; ++p; }
+	GR_int8u *pp = (GR_int8u *)p;
+	int ww = (w+3) >> 2;
+	if ( !ww ) break;
+	_SetVGAWritePlane(plane);
+	switch (opr) {
+	  case C_XOR: _SetVGAReadPlane(plane);
+		      repfill_b_f_xor(pp,cval,ww);
+		      break;
+	  case C_OR:  _SetVGAReadPlane(plane);
+		      repfill_b_f_or(pp,cval,ww);
+		      break;
+	  case C_AND: _SetVGAReadPlane(plane);
+		      repfill_b_f_and(pp,cval,ww);
+		      break;
+	  default   : repfill_b_f(pp,cval,ww);
+		      break;
+	}
+	--w;
+	if (++plane == 4) { plane = 0; ++p; }
       }
     }
   }
@@ -142,30 +142,30 @@ static void drawhline(int x,int y,int w,GrColor color) {
 
 static void drawvline(int x,int y,int h,GrColor color)
 {
-        char *ptr;
-        unsigned skip;
-        GR_int8u cv;
-        GRX_ENTER();
-        skip = CURC->gc_lineoffset;
-        ptr = &CURC->gc_baseaddr[0][FOFS(x,y,skip)];
-        cv = (GR_int8u)color;
-        x &= 3;
-        _SetVGAWritePlane(x);
-        setup_far_selector(CURC->gc_selector);
-        switch(C_OPER(color)) {
-          case C_XOR: _SetVGAReadPlane(x);
-                      colfill_b_f_xor(ptr,skip,cv,h);
-                      break;
-          case C_OR:  _SetVGAReadPlane(x);
-                      colfill_b_f_or(ptr,skip,cv,h);
-                      break;
-          case C_AND: _SetVGAReadPlane(x);
-                      colfill_b_f_and(ptr,skip,cv,h);
-                      break;
-          default:    colfill_b_f(ptr,skip,cv,h);
-                      break;
-        }
-        GRX_LEAVE();
+	char *ptr;
+	unsigned skip;
+	GR_int8u cv;
+	GRX_ENTER();
+	skip = CURC->gc_lineoffset;
+	ptr = &CURC->gc_baseaddr[0][FOFS(x,y,skip)];
+	cv = (GR_int8u)color;
+	x &= 3;
+	_SetVGAWritePlane(x);
+	setup_far_selector(CURC->gc_selector);
+	switch(C_OPER(color)) {
+	  case C_XOR: _SetVGAReadPlane(x);
+		      colfill_b_f_xor(ptr,skip,cv,h);
+		      break;
+	  case C_OR:  _SetVGAReadPlane(x);
+		      colfill_b_f_or(ptr,skip,cv,h);
+		      break;
+	  case C_AND: _SetVGAReadPlane(x);
+		      colfill_b_f_and(ptr,skip,cv,h);
+		      break;
+	  default:    colfill_b_f(ptr,skip,cv,h);
+		      break;
+	}
+	GRX_LEAVE();
 }
 
 
@@ -178,72 +178,72 @@ static
 
 static INLINE
 void xmajor(GR_int8u *ptr, int len, int yskip,
-            GR_int32u ErrorAcc, GR_int32u ErrorAdj,
-            int op, int color)
+	    GR_int32u ErrorAcc, GR_int32u ErrorAdj,
+	    int op, int color)
 {
     if (len) {
-        while (--len) {
-            POKEFAST(ptr,color,op);
-            ptrinc(ptr,1);
-            ErrorAcc += ErrorAdj;
+	while (--len) {
+	    POKEFAST(ptr,color,op);
+	    ptrinc(ptr,1);
+	    ErrorAcc += ErrorAdj;
 
-            if (ErrorAcc & ~0xFFFFL) {
-                ErrorAcc &= 0xFFFFL;
-                ptrinc(ptr,yskip);
-            }
-        }
-        POKEFAST(ptr,color,op);
+	    if (ErrorAcc & ~0xFFFFL) {
+		ErrorAcc &= 0xFFFFL;
+		ptrinc(ptr,yskip);
+	    }
+	}
+	POKEFAST(ptr,color,op);
     }
 }
 
 static INLINE
 void middle(GR_int8u *ptr, int len, int yskip,
-            GR_int32u ErrorAcc, GR_int32u ErrorAdj,
-            int op, int color)
+	    GR_int32u ErrorAcc, GR_int32u ErrorAdj,
+	    int op, int color)
 {
     if (len) {
-         while (--len) {
-            POKEFAST(ptr,color,op);
-            ErrorAcc += ErrorAdj;
-            ptrinc(ptr, (yskip * (int)(ErrorAcc >> 16)) + 1);
-            ErrorAcc &= 0xFFFFL;
-        }
-        POKEFAST(ptr,color,op);
+	 while (--len) {
+	    POKEFAST(ptr,color,op);
+	    ErrorAcc += ErrorAdj;
+	    ptrinc(ptr, (yskip * (int)(ErrorAcc >> 16)) + 1);
+	    ErrorAcc &= 0xFFFFL;
+	}
+	POKEFAST(ptr,color,op);
     }
 }
 
 
 static INLINE
 void ymajor(GR_int8u *ptr, int len, int yskip,
-            GR_int32u ErrorAcc, GR_int32u ErrorAdj,
-            int op, int color)
+	    GR_int32u ErrorAcc, GR_int32u ErrorAdj,
+	    int op, int color)
 {
 
     if (len) {
-        int i;
-        GR_int32u TinyAdj = (ErrorAdj >> 2);
-        ErrorAdj -= TinyAdj;
+	int i;
+	GR_int32u TinyAdj = (ErrorAdj >> 2);
+	ErrorAdj -= TinyAdj;
 
-        while (--len) {
-            ErrorAcc += TinyAdj;
-            i = (ErrorAcc >> 16);
-            ErrorAcc &= 0xFFFFL;
+	while (--len) {
+	    ErrorAcc += TinyAdj;
+	    i = (ErrorAcc >> 16);
+	    ErrorAcc &= 0xFFFFL;
 
-            while (i--) {
-                POKEFAST(ptr,color,op);
-                ptrinc(ptr,yskip);
-            }
+	    while (i--) {
+		POKEFAST(ptr,color,op);
+		ptrinc(ptr,yskip);
+	    }
 
-            ErrorAcc += ErrorAdj;
-            ptrinc(ptr, (yskip * (int)(ErrorAcc >> 16)) + 1);
-            ErrorAcc &= 0xFFFFL;
-        }
-        ErrorAcc += TinyAdj;
-        i = (ErrorAcc >> 16);
-        while (i--) {
-            POKEFAST(ptr,color,op);
-            ptrinc(ptr,yskip);
-        }
+	    ErrorAcc += ErrorAdj;
+	    ptrinc(ptr, (yskip * (int)(ErrorAcc >> 16)) + 1);
+	    ErrorAcc &= 0xFFFFL;
+	}
+	ErrorAcc += TinyAdj;
+	i = (ErrorAcc >> 16);
+	while (i--) {
+	    POKEFAST(ptr,color,op);
+	    ptrinc(ptr,yskip);
+	}
     }
 }
 
@@ -259,30 +259,30 @@ static void drawline(int x,int y,int dx,int dy,GrColor color)
     GRX_ENTER();
     /* Make sure the line runs left to right */
     if (dx < 0) {
-        x -= (dx=-dx);
-        y -= (dy=-dy);
+	x -= (dx=-dx);
+	y -= (dy=-dy);
     }
 
     yskip = CURC->gc_lineoffset;
     if (dy < 0) {
-        dy = -dy;  /* Make dy positive */
-        yskip = -yskip;
+	dy = -dy;  /* Make dy positive */
+	yskip = -yskip;
     }
 
     if (dx == 0) {
-        /* Vertical Line (and one pixel lines) */
-        if (yskip > 0) {
-            drawvline(x,y,dy+1,color);
-            goto done;
-        }
-        drawvline(x,y-dy,dy+1,color);
-        goto done;
+	/* Vertical Line (and one pixel lines) */
+	if (yskip > 0) {
+	    drawvline(x,y,dy+1,color);
+	    goto done;
+	}
+	drawvline(x,y-dy,dy+1,color);
+	goto done;
     }
 
     if (dy == 0) {
-        /* Horizontal Line */
-        drawhline(x,y,dx+1,color);
-        goto done;
+	/* Horizontal Line */
+	drawhline(x,y,dx+1,color);
+	goto done;
     }
 
     oper = C_OPER(color);
@@ -299,69 +299,69 @@ static void drawline(int x,int y,int dx,int dy,GrColor color)
     for (i=plane; i < 3; i++) len[i]++;
 
     if ((dx >> 2) >= dy) {
-        /* X-Major line (0.00 < slope <= 0.25) */
-        GR_int32u ErrorAcc = 0x8000;
-        GR_int32u ErrorAdj = ((((GR_int32u)dy << 18) / (GR_int32u)dx));
-        GR_int32u TinyAdj  = (ErrorAdj >> 2);
-        while (i--) {
-            if (oper != C_WRITE) _SetVGAReadPlane(plane);
-            _SetVGAWritePlane(plane);
-            xmajor(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
-            if (++plane == 4) {
-                plane = 0;
-                ptrinc(ptr,1);
-            }
-            ErrorAcc += TinyAdj;
-            if (ErrorAcc & ~0xFFFFL) {
-                ErrorAcc &= 0xFFFFL;
-                ptrinc(ptr,yskip);
-            }
-        }
-        if (oper != C_WRITE) _SetVGAReadPlane(plane);
-        _SetVGAWritePlane(plane);
-        xmajor(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
+	/* X-Major line (0.00 < slope <= 0.25) */
+	GR_int32u ErrorAcc = 0x8000;
+	GR_int32u ErrorAdj = ((((GR_int32u)dy << 18) / (GR_int32u)dx));
+	GR_int32u TinyAdj  = (ErrorAdj >> 2);
+	while (i--) {
+	    if (oper != C_WRITE) _SetVGAReadPlane(plane);
+	    _SetVGAWritePlane(plane);
+	    xmajor(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
+	    if (++plane == 4) {
+		plane = 0;
+		ptrinc(ptr,1);
+	    }
+	    ErrorAcc += TinyAdj;
+	    if (ErrorAcc & ~0xFFFFL) {
+		ErrorAcc &= 0xFFFFL;
+		ptrinc(ptr,yskip);
+	    }
+	}
+	if (oper != C_WRITE) _SetVGAReadPlane(plane);
+	_SetVGAWritePlane(plane);
+	xmajor(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
     } else if (dx >= dy) {
-        /* Middle line (0.25 < slope <= 1.00) */
-        GR_int32u ErrorAcc = 0x8000;
-        GR_int32u ErrorAdj = ((((GR_int32u)dy << 18) / (GR_int32u)dx));
-        GR_int32u TinyAdj  = (ErrorAdj >> 2);
-        while (i--) {
-            if (oper != C_WRITE) _SetVGAReadPlane(plane);
-            _SetVGAWritePlane(plane);
-            middle(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
-            if (++plane == 4) {
-                plane = 0;
-                ptrinc(ptr,1);
-            }
-            ErrorAcc += TinyAdj;
-            if (ErrorAcc & ~0xFFFFL) {
-                ptrinc(ptr,yskip);
-                ErrorAcc &= 0xFFFFL;
-            }
-        }
-        if (oper != C_WRITE) _SetVGAReadPlane(plane);
-        _SetVGAWritePlane(plane);
-        middle(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
+	/* Middle line (0.25 < slope <= 1.00) */
+	GR_int32u ErrorAcc = 0x8000;
+	GR_int32u ErrorAdj = ((((GR_int32u)dy << 18) / (GR_int32u)dx));
+	GR_int32u TinyAdj  = (ErrorAdj >> 2);
+	while (i--) {
+	    if (oper != C_WRITE) _SetVGAReadPlane(plane);
+	    _SetVGAWritePlane(plane);
+	    middle(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
+	    if (++plane == 4) {
+		plane = 0;
+		ptrinc(ptr,1);
+	    }
+	    ErrorAcc += TinyAdj;
+	    if (ErrorAcc & ~0xFFFFL) {
+		ptrinc(ptr,yskip);
+		ErrorAcc &= 0xFFFFL;
+	    }
+	}
+	if (oper != C_WRITE) _SetVGAReadPlane(plane);
+	_SetVGAWritePlane(plane);
+	middle(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
     } else {
-        /* Y-Major line (slope > 1) */
-        GR_int32u ErrorAcc = 0x8000;
-        GR_int32u ErrorAdj = ((((GR_int32u)(dy+1) << 18) / (GR_int32u)(dx+1)));
-        GR_int32u TinyAdj  = (ErrorAdj >> 2);
-        while (i--) {
-            if (oper != C_WRITE) _SetVGAReadPlane(plane);
-            _SetVGAWritePlane(plane);
-            ymajor(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
-            if (++plane == 4) {
-                plane = 0;
-                ptrinc(ptr,1);
-            }
-            ErrorAcc += TinyAdj;
-            ptrinc(ptr,(yskip * (ErrorAcc >> 16)));
-            ErrorAcc &= 0xFFFFL;
-        }
-        if (oper != C_WRITE) _SetVGAReadPlane(plane);
-        _SetVGAWritePlane(plane);
-        ymajor(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
+	/* Y-Major line (slope > 1) */
+	GR_int32u ErrorAcc = 0x8000;
+	GR_int32u ErrorAdj = ((((GR_int32u)(dy+1) << 18) / (GR_int32u)(dx+1)));
+	GR_int32u TinyAdj  = (ErrorAdj >> 2);
+	while (i--) {
+	    if (oper != C_WRITE) _SetVGAReadPlane(plane);
+	    _SetVGAWritePlane(plane);
+	    ymajor(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
+	    if (++plane == 4) {
+		plane = 0;
+		ptrinc(ptr,1);
+	    }
+	    ErrorAcc += TinyAdj;
+	    ptrinc(ptr,(yskip * (ErrorAcc >> 16)));
+	    ErrorAcc &= 0xFFFFL;
+	}
+	if (oper != C_WRITE) _SetVGAReadPlane(plane);
+	_SetVGAWritePlane(plane);
+	ymajor(ptr, len[plane], yskip, ErrorAcc, ErrorAdj, oper, color);
     }
   done:
     GRX_LEAVE();
@@ -386,8 +386,8 @@ static
 static char *LineBuff = NULL;
 
 static void pbltv2v(GrFrame *dst,int dx,int dy,
-                    GrFrame *src,int sx,int sy,
-                    int w,int h,GrColor op     )
+		    GrFrame *src,int sx,int sy,
+		    int w,int h,GrColor op     )
 {
     GR_int32u soffs, doffs;
     int skip, lo;
@@ -416,61 +416,61 @@ static void pbltv2v(GrFrame *dst,int dx,int dy,
       vp = &SCRN->gc_baseaddr[0][soffs];
       dptr = LineBuff;
       for (plc=0; plc < 4; ++plc) {
-        char *sptr = vp;
-        int bytes = (ww+3)>>2;
-        _SetVGAReadPlane(pl);
-        fwdcopy_set_f(sptr,dptr,sptr,bytes);
-        if (--ww <= 0) break;
-        if (++pl == 4) { pl=0; ++vp; }
+	char *sptr = vp;
+	int bytes = (ww+3)>>2;
+	_SetVGAReadPlane(pl);
+	fwdcopy_set_f(sptr,dptr,sptr,bytes);
+	if (--ww <= 0) break;
+	if (++pl == 4) { pl=0; ++vp; }
       }
       pl = dx & 3;
       ww = w;
       vp = &SCRN->gc_baseaddr[0][doffs];
       sptr = LineBuff;
       switch (op) {
-        case C_XOR:
-          for (plc=0; plc < 4; ++plc) {
-            char *dptr = vp;
-            int bytes = (ww+3)>>2;
-            _SetVGAReadPlane(pl);
-            _SetVGAWritePlane(pl);
-            fwdcopy_f_xor(dptr,dptr,sptr,bytes);
-            if (--ww <= 0) break;
-            if (++pl == 4) { pl=0; ++vp; }
-          }
-          break;
-        case C_OR:
-          for (plc=0; plc < 4; ++plc) {
-            char *dptr = vp;
-            int bytes = (ww+3)>>2;
-            _SetVGAReadPlane(pl);
-            _SetVGAWritePlane(pl);
-            fwdcopy_f_or(dptr,dptr,sptr,bytes);
-            if (--ww <= 0) break;
-            if (++pl == 4) { pl=0; ++vp; }
-          }
-          break;
-        case C_AND:
-          for (plc=0; plc < 4; ++plc) {
-            char *dptr = vp;
-            int bytes = (ww+3)>>2;
-            _SetVGAReadPlane(pl);
-            _SetVGAWritePlane(pl);
-            fwdcopy_f_and(dptr,dptr,sptr,bytes);
-            if (--ww <= 0) break;
-            if (++pl == 4) { pl=0; ++vp; }
-          }
-          break;
-        default:
-          for (plc=0; plc < 4; ++plc) {
-            char *dptr = vp;
-            int bytes = (ww+3)>>2;
-            _SetVGAWritePlane(pl);
-            fwdcopy_f_set(dptr,dptr,sptr,bytes);
-            if (--ww <= 0) break;
-            if (++pl == 4) { pl=0; ++vp; }
-          }
-          break;
+	case C_XOR:
+	  for (plc=0; plc < 4; ++plc) {
+	    char *dptr = vp;
+	    int bytes = (ww+3)>>2;
+	    _SetVGAReadPlane(pl);
+	    _SetVGAWritePlane(pl);
+	    fwdcopy_f_xor(dptr,dptr,sptr,bytes);
+	    if (--ww <= 0) break;
+	    if (++pl == 4) { pl=0; ++vp; }
+	  }
+	  break;
+	case C_OR:
+	  for (plc=0; plc < 4; ++plc) {
+	    char *dptr = vp;
+	    int bytes = (ww+3)>>2;
+	    _SetVGAReadPlane(pl);
+	    _SetVGAWritePlane(pl);
+	    fwdcopy_f_or(dptr,dptr,sptr,bytes);
+	    if (--ww <= 0) break;
+	    if (++pl == 4) { pl=0; ++vp; }
+	  }
+	  break;
+	case C_AND:
+	  for (plc=0; plc < 4; ++plc) {
+	    char *dptr = vp;
+	    int bytes = (ww+3)>>2;
+	    _SetVGAReadPlane(pl);
+	    _SetVGAWritePlane(pl);
+	    fwdcopy_f_and(dptr,dptr,sptr,bytes);
+	    if (--ww <= 0) break;
+	    if (++pl == 4) { pl=0; ++vp; }
+	  }
+	  break;
+	default:
+	  for (plc=0; plc < 4; ++plc) {
+	    char *dptr = vp;
+	    int bytes = (ww+3)>>2;
+	    _SetVGAWritePlane(pl);
+	    fwdcopy_f_set(dptr,dptr,sptr,bytes);
+	    if (--ww <= 0) break;
+	    if (++pl == 4) { pl=0; ++vp; }
+	  }
+	  break;
       }
       doffs += skip;
       soffs += skip;
@@ -485,15 +485,15 @@ static int alloc_blit_buffer(int width) {
 }
 
 static void bltv2v(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+		   GrFrame *src,int sx,int sy,
+		   int w,int h,GrColor op)
 {
-        GRX_ENTER();
-        if(GrColorMode(op) != GrIMAGE && alloc_blit_buffer(w))
-            pbltv2v(dst,dx,dy,src,sx,sy,w,h,op);
-        else
-            bitblt(dst,dx,dy,src,sx,sy,w,h,op);
-        GRX_LEAVE();
+	GRX_ENTER();
+	if(GrColorMode(op) != GrIMAGE && alloc_blit_buffer(w))
+	    pbltv2v(dst,dx,dy,src,sx,sy,w,h,op);
+	else
+	    bitblt(dst,dx,dy,src,sx,sy,w,h,op);
+	GRX_LEAVE();
 }
 
 
@@ -503,19 +503,19 @@ static void bltv2v(GrFrame *dst,int dx,int dy,
 #define VID2MEM_OPR(M,OP) do {                   \
       int _ww_ = w;                              \
       for (plc = 0; plc < 4; ++plc) {            \
-        char *_p_ = vp;                      \
-        char *_dptr_ = &M[plc];              \
-        int _w_ = (_ww_+3)>>2;                   \
-        _SetVGAReadPlane(pl);                    \
-        colcopy_b##OP##_f(_dptr_,4,_p_,1,_w_);   \
-        if ((--_ww_) == 0) break;                \
-        if (++pl == 4) { pl = 0; ++vp; }         \
+	char *_p_ = vp;                      \
+	char *_dptr_ = &M[plc];              \
+	int _w_ = (_ww_+3)>>2;                   \
+	_SetVGAReadPlane(pl);                    \
+	colcopy_b##OP##_f(_dptr_,4,_p_,1,_w_);   \
+	if ((--_ww_) == 0) break;                \
+	if (++pl == 4) { pl = 0; ++vp; }         \
       }                                          \
 } while (0)
 
 static void pbltv2r(GrFrame *dst,int dx,int dy,
-                    GrFrame *src,int sx,int sy,
-                    int w,int h,GrColor op     )
+		    GrFrame *src,int sx,int sy,
+		    int w,int h,GrColor op     )
 {
     GR_int32u soffs;
     int sskip, dskip;
@@ -532,10 +532,10 @@ static void pbltv2r(GrFrame *dst,int dx,int dy,
       pl = sx & 3;
       vp = &SCRN->gc_baseaddr[0][soffs];
       switch (op) {
-        case C_XOR: VID2MEM_OPR(rp,_xor); break;
-        case C_OR:  VID2MEM_OPR(rp,_or);  break;
-        case C_AND: VID2MEM_OPR(rp,_and); break;
-        default:    VID2MEM_OPR(rp,_set); break;
+	case C_XOR: VID2MEM_OPR(rp,_xor); break;
+	case C_OR:  VID2MEM_OPR(rp,_or);  break;
+	case C_AND: VID2MEM_OPR(rp,_and); break;
+	default:    VID2MEM_OPR(rp,_set); break;
       }
       rp += dskip;
       soffs += sskip;
@@ -544,15 +544,15 @@ static void pbltv2r(GrFrame *dst,int dx,int dy,
 }
 
 static void bltv2r(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+		   GrFrame *src,int sx,int sy,
+		   int w,int h,GrColor op)
 {
-        GRX_ENTER();
-        if(GrColorMode(op) != GrIMAGE)
-            pbltv2r(dst,dx,dy,src,sx,sy,w,h,op);
-        else
-            _GrFrDrvGenericBitBlt(dst,dx,dy,src,sx,sy,w,h,op);
-        GRX_LEAVE();
+	GRX_ENTER();
+	if(GrColorMode(op) != GrIMAGE)
+	    pbltv2r(dst,dx,dy,src,sx,sy,w,h,op);
+	else
+	    _GrFrDrvGenericBitBlt(dst,dx,dy,src,sx,sy,w,h,op);
+	GRX_LEAVE();
 }
 
 /* ------------------------------------------------- ram -> video blit */
@@ -560,33 +560,33 @@ static void bltv2r(GrFrame *dst,int dx,int dy,
 #define MEM2VID_OPR(M,OP) do {                   \
       int _ww_ = w;                              \
       for (plc = 0; plc < 4; ++plc) {            \
-        char *_p_ = vp;                      \
-        char *_sptr_ = &M[plc];              \
-        int _w_ = (_ww_+3)>>2;                   \
-        _SetVGAWritePlane(pl);                   \
-        _SetVGAReadPlane(pl);                    \
-        colcopy_b_f##OP(_p_,1,_sptr_,4,_w_);     \
-        if ((--_ww_) == 0) break;                \
-        if (++pl == 4) { pl = 0; ++vp; }         \
+	char *_p_ = vp;                      \
+	char *_sptr_ = &M[plc];              \
+	int _w_ = (_ww_+3)>>2;                   \
+	_SetVGAWritePlane(pl);                   \
+	_SetVGAReadPlane(pl);                    \
+	colcopy_b_f##OP(_p_,1,_sptr_,4,_w_);     \
+	if ((--_ww_) == 0) break;                \
+	if (++pl == 4) { pl = 0; ++vp; }         \
       }                                          \
 } while (0)
 
 #define MEM2VID_SET(M) do {                      \
       int _ww_ = w;                              \
       for (plc = 0; plc < 4; ++plc) {            \
-        char *_p_ = vp;                      \
-        char *_sptr_ = &M[plc];              \
-        int _w_ = (_ww_+3)>>2;                   \
-        _SetVGAWritePlane(pl);                   \
-        colcopy_b_f_set(_p_,1,_sptr_,4,_w_);     \
-        if ((--_ww_) == 0) break;                \
-        if (++pl == 4) { pl = 0; ++vp; }         \
+	char *_p_ = vp;                      \
+	char *_sptr_ = &M[plc];              \
+	int _w_ = (_ww_+3)>>2;                   \
+	_SetVGAWritePlane(pl);                   \
+	colcopy_b_f_set(_p_,1,_sptr_,4,_w_);     \
+	if ((--_ww_) == 0) break;                \
+	if (++pl == 4) { pl = 0; ++vp; }         \
       }                                          \
 } while (0)
 
 static void pbltr2v(GrFrame *dst,int dx,int dy,
-                    GrFrame *src,int sx,int sy,
-                    int w,int h,GrColor op     )
+		    GrFrame *src,int sx,int sy,
+		    int w,int h,GrColor op     )
 {
     GR_int32u doffs;
     int sskip, dskip;
@@ -603,10 +603,10 @@ static void pbltr2v(GrFrame *dst,int dx,int dy,
       pl = dx & 3;
       vp = &SCRN->gc_baseaddr[0][doffs];
       switch (op) {
-        case C_XOR: MEM2VID_OPR(rp,_xor); break;
-        case C_OR:  MEM2VID_OPR(rp,_or);  break;
-        case C_AND: MEM2VID_OPR(rp,_and); break;
-        default:    MEM2VID_SET(rp);      break;
+	case C_XOR: MEM2VID_OPR(rp,_xor); break;
+	case C_OR:  MEM2VID_OPR(rp,_or);  break;
+	case C_AND: MEM2VID_OPR(rp,_and); break;
+	default:    MEM2VID_SET(rp);      break;
       }
       doffs += dskip;
       rp += sskip;
@@ -615,15 +615,15 @@ static void pbltr2v(GrFrame *dst,int dx,int dy,
 }
 
 static void bltr2v(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+		   GrFrame *src,int sx,int sy,
+		   int w,int h,GrColor op)
 {
-        GRX_ENTER();
-        if(GrColorMode(op) == GrIMAGE)
-            _GrFrDrvGenericBitBlt(dst,dx,dy,src,sx,sy,w,h,op);
-        else
-            pbltr2v(dst,dx,dy,src,sx,sy,w,h,op);
-        GRX_LEAVE();
+	GRX_ENTER();
+	if(GrColorMode(op) == GrIMAGE)
+	    _GrFrDrvGenericBitBlt(dst,dx,dy,src,sx,sy,w,h,op);
+	else
+	    pbltr2v(dst,dx,dy,src,sx,sy,w,h,op);
+	GRX_LEAVE();
 }
 
 

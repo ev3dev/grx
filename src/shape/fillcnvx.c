@@ -21,7 +21,7 @@
 
 void GrFilledConvexPolygon(int n,int pt[][2],GrColor c)
 {
-        GrFillArg fval;
-        fval.color = c;
-        _GrScanConvexPoly(n,pt,&_GrSolidFiller,fval);
+	GrFillArg fval;
+	fval.color = c;
+	_GrScanConvexPoly(n,pt,&_GrSolidFiller,fval);
 }

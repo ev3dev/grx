@@ -27,5 +27,5 @@
 
 void GrPatternedCircle(int xc,int yc,int r,GrLinePattern *lp)
 {
-        GrPatternedEllipse(xc,yc,r,r,lp);
+	GrPatternedEllipse(xc,yc,r,r,lp);
 }

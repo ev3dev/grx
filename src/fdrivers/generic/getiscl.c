@@ -17,8 +17,8 @@
 
 
 GrColor *getindexedscanline(GrFrame *c,
-                                int x,int y,int w,
-                                int *indx          )
+				int x,int y,int w,
+				int *indx          )
 {
    GrColor *pixels;
    GrColor *p;
@@ -29,16 +29,16 @@ GrColor *getindexedscanline(GrFrame *c,
        int i, oldx = -1;
        GrColor col = 0;
        for (i=0; i < w; ++i) {
-         int xx = x+indx[i];
-         if (oldx != xx) {
-           oldx = xx;
-           col = readpixel(c,xx,y);
-         }
-         *(p++) = col;
+	 int xx = x+indx[i];
+	 if (oldx != xx) {
+	   oldx = xx;
+	   col = readpixel(c,xx,y);
+	 }
+	 *(p++) = col;
        }
      } else {
        for ( ; w > 0; --w)
-         *(p++) = readpixel(c,x++,y);
+	 *(p++) = readpixel(c,x++,y);
      }
    }
    GRX_RETURN(pixels);

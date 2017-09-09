@@ -35,9 +35,9 @@ void GrPatternFilledEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int
       GrFillArg fa;
 
       if (style == GR_ARC_STYLE_CLOSE2) {
-              points[numpts][0] = xc;
-              points[numpts][1] = yc;
-              numpts++;
+	      points[numpts][0] = xc;
+	      points[numpts][1] = yc;
+	      numpts++;
       }
       fa.p = p;
       if(numpts < 0) _GrScanConvexPoly((-numpts),points,&_GrPatternFiller,fa);

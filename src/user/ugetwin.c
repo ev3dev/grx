@@ -21,8 +21,8 @@
 
 void GrGetUserWindow(int *x1,int *y1,int *x2,int *y2)
 {
-        *x1 = CURC->gc_usrxbase;
-        *y1 = CURC->gc_usrybase;
-        *x2 = CURC->gc_usrxbase + CURC->gc_usrwidth;
-        *y2 = CURC->gc_usrybase + CURC->gc_usrheight;
+	*x1 = CURC->gc_usrxbase;
+	*y1 = CURC->gc_usrybase;
+	*x2 = CURC->gc_usrxbase + CURC->gc_usrwidth;
+	*y2 = CURC->gc_usrybase + CURC->gc_usrheight;
 }

@@ -27,21 +27,21 @@ void GrEllipseArc(int xc,int yc,int xa,int ya,int start,int end,int style,GrColo
     pnts = ALLOC(sizeof(int) * 2 * (GR_MAX_ELLIPSE_POINTS + 1));
     if (pnts != NULL)
     {
-        GrFillArg fval;
-        int npts  = GrGenerateEllipseArc(xc,yc,xa,ya,start,end,pnts);
-        int close = FALSE;
-        switch(style) {
-          case GR_ARC_STYLE_CLOSE2:
-            pnts[npts][0] = xc;
-            pnts[npts][1] = yc;
-            npts++;
-          case GR_ARC_STYLE_CLOSE1:
-            close = TRUE;
-            break;
-        }
-        fval.color = c;
-        _GrDrawPolygon(npts,pnts,&_GrSolidFiller,fval,close);
-        FREE(pnts);
+	GrFillArg fval;
+	int npts  = GrGenerateEllipseArc(xc,yc,xa,ya,start,end,pnts);
+	int close = FALSE;
+	switch(style) {
+	  case GR_ARC_STYLE_CLOSE2:
+	    pnts[npts][0] = xc;
+	    pnts[npts][1] = yc;
+	    npts++;
+	  case GR_ARC_STYLE_CLOSE1:
+	    close = TRUE;
+	    break;
+	}
+	fval.color = c;
+	_GrDrawPolygon(npts,pnts,&_GrSolidFiller,fval,close);
+	FREE(pnts);
     }
     reset_ALLOC();
 }

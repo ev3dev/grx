@@ -69,31 +69,31 @@
  * [i][l]swap [i][u][l][ul]sort
  */
 #define iswap(x,y) {                                            \
-        int _swap_tmpval_ = (x);                                \
-        (x) = (y);                                              \
-        (y) = _swap_tmpval_;                                    \
+	int _swap_tmpval_ = (x);                                \
+	(x) = (y);                                              \
+	(y) = _swap_tmpval_;                                    \
 }
 
 #define lswap(x,y) {                                            \
-        long _swap_tmpval_ = (x);                               \
-        (x) = (y);                                              \
-        (y) = _swap_tmpval_;                                    \
+	long _swap_tmpval_ = (x);                               \
+	(x) = (y);                                              \
+	(y) = _swap_tmpval_;                                    \
 }
 
 #define isort(x,y) {                                            \
-        if((int)(x) > (int)(y)) iswap(x,y)                      \
+	if((int)(x) > (int)(y)) iswap(x,y)                      \
 }
 
 #define usort(x,y) {                                            \
-        if((unsigned int)(x) > (unsigned int)(y)) iswap(x,y)    \
+	if((unsigned int)(x) > (unsigned int)(y)) iswap(x,y)    \
 }
 
 #define lsort(x,y) {                                            \
-        if((long)(x) > (long)(y)) lswap(x,y)                    \
+	if((long)(x) > (long)(y)) lswap(x,y)                    \
 }
 
 #define ulsort(x,y) {                                           \
-        if((unsigned long)(x) > (unsigned long)(y)) lswap(x,y)  \
+	if((unsigned long)(x) > (unsigned long)(y)) lswap(x,y)  \
 }
 
 /*
@@ -107,8 +107,8 @@
 #endif
 #ifndef offsetof
 #define offsetof(structype,field) (int)(                        \
-        (char *)(&((structype *)(0))->field) -                  \
-        (char *)(0)                                             \
+	(char *)(&((structype *)(0))->field) -                  \
+	(char *)(0)                                             \
 )
 #endif
 
@@ -147,8 +147,8 @@
 #endif
 #ifndef irscale
 #define irscale(X,N,D)  ((iscale(((int)(X) << 1),N,D) +                 \
-        (((int)(X) ^ (int)(N) ^ (int)(D)) >> (bitsof(int) - 1)) +       \
-        1) >> 1)
+	(((int)(X) ^ (int)(N) ^ (int)(D)) >> (bitsof(int) - 1)) +       \
+	1) >> 1)
 #endif
 #ifndef urscale
 #define urscale(X,N,D)  ((uscale(((int)(X) << 1),N,D) + 1) >> 1)
@@ -159,8 +159,8 @@
  * copy the lower byte(s) of a byte or word into the upper byte(s)
  */
 #define __INLINE_REPLICATE__(V,TFROM,TTO) (                             \
-        ((unsigned TTO)(unsigned TFROM)(V)) |                           \
-        ((unsigned TTO)(unsigned TFROM)(V) << (sizeof(TFROM) * 8))      \
+	((unsigned TTO)(unsigned TFROM)(V)) |                           \
+	((unsigned TTO)(unsigned TFROM)(V) << (sizeof(TFROM) * 8))      \
 )
 
 #ifndef replicate_b2w

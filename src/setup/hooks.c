@@ -20,16 +20,16 @@
 
 void GrSetModeRestore(int restoreFlag)
 {
-        DRVINFO->moderestore = restoreFlag;
+	DRVINFO->moderestore = restoreFlag;
 }
 
 void GrSetErrorHandling(int exitIfError)
 {
-        DRVINFO->errsfatal = exitIfError;
+	DRVINFO->errsfatal = exitIfError;
 }
 
 void GrSetModeHook(void (*hookfunc)(void))
 {
-        DRVINFO->mdsethook = hookfunc;
+	DRVINFO->mdsethook = hookfunc;
 }
 

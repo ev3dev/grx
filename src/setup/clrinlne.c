@@ -20,76 +20,76 @@
 
 GrColor (GrColorValue)(GrColor c)
 {
-        return(GrColorValue(c));
+	return(GrColorValue(c));
 }
 
 GrColor (GrColorMode)(GrColor c)
 {
-        return(GrColorMode(c));
+	return(GrColorMode(c));
 }
 
 GrColor (GrWriteModeColor)(GrColor c)
 {
-        return(GrWriteModeColor(c));
+	return(GrWriteModeColor(c));
 }
 
 GrColor (GrXorModeColor)(GrColor c)
 {
-        return(GrXorModeColor(c));
+	return(GrXorModeColor(c));
 }
 
 GrColor (GrOrModeColor)(GrColor c)
 {
-        return(GrOrModeColor(c));
+	return(GrOrModeColor(c));
 }
 GrColor (GrAndModeColor)(GrColor c)
 {
-        return(GrAndModeColor(c));
+	return(GrAndModeColor(c));
 }
 
 GrColor (GrImageModeColor)(GrColor c)
 {
-        return(GrImageModeColor(c));
+	return(GrImageModeColor(c));
 }
 
 GrColor (GrNumColors)(void)
 {
-        return(GrNumColors());
+	return(GrNumColors());
 }
 
 GrColor (GrNumFreeColors)(void)
 {
-        return(GrNumFreeColors());
+	return(GrNumFreeColors());
 }
 
 GrColor (GrBuildRGBcolorT)(int r,int g,int b)
 {
-        return(GrBuildRGBcolorT(r,g,b));
+	return(GrBuildRGBcolorT(r,g,b));
 }
 
 GrColor (GrBuildRGBcolorR)(int r,int g,int b)
 {
-        return(GrBuildRGBcolorR(r,g,b));
+	return(GrBuildRGBcolorR(r,g,b));
 }
 
 int (GrRGBcolorRed)(GrColor c)
 {
-        return(GrRGBcolorRed(c));
+	return(GrRGBcolorRed(c));
 }
 
 int (GrRGBcolorGreen)(GrColor c)
 {
-        return(GrRGBcolorGreen(c));
+	return(GrRGBcolorGreen(c));
 }
 
 int (GrRGBcolorBlue)(GrColor c)
 {
-        return(GrRGBcolorBlue(c));
+	return(GrRGBcolorBlue(c));
 }
 
 GrColor (GrAllocColorID)(int r,int g,int b)
 {
-        return(GrAllocColorID(r,g,b));
+	return(GrAllocColorID(r,g,b));
 }
 
 GrColor (GrAllocColor2)(long hcolor)
@@ -104,7 +104,7 @@ GrColor (GrAllocColor2ID)(long hcolor)
 
 void (GrQueryColorID)(GrColor c,int *r,int *g,int *b)
 {
-        GrQueryColorID(c,r,g,b);
+	GrQueryColorID(c,r,g,b);
 }
 
 void (GrQueryColor2ID)(GrColor c,long *hcolor)

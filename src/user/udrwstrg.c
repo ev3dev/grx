@@ -22,7 +22,7 @@
 
 void GrUsrDrawString(char *text,int length,int x,int y,const GrTextOption *opt)
 {
-        U2SX(x,CURC);
-        U2SY(y,CURC);
-        GrDrawString(text,length,x,y,opt);
+	U2SX(x,CURC);
+	U2SY(y,CURC);
+	GrDrawString(text,length,x,y,opt);
 }

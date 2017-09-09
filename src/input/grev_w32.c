@@ -349,10 +349,10 @@ static void init_w32queue(int queue_size)
 {
     EnterCriticalSection(&_csEventQueue);
     if (_W32EventQueueSize != queue_size) {
-        if (_W32EventQueue != NULL)
-            free(_W32EventQueue);
+	if (_W32EventQueue != NULL)
+	    free(_W32EventQueue);
         _W32EventQueue = (W32Event *)malloc(sizeof(W32Event) * queue_size);
-        _W32EventQueueSize = _W32EventQueue ? queue_size : 0;
+	_W32EventQueueSize = _W32EventQueue ? queue_size : 0;
     }
     _W32EventQueueRead = 0;
     _W32EventQueueWrite = 0;
@@ -366,17 +366,17 @@ static unsigned short StdKeyTranslate(int winkey, int fkbState)
     int i;
 
     if (fkbState & GRKBS_ALT)
-        k = altstdkeys;
+	k = altstdkeys;
     else if (fkbState & GRKBS_CTRL)
-        k = controlstdkeys;
+	k = controlstdkeys;
     else if (fkbState & GRKBS_SHIFT)
-        k = shiftstdkeys;
+	k = shiftstdkeys;
     else
-        k = stdkeys;
+	k = stdkeys;
 
     for (i = 0; i < NSTDKEYS; i++) {
-        if (winkey == k[i].winkey)
-            return k[i].grkey;
+	if (winkey == k[i].winkey)
+	    return k[i].grkey;
     }
 
     return 0;

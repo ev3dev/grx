@@ -16,7 +16,7 @@
  **/
 
 void putscanline(int x,int y,int w,
-                 const GrColor *scl, GrColor op )
+		 const GrColor *scl, GrColor op )
 {
    GrColor skipc;
    GRX_ENTER();

@@ -29,8 +29,9 @@
 static GrEvent evqueue[MAX_EVQUEUE];
 static int num_evqueue = 0;
 
-static int kbsysencoding = 0;
-static int kbusrencoding = 0;
+static int kbsysencoding = GRENC_CP437;
+
+static int genexposeevents = GR_GEN_EXPOSE_NO;
 
 #define MAX_HOOK_FUNCTIONS 10
 static int (*hook_event[MAX_HOOK_FUNCTIONS]) (GrEvent *);
@@ -61,10 +62,6 @@ int GrEventInit(void)
     }
     ret = _GrEventInit();
     kbsysencoding = _GrGetKbSysEncoding();
-    if (kbsysencoding == GRENC_UTF_8)
-        kbusrencoding = GRENC_ISO_8859_1;
-    else
-        kbusrencoding = kbsysencoding;
     return ret;
 }
 
@@ -88,30 +85,6 @@ void GrEventUnInit(void)
 int GrGetKbSysEncoding(void)
 {
     return kbsysencoding;
-}
-
-/**
- ** GrGetKbEncoding - Get kb user encoding
- **
- **/
-
-int GrGetKbEncoding(void)
-{
-    return kbusrencoding;
-}
-
-/**
- ** GrSetKbEncoding - Set kb user encoding
- **
- **/
-
-int GrSetKbEncoding(int enc)
-{
-    if (enc >= 0 && enc <= GRENC_LASTENCODE) {
-        kbusrencoding = enc;
-        return 1;
-    }
-    return 0;
 }
 
 /**
@@ -281,12 +254,12 @@ int GrEventDeleteHook(int (*fn) (GrEvent *))
 
 static int preproccess_event(GrEvent *ev)
 {
-    int i;
+    int i, usrenc;
 
     if (ev->type == GREV_PREKEY) {
-        if ((ev->p2 != GRKEY_KEYCODE) &&
-            (kbsysencoding != kbusrencoding)) {
-          GrRecodeEvent(ev, kbsysencoding, kbusrencoding);
+        usrenc = GrGetUserEncoding();
+        if ((ev->p2 != GRKEY_KEYCODE) && (kbsysencoding != usrenc)) {
+          GrRecodeEvent(ev, kbsysencoding, usrenc);
         }
         ev->type = GREV_KEY;
     }
@@ -299,3 +272,10 @@ static int preproccess_event(GrEvent *ev)
     return 0;
 }
 
+void GrEventGenExpose(int when)
+{
+    genexposeevents = when;
+#ifdef __XWIN__
+    _GrXwinEventGenExpose(when);
+#endif
+}

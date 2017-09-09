@@ -21,5 +21,5 @@
 
 void GrCircle(int xc,int yc,int r,GrColor c)
 {
-        GrEllipse(xc,yc,r,r,c);
+	GrEllipse(xc,yc,r,r,c);
 }

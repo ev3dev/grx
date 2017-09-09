@@ -46,18 +46,18 @@ static void _ReadMouseData(int *mb, int *mx, int *my);
 #define PS2_RIGHTBUTTON  2
 
 #define update_coord(WHICH,MICKEYS) do {                                    \
-        static int fract = 0;                                               \
-        int delta,ddelta,pos;                                               \
-        delta   = (MICKEYS) * MOUINFO->spmult;                              \
-        ddelta  = (delta + fract) / MOUINFO->spdiv;                         \
-        fract   = (delta + fract) % MOUINFO->spdiv;                         \
-        if(iabs(ddelta) >= MOUINFO->thresh) ddelta *= MOUINFO->accel;       \
-        pos     = MOUINFO->WHICH##pos + ddelta;                             \
-        if(pos  < MOUINFO->WHICH##min) pos = MOUINFO->WHICH##min;           \
-        if(pos  > MOUINFO->WHICH##max) pos = MOUINFO->WHICH##max;           \
-        if(pos != MOUINFO->WHICH##pos) {                                    \
-        MOUINFO->WHICH##pos = pos;                                          \
-        }                                                                   \
+	static int fract = 0;                                               \
+	int delta,ddelta,pos;                                               \
+	delta   = (MICKEYS) * MOUINFO->spmult;                              \
+	ddelta  = (delta + fract) / MOUINFO->spdiv;                         \
+	fract   = (delta + fract) % MOUINFO->spdiv;                         \
+	if(iabs(ddelta) >= MOUINFO->thresh) ddelta *= MOUINFO->accel;       \
+	pos     = MOUINFO->WHICH##pos + ddelta;                             \
+	if(pos  < MOUINFO->WHICH##min) pos = MOUINFO->WHICH##min;           \
+	if(pos  > MOUINFO->WHICH##max) pos = MOUINFO->WHICH##max;           \
+	if(pos != MOUINFO->WHICH##pos) {                                    \
+	MOUINFO->WHICH##pos = pos;                                          \
+	}                                                                   \
 } while(0)
 
 /**
@@ -176,7 +176,7 @@ int _GrReadInputs(void)
         evaux.kbstat = _GetKbstat();
         evaux.p1 = _GetKey();
         if (evaux.p1 > 0xff)
-            evaux.p2 = GRENC_CP437;
+            evaux.p2 = GRKEY_KEYCODE;
         else
             evaux.p2 = 1;
         evaux.p3 = 0;
@@ -199,11 +199,11 @@ int _GrMouseDetect(void)
 {
     Int86Regs r;
 
-    MOUINFO->msstatus = (-1);        /* assume missing */
+    MOUINFO->msstatus = (-1);	/* assume missing */
     sttzero(&r);
     int33(&r);
     if(IREG_AX(r) != 0) {
-        MOUINFO->msstatus = 1;        /* present, but not initted */
+        MOUINFO->msstatus = 1;	/* present, but not initted */
         return 1;
     }
     return 0;

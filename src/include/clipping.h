@@ -138,60 +138,60 @@
 
 #define clip_line_xmin_(c,x1,y1,x2,y2,when_clip) {                      \
     if(x1 < c->gc_xcliplo) {                                            \
-        y1 += irscale((y2 - y1),(c->gc_xcliplo - x1),(x2 - x1));        \
-        x1  = c->gc_xcliplo;                                            \
-        when_clip;                                                      \
+	y1 += irscale((y2 - y1),(c->gc_xcliplo - x1),(x2 - x1));        \
+	x1  = c->gc_xcliplo;                                            \
+	when_clip;                                                      \
     }                                                                   \
 }
 
 #define clip_line_xmax_(c,x1,y1,x2,y2,when_clip) {                      \
     if(x2 > c->gc_xcliphi) {                                            \
-        y2 -= irscale((y2 - y1),(x2 - c->gc_xcliphi),(x2 - x1));        \
-        x2  = c->gc_xcliphi;                                            \
-        when_clip;                                                      \
+	y2 -= irscale((y2 - y1),(x2 - c->gc_xcliphi),(x2 - x1));        \
+	x2  = c->gc_xcliphi;                                            \
+	when_clip;                                                      \
     }                                                                   \
 }
 
 #define clip_line_ymin_(c,x1,y1,x2,y2,when_clip) {                      \
     if(y1 < c->gc_ycliplo) {                                            \
-        x1 += irscale((x2 - x1),(c->gc_ycliplo - y1),(y2 - y1));        \
-        y1  = c->gc_ycliplo;                                            \
-        when_clip;                                                      \
+	x1 += irscale((x2 - x1),(c->gc_ycliplo - y1),(y2 - y1));        \
+	y1  = c->gc_ycliplo;                                            \
+	when_clip;                                                      \
     }                                                                   \
 }
 
 #define clip_line_ymax_(c,x1,y1,x2,y2,when_clip) {                      \
     if(y2 > c->gc_ycliphi) {                                            \
-        x2 -= irscale((x2 - x1),(y2 - c->gc_ycliphi),(y2 - y1));        \
-        y2  = c->gc_ycliphi;                                            \
-        when_clip;                                                      \
+	x2 -= irscale((x2 - x1),(y2 - c->gc_ycliphi),(y2 - y1));        \
+	y2  = c->gc_ycliphi;                                            \
+	when_clip;                                                      \
     }                                                                   \
 }
 
 #define clip_line_(c,x1,y1,x2,y2,when_out,when_clip) {                  \
     if(x1 < x2) {                                                       \
-        if(x2 < c->gc_xcliplo) { when_out; }                            \
-        if(x1 > c->gc_xcliphi) { when_out; }                            \
-        clip_line_xmin_(c,x1,y1,x2,y2,when_clip);                       \
-        clip_line_xmax_(c,x1,y1,x2,y2,when_clip);                       \
+	if(x2 < c->gc_xcliplo) { when_out; }                            \
+	if(x1 > c->gc_xcliphi) { when_out; }                            \
+	clip_line_xmin_(c,x1,y1,x2,y2,when_clip);                       \
+	clip_line_xmax_(c,x1,y1,x2,y2,when_clip);                       \
     }                                                                   \
     else {                                                              \
-        if(x1 < c->gc_xcliplo) { when_out; }                            \
-        if(x2 > c->gc_xcliphi) { when_out; }                            \
-        clip_line_xmin_(c,x2,y2,x1,y1,when_clip);                       \
-        clip_line_xmax_(c,x2,y2,x1,y1,when_clip);                       \
+	if(x1 < c->gc_xcliplo) { when_out; }                            \
+	if(x2 > c->gc_xcliphi) { when_out; }                            \
+	clip_line_xmin_(c,x2,y2,x1,y1,when_clip);                       \
+	clip_line_xmax_(c,x2,y2,x1,y1,when_clip);                       \
     }                                                                   \
     if(y1 < y2) {                                                       \
-        if(y2 < c->gc_ycliplo) { when_out; }                            \
-        if(y1 > c->gc_ycliphi) { when_out; }                            \
-        clip_line_ymin_(c,x1,y1,x2,y2,when_clip);                       \
-        clip_line_ymax_(c,x1,y1,x2,y2,when_clip);                       \
+	if(y2 < c->gc_ycliplo) { when_out; }                            \
+	if(y1 > c->gc_ycliphi) { when_out; }                            \
+	clip_line_ymin_(c,x1,y1,x2,y2,when_clip);                       \
+	clip_line_ymax_(c,x1,y1,x2,y2,when_clip);                       \
     }                                                                   \
     else {                                                              \
-        if(y1 < c->gc_ycliplo) { when_out; }                            \
-        if(y2 > c->gc_ycliphi) { when_out; }                            \
-        clip_line_ymin_(c,x2,y2,x1,y1,when_clip);                       \
-        clip_line_ymax_(c,x2,y2,x1,y1,when_clip);                       \
+	if(y1 < c->gc_ycliplo) { when_out; }                            \
+	if(y2 > c->gc_ycliphi) { when_out; }                            \
+	clip_line_ymin_(c,x2,y2,x1,y1,when_clip);                       \
+	clip_line_ymax_(c,x2,y2,x1,y1,when_clip);                       \
     }                                                                   \
 }
 

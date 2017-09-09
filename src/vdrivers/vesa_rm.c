@@ -20,34 +20,34 @@
 
 static void RM_setbank(int bk)
 {
-        Int86Regs r;
+	Int86Regs r;
 
-        sttzero(&r);
-        IREG_AX(r) = VESA_FUNC + VESA_PAGE_CTL;
-        IREG_BX(r) = _GrVidDrvVESAwrbank;
-        IREG_DX(r) = bk << _GrVidDrvVESAbanksft;
-        int10(&r);
-        if(_GrVidDrvVESArdbank >= 0) {
-            IREG_AX(r) = VESA_FUNC + VESA_PAGE_CTL;
-            IREG_BX(r) = _GrVidDrvVESArdbank;
-            IREG_DX(r) = bk << _GrVidDrvVESAbanksft;
-            int10(&r);
-        }
-        setup_far_selector(SCRN->gc_selector);
+	sttzero(&r);
+	IREG_AX(r) = VESA_FUNC + VESA_PAGE_CTL;
+	IREG_BX(r) = _GrVidDrvVESAwrbank;
+	IREG_DX(r) = bk << _GrVidDrvVESAbanksft;
+	int10(&r);
+	if(_GrVidDrvVESArdbank >= 0) {
+	    IREG_AX(r) = VESA_FUNC + VESA_PAGE_CTL;
+	    IREG_BX(r) = _GrVidDrvVESArdbank;
+	    IREG_DX(r) = bk << _GrVidDrvVESAbanksft;
+	    int10(&r);
+	}
+	setup_far_selector(SCRN->gc_selector);
 }
 
 static void RM_setrwbanks(int rb,int wb)
 {
-        Int86Regs r;
+	Int86Regs r;
 
-        sttzero(&r);
-        IREG_AX(r) = VESA_FUNC + VESA_PAGE_CTL;
-        IREG_BX(r) = _GrVidDrvVESAwrbank;
-        IREG_DX(r) = wb << _GrVidDrvVESAbanksft;
-        int10(&r);
-        IREG_AX(r) = VESA_FUNC + VESA_PAGE_CTL;
-        IREG_BX(r) = _GrVidDrvVESArdbank;
-        IREG_DX(r) = rb << _GrVidDrvVESAbanksft;
-        int10(&r);
-        setup_far_selector(SCRN->gc_selector);
+	sttzero(&r);
+	IREG_AX(r) = VESA_FUNC + VESA_PAGE_CTL;
+	IREG_BX(r) = _GrVidDrvVESAwrbank;
+	IREG_DX(r) = wb << _GrVidDrvVESAbanksft;
+	int10(&r);
+	IREG_AX(r) = VESA_FUNC + VESA_PAGE_CTL;
+	IREG_BX(r) = _GrVidDrvVESArdbank;
+	IREG_DX(r) = rb << _GrVidDrvVESAbanksft;
+	int10(&r);
+	setup_far_selector(SCRN->gc_selector);
 }

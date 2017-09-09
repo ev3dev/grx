@@ -26,19 +26,19 @@
 
 int _GrViDrvVESAsetVirtualSize(GrVideoMode *md,int w,int h,GrVideoMode *result)
 {
-        Int86Regs r;
-        sttzero(&r);
-        IREG_AX(r) = VESA_FUNC + VESA_SCAN_LNLEN;
-        IREG_BX(r) = 0;
-        IREG_CX(r) = w;
-        int10(&r);
-        if(IREG_AX(r) == VESA_SUCCESS) {
-            result->lineoffset = IREG_BX(r);
-            result->width      = IREG_CX(r);
-            result->height     = umin(IREG_DX(r),h);
-            return(TRUE);
-        }
-        return(FALSE);
+	Int86Regs r;
+	sttzero(&r);
+	IREG_AX(r) = VESA_FUNC + VESA_SCAN_LNLEN;
+	IREG_BX(r) = 0;
+	IREG_CX(r) = w;
+	int10(&r);
+	if(IREG_AX(r) == VESA_SUCCESS) {
+	    result->lineoffset = IREG_BX(r);
+	    result->width      = IREG_CX(r);
+	    result->height     = umin(IREG_DX(r),h);
+	    return(TRUE);
+	}
+	return(FALSE);
 }
 
 /*
@@ -48,21 +48,21 @@ int _GrViDrvVESAsetVirtualSize(GrVideoMode *md,int w,int h,GrVideoMode *result)
 */
 int _GrViDrvVESAvirtualScroll(GrVideoMode *md,int x,int y,int result[2])
 {
-        Int86Regs r;
-        sttzero(&r);
-        IREG_AX(r) = VESA_FUNC + VESA_DISP_START;
-        IREG_BX(r) = 0;
-        IREG_CX(r) = x;
-        IREG_DX(r) = y;
-        int10(&r);
-        if(IREG_AX(r) == VESA_SUCCESS) {
-            IREG_AX(r) = VESA_FUNC + VESA_DISP_START;
-            IREG_BX(r) = 1;
-            int10(&r);
-            result[0] = IREG_CX(r);
-            result[1] = IREG_DX(r);
-            return(TRUE);
-        }
-        return(FALSE);
+	Int86Regs r;
+	sttzero(&r);
+	IREG_AX(r) = VESA_FUNC + VESA_DISP_START;
+	IREG_BX(r) = 0;
+	IREG_CX(r) = x;
+	IREG_DX(r) = y;
+	int10(&r);
+	if(IREG_AX(r) == VESA_SUCCESS) {
+	    IREG_AX(r) = VESA_FUNC + VESA_DISP_START;
+	    IREG_BX(r) = 1;
+	    int10(&r);
+	    result[0] = IREG_CX(r);
+	    result[1] = IREG_DX(r);
+	    return(TRUE);
+	}
+	return(FALSE);
 }
 

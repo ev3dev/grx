@@ -25,6 +25,7 @@
 #include "libgrx.h"
 #include "libxwin.h"
 #include <X11/keysym.h>
+#include <X11/XKBlib.h>
 #include <X11/Xlocale.h>
 #include "mgrxkeys.h"
 #include "ninput.h"
@@ -135,8 +136,18 @@ int _GrReadInputs(void)
         }
         switch (xev.type) {
         case Expose:
-            _XGrCopyBStore(xev.xexpose.x, xev.xexpose.y,
-              xev.xexpose.width, xev.xexpose.height);
+            if (_XGrGenExposeEvents == GR_GEN_EXPOSE_NO) {
+                _XGrCopyBStore(xev.xexpose.x, xev.xexpose.y,
+                  xev.xexpose.width, xev.xexpose.height);
+            } else {
+                evaux.type = GREV_EXPOSE;
+                evaux.kbstat = 0;
+                evaux.p1 = xev.xexpose.x;
+                evaux.p2 = xev.xexpose.y;
+                evaux.p3 = xev.xexpose.width;
+                evaux.p4 = xev.xexpose.height;
+                GrEventEnqueue(&evaux);
+            }
             break;
 
         case MotionNotify:
@@ -211,7 +222,8 @@ int _GrReadInputs(void)
             break;
 
       case KeyPress:
-          keysym = XKeycodeToKeysym(_XGrDisplay, xev.xkey.keycode, 0);
+//          keysym = XKeycodeToKeysym(_XGrDisplay, xev.xkey.keycode, 0);
+          keysym = XkbKeycodeToKeysym(_XGrDisplay, xev.xkey.keycode, 0, 0);
           if (IsModifierKey(keysym)) {
               _XGrModifierKey(keysym, xev.type);
           } else {
@@ -236,7 +248,8 @@ int _GrReadInputs(void)
           break;
 
       case KeyRelease:
-          keysym = XKeycodeToKeysym(_XGrDisplay, xev.xkey.keycode, 0);
+//          keysym = XKeycodeToKeysym(_XGrDisplay, xev.xkey.keycode, 0);
+          keysym = XkbKeycodeToKeysym(_XGrDisplay, xev.xkey.keycode, 0, 0);
           if (IsModifierKey (keysym)) {
               _XGrModifierKey (keysym, xev.type);
           }

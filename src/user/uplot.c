@@ -22,7 +22,7 @@
 
 void GrUsrPlot(int x,int y,GrColor c)
 {
-        U2SX(x,CURC);
-        U2SY(y,CURC);
-        GrPlot(x,y,c);
+	U2SX(x,CURC);
+	U2SY(y,CURC);
+	GrPlot(x,y,c);
 }

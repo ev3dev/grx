@@ -1,0 +1,28 @@
+There are some important changes in the MGRX 1.1 API over MGRX 1.0 that require
+changing the source code. These are:
+
+1- To acomodate the new extended internationalization support the GR_ATTR_TEXT
+   chrtype was deleted, so if your program depends on it you can't update to
+   MGRX 1.1, sorry.
+
+2- The GrTextRegion and functions were deleted too, because its use is very
+   connected to the GR_ATTR_TEXT chrtype.
+
+3- Now GrTextOption.fgcv and GrTextOption.bgcv are GrColor values, not unions,
+   so you must change constructions like "grt->fgcv.v = color" by
+   "grt->fgcv = color". The same for bgcv.
+
+4- Replaced GrGetKbEncoding and GrSetKbEncoding functions with GrGetUserEncoding
+   and GrSetUserEncoding, these functions exists even if not input driver is
+   ebabled (like with the memory driver). User enconding default to GRENC_UTF_8
+   in linux and X11, GRENC_PC437 in DJGPP and GRENC_PC1252 in WIn32, but the
+   programmer can set it like he wants. Now key events are recoded to the user
+   encoding.
+
+5- Deleted the GrProportionalTextWidth function because GrFontStringWidth works
+   for both proportional and fixed fonts.
+
+6- Replaced the GrDefaultFont define by two functions GrGetDefaultFont and
+   GrSetDefaultFont, now you can set the default font that you want (set to 
+   built-in GrFont_PC8x14 by default).
+

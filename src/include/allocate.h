@@ -44,6 +44,6 @@ extern void *_GrTempBuffer;
 extern unsigned  _GrTempBufferBytes;
 #define _GrTempBufferAlloc(b) (                                     \
     ((unsigned)(b) <= _GrTempBufferBytes) ? _GrTempBuffer           \
-                                          : _GrTempBufferAlloc_(b) )
+					  : _GrTempBufferAlloc_(b) )
 extern void *_GrTempBufferAlloc_(size_t bytes);
 extern void _GrTempBufferFree(void);

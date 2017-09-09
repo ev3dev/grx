@@ -22,8 +22,8 @@
 
 void GrUsrHLine(int x1,int x2,int y,GrColor c)
 {
-        U2SX(x1,CURC);
-        U2SX(x2,CURC);
-        U2SY(y,CURC);
-        GrHLine(x1,x2,y,c);
+	U2SX(x1,CURC);
+	U2SX(x2,CURC);
+	U2SY(y,CURC);
+	GrHLine(x1,x2,y,c);
 }

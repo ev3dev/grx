@@ -21,7 +21,7 @@
 /* will draw array of pixel values to current context          */
 
 void _GrFrDrvGenericPutScanline(int x,int y,int w,
-                                const GrColor *scl, GrColor op )
+				const GrColor *scl, GrColor op )
 {
    GrColor skipc;
    _GR_drawPix drawpixel;

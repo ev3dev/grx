@@ -21,7 +21,7 @@
 
 void GrFilledPolygon(int n,int pt[][2],GrColor c)
 {
-        GrFillArg fval;
-        fval.color = c;
-        _GrScanPolygon(n,pt,&_GrSolidFiller,fval);
+	GrFillArg fval;
+	fval.color = c;
+	_GrScanPolygon(n,pt,&_GrSolidFiller,fval);
 }

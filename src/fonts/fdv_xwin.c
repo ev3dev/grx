@@ -47,9 +47,9 @@ static void init_swap_byte (void)
     unsigned int i;
     for (i = 0; i < 256; i++) {
       swap_byte[i] = (  ((i&0x01)<<7) | ((i&0x02)<<5)
-                      | ((i&0x04)<<3) | ((i&0x08)<<1)
-                      | ((i&0x10)>>1) | ((i&0x20)>>3)
-                      | ((i&0x40)>>5) | ((i&0x80)>>7));
+		      | ((i&0x04)<<3) | ((i&0x08)<<1)
+		      | ((i&0x10)>>1) | ((i&0x20)>>3)
+		      | ((i&0x40)>>5) | ((i&0x80)>>7));
     }
     swap_byte_inited = 1;
   }
@@ -91,23 +91,23 @@ static int openfile(char *fname)
 
   numchars = fontp->max_char_or_byte2 - fontp->min_char_or_byte2 + 1;
   fontbmp = XCreatePixmap (fontdsp, fontwin,
-                           numchars * fontp->max_bounds.width,
-                           fontp->ascent + fontp->descent, 1);
+			   numchars * fontp->max_bounds.width,
+			   fontp->ascent + fontp->descent, 1);
   if (fontbmp == None)  goto done;
   fontgc = XCreateGC (fontdsp, fontbmp, 0L, NULL);
   if (fontgc == None)   goto done;
   XSetFont (fontdsp, fontgc, fontp->fid);
   XSetForeground (fontdsp, fontgc, 0);
   XFillRectangle (fontdsp, fontbmp, fontgc, 0, 0,
-                  numchars * fontp->max_bounds.width,
-                  fontp->ascent + fontp->descent);
+		  numchars * fontp->max_bounds.width,
+		  fontp->ascent + fontp->descent);
   XSetForeground (fontdsp, fontgc, 1);
   XSetBackground (fontdsp, fontgc, 0);
   for (i = 0; i < numchars; i++) {
     char c = fontp->min_char_or_byte2 + i;
     XDrawString (fontdsp, fontbmp, fontgc,
-                 i * fontp->max_bounds.width,
-                 fontp->ascent, &c, 1);
+		 i * fontp->max_bounds.width,
+		 fontp->ascent, &c, 1);
   }
   res = TRUE;
 done:
@@ -141,6 +141,7 @@ static int header(GrFontHeader *hdr)
   hdr->ulpos      = hdr->height - hdr->ulheight;
   hdr->minchar    = fontp->min_char_or_byte2;
   hdr->numchars   = fontp->max_char_or_byte2 - fontp->min_char_or_byte2 + 1;
+  hdr->encoding   = 0; /* GR_FONTENC_UNKNOWN */
   strncpy(hdr->name, hdr->family, 89);
   hdr->name[89] = '\0';
   sprintf(hdr->name + strlen(hdr->name), "-%d", hdr->height);
@@ -179,13 +180,13 @@ static int bitmap(int chr,int w,int h,char *buffer)
   if ((h <= 0) || (h != (fontp->ascent + fontp->descent)))      return(FALSE);
   if (fontdsp == NULL)  return(FALSE);
   img = XGetImage (fontdsp,
-                   fontbmp,
-                   (chr - fontp->min_char_or_byte2) * fontp->max_bounds.width,
-                   0,
-                   w,
-                   h,
-                   AllPlanes,
-                   ZPixmap);
+		   fontbmp,
+		   (chr - fontp->min_char_or_byte2) * fontp->max_bounds.width,
+		   0,
+		   w,
+		   h,
+		   AllPlanes,
+		   ZPixmap);
   if (img == NULL)      return(FALSE);
   data = (unsigned char *)(img->data);
   bpl = (w + 7) >> 3;

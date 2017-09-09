@@ -48,8 +48,8 @@ void GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,GrImage *p)
     do {
       copyw = min(x2-xx,iwdt-xoff);
       (*bltfun)( &CURC->gc_frame, xx + CURC->gc_xoffset, yy + CURC->gc_yoffset,
-                 &p->pxp_source,xoff,yoff,copyw,copyh,
-                 p->pxp_oper
+		 &p->pxp_source,xoff,yoff,copyw,copyh,
+		 p->pxp_oper
       );
       xx += iwdt-xoff;
       xoff = 0;

@@ -22,12 +22,12 @@
 
 void GrGetScreenCoord(int *x,int *y)
 {
-        U2SX(*x,CURC);
-        U2SY(*y,CURC);
+	U2SX(*x,CURC);
+	U2SY(*y,CURC);
 }
 
 void GrGetUserCoord(int *x,int *y)
 {
-        S2UX(*x,CURC);
-        S2UY(*y,CURC);
+	S2UX(*x,CURC);
+	S2UY(*y,CURC);
 }

@@ -20,66 +20,66 @@
 
 GrContext *(GrCreateContext)(int w,int h,char *memory[4],GrContext *where)
 {
-        return(GrCreateContext(w,h,memory,where));
+	return(GrCreateContext(w,h,memory,where));
 }
 
 GrContext *(GrCurrentContext)(void)
 {
-        return(GrCurrentContext());
+	return(GrCurrentContext());
 }
 
 GrContext *(GrScreenContext)(void)
 {
-        return(GrScreenContext());
+	return(GrScreenContext());
 }
 
 void (GrGetClipBox)(int *x1p,int *y1p,int *x2p,int *y2p)
 {
-        GrGetClipBox(x1p,y1p,x2p,y2p);
+	GrGetClipBox(x1p,y1p,x2p,y2p);
 }
 
 void (GrGetClipBoxC)(const GrContext *c,int *x1p,int *y1p,int *x2p,int *y2p)
 {
-        GrGetClipBoxC(c,x1p,y1p,x2p,y2p);
+	GrGetClipBoxC(c,x1p,y1p,x2p,y2p);
 }
 
 int (GrMaxX)(void)
 {
-        return(GrMaxX());
+	return(GrMaxX());
 }
 
 int (GrMaxY)(void)
 {
-        return(GrMaxY());
+	return(GrMaxY());
 }
 
 int (GrSizeX)(void)
 {
-        return(GrSizeX());
+	return(GrSizeX());
 }
 
 int (GrSizeY)(void)
 {
-        return(GrSizeY());
+	return(GrSizeY());
 }
 
 int (GrLowX)(void)
 {
-        return(GrLowX());
+	return(GrLowX());
 }
 
 int (GrLowY)(void)
 {
-        return(GrLowY());
+	return(GrLowY());
 }
 
 int (GrHighX)(void)
 {
-        return(GrHighX());
+	return(GrHighX());
 }
 
 int (GrHighY)(void)
 {
-        return(GrHighY());
+	return(GrHighY());
 }
 

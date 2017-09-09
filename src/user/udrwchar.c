@@ -22,8 +22,8 @@
 
 void GrUsrDrawChar(long chr,int x,int y,const GrTextOption *opt)
 {
-        U2SX(x,CURC);
-        U2SY(y,CURC);
-        GrDrawChar(chr,x,y,opt);
+	U2SX(x,CURC);
+	U2SY(y,CURC);
+	GrDrawChar(chr,x,y,opt);
 }
 

@@ -10,7 +10,7 @@
 
 void GrPolygon(int n,int pt[][2],GrColor c)
 {
-        GrFillArg fval;
-        fval.color = c;
-        _GrDrawPolygon(n,pt,&_GrSolidFiller,fval,TRUE);
+	GrFillArg fval;
+	fval.color = c;
+	_GrDrawPolygon(n,pt,&_GrSolidFiller,fval,TRUE);
 }

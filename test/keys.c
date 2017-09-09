@@ -21,7 +21,7 @@
 
 #define ISPRINT(k) (((unsigned int)(k)) <= 255 && isprint(k))
 
-typedef struct { unsigned short key;
+typedef struct { long key;
                  char *name; } KeyEntry;
 
 static KeyEntry Keys[] = {
@@ -333,10 +333,12 @@ int main(void) {
     KeyEntry *kp;
     GrEvent ev;
     long k;
+    char *sk = (char *)&k;
     int ok;
-    char buf[121], buf_name[121];
+    char buf[201], buf_name[121];
+    int i, nc;
 
-    GrSetMode(GR_width_height_graphics, 800, 600);
+    GrSetMode(GR_width_height_bpp_graphics, 800, 600, 8);
     GrEventInit();
     GrMouseDisplayCursor();
 
@@ -359,16 +361,22 @@ int main(void) {
             if (!ok) {
                  strcpy(buf_name, "UNKNOWN");
             }
-            sprintf(buf, "GREV_KEY, time=%ld, kbstat=0x%03x, p2=%d code=0x%08x (%c), symbol=%s",
-                    (long)ev.time, (unsigned)ev.kbstat, (int)ev.p2, (unsigned)k, (char)k, buf_name);
+            nc = sprintf(buf, "GREV_KEY, time=%ld, kbstat=0x%03x, p2=%3d code=0x%08x (",
+                    (long)ev.time, (unsigned)ev.kbstat, (int)ev.p2, (unsigned)k);
+            if (ev.p2 == GRKEY_KEYCODE || ev.p2 < 1 || ev.p2 >4 ) {
+                nc += sprintf(&(buf[nc]), " ");
+            } else {
+                for (i=0; i< ev.p2; i++) {
+                    nc += sprintf(&(buf[nc]), "%c", sk[i]);
+                }
+            }
+            sprintf(&(buf[nc]), "), symbol=%s", buf_name);
             print_scroll(buf);
-        }
-        else if (ev.type == GREV_MOUSE) {
+        } else if (ev.type == GREV_MOUSE) {
             sprintf(buf, "GREV_MOUSE, time=%ld, kbstat=0x%03x, p1=%ld, X=%ld, Y=%ld",
                    (long)ev.time, (unsigned)ev.kbstat, ev.p1, ev.p2, ev.p3);
             print_scroll(buf);
-        }
-        else {
+        } else {
             sprintf(buf, "TYPE=%d, time=%ld, kbstat=0x%03x, p1=%ld, X=%ld, Y=%ld",
                    ev.type, (long)ev.time, (unsigned)ev.kbstat, ev.p1, ev.p2, ev.p3);
             print_scroll(buf);

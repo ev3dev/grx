@@ -24,44 +24,44 @@ const
 struct _GR_contextInfo * const GrContextInfo = &_GrContextInfo;
 struct _GR_contextInfo _GrContextInfo = {
     {                                   /* the current context */
-        {                               /* frame */
-            {                           /* frame start addresses */
+	{                               /* frame */
+	    {                           /* frame start addresses */
 #ifdef __MSDOS__
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0))
+		LINP_PTR(MK_FP(0xb800,0)),
+		LINP_PTR(MK_FP(0xb800,0)),
+		LINP_PTR(MK_FP(0xb800,0)),
+		LINP_PTR(MK_FP(0xb800,0))
 #else
-                NULL,NULL,NULL,NULL
+		NULL,NULL,NULL,NULL
 #endif
-            },
-            0,                          /* selector */
-            TRUE,                       /* onscreen */
-            0,                          /* memflags */
-            0,                          /* lineoffset */
-            &DRVINFO->tdriver           /* frame driver */
-        },
-        NULL                            /* root */
+	    },
+	    0,                          /* selector */
+	    TRUE,                       /* onscreen */
+	    0,                          /* memflags */
+	    0,                          /* lineoffset */
+	    &DRVINFO->tdriver           /* frame driver */
+	},
+	NULL                            /* root */
     },
     {                                   /* the screen context */
-        {                               /* frame */
-            {                           /* frame start addresses */
+	{                               /* frame */
+	    {                           /* frame start addresses */
 #ifdef __MSDOS__
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0)),
-                LINP_PTR(MK_FP(0xb800,0))
+		LINP_PTR(MK_FP(0xb800,0)),
+		LINP_PTR(MK_FP(0xb800,0)),
+		LINP_PTR(MK_FP(0xb800,0)),
+		LINP_PTR(MK_FP(0xb800,0))
 #else
-                NULL,NULL,NULL,NULL
+		NULL,NULL,NULL,NULL
 #endif
-            },
-            0,                          /* selector */
-            TRUE,                       /* onscreen */
-            0,                          /* memflags */
-            0,                          /* lineoffset */
-            &DRVINFO->tdriver           /* frame driver */
-        },
-        NULL                            /* root */
+	    },
+	    0,                          /* selector */
+	    TRUE,                       /* onscreen */
+	    0,                          /* memflags */
+	    0,                          /* lineoffset */
+	    &DRVINFO->tdriver           /* frame driver */
+	},
+	NULL                            /* root */
     }
 };
 

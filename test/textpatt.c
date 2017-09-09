@@ -43,8 +43,8 @@ int main(void)
     opt.txo_xalign = 0;
     opt.txo_yalign = 0;
     opt.txo_direct = GR_TEXT_RIGHT;
-    opt.txo_fgcolor.v = GrNOCOLOR;
-    opt.txo_bgcolor.v = GrNOCOLOR;
+    opt.txo_fgcolor = GrNOCOLOR;
+    opt.txo_bgcolor = GrNOCOLOR;
     GrPatternFilledBox(0, 0, GrMaxX(), GrMaxY(), p1);
     GrEventWaitKeyOrClick(&ev);
     GrPatternDrawString(" Hello world !", 15, 40, 10, &opt, p1);
@@ -52,7 +52,7 @@ int main(void)
     GrPatternDrawStringExt(" Hello world !!", 16, 40, 100, &opt, p1);
     GrPatternDrawStringExt(" Hello world !!", 16, 44, 140, &opt, p2);
     GrEventWaitKeyOrClick(&ev);
-    opt.txo_bgcolor.v = GrBlack();
+    opt.txo_bgcolor = GrBlack();
     GrPatternDrawString(" Hello world !", 15, 40, 10, &opt, p1);
     GrPatternDrawString(" Hello world !", 15, 44, 50, &opt, p2);
     GrPatternDrawStringExt(" Hello world !!", 16, 40, 100, &opt, p1);

@@ -21,13 +21,13 @@
 
 void GrHLine(int x1,int x2,int yy,GrColor c)
 {
-        clip_hline(CURC,x1,x2,yy);
-        mouse_block(CURC,x1,yy,x2,yy);
-        (*FDRV->drawhline)(
-            x1 + CURC->gc_xoffset,
-            yy + CURC->gc_yoffset,
-            x2 - x1 + 1,
-            c
-        );
-        mouse_unblock();
+	clip_hline(CURC,x1,x2,yy);
+	mouse_block(CURC,x1,yy,x2,yy);
+	(*FDRV->drawhline)(
+	    x1 + CURC->gc_xoffset,
+	    yy + CURC->gc_yoffset,
+	    x2 - x1 + 1,
+	    c
+	);
+	mouse_unblock();
 }

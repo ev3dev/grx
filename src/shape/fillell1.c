@@ -21,7 +21,7 @@
 
 void GrFilledEllipse(int xc,int yc,int xa,int ya,GrColor c)
 {
-        GrFillArg fval;
-        fval.color = c;
-        _GrScanEllipse(xc,yc,xa,ya,&_GrSolidFiller,fval,TRUE);
+	GrFillArg fval;
+	fval.color = c;
+	_GrScanEllipse(xc,yc,xa,ya,&_GrSolidFiller,fval,TRUE);
 }

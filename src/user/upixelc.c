@@ -22,7 +22,7 @@
 
 GrColor GrUsrPixelC(GrContext *c,int x,int y)
 {
-        U2SX(x,c);
-        U2SY(y,c);
-        return(GrPixelC(c,x,y));
+	U2SX(x,c);
+	U2SY(y,c);
+	return(GrPixelC(c,x,y));
 }

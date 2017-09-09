@@ -16,8 +16,13 @@
  */
 
 typedef void (*TextDrawBitmapFunc)(int x,int y,int w,int h,int ox, int oy,
-                                   char *bmp,int pitch,int start,
-                                   GrColor fg,GrColor bg,GrPattern *p);
+              char *bmp,int pitch,int start,
+              GrColor fg,GrColor bg,GrPattern *p);
+
+int _GrFontWordTextWidth(const GrFont *font,const unsigned short *text,int len);
 
 void _GrDrawString(const void *text,int length,int x,int y,
                    const GrTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm);
+
+void _GrDrawChar(long chr, int x, int y,
+                 const GrTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm);

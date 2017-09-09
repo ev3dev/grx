@@ -321,6 +321,73 @@ int _GrRecode_UCS2_UTF8(long src, unsigned char *des)
   return 4;
 }
 
+int _GrRecode_UCS2_mgrx512(long src, long *des)
+{
+  static unsigned short r_mgrx512[273][2] = {
+  {0x0152,140}, {0x0153,156}, {0x0160,138}, {0x0161,154}, {0x0178,159}, {0x017D,142}, 
+  {0x017E,158}, {0x0192,131}, {0x02C6,136}, {0x02DC,152}, {0x0384,436}, {0x0385,437}, 
+  {0x0386,438}, {0x0388,440}, {0x0389,441}, {0x038A,442}, {0x038C,444}, {0x038E,446}, 
+  {0x038F,447}, {0x0390,448}, {0x0391,449}, {0x0392,450}, {0x0393,451}, {0x0394,452}, 
+  {0x0395,453}, {0x0396,454}, {0x0397,455}, {0x0398,456}, {0x0399,457}, {0x039A,458}, 
+  {0x039B,459}, {0x039C,460}, {0x039D,461}, {0x039E,462}, {0x039F,463}, {0x03A0,464}, 
+  {0x03A1,465}, {0x03A3,467}, {0x03A4,468}, {0x03A5,469}, {0x03A6,470}, {0x03A7,471}, 
+  {0x03A8,472}, {0x03A9,473}, {0x03AA,474}, {0x03AB,475}, {0x03AC,476}, {0x03AD,477}, 
+  {0x03AE,478}, {0x03AF,479}, {0x03B0,480}, {0x03B1,481}, {0x03B2,482}, {0x03B3,483}, 
+  {0x03B4,484}, {0x03B5,485}, {0x03B6,486}, {0x03B7,487}, {0x03B8,488}, {0x03B9,489}, 
+  {0x03BA,490}, {0x03BB,491}, {0x03BC,492}, {0x03BD,493}, {0x03BE,494}, {0x03BF,495}, 
+  {0x03C0,496}, {0x03C1,497}, {0x03C2,498}, {0x03C3,499}, {0x03C4,500}, {0x03C5,501}, 
+  {0x03C6,502}, {0x03C7,503}, {0x03C8,504}, {0x03C9,505}, {0x03CA,506}, {0x03CB,507}, 
+  {0x03CC,508}, {0x03CD,509}, {0x03CE,510}, {0x0401,289}, {0x0402,290}, {0x0403,291}, 
+  {0x0404,292}, {0x0405,293}, {0x0406,294}, {0x0407,295}, {0x0408,296}, {0x0409,297}, 
+  {0x040A,298}, {0x040B,299}, {0x040C,300}, {0x040E,302}, {0x040F,303}, {0x0410,304}, 
+  {0x0411,305}, {0x0412,306}, {0x0413,307}, {0x0414,308}, {0x0415,309}, {0x0416,310}, 
+  {0x0417,311}, {0x0418,312}, {0x0419,313}, {0x041A,314}, {0x041B,315}, {0x041C,316}, 
+  {0x041D,317}, {0x041E,318}, {0x041F,319}, {0x0420,320}, {0x0421,321}, {0x0422,322}, 
+  {0x0423,323}, {0x0424,324}, {0x0425,325}, {0x0426,326}, {0x0427,327}, {0x0428,328}, 
+  {0x0429,329}, {0x042A,330}, {0x042B,331}, {0x042C,332}, {0x042D,333}, {0x042E,334}, 
+  {0x042F,335}, {0x0430,336}, {0x0431,337}, {0x0432,338}, {0x0433,339}, {0x0434,340}, 
+  {0x0435,341}, {0x0436,342}, {0x0437,343}, {0x0438,344}, {0x0439,345}, {0x043A,346}, 
+  {0x043B,347}, {0x043C,348}, {0x043D,349}, {0x043E,350}, {0x043F,351}, {0x0440,352}, 
+  {0x0441,353}, {0x0442,354}, {0x0443,355}, {0x0444,356}, {0x0445,357}, {0x0446,358}, 
+  {0x0447,359}, {0x0448,360}, {0x0449,361}, {0x044A,362}, {0x044B,363}, {0x044C,364}, 
+  {0x044D,365}, {0x044E,366}, {0x044F,367}, {0x0451,369}, {0x0452,370}, {0x0453,371}, 
+  {0x0454,372}, {0x0455,373}, {0x0456,374}, {0x0457,375}, {0x0458,376}, {0x0459,377}, 
+  {0x045A,378}, {0x045B,379}, {0x045C,380}, {0x045E,382}, {0x045F,383}, {0x2013,150}, 
+  {0x2014,151}, {0x2015,431}, {0x2018,145}, {0x2018,417}, {0x2019,146}, {0x2019,418}, 
+  {0x201A,130}, {0x201C,147}, {0x201D,148}, {0x201E,132}, {0x2020,134}, {0x2021,135}, 
+  {0x2022,149}, {0x2026,133}, {0x2030,137}, {0x2039,139}, {0x203A,155}, {0x20AC,128}, 
+  {0x20AC,420}, {0x2116,368}, {0x2122,153}, {0x2190,256}, {0x2191,257}, {0x2192,258}, 
+  {0x2193,259}, {0x2194,260}, {0x2195,261}, {0x21B5,262}, {0x21D0,263}, {0x21D1,264}, 
+  {0x21D2,265}, {0x21D3,266}, {0x21D4,267}, {0x21D5,268}, {0x2200,270}, {0x2203,271}, 
+  {0x2204,272}, {0x2205,273}, {0x2206,274}, {0x2208,275}, {0x2209,276}, {0x221A,277}, 
+  {0x221E,278}, {0x2229,279}, {0x222A,280}, {0x2248,281}, {0x2260,282}, {0x2261,283}, 
+  {0x2320,384}, {0x2321,386}, {0x239B,387}, {0x239C,388}, {0x239D,389}, {0x239E,390}, 
+  {0x239F,391}, {0x23A0,392}, {0x23A1,393}, {0x23A2,394}, {0x23A3,395}, {0x23A4,396}, 
+  {0x23A5,397}, {0x23A6,398}, {0x23A7,399}, {0x23A8,400}, {0x23A9,401}, {0x23AB,403}, 
+  {0x23AC,404}, {0x23AD,405}, {0x23AE,385}, {0x2500,  1}, {0x2502,  2}, {0x2508,  3}, 
+  {0x250A,  4}, {0x250C, 05}, {0x2510,  6}, {0x2514,  7}, {0x2518,  8}, {0x251C,  9}, 
+  {0x2524, 10}, {0x252C, 11}, {0x2534, 12}, {0x253C, 13}, {0x2588, 17}, {0x2591, 14}, 
+  {0x2592, 15}, {0x2593, 16}, {0x263A, 18}, {0x263B, 19}, {0x263C, 20}, {0x2640, 21}, 
+  {0x2642, 22}, {0x2660, 23}, {0x2663, 24}, {0x2665, 25}, {0x2666, 26}, {0x266A, 27}, 
+  {0x266B, 28}, {0x2714, 29}, {0x2718, 30}};
+  
+  unsigned short *ind;
+
+  if ((src > 0x1F && src < 0x80) || (src > 0xA0 && src < 0x100)) {
+    *des = src;
+    return 1;
+  }
+
+  ind = bsearch((void *)&src, (void *)r_mgrx512, 273,
+                2*sizeof(unsigned short), compara);
+  if (ind != NULL) {
+    *des = *(ind+1);
+    return 1;
+  }
+
+  return 0;
+}
+
 int GrRecodeEvent(GrEvent *ev, int srcenc, int desenc)
 {
   long aux;
@@ -392,16 +459,81 @@ int GrRecodeEvent(GrEvent *ev, int srcenc, int desenc)
 
 /* UTF-8 utility functions */
 
+int GrStrLen(const void *text, int chrtype)
+{
+  int length = 0;
+  unsigned char *cs;
+  unsigned short *ss;
+    
+  switch (chrtype) {
+    case GR_BYTE_TEXT:
+    case GR_CP437_TEXT:
+    case GR_CP850_TEXT:
+    case GR_CP1252_TEXT:
+    case GR_ISO_8859_1_TEXT:
+      cs = (unsigned char *)text;
+      while(*cs) {
+        length++;
+        cs++;
+      }
+      return length;
+    case GR_UTF8_TEXT:
+      cs = (unsigned char *)text;
+      while(*cs) {
+        if ((*cs & 0xc0) != 0x80) length++;
+        cs++;
+      }
+      return length;
+    case GR_WORD_TEXT:
+    case GR_UCS2_TEXT:
+      ss = (unsigned short *)text;
+      while(*ss) {
+        length++;
+        ss++;
+      }
+      return length;
+    default:
+      return 0;
+  }
+}
+
 int GrUTF8StrLen(unsigned char *s)
 {
   int l8 = 0;
-  int i, l;
 
-  l = strlen((char *)s);
-  for (i=0; i<l; i++)
-    if ((s[i] & 0xc0) != 0x80) l8++;
-
+  while (*s) {
+    if ((*s & 0xc0) != 0x80) l8++;
+    s++;
+  }
+      
   return l8;
+}
+
+/* returns a char[4] packed in a long */
+long GrNextUTF8Char(unsigned char *s, int *nb)
+{
+  long res;
+  unsigned char *caux;
+  int i;
+
+  caux = (unsigned char *)&res;
+
+  *nb = 1; /* default one byte */
+
+  if (((s[0] & 0xe0) == 0xc0) && ((s[1] & 0xc0) == 0x80)) { /* two bytes */
+    *nb = 2;
+  } else if (((s[0] & 0xf0) == 0xe0) && ((s[1] & 0xc0) == 0x80) &&
+      ((s[2] & 0xc0) == 0x80)) { /* three bytes */
+    *nb = 3;
+  } else if (((s[0] & 0xf8) == 0xf0) && ((s[1] & 0xc0) == 0x80) &&
+      ((s[2] & 0xc0) == 0x80) && ((s[3] & 0xc0) == 0x80)) { /* four bytes */
+    *nb = 4;
+  }
+
+  for (i=0; i<*nb; i++)
+    caux[i] = s[i];
+    
+  return res;
 }
 
 unsigned short GrUTF8ToUCS2(unsigned char *s)
@@ -412,6 +544,7 @@ unsigned short GrUTF8ToUCS2(unsigned char *s)
   return des;
 }
 
+/* returns a char[4] packed in a long */
 long GrUCS2ToUTF8(unsigned short ch)
 {
   long res = (unsigned char)'?';
@@ -422,13 +555,41 @@ long GrUCS2ToUTF8(unsigned short ch)
   return res;
 }
 
-unsigned short *GrUTF8StrToUCS2Str(unsigned char *s, int *ulen)
+/*
+unsigned short GrUTF8ToUCS2nb(unsigned char *s, int *nb)
+{
+  long des;
+
+  *nb = _GrRecode_UTF8_UCS2(s, &des);
+  if (*nb == 0) {
+    des = (unsigned char)'?';
+    *nb = 1;
+  }
+  return des;
+}
+*/
+
+/* returns a char[4] packed in a long */
+/*
+long GrUCS2ToUTF8nb(unsigned short ch, int *nb)
+{
+  long res = (unsigned char)'?';
+  unsigned char *caux;
+
+  caux = (unsigned char *)&res;
+  *nb = _GrRecode_UCS2_UTF8(ch, caux);
+  return res;
+}
+*/
+
+unsigned short *GrUTF8StrToUCS2Str(unsigned char *s, int *ulen, int maxlen)
 {
   unsigned short *buf;
   long des;
   int i, nb;
 
   *ulen = GrUTF8StrLen(s);
+  if (maxlen > 0 && *ulen > maxlen) *ulen = maxlen;
   buf = calloc(*ulen, sizeof(unsigned short));
   if (buf == NULL) return NULL;
 

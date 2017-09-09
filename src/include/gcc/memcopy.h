@@ -30,60 +30,60 @@
        " cld        \n"                                                 \
        " rep        \n"                                                 \
        " movs"#SIZE                                                     \
-        : "=D" ((void *)(D)), "=S" ((void *)(S)), "=c" ((int)(C))       \
-        : "0"  ((void *)(D)), "1"  ((void *)(S)), "2"  ((int)(C))       \
+	: "=D" ((void *)(D)), "=S" ((void *)(S)), "=c" ((int)(C))       \
+	: "0"  ((void *)(D)), "1"  ((void *)(S)), "2"  ((int)(C))       \
     );                                                                  \
 })
 
 #define __INLINE_STD_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)                   \
-        __INLINE_386_ROWCOPY__(D,S,C,SIZE)
+	__INLINE_386_ROWCOPY__(D,S,C,SIZE)
 
 #define __INLINE_386_G_COPY__(DP,DS,SP,SS,C,DIN,SIN,SIZE,TYPE,DSEL,SSEL) ({  \
     register TYPE _scr_;                                                     \
     __asm__ volatile(""                                                      \
-          "    incl    %2                           \n"                      \
-          "    shrl    $1,%2                        \n"                      \
-          "    jnc     1f                           \n"                      \
-          "    jmp     0f                           \n"                      \
-          "    .align 4,0x90                        \n"                      \
-          "0:  "#SIN""#SIZE"  "#SSEL"(%1),%3        \n"                      \
-          "    addl    %8,%1                        \n"                      \
-          "    "#DIN""#SIZE"   %3,"#DSEL"(%0)       \n"                      \
-          "    addl    %7,%0                        \n"                      \
-          "1:  "#SIN""#SIZE"  "#SSEL"(%1),%3        \n"                      \
-          "    addl    %8,%1                        \n"                      \
-          "    "#DIN""#SIZE"   %3,"#DSEL"(%0)       \n"                      \
-          "    addl    %7,%0                        \n"                      \
-          "    decl    %2                           \n"                      \
-          "    jne     0b"                                                   \
-          : "=r" ((void *)(DP)),"=r" ((void *)(SP)),"=r" ((int)(C)),         \
-            "=&q" ((TYPE)_scr_)                                              \
-          : "0"  ((void *)(DP)),"1"  ((void *)(SP)), "2" ((int)(C)),         \
-            "gn" ((int)(DS)), "gn" ((int)(SS))                               \
+	  "    incl    %2                           \n"                      \
+	  "    shrl    $1,%2                        \n"                      \
+	  "    jnc     1f                           \n"                      \
+	  "    jmp     0f                           \n"                      \
+	  "    .align 4,0x90                        \n"                      \
+	  "0:  "#SIN""#SIZE"  "#SSEL"(%1),%3        \n"                      \
+	  "    addl    %8,%1                        \n"                      \
+	  "    "#DIN""#SIZE"   %3,"#DSEL"(%0)       \n"                      \
+	  "    addl    %7,%0                        \n"                      \
+	  "1:  "#SIN""#SIZE"  "#SSEL"(%1),%3        \n"                      \
+	  "    addl    %8,%1                        \n"                      \
+	  "    "#DIN""#SIZE"   %3,"#DSEL"(%0)       \n"                      \
+	  "    addl    %7,%0                        \n"                      \
+	  "    decl    %2                           \n"                      \
+	  "    jne     0b"                                                   \
+	  : "=r" ((void *)(DP)),"=r" ((void *)(SP)),"=r" ((int)(C)),         \
+	    "=&q" ((TYPE)_scr_)                                              \
+	  : "0"  ((void *)(DP)),"1"  ((void *)(SP)), "2" ((int)(C)),         \
+	    "gn" ((int)(DS)), "gn" ((int)(SS))                               \
     );                                                                       \
 })
 
 #define __INLINE_386_C_COPY__(DP,DS,SP,SS,C,DIN,SIN,SIZE,TYPE,DSEL,SSEL,DINC,SINC) ({\
     register TYPE _scr_;                                                     \
     __asm__ volatile(""                                                      \
-          "    incl    %2                           \n"                      \
-          "    shrl    $1,%2                        \n"                      \
-          "    jnc     1f                           \n"                      \
-          "    jmp     0f                           \n"                      \
-          "    .align 4,0x90                        \n"                      \
-          "0:  "#SIN""#SIZE"  "#SSEL"(%1),%3        \n"                      \
-          "    " SINC "                             \n"                      \
-          "    "#DIN""#SIZE"   %3,"#DSEL"(%0)       \n"                      \
-          "    " DINC "                             \n"                      \
-          "1:  "#SIN""#SIZE"  "#SSEL"(%1),%3        \n"                      \
-          "    " SINC "                             \n"                      \
-          "    "#DIN""#SIZE"   %3,"#DSEL"(%0)       \n"                      \
-          "    " DINC "                             \n"                      \
-          "    decl    %2                           \n"                      \
-          "    jne     0b"                                                   \
-          : "=r" ((void *)(DP)),"=r" ((void *)(SP)),"=r" ((int)(C)),         \
-            "=&q" ((TYPE)_scr_)                                              \
-          : "0"  ((void *)(DP)),"1"  ((void *)(SP)), "2" ((int)(C))          \
+	  "    incl    %2                           \n"                      \
+	  "    shrl    $1,%2                        \n"                      \
+	  "    jnc     1f                           \n"                      \
+	  "    jmp     0f                           \n"                      \
+	  "    .align 4,0x90                        \n"                      \
+	  "0:  "#SIN""#SIZE"  "#SSEL"(%1),%3        \n"                      \
+	  "    " SINC "                             \n"                      \
+	  "    "#DIN""#SIZE"   %3,"#DSEL"(%0)       \n"                      \
+	  "    " DINC "                             \n"                      \
+	  "1:  "#SIN""#SIZE"  "#SSEL"(%1),%3        \n"                      \
+	  "    " SINC "                             \n"                      \
+	  "    "#DIN""#SIZE"   %3,"#DSEL"(%0)       \n"                      \
+	  "    " DINC "                             \n"                      \
+	  "    decl    %2                           \n"                      \
+	  "    jne     0b"                                                   \
+	  : "=r" ((void *)(DP)),"=r" ((void *)(SP)),"=r" ((int)(C)),         \
+	    "=&q" ((TYPE)_scr_)                                              \
+	  : "0"  ((void *)(DP)),"1"  ((void *)(SP)), "2" ((int)(C))          \
     );                                                                       \
 })
 
@@ -140,97 +140,97 @@
 })
 
 #define __INLINE_SEGSEG_ROWCOPY__(D,S,C,SZ,T,DS,SS)                           \
-        __INLINE_386_COLCOPY__(D,CPSIZE_##SZ,S,CPSIZE_##SZ,C,mov,mov,SZ,T,DS,SS)
+	__INLINE_386_COLCOPY__(D,CPSIZE_##SZ,S,CPSIZE_##SZ,C,mov,mov,SZ,T,DS,SS)
 
 /* memory -> memory copies */
 #define __INLINE_STD_COLCOPY__(D,DSKP,S,SSKP,C,DM,SM,INS,SIZE,TYPE)           \
-        __INLINE_386_COLCOPY__(D,DSKP,S,SSKP,C,INS,mov,SIZE,TYPE,,)
+	__INLINE_386_COLCOPY__(D,DSKP,S,SSKP,C,INS,mov,SIZE,TYPE,,)
 #ifdef  I386_GCC_FAR_MEMORY
 /* memory -> video copies */
 #define __INLINE_FAR_STD_COLCOPY__(DST,DSKP,SRC,SSKP,C,DM,SM,INS,SIZE,TYPE)   \
-        __INLINE_386_COLCOPY__(DST,DSKP,SRC,SSKP,C,INS,mov,SIZE,TYPE,%%fs:,)
+	__INLINE_386_COLCOPY__(DST,DSKP,SRC,SSKP,C,INS,mov,SIZE,TYPE,%%fs:,)
 #define __INLINE_FAR_STD_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)                     \
-        __INLINE_SEGSEG_ROWCOPY__(D,S,C,SIZE,TYPE,%%fs:,)
+	__INLINE_SEGSEG_ROWCOPY__(D,S,C,SIZE,TYPE,%%fs:,)
 /* video -> memory copies */
 #define __INLINE_STD_FAR_COLCOPY__(DST,DSKP,SRC,SSKP,C,DM,SM,INS,SIZE,TYPE)   \
-        __INLINE_386_COLCOPY__(DST,DSKP,SRC,SSKP,C,INS,mov,SIZE,TYPE,,%%fs:)
+	__INLINE_386_COLCOPY__(DST,DSKP,SRC,SSKP,C,INS,mov,SIZE,TYPE,,%%fs:)
 #define __INLINE_STD_FAR_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)                     \
-        __INLINE_SEGSEG_ROWCOPY__(D,S,C,SIZE,TYPE,,%%fs:)
+	__INLINE_SEGSEG_ROWCOPY__(D,S,C,SIZE,TYPE,,%%fs:)
 /* video -> video copies */
 #define __INLINE_FAR_FAR_COLCOPY__(DST,DSKP,SRC,SSKP,C,DM,SM,INS,SIZE,TYPE)   \
-        __INLINE_386_COLCOPY__(DST,DSKP,SRC,SSKP,C,INS,mov,SIZE,TYPE,%%fs:,%%fs:)
+	__INLINE_386_COLCOPY__(DST,DSKP,SRC,SSKP,C,INS,mov,SIZE,TYPE,%%fs:,%%fs:)
 #define __INLINE_FAR_FAR_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)                     \
-        __INLINE_SEGSEG_ROWCOPY__(D,S,C,SIZE,TYPE,%%fs:,%%fs:)
+	__INLINE_SEGSEG_ROWCOPY__(D,S,C,SIZE,TYPE,%%fs:,%%fs:)
 #else   /* I386_GCC_FAR_MEMORY */
 #define __INLINE_FAR_STD_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)                     \
-        __INLINE_STD_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)
+	__INLINE_STD_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)
 #define __INLINE_STD_FAR_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)                     \
-        __INLINE_STD_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)
+	__INLINE_STD_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)
 #define __INLINE_FAR_FAR_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)                     \
-        __INLINE_STD_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)
+	__INLINE_STD_ROWCOPY__(D,S,C,DM,SM,SIZE,TYPE)
 #endif  /* I386_GCC_FAR_MEMORY */
 
 #define fwdcopy_set(AP,D,S,C) do {                                           \
   int _scr_;                                                                 \
   if ((AP)==(D))                                                             \
     __asm__ volatile("\n"                                                    \
-          "    cld                                  \n"                      \
-          "    cmpl    $4,%2                        \n"                      \
-          "    jb      3f                           \n"                      \
-          "    testl   $1,%0                        \n"                      \
-          "    je      1f                           \n"                      \
-          "    movsb                                \n"                      \
-          "    decl    %2                           \n"                      \
-          "1:  testl   $2,%0                        \n"                      \
-          "    je      2f                           \n"                      \
-          "    movsw                                \n"                      \
-          "    decl    %2                           \n"                      \
-          "    decl    %2                           \n"                      \
-          "2:  movl    %2,%3                        \n"                      \
-          "    shrl    $2,%3                        \n"                      \
-          "    je      3f                           \n"                      \
-          "    rep                                  \n"                      \
-          "    movsl                                \n"                      \
-          "3:  testl   $2,%2                        \n"                      \
-          "    je      4f                           \n"                      \
-          "    movsw                                \n"                      \
-          "4:  testl   $1,%2                        \n"                      \
-          "    je      5f                           \n"                      \
-          "    movsb                                \n"                      \
-          "5:                                         "                      \
-          : "=D" ((void *)(D)),"=S" ((void *)(S)),"=r" ((int)(C)),           \
-            "=&c" ((int)_scr_)                                               \
-          : "0"  ((void *)(D)), "1" ((void *)(S)), "2" ((int)(C))            \
+	  "    cld                                  \n"                      \
+	  "    cmpl    $4,%2                        \n"                      \
+	  "    jb      3f                           \n"                      \
+	  "    testl   $1,%0                        \n"                      \
+	  "    je      1f                           \n"                      \
+	  "    movsb                                \n"                      \
+	  "    decl    %2                           \n"                      \
+	  "1:  testl   $2,%0                        \n"                      \
+	  "    je      2f                           \n"                      \
+	  "    movsw                                \n"                      \
+	  "    decl    %2                           \n"                      \
+	  "    decl    %2                           \n"                      \
+	  "2:  movl    %2,%3                        \n"                      \
+	  "    shrl    $2,%3                        \n"                      \
+	  "    je      3f                           \n"                      \
+	  "    rep                                  \n"                      \
+	  "    movsl                                \n"                      \
+	  "3:  testl   $2,%2                        \n"                      \
+	  "    je      4f                           \n"                      \
+	  "    movsw                                \n"                      \
+	  "4:  testl   $1,%2                        \n"                      \
+	  "    je      5f                           \n"                      \
+	  "    movsb                                \n"                      \
+	  "5:                                         "                      \
+	  : "=D" ((void *)(D)),"=S" ((void *)(S)),"=r" ((int)(C)),           \
+	    "=&c" ((int)_scr_)                                               \
+	  : "0"  ((void *)(D)), "1" ((void *)(S)), "2" ((int)(C))            \
     );                                                                       \
   else                                                                       \
     __asm__ volatile("\n"                                                    \
-          "    cld                                  \n"                      \
-          "    cmpl    $4,%2                        \n"                      \
-          "    jb      3f                           \n"                      \
-          "    testl   $1,%1                        \n"                      \
-          "    je      1f                           \n"                      \
-          "    movsb                                \n"                      \
-          "    decl    %2                           \n"                      \
-          "1:  testl   $2,%1                        \n"                      \
-          "    je      2f                           \n"                      \
-          "    movsw                                \n"                      \
-          "    decl    %2                           \n"                      \
-          "    decl    %2                           \n"                      \
-          "2:  movl    %2,%3                        \n"                      \
-          "    shrl    $2,%3                        \n"                      \
-          "    je      3f                           \n"                      \
-          "    rep                                  \n"                      \
-          "    movsl                                \n"                      \
-          "3:  testl   $2,%2                        \n"                      \
-          "    je      4f                           \n"                      \
-          "    movsw                                \n"                      \
-          "4:  testl   $1,%2                        \n"                      \
-          "    je      5f                           \n"                      \
-          "    movsb                                \n"                      \
-          "5:                                         "                      \
-          : "=D" ((void *)(D)),"=S" ((void *)(S)),"=r" ((int)(C)),           \
-            "=&c" ((int)_scr_)                                               \
-          : "0"  ((void *)(D)), "1" ((void *)(S)), "2" ((int)(C))            \
+	  "    cld                                  \n"                      \
+	  "    cmpl    $4,%2                        \n"                      \
+	  "    jb      3f                           \n"                      \
+	  "    testl   $1,%1                        \n"                      \
+	  "    je      1f                           \n"                      \
+	  "    movsb                                \n"                      \
+	  "    decl    %2                           \n"                      \
+	  "1:  testl   $2,%1                        \n"                      \
+	  "    je      2f                           \n"                      \
+	  "    movsw                                \n"                      \
+	  "    decl    %2                           \n"                      \
+	  "    decl    %2                           \n"                      \
+	  "2:  movl    %2,%3                        \n"                      \
+	  "    shrl    $2,%3                        \n"                      \
+	  "    je      3f                           \n"                      \
+	  "    rep                                  \n"                      \
+	  "    movsl                                \n"                      \
+	  "3:  testl   $2,%2                        \n"                      \
+	  "    je      4f                           \n"                      \
+	  "    movsw                                \n"                      \
+	  "4:  testl   $1,%2                        \n"                      \
+	  "    je      5f                           \n"                      \
+	  "    movsb                                \n"                      \
+	  "5:                                         "                      \
+	  : "=D" ((void *)(D)),"=S" ((void *)(S)),"=r" ((int)(C)),           \
+	    "=&c" ((int)_scr_)                                               \
+	  : "0"  ((void *)(D)), "1" ((void *)(S)), "2" ((int)(C))            \
     );                                                                       \
 } while (0)
 

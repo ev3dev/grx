@@ -69,71 +69,71 @@
 static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
-        GrColor col;
-        char *p;
-        GRX_ENTER();
+	GrColor col;
+	char *p;
+	GRX_ENTER();
 #ifdef FAR_ACCESS
-        p = &SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
-        setup_far_selector(SCRN->gc_selector);
+	p = &SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
+	setup_far_selector(SCRN->gc_selector);
 #else
-        p = &c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
+	p = &c->gf_baseaddr[0][FOFS(x,y,c->gf_lineoffset)];
 #endif
-        col = peek24(p);
-        GRX_RETURN(col);
+	col = peek24(p);
+	GRX_RETURN(col);
 }
 
 
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        char *p;
-        GRX_ENTER();
-        p = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
-        SETFARSEL(CURC->gc_selector);
-        switch(C_OPER(color)) {
-            case C_XOR: poke24_xor(p,color);  break;
-            case C_OR:  poke24_or( p,color);  break;
-            case C_AND: poke24_and(p,color);  break;
-            default:    poke24_set(p,color);  break;
-        }
-        GRX_LEAVE();
+	char *p;
+	GRX_ENTER();
+	p = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+	SETFARSEL(CURC->gc_selector);
+	switch(C_OPER(color)) {
+	    case C_XOR: poke24_xor(p,color);  break;
+	    case C_OR:  poke24_or( p,color);  break;
+	    case C_AND: poke24_and(p,color);  break;
+	    default:    poke24_set(p,color);  break;
+	}
+	GRX_LEAVE();
 }
 
 
 static void drawhline(int x,int y,int w,GrColor color)
 {
-        char *p;
-        GRX_ENTER();
-        p  = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+	char *p;
+	GRX_ENTER();
+	p  = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
 
-        w = MULT3(w);
-        SETFARSEL(CURC->gc_selector);
+	w = MULT3(w);
+	SETFARSEL(CURC->gc_selector);
 #       ifndef GRX_HAVE_FAST_REPFILL24
-        {
-          GR_int8u c0;
-          c0 = RD24BYTE(color,0);
-          if (c0 == RD24BYTE(color,1) && c0 == RD24BYTE(color,2) ) {
-             GR_repl cval = freplicate_b(c0);
-             switch(C_OPER(color)) {
-               case C_XOR: repfill8_xor(p,cval,w); break;
-               case C_OR:  repfill8_or( p,cval,w); break;
-               case C_AND: repfill8_and(p,cval,w); break;
-               default:    repfill8_set(p,cval,w); break;
-             }
-             goto done;
-           }
-        }
+	{
+	  GR_int8u c0;
+	  c0 = RD24BYTE(color,0);
+	  if (c0 == RD24BYTE(color,1) && c0 == RD24BYTE(color,2) ) {
+	     GR_repl cval = freplicate_b(c0);
+	     switch(C_OPER(color)) {
+	       case C_XOR: repfill8_xor(p,cval,w); break;
+	       case C_OR:  repfill8_or( p,cval,w); break;
+	       case C_AND: repfill8_and(p,cval,w); break;
+	       default:    repfill8_set(p,cval,w); break;
+	     }
+	     goto done;
+	   }
+	}
 #       endif
-        switch (C_OPER(color)) {
-          case C_XOR: repfill24_xor(p,color,w); break;
-          case C_OR:  repfill24_or( p,color,w); break;
-          case C_AND: repfill24_and(p,color,w); break;
-          default:    repfill24_set(p,color,w); break;
-        }
+	switch (C_OPER(color)) {
+	  case C_XOR: repfill24_xor(p,color,w); break;
+	  case C_OR:  repfill24_or( p,color,w); break;
+	  case C_AND: repfill24_and(p,color,w); break;
+	  default:    repfill24_set(p,color,w); break;
+	}
 #ifndef GRX_HAVE_FAST_REPFILL24
   done:
 #endif
-        GRX_LEAVE();
+	GRX_LEAVE();
 }
 
 
@@ -155,66 +155,66 @@ static
 
 static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
-        GRX_ENTER();
-        if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else
+	GRX_ENTER();
+	if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
+	    dst,dx,dy,
+	    src,sx,sy,
+	    w,h,
+	    op
+	);
+	else
 #ifdef FAR_ACCESS
-          _GrFrDrvPackedBitBltV2V_LFB(
+	  _GrFrDrvPackedBitBltV2V_LFB(
 #else
-          _GrFrDrvPackedBitBltR2R(
+	  _GrFrDrvPackedBitBltR2R(
 #endif
-            dst,MULT3(dx),dy,
-            src,MULT3(sx),sy,
-            MULT3(w),h,
-            op
-        );
-        GRX_LEAVE();
+	    dst,MULT3(dx),dy,
+	    src,MULT3(sx),sy,
+	    MULT3(w),h,
+	    op
+	);
+	GRX_LEAVE();
 }
 
 #ifdef FAR_ACCESS
 
 static void bltv2r(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+		   GrFrame *src,int sx,int sy,
+		   int w,int h,GrColor op)
 {
-        GRX_ENTER();
-        if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else _GrFrDrvPackedBitBltV2R_LFB(
-            dst,MULT3(dx),dy,
-            src,MULT3(sx),sy,
-            MULT3(w),h,
-            op
-        );
-        GRX_LEAVE();
+	GRX_ENTER();
+	if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
+	    dst,dx,dy,
+	    src,sx,sy,
+	    w,h,
+	    op
+	);
+	else _GrFrDrvPackedBitBltV2R_LFB(
+	    dst,MULT3(dx),dy,
+	    src,MULT3(sx),sy,
+	    MULT3(w),h,
+	    op
+	);
+	GRX_LEAVE();
 }
 
 static void bltr2v(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int sx,int sy,
-                   int w,int h,GrColor op)
+		   GrFrame *src,int sx,int sy,
+		   int w,int h,GrColor op)
 {
-        GRX_ENTER();
-        if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else _GrFrDrvPackedBitBltR2V_LFB(
-            dst,MULT3(dx),dy,
-            src,MULT3(sx),sy,
-            MULT3(w),h,
-            op
-        );
-        GRX_LEAVE();
+	GRX_ENTER();
+	if(GrColorMode(op) == GrIMAGE) _GrFrDrvGenericBitBlt(
+	    dst,dx,dy,
+	    src,sx,sy,
+	    w,h,
+	    op
+	);
+	else _GrFrDrvPackedBitBltR2V_LFB(
+	    dst,MULT3(dx),dy,
+	    src,MULT3(sx),sy,
+	    MULT3(w),h,
+	    op
+	);
+	GRX_LEAVE();
 }
 #endif /* FAR_ACCESS */

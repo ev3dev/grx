@@ -21,5 +21,5 @@
 
 void GrCustomCircle(int xc,int yc,int r,const GrLineOption *o)
 {
-        GrCustomEllipse(xc,yc,r,r,o);
+	GrCustomEllipse(xc,yc,r,r,o);
 }

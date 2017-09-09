@@ -18,9 +18,9 @@
 
 void drawhline(int x,int y,int w,GrColor c)
 {
-        GRX_ENTER();
-        w += x;
-        do { drawpixel(x,y,c); } while(++x != w);
-        GRX_LEAVE();
+	GRX_ENTER();
+	w += x;
+	do { drawpixel(x,y,c); } while(++x != w);
+	GRX_LEAVE();
 }
 

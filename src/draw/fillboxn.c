@@ -21,12 +21,12 @@
 
 void GrFilledBoxNC(int x1,int y1,int x2,int y2,GrColor c)
 {
-        (*FDRV->drawblock)(
-            x1 + CURC->gc_xoffset,
-            y1 + CURC->gc_yoffset,
-            x2 - x1 + 1,
-            y2 - y1 + 1,
-            c
-        );
+	(*FDRV->drawblock)(
+	    x1 + CURC->gc_xoffset,
+	    y1 + CURC->gc_yoffset,
+	    x2 - x1 + 1,
+	    y2 - y1 + 1,
+	    c
+	);
 }
 

@@ -144,7 +144,7 @@ static int readjpeg( FILE *f, GrContext *grc, int scale )
   jpeg_stdio_src( &cinfo,f );
   jpeg_read_header( &cinfo,TRUE );
 
-  cinfo.scale_denom = scale;
+  cinfo.scale_denom = scale * cinfo.scale_num;
   
   jpeg_start_decompress( &cinfo );
 

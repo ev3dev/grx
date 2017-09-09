@@ -20,106 +20,106 @@
 
 GrGraphicsMode (GrCurrentMode)(void)
 {
-        return(GrCurrentMode());
+	return(GrCurrentMode());
 }
 
 GrVideoAdapter (GrAdapterType)(void)
 {
-        return(GrAdapterType());
+	return(GrAdapterType());
 }
 
 GrFrameMode (GrCurrentFrameMode)(void)
 {
-        return(GrCurrentFrameMode());
+	return(GrCurrentFrameMode());
 }
 
 GrFrameMode (GrScreenFrameMode)(void)
 {
-        return(GrScreenFrameMode());
+	return(GrScreenFrameMode());
 }
 
 GrFrameMode (GrCoreFrameMode)(void)
 {
-        return(GrCoreFrameMode());
+	return(GrCoreFrameMode());
 }
 
 const GrVideoDriver *(GrCurrentVideoDriver)(void)
 {
-        return(GrCurrentVideoDriver());
+	return(GrCurrentVideoDriver());
 }
 
 const GrVideoMode *(GrCurrentVideoMode)(void)
 {
-        return(GrCurrentVideoMode());
+	return(GrCurrentVideoMode());
 }
 
 const GrVideoMode *(GrVirtualVideoMode)(void)
 {
-        return(GrVirtualVideoMode());
+	return(GrVirtualVideoMode());
 }
 
 const GrFrameDriver *(GrCurrentFrameDriver)(void)
 {
-        return(GrCurrentFrameDriver());
+	return(GrCurrentFrameDriver());
 }
 
 const GrFrameDriver *(GrScreenFrameDriver)(void)
 {
-        return(GrScreenFrameDriver());
+	return(GrScreenFrameDriver());
 }
 
 int (GrScreenX)(void)
 {
-        return(GrScreenX());
+	return(GrScreenX());
 }
 
 int (GrScreenY)(void)
 {
-        return(GrScreenY());
+	return(GrScreenY());
 }
 
 int (GrVirtualX)(void)
 {
-        return(GrVirtualX());
+	return(GrVirtualX());
 }
 
 int (GrVirtualY)(void)
 {
-        return(GrVirtualY());
+	return(GrVirtualY());
 }
 
 int (GrViewportX)(void)
 {
-        return(GrViewportX());
+	return(GrViewportX());
 }
 
 int (GrViewportY)(void)
 {
-        return(GrViewportY());
+	return(GrViewportY());
 }
 
 int (GrScreenIsVirtual)(void)
 {
-        return(GrScreenIsVirtual());
+	return(GrScreenIsVirtual());
 }
 
 int (GrNumPlanes)(void)
 {
-        return(GrNumPlanes());
+	return(GrNumPlanes());
 }
 
 int (GrLineOffset)(int width)
 {
-        return(GrLineOffset(width));
+	return(GrLineOffset(width));
 }
 
 long (GrPlaneSize)(int w,int h)
 {
-        return(GrPlaneSize(w,h));
+	return(GrPlaneSize(w,h));
 }
 
 long (GrContextSize)(int w,int h)
 {
-        return(GrContextSize(w,h));
+	return(GrContextSize(w,h));
 }
 

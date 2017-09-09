@@ -22,16 +22,16 @@
 
 void GrUnloadFont(GrFont *f)
 {
-        if((f != NULL) && !f->h.preloaded) {
-            unsigned int i;
-            free(f->h.name);
-            free(f->h.family);
-            farfree(f->bitmap);
-            if(f->auxmap) farfree(f->auxmap);
-            for(i = 0; i < itemsof(f->auxoffs); i++) {
-                if(f->auxoffs[i]) free(f->auxoffs[i]);
-            }
-            free(f);
-        }
+	if((f != NULL) && !f->h.preloaded) {
+	    unsigned int i;
+	    free(f->h.name);
+	    free(f->h.family);
+	    farfree(f->bitmap);
+	    if(f->auxmap) farfree(f->auxmap);
+	    for(i = 0; i < itemsof(f->auxoffs); i++) {
+		if(f->auxoffs[i]) free(f->auxoffs[i]);
+	    }
+	    free(f);
+	}
 }
 

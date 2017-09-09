@@ -22,8 +22,8 @@
 
 void GrUsrVLine(int x,int y1,int y2,GrColor c)
 {
-        U2SX(x,CURC);
-        U2SY(y1,CURC);
-        U2SY(y2,CURC);
-        GrVLine(x,y1,y2,c);
+	U2SX(x,CURC);
+	U2SY(y1,CURC);
+	U2SY(y2,CURC);
+	GrVLine(x,y1,y2,c);
 }

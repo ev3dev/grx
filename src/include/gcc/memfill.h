@@ -29,98 +29,98 @@
  * Unoptimized row and column fills
  */
 #define __INLINE_386_ROWFILL__(P,V,C,SIZE,TYPE) ({                      \
-        __asm__ volatile(                                               \
-                " cld          \n"                                      \
-                " rep          \n"                                      \
-                " stos"#SIZE                                            \
-                  : "=D" ((void *)(P)), "=c" ((int)(C))                 \
-                  : "0"  ((void *)(P)), "1"  ((int)(C)),                \
-                    "a"  ((TYPE)(V))                                    \
-        );                                                              \
+	__asm__ volatile(                                               \
+		" cld          \n"                                      \
+		" rep          \n"                                      \
+		" stos"#SIZE                                            \
+		  : "=D" ((void *)(P)), "=c" ((int)(C))                 \
+		  : "0"  ((void *)(P)), "1"  ((int)(C)),                \
+		    "a"  ((TYPE)(V))                                    \
+	);                                                              \
 })
 #define __INLINE_STD_ROWFILL__(P,V,C,FMODE,SIZE,TYPE)                   \
-        __INLINE_386_ROWFILL__(P,V,C,SIZE,TYPE)
+	__INLINE_386_ROWFILL__(P,V,C,SIZE,TYPE)
 
 #define __INLINE_386_COLFILL__(P,V,C,SKIP,INS,SIZE,TYPE,SEL) ({         \
-        if(__builtin_constant_p(SKIP) && ((SKIP) == 1))                 \
-          __asm__ volatile(""                                           \
-                "    incl    %1                           \n"           \
-                "    shrl    $1,%1                        \n"           \
-                "    jnc     1f                           \n"           \
-                "    jmp     0f                           \n"           \
-                "    .align 4,0x90                        \n"           \
-                "0:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
-                "    incl    %0                           \n"           \
-                "1:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
-                "    incl    %0                           \n"           \
-                "    decl    %1                           \n"           \
-                "    jne     0b"                                        \
-                : "=r" ((void *)(P)), "=r" ((int)(C))                   \
-                : "0"  ((void *)(P)), "1"  ((int)(C)),                  \
-                  "qn" ((TYPE)(V))                                      \
-          );                                                            \
-        else                                                            \
-        if(__builtin_constant_p(SKIP) && ((SKIP) == 2))                 \
-          __asm__ volatile(""                                           \
-                "    incl    %1                           \n"           \
-                "    shrl    $1,%1                        \n"           \
-                "    jnc     1f                           \n"           \
-                "    jmp     0f                           \n"           \
-                "    .align 4,0x90                        \n"           \
-                "0:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
-                "    leal    2(%0),%0                     \n"           \
-                "1:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
-                "    leal    2(%0),%0                     \n"           \
-                "    decl    %1                           \n"           \
-                "    jne     0b"                                        \
-                : "=r" ((void *)(P)), "=r" ((int)(C))                   \
-                : "0"  ((void *)(P)), "1"  ((int)(C)),                  \
-                  "qn" ((TYPE)(V))                                      \
-          );                                                            \
-        else                                                            \
-        if(__builtin_constant_p(SKIP) && ((SKIP) == 4))                 \
-          __asm__ volatile(""                                           \
-                "    incl    %1                           \n"           \
-                "    shrl    $1,%1                        \n"           \
-                "    jnc     1f                           \n"           \
-                "    jmp     0f                           \n"           \
-                "    .align 4,0x90                        \n"           \
-                "0:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
-                "    leal    4(%0),%0                     \n"           \
-                "1:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
-                "    leal    4(%0),%0                     \n"           \
-                "    decl    %1                           \n"           \
-                "    jne     0b"                                        \
-                : "=r" ((void *)(P)), "=r" ((int)(C))                   \
-                : "0"  ((void *)(P)), "1"  ((int)(C)),                  \
-                  "qn" ((TYPE)(V))                                      \
-          );                                                            \
-        else                                                            \
-          __asm__ volatile(""                                           \
-                "    incl    %1                           \n"           \
-                "    shrl    $1,%1                        \n"           \
-                "    jnc     1f                           \n"           \
-                "    jmp     0f                           \n"           \
-                "    .align 4,0x90                        \n"           \
-                "0:  "#INS""#SIZE"   %5,"#SEL"(%0)        \n"           \
-                "    addl    %4,%0                        \n"           \
-                "1:  "#INS""#SIZE"   %5,"#SEL"(%0)        \n"           \
-                "    addl    %4,%0                        \n"           \
-                "    decl    %1                           \n"           \
-                "    jne     0b"                                        \
-                : "=r" ((void *)(P)), "=r" ((int)(C))                   \
-                : "0"  ((void *)(P)), "1"  ((int)(C)),                  \
-                  "ng" ((int)(SKIP)), "qn" ((TYPE)(V))                  \
-          );                                                            \
+	if(__builtin_constant_p(SKIP) && ((SKIP) == 1))                 \
+	  __asm__ volatile(""                                           \
+		"    incl    %1                           \n"           \
+		"    shrl    $1,%1                        \n"           \
+		"    jnc     1f                           \n"           \
+		"    jmp     0f                           \n"           \
+		"    .align 4,0x90                        \n"           \
+		"0:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
+		"    incl    %0                           \n"           \
+		"1:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
+		"    incl    %0                           \n"           \
+		"    decl    %1                           \n"           \
+		"    jne     0b"                                        \
+		: "=r" ((void *)(P)), "=r" ((int)(C))                   \
+		: "0"  ((void *)(P)), "1"  ((int)(C)),                  \
+		  "qn" ((TYPE)(V))                                      \
+	  );                                                            \
+	else                                                            \
+	if(__builtin_constant_p(SKIP) && ((SKIP) == 2))                 \
+	  __asm__ volatile(""                                           \
+		"    incl    %1                           \n"           \
+		"    shrl    $1,%1                        \n"           \
+		"    jnc     1f                           \n"           \
+		"    jmp     0f                           \n"           \
+		"    .align 4,0x90                        \n"           \
+		"0:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
+		"    leal    2(%0),%0                     \n"           \
+		"1:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
+		"    leal    2(%0),%0                     \n"           \
+		"    decl    %1                           \n"           \
+		"    jne     0b"                                        \
+		: "=r" ((void *)(P)), "=r" ((int)(C))                   \
+		: "0"  ((void *)(P)), "1"  ((int)(C)),                  \
+		  "qn" ((TYPE)(V))                                      \
+	  );                                                            \
+	else                                                            \
+	if(__builtin_constant_p(SKIP) && ((SKIP) == 4))                 \
+	  __asm__ volatile(""                                           \
+		"    incl    %1                           \n"           \
+		"    shrl    $1,%1                        \n"           \
+		"    jnc     1f                           \n"           \
+		"    jmp     0f                           \n"           \
+		"    .align 4,0x90                        \n"           \
+		"0:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
+		"    leal    4(%0),%0                     \n"           \
+		"1:  "#INS""#SIZE"   %4,"#SEL"(%0)        \n"           \
+		"    leal    4(%0),%0                     \n"           \
+		"    decl    %1                           \n"           \
+		"    jne     0b"                                        \
+		: "=r" ((void *)(P)), "=r" ((int)(C))                   \
+		: "0"  ((void *)(P)), "1"  ((int)(C)),                  \
+		  "qn" ((TYPE)(V))                                      \
+	  );                                                            \
+	else                                                            \
+	  __asm__ volatile(""                                           \
+		"    incl    %1                           \n"           \
+		"    shrl    $1,%1                        \n"           \
+		"    jnc     1f                           \n"           \
+		"    jmp     0f                           \n"           \
+		"    .align 4,0x90                        \n"           \
+		"0:  "#INS""#SIZE"   %5,"#SEL"(%0)        \n"           \
+		"    addl    %4,%0                        \n"           \
+		"1:  "#INS""#SIZE"   %5,"#SEL"(%0)        \n"           \
+		"    addl    %4,%0                        \n"           \
+		"    decl    %1                           \n"           \
+		"    jne     0b"                                        \
+		: "=r" ((void *)(P)), "=r" ((int)(C))                   \
+		: "0"  ((void *)(P)), "1"  ((int)(C)),                  \
+		  "ng" ((int)(SKIP)), "qn" ((TYPE)(V))                  \
+	  );                                                            \
 })
 #define __INLINE_STD_COLFILL__(P,V,C,SKIP,FMODE,INS,SIZE,TYPE)          \
-        __INLINE_386_COLFILL__(P,V,C,SKIP,INS,SIZE,TYPE,)
+	__INLINE_386_COLFILL__(P,V,C,SKIP,INS,SIZE,TYPE,)
 #ifdef  I386_GCC_FAR_MEMORY
 #define __INLINE_FAR_COLFILL__(P,V,C,SKIP,FMODE,INS,SIZE,TYPE)          \
-        __INLINE_386_COLFILL__(P,V,C,SKIP,INS,SIZE,TYPE,%%fs:)
+	__INLINE_386_COLFILL__(P,V,C,SKIP,INS,SIZE,TYPE,%%fs:)
 #else   /* I386_GCC_FAR_MEMORY */
 #define __INLINE_FAR_ROWFILL__(P,V,C,FMODE,SIZE,TYPE)                   \
-        __INLINE_STD_ROWFILL__(P,V,C,FMODE,SIZE,TYPE)
+	__INLINE_STD_ROWFILL__(P,V,C,FMODE,SIZE,TYPE)
 #endif  /* I386_GCC_FAR_MEMORY */
 
 /* ============================================ special optimized fills */
@@ -257,10 +257,10 @@
 } while (0)
 
 #define __INLINE_24_REPFILL__(P,C,B,FMODE,INS) \
-        __INLINE_386_REPFILL24__(P,C,B,INS,)
+	__INLINE_386_REPFILL24__(P,C,B,INS,)
 
 #define __INLINE_24_FAR_REPFILL__(P,C,B,FMODE,INS) \
-        __INLINE_386_REPFILL24__(P,C,B,INS,%%fs:)
+	__INLINE_386_REPFILL24__(P,C,B,INS,%%fs:)
 
 #define GRX_HAVE_FAST_REPFILL24
 

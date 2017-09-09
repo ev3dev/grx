@@ -2,18 +2,18 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
-   <title>MGRX 1.0, Programmer's Guide</title>
+   <title>MGRX 1.1, Programmer's Guide</title>
 </head>
 <body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#555555">M</font><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>1.0</small></h1>
-<h1>a graphics library for DOS, Linux console &amp; X11 and Win32</h1>
+<small>1.1</small></h1>
+<h1>a C graphics library for DOS, Linux console &amp; X11 and Win32</h1>
 <h2>Programmer's Manual</h2>
 <p>Based on the original GRX manual written by: Csaba Biegl on August 10, 1992
-<p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on November 1, 2005
-<p>Last update: November 17, 2008
+<p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on August 1, 2005
+<p>Last update: September 1, 2017
 </center>
 
 <hr>
@@ -22,18 +22,19 @@
 <p>&nbsp;&nbsp;<b>MGRX</b> is a 2D graphics library derived from the GRX library.
 GRX was originaly written by Csaba Biegl for DJ Delorie's DOS port of the GCC compiler.
 MGRX supports four platforms: DOS (DJGPPv2), Linux console, Linux X11 and Win32
-(Mingw). On DOS it supports VGA and VESA compliant cards. On Linux console it uses
+(TDM-GCC). On DOS it supports VGA and VESA compliant cards. On Linux console it uses
 the framebuffer. On X11 and Win32 it runs in a window.
 
 <h2>Contents</h2>
 <dir>
-<li><a href="#why">Why MGRX</a>
+<li><a href="#why">MGRX versus GRX</a>
 <li><a href="#hello">Hello world</a>
 <li><a href="#dtfd">Data types, function declarations</a>
 <li><a href="#sgd">Setting the graphics driver</a>
 <li><a href="#svm">Setting video modes</a>
 <li><a href="#gc">Graphics contexts</a>
 <li><a href="#cu">How to use graphics contexts</a>
+<li><a href="#dbuf">Example: double buffer</a>
 <li><a href="#cm">Color management</a>
 <li><a href="#pufc">Portable use of a few colors</a>
 <li><a href="#gpri">Graphics primitives</a>
@@ -42,6 +43,7 @@ the framebuffer. On X11 and Win32 it runs in a window.
 <li><a href="#pfgpri">Pattern filled graphics primitives</a>
 <li><a href="#pld">Patterned line drawing</a>
 <li><a href="#img">Image manipulation</a>
+<li><a href="#enc">About text encoding</a>
 <li><a href="#td">Text drawing</a>
 <li><a href="#utf8">Special UTF-8 text type considerations</a>
 <li><a href="#siuc">Drawing in user coordinates</a>
@@ -51,34 +53,32 @@ the framebuffer. On X11 and Win32 it runs in a window.
 <li><a href="#jpeg">Writing/reading JPEG graphics files</a>
 <li><a href="#misc">Miscellaneous functions</a>
 <li><a href="#input">Input API</a>
-<li><a href="#intl">Intl input support</a>
 <li><a href="#mouse">Mouse cursor handling</a>
 <li><a href="#mdrv">The memory driver</a>
 <li><a href="#ref">References</a>
 </dir>
 
 <hr>
-<h2><a name="why">Why MGRX</a></h2>
+<h2><a name="why">MGRX versus GRX</a></h2>
 
 <p>&nbsp;&nbsp;<b>MGRX</b> (mgrx.fgrim.com) is a fork of GRX (grx.gnu.de).
-Because I liked the GRX C API interface, I began to maintain GRX when it
-was orphaned at the end of 2000. But GRX has not only the C API, it has a
-Pascal API, a BGI compatibility API, support for Turbo C, Wattcom, MSC and
-some X11 implementations over mainframes. At the end it no was fun, to easy
-to break things I don't know (and don't want to know). So I stoped my job
-maintainig GRX at the end of 2003. At the time I write this, GRX is still
-orphaned.</p>
+The main MGRX differences are:</p>
+<ul>
+<li>Only provides the C API interface without add-ons (no Pascal, no Borland
+BGI API)
+<li>Has a new (and better I think) input API
+<li>Includes (limited) internationalization support
+<li>Supports (officially) only the 4 platforms mentioned above
+</ul>
 
-<p>But in the mean time I developed a fork for my own use, only the C API,
-no Pascal, no BGI, no Turbo C support, only the 4 platforms I can test. And
-a new (and better I think) input API. And now I have released it, only for
-fun.</p>
+<p>&nbsp;&nbsp;The MGRX goal is to be a small, easy to use and maintain, C
+graphics library.</p>
 
 <hr>
 <h2><a name="hello">Hello world</a></h2>
 
 <p>&nbsp;&nbsp;The next program draws a double frame around the screen and
-writes "Hello, MGRX world" centered. Then it waits after a key is pressed.
+writes "Hello, MGRX world" centered, then it waits until a key is pressed.
 
 <pre>
 #include &lt;string.h>
@@ -95,9 +95,9 @@ int main()
   GrSetMode( GR_default_graphics );
   GrEventInit();
 
-  grt.txo_font = &GrDefaultFont;
-  grt.txo_fgcolor.v = GrWhite();
-  grt.txo_bgcolor.v = GrBlack();
+  grt.txo_font = GrGetDefaultFont();
+  grt.txo_fgcolor = GrWhite();
+  grt.txo_bgcolor = GrBlack();
   grt.txo_direct = GR_TEXT_RIGHT;
   grt.txo_xalign = GR_ALIGN_CENTER;
   grt.txo_yalign = GR_ALIGN_CENTER;
@@ -117,16 +117,14 @@ int main()
 }
 </pre>
 
-<p>How to compile the hello world program (assuming the MGRX library was
+<p>&nbsp;&nbsp;How to compile the hello world program (assuming the MGRX library was
 previously installed)
 <ul>
 <li>DJGPP: gcc -o helomgrx.exe helomgrx.c -lmgrx
-<li>Mingw: gcc -o helomgrx.exe helomgrx.c -lmgrx -mwindows
-<li>Linux X11 (i386): gcc -m32 -o helomgrx helomgrx.c -D__XWIN__
--I/usr/X11R6/include -lmgrxX -L/usr/X11R6/lib -lX11
+<li>TDM-GCC: gcc -o helomgrx.exe helomgrx.c -lmgrx -mwindows
+<li>Linux X11 (i386): gcc -m32 -o helomgrx helomgrx.c -D__XWIN__ -lmgrxX -lX11
 <li>Linux console (i386): gcc -m32 -o helomgrx helomgrx.c -lmgrx
-<li>Linux X11 (x86_64): gcc -m64 -o helomgrx helomgrx.c -D__XWIN__
--I/usr/X11R6/include -lmgrxX -L/usr/X11R6/lib64 -lX11
+<li>Linux X11 (x86_64): gcc -m64 -o helomgrx helomgrx.c -D__XWIN__ -lmgrxX -lX11
 <li>Linux console (x86_64): gcc -m64 -o helomgrx helomgrx.c -lmgrx
 </ul>
 <hr>
@@ -154,12 +152,12 @@ environment variable <code>MGRXDRV</code>, but a program can set it using:
 <pre>
 int GrSetDriver(char *drvspec);
 </pre>
-<p>&nbsp;&nbsp;The drvspec string has the same format as the environment
-variable:
+<p>&nbsp;&nbsp;On succes it returns non-zero (TRUE). The drvspec string has
+the same format as the environment variable:
 <pre>
 &lt;driver> gw &lt;width> gh &lt;height> nc &lt;colors>
 </pre>
-Available drivers are for:
+<p>&nbsp;&nbsp;Available drivers are for:
 <ul>
 <li>DOS => stdega, stdvga, VESA, memory
 <li>Linux console => linuxfb, memory
@@ -173,6 +171,10 @@ The current driver name can be obtained from:
 <pre>
 GrCurrentVideoDriver()->name
 </pre>
+
+<p>&nbsp;&nbsp;If neither the <code>MGRXDRV</code> variable exist, nor the
+driver is set by program, MGRX will try to detect the correct driver when
+first calling <code>GrSetMode</code>
 
 <hr>
 <h2><a name="svm">Setting video modes</a></h2>
@@ -234,7 +236,7 @@ GR_custom_bpp_graphics</code> modes require five arguments:
 <code>int width</code>, <code>int height</code>, <code>GrColor colors</code>
 or <code>int bpp</code>, <code>int vx</code> and <code>int vy</code>. Using
 this modes you can set a virtual screen of <code>vx</code> by <code>vy</code>
-size.
+size, but it only works on some videomodes with the DOS drivers.
 
 <p>&nbsp;&nbsp;The <code>GR_NC_...</code> modes are equivalent to the
 <code>GR_..</code> ones, but they don't clear the video memory.
@@ -412,8 +414,23 @@ pointed to by <code>where</code> using:
 <pre>
 GrContext *GrSaveContext(GrContext *where); 
 </pre>
-<p>&nbsp;&nbsp;(Again, if <code>where</code> is NULL, the library allocates
-the space.) The next two functions:
+<p>again, if <code>where</code> is NULL, the library allocates
+the space, and you must remember to destory it, but remember this is a copy,
+not the original context, so for typical use of this fuction (save the current
+context, set a new context, do some drawings anf restore the original context)
+is better to provide <code>where</code>. Example:
+<pre>
+void do_something()
+{
+  GrContext grc; 
+  GrSaveContext(&grc);
+  GrSetContext(another_context);
+  ...do some drawing;
+  GrSetContext(&grc);
+}
+</pre>
+
+<p>The next two functions:
 <pre>
 const GrContext *GrCurrentContext(void);
 const GrContext *GrScreenContext(void);
@@ -450,7 +467,7 @@ int GrSizeY(void);
 </pre>
 <p>&nbsp;&nbsp;The <code>Max</code> functions return the biggest valid
 coordinate, while the <code>Size</code> functions return a value one higher.
-The limits of the graphics screen (regardless of the current context) can be
+The size of the graphics screen (regardless of the current context) can be
 obtained with:
 <pre>
 int GrScreenX(void); 
@@ -520,6 +537,27 @@ GrCreateContext</code>.
 
 <p>&nbsp;&nbsp;Using <code>GrCreateSubContext</code> is the same, except it
 doesn't need the buffer, because it uses the parent buffer.
+
+<hr>
+<h2><a name="dbuf">Example: double buffer</a></h2>
+
+<p>&nbsp;&nbsp;Using contexts it is easy to implement double buffering, a
+technique to first draw each frame in memory and display them on screen at
+once, this makes changes to the screen appear much smoother:
+<pre>
+GrContext *grc;
+
+if( (grc = GrCreateContext( GrScreenX(),GrScreenY(),NULL,NULL )) == NULL ){
+  ...process the error and exit
+  }
+
+GrSetContext( grc ); /* now all drawing will be in grc! */
+while(1){
+  ...draw the frame
+  GrBitBlt(GrScreenContext(),0,0,grc,0,0,grc->gc_xmax,grc->gc_ymax,GrWRITE);
+  ...and probably process user input
+}
+</pre>
 
 <hr>
 <h2><a name="cm">Color management</a></h2>
@@ -1230,6 +1268,122 @@ void GrImageDestroy(GrImage *i);
 </pre>
 
 <hr>
+<h2><a name="enc">About text encoding</a></h2>
+
+<p>&nbsp;&nbsp;If you use only ASCII text you can skip this chapter, set
+the <code>chrtype</code> to <code>GR_BYTE_TEXT</code> (see below) and go ahead.
+But if you need to use extended chars you need to know abour character
+encodings. <b>MGRX</b> has (limited) support for extended encodings.
+
+<p>&nbsp;&nbsp;The problem is that you can have different encodings for your
+source code, for the fonts you are using and for the machine your program is
+finally running. To manage this <b>MGRX</b> has four concepts:
+
+<ul>
+<li>User encoding.
+<li>Font encoding.
+<li>Chrtype (string encoding).
+<li>KbSys encoding.
+</ul>
+
+<p>&nbsp;&nbsp;The <b>user encoding</b> is the source code encoding, The supported
+encodings are:
+
+<pre>
+#define GRENC_CP437          0   /* standard DOS encoding */
+#define GRENC_CP850          1   /* latin1 DOS encoding */
+#define GRENC_CP1252         2   /* standard Win encoding */
+#define GRENC_ISO_8859_1     3   /* standard in some Linux */
+#define GRENC_UTF_8          4   /* multibyte unicode, standard in newest Linux */
+#define GRENC_UCS_2          5   /* restricted unicode, 2 bytes, only BMP range */
+#define GRENC_LASTENCODE     5   /* last encode, for checks */
+</pre>
+
+<b>MGRX</b> sets the user encoding to <code>GRENC_UTF_8</code> in linux
+console and X11, to <code>GRENC_PC437</code> in DJGPP and to
+<code>GRENC_PC1252</code> in Win32. But as a programmer you can know better
+and can set it whit the <code>GrSetUserEncoding</code> function. Do it after
+setting the graphics mode.
+
+<pre>
+int GrGetUserEncoding(void);
+int GrSetUserEncoding(int enc);
+</pre>
+
+<p>&nbsp;&nbsp;The <b>font encoding</b> is obsviusly the encoding used by the font glyphs,
+the supported font encodings are:
+
+<pre>
+#define GR_FONTENC_UNKNOWN     0     /* unknow encoding (no recode) */
+#define GR_FONTENC_CP437       1     /* standard dos encoding */
+#define GR_FONTENC_CP850       2     /* standard dos encoding */
+#define GR_FONTENC_CP1252      3     /* standard Win encoding */
+#define GR_FONTENC_ISO_8859_1  4     /* standard latin encoding */
+#define GR_FONTENC_UNICODE     5     /* direct UNICODE encoding */
+#define GR_FONTENC_MGRX512     6     /* custom MGRX 512 char encoding */
+#define GR_FONTENC_LASTENC     6     /* last encoding, for checks */
+</pre>
+
+<p>Only the fonts provided whit <b>MGRX</b> in his own format (.fnt) have the
+font encoding set in their heading data, but after loading a font, you can set their
+encoding with the <code>GrFontSetEncoding</code> function.
+
+<pre>
+void GrFontSetEncoding(GrFont *font,int fontencoding);
+</pre>
+
+<p>The MGRX512 font encoding is a specialy crafted encoding used by some of the fonts
+provided with <b>MGRX</b>. They have 512 glyphs covering Latin, Cyrilic and Greek and
+some other miscellaneous glyphs. See the <b>doc/mgrx512.txt</b> file for more
+information.
+
+<p>&nbsp;&nbsp;<b>Chrtype</b> is the specific encoding used for the string you want
+to draw, it can be one of these:
+
+<pre>
+#define GR_BYTE_TEXT            0   /* 1 byte per character, unknow encoding */
+#define GR_WORD_TEXT            1   /* 2 bytes per character, unknow encoding */
+#define GR_CP437_TEXT           2   /* 1 bpc standard DOS encoding */
+#define GR_CP850_TEXT           3   /* 1 bpc latin1 DOS encoding */
+#define GR_CP1252_TEXT          4   /* 1 bpc standard Win encoding */
+#define GR_ISO_8859_1_TEXT      5   /* 1 bpc latin1 standard in some Linux */
+#define GR_UTF8_TEXT            6   /* multibyte UTF-8 Unicode, restricted to 4 bytes */
+#define GR_UCS2_TEXT            7   /* 2 bpc restricted Unicode, only BMP range */
+</pre>
+
+<p>You can set the chrtype individually for every string you need to draw,
+there is a funtion to get the chrtype corresponding to the user encoding
+
+<pre>
+char GrGetChrtypeForUserEncoding(void);
+</pre>
+
+<p>It takes advantage that the corresponding chtype is "userencoding + 2" so have
+these into account if you want to add more encodings to <b>MGRX</b>.
+
+<p>The <b>MGRX</b> text draw funtions will try to recode from chrtype to the
+font encoding before draw the text.
+
+<p>&nbsp;&nbsp;The <b>KbSys encoding</b> is the encoding used by the computer, where
+the program is executed, to get input from the keyboard. It can be one of the defined
+"user encoding". 
+
+<p>Every input driver try to guess the encoding used for the running program,
+if not sure it uses the MGRXKBSYSENCODING environment variable that can
+be set by the users to one of these strings: "CP437", "CP850", "CP1252",
+"ISO_8859_1", "UTF_8" or "UCS_2". The system encoding can be get using
+this function:
+
+<pre>
+int GrGetKbSysEncoding(void);
+</pre>
+
+<p>If the KbSys encoding is different from the user encoding, the input driver will
+recode key events to user encoding. So using by example 
+<code>GrSetUserEncoding(GRENC_UTF_8);</code> you can write a portable
+program that gets UTF8 encoded keys in every plattform.
+
+<hr>
 <h2><a name="td">Text drawing</a></h2>
 
 <p>&nbsp;&nbsp;The library supports loadable fonts. When in memory they are
@@ -1239,32 +1393,35 @@ to load the <b>MGRX</b> own font format and the BGI Borland format for all
 platforms supported, the X11 version can load X11 fonts too.
 
 <p>&nbsp;&nbsp;The <b>MGRX</b> distribution come with a font collection in
-the <b>MGRX</b> own format. Some of these fonts were converted from VGA fonts.
-These fonts have all 256 characters from the PC-437 codepage. Some additional
-fonts were converted from fonts in the MIT X11 distribution. Most of these
-are ISO-8859-1 coded. Fonts also have family names. The following font
-families are included:
+the <b>MGRX</b> own format. Some of these fonts were converted from VGA fonts,
+these fonts have all 256 characters from the CP437 or CP850 codepage. Some
+fonts were converted from fonts in the MIT X11 distribution, these are ASCII
+or ISO-8859-1 coded. A group of fonts were converted from the Terminus font
+and are MGRX512 encoded. The following fonts are included:
 <pre>
 <b>Font file name       Family  Description</b>
-pc&lt;W>x&lt;H>[t].fnt     pc      VGA font, fixed 
-xm&lt;W>x&lt;H>[b][i].fnt  X_misc  X11, fixed, miscellaneous group 
-char&lt;H>[b][i].fnt    char    X11, proportional, charter family 
-cour&lt;H>[b][i].fnt    cour    X11, fixed, courier 
-helve&lt;H>[b][i].fnt   helve   X11, proportional, helvetica 
-lucb&lt;H>[b][i].fnt    lucb    X11, proportional, lucida bright 
-lucs&lt;H>[b][i].fnt    lucs    X11, proportional, lucida sans serif 
-luct&lt;H>[b][i].fnt    luct    X11, fixed, lucida typewriter 
-ncen&lt;H>[b][i].fnt    ncen    X11, proportional, new century schoolbook 
+pc&lt;W>x&lt;H>[t].fnt     pc      VGA font, fixed, CP437
+pc850-&lt;H>[t].fnt     pc      VGA font, fixed, CP850
+xm&lt;W>x&lt;H>[b][i].fnt  X_misc  X11, fixed, miscellaneous group, ASCII
+char&lt;H>[b][i].fnt    char    X11, proportional, charter family, ISO-8859-1
+cour&lt;H>[b][i].fnt    cour    X11, fixed, courier, ASCII
+helv&lt;H>[b][i].fnt    helve   X11, proportional, helvetica, ASCII
+lucb&lt;H>[b][i].fnt    lucb    X11, proportional, lucida bright, ISO-8859-1
+lucs&lt;H>[b][i].fnt    lucs    X11, proportional, lucida sans serif , ISO-8859-1
+luct&lt;H>[b][i].fnt    luct    X11, fixed, lucida typewriter, ISO-8859-1
+ncen&lt;H>[b][i].fnt    ncen    X11, proportional, new century schoolbook, ISO-8859-1
 symb&lt;H>.fnt          symbol  X11, proportional, greek letters, symbols 
-tms&lt;H>[b][i].fnt     times   X11, proportional, times
+tms&lt;H>[b][i].fnt     times   X11, proportional, times, ASCII
+tmgrx&lt;H>[b].fnt      tmgrx   Ter, fixed, MGRX512
 </pre>
 <p>&nbsp;&nbsp;In the font names &lt;W> means the font width, &lt;H> the font
 height. Many font families have bold and/or italic variants. The files
 containing these fonts contain a 'b' and/or 'i' character in their name just
-before the extension. Additionally, the strings "_bold" and/or "_ital" are
-appended to the font family names. Some of the pc VGA fonts come in thin
-formats also, these are denoted by a 't' in their file names and the
-string "_thin" in their family names.
+before the extension. Some of the pc VGA fonts come in thin
+formats also, these are denoted by a 't' in their file names.
+
+<p>&nbsp;&nbsp;A full font list is in the <b>fonts/_fonts.dir</b> file. Please
+read the <b>copying.grx</b> file to know about font licenses.
 
 <p>&nbsp;&nbsp;The <code>GrFont</code> structure hold a font in memory. A
 number of 'pc' fonts are built-in to the library and don't need to be
@@ -1322,6 +1479,12 @@ arguments.
 
 <p>&nbsp;&nbsp;The function:
 <pre>
+void GrDumpGrxFont(const GrFont *f, char *fileName);
+</pre>
+<p>writes a font to a file int the <b>MGRX</b> own format.
+
+<p>&nbsp;&nbsp;The function:
+<pre>
 void GrDumpFnaFont(const GrFont *f, char *fileName);
 </pre>
 <p>writes a font to an ascii font file, so it can be quickly edited with a
@@ -1357,30 +1520,30 @@ extern GrFont myhelv15
 void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
 </pre>
 <p>draw text in the current context in the standard direction, using the
-<code>GrDefaultFont</code> (mapped in the <b>mgrx.h</b> file to the
-<code>GrFont_PC8x14</code> font) with <code>x</code>, <code>y</code> like
-the upper left corner and the foreground and background colors given (note
-that <code>bg</code> equal to <code>GrNOCOLOR</code> make the
-background transparent). This function expects <code>GR_BYTE_TEXT</code>
-character type strings (see bellow).
+Default Font (set initially to <code>GrFont_PC8x14</code> but can be changed),
+using the <b>chrtype</b> corresponding to the user encoding, 
+with <code>x</code>, <code>y</code> like the upper left corner and the
+foreground and background colors given (note that <code>bg</code> equal
+to <code>GrNOCOLOR</code> make the background transparent).
+
+<p>the Default Font can be get or set with these functions:
+<pre>
+GrFont *GrGetDefaultFont();
+void GrSetDefaultFont(GrFont *font);
+</pre>
 
 <p>&nbsp;&nbsp;For other functions the <code>GrTextOption</code> structure
 specifies how to draw a character string:
 <pre>
-typedef struct _GR_textOption {       /* text drawing option structure */
-  struct _GR_font     *txo_font;      /* font to be used */
-  union  _GR_textColor txo_fgcolor;   /* foreground color */
-  union  _GR_textColor txo_bgcolor;   /* background color */
-  char    txo_chrtype;                /* character type (see above) */
-  char    txo_direct;                 /* direction (see above) */
-  char    txo_xalign;                 /* X alignment (see above) */
-  char    txo_yalign;                 /* Y alignment (see above) */
+typedef struct _GR_textOption {  /* text drawing option structure */
+        GrFont *txo_font;        /* font to be used */
+        GrColor txo_fgcolor;     /* foreground color */
+        GrColor txo_bgcolor;     /* background color */
+        char    txo_chrtype;     /* character type (see above) */
+        char    txo_direct;      /* direction (see above) */
+        char    txo_xalign;      /* X alignment (see above) */
+        char    txo_yalign;      /* Y alignment (see above) */
 } GrTextOption;
-
-typedef union _GR_textColor {         /* text color union */
-  GrColor       v;                    /* color value for "direct" text */
-  GrColorTableP p;                    /* color table for attribute text */
-} GrTextColor;
 </pre>
 <p>&nbsp;&nbsp;The text can be rotated in increments of 90 degrees
 (<code>txo_direct</code>), alignments can be set in both directions
@@ -1404,44 +1567,18 @@ direction values:
 #define GR_ALIGN_BASELINE       3       /* Y only */
 #define GR_ALIGN_DEFAULT        GR_ALIGN_LEFT
 </pre>
-<p>&nbsp;&nbsp;Text strings can be of three different types: one character
-per byte (i.e. the usual C character string, this is the default), one
-character per 16-bit word (suitable for fonts with a large number of
-characters), and a PC-style character-attribute pair. In the last case the
-<code>GrTextOption</code> structure must contain a pointer to a color table
-of size 16 (fg color bits in attrib) or 8 (bg color bits). (The color table
-format is explained in more detail in the previous section explaining the
-methods to build fill patterns.) The supported text types:
-<pre>
-#define GR_BYTE_TEXT            0       /* one byte per character */
-#define GR_WORD_TEXT            1       /* two bytes per character */
-#define GR_ATTR_TEXT            2       /* chr w/ PC style attribute byte */
-#define GR_UTF8_TEXT            3       /* multibyte UTF-8 encoding, restricted to 4 bytes */
+<p>&nbsp;&nbsp;Text strings chrtype must be one of the types defined in the 
+previous section. With <code>GR_BYTE_TEXT</code> and <code>GR_WORD_TEXT</code>
+there will be no recoding, so is up to you to select a font that match the
+text encoding you are using.
 
-</pre>
-<p><code>GR_BYTE_TEXT</code> uses one byte per character,
-<code>GR_WORD_TEXT</code> uses two bytes per character and
-<code>GR_UTF8_TEXT</code> is the standard multibyte UTF-8 encoding. Note
-that is up to you the use of a font that match the text encoding you have
-choosing.
-<p>&nbsp;&nbsp;The PC-style attribute text uses the same layout (first byte:
-character, second: attributes) and bitfields as the text mode screen on the
-PC. The only difference is that the 'blink' bit is not supported (it would
-be very time consuming -- the PC text mode does it with hardware support).
-This bit is used instead to control the underlined display of characters. For
-convenience the following attribute manipulation macros have been declared
- in <b>mgrx.h</b>:
-<pre>
-#define GR_BUILD_ATTR(fg,bg,ul) \
-        (((fg) & 15) | (((bg) & 7) << 4) | ((ul) ? 128 : 0))
-#define GR_ATTR_FGCOLOR(attr)   (((attr)     ) &  15)
-#define GR_ATTR_BGCOLOR(attr)   (((attr) >> 4) &   7)
-#define GR_ATTR_UNDERLINE(attr) (((attr)     ) & 128)
-</pre>
-<p>&nbsp;&nbsp;Text strings of the types <code>GR_BYTE_TEXT</code>,
-<code>GR_WORD_TEXT</code> and <code>GR_UTF8_TEXT</code> can also be drawn
-underlined. This is controlled by OR-ing the constant
-<code>GR_UNDERLINE_TEXT</code> to the foreground color value:
+<p>&nbsp;&nbsp;Remember that <code>GR_WORD_TEXT</code> and <code>GR_UCS2_TEXT</code>
+are two bytes per character. <code>GR_UTF8_TEXT</code> is the standard multibyte
+UTF-8 encoding. All other chrtypes are one byte per character.
+
+<p>&nbsp;&nbsp;Text strings can also be drawn underlined. This is controlled
+by OR-ing the constant <code>GR_UNDERLINE_TEXT</code> to the foreground color
+value:
 <pre>
 #define GR_UNDERLINE_TEXT       (GrXOR << 4)
 </pre>
@@ -1452,6 +1589,14 @@ functions:
 void GrDrawChar(long chr,int x,int y,const GrTextOption *opt);
 void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt);
 </pre>
+
+<p>&nbsp;&nbsp;You must set the <code>length</code> parameter according to
+the indicated chrtype, it must be number of words for <code>GR_WORD_TEXT</code>
+and <code>GR_UCS2_TEXT</code>, the real number of characters for
+<code>GR_UTF8_TEXT</code>, or the number of bytes for the rest of chrtypes.
+If the string is NULL terminated you can set <code>length</code> to 0, and the
+function will calculate the lenght according to the chrtype.
+
 <p>&nbsp;&nbsp;NOTE: text drawing is fastest when it is drawn in the 'normal'
 direction, and the character does not have to be clipped. It this case the
 library can use the appropriate low-level video RAM access routine, while
@@ -1475,9 +1620,9 @@ int  GrFontCharWidth(const GrFont *font,int chr);
 int  GrFontCharHeight(const GrFont *font,int chr);
 int  GrFontCharBmpRowSize(const GrFont *font,int chr);
 int  GrFontCharBitmapSize(const GrFont *font,int chr);
-int  GrFontStringWidth(const GrFont *font,void *text,int len,int type);
-int  GrFontStringHeight(const GrFont *font,void *text,int len,int type);
-int  GrProportionalTextWidth(const GrFont *font,void *text,int len,int type);
+
+int  GrFontStringWidth(const GrFont *font,void *text,int len,int chrtype);
+int  GrFontStringHeight(const GrFont *font,void *text,int len,int chrtype);
 
 int  GrCharWidth(long chr,const GrTextOption *opt);
 int  GrCharHeight(long chr,const GrTextOption *opt);
@@ -1486,47 +1631,11 @@ int  GrStringWidth(void *text,int length,const GrTextOption *opt);
 int  GrStringHeight(void *text,int length,const GrTextOption *opt);
 void GrStringSize(void *text,int length,const GrTextOption *opt,int *w,int *h);
 </pre>
-<p>&nbsp;&nbsp;The <code>GrTextRegion</code> structure and its associated
-functions can be used to implement a fast (as much as possible in graphics
-modes) rectangular text window using a fixed font. Clipping for such windows
-is done in character size increments instead of pixels (i.e. no partial
-characters are drawn). Only fixed fonts can be used in their natural size.
-<code>GrDumpText</code> will cache the code of the drawn characters in the
-buffer pointed to by the 'backup' slot (if it is non-NULL) and will draw a
-character only if the previously drawn character in that grid element
-is different. Note that <code>GrTextRegion</code> doesn't support
-<code>GR_UTF8_TEXT</code> text type, because characters can have different
-byte sizes.
 
-<p>&nbsp;&nbsp;This can speed up text scrolling significantly in graphics
-modes. The supported text types are the same as above.
-<pre>
-typedef struct {                      /* fixed font text window desc. */
-  struct _GR_font     *txr_font;      /* font to be used */
-  union  _GR_textColor txr_fgcolor;   /* foreground color */
-  union  _GR_textColor txr_bgcolor;   /* background color */
-  void   *txr_buffer;                 /* pointer to text buffer */
-  void   *txr_backup;                 /* optional backup buffer */
-  int     txr_width;                  /* width of area in chars */
-  int     txr_height;                 /* height of area in chars */
-  int     txr_lineoffset;             /* offset in buffer(s) between rows */
-  int     txr_xpos;                   /* upper left corner X coordinate */
-  int     txr_ypos;                   /* upper left corner Y coordinate */
-  char    txr_chrtype;                /* character type (see above) */
-} GrTextRegion;
-
-void GrDumpChar(int chr,int col,int row,const GrTextRegion *r);
-void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r);
-void GrDumpTextRegion(const GrTextRegion *r);
-</pre>
-<p>&nbsp;&nbsp;The <code>GrDumpTextRegion</code> function outputs the whole
-text region, while <code>GrDumpText</code> draws only a user-specified part
-of it. <code>GrDumpChar</code> updates the character in the buffer at the
-specified location with the new character passed to it as argument and then
-draws the new character on the screen as well. With these functions you can
-simulate a text mode window, write chars directly to the <code>txr_buffer
-</code> and call <code>GrDumpTextRegion</code> when you want to update the
-window (or <code>GrDumpText</code> if you know the area to update is small).
+<p>&nbsp;&nbsp;The first five funtions don't recode, so the <code>chr</code>
+parameter is really the font glyph index. All other fucntions recode if needed.
+If the string is NULL terminated you can set <code>length</code> to 0, and 
+let the function calculate the lenght according to the chrtype.
 
 <hr>
 <h2><a name="utf8">Special UTF-8 text type considerations</a></h2>
@@ -1540,10 +1649,23 @@ int GrUTF8StrLen(unsigned char *s);
 <p>returns the number of UTF-8 characters in <code>s</code>.
 
 <pre>
+int GrStrLen(const void *text, int chrtype);
+</pre>
+<p>is a more general function that returns the number of characters according
+to the chrtype provided.
+
+<pre>
 long GrUCS2ToUTF8(unsigned short ch);
 </pre>
 <p>converts a UCS-2 word character to a UTF-8 string packed in a long
 for convenience (some functions use it, see bellow).
+
+<pre>
+long GrNextUTF8Char(unsigned char *s, int *nb);
+</pre>
+<p>returns the first UTF-8 character packed in a long, it sets <code>nb</code>
+to the number of bytes consumed, so you can advance the string pointer to the
+next character.
 
 <pre>
 unsigned short GrUTF8ToUCS2(unsigned char *s);
@@ -1567,8 +1689,17 @@ opt.txo_chrtype = GR_UTF8_TEXT;
 GrDrawString(sutf8, GrUTF8StrLen(sutf8), x, y, opt);
 </pre>
 
+<o>or if <code>sutf8</code> is NULL terminated you can let the fucntion
+to calculate:
+
+<pre>
+opt.txo_chrtype = GR_UTF8_TEXT;
+GrDrawString(sutf8, 0, x, y, opt);
+</pre>
+
+
 <p>For font related functions that expect a unique character packed in
-a long and a char type, you need to pack the UTF-8 char in a long,
+a long and a chrtype, you need to pack the UTF-8 char in a long,
 example:
 
 <pre>
@@ -1581,7 +1712,7 @@ opt.txo_chrtype = GR_UTF8_TEXT;
 void GrDrawChar(*c, x, y, opt);
 </pre>
 
-<p>For font functions that expect a unique character without text type,
+<p>For font functions that expect a unique character without chrtype,
 you must pass the UCS-2 equivalent character, example:
 
 <pre>
@@ -1968,7 +2099,7 @@ error (-1) ever.
 unsigned GrGetLibraryVersion(void);
 </pre>
 <p>&nbsp;&nbsp;<code>GrGetLibraryVersion</code> returns the <b>MGRX</b>
-version API, like a hexadecimal coded number plus 0x0200. By example 0x0290
+version API, like a hexadecimal coded number. By example 0x0090
 means 0.9.0
 Because <b>mgrx.h</b> defines the <code>MGRX_VERSION_API</code> macro, you
 can check if both, the library and the include file, are in the same version
@@ -1994,8 +2125,8 @@ system you are working in. <b>mgrx.h</b> defines some macros you can use:
 void GrSetWindowTitle(char *title);
 </pre>
 <p>&nbsp;&nbsp;<code>GrSetWindowTitle</code> sets the main window title
-in the X11 an Win32 versions. It doesn't do nothing in the DOS and
-Linux-SvgaLib versions.
+in the X11 an Win32 versions. It does nothing in the DOS and
+Linux-Console versions.
 
 <pre>
 void GrSleep(int msec);
@@ -2066,16 +2197,17 @@ void GrEventRead(GrEvent * ev);
 <p>the event structure is defined in <b>mgrx.h</b>
 
 <pre>
-typedef struct {
-    int type;      /* event type */
-    long time;     /* miliseconds */
-    int kbstat;    /* kb status */
-    union {
-      long p1;              /* key(GREV_KEY) subevent(GREV_MOUSE) */
-      unsigned char cp1[4]; /* for easy access to multibyte char encodings (like UTF-8) */
+ttypedef struct {
+    int type;               /* event type */
+    long time;              /* miliseconds */
+    int kbstat;             /* kb status */
+    union {                 /* GREV_KEY     GREV_MOUSE  GREV_MMOVE  GREV_EXPOSE */
+      long p1;              /* key          subevent    but status  x           */
+      unsigned char cp1[4]; /* for easy access to multibyte key (like UTF-8)    */
     };
-    long p2;       /* x-pos(GREV_MOUSE) */
-    long p3;       /* Y-pos(GREV_MOUSE) */
+    long p2;                /* type/nbytes  x           x           y           */
+    long p3;                /* --           y           y           width       */
+    long p4;                /* --           --          --          height      */
 } GrEvent;
 </pre>
 
@@ -2088,6 +2220,7 @@ is ready. The possible events are:
 #define GREV_MOUSE   2           /* mouse event, p1=subevent, p2=x, p3=y */
 #define GREV_MMOVE   3           /* mouse move event, p1=buttons status, p2=x, p3=y */
 #define GREV_PREKEY  4           /* key event before be recoded, internal event, users don't see it */
+#define GREV_EXPOSE  5           /* a window area must be redraw (generated only if user requests it */
 #define GREV_USER    100         /* user event */
 </pre>
 
@@ -2169,7 +2302,28 @@ the GREV_KEY. This is an extract:
 #define GrKey_Alt_F3               0x016a
 </pre>
 
-<p>but you can be confident that the standard ASCII is right maped.
+<p>but you can be confident that the standard ASCII is right maped. Remenber,
+if the KbSys encoding is different from the user encoding, the input driver
+will recode key events to user encoding.
+
+<p>&nbsp;&nbsp;The GREV_EXPOSE event is only generated in X11 systems and
+only if the user requests it using this function:
+
+<pre>
+void GrEventGenExpose(int when);
+</pre>
+
+<p><code>when</code> can be:
+
+<pre>
+#define GR_GEN_EXPOSE_NO    0    /* Doesn't gen GREV_EXPOSE (default) */
+#define GR_GEN_EXPOSE_YES   1    /* Gen GREV_EXPOSE */
+</pre>
+
+<p>When GREV_EXPOSE events are generated, the X11 video driver doesn't use
+backing store, so drawings are faster, but the program must redraw the area
+exposed by itsel. Check the test program "life" for an example. For systems
+other than X11 the function does nothing.
 
 <p>&nbsp;&nbsp;These are the other functions of the input API:
 
@@ -2191,57 +2345,6 @@ int GrEventEnqueue(GrEvent * ev);
 button is pressed.
 
 <p><code>GrEventEnqueue</code> enqueue an user event.
-
-<hr>
-<h2><a name="intl">Intl input support</a></h2>
-
-<p>The input characters returned by the input driver in every plattform
-can be encoded in different encodings. By example in DOS they can be
-encoded in PC-437 or PC-850 and in Linux-X11 in ISO-8859-1 or UTF-8.
-This is a problem to make portable programs.
-
-<p>To resolve this problem <b>MGRX</b> supports different input encodings
-and can recode to the desired programmer encoding before it returns a key
-event. The supported encodings are:
-
-<pre>
-#define GRENC_CP437          0   /* standard DOS encoding */
-#define GRENC_CP850          1   /* latin1 DOS encoding */
-#define GRENC_CP1252         2   /* standard Win encoding */
-#define GRENC_ISO_8859_1     3   /* standard in some Linux */
-#define GRENC_UTF_8          4   /* multibyte unicode, standard in newest Linux */
-#define GRENC_UCS_2          5   /* restricted unicode, 2 bytes, only BMP range */
-#define GRENC_LASTENCODE     5   /* last encode, for checks */
-</pre>
-
-<p>Every input driver try to guess the encoding used for the plattform,
-if not sure it uses the MGRXKBSYSENCODING environment variable that can
-be set by the users to one of these strings: "CP437", "CP850", "CP1252",
-"ISO_8859_1", "UTF_8" or "UCS_2". The system encoding can be get using
-this function:
-
-<pre>
-int GrGetKbSysEncoding(void);
-</pre>
-
-<p>The program can set the encoding it wants to be used in key events using
-this function:
-
-<pre>
-int GrSetKbEncoding(int enc);
-</pre>
-
-<p>and if it is different from the system encoding, the input driver will
-recode key events to the desired encoding. So using by example 
-<code>GrSetKbEncoding(GRENC_ISO_8859_1);</code> you can write a portable
-program that gets ISO-8859-1 encoded keys in every plattform.
-
-<p>To get the actual user encoding you can use this function:
-
-<pre>
-int GrGetKbEncoding(void);
-</pre>
-
 
 <hr>
 <h2><a name="mouse">Mouse cursor handling</a></h2>
@@ -2386,8 +2489,8 @@ int main()
   GrSetMode( GR_default_graphics );
 
   grt.txo_font = &GrDefaultFont;
-  grt.txo_fgcolor.v = GrWhite();
-  grt.txo_bgcolor.v = GrBlack();
+  grt.txo_fgcolor = GrWhite();
+  grt.txo_bgcolor = GrBlack();
   grt.txo_direct = GR_TEXT_RIGHT;
   grt.txo_xalign = GR_ALIGN_CENTER;
   grt.txo_yalign = GR_ALIGN_CENTER;

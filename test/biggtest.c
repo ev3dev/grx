@@ -69,9 +69,9 @@ static void PrintInfo(void)
     sprintf(aux, " Mode: %dx%d %d bpp ", GrCurrentVideoMode()->width,
     GrCurrentVideoMode()->height, GrCurrentVideoMode()->bpp);
     x = (GrMaxX() -
-        GrFontStringWidth(&GrDefaultFont, aux, strlen(aux), GR_BYTE_TEXT)) / 2;
+        GrFontStringWidth(GrGetDefaultFont(), aux, strlen(aux), GR_BYTE_TEXT)) / 2;
     y = (GrMaxY() -
-        GrFontStringHeight(&GrDefaultFont, aux, strlen(aux), GR_BYTE_TEXT)) / 2;
+        GrFontStringHeight(GrGetDefaultFont(), aux, strlen(aux), GR_BYTE_TEXT)) / 2;
     GrTextXY(x, y, aux, GrWhite(), GrBlack());
 }
 

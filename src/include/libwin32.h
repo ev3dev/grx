@@ -1,9 +1,9 @@
 /**
  ** libwin32.h - GRX library Win32-API private include file
  **
- ** Author:        Gernot Graeff
- ** E-mail:        gernot.graeff@t-online.de
- ** Date:        13.11.98
+ ** Author:	Gernot Graeff
+ ** E-mail:	gernot.graeff@t-online.de
+ ** Date:	13.11.98
  **
  ** This file is part of the GRX graphics library.
  **

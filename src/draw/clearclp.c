@@ -20,6 +20,6 @@
 
 void GrClearClipBox(GrColor bg)
 {
-        GrFilledBox(0,0,CURC->gc_xmax,CURC->gc_ymax,bg);
+	GrFilledBox(0,0,CURC->gc_xmax,CURC->gc_ymax,bg);
 }
 

@@ -54,7 +54,7 @@ static void get_scanline(char *dptr, char *sptr, int w) {
 }
 
 static void put_scanline(char *dptr,char *sptr,int w,
-                         GR_int8u lm, GR_int8u rm, int op    ) {
+			 GR_int8u lm, GR_int8u rm, int op    ) {
   GRX_ENTER();
   if (w==1) lm &= rm;
   if ( ((GR_int8u)(~lm)) ) {
@@ -88,15 +88,15 @@ done:
 
 
 extern void _GR_shift_scanline(GR_int8u **dst,
-                               GR_int8u **src,
-                               int ws, int shift, int planes );
+			       GR_int8u **src,
+			       int ws, int shift, int planes );
 #define shift_scanline(dst,src,w,sh) \
     _GR_shift_scanline((GR_int8u **)&(dst),(GR_int8u **)&(src),(w),(sh),1)
 
 
 void _GR_rblit_14(GrFrame *dst,int dx,int dy,
-                  GrFrame *src,int x,int y,int w,int h,
-                  GrColor op, int planes, _GR_blitFunc bitblt)
+		  GrFrame *src,int x,int y,int w,int h,
+		  GrColor op, int planes, _GR_blitFunc bitblt)
 {
     int pl;
     GRX_ENTER();
@@ -111,54 +111,54 @@ void _GR_rblit_14(GrFrame *dst,int dx,int dy,
       int dskip   = dst->gf_lineoffset;
       int sskip   = src->gf_lineoffset;
       if ((dy>y) && (dst->gf_baseaddr[0]==src->gf_baseaddr[0])) {
-        /* reverse */
-        dy += h-1;
-        y  += h-1;
-        doffs = FOFS(dx,dy,dskip);
-        soffs = FOFS( x, y,sskip);
-        for (pl=0; pl < planes; ++pl) {
-          char *dptr = &dst->gf_baseaddr[pl][doffs];
-          char *sptr = &src->gf_baseaddr[pl][soffs];
-          int hh = h;
-          if (shift) {
-            while (hh-- > 0) {
-              shift_scanline(LineBuff,sptr,ws,shift);
-              put_scanline(dptr,LineBuff,wd,lm,rm,oper);
-              dptr -= dskip;
-              sptr -= sskip;
-            }
-          } else {
-            while (hh-- > 0) {
-              get_scanline(LineBuff, sptr, ws);
-              put_scanline(dptr,LineBuff,wd,lm,rm,oper);
-              dptr -= dskip;
-              sptr -= sskip;
-            }
-          }
-        }
+	/* reverse */
+	dy += h-1;
+	y  += h-1;
+	doffs = FOFS(dx,dy,dskip);
+	soffs = FOFS( x, y,sskip);
+	for (pl=0; pl < planes; ++pl) {
+	  char *dptr = &dst->gf_baseaddr[pl][doffs];
+	  char *sptr = &src->gf_baseaddr[pl][soffs];
+	  int hh = h;
+	  if (shift) {
+	    while (hh-- > 0) {
+	      shift_scanline(LineBuff,sptr,ws,shift);
+	      put_scanline(dptr,LineBuff,wd,lm,rm,oper);
+	      dptr -= dskip;
+	      sptr -= sskip;
+	    }
+	  } else {
+	    while (hh-- > 0) {
+	      get_scanline(LineBuff, sptr, ws);
+	      put_scanline(dptr,LineBuff,wd,lm,rm,oper);
+	      dptr -= dskip;
+	      sptr -= sskip;
+	    }
+	  }
+	}
       } else {
-        /* forward */
-        doffs = FOFS(dx,dy,dst->gf_lineoffset);
-        soffs = FOFS( x, y,src->gf_lineoffset);
-        for (pl=0; pl < planes; ++pl) {
-          char *dptr = &dst->gf_baseaddr[pl][doffs];
-          char *sptr = &src->gf_baseaddr[pl][soffs];
-          int hh = h;
-          if (shift) {
-            while (hh-- > 0) {
-              shift_scanline(LineBuff,sptr,ws,shift);
-              put_scanline(dptr,LineBuff,wd,lm,rm,oper);
-              dptr += dskip;
-              sptr += sskip;
-            }
-           } else {
-             while (hh-- > 0) {
-               put_scanline(dptr,sptr,wd,lm,rm,oper);
-               dptr += dskip;
-               sptr += sskip;
-             }
-           }
-        }
+	/* forward */
+	doffs = FOFS(dx,dy,dst->gf_lineoffset);
+	soffs = FOFS( x, y,src->gf_lineoffset);
+	for (pl=0; pl < planes; ++pl) {
+	  char *dptr = &dst->gf_baseaddr[pl][doffs];
+	  char *sptr = &src->gf_baseaddr[pl][soffs];
+	  int hh = h;
+	  if (shift) {
+	    while (hh-- > 0) {
+	      shift_scanline(LineBuff,sptr,ws,shift);
+	      put_scanline(dptr,LineBuff,wd,lm,rm,oper);
+	      dptr += dskip;
+	      sptr += sskip;
+	    }
+	   } else {
+	     while (hh-- > 0) {
+	       put_scanline(dptr,sptr,wd,lm,rm,oper);
+	       dptr += dskip;
+	       sptr += sskip;
+	     }
+	   }
+	}
       }
     } else
       bitblt(dst,dx,dy,src,x,y,w,h,op);

@@ -18,6 +18,7 @@
  ** 071201 Introduction of GR_PtrInt (integer of same length as a pointer)
  **        to suppress warnings (in fact errors) when compiling with
  **        x86_64 platforms. Backport from GRX 2.4.7 (M.Lombardi)
+ ** 170630 Added _GrIniUserEncoding protoptype
  **/
 
 #ifndef __LIBGRX_H_INCLUDED__
@@ -34,20 +35,19 @@
 #endif
 
 #ifndef NULL
-#define NULL            ((void *)(0))
+#define NULL  ((void *)(0))
 #endif
 
 #ifndef FALSE
-#define FALSE           0
+#define FALSE  0
 #endif
 
 #ifndef TRUE
-#define TRUE            1
+#define TRUE   1
 #endif
 
 /* x86 allow misaligned access to non byte location */
-#if   defined(__i386__) \
-   || defined(__x86_64__)
+#if defined(__i386__) || defined(__x86_64__)
 #  define MISALIGNED_16bit_OK
 #  define MISALIGNED_32bit_OK
 #endif
@@ -79,8 +79,7 @@ typedef unsigned GR_int64 GR_int64u;
 
 /* get system endian */
 #if !defined(_BIG_ENDIAN) && !defined(_LITTLE_ENDIAN)
-#  if defined(__GNUC__) && \
-      (defined(__i386__) || defined(__x86_64__))
+#  if defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__))
 #    define _LITTLE_ENDIAN
 #  else
 #    include <sys/byteorder.h>
@@ -204,7 +203,7 @@ extern int _GR_firstFreeColor; /* can't access all colors on all systems */
 extern int _GR_lastFreeColor;  /* eg. X11 and other windowing systems    */
 int _GrResetColors(void);      /* like GrResetColors but return true on success */
 
-#define C_OPER(color)   (unsigned int)((GrColor)(color) >> 24)
+#define C_OPER(color)   (unsigned int)(((GrColor)(color) >> 24) & 15)
 #define C_WRITE         (int)(GrWRITE >> 24)
 #define C_XOR           (int)(GrXOR   >> 24)
 #define C_OR            (int)(GrOR    >> 24)
@@ -232,6 +231,22 @@ GrFrameDriver *_GrFindRAMframeDriver(GrFrameMode mode);
 void _GrCloseVideoDriver(void);
 void _GrDummyFunction(void);
 
+void _GrIniUserEncoding(void); /* called in GrSetMode */
+
+int _GrRecode_CP437_UCS2(unsigned char src, long *des);
+int _GrRecode_CP850_UCS2(unsigned char src, long *des);
+int _GrRecode_CP1252_UCS2(unsigned char src, long *des);
+int _GrRecode_ISO88591_UCS2(unsigned char src, long *des);
+int _GrRecode_UTF8_UCS2(unsigned char *src, long *des);
+int _GrRecode_UCS2_CP437(long src, unsigned char *des);
+int _GrRecode_UCS2_CP850(long src, unsigned char *des);
+int _GrRecode_UCS2_CP1252(long src, unsigned char *des);
+int _GrRecode_UCS2_ISO88591(long src, unsigned char *des);
+int _GrRecode_UCS2_UTF8(long src, unsigned char *des);
+int _GrRecode_UCS2_mgrx512(long src, long *des);
+
+#ifdef __XWIN__
+void _GrXwinEventGenExpose(int when);
+#endif
 
 #endif  /* whole file */
-

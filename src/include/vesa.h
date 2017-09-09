@@ -48,29 +48,27 @@
 #define VESA_PM_INTERF  10              /* VBE protected mode interface */
 
 #ifdef  __GNUC__
-#define PACK            __attribute__((packed))
+#define PACK __attribute__((packed))
 #else
 #define PACK
 #endif
 
-#define PACKTYPEMOD
-
 /*
  * The VGA info structure (without padding)
  */
-typedef PACKTYPEMOD struct {
-    char        VESAsignature[4]  PACK;     /* should be "VESA" */
-    short       VESAversion       PACK;     /* VESA version number */
-    char   *OEMstringPtr      PACK;     /* Pointer to OEM string */
-    long        Capabilities      PACK;     /* capabilities of the video env */
-    short  *VideoModePtr      PACK;     /* ptr to supported Super VGA modes */
+typedef struct PACK {
+    char   VESAsignature[4];   /* should be "VESA" */
+    short  VESAversion;        /* VESA version number */
+    char   *OEMstringPtr;      /* Pointer to OEM string */
+    long   Capabilities;       /* capabilities of the video env */
+    short  *VideoModePtr;      /* ptr to supported Super VGA modes */
     /* ==== VESA 1.2 and later ==== */
-    short       MemorySize        PACK;     /* # of 64K pages */
+    short  MemorySize;         /* # of 64K pages */
     /* ==== VESA 2.0 and later ==== */
-    short       OEMversion        PACK;     /* OEM software revision number */
-    char   *VendorNamePtr     PACK;     /* Pointer to vendor name */
-    char   *ProductNamePtr    PACK;     /* Pointer to product name */
-    char   *RevisionStrPtr    PACK;     /* Pointer to product revision string */
+    short  OEMversion;         /* OEM software revision number */
+    char   *VendorNamePtr;     /* Pointer to vendor name */
+    char   *ProductNamePtr;    /* Pointer to product name */
+    char   *RevisionStrPtr;    /* Pointer to product revision string */
 } VESAvgaInfoBlock;
 
 /*
@@ -84,61 +82,60 @@ typedef PACKTYPEMOD struct {
 /*
  * The mode information structure (without padding)
  */
-typedef PACKTYPEMOD struct {
-    short       ModeAttributes    PACK;     /* mode attributes */
-    char        WinAAttributes    PACK;     /* Window A attributes */
-    char        WinBAttributes    PACK;     /* Window B attributes */
-    short       WinGranularity    PACK;     /* window granularity */
-    short       WinSize           PACK;     /* window size */
-    short       WinASegment       PACK;     /* Window A start segment */
-    short       WinBSegment       PACK;     /* Window B start segment */
-    void      (*WinFuncPtr)()     PACK;     /* pointer to window function */
-    short       BytesPerScanLine  PACK;     /* bytes per scan line */
+typedef struct PACK {
+    short       ModeAttributes;        /* mode attributes */
+    char        WinAAttributes;        /* Window A attributes */
+    char        WinBAttributes;        /* Window B attributes */
+    short       WinGranularity;        /* window granularity */
+    short       WinSize;               /* window size */
+    short       WinASegment;           /* Window A start segment */
+    short       WinBSegment;           /* Window B start segment */
+    void      (*WinFuncPtr)();         /* pointer to window function */
+    short       BytesPerScanLine;      /* bytes per scan line */
     /* ==== extended and optional information ==== */
-    short       XResolution       PACK;     /* horizontal resolution */
-    short       YResolution       PACK;     /* vertical resolution */
-    char        XCharSize         PACK;     /* character cell width */
-    char        YCharSize         PACK;     /* character cell height */
-    char        NumberOfPlanes    PACK;     /* number of memory planes */
-    char        BitsPerPixel      PACK;     /* bits per pixel */
-    char        NumberOfBanks     PACK;     /* number of banks */
-    char        MemoryModel       PACK;     /* memory model type */
-    char        BankSize          PACK;     /* bank size in K */
-    char        NumImagePages     PACK;     /* number of image pages */
-    char        reserved[1]       PACK;
+    short       XResolution;           /* horizontal resolution */
+    short       YResolution;           /* vertical resolution */
+    char        XCharSize;             /* character cell width */
+    char        YCharSize;             /* character cell height */
+    char        NumberOfPlanes;        /* number of memory planes */
+    char        BitsPerPixel;          /* bits per pixel */
+    char        NumberOfBanks;         /* number of banks */
+    char        MemoryModel;           /* memory model type */
+    char        BankSize;              /* bank size in K */
+    char        NumImagePages;         /* number of image pages */
+    char        reserved[1];
     /* ==== VESA 1.2 and later ==== */
-    char        RedMaskSize       PACK;     /* number of bits in red mask */
-    char        RedMaskPos        PACK;     /* starting bit for red mask */
-    char        GreenMaskSize     PACK;
-    char        GreenMaskPos      PACK;
-    char        BlueMaskSize      PACK;
-    char        BlueMaskPos       PACK;
-    char        ReservedMaskSize  PACK;     /* reserved bits in pixel */
-    char        ReservedMaskPos   PACK;
-    char        DirectScreenMode  PACK;
+    char        RedMaskSize;           /* number of bits in red mask */
+    char        RedMaskPos;            /* starting bit for red mask */
+    char        GreenMaskSize;
+    char        GreenMaskPos;
+    char        BlueMaskSize;
+    char        BlueMaskPos;
+    char        ReservedMaskSize;      /* reserved bits in pixel */
+    char        ReservedMaskPos;
+    char        DirectScreenMode;
     /* ==== VESA 2.0 and later ==== */
-    unsigned long LinearFrameBuffer PACK;   /* physical address of linear frame buf */
-    unsigned long StartOffScreenMem PACK;   /* physical addr.: start of off screen mem */
-    short       OffScreenMemSize  PACK;     /* off screen mem size in kb */
+    unsigned long LinearFrameBuffer;   /* physical address of linear frame buf */
+    unsigned long StartOffScreenMem;   /* physical addr.: start of off screen mem */
+    short       OffScreenMemSize;      /* off screen mem size in kb */
 } VESAmodeInfoBlock;
 
 /*
  * The protected mode info structure (VBE2+)
  */
-typedef PACKTYPEMOD struct {
-    unsigned short RealMode_SEG      PACK;     /* RealMode physical base addr */
-    unsigned short RealMode_OFF      PACK;     /* of the following data table */
-    unsigned short PhysicalLength    PACK;     /* length of original table */
+typedef struct PACK {
+    unsigned short RealMode_SEG;       /* RealMode physical base addr */
+    unsigned short RealMode_OFF;       /* of the following data table */
+    unsigned short PhysicalLength;     /* length of original table */
     /* Original table starts here */
-    unsigned short SetWindow_off     PACK;     /* ofs to PM Set Windows func */
-    unsigned short DisplStart_off    PACK;     /* ofs to PM Set Display Start func */
-    unsigned short PPalette_off      PACK;     /* ofs to PM Set Primary Palette func */
-    unsigned short SubTable_off      PACK;     /* ofs to PM resource sub table */
+    unsigned short SetWindow_off;      /* ofs to PM Set Windows func */
+    unsigned short DisplStart_off;     /* ofs to PM Set Display Start func */
+    unsigned short PPalette_off;       /* ofs to PM Set Primary Palette func */
+    unsigned short SubTable_off;       /* ofs to PM resource sub table */
 } VESApmInfoBlock;
 #define VESApmInfoBlock_BASEOFF       (3*sizeof(unsigned short))
 
 #undef PACK
-#undef PACKTYPEMOD
 
 /*
  * MODE attribute bits

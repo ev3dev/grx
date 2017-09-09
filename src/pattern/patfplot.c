@@ -25,29 +25,29 @@
 
 void _GrPatternFilledPlot(int x,int y,GrPattern *p)
 {
-        int xp,yp;
+	int xp,yp;
 
-        if(p->gp_ispixmap) {
-            xp = x % p->gp_pxp_width;
-            yp = y % p->gp_pxp_height;
-            (*CURC->gc_driver->drawpixel)(x,y,
-                (*p->gp_pxp_source.gf_driver->readpixel)(&p->gp_pxp_source,xp,yp)
-            );
-        }
-        else {
-            xp = x & 7;
-            yp = y % p->gp_bmp_height;
-            (*CURC->gc_driver->drawpixel)(x,y,
-                (p->gp_bmp_data[yp] & (0x80U >> xp)) ? p->gp_bmp_fgcolor : p->gp_bmp_bgcolor
-            );
-        }
+	if(p->gp_ispixmap) {
+	    xp = x % p->gp_pxp_width;
+	    yp = y % p->gp_pxp_height;
+	    (*CURC->gc_driver->drawpixel)(x,y,
+		(*p->gp_pxp_source.gf_driver->readpixel)(&p->gp_pxp_source,xp,yp)
+	    );
+	}
+	else {
+	    xp = x & 7;
+	    yp = y % p->gp_bmp_height;
+	    (*CURC->gc_driver->drawpixel)(x,y,
+		(p->gp_bmp_data[yp] & (0x80U >> xp)) ? p->gp_bmp_fgcolor : p->gp_bmp_bgcolor
+	    );
+	}
 }
 
 void GrPatternFilledPlot(int x,int y,GrPattern *p)
 {
-        clip_dot(CURC,x,y);
-        mouse_block(CURC,x,y,x,y);
-        _GrPatternFilledPlot(x+CURC->gc_xoffset,y+CURC->gc_yoffset, p);
-        mouse_unblock();
+	clip_dot(CURC,x,y);
+	mouse_block(CURC,x,y,x,y);
+	_GrPatternFilledPlot(x+CURC->gc_xoffset,y+CURC->gc_yoffset, p);
+	mouse_unblock();
 }
 

@@ -20,14 +20,14 @@
 #include "arith.h"
 
 #define MAXPTS  (GR_MAX_ELLIPSE_POINTS & (~15))
-#define SEGLEN  5                /* preferred lenght of line segments on arc */
-#define TRIGMGN 16384                /* scale factor for sine table */
-#define PERIOD  1024                /* number of points in sine table */
-#define PHALF        (PERIOD / 2)
+#define SEGLEN  5		/* preferred lenght of line segments on arc */
+#define TRIGMGN 16384		/* scale factor for sine table */
+#define PERIOD  1024		/* number of points in sine table */
+#define PHALF	(PERIOD / 2)
 #define PQUART  (PERIOD / 4)
 
 static int sintab[PQUART + 1] = {
-        0,   101,   201,   302,          402,         503,        603,   704,
+	0,   101,   201,   302,	  402,	 503,	603,   704,
       804,   904,  1005,  1105,  1205,  1306,  1406,  1506,
      1606,  1706,  1806,  1906,  2006,  2105,  2205,  2305,
      2404,  2503,  2603,  2702,  2801,  2900,  2999,  3098,
@@ -68,85 +68,85 @@ static int last_xc = 0,last_yc = 0;
 
 static void gr_sincos(int n,int cx,int cy,int rx,int ry,int *pt)
 {
-        int cval,sval;
-        switch((n &= (PERIOD - 1)) / PQUART) {
-          case 0:
-            sval =  sintab[n];
-            cval =  sintab[PQUART - n];
-            break;
-          case 1:
-            sval =  sintab[PHALF - n];
-            cval = -sintab[n - PQUART];
-            break;
-          case 2:
-            sval = -sintab[n - PHALF];
-            cval = -sintab[PERIOD - PQUART - n];
-            break;
-          default: /* must be 3 */
-            sval = -sintab[PERIOD - n];
-            cval =  sintab[n - PERIOD + PQUART];
-            break;
-        }
-        pt[0] = cx; pt[0] += irscale(rx,cval,TRIGMGN);
-        pt[1] = cy; pt[1] -= irscale(ry,sval,TRIGMGN);
+	int cval,sval;
+	switch((n &= (PERIOD - 1)) / PQUART) {
+	  case 0:
+	    sval =  sintab[n];
+	    cval =  sintab[PQUART - n];
+	    break;
+	  case 1:
+	    sval =  sintab[PHALF - n];
+	    cval = -sintab[n - PQUART];
+	    break;
+	  case 2:
+	    sval = -sintab[n - PHALF];
+	    cval = -sintab[PERIOD - PQUART - n];
+	    break;
+	  default: /* must be 3 */
+	    sval = -sintab[PERIOD - n];
+	    cval =  sintab[n - PERIOD + PQUART];
+	    break;
+	}
+	pt[0] = cx; pt[0] += irscale(rx,cval,TRIGMGN);
+	pt[1] = cy; pt[1] -= irscale(ry,sval,TRIGMGN);
 }
 
 int GrGenerateEllipseArc(int cx,int cy,int rx,int ry,int start,int end,int pt[][2])
 {
-        int npts = urscale((iabs(rx) + iabs(ry)),314,(SEGLEN * 100));
-        int step,closed;
-        start = irscale(start,PERIOD,GR_MAX_ANGLE_VALUE) & (PERIOD - 1);
-        end   = irscale(end,  PERIOD,GR_MAX_ANGLE_VALUE) & (PERIOD - 1);
-        if(start == end) {
-            closed = TRUE;
-            end += PERIOD;
-        }
-        else {
-            if(start > end) end += PERIOD;
-            closed = FALSE;
-        }
-        npts = urscale(npts,(end - start),PERIOD);
-        npts = umax(npts,16);
-        npts = umin(npts,MAXPTS);
-        if(closed) {
-            for(step = 1; (PERIOD / step) > npts; step <<= 1);
-            end -= step;
-            npts = 0;
-        }
-        else {
-            int start2 = end - start - 1;
-            step = umax(1,((end - start) / npts));
-            while(((start2 + step) / step) >= MAXPTS) step++;
-            start2 = end - (((end - start) / step) * step);
-            npts = 0;
-            if(start2 > start) {
-                gr_sincos(start,cx,cy,rx,ry,pt[0]);
-                start = start2;
-                npts++;
-            }
-        }
-        while(start <= end) {
-            gr_sincos(start,cx,cy,rx,ry,pt[npts]);
-            start += step;
-            npts++;
-        }
-        last_xc = cx;
-        last_yc = cy;
-        last_xs = pt[0][0];
-        last_ys = pt[0][1];
-        last_xe = pt[npts - 1][0];
-        last_ye = pt[npts - 1][1];
-        return(npts);
+	int npts = urscale((iabs(rx) + iabs(ry)),314,(SEGLEN * 100));
+	int step,closed;
+	start = irscale(start,PERIOD,GR_MAX_ANGLE_VALUE) & (PERIOD - 1);
+	end   = irscale(end,  PERIOD,GR_MAX_ANGLE_VALUE) & (PERIOD - 1);
+	if(start == end) {
+	    closed = TRUE;
+	    end += PERIOD;
+	}
+	else {
+	    if(start > end) end += PERIOD;
+	    closed = FALSE;
+	}
+	npts = urscale(npts,(end - start),PERIOD);
+	npts = umax(npts,16);
+	npts = umin(npts,MAXPTS);
+	if(closed) {
+	    for(step = 1; (PERIOD / step) > npts; step <<= 1);
+	    end -= step;
+	    npts = 0;
+	}
+	else {
+	    int start2 = end - start - 1;
+	    step = umax(1,((end - start) / npts));
+	    while(((start2 + step) / step) >= MAXPTS) step++;
+	    start2 = end - (((end - start) / step) * step);
+	    npts = 0;
+	    if(start2 > start) {
+		gr_sincos(start,cx,cy,rx,ry,pt[0]);
+		start = start2;
+		npts++;
+	    }
+	}
+	while(start <= end) {
+	    gr_sincos(start,cx,cy,rx,ry,pt[npts]);
+	    start += step;
+	    npts++;
+	}
+	last_xc = cx;
+	last_yc = cy;
+	last_xs = pt[0][0];
+	last_ys = pt[0][1];
+	last_xe = pt[npts - 1][0];
+	last_ye = pt[npts - 1][1];
+	return(npts);
 }
 
 int GrGenerateEllipse(int xc,int yc,int rx,int ry,int pt[][2])
 {
-        return(GrGenerateEllipseArc(xc,yc,rx,ry,0,0,pt));
+	return(GrGenerateEllipseArc(xc,yc,rx,ry,0,0,pt));
 }
 
 void GrLastArcCoords(int *xs,int *ys,int *xe,int *ye,int *xc,int *yc)
 {
-        *xs = last_xs; *ys = last_ys;
-        *xe = last_xe; *ye = last_ye;
-        *xc = last_xc; *yc = last_yc;
+	*xs = last_xs; *ys = last_ys;
+	*xe = last_xe; *ye = last_ye;
+	*xc = last_xc; *yc = last_yc;
 }

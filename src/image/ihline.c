@@ -44,9 +44,9 @@ void GrImageHLineAlign(int xo,int yo,int x,int y,int width,GrImage *p)
   else                   bltfun = CURC->gc_driver->bitblt;
   while ( width > 0 ) {
     if ( cpysize > width ) cpysize = width;
-         (*bltfun)(&CURC->gc_frame,xdest,ydest,
-                   &p->pxp_source,ximg,yimg,cpysize,1,
-                   optype);
+	 (*bltfun)(&CURC->gc_frame,xdest,ydest,
+		   &p->pxp_source,ximg,yimg,cpysize,1,
+		   optype);
     width -= cpysize;
     ximg = 0;
     xdest += cpysize;

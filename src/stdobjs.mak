@@ -107,6 +107,7 @@ STD_6 = $(OP)setup/clip$(OX)        \
 	$(OP)setup/fframe$(OX)      \
 	$(OP)setup/fgeom$(OX)       \
 	$(OP)setup/hooks$(OX)       \
+	$(OP)setup/iniencod$(OX)    \
 	$(OP)setup/modewalk$(OX)    \
 	$(OP)setup/setdrvr$(OX)     \
 	$(OP)setup/setmode$(OX)     \
@@ -142,17 +143,19 @@ STD_8 = $(OP)text/buildaux$(OX)     \
 	$(OP)text/drwstrg$(OX)      \
 	$(OP)text/dumpfna$(OX)      \
 	$(OP)text/dumpfont$(OX)     \
+	$(OP)text/dumpgrx$(OX)      \
 	$(OP)text/dumptext$(OX)     \
 	$(OP)text/epatstrg$(OX)     \
 	$(OP)text/fntinlne$(OX)     \
 	$(OP)text/fontinfo$(OX)     \
 	$(OP)text/fontpath$(OX)     \
+	$(OP)text/frecode$(OX)      \
 	$(OP)text/loadfont$(OX)     \
 	$(OP)text/pattstrg$(OX)     \
-	$(OP)text/propwdt$(OX)      \
+	$(OP)text/strsize$(OX)      \
 	$(OP)text/unloadfn$(OX)
 
-STD_9 = $(OP)user/ubox$(OX)         \
+STD_9 = $(OP)user/ubox$(OX)     \
 	$(OP)user/ucbox$(OX)        \
 	$(OP)user/uccirc$(OX)       \
 	$(OP)user/uccirca$(OX)      \

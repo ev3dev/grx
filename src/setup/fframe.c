@@ -21,17 +21,17 @@
 
 GrFrameDriver *_GrFindFrameDriver(GrFrameMode mode)
 {
-        int ii = 0;
-        while(_GrFrameDriverTable[ii] != NULL) {
-            if(_GrFrameDriverTable[ii]->mode == mode) break;
-            ii++;
-        }
-        return(_GrFrameDriverTable[ii]);
+	int ii = 0;
+	while(_GrFrameDriverTable[ii] != NULL) {
+	    if(_GrFrameDriverTable[ii]->mode == mode) break;
+	    ii++;
+	}
+	return(_GrFrameDriverTable[ii]);
 }
 
 GrFrameDriver *_GrFindRAMframeDriver(GrFrameMode mode)
 {
-        GrFrameDriver *dp = _GrFindFrameDriver(mode);
-        return((dp && dp->is_video) ? _GrFindFrameDriver(dp->rmode) : dp);
+	GrFrameDriver *dp = _GrFindFrameDriver(mode);
+	return((dp && dp->is_video) ? _GrFindFrameDriver(dp->rmode) : dp);
 }
 

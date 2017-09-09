@@ -21,7 +21,7 @@
 
 void GrCustomPolyLine(int n,int pt[][2],const GrLineOption *o)
 {
-        GrFillArg fval;
-        fval.color = o->lno_color;
-        _GrDrawCustomPolygon(n,pt,o,&_GrSolidFiller,fval,FALSE,FALSE);
+	GrFillArg fval;
+	fval.color = o->lno_color;
+	_GrDrawCustomPolygon(n,pt,o,&_GrSolidFiller,fval,FALSE,FALSE);
 }

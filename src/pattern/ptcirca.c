@@ -27,6 +27,6 @@
 
 void GrPatternedCircleArc(int xc,int yc,int r,int start,int end,int style,GrLinePattern *lp)
 {
-        GrPatternedEllipseArc(xc,yc,r,r,start,end,style,lp);
+	GrPatternedEllipseArc(xc,yc,r,r,start,end,style,lp);
 }
 

@@ -59,6 +59,7 @@ extern GrColor *egacolors;
 
 int gfaz_ini( int width, int height, int bpp );
 int gfaz_fin( void );
+void gfaz_setfont(GrFont *f);
 
 void par_event_queue( int type, long p1, long p2, long p3 );
 

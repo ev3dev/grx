@@ -23,8 +23,8 @@
 #include "text/text.h"
 
 static void ExtPatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
-                                char *bmp,int pitch,int start,
-                                GrColor fg,GrColor bg,GrPattern *p)
+				char *bmp,int pitch,int start,
+				GrColor fg,GrColor bg,GrPattern *p)
 {
   GRX_ENTER();
   _GrFillBitmapPatternExt(x,y,w,h,ox,oy,bmp,pitch,start,p,bg);
@@ -32,7 +32,7 @@ static void ExtPatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
 }
 
 void GrPatternDrawStringExt(void *text,int length,int x,int y,
-                               const GrTextOption *opt,GrPattern *p)
+			       const GrTextOption *opt,GrPattern *p)
 {
   GRX_ENTER();
   _GrDrawString(text,length,x,y,opt,p,ExtPatternFilledBmp);

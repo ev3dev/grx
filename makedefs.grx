@@ -5,7 +5,7 @@
 
 # Specify version of MGRX
 # Currently only used to generate name of shared libraries for linux
-MGRX_VERSION=0.1.0
+MGRX_VERSION=1.1.0
 
 # Specify if you have libjpeg.a and corresponding .h files.
 HAVE_LIBJPEG=y
@@ -21,7 +21,7 @@ NEED_ZLIB=y
 INCLUDE_SHARED_SUPPORT=n
 
 # Specify in linux if you want to build the library for x86_64
-BUILD_X86_64=n
+BUILD_X86_64=y
 
 ### SYSTEM SETTINGS ##################################################
 

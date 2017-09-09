@@ -40,16 +40,16 @@ void GrSetEGAVGAmonoDrawnPlane(int plane)
 
 void GrSetEGAVGAmonoShownPlane(int plane)
 {
-        void (*DACload)(int c,int r,int g,int b);
-        int i;
-        GRX_ENTER();
-        DACload = DRVINFO->actmode.extinfo->loadcolor;
-        plane &= 3;
-        if(DACload) for(i = 0; i < 16; i++) {
-            int v = (i & (1 << plane)) ? 255 : 0;
-            (*DACload)(i,v,v,v);
-        }
-        GRX_LEAVE();
+	void (*DACload)(int c,int r,int g,int b);
+	int i;
+	GRX_ENTER();
+	DACload = DRVINFO->actmode.extinfo->loadcolor;
+	plane &= 3;
+	if(DACload) for(i = 0; i < 16; i++) {
+	    int v = (i & (1 << plane)) ? 255 : 0;
+	    (*DACload)(i,v,v,v);
+	}
+	GRX_LEAVE();
 }
 
 static size_t LineBytes = 0;
@@ -93,19 +93,19 @@ GrColor readpixel(GrFrame *c,int x,int y)
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        char *ptr;
-        unsigned cval;
-        GRX_ENTER();
-        ptr = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
-        cval= ((unsigned int)color & 1) << (7 - (x &= 7));
-        setup_far_selector(CURC->gc_selector);
-        switch(C_OPER(color)) {
-            case C_XOR: poke_b_f_xor(ptr,cval);  break;
-            case C_OR:  poke_b_f_or(ptr,cval);   break;
-            case C_AND: poke_b_f_and(ptr,~cval); break;
-            default:    poke_b_f(ptr,((peek_b_f(ptr) & (~0x80 >> x)) | cval));
-        }
-        GRX_LEAVE();
+	char *ptr;
+	unsigned cval;
+	GRX_ENTER();
+	ptr = &CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
+	cval= ((unsigned int)color & 1) << (7 - (x &= 7));
+	setup_far_selector(CURC->gc_selector);
+	switch(C_OPER(color)) {
+	    case C_XOR: poke_b_f_xor(ptr,cval);  break;
+	    case C_OR:  poke_b_f_or(ptr,cval);   break;
+	    case C_AND: poke_b_f_and(ptr,~cval); break;
+	    default:    poke_b_f(ptr,((peek_b_f(ptr) & (~0x80 >> x)) | cval));
+	}
+	GRX_LEAVE();
 }
 
 #define maskoper(d,op,s,msk,SF,DF) do {                       \
@@ -122,7 +122,7 @@ static void drawhline(int x,int y,int w,GrColor color)
     oper  = C_OPER(color);
     color = color & 1 ? ~0L : 0L;
     if (   !(!color && (oper==C_OR||oper==C_XOR))
-        && !( color && oper==C_AND)                ) {
+	&& !( color && oper==C_AND)                ) {
       GR_int8u *pp = (GR_int8u *)&CURC->gc_baseaddr[0][FOFS(x,y,CURC->gc_lineoffset)];
       GR_int8u lm = 0xff >> (x & 7);
       GR_int8u rm = 0xff << ((-(w += x)) & 7);
@@ -130,32 +130,32 @@ static void drawhline(int x,int y,int w,GrColor color)
       if(w == 1) lm &= rm;
       setup_far_selector(CURC->gc_selector);
       if( lm ) {
-        switch(oper) {
-          case C_XOR: maskoper(pp,^,(GR_int8u)color,lm,_f,_f); break;
-          case C_OR:  maskoper(pp,|,(GR_int8u)color,lm,_f,_f); break;
-          case C_AND: maskoper(pp,&,(GR_int8u)color,lm,_f,_f); break;
-          default:    maskset(pp,(GR_int8u)color,lm,_f);       break;
-                      break;
-        }
-        if (!(--w)) goto done;
-        ++pp;
+	switch(oper) {
+	  case C_XOR: maskoper(pp,^,(GR_int8u)color,lm,_f,_f); break;
+	  case C_OR:  maskoper(pp,|,(GR_int8u)color,lm,_f,_f); break;
+	  case C_AND: maskoper(pp,&,(GR_int8u)color,lm,_f,_f); break;
+	  default:    maskset(pp,(GR_int8u)color,lm,_f);       break;
+		      break;
+	}
+	if (!(--w)) goto done;
+	++pp;
       }
       if ( rm ) --w;
       if (w) {
-        switch(oper) {
-          case C_XOR: repfill_b_f_xor(pp,color,w); break;
-          case C_OR:  repfill_b_f_or( pp,color,w); break;
-          case C_AND: repfill_b_f_and(pp,color,w); break;
-          default:    repfill_b_f(    pp,color,w); break;
-        }
+	switch(oper) {
+	  case C_XOR: repfill_b_f_xor(pp,color,w); break;
+	  case C_OR:  repfill_b_f_or( pp,color,w); break;
+	  case C_AND: repfill_b_f_and(pp,color,w); break;
+	  default:    repfill_b_f(    pp,color,w); break;
+	}
       }
       if ( rm ) {
-        switch(oper) {
-          case C_XOR: maskoper(pp,^,(GR_int8u)color,rm,_f,_f); break;
-          case C_OR:  maskoper(pp,|,(GR_int8u)color,rm,_f,_f); break;
-          case C_AND: maskoper(pp,&,(GR_int8u)color,rm,_f,_f); break;
-          default:    maskset(pp,(GR_int8u)color,rm,_f);       break;
-        }
+	switch(oper) {
+	  case C_XOR: maskoper(pp,^,(GR_int8u)color,rm,_f,_f); break;
+	  case C_OR:  maskoper(pp,|,(GR_int8u)color,rm,_f,_f); break;
+	  case C_AND: maskoper(pp,&,(GR_int8u)color,rm,_f,_f); break;
+	  default:    maskset(pp,(GR_int8u)color,rm,_f);       break;
+	}
       }
     }
 done:
@@ -165,44 +165,44 @@ done:
 
 static void drawvline(int x,int y,int h,GrColor color)
 {
-        char *p;
-        unsigned int cval;
-        unsigned int lwdt;
-        GRX_ENTER();
-        lwdt = CURC->gc_lineoffset;
-        cval = ((unsigned int)color & 1) << (7 - (x & 7));
-        setup_far_selector(CURC->gc_selector);
-        switch (C_OPER(color)) {
-          case C_XOR:
-              /* no need to xor anything with 0 */
-              if (cval) {
-                p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
-                colfill_b_f_xor(p,lwdt,cval,h);
-              }
-              break;
-          case C_OR:
-              /* no need to or anything with 0 */
-              if (cval) {
-            do_OR:
-                p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
-                colfill_b_f_or(p,lwdt,cval,h);
-              }
-              break;
-          case C_AND:
-              /* no need to and anything with 1 */
-              if (!cval) {
-            do_AND:
-                cval = ~(1 << (7 - (x & 7)));
-                p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
-                colfill_b_f_and(p,lwdt,cval,h);
-              }
-              break;
-          default:
-              if (cval) goto do_OR;
-              goto do_AND;
-              break;
-        }
-        GRX_LEAVE();
+	char *p;
+	unsigned int cval;
+	unsigned int lwdt;
+	GRX_ENTER();
+	lwdt = CURC->gc_lineoffset;
+	cval = ((unsigned int)color & 1) << (7 - (x & 7));
+	setup_far_selector(CURC->gc_selector);
+	switch (C_OPER(color)) {
+	  case C_XOR:
+	      /* no need to xor anything with 0 */
+	      if (cval) {
+		p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
+		colfill_b_f_xor(p,lwdt,cval,h);
+	      }
+	      break;
+	  case C_OR:
+	      /* no need to or anything with 0 */
+	      if (cval) {
+	    do_OR:
+		p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
+		colfill_b_f_or(p,lwdt,cval,h);
+	      }
+	      break;
+	  case C_AND:
+	      /* no need to and anything with 1 */
+	      if (!cval) {
+	    do_AND:
+		cval = ~(1 << (7 - (x & 7)));
+		p = &CURC->gc_baseaddr[0][FOFS(x,y,lwdt)];
+		colfill_b_f_and(p,lwdt,cval,h);
+	      }
+	      break;
+	  default:
+	      if (cval) goto do_OR;
+	      goto do_AND;
+	      break;
+	}
+	GRX_LEAVE();
 }
 
 
@@ -248,7 +248,7 @@ static
 */
 
 static void put_scanline(char *dptr,char *sptr,int w,
-                         GR_int8u lm, GR_int8u rm, int op    ) {
+			 GR_int8u lm, GR_int8u rm, int op    ) {
   GRX_ENTER();
   if (w==1) lm &= rm;
   if ( ((GR_int8u)(~lm)) ) {
@@ -287,8 +287,8 @@ static void get_scanline(char *dptr, char *sptr, int w) {
 }
 
 extern void _GR_shift_scanline(GR_int8u **dst,
-                               GR_int8u **src,
-                               int ws, int shift, int planes );
+			       GR_int8u **src,
+			       int ws, int shift, int planes );
 #define shift_scanline(dst,src,w,sh) \
     _GR_shift_scanline((GR_int8u **)&(dst),(GR_int8u **)&(src),(w),(sh),1)
 
@@ -297,138 +297,138 @@ static
 #include "fdrivers/generic/bitblt.c"
 
 static void bltv2v(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int x,int y,int w,int h,
-                   GrColor op)
+		   GrFrame *src,int x,int y,int w,int h,
+		   GrColor op)
 {
     GRX_ENTER();
     if(GrColorMode(op) != GrIMAGE && alloc_blit_buffer()) {
-        int shift = ((int)(x&7)) - ((int)(dx&7));
-        char *dptr, *sptr;
-        int      skip, lo = SCRN->gc_lineoffset;
-        int      oper= C_OPER(op);
-        GR_int8u lm = 0xff >> (dx & 7);
-        GR_int8u rm = 0xff << ((-(w + dx)) & 7);
-        int      ws = ((x+w+7) >> 3) - (x >> 3);
-        int      wd = ((dx+w+7) >> 3) - (dx >> 3);
-        setup_far_selector(SCRN->gc_selector);
-        if (dy < y) {
-          skip = lo;
-        } else {
-          y += h-1; dy += h-1;
-          skip = -lo;
-        }
-        sptr = &SCRN->gc_baseaddr[0][FOFS(x,y,lo)];
-        dptr = &SCRN->gc_baseaddr[0][FOFS(dx,dy,lo)];
-        while (h-- > 0) {
-          get_scanline(LineBuff,sptr,ws);
-          if (shift)
-            shift_scanline(LineBuff,LineBuff,ws,shift);
-          put_scanline(dptr,LineBuff, wd, lm, rm, oper);
-          dptr += skip;
-          sptr += skip;
-        }
+	int shift = ((int)(x&7)) - ((int)(dx&7));
+	char *dptr, *sptr;
+	int      skip, lo = SCRN->gc_lineoffset;
+	int      oper= C_OPER(op);
+	GR_int8u lm = 0xff >> (dx & 7);
+	GR_int8u rm = 0xff << ((-(w + dx)) & 7);
+	int      ws = ((x+w+7) >> 3) - (x >> 3);
+	int      wd = ((dx+w+7) >> 3) - (dx >> 3);
+	setup_far_selector(SCRN->gc_selector);
+	if (dy < y) {
+	  skip = lo;
+	} else {
+	  y += h-1; dy += h-1;
+	  skip = -lo;
+	}
+	sptr = &SCRN->gc_baseaddr[0][FOFS(x,y,lo)];
+	dptr = &SCRN->gc_baseaddr[0][FOFS(dx,dy,lo)];
+	while (h-- > 0) {
+	  get_scanline(LineBuff,sptr,ws);
+	  if (shift)
+	    shift_scanline(LineBuff,LineBuff,ws,shift);
+	  put_scanline(dptr,LineBuff, wd, lm, rm, oper);
+	  dptr += skip;
+	  sptr += skip;
+	}
     } else
-        bitblt(dst,dx,dy,src,x,y,w,h,op);
+	bitblt(dst,dx,dy,src,x,y,w,h,op);
     GRX_LEAVE();
 }
 
 static void bltr2v(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int x,int y,int w,int h,
-                   GrColor op)
+		   GrFrame *src,int x,int y,int w,int h,
+		   GrColor op)
 {
     GRX_ENTER();
     if(GrColorMode(op) != GrIMAGE && alloc_blit_buffer()) {
-        int oper  = C_OPER(op);
-        int shift = ((int)(x&7)) - ((int)(dx&7));
-        char *dptr, *sptr;
-        int sskip,dskip;
-        GR_int8u lm = 0xff >> (dx & 7);
-        GR_int8u rm = 0xff << ((-(w + dx)) & 7);
-        int ws = ((x+w+7) >> 3) - (x >> 3);
-        int wd = ((dx+w+7) >> 3) - (dx >> 3);
-        setup_far_selector(SCRN->gc_selector);
-        dskip = SCRN->gc_lineoffset;
-        dptr = &SCRN->gc_baseaddr[0][FOFS(dx,dy,dskip)];
-        sskip = src->gf_lineoffset;
-        sptr = &src->gf_baseaddr[0][FOFS(x,y,sskip)];
-        if (shift)
-          while (h-- > 0) {
-              shift_scanline(LineBuff,sptr,ws,shift);
-              put_scanline(dptr,LineBuff,wd,lm,rm,oper);
-              dptr += dskip;
-              sptr += sskip;
-          }
-        else
-          while (h-- > 0) {
-              put_scanline(dptr,sptr,wd,lm,rm,oper);
-              dptr += dskip;
-              sptr += sskip;
-          }
+	int oper  = C_OPER(op);
+	int shift = ((int)(x&7)) - ((int)(dx&7));
+	char *dptr, *sptr;
+	int sskip,dskip;
+	GR_int8u lm = 0xff >> (dx & 7);
+	GR_int8u rm = 0xff << ((-(w + dx)) & 7);
+	int ws = ((x+w+7) >> 3) - (x >> 3);
+	int wd = ((dx+w+7) >> 3) - (dx >> 3);
+	setup_far_selector(SCRN->gc_selector);
+	dskip = SCRN->gc_lineoffset;
+	dptr = &SCRN->gc_baseaddr[0][FOFS(dx,dy,dskip)];
+	sskip = src->gf_lineoffset;
+	sptr = &src->gf_baseaddr[0][FOFS(x,y,sskip)];
+	if (shift)
+	  while (h-- > 0) {
+	      shift_scanline(LineBuff,sptr,ws,shift);
+	      put_scanline(dptr,LineBuff,wd,lm,rm,oper);
+	      dptr += dskip;
+	      sptr += sskip;
+	  }
+	else
+	  while (h-- > 0) {
+	      put_scanline(dptr,sptr,wd,lm,rm,oper);
+	      dptr += dskip;
+	      sptr += sskip;
+	  }
     } else
-        _GrFrDrvGenericBitBlt(dst,dx,dy,src,x,y,w,h,op);
+	_GrFrDrvGenericBitBlt(dst,dx,dy,src,x,y,w,h,op);
     GRX_LEAVE();
 }
 
 
 static void bltv2r(GrFrame *dst,int dx,int dy,
-                   GrFrame *src,int x,int y,int w,int h,
-                   GrColor op)
+		   GrFrame *src,int x,int y,int w,int h,
+		   GrColor op)
 {
     GRX_ENTER();
     while(GrColorMode(op) != GrIMAGE)
       if(alloc_blit_buffer()) {
-        int oper  = C_OPER(op);
-        int shift = ((int)(x&7)) - ((int)(dx&7));
-        char *dp, *dptr, *sp, *sptr;
-        int sskip,dskip;
-        GR_int8u lm = 0xff >> (dx & 7);
-        GR_int8u rm = 0xff << ((-(w + dx)) & 7);
-        int ws = ((x+w+7) >> 3) - (x >> 3);
-        int wd = ((dx+w+7) >> 3) - (dx >> 3);
-        if (wd==1) break;
-        setup_far_selector(SCRN->gc_selector);
-        sskip = SCRN->gc_lineoffset;
-        sp    = &SCRN->gc_baseaddr[0][FOFS(x,y,sskip)];
-        dskip = dst->gf_lineoffset;
-        dp    = &dst->gf_baseaddr[0][FOFS(x,y,dskip)];
-        while (h-- > 0) {
-          int ww = wd;
-          get_scanline(LineBuff,sp,ws);
-          if (shift)
-            shift_scanline(LineBuff,LineBuff,ws,shift);
-          sptr = LineBuff;
-          dptr = dp;
-          if ( ((GR_int8u)(~lm)) ) {
-            switch (op) {
-              case C_XOR: maskoper(dptr,^,*sptr,lm,_set,_n); break;
-              case C_OR : maskoper(dptr,|,*sptr,lm,_set,_n); break;
-              case C_AND: maskoper(dptr,&,*sptr,lm,_set,_n); break;
-              default   : maskset(dptr,*sptr,lm,_n);         break;
-            }
-            ++dptr;
-            ++sptr;
-            if (!(--ww)) goto next;
-          }
-          if ( ((GR_int8u)(~rm)) ) --ww;
-          if (ww) switch(oper) {
-              case C_XOR: fwdcopy_xor(dptr,dptr,sptr,ww); break;
-              case C_OR:  fwdcopy_or( dptr,dptr,sptr,ww); break;
-              case C_AND: fwdcopy_and(dptr,dptr,sptr,ww); break;
-              default:    fwdcopy_set(dptr,dptr,sptr,ww); break;
-          }
-          if ( ((GR_int8u)(~rm)) ) {
-            switch (op) {
-              case C_XOR: maskoper(dptr,^,*sptr,rm,_set,_n); break;
-              case C_OR : maskoper(dptr,|,*sptr,rm,_set,_n); break;
-              case C_AND: maskoper(dptr,&,*sptr,rm,_set,_n); break;
-              default   : maskset(dptr,*sptr,rm,_n);         break;
-            }
-          }
-        next:
-          sp += sskip;
-          dp += dskip;
-        }
-        goto done;
+	int oper  = C_OPER(op);
+	int shift = ((int)(x&7)) - ((int)(dx&7));
+	char *dp, *dptr, *sp, *sptr;
+	int sskip,dskip;
+	GR_int8u lm = 0xff >> (dx & 7);
+	GR_int8u rm = 0xff << ((-(w + dx)) & 7);
+	int ws = ((x+w+7) >> 3) - (x >> 3);
+	int wd = ((dx+w+7) >> 3) - (dx >> 3);
+	if (wd==1) break;
+	setup_far_selector(SCRN->gc_selector);
+	sskip = SCRN->gc_lineoffset;
+	sp    = &SCRN->gc_baseaddr[0][FOFS(x,y,sskip)];
+	dskip = dst->gf_lineoffset;
+	dp    = &dst->gf_baseaddr[0][FOFS(x,y,dskip)];
+	while (h-- > 0) {
+	  int ww = wd;
+	  get_scanline(LineBuff,sp,ws);
+	  if (shift)
+	    shift_scanline(LineBuff,LineBuff,ws,shift);
+	  sptr = LineBuff;
+	  dptr = dp;
+	  if ( ((GR_int8u)(~lm)) ) {
+	    switch (op) {
+	      case C_XOR: maskoper(dptr,^,*sptr,lm,_set,_n); break;
+	      case C_OR : maskoper(dptr,|,*sptr,lm,_set,_n); break;
+	      case C_AND: maskoper(dptr,&,*sptr,lm,_set,_n); break;
+	      default   : maskset(dptr,*sptr,lm,_n);         break;
+	    }
+	    ++dptr;
+	    ++sptr;
+	    if (!(--ww)) goto next;
+	  }
+	  if ( ((GR_int8u)(~rm)) ) --ww;
+	  if (ww) switch(oper) {
+	      case C_XOR: fwdcopy_xor(dptr,dptr,sptr,ww); break;
+	      case C_OR:  fwdcopy_or( dptr,dptr,sptr,ww); break;
+	      case C_AND: fwdcopy_and(dptr,dptr,sptr,ww); break;
+	      default:    fwdcopy_set(dptr,dptr,sptr,ww); break;
+	  }
+	  if ( ((GR_int8u)(~rm)) ) {
+	    switch (op) {
+	      case C_XOR: maskoper(dptr,^,*sptr,rm,_set,_n); break;
+	      case C_OR : maskoper(dptr,|,*sptr,rm,_set,_n); break;
+	      case C_AND: maskoper(dptr,&,*sptr,rm,_set,_n); break;
+	      default   : maskset(dptr,*sptr,rm,_n);         break;
+	    }
+	  }
+	next:
+	  sp += sskip;
+	  dp += dskip;
+	}
+	goto done;
       }
     _GrFrDrvGenericBitBlt(dst,dx,dy,src,x,y,w,h,op);
 done:

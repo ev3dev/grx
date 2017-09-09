@@ -21,6 +21,6 @@
 
 void GrCircleArc(int xc,int yc,int r,int start,int end,int style,GrColor c)
 {
-        GrEllipseArc(xc,yc,r,r,start,end,style,c);
+	GrEllipseArc(xc,yc,r,r,start,end,style,c);
 }
 

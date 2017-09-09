@@ -17,6 +17,7 @@
  **
  ** Contributions by:
  ** 080125 M.Alvarez, UTF-8 support
+ ** 170706 M.Alvarez, rewrite for font encoding functionality
  **
  **/
 
@@ -26,8 +27,8 @@
 #include "text/text.h"
 
 static void PatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
-                                char *bmp,int pitch,int start,
-                                GrColor fg,GrColor bg,GrPattern *p)
+                             char *bmp,int pitch,int start,
+                             GrColor fg,GrColor bg,GrPattern *p)
 {
     GRX_ENTER();
     _GrFillBitmapPattern(x,y,w,h,bmp,pitch,start,p,bg);
@@ -44,24 +45,8 @@ void GrPatternDrawString(void *text,int length,int x,int y,
 
 void GrPatternDrawChar(long chr,int x,int y,const GrTextOption *opt,GrPattern *p)
 {
-    char  cbuff[2];
-    short sbuff[2];
-
     GRX_ENTER();
-    switch(opt->txo_chrtype) {
-      case GR_UTF8_TEXT:
-        GrPatternDrawString((void *)&chr,1,x,y,opt,p);
-        break;
-      case GR_WORD_TEXT:
-      case GR_ATTR_TEXT:
-        sbuff[0] = chr;
-        GrPatternDrawString(sbuff,1,x,y,opt,p);
-        break;
-      default:
-        cbuff[0] = chr;
-        GrPatternDrawString(cbuff,1,x,y,opt,p);
-        break;
-    }
+    _GrDrawChar(chr,x,y,opt,p,PatternFilledBmp);
     GRX_LEAVE();
 }
 

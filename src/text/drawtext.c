@@ -16,19 +16,31 @@
  **
  **/
 
-#include <string.h>
 #include "libgrx.h"
+
+static GrFont *_DefaultFont = &GrFont_PC8x14;
 
 void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg)
 {
-        GrTextOption opt;
-        opt.txo_font      = &GrDefaultFont;
-        opt.txo_fgcolor.v = fg;
-        opt.txo_bgcolor.v = bg;
-        opt.txo_chrtype   = GR_BYTE_TEXT;
-        opt.txo_direct    = GR_TEXT_RIGHT;
-        opt.txo_xalign    = GR_ALIGN_LEFT;
-        opt.txo_yalign    = GR_ALIGN_TOP;
-        GrDrawString(text,(int)strlen(text),x,y,&opt);
+    GrTextOption opt;
+    opt.txo_font      = _DefaultFont;
+    opt.txo_fgcolor   = fg;
+    opt.txo_bgcolor   = bg;
+    opt.txo_chrtype   = GrGetChrtypeForUserEncoding();
+    opt.txo_direct    = GR_TEXT_RIGHT;
+    opt.txo_xalign    = GR_ALIGN_LEFT;
+    opt.txo_yalign    = GR_ALIGN_TOP;
+    GrDrawString(text,0,x,y,&opt);
+}
+
+GrFont *GrGetDefaultFont()
+{
+    return _DefaultFont;
+}
+
+void GrSetDefaultFont(GrFont *font)
+{
+    if (font != NULL)
+        _DefaultFont = font;
 }
 

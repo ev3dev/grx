@@ -39,8 +39,8 @@
 
 typedef struct _GR_fontFileHeaderPSF {  /* the header */
     GR_int8u id[2];
-    GR_int8u mode;                        /* or psf2 id[2] */
-    GR_int8u size;                        /* or psf2 id[3] */
+    GR_int8u mode;			/* or psf2 id[2] */
+    GR_int8u size;			/* or psf2 id[3] */
     GR_int32u version;
     GR_int32u offset;
     GR_int32u flags;

@@ -25,7 +25,7 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0100
+#define MGRX_VERSION_API 0x0110
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
@@ -200,11 +200,11 @@ struct _GR_videoDriver {
         struct _GR_videoDriver  *inherit;   /* inherit video modes from this */
         struct _GR_videoMode    *modes;     /* table of supported modes */
         int    nmodes;                      /* number of modes */
-        int   (*detect)(void);
-        int   (*init)(char *options);
-        void  (*reset)(void);
-        GrVideoMode * (*selectmode)(GrVideoDriver *drv,int w,int h,int bpp,
-                                    int txt,unsigned int *ep);
+        int   (*detect)(void);              /* detection routine */
+        int   (*init)(char *options);       /* initialization routine */
+        void  (*reset)(void);               /* reset routine */
+        GrVideoMode * (*selectmode)(        /* special mode select routine */
+            GrVideoDriver *drv, int w,int h,int bpp, int txt,unsigned int *ep);
         unsigned  drvflags;
 };
 /* bits in the drvflags field: */
@@ -814,43 +814,14 @@ GrColor GrPixelCNC(GrContext *c,int x,int y);
 /*
  * character types in text strings
  */
-#define GR_BYTE_TEXT            0       /* one byte per character */
-#define GR_WORD_TEXT            1       /* two bytes per character */
-#define GR_ATTR_TEXT            2       /* chr w/ PC style attribute byte */
-#define GR_UTF8_TEXT            3       /* multibyte UTF-8 encoding, restricted to 4 bytes */
-
-/*
- * macros to access components of various string/character types
- */
-#define GR_TEXTCHR_SIZE(ty)     (((ty) == GR_BYTE_TEXT) ? sizeof(char) : sizeof(short))
-#define GR_TEXTCHR_CODE(ch,ty)  (((ty) == GR_WORD_TEXT) ? (unsigned short)(ch) : (unsigned char)(ch))
-#define GR_TEXTCHR_ATTR(ch,ty)  (((ty) == GR_ATTR_TEXT) ? ((unsigned short)(ch) >> 8) : 0)
-#define GR_TEXTSTR_CODE(pt,ty)  (((ty) == GR_WORD_TEXT) ? ((unsigned short *)(pt))[0] : ((unsigned char *)(pt))[0])
-#define GR_TEXTSTR_ATTR(pt,ty)  (((ty) == GR_ATTR_TEXT) ? ((unsigned char *)(pt))[1] : 0)
-
-/*
- * text attribute macros for the GR_ATTR_TEXT type
- * _GR_textattrintensevideo drives if the eighth bit is used for
- * underline (false, default) or more background colors (true)
- */
-extern int _GR_textattrintensevideo;
-
-#define GR_BUILD_ATTR(fg,bg,ul) (_GR_textattrintensevideo ? \
-                                (((fg) & 15) | (((bg) & 15) << 4)) \
-                                : \
-                                (((fg) & 15) | (((bg) & 7) << 4) | ((ul) ? 128 : 0)) \
-                                )
-#define GR_ATTR_FGCOLOR(attr)   (((attr)     ) &  15)
-#define GR_ATTR_BGCOLOR(attr)   (_GR_textattrintensevideo ? \
-                                (((attr) >> 4) &  15) \
-                                : \
-                                (((attr) >> 4) &   7) \
-                                )
-#define GR_ATTR_UNDERLINE(attr) (_GR_textattrintensevideo ? \
-                                (0) \
-                                : \
-                                (((attr)     ) & 128) \
-                                )
+#define GR_BYTE_TEXT            0   /* 1 byte per character, unknow encoding */
+#define GR_WORD_TEXT            1   /* 2 bytes per character, unknow encoding */
+#define GR_CP437_TEXT           2   /* 1 bpc standard DOS encoding */
+#define GR_CP850_TEXT           3   /* 1 bpc latin1 DOS encoding */
+#define GR_CP1252_TEXT          4   /* 1 bpc standard Win encoding */
+#define GR_ISO_8859_1_TEXT      5   /* 1 bpc latin1 standard in some Linux */
+#define GR_UTF8_TEXT            6   /* multibyte UTF-8 Unicode, restricted to 4 bytes */
+#define GR_UCS2_TEXT            7   /* 2 bpc restricted Unicode, only BMP range */
 
 /*
  * OR this to the foreground color value for underlined text when
@@ -870,6 +841,18 @@ extern int _GR_textattrintensevideo;
 #define GR_FONTCVT_PROPORTION   32      /* convert fixed font to prop. wdt */
 
 /*
+ * Font encoding, to recode from user encoding to display
+ */
+#define GR_FONTENC_UNKNOWN     0     /* unknow encoding (no recode) */
+#define GR_FONTENC_CP437       1     /* standard dos encoding */
+#define GR_FONTENC_CP850       2     /* standard dos encoding */
+#define GR_FONTENC_CP1252      3     /* standard Win encoding */
+#define GR_FONTENC_ISO_8859_1  4     /* standard latin encoding */
+#define GR_FONTENC_UNICODE     5     /* direct UNICODE encoding */
+#define GR_FONTENC_MGRX512     6     /* custom MGRX 512 char encoding */
+#define GR_FONTENC_LASTENC     6     /* last encoding, for checks */
+
+/*
  * font structures
  */
 typedef struct _GR_fontHeader {         /* font descriptor */
@@ -886,6 +869,7 @@ typedef struct _GR_fontHeader {         /* font descriptor */
         unsigned int  ulheight;             /* underline width */
         unsigned int  minchar;              /* lowest character code in font */
         unsigned int  numchars;             /* number of characters in font */
+        unsigned int  encoding;             /* font encoding (if known) */
 } GrFontHeader;
 
 typedef struct _GR_fontChrInfo {        /* character descriptor */
@@ -894,60 +878,89 @@ typedef struct _GR_fontChrInfo {        /* character descriptor */
 } GrFontChrInfo;
 
 typedef struct _GR_font {               /* the complete font */
-        struct  _GR_fontHeader  h;          /* the font info structure */
-        char     *bitmap;               /* character bitmap array */
-        char     *auxmap;               /* map for rotated & underline chrs */
+        struct   _GR_fontHeader h;          /* the font info structure */
+        char     *bitmap;                   /* character bitmap array */
+        char     *auxmap;                   /* map for rotated & underline chrs */
         unsigned int  minwidth;             /* width of narrowest character */
         unsigned int  maxwidth;             /* width of widest character */
         unsigned int  auxsize;              /* allocated size of auxiliary map */
         unsigned int  auxnext;              /* next free byte in auxiliary map */
-        unsigned int       *auxoffs[7]; /* offsets to completed aux chars */
-        struct  _GR_fontChrInfo chrinfo[1]; /* character info (not act. size) */
+        unsigned int  *auxoffs[7];          /* offsets to completed aux chars */
+        struct   _GR_fontChrInfo chrinfo[1]; /* character info (not act. size) */
 } GrFont;
 
 extern  GrFont          GrFont_PC6x8;
 extern  GrFont          GrFont_PC8x8;
 extern  GrFont          GrFont_PC8x14;
 extern  GrFont          GrFont_PC8x16;
-#define GrDefaultFont   GrFont_PC8x14
+/* #define GrDefaultFont   GrFont_PC8x14  Use GrGetDefaultFont() instead */
+
+GrFont *GrGetDefaultFont();  /* GrFont_PC8x14 if not changed */
+void GrSetDefaultFont(GrFont *font);
 
 GrFont *GrLoadFont(char *name);
 GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minch,int maxch);
 GrFont *GrBuildConvertedFont(const GrFont *from,int cvt,int w,int h,int minch,int maxch);
 
 void GrUnloadFont(GrFont *font);
-void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName);
-void GrDumpFnaFont(const GrFont *f, char *fileName);
+void GrDumpFont(const GrFont *font,char *CsymbolName,char *fileName);
+void GrDumpFnaFont(const GrFont *font,char *fileName);
+void GrDumpGrxFont(const GrFont *font,char *fileName);
 void GrSetFontPath(char *path_list);
 
-int  GrFontCharPresent(const GrFont *font,int chr);
-int  GrFontCharWidth(const GrFont *font,int chr);
-int  GrFontCharHeight(const GrFont *font,int chr);
-int  GrFontCharBmpRowSize(const GrFont *font,int chr);
-int  GrFontCharBitmapSize(const GrFont *font,int chr);
-int  GrFontStringWidth(const GrFont *font,void *text,int len,int type);
-int  GrFontStringHeight(const GrFont *font,void *text,int len,int type);
-int  GrProportionalTextWidth(const GrFont *font,const void *text,int len,int type);
+/*
+ * In these functions chr is a font char index, not a real char
+ * recode it before use if you want to work with real chars
+ */
+int  GrFontCharPresent(const GrFont *font,unsigned int chr);
+int  GrFontCharWidth(const GrFont *font,unsigned int chr);
+int  GrFontCharHeight(const GrFont *font,unsigned int chr);
+int  GrFontCharBmpRowSize(const GrFont *font,unsigned int chr);
+int  GrFontCharBitmapSize(const GrFont *font,unsigned int chr);
 
-char *GrBuildAuxiliaryBitmap(GrFont *font,int chr,int dir,int ul);
-char *GrFontCharBitmap(const GrFont *font,int chr);
-char *GrFontCharAuxBmp(GrFont *font,int chr,int dir,int ul);
+char *GrBuildAuxiliaryBitmap(GrFont *font,unsigned int chr,int dir,int ul);
+char *GrFontCharBitmap(const GrFont *font,unsigned int chr);
+char *GrFontCharAuxBmp(GrFont *font,unsigned int chr,int dir,int ul);
 
-typedef union _GR_textColor {           /* text color union */
-        GrColor       v;                    /* color value for "direct" text */
-        GrColorTableP p;                    /* color table for attribute text */
-} GrTextColor;
-
-typedef struct _GR_textOption {         /* text drawing option structure */
-        struct _GR_font     *txo_font;      /* font to be used */
-        union  _GR_textColor txo_fgcolor;   /* foreground color */
-        union  _GR_textColor txo_bgcolor;   /* background color */
-        char    txo_chrtype;                /* character type (see above) */
-        char    txo_direct;                 /* direction (see above) */
-        char    txo_xalign;                 /* X alignment (see above) */
-        char    txo_yalign;                 /* Y alignment (see above) */
+typedef struct _GR_textOption {      /* text drawing option structure */
+        struct _GR_font *txo_font;   /* font to be used */
+        GrColor txo_fgcolor;         /* foreground color */
+        GrColor txo_bgcolor;         /* background color */
+        char    txo_chrtype;         /* character type (see above) */
+        char    txo_direct;          /* direction (see above) */
+        char    txo_xalign;          /* X alignment (see above) */
+        char    txo_yalign;          /* Y alignment (see above) */
 } GrTextOption;
 
+/*
+ * The recode function from char type encoding to the font encoding
+ * remember UTF-8 chr must be a char[4] packed in a long
+ */
+int  GrFontNeedRecode(const GrFont *font,int chrtype);
+unsigned int GrFontCharRecode(const GrFont *font,long chr,int chrtype);
+unsigned short *GrFontTextRecode(const GrFont *font,const void *text,int length,int chrtype);
+
+void GrFontSetEncoding(GrFont *font,int fontencoding);
+
+/*
+ * These functions will internally recode chars if needed from
+ * char type encoding to the font encoding
+ */
+int  GrFontStringWidth(const GrFont *font,const void *text,int len,int chrtype);
+int  GrFontStringHeight(const GrFont *font,const void *text,int len,int chrtype);
+
+int  GrCharWidth(long chr, const GrTextOption *opt);
+int  GrCharHeight(long chr, const GrTextOption *opt);
+void GrCharSize(long chr, const GrTextOption *opt,int *w,int *h);
+int  GrStringWidth(const void *text,int length,const GrTextOption *opt);
+int  GrStringHeight(const void *text,int length,const GrTextOption *opt);
+void GrStringSize(const void *text,int length,const GrTextOption *opt,int *w,int *h);
+
+void GrDrawChar(long chr,int x,int y,const GrTextOption *opt);
+void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt);
+void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
+
+#if 0
 typedef struct {                        /* fixed font text window desc. */
         struct _GR_font     *txr_font;      /* font to be used */
         union  _GR_textColor txr_fgcolor;   /* foreground color */
@@ -961,25 +974,18 @@ typedef struct {                        /* fixed font text window desc. */
         int     txr_ypos;                   /* upper left corner Y coordinate */
         char    txr_chrtype;                /* character type (see above) */
 } GrTextRegion;
+#endif
 
-int  GrCharWidth(long chr, const GrTextOption *opt);
-int  GrCharHeight(long chr, const GrTextOption *opt);
-void GrCharSize(long chr, const GrTextOption *opt,int *w,int *h);
-int  GrStringWidth(void *text,int length,const GrTextOption *opt);
-int  GrStringHeight(void *text,int length,const GrTextOption *opt);
-void GrStringSize(void *text,int length,const GrTextOption *opt,int *w,int *h);
-
-void GrDrawChar(long chr,int x,int y,const GrTextOption *opt);
-void GrDrawString(void *text,int length,int x,int y,const GrTextOption *opt);
-void GrTextXY(int x,int y,char *text,GrColor fg,GrColor bg);
-
+/*
 void GrDumpChar(int chr,int col,int row,const GrTextRegion *r);
 void GrDumpText(int col,int row,int wdt,int hgt,const GrTextRegion *r);
 void GrDumpTextRegion(const GrTextRegion *r);
+*/
 
 #ifndef GRX_SKIP_INLINES
 #define GrFontCharPresent(f,ch) (                                              \
-        ((unsigned int)(ch) - (f)->h.minchar) < (f)->h.numchars                \
+        ((unsigned int)(ch) < (f)->h.minchar) ? 0 :                            \
+        (((unsigned int)(ch) - (f)->h.minchar) < (f)->h.numchars)              \
 )
 #define GrFontCharWidth(f,ch) (                                                \
         GrFontCharPresent(f,ch) ?                                              \
@@ -997,38 +1003,16 @@ void GrDumpTextRegion(const GrTextRegion *r);
 #define GrFontCharBitmapSize(f,ch) (                                           \
         GrFontCharBmpRowSize(f,ch) * (f)->h.height                             \
 )
-#define GrFontStringWidth(f,t,l,tp) (                                          \
-        (f)->h.proportional ?                                                  \
-        GrProportionalTextWidth((f),(t),(l),(tp)) :                            \
-        (f)->h.width * (l)                                                     \
-)
-#define GrFontStringHeight(f,t,l,tp) (                                         \
-        (f)->h.height                                                          \
-)
 #define GrFontCharBitmap(f,ch) (                                               \
         GrFontCharPresent(f,ch) ?                                              \
         &(f)->bitmap[(f)->chrinfo[(unsigned int)(ch) - (f)->h.minchar].offset]:\
-        (char *)0                                                          \
+        (char *)0                                                              \
 )
 #define GrFontCharAuxBmp(f,ch,dir,ul) (                                        \
         (((dir) == GR_TEXT_DEFAULT) && !(ul)) ?                                \
         GrFontCharBitmap(f,ch) :                                               \
         GrBuildAuxiliaryBitmap((f),(ch),(dir),(ul))                            \
 )
-#define GrStringWidth(t,l,o) (                                                 \
-        GR_TEXT_IS_VERTICAL((o)->txo_direct) ?                                 \
-        GrFontStringHeight((o)->txo_font,(t),(l),(o)->txo_chrtype) :           \
-        GrFontStringWidth( (o)->txo_font,(t),(l),(o)->txo_chrtype)             \
-)
-#define GrStringHeight(t,l,o) (                                                \
-        GR_TEXT_IS_VERTICAL((o)->txo_direct) ?                                 \
-        GrFontStringWidth( (o)->txo_font,(t),(l),(o)->txo_chrtype) :           \
-        GrFontStringHeight((o)->txo_font,(t),(l),(o)->txo_chrtype)             \
-)
-#define GrStringSize(t,l,o,wp,hp) do {                                         \
-        *(wp) = GrStringWidth( t,l,o);                                         \
-        *(hp) = GrStringHeight(t,l,o);                                         \
-} while(0)
 #endif /* GRX_SKIP_INLINES */
 
 /* ================================================================== */
@@ -1347,12 +1331,13 @@ typedef struct {
     int type;               /* event type */
     long time;              /* miliseconds */
     int kbstat;             /* kb status */
-    union {
-      long p1;              /* key(GREV_KEY) subevent(GREV_MOUSE) */
-      unsigned char cp1[4]; /* for easy access to multibyte char encodings (like UTF-8) */
+    union {                 /* GREV_KEY     GREV_MOUSE  GREV_MMOVE  GREV_EXPOSE */
+      long p1;              /* key          subevent    but status  x           */
+      unsigned char cp1[4]; /* for easy access to multibyte key (like UTF-8)    */
     };
-    long p2;                /* type or nbytes (GREV_KEY) x-pos(GREV_MOUSE) */
-    long p3;                /* Y-pos(GREV_MOUSE) */
+    long p2;                /* type/nbytes  x           x           y           */
+    long p3;                /* --           y           y           width       */
+    long p4;                /* --           --          --          height      */
 } GrEvent;
 
 #define GREV_NULL    0           /* no event */
@@ -1360,33 +1345,37 @@ typedef struct {
 #define GREV_MOUSE   2           /* mouse event, p1=subevent, p2=x, p3=y */
 #define GREV_MMOVE   3           /* mouse move event, p1=buttons status, p2=x, p3=y */
 #define GREV_PREKEY  4           /* key event before be recoded, internal event, users don't see it */
+#define GREV_EXPOSE  5           /* a window area must be redraw (generated only if user requests it */
 #define GREV_USER    100         /* user event */
 
 #define GRKEY_KEYCODE     100    /* p1 is a special key, not a char */
 
-#define GRMOUSE_LB_PRESSED  1    /* Left button depressed */
-#define GRMOUSE_MB_PRESSED  2    /* Middle button depressed */
-#define GRMOUSE_RB_PRESSED  3    /* Right button depressed */
+#define GRMOUSE_LB_PRESSED  1    /* Left button pressed */
+#define GRMOUSE_MB_PRESSED  2    /* Middle button pressed */
+#define GRMOUSE_RB_PRESSED  3    /* Right button pressed */
 #define GRMOUSE_LB_RELEASED 4    /* Left button released */
 #define GRMOUSE_MB_RELEASED 5    /* Middle button released */
 #define GRMOUSE_RB_RELEASED 6    /* Rigth button released */
-#define GRMOUSE_B4_PRESSED  7    /* Button 4 depressed (scroll wheel) */
+#define GRMOUSE_B4_PRESSED  7    /* Button 4 pressed (scroll wheel) */
 #define GRMOUSE_B4_RELEASED 8    /* Button 4 released (scroll wheel) */
-#define GRMOUSE_B5_PRESSED  9    /* Button 5 depressed (scroll wheel) */
+#define GRMOUSE_B5_PRESSED  9    /* Button 5 pressed (scroll wheel) */
 #define GRMOUSE_B5_RELEASED 10   /* Button 5 released (scroll wheel) */
 
 #define GRMOUSE_LB_STATUS   1    /* Status bit for left button */
 #define GRMOUSE_MB_STATUS   4    /* Status bit for middle button */
 #define GRMOUSE_RB_STATUS   2    /* Status bit for right button */
 
-#define GR_GEN_MMOVE_NEVER  0    /* Doesn't gen GREV_MMOVE */
+#define GR_GEN_MMOVE_NEVER  0    /* Doesn't gen GREV_MMOVE (default) */
 #define GR_GEN_MMOVE_IFBUT  1    /* Gen GREV_MMOVE if a button is pressed */
 #define GR_GEN_MMOVE_ALWAYS 2    /* Gen GREV_MMOVE always */
 
-#define GRKBS_RIGHTSHIFT    0x01   /* Keybd states: right shift key depressed */
-#define GRKBS_LEFTSHIFT     0x02   /* left shift key depressed */
-#define GRKBS_CTRL          0x04   /* CTRL depressed */
-#define GRKBS_ALT           0x08   /* ALT depressed */
+#define GR_GEN_EXPOSE_NO    0    /* Doesn't gen GREV_EXPOSE (default) */
+#define GR_GEN_EXPOSE_YES   1    /* Gen GREV_EXPOSE */
+
+#define GRKBS_RIGHTSHIFT    0x01   /* Keybd states: right shift key pressed */
+#define GRKBS_LEFTSHIFT     0x02   /* left shift key pressed */
+#define GRKBS_CTRL          0x04   /* CTRL pressed */
+#define GRKBS_ALT           0x08   /* ALT pressed */
 #define GRKBS_SCROLLOCK     0x10   /* SCROLL LOCK active */
 #define GRKBS_NUMLOCK       0x20   /* NUM LOCK active */
 #define GRKBS_CAPSLOCK      0x40   /* CAPS LOCK active */
@@ -1402,11 +1391,12 @@ void GrEventWait(GrEvent * ev);
 void GrEventWaitKeyOrClick(GrEvent * ev);
 int GrEventEnqueue(GrEvent * ev);
 void GrEventGenMmove(int when);
+void GrEventGenExpose(int when);
 int GrEventAddHook(int (*fn) (GrEvent *));
 int GrEventDeleteHook(int (*fn) (GrEvent *));
-
-/* Supported encodings and intl stuff */
-
+/*
+ * Supported kb and user encodings
+ */
 #define GRENC_CP437          0   /* standard DOS encoding */
 #define GRENC_CP850          1   /* latin1 DOS encoding */
 #define GRENC_CP1252         2   /* standard Win encoding */
@@ -1416,16 +1406,26 @@ int GrEventDeleteHook(int (*fn) (GrEvent *));
 #define GRENC_LASTENCODE     5   /* last encode, for checks */
 
 int GrGetKbSysEncoding(void);
-int GrGetKbEncoding(void);
-int GrSetKbEncoding(int enc);
 
 char *GrStrEncoding(int nenc);
 int GrFindEncoding(char *strenc);
+/*
+ * These functions are global, no only kb related, keys are recoded to user encoding
+ * and character type user strings can be deduced from user encoding
+ */
+int GrGetUserEncoding(void);
+int GrSetUserEncoding(int enc);
+char GrGetChrtypeForUserEncoding(void);
 
+/*
+ * utf-8 utility functions
+ */
+int GrStrLen(const void *text, int chrtype);
 int GrUTF8StrLen(unsigned char *s);
+long GrNextUTF8Char(unsigned char *s, int *nb);
 long GrUCS2ToUTF8(unsigned short ch);
 unsigned short GrUTF8ToUCS2(unsigned char *s);
-unsigned short *GrUTF8StrToUCS2Str(unsigned char *s, int *ulen);
+unsigned short *GrUTF8StrToUCS2Str(unsigned char *s, int *ulen, int maxlen);
 
 /* ================================================================== */
 /*                         MOUSE UTILITIES                            */

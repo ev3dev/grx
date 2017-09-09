@@ -32,10 +32,16 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "MGRX 1.0, the graphics library";
+    "MGRX 1.1, the graphics library";
 
 char *animatedtext =
-    "MGRX 1.0, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "MGRX 1.1, the graphics library for DJGPPv2, Linux, X11 and Win32";
+
+#if defined(__XWIN__) || defined(__WIN32__)
+static int need_restart = 0;
+#else
+static int need_restart = 1;
+#endif
 
 #define NDEMOS 35
 
@@ -190,6 +196,7 @@ static Board brdimg =
 
 static GrFont *grf_std;
 static GrFont *grf_big;
+static GrFont *grf_gfaz;
 GrTextOption grt_centered;
 GrTextOption grt_left;
 
@@ -225,6 +232,7 @@ int main(int argc, char **argv)
     ini_graphics();
     GrSetWindowTitle(wintitle);
     ini_objects();
+    gfaz_setfont(grf_gfaz);
     paint_screen();
 
     while (1) {
@@ -301,17 +309,24 @@ static void ini_objects(void)
             disaster("lucb40.fnt not found");
     }
 
-    grt_centered.txo_bgcolor.v = GrNOCOLOR;
+    grf_gfaz = GrLoadFont("tmgrx14b.fnt");
+    if (grf_gfaz == NULL) {
+        grf_gfaz = GrLoadFont("../fonts/tmgrx14b.fnt");
+        if (grf_gfaz == NULL)
+            disaster("tmgrx14b.fnt not found");
+    }
+
+    grt_centered.txo_bgcolor = GrNOCOLOR;
     grt_centered.txo_direct = GR_TEXT_RIGHT;
     grt_centered.txo_xalign = GR_ALIGN_CENTER;
     grt_centered.txo_yalign = GR_ALIGN_CENTER;
-    grt_centered.txo_chrtype = GR_BYTE_TEXT;
+    grt_centered.txo_chrtype = GR_UTF8_TEXT;
 
-    grt_left.txo_bgcolor.v = GrNOCOLOR;
+    grt_left.txo_bgcolor = GrNOCOLOR;
     grt_left.txo_direct = GR_TEXT_RIGHT;
     grt_left.txo_xalign = GR_ALIGN_LEFT;
     grt_left.txo_yalign = GR_ALIGN_CENTER;
-    grt_left.txo_chrtype = GR_BYTE_TEXT;
+    grt_left.txo_chrtype = GR_UTF8_TEXT;
 }
 
 /************************************************************************/
@@ -341,16 +356,22 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "MGRX 1.0";
+    char *t1 = "MGRX 1.1";
     char *t2 = "test programs launcher";
+    char *hw1 = "Hello world, Привет мир";
+    char *hw2 = "Γειά σου Κόσμε, Hola mundo";
 
-    grt_centered.txo_fgcolor.v = LIGHTGREEN;
+    grt_centered.txo_fgcolor = LIGHTGREEN;
 
     grt_centered.txo_font = grf_big;
-    GrDrawString(t1, strlen(t1), 0 + x, 0 + y, &grt_centered);
+    GrDrawString(t1, 0, 0 + x, 0 + y, &grt_centered);
 
     grt_centered.txo_font = grf_std;
-    GrDrawString(t2, strlen(t2), 0 + x, 40 + y, &grt_centered);
+    GrDrawString(t2, 0, 0 + x, 30 + y, &grt_centered);
+
+    grt_centered.txo_font = grf_gfaz;
+    GrDrawString(hw1, 0, 0 + x, 60 + y, &grt_centered);
+    GrDrawString(hw2, 0, 0 + x, 76 + y, &grt_centered);
 }
 
 /************************************************************************/
@@ -363,7 +384,7 @@ static void the_info(int x, int y)
     char *kbsysencoding;
     int nenc;
 
-    grt_centered.txo_fgcolor.v = CYAN;
+    grt_centered.txo_fgcolor = CYAN;
     grt_centered.txo_font = grf_std;
 
     nsys = GrGetLibrarySystem();
@@ -383,18 +404,18 @@ static void the_info(int x, int y)
     nenc = GrGetKbSysEncoding();
     kbsysencoding = GrStrEncoding(nenc);
 
-    sprintf(aux, "Version:%x System:%s", GrGetLibraryVersion(), sys);
-    GrDrawString(aux, strlen(aux), 0 + x, 0 + y, &grt_centered);
+    sprintf(aux, "Version: %x System: %s", GrGetLibraryVersion(), sys);
+    GrDrawString(aux, 0, 0 + x, 0 + y, &grt_centered);
 
-    sprintf(aux, "KbSysEncoding:%s", kbsysencoding);
-    GrDrawString(aux, strlen(aux), 0 + x, 20 + y, &grt_centered);
+    sprintf(aux, "KbSysEncoding: %s", kbsysencoding);
+    GrDrawString(aux, 0, 0 + x, 20 + y, &grt_centered);
 
     sprintf(aux, "VideoDriver: %s", GrCurrentVideoDriver()->name);
-    GrDrawString(aux, strlen(aux), 0 + x, 40 + y, &grt_centered);
+    GrDrawString(aux, 0, 0 + x, 40 + y, &grt_centered);
 
     sprintf(aux, "Mode: %dx%d %d bpp", GrCurrentVideoMode()->width,
             GrCurrentVideoMode()->height, GrCurrentVideoMode()->bpp);
-    GrDrawString(aux, strlen(aux), 0 + x, 60 + y, &grt_centered);
+    GrDrawString(aux, 0, 0 + x, 60 + y, &grt_centered);
 }
 
 /************************************************************************/
@@ -421,7 +442,9 @@ static int pev_command(GrEvent * ev)
         }
         for (i = 0; i < NDEMOS; i++) {
             if (ev->p1 == ptable[i].cid) {
-                gfaz_fin();
+                if (need_restart) {
+                    gfaz_fin();
+                }
 #if defined(__MSDOS__) || defined(__WIN32__)
                 if (ev->p1 == ID_MODETEST)
                     strcpy(nprog, "..\\bin\\");
@@ -438,8 +461,11 @@ static int pev_command(GrEvent * ev)
 #endif
                 strcat(nprog, ptable[i].prog);
                 system(nprog);
-                ini_graphics();
-                GrSetWindowTitle(wintitle);
+                if (need_restart) {
+                    ini_graphics();
+                    GrSetWindowTitle(wintitle);
+                    gfaz_setfont(grf_gfaz);
+                }
                 paint_screen();
                 return 1;
             }
@@ -469,12 +495,12 @@ static int pev_select(GrEvent * ev)
 
 static void paint_foot(char *s)
 {
-    grt_centered.txo_fgcolor.v = LIGHTGREEN;
+    grt_centered.txo_fgcolor = LIGHTGREEN;
     grt_centered.txo_font = grf_std;
 
     GrSetClipBox(10, 440, 630, 470);
     GrClearClipBox(CYAN);
-    GrDrawString(s, strlen(s), 320, 455, &grt_centered);
+    GrDrawString(s, 0, 320, 455, &grt_centered);
     GrResetClipBox();
 }
 
@@ -494,7 +520,7 @@ static void paint_animation(void)
         ini = 1;
     }
 
-    grt_left.txo_fgcolor.v = CYAN;
+    grt_left.txo_fgcolor = CYAN;
     grt_left.txo_font = grf_std;
     ltext = strlen(animatedtext);
     wtext = GrStringWidth(animatedtext, ltext, &grt_left);

@@ -21,15 +21,15 @@
 
 GrColor GrPixelC(GrContext *c,int x,int y)
 {
-        GrColor retval;
-        cxclip_dot_(c,x,y,return(GrNOCOLOR));
-        mouse_block(c,x,y,x,y);
-        retval = (*c->gc_driver->readpixel)(
-            &c->gc_frame,
-            x + c->gc_xoffset,
-            y + c->gc_yoffset
-        );
-        mouse_unblock();
-        return(retval);
+	GrColor retval;
+	cxclip_dot_(c,x,y,return(GrNOCOLOR));
+	mouse_block(c,x,y,x,y);
+	retval = (*c->gc_driver->readpixel)(
+	    &c->gc_frame,
+	    x + c->gc_xoffset,
+	    y + c->gc_yoffset
+	);
+	mouse_unblock();
+	return(retval);
 }
 

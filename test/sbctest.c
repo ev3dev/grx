@@ -102,8 +102,8 @@ TESTFUNC(sbctest)
   GrBitBlt( NULL,20,20,grc,0,0,299,299,GrXOR );
   GrEventWaitKeyOrClick(&ev);
 
-  grt.txo_fgcolor.v = GrWhite();
-  grt.txo_bgcolor.v = GrBlack() | GrOR;
+  grt.txo_fgcolor = GrWhite();
+  grt.txo_bgcolor = GrBlack() | GrOR;
   grt.txo_font = grf;
   grt.txo_direct = GR_TEXT_RIGHT;
   grt.txo_xalign = GR_ALIGN_LEFT;

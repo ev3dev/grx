@@ -28,13 +28,13 @@
 
 void GrPatternedLine(int x1,int y1,int x2,int y2,GrLinePattern *lp)
 {
-        GrFillArg fval;
-        int points[2][2];
+	GrFillArg fval;
+	int points[2][2];
 
-        points[0][0] = x1;
-        points[0][1] = y1;
-        points[1][0] = x2;
-        points[1][1] = y2;
-        fval.p = lp->lnp_pattern;
-        _GrDrawCustomPolygon(2,points,lp->lnp_option,&_GrPatternFiller,fval,FALSE,FALSE);
+	points[0][0] = x1;
+	points[0][1] = y1;
+	points[1][0] = x2;
+	points[1][1] = y2;
+	fval.p = lp->lnp_pattern;
+	_GrDrawCustomPolygon(2,points,lp->lnp_option,&_GrPatternFiller,fval,FALSE,FALSE);
 }

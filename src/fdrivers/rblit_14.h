@@ -17,5 +17,5 @@
  **/
 
 void _GR_rblit_14(GrFrame *dst,int dx,int dy,
-                  GrFrame *src,int x,int y,int w,int h,
-                  GrColor op, int planes, _GR_blitFunc bitblt);
+		  GrFrame *src,int x,int y,int w,int h,
+		  GrColor op, int planes, _GR_blitFunc bitblt);

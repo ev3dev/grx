@@ -26,6 +26,8 @@
  **     input driver must calls _LnxfbSwitchConsoleAndWait then.
  **   - _SwitchConsoleLnxfbDriver renamed to _LnxfbSwitchConsoleVt, not used,
  **     is here only for possible future use.
+ ** Modifications by Mariano Alvarez Fernandez 30/6/2017
+ *    - Added 32 bpp video mode
  **/
 
 #include <string.h>
@@ -321,6 +323,19 @@ static int build_video_mode(GrVideoMode * mp, GrVideoModeExt * ep)
             return FALSE;
         mp->bpp = 24;
         ep->mode = GR_frameSVGA24_LFB;
+        ep->flags |= GR_VMODEF_LINEAR;
+        ep->cprec[0] = fbvar.red.length;
+        ep->cprec[1] = fbvar.green.length;
+        ep->cprec[2] = fbvar.blue.length;
+        ep->cpos[0] = fbvar.red.offset;
+        ep->cpos[1] = fbvar.green.offset;
+        ep->cpos[2] = fbvar.blue.offset;
+        break;
+    case 32:
+        if (fbfix.visual != FB_VISUAL_TRUECOLOR)
+            return FALSE;
+        mp->bpp = 32;
+        ep->mode = (fbvar.red.offset == 16) ? GR_frameSVGA32L_LFB : GR_frameSVGA32H_LFB;
         ep->flags |= GR_VMODEF_LINEAR;
         ep->cprec[0] = fbvar.red.length;
         ep->cprec[1] = fbvar.green.length;

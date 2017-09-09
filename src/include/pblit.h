@@ -40,35 +40,35 @@
 **             copy operation
 */
 #define DO1COPY_FW(SIZE,OP,F) do {                                   \
-         poke_##SIZE##OP((dptr),peek_##SIZE##F(sptr));               \
-         (dptr) += CPSIZE_##SIZE;                                    \
-         (sptr) += CPSIZE_##SIZE;                                    \
+	 poke_##SIZE##OP((dptr),peek_##SIZE##F(sptr));               \
+	 (dptr) += CPSIZE_##SIZE;                                    \
+	 (sptr) += CPSIZE_##SIZE;                                    \
  } while(0)
 
 #define DO1COPY_RV(SIZE,OP,F) do {                                   \
-         poke_##SIZE##OP((dptr),peek_##SIZE##F(sptr));               \
-         (dptr) -= CPSIZE_##SIZE;                                    \
-         (sptr) -= CPSIZE_##SIZE;                                    \
+	 poke_##SIZE##OP((dptr),peek_##SIZE##F(sptr));               \
+	 (dptr) -= CPSIZE_##SIZE;                                    \
+	 (sptr) -= CPSIZE_##SIZE;                                    \
  } while(0)
 
 
 /* special handling for image blits */
 #define poke_b_image(p,v) do {                                           \
-         GR_int8u val = (v);                                             \
-         if(val != cval) poke_b(p,val);                                  \
+	 GR_int8u val = (v);                                             \
+	 if(val != cval) poke_b(p,val);                                  \
  } while (0)
 
 #define poke_b_f_image(p,v) do {                                         \
-         GR_int8u val = (v);                                             \
-         if(val != cval) poke_b_f(p,val);                                \
+	 GR_int8u val = (v);                                             \
+	 if(val != cval) poke_b_f(p,val);                                \
  } while (0)
 
 #define poke_b_n_image  poke_b_image
 
 #define __DOICOPY__(INC,WF,RF) do {                                      \
-         poke_b##WF##_image((dptr),peek_b##RF(sptr));                    \
-         (dptr) INC CPSIZE_b;                                            \
-         (sptr) INC CPSIZE_b;                                            \
+	 poke_b##WF##_image((dptr),peek_b##RF(sptr));                    \
+	 (dptr) INC CPSIZE_b;                                            \
+	 (sptr) INC CPSIZE_b;                                            \
  } while(0)
 
 #define __DOICOPY_FW__(WF,RF) __DOICOPY__(+=,WF,RF)

@@ -51,7 +51,7 @@ _GrFrameDriverSVGA16,                   /* Super VGA 32768/65536 color */
 _GrFrameDriverSVGA24,                   /* Super VGA 16M color */
 _GrFrameDriverSVGA32L,                  /* Super VGA 16M color padded #1 */
 _GrFrameDriverSVGA32H,                  /* Super VGA 16M color padded #2 */
-                                        /* Linear Framebuffer Modes : */
+					/* Linear Framebuffer Modes : */
 _GrFrameDriverSVGA8_LFB,                /* (Super) VGA 256 color */
 _GrFrameDriverSVGA16_LFB,               /* Super VGA 32768/65536 color */
 _GrFrameDriverSVGA24_LFB,               /* Super VGA 16M color */
@@ -63,7 +63,7 @@ _GrFrameDriverXWIN16,                   /* X 16 bpp */
 _GrFrameDriverXWIN24,                   /* X 24 bpp */
 _GrFrameDriverXWIN32L,                  /* X 32 bpp padded #1 */
 _GrFrameDriverXWIN32H,                  /* X 32 bpp padded #2 */
-        
+	
 _GrFrameDriverWIN32_4,                  /* WIN32 4 bpp */
 _GrFrameDriverWIN32_8,                  /* WIN32 8 bpp */
 _GrFrameDriverWIN32_24,                 /* WIN32 24 bpp */
@@ -117,12 +117,12 @@ _GrDriverMEM,                           /* memory screen driver */
 typedef GrColor  (*_GR_readPix)(GrFrame *,int,int);
 typedef void     (*_GR_drawPix)(int,int,GrColor);
 typedef void     (*_GR_blitFunc)(GrFrame *dst,int dx,int dy,
-                                 GrFrame *src,int  x,int  y,
-                                 int w,int h,GrColor op);
+				 GrFrame *src,int  x,int  y,
+				 int w,int h,GrColor op);
 typedef GrColor *(*_GR_getIndexedScanline)(GrFrame *c,int x,int y,
-                                               int w, int *indx);
+					       int w, int *indx);
 typedef void     (*_GR_putScanline)(int x,int y,int w,
-                                    const GrColor *scl,GrColor op);
+				    const GrColor *scl,GrColor op);
 
 /*
  * Frame driver utility functions
@@ -138,12 +138,12 @@ void _GrFrDrvPackedBitBltV2V_LFB(GrFrame *dst,int dx,int dy,GrFrame *src,int x,i
 
 void _GrFrDrvGenericPutScanline(int x,int y,int w,const GrColor *scl, GrColor op );
 GrColor *_GrFrDrvGenericGetIndexedScanline(GrFrame *c,
-                                           int x,int y,int w,
-                                           int *indx         );
+					   int x,int y,int w,
+					   int *indx         );
 
 void _GrFrDrvGenericStretchBlt(GrFrame *dst,int dx,int dy,int dw,int dh,
-                               GrFrame *src,int sx,int sy,int sw,int sh,
-                               GrColor op);
+			       GrFrame *src,int sx,int sy,int sw,int sh,
+			       GrColor op);
 
 /*
  * Video driver utility functions
@@ -179,7 +179,7 @@ extern GrVideoModeExt _GrViDrvEGAVGAtextModeExt;
 extern GrVideoModeExt _GrViDrvEGAVGAcustomTextModeExt;
 
 GrVideoMode * _gr_selectmode(GrVideoDriver *drv,int w,int h,int bpp,
-                             int txt,unsigned int *ep);
+			     int txt,unsigned int *ep);
 
 #endif /* USE_GRX_INTERNAL_DEFINITIONS */
 

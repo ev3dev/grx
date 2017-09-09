@@ -58,7 +58,8 @@ static char fonthdr[] =
 "            %d,  \t\t    "         "/* underline pixel pos (from top) */\n"
 "            %d,  \t\t    "         "/* underline width */\n"
 "            %d,  \t\t    "         "/* lowest character code in font */\n"
-"            %d   \t\t    "         "/* number of characters in font */\n"
+"            %d,  \t\t    "         "/* number of characters in font */\n"
+"            %d   \t\t    "         "/* encoding */\n"
 "        },\n"
 "        (char *)%-20s"             "/* character bitmap array */\n"
 "        0,                          /* auxiliary bitmap */\n"
@@ -86,82 +87,83 @@ static char fontend[] =
 
 void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName)
 {
-        unsigned int i;
-        int  offset;
-        char filname[200];
-        char fntname[200];
-        char famname[200];
-        char bitname[200];
-        char *p;
-        FILE *fp = fopen(fileName,"w");
-        if(!fp) return;
-        strcpy(filname,fileName);
-        for(p = filname; *p; p++) *p = toupper(*p);
-        sprintf(fntname,"\"%s",f->h.name);
-        if((p = strrchr(fntname,'.')) != 0) *p = '\0';
-        strcat(fntname,"\",");
-        sprintf(famname,"\"%s\",",f->h.family);
-        sprintf(bitname,"%s_bits",CsymbolName);
-        fprintf(
-            fp,
-            bitmaphdr,
-            filname,
-            CsymbolName,
-            CsymbolName,
-            bitname
-        );
-        for(i = 0; i < f->h.numchars; i++) {
-            int  chr = i + f->h.minchar;
-            int  len = GrFontCharBitmapSize(f,chr);
-            int  pos = 0,j;
-            char *bmp = GrFontCharBitmap(f,chr);
-            fprintf(fp,"\t/* character %d */\n\t",chr);
-            for(j = 0; j < len; j++) {
-                fprintf(fp,"0x%02x",(bmp[j] & 0xff));
-                if((j + 1) != len) {
-                    putc(',',fp);
-                    if(++pos != 12) continue;
-                    fputs("\n\t",fp);
-                    pos = 0;
-                }
-            }
-            if((i + 1) != f->h.numchars) {
-                fputs(",\n",fp);
-            }
-        }
-        fprintf(fp,
-            fonthdr,
-            f->h.numchars - 1,
-            CsymbolName,
-            fntname,
-            famname,
-            f->h.proportional,
-            f->h.width,
-            f->h.height,
-            f->h.baseline,
-            f->h.ulpos,
-            f->h.ulheight,
-            f->h.minchar,
-            f->h.numchars,
-            (strcat(bitname,","),bitname),
-            f->minwidth,
-            f->maxwidth,
-            GrFontCharWidth(f,f->h.minchar)
-        );
-        offset = GrFontCharBitmapSize(f,f->h.minchar);
-        for(i = 1; i < f->h.numchars; i++) {
-            int chr = i + f->h.minchar;
-            fprintf(
-                fp,
-                charinfo,
-                GrFontCharWidth(f,chr),
-                offset,
-                ((i == (f->h.numchars - 1)) ? ' ' : ','),
-                chr
-            );
-            offset += GrFontCharBitmapSize(f,chr);
-        }
-        fputs(fontend,fp);
-        fclose(fp);
+	unsigned int i;
+	int  offset;
+	char filname[200];
+	char fntname[200];
+	char famname[200];
+	char bitname[200];
+	char *p;
+	FILE *fp = fopen(fileName,"w");
+	if(!fp) return;
+	strcpy(filname,fileName);
+	for(p = filname; *p; p++) *p = toupper(*p);
+	sprintf(fntname,"\"%s",f->h.name);
+	if((p = strrchr(fntname,'.')) != 0) *p = '\0';
+	strcat(fntname,"\",");
+	sprintf(famname,"\"%s\",",f->h.family);
+	sprintf(bitname,"%s_bits",CsymbolName);
+	fprintf(
+	    fp,
+	    bitmaphdr,
+	    filname,
+	    CsymbolName,
+	    CsymbolName,
+	    bitname
+	);
+	for(i = 0; i < f->h.numchars; i++) {
+	    int  chr = i + f->h.minchar;
+	    int  len = GrFontCharBitmapSize(f,chr);
+	    int  pos = 0,j;
+	    char *bmp = GrFontCharBitmap(f,chr);
+	    fprintf(fp,"\t/* character %d */\n\t",chr);
+	    for(j = 0; j < len; j++) {
+		fprintf(fp,"0x%02x",(bmp[j] & 0xff));
+		if((j + 1) != len) {
+		    putc(',',fp);
+		    if(++pos != 12) continue;
+		    fputs("\n\t",fp);
+		    pos = 0;
+		}
+	    }
+	    if((i + 1) != f->h.numchars) {
+		fputs(",\n",fp);
+	    }
+	}
+	fprintf(fp,
+	    fonthdr,
+	    f->h.numchars - 1,
+	    CsymbolName,
+	    fntname,
+	    famname,
+	    f->h.proportional,
+	    f->h.width,
+	    f->h.height,
+	    f->h.baseline,
+	    f->h.ulpos,
+	    f->h.ulheight,
+	    f->h.minchar,
+	    f->h.numchars,
+        f->h.encoding,
+	    (strcat(bitname,","),bitname),
+	    f->minwidth,
+	    f->maxwidth,
+	    GrFontCharWidth(f,f->h.minchar)
+	);
+	offset = GrFontCharBitmapSize(f,f->h.minchar);
+	for(i = 1; i < f->h.numchars; i++) {
+	    int chr = i + f->h.minchar;
+	    fprintf(
+		fp,
+		charinfo,
+		GrFontCharWidth(f,chr),
+		offset,
+		((i == (f->h.numchars - 1)) ? ' ' : ','),
+		chr
+	    );
+	    offset += GrFontCharBitmapSize(f,chr);
+	}
+	fputs(fontend,fp);
+	fclose(fp);
 }
 

@@ -20,9 +20,9 @@
 
 void GrClearScreen(GrColor bg)
 {
-        GrContext save;
-        GrSaveContext(&save);
-        GrSetContext(SCRN);
-        GrClearContext(bg);
-        GrSetContext(&save);
+	GrContext save;
+	GrSaveContext(&save);
+	GrSetContext(SCRN);
+	GrClearContext(bg);
+	GrSetContext(&save);
 }

@@ -34,160 +34,160 @@ char test_text[] = {
 
 void displayfont(GrFont *font,char *text,int len)
 {
-        GrTextOption opt;
-        int ww,hh;
-        int bx,by;
-        int bw,bh;
-        GrEvent ev;
+	GrTextOption opt;
+	int ww,hh;
+	int bx,by;
+	int bw,bh;
+	GrEvent ev;
 
-        memset(&opt,0,sizeof(opt));
-        opt.txo_font   = font;
-        opt.txo_xalign = GR_ALIGN_LEFT;
-        opt.txo_yalign = GR_ALIGN_TOP;
-        GrFilledBox(0,0,GrSizeX(),GrSizeY(),GrBlack());
-        opt.txo_direct    = GR_TEXT_RIGHT;
-        opt.txo_fgcolor.v = GrBlack();
-        opt.txo_bgcolor.v = c1;
-        ww = GrStringWidth(text,len,&opt);
-        hh = GrStringHeight(text,len,&opt);
-        bw = ww+2*hh;
-        bh = ww;
-        bx = cx - bw/2;
-        by = cy - bh/2;
-        GrDrawString(text,len,bx+hh,by,&opt);
-        opt.txo_direct    = GR_TEXT_DOWN;
-        opt.txo_bgcolor.v = c2;
-        GrDrawString(text,len,bx+bw-hh,by,&opt);
-        opt.txo_direct    = GR_TEXT_LEFT;
-        opt.txo_bgcolor.v = c3;
-        GrDrawString(text,len,bx+bw-ww-hh,by+bh-hh,&opt);
-        opt.txo_direct    = GR_TEXT_UP;
-        opt.txo_bgcolor.v = c4;
-        GrDrawString(text,len,bx,by+bh-ww,&opt);
-        GrEventWaitKeyOrClick(&ev);
-        GrClearClipBox(GrBlack());
-        opt.txo_direct    = GR_TEXT_RIGHT;
-        opt.txo_fgcolor.v = c1;
-        opt.txo_bgcolor.v = GrBlack();
-        bx = GrSizeX() / 16;
-        by = GrSizeY() / 16;
-        bx = (bx + 7) & ~7;
-        while(by < GrSizeY()) {
-            GrDrawString(test_text,strlen(test_text),bx,by,&opt);
-            opt.txo_fgcolor.v ^= GR_UNDERLINE_TEXT;
-            by += hh;
-        }
-        GrEventWaitKeyOrClick(&ev);
+	memset(&opt,0,sizeof(opt));
+	opt.txo_font   = font;
+	opt.txo_xalign = GR_ALIGN_LEFT;
+	opt.txo_yalign = GR_ALIGN_TOP;
+	GrFilledBox(0,0,GrSizeX(),GrSizeY(),GrBlack());
+	opt.txo_direct    = GR_TEXT_RIGHT;
+	opt.txo_fgcolor = GrBlack();
+	opt.txo_bgcolor = c1;
+	ww = GrStringWidth(text,len,&opt);
+	hh = GrStringHeight(text,len,&opt);
+	bw = ww+2*hh;
+	bh = ww;
+	bx = cx - bw/2;
+	by = cy - bh/2;
+	GrDrawString(text,len,bx+hh,by,&opt);
+	opt.txo_direct    = GR_TEXT_DOWN;
+	opt.txo_bgcolor = c2;
+	GrDrawString(text,len,bx+bw-hh,by,&opt);
+	opt.txo_direct    = GR_TEXT_LEFT;
+	opt.txo_bgcolor = c3;
+	GrDrawString(text,len,bx+bw-ww-hh,by+bh-hh,&opt);
+	opt.txo_direct    = GR_TEXT_UP;
+	opt.txo_bgcolor = c4;
+	GrDrawString(text,len,bx,by+bh-ww,&opt);
+	GrEventWaitKeyOrClick(&ev);
+	GrClearClipBox(GrBlack());
+	opt.txo_direct    = GR_TEXT_RIGHT;
+	opt.txo_fgcolor = c1;
+	opt.txo_bgcolor = GrBlack();
+	bx = GrSizeX() / 16;
+	by = GrSizeY() / 16;
+	bx = (bx + 7) & ~7;
+	while(by < GrSizeY()) {
+	    GrDrawString(test_text,strlen(test_text),bx,by,&opt);
+	    opt.txo_fgcolor ^= GR_UNDERLINE_TEXT;
+	    by += hh;
+	}
+	GrEventWaitKeyOrClick(&ev);
 }
 
 TESTFUNC(fonttest)
 {
-        GrFont *f;
-        int i;
-        char buff[100];
-        cx = GrSizeX() / 2;
-        cy = GrSizeY() / 2;
-        c1 = GrAllocColor(100,200,100);
-        c2 = GrAllocColor(150,150,100);
-        c3 = GrAllocColor(100,100,200);
-        c4 = GrAllocColor(100,180,180);
-        GrBox(GrSizeX()/16 - 2,
-            GrSizeY()/16 - 2,
-            GrSizeX() - GrSizeX()/16 + 1,
-            GrSizeY() - GrSizeY()/16 + 1,
-            GrAllocColor(250,100,100)
-        );
-        GrSetClipBox(GrSizeX()/16,
-            GrSizeY()/16,
-            GrSizeX() - GrSizeX()/16 - 1,
-            GrSizeY() - GrSizeY()/16 - 1
-        );
-        strcpy(buff,"Default GRX font");
-        displayfont(&GrDefaultFont,buff,strlen(buff));
-        strcpy(buff,"Default font scaled to 6x10");
-        displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE),
-                6,
-                10,
-                ' ',
-                'z'
-            ),
-            buff,
-            strlen(buff)
-        );
-        strcpy(buff,"Default font scaled to 12x24");
-        displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE),
-                12,
-                24,
-                ' ',
-                'z'
-            ),
-            buff,
-            strlen(buff)
-        );
-        strcpy(buff,"Default font scaled to 18x36");
-        displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE),
-                18,
-                36,
-                ' ',
-                'z'
-            ),
-            buff,
-            strlen(buff)
-        );
-        strcpy(buff,"Default font scaled to 10x20 proportional");
-        displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE | GR_FONTCVT_PROPORTION),
-                10,
-                20,
-                ' ',
-                'z'
-            ),
-            buff,
-            strlen(buff)
-        );
-        strcpy(buff,"Default font scaled to 10x20 bold");
-        displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE | GR_FONTCVT_BOLDIFY),
-                10,
-                20,
-                ' ',
-                'z'
-            ),
-            buff,
-            strlen(buff)
-        );
-        strcpy(buff,"Default font scaled to 10x20 italic");
-        displayfont(
-            GrBuildConvertedFont(
-                &GrDefaultFont,
-                (GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE | GR_FONTCVT_ITALICIZE),
-                10,
-                20,
-                ' ',
-                'z'
-            ),
-            buff,
-            strlen(buff)
-        );
-        for(i = 0; i < Argc; i++) {
-            f = GrLoadFont(Argv[i]);
-            if(f) {
-                sprintf(buff,"This is font %s",Argv[i]);
-                displayfont(f,buff,strlen(buff));
-            }
-        }
+	GrFont *f;
+	int i;
+	char buff[100];
+	cx = GrSizeX() / 2;
+	cy = GrSizeY() / 2;
+	c1 = GrAllocColor(100,200,100);
+	c2 = GrAllocColor(150,150,100);
+	c3 = GrAllocColor(100,100,200);
+	c4 = GrAllocColor(100,180,180);
+	GrBox(GrSizeX()/16 - 2,
+	    GrSizeY()/16 - 2,
+	    GrSizeX() - GrSizeX()/16 + 1,
+	    GrSizeY() - GrSizeY()/16 + 1,
+	    GrAllocColor(250,100,100)
+	);
+	GrSetClipBox(GrSizeX()/16,
+	    GrSizeY()/16,
+	    GrSizeX() - GrSizeX()/16 - 1,
+	    GrSizeY() - GrSizeY()/16 - 1
+	);
+	strcpy(buff,"Default GRX font");
+	displayfont(GrGetDefaultFont(),buff,strlen(buff));
+	strcpy(buff,"Default font scaled to 6x10");
+	displayfont(
+	    GrBuildConvertedFont(
+		GrGetDefaultFont(),
+		(GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE),
+		6,
+		10,
+		' ',
+		'z'
+	    ),
+	    buff,
+	    strlen(buff)
+	);
+	strcpy(buff,"Default font scaled to 12x24");
+	displayfont(
+	    GrBuildConvertedFont(
+		GrGetDefaultFont(),
+		(GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE),
+		12,
+		24,
+		' ',
+		'z'
+	    ),
+	    buff,
+	    strlen(buff)
+	);
+	strcpy(buff,"Default font scaled to 18x36");
+	displayfont(
+	    GrBuildConvertedFont(
+		GrGetDefaultFont(),
+		(GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE),
+		18,
+		36,
+		' ',
+		'z'
+	    ),
+	    buff,
+	    strlen(buff)
+	);
+	strcpy(buff,"Default font scaled to 10x20 proportional");
+	displayfont(
+	    GrBuildConvertedFont(
+		GrGetDefaultFont(),
+		(GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE | GR_FONTCVT_PROPORTION),
+		10,
+		20,
+		' ',
+		'z'
+	    ),
+	    buff,
+	    strlen(buff)
+	);
+	strcpy(buff,"Default font scaled to 10x20 bold");
+	displayfont(
+	    GrBuildConvertedFont(
+		GrGetDefaultFont(),
+		(GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE | GR_FONTCVT_BOLDIFY),
+		10,
+		20,
+		' ',
+		'z'
+	    ),
+	    buff,
+	    strlen(buff)
+	);
+	strcpy(buff,"Default font scaled to 10x20 italic");
+	displayfont(
+	    GrBuildConvertedFont(
+		GrGetDefaultFont(),
+		(GR_FONTCVT_SKIPCHARS | GR_FONTCVT_RESIZE | GR_FONTCVT_ITALICIZE),
+		10,
+		20,
+		' ',
+		'z'
+	    ),
+	    buff,
+	    strlen(buff)
+	);
+	for(i = 0; i < Argc; i++) {
+	    f = GrLoadFont(Argv[i]);
+	    if(f) {
+		sprintf(buff,"This is font %s",Argv[i]);
+		displayfont(f,buff,strlen(buff));
+	    }
+	}
 }
 

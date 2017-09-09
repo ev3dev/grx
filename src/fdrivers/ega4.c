@@ -38,56 +38,56 @@ static int  writeops[] = {
 
 static int init(GrVideoMode *mp)
 {
-        GRX_ENTER();
-        /* set write mode 0 */
-        outport_w(VGA_GR_CTRL_PORT,((0 << 8) | VGA_MODE_REG));
-        /* don't care register to 0 */
-        outport_w(VGA_GR_CTRL_PORT,((0 << 8) | VGA_COLOR_DONTC_REG));
-        /* enable all 4 planes for writing */
-        outport_w(VGA_SEQUENCER_PORT,((0x0f << 8) | VGA_WRT_PLANE_ENB_REG));
-        /* enable all 4 planes for set/reset */
-        outport_w(VGA_GR_CTRL_PORT,((0x0f << 8) | VGA_SET_RESET_ENB_REG));
-        lastcolor = (-1L);
-        GRX_RETURN(TRUE);
+	GRX_ENTER();
+	/* set write mode 0 */
+	outport_w(VGA_GR_CTRL_PORT,((0 << 8) | VGA_MODE_REG));
+	/* don't care register to 0 */
+	outport_w(VGA_GR_CTRL_PORT,((0 << 8) | VGA_COLOR_DONTC_REG));
+	/* enable all 4 planes for writing */
+	outport_w(VGA_SEQUENCER_PORT,((0x0f << 8) | VGA_WRT_PLANE_ENB_REG));
+	/* enable all 4 planes for set/reset */
+	outport_w(VGA_GR_CTRL_PORT,((0x0f << 8) | VGA_SET_RESET_ENB_REG));
+	lastcolor = (-1L);
+	GRX_RETURN(TRUE);
 }
 
 
 static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
-        char *ptr;
-        unsigned mask, pixval;
-        GRX_ENTER();
-        ptr = &SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
-        mask= 0x80U >> (x &= 7);
-        setup_far_selector(SCRN->gc_selector);
-        outport_w(VGA_GR_CTRL_PORT,((3 << 8) | VGA_RD_PLANE_SEL_REG));
-        pixval = (peek_b_f(ptr) & mask);
-        outport_b(VGA_GR_CTRL_DATA,2);
-        pixval = (peek_b_f(ptr) & mask) | (pixval << 1);
-        outport_b(VGA_GR_CTRL_DATA,1);
-        pixval = (peek_b_f(ptr) & mask) | (pixval << 1);
-        outport_b(VGA_GR_CTRL_DATA,0);
-        pixval = (peek_b_f(ptr) & mask) | (pixval << 1);
-        lastcolor = (-1L);
-        GRX_RETURN((GrColor)(pixval >> (7 - x)));
+	char *ptr;
+	unsigned mask, pixval;
+	GRX_ENTER();
+	ptr = &SCRN->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
+	mask= 0x80U >> (x &= 7);
+	setup_far_selector(SCRN->gc_selector);
+	outport_w(VGA_GR_CTRL_PORT,((3 << 8) | VGA_RD_PLANE_SEL_REG));
+	pixval = (peek_b_f(ptr) & mask);
+	outport_b(VGA_GR_CTRL_DATA,2);
+	pixval = (peek_b_f(ptr) & mask) | (pixval << 1);
+	outport_b(VGA_GR_CTRL_DATA,1);
+	pixval = (peek_b_f(ptr) & mask) | (pixval << 1);
+	outport_b(VGA_GR_CTRL_DATA,0);
+	pixval = (peek_b_f(ptr) & mask) | (pixval << 1);
+	lastcolor = (-1L);
+	GRX_RETURN((GrColor)(pixval >> (7 - x)));
 }
 
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        char *ptr;
-        GRX_ENTER();
-        ptr = &CURC->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
-        setup_far_selector(CURC->gc_selector);
-        if(lastcolor != color) {
-            outport_w(VGA_GR_CTRL_PORT,writeops[C_OPER(color) & 3]);
-            outport_w(VGA_GR_CTRL_PORT,((((int)color & 0x0f) << 8) | VGA_SET_RESET_REG));
-            lastcolor = color;
-        }
-        outport_w(VGA_GR_CTRL_PORT,((0x8000U >> (x & 7)) | VGA_BIT_MASK_REG));
-        poke_b_f_or(ptr,0);
-        GRX_LEAVE();
+	char *ptr;
+	GRX_ENTER();
+	ptr = &CURC->gc_baseaddr[0][FOFS(x,y,SCRN->gc_lineoffset)];
+	setup_far_selector(CURC->gc_selector);
+	if(lastcolor != color) {
+	    outport_w(VGA_GR_CTRL_PORT,writeops[C_OPER(color) & 3]);
+	    outport_w(VGA_GR_CTRL_PORT,((((int)color & 0x0f) << 8) | VGA_SET_RESET_REG));
+	    lastcolor = color;
+	}
+	outport_w(VGA_GR_CTRL_PORT,((0x8000U >> (x & 7)) | VGA_BIT_MASK_REG));
+	poke_b_f_or(ptr,0);
+	GRX_LEAVE();
 }
 
 static

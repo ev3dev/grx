@@ -22,8 +22,8 @@
 
 void GrPatternFloodFill(int x, int y, GrColor border, GrPattern *p)
 {
-        GrFillArg fval;
+	GrFillArg fval;
 
-        fval.p = p;
-        _GrFloodFill(x,y,border,&_GrPatternFiller,fval);
+	fval.p = p;
+	_GrFloodFill(x,y,border,&_GrPatternFiller,fval);
 }

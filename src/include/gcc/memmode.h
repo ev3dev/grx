@@ -41,8 +41,8 @@ extern   char          *__transfer_buffer;
 #endif   /* __MSDOS__ */
 
 #define  MK_FP(s,o)      (void *)(                  \
-        ((long)(unsigned short)(s) << 4) +          \
-        (unsigned short)(o)                         \
+	((long)(unsigned short)(s) << 4) +          \
+	(unsigned short)(o)                         \
 )
 #define  FP_SEG(p)      (unsigned short)((long)(p) >> 4)
 #define  FP_OFF(p)      (unsigned short)((int)(p) & 15)

@@ -1,4 +1,4 @@
-Welcome to MGRX 1.0!
+Welcome to MGRX 1.1!
 
 MGRX is a 2D graphics C library derived from the GRX library. GRX was
 originaly written by Csaba Biegl for DJ Delorie's DOS port of the GCC
@@ -22,16 +22,15 @@ Why MGRX
 MGRX (mgrx.fgrim.com) is a fork of GRX (grx.gnu.de). Because I liked the
 GRX C API interface, I began to maintain GRX when it was orphaned at the
 end of 2000. But GRX has not only the C API, it has a Pascal API, a BGI
-compatibility API, support for Turbo C, Wattcom, MSC and some X11
-implementations over mainframes. At the end it no was must fun, to easy
-to break things I don't know (and don't want to know). So I stoped my job
-maintaining GRX at the end of 2003. At the time I write this, GRX is still
-orphaned.
+compatibility API, support for Turbo C, Wattcom, MSC and some obscure X11
+implementations over mainframes. At the end it was not funny, it was easy
+to break things I didn't know . So I stopped maintaining GRX at the end
+of 2003.
 
-But in the mean time I developed a fork for my own use, only the C API,
-no Pascal, no BGI, no Turbo C support, only the 4 platforms I can test. And
-a new (and better I think) input API. And now I have released it, only for
-fun.
+After that I developed a fork for my own use, only the C API, no Pascal,
+no BGI, no Turbo C support, only the 4 platforms I can test. It comes
+with a new (and better I think) input API and some (limited) Intl support.
+I have released it for fun, maybe it can be useful for someone.
 
 MGRX installation instructions
 ==============================
@@ -39,7 +38,7 @@ MGRX installation instructions
 Requirements:
 -------------
 
-  The source files and fonts:  mgrx09.tar.gz or mgrx09.zip
+  The source files and fonts:  mgrx110.tar.gz or mgrx110s.zip
   This document:               readme
 
 A. Unpacking the MGRX archive
@@ -58,12 +57,12 @@ A. Unpacking the MGRX archive
 
   3) unpack the MGRX archive:
 
-         tar xzvf mgrx09.tar.gz  (1)
+         tar xzvf mgrx110.tar.gz  (1)
      or
-         unzip mgrx09.zip        (2)
+         unzip mgrx110s.zip        (2)
 
-     (1) This will create the subdirectory 'mgrx09'.
-     (2) This will create the subdirectory 'contrib/mgrx09'.
+     (1) This will create the subdirectory 'mgrx110'.
+     (2) This will create the subdirectory 'contrib/mgrx110'.
 
 B. Compiling MGRX
 -----------------
@@ -136,20 +135,19 @@ F. Installing MGRX fonts
 Support for the x86_64 architecture
 ===================================
 
-  By default, on linux, the makefiles build the library for the i386
-  architecture even in a x86_64 cpu. To build the x86_64 library (in
-  a x86_64 compatible cpu of course) you must set to 'y' the BUILD_X86_64
-  variable in the makedefs.grx file.
+  By default, on linux, the makefiles build the library for the x86_64
+  architecture. To build the i386 library you must set to 'n' the
+  BUILD_X86_64 variable in the makedefs.grx file.
 
 Environment variables for using MGRX programs
 =============================================
 
   1) set the default driver and graphics mode info (very useful but not
-     required), in DOS or Windows:
+     required). DOS or Windows:
 
        SET MGRXDRV=<driver> gw <width> gh <height> nc <colors>
 
-     in Linux:
+     Linux:
 
        export MGRXDRV="<driver> gw <width> gh <height> nc <colors>"
 
@@ -162,8 +160,20 @@ Environment variables for using MGRX programs
 
      Values for gw and gh can be by example 640,480 or 800,600
      Values for nc can be 2, 16, 256, 64K or 16M.
+     
+  2) Set the keyboard system encoding. MGRX try to guess it, but if
+     unsure it will use this variable. DOS or Windows:
+     
+       SET MGRXKBSYSENCODING=<kbsysencoding>
+       
+     Linux:
+     
+       export MGRXKBSYSENCODING="<kbsysencoding>"
+       
+     Posible values are: "CP437", "CP850", "CP1252", "ISO_8859_1", "UTF_8"
+     or "UCS_2".
 
-  2) set the GRX font dir, in DOS or Windows:
+  3) set the GRX font dir, in DOS or Windows:
 
        SET MGRXFONT=<directory for the MGRX fonts>
 
@@ -176,7 +186,7 @@ Environment variables for using MGRX programs
      NOTE: You can define a default font directory when compiling MGRX.
            Check the "makedefs.grx" file. 
 
-  3) the linux framebuffer driver opens the "/dev/fb0" device file by
+  4) the linux framebuffer driver opens the "/dev/fb0" device file by
      default, if you want to open an alternate device file, set the
      $FRAMEBUFFER environment variable:
 
@@ -185,7 +195,7 @@ Environment variables for using MGRX programs
 Help
 ====
 
-  Read the programmer's guide in the "doc/grx246um.htm" file.
+  Read the programmer's guide in the "doc/mgrx11pm.htm" file.
 
   See the MGRX site (mgrx.fgrim.com) for updates, tips, ... 
 

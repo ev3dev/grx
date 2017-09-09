@@ -34,25 +34,25 @@ void delay(unsigned msec)
  
       if ((msec%10000/182) > (5000/182)) /* Manual round ticks */
       {
-        end_tick++;
+	end_tick++;
       }
       if (end_tick > TICK_PER_DAY)  /* Tick time past midnight */
       {
-        /* check for midnight */
-        while (r.h.al == 0)
-        {
-          r.h.ah = 0x00;
-          __dpmi_int(0x1A, &r);
-          __dpmi_yield();
-        }
-        end_tick = end_tick - TICK_PER_DAY;
+	/* check for midnight */
+	while (r.h.al == 0)
+	{
+	  r.h.ah = 0x00;
+	  __dpmi_int(0x1A, &r);
+	  __dpmi_yield();
+	}
+	end_tick = end_tick - TICK_PER_DAY;
       }
  
       while (((r.x.cx << 16) + (r.x.dx & 0xffffUL)) <= end_tick)
       {
-        r.h.ah = 0x00;
-        __dpmi_int(0x1A, &r);
-        __dpmi_yield();
+	r.h.ah = 0x00;
+	__dpmi_int(0x1A, &r);
+	__dpmi_yield();
       }
       msec = 0;  /* waited the required time */
     }

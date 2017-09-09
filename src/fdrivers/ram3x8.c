@@ -34,15 +34,15 @@
 static INLINE
 GrColor readpixel(GrFrame *c,int x,int y)
 {
-        GR_int32u offs;
-        GrColor pix;
-        GRX_ENTER();
-        offs = FOFS(x,y,c->gf_lineoffset);
-        pix = 0;
-        WR24BYTE(pix,0,peek_b(&c->gf_baseaddr[0][offs]));
-        WR24BYTE(pix,1,peek_b(&c->gf_baseaddr[1][offs]));
-        WR24BYTE(pix,2,peek_b(&c->gf_baseaddr[2][offs]));
-        GRX_RETURN(pix);
+	GR_int32u offs;
+	GrColor pix;
+	GRX_ENTER();
+	offs = FOFS(x,y,c->gf_lineoffset);
+	pix = 0;
+	WR24BYTE(pix,0,peek_b(&c->gf_baseaddr[0][offs]));
+	WR24BYTE(pix,1,peek_b(&c->gf_baseaddr[1][offs]));
+	WR24BYTE(pix,2,peek_b(&c->gf_baseaddr[2][offs]));
+	GRX_RETURN(pix);
 }
 
 /* -------------------------------------------------------------------- */
@@ -50,32 +50,32 @@ GrColor readpixel(GrFrame *c,int x,int y)
 static INLINE
 void drawpixel(int x,int y,GrColor color)
 {
-        GR_int32u offs;
-        char *p0,*p1,*p2;
-        GRX_ENTER();
-        offs = FOFS(x,y,CURC->gc_lineoffset);
-        p0 = &CURC->gc_baseaddr[0][offs];
-        p1 = &CURC->gc_baseaddr[1][offs];
-        p2 = &CURC->gc_baseaddr[2][offs];
-        switch(C_OPER(color)) {
-          case C_XOR: poke_b_xor(p0,RD24BYTE(color,0));
-                      poke_b_xor(p1,RD24BYTE(color,1));
-                      poke_b_xor(p2,RD24BYTE(color,2));
-                      break;
-          case C_OR:  poke_b_or(p0,RD24BYTE(color,0));
-                      poke_b_or(p1,RD24BYTE(color,1));
-                      poke_b_or(p2,RD24BYTE(color,2));
-                      break;
-          case C_AND: poke_b_and(p0,RD24BYTE(color,0));
-                      poke_b_and(p1,RD24BYTE(color,1));
-                      poke_b_and(p2,RD24BYTE(color,2));
-                      break;
-          default:    poke_b(p0,RD24BYTE(color,0));
-                      poke_b(p1,RD24BYTE(color,1));
-                      poke_b(p2,RD24BYTE(color,2));
-                      break;
-        }
-        GRX_LEAVE();
+	GR_int32u offs;
+	char *p0,*p1,*p2;
+	GRX_ENTER();
+	offs = FOFS(x,y,CURC->gc_lineoffset);
+	p0 = &CURC->gc_baseaddr[0][offs];
+	p1 = &CURC->gc_baseaddr[1][offs];
+	p2 = &CURC->gc_baseaddr[2][offs];
+	switch(C_OPER(color)) {
+	  case C_XOR: poke_b_xor(p0,RD24BYTE(color,0));
+		      poke_b_xor(p1,RD24BYTE(color,1));
+		      poke_b_xor(p2,RD24BYTE(color,2));
+		      break;
+	  case C_OR:  poke_b_or(p0,RD24BYTE(color,0));
+		      poke_b_or(p1,RD24BYTE(color,1));
+		      poke_b_or(p2,RD24BYTE(color,2));
+		      break;
+	  case C_AND: poke_b_and(p0,RD24BYTE(color,0));
+		      poke_b_and(p1,RD24BYTE(color,1));
+		      poke_b_and(p2,RD24BYTE(color,2));
+		      break;
+	  default:    poke_b(p0,RD24BYTE(color,0));
+		      poke_b(p1,RD24BYTE(color,1));
+		      poke_b(p2,RD24BYTE(color,2));
+		      break;
+	}
+	GRX_LEAVE();
 }
 
 /* -------------------------------------------------------------------- */
@@ -88,15 +88,15 @@ static void drawhline(int x,int y,int w,GrColor color) {
     offs = FOFS(x,y,CURC->gc_lineoffset);
     for (pl=0; pl < 3; ++pl) {
       if(DOCOLOR8(color,copr)) {
-        GR_repl cval = freplicate_b(color);
-        char *pp = &CURC->gc_baseaddr[pl][offs];
-        int ww = w;
-        switch(copr) {
-            case C_XOR: repfill_b_xor(pp,cval,ww); break;
-            case C_OR:  repfill_b_or( pp,cval,ww); break;
-            case C_AND: repfill_b_and(pp,cval,ww); break;
-            default:    repfill_b(    pp,cval,ww); break;
-        }
+	GR_repl cval = freplicate_b(color);
+	char *pp = &CURC->gc_baseaddr[pl][offs];
+	int ww = w;
+	switch(copr) {
+	    case C_XOR: repfill_b_xor(pp,cval,ww); break;
+	    case C_OR:  repfill_b_or( pp,cval,ww); break;
+	    case C_AND: repfill_b_and(pp,cval,ww); break;
+	    default:    repfill_b(    pp,cval,ww); break;
+	}
       }
       color >>= 8;
     }
@@ -117,14 +117,14 @@ static void drawvline(int x,int y,int h,GrColor color)
     offs = FOFS(x,y,lwdt);
     for (pl=0; pl < 3; ++pl) {
       if(DOCOLOR8(color,copr)) {
-        char *pp = &CURC->gc_baseaddr[pl][offs];
-        int hh = h;
-        switch(copr) {
-            case C_XOR: colfill_b_xor(pp,lwdt,(GR_int8u)color,hh); break;
-            case C_OR:  colfill_b_or( pp,lwdt,(GR_int8u)color,hh); break;
-            case C_AND: colfill_b_and(pp,lwdt,(GR_int8u)color,hh); break;
-            default:    colfill_b(    pp,lwdt,(GR_int8u)color,hh); break;
-        }
+	char *pp = &CURC->gc_baseaddr[pl][offs];
+	int hh = h;
+	switch(copr) {
+	    case C_XOR: colfill_b_xor(pp,lwdt,(GR_int8u)color,hh); break;
+	    case C_OR:  colfill_b_or( pp,lwdt,(GR_int8u)color,hh); break;
+	    case C_AND: colfill_b_and(pp,lwdt,(GR_int8u)color,hh); break;
+	    default:    colfill_b(    pp,lwdt,(GR_int8u)color,hh); break;
+	}
       }
       color >>= 8;
     }
@@ -152,20 +152,20 @@ static
 
 /* in pblitr2r.c if GRX_USE_RAM3x8 defined */
 extern void _GrFrDrvPackedBitBltR2Rpl(GrFrame *dst,int dx,int dy,
-                                      GrFrame *src,int x,int y,
-                                      int w,int h,GrColor op,int plane);
+				      GrFrame *src,int x,int y,
+				      int w,int h,GrColor op,int plane);
 
 static void bitblit(GrFrame *dst,int dx,int dy,
-                    GrFrame *src,int sx,int sy,
-                    int w,int h,GrColor op)
+		    GrFrame *src,int sx,int sy,
+		    int w,int h,GrColor op)
 {
     int pl;
     GRX_ENTER();
     if(GrColorMode(op) == GrIMAGE)
-        bitblt(dst,dx,dy,src,sx,sy,w,h,op);
+	bitblt(dst,dx,dy,src,sx,sy,w,h,op);
     else
-        for (pl=0; pl < 3; ++pl)
-            _GrFrDrvPackedBitBltR2Rpl(dst,dx,dy,src,sx,sy,w,h,op,pl);
+	for (pl=0; pl < 3; ++pl)
+	    _GrFrDrvPackedBitBltR2Rpl(dst,dx,dy,src,sx,sy,w,h,op,pl);
     GRX_LEAVE();
 }
 
