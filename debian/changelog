@@ -1,3 +1,9 @@
+grx (3.0.0~artful1) artful; urgency=medium
+
+  * Artful branch
+
+ -- David Lechner <david@lechnology.com>  Fri, 20 Oct 2017 17:16:52 -0500
+
 grx (3.0.0~zesty1) zesty; urgency=medium
 
   * Rename a bunch functions and remove some others
