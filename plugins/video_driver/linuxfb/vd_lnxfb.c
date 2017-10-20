@@ -64,7 +64,7 @@ static int detect(void)
 {
     struct vt_stat vtstat;
     struct fb_con2fbmap con2fb_map;
-    char ttyname[12];
+    char ttyname[15];
     char fbname[10];
     int err;
 
