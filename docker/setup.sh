@@ -6,15 +6,9 @@ project="grx"
 
 script_dir=$(dirname $(readlink -f "${0}"))
 
-build_dir="${1}"
-if [ ! -n "${build_dir}" ]; then
-    echo "Error: Must specify build directory"
-    exit 1
-fi
-
-case ${2} in
+case ${1} in
     armel|armhf)
-        arch=${2}
+        arch=${1}
         ;;
     *)
         echo "Error: Must specify 'armel' or 'armhf'"
@@ -27,15 +21,17 @@ if ! which docker >/dev/null; then
     exit 1
 fi
 
+build_dir=build-${arch}
 image_name="${project}-${arch}"
 container_name="${project}_${arch}"
+
+mkdir -p ${build_dir}
 
 docker build \
     --tag ${image_name} \
     --no-cache \
     --file "${script_dir}/${arch}.dockerfile" \
     "${script_dir}/"
-mkdir -p ${build_dir}
 
 docker rm --force ${container_name} >/dev/null 2>&1 || true
 docker run \
@@ -52,6 +48,7 @@ docker run \
 docker exec --tty ${container_name} cmake /src \
     -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_TOOLCHAIN_FILE=/home/compiler/toolchain.cmake \
+    -DGRX_PLUGIN_GTK3=No \
     -DGRX_ENABLE_DOC=No
 
 echo "Done. You can now compile by running 'docker exec --tty ${container_name} make'"
