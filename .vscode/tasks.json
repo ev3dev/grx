@@ -19,7 +19,8 @@
             ]
         },
         {
-            "taskName": "edit_cache"
+            "taskName": "edit_cache",
+            "problemMatcher": []
         },
         {
             "taskName": "reload_cache"
