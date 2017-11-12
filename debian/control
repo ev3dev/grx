@@ -29,7 +29,7 @@ Homepage: https://github.com/ev3dev/grx
 Vcs-Git: https://github.com/ev3dev/grx.git
 Vcs-Browser: https://github.com/ev3dev/grx
 
-Package: libgrx-3.0-1
+Package: libgrx-3.0-2
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -45,7 +45,7 @@ Package: libgrx-3.0-dev
 Section: libdevel
 Architecture: any
 Multi-Arch: same
-Depends: libgrx-3.0-1 (= ${binary:Version}), gir1.2-grx-3.0 (= ${binary:Version}),
+Depends: libgrx-3.0-2 (= ${binary:Version}), gir1.2-grx-3.0 (= ${binary:Version}),
     ${misc:Depends}, pkg-config,
     libglib2.0-dev, libpng-dev, libfontconfig1-dev, libfreetype6-dev
 Description: 2D graphics library
