@@ -301,6 +301,11 @@ void grx_linuxfb_update_pointer (gint32 dx, gint32 dy, gint32 *x, gint32 *y)
     pointer_y = *y;
 }
 
+void grx_linuxfb_get_pointer(guint32 *x, guint32 *y)
+{
+    *x = pointer_x;
+    *y = pointer_y;
+}
 
 static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)
 {

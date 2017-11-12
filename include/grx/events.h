@@ -138,6 +138,8 @@ typedef struct {
  * @type: @GRX_EVENT_TYPE_BUTTON_PRESS, @GRX_EVENT_TYPE_BUTTON_RELEASE
  * or @GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS
  * @button: the platform dependent button code
+ * @x: the pointer position along the x axis
+ * @y: the pointer position along the y axis
  * @modifiers: modifier key flags
  * @device: the originating device
  *
@@ -146,6 +148,8 @@ typedef struct {
 typedef struct {
     GrxEventType type;
     guint32 button;
+    gint32 x;
+    gint32 y;
     GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxButtonEvent;
@@ -207,7 +211,7 @@ GrxDevice *grx_event_get_device (GrxEvent *event);
 GrxKey grx_event_get_keysym (GrxEvent *event);
 gunichar grx_event_get_keychar (GrxEvent *event);
 guint32 grx_event_get_keycode (GrxEvent *event);
-void grx_event_get_coords (GrxEvent *event, guint32 *x, guint32 *y);
+void grx_event_get_coords (GrxEvent *event, gint *x, gint *y);
 guint32 grx_event_get_button (GrxEvent *event);
 
 /**

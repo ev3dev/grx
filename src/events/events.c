@@ -352,15 +352,22 @@ guint32 grx_event_get_keycode (GrxEvent *event)
  *
  * Gets the screen coordinates of an event.
  *
- * @x and @y are set to -1 if @event is not a #GrxMotionEvent or #GrxTouchEvent.
+ * @x and @y are set to -1 if @event is not a #GrxButtonEvent, #GrxMotionEvent
+ * or #GrxTouchEvent.
  */
-void grx_event_get_coords (GrxEvent *event, guint32 *x, guint32 *y)
+void grx_event_get_coords (GrxEvent *event, gint *x, gint *y)
 {
     g_return_if_fail (event != NULL);
     g_return_if_fail (x != NULL);
     g_return_if_fail (y != NULL);
 
     switch (event->type) {
+    case GRX_EVENT_TYPE_BUTTON_PRESS:
+    case GRX_EVENT_TYPE_BUTTON_RELEASE:
+    case GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS:
+        *x = event->button.x;
+        *y = event->button.y;
+        break;
     case GRX_EVENT_TYPE_POINTER_MOTION:
         *x = event->motion.x;
         *y = event->motion.y;

@@ -245,6 +245,8 @@ static gboolean on_event (GtkWidget *widget, GdkEvent *event, gpointer user_data
             // grx_event.button.device = GRX_DEVICE (grx_gtk3_device_lookup
             //     (device_manager, event->button.device));
             grx_event.button.button = event->button.button;
+            grx_event.button.x = event->button.x;
+            grx_event.button.y = event->button.y;
             grx_event.button.modifiers = map_modifiers (event->button.state);
             break;
         case GDK_TOUCH_BEGIN:

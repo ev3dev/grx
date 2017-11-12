@@ -843,8 +843,8 @@ namespace Grx {
     [CCode (has_type_id = false)]
     public struct MotionEvent {
         EventType type;
-        int32 x;
-        int32 y;
+        int x;
+        int y;
         ModifierFlags modifiers;
         Device *device;
     }
@@ -853,6 +853,8 @@ namespace Grx {
     public struct ButtonEvent {
         EventType type;
         uint button;
+        int x;
+        int y;
         ModifierFlags modifiers;
         Device *device;
     }
@@ -880,7 +882,7 @@ namespace Grx {
         public Key keysym { get; }
         public unichar keychar { get; }
         public uint32 keycode { get; }
-        public void get_coords (out uint32 x, out uint32 y);
+        public void get_coords (out int x, out int y);
         public uint32 button_code { [CCode (cname="grx_event_get_button")] get; }
     }
 

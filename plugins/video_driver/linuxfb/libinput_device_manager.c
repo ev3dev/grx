@@ -179,6 +179,7 @@ static gboolean source_check (GSource *source)
 // TODO: put this in a header file
 extern void grx_linuxfb_chvt (int vt_num);
 extern void grx_linuxfb_update_pointer (gint32 dx, gint32 dy, gint32 *x, gint32 *y);
+extern void grx_linuxfb_get_pointer (gint32 *x, gint32 *y);
 
 static gboolean
 source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
@@ -334,6 +335,7 @@ source_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
                 break;
             }
             grx_event.button.button = button;
+            grx_linuxfb_get_pointer(&grx_event.button.x, &grx_event.button.y);
             grx_event.button.modifiers = grx_libinput_device_get_modifier_flags (grx_device);
             grx_event.button.device = GRX_DEVICE (grx_device);
         }
