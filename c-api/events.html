@@ -547,13 +547,14 @@ is not a <a class="link" href="events.html#GrxKeyEvent" title="GrxKeyEvent"><spa
 <a name="grx-event-get-coords"></a><h3>grx_event_get_coords ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 grx_event_get_coords (<em class="parameter"><code><a class="link" href="events.html#GrxEvent"><span class="type">GrxEvent</span></a> *event</code></em>,
-                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *x</code></em>,
-                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *y</code></em>);</pre>
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *x</code></em>,
+                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *y</code></em>);</pre>
 <p>Gets the screen coordinates of an event.</p>
 <p><em class="parameter"><code>x</code></em>
  and <em class="parameter"><code>y</code></em>
  are set to -1 if <em class="parameter"><code>event</code></em>
- is not a <a class="link" href="events.html#GrxMotionEvent" title="GrxMotionEvent"><span class="type">GrxMotionEvent</span></a> or <a class="link" href="events.html#GrxTouchEvent" title="GrxTouchEvent"><span class="type">GrxTouchEvent</span></a>.</p>
+ is not a <a class="link" href="events.html#GrxButtonEvent" title="GrxButtonEvent"><span class="type">GrxButtonEvent</span></a>, <a class="link" href="events.html#GrxMotionEvent" title="GrxMotionEvent"><span class="type">GrxMotionEvent</span></a>
+or <a class="link" href="events.html#GrxTouchEvent" title="GrxTouchEvent"><span class="type">GrxTouchEvent</span></a>.</p>
 <div class="refsect3">
 <a name="grx-event-get-coords.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -982,6 +983,8 @@ or <em class="parameter"><code>GRX_EVENT_TYPE_KEY_UP</code></em>
 <pre class="programlisting">typedef struct {
     GrxEventType type;
     guint32 button;
+    gint32 x;
+    gint32 y;
     GrxModifierFlags modifiers;
     GrxDevice *device;
 } GrxButtonEvent;
@@ -1007,6 +1010,16 @@ or <em class="parameter"><code>GRX_EVENT_TYPE_BUTTON_DOUBLE_PRESS</code></em>
 <tr>
 <td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="GrxButtonEvent.button"></a>button</code></em>;</p></td>
 <td class="struct_member_description"><p>the platform dependent button code</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> <em class="structfield"><code><a name="GrxButtonEvent.x"></a>x</code></em>;</p></td>
+<td class="struct_member_description"><p>the pointer position along the x axis</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> <em class="structfield"><code><a name="GrxButtonEvent.y"></a>y</code></em>;</p></td>
+<td class="struct_member_description"><p>the pointer position along the y axis</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>

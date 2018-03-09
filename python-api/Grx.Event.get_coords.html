@@ -14,13 +14,14 @@
 <div class="hgroup"><h1 class="title"><span class="title">Grx.Event.get_coords</span></h1></div>
 <div class="region">
 <div class="contents">
-<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(Grx.Event, guint32, guint32)
+<div class="synopsis"><div class="inner"><div class="region"><div class="contents"><div class="code"><pre class="contents syntax brush-python">@accepts(Grx.Event, int, int)
 @returns(none)
 def get_coords(self, x, y):
     # Python wrapper for grx_event_get_coords()
   </pre></div></div></div></div></div>
 <p class="p">Gets the screen coordinates of an event.</p>
-<p class="p"><span class="code">x</span> and <span class="code">y</span> are set to -1 if <span class="code">self</span> is not a <span class="link"><a href="Grx.MotionEvent.html" title="Grx.MotionEvent">Grx.MotionEvent</a></span> or <span class="link"><a href="Grx.TouchEvent.html" title="Grx.TouchEvent">Grx.TouchEvent</a></span>.</p>
+<p class="p"><span class="code">x</span> and <span class="code">y</span> are set to -1 if <span class="code">self</span> is not a <span class="link"><a href="Grx.ButtonEvent.html" title="Grx.ButtonEvent">Grx.ButtonEvent</a></span>, <span class="link"><a href="Grx.MotionEvent.html" title="Grx.MotionEvent">Grx.MotionEvent</a></span>
+or <span class="link"><a href="Grx.TouchEvent.html" title="Grx.TouchEvent">Grx.TouchEvent</a></span>.</p>
 <div class="terms"><div class="inner"><div class="region"><dl class="terms">
 <dt class="terms"><span class="code">self</span></dt>
 <dd class="terms"><p class="p">the event</p></dd>

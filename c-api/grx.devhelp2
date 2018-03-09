@@ -2999,6 +2999,8 @@
     <keyword type="member" name="GrxMotionEvent.device" link="events.html#GrxMotionEvent.device"/>
     <keyword type="member" name="GrxButtonEvent.type" link="events.html#GrxButtonEvent.type"/>
     <keyword type="member" name="GrxButtonEvent.button" link="events.html#GrxButtonEvent.button"/>
+    <keyword type="member" name="GrxButtonEvent.x" link="events.html#GrxButtonEvent.x"/>
+    <keyword type="member" name="GrxButtonEvent.y" link="events.html#GrxButtonEvent.y"/>
     <keyword type="member" name="GrxButtonEvent.modifiers" link="events.html#GrxButtonEvent.modifiers"/>
     <keyword type="member" name="GrxButtonEvent.device" link="events.html#GrxButtonEvent.device"/>
     <keyword type="member" name="GrxTouchEvent.type" link="events.html#GrxTouchEvent.type"/>
