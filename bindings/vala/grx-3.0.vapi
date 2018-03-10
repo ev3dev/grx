@@ -869,9 +869,13 @@ namespace Grx {
         Device *device;
     }
 
-    [CCode (has_type_id = false)]
+    [CCode (copy_function = "grx_event_copy", free_function = "grx_event_free")]
     [Compact]
     public class Event {
+        /**
+         * Creates a new event;
+         */
+        public Event (EventType type);
         public EventType type;
         public KeyEvent key;
         public MotionEvent motion;
