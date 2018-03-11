@@ -12,7 +12,7 @@ macro (add_demo name)
         unset (simpleSource)
     endif ()
 
-    vala2c (${name}C
+    vala2c (vala-${name}-vala
         SOURCE_FILES
             ${name}.vala
             ${simpleSource}
@@ -30,7 +30,7 @@ macro (add_demo name)
             ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi
     )
 
-    add_executable (vala-${name} ${${name}C})
+    add_executable (vala-${name} $<TARGET_PROPERTY:vala-${name}-vala,C_FILES>)
     set_property (TARGET vala-${name} PROPERTY OUTPUT_NAME ${name})
     target_compile_options (vala-${name} PRIVATE "-w")
     target_include_directories (vala-${name} PRIVATE

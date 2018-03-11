@@ -11,7 +11,7 @@ pkg_check_modules (GRX_CALIBRATE_DEPS REQUIRED
     gudev-1.0
 )
 
-vala2c (GRX_CALIBRATE_C
+vala2c (grx-calibrate-touch-vala
     SOURCE_FILES
         calibrate-touch.vala
     PACKAGES
@@ -24,7 +24,7 @@ vala2c (GRX_CALIBRATE_C
         ${CMAKE_SOURCE_DIR}/bindings/vala/grx-3.0.vapi
 )
 
-add_executable (grx-calibrate-touch ${GRX_CALIBRATE_C})
+add_executable (grx-calibrate-touch $<TARGET_PROPERTY:grx-calibrate-touch-vala,C_FILES>)
 target_compile_options (grx-calibrate-touch PRIVATE "-w")
 target_include_directories (grx-calibrate-touch PRIVATE
     ${CMAKE_SOURCE_DIR}/include
