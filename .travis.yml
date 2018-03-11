@@ -17,6 +17,7 @@ before_install:
 - sudo apt-get install --yes pbuilder-ev3dev gobject-introspection
 before_script:
 - pbuilder-ev3dev base
-- git checkout -B ev3dev-stretch
+- git checkout ev3dev-$DIST
+- git merge ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
 script:
 - pbuilder-ev3dev build
