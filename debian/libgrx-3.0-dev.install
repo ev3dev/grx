@@ -1,0 +1,6 @@
+usr/include/*
+usr/lib/*/libgrx-3.0.a
+usr/lib/*/libgrx-3.0.so
+usr/lib/*/pkgconfig/grx*.pc
+usr/share/gir-1.0/*
+usr/share/vala/vapi/*
