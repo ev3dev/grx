@@ -2,8 +2,8 @@ language: bash
 sudo: required
 dist: trusty
 env:
-- OS=ubuntu ARCH=amd64 DIST=artful
-- OS=ubuntu ARCH=i386 DIST=artful
+- OS=ubuntu ARCH=amd64 DIST=bionic
+- OS=ubuntu ARCH=i386 DIST=bionic
 cache:
   directories:
   - "$HOME/cache"
@@ -13,6 +13,6 @@ before_install:
 - sudo apt-get install --yes pbuilder-ev3dev gobject-introspection
 before_script:
 - pbuilder-ev3dev base
-- git checkout -B ev3dev-artful
+- git checkout -B ev3dev-bionic
 script:
 - pbuilder-ev3dev build
