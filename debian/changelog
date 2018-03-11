@@ -1,3 +1,12 @@
+grx (3.1.0) stable; urgency=medium
+
+  * Fix return types
+  * Add pointer coordinates to button events
+  * Don't break people's fonts
+  * vapi: fix bindings for Event
+
+ -- David Lechner <david@lechnology.com>  Sat, 10 Mar 2018 19:52:58 -0600
+
 grx (3.0.0) testing; urgency=medium
 
   * Rename a bunch functions and remove some others
