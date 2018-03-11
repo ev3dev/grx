@@ -11,8 +11,7 @@ cache:
   directories:
   - "$HOME/cache"
 before_install:
-- sudo apt-add-repository "deb http://archive.ev3dev.org/ubuntu trusty main"
-- sudo cp .travis/ev3dev-archive-keyring.gpg /etc/apt/trusted.gpg.d/
+- sudo apt-add-repository --yes ppa:ev3dev/tools/
 - sudo apt-get update
 - sudo apt-get install --yes pbuilder-ev3dev gobject-introspection
 before_script:
