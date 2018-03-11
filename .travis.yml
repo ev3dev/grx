@@ -2,17 +2,16 @@ language: bash
 sudo: required
 dist: trusty
 env:
+- OS=ubuntu ARCH=amd64 DIST=xenial
+- OS=ubuntu ARCH=amd64 DIST=bionic
 - OS=debian ARCH=amd64 DIST=stretch
-- OS=debian ARCH=i386 DIST=stretch
 - OS=debian ARCH=armhf DIST=stretch
-- OS=raspbian ARCH=armhf DIST=stretch
 - OS=debian ARCH=armel DIST=stretch
 cache:
   directories:
   - "$HOME/cache"
 before_install:
-- sudo apt-add-repository "deb http://archive.ev3dev.org/ubuntu trusty main"
-- sudo cp .travis/ev3dev-archive-keyring.gpg /etc/apt/trusted.gpg.d/
+- sudo apt-add-repository --yes ppa:ev3dev/tools/
 - sudo apt-get update
 - sudo apt-get install --yes pbuilder-ev3dev gobject-introspection
 before_script:
