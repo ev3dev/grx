@@ -19,4 +19,4 @@ before_script:
 - git checkout -B ev3dev-$DIST
 - curl -L https://github.com/ev3dev/grx/archive/ev3dev-$DIST.tar.gz | tar --strip-components=1 -xz grx-ev3dev-$DIST/debian
 script:
-- pbuilder-ev3dev build
+- pbuilder-ev3dev dev-build
