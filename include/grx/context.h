@@ -162,8 +162,8 @@ void grx_context_reset_clip_box(GrxContext *context);
     *(x2p) = (C)->x_clip_high;                              \
     *(y2p) = (C)->y_clip_high;                              \
 } while(0)
-#define grx_context_get_width(c) ((c)->x_max - 1)
-#define grx_context_get_height(c) ((c)->y_max - 1)
+#define grx_context_get_width(c) ((c)->x_max + 1)
+#define grx_context_get_height(c) ((c)->y_max + 1)
 #define grx_context_get_max_x(c) ((c)->x_max)
 #define grx_context_get_max_y(c) ((c)->y_max)
 #endif  /* GRX_SKIP_INLINES */

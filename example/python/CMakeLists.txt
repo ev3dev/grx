@@ -26,11 +26,11 @@ foreach (FILE_NAME ${PROGRAMS})
             ${TYPELIB_TARGET}
             plugins
     )
-    install(PROGRAMS ${FILE_NAME} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/python)
+    install(PROGRAMS ${FILE_NAME} DESTINATION ${CMAKE_INSTALL_PKGLIBDIR}/examples/python)
 endforeach (FILE_NAME ${PROGRAMS})
 
 set (MODULES
     demo.py
 )
 
-install (FILES ${MODULES} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/python)
+install (FILES ${MODULES} DESTINATION ${CMAKE_INSTALL_PKGLIBDIR}/examples/python)

@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.0)
 cmake_policy(SET CMP0048 NEW)
 
-project ("grx" VERSION 3.1.0 LANGUAGES C)
+project ("grx" VERSION 3.1.1 LANGUAGES C)
 set (ABI_VERSION 2)
 set (GIR_NAME "Grx")
 set (GIR_VERSION "3.0")

@@ -164,7 +164,7 @@ init (GInitable *initable, GCancellable *cancellable, GError **error)
         AddDeviceData *data;
 
         data = g_malloc (sizeof(*data));
-        data->grx_device_manager = g_object_ref (self);
+        data->grx_device_manager = GRX_DEVICE_MANAGER (g_object_ref (self));
         data->gdk_device_manager = g_object_ref (self->gdk_device_manager);
         data->device = g_object_ref (item->data);
         g_idle_add (add_device, data);

@@ -25,11 +25,11 @@ foreach (FILE_NAME ${PROGRAMS})
             ${TYPELIB_TARGET}
             plugins
     )
-    install (PROGRAMS ${FILE_NAME} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/javascript)
+    install (PROGRAMS ${FILE_NAME} DESTINATION ${CMAKE_INSTALL_PKGLIBDIR}/examples/javascript)
 endforeach (FILE_NAME ${PROGRAMS})
 
 set (MODULES
     demo.js
 )
 
-install (FILES ${MODULES} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/javascript)
+install (FILES ${MODULES} DESTINATION ${CMAKE_INSTALL_PKGLIBDIR}/examples/javascript)
