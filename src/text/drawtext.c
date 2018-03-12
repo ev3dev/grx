@@ -28,7 +28,18 @@
 #include "libgrx.h"
 #include "text.h"
 
-
+/**
+ * grx_draw_text:
+ * @text: The text to draw
+ * @x: The x coordinate
+ * @y: The y coordinate
+ * @options: #GrxTextOptions to control how the text is drawn
+ *
+ * Draws the text at the specified coordinates using @options.
+ *
+ * The position of the text relative to the coordinates will depend on the
+ * alignment given in @options.
+ */
 void grx_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options)
 {
     FT_GlyphSlot slot;
