@@ -1,3 +1,10 @@
+grx (3.1.1~bionic2) bionic; urgency=medium
+
+  * dev package depend on strict binary version of gir
+  * plugin packages need so version in package name
+
+ -- David Lechner <david@lechnology.com>  Mon, 12 Mar 2018 15:35:03 -0500
+
 grx (3.1.1~bionic1) bionic; urgency=medium
 
   * Fix off-by-two error in grx_get_{width,height}()
