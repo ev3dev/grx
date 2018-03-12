@@ -311,7 +311,7 @@ grx_application_class_init (GrxApplicationClass *klass)
                                        G_STRUCT_OFFSET (GrxApplicationClass, event),
                                        g_signal_accumulator_true_handled,
                                        NULL, /* accumulator data */
-                                       _grx_marshal_BOOL__BOXED,
+                                       _grx_marshal_BOOLEAN__BOXED,
                                        G_TYPE_BOOLEAN, /* return type */
                                        1, /* n_params */
                                        GRX_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
