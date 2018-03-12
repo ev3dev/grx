@@ -429,7 +429,7 @@ GSource *grx_libinput_device_manager_source_new (GrxLibinputDeviceManager *conte
     GSource *source;
 
     source = g_source_new (&source_funcs, sizeof(GrxLibinputDeviceManagerSource));
-    ((GrxLibinputDeviceManagerSource *)source)->instance = g_object_ref(G_OBJECT (context));
+    ((GrxLibinputDeviceManagerSource *)source)->instance = g_object_ref (context);
     g_source_add_unix_fd (source, libinput_get_fd (context->libinput), G_IO_IN);
 
     return source;
