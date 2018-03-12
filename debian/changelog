@@ -1,3 +1,11 @@
+grx (3.1.1~xenial1) xenial; urgency=medium
+
+  * Fix off-by-two error in grx_get_{width,height}()
+  * Add doc comment for grx_draw_text()
+  * Install all examples in the same place
+
+ -- David Lechner <david@lechnology.com>  Mon, 12 Mar 2018 15:20:59 -0500
+
 grx (3.1.0~xenial1) xenial; urgency=medium
 
   * Fix return types
