@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8"/>
-    <title>Grx.Event.modifiers &ndash; grx-3.0 &ndash; Vala Binding Reference</title>
+    <title>Grx.Event.Event &ndash; grx-3.0 &ndash; Vala Binding Reference</title>
     <link href="../style.css" rel="stylesheet" type="text/css"/><script src="../scripts.js" type="text/javascript">
     </script>
   </head>
   <body>
-    <div class="site_header">Grx.Event.modifiers &ndash; grx-3.0 Reference Manual</div>
+    <div class="site_header">Grx.Event.Event &ndash; grx-3.0 Reference Manual</div>
     <div class="site_body">
       <div class="site_navigation">
         <ul class="navi_main">
@@ -32,8 +32,8 @@
           <li class="property"><a href="Grx.Event.keychar.html">keychar</a></li>
           <li class="property"><a href="Grx.Event.keycode.html">keycode</a></li>
           <li class="property"><a href="Grx.Event.keysym.html">keysym</a></li>
-          <li class="property">modifiers</li>
-          <li class="creation_method"><a href="Grx.Event.Event.html">Event</a></li>
+          <li class="property"><a href="Grx.Event.modifiers.html">modifiers</a></li>
+          <li class="creation_method">Event</li>
           <li class="method"><a href="Grx.Event.get_coords.html">get_coords</a></li>
           <li class="field"><a href="Grx.Event.button.html">button</a></li>
           <li class="field"><a href="Grx.Event.key.html">key</a></li>
@@ -43,10 +43,30 @@
         </ul>
       </div>
       <div class="site_content">
-        <h1 class="main_title">modifiers</h1>
+        <h1 class="main_title">Event</h1>
         <hr class="main_hr"/>
         <h2 class="main_title">Description:</h2>
-        <div class="main_code_definition"><span class="main_keyword">public</span> <span class="main_type"><a href="Grx.ModifierFlags.html" class="enum">ModifierFlags</a></span> <b><span class="property">modifiers</span></b> { <span class="main_keyword">get</span>; }
+        <div class="main_code_definition"><span class="main_keyword">public</span> <b><span class="creation_method">Event</span></b> (<span class="main_type"><a href="Grx.EventType.html" class="enum">EventType</a></span> type)
+        </div>
+        <div class="description">
+          <p>Allocates a new <a href="Grx.Event.html" class="class">Event</a>.</p>
+          <h2 class="main_title">Parameters:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td class="main_parameter_table_name">type</td>
+              <td>
+                <p>the event type</p>
+              </td>
+            </tr>
+          </table>
+          <h2 class="main_title">Returns:</h2>
+          <table class="main_parameter_table">
+            <tr>
+              <td>
+                <p>the event struct</p>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div><br/>
