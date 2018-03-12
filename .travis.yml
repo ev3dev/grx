@@ -1,6 +1,6 @@
 language: bash
 sudo: required
-dist: trusty
+dist: xenial
 env:
 - OS=ubuntu ARCH=amd64 DIST=bionic
 - OS=ubuntu ARCH=i386 DIST=bionic
