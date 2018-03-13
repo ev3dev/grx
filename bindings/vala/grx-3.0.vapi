@@ -321,7 +321,7 @@ namespace Grx {
         public FrameDriver *driver;
     }
 
-    [CCode (copy_function = "grx_context_ref", free_function = "grx_context_unref")]
+    [CCode (ref_function = "grx_context_ref", unref_function = "grx_context_unref")]
     [Compact]
     public class Context {
         public int width { get; }
@@ -536,7 +536,7 @@ namespace Grx {
         WIDE
     }
 
-    [CCode (copy_function = "grx_font_ref", free_function = "grx_font_unref")]
+    [CCode (ref_function = "grx_font_ref", unref_function = "grx_font_unref")]
     [Compact]
     public class Font {
         [CCode (cname = "grx_font_load_full")]
@@ -556,7 +556,7 @@ namespace Grx {
         public int get_text_height (string? text);
     }
 
-    [CCode (copy_function = "grx_text_options_ref", free_function = "grx_text_options_unref")]
+    [CCode (ref_function = "grx_text_options_ref", unref_function = "grx_text_options_unref")]
     [Compact]
     public class TextOptions {
         [CCode (cname = "grx_text_options_new_full")]
@@ -735,7 +735,7 @@ namespace Grx {
         BOX
     }
 
-    [CCode (copy_function = "grx_cursor_ref", free_function = "grx_cursor_unref")]
+    [CCode (ref_function = "grx_cursor_ref", unref_function = "grx_cursor_unref")]
     [Compact]
     public class Cursor {
         public Cursor ([CCode (array_length = false)]uint8[] pixels, int pitch, int width, int height, int x0, int y0, GLib.Array<Color> colors);
