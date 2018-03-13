@@ -11,6 +11,9 @@ cache:
   directories:
   - "$HOME/cache"
 before_install:
+# temporary need for trusty-proposed
+- sudo cp .travis/trusty-proposed.list /etc/apt/sources.list.d/
+# end temporary workaround
 - sudo apt-add-repository --yes ppa:ev3dev/tools/
 - sudo apt-get update
 - sudo apt-get install --yes pbuilder-ev3dev gobject-introspection
