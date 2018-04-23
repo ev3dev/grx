@@ -33,10 +33,10 @@ Package: libgrx-3.0-2
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: libgrx-3.0-2-plugin-gtk3,
-            libgrx-3.0-2-plugin-linuxfb,
+Recommends: libgrx-3.0-2-plugin-linuxfb,
             libgrx-3.0-2-plugin-memory,
             libgrx-3.0-bin
+Suggests: libgrx-3.0-2-plugin-gtk3
 Description: 2D graphics library
  A simple 2D graphics library similar to the old Borland Graphics Interface
  (BGI).
