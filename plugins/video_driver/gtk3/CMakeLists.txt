@@ -11,6 +11,8 @@ set (GTK3_MODULES
 )
 pkg_check_modules (GTK3_DEPS REQUIRED ${GTK3_MODULES})
 
+string (REPLACE ";" " " link_flags "${GTK3_DEPS_LDFLAGS}")
+
 add_library (plugin-gtk3 MODULE ${GTK3_SOURCE_FILES})
 target_compile_options (plugin-gtk3 PRIVATE "-Wall" "-Werror")
 target_include_directories (plugin-gtk3
@@ -26,6 +28,7 @@ target_link_libraries (plugin-gtk3 ${GTK3_DEPS_LIBRARIES} ${SHARED_LIBRARY_TARGE
 set_target_properties (plugin-gtk3 PROPERTIES
     OUTPUT_NAME ${PACKAGE_NAME}-vdriver-gtk3
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
+    LINK_FLAGS "${link_flags}"
 )
 add_dependencies (plugins plugin-gtk3)
 install (TARGETS plugin-gtk3 LIBRARY DESTINATION ${CMAKE_INSTALL_PKGPLUGINDIR})

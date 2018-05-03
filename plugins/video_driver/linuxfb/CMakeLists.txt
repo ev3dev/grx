@@ -14,6 +14,8 @@ set (LINUXFB_MODULES
 )
 pkg_check_modules (LINUXFB_DEPS REQUIRED ${LINUXFB_MODULES})
 
+string (REPLACE ";" " " link_flags "${LINUXFB_DEPS_LDFLAGS}")
+
 add_library (plugin-linuxfb MODULE ${LINUXFB_SOURCE_FILES})
 target_compile_options (plugin-linuxfb PRIVATE "-Wall" "-Werror")
 target_include_directories (plugin-linuxfb
@@ -29,6 +31,7 @@ target_link_libraries (plugin-linuxfb ${LINUXFB_DEPS_LIBRARIES} ${SHARED_LIBRARY
 set_target_properties (plugin-linuxfb PROPERTIES
     OUTPUT_NAME ${PACKAGE_NAME}-vdriver-linuxfb
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
+    LINK_FLAGS "${link_flags}"
 )
 add_dependencies (plugins plugin-linuxfb)
 install (TARGETS plugin-linuxfb LIBRARY DESTINATION ${CMAKE_INSTALL_PKGPLUGINDIR})

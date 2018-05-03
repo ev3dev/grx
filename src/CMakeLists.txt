@@ -274,6 +274,8 @@ pkg_check_modules (GRX_PUBLIC_DEPS REQUIRED ${PUBLIC_MODULES})
 set (PRIVATE_MODULES gmodule-2.0 libpng freetype2 fontconfig)
 pkg_check_modules (GRX_PRIVATE_DEPS REQUIRED ${PRIVATE_MODULES})
 
+string (REPLACE ";" " " link_flags "${GRX_PUBLIC_DEPS_LDFLAGS} ${GRX_PRIVATE_DEPS_LDFLAGS}")
+
 
 # declare the libraries
 
@@ -311,6 +313,7 @@ set_target_properties (${SHARED_LIBRARY_TARGET} PROPERTIES
     VERSION "${PROJECT_VERSION}"
     SOVERSION "${ABI_VERSION}"
     OUTPUT_NAME ${PACKAGE_NAME}
+    LINK_FLAGS "${link_flags}"
 )
 install (TARGETS ${SHARED_LIBRARY_TARGET} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
