@@ -1,0 +1,146 @@
+grx (3.1.1) stable; urgency=medium
+
+  * Fix off-by-two error in grx_get_{width,height}()
+  * Add doc comment for grx_draw_text()
+  * Install all examples in the same place
+
+ -- David Lechner <david@lechnology.com>  Mon, 12 Mar 2018 15:38:06 -0500
+
+grx (3.1.0) stable; urgency=medium
+
+  * Fix return types
+  * Add pointer coordinates to button events
+  * Don't break people's fonts
+  * vapi: fix bindings for Event
+
+ -- David Lechner <david@lechnology.com>  Sat, 10 Mar 2018 19:52:58 -0600
+
+grx (3.0.0) testing; urgency=medium
+
+  * Rename a bunch functions and remove some others
+  * Add support for 2bpp grayscale
+  * linuxfb: add 32bpp support
+  * Add lots of docs and examples
+
+ -- David Lechner <david@lechnology.com>  Mon, 28 Aug 2017 20:13:16 -0500
+
+grx (2.99.8.2) testing; urgency=medium
+
+  * remove "found pattern..." debug print
+  * debian: add postinst script to enable bitmap fonts in fontconfig
+
+ -- David Lechner <david@lechnology.com>  Thu, 23 Mar 2017 19:30:09 -0500
+
+grx (2.99.8.1) testing; urgency=medium
+
+  * Add a man page for grx-calibrate-touch
+  * Add -dev package dependenices from pkg-config Requires.private
+  * -dev package needs to depend on typelib package
+  * -doc package goes in doc section
+
+ -- David Lechner <david@lechnology.com>  Wed, 22 Mar 2017 21:40:22 -0500
+
+grx (2.99.8) testing; urgency=medium
+
+  * Major breakage: cleanup and rearranging of many functions and types
+  * Using FreeType2/FontConfig for font handling
+  * Add packages for GIR typelib, examples, documentation and tools
+
+ -- David Lechner <david@lechnology.com>  Tue, 21 Mar 2017 22:36:50 -0500
+
+grx (2.99.7) stable; urgency=medium
+
+  * Change package data dir to prevent conflict with grx2
+
+ -- David Lechner <david@lechnology.com>  Mon, 10 Oct 2016 21:43:36 -0500
+
+grx (2.99.6) stable; urgency=medium
+
+  * Fix broken dependency on libgrx-fonts
+
+ -- David Lechner <david@lechnology.com>  Sun, 09 Oct 2016 23:25:44 -0500
+
+grx (2.99.5) stable; urgency=medium
+
+  * Add mutiarch support to debian packaging
+
+ -- David Lechner <david@lechnology.com>  Sun, 09 Oct 2016 21:15:16 -0500
+
+grx (2.99.4) stable; urgency=medium
+
+  * Fix plugin library issues
+
+ -- David Lechner <david@lechnology.com>  Fri, 05 Aug 2016 22:14:53 -0500
+
+grx (2.99.3) stable; urgency=medium
+
+  * Fix i386 build
+
+ -- David Lechner <david@lechnology.com>  Tue, 02 Aug 2016 13:16:58 -0500
+
+grx (2.99.2) stable; urgency=medium
+
+  * Fix libgrx-3.0-dev depends
+
+ -- David Lechner <david@lechnology.com>  Tue, 02 Aug 2016 12:33:35 -0500
+
+grx (2.99.1) stable; urgency=medium
+
+  * Install additional public header files
+  * Fix some cross-compiling issues
+  * Need to install the .so file for plugins.
+  * Fix referencing wrong funcs in docs
+  * Add short macros for black and white colors
+  * Fix travis build on ev3dev-jessie branch
+
+ -- David Lechner <david@lechnology.com>  Tue, 02 Aug 2016 11:33:12 -0500
+
+grx (2.99.0) stable; urgency=medium
+
+  * First pre-release of GRX 3.
+
+ -- David Lechner <david@lechnology.com>  Fri, 22 Jul 2016 12:16:32 -0500
+
+grx (2.4.9-0ev3dev7) stable; urgency=medium
+
+  * Add vala vapi and pkgconfig files to -dev package
+
+ -- David Lechner <david@lechnology.com>  Fri, 11 Sep 2015 09:58:48 -0500
+
+grx (2.4.9-0ev3dev6) testing; urgency=medium
+
+  * Fix context not correctly saved in in GrClearContextC, GrFloodSpillC and 
+    GrFloodSpillC2.
+
+ -- David Lechner <david@lechnology.com>  Tue, 10 Feb 2015 22:07:37 -0600
+
+grx (2.4.9-0ev3dev5) testing; urgency=medium
+
+  * Fix not usable by non-root users.
+
+ -- David Lechner <david@lechnology.com>  Sat, 31 Jan 2015 23:51:42 -0600
+
+grx (2.4.9-0ev3dev4) testing; urgency=medium
+
+  * Fix dynamic library linking.
+
+ -- David Lechner <david@lechnology.com>  Sat, 31 Jan 2015 18:34:40 -0600
+
+grx (2.4.9-0ev3dev3) testing; urgency=medium
+
+  * Fix inverted colors on MONO_01 framebuffer after switching consoles.
+
+ -- David Lechner <david@lechnology.com>  Sun, 25 Jan 2015 19:02:03 -0600
+
+grx (2.4.9-0ev3dev2) testing; urgency=medium
+
+  * Fix debian/watch file in source package.
+  * Fix possible NULL pointer usage when switching consoles.
+
+ -- David Lechner <david@lechnology.com>  Fri, 09 Jan 2015 14:41:57 -0600
+
+grx (2.4.9-0ev3dev1) testing; urgency=low
+
+  * Initial release
+
+ -- David Lechner <david@lechnology.com>  Sat, 09 Aug 2014 16:11:11 -0500
