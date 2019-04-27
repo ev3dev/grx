@@ -1,22 +1,18 @@
 language: bash
 sudo: required
-dist: trusty
+dist: xenial
 env:
-- OS=ubuntu ARCH=amd64 DIST=xenial
 - OS=ubuntu ARCH=amd64 DIST=bionic
-- OS=debian ARCH=amd64 DIST=stretch
-- OS=debian ARCH=armhf DIST=stretch
-- OS=debian ARCH=armel DIST=stretch
+- OS=debian ARCH=amd64 DIST=buster QEMU=qemu-user-static
+- OS=debian ARCH=armhf DIST=buster QEMU=qemu-user-static
+- OS=debian ARCH=armel DIST=buster QEMU=qemu-user-static
 cache:
   directories:
   - "$HOME/cache"
 before_install:
-# temporary need for trusty-proposed
-- sudo cp .travis/trusty-proposed.list /etc/apt/sources.list.d/
-# end temporary workaround
-- sudo apt-add-repository --yes ppa:ev3dev/tools/
+- sudo apt-add-repository --yes ppa:ev3dev/tools
 - sudo apt-get update
-- sudo apt-get install --yes pbuilder-ev3dev gobject-introspection
+- sudo apt-get install --yes debhelper pbuilder-ev3dev gobject-introspection $QEMU
 before_script:
 - pbuilder-ev3dev base
 - git checkout -B ev3dev-$DIST
