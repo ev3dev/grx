@@ -1,4 +1,5 @@
 libgrx-3.0.so.2 libgrx-3.0-2 #MINVER#
+* Build-Depends-Package: libgrx-3.0-dev
  (optional)GrColorInfo@Base 3.0.0
  (optional)GrContextInfo@Base 3.0.0
  (optional)GrDriverInfo@Base 3.0.0
