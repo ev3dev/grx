@@ -3,7 +3,7 @@ sudo: required
 dist: xenial
 env:
 - OS=ubuntu ARCH=amd64 DIST=bionic
-- OS=debian ARCH=amd64 DIST=buster QEMU=qemu-user-static
+- OS=debian ARCH=amd64 DIST=buster
 - OS=debian ARCH=armhf DIST=buster QEMU=qemu-user-static
 - OS=debian ARCH=armel DIST=buster QEMU=qemu-user-static
 cache:
