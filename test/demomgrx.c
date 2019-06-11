@@ -1,7 +1,7 @@
 /**
  ** demomgrx.c ---- MGRX Test programs launcher
  **
- ** Copyright (C) 2000,2001,2005,2008 Mariano Alvarez Fernandez
+ ** Copyright (C) 2000,2001,2005,2008,2019 Mariano Alvarez Fernandez
  ** [e-mail: malfer@telefonica.net]
  **
  ** This is a test/demo file of the GRX graphics library.
@@ -32,10 +32,10 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "MGRX 1.1, the graphics library";
+    "MGRX 1.1.1, the graphics library";
 
 char *animatedtext =
-    "MGRX 1.1, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "MGRX 1.1.1, the graphics library for DJGPPv2, Linux, X11 and Win32";
 
 #if defined(__XWIN__) || defined(__WIN32__)
 static int need_restart = 0;
@@ -43,7 +43,7 @@ static int need_restart = 0;
 static int need_restart = 1;
 #endif
 
-#define NDEMOS 35
+#define NDEMOS 36
 
 #define ID_ARCTEST   1
 #define ID_BB1TEST   2
@@ -76,6 +76,7 @@ static int need_restart = 1;
 #define ID_FNTDEMO4 29
 #define ID_DEMOINTL 30
 #define ID_BIGGTEST 31
+#define ID_CUSPTEST 32
 #define ID_MODETEST 50
 #define ID_PAGE1    81
 #define ID_PAGE2    82
@@ -117,8 +118,9 @@ static ProgTable ptable[NDEMOS] = {
     {ID_FNTDEMO2, "fontdemo ter-114b.res", "fontdemo ter-114b.res -> test a RES font"},
     {ID_FNTDEMO3, "fontdemo ter-114n.fna", "fontdemo ter-114n.fna -> test a FNA font"},
     {ID_FNTDEMO4, "fontdemo ter-114v.psf", "fontdemo ter-114v.psf -> test a PSF font"},
-    {ID_DEMOINTL, "demointl", "test intl support"},
-    {ID_BIGGTEST, "biggtest", "test GR_biggest_graphics"},
+    {ID_DEMOINTL, "demointl", "demointl.c -> test intl support"},
+    {ID_BIGGTEST, "biggtest", "biggtest.c -> test GR_biggest_graphics"},
+    {ID_CUSPTEST, "cusptest", "cusptest.c -> test wide line functions"},
     {ID_MODETEST, "modetest", "modetest.c -> test all available graphics modes"},
     {ID_PAGE1, "", "Change to page 1"},
     {ID_PAGE2, "", "Change to page 2"},
@@ -169,7 +171,7 @@ static Button bp1[NBUTTONSP1] = {
     {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
 };
 
-#define NBUTTONSP2  11
+#define NBUTTONSP2  12
 
 static Button bp2[NBUTTONSP2] = {
     {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "FontTest", BSTATUS_SELECTED, ID_FONTTEST},
@@ -180,6 +182,7 @@ static Button bp2[NBUTTONSP2] = {
     {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo4", 0, ID_FNTDEMO4},
     {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "DemoIntl", 0, ID_DEMOINTL},
     {PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, "BigGTest", 0, ID_BIGGTEST},
+    {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "CusPTest", 0, ID_CUSPTEST},
     {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 1", 0, ID_PAGE1},
     {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
     {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
@@ -356,7 +359,7 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "MGRX 1.1";
+    char *t1 = "MGRX 1.1.1";
     char *t2 = "test programs launcher";
     char *hw1 = "Hello world, Привет мир";
     char *hw2 = "Γειά σου Κόσμε, Hola mundo";

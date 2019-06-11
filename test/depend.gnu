@@ -45,3 +45,4 @@ wintest.o: wintest.c test.h ../include/mgrx.h ../include/mgrxkeys.h \
  drawing.h rand.h
 biggtest.o: biggtest.c ../include/mgrx.h ../include/mgrxkeys.h drawing.h \
  rand.h
+cusptest.o: cusptest.c ../include/mgrx.h ../include/mgrxkeys.h

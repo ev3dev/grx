@@ -8,12 +8,12 @@
 
 <center>
 <h1><font color="#555555">M</font><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>1.1</small></h1>
+<small>1.1.1</small></h1>
 <h1>a C graphics library for DOS, Linux console &amp; X11 and Win32</h1>
 <h2>Programmer's Manual</h2>
 <p>Based on the original GRX manual written by: Csaba Biegl on August 10, 1992
 <p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on August 1, 2005
-<p>Last update: September 1, 2017
+<p>Last update: June 11, 2019
 </center>
 
 <hr>
@@ -2333,6 +2333,9 @@ int GrEventCheck(void);
 void GrEventWait(GrEvent * ev);
 void GrEventWaitKeyOrClick(GrEvent * ev);
 int GrEventEnqueue(GrEvent * ev);
+int GrEventParEnqueue(int type, long p1, long p2, long p3, long p4);
+int GrEventEnqueueFirst(GrEvent * ev);
+int GrEventParEnqueueFirst(int type, long p1, long p2, long p3, long p4);
 </pre>
 
 <p><code>GrEventFlush</code> flush the event queue.
@@ -2344,7 +2347,11 @@ int GrEventEnqueue(GrEvent * ev);
 <p><code>GrEventWaitKeyOrClick</code> waits until a key or the left mouse
 button is pressed.
 
-<p><code>GrEventEnqueue</code> enqueue an user event.
+<p><code>GrEventEnqueue</code> and <code>GrEventParEnqueue</code> enqueue an
+user event, passing the whole structure or only the type and parameters.
+
+<p><code>GrEventEnqueueFirst</code> and <code>GrEventParEnqueueFirst</code> 
+enqueue an user event at the begining of the queue.
 
 <hr>
 <h2><a name="mouse">Mouse cursor handling</a></h2>

@@ -19,8 +19,8 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <mgrx.h>
-#include <mgrxkeys.h>
+#include "mgrx.h"
+#include "mgrxkeys.h"
 #include "gfaz.h"
 
 GrColor *egacolors;

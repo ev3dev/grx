@@ -238,6 +238,7 @@ int _GrRecode_CP850_UCS2(unsigned char src, long *des);
 int _GrRecode_CP1252_UCS2(unsigned char src, long *des);
 int _GrRecode_ISO88591_UCS2(unsigned char src, long *des);
 int _GrRecode_UTF8_UCS2(unsigned char *src, long *des);
+int _GrRecode_mgrx512_UCS2(unsigned short src, long *des);
 int _GrRecode_UCS2_CP437(long src, unsigned char *des);
 int _GrRecode_UCS2_CP850(long src, unsigned char *des);
 int _GrRecode_UCS2_CP1252(long src, unsigned char *des);

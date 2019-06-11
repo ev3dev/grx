@@ -1,6 +1,24 @@
+2019-06-10 Solved a very old problem in Customized and Patterned line drawings
+           funtions. The intersect code (in src/wideline/drwcpoly.c) gave bad results
+           for solid and pattern filed wide lines, changed to a simple algorithm that
+           works very well, except for circles and dashed lines, so we use part of the
+           original code for these cases.
+           Added the cusptest.c program to test Customized and Patterned line drawings.
+2017-10-01 New functions:
+           reverse recode from font encoding to chrtype
+             long GrFontCharReverseRecode(const GrFont *font,unsigned int chr,int chrtype);
+           get a string for the numerical fontencoding
+             char *GrStrFontEncoding(int fontencoding);
+           these functions enqueue an event the first in the queue
+             int GrEventEnqueueFirst(GrEvent * ev);
+             int GrEventParEnqueueFirst(int type, long p1, long p2, long p3, long p4);
+2017-10-01 New funtion to enqueue a event by its parameters
+             int GrEventParEnqueue(int type, long p1, long p2, long p3, long p4);
+           Changed wait input if no events to delay(1) instead dpmi_yield in the
+           djgpp version, so now demommgrx runs smoothly like otther versions.
 2017-09-09 ----------- mGRX 1.1.0 released
 2017-09-08 Fix a proglem in jpeg read with new version 9 of libjpeg, they have 
-           changed the default for cinfo.scale_denom = scale and cinfo.scale_num.
+           changed the default for cinfo.scale_denom and cinfo.scale_num.
            Fix warnings with DJGPP 2.05 in src/include/vesa.h.
 2017-09-07 Changed __attribute__((packed)) by #pragma pack in fdv_win.h, to
            workarround a bug in mingw gcc.

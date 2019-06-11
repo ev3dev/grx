@@ -18,6 +18,13 @@
 #include "libgrx.h"
 #include "text/text.h"
  
+void GrFontSetEncoding(GrFont *font,int fontencoding)
+{
+  if (font == NULL) return;
+  if (fontencoding >= 0 && fontencoding <= GR_FONTENC_LASTENC)
+    font->h.encoding = fontencoding;
+}
+
 int GrFontNeedRecode(const GrFont *font,int chrtype)
 {
   if (font == NULL) return 0;
@@ -142,9 +149,61 @@ unsigned short *GrFontTextRecode(const GrFont *font,const void *text,int length,
   return buf;
 }
 
-void GrFontSetEncoding(GrFont *font,int fontencoding)
+static long _GrCharReverseRecode(int fontenc,unsigned int chr,int chrtype)
 {
-  if (font == NULL) return;
-  if (fontencoding >= 0 && fontencoding <= GR_FONTENC_LASTENC)
-    font->h.encoding = fontencoding;
+  long aux, aux2;
+  unsigned char caux;
+  
+  aux = '?';
+  switch (fontenc) {
+  case GR_FONTENC_CP437:
+    _GrRecode_CP437_UCS2(chr, &aux);
+    break;
+  case GR_FONTENC_CP850:
+    _GrRecode_CP850_UCS2(chr, &aux);
+    break;
+  case GR_FONTENC_CP1252:
+    _GrRecode_CP1252_UCS2(chr, &aux);
+    break;
+  case GR_FONTENC_ISO_8859_1:
+    _GrRecode_ISO88591_UCS2(chr, &aux);
+    break;
+  case GR_FONTENC_MGRX512:
+    _GrRecode_mgrx512_UCS2(chr, &aux);
+    break;
+  case GR_FONTENC_UNICODE:
+    aux = chr;
+    break;
+  }
+
+  caux = '?';
+  switch (chrtype) {
+  case GR_CP437_TEXT:
+    _GrRecode_UCS2_CP437(aux, &caux);
+    return caux;
+  case GR_CP850_TEXT:
+    _GrRecode_UCS2_CP850(aux, &caux);
+    return caux;
+  case GR_CP1252_TEXT:
+    _GrRecode_UCS2_CP1252(aux, &caux);
+    return caux;
+  case GR_ISO_8859_1_TEXT:
+    _GrRecode_UCS2_ISO88591(aux, &caux);
+    return caux;
+  case GR_UTF8_TEXT:
+    _GrRecode_UCS2_UTF8(aux, (unsigned char *)&aux2);
+    return aux2;
+  case GR_UCS2_TEXT:
+    return aux;
+  }
+  
+  return chr;
 }
+
+long GrFontCharReverseRecode(const GrFont *font,unsigned int chr,int chrtype)
+{
+  if (!GrFontNeedRecode(font, chrtype)) return chr;
+  
+  return _GrCharReverseRecode(font->h.encoding, chr, chrtype);
+}
+

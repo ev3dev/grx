@@ -56,3 +56,22 @@ int GrFindEncoding(char *strenc)
 
   return -1;
 }
+
+char *GrStrFontEncoding(int fontencoding)
+{
+  if (fontencoding == GR_FONTENC_CP437)
+    return ("CP437");
+  else if (fontencoding == GR_FONTENC_CP850)
+    return ("CP850");
+  else if (fontencoding == GR_FONTENC_CP1252)
+    return ("CP1252");
+  else if (fontencoding == GR_FONTENC_ISO_8859_1)
+    return ("ISO_8859_1");
+  else if (fontencoding == GR_FONTENC_UNICODE)
+    return ("UNICODE");
+  else if (fontencoding == GR_FONTENC_MGRX512)
+    return ("MGRX512");
+
+  return ("UNKNOW");
+}
+

@@ -25,7 +25,7 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0110
+#define MGRX_VERSION_API 0x0111
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
@@ -939,8 +939,10 @@ typedef struct _GR_textOption {      /* text drawing option structure */
 int  GrFontNeedRecode(const GrFont *font,int chrtype);
 unsigned int GrFontCharRecode(const GrFont *font,long chr,int chrtype);
 unsigned short *GrFontTextRecode(const GrFont *font,const void *text,int length,int chrtype);
+long GrFontCharReverseRecode(const GrFont *font,unsigned int chr,int chrtype);
 
 void GrFontSetEncoding(GrFont *font,int fontencoding);
+char *GrStrFontEncoding(int fontencoding);
 
 /*
  * These functions will internally recode chars if needed from
@@ -1390,6 +1392,9 @@ void GrEventRead(GrEvent * ev);
 void GrEventWait(GrEvent * ev);
 void GrEventWaitKeyOrClick(GrEvent * ev);
 int GrEventEnqueue(GrEvent * ev);
+int GrEventParEnqueue(int type, long p1, long p2, long p3, long p4);
+int GrEventEnqueueFirst(GrEvent * ev);
+int GrEventParEnqueueFirst(int type, long p1, long p2, long p3, long p4);
 void GrEventGenMmove(int when);
 void GrEventGenExpose(int when);
 int GrEventAddHook(int (*fn) (GrEvent *));

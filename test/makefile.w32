@@ -54,7 +54,8 @@ PROGS=  arctest.exe     \
 	textpatt.exe    \
 	winclip.exe     \
 	wintest.exe     \
-	biggtest.exe
+	biggtest.exe    \
+	cusptest.exe
 
 all: 	$(PROGS) \
 	demomgrx.exe \

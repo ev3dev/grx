@@ -75,7 +75,8 @@ PROGS=  xarctest     \
 	xtextpatt    \
 	xwinclip     \
 	xwintest     \
-	xbiggtest
+	xbiggtest    \
+	xcusptest
 
 all: $(PROGS) xdemomgrx xdemointl
 

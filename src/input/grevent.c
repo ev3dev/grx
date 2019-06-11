@@ -205,6 +205,73 @@ int GrEventEnqueue(GrEvent * ev)
 }
 
 /**
+ ** GrEventParEnqueue - Enqueues an event defined by parameters
+ **
+ ** Arguments:
+ **   type: event type
+ **   p1, p2, p3, p4: parameters
+ **
+ ** Returns  0 on success
+ **         -1 on error
+ **/
+
+int GrEventParEnqueue(int type, long p1, long p2, long p3, long p4)
+{
+  GrEvent ev;
+
+  ev.type = type;
+  ev.p1 = p1;
+  ev.p2 = p2;
+  ev.p3 = p3;
+  ev.p4 = p4;
+  return GrEventEnqueue(&ev);
+}
+
+/**
+ ** GrEventEnqueueFirst - Enqueues an event first
+ **
+ ** Arguments:
+ **   ev: returns the event
+ **
+ ** Returns  0 on success
+ **         -1 on error
+ **/
+
+int GrEventEnqueueFirst(GrEvent * ev)
+{
+    ev->time = GrMsecTime();
+    if (num_evqueue < MAX_EVQUEUE) {
+        evqueue[num_evqueue] = *ev;
+        num_evqueue++;
+        return 0;
+    }
+    return -1;
+}
+
+/**
+ ** GrEventParEnqueueFirst - Enqueues an event first defined by parameters
+ **
+ ** Arguments:
+ **   type: event type
+ **   p1, p2, p3, p4: parameters
+ **
+ ** Returns  0 on success
+ **         -1 on error
+ **/
+
+int GrEventParEnqueueFirst(int type, long p1, long p2, long p3, long p4)
+{
+  GrEvent ev;
+
+  ev.type = type;
+  ev.p1 = p1;
+  ev.p2 = p2;
+  ev.p3 = p3;
+  ev.p4 = p4;
+  return GrEventEnqueueFirst(&ev);
+}
+
+/**
  ** GrEventAddHook - Add a function to hook events
  **
  ** Arguments:
@@ -250,6 +317,21 @@ int GrEventDeleteHook(int (*fn) (GrEvent *))
     return 0;
 }
 
+/**
+ ** GrEventGenExpose - Generate or not Expose eventes
+ **
+ ** Arguments:
+ **   when: GR_GEN_EXPOSE_NO or GR_GEN_EXPOSE_YES
+ **/
+
+void GrEventGenExpose(int when)
+{
+    genexposeevents = when;
+#ifdef __XWIN__
+    _GrXwinEventGenExpose(when);
+#endif
+}
+
 /* Internal functions */
 
 static int preproccess_event(GrEvent *ev)
@@ -270,12 +352,4 @@ static int preproccess_event(GrEvent *ev)
     }
 
     return 0;
-}
-
-void GrEventGenExpose(int when)
-{
-    genexposeevents = when;
-#ifdef __XWIN__
-    _GrXwinEventGenExpose(when);
-#endif
 }

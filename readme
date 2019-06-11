@@ -1,4 +1,4 @@
-Welcome to MGRX 1.1!
+Welcome to MGRX 1.1.1!
 
 MGRX is a 2D graphics C library derived from the GRX library. GRX was
 originaly written by Csaba Biegl for DJ Delorie's DOS port of the GCC
@@ -9,7 +9,7 @@ Supported platforms
 
 MGRX supports the following four platforms:
 
-  DOS using DJGPP v2.03; with EGA, VGA, VESA and memory drivers
+  DOS using DJGPP v2.05; with EGA, VGA, VESA and memory drivers
   Linux console using gcc; with framebuffer and memory drivers
   Linux X11; x11(windowed) and memory drivers
   Win32 using Mingw; w32(windowed) and memory drivers

@@ -185,7 +185,7 @@ int _GrReadInputs(void)
         nev++;
     }
 
-    if (nev == 0) __dpmi_yield(); /* yield */
+    if (nev == 0) delay(1); /* yield */
     return nev;
 }
 
