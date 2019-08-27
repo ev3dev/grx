@@ -18,11 +18,13 @@
  **
  ** Contributions by:
  ** 080120 M.Alvarez, intl support
+ ** 190803 M.Alvarez, added support for imps2 mouse protocol (we have the wheel)
+ ** 190804 M.Alvarez, changed termio by termios, solve problems with control keys
  **
  **/
 
 #include <stdio.h>
-#include <termio.h>
+#include <termios.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -39,8 +41,8 @@
 
 #include "mgrxkeys.h"
 
-static struct termio kbd_setup;
-static struct termio kbd_reset;
+static struct termios kbd_nsetup;
+static struct termios kbd_nreset;
 static int kbd_initted = FALSE;
 static int kbd_isatty;
 static int kbd_lastchr;
@@ -68,7 +70,8 @@ static int inkey(void);
 static int validKey(int key, int valid);
 static int _CheckKeyboardHit(void);
 static int _ReadCharFromKeyboard(void);
-static int _ReadPS2MouseData(int *mb, int *mx, int *my);
+static int _TryToSetImps2_Mode(void);
+static int _ReadPS2MouseData(int *mb, int *mx, int *my, int *wh);
 
 #define update_coord(WHICH,MICKEYS) do {                                    \
         static int fract = 0;                                               \
@@ -146,20 +149,20 @@ int _GrReadInputs(void)
 {
     GrEvent evaux;
     int nev = 0;
-    int mb = 0, mx = 0, my = 0;
+    int mb = 0, mx = 0, my = 0, wh = 0;
 
     if (_lnxfb_waiting_to_switch_console)
         _LnxfbSwitchConsoleAndWait();
 
     if (MOUINFO->msstatus == 2) {
-        if (_ReadPS2MouseData(&mb, &mx, &my)) {
+        if (_ReadPS2MouseData(&mb, &mx, &my, &wh)) {
             update_coord(x, mx);
             update_coord(y, my);
             /** NOTE we know PS2_LEFTBUTTON == GRMOUSE_LB_STATUS, etc */
             MOUINFO->bstatus = mb;
             GrMouseUpdateCursor();
             MOUINFO->moved  = TRUE;
-            if (mb != mou_buttons) {
+            if (mb != mou_buttons || wh != 0) {
                 evaux.type = GREV_MOUSE;
                 evaux.kbstat = kbd_lastmod;
                 evaux.p2 = MOUINFO->xpos;
@@ -187,6 +190,20 @@ int _GrReadInputs(void)
                         evaux.p1 = GRMOUSE_RB_RELEASED;
                     GrEventEnqueue(&evaux);
                     nev++;
+                }
+                if (wh < 0) {
+                    evaux.p1 = GRMOUSE_B4_PRESSED;
+                    GrEventEnqueue(&evaux);
+                    evaux.p1 = GRMOUSE_B4_RELEASED;
+                    GrEventEnqueue(&evaux);
+                    nev += 2;
+                }
+                if (wh > 0) {
+                    evaux.p1 = GRMOUSE_B5_PRESSED;
+                    GrEventEnqueue(&evaux);
+                    evaux.p1 = GRMOUSE_B5_RELEASED;
+                    GrEventEnqueue(&evaux);
+                    nev += 2;
                 }
                 mou_buttons = mb;
                 MOUINFO->moved = FALSE;
@@ -261,9 +278,14 @@ int _GrReadInputs(void)
 int _GrMouseDetect(void)
 {
     MOUINFO->msstatus = (-1);        /* assume missing */
-    mou_filedsc = open("/dev/psaux", O_RDONLY | O_NDELAY);
+    mou_filedsc = open("/dev/input/mice", O_RDWR | O_NDELAY);
+    if (mou_filedsc < 0)
+        mou_filedsc = open("/dev/psaux", O_RDWR | O_NDELAY);
     if (mou_filedsc >= 0) {
         MOUINFO->msstatus = 1;        /* present, but not initted */
+        _TryToSetImps2_Mode();
+        // although now we know if we have an imps2 mouse, let _ReadPS2MouseData
+        // to adapt itself to the packet size (3 for ps2, 4 for imps2)
         return 1;
     }
     return 0;
@@ -323,7 +345,7 @@ void GrMouseWarp(int x, int y)
 static void kbd_restore(void)
 {
     if (kbd_initted && kbd_isatty && (kbd_mode != normal)) {
-        ioctl(kbd_filedsc, TCSETA, &kbd_reset);
+        tcsetattr(kbd_filedsc, 0, &kbd_nreset);
         kbd_mode = normal;
     }
 }
@@ -336,36 +358,39 @@ static void kbd_init(void)
         kbd_filedsc = fileno(stdin);
         kbd_isatty = isatty(kbd_filedsc);
         if (kbd_isatty) {
-            ioctl(kbd_filedsc, TCGETA, &kbd_setup);
-            ioctl(kbd_filedsc, TCGETA, &kbd_reset);
-            kbd_setup.c_lflag &= ~(ICANON | ECHO);
-            kbd_setup.c_iflag &= ~(INLCR | ICRNL);
+            tcgetattr(kbd_filedsc, &kbd_nreset);
+            tcgetattr(kbd_filedsc, &kbd_nsetup);
+            kbd_nsetup.c_lflag &= ~((tcflag_t)(ICANON | ISIG | ECHO | ECHOCTL));
+            kbd_nsetup.c_iflag = 0;
             atexit(kbd_restore);
             kbd_mode = normal;
         }
     }
 }
 
-static int n = 0;
+#define CHRBUFSIZE 30
+
+static int chrspending = 0;
 static int getByte(int remove)
 {
-    static unsigned char keybuf[10];
+    static unsigned char keybuf[CHRBUFSIZE];
     int ch, f;
 
-    if (n < 0)
-        n = 0;
-    if (n <= 0) {
-        f = read(kbd_filedsc, keybuf + n, 10 - n);
+    if (chrspending < 0) chrspending = 0;
+    
+    if (chrspending == 0) {
+        f = read(kbd_filedsc, keybuf, CHRBUFSIZE);
         if (f > 0) {
-            n += f;
+            chrspending += f;
         }
     }
-    if (n <= 0)
-        return EOF;
+
+    if (chrspending <= 0) return EOF;
+
     ch = keybuf[0];
     if (remove) {
-        --n;
-        memmove(&keybuf[0], &keybuf[1], n * sizeof(unsigned char));
+        --chrspending;
+        memmove(&keybuf[0], &keybuf[1], chrspending * sizeof(unsigned char));
     }
     return ch;
 }
@@ -373,10 +398,11 @@ static int getByte(int remove)
 static const unsigned short fnk[] = {
     GrKey_F6, GrKey_F7, GrKey_F8, GrKey_F9, GrKey_F10, GrKey_Escape,
     /* shift F1 == F11, shift F2 == F12  What code should be returned ?? */
+    /* M.Alvarez 190807 we return F11, F12 now all kb has 12 function keys */
+    GrKey_F11, GrKey_F12,
     GrKey_Shift_F1, GrKey_Shift_F2,
-    GrKey_Shift_F3, GrKey_Shift_F4,
-    GrKey_Escape, GrKey_Shift_F5, GrKey_Shift_F6, GrKey_Escape,
-    GrKey_Shift_F7, GrKey_Shift_F8, GrKey_Shift_F9, GrKey_Shift_F10
+    GrKey_Escape, GrKey_Shift_F3, GrKey_Shift_F4, GrKey_Escape,
+    GrKey_Shift_F5, GrKey_Shift_F6, GrKey_Shift_F7, GrKey_Shift_F8
 };
 
 static const unsigned short alt[] = {
@@ -475,7 +501,7 @@ static int inkey(void)
             return (GrKey_BackSpace);
         return (Key);
     }
-    if (n == 0)
+    if (chrspending == 0)
         return (GrKey_Escape);
     /* We have ^[ and something more after that */
 
@@ -486,7 +512,7 @@ static int inkey(void)
         return (keytrans(Key, alt));        /* Check for Alt+Key */
 
     /* We have ^[[ */
-    if (n == 0)
+    if (chrspending == 0)
         return (GrKey_Alt_LBracket);
 
     Key = getByte(1);
@@ -571,9 +597,9 @@ static int _CheckKeyboardHit(void)
         return (TRUE);
     }
     if (kbd_mode != test) {
-        kbd_setup.c_cc[VMIN] = 0;
-        kbd_setup.c_cc[VTIME] = 0;
-        if (ioctl(kbd_filedsc, TCSETAW, &kbd_setup) == EOF)
+        kbd_nsetup.c_cc[VMIN] = 0;
+        kbd_nsetup.c_cc[VTIME] = 0;
+        if (tcsetattr(kbd_filedsc, TCSADRAIN, &kbd_nsetup) == -1)
             return (FALSE);
         kbd_mode = test;
     }
@@ -611,9 +637,9 @@ static int _ReadCharFromKeyboard(void)
         }
         /* no key till now. Wait of it ... */
         if (kbd_mode != wait) {
-            kbd_setup.c_cc[VMIN] = 0;
-            kbd_setup.c_cc[VTIME] = 1;
-            if (ioctl(kbd_filedsc, TCSETAW, &kbd_setup) == EOF)
+            kbd_nsetup.c_cc[VMIN] = 0;
+            kbd_nsetup.c_cc[VTIME] = 1;
+            if (tcsetattr(kbd_filedsc, TCSADRAIN, &kbd_nsetup) == -1)
                 return (EOF);
             kbd_mode = wait;
         }
@@ -624,7 +650,41 @@ static int _ReadCharFromKeyboard(void)
 
 /** Internal mouse functions **/
 
-static int _ReadPS2MouseData(int *mb, int *mx, int *my)
+static int _TryToSetImps2_Mode(void)
+{
+    unsigned char buf_imps2[6] = {0xf3, 0xc8, 0xf3, 0x64, 0xf3, 0x50}; 
+    unsigned char bufw[2], bufr[256] = {0};
+    int ret;
+
+    // reset the mouse
+    bufw[0] = 0xff;
+    write(mou_filedsc, bufw, 1);
+    usleep( 10000L );
+    while (read(mou_filedsc, bufr, 1) == 1);
+    
+    // send magic string to set imps2 mode (to have wheell events)
+    write(mou_filedsc, buf_imps2, 6);
+    usleep( 10000L );
+    while (read(mou_filedsc, bufr, 1) == 1);
+
+    // ask mouse ID (0=normal, 2=imps2)
+    bufw[0] = 0xf2;
+    write(mou_filedsc, bufw, 1);
+    usleep( 10000L );
+    read(mou_filedsc, bufr, 1);
+    read(mou_filedsc, bufr+1, 1);
+    ret = bufr[1];
+
+    // enable mouse
+    bufw[0] = 0xf4;
+    write(mou_filedsc, bufw, 1);
+    usleep( 10000L );
+    read(mou_filedsc, bufr, 1);
+
+    return ret;
+}
+    
+static int _ReadPS2MouseData(int *mb, int *mx, int *my, int *wh)
 {
     static int imps2 = 0;
     static int count_to_imps2 = 0;
@@ -633,6 +693,7 @@ static int _ReadPS2MouseData(int *mb, int *mx, int *my)
     int evr = 0;
 
     *mx = *my = 0;
+    *wh = 0;
     do {
         if (read(mou_filedsc, buf, 1) < 1)
             return evr;
@@ -647,11 +708,15 @@ static int _ReadPS2MouseData(int *mb, int *mx, int *my)
                 last_packed_ok = 0;
             }
             return evr;
+        } else if ((buf[0] & 0xF8) == 0xF8) { /* mmmm, can be the wheel packet */
+            return evr;                       /* and sync is lost */
         }
         while (read(mou_filedsc, buf + 1, 1) != 1);
         while (read(mou_filedsc, buf + 2, 1) != 1);
-        if (imps2) /* the IMPS2 protocol is 4 bytes wide */
+        if (imps2) {/* the IMPS2 protocol is 4 bytes wide */
             while (read(mou_filedsc, buf + 3, 1) != 1);
+            *wh = (buf[3] & 7) * ((buf[3] & 8)? -1 : 1);
+        }
         *mb = buf[0] & 0x7;
         *mx += (buf[0] & 0x10) ? buf[1] - 256 : buf[1];
         *my += (buf[0] & 0x20) ? -(buf[2] - 256) : -buf[2];

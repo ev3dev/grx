@@ -507,6 +507,9 @@ int GrRecodeEvent(GrEvent *ev, int srcenc, int desenc)
   int i;
 
   if (ev->p2 == GRKEY_KEYCODE) return 0;
+  
+  /* don't recode ASCII keys (include controls) */
+  if (ev->p1 < 0x80) return 0;
 
   switch (srcenc) {
   case GRENC_CP437:

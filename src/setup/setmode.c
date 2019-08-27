@@ -23,8 +23,7 @@
 
 #include "libgrx.h"
 #include "arith.h"
-#include "memfill.h"
-#include "memcopy.h"
+#include "memmode.h"
 #include "grdriver.h"
 
 GrVideoMode * _gr_selectmode(GrVideoDriver *drv,int w,int h,int bpp,
@@ -210,7 +209,7 @@ int GrSetMode(GrGraphicsMode which,...)
 {
 	int  w,h,pl,vw,vh;
 	int  t,noclear,res;
-	GrColor c;
+	long c;
 	va_list ap;
 	GRX_ENTER();
 	pl = 0;
@@ -274,7 +273,7 @@ int GrSetMode(GrGraphicsMode which,...)
 	  case GR_width_height_color_graphics:
 	    w = va_arg(ap,int);
 	    h = va_arg(ap,int);
-	    c = va_arg(ap,GrColor);
+	    c = va_arg(ap,long);
 	    break;
 	  case GR_NC_width_height_bpp_graphics:
 	    noclear = TRUE;
@@ -288,7 +287,7 @@ int GrSetMode(GrGraphicsMode which,...)
 	  case GR_custom_graphics:
 	    w  = va_arg(ap,int);
 	    h  = va_arg(ap,int);
-	    c  = va_arg(ap,GrColor);
+	    c  = va_arg(ap,long);
 	    vw = va_arg(ap,int);
 	    vh = va_arg(ap,int);
 	    break;
@@ -308,7 +307,7 @@ int GrSetMode(GrGraphicsMode which,...)
 	}
 	va_end(ap);
 	if (c)
-	  for(pl = 1; (pl < 32) && ((1UL << pl) < (GrColor)c); pl++) ;
+	  for(pl = 1; (pl < 32) && ((1UL << pl) < c); pl++) ;
 	for( ; ; ) {
 	    GrContext     cxt;
 	    GrFrameDriver fdr;

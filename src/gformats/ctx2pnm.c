@@ -1,8 +1,8 @@
 /**
  ** ctx2pnm.c ---- saves a context in a PNM file
  **
- ** Copyright (C) 2000,2001 Mariano Alvarez Fernandez
- ** [e-mail: malfer@teleline.es]
+ ** Copyright (C) 2000,2001,2019 Mariano Alvarez Fernandez
+ ** [e-mail: malfer@telefonica.net]
  **
  ** This file is part of the GRX graphics library.
  **
@@ -42,20 +42,30 @@ int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn )
   GrContext grcaux;
   char cab[81];
   int currentbyte = 0, currentbit = 7;
-  int x, y;
+  int x, y, width;
+  GrColor *pColors = NULL;
 
   if( (f = fopen( pbmfn,"wb" )) == NULL ) return -1;
   
   GrSaveContext( &grcaux );
   if( grc != NULL ) GrSetContext( grc );
+  width = GrSizeX();
+  pColors = malloc( sizeof(GrColor)*width );
+  if( pColors == NULL ){
+    GrSetContext( &grcaux );
+    fclose( f );
+    return -1;
+    }
+  
   sprintf( cab,"P4\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
   sprintf( cab,"\n%d %d\n",GrSizeX(),GrSizeY() );
   fwrite( cab,1,strlen( cab ),f );
   for( y=0; y<GrSizeY(); y++ ){
-    for( x=0; x<GrSizeX(); x++ ){
-      if( GrPixel( x,y ) == GrBlack() )
+    memcpy( pColors,GrGetScanline( 0,width-1,y ),sizeof(GrColor)*width );
+    for( x=0; x<width; x++ ){
+      if( pColors[x] == GrBlack() )
         currentbyte |= 1 << currentbit;
       currentbit--;
       if( currentbit < 0 ){
@@ -70,6 +80,7 @@ int GrSaveContextToPbm( GrContext *grc, char *pbmfn, char *docn )
       currentbit = 7;
       }
     }
+  free( pColors );
   GrSetContext( &grcaux );
   fclose( f );
 
@@ -98,23 +109,35 @@ int GrSaveContextToPgm( GrContext *grc, char *pgmfn, char *docn )
   char cab[81];
   unsigned char grey;
   int rgb[3];
-  int x, y;
+  int x, y, width;
+  GrColor *pColors = NULL;
 
   if( (f = fopen( pgmfn,"wb" )) == NULL ) return -1;
   
   GrSaveContext( &grcaux );
   if( grc != NULL ) GrSetContext( grc );
+  width = GrSizeX();
+  pColors = malloc( sizeof(GrColor)*width );
+  if( pColors == NULL ){
+    GrSetContext( &grcaux );
+    fclose( f );
+    return -1;
+    }
+  
   sprintf( cab,"P5\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
   sprintf( cab,"\n%d %d\n255\n",GrSizeX(),GrSizeY() );
   fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<GrSizeY(); y++ )
-    for( x=0; x<GrSizeX(); x++ ){
-      GrQueryColor( GrPixel( x,y ),&rgb[0],&rgb[1],&rgb[2] );
+  for( y=0; y<GrSizeY(); y++ ) {
+    memcpy( pColors,GrGetScanline( 0,width-1,y ),sizeof(GrColor)*width );
+    for( x=0; x<width; x++ ){
+      GrQueryColor( pColors[x],&rgb[0],&rgb[1],&rgb[2] );
       grey = (0.229 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2]);
       fwrite( &grey,1,1,f );
       }
+    }
+  free( pColors );
   GrSetContext( &grcaux );
   fclose( f );
 
@@ -141,25 +164,37 @@ int GrSaveContextToPpm( GrContext *grc, char *ppmfn, char *docn )
   GrContext grcaux;
   char cab[81];
   unsigned char brgb[3];
-  int x, y, r, g, b;
+  int x, y, r, g, b, width;
+  GrColor *pColors = NULL;
 
   if( (f = fopen( ppmfn,"wb" )) == NULL ) return -1;
   
   GrSaveContext( &grcaux );
   if( grc != NULL ) GrSetContext( grc );
+  width = GrSizeX();
+  pColors = malloc( sizeof(GrColor)*width );
+  if( pColors == NULL ){
+    GrSetContext( &grcaux );
+    fclose( f );
+    return -1;
+    }
+  
   sprintf( cab,"P6\n#" );
   fwrite( cab,1,strlen( cab ),f );
   if( docn != NULL ) fwrite( docn,1,strlen( docn ), f );
   sprintf( cab,"\n%d %d\n255\n",GrSizeX(),GrSizeY() );
   fwrite( cab,1,strlen( cab ),f );
-  for( y=0; y<GrSizeY(); y++ )
-    for( x=0; x<GrSizeX(); x++ ){
-      GrQueryColor( GrPixel( x,y ),&r,&g,&b );
+  for( y=0; y<GrSizeY(); y++ ) {
+    memcpy( pColors,GrGetScanline( 0,width-1,y ),sizeof(GrColor)*width );
+    for( x=0; x<width; x++ ){
+      GrQueryColor( pColors[x],&r,&g,&b );
       brgb[0] = r;
       brgb[1] = g;
       brgb[2] = b;
       fwrite( brgb,1,3,f );
       }
+    }
+  free( pColors );
   GrSetContext( &grcaux );
   fclose( f );
 

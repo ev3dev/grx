@@ -34,7 +34,7 @@ static int gbpp = 16;
 #define XGUI 800
 #define YGUI 600
 
-char *wintitle = "MGRX 1.1.1, the graphics library";
+char *wintitle = "MGRX 1.1.2, the graphics library";
 
 #define ID_FCP437      1
 #define ID_FCP850      2

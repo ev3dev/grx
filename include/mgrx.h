@@ -25,7 +25,7 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0111
+#define MGRX_VERSION_API 0x0112
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
@@ -1332,7 +1332,7 @@ long GrMsecTime( void );
 typedef struct {
     int type;               /* event type */
     long time;              /* miliseconds */
-    int kbstat;             /* kb status */
+    int kbstat;             /* kb status (count for GREV_EXPOSE) */
     union {                 /* GREV_KEY     GREV_MOUSE  GREV_MMOVE  GREV_EXPOSE */
       long p1;              /* key          subevent    but status  x           */
       unsigned char cp1[4]; /* for easy access to multibyte key (like UTF-8)    */

@@ -163,6 +163,7 @@ ifeq ($(INCLUDE_SHARED_SUPPORT),y)
 endif
 	install -m 0644 ../include/mgrx.h $(INSTALLDIR)/include
 	install -m 0644 ../include/mgrxkeys.h $(INSTALLDIR)/include
+	install -m 0644 ../include/mgrxcolr.h $(INSTALLDIR)/include
 
 uninstall:
 	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXST))
@@ -173,6 +174,7 @@ ifeq ($(INCLUDE_SHARED_SUPPORT),y)
 endif
 	rm -f $(INSTALLDIR)/include/mgrx.h
 	rm -f $(INSTALLDIR)/include/mgrxkeys.h
+	rm -f $(INSTALLDIR)/include/mgrxcolr.h
 
 setsuid: $(UTILPX)
 ifeq ($(SET_XSUIDROOT),y)

@@ -141,7 +141,7 @@ int _GrReadInputs(void)
                   xev.xexpose.width, xev.xexpose.height);
             } else {
                 evaux.type = GREV_EXPOSE;
-                evaux.kbstat = 0;
+                evaux.kbstat = xev.xexpose.count; // if != 0 more expose follow
                 evaux.p1 = xev.xexpose.x;
                 evaux.p2 = xev.xexpose.y;
                 evaux.p3 = xev.xexpose.width;

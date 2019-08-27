@@ -28,9 +28,9 @@ static GrColor *EGA;
 #define blue  EGA[1]
 #define white EGA[15]
 
-static void printdata(int n,int points[][2],int convex)
+static void printdata(int n, int points[][2], int convex)
 {
-    int i;
+    int i, xpos;
     char buf[41];
 
     if (!convex)
@@ -38,100 +38,132 @@ static void printdata(int n,int points[][2],int convex)
     else
         sprintf(buf, "Convex");
 
-    GrTextXY(550, 0, buf, white, black);
+    xpos = GrMaxX() - 90;
+    GrTextXY(xpos, 0, buf, white, black);
 
     for (i=0; i<n; i++) {
         sprintf(buf, "%d %d", points[i][0], points[i][1]);
-        GrTextXY(550, (i+1)*16, buf, white, black);
+        GrTextXY(xpos, (i+1)*16, buf, white, black);
     }
 }
 
-static void testpoly(int n,int points[][2],int convex)
+static void testpoly(int n, int points[][2], int convex)
 {
     GrEvent ev;
 
     GrClearScreen(black);
     printdata(n, points, 0);
-    GrPolygon(n,points,white);
-    GrFilledPolygon(n,points,red);
+    GrPolygon(n, points, white);
+    GrFilledPolygon(n, points, red);
     GrEventWaitKeyOrClick(&ev);
-    if(convex || (n <= 3)) {
+    if (convex || (n <= 3)) {
         GrClearScreen(black);
         printdata(n, points, 1);
-        GrPolygon(n,points,white);
-        GrFilledConvexPolygon(n,points,blue);
+        GrPolygon(n, points, white);
+        GrFilledConvexPolygon(n, points, blue);
         GrEventWaitKeyOrClick(&ev);
     }
 }
 
-static void speedtest(void)
+static void doscan(void)
 {
     int pts[4][2];
     int ww = GrSizeX() / 10;
     int hh = GrSizeY() / 10;
     int sx = (GrSizeX() - 2*ww) / 32;
     int sy = (GrSizeY() - 2*hh) / 32;
-    int  ii,jj;
+    int  ii, jj;
     GrColor color;
-    long t1,t2,t3;
-    char msg[81];
+    
+    pts[0][1] = 0;
+    pts[1][1] = hh;
+    pts[2][1] = 2*hh;
+    pts[3][1] = hh;
+    color = 0;
+    for (ii = 0; ii < 32; ii++) {
+        pts[0][0] = ww;
+        pts[1][0] = 2*ww;
+        pts[2][0] = ww;
+        pts[3][0] = 0;
+        for (jj = 0; jj < 32; jj++) {
+            GrFilledPolygon(4, pts, EGA[color] | GrXOR);
+            color = (color + 1) & 15;
+            pts[0][0] += sx;
+            pts[1][0] += sx;
+            pts[2][0] += sx;
+            pts[3][0] += sx;
+        }
+        pts[0][1] += sy;
+        pts[1][1] += sy;
+        pts[2][1] += sy;
+        pts[3][1] += sy;
+    }
+}
 
+static void doscan_convex(void)
+{
+    int pts[4][2];
+    int ww = GrSizeX() / 10;
+    int hh = GrSizeY() / 10;
+    int sx = (GrSizeX() - 2*ww) / 32;
+    int sy = (GrSizeY() - 2*hh) / 32;
+    int  ii, jj;
+    GrColor color;
+    
+    pts[0][1] = 0;
+    pts[1][1] = hh;
+    pts[2][1] = 2*hh;
+    pts[3][1] = hh;
+    color = 0;
+    for (ii = 0; ii < 32; ii++) {
+        pts[0][0] = ww;
+        pts[1][0] = 2*ww;
+        pts[2][0] = ww;
+        pts[3][0] = 0;
+        for (jj = 0; jj < 32; jj++) {
+            GrFilledConvexPolygon(4, pts, EGA[color] | GrXOR);
+            color = (color + 1) & 15;
+            pts[0][0] += sx;
+            pts[1][0] += sx;
+            pts[2][0] += sx;
+            pts[3][0] += sx;
+        }
+        pts[0][1] += sy;
+        pts[1][1] += sy;
+        pts[2][1] += sy;
+        pts[3][1] += sy;
+    }
+}
+
+static void speedtest(void)
+{
+    clock_t t1, t2, t3, t4;
+    char msg[81];
+    int i, rounds;
+
+    rounds = 2;
+    
     GrClearScreen(black);
     t1 = GrMsecTime();
-    pts[0][1] = 0;
-    pts[1][1] = hh;
-    pts[2][1] = 2*hh;
-    pts[3][1] = hh;
-    color = 0;
-    for(ii = 0; ii < 32; ii++) {
-        pts[0][0] = ww;
-        pts[1][0] = 2*ww;
-        pts[2][0] = ww;
-        pts[3][0] = 0;
-        for(jj = 0; jj < 32; jj++) {
-            GrFilledPolygon(4,pts, EGA[color] | GrXOR);
-            color = (color + 1) & 15;
-            pts[0][0] += sx;
-            pts[1][0] += sx;
-            pts[2][0] += sx;
-            pts[3][0] += sx;
-        }
-        pts[0][1] += sy;
-        pts[1][1] += sy;
-        pts[2][1] += sy;
-        pts[3][1] += sy;
+    for (i=0; i<rounds; i++) {
+        doscan();
     }
     t2 = GrMsecTime();
-    pts[0][1] = 0;
-    pts[1][1] = hh;
-    pts[2][1] = 2*hh;
-    pts[3][1] = hh;
-    color = 0;
-    for(ii = 0; ii < 32; ii++) {
-        pts[0][0] = ww;
-        pts[1][0] = 2*ww;
-        pts[2][0] = ww;
-        pts[3][0] = 0;
-        for(jj = 0; jj < 32; jj++) {
-            GrFilledConvexPolygon(4,pts, EGA[color] | GrXOR);
-            color = (color + 1) & 15;
-            pts[0][0] += sx;
-            pts[1][0] += sx;
-            pts[2][0] += sx;
-            pts[3][0] += sx;
-        }
-        pts[0][1] += sy;
-        pts[1][1] += sy;
-        pts[2][1] += sy;
-        pts[3][1] += sy;
-    }
+
+    GrClearScreen(black);
     t3 = GrMsecTime();
-    GrTextXY(0, 0, "Times to scan 1024 polygons", white, black);
+    for (i=0; i<rounds; i++) {
+        doscan_convex();
+    }
+    t4 = GrMsecTime();
+
+    sprintf(msg, "Times to scan %d polygons", 1024*rounds);
+    GrTextXY(0, 0, msg, white, black);
     sprintf(msg, "   with 'GrFilledPolygon': %.2f (s)",
             (double)(t2 - t1) / (double)1000);
     GrTextXY(0, 18, msg, white, black);
     sprintf(msg, "   with 'GrFilledConvexPolygon': %.2f (s)",
-            (double)(t3 - t2) / (double)1000);
+            (double)(t4 - t3) / (double)1000);
     GrTextXY(0, 36, msg, white, black);
 }
 
@@ -145,24 +177,24 @@ TESTFUNC(ptest)
     GrEvent ev;
 
     fp = fopen("polytest.dat","r");
-    if(fp == NULL) return;
+    if (fp == NULL) return;
     EGA = GrAllocEgaColors();
     ii  = collect = convex = 0;
-    while(fgets(buff,299,fp) != NULL) {
-        if(!collect) {
-            if(strncmp(buff,"begin",5) == 0) {
+    while (fgets(buff, 299, fp) != NULL) {
+        if (!collect) {
+            if (strncmp(buff, "begin", 5) == 0) {
                 convex  = (buff[5] == 'c');
                 collect = 1;
                 ii      = 0;
             }
             continue;
         }
-        if(strncmp(buff,"end",3) == 0) {
-            testpoly(ii,pts,convex);
+        if (strncmp(buff, "end", 3) == 0) {
+            testpoly(ii, pts, convex);
             collect = 0;
             continue;
         }
-        if(sscanf(buff,"%d %d",&pts[ii][0],&pts[ii][1]) == 2) ii++;
+        if (sscanf(buff, "%d %d", &pts[ii][0], &pts[ii][1]) == 2) ii++;
     }
     fclose(fp);
     speedtest();

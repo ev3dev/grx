@@ -32,10 +32,10 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "MGRX 1.1.1, the graphics library";
+    "MGRX 1.1.2, the graphics library";
 
 char *animatedtext =
-    "MGRX 1.1.1, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "MGRX 1.1.2, the graphics library for DJGPPv2, Linux, X11 and Win32";
 
 #if defined(__XWIN__) || defined(__WIN32__)
 static int need_restart = 0;
@@ -43,7 +43,7 @@ static int need_restart = 0;
 static int need_restart = 1;
 #endif
 
-#define NDEMOS 36
+#define NDEMOS 38
 
 #define ID_ARCTEST   1
 #define ID_BB1TEST   2
@@ -57,26 +57,28 @@ static int need_restart = 1;
 #define ID_JPGTEST  10
 #define ID_KEYS     11
 #define ID_LIFE     12
-#define ID_LINETEST 13
-#define ID_MOUSETST 14
-#define ID_PCIRCTST 15
-#define ID_PNMTEST  16
-#define ID_PNGTEST  17
-#define ID_POLYTEST 18
-#define ID_RGBTEST  19
-#define ID_SCROLTST 20
-#define ID_SBCTEST  21
-#define ID_SPEEDTST 22
-#define ID_TEXTPATT 23
-#define ID_WINCLIP  24
-#define ID_WINTEST  25
-#define ID_FNTDEMO1 26
-#define ID_FNTDEMO2 27
-#define ID_FNTDEMO3 28
-#define ID_FNTDEMO4 29
-#define ID_DEMOINTL 30
-#define ID_BIGGTEST 31
-#define ID_CUSPTEST 32
+#define ID_LIFEDB   13
+#define ID_LINETEST 14
+#define ID_MOUSETST 15
+#define ID_PCIRCTST 16
+#define ID_PNMTEST  17
+#define ID_PNGTEST  18
+#define ID_POLYTEST 19
+#define ID_RGBTEST  20
+#define ID_SCROLTST 21
+#define ID_SBCTEST  22
+#define ID_SPEEDTST 23
+#define ID_TEXTPATT 24
+#define ID_WINCLIP  25
+#define ID_WINTEST  26
+#define ID_FNTDEMO1 27
+#define ID_FNTDEMO2 28
+#define ID_FNTDEMO3 29
+#define ID_FNTDEMO4 30
+#define ID_DEMOINTL 31
+#define ID_BIGGTEST 32
+#define ID_CUSPTEST 33
+#define ID_CLRTABLE 34
 #define ID_MODETEST 50
 #define ID_PAGE1    81
 #define ID_PAGE2    82
@@ -101,6 +103,7 @@ static ProgTable ptable[NDEMOS] = {
     {ID_JPGTEST, "jpgtest", "jpgtext.c -> text context to jpeg functions"},
     {ID_KEYS, "keys", "keys.c -> test keyboard input"},
     {ID_LIFE, "life", "life.c -> Conway's life program"},
+    {ID_LIFEDB, "life_db", "life_db.c -> Double buffer version of life"},
     {ID_LINETEST, "linetest", "linetest.c -> test wide and patterned lines"},
     {ID_MOUSETST, "mousetst", "mousetst.c -> test mouse cursor and mouse/keyboard input"},
     {ID_PCIRCTST, "pcirctst", "pcirctst.c -> test custom circle and ellipse rendering"},
@@ -121,6 +124,7 @@ static ProgTable ptable[NDEMOS] = {
     {ID_DEMOINTL, "demointl", "demointl.c -> test intl support"},
     {ID_BIGGTEST, "biggtest", "biggtest.c -> test GR_biggest_graphics"},
     {ID_CUSPTEST, "cusptest", "cusptest.c -> test wide line functions"},
+    {ID_CLRTABLE, "clrtable", "clrtable.c -> test color tables"},
     {ID_MODETEST, "modetest", "modetest.c -> test all available graphics modes"},
     {ID_PAGE1, "", "Change to page 1"},
     {ID_PAGE2, "", "Change to page 2"},
@@ -154,16 +158,16 @@ static Button bp1[NBUTTONSP1] = {
     {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "JpgTest", 0, ID_JPGTEST},
     {PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, "Keys", 0, ID_KEYS},
     {PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Life", 0, ID_LIFE},
-    {PX1, PY2, 100, 40, IND_BLUE, IND_YELLOW, "LineTest", 0, ID_LINETEST},
-    {PX1, PY3, 100, 40, IND_BLUE, IND_YELLOW, "MouseTst", 0, ID_MOUSETST},
-    {PX1, PY4, 100, 40, IND_BLUE, IND_YELLOW, "PcircTst", 0, ID_PCIRCTST},
-    {PX1, PY5, 100, 40, IND_BLUE, IND_YELLOW, "PnmTest", 0, ID_PNMTEST},
-    {PX1, PY6, 100, 40, IND_BLUE, IND_YELLOW, "PngTest", 0, ID_PNGTEST},
-    {PX1, PY7, 100, 40, IND_BLUE, IND_YELLOW, "PolyTest", 0, ID_POLYTEST},
-    {PX1, PY8, 100, 40, IND_BLUE, IND_YELLOW, "RgbTest", 0, ID_RGBTEST},
-    {PX2, PY0, 100, 40, IND_BLUE, IND_YELLOW, "SbcTest", 0, ID_SBCTEST},
-    {PX2, PY1, 100, 40, IND_BLUE, IND_YELLOW, "ScrolTst", 0, ID_SCROLTST},
-    {PX2, PY2, 100, 40, IND_BLUE, IND_YELLOW, "SpeedTst", 0, ID_SPEEDTST},
+    {PX1, PY2, 100, 40, IND_BLUE, IND_YELLOW, "Life_db", 0, ID_LIFEDB},
+    {PX1, PY3, 100, 40, IND_BLUE, IND_YELLOW, "LineTest", 0, ID_LINETEST},
+    {PX1, PY4, 100, 40, IND_BLUE, IND_YELLOW, "MouseTst", 0, ID_MOUSETST},
+    {PX1, PY5, 100, 40, IND_BLUE, IND_YELLOW, "PcircTst", 0, ID_PCIRCTST},
+    {PX1, PY6, 100, 40, IND_BLUE, IND_YELLOW, "PnmTest", 0, ID_PNMTEST},
+    {PX1, PY7, 100, 40, IND_BLUE, IND_YELLOW, "PngTest", 0, ID_PNGTEST},
+    {PX1, PY8, 100, 40, IND_BLUE, IND_YELLOW, "PolyTest", 0, ID_POLYTEST},
+    {PX2, PY0, 100, 40, IND_BLUE, IND_YELLOW, "RgbTest", 0, ID_RGBTEST},
+    {PX2, PY1, 100, 40, IND_BLUE, IND_YELLOW, "SbcTest", 0, ID_SBCTEST},
+    {PX2, PY2, 100, 40, IND_BLUE, IND_YELLOW, "ScrolTst", 0, ID_SCROLTST},
     {PX2, PY3, 100, 40, IND_BLUE, IND_YELLOW, "WinClip", 0, ID_WINCLIP},
     {PX2, PY4, 100, 40, IND_BLUE, IND_YELLOW, "WinTest", 0, ID_WINTEST},
     {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 2", 0, ID_PAGE2},
@@ -171,7 +175,7 @@ static Button bp1[NBUTTONSP1] = {
     {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
 };
 
-#define NBUTTONSP2  12
+#define NBUTTONSP2  14
 
 static Button bp2[NBUTTONSP2] = {
     {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "FontTest", BSTATUS_SELECTED, ID_FONTTEST},
@@ -183,6 +187,8 @@ static Button bp2[NBUTTONSP2] = {
     {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "DemoIntl", 0, ID_DEMOINTL},
     {PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, "BigGTest", 0, ID_BIGGTEST},
     {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "CusPTest", 0, ID_CUSPTEST},
+    {PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, "ClrTable", 0, ID_CLRTABLE},
+    {PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, "SpeedTst", 0, ID_SPEEDTST},
     {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 1", 0, ID_PAGE1},
     {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
     {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
@@ -200,15 +206,19 @@ static Board brdimg =
 static GrFont *grf_std;
 static GrFont *grf_big;
 static GrFont *grf_gfaz;
+static GrFont *grf_intl;
 GrTextOption grt_centered;
 GrTextOption grt_left;
 
 static GrContext *grcglob = NULL;
+static GrContext *grcglobdb = NULL;
 static int worg = 0, horg = 0;
 
 /* Internal routines */
 
 static void ini_graphics(void);
+static void end_graphics(void);
+static GrFont *load_font(char *fname);
 static void ini_objects(void);
 static void paint_screen(void);
 static void the_title(int x, int y);
@@ -263,6 +273,14 @@ int main(int argc, char **argv)
                 paint_foot("over a button, please");
             else if (ev.p1 == GRMOUSE_LB_RELEASED)
                 paint_foot("Hold down left mouse buttom to see a comment");
+            continue;
+        }
+        if (ev.type == GREV_EXPOSE) {
+            printf("expose %ld %ld %ld %ld %d\n",
+                   ev.p1, ev.p2, ev.p3, ev.p4, ev.kbstat);
+            if (ev.kbstat == 0) // no more EXPOSE events follow
+                paint_screen();
+            continue;
         }
         if (ev.type == GREV_NULL) {
             if (ev.time > (oldtime + 5)) {
@@ -272,7 +290,7 @@ int main(int argc, char **argv)
         }
     }
 
-    gfaz_fin();
+    end_graphics();
     return 0;
 }
 
@@ -292,32 +310,47 @@ static void ini_graphics(void)
                                      NULL, NULL);
         GrSetContext(grcglob);
     }
+    grcglobdb = GrCreateContext(640, 480, NULL, NULL);
+    GrEventGenExpose(GR_GEN_EXPOSE_YES);
+}
+
+/************************************************************************/
+
+static void end_graphics(void)
+{
+    if (grcglobdb) GrDestroyContext(grcglobdb);
+    if (grcglob) GrDestroyContext(grcglob);
+    gfaz_fin();
+}
+
+/************************************************************************/
+
+static GrFont *load_font(char *fname)
+{
+    GrFont *gf;
+    char s[81];
+    
+    gf = GrLoadFont(fname);
+    if (gf == NULL) {
+        snprintf(s, 80, "../fonts/%s", fname);
+        gf = GrLoadFont(s);
+        if (gf == NULL) {
+            snprintf(s, 80, "%s not found in ./ or ../fonts/", fname);
+            disaster(s);
+        }
+    }
+    
+    return gf;
 }
 
 /************************************************************************/
 
 static void ini_objects(void)
 {
-    grf_std = GrLoadFont("lucb21.fnt");
-    if (grf_std == NULL) {
-        grf_std = GrLoadFont("../fonts/lucb21.fnt");
-        if (grf_std == NULL)
-            disaster("lucb21.fnt not found");
-    }
-
-    grf_big = GrLoadFont("lucb40.fnt");
-    if (grf_big == NULL) {
-        grf_big = GrLoadFont("../fonts/lucb40.fnt");
-        if (grf_big == NULL)
-            disaster("lucb40.fnt not found");
-    }
-
-    grf_gfaz = GrLoadFont("tmgrx14b.fnt");
-    if (grf_gfaz == NULL) {
-        grf_gfaz = GrLoadFont("../fonts/tmgrx14b.fnt");
-        if (grf_gfaz == NULL)
-            disaster("tmgrx14b.fnt not found");
-    }
+    grf_std = load_font("lucb21.fnt");
+    grf_big = load_font("lucb40.fnt");
+    grf_gfaz = load_font("tmgrx14b.fnt");
+    grf_intl = load_font("tmgrx18b.fnt");
 
     grt_centered.txo_bgcolor = GrNOCOLOR;
     grt_centered.txo_direct = GR_TEXT_RIGHT;
@@ -336,33 +369,47 @@ static void ini_objects(void)
 
 static void paint_screen(void)
 {
-    GrContext *grc;
+    // use a double buffer to avoid flickering
+    GrContext *grc, *grcf;
 
+    grcf = grcglob;
+    if (grcglobdb != NULL) { 
+        GrSetContext(grcglobdb);
+        grcf = grcglobdb;
+    }
     paint_board(&brd);
+    if (GrNumColors() > 256 && GrJpegSupport()) {
+        GrSetClipBox(4,4,GrMaxX()-4,GrMaxY()-4);
+        //GrLoadContextFromPnm(NULL, "flor1_640_gris.pgm");
+        GrLoadContextFromJpeg(NULL, "jpeg3.jpg", 1);
+        GrResetClipBox();
+    }
     paint_button_group(bgact);
     paint_board(&brdimg);
     grc = GrCreateSubContext(brdimg.x + 4, brdimg.y + 4,
                              brdimg.x + brdimg.wide - 5,
-                             brdimg.y + brdimg.high - 5, grcglob, NULL);
+                             brdimg.y + brdimg.high - 5, grcf, NULL);
     if (bgact == &bgp1)
         GrLoadContextFromPnm(grc, "pnmtest.ppm");
     else
         GrLoadContextFromPnm(grc, "pnmtest2.ppm");
     GrDestroyContext(grc);
     the_info(500, 215);
-    drawing(400, 290, 200, 150, BROWN, DARKGRAY);
+    drawing(400, 290, 200, 150, BROWN, GrNOCOLOR);
     the_title(500, 330);
     paint_foot("Hold down left mouse buttom to see a comment");
+    GrSetContext(grcglob);
+    GrBitBlt(NULL, 0, 0, grcglobdb, 0, 0, 639, 479, GrWRITE);
 }
 
 /************************************************************************/
 
 static void the_title(int x, int y)
 {
-    char *t1 = "MGRX 1.1.1";
+    char *t1 = "MGRX 1.1.2";
     char *t2 = "test programs launcher";
-    char *hw1 = "Hello world, Привет мир";
-    char *hw2 = "Γειά σου Κόσμε, Hola mundo";
+    char *hw1 = "Hello world  Привет мир";
+    char *hw2 = "Γειά σου Κόσμε  Hola mundo";
 
     grt_centered.txo_fgcolor = LIGHTGREEN;
 
@@ -372,9 +419,9 @@ static void the_title(int x, int y)
     grt_centered.txo_font = grf_std;
     GrDrawString(t2, 0, 0 + x, 30 + y, &grt_centered);
 
-    grt_centered.txo_font = grf_gfaz;
-    GrDrawString(hw1, 0, 0 + x, 60 + y, &grt_centered);
-    GrDrawString(hw2, 0, 0 + x, 76 + y, &grt_centered);
+    grt_centered.txo_font = grf_intl;
+    GrDrawString(hw1, 0, 0 + x, 54 + y, &grt_centered);
+    GrDrawString(hw2, 0, 0 + x, 74 + y, &grt_centered);
 }
 
 /************************************************************************/
@@ -387,7 +434,7 @@ static void the_info(int x, int y)
     char *kbsysencoding;
     int nenc;
 
-    grt_centered.txo_fgcolor = CYAN;
+    grt_centered.txo_fgcolor = LIGHTCYAN;
     grt_centered.txo_font = grf_std;
 
     nsys = GrGetLibrarySystem();
@@ -446,7 +493,7 @@ static int pev_command(GrEvent * ev)
         for (i = 0; i < NDEMOS; i++) {
             if (ev->p1 == ptable[i].cid) {
                 if (need_restart) {
-                    gfaz_fin();
+                    end_graphics();
                 }
 #if defined(__MSDOS__) || defined(__WIN32__)
                 if (ev->p1 == ID_MODETEST)
@@ -468,6 +515,7 @@ static int pev_command(GrEvent * ev)
                     ini_graphics();
                     GrSetWindowTitle(wintitle);
                     gfaz_setfont(grf_gfaz);
+                    GrEventFlush();
                 }
                 paint_screen();
                 return 1;
@@ -513,26 +561,32 @@ static void paint_animation(void)
 {
     static int pos = 620;
     static int ini = 0;
-    static GrContext *grc;
+    static GrContext *grc, *grcor;
     int ltext, wtext;
 
     if (!ini) {
+        grcor = GrCreateContext(620, 30, NULL, NULL);
+        if (grcor == NULL) return;
         grc = GrCreateContext(620, 30, NULL, NULL);
-        if (grc == NULL)
+        if (grc == NULL) {
+            GrDestroyContext(grcor);
             return;
+        }
+        GrBitBlt(grcor, 0, 0, NULL, 10, 8, 629, 37, GrWRITE);
         ini = 1;
     }
 
-    grt_left.txo_fgcolor = CYAN;
+    grt_left.txo_fgcolor = LIGHTCYAN;
     grt_left.txo_font = grf_std;
     ltext = strlen(animatedtext);
     wtext = GrStringWidth(animatedtext, ltext, &grt_left);
 
+    GrBitBlt(grc, 0, 0, grcor, 0, 0, 619, 29, GrWRITE);
     GrSetContext(grc);
-    GrClearContext(DARKGRAY);
+    //GrClearContext(DARKGRAY);
     GrDrawString(animatedtext, ltext, pos, 15, &grt_left);
     GrSetContext(grcglob);
-    GrBitBlt(NULL, 10, 8, grc, 0, 0, 629, 29, GrWRITE);
+    GrBitBlt(NULL, 10, 8, grc, 0, 0, 619, 29, GrWRITE);
 
     pos -= 1;
     if (pos <= -wtext)

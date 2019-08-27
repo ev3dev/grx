@@ -24,6 +24,12 @@
 #include "mgrx.h"
 #include "mgrxkeys.h"
 
+/* default mode */
+
+static int gwidth = 1024;
+static int gheight = 768;
+static int gbpp = 24;
+
 static int po_star[10][2] = {{150,25},{179,111},{269,111},{197,165},{223,251},
                              {150,200},{77,251},{103,165},{31,111},{121,111}};
 
@@ -115,10 +121,17 @@ int main(int argc,char **argv)
     GrEvent ev;
     GrColor color;
 
-    GrSetMode(GR_width_height_bpp_graphics, 1024, 768, 24);
+    if (argc >= 4) {
+        gwidth = atoi(argv[1]);
+        gheight = atoi(argv[2]);
+        gbpp = atoi(argv[3]);
+    }
+
+    GrSetMode(GR_width_height_bpp_graphics, gwidth, gheight, gbpp);
 
     GrEventInit();
     GrMouseDisplayCursor();
+    GrSetDefaultFont(&GrFont_PC8x16);
 
     lopt.lno_color = GrWhite();
     lopt.lno_width = 20;

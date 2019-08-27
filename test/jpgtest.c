@@ -21,6 +21,12 @@
 #include "mgrx.h"
 #include "mgrxkeys.h"
 
+/* default mode */
+
+static int gwidth = 640;
+static int gheight = 480;
+static int gbpp = 24;
+
 void imagen(char *nf, int scale)
 {
     GrContext *grc;
@@ -31,8 +37,8 @@ void imagen(char *nf, int scale)
 
     GrQueryJpeg(nf, &w, &h);
     sprintf(s, "%s %dx%d scale 1/%d", nf, w, h, scale);
-    wide = (w/scale > 600) ? 600 : w/scale;
-    high = (h/scale > 400) ? 400 : h/scale;
+    wide = (w/scale > GrMaxX()-40) ? GrMaxX()-40 : w/scale;
+    high = (h/scale > GrMaxY()-80) ? GrMaxY()-80 : h/scale;
     GrClearScreen(GrAllocColor(0, 0, 200));
 
     GrBox(10, 40, 10+wide+1, 40+high+1, GrWhite());
@@ -63,12 +69,18 @@ void nojpegsupport(void)
     GrEventWaitKeyOrClick(&ev);
 }
 
-int main()
+int main(int argc, char **argv)
 {
     GrContext *grc;
     GrEvent ev;
 
-    GrSetMode(GR_width_height_bpp_graphics, 640, 480, 24);
+    if (argc >= 4) {
+        gwidth = atoi(argv[1]);
+        gheight = atoi(argv[2]);
+        gbpp = atoi(argv[3]);
+    }
+
+    GrSetMode(GR_width_height_bpp_graphics, gwidth, gheight, gbpp);
     GrEventInit();
     GrMouseDisplayCursor();
 
@@ -87,6 +99,10 @@ int main()
     imagen("jpeg2.jpg", 2);
     imagen("jpeg2.jpg", 4);
     imagen("jpeg2.jpg", 8);
+    imagen("jpeg3.jpg", 1);
+    imagen("jpeg3.jpg", 2);
+    imagen("jpeg3.jpg", 4);
+    imagen("jpeg3.jpg", 8);
 
     GrClearScreen(GrAllocColor(0, 100, 0));
     grc = GrCreateSubContext(10, 40, 10+400-1, 40+300-1, NULL, NULL);

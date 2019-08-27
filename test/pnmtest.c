@@ -28,15 +28,26 @@
 #define FIMAGEPBM2 "prueba.pbm"
 #define FSCREEN "output.ppm"
 
-int main(void)
+/* default mode */
+
+static int gwidth = 640;
+static int gheight = 480;
+static int gbpp = 24;
+
+int main(int argc, char **argv)
 {
     GrContext *grc;
     int wide, high, maxval;
     char s[81];
     GrEvent ev;
 
-    /*GrSetMode( GR_default_graphics ); */
-    GrSetMode(GR_width_height_color_graphics, 640, 480, 32768);
+    if (argc >= 4) {
+        gwidth = atoi(argv[1]);
+        gheight = atoi(argv[2]);
+        gbpp = atoi(argv[3]);
+    }
+
+    GrSetMode(GR_width_height_bpp_graphics, gwidth, gheight, gbpp);
     GrEventInit();
     GrMouseDisplayCursor();
     GrQueryPnm(FIMAGEPPM, &wide, &high, &maxval);

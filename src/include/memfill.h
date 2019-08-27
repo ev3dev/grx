@@ -21,6 +21,7 @@
  ** 071201 Introduction of GR_PtrInt (integer of same length as a pointer)
  **        to suppress warnings (in fact errors) when compiling with
  **        x86_64 platforms. Backport from GRX 2.4.7 (M.Lombardi)
+ ** 190813 Moved sttzero to libgrx.h
  **/
 
 #ifndef __MEMFILL_H_INCLUDED__
@@ -34,10 +35,6 @@
 #endif
 #ifndef __ARITH_H_INCLUDED__
 #include "arith.h"
-#endif
-
-#ifdef __GNUC__
-#  include "gcc/memfill.h"
 #endif
 
 #if !defined(GR_int64) && !defined(NO_64BIT_FILL)
@@ -866,18 +863,5 @@
 
 #define memfill_24   memfill_24_set
 #define memfill_24_f memfill_24_set_f
-
-/*
- * stuff to clear arrays, structures
- */
-#define memzero(p,s) do {                                               \
-	register void     *_FP = (void *)(p);                           \
-	register GR_repl   _FV = 0;                                     \
-	register unsigned  _FC = (unsigned)(s);                         \
-        DBGPRINTF(DBG_COPYFILL,("memzero size=%u\n",_FC));              \
-	repfill_b(_FP,_FV,_FC);                                         \
-} while(0)
-
-#define sttzero(p)              memzero((p),sizeof(*(p)))
 
 #endif  /* whole file */

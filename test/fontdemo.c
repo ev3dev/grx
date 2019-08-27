@@ -154,7 +154,8 @@ static void info1(void)
     else
         strcat(buffer, " fixed");
     gputs(buffer);
-    sprintf(buffer, "Font family: %s  Encoding: %d", hdr->family, hdr->encoding);
+    sprintf(buffer, "Font family: %s  Encoding: %d (%s)",
+            hdr->family, hdr->encoding, GrStrFontEncoding(hdr->encoding));
     gputs(buffer);
     sprintf(buffer, "Min char, num chars: %d, %d", hdr->minchar,hdr->numchars);
     gputs(buffer);

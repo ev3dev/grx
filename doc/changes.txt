@@ -1,3 +1,48 @@
+2019-08-27 ----------- mGRX 1.1.2 released
+2019-08-25 Solved an old bug showing in 16 color modes. The defaut red mouse
+           allocated a cell with a red color not in the ega color table, so if
+           GrAllocEgaColors() is called after mouse initialization the last ega 
+           color (white) can't be alloced. Solution: setting the default mouse
+           color to black & white and allocate black & white colors first in
+           GrAllocEgaColors() to prevent no cells for the two basic colors.
+2019-08-24 GREV_EXPOSE event populates "count" in the "kbstat" field. If count is
+           zero, no more Expose events follow. The X11 man pages say: Simple
+           applications that do not want to optimize redisplay can just ignore all
+           Expose events with nonzero counts and perform full redisplays on events
+           with zero counts.
+2019-08-22 Decorate demomgrx background.
+2019-08-19 Added "life_db" test program, double buffer version of life, much faster
+           than the normal version in X11 and Win32, a bit slower in Linux-fb
+           and djgpp.
+2019-08-18 Don't recode ASCII keys (include controls) when reading keyboard, it can
+           hide the control keys in MSDOS and Win32.
+2019-08-17 Solved a bug in libgrx.h getting BYTE_ORDED showed in win32 after remove
+           of assembler code in memfill.h.
+2019-08-14 Removed assembler code from src/include/memfill.h, tested all platforms.
+2019-08-13 Moved sttcopy and sttzero to libgrx.h using string.h routines. Deleted
+           includes memcopy.h and memfill.h for files that do not need them now.
+2019-08-13 Restaured "CCOPT += -DLFB_BY_NEAR_POINTER" in src/makefile.lnx because
+           the framebuffer is in user space.  we can now remove lfb--.o files
+           from the linuxfb build.
+2019-08-12 Checking the 32 bit build in linux I had unespected segment violation
+           with the fb friver, the cause was the i386 assembler code used by sttcopy
+           function. Because I don't know how to debug assembler, and it is not used
+           in the 64 bit build, and have not found speed difference with and without
+           the assembler code in other 32 bit plattforms (like DJGPP) I deleted
+           the i386 assembler code in src/include/memcopy.h. As far as the DJGPP
+           and Win32 versions will continue to run I will try to eliminate more
+           assembler code in future.
+2019-08-10 Updated the programmer manual explaining how to use the portable color
+           tables defined in mgrxcolr.h
+2019-08-03 Changed the obsolete termio by termios in the linux framebuffer input driver,
+           this solve problems with control keys.
+2019-08-02 Added support for the imps2 mouse protocol in the linux framebuffer input
+           driver, now we have wheel events.
+2019-06-20 Added color tables (new concept) for easy use of colors by names, there are
+           two tables defined: EGA (16 colors) and WEB (138 colors). The definitions are
+           in the new main include file include/mgrxcolr.h and the necesary code in
+           src/setup/colortbl.c. Added the clrtable.c program to test color tables.
+2019-06-11 ----------- mGRX 1.1.1 released
 2019-06-10 Solved a very old problem in Customized and Patterned line drawings
            funtions. The intersect code (in src/wideline/drwcpoly.c) gave bad results
            for solid and pattern filed wide lines, changed to a simple algorithm that
@@ -15,7 +60,7 @@
 2017-10-01 New funtion to enqueue a event by its parameters
              int GrEventParEnqueue(int type, long p1, long p2, long p3, long p4);
            Changed wait input if no events to delay(1) instead dpmi_yield in the
-           djgpp version, so now demommgrx runs smoothly like otther versions.
+           djgpp version, so now demommgrx runs smoothly like other versions.
 2017-09-09 ----------- mGRX 1.1.0 released
 2017-09-08 Fix a proglem in jpeg read with new version 9 of libjpeg, they have 
            changed the default for cinfo.scale_denom and cinfo.scale_num.

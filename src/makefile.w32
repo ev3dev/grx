@@ -101,11 +101,13 @@ install: $(MGRXST)
 	copy $(MGRXSTdos) $(MINGWDIR)\lib
 	copy ..\include\mgrx.h $(MINGWDIR)\include
 	copy ..\include\mgrxkeys.h $(MINGWDIR)\include
+	copy ..\include\mgrxcolr.h $(MINGWDIR)\include
 
 uninstall:
 	if exist $(MINGWDIR)\lib\$(MGRXln)    del $(MINGWDIR)\lib\$(MGRXln)
 	if exist $(MINGWDIR)\include\mgrx.h   del $(MINGWDIR)\include\mgrx.h
 	if exist $(MINGWDIR)\include\mgrxkeys.h del $(MINGWDIR)\include\mgrxkeys.h
+	if exist $(MINGWDIR)\include\mgrxcolr.h del $(MINGWDIR)\include\mgrxcolr.h
 
 install-bin: $(UTILPC) $(UTILPW)
 	copy ..\bin\bin2c.exe $(MINGWDIR)\bin

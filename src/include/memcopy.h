@@ -1,5 +1,5 @@
 /**
- ** memcopy.h ---- inline assembly memory copy macros
+ ** memcopy.h ---- inline memory copy macros
  **
  ** Copyright (c) 1998 Hartmut Schirmer
  **
@@ -20,6 +20,8 @@
  ** 071201 Introduction of GR_PtrInt (integer of same length as a pointer)
  **        to suppress warnings (in fact errors) when compiling with
  **        x86_64 platforms. Backport from GRX 2.4.7 (M.Lombardi)
+ ** 190812 Remove i386 assembler code
+ ** 190813 Moved sttcopy to libgrx.h
  **/
 
 #ifndef __MEMCOPY_H_INCLUDED__
@@ -46,10 +48,6 @@
 #endif
 #if !defined(CPSIZE_h) && defined(GR_int64)
 #define CPSIZE_h     sizeof(GR_int64)
-#endif
-
-#ifdef __GNUC__
-#  include "gcc/memcopy.h"
 #endif
 
 #if !defined(GR_int64) && !defined(NO_64BIT_COPY)
@@ -1399,19 +1397,5 @@ while (0)
 #ifndef revcopy_f_and_f
 #define revcopy_f_and_f(ap,d,s,c)  __INLINE_REV_COPY__(_f_and,_f,ap,d,s,c)
 #endif
-
-/*
- * stuff to copy arrays, structures
- */
-#define memcopy(d,s,sze) do {                                           \
-	register void              *_CD = (void *)(d);                  \
-	register void              *_CS = (void *)(s);                  \
-	register unsigned GR_PtrInt _CC = (unsigned GR_PtrInt)(sze);    \
-        DBGPRINTF(DBG_COPYFILL,("memcopy size=%u\n",_CC));              \
-	fwdcopy_set(_CD,_CD,_CS,_CC);                                   \
-} while(0)
-#define sttcopy(dstp,srcp)      memcopy((dstp),(srcp),sizeof(*(srcp)))
-
-
 
 #endif  /* whole file */

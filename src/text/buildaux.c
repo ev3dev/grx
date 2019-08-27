@@ -19,7 +19,6 @@
 #include "libgrx.h"
 #include "allocate.h"
 #include "arith.h"
-#include "memfill.h"
 
 char *GrBuildAuxiliaryBitmap(GrFont *f,unsigned int chr,int dir,int ul)
 {
@@ -39,7 +38,7 @@ char *GrBuildAuxiliaryBitmap(GrFont *f,unsigned int chr,int dir,int ul)
         size = sizeof(f->auxoffs[0][0]) * f->h.numchars;
         f->auxoffs[dir] = farmalloc(size);
         if(f->auxoffs[dir] == NULL) return(NULL);
-        memzero(f->auxoffs[dir],size);
+        memset(f->auxoffs[dir],0,size);
     }
     h     = f->h.height;
     w     = f->chrinfo[idx].width;
@@ -95,7 +94,7 @@ char *GrBuildAuxiliaryBitmap(GrFont *f,unsigned int chr,int dir,int ul)
     cvtmap = &f->auxmap[f->auxnext];
     f->auxoffs[dir][idx] = f->auxnext + 1;
     f->auxnext += rsize;
-    memfill_b(cvtmap,0,rsize);
+    memset(cvtmap,0,rsize);
     for(h = bpos = 0; bpos < size; bpos += boff,rbpos += rboff,h++) {
         unsigned int bp    = bpos;
         unsigned int bptop = bpos + w;

@@ -17,8 +17,7 @@
  **/
 
 #include "libgrx.h"
-#include "memcopy.h"
-#include "memfill.h"
+#include "arith.h"
 
 static void (*DACload)(int c,int r,int g,int b) = NULL;
 

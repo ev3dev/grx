@@ -135,6 +135,7 @@ void _GrDrawString(const void *text, int length, int x, int y,
   unsigned short *text2;
 
   GRX_ENTER();
+  if (text == NULL) return;
   if (length <= 0) length = GrStrLen(text, opt->txo_chrtype);
   text2 = GrFontTextRecode(opt->txo_font, text, length, opt->txo_chrtype);
   if (text2 == NULL) return;

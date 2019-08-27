@@ -18,7 +18,10 @@
  ** 071201 Introduction of GR_PtrInt (integer of same length as a pointer)
  **        to suppress warnings (in fact errors) when compiling with
  **        x86_64 platforms. Backport from GRX 2.4.7 (M.Lombardi)
- ** 170630 Added _GrIniUserEncoding protoptype
+ ** 170630 Added _GrIniUserEncoding and _GrRecode protoptypes
+ ** 190813 Define here sttcopy and sttzero using string.h routines
+ ** 190818 Solved a bug in getting BYTE_ORDED showed in win32 after remove of
+ **        assembler code in memfill.h
  **/
 
 #ifndef __LIBGRX_H_INCLUDED__
@@ -88,8 +91,8 @@ typedef unsigned GR_int64 GR_int64u;
 
 #if defined(__BYTE_ORDER__) && !defined(BYTE_ORDER)
 #  define BYTE_ORDER    __BYTE_ORDER__
-#  define LITTLE_ENDIAN __LITTLE_ENDIAN__
-#  define BIG_ENDIAN    __BIG_ENDIAN__
+#  define LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
+#  define BIG_ENDIAN    __ORDER_BIG_ENDIAN__
 #endif
 
 #if !defined(BYTE_ORDER) && defined(_LITTLE_ENDIAN)
@@ -107,6 +110,11 @@ typedef unsigned GR_int64 GR_int64u;
 #ifndef BYTE_ORDER
 #error Unknown byte ordering !
 #endif
+
+/* sttcopy and sttzero */
+
+#define sttcopy(dstp,srcp)      memcpy((dstp),(srcp),sizeof(*(srcp)))
+#define sttzero(p)              memset((p),0,sizeof(*(p)))
 
 /* Debug support */
 #if defined(DEBUG) && !defined(__GRXDEBUG_H_INCLUDED__)

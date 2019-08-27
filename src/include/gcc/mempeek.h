@@ -25,13 +25,13 @@
 /* ================================================================ */
 #ifdef __i386__
 
-/* the far selector peek / poke stuff is only used
-** if far memory access is required (DJGPP v2)     */
-#ifdef I386_GCC_FAR_MEMORY
-
 #ifndef MOV_INS
 #include "gcc/asmsupp.h"
 #endif
+
+/* the far selector peek / poke stuff is only used
+** if far memory access is required (DJGPP v2)     */
+#ifdef I386_GCC_FAR_MEMORY
 
 #define __INLINE_386_PEEK__(P,SIZE,T,SEL) ({            \
     unsigned T _peekvalue;                              \

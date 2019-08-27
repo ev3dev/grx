@@ -14,6 +14,7 @@
  **
  **/
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "mgrx.h"
@@ -319,16 +320,36 @@ static KeyEntry Keys[] = {
 
 #define KEYS (sizeof(Keys)/sizeof(Keys[0]))
 
-void print_scroll( char *s)
-{
-    int linehigh = 16;
+static int gwidth = 800;
+static int gheight = 600;
+static int gbpp = 8;
 
-    GrBitBlt(NULL, 0, 0, NULL, 0, linehigh, GrMaxX(), GrMaxY(), GrWRITE);
-    GrFilledBox(0, GrMaxY()-linehigh, GrMaxX(), GrMaxY(), GrBlack());
-    GrTextXY(0, GrMaxY()-linehigh, s, GrWhite(), GrBlack());
+static int lineheight = 18;
+
+void print_scroll_old( char *s)
+{
+    GrBitBlt(NULL, 0, 0, NULL, 0, lineheight, GrMaxX(), GrMaxY(), GrWRITE);
+    GrFilledBox(0, GrMaxY()-lineheight, GrMaxX(), GrMaxY(), GrBlack());
+    GrTextXY(0, GrMaxY()-lineheight, s, GrWhite(), GrBlack());
 }
 
-int main(void) {
+void print_scroll( char *s)
+{
+    int nlines = GrMaxY() / lineheight;
+    int linemid = nlines / 2;
+    static int actline = 0;
+
+    if (actline >= nlines) {
+        GrBitBlt(NULL, 0, 0, NULL, 0, lineheight*linemid, GrMaxX(), GrMaxY(), GrWRITE);
+        GrFilledBox(0, GrMaxY()-lineheight*linemid, GrMaxX(), GrMaxY(), GrBlack());
+        actline = linemid;
+    }
+    GrTextXY(0, lineheight*actline, s, GrWhite(), GrBlack());
+    actline++;
+}
+
+int main(int argc, char **argv)
+{
     int spaces_count = 0;
     KeyEntry *kp;
     GrEvent ev;
@@ -338,7 +359,14 @@ int main(void) {
     char buf[201], buf_name[121];
     int i, nc;
 
-    GrSetMode(GR_width_height_bpp_graphics, 800, 600, 8);
+    if (argc >= 4) {
+        gwidth = atoi(argv[1]);
+        gheight = atoi(argv[2]);
+        gbpp = atoi(argv[3]);
+    }
+
+    GrSetMode(GR_width_height_bpp_graphics, gwidth, gheight, gbpp);
+    GrSetDefaultFont(&GrFont_PC8x16);
     GrEventInit();
     GrMouseDisplayCursor();
 

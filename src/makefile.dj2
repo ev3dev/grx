@@ -118,11 +118,13 @@ install: $(MGRXST)
 	copy $(MGRXSTdos) $(DJDIRdos)\lib
 	copy ..\include\mgrx.h $(DJDIRdos)\include
 	copy ..\include\mgrxkeys.h $(DJDIRdos)\include
+	copy ..\include\mgrxcolr.h $(DJDIRdos)\include
 
 uninstall:
 	if exist $(DJDIRdos)\lib\$(MGRXln)    del $(DJDIRdos)\lib\$(MGRXln)
 	if exist $(DJDIRdos)\include\mgrx.h   del $(DJDIRdos)\include\mgrx.h
 	if exist $(DJDIRdos)\include\mgrxkeys.h del $(DJDIRdos)\include\mgrxkeys.h
+	if exist $(DJDIRdos)\include\mgrxcolr.h del $(DJDIRdos)\include\mgrxcolr.h
 
 install-bin: $(UTILP)
 	copy ..\bin\bin2c.exe $(DJDIRdos)\bin

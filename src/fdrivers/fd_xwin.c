@@ -24,11 +24,9 @@
  ** 170714 Use BStore only if not generated GREV_EXPOSE events
  **/
 
-#include <string.h>
 #include "libgrx.h"
 #include "libxwin.h"
 #include "arith.h"
-#include "memfill.h"
 #include "grdriver.h"
 
 INLINE

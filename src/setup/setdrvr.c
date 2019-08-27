@@ -17,13 +17,10 @@
  **/
 
 #include <ctype.h>
-#include <string.h>
 
 #include "libgrx.h"
 #include "grdriver.h"
 #include "arith.h"
-#include "memcopy.h"
-#include "memfill.h"
 
 static char * nxtoken(char *p,char *token)
 {

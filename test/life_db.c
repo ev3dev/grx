@@ -1,5 +1,5 @@
 /**
- ** life.c ---- Conway's life program
+ ** life_db.c ---- Conway's life program
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  ** [e-mail: csaba@vuse.vanderbilt.edu]
@@ -15,6 +15,8 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 190819 Double buffer version of life, much faster than the normal 
+ **        version in X11 and Win32, a bit slower in Linux-fb and djgpp
  **/
 
 #include "test.h"
@@ -34,9 +36,15 @@ TESTFUNC(life)
     GrColor c[2];
     long thresh;
     GrEvent ev;
+    GrContext *grc;
 
     GrEventGenExpose(GR_GEN_EXPOSE_YES);
-   
+
+    if ( (grc = GrCreateContext( GrScreenX(),GrScreenY(),NULL,NULL )) == NULL ) {
+        printf("Error creating double buffer\n");
+        return;
+    }
+    
     for(which = 0; which < 2; which++) {
         cur = malloc(H * sizeof(char *));
         if(!cur) return;
@@ -65,7 +73,9 @@ TESTFUNC(life)
     old = map[which];
     cur = map[1 - which];
     SRND((int)time(NULL));
+
     GrMouseEraseCursor();
+    GrSetContext( grc );
     for(y = 0; y < H; y++) {
         for(x = 0; x < W; x++) {
             int ii = RND() % 53;
@@ -74,6 +84,9 @@ TESTFUNC(life)
             GrPlotNC(x,y,c[(int)old[y][x]]);
         }
     }
+     /* djgpp does'nt work if not set the screen context before blit */
+    GrSetContext( NULL );
+    GrBitBlt(GrScreenContext(),0,0,grc,0,0,grc->gc_xmax,grc->gc_ymax,GrWRITE);
     //GrMouseDisplayCursor();
     
     thresh = (((unsigned long)RND() << 16) + RND()) % 1003567UL;
@@ -104,6 +117,7 @@ TESTFUNC(life)
             }
         }
         //GrMouseEraseCursor();
+        GrSetContext( grc );
         for(y = 0; y < H; y++) {
             char *curr = cur[y];
             char *oldr = old[y];
@@ -111,6 +125,8 @@ TESTFUNC(life)
                 if(curr[x] != oldr[x]) GrPlotNC(x,y,c[(int)curr[x]]);
             }
         }
+        GrSetContext( NULL );
+        GrBitBlt(GrScreenContext(),0,0,grc,0,0,grc->gc_xmax,grc->gc_ymax,GrWRITE);
         //GrMouseDisplayCursor();
         which = 1 - which;
         old = map[which];
@@ -123,11 +139,8 @@ TESTFUNC(life)
                        ev.p1, ev.p2, ev.p3, ev.p4, ev.kbstat);
                 if (ev.kbstat == 0) {// no more EXPOSE events follow
                     //GrMouseEraseCursor();
-                    for(y = ev.p2; y < ev.p4; y++) {
-                        for(x = ev.p1; x < ev.p3; x++) {
-                            GrPlotNC(x,y,c[(int)old[y][x]]);
-                        }
-                    }
+                    GrBitBlt(GrScreenContext(),0,0,grc,0,0,
+                             grc->gc_xmax,grc->gc_ymax,GrWRITE);
                     //GrMouseDisplayCursor();
                 }
             } else

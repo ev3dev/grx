@@ -99,6 +99,7 @@ STD_6 = $(OP)setup/clip$(OX)        \
 	$(OP)setup/colorbw$(OX)     \
 	$(OP)setup/colorega$(OX)    \
 	$(OP)setup/colors$(OX)      \
+	$(OP)setup/colortbl$(OX)    \
 	$(OP)setup/context$(OX)     \
 	$(OP)setup/cxtinfo$(OX)     \
 	$(OP)setup/cxtinlne$(OX)    \
@@ -112,10 +113,10 @@ STD_6 = $(OP)setup/clip$(OX)        \
 	$(OP)setup/setdrvr$(OX)     \
 	$(OP)setup/setmode$(OX)     \
 	$(OP)setup/version$(OX)     \
-	$(OP)setup/viewport$(OX)    \
-	$(OP)shape/circle1$(OX)
+	$(OP)setup/viewport$(OX)
 
-STD_7 = $(OP)shape/circle2$(OX)     \
+STD_7 = $(OP)shape/circle1$(OX)     \
+	$(OP)shape/circle2$(OX)     \
 	$(OP)shape/circle3$(OX)     \
 	$(OP)shape/circle4$(OX)     \
 	$(OP)shape/drawpoly$(OX)    \

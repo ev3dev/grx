@@ -25,7 +25,6 @@
 #include "shapes.h"
 #include "clipping.h"
 #include "arith.h"
-#include "memcopy.h"
 
 /*
  * update the end point of line #1 and the starting point of line #2

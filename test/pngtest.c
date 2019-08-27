@@ -21,6 +21,12 @@
 #include "mgrx.h"
 #include "mgrxkeys.h"
 
+/* default mode */
+
+static int gwidth = 640;
+static int gheight = 480;
+static int gbpp = 24;
+
 void imagen(char *nf)
 {
     GrContext *grc;
@@ -69,12 +75,18 @@ void nopngsupport(void)
 }
 
 
-int main()
+int main(int argc, char **argv)
 {
     GrContext *grc;
     GrEvent ev;
 
-    GrSetMode(GR_width_height_bpp_graphics, 640, 480, 24);
+    if (argc >= 4) {
+        gwidth = atoi(argv[1]);
+        gheight = atoi(argv[2]);
+        gbpp = atoi(argv[3]);
+    }
+
+    GrSetMode(GR_width_height_bpp_graphics, gwidth, gheight, gbpp);
     GrEventInit();
     GrMouseDisplayCursor();
 

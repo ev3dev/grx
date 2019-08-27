@@ -16,14 +16,10 @@
  **
  **/
 
-#include <string.h>
-#include <stdio.h>
-
 #include "libgrx.h"
 #include "grfontdv.h"
 #include "allocate.h"
 #include "arith.h"
-#include "memfill.h"
 
 /*
  * amounts for various font conversions
@@ -83,7 +79,7 @@ static int cvtbitmap(int oldw,int neww,conv *c,char *bmp)
 	work_base = ALLOC((size_t)i);
 	if(work_base) {
 	    unsigned char *work = work_base;
-	    memzero(work,i);
+	    memset(work,0,i);
 	    work += wofs;
 	    w = neww - c->boldwdt - c->italwdt;
 	    h = c->newhgt;
@@ -188,7 +184,7 @@ static int cvtbitmap(int oldw,int neww,conv *c,char *bmp)
 		char  *bp = &bmp[y * i];
 		unsigned char *wp = &work[y * wofs];
 		int  xpos = x;
-		memfill_b(bp,0,i);
+		memset(bp,0,i);
 		for(j = 0; j < neww; j++,xpos++) {
 		    if(wp[xpos]) bp[j >> 3] |= (0x80 >> (j & 7));
 		}
@@ -246,7 +242,7 @@ GrFont *_GrBuildFont(
 	i = sizeof(GrFont) + ((numch - 1) * sizeof(GrFontChrInfo));
 	f = malloc(i);
 	if(!f) goto error;
-	memzero(f,i);
+	memset(f,0,i);
 	f->h.name   = malloc(strlen(h->name)   + 1);
 	f->h.family = malloc(strlen(h->family) + 1);
 	if(!f->h.name || !f->h.family) goto error;
@@ -294,7 +290,7 @@ GrFont *_GrBuildFont(
 	if((unsigned long)(unsigned int)bmplen != bmplen) goto error;
 	f->bitmap = farmalloc(bmplen);
 	if(!f->bitmap) goto error;
-	memzero(f->bitmap,(unsigned int)bmplen);
+	memset(f->bitmap,0,(unsigned int)bmplen);
 	i = f->maxwidth;
 	if(h->width > (unsigned int)wdt) i = urscale(i,h->width,wdt);
 	i = ((i + 31) >> 3) * umax(hgt,h->height);

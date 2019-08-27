@@ -42,6 +42,7 @@ PROGS=  arctest.exe     \
 	jpgtest.exe     \
 	keys.exe        \
 	life.exe        \
+	life_db.exe     \
 	linetest.exe    \
 	mousetst.exe    \
 	pcirctst.exe    \
@@ -55,7 +56,8 @@ PROGS=  arctest.exe     \
 	winclip.exe     \
 	wintest.exe     \
 	biggtest.exe    \
-	cusptest.exe
+	cusptest.exe    \
+	clrtable.exe
 
 all: 	$(PROGS) \
 	demomgrx.exe \

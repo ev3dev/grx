@@ -56,7 +56,7 @@ void _GrInitMouseCursor(void)
         MOUINFO->cursor = NULL;
     }
     if (MSCURSOR == NULL) {
-        GrMouseSetInternalCursor(GR_MCUR_TYPE_ARROW, GrAllocColor(255, 0, 0), GrBlack());
+        GrMouseSetInternalCursor(GR_MCUR_TYPE_ARROW, GrWhite(), GrBlack());
     }
     if (MSCURSOR && MSCURSOR->displayed) {
         GrEraseCursor(MSCURSOR);

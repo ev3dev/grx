@@ -16,13 +16,9 @@
  **
  **/
 
-#include <string.h>
-
 #include "libgrx.h"
 #include "allocate.h"
 #include "clipping.h"
-#include "memcopy.h"
-#include "memfill.h"
 
 #define  MYCONTEXT      1
 #define  MYFRAME        2

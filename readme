@@ -1,4 +1,4 @@
-Welcome to MGRX 1.1.1!
+Welcome to MGRX 1.1.2!
 
 MGRX is a 2D graphics C library derived from the GRX library. GRX was
 originaly written by Csaba Biegl for DJ Delorie's DOS port of the GCC
@@ -10,15 +10,17 @@ Supported platforms
 MGRX supports the following four platforms:
 
   DOS using DJGPP v2.05; with EGA, VGA, VESA and memory drivers
-  Linux console using gcc; with framebuffer and memory drivers
-  Linux X11; x11(windowed) and memory drivers
-  Win32 using Mingw; w32(windowed) and memory drivers
+  Linux fb using gcc; with framebuffer and memory drivers
+  Linux X11 using gcc; x11(windowed) and memory drivers
+  Win32 using TDM-GCC (a Mingw32 distribution); w32(windowed) and
+  memory drivers
 
   Both i386 and x86_64 architectures are supported for the linux
-  console and the linux X11 versions. See bellow.
+  framebuffer and the linux X11 versions. See bellow.
 
 Why MGRX
 ========
+
 MGRX (mgrx.fgrim.com) is a fork of GRX (grx.gnu.de). Because I liked the
 GRX C API interface, I began to maintain GRX when it was orphaned at the
 end of 2000. But GRX has not only the C API, it has a Pascal API, a BGI
@@ -57,72 +59,98 @@ A. Unpacking the MGRX archive
 
   3) unpack the MGRX archive:
 
-         tar xzvf mgrx110.tar.gz  (1)
+         tar xzvf mgrx112.tar.gz  (1)
      or
-         unzip mgrx110s.zip        (2)
+         unzip mgrx112s.zip        (2)
 
-     (1) This will create the subdirectory 'mgrx110'.
-     (2) This will create the subdirectory 'contrib/mgrx110'.
+     (1) This will create the subdirectory 'mgrx112'.
+     (2) This will create the subdirectory 'contrib/mgrx112'.
 
-B. Compiling MGRX
------------------
+B. Edit "makedefs.grx"
+----------------------
 
   1) Go to MGRX base dir and edit "makedefs.grx" to customize it for
      your system. The file is well comented.
 
-  2) Switch to the "src" sub dir
+  Some things you can change:
+  
+  -remove support for reading/writing JPEG files, set HAVE_LIBJPEG=n
+  
+  -remove support for reading/writing PNG files, set HAVE_LIBPNG=n
+  and NEED_ZLIB=n
+  
+  - For linux framebuffer and X11 select i386 or x86_64 architecture. By
+  default the makefiles build the library for the x86_64 architecture. To
+  build the i386 library you must set BUILD_X86_64=n
+  
+  - For linux framebuffer and X11 select shared or static libraries. By
+  default only the static libraries are build (and it is the recomended
+  option). To build the shared libraries set INCLUDE_SHARED_SUPPORT=y
 
-  3) run 'make -f <your makefile>':
+C. Compiling MGRX
+-----------------
+
+  1) Switch to the "src" sub dir
+
+  2) run 'make -f <your makefile>':
 
      makefile.dj2 for DOS/DJGPPv2
      makefile.w32 for Win32/Mingw
-     makefile.lnx for Linux/console
+     makefile.lnx for Linux/framebuffer
      makefile.x11 for Linux/X11
 
      This process generates the MGRX lib in the "lib/---" (where ---
-     is dj2, w32, lnx or x11) subdir and some utility programs in the
+     is dj2, win32 or linux) subdir and some utility programs in the
      "bin" subdir.
 
      Note for DJGPP/Mingw users: Do _not_ use an environment variable
      `SHELL' leading to `bash', e.g. `SHELL=/djgpp/bin/bash.exe'.
-     Some parts of the DJGPP/Mingw Makefiles require `command.com'.
+     Do not use MSYS either. The DJGPP/Mingw Makefiles must be run with
+     the normal 'command.com'.
+     
+     Note for Mingw users: use "mingw32-make" instead "make". The 
+     compilation was tested with the 32 bit version of "TDM-GCC"
+     mingw32 distribution.
 
-C. Testing MGRX
+D. Testing MGRX
 ---------------
 
   1) Switch to the "test" sub dir
 
   2) run 'make -f <your makefile>'
 
-  3) run the 'demomgrx' program
+  3) run the 'demomgrx' program ('xdemomgrx' for the X11 version)
+  (see section bellow on running mgrx programs in Linux framebuffer)
 
-D. Installing MGRX lib for your compiler
+E. Installing MGRX lib for your compiler
 ----------------------------------------
 
   Copy the library from <MGRX base>/lib/<your system> to the compiler
   library directory.
-  Copy the header files mgrx.h and mgrxkeys.h from <MGRX base>/include
-  to your compiler include directory.
+  Copy the header files mgrx.h, mgrxkeys.h and mgrxcolr.h from
+  <MGRX base>/include to your compiler include directory.
 
   Or you can let makefiles do it for you, switch to the "src" sub dir and
   run 'make -f <your makefile> install'. You can uninstall the library
   running 'make -f <your makefile> uninstall'.
 
-  Note for Linux users: probably you must be root to do that. Don't forget
-  to run 'ldconfig' to register the shared libraries.
+  Note for Linux users: probably you must be root to do that.
+  
+  Note 2 for Linux users: if you have build the sahred libraries don't
+  forget to run 'ldconfig' to register them.
 
-E. Installing MGRX utility programs
+F. Installing MGRX utility programs
 -----------------------------------
 
   MGRX come with some utility programs like modetest. They are compiled
-  with the library and stored in the "bin" sub dir. To install they in
+  with the library and stored in the "bin" sub dir. To install them in
   your system run 'make -f <your makefile> install-bin'
 
   You can uninstall them running 'make -f <your makefile> uninstall-bin'
 
   Note for Linux users: probably you must be root to do that.
 
-F. Installing MGRX fonts
+G. Installing MGRX fonts
 ------------------------
 
   Only if you have defined a default font directory in "makedefs.grx"
@@ -132,18 +160,13 @@ F. Installing MGRX fonts
 
   Note for Linux users: probably you must be root to do that.
 
-Support for the x86_64 architecture
-===================================
-
-  By default, on linux, the makefiles build the library for the x86_64
-  architecture. To build the i386 library you must set to 'n' the
-  BUILD_X86_64 variable in the makedefs.grx file.
-
 Environment variables for using MGRX programs
 =============================================
 
-  1) set the default driver and graphics mode info (very useful but not
-     required). DOS or Windows:
+  1) You can set set the default driver and graphics mode (but these
+     is not required really).
+     
+     DOS or Windows:
 
        SET MGRXDRV=<driver> gw <width> gh <height> nc <colors>
 
@@ -162,7 +185,9 @@ Environment variables for using MGRX programs
      Values for nc can be 2, 16, 256, 64K or 16M.
      
   2) Set the keyboard system encoding. MGRX try to guess it, but if
-     unsure it will use this variable. DOS or Windows:
+     unsure it will use this variable.
+     
+     DOS or Windows:
      
        SET MGRXKBSYSENCODING=<kbsysencoding>
        
@@ -173,7 +198,10 @@ Environment variables for using MGRX programs
      Posible values are: "CP437", "CP850", "CP1252", "ISO_8859_1", "UTF_8"
      or "UCS_2".
 
-  3) set the GRX font dir, in DOS or Windows:
+  3) Set the GRX font dir (not required if you have set the default font
+     path in 'makedefs.grx' or if your program know where it is).
+     
+     in DOS or Windows:
 
        SET MGRXFONT=<directory for the MGRX fonts>
 
@@ -181,16 +209,31 @@ Environment variables for using MGRX programs
 
        export MGRXFONT=<directory for the MGRX fonts>
 
-     This is required for GRX graphics text output. Path: <MGRX base>/fonts
-
-     NOTE: You can define a default font directory when compiling MGRX.
-           Check the "makedefs.grx" file. 
-
   4) the linux framebuffer driver opens the "/dev/fb0" device file by
      default, if you want to open an alternate device file, set the
      $FRAMEBUFFER environment variable:
 
        export FRAMEBUFFER=<device file>
+
+Running mgrx programs for Linux framebuffer
+===========================================
+
+On most Linux distributios the device framebuffer "/dev/fb0" and the
+mouse device "/dev/input/mice" are not accesible to normal users by
+default. So to run mgrx programs for Linux framebuffer you have to
+choose one of these solutions (beware that you are changing the security
+policy of your distribution, but as the programmer you know better :)
+
+- run the program with root supersuser, either changing user or using
+the sudo command.
+
+- set the root suid for your mgrx programs (read the "chmod" man page
+to know how to do it).
+
+- change the "/dev/fb0" and "/dev/input/mice" permissions (with root).
+
+- add your user to the "video" and "input" groups, editing (with root)
+the "/etc/group" file. I think this is the best solultion.
 
 Help
 ====

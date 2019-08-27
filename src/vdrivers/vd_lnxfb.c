@@ -30,7 +30,6 @@
  *    - Added 32 bpp video mode
  **/
 
-#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
@@ -43,8 +42,6 @@
 #include "libgrx.h"
 #include "grdriver.h"
 #include "arith.h"
-#include "memcopy.h"
-#include "memfill.h"
 
 #define  NUM_MODES    80        /* max # of supported modes */
 #define  NUM_EXTS     15        /* max # of mode extensions */
@@ -87,7 +84,7 @@ static void reset(void)
     struct vt_mode vtm;
 
     if (fbuffer) {
-        memzero(fbuffer, fbvar.yres * fbfix.line_length);
+        memset(fbuffer, 0, fbvar.yres * fbfix.line_length);
         munmap(fbuffer, fbfix.smem_len);
         fbuffer = NULL;
     }
@@ -199,10 +196,16 @@ static int setmode(GrVideoMode * mp, int noclear)
 {
     struct vt_mode vtm;
 
-    fbuffer = mp->extinfo->frame = mmap(0,
+    fbuffer = mp->extinfo->frame = mmap(NULL,
                                         fbfix.smem_len,
                                         PROT_READ | PROT_WRITE,
                                         MAP_SHARED, fbfd, 0);
+    if (fbuffer == MAP_FAILED) {
+        fbuffer = NULL;
+        mp->extinfo->frame = NULL;
+        return FALSE;
+    }
+
     if (mp->extinfo->frame && ttyfd > -1) {
         ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
         vtm.mode = VT_PROCESS;
@@ -213,7 +216,7 @@ static int setmode(GrVideoMode * mp, int noclear)
         ingraphicsmode = 1;
     }
     if (mp->extinfo->frame && !noclear)
-        memzero(mp->extinfo->frame, fbvar.yres * fbfix.line_length);
+        memset(mp->extinfo->frame, 0, fbvar.yres * fbfix.line_length);
     return ((mp->extinfo->frame) ? TRUE : FALSE);
 }
 
@@ -222,7 +225,7 @@ static int settext(GrVideoMode * mp, int noclear)
     struct vt_mode vtm;
 
     if (fbuffer) {
-        memzero(fbuffer, fbvar.yres * fbfix.line_length);
+        memset(fbuffer, 0, fbvar.yres * fbfix.line_length);
         munmap(fbuffer, fbfix.smem_len);
         fbuffer = NULL;
     }
@@ -381,7 +384,7 @@ static int init(char *options)
     if (detect()) {
         GrVideoMode mode, *modep = &modes[1];
         GrVideoModeExt ext, *extp = &exts[0];
-        memzero(modep, (sizeof(modes) - sizeof(modes[0])));
+        memset(modep, 0, (sizeof(modes) - sizeof(modes[0])));
         if ((build_video_mode(&mode, &ext))) {
             add_video_mode(&mode, &ext, &modep, &extp);
         }

@@ -9,7 +9,7 @@ GRXVLNX=y
 include ../makedefs.grx
 
 INCDIR= -I. -I./include -I../include
-CCOPT +=
+CCOPT += -DLFB_BY_NEAR_POINTER
 ADDON_LIBS =
 
 ifdef MGRX_DEFAULT_FONT_PATH
@@ -66,14 +66,6 @@ O=      $(STD_O)                \
 	fdrivers/ram24.o        \
 	fdrivers/ram32l.o       \
 	fdrivers/ram32h.o       \
-	fdrivers/lfb8.o         \
-	fdrivers/lfb16.o        \
-	fdrivers/lfb24.o        \
-	fdrivers/lfb32h.o       \
-	fdrivers/lfb32l.o       \
-	fdrivers/lfbbltrv.o     \
-	fdrivers/lfbbltvr.o     \
-	fdrivers/lfbbltvv.o     \
 	input/grev_lnx.o        \
 	misc/lnxmisc.o          \
 	vdrivers/vd_lnxfb.o
@@ -146,6 +138,7 @@ ifeq ($(INCLUDE_SHARED_SUPPORT),y)
 endif
 	install -m 0644 ../include/mgrx.h $(INSTALLDIR)/include
 	install -m 0644 ../include/mgrxkeys.h $(INSTALLDIR)/include
+	install -m 0644 ../include/mgrxcolr.h $(INSTALLDIR)/include
 
 uninstall:
 	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXST))
@@ -156,6 +149,7 @@ ifeq ($(INCLUDE_SHARED_SUPPORT),y)
 endif
 	rm -f $(INSTALLDIR)/include/mgrx.h
 	rm -f $(INSTALLDIR)/include/mgrxkeys.h
+	rm -f $(INSTALLDIR)/include/mgrxcolr.h
 
 setsuid: $(UTILPS)
 ifeq ($(SET_SUIDROOT),y)

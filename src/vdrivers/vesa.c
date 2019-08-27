@@ -19,8 +19,6 @@
  ** Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77]
  **/
 
-#include <string.h>
-
 #include "libgrx.h"
 #include "grdriver.h"
 #include "arith.h"
@@ -350,8 +348,8 @@ static int init(char *options)
     DBGPRINTF(DBG_DRIVER,("options: \"%s\"\n",options));
     if(_GrViDrvInitEGAVGA(options)) {
 	VESAvgaInfoBlock blk;
-	memzero(modes,sizeof(modes));
-	memzero(exts,sizeof(exts));
+	memset(modes,0,sizeof(modes));
+	memset(exts,0,sizeof(exts));
 	nexts = 0;
 	if(_GrViDrvVESAgetVGAinfo(&blk)) {
 	    VESAmodeInfoBlock mdinfo;

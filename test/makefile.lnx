@@ -55,6 +55,7 @@ PROGS=	arctest     \
 	jpgtest     \
 	keys        \
 	life        \
+	life_db     \
 	linetest    \
 	memtest     \
 	mousetst    \
@@ -70,7 +71,8 @@ PROGS=	arctest     \
 	winclip     \
 	wintest     \
 	biggtest    \
-	cusptest
+	cusptest    \
+	clrtable
 
 all:    $(PROGS) demomgrx demointl
 

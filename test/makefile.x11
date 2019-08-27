@@ -61,6 +61,7 @@ PROGS=  xarctest     \
 	xjpgtest     \
 	xkeys        \
 	xlife        \
+	xlife_db     \
 	xlinetest    \
 	xmemtest     \
 	xmousetst    \
@@ -76,7 +77,8 @@ PROGS=  xarctest     \
 	xwinclip     \
 	xwintest     \
 	xbiggtest    \
-	xcusptest
+	xcusptest    \
+	xclrtable
 
 all: $(PROGS) xdemomgrx xdemointl
 

@@ -30,7 +30,7 @@ int main(void)
   GrEvent ev;
   GrColor *egacolors;
 
-  GrSetMode(GR_width_height_color_graphics, 320, 200, (GrColor)256);
+  GrSetMode(GR_default_graphics);
   GrEventInit();
   GrMouseDisplayCursor();
   egacolors = GrAllocEgaColors();

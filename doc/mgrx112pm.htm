@@ -2,18 +2,18 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
-   <title>MGRX 1.1, Programmer's Guide</title>
+   <title>MGRX 1.1.2, Programmer's Guide</title>
 </head>
 <body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#555555">M</font><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>1.1.1</small></h1>
+<small>1.1.2</small></h1>
 <h1>a C graphics library for DOS, Linux console &amp; X11 and Win32</h1>
 <h2>Programmer's Manual</h2>
 <p>Based on the original GRX manual written by: Csaba Biegl on August 10, 1992
 <p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on August 1, 2005
-<p>Last update: June 11, 2019
+<p>Last update: August 10, 2019
 </center>
 
 <hr>
@@ -137,27 +137,29 @@ files (in the 'include' sub-directory):
 <ul>
 <li><b>mgrx.h</b>  drawing-related structures and functions
 <li><b>mgrxkeys.h</b>  platform independent key definitions
+<li><b>mgrxcolr.h</b>  defines some colors tables in a portable way
 <li><b>grdriver.h</b>  graphics driver format specifications
 <li><b>grfontdv.h</b>  format of a font when loaded into memory
 </ul>
 
 <p>&nbsp;&nbsp;User programs normally only include <b>mgrx.h</b> and
-<b>mgrxkeys.h</b>
+<b>mgrxkeys.h</b> and optionally <b>mgrxcolr.h</b>
 
 <hr>
 <h2><a name="sgd">Setting the graphics driver</a></h2>
 
-<p>&nbsp;&nbsp;The graphics driver is normally set by the final user by the
-environment variable <code>MGRXDRV</code>, but a program can set it using:
+<p>&nbsp;&nbsp;The graphics driver is normally autodetected or set by the
+final user using the environment variable <code>MGRXDRV</code>, but a program
+can set it by function:
 <pre>
 int GrSetDriver(char *drvspec);
 </pre>
-<p>&nbsp;&nbsp;On succes it returns non-zero (TRUE). The drvspec string has
+<p>on succes it returns non-zero (TRUE). The drvspec string has
 the same format as the environment variable:
 <pre>
 &lt;driver> gw &lt;width> gh &lt;height> nc &lt;colors>
 </pre>
-<p>&nbsp;&nbsp;Available drivers are for:
+<p>available drivers are for:
 <ul>
 <li>DOS => stdega, stdvga, VESA, memory
 <li>Linux console => linuxfb, memory
@@ -165,16 +167,38 @@ the same format as the environment variable:
 <li>Win32 => win32, memory
 </ul>
 
-<p>&nbsp;&nbsp;The optionals gw, gh and nc parameters set the desired
+<p>the optionals gw, gh and nc parameters set the desired
 default graphics mode. Normal values for 'nc' are 2, 16, 256, 64K and 16M.
-The current driver name can be obtained from:
+
+<p>&nbsp;&nbsp;If neither the <code>MGRXDRV</code> variable exist, nor the
+driver is set by program, MGRX will try to detect the correct driver when
+first calling <code>GrSetMode</code> (see bellow)
+
+<p>&nbsp;&nbsp;After initiated the current driver name can be obtained from:
 <pre>
 GrCurrentVideoDriver()->name
 </pre>
 
-<p>&nbsp;&nbsp;If neither the <code>MGRXDRV</code> variable exist, nor the
-driver is set by program, MGRX will try to detect the correct driver when
-first calling <code>GrSetMode</code>
+<p>&nbsp;&nbsp;The type of the installed graphics adapter can be
+determined with the function:
+<pre>
+GrVideoAdapter GrAdapterType(void);
+</pre>
+<p>it returns the type of the adapter as one of the following symbolic
+constants (defined in <b>mgrx.h</b>):
+<pre>
+typedef enum _GR_videoAdapters {
+  GR_UNKNOWN = (-1),     /* not known (before driver set) */
+  GR_VGA,                /* VGA adapter */
+  GR_EGA,                /* EGA adapter */
+  GR_XWIN,               /* X11 driver */
+  GR_WIN32,              /* W32 driver */
+  GR_LNXFB,              /* Linux FB driver */
+  GR_MEM                 /* memory only driver */
+} GrVideoAdapter;
+</pre>
+<p>&nbsp;&nbsp;Note that the <code>VESA</code> driver return <code>GR_VGA
+</code> here.
 
 <hr>
 <h2><a name="svm">Setting video modes</a></h2>
@@ -273,42 +297,27 @@ struct _GR_videoMode {
   struct _GR_videoModeExt *extinfo;   /* extra info (maybe shared) */
 };
 </pre>
-<p>&nbsp;&nbsp;The <code>width</code>, <code>height</code> and <code>bpp
+<p>the <code>width</code>, <code>height</code> and <code>bpp
 </code> members are the useful information if you are interested in set
 modes other than the <code>GR_default_graphics</code>.
+
+<p>The current graphics mode (one of the valid <code>mode</code>
+argument values for <code>GrSetMode</code>) can be obtained with:
+<pre>
+GrGraphicsMode GrCurrentMode(void);
+</pre>
+<p>while the current <code>GrVideoMode</code> can be determined with:
+<pre>
+GrVideoMode * GrCurrentVideoMode(void);
+</pre>
 
 <p>&nbsp;&nbsp;A user-defined function can be invoked every time the video
 mode is changed (i.e. <code>GrSetMode</code> is called). This function should
 not take any parameters and don't return any value. It can be installed (for
-all subsequent <code>GrSetMode</code> calls) with the:
+all subsequent <code>GrSetMode</code> calls) with the function:
 <pre>
 void GrSetModeHook(void (*hookfunc)(void));
 </pre>
-<p>function. The current graphics mode (one of the valid <code>mode</code>
-argument values for <code>GrSetMode</code>) can be obtained with the:
-<pre>
-GrGraphicsMode GrCurrentMode(void);
-</pre>
-<p>function, while the type of the installed graphics adapter can be
-determined with the:
-<pre>
-GrVideoAdapter GrAdapterType(void);
-</pre>
-function. <code>GrAdapterType</code> returns the type of the adapter as one
-of the following symbolic constants (defined in <b>mgrx.h</b>):
-<pre>
-typedef enum _GR_videoAdapters {
-  GR_UNKNOWN = (-1),     /* not known (before driver set) */
-  GR_VGA,                /* VGA adapter */
-  GR_EGA,                /* EGA adapter */
-  GR_XWIN,               /* X11 driver */
-  GR_WIN32,              /* W32 driver */
-  GR_LNXFB,              /* Linux FB driver */
-  GR_MEM                 /* memory only driver */
-} GrVideoAdapter;
-</pre>
-<p>&nbsp;&nbsp;Note that the <code>VESA</code> driver return <code>GR_VGA
-</code> here.
 
 <hr>
 <h2><a name="gc">Graphics contexts</a></h2>
@@ -700,8 +709,82 @@ table model they call the normal routines).
 
 <p>&nbsp;&nbsp;People that only want to use a few colors find the <b>MGRX</b>
 color handling a bit confusing, but it gives the power to manage a lot of
-color deeps and two color models. Here are some guidelines to easily use the
-famous 16 ega colors in <b>MGRX</b> programs. We need this <b>MGRX</b> function:
+color deeps and two color models. Here are some guidelines for using a few
+colors in a portable way in <b>MGRX</b> programs.
+
+<h3>Using the include file "mgrxcolr.h" (new in version 1.1.2)</h3>
+
+<p>&nbsp;&nbsp;The "mgrxcolr.h" provides defines and functions to use two
+color tables, a EGA one with 16 colors that you can use with 4bpp and more
+graphics modes, and another table with the 138 WEB colors, as defined by 
+the w3.org, that you can use with 8bpp and more graphics modes.
+
+<p>&nbsp;&nbsp;For each table you have:
+
+<ul>
+<li>A set of defines with the RGB color definitions, by example:
+<pre>
+#define EGAR_BLACK          0x000000
+#define EGAR_BLUE           0x0000AA
+#define EGAR_GREEN          0x00AA00
+...
+#define WEBR_ALICEBLUE              0xF0F8FF 
+#define WEBR_ANTIQUEWHITE           0xFAEBD7 
+#define WEBR_AQUAMARINE             0x7FFFD4 
+...
+</pre>
+<p>You can use directly those defines to allocate colors with
+<code>GrAllocColor2(XXXR_xxx)</code>
+
+<li>A extern reference for each table and a function you need to call just
+once to allocate colors:
+<pre>
+extern GrColorTableDef GrEgaColorTable[];
+int GrGenEgaColorTable(void);
+extern GrColorTableDef GrWebColorTable[];
+int GrGenWebColorTable(void);
+</pre>
+<p>As an extra in the tables are the color names.
+<li>Another set of defines you can use, after calling the GrGen.. function,
+to reference the allocated colors, by example:
+<pre>
+#define EGAC_BLACK          GrEgaColorTable[0].color
+#define EGAC_BLUE           GrEgaColorTable[1].color
+#define EGAC_GREEN          GrEgaColorTable[2].color
+...
+#define WEBC_ALICEBLUE              GrWebColorTable[0].color 
+#define WEBC_ANTIQUEWHITE           GrWebColorTable[1].color 
+#define WEBC_AQUAMARINE             GrWebColorTable[2].color 
+...
+</pre>
+<p>Note that you can't use those defines to initialize static variables
+because the corresponding table is not populated yet.
+
+<li>A last set of defines with the index of each color in the corresponding
+table, by example:
+<pre>
+#define EGAI_BLACK          0
+#define EGAI_BLUE           1
+#define EGAI_GREEN          2
+...
+#define WEBI_ALICEBLUE              0 
+#define WEBI_ANTIQUEWHITE           1 
+#define WEBI_AQUAMARINE             2 
+...
+</pre>
+<p>You can use those defines to initialize static variables, but to use the
+colors you need to write <code>GrXXXColorTable[XXXI_xxx].color</code> or the
+macro <code>XXXColor(XXXI_xxx)</code>
+</ul>
+
+<p>&nbsp;&nbsp;There is an example of how to use each case in the "clrtable"
+test program.
+
+<h3>Using the  GrAllocEgaColors function</h3>
+
+<p>&nbsp;&nbsp;This is the classic method to use the 16 EGA colors in a
+portable way that also works in versions prior to 1.1.2. We need this
+<b>MGRX</b> function:
 <pre>
 GrColor *GrAllocEgaColors(void);
 </pre>
@@ -2200,7 +2283,7 @@ void GrEventRead(GrEvent * ev);
 ttypedef struct {
     int type;               /* event type */
     long time;              /* miliseconds */
-    int kbstat;             /* kb status */
+    int kbstat;             /* kb status (count for GREV_EXPOSE) */
     union {                 /* GREV_KEY     GREV_MOUSE  GREV_MMOVE  GREV_EXPOSE */
       long p1;              /* key          subevent    but status  x           */
       unsigned char cp1[4]; /* for easy access to multibyte key (like UTF-8)    */
@@ -2323,7 +2406,11 @@ void GrEventGenExpose(int when);
 <p>When GREV_EXPOSE events are generated, the X11 video driver doesn't use
 backing store, so drawings are faster, but the program must redraw the area
 exposed by itsel. Check the test program "life" for an example. For systems
-other than X11 the function does nothing.
+other than X11 the function does nothing. GREV_EXPOSE populates "count" in
+the "kbstat" field. If count is zero, no more Expose events follow. Simple
+applications that do not want to optimize redisplay can just ignore all
+Expose events with nonzero counts and perform full redisplays on events with
+zero counts. 
 
 <p>&nbsp;&nbsp;These are the other functions of the input API:
 

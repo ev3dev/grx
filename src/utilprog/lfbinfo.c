@@ -1,7 +1,7 @@
 /**
  ** lfbinfo.c ---- print linux framebuffer information
  **
- ** Copyright (c) 2001 Mariano Alvarez Fernandez
+ ** Copyright (c) 2001, 2019 Mariano Alvarez Fernandez
  ** [e-mail: malfer@teleline.es]
  **
  ** This file is part of the GRX graphics library.
@@ -14,6 +14,7 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 190819 added printfs for all variable fields
  **/
 
 #include <stdio.h>
@@ -40,7 +41,7 @@ int main()
 
     printf( "Device file: %s\n",fbname );
 
-    printf( "Fixed data\n" );
+    printf( "\nFixed data\n" );
     printf( "----------\n" );
     ioctl( fd,FBIOGET_FSCREENINFO,&refix );
     printf( "name: %16s\n",refix.id );
@@ -57,7 +58,7 @@ int main()
     printf( "accel: %d\n",(int)refix.accel );
     printf( "capabilities: %d\n",(int)refix.capabilities );
     ioctl( fd,FBIOGET_VSCREENINFO,&resul );
-    printf( "Variable data\n" );
+    printf( "\nVariable data\n" );
     printf( "-------------\n" );
     printf( "xres: %d\n",(int)resul.xres );
     printf( "yres: %d\n",(int)resul.yres );
@@ -66,6 +67,7 @@ int main()
     printf( "xoffset: %d\n",(int)resul.xoffset );
     printf( "yoffset: %d\n",(int)resul.yoffset );
     printf( "bpp: %d\n",(int)resul.bits_per_pixel );
+    printf( "grayscale: %d\n",(int)resul.grayscale );
     printf( "red offset: %d  length: %d  msb_right: %d\n",
         resul.red.offset,resul.red.length,resul.red.msb_right );
     printf( "green offset: %d  length: %d  msb_right: %d\n",
@@ -74,5 +76,21 @@ int main()
         resul.blue.offset,resul.blue.length,resul.blue.msb_right );
     printf( "transp offset: %d  length: %d  msb_right: %d\n",
         resul.transp.offset,resul.transp.length,resul.transp.msb_right );
+    printf( "nonstd: %d\n",(int)resul.nonstd );
+    printf( "activate: %d\n",(int)resul.activate );
+    printf( "height(mm): %d\n",(int)resul.height );
+    printf( "width(mm): %d\n",(int)resul.width );
+    printf( "accel_flags(obsolete): %d\n",(int)resul.accel_flags );
+    printf( "pixclock(pico seconds): %d\n",(int)resul.pixclock );
+    printf( "left_margin: %d\n",(int)resul.left_margin );
+    printf( "right_margin: %d\n",(int)resul.right_margin );
+    printf( "upper_margin: %d\n",(int)resul.upper_margin );
+    printf( "lower_margin: %d\n",(int)resul.lower_margin );
+    printf( "hsync_len: %d\n",(int)resul.hsync_len );
+    printf( "vsync_len: %d\n",(int)resul.vsync_len );
+    printf( "sync: %d\n",(int)resul.sync );
+    printf( "vmode: %d\n",(int)resul.vmode );
+    printf( "rotate: %d\n",(int)resul.rotate );
+    printf( "colorspace: %d\n",(int)resul.colorspace );
     return 0;
 }
