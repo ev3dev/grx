@@ -13,7 +13,8 @@
             "env": { 
                 "GRX_PLUGIN_PATH": "${workspaceRoot}/build/plugins",
                 "LD_LIBRARY_PATH": "${workspaceRoot}/build/src",
-                "GI_TYPELIB_PATH": "${workspaceRoot}/build/src"
+                "GI_TYPELIB_PATH": "${workspaceRoot}/build/src",
+                "FONTCONFIG_PATH": "${workspaceRoot}/src"
             },
             "debugOptions": [
                 "WaitOnAbnormalExit",

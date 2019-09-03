@@ -285,6 +285,7 @@ set_target_properties (${LIBRARY_OBJECT_TARGET} PROPERTIES POSITION_INDEPENDENT_
 target_compile_options (${LIBRARY_OBJECT_TARGET} PRIVATE "-Wall" "-Werror")
 target_compile_definitions (${LIBRARY_OBJECT_TARGET} PRIVATE
     "GRX_DEFAULT_PLUGIN_PATH=\"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_PKGPLUGINDIR}\""
+    "GRX_FONTCONFIG_PATH=\"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_PKGDATADIR}/fonts\""
     "LFB_BY_NEAR_POINTER"
 )
 if (GRX_DEBUG)
@@ -339,6 +340,10 @@ add_custom_target (grx-pkg-config ALL
 )
 install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}.pc
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
+
+
+# fontconfig
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/fonts.conf DESTINATION ${CMAKE_INSTALL_PKGDATADIR}/fonts)
 
 
 # gobject introspection

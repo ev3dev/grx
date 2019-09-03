@@ -191,6 +191,8 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
     GrxFont *font;
     FcChar8 *file;
 
+    g_setenv("FONTCONFIG_PATH", GRX_FONTCONFIG_PATH, FALSE);
+
     if (!FcInit()) {
         g_set_error_literal(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
             "Failed to init fontconfig");
