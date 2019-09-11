@@ -2,18 +2,18 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
-   <title>MGRX 1.1.2, Programmer's Guide</title>
+   <title>MGRX 1.2.0, Programmer's Guide</title>
 </head>
 <body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#555555">M</font><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>1.1.2</small></h1>
+<small>1.2.0</small></h1>
 <h1>a C graphics library for DOS, Linux console &amp; X11 and Win32</h1>
 <h2>Programmer's Manual</h2>
 <p>Based on the original GRX manual written by: Csaba Biegl on August 10, 1992
 <p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on August 1, 2005
-<p>Last update: August 10, 2019
+<p>Last update: September 1, 2019
 </center>
 
 <hr>
@@ -21,9 +21,18 @@
 
 <p>&nbsp;&nbsp;<b>MGRX</b> is a 2D graphics library derived from the GRX library.
 GRX was originaly written by Csaba Biegl for DJ Delorie's DOS port of the GCC compiler.
-MGRX supports four platforms: DOS (DJGPPv2), Linux console, Linux X11 and Win32
-(TDM-GCC). On DOS it supports VGA and VESA compliant cards. On Linux console it uses
-the framebuffer. On X11 and Win32 it runs in a window.
+<p>&nbsp;&nbsp;<b>MGRX</b> supports four platforms:
+<ul>
+<li>DOS (using the DJGPPv2 32bit compiler) with VGA and VESA compliant cards.
+<li>Linux console (using the gcc compiler) on top of the framebuffer.
+<li>Linux X11 (using the gcc compiler) running in a window.
+<li>Win32 (tested with the TDM-GCC compiler, a Mingw32 distribution) running in a window.
+</ul>
+<p>&nbsp;&nbsp;For the Linux framebuffer and the Linux X11 versions three architectures
+are supported: i386 (32bit), x86_64 (64bit) and ARM (32bit, tested in a Raspberry Pi 4
+using Raspbian).
+<p>&nbsp;&nbsp;Additionally <b>MGRX</b> can work without graphic output using the
+memory driver.
 
 <h2>Contents</h2>
 <dir>
@@ -126,6 +135,8 @@ previously installed)
 <li>Linux console (i386): gcc -m32 -o helomgrx helomgrx.c -lmgrx
 <li>Linux X11 (x86_64): gcc -m64 -o helomgrx helomgrx.c -D__XWIN__ -lmgrxX -lX11
 <li>Linux console (x86_64): gcc -m64 -o helomgrx helomgrx.c -lmgrx
+<li>Linux X11 (ARM): gcc -o helomgrx helomgrx.c -D__XWIN__ -lmgrxX -lX11
+<li>Linux console (ARM): gcc -o helomgrx helomgrx.c -lmgrx
 </ul>
 <hr>
 <h2><a name="dtfd">Data types, function declarations</a></h2>

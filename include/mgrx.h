@@ -25,15 +25,17 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0112
+#define MGRX_VERSION_API 0x0120
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
-#define MGRX_VERSION_GCC_386_LINUX       2       /* console framebuffer */
-#define MGRX_VERSION_GCC_386_X11         3       /* X11 version */
+#define MGRX_VERSION_GCC_386_LINUX       2       /* console framebuffer i386 */
+#define MGRX_VERSION_GCC_386_X11         3       /* X11 version i386 */
 #define MGRX_VERSION_GCC_386_WIN32       4       /* WIN32 using Mingw32 */
-#define MGRX_VERSION_GCC_X86_64_LINUX    5       /* console framebuffer 64 */
-#define MGRX_VERSION_GCC_X86_64_X11      6       /* X11 version 64 */
+#define MGRX_VERSION_GCC_X86_64_LINUX    5       /* console framebuffer x86_64 */
+#define MGRX_VERSION_GCC_X86_64_X11      6       /* X11 version x86_64 */
+#define MGRX_VERSION_GCC_ARM_LINUX       7       /* console framebuffer arm */
+#define MGRX_VERSION_GCC_ARM_X11         8       /* X11 version arm */
 
 #ifdef  __GNUC__
 #ifdef  __DJGPP__
@@ -46,12 +48,18 @@
 #if defined(__linux__) && defined(__x86_64__)
 #define MGRX_VERSION     MGRX_VERSION_GCC_X86_64_X11
 #endif
+#if defined(__linux__) && defined(__arm__)
+#define MGRX_VERSION     MGRX_VERSION_GCC_ARM_X11
+#endif
 #else
 #if defined(__linux__) && defined(__i386__)
 #define MGRX_VERSION     MGRX_VERSION_GCC_386_LINUX
 #endif
 #if defined(__linux__) && defined(__x86_64__)
 #define MGRX_VERSION     MGRX_VERSION_GCC_X86_64_LINUX
+#endif
+#if defined(__linux__) && defined(__arm__)
+#define MGRX_VERSION     MGRX_VERSION_GCC_ARM_LINUX
 #endif
 #endif
 #ifdef  __WIN32__
@@ -101,7 +109,6 @@ typedef enum _GR_graphicsModes {
         GR_biggest_graphics,
         GR_width_height_color_graphics,     /* int w,int h,GrColor nc */
         GR_custom_graphics,                 /* int w,int h,GrColor nc,int vx,int vy */
-//        GR_maximized_color_graphics,        /* GrColor nc */
         /* ==== equivalent modes which do not clear the video memory ==== */
         GR_NC_default_text,
         GR_NC_320_200_graphics,
@@ -110,70 +117,75 @@ typedef enum _GR_graphicsModes {
         GR_NC_biggest_graphics,
         GR_NC_width_height_color_graphics,  /* int w,int h,GrColor nc */
         GR_NC_custom_graphics,              /* int w,int h,GrColor nc,int vx,int vy */
-//        GR_NC_maximized_color_graphics,     /* GrColor nc */
-        /* ==== plane instead of color based modes ==== */
-        /* colors = 1 << bpp  >>> resort enum for GRX3 <<< */
+        /* ==== bpp instead number of color based modes ==== */
+        /* colors = 1 << bpp */
         GR_width_height_bpp_graphics,       /* int w,int h,int bpp */
         GR_custom_bpp_graphics,             /* int w,int h,int bpp,int vx,int vy */
-//        GR_maximized_bpp_graphics,          /* int bpp */
         GR_NC_width_height_bpp_graphics,    /* int w,int h,int bpp */
         GR_NC_custom_bpp_graphics           /* int w,int h,int bpp,int vx,int vy */
-//        GR_NC_maximized_bpp_graphics        /* int bpp */
 } GrGraphicsMode;
 
 /*
  * Available frame modes (video memory layouts)
  */
 typedef enum _GR_frameModes {
-        /* ====== video frame buffer modes ====== */
-        GR_frameUndef,                      /* undefined */
-        GR_frameText,                       /* text modes */
-        GR_frameHERC1,                      /* Hercules mono */
-        GR_frameEGAVGA1,                    /* EGA VGA mono */
-        GR_frameEGA4,                       /* EGA 16 color */
-        GR_frameSVGA4,                      /* (Super) VGA 16 color */
-        GR_frameSVGA8,                      /* (Super) VGA 256 color */
-        GR_frameVGA8X,                      /* VGA 256 color mode X */
-        GR_frameSVGA16,                     /* Super VGA 32768/65536 color */
-        GR_frameSVGA24,                     /* Super VGA 16M color */
-        GR_frameSVGA32L,                    /* Super VGA 16M color padded #1 */
-        GR_frameSVGA32H,                    /* Super VGA 16M color padded #2 */
-        /* ==== modes provided by the X11 driver ===== */
-        GR_frameXWIN1   = GR_frameEGAVGA1,
-        GR_frameXWIN4   = GR_frameSVGA4,
-        GR_frameXWIN8   = GR_frameSVGA8,
-        GR_frameXWIN16  = GR_frameSVGA16,
-        GR_frameXWIN24  = GR_frameSVGA24,
-        GR_frameXWIN32L = GR_frameSVGA32L,
-        GR_frameXWIN32H = GR_frameSVGA32H,
-        /* ==== modes provided by the WIN32 driver ===== */
-        GR_frameWIN32_1   = GR_frameEGAVGA1,
-        GR_frameWIN32_4   = GR_frameSVGA4,
-        GR_frameWIN32_8   = GR_frameSVGA8,
-        GR_frameWIN32_16  = GR_frameSVGA16,
-        GR_frameWIN32_24  = GR_frameSVGA24,
-        GR_frameWIN32_32L = GR_frameSVGA32L,
-        GR_frameWIN32_32H = GR_frameSVGA32H,
-        /* ==== linear frame buffer modes  ====== */
-        GR_frameSVGA8_LFB,                  /* (Super) VGA 256 color */
-        GR_frameSVGA16_LFB,                 /* Super VGA 32768/65536 color */
-        GR_frameSVGA24_LFB,                 /* Super VGA 16M color */
-        GR_frameSVGA32L_LFB,                /* Super VGA 16M color padded #1 */
-        GR_frameSVGA32H_LFB,                /* Super VGA 16M color padded #2 */
-        /* ====== system RAM frame buffer modes ====== */
-        GR_frameRAM1,                       /* mono */
-        GR_frameRAM4,                       /* 16 color planar */
-        GR_frameRAM8,                       /* 256 color */
-        GR_frameRAM16,                      /* 32768/65536 color */
-        GR_frameRAM24,                      /* 16M color */
-        GR_frameRAM32L,                     /* 16M color padded #1 */
-        GR_frameRAM32H,                     /* 16M color padded #2 */
-        GR_frameRAM3x8,                     /* 16M color planar (image mode) */
-        /* ====== markers for scanning modes ====== */
+        /* ==== MSDOS video frame buffer modes ==== */
+        GR_frameUndef,              /* undefined */
+        GR_frameText,               /* text modes */
+        GR_frameHERC1,              /* Hercules mono (deleted) */
+        GR_frameEGAVGA1,            /* EGA VGA mono */
+        GR_frameEGA4,               /* EGA 16 color */
+        GR_frameSVGA4,              /* (Super) VGA 16 color */
+        GR_frameSVGA8,              /* (Super) VGA 256 color */
+        GR_frameVGA8X,              /* VGA 256 color mode X */
+        GR_frameSVGA16,             /* Super VGA 32768/65536 color */
+        GR_frameSVGA24,             /* Super VGA 16M color */
+        GR_frameSVGA32L,            /* Super VGA 16M color padded #1 */
+        GR_frameSVGA32H,            /* Super VGA 16M color padded #2 */
+        /* ==== linear frame buffer modes  ==== */
+        GR_frameSVGA8_LFB,          /* (Super) VGA 256 color */
+        GR_frameSVGA16_LFB,         /* Super VGA 32768/65536 color */
+        GR_frameSVGA24_LFB,         /* Super VGA 16M color */
+        GR_frameSVGA32L_LFB,        /* Super VGA 16M color padded #1 */
+        GR_frameSVGA32H_LFB,        /* Super VGA 16M color padded #2 */
+        /* ==== modes provided by the X11 driver ==== */
+        GR_frameXWIN1,              /* 1bpp B&W */
+        GR_frameXWIN4,              /* 4bpp paletted mode */
+        GR_frameXWIN8,              /* 8bpp paletted mode */
+        GR_frameXWIN16,             /* 16bpp */
+        GR_frameXWIN24,             /* 24bpp */
+        GR_frameXWIN32L,            /* 32bpp (24bpp padded low) */
+        GR_frameXWIN32H,            /* 32bpp (24bpp padded high) */
+        /* ==== modes provided by the WIN32 driver ==== */
+        GR_frameWIN32_1,            /* 1bpp (to do) */
+        GR_frameWIN32_4,            /* 4bpp (to do) */
+        GR_frameWIN32_8,            /* 8bpp paletted mode */
+        GR_frameWIN32_16,           /* 16bpp (to do) */
+        GR_frameWIN32_24,           /* 24bpp */
+        GR_frameWIN32_32L,          /* 32bpp low (to do) */
+        GR_frameWIN32_32H,          /* 32bpp high (to do) */
+        /* ==== modes provided by the linux fb driver ==== */
+        GR_frameLNXFB_1,            /* 1bpp (to do) */
+        GR_frameLNXFB_4,            /* 4bpp (to do) */
+        GR_frameLNXFB_8,            /* 8bpp (to do) */
+        GR_frameLNXFB_16,           /* 16bpp */
+        GR_frameLNXFB_24,           /* 24bpp (to do) */
+        GR_frameLNXFB_32L,          /* 32bpp (24bpp padded low) */
+        GR_frameLNXFB_32H,          /* 32bpp (24bpp padded high) */
+        /* ==== system RAM frame buffer modes ==== */
+        GR_frameRAM1,               /* mono */
+        GR_frameRAM4,               /* 16 color planar */
+        GR_frameRAM8,               /* 256 color */
+        GR_frameRAM16,              /* 32768/65536 color */
+        GR_frameRAM24,              /* 16M color */
+        GR_frameRAM32L,             /* 16M color padded #1 */
+        GR_frameRAM32H,             /* 16M color padded #2 */
+        GR_frameRAM3x8,             /* 16M color planar (image mode) */
+        /* ==== markers for scanning modes ==== */
         GR_firstTextFrameMode     = GR_frameText,
         GR_lastTextFrameMode      = GR_frameText,
         GR_firstGraphicsFrameMode = GR_frameHERC1,
-        GR_lastGraphicsFrameMode  = GR_frameSVGA32H_LFB,
+        GR_lastGraphicsFrameMode  = GR_frameLNXFB_32H,
         GR_firstRAMframeMode      = GR_frameRAM1,
         GR_lastRAMframeMode       = GR_frameRAM3x8
 } GrFrameMode;

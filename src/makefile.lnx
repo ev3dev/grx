@@ -66,6 +66,9 @@ O=      $(STD_O)                \
 	fdrivers/ram24.o        \
 	fdrivers/ram32l.o       \
 	fdrivers/ram32h.o       \
+	fdrivers/lnxfb16.o      \
+	fdrivers/lnxfb32l.o     \
+	fdrivers/lnxfb32h.o     \
 	input/grev_lnx.o        \
 	misc/lnxmisc.o          \
 	vdrivers/vd_lnxfb.o
@@ -82,7 +85,7 @@ all: libst libsh $(UTILP) $(UTILPS)
 
 libst: $(MGRXST)
 
-$(MGRXST): $(LINUX_i386_CONSOLE) $(O)
+$(MGRXST): $(LINUX_CONSOLE) $(O)
 	-rm -f $(MGRXST)
 	$(AR) -r $(MGRXST) $(O)
 	$(RANLIB) $(MGRXST)
@@ -93,7 +96,7 @@ else
 libsh:
 endif
 
-$(MGRXSHna): $(LINUX_i386_CONSOLE) $(LO)
+$(MGRXSHna): $(LINUX_CONSOLE) $(LO)
 	-rm -f $(MGRXSHna)
 	$(CC) $(LDOPT) -shared -Wl,-soname,$(notdir $(MGRXSHli)) -o $(MGRXSHna) $(LO)
 	ln -sf $(notdir $(MGRXSHna)) $(MGRXSHli)
@@ -107,17 +110,17 @@ $(UTILPS): ../bin/% : utilprog/%.o $(MGRXST)
 	$(STRIP) $@
 	chmod $(EXECBITS) $@
 
-$(O): $(LINUX_i386_CONSOLE)
+$(O): $(LINUX_CONSOLE)
 
-$(LO): $(LINUX_i386_CONSOLE)
+$(LO): $(LINUX_CONSOLE)
 
-$(LINUX_i386_CONSOLE):
-	if [ ! -r $(LINUX_i386_CONSOLE) ]; then \
+$(LINUX_CONSOLE):
+	if [ ! -r $(LINUX_CONSOLE) ]; then \
 	rm -f $(SYSTEM_TAG_PREFIX).* $(O) $(LO) utilprog/*.o; fi
-	touch $(LINUX_i386_CONSOLE)
+	touch $(LINUX_CONSOLE)
 
 clean:
-	rm -f $(O) $(O:.o=.s) $(LO) $(LINUX_i386_CONSOLE)
+	rm -f $(O) $(O:.o=.s) $(LO) $(LINUX_CONSOLE)
 	rm -f utilprog/*.o
 
 cleanall: clean

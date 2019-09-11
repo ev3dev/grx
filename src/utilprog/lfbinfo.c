@@ -56,7 +56,8 @@ int main()
     printf( "mmio_start: %lu\n",(unsigned long)refix.mmio_start );
     printf( "mmio_len: %d\n",(int)refix.mmio_len );
     printf( "accel: %d\n",(int)refix.accel );
-    printf( "capabilities: %d\n",(int)refix.capabilities );
+    // not present in old linux
+    //printf( "capabilities: %d\n",(int)refix.capabilities );
     ioctl( fd,FBIOGET_VSCREENINFO,&resul );
     printf( "\nVariable data\n" );
     printf( "-------------\n" );
@@ -91,6 +92,7 @@ int main()
     printf( "sync: %d\n",(int)resul.sync );
     printf( "vmode: %d\n",(int)resul.vmode );
     printf( "rotate: %d\n",(int)resul.rotate );
-    printf( "colorspace: %d\n",(int)resul.colorspace );
+    // not present in old linux
+    //printf( "colorspace: %d\n",(int)resul.colorspace );
     return 0;
 }

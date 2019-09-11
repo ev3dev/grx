@@ -299,7 +299,7 @@ static int build_video_mode(GrVideoMode * mp, GrVideoModeExt * ep)
         if (fbfix.visual != FB_VISUAL_TRUECOLOR)
             return FALSE;
         mp->bpp = 15;
-        ep->mode = GR_frameSVGA16_LFB;
+        ep->mode = GR_frameLNXFB_16;
         ep->flags |= GR_VMODEF_LINEAR;
         ep->cprec[0] = fbvar.red.length;
         ep->cprec[1] = fbvar.green.length;
@@ -312,7 +312,7 @@ static int build_video_mode(GrVideoMode * mp, GrVideoModeExt * ep)
         if (fbfix.visual != FB_VISUAL_TRUECOLOR)
             return FALSE;
         mp->bpp = 16;
-        ep->mode = GR_frameSVGA16_LFB;
+        ep->mode = GR_frameLNXFB_16;
         ep->flags |= GR_VMODEF_LINEAR;
         ep->cprec[0] = fbvar.red.length;
         ep->cprec[1] = fbvar.green.length;
@@ -338,7 +338,7 @@ static int build_video_mode(GrVideoMode * mp, GrVideoModeExt * ep)
         if (fbfix.visual != FB_VISUAL_TRUECOLOR)
             return FALSE;
         mp->bpp = 32;
-        ep->mode = (fbvar.red.offset == 16) ? GR_frameSVGA32L_LFB : GR_frameSVGA32H_LFB;
+        ep->mode = (fbvar.red.offset == 16) ? GR_frameLNXFB_32L : GR_frameLNXFB_32H;
         ep->flags |= GR_VMODEF_LINEAR;
         ep->cprec[0] = fbvar.red.length;
         ep->cprec[1] = fbvar.green.length;

@@ -1,4 +1,4 @@
-Welcome to MGRX 1.1.2!
+Welcome to MGRX 1.2.0!
 
 MGRX is a 2D graphics C library derived from the GRX library. GRX was
 originaly written by Csaba Biegl for DJ Delorie's DOS port of the GCC
@@ -15,8 +15,9 @@ MGRX supports the following four platforms:
   Win32 using TDM-GCC (a Mingw32 distribution); w32(windowed) and
   memory drivers
 
-  Both i386 and x86_64 architectures are supported for the linux
-  framebuffer and the linux X11 versions. See bellow.
+  For the Linux framebuffer and the Linux X11 versions three
+  architectures are supported: i386 (32bit), x86_64 (64bit)
+  and ARM (32bit, tested in a Raspberry Pi 4 using Raspbian).
 
 Why MGRX
 ========
@@ -40,31 +41,42 @@ MGRX installation instructions
 Requirements:
 -------------
 
-  The source files and fonts:  mgrx110.tar.gz or mgrx110s.zip
+  The source files and fonts:  mgrx120.tar.gz or mgrx120s.zip
   This document:               readme
+  
+Dependencies:
+-------------
+
+The only dependencies are libjpeg (for reading and writing JPEG files)
+and libpng and zlib (for reading and writing PNG files). But you can
+disable those capabilities to have no dependencies at all (see belloow).
+
+Anyway it's easy to install the binary libraries in Linux and DJGPP. And
+for the TDM-GCC (Win32) compiler you can download a precompiled package
+from the MGRX site.
 
 A. Unpacking the MGRX archive
 -----------------------------
 
-  1) Choose and download the .tar.gz or .zip package. You can use either.
+  1) 'cd' to a directory where you want the MGRX file tree to be created
+     as a subdirectory. Examples are:
+
+       DJGPP : C:\DJGPP
+       Mingw : C:\MINGW or C:\TDM-GCC-32
+       Linux : /usr/local/src or ~ (your home dir)
+
+  2) Choose and download the .tar.gz or .zip archive. You can use either.
      The .zip is intended for dos and win32 users, specialy for DJGPP users,
      because it expand to the contrib subdir and has manifest files.
 
-  2) 'cd' to a directory where you want the MGRX file tree to be created
-     as a subdirectory. Examples are:
+  3) Unpack the MGRX archive:
 
-       DJGPP : cd C:\DJGPP
-       Mingw : cd C:\MINGW
-       Linux : cd /usr/local/src
-
-  3) unpack the MGRX archive:
-
-         tar xzvf mgrx112.tar.gz  (1)
+         tar xzvf mgrx120.tar.gz   (1)
      or
-         unzip mgrx112s.zip        (2)
+         unzip mgrx120s.zip        (2)
 
-     (1) This will create the subdirectory 'mgrx112'.
-     (2) This will create the subdirectory 'contrib/mgrx112'.
+     (1) This will create the subdirectory 'mgrx120'.
+     (2) This will create the subdirectory 'contrib/mgrx120'.
 
 B. Edit "makedefs.grx"
 ----------------------
@@ -79,9 +91,11 @@ B. Edit "makedefs.grx"
   -remove support for reading/writing PNG files, set HAVE_LIBPNG=n
   and NEED_ZLIB=n
   
-  - For linux framebuffer and X11 select i386 or x86_64 architecture. By
-  default the makefiles build the library for the x86_64 architecture. To
-  build the i386 library you must set BUILD_X86_64=n
+  - For linux framebuffer and X11 select i386, x86_64 or ARM architecture.
+  By default the makefiles build the library for the x86_64 architecture. To
+  build the i386 library you must set BUILD_I386=y, BUILD_X86_64=n and
+  BUILD_ARM=n. To build for ARM set BUILD_ARM=y, BUILD_I386=n and
+  BUILD_X86_64=n.
   
   - For linux framebuffer and X11 select shared or static libraries. By
   default only the static libraries are build (and it is the recomended
@@ -122,8 +136,8 @@ D. Testing MGRX
   3) run the 'demomgrx' program ('xdemomgrx' for the X11 version)
   (see section bellow on running mgrx programs in Linux framebuffer)
 
-E. Installing MGRX lib for your compiler
-----------------------------------------
+E. Installing MGRX lib for your compiler (optional)
+---------------------------------------------------
 
   Copy the library from <MGRX base>/lib/<your system> to the compiler
   library directory.
@@ -139,8 +153,8 @@ E. Installing MGRX lib for your compiler
   Note 2 for Linux users: if you have build the sahred libraries don't
   forget to run 'ldconfig' to register them.
 
-F. Installing MGRX utility programs
------------------------------------
+F. Installing MGRX utility programs (optional)
+----------------------------------------------
 
   MGRX come with some utility programs like modetest. They are compiled
   with the library and stored in the "bin" sub dir. To install them in
@@ -150,8 +164,8 @@ F. Installing MGRX utility programs
 
   Note for Linux users: probably you must be root to do that.
 
-G. Installing MGRX fonts
-------------------------
+G. Installing MGRX fonts (optional)
+-----------------------------------
 
   Only if you have defined a default font directory in "makedefs.grx"
   you can install them running 'make -f <your makefile> install-fonts'
@@ -163,8 +177,8 @@ G. Installing MGRX fonts
 Environment variables for using MGRX programs
 =============================================
 
-  1) You can set set the default driver and graphics mode (but these
-     is not required really).
+  1) You can set set the default driver and graphics mode (but it
+     is not required).
      
      DOS or Windows:
 
@@ -176,10 +190,10 @@ Environment variables for using MGRX programs
 
      Available drivers are for:
 
-       DOS  : stdega, stdvga, VESA, memory
-       Linux: linuxfb, memory
-       X11  : xwin, memory
-       Win32: win32, memory
+       DOS      : stdega, stdvga, VESA, memory
+       Linux fb : linuxfb, memory
+       Linux X11: xwin, memory
+       Win32    : win32, memory
 
      Values for gw and gh can be by example 640,480 or 800,600
      Values for nc can be 2, 16, 256, 64K or 16M.
@@ -233,12 +247,13 @@ to know how to do it).
 - change the "/dev/fb0" and "/dev/input/mice" permissions (with root).
 
 - add your user to the "video" and "input" groups, editing (with root)
-the "/etc/group" file. I think this is the best solultion.
+the "/etc/group" file. I think this is the best solultion (it seems
+to be the default in Raspbian, so nothing to do in that case).
 
 Help
 ====
 
-  Read the programmer's guide in the "doc/mgrx11pm.htm" file.
+  Read the programmer's guide in the "doc/mgrxpm.htm" file.
 
   See the MGRX site (mgrx.fgrim.com) for updates, tips, ... 
 

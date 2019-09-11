@@ -107,7 +107,7 @@ all: libst libsh $(UTILP) $(UTILPX)
 
 libst: $(MGRXST)
 
-$(MGRXST): $(LINUX_i386_X11) $(O)
+$(MGRXST): $(LINUX_X11) $(O)
 	-rm -f $(MGRXST)
 	$(AR) -r $(MGRXST) $(O)
 	$(RANLIB) $(MGRXST)
@@ -118,7 +118,7 @@ else
 libsh:
 endif
 
-$(MGRXSHna): $(LINUX_i386_X11) $(LO)
+$(MGRXSHna): $(LINUX_X11) $(LO)
 	-rm -f $(MGRXSHna)
 	$(CC) $(LDOPT) -shared -Wl,-soname,$(notdir $(MGRXSHli)) -o $(MGRXSHna) $(LO)
 	ln -sf $(notdir $(MGRXSHna)) $(MGRXSHli)
@@ -132,17 +132,17 @@ $(UTILPX): ../bin/x% : utilprog/%.o $(MGRXST)
 	$(STRIP) $@
 	chmod $(EXECBITS) $@
 
-$(O): $(LINUX_i386_X11)
+$(O): $(LINUX_X11)
 
-$(LO): $(LINUX_i386_X11)
+$(LO): $(LINUX_X11)
 
-$(LINUX_i386_X11):
-	-if [ ! -r $(LINUX_i386_X11) ]; then \
+$(LINUX_X11):
+	-if [ ! -r $(LINUX_X11) ]; then \
 	rm -f $(SYSTEM_TAG_PREFIX).* $(O) $(LO) utilprog/*.o; fi
-	touch $(LINUX_i386_X11)
+	touch $(LINUX_X11)
 
 clean:
-	rm -f $(O) $(LO) $(LINUX_i386_X11)
+	rm -f $(O) $(LO) $(LINUX_X11)
 	rm -f utilprog/*.o
 
 cleanall: clean

@@ -34,7 +34,7 @@ static int gbpp = 16;
 #define XGUI 800
 #define YGUI 600
 
-char *wintitle = "MGRX 1.1.2, the graphics library";
+char *wintitle = "MGRX 1.2.0, the graphics library";
 
 #define ID_FCP437      1
 #define ID_FCP850      2
@@ -71,9 +71,9 @@ static Button bp1[NBUTTONSP1] = {
     {PX1, PY0+INCRY*5, 80, 40, IND_GREEN, IND_YELLOW, "8859-1", 0, ID_SISO88591},
     {PX0, PY0+INCRY*6, 80, 40, IND_GREEN, IND_YELLOW, "UTF-8", 0, ID_SUTF8},
     {PX1, PY0+INCRY*6, 80, 40, IND_GREEN, IND_YELLOW, "UCS-2", 0, ID_SUCS2},
-    {PX0, PY0+INCRY*7.5, 80, 40, IND_BROWN, IND_YELLOW, "Test 1", 0, ID_TEST1},
-    {PX1, PY0+INCRY*7.5, 80, 40, IND_BROWN, IND_YELLOW, "Test 2", 0, ID_TEST2},
-    {PX0, PY0+INCRY*8.5, 80, 40, IND_BROWN, IND_YELLOW, "Test 3", 0, ID_TEST3},
+    {PX0, PY0+INCRY*7.5, 80, 40, IND_BROWN, IND_YELLOW, "Glyphs", 0, ID_TEST1},
+    {PX1, PY0+INCRY*7.5, 80, 40, IND_BROWN, IND_YELLOW, "Chars", 0, ID_TEST2},
+    {PX0, PY0+INCRY*8.5, 80, 40, IND_BROWN, IND_YELLOW, "Strings", 0, ID_TEST3},
     {PX0, PY0+INCRY*10, 160, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
 };
 
@@ -82,7 +82,7 @@ static Button_Group bgp1 = { 10, 120, bp1, NBUTTONSP1, 0, 0 };
 static Board brd =
     { 0, 0, XGUI, YGUI, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
 static Board brdtxt =
-    { 180, 80, XGUI-190, YGUI-90, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
+    { 180, 80, XGUI-190, YGUI-90, IND_BLACK, IND_CYAN, IND_BLACK, 1 };
 
 static GrFont *grf_CP437;
 static GrFont *grf_CP850;
@@ -93,7 +93,7 @@ GrTextOption grt_text;
 GrTextOption grt_info;
 
 #define FONT_CP437 "pc8x16.fnt"
-#define FONT_CP850 "pc850-19.fnt"  /* is a real CP850 font */
+#define FONT_CP850 "pc850-19.fnt"
 #define FONT_CP1252 "ter-114b.res"
 #define FONT_ISO88591 "ncen22b.fnt"
 #define FONT_MGRX "tmgrx22b.fnt"
@@ -189,7 +189,7 @@ static void salta_linea(void)
     xpos = 0;
     if (ypos > brdtxt.high-2*ydelta-8 ) {
         GrBitBlt(NULL, 0, 0, NULL, 0, ydelta, GrMaxX(), GrMaxY(), GrWRITE);
-        GrFilledBox(0, GrMaxY()-ydelta, GrMaxX(), GrMaxY(), DARKGRAY);
+        GrFilledBox(0, GrMaxY()-ydelta, GrMaxX(), GrMaxY(), BLACK);
     }
     else
         ypos += ydelta;
@@ -242,7 +242,7 @@ void hide_tcursor(void)
     tcursor_status--;
     
     if (tcursor_status == -1) {
-      draw_tcursor(DARKGRAY);
+      draw_tcursor(BLACK);
     }
 }
 
@@ -343,7 +343,7 @@ static void ini_objects(void)
     ydelta = GrCharHeight('M', &grt_text);
 
     grt_info.txo_font = grf_CP437;
-    grt_info.txo_fgcolor = CYAN;
+    grt_info.txo_fgcolor = LIGHTCYAN;
     grt_info.txo_bgcolor = GrNOCOLOR;
     grt_info.txo_direct = GR_TEXT_RIGHT;
     grt_info.txo_xalign = GR_ALIGN_LEFT;
@@ -395,6 +395,10 @@ static void the_info(int x, int y)
         strcpy(sys, "X64");
     else if (nsys == MGRX_VERSION_GCC_386_WIN32)
         strcpy(sys, "W32");
+    else if (nsys == MGRX_VERSION_GCC_ARM_LINUX)
+        strcpy(sys, "LAR");
+    else if (nsys == MGRX_VERSION_GCC_ARM_X11)
+        strcpy(sys, "XAR");
 
     nsysenc = GrGetKbSysEncoding();
     nusrenc = GrGetUserEncoding();
@@ -403,8 +407,9 @@ static void the_info(int x, int y)
             GrGetLibraryVersion(), sys, GrStrEncoding(nsysenc));
     GrDrawString(aux, strlen(aux), 0 + x, 0 + y, &grt_info);
 
-    sprintf(aux, "UserEncoding: %s  TextFont: %s  FontEncoding: %d",
-            GrStrEncoding(nusrenc), stext_font, grt_text.txo_font->h.encoding);
+    sprintf(aux, "UserEncoding: %s  TextFont: %s  FontEncoding: %d (%s)",
+            GrStrEncoding(nusrenc), stext_font, grt_text.txo_font->h.encoding,
+            GrStrFontEncoding(grt_text.txo_font->h.encoding));
     GrDrawString(aux, strlen(aux), 0 + x, 20 + y, &grt_info);
 
     sprintf(aux, "VideoDriver: %s  Mode: %dx%d %d bpp",

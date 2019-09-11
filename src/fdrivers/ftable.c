@@ -37,13 +37,19 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverSVGA32L,
     &_GrFrameDriverSVGA32H,
 #endif
-#if  defined(__DJGPP__) || defined(XF86DGA_FRAMEBUFFER) \
-  || (defined(__linux__) && !defined(__XWIN__))
+#if  defined(__DJGPP__) || defined(XF86DGA_FRAMEBUFFER)
     &_GrFrameDriverSVGA8_LFB,
     &_GrFrameDriverSVGA16_LFB,
     &_GrFrameDriverSVGA24_LFB,
     &_GrFrameDriverSVGA32L_LFB,
     &_GrFrameDriverSVGA32H_LFB,
+#endif
+#if defined(__linux__) && !defined(__XWIN__)
+    &_GrFrameDriverSVGA8_LFB,
+    &_GrFrameDriverLNXFB_16,
+    &_GrFrameDriverSVGA24_LFB,
+    &_GrFrameDriverLNXFB_32L,
+    &_GrFrameDriverLNXFB_32H,
 #endif
 #ifdef __XWIN__
     &_GrFrameDriverXWIN8,

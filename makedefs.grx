@@ -1,11 +1,11 @@
 ### MGRX CONFIGURATION ###############################################
 
 # This file sets variables that direct the libary build for the
-# programmer needs. The file is used for the four standard plattforms
+# programmer needs. The file is used for the four standard plattforms.
 
 # Specify version of MGRX
 # Currently only used to generate name of shared libraries for linux
-MGRX_VERSION=1.1.2
+MGRX_VERSION=1.2.0
 
 # Specify if you have libjpeg.a and corresponding .h files.
 HAVE_LIBJPEG=y
@@ -20,9 +20,11 @@ NEED_ZLIB=y
 # Specify if you want shared library support (Linux console and X11)
 INCLUDE_SHARED_SUPPORT=n
 
-# Specify if you want to build the library for x86_64 in linux
-# (Linux console and x11 versions)
+# Specify if you want to build the library for arm, i386 or x86_64
+# (Linux console and x11 versions) Set only one to 'y'.
+BUILD_I386=n
 BUILD_X86_64=y
+BUILD_ARM=n
 
 ### SYSTEM SETTINGS ##################################################
 
@@ -34,8 +36,8 @@ STRIP  = strip
 # Different systems / setups may generate .o files
 # this tag files will show what version is present
 SYSTEM_TAG_PREFIX     = systag
-LINUX_i386_CONSOLE    = $(SYSTEM_TAG_PREFIX).000
-LINUX_i386_X11        = $(SYSTEM_TAG_PREFIX).002
+LINUX_CONSOLE         = $(SYSTEM_TAG_PREFIX).000
+LINUX_X11             = $(SYSTEM_TAG_PREFIX).002
 DOS_DJGPP_V2          = $(SYSTEM_TAG_PREFIX).004
 WIN32_GCC_i386_STATIC = $(SYSTEM_TAG_PREFIX).006
 
@@ -61,13 +63,16 @@ WARNOPTS = -W -Wshadow -Wpointer-arith -Wbad-function-cast \
 
 ifdef GRXVLNX
 
-# check for i386 or x86_64 build
+# check for arm, i386 or x86_64 build
 ifeq ($(BUILD_X86_64),y)
 CCOPT += -m64
 LDOPT += -m64
-else
+else ifeq ($(BUILD_I386),y)
 CCOPT += -m32
 LDOPT += -m32
+else
+CCOPT +=
+LDOPT +=
 endif
 
 # place libmgrx.a and libmgrx.so in lib/unix
@@ -88,13 +93,16 @@ endif
 
 ifdef GRXVX11
 
-# check for i386 or x86_64 build
+# check for arm, i386 or x86_64 build
 ifeq ($(BUILD_X86_64),y)
 CCOPT += -m64
 LDOPT += -m64
-else
+else ifeq ($(BUILD_I386),y)
 CCOPT += -m32
 LDOPT += -m32
+else
+CCOPT +=
+LDOPT +=
 endif
 
 # place libmgrxX.a and libmgrxX.so in lib/unix

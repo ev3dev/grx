@@ -22,6 +22,7 @@
  ** 190813 Define here sttcopy and sttzero using string.h routines
  ** 190818 Solved a bug in getting BYTE_ORDED showed in win32 after remove of
  **        assembler code in memfill.h
+ ** 190829 Added ARM support
  **/
 
 #ifndef __LIBGRX_H_INCLUDED__
@@ -50,7 +51,7 @@
 #endif
 
 /* x86 allow misaligned access to non byte location */
-#if defined(__i386__) || defined(__x86_64__)
+#if defined(__i386__) || defined(__x86_64__) || defined(__arm__)
 #  define MISALIGNED_16bit_OK
 #  define MISALIGNED_32bit_OK
 #endif
@@ -82,7 +83,7 @@ typedef unsigned GR_int64 GR_int64u;
 
 /* get system endian */
 #if !defined(_BIG_ENDIAN) && !defined(_LITTLE_ENDIAN)
-#  if defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__))
+#  if defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__) || defined(__arm__))
 #    define _LITTLE_ENDIAN
 #  else
 #    include <sys/byteorder.h>

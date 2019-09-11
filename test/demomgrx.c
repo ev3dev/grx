@@ -32,10 +32,10 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "MGRX 1.1.2, the graphics library";
+    "MGRX 1.2.0, the graphics library";
 
 char *animatedtext =
-    "MGRX 1.1.2, the graphics library for DJGPPv2, Linux, X11 and Win32";
+    "MGRX 1.2.0, the graphics library for DJGPPv2, Linux, X11 and Win32";
 
 #if defined(__XWIN__) || defined(__WIN32__)
 static int need_restart = 0;
@@ -406,7 +406,7 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "MGRX 1.1.2";
+    char *t1 = "MGRX 1.2.0";
     char *t2 = "test programs launcher";
     char *hw1 = "Hello world  Привет мир";
     char *hw2 = "Γειά σου Κόσμε  Hola mundo";
@@ -441,15 +441,19 @@ static void the_info(int x, int y)
     if (nsys == MGRX_VERSION_GCC_386_DJGPP)
         strcpy(sys, "DJ2");
     else if (nsys == MGRX_VERSION_GCC_386_LINUX)
-        strcpy(sys, "LNX");
+        strcpy(sys, "L32");
     else if (nsys == MGRX_VERSION_GCC_386_X11)
-        strcpy(sys, "X11");
+        strcpy(sys, "X32");
     else if (nsys == MGRX_VERSION_GCC_X86_64_LINUX)
         strcpy(sys, "L64");
     else if (nsys == MGRX_VERSION_GCC_X86_64_X11)
         strcpy(sys, "X64");
     else if (nsys == MGRX_VERSION_GCC_386_WIN32)
         strcpy(sys, "W32");
+    else if (nsys == MGRX_VERSION_GCC_ARM_LINUX)
+        strcpy(sys, "LAR");
+    else if (nsys == MGRX_VERSION_GCC_ARM_X11)
+        strcpy(sys, "XAR");
 
     nenc = GrGetKbSysEncoding();
     kbsysencoding = GrStrEncoding(nenc);

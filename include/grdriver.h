@@ -42,6 +42,7 @@ extern GrFrameDriver
 /*
  * Standard frame drivers in GRX
  */
+// MSDOS
 _GrFrameDriverEGAVGA1,                  /* EGA VGA mono */
 _GrFrameDriverEGA4,                     /* EGA 16 color */
 _GrFrameDriverSVGA4,                    /* (Super) VGA 16 color */
@@ -51,23 +52,32 @@ _GrFrameDriverSVGA16,                   /* Super VGA 32768/65536 color */
 _GrFrameDriverSVGA24,                   /* Super VGA 16M color */
 _GrFrameDriverSVGA32L,                  /* Super VGA 16M color padded #1 */
 _GrFrameDriverSVGA32H,                  /* Super VGA 16M color padded #2 */
-					/* Linear Framebuffer Modes : */
+
+// Linear Framebuffer
 _GrFrameDriverSVGA8_LFB,                /* (Super) VGA 256 color */
 _GrFrameDriverSVGA16_LFB,               /* Super VGA 32768/65536 color */
 _GrFrameDriverSVGA24_LFB,               /* Super VGA 16M color */
 _GrFrameDriverSVGA32L_LFB,              /* Super VGA 16M color padded #1 */
 _GrFrameDriverSVGA32H_LFB,              /* Super VGA 16M color padded #2 */
 
+// Linux Framebuffer
+_GrFrameDriverLNXFB_16,                 /* Linux fb 16bpp */
+_GrFrameDriverLNXFB_32L,                /* Linux fb 32bpp padded #1 */
+_GrFrameDriverLNXFB_32H,                /* Linux fb 32bpp padded #2 */
+
+// X11
 _GrFrameDriverXWIN8,                    /* X 8 bpp */
 _GrFrameDriverXWIN16,                   /* X 16 bpp */
 _GrFrameDriverXWIN24,                   /* X 24 bpp */
 _GrFrameDriverXWIN32L,                  /* X 32 bpp padded #1 */
 _GrFrameDriverXWIN32H,                  /* X 32 bpp padded #2 */
-	
+
+// Win32
 _GrFrameDriverWIN32_4,                  /* WIN32 4 bpp */
 _GrFrameDriverWIN32_8,                  /* WIN32 8 bpp */
 _GrFrameDriverWIN32_24,                 /* WIN32 24 bpp */
 
+// RAM 
 _GrFrameDriverRAM1,                     /* mono */
 _GrFrameDriverRAM4,                     /* 16 color planar */
 _GrFrameDriverRAM8,                     /* 256 color */
