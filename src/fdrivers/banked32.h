@@ -132,8 +132,6 @@ static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
 	GRX_LEAVE();
 }
 
-#ifndef GRX_USE_RAM3x8
-
 static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
 	GRX_ENTER();
@@ -169,5 +167,3 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
 	);
 	GRX_LEAVE();
 }
-
-#endif /* !GRX_USE_RAM3x8 */

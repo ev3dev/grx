@@ -1,3 +1,36 @@
+2019-09-17 ----------- MGRX 1.3.0 released
+2019-10-16 Added new section to the programer's manual:
+           "Recode to/from GR_UCS2_TEXT chartype"
+2019-10-15 Solved a bug in the W32 videodriver, when changing modes without
+           exiting, we need to delete the old hDCMem and generate a new one.
+2019-10-13 Moved test graphics files to the testimg subdirectory, so
+           both normal tests and GrGUI tests can use them.
+2019-10-13 Added GrGUI to MGRX. GrGUI is a mini Graphics User Interface
+           specifically designed for MGRX. The added code consist of:
+           - the src/grgui subdirectory with the GrGUI library functions.
+           - the include/grgui.h main include file.
+           - the doc/grguipm.htm file, the GrGUI programmer's guide.
+           - the testgui subdirectory with demo GrGUI programs, includes
+           demmgrx2, demintl2 and eleven examples used in the pm.
+           By default GrGUI is included in the MGRX library, but a
+           switch is provided in makedefs.grx to exclude it.
+2019-10-07 New recode utility functions:
+           unsigned short GrCharRecodeToUCS2(long chr,int chrtype);
+           long GrCharRecodeFromUCS2(long chr,int chrtype);
+           unsigned short *GrTextRecodeToUCS2(const void *text,int length,
+                                              int chrtype);
+2019-09-19 Remove RAM3x8 framedriver and a lot of conditional compilation
+           defines, really we have never used it.
+2019-09-19 Solved a bug in vd_mem.c, missing color component positions in the
+           24 bpp videomode.
+2019-09-16 Use the more accurate clock_getres function in GrMsecTime function
+           (Linux console and x11 versions). For old glibc versions (< 2.17)
+           it is necesary setting NEED_LIBRT to "y" in makedefs.grx
+2019-09-13 demomgrx showes the screen and ram framebuffers modes.
+2019-09-13 New function:
+           char *GrFrameDriverName(GrFrameMode m);
+           returns a short text describing the GrFrameMode given.
+2019-09-11 ----------- mGRX 1.2.0 released
 2019-09-11 Polished GrFrameMode enum type in mgrx.h
 2019-09-09 New specific and faster frame drivers for 32bpp and 16 bpp linux
            framebuffer, written from scratch. For 8bpp and 24bpp the generic

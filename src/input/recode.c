@@ -572,7 +572,111 @@ int GrRecodeEvent(GrEvent *ev, int srcenc, int desenc)
   return 0;
 }
 
-/* UTF-8 utility functions */
+unsigned short GrCharRecodeToUCS2(long chr,int chrtype)
+{
+  long aux;
+  
+  aux = '?';
+  switch (chrtype) {
+  case GR_CP437_TEXT:
+    _GrRecode_CP437_UCS2((unsigned char)chr, &aux);
+    return (unsigned short)aux;
+  case GR_CP850_TEXT:
+    _GrRecode_CP850_UCS2((unsigned char)chr, &aux);
+    return (unsigned short)aux;
+  case GR_CP1252_TEXT:
+    _GrRecode_CP1252_UCS2((unsigned char)chr, &aux);
+    return (unsigned short)aux;
+  case GR_ISO_8859_1_TEXT:
+    _GrRecode_ISO88591_UCS2((unsigned char)chr, &aux);
+    return (unsigned short)aux;
+  case GR_UTF8_TEXT:
+    return GrUTF8ToUCS2((unsigned char *)(&chr));
+  default: // GR_UCS2_TEXT, GR_BYTE_TEXT, GR_WORD_TEXT
+    return (unsigned short)chr;
+  }
+}
+
+long GrCharRecodeFromUCS2(long chr,int chrtype)
+{
+  //long aux2;
+  unsigned char caux;
+
+  caux = '?';
+  switch (chrtype) {
+  case GR_CP437_TEXT:
+    _GrRecode_UCS2_CP437(chr, &caux);
+    return caux;
+  case GR_CP850_TEXT:
+    _GrRecode_UCS2_CP850(chr, &caux);
+    return caux;
+  case GR_CP1252_TEXT:
+    _GrRecode_UCS2_CP1252(chr, &caux);
+    return caux;
+  case GR_ISO_8859_1_TEXT:
+    _GrRecode_UCS2_ISO88591(chr, &caux);
+    return caux;
+  case GR_UTF8_TEXT:
+    return GrUCS2ToUTF8(chr);
+    //_GrRecode_UCS2_UTF8(chr, (unsigned char *)&aux2);
+    // return aux2;
+  default: // GR_UCS2_TEXT, GR_BYTE_TEXT, GR_WORD_TEXT
+    return chr;
+  }
+}
+
+unsigned short *GrTextRecodeToUCS2(const void *text,int length,int chrtype)
+{
+  unsigned short *buf, *buf2;
+  int i, len2;
+  long aux;
+
+  if (length <= 0) length = 0;
+
+  buf = NULL;
+  switch (chrtype) {
+  case GR_BYTE_TEXT:
+  case GR_CP437_TEXT:
+  case GR_CP850_TEXT:
+  case GR_CP1252_TEXT:
+  case GR_ISO_8859_1_TEXT:
+    buf = calloc(length+1, sizeof(unsigned short));
+    if (buf == NULL) return NULL;
+    for (i=0; i<length; i++) {
+        aux = ((unsigned char *)text)[i];
+        buf[i] = GrCharRecodeToUCS2(aux, chrtype);
+    }
+    return buf;
+  case GR_WORD_TEXT:
+  case GR_UCS2_TEXT:
+    buf = calloc(length+1, sizeof(unsigned short));
+    if (buf == NULL) return NULL;
+    for (i=0; i<length; i++) buf[i] = ((unsigned short *)text)[i];
+    return buf;
+  case GR_UTF8_TEXT:
+    if (length == 0) {
+        buf = calloc(1, sizeof(unsigned short));
+        return buf;
+    }
+    buf = GrUTF8StrToUCS2Str((unsigned char *)text, &len2, length);
+    if (buf == NULL) return NULL;
+    if (len2 < length) { /* better that return NULL we add '?' */
+                         /* so programmer can see he has a bug */
+        buf2 = realloc(buf, (length+1) * sizeof(unsigned short));
+        if (buf2 == NULL) {
+            free(buf);
+            return NULL;
+        }
+        for (i=len2; i<length; i++) buf2[i] = '?';
+        buf2[length] = 0;
+        return buf2;
+    } else {
+        return buf;
+    }
+  }
+  
+  return NULL;
+}
 
 int GrStrLen(const void *text, int chrtype)
 {
@@ -611,6 +715,8 @@ int GrStrLen(const void *text, int chrtype)
       return 0;
   }
 }
+
+/* UTF-8 utility functions */
 
 int GrUTF8StrLen(unsigned char *s)
 {
@@ -705,7 +811,7 @@ unsigned short *GrUTF8StrToUCS2Str(unsigned char *s, int *ulen, int maxlen)
 
   *ulen = GrUTF8StrLen(s);
   if (maxlen > 0 && *ulen > maxlen) *ulen = maxlen;
-  buf = calloc(*ulen, sizeof(unsigned short));
+  buf = calloc(*ulen+1, sizeof(unsigned short));
   if (buf == NULL) return NULL;
 
   des = 0;

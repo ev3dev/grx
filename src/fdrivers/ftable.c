@@ -67,13 +67,9 @@ GrFrameDriver *_GrFrameDriverTable[] = {
     &_GrFrameDriverRAM4,
     &_GrFrameDriverRAM8,
     &_GrFrameDriverRAM16,
-#ifdef GRX_USE_RAM3x8
-    &_GrFrameDriverRAM3x8,
-#else
     &_GrFrameDriverRAM24,
     &_GrFrameDriverRAM32L,
     &_GrFrameDriverRAM32H,
-#endif
     NULL
 };
 

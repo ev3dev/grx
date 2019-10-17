@@ -32,15 +32,28 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "MGRX 1.2.0, the graphics library";
+    "MGRX 1.3.0, the graphics library";
 
-char *animatedtext =
-    "MGRX 1.2.0, the graphics library for DJGPPv2, Linux, X11 and Win32";
+char *animatedtext[2] = {
+    "MGRX 1.3.0, the graphics library for DJGPPv2, Linux, X11 and Win32",
+    "Hello world    Привет мир    Γειά σου Κόσμε    Hola mundo" };
 
 #if defined(__XWIN__) || defined(__WIN32__)
 static int need_restart = 0;
 #else
 static int need_restart = 1;
+#endif
+
+#if defined(__MSDOS__) || defined(__WIN32__)
+#define PPMIMG1   "..\\testimg\\pnmtest.ppm"
+#define PPMIMG2   "..\\testimg\\pnmtest2.ppm"
+#define JPGIMGBG  "..\\testimg\\jpeg3.jpg"
+#define PPMIMGOUT "..\\testimg\\demomgrx.ppm"
+#else
+#define PPMIMG1   "../testimg/pnmtest.ppm"
+#define PPMIMG2   "../testimg/pnmtest2.ppm"
+#define JPGIMGBG  "../testimg/jpeg3.jpg"
+#define PPMIMGOUT "../testimg/demogrx.ppm"
 #endif
 
 #define NDEMOS 38
@@ -194,14 +207,14 @@ static Button bp2[NBUTTONSP2] = {
     {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
 };
 
-static Button_Group bgp1 = { 20, 30, bp1, NBUTTONSP1, 0, 0 };
-static Button_Group bgp2 = { 20, 30, bp2, NBUTTONSP2, 0, 0 };
+static Button_Group bgp1 = { 16, 30, bp1, NBUTTONSP1, 0, 0 };
+static Button_Group bgp2 = { 16, 30, bp2, NBUTTONSP2, 0, 0 };
 static Button_Group *bgact = &bgp1;
 
 static Board brd =
     { 0, 0, 640, 480, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
 static Board brdimg =
-    { 384, 46, 235, 157, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
+    { 379, 46, 235, 157, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
 
 static GrFont *grf_std;
 static GrFont *grf_big;
@@ -259,7 +272,7 @@ int main(int argc, char **argv)
         if ((ev.type == GREV_KEY) && (ev.p1 == GrKey_Escape))
             break;
         if ((ev.type == GREV_KEY) && (ev.p1 == 's')) {
-            GrSaveContextToPpm(NULL, "demomgrx.ppm", "DemoMGRX");
+            GrSaveContextToPpm(NULL, PPMIMGOUT, "DemoMGRX");
             continue;
         }
         if (pev_button_group(&ev, bgact))
@@ -278,12 +291,15 @@ int main(int argc, char **argv)
         if (ev.type == GREV_EXPOSE) {
             printf("expose %ld %ld %ld %ld %d\n",
                    ev.p1, ev.p2, ev.p3, ev.p4, ev.kbstat);
-            if (ev.kbstat == 0) // no more EXPOSE events follow
+            if (ev.kbstat == 0) { // no more EXPOSE events follow
+                if (gwidth > 640 || gheight > 480)
+                    GrClearScreen(GrAllocColor(120, 90, 60));
                 paint_screen();
+            }
             continue;
         }
         if (ev.type == GREV_NULL) {
-            if (ev.time > (oldtime + 5)) {
+            if (ev.time > (oldtime + 9)) {
                 paint_animation();
                 oldtime = ev.time;
             }
@@ -380,8 +396,7 @@ static void paint_screen(void)
     paint_board(&brd);
     if (GrNumColors() > 256 && GrJpegSupport()) {
         GrSetClipBox(4,4,GrMaxX()-4,GrMaxY()-4);
-        //GrLoadContextFromPnm(NULL, "flor1_640_gris.pgm");
-        GrLoadContextFromJpeg(NULL, "jpeg3.jpg", 1);
+        GrLoadContextFromJpeg(NULL, JPGIMGBG, 1);
         GrResetClipBox();
     }
     paint_button_group(bgact);
@@ -390,13 +405,12 @@ static void paint_screen(void)
                              brdimg.x + brdimg.wide - 5,
                              brdimg.y + brdimg.high - 5, grcf, NULL);
     if (bgact == &bgp1)
-        GrLoadContextFromPnm(grc, "pnmtest.ppm");
+        GrLoadContextFromPnm(grc, PPMIMG1);
     else
-        GrLoadContextFromPnm(grc, "pnmtest2.ppm");
+        GrLoadContextFromPnm(grc, PPMIMG2);
     GrDestroyContext(grc);
-    the_info(500, 215);
-    drawing(400, 290, 200, 150, BROWN, GrNOCOLOR);
-    the_title(500, 330);
+    the_info(495, 225);
+    the_title(495, 370);
     paint_foot("Hold down left mouse buttom to see a comment");
     GrSetContext(grcglob);
     GrBitBlt(NULL, 0, 0, grcglobdb, 0, 0, 639, 479, GrWRITE);
@@ -406,10 +420,8 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "MGRX 1.2.0";
+    char *t1 = "MGRX 1.3.0";
     char *t2 = "test programs launcher";
-    char *hw1 = "Hello world  Привет мир";
-    char *hw2 = "Γειά σου Κόσμε  Hola mundo";
 
     grt_centered.txo_fgcolor = LIGHTGREEN;
 
@@ -419,9 +431,6 @@ static void the_title(int x, int y)
     grt_centered.txo_font = grf_std;
     GrDrawString(t2, 0, 0 + x, 30 + y, &grt_centered);
 
-    grt_centered.txo_font = grf_intl;
-    GrDrawString(hw1, 0, 0 + x, 54 + y, &grt_centered);
-    GrDrawString(hw2, 0, 0 + x, 74 + y, &grt_centered);
 }
 
 /************************************************************************/
@@ -467,9 +476,15 @@ static void the_info(int x, int y)
     sprintf(aux, "VideoDriver: %s", GrCurrentVideoDriver()->name);
     GrDrawString(aux, 0, 0 + x, 40 + y, &grt_centered);
 
+    sprintf(aux, "ScreenFrameBuffer: %s", GrFrameDriverName(GrScreenFrameMode()));
+    GrDrawString(aux, 0, 0 + x, 60 + y, &grt_centered);
+
+    sprintf(aux, "RamFrameBuffer: %s", GrFrameDriverName(GrCoreFrameMode()));
+    GrDrawString(aux, 0, 0 + x, 80 + y, &grt_centered);
+
     sprintf(aux, "Mode: %dx%d %d bpp", GrCurrentVideoMode()->width,
             GrCurrentVideoMode()->height, GrCurrentVideoMode()->bpp);
-    GrDrawString(aux, 0, 0 + x, 60 + y, &grt_centered);
+    GrDrawString(aux, 0, 0 + x, 100 + y, &grt_centered);
 }
 
 /************************************************************************/
@@ -477,11 +492,11 @@ static void the_info(int x, int y)
 static int pev_command(GrEvent * ev)
 {
     int i;
-    char nprog[81];
+    char nprog[121];
 
     if (ev->type == GREV_COMMAND) {
         if (ev->p1 == ID_EXIT) {
-            par_event_queue(GREV_END, 0, 0, 0);
+            GrEventParEnqueue(GREV_END, 0, 0, 0, 0);
             return 1;
         }
         if (ev->p1 == ID_PAGE1) {
@@ -504,14 +519,18 @@ static int pev_command(GrEvent * ev)
                     strcpy(nprog, "..\\bin\\");
                 else
                     strcpy(nprog, ".\\");
+#elif defined(__XWIN__)
+                if (ev->p1 == ID_MODETEST)
+                    strcpy(nprog, "xterm -e ../bin/x");
+                else if (ev->p1 == ID_SPEEDTST)
+                    strcpy(nprog, "xterm -e ./x");
+                else
+                    strcpy(nprog, "./x");
 #else
                 if (ev->p1 == ID_MODETEST)
                     strcpy(nprog, "../bin/");
                 else
                     strcpy(nprog, "./");
-#endif
-#if defined(__XWIN__)
-                strcat(nprog, "x");
 #endif
                 strcat(nprog, ptable[i].prog);
                 system(nprog);
@@ -565,6 +584,7 @@ static void paint_animation(void)
 {
     static int pos = 620;
     static int ini = 0;
+    static int ind = 0;
     static GrContext *grc, *grcor;
     int ltext, wtext;
 
@@ -580,21 +600,24 @@ static void paint_animation(void)
         ini = 1;
     }
 
+    if (ind > 1) ind = 0;
     grt_left.txo_fgcolor = LIGHTCYAN;
-    grt_left.txo_font = grf_std;
-    ltext = strlen(animatedtext);
-    wtext = GrStringWidth(animatedtext, ltext, &grt_left);
+    grt_left.txo_font = ((ind % 2) == 1) ? grf_intl : grf_std;
+    ltext = GrUTF8StrLen((unsigned char *)animatedtext[ind]);
+    wtext = GrStringWidth(animatedtext[ind], ltext, &grt_left);
 
     GrBitBlt(grc, 0, 0, grcor, 0, 0, 619, 29, GrWRITE);
     GrSetContext(grc);
     //GrClearContext(DARKGRAY);
-    GrDrawString(animatedtext, ltext, pos, 15, &grt_left);
+    GrDrawString(animatedtext[ind], ltext, pos, 15, &grt_left);
     GrSetContext(grcglob);
     GrBitBlt(NULL, 10, 8, grc, 0, 0, 619, 29, GrWRITE);
 
     pos -= 1;
-    if (pos <= -wtext)
+    if (pos <= -wtext) {
         pos = 620;
+        ind++;
+    }
 }
 
 /************************************************************************/

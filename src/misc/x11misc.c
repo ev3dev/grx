@@ -1,4 +1,4 @@
-/**
+ /**
  ** x11misc.c - miscellaneous functions for X11
  **
  ** Copyright (C) 2001 Mariano Alvarez Fernandez
@@ -19,7 +19,8 @@
  **/
 
 #include <unistd.h>
-#include <sys/times.h>
+#include <time.h>
+//#include <sys/times.h>
 #include "libgrx.h"
 #include "libxwin.h"
 
@@ -35,7 +36,17 @@ void GrSleep( int msec )
   usleep(msec*1000L);
 }
 
-long GrMsecTime( void )
+/*long GrMsecTime( void )
 {
   return ((long)times(NULL) * (1000L / sysconf(_SC_CLK_TCK)));
+}*/
+
+long GrMsecTime( void )
+{
+  static time_t orig = 0;
+  struct timespec tp;
+  
+  clock_gettime(CLOCK_MONOTONIC, &tp);
+  if (orig == 0) orig = tp.tv_sec;
+  return (((long)(tp.tv_sec - orig) * 1000L) + ((long)tp.tv_nsec / 1000000L));
 }

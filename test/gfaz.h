@@ -1,5 +1,5 @@
 /**
- ** gfaz.h ---- gfaz headers
+ ** gfaz.h ---- gfaz header, micro GUI for MGRX
  **
  ** Copyright (C) 2000,2001,2005 Mariano Alvarez Fernandez
  ** [e-mail: malfer@telefonica.net]
@@ -61,8 +61,6 @@ int gfaz_ini( int width, int height, int bpp );
 int gfaz_fin( void );
 void gfaz_setfont(GrFont *f);
 
-void par_event_queue( int type, long p1, long p2, long p3 );
-
 void show_mouse( void );
 void hide_mouse( void );
 
@@ -94,26 +92,8 @@ int  pev_button_group( GrEvent *ev, Button_Group *bg );
 typedef struct{
   int x, y;                   // left upper coordinates
   int wide, high;             // what do you mean
-  int aid;                    // area id
-  int divx, divy;             // x, y divisors
-  int inip1, inip2;           // par1, par2 initial values
-  int incrp1, incrp2;         // par1, par2 increments
-  int invert;                 // x,y -> par1,par2 or inverted if 1
-  } Area;
-
-typedef struct{
-  int x, y;                   // left upper coordinates
-  Area *a;                    // area array
-  } Area_Group;
-
-int  pev_area_group( GrEvent *ev, Area_Group *ag );
-
-typedef struct{
-  int x, y;                   // left upper coordinates
-  int wide, high;             // what do you mean
   int lcolor, bcolor, color;  // line, border, normal ind color
   int border;                 //
   } Board;
 
 void paint_board( Board *b );
-  

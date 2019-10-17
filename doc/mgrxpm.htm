@@ -1,19 +1,19 @@
 <html>
 <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta charset="UTF-8">
    <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
-   <title>MGRX 1.2.0, Programmer's Guide</title>
+   <title>MGRX Programmer's Guide</title>
 </head>
 <body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
 
 <center>
 <h1><font color="#555555">M</font><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>1.2.0</small></h1>
+<small>1.3.0</small></h1>
 <h1>a C graphics library for DOS, Linux console &amp; X11 and Win32</h1>
 <h2>Programmer's Manual</h2>
 <p>Based on the original GRX manual written by: Csaba Biegl on August 10, 1992
 <p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on August 1, 2005
-<p>Last update: September 1, 2019
+<p>Last update: October 15, 2019
 </center>
 
 <hr>
@@ -55,6 +55,7 @@ memory driver.
 <li><a href="#enc">About text encoding</a>
 <li><a href="#td">Text drawing</a>
 <li><a href="#utf8">Special UTF-8 text type considerations</a>
+<li><a href="#ucs2">Recode to/from GR_UCS2_TEXT chartype</a>
 <li><a href="#siuc">Drawing in user coordinates</a>
 <li><a href="#gcur">Graphics cursors</a>
 <li><a href="#pnm">Writing/reading PNM graphics files</a>
@@ -1768,12 +1769,13 @@ unsigned short GrUTF8ToUCS2(unsigned char *s);
 word character.
 
 <pre>
-unsigned short *GrUTF8StrToUCS2Str(unsigned char *s, int *ulen);
+unsigned short *GrUTF8StrToUCS2Str(unsigned char *s, int *ulen, int maxlen);
 </pre>
 <p>converts a UTF-8 string to a UCS-2 string and set the <code>ulen</code>
 variable with the UTF-8 string length. This function allocates the
 necesary memory, so you must check the returned pointer for NULL, and the
-memory must be freed when unneded.
+memory must be freed when unneded. The <code>maxlen</code> parameter fixs
+the maximum len you want, a 0 indicates no maxlen.
 
 <p>For font related functions that expect a string and a length you must
 pass the UTF-8 string and UTF-8 length (or less), example:
@@ -1812,6 +1814,36 @@ you must pass the UCS-2 equivalent character, example:
 <pre>
 GrFontCharWidth(font,GrUTF8ToUCS2(sutf8));
 </pre>
+
+<hr>
+<h2><a name="ucs2">Recode to/from GR_UCS2_TEXT chartype</a></h2>
+
+<p>&nbsp;&nbsp;GR_UCS2_TEXT chartype is a very convenient chartype to
+work internally for a program, because it can accommodate every character
+from other chartypes and any char occupies exactly two bytes (an unsigned
+short). <b>MGRX</b> provides some funtions to recode to/from any chartype
+(including the GR_UTF8_TEXT chartype) from/to GR_UCS2_TEXT.
+
+<pre>
+unsigned short GrCharRecodeToUCS2(long chr,int chrtype);
+</pre>
+<p>converts the <code>chr</code> character of type <code>chartype</code>
+to a a UCS-2 character. Remember for UTF-8 you have to provide a char[4]
+packed in a long.
+
+<pre>
+long GrCharRecodeFromUCS2(long chr,int chrtype);
+</pre>
+<p>do the opposite, converts a <code>chr</code> UCS-2 character to a 
+character of type <code>chartype</code>. Again, if UTF-8 is the chartype
+required, it returns a char[4] packed in a long.
+
+<pre>
+unsigned short *GrTextRecodeToUCS2(const void *text,int length,int chrtype);
+</pre>
+<p>converts a string of any <code>chartype</code> to a UCS-2 string. This
+function allocates the necesary memory, so you must check the returned pointer
+for NULL, and the memory must be freed when unneded.
 
 <hr>
 <h2><a name="siuc">Drawing in user coordinates</a></h2>
@@ -2207,12 +2239,14 @@ system you are working in. <b>mgrx.h</b> defines some macros you can use:
 
 <pre>
 /* these are the supported configurations: */
-#define MGRX_VERSION_GCC_386_DJGPP     1  /* DJGPP v2 */
-#define MGRX_VERSION_GCC_386_LINUX     2  /* console framebuffer */
-#define MGRX_VERSION_GCC_386_X11       3  /* X11 version */
-#define MGRX_VERSION_GCC_386_WIN32     4  /* WIN32 using Mingw32 */
-#define MGRX_VERSION_GCC_X86_64_LINUX  5  /* console framebuffer 64 */
-#define MGRX_VERSION_GCC_X86_64_X11    6  /* X11 version 64 */
+#define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
+#define MGRX_VERSION_GCC_386_LINUX       2       /* console framebuffer i386 */
+#define MGRX_VERSION_GCC_386_X11         3       /* X11 version i386 */
+#define MGRX_VERSION_GCC_386_WIN32       4       /* WIN32 using Mingw32 */
+#define MGRX_VERSION_GCC_X86_64_LINUX    5       /* console framebuffer x86_64 */
+#define MGRX_VERSION_GCC_X86_64_X11      6       /* X11 version x86_64 */
+#define MGRX_VERSION_GCC_ARM_LINUX       7       /* console framebuffer arm */
+#define MGRX_VERSION_GCC_ARM_X11         8       /* X11 version arm */
 </pre>
 
 <pre>

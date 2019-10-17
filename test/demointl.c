@@ -34,7 +34,7 @@ static int gbpp = 16;
 #define XGUI 800
 #define YGUI 600
 
-char *wintitle = "MGRX 1.2.0, the graphics library";
+char *wintitle = "MGRX 1.3.0, the graphics library";
 
 #define ID_FCP437      1
 #define ID_FCP850      2
@@ -485,7 +485,7 @@ static int pev_command(GrEvent * ev)
 {
     if (ev->type == GREV_COMMAND) {
         if (ev->p1 == ID_EXIT) {
-            par_event_queue(GREV_END, 0, 0, 0);
+            GrEventParEnqueue(GREV_END, 0, 0, 0, 0);
             return 1;
         }
         if (ev->p1 == ID_FCP437) {

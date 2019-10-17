@@ -1,5 +1,5 @@
 /**
- ** gfaz.c ---- Mini GUI for MGRX
+ ** gfaz.c ---- Micro GUI for MGRX
  **
  ** Copyright (C) 2000,2001,2005 Mariano Alvarez Fernandez
  ** [e-mail: malfer@telefonica.net]
@@ -46,7 +46,6 @@ int gfaz_ini( int width, int height, int bpp )
   egacolors = GrAllocEgaColors();
 
   GrEventInit();
-  GrMouseSetInternalCursor( GR_MCUR_TYPE_ARROW,GrWhite(),GrBlack() );
   show_mouse();
 
   grt.txo_font = &GrFont_PC8x14;
@@ -77,19 +76,6 @@ int gfaz_fin( void )
 void gfaz_setfont(GrFont *f)
 {
   grt.txo_font = f;
-}
-
-/**************************************************************************/
-
-void par_event_queue( int type, long p1, long p2, long p3 )
-{
-  GrEvent ev;
-
-  ev.type = type;
-  ev.p1 = p1;
-  ev.p2 = p2;
-  ev.p3 = p3;
-  GrEventEnqueue( &ev );
 }
 
 /**************************************************************************/
@@ -210,7 +196,7 @@ int pev_button_group( GrEvent *ev, Button_Group *bg )
           paint_button( bg->x,bg->y,&(bg->b[i]) );
           bg->pb = i;
           bg->abp = 1;
-          par_event_queue( GREV_SELECT,bg->b[i].bid,0,0 );
+          GrEventParEnqueue( GREV_SELECT,bg->b[i].bid,0,0,0 );
           return 1;
           }
       }
@@ -223,7 +209,7 @@ int pev_button_group( GrEvent *ev, Button_Group *bg )
         if( coord_into( ev->p2,ev->p3,
                         bg->x+bg->b[i].x,bg->y+bg->b[i].y,
                         bg->b[i].wide,bg->b[i].high ) ){
-          par_event_queue( GREV_COMMAND,bg->b[i].bid,0,0 );
+          GrEventParEnqueue( GREV_COMMAND,bg->b[i].bid,0,0,0 );
           }
         return 1;
         }
@@ -239,7 +225,7 @@ int pev_button_group( GrEvent *ev, Button_Group *bg )
         bg->pb++;
         bg->b[bg->pb].status |= BSTATUS_SELECTED;
         paint_button( bg->x,bg->y,&(bg->b[bg->pb]) );
-        par_event_queue( GREV_SELECT,bg->b[bg->pb].bid,0,0 );
+        GrEventParEnqueue( GREV_SELECT,bg->b[bg->pb].bid,0,0,0 );
         }
       return 1;
       }
@@ -252,12 +238,12 @@ int pev_button_group( GrEvent *ev, Button_Group *bg )
         bg->pb--;
         bg->b[bg->pb].status |= BSTATUS_SELECTED;
         paint_button( bg->x,bg->y,&(bg->b[bg->pb]) );
-        par_event_queue( GREV_SELECT,bg->b[bg->pb].bid,0,0 );
+        GrEventParEnqueue( GREV_SELECT,bg->b[bg->pb].bid,0,0,0 );
         }
       return 1;
       }
     else if( ev->p1 == GrKey_Return ){
-      par_event_queue( GREV_COMMAND,bg->b[bg->pb].bid,0,0 );
+      GrEventParEnqueue( GREV_COMMAND,bg->b[bg->pb].bid,0,0,0 );
       return 1;
       }
     }

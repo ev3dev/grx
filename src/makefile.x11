@@ -40,6 +40,10 @@ ifeq ($(USE_XF86DGA_DRIVER),y)
   ADDON_LIBS += -lXxf86dga -lXext
 endif
 
+ifeq ($(NEED_LIBRT),y)
+  ADDON_LIBS += -lrt
+endif
+
 MGRXST   = ../lib/$(GRX_LIB_SUBDIR)/libmgrxX.a
 MGRXSH   = ../lib/$(GRX_LIB_SUBDIR)/libmgrxX.so
 MGRXSHli = $(MGRXSH).$(word 1,$(subst ., ,$(MGRX_VERSION)))
@@ -83,6 +87,10 @@ O=      $(STD_O)            \
 	input/grev_x11.o    \
 	misc/x11misc.o      \
 	vdrivers/vd_xwin.o
+
+ifeq ($(INCLUDE_GRGUI),y)
+O+=	$(GRGUI_1)
+endif
 
 ifeq ($(USE_XF86DGA_DRIVER),y)
 O+=	fdrivers/lfb16.o    \
@@ -164,6 +172,9 @@ endif
 	install -m 0644 ../include/mgrx.h $(INSTALLDIR)/include
 	install -m 0644 ../include/mgrxkeys.h $(INSTALLDIR)/include
 	install -m 0644 ../include/mgrxcolr.h $(INSTALLDIR)/include
+ifeq ($(INCLUDE_GRGUI),y)
+	install -m 0644 ../include/grgui.h $(INSTALLDIR)/include
+endif
 
 uninstall:
 	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXST))
@@ -175,6 +186,9 @@ endif
 	rm -f $(INSTALLDIR)/include/mgrx.h
 	rm -f $(INSTALLDIR)/include/mgrxkeys.h
 	rm -f $(INSTALLDIR)/include/mgrxcolr.h
+ifeq ($(INCLUDE_GRGUI),y)
+	rm -f $(INSTALLDIR)/include/grgui.h
+endif
 
 setsuid: $(UTILPX)
 ifeq ($(SET_XSUIDROOT),y)

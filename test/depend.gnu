@@ -20,6 +20,8 @@ jpgtest.o: jpgtest.c ../include/mgrx.h ../include/mgrxkeys.h
 keys.o: keys.c ../include/mgrx.h ../include/mgrxkeys.h
 life.o: life.c test.h ../include/mgrx.h ../include/mgrxkeys.h drawing.h \
  rand.h
+life_db.o: life_db.c test.h ../include/mgrx.h ../include/mgrxkeys.h \
+ drawing.h rand.h
 linetest.o: linetest.c test.h ../include/mgrx.h ../include/mgrxkeys.h \
  drawing.h rand.h
 memtest.o: memtest.c ../include/mgrx.h drawing.h rand.h
@@ -46,3 +48,5 @@ wintest.o: wintest.c test.h ../include/mgrx.h ../include/mgrxkeys.h \
 biggtest.o: biggtest.c ../include/mgrx.h ../include/mgrxkeys.h drawing.h \
  rand.h
 cusptest.o: cusptest.c ../include/mgrx.h ../include/mgrxkeys.h
+clrtable.o: clrtable.c ../include/mgrx.h ../include/mgrxkeys.h \
+ ../include/mgrxcolr.h

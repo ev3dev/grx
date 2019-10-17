@@ -229,6 +229,27 @@ STD_11= $(OP)utils/resize$(OX)      \
 	$(OP)wideline/custpoly$(OX) \
 	$(OP)wideline/drwcpoly$(OX)
 
+GRGUI_1 = $(OP)grgui/setup$(OX) \
+	$(OP)grgui/gcontext$(OX) \
+	$(OP)grgui/shortcut$(OX) \
+	$(OP)grgui/menus$(OX) \
+	$(OP)grgui/menubar$(OX) \
+	$(OP)grgui/scrollbar$(OX) \
+	$(OP)grgui/panels$(OX) \
+	$(OP)grgui/tiles$(OX) \
+	$(OP)grgui/dialogs$(OX) \
+	$(OP)grgui/cdialogs$(OX) \
+	$(OP)grgui/object$(OX) \
+	$(OP)grgui/obutton$(OX) \
+	$(OP)grgui/olabel$(OX) \
+	$(OP)grgui/otext$(OX) \
+	$(OP)grgui/olight$(OX) \
+	$(OP)grgui/oentry$(OX) \
+	$(OP)grgui/olist$(OX) \
+	$(OP)grgui/group$(OX) \
+	$(OP)grgui/textarea$(OX) \
+	$(OP)grgui/utility$(OX)
+
 DBG_1 = $(OP)utils/dbgprint$(OX)
 
 JPG_1 = $(OP)gformats/ctx2jpg$(OX) \

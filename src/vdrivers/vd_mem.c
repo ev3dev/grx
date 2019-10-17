@@ -14,6 +14,8 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 20190919 Solved a bug, missing color component positions for 24 bpp
+ ** 20190919 Added 16 bpp mode (M.Alvarez)
  **/
 
 #include "libgrx.h"
@@ -21,30 +23,33 @@
 #include "allocate.h"
 #include "arith.h"
 
-static  char * MemBuf = NULL;
-static  unsigned long MemBufSze = 0;
+static char * MemBuf = NULL;
+static unsigned long MemBufSze = 0;
 
-static void FreeMemBuf(void) {
-  if (MemBuf) farfree(MemBuf);
-  MemBuf = NULL;
-  MemBufSze = 0;
+static void FreeMemBuf(void)
+{
+    if (MemBuf) farfree(MemBuf);
+    MemBuf = NULL;
+    MemBufSze = 0;
 }
 
-static int AllocMemBuf(unsigned long sze) {
-  int clear = 1;
-  if (!MemBuf) {
-    MemBuf = farcalloc(1,(size_t)sze);
-    if (!MemBuf) return 0;
-    MemBufSze = sze;
-    clear = 0;
-  }
-  if (MemBufSze < sze) {
-    MemBuf = farrealloc(MemBuf,(size_t)sze);
-    if (!MemBuf) return 0;
-    MemBufSze = sze;
-  }
-  if (clear) memset(MemBuf,0,sze);
-  return 1;
+static int AllocMemBuf(unsigned long sze)
+{
+    int clear = 1;
+
+    if (!MemBuf) {
+        MemBuf = farcalloc(1,(size_t)sze);
+        if (!MemBuf) return 0;
+        MemBufSze = sze;
+        clear = 0;
+    }
+    if (MemBufSze < sze) {
+        MemBuf = farrealloc(MemBuf,(size_t)sze);
+        if (!MemBuf) return 0;
+        MemBufSze = sze;
+    }
+    if (clear) memset(MemBuf,0,sze);
+    return 1;
 }
 
 static int mem_setmode (GrVideoMode *mp,int noclear);
@@ -94,16 +99,27 @@ static GrVideoModeExt gr8ext = {
     NULL                                /* color loader */
 };
 
+static GrVideoModeExt gr16ext = {
+    GR_frameRAM16,                      /* frame driver */
+    NULL,                               /* frame driver override */
+    NULL,                               /* frame buffer address */
+    { 5, 6, 5 },                        /* color precisions */
+    {11, 5, 0 },                        /* color component bit positions */
+    GR_VMODEF_MEMORY,                   /* mode flag bits */
+    mem_setmode,                        /* mode set */
+    NULL,                               /* virtual size set */
+    NULL,                               /* virtual scroll */
+    NULL,                               /* bank set function */
+    NULL,                               /* double bank set function */
+    NULL                                /* color loader */
+};
+
 static GrVideoModeExt gr24ext = {
-#ifdef GRX_USE_RAM3x8
-    GR_frameRAM3x8,                     /* frame driver */
-#else
     GR_frameRAM24,                      /* frame driver */
-#endif
     NULL,                               /* frame driver override */
     NULL,                               /* frame buffer address */
     { 8, 8, 8 },                        /* color precisions */
-    { 0, 0, 0 },                        /* color component bit positions */
+    {16, 8, 0 },                        /* color component bit positions */
     GR_VMODEF_MEMORY,                   /* mode flag bits */
     mem_setmode,                        /* mode set */
     NULL,                               /* virtual size set */
@@ -135,12 +151,13 @@ GrVideoModeExt   dummyExt = {
 };
 
 static GrVideoMode modes[] = {
-    /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext                             */
-    {  TRUE,  1,  640,  480,  0x00,   80,    0,  &gr1ext                          },
-    {  TRUE,  4,  640,  480,  0x00,  320,    0,  &gr4ext                          },
-    {  TRUE,  8,  640,  480,  0x00,  640,    0,  &gr8ext                          },
-    {  TRUE, 24,  640,  480,  0x00, 1920,    0,  &gr24ext                         },
-    {  TRUE,  1,   80,   25,  0x00,  160,    0,  &dummyExt                        }
+    /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext  */
+    {  TRUE,  1,  640,  480,  0x00,   80,    0,  &gr1ext    },
+    {  TRUE,  4,  640,  480,  0x00,  320,    0,  &gr4ext    },
+    {  TRUE,  8,  640,  480,  0x00,  640,    0,  &gr8ext    },
+    {  TRUE, 16,  640,  480,  0x00, 1280,    0,  &gr16ext   },
+    {  TRUE, 24,  640,  480,  0x00, 1920,    0,  &gr24ext   },
+    {  TRUE,  1,   80,   25,  0x00,  160,    0,  &dummyExt  }
 };
 
 static int mem_setmode (GrVideoMode *mp,int noclear)
@@ -149,43 +166,44 @@ static int mem_setmode (GrVideoMode *mp,int noclear)
 }
 
 static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
-				      int bpp, int txt, unsigned int * ep )
+                                      int bpp, int txt, unsigned int * ep )
 {
     int  index;
     unsigned long  size;
     int  LineOffset;
 
     if (txt) return _gr_selectmode (drv,w,h,bpp,txt,ep);
-/* why ???
-    if (w<320) w=320;
-    if (h<240) h=240;
-*/
+
     if (w < 1 || h < 1) return NULL;
 
-    switch (bpp)
-      {
-	 case 1:   index = 0;
-		   LineOffset = (w + 7) >> 3;
-		   size = h;
-		   break;
-	 case 4:   index = 1;
-		   LineOffset = (w + 7) >> 3;
-		   size = 4*h;
-		   break;
-	 case 8:   index = 2;
-		   LineOffset = w;
-		   size = h;
-		   break;
-	 case 24:  index = 3;
-#ifdef GRX_USE_RAM3x8
-                   LineOffset = w;
-		   size = 3*h;
-#else
-		   LineOffset = 3*w;
-		   size = h;
-#endif
-		   break;
-	 default:  return NULL;
+    switch (bpp) {
+        case 1:
+            index = 0;
+            LineOffset = (w + 7) >> 3;
+            size = h;
+            break;
+        case 4:
+            index = 1;
+            LineOffset = (w + 7) >> 3;
+            size = 4*h;
+            break;
+        case 8:
+            index = 2;
+            LineOffset = w;
+            size = h;
+            break;
+        case 16:
+            index = 3;
+            LineOffset = 2*w;
+            size = h;
+            break;
+        case 24:
+            index = 4;
+            LineOffset = 3*w;
+            size = h;
+            break;
+        default:
+            return NULL;
       }
 
     LineOffset = (LineOffset+7) & (~7); /* align rows to 64bit boundary */
@@ -193,14 +211,13 @@ static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
 
     if (((size_t)size) != size) return NULL;
 
-			       /* why ???       */
-    modes[index].width       = /* w<320 ? 320 : */ w;
-    modes[index].height      = /* h<200 ? 200 : */ h;
+    modes[index].width       = w;
+    modes[index].height      = h;
     modes[index].bpp         = bpp;
     modes[index].lineoffset  = LineOffset;
 
     if ( AllocMemBuf(size) ) {
-	modes[index].extinfo->frame = MemBuf;
+        modes[index].extinfo->frame = MemBuf;
         return _gr_selectmode (drv,w,h,bpp,txt,ep);
     }
     return FALSE;
@@ -209,14 +226,14 @@ static GrVideoMode * mem_selectmode ( GrVideoDriver * drv, int w, int h,
 /*
 static int detect (void)
 {
-	return TRUE;
+    return TRUE;
 }
 */
 
 static void mem_reset (void)
 {
     if(DRVINFO->moderestore) {
-      FreeMemBuf();
+        FreeMemBuf();
     }
 }
 

@@ -138,17 +138,6 @@ static int buildcontext(GrVideoMode *mp,GrFrameDriver *fdp,GrContext *cxt)
 	    DBGPRINTF(DBG_SETMD,("buildcontext - mp->lineoffset = %d\n",mp->lineoffset));
 	    DBGPRINTF(DBG_SETMD,("buildcontext - mp->ext->mode  = %d\n",mp->extinfo->mode));
 	    DBGPRINTF(DBG_SETMD,("buildcontext - mp->ext->flags = %x\n",mp->extinfo->flags));
-#ifdef GRX_USE_RAM3x8
-	    if (mp->bpp==24)
-	      {
-		 int m_incr = mp->lineoffset*mp->height;
-		 cxt->gc_baseaddr[0] = mp->extinfo->frame;
-		 cxt->gc_baseaddr[1] = cxt->gc_baseaddr[0] + m_incr;
-		 cxt->gc_baseaddr[2] = cxt->gc_baseaddr[1] + m_incr;
-		 cxt->gc_baseaddr[3] = NULL;
-	      }
-            else
-#endif
 	    if (mp->bpp==4)
 	      {
 		 int m_incr = mp->lineoffset*mp->height;

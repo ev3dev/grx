@@ -1,14 +1,14 @@
 #
 # MGRX makefile for LINUX/X11 version (GNU-make)
 #
-.PHONY : libs test clean cleanall install uninstall \
+.PHONY : libs test testgui clean cleanall install uninstall \
 	 install-bin uninstall-bin install-fonts uninstall-fonts
 
 GRXVX11=y
 
 include makedefs.grx
 
-all: libs test
+all: libs test testgui
 
 libs:
 	$(MAKE) -C src -f makefile.x11
@@ -16,7 +16,15 @@ libs:
 test: libs
 	$(MAKE) -C test -f makefile.x11
 
+testgui: libs
+ifeq ($(INCLUDE_GRGUI),y)
+	$(MAKE) -C testgui -f makefile.x11
+endif
+
 clean:
+ifeq ($(INCLUDE_GRGUI),y)
+	$(MAKE) -C testgui -f makefile.x11 clean
+endif
 	$(MAKE) -C test -f makefile.x11 clean
 	$(MAKE) -C src -f makefile.x11 clean
 

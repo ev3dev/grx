@@ -1,8 +1,11 @@
-Welcome to MGRX 1.2.0!
+Welcome to MGRX 1.3.0!
 
 MGRX is a 2D graphics C library derived from the GRX library. GRX was
 originaly written by Csaba Biegl for DJ Delorie's DOS port of the GCC
 compiler.
+
+From version 1.3.0 MGRX comes with GrGUI, a mini Graphics User Interface
+specifically designed for MGRX.
 
 Supported platforms
 ===================
@@ -41,7 +44,7 @@ MGRX installation instructions
 Requirements:
 -------------
 
-  The source files and fonts:  mgrx120.tar.gz or mgrx120s.zip
+  The source files and fonts:  mgrx130.tar.gz or mgrx130s.zip
   This document:               readme
   
 Dependencies:
@@ -71,12 +74,12 @@ A. Unpacking the MGRX archive
 
   3) Unpack the MGRX archive:
 
-         tar xzvf mgrx120.tar.gz   (1)
+         tar xzvf mgrx130.tar.gz   (1)
      or
-         unzip mgrx120s.zip        (2)
+         unzip mgrx130s.zip        (2)
 
-     (1) This will create the subdirectory 'mgrx120'.
-     (2) This will create the subdirectory 'contrib/mgrx120'.
+     (1) This will create the subdirectory 'mgrx130'.
+     (2) This will create the subdirectory 'contrib/mgrx130'.
 
 B. Edit "makedefs.grx"
 ----------------------
@@ -86,9 +89,11 @@ B. Edit "makedefs.grx"
 
   Some things you can change:
   
-  -remove support for reading/writing JPEG files, set HAVE_LIBJPEG=n
+  - not to include GrGUI, set INCLUDE_GRGUI=n
   
-  -remove support for reading/writing PNG files, set HAVE_LIBPNG=n
+  - remove support for reading/writing JPEG files, set HAVE_LIBJPEG=n
+  
+  - remove support for reading/writing PNG files, set HAVE_LIBPNG=n
   and NEED_ZLIB=n
   
   - For linux framebuffer and X11 select i386, x86_64 or ARM architecture.
@@ -100,6 +105,9 @@ B. Edit "makedefs.grx"
   - For linux framebuffer and X11 select shared or static libraries. By
   default only the static libraries are build (and it is the recomended
   option). To build the shared libraries set INCLUDE_SHARED_SUPPORT=y
+
+  - For linux framebuffer and X11 if your glibc version is < 2.17 you
+  need to set NEED_LIBRT=y
 
 C. Compiling MGRX
 -----------------
@@ -134,9 +142,19 @@ D. Testing MGRX
   2) run 'make -f <your makefile>'
 
   3) run the 'demomgrx' program ('xdemomgrx' for the X11 version)
-  (see section bellow on running mgrx programs in Linux framebuffer)
+  (see bellow on running mgrx programs in Linux framebuffer)
 
-E. Installing MGRX lib for your compiler (optional)
+E. Testing GrGUI (if compiled in)
+---------------------------------
+
+  1) Switch to the "testgui" sub dir
+
+  2) run 'make -f <your makefile>'
+
+  3) run the 'demmgrx2' program ('xdemmgrx2' for the X11 version)
+  (see bellow on running mgrx programs in Linux framebuffer)
+
+F. Installing MGRX lib for your compiler (optional)
 ---------------------------------------------------
 
   Copy the library from <MGRX base>/lib/<your system> to the compiler
@@ -153,7 +171,7 @@ E. Installing MGRX lib for your compiler (optional)
   Note 2 for Linux users: if you have build the sahred libraries don't
   forget to run 'ldconfig' to register them.
 
-F. Installing MGRX utility programs (optional)
+G. Installing MGRX utility programs (optional)
 ----------------------------------------------
 
   MGRX come with some utility programs like modetest. They are compiled
@@ -164,7 +182,7 @@ F. Installing MGRX utility programs (optional)
 
   Note for Linux users: probably you must be root to do that.
 
-G. Installing MGRX fonts (optional)
+H. Installing MGRX fonts (optional)
 -----------------------------------
 
   Only if you have defined a default font directory in "makedefs.grx"
@@ -253,7 +271,9 @@ to be the default in Raspbian, so nothing to do in that case).
 Help
 ====
 
-  Read the programmer's guide in the "doc/mgrxpm.htm" file.
+  Read the MGRX programmer's manual in the "doc/mgrxpm.htm" file.
+  
+  Read the GrGUI programmer's guide in the "doc/grguipm.htm" file.
 
   See the MGRX site (mgrx.fgrim.com) for updates, tips, ... 
 

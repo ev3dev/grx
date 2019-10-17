@@ -1,0 +1,64 @@
+#
+# MGRX test programs makefile for Mingw. Uses GNU make.
+#
+.SUFFIXES: .exe
+.PHONY: clean install uninstall
+
+GRXVW32=y
+
+include ../makedefs.grx
+
+INCDIR=  -I../include
+MGRX = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
+
+ifeq ($(HAVE_LIBTIFF),y)
+  ADDON_LIBS += -ltiff
+endif
+
+ifeq ($(HAVE_LIBJPEG),y)
+  ADDON_LIBS += -ljpeg
+endif
+
+ifeq ($(HAVE_LIBPNG),y)
+  ADDON_LIBS += -lpng
+endif
+
+ifeq ($(NEED_ZLIB),y)
+  ADDON_LIBS += -lz
+endif
+
+LIBS= $(MGRX) $(ADDON_LIBS)
+
+PROGS=  grgui01.exe    \
+	grgui02.exe    \
+	grgui03.exe    \
+	grgui04.exe    \
+	grgui05.exe    \
+	grgui06.exe    \
+	grgui07.exe    \
+	grgui08.exe    \
+	grgui09.exe    \
+	grgui10.exe    \
+	grgui11.exe    \
+	demmgrx2.exe   \
+	demintl2.exe
+
+all: 	$(PROGS)
+
+$(PROGS): %.exe : %.o $(MGRX)
+	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm -mwindows
+
+.c.o:
+	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
+
+.c.s:
+	$(CC) -S $(CCOPT) $(INCDIR) $*.c
+
+clean:
+	if exist *.o del *.o
+	if exist *.exe del *.exe
+
+depend.new:
+	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:.exe=.c) >depend.new
+
+include depend.gnu

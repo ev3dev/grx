@@ -82,6 +82,10 @@
  **
  ** Changes by M.Alvarez (malfer@telefonica.net) 06/09/2017
  **   - Workarround to loadcolor fail in W7 for the 256 color driver
+ **
+ ** Changes by M.Alvarez (malfer@telefonica.net) 16/10/2019
+ **   - Solved a bug when changing modes without exiting, we need to
+ **     delete the old hDCMem and generate a new one
  **/
 
 #include "libwin32.h"
@@ -207,13 +211,13 @@ static int setmode(GrVideoMode * mp, int noclear)
                      maxWindowWidth, maxWindowHeight,
                      SWP_DRAWFRAME | SWP_NOZORDER | SWP_SHOWWINDOW);
 
-        if (hBmpDIB != NULL) {
+        if (hBmpDIB != NULL)
             DeleteObject(hBmpDIB);
-            hBmpDIB = NULL;
-        }
+        if (hDCMem != NULL)
+            DeleteDC(hDCMem);
+        
         hDC = GetDC(hGRXWnd);
-        if (hDCMem == NULL)
-            hDCMem = CreateCompatibleDC(hDC);
+        hDCMem = CreateCompatibleDC(hDC);
         if (mp->bpp == 8) {
             hBmpDIB = CreateDIB8(hDC, mp->width, mp->height,
                                  &mp->extinfo->frame);
@@ -234,6 +238,14 @@ static int setmode(GrVideoMode * mp, int noclear)
         /* If changing to text-mode, hide the graphics window. */
         if (hGRXWnd != NULL)
             ShowWindow(hGRXWnd, SW_HIDE);
+        if (hBmpDIB != NULL) {
+            DeleteObject(hBmpDIB);
+            hBmpDIB = NULL;
+        }
+        if (hDCMem != NULL) {
+            DeleteDC(hDCMem);
+            hDCMem = NULL;
+        }
     }
     return (TRUE);
 }
@@ -383,14 +395,16 @@ static int init(char *options)
 
 static void reset(void)
 {
-    isMainWaitingTermination = 1;
-    PostMessage(hGRXWnd, WM_CLOSE, 0, 0);
+    if (isWindowThreadRunning) {
+        isMainWaitingTermination = 1;
+        PostMessage(hGRXWnd, WM_CLOSE, 0, 0);
 
-    while (isWindowThreadRunning == 1)
-        Sleep(1);
+        while (isWindowThreadRunning == 1)
+            Sleep(1);
 
-    isMainWaitingTermination = 0;
-    DeleteCriticalSection(&_csEventQueue);
+        isMainWaitingTermination = 0;
+        DeleteCriticalSection(&_csEventQueue);
+    }
 
     if(hBmpDIB != NULL)
     {

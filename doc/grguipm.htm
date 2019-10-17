@@ -1,0 +1,1327 @@
+<html>
+<head>
+   <meta charset="UTF-8">
+   <meta name="Author" content="Mariano Alvarez Fern&aacute;ndez">
+   <title>GrGUI Programmer's Guide</title>
+</head>
+<body text="#000000" bgcolor="#CCCCCC" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+
+<center>
+<h1>GrGUI <small>1.3.0</small></h1>
+<h1>a graphics gui on top of
+<font color="#555555">M</font><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
+</h1>
+<h2>Programmer's Guide by examples</h2>
+<p>Written by Mariano Alvarez Fern&aacute;ndez on October 1, 2019
+<p>Last update: October 1, 2019
+</center>
+
+<hr>
+<h2>Abstract</h2>
+
+<p>&nbsp;&nbsp;<b>GrGUI</b> is a mini graphics user interface running on top of
+MGRX. It wants to be small, easy to use and not intrusive whit your program design,
+this is why it doesn't have a main loop to take control, instead you send
+individual events to specific functions when you want the GUI takes care of them.
+You don't need to use all the GUI functionality, you can (by example)
+use only the menues or the menu bar or some dialogs or some buttons or the GUI
+Contexts, it's up to you.
+<p>In this document, instead to present a detailed manual of each function, we
+will present eleven examples that covers the GrGUI basic concepts.
+<p>Because all MGRX functions begin with "Gr" and all GrGUI functions begin
+with "GUI" yo can easily know what code is GrGUI related or standard MGRX code.
+<p>You can find all the examples in the MGRX distribution under the "testgui"
+subdirectory.
+
+<h2>Contents</h2>
+<dir>
+<li><a href="#Ex01">Example 01. Initiating and ending GrGUI</a>
+<li><a href="#Ex02">Example 02. GUI Contexts</a>
+<li><a href="#Ex03">Example 03. Menues</a>
+<li><a href="#Ex04">Example 04. Menu bar</a>
+<li><a href="#Ex05">Example 05. GUI Panels</a>
+<li><a href="#Ex06">Example 06. Common Dialogs</a>
+<li><a href="#Ex07">Example 07. GUI Tiles</a>
+<li><a href="#Ex08">Example 08. GUI Objects</a>
+<li><a href="#Ex09">Example 09. GUI Tiles with Objects and TextArea</a>
+<li><a href="#Ex10">Example 10. GUI Dialog with Objects</a>
+<li><a href="#Ex11">Example 11. Fonts, Colors and Double Buffer</a>
+<li><a href="#End">More information</a>
+</dir>
+
+<hr>
+<h2><a name="Ex01">Example 01. Initiating and ending GrGUI</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+
+<span style='color:#0057ae;'>int</span> main()
+{
+    <span style='color:#0057ae;'>char</span> *abouttext[<span style='color:#b08000;'>4</span>] = {
+        <span style='color:#bf0303;'>&quot;Welcome to MGRX and GrGUI&quot;</span>,
+        <span style='color:#bf0303;'>&quot;MGRX is a small C 2D graphics library&quot;</span>,
+        <span style='color:#bf0303;'>&quot;and GrGUI a miniGUI on top of MGRX&quot;</span>,
+        <span style='color:#bf0303;'>&quot;visit mgrx.fgrim.com for more info&quot;</span>};
+
+    GrSetMode(GR_default_graphics);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+
+    GUICDialogInfo(<span style='color:#bf0303;'>&quot;Hello GrGUI&quot;</span>, (<span style='color:#0057ae;'>void</span> **)abouttext, <span style='color:#b08000;'>4</span>, <span style='color:#bf0303;'>&quot;Ok&quot;</span>);
+
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex01.png">
+<p>Note we only include "grgui.h", because internally it includes "mgrx.h" and
+even "mgrxkeys.h".
+<p>"GUIInit" expect the graphics mode to be set before calling it. GUInit takes two
+parameters that can be 1 (true) or 0 (false). The first one indicates if it must
+init the MGRX input subsystem. The second if it must use a double-buffer for the
+graphics output. Using a double-buffer we get a smoother output and it can be
+faster for most videodrivers, but it needs the user to indicate when bitblt to
+the screen if the graphic output is not done by GrGUI functions. We will see it
+in the last example.
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="Ex02">Example 02. GUI Contexts</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+
+<span style='color:#0057ae;'>int</span> main()
+{
+    GUIContext *gctx1, *gctx2, *gctx3;
+    GrEvent ev;
+
+    GrSetMode(GR_default_graphics);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+
+    GrClearScreen(GrAllocColor(<span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>100</span>, <span style='color:#b08000;'>0</span>));
+    gctx1 = GUIContextCreate(<span style='color:#b08000;'>100</span>, <span style='color:#b08000;'>100</span>, <span style='color:#b08000;'>200</span>, <span style='color:#b08000;'>200</span>, <span style='color:#b08000;'>1</span>);
+    gctx2 = GUIContextCreate(<span style='color:#b08000;'>150</span>, <span style='color:#b08000;'>150</span>, <span style='color:#b08000;'>250</span>, <span style='color:#b08000;'>250</span>, <span style='color:#b08000;'>1</span>);
+    gctx3 = GUIContextCreate(<span style='color:#b08000;'>200</span>,  <span style='color:#b08000;'>50</span>, <span style='color:#b08000;'>400</span>, <span style='color:#b08000;'>300</span>, <span style='color:#b08000;'>1</span>);
+    <b>if</b> (gctx1 == NULL || gctx2 == NULL || gctx3 == NULL) exit(<span style='color:#b08000;'>1</span>);
+
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>10</span>, <span style='color:#bf0303;'>&quot;Test GUIContexts, press any key to continue&quot;</span>,
+             GrWhite(), GrNOCOLOR);
+
+    GUIContextSaveUnder(gctx1);
+    GrSetContext(gctx1-&gt;c);
+    GrClearContext(GrAllocColor(<span style='color:#b08000;'>100</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>));
+    GrEventWaitKeyOrClick(&amp;ev);
+
+    GUIContextSaveUnder(gctx2);
+    GrSetContext(gctx2-&gt;c);
+    GrClearContext(GrAllocColor(<span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>100</span>));
+    GrEventWaitKeyOrClick(&amp;ev);
+
+    GUIContextSaveUnder(gctx3);
+    GrSetContext(gctx3-&gt;c);
+    GrClearContext(GrAllocColor(<span style='color:#b08000;'>200</span>, <span style='color:#b08000;'>200</span>, <span style='color:#b08000;'>0</span>));
+    GrEventWaitKeyOrClick(&amp;ev);
+
+    GUIContextRestoreUnder(gctx3);
+    GUIContextDestroy(gctx3);
+    GrEventWaitKeyOrClick(&amp;ev);
+
+    GUIContextRestoreUnder(gctx2);
+    GUIContextDestroy(gctx2);
+    GrEventWaitKeyOrClick(&amp;ev);
+
+    GUIContextRestoreUnder(gctx1);
+    GUIContextDestroy(gctx1);
+    GrEventWaitKeyOrClick(&amp;ev);
+
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex02.png">
+<p>GUI Contexts are the basic GrGUI container, they provides a screen (or memory
+if we asked for double-buffer) subcontext to draw in. They can save the actual
+graphic contents under the context and restore it later.
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="Ex03">Example 03. Menues</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+
+<span style='color:#006e28;'>#define COMMAND_OPTION1     1</span>
+<span style='color:#006e28;'>#define COMMAND_OPTION2     2</span>
+<span style='color:#006e28;'>#define COMMAND_OPTION3     3</span>
+<span style='color:#006e28;'>#define COMMAND_OPTION4     4</span>
+<span style='color:#006e28;'>#define COMMAND_EXIT        5</span>
+
+<span style='color:#006e28;'>#define ID_MENU1            1</span>
+<span style='color:#006e28;'>#define ID_MENU2            2</span>
+
+<span style='color:#0057ae;'>void</span> print_line(<span style='color:#0057ae;'>char</span> *s)
+{
+    <span style='color:#006e28;'>#define LINE_HIGH 16</span>
+    <span style='color:#0057ae;'>static</span> <span style='color:#0057ae;'>int</span> ypos = <span style='color:#b08000;'>10</span>;
+    
+    <b>if</b> (ypos &gt;= GrMaxY() - LINE_HIGH) {
+        GrClearContext(GrBlack());
+        ypos = <span style='color:#b08000;'>10</span>;
+    }
+    GrTextXY(<span style='color:#b08000;'>10</span>, ypos, s, GrWhite(), GrBlack());
+    ypos += LINE_HIGH;
+}
+    
+<span style='color:#0057ae;'>int</span> main()
+{
+    <span style='color:#0057ae;'>static</span> GUIMenuItem itemsm1[<span style='color:#b08000;'>6</span>] = {
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;Option &amp;1&quot;</span>, <span style='color:#924c9d;'>'1'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_OPTION1, <span style='color:#b08000;'>0</span>},
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;Option &amp;2&quot;</span>, <span style='color:#924c9d;'>'2'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_OPTION2, <span style='color:#b08000;'>0</span>},
+        {GUI_MI_SEP, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;&quot;</span>, <span style='color:#b08000;'>0</span>, NULL, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>}, 
+        {GUI_MI_MENU, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;&amp;Submenu&quot;</span>, <span style='color:#924c9d;'>'S'</span>, NULL, <span style='color:#b08000;'>0</span>, ID_MENU2, <span style='color:#b08000;'>0</span>}, 
+        {GUI_MI_SEP, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;&quot;</span>, <span style='color:#b08000;'>0</span>, NULL, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>}, 
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;E&amp;xit&quot;</span>, <span style='color:#924c9d;'>'X'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_EXIT, <span style='color:#b08000;'>0</span>}};
+    <span style='color:#0057ae;'>static</span> GUIMenu menu1 = {ID_MENU1, <span style='color:#b08000;'>6</span>, <span style='color:#b08000;'>0</span>, itemsm1};
+
+    <span style='color:#0057ae;'>static</span> GUIMenuItem itemsm2[<span style='color:#b08000;'>2</span>] = {
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;Option &amp;3&quot;</span>, <span style='color:#924c9d;'>'3'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_OPTION3, <span style='color:#b08000;'>0</span>},
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;Option &amp;4&quot;</span>, <span style='color:#924c9d;'>'4'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_OPTION4, <span style='color:#b08000;'>0</span>}};
+    <span style='color:#0057ae;'>static</span> GUIMenu menu2 = {ID_MENU2, <span style='color:#b08000;'>2</span>, <span style='color:#b08000;'>0</span>, itemsm2};
+    
+    GrEvent ev;
+    <span style='color:#0057ae;'>int</span> result;
+    <span style='color:#0057ae;'>char</span> s[<span style='color:#b08000;'>81</span>];
+
+    GrSetMode(GR_default_graphics);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+
+    GUIMenuRegister(&amp;menu1);
+    GUIMenuRegister(&amp;menu2);
+
+    print_line(<span style='color:#bf0303;'>&quot;Press R to run menu, Esc to quit&quot;</span>);
+    <b>while</b>(<span style='color:#b08000;'>1</span>) {
+        GrEventWait(&amp;ev);
+        <b>if</b> (ev.type == GREV_KEY) {
+            <b>if</b> (ev.p1 == GrKey_Escape) <b>break</b>;
+            <b>if</b> (ev.p1 == <span style='color:#924c9d;'>'r'</span> || ev.p1 == <span style='color:#924c9d;'>'R'</span>) {
+                result = GUIMenuRun(ID_MENU1, <span style='color:#b08000;'>100</span>, <span style='color:#b08000;'>100</span>, <span style='color:#b08000;'>0</span>);
+                sprintf(s,<span style='color:#bf0303;'>&quot;GUIMenuRun returned %d&quot;</span>, result);
+                print_line(s);
+            }
+        }
+        <b>if</b> (ev.type == GREV_COMMAND) {
+            <b>if</b> (ev.p1 == COMMAND_EXIT) {
+                print_line(<span style='color:#bf0303;'>&quot;Received COMMAND_EXIT event, exiting in 3 seconds&quot;</span>);
+                GrMouseEraseCursor();
+                GrSleep(<span style='color:#b08000;'>3000</span>);
+                <b>break</b>;
+            }
+            sprintf(s,<span style='color:#bf0303;'>&quot;Received COMMAND event %ld&quot;</span>, ev.p1);
+            print_line(s);
+        }
+    }
+
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex03.png">
+<p>We define menues statically as a list of menu items, they can be Operations,
+Separator or other Menues. When user selects an Operation a GREV_COMMAND event
+is generated. You can cancel a menu pressing the Escape key or clicking the
+mouse outside the menu area.
+<p>Menues must be registered with the "GUIMenuRegister" funtion, so that a menu
+can call another menu.
+<p>Obviusly a menu uses a GUI Context.
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="Ex04">Example 04. Menu bar</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+
+<span style='color:#006e28;'>#define COMMAND_OPTION1     1</span>
+<span style='color:#006e28;'>#define COMMAND_OPTION2     2</span>
+<span style='color:#006e28;'>#define COMMAND_OPTION3     3</span>
+<span style='color:#006e28;'>#define COMMAND_OPTION4     4</span>
+<span style='color:#006e28;'>#define COMMAND_OPTION5     5</span>
+<span style='color:#006e28;'>#define COMMAND_OPTION6     6</span>
+<span style='color:#006e28;'>#define COMMAND_EXIT        7</span>
+
+<span style='color:#006e28;'>#define ID_MENU1            1</span>
+<span style='color:#006e28;'>#define ID_MENU2            2</span>
+<span style='color:#006e28;'>#define ID_MENU3            3</span>
+
+<span style='color:#0057ae;'>void</span> print_line(<span style='color:#0057ae;'>char</span> *s)
+{
+    <span style='color:#006e28;'>#define LINE_HIGH 16</span>
+    <span style='color:#0057ae;'>static</span> <span style='color:#0057ae;'>int</span> ypos = <span style='color:#b08000;'>10</span>;
+    
+    <b>if</b> (ypos &gt;= GrMaxY() - LINE_HIGH) {
+        GrClearContext(GrBlack());
+        ypos = <span style='color:#b08000;'>10</span>;
+    }
+    GrTextXY(<span style='color:#b08000;'>10</span>, ypos, s, GrWhite(), GrBlack());
+    ypos += LINE_HIGH;
+}
+    
+<span style='color:#0057ae;'>int</span> main()
+{
+    <span style='color:#0057ae;'>static</span> GUIMenuItem itemsm1[<span style='color:#b08000;'>6</span>] = {
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;Option &amp;1&quot;</span>, <span style='color:#924c9d;'>'1'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_OPTION1, <span style='color:#b08000;'>0</span>},
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;Option &amp;2&quot;</span>, <span style='color:#924c9d;'>'2'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_OPTION2, <span style='color:#b08000;'>0</span>},
+        {GUI_MI_SEP, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;&quot;</span>, <span style='color:#b08000;'>0</span>, NULL, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>}, 
+        {GUI_MI_MENU, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;&amp;Submenu&quot;</span>, <span style='color:#924c9d;'>'S'</span>, NULL, <span style='color:#b08000;'>0</span>, ID_MENU2, <span style='color:#b08000;'>0</span>}, 
+        {GUI_MI_SEP, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;&quot;</span>, <span style='color:#b08000;'>0</span>, NULL, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>}, 
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;E&amp;xit&quot;</span>, <span style='color:#924c9d;'>'X'</span>, <span style='color:#bf0303;'>&quot;Ctrl+X&quot;</span>, GrKey_Control_X, COMMAND_EXIT, <span style='color:#b08000;'>0</span>}};
+    <span style='color:#0057ae;'>static</span> GUIMenu menu1 = {ID_MENU1, <span style='color:#b08000;'>6</span>, <span style='color:#b08000;'>0</span>, itemsm1};
+
+    <span style='color:#0057ae;'>static</span> GUIMenuItem itemsm2[<span style='color:#b08000;'>2</span>] = {
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;Option &amp;3&quot;</span>, <span style='color:#924c9d;'>'3'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_OPTION3, <span style='color:#b08000;'>0</span>},
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;Option &amp;4&quot;</span>, <span style='color:#924c9d;'>'4'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_OPTION4, <span style='color:#b08000;'>0</span>}};
+    <span style='color:#0057ae;'>static</span> GUIMenu menu2 = {ID_MENU2, <span style='color:#b08000;'>2</span>, <span style='color:#b08000;'>0</span>, itemsm2};
+
+    <span style='color:#0057ae;'>static</span> GUIMenuItem itemsm3[<span style='color:#b08000;'>4</span>] = {
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;Option &amp;5&quot;</span>, <span style='color:#924c9d;'>'5'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_OPTION5, <span style='color:#b08000;'>0</span>},
+        {GUI_MI_OPER, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;Option &amp;6&quot;</span>, <span style='color:#924c9d;'>'6'</span>, NULL, <span style='color:#b08000;'>0</span>, COMMAND_OPTION6, <span style='color:#b08000;'>0</span>},
+        {GUI_MI_SEP, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;&quot;</span>, <span style='color:#b08000;'>0</span>, NULL, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>}, 
+        {GUI_MI_MENU, <span style='color:#b08000;'>1</span>, <span style='color:#bf0303;'>&quot;&amp;Submenu&quot;</span>, <span style='color:#924c9d;'>'S'</span>, NULL, <span style='color:#b08000;'>0</span>, ID_MENU2, <span style='color:#b08000;'>0</span>}};
+    <span style='color:#0057ae;'>static</span> GUIMenu menu3 = {ID_MENU3, <span style='color:#b08000;'>4</span>, <span style='color:#b08000;'>0</span>, itemsm3};
+
+    <span style='color:#0057ae;'>static</span> GUIMenuBarItem mbitems[<span style='color:#b08000;'>2</span>] = {
+        {<span style='color:#bf0303;'>&quot;&amp;First_menu&quot;</span>, <span style='color:#b08000;'>1</span>, GrKey_Alt_F, ID_MENU1}, 
+        {<span style='color:#bf0303;'>&quot;&amp;Second_menu&quot;</span>, <span style='color:#b08000;'>1</span>, GrKey_Alt_S, ID_MENU3}};
+    <span style='color:#0057ae;'>static</span> GUIMenuBar menubar = {<span style='color:#b08000;'>2</span> ,<span style='color:#b08000;'>0</span>, mbitems};
+
+    GrEvent ev;
+    <span style='color:#0057ae;'>char</span> s[<span style='color:#b08000;'>81</span>];
+    GrContext *ctx;
+
+    GrSetMode(GR_default_graphics);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+
+    GUIMenuRegister(&amp;menu1);
+    GUIMenuRegister(&amp;menu2);
+    GUIMenuRegister(&amp;menu3);
+    GUIMenuBarSet(&amp;menubar);
+    GUIMenuBarShow();
+    ctx = GrCreateSubContext(<span style='color:#b08000;'>0</span>, GUIMenuBarGetHeight(),
+                             GrMaxX(), GrMaxY(), NULL, NULL);
+    GrSetContext(ctx);
+
+    print_line(<span style='color:#bf0303;'>&quot;Try the MenuBar above&quot;</span>);
+    <b>while</b>(<span style='color:#b08000;'>1</span>) {
+        GrEventWait(&amp;ev);
+        <b>if</b> (ev.type == GREV_KEY) {
+            <b>if</b> (ev.p1 == GrKey_Escape) <b>break</b>;
+        }
+        <b>if</b> (ev.type == GREV_COMMAND) {
+            <b>if</b> (ev.p1 == COMMAND_EXIT) {
+                print_line(<span style='color:#bf0303;'>&quot;Received COMMAND_EXIT event, exiting in 3 seconds&quot;</span>);
+                GrMouseEraseCursor();
+                GrSleep(<span style='color:#b08000;'>3000</span>);
+                <b>break</b>;
+            }
+            sprintf(s,<span style='color:#bf0303;'>&quot;Received COMMAND event %ld&quot;</span>, ev.p1);
+            print_line(s);
+        }
+    }
+
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex04.png">
+<p>The menu bar is statically defined as a list of menu bar items. Each item points
+to a menu id. You can have only a menu bar at any time that is registered using
+the "GUIMenuBarSet" function. After that you can show it with the "GUIMenuBarShow"
+function. When showed you can select a menu clicking with the mouse or using the
+ALT+letter combination defined. When tied to the menu bar, menu operations can
+define keyboard shortcuts to acces the operation directly, in our example
+"Ctrl-X" executes the Exit operation.
+<p>The funtion "GUIMenuBarGetHeight" is important because it reports the menu
+bar height in pixels, so we can set a screen subcontext as our drawing area
+without interfere with the menu bar.
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="Ex05">Example 05. GUI Panels</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+
+<b>typedef</b> <b>struct</b> {
+    GUIPanel *gp;
+    GrColor fg;
+    GrColor bg;
+} UserData;
+
+<span style='color:#0057ae;'>void</span> paint_panel1(<span style='color:#0057ae;'>void</span> *data)
+{
+    UserData *ud;
+
+    ud = (UserData *)data;
+    GrClearContext(ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>10</span>, <span style='color:#bf0303;'>&quot;This is a simple panel with 1 px border&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>26</span>, <span style='color:#bf0303;'>&quot;Press R to reverse colors, C to continue&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+}
+
+<span style='color:#0057ae;'>void</span> paint_panel2(<span style='color:#0057ae;'>void</span> *data)
+{
+    UserData *ud;
+
+    ud = (UserData *)data;
+    GrClearContext(ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>10</span>, <span style='color:#bf0303;'>&quot;This is a panel with 4 px border,&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>26</span>, <span style='color:#bf0303;'>&quot;title and scroll bars&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>42</span>, <span style='color:#bf0303;'>&quot;Press R to reverse colors, C to continue&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+}
+
+<span style='color:#0057ae;'>void</span> paint_panel2_title(<span style='color:#0057ae;'>void</span> *data)
+{
+    UserData *ud;
+
+    ud = (UserData *)data;
+    GrClearContext(ud-&gt;fg);
+    GrTextXY(<span style='color:#b08000;'>2</span>, <span style='color:#b08000;'>2</span>, <span style='color:#bf0303;'>&quot;This is the panel 2 title&quot;</span>, ud-&gt;bg, ud-&gt;fg);
+    GrHLine(<span style='color:#b08000;'>0</span>, GrMaxX(), GrMaxY(), ud-&gt;bg);
+}
+
+<span style='color:#0057ae;'>int</span> process_panel_event(<span style='color:#0057ae;'>void</span> *data, GrEvent *ev)
+{
+    UserData *ud;
+    GrColor aux;
+
+    ud = (UserData *)data;
+    <b>if</b> (ev-&gt;type == GREV_KEY) {
+        <b>if</b> (ev-&gt;p1 == <span style='color:#924c9d;'>'r'</span> || ev-&gt;p1 == <span style='color:#924c9d;'>'R'</span>) {
+            aux = ud-&gt;fg;
+            ud-&gt;fg = ud-&gt;bg;
+            ud-&gt;bg = aux;
+            ud-&gt;gp-&gt;paintcl(data);
+            <b>return</b> <span style='color:#b08000;'>1</span>;
+        }
+        <b>if</b> (ev-&gt;p1 == <span style='color:#924c9d;'>'c'</span> || ev-&gt;p1 == <span style='color:#924c9d;'>'C'</span>) {
+            <b>return</b> -<span style='color:#b08000;'>1</span>;
+        }
+    }
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+
+<span style='color:#0057ae;'>int</span> main()
+{
+    GUIPanel *gp1, *gp2;
+    GrEvent ev;
+    UserData ud;
+    <span style='color:#0057ae;'>int</span> ret;
+
+    GrSetMode(GR_default_graphics);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+
+    GrClearScreen(GrAllocColor(<span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>100</span>, <span style='color:#b08000;'>0</span>));
+    gp1 = GUIPanelCreate(<span style='color:#b08000;'>100</span>, <span style='color:#b08000;'>100</span>, GrMaxX()-<span style='color:#b08000;'>200</span>, GrSizeY()-<span style='color:#b08000;'>200</span>,
+                         GUI_PCAPB_SU, <span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+    gp2 = GUIPanelCreate(<span style='color:#b08000;'>100</span>, <span style='color:#b08000;'>100</span>, GrMaxX()-<span style='color:#b08000;'>200</span>, GrSizeY()-<span style='color:#b08000;'>200</span>,
+                         GUI_PCAPB_SU|GUI_PCAPB_VSCB|GUI_PCAPB_HSCB, <span style='color:#b08000;'>4</span>, <span style='color:#b08000;'>20</span>);
+    <b>if</b> (gp1 == NULL || gp2 == NULL) exit(<span style='color:#b08000;'>1</span>);
+
+    ud.gp = gp1;
+    ud.fg = GrBlack();
+    ud.bg = GrWhite();
+
+    GUIPanelSetClCallBacks(gp1, paint_panel1, process_panel_event);
+    GUIPanelSetUserData(gp1, (<span style='color:#0057ae;'>void</span> *)&amp;ud);
+    
+    GUIPanelPaint(gp1, GrBlack(), GrWhite());
+    <b>while</b>(<span style='color:#b08000;'>1</span>) {
+        GrEventWait(&amp;ev);
+        ret = GUIPanelProcessEvent(gp1, &amp;ev);
+        <b>if</b> (ret == -<span style='color:#b08000;'>1</span>) <b>break</b>;
+    }
+    GUIContextRestoreUnder(gp1-&gt;gc);
+    GUIPanelDestroy(gp1);
+    
+    ud.gp = gp2;
+    ud.fg = GrAllocColor2(<span style='color:#b08000;'>0x555555</span>);
+    ud.bg = GrAllocColor2(<span style='color:#b08000;'>0x55FFFF</span>);
+
+    GUIPanelSetClCallBacks(gp2, paint_panel2, process_panel_event);
+    GUIPanelSetTlCallBack(gp2, paint_panel2_title);
+    GUIPanelSetUserData(gp2, (<span style='color:#0057ae;'>void</span> *)&amp;ud);
+    
+    GUIPanelPaint(gp2, GrBlack(), GrWhite());
+    <b>while</b>(<span style='color:#b08000;'>1</span>) {
+        GrEventWait(&amp;ev);
+        ret = GUIPanelProcessEvent(gp2, &amp;ev);
+        <b>if</b> (ret == -<span style='color:#b08000;'>1</span>) <b>break</b>;
+    }
+    GUIContextRestoreUnder(gp2-&gt;gc);
+    GUIPanelDestroy(gp2);
+
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex05.png">
+<p>A GUI Panel is a more elaborated container on top of a GUI Context, it can
+have a border, a title area, a client area and Scrollbars. And more important
+you can attach a client area paint, a title area paint and a event processing
+functions to them.
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="Ex06">Example 06. Common Dialogs</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+
+<span style='color:#0057ae;'>void</span> print_line(<span style='color:#0057ae;'>char</span> *s)
+{
+    <span style='color:#006e28;'>#define LINE_HIGH 16</span>
+    <span style='color:#0057ae;'>static</span> <span style='color:#0057ae;'>int</span> ypos = <span style='color:#b08000;'>10</span>;
+    
+    <b>if</b> (ypos &gt;= GrMaxY() - LINE_HIGH) {
+        GrClearContext(GrBlack());
+        ypos = <span style='color:#b08000;'>10</span>;
+    }
+    GrTextXY(<span style='color:#b08000;'>10</span>, ypos, s, GrWhite(), GrBlack());
+    ypos += LINE_HIGH;
+}
+    
+<span style='color:#0057ae;'>int</span> main()
+{
+    <span style='color:#0057ae;'>char</span> *bodytext[<span style='color:#b08000;'>2</span>] = {
+        <span style='color:#bf0303;'>&quot;This is a GrGUI common dialog&quot;</span>,
+        <span style='color:#bf0303;'>&quot;select one option&quot;</span>};
+    GrEvent ev;
+    <span style='color:#0057ae;'>char</span> s[<span style='color:#b08000;'>81</span>];
+    <span style='color:#0057ae;'>int</span> result;
+
+    GrSetMode(GR_default_graphics);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+
+    print_line(<span style='color:#bf0303;'>&quot;Press 1 to run dialog Yes/No&quot;</span>);
+    print_line(<span style='color:#bf0303;'>&quot;Press 2 to run dialog Yes/No/Cancel&quot;</span>);
+    print_line(<span style='color:#bf0303;'>&quot;Esc to quit&quot;</span>);
+
+    <b>while</b>(<span style='color:#b08000;'>1</span>) {
+        GrEventWait(&amp;ev);
+        <b>if</b> (ev.type == GREV_KEY) {
+            <b>if</b> (ev.p1 == GrKey_Escape) <b>break</b>;
+            <b>if</b> (ev.p1 == <span style='color:#924c9d;'>'1'</span>) {
+                result = GUICDialogYesNo(<span style='color:#bf0303;'>&quot;Test Yes/No&quot;</span>,
+                            (<span style='color:#0057ae;'>void</span> **)bodytext, <span style='color:#b08000;'>2</span>, <span style='color:#bf0303;'>&quot;Yes&quot;</span>, <span style='color:#bf0303;'>&quot;No&quot;</span>);
+                sprintf(s,<span style='color:#bf0303;'>&quot;Dialog Yes/No returned %d&quot;</span>, result);
+                print_line(s);
+            }
+            <b>if</b> (ev.p1 == <span style='color:#924c9d;'>'2'</span>) {
+                result = GUICDialogYesNoCancel(<span style='color:#bf0303;'>&quot;Test Yes/No/Cancel&quot;</span>,
+                            (<span style='color:#0057ae;'>void</span> **)bodytext, <span style='color:#b08000;'>2</span>, <span style='color:#bf0303;'>&quot;Yes&quot;</span>, <span style='color:#bf0303;'>&quot;No&quot;</span>, <span style='color:#bf0303;'>&quot;Cancel&quot;</span>);
+                sprintf(s,<span style='color:#bf0303;'>&quot;Dialog Yes/No returned %d&quot;</span>, result);
+                print_line(s);
+            }
+        }
+    }
+
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex06.png">
+<p>A GUI Dialog is a another container on top of a GUI Panel. GrGUI provides
+some common dialogs, one of them was used in the first example to show some
+information to the user. The other two, to ask a Yes/No question or a
+Yes/No/Cancel question to the user, are showed in this example.
+<p>In example 10 we will see how to construct our own dialog.
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="Ex07">Example 07. GUI Tiles</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+
+<b>typedef</b> <b>struct</b> {
+    GUITile *gt;
+    GrColor fg;
+    GrColor bg;
+} UserData;
+
+<span style='color:#0057ae;'>void</span> paint_tile1(<span style='color:#0057ae;'>void</span> *data)
+{
+    UserData *ud;
+
+    ud = (UserData *)data;
+    GrClearContext(ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>16</span>, <span style='color:#bf0303;'>&quot;This is a passive tile with 1 px border&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+}
+
+<span style='color:#0057ae;'>void</span> paint_tile2(<span style='color:#0057ae;'>void</span> *data)
+{
+    UserData *ud;
+
+    ud = (UserData *)data;
+    GrClearContext(ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>10</span>, <span style='color:#bf0303;'>&quot;This is an active tile&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>26</span>, <span style='color:#bf0303;'>&quot;When selected:&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>42</span>, <span style='color:#bf0303;'>&quot;  Press R to reverse colors&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>58</span>, <span style='color:#bf0303;'>&quot;  Esc to finish&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+}
+
+<span style='color:#0057ae;'>void</span> paint_tile3(<span style='color:#0057ae;'>void</span> *data)
+{
+    UserData *ud;
+
+    ud = (UserData *)data;
+    GrClearContext(ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>10</span>, <span style='color:#bf0303;'>&quot;This is a second active tile,&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>26</span>, <span style='color:#bf0303;'>&quot;When selected:&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>42</span>, <span style='color:#bf0303;'>&quot;  Press R to reverse colors&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>58</span>, <span style='color:#bf0303;'>&quot;  Esc to finish&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+}
+
+<span style='color:#0057ae;'>void</span> paint_tile4(<span style='color:#0057ae;'>void</span> *data)
+{
+    UserData *ud;
+
+    ud = (UserData *)data;
+    GrClearContext(ud-&gt;bg);
+    GrTextXY(<span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>16</span>, <span style='color:#bf0303;'>&quot;This is a passive tile borderless&quot;</span>, ud-&gt;fg, ud-&gt;bg);
+}
+
+<span style='color:#0057ae;'>int</span> process_tile_event(<span style='color:#0057ae;'>void</span> *data, GrEvent *ev)
+{
+    UserData *ud;
+    GrColor aux;
+
+    ud = (UserData *)data;
+    <b>if</b> (ev-&gt;type == GREV_KEY) {
+        <b>if</b> (ev-&gt;p1 == <span style='color:#924c9d;'>'r'</span> || ev-&gt;p1 == <span style='color:#924c9d;'>'R'</span>) {
+            aux = ud-&gt;fg;
+            ud-&gt;fg = ud-&gt;bg;
+            ud-&gt;bg = aux;
+            ud-&gt;gt-&gt;p-&gt;paintcl(data);
+            <b>return</b> <span style='color:#b08000;'>1</span>;
+        }
+        <b>if</b> (ev-&gt;p1 == GrKey_Escape) {
+            <b>return</b> -<span style='color:#b08000;'>1</span>;
+        }
+    }
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+
+<span style='color:#0057ae;'>int</span> main()
+{
+    <span style='color:#006e28;'>#define IDT1 1</span>
+    <span style='color:#006e28;'>#define IDT2 2</span>
+    <span style='color:#006e28;'>#define IDT3 3</span>
+    <span style='color:#006e28;'>#define IDT4 4</span>
+
+    GUITile *gt1, *gt2, *gt3, *gt4;
+    UserData ud1, ud2, ud3, ud4;
+    GrEvent ev;
+    <span style='color:#0057ae;'>int</span> ret;
+
+    GrSetMode(GR_default_graphics);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+
+    <span style='color:#898887;'>//GrClearScreen(GrAllocColor(0, 100, 0));</span>
+    gt1 = GUITileCreate(IDT1, GUI_TT_STATICBORDER, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>,
+                        GrSizeX(), <span style='color:#b08000;'>50</span>);
+    gt2 = GUITileCreate(IDT2, GUI_TT_ACTIVEBORDER, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>50</span>,
+                        GrSizeX()/<span style='color:#b08000;'>2</span>, GrSizeY()-<span style='color:#b08000;'>100</span>);
+    gt3 = GUITileCreate(IDT3, GUI_TT_ACTIVEBORDER, GrSizeX()/<span style='color:#b08000;'>2</span>, <span style='color:#b08000;'>50</span>,
+                        GrSizeX()/<span style='color:#b08000;'>2</span>, GrSizeY()-<span style='color:#b08000;'>100</span>);
+    gt4 = GUITileCreate(IDT4, GUI_TT_BORDERLESS, <span style='color:#b08000;'>0</span>,
+                        GrSizeY()-<span style='color:#b08000;'>50</span>, GrSizeX(), <span style='color:#b08000;'>50</span>);
+    <b>if</b> (gt1 == NULL || gt2 == NULL || gt3 == NULL || gt4 == NULL) exit(<span style='color:#b08000;'>1</span>);
+    
+    GUIPanelSetClCallBacks(gt1-&gt;p, paint_tile1, NULL);
+    GUIPanelSetUserData(gt1-&gt;p, (<span style='color:#0057ae;'>void</span> *)&amp;ud1);
+    ud1.gt = gt1;
+    ud1.fg = GrWhite();
+    ud1.bg = GrAllocColor2(<span style='color:#b08000;'>0x00AAAA</span>);
+    GUIPanelSetClCallBacks(gt2-&gt;p, paint_tile2, process_tile_event);
+    GUIPanelSetUserData(gt2-&gt;p, (<span style='color:#0057ae;'>void</span> *)&amp;ud2);
+    ud2.gt = gt2;
+    ud2.fg = GrWhite();
+    ud2.bg = GrAllocColor2(<span style='color:#b08000;'>0x00AA00</span>);
+    GUIPanelSetClCallBacks(gt3-&gt;p, paint_tile3, process_tile_event);
+    GUIPanelSetUserData(gt3-&gt;p, (<span style='color:#0057ae;'>void</span> *)&amp;ud3);
+    ud3.gt = gt3;
+    ud3.fg = GrWhite();
+    ud3.bg = GrAllocColor2(<span style='color:#b08000;'>0x00AA00</span>);
+    GUIPanelSetClCallBacks(gt4-&gt;p, paint_tile4, NULL);
+    GUIPanelSetUserData(gt4-&gt;p, (<span style='color:#0057ae;'>void</span> *)&amp;ud4);
+    ud4.gt = gt4;
+    ud4.fg = GrWhite();
+    ud4.bg = GrAllocColor2(<span style='color:#b08000;'>0x555555</span>);
+
+    GUITileRegister(gt1);
+    GUITileRegister(gt2);
+    GUITileRegister(gt3);
+    GUITileRegister(gt4);
+
+    GUITilePaint(IDT1);
+    GUITilePaint(IDT2);
+    GUITilePaint(IDT3);
+    GUITilePaint(IDT4);
+
+    <b>while</b>(<span style='color:#b08000;'>1</span>) {
+        GrEventWait(&amp;ev);
+        ret = GUITilesProcessEvent(&amp;ev);
+        <b>if</b> (ret == -<span style='color:#b08000;'>1</span>) <b>break</b>;
+    }
+    
+    GUITilesDestroyAll();
+    
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex07.png">
+<p>GUI Tiles are containers too, on top of a GUI Panel. But the basic idea
+of GUI Tiles is to divide the screen area in rectangular areas. Each tile can
+be passive (only to show information) or active (it can get user input).
+<p>Only one of the active tiles have the focus, and you can change it using
+the mouse or the Alt+RigtCursor, Alt+LeftCursor keystrokes.
+To achieve this functionality, GUI Tiles must be registered using the
+"GUITileRegister" function.
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="Ex08">Example 08. GUI Objects</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;string.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;mgrxcolr.h&gt;</span>
+
+
+<span style='color:#006e28;'>#define COMMAND_EXIT         1</span>
+<span style='color:#006e28;'>#define COMMAND_SWITCH_L1    2</span>
+<span style='color:#006e28;'>#define COMMAND_SWITCH_L2    3</span>
+<span style='color:#006e28;'>#define COMMAND_SWITCH_L3    4</span>
+<span style='color:#006e28;'>#define COMMAND_SWITCH_L4    5</span>
+<span style='color:#006e28;'>#define COMMAND_GET_DATA     6</span>
+
+<span style='color:#0057ae;'>char</span> *listopt[<span style='color:#b08000;'>5</span>] = { <span style='color:#bf0303;'>&quot;Primera opción&quot;</span>, <span style='color:#bf0303;'>&quot;Segunda opción&quot;</span>, 
+    <span style='color:#bf0303;'>&quot;Tercera opción&quot;</span>, <span style='color:#bf0303;'>&quot;Cuarta opción&quot;</span>, <span style='color:#bf0303;'>&quot;Quinta opción&quot;</span>};
+<span style='color:#0057ae;'>char</span> bdtline1[<span style='color:#b08000;'>81</span>], bdtline2[<span style='color:#b08000;'>81</span>], bdtline3[<span style='color:#b08000;'>81</span>], bdtline4[<span style='color:#b08000;'>81</span>];
+<span style='color:#0057ae;'>char</span> *buf_test[<span style='color:#b08000;'>4</span>] = {bdtline1, bdtline2, bdtline3, bdtline4};
+
+<span style='color:#0057ae;'>void</span> add_line_to_buf_test(<span style='color:#0057ae;'>char</span> *s)
+{
+    <span style='color:#0057ae;'>int</span> i;
+    
+    <b>for</b> (i=<span style='color:#b08000;'>0</span>; i&lt;<span style='color:#b08000;'>3</span>; i++)
+        memcpy(buf_test[i], buf_test[i+<span style='color:#b08000;'>1</span>], <span style='color:#b08000;'>81</span>);
+    
+    strncpy(buf_test[<span style='color:#b08000;'>3</span>], s, <span style='color:#b08000;'>80</span>);
+    buf_test[<span style='color:#b08000;'>3</span>][<span style='color:#b08000;'>80</span>] = <span style='color:#924c9d;'>'\0'</span>;
+}
+
+<span style='color:#0057ae;'>int</span> process_go_event(GUIGroup *go, GrEvent *ev)
+{
+    <span style='color:#0057ae;'>char</span> aux[<span style='color:#b08000;'>81</span>];
+    <span style='color:#0057ae;'>char</span> *s, *sonoff[<span style='color:#b08000;'>4</span>];
+    <span style='color:#0057ae;'>char</span> *son = <span style='color:#bf0303;'>&quot;On&quot;</span>;
+    <span style='color:#0057ae;'>char</span> *soff = <span style='color:#bf0303;'>&quot;Off&quot;</span>;
+    <span style='color:#0057ae;'>int</span> i, status;
+
+    <b>if</b> (ev-&gt;type == GREV_COMMAND) {
+        <b>switch</b> (ev-&gt;p1) {
+            <b>case</b> COMMAND_EXIT :
+                <b>return</b> -<span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_SWITCH_L1 :
+                GUIGroupSetOn(go, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>1</span>);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_SWITCH_L2 :
+                GUIGroupSetOn(go, <span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>1</span>);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_SWITCH_L3 :
+                GUIGroupSetOn(go, <span style='color:#b08000;'>2</span>, <span style='color:#b08000;'>1</span>);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_SWITCH_L4 :
+                GUIGroupSetOn(go, <span style='color:#b08000;'>3</span>, <span style='color:#b08000;'>1</span>);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_GET_DATA :
+                <b>for</b> (i=<span style='color:#b08000;'>0</span>; i&lt;<span style='color:#b08000;'>4</span>; i++) {
+                    status = GUIGroupGetOn(go, i);
+                    sonoff[i] = status ? son : soff;
+                }
+                sprintf(aux, <span style='color:#bf0303;'>&quot;Lights status 1:%s 2:%s 3:%s 4:%s&quot;</span>,
+                        sonoff[<span style='color:#b08000;'>0</span>], sonoff[<span style='color:#b08000;'>1</span>], sonoff[<span style='color:#b08000;'>2</span>], sonoff[<span style='color:#b08000;'>3</span>]);
+                add_line_to_buf_test(aux);
+                s = GUIGroupGetText(go, <span style='color:#b08000;'>5</span>, GR_UTF8_TEXT);
+                sprintf(aux, <span style='color:#bf0303;'>&quot;Entry: %s&quot;</span>, s);
+                add_line_to_buf_test(aux);
+                free(s);
+                GUIGroupRePaintObject(go, <span style='color:#b08000;'>15</span>);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+        }
+    }
+    <b>if</b> (ev-&gt;type == GREV_FCHANGE) {
+        sprintf(aux, <span style='color:#bf0303;'>&quot;Field changed, p1=%ld, p2=%ld&quot;</span>, ev-&gt;p1, ev-&gt;p2);
+        add_line_to_buf_test(aux);
+        GUIGroupRePaintObject(go, <span style='color:#b08000;'>15</span>);
+    }
+
+    <b>return</b> GUIGroupProcessEvent(go, ev);
+}
+
+<span style='color:#0057ae;'>int</span> main()
+{
+    GUIGroup *go;
+    GrEvent ev;
+
+    GrSetMode(GR_default_graphics);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+    GrGenEgaColorTable();
+    GrClearContext(EGAC_DARKGRAY);
+
+    GUIObjectsSetColors(EGAC_BLACK, EGAC_LIGHTGRAY, EGAC_DARKGRAY);
+    go = GUIGroupCreate(<span style='color:#b08000;'>17</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>70</span>);
+    <b>if</b> (go == NULL) exit(<span style='color:#b08000;'>1</span>);
+    GUIObjectSetLight(&amp;(go-&gt;o[<span style='color:#b08000;'>0</span>]), <span style='color:#b08000;'>0</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>32</span>, EGAC_LIGHTGREEN, EGAC_BLACK, <span style='color:#bf0303;'>&quot;Light 1&quot;</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetLight(&amp;(go-&gt;o[<span style='color:#b08000;'>1</span>]), <span style='color:#b08000;'>1</span>,  <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>32</span>, EGAC_LIGHTGREEN, EGAC_BLACK, <span style='color:#bf0303;'>&quot;Light 2&quot;</span>, <span style='color:#b08000;'>1</span>);
+    GUIObjectSetLight(&amp;(go-&gt;o[<span style='color:#b08000;'>2</span>]), <span style='color:#b08000;'>2</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>32</span>, EGAC_LIGHTRED, EGAC_BLACK, <span style='color:#bf0303;'>&quot;Light 3&quot;</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetLight(&amp;(go-&gt;o[<span style='color:#b08000;'>3</span>]), <span style='color:#b08000;'>3</span>, <span style='color:#b08000;'>240</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>32</span>, EGAC_LIGHTCYAN, EGAC_BLACK, <span style='color:#bf0303;'>&quot;Light 4&quot;</span>, <span style='color:#b08000;'>1</span>);
+    GUIObjectSetLabel(&amp;(go-&gt;o[<span style='color:#b08000;'>4</span>]), <span style='color:#b08000;'>4</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, GrNOCOLOR, EGAC_WHITE, <span style='color:#bf0303;'>&quot;Editable field&quot;</span>);
+    GUIObjectSetEntry(&amp;(go-&gt;o[<span style='color:#b08000;'>5</span>]), <span style='color:#b08000;'>5</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, EGAC_WHITE, EGAC_BLACK, <span style='color:#b08000;'>30</span>, <span style='color:#bf0303;'>&quot;entry field&quot;</span>);
+    GUIObjectSetLabel(&amp;(go-&gt;o[<span style='color:#b08000;'>6</span>]), <span style='color:#b08000;'>6</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, GrNOCOLOR, EGAC_WHITE, <span style='color:#bf0303;'>&quot;List field #1&quot;</span>);
+    GUIObjectSetList(&amp;(go-&gt;o[<span style='color:#b08000;'>7</span>]),  <span style='color:#b08000;'>7</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, EGAC_WHITE, EGAC_BLACK, (<span style='color:#0057ae;'>void</span> **)listopt, <span style='color:#b08000;'>5</span>, <span style='color:#b08000;'>3</span>, <span style='color:#b08000;'>1</span>);
+    GUIObjectSetLabel(&amp;(go-&gt;o[<span style='color:#b08000;'>8</span>]), <span style='color:#b08000;'>8</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>120</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, GrNOCOLOR, EGAC_WHITE, <span style='color:#bf0303;'>&quot;List field #2&quot;</span>);
+    GUIObjectSetList(&amp;(go-&gt;o[<span style='color:#b08000;'>9</span>]),  <span style='color:#b08000;'>9</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>120</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, EGAC_WHITE, EGAC_BLACK, (<span style='color:#0057ae;'>void</span> **)listopt, <span style='color:#b08000;'>5</span>, <span style='color:#b08000;'>5</span>, <span style='color:#b08000;'>2</span>);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>10</span>]), <span style='color:#b08000;'>10</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>40</span>, EGAC_CYAN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;L1&quot;</span>, COMMAND_SWITCH_L1, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>11</span>]), <span style='color:#b08000;'>11</span>,  <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>40</span>, EGAC_CYAN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;L2&quot;</span>, COMMAND_SWITCH_L2, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>12</span>]), <span style='color:#b08000;'>12</span>,  <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>40</span>, EGAC_CYAN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;L3&quot;</span>, COMMAND_SWITCH_L3, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>13</span>]), <span style='color:#b08000;'>13</span>, <span style='color:#b08000;'>120</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>40</span>, EGAC_CYAN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;L4&quot;</span>, COMMAND_SWITCH_L4, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>14</span>]), <span style='color:#b08000;'>14</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, EGAC_CYAN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;Get data&quot;</span>, COMMAND_GET_DATA, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetText(&amp;(go-&gt;o[<span style='color:#b08000;'>15</span>]), <span style='color:#b08000;'>15</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>210</span>, <span style='color:#b08000;'>320</span>, <span style='color:#b08000;'>80</span>, EGAC_LIGHTGRAY, EGAC_BLACK, (<span style='color:#0057ae;'>void</span> **)buf_test, <span style='color:#b08000;'>4</span>, GR_ALIGN_LEFT, NULL);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>16</span>]), <span style='color:#b08000;'>16</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>300</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, EGAC_GREEN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;Exit&quot;</span>, COMMAND_EXIT, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIGroupSetSelected(go, <span style='color:#b08000;'>16</span>, <span style='color:#b08000;'>0</span>);
+
+    GUIGroupPaint(go);
+
+    <b>while</b>(<span style='color:#b08000;'>1</span>) {
+        GrEventRead(&amp;ev);
+        <b>if</b> ((ev.type == GREV_KEY) &amp;&amp; (ev.p1 == GrKey_Escape)) <b>break</b>;
+        <b>if</b> (process_go_event(go, &amp;ev) &lt; <span style='color:#b08000;'>0</span>) <b>break</b>;
+    }
+
+    GUIGroupDestroy(go);
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex08.png">
+<p>GUI Objects are widgets, small rectangular objects with some function. There
+are six objects types in GrGUI:
+<ul>
+<li>GUIOBJTYPE_LABEL are small pieces of static text.
+<li>GUIOBJTYPE_TEXT are multiline pieces of static text.
+<li>GUIOBJTYPE_LIGHT are rectangular areas that can be on or off.
+<li>GUIOBJTYPE_BUTTON are things you can press and they send a GREV_COMMAND event.
+<li>GUIOBJTYPE_ENTRY are editable text fields.
+<li>GUIOBJTYPE_LIST are list of options from which to choose one.
+</ul>
+<p>GUI Objects only can live in a GUI Group. You first create a group and them
+defines each element to be a GUI Object of any type. All the objects in a group
+are managed as a whole. In this example we create a group with objects of all 
+types. You can see that it is not necesary to attach a group to a container. We
+will do it in the next two examples.
+
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="Ex09">Example 09. GUI Tiles with Objects and TextArea</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;string.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;mgrxcolr.h&gt;</span>
+
+<span style='color:#006e28;'>#define COMMAND_EXIT         1</span>
+<span style='color:#006e28;'>#define COMMAND_LOAD         2</span>
+<span style='color:#006e28;'>#define COMMAND_SAVE         3</span>
+
+<b>typedef</b> <b>struct</b> {
+    GUITextArea *ta;
+    GUIGroup *go;
+} UserData;
+
+<span style='color:#0057ae;'>void</span> paint_tl1(<span style='color:#0057ae;'>void</span> *data)
+{
+    UserData *ud;
+
+    ud = (UserData *)data;
+    GrClearContext(EGAC_LIGHTGRAY);
+    GUIGroupPaint(ud-&gt;go);
+}
+
+<span style='color:#0057ae;'>void</span> paint_tl2(<span style='color:#0057ae;'>void</span> *data)
+{
+    UserData *ud;
+
+    ud = (UserData *)data;
+    GUITAReDraw(ud-&gt;ta);
+}
+
+<span style='color:#0057ae;'>int</span> process_tl1_event(<span style='color:#0057ae;'>void</span> *data, GrEvent *ev)
+{
+    UserData *ud;
+    GUITAStatus tast;
+    <span style='color:#0057ae;'>FILE</span> *fin, *fout;
+    <span style='color:#0057ae;'>char</span> aux[<span style='color:#b08000;'>251</span>];
+    <span style='color:#0057ae;'>char</span> *s;
+    <span style='color:#0057ae;'>int</span> len, i;
+
+    ud = (UserData *)data;
+    <b>if</b> (ev-&gt;type == GREV_COMMAND) {
+        <b>switch</b> (ev-&gt;p1) {
+            <b>case</b> COMMAND_EXIT :
+                <b>return</b> -<span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_LOAD :
+                s = GUIGroupGetText(ud-&gt;go, <span style='color:#b08000;'>1</span>, GR_UTF8_TEXT);
+                fin = fopen(s, <span style='color:#bf0303;'>&quot;r&quot;</span>);
+                free(s);
+                <b>if</b> (fin == NULL) <b>return</b> <span style='color:#b08000;'>1</span>;
+                GUITAHideCursor(ud-&gt;ta);
+                <b>while</b> (fgets(aux, <span style='color:#b08000;'>250</span>, fin) != NULL) {
+                    len = strlen(aux);
+                    <b>if</b> (len&gt;<span style='color:#b08000;'>0</span> &amp;&amp; aux[len-<span style='color:#b08000;'>1</span>]==<span style='color:#924c9d;'>'\n'</span>) aux[len-<span style='color:#b08000;'>1</span>] = <span style='color:#924c9d;'>'\0'</span>;
+                    GUITADrawString(ud-&gt;ta, aux, <span style='color:#b08000;'>0</span>, GR_UTF8_TEXT);
+                    GUITANewLine(ud-&gt;ta);
+                }
+                GUITAShowCursor(ud-&gt;ta);
+                fclose(fin);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_SAVE :
+                s = GUIGroupGetText(ud-&gt;go, <span style='color:#b08000;'>3</span>, GR_UTF8_TEXT);
+                fout = fopen(s, <span style='color:#bf0303;'>&quot;w&quot;</span>);
+                free(s);
+                <b>if</b> (fout == NULL) <b>return</b> <span style='color:#b08000;'>1</span>;
+                GUITAGetStatus(ud-&gt;ta, &amp;tast);
+                <b>for</b> (i=<span style='color:#b08000;'>0</span>; i&lt;tast.nlines; i++) {
+                    s = GUITAGetString(ud-&gt;ta, i, GR_UTF8_TEXT);
+                    <b>if</b> (s == NULL) <b>break</b>;
+                    fputs(s, fout);
+                    putc( <span style='color:#924c9d;'>'\n'</span>, fout);
+                    free(s);
+                }
+                fclose(fout);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+        }
+    }
+
+    <b>return</b> GUIGroupProcessEvent(ud-&gt;go, ev);
+}
+
+<span style='color:#0057ae;'>int</span> process_tl2_event(<span style='color:#0057ae;'>void</span> *data, GrEvent *ev)
+{
+    UserData *ud;
+
+    ud = (UserData *)data;
+    <b>return</b> GUITAProcessEvent(ud-&gt;ta, ev);
+}
+
+<span style='color:#0057ae;'>int</span> main()
+{
+    <span style='color:#006e28;'>#define IDT1 1</span>
+    <span style='color:#006e28;'>#define IDT2 2</span>
+
+    GUITile *gt1, *gt2;
+    GUITextArea *ta1;
+    GUIGroup *go1;
+    UserData ud;
+    GrEvent ev;
+    <span style='color:#0057ae;'>int</span> ret;
+
+    GrSetMode(GR_default_graphics);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+    GrGenEgaColorTable();
+    GUIScrollbarsSetColors(EGAC_LIGHTGRAY, EGAC_DARKGRAY);
+    GUITilesSetColors(EGAC_BLACK, EGAC_LIGHTGRAY, EGAC_YELLOW);
+    GUIObjectsSetColors(EGAC_BLACK, EGAC_LIGHTGRAY, EGAC_DARKGRAY);
+
+    gt1 = GUITileCreate(IDT1, GUI_TT_ACTIVEBORDER, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>,
+                        <span style='color:#b08000;'>168</span>, GrSizeY());
+    gt2 = GUITileCreate(IDT2, GUI_TT_ACTIVEBWSCB, <span style='color:#b08000;'>168</span>, <span style='color:#b08000;'>0</span>,
+                        GrSizeX()-<span style='color:#b08000;'>168</span>, GrSizeY());
+    <b>if</b> (gt1 == NULL || gt2 == NULL) exit(<span style='color:#b08000;'>1</span>);
+    
+    GUITileRegister(gt1);
+    GUITileRegister(gt2);
+
+    go1 = GUIGroupCreate(<span style='color:#b08000;'>5</span>, <span style='color:#b08000;'>10</span>, <span style='color:#b08000;'>32</span>);
+    GUIObjectSetButton(&amp;(go1-&gt;o[<span style='color:#b08000;'>0</span>]), <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>140</span>, <span style='color:#b08000;'>40</span>, EGAC_GREEN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;Load File&quot;</span>, COMMAND_LOAD, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetEntry(&amp;(go1-&gt;o[<span style='color:#b08000;'>1</span>]),  <span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>,  <span style='color:#b08000;'>44</span>, <span style='color:#b08000;'>140</span>, <span style='color:#b08000;'>30</span>, EGAC_WHITE, EGAC_BLACK, <span style='color:#b08000;'>30</span>, <span style='color:#bf0303;'>&quot;inputfile&quot;</span>);
+    GUIObjectSetButton(&amp;(go1-&gt;o[<span style='color:#b08000;'>2</span>]), <span style='color:#b08000;'>2</span>, <span style='color:#b08000;'>0</span>,  <span style='color:#b08000;'>84</span>, <span style='color:#b08000;'>140</span>, <span style='color:#b08000;'>40</span>, EGAC_GREEN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;Save File&quot;</span>, COMMAND_SAVE, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetEntry(&amp;(go1-&gt;o[<span style='color:#b08000;'>3</span>]),  <span style='color:#b08000;'>3</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>128</span>, <span style='color:#b08000;'>140</span>, <span style='color:#b08000;'>30</span>, EGAC_WHITE, EGAC_BLACK, <span style='color:#b08000;'>30</span>, <span style='color:#bf0303;'>&quot;outputfile&quot;</span>);
+    GUIObjectSetButton(&amp;(go1-&gt;o[<span style='color:#b08000;'>4</span>]), <span style='color:#b08000;'>4</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>168</span>, <span style='color:#b08000;'>140</span>, <span style='color:#b08000;'>40</span>, EGAC_RED, EGAC_WHITE, <span style='color:#bf0303;'>&quot;Exit&quot;</span>, COMMAND_EXIT, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIGroupSetSelected(go1, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIGroupSetPanel(go1, gt1-&gt;p);
+
+    ta1 = GUITACreate(gt2-&gt;p, NULL, <span style='color:#b08000;'>10000</span>);
+    <b>if</b> (ta1 == NULL) exit(<span style='color:#b08000;'>1</span>);
+    GUITASetBgColor(ta1, EGAC_DARKGRAY);
+    GUITASetTextColors(ta1, EGAC_WHITE, EGAC_DARKGRAY);
+    GUITASetCursorColor(ta1, EGAC_YELLOW);
+    GUITAClear(ta1);
+
+    GUIPanelSetClCallBacks(gt1-&gt;p, paint_tl1, process_tl1_event);
+    GUIPanelSetClCallBacks(gt2-&gt;p, paint_tl2, process_tl2_event);
+    GUIPanelSetUserData(gt1-&gt;p, (<span style='color:#0057ae;'>void</span> *)&amp;ud);
+    GUIPanelSetUserData(gt2-&gt;p, (<span style='color:#0057ae;'>void</span> *)&amp;ud);
+    ud.ta = ta1;
+    ud.go = go1;
+
+    GUITilePaint(IDT1);
+    GUITilePaint(IDT2);
+    GUITAShowCursor(ta1);
+
+    <b>while</b>(<span style='color:#b08000;'>1</span>) {
+        GrEventRead(&amp;ev);
+        ret = GUITilesProcessEvent(&amp;ev);
+        <b>if</b> (ret == -<span style='color:#b08000;'>1</span>) <b>break</b>;
+    }
+    
+    GUIGroupDestroy(go1);
+    GUITADestroy(ta1);
+    GUITilesDestroyAll();
+    
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex09.png">
+<p>In this example we divide the screen with two active GUI Tiles, we attach a
+GUI Group of object to one Tile and a GUI TextArea to the other one.
+<p>A GUI  TextArea is a window over a editable text. So in our present example
+we have a simple text editor.
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="Ex10">Example 10. GUI Dialog with Objects</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;string.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;mgrxcolr.h&gt;</span>
+
+<span style='color:#006e28;'>#define COMMAND_OK           1</span>
+<span style='color:#006e28;'>#define COMMAND_SWITCH_L1    2</span>
+<span style='color:#006e28;'>#define COMMAND_SWITCH_L2    3</span>
+<span style='color:#006e28;'>#define COMMAND_SWITCH_L3    4</span>
+<span style='color:#006e28;'>#define COMMAND_SWITCH_L4    5</span>
+<span style='color:#006e28;'>#define COMMAND_GET_DATA     6</span>
+
+<span style='color:#0057ae;'>char</span> *listopt[<span style='color:#b08000;'>5</span>] = { <span style='color:#bf0303;'>&quot;Primera opción&quot;</span>, <span style='color:#bf0303;'>&quot;Segunda opción&quot;</span>, 
+    <span style='color:#bf0303;'>&quot;Tercera opción&quot;</span>, <span style='color:#bf0303;'>&quot;Cuarta opción&quot;</span>, <span style='color:#bf0303;'>&quot;Quinta opción&quot;</span>};
+<span style='color:#0057ae;'>char</span> bdtline1[<span style='color:#b08000;'>81</span>], bdtline2[<span style='color:#b08000;'>81</span>], bdtline3[<span style='color:#b08000;'>81</span>], bdtline4[<span style='color:#b08000;'>81</span>];
+<span style='color:#0057ae;'>char</span> *buf_test[<span style='color:#b08000;'>4</span>] = {bdtline1, bdtline2, bdtline3, bdtline4};
+
+<span style='color:#0057ae;'>void</span> print_line(<span style='color:#0057ae;'>char</span> *s)
+{
+    <span style='color:#006e28;'>#define LINE_HIGH 16</span>
+    <span style='color:#0057ae;'>static</span> <span style='color:#0057ae;'>int</span> ypos = <span style='color:#b08000;'>10</span>;
+    
+    <b>if</b> (ypos &gt;= GrMaxY() - LINE_HIGH) {
+        GrClearContext(GrBlack());
+        ypos = <span style='color:#b08000;'>10</span>;
+    }
+    GrTextXY(<span style='color:#b08000;'>10</span>, ypos, s, GrWhite(), GrBlack());
+    ypos += LINE_HIGH;
+}
+    
+<span style='color:#0057ae;'>void</span> add_line_to_buf_test(<span style='color:#0057ae;'>char</span> *s)
+{
+    <span style='color:#0057ae;'>int</span> i;
+    
+    <b>for</b> (i=<span style='color:#b08000;'>0</span>; i&lt;<span style='color:#b08000;'>3</span>; i++)
+        memcpy(buf_test[i], buf_test[i+<span style='color:#b08000;'>1</span>], <span style='color:#b08000;'>81</span>);
+    
+    strncpy(buf_test[<span style='color:#b08000;'>3</span>], s, <span style='color:#b08000;'>80</span>);
+    buf_test[<span style='color:#b08000;'>3</span>][<span style='color:#b08000;'>80</span>] = <span style='color:#924c9d;'>'\0'</span>;
+}
+
+<span style='color:#0057ae;'>int</span> process_dlg_event(<span style='color:#0057ae;'>void</span> *udata, GrEvent *ev)
+{
+    GUIDialog *d = (GUIDialog *)udata;
+    GUIGroup *go = (GUIGroup *)(d-&gt;exdata);
+    <span style='color:#0057ae;'>char</span> aux[<span style='color:#b08000;'>81</span>];
+    <span style='color:#0057ae;'>char</span> *s, *sonoff[<span style='color:#b08000;'>4</span>];
+    <span style='color:#0057ae;'>char</span> *son = <span style='color:#bf0303;'>&quot;On&quot;</span>;
+    <span style='color:#0057ae;'>char</span> *soff = <span style='color:#bf0303;'>&quot;Off&quot;</span>;
+    <span style='color:#0057ae;'>int</span> i, status;
+
+    <b>if</b> (ev-&gt;type == GREV_COMMAND) {
+        <b>switch</b> (ev-&gt;p1) {
+            <b>case</b> COMMAND_OK :
+                <b>return</b> -<span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_SWITCH_L1 :
+                GUIGroupSetOn(go, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>1</span>);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_SWITCH_L2 :
+                GUIGroupSetOn(go, <span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>1</span>);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_SWITCH_L3 :
+                GUIGroupSetOn(go, <span style='color:#b08000;'>2</span>, <span style='color:#b08000;'>1</span>);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_SWITCH_L4 :
+                GUIGroupSetOn(go, <span style='color:#b08000;'>3</span>, <span style='color:#b08000;'>1</span>);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+            <b>case</b> COMMAND_GET_DATA :
+                <b>for</b> (i=<span style='color:#b08000;'>0</span>; i&lt;<span style='color:#b08000;'>4</span>; i++) {
+                    status = GUIGroupGetOn(go, i);
+                    sonoff[i] = status ? son : soff;
+                }
+                sprintf(aux, <span style='color:#bf0303;'>&quot;Lights status 1:%s 2:%s 3:%s 4:%s&quot;</span>,
+                        sonoff[<span style='color:#b08000;'>0</span>], sonoff[<span style='color:#b08000;'>1</span>], sonoff[<span style='color:#b08000;'>2</span>], sonoff[<span style='color:#b08000;'>3</span>]);
+                add_line_to_buf_test(aux);
+                s = GUIGroupGetText(go, <span style='color:#b08000;'>5</span>, GR_UTF8_TEXT);
+                sprintf(aux, <span style='color:#bf0303;'>&quot;Entry: %s&quot;</span>, s);
+                add_line_to_buf_test(aux);
+                free(s);
+                GUIGroupRePaintObject(go, <span style='color:#b08000;'>15</span>);
+                <b>return</b> <span style='color:#b08000;'>1</span>;
+        }
+    }
+    <b>if</b> (ev-&gt;type == GREV_FCHANGE) {
+        sprintf(aux, <span style='color:#bf0303;'>&quot;Field changed, p1=%ld, p2=%ld&quot;</span>, ev-&gt;p1, ev-&gt;p2);
+        add_line_to_buf_test(aux);
+        GUIGroupRePaintObject(go, <span style='color:#b08000;'>15</span>);
+    }
+
+    <b>return</b> GUIGroupProcessEvent(go, ev);
+}
+
+<span style='color:#0057ae;'>int</span> main()
+{
+    GUIGroup *go;
+    GUIDialog *d;
+    GrEvent ev;
+    <span style='color:#0057ae;'>char</span> s[<span style='color:#b08000;'>81</span>];
+    <span style='color:#0057ae;'>int</span> result, i;
+
+    GrSetMode(GR_default_graphics);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>0</span>);
+    GrGenEgaColorTable();
+
+    GUIObjectsSetColors(EGAC_BLACK, EGAC_LIGHTGRAY, EGAC_DARKGRAY);
+    GUIDialogsSetColors(EGAC_BLACK, EGAC_YELLOW, EGAC_BLUE, EGAC_WHITE);
+    go = GUIGroupCreate(<span style='color:#b08000;'>17</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>70</span>);
+    <b>if</b> (go == NULL) exit(<span style='color:#b08000;'>1</span>);
+    GUIObjectSetLight(&amp;(go-&gt;o[<span style='color:#b08000;'>0</span>]), <span style='color:#b08000;'>0</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>32</span>, EGAC_LIGHTGREEN, EGAC_BLACK, <span style='color:#bf0303;'>&quot;Light 1&quot;</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetLight(&amp;(go-&gt;o[<span style='color:#b08000;'>1</span>]), <span style='color:#b08000;'>1</span>,  <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>32</span>, EGAC_LIGHTGREEN, EGAC_BLACK, <span style='color:#bf0303;'>&quot;Light 2&quot;</span>, <span style='color:#b08000;'>1</span>);
+    GUIObjectSetLight(&amp;(go-&gt;o[<span style='color:#b08000;'>2</span>]), <span style='color:#b08000;'>2</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>32</span>, EGAC_LIGHTRED, EGAC_BLACK, <span style='color:#bf0303;'>&quot;Light 3&quot;</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetLight(&amp;(go-&gt;o[<span style='color:#b08000;'>3</span>]), <span style='color:#b08000;'>3</span>, <span style='color:#b08000;'>240</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>32</span>, EGAC_LIGHTCYAN, EGAC_BLACK, <span style='color:#bf0303;'>&quot;Light 4&quot;</span>, <span style='color:#b08000;'>1</span>);
+    GUIObjectSetLabel(&amp;(go-&gt;o[<span style='color:#b08000;'>4</span>]), <span style='color:#b08000;'>4</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, GrNOCOLOR, EGAC_WHITE, <span style='color:#bf0303;'>&quot;Editable field&quot;</span>);
+    GUIObjectSetEntry(&amp;(go-&gt;o[<span style='color:#b08000;'>5</span>]), <span style='color:#b08000;'>5</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, EGAC_WHITE, EGAC_BLACK, <span style='color:#b08000;'>30</span>, <span style='color:#bf0303;'>&quot;entry field&quot;</span>);
+    GUIObjectSetLabel(&amp;(go-&gt;o[<span style='color:#b08000;'>6</span>]), <span style='color:#b08000;'>6</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, GrNOCOLOR, EGAC_WHITE, <span style='color:#bf0303;'>&quot;List field #1&quot;</span>);
+    GUIObjectSetList(&amp;(go-&gt;o[<span style='color:#b08000;'>7</span>]),  <span style='color:#b08000;'>7</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, EGAC_WHITE, EGAC_BLACK, (<span style='color:#0057ae;'>void</span> **)listopt, <span style='color:#b08000;'>5</span>, <span style='color:#b08000;'>3</span>, <span style='color:#b08000;'>1</span>);
+    GUIObjectSetLabel(&amp;(go-&gt;o[<span style='color:#b08000;'>8</span>]), <span style='color:#b08000;'>8</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>120</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, GrNOCOLOR, EGAC_WHITE, <span style='color:#bf0303;'>&quot;List field #2&quot;</span>);
+    GUIObjectSetList(&amp;(go-&gt;o[<span style='color:#b08000;'>9</span>]),  <span style='color:#b08000;'>9</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>120</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>30</span>, EGAC_WHITE, EGAC_BLACK, (<span style='color:#0057ae;'>void</span> **)listopt, <span style='color:#b08000;'>5</span>, <span style='color:#b08000;'>5</span>, <span style='color:#b08000;'>2</span>);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>10</span>]), <span style='color:#b08000;'>10</span>,   <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>40</span>, EGAC_CYAN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;L1&quot;</span>, COMMAND_SWITCH_L1, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>11</span>]), <span style='color:#b08000;'>11</span>,  <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>40</span>, EGAC_CYAN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;L2&quot;</span>, COMMAND_SWITCH_L2, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>12</span>]), <span style='color:#b08000;'>12</span>,  <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>40</span>, EGAC_CYAN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;L3&quot;</span>, COMMAND_SWITCH_L3, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>13</span>]), <span style='color:#b08000;'>13</span>, <span style='color:#b08000;'>120</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, <span style='color:#b08000;'>40</span>, EGAC_CYAN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;L4&quot;</span>, COMMAND_SWITCH_L4, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>14</span>]), <span style='color:#b08000;'>14</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, EGAC_CYAN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;Get data&quot;</span>, COMMAND_GET_DATA, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIObjectSetText(&amp;(go-&gt;o[<span style='color:#b08000;'>15</span>]), <span style='color:#b08000;'>15</span>, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>210</span>, <span style='color:#b08000;'>320</span>, <span style='color:#b08000;'>80</span>, EGAC_LIGHTGRAY, EGAC_BLACK, (<span style='color:#0057ae;'>void</span> **)buf_test, <span style='color:#b08000;'>4</span>, GR_ALIGN_LEFT, NULL);
+    GUIObjectSetButton(&amp;(go-&gt;o[<span style='color:#b08000;'>16</span>]), <span style='color:#b08000;'>16</span>, <span style='color:#b08000;'>80</span>, <span style='color:#b08000;'>300</span>, <span style='color:#b08000;'>160</span>, <span style='color:#b08000;'>40</span>, EGAC_GREEN, EGAC_WHITE, <span style='color:#bf0303;'>&quot;Exit&quot;</span>, COMMAND_OK, <span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>);
+    GUIGroupSetSelected(go, <span style='color:#b08000;'>16</span>, <span style='color:#b08000;'>0</span>);
+
+    d = GUIGroupDialogCreate(<span style='color:#bf0303;'>&quot;Test various objects&quot;</span>, go, process_dlg_event);
+    <b>if</b> (d == NULL) exit(<span style='color:#b08000;'>1</span>);
+
+    print_line(<span style='color:#bf0303;'>&quot;Press D to run dialog&quot;</span>);
+    print_line(<span style='color:#bf0303;'>&quot;Esc to quit&quot;</span>);
+
+    <b>while</b>(<span style='color:#b08000;'>1</span>) {
+        GrEventRead(&amp;ev);
+        <b>if</b> (ev.type == GREV_KEY) {
+            <b>if</b> (ev.p1 == GrKey_Escape) <b>break</b>;
+            <b>if</b> (ev.p1 == <span style='color:#924c9d;'>'d'</span> || ev.p1 == <span style='color:#924c9d;'>'D'</span>) {
+                result = GUIDialogRun(d);
+                sprintf(s,<span style='color:#bf0303;'>&quot;Dialog returned %d, Text object contens:&quot;</span>, result);
+                print_line(s);
+                <b>for</b> (i=<span style='color:#b08000;'>0</span>; i&lt;<span style='color:#b08000;'>4</span>; i++) 
+                    print_line(buf_test[i]);
+            }
+        }
+    }
+
+    GUIDialogDestroy(d);
+    GUIGroupDestroy(go);
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex10.png">
+<p>Now we reuse the GUi Group we create in the example 8 and attach it to a dialog
+to show we can have complex dialogs with GrGUI.
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="Ex11">Example 11. Fonts, Colors and Double Buffer</a></h2>
+
+<pre style='color:#1f1c1b;background-color:#dddddd;'>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdlib.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;stdio.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&lt;grgui.h&gt;</span>
+<span style='color:#006e28;'>#include </span><span style='color:#ff5500;'>&quot;mgrxcolr.h&quot;</span>
+
+<span style='color:#006e28;'>#if</span><span style='color:#006e28;'> defined(__MSDOS__) || defined(__WIN32__)</span>
+<span style='color:#006e28;'>#define JPGIMGBG  &quot;..\\testimg\\jpeg4.jpg&quot;</span>
+<span style='color:#006e28;'>#else</span>
+<span style='color:#006e28;'>#define JPGIMGBG  &quot;../testimg/jpeg4.jpg&quot;</span>
+<span style='color:#006e28;'>#endif</span>
+
+<span style='color:#0057ae;'>int</span> main()
+{
+    <span style='color:#0057ae;'>char</span> *abouttext[<span style='color:#b08000;'>4</span>] = {
+        <span style='color:#bf0303;'>&quot;Welcome to MGRX and GrGUI&quot;</span>,
+        <span style='color:#bf0303;'>&quot;MGRX is a small C 2D graphics library&quot;</span>,
+        <span style='color:#bf0303;'>&quot;and GrGUI a miniGUI on top of MGRX&quot;</span>,
+        <span style='color:#bf0303;'>&quot;visit mgrx.fgrim.com for more info&quot;</span>};
+    GrContext *globctx;
+
+    GrSetMode(GR_width_height_bpp_graphics, <span style='color:#b08000;'>640</span>, <span style='color:#b08000;'>480</span>, <span style='color:#b08000;'>32</span>);
+    GrGenWebColorTable();
+    GrSetFontPath(<span style='color:#bf0303;'>&quot;../fonts/;./&quot;</span>);
+    GUIInit(<span style='color:#b08000;'>1</span>, <span style='color:#b08000;'>1</span>);
+
+    GUIObjectsSetColors(WEBC_KHAKI, WEBC_PERU, WEBC_SIENNA);
+    GUIObjectsSetFontByName(<span style='color:#bf0303;'>&quot;tmgrx16b.fnt&quot;</span>);
+    GUIDialogsSetColors(WEBC_BLACK, WEBC_ORANGE, WEBC_MAROON,
+                        WEBC_ANTIQUEWHITE);
+    GUICDialogsSetColors(WEBC_TAN, WEBC_BLACK);
+    GUIDialogsSetTitleFontByName(<span style='color:#bf0303;'>&quot;ncen40bi.fnt&quot;</span>);
+    GUICDialogsSetFontByName(<span style='color:#bf0303;'>&quot;tmgrx18b.fnt&quot;</span>);
+
+    globctx = GUIGetGlobalContext();
+    GrSetContext(globctx);
+
+    <b>if</b> (GrNumColors() &gt; <span style='color:#b08000;'>256</span> &amp;&amp; GrJpegSupport()) {
+        GrLoadContextFromJpeg(NULL, JPGIMGBG, <span style='color:#b08000;'>1</span>);
+    } <b>else</b> {
+        GrFilledBox(<span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>, GrMaxX(), GrMaxY(), WEBC_GOLDENROD);
+    }
+    GUIGlobalBltRectToScreen(<span style='color:#b08000;'>0</span>, <span style='color:#b08000;'>0</span>, GrScreenX()-<span style='color:#b08000;'>1</span>, GrScreenY()-<span style='color:#b08000;'>1</span>);
+
+    GUICDialogInfo(<span style='color:#bf0303;'>&quot;Hello GrGUI&quot;</span>, (<span style='color:#0057ae;'>void</span> **)abouttext, <span style='color:#b08000;'>4</span>, <span style='color:#bf0303;'>&quot;Okey&quot;</span>);
+
+    GUIEnd();
+    GrSetMode(GR_default_text);
+
+    <b>return</b> <span style='color:#b08000;'>0</span>;
+}
+</pre>
+
+<div>
+<img align="right" src="img/ex11.png">
+<p>Until now sometimes we have left the default black and whiite colors, sometime we
+have used GrGUI functions to set the default colors of some elements. In all cases
+we have left the default font.
+<p>In this last example we return to our first hello
+GrGUI example but changing default colors and fonts.
+We draw a background image too and activate the double buffer (second parameter
+of "GUIInit" function).
+<p>While we use the GUI functions to do the drawing there are
+no difference, but in other case we have to use special code. You can notice that
+to draw the image background instead doing it in the Screen context we use the
+"GUIGetGlobalContext" to get the memory context GrGUI is using to draw, and after
+putting our image in, we bitblt to the real Screen using
+"GUIGlobalBltRectToScreen".
+<p>So it is different to code with or without double buffer.
+The good news is that "GUIGetGlobalContext" returns the Screen context if GrGUI
+isn't using double buffer and "GUIGlobalBltRectToScreen" doesn't do anything in that
+case. So we can code as the double buffer is ever set and it works ok without double
+buffer.
+<br clear="right">
+</div>
+
+<hr>
+<h2><a name="End">More information</a></h2>
+<p>I think the eleven examples covers most of the GrGUI functionality, but 
+GrGUI is a small GUI, you can use the "grgui.h" main include file as a
+reference, or even read the source code if nedeed.
+<p>A big example is the "demintl2.c" program, it use is mainly to test the 
+international features of MGRX, but it makes extensive use of GrGUI too.
+<p>Enjoy.
+
+</body>
+</html>
+

@@ -12,6 +12,10 @@ INCDIR= -I. -I./include -I../include
 CCOPT += -DLFB_BY_NEAR_POINTER
 ADDON_LIBS =
 
+ifeq ($(NEED_LIBRT),y)
+  ADDON_LIBS += -lrt
+endif
+
 ifdef MGRX_DEFAULT_FONT_PATH
 CCOPT += -DMGRX_DEFAULT_FONT_PATH=\"$(MGRX_DEFAULT_FONT_PATH)\"
 endif
@@ -72,6 +76,10 @@ O=      $(STD_O)                \
 	input/grev_lnx.o        \
 	misc/lnxmisc.o          \
 	vdrivers/vd_lnxfb.o
+
+ifeq ($(INCLUDE_GRGUI),y)
+O+=	$(GRGUI_1)
+endif
 
 LO = $(subst $(OX),.lo,$(O))
 
@@ -142,6 +150,9 @@ endif
 	install -m 0644 ../include/mgrx.h $(INSTALLDIR)/include
 	install -m 0644 ../include/mgrxkeys.h $(INSTALLDIR)/include
 	install -m 0644 ../include/mgrxcolr.h $(INSTALLDIR)/include
+ifeq ($(INCLUDE_GRGUI),y)
+	install -m 0644 ../include/grgui.h $(INSTALLDIR)/include
+endif
 
 uninstall:
 	rm -f $(INSTALLDIR)/$(INSLIBSUBDIR)/$(notdir $(MGRXST))
@@ -153,6 +164,9 @@ endif
 	rm -f $(INSTALLDIR)/include/mgrx.h
 	rm -f $(INSTALLDIR)/include/mgrxkeys.h
 	rm -f $(INSTALLDIR)/include/mgrxcolr.h
+ifeq ($(INCLUDE_GRGUI),y)
+	rm -f $(INSTALLDIR)/include/grgui.h
+endif
 
 setsuid: $(UTILPS)
 ifeq ($(SET_SUIDROOT),y)

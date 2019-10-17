@@ -30,10 +30,10 @@ TESTFUNC(life)
 {
     int  W = GrSizeX();
     int  H = GrSizeY();
-    char **map[2],**old,**cur;
+    char **map[3],**old2,**old,**cur,**aux;
     int  *xp,*xn,*yp,*yn;
     int  which,x,y,gen;
-    GrColor c[2];
+    GrColor c[2], c2[2];
     long thresh;
     GrEvent ev;
     GrContext *grc;
@@ -45,7 +45,7 @@ TESTFUNC(life)
         return;
     }
     
-    for(which = 0; which < 2; which++) {
+    for(which = 0; which < 3; which++) {
         cur = malloc(H * sizeof(char *));
         if(!cur) return;
         map[which] = cur;
@@ -69,9 +69,13 @@ TESTFUNC(life)
     }
     c[0] = GrBlack();
     c[1] = GrWhite();
-    which = 0;
-    old = map[which];
-    cur = map[1 - which];
+    //c2[0] = GrAllocColor2(0x555555);
+    c2[0] = GrAllocColor2(0xAA0000);
+    c2[1] = GrAllocColor2(0xFFFF55);
+
+    old2 = map[0];
+    old = map[1];
+    cur = map[2];
     SRND((int)time(NULL));
 
     GrMouseEraseCursor();
@@ -80,7 +84,7 @@ TESTFUNC(life)
         for(x = 0; x < W; x++) {
             int ii = RND() % 53;
             while(--ii >= 0) RND();
-            old[y][x] = (((RND() % 131) > 107) ? 1 : 0);
+            old2[y][x] = old[y][x] = (((RND() % 131) > 107) ? 1 : 0);
             GrPlotNC(x,y,c[(int)old[y][x]]);
         }
     }
@@ -121,16 +125,22 @@ TESTFUNC(life)
         for(y = 0; y < H; y++) {
             char *curr = cur[y];
             char *oldr = old[y];
+            char *oldr2 = old2[y];
             for(x = 0; x < W; x++) {
-                if(curr[x] != oldr[x]) GrPlotNC(x,y,c[(int)curr[x]]);
+                if(curr[x] != oldr[x])
+                    GrPlotNC(x,y,c2[(int)curr[x]]);
+                else if(oldr2[x] != oldr[x])
+                    GrPlotNC(x,y,c[(int)oldr[x]]);
             }
         }
         GrSetContext( NULL );
         GrBitBlt(GrScreenContext(),0,0,grc,0,0,grc->gc_xmax,grc->gc_ymax,GrWRITE);
         //GrMouseDisplayCursor();
-        which = 1 - which;
-        old = map[which];
-        cur = map[1 - which];
+
+        aux = old2;
+        old2 = old;
+        old = cur;
+        cur = aux;
         
         if (GrEventCheck()) {
             GrEventWait(&ev);

@@ -40,6 +40,10 @@ ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
 
+ifeq ($(NEED_LIBRT),y)
+  ADDON_LIBS += -lrt
+endif
+
 LIBS= $(MGRX) $(ADDON_LIBS) -lm
 
 PROGS=	arctest     \

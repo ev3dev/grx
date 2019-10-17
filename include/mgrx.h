@@ -25,7 +25,7 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0120
+#define MGRX_VERSION_API 0x0130
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
@@ -180,14 +180,13 @@ typedef enum _GR_frameModes {
         GR_frameRAM24,              /* 16M color */
         GR_frameRAM32L,             /* 16M color padded #1 */
         GR_frameRAM32H,             /* 16M color padded #2 */
-        GR_frameRAM3x8,             /* 16M color planar (image mode) */
         /* ==== markers for scanning modes ==== */
         GR_firstTextFrameMode     = GR_frameText,
         GR_lastTextFrameMode      = GR_frameText,
         GR_firstGraphicsFrameMode = GR_frameHERC1,
         GR_lastGraphicsFrameMode  = GR_frameLNXFB_32H,
         GR_firstRAMframeMode      = GR_frameRAM1,
-        GR_lastRAMframeMode       = GR_frameRAM3x8
+        GR_lastRAMframeMode       = GR_frameRAM32H
 } GrFrameMode;
 
 /*
@@ -340,6 +339,7 @@ GrVideoAdapter GrAdapterType(void);
 GrFrameMode    GrCurrentFrameMode(void);
 GrFrameMode    GrScreenFrameMode(void);
 GrFrameMode    GrCoreFrameMode(void);
+char *GrFrameDriverName(GrFrameMode m);
 
 const GrVideoDriver *GrCurrentVideoDriver(void);
 const GrVideoMode   *GrCurrentVideoMode(void);
@@ -836,8 +836,7 @@ GrColor GrPixelCNC(GrContext *c,int x,int y);
 #define GR_UCS2_TEXT            7   /* 2 bpc restricted Unicode, only BMP range */
 
 /*
- * OR this to the foreground color value for underlined text when
- * using GR_BYTE_TEXT or GR_WORD_TEXT modes.
+ * OR this to the foreground color value for underlined text
  */
 #define GR_UNDERLINE_TEXT       (GrXOR << 4)
 
@@ -1426,6 +1425,7 @@ int GrGetKbSysEncoding(void);
 
 char *GrStrEncoding(int nenc);
 int GrFindEncoding(char *strenc);
+
 /*
  * These functions are global, no only kb related, keys are recoded to user encoding
  * and character type user strings can be deduced from user encoding
@@ -1435,9 +1435,13 @@ int GrSetUserEncoding(int enc);
 char GrGetChrtypeForUserEncoding(void);
 
 /*
- * utf-8 utility functions
+ * utf-8 and recode utility functions
  */
 int GrStrLen(const void *text, int chrtype);
+unsigned short GrCharRecodeToUCS2(long chr,int chrtype);
+long GrCharRecodeFromUCS2(long chr,int chrtype);
+unsigned short *GrTextRecodeToUCS2(const void *text,int length,int chrtype);
+
 int GrUTF8StrLen(unsigned char *s);
 long GrNextUTF8Char(unsigned char *s, int *nb);
 long GrUCS2ToUTF8(unsigned short ch);

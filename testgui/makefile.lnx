@@ -1,0 +1,95 @@
+#
+# MGRX test programs makefile for LINUX/console. Uses GNU make.
+#
+.PHONY : clean setsuid
+
+GRXVLNX=y
+
+include  ../makedefs.grx
+
+INCDIR=  -I../include
+
+CCOPT +=
+
+# Enable this line for static linked test progs (default)
+MGRX = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
+# or this if you've already installed the shared libs
+#MGRX = -L../lib/$(GRX_LIB_SUBDIR) -lmgrx
+
+ifeq ($(SET_SUIDROOT),y)
+EXECBITS = 4755
+else
+EXECBITS = 0755
+endif
+
+ADDON_LIBS =
+
+ifeq ($(HAVE_LIBTIFF),y)
+  ADDON_LIBS += -ltiff
+endif
+
+ifeq ($(HAVE_LIBJPEG),y)
+  ADDON_LIBS += -ljpeg
+endif
+
+ifeq ($(HAVE_LIBPNG),y)
+  ADDON_LIBS += -lpng
+endif
+
+ifeq ($(NEED_ZLIB),y)
+  ADDON_LIBS += -lz
+endif
+
+ifeq ($(NEED_LIBRT),y)
+  ADDON_LIBS += -lrt
+endif
+
+LIBS= $(MGRX) $(ADDON_LIBS) -lm
+
+PROGS=  grgui01    \
+	grgui02    \
+	grgui03    \
+	grgui04    \
+	grgui05    \
+	grgui06    \
+	grgui07    \
+	grgui08    \
+	grgui09    \
+	grgui10    \
+	grgui11    \
+	demmgrx2   \
+	demintl2
+
+all:    $(PROGS)
+
+$(PROGS): % : %.o $(MGRX)
+
+clean:
+	rm -f *.o $(PROGS) demomgrx demointl
+
+setsuid: $(PROGS) demomgrx demointl
+ifeq ($(SET_SUIDROOT),y)
+	chown root $(PROGS) demomgrx demointl
+	chmod $(EXECBITS) $(PROGS) demomgrx demointl
+else
+	@echo "Nothing to do, SET_SUIDROOT is not set to 'y' in makedefs.grx"
+endif
+
+.o:
+	$(CC) $(LDOPT) -o $* $*.o $(LIBS)
+	chmod $(EXECBITS) $*
+
+.oo:
+	$(CC) $(LDOPT) -o $* $*.o $(LIBS)
+	$(STRIP) $*
+
+.c.o:
+	$(CC) -c $(CCOPT) $(INCDIR) $*.c -o $*.o
+
+.c.s:
+	$(CC) -S $(CCOPT) $(INCDIR) $*.c
+
+depend.new:
+	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:=.c) >depend.new
+
+include depend.gnu

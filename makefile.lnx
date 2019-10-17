@@ -1,14 +1,14 @@
 #
 # MGRX makefile for LINUX/console version
 #
-.PHONY : libs test clean cleanall install uninstall setsuid \
+.PHONY : libs test testgui clean cleanall install uninstall setsuid \
 	 install-bin uninstall-bin install-fonts uninstall-fonts
 
 GRXVLNX=y
 
 include makedefs.grx
 
-all: libs test
+all: libs test testgui
 
 libs:
 	$(MAKE) -C src -f makefile.lnx
@@ -16,7 +16,15 @@ libs:
 test: libs
 	$(MAKE) -C test -f makefile.lnx
 
+testgui: libs
+ifeq ($(INCLUDE_GRGUI),y)
+	$(MAKE) -C testgui -f makefile.lnx
+endif
+
 clean:
+ifeq ($(INCLUDE_GRGUI),y)
+	$(MAKE) -C testgui -f makefile.lnx clean
+endif
 	$(MAKE) -C test -f makefile.lnx clean
 	$(MAKE) -C src -f makefile.lnx clean
 
@@ -44,4 +52,7 @@ uninstall-fonts:
 setsuid:
 	$(MAKE) -C src -f makefile.lnx setsuid
 	$(MAKE) -C test -f makefile.lnx setsuid
+ifeq ($(INCLUDE_GRGUI),y)
+	$(MAKE) -C testgui -f makefile.lnx setsuid
+endif
 

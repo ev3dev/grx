@@ -324,8 +324,6 @@ static void bitblt(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
 	GRX_LEAVE();
 }
 
-#ifndef GRX_USE_RAM3x8
-
 static void bltv2r(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,int h,GrColor op)
 {
 	GRX_ENTER();
@@ -362,15 +360,9 @@ static void bltr2v(GrFrame *dst,int dx,int dy,GrFrame *src,int sx,int sy,int w,i
 	GRX_LEAVE();
 }
 
-#endif /* !GRX_USE_RAM3x8 */
-
 GrFrameDriver _GrFrameDriverSVGA24 = {
     GR_frameSVGA24,             /* frame mode */
-#ifdef GRX_USE_RAM3x8
-    GR_frameRAM3x8,             /* compatible RAM frame mode */
-#else
     GR_frameRAM24,              /* compatible RAM frame mode */
-#endif
     TRUE,                       /* onscreen */
     4,                          /* line width alignment */
     1,                          /* number of planes */
@@ -386,13 +378,8 @@ GrFrameDriver _GrFrameDriverSVGA24 = {
     drawbitmap,
     drawpattern,
     bitblt,
-#ifdef GRX_USE_RAM3x8
-    _GrFrDrvGenericBitBlt,
-    _GrFrDrvGenericBitBlt,
-#else
     bltv2r,
     bltr2v,
-#endif
     _GrFrDrvGenericGetIndexedScanline,
     _GrFrDrvGenericPutScanline
 };

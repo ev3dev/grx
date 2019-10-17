@@ -27,6 +27,18 @@ static int gwidth = 640;
 static int gheight = 480;
 static int gbpp = 24;
 
+#if defined(__MSDOS__) || defined(__WIN32__)
+#define PNGIMGCOMPO "..\\testimg\\pngcompo.png"
+#define PNGIMGOWL   "..\\testimg\\pngowl.png"
+#define PNGIMGRED   "..\\testimg\\pngred.png"
+#define PNGIMGOUT   "..\\testimg\\output.png"
+#else
+#define PNGIMGCOMPO "../testimg/pngcompo.png"
+#define PNGIMGOWL   "../testimg/pngowl.png"
+#define PNGIMGRED   "../testimg/pngred.png"
+#define PNGIMGOUT   "../testimg/output.png"
+#endif
+
 void imagen(char *nf)
 {
     GrContext *grc;
@@ -97,26 +109,26 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    imagen("pngcompo.png");
-    imagen("pngowl.png");
-    imagen("pngred.png");
+    imagen(PNGIMGCOMPO);
+    imagen(PNGIMGOWL);
+    imagen(PNGIMGRED);
 
     GrClearScreen(GrAllocColor(0, 100, 0));
     grc = GrCreateSubContext(191, 121, 191+256-1, 121+240-1, NULL, NULL);
-    GrLoadContextFromPng(grc, "pngred.png", 1);
+    GrLoadContextFromPng(grc, PNGIMGRED, 1);
     GrDestroyContext(grc);
     grc = GrCreateSubContext(181, 241, 181+289-1, 241+80-1, NULL, NULL);
-    GrLoadContextFromPng(grc, "pngcompo.png", 1);
+    GrLoadContextFromPng(grc, PNGIMGCOMPO, 1);
     GrDestroyContext(grc);
 
     GrTextXY(10, 10, "Press any key to save screen", GrBlack(), GrWhite());
     GrEventWaitKeyOrClick(&ev);
-    GrSaveContextToPng(NULL, "output.png");
+    GrSaveContextToPng(NULL, PNGIMGOUT);
 
     GrClearScreen(GrBlack());
     GrTextXY(10, 10, "Press any key to reload screen", GrBlack(), GrWhite());
     GrEventWaitKeyOrClick(&ev);
-    GrLoadContextFromPng(NULL, "output.png", 0);
+    GrLoadContextFromPng(NULL, PNGIMGOUT, 0);
 
     GrTextXY(10, 10, "Press any key to finish       ", GrBlack(), GrWhite());
     GrEventWaitKeyOrClick(&ev);

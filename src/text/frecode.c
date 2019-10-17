@@ -106,10 +106,10 @@ unsigned int GrFontCharRecode(const GrFont *font,long chr,int chrtype)
 
 unsigned short *GrFontTextRecode(const GrFont *font,const void *text,int length,int chrtype)
 {
-  unsigned short *buf;
+  unsigned short *buf, *buf2;
   int i, len2;
 
-  if (length <= 0) return NULL;
+  if (length <= 0) length = 0;
 
   buf = NULL;
   switch (chrtype) {
@@ -118,24 +118,33 @@ unsigned short *GrFontTextRecode(const GrFont *font,const void *text,int length,
   case GR_CP850_TEXT:
   case GR_CP1252_TEXT:
   case GR_ISO_8859_1_TEXT:
-    buf = calloc(length, sizeof(unsigned short));
+    buf = calloc(length+1, sizeof(unsigned short));
     if (buf == NULL) return NULL;
     for (i=0; i<length; i++) buf[i] = ((unsigned char *)text)[i];
     break;
   case GR_WORD_TEXT:
   case GR_UCS2_TEXT:
-    buf = calloc(length, sizeof(unsigned short));
+    buf = calloc(length+1, sizeof(unsigned short));
     if (buf == NULL) return NULL;
     for (i=0; i<length; i++) buf[i] = ((unsigned short *)text)[i];
     break;
   case GR_UTF8_TEXT:
+    if (length == 0) {
+        buf = calloc(1, sizeof(unsigned short));
+        break;
+    }
     buf = GrUTF8StrToUCS2Str((unsigned char *)text, &len2, length);
     if (buf == NULL) return NULL;
     if (len2 < length) { /* better that return NULL we add '?' */
                          /* so programmer can see he has a bug */
-      buf = realloc(buf, length * sizeof(unsigned short));
-      if (buf == NULL) return NULL;
+      buf2 = realloc(buf, (length+1) * sizeof(unsigned short));
+      if (buf2 == NULL) {
+          free(buf);
+          return NULL;
+      }
+      buf = buf2;
       for (i=len2; i<length; i++) buf[i] = '?';
+      buf[length] = 0;
     }
     break;
   }

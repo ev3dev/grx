@@ -30,6 +30,11 @@ include ./stdobjs.mak
 # Keep things a little smaller when building the lib ...
 STD_Oa= $(STD_1) $(STD_2)  $(STD_3)  $(STD_4) $(STD_5) $(STD_6)
 STD_Ob= $(STD_7) $(STD_8) $(STD_9) $(STD_10) $(STD_11) $(STD_12)
+ifeq ($(INCLUDE_GRGUI),y)
+STD_Oc= $(GRGUI_1)
+else
+STD_Oc=
+endif
 
 ADDON_O=
 ifdef DEBUG
@@ -79,7 +84,7 @@ DJ_O=   $(ADDON_O)              \
 	vdrivers/u_vsvirt.o     \
 	vdrivers/vesa.o
 
-ALL_O = $(STD_Oa) $(STD_Ob) $(DJ_O)
+ALL_O = $(STD_Oa) $(STD_Ob) $(STD_Oc) $(DJ_O)
 
 UTILP = ../bin/bin2c.exe        \
 	../bin/fnt2c.exe        \
@@ -93,7 +98,10 @@ clean:
 	if exist fdrivers\*.o del fdrivers\*.o
 	if exist fonts\*.o    del fonts\*.o
 	if exist image\*.o    del image\*.o
+	if exist gcursors\*.o del gcursors\*.o
 	if exist gformats\*.o del gformats\*.o
+	if exist grgui\*.o    del grgui\*.o
+	if exist image\*.o    del image\*.o
 	if exist input\*.o    del input\*.o
 	if exist misc\*.o     del misc\*.o
 	if exist pattern\*.o  del pattern\*.o
@@ -105,9 +113,6 @@ clean:
 	if exist utils\*.o    del utils\*.o
 	if exist vdrivers\*.o del vdrivers\*.o
 	if exist wideline\*.o del wideline\*.o
-	if exist ..\addons\*.o del ..\addons\*.o
-	if exist ..\addons\print\*.o del ..\addons\print\*.o
-	if exist ..\addons\bmp\*.o   del ..\addons\bmp\*.o
 	if exist $(TAG)       del $(TAG)
 
 cleanall: clean
@@ -119,12 +124,18 @@ install: $(MGRXST)
 	copy ..\include\mgrx.h $(DJDIRdos)\include
 	copy ..\include\mgrxkeys.h $(DJDIRdos)\include
 	copy ..\include\mgrxcolr.h $(DJDIRdos)\include
+ifeq ($(INCLUDE_GRGUI),y)
+	copy ..\include\grgui.h $(DJDIRdos)\include
+endif
 
 uninstall:
 	if exist $(DJDIRdos)\lib\$(MGRXln)    del $(DJDIRdos)\lib\$(MGRXln)
 	if exist $(DJDIRdos)\include\mgrx.h   del $(DJDIRdos)\include\mgrx.h
 	if exist $(DJDIRdos)\include\mgrxkeys.h del $(DJDIRdos)\include\mgrxkeys.h
 	if exist $(DJDIRdos)\include\mgrxcolr.h del $(DJDIRdos)\include\mgrxcolr.h
+ifeq ($(INCLUDE_GRGUI),y)
+	if exist $(DJDIRdos)\include\grgui.h   del $(DJDIRdos)\include\grgui.h
+endif
 
 install-bin: $(UTILP)
 	copy ..\bin\bin2c.exe $(DJDIRdos)\bin
@@ -161,6 +172,7 @@ $(MGRXST): $(TAG) $(ALL_O)
 	if exist $(MGRXSTdos) del $(MGRXSTdos)
 	$(AR) -r $(MGRXST) $(STD_Oa)
 	$(AR) -r $(MGRXST) $(STD_Ob)
+	$(AR) -r $(MGRXST) $(STD_Oc)
 	$(AR) -r $(MGRXST) $(DJ_O)
 	$(RANLIB) $(MGRXST)
 

@@ -27,6 +27,20 @@ static int gwidth = 640;
 static int gheight = 480;
 static int gbpp = 24;
 
+#if defined(__MSDOS__) || defined(__WIN32__)
+#define JPGIMG1    "..\\testimg\\jpeg1.jpg"
+#define JPGIMG2    "..\\testimg\\jpeg2.jpg"
+#define JPGIMG3    "..\\testimg\\jpeg3.jpg"
+#define JPGIMGOUT  "..\\testimg\\output.jpg"
+#define JPGIMGOUTG "..\\testimg\\outputg.jpg"
+#else
+#define JPGIMG1    "../testimg/jpeg1.jpg"
+#define JPGIMG2    "../testimg/jpeg2.jpg"
+#define JPGIMG3    "../testimg/jpeg3.jpg"
+#define JPGIMGOUT  "../testimg/output.jpg"
+#define JPGIMGOUTG "../testimg/outputg.jpg"
+#endif
+
 void imagen(char *nf, int scale)
 {
     GrContext *grc;
@@ -91,45 +105,45 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    imagen("jpeg1.jpg", 1);
-    imagen("jpeg1.jpg", 2);
-    imagen("jpeg1.jpg", 4);
-    imagen("jpeg1.jpg", 8);
-    imagen("jpeg2.jpg", 1);
-    imagen("jpeg2.jpg", 2);
-    imagen("jpeg2.jpg", 4);
-    imagen("jpeg2.jpg", 8);
-    imagen("jpeg3.jpg", 1);
-    imagen("jpeg3.jpg", 2);
-    imagen("jpeg3.jpg", 4);
-    imagen("jpeg3.jpg", 8);
+    imagen(JPGIMG1, 1);
+    imagen(JPGIMG1, 2);
+    imagen(JPGIMG1, 4);
+    imagen(JPGIMG1, 8);
+    imagen(JPGIMG2, 1);
+    imagen(JPGIMG2, 2);
+    imagen(JPGIMG2, 4);
+    imagen(JPGIMG2, 8);
+    imagen(JPGIMG3, 1);
+    imagen(JPGIMG3, 2);
+    imagen(JPGIMG3, 4);
+    imagen(JPGIMG3, 8);
 
     GrClearScreen(GrAllocColor(0, 100, 0));
     grc = GrCreateSubContext(10, 40, 10+400-1, 40+300-1, NULL, NULL);
-    GrLoadContextFromJpeg(grc, "jpeg1.jpg", 2);
+    GrLoadContextFromJpeg(grc, JPGIMG1, 2);
     GrDestroyContext(grc);
     grc = GrCreateSubContext(210, 150, 210+400-1, 150+300-1, NULL, NULL);
-    GrLoadContextFromJpeg(grc, "jpeg2.jpg", 2);
+    GrLoadContextFromJpeg(grc, JPGIMG2, 2);
     GrDestroyContext(grc);
 
     GrTextXY(10, 10, "Press any key to save color and gray screen",
              GrBlack(), GrWhite());
     GrEventWaitKeyOrClick(&ev);
 
-    GrSaveContextToJpeg(NULL, "output.jpg", 75);
-    GrSaveContextToGrayJpeg(NULL, "outputg.jpg", 75);
+    GrSaveContextToJpeg(NULL, JPGIMGOUT, 75);
+    GrSaveContextToGrayJpeg(NULL, JPGIMGOUTG, 75);
 
     GrClearScreen(GrBlack());
     GrTextXY(10, 10," Press any key to reload color screen       ",
              GrBlack(), GrWhite());
     GrEventWaitKeyOrClick(&ev);
-    GrLoadContextFromJpeg( NULL, "output.jpg", 1);
+    GrLoadContextFromJpeg( NULL, JPGIMGOUT, 1);
 
     GrTextXY(10, 10, "Press any key to reload gray screen        ",
              GrBlack(), GrWhite());
     GrEventWaitKeyOrClick(&ev);
     GrClearScreen(GrBlack());
-    GrLoadContextFromJpeg(NULL, "outputg.jpg", 1);
+    GrLoadContextFromJpeg(NULL, JPGIMGOUTG, 1);
 
     GrTextXY(10, 10, "Press any key to end                       ",
              GrBlack(), GrWhite());

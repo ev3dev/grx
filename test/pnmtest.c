@@ -21,12 +21,19 @@
 #include "mgrx.h"
 #include "mgrxkeys.h"
 
-#define FIMAGEPPM "pnmtest.ppm"
-#define FIMAGEPBM "pnmtest.pbm"
-
-#define FIMAGEPGM "prueba.pgm"
-#define FIMAGEPBM2 "prueba.pbm"
-#define FSCREEN "output.ppm"
+#if defined(__MSDOS__) || defined(__WIN32__)
+#define FIMAGEPPM "..\\testimg\\pnmtest.ppm"
+#define FIMAGEPBM "..\\testimg\\pnmtest.pbm"
+#define FIMAGEPGM "..\\testimg\\prueba.pgm"
+#define FIMAGEPBM2 "..\\testimg\\prueba.pbm"
+#define FSCREEN "..\\testimg\\output.ppm"
+#else
+#define FIMAGEPPM "../testimg/pnmtest.ppm"
+#define FIMAGEPBM "../testimg/pnmtest.pbm"
+#define FIMAGEPGM "../testimg/prueba.pgm"
+#define FIMAGEPBM2 "../testimg/prueba.pbm"
+#define FSCREEN "../testimg/output.ppm"
+#endif
 
 /* default mode */
 

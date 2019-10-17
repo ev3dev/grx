@@ -15,22 +15,23 @@ with the next text:
 Source code with the above copyright is distributed under the following terms:
 
  (1) The test programs for the graphics library (code in the 'test'
-     sub-directory) is distributed without restrictions. This code
-     is free for use in commercial, shareware or freeware applications.
+     and 'testgui' sub-directories) is distributed without restrictions.
+     This code is free for use in commercial, shareware or freeware
+     applications.
 
- (2) The GRX graphics library is distributed under the terms of the
+ (2) The GRX graphics library itself is distributed under the terms of the
      GNU LGPL (Library General Public License) with the following amendments
      and/or exceptions:
 
      -  Using the DOS versions (DOS only! this exception DOES NOT apply to
-	the Linux version) you are permitted to distribute an application
-	linked with GRX in binary only, provided that the documentation
-	of the program:
+    the other versions) you are permitted to distribute an application
+    linked with GRX in binary only, provided that the documentation
+    of the program:
 
-	   a)	informs the user that GRX is used in the program, AND
+       a) informs the user that GRX is used in the program, AND
 
-	   b)	provides the user with the necessary information about
-		how to obtain GRX. (i.e. ftp site, etc..)
+       b) provides the user with the necessary information about
+          how to obtain GRX. (i.e. ftp site, etc..)
 
  (3) Fonts (in the 'fonts' sub-directory). Most of the fonts included with
      the GRX library were derived from fonts in the MIT X11R4 distribution.

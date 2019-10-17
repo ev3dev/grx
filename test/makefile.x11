@@ -42,6 +42,10 @@ ifeq ($(NEED_ZLIB),y)
   ADDON_LIBS += -lz
 endif
 
+ifeq ($(NEED_LIBRT),y)
+  ADDON_LIBS += -lrt
+endif
+
 LIBS= $(MGRXX) $(ADDON_LIBS) $(X11LIBS) -lm
 
 ifndef   DEBUG

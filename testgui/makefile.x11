@@ -1,0 +1,98 @@
+#
+# MGRX test programs makefile for LINUX/X11. Uses GNU make.
+#
+.PHONY : clean setsuid
+
+GRXVX11=y
+
+include ../makedefs.grx
+
+INCDIR=  -I../include
+
+# Enable this line for static linked test progs (default)
+MGRXX = ../lib/$(GRX_LIB_SUBDIR)/libmgrxX.a
+# or this if you've already installed the shared libs
+#MGRXX = -L../lib/$(GRX_LIB_SUBDIR) -lmgrxX
+
+ifeq ($(SET_XSUIDROOT),y)
+EXECBITS = 4755
+else
+EXECBITS = 0755
+endif
+
+ADDON_LIBS=
+
+ifeq ($(USE_XF86DGA_DRIVER),y)
+  ADDON_LIBS += -lXxf86dga -lXext
+endif
+
+ifeq ($(HAVE_LIBTIFF),y)
+  ADDON_LIBS += -ltiff
+endif
+
+ifeq ($(HAVE_LIBJPEG),y)
+  ADDON_LIBS += -ljpeg
+endif
+
+ifeq ($(HAVE_LIBPNG),y)
+  ADDON_LIBS += -lpng
+endif
+
+ifeq ($(NEED_ZLIB),y)
+  ADDON_LIBS += -lz
+endif
+
+ifeq ($(NEED_LIBRT),y)
+  ADDON_LIBS += -lrt
+endif
+
+LIBS= $(MGRXX) $(ADDON_LIBS) $(X11LIBS) -lm
+
+ifndef   DEBUG
+LDOPT += -s
+endif
+
+PROGS=  xgrgui01    \
+	xgrgui02    \
+	xgrgui03    \
+	xgrgui04    \
+	xgrgui05    \
+	xgrgui06    \
+	xgrgui07    \
+	xgrgui08    \
+	xgrgui09    \
+	xgrgui10    \
+	xgrgui11    \
+	xdemmgrx2   \
+	xdemintl2
+
+all: $(PROGS)
+
+$(PROGS): x%: %.o $(MGRXX)
+	$(CC) $(LDOPT) -o $@ $*.o $(LIBS)
+	chmod $(EXECBITS) $@
+
+$(PROGS:x%=%.o): %.o : %.c
+	$(CC) -c $(CCOPT) -D__XWIN__ $(INCDIR) $*.c -o $*.o
+
+.c.o:
+	$(CC) -c $(CCOPT) -D__XWIN__ $(INCDIR) $*.c
+
+.c.s:
+	$(CC) -S $(CCOPT) $(INCDIR) $*.c
+
+clean:
+	rm -f *.o $(PROGS) xdemomgrx xdemointl
+
+setsuid: $(PROGS) xdemomgrx xdemointl
+ifeq ($(SET_XSUIDROOT),y)
+	chown root $(PROGS) xdemomgrx xdemointl
+	chmod $(EXECBITS) $(PROGS) xdemomgrx xdemointl
+else
+	@echo "Nothing to do, SET_XSUIDROOT is not set to 'y' in makedefs.grx"
+endif
+
+depend.new:
+	$(CC) -MM $(CCOPT) $(INCDIR) $(PROGS:x%=%.c) > depend.new
+
+include depend.gnu

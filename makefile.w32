@@ -1,14 +1,14 @@
 #
 # MGRX makefile for Mingw version
 #
-.PHONY : libs test clean cleanall install uninstall \
+.PHONY : libs test testgui clean cleanall install uninstall \
 	 install-bin uninstall-bin install-fonts uninstall-fonts
 
 GRXVW32=y
 
 include makedefs.grx
 
-all:   libs test
+all:   libs test testgui
 
 libs:
 	$(MAKE) -C src -f makefile.w32
@@ -16,7 +16,15 @@ libs:
 test:   libs
 	$(MAKE) -C test -f makefile.w32
 
+testgui: libs
+ifeq ($(INCLUDE_GRGUI),y)
+	$(MAKE) -C testgui -f makefile.w32
+endif
+
 clean:
+ifeq ($(INCLUDE_GRGUI),y)
+	$(MAKE) -C testgui -f makefile.w32 clean
+endif
 	$(MAKE) -C test -f makefile.w32 clean
 	$(MAKE) -C src -f makefile.w32 clean
 

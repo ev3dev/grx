@@ -27,11 +27,7 @@
 
 GrFrameDriver _GrFrameDriverSVGA32H = {
     GR_frameSVGA32H,            /* frame mode */
-#ifdef GRX_USE_RAM3x8
-    GR_frameRAM3x8,             /* compatible RAM frame mode */
-#else
     GR_frameRAM32H,             /* compatible RAM frame mode */
-#endif
     TRUE,                       /* onscreen */
     4,                          /* line width alignment */
     1,                          /* number of planes */
@@ -47,14 +43,8 @@ GrFrameDriver _GrFrameDriverSVGA32H = {
     drawbitmap,
     drawpattern,
     bitblt,
-#ifdef GRX_USE_RAM3x8
-    _GrFrDrvGenericBitBlt,
-    _GrFrDrvGenericBitBlt,
-#else
     bltv2r,
     bltr2v,
-#endif
     _GrFrDrvGenericGetIndexedScanline,
     _GrFrDrvGenericPutScanline
 };
-
