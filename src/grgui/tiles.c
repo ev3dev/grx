@@ -80,6 +80,14 @@ GUITile * GUITileCreate(int idt, int type, int x, int y, int width, int height)
         wborder = 4;
         t->active = 1;
         capbs = GUI_PCAPB_VSCB | GUI_PCAPB_HSCB;
+    } else if (t->type == GUI_TT_ACTIVEBWVSCB) {
+        wborder = 4;
+        t->active = 1;
+        capbs = GUI_PCAPB_VSCB;
+    } else if (t->type == GUI_TT_ACTIVEBWHSCB) {
+        wborder = 4;
+        t->active = 1;
+        capbs = GUI_PCAPB_HSCB;
     }
 
     t->p = GUIPanelCreate(x, y, width, height, capbs, wborder, 0);
@@ -166,6 +174,15 @@ void GUITilePaint(int idt)
     return;
 }
 
+GUITile * GUITileGetPointer(int idt)
+{
+    int ind;
+
+    if ((ind = FindIdt(idt)) < 0) return NULL;
+    
+    return regtile[ind];
+}
+
 void GUITilesSetColors(GrColor l, GrColor b, GrColor sb)
 {
     _tileslcolor = l;
@@ -180,6 +197,19 @@ int GUITilesProcessEvent(GrEvent *ev)
     if (selectedtile < 0) return 0;
     
     t = regtile[selectedtile];
+    return GUIPanelProcessEvent(t->p, ev);
+}
+
+int GUITilesProcessTileEvent(GrEvent *ev, int idt)
+{
+    GUITile *t;
+    int ind;
+
+    if ((ind = FindIdt(idt)) < 0) return 0;
+    
+    t = regtile[ind];
+    if (!t->active) return 0;
+
     return GUIPanelProcessEvent(t->p, ev);
 }
 
@@ -238,7 +268,7 @@ int _GUITilesHookEvent(GrEvent *ev)
     }
     
     if (ev->type == GREV_MOUSE) {
-        if (ev->p1 == GRMOUSE_LB_PRESSED) {
+        if ((ev->p1 == GRMOUSE_LB_PRESSED) || (ev->p1 == GRMOUSE_RB_PRESSED)){
             for (i=0; i<numtiles; i++) {
                 gc = regtile[i]->p->gc;
                 if (GrCheckCoordInto(ev->p2, ev->p3, gc->xorg, gc->yorg,
@@ -273,7 +303,8 @@ static void PaintBorder(GUITile *t)
         return;
     }
 
-    if (t->type == GUI_TT_ACTIVEBORDER || t->type == GUI_TT_ACTIVEBWSCB) {
+    if (t->type == GUI_TT_ACTIVEBORDER || t->type == GUI_TT_ACTIVEBWSCB ||
+        t->type == GUI_TT_ACTIVEBWVSCB ||t->type == GUI_TT_ACTIVEBWHSCB) {
         c = t->selected ? _tilessbcolor : _tilesbcolor;
         GUIPanelRePaintBorder(t->p, _tileslcolor, c);
         return;

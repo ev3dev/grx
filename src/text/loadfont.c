@@ -97,8 +97,8 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minc,int maxc)
           default:
             if(isspace(chr)) {
                 if(len == 0) continue;
-                name = "";
-                chr  = '\0';
+               // name = "";  // why? 
+               // chr  = '\0';
             }
 #ifdef __MSDOS__
              chr = tolower(chr);

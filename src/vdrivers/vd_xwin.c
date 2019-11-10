@@ -24,6 +24,7 @@
  ** 071201 M.Alvarez, go to fullscreen if w,h == X resolution
  **                   GR_biggest_graphics is honored
  ** 170714 Use BStore only if not generated GREV_EXPOSE events
+ ** 221019 Added SubstructureRedirectMask to go/return from fullsecreen
  **/
 
 #include "libgrx.h"
@@ -136,7 +137,7 @@ static void goto_fullscreen(Display *dsp, Window win)
   xev.xclient.data.l[1] = fullscreen;
   xev.xclient.data.l[2] = 0;
   XSendEvent(dsp, DefaultRootWindow(dsp), False,
-    SubstructureNotifyMask, &xev);
+    SubstructureNotifyMask | SubstructureRedirectMask, &xev);
 }
 
 static void returnfrom_fullscreen(Display *dsp, Window win)
@@ -153,7 +154,7 @@ static void returnfrom_fullscreen(Display *dsp, Window win)
   xev.xclient.data.l[1] = fullscreen;
   xev.xclient.data.l[2] = 0;
   XSendEvent(dsp, DefaultRootWindow(dsp), False,
-    SubstructureNotifyMask, &xev);
+    SubstructureNotifyMask | SubstructureRedirectMask, &xev);
 }
 
 static void setbank(int bk)

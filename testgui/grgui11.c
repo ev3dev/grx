@@ -16,7 +16,8 @@ int main()
         "MGRX is a small C 2D graphics library",
         "and GrGUI a miniGUI on top of MGRX",
         "visit mgrx.fgrim.com for more info"};
-    GrContext *globctx;
+    GrContext *globctx, *imgctx;
+    int imgloaded = 0, imgwidth, imgheight;
 
     GrSetMode(GR_width_height_bpp_graphics, 640, 480, 32);
     GrGenWebColorTable();
@@ -35,8 +36,19 @@ int main()
     GrSetContext(globctx);
 
     if (GrNumColors() > 256 && GrJpegSupport()) {
-        GrLoadContextFromJpeg(NULL, JPGIMGBG, 1);
-    } else {
+        if (GrQueryJpeg(JPGIMGBG, &imgwidth, &imgheight) == 0) {
+            imgctx = GrCreateContext(imgwidth, imgheight, NULL, NULL);
+            if (imgctx != NULL) {
+                if (GrLoadContextFromJpeg(imgctx, JPGIMGBG, 1) == 0) {
+                    GrStretchBlt(NULL, 0, 0, GrMaxX(), GrMaxY(),
+                                imgctx, 0, 0, imgwidth-1, imgheight-1, GrWRITE);
+                    imgloaded = 1;
+                }
+            GrDestroyContext(imgctx);
+            }
+        }
+    }
+    if (!imgloaded) {
         GrFilledBox(0, 0, GrMaxX(), GrMaxY(), WEBC_GOLDENROD);
     }
     GUIGlobalBltRectToScreen(0, 0, GrScreenX()-1, GrScreenY()-1);

@@ -59,7 +59,7 @@ static void swap_wtable(GR_int16u *wtable,unsigned int wtsize)
 }
 #endif
 
-void GrDumpGrxFont(const GrFont *f,char *fileName)
+int GrDumpGrxFont(const GrFont *f,char *fileName)
 {
     FILE *fp;
     GrFontFileHeaderGRX fhdr;
@@ -69,9 +69,8 @@ void GrDumpGrxFont(const GrFont *f,char *fileName)
     GR_int32u bmpsize = 0;
     unsigned int i, w;
     
-    GRX_ENTER();
     fp = fopen(fileName,"w");
-    if (!fp) return;
+    if (!fp) return 0;
           
     isfixed = f->h.proportional ? FALSE : TRUE;
 
@@ -95,7 +94,7 @@ void GrDumpGrxFont(const GrFont *f,char *fileName)
         wtable = malloc(wtsize);
         if (wtable == NULL) {
             fclose(fp);
-            return;
+            return 0;
         }
         for (i=0; i<f->h.numchars; i++) {
             w = f->chrinfo[i].width;
@@ -122,5 +121,5 @@ void GrDumpGrxFont(const GrFont *f,char *fileName)
         free(wtable);
 
     fclose(fp);
-    GRX_LEAVE();
+    return 1;
 }

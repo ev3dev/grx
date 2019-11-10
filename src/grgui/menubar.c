@@ -294,8 +294,8 @@ int _GUIMenuBarHookEvent(GrEvent *ev)
         GrSaveContext(&grcaux);
         show_menubar_item(smb->select,1);
         blt_menubar_item(smb->select);
-        GUIMenuRun(smb->i[smb->select].idm, mbd.startx[smb->select]+1,
-                   mbd.height+1, 0);
+        _GUIMenuRun(smb->i[smb->select].idm, mbd.startx[smb->select]+1,
+                    mbd.height+1, 0);
         show_menubar_item(smb->select,0);
         blt_menubar_item(smb->select);
         GrSetContext(&grcaux);

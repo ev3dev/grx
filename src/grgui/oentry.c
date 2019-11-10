@@ -173,6 +173,34 @@ void *_GUIOEntryGetText(GUIObject *o, int chrtype)
 
 /***************************/
 
+void _GUIOEntrySetText(GUIObject *o, void *newtext)
+{
+    EntryData *data;
+    unsigned short *text2;
+    int i, len;
+    
+    data = (EntryData *)(o->data);
+
+    data->len = 0;
+    data->tcpos = 0;
+    data->xorg = 0;
+    data->blink = 1;
+    data->save = 0;
+    data->time = 0;
+
+    len = GrStrLen(newtext, _objectchrtype);
+    text2 = GrFontTextRecode(_objectfont, newtext, len, _objectchrtype);
+    if (text2 == NULL) return;
+    
+    for (i = 0; i<len; i++) {
+        add_char(o, text2[i], GR_WORD_TEXT);
+    }
+    data->changed = 0;
+    free(text2);
+}
+
+/***************************/
+/*
 void _GUIOEntryPaint(GUIObject *o, int x, int y)
 {
     GrLineOption glo;
@@ -232,6 +260,84 @@ void _GUIOEntryPaint(GUIObject *o, int x, int y)
     }
 
     GrResetClipBox();
+
+    if (!o->selected && data->changed) {
+        GrEventParEnqueue(GREV_FCHANGE, o->id, 0, 0, 0);
+        data->changed = 0;
+    }
+}
+*/
+/***************************/
+
+void _GUIOEntryPaint(GUIObject *o, int x, int y)
+{
+    GrLineOption glo;
+    EntryData *data;
+    int tcx_org, tcx, tcy;
+    int entry_maxx;
+    GrContext *grc, grcaux;
+    
+    data = (EntryData *)(o->data);
+    tcx = 0;
+
+    grc = GrCreateContext(o->width, o->height, NULL, NULL);
+    if (grc == NULL) return;
+    GrSaveContext(&grcaux);
+    GrSetContext(grc);
+
+    _objectentopt.txo_fgcolor = o->fg;
+    GrBox(0, 0, o->width-1, o->height-1, _objectlcolor);
+    GrFilledBox(1, 1, o->width-2, o->height-2, o->bg);
+    entry_maxx = o->width - 7;
+
+    if (o->selected) {
+        glo.lno_color = o->fg;
+        glo.lno_width = 1;
+        glo.lno_pattlen = 2;
+        glo.lno_dashpat = (unsigned char *)"\2\1";
+        GrCustomBox(2, 2, o->width-3, o->height-3, &glo);
+        if (data->tcpos == 0)
+            tcx_org = 0;
+        else if (data->tcpos >= data->len)
+            tcx_org = data->x[data->tcpos-1] + data->w[data->tcpos-1];
+        else
+            tcx_org = data->x[data->tcpos];
+        tcx = tcx_org - data->xorg;
+        while (tcx < 0) {
+            data->xorg -= data->xbits;
+            tcx = tcx_org - data->xorg;
+        }
+        while (tcx > entry_maxx) {
+            data->xorg += data->xbits;
+            tcx = tcx_org - data->xorg;
+        }
+        //printf("tcpos %d  len %d  xorg %d\n", data->tcpos, data->len, data->xorg);
+    }
+
+    GrSetClipBox(3, 1, o->width-4, o->height-2);
+
+    if (data->len > 0) {
+        GrDrawString(data->c, data->len, 3-data->xorg, o->height/2,
+                     &_objectentopt);
+    }
+
+    if (!data->save) {
+        data->blink = 1;
+        data->time = 0;
+    }
+
+    if (o->selected && data->blink) {
+        tcx += 3;
+        tcy = o->height/2 - data->ybits/2 - 1;
+        GrVLine(tcx, tcy, tcy+data->ybits, o->fg);
+        GrVLine(tcx+1, tcy, tcy+data->ybits, o->fg);
+    }
+
+    GrResetClipBox();
+
+    GrSetContext(&grcaux);
+    GrBitBlt(NULL, x+o->x, y+o->y, grc, 0, 0, o->width-1, o->height-1, GrWRITE);
+    GrDestroyContext(grc);
 
     if (!o->selected && data->changed) {
         GrEventParEnqueue(GREV_FCHANGE, o->id, 0, 0, 0);
@@ -303,6 +409,9 @@ int _GUIOEntryProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev)
                 GrEventParEnqueue(GREV_FCHANGE, o->id, 0, 0, 0);
                 data->changed = 0;
             }
+            return 0;
+        } else if (ev->p1 == '\t') { // we don't consume tabs
+            return 0;
         } else if (ev->p1 == '\b') {
             delete_char(o);
         } else if (ev->p1 == 0x7f) {

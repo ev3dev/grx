@@ -745,6 +745,7 @@ void GrFloodSpill(int x1, int y1, int x2, int y2, GrColor old_c, GrColor new_c);
 void GrFloodSpill2(int x1, int y1, int x2, int y2, GrColor old_c1, GrColor new_c1, GrColor old_c2, GrColor new_c2);
 void GrFloodSpillC(GrContext *ctx, int x1, int y1, int x2, int y2, GrColor old_c, GrColor new_c);
 void GrFloodSpillC2(GrContext *ctx, int x1, int y1, int x2, int y2, GrColor old_c1, GrColor new_c1, GrColor old_c2, GrColor new_c2);
+void GrStretchBlt(GrContext *dst,int dx1,int dy1,int dx2,int dy2,GrContext *src,int x1,int y1,int x2,int y2,GrColor oper);
 
 GrColor GrPixel(int x,int y);
 GrColor GrPixelC(GrContext *c,int x,int y);
@@ -914,9 +915,9 @@ GrFont *GrLoadConvertedFont(char *name,int cvt,int w,int h,int minch,int maxch);
 GrFont *GrBuildConvertedFont(const GrFont *from,int cvt,int w,int h,int minch,int maxch);
 
 void GrUnloadFont(GrFont *font);
-void GrDumpFont(const GrFont *font,char *CsymbolName,char *fileName);
-void GrDumpFnaFont(const GrFont *font,char *fileName);
-void GrDumpGrxFont(const GrFont *font,char *fileName);
+int GrDumpFont(const GrFont *font,char *CsymbolName,char *fileName);
+int GrDumpFnaFont(const GrFont *font,char *fileName);
+int GrDumpGrxFont(const GrFont *font,char *fileName);
 void GrSetFontPath(char *path_list);
 
 /*

@@ -70,6 +70,7 @@ extern GrColor _menufgsnacolor;
 void _GUIMenuInit(void);
 void _GUIMenuEnd(void);
 void _GUIMenuSetKeyShortCut(int idmenu);
+int _GUIMenuRun(int idmenu, int x, int y, int minwidth);
 
 /**
  ** MENUBAR
@@ -154,6 +155,7 @@ int _GUIObjectProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev);
 void _GUIObjectSetOn(GUIGroup *g, GUIObject *o, int paint);
 void _GUIObjectDestroy(GUIObject *o);
 void *_GUIObjectGetText(GUIObject *o, int chrtype);
+void _GUIObjectSetText(GUIObject *o, void *newtext);
 
 void _GUIOLabelPaint(GUIObject *o, int x, int y);
 void _GUIOTextDestroy(GUIObject *o);
@@ -165,6 +167,7 @@ int _GUIOButtonProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev);
 void _GUIOButtonSetOn(GUIGroup *g, GUIObject *o, int paint);
 void _GUIOEntryDestroy(GUIObject *o);
 void *_GUIOEntryGetText(GUIObject *o, int chrtype);
+void _GUIOEntrySetText(GUIObject *o, void *newtext);
 void _GUIOEntryPaint(GUIObject *o, int x, int y);
 int _GUIOEntryProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev);
 void _GUIOListDestroy(GUIObject *o);

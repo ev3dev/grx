@@ -209,7 +209,9 @@ void GUIPanelDestroy(GUIPanel *p);
 #define GUI_TT_BORDERLESS     1
 #define GUI_TT_STATICBORDER   2
 #define GUI_TT_ACTIVEBORDER   3
-#define GUI_TT_ACTIVEBWSCB    4
+#define GUI_TT_ACTIVEBWSCB    4  // active border with both scrollbars
+#define GUI_TT_ACTIVEBWVSCB   5  // active border with vertical scrollbar
+#define GUI_TT_ACTIVEBWHSCB   6  // active border with horizontal scrollbar
 
 typedef struct {
     int idt;                 // tile id
@@ -220,13 +222,15 @@ typedef struct {
 } GUITile;
 
 GUITile * GUITileCreate(int idt, int type, int x, int y, int width, int height);
+void GUITileDestroy(GUITile *t);
 int GUITileRegister(GUITile *t);
 GUITile * GUITileUnRegister(int idt);
-void GUITileDestroy(GUITile *t);
 void GUITilePaint(int idt);
+GUITile * GUITileGetPointer(int idt);
 
 void GUITilesSetColors(GrColor l, GrColor b, GrColor sb);
 int GUITilesProcessEvent(GrEvent *ev);
+int GUITilesProcessTileEvent(GrEvent *ev, int idt);
 void GUITilesDestroyAll(void);
 
 /**
@@ -339,6 +343,7 @@ void GUIGroupSetSelected(GUIGroup *g, int id, int paint);
 void GUIGroupPaint(GUIGroup *g);
 void GUIGroupRePaintObject(GUIGroup *g, int id);
 void *GUIGroupGetText(GUIGroup *g, int id, int chrtype);
+void GUIGroupSetText(GUIGroup *g, int id, void *newtext);
 void GUIGroupSetOn(GUIGroup *g, int id, int paint);
 int GUIGroupGetOn(GUIGroup *g, int id);
 int GUIGroupProcessEvent(GUIGroup *g, GrEvent *ev);

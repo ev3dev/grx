@@ -135,6 +135,18 @@ void *GUIGroupGetText(GUIGroup *g, int id, int chrtype)
 
 /***************************/
 
+void GUIGroupSetText(GUIGroup *g, int id, void *newtext)
+{
+    int ind;
+    
+    ind = find_id(g, id);
+    if (ind < 0) return;
+    
+    _GUIObjectSetText(&(g->o[ind]), newtext);
+}
+
+/***************************/
+
 void GUIGroupSetOn(GUIGroup *g, int id, int paint)
 {
     int ind;

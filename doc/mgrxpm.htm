@@ -8,12 +8,12 @@
 
 <center>
 <h1><font color="#555555">M</font><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>1.3.0</small></h1>
+<small>1.3.1</small></h1>
 <h1>a C graphics library for DOS, Linux console &amp; X11 and Win32</h1>
 <h2>Programmer's Manual</h2>
 <p>Based on the original GRX manual written by: Csaba Biegl on August 10, 1992
 <p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on August 1, 2005
-<p>Last update: October 15, 2019
+<p>Last update: November 9, 2019
 </center>
 
 <hr>
@@ -1574,27 +1574,28 @@ arguments.
 
 <p>&nbsp;&nbsp;The function:
 <pre>
-void GrDumpGrxFont(const GrFont *f, char *fileName);
+int GrDumpGrxFont(const GrFont *f, char *fileName);
 </pre>
-<p>writes a font to a file int the <b>MGRX</b> own format.
+<p>writes a font to a file int the <b>MGRX</b> own format. It returns 0
+if error or 1 if succes.
 
 <p>&nbsp;&nbsp;The function:
 <pre>
-void GrDumpFnaFont(const GrFont *f, char *fileName);
+int GrDumpFnaFont(const GrFont *f, char *fileName);
 </pre>
 <p>writes a font to an ascii font file, so it can be quickly edited with a
 text editor. For a description of the ascii font format, see the
-<b>doc/fna.txt</b> file.
+<b>doc/fna.txt</b> file.  It returns 0 if error or 1 if succes.
 
 <p>&nbsp;&nbsp;The function:
 <pre>
-void GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName);
+int GrDumpFont(const GrFont *f,char *CsymbolName,char *fileName);
 </pre>
 <p>writes a font to a C source code file, so it can be compiled and linked
 with a user program. <code>GrDumpFont</code> would not normally be used in
 a released program because its purpose is to produce source code. When the
 source code is compiled and linked into a program distributing the font
-file with the program in not necessary, avoiding the possibility of the
+file with the program is not necessary, avoiding the possibility of the
 font file being deleted or corrupted.
 
 <p>&nbsp;&nbsp;You can use the premade <b>src/utilprog/fnt2c.c</b> program

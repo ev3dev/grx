@@ -236,3 +236,24 @@ void *_GUIObjectGetText(GUIObject *o, int chrtype)
     
     return NULL;
 }
+
+/***************************/
+
+void _GUIObjectSetText(GUIObject *o, void *newtext)
+{
+    switch (o->type) {
+        case GUIOBJTYPE_LABEL:
+            break;
+        case GUIOBJTYPE_TEXT:
+            break;
+        case GUIOBJTYPE_LIGHT:
+            break;
+        case GUIOBJTYPE_BUTTON:
+            break;
+        case GUIOBJTYPE_ENTRY:
+            _GUIOEntrySetText(o, newtext);
+            break;
+        case GUIOBJTYPE_LIST:
+            break;
+    }
+}

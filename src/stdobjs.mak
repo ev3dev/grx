@@ -24,7 +24,8 @@ STD_1 = $(OP)draw/bitblt$(OX)       \
 	$(OP)draw/pixelc$(OX)       \
 	$(OP)draw/plot$(OX)         \
 	$(OP)draw/putscl$(OX)       \
-	$(OP)draw/flodspil$(OX)
+	$(OP)draw/flodspil$(OX)     \
+	$(OP)draw/strchblt$(OX)
 
 STD_2 = $(OP)fdrivers/dotab8$(OX)   \
 	$(OP)fdrivers/ftable$(OX)   \

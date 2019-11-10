@@ -266,6 +266,17 @@ int GUIMenuGetEnable(int idmenu,int type, int id)
 }
 
 int GUIMenuRun(int idmenu, int x, int y, int minwidth)
+{
+    int ret;
+
+    _GUISuspendHooks();
+    ret = _GUIMenuRun(idmenu, x, y, minwidth);
+    _GUIRestartHooks();
+
+    return ret;
+}
+
+int _GUIMenuRun(int idmenu, int x, int y, int minwidth)
 /* returns -1=error, 0=continue, 1=operation enqueued, 2=cancel*/
 {
     GUIMenu *m;
@@ -303,8 +314,8 @@ int GUIMenuRun(int idmenu, int x, int y, int minwidth)
         if (r < 0) break;
         if (r == 1) {
             if (m->i[m->select].type == GUI_MI_MENU) {
-                res = GUIMenuRun(m->i[m->select].id, x+30,
-                                 y+md.lineheight*(m->select+1)+2, md.width);
+                res = _GUIMenuRun(m->i[m->select].id, x+30,
+                                  y+md.lineheight*(m->select+1)+2, md.width);
                 GrSetContext(gctx->c);
             }
             else if (m->i[m->select].type == GUI_MI_OPER) {
@@ -489,6 +500,12 @@ static int proccess_menu_event(GUIMenu *m, GUIMenuDims *md,
                     if (!GUIContextTransMouseEvIfInCtx(gctx, ev)) return 0;
                     pos = ev->p3 / md->lineheight;
                     if ((pos == i) && (m->i[i].enabled)) return 1;
+                    break;
+                case GRMOUSE_RB_PRESSED :
+                    if (!GUIContextTransMouseEvIfInCtx(gctx, ev)) {
+                        GrEventEnqueueFirst(&orgev);
+                        return -1;
+                    }
                     break;
                 case GRMOUSE_B4_RELEASED :
                     GrEventParEnqueue(GREV_KEY, GrKey_Up, GRKEY_KEYCODE, 0, 0);
