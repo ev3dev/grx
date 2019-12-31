@@ -274,6 +274,8 @@ pkg_check_modules (GRX_PUBLIC_DEPS REQUIRED ${PUBLIC_MODULES})
 set (PRIVATE_MODULES gmodule-2.0 libpng freetype2 fontconfig)
 pkg_check_modules (GRX_PRIVATE_DEPS REQUIRED ${PRIVATE_MODULES})
 
+string (REPLACE ";" " " link_flags "${GRX_PUBLIC_DEPS_LDFLAGS} ${GRX_PRIVATE_DEPS_LDFLAGS}")
+
 
 # declare the libraries
 
@@ -283,6 +285,7 @@ set_target_properties (${LIBRARY_OBJECT_TARGET} PROPERTIES POSITION_INDEPENDENT_
 target_compile_options (${LIBRARY_OBJECT_TARGET} PRIVATE "-Wall" "-Werror")
 target_compile_definitions (${LIBRARY_OBJECT_TARGET} PRIVATE
     "GRX_DEFAULT_PLUGIN_PATH=\"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_PKGPLUGINDIR}\""
+    "GRX_FONTCONFIG_PATH=\"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_PKGDATADIR}/fonts\""
     "LFB_BY_NEAR_POINTER"
 )
 if (GRX_DEBUG)
@@ -311,6 +314,7 @@ set_target_properties (${SHARED_LIBRARY_TARGET} PROPERTIES
     VERSION "${PROJECT_VERSION}"
     SOVERSION "${ABI_VERSION}"
     OUTPUT_NAME ${PACKAGE_NAME}
+    LINK_FLAGS "${link_flags}"
 )
 install (TARGETS ${SHARED_LIBRARY_TARGET} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
@@ -336,6 +340,10 @@ add_custom_target (grx-pkg-config ALL
 )
 install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}.pc
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
+
+
+# fontconfig
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/fonts.conf DESTINATION ${CMAKE_INSTALL_PKGDATADIR}/fonts)
 
 
 # gobject introspection

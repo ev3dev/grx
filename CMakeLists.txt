@@ -1,7 +1,5 @@
-cmake_minimum_required (VERSION 3.0)
-cmake_policy(SET CMP0048 NEW)
-
-project ("grx" VERSION 3.1.1 LANGUAGES C)
+cmake_minimum_required (VERSION 3.10)
+project ("grx" VERSION 3.1.2 LANGUAGES C)
 set (ABI_VERSION 2)
 set (GIR_NAME "Grx")
 set (GIR_VERSION "3.0")
@@ -62,3 +60,10 @@ install (FILES bindings/vala/grx-3.0.vapi
 
 install (FILES include/grx-3.0.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install (DIRECTORY include/grx DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+# exports for locally including this proejct in another cmake project
+
+configure_file (${PACKAGE_NAME}Config.cmake.in ${PACKAGE_NAME}Config.cmake @ONLY)
+export (TARGETS ${SHARED_LIBRARY_TARGET} ${STATIC_LIBRARY_TARGET}
+    APPEND FILE ${PACKAGE_NAME}Config.cmake)
+export (PACKAGE ${PACKAGE_NAME})

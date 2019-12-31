@@ -4,6 +4,8 @@ find_package (Valac REQUIRED)
 
 pkg_check_modules (EXAMPLE_DEPS REQUIRED glib-2.0 gio-2.0 gobject-2.0)
 
+string (REPLACE ";" " " link_flags "${EXAMPLE_DEPS_LDFLAGS}")
+
 macro (add_demo name)
     # optionally include demo.vala
     if ("${ARGV1}" STREQUAL "SIMPLE")
@@ -32,6 +34,7 @@ macro (add_demo name)
 
     add_executable (vala-${name} $<TARGET_PROPERTY:vala-${name}-vala,C_FILES>)
     set_property (TARGET vala-${name} PROPERTY OUTPUT_NAME ${name})
+    set_property (TARGET vala-${name} PROPERTY LINK_FLAGS "${link_flags}")
     target_compile_options (vala-${name} PRIVATE "-w")
     target_include_directories (vala-${name} PRIVATE
         ${CMAKE_SOURCE_DIR}/include

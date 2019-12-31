@@ -47,7 +47,6 @@ docker run \
 
 docker exec --tty ${container_name} cmake /src \
     -DCMAKE_BUILD_TYPE=Debug \
-    -DCMAKE_TOOLCHAIN_FILE=/home/compiler/toolchain.cmake \
     -DGRX_PLUGIN_GTK3=No \
     -DGRX_ENABLE_DOC=No
 
