@@ -1,3 +1,10 @@
+grx (3.1.2~bionic1) bionic; urgency=medium
+
+  * vapi: fix bindings for reference counted types
+  * Add a fontconfig configuration file
+
+ -- David Lechner <david@lechnology.com>  Tue, 31 Dec 2019 10:45:36 -0600
+
 grx (3.1.1~bionic2) bionic; urgency=medium
 
   * dev package depend on strict binary version of gir
