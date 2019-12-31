@@ -1,9 +1,9 @@
-grx (3.1.2~bionic1) bionic; urgency=medium
+grx (3.1.2~bionic2) bionic; urgency=medium
 
   * vapi: fix bindings for reference counted types
   * Add a fontconfig configuration file
 
- -- David Lechner <david@lechnology.com>  Tue, 31 Dec 2019 10:45:36 -0600
+ -- David Lechner <david@lechnology.com>  Tue, 31 Dec 2019 11:21:46 -0600
 
 grx (3.1.1~bionic2) bionic; urgency=medium
 
