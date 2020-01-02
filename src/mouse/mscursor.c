@@ -373,12 +373,15 @@ void _GrInitMouseCursor(void)
         MOUINFO->docheck   = FALSE;
         MOUINFO->block     = block;
         MOUINFO->unblock   = unblock;
-        MOUINFO->device_manager = g_object_ref(grx_get_device_manager());
         MOUINFO->pointer_device_count = 0;
-        MOUINFO->device_added_handler = g_signal_connect(
-            G_OBJECT(MOUINFO->device_manager), "device-added",
-            (GCallback)handle_device_added, NULL);
-        MOUINFO->device_removed_handler = g_signal_connect(
-            G_OBJECT(MOUINFO->device_manager), "device-removed",
-            (GCallback)handle_device_removed, NULL);
+        MOUINFO->device_manager = grx_get_device_manager();
+        if (MOUINFO->device_manager) {
+            g_object_ref(MOUINFO->device_manager);
+            MOUINFO->device_added_handler = g_signal_connect(
+                G_OBJECT(MOUINFO->device_manager), "device-added",
+                (GCallback)handle_device_added, NULL);
+            MOUINFO->device_removed_handler = g_signal_connect(
+                G_OBJECT(MOUINFO->device_manager), "device-removed",
+                (GCallback)handle_device_removed, NULL);
+        }
 }
