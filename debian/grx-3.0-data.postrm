@@ -1,0 +1,12 @@
+#! /bin/sh
+
+set -e
+
+case "$1" in
+	purge)
+	    rm -f /var/log/grx-3.0-fontconfig.log
+	    rm -rf /var/cache/grx-3.0/fontconfig
+	    ;;
+esac
+
+#DEBHELPER#
