@@ -87,7 +87,7 @@
 /* char should always be 8bit and short 16bit ... */
 #define GR_int8  char
 #define GR_int16 short
-#if defined(__alpha__) || (defined(_MIPS_SZLONG) && _MIPS_SZLONG == 64)        || defined(__x86_64__)
+#if defined(__alpha__) || (defined(_MIPS_SZLONG) && _MIPS_SZLONG == 64) || defined(__x86_64__) || defined(__aarch64__)
 #define GR_int32 int
 #define GR_int64 long
 #define GR_PtrInt long
