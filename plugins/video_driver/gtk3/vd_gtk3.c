@@ -41,6 +41,10 @@ static gboolean detect(void)
     if (!gtk_init_ok) {
         int argc = 0;
 
+        // gtk_init() calls FcInit(), so we need to be sure to use the
+        // preferred FONTCONFIG_PATH now so it doesn't interfere later
+        g_setenv ("FONTCONFIG_PATH", GRX_FONTCONFIG_PATH, FALSE);
+
         gtk_init_ok = gtk_init_check (&argc, NULL);
 
         if (!gtk_init_ok) {

@@ -15,6 +15,8 @@ string (REPLACE ";" " " link_flags "${GTK3_DEPS_LDFLAGS}")
 
 add_library (plugin-gtk3 MODULE ${GTK3_SOURCE_FILES})
 target_compile_options (plugin-gtk3 PRIVATE "-Wall" "-Werror")
+target_compile_definitions (plugin-gtk3 PRIVATE
+    "GRX_FONTCONFIG_PATH=\"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_PKGDATADIR}/fonts\"")
 target_include_directories (plugin-gtk3
     PUBLIC
         ${CMAKE_SOURCE_DIR}/include
