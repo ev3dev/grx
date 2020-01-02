@@ -1,3 +1,12 @@
+grx (3.1.2~bionic3) bionic; urgency=medium
+
+  * Fix CRITICAL when using memory video driver plugin
+  * Fix build on ARM64
+  * Set FONTCONFIG_PATH in GTK video driver
+  * debian: add grx-3.0-data package
+
+ -- David Lechner <david@lechnology.com>  Thu, 02 Jan 2020 14:14:22 -0600
+
 grx (3.1.2~bionic2) bionic; urgency=medium
 
   * vapi: fix bindings for reference counted types
