@@ -200,7 +200,7 @@ int main()
 
 static void setup(void)
 {
-    static char *wintitle = "MGRX+GrGUI 1.3.0, the graphics library";
+    static char *wintitle = "MGRX+GrGUI 1.3.2, the graphics library";
 
     GrSetMode(GR_width_height_bpp_graphics, globalw, globalh, globalbpp);
     GrGenEgaColorTable();
@@ -281,7 +281,7 @@ static void setup_menus(void)
         {GUI_MI_OPER, 1, "&I 1920x1080x24", 'I', NULL, 0, COMMAND_RES_1920x1080x24, 0}, 
         {GUI_MI_OPER, 1, "&J 4000x4000x24", 'J', NULL, 0, COMMAND_RES_4000x4000x24, 0}, 
         {GUI_MI_SEP, 1, "", 0, NULL, 0, 0, 0}, 
-        {GUI_MI_OPER, 1, "E&xit", 'X', "Ctrl+X", GrKey_Control_X, COMMAND_EXIT, 0}};
+        {GUI_MI_OPER, 1, "E&xit", 'X', "Alt+X", GrKey_Alt_X, COMMAND_EXIT, 0}};
 
     static GUIMenu menu1 = {1, 13, 0, itemsm1};
 
@@ -729,7 +729,7 @@ static int process_fchange(GrEvent *ev)
     
     sprintf(aux, "Field changed, p1=%ld, p2=%ld", ev->p1, ev->p2);
     GUITANewLine(textarea1);
-    GUITADrawString(textarea1, aux, 0, GR_UTF8_TEXT);
+    GUITAPutString(textarea1, aux, 0, GR_UTF8_TEXT);
     GUITANewLine(textarea1);
     GUITilePaint(IDT_STATUS);
 
@@ -940,14 +940,14 @@ static void dotest(int n)
     switch (n) {
         case 1:
             GUITANewLine(textarea1);
-            GUITADrawString(textarea1, "Font glyphs:", 0, GR_UTF8_TEXT);
+            GUITAPutString(textarea1, "Font glyphs:", 0, GR_UTF8_TEXT);
             GUITANewLine(textarea1);
             //GUITASetTextColors(textarea1, EGAC_YELLOW, EGAC_DARKGRAY);
             count = 0;
             for (i=texta_font->h.minchar; i<(texta_font->h.minchar +
                 texta_font->h.numchars); i++) {
                 //if ((i-texta_font->h.minchar) % tast.ncscr == 0) GUITANewLine(textarea1);
-                GUITADrawChar(textarea1, i, GR_BYTE_TEXT);
+                GUITAPutChar(textarea1, i, GR_WORD_TEXT);
                 count++;
                 if (count >= 32) {
                     count = 0;
@@ -958,7 +958,7 @@ static void dotest(int n)
             break;
         case 2:
             GUITANewLine(textarea1);
-            GUITADrawString(textarea1, "First 256 user encoding chars:",
+            GUITAPutString(textarea1, "First 256 user encoding chars:",
                             0, GR_UTF8_TEXT);
             GUITANewLine(textarea1);
             //GUITASetTextColors(textarea1, EGAC_LIGHTGREEN, EGAC_DARKGRAY);
@@ -966,10 +966,10 @@ static void dotest(int n)
             for (i=0; i<256; i++) {
                 //if (i % tast.ncscr == 0) GUITANewLine(textarea1);
                 if (GrGetUserEncoding() == GRENC_UTF_8)
-                    GUITADrawChar(textarea1, GrUCS2ToUTF8(i),
+                    GUITAPutChar(textarea1, GrUCS2ToUTF8(i),
                                  GrGetChrtypeForUserEncoding());
                 else
-                  GUITADrawChar(textarea1, i, GrGetChrtypeForUserEncoding());
+                  GUITAPutChar(textarea1, i, GrGetChrtypeForUserEncoding());
                 count++;
                 if (count >= 32) {
                     count = 0;
@@ -980,7 +980,7 @@ static void dotest(int n)
             break;
         case 3:
             GUITANewLine(textarea1);
-            GUITADrawString(textarea1, "Strings with different chrtypes:",
+            GUITAPutString(textarea1, "Strings with different chrtypes:",
                            0, GR_UTF8_TEXT);
             //GUITASetTextColors(textarea1, EGAC_LIGHTCYAN, EGAC_DARKGRAY);
             draw_string_collection();
@@ -1016,26 +1016,25 @@ static void draw_string_collection(void)
       (unsigned char *)"⌡ ⎝ ⎠ ⎣ ⎦ ⎩ ⎭   ←↑→↓↔↕↵⇐⇑⇒⇓⇔⇕";
     
     GUITANewLine(textarea1);
-    GUITADrawString(textarea1, scp437, 0, GR_CP437_TEXT);
+    GUITAPutString(textarea1, scp437, 0, GR_CP437_TEXT);
 
     GUITANewLine(textarea1);
-    GUITADrawString(textarea1, scp850, 0, GR_CP850_TEXT);
+    GUITAPutString(textarea1, scp850, 0, GR_CP850_TEXT);
     
     GUITANewLine(textarea1);
-    GUITADrawString(textarea1, scp1252, 0, GR_CP1252_TEXT);
+    GUITAPutString(textarea1, scp1252, 0, GR_CP1252_TEXT);
 
     GUITANewLine(textarea1);
-    GUITADrawString(textarea1, siso88591, 0, GR_ISO_8859_1_TEXT);
+    GUITAPutString(textarea1, siso88591, 0, GR_ISO_8859_1_TEXT);
     
     GUITANewLine(textarea1);
-    GUITADrawString(textarea1, sutf8, 0, GR_UTF8_TEXT);
+    GUITAPutString(textarea1, sutf8, 0, GR_UTF8_TEXT);
     GUITANewLine(textarea1);
-    GUITADrawString(textarea1, sutf8c1, 0, GR_UTF8_TEXT);
+    GUITAPutString(textarea1, sutf8c1, 0, GR_UTF8_TEXT);
     GUITANewLine(textarea1);
-    GUITADrawString(textarea1, sutf8c2, 0, GR_UTF8_TEXT);
+    GUITAPutString(textarea1, sutf8c2, 0, GR_UTF8_TEXT);
     GUITANewLine(textarea1);
-    GUITADrawString(textarea1, sutf8c3, 0, GR_UTF8_TEXT);
-
+    GUITAPutString(textarea1, sutf8c3, 0, GR_UTF8_TEXT);
 }
 
 /**************************/
@@ -1055,7 +1054,7 @@ static void file_listing(void)
     if (f == NULL) {
         GUITANewLine(textarea1);
         sprintf(aux, "Error opening %s", s);
-        GUITADrawString(textarea1, aux, 0, GR_UTF8_TEXT);
+        GUITAPutString(textarea1, aux, 0, GR_UTF8_TEXT);
         GUITANewLine(textarea1);
         free(s);
         return;
@@ -1063,14 +1062,14 @@ static void file_listing(void)
     
     GUITANewLine(textarea1);
     sprintf(aux, "Listing %s", s);
-    GUITADrawString(textarea1, aux, 0, GR_UTF8_TEXT);
+    GUITAPutString(textarea1, aux, 0, GR_UTF8_TEXT);
     //GUITASetTextColors(textarea1, EGAC_GREEN, EGAC_DARKGRAY);
     GUITANewLine(textarea1);
     
     while (fgets(aux, 250, f) != NULL) {
         l = strlen(aux);
         if (l>0 && aux[l-1]=='\n') aux[l-1] = '\0';
-        GUITADrawString(textarea1, aux, 0, GR_UTF8_TEXT);
+        GUITAPutString(textarea1, aux, 0, GR_UTF8_TEXT);
         GUITANewLine(textarea1);
     }
     
@@ -1086,7 +1085,7 @@ static void print_dlg_result( char *s, int d)
 
     GUITANewLine(textarea1);
     sprintf(aux, "Dialog %s returned %d", s, d);
-    GUITADrawString(textarea1, aux, 0, GR_UTF8_TEXT);
+    GUITAPutString(textarea1, aux, 0, GR_UTF8_TEXT);
     GUITANewLine(textarea1);
 }
     
@@ -1097,11 +1096,11 @@ static void print_test_dlg_result(void)
     int i;
 
     GUITANewLine(textarea1);
-    GUITADrawString(textarea1, "Test dialog returned:", 0, GR_UTF8_TEXT);
+    GUITAPutString(textarea1, "Test dialog returned:", 0, GR_UTF8_TEXT);
     GUITANewLine(textarea1);
     
     for (i=0; i<4; i++) {
-        GUITADrawString(textarea1, buf_dlg_test[i], 0, GR_UTF8_TEXT);
+        GUITAPutString(textarea1, buf_dlg_test[i], 0, GR_UTF8_TEXT);
         GUITANewLine(textarea1);
     }
 }

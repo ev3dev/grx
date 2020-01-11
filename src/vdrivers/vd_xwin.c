@@ -24,7 +24,8 @@
  ** 071201 M.Alvarez, go to fullscreen if w,h == X resolution
  **                   GR_biggest_graphics is honored
  ** 170714 Use BStore only if not generated GREV_EXPOSE events
- ** 221019 Added SubstructureRedirectMask to go/return from fullsecreen
+ ** 191022 Added SubstructureRedirectMask to go/return from fullsecreen
+ ** 191112 Added code to generate GREV_WMEND events
  **/
 
 #include "libgrx.h"
@@ -57,6 +58,8 @@ unsigned int    _XGrMaxHeight;
 int             _XGrBStoreInited = 0;
 int             _XGrFullScreen = 0;
 int             _XGrGenExposeEvents = GR_GEN_EXPOSE_NO;
+int             _XGrGenWMEndEvents = GR_GEN_WMEND_NO;
+Atom            _wmDeleteWindow;
 
 unsigned long   _XGrColorPlanes[8];
 unsigned int    _XGrColorNumPlanes;
@@ -447,6 +450,9 @@ static int init(char *options)
   _XGrPatternGC = XCreateGC(_XGrDisplay, _XGrPattern, 0L, NULL);
   _XGrDefaultGC = DefaultGC(_XGrDisplay, _XGrScreen);
   _XGrGC = XCreateGC (_XGrDisplay, _XGrWindow, 0L, NULL);
+  
+  _wmDeleteWindow = XInternAtom(_XGrDisplay, "WM_DELETE_WINDOW", True);
+  XSetWMProtocols(_XGrDisplay, _XGrWindow, &_wmDeleteWindow, 1);
 
   /* is this required ?? */
   if (_XGrColormap) {
@@ -533,6 +539,11 @@ void _GrXwinEventGenExpose(int when)
     _XGRActDrawable = (Drawable) _XGrBStore;
   else
     _XGRActDrawable = (Drawable) _XGrWindow;
+}
+
+void _GrXwinEventGenWMEnd(int when)
+{
+  _XGrGenWMEndEvents = when;
 }
 
 GrVideoDriver _GrVideoDriverXWIN = {

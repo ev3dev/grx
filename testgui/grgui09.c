@@ -53,7 +53,7 @@ int process_tl1_event(void *data, GrEvent *ev)
                 while (fgets(aux, 250, fin) != NULL) {
                     len = strlen(aux);
                     if (len>0 && aux[len-1]=='\n') aux[len-1] = '\0';
-                    GUITADrawString(ud->ta, aux, 0, GR_UTF8_TEXT);
+                    GUITAPutString(ud->ta, aux, 0, GR_UTF8_TEXT);
                     GUITANewLine(ud->ta);
                 }
                 GUITAShowCursor(ud->ta);

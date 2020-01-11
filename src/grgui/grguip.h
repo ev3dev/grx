@@ -39,6 +39,10 @@ void _GUISuspendHooks(void);
 void _GUIRestartHooks(void);
 int _GUIGetNoHookNow(void);
 
+void _GUISetClipBoard(unsigned short *buf, int len);
+int _GUIGetClipBoard(unsigned short *buf, int maxlen);
+int _GUIGetLenClipBoard(void);
+
 /**
  ** GUI CONTEXTS
  **/

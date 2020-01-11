@@ -261,14 +261,16 @@ int _GUITilesHookEvent(GrEvent *ev)
         } else if (ev->p1 == GrKey_Alt_Right) {
             TileSelectNext(1);
             return 1;
-        } else if (ev->p1 == GrKey_Alt_Tab) {
+        } else if (ev->p1 == GrKey_F8) {
             TileSelectNext(1);
             return 1;
         }
     }
     
     if (ev->type == GREV_MOUSE) {
-        if ((ev->p1 == GRMOUSE_LB_PRESSED) || (ev->p1 == GRMOUSE_RB_PRESSED)){
+        if ((ev->p1 == GRMOUSE_LB_PRESSED) ||
+            (ev->p1 == GRMOUSE_MB_PRESSED) ||
+            (ev->p1 == GRMOUSE_RB_PRESSED)){
             for (i=0; i<numtiles; i++) {
                 gc = regtile[i]->p->gc;
                 if (GrCheckCoordInto(ev->p2, ev->p3, gc->xorg, gc->yorg,

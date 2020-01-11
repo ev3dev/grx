@@ -1,3 +1,35 @@
+2020-01-11 ----------- MGRX 1.3.2 released
+2020-01-10 Added two new font encodings GR_FONTENC_ISO_8859_5 and
+           GR_FONTENC_ISO_8859_7.
+2020-01-06 Updated programmer's guides.
+2020-01-04 testgui demo grgui11.c uses GrStretchBlt.
+2019-11-26 New 32bpp memory framedrivers in src/newfdrv that uses only C
+           standard bit operations and C standard functions. Not used by now,
+           they will be activate in a future release.
+2019-11-23 Added setmark parameter to GUITAMoveCursor and GUITAMoveCursorRel,
+           if =1 clear marked area, =-1 extend marked area, =0 do nothing.
+           Changed names of GUITADrawChar and GUITADrawString to
+           GUITAPutChar and GUITAPutString. They describe best its function.
+2019-11-22 GUIScrollbar new specific events GREV_SCBVERT and GREV_SCBHORZ,
+           with p1 = new lift inivalue. Events are sent when clicking over or
+           under the lift and when dragging the lift.
+           Changed GUITextArea mini editor to respond to the new events.
+           Changed GUITextArea cursor movement behaviour to be similar
+           to other modern editors.
+2019-11-19 Added mark capabilities (with keys and mouse) and (internal)
+           clipboard interaction to the GUITextArea mini editor.
+2019-11-17 First work to add clipboard interaction to GrGUI.
+           In GUIOBJTYPE_ENTRY objects you can mark text with shift+cursor
+           keys or the mouse and reacts to ^C ^X ^V. The clipboard is internal
+           to the program (by now).
+2019-11-13 The xwin and win32 drivers generate GREV_WMEND events when requested.
+           Modified the testgui/demmgrx2.c to request GREV_WMEND events (and
+           handle them).
+2019-11-12 Preparation for the new GREV_WMEND event, generated in windowing
+           systems when user click the close window button and the programmer
+           has equested it. New function:
+             void GrEventGenWMEnd(int when)
+           "when" can be GR_GEN_WMEND_NO (the default) or GR_GEN_WMEND_YES.
 2019-11-10 ----------- MGRX 1.3.1 released
 2019-11-07 For the GrGUI entry object we draw first the object in
            memory, so blinking cursor can be draw faster.

@@ -16,7 +16,7 @@
  **
  ** Contributions by:
  ** 080113 M.Alvarez, intl support
- **
+ ** 191112 Added code to generate GREV_WMEND events
  **/
 
 #include <stdlib.h>
@@ -32,6 +32,7 @@ static int num_evqueue = 0;
 static int kbsysencoding = GRENC_CP437;
 
 static int genexposeevents = GR_GEN_EXPOSE_NO;
+static int genwmendevents = GR_GEN_WMEND_NO;
 
 #define MAX_HOOK_FUNCTIONS 10
 static int (*hook_event[MAX_HOOK_FUNCTIONS]) (GrEvent *);
@@ -329,6 +330,24 @@ void GrEventGenExpose(int when)
     genexposeevents = when;
 #ifdef __XWIN__
     _GrXwinEventGenExpose(when);
+#endif
+}
+
+/**
+ ** GrEventGenWMEnd - Generate or not WMEnd eventes
+ **
+ ** Arguments:
+ **   when: GR_GEN_WMEND_NO or GR_GEN_WMEND_YES
+ **/
+
+void GrEventGenWMEnd(int when)
+{
+    genwmendevents = when;
+#ifdef __XWIN__
+    _GrXwinEventGenWMEnd(when);
+#endif
+#ifdef __WIN32__
+    _GrW32EventGenWMEnd(when);
 #endif
 }
 

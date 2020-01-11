@@ -248,15 +248,24 @@ int _GrRecode_CP1252_UCS2(unsigned char src, long *des);
 int _GrRecode_ISO88591_UCS2(unsigned char src, long *des);
 int _GrRecode_UTF8_UCS2(unsigned char *src, long *des);
 int _GrRecode_mgrx512_UCS2(unsigned short src, long *des);
+int _GrRecode_ISO88595_UCS2(unsigned char src, long *des);
+int _GrRecode_ISO88597_UCS2(unsigned char src, long *des);
 int _GrRecode_UCS2_CP437(long src, unsigned char *des);
 int _GrRecode_UCS2_CP850(long src, unsigned char *des);
 int _GrRecode_UCS2_CP1252(long src, unsigned char *des);
 int _GrRecode_UCS2_ISO88591(long src, unsigned char *des);
 int _GrRecode_UCS2_UTF8(long src, unsigned char *des);
 int _GrRecode_UCS2_mgrx512(long src, long *des);
+int _GrRecode_UCS2_ISO88595(long src, unsigned char *des);
+int _GrRecode_UCS2_ISO88597(long src, unsigned char *des);
 
 #ifdef __XWIN__
 void _GrXwinEventGenExpose(int when);
+void _GrXwinEventGenWMEnd(int when);
+#endif
+
+#ifdef __WIN32__
+void _GrW32EventGenWMEnd(int when);
 #endif
 
 #endif  /* whole file */

@@ -5,7 +5,7 @@
 
 # Specify version of MGRX
 # Currently only used to generate name of shared libraries for linux
-MGRX_VERSION=1.3.0
+MGRX_VERSION=1.3.2
 
 # Specify if you want to include GrGUI in the MGRX lib
 INCLUDE_GRGUI=y

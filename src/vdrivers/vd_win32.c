@@ -86,6 +86,9 @@
  ** Changes by M.Alvarez (malfer@telefonica.net) 16/10/2019
  **   - Solved a bug when changing modes without exiting, we need to
  **     delete the old hDCMem and generate a new one
+ **
+ ** Changes by M.Alvarez (malfer@telefonica.net) 12/11/2019
+ **   - Added code to generate GREV_WMEND events
  **/
 
 #include "libwin32.h"
@@ -106,6 +109,8 @@ int _W32EventQueueSize = 0;
 int _W32EventQueueRead = 0;
 int _W32EventQueueWrite = 0;
 int _W32EventQueueLength = 0;
+
+int _W32GenWMEndEvents = GR_GEN_WMEND_NO;
 
 static HBITMAP hBmpDIB = NULL;
 
@@ -564,6 +569,10 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
         }
 
     case WM_CLOSE:
+        if (_W32GenWMEndEvents != GR_GEN_WMEND_NO) {
+            EnqueueW32Event(uMsg, wParam, lParam, 0);
+            return 0;
+        }
         if (!isMainWaitingTermination && MessageBox(hWnd,
             "This will abort the program\nare you sure?", "Abort",
              MB_APPLMODAL | MB_ICONQUESTION | MB_YESNO ) != IDYES)
@@ -691,3 +700,9 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
+
+void _GrW32EventGenWMEnd(int when)
+{
+  _W32GenWMEndEvents = when;
+}
+

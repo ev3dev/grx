@@ -25,7 +25,7 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0130
+#define MGRX_VERSION_API 0x0132
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
@@ -862,7 +862,9 @@ GrColor GrPixelCNC(GrContext *c,int x,int y);
 #define GR_FONTENC_ISO_8859_1  4     /* standard latin encoding */
 #define GR_FONTENC_UNICODE     5     /* direct UNICODE encoding */
 #define GR_FONTENC_MGRX512     6     /* custom MGRX 512 char encoding */
-#define GR_FONTENC_LASTENC     6     /* last encoding, for checks */
+#define GR_FONTENC_ISO_8859_5  7     /* ASCII + Cyrillic */
+#define GR_FONTENC_ISO_8859_7  8     /* ASCII + Greek */
+#define GR_FONTENC_LASTENC     8     /* last encoding, for checks */
 
 /*
  * font structures
@@ -1360,6 +1362,7 @@ typedef struct {
 #define GREV_MMOVE   3           /* mouse move event, p1=buttons status, p2=x, p3=y */
 #define GREV_PREKEY  4           /* key event before be recoded, internal event, users don't see it */
 #define GREV_EXPOSE  5           /* a window area must be redraw (generated only if user requests it */
+#define GREV_WMEND   6           /* window manager wants ending (generated only if user requests it */
 #define GREV_USER    100         /* user event */
 
 #define GRKEY_KEYCODE     100    /* p1 is a special key, not a char */
@@ -1386,6 +1389,9 @@ typedef struct {
 #define GR_GEN_EXPOSE_NO    0    /* Doesn't gen GREV_EXPOSE (default) */
 #define GR_GEN_EXPOSE_YES   1    /* Gen GREV_EXPOSE */
 
+#define GR_GEN_WMEND_NO     0    /* Doesn't gen GREV_WNEND (default) */
+#define GR_GEN_WMEND_YES    1    /* Gen GREV_WNEND */
+
 #define GRKBS_RIGHTSHIFT    0x01   /* Keybd states: right shift key pressed */
 #define GRKBS_LEFTSHIFT     0x02   /* left shift key pressed */
 #define GRKBS_CTRL          0x04   /* CTRL pressed */
@@ -1409,6 +1415,7 @@ int GrEventEnqueueFirst(GrEvent * ev);
 int GrEventParEnqueueFirst(int type, long p1, long p2, long p3, long p4);
 void GrEventGenMmove(int when);
 void GrEventGenExpose(int when);
+void GrEventGenWMEnd(int when);
 int GrEventAddHook(int (*fn) (GrEvent *));
 int GrEventDeleteHook(int (*fn) (GrEvent *));
 /*

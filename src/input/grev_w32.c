@@ -18,7 +18,7 @@
  ** 080120 M.Alvarez, intl support
  ** 080204 M.Alvarez, generate wheel events
  ** 081117 Richard, fixed bug in GrMouseWarp
- **
+ ** 191112 Added code to generate GREV_WMEND events
  **/
 
 #include <stdlib.h>
@@ -98,6 +98,14 @@ int _GrReadInputs(void)
         LeaveCriticalSection(&_csEventQueue);
 
         switch (evaux.uMsg) {
+        case WM_CLOSE:
+            ev.type = GREV_WMEND;
+            ev.p1 = 0;
+            ev.p2 = 0;
+            ev.p3 = 0;
+            GrEventEnqueue(&ev);
+            nev++;
+            break;
         case WM_CHAR:
             ev.type = GREV_PREKEY;
             ev.kbstat = evaux.kbstat;

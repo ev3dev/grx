@@ -1,7 +1,7 @@
 /**
  ** auxintl.c ---- auxiliary intl routines 
  **
- ** Copyright (C) 2008 Mariano Alvarez Fernandez
+ ** Copyright (C) 2008, 2020 Mariano Alvarez Fernandez
  ** [e-mail: malfer at telefonica.net]
  **
  ** This file is part of the GRX graphics library.
@@ -67,6 +67,10 @@ char *GrStrFontEncoding(int fontencoding)
     return ("CP1252");
   else if (fontencoding == GR_FONTENC_ISO_8859_1)
     return ("ISO_8859_1");
+  else if (fontencoding == GR_FONTENC_ISO_8859_5)
+    return ("ISO_8859_5");
+  else if (fontencoding == GR_FONTENC_ISO_8859_7)
+    return ("ISO_8859_7");
   else if (fontencoding == GR_FONTENC_UNICODE)
     return ("UNICODE");
   else if (fontencoding == GR_FONTENC_MGRX512)

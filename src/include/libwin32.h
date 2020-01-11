@@ -41,14 +41,10 @@ extern HWND hGRXWnd;
 extern HDC hDCMem;
 extern HANDLE windowThread;
 
+extern int _W32GenWMEndEvents;
+
 extern int _GrIsKbdEnabled(void);
 extern int _GrKeyPressed(void);
 extern int _GrKeyStat(void);
-
-/* _keysw32pool used only when GrMouseEventEnable( 0,x ) is set */
-
-#define  _MAXKEYSW32POOL 16
-extern int _nkeysw32pool;
-extern int _keysw32pool[_MAXKEYSW32POOL];
 
 #endif

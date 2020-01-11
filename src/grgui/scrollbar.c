@@ -24,6 +24,8 @@
 GrColor _scbbgcolor;
 GrColor _scbliftcolor;
 
+static void send_event(GUIScrollbar *scb, int first, int pos);
+
 /***************************/
 
 void _GUIScrollbarInit(void)
@@ -150,22 +152,26 @@ int GUIScrollbarProcessEvent(GUIScrollbar *scb, GrEvent *ev)
         if (ev->p1 == GRMOUSE_LB_PRESSED) {
             if (GrCheckCoordInto(x, y, scb->x, scb->y, scb->width, scb->height)) {
                 scb->pressed = 1;
-                scb->lastkeysend = GrKey_NoKey;
                 scb->lasttimesend = ev->time;
                 scb->intv = 500;
                 if (scb->type == GUI_TSB_VERTICAL) {
+                    scb->pressed_pos = y;
                     if (y < scb->lifty)
-                        scb->lastkeysend = GrKey_PageUp;
-                    if (y >= scb->lifty+scb->lifth)
-                        scb->lastkeysend = GrKey_PageDown;
+                        scb->pressedmode = 1;
+                    else if (y >= scb->lifty+scb->lifth)
+                        scb->pressedmode = -1;
+                    else
+                        scb->pressedmode = 0;
                 } else {
+                    scb->pressed_pos = x;
                     if (x < scb->liftx)
-                        scb->lastkeysend = GrKey_Home;
-                    if (x >= scb->liftx+scb->liftw)
-                        scb->lastkeysend = GrKey_End;
+                        scb->pressedmode = 1;
+                    else if (x >= scb->liftx+scb->liftw)
+                        scb->pressedmode = -1;
+                    else
+                        scb->pressedmode = 0;
                 }
-                if (scb->lastkeysend != GrKey_NoKey)
-                    GrEventParEnqueue(GREV_KEY, scb->lastkeysend, GRKEY_KEYCODE, 0, 0);
+                send_event(scb, 1, 0);
                 return 1;
             }
         } else if (ev->p1 == GRMOUSE_LB_RELEASED) {
@@ -174,11 +180,20 @@ int GUIScrollbarProcessEvent(GUIScrollbar *scb, GrEvent *ev)
                 return 1;
             }
         }
-    }
-    if (ev->type == GREV_NULL) {
-        if (scb->pressed && (scb->lastkeysend != GrKey_NoKey) &&
+    } else if (ev->type == GREV_MMOVE) {
+        if (ev->p1 == GRMOUSE_LB_PRESSED) {
+            if (scb->pressed && (scb->pressedmode == 0)) {
+                if (scb->type == GUI_TSB_VERTICAL)
+                    send_event(scb, 0, ev->p3);
+                else
+                    send_event(scb, 0, ev->p2);
+                return 1;
+            }
+        }
+    } else if (ev->type == GREV_NULL) {
+        if (scb->pressed && (scb->pressedmode != 0) &&
             (ev->time > scb->lasttimesend + scb->intv)) {
-            GrEventParEnqueue(GREV_KEY, scb->lastkeysend, GRKEY_KEYCODE, 0, 0);
+            send_event(scb, 0, 0);
             scb->lasttimesend = ev->time;
             scb->intv = 50;
             return 1;
@@ -186,4 +201,46 @@ int GUIScrollbarProcessEvent(GUIScrollbar *scb, GrEvent *ev)
     }
     
     return 0;
+}
+
+/***************************/
+
+static void send_event(GUIScrollbar *scb, int first, int pos)
+{
+    GrEvent ev;
+    int liftlen;
+    int dime, dist, value;
+
+    ev.type = (scb->type == GUI_TSB_VERTICAL) ? GREV_SCBVERT : GREV_SCBHORZ;
+    ev.p1 = ev.p2 = ev.p3 = ev.p4 = 0;
+
+    liftlen = scb->endvalue - scb->inivalue;
+
+    if (scb->pressedmode == 1) { // up
+        if (first) scb->lastvaluesend = scb->inivalue;
+        scb->lastvaluesend -= liftlen;
+        if (scb->lastvaluesend < scb->minvalue) scb->lastvaluesend = scb->minvalue;
+        ev.p1 = scb->lastvaluesend;
+        GrEventEnqueue(&ev);
+    } else if (scb->pressedmode == -1) { // down
+        if (first) scb->lastvaluesend = scb->inivalue;
+        scb->lastvaluesend += liftlen;
+        if (scb->lastvaluesend > (scb->maxvalue - liftlen))
+            scb->lastvaluesend = scb->maxvalue - liftlen;
+        ev.p1 = scb->lastvaluesend;
+        GrEventEnqueue(&ev);
+    } else { // move
+        if (first) {
+            scb->lastvaluesend = scb->inivalue;
+        } else {
+            dime = (scb->type == GUI_TSB_VERTICAL) ? scb->height : scb->width;
+            dist = (pos - scb->pressed_pos) *
+                   (scb->maxvalue - scb->minvalue) / dime;
+            value = scb->lastvaluesend + dist;
+            if (value < scb->minvalue) value = scb->minvalue;
+            if (value > (scb->maxvalue - liftlen)) value = scb->maxvalue - liftlen;
+            ev.p1 = value;
+            GrEventEnqueue(&ev);
+        }
+    }
 }

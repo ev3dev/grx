@@ -61,6 +61,8 @@ extern unsigned int     _XGrMaxHeight;
 extern int              _XGrBStoreInited;
 extern int              _XGrFullScreen;
 extern int              _XGrGenExposeEvents;
+extern int              _XGrGenWMEndEvents;
+extern Atom            _wmDeleteWindow;
 
 extern unsigned long   _XGrColorPlanes[8];
 extern unsigned int    _XGrColorNumPlanes;
@@ -68,6 +70,6 @@ extern unsigned long   _XGrColorPixels[2];
 extern unsigned int    _XGrColorNumPixels;
 extern char *          _XGrClassNames[6];
 
-extern void _XGrCopyBStore(int x, int y, int width, int lenght);
+void _XGrCopyBStore(int x, int y, int width, int lenght);
 
 #endif

@@ -8,12 +8,12 @@
 
 <center>
 <h1><font color="#555555">M</font><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>1.3.1</small></h1>
+<small>1.3.2</small></h1>
 <h1>a C graphics library for DOS, Linux console &amp; X11 and Win32</h1>
 <h2>Programmer's Manual</h2>
 <p>Based on the original GRX manual written by: Csaba Biegl on August 10, 1992
 <p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on August 1, 2005
-<p>Last update: November 9, 2019
+<p>Last update: January 6, 2020
 </center>
 
 <hr>
@@ -1022,6 +1022,16 @@ combined with the pixels in the destination context (the GrIMAGE op must be
 ored with the color value to be handled as transparent). If either the source
 or the destination context argument is the NULL pointer then the current
 context is used for that argument.
+
+<p>&nbsp;&nbsp;GrBitblt works pixel by pixel, there is another function that
+can stretch the source to the destination:
+
+<pre>
+void GrStretchBlt(GrContext *dst,int dx1,int dy1,int dx2,int dy2,
+                  GrContext *src,int x1,int y1,int x2,int y2,GrColor oper);
+</pre>
+<p>here <code>dx1</code>, <code>dy1</code>, <code>dx2</code>, <code>dy2</code>
+define the destination area to stretch the source area.
 
 <p>&nbsp;&nbsp;A efficient form to get/put pixels from/to a context can be
 achieved using the next functions:
@@ -2350,6 +2360,7 @@ is ready. The possible events are:
 #define GREV_MMOVE   3           /* mouse move event, p1=buttons status, p2=x, p3=y */
 #define GREV_PREKEY  4           /* key event before be recoded, internal event, users don't see it */
 #define GREV_EXPOSE  5           /* a window area must be redraw (generated only if user requests it */
+#define GREV_WMEND   6           /* window manager wants ending (generated only if user requests it */
 #define GREV_USER    100         /* user event */
 </pre>
 
@@ -2457,6 +2468,25 @@ the "kbstat" field. If count is zero, no more Expose events follow. Simple
 applications that do not want to optimize redisplay can just ignore all
 Expose events with nonzero counts and perform full redisplays on events with
 zero counts. 
+
+<p>&nbsp;&nbsp;The GREV_WMEND event is only generated in X11 and W32 systems
+and only if the user requests it using this function:
+
+<pre>
+void GrEventGenWMEnd(int when);
+</pre>
+
+<p><code>when</code> can be:
+
+<pre>
+#define GR_GEN_WMEND_NO    0    /* Doesn't gen GREV_WMEND (default) */
+#define GR_GEN_WMEND_YES   1    /* Gen GREV_WMEND */
+</pre>
+
+<p>If GREV_WMEND generation is active it will be generated when the user
+click the close window button, then the program must handle it, normally
+asking the user if he wants to exit. If generation is not active the
+program will be aborted.
 
 <p>&nbsp;&nbsp;These are the other functions of the input API:
 

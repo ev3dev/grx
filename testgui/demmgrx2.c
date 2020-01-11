@@ -34,10 +34,10 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "MGRX+GrGUI 1.3.0, the graphics library";
+    "MGRX+GrGUI 1.3.2, the graphics library";
 
 char *animatedtext[2] = {
-    "MGRX 1.3.0, the graphics library for DJGPPv2, Linux, X11 and Win32",
+    "MGRX 1.3.2, the graphics library for DJGPPv2, Linux, X11 and Win32",
     "Hello world    Привет мир    Γειά σου Κόσμε    Hola mundo" };
 
 #if defined(__XWIN__) || defined(__WIN32__)
@@ -204,8 +204,10 @@ static void disaster(char *s);
 
 int main(int argc, char **argv)
 {
+    char *infoexit[1] = {"Do you want to exit?"};
     GrEvent ev;
     long oldtime = 0;
+    int ret;
 
     if (argc >= 4) {
         gwidth = atoi(argv[1]);
@@ -228,8 +230,11 @@ int main(int argc, char **argv)
         }
         if (ev.type == GREV_END)
             break;
-        if ((ev.type == GREV_KEY) && (ev.p1 == GrKey_Escape))
-            break;
+        if (((ev.type == GREV_KEY) && (ev.p1 == GrKey_Escape)) ||
+             (ev.type == GREV_WMEND)) {
+            ret = GUICDialogYesNo("Exit", (void **)infoexit, 1, "Yes", "No");
+            if (ret == 1) break;
+        }
         if ((ev.type == GREV_KEY) && (ev.p1 == 's')) {
             GrSaveContextToPpm(NULL, PPMIMGOUT, "DemMGRX2");
             continue;
@@ -291,6 +296,7 @@ static void ini_graphics(void)
     }
     grcglobdb = GrCreateContext(640, 480, NULL, NULL);
     GrEventGenExpose(GR_GEN_EXPOSE_YES);
+    GrEventGenWMEnd(GR_GEN_WMEND_YES);
 }
 
 /************************************************************************/
@@ -482,7 +488,7 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "MGRX 1.3.0";
+    char *t1 = "MGRX 1.3.2";
     char *t2 = "test programs launcher";
 
     grt_centered.txo_fgcolor = EGAC_LIGHTGREEN;

@@ -17,7 +17,7 @@
  ** Contributions by:
  ** 070505 M.Alvarez, Using a Pixmap for BackingStore
  ** 080113 M.Alvarez, intl support
- **
+ ** 191112 Added code to generate GREV_WMEND events
  **/
 
 #include <stdlib.h>
@@ -135,6 +135,16 @@ int _GrReadInputs(void)
             continue;
         }
         switch (xev.type) {
+        case ClientMessage:
+            if (xev.xclient.data.l[0] == _wmDeleteWindow) {
+                if (_XGrGenWMEndEvents == GR_GEN_WMEND_NO) {
+                    exit(1);
+                } else {
+                    GrEventParEnqueue(GREV_WMEND, 0, 0, 0, 0);
+                }
+            }
+            break;
+
         case Expose:
             if (_XGrGenExposeEvents == GR_GEN_EXPOSE_NO) {
                 _XGrCopyBStore(xev.xexpose.x, xev.xexpose.y,

@@ -18,6 +18,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "grguip.h"
 
 static int guiinited = 0;
@@ -106,6 +107,16 @@ void GUIGlobalBltRectToScreen(int x1, int y1, int x2, int y2)
     }
 }
 
+void GUIManageExposeEvents(int manage)
+{
+    if (manage && _GUIUseDB && !manageexposeevents) {
+        manageexposeevents = 1;
+        GrEventGenExpose(GR_GEN_EXPOSE_YES);
+    } else if (manageexposeevents) {
+        manageexposeevents = 0;
+        GrEventGenExpose(GR_GEN_EXPOSE_NO);
+    }
+}
 
 int _GUIExposeHookEvent(GrEvent *ev)
 {
@@ -124,17 +135,6 @@ int _GUIExposeHookEvent(GrEvent *ev)
     return 0;
 }
 
-void GUIManageExposeEvents(int manage)
-{
-    if (manage && _GUIUseDB && !manageexposeevents) {
-        manageexposeevents = 1;
-        GrEventGenExpose(GR_GEN_EXPOSE_YES);
-    } else if (manageexposeevents) {
-        manageexposeevents = 0;
-        GrEventGenExpose(GR_GEN_EXPOSE_YES);
-    }
-}
-
 void _GUISuspendHooks(void)
 {
     nohookplease++;
@@ -148,4 +148,32 @@ void _GUIRestartHooks(void)
 int _GUIGetNoHookNow(void)
 {
     return (nohookplease > 0);
+}
+
+#define MAX_CLIPBOARDCHARS 4095
+static unsigned short clipboard[MAX_CLIPBOARDCHARS+1];
+static int clipboard_len = 0;
+
+void _GUISetClipBoard(unsigned short *buf, int len)
+{
+    if (len > MAX_CLIPBOARDCHARS) len = MAX_CLIPBOARDCHARS;
+    
+    memcpy(clipboard, buf, len*sizeof(unsigned short));
+    clipboard[len] = 0;
+    clipboard_len = len;
+}
+
+int _GUIGetClipBoard(unsigned short *buf, int maxlen)
+{
+    int len;
+
+    len = ((maxlen-1) > clipboard_len) ? clipboard_len : maxlen-1;
+    memcpy(buf, clipboard, len*sizeof(unsigned short));
+    buf[len] = 0;
+    return len;
+}
+
+int _GUIGetLenClipBoard(void)
+{
+    return clipboard_len;
 }

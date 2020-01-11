@@ -105,6 +105,8 @@ static int openfile(char *fname)
          fontp->all_chars_exist, fontp->ascent, fontp->descent);*/
 
   real_maxwidth = fontp->max_bounds.rbearing - fontp->min_bounds.lbearing;
+  if (fontp->max_bounds.width > real_maxwidth)
+    real_maxwidth = fontp->max_bounds.width;
   real_height = fontp->max_bounds.ascent + fontp->max_bounds.descent;
 
   numchars = fontp->max_char_or_byte2 - fontp->min_char_or_byte2 + 1;

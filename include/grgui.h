@@ -32,8 +32,10 @@
 #define GREV_COMMAND 50      // command event, p1=id, p2=subid (if any)
 #define GREV_SELECT  51      // select event, p1=id, p2=subid (if any)
 #define GREV_FCHANGE 52      // field changed, p1=id, p2=subid  (if any)
-#define GREV_PRIVGUI 53      // private GUI event, p1=subtype (user doesn't see it)
-#define GREV_END     54      // end program event
+#define GREV_SCBVERT 53      // vertical scrollbar moved, p1=new lift inivalue
+#define GREV_SCBHORZ 54      // horizontal scrollbar moved, p1=inivalue, p2=endvalue
+#define GREV_PRIVGUI 55      // private GUI event, p1=subtype (user doesn't see it)
+#define GREV_END     56      // end program event
 
 /**
  ** SETUP
@@ -150,8 +152,10 @@ typedef struct {
     int inivalue, endvalue; // lift limits
     int liftx, lifty;       // lift position
     int liftw, lifth;       // lift dimensions
-    int pressed;            // mouse pressed
-    int lastkeysend;        // so GREV_NULL can repeat if pressed
+    int pressed;            // left mouse pressed
+    int pressedmode;        // 1=go up, 0=move, -1=go down
+    int lastvaluesend;      // so GREV_NULL can repeat while pressed
+    int pressed_pos;          // x or y pos whem pressed over lift
     long lasttimesend;      // last time a event was send
     long intv;              // interval to send a new one
 } GUIScrollbar;
@@ -361,31 +365,33 @@ GUIDialog * GUIGroupDialogCreate(void *title, GUIGroup *go,
 typedef struct _guiTextArea GUITextArea;
 
 typedef struct{
-  int nlines;            // actual number of lines
-  int tclpos;            // text cursor line pos
-  int tccpos;            // text cursor char pos
-  int ncscr;             // min nº chars fitting on screen
-  int full;              // text buffer is full
+    int nlines;            // actual number of lines
+    int tclpos;            // text cursor line pos
+    int tccpos;            // text cursor char pos
+    int ncscr;             // min nº chars fitting on screen
+    int fmline, fmch;      // line&col first char of marked area
+    int lmline, lmch;      // line&col last char of marked area
+    int full;              // text buffer is full
 } GUITAStatus;
 
 GUITextArea * GUITACreate(GUIPanel *p, GrFont *f, int maxlines);
 void GUITASetFont(GUITextArea *ta, GrFont *f);
 void GUITASetBgColor(GUITextArea *ta, GrColor c);
 void GUITASetTextColors(GUITextArea *ta, GrColor fg, GrColor bg);
+void GUITASetCursorColor(GUITextArea *ta, GrColor c);
 void GUITADestroy(GUITextArea *ta);
-void GUITAGetStatus(GUITextArea *ta, GUITAStatus *tast);
-void *GUITAGetString(GUITextArea *ta, int nline, int chrtype);
 void GUITAShowCursor(GUITextArea *ta);
 void GUITAHideCursor(GUITextArea *ta);
-void GUITAMoveCursor(GUITextArea *ta, int nline, int nchar);
-void GUITAMoveCursorRel(GUITextArea *ta, int incrl, int incrc);
-void GUITASetCursorColor(GUITextArea *ta, GrColor c);
-void GUITAClear(GUITextArea *ta);
+void GUITAMoveCursor(GUITextArea *ta, int nline, int nchar, int setmark);
+void GUITAMoveCursorRel(GUITextArea *ta, int incrl, int incrc, int setmark);
 void GUITAReDraw(GUITextArea *ta);
+void GUITAClear(GUITextArea *ta);
 void GUITANewLine(GUITextArea *ta);
-void GUITADrawChar(GUITextArea *ta, long ch, int chrtype);
-void GUITADrawString(GUITextArea *ta, void *s, int len, int chrtype);
+void GUITAPutChar(GUITextArea *ta, long ch, int chrtype);
+void GUITAPutString(GUITextArea *ta, void *s, int len, int chrtype);
 void GUITAPrintChar(GUITextArea *ta, long ch, int chrtype);
+void GUITAGetStatus(GUITextArea *ta, GUITAStatus *tast);
+void *GUITAGetString(GUITextArea *ta, int nline, int chrtype);
 int GUITAProcessEvent(GUITextArea *ta, GrEvent *ev);
 
 /**

@@ -29,7 +29,6 @@
 #include "arith.h"
 #include "grdriver.h"
 
-INLINE
 void _XGrCopyBStore(int x, int y, int width, int lenght)
 {
   if (_XGrGenExposeEvents == GR_GEN_EXPOSE_NO) 

@@ -1,7 +1,7 @@
 /**
  ** frecode.c ---- recode font functions
  **
- ** Copyright (c) 2017 Mariano Alvarez Fernandez
+ ** Copyright (c) 2017, 2020 Mariano Alvarez Fernandez
  **
  ** This file is part of the GRX graphics library.
  **
@@ -78,6 +78,12 @@ static unsigned int _GrCharRecode(int fontenc,long chr,int chrtype)
     return caux;
   case GR_FONTENC_ISO_8859_1:
     _GrRecode_UCS2_ISO88591(aux, &caux);
+    return caux;
+  case GR_FONTENC_ISO_8859_5:
+    _GrRecode_UCS2_ISO88595(aux, &caux);
+    return caux;
+  case GR_FONTENC_ISO_8859_7:
+    _GrRecode_UCS2_ISO88597(aux, &caux);
     return caux;
   case GR_FONTENC_MGRX512:
     _GrRecode_UCS2_mgrx512(aux, &aux2);
@@ -176,6 +182,12 @@ static long _GrCharReverseRecode(int fontenc,unsigned int chr,int chrtype)
     break;
   case GR_FONTENC_ISO_8859_1:
     _GrRecode_ISO88591_UCS2(chr, &aux);
+    break;
+  case GR_FONTENC_ISO_8859_5:
+    _GrRecode_ISO88595_UCS2(chr, &aux);
+    break;
+  case GR_FONTENC_ISO_8859_7:
+    _GrRecode_ISO88597_UCS2(chr, &aux);
     break;
   case GR_FONTENC_MGRX512:
     _GrRecode_mgrx512_UCS2(chr, &aux);

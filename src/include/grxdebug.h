@@ -32,7 +32,7 @@ extern int   _GR_debug_flags;
 extern void  _GR_debug_printf(char *fmt,...);
 
 # ifdef __GNUC__
-  extern char *_GR_debug_function;
+  extern const char *_GR_debug_function;
 #  define DBGPRINTF(tst,x) do {           \
      if ((tst)&_GR_debug_flags) {         \
        _GR_debug_file = __FILE__;         \

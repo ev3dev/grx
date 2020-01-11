@@ -35,12 +35,18 @@ typedef struct {
     int blink, save;      // blink: 1=on, 0=off, save used only by blink code
     long time;            // cursor blink time
     int changed;          // entry edited
+    int fmch, lmch;       // first and last chars of marked area
+    int pvmch;            // pivot char to extend marked area
 } EntryData;
 
+static void _GUIOEntryRePaint(GUIGroup *g, GUIObject *o, int setmark);
 static void add_char(GUIObject *o, long ch, int chrtype);
 static void delete_char(GUIObject *o);
 static void erase_char(GUIObject *o);
 static void calc_tcpos_click(GUIObject *o, int x);
+static int delete_marked_area(GUIObject *o);
+static void copy_marked_area(GUIObject *o, int clear);
+static void paste_marked_area(GUIObject *o);
 
 /***************************/
 
@@ -98,6 +104,7 @@ void GUIObjectSetEntry(GUIObject *o, int id, int x, int y, int width, int height
     text2 = GrFontTextRecode(_objectfont, initext, len, _objectchrtype);
     if (text2 == NULL) return;
     
+    data->fmch = data->lmch = data->pvmch = 0;
     for (i = 0; i<len; i++) {
         add_char(o, text2[i], GR_WORD_TEXT);
     }
@@ -192,6 +199,7 @@ void _GUIOEntrySetText(GUIObject *o, void *newtext)
     text2 = GrFontTextRecode(_objectfont, newtext, len, _objectchrtype);
     if (text2 == NULL) return;
     
+    data->fmch = data->lmch = data->pvmch = 0;
     for (i = 0; i<len; i++) {
         add_char(o, text2[i], GR_WORD_TEXT);
     }
@@ -199,74 +207,6 @@ void _GUIOEntrySetText(GUIObject *o, void *newtext)
     free(text2);
 }
 
-/***************************/
-/*
-void _GUIOEntryPaint(GUIObject *o, int x, int y)
-{
-    GrLineOption glo;
-    EntryData *data;
-    int tcx_org, tcx, tcy;
-    int entry_maxx;
-    
-    data = (EntryData *)(o->data);
-    tcx = 0;
-
-    _objectentopt.txo_fgcolor = o->fg;
-    GrBox(x+o->x, y+o->y, x+o->x+o->width-1, y+o->y+o->height-1, _objectlcolor);
-    GrFilledBox(x+o->x+1, y+o->y+1, x+o->x+o->width-2, y+o->y+o->height-2, o->bg);
-    entry_maxx = o->width - 7;
-
-    if (o->selected) {
-        glo.lno_color = o->fg;
-        glo.lno_width = 1;
-        glo.lno_pattlen = 2;
-        glo.lno_dashpat = (unsigned char *)"\2\1";
-        GrCustomBox(x+o->x+2, y+o->y+2, x+o->x+o->width-3, y+o->y+o->height-3, &glo);
-        if (data->tcpos == 0)
-            tcx_org = 0;
-        else if (data->tcpos >= data->len)
-            tcx_org = data->x[data->tcpos-1] + data->w[data->tcpos-1];
-        else
-            tcx_org = data->x[data->tcpos];
-        tcx = tcx_org - data->xorg;
-        while (tcx < 0) {
-            data->xorg -= data->xbits;
-            tcx = tcx_org - data->xorg;
-        }
-        while (tcx > entry_maxx) {
-            data->xorg += data->xbits;
-            tcx = tcx_org - data->xorg;
-        }
-        //printf("tcpos %d  len %d  xorg %d\n", data->tcpos, data->len, data->xorg);
-    }
-
-    GrSetClipBox(x+o->x+3, y+o->y+1, x+o->x+o->width-4, y+o->y+o->height-2);
-
-    if (data->len > 0) {
-        GrDrawString(data->c, data->len, x+o->x+3-data->xorg, y+o->y+o->height/2,
-                     &_objectentopt);
-    }
-
-    if (!data->save) {
-        data->blink = 1;
-        data->time = 0;
-    }
-
-    if (o->selected && data->blink) {
-        tcx += x + o->x + 3;
-        tcy = y + o->y + o->height/2 - data->ybits/2 - 1;
-        GrVLine(tcx, tcy, tcy+data->ybits, o->fg);
-        GrVLine(tcx+1, tcy, tcy+data->ybits, o->fg);
-    }
-
-    GrResetClipBox();
-
-    if (!o->selected && data->changed) {
-        GrEventParEnqueue(GREV_FCHANGE, o->id, 0, 0, 0);
-        data->changed = 0;
-    }
-}
-*/
 /***************************/
 
 void _GUIOEntryPaint(GUIObject *o, int x, int y)
@@ -276,6 +216,7 @@ void _GUIOEntryPaint(GUIObject *o, int x, int y)
     int tcx_org, tcx, tcy;
     int entry_maxx;
     GrContext *grc, grcaux;
+    int len;
     
     data = (EntryData *)(o->data);
     tcx = 0;
@@ -285,7 +226,6 @@ void _GUIOEntryPaint(GUIObject *o, int x, int y)
     GrSaveContext(&grcaux);
     GrSetContext(grc);
 
-    _objectentopt.txo_fgcolor = o->fg;
     GrBox(0, 0, o->width-1, o->height-1, _objectlcolor);
     GrFilledBox(1, 1, o->width-2, o->height-2, o->bg);
     entry_maxx = o->width - 7;
@@ -317,8 +257,28 @@ void _GUIOEntryPaint(GUIObject *o, int x, int y)
     GrSetClipBox(3, 1, o->width-4, o->height-2);
 
     if (data->len > 0) {
-        GrDrawString(data->c, data->len, 3-data->xorg, o->height/2,
-                     &_objectentopt);
+        _objectentopt.txo_fgcolor = o->fg;
+        if (data->fmch > 0) {
+            len = data->fmch;
+            GrDrawString(data->c, len, 3-data->xorg, o->height/2,
+                         &_objectentopt);
+        }
+        if (data->lmch > data->fmch) {
+            _objectentopt.txo_fgcolor = GrNOCOLOR;
+            _objectentopt.txo_bgcolor = o->fg;
+            len = data->lmch - data->fmch;
+            GrDrawString(&(data->c[data->fmch]), len,
+                         3-data->xorg+data->x[data->fmch],
+                         o->height/2, &_objectentopt);
+            _objectentopt.txo_fgcolor = o->fg;
+            _objectentopt.txo_bgcolor = GrNOCOLOR;
+        }
+        if (data->lmch < data->len) {
+            len = data->len - data->lmch;
+            GrDrawString(&(data->c[data->lmch]), len,
+                         3-data->xorg+data->x[data->lmch],
+                         o->height/2, &_objectentopt);
+        }
     }
 
     if (!data->save) {
@@ -347,17 +307,6 @@ void _GUIOEntryPaint(GUIObject *o, int x, int y)
 
 /***************************/
 
-void _GUIOEntryRePaint(GUIGroup *g, GUIObject *o)
-{
-    _GUIOEntryPaint(o, g->x, g->y);
-    if (g->p) {
-        GUIPanelBltRectClToScreen(g->p, g->x+o->x, g->y+o->y,
-                                  o->width, o->height);
-    }
-}
-
-/***************************/
-
 int _GUIOEntryProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev)
 {
     EntryData *data;
@@ -369,37 +318,71 @@ int _GUIOEntryProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev)
             o->selected = 1;
             o->pressed = 1;
             calc_tcpos_click(o, ev->p2-g->x-o->x);
-            _GUIOEntryRePaint(g, o);
+            _GUIOEntryRePaint(g, o, 1);
             return 1;
         } else if (ev->p1 == GRMOUSE_LB_RELEASED) {
             o->pressed = 0;
             return 1;
         }
+    } else if (ev->type == GREV_MMOVE) {
+        if ((ev->p1 & GRMOUSE_LB_STATUS) && o->pressed) {
+            calc_tcpos_click(o, ev->p2-g->x-o->x);
+            _GUIOEntryRePaint(g, o, -1);
+            return 1;
+        }
     } else if ((ev->type == GREV_KEY) && (ev->p2 == GRKEY_KEYCODE)) {
         if (ev->p1 == GrKey_Delete) {
             erase_char(o);
+            _GUIOEntryRePaint(g, o, 1);
+            return 1;
         } else if (ev->p1 == GrKey_Left) {
             if (data->tcpos > 0) {
                 data->tcpos -= 1;
-                _GUIOEntryRePaint(g, o);
+                _GUIOEntryRePaint(g, o, 1);
             }
             return 1;
         } else if (ev->p1 == GrKey_Right) {
             if (data->tcpos < data->len) {
                 data->tcpos += 1;
-                _GUIOEntryRePaint(g, o);
+                _GUIOEntryRePaint(g, o, 1);
             }
             return 1;
         } else if (ev->p1 == GrKey_Home) {
             if (data->tcpos > 0) {
                 data->tcpos = 0;
-                _GUIOEntryRePaint(g, o);
+                _GUIOEntryRePaint(g, o, 1);
             }
             return 1;
         } else if (ev->p1 == GrKey_End) {
             if (data->tcpos < data->len) {
                 data->tcpos = data->len;
-                _GUIOEntryRePaint(g, o);
+                _GUIOEntryRePaint(g, o, 1);
+            }
+            return 1;
+        } else if (ev->p1 == GrKey_Shift_Left) {
+            if (data->tcpos > 0) {
+                data->tcpos -= 1;
+                _GUIOEntryRePaint(g, o, -1);
+            }
+            return 1;
+        } else if (ev->p1 == GrKey_Shift_Right) {
+            if (data->tcpos < data->len) {
+                data->tcpos += 1;
+                _GUIOEntryRePaint(g, o, -1);
+            }
+            return 1;
+        } else if (ev->p1 == GrKey_Shift_Home) {
+            if (data->tcpos > 0) {
+                data->tcpos = 0;
+                data->lmch = data->pvmch;
+                _GUIOEntryRePaint(g, o, -1);
+            }
+            return 1;
+        } else if (ev->p1 == GrKey_Shift_End) {
+            if (data->tcpos < data->len) {
+                data->tcpos = data->len;
+                data->fmch = data->pvmch;
+                _GUIOEntryRePaint(g, o, -1);
             }
             return 1;
         }
@@ -409,17 +392,25 @@ int _GUIOEntryProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev)
                 GrEventParEnqueue(GREV_FCHANGE, o->id, 0, 0, 0);
                 data->changed = 0;
             }
-            return 0;
+            return 1;
         } else if (ev->p1 == '\t') { // we don't consume tabs
             return 0;
         } else if (ev->p1 == '\b') {
             delete_char(o);
         } else if (ev->p1 == 0x7f) {
             erase_char(o);
+        } else if (ev->p1 == GrKey_Control_C) {
+            copy_marked_area(o, 0);
+            _GUIOEntryRePaint(g, o, -1);
+            return 1;
+        } else if (ev->p1 == GrKey_Control_V) {
+            paste_marked_area(o);
+        } else if (ev->p1 == GrKey_Control_X) {
+            copy_marked_area(o, 1);
         } else if (ev->p1 >= ' ') {
             add_char(o, ev->p1, GrGetChrtypeForUserEncoding());
         }
-        _GUIOEntryRePaint(g, o);
+        _GUIOEntryRePaint(g, o, 1);
         return 1;
     } else if (ev->type == GREV_NULL) {
         if (data->time == 0) {
@@ -429,7 +420,7 @@ int _GUIOEntryProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev)
                 data->time = ev->time;
                 data->blink ^= 1;
                 data->save = 1;
-                _GUIOEntryRePaint(g, o);
+                _GUIOEntryRePaint(g, o, 0);
                 data->save = 0;
             }
         }
@@ -440,14 +431,43 @@ int _GUIOEntryProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev)
 
 /***************************/
 
+static void _GUIOEntryRePaint(GUIGroup *g, GUIObject *o, int setmark)
+{
+    EntryData *data;
+    
+    data = (EntryData *)(o->data);
+
+    if (setmark == 1) {
+        data->fmch = data->lmch = data->pvmch = data->tcpos;
+    } else if (setmark == -1) {
+        if (data->tcpos < data->pvmch) {
+            data->fmch = data->tcpos;
+        } else if (data->tcpos == data->pvmch) {
+            data->fmch = data->lmch = data->tcpos;
+        } else { // data->tcpos > data->pvmch
+            data->lmch = data->tcpos;
+        }
+    }
+
+    _GUIOEntryPaint(o, g->x, g->y);
+    if (g->p) {
+        GUIPanelBltRectClToScreen(g->p, g->x+o->x, g->y+o->y,
+                                  o->width, o->height);
+    }
+}
+
+/***************************/
+
 static void add_char(GUIObject *o, long ch, int chrtype)
 {
     EntryData *data;
     long chr;
     unsigned short w;
     int i;
-    
+
     data = (EntryData *)(o->data);
+
+    if (data->fmch < data->lmch) delete_marked_area(o);
     
     if (data->len >= o->maxlen) return;
     
@@ -470,6 +490,7 @@ static void add_char(GUIObject *o, long ch, int chrtype)
     data->len += 1;
     data->tcpos += 1;
     data->changed = 1;
+    data->fmch = data->lmch = data->pvmch = data->tcpos;
 }
 
 /***************************/
@@ -480,6 +501,8 @@ static void delete_char(GUIObject *o)
     unsigned short w;
     int i;
     
+    if (delete_marked_area(o)) return;
+
     data = (EntryData *)(o->data);
 
     if (data->tcpos < 1) return;
@@ -496,6 +519,7 @@ static void delete_char(GUIObject *o)
     data->len -= 1;
     data->tcpos -= 1;
     data->changed = 1;
+    data->fmch = data->lmch = data->pvmch = data->tcpos;
 }
 
 /***************************/
@@ -506,6 +530,8 @@ static void erase_char(GUIObject *o)
     unsigned short w;
     int i;
     
+    if (delete_marked_area(o)) return;
+
     data = (EntryData *)(o->data);
 
     if (data->tcpos >= data->len) return;
@@ -520,6 +546,7 @@ static void erase_char(GUIObject *o)
 
     data->len -= 1;
     data->changed = 1;
+    data->fmch = data->lmch = data->pvmch = data->tcpos;
 }
 
 /***************************/
@@ -540,4 +567,84 @@ static void calc_tcpos_click(GUIObject *o, int x)
         }
     }
     data->tcpos = pos;
+}
+
+/***************************/
+
+static int delete_marked_area(GUIObject *o)
+{
+    EntryData *data;
+    int i, pos, x;
+    
+    data = (EntryData *)(o->data);
+
+    if (data->fmch == data->lmch) return 0;
+
+    data->tcpos = data->fmch;
+    pos = data->fmch;
+    x = data->x[pos];
+    
+    for (i=data->lmch; i<data->len; i++) {
+        data->c[pos] = data->c[i];
+        data->x[pos] = x;
+        data->w[pos] = data->w[i];
+        x += data->w[i];
+        pos++;
+    }
+
+    data->len -= (data->lmch - data->fmch);
+    data->fmch = data->lmch = data->pvmch = data->tcpos;
+    data->changed = 1;
+
+    return 1;
+}
+
+/***************************/
+
+static void copy_marked_area(GUIObject *o, int clear)
+{
+    EntryData *data;
+    unsigned short *buf;
+    int i, pos, len;
+    
+    data = (EntryData *)(o->data);
+
+    if (data->fmch == data->lmch) return;
+
+    len = data->lmch - data->fmch;
+    buf = malloc((len+1)*sizeof(unsigned short));
+    if (buf == NULL) return;
+
+    pos = data->fmch;
+    for (i=0; i<len; i++) {
+        buf[i] = GrFontCharReverseRecode(_objectfont, data->c[pos], GR_UCS2_TEXT);
+        pos++;
+    }
+    buf[len] = 0;
+
+    _GUISetClipBoard(buf, len);
+    free(buf);
+
+    if (clear) delete_marked_area(o);
+}
+
+/***************************/
+
+static void paste_marked_area(GUIObject *o)
+{
+    unsigned short *buf;
+    int i, len;
+    
+    delete_marked_area(o);
+
+    buf = malloc((o->maxlen+1)*sizeof(unsigned short));
+    if (buf == NULL) return;
+
+    len = _GUIGetClipBoard(buf, o->maxlen);
+
+    for (i = 0; i<len; i++) {
+        add_char(o, buf[i], GR_UCS2_TEXT);
+    }
+
+    free(buf);
 }
