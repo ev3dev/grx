@@ -74,7 +74,7 @@ static int detect(void)
         // try the boss tty first (probably won't work unless we are root)
         ttyfd = open("/dev/tty0", O_WRONLY);
         if (ttyfd == -1) {
-            g_debug("Failed top open /dev/tty0: %s", strerror(errno));
+            g_debug("Failed to open /dev/tty0: %s", strerror(errno));
             // fall back to stdin
             ttyfd = dup(0);
         }
@@ -100,14 +100,14 @@ static int detect(void)
         sprintf(ttyname, "/dev/tty%d", graphics_vt);
         ttyfd = open(ttyname, O_RDWR);
         if (ttyfd == -1) {
-            g_debug("Failed top open /dev/tty%d: %s", graphics_vt,
+            g_debug("Failed to open /dev/tty%d: %s", graphics_vt,
                     strerror(errno));
             // fall back to current console
             graphics_vt = vtstat.v_active;
             sprintf(ttyname, "/dev/tty%d", graphics_vt);
             ttyfd = open(ttyname, O_RDWR);
             if (ttyfd == -1) {
-                g_debug("Failed top open /dev/tty%d: %s", graphics_vt,
+                g_debug("Failed to open /dev/tty%d: %s", graphics_vt,
                         strerror(errno));
                 return FALSE;
             }
