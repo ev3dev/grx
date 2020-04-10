@@ -133,8 +133,8 @@ void GUIPanelPaint(GUIPanel *p, GrColor lcolor, GrColor bcolor)
 
     GrSetContext(p->gc->c);
     if (p->wborder > 0) PaintBorder(p, lcolor, bcolor);
-    if (p->vscb != NULL) GUIScrollbarPaint(p->vscb);
-    if (p->hscb != NULL) GUIScrollbarPaint(p->hscb);
+    if (p->vscb != NULL) GUIScrollbarPaint(p->vscb, 0, 0, 0);
+    if (p->hscb != NULL) GUIScrollbarPaint(p->hscb, 0, 0, 0);
     if ((p->vscb != NULL) && (p->hscb != NULL)) PaintCorner(p);
 
     if (p->ct && p->painttl) {
@@ -147,8 +147,9 @@ void GUIPanelPaint(GUIPanel *p, GrColor lcolor, GrColor bcolor)
         (p->paintcl)(p->udata);
     }
 
+    GrSetContext(p->gc->c);
+    GUIDBCurCtxBltToScreen();
     GrSetContext(&grcaux);
-    GUIContextBltToScreen(p->gc);
 }
 
 /***************************/
@@ -161,12 +162,10 @@ void GUIPanelRePaintScb(GUIPanel *p)
     GrSetContext(p->gc->c);
 
     if (p->vscb != NULL) {
-        GUIScrollbarPaint(p->vscb);
-        GUIScrollbarBltToScreen(p->gc, p->vscb);
+        GUIScrollbarPaint(p->vscb, 0, 0, 1);
     }
     if (p->hscb != NULL) {
-        GUIScrollbarPaint(p->hscb);
-        GUIScrollbarBltToScreen(p->gc, p->hscb);
+        GUIScrollbarPaint(p->hscb, 0, 0, 1);
     }
 
     GrSetContext(&grcaux);
@@ -191,17 +190,6 @@ void GUIPanelRePaintBorder(GUIPanel *p, GrColor lcolor, GrColor bcolor)
     }
         
     GrSetContext(&grcaux);
-}
-
-/***************************/
-
-void GUIPanelBltRectClToScreen(GUIPanel *p, int x, int y, int width, int height)
-{
-    //x += p->cl->gc_xoffset;
-    //y += p->cl->gc_yoffset;
-    x += p->xcl - p->gc->xorg;
-    y += p->ycl - p->gc->yorg;
-    GUIContextBltRectToScreen(p->gc, x, y, x+width-1, y+height-1);
 }
 
 /***************************/

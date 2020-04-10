@@ -70,6 +70,22 @@ void GUIMenuBarSet(GUIMenuBar *mb)
   smb = mb;
 }
 
+void GUIMenuBarSetI18nFields(void)
+{
+    int i;
+    char *p;
+
+    if (smb == NULL) return;
+
+    for (i=0; i<smb->nitems; i++) {
+        if (smb->i[i].sid >= 0) {
+            smb->i[i].title = (char *)GrI18nGetString(smb->i[i].sid);
+            p = strchr(smb->i[i].title, '&');
+            if (p) smb->i[i].key = toupper(*(p+1));
+        }
+    }
+}
+
 int GUIMenuBarSetItemEnable(int idm, int enable)
 {
     int i;
@@ -126,7 +142,7 @@ void GUIMenuBarShow(void)
         if (smb->i[i].enabled)
             _GUIMenuSetKeyShortCut(smb->i[i].idm);
     }
-    GUIContextBltToScreen(gctx);
+    GUIDBCurCtxBltToScreen();
 
     GrSetContext(&grcaux);
 }
@@ -160,7 +176,7 @@ void GUIMenuBarRedraw(void)
     for (i=0; i<smb->nitems; i++) {
         show_menubar_item(i, 0);
     }
-    GUIContextBltToScreen(gctx);
+    GUIDBCurCtxBltToScreen();
 
     GrSetContext(&grcaux);
 }
@@ -375,5 +391,5 @@ static void blt_menubar_item(int ind)
 
     x = mbd.startx[ind];
     y = mbd.starty;
-    GUIContextBltRectToScreen(gctx, x, y, x+mbd.length[ind]-1, y+mbd.height-4);
+    GUIDBCurCtxBltRectToScreen(x, y, x+mbd.length[ind]-1, y+mbd.height-4);
 }

@@ -68,29 +68,13 @@ void GUIContextSaveUnder(GUIContext *gctx)
 
 void GUIContextRestoreUnder(GUIContext *gctx)
 {
-/*    if (gctx->su) {
-        GrBitBlt(_GUIGlobCtx, gctx->xorg, gctx->yorg, gctx->su, 0, 0,
-                 gctx->width-1, gctx->height-1, GrWRITE);
-    }*/
     if (gctx->su) {
         GrBitBlt(gctx->c, 0, 0, gctx->su, 0, 0,
                  gctx->width-1, gctx->height-1, GrWRITE);
-    }
-    GUIContextBltToScreen(gctx);
-}
-
-void GUIContextBltToScreen(GUIContext *gctx)
-{
-    if (_GUIUseDB) {
-        GrBitBlt(gctx->sc, 0, 0, gctx->c, 0, 0,
-                 gctx->width-1, gctx->height-1, GrWRITE);
-    }
-}
-
-void GUIContextBltRectToScreen(GUIContext *gctx, int x1, int y1, int x2, int y2)
-{
-    if (_GUIUseDB) {
-        GrBitBlt(gctx->sc, x1, y1, gctx->c, x1, y1, x2, y2, GrWRITE);
+        if (_GUIUseDB) {
+            GrBitBlt(gctx->sc, 0, 0, gctx->c, 0, 0,
+                     gctx->width-1, gctx->height-1, GrWRITE);
+        }
     }
 }
 

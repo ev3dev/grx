@@ -24,6 +24,8 @@
 GrColor _scbbgcolor;
 GrColor _scbliftcolor;
 
+static long next_aid = 1;
+
 static void send_event(GUIScrollbar *scb, int first, int pos);
 
 /***************************/
@@ -72,10 +74,20 @@ GUIScrollbar * GUIScrollbarCreate(int type, int x, int y, int thick, int lenght)
     }
 
     scb->pressed = 0;
+    scb->dx = 0;
+    scb->dy = 0;
+    scb->aid = next_aid++;
 
     GUIScrollbarSetLimits(scb, 0, 10, 0, 10);
 
     return scb;
+}
+
+/***************************/
+
+long GUIScrollbarGetAid(GUIScrollbar *scb)
+{
+    return scb->aid;
 }
 
 /***************************/
@@ -86,7 +98,7 @@ void GUIScrollbarSetLimits(GUIScrollbar *scb, int minvalue, int maxvalue,
     long p1, p2;
 
     // some protection checks
-    if (maxvalue <= minvalue) maxvalue = minvalue + 1; // not want divide by 0
+    if (maxvalue <= minvalue) maxvalue = minvalue + 1; // no divide by 0
     if (endvalue > maxvalue) endvalue = maxvalue;
     if (inivalue < minvalue) inivalue = minvalue;
     if (inivalue >= endvalue) {
@@ -124,21 +136,25 @@ void GUIScrollbarSetLimits(GUIScrollbar *scb, int minvalue, int maxvalue,
 
 /***************************/
 
-void GUIScrollbarPaint(GUIScrollbar *scb)
+void GUIScrollbarPaint(GUIScrollbar *scb, int dx, int dy, int blt)
 {
-    GrFilledBox(scb->x, scb->y, scb->x+scb->width-1,
-                scb->y+scb->height-1, _scbbgcolor);
-    GrFilledBox(scb->liftx, scb->lifty, scb->liftx+scb->liftw-1,
-                scb->lifty+scb->lifth-1, _scbliftcolor);
+    int x, y, fx, fy;
+
+    scb->dx = dx;
+    scb->dy = dy;
+
+    x = scb->x + scb->dx;
+    y = scb->y + scb->dy;
+    fx = scb->liftx + scb->dx;
+    fy = scb->lifty + scb->dy;
+
+    GrFilledBox(x, y, x+scb->width-1, y+scb->height-1, _scbbgcolor);
+    GrFilledBox(fx, fy, fx+scb->liftw-1, fy+scb->lifth-1, _scbliftcolor);
+    if (blt) {
+        GUIDBCurCtxBltRectToScreen(x, y, x+scb->width-1, y+scb->height-1);
+    }
 }
 
-/***************************/
-
-void GUIScrollbarBltToScreen(GUIContext *gctx, GUIScrollbar *scb)
-{
-    GUIContextBltRectToScreen(gctx, scb->x, scb->y, scb->x+scb->width-1,
-                              scb->y+scb->height-1);
-}
 
 /***************************/
 
@@ -147,8 +163,8 @@ int GUIScrollbarProcessEvent(GUIScrollbar *scb, GrEvent *ev)
     int x, y;
 
     if (ev->type == GREV_MOUSE) {
-        x = ev->p2;
-        y = ev->p3;
+        x = ev->p2 - scb->dx;
+        y = ev->p3 - scb->dy;
         if (ev->p1 == GRMOUSE_LB_PRESSED) {
             if (GrCheckCoordInto(x, y, scb->x, scb->y, scb->width, scb->height)) {
                 scb->pressed = 1;
@@ -184,9 +200,9 @@ int GUIScrollbarProcessEvent(GUIScrollbar *scb, GrEvent *ev)
         if (ev->p1 == GRMOUSE_LB_PRESSED) {
             if (scb->pressed && (scb->pressedmode == 0)) {
                 if (scb->type == GUI_TSB_VERTICAL)
-                    send_event(scb, 0, ev->p3);
+                    send_event(scb, 0, ev->p3 - scb->dy);
                 else
-                    send_event(scb, 0, ev->p2);
+                    send_event(scb, 0, ev->p2 - scb->dx);
                 return 1;
             }
         }
@@ -212,7 +228,8 @@ static void send_event(GUIScrollbar *scb, int first, int pos)
     int dime, dist, value;
 
     ev.type = (scb->type == GUI_TSB_VERTICAL) ? GREV_SCBVERT : GREV_SCBHORZ;
-    ev.p1 = ev.p2 = ev.p3 = ev.p4 = 0;
+    ev.p1 = ev.p3 = ev.p4 = 0;
+    ev.p2 = scb->aid;
 
     liftlen = scb->endvalue - scb->inivalue;
 

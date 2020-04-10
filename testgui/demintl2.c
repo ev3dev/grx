@@ -44,6 +44,7 @@
 #define COMMAND_FONT_CP1252       203
 #define COMMAND_FONT_ISO88591     204
 #define COMMAND_FONT_MGRX         205
+#define COMMAND_FONT_CP437EXT     206
 #define COMMAND_UENC_CP437        211
 #define COMMAND_UENC_CP850        212
 #define COMMAND_UENC_CP1252       213
@@ -72,6 +73,7 @@
 #define COMMAND_LOADFONT_CP850    320
 #define COMMAND_LOADFONT_ISO59    340
 #define COMMAND_LOADFONT_MGRX     400
+#define COMMAND_LOADFONT_CP437EXT 440
 #define COMMAND_LOADFONT_LAST     499
 
 /* tiles ids */
@@ -104,6 +106,7 @@ static GrFont *grf_CP850 = NULL;
 static GrFont *grf_CP1252 = NULL;
 static GrFont *grf_ISO88591 = NULL;
 static GrFont *grf_MGRX = NULL;
+static GrFont *grf_CP437Ext = NULL;
 static GrFont *texta_font = NULL;
 
 static char *font_name_CP437 = "pc8x16.fnt";
@@ -111,6 +114,7 @@ static char *font_name_CP850 = "pc850-19.fnt";
 static char *font_name_CP1252 = "ter-114b.res";
 static char *font_name_ISO88591 = "ncen22b.fnt";
 static char *font_name_MGRX = "tmgrx22b.fnt";
+static char *font_name_CP437Ext = "px8x18.fnt";
 static char *stext_font = NULL;
 
 char *abouttext[3] = {
@@ -148,7 +152,7 @@ static void dotest(int n);
 static void draw_string_collection(void);
 static void file_listing(void);
 static void print_dlg_result( char *s, int d);
-static void print_test_dlg_result(void);
+static void print_test_dlg_result(int d);
 
 void paint_panel1(void *udata);
 void paint_panel2(void *udata);
@@ -158,14 +162,16 @@ int processev_panel2(void *udata, GrEvent *ev);
 int processev_panel3(void *udata, GrEvent *ev);
 
 static void dlg_ta_color(void);
-static void dlg_test_obj1(void);
+static int dlg_test_obj1(void);
 static void dlg_test_obj2(void);
 
 /* main program begin */
 
 int main()
 {
+    char *infoexit[1] = {"Do you want to exit?"};
     GrEvent ev;
+    int ret;
     
     while (1) {
         setup();
@@ -177,16 +183,30 @@ int main()
         GUITAShowCursor(textarea1);
         while (1) {
             GrEventRead(&ev);
-            if (GUITilesProcessEvent(&ev)) continue;
-            if (ev.type == GREV_KEY && ev.p1 == GrKey_Escape) {
+            if (ev.type == GREV_END) {
                 globalw = -1;
                 break;
             }
+            if (((ev.type == GREV_KEY) && (ev.p1 == GrKey_Escape)) ||
+                 (ev.type == GREV_WMEND)) {
+                ret = GUICDialogYesNo("Exit", (void **)infoexit, 1, "Yes", "No");
+                if (ret == 1) {
+                    globalw = -1;
+                    break;
+                } else
+                    continue;
+            }
+            if (GUITilesProcessEvent(&ev)) {
+                continue;
+            }
             if (ev.type == GREV_COMMAND) {
-                if (process_command(&ev)) break;
+                ret = process_command(&ev);
+                if (ret == -1) break;
+                if (ret) continue;
             }
             if (ev.type == GREV_FCHANGE) {
-                if (process_fchange(&ev)) break;
+                if (process_fchange(&ev))
+                    continue;
             }
         }
         terminate();
@@ -200,13 +220,15 @@ int main()
 
 static void setup(void)
 {
-    static char *wintitle = "MGRX+GrGUI 1.3.2, the graphics library";
+    static char *wintitle = "MGRX+GrGUI 1.3.3, the graphics library";
 
     GrSetMode(GR_width_height_bpp_graphics, globalw, globalh, globalbpp);
     GrGenEgaColorTable();
     GrSetFontPath("../fonts/;./");
+    GrSetDefaultFont(&GrFont_PX8x18);
+    GrEventGenWMEnd(GR_GEN_WMEND_YES);
     GUIInit(1, usedoublebuffer);
-    GUIManageExposeEvents(manageexposeevents);
+    GUIDBManageExposeEvents(manageexposeevents);
     //GrEventGenExpose(GR_GEN_EXPOSE_YES);
     GrSetWindowTitle(wintitle);
     //GrClearScreen(EGAC_BROWN);
@@ -258,6 +280,13 @@ static void setup_fonts(void)
     }
     //GrFontSetEncoding(grf_MGRX, GR_FONTENC_MGRX512);
 
+    if (grf_CP437Ext == NULL) grf_CP437Ext = GrLoadFont(font_name_CP437Ext);
+    if (grf_CP437Ext == NULL) {
+        sprintf(aux,"%s not found", font_name_CP437Ext);
+        disaster(aux);
+    }
+    //GrFontSetEncoding(grf_CP437Ext, GR_FONTENC_CP437EXT);
+
     if (texta_font == NULL) {
         texta_font = grf_CP437;
         stext_font = font_name_CP437;
@@ -285,19 +314,20 @@ static void setup_menus(void)
 
     static GUIMenu menu1 = {1, 13, 0, itemsm1};
 
-    static GUIMenuItem itemsm2[10] = {
+    static GUIMenuItem itemsm2[11] = {
         {GUI_MI_MENU, 1, "&1 Select CP437 font", '1', NULL, 0, 21, 0}, 
         {GUI_MI_MENU, 1, "&2 Select CP850 font", '2', NULL, 0, 22, 0}, 
         {GUI_MI_MENU, 0, "&3 Select CP1252 font", '3', NULL, 0, 23, 0}, 
         {GUI_MI_MENU, 1, "&4 Select ISO8859-1 font", '4', NULL, 0, 24, 0}, 
         {GUI_MI_MENU, 1, "&5 Select MGRX font", '5', NULL, 0, 25, 0}, 
+        {GUI_MI_MENU, 1, "&6 Select CP437Ext font", '6', NULL, 0, 26, 0}, 
         {GUI_MI_SEP, 1, "", 0, NULL, 0, 0, 0}, 
         {GUI_MI_OPER, 1, "&Save content to demintl2.out", 'S', NULL, 0, COMMAND_TA_SAVE, 0},
         {GUI_MI_SEP, 1, "", 0, NULL, 0, 0, 0}, 
-        {GUI_MI_OPER, 1, "&Char color", 'C', "Alt+C", GrKey_Alt_C, COMMAND_TA_CHARCOLOR, 0},
-        {GUI_MI_OPER, 1, "C&lear text area", 'L', "Alt+L", GrKey_Alt_L, COMMAND_TA_CLEAR, 0}};
+        {GUI_MI_OPER, 1, "&Char color...", 'C', "Alt+C", GrKey_Alt_C, COMMAND_TA_CHARCOLOR, 0},
+        {GUI_MI_OPER, 1, "C&lear text area...", 'L', "Alt+L", GrKey_Alt_L, COMMAND_TA_CLEAR, 0}};
 
-    static GUIMenu menu2 = {2, 10, 0, itemsm2};
+    static GUIMenu menu2 = {2, 11, 0, itemsm2};
 
     static GUIMenuItem itemsm21[7] = {
         {GUI_MI_OPER, 1, "&A pc6x8.fnt", 'A', NULL, 0, COMMAND_LOADFONT_CP437+1, 0}, 
@@ -362,14 +392,21 @@ static void setup_menus(void)
 
     static GUIMenu menu25 = {25, 17, 0, itemsm25};
 
+    static GUIMenuItem itemsm26[3] = {
+        {GUI_MI_OPER, 1, "&A px8x18.fnt", 'A', NULL, 0, COMMAND_LOADFONT_CP437EXT+1, 0}, 
+        {GUI_MI_OPER, 1, "&B px11x22.fnt", 'B', NULL, 0, COMMAND_LOADFONT_CP437EXT+2, 0}, 
+        {GUI_MI_OPER, 1, "&C px14x28.fnt", 'C', NULL, 0, COMMAND_LOADFONT_CP437EXT+3, 0}};
+
+    static GUIMenu menu26 = {26, 3, 0, itemsm26};
+
     static GUIMenuItem itemsm3[10] = {
         {GUI_MI_OPER, 1, "&About", 'A', NULL, 0, COMMAND_DLG_ABOUT, 0},
         {GUI_MI_SEP, 1, "", 0, NULL, 0, 0, 0}, 
-        {GUI_MI_OPER, 1, "&Test Yes/No dialog", 'T', NULL, 0, COMMAND_DLG_YN, 0},
-        {GUI_MI_OPER, 1, "T&est Yes/No/Cancel dialog", 'E', NULL, 0, COMMAND_DLG_YNC, 0},
+        {GUI_MI_OPER, 1, "&Test Yes/No dialog...", 'T', NULL, 0, COMMAND_DLG_YN, 0},
+        {GUI_MI_OPER, 1, "T&est Yes/No/Cancel dialog...", 'E', NULL, 0, COMMAND_DLG_YNC, 0},
         {GUI_MI_SEP, 1, "", 0, NULL, 0, 0, 0}, 
-        {GUI_MI_OPER, 1, "Test &Objects 1", 'O', NULL, 0, COMMAND_TEST_OBJ1, 0},
-        {GUI_MI_OPER, 1, "Test O&bjects 2", 'B', NULL, 0, COMMAND_TEST_OBJ2, 0},
+        {GUI_MI_OPER, 1, "Test &Objects 1...", 'O', NULL, 0, COMMAND_TEST_OBJ1, 0},
+        {GUI_MI_OPER, 1, "Test O&bjects 2...", 'B', NULL, 0, COMMAND_TEST_OBJ2, 0},
         {GUI_MI_SEP, 1, "", 0, NULL, 0, 0, 0}, 
         {GUI_MI_OPER, 1, "&Use DoubleBuffer", 'U', NULL, 0, COMMAND_USE_DB, 0},
         {GUI_MI_OPER, 0, "&Manage Expose Events", 'M', NULL, 0, COMMAND_MANAGE_EXP, 0}};
@@ -384,13 +421,8 @@ static void setup_menus(void)
     static GUIMenuBar menubar = {3 ,0, mbitems};
 
     GUIMenusSetChrType(GR_UTF8_TEXT); // this source is UTF8 coded
-//    GUIMenusSetFontByName("univ12b.fnt");
-//    GUIMenusSetFontByName("anti10.fnt");
-//    GUIMenusSetFontByName("ncen22.fnt");
-//    GUIMenusSetFontByName("ter-mgrx20n.psf");
-    GUIMenusSetFontByName("tmgrx18b.fnt");
-//    GUIMenuSetFontByName("tmgrx12n.fnt");
-//    GUIMenuSetFontByName("c:/grxfonts/univ09.fnt");
+    //GUIMenusSetFontByName("tmgrx18b.fnt");
+    GUIMenusSetFont(&GrFont_PX8x18);
 
     GUIMenusSetColors(EGAC_WHITE, EGAC_RED, EGAC_BLACK,
                       EGAC_YELLOW, EGAC_LIGHTGRAY, EGAC_DARKGRAY);
@@ -401,6 +433,7 @@ static void setup_menus(void)
     GUIMenuRegister(&menu22);
     GUIMenuRegister(&menu24);
     GUIMenuRegister(&menu25);
+    GUIMenuRegister(&menu26);
     GUIMenuRegister(&menu3);
     GUIMenuBarSet(&menubar);
 }
@@ -414,7 +447,7 @@ static void setup_tiles(void)
 
     int mbheight, stheight;
 
-    grt_info.txo_font = &GrFont_PC8x16;
+    grt_info.txo_font = &GrFont_PX8x18;
     grt_info.txo_fgcolor = EGAC_BLACK;
     grt_info.txo_bgcolor = GrNOCOLOR;
     grt_info.txo_direct = GR_TEXT_RIGHT;
@@ -466,8 +499,10 @@ static void setup_tiles(void)
 
     GUIDialogsSetColors(EGAC_BLACK, EGAC_YELLOW, EGAC_BLUE, EGAC_WHITE);
     GUICDialogsSetColors(EGAC_GREEN, EGAC_WHITE);
-    GUIDialogsSetTitleFontByName("tmgrx18n.fnt");
-    GUICDialogsSetFontByName("tmgrx18n.fnt");
+    //GUIDialogsSetTitleFontByName("tmgrx18n.fnt");
+    //GUICDialogsSetFontByName("tmgrx18n.fnt");
+    GUIDialogsSetTitleFont(&GrFont_PX11x22);
+    GUICDialogsSetFont(&GrFont_PX8x18);
 
 #undef PAN2W
 #undef PAN1H
@@ -481,10 +516,11 @@ static void setup_groups(void)
 #define PX1 80
 #define PY0 0
 #define INCRY 42
-#define NOBJECTSP1 19
+#define NOBJECTSP1 20
 
     GUIObjectsSetChrType(GR_UTF8_TEXT); // this source is UTF8 coded
-    GUIObjectsSetFontByName("tmgrx16b.fnt");
+    //GUIObjectsSetFontByName("tmgrx16b.fnt");
+    GUIObjectsSetFont(&GrFont_PX8x18);
     GUIObjectsSetColors(EGAC_BLACK, EGAC_LIGHTGRAY, EGAC_DARKGRAY);
 
     grp1 = GUIGroupCreate(NOBJECTSP1, 16, 32);
@@ -494,19 +530,20 @@ static void setup_groups(void)
     GUIObjectSetButton(&(grp1->o[3]), 3, PX0, PY0+INCRY*1, 80, 40, EGAC_BLUE, EGAC_YELLOW, "CP1252", COMMAND_FONT_CP1252, 101, 0);
     GUIObjectSetButton(&(grp1->o[4]), 4, PX1, PY0+INCRY*1, 80, 40, EGAC_BLUE, EGAC_YELLOW, "8859-1", COMMAND_FONT_ISO88591, 101, 0);
     GUIObjectSetButton(&(grp1->o[5]), 5, PX0, PY0+INCRY*2, 80, 40, EGAC_BLUE, EGAC_YELLOW, "MGRX", COMMAND_FONT_MGRX, 101, 0);
-    GUIObjectSetLabel(&(grp1->o[6]), 6, PX0, PY0+INCRY*3.5-20, 160, 20, GrNOCOLOR, EGAC_BLACK, "Set UserEncoding");
-    GUIObjectSetButton(&(grp1->o[7]), 7, PX0, PY0+INCRY*3.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "CP437", COMMAND_UENC_CP437, 102, 1);
-    GUIObjectSetButton(&(grp1->o[8]), 8, PX1, PY0+INCRY*3.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "CP850", COMMAND_UENC_CP850, 102, 0);
-    GUIObjectSetButton(&(grp1->o[9]), 9, PX0, PY0+INCRY*4.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "CP1252", COMMAND_UENC_CP1252, 102, 0);
-    GUIObjectSetButton(&(grp1->o[10]), 10, PX1, PY0+INCRY*4.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "8859-1", COMMAND_UENC_ISO88591, 102, 0);
-    GUIObjectSetButton(&(grp1->o[11]), 11, PX0, PY0+INCRY*5.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "UTF-8", COMMAND_UENC_UTF8, 102, 0);
-    GUIObjectSetButton(&(grp1->o[12]), 12, PX1, PY0+INCRY*5.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "UCS-2", COMMAND_UENC_UCS2, 102, 0);
-    GUIObjectSetButton(&(grp1->o[13]), 13, PX0, PY0+INCRY*7, 80, 40, EGAC_BROWN, EGAC_WHITE, "Glyphs", COMMAND_TEST1, 0, 0);
-    GUIObjectSetButton(&(grp1->o[14]), 14, PX1, PY0+INCRY*7, 80, 40, EGAC_BROWN, EGAC_WHITE, "Chars", COMMAND_TEST2, 0, 0);
-    GUIObjectSetButton(&(grp1->o[15]), 15, PX0, PY0+INCRY*8, 80, 40, EGAC_BROWN, EGAC_WHITE, "Strings", COMMAND_TEST3, 0, 0);
-    GUIObjectSetButton(&(grp1->o[16]), 16, PX1, PY0+INCRY*8, 80, 40, EGAC_BROWN, EGAC_WHITE, "LoadFile", COMMAND_TEST4, 0, 0);
-    GUIObjectSetEntry(&(grp1->o[17]), 17, PX0, PY0+INCRY*9.1, 160, 30, EGAC_WHITE, EGAC_BLACK, 30, "demintl2.c");
-    GUIObjectSetButton(&(grp1->o[18]), 18, PX0, PY0+INCRY*10, 160, 40, EGAC_RED, EGAC_WHITE, "Exit", COMMAND_EXIT, 0, 0);
+    GUIObjectSetButton(&(grp1->o[6]), 6, PX1, PY0+INCRY*2, 80, 40, EGAC_BLUE, EGAC_YELLOW, "437Ext", COMMAND_FONT_CP437EXT, 101, 0);
+    GUIObjectSetLabel(&(grp1->o[7]), 7, PX0, PY0+INCRY*3.5-20, 160, 20, GrNOCOLOR, EGAC_BLACK, "Set UserEncoding");
+    GUIObjectSetButton(&(grp1->o[8]), 8, PX0, PY0+INCRY*3.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "CP437", COMMAND_UENC_CP437, 102, 1);
+    GUIObjectSetButton(&(grp1->o[9]), 9, PX1, PY0+INCRY*3.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "CP850", COMMAND_UENC_CP850, 102, 0);
+    GUIObjectSetButton(&(grp1->o[10]), 10, PX0, PY0+INCRY*4.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "CP1252", COMMAND_UENC_CP1252, 102, 0);
+    GUIObjectSetButton(&(grp1->o[11]), 11, PX1, PY0+INCRY*4.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "8859-1", COMMAND_UENC_ISO88591, 102, 0);
+    GUIObjectSetButton(&(grp1->o[12]), 12, PX0, PY0+INCRY*5.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "UTF-8", COMMAND_UENC_UTF8, 102, 0);
+    GUIObjectSetButton(&(grp1->o[13]), 13, PX1, PY0+INCRY*5.5, 80, 40, EGAC_GREEN, EGAC_YELLOW, "UCS-2", COMMAND_UENC_UCS2, 102, 0);
+    GUIObjectSetButton(&(grp1->o[14]), 14, PX0, PY0+INCRY*7, 80, 40, EGAC_BROWN, EGAC_WHITE, "Glyphs", COMMAND_TEST1, 0, 0);
+    GUIObjectSetButton(&(grp1->o[15]), 15, PX1, PY0+INCRY*7, 80, 40, EGAC_BROWN, EGAC_WHITE, "Chars", COMMAND_TEST2, 0, 0);
+    GUIObjectSetButton(&(grp1->o[16]), 16, PX0, PY0+INCRY*8, 80, 40, EGAC_BROWN, EGAC_WHITE, "Strings", COMMAND_TEST3, 0, 0);
+    GUIObjectSetButton(&(grp1->o[17]), 17, PX1, PY0+INCRY*8, 80, 40, EGAC_BROWN, EGAC_WHITE, "LoadFile", COMMAND_TEST4, 0, 0);
+    GUIObjectSetEntry(&(grp1->o[18]), 18, PX0, PY0+INCRY*9.1, 160, 30, EGAC_WHITE, EGAC_BLACK, 30, "demintl2.c");
+    GUIObjectSetButton(&(grp1->o[19]), 19, PX0, PY0+INCRY*10, 160, 40, EGAC_RED, EGAC_WHITE, "Exit", COMMAND_EXIT, 0, 0);
     GUIGroupSetSelected(grp1, 1, 0);
     GUIGroupSetPanel(grp1, tile2->p);
 }
@@ -558,106 +595,111 @@ static int process_command(GrEvent *ev)
     switch (ev->p1) {
         case COMMAND_RES_640x480x8 :
             set_desired_resolution(640, 480, 8);
-            return 1;
+            return -1;
         case COMMAND_RES_800x600x8 :
             set_desired_resolution(800, 600, 8);
-            return 1;
+            return -1;
         case COMMAND_RES_1024x768x8 :
             set_desired_resolution(1024, 768, 8);
-            return 1;
+            return -1;
         case COMMAND_RES_1920x1080x8 :
             set_desired_resolution(1920, 1080, 8);
-            return 1;
+            return -1;
         case COMMAND_RES_4000x4000x8 :
             set_desired_resolution(4000, 4000, 8);
-            return 1;
+            return -1;
         case COMMAND_RES_640x480x24 :
             set_desired_resolution(640, 480, 24);
-            return 1;
+            return -1;
         case COMMAND_RES_800x600x24 :
             set_desired_resolution(800, 600, 24);
-            return 1;
+            return -1;
         case COMMAND_RES_1024x768x24 :
             set_desired_resolution(1024, 768, 24);
-            return 1;
+            return -1;
         case COMMAND_RES_1920x1080x24 :
             set_desired_resolution(1920, 1080, 24);
-            return 1;
+            return -1;
         case COMMAND_RES_4000x4000x24 :
             set_desired_resolution(4000, 4000, 24);
-            return 1;
+            return -1;
 
         case COMMAND_FONT_CP437 :
             texta_font = grf_CP437;
             stext_font = font_name_CP437;
             restart_paint(0);
-            return 0;
+            return 1;
         case COMMAND_FONT_CP850 :
             texta_font = grf_CP850;
             stext_font = font_name_CP850;
             restart_paint(0);
-            return 0;
+            return 1;
         case COMMAND_FONT_CP1252 :
             texta_font = grf_CP1252;
             stext_font = font_name_CP1252;
             restart_paint(0);
-            return 0;
+            return 1;
         case COMMAND_FONT_ISO88591 :
             texta_font = grf_ISO88591;
             stext_font = font_name_ISO88591;
             restart_paint(0);
-            return 0;
+            return 1;
         case COMMAND_FONT_MGRX :
             texta_font = grf_MGRX;
             stext_font = font_name_MGRX;
             restart_paint(0);
-            return 0;
+            return 1;
+        case COMMAND_FONT_CP437EXT :
+            texta_font = grf_CP437Ext;
+            stext_font = font_name_CP437Ext;
+            restart_paint(0);
+            return 1;
 
         case COMMAND_UENC_CP437 :
             GrSetUserEncoding(GRENC_CP437);
             restart_paint(0);
-            return 0;
+            return 1;
         case COMMAND_UENC_CP850 :
             GrSetUserEncoding(GRENC_CP850);
             restart_paint(0);
-            return 0;
+            return 1;
         case COMMAND_UENC_CP1252 :
             GrSetUserEncoding(GRENC_CP1252);
             restart_paint(0);
-            return 0;
+            return 1;
         case COMMAND_UENC_ISO88591 :
             GrSetUserEncoding(GRENC_ISO_8859_1);
             restart_paint(0);
-            return 0;
+            return 1;
         case COMMAND_UENC_UTF8 :
             GrSetUserEncoding(GRENC_UTF_8);
             restart_paint(0);
-            return 0;
+            return 1;
         case COMMAND_UENC_UCS2 :
             GrSetUserEncoding(GRENC_UCS_2);
             restart_paint(0);
-            return 0;
+            return 1;
 
         case COMMAND_TEST1 :
             dotest(1);
             GUITilePaint(IDT_STATUS);
-            return 0;
+            return 1;
         case COMMAND_TEST2 :
             dotest(2);
             GUITilePaint(IDT_STATUS);
-            return 0;
+            return 1;
         case COMMAND_TEST3 :
             dotest(3);
             GUITilePaint(IDT_STATUS);
-            return 0;
+            return 1;
         case COMMAND_TEST4 :
             dotest(4);
             GUITilePaint(IDT_STATUS);
-            return 0;
+            return 1;
 
         case COMMAND_TA_SAVE :
             save_content_to_file();
-            return 0;
+            return 1;
         case COMMAND_TA_CLEAR :
             result = GUICDialogYesNo("Clear text area?", NULL, 0, "Yes", "No");
             if (result == 1) {
@@ -666,34 +708,34 @@ static int process_command(GrEvent *ev)
                 GUITilePaint(IDT_EDIT);
                 GUITilePaint(IDT_STATUS);
             }
-            return 0;
+            return 1;
         case COMMAND_TA_CHARCOLOR :
             dlg_ta_color();
-            return 0;
+            return 1;
 
         case COMMAND_DLG_ABOUT :
             GUICDialogInfo("About", (void **)abouttext, 3, "Ok");
-            return 0;
+            return 1;
         case COMMAND_DLG_YN :
             result = GUICDialogYesNo("Test Yes/No", (void **)abouttext,
                                      3, "Yes", "No");
             print_dlg_result("Yes/No", result);
             GUITilePaint(IDT_STATUS);
-            return 0;
+            return 1;
         case COMMAND_DLG_YNC :
             result = GUICDialogYesNoCancel("Test Yes/No/Cancel", (void **)abouttext,
                                            3, "Yes", "No", "Cancel");
             print_dlg_result("Yes/No/Cancel", result);
             GUITilePaint(IDT_STATUS);
-            return 0;
+            return 1;
 
         case COMMAND_TEST_OBJ1 :
-            dlg_test_obj1();
-            print_test_dlg_result();
-            return 0;
+            result = dlg_test_obj1();
+            print_test_dlg_result(result);
+            return 1;
         case COMMAND_TEST_OBJ2 :
             dlg_test_obj2();
-            return 0;
+            return 1;
             
         case COMMAND_USE_DB :
             usedoublebuffer = (usedoublebuffer) ? 0 : 1;
@@ -705,17 +747,18 @@ static int process_command(GrEvent *ev)
                 GUIMenuSetTag(3, COMMAND_MANAGE_EXP, 0);
                 GUIMenuSetEnable(3, GUI_MI_OPER, COMMAND_MANAGE_EXP, 0);
             }
-            return 1;
+            return -1;
+
         case COMMAND_MANAGE_EXP :
             if (usedoublebuffer) {
                 manageexposeevents = (manageexposeevents) ? 0 : 1;
                 GUIMenuSetTag(3, COMMAND_MANAGE_EXP, manageexposeevents);
-                GUIManageExposeEvents(manageexposeevents);
+                GUIDBManageExposeEvents(manageexposeevents);
             }
-            return !manageexposeevents;
+            return (manageexposeevents ? 1 : -1);
             
         case COMMAND_EXIT :
-            set_desired_resolution(-1, 0, 0);
+            GrEventParEnqueue(GREV_END, 0, 0, 0, 0);
             return 1;
     }
     return 0;
@@ -733,7 +776,7 @@ static int process_fchange(GrEvent *ev)
     GUITANewLine(textarea1);
     GUITilePaint(IDT_STATUS);
 
-    return 0;
+    return 1;
 }
 
 /**************************/
@@ -755,6 +798,8 @@ static int process_loadfont(long nfont)
         "tmgrx18b.fnt", "tmgrx18n.fnt", "tmgrx20b.fnt", "tmgrx20n.fnt", "tmgrx22b.fnt",
         "tmgrx22n.fnt", "tmgrx24b.fnt", "tmgrx24n.fnt", "tmgrx28b.fnt", "tmgrx28n.fnt",
         "tmgrx32b.fnt", "tmgrx32n.fnt"};
+    static char* cp437ext_fonts[3] = {
+        "px8x18.fnt", "px11x22.fnt", "px14x28.fnt"};
     int selected;
     char aux[81];
     
@@ -818,6 +863,21 @@ static int process_loadfont(long nfont)
         restart_paint(1);
         return 1;
     }
+    if ((nfont >= COMMAND_LOADFONT_CP437EXT+1) && (nfont <= COMMAND_LOADFONT_CP437EXT+3)) {
+        selected = nfont - COMMAND_LOADFONT_CP437EXT - 1;
+        GrUnloadFont(grf_CP437Ext);
+        font_name_CP437Ext = cp437ext_fonts[selected];
+        grf_CP437Ext = GrLoadFont(font_name_CP437Ext);
+        if (grf_CP437Ext == NULL) {
+            sprintf(aux,"%s not found", font_name_CP437Ext);
+            disaster(aux);
+        }
+        texta_font = grf_CP437Ext;
+        stext_font = font_name_CP437Ext;
+        GUIMenuSetUniqueTag(26, nfont, 2);
+        restart_paint(1);
+        return 1;
+    }
     return 0;
 }
 
@@ -877,6 +937,9 @@ static void restart_groups(void)
             break;
         case GR_FONTENC_MGRX512:
             command_fontenc = COMMAND_FONT_MGRX;
+            break;
+        case GR_FONTENC_CP437EXT:
+            command_fontenc = COMMAND_FONT_CP437EXT;
             break;
     }
         
@@ -1014,6 +1077,8 @@ static void draw_string_collection(void)
       (unsigned char *)"⎮ ⎜ ⎟ ⎢ ⎥ ⎨ ⎬   ⌡ ⎝ ⎠ ⎣ ⎦ ⎩ ⎭";
     unsigned char *sutf8c3 =
       (unsigned char *)"⌡ ⎝ ⎠ ⎣ ⎦ ⎩ ⎭   ←↑→↓↔↕↵⇐⇑⇒⇓⇔⇕";
+    unsigned char *sutf8c4 =
+      (unsigned char *)"Hello world    Привет мир    Γειά σου Κόσμε";
     
     GUITANewLine(textarea1);
     GUITAPutString(textarea1, scp437, 0, GR_CP437_TEXT);
@@ -1035,6 +1100,8 @@ static void draw_string_collection(void)
     GUITAPutString(textarea1, sutf8c2, 0, GR_UTF8_TEXT);
     GUITANewLine(textarea1);
     GUITAPutString(textarea1, sutf8c3, 0, GR_UTF8_TEXT);
+    GUITANewLine(textarea1);
+    GUITAPutString(textarea1, sutf8c4, 0, GR_UTF8_TEXT);
 }
 
 /**************************/
@@ -1046,7 +1113,7 @@ static void file_listing(void)
     char *s;
     int l;
     
-    s = GUIGroupGetText(grp1, 17, GR_UTF8_TEXT);
+    s = GUIGroupGetText(grp1, 18, GR_UTF8_TEXT);
     if (s == NULL) return;
 
     //f = fopen("grgui.h", "r");
@@ -1091,12 +1158,14 @@ static void print_dlg_result( char *s, int d)
     
 /**************************/
 
-static void print_test_dlg_result(void)
+static void print_test_dlg_result(int d)
 {
+    char aux[81];
     int i;
 
     GUITANewLine(textarea1);
-    GUITAPutString(textarea1, "Test dialog returned:", 0, GR_UTF8_TEXT);
+    sprintf(aux, "Test dialog returned: %d, contents:", d);
+    GUITAPutString(textarea1, aux, 0, GR_UTF8_TEXT);
     GUITANewLine(textarea1);
     
     for (i=0; i<4; i++) {
@@ -1200,6 +1269,7 @@ int processev_panel2(void *udata, GrEvent *ev)
 int processev_panel3(void *udata, GrEvent *ev)
 {
     int ret;
+
     ret = GUITAProcessEvent(textarea1, ev);
     if (ret) GUITilePaint(IDT_STATUS);
     return ret;
@@ -1335,10 +1405,11 @@ int processev_dlg_test_obj1(void *udata, GrEvent *ev)
 
 /**************************/
 
-static void dlg_test_obj1(void)
+static int dlg_test_obj1(void)
 {
     GUIGroup *go;
     GUIDialog *d;
+    int ret;
 
     go = GUIGroupCreate(17, 0, 0);
     if (go == NULL) disaster("creating group in dlg_test_obj1");
@@ -1364,10 +1435,11 @@ static void dlg_test_obj1(void)
     d = GUIGroupDialogCreate("Test various objects", go, processev_dlg_test_obj1);
     if (d == NULL) disaster("creating dialog in dlg_test_obj1");
 
-    GUIDialogRun(d);
+    ret = GUIDialogRun(d);
 
     GUIDialogDestroy(d);
     GUIGroupDestroy(go);
+    return ret;
 }
 
 /**************************/

@@ -75,6 +75,8 @@ char *GrStrFontEncoding(int fontencoding)
     return ("UNICODE");
   else if (fontencoding == GR_FONTENC_MGRX512)
     return ("MGRX512");
+  else if (fontencoding == GR_FONTENC_CP437EXT)
+    return ("CP437EXT");
 
   return ("UNKNOW");
 }

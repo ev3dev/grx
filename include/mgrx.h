@@ -4,6 +4,10 @@
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  ** [e-mail: csaba@vuse.vanderbilt.edu]
  **
+ ** Copyright (C) 2006-2020 Mariano Alvarez Fernandez
+ ** [e-mail: malfer@telefonica.net] 
+ ** Heavily modified for MGRX
+ **
  ** This file is part of the GRX graphics library.
  **
  ** The GRX graphics library is free software; you can redistribute it
@@ -25,7 +29,7 @@
 
 /* Version of MGRX API */
 
-#define MGRX_VERSION_API 0x0132
+#define MGRX_VERSION_API 0x0133
 
 /* these are the supported configurations: */
 #define MGRX_VERSION_GCC_386_DJGPP       1       /* DJGPP v2 */
@@ -864,7 +868,8 @@ GrColor GrPixelCNC(GrContext *c,int x,int y);
 #define GR_FONTENC_MGRX512     6     /* custom MGRX 512 char encoding */
 #define GR_FONTENC_ISO_8859_5  7     /* ASCII + Cyrillic */
 #define GR_FONTENC_ISO_8859_7  8     /* ASCII + Greek */
-#define GR_FONTENC_LASTENC     8     /* last encoding, for checks */
+#define GR_FONTENC_CP437EXT    9     /* CP437 + ISO-8859-1 + CP1252 */
+#define GR_FONTENC_LASTENC     9     /* last encoding, for checks */
 
 /*
  * font structures
@@ -903,10 +908,14 @@ typedef struct _GR_font {               /* the complete font */
         struct   _GR_fontChrInfo chrinfo[1]; /* character info (not act. size) */
 } GrFont;
 
+/* built-in fonts */
 extern  GrFont          GrFont_PC6x8;
 extern  GrFont          GrFont_PC8x8;
 extern  GrFont          GrFont_PC8x14;
 extern  GrFont          GrFont_PC8x16;
+extern  GrFont          GrFont_PX8x18;
+extern  GrFont          GrFont_PX11x22;
+extern  GrFont          GrFont_PX14x28;
 /* #define GrDefaultFont   GrFont_PC8x14  Use GrGetDefaultFont() instead */
 
 GrFont *GrGetDefaultFont();  /* GrFont_PC8x14 if not changed */
@@ -1531,6 +1540,23 @@ void GrMouseUnBlock(int return_value_from_GrMouseBlock);
 } while(0)
 #endif  /* GRX_SKIP_INLINES */
 
+/* ================================================================== */
+/*                             i18n catalogs                          */
+/* ================================================================== */
+
+/* A catalog implementation to help internationalize programs */
+/* it doesn't depend of any other mgrx function               */
+/* and it is Chrtype agnostic (this is why (void *) is used   */
+
+#define GR_MAX_I18N_LANGS 20
+
+int GrI18nInit(int nlg, int nstr, void *defstr);
+void GrI18nEnd(void);
+int GrI18nSetLabel(int lid, void *label);
+void * GrI18nGetLabel(int lid);
+int GrI18nSetLang(int lid);
+void GrI18nAddStrings(int lid, int fsid, int nums, void **str);
+void * GrI18nGetString(int sid);
 
 #ifdef __cplusplus
 }

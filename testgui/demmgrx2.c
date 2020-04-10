@@ -34,10 +34,10 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "MGRX+GrGUI 1.3.2, the graphics library";
+    "MGRX+GrGUI 1.3.3, the graphics library";
 
 char *animatedtext[2] = {
-    "MGRX 1.3.2, the graphics library for DJGPPv2, Linux, X11 and Win32",
+    "MGRX 1.3.3, the graphics library for DJGPPv2, Linux, X11 and Win32",
     "Hello world    Привет мир    Γειά σου Κόσμε    Hola mundo" };
 
 #if defined(__XWIN__) || defined(__WIN32__)
@@ -58,7 +58,7 @@ static int need_restart = 1;
 #define PPMIMGOUT "../testimg/demmgrx2.ppm"
 #endif
 
-#define NDEMOS 50
+#define NDEMOS 51
 
 #define ID_ARCTEST   1
 #define ID_BB1TEST   2
@@ -106,6 +106,7 @@ static int need_restart = 1;
 #define ID_GUIEX09  49
 #define ID_GUIEX10  50
 #define ID_GUIEX11  51
+#define ID_SHOWFNT2 52
 #define ID_MODETEST 70
 #define ID_PAGE1    81
 #define ID_PAGE2    82
@@ -164,6 +165,7 @@ static ProgTable ptable[NDEMOS] = {
     {ID_GUIEX09, "grgui09", "grgui09.c -> GrGUI example 09"},
     {ID_GUIEX10, "grgui10", "grgui10.c -> GrGUI example 10"},
     {ID_GUIEX11, "grgui11", "grgui11.c -> GrGUI example 11"},
+    {ID_SHOWFNT2, "showfnt2", "showfnt2.c -> show MGRX font collection"},
     {ID_MODETEST, "modetest", "modetest.c -> test all available graphics modes"},
     {ID_PAGE1, "", "Change to page 1"},
     {ID_PAGE2, "", "Change to page 2"},
@@ -361,6 +363,7 @@ static void ini_grgui(void)
 
     GUIDialogsSetTitleFont(grf_gfaz);
     GUIDialogsSetColors(EGAC_BLACK, EGAC_LIGHTCYAN, EGAC_WHITE, EGAC_BLACK);
+    GUIDialogsSetTitleFont(grf_intl);
     GUICDialogsSetFont(grf_gfaz);
     GUICDialogsSetColors(EGAC_CYAN, EGAC_WHITE);
 }
@@ -383,7 +386,7 @@ static void ini_groups(void)
 #define PY8 362
 
 #define NBUTTONSP1 26
-#define NBUTTONSP2 26
+#define NBUTTONSP2 27
 
     bgrp1 = GUIGroupCreate(NBUTTONSP1, 16, 30);
     GUIObjectSetButton(&(bgrp1->o[0]),   0, PX0, PY0, 100, 40, EGAC_DARKGRAY, EGAC_LIGHTGRAY, "ArcTest", ID_ARCTEST, 0, 0);
@@ -437,10 +440,11 @@ static void ini_groups(void)
     GUIObjectSetButton(&(bgrp2->o[19]), 19, PX2, PY1, 100, 40, EGAC_CYAN, EGAC_YELLOW, "GrGui08", ID_GUIEX08, 0, 0);
     GUIObjectSetButton(&(bgrp2->o[20]), 20, PX2, PY2, 100, 40, EGAC_CYAN, EGAC_YELLOW, "GrGui09", ID_GUIEX09, 0, 0);
     GUIObjectSetButton(&(bgrp2->o[21]), 21, PX2, PY3, 100, 40, EGAC_CYAN, EGAC_YELLOW, "GrGui10", ID_GUIEX10, 0, 0);
-    GUIObjectSetButton(&(bgrp2->o[22]), 23, PX2, PY4, 100, 40, EGAC_CYAN, EGAC_YELLOW, "GrGui11", ID_GUIEX11, 0, 0);
-    GUIObjectSetButton(&(bgrp2->o[23]), 23, PX2, PY6, 100, 40, EGAC_GREEN, EGAC_WHITE, "Page 1", ID_PAGE1, 0, 0);
-    GUIObjectSetButton(&(bgrp2->o[24]), 24, PX2, PY7, 100, 40, EGAC_BROWN, EGAC_WHITE, "ModeTest", ID_MODETEST, 0, 0);
-    GUIObjectSetButton(&(bgrp2->o[25]), 25, PX2, PY8, 100, 40, EGAC_RED, EGAC_WHITE, "Exit", ID_EXIT, 0, 0);
+    GUIObjectSetButton(&(bgrp2->o[22]), 22, PX2, PY4, 100, 40, EGAC_CYAN, EGAC_YELLOW, "GrGui11", ID_GUIEX11, 0, 0);
+    GUIObjectSetButton(&(bgrp2->o[23]), 23, PX2, PY5, 100, 40, EGAC_CYAN, EGAC_YELLOW, "ShowFnt2", ID_SHOWFNT2, 0, 0);
+    GUIObjectSetButton(&(bgrp2->o[24]), 24, PX2, PY6, 100, 40, EGAC_GREEN, EGAC_WHITE, "Page 1", ID_PAGE1, 0, 0);
+    GUIObjectSetButton(&(bgrp2->o[25]), 25, PX2, PY7, 100, 40, EGAC_BROWN, EGAC_WHITE, "ModeTest", ID_MODETEST, 0, 0);
+    GUIObjectSetButton(&(bgrp2->o[26]), 26, PX2, PY8, 100, 40, EGAC_RED, EGAC_WHITE, "Exit", ID_EXIT, 0, 0);
     GUIGroupSetSelected(bgrp2, 0, 0);
 
     bgrpact = bgrp1;
@@ -488,7 +492,7 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "MGRX 1.3.2";
+    char *t1 = "MGRX 1.3.3";
     char *t2 = "test programs launcher";
 
     grt_centered.txo_fgcolor = EGAC_LIGHTGREEN;

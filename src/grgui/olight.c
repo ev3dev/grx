@@ -44,13 +44,18 @@ void GUIObjectSetLight(GUIObject *o, int id, int x, int y, int width, int height
     o->pressed = -1;
     o->selected = -1;
     o->data = NULL;
+    o->visible = 1;
 }
 
 /***************************/
 
-void _GUIOLightPaint(GUIObject *o, int x, int y)
+void _GUIOLightPaint(GUIObject *o, int dx, int dy)
 {
     GrColor c1, c2;
+    int x, y;
+    
+    x = o->x + dx;
+    y = o->y + dy;
     
     if (o->on) {
         c1 = o->bg;
@@ -60,12 +65,12 @@ void _GUIOLightPaint(GUIObject *o, int x, int y)
         c2 = _objectshcolor2;
     }
 
-    GrBox(x+o->x, y+o->y, x+o->x+o->width-1, y+o->y+o->height-1, _objectlcolor);
-    GrBox(x+o->x+1, y+o->y+1, x+o->x+o->width-2, y+o->y+o->height-2, c1);
-    GrBox(x+o->x+2, y+o->y+2, x+o->x+o->width-3, y+o->y+o->height-3, _objectlcolor);
+    GrBox(x, y, x+o->width-1, y+o->height-1, _objectlcolor);
+    GrBox(x+1, y+1, x+o->width-2, y+o->height-2, c1);
+    GrBox(x+2, y+2, x+o->width-3, y+o->height-3, _objectlcolor);
     _objectbutopt.txo_fgcolor = c2;
-    GrFilledBox(x+o->x+3, y+o->y+3, x+o->x+o->width-4, y+o->y+o->height-4, c1);
-    GrDrawString(o->text, 0, x+o->x+o->width/2, y+o->y+o->height/2, &_objectbutopt);
+    GrFilledBox(x+3, y+3, x+o->width-4, y+o->height-4, c1);
+    GrDrawString(o->text, 0, x+o->width/2, y+o->height/2, &_objectbutopt);
 }
 
 /***************************/
@@ -73,10 +78,8 @@ void _GUIOLightPaint(GUIObject *o, int x, int y)
 void _GUIOLightRePaint(GUIGroup *g, GUIObject *o)
 {
     _GUIOLightPaint(o, g->x, g->y);
-    if (g->p) {
-        GUIPanelBltRectClToScreen(g->p, g->x+o->x, g->y+o->y,
-                                  o->width, o->height);
-    }
+    GUIDBCurCtxBltRectToScreen(g->x+o->x, g->y+o->y, g->x+o->x+o->width-1,
+                             g->y+o->y+o->height-1);
 }
 
 /***************************/
@@ -85,4 +88,11 @@ void _GUIOLightSetOn(GUIGroup *g, GUIObject *o, int paint)
 {
     o->on ^= 1;
     if (paint) _GUIOLightRePaint(g, o);
+}
+
+/***************************/
+
+void _GUIOLightSetText(GUIObject *o, void *newtext)
+{
+    o->text = newtext;
 }

@@ -53,6 +53,14 @@ STD_3 = $(OP)fonts/fdv_bgi$(OX)     \
 	$(OP)fonts/pc8x8$(OX)       \
 	$(OP)fonts/pc8x14$(OX)      \
 	$(OP)fonts/pc8x16$(OX)      \
+	$(OP)fonts/px8x18$(OX)      \
+	$(OP)fonts/px11x22$(OX)     \
+	$(OP)fonts/px14x28$(OX)     \
+	$(OP)gformats/ctx2pnm$(OX)  \
+	$(OP)gformats/pnm2ctx$(OX)
+
+STD_4 = $(OP)gcursors/bldcurs$(OX)  \
+	$(OP)gcursors/drawcurs$(OX) \
 	$(OP)image/ialloc$(OX)      \
 	$(OP)image/ibuild$(OX)      \
 	$(OP)image/ifbox$(OX)       \
@@ -61,11 +69,6 @@ STD_3 = $(OP)fonts/fdv_bgi$(OX)     \
 	$(OP)image/imginlne$(OX)    \
 	$(OP)image/iplot$(OX)       \
 	$(OP)image/istretch$(OX)    \
-	$(OP)gformats/ctx2pnm$(OX)  \
-	$(OP)gformats/pnm2ctx$(OX)
-
-STD_4 = $(OP)gcursors/bldcurs$(OX)  \
-	$(OP)gcursors/drawcurs$(OX) \
 	$(OP)input/mouinfo$(OX)     \
 	$(OP)input/mouinlne$(OX)    \
 	$(OP)input/mscursor$(OX)    \
@@ -228,7 +231,8 @@ STD_11= $(OP)utils/resize$(OX)      \
 	$(OP)wideline/custline$(OX) \
 	$(OP)wideline/custplne$(OX) \
 	$(OP)wideline/custpoly$(OX) \
-	$(OP)wideline/drwcpoly$(OX)
+	$(OP)wideline/drwcpoly$(OX) \
+	$(OP)i18n/gri18n$(OX)
 
 GRGUI_1 = $(OP)grgui/setup$(OX) \
 	$(OP)grgui/gcontext$(OX) \
@@ -247,8 +251,12 @@ GRGUI_1 = $(OP)grgui/setup$(OX) \
 	$(OP)grgui/olight$(OX) \
 	$(OP)grgui/oentry$(OX) \
 	$(OP)grgui/olist$(OX) \
+	$(OP)grgui/odlist$(OX) \
+	$(OP)grgui/oreglist$(OX) \
 	$(OP)grgui/group$(OX) \
 	$(OP)grgui/textarea$(OX) \
+	$(OP)grgui/rawdl$(OX) \
+	$(OP)grgui/rawdl2$(OX) \
 	$(OP)grgui/utility$(OX)
 
 DBG_1 = $(OP)utils/dbgprint$(OX)

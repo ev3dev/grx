@@ -51,7 +51,7 @@ int main()
     if (!imgloaded) {
         GrFilledBox(0, 0, GrMaxX(), GrMaxY(), WEBC_GOLDENROD);
     }
-    GUIGlobalBltRectToScreen(0, 0, GrScreenX()-1, GrScreenY()-1);
+    GUIDBCurCtxBltToScreen();
 
     GUICDialogInfo("Hello GrGUI", (void **)abouttext, 4, "Okey");
 

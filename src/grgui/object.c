@@ -123,26 +123,32 @@ void GUIObjectsSetColors(GrColor l, GrColor sh1, GrColor sh2)
 
 /***************************/
 
-void _GUIObjectPaint(GUIObject *o, int x, int y)
+void _GUIObjectPaint(GUIObject *o, int dx, int dy)
 {
     switch (o->type) {
         case GUIOBJTYPE_LABEL:
-            _GUIOLabelPaint(o, x, y);
+            _GUIOLabelPaint(o, dx, dy);
             break;
         case GUIOBJTYPE_TEXT:
-            _GUIOTextPaint(o, x, y);
+            _GUIOTextPaint(o, dx, dy);
             break;
         case GUIOBJTYPE_LIGHT:
-            _GUIOLightPaint(o, x, y);
+            _GUIOLightPaint(o, dx, dy);
             break;
         case GUIOBJTYPE_BUTTON:
-            _GUIOButtonPaint(o, x, y);
+            _GUIOButtonPaint(o, dx, dy);
             break;
         case GUIOBJTYPE_ENTRY:
-            _GUIOEntryPaint(o, x, y);
+            _GUIOEntryPaint(o, dx, dy);
             break;
         case GUIOBJTYPE_LIST:
-            _GUIOListPaint(o, x, y);
+            _GUIOListPaint(o, dx, dy);
+            break;
+        case GUIOBJTYPE_DLIST:
+            _GUIODListPaint(o, dx, dy);
+            break;
+        case GUIOBJTYPE_REGLIST:
+            _GUIORegListPaint(o, dx, dy);
             break;
     }
 }
@@ -164,6 +170,11 @@ int _GUIObjectProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev)
             return _GUIOEntryProcessEvent(g, o, ev);
         case GUIOBJTYPE_LIST:
             return _GUIOListProcessEvent(g, o, ev);
+        case GUIOBJTYPE_DLIST:
+            return _GUIODListProcessEvent(g, o, ev);
+        case GUIOBJTYPE_REGLIST:
+            return _GUIORegListProcessEvent(g, o, ev);
+        default:
             break;
     }
     
@@ -189,6 +200,10 @@ void _GUIObjectSetOn(GUIGroup *g, GUIObject *o, int paint)
             break;
         case GUIOBJTYPE_LIST:
             break;
+        case GUIOBJTYPE_DLIST:
+            break;
+        case GUIOBJTYPE_REGLIST:
+            break;
     }
 }
 
@@ -212,6 +227,12 @@ void _GUIObjectDestroy(GUIObject *o)
         case GUIOBJTYPE_LIST:
             _GUIOListDestroy(o);
             break;
+        case GUIOBJTYPE_DLIST:
+            _GUIODListDestroy(o);
+            break;
+        case GUIOBJTYPE_REGLIST:
+            _GUIORegListDestroy(o);
+            break;
     }
 }
 
@@ -232,6 +253,12 @@ void *_GUIObjectGetText(GUIObject *o, int chrtype)
             return _GUIOEntryGetText(o, chrtype);
         case GUIOBJTYPE_LIST:
             return NULL;
+        case GUIOBJTYPE_DLIST:
+            return NULL;
+        case GUIOBJTYPE_REGLIST:
+            return NULL;
+        default:
+            break;
     }
     
     return NULL;
@@ -243,17 +270,24 @@ void _GUIObjectSetText(GUIObject *o, void *newtext)
 {
     switch (o->type) {
         case GUIOBJTYPE_LABEL:
+            _GUIOLabelSetText(o, newtext);
             break;
         case GUIOBJTYPE_TEXT:
             break;
         case GUIOBJTYPE_LIGHT:
+            _GUIOLightSetText(o, newtext);
             break;
         case GUIOBJTYPE_BUTTON:
+            _GUIOButtonSetText(o, newtext);
             break;
         case GUIOBJTYPE_ENTRY:
             _GUIOEntrySetText(o, newtext);
             break;
         case GUIOBJTYPE_LIST:
+            break;
+        case GUIOBJTYPE_DLIST:
+            break;
+        case GUIOBJTYPE_REGLIST:
             break;
     }
 }

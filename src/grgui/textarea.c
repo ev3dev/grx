@@ -579,6 +579,7 @@ int GUITAProcessEvent(GUITextArea *ta, GrEvent *ev)
         if (ev->p1 == GrKey_Delete) {
             print_char(ta, 0x7f, GrGetChrtypeForUserEncoding(), 1);
             scroll_toshow_tc(ta);
+            return 1;
         } else if (ev->p1 == GrKey_Left) {
             move_tcursor_rel(ta, 0, -1, 1);
             scroll_toshow_tc(ta);
@@ -764,12 +765,12 @@ static void draw_tcursor(GUITextArea *ta, int show)
     if (show) {
         GrVLine(xpos, ypos, ypos-ta->ybits+1, ta->tccolor);
         GrVLine(xpos+1, ypos, ypos-ta->ybits+1, ta->tccolor);
-        GUIPanelBltRectClToScreen(ta->p, xpos, ypos-ta->ybits+1, 2, ta->ybits);
+        GUIDBCurCtxBltRectToScreen(xpos, ypos-ta->ybits+1, xpos+1, ypos);
         ta->tctime = 0; // reset blink
     } else if (ta->tccpos >= l->len) {
         GrVLine(xpos, ypos, ypos-ta->ybits+1, ta->bgcolor);
         GrVLine(xpos+1, ypos, ypos-ta->ybits+1, ta->bgcolor);
-        GUIPanelBltRectClToScreen(ta->p, xpos, ypos-ta->ybits+1, 2, ta->ybits);
+        GUIDBCurCtxBltRectToScreen(xpos, ypos-ta->ybits+1, xpos+1, ypos);
     } else {
         redraw_char(ta, ta->tclpos, ta->tccpos, 1);
     }
@@ -794,15 +795,15 @@ static void blink_tcursor(GUITextArea *ta)
     if (ta->tcblink) {
         GrVLine(xpos, ypos, ypos-ta->ybits+1, ta->tccolor);
         GrVLine(xpos+1, ypos, ypos-ta->ybits+1, ta->tccolor);
-        GUIPanelBltRectClToScreen(ta->p, xpos, ypos-ta->ybits+1, 2, ta->ybits);
-    } else if (ta->tccpos >= l->len) {
+        GUIDBCurCtxBltRectToScreen(xpos, ypos-ta->ybits+1, xpos+1, ypos);
+   } else if (ta->tccpos >= l->len) {
         GrVLine(xpos, ypos, ypos-ta->ybits+1, ta->bgcolor);
         GrVLine(xpos+1, ypos, ypos-ta->ybits+1, ta->bgcolor);
-        GUIPanelBltRectClToScreen(ta->p, xpos, ypos-ta->ybits+1, 2, ta->ybits);
+        GUIDBCurCtxBltRectToScreen(xpos, ypos-ta->ybits+1, xpos+1, ypos);
     } else {
         //GrVLine(xpos, ypos, ypos-ta->ybits+1, ta->bgcolor);
         //GrVLine(xpos+1, ypos, ypos-ta->ybits+1, ta->bgcolor);
-        //GUIPanelBltRectClToScreen(ta->p, xpos, ypos-ta->ybits+1, 2, ta->ybits);
+        //GUIDBCurCtxBltRectToScreen(xpos, ypos-ta->ybits+1, xpos+1, ypos);
         redraw_char(ta, ta->tclpos, ta->tccpos, 1);
     }
 }
@@ -824,7 +825,7 @@ static void redraw(GUITextArea *ta)
     if (i > 0)
         GrFilledBox(0, (cl*ta->ybits)+1, GrMaxX(), (cl+i)*ta->ybits, ta->bgcolor);
     
-    GUIPanelBltRectClToScreen(ta->p, 0, 0, GrSizeX(), GrSizeY());
+    GUIDBCurCtxBltToScreen();
     redraw_scbs(ta);
 }
 
@@ -847,8 +848,8 @@ static void redraw_line_from(GUITextArea *ta, int line, int c, int blit)
                                   ta->l[line].cl[c].x - ta->xorg;
     if (x1 < 0) x1 = 0;
     if (x1 < GrSizeX() && blit)
-        GUIPanelBltRectClToScreen(ta->p, x1, ta->l[line].y-ta->ybits+1,
-                                  GrSizeX(), ta->ybits);
+        GUIDBCurCtxBltRectToScreen(x1, ta->l[line].y-ta->ybits+1,
+                                 GrMaxX(), ta->l[line].y);
 }
 
 /**************************************************************************/
@@ -856,6 +857,7 @@ static void redraw_line_from(GUITextArea *ta, int line, int c, int blit)
 static void redraw_char(GUITextArea *ta, int line, int c, int blit)
 {
     GrTextOption grt2;
+    int x1;
     
     if (ta->l[line].y > (GrMaxY()+ta->ybits)) return;
     if (c >= ta->l[line].len) return;
@@ -867,13 +869,13 @@ static void redraw_char(GUITextArea *ta, int line, int c, int blit)
         grt2.txo_fgcolor = ta->l[line].cl[c].fg;
         grt2.txo_bgcolor = ta->l[line].cl[c].bg;
     }
-    GrDrawChar(ta->l[line].cl[c].c, ta->l[line].cl[c].x-ta->xorg,
-               ta->l[line].y, &(grt2));
+    x1 = ta->l[line].cl[c].x-ta->xorg;
+    GrDrawChar(ta->l[line].cl[c].c, x1, ta->l[line].y, &grt2);
 
     if (blit)
-        GUIPanelBltRectClToScreen(ta->p, ta->l[line].cl[c].x-ta->xorg,
-                                  ta->l[line].y-ta->ybits+1,
-                                  ta->l[line].cl[c].w, ta->ybits);
+        GUIDBCurCtxBltRectToScreen(x1, ta->l[line].y-ta->ybits+1,
+                                 x1+ta->l[line].cl[c].w-1, ta->l[line].y);
+                                 
 }
 
 /**************************************************************************/
@@ -1364,6 +1366,8 @@ static void copy_marqued_area(GUITextArea *ta, int clear, int draw)
 
     _GUISetClipBoard(buf, len);
     free(buf);
+
+    if (ta->full) return;
 
     if (clear) delete_marqued_area(ta, draw);
 }

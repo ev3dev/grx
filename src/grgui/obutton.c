@@ -48,13 +48,14 @@ void GUIObjectSetButton(GUIObject *o, int id, int x, int y, int width, int heigh
     o->pressed = 0;
     o->selected = 0;
     o->data = NULL;
+    o->visible = 1;
 }
 
 /***************************/
 
-void _GUIOButtonPaint(GUIObject *o, int x, int y)
+void _GUIOButtonPaint(GUIObject *o, int dx, int dy)
 {
-    dboton(x+o->x, y+o->y, o->width, o->height, o->bg, o->fg,
+    dboton(dx+o->x, dy+o->y, o->width, o->height, o->bg, o->fg,
            o->text, o->sgid, o->selected, o->pressed, o->on);
 }
 
@@ -64,10 +65,8 @@ void _GUIOButtonRePaint(GUIGroup *g, GUIObject *o)
 {
     dboton(g->x+o->x, g->y+o->y, o->width, o->height, o->bg, o->fg,
            o->text, o->sgid, o->selected, o->pressed, o->on);
-    if (g->p) {
-        GUIPanelBltRectClToScreen(g->p, g->x+o->x, g->y+o->y,
-                                  o->width, o->height);
-    }
+    GUIDBCurCtxBltRectToScreen(g->x+o->x, g->y+o->y, g->x+o->x+o->width-1,
+                             g->y+o->y+o->height-1);
 }
 
 /***************************/
@@ -132,6 +131,13 @@ void _GUIOButtonSetOn(GUIGroup *g, GUIObject *o, int paint)
 
 /***************************/
 
+void _GUIOButtonSetText(GUIObject *o, void *newtext)
+{
+    o->text = newtext;
+}
+
+/***************************/
+
 static void adjust_sgid(GUIGroup *g, int sgid, int id, int paint)
 {
     int i;
@@ -190,7 +196,8 @@ static void dboton(int x, int y, int an, int al, GrColor c, GrColor ct,
         GrLine(x+12+iaux, y+al-11+iaux, x+an-13+iaux, y+al-11+iaux, caux);
     }
 
-    _objectbutopt.txo_fgcolor = ct;
+    //_objectbutopt.txo_fgcolor = ct;
+    _objectbutopt.txo_fgcolor = (sgid > 0) ? caux : ct;
     iaux = pulsd ? 1 : 0;
     GrDrawString(s, 0, x+an/2+iaux, y+al/2+iaux, &_objectbutopt);
 

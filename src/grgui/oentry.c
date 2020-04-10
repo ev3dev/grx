@@ -73,6 +73,7 @@ void GUIObjectSetEntry(GUIObject *o, int id, int x, int y, int width, int height
     o->on = 0;
     o->pressed = 0;
     o->selected = 0;
+    o->visible = 1;
 
     data = malloc(sizeof(EntryData));
     if (data != NULL) {
@@ -88,6 +89,7 @@ void GUIObjectSetEntry(GUIObject *o, int id, int x, int y, int width, int height
         o->type = GUIOBJTYPE_NONE;
         o->pressed = -1;
         o->selected = -1;
+        o->visible = 0;
         return;
     }
     data->len = 0;
@@ -209,7 +211,7 @@ void _GUIOEntrySetText(GUIObject *o, void *newtext)
 
 /***************************/
 
-void _GUIOEntryPaint(GUIObject *o, int x, int y)
+void _GUIOEntryPaint(GUIObject *o, int dx, int dy)
 {
     GrLineOption glo;
     EntryData *data;
@@ -296,7 +298,7 @@ void _GUIOEntryPaint(GUIObject *o, int x, int y)
     GrResetClipBox();
 
     GrSetContext(&grcaux);
-    GrBitBlt(NULL, x+o->x, y+o->y, grc, 0, 0, o->width-1, o->height-1, GrWRITE);
+    GrBitBlt(NULL, dx+o->x, dy+o->y, grc, 0, 0, o->width-1, o->height-1, GrWRITE);
     GrDestroyContext(grc);
 
     if (!o->selected && data->changed) {
@@ -450,10 +452,8 @@ static void _GUIOEntryRePaint(GUIGroup *g, GUIObject *o, int setmark)
     }
 
     _GUIOEntryPaint(o, g->x, g->y);
-    if (g->p) {
-        GUIPanelBltRectClToScreen(g->p, g->x+o->x, g->y+o->y,
-                                  o->width, o->height);
-    }
+    GUIDBCurCtxBltRectToScreen(g->x+o->x, g->y+o->y, g->x+o->x+o->width-1,
+                             g->y+o->y+o->height-1);
 }
 
 /***************************/

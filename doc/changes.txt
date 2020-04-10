@@ -1,3 +1,80 @@
+2020-04-08 Workarround to solve a race condition in W10, sometimes hDCMem
+           was used before it was ready.
+2020-03-24 To help use the i18n catalog, added the field "sid" to GUIMenuItem
+           and GUIMenuBarItem, so menus and the bar menu continue to be
+           defined statically, without populate the "title" and "key" fields,
+           and them use this new funcions:
+             void GUIMenusSetI18nFields(void);
+             void GUIMenuBarSetI18nFields(void);
+2020-03-24 Added to MGRX a catalog implementation to help internationalize
+           programs, it doesn't depend of any other mgrx function and it
+           is Chrtype agnostic (this is why (void *) is used). The functions:
+             int GrI18nInit(int nlg, int nstr, void *defstr);
+             void GrI18nEnd(void);
+             int GrI18nSetLabel(int lid, void *label);
+             void * GrI18nGetLabel(int lid);
+             int GrI18nSetLang(int lid);
+             void GrI18nAddStrings(int lid, int fsid, int nums, void **str);
+             void * GrI18nGetString(int sid);
+           New test program to test the catalog: test/i18ntest.c
+2020-03-20 New GUIObject field "visible", if 0 the object is ignored within
+           the group. After GUIObjectSet.. the object is visible by default,
+           its value can be changed using the new function:
+             void GUIGroupSetVisible(GUIGroup *g, int id, int visible);
+           After doing changes in visibility it is necesary to set the
+           correct GUIContext and call the function:
+             void GUIGroupRestartAfterVisibleChanges(GUIGroup *g);
+           that recalculates the selected object and paints the visible objects.
+2020-03-15 Added GUI component GUIRawDataList2 a generic version of
+           GUIRawDataList, that can handle generic registers, not only
+           strings, to substitute it in the future, for now to be used by
+           GUIOBJTYPE_REGLIST.
+           Added new object: GUIOBJTYPE_REGLIST, a deployed list of registers.
+2020-03-07 New menu item type GUI_MI_TITLE to show a menu title.
+           Added 'border' field to the GUIMenu structure, if =1 a thick
+           border is drawn around the menu.
+           New function:
+             void GUIMenusSetColors2(GrColor bgt, GrColor fgt, GrColor inb);
+           to set the bg and fg title colors and the inner color border.
+2020-02-20 New GrGUI function:
+             int GUIMenuGetDims(int idmenu, int *width, int *height);
+           to know the menu dimensions before running it.
+2020-02-18 New GrGUIfunctions:
+             void GUIDBPauseBltsToScreen(void);
+             void GUIDBRestartBltsToScreen(void);
+           can be used to pause and restart the blts performed by
+           GUIDBCurCtxBltToScreen and GUIDBCurCtxBltRectToScreen when in
+           double buffer mode, so it is easy to control the real screen update
+           when necesary.
+2020-02-02 New testgui program "showfnt2", show the MGRX font collection using
+           the new GUIOBJTYPE_DLIST object to select the font.
+2020-02-01 New GUI component GUIRawDataList mainly for use by GUIOBJTYPE_LIST
+           and the new GUIOBJTYPE_DLIST, a deployed list.
+2020-01-30 Restructured internal GrGUI code when using double buffer. Now
+           all the blits to screen are managed by this two functions:
+             void GUIDBCurCtxBltToScreen(void);
+             void GUIDBCurCtxBltRectToScreen(int x1, int y1, int x2, int y2);
+           they copy the whole or a rect from the current context to the screen
+           context, obviusly the current context must be the global context or
+           a subcontext of it, like the one provided by GUIContext.
+           Both functions do nothing if the double buffer is no enabled.
+           Renamed GUIManageExposeEvents to GUIDBManageExposeEvents.
+2020-01-26 Updated from ASCII to ISO8859-1 all cour, helv & tms fonts.
+           Errors in lucb40b.fnt, lucb40bi.fnt, lucb40.fnt, lucb40i.fnt
+           and lucs40.fnt have been corrected.
+           Checked baseline correctness for most fonts (except xm fonts).
+2020-01-22 Updated all tmgrx fonts from the last Terminus font distribution,
+           applying the variants dv1, ij1 and td1.
+2020-01-19 Updated testgui/demintl2.c test program to cover the new font
+           encoding.
+2020-01-19 Added the three new fonts as built-in fonts ready to use:
+           GrFont_PX8x18, GrFont_PX11x22 and GrFont_PX14x28
+2020-01-19 Added three fonts that are GR_FONTENC_CP437EXT coded,
+           px8x18.fnt, px11x22.fnt and px14x28.fnt. They are derived
+           from pc public domain fonts.
+2020-01-18 New font encoding GR_FONTENC_CP437EXT a custom encoding that
+           cover CP437 + ISO8859-1 + CP1252 (by now). The encoding details
+           are described in doc/cp437ext.txt
 2020-01-11 ----------- MGRX 1.3.2 released
 2020-01-10 Added two new font encodings GR_FONTENC_ISO_8859_5 and
            GR_FONTENC_ISO_8859_7.

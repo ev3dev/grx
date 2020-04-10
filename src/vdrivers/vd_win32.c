@@ -89,6 +89,10 @@
  **
  ** Changes by M.Alvarez (malfer@telefonica.net) 12/11/2019
  **   - Added code to generate GREV_WMEND events
+ **
+ ** Changes by M.Alvarez (malfer@telefonica.net) 30/03/2020
+ **   - Workarround to solve a race condition in W10, sometimes hDCMem
+ **     was used before it was ready
  **/
 
 #include "libwin32.h"
@@ -97,7 +101,7 @@
 #include "arith.h"
 
 #ifndef GRXWINDOW_TITLE
-#define GRXWINDOW_TITLE "GRX"
+#define GRXWINDOW_TITLE "MGRX"
 #endif
 
 HWND hGRXWnd = NULL;
@@ -122,6 +126,7 @@ static HANDLE mainThread   = INVALID_HANDLE_VALUE;
 
 static volatile int isWindowThreadRunning = 0;
 static volatile int isMainWaitingTermination = 0;
+static volatile int ishDCMemReady = 0;
 
 static DWORD WINAPI WndThread(void *param);
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
@@ -201,6 +206,7 @@ static int setmode(GrVideoMode * mp, int noclear)
     int inipos;
 
     if (mp->extinfo->mode != GR_frameText) {
+        ishDCMemReady = 0;
         inipos = 50;
         if (mp->width == maxScreenWidth && mp->height == maxScreenHeight)
             inipos = 0;
@@ -223,6 +229,7 @@ static int setmode(GrVideoMode * mp, int noclear)
         
         hDC = GetDC(hGRXWnd);
         hDCMem = CreateCompatibleDC(hDC);
+        //if (!hDCMem) printf("Error, hDCMem\n");
         if (mp->bpp == 8) {
             hBmpDIB = CreateDIB8(hDC, mp->width, mp->height,
                                  &mp->extinfo->frame);
@@ -230,6 +237,7 @@ static int setmode(GrVideoMode * mp, int noclear)
             hBmpDIB = CreateDIB24(hDC, mp->width, mp->height,
                                   &mp->extinfo->frame);
         }
+        //if (!hBmpDIB) printf("Error, hBmpDIB\n");
         SelectObject(hDCMem, hBmpDIB);
         SetRect(&Rect, 0, 0, mp->width, mp->height);
         hBrush = CreateSolidBrush(RGB(0, 0, 0));
@@ -237,12 +245,15 @@ static int setmode(GrVideoMode * mp, int noclear)
         FillRect(hDC, &Rect, hBrush);
         ReleaseDC(hGRXWnd, hDC);
         DeleteObject(hBrush);
+        ishDCMemReady = 1;
+        InvalidateRect(hGRXWnd, NULL, FALSE);
         UpdateWindow(hGRXWnd);
         SetForegroundWindow(hGRXWnd);
     } else {
         /* If changing to text-mode, hide the graphics window. */
         if (hGRXWnd != NULL)
             ShowWindow(hGRXWnd, SW_HIDE);
+        ishDCMemReady = 0;
         if (hBmpDIB != NULL) {
             DeleteObject(hBmpDIB);
             hBmpDIB = NULL;
@@ -411,6 +422,8 @@ static void reset(void)
         DeleteCriticalSection(&_csEventQueue);
     }
 
+    ishDCMemReady = 0;
+
     if(hBmpDIB != NULL)
     {
         DeleteObject(hBmpDIB);
@@ -569,14 +582,16 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
         }
 
     case WM_CLOSE:
-        if (_W32GenWMEndEvents != GR_GEN_WMEND_NO) {
-            EnqueueW32Event(uMsg, wParam, lParam, 0);
-            return 0;
+        if (!isMainWaitingTermination) {
+            if (_W32GenWMEndEvents != GR_GEN_WMEND_NO) {
+                EnqueueW32Event(uMsg, wParam, lParam, 0);
+                return 0;
+            }
+            if (MessageBox(hWnd,
+                "This will abort the program\nare you sure?", "Abort",
+                MB_APPLMODAL | MB_ICONQUESTION | MB_YESNO ) != IDYES)
+                return 0;
         }
-        if (!isMainWaitingTermination && MessageBox(hWnd,
-            "This will abort the program\nare you sure?", "Abort",
-             MB_APPLMODAL | MB_ICONQUESTION | MB_YESNO ) != IDYES)
-            return 0;
         DestroyWindow(hWnd);
         if (!isMainWaitingTermination)
         {
@@ -649,6 +664,8 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
         {
             HDC hDC;
             PAINTSTRUCT ps;
+
+            if (!ishDCMemReady) return 0;
 
             hDC = BeginPaint(hWnd, &ps);
             BitBlt(hDC,

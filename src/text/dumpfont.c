@@ -33,7 +33,7 @@ static char bitmaphdr[] =
 "#include \"mgrx.h\"\n"
 "#undef   %s\n"
 "\n"
-"static unsigned char far %s[] = {\n";
+"static unsigned char %s[] = {\n";
 
 /* ----------------------------------------------------------------------- */
 static char fonthdr[] =

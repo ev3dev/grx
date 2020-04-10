@@ -1,5 +1,9 @@
+The GR_FONTENC_MGRX512 font encoding is a custom encoding
+that cover ISO8859-1 + CP1252 + ISO8859-5 + ISO8859-7 +
+a bunch of miscelaneous glyphs.
+
 # Unicode equivalence for the 512 glyphs
-# on MGRX512 encoding
+# in MGRX512 encoding
 #
 # 00-1F => miscelaneous symbols
 ---- 2500 2502 2508 250A 250C 2510 2514

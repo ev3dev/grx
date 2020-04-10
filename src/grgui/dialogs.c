@@ -174,7 +174,8 @@ int GUIDialogRun(GUIDialog *d)
 
     while (1) {
         GrEventRead(&ev);
-        if (ev.type == GREV_KEY && ev.p1 == GrKey_Escape) {
+        if (((ev.type == GREV_KEY) && (ev.p1 == GrKey_Escape)) ||
+             (ev.type == GREV_WMEND)) {
             ret = -1;
             break;
         }

@@ -88,6 +88,9 @@ static unsigned int _GrCharRecode(int fontenc,long chr,int chrtype)
   case GR_FONTENC_MGRX512:
     _GrRecode_UCS2_mgrx512(aux, &aux2);
     return aux2;
+  case GR_FONTENC_CP437EXT:
+    _GrRecode_UCS2_CP437Ext(aux, &aux2);
+    return aux2;
   case GR_FONTENC_UNICODE:
     return aux;
   }
@@ -191,6 +194,9 @@ static long _GrCharReverseRecode(int fontenc,unsigned int chr,int chrtype)
     break;
   case GR_FONTENC_MGRX512:
     _GrRecode_mgrx512_UCS2(chr, &aux);
+    break;
+  case GR_FONTENC_CP437EXT:
+    _GrRecode_CP437Ext_UCS2(chr, &aux);
     break;
   case GR_FONTENC_UNICODE:
     aux = chr;

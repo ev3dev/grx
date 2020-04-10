@@ -8,12 +8,12 @@
 
 <center>
 <h1><font color="#555555">M</font><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>1.3.2</small></h1>
+<small>1.3.3</small></h1>
 <h1>a C graphics library for DOS, Linux console &amp; X11 and Win32</h1>
 <h2>Programmer's Manual</h2>
 <p>Based on the original GRX manual written by: Csaba Biegl on August 10, 1992
 <p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on August 1, 2005
-<p>Last update: January 6, 2020
+<p>Last update: April 8, 2020
 </center>
 
 <hr>
@@ -56,6 +56,7 @@ memory driver.
 <li><a href="#td">Text drawing</a>
 <li><a href="#utf8">Special UTF-8 text type considerations</a>
 <li><a href="#ucs2">Recode to/from GR_UCS2_TEXT chartype</a>
+<li><a href="#i18n">Internationalization</a>
 <li><a href="#siuc">Drawing in user coordinates</a>
 <li><a href="#gcur">Graphics cursors</a>
 <li><a href="#pnm">Writing/reading PNM graphics files</a>
@@ -1426,7 +1427,10 @@ the supported font encodings are:
 #define GR_FONTENC_ISO_8859_1  4     /* standard latin encoding */
 #define GR_FONTENC_UNICODE     5     /* direct UNICODE encoding */
 #define GR_FONTENC_MGRX512     6     /* custom MGRX 512 char encoding */
-#define GR_FONTENC_LASTENC     6     /* last encoding, for checks */
+#define GR_FONTENC_ISO_8859_5  7     /* ASCII + Cyrillic */
+#define GR_FONTENC_ISO_8859_7  8     /* ASCII + Greek */
+#define GR_FONTENC_CP437EXT    9     /* CP437 + ISO-8859-1 + CP1252 */
+#define GR_FONTENC_LASTENC     9     /* last encoding, for checks */
 </pre>
 
 <p>Only the fonts provided whit <b>MGRX</b> in his own format (.fnt) have the
@@ -1437,10 +1441,14 @@ encoding with the <code>GrFontSetEncoding</code> function.
 void GrFontSetEncoding(GrFont *font,int fontencoding);
 </pre>
 
-<p>The MGRX512 font encoding is a specialy crafted encoding used by some of the fonts
-provided with <b>MGRX</b>. They have 512 glyphs covering Latin, Cyrilic and Greek and
+<p>The MGRX512 font encoding is a specially crafted encoding used by some of the fonts
+provided with <b>MGRX</b>. It has 512 glyphs covering Latin, Cyrilic and Greek and
 some other miscellaneous glyphs. See the <b>doc/mgrx512.txt</b> file for more
 information.
+
+<p>The CP437EXT font encoding is another <b>MGRX</b> custom encoding that cover
+CP437 + ISO8859-1 + CP1252 (by now) providing 323 glyphs. See the <b>doc/cp437ext.txt</b>
+file for more information.
 
 <p>&nbsp;&nbsp;<b>Chrtype</b> is the specific encoding used for the string you want
 to draw, it can be one of these:
@@ -1505,24 +1513,25 @@ or ISO-8859-1 coded. A group of fonts were converted from the Terminus font
 and are MGRX512 encoded. The following fonts are included:
 <pre>
 <b>Font file name       Family  Description</b>
-pc&lt;W>x&lt;H>[t].fnt     pc      VGA font, fixed, CP437
-pc850-&lt;H>[t].fnt     pc      VGA font, fixed, CP850
+pc&lt;W>x&lt;H>[t].fnt     pc      pc font, fixed, CP437
+px&lt;W>x&lt;H>.fnt        pcext   pc font, fixed, CP437EXT
+pc850-&lt;H>[t].fnt     pc      pc font, fixed, CP850
 xm&lt;W>x&lt;H>[b][i].fnt  X_misc  X11, fixed, miscellaneous group, ASCII
 char&lt;H>[b][i].fnt    char    X11, proportional, charter family, ISO-8859-1
-cour&lt;H>[b][i].fnt    cour    X11, fixed, courier, ASCII
-helv&lt;H>[b][i].fnt    helve   X11, proportional, helvetica, ASCII
+cour&lt;H>[b][i].fnt    cour    X11, fixed, courier, ISO-8859-1
+helv&lt;H>[b][i].fnt    helve   X11, proportional, helvetica, ISO-8859-1
 lucb&lt;H>[b][i].fnt    lucb    X11, proportional, lucida bright, ISO-8859-1
 lucs&lt;H>[b][i].fnt    lucs    X11, proportional, lucida sans serif , ISO-8859-1
 luct&lt;H>[b][i].fnt    luct    X11, fixed, lucida typewriter, ISO-8859-1
 ncen&lt;H>[b][i].fnt    ncen    X11, proportional, new century schoolbook, ISO-8859-1
 symb&lt;H>.fnt          symbol  X11, proportional, greek letters, symbols 
-tms&lt;H>[b][i].fnt     times   X11, proportional, times, ASCII
+tms&lt;H>[b][i].fnt     times   X11, proportional, times, ISO-8859-1
 tmgrx&lt;H>[b].fnt      tmgrx   Ter, fixed, MGRX512
 </pre>
 <p>&nbsp;&nbsp;In the font names &lt;W> means the font width, &lt;H> the font
 height. Many font families have bold and/or italic variants. The files
 containing these fonts contain a 'b' and/or 'i' character in their name just
-before the extension. Some of the pc VGA fonts come in thin
+before the extension. Some of the pc fonts come in thin
 formats also, these are denoted by a 't' in their file names.
 
 <p>&nbsp;&nbsp;A full font list is in the <b>fonts/_fonts.dir</b> file. Please
@@ -1536,7 +1545,13 @@ extern  GrFont          GrFont_PC6x8;
 extern  GrFont          GrFont_PC8x8;
 extern  GrFont          GrFont_PC8x14;
 extern  GrFont          GrFont_PC8x16;
+extern  GrFont          GrFont_PX8x18;
+extern  GrFont          GrFont_PX11x22;
+extern  GrFont          GrFont_PX14x28;
 </pre>
+
+<p>The first four are CP437 coded and the last three CP437EXT.
+
 <p>&nbsp;&nbsp;Other fonts must be loaded with the <code>GrLoadFont</code>
 function. If the font file name starts with any path separator character
 or character sequence ('<drive letter>:', '/' or '\') then it is loaded
@@ -1612,7 +1627,7 @@ font file being deleted or corrupted.
 (see the source, it's so simple) to dump a selected font to source code,
 by example:
 <pre>
-"fnt2c helv15 myhelv15 myhelv15.c"
+"fnt2c helv15 myhelv15.c myhelv15"
 </pre>
 <p>&nbsp;&nbsp;Next, if this line is included in your main include file:
 <pre>
@@ -1855,6 +1870,27 @@ unsigned short *GrTextRecodeToUCS2(const void *text,int length,int chrtype);
 <p>converts a string of any <code>chartype</code> to a UCS-2 string. This
 function allocates the necesary memory, so you must check the returned pointer
 for NULL, and the memory must be freed when unneded.
+
+<hr>
+<h2><a name="i18n">Internationalization</a></h2>
+
+<p>&nbsp;&nbsp;To help internationalize programs, <b>MGRX</b> includes a 
+catalog implementation. It doesn't depend of any other <b>MGRX</b> function
+and it is Chrtype agnostic (this is why (void *) is used to pass strings).
+
+<p>These are the functions:
+
+<pre>
+int GrI18nInit(int nlg, int nstr, void *defstr);
+void GrI18nEnd(void);
+int GrI18nSetLabel(int lid, void *label);
+void * GrI18nGetLabel(int lid);
+int GrI18nSetLang(int lid);
+void GrI18nAddStrings(int lid, int fsid, int nums, void **str);
+void * GrI18nGetString(int sid);
+</pre>
+
+<p>For an example of use read the test program "test/i18ntest.c"
 
 <hr>
 <h2><a name="siuc">Drawing in user coordinates</a></h2>

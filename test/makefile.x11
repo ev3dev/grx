@@ -82,7 +82,8 @@ PROGS=  xarctest     \
 	xwintest     \
 	xbiggtest    \
 	xcusptest    \
-	xclrtable
+	xclrtable    \
+	xi18ntest
 
 all: $(PROGS) xdemomgrx xdemointl
 

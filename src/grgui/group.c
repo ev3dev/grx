@@ -46,6 +46,7 @@ GUIGroup * GUIGroupCreate(int nobj, int x, int y)
         g->o[i].type = GUIOBJTYPE_NONE;
         g->o[i].pressed = -1;
         g->o[i].selected = -1;
+        g->o[i].visible = 0;
     }
     
     g->x = x;
@@ -100,12 +101,53 @@ void GUIGroupSetSelected(GUIGroup *g, int id, int paint)
 
 /***************************/
 
+void GUIGroupSetVisible(GUIGroup *g, int id, int visible)
+{
+    int ind;
+    
+    ind = find_id(g, id);
+    if (ind < 0) return;
+
+    g->o[ind].visible = visible;
+
+}
+
+/***************************/
+
+void GUIGroupRestartAfterVisibleChanges(GUIGroup *g)
+{
+    // to be called after enable/disable objects
+    int i;
+
+    if (g->selected >= 0) {
+        if (!g->o[g->selected].visible) {
+            g->o[g->selected].selected = 0;
+            g->selected = -1;
+        }
+    }
+
+    if (g->selected < 0) {
+        for (i=0; i<g->nobj; i++) {
+             if (g->o[i].visible && g->o[i].selected == 0) {
+                 g->o[i].selected = 1;
+                 g->selected = i;
+                 break;
+             }
+        }
+    }
+
+    GUIGroupPaint(g);
+}
+
+/***************************/
+
 void GUIGroupPaint(GUIGroup *g)
 {
     int i;
 
     for (i=0; i<g->nobj; i++) {
-        _GUIObjectPaint(&(g->o[i]), g->x, g->y);
+        if (g->o[i].visible)
+            _GUIObjectPaint(&(g->o[i]), g->x, g->y);
     }
 }
 
@@ -118,7 +160,8 @@ void GUIGroupRePaintObject(GUIGroup *g, int id)
     ind = find_id(g, id);
     if (ind < 0) return;
 
-    repaint_object(g, ind);
+    if (g->o[ind].visible)
+        repaint_object(g, ind);
 }
 
 /***************************/
@@ -178,7 +221,7 @@ int GUIGroupProcessEvent(GUIGroup *g, GrEvent *ev)
     if (ev->type == GREV_MOUSE) {
         if (ev->p1 == GRMOUSE_LB_PRESSED) {
             for (i=0; i<g->nobj; i++) {
-                if ((g->o[i].selected >= 0) &&
+                if ((g->o[i].visible && g->o[i].selected >= 0) &&
                     (GrCheckCoordInto(ev->p2, ev->p3, g->x+g->o[i].x,
                     g->y+g->o[i].y, g->o[i].width, g->o[i].height))) {
                     if ((g->selected != i) && (g->selected >= 0)) {
@@ -193,6 +236,9 @@ int GUIGroupProcessEvent(GUIGroup *g, GrEvent *ev)
             if (g->o[g->selected].pressed) {
                 return _GUIObjectProcessEvent(g, &(g->o[g->selected]), ev);
             }
+        } else if ((ev->p1 == GRMOUSE_B4_RELEASED) ||
+                   (ev->p1 == GRMOUSE_B5_RELEASED)) {
+            return _GUIObjectProcessEvent(g, &(g->o[g->selected]), ev);
         }
     } else if (ev->type == GREV_KEY) {
         ret = _GUIObjectProcessEvent(g, &(g->o[g->selected]), ev);
@@ -260,12 +306,12 @@ static int select_next(GUIGroup *g, int dir)
     for (i=0; i<g->nobj-1; i++) {
         if (next >= g->nobj) next = 0;
         if (next < 0) next = g->nobj - 1;
-        if (g->o[next].selected >= 0) {
+        if (g->o[next].visible && g->o[next].selected >= 0) {
             return next;
         }
         next += dir;
     }
-    
+
     return -1;
 }
 
@@ -274,8 +320,7 @@ static int select_next(GUIGroup *g, int dir)
 static void repaint_object(GUIGroup *g, int ind)
 {
     _GUIObjectPaint(&(g->o[ind]), g->x, g->y);
-    if (g->p) {
-        GUIPanelBltRectClToScreen(g->p, g->x+g->o[ind].x, g->y+g->o[ind].y,
-                                  g->o[ind].width, g->o[ind].height);
-    }
+    GUIDBCurCtxBltRectToScreen(g->x+g->o[ind].x, g->y+g->o[ind].y,
+                             g->x+g->o[ind].x+g->o[ind].width-1,
+                             g->y+g->o[ind].y+g->o[ind].height-1);
 }

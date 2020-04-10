@@ -44,15 +44,28 @@ void GUIObjectSetLabel(GUIObject *o, int id, int x, int y, int width, int height
     o->pressed = -1;
     o->selected = -1;
     o->data = NULL;
+    o->visible = 1;
 }
 
 /***************************/
 
-void _GUIOLabelPaint(GUIObject *o, int x, int y)
+void _GUIOLabelPaint(GUIObject *o, int dx, int dy)
 {
+    int x, y;
+    
+    x = o->x + dx;
+    y = o->y + dy;
+
     _objectgenopt.txo_fgcolor = o->fg;
-    GrFilledBox(x+o->x, y+o->y, x+o->x+o->width-1, y+o->y+o->height-1, o->bg);
-    GrSetClipBox(x+o->x, y+o->y, x+o->x+o->width-1, y+o->y+o->height-1);
-    GrDrawString(o->text, 0, x+o->x+2, y+o->y+o->height/2, &_objectgenopt);
+    GrFilledBox(x, y, x+o->width-1, y+o->height-1, o->bg);
+    GrSetClipBox(x, y, x+o->width-1, y+o->height-1);
+    GrDrawString(o->text, 0, x+2, y+o->height/2, &_objectgenopt);
     GrResetClipBox();
+}
+
+/***************************/
+
+void _GUIOLabelSetText(GUIObject *o, void *newtext)
+{
+    o->text = newtext;
 }

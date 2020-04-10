@@ -1,7 +1,7 @@
 /**
  ** menus.c ---- Mini GUI for MGRX, menus
  **
- ** Copyright (C) 2002,2006,2019 Mariano Alvarez Fernandez
+ ** Copyright (C) 2002,2006,2019,2020 Mariano Alvarez Fernandez
  ** [e-mail: malfer at telefonica dot net]
  **
  ** This file is part of the GRX graphics library.
@@ -48,16 +48,20 @@ GrColor _menubgscolor;
 GrColor _menufgscolor;
 GrColor _menufgnacolor;
 GrColor _menufgsnacolor;
+GrColor _menubgtcolor;
+GrColor _menufgtcolor;
+GrColor _menuinbcolor;
 
 static GrTextOption grtopt;
 
 static GUIMenu *search_menu_reg(int idm);
 static void calculate_menu_dims(GUIMenu *m, GUIMenuDims *md, int minwidth);
 static void show_menu_item(GUIMenu *m, GUIMenuDims *md, int ind, int selected);
-static void blt_menu_item(GUIContext *gctx, GUIMenuDims *md, int ind);
+static void blt_menu_item(GUIMenuDims *md, int ind);
 static int proccess_menu_event(GUIMenu *m, GUIMenuDims *md,
                                GUIContext *gctx, GrEvent *ev);
 static void set_key_short_cut(int idmenu, int level);
+static int active_item(int type);
 
 void _GUIMenuInit(void)
 {
@@ -69,6 +73,9 @@ void _GUIMenuInit(void)
     _menufgscolor = GrWhite();
     _menufgnacolor = GrWhite();
     _menufgsnacolor = GrBlack();
+    _menubgtcolor = GrWhite();
+    _menufgtcolor = GrBlack();
+    _menuinbcolor = GrWhite();
 
     _menufont = GrGetDefaultFont();
     _menufontloaded = 0;
@@ -133,6 +140,33 @@ void GUIMenusSetColors(GrColor bg, GrColor bgs, GrColor fg,
     _menufgscolor = fgs;
     _menufgnacolor = fgna;
     _menufgsnacolor = fgsna;
+}
+
+void GUIMenusSetColors2(GrColor bgt, GrColor fgt, GrColor inb)
+{
+    _menubgtcolor = bgt;
+    _menufgtcolor = fgt;
+    _menuinbcolor = inb;
+}
+
+void GUIMenusSetI18nFields(void)
+{
+    GUIMenu *m;
+    GUIMenuItem *mi;
+    int i, j;
+    char *p;
+
+    for (i=0; i<nmenusreg; i++) {
+        m = menusreg[i];
+        for (j=0; j<m->nitems; j++) {
+            mi = &(m->i[j]);
+            if (mi->sid >= 0) {
+                mi->title = (char *)GrI18nGetString(mi->sid);
+                p = strchr(mi->title, '&');
+                if (p) mi->key = toupper(*(p+1));
+            }
+        }
+    }
 }
 
 int GUIMenuRegister(GUIMenu *m)
@@ -231,6 +265,21 @@ char *GUIMenuGetTitle(int idmenu, int type, int id)
     return NULL;
 }
 
+int GUIMenuGetDims(int idmenu, int *width, int *height)
+{
+    GUIMenu *m;
+    GUIMenuDims md;
+
+    m = search_menu_reg(idmenu);
+    if (m == NULL) return -1;
+
+    calculate_menu_dims(m, &md, 0);
+    *width = md.width;
+    *height = md.height;
+
+    return 0;
+}
+
 int GUIMenuGetTag(int idmenu, int idop)
 {
     GUIMenu *m;
@@ -286,6 +335,7 @@ int _GUIMenuRun(int idmenu, int x, int y, int minwidth)
     int i, r;
     int res = 0;
     GrContext grcaux;
+    int m2w, m2h, xdesp;
 
     m = search_menu_reg(idmenu);
     if (m == NULL) return 0;
@@ -299,10 +349,15 @@ int _GUIMenuRun(int idmenu, int x, int y, int minwidth)
     GrSetContext(gctx->c);
     GrClearContext(_menubgcolor);
     GrBox(0, 0, md.width-1, md.height-1, _menufgcolor);
+    if (m->border) {
+        GrBox(1, 1, md.width-2, md.height-2, _menuinbcolor);
+        GrBox(2, 2, md.width-3, md.height-3, _menuinbcolor);
+        GrBox(3, 3, md.width-4, md.height-4, _menufgcolor);
+    }
 
     for (i=0; i<m->nitems; i++)
         show_menu_item(m, &md, i, (i == m->select));
-    GUIContextBltToScreen(gctx);
+    GUIDBCurCtxBltToScreen();
 
     while (1) {
         GrEventWait(&ev);
@@ -314,7 +369,10 @@ int _GUIMenuRun(int idmenu, int x, int y, int minwidth)
         if (r < 0) break;
         if (r == 1) {
             if (m->i[m->select].type == GUI_MI_MENU) {
-                res = _GUIMenuRun(m->i[m->select].id, x+30,
+                GUIMenuGetDims(m->i[m->select].id, &m2w, &m2h);
+                if (m2w < md.width) m2w = md.width;
+                xdesp = ((x + m2w + 32) >= GrScreenX()) ? -30 : 30;
+                res = _GUIMenuRun(m->i[m->select].id, x+xdesp,
                                   y+md.lineheight*(m->select+1)+2, md.width);
                 GrSetContext(gctx->c);
             }
@@ -354,9 +412,11 @@ static void calculate_menu_dims(GUIMenu *m, GUIMenuDims *md, int minwidth)
 {
     int i, l, lt, lfkt;
     int fillw = 0;
+    int bordw = 1;
 
+    if (m->border) bordw = 4;
     md->lineheight = _menufont->h.height;
-    md->height = md->lineheight * m->nitems + 4;
+    md->height = md->lineheight * m->nitems + 2 + bordw * 2;
     lt = 0;
     lfkt = 0;
     for (i=0; i<m->nitems; i++) {
@@ -370,20 +430,20 @@ static void calculate_menu_dims(GUIMenu *m, GUIMenuDims *md, int minwidth)
         }
     }
     md->linewidth = lt;
-    if (lfkt) md->linewidth += 8 + lfkt;
-    md->linewidth += 20; //16
-    md->width = md->linewidth + 4;
+    if (lfkt) md->linewidth += _menufont->maxwidth + lfkt;
+    md->linewidth += 12 + _menufont->maxwidth;
+    md->width = md->linewidth + 2 + bordw * 2;
     if (md->width < minwidth) {
         fillw = minwidth - md->width;
         md->width += fillw;
         md->linewidth += fillw;
     }
 
-    md->startx = 2;
-    md->starty = 2;
-    md->titlestartx = 2 + 12; //+8
+    md->startx = 1 + bordw;
+    md->starty = 1 + bordw;
+    md->titlestartx = 1 + bordw + 12;
     md->fktitlestartx = md->titlestartx + lt + fillw;
-    if (lfkt) md->fktitlestartx += 8;
+    if (lfkt) md->fktitlestartx += _menufont->maxwidth;
     md->marrowstartx = md->fktitlestartx + lfkt;
 }
 
@@ -397,22 +457,31 @@ static void show_menu_item(GUIMenu *m, GUIMenuDims *md, int ind, int selected)
     GrFilledBox(x, y, x+md->linewidth-1, y+md->lineheight-1,
                 selected ? _menubgscolor : _menubgcolor);
     if (m->i[ind].type == GUI_MI_SEP) {
+        GrFilledBox(x, y, x+md->linewidth-1, y+md->lineheight-1, _menubgcolor);
         GrHLine(x, x+md->linewidth-1, y+md->lineheight/2, _menufgcolor);
-    }
-    else {
+    } else if (m->i[ind].type == GUI_MI_TITLE) {
+        GrFilledBox(x, y, x+md->linewidth-1, y+md->lineheight-1, _menubgtcolor);
+        grtopt.txo_fgcolor = _menufgtcolor;
+        len = GrStrLen(m->i[ind].title, _menuchrtype);
+        wtext = GrFontTextRecode(grtopt.txo_font, m->i[ind].title, len, _menuchrtype);
+        if (wtext == NULL) return;
+        GrDrawString(wtext, len, x, y, &grtopt);
+    } else {
+        GrFilledBox(x, y, x+md->linewidth-1, y+md->lineheight-1,
+                    selected ? _menubgscolor : _menubgcolor);
         if (m->i[ind].enabled ) 
             grtopt.txo_fgcolor = selected ? _menufgscolor : _menufgcolor;
         else
             grtopt.txo_fgcolor = selected ? _menufgsnacolor : _menufgnacolor;
         if (m->i[ind].tag == 1){
-            GrLine(x+1, y+md->lineheight/2, x+4, y+md->lineheight-1, grtopt.txo_fgcolor);
-            GrLine(x+4, y+md->lineheight-1, x+7, y+2,  grtopt.txo_fgcolor);
-            GrLine(x+2, y+md->lineheight/2, x+5, y+md->lineheight-1, grtopt.txo_fgcolor);
-            GrLine(x+5, y+md->lineheight-1, x+8, y+2, grtopt.txo_fgcolor);
+            GrLine(x+2, y+md->lineheight/2, x+5, y+md->lineheight-3, grtopt.txo_fgcolor);
+            GrLine(x+5, y+md->lineheight-3, x+8, y+3,  grtopt.txo_fgcolor);
+            GrLine(x+3, y+md->lineheight/2, x+6, y+md->lineheight-3, grtopt.txo_fgcolor);
+            GrLine(x+6, y+md->lineheight-3, x+9, y+3, grtopt.txo_fgcolor);
         }
         if (m->i[ind].tag == 2){
-            GrFilledBox(x+2, y+md->lineheight/2-3,
-                        x+7, y+md->lineheight/2+3, grtopt.txo_fgcolor);
+            GrFilledBox(x+3, y+md->lineheight/2-3,
+                        x+8, y+md->lineheight/2+3, grtopt.txo_fgcolor);
         }
         len = GrStrLen(m->i[ind].title, _menuchrtype);
         wtext = GrFontTextRecode(grtopt.txo_font, m->i[ind].title, len, _menuchrtype);
@@ -455,13 +524,13 @@ static void show_menu_item(GUIMenu *m, GUIMenuDims *md, int ind, int selected)
     }
 }
 
-static void blt_menu_item(GUIContext *gctx, GUIMenuDims *md, int ind)
+static void blt_menu_item(GUIMenuDims *md, int ind)
 {
     int x, y;
 
     x = md->startx;
     y = md->starty + ind * md->lineheight;
-    GUIContextBltRectToScreen(gctx, x, y, x+md->linewidth-1, y+md->lineheight-1);
+    GUIDBCurCtxBltRectToScreen(x, y, x+md->linewidth-1, y+md->lineheight-1);
 }
 
 static int proccess_menu_event(GUIMenu *m, GUIMenuDims *md,
@@ -473,11 +542,16 @@ static int proccess_menu_event(GUIMenu *m, GUIMenuDims *md,
     int i, k, pos;
     int change = 0;
     int res = 0;
+    int bordw = 1;
 
+    if (m->border) bordw = 4;
     orgev = *ev;
     i = m->select;
 
     switch (ev->type) {
+
+        case GREV_WMEND :
+            return -1;
 
         case GREV_MOUSE :
             c = ev->p1;
@@ -487,9 +561,9 @@ static int proccess_menu_event(GUIMenu *m, GUIMenuDims *md,
                         GrEventEnqueueFirst(&orgev);
                         return -1;
                     }
-                    pos = ev->p3 / md->lineheight;
+                    pos = (ev->p3 - bordw) / md->lineheight;
                     if ((pos >= 0) && (pos < m->nitems) &&
-                        (m->i[pos].type != GUI_MI_SEP)) {
+                        active_item(m->i[pos].type)) {
                         if (i != pos) {
                             i = pos;
                             change = 1;
@@ -498,7 +572,7 @@ static int proccess_menu_event(GUIMenu *m, GUIMenuDims *md,
                     break;
                 case GRMOUSE_LB_RELEASED :
                     if (!GUIContextTransMouseEvIfInCtx(gctx, ev)) return 0;
-                    pos = ev->p3 / md->lineheight;
+                    pos = (ev->p3 - bordw) / md->lineheight;
                     if ((pos == i) && (m->i[i].enabled)) return 1;
                     break;
                 case GRMOUSE_RB_PRESSED :
@@ -519,9 +593,9 @@ static int proccess_menu_event(GUIMenu *m, GUIMenuDims *md,
         case GREV_MMOVE :
             if (ev->p1 & GRMOUSE_LB_STATUS) {
                 if (!GUIContextTransMouseEvIfInCtx(gctx, ev)) return 0;
-                pos = ev->p3 / md->lineheight;
+                pos = (ev->p3 - bordw) / md->lineheight;
                 if ((pos >= 0) && (pos < m->nitems) &&
-                    (m->i[pos].type != GUI_MI_SEP)) {
+                    active_item(m->i[pos].type)) {
                     if (i != pos) {
                         i = pos;
                         change = 1;
@@ -535,11 +609,11 @@ static int proccess_menu_event(GUIMenu *m, GUIMenuDims *md,
             switch (c) {
                 case GrKey_Up :
                     if (i > 0) {
-                        if (m->i[i-1].type != GUI_MI_SEP) {
+                        if (active_item(m->i[i-1].type)) {
                             i--;
                             change = 1;
                         }
-                        else if ((i > 1) && (m->i[i-2].type != GUI_MI_SEP)) {
+                        else if ((i > 1) && active_item(m->i[i-2].type)) {
                             i -= 2;
                             change = 1;
                         }
@@ -547,12 +621,12 @@ static int proccess_menu_event(GUIMenu *m, GUIMenuDims *md,
                     break;
                 case GrKey_Down :
                     if (i < m->nitems-1) {
-                        if (m->i[i+1].type != GUI_MI_SEP) {
+                        if (active_item(m->i[i+1].type)) {
                             i++;
                             change = 1;
                         }
                         else if ((i < m->nitems-2) &&
-                                 (m->i[i+2].type != GUI_MI_SEP)){
+                                 active_item(m->i[i+2].type)){
                             i += 2;
                             change = 1;
                         }
@@ -584,10 +658,10 @@ static int proccess_menu_event(GUIMenu *m, GUIMenuDims *md,
 
     if (change) {
         show_menu_item(m, md, m->select, 0);
-        blt_menu_item(gctx, md, m->select);
+        blt_menu_item(md, m->select);
         m->select = i;
         show_menu_item(m, md, m->select, 1);
-        blt_menu_item(gctx, md, m->select);
+        blt_menu_item(md, m->select);
     }
 
     return res;
@@ -615,4 +689,8 @@ static void set_key_short_cut(int idmenu, int level)
     }
 }
 
-
+static int active_item(int type)
+{
+    if (type == GUI_MI_OPER || type == GUI_MI_MENU) return 1;
+    return 0;
+}

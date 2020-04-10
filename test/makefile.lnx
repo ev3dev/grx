@@ -76,7 +76,8 @@ PROGS=	arctest     \
 	wintest     \
 	biggtest    \
 	cusptest    \
-	clrtable
+	clrtable    \
+	i18ntest
 
 all:    $(PROGS) demomgrx demointl
 

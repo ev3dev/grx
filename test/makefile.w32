@@ -63,7 +63,8 @@ all: 	$(PROGS) \
 	demomgrx.exe \
 	demointl.exe \
 	speedtst.exe \
-	memtest.exe
+	memtest.exe  \
+	i18ntest.exe
 
 demomgrx.exe: demomgrx.o gfaz.o $(MGRX)
 	$(CC) $(LDOPT) -o demomgrx.exe demomgrx.o gfaz.o $(LIBS) -lm -mwindows
@@ -76,6 +77,9 @@ speedtst.exe: speedtst.o $(MGRX)
 
 memtest.exe: memtest.o $(MGRX)
 	$(CC) $(LDOPT) -o memtest.exe memtest.o $(LIBS) -lm -mwindows -mconsole
+
+i18ntest.exe: i18ntest.o $(MGRX)
+	$(CC) $(LDOPT) -o i18ntest.exe i18ntest.o $(LIBS) -lm -mconsole
 
 $(PROGS): %.exe : %.o $(MGRX)
 	$(CC) $(LDOPT) -o $*.exe $*.o $(LIBS) -lm -mwindows

@@ -53,10 +53,12 @@ void GUIObjectSetText(GUIObject *o, int id, int x, int y, int width, int height,
     o->maxlen = 0;
     o->pressed = -1;
     o->selected = -1;
+    o->visible = 1;
 
     data = malloc(sizeof(TextData));
     if (data == NULL) {
         o->type = GUIOBJTYPE_NONE;
+        o->visible = 0;
         return;
     }
     
@@ -80,11 +82,11 @@ void _GUIOTextDestroy(GUIObject *o)
 
 /***************************/
 
-void _GUIOTextPaint(GUIObject *o, int x, int y)
+void _GUIOTextPaint(GUIObject *o, int dx, int dy)
 {
     GrTextOption grt;
     TextData *data;
-    int i, h;
+    int i, h, x, y;
 
     data = (TextData *)(o->data);
     grt = _objectgenopt;
@@ -94,8 +96,8 @@ void _GUIOTextPaint(GUIObject *o, int x, int y)
     if (data->f) grt.txo_font = data->f;
     h = grt.txo_font->h.height;
 
-    x += o->x;
-    y += o->y;
+    x = o->x + dx;
+    y = o->y + dy;
     
     GrFilledBox(x, y, x+o->width-1, y+o->height-1, o->bg);
     GrSetClipBox(x, y, x+o->width-1, y+o->height-1);

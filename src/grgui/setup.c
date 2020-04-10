@@ -25,6 +25,7 @@ static int guiinited = 0;
 static int greventinited = 0;
 static int nohookplease = 0;
 static int manageexposeevents = 0;
+static int pausebltstoscreen = 0;
 
 int _GUIUseDB = 0;
 GrContext *_GUIGlobCtx = NULL;
@@ -99,15 +100,39 @@ GrContext *GUIGetGlobalContext(void)
     return _GUIGlobCtx;
 }
 
-void GUIGlobalBltRectToScreen(int x1, int y1, int x2, int y2)
+void GUIDBPauseBltsToScreen(void)
 {
-    if (_GUIUseDB) {
-        GrBitBlt(GrScreenContext(), x1, y1,
-                 _GUIGlobCtx, x1, y1, x2, y2, GrWRITE);
+    pausebltstoscreen++;
+}
+
+void GUIDBRestartBltsToScreen(void)
+{
+    pausebltstoscreen--;
+}
+
+void GUIDBCurCtxBltToScreen(void)
+{
+    GrContext *curctx;
+
+    if (_GUIUseDB && pausebltstoscreen == 0) {
+        curctx = GrCurrentContext();
+        GrBitBlt(GrScreenContext(), curctx->gc_xoffset, curctx->gc_yoffset,
+                 curctx, 0, 0, curctx->gc_xmax, curctx->gc_ymax, GrWRITE);
     }
 }
 
-void GUIManageExposeEvents(int manage)
+void GUIDBCurCtxBltRectToScreen(int x1, int y1, int x2, int y2)
+{
+    GrContext *curctx;
+
+    if (_GUIUseDB && pausebltstoscreen == 0) {
+        curctx = GrCurrentContext();
+        GrBitBlt(GrScreenContext(), x1+curctx->gc_xoffset,
+                 y1+curctx->gc_yoffset, curctx, x1, y1, x2, y2, GrWRITE);
+    }
+}
+
+void GUIDBManageExposeEvents(int manage)
 {
     if (manage && _GUIUseDB && !manageexposeevents) {
         manageexposeevents = 1;

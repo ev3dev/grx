@@ -32,10 +32,10 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "MGRX 1.3.2, the graphics library";
+    "MGRX 1.3.3, the graphics library";
 
 char *animatedtext[2] = {
-    "MGRX 1.3.2, the graphics library for DJGPPv2, Linux, X11 and Win32",
+    "MGRX 1.3.3, the graphics library for DJGPPv2, Linux, X11 and Win32",
     "Hello world    Привет мир    Γειά σου Κόσμε    Hola mundo" };
 
 #if defined(__XWIN__) || defined(__WIN32__)
@@ -420,7 +420,7 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "MGRX 1.3.2";
+    char *t1 = "MGRX 1.3.3";
     char *t2 = "test programs launcher";
 
     grt_centered.txo_fgcolor = LIGHTGREEN;

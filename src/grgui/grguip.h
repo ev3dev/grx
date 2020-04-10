@@ -154,29 +154,38 @@ extern GrTextOption _objectentopt; // entries
 
 void _GUIObjectInit(void);
 void _GUIObjectEnd(void);
-void _GUIObjectPaint(GUIObject *o, int x, int y);
+void _GUIObjectPaint(GUIObject *o, int dx, int dy);
 int _GUIObjectProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev);
 void _GUIObjectSetOn(GUIGroup *g, GUIObject *o, int paint);
 void _GUIObjectDestroy(GUIObject *o);
 void *_GUIObjectGetText(GUIObject *o, int chrtype);
 void _GUIObjectSetText(GUIObject *o, void *newtext);
 
-void _GUIOLabelPaint(GUIObject *o, int x, int y);
+void _GUIOLabelPaint(GUIObject *o, int dx, int dy);
+void _GUIOLabelSetText(GUIObject *o, void *newtext);
 void _GUIOTextDestroy(GUIObject *o);
-void _GUIOTextPaint(GUIObject *o, int x, int y);
-void _GUIOLightPaint(GUIObject *o, int x, int y);
+void _GUIOTextPaint(GUIObject *o, int dx, int dy);
+void _GUIOLightPaint(GUIObject *o, int dx, int dy);
 void _GUIOLightSetOn(GUIGroup *g, GUIObject *o, int paint);
-void _GUIOButtonPaint(GUIObject *o, int x, int y);
+void _GUIOLightSetText(GUIObject *o, void *newtext);
+void _GUIOButtonPaint(GUIObject *o, int dx, int dy);
 int _GUIOButtonProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev);
 void _GUIOButtonSetOn(GUIGroup *g, GUIObject *o, int paint);
+void _GUIOButtonSetText(GUIObject *o, void *newtext);
 void _GUIOEntryDestroy(GUIObject *o);
 void *_GUIOEntryGetText(GUIObject *o, int chrtype);
 void _GUIOEntrySetText(GUIObject *o, void *newtext);
-void _GUIOEntryPaint(GUIObject *o, int x, int y);
+void _GUIOEntryPaint(GUIObject *o, int dx, int dy);
 int _GUIOEntryProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev);
 void _GUIOListDestroy(GUIObject *o);
-void _GUIOListPaint(GUIObject *o, int x, int y);
+void _GUIOListPaint(GUIObject *o, int dx, int dy);
 int _GUIOListProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev);
+void _GUIODListDestroy(GUIObject *o);
+void _GUIODListPaint(GUIObject *o, int dx, int dy);
+int _GUIODListProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev);
+void _GUIORegListDestroy(GUIObject *o);
+void _GUIORegListPaint(GUIObject *o, int dx, int dy);
+int _GUIORegListProcessEvent(GUIGroup *g, GUIObject *o, GrEvent *ev);
 
 /**
  ** GROUPS of objects
