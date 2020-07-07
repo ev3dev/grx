@@ -15,6 +15,8 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 200620 M.Alvarez, added GrPatternDrawCharExt
+ **
  **/
 
 #include "libgrx.h"
@@ -23,18 +25,26 @@
 #include "text/text.h"
 
 static void ExtPatternFilledBmp(int x,int y,int w,int h,int ox, int oy,
-				char *bmp,int pitch,int start,
-				GrColor fg,GrColor bg,GrPattern *p)
+                                char *bmp,int pitch,int start,
+                                GrColor fg,GrColor bg,GrPattern *p)
 {
-  GRX_ENTER();
-  _GrFillBitmapPatternExt(x,y,w,h,ox,oy,bmp,pitch,start,p,bg);
-  GRX_LEAVE();
+    GRX_ENTER();
+    _GrFillBitmapPatternExt(x,y,w,h,ox,oy,bmp,pitch,start,p,bg);
+    GRX_LEAVE();
 }
 
 void GrPatternDrawStringExt(void *text,int length,int x,int y,
-			       const GrTextOption *opt,GrPattern *p)
+                            const GrTextOption *opt,GrPattern *p)
 {
-  GRX_ENTER();
-  _GrDrawString(text,length,x,y,opt,p,ExtPatternFilledBmp);
-  GRX_LEAVE();
+    GRX_ENTER();
+    _GrDrawString(text,length,x,y,opt,p,ExtPatternFilledBmp);
+    GRX_LEAVE();
+}
+
+void GrPatternDrawCharExt(long chr,int x,int y,
+                          const GrTextOption *opt,GrPattern *p)
+{
+    GRX_ENTER();
+    _GrDrawChar(chr,x,y,opt,p,ExtPatternFilledBmp);
+    GRX_LEAVE();
 }

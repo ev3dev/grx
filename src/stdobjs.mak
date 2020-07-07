@@ -74,7 +74,11 @@ STD_4 = $(OP)gcursors/bldcurs$(OX)  \
 	$(OP)input/mscursor$(OX)    \
 	$(OP)input/grevent$(OX)     \
 	$(OP)input/recode$(OX)      \
-	$(OP)input/auxintl$(OX)
+	$(OP)input/auxintl$(OX)     \
+	$(OP)pattern/pixdsply$(OX)  \
+	$(OP)pattern/pixtrans$(OX)  \
+	$(OP)pattern/pataligf$(OX)  \
+	$(OP)pattern/gradient$(OX)
 
 STD_5 = $(OP)pattern/fillpatt$(OX)  \
 	$(OP)pattern/makepat$(OX)   \
@@ -149,7 +153,6 @@ STD_8 = $(OP)text/buildaux$(OX)     \
 	$(OP)text/dumpfna$(OX)      \
 	$(OP)text/dumpfont$(OX)     \
 	$(OP)text/dumpgrx$(OX)      \
-	$(OP)text/dumptext$(OX)     \
 	$(OP)text/epatstrg$(OX)     \
 	$(OP)text/fntinlne$(OX)     \
 	$(OP)text/fontinfo$(OX)     \

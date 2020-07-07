@@ -11,10 +11,6 @@ include ../makedefs.grx
 INCDIR=  -I../include
 MGRX = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
 
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_LIBS += -ltiff
-endif
-
 ifeq ($(HAVE_LIBJPEG),y)
   ADDON_LIBS += -ljpeg
 endif

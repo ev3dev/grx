@@ -19,7 +19,6 @@
  **/
 
 #include "libgrx.h"
-#include "allocate.h"
 #include "image/image.h"
 
 int _GrImageTestSize(int wdt,int hgt)
@@ -27,9 +26,6 @@ int _GrImageTestSize(int wdt,int hgt)
   long total;
   GRX_ENTER();
   total = GrContextSize(wdt,hgt);
-# ifdef _MAXMEMPLANESIZE
-  if ( total > _MAXMEMPLANESIZE ) total = 0L;
-# endif
   GRX_RETURN(total);
 }
 
@@ -46,7 +42,7 @@ GrImage *_GrImageAllocate(GrContext *ctx, int nwidth,int nheight)
     GrDestroyContext(ctx);
     goto done;
   }
-  img->pxp_ispixmap = 1;
+  img->pxp_ptype = GR_PTYPE_PIXMAP;
   img->pxp_width  = nwidth;
   img->pxp_height = nheight;
   img->pxp_oper   = 0;

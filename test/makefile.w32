@@ -11,10 +11,6 @@ include ../makedefs.grx
 INCDIR=  -I../include
 MGRX = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
 
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_LIBS += -ltiff
-endif
-
 ifeq ($(HAVE_LIBJPEG),y)
   ADDON_LIBS += -ljpeg
 endif
@@ -38,14 +34,16 @@ PROGS=  arctest.exe     \
 	curstest.exe    \
 	fontdemo.exe    \
 	fonttest.exe    \
-	imgtest.exe     \
+	gradtest.exe    \
 	jpgtest.exe     \
 	keys.exe        \
 	life.exe        \
 	life_db.exe     \
 	linetest.exe    \
 	mousetst.exe    \
+	patrtest.exe    \
 	pcirctst.exe    \
+	pixmtest.exe    \
 	pnmtest.exe     \
 	pngtest.exe     \
 	polytest.exe    \

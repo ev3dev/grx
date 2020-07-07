@@ -12,9 +12,6 @@ INCDIR=  -I../include
 MGRX = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
 
 ADDON_LIBS=-lpc
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_LIBS += -ltiff
-endif
 
 ifeq ($(HAVE_LIBJPEG),y)
   ADDON_LIBS += -ljpeg

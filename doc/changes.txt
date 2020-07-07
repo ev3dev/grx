@@ -1,3 +1,72 @@
+2020-07-07 ----------- MGRX 1.3.4 released
+2020-06-30 Add gradients as a new pattern type, step 3
+           Modified pattern filled an patterned functions to work with gradients.
+           Added test/gradtest.c example program.
+           Modified test/patrtest.c to test bitmpas, pixmaps and gradients.
+2020-06-29 Add gradients as a new pattern type, step 2
+           Defined the gradient structures:
+             typedef struct {...} GrGrdLinearData;
+             typedef struct {...} GrGrdRadialData;
+             typedef struct {...} GrGrdStop;
+             typedef struct {...} GrGradient;
+           Added GrGradient to the GrPattern union
+           New functions in src/pattern/gradient.c:
+             GrPattern *GrCreateLinGradient(int xi, int yi, int xf, int yf);
+             GrPattern *GrCreateRadGradient(int xc, int yc, int r);
+             int GrAddGradientStop(GrPattern *p, int dist, GrColor c);
+             int GrGenGradientColorTbl(GrPattern *p);
+             GrColor GrGradientColor(GrPattern *p, int x, int y, int xo, int yo);
+             GrPattern *GrBuildPixmapFromGradient(GrPattern *p, int xo, int yo, int w, int h);
+2020-06-28 Add gradients as a new pattern type, step 1
+           Renamed GrPattern.ispixmap to GrPattern.ptype, with possible values:
+             GR_PTYPE_BITMAP   0
+             GR_PTYPE_PIXMAP   1
+             GR_PTYPE_GRADIENT 2 (new!!)
+           Modified pattern filled an patterned functions to have the change
+           in account.
+2020-06-27 New test program pixmtest in place of imgtest that has been deleted.
+           New test program patrtest to test pattern filled and patterned shapes.
+2020-06-26 Added Patterned Align functions:
+             void GrPatndAlignLine(int xo,int yo,int x1,int y1,int x2,int y2,GrLinePattern *lp);
+             void GrPatndAlignBox(int xo,int yo,int x1,int y1,int x2,int y2,GrLinePattern *lp);
+             void GrPatndAlignCircle(int xo,int yo,int xc,int yc,int r,GrLinePattern *lp);
+             void GrPatndAlignEllipse(int xo,int yo,int xc,int yc,int xa,int ya,GrLinePattern *lp);
+             void GrPatndAlignCircleArc(int xo,int yo,int xc,int yc,int r,int start,int end,int style,GrLinePattern *lp);
+             void GrPatndAlignEllipseArc(int xo,int yo,int xc,int yc,int xa,int ya,int start,int end,int style,GrLinePattern *lp);
+             void GrPatndAlignPolyLine(int xo,int yo,int numpts,int points[][2],GrLinePattern *lp);
+             void GrPatndAlignPolygon(int xo,int yo,int numpts,int points[][2],GrLinePattern *lp);
+2020-06-26 Added more Pattern Align functions:
+             void GrPatAlignFilledCircleArc(int xo,int yo,int xc,int yc,int r,int start,int end,int style,GrPattern *p);
+             void GrPatAlignFilledEllipseArc(int xo,int yo,int xc,int yc,int xa,int ya,int start,int end,int style,GrPattern *p);
+             void GrPatAlignFloodFill(int xo,int yo,int x, int y, GrColor border, GrPattern *p);
+2020-06-25 Added more Pattern Align functions:
+             void GrPatAlignFilledCircle(int xo,int yo,int xc,int yc,int r,GrPattern *p);
+             void GrPatAlignFilledEllipse(int xo,int yo,int xc,int yc,int xa,int ya,GrPattern *p);
+             void GrPatAlignFilledConvexPolygon(int xo,int yo,int n,int pt[][2],GrPattern *p);
+             void GrPatAlignFilledPolygon(int xo,int yo,int n,int pt[][2],GrPattern *p);
+2020-06-24 Added Pixmpap display and transformation functions:
+             void GrPixmapDisplay(int x,int y, GrPixmap *p);
+             void GrPixmapDisplayExt(int x1,int y1,int x2,int y2, GrPixmap *p);
+             GrPixmap *GrPixmapInverse(GrPixmap *p,int flag);
+             GrPixmap *GrPixmapStretch(GrPixmap *p,int nwidth,int nheight);
+2020-06-24 Added Pattern Align functions:
+             void GrPatAlignFilledPlot(int xo,int yo,int x,int y,GrPattern *p);
+             void GrPatAlignFilledLine(int xo,int yo,int x1,int y1,int x2,int y2,GrPattern *p);
+             void GrPatAlignFilledBox(int xo,int yo,int x1,int y1,int x2,int y2,GrPattern *p);
+2020-06-24 Added Non Resize versions of GrBuildPixmap functions:
+             GrPattern *GrBuildPixmapNR(const char *pixels,int w,int h,const GrColorTableP ct);
+             GrPattern *GrBuildPixmapFromBitsNR(const char *bits,int w,int h,GrColor fgc,GrColor bgc);
+2020-06-24 Deprecated GrImage and its asociated functions.
+2020-06-20 Solved old bugs handling memflags and generating pixmaps from bits
+           in makepat.c
+2020-06-19 Get rid of farmalloc/farfree
+2020-06-18 Removed src/text/dumptext.c
+2020-06-18 Added GrPatternDrawCharExt function.
+2020-06-18 Solved an old bug in _GrDrawWordText when drawing text with 
+           GrPatternDrawStringExt in subcontext.
+2020-06-18 Solved an old bug in GrPatternFilledLine when drawing in subcontext.
+2020-06-01 Use only int arithmetic in png2ctx.c
+2020-04-10 ----------- MGRX 1.3.3 released
 2020-04-08 Workarround to solve a race condition in W10, sometimes hDCMem
            was used before it was ready.
 2020-03-24 To help use the i18n catalog, added the field "sid" to GUIMenuItem

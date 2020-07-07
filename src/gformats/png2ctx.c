@@ -244,13 +244,11 @@ static int readpng( FILE *f, GrContext *grc, int use_alpha )
             GrQueryColor( pColors[x],&r,&g,&b );
           }
           else if (alpha != 255) { // if a==255, rgb not modified
-            float f1, f2;
-            f1 = (alpha/255.0);
-            f2 = ((255-alpha)/255.0);
+            int ralpha = 255 - alpha;
             GrQueryColor( pColors[x],&ro,&go,&bo );
-            r = (r * f1) + (ro * f2);
-            g = (g * f1) + (go * f2);
-            b = (b * f1) + (bo * f2);
+            r = ((r * alpha) + (ro * ralpha)) / 255;
+            g = ((g * alpha) + (go * ralpha)) / 255;
+            b = ((b * alpha) + (bo * ralpha)) / 255;
           }
         }
         pColors[x] = GrAllocColor( r,g,b );

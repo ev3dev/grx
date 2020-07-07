@@ -24,10 +24,6 @@ endif
 
 ADDON_LIBS =
 
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_LIBS += -ltiff
-endif
-
 ifeq ($(HAVE_LIBJPEG),y)
   ADDON_LIBS += -ljpeg
 endif
@@ -55,7 +51,7 @@ PROGS=	arctest     \
 	curstest    \
 	fontdemo    \
 	fonttest    \
-	imgtest     \
+	gradtest    \
 	jpgtest     \
 	keys        \
 	life        \
@@ -63,7 +59,9 @@ PROGS=	arctest     \
 	linetest    \
 	memtest     \
 	mousetst    \
+	patrtest    \
 	pcirctst    \
+	pixmtest    \
 	pnmtest     \
 	pngtest     \
 	polytest    \

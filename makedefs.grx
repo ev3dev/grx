@@ -121,19 +121,20 @@ INSTALLDIR=/usr/local
 # Set the default GRX font path
 #MGRX_DEFAULT_FONT_PATH=/usr/local/lib/fonts/grx
 
+# These seems no longer necesary
 # The X11 base dir on your system
-X11BASE=/usr/X11R6
-
+#X11BASE=/usr/X11R6
 # Add directories with X11 include files here
-X11INCS=-I$(X11BASE)/include
-
+#X11INCS=-I$(X11BASE)/include
 # put X11 required libraries and directories here
 # note: some systems need -lsocket added
-ifeq ($(BUILD_X86_64),y)
-X11LIBS=-L$(X11BASE)/lib64 -lX11
-else
-X11LIBS=-L$(X11BASE)/lib -lX11
-endif
+#ifeq ($(BUILD_X86_64),y)
+#X11LIBS=-L$(X11BASE)/lib64 -lX11
+#else
+#X11LIBS=-L$(X11BASE)/lib -lX11
+#endif
+
+X11LIBS=-lX11
 
 # Set to try to use the XFree86 Direct Graphics Access driver (DGA2)
 # (if DGA2 is not available, fall back to the windowed X11 driver)

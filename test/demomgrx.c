@@ -1,7 +1,7 @@
 /**
  ** demomgrx.c ---- MGRX Test programs launcher
  **
- ** Copyright (C) 2000,2001,2005,2008,2019 Mariano Alvarez Fernandez
+ ** Copyright (C) 2000,2001,2005,2008,2019,2020 Mariano Alvarez Fernandez
  ** [e-mail: malfer@telefonica.net]
  **
  ** This is a test/demo file of the GRX graphics library.
@@ -32,10 +32,10 @@ static int gheight = 480;
 static int gbpp = 16;
 
 char *wintitle =
-    "MGRX 1.3.3, the graphics library";
+    "MGRX 1.3.4, the graphics library";
 
 char *animatedtext[2] = {
-    "MGRX 1.3.3, the graphics library for DJGPPv2, Linux, X11 and Win32",
+    "MGRX 1.3.4, the graphics library for DJGPPv2, Linux, X11 and Win32",
     "Hello world    Привет мир    Γειά σου Κόσμε    Hola mundo" };
 
 #if defined(__XWIN__) || defined(__WIN32__)
@@ -56,42 +56,44 @@ static int need_restart = 1;
 #define PPMIMGOUT "../testimg/demogrx.ppm"
 #endif
 
-#define NDEMOS 38
+#define NDEMOS 40
 
 #define ID_ARCTEST   1
 #define ID_BB1TEST   2
-#define ID_BLITTEST  3
-#define ID_CIRCTEST  4
-#define ID_CLIPTEST  5
-#define ID_COLOROPS  6
-#define ID_CURSTEST  7
-#define ID_FONTTEST  8
-#define ID_IMGTEST   9
-#define ID_JPGTEST  10
-#define ID_KEYS     11
-#define ID_LIFE     12
-#define ID_LIFEDB   13
-#define ID_LINETEST 14
-#define ID_MOUSETST 15
-#define ID_PCIRCTST 16
-#define ID_PNMTEST  17
-#define ID_PNGTEST  18
-#define ID_POLYTEST 19
-#define ID_RGBTEST  20
-#define ID_SCROLTST 21
-#define ID_SBCTEST  22
-#define ID_SPEEDTST 23
-#define ID_TEXTPATT 24
-#define ID_WINCLIP  25
-#define ID_WINTEST  26
-#define ID_FNTDEMO1 27
-#define ID_FNTDEMO2 28
-#define ID_FNTDEMO3 29
-#define ID_FNTDEMO4 30
-#define ID_DEMOINTL 31
-#define ID_BIGGTEST 32
-#define ID_CUSPTEST 33
-#define ID_CLRTABLE 34
+#define ID_BIGGTEST  3
+#define ID_BLITTEST  4
+#define ID_CIRCTEST  5
+#define ID_CLIPTEST  6
+#define ID_CLRTABLE  7
+#define ID_COLOROPS  8
+#define ID_CURSTEST  9
+#define ID_CUSPTEST 10
+#define ID_DEMOINTL 11
+#define ID_FNTDEMO1 12
+#define ID_FNTDEMO2 13
+#define ID_FNTDEMO3 14
+#define ID_FNTDEMO4 15
+#define ID_FONTTEST 16
+#define ID_GRADTEST 17
+#define ID_JPGTEST  18
+#define ID_KEYS     19
+#define ID_LIFE     20
+#define ID_LIFEDB   21
+#define ID_LINETEST 22
+#define ID_MOUSETST 23
+#define ID_PATRTEST 24
+#define ID_PCIRCTST 25
+#define ID_PIXMTEST 26
+#define ID_PNMTEST  27
+#define ID_PNGTEST  28
+#define ID_POLYTEST 29
+#define ID_RGBTEST  30
+#define ID_SBCTEST  31
+#define ID_SCROLTST 32
+#define ID_SPEEDTST 33
+#define ID_TEXTPATT 34
+#define ID_WINCLIP  35
+#define ID_WINTEST  36
 #define ID_MODETEST 50
 #define ID_PAGE1    81
 #define ID_PAGE2    82
@@ -106,20 +108,30 @@ typedef struct {
 static ProgTable ptable[NDEMOS] = {
     {ID_ARCTEST, "arctest", "arctest.c -> test arc outline and filled arc drawing"},
     {ID_BB1TEST, "bb1test", "bb1test.c -> test GrBitBlt1bpp routine"},
+    {ID_BIGGTEST, "biggtest", "biggtest.c -> test GR_biggest_graphics"},
     {ID_BLITTEST, "blittest", "blittest.c -> test various bitblt-s"},
     {ID_CIRCTEST, "circtest", "circtest.c -> test circle and ellipse rendering"},
     {ID_CLIPTEST, "cliptest", "cliptest.c -> test clipping"},
+    {ID_CLRTABLE, "clrtable", "clrtable.c -> test color tables"},
     {ID_COLOROPS, "colorops", "colorops.c -> test WRITE, XOR, OR, and AND draw modes"},
     {ID_CURSTEST, "curstest", "curstest.c -> test cursors"},
+    {ID_CUSPTEST, "cusptest", "cusptest.c -> test custom line shapes"},
+    {ID_DEMOINTL, "demointl", "demointl.c -> test intl support"},
+    {ID_FNTDEMO1, "fontdemo ncen22b.fnt", "fontdemo ncen22b.fnt -> test a GRX font"},
+    {ID_FNTDEMO2, "fontdemo ter-114b.res", "fontdemo ter-114b.res -> test a RES font"},
+    {ID_FNTDEMO3, "fontdemo ter-114n.fna", "fontdemo ter-114n.fna -> test a FNA font"},
+    {ID_FNTDEMO4, "fontdemo ter-114v.psf", "fontdemo ter-114v.psf -> test a PSF font"},
     {ID_FONTTEST, "fonttest", "fonttest.c -> test text drawing"},
-    {ID_IMGTEST, "imgtest", "imgtest.c -> test image functions mapping"},
+    {ID_GRADTEST, "gradtest", "gradtest.c -> test gradients"},
     {ID_JPGTEST, "jpgtest", "jpgtext.c -> text context to jpeg functions"},
     {ID_KEYS, "keys", "keys.c -> test keyboard input"},
     {ID_LIFE, "life", "life.c -> Conway's life program"},
     {ID_LIFEDB, "life_db", "life_db.c -> Double buffer version of life"},
     {ID_LINETEST, "linetest", "linetest.c -> test wide and patterned lines"},
     {ID_MOUSETST, "mousetst", "mousetst.c -> test mouse cursor and mouse/keyboard input"},
+    {ID_PATRTEST, "patrtest", "patrtest.c -> test pattern filled and patterned shapes"},
     {ID_PCIRCTST, "pcirctst", "pcirctst.c -> test custom circle and ellipse rendering"},
+    {ID_PIXMTEST, "pixmtest", "pixmtest.c -> test pixmap functions"},
     {ID_PNMTEST, "pnmtest", "pnmtext.c -> text context to pnm functions"},
     {ID_PNGTEST, "pngtest", "pngtext.c -> text context to png functions"},
     {ID_POLYTEST, "polytest", "polytest.c -> test polygon rendering"},
@@ -130,14 +142,6 @@ static ProgTable ptable[NDEMOS] = {
     {ID_TEXTPATT, "textpatt", "textpatt.c -> test patterned text"},
     {ID_WINCLIP, "winclip", "winclip.c -> clip a drawing to various windows (contexts)"},
     {ID_WINTEST, "wintest", "wintest.c -> test window (context) mapping"},
-    {ID_FNTDEMO1, "fontdemo ncen22b.fnt", "fontdemo ncen22b.fnt -> test a GRX font"},
-    {ID_FNTDEMO2, "fontdemo ter-114b.res", "fontdemo ter-114b.res -> test a RES font"},
-    {ID_FNTDEMO3, "fontdemo ter-114n.fna", "fontdemo ter-114n.fna -> test a FNA font"},
-    {ID_FNTDEMO4, "fontdemo ter-114v.psf", "fontdemo ter-114v.psf -> test a PSF font"},
-    {ID_DEMOINTL, "demointl", "demointl.c -> test intl support"},
-    {ID_BIGGTEST, "biggtest", "biggtest.c -> test GR_biggest_graphics"},
-    {ID_CUSPTEST, "cusptest", "cusptest.c -> test wide line functions"},
-    {ID_CLRTABLE, "clrtable", "clrtable.c -> test color tables"},
     {ID_MODETEST, "modetest", "modetest.c -> test all available graphics modes"},
     {ID_PAGE1, "", "Change to page 1"},
     {ID_PAGE2, "", "Change to page 2"},
@@ -162,46 +166,48 @@ static ProgTable ptable[NDEMOS] = {
 static Button bp1[NBUTTONSP1] = {
     {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "ArcTest", BSTATUS_SELECTED, ID_ARCTEST},
     {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Bb1Test", 0, ID_BB1TEST},
-    {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "BlitTest", 0, ID_BLITTEST},
-    {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "CircTest", 0, ID_CIRCTEST},
-    {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "ClipTest", 0, ID_CLIPTEST},
-    {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "Colorops", 0, ID_COLOROPS},
-    {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "CursTest", 0, ID_CURSTEST},
-    {PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, "ImgTest", 0, ID_IMGTEST},
-    {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "JpgTest", 0, ID_JPGTEST},
-    {PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, "Keys", 0, ID_KEYS},
-    {PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Life", 0, ID_LIFE},
-    {PX1, PY2, 100, 40, IND_BLUE, IND_YELLOW, "Life_db", 0, ID_LIFEDB},
-    {PX1, PY3, 100, 40, IND_BLUE, IND_YELLOW, "LineTest", 0, ID_LINETEST},
-    {PX1, PY4, 100, 40, IND_BLUE, IND_YELLOW, "MouseTst", 0, ID_MOUSETST},
-    {PX1, PY5, 100, 40, IND_BLUE, IND_YELLOW, "PcircTst", 0, ID_PCIRCTST},
-    {PX1, PY6, 100, 40, IND_BLUE, IND_YELLOW, "PnmTest", 0, ID_PNMTEST},
-    {PX1, PY7, 100, 40, IND_BLUE, IND_YELLOW, "PngTest", 0, ID_PNGTEST},
-    {PX1, PY8, 100, 40, IND_BLUE, IND_YELLOW, "PolyTest", 0, ID_POLYTEST},
-    {PX2, PY0, 100, 40, IND_BLUE, IND_YELLOW, "RgbTest", 0, ID_RGBTEST},
-    {PX2, PY1, 100, 40, IND_BLUE, IND_YELLOW, "SbcTest", 0, ID_SBCTEST},
-    {PX2, PY2, 100, 40, IND_BLUE, IND_YELLOW, "ScrolTst", 0, ID_SCROLTST},
-    {PX2, PY3, 100, 40, IND_BLUE, IND_YELLOW, "WinClip", 0, ID_WINCLIP},
-    {PX2, PY4, 100, 40, IND_BLUE, IND_YELLOW, "WinTest", 0, ID_WINTEST},
+    {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "BigGTest", 0, ID_BIGGTEST},
+    {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "BlitTest", 0, ID_BLITTEST},
+    {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "CircTest", 0, ID_CIRCTEST},
+    {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "ClipTest", 0, ID_CLIPTEST},
+    {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "ClrTable", 0, ID_CLRTABLE},
+    {PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, "ColorOps", 0, ID_COLOROPS},
+    {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "CursTest", 0, ID_CURSTEST},
+    {PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, "CusPTest", 0, ID_CUSPTEST},
+    {PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, "DemoIntl", 0, ID_DEMOINTL},
+    {PX1, PY2, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo1", 0, ID_FNTDEMO1},
+    {PX1, PY3, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo2", 0, ID_FNTDEMO2},
+    {PX1, PY4, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo3", 0, ID_FNTDEMO3},
+    {PX1, PY5, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo4", 0, ID_FNTDEMO4},
+    {PX1, PY6, 100, 40, IND_BLUE, IND_YELLOW, "FontTest", 0, ID_FONTTEST},
+    {PX1, PY7, 100, 40, IND_BLUE, IND_YELLOW, "GradTest", 0, ID_GRADTEST},
+    {PX1, PY8, 100, 40, IND_BLUE, IND_YELLOW, "JpgTest", 0, ID_JPGTEST},
+    {PX2, PY0, 100, 40, IND_BLUE, IND_YELLOW, "Keys", 0, ID_KEYS},
+    {PX2, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Life", 0, ID_LIFE},
+    {PX2, PY2, 100, 40, IND_BLUE, IND_YELLOW, "Life_db", 0, ID_LIFEDB},
+    {PX2, PY3, 100, 40, IND_BLUE, IND_YELLOW, "LineTest", 0, ID_LINETEST},
+    {PX2, PY4, 100, 40, IND_BLUE, IND_YELLOW, "MouseTst", 0, ID_MOUSETST},
     {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 2", 0, ID_PAGE2},
     {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
     {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
 };
 
-#define NBUTTONSP2  14
+#define NBUTTONSP2  16
 
 static Button bp2[NBUTTONSP2] = {
-    {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "FontTest", BSTATUS_SELECTED, ID_FONTTEST},
-    {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "TextPatt", 0, ID_TEXTPATT},
-    {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo1", 0, ID_FNTDEMO1},
-    {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo2", 0, ID_FNTDEMO2},
-    {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo3", 0, ID_FNTDEMO3},
-    {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo4", 0, ID_FNTDEMO4},
-    {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "DemoIntl", 0, ID_DEMOINTL},
-    {PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, "BigGTest", 0, ID_BIGGTEST},
-    {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "CusPTest", 0, ID_CUSPTEST},
-    {PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, "ClrTable", 0, ID_CLRTABLE},
-    {PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, "SpeedTst", 0, ID_SPEEDTST},
+    {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "PatrTest", BSTATUS_SELECTED, ID_PATRTEST},
+    {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "PcircTst", 0, ID_PCIRCTST},
+    {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "PixmTest", 0, ID_PIXMTEST},
+    {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "PnmTest", 0, ID_PNMTEST},
+    {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "PngTest", 0, ID_PNGTEST},
+    {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "PolyTest", 0, ID_POLYTEST},
+    {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "RgbTest", 0, ID_RGBTEST},
+    {PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, "SbcTest", 0, ID_SBCTEST},
+    {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "ScrolTst", 0, ID_SCROLTST},
+    {PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, "SpeedTst", 0, ID_SPEEDTST},
+    {PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, "TextPatt", 0, ID_TEXTPATT},
+    {PX1, PY2, 100, 40, IND_BLUE, IND_YELLOW, "WinClip", 0, ID_WINCLIP},
+    {PX1, PY3, 100, 40, IND_BLUE, IND_YELLOW, "WinTest", 0, ID_WINTEST},
     {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 1", 0, ID_PAGE1},
     {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
     {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
@@ -289,8 +295,8 @@ int main(int argc, char **argv)
             continue;
         }
         if (ev.type == GREV_EXPOSE) {
-            printf("expose %ld %ld %ld %ld %d\n",
-                   ev.p1, ev.p2, ev.p3, ev.p4, ev.kbstat);
+            //printf("expose %ld %ld %ld %ld %d\n",
+            //       ev.p1, ev.p2, ev.p3, ev.p4, ev.kbstat);
             if (ev.kbstat == 0) { // no more EXPOSE events follow
                 if (gwidth > 640 || gheight > 480)
                     GrClearScreen(GrAllocColor(120, 90, 60));
@@ -420,7 +426,7 @@ static void paint_screen(void)
 
 static void the_title(int x, int y)
 {
-    char *t1 = "MGRX 1.3.3";
+    char *t1 = "MGRX 1.3.4";
     char *t2 = "test programs launcher";
 
     grt_centered.txo_fgcolor = LIGHTGREEN;

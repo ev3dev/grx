@@ -18,11 +18,18 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 200624 M.Alvarez, adding GrPatAlignFilledCircle
+ **
  **/
 
 #include "libgrx.h"
 
 void GrPatternFilledCircle(int xc,int yc,int r,GrPattern *p)
 {
-	GrPatternFilledEllipse(xc,yc,r,r,p);
+    GrPatternFilledEllipse(xc,yc,r,r,p);
+}
+
+void GrPatAlignFilledCircle(int xo,int yo,int xc,int yc,int r,GrPattern *p)
+{
+    GrPatAlignFilledEllipse(xo,yo,xc,yc,r,r,p);
 }

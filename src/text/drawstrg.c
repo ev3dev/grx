@@ -18,14 +18,13 @@
  ** Contributions by:
  ** 080125 M.Alvarez, UTF-8 support
  ** 170706 M.Alvarez, rewrite for font encoding functionality
+ *= 200620 M.Alvarez, solved an old bug
  **
  **/
 
 #include "libgrx.h"
 #include "clipping.h"
 #include "text/text.h"
-
-int _GR_textattrintensevideo = 0;
 
 static void _GrDrawWordText(const unsigned short *text,int length,int x,int y,
                    const GrTextOption *opt, GrPattern *p, TextDrawBitmapFunc dbm)
@@ -44,12 +43,11 @@ static void _GrDrawWordText(const unsigned short *text,int length,int x,int y,
     int     dypre = 0;
     int     dxpost= 0;
     int     dypost= 0;
-    int     oldx  = x;
-    int     oldy  = y;
     int     y1    = f->h.height;
     int     ww    = (x1 & ~rotat) | (y1 &  rotat);
     int     hh    = (x1 &  rotat) | (y1 & ~rotat);
     int     x2, y2;
+    int     oldx, oldy;
     switch(opt->txo_xalign) {
       case GR_ALIGN_RIGHT:
         x -= ww - 1;
@@ -70,6 +68,8 @@ static void _GrDrawWordText(const unsigned short *text,int length,int x,int y,
         break;
     }
     mouse_block(CURC,x,y,(x + ww - 1),(y + hh - 1));
+    oldx = x + CURC->gc_xoffset;
+    oldy = y + CURC->gc_yoffset;
     switch(opt->txo_direct) {
       case GR_TEXT_DOWN:
         dypost = ~0;

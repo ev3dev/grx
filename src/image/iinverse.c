@@ -48,7 +48,7 @@ GrImage *GrImageInverse(GrImage *p,int flag)
     yy += sidey;
   } while(++ys < height);
   *CURC = save;
-  img->pxp_ispixmap = 1;
+  img->pxp_ptype = GR_PTYPE_PIXMAP;
   img->pxp_width  = width;
   img->pxp_height = height;
   img->pxp_oper   = 0;

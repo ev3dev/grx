@@ -21,7 +21,6 @@
 
 #include "libgrx.h"
 #include "grfontdv.h"
-#include "allocate.h"
 #include "fonts/fdv_grx.h"
 
 #ifndef  SEEK_SET
@@ -72,7 +71,7 @@ static void cleanup(void)
 {
     GRX_ENTER();
     if(fontfp != NULL) fclose(fontfp);
-    if(wtable != NULL) farfree(wtable);
+    if(wtable != NULL) free(wtable);
     fontfp = NULL;
     wtable = NULL;
     nextch = 0;
@@ -113,7 +112,7 @@ static int openfile(char *fname)
     }
     if (!fhdr.isfixed) {
         wtsize = sizeof(GR_int16u) * (fhdr.maxchar - fhdr.minchar + 1);
-        wtable = farmalloc(wtsize);
+        wtable = malloc(wtsize);
         if (wtable == NULL) {
             DBGPRINTF(DBG_FONT,("Allocating wtable failed\n"));
             goto done;

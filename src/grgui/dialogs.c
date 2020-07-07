@@ -157,8 +157,9 @@ void GUIDialogDestroy(GUIDialog *d)
 
 int GUIDialogRun(GUIDialog *d)
 {
-    GrEvent ev;
+    GrEvent ev, exp_ev;
     int ret = 0;
+    int rec_expose = 0;
     
     if (d == NULL) return -1;
 
@@ -178,6 +179,13 @@ int GUIDialogRun(GUIDialog *d)
              (ev.type == GREV_WMEND)) {
             ret = -1;
             break;
+        } else if (ev.type == GREV_EXPOSE) { // received here only if
+            // user program activate generation and not
+            // managed by GrGUI, so do something reasonable
+            rec_expose = 1;
+            exp_ev = ev;
+            if (ev.kbstat == 0)
+                GUIPanelPaint(d->p, _dlglinecolor, _dlgbordercolor);
         }
         if (GUIPanelProcessEvent(d->p, &ev) < 0) break;
     }
@@ -190,7 +198,11 @@ int GUIDialogRun(GUIDialog *d)
         _GUIRestartHooks();
     }
     dialog_running--;
-    
+
+    if (rec_expose) {
+        GrEventEnqueueFirst(&exp_ev);
+    }
+
     return ret;
 }
 

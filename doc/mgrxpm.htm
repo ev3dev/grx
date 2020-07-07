@@ -8,12 +8,12 @@
 
 <center>
 <h1><font color="#555555">M</font><font color="#FF0000">G</font><font color="#00CC00">R</font><font color="#0000FF">X</font>
-<small>1.3.3</small></h1>
+<small>1.3.4</small></h1>
 <h1>a C graphics library for DOS, Linux console &amp; X11 and Win32</h1>
 <h2>Programmer's Manual</h2>
 <p>Based on the original GRX manual written by: Csaba Biegl on August 10, 1992
 <p>Adapted for MGRX by: Mariano Alvarez Fern&aacute;ndez on August 1, 2005
-<p>Last update: April 8, 2020
+<p>Last update: July 7, 2020
 </center>
 
 <hr>
@@ -49,9 +49,9 @@ memory driver.
 <li><a href="#gpri">Graphics primitives</a>
 <li><a href="#ncgpri">Non-clipping graphics primitives</a>
 <li><a href="#cld">Customized line drawing</a>
+<li><a href="#pbpg">Patterns (bitmap, pixmaps and gradients)</a>
 <li><a href="#pfgpri">Pattern filled graphics primitives</a>
 <li><a href="#pld">Patterned line drawing</a>
-<li><a href="#img">Image manipulation</a>
 <li><a href="#enc">About text encoding</a>
 <li><a href="#td">Text drawing</a>
 <li><a href="#utf8">Special UTF-8 text type considerations</a>
@@ -1133,90 +1133,164 @@ void GrCustomPolygon(int numpts,int points[][2],const GrLineOption *o);
 </pre>
 
 <hr>
-<h2><a name="pfgpri">Pattern filled graphics primitives</a></h2>
+<h2><a name="pbpg">Patterns (bitmaps, pixmaps and gradients)</a></h2>
 
-<p>&nbsp;&nbsp;The library also supports a pattern filled version of the
-basic filled primitives described above. These functions have similar
+<p>&nbsp;&nbsp;The library also supports pattern filled and paterned versions
+of the filled and custom primitives described above. These functions have similar
 parameter passing conventions as the basic ones with one difference: instead
 of the color value a pointer to an union of type 'GrPattern' has to be passed
-to them. The <code>GrPattern</code> union can contain either a bitmap or a
-pixmap fill pattern. The first integer slot in the union determines which
+to them. The <code>GrPattern</code> union can contain a bitmap a pixmap or a
+gradient fill pattern. The first integer slot in the union determines which
 type it is. Bitmap fill patterns are rectangular arrays of bits, each set
 bit representing the foreground color of the fill operation, and each zero
 bit representing the background. Both the foreground and background colors
 can be combined with any of the supported logical operations. Bitmap fill
 patterns have one restriction: their width must be eight pixels. Pixmap
-fill patterns are very similar to contexts. The relevant structure
+fill patterns are very similar to contexts. Gradients are smooth color
+changes, can be linear or radial. Gradients can be used only in rgb
+color modes. The relevant structure
 declarations (from <b>mgrx.h</b>):
 <pre>
+#define GR_PTYPE_BITMAP   0
+#define GR_PTYPE_PIXMAP   1
+#define GR_PTYPE_GRADIENT 2
+
 /*
  * BITMAP: a mode independent way to specify a fill pattern of two
  *   colors. It is always 8 pixels wide (1 byte per scan line), its
- *   height is user-defined. SET THE TYPE FLAG TO ZERO!!!
+ *   height is user-defined. SET THE TYPE FLAG TO GR_PTYPE_BITMAP!!!
  */
 typedef struct _GR_bitmap {
-  int     bmp_ispixmap;          /* type flag for pattern union */
-  int     bmp_height;            /* bitmap height */
-  char   *bmp_data;              /* pointer to the bit pattern */
-  GrColor bmp_fgcolor;           /* foreground color for fill */
-  GrColor bmp_bgcolor;           /* background color for fill */
-  int     bmp_memflags;          /* set if dynamically allocated */
+    int     bmp_ptype;              /* type flag for pattern union */
+    int     bmp_height;             /* bitmap height */
+    char   *bmp_data;               /* pointer to the bit pattern */
+    GrColor bmp_fgcolor;            /* foreground color for fill */
+    GrColor bmp_bgcolor;            /* background color for fill */
+    int     bmp_memflags;           /* set if dynamically allocated */
 } GrBitmap;
 
 /*
  * PIXMAP: a fill pattern stored in a layout identical to the video RAM
  *   for filling using 'bitblt'-s. It is mode dependent, typically one
- *   of the library functions is used to build it. KEEP THE TYPE FLAG
- *   NONZERO!!!
+ *   of the library functions is used to build it. SET THE TYPE FLAG TO
+ *   GR_PTYPE_PIXMAP!!!
  */
 typedef struct _GR_pixmap {
-  int     pxp_ispixmap;          /* type flag for pattern union */
-  int     pxp_width;             /* pixmap width (in pixels)  */
-  int     pxp_height;            /* pixmap height (in pixels) */
-  GrColor pxp_oper;              /* bitblt mode (SET, OR, XOR, AND, IMAGE) */
-  struct _GR_frame pxp_source;   /* source context for fill */
+    int     pxp_ptype;              /* type flag for pattern union */
+    int     pxp_width;              /* pixmap width (in pixels)  */
+    int     pxp_height;             /* pixmap height (in pixels) */
+    GrColor pxp_oper;               /* bitblt mode (SET, OR, XOR, AND, IMAGE) */
+    struct _GR_frame pxp_source;    /* source context for fill */
 } GrPixmap;
 
 /*
- * Fill pattern union -- can either be a bitmap or a pixmap
+ * GRADIENT: a fill pattern that change color in the direction defined by a
+ *   vector (linar gradient) or from the distance to a point (radial gradient).
+ *   Only can be used in rgb mode. SET THE TYPE FLAG TO GR_PTYPE_GRADIENT!!!
+ */
+typedef struct {
+    int xi, yi, xf, yf;             // vector that define the gradient
+    float dist_if;                  // distance from i to f (calculated)
+} GrGrdLinearData;
+
+typedef struct {
+    int xc, yc, r;                  // center and radius that define the gradient
+} GrGrdRadialData;
+
+typedef struct {
+    int dist;                       // normalized distance (0 to 255)
+    GrColor c;                      // color
+} GrGrdStop;
+
+#define GR_LINEAR_GRADIENT 0
+#define GR_RADIAL_GRADIENT 1
+
+#define GR_GRADIENT_MAXSTOPS 10
+
+typedef struct {
+    int     grd_ptype;              // type flag for pattern union
+    int     grd_mode;               // gradient mode (linear or radial)
+    GrColor grd_oper;               // bitblt mode (SET, OR, XOR, AND, IMAGE)
+    int     grd_memflags;           // set if dynamically allocated
+    union {
+        GrGrdLinearData grd_ld;     // linear data
+        GrGrdRadialData grd_rd;     // radial data
+    };
+    int     grd_nstops;             // num of stops
+    GrGrdStop grd_stop[GR_GRADIENT_MAXSTOPS];   // stop definition
+    int     grd_genctbl;            // color table has been generated 1=yes 0=no
+    GrColor grd_ctbl[257];          // color table ctbl[0]=num_colors=256 ever
+} GrGradient;
+
+/*
+ * Fill pattern union -- can either be a bitmap, a pixmap or a gradient
  */
 typedef union _GR_pattern {
-  int      gp_ispixmap;          /* nonzero for pixmaps */
-  GrBitmap gp_bitmap;            /* fill bitmap */
-  GrPixmap gp_pixmap;            /* fill pixmap */
+    int        gp_ptype;            /* type flag */
+    GrBitmap   gp_bitmap;           /* fill bitmap */
+    GrPixmap   gp_pixmap;           /* fill pixmap */
+    GrGradient gp_gradient;         /* fill gradient */
 } GrPattern;
 </pre>
 <p>&nbsp;&nbsp;This define group (from <b>mgrx.h</b>) help to acces the
 <code>GrPattern</code> menbers:
 <pre>
-#define gp_bmp_data                     gp_bitmap.bmp_data
-#define gp_bmp_height                   gp_bitmap.bmp_height
-#define gp_bmp_fgcolor                  gp_bitmap.bmp_fgcolor
-#define gp_bmp_bgcolor                  gp_bitmap.bmp_bgcolor
+#define gp_bmp_data                 gp_bitmap.bmp_data
+#define gp_bmp_height               gp_bitmap.bmp_height
+#define gp_bmp_fgcolor              gp_bitmap.bmp_fgcolor
+#define gp_bmp_bgcolor              gp_bitmap.bmp_bgcolor
 
-#define gp_pxp_width                    gp_pixmap.pxp_width
-#define gp_pxp_height                   gp_pixmap.pxp_height
-#define gp_pxp_oper                     gp_pixmap.pxp_oper
-#define gp_pxp_source                   gp_pixmap.pxp_source
+#define gp_pxp_width                gp_pixmap.pxp_width
+#define gp_pxp_height               gp_pixmap.pxp_height
+#define gp_pxp_oper                 gp_pixmap.pxp_oper
+#define gp_pxp_source               gp_pixmap.pxp_source
+
+#define gp_grd_mode                 gp_gradient.grd_mode
+#define gp_grd_oper                 gp_gradient.grd_oper
+#define gp_grd_memflags             gp_gradient.grd_memflags
+#define gp_grd_ld                   gp_gradient.grd_ld
+#define gp_grd_rd                   gp_gradient.grd_rd
+#define gp_grd_nstops               gp_gradient.grd_nstops
+#define gp_grd_stop                 gp_gradient.grd_stop
+#define gp_grd_genctbl              gp_gradient.grd_genctbl
+#define gp_grd_ctbl                 gp_gradient.grd_ctbl
 </pre>
+
+<h3>Bitmaps</h3>
+
 <p>&nbsp;&nbsp;Bitmap patterns can be easily built from initialized character
 arrays and static structures by the C compiler, thus no special support is
 included in the library for creating them. The only action required from the
 application program might be changing the foreground and background colors
-as needed. Pixmap patterns are more difficult to build as they replicate the
+as needed. Here is an example:
+
+<pre>
+    unsigned char bmpdata[8] = {0x00, 0x7E, 0x82, 0x82, 0x82, 0x82, 0x7E, 0x00};
+    GrBitmap bm1 = {GR_PTYPE_BITMAP, 8, NULL, 0, 0, 0};
+    bm1.bmp_fgcolor = GrWhite();
+    bm1.bmp_bgcolor = GrBlack();
+    bm1.bmp_data = (char *)bmpdata;
+</pre>
+
+<h3>Pixmaps</h3>
+
+<p>&nbsp;&nbsp;Pixmap patterns are more difficult to build as they replicate the
 layout of the video memory which changes for different video modes. For this
 reason the library provides three functions to create pixmap patterns in a
 mode-independent way:
 <pre>
-GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP colors);
+GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct);
+GrPattern *GrBuildPixmapNR(const char *pixels,int w,int h,const GrColorTableP ct);
 GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,
                                  GrColor fgc,GrColor bgc);
+GrPattern *GrBuildPixmapFromBitsNR(const char *bits,int w,int h,
+                                   GrColor fgc,GrColor bgc);
 GrPattern *GrConvertToPixmap(GrContext *src);
 </pre>
 <p>&nbsp;&nbsp;<code>GrBuildPixmap</code> build a pixmap from a two
 dimensional (<code>w</code> by <code>h</code>) array of characters. The
 elements in this array are used as indices into the color table specified
-with the argument <code>colors</code>. (This means that pixmaps created
+with the argument <code>ct</code>. (This means that pixmaps created
 this way can use at most 256 colors.) The color table pointer:
 <pre>
 typedef GrColor *GrColorTableP;
@@ -1231,20 +1305,70 @@ pixmap fill pattern from bitmap data. It is useful if the width of the
 bitmap pattern is not eight as such bitmap patterns can not be used to build
 a <code>GrBitmap</code> structure.
 
+<p>&nbsp;&nbsp;Either <code>GrBuildPixmapFromBits</code> and
+<code>GrBuildPixmap</code> can return a pixmap wither than <code>w</code>
+to a multiple of 8 bytes for faster bitblt's. If that conduct is not
+desirable use the NR versions of the fucntions.
+
 <p>&nbsp;&nbsp;The <code>GrConvertToPixmap</code> function converts a
 graphics context to a pixmap fill pattern. It is useful when the pattern
 can be created with graphics drawing operations. NOTE: the pixmap pattern
 and the original context share the drawing RAM, thus if the context is
-redrawn the fill pattern changes as well. Fill patterns which were built
-by library routines can be destroyed when no longer needed (i.e. the space
-occupied by them can be freed) by calling:
+redrawn the fill pattern changes as well.
+
+<h3>Gradients</h3>
+
+<p>&nbsp;&nbsp;Gradients can be build by simple code or using functions
+from the library. First you call one of these:
+<pre>
+GrPattern *GrCreateLinGradient(int xi, int yi, int xf, int yf);
+GrPattern *GrCreateRadGradient(int xc, int yc, int r);
+</pre>
+<p>to create a linear or a radial gradient. After that you define the 
+gradient stop points using:
+<pre>
+int GrAddGradientStop(GrPattern *p, int dist, GrColor c);
+</pre>
+<p><code>dist</code> is a integer normalized distance, from 0 to 255, that
+represent the distance from (x1,yi) to (xf,yf) or (r). Here is an simple
+example for a radial gradient with 3 stop points:
+<pre>
+    rg1 = GrCreateRadGradient(GrMaxX()/2, GrMaxY()/2, GrMaxX()/2);
+    if (rg1 == NULL) goto error;
+    GrAddGradientStop(rg1, 0, GrAllocColor(255, 0, 0));
+    GrAddGradientStop(rg1, 128, GrAllocColor(0, 0, 255));
+    GrAddGradientStop(rg1, 255, GrAllocColor(0, 255, 0));
+    GrGenGradientColorTbl(rg1);
+</pre>
+<p>&nbsp;&nbsp;In any case, after creating the gradient you must call
+a function to populate the color table that defines the gradient:
+<pre>
+int GrGenGradientColorTbl(GrPattern *p);
+</pre>
+
+<p>&nbsp;&nbsp;When drawing with a gradient, the lib must calculate the 
+distance to show the correct color for every point. If you want the same
+gradient a lot of times is faster to generate first a pixmap from the gradient:
+<pre>
+GrPattern *GrBuildPixmapFromGradient(GrPattern *p, int xo, int yo, int w, int h);
+</pre>
+<p><code>w,h</code> will be the pixmap dimensions, and <code>xo,yo</code> the 
+gradient pos that will correspond to the 0,0 pixmap point.
+
+<h3>Destroy patterns</h3>
+
+<p>&nbsp;&nbsp;Patterns which were built by library routines can be destroyed
+when no longer needed (i.e. the space occupied by them can be freed) by calling:
 <pre>
 void GrDestroyPattern(GrPattern *p);
 </pre>
-<p>&nbsp;&nbsp;NOTE: when pixmap fill patterns converted from contexts are
+<p>&nbsp;&nbsp;NOTE: when pixmap patterns converted from contexts are
 destroyed, the drawing RAM is not freed. It is freed when the original
 context is destroyed. Fill patterns built by the application have to be
 destroyed by the application as well (if this is needed).
+
+<hr>
+<h2><a name="pfgpri">Pattern filled graphics primitives</a></h2>
 
 <p>&nbsp;&nbsp;The list of supported pattern filled graphics primitives is
 shown below. These functions are very similar to their solid filled
@@ -1263,8 +1387,46 @@ void GrPatternFilledConvexPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFilledPolygon(int numpts,int points[][2],GrPattern *p);
 void GrPatternFloodFill(int x, int y, GrColor border, GrPattern *p);
 </pre>
-<p>&nbsp;&nbsp;Strictly speaking the plot and line functions in the above
-group are not filled, but they have been included here for convenience.
+<p>&nbsp;&nbsp;All the above functions align the pattern origin with the 
+context origin. Most of the time it is what is expected, so two intersecting
+shapes show a continuous pattern. But some times it is needing to align to
+other point, next functions do that:
+<pre>
+void GrPatAlignFilledPlot(int xo,int yo,int x,int y,GrPattern *p);
+void GrPatAlignFilledLine(int xo,int yo,int x1,int y1,int x2,int y2,GrPattern *p);
+void GrPatAlignFilledBox(int xo,int yo,int x1,int y1,int x2,int y2,GrPattern *p);
+void GrPatAlignFilledCircle(int xo,int yo,int xc,int yc,int r,GrPattern *p);
+void GrPatAlignFilledEllipse(int xo,int yo,int xc,int yc,int xa,int ya,GrPattern *p);
+void GrPatAlignFilledCircleArc(int xo,int yo,int xc,int yc,int r,
+                               int start,int end,int style,GrPattern *p);
+void GrPatAlignFilledEllipseArc(int xo,int yo,int xc,int yc,int xa,int ya,
+                                int start,int end,int style,GrPattern *p);
+void GrPatAlignFilledConvexPolygon(int xo,int yo,int n,int pt[][2],GrPattern *p);
+void GrPatAlignFilledPolygon(int xo,int yo,int n,int pt[][2],GrPattern *p);
+void GrPatAlignFloodFill(int xo,int yo,int x, int y, GrColor border, GrPattern *p);
+</pre>
+
+
+<p>&nbsp;&nbsp;There are two functions to display all or part of a pixmap
+in the current context, aligning to the display box:
+<pre>
+void GrPixmapDisplay(int x,int y, GrPixmap *p);
+void GrPixmapDisplayExt(int x1,int y1,int x2,int y2, GrPixmap *p);
+</pre>
+<p>&nbsp;&nbsp;And two others to transform pixmaps:
+<pre>
+GrPixmap *GrPixmapInverse(GrPixmap *p,int flag);
+GrPixmap *GrPixmapStretch(GrPixmap *p,int nwidth,int nheight);
+</pre>
+<p><code>GrPixmapInverse</code> creates a new pixmap
+flipping <code>p</code> left-right or top-down as indicated by <code>flag
+</code> that can be:
+<pre>
+#define GR_PIXMAP_INVLR  0x01  /* inverse left right */
+#define GR_PIXMAP_INVTD  0x02  /* inverse top down */
+</pre>
+<p><code>GrPixmapStretch</code> creates a new pixmap stretching
+<code>p</code> to <code>nwidth</code> by <code>nheight</code>.
 
 <hr>
 <h2><a name="pld">Patterned line drawing</a></h2>
@@ -1295,82 +1457,19 @@ void GrPatternedEllipseArc(int xc,int yc,int xa,int ya,int start,int end,
 void GrPatternedPolyLine(int numpts,int points[][2],GrLinePattern *lp);
 void GrPatternedPolygon(int numpts,int points[][2],GrLinePattern *lp);
 </pre>
-
-<hr>
-<h2><a name="img">Image manipulation</a></h2>
-
-<p>&nbsp;&nbsp;<b>MGRX</b> defines the <code>GrImage</code> type like a
-<code>GrPixmap</code> synonym:
+<p>&nbsp;&nbsp;Again the above functions align the pattern origin with the 
+context origin. To align with another point use next functions:
 <pre>
-#define GrImage GrPixmap
-</pre>
-<p>nevertheless the <code>GrImage</code> type enforces the image character
-of this object, so for compatibility with future <b>MGRX</b> versions use the
-next functions if you need to convert between <code>GrImage</code> and
-<code>GrPixmap</code> objects:
-<pre>
-GrImage *GrImageFromPattern(GrPattern *p);
-GrPattern *GrPatternFromImage(GrImage *p);
-</pre>
-<p>the <code>GrImageFromPattern</code> function returns NULL if the
-<code>GrPattern</code> given is not a <code>GrPixmap</code>.
-
-<p>&nbsp;&nbsp;Like pixmaps patterns images are dependent of the actual
-video mode set. So the library provides functions to create images in
-a mode-independent way:
-<pre>
-GrImage *GrImageBuild(const char *pixels,int w,int h,const GrColorTableP colors);
-GrImage *GrImageFromContext(GrContext *c);
-</pre>
-<p>these functions work like the <code>GrBuildPixmap</code> and
-<code>GrConvertToPixmap</code> ones. Remember: the image and the original
-context share the drawing RAM.
-
-<p>&nbsp;&nbsp;There are a number of functions to display all or part of
-an image in the current context:
-<pre>
-void GrImageDisplay(int x,int y, GrImage *i);
-void GrImageDisplayExt(int x1,int y1,int x2,int y2, GrImage *i);
-void GrImageFilledBoxAlign(int xo,int yo,int x1,int y1,int x2,int y2,
-                           GrImage *p);
-void GrImageHLineAlign(int xo,int yo,int x,int y,int width,GrImage *p);
-void GrImagePlotAlign(int xo,int yo,int x,int y,GrImage *p);
-</pre>
-<p>&nbsp;&nbsp;<code>GrImageDisplay</code> display the whole image using
-<code>x</code>, <code>y</code> like the upper left corner in the current
-context. <code>GrImageDisplayExt</code> display as much as it can
-(repiting the image if necesary) in the rectangle defined by
-<code>x1</code>, <code>y1</code> and <code>x2</code>, <code>y2</code>.
-
-<p>&nbsp;&nbsp;<code>GrImageFilledBoxAlign</code> is a most general funtion
-(really the later two call it) display as much as it can in the defined
-rectangle using <code>xo</code>, <code>yo</code> like the align point, it
-is the virtual point in the destination context (it doesn't need to be into
-the rectangle) with that the upper left image corner is aligned.
-
-<p>&nbsp;&nbsp;<code>GrImageHLineAlign</code> and  <code>GrImagePlotAlign
-</code> display a row segment or a point of the image at <code>x</code>
-<code>y</code> position using the <code>xo</code>, <code>yo</code> allign
-point.
-
-<p>&nbsp;&nbsp;The most usefull image funtions are these:
-<pre>
-GrImage *GrImageInverse(GrImage *p,int flag);
-GrImage *GrImageStretch(GrImage *p,int nwidth,int nheight);
-</pre>
-<p>&nbsp;&nbsp;<code>GrImageInverse</code> creates a new image object,
-flipping <code>p</code> left-right or top-down as indicated by <code>flag
-</code> that can be:
-<pre>
-#define GR_IMAGE_INVERSE_LR  0x01  /* inverse left right */
-#define GR_IMAGE_INVERSE_TD  0x02  /* inverse top down */
-</pre>
-<p>&nbsp;&nbsp;<code>GrImageStretch</code> creates a new image stretching
-<code>p</code> to <code>nwidth</code> by <code>nheight</code>.
-
-<p>&nbsp;&nbsp;To destroy a image objet when you don't need it any more use:
-<pre>
-void GrImageDestroy(GrImage *i);
+void GrPatndAlignLine(int xo,int yo,int x1,int y1,int x2,int y2,GrLinePattern *lp);
+void GrPatndAlignBox(int xo,int yo,int x1,int y1,int x2,int y2,GrLinePattern *lp);
+void GrPatndAlignCircle(int xo,int yo,int xc,int yc,int r,GrLinePattern *lp);
+void GrPatndAlignEllipse(int xo,int yo,int xc,int yc,int xa,int ya,GrLinePattern *lp);
+void GrPatndAlignCircleArc(int xo,int yo,int xc,int yc,int r,
+                           int start,int end,int style,GrLinePattern *lp);
+void GrPatndAlignEllipseArc(int xo,int yo,int xc,int yc,int xa,int ya,
+                            int start,int end,int style,GrLinePattern *lp);
+void GrPatndAlignPolyLine(int xo,int yo,int numpts,int points[][2],GrLinePattern *lp);
+void GrPatndAlignPolygon(int xo,int yo,int numpts,int points[][2],GrLinePattern *lp);
 </pre>
 
 <hr>
@@ -1726,11 +1825,15 @@ in any other case the text is drawn pixel-by-pixel by the higher-level code.
 <p>&nbsp;&nbsp;There are pattern filed versions too:
 <pre>
 void GrPatternDrawChar(long chr,int x,int y,const GrTextOption *opt,GrPattern *p);
-void GrPatternDrawString(void *text,int length,int x,int y,const GrTextOption *opt,
-                         GrPattern *p);
+void GrPatternDrawString(void *text,int length,int x,int y,
+                         const GrTextOption *opt,GrPattern *p);
+void GrPatternDrawCharExt(long chr,int x,int y,const GrTextOption *opt,GrPattern *p);
 void GrPatternDrawStringExt(void *text,int length,int x,int y,
                             const GrTextOption *opt,GrPattern *p);
 </pre>
+<p>the first two align the pattern origin with the context origin. The
+last two align with the text box.
+
 <p>&nbsp;&nbsp;The size of a font, a character or a text string can be
 obtained by calling one of the following functions. These functions also
 take into consideration the text direction specified in the text option

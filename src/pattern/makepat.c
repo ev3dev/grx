@@ -18,16 +18,38 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 200620 M.Alvarez, solved old bugs handling memflags and generating
+ **                   pixmaps from bits
+ **
  **/
 
 #include "libgrx.h"
-#include "allocate.h"
 
 #define  BEST_MAX_LINE         128
 #define  BEST_MAX_CONTEXT      2048L
 
-#define GCM_MYMEMORY        1           /* set if my context memory */
-#define GCM_MYCONTEXT       2           /* set if my context structure */
+GrPixmap *_GrCreatePixmap(GrContext *ctx, int w,int h)
+{
+    GrPixmap *pix = NULL;
+    
+    GRX_ENTER();
+    if (GrContextSize(w, h) <= 0) goto done;
+    if (!GrCreateContext(w, h, NULL, ctx)) goto done;
+    pix = (GrPixmap *)malloc(sizeof(GrPixmap));
+    if ( !pix ) {
+        GrDestroyContext(ctx);
+        goto done;
+    }
+    pix->pxp_source = ctx->gc_frame;
+    pix->pxp_source.gf_memflags =  (MGRX_GF_MYCONTEXT | MGRX_GF_MYFRAME);
+    pix->pxp_ptype = GR_PTYPE_PIXMAP;
+    pix->pxp_width  = w;
+    pix->pxp_height = h;
+    pix->pxp_oper   = 0;
+
+done:
+    GRX_RETURN(pix);
+}
 
 /*
  * try to replicate a pixmap for faster bitblt-s
@@ -36,135 +58,191 @@
  */
 static int _GrBestPixmapWidth(int wdt,int hgt)
 {
-	long total   = GrContextSize(wdt,hgt);
-	int  linelen = GrLineOffset(wdt);
-	int  factor  = 1;
-	int  test;
+    long total   = GrContextSize(wdt,hgt);
+    int  linelen = GrLineOffset(wdt);
+    int  factor  = 1;
+    int  test;
 
-	if(total == 0L) return(0);
-#ifdef _MAXMEMPLANESIZE
-	if(total > _MAXMEMPLANESIZE) return(0);
-#endif
-	if((test = (int)(BEST_MAX_CONTEXT / total)) > factor)
-	    factor = test;
-	if((test = (BEST_MAX_LINE / linelen)) < factor)
-	    factor = test;
-	while((factor >>= 1) != 0)
-	    wdt <<= 1;
-	return(wdt);
+    if(total == 0L) return(0);
+    if((test = (int)(BEST_MAX_CONTEXT / total)) > factor)
+        factor = test;
+    if((test = (BEST_MAX_LINE / linelen)) < factor)
+        factor = test;
+    while((factor >>= 1) != 0)
+        wdt <<= 1;
+    return(wdt);
+}
+
+GrPattern *GrBuildPixmapNR(const char *pixels,int w,int h,const GrColorTableP ct)
+{
+    GrContext csave,cwork;
+    GrPixmap  *result = NULL;
+    unsigned  char *src;
+    int  wdt;
+    int  hgt;
+    GrColor color;
+
+    GRX_ENTER();
+    result = _GrCreatePixmap(&cwork,w,h);
+    if (result == NULL) goto bad;
+
+    csave = *CURC;
+    *CURC = cwork;
+    for(hgt = 0; hgt < h; hgt++) {
+        src = (unsigned char *)pixels;
+        for(wdt = 0; wdt < w; wdt++) {
+            color = *src++;
+            if(ct != NULL) color = GR_CTABLE_COLOR(ct,color);
+            (*CURC->gc_driver->drawpixel)(wdt,hgt,(color & C_COLOR));
+        }
+        pixels += w;
+    }
+    *CURC = csave;
+    GRX_RETURN((GrPattern *)result);
+
+bad:
+    GRX_RETURN(NULL);
 }
 
 GrPattern *GrBuildPixmap(const char *pixels,int w,int h,const GrColorTableP ct)
 {
-	GrContext csave,cwork;
-	GrPixmap  *result;
-	unsigned  char *src;
-	int  wdt,wdt2,fullw;
-	int  hgt;
-	GrColor color;
+    GrContext csave,cwork;
+    GrPixmap  *result = NULL;
+    unsigned  char *src;
+    int  wdt,wdt2,fullw;
+    int  hgt;
+    GrColor color;
 
-	if((fullw = _GrBestPixmapWidth(w,h)) <= 0) return(NULL);
-	result = (GrPixmap *)malloc(sizeof(GrPixmap));
-	if (result == NULL) return(NULL);
+    GRX_ENTER();
+    if ((fullw = _GrBestPixmapWidth(w,h)) <= 0) goto bad;
+    result = _GrCreatePixmap(&cwork,fullw,h);
+    if (result == NULL) goto bad;
 
-	if (!GrCreateContext(fullw,h,NULL,&cwork)) {
-	  free(result);
-	  return NULL;
-	}
-	csave = *CURC;
-	*CURC = cwork;
-	for(hgt = 0; hgt < h; hgt++) {
-	    for(wdt2 = fullw; (wdt2 -= w) >= 0; ) {
-		src = (unsigned char *)pixels;
-		for(wdt = 0; wdt < w; wdt++) {
-		    color = *src++;
-		    if(ct != NULL) color = GR_CTABLE_COLOR(ct,color);
-		    (*CURC->gc_driver->drawpixel)(wdt2+wdt,hgt,(color & C_COLOR));
-		}
-	    }
-	    pixels += w;
-	}
-	*CURC = csave;
-	result->pxp_source = cwork.gc_frame;
-	result->pxp_source.gf_memflags = (GCM_MYCONTEXT | GCM_MYMEMORY);
-	result->pxp_ispixmap = TRUE;
-	result->pxp_width  = fullw;
-	result->pxp_height = h;
-	result->pxp_oper   = 0;
-	return((GrPattern *)result);
+    csave = *CURC;
+    *CURC = cwork;
+    for(hgt = 0; hgt < h; hgt++) {
+        for(wdt2 = fullw; (wdt2 -= w) >= 0; ) {
+            src = (unsigned char *)pixels;
+            for(wdt = 0; wdt < w; wdt++) {
+                color = *src++;
+                if(ct != NULL) color = GR_CTABLE_COLOR(ct,color);
+                (*CURC->gc_driver->drawpixel)(wdt2+wdt,hgt,(color & C_COLOR));
+            }
+        }
+        pixels += w;
+    }
+    *CURC = csave;
+    GRX_RETURN((GrPattern *)result);
+
+bad:
+    GRX_RETURN(NULL);
+}
+
+GrPattern *GrBuildPixmapFromBitsNR(const char *bits,int w,int h,GrColor fgc,GrColor bgc)
+{
+    GrContext csave,cwork;
+    GrPixmap  *result = NULL;
+    unsigned  char *src;
+    int  wdt,hgt;
+    int  mask,byte;
+
+    GRX_ENTER();
+    result = _GrCreatePixmap(&cwork,w,h);
+    if (result == NULL) goto bad;
+
+    csave = *CURC;
+    *CURC = cwork;
+    fgc &= C_COLOR;
+    bgc &= C_COLOR;
+    for(hgt = 0; hgt < h; hgt++) {
+        src  = (unsigned char *)bits;
+        mask = byte = 0;
+        for(wdt = 0; wdt < w; wdt++) {
+            if((mask >>= 1) == 0) { mask = 0x80; byte = *src++; }
+            (*CURC->gc_driver->drawpixel)(wdt,hgt,((byte & mask) ? fgc : bgc));
+        }
+        bits += (w + 7) >> 3;
+    }
+    *CURC = csave;
+    GRX_RETURN((GrPattern *)result);
+
+bad:
+    GRX_RETURN(NULL);
 }
 
 GrPattern *GrBuildPixmapFromBits(const char *bits,int w,int h,GrColor fgc,GrColor bgc)
 {
-	GrContext csave,cwork;
-	GrPixmap  *result;
-	unsigned  char *src;
-	int  wdt,wdt2,fullw;
-	int  hgt,mask,byte;
+    GrContext csave,cwork;
+    GrPixmap  *result = NULL;
+    unsigned  char *src;
+    int  wdt,wdt2,fullw;
+    int  hgt,mask,byte;
 
-	if((fullw = _GrBestPixmapWidth(w,h)) <= 0) return(NULL);
-	result = (GrPixmap *)malloc(sizeof(GrPixmap));
-	if(result == NULL) return(NULL);
+    GRX_ENTER();
+    if((fullw = _GrBestPixmapWidth(w,h)) <= 0) goto bad;
+    result = _GrCreatePixmap(&cwork,fullw,h);
+    if (result == NULL) goto bad;
 
-	if (!GrCreateContext(fullw,h,NULL,&cwork)) {
-	  free(result);
-	  return NULL;
-	}
-	csave = *CURC;
-	*CURC = cwork;
-	fgc &= C_COLOR;
-	bgc &= C_COLOR;
-	for(hgt = 0; hgt < h; hgt++) {
-	    for(wdt2 = fullw; (wdt2 -= w) >= 0; ) {
-		src  = (unsigned char *)bits;
-		mask = byte = 0;
-		for(wdt = w; --wdt >= 0; ) {
-		    if((mask >>= 1) == 0) { mask = 0x80; byte = *src++; }
-		    (*CURC->gc_driver->drawpixel)(wdt2+wdt,hgt,((byte & mask) ? fgc : bgc));
-		}
-	    }
-	    bits += (w + 7) >> 3;
-	}
-	*CURC = csave;
-	result->pxp_source = cwork.gc_frame;
-	result->pxp_source.gf_memflags = (GCM_MYCONTEXT | GCM_MYMEMORY);
-	result->pxp_ispixmap = TRUE;
-	result->pxp_width  = fullw;
-	result->pxp_height = h;
-	result->pxp_oper   = 0;
-	return((GrPattern *)result);
+    csave = *CURC;
+    *CURC = cwork;
+    fgc &= C_COLOR;
+    bgc &= C_COLOR;
+    for(hgt = 0; hgt < h; hgt++) {
+        for(wdt2 = fullw; (wdt2 -= w) >= 0; ) {
+            src  = (unsigned char *)bits;
+            mask = byte = 0;
+            //for(wdt = w; --wdt >= 0; ) { // this is a bug
+            for(wdt = 0; wdt < w; wdt++) {
+                if((mask >>= 1) == 0) { mask = 0x80; byte = *src++; }
+                (*CURC->gc_driver->drawpixel)(wdt2+wdt,hgt,((byte & mask) ? fgc : bgc));
+            }
+        }
+        bits += (w + 7) >> 3;
+    }
+    *CURC = csave;
+    GRX_RETURN((GrPattern *)result);
+
+bad:
+    GRX_RETURN(NULL);
 }
 
 GrPattern *GrConvertToPixmap(GrContext *src)
 {
-	GrPixmap *result;
+    GrPixmap *result = NULL;
 
-	if(src->gc_onscreen) return(NULL);
-	result = malloc(sizeof(GrPixmap));
-	if(result == NULL) return(NULL);
-	result->pxp_source = src->gc_frame;
-	result->pxp_source.gf_memflags = GCM_MYCONTEXT;
-	result->pxp_ispixmap = TRUE;
-	result->pxp_width  = src->gc_xmax + 1;
-	result->pxp_height = src->gc_ymax + 1;
-	result->pxp_oper   = 0;
-	return((GrPattern *)result);
+    GRX_ENTER();
+    if(src->gc_onscreen) goto bad;
+    result = malloc(sizeof(GrPixmap));
+    if(result == NULL) goto bad;;
+    result->pxp_source = src->gc_frame;
+    result->pxp_source.gf_memflags = MGRX_GF_MYCONTEXT;
+    result->pxp_ptype = GR_PTYPE_PIXMAP;
+    result->pxp_width  = src->gc_xmax + 1;
+    result->pxp_height = src->gc_ymax + 1;
+    result->pxp_oper   = 0;
+    GRX_RETURN((GrPattern *)result);
+
+bad:
+    GRX_RETURN(NULL);
 }
-
 
 void GrDestroyPattern(GrPattern *p)
 {
-  if (!p) return;
-  if (p->gp_ispixmap) {
-    if ( p->gp_pxp_source.gf_memflags & GCM_MYMEMORY) {
-      int ii;
-      for ( ii = p->gp_pxp_source.gf_driver->num_planes; ii > 0; ii-- )
-	 farfree(p->gp_pxp_source.gf_baseaddr[ii - 1]);
+    GRX_ENTER();
+    if (p) {
+        if (p->gp_ptype == GR_PTYPE_PIXMAP) {
+            if ( p->gp_pxp_source.gf_memflags & MGRX_GF_MYFRAME) {
+                int ii;
+                for ( ii = p->gp_pxp_source.gf_driver->num_planes; ii > 0; ii-- )
+                free(p->gp_pxp_source.gf_baseaddr[ii - 1]);
+            }
+            if ( p->gp_pxp_source.gf_memflags & MGRX_GF_MYCONTEXT )
+                free(p);
+        } else if(p->gp_ptype == GR_PTYPE_BITMAP) {
+            if ( p->gp_bitmap.bmp_memflags ) free(p);
+        } else if(p->gp_ptype == GR_PTYPE_GRADIENT) {
+            if ( p->gp_gradient.grd_memflags ) free(p);
+        }
     }
-    if ( p->gp_pxp_source.gf_memflags & GCM_MYCONTEXT )
-      free(p);
-    return;
-  }
-  if ( p->gp_bitmap.bmp_memflags ) free(p);
+    GRX_LEAVE();
 }
-

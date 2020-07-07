@@ -21,25 +21,50 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 200626 M.Alvarez, adding GrPatndAlignEllipse
+ **
  **/
 
 #include "libgrx.h"
 #include "allocate.h"
 #include "shapes.h"
 
-void GrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp) {
+void GrPatternedEllipse(int xc,int yc,int xa,int ya,GrLinePattern *lp)
+{
     int (*points)[2];
     setup_ALLOC();
     points = ALLOC(sizeof(int) * 2 * GR_MAX_ELLIPSE_POINTS);
-    if (points != NULL)
-    {
-	int numpts = GrGenerateEllipse(xc,yc,xa,ya,points);
-	GrFillArg fval;
 
-	fval.p = lp->lnp_pattern;
-	_GrDrawCustomPolygon(numpts,points,lp->lnp_option,
-			     &_GrPatternFiller,fval,TRUE,TRUE);
-	FREE(points);
+    if (points != NULL) {
+        int numpts = GrGenerateEllipse(xc,yc,xa,ya,points);
+        GrFillArg fval;
+        
+        fval.p = lp->lnp_pattern;
+        _GrDrawCustomPolygon(numpts,points,lp->lnp_option,
+                             &_GrPatternFiller,fval,TRUE,TRUE);
+        FREE(points);
+    }
+    reset_ALLOC();
+}
+
+void GrPatndAlignEllipse(int xo,int yo,int xc,int yc,int xa,int ya,GrLinePattern *lp)
+{
+    int (*points)[2];
+    setup_ALLOC();
+    points = ALLOC(sizeof(int) * 2 * GR_MAX_ELLIPSE_POINTS);
+
+    if (points != NULL) {
+        int numpts = GrGenerateEllipse(xc,yc,xa,ya,points);
+        GrFillArg fval;
+        
+        xo += CURC->gc_xoffset;
+        yo += CURC->gc_yoffset;
+        fval.pa.p = lp->lnp_pattern;
+        fval.pa.xo = xo;
+        fval.pa.yo = yo;
+        _GrDrawCustomPolygon(numpts,points,lp->lnp_option,
+                             &_GrPatternAlignFiller,fval,TRUE,TRUE);
+        FREE(points);
     }
     reset_ALLOC();
 }

@@ -121,15 +121,15 @@ TESTFUNC(life)
             if (ev.type == GREV_EXPOSE) {
                 printf("expose %ld %ld %ld %ld %d\n",
                        ev.p1, ev.p2, ev.p3, ev.p4, ev.kbstat);
-                if (ev.kbstat == 0) {// no more EXPOSE events follow
+                //if (ev.kbstat == 0) {// no more EXPOSE events follow
                     //GrMouseEraseCursor();
-                    for(y = ev.p2; y < ev.p4; y++) {
-                        for(x = ev.p1; x < ev.p3; x++) {
+                    for(y = ev.p2; y < ev.p2+ev.p4-1; y++) {
+                        for(x = ev.p1; x < ev.p1+ev.p3-1; x++) {
                             GrPlotNC(x,y,c[(int)old[y][x]]);
                         }
                     }
                     //GrMouseDisplayCursor();
-                }
+                //}
             } else
                 break;
         }

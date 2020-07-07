@@ -234,8 +234,13 @@ int _GrResetColors(void);      /* like GrResetColors but return true on success 
         } }
 
 /* internal utility functions */
+
 GrFrameDriver *_GrFindFrameDriver(GrFrameMode mode);
 GrFrameDriver *_GrFindRAMframeDriver(GrFrameMode mode);
+
+GrPixmap *_GrCreatePixmap(GrContext *ctx, int w,int h);
+GrColor _GrRadGradientColor(GrGradient *g, int x, int y, int xo, int yo);
+GrColor _GrLinGradientColor(GrGradient *g, int x, int y, int xo, int yo);
 
 void _GrCloseVideoDriver(void);
 void _GrDummyFunction(void);

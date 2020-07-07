@@ -26,10 +26,6 @@ ifeq ($(USE_XF86DGA_DRIVER),y)
   ADDON_LIBS += -lXxf86dga -lXext
 endif
 
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_LIBS += -ltiff
-endif
-
 ifeq ($(HAVE_LIBJPEG),y)
   ADDON_LIBS += -ljpeg
 endif
@@ -61,7 +57,7 @@ PROGS=  xarctest     \
 	xcurstest    \
 	xfontdemo    \
 	xfonttest    \
-	ximgtest     \
+	xgradtest    \
 	xjpgtest     \
 	xkeys        \
 	xlife        \
@@ -69,7 +65,9 @@ PROGS=  xarctest     \
 	xlinetest    \
 	xmemtest     \
 	xmousetst    \
+	xpatrtest    \
 	xpcirctst    \
+	xpixmtest    \
 	xpnmtest     \
 	xpngtest     \
 	xpolytest    \

@@ -12,9 +12,6 @@ INCDIR=  -I../include
 MGRX = ../lib/$(GRX_LIB_SUBDIR)/libmgrx.a
 
 ADDON_LIBS=-lpc
-ifeq ($(HAVE_LIBTIFF),y)
-  ADDON_LIBS += -ltiff
-endif
 
 ifeq ($(HAVE_LIBJPEG),y)
   ADDON_LIBS += -ljpeg
@@ -39,7 +36,7 @@ PROGS=  arctest.exe     \
 	curstest.exe    \
 	fontdemo.exe    \
 	fonttest.exe    \
-	imgtest.exe     \
+	gradtest.exe    \
 	jpgtest.exe     \
 	keys.exe        \
 	life.exe        \
@@ -47,7 +44,9 @@ PROGS=  arctest.exe     \
 	linetest.exe    \
 	memtest.exe     \
 	mousetst.exe    \
+	patrtest.exe    \
 	pcirctst.exe    \
+	pixmtest.exe    \
 	pnmtest.exe     \
 	pngtest.exe     \
 	polytest.exe    \

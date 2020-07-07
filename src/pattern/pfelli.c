@@ -18,15 +18,33 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 200624 M.Alvarez, adding GrPatAlignFilledEllipse
+ **
  **/
 
 #include "libgrx.h"
+#include "clipping.h"
 #include "shapes.h"
 
 void GrPatternFilledEllipse(int xc,int yc,int xa,int ya,GrPattern *p)
 {
-	GrFillArg fa;
+    GrFillArg fa;
 
-	fa.p = p;
-	_GrScanEllipse(xc,yc,xa,ya,&_GrPatternFiller,fa,TRUE);
+    fa.p = p;
+    _GrScanEllipse(xc,yc,xa,ya,&_GrPatternFiller,fa,TRUE);
+}
+
+void GrPatAlignFilledEllipse(int xo,int yo,int xc,int yc,int xa,int ya,GrPattern *p)
+{
+    GrFillArg fa;
+
+    //xo = min(xo, xc-xa);
+    //yo = min(yo, yc-ya);
+    xo += CURC->gc_xoffset;
+    yo += CURC->gc_yoffset;
+
+    fa.pa.p = p;
+    fa.pa.xo = xo;
+    fa.pa.yo = yo;
+    _GrScanEllipse(xc,yc,xa,ya,&_GrPatternAlignFiller,fa,TRUE);
 }

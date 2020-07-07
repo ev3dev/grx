@@ -21,11 +21,15 @@
 
 #define USE_FDR_DRAWPATTERN 1
 
+typedef struct {
+    GrPattern *p;
+    int xo, yo;
+} GrPatAlignArg;
+
 typedef union _GR_fillArg {
     GrColor color;
-    struct _GR_bitmap *bmp;
-    struct _GR_pixmap *pxp;
     GrPattern *p;
+    GrPatAlignArg pa;
 } GrFillArg;
 
 typedef void (*PixelFillFunc)(int x,int y,GrFillArg fval);
@@ -40,10 +44,7 @@ typedef struct _GR_filler {
 
 extern GrFiller _GrSolidFiller;
 extern GrFiller _GrPatternFiller;
-/*
-extern GrFiller _GrBitmapFiller;
-extern GrFiller _GrPixmapFiller;
-*/
+extern GrFiller _GrPatternAlignFiller;
 
 void _GrDrawPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c,int doClose);
 void _GrDrawCustomPolygon(int n,int pt[][2],const GrLineOption *lp,GrFiller *f,GrFillArg c,int doClose,int circle);
@@ -52,18 +53,13 @@ void _GrScanPolygon(int n,int pt[][2],GrFiller *f,GrFillArg c);
 void _GrScanEllipse(int xc,int yc,int xa,int ya,GrFiller *f,GrFillArg c,int filled);
 
 /* --- */
-#define _GrDrawPatternedPixel ((PixelFillFunc)_GrPatternFilledPlot)
-#define _GrDrawPatternedLine ((LineFillFunc)_GrPatternFilledLine)
-void _GrFillPatternedScanLine(int x,int y,int w,GrFillArg arg);
-
-/* --- */
 void _GrFloodFill(int x,int y,GrColor border,GrFiller *f,GrFillArg fa);
 
 /* -- */
-void _GrFillPattern(int x,int y,int width,GrPattern *p);
 void _GrFillPatternExt(int x,int y,int sx, int sy,int width,GrPattern *p);
-void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrPattern *p);
-void _GrPatternFilledPlot(int x,int y,GrPattern *p);
+void _GrPatternFilledPlotExt(int x,int y,int sx,int sy,GrPattern *p);
+void _GrPatternFilledLineExt(int x1,int y1,int dx,int dy,int sx,int sy,GrPattern *p);
+void _GrPatternFilledBoxExt(int x1,int y1,int x2,int y2,int sx,int sy,GrPattern *p);
 
 void _GrFillBitmapPattern(int x,int y,int w,int h,
 			  char *bmp,int pitch,int start,

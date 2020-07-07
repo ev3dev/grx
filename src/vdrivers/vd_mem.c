@@ -20,7 +20,6 @@
 
 #include "libgrx.h"
 #include "grdriver.h"
-#include "allocate.h"
 #include "arith.h"
 
 static char * MemBuf = NULL;
@@ -28,7 +27,7 @@ static unsigned long MemBufSze = 0;
 
 static void FreeMemBuf(void)
 {
-    if (MemBuf) farfree(MemBuf);
+    if (MemBuf) free(MemBuf);
     MemBuf = NULL;
     MemBufSze = 0;
 }
@@ -38,13 +37,13 @@ static int AllocMemBuf(unsigned long sze)
     int clear = 1;
 
     if (!MemBuf) {
-        MemBuf = farcalloc(1,(size_t)sze);
+        MemBuf = calloc(1,(size_t)sze);
         if (!MemBuf) return 0;
         MemBufSze = sze;
         clear = 0;
     }
     if (MemBufSze < sze) {
-        MemBuf = farrealloc(MemBuf,(size_t)sze);
+        MemBuf = realloc(MemBuf,(size_t)sze);
         if (!MemBuf) return 0;
         MemBufSze = sze;
     }

@@ -1,6 +1,5 @@
 /**
- ** allocate.h ---- common ground for malloc & friends in 16 & 32 bit envs
- **                 stack based temporary memory allocation
+ ** allocate.h ---- some allocate functions
  **
  ** Copyright (c) 1995 Csaba Biegl, 820 Stirrup Dr, Nashville, TN 37221
  ** [e-mail: csaba@vuse.vanderbilt.edu]
@@ -23,11 +22,6 @@
 #  include <stdlib.h>
 #endif
 
-#define farmalloc  malloc
-#define farrealloc realloc
-#define farcalloc  calloc
-#define farfree    free
-
 #ifndef setup_alloca
 #define setup_alloca()
 #define reset_alloca()
@@ -44,6 +38,6 @@ extern void *_GrTempBuffer;
 extern unsigned  _GrTempBufferBytes;
 #define _GrTempBufferAlloc(b) (                                     \
     ((unsigned)(b) <= _GrTempBufferBytes) ? _GrTempBuffer           \
-					  : _GrTempBufferAlloc_(b) )
+                      : _GrTempBufferAlloc_(b) )
 extern void *_GrTempBufferAlloc_(size_t bytes);
 extern void _GrTempBufferFree(void);

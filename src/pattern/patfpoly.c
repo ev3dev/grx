@@ -18,17 +18,42 @@
  ** but WITHOUT ANY WARRANTY; without even the implied warranty of
  ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  **
+ ** 200625 M.Alvarez, adding GrPatAlignFilledPolygon
+ **
  **/
 
 #include "libgrx.h"
+#include "clipping.h"
 #include "shapes.h"
 
 void GrPatternFilledPolygon(int n,int pt[][2],GrPattern *p)
 {
-	GrFillArg fa;
+    GrFillArg fa;
 
-	fa.p = p;
-	if(n <= 3) _GrScanConvexPoly(n,pt,&_GrPatternFiller,fa);
-	else       _GrScanPolygon(   n,pt,&_GrPatternFiller,fa);
+    fa.p = p;
+    if(n <= 3)
+        _GrScanConvexPoly(n,pt,&_GrPatternFiller,fa);
+    else 
+        _GrScanPolygon(n,pt,&_GrPatternFiller,fa);
 }
 
+void GrPatAlignFilledPolygon(int xo,int yo,int n,int pt[][2],GrPattern *p)
+{
+    GrFillArg fa;
+    //int i;
+
+    //for (i=0; i<n; i++) {
+    //    xo = min(xo, pt[i][0]);
+    //    yo = min(yo, pt[i][1]);
+    //}
+    xo += CURC->gc_xoffset;
+    yo += CURC->gc_yoffset;
+
+    fa.pa.p = p;
+    fa.pa.xo = xo;
+    fa.pa.yo = yo;
+    if(n <= 3)
+        _GrScanConvexPoly(n,pt,&_GrPatternAlignFiller,fa);
+    else 
+        _GrScanPolygon(n,pt,&_GrPatternAlignFiller,fa);
+}

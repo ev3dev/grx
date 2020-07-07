@@ -160,7 +160,8 @@ static void dboton(int x, int y, int an, int al, GrColor c, GrColor ct,
     int pol[7][2], prof;
     GrLineOption glo;
     int mouseblock;
-    GrColor caux;
+    GrColor caux, ctdim;
+    long lctdim;
     int iaux;
 
     prof = (pulsd) ? 2 : 4;
@@ -196,8 +197,15 @@ static void dboton(int x, int y, int an, int al, GrColor c, GrColor ct,
         GrLine(x+12+iaux, y+al-11+iaux, x+an-13+iaux, y+al-11+iaux, caux);
     }
 
-    //_objectbutopt.txo_fgcolor = ct;
-    _objectbutopt.txo_fgcolor = (sgid > 0) ? caux : ct;
+    _objectbutopt.txo_fgcolor = ct;
+    if (sgid > 100 && !on) {
+        if (GrCurrentContext()->gc_driver->bits_per_pixel > 8) {
+            GrQueryColor2(ct, &lctdim);
+            lctdim &= 0xCFCFCF;
+            ctdim = GrAllocColor2(lctdim);
+            _objectbutopt.txo_fgcolor = ctdim;
+        }
+    }
     iaux = pulsd ? 1 : 0;
     GrDrawString(s, 0, x+an/2+iaux, y+al/2+iaux, &_objectbutopt);
 
