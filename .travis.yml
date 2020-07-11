@@ -2,9 +2,9 @@ language: bash
 sudo: required
 dist: bionic
 env:
-- OS=ubuntu ARCH=amd64 DIST=bionic
-- OS=ubuntu ARCH=i386 DIST=bionic
-- OS=ubuntu ARCH=arm64 DIST=bionic
+- OS=ubuntu ARCH=amd64 DIST=focal
+- OS=ubuntu ARCH=i386 DIST=focal
+- OS=ubuntu ARCH=arm64 DIST=focal
 cache:
   directories:
   - "$HOME/cache"
@@ -14,6 +14,6 @@ before_install:
 - sudo apt-get install --yes debhelper pbuilder-ev3dev gobject-introspection
 before_script:
 - pbuilder-ev3dev base
-- git checkout -B ev3dev-bionic
+- git checkout -B ev3dev-focal
 script:
 - pbuilder-ev3dev dev-build

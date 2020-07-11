@@ -1,0 +1,2 @@
+# Uses custom FONTCONFIG_PATH
+grx-3.0-data binary: maintainer-script-should-not-use-fc-cache

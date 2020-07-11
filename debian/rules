@@ -10,5 +10,8 @@
 override_dh_makeshlibs:
 	dh_makeshlibs --exclude plugin
 
-override_dh_install:
-	dh_install --list-missing
+override_dh_missing:
+	dh_missing --fail-missing
+
+override_dh_fixperms:
+	dh_fixperms --exclude .js
