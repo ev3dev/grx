@@ -35,6 +35,13 @@ What OSes does it run on?
 Getting Around
 --------------
 
+On the web:
+
+* Docs: http://docs.ev3dev.org/projects/grx/
+* Bugs/Questions: https://github.com/ev3dev/grx/issues/
+* Wiki: https://github.com/ev3dev/grx/wiki/
+
+
 Source code directories:
 
     addons/     Last remains of some code from GRX 2.x - not used (but might be useful)
@@ -51,13 +58,6 @@ Source code directories:
     src/        The main library source code
     test/       Old demo program from GRX 2.x
     tools/      Utility programs
-
-On the web:
-
-* Docs: http://docs.ev3dev.org/projects/grx
-* Bugs/Questions: https://github.com/ev3dev/grx/issues
-* Wiki: https://github.com/ev3dev/grx/wiki
-
 
 License
 -------
