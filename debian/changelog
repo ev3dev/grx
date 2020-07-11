@@ -1,3 +1,11 @@
+grx (3.1.2~focal1) focal; urgency=medium
+
+  * Fix spelling typo in Linux framebuffer error messages
+  * Update README.md
+  * debian: target Ubuntu Focal
+
+ -- David Lechner <david@lechnology.com>  Sat, 11 Jul 2020 12:24:21 -0500
+
 grx (3.1.2~bionic3) bionic; urgency=medium
 
   * Fix CRITICAL when using memory video driver plugin
