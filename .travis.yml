@@ -13,6 +13,11 @@ before_install:
 - sudo apt-add-repository --yes ppa:ev3dev/tools
 - sudo apt-get update
 - sudo apt-get install --yes debhelper pbuilder-ev3dev gobject-introspection $QEMU
+- if [ -n "$QEMU" ]; then
+    wget https://github.com/multiarch/qemu-user-static/releases/download/v5.0.0-2/qemu-arm-static;
+    chmod +x qemu-arm-static;
+    sudo mv qemu-arm-static /usr/bin/;
+  fi
 before_script:
 - pbuilder-ev3dev base
 - git checkout -B ev3dev-$DIST
