@@ -112,12 +112,10 @@ class Life(Grx.Application):
 
     def _draw(self):
         self._update_state()
-        for x in range(self.width):
-            new_row = self.new_state[x]
-            old_row = self.old_state[x]
-            for y in range(self.height):
-                if old_row[y] != new_row[y]:
-                    Grx.fast_draw_pixel(x, y, self.color[new_row[y]])
+        for x, (new_row, old_row) in enumerate(zip(self.new_state, self.old_state)):
+            for y, (new_value, old_value) in enumerate(zip(new_row, old_row)):
+                if new_value != old_value:
+                    Grx.fast_draw_pixel(x, y, self.color[new_value])
 
         self.old_state, self.new_state = self.new_state, self.old_state
 
