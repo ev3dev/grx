@@ -85,8 +85,4 @@ extern char *          _XGrClassNames[6];
 
 extern void _XGrCopyBStore(int x, int y, int width, int lenght);
 
-extern int              _XGrKeyboardHit(void);
-extern int              _XGrKeyboardGetKey(void);
-extern int              _XGrKeyboardGetState(void);
-
 #endif

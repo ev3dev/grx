@@ -16,10 +16,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "grx-3.0.h"
-#include "grxkeys.h"
+
+#include "loop.h"
 
 #define FIMAGEPPM "pnmtest.ppm"
 #define FIMAGEPBM "pnmtest.pbm"
@@ -61,7 +63,7 @@ int main(void)
   grx_context_save_to_pgm( grc,FIMAGEPGM,"TestPnm",NULL );
   grx_context_unref( grc );
   grx_draw_text("Press any key to continue", 10, 50+high, text_opt);
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_query_pnm_file( FIMAGEPGM, &format, &wide, &high, &maxval );
@@ -72,7 +74,7 @@ int main(void)
   grx_context_load_from_pnm( grc,FIMAGEPGM,NULL );
   grx_context_unref( grc );
   grx_draw_text("Press any key to continue", 10, 50+high, text_opt);
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_query_pnm_file( FIMAGEPBM, &format, &wide, &high, &maxval );
@@ -84,7 +86,7 @@ int main(void)
   grx_context_save_to_pbm( grc,FIMAGEPBM2,"TestPnm",NULL );
   grx_context_unref( grc );
   grx_draw_text("Press any key to continue", 10, 50+high, text_opt);
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_query_pnm_file( FIMAGEPPM, &format, &wide, &high, &maxval );
@@ -103,16 +105,16 @@ int main(void)
   grx_context_load_from_pnm( grc,FIMAGEPBM2,NULL );
   grx_context_unref( grc );
   grx_draw_text("Press any key to save screen", 10, 20, text_opt);
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_context_save_to_ppm( NULL,FSCREEN,"TestPnm",NULL );
   grx_clear_screen( GRX_COLOR_WHITE );
   grx_draw_text("Press any key to reload screen", 10, 20, text_opt);
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_context_load_from_pnm( NULL,FSCREEN,NULL );
   grx_draw_text("Press any key to end        ", 10, 20, text_opt);
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
 

@@ -18,8 +18,8 @@
  */
 
 #include <stdio.h>
+
 #include "grx-3.0.h"
-#include "grxkeys.h"
 #include "drawing.h"
 
 int main()
@@ -83,7 +83,7 @@ int main()
     grx_draw_text("press any key to toggle full screen / windowed modes, escape to end",
         10,wh,text_opt);
 
-  } while ( GrKeyRead() != GrKey_Escape );
+  } while (run_main_loop_until_key_press() != GRX_KEY_ESCAPE);
 
   grx_text_options_unref(text_opt);
   grx_font_unref(font);

@@ -73,7 +73,7 @@ TESTFUNC(colorops)
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
 
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        while(!GrKeyPressed()) {
+        while (!run_one_main_loop_iteration()) {
             drawing(ww/4+(RND()%100),
                 wh/4+(RND()%100),
                 ww,
@@ -82,10 +82,10 @@ TESTFUNC(colorops)
                 bg
             );
         }
-        GrKeyRead();
+        run_main_loop_until_key_press();
         grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        while(!GrKeyPressed()) {
+        while (!run_one_main_loop_iteration()) {
             drawing(ww/4+(RND()%100),
                 wh/4+(RND()%100),
                 ww,
@@ -94,10 +94,10 @@ TESTFUNC(colorops)
                 bg
             );
         }
-        GrKeyRead();
+        run_main_loop_until_key_press();
         grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        while(!GrKeyPressed()) {
+        while (!run_one_main_loop_iteration()) {
             drawing(ww/4+(RND()%100),
                 wh/4+(RND()%100),
                 ww,
@@ -106,10 +106,10 @@ TESTFUNC(colorops)
                 bg
             );
         }
-        GrKeyRead();
+        run_main_loop_until_key_press();
         grx_draw_framed_box(ww/4-1,wh/4-1,ww/4+ww+1,wh/4+wh+1,wdt,&icolors);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        while(!GrKeyPressed()) {
+        while (!run_one_main_loop_iteration()) {
             drawing(ww/4+(RND()%100),
                 wh/4+(RND()%100),
                 ww,
@@ -118,5 +118,5 @@ TESTFUNC(colorops)
                 bg
             );
         }
-        GrKeyRead();
+        run_main_loop_until_key_press();
 }

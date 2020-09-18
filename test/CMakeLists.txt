@@ -17,6 +17,15 @@ target_link_libraries (demogrx
     ${TEST_DEPS_LIBRARIES}
 )
 
+add_custom_target (run-demogrx
+    COMMAND ${CMAKE_COMMAND} -E env
+        GRX_PLUGIN_PATH="${CMAKE_BINARY_DIR}/plugins"
+        "$<TARGET_FILE:demogrx>"
+    DEPENDS
+        demogrx
+        plugins
+)
+
 set (PROGRAMS
     arctest
     bb1test

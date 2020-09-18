@@ -18,8 +18,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "grx-3.0.h"
-#include "grxkeys.h"
+
+#include "loop.h"
 
 static GrxTextOptions *text_opt;
 
@@ -48,7 +50,7 @@ void imagen( char *nf )
 
   grx_draw_text( s,10,10,text_opt );
   grx_draw_text( "Press any key to continue",10,50+high,text_opt );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 }
 
 void nopngsupport( void )
@@ -67,7 +69,7 @@ void nopngsupport( void )
   text_opt = grx_text_options_new( grx_text_options_get_font( text_opt ),GRX_COLOR_WHITE );
   for( i=0; i<6; i++ )
     grx_draw_text( s[i],90,160+i*18,text_opt2 );
-  GrKeyRead();
+  run_main_loop_until_key_press();
   grx_text_options_unref(text_opt2);
 }
 
@@ -106,16 +108,16 @@ int main()
   grx_context_unref( grc );
 
   grx_draw_text( "Press any key to save screen",10,10,text_opt );
-  GrKeyRead();
+  run_main_loop_until_key_press();
   grx_context_save_to_png( NULL,"output.png",NULL );
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_draw_text( "Press any key to reload screen",10,10,text_opt );
-  GrKeyRead();
+  run_main_loop_until_key_press();
   grx_context_load_from_png( NULL,"output.png",0,NULL );
 
   grx_draw_text( "Press any key to end          ",10,10,text_opt );
-  GrKeyRead();
+  run_main_loop_until_key_press();
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
 
   grx_text_options_unref(text_opt);

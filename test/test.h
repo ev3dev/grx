@@ -19,14 +19,15 @@
 #ifndef __TEST_H_INCLUDED__
 #define __TEST_H_INCLUDED__
 
-#include <grx-3.0.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "grxkeys.h"
+#include <glib.h>
+#include <grx-3.0.h>
+
 #include "drawing.h"
+#include "loop.h"
 
 extern void (*testfunc)(void);
 char   exit_message[2000] = { "" };
@@ -40,6 +41,36 @@ GrxTextOptions *white_text_black_bg;
 void name(void);        \
 void (*testfunc)(void) = name;  \
 void name(void)
+
+static void run_one_main_loop_iteration_handle_event(GrxEvent *event, gpointer user_data) {
+    GrxKey *key = user_data;
+
+    if (event->type == GRX_EVENT_TYPE_KEY_DOWN) {
+        *key = grx_event_get_keysym(event);
+    }
+}
+
+gboolean run_one_main_loop_iteration() {
+    GrxKey key = GRX_KEY_NO_SYMBOL;
+    guint id = grx_event_handler_add(run_one_main_loop_iteration_handle_event, &key, NULL);
+    g_main_context_iteration(NULL, FALSE);
+    g_source_remove(id);
+    return key != GRX_KEY_NO_SYMBOL;
+}
+
+static gboolean run_main_loop_for_time_handle_timeout(gpointer user_data) {
+    GMainLoop *loop = user_data;
+    g_main_loop_quit(loop);
+    return G_SOURCE_REMOVE;
+}
+
+void run_main_loop_for_time(gint milliseconds) {
+    GMainLoop *loop = g_main_loop_new(NULL, FALSE);
+
+    g_timeout_add(milliseconds, run_main_loop_for_time_handle_timeout, loop);
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+}
 
 int main(int argc,char **argv)
 {

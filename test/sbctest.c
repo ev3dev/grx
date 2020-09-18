@@ -14,10 +14,11 @@
  */
 
 #include <string.h>
+
 #include "test.h"
 
 static void drawpf( int border, GrxPixmap *pat );
-static void drawp( int border, GrxLineOptions *o, GRxPattern *p );
+static void drawp(int border, GrxLineOptions *o, GrxPixmap *p);
 
 TESTFUNC(sbctest)
 {
@@ -48,14 +49,14 @@ TESTFUNC(sbctest)
   drawing( 10,10,280,280,GRX_COLOR_WHITE,GRX_COLOR_NONE );
   grx_set_current_context( NULL );
   grx_bit_blt( 20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_draw_text("Black drawing on subcontext    ", 0,0,white_text_black_bg );
   grx_set_current_context( grsc );
   drawing( 0,0,280,280,GRX_COLOR_BLACK,GRX_COLOR_NONE );
   grx_set_current_context( NULL );
   grx_bit_blt( 20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_draw_text("Pattern drawing on context     ", 0,0,white_text_black_bg );
   grx_set_current_context( grc );
@@ -63,7 +64,7 @@ TESTFUNC(sbctest)
   drawpf( 10,pat1 );
   grx_set_current_context( NULL );
   grx_bit_blt( 20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_draw_text("Pattern drawing on subcontext  ", 0,0,white_text_black_bg );
   grx_set_current_context( grsc );
@@ -71,7 +72,7 @@ TESTFUNC(sbctest)
   drawpf( 0,pat2 );
   grx_set_current_context( NULL );
   grx_bit_blt( 20,20,grc,0,0,299,299,GRX_COLOR_MODE_XOR );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grl.color = GRX_COLOR_WHITE;
   grl.width = 3;
@@ -83,7 +84,7 @@ TESTFUNC(sbctest)
   drawp( 10,&grl, pat1 );
   grx_set_current_context( NULL );
   grx_bit_blt( 20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_draw_text("Patterned drawing on subcontext", 0,0,white_text_black_bg );
   grx_set_current_context( grsc );
@@ -91,7 +92,7 @@ TESTFUNC(sbctest)
   drawp( 0,&grl,pat2 );
   grx_set_current_context( NULL );
   grx_bit_blt( 20,20,grc,0,0,299,299,GRX_COLOR_MODE_XOR );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 #if 0
   grt.txo_fgcolor.v = GRX_COLOR_WHITE;
   grt.txo_bgcolor.v = GRX_COLOR_BLACK | GRX_COLOR_MODE_OR;
@@ -109,7 +110,7 @@ TESTFUNC(sbctest)
   grx_draw_string_with_pixmap_ext( "Hola a todos",12,20,180,&grt,pat1 );
   grx_set_current_context( NULL );
   grx_bit_blt( 20,20,grc,0,0,299,299,GRX_COLOR_MODE_WRITE );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_draw_text("Patterned text on subcontext   ", 0,0,white_text_black_bg );
   grx_set_current_context( grsc );
@@ -119,7 +120,7 @@ TESTFUNC(sbctest)
   grx_draw_string_with_pixmap_ext( "Hola a todos",12,10,170,&grt,pat2 );
   grx_set_current_context( NULL );
   grx_bit_blt( 20,20,grc,0,0,299,299,GRX_COLOR_MODE_XOR );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 #endif
   grx_font_unref( grf );
   grx_pixmap_free( pat2 );

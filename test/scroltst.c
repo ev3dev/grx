@@ -56,7 +56,7 @@ TESTFUNC(scrolltest)
                 grx_draw_text(l4,x,yy,text_opt); yy += txh;
                 grx_draw_text(l5,x,yy,text_opt); yy += txh;
                 grx_draw_text(l6,x,yy,text_opt); yy += txh;
-                switch(GrKeyRead()) {
+                switch (run_main_loop_until_key_press()) {
                     case 'w': vw -= 8; break;
                     case 'W': vw += 8; break;
                     case 'h': vh -= 8; break;

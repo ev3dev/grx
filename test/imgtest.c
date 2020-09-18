@@ -51,7 +51,7 @@ TESTFUNC(imgtest)
         grx_draw_pixmap(ww+16,1,img1);
         grx_draw_pixmap_tiled(0,wh+4,x-1,y-1, img1);
 
-        GrKeyRead();
+        run_main_loop_until_key_press();
 
         for (m1=1; m1 <= PARTS ; m1<<=1) {
           for (d1=1; d1 <= PARTS; d1 <<= 1) {
@@ -66,7 +66,7 @@ TESTFUNC(imgtest)
             }
           }
         }
-        GrKeyRead();
+        run_main_loop_until_key_press();
 
         /* let's finish with some grx_get_scanline / grx_put_scanline tests */
         for (d1 = 1; d1 < 32; ++d1) {
@@ -79,5 +79,5 @@ TESTFUNC(imgtest)
           }
         }
 
-        GrKeyRead();
+        run_main_loop_until_key_press();
 }

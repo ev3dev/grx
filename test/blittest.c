@@ -59,7 +59,7 @@ void doblits(GrxContext *src,int x,int y)
 /*
   {
         GrxColor xc = grx_color_get(255,255,255) | GRX_COLOR_MODE_XOR;
-        GrKeyRead();
+        run_main_loop_until_key_press();
         xx = (grx_get_width() - BWW)/ 2;
         yy = 2;
         for(ii = 0; ii < 8; ii++) {
@@ -78,7 +78,7 @@ void bltest(GrxContext *src,int x,int y)
         for(ii = 0; ii < 8; ii++) {
             drbox(src,x,y);
             doblits(src,x,y);
-            GrKeyRead();
+            run_main_loop_until_key_press();
             x++;
         }
 }
@@ -114,11 +114,11 @@ TESTFUNC(blittest)
         GrxContext *tile = grx_context_new(bw,bh,NULL,NULL);
 
         blxtest();
-        GrKeyRead();
+        run_main_loop_until_key_press();
 
         BWW = 3;
         blxtest();
-        GrKeyRead();
+        run_main_loop_until_key_press();
 
         bcolors.background = grx_color_get(160,100,30);
         bcolors.border_top = grx_color_get(240,150,45);
@@ -153,7 +153,7 @@ TESTFUNC(blittest)
 
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        GrKeyRead();
+        run_main_loop_until_key_press();
 
         grx_clear_screen(0);
         grx_set_current_context(save);
@@ -188,7 +188,7 @@ TESTFUNC(blittest)
 
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
-        GrKeyRead();
+        run_main_loop_until_key_press();
 
 
         grx_context_bit_blt(tile,
@@ -226,7 +226,7 @@ TESTFUNC(blittest)
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
 
-        GrKeyRead();
+        run_main_loop_until_key_press();
         grx_reset_clip_box();
         grx_bit_blt(
            60,60,
@@ -237,7 +237,7 @@ TESTFUNC(blittest)
            GRX_COLOR_MODE_WRITE
         );
 
-        GrKeyRead();
+        run_main_loop_until_key_press();
 
         grx_bit_blt(
            10,10,
@@ -248,7 +248,7 @@ TESTFUNC(blittest)
            GRX_COLOR_MODE_WRITE
         );
 
-        GrKeyRead();
+        run_main_loop_until_key_press();
 
         grx_set_current_context(tile);
         grx_clear_context(0);
@@ -286,6 +286,6 @@ TESTFUNC(blittest)
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
         drawing(ww/4,wh/4,ww,wh,c,bg);
 
-        GrKeyRead();
+        run_main_loop_until_key_press();
 
 }

@@ -18,8 +18,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "grx-3.0.h"
-#include "grxkeys.h"
+
+#include "loop.h"
 
 static GrxTextOptions *text_opt;
 
@@ -43,7 +45,7 @@ void imagen( char *nf, int scale )
 
   grx_draw_text( s,10,10,text_opt );
   grx_draw_text( "Press any key to continue",10,50+high,text_opt );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 }
 
 void nojpegsupport( void )
@@ -60,7 +62,7 @@ void nojpegsupport( void )
   grx_clear_screen( grx_color_get( 0,0,100 ) );
   for( i=0; i<6; i++ )
     grx_draw_text( s[i],90,160+i*18,text_opt );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 }
 
 int main()
@@ -103,23 +105,23 @@ int main()
   grx_context_unref( grc );
 
   grx_draw_text( "Press any key to save color and gray screen",10,10,text_opt );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_context_save_to_jpeg( NULL,"p.jpg",75,NULL );
   grx_context_save_to_jpeg_grayscale( NULL,"pgray.jpg",75,NULL );
 
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_draw_text( "Press any key to reload color screen       ",10,10,text_opt );
-  GrKeyRead();
+  run_main_loop_until_key_press();
   grx_context_load_from_jpeg( NULL,"p.jpg",1,NULL );
 
   grx_draw_text( "Press any key to reload gray screen        ",10,10,text_opt );
-  GrKeyRead();
+  run_main_loop_until_key_press();
   grx_clear_screen( GRX_COLOR_BLACK );
   grx_context_load_from_jpeg( NULL,"pgray.jpg",1,NULL );
 
   grx_draw_text( "Press any key to end                       ",10,10,text_opt );
-  GrKeyRead();
+  run_main_loop_until_key_press();
 
   grx_text_options_unref(text_opt);
 

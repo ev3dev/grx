@@ -26,19 +26,26 @@ TESTFUNC(test1)
             o1.color   = grx_color_get(255,0,0);
             o1.width   = 1;
             o1.n_dash_patterns = 4 * i;
-            o1.dash_patterns = "\5\5\24\24";
+            o1.dash_pattern0 = o1.dash_pattern1 = 5;
+            o1.dash_pattern2 = o1.dash_pattern3 = 24;
             o2.color   = grx_color_get(255,255,0);
             o2.width   = 2;
             o2.n_dash_patterns = 6 * i;
-            o2.dash_patterns = "\5\5\24\24\2\2";
+            o2.dash_pattern0 = o2.dash_pattern1 = 5;
+            o2.dash_pattern2 = o2.dash_pattern3 = 24;
+            o2.dash_pattern4 = o2.dash_pattern5 = 2;
             o3.color   = grx_color_get(0,255,255);
             o3.width   = 30;
             o3.n_dash_patterns = 8 * i;
-            o3.dash_patterns = "\5\5\24\24\2\2\40\40";
+            o3.dash_pattern0 = o3.dash_pattern1 = 5;
+            o3.dash_pattern2 = o3.dash_pattern3 = 24;
+            o3.dash_pattern4 = o3.dash_pattern5 = 2;
+            o3.dash_pattern6 = o3.dash_pattern7 = 40;
             o4.color   = grx_color_get(255,0,255);
             o4.width   = 4;
             o4.n_dash_patterns = 6 * i;
-            o4.dash_patterns = "\2\2\2\2\10\10";
+            o4.dash_pattern0 = o4.dash_pattern1 = o4.dash_pattern2 = o4.dash_pattern3 = 2;
+            o4.dash_pattern4 = o4.dash_pattern5 = 10;
             grx_clear_screen(GRX_COLOR_BLACK);
             grx_draw_line_with_options(10,10,100,100,&o1);
             grx_draw_line_with_options(10,50,100,140,&o1);
@@ -56,10 +63,10 @@ TESTFUNC(test1)
             grx_draw_line_with_options(420,100,440,300,&o4);
             grx_draw_line_with_options(480,100,460,300,&o4);
             grx_draw_line_with_options(600,200,500,300,&o4);
-            GrKeyRead();
+            run_main_loop_until_key_press();
             grx_clear_screen(GRX_COLOR_BLACK);
             grx_draw_box_with_options(50,50,550,350,&o3);
             grx_draw_circle_with_options(300,200,50,&o2);
-            GrKeyRead();
+            run_main_loop_until_key_press();
         }
 }

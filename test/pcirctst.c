@@ -16,14 +16,19 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "test.h"
 #include <math.h>
+
+#include "test.h"
 
 static int stop = 0;
 
 static int widths[] = { 1, 2, 5, 10, 20, 50, 0 };
 
-static GrxLineOptions Solid = { 0, 1, 0, NULL };  /* normal solid */
+static GrxLineOptions Solid = { 
+    .color = 0,
+    .width = 1,
+    .n_dash_patterns = 0,
+};  /* normal solid */
 
 static GrxLineOptions *Patterns[] = {
   &Solid, NULL
@@ -65,7 +70,7 @@ void drawellip(int xc,int yc,int rx,int ry,GrxColor c1,GrxColor c2,GrxColor c3)
                 l->color = c2;
                 l->width = *wdt;
                 grx_draw_ellipse_with_options(xc,yc,rx,ry,l);
-                if(GrKeyRead() == 'q') {
+                if (run_main_loop_until_key_press() == 'q') {
                   stop = 1;
                   return;
                 }

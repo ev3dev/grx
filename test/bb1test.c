@@ -15,10 +15,11 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
-
 #include <stdlib.h>
+
 #include "grx-3.0.h"
-#include "grxkeys.h"
+
+#include "loop.h"
 
 int main(void)
 {
@@ -30,7 +31,7 @@ int main(void)
   int x = 0;
   int y = 40;
   GrxColor fcolor, bcolor;
-  GrKeyType k;
+  GrxKey k;
   GError *error = NULL;
 
   font = grx_font_load(NULL, -1, &error);
@@ -61,7 +62,7 @@ int main(void)
   grx_bit_blt_1bpp(x,y,pContext,0,0,sizex-1,sizey-1,fcolor,bcolor);
 
   while( 1 ){
-    k = GrKeyRead();
+    k = run_main_loop_until_key_press();
     if( k == 'q' ) break;
     switch( k ) {
       case 'u': y--; break;

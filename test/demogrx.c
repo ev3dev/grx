@@ -20,7 +20,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <grx-3.0.h>
-#include "grxkeys.h"
 #include "gfaz.h"
 #include "drawing.h"
 
@@ -205,7 +204,6 @@ static void disaster(char *s);
 
 int main(int argc, char **argv)
 {
-    Event ev;
     char buffer[100];
 
     if (argc >= 4) {
@@ -218,74 +216,44 @@ int main(int argc, char **argv)
     ini_objects();
     paint_screen();
 
-    while (1) {
-        // hack to translate new events to old
-        g_main_context_iteration (g_main_context_default (), FALSE);
-        while (grx_events_pending ()) {
-            GrxEvent *event = grx_event_get ();
-            switch (event->type) {
-            case GRX_EVENT_TYPE_APP_QUIT:
-                par_event_queue (EV_END, 0, 0, 0);
-                break;
-            case GRX_EVENT_TYPE_KEY_DOWN:
-                switch (event->key.keysym) {
-                case GRX_KEY_Escape:
-                    par_event_queue (EV_KEY, GrKey_Escape, 0, 0);
-                    break;
-                case GRX_KEY_Up:
-                    par_event_queue (EV_KEY, GrKey_Up, 0, 0);
-                    break;
-                case GRX_KEY_Down:
-                    par_event_queue (EV_KEY, GrKey_Down, 0, 0);
-                    break;
-                case GRX_KEY_Left:
-                    par_event_queue (EV_KEY, GrKey_Left, 0, 0);
-                    break;
-                case GRX_KEY_Right:
-                    par_event_queue (EV_KEY, GrKey_Right, 0, 0);
-                    break;
-                case GRX_KEY_Return:
-                    par_event_queue (EV_KEY, GrKey_Return, 0, 0);
-                    break;
-                default:
-                    break;
-                }
-                break;
-            default:
-                break;
-            }
-            grx_event_free (event);
+    for (;;) {
+        while (!grx_events_pending()) {
+            g_main_context_iteration(NULL, TRUE);
         }
-
-        event_read(&ev);
-        if (ev.type == EV_MOUSE) {
-            ev.p2 -= worg;
-            ev.p3 -= horg;
+        GrxEvent *ev = grx_event_get();
+        if (ev->type == GRX_EVENT_TYPE_BUTTON_PRESS || ev->type == GRX_EVENT_TYPE_BUTTON_RELEASE) {
+            ev->button.x -= worg;
+            ev->button.y -= horg;
         }
-        if (ev.type == EV_END)
+        if (ev->type == GRX_EVENT_TYPE_APP_QUIT) {
             break;
-        if ((ev.type == EV_KEY) && (ev.p1 == GrKey_Escape))
+        }
+        if (ev->type == GRX_EVENT_TYPE_KEY_DOWN && ev->key.keysym == GRX_KEY_ESCAPE) {
             break;
-        if ((ev.type == EV_KEY) && (ev.p1 == 's')) {
+        }
+        if (ev->type == GRX_EVENT_TYPE_KEY_DOWN && ev->key.keysym  == GRX_KEY_LCASE_S) {
             grx_context_save_to_ppm(NULL, "demogrx.ppm", "DemoGRX", NULL);
             continue;
         }
-        if (pev_button_group(&ev, bgact))
+        if (pev_button_group(ev, bgact)) {
             continue;
-        if (pev_command(&ev))
-            continue;
-        if (pev_select(&ev))
-            continue;
-        if (ev.type == EV_MOUSE) {
-            if (ev.p1 == MOUSE_LB_PRESSED) {
-                sprintf(buffer, "%ld %ld over a button, please",ev.p2,ev.p3);
-                paint_foot(buffer);
-            }
-            else if (ev.p1 == MOUSE_LB_RELEASED)
-                paint_foot("Hold down left mouse buttom to see a comment");
         }
-        if (ev.type == EV_NULL)
+        if (pev_command((Event*)ev)) {
+            continue;
+        }
+        if (pev_select((Event*)ev)) {
+            continue;
+        }
+        if (ev->type == GRX_EVENT_TYPE_BUTTON_PRESS) {
+            sprintf(buffer, "%d %d over a button, please", ev->button.x, ev->button.y);
+            paint_foot(buffer);
+        }
+        if (ev->type == GRX_EVENT_TYPE_BUTTON_RELEASE) {
+            paint_foot("Hold down left mouse buttom to see a comment");
+        }
+        if (ev->type == GRX_EVENT_TYPE_NONE) {
             paint_animation();
+        }
     }
 
     gfaz_fin();
@@ -413,7 +381,10 @@ static int pev_command(Event * ev)
 
     if (ev->type == EV_COMMAND) {
         if (ev->p1 == ID_EXIT) {
-            par_event_queue(EV_END, 0, 0, 0);
+            GrxEvent event = {
+                .type = GRX_EVENT_TYPE_APP_QUIT,
+            };
+            grx_event_put(&event);
             return 1;
         }
         if (ev->p1 == ID_PAGE1) {
@@ -524,12 +495,9 @@ static void paint_animation(void)
 
 static void disaster(char *s)
 {
-    void _GrCloseVideoDriver(void);
-
     char aux[81];
 
     gfaz_fin();
-    _GrCloseVideoDriver();
     printf("DemoGRX: %s\n", s);
     printf("press Return to continue\n");
     fgets(aux, 80, stdin);

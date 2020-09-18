@@ -16,8 +16,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "test.h"
 
@@ -32,12 +32,12 @@ static void testpoly(int n,GrxPoint *points,int convex)
         grx_clear_screen(black);
         grx_draw_polygon(n,points,white);
         grx_draw_filled_polygon(n,points,(red | GRX_COLOR_MODE_XOR));
-        GrKeyRead();
+        run_main_loop_until_key_press();
         if(convex || (n <= 3)) {
             grx_clear_screen(black);
             grx_draw_filled_polygon(n,points,white);
             grx_draw_filled_convex_polygon(n,points,(red | GRX_COLOR_MODE_XOR));
-            GrKeyRead();
+            run_main_loop_until_key_press();
         }
 }
 
@@ -142,5 +142,5 @@ TESTFUNC(ptest)
         }
         fclose(fp);
         speedtest();
-        GrKeyRead();
+        run_main_loop_until_key_press();
 }

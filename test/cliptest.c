@@ -33,9 +33,9 @@ TESTFUNC(cliptest)
         grx_set_clip_box(ww/4,wh/4,ww/4+ww,wh/4+wh);
 
         drawing(0,0,ww,wh,c,GRX_COLOR_BLACK);
-        GrKeyRead();
+        run_main_loop_until_key_press();
 
-        while(!GrKeyPressed()) {
+        while (!run_one_main_loop_iteration()) {
             grx_draw_filled_box(0,0,x,y,GRX_COLOR_BLACK);
             drawing(-(RND()%(2*ww))+ww/2,
                 -(RND()%(2*wh))+wh/2,
@@ -46,5 +46,5 @@ TESTFUNC(cliptest)
             );
             for(delay = 200000L; delay > 0L; delay--);
         }
-        GrKeyRead();
+        run_main_loop_until_key_press();
 }

@@ -18,26 +18,15 @@
 
 #include <stdlib.h>
 #include <string.h>
+
 #include <grx-3.0.h>
-#include <grxkeys.h>
+
 #include "gfaz.h"
 
 GrxColor *egacolors;
 
-static int mouse_found = 0;
-static int mouse_count = 0;
-
-#define MAX_EVQUEUE 10
-
-static Event evqueue[MAX_EVQUEUE];
-static int num_evqueue = 0;
-
-static void (*hook_input_event)( Event * ) = NULL;
-
 /* Internal routines */
 
-static int read_input( void );
-static void input_event_queue( Event *ev );
 static int coord_into( int x, int y, int xo, int yo, int xl, int yl );
 
 /**************************************************************************/
@@ -52,13 +41,6 @@ int gfaz_ini( int width, int height, int bpp )
   
   egacolors = grx_color_get_ega_colors();
 
-  if( GrMouseDetect() ){
-    mouse_found = 1;
-    grx_mouse_set_cursor_default(GRX_COLOR_WHITE,GRX_COLOR_BLACK);
-    show_mouse();
-    }
-  GrMouseEventEnable( 1,mouse_found );
-
   return 0;
 }
 
@@ -66,10 +48,6 @@ int gfaz_ini( int width, int height, int bpp )
 
 int gfaz_fin( void )
 {
-  if( mouse_found ){
-    hide_mouse();
-    }
-    
   grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
   
   return 0;
@@ -77,131 +55,12 @@ int gfaz_fin( void )
 
 /**************************************************************************/
 
-void event_read( Event *ev )
-{
-  while( 1 ){
-    if( num_evqueue > 0 ){
-      num_evqueue--;
-      *ev = evqueue[num_evqueue];
-      return;
-      }
-    if( read_input() ){
-      continue;
-      }
-    ev->type = EV_NULL;
-    ev->p1 = 0;
-    ev->p2 = 0;
-    ev->p3 = 0;
-    return;
-    }
-}
-
-/**************************************************************************/
-
-void event_wait( Event *ev )
-{
-  while( 1 ){
-    event_read( ev );
-    if( ev->type != EV_NULL )
-      return;
-    }
-}
-
-/**************************************************************************/
-
-void event_queue( Event *ev )
-{
-  if( num_evqueue < MAX_EVQUEUE )
-    evqueue[num_evqueue++] = *ev;
-}
-
-/**************************************************************************/
-
-void par_event_queue( int type, long p1, long p2, long p3 )
-{
-  Event ev;
-
-  ev.type = type;
-  ev.p1 = p1;
-  ev.p2 = p2;
-  ev.p3 = p3;
-  event_queue( &ev );
-}
-
-/**************************************************************************/
-
-void set_hook_input_event( void (*fn)( Event * ) )
-{
-  hook_input_event = fn;
-}
-
-/**************************************************************************/
-
-static void input_event_queue( Event *ev )
-{
-  if( hook_input_event != NULL )
-    hook_input_event( ev );
-  else
-    event_queue( ev );
-}
-
-/************************************************************************/
-
-static int read_input( void )
-{
-  GrMouseEvent evt;
-  Event evaux;
-
-  GrMouseGetEventT( GR_M_EVENT,&evt,10L );
-  if( evt.dtime == -1 ) return 0;
-  
-  if( evt.flags & GR_M_KEYPRESS ){
-    evaux.type = EV_KEY;
-    evaux.p1 = evt.key;
-    evaux.p2 = 0;
-    evaux.p3 = 0;
-    input_event_queue( &evaux );
-    }
-  evaux.type = EV_MOUSE;
-  evaux.p2 = evt.x;
-  evaux.p3 = evt.y;
-  if( evt.flags & GR_M_LEFT_DOWN ){
-    evaux.p1 = MOUSE_LB_PRESSED;
-    input_event_queue( &evaux );
-    }
-  if( evt.flags & GR_M_RIGHT_DOWN ){
-    evaux.p1 = MOUSE_RB_PRESSED;
-    input_event_queue( &evaux );
-    }
-  if( evt.flags & GR_M_LEFT_UP ){
-    evaux.p1 = MOUSE_LB_RELEASED;
-    input_event_queue( &evaux );
-    }
-  if( evt.flags & GR_M_RIGHT_UP ){
-    evaux.p1 = MOUSE_RB_RELEASED;
-    input_event_queue( &evaux );
-    }
-  return 1;
-}
-
-/**************************************************************************/
-
-void show_mouse( void )
-{
-  if( (mouse_count == 0) && mouse_found )
-    _grx_mouse_show_cursor();
-
-  mouse_count++;
-}
-
-/************************************************************************/
-
-void hide_mouse( void )
-{
-  mouse_count--;
-  
-  if( (mouse_count == 0) && mouse_found )
-    _grx_mouse_hide_cursor();
+static void par_event_queue(GrxEventType type, int p1, int p2, int p3) {
+    GrxEvent ev = { .type = type, };
+    ((Event*)&ev)->p1 = p1;
+    ((Event*)&ev)->p2 = p2;
+    ((Event*)&ev)->p3 = p3;
+    grx_event_put(&ev);
 }
 
 /**************************************************************************/
@@ -258,7 +117,8 @@ void dboton(int x, int y, int an, int al, GrxTextOptions *to, char *s, int t)
     glo.color = grx_text_options_get_fg_color( to );
     glo.width = 1;
     glo.n_dash_patterns = 2;
-    glo.dash_patterns = "\2\1";
+    glo.dash_pattern0 = 2;
+    glo.dash_pattern1 = 1;
     grx_draw_box_with_options( x+8,y+al/2-6,x+an-8,y+al/2+5,&glo );
     }
 
@@ -284,14 +144,13 @@ void paint_button_group( Button_Group *bg )
 
 /**************************************************************************/
 
-int pev_button_group( Event *ev, Button_Group *bg )
+int pev_button_group(GrxEvent *ev, Button_Group *bg)
 {
   int i;
 
-  if( ev->type == EV_MOUSE ){
-    if( ev->p1 == MOUSE_LB_PRESSED ){
+  if (ev->type == GRX_EVENT_TYPE_BUTTON_PRESS){
       for( i=0; i<bg->nb; i++ )
-        if( coord_into( ev->p2,ev->p3,
+        if (coord_into( ev->button.x, ev->button.y,
                         bg->x+bg->b[i].x,bg->y+bg->b[i].y,
                         bg->b[i].wide,bg->b[i].high ) ){
           bg->b[bg->pb].status &= ~BSTATUS_SELECTED;
@@ -304,13 +163,13 @@ int pev_button_group( Event *ev, Button_Group *bg )
           return 1;
           }
       }
-    if( ev->p1 == MOUSE_LB_RELEASED ){
+  else if (ev->type == GRX_EVENT_TYPE_BUTTON_RELEASE) {
       if( bg->abp ){
         i = bg->pb;
         bg->b[i].status &= ~BSTATUS_PRESSED;
         paint_button( bg->x,bg->y,&(bg->b[i]) );
         bg->abp = 0;
-        if( coord_into( ev->p2,ev->p3,
+        if (coord_into(ev->button.x, ev->button.y,
                         bg->x+bg->b[i].x,bg->y+bg->b[i].y,
                         bg->b[i].wide,bg->b[i].high ) ){
           par_event_queue( EV_COMMAND,bg->b[i].bid,0,0 );
@@ -318,11 +177,10 @@ int pev_button_group( Event *ev, Button_Group *bg )
         return 1;
         }
       }
-    }
-  else if( ev->type == EV_KEY ){
-    if( ev->p1 == GrKey_Right ||
-        ev->p1 == GrKey_Down ||
-        ev->p1 == GrKey_Tab ){
+  else if (ev->type == GRX_EVENT_TYPE_KEY_DOWN) {
+    if (ev->key.keysym == GRX_KEY_RIGHT ||
+        ev->key.keysym == GRX_KEY_DOWN ||
+        ev->key.keysym == GRX_KEY_TAB) {
       if( bg->pb < bg->nb-1 ){
         bg->b[bg->pb].status &= ~BSTATUS_SELECTED;
         paint_button( bg->x,bg->y,&(bg->b[bg->pb]) );
@@ -333,9 +191,9 @@ int pev_button_group( Event *ev, Button_Group *bg )
         }
       return 1;
       }
-    else if( ev->p1 == GrKey_Left ||
-             ev->p1 == GrKey_Up ||
-             ev->p1 == GrKey_BackTab ){
+    else if (ev->key.keysym == GRX_KEY_LEFT ||
+             ev->key.keysym == GRX_KEY_UP ||
+             ev->key.keysym == GRX_KEY_BACK_TAB) {
       if( bg->pb > 0 ){
         bg->b[bg->pb].status &= ~BSTATUS_SELECTED;
         paint_button( bg->x,bg->y,&(bg->b[bg->pb]) );
@@ -346,7 +204,7 @@ int pev_button_group( Event *ev, Button_Group *bg )
         }
       return 1;
       }
-    else if( ev->p1 == GrKey_Return ){
+    else if (ev->key.keysym == GRX_KEY_RETURN) {
       par_event_queue( EV_COMMAND,bg->b[bg->pb].bid,0,0 );
       return 1;
       }

@@ -105,6 +105,7 @@ TESTFUNC(life)
             which = 1 - which;
             old = map[which];
             cur = map[1 - which];
-        } while(!GrKeyPressed());
-        while(GrKeyPressed()) GrKeyRead();
+        } while (!run_one_main_loop_iteration());
+        while (run_one_main_loop_iteration()) { }
+        run_main_loop_until_key_press();
 }

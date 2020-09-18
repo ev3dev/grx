@@ -17,6 +17,7 @@
  */
 
 #include "test.h"
+#include "../src/include/mouse.h"
 
 char p16d[] = {
     0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,
@@ -41,14 +42,14 @@ TESTFUNC(cursortest)
 {
         GrxColor bgc = grx_color_get(0,0,128);
         GrxColor fgc = grx_color_get(255,255,0);
-        GrxColor msc[3];
+        GArray *msc;
         GrxCursor *cur;
         int x,y;
 
-        msc[0] = 2;
-        msc[1] = GRX_COLOR_WHITE;
-        msc[2] = grx_color_get(255,0,0);
+        msc = g_array_sized_new(FALSE, FALSE, sizeof(GrxColor), 3);
+        g_array_append_vals(msc, (GrxColor[]){ 2, GRX_COLOR_WHITE, grx_color_get(255,0,0) }, 3);
         cur = grx_cursor_new(p16d,16,16,16,1,1,msc);
+        g_array_unref(msc);
         x = grx_get_screen_width() / 2;
         y = grx_get_screen_height() / 2;
         grx_cursor_move(cur,x,y);
@@ -83,7 +84,7 @@ TESTFUNC(cursortest)
                 GRX_COLOR_MODE_WRITE
             );
             grx_draw_text("Type u d l r U D L R or q to quit",0,grx_get_max_y()-20,white_text);
-            switch(GrKeyRead()) {
+            switch(run_main_loop_until_key_press()) {
                 case 'u': y--; break;
                 case 'd': y++; break;
                 case 'l': x--; break;

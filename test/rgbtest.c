@@ -32,5 +32,5 @@ TESTFUNC(rgbtest)
                 grx_draw_filled_box(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,ii*32+jj);
             }
         }
-        GrKeyRead();
+        run_main_loop_until_key_press();
 }

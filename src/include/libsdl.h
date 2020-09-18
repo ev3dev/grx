@@ -29,9 +29,6 @@ extern int _SGrLength;
 extern int _SGrActive;
 #endif
 
-extern int _GrIsKbdEnabled(void);
-extern int _GrKeyPressed(void);
-
 /* _keyssdlpool used only when GrMouseEventEnable( 0,x ) is set */
 
 #define  _MAXKEYSSDLPOOL 16

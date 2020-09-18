@@ -50,5 +50,5 @@ TESTFUNC(winclip)
         drawing(-ww/2,-wh/2,ww*2,wh*2,c,GRX_COLOR_BLACK);
         grx_draw_box(0,0,ww-1,wh-1,c);
 
-        GrKeyRead();
+        run_main_loop_until_key_press();
 }

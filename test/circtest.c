@@ -16,8 +16,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "test.h"
 #include <math.h>
+
+#include "test.h"
 
 void drawellip(int xc,int yc,int rx,int ry,GrxColor c1,GrxColor c2,GrxColor c3)
 {
@@ -72,7 +73,7 @@ TESTFUNC(circtest)
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             xr += xr/4+1;
             yr += yr/4+1;
-            g_usleep(200*1000);
+            run_main_loop_for_time(200);
         }
         c1 = grx_color_get(64,64,128);
         xr = 4;
@@ -81,7 +82,7 @@ TESTFUNC(circtest)
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             yr += yr/4+1;
             xr = yr * 4;
-            g_usleep(200*1000);
+            run_main_loop_for_time(200);
         }
         c1 = grx_color_get(64,64,64);
         xr = 1;
@@ -90,9 +91,9 @@ TESTFUNC(circtest)
             drawellip(xc,yc,xr,yr,c1,c2,c3);
             xr += xr/4+1;
             yr = xr * 4;
-            g_usleep(200*1000);
+            run_main_loop_for_time(200);
         }
 
         grx_draw_text("press any key to continue",0,0,white_text_black_bg);
-        GrKeyRead();
+        run_main_loop_until_key_press();
 }

@@ -21,7 +21,6 @@
 #include <ctype.h>
 
 #include "grx-3.0.h"
-#include "grxkeys.h"
 
 #include "../../test/drawing.h"
 
@@ -246,7 +245,21 @@ int main(void)
                 }
             }
             PrintInfo();
-            GrKeyRead();
+
+            gboolean done = FALSE;
+            while (!done) {
+                while (!grx_events_pending()) {
+                    g_main_context_iteration(NULL, TRUE);
+                }
+                GrxEvent *evt = grx_event_get();
+                GrxEventType type = grx_event_get_event_type(evt);
+                
+                if (type == GRX_EVENT_TYPE_APP_QUIT || type == GRX_EVENT_TYPE_KEY_DOWN) {
+                    done = TRUE;
+                }
+                
+                grx_event_free(evt);
+            }
         }
 
         grx_text_options_unref(text_opt);
