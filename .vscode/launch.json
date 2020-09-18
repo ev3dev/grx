@@ -7,7 +7,7 @@
             "request": "launch",
             "preLaunchTask": "grx-3.0-typelib",
             "stopOnEntry": false,
-            "pythonPath": "${config:python.pythonPath}",
+            "pythonPath": "${command:python.interpreterPath}",
             "program": "${file}",
             "cwd": "${fileDirname}",
             "env": { 
@@ -15,12 +15,7 @@
                 "LD_LIBRARY_PATH": "${workspaceRoot}/build/src",
                 "GI_TYPELIB_PATH": "${workspaceRoot}/build/src",
                 "FONTCONFIG_PATH": "${workspaceRoot}/src"
-            },
-            "debugOptions": [
-                "WaitOnAbnormalExit",
-                "WaitOnNormalExit",
-                "RedirectOutput"
-            ]
+            }
         },
         {
             "name": "Run vala file",
