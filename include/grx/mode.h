@@ -244,7 +244,7 @@ struct _GrxFrameDriver {
     gboolean is_video;                   /* video RAM frame driver ? */
     gint     row_align;                  /* scan line size alignment */
     gint     bits_per_pixel;             /* bits per pixel */
-    gint     max_plane_size;             /* maximum plane size in bytes */
+    gint     max_mem_size;               /* maximum frame memory size in bytes */
     gboolean (*init)(GrxVideoMode *md);
     GrxColor (*readpixel)(GrxFrame *c, gint x, gint y);
     void     (*drawpixel)(gint x, gint y, GrxColor c);

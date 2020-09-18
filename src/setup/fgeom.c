@@ -80,17 +80,17 @@ gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width)
 }
 
 /**
- * grx_frame_mode_get_plane_size:
+ * grx_frame_mode_get_memory_size:
  * @mode: a #GrxFrameMode
  * @width: the width in pixels
  * @height: the height in pixels
  *
- * Gets the plane size in bytes required to store an image of @width x @height
+ * Gets the memory size in bytes required to store an image of @width x @height
  * for this frame mode.
  *
  * Returns: the size in bytes.
  */
-gint grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height)
+gint grx_frame_mode_get_memory_size(GrxFrameMode mode, gint width, gint height)
 {
         return(umul32(grx_frame_mode_get_line_offset(mode, width), height));
 }

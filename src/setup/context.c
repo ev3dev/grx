@@ -45,7 +45,7 @@ void grx_context_unref(GrxContext *ctx);
  * Creates a new context in system memory using the memory layout specified by
  * @mode.
  *
- * @memory must contain a buffer of size grx_frame_mode_get_plane_size(). %NULL may also
+ * @memory must contain a buffer of size grx_frame_mode_get_memory_size(). %NULL may also
  * be passed to @memory, in which case the memory will be dynamically allocated.
  *
  * Likewise, @where can be an unused #GrxContext (e.g. you may want to do this
@@ -60,24 +60,39 @@ GrxContext *grx_context_new_full(GrxFrameMode md, gint w, gint h,
 {
         GrxFrameDriver *fd = _GrFindRAMframeDriver(md);
         int  offset, flags = 0;
-        long psize;
+        gint mem_size;
 
-        if(!fd) return(NULL);
-        offset = grx_frame_mode_get_line_offset(md,w);
-        psize  = grx_frame_mode_get_plane_size(md,w,h);
-        if(psize <= 0L) return(NULL);
-        if(psize >  fd->max_plane_size) return(NULL);
-        if(!where) {
+        if (!fd) {
+            g_debug("failed to get frame driver for frame mode");
+            return NULL;
+        }
+        offset = grx_frame_mode_get_line_offset(md, w);
+        mem_size  = grx_frame_mode_get_memory_size(md, w, h);
+        if (mem_size <= 0) {
+            g_debug("frame memory size less than 0");
+            return NULL;
+        }
+        if (mem_size > fd->max_mem_size) {
+            g_debug("frame memory size too big");
+            return NULL;
+        }
+        if (!where) {
             where = malloc(sizeof(GrxContext));
-            if(!where) return(NULL);
+            if (!where) {
+                g_debug("failed to allocate context");
+                return NULL;
+            }
             flags = MYCONTEXT;
         }
         sttzero(where);
         if (!memory) {
-            memory = malloc((size_t)psize);
+            memory = malloc(mem_size);
             if (!memory) {
-                if(flags) free(where);
-                return(NULL);
+                if (flags) {
+                    free(where);
+                }
+                g_debug("failed to allocate frame memory");
+                return NULL;
             }
             flags |= MYFRAME;
         }

@@ -189,7 +189,7 @@ namespace Grx {
         public static FrameMode get_screen_core ();
         public int get_bpp ();
         public int get_line_offset (int width);
-        public int get_plane_size (int width, int height);
+        public int get_memory_size (int width, int height);
         public int get_context_size (int width, int height);
     }
 
@@ -251,7 +251,7 @@ namespace Grx {
         public int is_video;
         public int row_align;
         public int bits_per_pixel;
-        public int max_plane_size;
+        public int max_mem_size;
     }
 
     /*
@@ -292,7 +292,7 @@ namespace Grx {
      * RAM context geometry and memory allocation inquiry stuff
      */
     public int screen_get_line_offset (int width);
-    public int screen_get_plane_size (int width, int height);
+    public int screen_get_memory_size (int width, int height);
     public int screen_get_context_size (int width, int height);
 
     /* ================================================================== */

@@ -31,7 +31,7 @@
  * Creates a new context in system memory using the memory layout specified by
  * grx_frame_mode_get_screen_core().
  *
- * @memory must contain a buffer of size grx_screen_get_plane_size(). %NULL may also
+ * @memory must contain a buffer of size grx_screen_get_memory_size(). %NULL may also
  * be passed to @memory, in which case the memory will be dynamically allocated.
  *
  * Likewise, @where can be an unused #GrxContext (e.g. you may want to do this

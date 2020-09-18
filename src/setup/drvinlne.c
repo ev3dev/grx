@@ -194,18 +194,18 @@ int (grx_screen_get_line_offset)(int width)
 }
 
 /**
- * grx_screen_get_plane_size:
+ * grx_screen_get_memory_size:
  * @width: the width in pixels
  * @height: the height in pixels
  *
- * Gets the plane size in bytes required to store an image of @width x @height
+ * Gets the memory size in bytes required to store an image of @width x @height
  * for the screen.
  *
  * Returns: the size in bytes.
  */
-int (grx_screen_get_plane_size)(int w,int h)
+int (grx_screen_get_memory_size)(int w,int h)
 {
-    return(grx_screen_get_plane_size(w,h));
+    return(grx_screen_get_memory_size(w,h));
 }
 
 /**

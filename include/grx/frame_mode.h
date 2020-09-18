@@ -92,11 +92,11 @@ GrxFrameMode grx_frame_mode_get_screen_core(void);
 
 gint grx_frame_mode_get_bpp(GrxFrameMode mode);
 gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width);
-gint grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height);
+gint grx_frame_mode_get_memory_size(GrxFrameMode mode, gint width, gint height);
 gint grx_frame_mode_get_context_size(GrxFrameMode mode, gint width, gint height);
 
 gint grx_screen_get_line_offset(gint width);
-gint grx_screen_get_plane_size(gint width, gint height);
+gint grx_screen_get_memory_size(gint width, gint height);
 gint grx_screen_get_context_size(gint width, gint height);
 
 /*
@@ -110,8 +110,8 @@ gint grx_screen_get_context_size(gint width, gint height);
 
 #define grx_screen_get_line_offset(w) \
     grx_frame_mode_get_line_offset(grx_frame_mode_get_screen_core(),(w))
-#define grx_screen_get_plane_size(w,h) \
-    grx_frame_mode_get_plane_size(grx_frame_mode_get_screen_core(),(w),(h))
+#define grx_screen_get_memory_size(w,h) \
+    grx_frame_mode_get_memory_size(grx_frame_mode_get_screen_core(),(w),(h))
 #define grx_screen_get_context_size(w,h) \
     grx_frame_mode_get_context_size(grx_frame_mode_get_screen_core(),(w),(h))
 

@@ -115,7 +115,7 @@ static int buildframedriver(GrxVideoMode *mp,GrxFrameDriver *drv)
                (d2->rmode == d1->rmode) &&
                (d1->is_video ? d2->is_video : !d2->is_video) &&
                (d2->row_align <= d1->row_align) && !(d1->row_align % d2->row_align) &&
-               (d2->max_plane_size >= d1->max_plane_size) &&
+               (d2->max_mem_size >= d1->max_mem_size) &&
                (d2->bits_per_pixel == d1->bits_per_pixel)) {
                 drv->init = d2->init ? d2->init : d1->init;
                 goto done; /* TRUE */
@@ -132,16 +132,16 @@ done:   GRX_RETURN(res);
 
 static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
 {
-        long plsize;
+        long mem_size;
         int res;
         GRX_ENTER();
         res = FALSE;
-        plsize = umul32(mp->line_offset,mp->height);
+        mem_size = umul32(mp->line_offset,mp->height);
         g_debug ("buildcontext - Mode Frame buffer = %p",
                  mp->extended_info->frame);
         g_debug ("buildcontext - Mode Frame selector = 0x%x",
                  mp->extended_info->lfb_selector);
-        g_debug ("plane size: %ld", plsize);
+        g_debug ("frame memory size: %ld", mem_size);
         sttzero(cxt);
 #if !(defined(__XWIN__) && !defined(XF86DGA_FRAMEBUFFER) && !defined(__SDL__))
         if(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_LINEAR)
@@ -154,8 +154,8 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
         if (mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_MEMORY)
         {
             g_debug ("buildcontext - Memory Mode");
-            if (plsize > fdp->max_plane_size) {
-                g_debug ("plane size too big");
+            if (mem_size > fdp->max_mem_size) {
+                g_debug ("frame memory size too big");
                 goto done; /* FALSE */
             }
             if (mp->line_offset % fdp->row_align) {
@@ -173,12 +173,12 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
 
             cxt->gc_base_address = mp->extended_info->frame;
         } else {
-            if (plsize > fdp->max_plane_size) {
-                g_debug ("plane size too big");
+            if (mem_size > fdp->max_mem_size) {
+                g_debug ("frame memory size too big");
                 goto done; /* FALSE */
             }
-            if (!mp->extended_info->set_bank && (plsize > 0x10000L)) {
-                g_debug ("plane size exceeds 64KiB");
+            if (!mp->extended_info->set_bank && (mem_size > 0x10000L)) {
+                g_debug ("frame memory size exceeds 64KiB");
                 goto done; /* FALSE */
             }
             if (mp->line_offset % fdp->row_align) {
