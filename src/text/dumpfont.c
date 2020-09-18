@@ -48,7 +48,6 @@ gint grx_font_dump(GrxFont *font, GrxContext *context, gint start, GrxColor fg, 
     FT_GlyphSlot slot;
     FT_Error ret;
     GrxContext ctx;
-    GrxFrameMemory mem;
     gint i, x, y, x0, y0, x1, y1, height, width, ascender;
 
     g_return_val_if_fail(font != NULL, 0);
@@ -80,9 +79,8 @@ gint grx_font_dump(GrxFont *font, GrxContext *context, gint start, GrxColor fg, 
         if (slot->bitmap.pixel_mode != FT_PIXEL_MODE_MONO) {
             continue;
         }
-        mem.plane0 = slot->bitmap.buffer;
         grx_context_new_full(GRX_FRAME_MODE_RAM_1BPP,
-            slot->bitmap.pitch * 8, slot->bitmap.rows, &mem, &ctx);
+            slot->bitmap.pitch * 8, slot->bitmap.rows, slot->bitmap.buffer, &ctx);
         grx_context_bit_blt_1bpp(context, x + slot->bitmap_left,
             y - slot->bitmap_top + ascender, &ctx, 0, 0,
             slot->bitmap.width, slot->bitmap.rows, fg, bg);

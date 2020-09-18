@@ -48,20 +48,12 @@
 #define OVERLAP(dp,sp) ( ((GR_int8 *)dp) > ((GR_int8 *)sp) )
 #endif
 
-/* for RAM3x8 support */
-#ifndef PLANE_ARG
-#define PLANE 0
-#endif
-
 #ifdef LOCALFUNC
 static
 #endif
 void BLITFUNC(GrxFrame *dst,int dx,int dy,
               GrxFrame *src,int sx,int sy,
               int w,int h,GrxColor op
-#ifdef PLANE_ARG
-             ,int PLANE
-#endif
               )
 {
     unsigned char *dptr, *sptr;
@@ -75,8 +67,8 @@ void BLITFUNC(GrxFrame *dst,int dx,int dy,
     oper  = C_OPER(op);
     cval  = (GR_int8u)op;
 
-    dptr = &GRX_FRAME_MEMORY_PLANE(&dst->base_address,PLANE)[umuladd32(dy,dst->line_offset,dx)];
-    sptr = &GRX_FRAME_MEMORY_PLANE(&src->base_address,PLANE)[umuladd32(sy,src->line_offset,sx)];
+    dptr = &dst->base_address[umuladd32(dy,dst->line_offset,dx)];
+    sptr = &src->base_address[umuladd32(sy,src->line_offset,sx)];
 
 #   ifdef BLITSEL
       setup_far_selector(BLITSEL);

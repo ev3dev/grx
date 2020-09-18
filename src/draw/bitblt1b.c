@@ -53,7 +53,7 @@ void grx_context_bit_blt_1bpp(GrxContext *dst,int dx,int dy,
   if(dst == NULL) dst = CURC;
   if(src == NULL) src = CURC;
         
-  if(src->gc_driver->num_planes != 1 || src->gc_driver->bits_per_pixel != 1)
+  if(src->gc_driver->bits_per_pixel != 1)
     return;
         
   isort(x1,x2); oldx1 = x1;
@@ -72,7 +72,7 @@ void grx_context_bit_blt_1bpp(GrxContext *dst,int dx,int dy,
   mouse_addblock(dst,dx,dy,dstx2,dsty2);
 
   (dst->gc_driver->drawbitmap)((dx + dst->x_offset),(dy + dst->y_offset),
-    (x2 - x1 + 1),(y2 - y1 + 1),src->gc_base_address.plane0,src->gc_line_offset,
+    (x2 - x1 + 1),(y2 - y1 + 1),src->gc_base_address,src->gc_line_offset,
     /*alex:the offset should anyway be the x1,y1 point in src, as clipped*/
     (x1 + (y1 * (src->gc_line_offset << 3))),fg,bg);
 

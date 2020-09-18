@@ -61,13 +61,11 @@ _GrFrameDriverSDL32H,                   /* SDL 32 bpp padded #2 */
 
 _GrFrameDriverRAM1,                     /* mono */
 _GrFrameDriverRAM2,                     /* 4 color */
-_GrFrameDriverRAM4x1,                   /* 16 color planar */
 _GrFrameDriverRAM8,                     /* 256 color */
 _GrFrameDriverRAM16,                    /* 32768/65536 color */
 _GrFrameDriverRAM24,                    /* 16M color */
 _GrFrameDriverRAM32L,                   /* 16M color padded #1 */
 _GrFrameDriverRAM32H,                   /* 16M color padded #2 */
-_GrFrameDriverRAM3x8,                   /* 16M color planar (image mode) */
 /*
  * This is a NULL-terminated table of frame driver descriptor pointers. Users
  * can provide their own table with only the desired (or additional) drivers.

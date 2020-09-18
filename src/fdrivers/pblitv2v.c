@@ -67,8 +67,8 @@ void dualpageblt(GrxFrame *dst,int dx,int dy,
             w2 = w2 - w1;
             if(w2 == 0) w2=w3 , w3=0;
             do {
-                unsigned char *dptr = &dst->base_address.plane0[BANKPOS(doff)];
-                unsigned char *sptr = &src->base_address.plane0[BANKPOS(soff)];
+                unsigned char *dptr = &dst->base_address[BANKPOS(doff)];
+                unsigned char *sptr = &src->base_address[BANKPOS(soff)];
                 wb = BANKNUM(doff);
                 rb = BANKNUM(soff);
                 if((rbb - rb) | (wbb - wb)) SRWBANK((rbb = rb),(wbb = wb));
@@ -136,12 +136,12 @@ void _GrFrDrvPackedBitBltV2V(GrxFrame *dst,int dx,int dy,
           tmpn = umax(umin(h,(TMPSIZE / tmp.line_offset)),1);
           tmpx = tmp.line_offset * tmpn;
 #ifdef SMALL_STACK
-          tmp.base_address.plane0 = _GrTempBufferAlloc(tmpx);
+          tmp.base_address = _GrTempBufferAlloc(tmpx);
 #else
           setup_alloca();
-          tmp.base_address.plane0 = alloca((size_t)tmpx);
+          tmp.base_address = alloca((size_t)tmpx);
 #endif
-          if(tmp.base_address.plane0) {
+          if(tmp.base_address) {
             int ydir = 0;
             tmpx = sx & 3;
             if(dy > sy) {

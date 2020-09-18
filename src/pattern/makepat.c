@@ -227,7 +227,7 @@ GrxPixmap *grx_pixmap_copy(GrxPixmap *p)
     GrxContext src_ctx, *copy_ctx;
     GrxPixmap *copy;
 
-    grx_context_new_full(p->source.driver->mode, p->width, p->height, &p->source.base_address, &src_ctx);
+    grx_context_new_full(p->source.driver->mode, p->width, p->height, p->source.base_address, &src_ctx);
     copy_ctx = grx_context_new_full(p->source.driver->mode, p->width, p->height, NULL, NULL);
     g_return_val_if_fail(copy_ctx != NULL, NULL);
 
@@ -250,10 +250,7 @@ void grx_pixmap_free(GrxPixmap *p)
         return;
     }
     if (p->source.memory_flags & MY_MEMORY) {
-        int ii;
-        for (ii = p->source.driver->num_planes; ii > 0; ii--) {
-            free(GRX_FRAME_MEMORY_PLANE(&p->source.base_address, ii - 1));
-        }
+        free(p->source.base_address);
     }
     if (p->context) {
         grx_context_unref (p->context);

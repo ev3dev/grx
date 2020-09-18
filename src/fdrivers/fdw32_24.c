@@ -175,7 +175,6 @@ GrxFrameDriver _GrFrameDriverWIN32_24 = {
     .rmode              = GRX_FRAME_MODE_RAM_24BPP, /* compatible RAM frame mode */
     .is_video           = TRUE,                     /* onscreen */
     .row_align          = 4,                        /* line width alignment */
-    .num_planes         = 1,                        /* number of planes */
     .bits_per_pixel     = 24,                       /* bits per pixel */
     .max_plane_size     = 24 * 16 * 1024L * 1024L,  /* max plane size the code can handle */
     .init               = NULL,

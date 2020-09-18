@@ -39,14 +39,13 @@ void grx_context_unref(GrxContext *ctx);
  * @mode: the frame mode
  * @w: the width of the context
  * @h: the height of the context
- * @memory: (nullable): memory location(s) or %NULL
+ * @memory: (nullable): memory location or %NULL
  * @where: (nullable): an unused #GrxContext struct or %NULL
  *
  * Creates a new context in system memory using the memory layout specified by
  * @mode.
  *
- * @memory must contain grx_frame_mode_get_n_planes() pointers (usually just one, but
- * could be as many as 4) of size grx_frame_mode_get_plane_size(). %NULL may also
+ * @memory must contain a buffer of size grx_frame_mode_get_plane_size(). %NULL may also
  * be passed to @memory, in which case the memory will be dynamically allocated.
  *
  * Likewise, @where can be an unused #GrxContext (e.g. you may want to do this
@@ -56,12 +55,11 @@ void grx_context_unref(GrxContext *ctx);
  * Returns: (nullable): @where or a new context if @where was %NULL. Returns
  *      %NULL on error.
  */
-GrxContext *grx_context_new_full(GrxFrameMode md, int w, int h,
-                                 GrxFrameMemory *memory, GrxContext *where)
+GrxContext *grx_context_new_full(GrxFrameMode md, gint w, gint h,
+                                 guint8 *memory, GrxContext *where)
 {
         GrxFrameDriver *fd = _GrFindRAMframeDriver(md);
-        int  ii,offset,flags = 0;
-        GrxFrameMemory mymem;
+        int  offset, flags = 0;
         long psize;
 
         if(!fd) return(NULL);
@@ -75,25 +73,17 @@ GrxContext *grx_context_new_full(GrxFrameMode md, int w, int h,
             flags = MYCONTEXT;
         }
         sttzero(where);
-        if(!memory) {
-            for(ii = 0; ii < fd->num_planes; ii++) {
-                GRX_FRAME_MEMORY_PLANE(&mymem,ii) = malloc((size_t)psize);
-                if(!GRX_FRAME_MEMORY_PLANE(&mymem,ii)) {
-                    while(--ii >= 0) free(GRX_FRAME_MEMORY_PLANE(&mymem,ii));
-                    if(flags) free(where);
-                    return(NULL);
-                }
+        if (!memory) {
+            memory = malloc((size_t)psize);
+            if (!memory) {
+                if(flags) free(where);
+                return(NULL);
             }
-            while(ii < 4) GRX_FRAME_MEMORY_PLANE(&mymem,ii++) = NULL;
-            memory = &mymem;
             flags |= MYFRAME;
         }
         where->ref_count = 1;
         where->gc_driver      = fd;
-        where->gc_base_address.plane0 = memory->plane0;
-        where->gc_base_address.plane1 = memory->plane1;
-        where->gc_base_address.plane2 = memory->plane2;
-        where->gc_base_address.plane3 = memory->plane3;
+        where->gc_base_address = memory;
         where->gc_line_offset  = offset;
         where->gc_memory_flags    = flags;
         where->x_clip_high     = where->x_max = w - 1;
@@ -212,8 +202,7 @@ static void grx_context_free(GrxContext *cxt)
                 grx_context_unref (cxt->root);
             }
             if(cxt->gc_memory_flags & MYFRAME) {
-                int ii = cxt->gc_driver->num_planes;
-                while(--ii >= 0) free(GRX_FRAME_MEMORY_PLANE(&cxt->gc_base_address,ii));
+                free(cxt->gc_base_address);
             }
             if(cxt->gc_memory_flags & MYCONTEXT) free(cxt);
         }

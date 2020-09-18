@@ -181,18 +181,6 @@ int (grx_is_screen_virtual)(void)
 }
 
 /**
- * grx_screen_get_n_planes:
- *
- * Gets the number of planes for the screen's RAM frame mode.
- *
- * Returns: The number of planes.
- */
-int (grx_screen_get_n_planes)(void)
-{
-    return(grx_screen_get_n_planes());
-}
-
-/**
  * grx_screen_get_line_offset:
  * @width: the width in pixels
  *

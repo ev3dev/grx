@@ -18,15 +18,10 @@
 #include "libgrx.h"
 #include "highlow.h"
 
-void _GR_shift_scanline(GR_int8u **dst,
-                        GR_int8u **src,
-                        int ws, int shift, int planes) {
-  int plane;
-
+void _GR_shift_scanline(GR_int8u **dst, GR_int8u **src, int ws, int shift) {
   GRX_ENTER();
   if (shift <= 0) {
-    shift = -shift;
-    for (plane = 0; plane < planes; ++plane) {
+      shift = -shift;
       GR_int8u *s = *(src++) + ws;
       GR_int8u *d = *(dst++) + ws;
 #     if defined(__GNUC__) && defined(__i386__)
@@ -59,10 +54,8 @@ void _GR_shift_scanline(GR_int8u **dst,
         } while (--w);
         *d = *s >> shift;
 #     endif
-    }
   } else {
-    shift = 8-shift;
-    for (plane = 0; plane < planes; ++plane) {
+      shift = 8-shift;
       GR_int8u *s = *(src++);
       GR_int8u *d = *(dst++);
 #     if defined(__GNUC__) && defined(__i386__)
@@ -91,7 +84,6 @@ void _GR_shift_scanline(GR_int8u **dst,
           s++;
         } while (--w);
 #     endif
-    }
   }
   GRX_LEAVE();
 }

@@ -24,9 +24,7 @@ const struct _GR_contextInfo * const GrContextInfo = &_GrContextInfo;
 struct _GR_contextInfo _GrContextInfo = {
     .current = {
         .frame = {
-            .base_address = {
-                NULL, NULL, NULL, NULL
-            },
+            .base_address   = NULL,
             .selector       = 0,
             .is_on_screen   = TRUE,
             .memory_flags   = 0,
@@ -37,9 +35,7 @@ struct _GR_contextInfo _GrContextInfo = {
     },
     .screen = {
         .frame = {
-            .base_address = {
-                NULL, NULL, NULL, NULL
-            },
+            .base_address   = NULL,
             .selector       = 0,
             .is_on_screen   = TRUE,
             .memory_flags   = 0,

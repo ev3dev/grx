@@ -44,7 +44,6 @@ void grx_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options)
 {
     FT_GlyphSlot slot;
     GrxContext ctx;
-    GrxFrameMemory mem;
     gint x_offset, y_offset;
     gunichar c;
     FT_UInt index;
@@ -104,9 +103,8 @@ void grx_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options)
         if (slot->bitmap.pixel_mode != FT_PIXEL_MODE_MONO) {
             continue;
         }
-        mem.plane0 = slot->bitmap.buffer;
         grx_context_new_full(GRX_FRAME_MODE_RAM_1BPP, slot->bitmap.pitch * 8,
-                             slot->bitmap.rows, &mem, &ctx);
+                             slot->bitmap.rows, slot->bitmap.buffer, &ctx);
         grx_bit_blt_1bpp(x + slot->bitmap_left - x_offset,
                          y - slot->bitmap_top + y_offset,  &ctx, 0, 0,
                          slot->bitmap.width, slot->bitmap.rows,

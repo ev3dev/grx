@@ -36,7 +36,7 @@ GrxColor readpixel(GrxFrame *c,int x,int y)
 
     GRX_ENTER();
     offs = FOFS(x,y,c->line_offset);
-    pix = (GrxColor)((c->base_address.plane0[offs] >> ((x & 3) << 1)) & 3);
+    pix = (GrxColor)((c->base_address[offs] >> ((x & 3) << 1)) & 3);
     GRX_RETURN(pix);
 }
 
@@ -55,15 +55,15 @@ void drawpixel(int x,int y,GrxColor color)
         switch (op = C_OPER(color) & 3) {
         case C_WRITE:
         case C_AND:
-            CURC->gc_base_address.plane0[offs] &= cval | ~mask;
+            CURC->gc_base_address[offs] &= cval | ~mask;
             if (op != C_WRITE) {
                 break;
             }
         case C_OR:
-            CURC->gc_base_address.plane0[offs] |= cval & mask;
+            CURC->gc_base_address[offs] |= cval & mask;
             break;
         default:
-            CURC->gc_base_address.plane0[offs] ^= cval & mask;
+            CURC->gc_base_address[offs] ^= cval & mask;
             break;
         }
         GRX_LEAVE();
@@ -96,7 +96,7 @@ static void drawhline(int x,int y,int w,GrxColor color) {
     cv = (cval & 3) * 0x55555555;
 
     if (!( !cv && (oper==C_OR||oper==C_XOR)) && !(cv && oper==C_AND) ) {
-        GR_int8u *dptr = (GR_int8u *)&CURC->gc_base_address.plane0[DO];
+        GR_int8u *dptr = (GR_int8u *)&CURC->gc_base_address[DO];
         int ww = wd;
 
         if ((GR_int8u)(~lm)) {
@@ -178,7 +178,7 @@ static void drawvline(int x, int y, int h, GrxColor color)
     case C_XOR:
         /* no need to xor anything with 0 */
         if (color) {
-            p = &CURC->gc_base_address.plane0[offs];
+            p = &CURC->gc_base_address[offs];
             hh = h;
             colfill_b_xor(p,lwdt,mask,hh);
         }
@@ -186,7 +186,7 @@ static void drawvline(int x, int y, int h, GrxColor color)
     case C_OR:
         /* no need to or anything with 0 */
         if (color) {
-            p = &CURC->gc_base_address.plane0[offs];
+            p = &CURC->gc_base_address[offs];
             hh = h;
             colfill_b_or(p,lwdt,mask,hh);
         }
@@ -194,19 +194,19 @@ static void drawvline(int x, int y, int h, GrxColor color)
     case C_AND:
         /* no need to and anything with 3 */
         if (color != 0x03) {
-            p = &CURC->gc_base_address.plane0[offs];
+            p = &CURC->gc_base_address[offs];
             hh = h;
             colfill_b_and(p,lwdt,imask,hh);
         }
         break;
     default:
         if (color) {
-            p = &CURC->gc_base_address.plane0[offs];
+            p = &CURC->gc_base_address[offs];
             hh = h;
             colfill_b_or(p,lwdt,mask,hh);
         }
         if (color != 0x03) {
-            p = &CURC->gc_base_address.plane0[offs];
+            p = &CURC->gc_base_address[offs];
             hh = h;
             colfill_b_and(p,lwdt,imask,hh);
         }
@@ -235,7 +235,6 @@ GrxFrameDriver _GrFrameDriverRAM2 = {
     .rmode              = GRX_FRAME_MODE_UNDEFINED,
     .is_video           = FALSE,
     .row_align          = 4,
-    .num_planes         = 1,
     .bits_per_pixel     = 2,
     .max_plane_size     = 2*16*1024L*1024L,
     .init               = NULL,
@@ -259,7 +258,6 @@ GrxFrameDriver _GrFrameDriverCFB2_LFB = {
     .rmode              = GRX_FRAME_MODE_RAM_2BPP,
     .is_video           = TRUE,
     .row_align          = 4,
-    .num_planes         = 1,
     .bits_per_pixel     = 2,
     .max_plane_size     = 2*16*1024L*1024L,
     .init               = NULL,

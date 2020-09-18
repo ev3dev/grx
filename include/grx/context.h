@@ -42,26 +42,13 @@
  */
 
 /**
- * GrxFrameMemory:
- *
- * Private data structure used by #GrxFrame.
- */
-typedef struct {
-    /*<private>*/
-    guint8 *plane0;
-    guint8 *plane1;
-    guint8 *plane2;
-    guint8 *plane3;
-} GrxFrameMemory;
-
-/**
  * GrxFrame:
  *
  * Private data structure used by #GrxContext.
  */
 struct _GrxFrame {
     /*<private>*/
-    GrxFrameMemory  base_address;       /* base address of frame memory */
+    guint8         *base_address;       /* base address of frame memory */
     gshort          selector;           /* frame memory segment selector */
     gboolean        is_on_screen;       /* is it in video memory ? */
     guint8          memory_flags;       /* memory allocation flags */
@@ -115,9 +102,9 @@ void  grx_set_current_context(const GrxContext *context);
 GrxContext *grx_save_current_context(GrxContext *where);
 
 GType       grx_context_get_type(void);
-GrxContext *grx_context_new(gint w, gint h, GrxFrameMemory *memory, GrxContext *where);
+GrxContext *grx_context_new(gint w, gint h, guint8 *memory, GrxContext *where);
 GrxContext *grx_context_new_full(GrxFrameMode mode, gint w, gint h,
-                                 GrxFrameMemory *memory, GrxContext *where);
+                                 guint8 *memory, GrxContext *where);
 GrxContext *grx_context_new_subcontext(gint x1, gint y1, gint x2, gint y2,
                                        const GrxContext *parent, GrxContext *where);
 void  grx_context_resize_subcontext(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
@@ -141,15 +128,6 @@ const GrxColor *grx_context_get_scanline(GrxContext *context, gint x1, gint x2, 
 void grx_context_set_clip_box(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
 void grx_context_get_clip_box(const GrxContext *context, gint *x1, gint *y1, gint *x2, gint *y2);
 void grx_context_reset_clip_box(GrxContext *context);
-
-/**
- * GRX_FRAME_MEMORY_PLANE:
- * @f: pointer to #GrxFrameMemory
- * @i: the index of the plane (0-3)
- *
- * Gets a plane from #GrxFrameMemory by its index.
- */
-#define GRX_FRAME_MEMORY_PLANE(f,i) (((guint8**)f)[i])
 
 #ifndef GRX_SKIP_INLINES
 #define grx_context_new(w,h,m,c) \

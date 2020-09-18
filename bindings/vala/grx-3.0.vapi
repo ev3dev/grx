@@ -188,7 +188,6 @@ namespace Grx {
         public static FrameMode get_screen ();
         public static FrameMode get_screen_core ();
         public int get_bpp ();
-        public int get_n_planes ();
         public int get_line_offset (int width);
         public int get_plane_size (int width, int height);
         public int get_context_size (int width, int height);
@@ -251,7 +250,6 @@ namespace Grx {
         public FrameMode rmode;
         public int is_video;
         public int row_align;
-        public int num_planes;
         public int bits_per_pixel;
         public int max_plane_size;
     }
@@ -293,7 +291,6 @@ namespace Grx {
     /*
      * RAM context geometry and memory allocation inquiry stuff
      */
-    public int screen_get_n_planes ();
     public int screen_get_line_offset (int width);
     public int screen_get_plane_size (int width, int height);
     public int screen_get_context_size (int width, int height);
@@ -302,16 +299,9 @@ namespace Grx {
     /*              FRAME BUFFER, CONTEXT AND CLIPPING STUFF              */
     /* ================================================================== */
 
-    public struct FrameMemory {
-        public uint8 *plane0;
-        public uint8 *plane1;
-        public uint8 *plane2;
-        public uint8 *plane3;
-    }
-
     [CCode (has_type_id = false)]
     public struct Frame {
-        public FrameMemory base_address;
+        public uint8 *base_address;
         public short selector;
         public bool is_on_screen;
         public uint8 memory_flags;
@@ -326,8 +316,8 @@ namespace Grx {
         public int height { get; }
         public int max_x { get; }
         public int max_y { get; }
-        public static Context? new (int w, int h, [CCode (array_length = false)]uint8*[]? memory = null, out Context? where = null);
-        public static Context? new_full (FrameMode mode, int w, int h, [CCode (array_length = false)]uint8*[]? memory = null, out Context? where = null);
+        public static Context? new (int w, int h, [CCode (array_length = false)]uint8[]? memory = null, out Context? where = null);
+        public static Context? new_full (FrameMode mode, int w, int h, [CCode (array_length = false)]uint8[]? memory = null, out Context? where = null);
         public static Context? new_subcontext (int x1, int y1, int x2, int y2, Context parent, out Context? where = null);
 
         public void resize_subcontext (int x1, int y1, int x2, int y2);

@@ -35,7 +35,7 @@ GrxColor readpixel(GrxFrame *c,int x,int y)
 {
         GR_int8u *ptr;
         GRX_ENTER();
-        ptr = (GR_int8u *)&c->base_address.plane0[FOFS(x,y,c->line_offset)];
+        ptr = (GR_int8u *)&c->base_address[FOFS(x,y,c->line_offset)];
         GRX_RETURN((GrxColor)( (*ptr >> (x & 7)) & 1));
 }
 
@@ -44,7 +44,7 @@ GrxColor readpixel_inv(GrxFrame *c,int x,int y)
 {
     GR_int8u *ptr;
     GRX_ENTER();
-    ptr = (GR_int8u *)&c->base_address.plane0[FOFS(x,y,c->line_offset)];
+    ptr = (GR_int8u *)&c->base_address[FOFS(x,y,c->line_offset)];
     GRX_RETURN((GrxColor)(((*ptr >> (x & 7)) & 1) ? 0 : 1));
 }
 
@@ -55,7 +55,7 @@ void drawpixel(int x,int y,GrxColor color)
         GR_int8u cval;
 
         GRX_ENTER();
-        ptr = (GR_int8u *)&CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
+        ptr = (GR_int8u *)&CURC->gc_base_address[FOFS(x,y,CURC->gc_line_offset)];
         cval = (color & 1) << (x &= 7);
         switch(C_OPER(color)) {
             case C_XOR: *ptr ^=  cval; break;
@@ -88,7 +88,7 @@ static void drawhline(int x,int y,int w,GrxColor color) {
   if (!( !color && (oper==C_OR||oper==C_XOR)) && !(color && oper==C_AND) ) {
     GR_int8u lm = 0xff << (x & 7);
     GR_int8u rm = 0xff >> ((-(w + x)) & 7);
-    GR_int8u *p = (GR_int8u *)&CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
+    GR_int8u *p = (GR_int8u *)&CURC->gc_base_address[FOFS(x,y,CURC->gc_line_offset)];
     GR_repl cv = 0;
     if (color) cv = ~cv;
     w = ((x+w+7) >> 3) - (x >> 3);
@@ -143,7 +143,7 @@ static void drawvline(int x,int y,int h,GrxColor color)
           case C_XOR:
               /* no need to xor anything with 0 */
               if (color) {
-                p = &CURC->gc_base_address.plane0[FOFS(x,y,lwdt)];
+                p = &CURC->gc_base_address[FOFS(x,y,lwdt)];
                 colfill_b_xor(p,lwdt,mask,h);
               }
               break;
@@ -151,7 +151,7 @@ static void drawvline(int x,int y,int h,GrxColor color)
               /* no need to or anything with 0 */
               if (color) {
             do_OR:
-                p = &CURC->gc_base_address.plane0[FOFS(x,y,lwdt)];
+                p = &CURC->gc_base_address[FOFS(x,y,lwdt)];
                 colfill_b_or(p,lwdt,mask,h);
               }
               break;
@@ -160,7 +160,7 @@ static void drawvline(int x,int y,int h,GrxColor color)
               if (!color) {
             do_AND:
                 mask = ~mask;
-                p = &CURC->gc_base_address.plane0[FOFS(x,y,lwdt)];
+                p = &CURC->gc_base_address[FOFS(x,y,lwdt)];
                 colfill_b_and(p,lwdt,mask,h);
               }
               break;
@@ -196,7 +196,7 @@ static void bltr2r(GrxFrame *dst,int dx,int dy,
                    GrxColor op)
 {
     GRX_ENTER();
-    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt,FALSE);
+    _GR_rblit_14(dst, dx, dy, src, x, y, w, h, op, bitblt, FALSE);
     GRX_LEAVE();
 }
 
@@ -205,7 +205,7 @@ static void bltr2r_inv(GrxFrame *dst,int dx,int dy,
                        GrxColor op)
 {
     GRX_ENTER();
-    _GR_rblit_14(dst,dx,dy,src,x,y,w,h,op,1,bitblt,TRUE);
+    _GR_rblit_14(dst, dx, dy, src, x, y, w, h, op, bitblt, TRUE);
     GRX_LEAVE();
 }
 
@@ -222,7 +222,6 @@ GrxFrameDriver _GrFrameDriverRAM1 = {
     .rmode              = GRX_FRAME_MODE_UNDEFINED, /* compatible RAM frame mode */
     .is_video           = FALSE,                    /* onscreen */
     .row_align          = 4,                        /* scan line width alignment */
-    .num_planes         = 1,                        /* number of planes */
     .bits_per_pixel     = 1,                        /* bits per pixel */
     .max_plane_size     = 16*1024L*1024L,           /* max plane size the code can handle */
     .init               = NULL,
@@ -246,7 +245,6 @@ GrxFrameDriver _GrFrameDriverMONO01_LFB = {
     .rmode              = GRX_FRAME_MODE_RAM_1BPP,   /* compatible RAM frame mode */
     .is_video           = TRUE,                      /* onscreen */
     .row_align          = 4,                         /* scan line width alignment */
-    .num_planes         = 1,                         /* number of planes */
     .bits_per_pixel     = 1,                         /* bits per pixel */
     .max_plane_size     = 16*1024L*1024L,            /* max plane size the code can handle */
     .init               = NULL,
@@ -270,7 +268,6 @@ GrxFrameDriver _GrFrameDriverMONO10_LFB = {
     .rmode              = GRX_FRAME_MODE_RAM_1BPP,   /* compatible RAM frame mode */
     .is_video           = TRUE,                      /* onscreen */
     .row_align          = 4,                         /* scan line width alignment */
-    .num_planes         = 1,                         /* number of planes */
     .bits_per_pixel     = 1,                         /* bits per pixel */
     .max_plane_size     = 16*1024L*1024L,            /* max plane size the code can handle */
     .init               = NULL,

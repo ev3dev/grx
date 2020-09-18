@@ -243,7 +243,6 @@ struct _GrxFrameDriver {
     GrxFrameMode rmode;                  /* matching RAM frame (if video) */
     gboolean is_video;                   /* video RAM frame driver ? */
     gint     row_align;                  /* scan line size alignment */
-    gint     num_planes;                 /* number of planes */
     gint     bits_per_pixel;             /* bits per pixel */
     gint     max_plane_size;             /* maximum plane size in bytes */
     gboolean (*init)(GrxVideoMode *md);

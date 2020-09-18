@@ -39,8 +39,6 @@ gint grx_frame_mode_get_bpp(GrxFrameMode mode)
     case GRX_FRAME_MODE_LFB_2BPP:
     case GRX_FRAME_MODE_RAM_2BPP:
         return 2;
-    case GRX_FRAME_MODE_RAM_4X1BPP:
-        return 4;
     case GRX_FRAME_MODE_LFB_8BPP:
     case GRX_FRAME_MODE_RAM_8BPP:
         return 8;
@@ -49,7 +47,6 @@ gint grx_frame_mode_get_bpp(GrxFrameMode mode)
         return 16;
     case GRX_FRAME_MODE_LFB_24BPP:
     case GRX_FRAME_MODE_RAM_24BPP:
-    case GRX_FRAME_MODE_RAM_3X8BPP:
         return 24;
     case GRX_FRAME_MODE_LFB_32BPP_LOW:
     case GRX_FRAME_MODE_LFB_32BPP_HIGH:
@@ -59,20 +56,6 @@ gint grx_frame_mode_get_bpp(GrxFrameMode mode)
     default:
         return -1;
     }
-}
-
-/**
- * grx_frame_mode_get_n_planes:
- * @mode: a #GrxFrameMode
- *
- * Gets the number of planes for a frame mode.
- *
- * Returns: The number of planes.
- */
-gint grx_frame_mode_get_n_planes(GrxFrameMode mode)
-{
-    GrxFrameDriver *dp = _GrFindRAMframeDriver(mode);
-    return(dp ? dp->num_planes : 0);
 }
 
 /**
@@ -88,8 +71,7 @@ gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width)
 {
     GrxFrameDriver *dp = _GrFindRAMframeDriver(mode);
     if(dp) {
-        unsigned int w = (unsigned int)width 
-                       * (dp->bits_per_pixel / dp->num_planes);
+        unsigned int w = (unsigned int)width * dp->bits_per_pixel;
         w = ((w + 7) >> 3);
         w = ((w + dp->row_align - 1) / dp->row_align) * dp->row_align;
         return(w);
@@ -126,6 +108,5 @@ gint grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height)
  */
 gint grx_frame_mode_get_context_size(GrxFrameMode mode, gint width, gint height)
 {
-    return(umul32(grx_frame_mode_get_line_offset(mode, width),
-                  (grx_frame_mode_get_n_planes(mode) * height)));
+    return umul32(grx_frame_mode_get_line_offset(mode, width), height);
 }

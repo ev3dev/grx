@@ -115,7 +115,6 @@ static int buildframedriver(GrxVideoMode *mp,GrxFrameDriver *drv)
                (d2->rmode == d1->rmode) &&
                (d1->is_video ? d2->is_video : !d2->is_video) &&
                (d2->row_align <= d1->row_align) && !(d1->row_align % d2->row_align) &&
-               (d2->num_planes == d1->num_planes) &&
                (d2->max_plane_size >= d1->max_plane_size) &&
                (d2->bits_per_pixel == d1->bits_per_pixel)) {
                 drv->init = d2->init ? d2->init : d1->init;
@@ -148,10 +147,7 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
         if(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_LINEAR)
         {
             g_debug ("buildcontext - Linear Mode");
-            cxt->gc_base_address.plane0 =
-            cxt->gc_base_address.plane1 =
-            cxt->gc_base_address.plane2 =
-            cxt->gc_base_address.plane3 = LINP_PTR(mp->extended_info->frame);
+            cxt->gc_base_address = LINP_PTR(mp->extended_info->frame);
             cxt->gc_selector    = mp->extended_info->lfb_selector;
         } else
 #endif /* !(__XWIN__ && !XF86DGA_FRAMEBUFFER && !__SDL__) */
@@ -174,32 +170,8 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
             g_debug ("buildcontext - mp->line_offset = %d",mp->line_offset);
             g_debug ("buildcontext - mp->ext->mode   = %d",mp->extended_info->mode);
             g_debug ("buildcontext - mp->ext->flags  = 0x%x",mp->extended_info->flags);
-#ifdef GRX_USE_RAM3x8
-            if (mp->bpp==24)
-              {
-                 int m_incr = mp->line_offset*mp->height;
-                 cxt->gc_base_address.plane0 = mp->extended_info->frame;
-                 cxt->gc_base_address.plane1 = cxt->gc_base_address.plane0 + m_incr;
-                 cxt->gc_base_address.plane2 = cxt->gc_base_address.plane1 + m_incr;
-                 cxt->gc_base_address.plane3 = NULL;
-              }
-            else
-#endif
-            if (mp->bpp==4)
-              {
-                 int m_incr = mp->line_offset*mp->height;
-                 cxt->gc_base_address.plane0 = mp->extended_info->frame;
-                 cxt->gc_base_address.plane1 = cxt->gc_base_address.plane0 + m_incr;
-                 cxt->gc_base_address.plane2 = cxt->gc_base_address.plane1 + m_incr;
-                 cxt->gc_base_address.plane3 = cxt->gc_base_address.plane2 + m_incr;
-              }
-            else
-              {
-                 cxt->gc_base_address.plane0 =
-                 cxt->gc_base_address.plane1 =
-                 cxt->gc_base_address.plane2 =
-                 cxt->gc_base_address.plane3 = mp->extended_info->frame;
-              }
+
+            cxt->gc_base_address = mp->extended_info->frame;
         } else {
             if (plsize > fdp->max_plane_size) {
                 g_debug ("plane size too big");
@@ -213,10 +185,7 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
                 g_debug ("offset does not match alignment");
                 goto done; /* FALSE */
             }
-            cxt->gc_base_address.plane0 =
-            cxt->gc_base_address.plane1 =
-            cxt->gc_base_address.plane2 =
-            cxt->gc_base_address.plane3 = LINP_PTR(mp->extended_info->frame);
+            cxt->gc_base_address = LINP_PTR(mp->extended_info->frame);
             cxt->gc_selector    = LINP_SEL(mp->extended_info->frame);
         }
         cxt->gc_is_on_screen    = !(mp->extended_info->flags&GRX_VIDEO_MODE_FLAG_MEMORY);
@@ -229,10 +198,7 @@ static int buildcontext(GrxVideoMode *mp,GrxFrameDriver *fdp,GrxContext *cxt)
 
         res = TRUE;
 
-        g_debug ("buildcontext - context buffer 0 = %p",cxt->gc_base_address.plane0);
-        g_debug ("buildcontext - context buffer 1 = %p",cxt->gc_base_address.plane1);
-        g_debug ("buildcontext - context buffer 2 = %p",cxt->gc_base_address.plane2);
-        g_debug ("buildcontext - context buffer 3 = %p",cxt->gc_base_address.plane3);
+        g_debug ("buildcontext - context buffer = %p",cxt->gc_base_address);
 done:
         GRX_RETURN(res);
 }

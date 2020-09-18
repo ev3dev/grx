@@ -98,16 +98,15 @@ static void invert_scanline(unsigned char *sptr,int w)
 
 G_GNUC_INTERNAL extern void _GR_shift_scanline(GR_int8u **dst,
                                                GR_int8u **src,
-                                               int ws, int shift, int planes );
+                                               int ws, int shift);
 #define shift_scanline(dst,src,w,sh) \
-    _GR_shift_scanline((GR_int8u **)&(dst),(GR_int8u **)&(src),(w),(sh),1)
+    _GR_shift_scanline((GR_int8u **)&(dst),(GR_int8u **)&(src),(w),(sh))
 
 
-void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
-                  GrxFrame *src,int x,int y,int w,int h,
-                  GrxColor op, int planes, _GR_blitFunc bitblt, int invert)
+void _GR_rblit_14(GrxFrame *dst, gint dx, gint dy,
+                  GrxFrame *src, gint x, gint y, gint w, gint h,
+                  GrxColor op, _GR_blitFunc bitblt, gboolean invert)
 {
-    int pl;
     GRX_ENTER();
     if(grx_color_get_mode(op) != GRX_COLOR_MODE_IMAGE && do_alloc(w)) {
       GR_int32u doffs, soffs;
@@ -119,20 +118,20 @@ void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
       int wd      = ((dx+w+7) >> 3) - (dx >> 3);
       int dskip   = dst->line_offset;
       int sskip   = src->line_offset;
-      if ((dy>y) && (dst->base_address.plane0==src->base_address.plane0)) {
+      if ((dy>y) && (dst->base_address == src->base_address)) {
         /* reverse */
         dy += h-1;
         y  += h-1;
         doffs = FOFS(dx,dy,dskip);
         soffs = FOFS( x, y,sskip);
-        for (pl=0; pl < planes; ++pl) {
-          unsigned char *dptr = &GRX_FRAME_MEMORY_PLANE(&dst->base_address,pl)[doffs];
-          unsigned char *sptr = &GRX_FRAME_MEMORY_PLANE(&src->base_address,pl)[soffs];
+
+          unsigned char *dptr = &dst->base_address[doffs];
+          unsigned char *sptr = &src->base_address[soffs];
           int hh = h;
           if (shift) {
             while (hh-- > 0) {
               shift_scanline(LineBuff,sptr,ws,shift);
-        if (invert)
+              if (invert)
                 invert_scanline(LineBuff,ws);
               put_scanline(dptr,LineBuff,wd,lm,rm,oper);
               dptr -= dskip;
@@ -148,14 +147,13 @@ void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
               sptr -= sskip;
             }
           }
-        }
       } else {
         /* forward */
         doffs = FOFS(dx,dy,dst->line_offset);
         soffs = FOFS( x, y,src->line_offset);
-        for (pl=0; pl < planes; ++pl) {
-          unsigned char *dptr = &GRX_FRAME_MEMORY_PLANE(&dst->base_address,pl)[doffs];
-          unsigned char *sptr = &GRX_FRAME_MEMORY_PLANE(&src->base_address,pl)[soffs];
+
+          unsigned char *dptr = &dst->base_address[doffs];
+          unsigned char *sptr = &src->base_address[soffs];
           int hh = h;
           if (shift) {
             while (hh-- > 0) {
@@ -176,7 +174,6 @@ void _GR_rblit_14(GrxFrame *dst,int dx,int dy,
                sptr += sskip;
              }
            }
-        }
       }
     } else
       bitblt(dst,dx,dy,src,x,y,w,h,op);

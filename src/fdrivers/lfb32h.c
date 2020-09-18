@@ -38,7 +38,6 @@ GrxFrameDriver _GrFrameDriverSVGA32H_LFB = {
     .rmode              = GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
     .is_video           = TRUE,                          /* onscreen */
     .row_align          = 4,                             /* line width alignment */
-    .num_planes         = 1,                             /* number of planes */
     .bits_per_pixel     = 32,                            /* bits per pixel */
     .max_plane_size     = 32*16*1024L*1024L,             /* max plane size the code can handle */
     .init               = NULL,

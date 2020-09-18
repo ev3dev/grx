@@ -25,14 +25,13 @@
  * grx_context_new:
  * @w: the width of the context
  * @h: the height of the context
- * @memory: (nullable): memory location(s) or %NULL
+ * @memory: (nullable): memory location or %NULL
  * @where: (nullable): an unused #GrxContext struct or %NULL
  *
  * Creates a new context in system memory using the memory layout specified by
  * grx_frame_mode_get_screen_core().
  *
- * @memory must contain grx_screen_get_n_planes() pointers (usually just one, but
- * could be as many as 4) of size grx_screen_get_plane_size(). %NULL may also
+ * @memory must contain a buffer of size grx_screen_get_plane_size(). %NULL may also
  * be passed to @memory, in which case the memory will be dynamically allocated.
  *
  * Likewise, @where can be an unused #GrxContext (e.g. you may want to do this
@@ -42,7 +41,7 @@
  * Returns: (nullable): @where or a new context if @where was %NULL. Returns
  *      %NULL on error.
  */
-GrxContext *(grx_context_new)(int w,int h,GrxFrameMemory *memory,GrxContext *where)
+GrxContext *(grx_context_new)(gint w, gint h, guint8 *memory, GrxContext *where)
 {
         return(grx_context_new(w,h,memory,where));
 }

@@ -84,21 +84,6 @@ static GrxVideoModeExt gr2ext = {
     .load_color       = NULL,                       /* color loader */
 };
 
-static GrxVideoModeExt gr4ext = {
-    .mode             = GRX_FRAME_MODE_RAM_4X1BPP,  /* frame driver */
-    .drv              = NULL,                       /* frame driver override */
-    .frame            = NULL,                       /* frame buffer address */
-    .cprec            = { 8, 8, 8 },                /* color precisions */
-    .cpos             = { 0, 0, 0 },                /* color component bit positions */
-    .flags            = GRX_VIDEO_MODE_FLAG_MEMORY, /* mode flag bits */
-    .setup            = mem_setmode,                /* mode set */
-    .set_virtual_size = NULL,                       /* virtual size set */
-    .scroll           = NULL,                       /* virtual scroll */
-    .set_bank         = NULL,                       /* bank set function */
-    .set_rw_banks     = NULL,                       /* double bank set function */
-    .load_color       = NULL,                       /* color loader */
-};
-
 static GrxVideoModeExt gr8ext = {
     .mode             = GRX_FRAME_MODE_RAM_8BPP,    /* frame driver */
     .drv              = NULL,                       /* frame driver override */
@@ -115,19 +100,11 @@ static GrxVideoModeExt gr8ext = {
 };
 
 static GrxVideoModeExt gr24ext = {
-#ifdef GRX_USE_RAM3x8
-    .mode             = GRX_FRAME_MODE_RAM_3X8BPP,  /* frame driver */
-#else
     .mode             = GRX_FRAME_MODE_RAM_24BPP,   /* frame driver */
-#endif
     .drv              = NULL,                       /* frame driver override */
     .frame            = NULL,                       /* frame buffer address */
     .cprec            = { 8, 8, 8 },                /* color precisions */
-#ifdef GRX_USE_RAM3x8
-    .cpos             = { 0, 0, 0 },                /* color component bit positions */
-#else
     .cpos             = { 0, 8, 16 },               /* color component bit positions */
-#endif
     .flags            = GRX_VIDEO_MODE_FLAG_MEMORY, /* mode flag bits */
     .setup            = mem_setmode,                /* mode set */
     .set_virtual_size = NULL,                       /* virtual size set */
@@ -162,7 +139,6 @@ static GrxVideoMode modes[] = {
     /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext                             */
     {  TRUE,  1,  640,  480,  0x00,   80,    0,  &gr1ext                          },
     {  TRUE,  2,  640,  480,  0x00,  160,    0,  &gr2ext                          },
-    {  TRUE,  4,  640,  480,  0x00,  320,    0,  &gr4ext                          },
     {  TRUE,  8,  640,  480,  0x00,  640,    0,  &gr8ext                          },
     {  TRUE, 24,  640,  480,  0x00, 1920,    0,  &gr24ext                         },
     {  TRUE,  1,   80,   25,  0x00,  160,    0,  &dummyExt                        }
@@ -203,13 +179,8 @@ static GrxVideoMode * mem_selectmode ( GrxVideoDriver * drv, int w, int h,
                    size = h;
                    break;
          case 24:  index = 3;
-#ifdef GRX_USE_RAM3x8
-                   LineOffset = w;
-                   size = 3*h;
-#else
                    LineOffset = 3*w;
                    size = h;
-#endif
                    break;
          default:  return NULL;
       }

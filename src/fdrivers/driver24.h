@@ -74,10 +74,10 @@ GrxColor readpixel(GrxFrame *c,int x,int y)
         unsigned char *p;
         GRX_ENTER();
 #ifdef FAR_ACCESS
-        p = &SCRN->gc_base_address.plane0[FOFS(x,y,SCRN->gc_line_offset)];
+        p = &SCRN->gc_base_address[FOFS(x,y,SCRN->gc_line_offset)];
         setup_far_selector(SCRN->gc_selector);
 #else
-        p = &c->base_address.plane0[FOFS(x,y,c->line_offset)];
+        p = &c->base_address[FOFS(x,y,c->line_offset)];
 #endif
         col = peek24(p);
         GRX_RETURN(col);
@@ -89,7 +89,7 @@ void drawpixel(int x,int y,GrxColor color)
 {
         unsigned char *p;
         GRX_ENTER();
-        p = &CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
+        p = &CURC->gc_base_address[FOFS(x,y,CURC->gc_line_offset)];
         SETFARSEL(CURC->gc_selector);
         switch(C_OPER(color)) {
             case C_XOR: poke24_xor(p,color);  break;
@@ -105,7 +105,7 @@ static void drawhline(int x,int y,int w,GrxColor color)
 {
         unsigned char *p;
         GRX_ENTER();
-        p  = &CURC->gc_base_address.plane0[FOFS(x,y,CURC->gc_line_offset)];
+        p  = &CURC->gc_base_address[FOFS(x,y,CURC->gc_line_offset)];
 
         w = MULT3(w);
         SETFARSEL(CURC->gc_selector);

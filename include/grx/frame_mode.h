@@ -44,13 +44,11 @@
  * @GRX_FRAME_MODE_LFB_32BPP_HIGH: Linear frame buffer, 32bpp, 16M color using upper 24 bits
  * @GRX_FRAME_MODE_RAM_1BPP: RAM frame buffer, 1bpp, monochome
  * @GRX_FRAME_MODE_RAM_2BPP: RAM frame buffer, 2bpp, 4 color
- * @GRX_FRAME_MODE_RAM_4X1BPP: RAM frame buffer, 4bpp, 16 color planar
  * @GRX_FRAME_MODE_RAM_8BPP: RAM frame buffer, 8bpp, 256 color
  * @GRX_FRAME_MODE_RAM_16BPP: RAM frame buffer, 16bpp, 32768/65536 color
  * @GRX_FRAME_MODE_RAM_24BPP: RAM frame buffer, 24bpp, 16M color
  * @GRX_FRAME_MODE_RAM_32BPP_LOW: RAM frame buffer, 32bpp, 16M color using lower 24 bits
  * @GRX_FRAME_MODE_RAM_32BPP_HIGH: RAM frame buffer, 32bpp, 16M color using upper 24 bits
- * @GRX_FRAME_MODE_RAM_3X8BPP: RAM frame buffer, 3x8bpp, 16M color in 3 planes
  * @GRX_FRAME_MODE_FIRST_TEXT: The first text mode
  * @GRX_FRAME_MODE_LAST_TEXT: The last text mode
  * @GRX_FRAME_MODE_FIRST_GRAPHICS: The first graphics mode
@@ -75,20 +73,17 @@ typedef enum {
     /* ====== system RAM frame buffer modes ====== */
     GRX_FRAME_MODE_RAM_1BPP = 64,       /* mono */
     GRX_FRAME_MODE_RAM_2BPP,            /* 4 color */
-    GRX_FRAME_MODE_RAM_4X1BPP,          /* 16 color planar */
     GRX_FRAME_MODE_RAM_8BPP,            /* 256 color */
     GRX_FRAME_MODE_RAM_16BPP,           /* 32768/65536 color */
     GRX_FRAME_MODE_RAM_24BPP,           /* 16M color */
     GRX_FRAME_MODE_RAM_32BPP_LOW,       /* 16M color padded #1 */
     GRX_FRAME_MODE_RAM_32BPP_HIGH,      /* 16M color padded #2 */
-    GRX_FRAME_MODE_RAM_3X8BPP,          /* 16M color planar (image mode) */
     /* ====== markers for scanning modes ====== */
     GRX_FRAME_MODE_FIRST_TEXT     = GRX_FRAME_MODE_TEXT,
     GRX_FRAME_MODE_LAST_TEXT      = GRX_FRAME_MODE_TEXT,
     GRX_FRAME_MODE_FIRST_GRAPHICS = GRX_FRAME_MODE_LFB_MONO01,
     GRX_FRAME_MODE_LAST_GRAPHICS  = GRX_FRAME_MODE_LFB_32BPP_HIGH,
     GRX_FRAME_MODE_FIRST_RAM      = GRX_FRAME_MODE_RAM_1BPP,
-    GRX_FRAME_MODE_LAST_RAM       = GRX_FRAME_MODE_RAM_3X8BPP
 } GrxFrameMode;
 
 GrxFrameMode grx_frame_mode_get_current(void);
@@ -96,12 +91,10 @@ GrxFrameMode grx_frame_mode_get_screen(void);
 GrxFrameMode grx_frame_mode_get_screen_core(void);
 
 gint grx_frame_mode_get_bpp(GrxFrameMode mode);
-gint grx_frame_mode_get_n_planes(GrxFrameMode mode);
 gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width);
 gint grx_frame_mode_get_plane_size(GrxFrameMode mode, gint width, gint height);
 gint grx_frame_mode_get_context_size(GrxFrameMode mode, gint width, gint height);
 
-gint grx_screen_get_n_planes(void);
 gint grx_screen_get_line_offset(gint width);
 gint grx_screen_get_plane_size(gint width, gint height);
 gint grx_screen_get_context_size(gint width, gint height);
@@ -115,8 +108,6 @@ gint grx_screen_get_context_size(gint width, gint height);
 #define grx_frame_mode_get_screen()         (GrDriverInfo->sdriver.mode)
 #define grx_frame_mode_get_screen_core()    (GrDriverInfo->sdriver.rmode)
 
-#define grx_screen_get_n_planes() \
-    grx_frame_mode_get_n_planes(grx_frame_mode_get_screen_core())
 #define grx_screen_get_line_offset(w) \
     grx_frame_mode_get_line_offset(grx_frame_mode_get_screen_core(),(w))
 #define grx_screen_get_plane_size(w,h) \

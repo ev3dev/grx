@@ -20,19 +20,8 @@
 
 #include <grx/context.h>
 
-#ifdef GRX_USE_RAM3x8
-
-/* name of blit function to be created */
-#define BLITFUNC _GrFrDrvPackedBitBltR2Rpl
-/* create function with additional 'int plane' as last arg */
-#define PLANE_ARG
-
-#else /* GRX_USE_RAM3x8 */
-
 /* name of blit function to be created */
 #define BLITFUNC _GrFrDrvPackedBitBltR2R
-
-#endif /* GRX_USE_RAM3x8 */
 
 /* only RAM access, use _n to keep preprocessor happy */
 
@@ -43,13 +32,3 @@
 #define BLIT_CAN_OVERLAP
 
 #include "pblit_nb.h"
-
-
-#ifdef GRX_USE_RAM3x8
-void _GrFrDrvPackedBitBltR2R(GrxFrame *dst,int dx,int dy,
-                             GrxFrame *src,int sx,int sy,
-                             int w,int h,GrxColor op)
-{
-   _GrFrDrvPackedBitBltR2Rpl(dst,dx,dy,src,sx,sy,w,h,op,0);
-}
-#endif
