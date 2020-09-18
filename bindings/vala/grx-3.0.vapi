@@ -228,8 +228,6 @@ namespace Grx {
     [Flags]
     public enum VideoModeFlags {
         LINEAR,
-        ACCEL,
-        FAST_SVGA8 ,
         MEMORY,
     }
 

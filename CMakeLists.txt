@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.10)
-project ("grx" VERSION 3.1.2 LANGUAGES C)
-set (ABI_VERSION 2)
+project ("grx" VERSION 3.2.0 LANGUAGES C)
+set (ABI_VERSION 3)
 set (GIR_NAME "Grx")
 set (GIR_VERSION "3.0")
 set (PACKAGE_NAME ${PROJECT_NAME}-${GIR_VERSION})
