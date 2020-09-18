@@ -4,7 +4,7 @@
 	"recommendations": [
 		// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
 		"ms-vscode.cpptools",
-		"donjayamanne.python",
+		"ms-python.python",
 		"thiagoabreu.vala",
 		"twxs.cmake"
 	]
