@@ -15,7 +15,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-void drawpattern(int x, int y, int w, unsigned char patt, GrxColor fg, GrxColor bg)
+#include <grx/color.h>
+
+#include "libgrx.h"
+
+static void drawpattern(
+    int x, int y, int w, unsigned char patt, GrxColor fg, GrxColor bg)
 {
     GR_int8u mask;
     GRX_ENTER();

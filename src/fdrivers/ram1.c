@@ -210,24 +210,14 @@ static void drawvline_inv(int x, int y, int h, GrxColor color)
     drawvline(x, y, h, grx_color_get_mode(color) | grx_color_get_value(~color));
 }
 
-static
-#include "generic/block.c"
-
-    static
-#include "generic/line.c"
-
-    static
+#include "generic/bitblt.c"
 #include "generic/bitmap.c"
-
-    static
+#include "generic/block.c"
+#include "generic/line.c"
 #include "generic/pattern.c"
 
-    static
-#include "generic/bitblt.c"
-
-    static void
-    bltr2r(GrxFrame *dst, int dx, int dy, GrxFrame *src, int x, int y, int w, int h,
-        GrxColor op)
+static void bltr2r(GrxFrame *dst, int dx, int dy, GrxFrame *src, int x, int y, int w,
+    int h, GrxColor op)
 {
     GRX_ENTER();
     _GR_rblit_14(dst, dx, dy, src, x, y, w, h, op, bitblt, FALSE);
@@ -244,33 +234,32 @@ static void bltr2r_inv(GrxFrame *dst, int dx, int dy, GrxFrame *src, int x, int 
 
 /* -------------------------------------------------------------------- */
 
-static
 #include "generic/getiscl.c"
 
-    /* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
 
-    GrxFrameDriver _GrFrameDriverRAM1 = {
-        .mode = GRX_FRAME_MODE_RAM_1BPP,   /* frame mode */
-        .rmode = GRX_FRAME_MODE_UNDEFINED, /* compatible RAM frame mode */
-        .is_video = FALSE,                 /* onscreen */
-        .row_align = 4,                    /* scan line width alignment */
-        .bits_per_pixel = 1,               /* bits per pixel */
-        .max_mem_size = 16 * 1024 * 1024,  /* max memory size the code can handle */
-        .init = NULL,
-        .readpixel = readpixel,
-        .drawpixel = drawpixel,
-        .drawline = drawline,
-        .drawhline = drawhline,
-        .drawvline = drawvline,
-        .drawblock = drawblock,
-        .drawbitmap = drawbitmap,
-        .drawpattern = drawpattern,
-        .bitblt = bltr2r,
-        .bltv2r = NULL,
-        .bltr2v = NULL,
-        .getindexedscanline = getindexedscanline,
-        .putscanline = _GrFrDrvGenericPutScanline,
-    };
+GrxFrameDriver _GrFrameDriverRAM1 = {
+    .mode = GRX_FRAME_MODE_RAM_1BPP,   /* frame mode */
+    .rmode = GRX_FRAME_MODE_UNDEFINED, /* compatible RAM frame mode */
+    .is_video = FALSE,                 /* onscreen */
+    .row_align = 4,                    /* scan line width alignment */
+    .bits_per_pixel = 1,               /* bits per pixel */
+    .max_mem_size = 16 * 1024 * 1024,  /* max memory size the code can handle */
+    .init = NULL,
+    .readpixel = readpixel,
+    .drawpixel = drawpixel,
+    .drawline = drawline,
+    .drawhline = drawhline,
+    .drawvline = drawvline,
+    .drawblock = drawblock,
+    .drawbitmap = drawbitmap,
+    .drawpattern = drawpattern,
+    .bitblt = bltr2r,
+    .bltv2r = NULL,
+    .bltr2v = NULL,
+    .getindexedscanline = getindexedscanline,
+    .putscanline = _GrFrDrvGenericPutScanline,
+};
 
 GrxFrameDriver _GrFrameDriverMONO01_LFB = {
     .mode = GRX_FRAME_MODE_LFB_MONO01, /* frame mode */

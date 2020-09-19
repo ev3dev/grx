@@ -15,10 +15,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "globals.h"
+#include <grx/color.h>
 
-void bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int x, int y, int w, int h,
-    GrxColor op)
+#include "globals.h"
+#include "libgrx.h"
+
+static void bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int x, int y, int w,
+    int h, GrxColor op)
 {
     GrxFrame csave;
     GrxColor skipc;

@@ -213,43 +213,34 @@ static void drawvline(int x, int y, int h, GrxColor color)
     GRX_LEAVE();
 }
 
-static
-#include "generic/block.c"
-
-    static
-#include "generic/line.c"
-
-    static
+#include "generic/bitblt.c"
 #include "generic/bitmap.c"
-
-    static
+#include "generic/block.c"
+#include "generic/line.c"
 #include "generic/pattern.c"
 
-    static
-#include "generic/bitblt.c"
-
-    GrxFrameDriver _GrFrameDriverRAM2 = {
-        .mode = GRX_FRAME_MODE_RAM_2BPP,
-        .rmode = GRX_FRAME_MODE_UNDEFINED,
-        .is_video = FALSE,
-        .row_align = 4,
-        .bits_per_pixel = 2,
-        .max_mem_size = 2 * 16 * 1024 * 1024,
-        .init = NULL,
-        .readpixel = readpixel,
-        .drawpixel = drawpixel,
-        .drawline = drawline,
-        .drawhline = drawhline,
-        .drawvline = drawvline,
-        .drawblock = drawblock,
-        .drawbitmap = drawbitmap,
-        .drawpattern = drawpattern,
-        .bitblt = bitblt,
-        .bltv2r = NULL,
-        .bltr2v = NULL,
-        .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
-        .putscanline = _GrFrDrvGenericPutScanline,
-    };
+GrxFrameDriver _GrFrameDriverRAM2 = {
+    .mode = GRX_FRAME_MODE_RAM_2BPP,
+    .rmode = GRX_FRAME_MODE_UNDEFINED,
+    .is_video = FALSE,
+    .row_align = 4,
+    .bits_per_pixel = 2,
+    .max_mem_size = 2 * 16 * 1024 * 1024,
+    .init = NULL,
+    .readpixel = readpixel,
+    .drawpixel = drawpixel,
+    .drawline = drawline,
+    .drawhline = drawhline,
+    .drawvline = drawvline,
+    .drawblock = drawblock,
+    .drawbitmap = drawbitmap,
+    .drawpattern = drawpattern,
+    .bitblt = bitblt,
+    .bltv2r = NULL,
+    .bltr2v = NULL,
+    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+    .putscanline = _GrFrDrvGenericPutScanline,
+};
 
 GrxFrameDriver _GrFrameDriverCFB2_LFB = {
     .mode = GRX_FRAME_MODE_LFB_2BPP,

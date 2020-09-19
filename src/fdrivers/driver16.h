@@ -304,19 +304,14 @@ done:
     GRX_LEAVE();
 }
 #else
-static
 #include "generic/line.c"
 #endif
 
-static
 #include "generic/bitmap.c"
-
-    static
 #include "generic/pattern.c"
 
-    static void
-    bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w, int h,
-        GrxColor op)
+static void bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
+    int h, GrxColor op)
 {
     GRX_ENTER();
     if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)

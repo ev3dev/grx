@@ -15,7 +15,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-void drawblock(int x, int y, int w, int h, GrxColor c)
+#include <grx/color.h>
+
+#include "libgrx.h"
+
+static void drawblock(int x, int y, int w, int h, GrxColor c)
 {
     GRX_ENTER();
     h += y;

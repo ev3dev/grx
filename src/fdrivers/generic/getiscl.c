@@ -14,7 +14,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-GrxColor *getindexedscanline(GrxFrame *c, int x, int y, int w, int *indx)
+#include <grx/color.h>
+
+#include "libgrx.h"
+
+static GrxColor *getindexedscanline(GrxFrame *c, int x, int y, int w, int *indx)
 {
     GrxColor *pixels;
     GrxColor *p;

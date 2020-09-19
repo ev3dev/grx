@@ -15,8 +15,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-void drawbitmap(int x, int y, int w, int h, unsigned char *bmp, int pitch, int start,
-    GrxColor fg, GrxColor bg)
+#include <grx/color.h>
+
+#include "libgrx.h"
+
+static void drawbitmap(int x, int y, int w, int h, unsigned char *bmp, int pitch,
+    int start, GrxColor fg, GrxColor bg)
 {
     GRX_ENTER();
     w += x;

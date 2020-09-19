@@ -15,7 +15,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-void drawline(int x, int y, int dx, int dy, GrxColor c)
+#include <grx/color.h>
+
+#include "libgrx.h"
+
+static void drawline(int x, int y, int dx, int dy, GrxColor c)
 {
     int cnt, err, yoff;
     GRX_ENTER();

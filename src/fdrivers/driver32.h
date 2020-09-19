@@ -119,7 +119,6 @@ static void drawvline(int x, int y, int h, GrxColor color)
     GRX_LEAVE();
 }
 #else
-static
 #include "generic/vline.c"
 #endif
 
@@ -201,11 +200,8 @@ static void drawblock(int x, int y, int w, int h, GrxColor color)
     GRX_LEAVE();
 }
 #else
-    static
-#include "generic/hline.c"
-
-    static
 #include "generic/block.c"
+#include "generic/hline.c"
 #endif
 
 #if defined(__GNUC__) && defined(__i386__)
@@ -334,19 +330,14 @@ done:
     GRX_LEAVE();
 }
 #else
-    static
 #include "generic/line.c"
 #endif
 
-static
 #include "generic/bitmap.c"
-
-    static
 #include "generic/pattern.c"
 
-    static void
-    bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w, int h,
-        GrxColor op)
+static void bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
+    int h, GrxColor op)
 {
     GRX_ENTER();
     if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
