@@ -51,7 +51,7 @@ add_subdirectory (doc)
 add_subdirectory (plugins)
 add_subdirectory (tools)
 add_subdirectory (example)
-add_subdirectory (test EXCLUDE_FROM_ALL)
+add_subdirectory (test)
 
 # these should probably be move do subdirectories too
 
