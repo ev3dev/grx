@@ -187,7 +187,6 @@ set (LIBRARY_SOURCE_FILES
     user/utextxy.c
     user/uvline.c
     utils/error.c
-    utils/ordswap.c
     utils/resize.c
     utils/shiftscl.c
     utils/tmpbuff.c
