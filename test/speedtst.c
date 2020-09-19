@@ -911,7 +911,21 @@ done:
             exit(1);
 
         fprintf(
-            log, "\nGraphics driver: \"%s\"\n\n", grx_get_current_video_driver()->name);
+            log, "\nGraphics driver: \"%s\"\n", grx_get_current_video_driver()->name);
+
+        fprintf(log, "Build configuration: %s %s\n",
+#ifndef NDEBUG
+            "Debug",
+#else
+            "Release",
+#endif
+#if DEBUG
+            "GRX_DEBUG"
+#else
+            ""
+#endif
+        );
+
         fprintf(log, "Results:\n");
         printresultheader(log);
 
