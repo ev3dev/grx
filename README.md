@@ -48,15 +48,14 @@ Source code directories:
     bindings/   Bindings for other programming languages
     cmake/      Some CMake modules (this is a git submodule)
     data/       Various data files
-    debian/     Debian packaging stuff
     doc/        Documentation
     docker/     Dockerfiles for cross-compiling
     example/    Examples of how to use GRX 3
     include/    Public header files
     plugins/    Pluggable components, such as video drivers
-    scripts/    Scripts used during build
+    scripts/    Scripts used for development
     src/        The main library source code
-    test/       Old demo program from GRX 2.x
+    test/       Old demo/test program from GRX 2.x
     tools/      Utility programs
 
 License
