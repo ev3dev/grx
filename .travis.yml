@@ -1,11 +1,11 @@
 language: bash
 sudo: required
-dist: bionic
+dist: focal
 env:
-- OS=ubuntu ARCH=amd64 DIST=bionic
-- OS=debian ARCH=amd64 DIST=buster
-- OS=debian ARCH=armhf DIST=buster QEMU=qemu-user-static
-- OS=debian ARCH=armel DIST=buster QEMU=qemu-user-static
+- OS=ubuntu ARCH=amd64 DIST=focal
+- OS=debian ARCH=amd64 DIST=bullseye
+- OS=debian ARCH=armhf DIST=bullseye QEMU=qemu-user-static
+- OS=debian ARCH=armel DIST=bullseye QEMU=qemu-user-static
 cache:
   directories:
   - "$HOME/cache"
