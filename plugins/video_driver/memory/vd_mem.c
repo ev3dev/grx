@@ -126,7 +126,7 @@ static int dummymode(GrxVideoMode *mp, int noclear)
     return TRUE;
 }
 
-GrxVideoModeExt dummyExt = {
+static GrxVideoModeExt dummyExt = {
     .mode = GRX_FRAME_MODE_TEXT, /* frame driver */
     .drv = NULL,                 /* frame driver override */
     .frame = MK_FP(0xb800, 0),   /* frame buffer address */
