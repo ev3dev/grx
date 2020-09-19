@@ -31,26 +31,26 @@
 /* -------------------------------------------------------------------- */
 
 GrxFrameDriver _GrFrameDriverSDL8 = {
-    .mode               = GR_frameSDL8,            /* frame mode */
-    .rmode              = GRX_FRAME_MODE_RAM_8BPP, /* compatible RAM frame mode */
-    .is_video           = TRUE,                    /* onscreen */
-    .row_align          = 4,                       /* scan line width alignment */
-    .bits_per_pixel     = 8,                       /* bits per pixel */
-    .max_mem_size       = 8 * 16 * 1024 * 1024,    /* max memory size the code can handle */
-    .init               = NULL,
-    .readpixel          = readpixel,
-    .drawpixel          = sdl_drawpixel,
-    .drawline           = sdl_drawline,
-    .drawhline          = sdl_drawhline,
-    .drawvline          = sdl_drawvline,
-    .drawblock          = sdl_drawblock,
-    .drawbitmap         = sdl_drawbitmap,
-    .drawpattern        = sdl_drawpattern,
-    .bitblt             = sdl_bitblt,
-    .bltv2r             = bltv2r,
-    .bltr2v             = sdl_bltr2v,
+    .mode = GR_frameSDL8,                 /* frame mode */
+    .rmode = GRX_FRAME_MODE_RAM_8BPP,     /* compatible RAM frame mode */
+    .is_video = TRUE,                     /* onscreen */
+    .row_align = 4,                       /* scan line width alignment */
+    .bits_per_pixel = 8,                  /* bits per pixel */
+    .max_mem_size = 8 * 16 * 1024 * 1024, /* max memory size the code can handle */
+    .init = NULL,
+    .readpixel = readpixel,
+    .drawpixel = sdl_drawpixel,
+    .drawline = sdl_drawline,
+    .drawhline = sdl_drawhline,
+    .drawvline = sdl_drawvline,
+    .drawblock = sdl_drawblock,
+    .drawbitmap = sdl_drawbitmap,
+    .drawpattern = sdl_drawpattern,
+    .bitblt = sdl_bitblt,
+    .bltv2r = bltv2r,
+    .bltr2v = sdl_bltr2v,
     .getindexedscanline = getindexedscanline,
-    .putscanline        = sdl_putscanline,
+    .putscanline = sdl_putscanline,
 };
 
 #endif

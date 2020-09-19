@@ -29,16 +29,16 @@
 #include "mempeek.h"
 #endif
 
-#if G_BYTE_ORDER==G_LITTLE_ENDIAN
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
 /* read color component from 32bit variable */
-#define RD24BYTE(p,idx)    peek_b(((GR_int8u *)(&p))+idx)
+#define RD24BYTE(p, idx) peek_b(((GR_int8u *)(&p)) + idx)
 /* write color componet to 32bit variable */
-#define WR24BYTE(p,idx,cc) poke_b(((GR_int8u *)(&p))+idx,cc)
+#define WR24BYTE(p, idx, cc) poke_b(((GR_int8u *)(&p)) + idx, cc)
 #else
 /* read color component from 32bit variable */
-#define RD24BYTE(p,idx)    peek_b(((GR_int8u *)(&p))+idx+1)
+#define RD24BYTE(p, idx)     peek_b(((GR_int8u *)(&p)) + idx + 1)
 /* write color componet to 32bit variable */
-#define WR24BYTE(p,idx,cc) poke_b(((GR_int8u *)(&p))+idx+1,cc)
+#define WR24BYTE(p, idx, cc) poke_b(((GR_int8u *)(&p)) + idx + 1, cc)
 #endif
 
 #endif

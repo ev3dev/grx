@@ -20,17 +20,18 @@
 
 TESTFUNC(rgbtest)
 {
-        int x = grx_get_width();
-        int y = grx_get_height();
-        int ww = (x-10)/32;
-        int wh = (y-10)/8;
-        int ii,jj;
+    int x = grx_get_width();
+    int y = grx_get_height();
+    int ww = (x - 10) / 32;
+    int wh = (y - 10) / 8;
+    int ii, jj;
 
-        grx_color_info_set_palette_type_rgb();
-        for(ii = 0; ii < 8; ii++) {
-            for(jj = 0; jj < 32; jj++) {
-                grx_draw_filled_box(5+jj*ww,5+ii*wh,5+jj*ww+ww-1,5+ii*wh+wh-1,ii*32+jj);
-            }
+    grx_color_info_set_palette_type_rgb();
+    for (ii = 0; ii < 8; ii++) {
+        for (jj = 0; jj < 32; jj++) {
+            grx_draw_filled_box(5 + jj * ww, 5 + ii * wh, 5 + jj * ww + ww - 1,
+                5 + ii * wh + wh - 1, ii * 32 + jj);
         }
-        run_main_loop_until_key_press();
+    }
+    run_main_loop_until_key_press();
 }

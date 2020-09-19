@@ -30,7 +30,7 @@
  */
 void grx_flood_fill(int x, int y, GrxColor border, GrxColor c)
 {
-        GrFillArg fval;
-        fval.color = c;
-        _GrFloodFill(x,y,border,&_GrSolidFiller,fval);
+    GrFillArg fval;
+    fval.color = c;
+    _GrFloodFill(x, y, border, &_GrSolidFiller, fval);
 }

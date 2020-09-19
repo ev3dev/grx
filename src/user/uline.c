@@ -36,11 +36,11 @@
  * For horizontal and vertical lines, see grx_user_draw_hline() and
  * grx_user_draw_vline().
  */
-void grx_user_draw_line(int x1,int y1,int x2,int y2,GrxColor c)
+void grx_user_draw_line(int x1, int y1, int x2, int y2, GrxColor c)
 {
-        U2SX(x1,CURC);
-        U2SY(y1,CURC);
-        U2SX(x2,CURC);
-        U2SY(y2,CURC);
-        grx_draw_line(x1,y1,x2,y2,c);
+    U2SX(x1, CURC);
+    U2SY(y1, CURC);
+    U2SX(x2, CURC);
+    U2SY(y2, CURC);
+    grx_draw_line(x1, y1, x2, y2, c);
 }

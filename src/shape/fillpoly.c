@@ -30,9 +30,9 @@
  * Coordinate arrays can either contain or omit the closing edge of the polygon.
  * It will be automatically appended to the list if it is missing.
  */
-void grx_draw_filled_polygon(int n,GrxPoint *pt,GrxColor c)
+void grx_draw_filled_polygon(int n, GrxPoint *pt, GrxColor c)
 {
-        GrFillArg fval;
-        fval.color = c;
-        _GrScanPolygon(n,pt,&_GrSolidFiller,fval);
+    GrFillArg fval;
+    fval.color = c;
+    _GrScanPolygon(n, pt, &_GrSolidFiller, fval);
 }

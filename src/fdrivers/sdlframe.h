@@ -19,6 +19,10 @@
  * being too slow in windowed modes.
  */
 
+#include <grx/color.h>
+#include <grx/common.h>
+
+#include "libgrx.h"
 #include "libsdl.h"
 #include "memcopy.h"
 
@@ -32,11 +36,11 @@ static void sdl_drawline(int x, int y, int dx, int dy, GrxColor color)
 {
     drawline(x, y, dx, dy, color);
 
-    if(dx < 0) {
+    if (dx < 0) {
         x += dx;
         dx = -dx;
     }
-    if(dy < 0) {
+    if (dy < 0) {
         y += dy;
         dy = -dy;
     }
@@ -63,35 +67,35 @@ static INLINE void sdl_drawblock(int x, int y, int w, int h, GrxColor color)
 }
 
 static INLINE void sdl_drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
-                                  int pitch, int start, GrxColor fg, GrxColor bg)
+    int pitch, int start, GrxColor fg, GrxColor bg)
 {
     drawbitmap(x, y, w, h, bmp, pitch, start, fg, bg);
     SDL_UpdateRect(_SGrScreen, x, y, w, h);
 }
 
-static INLINE void sdl_drawpattern(int x, int y, int w, unsigned char patt,
-                                   GrxColor fg, GrxColor bg)
+static INLINE void sdl_drawpattern(
+    int x, int y, int w, unsigned char patt, GrxColor fg, GrxColor bg)
 {
     drawpattern(x, y, w, patt, fg, bg);
     SDL_UpdateRect(_SGrScreen, x, y, w, 1);
 }
 
-static INLINE void sdl_bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src,
-                              int sx, int sy,int w,int h, GrxColor op)
+static INLINE void sdl_bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx,
+    int sy, int w, int h, GrxColor op)
 {
     bitblt(dst, dx, dy, src, sx, sy, w, h, op);
     SDL_UpdateRect(_SGrScreen, dx, dy, w, h);
 }
 
-static INLINE void sdl_bltr2v(GrxFrame *dst, int dx, int dy, GrxFrame *src,
-                              int sx, int sy, int w, int h, GrxColor op)
+static INLINE void sdl_bltr2v(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx,
+    int sy, int w, int h, GrxColor op)
 {
     bltr2v(dst, dx, dy, src, sx, sy, w, h, op);
     SDL_UpdateRect(_SGrScreen, dx, dy, w, h);
 }
 
-static INLINE void sdl_putscanline(int x, int y, int w, const GrxColor *scl,
-                                   GrxColor op)
+static INLINE void sdl_putscanline(
+    int x, int y, int w, const GrxColor *scl, GrxColor op)
 {
     putscanline(x, y, w, scl, op);
     SDL_UpdateRect(_SGrScreen, x, y, w, 1);

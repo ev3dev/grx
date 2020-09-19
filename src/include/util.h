@@ -20,6 +20,9 @@
 
 #include <glib.h>
 
+#include <grx/common.h>
+#include <grx/frame_mode.h>
+
 /*
  * internal utility functions
  */

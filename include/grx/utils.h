@@ -24,6 +24,6 @@
 /*               MISCELLANEOUS UTILITIY FUNCTIONS                     */
 /* ================================================================== */
 
-void grx_resize_gray_map(unsigned char *map,int pitch,int ow,int oh,int nw,int nh);
+void grx_resize_gray_map(unsigned char *map, int pitch, int ow, int oh, int nw, int nh);
 
 #endif /* __GRX_UTILS_H__ */

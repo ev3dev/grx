@@ -96,10 +96,10 @@
  *   - Added videomodes for wide monitors
  */
 
-#include "libwin32.h"
-#include "libgrx.h"
-#include "grdriver.h"
 #include "arith.h"
+#include "grdriver.h"
+#include "libgrx.h"
+#include "libwin32.h"
 
 #ifndef GRXWINDOW_TITLE
 #define GRXWINDOW_TITLE "GRX"
@@ -122,7 +122,7 @@ static int maxScreenWidth, maxScreenHeight;
 static int maxWindowWidth, maxWindowHeight;
 
 HANDLE windowThread = INVALID_HANDLE_VALUE;
-static HANDLE mainThread   = INVALID_HANDLE_VALUE;
+static HANDLE mainThread = INVALID_HANDLE_VALUE;
 
 static volatile int isWindowThreadRunning = 0;
 static volatile int isMainWaitingTermination = 0;
@@ -135,8 +135,7 @@ static struct _GR_modifiedColors modifiedColors[256];
 static volatile int isColorModified = 0;
 
 static DWORD WINAPI WndThread(void *param);
-static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
-                                LPARAM lParam);
+static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 static void load_color(int c, int r, int g, int b)
 {
@@ -149,7 +148,7 @@ static void load_color(int c, int r, int g, int b)
         modifiedColors[c].color = color;
         modifiedColors[c].modified = 1;
         isColorModified = 1;
-        InvalidateRect(hGRXWnd, NULL, FALSE);        
+        InvalidateRect(hGRXWnd, NULL, FALSE);
     }
 }
 
@@ -158,8 +157,8 @@ static HBITMAP CreateDIB8(HDC hdc, int w, int h, char **pBits)
     BITMAPINFO *pbmInfo;
     HBITMAP hBmp;
 
-    pbmInfo = malloc(sizeof(BITMAPINFO) +256*sizeof(RGBQUAD));
-    pbmInfo->bmiHeader.biSize = sizeof (BITMAPINFOHEADER);
+    pbmInfo = malloc(sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD));
+    pbmInfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     pbmInfo->bmiHeader.biWidth = w;
     pbmInfo->bmiHeader.biHeight = -h;
     pbmInfo->bmiHeader.biPlanes = 1;
@@ -170,9 +169,9 @@ static HBITMAP CreateDIB8(HDC hdc, int w, int h, char **pBits)
     pbmInfo->bmiHeader.biYPelsPerMeter = 0;
     pbmInfo->bmiHeader.biClrUsed = 0;
     pbmInfo->bmiHeader.biClrImportant = 0;
-    hBmp = CreateDIBSection(0, pbmInfo, DIB_RGB_COLORS, (void*)pBits, 0, 0);
+    hBmp = CreateDIBSection(0, pbmInfo, DIB_RGB_COLORS, (void *)pBits, 0, 0);
     free(pbmInfo);
-    return(hBmp);
+    return hBmp;
 }
 
 static HBITMAP CreateDIB24(HDC hdc, int w, int h, char **pBits)
@@ -181,7 +180,7 @@ static HBITMAP CreateDIB24(HDC hdc, int w, int h, char **pBits)
     HBITMAP hBmp;
 
     pbmInfo = malloc(sizeof(BITMAPINFO));
-    pbmInfo->bmiHeader.biSize = sizeof (BITMAPINFOHEADER);
+    pbmInfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     pbmInfo->bmiHeader.biWidth = w;
     pbmInfo->bmiHeader.biHeight = -h;
     pbmInfo->bmiHeader.biPlanes = 1;
@@ -192,12 +191,12 @@ static HBITMAP CreateDIB24(HDC hdc, int w, int h, char **pBits)
     pbmInfo->bmiHeader.biYPelsPerMeter = 0;
     pbmInfo->bmiHeader.biClrUsed = 0;
     pbmInfo->bmiHeader.biClrImportant = 0;
-    hBmp = CreateDIBSection(0, pbmInfo, DIB_RGB_COLORS, (void*)pBits, 0, 0);
+    hBmp = CreateDIBSection(0, pbmInfo, DIB_RGB_COLORS, (void *)pBits, 0, 0);
     free(pbmInfo);
-    return(hBmp);
+    return hBmp;
 }
 
-static int setmode(GrxVideoMode * mp, int noclear)
+static int setmode(GrxVideoMode *mp, int noclear)
 {
     RECT Rect;
     HDC hDC;
@@ -216,10 +215,8 @@ static int setmode(GrxVideoMode * mp, int noclear)
         AdjustWindowRect(&Rect, WS_OVERLAPPEDWINDOW, FALSE);
         maxWindowWidth = Rect.right - Rect.left;
         maxWindowHeight = Rect.bottom - Rect.top;
-        SetWindowPos(hGRXWnd, NULL,
-                     Rect.left, Rect.top,
-                     maxWindowWidth, maxWindowHeight,
-                     SWP_DRAWFRAME | SWP_NOZORDER | SWP_SHOWWINDOW);
+        SetWindowPos(hGRXWnd, NULL, Rect.left, Rect.top, maxWindowWidth,
+            maxWindowHeight, SWP_DRAWFRAME | SWP_NOZORDER | SWP_SHOWWINDOW);
 
         if (hBmpDIB != NULL) {
             DeleteObject(hBmpDIB);
@@ -229,16 +226,15 @@ static int setmode(GrxVideoMode * mp, int noclear)
         if (hDCMem == NULL)
             hDCMem = CreateCompatibleDC(hDC);
         if (mp->bpp == 8) {
-            hBmpDIB = CreateDIB8(hDC, mp->width, mp->height,
-                                 &mp->extended_info->frame);
-        } else {
-            hBmpDIB = CreateDIB24(hDC, mp->width, mp->height,
-                                  &mp->extended_info->frame);
+            hBmpDIB = CreateDIB8(hDC, mp->width, mp->height, &mp->extended_info->frame);
+        }
+        else {
+            hBmpDIB =
+                CreateDIB24(hDC, mp->width, mp->height, &mp->extended_info->frame);
         }
         SelectObject(hDCMem, hBmpDIB);
         if (mp->bpp == 8) {
-            color.rgbBlue = color.rgbGreen = color.rgbRed =
-                            color.rgbReserved = 0;
+            color.rgbBlue = color.rgbGreen = color.rgbRed = color.rgbReserved = 0;
             SetDIBColorTable(hDCMem, 0, 1, &color);
         }
         SetRect(&Rect, 0, 0, mp->width, mp->height);
@@ -252,14 +248,15 @@ static int setmode(GrxVideoMode * mp, int noclear)
         DeleteObject(hBrush);
         UpdateWindow(hGRXWnd);
         SetForegroundWindow(hGRXWnd);
-    } else {
+    }
+    else {
         /* If changing to text-mode, hide the graphics window. */
         if (hGRXWnd != NULL) {
             ShowWindow(hGRXWnd, SW_HIDE);
             SetForegroundWindow(hPrvWnd);
         }
     }
-    return (TRUE);
+    return TRUE;
 }
 
 static void setbank_dummy(int bk)
@@ -268,77 +265,77 @@ static void setbank_dummy(int bk)
 }
 
 GrxVideoModeExt grtextext = {
-    .mode             = GRX_FRAME_MODE_TEXT, /* frame driver */
-    .drv              = NULL,                /* frame driver override */
-    .frame            = NULL,                /* frame buffer address */
-    .cprec            = {0, 0, 0},           /* color precisions */
-    .cpos             = {0, 0, 0},           /* color component bit positions */
-    .flags            = 0,                   /* mode flag bits */
-    .setup            = setmode,             /* mode set */
-    .set_virtual_size = NULL,                /* virtual size set */
-    .scroll           = NULL,                /* virtual scroll */
-    .set_bank         = NULL,                /* bank set function */
-    .set_rw_banks     = NULL,                /* double bank set function */
-    .load_color       = NULL,                /* color loader */
+    .mode = GRX_FRAME_MODE_TEXT, /* frame driver */
+    .drv = NULL,                 /* frame driver override */
+    .frame = NULL,               /* frame buffer address */
+    .cprec = { 0, 0, 0 },        /* color precisions */
+    .cpos = { 0, 0, 0 },         /* color component bit positions */
+    .flags = 0,                  /* mode flag bits */
+    .setup = setmode,            /* mode set */
+    .set_virtual_size = NULL,    /* virtual size set */
+    .scroll = NULL,              /* virtual scroll */
+    .set_bank = NULL,            /* bank set function */
+    .set_rw_banks = NULL,        /* double bank set function */
+    .load_color = NULL,          /* color loader */
 };
 
 static GrxVideoModeExt grxwinext8 = {
-    .mode             = GR_frameWIN32_8, /* frame driver */
-    .drv              = NULL,            /* frame driver override */
-    .frame            = NULL,            /* frame buffer address */
-    .cprec            = {8, 8, 8},       /* color precisions */
-    .cpos             = {0, 8, 16},      /* color component bit positions */
-    .flags            = 0,               /* mode flag bits */
-    .setup            = setmode,         /* mode set */
-    .set_virtual_size = NULL,            /* virtual size set */
-    .scroll           = NULL,            /* virtual scroll */
-    .set_bank         = setbank_dummy,   /* bank set function */
-    .set_rw_banks     = NULL,            /* double bank set function */
-    .load_color       = load_color,      /* color loader */
+    .mode = GR_frameWIN32_8,   /* frame driver */
+    .drv = NULL,               /* frame driver override */
+    .frame = NULL,             /* frame buffer address */
+    .cprec = { 8, 8, 8 },      /* color precisions */
+    .cpos = { 0, 8, 16 },      /* color component bit positions */
+    .flags = 0,                /* mode flag bits */
+    .setup = setmode,          /* mode set */
+    .set_virtual_size = NULL,  /* virtual size set */
+    .scroll = NULL,            /* virtual scroll */
+    .set_bank = setbank_dummy, /* bank set function */
+    .set_rw_banks = NULL,      /* double bank set function */
+    .load_color = load_color,  /* color loader */
 };
 
 static GrxVideoModeExt grxwinext24 = {
-    .mode             = GR_frameWIN32_24, /* frame driver */
-    .drv              = NULL,             /* frame driver override */
-    .frame            = NULL,             /* frame buffer address */
-    .cprec            = {8, 8, 8},        /* color precisions */
-    .cpos             = {16, 8, 0},       /* color component bit positions */
-    .flags            = 0,                /* mode flag bits */
-    .setup            = setmode,          /* mode set */
-    .set_virtual_size = NULL,             /* virtual size set */
-    .scroll           = NULL,             /* virtual scroll */
-    .set_bank         = setbank_dummy,    /* bank set function */
-    .set_rw_banks     = NULL,             /* double bank set function */
-    .load_color       = NULL,             /* color loader */
+    .mode = GR_frameWIN32_24,  /* frame driver */
+    .drv = NULL,               /* frame driver override */
+    .frame = NULL,             /* frame buffer address */
+    .cprec = { 8, 8, 8 },      /* color precisions */
+    .cpos = { 16, 8, 0 },      /* color component bit positions */
+    .flags = 0,                /* mode flag bits */
+    .setup = setmode,          /* mode set */
+    .set_virtual_size = NULL,  /* virtual size set */
+    .scroll = NULL,            /* virtual scroll */
+    .set_bank = setbank_dummy, /* bank set function */
+    .set_rw_banks = NULL,      /* double bank set function */
+    .load_color = NULL,        /* color loader */
 };
 
 static GrxVideoMode modes[] = {
     /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext  */
-    {TRUE, 8, 80, 25, 0x00, 80, 1, &grtextext},
+    { TRUE, 8, 80, 25, 0x00, 80, 1, &grtextext },
 
-    {TRUE, 8, 320, 240, 0x00, 320, 0, &grxwinext8},
-    {TRUE, 8, 640, 480, 0x00, 640, 0, &grxwinext8},
-    {TRUE, 8, 800, 600, 0x00, 800, 0, &grxwinext8},
-    {TRUE, 8, 1024, 768, 0x00, 1024, 0, &grxwinext8},
-    {TRUE, 8, 1280, 1024, 0x00, 1280, 0, &grxwinext8},
-    {TRUE, 8, 1600, 1200, 0x00, 1600, 0, &grxwinext8},
-    {TRUE, 8, 1440, 900, 0x00, 1440, 0, &grxwinext8},
-    {TRUE, 8, 1680, 1050, 0x00, 1680, 0, &grxwinext8},
-    {TRUE, 8, 1920, 1200, 0x00, 1920, 0, &grxwinext8},
-    {TRUE, 8, 2560, 1600, 0x00, 2560, 0, &grxwinext8},
+    { TRUE, 8, 320, 240, 0x00, 320, 0, &grxwinext8 },
+    { TRUE, 8, 640, 480, 0x00, 640, 0, &grxwinext8 },
+    { TRUE, 8, 800, 600, 0x00, 800, 0, &grxwinext8 },
+    { TRUE, 8, 1024, 768, 0x00, 1024, 0, &grxwinext8 },
+    { TRUE, 8, 1280, 1024, 0x00, 1280, 0, &grxwinext8 },
+    { TRUE, 8, 1600, 1200, 0x00, 1600, 0, &grxwinext8 },
+    { TRUE, 8, 1440, 900, 0x00, 1440, 0, &grxwinext8 },
+    { TRUE, 8, 1680, 1050, 0x00, 1680, 0, &grxwinext8 },
+    { TRUE, 8, 1920, 1200, 0x00, 1920, 0, &grxwinext8 },
+    { TRUE, 8, 2560, 1600, 0x00, 2560, 0, &grxwinext8 },
 
-    {TRUE, 24, 320, 240, 0x00, 960, 0, &grxwinext24},
-    {TRUE, 24, 640, 480, 0x00, 1920, 0, &grxwinext24},
-    {TRUE, 24, 800, 600, 0x00, 2400, 0, &grxwinext24},
-    {TRUE, 24, 1024, 768, 0x00, 3072, 0, &grxwinext24},
-    {TRUE, 24, 1280, 1024, 0x00, 3840, 0, &grxwinext24},
-    {TRUE, 24, 1600, 1200, 0x00, 4800, 0, &grxwinext24},
-    {TRUE, 24, 1440, 900, 0x00, 4320, 0, &grxwinext24},
-    {TRUE, 24, 1680, 1050, 0x00, 5040, 0, &grxwinext24},
-    {TRUE, 24, 1920, 1200, 0x00, 5760, 0, &grxwinext24},
-    {TRUE, 24, 2560, 1600, 0x00, 7680, 0, &grxwinext24},
+    { TRUE, 24, 320, 240, 0x00, 960, 0, &grxwinext24 },
+    { TRUE, 24, 640, 480, 0x00, 1920, 0, &grxwinext24 },
+    { TRUE, 24, 800, 600, 0x00, 2400, 0, &grxwinext24 },
+    { TRUE, 24, 1024, 768, 0x00, 3072, 0, &grxwinext24 },
+    { TRUE, 24, 1280, 1024, 0x00, 3840, 0, &grxwinext24 },
+    { TRUE, 24, 1600, 1200, 0x00, 4800, 0, &grxwinext24 },
+    { TRUE, 24, 1440, 900, 0x00, 4320, 0, &grxwinext24 },
+    { TRUE, 24, 1680, 1050, 0x00, 5040, 0, &grxwinext24 },
+    { TRUE, 24, 1920, 1200, 0x00, 5760, 0, &grxwinext24 },
+    { TRUE, 24, 2560, 1600, 0x00, 7680, 0, &grxwinext24 },
 
-    {FALSE, 0, 9999, 9999, 0x00, 0, 0, NULL}
+    { FALSE, 0, 9999, 9999, 0x00, 0, 0, NULL }
 };
 
 static int detect(void)
@@ -355,11 +352,12 @@ static int detect(void)
         wndclass.hInstance = GetModuleHandle(NULL);
         wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
         wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-        wndclass.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
+        wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
         wndclass.lpszMenuName = NULL;
         wndclass.lpszClassName = "GRXCLASS";
         wndclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-        if (RegisterClassEx(&wndclass)== 0) return FALSE;
+        if (RegisterClassEx(&wndclass) == 0)
+            return FALSE;
         inited = 1;
     }
 
@@ -371,7 +369,8 @@ static int init(char *options)
     int i;
     DWORD thread_id;
 
-    if (!detect()) return FALSE;
+    if (!detect())
+        return FALSE;
 
     /* WARNING: mainThread can not be used in the windowThread */
     mainThread = GetCurrentThread();
@@ -379,7 +378,7 @@ static int init(char *options)
     hPrvWnd = GetForegroundWindow();
 
     InitializeCriticalSection(&_csEventQueue);
-    
+
     /* The modes not compatible width the configuration */
     /* of Windows are made 'non-present'                */
     maxScreenWidth = GetSystemMetrics(SM_CXSCREEN);
@@ -414,8 +413,7 @@ static void reset(void)
     isMainWaitingTermination = 0;
     DeleteCriticalSection(&_csEventQueue);
 
-    if(hBmpDIB != NULL)
-    {
+    if (hBmpDIB != NULL) {
         DeleteObject(hBmpDIB);
         hBmpDIB = NULL;
     }
@@ -425,8 +423,8 @@ static void reset(void)
     }
 }
 
-static GrxVideoMode * _w32_selectmode(GrxVideoDriver * drv, int w, int h,
-                                     int bpp, int txt, unsigned int * ep)
+static GrxVideoMode *_w32_selectmode(
+    GrxVideoDriver *drv, int w, int h, int bpp, int txt, unsigned int *ep)
 {
     GrxVideoMode *mp, *res;
     long resto;
@@ -435,7 +433,7 @@ static GrxVideoMode * _w32_selectmode(GrxVideoDriver * drv, int w, int h,
         res = _gr_select_mode(drv, w, h, bpp, txt, ep);
         goto done;
     }
-    for (mp = &modes[1]; mp < &modes[itemsof(modes)-1]; mp++) {
+    for (mp = &modes[1]; mp < &modes[itemsof(modes) - 1]; mp++) {
         if (mp->present && mp->width == w && mp->height == h) {
             res = _gr_select_mode(drv, w, h, bpp, txt, ep);
             goto done;
@@ -450,14 +448,16 @@ static GrxVideoMode * _w32_selectmode(GrxVideoDriver * drv, int w, int h,
             mp->bpp = 8;
             mp->extended_info = &grxwinext8;
             resto = mp->width % 4;
-            if (resto) resto = 4 - resto;
+            if (resto)
+                resto = 4 - resto;
             mp->line_offset = mp->width + resto;
         }
         else {
             mp->bpp = 24;
             mp->extended_info = &grxwinext24;
             resto = (mp->width * 3) % 4;
-            if (resto) resto = 4 - resto;
+            if (resto)
+                resto = 4 - resto;
             mp->line_offset = mp->width * 3 + resto;
         }
     }
@@ -467,15 +467,15 @@ done:
 }
 
 GrxVideoDriver _GrVideoDriverWIN32 = {
-    .name        = "win32",                 /* name */
-    .inherit     = NULL,                    /* inherit modes from this driver */
-    .modes       = modes,                   /* mode table */
-    .n_modes     = itemsof(modes),          /* # of modes */
-    .detect      = detect,                  /* detection routine */
-    .init        = init,                    /* initialization routine */
-    .reset       = reset,                   /* reset routine */
-    .select_mode = _w32_selectmode,         /* special mode select routine */
-    .flags       = GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION /* arbitrary resolution possible */
+    .name = "win32",                               /* name */
+    .inherit = NULL,                               /* inherit modes from this driver */
+    .modes = modes,                                /* mode table */
+    .n_modes = itemsof(modes),                     /* # of modes */
+    .detect = detect,                              /* detection routine */
+    .init = init,                                  /* initialization routine */
+    .reset = reset,                                /* reset routine */
+    .select_mode = _w32_selectmode,                /* special mode select routine */
+    .flags = GRX_VIDEO_DRIVER_FLAG_USER_RESOLUTION /* arbitrary resolution possible */
 };
 
 static DWORD WINAPI WndThread(void *param)
@@ -483,10 +483,8 @@ static DWORD WINAPI WndThread(void *param)
     MSG msg;
 
     hGRXWnd = CreateWindow("GRXCLASS", GRXWINDOW_TITLE,
-                           WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU
-                           | WS_THICKFRAME | WS_MINIMIZEBOX, 0, 0,
-                           CW_USEDEFAULT, CW_USEDEFAULT, NULL,
-                           NULL, GetModuleHandle(NULL), NULL);
+        WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX, 0, 0,
+        CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, GetModuleHandle(NULL), NULL);
     ShowWindow(hGRXWnd, SW_HIDE);
 
     isWindowThreadRunning = 1;
@@ -523,8 +521,7 @@ static int convertwin32keystate(void)
     return fkbState;
 }
 
-static void EnqueueW32Event(UINT uMsg, WPARAM wParam, LPARAM lParam,
-                            int kbstat)
+static void EnqueueW32Event(UINT uMsg, WPARAM wParam, LPARAM lParam, int kbstat)
 {
     if (_W32EventQueue == NULL)
         return;
@@ -544,40 +541,38 @@ static void EnqueueW32Event(UINT uMsg, WPARAM wParam, LPARAM lParam,
     LeaveCriticalSection(&_csEventQueue);
 }
 
-static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
-                                LPARAM lParam)
+static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     static int cursorOn = 1;
     int kbstat;
     BOOL fInsert;
 
     switch (uMsg) {
-
-    case WM_NCHITTEST:
-        {
-            LRESULT res = DefWindowProc(hWnd, uMsg, wParam, lParam);
-            if (res == HTCLIENT) {
-                if (cursorOn) {
-                    ShowCursor(FALSE);
-                    cursorOn = 0;
-                }
-            } else {
-                if (!cursorOn) {
-                    ShowCursor(TRUE);
-                    cursorOn = 1;
-                }
+    case WM_NCHITTEST: {
+        LRESULT res = DefWindowProc(hWnd, uMsg, wParam, lParam);
+        if (res == HTCLIENT) {
+            if (cursorOn) {
+                ShowCursor(FALSE);
+                cursorOn = 0;
             }
-            return res;
         }
+        else {
+            if (!cursorOn) {
+                ShowCursor(TRUE);
+                cursorOn = 1;
+            }
+        }
+        return res;
+    }
 
     case WM_CLOSE:
-        if (!isMainWaitingTermination && MessageBox(hWnd,
-            "This will abort the program\nare you sure?", "Abort",
-             MB_APPLMODAL | MB_ICONQUESTION | MB_YESNO ) != IDYES)
+        if (!isMainWaitingTermination
+            && MessageBox(hWnd, "This will abort the program\nare you sure?", "Abort",
+                   MB_APPLMODAL | MB_ICONQUESTION | MB_YESNO)
+                   != IDYES)
             return 0;
         DestroyWindow(hWnd);
-        if (!isMainWaitingTermination)
-        {
+        if (!isMainWaitingTermination) {
             isWindowThreadRunning = 0;
             ExitProcess(1);
         }
@@ -587,13 +582,12 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
         PostQuitMessage(0);
         break;
 
-    case WM_GETMINMAXINFO:
-        {
-            LPMINMAXINFO lpmmi = (LPMINMAXINFO) lParam;
+    case WM_GETMINMAXINFO: {
+        LPMINMAXINFO lpmmi = (LPMINMAXINFO)lParam;
 
-            lpmmi->ptMaxSize.x = lpmmi->ptMaxTrackSize.x = maxWindowWidth;
-            lpmmi->ptMaxSize.y = lpmmi->ptMaxTrackSize.y = maxWindowHeight;
-        }
+        lpmmi->ptMaxSize.x = lpmmi->ptMaxTrackSize.x = maxWindowWidth;
+        lpmmi->ptMaxSize.y = lpmmi->ptMaxTrackSize.y = maxWindowHeight;
+    }
         return 0;
 
     case WM_SYSCHAR:
@@ -622,51 +616,49 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
     case WM_LBUTTONUP:
     case WM_MBUTTONUP:
     case WM_RBUTTONUP:
-    case WM_MOUSEMOVE:
-          {
-            kbstat = convertwin32keystate();
-            EnqueueW32Event(uMsg, wParam, lParam, kbstat);
-          }
+    case WM_MOUSEMOVE: {
+        kbstat = convertwin32keystate();
+        EnqueueW32Event(uMsg, wParam, lParam, kbstat);
+    }
         return 0;
 
-    case WM_MOUSEWHEEL:
-          {
-            kbstat = convertwin32keystate();
-            /* twice to simulate down up */
-            EnqueueW32Event(uMsg, wParam, lParam, kbstat); 
-            EnqueueW32Event(uMsg, wParam, lParam, kbstat);
-          }
+    case WM_MOUSEWHEEL: {
+        kbstat = convertwin32keystate();
+        /* twice to simulate down up */
+        EnqueueW32Event(uMsg, wParam, lParam, kbstat);
+        EnqueueW32Event(uMsg, wParam, lParam, kbstat);
+    }
         return 0;
 
+    case WM_PAINT: {
+        HDC hDC;
+        PAINTSTRUCT ps;
 
-    case WM_PAINT:
-        {
-            HDC hDC;
-            PAINTSTRUCT ps;
+        if (isColorModified) {
+            int c;
 
-            if (isColorModified) {
-                int c;
+            isColorModified = 0;
+            for (c = 0; c < 256; c++) {
+                if (modifiedColors[c].modified) {
+                    int res;
 
-                isColorModified = 0;
-                for (c = 0; c < 256; c++) {
-                    if (modifiedColors[c].modified) {
-                        int res;
-
-                        modifiedColors[c].modified = 0;
-                            if ((res = SetDIBColorTable(hDCMem, c, 1, &modifiedColors[c].color)) != 1)
-                            DBGPRINTF(DBG_DRIVER,("SetDIBColorTable returned %d (%ld) color %d\n", res, GetLastError(), c));
-                    }
+                    modifiedColors[c].modified = 0;
+                    if ((res = SetDIBColorTable(hDCMem, c, 1, &modifiedColors[c].color))
+                        != 1)
+                        DBGPRINTF(DBG_DRIVER,
+                            ("SetDIBColorTable returned %d (%ld) color %d\n", res,
+                                GetLastError(), c));
                 }
             }
-
-            hDC = BeginPaint(hWnd, &ps);
-            BitBlt(hDC,
-                   ps.rcPaint.left, ps.rcPaint.top,
-                   ps.rcPaint.right - ps.rcPaint.left + 1,
-                   ps.rcPaint.bottom - ps.rcPaint.top + 1,
-                   hDCMem, ps.rcPaint.left, ps.rcPaint.top, SRCCOPY);
-            EndPaint(hWnd, &ps);
         }
+
+        hDC = BeginPaint(hWnd, &ps);
+        BitBlt(hDC, ps.rcPaint.left, ps.rcPaint.top,
+            ps.rcPaint.right - ps.rcPaint.left + 1,
+            ps.rcPaint.bottom - ps.rcPaint.top + 1, hDCMem, ps.rcPaint.left,
+            ps.rcPaint.top, SRCCOPY);
+        EndPaint(hWnd, &ps);
+    }
         return 0;
 
     case WM_SYSCOMMAND:
@@ -697,14 +689,13 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
         break;
 
     default:
-/*
-        char szMsg[255];
-        sprintf(szMsg, "Msg %x, wParam %d, lParam %d",
-                uMsg, wParam, lParam);
-        MessageBox(NULL, szMsg, "Msg", MB_OK);
-*/
+        /*
+                char szMsg[255];
+                sprintf(szMsg, "Msg %x, wParam %d, lParam %d",
+                        uMsg, wParam, lParam);
+                MessageBox(NULL, szMsg, "Msg", MB_OK);
+        */
         break;
-
     }
 
     return DefWindowProc(hWnd, uMsg, wParam, lParam);

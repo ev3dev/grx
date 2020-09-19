@@ -28,7 +28,7 @@
  */
 GrxCursor *(grx_mouse_get_cursor)(void)
 {
-    return(grx_mouse_get_cursor());
+    return grx_mouse_get_cursor();
 }
 
 /**
@@ -38,9 +38,9 @@ GrxCursor *(grx_mouse_get_cursor)(void)
  *
  * Returns: %TRUE if the mouse cursor is shown on the screen.
  */
-int (grx_mouse_is_cursor_shown)(void)
+int(grx_mouse_is_cursor_shown)(void)
 {
-    return(grx_mouse_is_cursor_shown());
+    return grx_mouse_is_cursor_shown();
 }
 
 /**
@@ -58,9 +58,9 @@ int (grx_mouse_is_cursor_shown)(void)
  *
  * Returns: state flags that need to be passed to grx_mouse_unblock()
  */
-unsigned int (grx_mouse_block)(GrxContext *c,int x1,int y1,int x2,int y2)
+unsigned int(grx_mouse_block)(GrxContext *c, int x1, int y1, int x2, int y2)
 {
-    return(grx_mouse_block(c,x1,y1,x2,y2));
+    return grx_mouse_block(c, x1, y1, x2, y2);
 }
 
 /**
@@ -69,7 +69,7 @@ unsigned int (grx_mouse_block)(GrxContext *c,int x1,int y1,int x2,int y2)
  *
  * Restore the mouse cursor after a call to grx_mouse_block().
  */
-void (grx_mouse_unblock)(unsigned int flags)
+void(grx_mouse_unblock)(unsigned int flags)
 {
     grx_mouse_unblock(flags);
 }

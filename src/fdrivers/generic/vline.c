@@ -15,10 +15,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-void drawvline(int x,int y,int h,GrxColor c)
+void drawvline(int x, int y, int h, GrxColor c)
 {
-        GRX_ENTER();
-        h += y;
-        do { drawpixel(x,y,c); } while(++y != h);
-        GRX_LEAVE();
+    GRX_ENTER();
+    h += y;
+    do {
+        drawpixel(x, y, c);
+    } while (++y != h);
+    GRX_LEAVE();
 }

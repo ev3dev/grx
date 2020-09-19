@@ -43,7 +43,7 @@
  */
 GrxContext *(grx_context_new)(gint w, gint h, guint8 *memory, GrxContext *where)
 {
-        return(grx_context_new(w,h,memory,where));
+    return grx_context_new(w, h, memory, where);
 }
 
 /**
@@ -55,7 +55,7 @@ GrxContext *(grx_context_new)(gint w, gint h, guint8 *memory, GrxContext *where)
  */
 GrxContext *(grx_get_current_context)(void)
 {
-        return(grx_get_current_context());
+    return grx_get_current_context();
 }
 
 /**
@@ -67,7 +67,7 @@ GrxContext *(grx_get_current_context)(void)
  */
 GrxContext *(grx_get_screen_context)(void)
 {
-        return(grx_get_screen_context());
+    return grx_get_screen_context();
 }
 
 /**
@@ -79,9 +79,9 @@ GrxContext *(grx_get_screen_context)(void)
  *
  * Gets the clipping limits of the current context.
  */
-void (grx_get_clip_box)(int *x1p,int *y1p,int *x2p,int *y2p)
+void(grx_get_clip_box)(int *x1p, int *y1p, int *x2p, int *y2p)
 {
-        grx_get_clip_box(x1p,y1p,x2p,y2p);
+    grx_get_clip_box(x1p, y1p, x2p, y2p);
 }
 
 /**
@@ -94,9 +94,10 @@ void (grx_get_clip_box)(int *x1p,int *y1p,int *x2p,int *y2p)
  *
  * Gets the clipping limits of @context.
  */
-void (grx_context_get_clip_box)(const GrxContext *c,int *x1p,int *y1p,int *x2p,int *y2p)
+void(grx_context_get_clip_box)(
+    const GrxContext *c, int *x1p, int *y1p, int *x2p, int *y2p)
 {
-        grx_context_get_clip_box(c,x1p,y1p,x2p,y2p);
+    grx_context_get_clip_box(c, x1p, y1p, x2p, y2p);
 }
 
 /**
@@ -108,9 +109,9 @@ void (grx_context_get_clip_box)(const GrxContext *c,int *x1p,int *y1p,int *x2p,i
  *
  * Returns: the index
  */
-int (grx_get_max_x)(void)
+int(grx_get_max_x)(void)
 {
-        return(grx_get_max_x());
+    return grx_get_max_x();
 }
 
 /**
@@ -122,9 +123,9 @@ int (grx_get_max_x)(void)
  *
  * Returns: the index
  */
-int (grx_get_max_y)(void)
+int(grx_get_max_y)(void)
 {
-        return(grx_get_max_y());
+    return grx_get_max_y();
 }
 
 /**
@@ -134,9 +135,9 @@ int (grx_get_max_y)(void)
  *
  * Returns: the width
  */
-int (grx_get_width)(void)
+int(grx_get_width)(void)
 {
-        return(grx_get_width());
+    return grx_get_width();
 }
 
 /**
@@ -146,9 +147,9 @@ int (grx_get_width)(void)
  *
  * Returns: the height
  */
-int (grx_get_height)(void)
+int(grx_get_height)(void)
 {
-        return(grx_get_height());
+    return grx_get_height();
 }
 
 /**
@@ -158,9 +159,9 @@ int (grx_get_height)(void)
  *
  * Returns: the current value
  */
-int (grx_get_clip_box_min_x)(void)
+int(grx_get_clip_box_min_x)(void)
 {
-        return(grx_get_clip_box_min_x());
+    return grx_get_clip_box_min_x();
 }
 
 /**
@@ -170,9 +171,9 @@ int (grx_get_clip_box_min_x)(void)
  *
  * Returns: the current value
  */
-int (grx_get_clip_box_min_y)(void)
+int(grx_get_clip_box_min_y)(void)
 {
-        return(grx_get_clip_box_min_y());
+    return grx_get_clip_box_min_y();
 }
 
 /**
@@ -182,9 +183,9 @@ int (grx_get_clip_box_min_y)(void)
  *
  * Returns: the current value
  */
-int (grx_get_clip_box_max_x)(void)
+int(grx_get_clip_box_max_x)(void)
 {
-        return(grx_get_clip_box_max_x());
+    return grx_get_clip_box_max_x();
 }
 
 /**
@@ -194,9 +195,9 @@ int (grx_get_clip_box_max_x)(void)
  *
  * Returns: the current value
  */
-int (grx_get_clip_box_max_y)(void)
+int(grx_get_clip_box_max_y)(void)
 {
-        return(grx_get_clip_box_max_y());
+    return grx_get_clip_box_max_y();
 }
 
 /**
@@ -207,9 +208,9 @@ int (grx_get_clip_box_max_y)(void)
  *
  * Returns: the width
  */
-gint (grx_context_get_width)(GrxContext *context)
+gint(grx_context_get_width)(GrxContext *context)
 {
-        return (grx_context_get_width(context));
+    return grx_context_get_width(context);
 }
 
 /**
@@ -220,9 +221,9 @@ gint (grx_context_get_width)(GrxContext *context)
  *
  * Returns: the height
  */
-gint (grx_context_get_height)(GrxContext *context)
+gint(grx_context_get_height)(GrxContext *context)
 {
-        return (grx_context_get_height(context));
+    return grx_context_get_height(context);
 }
 
 /**
@@ -233,9 +234,9 @@ gint (grx_context_get_height)(GrxContext *context)
  *
  * Returns: the value
  */
-gint (grx_context_get_max_x)(GrxContext *context)
+gint(grx_context_get_max_x)(GrxContext *context)
 {
-        return (grx_context_get_max_x(context));
+    return grx_context_get_max_x(context);
 }
 
 /**
@@ -246,7 +247,7 @@ gint (grx_context_get_max_x)(GrxContext *context)
  *
  * Returns: the value
  */
-gint (grx_context_get_max_y)(GrxContext *context)
+gint(grx_context_get_max_y)(GrxContext *context)
 {
-        return (grx_context_get_max_y(context));
+    return grx_context_get_max_y(context);
 }

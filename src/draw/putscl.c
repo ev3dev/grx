@@ -14,10 +14,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "globals.h"
-#include "mouse.h"
-#include "libgrx.h"
 #include "clipping.h"
+#include "globals.h"
+#include "libgrx.h"
+#include "mouse.h"
 
 /**
  * grx_put_scanline:
@@ -33,19 +33,15 @@
  * results are implementation dependent. So you can't supply operation code
  * with the pixel data!
  */
-void grx_put_scanline(int x1,int x2,int yy,const GrxColor *c, GrxColor op)
+void grx_put_scanline(int x1, int x2, int yy, const GrxColor *c, GrxColor op)
 {
-        int xs;
-        isort(x1,x2);
-        xs = x1;
-        clip_hline(CURC,x1,x2,yy);
-        mouse_block(CURC,x1,yy,x2,yy);
-        (*FDRV->putscanline)(
-            x1 + CURC->x_offset,
-            yy + CURC->y_offset,
-            x2 - x1 + 1,
-            &c[x1-xs],  /* adjust pixel pointer when clipped */
-            op
-        );
-        mouse_unblock();
+    int xs;
+    isort(x1, x2);
+    xs = x1;
+    clip_hline(CURC, x1, x2, yy);
+    mouse_block(CURC, x1, yy, x2, yy);
+    (*FDRV->putscanline)(x1 + CURC->x_offset, yy + CURC->y_offset, x2 - x1 + 1,
+        &c[x1 - xs], /* adjust pixel pointer when clipped */
+        op);
+    mouse_unblock();
 }

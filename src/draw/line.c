@@ -15,10 +15,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
 #include "mouse.h"
-#include "clipping.h"
 
 /**
  * grx_draw_line:
@@ -33,16 +33,10 @@
  *
  * For horizontal and vertical lines, see grx_draw_hline() and grx_draw_vline().
  */
-void grx_draw_line(int x1,int y1,int x2,int y2,GrxColor c)
+void grx_draw_line(int x1, int y1, int x2, int y2, GrxColor c)
 {
-        clip_line(CURC,x1,y1,x2,y2);
-        mouse_block(CURC,x1,y1,x2,y2);
-        (*FDRV->drawline)(
-            x1 + CURC->x_offset,
-            y1 + CURC->y_offset,
-            x2 - x1,
-            y2 - y1,
-            c
-        );
-        mouse_unblock();
+    clip_line(CURC, x1, y1, x2, y2);
+    mouse_block(CURC, x1, y1, x2, y2);
+    (*FDRV->drawline)(x1 + CURC->x_offset, y1 + CURC->y_offset, x2 - x1, y2 - y1, c);
+    mouse_unblock();
 }

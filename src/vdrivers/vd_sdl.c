@@ -29,10 +29,10 @@
 
 #include <string.h>
 
-#include "libsdl.h"
-#include "libgrx.h"
-#include "grdriver.h"
 #include "arith.h"
+#include "grdriver.h"
+#include "libgrx.h"
+#include "libsdl.h"
 #include "memcopy.h"
 #include "memfill.h"
 
@@ -53,7 +53,7 @@ static int MaxWidth, MaxHeight;
 #elif defined(__XWIN__)
 static int MaxWidth, MaxHeight;
 #else
-#define MaxWidth 9600
+#define MaxWidth  9600
 #define MaxHeight 7200
 #endif
 
@@ -63,405 +63,407 @@ static void load_color(int c, int r, int g, int b);
 
 static int filter(const SDL_Event *event)
 {
-        if(event->type == SDL_KEYDOWN) {
-            if(event->key.keysym.sym == SDLK_SCROLLOCK)
-                SDL_SetModState(SDL_GetModState() ^ KMOD_SCROLL);
-            else if(event->key.keysym.sym == SDLK_INSERT)
-                SDL_SetModState(SDL_GetModState() ^ KMOD_INSERT);
-        }
+    if (event->type == SDL_KEYDOWN) {
+        if (event->key.keysym.sym == SDLK_SCROLLOCK)
+            SDL_SetModState(SDL_GetModState() ^ KMOD_SCROLL);
+        else if (event->key.keysym.sym == SDLK_INSERT)
+            SDL_SetModState(SDL_GetModState() ^ KMOD_INSERT);
+    }
 
-        if((event->type == SDL_KEYDOWN || event->type == SDL_KEYUP)
-           && event->key.keysym.sym >= SDLK_NUMLOCK) return(0);
+    if ((event->type == SDL_KEYDOWN || event->type == SDL_KEYUP)
+        && event->key.keysym.sym >= SDLK_NUMLOCK)
+        return 0;
 
-        return(1);
+    return 1;
 }
 
 #if defined(__WIN32__)
 LONG CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-        switch(msg) {
-            case WM_KILLFOCUS :
-                SDL_EnableKeyRepeat(0, 0);
-                _SGrActive = FALSE;
-                break;
-            case WM_SYSCOMMAND : if (wParam != SC_RESTORE) break;
-            case WM_SETFOCUS :
-                SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY,
-                                    SDL_DEFAULT_REPEAT_INTERVAL);
-                _SGrActive = TRUE;
-                break;
-            case WM_ACTIVATEAPP :
-                if(_SGrActive && !SDL_LockSurface(_SGrScreen)) {
-                    if(_SGrBackup != NULL) free(_SGrBackup);
-                    _SGrLength = _SGrScreen->pitch * _SGrScreen->h;
-                    _SGrBackup = malloc(_SGrLength);
-                    if(_SGrBackup != NULL)
-                        memcpy(_SGrBackup, _SGrScreen->pixels, _SGrLength);
-                    SDL_UnlockSurface(_SGrScreen);
-                }
+    switch (msg) {
+    case WM_KILLFOCUS:
+        SDL_EnableKeyRepeat(0, 0);
+        _SGrActive = FALSE;
+        break;
+    case WM_SYSCOMMAND:
+        if (wParam != SC_RESTORE)
+            break;
+    case WM_SETFOCUS:
+        SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+        _SGrActive = TRUE;
+        break;
+    case WM_ACTIVATEAPP:
+        if (_SGrActive && !SDL_LockSurface(_SGrScreen)) {
+            if (_SGrBackup != NULL)
+                free(_SGrBackup);
+            _SGrLength = _SGrScreen->pitch * _SGrScreen->h;
+            _SGrBackup = malloc(_SGrLength);
+            if (_SGrBackup != NULL)
+                memcpy(_SGrBackup, _SGrScreen->pixels, _SGrLength);
+            SDL_UnlockSurface(_SGrScreen);
         }
+    }
 
-        return (CallWindowProc(wndproc, hwnd, msg, wParam, lParam));
+    return CallWindowProc(wndproc, hwnd, msg, wParam, lParam);
 }
 #endif
 
-static int setmode(GrxVideoMode *mp,int noclear)
+static int setmode(GrxVideoMode *mp, int noclear)
 {
-        int res;
-        GrxVideoModeExt *ep = mp->extended_info;
-        int fullscreen = mp->user_data & SDL_FULLSCREEN;
-#if defined (__WIN32__)
-        SDL_SysWMinfo info;
-#endif
-        SDL_PixelFormat *vfmt;
-        GRX_ENTER();
-        res = FALSE;
-        if(mp->mode != 0) {
-            if(!detect()) {
-                DBGPRINTF(DBG_DRIVER, ("SDL re-detect() failed\n"));
-                goto done;
-            }
-
-            _SGrScreen = SDL_SetVideoMode(mp->width, mp->height, mp->bpp,
-                                          mp->user_data);
-            if(_SGrScreen == NULL) {
-                DBGPRINTF(DBG_DRIVER, ("SDL_SetVideoMode() failed\n"));
-                goto done;
-            }
-            if((_SGrScreen->flags & SDL_FULLSCREEN) != fullscreen) {
-                DBGPRINTF(DBG_DRIVER, ("SDL_FULLSCREEN mismatch\n"));
-                goto done;
-            }
-
-            SDL_ShowCursor(SDL_DISABLE);
-            SDL_EnableUNICODE(1);
-            SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY,
-                                SDL_DEFAULT_REPEAT_INTERVAL);
-            SDL_SetEventFilter(filter);
-
-            if(SDL_MUSTLOCK(_SGrScreen)) {
-                if(!fullscreen) {
-                    DBGPRINTF(DBG_DRIVER, ("hardware windows not supported\n"));
-                    goto done;
-                }
-                if(SDL_LockSurface(_SGrScreen)) {
-                    DBGPRINTF(DBG_DRIVER, ("SDL_LockSurface() failed\n"));
-                    goto done;
-                }
+    int res;
+    GrxVideoModeExt *ep = mp->extended_info;
+    int fullscreen = mp->user_data & SDL_FULLSCREEN;
 #if defined(__WIN32__)
-                SDL_VERSION(&info.version);
-                if(!SDL_GetWMInfo(&info)) {
-                    DBGPRINTF(DBG_DRIVER, ("SDL_GetWMInfo() failed\n"));
-                    goto done;
-                }
-                window = info.window;
-                wndproc = (WNDPROC)GetWindowLong(window, GWL_WNDPROC);
-                SetWindowLong(window, GWL_WNDPROC, (LONG) WndProc);
-                _SGrActive = TRUE;
+    SDL_SysWMinfo info;
 #endif
-            }
-
-            mp->line_offset = _SGrScreen->pitch;
-            ep->frame = _SGrScreen->pixels;
-
-            if(mp->bpp >= 15 && fullscreen) {
-                vfmt = _SGrScreen->format;
-                ep->cprec[0] = 8 - vfmt->Rloss;
-                ep->cprec[1] = 8 - vfmt->Gloss;
-                ep->cprec[2] = 8 - vfmt->Bloss;
-                ep->cpos[0]  = vfmt->Rshift;
-                ep->cpos[1]  = vfmt->Gshift;
-                ep->cpos[2]  = vfmt->Bshift;
-                if(mp->bpp == 32 && vfmt->Rshift == 24)
-                    ep->mode = GRX_FRAME_MODE_LFB_32BPP_HIGH;
-            }
-
-            if(!noclear) {
-                if(mp->bpp == 8) load_color(0, 0, 0, 0);
-                SDL_FillRect(_SGrScreen, NULL, 0);
-                SDL_UpdateRect(_SGrScreen, 0, 0, 0, 0);
-            }
-
-            res = TRUE;
+    SDL_PixelFormat *vfmt;
+    GRX_ENTER();
+    res = FALSE;
+    if (mp->mode != 0) {
+        if (!detect()) {
+            DBGPRINTF(DBG_DRIVER, ("SDL re-detect() failed\n"));
+            goto done;
         }
-done:        if (res != TRUE) {
-            reset();
-            res = mp->mode == 0;
+
+        _SGrScreen = SDL_SetVideoMode(mp->width, mp->height, mp->bpp, mp->user_data);
+        if (_SGrScreen == NULL) {
+            DBGPRINTF(DBG_DRIVER, ("SDL_SetVideoMode() failed\n"));
+            goto done;
         }
-        GRX_RETURN(res);
+        if ((_SGrScreen->flags & SDL_FULLSCREEN) != fullscreen) {
+            DBGPRINTF(DBG_DRIVER, ("SDL_FULLSCREEN mismatch\n"));
+            goto done;
+        }
+
+        SDL_ShowCursor(SDL_DISABLE);
+        SDL_EnableUNICODE(1);
+        SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+        SDL_SetEventFilter(filter);
+
+        if (SDL_MUSTLOCK(_SGrScreen)) {
+            if (!fullscreen) {
+                DBGPRINTF(DBG_DRIVER, ("hardware windows not supported\n"));
+                goto done;
+            }
+            if (SDL_LockSurface(_SGrScreen)) {
+                DBGPRINTF(DBG_DRIVER, ("SDL_LockSurface() failed\n"));
+                goto done;
+            }
+#if defined(__WIN32__)
+            SDL_VERSION(&info.version);
+            if (!SDL_GetWMInfo(&info)) {
+                DBGPRINTF(DBG_DRIVER, ("SDL_GetWMInfo() failed\n"));
+                goto done;
+            }
+            window = info.window;
+            wndproc = (WNDPROC)GetWindowLong(window, GWL_WNDPROC);
+            SetWindowLong(window, GWL_WNDPROC, (LONG)WndProc);
+            _SGrActive = TRUE;
+#endif
+        }
+
+        mp->line_offset = _SGrScreen->pitch;
+        ep->frame = _SGrScreen->pixels;
+
+        if (mp->bpp >= 15 && fullscreen) {
+            vfmt = _SGrScreen->format;
+            ep->cprec[0] = 8 - vfmt->Rloss;
+            ep->cprec[1] = 8 - vfmt->Gloss;
+            ep->cprec[2] = 8 - vfmt->Bloss;
+            ep->cpos[0] = vfmt->Rshift;
+            ep->cpos[1] = vfmt->Gshift;
+            ep->cpos[2] = vfmt->Bshift;
+            if (mp->bpp == 32 && vfmt->Rshift == 24)
+                ep->mode = GRX_FRAME_MODE_LFB_32BPP_HIGH;
+        }
+
+        if (!noclear) {
+            if (mp->bpp == 8)
+                load_color(0, 0, 0, 0);
+            SDL_FillRect(_SGrScreen, NULL, 0);
+            SDL_UpdateRect(_SGrScreen, 0, 0, 0, 0);
+        }
+
+        res = TRUE;
+    }
+done:
+    if (res != TRUE) {
+        reset();
+        res = mp->mode == 0;
+    }
+    GRX_RETURN(res);
 }
 
 static void reset(void)
 {
-        GRX_ENTER();
+    GRX_ENTER();
 #if defined(__WIN32__)
-        _SGrActive = TRUE;
-        if(_SGrBackup != NULL) free(_SGrBackup);
-        _SGrBackup = NULL;
+    _SGrActive = TRUE;
+    if (_SGrBackup != NULL)
+        free(_SGrBackup);
+    _SGrBackup = NULL;
 #endif
-        if(_SGrScreen != NULL)
-            if(SDL_MUSTLOCK(_SGrScreen)) SDL_UnlockSurface(_SGrScreen);
-        if(SDL_WasInit(SDL_INIT_VIDEO)) SDL_Quit();
-        _SGrScreen = NULL;
-        GRX_LEAVE();
+    if (_SGrScreen != NULL)
+        if (SDL_MUSTLOCK(_SGrScreen))
+            SDL_UnlockSurface(_SGrScreen);
+    if (SDL_WasInit(SDL_INIT_VIDEO))
+        SDL_Quit();
+    _SGrScreen = NULL;
+    GRX_LEAVE();
 }
 
 static int detect(void)
 {
-        int res;
-        GRX_ENTER();
-        res = SDL_WasInit(SDL_INIT_VIDEO) || SDL_Init(SDL_INIT_VIDEO) == 0;
-        GRX_RETURN(res);
+    int res;
+    GRX_ENTER();
+    res = SDL_WasInit(SDL_INIT_VIDEO) || SDL_Init(SDL_INIT_VIDEO) == 0;
+    GRX_RETURN(res);
 }
 
 static void load_color(int c, int r, int g, int b)
 {
-        SDL_Color color;
+    SDL_Color color;
 
-        if(_SGrScreen != NULL) {
-            color.r = r;
-            color.g = g;
-            color.b = b;
-            SDL_SetPalette(_SGrScreen, SDL_PHYSPAL, &color, c, 1);
-        }
+    if (_SGrScreen != NULL) {
+        color.r = r;
+        color.g = g;
+        color.b = b;
+        SDL_SetPalette(_SGrScreen, SDL_PHYSPAL, &color, c, 1);
+    }
 }
 
-static int build_video_mode(int mode, int flags, SDL_Rect *rect,
-                            SDL_PixelFormat *vfmt, GrxVideoMode *mp,
-                            GrxVideoModeExt *ep)
+static int build_video_mode(int mode, int flags, SDL_Rect *rect, SDL_PixelFormat *vfmt,
+    GrxVideoMode *mp, GrxVideoModeExt *ep)
 {
-        mp->present    = TRUE;
-        mp->bpp        = vfmt->BitsPerPixel;
-        mp->width      = rect->w;
-        mp->height     = rect->h;
-        mp->mode       = mode;
-        mp->line_offset = 0;
-        mp->user_data   = flags | SDL_HWPALETTE;
-        mp->extended_info    = NULL;
+    mp->present = TRUE;
+    mp->bpp = vfmt->BitsPerPixel;
+    mp->width = rect->w;
+    mp->height = rect->h;
+    mp->mode = mode;
+    mp->line_offset = 0;
+    mp->user_data = flags | SDL_HWPALETTE;
+    mp->extended_info = NULL;
 
-        ep->drv        = NULL;
-        ep->frame      = NULL;
-        ep->flags      = GRX_VIDEO_MODE_FLAG_LINEAR;
-        ep->setup      = setmode;
-        ep->set_virtual_size   = NULL;
-        ep->scroll     = NULL;
-        ep->set_bank    = NULL;
-        ep->set_rw_banks = NULL;
-        ep->load_color  = NULL;
+    ep->drv = NULL;
+    ep->frame = NULL;
+    ep->flags = GRX_VIDEO_MODE_FLAG_LINEAR;
+    ep->setup = setmode;
+    ep->set_virtual_size = NULL;
+    ep->scroll = NULL;
+    ep->set_bank = NULL;
+    ep->set_rw_banks = NULL;
+    ep->load_color = NULL;
 
-        switch(mp->bpp) {
-            case 8 :
-                ep->cprec[0] =
-                ep->cprec[1] =
-                ep->cprec[2] = 6;
-                ep->cpos[0]  =
-                ep->cpos[1]  =
-                ep->cpos[2]  = 0;
-                ep->mode = GR_frameSDL8;
-                ep->load_color = load_color;
-                break;
-            case 15 : 
-            case 16 : ep->mode = GR_frameSDL16; break;
-            case 24 : ep->mode = GR_frameSDL24; break;
-            case 32 : ep->mode = GR_frameSDL32L; break;
-            default : return(FALSE);
+    switch (mp->bpp) {
+    case 8:
+        ep->cprec[0] = ep->cprec[1] = ep->cprec[2] = 6;
+        ep->cpos[0] = ep->cpos[1] = ep->cpos[2] = 0;
+        ep->mode = GR_frameSDL8;
+        ep->load_color = load_color;
+        break;
+    case 15:
+    case 16:
+        ep->mode = GR_frameSDL16;
+        break;
+    case 24:
+        ep->mode = GR_frameSDL24;
+        break;
+    case 32:
+        ep->mode = GR_frameSDL32L;
+        break;
+    default:
+        return FALSE;
+    }
+
+    if (mp->width == MaxWidth && mp->height == MaxHeight)
+        mp->user_data |= SDL_NOFRAME;
+
+    if (mp->bpp >= 15) {
+        if (flags & SDL_FULLSCREEN) {
+            ep->cprec[0] = ep->cprec[1] = ep->cprec[2] = 0;
+            ep->cpos[0] = ep->cpos[1] = ep->cpos[2] = 0;
         }
-
-        if(mp->width == MaxWidth && mp->height == MaxHeight)
-            mp->user_data |= SDL_NOFRAME;
-
-        if(mp->bpp >= 15) {
-            if(flags & SDL_FULLSCREEN) {
-                ep->cprec[0] = 
-                ep->cprec[1] = 
-                ep->cprec[2] = 0;
-                ep->cpos[0]  = 
-                ep->cpos[1]  = 
-                ep->cpos[2]  = 0;
-            }
-            else {
-                ep->cprec[0] = 8 - vfmt->Rloss;
-                ep->cprec[1] = 8 - vfmt->Gloss;
-                ep->cprec[2] = 8 - vfmt->Bloss;
-                ep->cpos[0]  = vfmt->Rshift;
-                ep->cpos[1]  = vfmt->Gshift;
-                ep->cpos[2]  = vfmt->Bshift;
-                if(mp->bpp == 32 && vfmt->Rshift == 24)
-                    ep->mode = GR_frameSDL32H;
-            }
+        else {
+            ep->cprec[0] = 8 - vfmt->Rloss;
+            ep->cprec[1] = 8 - vfmt->Gloss;
+            ep->cprec[2] = 8 - vfmt->Bloss;
+            ep->cpos[0] = vfmt->Rshift;
+            ep->cpos[1] = vfmt->Gshift;
+            ep->cpos[2] = vfmt->Bshift;
+            if (mp->bpp == 32 && vfmt->Rshift == 24)
+                ep->mode = GR_frameSDL32H;
         }
+    }
 
-        return(TRUE);
+    return TRUE;
 }
 
 GrxVideoModeExt grtextextsdl = {
-    .mode             = GRX_FRAME_MODE_TEXT, /* frame driver */
-    .drv              = NULL,                /* frame driver override */
-    .frame            = NULL,                /* frame buffer address */
-    .cprec            = { 0, 0, 0 },         /* color precisions */
-    .cpos             = { 0, 0, 0 },         /* color component bit positions */
-    .flags            = 0,                   /* mode flag bits */
-    .setup            = setmode,             /* mode set */
-    .set_virtual_size = NULL,                /* virtual size set */
-    .scroll           = NULL,                /* virtual scroll */
-    .set_bank         = NULL,                /* bank set function */
-    .set_rw_banks     = NULL,                /* double bank set function */
-    .load_color       = NULL,                /* color loader */
+    .mode = GRX_FRAME_MODE_TEXT, /* frame driver */
+    .drv = NULL,                 /* frame driver override */
+    .frame = NULL,               /* frame buffer address */
+    .cprec = { 0, 0, 0 },        /* color precisions */
+    .cpos = { 0, 0, 0 },         /* color component bit positions */
+    .flags = 0,                  /* mode flag bits */
+    .setup = setmode,            /* mode set */
+    .set_virtual_size = NULL,    /* virtual size set */
+    .scroll = NULL,              /* virtual scroll */
+    .set_bank = NULL,            /* bank set function */
+    .set_rw_banks = NULL,        /* double bank set function */
+    .load_color = NULL,          /* color loader */
 };
 
-#define  NUM_MODES    200               /* max # of supported modes */
-#define  NUM_EXTS     10                /* max # of mode extensions */
+#define NUM_MODES 200 /* max # of supported modes */
+#define NUM_EXTS  10  /* max # of mode extensions */
 
 static GrxVideoModeExt exts[NUM_EXTS];
-static GrxVideoMode   modes[NUM_MODES] = {
+static GrxVideoMode modes[NUM_MODES] = {
     /* pres.  bpp wdt   hgt   BIOS   scan  priv. &ext  */
-    {  TRUE,  8,   80,   25,  0x00,    80, 1,    &grtextextsdl  },
-    {  0  }
+    { TRUE, 8, 80, 25, 0x00, 80, 1, &grtextextsdl }, { 0 }
 };
 
 /* from svgalib.c, unmodified */
 static void add_video_mode(
-    GrxVideoMode *mp,  GrxVideoModeExt *ep,
-    GrxVideoMode **mpp,GrxVideoModeExt **epp
-) {
-        if(*mpp < &modes[NUM_MODES]) {
-            if(!mp->extended_info) {
-                GrxVideoModeExt *etp = &exts[0];
-                while(etp < *epp) {
-                    if(memcmp(etp,ep,sizeof(GrxVideoModeExt)) == 0) {
-                        mp->extended_info = etp;
-                        break;
-                    }
-                    etp++;
-                }
-                if(!mp->extended_info) {
-                    if(etp >= &exts[NUM_EXTS]) return;
-                    sttcopy(etp,ep);
+    GrxVideoMode *mp, GrxVideoModeExt *ep, GrxVideoMode **mpp, GrxVideoModeExt **epp)
+{
+    if (*mpp < &modes[NUM_MODES]) {
+        if (!mp->extended_info) {
+            GrxVideoModeExt *etp = &exts[0];
+            while (etp < *epp) {
+                if (memcmp(etp, ep, sizeof(GrxVideoModeExt)) == 0) {
                     mp->extended_info = etp;
-                    *epp = ++etp;
+                    break;
                 }
+                etp++;
             }
-            sttcopy(*mpp,mp);
-            (*mpp)++;
+            if (!mp->extended_info) {
+                if (etp >= &exts[NUM_EXTS])
+                    return;
+                sttcopy(etp, ep);
+                mp->extended_info = etp;
+                *epp = ++etp;
+            }
         }
+        sttcopy(*mpp, mp);
+        (*mpp)++;
+    }
 }
 
 #define NUM_RESOS 7
 
 struct {
     int w, h;
-}
-resos[NUM_RESOS] = {
-    { 320, 240 },
-    { 640, 480 },
-    { 800, 600 },
-    { 1024, 768 },
-    { 1280, 1024 },
-    { 1600, 1200 },
-    { 9999, 9999 }
-};
+} resos[NUM_RESOS] = { { 320, 240 }, { 640, 480 }, { 800, 600 }, { 1024, 768 },
+    { 1280, 1024 }, { 1600, 1200 }, { 9999, 9999 } };
 
 static int init(char *options)
 {
-        int res;
-        SDL_Rect **rects;
-        int *bpp, n;
-        int bpps[] = { 8, 15, 16, 24, 32, 0 };
-        SDL_PixelFormat fmt;
-        const SDL_VideoInfo *vi;
+    int res;
+    SDL_Rect **rects;
+    int *bpp, n;
+    int bpps[] = { 8, 15, 16, 24, 32, 0 };
+    SDL_PixelFormat fmt;
+    const SDL_VideoInfo *vi;
 #if defined(__XWIN__)
-        Display *dsp;
+    Display *dsp;
 #endif
-        SDL_Rect rect = { 0, 0, 0, 0 };
-        int i;
-        GrxVideoMode mode, *modep = &modes[1];
-        GrxVideoModeExt ext, *extp = &exts[0];
-        GRX_ENTER();
-        res = FALSE;
-        if(detect()) {
-            if(options) {
-                if(!strncmp(options, "fs", 2)) fullscreen = TRUE;
-                else if(!strncmp(options, "ww", 2)) fullscreen = FALSE;
-            }
-            memzero(modep,(sizeof(modes) - sizeof(modes[0])));
-            if(fullscreen) {
-                memzero(&fmt, sizeof fmt);
-                for(bpp = bpps; *bpp; bpp++) {
-                    fmt.BitsPerPixel = *bpp;
-                    rects = SDL_ListModes(&fmt, SDL_HWSURFACE|SDL_FULLSCREEN);
-                    if(rects != NULL && rects != (SDL_Rect **) -1) {
-                        for(n = 0; rects[n] != NULL; n++);
-                        for(i = n - 1; i >= 0; i--) {
-                            if(!build_video_mode(n-i,
-                                                 SDL_HWSURFACE|SDL_FULLSCREEN,
-                                                 rects[i], &fmt, &mode, &ext))
-                                continue;
-                            add_video_mode(&mode,&ext,&modep,&extp);
-                        }
+    SDL_Rect rect = { 0, 0, 0, 0 };
+    int i;
+    GrxVideoMode mode, *modep = &modes[1];
+    GrxVideoModeExt ext, *extp = &exts[0];
+    GRX_ENTER();
+    res = FALSE;
+    if (detect()) {
+        if (options) {
+            if (!strncmp(options, "fs", 2))
+                fullscreen = TRUE;
+            else if (!strncmp(options, "ww", 2))
+                fullscreen = FALSE;
+        }
+        memzero(modep, (sizeof(modes) - sizeof(modes[0])));
+        if (fullscreen) {
+            memzero(&fmt, sizeof fmt);
+            for (bpp = bpps; *bpp; bpp++) {
+                fmt.BitsPerPixel = *bpp;
+                rects = SDL_ListModes(&fmt, SDL_HWSURFACE | SDL_FULLSCREEN);
+                if (rects != NULL && rects != (SDL_Rect **)-1) {
+                    for (n = 0; rects[n] != NULL; n++)
+                        ;
+                    for (i = n - 1; i >= 0; i--) {
+                        if (!build_video_mode(n - i, SDL_HWSURFACE | SDL_FULLSCREEN,
+                                rects[i], &fmt, &mode, &ext))
+                            continue;
+                        add_video_mode(&mode, &ext, &modep, &extp);
                     }
                 }
             }
-            if(modep == &modes[1]) {
-                if((vi = SDL_GetVideoInfo()) == NULL) {
-                    DBGPRINTF(DBG_DRIVER, ("SDL_GetVideoInfo() failed\n"));
-                    goto done;
-                }
-#if defined(__WIN32__)
-                MaxWidth = GetSystemMetrics(SM_CXSCREEN);
-                MaxHeight = GetSystemMetrics(SM_CYSCREEN);
-#elif defined(__XWIN__)
-                if((dsp = XOpenDisplay("")) != NULL) {
-                    MaxWidth = DisplayWidth(dsp, DefaultScreen(dsp));
-                    MaxHeight = DisplayHeight(dsp, DefaultScreen(dsp));
-                    XCloseDisplay(dsp);
-                }
-                else {
-                    MaxWidth = 9600;
-                    MaxHeight = 7200;
-                }
-#endif
-                for(i = 0; i < NUM_RESOS; i++) {
-                    rect.w = resos[i].w;
-                    rect.h = resos[i].h;
-                    if(!build_video_mode(i+1, SDL_SWSURFACE, &rect, vi->vfmt,
-                                         &mode, &ext))
-                        continue;
-                    mode.present = rect.w <= MaxWidth && rect.h <= MaxHeight;
-                    add_video_mode(&mode,&ext,&modep,&extp);
-                }
-            }
-            res = TRUE;
         }
-done:        if(!res) reset();
-        GRX_RETURN(res);
+        if (modep == &modes[1]) {
+            if ((vi = SDL_GetVideoInfo()) == NULL) {
+                DBGPRINTF(DBG_DRIVER, ("SDL_GetVideoInfo() failed\n"));
+                goto done;
+            }
+#if defined(__WIN32__)
+            MaxWidth = GetSystemMetrics(SM_CXSCREEN);
+            MaxHeight = GetSystemMetrics(SM_CYSCREEN);
+#elif defined(__XWIN__)
+            if ((dsp = XOpenDisplay("")) != NULL) {
+                MaxWidth = DisplayWidth(dsp, DefaultScreen(dsp));
+                MaxHeight = DisplayHeight(dsp, DefaultScreen(dsp));
+                XCloseDisplay(dsp);
+            }
+            else {
+                MaxWidth = 9600;
+                MaxHeight = 7200;
+            }
+#endif
+            for (i = 0; i < NUM_RESOS; i++) {
+                rect.w = resos[i].w;
+                rect.h = resos[i].h;
+                if (!build_video_mode(
+                        i + 1, SDL_SWSURFACE, &rect, vi->vfmt, &mode, &ext))
+                    continue;
+                mode.present = rect.w <= MaxWidth && rect.h <= MaxHeight;
+                add_video_mode(&mode, &ext, &modep, &extp);
+            }
+        }
+        res = TRUE;
+    }
+done:
+    if (!res)
+        reset();
+    GRX_RETURN(res);
 }
 
-static GrxVideoMode *select_mode(GrxVideoDriver *drv, int w, int h,
-                                int bpp, int txt, unsigned int *ep)
+static GrxVideoMode *select_mode(
+    GrxVideoDriver *drv, int w, int h, int bpp, int txt, unsigned int *ep)
 {
-        int i;
+    int i;
 
-        if(!txt && !(modes[1].user_data & SDL_FULLSCREEN)) {
-            for(i = 1; i < NUM_RESOS; i++)
-                if(modes[i].width == w && modes[i].height == h) goto done;
-            if(w <= MaxWidth && h <= MaxHeight) {
-                modes[i].present = TRUE;
-                modes[i].width = w;
-                modes[i].height = h;
-            }
-            else modes[i].present = FALSE;
+    if (!txt && !(modes[1].user_data & SDL_FULLSCREEN)) {
+        for (i = 1; i < NUM_RESOS; i++)
+            if (modes[i].width == w && modes[i].height == h)
+                goto done;
+        if (w <= MaxWidth && h <= MaxHeight) {
+            modes[i].present = TRUE;
+            modes[i].width = w;
+            modes[i].height = h;
         }
-done:        return(_gr_select_mode(drv, w, h, bpp, txt, ep));
+        else
+            modes[i].present = FALSE;
+    }
+done:
+    return _gr_select_mode(drv, w, h, bpp, txt, ep);
 }
 
 GrxVideoDriver _GrVideoDriverSDL = {
-    .name        = "sdl",                   /* name */
-    .inherit     = NULL,                    /* inherit modes from this driver */
-    .modes       = modes,                   /* mode table */
-    .n_modes     = itemsof(modes),          /* # of modes */
-    .detect      = detect,                  /* detection routine */
-    .init        = init,                    /* initialization routine */
-    .reset       = reset,                   /* reset routine */
-    .select_mode = select_mode,             /* special mode select routine */
-    .flags       = 0,                       /* no additional capabilities */
+    .name = "sdl",              /* name */
+    .inherit = NULL,            /* inherit modes from this driver */
+    .modes = modes,             /* mode table */
+    .n_modes = itemsof(modes),  /* # of modes */
+    .detect = detect,           /* detection routine */
+    .init = init,               /* initialization routine */
+    .reset = reset,             /* reset routine */
+    .select_mode = select_mode, /* special mode select routine */
+    .flags = 0,                 /* no additional capabilities */
 };

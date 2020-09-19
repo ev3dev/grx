@@ -74,27 +74,32 @@
  */
 struct _GrxLineOptions {
     GrxColor color;
-    gint     width;
-    gint     n_dash_patterns;
-    guint8   dash_pattern0;
-    guint8   dash_pattern1;
-    guint8   dash_pattern2;
-    guint8   dash_pattern3;
-    guint8   dash_pattern4;
-    guint8   dash_pattern5;
-    guint8   dash_pattern6;
-    guint8   dash_pattern7;
+    gint width;
+    gint n_dash_patterns;
+    guint8 dash_pattern0;
+    guint8 dash_pattern1;
+    guint8 dash_pattern2;
+    guint8 dash_pattern3;
+    guint8 dash_pattern4;
+    guint8 dash_pattern5;
+    guint8 dash_pattern6;
+    guint8 dash_pattern7;
 };
 
-void grx_draw_line_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
-void grx_draw_box_with_options(gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
+void grx_draw_line_with_options(
+    gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
+void grx_draw_box_with_options(
+    gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o);
 void grx_draw_circle_with_options(gint xc, gint yc, gint r, const GrxLineOptions *o);
-void grx_draw_ellipse_with_options(gint xc, gint yc, gint rx, gint ry, const GrxLineOptions *o);
+void grx_draw_ellipse_with_options(
+    gint xc, gint yc, gint rx, gint ry, const GrxLineOptions *o);
 void grx_draw_circle_arc_with_options(gint xc, gint yc, gint r, gint start, gint end,
-                                      GrxArcStyle style, const GrxLineOptions *o);
-void grx_draw_ellipse_arc_with_options(gint xc, gint yc, gint rx, gint ry, gint start, gint end,
-                                       GrxArcStyle style, const GrxLineOptions *o);
-void grx_draw_polyline_with_options(gint n_points, GrxPoint *points, const GrxLineOptions *o);
-void grx_draw_polygon_with_options(gint n_points, GrxPoint *points, const GrxLineOptions *o);
+    GrxArcStyle style, const GrxLineOptions *o);
+void grx_draw_ellipse_arc_with_options(gint xc, gint yc, gint rx, gint ry, gint start,
+    gint end, GrxArcStyle style, const GrxLineOptions *o);
+void grx_draw_polyline_with_options(
+    gint n_points, GrxPoint *points, const GrxLineOptions *o);
+void grx_draw_polygon_with_options(
+    gint n_points, GrxPoint *points, const GrxLineOptions *o);
 
 #endif /* __GRX_WIDELINE_H__ */

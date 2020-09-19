@@ -17,11 +17,14 @@
  * modifications by Hartmut Schirmer (c) 1998
  */
 
-#include "globals.h"
-#include "mouse.h"
-#include "libgrx.h"
+#include <grx/color.h>
+#include <grx/pixmap.h>
+
 #include "clipping.h"
+#include "globals.h"
 #include "image.h"
+#include "libgrx.h"
+#include "mouse.h"
 
 /**
  * grx_draw_hline_with_offset_pixmap:
@@ -37,35 +40,38 @@
  * @x, @y. The pixmap is repeated if the width of the line is greater than the
  * width of the pixmap.
  */
-void grx_draw_hline_with_offset_pixmap(int xo,int yo,int x,int y,int width,GrxPixmap *p)
+void grx_draw_hline_with_offset_pixmap(
+    gint xo, gint yo, gint x, gint y, gint width, GrxPixmap *p)
 {
-  int x2, widthimg, yimg, ximg, xdest, ydest, cpysize;
-  GrxColor optype;
-  void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
-  x2 = x+width;
-  xo = min(xo, min(x,x2));
-  yo = min(yo, y);
-  clip_hline(CURC,x,x2,y);
-  width = x2 - x;
-  mouse_block(CURC,x,y,x2,y);
-  widthimg = p->width;
-  yimg = (y - yo) % p->height;
-  ximg = (x - xo) % widthimg;
-  xdest = x + CURC->x_offset;
-  ydest = y + CURC->y_offset;
-  cpysize = widthimg - ximg;
-  optype = p->mode;
-  if (CURC->gc_is_on_screen) bltfun = CURC->gc_driver->bltr2v;
-  else                   bltfun = CURC->gc_driver->bitblt;
-  while ( width > 0 ) {
-    if ( cpysize > width ) cpysize = width;
-         (*bltfun)(&CURC->frame,xdest,ydest,
-                   &p->source,ximg,yimg,cpysize,1,
-                   optype);
-    width -= cpysize;
-    ximg = 0;
-    xdest += cpysize;
-    cpysize = widthimg;
-  };
-  mouse_unblock();
+    int x2, widthimg, yimg, ximg, xdest, ydest, cpysize;
+    GrxColor optype;
+    void (*bltfun)(GrxFrame *, int, int, GrxFrame *, int, int, int, int, GrxColor);
+    x2 = x + width;
+    xo = min(xo, min(x, x2));
+    yo = min(yo, y);
+    clip_hline(CURC, x, x2, y);
+    width = x2 - x;
+    mouse_block(CURC, x, y, x2, y);
+    widthimg = p->width;
+    yimg = (y - yo) % p->height;
+    ximg = (x - xo) % widthimg;
+    xdest = x + CURC->x_offset;
+    ydest = y + CURC->y_offset;
+    cpysize = widthimg - ximg;
+    optype = p->mode;
+    if (CURC->gc_is_on_screen)
+        bltfun = CURC->gc_driver->bltr2v;
+    else
+        bltfun = CURC->gc_driver->bitblt;
+    while (width > 0) {
+        if (cpysize > width)
+            cpysize = width;
+        (*bltfun)(
+            &CURC->frame, xdest, ydest, &p->source, ximg, yimg, cpysize, 1, optype);
+        width -= cpysize;
+        ximg = 0;
+        xdest += cpysize;
+        cpysize = widthimg;
+    };
+    mouse_unblock();
 }

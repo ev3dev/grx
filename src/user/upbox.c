@@ -33,11 +33,12 @@
  * Draws a rectangle on the current context using the specified coordinates
  * and line options and pixmap.
  */
-void grx_user_draw_box_with_pixmap(int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
+void grx_user_draw_box_with_pixmap(
+    int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
 {
-    U2SX (x1, CURC);
-    U2SX (x2, CURC);
-    U2SY (y1, CURC);
-    U2SY (y2, CURC);
-    grx_draw_box_with_pixmap (x1 ,y1, x2, y2, o, p);
+    U2SX(x1, CURC);
+    U2SX(x2, CURC);
+    U2SY(y1, CURC);
+    U2SY(y2, CURC);
+    grx_draw_box_with_pixmap(x1, y1, x2, y2, o, p);
 }

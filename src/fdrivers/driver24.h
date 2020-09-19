@@ -19,203 +19,198 @@
  * Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77]
  */
 
+#include "access24.h"
+#include "arith.h"
 #include "colors.h"
 #include "globals.h"
-#include "libgrx.h"
 #include "grdriver.h"
-#include "arith.h"
-#include "mempeek.h"
+#include "libgrx.h"
 #include "memfill.h"
-#include "access24.h"
+#include "mempeek.h"
 
 /* frame offset address calculation */
-#define MULT3(x)     ( (x)+(x)+(x) )
-#define FOFS(x,y,lo) umuladd32((y),(lo),MULT3(x))
+#define MULT3(x)       ((x) + (x) + (x))
+#define FOFS(x, y, lo) umuladd32((y), (lo), MULT3(x))
 
 /* #define FAR_ACCESS for video access routines */
 
 #ifdef FAR_ACCESS
-# define peek24(p)       peek_24_f((p))
-# define poke24_xor      poke_24_f_xor
-# define poke24_or       poke_24_f_or
-# define poke24_and      poke_24_f_and
-# define poke24_set      poke_24_f
-# define repfill8_xor    repfill_b_f_xor
-# define repfill8_or     repfill_b_f_or
-# define repfill8_and    repfill_b_f_and
-# define repfill8_set    repfill_b_f
-# define repfill24_xor   repfill_24_f_xor
-# define repfill24_or    repfill_24_f_or
-# define repfill24_and   repfill_24_f_and
-# define repfill24_set   repfill_24_f_set
-# define SETFARSEL(sel)  setup_far_selector(sel)
+#define peek24(p)      peek_24_f((p))
+#define poke24_xor     poke_24_f_xor
+#define poke24_or      poke_24_f_or
+#define poke24_and     poke_24_f_and
+#define poke24_set     poke_24_f
+#define repfill8_xor   repfill_b_f_xor
+#define repfill8_or    repfill_b_f_or
+#define repfill8_and   repfill_b_f_and
+#define repfill8_set   repfill_b_f
+#define repfill24_xor  repfill_24_f_xor
+#define repfill24_or   repfill_24_f_or
+#define repfill24_and  repfill_24_f_and
+#define repfill24_set  repfill_24_f_set
+#define SETFARSEL(sel) setup_far_selector(sel)
 #else /* defined FAR_ACCESS */
-# define peek24(p)       peek_24((p))
-# define poke24_xor      poke_24_xor
-# define poke24_or       poke_24_or
-# define poke24_and      poke_24_and
-# define poke24_set      poke_24
-# define repfill8_xor    repfill_b_xor
-# define repfill8_or     repfill_b_or
-# define repfill8_and    repfill_b_and
-# define repfill8_set    repfill_b
-# define repfill24_xor   repfill_24_xor
-# define repfill24_or    repfill_24_or
-# define repfill24_and   repfill_24_and
-# define repfill24_set   repfill_24_set
-# define SETFARSEL(sel)
+#define peek24(p)     peek_24((p))
+#define poke24_xor    poke_24_xor
+#define poke24_or     poke_24_or
+#define poke24_and    poke_24_and
+#define poke24_set    poke_24
+#define repfill8_xor  repfill_b_xor
+#define repfill8_or   repfill_b_or
+#define repfill8_and  repfill_b_and
+#define repfill8_set  repfill_b
+#define repfill24_xor repfill_24_xor
+#define repfill24_or  repfill_24_or
+#define repfill24_and repfill_24_and
+#define repfill24_set repfill_24_set
+#define SETFARSEL(sel)
 #endif
 
-
-static INLINE
-GrxColor readpixel(GrxFrame *c,int x,int y)
+static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
 {
-        GrxColor col;
-        unsigned char *p;
-        GRX_ENTER();
+    GrxColor col;
+    unsigned char *p;
+    GRX_ENTER();
 #ifdef FAR_ACCESS
-        p = &SCRN->gc_base_address[FOFS(x,y,SCRN->gc_line_offset)];
-        setup_far_selector(SCRN->gc_selector);
+    p = &SCRN->gc_base_address[FOFS(x, y, SCRN->gc_line_offset)];
+    setup_far_selector(SCRN->gc_selector);
 #else
-        p = &c->base_address[FOFS(x,y,c->line_offset)];
+    p = &c->base_address[FOFS(x, y, c->line_offset)];
 #endif
-        col = peek24(p);
-        GRX_RETURN(col);
+    col = peek24(p);
+    GRX_RETURN(col);
 }
 
-
-static INLINE
-void drawpixel(int x,int y,GrxColor color)
+static INLINE void drawpixel(int x, int y, GrxColor color)
 {
-        unsigned char *p;
-        GRX_ENTER();
-        p = &CURC->gc_base_address[FOFS(x,y,CURC->gc_line_offset)];
-        SETFARSEL(CURC->gc_selector);
-        switch(C_OPER(color)) {
-            case C_XOR: poke24_xor(p,color);  break;
-            case C_OR:  poke24_or( p,color);  break;
-            case C_AND: poke24_and(p,color);  break;
-            default:    poke24_set(p,color);  break;
-        }
-        GRX_LEAVE();
+    unsigned char *p;
+    GRX_ENTER();
+    p = &CURC->gc_base_address[FOFS(x, y, CURC->gc_line_offset)];
+    SETFARSEL(CURC->gc_selector);
+    switch (C_OPER(color)) {
+    case C_XOR:
+        poke24_xor(p, color);
+        break;
+    case C_OR:
+        poke24_or(p, color);
+        break;
+    case C_AND:
+        poke24_and(p, color);
+        break;
+    default:
+        poke24_set(p, color);
+        break;
+    }
+    GRX_LEAVE();
 }
 
-
-static void drawhline(int x,int y,int w,GrxColor color)
+static void drawhline(int x, int y, int w, GrxColor color)
 {
-        unsigned char *p;
-        GRX_ENTER();
-        p  = &CURC->gc_base_address[FOFS(x,y,CURC->gc_line_offset)];
+    unsigned char *p;
+    GRX_ENTER();
+    p = &CURC->gc_base_address[FOFS(x, y, CURC->gc_line_offset)];
 
-        w = MULT3(w);
-        SETFARSEL(CURC->gc_selector);
-#       ifndef GRX_HAVE_FAST_REPFILL24
-        {
-          GR_int8u c0;
-          c0 = RD24BYTE(color,0);
-          if (c0 == RD24BYTE(color,1) && c0 == RD24BYTE(color,2) ) {
-             GR_repl cval = freplicate_b(c0);
-             switch(C_OPER(color)) {
-               case C_XOR: repfill8_xor(p,cval,w); break;
-               case C_OR:  repfill8_or( p,cval,w); break;
-               case C_AND: repfill8_and(p,cval,w); break;
-               default:    repfill8_set(p,cval,w); break;
-             }
-             goto done;
-           }
-        }
-#       endif
-        switch (C_OPER(color)) {
-          case C_XOR: repfill24_xor(p,color,w); break;
-          case C_OR:  repfill24_or( p,color,w); break;
-          case C_AND: repfill24_and(p,color,w); break;
-          default:    repfill24_set(p,color,w); break;
-        }
+    w = MULT3(w);
+    SETFARSEL(CURC->gc_selector);
 #ifndef GRX_HAVE_FAST_REPFILL24
-  done:
+    {
+        GR_int8u c0;
+        c0 = RD24BYTE(color, 0);
+        if (c0 == RD24BYTE(color, 1) && c0 == RD24BYTE(color, 2)) {
+            GR_repl cval = freplicate_b(c0);
+            switch (C_OPER(color)) {
+            case C_XOR:
+                repfill8_xor(p, cval, w);
+                break;
+            case C_OR:
+                repfill8_or(p, cval, w);
+                break;
+            case C_AND:
+                repfill8_and(p, cval, w);
+                break;
+            default:
+                repfill8_set(p, cval, w);
+                break;
+            }
+            goto done;
+        }
+    }
 #endif
-        GRX_LEAVE();
+    switch (C_OPER(color)) {
+    case C_XOR:
+        repfill24_xor(p, color, w);
+        break;
+    case C_OR:
+        repfill24_or(p, color, w);
+        break;
+    case C_AND:
+        repfill24_and(p, color, w);
+        break;
+    default:
+        repfill24_set(p, color, w);
+        break;
+    }
+#ifndef GRX_HAVE_FAST_REPFILL24
+done:
+#endif
+    GRX_LEAVE();
 }
-
-
 
 static
 #include "generic/vline.c"
 
-static
+    static
 #include "generic/line.c"
 
-static
+    static
 #include "generic/block.c"
 
-static
+    static
 #include "generic/bitmap.c"
 
-static
+    static
 #include "generic/pattern.c"
 
-static void bitblt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
+    static void
+    bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w, int h,
+        GrxColor op)
 {
-        GRX_ENTER();
-        if(grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else
+    GRX_ENTER();
+    if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
+        _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
+    else
 #ifdef FAR_ACCESS
-          _GrFrDrvPackedBitBltV2V_LFB(
+        _GrFrDrvPackedBitBltV2V_LFB(
 #else
-          _GrFrDrvPackedBitBltR2R(
+        _GrFrDrvPackedBitBltR2R(
 #endif
-            dst,MULT3(dx),dy,
-            src,MULT3(sx),sy,
-            MULT3(w),h,
-            op
-        );
-        GRX_LEAVE();
+            dst, MULT3(dx), dy, src, MULT3(sx), sy, MULT3(w), h, op);
+    GRX_LEAVE();
 }
 
 #ifdef FAR_ACCESS
 
-static void bltv2r(GrxFrame *dst,int dx,int dy,
-                   GrxFrame *src,int sx,int sy,
-                   int w,int h,GrxColor op)
+static void bltv2r(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
+    int h, GrxColor op)
 {
-        GRX_ENTER();
-        if(grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else _GrFrDrvPackedBitBltV2R_LFB(
-            dst,MULT3(dx),dy,
-            src,MULT3(sx),sy,
-            MULT3(w),h,
-            op
-        );
-        GRX_LEAVE();
+    GRX_ENTER();
+    if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
+        _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
+    else
+        _GrFrDrvPackedBitBltV2R_LFB(
+            dst, MULT3(dx), dy, src, MULT3(sx), sy, MULT3(w), h, op);
+    GRX_LEAVE();
 }
 
-static void bltr2v(GrxFrame *dst,int dx,int dy,
-                   GrxFrame *src,int sx,int sy,
-                   int w,int h,GrxColor op)
+static void bltr2v(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
+    int h, GrxColor op)
 {
-        GRX_ENTER();
-        if(grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else _GrFrDrvPackedBitBltR2V_LFB(
-            dst,MULT3(dx),dy,
-            src,MULT3(sx),sy,
-            MULT3(w),h,
-            op
-        );
-        GRX_LEAVE();
+    GRX_ENTER();
+    if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
+        _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
+    else
+        _GrFrDrvPackedBitBltR2V_LFB(
+            dst, MULT3(dx), dy, src, MULT3(sx), sy, MULT3(w), h, op);
+    GRX_LEAVE();
 }
 #endif /* FAR_ACCESS */

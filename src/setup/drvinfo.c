@@ -16,16 +16,15 @@
  */
 
 #include "globals.h"
-#include "libgrx.h"
 #include "grdriver.h"
+#include "libgrx.h"
 #include "util.h"
 
 #undef GrDriverInfo
 
 static GrxColor dummyframefn(void);
 
-const
-struct _GR_driverInfo * const GrDriverInfo = &_GrDriverInfo;
+const struct _GR_driverInfo *const GrDriverInfo = &_GrDriverInfo;
 struct _GR_driverInfo _GrDriverInfo = {
     .vdriver = NULL,                    /* video driver */
     .curmode = &DRVINFO->actmode,       /* current video mode pointer */
@@ -119,6 +118,4 @@ static GrxColor dummyframefn(void)
     return GRX_COLOR_NONE;
 }
 
-void _GrDummyFunction(void)
-{
-}
+void _GrDummyFunction(void) { }

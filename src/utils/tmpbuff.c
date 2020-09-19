@@ -14,27 +14,29 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "libgrx.h"
 #include "allocate.h"
+#include "libgrx.h"
 
 void *_GrTempBuffer = NULL;
-unsigned  _GrTempBufferBytes = 0;
+unsigned _GrTempBufferBytes = 0;
 
-void *_GrTempBufferAlloc_(size_t bytes) {
-  GRX_ENTER();
-  if (bytes > _GrTempBufferBytes || _GrTempBuffer == NULL) {
-    void *neu = realloc(_GrTempBuffer, bytes);
-    if (neu) {
-      _GrTempBuffer = neu;
-      _GrTempBufferBytes = bytes;
+void *_GrTempBufferAlloc_(size_t bytes)
+{
+    GRX_ENTER();
+    if (bytes > _GrTempBufferBytes || _GrTempBuffer == NULL) {
+        void *neu = realloc(_GrTempBuffer, bytes);
+        if (neu) {
+            _GrTempBuffer = neu;
+            _GrTempBufferBytes = bytes;
+        }
     }
-  }
-  GRX_RETURN( (bytes<=_GrTempBufferBytes && _GrTempBuffer)
-             ? _GrTempBuffer : NULL);
+    GRX_RETURN((bytes <= _GrTempBufferBytes && _GrTempBuffer) ? _GrTempBuffer : NULL);
 }
 
-void _GrTempBufferFree(void) {
-  if (_GrTempBuffer) free(_GrTempBuffer);
-  _GrTempBuffer = NULL;
-  _GrTempBufferBytes = 0;
+void _GrTempBufferFree(void)
+{
+    if (_GrTempBuffer)
+        free(_GrTempBuffer);
+    _GrTempBuffer = NULL;
+    _GrTempBufferBytes = 0;
 }

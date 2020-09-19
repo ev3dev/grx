@@ -17,13 +17,14 @@
 
 void drawpattern(int x, int y, int w, unsigned char patt, GrxColor fg, GrxColor bg)
 {
-        GR_int8u mask;
-        GRX_ENTER();
-        mask = 0x80;
-        w += x;
-        do {
-            drawpixel(x,y,(patt & mask) ? fg : bg);
-            if((mask >>= 1) == 0) mask = 0x80;
-        } while(++x != w);
-        GRX_LEAVE();
+    GR_int8u mask;
+    GRX_ENTER();
+    mask = 0x80;
+    w += x;
+    do {
+        drawpixel(x, y, (patt & mask) ? fg : bg);
+        if ((mask >>= 1) == 0)
+            mask = 0x80;
+    } while (++x != w);
+    GRX_LEAVE();
 }

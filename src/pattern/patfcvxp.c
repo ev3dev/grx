@@ -40,10 +40,10 @@
  * twice. It can also be used to fill several disjoint nonoverlapping polygons
  * in a single operation.
  */
-void grx_draw_filled_convex_polygon_with_pixmap(int n,GrxPoint *pt,GrxPixmap *p)
+void grx_draw_filled_convex_polygon_with_pixmap(int n, GrxPoint *pt, GrxPixmap *p)
 {
-        GrFillArg fa;
+    GrFillArg fa;
 
-        fa.p = p;
-        _GrScanConvexPoly(n,pt,&_GrPatternFiller,fa);
+    fa.p = p;
+    _GrScanConvexPoly(n, pt, &_GrPatternFiller, fa);
 }

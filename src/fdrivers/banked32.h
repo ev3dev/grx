@@ -19,82 +19,96 @@
  * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  */
 
-#include "banking.h"
-#include "globals.h"
-#include "colors.h"
-#include "libgrx.h"
-#include "grdriver.h"
 #include "arith.h"
-#include "mempeek.h"
+#include "banking.h"
+#include "colors.h"
+#include "globals.h"
+#include "grdriver.h"
+#include "libgrx.h"
 #include "memfill.h"
+#include "mempeek.h"
 
 /* frame offset address calculation */
-#define FOFS(x,y,lo) umuladd32((y),(lo),((x)<<2))
+#define FOFS(x, y, lo) umuladd32((y), (lo), ((x) << 2))
 
-static INLINE
-GrxColor readpixel(GrxFrame *c,int x,int y)
+static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
 {
-        GR_int32u offs;
-        char *pp;
-        GRX_ENTER();
-        offs = FOFS(x,y,SCRN->gc_line_offset);
-        CHKBANK(BANKNUM(offs));
-        pp = &SCRN->gc_base_address[BANKPOS(offs)];
-        setup_far_selector(SCRN->gc_selector);
-        GRX_RETURN(PIX2COL(peek_l_f(pp)));
+    GR_int32u offs;
+    char *pp;
+    GRX_ENTER();
+    offs = FOFS(x, y, SCRN->gc_line_offset);
+    CHKBANK(BANKNUM(offs));
+    pp = &SCRN->gc_base_address[BANKPOS(offs)];
+    setup_far_selector(SCRN->gc_selector);
+    GRX_RETURN(PIX2COL(peek_l_f(pp)));
 }
 
-static INLINE
-void drawpixel(int x,int y,GrxColor color)
+static INLINE void drawpixel(int x, int y, GrxColor color)
 {
-        GR_int32u offs;
-        char *ptr;
-        int op;
-        GRX_ENTER();
-        offs = FOFS(x,y,SCRN->gc_line_offset);
-        CHKBANK(BANKNUM(offs));
-        ptr = &SCRN->gc_base_address[BANKPOS(offs)];
-        op = C_OPER(color);
-        color = COL2PIX(color);
-        setup_far_selector(CURC->gc_selector);
-        switch(op) {
-            case C_XOR: poke_l_f_xor(ptr,color); break;
-            case C_OR:  poke_l_f_or( ptr,color); break;
-            case C_AND: poke_l_f_and(ptr,color); break;
-            default:    poke_l_f(    ptr,color); break;
-        }
-        GRX_LEAVE();
+    GR_int32u offs;
+    char *ptr;
+    int op;
+    GRX_ENTER();
+    offs = FOFS(x, y, SCRN->gc_line_offset);
+    CHKBANK(BANKNUM(offs));
+    ptr = &SCRN->gc_base_address[BANKPOS(offs)];
+    op = C_OPER(color);
+    color = COL2PIX(color);
+    setup_far_selector(CURC->gc_selector);
+    switch (op) {
+    case C_XOR:
+        poke_l_f_xor(ptr, color);
+        break;
+    case C_OR:
+        poke_l_f_or(ptr, color);
+        break;
+    case C_AND:
+        poke_l_f_and(ptr, color);
+        break;
+    default:
+        poke_l_f(ptr, color);
+        break;
+    }
+    GRX_LEAVE();
 }
 
 #ifdef freplicate_l
-static void drawhline(int x,int y,int w,GrxColor color)
+static void drawhline(int x, int y, int w, GrxColor color)
 {
-        GR_int32u offs;
-        GR_repl cval;
-        int oper;
-        unsigned int w1, w2;
-        GRX_ENTER();
-        offs = FOFS(x,y,SCRN->gc_line_offset);
-        w2 = BANKLFT(offs) >> 2;
-        w2 = w - (w1 = umin(w,w2));
-        oper = C_OPER(color);
-        color = COL2PIX(color);
-        cval = freplicate_l(color);
-        setup_far_selector(CURC->gc_selector);
-        do {
-            char *pp = &CURC->gc_base_address[BANKPOS(offs)];
-            CHKBANK(BANKNUM(offs));
-            offs += (w1 << 2);
-            switch(oper) {
-                case C_XOR: repfill_l_f_xor(pp,cval,w1); break;
-                case C_OR:  repfill_l_f_or( pp,cval,w1); break;
-                case C_AND: repfill_l_f_and(pp,cval,w1); break;
-                default:    repfill_l_f(    pp,cval,w1); break;
-            }
-            w1 = w2;
-            w2 = 0;
-        } while(w1 != 0);
-        GRX_LEAVE();
+    GR_int32u offs;
+    GR_repl cval;
+    int oper;
+    unsigned int w1, w2;
+    GRX_ENTER();
+    offs = FOFS(x, y, SCRN->gc_line_offset);
+    w2 = BANKLFT(offs) >> 2;
+    w2 = w - (w1 = umin(w, w2));
+    oper = C_OPER(color);
+    color = COL2PIX(color);
+    cval = freplicate_l(color);
+    setup_far_selector(CURC->gc_selector);
+    do {
+        char *pp = &CURC->gc_base_address[BANKPOS(offs)];
+        CHKBANK(BANKNUM(offs));
+        offs += (w1 << 2);
+        switch (oper) {
+        case C_XOR:
+            repfill_l_f_xor(pp, cval, w1);
+            break;
+        case C_OR:
+            repfill_l_f_or(pp, cval, w1);
+            break;
+        case C_AND:
+            repfill_l_f_and(pp, cval, w1);
+            break;
+        default:
+            repfill_l_f(pp, cval, w1);
+            break;
+        }
+        w1 = w2;
+        w2 = 0;
+    } while (w1 != 0);
+    GRX_LEAVE();
 }
 #else
 static
@@ -104,68 +118,51 @@ static
 static
 #include "generic/vline.c"
 
-static
+    static
 #include "generic/block.c"
 
-static
+    static
 #include "generic/line.c"
 
-static
+    static
 #include "generic/bitmap.c"
 
-static
+    static
 #include "generic/pattern.c"
 
-static void bitblt(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
+    static void
+    bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w, int h,
+        GrxColor op)
 {
-        GRX_ENTER();
-        if(grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else _GrFrDrvPackedBitBltV2V(
-            dst,(dx << 2),dy,
-            src,(sx << 2),sy,
-            (w << 2),h,
-            op
-        );
-        GRX_LEAVE();
+    GRX_ENTER();
+    if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
+        _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
+    else
+        _GrFrDrvPackedBitBltV2V(
+            dst, (dx << 2), dy, src, (sx << 2), sy, (w << 2), h, op);
+    GRX_LEAVE();
 }
 
-static void bltv2r(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
+static void bltv2r(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
+    int h, GrxColor op)
 {
-        GRX_ENTER();
-        if(grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else _GrFrDrvPackedBitBltV2R(
-            dst,(dx << 2),dy,
-            src,(sx << 2),sy,
-            (w << 2),h,
-            op
-        );
-        GRX_LEAVE();
+    GRX_ENTER();
+    if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
+        _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
+    else
+        _GrFrDrvPackedBitBltV2R(
+            dst, (dx << 2), dy, src, (sx << 2), sy, (w << 2), h, op);
+    GRX_LEAVE();
 }
 
-static void bltr2v(GrxFrame *dst,int dx,int dy,GrxFrame *src,int sx,int sy,int w,int h,GrxColor op)
+static void bltr2v(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
+    int h, GrxColor op)
 {
-        GRX_ENTER();
-        if(grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE) _GrFrDrvGenericBitBlt(
-            dst,dx,dy,
-            src,sx,sy,
-            w,h,
-            op
-        );
-        else _GrFrDrvPackedBitBltR2V(
-            dst,(dx << 2),dy,
-            src,(sx << 2),sy,
-            (w << 2),h,
-            op
-        );
-        GRX_LEAVE();
+    GRX_ENTER();
+    if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
+        _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
+    else
+        _GrFrDrvPackedBitBltR2V(
+            dst, (dx << 2), dy, src, (sx << 2), sy, (w << 2), h, op);
+    GRX_LEAVE();
 }

@@ -40,7 +40,7 @@
  *
  * The maximum allowable angle (360 degrees).
  */
-#define GRX_MAX_ANGLE_VALUE      (3600)
+#define GRX_MAX_ANGLE_VALUE (3600)
 
 /**
  * GrxArcStyle:
@@ -54,9 +54,9 @@
  * Indicates how an arc should be drawn.
  */
 typedef enum {
-    GRX_ARC_STYLE_OPEN           = 0,
-    GRX_ARC_STYLE_CLOSED_CHORD   = 1,
-    GRX_ARC_STYLE_CLOSED_RADIUS  = 2,
+    GRX_ARC_STYLE_OPEN = 0,
+    GRX_ARC_STYLE_CLOSED_CHORD = 1,
+    GRX_ARC_STYLE_CLOSED_RADIUS = 2,
 } GrxArcStyle;
 
 /**
@@ -97,50 +97,62 @@ void grx_clear_clip_box(GrxColor bg);
 void grx_draw_pixel(gint x, gint y, GrxColor c);
 void grx_draw_line(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_draw_hline(gint x1, gint x2, gint y, GrxColor c);
-void grx_draw_vline(gint x, gint y1, gint y2,GrxColor c);
+void grx_draw_vline(gint x, gint y1, gint y2, GrxColor c);
 void grx_draw_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_draw_rounded_box(gint x1, gint y1, gint x2, gint y2, gint r, GrxColor c);
 void grx_draw_circle(gint xc, gint yc, gint r, GrxColor c);
 void grx_draw_ellipse(gint xc, gint yc, gint rx, gint ry, GrxColor c);
-void grx_draw_circle_arc(gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
-void grx_draw_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end,GrxArcStyle style,GrxColor c);
+void grx_draw_circle_arc(
+    gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
+void grx_draw_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end,
+    GrxArcStyle style, GrxColor c);
 void grx_draw_polyline(gint n_points, GrxPoint *points, GrxColor c);
 void grx_draw_polygon(gint n_points, GrxPoint *points, GrxColor c);
 
-void grx_get_last_arc_coordinates(gint *xs, gint *ys, gint *xe, gint *ye, gint *xc, gint *yc);
+void grx_get_last_arc_coordinates(
+    gint *xs, gint *ys, gint *xe, gint *ye, gint *xc, gint *yc);
 GArray *grx_generate_ellipse(gint xc, gint yc, gint rx, gint ry);
-GArray *grx_generate_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end);
+GArray *grx_generate_ellipse_arc(
+    gint xc, gint yc, gint rx, gint ry, gint start, gint end);
 GArray *grx_generate_points(GArray *coords);
 
 void grx_draw_filled_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
-void grx_draw_filled_rounded_box(gint x1, gint y1, gint x2, gint y2, gint r, GrxColor c);
-void grx_draw_framed_box(gint x1, gint y1, gint x2, gint y2, gint width, const GrxFramedBoxColors *c);
+void grx_draw_filled_rounded_box(
+    gint x1, gint y1, gint x2, gint y2, gint r, GrxColor c);
+void grx_draw_framed_box(
+    gint x1, gint y1, gint x2, gint y2, gint width, const GrxFramedBoxColors *c);
 void grx_draw_filled_circle(gint xc, gint yc, gint r, GrxColor c);
 void grx_draw_filled_ellipse(gint xc, gint yc, gint rx, gint ry, GrxColor c);
-void grx_draw_filled_circle_arc(gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
-void grx_draw_filled_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end, GrxArcStyle style, GrxColor c);
+void grx_draw_filled_circle_arc(
+    gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
+void grx_draw_filled_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start,
+    gint end, GrxArcStyle style, GrxColor c);
 void grx_draw_filled_polygon(gint n_points, GrxPoint *points, GrxColor c);
 void grx_draw_filled_convex_polygon(gint n_points, GrxPoint *points, GrxColor c);
 
 void grx_flood_fill(gint x, gint y, GrxColor border, GrxColor c);
-void grx_flood_spill(gint x1, gint y1, gint x2, gint y2, GrxColor old_c, GrxColor new_c);
-void grx_flood_spill2(gint x1, gint y1, gint x2, gint y2, GrxColor old_c1, GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
+void grx_flood_spill(
+    gint x1, gint y1, gint x2, gint y2, GrxColor old_c, GrxColor new_c);
+void grx_flood_spill2(gint x1, gint y1, gint x2, gint y2, GrxColor old_c1,
+    GrxColor new_c1, GrxColor old_c2, GrxColor new_c2);
 
 GrxColor grx_get_pixel_at(gint x, gint y);
 
-void grx_bit_blt(gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor op);
-void grx_bit_blt_1bpp(gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor fg, GrxColor bg);
+void grx_bit_blt(
+    gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor op);
+void grx_bit_blt_1bpp(gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2,
+    gint y2, GrxColor fg, GrxColor bg);
 
 const GrxColor *grx_get_scanline(gint x1, gint x2, gint y, guint *n);
 void grx_put_scanline(gint x1, gint x2, gint y, const GrxColor *scan_line, GrxColor op);
 
 #ifndef GRX_SKIP_INLINES
-#define grx_bit_blt(x,y,s,x1,x2,y1,y2,o) \
-    grx_context_bit_blt(NULL,(x),(y),(s),(x1),(x2),(y1),(y2),(o))
-#define grx_bit_blt_1bpp(x,y,s,x1,y1,x2,y2,f,b) \
-    grx_context_bit_blt_1bpp(NULL,(x),(y),(s),(x1),(y1),(x2),(y2),(f),(b))
-#define grx_get_scanline(x1,x2,yy,n) \
-    grx_context_get_scanline(NULL,(x1),(x2),(yy),(n))
+#define grx_bit_blt(x, y, s, x1, x2, y1, y2, o) \
+    grx_context_bit_blt(NULL, (x), (y), (s), (x1), (x2), (y1), (y2), (o))
+#define grx_bit_blt_1bpp(x, y, s, x1, y1, x2, y2, f, b) \
+    grx_context_bit_blt_1bpp(NULL, (x), (y), (s), (x1), (y1), (x2), (y2), (f), (b))
+#define grx_get_scanline(x1, x2, yy, n) \
+    grx_context_get_scanline(NULL, (x1), (x2), (yy), (n))
 #endif /* GRX_SKIP_INLINES */
 
 #endif /* __GRX_DRAW_H__ */

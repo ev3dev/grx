@@ -22,30 +22,31 @@
 
 struct _GrxCursor {
     /* <private> */
-    GrxContext work;                    /* work areas (4) */
-    int     xcord,ycord;                /* cursor position on screen */
-    int     xsize,ysize;                /* cursor size */
-    int     xoffs,yoffs;                /* LU corner to hot point offset */
-    int     xwork,ywork;                /* save/work area sizes */
-    int     xwpos,ywpos;                /* save/work area position on screen */
-    int     displayed;                  /* set if displayed */
+    GrxContext work;  /* work areas (4) */
+    int xcord, ycord; /* cursor position on screen */
+    int xsize, ysize; /* cursor size */
+    int xoffs, yoffs; /* LU corner to hot point offset */
+    int xwork, ywork; /* save/work area sizes */
+    int xwpos, ywpos; /* save/work area position on screen */
+    int displayed;    /* set if displayed */
     unsigned int ref_count;
 };
 
 /*
  * mouse stuff
  */
-#define mouse_block(c,x1,y1,x2,y2) {                                        \
-        int __mouse_block_flag = 0;                                         \
-        mouse_addblock(c,x1,y1,x2,y2);
-#define mouse_addblock(c,x1,y1,x2,y2)                                       \
-        if(MOUINFO->docheck && (c)->gc_is_on_screen) {                          \
-        __mouse_block_flag |= (*MOUINFO->block)((c),(x1),(y1),(x2),(y2));   \
-        }
-#define mouse_unblock()                                                     \
-        if(__mouse_block_flag) {                                            \
-        (*MOUINFO->unblock)(__mouse_block_flag);                            \
-        }                                                                       \
-}
+#define mouse_block(c, x1, y1, x2, y2) \
+    {                                  \
+        int __mouse_block_flag = 0;    \
+        mouse_addblock(c, x1, y1, x2, y2);
+#define mouse_addblock(c, x1, y1, x2, y2)                                     \
+    if (MOUINFO->docheck && (c)->gc_is_on_screen) {                           \
+        __mouse_block_flag |= (*MOUINFO->block)((c), (x1), (y1), (x2), (y2)); \
+    }
+#define mouse_unblock()                          \
+    if (__mouse_block_flag) {                    \
+        (*MOUINFO->unblock)(__mouse_block_flag); \
+    }                                            \
+    }
 
 #endif /* __INCLUDE_MOUSE_H__ */

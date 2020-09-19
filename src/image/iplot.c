@@ -17,11 +17,13 @@
  * modifications by Hartmut Schirmer (c) 1998
  */
 
-#include "globals.h"
-#include "mouse.h"
-#include "libgrx.h"
+#include <grx/pixmap.h>
+
 #include "clipping.h"
+#include "globals.h"
 #include "image.h"
+#include "libgrx.h"
+#include "mouse.h"
 
 /**
  * grx_draw_pixel_with_offset_pixmap:
@@ -36,18 +38,18 @@
  * The color of the pixel comes from the pixmap as if @p was tiled over the
  * entrire context starting with the top/left of the pixmap at @x0, @y0.
  */
-void grx_draw_pixel_with_offset_pixmap(int xo,int yo,int x,int y,GrxPixmap *p)
+void grx_draw_pixel_with_offset_pixmap(gint xo, gint yo, gint x, gint y, GrxPixmap *p)
 {
-   int xp, yp;
-   GrxColor col;
+    gint xp, yp;
+    GrxColor col;
 
-   xo = min(xo, x);
-   yo = min(yo, y);
-   clip_dot(CURC,x,y);
-   xp = (x - xo) % p->width;
-   yp = (y - yo) % p->height;
-   mouse_block(CURC,x,y,x,y);
-   col = (*p->source.driver->readpixel)(&p->source,xp,yp);
-   (*CURC->gc_driver->drawpixel)(x + CURC->x_offset, y + CURC->y_offset, col);
-   mouse_unblock();
+    xo = min(xo, x);
+    yo = min(yo, y);
+    clip_dot(CURC, x, y);
+    xp = (x - xo) % p->width;
+    yp = (y - yo) % p->height;
+    mouse_block(CURC, x, y, x, y);
+    col = (*p->source.driver->readpixel)(&p->source, xp, yp);
+    (*CURC->gc_driver->drawpixel)(x + CURC->x_offset, y + CURC->y_offset, col);
+    mouse_unblock();
 }

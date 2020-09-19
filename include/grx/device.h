@@ -16,9 +16,9 @@
 #ifndef __GRX_DEVICE_H__
 #define __GRX_DEVICE_H__
 
-#include <glib.h>
-#include <glib-object.h>
 #include <gio/gio.h>
+#include <glib-object.h>
+#include <glib.h>
 
 /**
  * SECTION:device
@@ -54,15 +54,15 @@ G_DECLARE_DERIVABLE_TYPE(GrxDevice, grx_device, GRX, DEVICE, GObject)
  */
 struct _GrxDeviceClass {
     GObjectClass parent_class;
-    gboolean (*reset_calibration) (GrxDevice *device);
+    gboolean (*reset_calibration)(GrxDevice *device);
     gpointer reserved[6];
 };
 
-const gchar *grx_device_get_name (GrxDevice *device);
-const gchar *grx_device_get_sysname (GrxDevice *device);
-gboolean grx_device_get_has_keyboard (GrxDevice *device);
-gboolean grx_device_get_has_pointer (GrxDevice *device);
-gboolean grx_device_get_has_touch (GrxDevice *device);
-gboolean grx_device_reset_calibration (GrxDevice *device);
+const gchar *grx_device_get_name(GrxDevice *device);
+const gchar *grx_device_get_sysname(GrxDevice *device);
+gboolean grx_device_get_has_keyboard(GrxDevice *device);
+gboolean grx_device_get_has_pointer(GrxDevice *device);
+gboolean grx_device_get_has_touch(GrxDevice *device);
+gboolean grx_device_reset_calibration(GrxDevice *device);
 
 #endif /* __GRX_DEVICE_H__ */

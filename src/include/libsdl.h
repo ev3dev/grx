@@ -19,8 +19,8 @@
 
 #include <SDL/SDL.h>
 
-#define KMOD_SCROLL ((SDLMod) 0x10)
-#define KMOD_INSERT ((SDLMod) 0x20)
+#define KMOD_SCROLL ((SDLMod)0x10)
+#define KMOD_INSERT ((SDLMod)0x20)
 
 extern SDL_Surface *_SGrScreen;
 #if defined(__WIN32__)
@@ -31,7 +31,7 @@ extern int _SGrActive;
 
 /* _keyssdlpool used only when GrMouseEventEnable( 0,x ) is set */
 
-#define  _MAXKEYSSDLPOOL 16
+#define _MAXKEYSSDLPOOL 16
 extern int _nkeyssdlpool;
 extern int _keyssdlpool[_MAXKEYSSDLPOOL];
 
@@ -40,8 +40,9 @@ extern int _keyssdlpool[_MAXKEYSSDLPOOL];
 #include <windows.h>
 #elif defined(__XWIN__)
 #include <unistd.h>
-#include <X11/Xproto.h>
+
 #include <X11/Xlib.h>
+#include <X11/Xproto.h>
 #include <X11/Xutil.h>
 #endif
 

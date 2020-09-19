@@ -31,14 +31,14 @@ typedef union _GR_fillArg {
     GrxPixmap *p;
 } GrFillArg;
 
-typedef void (*PixelFillFunc)(int x,int y,GrFillArg fval);
-typedef void (*LineFillFunc)(int x,int y,int dx,int dy,GrFillArg fval);
-typedef void (*ScanFillFunc)(int x,int y,int w,GrFillArg fval);
+typedef void (*PixelFillFunc)(int x, int y, GrFillArg fval);
+typedef void (*LineFillFunc)(int x, int y, int dx, int dy, GrFillArg fval);
+typedef void (*ScanFillFunc)(int x, int y, int w, GrFillArg fval);
 
 typedef struct _GR_filler {
     PixelFillFunc pixel;
-    LineFillFunc  line;
-    ScanFillFunc  scan;
+    LineFillFunc line;
+    ScanFillFunc scan;
 } GrFiller;
 
 G_GNUC_INTERNAL extern GrFiller _GrSolidFiller;
@@ -48,28 +48,31 @@ G_GNUC_INTERNAL extern GrFiller _GrBitmapFiller;
 G_GNUC_INTERNAL extern GrFiller _GrPixmapFiller;
 */
 
-G_GNUC_INTERNAL void _GrDrawPolygon(int n,GrxPoint *pt,GrFiller *f,GrFillArg c,int doClose);
-G_GNUC_INTERNAL void _GrDrawCustomPolygon(int n,GrxPoint *pt,const GrxLineOptions *lp,GrFiller *f,GrFillArg c,int doClose,int circle);
-G_GNUC_INTERNAL void _GrScanConvexPoly(int n,GrxPoint *pt,GrFiller *f,GrFillArg c);
-G_GNUC_INTERNAL void _GrScanPolygon(int n,GrxPoint *pt,GrFiller *f,GrFillArg c);
-G_GNUC_INTERNAL void _GrScanEllipse(int xc,int yc,int rx,int ry,GrFiller *f,GrFillArg c,int filled);
+G_GNUC_INTERNAL void _GrDrawPolygon(
+    int n, GrxPoint *pt, GrFiller *f, GrFillArg c, int doClose);
+G_GNUC_INTERNAL void _GrDrawCustomPolygon(int n, GrxPoint *pt, const GrxLineOptions *lp,
+    GrFiller *f, GrFillArg c, int doClose, int circle);
+G_GNUC_INTERNAL void _GrScanConvexPoly(int n, GrxPoint *pt, GrFiller *f, GrFillArg c);
+G_GNUC_INTERNAL void _GrScanPolygon(int n, GrxPoint *pt, GrFiller *f, GrFillArg c);
+G_GNUC_INTERNAL void _GrScanEllipse(
+    int xc, int yc, int rx, int ry, GrFiller *f, GrFillArg c, int filled);
 
 #define _GrDrawPatternedPixel ((PixelFillFunc)_GrPatternFilledPlot)
-#define _GrDrawPatternedLine ((LineFillFunc)_GrPatternFilledLine)
-G_GNUC_INTERNAL void _GrFillPatternedScanLine(int x,int y,int w,GrFillArg arg);
+#define _GrDrawPatternedLine  ((LineFillFunc)_GrPatternFilledLine)
+G_GNUC_INTERNAL void _GrFillPatternedScanLine(int x, int y, int w, GrFillArg arg);
 
-G_GNUC_INTERNAL void _GrFloodFill(int x,int y,GrxColor border,GrFiller *f,GrFillArg fa);
+G_GNUC_INTERNAL void _GrFloodFill(
+    int x, int y, GrxColor border, GrFiller *f, GrFillArg fa);
 
-G_GNUC_INTERNAL void _GrFillPattern(int x,int y,int width,GrxPixmap *p);
-G_GNUC_INTERNAL void _GrFillPatternExt(int x,int y,int sx, int sy,int width,GrxPixmap *p);
-G_GNUC_INTERNAL void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPixmap *p);
-G_GNUC_INTERNAL void _GrPatternFilledPlot(int x,int y,GrxPixmap *p);
+G_GNUC_INTERNAL void _GrFillPattern(int x, int y, int width, GrxPixmap *p);
+G_GNUC_INTERNAL void _GrFillPatternExt(
+    int x, int y, int sx, int sy, int width, GrxPixmap *p);
+G_GNUC_INTERNAL void _GrPatternFilledLine(int x1, int y1, int dx, int dy, GrxPixmap *p);
+G_GNUC_INTERNAL void _GrPatternFilledPlot(int x, int y, GrxPixmap *p);
 
-G_GNUC_INTERNAL void _GrFillBitmapPattern(int x,int y,int w,int h,
-                                          unsigned char *bmp,int pitch,int start,
-                                          GrxPixmap* p,GrxColor bg);
-G_GNUC_INTERNAL void _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
-                                             unsigned char *bmp,int pitch,int start,
-                                             GrxPixmap* p,GrxColor bg);
+G_GNUC_INTERNAL void _GrFillBitmapPattern(int x, int y, int w, int h,
+    unsigned char *bmp, int pitch, int start, GrxPixmap *p, GrxColor bg);
+G_GNUC_INTERNAL void _GrFillBitmapPatternExt(int x, int y, int w, int h, int sx, int sy,
+    unsigned char *bmp, int pitch, int start, GrxPixmap *p, GrxColor bg);
 
 #endif

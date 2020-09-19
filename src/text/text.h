@@ -17,11 +17,9 @@
 #ifndef __GRX_TEXT_TEXT_H
 #define __GRX_TEXT_TEXT_H
 
-#include <glib.h>
-
 #include <fontconfig/fontconfig.h>
-
 #include <ft2build.h>
+#include <glib.h>
 #include FT_FREETYPE_H
 
 #include <grx/pixmap.h>
@@ -41,9 +39,8 @@ struct _GrxTextOptions {
     guint ref_count;
 };
 
-typedef void (*TextDrawBitmapFunc)(int x,int y,int w,int h,int ox, int oy,
-                                   unsigned char *bmp,int pitch,int start,
-                                   GrxColor fg,GrxColor bg,GrxPixmap *p);
+typedef void (*TextDrawBitmapFunc)(int x, int y, int w, int h, int ox, int oy,
+    unsigned char *bmp, int pitch, int start, GrxColor fg, GrxColor bg, GrxPixmap *p);
 
 G_GNUC_INTERNAL FT_Library grx_get_global_freetype_library(GError **err);
 G_GNUC_INTERNAL FcCharSet *script_to_charset(const gchar *script);

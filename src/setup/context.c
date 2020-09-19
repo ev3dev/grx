@@ -15,19 +15,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <glib-object.h>
 #include <string.h>
 
-#include "globals.h"
-#include "libgrx.h"
+#include <glib-object.h>
+
 #include "allocate.h"
 #include "clipping.h"
+#include "globals.h"
+#include "libgrx.h"
 #include "memcopy.h"
 #include "memfill.h"
 #include "util.h"
 
-#define  MYCONTEXT      1
-#define  MYFRAME        2
+#define MYCONTEXT 1
+#define MYFRAME   2
 
 G_DEFINE_BOXED_TYPE(GrxContext, grx_context, grx_context_ref, grx_context_unref);
 
@@ -45,8 +46,8 @@ void grx_context_unref(GrxContext *ctx);
  * Creates a new context in system memory using the memory layout specified by
  * @mode.
  *
- * @memory must contain a buffer of size grx_frame_mode_get_memory_size(). %NULL may also
- * be passed to @memory, in which case the memory will be dynamically allocated.
+ * @memory must contain a buffer of size grx_frame_mode_get_memory_size(). %NULL may
+ * also be passed to @memory, in which case the memory will be dynamically allocated.
  *
  * Likewise, @where can be an unused #GrxContext (e.g. you may want to do this
  * if you want a stack allocated context) or it can be %NULL to dynamically
@@ -55,55 +56,55 @@ void grx_context_unref(GrxContext *ctx);
  * Returns: (nullable): @where or a new context if @where was %NULL. Returns
  *      %NULL on error.
  */
-GrxContext *grx_context_new_full(GrxFrameMode md, gint w, gint h,
-                                 guint8 *memory, GrxContext *where)
+GrxContext *grx_context_new_full(
+    GrxFrameMode md, gint w, gint h, guint8 *memory, GrxContext *where)
 {
-        GrxFrameDriver *fd = _GrFindRAMframeDriver(md);
-        int  offset, flags = 0;
-        gint mem_size;
+    GrxFrameDriver *fd = _GrFindRAMframeDriver(md);
+    int offset, flags = 0;
+    gint mem_size;
 
-        if (!fd) {
-            g_debug("failed to get frame driver for frame mode");
-            return NULL;
-        }
-        offset = grx_frame_mode_get_line_offset(md, w);
-        mem_size  = grx_frame_mode_get_memory_size(md, w, h);
-        if (mem_size <= 0) {
-            g_debug("frame memory size less than 0");
-            return NULL;
-        }
-        if (mem_size > fd->max_mem_size) {
-            g_debug("frame memory size too big");
-            return NULL;
-        }
+    if (!fd) {
+        g_debug("failed to get frame driver for frame mode");
+        return NULL;
+    }
+    offset = grx_frame_mode_get_line_offset(md, w);
+    mem_size = grx_frame_mode_get_memory_size(md, w, h);
+    if (mem_size <= 0) {
+        g_debug("frame memory size less than 0");
+        return NULL;
+    }
+    if (mem_size > fd->max_mem_size) {
+        g_debug("frame memory size too big");
+        return NULL;
+    }
+    if (!where) {
+        where = malloc(sizeof(GrxContext));
         if (!where) {
-            where = malloc(sizeof(GrxContext));
-            if (!where) {
-                g_debug("failed to allocate context");
-                return NULL;
-            }
-            flags = MYCONTEXT;
+            g_debug("failed to allocate context");
+            return NULL;
         }
-        sttzero(where);
+        flags = MYCONTEXT;
+    }
+    sttzero(where);
+    if (!memory) {
+        memory = malloc(mem_size);
         if (!memory) {
-            memory = malloc(mem_size);
-            if (!memory) {
-                if (flags) {
-                    free(where);
-                }
-                g_debug("failed to allocate frame memory");
-                return NULL;
+            if (flags) {
+                free(where);
             }
-            flags |= MYFRAME;
+            g_debug("failed to allocate frame memory");
+            return NULL;
         }
-        where->ref_count = 1;
-        where->gc_driver      = fd;
-        where->gc_base_address = memory;
-        where->gc_line_offset  = offset;
-        where->gc_memory_flags    = flags;
-        where->x_clip_high     = where->x_max = w - 1;
-        where->y_clip_high     = where->y_max = h - 1;
-        return(where);
+        flags |= MYFRAME;
+    }
+    where->ref_count = 1;
+    where->gc_driver = fd;
+    where->gc_base_address = memory;
+    where->gc_line_offset = offset;
+    where->gc_memory_flags = flags;
+    where->x_clip_high = where->x_max = w - 1;
+    where->y_clip_high = where->y_max = h - 1;
+    return where;
 }
 
 /**
@@ -122,39 +123,41 @@ GrxContext *grx_context_new_full(GrxFrameMode md, gint w, gint h,
  * i.e. the address of the top left pixel is (0,0) even in a sub-context which
  * has been mapped onto the interior of its parent context.
  *
- * Returns: (nullable): @where or a new context if @where was %NULL. Return %NULL on error.
+ * Returns: (nullable): @where or a new context if @where was %NULL. Return %NULL on
+ * error.
  */
-GrxContext *grx_context_new_subcontext(int x1, int y1, int x2, int y2,
-                                          const GrxContext *parent,
-                                          GrxContext *where)
+GrxContext *grx_context_new_subcontext(
+    int x1, int y1, int x2, int y2, const GrxContext *parent, GrxContext *where)
 {
-        int flags = 0;
+    int flags = 0;
 
-        if(!parent) parent = SCRN;
-        if(parent->root) {
-            x1 += parent->x_offset;
-            y1 += parent->y_offset;
-            x2 += parent->x_offset;
-            y2 += parent->y_offset;
-            parent = parent->root;
-        }
-        cxclip_box_(parent,x1,y1,x2,y2,return(NULL),CLIP_EMPTY_MACRO_ARG);
-        if(!where) {
-            where = malloc(sizeof(GrxContext));
-            if(!where) return(NULL);
-            flags = MYCONTEXT;
-        }
-        sttzero(where);
-        sttcopy(&where->frame,&parent->frame);
-        where->ref_count = 1;
-        where->gc_memory_flags = flags;
-        where->x_offset  = x1;
-        where->y_offset  = y1;
-        where->x_clip_high  = where->x_max = x2 - x1;
-        where->y_clip_high  = where->y_max = y2 - y1;
-        where->root     = (GrxContext *)parent;
-        grx_context_ref (where->root);
-        return(where);
+    if (!parent)
+        parent = SCRN;
+    if (parent->root) {
+        x1 += parent->x_offset;
+        y1 += parent->y_offset;
+        x2 += parent->x_offset;
+        y2 += parent->y_offset;
+        parent = parent->root;
+    }
+    cxclip_box_(parent, x1, y1, x2, y2, return NULL, CLIP_EMPTY_MACRO_ARG);
+    if (!where) {
+        where = malloc(sizeof(GrxContext));
+        if (!where)
+            return NULL;
+        flags = MYCONTEXT;
+    }
+    sttzero(where);
+    sttcopy(&where->frame, &parent->frame);
+    where->ref_count = 1;
+    where->gc_memory_flags = flags;
+    where->x_offset = x1;
+    where->y_offset = y1;
+    where->x_clip_high = where->x_max = x2 - x1;
+    where->y_clip_high = where->y_max = y2 - y1;
+    where->root = (GrxContext *)parent;
+    grx_context_ref(where->root);
+    return where;
 }
 
 /**
@@ -172,25 +175,25 @@ GrxContext *grx_context_new_subcontext(int x1, int y1, int x2, int y2,
  * The coordinate arguments (x1 through y2) are interpreted relative to the
  * parent context's limits.
  */
-void grx_context_resize_subcontext(GrxContext *context, int x1, int y1, int x2,
-                                   int y2)
+void grx_context_resize_subcontext(GrxContext *context, int x1, int y1, int x2, int y2)
 {
-        GrxContext *parent = context->root;
+    GrxContext *parent = context->root;
 
-        if((parent = context->root) == NULL) return;
-/*
-        x1 += context->x_offset;
-        y1 += context->y_offset;
-        x2 += context->x_offset;
-        y2 += context->y_offset;
-*/
-        cxclip_box(parent,x1,y1,x2,y2);
-        context->x_offset = x1;
-        context->y_offset = y1;
-        context->x_clip_high = context->x_max = x2 - x1;
-        context->y_clip_high = context->y_max = y2 - y1;
-        context->x_clip_low = 0;
-        context->y_clip_low = 0;
+    if ((parent = context->root) == NULL)
+        return;
+    /*
+            x1 += context->x_offset;
+            y1 += context->y_offset;
+            x2 += context->x_offset;
+            y2 += context->y_offset;
+    */
+    cxclip_box(parent, x1, y1, x2, y2);
+    context->x_offset = x1;
+    context->y_offset = y1;
+    context->x_clip_high = context->x_max = x2 - x1;
+    context->y_clip_high = context->y_max = y2 - y1;
+    context->x_clip_low = 0;
+    context->y_clip_low = 0;
 }
 
 /**
@@ -212,15 +215,16 @@ GrxContext *grx_context_ref(GrxContext *context)
 
 static void grx_context_free(GrxContext *cxt)
 {
-        if(cxt && (cxt != CURC) && (cxt != SCRN)) {
-            if (cxt->root) {
-                grx_context_unref (cxt->root);
-            }
-            if(cxt->gc_memory_flags & MYFRAME) {
-                free(cxt->gc_base_address);
-            }
-            if(cxt->gc_memory_flags & MYCONTEXT) free(cxt);
+    if (cxt && (cxt != CURC) && (cxt != SCRN)) {
+        if (cxt->root) {
+            grx_context_unref(cxt->root);
         }
+        if (cxt->gc_memory_flags & MYFRAME) {
+            free(cxt->gc_base_address);
+        }
+        if (cxt->gc_memory_flags & MYCONTEXT)
+            free(cxt);
+    }
 }
 
 /**
@@ -256,9 +260,10 @@ void grx_context_unref(GrxContext *ctx)
  */
 void grx_set_current_context(const GrxContext *context)
 {
-        if(!context) context = SCRN;
-        sttcopy(CURC,context);
-        sttcopy(FDRV,context->gc_driver);
+    if (!context)
+        context = SCRN;
+    sttcopy(CURC, context);
+    sttcopy(FDRV, context->gc_driver);
 }
 
 /**
@@ -285,15 +290,16 @@ void grx_set_current_context(const GrxContext *context)
  */
 GrxContext *grx_save_current_context(GrxContext *where)
 {
-        int flags = 0;
+    int flags = 0;
 
-        if(!where) {
-            where = malloc(sizeof(GrxContext));
-            if(!where) return(NULL);
-            flags = MYCONTEXT;
-        }
-        sttcopy(where,CURC);
-        where->ref_count = 1;
-        where->gc_memory_flags = flags;
-        return(where);
+    if (!where) {
+        where = malloc(sizeof(GrxContext));
+        if (!where)
+            return NULL;
+        flags = MYCONTEXT;
+    }
+    sttcopy(where, CURC);
+    where->ref_count = 1;
+    where->gc_memory_flags = flags;
+    return where;
 }

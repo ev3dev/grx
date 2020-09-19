@@ -39,14 +39,15 @@
  * coordinates from the starting angle to the ending angle with the specified
  * radius, arc style and pixmap.
  */
-void grx_user_draw_filled_circle_arc_with_pixmap(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxPixmap *p)
+void grx_user_draw_filled_circle_arc_with_pixmap(
+    int xc, int yc, int r, int start, int end, GrxArcStyle style, GrxPixmap *p)
 {
 #ifdef USR_KEEP_SHAPE
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(r,r,CURC->x_max,CURC->user_width);
-        grx_draw_filled_circle_arc_with_pixmap(xc,yc,r,start,end,style,p);
+    U2SX(xc, CURC);
+    U2SY(yc, CURC);
+    SCALE(r, r, CURC->x_max, CURC->user_width);
+    grx_draw_filled_circle_arc_with_pixmap(xc, yc, r, start, end, style, p);
 #else
-        grx_user_draw_filled_ellipse_arc_with_pixmap(xc,yc,r,r,start,end,style,p);
+    grx_user_draw_filled_ellipse_arc_with_pixmap(xc, yc, r, r, start, end, style, p);
 #endif /* USR_KEEP_SHAPE */
 }

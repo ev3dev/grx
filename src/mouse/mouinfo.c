@@ -15,10 +15,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "mouse.h"
 #include "libgrx.h"
-#undef         GrMouseInfo
+#include "mouse.h"
+#undef GrMouseInfo
 
-const
-struct _GR_mouseInfo * const GrMouseInfo = &_GrMouseInfo;
+const struct _GR_mouseInfo *const GrMouseInfo = &_GrMouseInfo;
 struct _GR_mouseInfo _GrMouseInfo = { 0 };

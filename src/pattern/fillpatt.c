@@ -18,20 +18,20 @@
  * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  */
 
+#include "arith.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "arith.h"
 #include "shapes.h"
 
 void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrxPixmap *p)
 {
     GRX_ENTER();
-    void (*bltfun)(GrxFrame*, int, int, GrxFrame*, int, int, int, int, GrxColor);
+    void (*bltfun)(GrxFrame *, int, int, GrxFrame *, int, int, int, int, GrxColor);
     int pattwdt = p->width;
     int xdest = x;
     int ydest = y;
-    int ypatt = (y-sy) % p->height;
-    int xpatt = (x-sx) % pattwdt;
+    int ypatt = (y - sy) % p->height;
+    int xpatt = (x - sx) % pattwdt;
     int cpysize = pattwdt - xpatt;
     GrxColor optype = p->mode;
 
@@ -45,7 +45,8 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrxPixmap *p)
         if (cpysize > width) {
             cpysize = width;
         }
-        (*bltfun)(&CURC->frame, xdest, ydest, &p->source, xpatt, ypatt, cpysize, 1, optype);
+        (*bltfun)(
+            &CURC->frame, xdest, ydest, &p->source, xpatt, ypatt, cpysize, 1, optype);
         width -= cpysize;
         xpatt = 0;
         xdest += cpysize;
@@ -56,14 +57,14 @@ void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrxPixmap *p)
 
 void _GrFillPattern(int x, int y, int width, GrxPixmap *p)
 {
-  GRX_ENTER();
-  _GrFillPatternExt(x,y,0,0,width,p);
-  GRX_LEAVE();
+    GRX_ENTER();
+    _GrFillPatternExt(x, y, 0, 0, width, p);
+    GRX_LEAVE();
 }
 
-void _GrFillPatternedScanLine(int x,int y,int w,GrFillArg arg)
+void _GrFillPatternedScanLine(int x, int y, int w, GrFillArg arg)
 {
-  GRX_ENTER();
-  _GrFillPatternExt(x,y,0,0,w,arg.p);
-  GRX_LEAVE();
+    GRX_ENTER();
+    _GrFillPatternExt(x, y, 0, 0, w, arg.p);
+    GRX_LEAVE();
 }

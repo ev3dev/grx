@@ -17,8 +17,8 @@
 
 #include <grx/mode.h>
 
-#include "libgrx.h"
 #include "arith.h"
+#include "libgrx.h"
 #include "util.h"
 
 /**
@@ -70,13 +70,13 @@ gint grx_frame_mode_get_bpp(GrxFrameMode mode)
 gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width)
 {
     GrxFrameDriver *dp = _GrFindRAMframeDriver(mode);
-    if(dp) {
+    if (dp) {
         unsigned int w = (unsigned int)width * dp->bits_per_pixel;
         w = ((w + 7) >> 3);
         w = ((w + dp->row_align - 1) / dp->row_align) * dp->row_align;
-        return(w);
+        return w;
     }
-    return(0);
+    return 0;
 }
 
 /**
@@ -92,7 +92,7 @@ gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width)
  */
 gint grx_frame_mode_get_memory_size(GrxFrameMode mode, gint width, gint height)
 {
-        return(umul32(grx_frame_mode_get_line_offset(mode, width), height));
+    return umul32(grx_frame_mode_get_line_offset(mode, width), height);
 }
 
 /**

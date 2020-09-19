@@ -18,8 +18,8 @@
 #include <grx/draw.h>
 #include <grx/wideline.h>
 
-#include "libgrx.h"
 #include "allocate.h"
+#include "libgrx.h"
 #include "shapes.h"
 
 /**
@@ -35,13 +35,15 @@
  * The ellipse can only draw ellipses with its major axis parallel with either
  * the X or Y coordinate axis
  */
-void grx_draw_ellipse_with_options(int xc,int yc,int rx,int ry,const GrxLineOptions *o)
+void grx_draw_ellipse_with_options(
+    int xc, int yc, int rx, int ry, const GrxLineOptions *o)
 {
     GArray *points;
     GrFillArg fval;
 
-    points = grx_generate_ellipse (xc, yc, rx, ry);
+    points = grx_generate_ellipse(xc, yc, rx, ry);
     fval.color = o->color;
-    _GrDrawCustomPolygon (points->len, (GrxPoint *)points->data, o, &_GrSolidFiller, fval, TRUE, TRUE);
-    g_array_unref (points);
+    _GrDrawCustomPolygon(
+        points->len, (GrxPoint *)points->data, o, &_GrSolidFiller, fval, TRUE, TRUE);
+    g_array_unref(points);
 }

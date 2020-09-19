@@ -21,12 +21,14 @@
 
 #include "arith.h"
 
-#define SCALE(var,arg,nom,den) do {    \
-    (var) = iscale((arg),(nom),(den)); \
-} while(0)
+#define SCALE(var, arg, nom, den)            \
+    do {                                     \
+        (var) = iscale((arg), (nom), (den)); \
+    } while (0)
 
-# define USCALE(var,arg,nom,den) do {  \
-    (var) = uscale((arg),(nom),(den)); \
-} while(0)
+#define USCALE(var, arg, nom, den)           \
+    do {                                     \
+        (var) = uscale((arg), (nom), (den)); \
+    } while (0)
 
 #endif /* whole file */

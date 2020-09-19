@@ -42,42 +42,36 @@
  */
 
 void grx_fast_draw_pixel(gint x, gint y, GrxColor c);
-void grx_fast_draw_line(gint x1, gint y1, gint x2, gint y2,GrxColor c);
+void grx_fast_draw_line(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_fast_draw_hline(gint x1, gint x2, gint y, GrxColor c);
 void grx_fast_draw_vline(gint x, gint y1, gint y2, GrxColor c);
 void grx_fast_draw_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_fast_draw_filled_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
-void grx_fast_draw_framed_box(gint x1, gint y1, gint x2, gint y2, gint width, const GrxFramedBoxColors *c);
-void grx_fast_bit_blt(gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor op);
-void grx_context_fast_bit_blt(GrxContext *context, gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor op);
+void grx_fast_draw_framed_box(
+    gint x1, gint y1, gint x2, gint y2, gint width, const GrxFramedBoxColors *c);
+void grx_fast_bit_blt(
+    gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2, gint y2, GrxColor op);
+void grx_context_fast_bit_blt(GrxContext *context, gint x, gint y, GrxContext *src,
+    gint x1, gint y1, gint x2, gint y2, GrxColor op);
 
 GrxColor grx_fast_get_pixel_at(gint x, gint y);
 GrxColor grx_context_fast_get_pixel_at(GrxContext *context, gint x, gint y);
 
 #ifndef GRX_SKIP_INLINES
-#define grx_fast_bit_blt(x,y,s,x1,y1,x2,y2,o) \
-        grx_context_fast_bit_blt((x),(y),(s),(x1),(y1),(x2),(y2),(o))
-#define grx_fast_draw_pixel(x,y,c) (                                           \
-        (*grx_get_current_frame_driver()->drawpixel)(                          \
-        ((x) + grx_get_current_context()->x_offset),                           \
-        ((y) + grx_get_current_context()->y_offset),                           \
-        ((c))                                                                  \
-        )                                                                      \
-)
-#define grx_fast_get_pixel_at(x,y) (                                              \
-        (*grx_get_current_frame_driver()->readpixel)(                          \
-        (GrxFrame *)(&grx_get_current_context()->frame),                       \
-        ((x) + grx_get_current_context()->x_offset),                           \
-        ((y) + grx_get_current_context()->y_offset)                            \
-        )                                                                      \
-)
-#define grx_context_fast_get_pixel_at(c,x,y) (                                    \
-        (*(c)->gc_driver->readpixel)(                                          \
-        (&(c)->frame),                                                         \
-        ((x) + (c)->x_offset),                                                 \
-        ((y) + (c)->y_offset)                                                  \
-        )                                                                      \
-)
-#endif  /* GRX_SKIP_INLINES */
+#define grx_fast_bit_blt(x, y, s, x1, y1, x2, y2, o) \
+    grx_context_fast_bit_blt((x), (y), (s), (x1), (y1), (x2), (y2), (o))
+#define grx_fast_draw_pixel(x, y, c)                 \
+    ((*grx_get_current_frame_driver()->drawpixel)(   \
+        ((x) + grx_get_current_context()->x_offset), \
+        ((y) + grx_get_current_context()->y_offset), ((c))))
+#define grx_fast_get_pixel_at(x, y)                      \
+    ((*grx_get_current_frame_driver()->readpixel)(       \
+        (GrxFrame *)(&grx_get_current_context()->frame), \
+        ((x) + grx_get_current_context()->x_offset),     \
+        ((y) + grx_get_current_context()->y_offset)))
+#define grx_context_fast_get_pixel_at(c, x, y) \
+    ((*(c)->gc_driver->readpixel)(             \
+        (&(c)->frame), ((x) + (c)->x_offset), ((y) + (c)->y_offset)))
+#endif /* GRX_SKIP_INLINES */
 
 #endif /* __GRX_DRAW_NC_H__ */

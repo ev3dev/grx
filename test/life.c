@@ -16,96 +16,95 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "test.h"
-#include "rand.h"
-
 #include <malloc.h>
 #include <string.h>
 #include <time.h>
 
+#include "rand.h"
+#include "test.h"
+
 TESTFUNC(life)
 {
-        int  W = grx_get_width();
-        int  H = grx_get_height();
-        char **map[2],**old,**cur;
-        int  *xp,*xn,*yp,*yn;
-        int  which,x,y,gen;
-        GrxColor c[2];
-        long thresh;
-        for(which = 0; which < 2; which++) {
-            cur = malloc(H * sizeof(char *));
-            if(!cur) return;
-            map[which] = cur;
-            for(y = 0; y < H; y++) {
-                cur[y] = malloc(W);
-                if(!cur[y]) return;
+    int W = grx_get_width();
+    int H = grx_get_height();
+    char **map[2], **old, **cur;
+    int *xp, *xn, *yp, *yn;
+    int which, x, y, gen;
+    GrxColor c[2];
+    long thresh;
+    for (which = 0; which < 2; which++) {
+        cur = malloc(H * sizeof(char *));
+        if (!cur)
+            return;
+        map[which] = cur;
+        for (y = 0; y < H; y++) {
+            cur[y] = malloc(W);
+            if (!cur[y])
+                return;
+        }
+    }
+    xp = malloc(W * sizeof(int));
+    xn = malloc(W * sizeof(int));
+    yp = malloc(H * sizeof(int));
+    yn = malloc(H * sizeof(int));
+    if (!xp || !xn || !yp || !yn)
+        return;
+    for (x = 0; x < W; x++) {
+        xp[x] = (x + W - 1) % W;
+        xn[x] = (x + W + 1) % W;
+    }
+    for (y = 0; y < H; y++) {
+        yp[y] = (y + H - 1) % H;
+        yn[y] = (y + H + 1) % H;
+    }
+    c[0] = GRX_COLOR_BLACK;
+    c[1] = GRX_COLOR_WHITE;
+    which = 0;
+    old = map[which];
+    cur = map[1 - which];
+    SRND((int)time(NULL));
+    for (y = 0; y < H; y++) {
+        for (x = 0; x < W; x++) {
+            int ii = RND() % 53;
+            while (--ii >= 0)
+                RND();
+            old[y][x] = (((RND() % 131) > 107) ? 1 : 0);
+            grx_fast_draw_pixel(x, y, c[(int)old[y][x]]);
+        }
+    }
+    thresh = (((unsigned long)RND() << 16) + RND()) % 1003567UL;
+    gen = (Argc > 0) ? 1 : 0;
+    do {
+        for (y = 0; y < H; y++) {
+            char *prow = old[yp[y]];
+            char *crow = old[y];
+            char *nrow = old[yn[y]];
+            char *curr = cur[y];
+            for (x = 0; x < W; x++) {
+                int xprev = xp[x];
+                int xnext = xn[x];
+                char live = prow[xprev] + prow[x] + prow[xnext] + crow[xprev]
+                            + crow[xnext] + nrow[xprev] + nrow[x] + nrow[xnext];
+                live = ((live | crow[x]) == 3) ? 1 : 0;
+                if (--thresh <= 0) {
+                    live ^= gen;
+                    thresh = (((unsigned long)RND() << 16) + RND()) % 1483567UL;
+                }
+                curr[x] = live;
             }
         }
-        xp = malloc(W * sizeof(int));
-        xn = malloc(W * sizeof(int));
-        yp = malloc(H * sizeof(int));
-        yn = malloc(H * sizeof(int));
-        if(!xp || !xn || !yp || !yn) return;
-        for(x = 0; x < W; x++) {
-            xp[x] = (x + W - 1) % W;
-            xn[x] = (x + W + 1) % W;
+        for (y = 0; y < H; y++) {
+            char *curr = cur[y];
+            char *oldr = old[y];
+            for (x = 0; x < W; x++) {
+                if (curr[x] != oldr[x])
+                    grx_fast_draw_pixel(x, y, c[(int)curr[x]]);
+            }
         }
-        for(y = 0; y < H; y++) {
-            yp[y] = (y + H - 1) % H;
-            yn[y] = (y + H + 1) % H;
-        }
-        c[0] = GRX_COLOR_BLACK;
-        c[1] = GRX_COLOR_WHITE;
-        which = 0;
+        which = 1 - which;
         old = map[which];
         cur = map[1 - which];
-        SRND((int)time(NULL));
-        for(y = 0; y < H; y++) {
-            for(x = 0; x < W; x++) {
-                int ii = RND() % 53;
-                while(--ii >= 0) RND();
-                old[y][x] = (((RND() % 131) > 107) ? 1 : 0);
-                grx_fast_draw_pixel(x,y,c[(int)old[y][x]]);
-            }
-        }
-        thresh = (((unsigned long)RND() << 16) + RND()) % 1003567UL;
-        gen    = (Argc > 0) ? 1 : 0;
-        do {
-            for(y = 0; y < H; y++) {
-                char *prow = old[yp[y]];
-                char *crow = old[y];
-                char *nrow = old[yn[y]];
-                char *curr = cur[y];
-                for(x = 0; x < W; x++) {
-                    int  xprev = xp[x];
-                    int  xnext = xn[x];
-                    char live  = prow[xprev] +
-                                 prow[x]     +
-                                 prow[xnext] +
-                                 crow[xprev] +
-                                 crow[xnext] +
-                                 nrow[xprev] +
-                                 nrow[x]     +
-                                 nrow[xnext];
-                    live = ((live | crow[x]) == 3) ? 1 : 0;
-                    if(--thresh <= 0) {
-                        live  ^= gen;
-                        thresh = (((unsigned long)RND() << 16) + RND()) % 1483567UL;
-                    }
-                    curr[x] = live;
-                }
-            }
-            for(y = 0; y < H; y++) {
-                char *curr = cur[y];
-                char *oldr = old[y];
-                for(x = 0; x < W; x++) {
-                    if(curr[x] != oldr[x]) grx_fast_draw_pixel(x,y,c[(int)curr[x]]);
-                }
-            }
-            which = 1 - which;
-            old = map[which];
-            cur = map[1 - which];
-        } while (!run_one_main_loop_iteration());
-        while (run_one_main_loop_iteration()) { }
-        run_main_loop_until_key_press();
+    } while (!run_one_main_loop_iteration());
+    while (run_one_main_loop_iteration()) { }
+    run_main_loop_until_key_press();
 }

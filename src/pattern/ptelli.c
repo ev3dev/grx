@@ -24,8 +24,8 @@
 
 #include <grx/draw.h>
 
-#include "libgrx.h"
 #include "allocate.h"
+#include "libgrx.h"
 #include "shapes.h"
 
 /**
@@ -43,14 +43,16 @@
  * The ellipse can only draw ellipses with its major axis parallel with either
  * the X or Y coordinate axis.
  */
-void grx_draw_ellipse_with_pixmap (int xc, int yc, int rx, int ry, GrxLineOptions *o, GrxPixmap *p)
+void grx_draw_ellipse_with_pixmap(
+    int xc, int yc, int rx, int ry, GrxLineOptions *o, GrxPixmap *p)
 {
     GArray *points;
 
-    points = grx_generate_ellipse (xc, yc, rx, ry);
+    points = grx_generate_ellipse(xc, yc, rx, ry);
     GrFillArg fval;
 
     fval.p = p;
-    _GrDrawCustomPolygon (points->len, (GrxPoint *)points->data, o, &_GrPatternFiller, fval, TRUE, TRUE);
-    g_array_unref (points);
+    _GrDrawCustomPolygon(
+        points->len, (GrxPoint *)points->data, o, &_GrPatternFiller, fval, TRUE, TRUE);
+    g_array_unref(points);
 }

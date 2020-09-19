@@ -15,10 +15,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
 #include "mouse.h"
-#include "clipping.h"
 
 /**
  * grx_context_bit_blt:
@@ -38,42 +38,42 @@
  *
  * Also see grx_bit_blt() for operating on the current context.
  */
-void grx_context_bit_blt(GrxContext *dst,int dx,int dy,GrxContext *src,
-                         int x1,int y1,int x2,int y2,GrxColor oper)
+void grx_context_bit_blt(GrxContext *dst, int dx, int dy, GrxContext *src, int x1,
+    int y1, int x2, int y2, GrxColor oper)
 {
-        int  oldx1,oldy1;
-        int  oldx2,oldy2;
-        int  dstx2,dsty2;
-        void (*bltfun)(GrxFrame*,int,int,GrxFrame*,int,int,int,int,GrxColor);
-        if(dst == NULL) dst = CURC;
-        if(src == NULL) src = CURC;
-        isort(x1,x2); oldx1 = x1;
-        isort(y1,y2); oldy1 = y1;
-        cxclip_ordbox(src,x1,y1,x2,y2);
-        oldx1 = (dx  += (x1 - oldx1));
-        oldy1 = (dy  += (y1 - oldy1));
-        oldx2 = dstx2 = dx + x2 - x1;
-        oldy2 = dsty2 = dy + y2 - y1;
-        clip_ordbox(dst,dx,dy,dstx2,dsty2);
-        x1 += (dx - oldx1);
-        y1 += (dy - oldy1);
-        x2 -= (oldx2 - dstx2);
-        y2 -= (oldy2 - dsty2);
-        if(src->gc_driver == dst->gc_driver)
-            bltfun = src->gc_driver->bitblt;
-        else if(src->gc_driver->mode == dst->gc_driver->rmode)
-            bltfun = dst->gc_driver->bltr2v;
-        else if(src->gc_driver->rmode == dst->gc_driver->mode)
-            bltfun = src->gc_driver->bltv2r;
-        else return;
-        mouse_block(src,x1,y1,x2,y2);
-        mouse_addblock(dst,dx,dy,dstx2,dsty2);
-        (*bltfun)(
-            &dst->frame,(dx + dst->x_offset),(dy + dst->y_offset),
-            &src->frame,(x1 + src->x_offset),(y1 + src->y_offset),
-            (x2 - x1 + 1),
-            (y2 - y1 + 1),
-            oper
-        );
-        mouse_unblock();
+    int oldx1, oldy1;
+    int oldx2, oldy2;
+    int dstx2, dsty2;
+    void (*bltfun)(GrxFrame *, int, int, GrxFrame *, int, int, int, int, GrxColor);
+    if (dst == NULL)
+        dst = CURC;
+    if (src == NULL)
+        src = CURC;
+    isort(x1, x2);
+    oldx1 = x1;
+    isort(y1, y2);
+    oldy1 = y1;
+    cxclip_ordbox(src, x1, y1, x2, y2);
+    oldx1 = (dx += (x1 - oldx1));
+    oldy1 = (dy += (y1 - oldy1));
+    oldx2 = dstx2 = dx + x2 - x1;
+    oldy2 = dsty2 = dy + y2 - y1;
+    clip_ordbox(dst, dx, dy, dstx2, dsty2);
+    x1 += (dx - oldx1);
+    y1 += (dy - oldy1);
+    x2 -= (oldx2 - dstx2);
+    y2 -= (oldy2 - dsty2);
+    if (src->gc_driver == dst->gc_driver)
+        bltfun = src->gc_driver->bitblt;
+    else if (src->gc_driver->mode == dst->gc_driver->rmode)
+        bltfun = dst->gc_driver->bltr2v;
+    else if (src->gc_driver->rmode == dst->gc_driver->mode)
+        bltfun = src->gc_driver->bltv2r;
+    else
+        return;
+    mouse_block(src, x1, y1, x2, y2);
+    mouse_addblock(dst, dx, dy, dstx2, dsty2);
+    (*bltfun)(&dst->frame, (dx + dst->x_offset), (dy + dst->y_offset), &src->frame,
+        (x1 + src->x_offset), (y1 + src->y_offset), (x2 - x1 + 1), (y2 - y1 + 1), oper);
+    mouse_unblock();
 }

@@ -1,7 +1,6 @@
 
-#include <glib.h>
-
 #include <ft2build.h>
+#include <glib.h>
 #include FT_FREETYPE_H
 
 typedef struct {
@@ -10,8 +9,11 @@ typedef struct {
 } FtError;
 
 #undef __FTERRORS_H__
-#define FT_ERRORDEF(e, v, s)  { e, s },
-#define FT_ERROR_END_LIST     { 0, NULL }
+#define FT_ERRORDEF(e, v, s) { e, s },
+#define FT_ERROR_END_LIST \
+    {                     \
+        0, NULL           \
+    }
 
 G_GNUC_INTERNAL const FtError ft_errors[] = {
 

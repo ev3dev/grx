@@ -35,7 +35,8 @@
  * from the starting angle to the ending angle with the specified radius,
  * arc style and options.
  */
-void grx_draw_circle_arc_with_options(int xc,int yc,int r,int start,int end,GrxArcStyle style,const GrxLineOptions *o)
+void grx_draw_circle_arc_with_options(int xc, int yc, int r, int start, int end,
+    GrxArcStyle style, const GrxLineOptions *o)
 {
-        grx_draw_ellipse_arc_with_options(xc,yc,r,r,start,end,style,o);
+    grx_draw_ellipse_arc_with_options(xc, yc, r, r, start, end, style, o);
 }

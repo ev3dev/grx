@@ -12,7 +12,7 @@ cache:
 before_install:
 - sudo apt-add-repository --yes ppa:ev3dev/tools
 - sudo apt-get update
-- sudo apt-get install --yes debhelper pbuilder-ev3dev gobject-introspection $QEMU
+- sudo apt-get install --yes debhelper pbuilder-ev3dev gobject-introspection clang-format $QEMU
 - if [ -n "$QEMU" ]; then
     wget https://github.com/multiarch/qemu-user-static/releases/download/v5.0.0-2/qemu-arm-static;
     chmod +x qemu-arm-static;
@@ -23,4 +23,5 @@ before_script:
 - git checkout -B ev3dev-$DIST
 - curl -L https://github.com/ev3dev/grx/archive/ev3dev-$DIST.tar.gz | tar --strip-components=1 -xz grx-ev3dev-$DIST/debian
 script:
+- ./format.sh
 - pbuilder-ev3dev dev-build

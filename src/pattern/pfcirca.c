@@ -38,7 +38,8 @@
  * coordinates from the starting angle to the ending angle with the specified
  * radius, arc style and pixmap.
  */
-void grx_draw_filled_circle_arc_with_pixmap(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxPixmap *p)
+void grx_draw_filled_circle_arc_with_pixmap(
+    int xc, int yc, int r, int start, int end, GrxArcStyle style, GrxPixmap *p)
 {
-        grx_draw_filled_ellipse_arc_with_pixmap(xc,yc,r,r,start,end,style,p);
+    grx_draw_filled_ellipse_arc_with_pixmap(xc, yc, r, r, start, end, style, p);
 }

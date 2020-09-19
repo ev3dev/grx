@@ -17,45 +17,48 @@
 #ifndef __GRXDEBUG_H_INCLUDED__
 #define __GRXDEBUG_H_INCLUDED__
 
-#define DBG_ENTER          0x8000
-#define DBG_LEAVE          DBG_ENTER
-#define DBG_FONT           0x4000
-#define DBG_DRIVER         0x1000
-#define DBG_COLOR          0x0800
-#define DBG_COPYFILL       0x0400
+#define DBG_ENTER    0x8000
+#define DBG_LEAVE    DBG_ENTER
+#define DBG_FONT     0x4000
+#define DBG_DRIVER   0x1000
+#define DBG_COLOR    0x0800
+#define DBG_COPYFILL 0x0400
 
 extern char *_GR_debug_file;
-extern int   _GR_debug_line;
-extern int   _GR_debug_flags;
-extern void  _GR_debug_printf(char *fmt,...);
+extern int _GR_debug_line;
+extern int _GR_debug_flags;
+extern void _GR_debug_printf(char *fmt, ...);
 
-# ifdef __GNUC__
-  extern const char *_GR_debug_function;
+#ifdef __GNUC__
+extern const char *_GR_debug_function;
 
 // http://stackoverflow.com/a/8488201/1976323
-#define __FILENAME__ \
-    (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
-#  define DBGPRINTF(tst,x) do {           \
-     if ((tst)&_GR_debug_flags) {         \
-       _GR_debug_file = __FILENAME__;     \
-       _GR_debug_line = __LINE__;         \
-       _GR_debug_function = __FUNCTION__; \
-       _GR_debug_printf x;                \
-     }                                    \
-   } while (0)
-# else
-#  define DBGPRINTF(tst,x) do {           \
-     if ((tst)&_GR_debug_flags) {         \
-       _GR_debug_file = __FILE__;         \
-       _GR_debug_line = __LINE__;         \
-       _GR_debug_printf x ;               \
-     }                                    \
-   } while (0)
+#define DBGPRINTF(tst, x)                      \
+    do {                                       \
+        if ((tst)&_GR_debug_flags) {           \
+            _GR_debug_file = __FILENAME__;     \
+            _GR_debug_line = __LINE__;         \
+            _GR_debug_function = __FUNCTION__; \
+            _GR_debug_printf x;                \
+        }                                      \
+    } while (0)
+#else
+#define DBGPRINTF(tst, x)              \
+    do {                               \
+        if ((tst)&_GR_debug_flags) {   \
+            _GR_debug_file = __FILE__; \
+            _GR_debug_line = __LINE__; \
+            _GR_debug_printf x;        \
+        }                              \
+    } while (0)
 #endif
 
-#define GRX_ENTER()       DBGPRINTF(DBG_ENTER,("FUNC ENTER\n"))
-#define GRX_LEAVE()       DBGPRINTF(DBG_LEAVE,("FUNC EXIT\n"))
-#define GRX_RETURN(x)     GRX_LEAVE(); return x;
+#define GRX_ENTER() DBGPRINTF(DBG_ENTER, ("FUNC ENTER\n"))
+#define GRX_LEAVE() DBGPRINTF(DBG_LEAVE, ("FUNC EXIT\n"))
+#define GRX_RETURN(x) \
+    GRX_LEAVE();      \
+    return x;
 
-#endif  /* whole file */
+#endif /* whole file */

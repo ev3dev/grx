@@ -16,9 +16,9 @@
 #ifndef __GRX_DEVICE_MANAGER_H__
 #define __GRX_DEVICE_MANAGER_H__
 
-#include <glib.h>
-#include <glib-object.h>
 #include <gio/gio.h>
+#include <glib-object.h>
+#include <glib.h>
 
 #include <grx/common.h>
 #include <grx/events.h>
@@ -39,7 +39,8 @@
  * Base class for device managers.
  */
 #define GRX_TYPE_DEVICE_MANAGER grx_device_manager_get_type()
-G_DECLARE_DERIVABLE_TYPE(GrxDeviceManager, grx_device_manager, GRX, DEVICE_MANAGER, GObject)
+G_DECLARE_DERIVABLE_TYPE(
+    GrxDeviceManager, grx_device_manager, GRX, DEVICE_MANAGER, GObject)
 
 /**
  * GrxDeviceManagerClass:
@@ -48,8 +49,7 @@ G_DECLARE_DERIVABLE_TYPE(GrxDeviceManager, grx_device_manager, GRX, DEVICE_MANAG
  *
  * The class type struct for #GrxDeviceManager.
  */
-struct _GrxDeviceManagerClass
-{
+struct _GrxDeviceManagerClass {
     GObjectClass parent_class;
     gpointer reserved[6];
 };

@@ -33,7 +33,7 @@
  */
 void grx_user_flood_fill_with_pixmap(int x, int y, GrxColor border, GrxPixmap *p)
 {
-        U2SX(x,CURC);
-        U2SY(y,CURC);
-        grx_flood_fill_with_pixmap(x,y,border,p);
+    U2SX(x, CURC);
+    U2SY(y, CURC);
+    grx_flood_fill_with_pixmap(x, y, border, p);
 }

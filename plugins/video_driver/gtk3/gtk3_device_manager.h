@@ -16,15 +16,15 @@
 #ifndef __GRX_GTK3_DEVICE_MANAGER_H__
 #define __GRX_GTK3_DEVICE_MANAGER_H__
 
-#include <glib.h>
-#include <glib-object.h>
 #include <gio/gio.h>
+#include <glib-object.h>
+#include <glib.h>
 
 #include <grx/device_manager.h>
 #include <grx/events.h>
 
-
 #define GRX_TYPE_GTK3_DEVICE_MANAGER grx_gtk3_device_manager_get_type()
-G_DECLARE_FINAL_TYPE(GrxGtk3DeviceManager, grx_gtk3_device_manager, GRX, GTK3_DEVICE_MANAGER, GrxDeviceManager)
+G_DECLARE_FINAL_TYPE(GrxGtk3DeviceManager, grx_gtk3_device_manager, GRX,
+    GTK3_DEVICE_MANAGER, GrxDeviceManager)
 
 #endif /* __GRX_GTK3_DEVICE_MANAGER_H__ */

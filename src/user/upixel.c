@@ -30,9 +30,9 @@
  * Gets the color value of the pixel in the current context at the specified
  * coordinates.
  */
-GrxColor grx_user_get_pixel_at(int x,int y)
+GrxColor grx_user_get_pixel_at(int x, int y)
 {
-        U2SX(x,CURC);
-        U2SY(y,CURC);
-        return(grx_get_pixel_at(x,y));
+    U2SX(x, CURC);
+    U2SY(y, CURC);
+    return grx_get_pixel_at(x, y);
 }

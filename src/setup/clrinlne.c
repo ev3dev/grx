@@ -29,9 +29,9 @@
  *
  * Returns: the color or %GRX_COLOR_NONE if @index is out of range
  */
-GrxColor (grx_color_lookup)(GArray *table, guint index)
+GrxColor(grx_color_lookup)(GArray *table, guint index)
 {
-        return(grx_color_lookup(table, index));
+    return grx_color_lookup(table, index);
 }
 
 /**
@@ -42,9 +42,9 @@ GrxColor (grx_color_lookup)(GArray *table, guint index)
  *
  * Returns: the color component.
  */
-GrxColor (grx_color_get_value)(GrxColor c)
+GrxColor(grx_color_get_value)(GrxColor c)
 {
-        return(grx_color_get_value(c));
+    return grx_color_get_value(c);
 }
 
 /**
@@ -55,9 +55,9 @@ GrxColor (grx_color_get_value)(GrxColor c)
  *
  * Returns: the #GrxColorMode component.
  */
-GrxColorMode (grx_color_get_mode)(GrxColor c)
+GrxColorMode(grx_color_get_mode)(GrxColor c)
 {
-        return(grx_color_get_mode(c));
+    return grx_color_get_mode(c);
 }
 
 /**
@@ -68,9 +68,9 @@ GrxColorMode (grx_color_get_mode)(GrxColor c)
  *
  * Returns: the modified color value.
  */
-GrxColor (grx_color_to_write_mode)(GrxColor c)
+GrxColor(grx_color_to_write_mode)(GrxColor c)
 {
-        return(grx_color_to_write_mode(c));
+    return grx_color_to_write_mode(c);
 }
 
 /**
@@ -81,9 +81,9 @@ GrxColor (grx_color_to_write_mode)(GrxColor c)
  *
  * Returns: the modified color value.
  */
-GrxColor (grx_color_to_xor_mode)(GrxColor c)
+GrxColor(grx_color_to_xor_mode)(GrxColor c)
 {
-        return(grx_color_to_xor_mode(c));
+    return grx_color_to_xor_mode(c);
 }
 
 /**
@@ -94,9 +94,9 @@ GrxColor (grx_color_to_xor_mode)(GrxColor c)
  *
  * Returns: the modified color value.
  */
-GrxColor (grx_color_to_or_mode)(GrxColor c)
+GrxColor(grx_color_to_or_mode)(GrxColor c)
 {
-        return(grx_color_to_or_mode(c));
+    return grx_color_to_or_mode(c);
 }
 
 /**
@@ -107,9 +107,9 @@ GrxColor (grx_color_to_or_mode)(GrxColor c)
  *
  * Returns: the modified color value.
  */
-GrxColor (grx_color_to_and_mode)(GrxColor c)
+GrxColor(grx_color_to_and_mode)(GrxColor c)
 {
-        return(grx_color_to_and_mode(c));
+    return grx_color_to_and_mode(c);
 }
 
 /**
@@ -120,9 +120,9 @@ GrxColor (grx_color_to_and_mode)(GrxColor c)
  *
  * Returns: the modified color value.
  */
-GrxColor (grx_color_to_image_mode)(GrxColor c)
+GrxColor(grx_color_to_image_mode)(GrxColor c)
 {
-        return(grx_color_to_image_mode(c));
+    return grx_color_to_image_mode(c);
 }
 
 /**
@@ -132,9 +132,9 @@ GrxColor (grx_color_to_image_mode)(GrxColor c)
  *
  * Returns: the number of colors.
  */
-int (grx_color_info_n_colors)(void)
+int(grx_color_info_n_colors)(void)
 {
-        return(grx_color_info_n_colors());
+    return grx_color_info_n_colors();
 }
 
 /**
@@ -146,9 +146,9 @@ int (grx_color_info_n_colors)(void)
  *
  * Returns: the number of unallocated colors.
  */
-int (grx_color_info_n_free_colors)(void)
+int(grx_color_info_n_free_colors)(void)
 {
-        return(grx_color_info_n_free_colors());
+    return grx_color_info_n_free_colors();
 }
 
 /**
@@ -158,9 +158,9 @@ int (grx_color_info_n_free_colors)(void)
  *
  * Returns: a #GrxColorPaletteType.
  */
-GrxColorPaletteType (grx_color_info_get_palette_type)(void)
+GrxColorPaletteType(grx_color_info_get_palette_type)(void)
 {
-        return(grx_color_info_get_palette_type());
+    return grx_color_info_get_palette_type();
 }
 
 /**
@@ -175,9 +175,9 @@ GrxColorPaletteType (grx_color_info_get_palette_type)(void)
  *
  * Returns: a new color value.
  */
-GrxColor (grx_color_build_rgb)(unsigned char r,unsigned char g,unsigned char b)
+GrxColor(grx_color_build_rgb)(unsigned char r, unsigned char g, unsigned char b)
 {
-        return(grx_color_build_rgb(r,g,b));
+    return grx_color_build_rgb(r, g, b);
 }
 
 /**
@@ -195,9 +195,9 @@ GrxColor (grx_color_build_rgb)(unsigned char r,unsigned char g,unsigned char b)
  *
  * Returns: a new color value.
  */
-GrxColor (grx_color_build_rgb_round)(unsigned char r,unsigned char g,unsigned char b)
+GrxColor(grx_color_build_rgb_round)(unsigned char r, unsigned char g, unsigned char b)
 {
-        return(grx_color_build_rgb_round(r,g,b));
+    return grx_color_build_rgb_round(r, g, b);
 }
 
 /**
@@ -212,9 +212,9 @@ GrxColor (grx_color_build_rgb_round)(unsigned char r,unsigned char g,unsigned ch
  *
  * Returns: a new color value.
  */
-GrxColor (grx_color_build_grayscale)(unsigned char r,unsigned char g,unsigned char b)
+GrxColor(grx_color_build_grayscale)(unsigned char r, unsigned char g, unsigned char b)
 {
-        return(grx_color_build_grayscale(r,g,b));
+    return grx_color_build_grayscale(r, g, b);
 }
 
 /**
@@ -228,9 +228,9 @@ GrxColor (grx_color_build_grayscale)(unsigned char r,unsigned char g,unsigned ch
  *
  * Returns: the red component.
  */
-unsigned char (grx_color_get_red)(GrxColor c)
+unsigned char(grx_color_get_red)(GrxColor c)
 {
-        return(grx_color_get_red(c));
+    return grx_color_get_red(c);
 }
 
 /**
@@ -244,9 +244,9 @@ unsigned char (grx_color_get_red)(GrxColor c)
  *
  * Returns: the green component.
  */
-unsigned char (grx_color_get_green)(GrxColor c)
+unsigned char(grx_color_get_green)(GrxColor c)
 {
-        return(grx_color_get_green(c));
+    return grx_color_get_green(c);
 }
 
 /**
@@ -260,9 +260,9 @@ unsigned char (grx_color_get_green)(GrxColor c)
  *
  * Returns: the blue component.
  */
-unsigned char (grx_color_get_blue)(GrxColor c)
+unsigned char(grx_color_get_blue)(GrxColor c)
 {
-        return(grx_color_get_blue(c));
+    return grx_color_get_blue(c);
 }
 
 /**
@@ -278,9 +278,9 @@ unsigned char (grx_color_get_blue)(GrxColor c)
  * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
  *          free colors.
  */
-GrxColor (grx_color_get_inline)(unsigned char r,unsigned char g,unsigned char b)
+GrxColor(grx_color_get_inline)(unsigned char r, unsigned char g, unsigned char b)
 {
-        return(grx_color_get_inline(r,g,b));
+    return grx_color_get_inline(r, g, b);
 }
 
 /**
@@ -296,9 +296,9 @@ GrxColor (grx_color_get_inline)(unsigned char r,unsigned char g,unsigned char b)
  * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
  *          free colors.
  */
-GrxColor (grx_color_get2)(unsigned int hcolor)
+GrxColor(grx_color_get2)(unsigned int hcolor)
 {
-        return(grx_color_get2(hcolor));
+    return grx_color_get2(hcolor);
 }
 
 /**
@@ -312,9 +312,9 @@ GrxColor (grx_color_get2)(unsigned int hcolor)
  * Returns: the composite color value or #GRX_COLOR_NONE if there are no more
  *          free colors.
  */
-GrxColor (grx_color_get2_inline)(unsigned int hcolor)
+GrxColor(grx_color_get2_inline)(unsigned int hcolor)
 {
-        return(grx_color_get2_inline(hcolor));
+    return grx_color_get2_inline(hcolor);
 }
 
 /**
@@ -328,9 +328,10 @@ GrxColor (grx_color_get2_inline)(unsigned int hcolor)
  *
  * This is the same as grx_color_query(), but inlined in C code.
  */
-void (grx_color_query_inline)(GrxColor c,unsigned char *r,unsigned char *g,unsigned char *b)
+void(grx_color_query_inline)(
+    GrxColor c, unsigned char *r, unsigned char *g, unsigned char *b)
 {
-        grx_color_query_inline(c,r,g,b);
+    grx_color_query_inline(c, r, g, b);
 }
 
 /**
@@ -342,7 +343,7 @@ void (grx_color_query_inline)(GrxColor c,unsigned char *r,unsigned char *g,unsig
  *
  * This is the same as grx_color_query2(), but inlined in C code.
  */
-void (grx_color_query2_inline)(GrxColor c,unsigned int *hcolor)
+void(grx_color_query2_inline)(GrxColor c, unsigned int *hcolor)
 {
-        grx_color_query2_inline(c,hcolor);
+    grx_color_query2_inline(c, hcolor);
 }

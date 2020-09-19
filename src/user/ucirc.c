@@ -42,14 +42,14 @@
  * Draws a circle on the current context centered at the specified coordinates
  * with the specified radius and color.
  */
-void grx_user_draw_circle(int xc,int yc,int r,GrxColor c)
+void grx_user_draw_circle(int xc, int yc, int r, GrxColor c)
 {
 #ifdef USR_KEEP_SHAPE
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(r,r,CURC->x_max,CURC->user_width);
-        grx_draw_circle(xc,yc,r,c);
+    U2SX(xc, CURC);
+    U2SY(yc, CURC);
+    SCALE(r, r, CURC->x_max, CURC->user_width);
+    grx_draw_circle(xc, yc, r, c);
 #else
-        grx_user_draw_ellipse(xc,yc,r,r,c);
+    grx_user_draw_ellipse(xc, yc, r, r, c);
 #endif
 }

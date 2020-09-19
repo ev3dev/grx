@@ -14,16 +14,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-void putscanline(int x,int y,int w,
-                 const GrxColor *scl, GrxColor op )
+#include <grx/color.h>
+
+void putscanline(int x, int y, int w, const GrxColor *scl, GrxColor op)
 {
-   GrxColor skipc;
-   GRX_ENTER();
-   skipc = op ^ GRX_COLOR_MODE_IMAGE;
-   op &= GRX_COLOR_MODE_MASK;
-   for ( w += x; x < w; ++x) {
-     GrxColor c = *(scl++);
-     if (c != skipc) drawpixel(x,y,(c|op));
-   }
-   GRX_LEAVE();
+    GrxColor skipc;
+    GRX_ENTER();
+    skipc = op ^ GRX_COLOR_MODE_IMAGE;
+    op &= GRX_COLOR_MODE_MASK;
+    for (w += x; x < w; ++x) {
+        GrxColor c = *(scl++);
+        if (c != skipc)
+            drawpixel(x, y, (c | op));
+    }
+    GRX_LEAVE();
 }

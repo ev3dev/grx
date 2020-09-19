@@ -35,10 +35,10 @@
  * The ellipse can only draw ellipses with its major axis parallel with either
  * the X or Y coordinate axis
  */
-void grx_draw_filled_ellipse_with_pixmap(int xc,int yc,int rx,int ry,GrxPixmap *p)
+void grx_draw_filled_ellipse_with_pixmap(int xc, int yc, int rx, int ry, GrxPixmap *p)
 {
-        GrFillArg fa;
+    GrFillArg fa;
 
-        fa.p = p;
-        _GrScanEllipse(xc,yc,rx,ry,&_GrPatternFiller,fa,TRUE);
+    fa.p = p;
+    _GrScanEllipse(xc, yc, rx, ry, &_GrPatternFiller, fa, TRUE);
 }

@@ -23,4 +23,4 @@
  *
  * Returns: a #GQuark.
  */
-G_DEFINE_QUARK(grx-error-quark, grx_error)
+G_DEFINE_QUARK(grx - error - quark, grx_error)

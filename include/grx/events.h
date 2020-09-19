@@ -16,9 +16,9 @@
 #ifndef __GRX_EVENT_H__
 #define __GRX_EVENT_H__
 
-#include <glib.h>
-#include <glib-object.h>
 #include <gio/gio.h>
+#include <glib-object.h>
+#include <glib.h>
 
 #include <grx/common.h>
 #include <grx/device.h>
@@ -44,12 +44,11 @@
  * Keyboard key modifier flags.
  */
 typedef enum /*<flags>*/ {
-    GRX_MODIFIER_SHIFT  = 0x01,
-    GRX_MODIFIER_CTRL   = 0x02,
-    GRX_MODIFIER_ALT    = 0x04,
-    GRX_MODIFIER_SUPER  = 0x08,
+    GRX_MODIFIER_SHIFT = 0x01,
+    GRX_MODIFIER_CTRL = 0x02,
+    GRX_MODIFIER_ALT = 0x04,
+    GRX_MODIFIER_SUPER = 0x08,
 } GrxModifierFlags;
-
 
 /**
  * GrxEventType:
@@ -58,7 +57,7 @@ typedef enum /*<flags>*/ {
  * this is triggered by console switching by the linuxfb video driver or when
  * using a graphical desktop driver such as gtk3, this is triggered when the
  * window becomes the active window on the desktop
- * window is the active window 
+ * window is the active window
  * @GRX_EVENT_TYPE_APP_DEACTIVATE: application deactivated event, for example,
  * this is triggered by console switching by the linuxfb video driver or when
  * using a graphical desktop driver such as gtk3, this is triggered when the
@@ -193,26 +192,25 @@ union _GrxEvent {
     GrxTouchEvent touch;
 };
 
-
 #define GRX_TYPE_EVENT grx_event_get_type()
 
-GType grx_event_get_type (void);
-GrxEvent *grx_event_new (GrxEventType type);
-gboolean grx_events_pending (void);
-GrxEvent *grx_event_peek (void);
-GrxEvent *grx_event_get (void);
-void grx_event_put (GrxEvent *event);
-GrxEvent *grx_event_copy (GrxEvent *event);
-void grx_event_free (GrxEvent *event);
+GType grx_event_get_type(void);
+GrxEvent *grx_event_new(GrxEventType type);
+gboolean grx_events_pending(void);
+GrxEvent *grx_event_peek(void);
+GrxEvent *grx_event_get(void);
+void grx_event_put(GrxEvent *event);
+GrxEvent *grx_event_copy(GrxEvent *event);
+void grx_event_free(GrxEvent *event);
 
-GrxEventType grx_event_get_event_type (GrxEvent *event);
-GrxModifierFlags grx_event_get_modifiers (GrxEvent *event);
-GrxDevice *grx_event_get_device (GrxEvent *event);
-GrxKey grx_event_get_keysym (GrxEvent *event);
-gunichar grx_event_get_keychar (GrxEvent *event);
-guint32 grx_event_get_keycode (GrxEvent *event);
-void grx_event_get_coords (GrxEvent *event, gint *x, gint *y);
-guint32 grx_event_get_button (GrxEvent *event);
+GrxEventType grx_event_get_event_type(GrxEvent *event);
+GrxModifierFlags grx_event_get_modifiers(GrxEvent *event);
+GrxDevice *grx_event_get_device(GrxEvent *event);
+GrxKey grx_event_get_keysym(GrxEvent *event);
+gunichar grx_event_get_keychar(GrxEvent *event);
+guint32 grx_event_get_keycode(GrxEvent *event);
+void grx_event_get_coords(GrxEvent *event, gint *x, gint *y);
+guint32 grx_event_get_button(GrxEvent *event);
 
 /**
  * GrxEventHandlerFunc:
@@ -223,8 +221,8 @@ guint32 grx_event_get_button (GrxEvent *event);
  */
 typedef void (*GrxEventHandlerFunc)(GrxEvent *event, gpointer user_data);
 
-GSource *grx_event_handler_source_new (void);
-guint grx_event_handler_add (GrxEventHandlerFunc callback, gpointer user_data,
-                             GDestroyNotify notify);
+GSource *grx_event_handler_source_new(void);
+guint grx_event_handler_add(
+    GrxEventHandlerFunc callback, gpointer user_data, GDestroyNotify notify);
 
 #endif /* __GRX_EVENT_H__ */

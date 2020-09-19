@@ -52,7 +52,8 @@
 typedef struct _GrxCursor GrxCursor;
 
 GType grx_cursor_get_type(void);
-GrxCursor *grx_cursor_new(guint8 *pixels, gint pitch, gint width, gint height, gint x0, gint y0, const GArray *colors);
+GrxCursor *grx_cursor_new(guint8 *pixels, gint pitch, gint width, gint height, gint x0,
+    gint y0, const GArray *colors);
 GrxCursor *grx_cursor_ref(GrxCursor *cursor);
 void grx_cursor_unref(GrxCursor *cursor);
 void grx_cursor_show(GrxCursor *cursor);
@@ -83,22 +84,22 @@ typedef enum {
  * mouse status information
  */
 extern const struct _GR_mouseInfo {
-    gint   (*block)(GrxContext*,gint,gint,gint,gint); /* mouse block function */
-    void  (*unblock)(guint flags); /* mouse unblock function */
-    GrxCursor *cursor;             /* the mouse cursor */
-    gboolean enabled;              /* the cursor is enabled, but possibly not displayed */
-    gboolean displayed;            /* cursor is (generally) drawn */
-    guint    blockflag;            /* cursor temp. erase/block flag */
-    gboolean docheck;              /* need to check before gr. op. to screen */
-    GrxCursorMode cursor_mode;     /* mouse cursor draw mode */
-    gint     x1,y1,x2,y2;          /* auxiliary params for some cursor draw modes */
-    GrxColor curscolor;            /* color for some cursor draw modes */
-    gint     xpos,ypos;            /* current mouse position */
+    gint (*block)(GrxContext *, gint, gint, gint, gint); /* mouse block function */
+    void (*unblock)(guint flags);                        /* mouse unblock function */
+    GrxCursor *cursor;                                   /* the mouse cursor */
+    gboolean enabled;          /* the cursor is enabled, but possibly not displayed */
+    gboolean displayed;        /* cursor is (generally) drawn */
+    guint blockflag;           /* cursor temp. erase/block flag */
+    gboolean docheck;          /* need to check before gr. op. to screen */
+    GrxCursorMode cursor_mode; /* mouse cursor draw mode */
+    gint x1, y1, x2, y2;       /* auxiliary params for some cursor draw modes */
+    GrxColor curscolor;        /* color for some cursor draw modes */
+    gint xpos, ypos;           /* current mouse position */
     GrxDeviceManager *device_manager;
     gulong device_added_handler;
     gulong device_removed_handler;
-    guint  pointer_device_count;
-} * const GrMouseInfo;
+    guint pointer_device_count;
+} *const GrMouseInfo;
 
 #endif /* __GTK_DOC_IGNORE__ */
 #endif /* __GI_SCANNER__ */
@@ -114,19 +115,19 @@ guint grx_mouse_block(GrxContext *context, gint x1, gint y1, gint x2, gint y2);
 void grx_mouse_unblock(guint flags);
 
 #ifndef GRX_SKIP_INLINES
-#define grx_mouse_get_cursor()       (GrMouseInfo->cursor)
-#define grx_mouse_is_cursor_shown()  (GrMouseInfo->displayed)
-#define grx_mouse_block(c,x1,y1,x2,y2) (                                            \
-    (((c) ? (const GrxContext*)(c) : grx_get_current_context())->gc_is_on_screen && \
-        (GrMouseInfo->docheck)) ?                                                  \
-    (*GrMouseInfo->block)((c),(x1),(y1),(x2),(y2)) :                               \
-    0                                                                               \
-)
-#define grx_mouse_unblock(f) do {                                              \
-    if((f) && GrMouseInfo->displayed) {                                       \
-        (*GrMouseInfo->unblock)((f));                                         \
-    }                                                                          \
-} while(0)
-#endif  /* GRX_SKIP_INLINES */
+#define grx_mouse_get_cursor()      (GrMouseInfo->cursor)
+#define grx_mouse_is_cursor_shown() (GrMouseInfo->displayed)
+#define grx_mouse_block(c, x1, y1, x2, y2)                                         \
+    ((((c) ? (const GrxContext *)(c) : grx_get_current_context())->gc_is_on_screen \
+         && (GrMouseInfo->docheck))                                                \
+            ? (*GrMouseInfo->block)((c), (x1), (y1), (x2), (y2))                   \
+            : 0)
+#define grx_mouse_unblock(f)                 \
+    do {                                     \
+        if ((f) && GrMouseInfo->displayed) { \
+            (*GrMouseInfo->unblock)((f));    \
+        }                                    \
+    } while (0)
+#endif /* GRX_SKIP_INLINES */
 
 #endif /* __GRX_INPUT_H__ */

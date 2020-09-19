@@ -18,8 +18,8 @@
 #include <grx/draw.h>
 #include <grx/wideline.h>
 
-#include "libgrx.h"
 #include "allocate.h"
+#include "libgrx.h"
 #include "shapes.h"
 
 /**
@@ -37,27 +37,29 @@
  * from the starting angle to the ending angle with the specified radii,
  * arc style and options.
  */
-void grx_draw_ellipse_arc_with_options(int xc,int yc,int rx,int ry,int start,int end,GrxArcStyle style,const GrxLineOptions *o)
+void grx_draw_ellipse_arc_with_options(int xc, int yc, int rx, int ry, int start,
+    int end, GrxArcStyle style, const GrxLineOptions *o)
 {
     GArray *points;
     GrFillArg fval;
     GrxPoint pt;
     gboolean close = FALSE;
 
-    points = grx_generate_ellipse_arc (xc, yc, rx, ry, start, end);
+    points = grx_generate_ellipse_arc(xc, yc, rx, ry, start, end);
     switch (style) {
     case GRX_ARC_STYLE_OPEN:
         break;
     case GRX_ARC_STYLE_CLOSED_RADIUS:
         pt.x = xc;
         pt.y = yc;
-        g_array_append_val (points, pt);
+        g_array_append_val(points, pt);
         /* fallthrough */
     case GRX_ARC_STYLE_CLOSED_CHORD:
         close = TRUE;
         break;
     }
     fval.color = o->color;
-    _GrDrawCustomPolygon (points->len, (GrxPoint *)points->data, o, &_GrSolidFiller, fval, close,TRUE);
-    g_array_unref (points);
+    _GrDrawCustomPolygon(
+        points->len, (GrxPoint *)points->data, o, &_GrSolidFiller, fval, close, TRUE);
+    g_array_unref(points);
 }

@@ -19,70 +19,79 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "clipping.h"
-#include "shapes.h"
 #include "mouse.h"
+#include "shapes.h"
 
-void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPixmap *p)
+void _GrPatternFilledLine(int x1, int y1, int dx, int dy, GrxPixmap *p)
 {
-        union { GrxFrame *c; unsigned char *b; } src;
-        int sy,ymajor;
-        int pw,ph,px,py;
-        int points,error;
+    union {
+        GrxFrame *c;
+        unsigned char *b;
+    } src;
+    int sy, ymajor;
+    int pw, ph, px, py;
+    int points, error;
 
-        if (dx < 0) {
-                x1 += dx; dx = -dx;
-                y1 += dy; dy = -dy;
-        }
-        if(dy==0) {
-/*int check_if_offsets_correct;*/
-            _GrFillPattern(x1,y1,dx+1,p);
-            return;
-        }
-        if(dy >= 0) {
-            sy = 1;
+    if (dx < 0) {
+        x1 += dx;
+        dx = -dx;
+        y1 += dy;
+        dy = -dy;
+    }
+    if (dy == 0) {
+        /*int check_if_offsets_correct;*/
+        _GrFillPattern(x1, y1, dx + 1, p);
+        return;
+    }
+    if (dy >= 0) {
+        sy = 1;
+    }
+    else {
+        dy = (-dy);
+        sy = (-1);
+    }
+
+    pw = p->width;
+    ph = p->height;
+    px = x1 % pw;
+    py = y1 % ph;
+    src.c = &p->source;
+
+    if (dy > dx) {
+        points = dy + 1;
+        error = dy >> 1;
+        ymajor = TRUE;
+    }
+    else {
+        points = dx + 1;
+        error = dx >> 1;
+        ymajor = FALSE;
+    }
+    while (--points >= 0) {
+        (*CURC->gc_driver->drawpixel)(
+            x1, y1, (*src.c->driver->readpixel)(src.c, px, py));
+        if (ymajor) {
+            if ((error -= dx) < 0)
+                error += dy, x1++, px++;
+            y1 += sy, py += sy;
         }
         else {
-            dy = (-dy);
-            sy = (-1);
+            if ((error -= dy) < 0)
+                error += dx, y1 += sy, py += sy;
+            x1++, px++;
         }
-
-        pw = p->width;
-        ph = p->height;
-        px = x1 % pw;
-        py = y1 % ph;
-        src.c = &p->source;
-
-        if(dy > dx) {
-            points = dy + 1;
-            error  = dy >> 1;
-            ymajor = TRUE;
+        if ((unsigned)py >= (unsigned)ph) {
+            if (py < 0)
+                py += ph;
+            else
+                py -= ph;
         }
-        else {
-            points = dx + 1;
-            error  = dx >> 1;
-            ymajor = FALSE;
-        }
-        while(--points >= 0) {
-            (*CURC->gc_driver->drawpixel)(
-                x1, y1, (*src.c->driver->readpixel)(src.c,px,py)
-            );
-            if(ymajor) {
-                if((error -= dx) < 0) error += dy,x1++,px++;
-                y1 += sy,py += sy;
-            }
-            else {
-                if((error -= dy) < 0) error += dx,y1 += sy,py += sy;
-                x1++,px++;
-            }
-            if((unsigned)py >= (unsigned)ph) {
-                if(py < 0) py += ph;
-                else       py -= ph;
-            }
-            if(px >= pw) px = 0;
-        }
+        if (px >= pw)
+            px = 0;
+    }
 }
 
 /**
@@ -98,10 +107,10 @@ void _GrPatternFilledLine(int x1,int y1,int dx,int dy,GrxPixmap *p)
  *
  * For horizontal and vertical lines, see grx_draw_hline() and grx_draw_vline().
  */
-void grx_draw_filled_line_with_pixmap(int x1,int y1,int x2,int y2,GrxPixmap *p)
+void grx_draw_filled_line_with_pixmap(int x1, int y1, int x2, int y2, GrxPixmap *p)
 {
-        clip_line(CURC,x1,y1,x2,y2);
-        mouse_block(CURC,x1,y1,x2,y2);
-        _GrPatternFilledLine(x1+CURC->x_offset,y1+CURC->x_offset,x2-x1,y2-y1,p);
-        mouse_unblock();
+    clip_line(CURC, x1, y1, x2, y2);
+    mouse_block(CURC, x1, y1, x2, y2);
+    _GrPatternFilledLine(x1 + CURC->x_offset, y1 + CURC->x_offset, x2 - x1, y2 - y1, p);
+    mouse_unblock();
 }

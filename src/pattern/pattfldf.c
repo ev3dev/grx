@@ -15,8 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "libgrx.h"
 #include "clipping.h"
+#include "libgrx.h"
 #include "shapes.h"
 
 /**
@@ -31,8 +31,8 @@
  */
 void grx_flood_fill_with_pixmap(int x, int y, GrxColor border, GrxPixmap *p)
 {
-        GrFillArg fval;
+    GrFillArg fval;
 
-        fval.p = p;
-        _GrFloodFill(x,y,border,&_GrPatternFiller,fval);
+    fval.p = p;
+    _GrFloodFill(x, y, border, &_GrPatternFiller, fval);
 }

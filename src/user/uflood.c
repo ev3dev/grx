@@ -33,7 +33,7 @@
  */
 void grx_user_flood_fill(int x, int y, GrxColor border, GrxColor c)
 {
-        U2SX(x,CURC);
-        U2SY(y,CURC);
-        grx_flood_fill(x,y,border,c);
+    U2SX(x, CURC);
+    U2SY(y, CURC);
+    grx_flood_fill(x, y, border, c);
 }

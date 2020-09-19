@@ -18,15 +18,12 @@
 
 #ifdef __i386__
 
-#define  MK_FP(s,o)      (void *)(                  \
-        ((long)(unsigned short)(s) << 4) +          \
-        (unsigned short)(o)                         \
-)
-#define  FP_SEG(p)      (unsigned short)((long)(p) >> 4)
-#define  FP_OFF(p)      (unsigned short)((int)(p) & 15)
-#define  FP86_SEG(p)    (unsigned short)((long)(p) >> 16)
-#define  FP86_OFF(p)    (unsigned short)((int)(p))
-#define  DECLARE_XFER_BUFFER(size)
-#define  DELETE_XFER_BUFFER
+#define MK_FP(s, o) (void *)(((long)(unsigned short)(s) << 4) + (unsigned short)(o))
+#define FP_SEG(p)   (unsigned short)((long)(p) >> 4)
+#define FP_OFF(p)   (unsigned short)((int)(p)&15)
+#define FP86_SEG(p) (unsigned short)((long)(p) >> 16)
+#define FP86_OFF(p) (unsigned short)((int)(p))
+#define DECLARE_XFER_BUFFER(size)
+#define DELETE_XFER_BUFFER
 
-#endif   /* __i386__ */
+#endif /* __i386__ */

@@ -56,71 +56,71 @@
  * @GRX_GRAPHICS_MODE_TEXT_80X25: Standard 80x25 text mode
  * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT: Text mode with parameters int w, int h
  * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR: Text mode with parameters int w,
- *     int h, GrxColor nc
+ *      int h, GrxColor nc
  * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP: Text mode with parameters int w,
- *     int h, int bpp
+ *      int h, int bpp
  * @GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT: Default graphics mode
  * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT: Graphics mode with parameters
- *     int w, int h
+ *      int w, int h
  * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR: Graphics mode with parameters
- *     int w, int h, GrxColor nc
+ *      int w, int h, GrxColor nc
  * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP: Graphics mode with parameters
- *     int w, int h, int bpp
+ *      int w, int h, int bpp
  * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM: Graphics mode with parameters
- *     int w, int h, GrxColor nc, int vx, int vy
+ *      int w, int h, GrxColor nc, int vx, int vy
  * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP: Graphics mode with parameters
- *     int w, int h, int bpp, int vx, int vy
+ *      int w, int h, int bpp, int vx, int vy
  * @GRX_GRAPHICS_MODE_TEXT_DEFAULT_NC: Same as #GRX_GRAPHICS_MODE_TEXT_DEFAULT
- *     but does not clear video memory
+ *      but does not clear video memory
  * @GRX_GRAPHICS_MODE_TEXT_80X25_NC: Same as #GRX_GRAPHICS_MODE_TEXT_80X25
- *     but does not clear video memory
+ *      but does not clear video memory
  * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_NC: Same as #GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT
- *     but does not clear video memory
- * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR_NC: Same as #GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR
- *     but does not clear video memory
- * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP_NC: Same as #GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP
- *     but does not clear video memory
+ *      but does not clear video memory
+ * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR_NC: Same as
+ *      #GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR but does not clear video memory
+ * @GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP_NC: Same as
+ *      #GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP but does not clear video memory
  * @GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT
- *     but does not clear video memory
- * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT
- *     but does not clear video memory
- * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR
- *     but does not clear video memory
- * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP
- *     but does not clear video memory
+ *      but does not clear video memory
+ * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_NC: Same as
+ *      #GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT but does not clear video memory
+ * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR_NC: Same as
+ *      #GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR but does not clear video memory
+ * @GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP_NC: Same as
+ *      #GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP but does not clear video memory
  * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM
- *     but does not clear video memory
- * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC: Same as #GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP
- *     but does not clear video memory
+ *      but does not clear video memory
+ * @GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC: Same as
+ *      #GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP but does not clear video memory
  *
  * available video modes (for grx_set_mode())
  */
 typedef enum {
-    GRX_GRAPHICS_MODE_UNKNOWN = (-1),   /* initial state */
+    GRX_GRAPHICS_MODE_UNKNOWN = (-1), /* initial state */
     /* ============= modes which clear the video memory ============= */
-    GRX_GRAPHICS_MODE_TEXT_DEFAULT = 0,               /* Extra parameters for grx_set_mode: */
+    GRX_GRAPHICS_MODE_TEXT_DEFAULT = 0, /* Extra parameters for grx_set_mode: */
     GRX_GRAPHICS_MODE_TEXT_80X25,
-    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT,              /* int w,int h */
-    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR,        /* int w,int h,GrxColor nc */
-    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP,          /* int w,int h,int bpp */
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT,       /* int w,int h */
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR, /* int w,int h,GrxColor nc */
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP,   /* int w,int h,int bpp */
     GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT = GRX_GRAPHICS_MODE_TEXT_DEFAULT + 64,
-    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT,          /* int w,int h */
-    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR,    /* int w,int h,GrxColor nc */
-    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,      /* int w,int h,int bpp */
-    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM,                /* int w,int h,GrxColor nc,int vx,int vy */
-    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP,            /* int w,int h,int bpp,int vx,int vy */
+    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT,       /* int w,int h */
+    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR, /* int w,int h,GrxColor nc */
+    GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP,   /* int w,int h,int bpp */
+    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM,     /* int w,int h,GrxColor nc,int vx,int vy */
+    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP, /* int w,int h,int bpp,int vx,int vy */
     /* ==== equivalent modes which do not clear the video memory ==== */
     GRX_GRAPHICS_MODE_TEXT_DEFAULT_NC = GRX_GRAPHICS_MODE_TEXT_DEFAULT + 32,
     GRX_GRAPHICS_MODE_TEXT_80X25_NC,
-    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_NC,           /* int w,int h */
-    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR_NC,     /* int w,int h,GrxColor nc */
-    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP_NC,       /* int w,int h,int bpp */
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_NC,       /* int w,int h */
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_COLOR_NC, /* int w,int h,GrxColor nc */
+    GRX_GRAPHICS_MODE_TEXT_WIDTH_HEIGHT_BPP_NC,   /* int w,int h,int bpp */
     GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT_NC = GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT + 32,
     GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_NC,       /* int w,int h */
     GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR_NC, /* int w,int h,GrxColor nc */
     GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP_NC,   /* int w,int h,int bpp */
-    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_NC,             /* int w,int h,GrxColor nc,int vx,int vy */
-    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC          /* int w,int h,int bpp,int vx,int vy */
+    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_NC,    /* int w,int h,GrxColor nc,int vx,int vy */
+    GRX_GRAPHICS_MODE_GRAPHICS_CUSTOM_BPP_NC /* int w,int h,int bpp,int vx,int vy */
 } GrxGraphicsMode;
 
 /**
@@ -154,18 +154,18 @@ typedef enum /*< flags >*/ {
  */
 struct _GrxVideoDriver {
     /*<private>*/
-    gchar                   *name;
-    GrxVideoDriverFlags     flags;
-    GrxVideoDriver          *inherit;
-    GrxVideoMode            *modes;
-    gint                    n_modes;
-    gboolean                (*detect)(void);
-    gboolean                (*init)(const gchar *options);
-    void                    (*reset)(void);
-    GrxVideoMode            *(*select_mode)(GrxVideoDriver *drv, gint w, gint h,
-                                            gint bpp, gboolean txt, guint *ep);
-    guint                   (*get_dpi)(GrxVideoDriver *drv);
-    gpointer                reserved[6];
+    gchar *name;
+    GrxVideoDriverFlags flags;
+    GrxVideoDriver *inherit;
+    GrxVideoMode *modes;
+    gint n_modes;
+    gboolean (*detect)(void);
+    gboolean (*init)(const gchar *options);
+    void (*reset)(void);
+    GrxVideoMode *(*select_mode)(
+        GrxVideoDriver *drv, gint w, gint h, gint bpp, gboolean txt, guint *ep);
+    guint (*get_dpi)(GrxVideoDriver *drv);
+    gpointer reserved[6];
 };
 
 /**
@@ -185,13 +185,13 @@ struct _GrxVideoDriver {
  */
 struct _GrxVideoMode {
     /*<private>*/
-    gboolean         present;
-    guint8           bpp;
-    guint16          width;
-    guint16          height;
-    guint16          mode;
-    gint             line_offset;
-    gpointer         user_data;
+    gboolean present;
+    guint8 bpp;
+    guint16 width;
+    guint16 height;
+    guint16 mode;
+    gint line_offset;
+    gpointer user_data;
     GrxVideoModeExt *extended_info;
 };
 
@@ -203,8 +203,8 @@ struct _GrxVideoMode {
  * Video mode flag bits (in the #GrxVideoModeExt structure)
  */
 typedef enum /*< flags >*/ {
-    GRX_VIDEO_MODE_FLAG_LINEAR        = 0x01,
-    GRX_VIDEO_MODE_FLAG_MEMORY        = 0x02,
+    GRX_VIDEO_MODE_FLAG_LINEAR = 0x01,
+    GRX_VIDEO_MODE_FLAG_MEMORY = 0x02,
 } GrxVideoModeFlags;
 
 /**
@@ -217,19 +217,20 @@ typedef enum /*< flags >*/ {
  */
 struct _GrxVideoModeExt {
     /*<private>*/
-    GrxFrameMode mode;                  /* frame driver for this video mode */
-    GrxFrameDriver *drv;                /* optional frame driver override */
-    guint8 *frame;                      /* frame buffer address */
-    guint8  cprec[3];                   /* color component precisions */
-    guint8  cpos[3];                    /* color component bit positions */
-    GrxVideoModeFlags flags;            /* mode flag bits; see "grdriver.h" */
+    GrxFrameMode mode;       /* frame driver for this video mode */
+    GrxFrameDriver *drv;     /* optional frame driver override */
+    guint8 *frame;           /* frame buffer address */
+    guint8 cprec[3];         /* color component precisions */
+    guint8 cpos[3];          /* color component bit positions */
+    GrxVideoModeFlags flags; /* mode flag bits; see "grdriver.h" */
     gboolean (*setup)(GrxVideoMode *md, gboolean no_clear);
-    gboolean (*set_virtual_size)(GrxVideoMode *md, guint w, guint h, GrxVideoMode *result);
+    gboolean (*set_virtual_size)(
+        GrxVideoMode *md, guint w, guint h, GrxVideoMode *result);
     gboolean (*scroll)(GrxVideoMode *md, gint x, gint y, gint result[2]);
-    void  (*set_bank)(gint bank);
-    void  (*set_rw_banks)(gint read_bank, gint write_bank);
-    void  (*load_color)(GrxColor c, GrxColor r, GrxColor g, GrxColor b);
-    gint    lfb_selector;
+    void (*set_bank)(gint bank);
+    void (*set_rw_banks)(gint read_bank, gint write_bank);
+    void (*load_color)(GrxColor c, GrxColor r, GrxColor g, GrxColor b);
+    gint lfb_selector;
 };
 
 /**
@@ -239,35 +240,35 @@ struct _GrxVideoModeExt {
  */
 struct _GrxFrameDriver {
     /*<private>*/
-    GrxFrameMode mode;                   /* supported frame access mode */
-    GrxFrameMode rmode;                  /* matching RAM frame (if video) */
-    gboolean is_video;                   /* video RAM frame driver ? */
-    gint     row_align;                  /* scan line size alignment */
-    gint     bits_per_pixel;             /* bits per pixel */
-    gint     max_mem_size;               /* maximum frame memory size in bytes */
+    GrxFrameMode mode;   /* supported frame access mode */
+    GrxFrameMode rmode;  /* matching RAM frame (if video) */
+    gboolean is_video;   /* video RAM frame driver ? */
+    gint row_align;      /* scan line size alignment */
+    gint bits_per_pixel; /* bits per pixel */
+    gint max_mem_size;   /* maximum frame memory size in bytes */
     gboolean (*init)(GrxVideoMode *md);
     GrxColor (*readpixel)(GrxFrame *c, gint x, gint y);
-    void     (*drawpixel)(gint x, gint y, GrxColor c);
-    void     (*drawline)(gint x, gint y, gint dx, gint dy, GrxColor c);
-    void     (*drawhline)(gint x, gint y, gint w, GrxColor c);
-    void     (*drawvline)(gint x, gint y, gint h, GrxColor c);
-    void     (*drawblock)(gint x, gint y, gint w, gint h, GrxColor c);
-    void     (*drawbitmap)(gint x, gint y, gint w, gint h, guint8 *bmp,
-                           gint pitch, gint start, GrxColor fg, GrxColor bg);
-    void     (*drawpattern)(gint x, gint y, gint w, guint8 patt, GrxColor fg, GrxColor bg);
-    void     (*bitblt)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src,
-                       gint x, gint y, gint w, gint h, GrxColor op);
-    void     (*bltv2r)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src,
-                       gint x, gint y, gint w, gint h, GrxColor op);
-    void     (*bltr2v)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src,
-                       gint x, gint y, gint w, gint h, GrxColor op);
+    void (*drawpixel)(gint x, gint y, GrxColor c);
+    void (*drawline)(gint x, gint y, gint dx, gint dy, GrxColor c);
+    void (*drawhline)(gint x, gint y, gint w, GrxColor c);
+    void (*drawvline)(gint x, gint y, gint h, GrxColor c);
+    void (*drawblock)(gint x, gint y, gint w, gint h, GrxColor c);
+    void (*drawbitmap)(gint x, gint y, gint w, gint h, guint8 *bmp, gint pitch,
+        gint start, GrxColor fg, GrxColor bg);
+    void (*drawpattern)(gint x, gint y, gint w, guint8 patt, GrxColor fg, GrxColor bg);
+    void (*bitblt)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y,
+        gint w, gint h, GrxColor op);
+    void (*bltv2r)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y,
+        gint w, gint h, GrxColor op);
+    void (*bltr2v)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y,
+        gint w, gint h, GrxColor op);
     GrxColor *(*getindexedscanline)(GrxFrame *c, gint x, gint y, gint w, gint *indx);
-      /* will return an array of pixel values pv[] read from frame   */
-      /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
-      /*    else             pv[i=0..w-1] = readpixel(x+indx[i],y)   */
-    void     (*putscanline)(gint x, gint y, gint w, const GrxColor *scl, GrxColor op);
-      /* will draw scl[i=0..w-1] to frame:                           */
-      /*    if (scl[i] != skipcolor) drawpixel(x+i,y,(scl[i] | op))  */
+    /* will return an array of pixel values pv[] read from frame   */
+    /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
+    /*    else             pv[i=0..w-1] = readpixel(x+indx[i],y)   */
+    void (*putscanline)(gint x, gint y, gint w, const GrxColor *scl, GrxColor op);
+    /* will draw scl[i=0..w-1] to frame:                           */
+    /*    if (scl[i] != skipcolor) drawpixel(x+i,y,(scl[i] | op))  */
 };
 
 #ifndef __GI_SCANNER__
@@ -278,25 +279,25 @@ struct _GrxFrameDriver {
  * driver and mode info structure
  */
 extern const struct _GR_driverInfo {
-        GrxVideoDriver     *vdriver;        /* the current video driver */
-        GrxVideoMode       *curmode;        /* current video mode pointer */
-        GrxVideoMode        actmode;        /* copy of above, resized if virtual */
-        GrxFrameDriver      fdriver;        /* frame driver for the current context */
-        GrxFrameDriver      sdriver;        /* frame driver for the screen */
-        GrxFrameDriver      tdriver;        /* a dummy driver for text modes */
-        GrxGraphicsMode     mcode;          /* code for the current mode */
-        GrxDeviceManager   *device_manager; /* device manager for current video driver */
-        int     deftw,defth;                /* default text mode size */
-        int     defgw,defgh;                /* default graphics mode size */
-        GrxColor deftc,defgc;               /* default text and graphics colors */
-        int     dpi;                        /* override vdriver get_dpi */
-        int     vposx,vposy;                /* current virtual viewport position */
-        int     splitbanks;                 /* indicates separate R/W banks */
-        int     curbank;                    /* currently mapped bank */
-        void  (*set_bank)(int bk);          /* banking routine */
-        void  (*set_rw_banks)(int rb,int wb); /* split banking routine */
-        void  *reserved[6];                 /* for future use */
-} * const GrDriverInfo;
+    GrxVideoDriver *vdriver;              /* the current video driver */
+    GrxVideoMode *curmode;                /* current video mode pointer */
+    GrxVideoMode actmode;                 /* copy of above, resized if virtual */
+    GrxFrameDriver fdriver;               /* frame driver for the current context */
+    GrxFrameDriver sdriver;               /* frame driver for the screen */
+    GrxFrameDriver tdriver;               /* a dummy driver for text modes */
+    GrxGraphicsMode mcode;                /* code for the current mode */
+    GrxDeviceManager *device_manager;     /* device manager for current video driver */
+    int deftw, defth;                     /* default text mode size */
+    int defgw, defgh;                     /* default graphics mode size */
+    GrxColor deftc, defgc;                /* default text and graphics colors */
+    int dpi;                              /* override vdriver get_dpi */
+    int vposx, vposy;                     /* current virtual viewport position */
+    int splitbanks;                       /* indicates separate R/W banks */
+    int curbank;                          /* currently mapped bank */
+    void (*set_bank)(int bk);             /* banking routine */
+    void (*set_rw_banks)(int rb, int wb); /* split banking routine */
+    void *reserved[6];                    /* for future use */
+} *const GrDriverInfo;
 
 #endif /* __GTK_DOC_IGNORE__ */
 #endif /* __GI_SCANNER__ */
@@ -315,12 +316,12 @@ guint grx_get_dpi(void);
 GrxDeviceManager *grx_get_device_manager(void);
 
 const GrxVideoDriver *grx_get_current_video_driver(void);
-const GrxVideoMode   *grx_get_current_video_mode(void);
-const GrxVideoMode   *grx_get_virtual_video_mode(void);
+const GrxVideoMode *grx_get_current_video_mode(void);
+const GrxVideoMode *grx_get_virtual_video_mode(void);
 const GrxFrameDriver *grx_get_current_frame_driver(void);
 const GrxFrameDriver *grx_get_screen_frame_driver(void);
-const GrxVideoMode   *grx_get_first_video_mode(GrxFrameMode mode);
-const GrxVideoMode   *grx_get_next_video_mode(const GrxVideoMode *prev);
+const GrxVideoMode *grx_get_first_video_mode(GrxFrameMode mode);
+const GrxVideoMode *grx_get_next_video_mode(const GrxVideoMode *prev);
 
 /**
  * GRX_DEFAULT_DPI:
@@ -335,14 +336,15 @@ const GrxVideoMode   *grx_get_next_video_mode(const GrxVideoMode *prev);
  * inline implementation for some of the above
  */
 #ifndef GRX_SKIP_INLINES
-#define grx_get_device_manager()        (GrDriverInfo->device_manager)
+#define grx_get_device_manager() (GrDriverInfo->device_manager)
 
-#define grx_get_current_video_driver()  ((const GrxVideoDriver *)( GrDriverInfo->vdriver))
-#define grx_get_current_video_mode()    ((const GrxVideoMode   *)( GrDriverInfo->curmode))
-#define grx_get_virtual_video_mode()    ((const GrxVideoMode   *)(&GrDriverInfo->actmode))
-#define grx_get_current_frame_driver()  ((const GrxFrameDriver *)(&GrDriverInfo->fdriver))
-#define grx_get_screen_frame_driver()   ((const GrxFrameDriver *)(&GrDriverInfo->sdriver))
+#define grx_get_current_video_driver() ((const GrxVideoDriver *)(GrDriverInfo->vdriver))
+#define grx_get_current_video_mode()   ((const GrxVideoMode *)(GrDriverInfo->curmode))
+#define grx_get_virtual_video_mode()   ((const GrxVideoMode *)(&GrDriverInfo->actmode))
+#define grx_get_current_frame_driver() \
+    ((const GrxFrameDriver *)(&GrDriverInfo->fdriver))
+#define grx_get_screen_frame_driver() ((const GrxFrameDriver *)(&GrDriverInfo->sdriver))
 
-#endif  /* GRX_SKIP_INLINES */
+#endif /* GRX_SKIP_INLINES */
 
 #endif /* __GRX_MODE_H__ */

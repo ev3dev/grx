@@ -32,35 +32,38 @@
 #endif
 
 #ifndef BANKPOS
-#define BANKPOS(offs)   ((GR_int16u)(offs))
+#define BANKPOS(offs) ((GR_int16u)(offs))
 #endif
 #ifndef BANKNUM
-#define BANKNUM(offs)   ((int)((GR_int32u)(offs) >> 16))
+#define BANKNUM(offs) ((int)((GR_int32u)(offs) >> 16))
 #endif
 #ifndef BANKLFT
-#define BANKLFT(offs)   (0x10000 - BANKPOS(offs))
+#define BANKLFT(offs) (0x10000 - BANKPOS(offs))
 #endif
 
-#define SETBANK(bk) do {                            \
-        register int _bankval_ = (bk);              \
-        DRVINFO->curbank = _bankval_;               \
-        (*DRVINFO->set_bank)(_bankval_);            \
-        BANKHOOK;                                   \
-} while(0)
+#define SETBANK(bk)                      \
+    do {                                 \
+        register int _bankval_ = (bk);   \
+        DRVINFO->curbank = _bankval_;    \
+        (*DRVINFO->set_bank)(_bankval_); \
+        BANKHOOK;                        \
+    } while (0)
 
-#define SRWBANK(rb,wb) do {                         \
-        DRVINFO->curbank = (-1);                    \
-        (*DRVINFO->set_rw_banks)((rb),(wb));        \
-        RWBANKHOOK;                                 \
-} while(0)
+#define SRWBANK(rb, wb)                       \
+    do {                                      \
+        DRVINFO->curbank = (-1);              \
+        (*DRVINFO->set_rw_banks)((rb), (wb)); \
+        RWBANKHOOK;                           \
+    } while (0)
 
-#define CHKBANK(bk) do {                            \
-        register int _bankval_ = (bk);              \
-        if(_bankval_ != DRVINFO->curbank) {         \
-        DRVINFO->curbank = _bankval_;               \
-        (*DRVINFO->set_bank)(_bankval_);            \
-        BANKHOOK;                                   \
-        }                                           \
-} while(0)
+#define CHKBANK(bk)                          \
+    do {                                     \
+        register int _bankval_ = (bk);       \
+        if (_bankval_ != DRVINFO->curbank) { \
+            DRVINFO->curbank = _bankval_;    \
+            (*DRVINFO->set_bank)(_bankval_); \
+            BANKHOOK;                        \
+        }                                    \
+    } while (0)
 
 #endif /* __INCLUDE_BANKING_H__ */

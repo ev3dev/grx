@@ -15,23 +15,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-void drawbitmap(int x,int y,int w,int h,
-                unsigned char *bmp,int pitch,int start,GrxColor fg,GrxColor bg)
+void drawbitmap(int x, int y, int w, int h, unsigned char *bmp, int pitch, int start,
+    GrxColor fg, GrxColor bg)
 {
-        GRX_ENTER();
-        w += x; h += y;
-        bmp += (unsigned int)start >> 3;
-        start &= 7;
+    GRX_ENTER();
+    w += x;
+    h += y;
+    bmp += (unsigned int)start >> 3;
+    start &= 7;
+    do {
+        unsigned char *bitp = bmp;
+        unsigned char bits = *bitp;
+        unsigned char mask = 0x80 >> start;
+        int xx = x;
         do {
-            unsigned char *bitp = bmp;
-            unsigned char bits = *bitp;
-            unsigned char mask = 0x80 >> start;
-            int   xx = x;
-            do {
-                drawpixel(xx,y,(bits & mask) ? fg : bg);
-                if((mask >>= 1) == 0) bits = *++bitp,mask = 0x80;
-            } while(++xx != w);
-            bmp += pitch;
-        } while(++y != h);
-        GRX_LEAVE();
+            drawpixel(xx, y, (bits & mask) ? fg : bg);
+            if ((mask >>= 1) == 0)
+                bits = *++bitp, mask = 0x80;
+        } while (++xx != w);
+        bmp += pitch;
+    } while (++y != h);
+    GRX_LEAVE();
 }

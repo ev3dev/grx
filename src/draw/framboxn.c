@@ -18,8 +18,8 @@
 #include <grx/draw.h>
 #include <grx/draw_nc.h>
 
-#include "libgrx.h"
 #include "clipping.h"
+#include "libgrx.h"
 
 /**
  * grx_fast_draw_framed_box:
@@ -38,20 +38,24 @@
  * box, including the frame, is within the bounds of the current context, then
  * use grx_draw_framed_box() instead.
  */
-void grx_fast_draw_framed_box(int x1,int y1,int x2,int y2,int wdt,const GrxFramedBoxColors *c)
+void grx_fast_draw_framed_box(
+    int x1, int y1, int x2, int y2, int wdt, const GrxFramedBoxColors *c)
 {
-        isort(x1,x2);
-        isort(y1,y2);
-        if(wdt < 0) wdt = 0;
-        if(c->background != GRX_COLOR_NONE) {
-            grx_fast_draw_filled_box(x1,y1,x2,y2,c->background);
-        }
-        while(--wdt >= 0) {
-            x1--; x2++;
-            y1--; y2++;
-            grx_fast_draw_hline(x1,x2,y1,c->border_top);
-            grx_fast_draw_vline(x1,(y1 + 1),(y2 - 1),c->border_left);
-            grx_fast_draw_vline(x2,(y1 + 1),(y2 - 1),c->border_right);
-            grx_fast_draw_hline(x1,x2,y2,c->border_bottom);
-        }
+    isort(x1, x2);
+    isort(y1, y2);
+    if (wdt < 0)
+        wdt = 0;
+    if (c->background != GRX_COLOR_NONE) {
+        grx_fast_draw_filled_box(x1, y1, x2, y2, c->background);
+    }
+    while (--wdt >= 0) {
+        x1--;
+        x2++;
+        y1--;
+        y2++;
+        grx_fast_draw_hline(x1, x2, y1, c->border_top);
+        grx_fast_draw_vline(x1, (y1 + 1), (y2 - 1), c->border_left);
+        grx_fast_draw_vline(x2, (y1 + 1), (y2 - 1), c->border_right);
+        grx_fast_draw_hline(x1, x2, y2, c->border_bottom);
+    }
 }

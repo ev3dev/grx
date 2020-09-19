@@ -23,16 +23,16 @@
 
 #include <grx/pixmap.h>
 
+#include "allocate.h"
 #include "colors.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "allocate.h"
 
-#define  MY_MEMORY             1        /* set if my context memory */
-#define  MY_CONTEXT            2        /* set if my context structure */
+#define MY_MEMORY  1 /* set if my context memory */
+#define MY_CONTEXT 2 /* set if my context structure */
 
-#define  BEST_MAX_LINE         128
-#define  BEST_MAX_CONTEXT      2048L
+#define BEST_MAX_LINE    128
+#define BEST_MAX_CONTEXT 2048L
 
 G_DEFINE_BOXED_TYPE(GrxPixmap, grx_pixmap, grx_pixmap_copy, grx_pixmap_free);
 
@@ -41,24 +41,26 @@ G_DEFINE_BOXED_TYPE(GrxPixmap, grx_pixmap, grx_pixmap_copy, grx_pixmap_free);
  * in bitplane modes it is especially desirable to replicate until
  * the width is a multiple of 8
  */
-static int _GrBestPixmapWidth(int wdt,int hgt)
+static int _GrBestPixmapWidth(int wdt, int hgt)
 {
-        long total   = grx_screen_get_context_size(wdt,hgt);
-        int  linelen = grx_screen_get_line_offset(wdt);
-        int  factor  = 1;
-        int  test;
+    long total = grx_screen_get_context_size(wdt, hgt);
+    int linelen = grx_screen_get_line_offset(wdt);
+    int factor = 1;
+    int test;
 
-        if(total == 0L) return(0);
+    if (total == 0L)
+        return 0;
 #ifdef _MAXMEMPLANESIZE
-        if(total > _MAXMEMPLANESIZE) return(0);
+    if (total > _MAXMEMPLANESIZE)
+        return 0;
 #endif
-        if((test = (int)(BEST_MAX_CONTEXT / total)) > factor)
-            factor = test;
-        if((test = (BEST_MAX_LINE / linelen)) < factor)
-            factor = test;
-        while((factor >>= 1) != 0)
-            wdt <<= 1;
-        return(wdt);
+    if ((test = (int)(BEST_MAX_CONTEXT / total)) > factor)
+        factor = test;
+    if ((test = (BEST_MAX_LINE / linelen)) < factor)
+        factor = test;
+    while ((factor >>= 1) != 0)
+        wdt <<= 1;
+    return wdt;
 }
 
 /**
@@ -77,48 +79,50 @@ static int _GrBestPixmapWidth(int wdt,int hgt)
  *
  * Returns: (nullable): a new #GrxPixmap or %NULL if there was an error.
  */
-GrxPixmap *grx_pixmap_new(const unsigned char *pixels,int w,int h,const GArray *ct)
+GrxPixmap *grx_pixmap_new(const unsigned char *pixels, int w, int h, const GArray *ct)
 {
-        GrxContext csave,cwork;
-        GrxPixmap  *result;
-        unsigned  char *src;
-        int  wdt,wdt2,fullw;
-        int  hgt;
-        GrxColor color;
+    GrxContext csave, cwork;
+    GrxPixmap *result;
+    unsigned char *src;
+    int wdt, wdt2, fullw;
+    int hgt;
+    GrxColor color;
 
-        if((fullw = _GrBestPixmapWidth(w,h)) <= 0) return(NULL);
-        result = (GrxPixmap *)malloc(sizeof(GrxPixmap));
-        if (result == NULL) return(NULL);
+    if ((fullw = _GrBestPixmapWidth(w, h)) <= 0)
+        return NULL;
+    result = (GrxPixmap *)malloc(sizeof(GrxPixmap));
+    if (result == NULL)
+        return NULL;
 
-        if (!grx_context_new(fullw,h,NULL,&cwork)) {
-          free(result);
-          return NULL;
-        }
-        csave = *CURC;
-        *CURC = cwork;
-        for(hgt = 0; hgt < h; hgt++) {
-            for(wdt2 = fullw; (wdt2 -= w) >= 0; ) {
-                src = (unsigned char *)pixels;
-                for(wdt = 0; wdt < w; wdt++) {
-                    color = *src++;
-                    if (ct != NULL) {
-                        color = grx_color_lookup(ct, color);
-                    }
-                    (*CURC->gc_driver->drawpixel)(wdt2+wdt,hgt,(color & C_COLOR));
+    if (!grx_context_new(fullw, h, NULL, &cwork)) {
+        free(result);
+        return NULL;
+    }
+    csave = *CURC;
+    *CURC = cwork;
+    for (hgt = 0; hgt < h; hgt++) {
+        for (wdt2 = fullw; (wdt2 -= w) >= 0;) {
+            src = (unsigned char *)pixels;
+            for (wdt = 0; wdt < w; wdt++) {
+                color = *src++;
+                if (ct != NULL) {
+                    color = grx_color_lookup(ct, color);
                 }
+                (*CURC->gc_driver->drawpixel)(wdt2 + wdt, hgt, (color & C_COLOR));
             }
-            pixels += w;
         }
-        *CURC = csave;
-        result->source = cwork.frame;
-        result->source.memory_flags = (MY_CONTEXT | MY_MEMORY);
-        result->is_pixmap = TRUE;
-        result->width  = fullw;
-        result->height = h;
-        result->mode   = 0;
-        result->context = NULL;
+        pixels += w;
+    }
+    *CURC = csave;
+    result->source = cwork.frame;
+    result->source.memory_flags = (MY_CONTEXT | MY_MEMORY);
+    result->is_pixmap = TRUE;
+    result->width = fullw;
+    result->height = h;
+    result->mode = 0;
+    result->context = NULL;
 
-        return result;
+    return result;
 }
 
 /**
@@ -135,47 +139,54 @@ GrxPixmap *grx_pixmap_new(const unsigned char *pixels,int w,int h,const GArray *
  *
  * Returns: (nullable): a new #GrxPixmap or %NULL if there was an error.
  */
-GrxPixmap *grx_pixmap_new_from_bits(const unsigned char *bits,int w,int h,GrxColor fgc,GrxColor bgc)
+GrxPixmap *grx_pixmap_new_from_bits(
+    const unsigned char *bits, int w, int h, GrxColor fgc, GrxColor bgc)
 {
-        GrxContext csave,cwork;
-        GrxPixmap  *result;
-        unsigned  char *src;
-        int  wdt,wdt2,fullw;
-        int  hgt,mask,byte;
+    GrxContext csave, cwork;
+    GrxPixmap *result;
+    unsigned char *src;
+    int wdt, wdt2, fullw;
+    int hgt, mask, byte;
 
-        if((fullw = _GrBestPixmapWidth(w,h)) <= 0) return(NULL);
-        result = (GrxPixmap *)malloc(sizeof(GrxPixmap));
-        if(result == NULL) return(NULL);
+    if ((fullw = _GrBestPixmapWidth(w, h)) <= 0)
+        return NULL;
+    result = (GrxPixmap *)malloc(sizeof(GrxPixmap));
+    if (result == NULL)
+        return NULL;
 
-        if (!grx_context_new(fullw,h,NULL,&cwork)) {
-          free(result);
-          return NULL;
-        }
-        csave = *CURC;
-        *CURC = cwork;
-        fgc &= C_COLOR;
-        bgc &= C_COLOR;
-        for(hgt = 0; hgt < h; hgt++) {
-            for(wdt2 = fullw; (wdt2 -= w) >= 0; ) {
-                src  = (unsigned char *)bits;
-                mask = byte = 0;
-                for(wdt = w; --wdt >= 0; ) {
-                    if((mask >>= 1) == 0) { mask = 0x80; byte = *src++; }
-                    (*CURC->gc_driver->drawpixel)(wdt2+wdt,hgt,((byte & mask) ? fgc : bgc));
+    if (!grx_context_new(fullw, h, NULL, &cwork)) {
+        free(result);
+        return NULL;
+    }
+    csave = *CURC;
+    *CURC = cwork;
+    fgc &= C_COLOR;
+    bgc &= C_COLOR;
+    for (hgt = 0; hgt < h; hgt++) {
+        for (wdt2 = fullw; (wdt2 -= w) >= 0;) {
+            src = (unsigned char *)bits;
+            mask = byte = 0;
+            for (wdt = w; --wdt >= 0;) {
+                if ((mask >>= 1) == 0) {
+                    mask = 0x80;
+                    byte = *src++;
                 }
+                (*CURC->gc_driver->drawpixel)(
+                    wdt2 + wdt, hgt, ((byte & mask) ? fgc : bgc));
             }
-            bits += (w + 7) >> 3;
         }
-        *CURC = csave;
-        result->source = cwork.frame;
-        result->source.memory_flags = (MY_CONTEXT | MY_MEMORY);
-        result->is_pixmap = TRUE;
-        result->width  = fullw;
-        result->height = h;
-        result->mode   = 0;
-        result->context = NULL;
+        bits += (w + 7) >> 3;
+    }
+    *CURC = csave;
+    result->source = cwork.frame;
+    result->source.memory_flags = (MY_CONTEXT | MY_MEMORY);
+    result->is_pixmap = TRUE;
+    result->width = fullw;
+    result->height = h;
+    result->mode = 0;
+    result->context = NULL;
 
-        return result;
+    return result;
 }
 
 /**
@@ -227,11 +238,14 @@ GrxPixmap *grx_pixmap_copy(GrxPixmap *p)
     GrxContext src_ctx, *copy_ctx;
     GrxPixmap *copy;
 
-    grx_context_new_full(p->source.driver->mode, p->width, p->height, p->source.base_address, &src_ctx);
-    copy_ctx = grx_context_new_full(p->source.driver->mode, p->width, p->height, NULL, NULL);
+    grx_context_new_full(
+        p->source.driver->mode, p->width, p->height, p->source.base_address, &src_ctx);
+    copy_ctx =
+        grx_context_new_full(p->source.driver->mode, p->width, p->height, NULL, NULL);
     g_return_val_if_fail(copy_ctx != NULL, NULL);
 
-    grx_context_bit_blt(copy_ctx, 0, 0, &src_ctx, 0, 0, p->width - 1, p->height - 1, GRX_COLOR_MODE_WRITE);
+    grx_context_bit_blt(copy_ctx, 0, 0, &src_ctx, 0, 0, p->width - 1, p->height - 1,
+        GRX_COLOR_MODE_WRITE);
     copy = grx_pixmap_new_from_context(copy_ctx);
     grx_context_unref(copy_ctx);
 
@@ -253,7 +267,7 @@ void grx_pixmap_free(GrxPixmap *p)
         free(p->source.base_address);
     }
     if (p->context) {
-        grx_context_unref (p->context);
+        grx_context_unref(p->context);
     }
     if (p->source.memory_flags & MY_CONTEXT) {
         free(p);

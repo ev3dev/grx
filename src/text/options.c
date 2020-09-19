@@ -20,7 +20,8 @@
 
 #include "text.h"
 
-G_DEFINE_BOXED_TYPE(GrxTextOptions, grx_text_options, grx_text_options_ref, grx_text_options_unref);
+G_DEFINE_BOXED_TYPE(
+    GrxTextOptions, grx_text_options, grx_text_options_ref, grx_text_options_unref);
 
 /**
  * grx_text_options_new:
@@ -38,7 +39,8 @@ G_DEFINE_BOXED_TYPE(GrxTextOptions, grx_text_options, grx_text_options_ref, grx_
  */
 GrxTextOptions *grx_text_options_new(GrxFont *font, GrxColor fg)
 {
-    return grx_text_options_new_full(font, fg, GRX_COLOR_NONE, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+    return grx_text_options_new_full(
+        font, fg, GRX_COLOR_NONE, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
 }
 
 /**
@@ -56,7 +58,8 @@ GrxTextOptions *grx_text_options_new(GrxFont *font, GrxColor fg)
  *
  * Returns: (transfer full): the new #GrxTextOptions structure
  */
-GrxTextOptions *grx_text_options_new_full(GrxFont *font, GrxColor fg, GrxColor bg, GrxTextHAlign h_align, GrxTextVAlign v_align)
+GrxTextOptions *grx_text_options_new_full(GrxFont *font, GrxColor fg, GrxColor bg,
+    GrxTextHAlign h_align, GrxTextVAlign v_align)
 {
     GrxTextOptions *options;
 

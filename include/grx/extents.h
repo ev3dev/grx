@@ -63,30 +63,32 @@ gint grx_get_clip_box_max_x(void);
 gint grx_get_clip_box_max_y(void);
 
 #ifndef GRX_SKIP_INLINES
-#define grx_get_max_x()                 (grx_get_current_context()->x_max)
-#define grx_get_max_y()                 (grx_get_current_context()->y_max)
-#define grx_get_width()                 (grx_get_max_x() + 1)
-#define grx_get_height()                (grx_get_max_y() + 1)
+#define grx_get_max_x()  (grx_get_current_context()->x_max)
+#define grx_get_max_y()  (grx_get_current_context()->y_max)
+#define grx_get_width()  (grx_get_max_x() + 1)
+#define grx_get_height() (grx_get_max_y() + 1)
 
-#define grx_get_screen_width()          (grx_get_current_video_mode()->width)
-#define grx_get_screen_height()         (grx_get_current_video_mode()->height)
-#define grx_get_virtual_width()         (grx_get_virtual_video_mode()->width)
-#define grx_get_virtual_height()        (grx_get_virtual_video_mode()->height)
-#define grx_is_screen_virtual() \
-    ((grx_get_screen_width() + grx_get_screen_height()) < (grx_get_virtual_width() + grx_get_virtual_height()))
-#define grx_get_viewport_x()           (GrDriverInfo->vposx)
-#define grx_get_viewport_y()           (GrDriverInfo->vposy)
+#define grx_get_screen_width()   (grx_get_current_video_mode()->width)
+#define grx_get_screen_height()  (grx_get_current_video_mode()->height)
+#define grx_get_virtual_width()  (grx_get_virtual_video_mode()->width)
+#define grx_get_virtual_height() (grx_get_virtual_video_mode()->height)
+#define grx_is_screen_virtual()                         \
+    ((grx_get_screen_width() + grx_get_screen_height()) \
+        < (grx_get_virtual_width() + grx_get_virtual_height()))
+#define grx_get_viewport_x() (GrDriverInfo->vposx)
+#define grx_get_viewport_y() (GrDriverInfo->vposy)
 
-#define grx_get_clip_box_min_x()        (grx_get_current_context()->x_clip_low)
-#define grx_get_clip_box_min_y()        (grx_get_current_context()->y_clip_low)
-#define grx_get_clip_box_max_x()        (grx_get_current_context()->x_clip_high)
-#define grx_get_clip_box_max_y()        (grx_get_current_context()->y_clip_high)
-#define grx_get_clip_box(x1p,y1p,x2p,y2p) do {      \
-    *(x1p) = grx_get_clip_box_min_x();              \
-    *(y1p) = grx_get_clip_box_min_y();              \
-    *(x2p) = grx_get_clip_box_max_x();              \
-    *(y2p) = grx_get_clip_box_max_y();              \
-} while(0)
-#endif  /* GRX_SKIP_INLINES */
+#define grx_get_clip_box_min_x() (grx_get_current_context()->x_clip_low)
+#define grx_get_clip_box_min_y() (grx_get_current_context()->y_clip_low)
+#define grx_get_clip_box_max_x() (grx_get_current_context()->x_clip_high)
+#define grx_get_clip_box_max_y() (grx_get_current_context()->y_clip_high)
+#define grx_get_clip_box(x1p, y1p, x2p, y2p) \
+    do {                                     \
+        *(x1p) = grx_get_clip_box_min_x();   \
+        *(y1p) = grx_get_clip_box_min_y();   \
+        *(x2p) = grx_get_clip_box_max_x();   \
+        *(y2p) = grx_get_clip_box_max_y();   \
+    } while (0)
+#endif /* GRX_SKIP_INLINES */
 
 #endif /* __GRX_EXTENTS_H__ */

@@ -32,26 +32,26 @@
 /* -------------------------------------------------------------------- */
 
 GrxFrameDriver _GrFrameDriverSVGA16_LFB = {
-    .mode               = GRX_FRAME_MODE_LFB_16BPP, /* frame mode */
-    .rmode              = GRX_FRAME_MODE_RAM_16BPP, /* compatible RAM frame mode */
-    .is_video           = TRUE,                     /* onscreen */
-    .row_align          = 4,                        /* scan line width alignment */
-    .bits_per_pixel     = 16,                       /* bits per pixel */
-    .max_mem_size       = 16 * 16 * 1024 * 1024,    /* max memory size the code can handle */
-    .init               = NULL,
-    .readpixel          = readpixel,
-    .drawpixel          = drawpixel,
-    .drawline           = drawline,
-    .drawhline          = drawhline,
-    .drawvline          = drawvline,
-    .drawblock          = drawblock,
-    .drawbitmap         = drawbitmap,
-    .drawpattern        = drawpattern,
-    .bitblt             = bitblt,
-    .bltv2r             = bltv2r,
-    .bltr2v             = bltr2v,
+    .mode = GRX_FRAME_MODE_LFB_16BPP,      /* frame mode */
+    .rmode = GRX_FRAME_MODE_RAM_16BPP,     /* compatible RAM frame mode */
+    .is_video = TRUE,                      /* onscreen */
+    .row_align = 4,                        /* scan line width alignment */
+    .bits_per_pixel = 16,                  /* bits per pixel */
+    .max_mem_size = 16 * 16 * 1024 * 1024, /* max memory size the code can handle */
+    .init = NULL,
+    .readpixel = readpixel,
+    .drawpixel = drawpixel,
+    .drawline = drawline,
+    .drawhline = drawhline,
+    .drawvline = drawvline,
+    .drawblock = drawblock,
+    .drawbitmap = drawbitmap,
+    .drawpattern = drawpattern,
+    .bitblt = bitblt,
+    .bltv2r = bltv2r,
+    .bltr2v = bltr2v,
     .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
-    .putscanline        = _GrFrDrvGenericPutScanline,
+    .putscanline = _GrFrDrvGenericPutScanline,
 };
 
 #endif

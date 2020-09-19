@@ -20,32 +20,33 @@
 
 #include <glib.h>
 
+#include <grx/color.h>
 #include <grx/context.h>
-#include <grx/mouse.h>
 #include <grx/mode.h>
+#include <grx/mouse.h>
 
 /*
  * global library data structures
  */
-extern  struct _GR_driverInfo  _GrDriverInfo;
-extern  struct _GR_contextInfo _GrContextInfo;
-extern  struct _GR_colorInfo   _GrColorInfo;
-extern  struct _GR_mouseInfo   _GrMouseInfo;
+extern struct _GR_driverInfo _GrDriverInfo;
+extern struct _GR_contextInfo _GrContextInfo;
+extern struct _GR_colorInfo _GrColorInfo;
+extern struct _GR_mouseInfo _GrMouseInfo;
 
-#define GrDriverInfo    (&_GrDriverInfo)
-#define GrContextInfo   (&_GrContextInfo)
-#define GrColorInfo     (&_GrColorInfo)
-#define GrMouseInfo     (&_GrMouseInfo)
+#define GrDriverInfo  (&_GrDriverInfo)
+#define GrContextInfo (&_GrContextInfo)
+#define GrColorInfo   (&_GrColorInfo)
+#define GrMouseInfo   (&_GrMouseInfo)
 
-#define DRVINFO         (&_GrDriverInfo)
-#define CXTINFO         (&_GrContextInfo)
-#define CLRINFO         (&_GrColorInfo)
-#define MOUINFO         (&_GrMouseInfo)
+#define DRVINFO (&_GrDriverInfo)
+#define CXTINFO (&_GrContextInfo)
+#define CLRINFO (&_GrColorInfo)
+#define MOUINFO (&_GrMouseInfo)
 
-#define CURC            (&(CXTINFO->current))
-#define SCRN            (&(CXTINFO->screen))
-#define FDRV            (&(DRVINFO->fdriver))
-#define SDRV            (&(DRVINFO->sdriver))
-#define VDRV            ( (DRVINFO->vdriver))
+#define CURC (&(CXTINFO->current))
+#define SCRN (&(CXTINFO->screen))
+#define FDRV (&(DRVINFO->fdriver))
+#define SDRV (&(DRVINFO->sdriver))
+#define VDRV ((DRVINFO->vdriver))
 
 #endif /* __INCLUDE_GLOBALS_H__ */

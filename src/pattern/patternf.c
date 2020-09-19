@@ -17,8 +17,5 @@
 #include "libgrx.h"
 #include "shapes.h"
 
-GrFiller _GrPatternFiller = {
-   _GrDrawPatternedPixel,
-   _GrDrawPatternedLine,
-   _GrFillPatternedScanLine
-};
+GrFiller _GrPatternFiller = { _GrDrawPatternedPixel, _GrDrawPatternedLine,
+    _GrFillPatternedScanLine };

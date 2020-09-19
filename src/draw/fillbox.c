@@ -15,10 +15,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "globals.h"
-#include "mouse.h"
-#include "libgrx.h"
 #include "clipping.h"
+#include "globals.h"
+#include "libgrx.h"
+#include "mouse.h"
 
 /**
  * grx_draw_filled_box:
@@ -31,16 +31,11 @@
  * Draws a filled rectangle on the current context using the specified
  * coordinates and color.
  */
-void grx_draw_filled_box(int x1,int y1,int x2,int y2,GrxColor c)
+void grx_draw_filled_box(int x1, int y1, int x2, int y2, GrxColor c)
 {
-        clip_box(CURC,x1,y1,x2,y2);
-        mouse_block(CURC,x1,y1,x2,y2);
-        (*FDRV->drawblock)(
-            x1 + CURC->x_offset,
-            y1 + CURC->y_offset,
-            x2 - x1 + 1,
-            y2 - y1 + 1,
-            c
-        );
-        mouse_unblock();
+    clip_box(CURC, x1, y1, x2, y2);
+    mouse_block(CURC, x1, y1, x2, y2);
+    (*FDRV->drawblock)(
+        x1 + CURC->x_offset, y1 + CURC->y_offset, x2 - x1 + 1, y2 - y1 + 1, c);
+    mouse_unblock();
 }

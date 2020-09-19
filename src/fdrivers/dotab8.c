@@ -18,7 +18,7 @@
  * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  */
 
-#include "libgrx.h"
 #include "docolor.h"
+#include "libgrx.h"
 
 unsigned int _GrFDdotable8[] = { 0xffffU, 0, 0, 0xffU };

@@ -22,42 +22,51 @@
 
 TESTFUNC(arctest)
 {
-        char buff[300];
-        int  xc,yc,rx,ry,start,end;
-        FILE *fp;
-        GrxColor red   = grx_color_get(255,0,0);
-        GrxColor green = grx_color_get(0,255,0);
-        GrxColor blue  = grx_color_get(0,0,255);
+    char buff[300];
+    int xc, yc, rx, ry, start, end;
+    FILE *fp;
+    GrxColor red = grx_color_get(255, 0, 0);
+    GrxColor green = grx_color_get(0, 255, 0);
+    GrxColor blue = grx_color_get(0, 0, 255);
 
-        fp = fopen("arctest.dat","r");
-        if (fp == NULL) {
-            perror("failed to open arctest.dat");
-            return;
-        }
-        while(fgets(buff,299,fp) != NULL) {
-            int len = strlen(buff);
-            while(--len >= 0) {
-                if(buff[len] == '\n') { buff[len] = '\0'; continue; }
-                if(buff[len] == '\r') { buff[len] = '\0'; continue; }
-                break;
+    fp = fopen("arctest.dat", "r");
+    if (fp == NULL) {
+        perror("failed to open arctest.dat");
+        return;
+    }
+    while (fgets(buff, 299, fp) != NULL) {
+        int len = strlen(buff);
+        while (--len >= 0) {
+            if (buff[len] == '\n') {
+                buff[len] = '\0';
+                continue;
             }
-            if(sscanf(buff,
-                      "arc xc=%d yc=%d rx=%d ry=%d start=%d end=%d",
-                      &xc,&yc,&rx,&ry,&start,&end) == 6) {
-                grx_clear_screen(GRX_COLOR_BLACK);
-                grx_draw_ellipse(xc,yc,rx,ry,red);
-                grx_draw_filled_ellipse(xc,yc,rx,ry,blue);
-                grx_draw_ellipse_arc(xc,yc,rx,ry,start,end,GRX_ARC_STYLE_CLOSED_RADIUS,GRX_COLOR_WHITE);
-                grx_draw_text(buff,0,0,white_text);
-                grx_draw_text("press any key to continue",0,20,white_text);
-                run_main_loop_until_key_press();
-                grx_clear_screen(GRX_COLOR_BLACK);
-                grx_draw_ellipse_arc(xc,yc,rx,ry,start,end,GRX_ARC_STYLE_CLOSED_RADIUS,red);
-                grx_draw_filled_ellipse_arc(xc,yc,rx,ry,start,end,GRX_ARC_STYLE_CLOSED_RADIUS,green);
-                grx_draw_text(buff,0,0,white_text);
-                grx_draw_text("press any key to continue",0,20,white_text);
-                run_main_loop_until_key_press();
+            if (buff[len] == '\r') {
+                buff[len] = '\0';
+                continue;
             }
+            break;
         }
-        fclose(fp);
+        if (sscanf(buff, "arc xc=%d yc=%d rx=%d ry=%d start=%d end=%d", &xc, &yc, &rx,
+                &ry, &start, &end)
+            == 6) {
+            grx_clear_screen(GRX_COLOR_BLACK);
+            grx_draw_ellipse(xc, yc, rx, ry, red);
+            grx_draw_filled_ellipse(xc, yc, rx, ry, blue);
+            grx_draw_ellipse_arc(xc, yc, rx, ry, start, end,
+                GRX_ARC_STYLE_CLOSED_RADIUS, GRX_COLOR_WHITE);
+            grx_draw_text(buff, 0, 0, white_text);
+            grx_draw_text("press any key to continue", 0, 20, white_text);
+            run_main_loop_until_key_press();
+            grx_clear_screen(GRX_COLOR_BLACK);
+            grx_draw_ellipse_arc(
+                xc, yc, rx, ry, start, end, GRX_ARC_STYLE_CLOSED_RADIUS, red);
+            grx_draw_filled_ellipse_arc(
+                xc, yc, rx, ry, start, end, GRX_ARC_STYLE_CLOSED_RADIUS, green);
+            grx_draw_text(buff, 0, 0, white_text);
+            grx_draw_text("press any key to continue", 0, 20, white_text);
+            run_main_loop_until_key_press();
+        }
+    }
+    fclose(fp);
 }

@@ -21,8 +21,8 @@
 #include <grx/draw.h>
 #include <grx/draw_nc.h>
 
-#include "mouse.h"
 #include "libgrx.h"
+#include "mouse.h"
 
 /**
  * grx_clear_context:
@@ -39,9 +39,9 @@
  */
 void grx_clear_context(GrxColor bg)
 {
-  mouse_block(CURC,0,0,CURC->x_max,CURC->y_max);
-  grx_fast_draw_filled_box(0,0,CURC->x_max,CURC->y_max,bg);
-  mouse_unblock();
+    mouse_block(CURC, 0, 0, CURC->x_max, CURC->y_max);
+    grx_fast_draw_filled_box(0, 0, CURC->x_max, CURC->y_max, bg);
+    mouse_unblock();
 }
 
 /**
@@ -63,9 +63,9 @@ void grx_clear_context(GrxColor bg)
  */
 void grx_context_clear(GrxContext *ctx, GrxColor bg)
 {
-  GrxContext s;
-  grx_save_current_context(&s);
-  grx_set_current_context(ctx);
-  grx_clear_context(bg);
-  grx_set_current_context(&s);
+    GrxContext s;
+    grx_save_current_context(&s);
+    grx_set_current_context(ctx);
+    grx_clear_context(bg);
+    grx_set_current_context(&s);
 }

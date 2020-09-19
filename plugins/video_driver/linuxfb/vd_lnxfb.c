@@ -17,36 +17,36 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <string.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
-#include <linux/fb.h>
-#include <sys/mman.h>
+#include <string.h>
 #include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <unistd.h>
+
+#include <glib-unix.h>
+#include <glib.h>
+#include <gmodule.h>
+#include <linux/fb.h>
 #include <linux/kd.h>
 #include <linux/vt.h>
-
-#include <glib.h>
-#include <glib-unix.h>
-#include <gmodule.h>
 
 #include <grx/context.h>
 #include <grx/draw.h>
 #include <grx/events.h>
 #include <grx/extents.h>
 
-#include "libinput_device_manager.h"
-#include "libgrx.h"
+#include "arith.h"
 #include "globals.h"
 #include "grdriver.h"
-#include "arith.h"
+#include "libgrx.h"
+#include "libinput_device_manager.h"
 #include "memcopy.h"
 #include "memfill.h"
 
-#define  NUM_MODES    80        /* max # of supported modes */
-#define  NUM_EXTS     15        /* max # of mode extensions */
-#define  MM_PER_IN    25        /* millimeters per inch */
+#define NUM_MODES 80 /* max # of supported modes */
+#define NUM_EXTS  15 /* max # of mode extensions */
+#define MM_PER_IN 25 /* millimeters per inch */
 
 static int initted = -1;
 static int fbfd = -1;
@@ -100,15 +100,13 @@ static int detect(void)
         sprintf(ttyname, "/dev/tty%d", graphics_vt);
         ttyfd = open(ttyname, O_RDWR);
         if (ttyfd == -1) {
-            g_debug("Failed to open /dev/tty%d: %s", graphics_vt,
-                    strerror(errno));
+            g_debug("Failed to open /dev/tty%d: %s", graphics_vt, strerror(errno));
             // fall back to current console
             graphics_vt = vtstat.v_active;
             sprintf(ttyname, "/dev/tty%d", graphics_vt);
             ttyfd = open(ttyname, O_RDWR);
             if (ttyfd == -1) {
-                g_debug("Failed to open /dev/tty%d: %s", graphics_vt,
-                        strerror(errno));
+                g_debug("Failed to open /dev/tty%d: %s", graphics_vt, strerror(errno));
                 return FALSE;
             }
         }
@@ -175,7 +173,7 @@ static int detect(void)
             fbfd = open(fbname, O_RDWR);
             if (fbfd == -1) {
                 g_debug("Failed to open /dev/fb%d: %s", con2fb_map.framebuffer,
-                        strerror(errno));
+                    strerror(errno));
                 ioctl(ttyfd, VT_ACTIVATE, original_vt);
                 close(ttyfd);
                 return FALSE;
@@ -201,7 +199,7 @@ static int detect(void)
         initted = 1;
     }
 
-    return (initted > 0);
+    return initted > 0;
 }
 
 static void reset(void)
@@ -241,7 +239,7 @@ static void reset(void)
 }
 
 /* release control of the vt */
-static void grx_linuxfb_release (void)
+static void grx_linuxfb_release(void)
 {
     if (!in_graphics_mode) {
         return;
@@ -254,7 +252,7 @@ static void grx_linuxfb_release (void)
 }
 
 /* resume control of the vt */
-static void grx_linuxfb_aquire (void)
+static void grx_linuxfb_aquire(void)
 {
     if (in_graphics_mode) {
         return;
@@ -268,7 +266,7 @@ static void grx_linuxfb_aquire (void)
     in_graphics_mode = TRUE;
 }
 
-void grx_linuxfb_chvt (int vt_num)
+void grx_linuxfb_chvt(int vt_num)
 {
     if (!in_graphics_mode) {
         return;
@@ -279,7 +277,7 @@ void grx_linuxfb_chvt (int vt_num)
     ioctl(ttyfd, VT_ACTIVATE, vt_num);
 }
 
-void grx_linuxfb_update_pointer (gint32 dx, gint32 dy, gint32 *x, gint32 *y)
+void grx_linuxfb_update_pointer(gint32 dx, gint32 dy, gint32 *x, gint32 *y)
 {
     *x = pointer_x + dx;
     *y = pointer_y + dy;
@@ -287,14 +285,14 @@ void grx_linuxfb_update_pointer (gint32 dx, gint32 dy, gint32 *x, gint32 *y)
     if (*x < 0) {
         *x = 0;
     }
-    if (*x >= grx_get_screen_width ()) {
-        *x = grx_get_screen_width () - 1;
+    if (*x >= grx_get_screen_width()) {
+        *x = grx_get_screen_width() - 1;
     }
     if (*y < 0) {
         *y = 0;
     }
-    if (*y >= grx_get_screen_height ()) {
-        *y = grx_get_screen_height () - 1;
+    if (*y >= grx_get_screen_height()) {
+        *y = grx_get_screen_height() - 1;
     }
 
     pointer_x = *x;
@@ -325,14 +323,12 @@ static void load_color(GrxColor c, GrxColor r, GrxColor g, GrxColor b)
     ioctl(fbfd, FBIOPUTCMAP, &cmap);
 }
 
-static int setmode(GrxVideoMode * mp, int noclear)
+static int setmode(GrxVideoMode *mp, int noclear)
 {
     struct vt_mode vtm;
 
-    fbuffer = mp->extended_info->frame = mmap(0,
-                                        fbfix.smem_len,
-                                        PROT_READ | PROT_WRITE,
-                                        MAP_SHARED, fbfd, 0);
+    fbuffer = mp->extended_info->frame =
+        mmap(0, fbfix.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, 0);
     if (mp->extended_info->frame && ttyfd > -1) {
         ioctl(ttyfd, KDSKBMODE, K_OFF);
         ioctl(ttyfd, KDSETMODE, KD_GRAPHICS);
@@ -344,10 +340,10 @@ static int setmode(GrxVideoMode * mp, int noclear)
     }
     if (mp->extended_info->frame && !noclear)
         memzero(mp->extended_info->frame, fbvar.yres * fbfix.line_length);
-    return ((mp->extended_info->frame) ? TRUE : FALSE);
+    return mp->extended_info->frame ? TRUE : FALSE;
 }
 
-static int settext(GrxVideoMode * mp, int noclear)
+static int settext(GrxVideoMode *mp, int noclear)
 {
     struct vt_mode vtm;
 
@@ -368,28 +364,27 @@ static int settext(GrxVideoMode * mp, int noclear)
 }
 
 GrxVideoModeExt grtextextfb = {
-    .mode             = GRX_FRAME_MODE_TEXT, /* frame driver */
-    .drv              = NULL,                /* frame driver override */
-    .frame            = NULL,                /* frame buffer address */
-    .cprec            = {6, 6, 6},           /* color precisions */
-    .cpos             = {0, 0, 0},           /* color component bit positions */
-    .flags            = 0,                   /* mode flag bits */
-    .setup            = settext,             /* mode set */
-    .set_virtual_size = NULL,                /* virtual size set */
-    .scroll           = NULL,                /* virtual scroll */
-    .set_bank         = NULL,                /* bank set function */
-    .set_rw_banks     = NULL,                /* double bank set function */
-    .load_color       = NULL,                /* color loader */
+    .mode = GRX_FRAME_MODE_TEXT, /* frame driver */
+    .drv = NULL,                 /* frame driver override */
+    .frame = NULL,               /* frame buffer address */
+    .cprec = { 6, 6, 6 },        /* color precisions */
+    .cpos = { 0, 0, 0 },         /* color component bit positions */
+    .flags = 0,                  /* mode flag bits */
+    .setup = settext,            /* mode set */
+    .set_virtual_size = NULL,    /* virtual size set */
+    .scroll = NULL,              /* virtual scroll */
+    .set_bank = NULL,            /* bank set function */
+    .set_rw_banks = NULL,        /* double bank set function */
+    .load_color = NULL,          /* color loader */
 };
 
 static GrxVideoModeExt exts[NUM_EXTS];
 static GrxVideoMode modes[NUM_MODES] = {
     /* pres.  bpp wdt   hgt   mode   scan  priv. &ext                             */
-    {TRUE, 4, 80, 25, 0, 160, 0, &grtextextfb},
-    {0}
+    { TRUE, 4, 80, 25, 0, 160, 0, &grtextextfb }, { 0 }
 };
 
-static int build_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep)
+static int build_video_mode(GrxVideoMode *mp, GrxVideoModeExt *ep)
 {
     mp->present = TRUE;
     mp->width = fbvar.xres;
@@ -398,11 +393,11 @@ static int build_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep)
     mp->extended_info = NULL;
     mp->user_data = 0;
     ep->drv = NULL;
-    ep->frame = NULL;                /* filled in after mode set */
+    ep->frame = NULL; /* filled in after mode set */
     ep->flags = 0;
     ep->setup = setmode;
-    ep->set_virtual_size = NULL;        /* tbd */
-    ep->scroll = NULL;                /* tbd */
+    ep->set_virtual_size = NULL; /* tbd */
+    ep->scroll = NULL;           /* tbd */
     ep->set_bank = NULL;
     ep->set_rw_banks = NULL;
     ep->load_color = NULL;
@@ -444,7 +439,7 @@ static int build_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep)
         ep->mode = GRX_FRAME_MODE_LFB_32BPP_LOW;
         break;
     default:
-        return (FALSE);
+        return FALSE;
     }
     mp->bpp = fbvar.bits_per_pixel;
     ep->flags |= GRX_VIDEO_MODE_FLAG_LINEAR;
@@ -454,11 +449,12 @@ static int build_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep)
     ep->cpos[0] = fbvar.red.offset;
     ep->cpos[1] = fbvar.green.offset;
     ep->cpos[2] = fbvar.blue.offset;
-    return (TRUE);
+
+    return TRUE;
 }
 
-static void add_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep,
-                           GrxVideoMode ** mpp, GrxVideoModeExt ** epp)
+static void add_video_mode(
+    GrxVideoMode *mp, GrxVideoModeExt *ep, GrxVideoMode **mpp, GrxVideoModeExt **epp)
 {
     if (*mpp < &modes[NUM_MODES]) {
         if (!mp->extended_info) {
@@ -483,7 +479,7 @@ static void add_video_mode(GrxVideoMode * mp, GrxVideoModeExt * ep,
     }
 }
 
-static gboolean console_switch_handler (gpointer user_data)
+static gboolean console_switch_handler(gpointer user_data)
 {
     GrxEvent event;
 
@@ -491,43 +487,52 @@ static gboolean console_switch_handler (gpointer user_data)
         // A well-behaved user program must listen for GRX_EVENT_TYPE_APP_DEACTIVATE
         // and stop drawing on the screen until GRX_EVENT_TYPE_APP_ACTIVATE is received.
         event.type = GRX_EVENT_TYPE_APP_DEACTIVATE;
-        grx_event_put (&event);
+        grx_event_put(&event);
 
         /* create a new context from the screen */
-        save = grx_context_new(grx_get_screen_width(), grx_get_screen_height(), NULL, NULL);
+        save = grx_context_new(
+            grx_get_screen_width(), grx_get_screen_height(), NULL, NULL);
         if (save == NULL) {
-            g_critical ("Could not allocate context for console switching.");
-        } else {
+            g_critical("Could not allocate context for console switching.");
+        }
+        else {
             /* copy framebuffer to new context */
             if (grx_frame_mode_get_screen() == GRX_FRAME_MODE_LFB_MONO01) {
                 /* Need to invert the colors on this one. */
                 grx_context_clear(save, 1);
                 grx_context_bit_blt(save, 0, 0, grx_get_screen_context(), 0, 0,
-                    grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_XOR);
-            } else {
+                    grx_get_screen_width() - 1, grx_get_screen_height() - 1,
+                    GRX_COLOR_MODE_XOR);
+            }
+            else {
                 grx_context_bit_blt(save, 0, 0, grx_get_screen_context(), 0, 0,
-                    grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_WRITE);
+                    grx_get_screen_width() - 1, grx_get_screen_height() - 1,
+                    GRX_COLOR_MODE_WRITE);
             }
         }
-        grx_linuxfb_release ();
-    } else {
-        grx_linuxfb_aquire ();
+        grx_linuxfb_release();
+    }
+    else {
+        grx_linuxfb_aquire();
 
         /* copy the temporary context back to the framebuffer */
         if (grx_frame_mode_get_screen() == GRX_FRAME_MODE_LFB_MONO01) {
             /* need to invert the colors on this one */
             grx_clear_screen(1);
             grx_context_bit_blt(grx_get_screen_context(), 0, 0, save, 0, 0,
-                     grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_XOR);
-        } else {
+                grx_get_screen_width() - 1, grx_get_screen_height() - 1,
+                GRX_COLOR_MODE_XOR);
+        }
+        else {
             grx_context_bit_blt(grx_get_screen_context(), 0, 0, save, 0, 0,
-                     grx_get_screen_width()-1, grx_get_screen_height()-1, GRX_COLOR_MODE_WRITE);
+                grx_get_screen_width() - 1, grx_get_screen_height() - 1,
+                GRX_COLOR_MODE_WRITE);
         }
         grx_context_unref(save);
 
         // now it is OK for the user program to start writing to the screen again
         event.type = GRX_EVENT_TYPE_APP_ACTIVATE;
-        grx_event_put (&event);
+        grx_event_put(&event);
     }
 
     return G_SOURCE_CONTINUE;
@@ -542,11 +547,11 @@ static int init(const char *options)
         GrxEvent event;
         GError *err = NULL;
 
-        device_manager = g_initable_new (GRX_TYPE_LIBINPUT_DEVICE_MANAGER, NULL,
-                                         &err, NULL);
+        device_manager =
+            g_initable_new(GRX_TYPE_LIBINPUT_DEVICE_MANAGER, NULL, &err, NULL);
         if (!device_manager) {
-            g_debug ("%s", err->message);
-            g_error_free (err);
+            g_debug("%s", err->message);
+            g_error_free(err);
             return FALSE;
         }
 
@@ -556,13 +561,13 @@ static int init(const char *options)
         }
 
         // Handle console switching
-        g_unix_signal_add (SIGUSR1, console_switch_handler, NULL);
+        g_unix_signal_add(SIGUSR1, console_switch_handler, NULL);
 
         event.type = GRX_EVENT_TYPE_APP_ACTIVATE;
-        grx_event_put (&event);
+        grx_event_put(&event);
 
-        DRVINFO->device_manager = GRX_DEVICE_MANAGER (device_manager);
-        grx_libinput_device_manager_event_add (device_manager);
+        DRVINFO->device_manager = GRX_DEVICE_MANAGER(device_manager);
+        grx_libinput_device_manager_event_add(device_manager);
 
         return TRUE;
     }
@@ -576,17 +581,18 @@ static guint get_dpi(GrxVideoDriver *driver)
         return GRX_DEFAULT_DPI;
     }
 
-    return (fbvar.xres * MM_PER_IN / fbvar.width +
-            fbvar.yres * MM_PER_IN / fbvar.height) / 2;
+    return (fbvar.xres * MM_PER_IN / fbvar.width
+               + fbvar.yres * MM_PER_IN / fbvar.height)
+           / 2;
 }
 
 G_MODULE_EXPORT GrxVideoDriver grx_linuxfb_video_driver = {
-    .name        = "linuxfb",                   /* name */
-    .modes       = modes,                       /* mode table */
-    .n_modes     = itemsof(modes),              /* # of modes */
-    .detect      = detect,                      /* detection routine */
-    .init        = init,                        /* initialization routine */
-    .reset       = reset,                       /* reset routine */
-    .select_mode = _gr_select_mode,             /* standard mode select routine */
-    .get_dpi     = get_dpi,
+    .name = "linuxfb",              /* name */
+    .modes = modes,                 /* mode table */
+    .n_modes = itemsof(modes),      /* # of modes */
+    .detect = detect,               /* detection routine */
+    .init = init,                   /* initialization routine */
+    .reset = reset,                 /* reset routine */
+    .select_mode = _gr_select_mode, /* standard mode select routine */
+    .get_dpi = get_dpi,
 };

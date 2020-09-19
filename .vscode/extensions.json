@@ -6,6 +6,7 @@
 		"ms-vscode.cpptools",
 		"ms-python.python",
 		"thiagoabreu.vala",
-		"twxs.cmake"
+		"twxs.cmake",
+		"xaver.clang-format"
 	]
 }

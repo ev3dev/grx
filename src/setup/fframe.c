@@ -15,21 +15,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "libgrx.h"
 #include "grdriver.h"
+#include "libgrx.h"
 
 GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode)
 {
-        int ii = 0;
-        while(_GrFrameDriverTable[ii] != NULL) {
-            if(_GrFrameDriverTable[ii]->mode == mode) break;
-            ii++;
-        }
-        return(_GrFrameDriverTable[ii]);
+    int ii = 0;
+    while (_GrFrameDriverTable[ii] != NULL) {
+        if (_GrFrameDriverTable[ii]->mode == mode)
+            break;
+        ii++;
+    }
+    return _GrFrameDriverTable[ii];
 }
 
 GrxFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode)
 {
-        GrxFrameDriver *dp = _GrFindFrameDriver(mode);
-        return((dp && dp->is_video) ? _GrFindFrameDriver(dp->rmode) : dp);
+    GrxFrameDriver *dp = _GrFindFrameDriver(mode);
+    return (dp && dp->is_video) ? _GrFindFrameDriver(dp->rmode) : dp;
 }

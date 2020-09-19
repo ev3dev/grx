@@ -21,89 +21,92 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <stdlib.h>
+#include <malloc.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <malloc.h>
-
-#define TRUE (1==1)
-#define FALSE (!TRUE)
 
 void usage(char *err)
 {
-  puts("bin2c -- convert binary files into C source\n");
-  puts("Usage:\n");
-  puts("  bin2c <input> <global name> [<output>]");
-  if (err != NULL)
-    printf("\n\nError: %s\n", err);
-  exit(1);
+    puts("bin2c -- convert binary files into C source\n");
+    puts("Usage:\n");
+    puts("  bin2c <input> <global name> [<output>]");
+    if (err != NULL)
+        printf("\n\nError: %s\n", err);
+    exit(1);
 }
 
 char *timestr(void)
 {
-  struct tm *lt;
-  time_t    t;
+    struct tm *lt;
+    time_t t;
 
-  t = time(NULL);
-  lt = localtime(&t);
-  return asctime(lt);
+    t = time(NULL);
+    lt = localtime(&t);
+    return asctime(lt);
 }
 
 long filesize(FILE *f)
 {
-  long posi, res;
+    long posi, res;
 
-  posi = ftell(f);
-  fseek(f, 0, SEEK_END);
-  res = ftell(f);
-  fseek(f, posi, SEEK_SET);
-  return res;
+    posi = ftell(f);
+    fseek(f, 0, SEEK_END);
+    res = ftell(f);
+    fseek(f, posi, SEEK_SET);
+    return res;
 }
 
 int main(int argc, char *argv[])
 {
-  FILE *inp, *outp;
-  char name[1000];
-  long length, count;
-  int linec;
-  unsigned char *buffer, *komma;
+    FILE *inp, *outp;
+    char name[1000];
+    long length, count;
+    int linec;
+    unsigned char *buffer, *komma;
 
-  if (argc < 3 || argc > 4) usage("Incorrect command line");
+    if (argc < 3 || argc > 4)
+        usage("Incorrect command line");
 
-  strcpy(name,"binary_data_field");
-  inp = fopen( argv[1], "rb");
-  if (inp == NULL) usage("Couldn't opem input file");
+    strcpy(name, "binary_data_field");
+    inp = fopen(argv[1], "rb");
+    if (inp == NULL)
+        usage("Couldn't opem input file");
 
-  strcpy( name, argv[2]);
-  if (argc > 3) {
-    outp = fopen(argv[3], "w");
-    if (outp == NULL) usage("Couldn't open output file");
-  } else
-    outp = stdout;
-
-  length = filesize(inp);
-  buffer = (unsigned char *)malloc( length);
-  if (buffer == NULL) usage("Out of memory");
-  if (fread( buffer, length, 1, inp) != 1) usage("read error");
-  fclose(inp);
-
-  fprintf(outp, "unsigned char %s[] = {\n", name);
-  count = 0;
-  linec = 0;
-  komma = " ";
-  while (count != length) {
-    linec += fprintf(outp, "%s", komma);
-    if (linec > 75) {
-      fprintf(outp, "\n ");
-      linec = 1;
+    strcpy(name, argv[2]);
+    if (argc > 3) {
+        outp = fopen(argv[3], "w");
+        if (outp == NULL)
+            usage("Couldn't open output file");
     }
-    linec += fprintf(outp, "%d", *buffer);
-    komma = ",";
-    ++count;
-    ++buffer;
-  }
-  fprintf(outp, "\n};\n");
-  fclose( outp);
-  return 0;
+    else
+        outp = stdout;
+
+    length = filesize(inp);
+    buffer = (unsigned char *)malloc(length);
+    if (buffer == NULL)
+        usage("Out of memory");
+    if (fread(buffer, length, 1, inp) != 1)
+        usage("read error");
+    fclose(inp);
+
+    fprintf(outp, "unsigned char %s[] = {\n", name);
+    count = 0;
+    linec = 0;
+    komma = " ";
+    while (count != length) {
+        linec += fprintf(outp, "%s", komma);
+        if (linec > 75) {
+            fprintf(outp, "\n ");
+            linec = 1;
+        }
+        linec += fprintf(outp, "%d", *buffer);
+        komma = ",";
+        ++count;
+        ++buffer;
+    }
+    fprintf(outp, "\n};\n");
+    fclose(outp);
+    return 0;
 }

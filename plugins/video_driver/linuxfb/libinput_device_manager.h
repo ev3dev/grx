@@ -16,16 +16,16 @@
 #ifndef __GRX_LIBINPUT_DEVICE_MANAGER_H__
 #define __GRX_LIBINPUT_DEVICE_MANAGER_H__
 
-#include <glib.h>
-#include <glib-object.h>
 #include <gio/gio.h>
+#include <glib-object.h>
+#include <glib.h>
 
 #include <grx/device_manager.h>
 #include <grx/events.h>
 
-
 #define GRX_TYPE_LIBINPUT_DEVICE_MANAGER grx_libinput_device_manager_get_type()
-G_DECLARE_FINAL_TYPE(GrxLibinputDeviceManager, grx_libinput_device_manager, GRX, LIBINPUT_DEVICE_MANAGER, GrxDeviceManager)
+G_DECLARE_FINAL_TYPE(GrxLibinputDeviceManager, grx_libinput_device_manager, GRX,
+    LIBINPUT_DEVICE_MANAGER, GrxDeviceManager)
 
 /**
  * GrxLibinputDeviceManagerSource:
@@ -41,7 +41,7 @@ typedef struct {
     guint last_button_time;
 } GrxLibinputDeviceManagerSource;
 
-GSource *grx_libinput_device_manager_source_new (GrxLibinputDeviceManager *context);
-guint grx_libinput_device_manager_event_add (GrxLibinputDeviceManager *context);
+GSource *grx_libinput_device_manager_source_new(GrxLibinputDeviceManager *context);
+guint grx_libinput_device_manager_event_add(GrxLibinputDeviceManager *context);
 
 #endif /* __GRX_LIBINPUT_DEVICE_MANAGER_H__ */

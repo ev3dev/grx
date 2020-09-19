@@ -14,10 +14,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "libgrx.h"
-#include "grdriver.h"
+#include <grx/context.h>
+#include <grx/pixmap.h>
+
 #include "clipping.h"
+#include "grdriver.h"
 #include "image.h"
+#include "libgrx.h"
 
 /**
  * grx_pixmap_stretch:
@@ -29,16 +32,15 @@
  *
  * Returns: (transfer full): the new pixmap
  */
-GrxPixmap *grx_pixmap_stretch(GrxPixmap *p,int nwidth,int nheight)
+GrxPixmap *grx_pixmap_stretch(GrxPixmap *p, gint nwidth, gint nheight)
 {
-  GrxContext  ctx;
-  GrxPixmap   *img;
+    GrxContext ctx;
+    GrxPixmap *img;
 
-  GRX_ENTER();
-  img = _GrImageAllocate(&ctx,nwidth,nheight);
-  if ( img )
-    _GrFrDrvGenericStretchBlt(&ctx.frame,0,0,nwidth,nheight,
-                              &p->source,0,0,p->width,p->height,
-                              p->mode);
-  GRX_RETURN(img);
+    GRX_ENTER();
+    img = _GrImageAllocate(&ctx, nwidth, nheight);
+    if (img)
+        _GrFrDrvGenericStretchBlt(&ctx.frame, 0, 0, nwidth, nheight, &p->source, 0, 0,
+            p->width, p->height, p->mode);
+    GRX_RETURN(img);
 }

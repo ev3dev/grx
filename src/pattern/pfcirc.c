@@ -33,7 +33,7 @@
  * Draws a filled circle on the current context centered at the specified
  * coordinates with the specified radius and pixmap.
  */
-void grx_draw_filled_circle_with_pixmap(int xc,int yc,int r,GrxPixmap *p)
+void grx_draw_filled_circle_with_pixmap(int xc, int yc, int r, GrxPixmap *p)
 {
-        grx_draw_filled_ellipse_with_pixmap(xc,yc,r,r,p);
+    grx_draw_filled_ellipse_with_pixmap(xc, yc, r, r, p);
 }

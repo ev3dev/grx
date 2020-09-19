@@ -21,63 +21,66 @@
 
 TESTFUNC(imgtest)
 {
-        int  x = grx_get_width();
-        int  y = grx_get_height();
-        int  ww = (x / PARTS)-1;
-        int  wh = (y / PARTS)-1;
-        int m1, m2, d1, d2;
-        GrxColor c1, c2, c3;
-        GrxContext ctx;
-        GrxPixmap *img1;
-        GrxPixmap *img2;
-        if (! grx_context_new(ww,wh,NULL,&ctx)) return;
+    int x = grx_get_width();
+    int y = grx_get_height();
+    int ww = (x / PARTS) - 1;
+    int wh = (y / PARTS) - 1;
+    int m1, m2, d1, d2;
+    GrxColor c1, c2, c3;
+    GrxContext ctx;
+    GrxPixmap *img1;
+    GrxPixmap *img2;
+    if (!grx_context_new(ww, wh, NULL, &ctx))
+        return;
 
-        grx_set_current_context(&ctx);
-        c1 = grx_color_get(255,100,0);
-        c2 = grx_color_get(0,0,(grx_color_info_n_colors() >= 16 ? 180 : 63));
-        c3 = grx_color_get(0,255,0);
-        drawing(0,0,ww,wh,c1,c2);
-        grx_draw_box(0,0,ww-1,wh-1,c1);
+    grx_set_current_context(&ctx);
+    c1 = grx_color_get(255, 100, 0);
+    c2 = grx_color_get(0, 0, (grx_color_info_n_colors() >= 16 ? 180 : 63));
+    c3 = grx_color_get(0, 255, 0);
+    drawing(0, 0, ww, wh, c1, c2);
+    grx_draw_box(0, 0, ww - 1, wh - 1, c1);
 
-        grx_set_current_context(NULL);
+    grx_set_current_context(NULL);
 
-        img1 = grx_pixmap_new_from_context(&ctx);
-        if (!img1) return;
+    img1 = grx_pixmap_new_from_context(&ctx);
+    if (!img1)
+        return;
 
-        grx_draw_filled_box(0,0,ww+1,wh+1,c3);
-        grx_draw_filled_box(ww+15,0,2*ww+16,wh+1,c3);
+    grx_draw_filled_box(0, 0, ww + 1, wh + 1, c3);
+    grx_draw_filled_box(ww + 15, 0, 2 * ww + 16, wh + 1, c3);
 
-        grx_bit_blt(1,1,&ctx,0,0,ww-1,wh-1,0);
-        grx_draw_pixmap(ww+16,1,img1);
-        grx_draw_pixmap_tiled(0,wh+4,x-1,y-1, img1);
+    grx_bit_blt(1, 1, &ctx, 0, 0, ww - 1, wh - 1, 0);
+    grx_draw_pixmap(ww + 16, 1, img1);
+    grx_draw_pixmap_tiled(0, wh + 4, x - 1, y - 1, img1);
 
-        run_main_loop_until_key_press();
+    run_main_loop_until_key_press();
 
-        for (m1=1; m1 <= PARTS ; m1<<=1) {
-          for (d1=1; d1 <= PARTS; d1 <<= 1) {
-            for (m2=1; m2 <= PARTS ; m2<<=1) {
-              for (d2=1; d2 <= PARTS; d2 <<= 1) {
-                img2 = grx_pixmap_stretch(img1,(m1*ww)/d1, (m2*wh)/d2);
-                if (img2) {
-                  grx_draw_pixmap_tiled(0,0,x-1,y-1,img2);
-                  grx_pixmap_free(img2);
+    for (m1 = 1; m1 <= PARTS; m1 <<= 1) {
+        for (d1 = 1; d1 <= PARTS; d1 <<= 1) {
+            for (m2 = 1; m2 <= PARTS; m2 <<= 1) {
+                for (d2 = 1; d2 <= PARTS; d2 <<= 1) {
+                    img2 = grx_pixmap_stretch(img1, (m1 * ww) / d1, (m2 * wh) / d2);
+                    if (img2) {
+                        grx_draw_pixmap_tiled(0, 0, x - 1, y - 1, img2);
+                        grx_pixmap_free(img2);
+                    }
                 }
-              }
             }
-          }
         }
-        run_main_loop_until_key_press();
+    }
+    run_main_loop_until_key_press();
 
-        /* let's finish with some grx_get_scanline / grx_put_scanline tests */
-        for (d1 = 1; d1 < 32; ++d1) {
-          for (m1 = wh; m1 < y-wh-d1-1; ++m1) {
+    /* let's finish with some grx_get_scanline / grx_put_scanline tests */
+    for (d1 = 1; d1 < 32; ++d1) {
+        for (m1 = wh; m1 < y - wh - d1 - 1; ++m1) {
             const GrxColor *cp;
-            cp = grx_get_scanline(ww+1,x-ww-d1,m1+1,NULL);
+            cp = grx_get_scanline(ww + 1, x - ww - d1, m1 + 1, NULL);
             if (cp) {
-              grx_put_scanline(ww,x-ww-d1-1,m1,cp,GRX_COLOR_MODE_IMAGE|c2);
+                grx_put_scanline(
+                    ww, x - ww - d1 - 1, m1, cp, GRX_COLOR_MODE_IMAGE | c2);
             }
-          }
         }
+    }
 
-        run_main_loop_until_key_press();
+    run_main_loop_until_key_press();
 }

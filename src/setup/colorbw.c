@@ -33,9 +33,10 @@
 #endif
 GrxColor grx_color_get_black(void)
 {
-        GRX_ENTER();
-        if(CLRINFO->black == GRX_COLOR_NONE) CLRINFO->black = grx_color_get(0,0,0);
-               GRX_RETURN(CLRINFO->black);
+    GRX_ENTER();
+    if (CLRINFO->black == GRX_COLOR_NONE)
+        CLRINFO->black = grx_color_get(0, 0, 0);
+    GRX_RETURN(CLRINFO->black);
 }
 
 /**
@@ -52,7 +53,8 @@ GrxColor grx_color_get_black(void)
 #endif
 GrxColor grx_color_get_white(void)
 {
-        GRX_ENTER();
-        if(CLRINFO->white == GRX_COLOR_NONE) CLRINFO->white = grx_color_get(255,255,255);
-        GRX_RETURN(CLRINFO->white);
+    GRX_ENTER();
+    if (CLRINFO->white == GRX_COLOR_NONE)
+        CLRINFO->white = grx_color_get(255, 255, 255);
+    GRX_RETURN(CLRINFO->white);
 }

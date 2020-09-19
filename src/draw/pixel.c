@@ -15,10 +15,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "globals.h"
-#include "mouse.h"
-#include "libgrx.h"
 #include "clipping.h"
+#include "globals.h"
+#include "libgrx.h"
+#include "mouse.h"
 
 /**
  * grx_get_pixel_at:
@@ -28,16 +28,12 @@
  * Gets the color value of the pixel in the current context at the specified
  * coordinates.
  */
-GrxColor grx_get_pixel_at(int x,int y)
+GrxColor grx_get_pixel_at(int x, int y)
 {
-        GrxColor retval;
-        cxclip_dot_(CURC,x,y,return(GRX_COLOR_NONE));
-        mouse_block(CURC,x,y,x,y);
-        retval = (*FDRV->readpixel)(
-            &CURC->frame,
-            x + CURC->x_offset,
-            y + CURC->y_offset
-        );
-        mouse_unblock();
-        return(retval);
+    GrxColor retval;
+    cxclip_dot_(CURC, x, y, return GRX_COLOR_NONE);
+    mouse_block(CURC, x, y, x, y);
+    retval = (*FDRV->readpixel)(&CURC->frame, x + CURC->x_offset, y + CURC->y_offset);
+    mouse_unblock();
+    return retval;
 }

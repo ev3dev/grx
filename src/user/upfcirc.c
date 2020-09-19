@@ -33,14 +33,14 @@
  * Draws a filled circle on the current context centered at the specified
  * coordinates with the specified radius and pixmap.
  */
-void grx_user_draw_filled_circle_with_pixmap(int xc,int yc,int r,GrxPixmap *p)
+void grx_user_draw_filled_circle_with_pixmap(int xc, int yc, int r, GrxPixmap *p)
 {
 #ifdef USR_KEEP_SHAPE
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(r,r,CURC->x_max,CURC->user_width);
-        grx_draw_filled_circle_with_pixmap(xc,yc,r,p);
+    U2SX(xc, CURC);
+    U2SY(yc, CURC);
+    SCALE(r, r, CURC->x_max, CURC->user_width);
+    grx_draw_filled_circle_with_pixmap(xc, yc, r, p);
 #else
-        grx_user_draw_filled_ellipse_with_pixmap(xc,yc,r,r,p);
+    grx_user_draw_filled_ellipse_with_pixmap(xc, yc, r, r, p);
 #endif /* USR_KEEP_SHAPE */
 }

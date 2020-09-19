@@ -42,7 +42,8 @@
  * from the starting angle to the ending angle with the specified radius,
  * arc style and line options and pixmap.
  */
-void grx_draw_circle_arc_with_pixmap (int xc, int yc, int r, int start, int end, GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p)
+void grx_draw_circle_arc_with_pixmap(int xc, int yc, int r, int start, int end,
+    GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p)
 {
-    grx_draw_ellipse_arc_with_pixmap (xc, yc, r, r, start, end, style, o, p);
+    grx_draw_ellipse_arc_with_pixmap(xc, yc, r, r, start, end, style, o, p);
 }

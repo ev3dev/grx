@@ -29,9 +29,9 @@
  *
  * Draw a single pixel on the current context at the specified coordinates.
  */
-void grx_user_draw_filled_pixel_with_pixmap(int x,int y,GrxPixmap *p)
+void grx_user_draw_filled_pixel_with_pixmap(int x, int y, GrxPixmap *p)
 {
-        U2SX(x,CURC);
-        U2SY(y,CURC);
-        grx_draw_filled_pixel_with_pixmap(x,y,p);
+    U2SX(x, CURC);
+    U2SY(y, CURC);
+    grx_draw_filled_pixel_with_pixmap(x, y, p);
 }

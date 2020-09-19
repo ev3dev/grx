@@ -18,29 +18,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <grx/common.h>
+
 /*
 ** grx_context_save_to_png - Returns error
 */
 
-int grx_context_save_to_png( GrxContext *grc, char *pngfn )
+int grx_context_save_to_png(GrxContext *grc, char *pngfn)
 {
-  return -1;
+    return -1;
 }
 
 /*
 ** grx_context_load_from_png - Returns error
 */
 
-int grx_context_load_from_png( GrxContext *grc, char *pngfn, int use_alpha )
+int grx_context_load_from_png(GrxContext *grc, char *pngfn, int use_alpha)
 {
-  return -1;
+    return -1;
 }
 
 /*
 ** grx_query_pnm_file - Returns error
 */
 
-int grx_query_png_file( char *pngfn, int *width, int *height )
+int grx_query_png_file(char *pngfn, int *width, int *height)
 {
-  return -1;
+    return -1;
 }

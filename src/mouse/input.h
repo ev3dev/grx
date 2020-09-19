@@ -17,17 +17,18 @@
 
 #include "mouse.h"
 
-#define test_unblock(flag) do {                                             \
-        static int checkcnt = 1000;                                         \
-        (flag) = FALSE;                                                     \
-        if(--checkcnt <= 0) {                                               \
-        checkcnt = 1000;                                                    \
-        flag = (TRUE);                                                      \
-        }                                                                   \
-} while(0)
+#define test_unblock(flag)          \
+    do {                            \
+        static int checkcnt = 1000; \
+        (flag) = FALSE;             \
+        if (--checkcnt <= 0) {      \
+            checkcnt = 1000;        \
+            flag = (TRUE);          \
+        }                           \
+    } while (0)
 
-#define COMPATIBLE(c)   ((c)->work.gc_driver->mode == SDRV->rmode)
+#define COMPATIBLE(c) ((c)->work.gc_driver->mode == SDRV->rmode)
 
 void _GrInitMouseCursor(void);
-int  _GrCheckKeyboardHit(void);
-int  _GrReadCharFromKeyboard(void);
+int _GrCheckKeyboardHit(void);
+int _GrReadCharFromKeyboard(void);

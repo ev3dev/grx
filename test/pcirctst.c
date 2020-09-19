@@ -24,89 +24,87 @@ static int stop = 0;
 
 static int widths[] = { 1, 2, 5, 10, 20, 50, 0 };
 
-static GrxLineOptions Solid = { 
+static GrxLineOptions Solid = {
     .color = 0,
     .width = 1,
     .n_dash_patterns = 0,
-};  /* normal solid */
+}; /* normal solid */
 
-static GrxLineOptions *Patterns[] = {
-  &Solid, NULL
-};
+static GrxLineOptions *Patterns[] = { &Solid, NULL };
 
-void drawellip(int xc,int yc,int rx,int ry,GrxColor c1,GrxColor c2,GrxColor c3)
+void drawellip(int xc, int yc, int rx, int ry, GrxColor c1, GrxColor c2, GrxColor c3)
 {
-        double ddx = (double)rx;
-        double ddy = (double)ry;
-        double R2 = ddx*ddx*ddy*ddy;
-        double SQ;
-        int x1,x2,y1,y2;
-        int dx,dy;
-        int *wdt, idx;
-        GrxLineOptions *l;
+    double ddx = (double)rx;
+    double ddy = (double)ry;
+    double R2 = ddx * ddx * ddy * ddy;
+    double SQ;
+    int x1, x2, y1, y2;
+    int dx, dy;
+    int *wdt, idx;
+    GrxLineOptions *l;
 
-        for (idx = 0, l = *Patterns; l != NULL; l = Patterns[++idx])
-            for (wdt=widths; *wdt != 0; ++wdt) {
-                grx_clear_screen(GRX_COLOR_BLACK);
+    for (idx = 0, l = *Patterns; l != NULL; l = Patterns[++idx])
+        for (wdt = widths; *wdt != 0; ++wdt) {
+            grx_clear_screen(GRX_COLOR_BLACK);
 
-                grx_draw_filled_box(xc-rx,yc-ry,xc+rx,yc+ry,c1);
-                dx = rx;
-                dy = 0;
-                grx_draw_pixel(xc-dx,yc,c3);
-                grx_draw_pixel(xc+dx,yc,c3);
-                while(++dy <= ry) {
-                    SQ = R2 - (double)dy * (double)dy * ddx * ddx;
-                    dx = (int)(sqrt(SQ)/ddy + 0.5);
-                    x1 = xc - dx;
-                    x2 = xc + dx;
-                    y1 = yc - dy;
-                    y2 = yc + dy;
-                    grx_draw_pixel(x1,y1,c3);
-                    grx_draw_pixel(x2,y1,c3);
-                    grx_draw_pixel(x1,y2,c3);
-                    grx_draw_pixel(x2,y2,c3);
-                }
-
-                l->color = c2;
-                l->width = *wdt;
-                grx_draw_ellipse_with_options(xc,yc,rx,ry,l);
-                if (run_main_loop_until_key_press() == 'q') {
-                  stop = 1;
-                  return;
-                }
+            grx_draw_filled_box(xc - rx, yc - ry, xc + rx, yc + ry, c1);
+            dx = rx;
+            dy = 0;
+            grx_draw_pixel(xc - dx, yc, c3);
+            grx_draw_pixel(xc + dx, yc, c3);
+            while (++dy <= ry) {
+                SQ = R2 - (double)dy * (double)dy * ddx * ddx;
+                dx = (int)(sqrt(SQ) / ddy + 0.5);
+                x1 = xc - dx;
+                x2 = xc + dx;
+                y1 = yc - dy;
+                y2 = yc + dy;
+                grx_draw_pixel(x1, y1, c3);
+                grx_draw_pixel(x2, y1, c3);
+                grx_draw_pixel(x1, y2, c3);
+                grx_draw_pixel(x2, y2, c3);
             }
+
+            l->color = c2;
+            l->width = *wdt;
+            grx_draw_ellipse_with_options(xc, yc, rx, ry, l);
+            if (run_main_loop_until_key_press() == 'q') {
+                stop = 1;
+                return;
+            }
+        }
 }
 
 TESTFUNC(circtest)
 {
-        int  xc,yc;
-        int  xr,yr;
-        GrxColor c1,c2,c3;
+    int xc, yc;
+    int xr, yr;
+    GrxColor c1, c2, c3;
 
-        c1 = grx_color_get(64,64,255);
-        c2 = grx_color_get(255,255,64);
-        c3 = grx_color_get(255,64,64);
-        xc = grx_get_width() / 2;
-        yc = grx_get_height() / 2;
-        xr = 1;
-        yr = 1;
-        while(!stop && ((xr < 1000) || (yr < 1000))) {
-            drawellip(xc,yc,xr,yr,c1,c2,c3);
-            xr += xr/4+1;
-            yr += yr/4+1;
-        }
-        xr = 4;
-        yr = 1;
-        while(!stop && ((xr < 1000) || (yr < 1000))) {
-            drawellip(xc,yc,xr,yr,c1,c2,c3);
-            yr += yr/4+1;
-            xr = yr * 4;
-        }
-        xr = 1;
-        yr = 4;
-        while(!stop && ((xr < 1000) || (yr < 1000))) {
-            drawellip(xc,yc,xr,yr,c1,c2,c3);
-            xr += xr/4+1;
-            yr = xr * 4;
-        }
+    c1 = grx_color_get(64, 64, 255);
+    c2 = grx_color_get(255, 255, 64);
+    c3 = grx_color_get(255, 64, 64);
+    xc = grx_get_width() / 2;
+    yc = grx_get_height() / 2;
+    xr = 1;
+    yr = 1;
+    while (!stop && ((xr < 1000) || (yr < 1000))) {
+        drawellip(xc, yc, xr, yr, c1, c2, c3);
+        xr += xr / 4 + 1;
+        yr += yr / 4 + 1;
+    }
+    xr = 4;
+    yr = 1;
+    while (!stop && ((xr < 1000) || (yr < 1000))) {
+        drawellip(xc, yc, xr, yr, c1, c2, c3);
+        yr += yr / 4 + 1;
+        xr = yr * 4;
+    }
+    xr = 1;
+    yr = 4;
+    while (!stop && ((xr < 1000) || (yr < 1000))) {
+        drawellip(xc, yc, xr, yr, c1, c2, c3);
+        xr += xr / 4 + 1;
+        yr = xr * 4;
+    }
 }

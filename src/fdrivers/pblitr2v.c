@@ -16,60 +16,70 @@
  */
 #include <grx/context.h>
 
+#include "arith.h"
 #include "banking.h"
 #include "colors.h"
-#include "libgrx.h"
 #include "grdriver.h"
-#include "arith.h"
-#include "mempeek.h"
+#include "libgrx.h"
 #include "memcopy.h"
+#include "mempeek.h"
 #include "pblit.h"
 
 /* frame offset address calculation */
-#define FOFS(x,y,lo) umuladd32((y),(lo),(x))
+#define FOFS(x, y, lo) umuladd32((y), (lo), (x))
 
-void _GrFrDrvPackedBitBltR2V(GrxFrame *dst,int dx,int dy,
-                             GrxFrame *src,int sx,int sy,
-                             int w,int h,GrxColor op)
+void _GrFrDrvPackedBitBltR2V(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx,
+    int sy, int w, int h, GrxColor op)
 {
-        GR_int32u doff;
-        unsigned char *dptr, *sptr;
-        unsigned int dskip, sskip;
-        int oper;
-        GR_int8u cval;
+    GR_int32u doff;
+    unsigned char *dptr, *sptr;
+    unsigned int dskip, sskip;
+    int oper;
+    GR_int8u cval;
 
-        GRX_ENTER();
-        dskip = dst->line_offset;
-        doff  = FOFS(dx,dy,dskip);
-        sskip = src->line_offset;
-        sptr  = &src->base_address[FOFS(sx,sy,sskip)];
-        dskip -= w;
-        sskip -= w;
-        oper  = C_OPER(op);
-        cval  = (GR_int8u)op;
+    GRX_ENTER();
+    dskip = dst->line_offset;
+    doff = FOFS(dx, dy, dskip);
+    sskip = src->line_offset;
+    sptr = &src->base_address[FOFS(sx, sy, sskip)];
+    dskip -= w;
+    sskip -= w;
+    oper = C_OPER(op);
+    cval = (GR_int8u)op;
 
-#       define DOICPY()   DOIMGCOPY(FW,_f,_n,w1)
+#define DOICPY() DOIMGCOPY(FW, _f, _n, w1)
 
-        setup_far_selector(dst->selector);
+    setup_far_selector(dst->selector);
+    do {
+        unsigned int w1 = BANKLFT(doff);
+        unsigned int w2 = w - (w1 = umin(w, w1));
         do {
-            unsigned int w1 = BANKLFT(doff);
-            unsigned int w2 = w - (w1 = umin(w,w1));
-            do {
-                dptr = &dst->base_address[BANKPOS(doff)];
-                CHKBANK(BANKNUM(doff));
-                doff += w1;
-                if (w1) switch(oper) {
-                    case C_IMAGE: DOICPY();                           break;
-                    case C_XOR:   fwdcopy_f_xor(dptr,dptr,sptr,w1);   break;
-                    case C_OR:    fwdcopy_f_or (dptr,dptr,sptr,w1);   break;
-                    case C_AND:   fwdcopy_f_and(dptr,dptr,sptr,w1);   break;
-                    default:      fwdcopy_f_set(dptr,dptr,sptr,w1);   break;
+            dptr = &dst->base_address[BANKPOS(doff)];
+            CHKBANK(BANKNUM(doff));
+            doff += w1;
+            if (w1)
+                switch (oper) {
+                case C_IMAGE:
+                    DOICPY();
+                    break;
+                case C_XOR:
+                    fwdcopy_f_xor(dptr, dptr, sptr, w1);
+                    break;
+                case C_OR:
+                    fwdcopy_f_or(dptr, dptr, sptr, w1);
+                    break;
+                case C_AND:
+                    fwdcopy_f_and(dptr, dptr, sptr, w1);
+                    break;
+                default:
+                    fwdcopy_f_set(dptr, dptr, sptr, w1);
+                    break;
                 }
-                w1 = w2;
-                w2 = 0;
-            } while(w1 != 0);
-            doff += dskip;
-            sptr += sskip;
-        } while(--h != 0);
-        GRX_LEAVE();
+            w1 = w2;
+            w2 = 0;
+        } while (w1 != 0);
+        doff += dskip;
+        sptr += sskip;
+    } while (--h != 0);
+    GRX_LEAVE();
 }

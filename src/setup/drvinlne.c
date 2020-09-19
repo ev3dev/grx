@@ -27,9 +27,9 @@
  *
  * Returns: the frame mode.
  */
-GrxFrameMode (grx_frame_mode_get_current)(void)
+GrxFrameMode(grx_frame_mode_get_current)(void)
 {
-        return(grx_frame_mode_get_current());
+    return grx_frame_mode_get_current();
 }
 
 /**
@@ -39,9 +39,9 @@ GrxFrameMode (grx_frame_mode_get_current)(void)
  *
  * Returns: the frame mode.
  */
-GrxFrameMode (grx_frame_mode_get_screen)(void)
+GrxFrameMode(grx_frame_mode_get_screen)(void)
 {
-        return(grx_frame_mode_get_screen());
+    return grx_frame_mode_get_screen();
 }
 
 /**
@@ -51,34 +51,34 @@ GrxFrameMode (grx_frame_mode_get_screen)(void)
  *
  * Returns: the frame mode.
  */
-GrxFrameMode (grx_frame_mode_get_screen_core)(void)
+GrxFrameMode(grx_frame_mode_get_screen_core)(void)
 {
-        return(grx_frame_mode_get_screen_core());
+    return grx_frame_mode_get_screen_core();
 }
 
 const GrxVideoDriver *(grx_get_current_video_driver)(void)
 {
-        return(grx_get_current_video_driver());
+    return grx_get_current_video_driver();
 }
 
 const GrxVideoMode *(grx_get_current_video_mode)(void)
 {
-        return(grx_get_current_video_mode());
+    return grx_get_current_video_mode();
 }
 
 const GrxVideoMode *(grx_get_virtual_video_mode)(void)
 {
-        return(grx_get_virtual_video_mode());
+    return grx_get_virtual_video_mode();
 }
 
 const GrxFrameDriver *(grx_get_current_frame_driver)(void)
 {
-        return(grx_get_current_frame_driver());
+    return grx_get_current_frame_driver();
 }
 
 const GrxFrameDriver *(grx_get_screen_frame_driver)(void)
 {
-        return(grx_get_screen_frame_driver());
+    return grx_get_screen_frame_driver();
 }
 
 /**
@@ -91,9 +91,8 @@ const GrxFrameDriver *(grx_get_screen_frame_driver)(void)
  */
 GrxDeviceManager *(grx_get_device_manager)(void)
 {
-    return grx_get_device_manager ();
+    return grx_get_device_manager();
 }
-
 
 /**
  * grx_get_screen_width:
@@ -102,9 +101,9 @@ GrxDeviceManager *(grx_get_device_manager)(void)
  *
  * Returns: the width
  */
-int (grx_get_screen_width)(void)
+int(grx_get_screen_width)(void)
 {
-        return(grx_get_screen_width());
+    return grx_get_screen_width();
 }
 
 /**
@@ -114,9 +113,9 @@ int (grx_get_screen_width)(void)
  *
  * Returns: the height
  */
-int (grx_get_screen_height)(void)
+int(grx_get_screen_height)(void)
 {
-        return(grx_get_screen_height());
+    return grx_get_screen_height();
 }
 
 /**
@@ -126,9 +125,9 @@ int (grx_get_screen_height)(void)
  *
  * Returns: the width
  */
-int (grx_get_virtual_width)(void)
+int(grx_get_virtual_width)(void)
 {
-        return(grx_get_virtual_width());
+    return grx_get_virtual_width();
 }
 
 /**
@@ -138,9 +137,9 @@ int (grx_get_virtual_width)(void)
  *
  * Returns: the height
  */
-int (grx_get_virtual_height)(void)
+int(grx_get_virtual_height)(void)
 {
-        return(grx_get_virtual_height());
+    return grx_get_virtual_height();
 }
 
 /**
@@ -150,9 +149,9 @@ int (grx_get_virtual_height)(void)
  *
  * Returns: the X coordinate
  */
-int (grx_get_viewport_x)(void)
+int(grx_get_viewport_x)(void)
 {
-        return(grx_get_viewport_x());
+    return grx_get_viewport_x();
 }
 
 /**
@@ -162,9 +161,9 @@ int (grx_get_viewport_x)(void)
  *
  * Returns: the Y coordinate
  */
-int (grx_get_viewport_y)(void)
+int(grx_get_viewport_y)(void)
 {
-        return(grx_get_viewport_y());
+    return grx_get_viewport_y();
 }
 
 /**
@@ -175,9 +174,9 @@ int (grx_get_viewport_y)(void)
  *
  * Returns: %TRUE if the screen is a virtual screen
  */
-int (grx_is_screen_virtual)(void)
+int(grx_is_screen_virtual)(void)
 {
-        return(grx_is_screen_virtual());
+    return grx_is_screen_virtual();
 }
 
 /**
@@ -188,9 +187,9 @@ int (grx_is_screen_virtual)(void)
  *
  * Returns: the number of bytes per row.
  */
-int (grx_screen_get_line_offset)(int width)
+int(grx_screen_get_line_offset)(int width)
 {
-    return(grx_screen_get_line_offset(width));
+    return grx_screen_get_line_offset(width);
 }
 
 /**
@@ -203,9 +202,9 @@ int (grx_screen_get_line_offset)(int width)
  *
  * Returns: the size in bytes.
  */
-int (grx_screen_get_memory_size)(int w,int h)
+int(grx_screen_get_memory_size)(int w, int h)
 {
-    return(grx_screen_get_memory_size(w,h));
+    return grx_screen_get_memory_size(w, h);
 }
 
 /**
@@ -218,7 +217,7 @@ int (grx_screen_get_memory_size)(int w,int h)
  *
  * Returns: the size in bytes.
  */
-int (grx_screen_get_context_size)(int w,int h)
+int(grx_screen_get_context_size)(int w, int h)
 {
-    return(grx_screen_get_context_size(w,h));
+    return grx_screen_get_context_size(w, h);
 }

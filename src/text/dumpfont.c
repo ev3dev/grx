@@ -14,9 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <glib.h>
-
 #include <ft2build.h>
+#include <glib.h>
 #include FT_FREETYPE_H
 
 #include <grx/context.h>
@@ -42,7 +41,8 @@
  * Returns: the index of the first glyph that was not drawn or -1 if all of the
  * glyphs were drawn
  */
-gint grx_font_dump(GrxFont *font, GrxContext *context, gint start, GrxColor fg, GrxColor bg)
+gint grx_font_dump(
+    GrxFont *font, GrxContext *context, gint start, GrxColor fg, GrxColor bg)
 {
     FT_Size_Metrics metrics;
     FT_GlyphSlot slot;
@@ -79,11 +79,11 @@ gint grx_font_dump(GrxFont *font, GrxContext *context, gint start, GrxColor fg, 
         if (slot->bitmap.pixel_mode != FT_PIXEL_MODE_MONO) {
             continue;
         }
-        grx_context_new_full(GRX_FRAME_MODE_RAM_1BPP,
-            slot->bitmap.pitch * 8, slot->bitmap.rows, slot->bitmap.buffer, &ctx);
+        grx_context_new_full(GRX_FRAME_MODE_RAM_1BPP, slot->bitmap.pitch * 8,
+            slot->bitmap.rows, slot->bitmap.buffer, &ctx);
         grx_context_bit_blt_1bpp(context, x + slot->bitmap_left,
-            y - slot->bitmap_top + ascender, &ctx, 0, 0,
-            slot->bitmap.width, slot->bitmap.rows, fg, bg);
+            y - slot->bitmap_top + ascender, &ctx, 0, 0, slot->bitmap.width,
+            slot->bitmap.rows, fg, bg);
         x += slot->advance.x >> 6;
         y += slot->advance.y >> 6;
     }

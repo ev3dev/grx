@@ -34,7 +34,8 @@
  * coordinates from the starting angle to the ending angle with the specified
  * radius, arc style and color.
  */
-void grx_draw_filled_circle_arc(int xc,int yc,int r,int start,int end,GrxArcStyle style,GrxColor c)
+void grx_draw_filled_circle_arc(
+    int xc, int yc, int r, int start, int end, GrxArcStyle style, GrxColor c)
 {
-        grx_draw_filled_ellipse_arc(xc,yc,r,r,start,end,style,c);
+    grx_draw_filled_ellipse_arc(xc, yc, r, r, start, end, style, c);
 }

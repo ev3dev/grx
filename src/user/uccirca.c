@@ -38,14 +38,15 @@
  * from the starting angle to the ending angle with the specified radius,
  * arc style and options.
  */
-void grx_user_draw_circle_arc_with_options(int xc,int yc,int r,int start,int end,GrxArcStyle style,const GrxLineOptions *lo)
+void grx_user_draw_circle_arc_with_options(int xc, int yc, int r, int start, int end,
+    GrxArcStyle style, const GrxLineOptions *lo)
 {
 #ifdef USR_KEEP_SHAPE
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(r,r,CURC->x_max,CURC->user_width);
-        grx_draw_circle_arc_with_options(xc,yc,r,start,end,style,lo);
+    U2SX(xc, CURC);
+    U2SY(yc, CURC);
+    SCALE(r, r, CURC->x_max, CURC->user_width);
+    grx_draw_circle_arc_with_options(xc, yc, r, start, end, style, lo);
 #else
-        grx_user_draw_ellipse_arc_with_options(xc,yc,r,r,start,end,style,lo);
+    grx_user_draw_ellipse_arc_with_options(xc, yc, r, r, start, end, style, lo);
 #endif /* USR_KEEP_SHAPE */
 }

@@ -30,7 +30,7 @@
  * Draws a circle on the current context centered at the specified coordinates
  * with the specified radius and options.
  */
-void grx_draw_circle_with_options(int xc,int yc,int r,const GrxLineOptions *o)
+void grx_draw_circle_with_options(int xc, int yc, int r, const GrxLineOptions *o)
 {
-        grx_draw_ellipse_with_options(xc,yc,r,r,o);
+    grx_draw_ellipse_with_options(xc, yc, r, r, o);
 }

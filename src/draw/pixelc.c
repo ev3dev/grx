@@ -15,9 +15,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "mouse.h"
-#include "libgrx.h"
 #include "clipping.h"
+#include "libgrx.h"
+#include "mouse.h"
 
 /**
  * grx_context_get_pixel_at:
@@ -30,16 +30,12 @@
  *
  * Also see grx_get_pixel_at() for operating on the current context.
  */
-GrxColor grx_context_get_pixel_at(GrxContext *c,int x,int y)
+GrxColor grx_context_get_pixel_at(GrxContext *c, int x, int y)
 {
-        GrxColor retval;
-        cxclip_dot_(c,x,y,return(GRX_COLOR_NONE));
-        mouse_block(c,x,y,x,y);
-        retval = (*c->gc_driver->readpixel)(
-            &c->frame,
-            x + c->x_offset,
-            y + c->y_offset
-        );
-        mouse_unblock();
-        return(retval);
+    GrxColor retval;
+    cxclip_dot_(c, x, y, return GRX_COLOR_NONE);
+    mouse_block(c, x, y, x, y);
+    retval = (*c->gc_driver->readpixel)(&c->frame, x + c->x_offset, y + c->y_offset);
+    mouse_unblock();
+    return retval;
 }

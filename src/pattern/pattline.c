@@ -39,7 +39,8 @@
  * Draws a line on the current context from the starting coordinates to the
  * ending coordinates using the specified line options and pixmap.
  */
-void grx_draw_line_with_pixmap (int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
+void grx_draw_line_with_pixmap(
+    int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
     GrxPoint points[2];
@@ -49,5 +50,5 @@ void grx_draw_line_with_pixmap (int x1, int y1, int x2, int y2, GrxLineOptions *
     points[1].x = x2;
     points[1].y = y2;
     fval.p = p;
-    _GrDrawCustomPolygon (2, points, o, &_GrPatternFiller, fval, FALSE, FALSE);
+    _GrDrawCustomPolygon(2, points, o, &_GrPatternFiller, fval, FALSE, FALSE);
 }

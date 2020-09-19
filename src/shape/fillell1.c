@@ -31,9 +31,9 @@
  * The ellipse can only draw ellipses with its major axis parallel with either
  * the X or Y coordinate axis
  */
-void grx_draw_filled_ellipse(int xc,int yc,int rx,int ry,GrxColor c)
+void grx_draw_filled_ellipse(int xc, int yc, int rx, int ry, GrxColor c)
 {
-        GrFillArg fval;
-        fval.color = c;
-        _GrScanEllipse(xc,yc,rx,ry,&_GrSolidFiller,fval,TRUE);
+    GrFillArg fval;
+    fval.color = c;
+    _GrScanEllipse(xc, yc, rx, ry, &_GrSolidFiller, fval, TRUE);
 }

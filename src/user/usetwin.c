@@ -48,10 +48,10 @@
  * GrSetUserWindow(0,8999,11999,0);
  * ]|
  */
-void grx_user_set_window(int x1,int y1,int x2,int y2)
+void grx_user_set_window(int x1, int y1, int x2, int y2)
 {
-        CURC->user_x_base  = x1;
-        CURC->user_y_base  = y1;
-        CURC->user_width  = x2 - x1;
-        CURC->user_height = y2 - y1;
+    CURC->user_x_base = x1;
+    CURC->user_y_base = y1;
+    CURC->user_width = x2 - x1;
+    CURC->user_height = y2 - y1;
 }

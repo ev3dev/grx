@@ -18,32 +18,32 @@
  * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  */
 
-#define PIX2COL(col) ((col)>>8)
-#define COL2PIX(col) ((col)<<8)
+#define PIX2COL(col) ((col) >> 8)
+#define COL2PIX(col) ((col) << 8)
 
 #include "driver32.h"
 
 GrxFrameDriver _GrFrameDriverRAM32H = {
-    .mode               = GRX_FRAME_MODE_RAM_32BPP_HIGH, /* frame mode */
-    .rmode              = GRX_FRAME_MODE_UNDEFINED,      /* compatible RAM frame mode */
-    .is_video           = FALSE,                         /* onscreen */
-    .row_align          = 4,                             /* scan line width alignment */
-    .bits_per_pixel     = 32,                            /* bits per pixel */
-    .max_mem_size       = 32 * 16 * 1024 * 1024,         /* max memory size the code can handle */
-    .init               = NULL,
-    .readpixel          = readpixel,
-    .drawpixel          = drawpixel,
-    .drawline           = drawline,
-    .drawhline          = drawhline,
-    .drawvline          = drawvline,
-    .drawblock          = drawblock,
-    .drawbitmap         = drawbitmap,
-    .drawpattern        = drawpattern,
-    .bitblt             = bitblt,
-    .bltv2r             = NULL,
-    .bltr2v             = NULL,
+    .mode = GRX_FRAME_MODE_RAM_32BPP_HIGH, /* frame mode */
+    .rmode = GRX_FRAME_MODE_UNDEFINED,     /* compatible RAM frame mode */
+    .is_video = FALSE,                     /* onscreen */
+    .row_align = 4,                        /* scan line width alignment */
+    .bits_per_pixel = 32,                  /* bits per pixel */
+    .max_mem_size = 32 * 16 * 1024 * 1024, /* max memory size the code can handle */
+    .init = NULL,
+    .readpixel = readpixel,
+    .drawpixel = drawpixel,
+    .drawline = drawline,
+    .drawhline = drawhline,
+    .drawvline = drawvline,
+    .drawblock = drawblock,
+    .drawbitmap = drawbitmap,
+    .drawpattern = drawpattern,
+    .bitblt = bitblt,
+    .bltv2r = NULL,
+    .bltr2v = NULL,
     .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
-    .putscanline        = _GrFrDrvGenericPutScanline,
+    .putscanline = _GrFrDrvGenericPutScanline,
 };
 
 /* some systems map LFB in normal user space (eg. Linux/svgalib) */
@@ -54,26 +54,26 @@ GrxFrameDriver _GrFrameDriverRAM32H = {
 ** bottom first blits but this shouldn't matter */
 
 GrxFrameDriver _GrFrameDriverSVGA32H_LFB = {
-    .mode               = GRX_FRAME_MODE_LFB_32BPP_HIGH, /* frame mode */
-    .rmode              = GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
-    .is_video           = TRUE,                          /* onscreen */
-    .row_align          = 4,                             /* line width alignment */
-    .bits_per_pixel     = 32,                            /* bits per pixel */
-    .max_mem_size       = 32 * 16 * 1024 * 1024,         /* max memory size the code can handle */
-    .init               = NULL,
-    .readpixel          = readpixel,
-    .drawpixel          = drawpixel,
-    .drawline           = drawline,
-    .drawhline          = drawhline,
-    .drawvline          = drawvline,
-    .drawblock          = drawblock,
-    .drawbitmap         = drawbitmap,
-    .drawpattern        = drawpattern,
-    .bitblt             = bitblt,
-    .bltv2r             = bitblt,
-    .bltr2v             = bitblt,
+    .mode = GRX_FRAME_MODE_LFB_32BPP_HIGH,  /* frame mode */
+    .rmode = GRX_FRAME_MODE_RAM_32BPP_HIGH, /* compatible RAM frame mode */
+    .is_video = TRUE,                       /* onscreen */
+    .row_align = 4,                         /* line width alignment */
+    .bits_per_pixel = 32,                   /* bits per pixel */
+    .max_mem_size = 32 * 16 * 1024 * 1024,  /* max memory size the code can handle */
+    .init = NULL,
+    .readpixel = readpixel,
+    .drawpixel = drawpixel,
+    .drawline = drawline,
+    .drawhline = drawhline,
+    .drawvline = drawvline,
+    .drawblock = drawblock,
+    .drawbitmap = drawbitmap,
+    .drawpattern = drawpattern,
+    .bitblt = bitblt,
+    .bltv2r = bitblt,
+    .bltr2v = bitblt,
     .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
-    .putscanline        = _GrFrDrvGenericPutScanline,
+    .putscanline = _GrFrDrvGenericPutScanline,
 };
 
 #endif

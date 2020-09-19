@@ -41,4 +41,4 @@
 #include <grx/utils.h>
 #include <grx/wideline.h>
 
-#endif  /* __GRX_3_0_H_INCLUDED__ */
+#endif /* __GRX_3_0_H_INCLUDED__ */

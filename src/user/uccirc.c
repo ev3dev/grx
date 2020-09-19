@@ -34,14 +34,14 @@
  * Draws a circle on the current context centered at the specified coordinates
  * with the specified radius and options.
  */
-void grx_user_draw_circle_with_options(int xc,int yc,int r,const GrxLineOptions *lo)
+void grx_user_draw_circle_with_options(int xc, int yc, int r, const GrxLineOptions *lo)
 {
 #ifdef USR_KEEP_SHAPE
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(r,r,CURC->x_max,CURC->user_width);
-        grx_draw_circle_with_options(xc,yc,r,lo);
+    U2SX(xc, CURC);
+    U2SY(yc, CURC);
+    SCALE(r, r, CURC->x_max, CURC->user_width);
+    grx_draw_circle_with_options(xc, yc, r, lo);
 #else
-        grx_user_draw_ellipse_with_options(xc,yc,r,r,lo);
+    grx_user_draw_ellipse_with_options(xc, yc, r, r, lo);
 #endif /* USR_KEEP_SHAPE */
 }

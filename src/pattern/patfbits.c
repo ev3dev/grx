@@ -14,85 +14,92 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "clipping.h"
 #include "shapes.h"
 
-void  _GrFillBitmapPatternExt(int x,int y,int w,int h, int sx, int sy,
-                                unsigned char *bmp,int pitch,int start,
-                                GrxPixmap* p,GrxColor bg)
+void _GrFillBitmapPatternExt(int x, int y, int w, int h, int sx, int sy,
+    unsigned char *bmp, int pitch, int start, GrxPixmap *p, GrxColor bg)
 {
-   GR_int8u *bits, *dptr;
-   GR_int8u mask;
-   int xx, width, oldx;
-   GRX_ENTER();
-   bits = (GR_int8u *)bmp + ((unsigned int)start >> 3);
-   if ( bg == GRX_COLOR_NONE )
-   {
-     w += x;
-     h += y;
-     do {
-       mask = 0x80;
-       dptr = bits;
-       oldx = xx = x;
-       width = 0;
-       do {
-         if ( *dptr & mask ) {
-           if ( width == 0 ) oldx = xx;
-           width++;
-         }
-         else if ( width ) {
-           _GrFillPatternExt(oldx, y, sx, sy, width, p);
-           width = 0;
-         }
-         if((mask >>= 1) == 0) { mask = 0x80; ++dptr; }
-       } while ( ++xx < w );
-       if ( width ) _GrFillPatternExt(oldx, y, sx, sy, width, p);
-       bits += pitch;
-     } while ( ++y < h );
-   }
-   else {
-     int  widthbg;
-     w += x; h += y;
-     do {
-       mask = 0x80;
-       dptr = bits;
-       oldx = xx = x;
-       widthbg = width = 0;
-       do {
-         if ( *dptr & mask ) {
-           if ( widthbg )
-           {
-             (*FDRV->drawhline)(oldx, y, widthbg, bg);
-             widthbg = 0;
-             oldx = xx;
-           }
-           width++;
-         }
-         else
-         {
-           if ( width )
-           {
-             _GrFillPatternExt(oldx, y, sx, sy, width, p);
-             width = 0;
-             oldx = xx;
-           }
-           widthbg++;
-         }
-         if((mask >>= 1) == 0) { mask = 0x80; ++dptr; }
-       } while ( ++xx < w );
-       if ( width   ) _GrFillPatternExt(oldx, y, sx, sy, width, p); else
-       if ( widthbg ) (*FDRV->drawhline)(oldx, y, widthbg, bg);
-       bits += pitch;
-     } while ( ++y < h );
-   }
-   GRX_LEAVE();
+    GR_int8u *bits, *dptr;
+    GR_int8u mask;
+    int xx, width, oldx;
+    GRX_ENTER();
+    bits = (GR_int8u *)bmp + ((unsigned int)start >> 3);
+    if (bg == GRX_COLOR_NONE) {
+        w += x;
+        h += y;
+        do {
+            mask = 0x80;
+            dptr = bits;
+            oldx = xx = x;
+            width = 0;
+            do {
+                if (*dptr & mask) {
+                    if (width == 0)
+                        oldx = xx;
+                    width++;
+                }
+                else if (width) {
+                    _GrFillPatternExt(oldx, y, sx, sy, width, p);
+                    width = 0;
+                }
+                if ((mask >>= 1) == 0) {
+                    mask = 0x80;
+                    ++dptr;
+                }
+            } while (++xx < w);
+            if (width)
+                _GrFillPatternExt(oldx, y, sx, sy, width, p);
+            bits += pitch;
+        } while (++y < h);
+    }
+    else {
+        int widthbg;
+        w += x;
+        h += y;
+        do {
+            mask = 0x80;
+            dptr = bits;
+            oldx = xx = x;
+            widthbg = width = 0;
+            do {
+                if (*dptr & mask) {
+                    if (widthbg) {
+                        (*FDRV->drawhline)(oldx, y, widthbg, bg);
+                        widthbg = 0;
+                        oldx = xx;
+                    }
+                    width++;
+                }
+                else {
+                    if (width) {
+                        _GrFillPatternExt(oldx, y, sx, sy, width, p);
+                        width = 0;
+                        oldx = xx;
+                    }
+                    widthbg++;
+                }
+                if ((mask >>= 1) == 0) {
+                    mask = 0x80;
+                    ++dptr;
+                }
+            } while (++xx < w);
+            if (width)
+                _GrFillPatternExt(oldx, y, sx, sy, width, p);
+            else if (widthbg)
+                (*FDRV->drawhline)(oldx, y, widthbg, bg);
+            bits += pitch;
+        } while (++y < h);
+    }
+    GRX_LEAVE();
 }
 
-void  _GrFillBitmapPattern(int x,int y,int w,int h,unsigned char *bmp,int pitch,int start,GrxPixmap* p,GrxColor bg)
+void _GrFillBitmapPattern(int x, int y, int w, int h, unsigned char *bmp, int pitch,
+    int start, GrxPixmap *p, GrxColor bg)
 {
-   GRX_ENTER();
-   _GrFillBitmapPatternExt(x, y, w, h, 0, 0, bmp, pitch, start, p, bg);
-   GRX_LEAVE();
+    GRX_ENTER();
+    _GrFillBitmapPatternExt(x, y, w, h, 0, 0, bmp, pitch, start, p, bg);
+    GRX_LEAVE();
 }

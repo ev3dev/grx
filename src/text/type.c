@@ -14,9 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <glib-object.h>
-
 #include <ft2build.h>
+#include <glib-object.h>
 #include FT_FREETYPE_H
 
 #include <grx/text.h>

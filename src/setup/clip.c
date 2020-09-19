@@ -15,9 +15,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "clipping.h"
 
 /**
  * grx_set_clip_box:
@@ -28,13 +28,13 @@
  *
  * Sets the clipping limits on the current context.
  */
-void grx_set_clip_box(int x1,int y1,int x2,int y2)
+void grx_set_clip_box(int x1, int y1, int x2, int y2)
 {
-        cxclip_box(CURC,x1,y1,x2,y2);
-        CURC->x_clip_low = x1;
-        CURC->y_clip_low = y1;
-        CURC->x_clip_high = x2;
-        CURC->y_clip_high = y2;
+    cxclip_box(CURC, x1, y1, x2, y2);
+    CURC->x_clip_low = x1;
+    CURC->y_clip_low = y1;
+    CURC->x_clip_high = x2;
+    CURC->y_clip_high = y2;
 }
 
 /**
@@ -47,13 +47,13 @@ void grx_set_clip_box(int x1,int y1,int x2,int y2)
  *
  * Sets the clipping limits on @context.
  */
-void grx_context_set_clip_box(GrxContext *c,int x1,int y1,int x2,int y2)
+void grx_context_set_clip_box(GrxContext *c, int x1, int y1, int x2, int y2)
 {
-        cxclip_box(c,x1,y1,x2,y2);
-        c->x_clip_low = x1;
-        c->y_clip_low = y1;
-        c->x_clip_high = x2;
-        c->y_clip_high = y2;
+    cxclip_box(c, x1, y1, x2, y2);
+    c->x_clip_low = x1;
+    c->y_clip_low = y1;
+    c->x_clip_high = x2;
+    c->y_clip_high = y2;
 }
 
 /**
@@ -64,10 +64,10 @@ void grx_context_set_clip_box(GrxContext *c,int x1,int y1,int x2,int y2)
  */
 void grx_reset_clip_box(void)
 {
-        CURC->x_clip_low = 0;
-        CURC->y_clip_low = 0;
-        CURC->x_clip_high = CURC->x_max;
-        CURC->y_clip_high = CURC->y_max;
+    CURC->x_clip_low = 0;
+    CURC->y_clip_low = 0;
+    CURC->x_clip_high = CURC->x_max;
+    CURC->y_clip_high = CURC->y_max;
 }
 
 /**
@@ -78,8 +78,8 @@ void grx_reset_clip_box(void)
  */
 void grx_context_reset_clip_box(GrxContext *c)
 {
-        c->x_clip_low = 0;
-        c->y_clip_low = 0;
-        c->x_clip_high = c->x_max;
-        c->y_clip_high = c->y_max;
+    c->x_clip_low = 0;
+    c->y_clip_low = 0;
+    c->x_clip_high = c->x_max;
+    c->y_clip_high = c->y_max;
 }

@@ -26,7 +26,7 @@
 /* only RAM access, use _n to keep preprocessor happy */
 
 #define WRITE_FAR _n
-#define READ_FAR _n
+#define READ_FAR  _n
 
 /* source and destination may overlap */
 #define BLIT_CAN_OVERLAP

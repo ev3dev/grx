@@ -28,10 +28,10 @@
  *
  * Gets the user window of the current context.
  */
-void grx_user_get_window(int *x1,int *y1,int *x2,int *y2)
+void grx_user_get_window(int *x1, int *y1, int *x2, int *y2)
 {
-        *x1 = CURC->user_x_base;
-        *y1 = CURC->user_y_base;
-        *x2 = CURC->user_x_base + CURC->user_width;
-        *y2 = CURC->user_y_base + CURC->user_height;
+    *x1 = CURC->user_x_base;
+    *y1 = CURC->user_y_base;
+    *x2 = CURC->user_x_base + CURC->user_width;
+    *y2 = CURC->user_y_base + CURC->user_height;
 }

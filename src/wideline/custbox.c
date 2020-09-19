@@ -32,14 +32,18 @@
  * Draws a rectangle on the current context using the specified coordinates
  * and options.
  */
-void grx_draw_box_with_options(int x1,int y1,int x2,int y2,const GrxLineOptions *o)
+void grx_draw_box_with_options(int x1, int y1, int x2, int y2, const GrxLineOptions *o)
 {
-        GrFillArg fval;
-        GrxPoint pt[4];
-        pt[0].x = x1; pt[0].y = y1;
-        pt[1].x = x2; pt[1].y = y1;
-        pt[2].x = x2; pt[2].y = y2;
-        pt[3].x = x1; pt[3].y = y2;
-        fval.color = o->color;
-        _GrDrawCustomPolygon(4,pt,o,&_GrSolidFiller,fval,TRUE,FALSE);
+    GrFillArg fval;
+    GrxPoint pt[4];
+    pt[0].x = x1;
+    pt[0].y = y1;
+    pt[1].x = x2;
+    pt[1].y = y1;
+    pt[2].x = x2;
+    pt[2].y = y2;
+    pt[3].x = x1;
+    pt[3].y = y2;
+    fval.color = o->color;
+    _GrDrawCustomPolygon(4, pt, o, &_GrSolidFiller, fval, TRUE, FALSE);
 }

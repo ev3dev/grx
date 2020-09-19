@@ -14,16 +14,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <glib.h>
-#include <glib-unix.h>
 #include <gio/gio.h>
+#include <glib-unix.h>
+#include <glib.h>
 
+#include <grx/application.h>
 #include <grx/context.h>
 #include <grx/draw.h>
-#include <grx/extents.h>
 #include <grx/events.h>
+#include <grx/extents.h>
 #include <grx/input_keysyms.h>
-#include <grx/application.h>
 #include <grx/mode.h>
 
 #include "marshal.h"
@@ -51,21 +51,15 @@ typedef struct {
     guint sigterm_source_id;
 } GrxApplicationPrivate;
 
-static void initable_interface_init (GInitableIface *iface);
+static void initable_interface_init(GInitableIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (GrxApplication,
-    grx_application, G_TYPE_APPLICATION,
-    G_ADD_PRIVATE (GrxApplication)
-    G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_interface_init))
+G_DEFINE_TYPE_WITH_CODE(GrxApplication, grx_application, G_TYPE_APPLICATION,
+    G_ADD_PRIVATE(GrxApplication)
+        G_IMPLEMENT_INTERFACE(G_TYPE_INITABLE, initable_interface_init))
 
 /* Properties */
 
-enum {
-    PROP_0,
-    PROP_IS_ACTIVE,
-    PROP_QUIT_ON_SIGNAL,
-    N_PROPERTIES
-};
+enum { PROP_0, PROP_IS_ACTIVE, PROP_QUIT_ON_SIGNAL, N_PROPERTIES };
 
 static GParamSpec *properties[N_PROPERTIES] = { NULL };
 
@@ -84,11 +78,9 @@ static GParamSpec *properties[N_PROPERTIES] = { NULL };
  *
  * Returns: %TRUE if the application is active
  */
-gboolean
-grx_application_is_active (GrxApplication *application)
+gboolean grx_application_is_active(GrxApplication *application)
 {
-    GrxApplicationPrivate *priv =
-        grx_application_get_instance_private (application);
+    GrxApplicationPrivate *priv = grx_application_get_instance_private(application);
 
     return priv->active;
 }
@@ -112,10 +104,9 @@ grx_application_is_active (GrxApplication *application)
  * Returns: %TRUE if the @application will quit when SIGHUP, SIGINT or SIGTERM
  * is received, otherwise %FALSE.
  */
-gboolean
-grx_application_get_quit_on_signal (GrxApplication *application)
+gboolean grx_application_get_quit_on_signal(GrxApplication *application)
 {
-    GrxApplicationPrivate *priv = grx_application_get_instance_private (application);
+    GrxApplicationPrivate *priv = grx_application_get_instance_private(application);
 
     return priv->sighup_source_id != 0;
 }
@@ -129,82 +120,79 @@ grx_application_get_quit_on_signal (GrxApplication *application)
  *
  * Sets the "quit-on-signal" property value.
  */
-void
-grx_application_set_quit_on_signal (GrxApplication *application, gboolean value)
+void grx_application_set_quit_on_signal(GrxApplication *application, gboolean value)
 {
     static GrxEvent quit_event = { .type = GRX_EVENT_TYPE_APP_QUIT };
 
-    GrxApplicationPrivate *priv = grx_application_get_instance_private (application);
+    GrxApplicationPrivate *priv = grx_application_get_instance_private(application);
 
     if (value) {
         if (priv->sighup_source_id == 0) {
-            priv->sighup_source_id = g_unix_signal_add (SIGHUP, (GSourceFunc)grx_event_put, &quit_event);
+            priv->sighup_source_id =
+                g_unix_signal_add(SIGHUP, (GSourceFunc)grx_event_put, &quit_event);
         }
         if (priv->sigint_source_id == 0) {
-            priv->sigint_source_id = g_unix_signal_add (SIGINT, (GSourceFunc)grx_event_put, &quit_event);
+            priv->sigint_source_id =
+                g_unix_signal_add(SIGINT, (GSourceFunc)grx_event_put, &quit_event);
         }
         if (priv->sigterm_source_id == 0) {
-            priv->sigterm_source_id = g_unix_signal_add (SIGTERM, (GSourceFunc)grx_event_put, &quit_event);
+            priv->sigterm_source_id =
+                g_unix_signal_add(SIGTERM, (GSourceFunc)grx_event_put, &quit_event);
         }
     }
     else {
         if (priv->sighup_source_id != 0) {
-            g_source_remove (priv->sighup_source_id);
+            g_source_remove(priv->sighup_source_id);
             priv->sighup_source_id = 0;
         }
         if (priv->sigint_source_id != 0) {
-            g_source_remove (priv->sigint_source_id);
+            g_source_remove(priv->sigint_source_id);
             priv->sigint_source_id = 0;
         }
         if (priv->sigterm_source_id != 0) {
-            g_source_remove (priv->sigterm_source_id);
+            g_source_remove(priv->sigterm_source_id);
             priv->sigterm_source_id = 0;
         }
     }
 }
 
-static void
-set_property (GObject *object, guint property_id, const GValue *value,
-              GParamSpec *pspec)
+static void set_property(
+    GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
     switch (property_id) {
     case PROP_QUIT_ON_SIGNAL:
-        grx_application_set_quit_on_signal (GRX_APPLICATION (object), g_value_get_boolean (value));
+        grx_application_set_quit_on_signal(
+            GRX_APPLICATION(object), g_value_get_boolean(value));
         break;
     default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
         break;
     }
 }
 
-static void
-get_property (GObject *object, guint property_id, GValue *value,
-              GParamSpec *pspec)
+static void get_property(
+    GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-    GrxApplication *self = GRX_APPLICATION (object);
-    GrxApplicationPrivate *priv =
-        grx_application_get_instance_private (self);
+    GrxApplication *self = GRX_APPLICATION(object);
+    GrxApplicationPrivate *priv = grx_application_get_instance_private(self);
 
     switch (property_id) {
     case PROP_IS_ACTIVE:
-        g_value_set_boolean (value, priv->active);
+        g_value_set_boolean(value, priv->active);
         break;
     case PROP_QUIT_ON_SIGNAL:
-        g_value_set_boolean (value, grx_application_get_quit_on_signal (GRX_APPLICATION (object)));
+        g_value_set_boolean(
+            value, grx_application_get_quit_on_signal(GRX_APPLICATION(object)));
         break;
     default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
         break;
     }
 }
 
 /* signals */
 
-enum {
-    SIG_0,
-    SIG_EVENT,
-    N_SIGNALS
-};
+enum { SIG_0, SIG_EVENT, N_SIGNALS };
 
 static uint signals[N_SIGNALS] = { 0 };
 
@@ -219,29 +207,25 @@ static uint signals[N_SIGNALS] = { 0 };
  * Returns: %TRUE if the handler handled the event, or %FALSE to continue
  *          propagating the event.
  */
-static gboolean
-event (GrxApplication *application, GrxEvent *event)
+static gboolean event(GrxApplication *application, GrxEvent *event)
 {
-    GrxApplicationPrivate *priv =
-        grx_application_get_instance_private (application);
+    GrxApplicationPrivate *priv = grx_application_get_instance_private(application);
 
     switch (event->type) {
     case GRX_EVENT_TYPE_APP_ACTIVATE:
         if (!priv->active) {
             priv->active = TRUE;
-            g_object_notify_by_pspec (G_OBJECT (application),
-                                      properties[PROP_IS_ACTIVE]);
+            g_object_notify_by_pspec(G_OBJECT(application), properties[PROP_IS_ACTIVE]);
         }
         break;
     case GRX_EVENT_TYPE_APP_DEACTIVATE:
         if (priv->active) {
             priv->active = FALSE;
-            g_object_notify_by_pspec (G_OBJECT (application),
-                                      properties[PROP_IS_ACTIVE]);
+            g_object_notify_by_pspec(G_OBJECT(application), properties[PROP_IS_ACTIVE]);
         }
         break;
     case GRX_EVENT_TYPE_APP_QUIT:
-        g_application_quit (G_APPLICATION (application));
+        g_application_quit(G_APPLICATION(application));
         break;
     default:
         if (priv->active) {
@@ -255,87 +239,73 @@ event (GrxApplication *application, GrxEvent *event)
 
 /* class implementation */
 
-static void event_handler (GrxEvent *event, gpointer user_data)
+static void event_handler(GrxEvent *event, gpointer user_data)
 {
-    GrxApplication *application = GRX_APPLICATION (user_data);
+    GrxApplication *application = GRX_APPLICATION(user_data);
     gboolean handled;
 
-    g_signal_emit (application, signals[SIG_EVENT], 0, event, &handled);
+    g_signal_emit(application, signals[SIG_EVENT], 0, event, &handled);
 }
 
-static void startup (GApplication *application)
+static void startup(GApplication *application)
 {
     GrxApplicationPrivate *priv =
-        grx_application_get_instance_private (GRX_APPLICATION (application));
+        grx_application_get_instance_private(GRX_APPLICATION(application));
 
-    G_APPLICATION_CLASS (grx_application_parent_class)->startup (application);
+    G_APPLICATION_CLASS(grx_application_parent_class)->startup(application);
 
-    priv->event_source_id = grx_event_handler_add (event_handler, application, NULL);
+    priv->event_source_id = grx_event_handler_add(event_handler, application, NULL);
 }
 
-static void shutdown (GApplication *application)
+static void shutdown(GApplication *application)
 {
     GrxApplicationPrivate *priv =
-        grx_application_get_instance_private (GRX_APPLICATION (application));
+        grx_application_get_instance_private(GRX_APPLICATION(application));
 
-    G_APPLICATION_CLASS (grx_application_parent_class)->shutdown (application);
+    G_APPLICATION_CLASS(grx_application_parent_class)->shutdown(application);
 
-    g_source_remove (priv->event_source_id);
+    g_source_remove(priv->event_source_id);
 }
 
-static void
-grx_application_class_init (GrxApplicationClass *klass)
+static void grx_application_class_init(GrxApplicationClass *klass)
 {
-    G_OBJECT_CLASS (klass)->set_property = set_property;
-    G_OBJECT_CLASS (klass)->get_property = get_property;
+    G_OBJECT_CLASS(klass)->set_property = set_property;
+    G_OBJECT_CLASS(klass)->get_property = get_property;
 
-    properties[PROP_IS_ACTIVE] =
-        g_param_spec_boolean ("is-active",
-                              "application is active",
-                              "Gets if the application is active.",
-                              FALSE /* default value */,
-                              G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+    properties[PROP_IS_ACTIVE] = g_param_spec_boolean("is-active",
+        "application is active", "Gets if the application is active.",
+        FALSE /* default value */, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
     properties[PROP_QUIT_ON_SIGNAL] =
-        g_param_spec_boolean ("quit-on-signal",
-                              "application will quit on signal",
-                              "Gets or sets if the application will queue a GRX_EVENT_TYPE_APP_QUIT event when SIGHUP, SIGINT or SIGTERM is received.",
-                              TRUE /* default value */,
-                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
-    g_object_class_install_properties (G_OBJECT_CLASS (klass),
-                                       N_PROPERTIES,
-                                       properties);
+        g_param_spec_boolean("quit-on-signal", "application will quit on signal",
+            "Gets or sets if the application will queue a GRX_EVENT_TYPE_APP_QUIT "
+            "event when SIGHUP, SIGINT or SIGTERM is received.",
+            TRUE /* default value */,
+            G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS);
+    g_object_class_install_properties(G_OBJECT_CLASS(klass), N_PROPERTIES, properties);
 
-    signals[SIG_EVENT] = g_signal_new ("event",
-                                       G_TYPE_FROM_CLASS (klass),
-                                       G_SIGNAL_RUN_LAST,
-                                       G_STRUCT_OFFSET (GrxApplicationClass, event),
-                                       g_signal_accumulator_true_handled,
-                                       NULL, /* accumulator data */
-                                       _grx_marshal_BOOLEAN__BOXED,
-                                       G_TYPE_BOOLEAN, /* return type */
-                                       1, /* n_params */
-                                       GRX_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+    signals[SIG_EVENT] = g_signal_new("event", G_TYPE_FROM_CLASS(klass),
+        G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET(GrxApplicationClass, event),
+        g_signal_accumulator_true_handled, NULL,     /* accumulator data */
+        _grx_marshal_BOOLEAN__BOXED, G_TYPE_BOOLEAN, /* return type */
+        1,                                           /* n_params */
+        GRX_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
-    G_APPLICATION_CLASS (klass)->startup = startup;
-    G_APPLICATION_CLASS (klass)->shutdown = shutdown;
+    G_APPLICATION_CLASS(klass)->startup = startup;
+    G_APPLICATION_CLASS(klass)->shutdown = shutdown;
 
     klass->event = event;
 }
 
-static void
-grx_application_init (GrxApplication *self)
-{
-}
+static void grx_application_init(GrxApplication *self) { }
 
 /* interface implementation */
 
-static gboolean init (GInitable *initable, GCancellable *cancellable,
-                      GError **error)
+static gboolean init(GInitable *initable, GCancellable *cancellable, GError **error)
 {
-    return grx_set_mode_default_graphics (TRUE, error);
+    return grx_set_mode_default_graphics(TRUE, error);
 }
 
-static void initable_interface_init (GInitableIface *iface)
+static void initable_interface_init(GInitableIface *iface)
 {
     iface->init = init;
 }
@@ -353,10 +323,9 @@ static void initable_interface_init (GInitableIface *iface)
  * Returns: (nullable): New instance of #GrxApplication or %NULL
  * if init() failed.
  */
-GrxApplication *
-grx_application_new (GError **error)
+GrxApplication *grx_application_new(GError **error)
 {
-    return g_initable_new (GRX_TYPE_APPLICATION, NULL, error, NULL);
+    return g_initable_new(GRX_TYPE_APPLICATION, NULL, error, NULL);
 }
 
 /**
@@ -372,11 +341,11 @@ grx_application_new (GError **error)
  * Returns: (nullable): New instance of #GrxApplication or %NULL
  * if init() failed.
  */
-GrxApplication *
-grx_application_new_full (const gchar *id, GApplicationFlags flags, GError **error)
+GrxApplication *grx_application_new_full(
+    const gchar *id, GApplicationFlags flags, GError **error)
 {
     g_return_val_if_fail(id != NULL && !g_application_id_is_valid(id), NULL);
 
-    return g_initable_new (GRX_TYPE_APPLICATION, NULL, error, "application-id",
-                           id, "flags", flags, NULL);
+    return g_initable_new(
+        GRX_TYPE_APPLICATION, NULL, error, "application-id", id, "flags", flags, NULL);
 }

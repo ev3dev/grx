@@ -17,9 +17,9 @@
  * Draw a multi-segment line on the current context that connects each point in
  * the @points array using the specified color.
  */
-void grx_draw_polyline(int n,GrxPoint *pt,GrxColor c)
+void grx_draw_polyline(int n, GrxPoint *pt, GrxColor c)
 {
-        GrFillArg fval;
-        fval.color = c;
-        _GrDrawPolygon(n,pt,&_GrSolidFiller,fval,FALSE);
+    GrFillArg fval;
+    fval.color = c;
+    _GrDrawPolygon(n, pt, &_GrSolidFiller, fval, FALSE);
 }

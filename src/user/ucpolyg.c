@@ -18,9 +18,9 @@
 #include <grx/draw.h>
 #include <grx/wideline.h>
 
+#include "allocate.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "allocate.h"
 #include "usercord.h"
 
 /**
@@ -35,21 +35,22 @@
  * Coordinate arrays can either contain or omit the closing edge of the polygon.
  * It will be automatically appended to the list if it is missing.
  */
-void grx_user_draw_polygon_with_options(int numpts,GrxPoint *points,const GrxLineOptions *lo)
+void grx_user_draw_polygon_with_options(
+    int numpts, GrxPoint *points, const GrxLineOptions *lo)
 {
-        int pt;
-        GrxPoint *tmp;
-        setup_ALLOC();
-        tmp = ALLOC(sizeof(GrxPoint) * numpts);
+    int pt;
+    GrxPoint *tmp;
+    setup_ALLOC();
+    tmp = ALLOC(sizeof(GrxPoint) * numpts);
 
-        if (tmp != NULL) {
-          for ( pt = 0;pt < numpts;pt++) {
-                tmp[pt] = points[pt];
-                U2SX(tmp[pt].x,CURC);
-                U2SY(tmp[pt].y,CURC);
-          }
-          grx_draw_polygon_with_options(numpts,tmp,lo);
-          FREE(tmp);
+    if (tmp != NULL) {
+        for (pt = 0; pt < numpts; pt++) {
+            tmp[pt] = points[pt];
+            U2SX(tmp[pt].x, CURC);
+            U2SY(tmp[pt].y, CURC);
         }
-        reset_ALLOC();
+        grx_draw_polygon_with_options(numpts, tmp, lo);
+        FREE(tmp);
+    }
+    reset_ALLOC();
 }

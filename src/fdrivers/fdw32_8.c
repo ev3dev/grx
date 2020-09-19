@@ -15,8 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "libwin32.h"
 #include "driver8.h"
+#include "libwin32.h"
 
 static void w32_drawpixel(int x, int y, GrxColor color)
 {
@@ -26,10 +26,10 @@ static void w32_drawpixel(int x, int y, GrxColor color)
     GRX_ENTER();
     drawpixel(x, y, color);
 
-    c = GetPixel ( hDCMem, x, y );
-    hDC = GetDC ( hGRXWnd );
-    SetPixelV ( hDC, x, y, c );
-    ReleaseDC ( hGRXWnd, hDC );
+    c = GetPixel(hDCMem, x, y);
+    hDC = GetDC(hGRXWnd);
+    SetPixelV(hDC, x, y, c);
+    ReleaseDC(hGRXWnd, hDC);
 
     GRX_LEAVE();
 }
@@ -40,21 +40,23 @@ static void w32_drawline(int x, int y, int dx, int dy, GrxColor c)
 
     GRX_ENTER();
     drawline(x, y, dx, dy, c);
-    if (dx > 0 ) {
+    if (dx > 0) {
         r.left = x;
         r.right = x + dx + 1;
-    } else {
+    }
+    else {
         r.left = x + dx;
         r.right = x + 1;
     }
-    if (dy > 0 ) {
+    if (dy > 0) {
         r.top = y;
         r.bottom = y + dy + 1;
-    } else {
+    }
+    else {
         r.top = y + dy;
         r.bottom = y + 1;
     }
-    InvalidateRect(hGRXWnd, &r, FALSE);        
+    InvalidateRect(hGRXWnd, &r, FALSE);
     GRX_LEAVE();
 }
 
@@ -68,7 +70,7 @@ static void w32_drawhline(int x, int y, int w, GrxColor c)
     r.top = y;
     r.right = x + w;
     r.bottom = y + 1;
-    InvalidateRect(hGRXWnd, &r, FALSE);        
+    InvalidateRect(hGRXWnd, &r, FALSE);
     GRX_LEAVE();
 }
 
@@ -82,12 +84,12 @@ static void w32_drawvline(int x, int y, int h, GrxColor c)
     r.top = y;
     r.right = x + 1;
     r.bottom = y + h;
-    InvalidateRect(hGRXWnd, &r, FALSE);        
+    InvalidateRect(hGRXWnd, &r, FALSE);
     GRX_LEAVE();
 }
 
-static void w32_drawpattern(int x, int y, int w, unsigned char patt,
-                            GrxColor fg, GrxColor bg)
+static void w32_drawpattern(
+    int x, int y, int w, unsigned char patt, GrxColor fg, GrxColor bg)
 {
     RECT r;
 
@@ -97,12 +99,11 @@ static void w32_drawpattern(int x, int y, int w, unsigned char patt,
     r.top = y;
     r.right = x + w;
     r.bottom = y + 1;
-    InvalidateRect(hGRXWnd, &r, FALSE);        
+    InvalidateRect(hGRXWnd, &r, FALSE);
     GRX_LEAVE();
 }
 
-static void w32_putscanline(int x, int y, int w,
-                            const GrxColor *scl, GrxColor op)
+static void w32_putscanline(int x, int y, int w, const GrxColor *scl, GrxColor op)
 {
     RECT r;
 
@@ -126,12 +127,12 @@ static void w32_drawblock(int x, int y, int w, int h, GrxColor c)
     r.top = y;
     r.right = x + w;
     r.bottom = y + h;
-    InvalidateRect(hGRXWnd, &r, FALSE);    
+    InvalidateRect(hGRXWnd, &r, FALSE);
     GRX_LEAVE();
 }
 
-static void w32_drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
-                           int pitch, int start, GrxColor fg, GrxColor bg)
+static void w32_drawbitmap(int x, int y, int w, int h, unsigned char *bmp, int pitch,
+    int start, GrxColor fg, GrxColor bg)
 {
     RECT r;
 
@@ -141,12 +142,12 @@ static void w32_drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
     r.top = y;
     r.right = x + w;
     r.bottom = y + h;
-    InvalidateRect(hGRXWnd, &r, FALSE);    
+    InvalidateRect(hGRXWnd, &r, FALSE);
     GRX_LEAVE();
 }
 
-static void w32_bitblit(GrxFrame *dst, int dx, int dy, GrxFrame *src,
-                        int sx, int sy, int w, int h, GrxColor op)
+static void w32_bitblit(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy,
+    int w, int h, GrxColor op)
 {
     RECT r;
 
@@ -163,24 +164,24 @@ static void w32_bitblit(GrxFrame *dst, int dx, int dy, GrxFrame *src,
 /* -------------------------------------------------------------------- */
 
 GrxFrameDriver _GrFrameDriverWIN32_8 = {
-    .mode               = GR_frameWIN32_8,         /* frame mode */
-    .rmode              = GRX_FRAME_MODE_RAM_8BPP, /* compatible RAM frame mode */
-    .is_video           = TRUE,                    /* onscreen */
-    .row_align          = 4,                       /* line width alignment */
-    .bits_per_pixel     = 8,                       /* bits per pixel */
-    .max_mem_size       = 8 * 16 * 1024 * 1024,    /* max memory size the code can handle */
-    .init               = NULL,
-    .readpixel          = readpixel,
-    .drawpixel          = w32_drawpixel,
-    .drawline           = w32_drawline,
-    .drawhline          = w32_drawhline,
-    .drawvline          = w32_drawvline,
-    .drawblock          = w32_drawblock,
-    .drawbitmap         = w32_drawbitmap,
-    .drawpattern        = w32_drawpattern,
-    .bitblt             = w32_bitblit,
-    .bltv2r             = bitblit,
-    .bltr2v             = w32_bitblit,
+    .mode = GR_frameWIN32_8,              /* frame mode */
+    .rmode = GRX_FRAME_MODE_RAM_8BPP,     /* compatible RAM frame mode */
+    .is_video = TRUE,                     /* onscreen */
+    .row_align = 4,                       /* line width alignment */
+    .bits_per_pixel = 8,                  /* bits per pixel */
+    .max_mem_size = 8 * 16 * 1024 * 1024, /* max memory size the code can handle */
+    .init = NULL,
+    .readpixel = readpixel,
+    .drawpixel = w32_drawpixel,
+    .drawline = w32_drawline,
+    .drawhline = w32_drawhline,
+    .drawvline = w32_drawvline,
+    .drawblock = w32_drawblock,
+    .drawbitmap = w32_drawbitmap,
+    .drawpattern = w32_drawpattern,
+    .bitblt = w32_bitblit,
+    .bltv2r = bitblit,
+    .bltr2v = w32_bitblit,
     .getindexedscanline = getindexedscanline,
-    .putscanline        = w32_putscanline,
+    .putscanline = w32_putscanline,
 };

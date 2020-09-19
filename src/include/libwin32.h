@@ -41,7 +41,7 @@ extern HANDLE windowThread;
 
 /* _keysw32pool used only when GrMouseEventEnable( 0,x ) is set */
 
-#define  _MAXKEYSW32POOL 16
+#define _MAXKEYSW32POOL 16
 extern int _nkeysw32pool;
 extern int _keysw32pool[_MAXKEYSW32POOL];
 

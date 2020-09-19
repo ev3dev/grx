@@ -32,9 +32,9 @@
  *
  * Also see grx_get_pixel_at() for operating on the current context.
  */
-GrxColor grx_context_get_pixel_at_user(GrxContext *c,int x,int y)
+GrxColor grx_context_get_pixel_at_user(GrxContext *c, int x, int y)
 {
-        U2SX(x,c);
-        U2SY(y,c);
-        return(grx_context_get_pixel_at(c,x,y));
+    U2SX(x, c);
+    U2SY(y, c);
+    return grx_context_get_pixel_at(c, x, y);
 }

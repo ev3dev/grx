@@ -15,8 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "libwin32.h"
 #include "driver24.h"
+#include "libwin32.h"
 
 static void w32_drawpixel(int x, int y, GrxColor color)
 {
@@ -26,10 +26,10 @@ static void w32_drawpixel(int x, int y, GrxColor color)
     GRX_ENTER();
     drawpixel(x, y, color);
 
-    c = GetPixel ( hDCMem, x, y );
-    hDC = GetDC ( hGRXWnd );
-    SetPixelV ( hDC, x, y, c );
-    ReleaseDC ( hGRXWnd, hDC );
+    c = GetPixel(hDCMem, x, y);
+    hDC = GetDC(hGRXWnd);
+    SetPixelV(hDC, x, y, c);
+    ReleaseDC(hGRXWnd, hDC);
 
     GRX_LEAVE();
 }
@@ -40,17 +40,19 @@ static void w32_drawline(int x, int y, int dx, int dy, GrxColor color)
 
     GRX_ENTER();
     drawline(x, y, dx, dy, color);
-    if (dx > 0 ) {
+    if (dx > 0) {
         Rect.left = x;
         Rect.right = x + dx + 1;
-    } else {
+    }
+    else {
         Rect.left = x + dx;
         Rect.right = x + 1;
     }
-    if (dy > 0 ) {
+    if (dy > 0) {
         Rect.top = y;
         Rect.bottom = y + dy + 1;
-    } else {
+    }
+    else {
         Rect.top = y + dy;
         Rect.bottom = y + 1;
     }
@@ -100,8 +102,8 @@ static void w32_drawblock(int x, int y, int w, int h, GrxColor color)
     GRX_LEAVE();
 }
 
-static void w32_drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
-                           int pitch, int start, GrxColor fg, GrxColor bg)
+static void w32_drawbitmap(int x, int y, int w, int h, unsigned char *bmp, int pitch,
+    int start, GrxColor fg, GrxColor bg)
 {
     RECT Rect;
 
@@ -115,8 +117,8 @@ static void w32_drawbitmap(int x, int y, int w, int h, unsigned char *bmp,
     GRX_LEAVE();
 }
 
-static void w32_drawpattern(int x, int y, int w, unsigned char patt,
-                            GrxColor fg, GrxColor bg)
+static void w32_drawpattern(
+    int x, int y, int w, unsigned char patt, GrxColor fg, GrxColor bg)
 {
     RECT Rect;
 
@@ -130,8 +132,8 @@ static void w32_drawpattern(int x, int y, int w, unsigned char patt,
     GRX_LEAVE();
 }
 
-static void w32_bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src,
-                       int sx, int sy, int w, int h, GrxColor op)
+static void w32_bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy,
+    int w, int h, GrxColor op)
 {
     RECT Rect;
 
@@ -145,8 +147,7 @@ static void w32_bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src,
     GRX_LEAVE();
 }
 
-void w32_putscanline(int x, int y, int w,
-                     const GrxColor *scl, GrxColor op )
+void w32_putscanline(int x, int y, int w, const GrxColor *scl, GrxColor op)
 {
     GrxColor skipc;
     RECT Rect;
@@ -159,9 +160,10 @@ void w32_putscanline(int x, int y, int w,
 
     skipc = op ^ GRX_COLOR_MODE_IMAGE;
     op &= GRX_COLOR_MODE_MASK;
-    for ( w += x; x < w; ++x) {
+    for (w += x; x < w; ++x) {
         GrxColor c = *(scl++);
-        if (c != skipc) drawpixel(x, y, (c|op));
+        if (c != skipc)
+            drawpixel(x, y, (c | op));
     }
 
     InvalidateRect(hGRXWnd, &Rect, FALSE);
@@ -171,24 +173,24 @@ void w32_putscanline(int x, int y, int w,
 /* -------------------------------------------------------------------- */
 
 GrxFrameDriver _GrFrameDriverWIN32_24 = {
-    .mode               = GR_frameWIN32_24,         /* frame mode */
-    .rmode              = GRX_FRAME_MODE_RAM_24BPP, /* compatible RAM frame mode */
-    .is_video           = TRUE,                     /* onscreen */
-    .row_align          = 4,                        /* line width alignment */
-    .bits_per_pixel     = 24,                       /* bits per pixel */
-    .max_mem_size       = 24 * 16 * 1024 * 1024,    /* max memory size the code can handle */
-    .init               = NULL,
-    .readpixel          = readpixel,
-    .drawpixel          = w32_drawpixel,
-    .drawline           = w32_drawline,
-    .drawhline          = w32_drawhline,
-    .drawvline          = w32_drawvline,
-    .drawblock          = w32_drawblock,
-    .drawbitmap         = w32_drawbitmap,
-    .drawpattern        = w32_drawpattern,
-    .bitblt             = w32_bitblt,
-    .bltv2r             = bitblt,
-    .bltr2v             = w32_bitblt,
+    .mode = GR_frameWIN32_24,              /* frame mode */
+    .rmode = GRX_FRAME_MODE_RAM_24BPP,     /* compatible RAM frame mode */
+    .is_video = TRUE,                      /* onscreen */
+    .row_align = 4,                        /* line width alignment */
+    .bits_per_pixel = 24,                  /* bits per pixel */
+    .max_mem_size = 24 * 16 * 1024 * 1024, /* max memory size the code can handle */
+    .init = NULL,
+    .readpixel = readpixel,
+    .drawpixel = w32_drawpixel,
+    .drawline = w32_drawline,
+    .drawhline = w32_drawhline,
+    .drawvline = w32_drawvline,
+    .drawblock = w32_drawblock,
+    .drawbitmap = w32_drawbitmap,
+    .drawpattern = w32_drawpattern,
+    .bitblt = w32_bitblt,
+    .bltv2r = bitblt,
+    .bltr2v = w32_bitblt,
     .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
-    .putscanline        = w32_putscanline,
+    .putscanline = w32_putscanline,
 };

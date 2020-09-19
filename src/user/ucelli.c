@@ -34,11 +34,12 @@
  * The ellipse can only draw ellipses with its major axis parallel with either
  * the X or Y coordinate axis
  */
-void grx_user_draw_ellipse_with_options(int xc,int yc,int rx,int ry,const GrxLineOptions *lo)
+void grx_user_draw_ellipse_with_options(
+    int xc, int yc, int rx, int ry, const GrxLineOptions *lo)
 {
-        U2SX(xc,CURC);
-        U2SY(yc,CURC);
-        SCALE(rx,rx,CURC->x_max,CURC->user_width);
-        SCALE(ry,ry,CURC->y_max,CURC->user_height);
-        grx_draw_ellipse_with_options(xc,yc,rx,ry,lo);
+    U2SX(xc, CURC);
+    U2SY(yc, CURC);
+    SCALE(rx, rx, CURC->x_max, CURC->user_width);
+    SCALE(ry, ry, CURC->y_max, CURC->user_height);
+    grx_draw_ellipse_with_options(xc, yc, rx, ry, lo);
 }

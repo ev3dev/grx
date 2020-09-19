@@ -15,9 +15,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "clipping.h"
 
 /**
  * grx_fast_draw_vline:
@@ -35,13 +35,8 @@
  * endpoints are within the bounds of the current context, then use
  * grx_draw_hline() instead.
  */
-void grx_fast_draw_vline(int xx,int y1,int y2,GrxColor c)
+void grx_fast_draw_vline(int xx, int y1, int y2, GrxColor c)
 {
-        isort(y1,y2);
-        (*FDRV->drawvline)(
-            xx + CURC->x_offset,
-            y1 + CURC->y_offset,
-            y2 - y1 + 1,
-            c
-        );
+    isort(y1, y2);
+    (*FDRV->drawvline)(xx + CURC->x_offset, y1 + CURC->y_offset, y2 - y1 + 1, c);
 }

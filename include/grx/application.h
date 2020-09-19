@@ -28,7 +28,8 @@
  * Class for managing the application lifecycle.
  */
 #define GRX_TYPE_APPLICATION grx_application_get_type()
-G_DECLARE_DERIVABLE_TYPE(GrxApplication, grx_application, GRX, APPLICATION, GApplication)
+G_DECLARE_DERIVABLE_TYPE(
+    GrxApplication, grx_application, GRX, APPLICATION, GApplication)
 
 /**
  * GrxApplicationClass:
@@ -40,20 +41,16 @@ G_DECLARE_DERIVABLE_TYPE(GrxApplication, grx_application, GRX, APPLICATION, GApp
  */
 struct _GrxApplicationClass {
     GApplicationClass parent_class;
-    gboolean (*event) (GrxApplication *application, GrxEvent *event);
+    gboolean (*event)(GrxApplication *application, GrxEvent *event);
     gpointer reserved[6];
 };
 
-GrxApplication *
-grx_application_new (GError **error);
-GrxApplication *
-grx_application_new_full (const gchar *id, GApplicationFlags flags, GError **error);
+GrxApplication *grx_application_new(GError **error);
+GrxApplication *grx_application_new_full(
+    const gchar *id, GApplicationFlags flags, GError **error);
 
-gboolean
-grx_application_is_active (GrxApplication *application);
-gboolean
-grx_application_get_quit_on_signal (GrxApplication *application);
-void
-grx_application_set_quit_on_signal (GrxApplication *application, gboolean value);
+gboolean grx_application_is_active(GrxApplication *application);
+gboolean grx_application_get_quit_on_signal(GrxApplication *application);
+void grx_application_set_quit_on_signal(GrxApplication *application, gboolean value);
 
 #endif /* __GRX_APPLICATION_H__ */

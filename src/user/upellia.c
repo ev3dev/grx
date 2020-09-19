@@ -38,11 +38,12 @@
  * from the starting angle to the ending angle with the specified radii,
  * arc style and line options and pixmap.
  */
-void grx_user_draw_ellipse_arc_with_pixmap (int xc, int yc, int rx, int ry, int start, int end, GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p)
+void grx_user_draw_ellipse_arc_with_pixmap(int xc, int yc, int rx, int ry, int start,
+    int end, GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p)
 {
-    U2SX (xc, CURC);
-    U2SY (yc, CURC);
-    SCALE (rx, rx, CURC->x_max, CURC->user_width);
-    SCALE (ry, ry, CURC->y_max, CURC->user_height);
-    grx_draw_ellipse_arc_with_pixmap (xc, yc, rx, ry, start, end, style, o, p);
+    U2SX(xc, CURC);
+    U2SY(yc, CURC);
+    SCALE(rx, rx, CURC->x_max, CURC->user_width);
+    SCALE(ry, ry, CURC->y_max, CURC->user_height);
+    grx_draw_ellipse_arc_with_pixmap(xc, yc, rx, ry, start, end, style, o, p);
 }

@@ -14,10 +14,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "globals.h"
-#include "mouse.h"
-#include "libgrx.h"
 #include "clipping.h"
+#include "globals.h"
+#include "libgrx.h"
+#include "mouse.h"
 
 /**
  * grx_context_get_scanline:
@@ -36,25 +36,23 @@
  *     an array of color values from the scanned pixels or %NULL if there was
  *     an error
  */
-const GrxColor *grx_context_get_scanline(GrxContext *ctx,int x1,int x2,int yy,unsigned int *n)
+const GrxColor *grx_context_get_scanline(
+    GrxContext *ctx, int x1, int x2, int yy, unsigned int *n)
 {
-        GrxColor *res = NULL;
-        if (ctx == NULL) ctx = CURC;
-        /* don't accept any clipping .... */
-        clip_hline_(ctx,x1,x2,yy,goto done,goto done);
-        mouse_block(ctx,x1,yy,x2,yy);
-        res = (*ctx->gc_driver->getindexedscanline)(
-            &ctx->frame,
-            x1 + ctx->x_offset,
-            yy + ctx->y_offset,
-            x2 - x1 + 1,
-            NULL
-        );
-        mouse_unblock();
-        if (n) {
-            *n = x2 - x1;
-        }
-done:   return res;
+    GrxColor *res = NULL;
+    if (ctx == NULL)
+        ctx = CURC;
+    /* don't accept any clipping .... */
+    clip_hline_(ctx, x1, x2, yy, goto done, goto done);
+    mouse_block(ctx, x1, yy, x2, yy);
+    res = (*ctx->gc_driver->getindexedscanline)(
+        &ctx->frame, x1 + ctx->x_offset, yy + ctx->y_offset, x2 - x1 + 1, NULL);
+    mouse_unblock();
+    if (n) {
+        *n = x2 - x1;
+    }
+done:
+    return res;
 }
 
 /**
@@ -71,6 +69,7 @@ done:   return res;
  *     an array of color values from the scanned pixels or %NULL if there was
  *     an error
  */
-const GrxColor *(grx_get_scanline)(int x1,int x2,int yy, unsigned int *n) {
-  return grx_context_get_scanline(NULL, x1,x2,yy,n);
+const GrxColor *(grx_get_scanline)(int x1, int x2, int yy, unsigned int *n)
+{
+    return grx_context_get_scanline(NULL, x1, x2, yy, n);
 }

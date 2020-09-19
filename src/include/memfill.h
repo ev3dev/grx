@@ -32,7 +32,7 @@
 #endif
 
 #ifdef __GNUC__
-#  include "gcc/memfill.h"
+#include "gcc/memfill.h"
 #endif
 
 #if !defined(GR_int64) && !defined(NO_64BIT_FILL)
@@ -46,345 +46,334 @@
 #endif
 
 #if !defined(CPSIZE_b) && defined(GR_int8)
-#define CPSIZE_b     sizeof(GR_int8)
+#define CPSIZE_b sizeof(GR_int8)
 #endif
 #if !defined(CPSIZE_w) && defined(GR_int16)
-#define CPSIZE_w     sizeof(GR_int16)
+#define CPSIZE_w sizeof(GR_int16)
 #endif
 #if !defined(CPSIZE_l) && defined(GR_int32)
-#define CPSIZE_l     sizeof(GR_int32)
+#define CPSIZE_l sizeof(GR_int32)
 #endif
 #if !defined(CPSIZE_h) && defined(GR_int64)
-#define CPSIZE_h     sizeof(GR_int64)
+#define CPSIZE_h sizeof(GR_int64)
 #endif
 
-#ifndef __INLINE_STD_COLFILL__
-#define __INLINE_STD_COLFILL__(P,V,C,SKIP,FMODE,INS,SIZE,TYPE) do {          \
-        poke##FMODE((P),(V));                                                \
-        ptrinc((P),(SKIP));                                                  \
-} while(--(C))
+#ifndef INLINE_STD_COLFILL
+#define INLINE_STD_COLFILL(P, V, C, SKIP, FMODE, INS, SIZE, TYPE) \
+    do {                                                          \
+        poke##FMODE((P), (V));                                    \
+        ptrinc((P), (SKIP));                                      \
+    } while (--(C))
 #endif
 
-#ifndef __INLINE_STD_OPRFILL__
-#define __INLINE_STD_OPRFILL__(P,V,C,FMODE,INS,SIZE,TYPE)                    \
-        __INLINE_STD_COLFILL__(P,V,C,sizeof(TYPE),FMODE,INS,SIZE,TYPE)
+#ifndef INLINE_STD_OPRFILL
+#define INLINE_STD_OPRFILL(P, V, C, FMODE, INS, SIZE, TYPE) \
+    INLINE_STD_COLFILL(P, V, C, sizeof(TYPE), FMODE, INS, SIZE, TYPE)
 #endif
 
-#ifndef __INLINE_STD_ROWFILL__
-#define __INLINE_STD_ROWFILL__(P,V,C,FMODE,SIZE,TYPE)                        \
-        __INLINE_STD_OPRFILL__(P,V,C,FMODE,MOV_INS,SIZE,TYPE)
+#ifndef INLINE_STD_ROWFILL
+#define INLINE_STD_ROWFILL(P, V, C, FMODE, SIZE, TYPE) \
+    INLINE_STD_OPRFILL(P, V, C, FMODE, MOV_INS, SIZE, TYPE)
 #endif
 
-#ifndef __INLINE_FAR_COLFILL__
-#define __INLINE_FAR_COLFILL__(P,V,C,SKIP,FMODE,INS,SIZE,TYPE)               \
-        __INLINE_STD_COLFILL__(P,V,C,SKIP,FMODE,INS,SIZE,TYPE)
+#ifndef INLINE_FAR_COLFILL
+#define INLINE_FAR_COLFILL(P, V, C, SKIP, FMODE, INS, SIZE, TYPE) \
+    INLINE_STD_COLFILL(P, V, C, SKIP, FMODE, INS, SIZE, TYPE)
 #endif
 
-#ifndef __INLINE_FAR_OPRFILL__
-#define __INLINE_FAR_OPRFILL__(P,V,C,FMODE,INS,SIZE,TYPE)                    \
-        __INLINE_FAR_COLFILL__(P,V,C,sizeof(TYPE),FMODE,INS,SIZE,TYPE)
+#ifndef INLINE_FAR_OPRFILL
+#define INLINE_FAR_OPRFILL(P, V, C, FMODE, INS, SIZE, TYPE) \
+    INLINE_FAR_COLFILL(P, V, C, sizeof(TYPE), FMODE, INS, SIZE, TYPE)
 #endif
 
-#ifndef __INLINE_FAR_ROWFILL__
-#define __INLINE_FAR_ROWFILL__(P,V,C,FMODE,SIZE,TYPE)                        \
-        __INLINE_FAR_OPRFILL__(P,V,C,FMODE,MOV_INS,SIZE,TYPE)
+#ifndef INLINE_FAR_ROWFILL
+#define INLINE_FAR_ROWFILL(P, V, C, FMODE, SIZE, TYPE) \
+    INLINE_FAR_OPRFILL(P, V, C, FMODE, MOV_INS, SIZE, TYPE)
 #endif
 
 /*
  * rowfill_<SIZE>[_<FAR>][_<OPER>](pointer,value,count)
  */
 #ifndef rowfill_b
-#define rowfill_b(p,v,c)          \
-        __INLINE_STD_ROWFILL__(p,v,c,_b,OP8b,GR_int8)
+#define rowfill_b(p, v, c) INLINE_STD_ROWFILL(p, v, c, _b, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(rowfill_w)
-#define rowfill_w(p,v,c)          \
-        __INLINE_STD_ROWFILL__(p,v,c,_w,OP16b,GR_int16)
+#define rowfill_w(p, v, c) INLINE_STD_ROWFILL(p, v, c, _w, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(rowfill_l)
-#define rowfill_l(p,v,c)          \
-        __INLINE_STD_ROWFILL__(p,v,c,_l,OP32b,GR_int32)
+#define rowfill_l(p, v, c) INLINE_STD_ROWFILL(p, v, c, _l, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(rowfill_h)
-#define rowfill_h(p,v,c)          \
-        __INLINE_STD_ROWFILL__(p,v,c,_h,OP64b,GR_int64)
+#define rowfill_h(p, v, c) INLINE_STD_ROWFILL(p, v, c, _h, OP64b, GR_int64)
 #endif
 
 #ifndef rowfill_b_xor
-#define rowfill_b_xor(p,v,c)      \
-        __INLINE_STD_OPRFILL__(p,v,c,_b_xor,XOR_INS,OP8b,GR_int8)
+#define rowfill_b_xor(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _b_xor, XOR_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(rowfill_w_xor)
-#define rowfill_w_xor(p,v,c)      \
-        __INLINE_STD_OPRFILL__(p,v,c,_w_xor,XOR_INS,OP16b,GR_int16)
+#define rowfill_w_xor(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _w_xor, XOR_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(rowfill_l_xor)
-#define rowfill_l_xor(p,v,c)      \
-        __INLINE_STD_OPRFILL__(p,v,c,_l_xor,XOR_INS,OP32b,GR_int32)
+#define rowfill_l_xor(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _l_xor, XOR_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(rowfill_h_xor)
-#define rowfill_h_xor(p,v,c)      \
-        __INLINE_STD_OPRFILL__(p,v,c,_h_xor,XOR_INS,OP64b,GR_int64)
+#define rowfill_h_xor(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _h_xor, XOR_INS, OP64b, GR_int64)
 #endif
 
 #ifndef rowfill_b_or
-#define rowfill_b_or(p,v,c)       \
-        __INLINE_STD_OPRFILL__(p,v,c,_b_or,OR_INS,OP8b,GR_int8)
+#define rowfill_b_or(p, v, c) INLINE_STD_OPRFILL(p, v, c, _b_or, OR_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(rowfill_w_or)
-#define rowfill_w_or(p,v,c)       \
-        __INLINE_STD_OPRFILL__(p,v,c,_w_or,OR_INS,OP16b,GR_int16)
+#define rowfill_w_or(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _w_or, OR_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(rowfill_l_or)
-#define rowfill_l_or(p,v,c)       \
-        __INLINE_STD_OPRFILL__(p,v,c,_l_or,OR_INS,OP32b,GR_int32)
+#define rowfill_l_or(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _l_or, OR_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(rowfill_h_or)
-#define rowfill_h_or(p,v,c)       \
-        __INLINE_STD_OPRFILL__(p,v,c,_h_or,OR_INS,OP64b,GR_int64)
+#define rowfill_h_or(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _h_or, OR_INS, OP64b, GR_int64)
 #endif
 
 #ifndef rowfill_b_and
-#define rowfill_b_and(p,v,c)      \
-        __INLINE_STD_OPRFILL__(p,v,c,_b_and,AND_INS,OP8b,GR_int8)
+#define rowfill_b_and(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _b_and, AND_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(rowfill_w_and)
-#define rowfill_w_and(p,v,c)      \
-        __INLINE_STD_OPRFILL__(p,v,c,_w_and,AND_INS,OP16b,GR_int16)
+#define rowfill_w_and(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _w_and, AND_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(rowfill_l_and)
-#define rowfill_l_and(p,v,c)      \
-        __INLINE_STD_OPRFILL__(p,v,c,_l_and,AND_INS,OP32b,GR_int32)
+#define rowfill_l_and(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _l_and, AND_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(rowfill_h_and)
-#define rowfill_h_and(p,v,c)      \
-        __INLINE_STD_OPRFILL__(p,v,c,_h_and,AND_INS,OP64b,GR_int64)
+#define rowfill_h_and(p, v, c) \
+    INLINE_STD_OPRFILL(p, v, c, _h_and, AND_INS, OP64b, GR_int64)
 #endif
 
-#define rowfill_b_n      rowfill_b
-#define rowfill_w_n      rowfill_w
-#define rowfill_l_n      rowfill_l
-#define rowfill_h_n      rowfill_h
-#define rowfill_b_xor_n  rowfill_b_xor
-#define rowfill_w_xor_n  rowfill_w_xor
-#define rowfill_l_xor_n  rowfill_l_xor
-#define rowfill_h_xor_n  rowfill_h_xor
-#define rowfill_b_or_n   rowfill_b_or
-#define rowfill_w_or_n   rowfill_w_or
-#define rowfill_l_or_n   rowfill_l_or
-#define rowfill_h_or_n   rowfill_h_or
-#define rowfill_b_and_n  rowfill_b_and
-#define rowfill_w_and_n  rowfill_w_and
-#define rowfill_l_and_n  rowfill_l_and
-#define rowfill_h_and_n  rowfill_h_and
-
-
+#define rowfill_b_n     rowfill_b
+#define rowfill_w_n     rowfill_w
+#define rowfill_l_n     rowfill_l
+#define rowfill_h_n     rowfill_h
+#define rowfill_b_xor_n rowfill_b_xor
+#define rowfill_w_xor_n rowfill_w_xor
+#define rowfill_l_xor_n rowfill_l_xor
+#define rowfill_h_xor_n rowfill_h_xor
+#define rowfill_b_or_n  rowfill_b_or
+#define rowfill_w_or_n  rowfill_w_or
+#define rowfill_l_or_n  rowfill_l_or
+#define rowfill_h_or_n  rowfill_h_or
+#define rowfill_b_and_n rowfill_b_and
+#define rowfill_w_and_n rowfill_w_and
+#define rowfill_l_and_n rowfill_l_and
+#define rowfill_h_and_n rowfill_h_and
 
 #ifndef rowfill_b_f
-#define rowfill_b_f(p,v,c)        \
-        __INLINE_FAR_ROWFILL__(p,v,c,_b_f,OP8b,GR_int8)
+#define rowfill_b_f(p, v, c) INLINE_FAR_ROWFILL(p, v, c, _b_f, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(rowfill_w_f)
-#define rowfill_w_f(p,v,c)        \
-        __INLINE_FAR_ROWFILL__(p,v,c,_w_f,OP16b,GR_int16)
+#define rowfill_w_f(p, v, c) INLINE_FAR_ROWFILL(p, v, c, _w_f, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(rowfill_l_f)
-#define rowfill_l_f(p,v,c)        \
-        __INLINE_FAR_ROWFILL__(p,v,c,_l_f,OP32b,GR_int32)
+#define rowfill_l_f(p, v, c) INLINE_FAR_ROWFILL(p, v, c, _l_f, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(rowfill_h_f)
-#define rowfill_h_f(p,v,c)        \
-        __INLINE_FAR_ROWFILL__(p,v,c,_h_f,OP64b,GR_int64)
+#define rowfill_h_f(p, v, c) INLINE_FAR_ROWFILL(p, v, c, _h_f, OP64b, GR_int64)
 #endif
 
 #ifndef rowfill_b_f_xor
-#define rowfill_b_f_xor(p,v,c)    \
-        __INLINE_FAR_OPRFILL__(p,v,c,_b_f_xor,XOR_INS,OP8b,GR_int8)
+#define rowfill_b_f_xor(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _b_f_xor, XOR_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(rowfill_w_f_xor)
-#define rowfill_w_f_xor(p,v,c)    \
-        __INLINE_FAR_OPRFILL__(p,v,c,_w_f_xor,XOR_INS,OP16b,GR_int16)
+#define rowfill_w_f_xor(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _w_f_xor, XOR_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(rowfill_l_f_xor)
-#define rowfill_l_f_xor(p,v,c)    \
-        __INLINE_FAR_OPRFILL__(p,v,c,_l_f_xor,XOR_INS,OP32b,GR_int32)
+#define rowfill_l_f_xor(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _l_f_xor, XOR_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(rowfill_h_f_xor)
-#define rowfill_h_f_xor(p,v,c)    \
-        __INLINE_FAR_OPRFILL__(p,v,c,_h_f_xor,XOR_INS,OP64b,GR_int64)
+#define rowfill_h_f_xor(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _h_f_xor, XOR_INS, OP64b, GR_int64)
 #endif
 
 #ifndef rowfill_b_f_or
-#define rowfill_b_f_or(p,v,c)     \
-        __INLINE_FAR_OPRFILL__(p,v,c,_b_f_or,OR_INS,OP8b,GR_int8)
+#define rowfill_b_f_or(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _b_f_or, OR_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(rowfill_w_f_or)
-#define rowfill_w_f_or(p,v,c)     \
-        __INLINE_FAR_OPRFILL__(p,v,c,_w_f_or,OR_INS,OP16b,GR_int16)
+#define rowfill_w_f_or(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _w_f_or, OR_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(rowfill_l_f_or)
-#define rowfill_l_f_or(p,v,c)     \
-        __INLINE_FAR_OPRFILL__(p,v,c,_l_f_or,OR_INS,OP32b,GR_int32)
+#define rowfill_l_f_or(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _l_f_or, OR_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(rowfill_h_f_or)
-#define rowfill_h_f_or(p,v,c)     \
-        __INLINE_FAR_OPRFILL__(p,v,c,_h_f_or,OR_INS,OP64b,GR_int64)
+#define rowfill_h_f_or(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _h_f_or, OR_INS, OP64b, GR_int64)
 #endif
 
 #ifndef rowfill_b_f_and
-#define rowfill_b_f_and(p,v,c)    \
-        __INLINE_FAR_OPRFILL__(p,v,c,_b_f_and,AND_INS,OP8b,GR_int8)
+#define rowfill_b_f_and(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _b_f_and, AND_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(rowfill_w_f_and)
-#define rowfill_w_f_and(p,v,c)    \
-        __INLINE_FAR_OPRFILL__(p,v,c,_w_f_and,AND_INS,OP16b,GR_int16)
+#define rowfill_w_f_and(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _w_f_and, AND_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(rowfill_l_f_and)
-#define rowfill_l_f_and(p,v,c)    \
-        __INLINE_FAR_OPRFILL__(p,v,c,_l_f_and,AND_INS,OP32b,GR_int32)
+#define rowfill_l_f_and(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _l_f_and, AND_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(rowfill_h_f_and)
-#define rowfill_h_f_and(p,v,c)    \
-        __INLINE_FAR_OPRFILL__(p,v,c,_h_f_and,AND_INS,OP64b,GR_int64)
+#define rowfill_h_f_and(p, v, c) \
+    INLINE_FAR_OPRFILL(p, v, c, _h_f_and, AND_INS, OP64b, GR_int64)
 #endif
 
 /*
  * colfill_<SIZE>[_<FAR>][_<OPER>](pointer,offset,value,count)
  */
 #ifndef colfill_b
-#define colfill_b(p,o,v,c)        \
-        __INLINE_STD_COLFILL__(p,v,c,o,_b,MOV_INS,OP8b,GR_int8)
+#define colfill_b(p, o, v, c) INLINE_STD_COLFILL(p, v, c, o, _b, MOV_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(colfill_w)
-#define colfill_w(p,o,v,c)        \
-        __INLINE_STD_COLFILL__(p,v,c,o,_w,MOV_INS,OP16b,GR_int16)
+#define colfill_w(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _w, MOV_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(colfill_l)
-#define colfill_l(p,o,v,c)        \
-        __INLINE_STD_COLFILL__(p,v,c,o,_l,MOV_INS,OP32b,GR_int32)
+#define colfill_l(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _l, MOV_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(colfill_h)
-#define colfill_h(p,o,v,c)        \
-        __INLINE_STD_COLFILL__(p,v,c,o,_h,MOV_INS,OP64b,GR_int64)
+#define colfill_h(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _h, MOV_INS, OP64b, GR_int64)
 #endif
 
 #ifndef colfill_b_xor
-#define colfill_b_xor(p,o,v,c)    \
-        __INLINE_STD_COLFILL__(p,v,c,o,_b_xor,XOR_INS,OP8b,GR_int8)
+#define colfill_b_xor(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _b_xor, XOR_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(colfill_w_xor)
-#define colfill_w_xor(p,o,v,c)    \
-        __INLINE_STD_COLFILL__(p,v,c,o,_w_xor,XOR_INS,OP16b,GR_int16)
+#define colfill_w_xor(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _w_xor, XOR_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(colfill_l_xor)
-#define colfill_l_xor(p,o,v,c)    \
-        __INLINE_STD_COLFILL__(p,v,c,o,_l_xor,XOR_INS,OP32b,GR_int32)
+#define colfill_l_xor(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _l_xor, XOR_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(colfill_h_xor)
-#define colfill_h_xor(p,o,v,c)    \
-        __INLINE_STD_COLFILL__(p,v,c,o,_h_xor,XOR_INS,OP64b,GR_int64)
+#define colfill_h_xor(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _h_xor, XOR_INS, OP64b, GR_int64)
 #endif
 
 #ifndef colfill_b_or
-#define colfill_b_or(p,o,v,c)     \
-        __INLINE_STD_COLFILL__(p,v,c,o,_b_or,OR_INS,OP8b,GR_int8)
+#define colfill_b_or(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _b_or, OR_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(colfill_w_or)
-#define colfill_w_or(p,o,v,c)     \
-        __INLINE_STD_COLFILL__(p,v,c,o,_w_or,OR_INS,OP16b,GR_int16)
+#define colfill_w_or(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _w_or, OR_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(colfill_l_or)
-#define colfill_l_or(p,o,v,c)     \
-        __INLINE_STD_COLFILL__(p,v,c,o,_l_or,OR_INS,OP32b,GR_int32)
+#define colfill_l_or(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _l_or, OR_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(colfill_h_or)
-#define colfill_h_or(p,o,v,c)     \
-        __INLINE_STD_COLFILL__(p,v,c,o,_h_or,OR_INS,OP64b,GR_int64)
+#define colfill_h_or(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _h_or, OR_INS, OP64b, GR_int64)
 #endif
 
 #ifndef colfill_b_and
-#define colfill_b_and(p,o,v,c)    \
-        __INLINE_STD_COLFILL__(p,v,c,o,_b_and,AND_INS,OP8b,GR_int8)
+#define colfill_b_and(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _b_and, AND_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(colfill_w_and)
-#define colfill_w_and(p,o,v,c)    \
-        __INLINE_STD_COLFILL__(p,v,c,o,_w_and,AND_INS,OP16b,GR_int16)
+#define colfill_w_and(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _w_and, AND_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(colfill_l_and)
-#define colfill_l_and(p,o,v,c)    \
-        __INLINE_STD_COLFILL__(p,v,c,o,_l_and,AND_INS,OP32b,GR_int32)
+#define colfill_l_and(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _l_and, AND_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(colfill_h_and)
-#define colfill_h_and(p,o,v,c)    \
-        __INLINE_STD_COLFILL__(p,v,c,o,_h_and,AND_INS,OP64b,GR_int64)
+#define colfill_h_and(p, o, v, c) \
+    INLINE_STD_COLFILL(p, v, c, o, _h_and, AND_INS, OP64b, GR_int64)
 #endif
 
 #ifndef colfill_b_f
-#define colfill_b_f(p,o,v,c)      \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_b_f,MOV_INS,OP8b,GR_int8)
+#define colfill_b_f(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _b_f, MOV_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(colfill_w_f)
-#define colfill_w_f(p,o,v,c)      \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_w_f,MOV_INS,OP16b,GR_int16)
+#define colfill_w_f(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _w_f, MOV_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(colfill_l_f)
-#define colfill_l_f(p,o,v,c)      \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_l_f,MOV_INS,OP32b,GR_int32)
+#define colfill_l_f(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _l_f, MOV_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(colfill_h_f)
-#define colfill_h_f(p,o,v,c)      \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_h_f,MOV_INS,OP64b,GR_int64)
+#define colfill_h_f(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _h_f, MOV_INS, OP64b, GR_int64)
 #endif
 
 #ifndef colfill_b_f_xor
-#define colfill_b_f_xor(p,o,v,c)  \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_b_f_xor,XOR_INS,OP8b,GR_int8)
+#define colfill_b_f_xor(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _b_f_xor, XOR_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(colfill_w_f_xor)
-#define colfill_w_f_xor(p,o,v,c)  \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_w_f_xor,XOR_INS,OP16b,GR_int16)
+#define colfill_w_f_xor(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _w_f_xor, XOR_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(colfill_l_f_xor)
-#define colfill_l_f_xor(p,o,v,c)  \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_l_f_xor,XOR_INS,OP32b,GR_int32)
+#define colfill_l_f_xor(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _l_f_xor, XOR_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(colfill_h_f_xor)
-#define colfill_h_f_xor(p,o,v,c)  \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_h_f_xor,XOR_INS,OP64b,GR_int64)
+#define colfill_h_f_xor(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _h_f_xor, XOR_INS, OP64b, GR_int64)
 #endif
 
 #ifndef colfill_b_f_or
-#define colfill_b_f_or(p,o,v,c)   \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_b_f_or,OR_INS,OP8b,GR_int8)
+#define colfill_b_f_or(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _b_f_or, OR_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(colfill_w_f_or)
-#define colfill_w_f_or(p,o,v,c)   \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_w_f_or,OR_INS,OP16b,GR_int16)
+#define colfill_w_f_or(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _w_f_or, OR_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(colfill_l_f_or)
-#define colfill_l_f_or(p,o,v,c)   \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_l_f_or,OR_INS,OP32b,GR_int32)
+#define colfill_l_f_or(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _l_f_or, OR_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(colfill_h_f_or)
-#define colfill_h_f_or(p,o,v,c)   \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_h_f_or,OR_INS,OP64b,GR_int64)
+#define colfill_h_f_or(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _h_f_or, OR_INS, OP64b, GR_int64)
 #endif
 
 #ifndef colfill_b_f_and
-#define colfill_b_f_and(p,o,v,c)  \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_b_f_and,AND_INS,OP8b,GR_int8)
+#define colfill_b_f_and(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _b_f_and, AND_INS, OP8b, GR_int8)
 #endif
 #if !defined(NO_16BIT_FILL) && !defined(colfill_w_f_and)
-#define colfill_w_f_and(p,o,v,c)  \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_w_f_and,AND_INS,OP16b,GR_int16)
+#define colfill_w_f_and(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _w_f_and, AND_INS, OP16b, GR_int16)
 #endif
 #if !defined(NO_32BIT_FILL) && !defined(colfill_l_f_and)
-#define colfill_l_f_and(p,o,v,c)  \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_l_f_and,AND_INS,OP32b,GR_int32)
+#define colfill_l_f_and(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _l_f_and, AND_INS, OP32b, GR_int32)
 #endif
 #if !defined(NO_64BIT_FILL) && !defined(colfill_h_f_and)
-#define colfill_h_f_and(p,o,v,c)  \
-        __INLINE_FAR_COLFILL__(p,v,c,o,_h_f_and,AND_INS,OP64b,GR_int64)
+#define colfill_h_f_and(p, o, v, c) \
+    INLINE_FAR_COLFILL(p, v, c, o, _h_f_and, AND_INS, OP64b, GR_int64)
 #endif
 
 /*
@@ -397,328 +386,350 @@
  */
 
 /* generic single element fill */
-#ifndef __INLINE_1_FILL__
-#define __INLINE_1_FILL__(P,V,WOP,SZ) do {                                    \
-    poke_##SZ##WOP((P),(V));                                                  \
-    ptrinc((P),(CPSIZE_##SZ));                                                \
-} while (0)
+#ifndef INLINE_1_FILL
+#define INLINE_1_FILL(P, V, WOP, SZ) \
+    do {                             \
+        poke_##SZ##WOP((P), (V));    \
+        ptrinc((P), (CPSIZE_##SZ));  \
+    } while (0)
 #endif
 
 /* fill and step to next higher alignment boundary */
-#ifndef __INLINE_ALIGN_FILL__
-#define __INLINE_ALIGN_FILL__(P,V,C,WOP,SZ,BASE)                              \
-  if ( ((GR_PtrInt)(P)) & CPSIZE_##SZ ) {                                           \
-    __INLINE_1_FILL__(P,V,WOP,SZ);                                            \
-    (C) -= (CPSIZE_##SZ/CPSIZE_##BASE);                                       \
-    if ( ! ((GR_PtrInt)(C)) ) break;                                                \
-  }
+#ifndef INLINE_ALIGN_FILL
+#define INLINE_ALIGN_FILL(P, V, C, WOP, SZ, BASE) \
+    if (((GR_PtrInt)(P)) & CPSIZE_##SZ) {         \
+        INLINE_1_FILL(P, V, WOP, SZ);             \
+        (C) -= (CPSIZE_##SZ / CPSIZE_##BASE);     \
+        if (!((GR_PtrInt)(C)))                    \
+            break;                                \
+    }
 #endif
 
 /* fill && step remaining bytes after otimal fill */
-#ifndef __INLINE_TAIL_FILL__
-#define __INLINE_TAIL_FILL__(P,V,C,WOP,SZ,BASE) do {                          \
-  if ( ((GR_PtrInt)(C)) & (CPSIZE_##SZ/CPSIZE_##BASE) )                             \
-    __INLINE_1_FILL__(P,V,WOP,SZ);                                            \
-} while (0)
+#ifndef INLINE_TAIL_FILL
+#define INLINE_TAIL_FILL(P, V, C, WOP, SZ, BASE)              \
+    do {                                                      \
+        if (((GR_PtrInt)(C)) & (CPSIZE_##SZ / CPSIZE_##BASE)) \
+            INLINE_1_FILL(P, V, WOP, SZ);                     \
+    } while (0)
 #endif
 
-#ifndef __INLINE_STD_OPT_FILL__
-#define __INLINE_STD_OPT_FILL__(P,V,C,WOP,SZ,BASE) do {                       \
-      if ((unsigned GR_PtrInt)(C) >= 2*(CPSIZE_##SZ/CPSIZE_##BASE)-1 ) {            \
-        unsigned GR_PtrInt _c_ = (-((GR_PtrInt)(P))) & ((CPSIZE_##SZ/CPSIZE_##BASE)-1);   \
-        if (_c_) {                                                            \
-          (C) -= _c_;                                                         \
-          rowfill_##BASE##WOP(P,V,_c_);                                       \
-        }                                                                     \
-        _c_ = ((unsigned GR_PtrInt)(C)) / (CPSIZE_##SZ/CPSIZE_##BASE);              \
-        rowfill_##SZ##WOP(P,V,_c_);                                           \
-        (C) &= ((CPSIZE_##SZ/CPSIZE_##BASE)-1);                               \
-      }                                                                       \
-      if ( (GR_PtrInt)(C) )                                                         \
-        rowfill_b##WOP(P,V,C);                                                \
-} while(0)
+#ifndef INLINE_STD_OPT_FILL
+#define INLINE_STD_OPT_FILL(P, V, C, WOP, SZ, BASE)                             \
+    do {                                                                        \
+        if ((unsigned GR_PtrInt)(C) >= 2 * (CPSIZE_##SZ / CPSIZE_##BASE) - 1) { \
+            unsigned GR_PtrInt _c_ =                                            \
+                (-((GR_PtrInt)(P))) & ((CPSIZE_##SZ / CPSIZE_##BASE) - 1);      \
+            if (_c_) {                                                          \
+                (C) -= _c_;                                                     \
+                rowfill_##BASE##WOP(P, V, _c_);                                 \
+            }                                                                   \
+            _c_ = ((unsigned GR_PtrInt)(C)) / (CPSIZE_##SZ / CPSIZE_##BASE);    \
+            rowfill_##SZ##WOP(P, V, _c_);                                       \
+            (C) &= ((CPSIZE_##SZ / CPSIZE_##BASE) - 1);                         \
+        }                                                                       \
+        if ((GR_PtrInt)(C))                                                     \
+            rowfill_b##WOP(P, V, C);                                            \
+    } while (0)
 #endif
 
+#ifndef INLINE_B_REPFILL
+#if !defined(NO_64BIT_FILL)
+#if defined(MISALIGNED_32bit_OK) && defined(MISALIGNED_16bit_OK)
+#define INLINE_B_REPFILL(P, V, C, FMODE)                                   \
+    do {                                                                   \
+        if ((unsigned GR_PtrInt)(C) >= 7) {                                \
+            INLINE_ALIGN_FILL(P, V, C, FMODE, b, b);                       \
+            INLINE_ALIGN_FILL(P, V, C, FMODE, w, b);                       \
+            INLINE_ALIGN_FILL(P, V, C, FMODE, l, b);                       \
+            {                                                              \
+                unsigned GR_PtrInt _c64_ = ((unsigned GR_PtrInt)(C)) >> 3; \
+                if (_c64_)                                                 \
+                    rowfill_h##FMODE(P, V, _c64_);                         \
+            }                                                              \
+        }                                                                  \
+        INLINE_TAIL_FILL(P, V, C, FMODE, l, b);                            \
+        INLINE_TAIL_FILL(P, V, C, FMODE, w, b);                            \
+        INLINE_TAIL_FILL(P, V, C, FMODE, b, b);                            \
+    } while (0)
+#else
+#define INLINE_B_REPFILL(P, V, C, FMODE) INLINE_STD_OPT_FILL(P, V, C, FMODE, h, b)
+#endif
+#elif !defined(NO_32BIT_FILL)
+#if defined(MISALIGNED_16bit_OK)
+#define INLINE_B_REPFILL(P, V, C, FMODE)                                   \
+    do {                                                                   \
+        if ((unsigned GR_PtrInt)(C) >= 3) {                                \
+            INLINE_ALIGN_FILL(P, V, C, FMODE, b, b);                       \
+            INLINE_ALIGN_FILL(P, V, C, FMODE, w, b);                       \
+            {                                                              \
+                unsigned GR_PtrInt _c32_ = ((unsigned GR_PtrInt)(C)) >> 2; \
+                if (_c32_)                                                 \
+                    rowfill_l##FMODE(P, V, _c32_);                         \
+            }                                                              \
+        }                                                                  \
+        INLINE_TAIL_FILL(P, V, C, FMODE, w, b);                            \
+        INLINE_TAIL_FILL(P, V, C, FMODE, b, b);                            \
+    } while (0)
+#else
+#define INLINE_B_REPFILL(P, V, C, FMODE) INLINE_STD_OPT_FILL(P, V, C, FMODE, l, b)
+#endif
+#elif !defined(NO_16BIT_FILL)
+#define INLINE_B_REPFILL(P, V, C, FMODE)                               \
+    do {                                                               \
+        INLINE_ALIGN_FILL(P, V, C, FMODE, b, b);                       \
+        {                                                              \
+            unsigned GR_PtrInt _c16_ = ((unsigned GR_PtrInt)(C)) >> 1; \
+            if (_c16_)                                                 \
+                rowfill_w##FMODE(P, V, _c16_);                         \
+        }                                                              \
+        INLINE_TAIL_FILL(P, V, C, FMODE, b, b);                        \
+    } while (0)
+#else
+#define INLINE_B_REPFILL(P, V, C, FMODE) rowfill_b##FMODE(P, V, C)
+#endif
+#endif /* !INLINE_B_REPFILL */
 
-#ifndef __INLINE_B_REPFILL__
-# if !defined(NO_64BIT_FILL)
-#  if defined(MISALIGNED_32bit_OK) && defined(MISALIGNED_16bit_OK)
-#   define __INLINE_B_REPFILL__(P,V,C,FMODE) do {                             \
-        if ((unsigned GR_PtrInt)(C) >= 7 ) {                                        \
-           __INLINE_ALIGN_FILL__(P,V,C,FMODE,b,b);                            \
-           __INLINE_ALIGN_FILL__(P,V,C,FMODE,w,b);                            \
-           __INLINE_ALIGN_FILL__(P,V,C,FMODE,l,b);                            \
-           { unsigned GR_PtrInt _c64_ = ((unsigned GR_PtrInt)(C)) >> 3;                   \
-             if (_c64_) rowfill_h##FMODE(P,V,_c64_);         }                \
-        }                                                                     \
-        __INLINE_TAIL_FILL__(P,V,C,FMODE,l,b);                                \
-        __INLINE_TAIL_FILL__(P,V,C,FMODE,w,b);                                \
-        __INLINE_TAIL_FILL__(P,V,C,FMODE,b,b);                                \
+#if !defined(NO_16BIT_FILL) && !defined(INLINE_W_REPFILL)
+#if !defined(NO_64BIT_FILL)
+#if defined(MISALIGNED_32bit_OK)
+#define INLINE_W_REPFILL(P, V, C, FMODE)                                   \
+    do {                                                                   \
+        if ((unsigned GR_PtrInt)(C) >= 3) {                                \
+            INLINE_ALIGN_FILL(P, V, C, FMODE, w, w);                       \
+            INLINE_ALIGN_FILL(P, V, C, FMODE, l, w);                       \
+            {                                                              \
+                unsigned GR_PtrInt _c64_ = ((unsigned GR_PtrInt)(C)) >> 2; \
+                if (_c64_)                                                 \
+                    rowfill_h##FMODE(P, V, _c64_);                         \
+            }                                                              \
+        }                                                                  \
+        INLINE_TAIL_FILL(P, V, C, FMODE, l, w);                            \
+        INLINE_TAIL_FILL(P, V, C, FMODE, w, w);                            \
     } while (0)
-#  else
-#   define __INLINE_B_REPFILL__(P,V,C,FMODE) \
-           __INLINE_STD_OPT_FILL__(P,V,C,FMODE,h,b)
-#  endif
-# elif !defined(NO_32BIT_FILL)
-#  if defined(MISALIGNED_16bit_OK)
-#   define __INLINE_B_REPFILL__(P,V,C,FMODE) do {                             \
-        if ((unsigned GR_PtrInt)(C) >= 3 ) {                                        \
-           __INLINE_ALIGN_FILL__(P,V,C,FMODE,b,b);                            \
-           __INLINE_ALIGN_FILL__(P,V,C,FMODE,w,b);                            \
-           { unsigned GR_PtrInt _c32_ = ((unsigned GR_PtrInt)(C)) >> 2;                   \
-             if (_c32_) rowfill_l##FMODE(P,V,_c32_);         }                \
-        }                                                                     \
-        __INLINE_TAIL_FILL__(P,V,C,FMODE,w,b);                                \
-        __INLINE_TAIL_FILL__(P,V,C,FMODE,b,b);                                \
+#else
+#define INLINE_W_REPFILL(P, V, C, FMODE) INLINE_STD_OPT_FILL(P, V, C, FMODE, h, w)
+#endif
+#elif !defined(NO_32BIT_FILL)
+#define INLINE_W_REPFILL(P, V, C, FMODE)                               \
+    do {                                                               \
+        INLINE_ALIGN_FILL(P, V, C, FMODE, w, w);                       \
+        {                                                              \
+            unsigned GR_PtrInt _c32_ = ((unsigned GR_PtrInt)(C)) >> 1; \
+            if (_c32_)                                                 \
+                rowfill_l##FMODE(P, V, _c32_);                         \
+        }                                                              \
+        INLINE_TAIL_FILL(P, V, C, FMODE, w, w);                        \
     } while (0)
-#  else
-#   define __INLINE_B_REPFILL__(P,V,C,FMODE) \
-           __INLINE_STD_OPT_FILL__(P,V,C,FMODE,l,b)
-#  endif
-# elif !defined(NO_16BIT_FILL)
-#   define __INLINE_B_REPFILL__(P,V,C,FMODE) do {                             \
-        __INLINE_ALIGN_FILL__(P,V,C,FMODE,b,b);                               \
-        { unsigned GR_PtrInt _c16_ = ((unsigned GR_PtrInt)(C)) >> 1;                      \
-          if (_c16_) rowfill_w##FMODE(P,V,_c16_);            }                \
-        __INLINE_TAIL_FILL__(P,V,C,FMODE,b,b);                                \
-    } while (0)
-# else
-#  define __INLINE_B_REPFILL__(P,V,C,FMODE) \
-          rowfill_b##FMODE(P,V,C)
-# endif
-#endif /* !__INLINE_B_REPFILL__ */
+#else
+#define INLINE_W_REPFILL(P, V, C, FMODE) rowfill_w##FMODE(P, V, C)
+#endif
+#endif /* !INLINE_W_REPFILL */
 
-#if !defined(NO_16BIT_FILL) && !defined(__INLINE_W_REPFILL__)
-# if !defined(NO_64BIT_FILL)
-#  if defined(MISALIGNED_32bit_OK)
-#   define __INLINE_W_REPFILL__(P,V,C,FMODE) do {                             \
-        if ((unsigned GR_PtrInt)(C) >= 3 ) {                                        \
-           __INLINE_ALIGN_FILL__(P,V,C,FMODE,w,w);                            \
-           __INLINE_ALIGN_FILL__(P,V,C,FMODE,l,w);                            \
-           { unsigned GR_PtrInt _c64_ = ((unsigned GR_PtrInt)(C)) >> 2;                   \
-             if (_c64_) rowfill_h##FMODE(P,V,_c64_);         }                \
-        }                                                                     \
-        __INLINE_TAIL_FILL__(P,V,C,FMODE,l,w);                                \
-        __INLINE_TAIL_FILL__(P,V,C,FMODE,w,w);                                \
+#if !defined(NO_32BIT_FILL) && !defined(INLINE_L_REPFILL)
+#if !defined(NO_64BIT_FILL)
+#define INLINE_L_REPFILL(P, V, C, FMODE)                               \
+    do {                                                               \
+        INLINE_ALIGN_FILL(P, V, C, FMODE, l, l);                       \
+        {                                                              \
+            unsigned GR_PtrInt _c64_ = ((unsigned GR_PtrInt)(C)) >> 1; \
+            if (_c64_)                                                 \
+                rowfill_h##FMODE(P, V, _c64_);                         \
+        }                                                              \
+        INLINE_TAIL_FILL(P, V, C, FMODE, l, l);                        \
     } while (0)
-#  else
-#   define __INLINE_W_REPFILL__(P,V,C,FMODE) \
-           __INLINE_STD_OPT_FILL__(P,V,C,FMODE,h,w)
-#  endif
-# elif !defined(NO_32BIT_FILL)
-#   define __INLINE_W_REPFILL__(P,V,C,FMODE) do {                             \
-        __INLINE_ALIGN_FILL__(P,V,C,FMODE,w,w);                               \
-        { unsigned GR_PtrInt _c32_ = ((unsigned GR_PtrInt)(C)) >> 1;                      \
-          if (_c32_) rowfill_l##FMODE(P,V,_c32_);            }                \
-        __INLINE_TAIL_FILL__(P,V,C,FMODE,w,w);                                \
-    } while (0)
-# else
-#  define __INLINE_W_REPFILL__(P,V,C,FMODE) \
-          rowfill_w##FMODE(P,V,C)
-# endif
-#endif /* !__INLINE_W_REPFILL__ */
+#else
+#define INLINE_L_REPFILL(P, V, C, FMODE) rowfill_l##FMODE(P, V, C)
+#endif
+#endif /* !INLINE_L_REPFILL */
 
-#if !defined(NO_32BIT_FILL) && !defined(__INLINE_L_REPFILL__)
-# if !defined(NO_64BIT_FILL)
-#   define __INLINE_L_REPFILL__(P,V,C,FMODE) do {                             \
-        __INLINE_ALIGN_FILL__(P,V,C,FMODE,l,l);                               \
-        { unsigned GR_PtrInt _c64_ = ((unsigned GR_PtrInt)(C)) >> 1;                      \
-          if (_c64_) rowfill_h##FMODE(P,V,_c64_);            }                \
-        __INLINE_TAIL_FILL__(P,V,C,FMODE,l,l);                                \
+#if !defined(NO_64BIT_FILL) && !defined(INLINE_H_REPFILL)
+#define INLINE_H_REPFILL(P, V, C, FMODE) \
+    do {                                 \
+        rowfill_h##FMODE((P), (V), (C)); \
     } while (0)
-# else
-#  define __INLINE_L_REPFILL__(P,V,C,FMODE) \
-          rowfill_l##FMODE(P,V,C)
-# endif
-#endif /* !__INLINE_L_REPFILL__ */
-
-#if !defined(NO_64BIT_FILL) && !defined(__INLINE_H_REPFILL__)
-#define __INLINE_H_REPFILL__(P,V,C,FMODE) do {                          \
-        rowfill_h##FMODE((P),(V),(C));                                  \
-} while(0)
-#endif /* !__INLINE_H_REPFILL__ */
+#endif /* !INLINE_H_REPFILL */
 
 /*
  * repfill_<SIZE>[_<FAR>][_<OPER>](pointer,value,count)
  */
 #ifndef repfill_b
-#define repfill_b(p,v,c)        __INLINE_B_REPFILL__(p,v,c,_n)
+#define repfill_b(p, v, c) INLINE_B_REPFILL(p, v, c, _n)
 #endif
-#if defined(__INLINE_W_REPFILL__) && !defined(repfill_w)
-#define repfill_w(p,v,c)        __INLINE_W_REPFILL__(p,v,c,_n)
+#if defined(INLINE_W_REPFILL) && !defined(repfill_w)
+#define repfill_w(p, v, c) INLINE_W_REPFILL(p, v, c, _n)
 #endif
-#if defined(__INLINE_L_REPFILL__) && !defined(repfill_l)
-#define repfill_l(p,v,c)        __INLINE_L_REPFILL__(p,v,c,_n)
+#if defined(INLINE_L_REPFILL) && !defined(repfill_l)
+#define repfill_l(p, v, c) INLINE_L_REPFILL(p, v, c, _n)
 #endif
-#if defined(__INLINE_H_REPFILL__) && !defined(repfill_h)
-#define repfill_h(p,v,c)        __INLINE_H_REPFILL__(p,v,c,_n)
+#if defined(INLINE_H_REPFILL) && !defined(repfill_h)
+#define repfill_h(p, v, c) INLINE_H_REPFILL(p, v, c, _n)
 #endif
 
 #ifndef repfill_b_xor
-#define repfill_b_xor(p,v,c)    __INLINE_B_REPFILL__(p,v,c,_xor)
+#define repfill_b_xor(p, v, c) INLINE_B_REPFILL(p, v, c, _xor)
 #endif
-#if defined(__INLINE_W_REPFILL__) && !defined(repfill_w_xor)
-#define repfill_w_xor(p,v,c)    __INLINE_W_REPFILL__(p,v,c,_xor)
+#if defined(INLINE_W_REPFILL) && !defined(repfill_w_xor)
+#define repfill_w_xor(p, v, c) INLINE_W_REPFILL(p, v, c, _xor)
 #endif
-#if defined(__INLINE_L_REPFILL__) && !defined(repfill_l_xor)
-#define repfill_l_xor(p,v,c)    __INLINE_L_REPFILL__(p,v,c,_xor)
+#if defined(INLINE_L_REPFILL) && !defined(repfill_l_xor)
+#define repfill_l_xor(p, v, c) INLINE_L_REPFILL(p, v, c, _xor)
 #endif
-#if defined(__INLINE_H_REPFILL__) && !defined(repfill_h_xor)
-#define repfill_h_xor(p,v,c)    __INLINE_H_REPFILL__(p,v,c,_xor)
+#if defined(INLINE_H_REPFILL) && !defined(repfill_h_xor)
+#define repfill_h_xor(p, v, c) INLINE_H_REPFILL(p, v, c, _xor)
 #endif
 
 #ifndef repfill_b_or
-#define repfill_b_or(p,v,c)     __INLINE_B_REPFILL__(p,v,c,_or)
+#define repfill_b_or(p, v, c) INLINE_B_REPFILL(p, v, c, _or)
 #endif
-#if defined(__INLINE_W_REPFILL__) && !defined(repfill_w_or)
-#define repfill_w_or(p,v,c)     __INLINE_W_REPFILL__(p,v,c,_or)
+#if defined(INLINE_W_REPFILL) && !defined(repfill_w_or)
+#define repfill_w_or(p, v, c) INLINE_W_REPFILL(p, v, c, _or)
 #endif
-#if defined(__INLINE_L_REPFILL__) && !defined(repfill_l_or)
-#define repfill_l_or(p,v,c)     __INLINE_L_REPFILL__(p,v,c,_or)
+#if defined(INLINE_L_REPFILL) && !defined(repfill_l_or)
+#define repfill_l_or(p, v, c) INLINE_L_REPFILL(p, v, c, _or)
 #endif
-#if defined(__INLINE_H_REPFILL__) && !defined(repfill_h_or)
-#define repfill_h_or(p,v,c)     __INLINE_H_REPFILL__(p,v,c,_or)
+#if defined(INLINE_H_REPFILL) && !defined(repfill_h_or)
+#define repfill_h_or(p, v, c) INLINE_H_REPFILL(p, v, c, _or)
 #endif
 
 #ifndef repfill_b_and
-#define repfill_b_and(p,v,c)    __INLINE_B_REPFILL__(p,v,c,_and)
+#define repfill_b_and(p, v, c) INLINE_B_REPFILL(p, v, c, _and)
 #endif
-#if defined(__INLINE_W_REPFILL__) && !defined(repfill_w_and)
-#define repfill_w_and(p,v,c)    __INLINE_W_REPFILL__(p,v,c,_and)
+#if defined(INLINE_W_REPFILL) && !defined(repfill_w_and)
+#define repfill_w_and(p, v, c) INLINE_W_REPFILL(p, v, c, _and)
 #endif
-#if defined(__INLINE_L_REPFILL__) && !defined(repfill_l_and)
-#define repfill_l_and(p,v,c)    __INLINE_L_REPFILL__(p,v,c,_and)
+#if defined(INLINE_L_REPFILL) && !defined(repfill_l_and)
+#define repfill_l_and(p, v, c) INLINE_L_REPFILL(p, v, c, _and)
 #endif
-#if defined(__INLINE_H_REPFILL__) && !defined(repfill_h_and)
-#define repfill_h_and(p,v,c)    __INLINE_H_REPFILL__(p,v,c,_and)
+#if defined(INLINE_H_REPFILL) && !defined(repfill_h_and)
+#define repfill_h_and(p, v, c) INLINE_H_REPFILL(p, v, c, _and)
 #endif
 
 #ifndef repfill_b_f
-#define repfill_b_f(p,v,c)      __INLINE_B_REPFILL__(p,v,c,_f)
+#define repfill_b_f(p, v, c) INLINE_B_REPFILL(p, v, c, _f)
 #endif
-#if defined(__INLINE_W_REPFILL__) && !defined(repfill_w_f)
-#define repfill_w_f(p,v,c)      __INLINE_W_REPFILL__(p,v,c,_f)
+#if defined(INLINE_W_REPFILL) && !defined(repfill_w_f)
+#define repfill_w_f(p, v, c) INLINE_W_REPFILL(p, v, c, _f)
 #endif
-#if defined(__INLINE_L_REPFILL__) && !defined(repfill_l_f)
-#define repfill_l_f(p,v,c)      __INLINE_L_REPFILL__(p,v,c,_f)
+#if defined(INLINE_L_REPFILL) && !defined(repfill_l_f)
+#define repfill_l_f(p, v, c) INLINE_L_REPFILL(p, v, c, _f)
 #endif
-#if defined(__INLINE_H_REPFILL__) && !defined(repfill_h_f)
-#define repfill_h_f(p,v,c)      __INLINE_H_REPFILL__(p,v,c,_f)
+#if defined(INLINE_H_REPFILL) && !defined(repfill_h_f)
+#define repfill_h_f(p, v, c) INLINE_H_REPFILL(p, v, c, _f)
 #endif
 
 #ifndef repfill_b_f_xor
-#define repfill_b_f_xor(p,v,c)  __INLINE_B_REPFILL__(p,v,c,_f_xor)
+#define repfill_b_f_xor(p, v, c) INLINE_B_REPFILL(p, v, c, _f_xor)
 #endif
-#if defined(__INLINE_W_REPFILL__) && !defined(repfill_w_f_xor)
-#define repfill_w_f_xor(p,v,c)  __INLINE_W_REPFILL__(p,v,c,_f_xor)
+#if defined(INLINE_W_REPFILL) && !defined(repfill_w_f_xor)
+#define repfill_w_f_xor(p, v, c) INLINE_W_REPFILL(p, v, c, _f_xor)
 #endif
-#if defined(__INLINE_L_REPFILL__) && !defined(repfill_l_f_xor)
-#define repfill_l_f_xor(p,v,c)  __INLINE_L_REPFILL__(p,v,c,_f_xor)
+#if defined(INLINE_L_REPFILL) && !defined(repfill_l_f_xor)
+#define repfill_l_f_xor(p, v, c) INLINE_L_REPFILL(p, v, c, _f_xor)
 #endif
-#if defined(__INLINE_H_REPFILL__) && !defined(repfill_h_f_xor)
-#define repfill_h_f_xor(p,v,c)  __INLINE_H_REPFILL__(p,v,c,_f_xor)
+#if defined(INLINE_H_REPFILL) && !defined(repfill_h_f_xor)
+#define repfill_h_f_xor(p, v, c) INLINE_H_REPFILL(p, v, c, _f_xor)
 #endif
 
 #ifndef repfill_b_f_or
-#define repfill_b_f_or(p,v,c)   __INLINE_B_REPFILL__(p,v,c,_f_or)
+#define repfill_b_f_or(p, v, c) INLINE_B_REPFILL(p, v, c, _f_or)
 #endif
-#if defined(__INLINE_W_REPFILL__) && !defined(repfill_w_f_or)
-#define repfill_w_f_or(p,v,c)   __INLINE_W_REPFILL__(p,v,c,_f_or)
+#if defined(INLINE_W_REPFILL) && !defined(repfill_w_f_or)
+#define repfill_w_f_or(p, v, c) INLINE_W_REPFILL(p, v, c, _f_or)
 #endif
-#if defined(__INLINE_L_REPFILL__) && !defined(repfill_l_f_or)
-#define repfill_l_f_or(p,v,c)   __INLINE_L_REPFILL__(p,v,c,_f_or)
+#if defined(INLINE_L_REPFILL) && !defined(repfill_l_f_or)
+#define repfill_l_f_or(p, v, c) INLINE_L_REPFILL(p, v, c, _f_or)
 #endif
-#if defined(__INLINE_H_REPFILL__) && !defined(repfill_h_f_or)
-#define repfill_h_f_or(p,v,c)   __INLINE_H_REPFILL__(p,v,c,_f_or)
+#if defined(INLINE_H_REPFILL) && !defined(repfill_h_f_or)
+#define repfill_h_f_or(p, v, c) INLINE_H_REPFILL(p, v, c, _f_or)
 #endif
 
 #ifndef repfill_b_f_and
-#define repfill_b_f_and(p,v,c)  __INLINE_B_REPFILL__(p,v,c,_f_and)
+#define repfill_b_f_and(p, v, c) INLINE_B_REPFILL(p, v, c, _f_and)
 #endif
-#if defined(__INLINE_W_REPFILL__) && !defined(repfill_w_f_and)
-#define repfill_w_f_and(p,v,c)  __INLINE_W_REPFILL__(p,v,c,_f_and)
+#if defined(INLINE_W_REPFILL) && !defined(repfill_w_f_and)
+#define repfill_w_f_and(p, v, c) INLINE_W_REPFILL(p, v, c, _f_and)
 #endif
-#if defined(__INLINE_L_REPFILL__) && !defined(repfill_l_f_and)
-#define repfill_l_f_and(p,v,c)  __INLINE_L_REPFILL__(p,v,c,_f_and)
+#if defined(INLINE_L_REPFILL) && !defined(repfill_l_f_and)
+#define repfill_l_f_and(p, v, c) INLINE_L_REPFILL(p, v, c, _f_and)
 #endif
-#if defined(__INLINE_H_REPFILL__) && !defined(repfill_h_f_and)
-#define repfill_h_f_and(p,v,c)  __INLINE_H_REPFILL__(p,v,c,_f_and)
+#if defined(INLINE_H_REPFILL) && !defined(repfill_h_f_and)
+#define repfill_h_f_and(p, v, c) INLINE_H_REPFILL(p, v, c, _f_and)
 #endif
 
-#define repfill_b_n      repfill_b
-#define repfill_w_n      repfill_w
-#define repfill_l_n      repfill_l
-#define repfill_h_n      repfill_h
-#define repfill_b_xor_n  repfill_b_xor
-#define repfill_w_xor_n  repfill_w_xor
-#define repfill_l_xor_n  repfill_l_xor
-#define repfill_h_xor_n  repfill_h_xor
-#define repfill_b_or_n   repfill_b_or
-#define repfill_w_or_n   repfill_w_or
-#define repfill_l_or_n   repfill_l_or
-#define repfill_h_or_n   repfill_h_or
-#define repfill_b_and_n  repfill_b_and
-#define repfill_w_and_n  repfill_w_and
-#define repfill_l_and_n  repfill_l_and
-#define repfill_h_and_n  repfill_h_and
-
+#define repfill_b_n     repfill_b
+#define repfill_w_n     repfill_w
+#define repfill_l_n     repfill_l
+#define repfill_h_n     repfill_h
+#define repfill_b_xor_n repfill_b_xor
+#define repfill_w_xor_n repfill_w_xor
+#define repfill_l_xor_n repfill_l_xor
+#define repfill_h_xor_n repfill_h_xor
+#define repfill_b_or_n  repfill_b_or
+#define repfill_w_or_n  repfill_w_or
+#define repfill_l_or_n  repfill_l_or
+#define repfill_h_or_n  repfill_h_or
+#define repfill_b_and_n repfill_b_and
+#define repfill_w_and_n repfill_w_and
+#define repfill_l_and_n repfill_l_and
+#define repfill_h_and_n repfill_h_and
 
 /*
  * Another set of optimized fills which also do the replication.
  */
 #if !defined(NO_64BIT_FILL)
-#define GR_repl GR_int64u
-#define freplicate_b(V)         replicate_b2h(V)
-#define freplicate_w(V)         replicate_w2h(V)
-#define freplicate_l(V)         replicate_l2h(V)
+#define GR_repl         GR_int64u
+#define freplicate_b(V) replicate_b2h(V)
+#define freplicate_w(V) replicate_w2h(V)
+#define freplicate_l(V) replicate_l2h(V)
 #elif !defined(NO_32BIT_FILL)
-#define GR_repl GR_int32u
-#define freplicate_b(V)         replicate_b2l(V)
-#define freplicate_w(V)         replicate_w2l(V)
-#define freplicate_l(V)         (V)
+#define GR_repl         GR_int32u
+#define freplicate_b(V) replicate_b2l(V)
+#define freplicate_w(V) replicate_w2l(V)
+#define freplicate_l(V) (V)
 #elif !defined(NO_16BIT_FILL)
-#define GR_repl GR_int16u
-#define freplicate_b(V)         replicate_b2w(V)
-#define freplicate_w(V)         (V)
+#define GR_repl         GR_int16u
+#define freplicate_b(V) replicate_b2w(V)
+#define freplicate_w(V) (V)
 #else
-#define GR_repl GR_int8u
-#define freplicate_b(V)         (V)
+#define GR_repl         GR_int8u
+#define freplicate_b(V) (V)
 #endif
 
 /*
  * optfill_<SIZE>[_<FAR>][_<OPER>](pointer,value,count)
  */
-#define optfill_b(p,v,c)        repfill_b(p,freplicate_b(v),c)
-#define optfill_w(p,v,c)        repfill_w(p,freplicate_w(v),c)
-#define optfill_l(p,v,c)        repfill_l(p,freplicate_l(v),c)
+#define optfill_b(p, v, c) repfill_b(p, freplicate_b(v), c)
+#define optfill_w(p, v, c) repfill_w(p, freplicate_w(v), c)
+#define optfill_l(p, v, c) repfill_l(p, freplicate_l(v), c)
 
-#define optfill_b_xor(p,v,c)    repfill_b_xor(p,freplicate_b(v),c)
-#define optfill_w_xor(p,v,c)    repfill_w_xor(p,freplicate_w(v),c)
-#define optfill_l_xor(p,v,c)    repfill_l_xor(p,freplicate_l(v),c)
+#define optfill_b_xor(p, v, c) repfill_b_xor(p, freplicate_b(v), c)
+#define optfill_w_xor(p, v, c) repfill_w_xor(p, freplicate_w(v), c)
+#define optfill_l_xor(p, v, c) repfill_l_xor(p, freplicate_l(v), c)
 
-#define optfill_b_or(p,v,c)     repfill_b_or(p,freplicate_b(v),c)
-#define optfill_w_or(p,v,c)     repfill_w_or(p,freplicate_w(v),c)
-#define optfill_l_or(p,v,c)     repfill_l_or(p,freplicate_l(v),c)
+#define optfill_b_or(p, v, c) repfill_b_or(p, freplicate_b(v), c)
+#define optfill_w_or(p, v, c) repfill_w_or(p, freplicate_w(v), c)
+#define optfill_l_or(p, v, c) repfill_l_or(p, freplicate_l(v), c)
 
-#define optfill_b_and(p,v,c)    repfill_b_and(p,freplicate_b(v),c)
-#define optfill_w_and(p,v,c)    repfill_w_and(p,freplicate_w(v),c)
-#define optfill_l_and(p,v,c)    repfill_l_and(p,freplicate_l(v),c)
+#define optfill_b_and(p, v, c) repfill_b_and(p, freplicate_b(v), c)
+#define optfill_w_and(p, v, c) repfill_w_and(p, freplicate_w(v), c)
+#define optfill_l_and(p, v, c) repfill_l_and(p, freplicate_l(v), c)
 
-#define optfill_b_f(p,v,c)      repfill_b_f(p,freplicate_b(v),c)
-#define optfill_w_f(p,v,c)      repfill_w_f(p,freplicate_w(v),c)
-#define optfill_l_f(p,v,c)      repfill_l_f(p,freplicate_l(v),c)
+#define optfill_b_f(p, v, c) repfill_b_f(p, freplicate_b(v), c)
+#define optfill_w_f(p, v, c) repfill_w_f(p, freplicate_w(v), c)
+#define optfill_l_f(p, v, c) repfill_l_f(p, freplicate_l(v), c)
 
-#define optfill_b_f_xor(p,v,c)  repfill_b_f_xor(p,freplicate_b(v),c)
-#define optfill_w_f_xor(p,v,c)  repfill_w_f_xor(p,freplicate_w(v),c)
-#define optfill_l_f_xor(p,v,c)  repfill_l_f_xor(p,freplicate_l(v),c)
+#define optfill_b_f_xor(p, v, c) repfill_b_f_xor(p, freplicate_b(v), c)
+#define optfill_w_f_xor(p, v, c) repfill_w_f_xor(p, freplicate_w(v), c)
+#define optfill_l_f_xor(p, v, c) repfill_l_f_xor(p, freplicate_l(v), c)
 
-#define optfill_b_f_or(p,v,c)   repfill_b_f_or(p,freplicate_b(v),c)
-#define optfill_w_f_or(p,v,c)   repfill_w_f_or(p,freplicate_w(v),c)
-#define optfill_l_f_or(p,v,c)   repfill_l_f_or(p,freplicate_l(v),c)
+#define optfill_b_f_or(p, v, c) repfill_b_f_or(p, freplicate_b(v), c)
+#define optfill_w_f_or(p, v, c) repfill_w_f_or(p, freplicate_w(v), c)
+#define optfill_l_f_or(p, v, c) repfill_l_f_or(p, freplicate_l(v), c)
 
-#define optfill_b_f_and(p,v,c)  repfill_b_f_and(p,freplicate_b(v),c)
-#define optfill_w_f_and(p,v,c)  repfill_w_f_and(p,freplicate_w(v),c)
-#define optfill_l_f_and(p,v,c)  repfill_l_f_and(p,freplicate_l(v),c)
+#define optfill_b_f_and(p, v, c) repfill_b_f_and(p, freplicate_b(v), c)
+#define optfill_w_f_and(p, v, c) repfill_w_f_and(p, freplicate_w(v), c)
+#define optfill_l_f_and(p, v, c) repfill_l_f_and(p, freplicate_l(v), c)
 
 /*
  * A set of optimized fills which preserves the address and count arguments
@@ -726,142 +737,146 @@
  * this (e.g. GCC)
  */
 
-#ifndef __INLINE_MEMFILL__
-#define __INLINE_MEMFILL__(P,V,C,SIZE,TYPE,FMODE) do {                  \
-        register void     *_FP = (void *)(P);                           \
-        register GR_repl   _FV = freplicate_##SIZE((TYPE)(V));          \
-        register GR_PtrInt _FC = (GR_PtrInt)(C);                        \
-        repfill_##SIZE##FMODE(_FP,_FV,_FC);                             \
-} while(0)
+#ifndef INLINE_MEMFILL
+#define INLINE_MEMFILL(P, V, C, SIZE, TYPE, FMODE)           \
+    do {                                                     \
+        register void *_FP = (void *)(P);                    \
+        register GR_repl _FV = freplicate_##SIZE((TYPE)(V)); \
+        register GR_PtrInt _FC = (GR_PtrInt)(C);             \
+        repfill_##SIZE##FMODE(_FP, _FV, _FC);                \
+    } while (0)
 #endif
 
 /*
  * memfill_<SIZE>[_<FAR>][_<OPER>](pointer,value,count)
  */
-#define memfill_b(p,v,c)        __INLINE_MEMFILL__(p,v,c,b,GR_int8,_n)
-#define memfill_w(p,v,c)        __INLINE_MEMFILL__(p,v,c,w,GR_int16,_n)
-#define memfill_l(p,v,c)        __INLINE_MEMFILL__(p,v,c,l,GR_int32,_n)
+#define memfill_b(p, v, c) INLINE_MEMFILL(p, v, c, b, GR_int8, _n)
+#define memfill_w(p, v, c) INLINE_MEMFILL(p, v, c, w, GR_int16, _n)
+#define memfill_l(p, v, c) INLINE_MEMFILL(p, v, c, l, GR_int32, _n)
 
-#define memfill_b_xor(p,v,c)    __INLINE_MEMFILL__(p,v,c,b,GR_int8,_xor)
-#define memfill_w_xor(p,v,c)    __INLINE_MEMFILL__(p,v,c,w,GR_int16,_xor)
-#define memfill_l_xor(p,v,c)    __INLINE_MEMFILL__(p,v,c,l,GR_int32,_xor)
+#define memfill_b_xor(p, v, c) INLINE_MEMFILL(p, v, c, b, GR_int8, _xor)
+#define memfill_w_xor(p, v, c) INLINE_MEMFILL(p, v, c, w, GR_int16, _xor)
+#define memfill_l_xor(p, v, c) INLINE_MEMFILL(p, v, c, l, GR_int32, _xor)
 
-#define memfill_b_or(p,v,c)     __INLINE_MEMFILL__(p,v,c,b,GR_int8,_or)
-#define memfill_w_or(p,v,c)     __INLINE_MEMFILL__(p,v,c,w,GR_int16,_or)
-#define memfill_l_or(p,v,c)     __INLINE_MEMFILL__(p,v,c,l,GR_int32,_or)
+#define memfill_b_or(p, v, c) INLINE_MEMFILL(p, v, c, b, GR_int8, _or)
+#define memfill_w_or(p, v, c) INLINE_MEMFILL(p, v, c, w, GR_int16, _or)
+#define memfill_l_or(p, v, c) INLINE_MEMFILL(p, v, c, l, GR_int32, _or)
 
-#define memfill_b_and(p,v,c)    __INLINE_MEMFILL__(p,v,c,b,GR_int8,_and)
-#define memfill_w_and(p,v,c)    __INLINE_MEMFILL__(p,v,c,w,GR_int16,_and)
-#define memfill_l_and(p,v,c)    __INLINE_MEMFILL__(p,v,c,l,GR_int32,_and)
+#define memfill_b_and(p, v, c) INLINE_MEMFILL(p, v, c, b, GR_int8, _and)
+#define memfill_w_and(p, v, c) INLINE_MEMFILL(p, v, c, w, GR_int16, _and)
+#define memfill_l_and(p, v, c) INLINE_MEMFILL(p, v, c, l, GR_int32, _and)
 
-#define memfill_b_f(p,v,c)      __INLINE_MEMFILL__(p,v,c,b,GR_int8,_f)
-#define memfill_w_f(p,v,c)      __INLINE_MEMFILL__(p,v,c,w,GR_int16,_f)
-#define memfill_l_f(p,v,c)      __INLINE_MEMFILL__(p,v,c,l,GR_int32,_f)
+#define memfill_b_f(p, v, c) INLINE_MEMFILL(p, v, c, b, GR_int8, _f)
+#define memfill_w_f(p, v, c) INLINE_MEMFILL(p, v, c, w, GR_int16, _f)
+#define memfill_l_f(p, v, c) INLINE_MEMFILL(p, v, c, l, GR_int32, _f)
 
-#define memfill_b_f_xor(p,v,c)  __INLINE_MEMFILL__(p,v,c,b,GR_int8,_f_xor)
-#define memfill_w_f_xor(p,v,c)  __INLINE_MEMFILL__(p,v,c,w,GR_int16,_f_xor)
-#define memfill_l_f_xor(p,v,c)  __INLINE_MEMFILL__(p,v,c,l,GR_int32,_f_xor)
+#define memfill_b_f_xor(p, v, c) INLINE_MEMFILL(p, v, c, b, GR_int8, _f_xor)
+#define memfill_w_f_xor(p, v, c) INLINE_MEMFILL(p, v, c, w, GR_int16, _f_xor)
+#define memfill_l_f_xor(p, v, c) INLINE_MEMFILL(p, v, c, l, GR_int32, _f_xor)
 
-#define memfill_b_f_or(p,v,c)   __INLINE_MEMFILL__(p,v,c,b,GR_int8,_f_or)
-#define memfill_w_f_or(p,v,c)   __INLINE_MEMFILL__(p,v,c,w,GR_int16,_f_or)
-#define memfill_l_f_or(p,v,c)   __INLINE_MEMFILL__(p,v,c,l,GR_int32,_f_or)
+#define memfill_b_f_or(p, v, c) INLINE_MEMFILL(p, v, c, b, GR_int8, _f_or)
+#define memfill_w_f_or(p, v, c) INLINE_MEMFILL(p, v, c, w, GR_int16, _f_or)
+#define memfill_l_f_or(p, v, c) INLINE_MEMFILL(p, v, c, l, GR_int32, _f_or)
 
-#define memfill_b_f_and(p,v,c)  __INLINE_MEMFILL__(p,v,c,b,GR_int8,_f_and)
-#define memfill_w_f_and(p,v,c)  __INLINE_MEMFILL__(p,v,c,w,GR_int16,_f_and)
-#define memfill_l_f_and(p,v,c)  __INLINE_MEMFILL__(p,v,c,l,GR_int32,_f_and)
+#define memfill_b_f_and(p, v, c) INLINE_MEMFILL(p, v, c, b, GR_int8, _f_and)
+#define memfill_w_f_and(p, v, c) INLINE_MEMFILL(p, v, c, w, GR_int16, _f_and)
+#define memfill_l_f_and(p, v, c) INLINE_MEMFILL(p, v, c, l, GR_int32, _f_and)
 
 /*
  * 24bpp special support functions
  */
 
-#ifndef __INLINE_24_REPFILL__
-#define __INLINE_24_REPFILL__(P,C,B,FMODE,INS) do {                \
-    GR_int32u _cl24_ = (GR_int32u)(C);                             \
-    GR_PtrInt _b24_ = (GR_PtrInt)(B);                                          \
-    while ( _b24_ >= 3) {                                          \
-        poke_24##FMODE((P), _cl24_);                               \
-        ptrinc((P),3);                                             \
-        _b24_ -= 3;                                                \
-    }                                                              \
-    /* B = 0..2 */                                                 \
-    if (! _b24_ ) break;                                           \
-    poke_b##FMODE((P), (GR_int8u)_cl24_);                          \
-    ptrinc((P),1);                                                 \
-    if (! --_b24_ ) break;                                         \
-    poke_b##FMODE((P), (GR_int8u)(_cl24_>>8));                     \
-    ptrinc((P),1);                                                 \
-} while (0)
+#ifndef INLINE_24_REPFILL
+#define INLINE_24_REPFILL(P, C, B, FMODE, INS)       \
+    do {                                             \
+        GR_int32u _cl24_ = (GR_int32u)(C);           \
+        GR_PtrInt _b24_ = (GR_PtrInt)(B);            \
+        while (_b24_ >= 3) {                         \
+            poke_24##FMODE((P), _cl24_);             \
+            ptrinc((P), 3);                          \
+            _b24_ -= 3;                              \
+        }                                            \
+        /* B = 0..2 */                               \
+        if (!_b24_)                                  \
+            break;                                   \
+        poke_b##FMODE((P), (GR_int8u)_cl24_);        \
+        ptrinc((P), 1);                              \
+        if (!--_b24_)                                \
+            break;                                   \
+        poke_b##FMODE((P), (GR_int8u)(_cl24_ >> 8)); \
+        ptrinc((P), 1);                              \
+    } while (0)
 #endif
 
-#ifndef __INLINE_24_FAR_REPFILL__
-#define __INLINE_24_FAR_REPFILL__(P,C,B,FMODE,INS) \
-        __INLINE_24_REPFILL__(P,C,B,FMODE,INS)
+#ifndef INLINE_24_FAR_REPFILL
+#define INLINE_24_FAR_REPFILL(P, C, B, FMODE, INS) \
+    INLINE_24_REPFILL(P, C, B, FMODE, INS)
 #endif
 
 #ifndef repfill_24_set
-#define repfill_24_set(p,c,b)   __INLINE_24_REPFILL__(p,c,b,_set,MOV_INS)
+#define repfill_24_set(p, c, b) INLINE_24_REPFILL(p, c, b, _set, MOV_INS)
 #endif
 #ifndef repfill_24_xor
-#define repfill_24_xor(p,c,b)   __INLINE_24_REPFILL__(p,c,b,_xor,XOR_INS)
+#define repfill_24_xor(p, c, b) INLINE_24_REPFILL(p, c, b, _xor, XOR_INS)
 #endif
 #ifndef repfill_24_or
-#define repfill_24_or(p,c,b)    __INLINE_24_REPFILL__(p,c,b,_or,OR_INS)
+#define repfill_24_or(p, c, b) INLINE_24_REPFILL(p, c, b, _or, OR_INS)
 #endif
 #ifndef repfill_24_and
-#define repfill_24_and(p,c,b)   __INLINE_24_REPFILL__(p,c,b,_and,AND_INS)
+#define repfill_24_and(p, c, b) INLINE_24_REPFILL(p, c, b, _and, AND_INS)
 #endif
 
 #ifndef repfill_24_f_set
-#define repfill_24_f_set(p,c,b) __INLINE_24_FAR_REPFILL__(p,c,b,_f_set,MOV_INS)
+#define repfill_24_f_set(p, c, b) INLINE_24_FAR_REPFILL(p, c, b, _f_set, MOV_INS)
 #endif
 #ifndef repfill_24_f_xor
-#define repfill_24_f_xor(p,c,b) __INLINE_24_FAR_REPFILL__(p,c,b,_f_xor,XOR_INS)
+#define repfill_24_f_xor(p, c, b) INLINE_24_FAR_REPFILL(p, c, b, _f_xor, XOR_INS)
 #endif
 #ifndef repfill_24_f_or
-#define repfill_24_f_or(p,c,b)  __INLINE_24_FAR_REPFILL__(p,c,b,_f_or,OR_INS)
+#define repfill_24_f_or(p, c, b) INLINE_24_FAR_REPFILL(p, c, b, _f_or, OR_INS)
 #endif
 #ifndef repfill_24_f_and
-#define repfill_24_f_and(p,c,b) __INLINE_24_FAR_REPFILL__(p,c,b,_f_and,AND_INS)
+#define repfill_24_f_and(p, c, b) INLINE_24_FAR_REPFILL(p, c, b, _f_and, AND_INS)
 #endif
 
-#ifndef __INLINE_24_MEMFILL
-#define __INLINE_24_MEMFILL__(p,c,b,FMODE) do {                    \
-    void *_p24 = (p);                                              \
-    unsigned long _c24 = (c);                                      \
-    unsigned _b24 = (b);                                           \
-    repfill_24##FMODE(_p24,_c24,_b24);                             \
-} while (0)
+#ifndef _INLINE_24MEMFILL
+#define INLINE_24_MEMFILL(p, c, b, FMODE)    \
+    do {                                     \
+        void *_p24 = (p);                    \
+        unsigned long _c24 = (c);            \
+        unsigned _b24 = (b);                 \
+        repfill_24##FMODE(_p24, _c24, _b24); \
+    } while (0)
 #endif
 
 #ifndef memfill_24_set
-#define memfill_24_set(p,c,b)   __INLINE_24_MEMFILL__(p,c,b,_set)
+#define memfill_24_set(p, c, b) INLINE_24_MEMFILL(p, c, b, _set)
 #endif
 #ifndef memfill_24_xor
-#define memfill_24_xor(p,c,b)   __INLINE_24_MEMFILL__(p,c,b,_xor)
+#define memfill_24_xor(p, c, b) INLINE_24_MEMFILL(p, c, b, _xor)
 #endif
 #ifndef memfill_24_or
-#define memfill_24_or(p,c,b)    __INLINE_24_MEMFILL__(p,c,b,_or)
+#define memfill_24_or(p, c, b) INLINE_24_MEMFILL(p, c, b, _or)
 #endif
 #ifndef memfill_24_and
-#define memfill_24_and(p,c,b)   __INLINE_24_MEMFILL__(p,c,b,_and)
+#define memfill_24_and(p, c, b) INLINE_24_MEMFILL(p, c, b, _and)
 #endif
 
 #ifndef memfill_24_set_f
-#define memfill_24_set_f(p,c,b) __INLINE_24_MEMFILL__(p,c,b,_set_f)
+#define memfill_24_set_f(p, c, b) INLINE_24_MEMFILL(p, c, b, _set_f)
 #endif
 #ifndef memfill_24_xor_f
-#define memfill_24_xor_f(p,c,b) __INLINE_24_MEMFILL__(p,c,b,_xor_f)
+#define memfill_24_xor_f(p, c, b) INLINE_24_MEMFILL(p, c, b, _xor_f)
 #endif
 #ifndef memfill_24_or_f
-#define memfill_24_or_f(p,c,b)  __INLINE_24_MEMFILL__(p,c,b,_or_f)
+#define memfill_24_or_f(p, c, b) INLINE_24_MEMFILL(p, c, b, _or_f)
 #endif
 #ifndef memfill_24_and_f
-#define memfill_24_and_f(p,c,b) __INLINE_24_MEMFILL__(p,c,b,_and_f)
+#define memfill_24_and_f(p, c, b) INLINE_24_MEMFILL(p, c, b, _and_f)
 #endif
 
 #define memfill_24   memfill_24_set
 #define memfill_24_f memfill_24_set_f
-
 
 /*
  * stuff to clear arrays, structures
@@ -871,15 +886,15 @@
 #define memzero(p,s)            memfill_l((p),0,((s) >> 2))
 #endif
 */
-#define memzero(p,s) do {                                               \
-        register void *_FP = (void *)(p);                               \
-        register GR_repl   _FV = 0;                                     \
-        register unsigned  _FC = (unsigned)(s);                         \
-        DBGPRINTF(DBG_COPYFILL,("memzero size=%u\n",_FC));              \
-        repfill_b(_FP,_FV,_FC);                                         \
-} while(0)
+#define memzero(p, s)                                        \
+    do {                                                     \
+        register void *_FP = (void *)(p);                    \
+        register GR_repl _FV = 0;                            \
+        register unsigned _FC = (unsigned)(s);               \
+        DBGPRINTF(DBG_COPYFILL, ("memzero size=%u\n", _FC)); \
+        repfill_b(_FP, _FV, _FC);                            \
+    } while (0)
 
+#define sttzero(p) memzero((p), sizeof(*(p)))
 
-#define sttzero(p)              memzero((p),sizeof(*(p)))
-
-#endif  /* whole file */
+#endif /* whole file */

@@ -14,11 +14,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <glib.h>
-
 #include <fontconfig/fontconfig.h>
-
 #include <ft2build.h>
+#include <glib.h>
 #include FT_FREETYPE_H
 #include FT_TYPES_H
 
@@ -72,14 +70,14 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
 
     ret = FT_New_Face(library, name, 0, &font->face);
     if (ret) {
-        g_set_error(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
-            "Error getting font face: %s", get_ft_error_msg(ret));
+        g_set_error(err, GRX_ERROR, GRX_ERROR_FONT_ERROR, "Error getting font face: %s",
+            get_ft_error_msg(ret));
         g_free(font);
         return NULL;
     }
     if (font->face->num_fixed_sizes == 0) {
-        g_set_error_literal(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
-            "Only bitmap fonts are supported");
+        g_set_error_literal(
+            err, GRX_ERROR, GRX_ERROR_FONT_ERROR, "Only bitmap fonts are supported");
         g_free(font);
         return NULL;
     }
@@ -87,8 +85,8 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
     ret = FT_Set_Pixel_Sizes(font->face, font->face->available_sizes[0].x_ppem >> 6,
         font->face->available_sizes[0].y_ppem >> 6);
     if (ret) {
-        g_set_error(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
-            "Error setting size: %s", get_ft_error_msg(ret));
+        g_set_error(err, GRX_ERROR, GRX_ERROR_FONT_ERROR, "Error setting size: %s",
+            get_ft_error_msg(ret));
         g_free(font);
         return NULL;
     }
@@ -113,22 +111,25 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
     g_debug("available_sizes:");
     for (int i = 0; i < font->face->num_fixed_sizes; i++) {
         FT_Bitmap_Size *size = &font->face->available_sizes[i];
-        g_debug("\t" "height: %d, width: %d, size: %ld-%ld/64, "
-                "x_ppem: %ld-%ld/64, y_ppem: %ld-%ld/64",
-            size->height, size->width,
-            size->size >> 6, size->size & 0x3f,
-            size->x_ppem >> 6, size->x_ppem & 0x3f,
-            size->y_ppem >> 6, size->y_ppem & 0x3f);
+        g_debug(
+            "\t"
+            "height: %d, width: %d, size: %ld-%ld/64, "
+            "x_ppem: %ld-%ld/64, y_ppem: %ld-%ld/64",
+            size->height, size->width, size->size >> 6, size->size & 0x3f,
+            size->x_ppem >> 6, size->x_ppem & 0x3f, size->y_ppem >> 6,
+            size->y_ppem & 0x3f);
     }
     g_debug("num_charmaps: %d", font->face->num_charmaps);
     g_debug("charmaps:");
     for (int i = 0; i < font->face->num_charmaps; i++) {
         FT_CharMap map = font->face->charmaps[i];
         // FIXME: string gets cut off is map->encoding == FT_ENCODING_NONE
-        g_debug("\t" "encoding: %c%c%c%c, platform_id: %d, encoding_id: %d",
+        g_debug(
+            "\t"
+            "encoding: %c%c%c%c, platform_id: %d, encoding_id: %d",
             map->encoding >> 24, (map->encoding >> 16) & 0xff,
-            (map->encoding >> 8) & 0xff, map->encoding & 0xff,
-            map->platform_id, map->encoding_id);
+            (map->encoding >> 8) & 0xff, map->encoding & 0xff, map->platform_id,
+            map->encoding_id);
     }
     g_debug("units_per_EM: %d", font->face->units_per_EM);
     g_debug("ascender: %d", font->face->ascender);
@@ -152,8 +153,7 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
     g_debug("size->metrics.descender: %ld-%ld/64",
         font->face->size->metrics.descender >> 6,
         font->face->size->metrics.descender & 0x3f);
-    g_debug("size->metrics.height: %ld-%ld/64",
-        font->face->size->metrics.height >> 6,
+    g_debug("size->metrics.height: %ld-%ld/64", font->face->size->metrics.height >> 6,
         font->face->size->metrics.height & 0x3f);
     g_debug("size->metrics.max_advance: %ld-%ld/64",
         font->face->size->metrics.max_advance >> 6,
@@ -182,9 +182,8 @@ GrxFont *grx_font_load_from_file(const gchar *name, GError **err)
  * Returns: (transfer full) (nullable): the font or %NULL if there was an error
  */
 GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
-                            GrxFontWeight weight, GrxFontSlant slant,
-                            GrxFontWidth width, gboolean monospace,
-                            const gchar *lang, const gchar *script, GError **err)
+    GrxFontWeight weight, GrxFontSlant slant, GrxFontWidth width, gboolean monospace,
+    const gchar *lang, const gchar *script, GError **err)
 {
     FcPattern *pattern, *match;
     FcResult result;
@@ -194,8 +193,8 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
     g_setenv("FONTCONFIG_PATH", GRX_FONTCONFIG_PATH, FALSE);
 
     if (!FcInit()) {
-        g_set_error_literal(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
-            "Failed to init fontconfig");
+        g_set_error_literal(
+            err, GRX_ERROR, GRX_ERROR_FONT_ERROR, "Failed to init fontconfig");
         return NULL;
     }
 
@@ -262,15 +261,15 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
 
     if (!match) {
         // TODO: use result for better error
-        g_set_error_literal(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
-            "Failed to find match");
+        g_set_error_literal(
+            err, GRX_ERROR, GRX_ERROR_FONT_ERROR, "Failed to find match");
         FcPatternDestroy(pattern);
         return NULL;
     }
 
     if (FcPatternGetString(match, FC_FILE, 0, &file) != FcResultMatch) {
-        g_set_error_literal(err, GRX_ERROR, GRX_ERROR_FONT_ERROR,
-            "Failed to get file name");
+        g_set_error_literal(
+            err, GRX_ERROR, GRX_ERROR_FONT_ERROR, "Failed to get file name");
         FcPatternDestroy(match);
         FcPatternDestroy(pattern);
         return NULL;
@@ -300,6 +299,5 @@ GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
 GrxFont *grx_font_load(const gchar *family, gint size, GError **err)
 {
     return grx_font_load_full(family, size, grx_get_dpi(), GRX_FONT_WEIGHT_REGULAR,
-                              GRX_FONT_SLANT_REGULAR, GRX_FONT_WIDTH_REGULAR,
-                              FALSE, NULL, NULL, err);
+        GRX_FONT_SLANT_REGULAR, GRX_FONT_WIDTH_REGULAR, FALSE, NULL, NULL, err);
 }

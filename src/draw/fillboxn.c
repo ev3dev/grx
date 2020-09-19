@@ -15,9 +15,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "clipping.h"
 
 /**
  * grx_fast_draw_filled_box:
@@ -34,13 +34,8 @@
  * box is within the bounds of the current context, then use
  * grx_draw_filled_box() instead.
  */
-void grx_fast_draw_filled_box(int x1,int y1,int x2,int y2,GrxColor c)
+void grx_fast_draw_filled_box(int x1, int y1, int x2, int y2, GrxColor c)
 {
-        (*FDRV->drawblock)(
-            x1 + CURC->x_offset,
-            y1 + CURC->y_offset,
-            x2 - x1 + 1,
-            y2 - y1 + 1,
-            c
-        );
+    (*FDRV->drawblock)(
+        x1 + CURC->x_offset, y1 + CURC->y_offset, x2 - x1 + 1, y2 - y1 + 1, c);
 }

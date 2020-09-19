@@ -20,90 +20,111 @@
  * Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77]
  */
 
-#include "colors.h"
-#include "libgrx.h"
-#include "grdriver.h"
-#include "arith.h"
-#include "mempeek.h"
+#include <grx/context.h>
 
+#include "arith.h"
+#include "colors.h"
+#include "grdriver.h"
+#include "libgrx.h"
+#include "mempeek.h"
 #include "pblit.h"
 
 /* WRITE_FAR should be defined as _f if destination is video */
 /* READ_FAR should be defined as _f if source is video */
 
-#define __DOCPYF(WF,OP,RF)  fwdcopy##WF##OP##RF(dptr,dptr,sptr,ww)
-#define __DOCPYR(WF,OP,RF)  revcopy##WF##OP##RF(dptr,dptr,sptr,ww)
+#define __DOCPYF(WF, OP, RF) fwdcopy##WF##OP##RF(dptr, dptr, sptr, ww)
+#define __DOCPYR(WF, OP, RF) revcopy##WF##OP##RF(dptr, dptr, sptr, ww)
 
-#define __DOIMGCPYF(WF,RF)  DOIMGCOPY(FW,WF,RF,ww)
-#define __DOIMGCPYR(WF,RF)  DOIMGCOPY(RV,WF,RF,ww)
+#define __DOIMGCPYF(WF, RF) DOIMGCOPY(FW, WF, RF, ww)
+#define __DOIMGCPYR(WF, RF) DOIMGCOPY(RV, WF, RF, ww)
 
 /* indirection to resolve WF=WRITE_FAR / RF=READ_FAR macros */
-#define DOCPYF(WF,OP,RF)  __DOCPYF(WF,OP,RF)
-#define DOCPYR(WF,OP,RF)  __DOCPYR(WF,OP,RF)
-#define DOIMGCPYF(WF,RF)  __DOIMGCPYF(WF,RF)
-#define DOIMGCPYR(WF,RF)  __DOIMGCPYR(WF,RF)
+#define DOCPYF(WF, OP, RF) __DOCPYF(WF, OP, RF)
+#define DOCPYR(WF, OP, RF) __DOCPYR(WF, OP, RF)
+#define DOIMGCPYF(WF, RF)  __DOIMGCPYF(WF, RF)
+#define DOIMGCPYR(WF, RF)  __DOIMGCPYR(WF, RF)
 
 /* check if forward blit would overwrite source */
 #ifdef BLIT_CAN_OVERLAP
-#define OVERLAP(dp,sp) ( ((GR_int8 *)dp) > ((GR_int8 *)sp) )
+#define OVERLAP(dp, sp) (((GR_int8 *)dp) > ((GR_int8 *)sp))
 #endif
 
 #ifdef LOCALFUNC
 static
 #endif
-void BLITFUNC(GrxFrame *dst,int dx,int dy,
-              GrxFrame *src,int sx,int sy,
-              int w,int h,GrxColor op
-              )
+    void
+    BLITFUNC(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w, int h,
+        GrxColor op)
 {
     unsigned char *dptr, *sptr;
-    unsigned  dskip, sskip;
-    int       oper, ww;
-    GR_int8u  cval;
+    unsigned dskip, sskip;
+    int oper, ww;
+    GR_int8u cval;
 
     GRX_ENTER();
     dskip = dst->line_offset - w;
     sskip = src->line_offset - w;
-    oper  = C_OPER(op);
-    cval  = (GR_int8u)op;
+    oper = C_OPER(op);
+    cval = (GR_int8u)op;
 
-    dptr = &dst->base_address[umuladd32(dy,dst->line_offset,dx)];
-    sptr = &src->base_address[umuladd32(sy,src->line_offset,sx)];
+    dptr = &dst->base_address[umuladd32(dy, dst->line_offset, dx)];
+    sptr = &src->base_address[umuladd32(sy, src->line_offset, sx)];
 
-#   ifdef BLITSEL
-      setup_far_selector(BLITSEL);
-#   endif
+#ifdef BLITSEL
+    setup_far_selector(BLITSEL);
+#endif
 
-#   ifdef BLIT_CAN_OVERLAP
-    if(OVERLAP(dptr,sptr)) {
-        dptr += umuladd32((h-1),dst->line_offset,w-1);
-        sptr += umuladd32((h-1),src->line_offset,w-1);
+#ifdef BLIT_CAN_OVERLAP
+    if (OVERLAP(dptr, sptr)) {
+        dptr += umuladd32((h - 1), dst->line_offset, w - 1);
+        sptr += umuladd32((h - 1), src->line_offset, w - 1);
         do {
             ww = w;
-            switch(oper) {
-                case C_IMAGE: DOIMGCPYR(WRITE_FAR,READ_FAR);    break;
-                case C_XOR:   DOCPYR(WRITE_FAR,_xor,READ_FAR);  break;
-                case C_OR:    DOCPYR(WRITE_FAR,_or,READ_FAR);   break;
-                case C_AND:   DOCPYR(WRITE_FAR,_and,READ_FAR);  break;
-                default:      DOCPYR(WRITE_FAR,_set,READ_FAR);  break;
+            switch (oper) {
+            case C_IMAGE:
+                DOIMGCPYR(WRITE_FAR, READ_FAR);
+                break;
+            case C_XOR:
+                DOCPYR(WRITE_FAR, _xor, READ_FAR);
+                break;
+            case C_OR:
+                DOCPYR(WRITE_FAR, _or, READ_FAR);
+                break;
+            case C_AND:
+                DOCPYR(WRITE_FAR, _and, READ_FAR);
+                break;
+            default:
+                DOCPYR(WRITE_FAR, _set, READ_FAR);
+                break;
             }
             dptr -= dskip;
             sptr -= sskip;
-        } while(--h != 0);
-    } else
+        } while (--h != 0);
+    }
+    else
 #endif /* BLIT_CAN_OVERLAP */
-      do {
-        ww = w;
-        switch(oper) {
-            case C_IMAGE: DOIMGCPYF(WRITE_FAR,READ_FAR);      break;
-            case C_XOR:   DOCPYF(WRITE_FAR,_xor,READ_FAR);    break;
-            case C_OR:    DOCPYF(WRITE_FAR,_or,READ_FAR);     break;
-            case C_AND:   DOCPYF(WRITE_FAR,_and,READ_FAR);    break;
-            default:      DOCPYF(WRITE_FAR,_set,READ_FAR);    break;
-        }
-        dptr += dskip;
-        sptr += sskip;
-      } while(--h != 0);
+        do {
+            ww = w;
+            switch (oper) {
+            case C_IMAGE:
+                DOIMGCPYF(WRITE_FAR, READ_FAR);
+                break;
+            case C_XOR:
+                DOCPYF(WRITE_FAR, _xor, READ_FAR);
+                break;
+            case C_OR:
+                DOCPYF(WRITE_FAR, _or, READ_FAR);
+                break;
+            case C_AND:
+                DOCPYF(WRITE_FAR, _and, READ_FAR);
+                break;
+            default:
+                DOCPYF(WRITE_FAR, _set, READ_FAR);
+                break;
+            }
+            dptr += dskip;
+            sptr += sskip;
+        } while (--h != 0);
     GRX_LEAVE();
 }
 

@@ -22,10 +22,9 @@
 
 #include <glib.h>
 
-#include <grx/context.h>
-#include <grx/pixmap.h>
+#include <grx/common.h>
 
-G_GNUC_INTERNAL int _GrImageTestSize(int wdt,int hgt);
-G_GNUC_INTERNAL GrxPixmap *_GrImageAllocate(GrxContext *ctx, int nwidth,int nheight);
+G_GNUC_INTERNAL int _GrImageTestSize(gint wdt, gint hgt);
+G_GNUC_INTERNAL GrxPixmap *_GrImageAllocate(GrxContext *ctx, gint nwidth, gint nheight);
 
 #endif

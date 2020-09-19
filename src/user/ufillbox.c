@@ -33,11 +33,11 @@
  * Draws a filled rectangle on the current context using the specified
  * coordinates and color.
  */
-void grx_user_draw_filled_box(int x1,int y1,int x2,int y2,GrxColor c)
+void grx_user_draw_filled_box(int x1, int y1, int x2, int y2, GrxColor c)
 {
-        U2SX(x1,CURC);
-        U2SY(y1,CURC);
-        U2SX(x2,CURC);
-        U2SY(y2,CURC);
-        grx_draw_filled_box(x1,y1,x2,y2,c);
+    U2SX(x1, CURC);
+    U2SY(y1, CURC);
+    U2SX(x2, CURC);
+    U2SY(y2, CURC);
+    grx_draw_filled_box(x1, y1, x2, y2, c);
 }

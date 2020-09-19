@@ -35,9 +35,9 @@
  */
 void grx_clear_screen(GrxColor bg)
 {
-        GrxContext save;
-        grx_save_current_context(&save);
-        grx_set_current_context(SCRN);
-        grx_clear_context(bg);
-        grx_set_current_context(&save);
+    GrxContext save;
+    grx_save_current_context(&save);
+    grx_set_current_context(SCRN);
+    grx_clear_context(bg);
+    grx_set_current_context(&save);
 }

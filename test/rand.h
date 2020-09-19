@@ -25,19 +25,24 @@
 
 static long _idum = 0;
 
-unsigned long ran0(void) {
-  long k;
-  _idum ^= _MASK;
-  k = _idum / _IQ;
-  _idum = _IA * (_idum - k * _IQ) - _IR * k;
-  if (_idum < 0) _idum += _IM;
-  return (unsigned long) _idum;
+unsigned long ran0(void)
+{
+    long k;
+    _idum ^= _MASK;
+    k = _idum / _IQ;
+    _idum = _IA * (_idum - k * _IQ) - _IR * k;
+    if (_idum < 0)
+        _idum += _IM;
+    return (unsigned long)_idum;
 }
 
-#define sran0(x) do _idum = (x); while(0)
+#define sran0(x)     \
+    do               \
+        _idum = (x); \
+    while (0)
 
-#define RND()    ran0()
-#define SRND(x)  sran0(x)
-#define RND_MAX  (_MASK)
+#define RND()   ran0()
+#define SRND(x) sran0(x)
+#define RND_MAX (_MASK)
 
 #endif

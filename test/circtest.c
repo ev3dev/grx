@@ -20,80 +20,80 @@
 
 #include "test.h"
 
-void drawellip(int xc,int yc,int rx,int ry,GrxColor c1,GrxColor c2,GrxColor c3)
+void drawellip(int xc, int yc, int rx, int ry, GrxColor c1, GrxColor c2, GrxColor c3)
 {
-        double ddx = (double)rx;
-        double ddy = (double)ry;
-        double R2 = ddx*ddx*ddy*ddy;
-        double SQ;
-        int x1,x2,y1,y2;
-        int dx,dy;
+    double ddx = (double)rx;
+    double ddy = (double)ry;
+    double R2 = ddx * ddx * ddy * ddy;
+    double SQ;
+    int x1, x2, y1, y2;
+    int dx, dy;
 
-        grx_draw_filled_box(xc-rx,yc-ry,xc+rx,yc+ry,c1);
-        dx = rx;
-        dy = 0;
-        grx_draw_pixel(xc-dx,yc,c3);
-        grx_draw_pixel(xc+dx,yc,c3);
-        while(++dy <= ry) {
-            SQ = R2 - (double)dy * (double)dy * ddx * ddx;
-            dx = (int)(sqrt(SQ)/ddy + 0.5);
-            x1 = xc - dx;
-            x2 = xc + dx;
-            y1 = yc - dy;
-            y2 = yc + dy;
-            grx_draw_pixel(x1,y1,c3);
-            grx_draw_pixel(x2,y1,c3);
-            grx_draw_pixel(x1,y2,c3);
-            grx_draw_pixel(x2,y2,c3);
-        }
-        grx_draw_ellipse(xc,yc,rx,ry,c2);
+    grx_draw_filled_box(xc - rx, yc - ry, xc + rx, yc + ry, c1);
+    dx = rx;
+    dy = 0;
+    grx_draw_pixel(xc - dx, yc, c3);
+    grx_draw_pixel(xc + dx, yc, c3);
+    while (++dy <= ry) {
+        SQ = R2 - (double)dy * (double)dy * ddx * ddx;
+        dx = (int)(sqrt(SQ) / ddy + 0.5);
+        x1 = xc - dx;
+        x2 = xc + dx;
+        y1 = yc - dy;
+        y2 = yc + dy;
+        grx_draw_pixel(x1, y1, c3);
+        grx_draw_pixel(x2, y1, c3);
+        grx_draw_pixel(x1, y2, c3);
+        grx_draw_pixel(x2, y2, c3);
+    }
+    grx_draw_ellipse(xc, yc, rx, ry, c2);
 }
 
 TESTFUNC(circtest)
 {
-        GrxFont *font;
-        int     xc,yc;
-        int     xr,yr;
-        GrxColor c1,c2,c3;
-        GError *err = NULL;
+    GrxFont *font;
+    int xc, yc;
+    int xr, yr;
+    GrxColor c1, c2, c3;
+    GError *err = NULL;
 
-        font = grx_font_load(NULL, -1, &err);
-        if (!font) {
-            g_error("%s", err->message);
-        }
+    font = grx_font_load(NULL, -1, &err);
+    if (!font) {
+        g_error("%s", err->message);
+    }
 
-        c1 = grx_color_get(64,64,255);
-        c2 = grx_color_get(255,255,64);
-        c3 = grx_color_get(255,64,64);
-        xc = grx_get_width() / 2;
-        yc = grx_get_height() / 2;
-        xr = 1;
-        yr = 1;
-        while((xr < 1000) || (yr < 1000)) {
-            drawellip(xc,yc,xr,yr,c1,c2,c3);
-            xr += xr/4+1;
-            yr += yr/4+1;
-            run_main_loop_for_time(200);
-        }
-        c1 = grx_color_get(64,64,128);
-        xr = 4;
-        yr = 1;
-        while((xr < 1000) || (yr < 1000)) {
-            drawellip(xc,yc,xr,yr,c1,c2,c3);
-            yr += yr/4+1;
-            xr = yr * 4;
-            run_main_loop_for_time(200);
-        }
-        c1 = grx_color_get(64,64,64);
-        xr = 1;
-        yr = 4;
-        while((xr < 1000) || (yr < 1000)) {
-            drawellip(xc,yc,xr,yr,c1,c2,c3);
-            xr += xr/4+1;
-            yr = xr * 4;
-            run_main_loop_for_time(200);
-        }
+    c1 = grx_color_get(64, 64, 255);
+    c2 = grx_color_get(255, 255, 64);
+    c3 = grx_color_get(255, 64, 64);
+    xc = grx_get_width() / 2;
+    yc = grx_get_height() / 2;
+    xr = 1;
+    yr = 1;
+    while ((xr < 1000) || (yr < 1000)) {
+        drawellip(xc, yc, xr, yr, c1, c2, c3);
+        xr += xr / 4 + 1;
+        yr += yr / 4 + 1;
+        run_main_loop_for_time(200);
+    }
+    c1 = grx_color_get(64, 64, 128);
+    xr = 4;
+    yr = 1;
+    while ((xr < 1000) || (yr < 1000)) {
+        drawellip(xc, yc, xr, yr, c1, c2, c3);
+        yr += yr / 4 + 1;
+        xr = yr * 4;
+        run_main_loop_for_time(200);
+    }
+    c1 = grx_color_get(64, 64, 64);
+    xr = 1;
+    yr = 4;
+    while ((xr < 1000) || (yr < 1000)) {
+        drawellip(xc, yc, xr, yr, c1, c2, c3);
+        xr += xr / 4 + 1;
+        yr = xr * 4;
+        run_main_loop_for_time(200);
+    }
 
-        grx_draw_text("press any key to continue",0,0,white_text_black_bg);
-        run_main_loop_until_key_press();
+    grx_draw_text("press any key to continue", 0, 0, white_text_black_bg);
+    run_main_loop_until_key_press();
 }

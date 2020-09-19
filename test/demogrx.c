@@ -16,12 +16,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
 #include <grx-3.0.h>
-#include "gfaz.h"
+
 #include "drawing.h"
+#include "gfaz.h"
 
 /* default mode */
 
@@ -29,23 +31,22 @@ static int gwidth = 640;
 static int gheight = 480;
 static int gbpp = 16;
 
-char *wintitle =
-    "GRX 2.4.9, the graphics library";
+char *wintitle = "GRX 2.4.9, the graphics library";
 
 char *animatedtext =
     "GRX 2.4.9, the graphics library for DJGPPv2, Linux, X11 and Win32";
 
 #define NDEMOS 33
 
-#define ID_ARCTEST   1
-#define ID_BB1TEST   2
-#define ID_BLITTEST  3
-#define ID_CIRCTEST  4
-#define ID_CLIPTEST  5
-#define ID_COLOROPS  6
-#define ID_CURSTEST  7
-#define ID_FONTTEST  8
-#define ID_IMGTEST   9
+#define ID_ARCTEST  1
+#define ID_BB1TEST  2
+#define ID_BLITTEST 3
+#define ID_CIRCTEST 4
+#define ID_CLIPTEST 5
+#define ID_COLOROPS 6
+#define ID_CURSTEST 7
+#define ID_FONTTEST 8
+#define ID_IMGTEST  9
 #define ID_JPGTEST  10
 #define ID_KEYS     11
 #define ID_LIFE     12
@@ -78,39 +79,46 @@ typedef struct {
 } ProgTable;
 
 static ProgTable ptable[NDEMOS] = {
-    {ID_ARCTEST, "arctest", "arctest.c -> test arc outline and filled arc drawing"},
-    {ID_BB1TEST, "bb1test", "bb1test.c -> test grx_bit_blt_1bpp routine"},
-    {ID_BLITTEST, "blittest", "blittest.c -> test various bitblt-s"},
-    {ID_CIRCTEST, "circtest", "circtest.c -> test circle and ellipse rendering"},
-    {ID_CLIPTEST, "cliptest", "cliptest.c -> test clipping"},
-    {ID_COLOROPS, "colorops", "colorops.c -> test WRITE, XOR, OR, and AND draw modes"},
-    {ID_CURSTEST, "curstest", "curstest.c -> test cursors"},
-    {ID_FONTTEST, "fonttest", "fonttest.c -> test text drawing"},
-    {ID_IMGTEST, "imgtest", "imgtest.c -> test image functions mapping"},
-    {ID_JPGTEST, "jpgtest", "jpgtext.c -> text context to jpeg functions"},
-    {ID_KEYS, "keys", "keys.c -> test keyboard input"},
-    {ID_LIFE, "life", "life.c -> Conway's life program"},
-    {ID_LINETEST, "linetest", "linetest.c -> test wide and pixmaped lines"},
-    {ID_MOUSETST, "mousetst", "mousetst.c -> test mouse cursor and mouse/keyboard input"},
-    {ID_PCIRCTST, "pcirctst", "pcirctst.c -> test custom circle and ellipse rendering"},
-    {ID_PNMTEST, "pnmtest", "pnmtext.c -> text context to pnm functions"},
-    {ID_PNGTEST, "pngtest", "pngtext.c -> text context to png functions"},
-    {ID_POLYTEST, "polytest", "polytest.c -> test polygon rendering"},
-    {ID_RGBTEST, "rgbtest", "rgbtest.c -> show 256 color RGB palette"},
-    {ID_SBCTEST, "sbctest", "sbctest.c -> test subcontext operations"},
-    {ID_SCROLTST, "scroltst", "scroltst.c -> test virtual screen set/scroll"},
-    {ID_SPEEDTST, "speedtst", "speedtst.c -> check all available frame drivers speed"},
-    {ID_TEXTPATT, "textpatt", "textpatt.c -> test patterned text"},
-    {ID_WINCLIP, "winclip", "winclip.c -> clip a drawing to various windows (contexts)"},
-    {ID_WINTEST, "wintest", "wintest.c -> test window (context) mapping"},
-    {ID_FNTDEMO1, "fontdemo ncen22b.fnt", "fontdemo ncen22b.fnt -> test a GRX font"},
-    {ID_FNTDEMO2, "fontdemo ter-114b.res", "fontdemo ter-114b.res -> test a RES font"},
-    {ID_FNTDEMO3, "fontdemo ter-114n.fna", "fontdemo ter-114n.fna -> test a FNA font"},
-    {ID_FNTDEMO4, "fontdemo ter-114v.psf", "fontdemo ter-114v.psf -> test a PSF font"},
-    {ID_MODETEST, "modetest", "modetest.c -> test all available graphics modes"},
-    {ID_PAGE1, "", "Change to page 1"},
-    {ID_PAGE2, "", "Change to page 2"},
-    {ID_EXIT, "", "Exit GRX test programs launcher"}
+    { ID_ARCTEST, "arctest", "arctest.c -> test arc outline and filled arc drawing" },
+    { ID_BB1TEST, "bb1test", "bb1test.c -> test grx_bit_blt_1bpp routine" },
+    { ID_BLITTEST, "blittest", "blittest.c -> test various bitblt-s" },
+    { ID_CIRCTEST, "circtest", "circtest.c -> test circle and ellipse rendering" },
+    { ID_CLIPTEST, "cliptest", "cliptest.c -> test clipping" },
+    { ID_COLOROPS, "colorops",
+        "colorops.c -> test WRITE, XOR, OR, and AND draw modes" },
+    { ID_CURSTEST, "curstest", "curstest.c -> test cursors" },
+    { ID_FONTTEST, "fonttest", "fonttest.c -> test text drawing" },
+    { ID_IMGTEST, "imgtest", "imgtest.c -> test image functions mapping" },
+    { ID_JPGTEST, "jpgtest", "jpgtext.c -> text context to jpeg functions" },
+    { ID_KEYS, "keys", "keys.c -> test keyboard input" },
+    { ID_LIFE, "life", "life.c -> Conway's life program" },
+    { ID_LINETEST, "linetest", "linetest.c -> test wide and pixmaped lines" },
+    { ID_MOUSETST, "mousetst",
+        "mousetst.c -> test mouse cursor and mouse/keyboard input" },
+    { ID_PCIRCTST, "pcirctst",
+        "pcirctst.c -> test custom circle and ellipse rendering" },
+    { ID_PNMTEST, "pnmtest", "pnmtext.c -> text context to pnm functions" },
+    { ID_PNGTEST, "pngtest", "pngtext.c -> text context to png functions" },
+    { ID_POLYTEST, "polytest", "polytest.c -> test polygon rendering" },
+    { ID_RGBTEST, "rgbtest", "rgbtest.c -> show 256 color RGB palette" },
+    { ID_SBCTEST, "sbctest", "sbctest.c -> test subcontext operations" },
+    { ID_SCROLTST, "scroltst", "scroltst.c -> test virtual screen set/scroll" },
+    { ID_SPEEDTST, "speedtst",
+        "speedtst.c -> check all available frame drivers speed" },
+    { ID_TEXTPATT, "textpatt", "textpatt.c -> test patterned text" },
+    { ID_WINCLIP, "winclip",
+        "winclip.c -> clip a drawing to various windows (contexts)" },
+    { ID_WINTEST, "wintest", "wintest.c -> test window (context) mapping" },
+    { ID_FNTDEMO1, "fontdemo ncen22b.fnt", "fontdemo ncen22b.fnt -> test a GRX font" },
+    { ID_FNTDEMO2, "fontdemo ter-114b.res",
+        "fontdemo ter-114b.res -> test a RES font" },
+    { ID_FNTDEMO3, "fontdemo ter-114n.fna",
+        "fontdemo ter-114n.fna -> test a FNA font" },
+    { ID_FNTDEMO4, "fontdemo ter-114v.psf",
+        "fontdemo ter-114v.psf -> test a PSF font" },
+    { ID_MODETEST, "modetest", "modetest.c -> test all available graphics modes" },
+    { ID_PAGE1, "", "Change to page 1" }, { ID_PAGE2, "", "Change to page 2" },
+    { ID_EXIT, "", "Exit GRX test programs launcher" }
 };
 
 #define PX0 10
@@ -128,57 +136,53 @@ static ProgTable ptable[NDEMOS] = {
 
 #define NBUTTONSP1 26
 
-static Button bp1[NBUTTONSP1] = {
-    {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "ArcTest", BSTATUS_SELECTED, ID_ARCTEST},
-    {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Bb1Test", 0, ID_BB1TEST},
-    {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "BlitTest", 0, ID_BLITTEST},
-    {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "CircTest", 0, ID_CIRCTEST},
-    {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "ClipTest", 0, ID_CLIPTEST},
-    {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "Colorops", 0, ID_COLOROPS},
-    {PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "CursTest", 0, ID_CURSTEST},
-    {PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, "ImgTest", 0, ID_IMGTEST},
-    {PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "JpgTest", 0, ID_JPGTEST},
-    {PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, "Keys", 0, ID_KEYS},
-    {PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Life", 0, ID_LIFE},
-    {PX1, PY2, 100, 40, IND_BLUE, IND_YELLOW, "LineTest", 0, ID_LINETEST},
-    {PX1, PY3, 100, 40, IND_BLUE, IND_YELLOW, "MouseTst", 0, ID_MOUSETST},
-    {PX1, PY4, 100, 40, IND_BLUE, IND_YELLOW, "PcircTst", 0, ID_PCIRCTST},
-    {PX1, PY5, 100, 40, IND_BLUE, IND_YELLOW, "PnmTest", 0, ID_PNMTEST},
-    {PX1, PY6, 100, 40, IND_BLUE, IND_YELLOW, "PngTest", 0, ID_PNGTEST},
-    {PX1, PY7, 100, 40, IND_BLUE, IND_YELLOW, "PolyTest", 0, ID_POLYTEST},
-    {PX1, PY8, 100, 40, IND_BLUE, IND_YELLOW, "RgbTest", 0, ID_RGBTEST},
-    {PX2, PY0, 100, 40, IND_BLUE, IND_YELLOW, "SbcTest", 0, ID_SBCTEST},
-    {PX2, PY1, 100, 40, IND_BLUE, IND_YELLOW, "ScrolTst", 0, ID_SCROLTST},
-    {PX2, PY2, 100, 40, IND_BLUE, IND_YELLOW, "SpeedTst", 0, ID_SPEEDTST},
-    {PX2, PY3, 100, 40, IND_BLUE, IND_YELLOW, "WinClip", 0, ID_WINCLIP},
-    {PX2, PY4, 100, 40, IND_BLUE, IND_YELLOW, "WinTest", 0, ID_WINTEST},
-    {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 2", 0, ID_PAGE2},
-    {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
-    {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
-};
+static Button bp1[NBUTTONSP1] = { { PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "ArcTest",
+                                      BSTATUS_SELECTED, ID_ARCTEST },
+    { PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Bb1Test", 0, ID_BB1TEST },
+    { PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "BlitTest", 0, ID_BLITTEST },
+    { PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "CircTest", 0, ID_CIRCTEST },
+    { PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "ClipTest", 0, ID_CLIPTEST },
+    { PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "Colorops", 0, ID_COLOROPS },
+    { PX0, PY6, 100, 40, IND_BLUE, IND_YELLOW, "CursTest", 0, ID_CURSTEST },
+    { PX0, PY7, 100, 40, IND_BLUE, IND_YELLOW, "ImgTest", 0, ID_IMGTEST },
+    { PX0, PY8, 100, 40, IND_BLUE, IND_YELLOW, "JpgTest", 0, ID_JPGTEST },
+    { PX1, PY0, 100, 40, IND_BLUE, IND_YELLOW, "Keys", 0, ID_KEYS },
+    { PX1, PY1, 100, 40, IND_BLUE, IND_YELLOW, "Life", 0, ID_LIFE },
+    { PX1, PY2, 100, 40, IND_BLUE, IND_YELLOW, "LineTest", 0, ID_LINETEST },
+    { PX1, PY3, 100, 40, IND_BLUE, IND_YELLOW, "MouseTst", 0, ID_MOUSETST },
+    { PX1, PY4, 100, 40, IND_BLUE, IND_YELLOW, "PcircTst", 0, ID_PCIRCTST },
+    { PX1, PY5, 100, 40, IND_BLUE, IND_YELLOW, "PnmTest", 0, ID_PNMTEST },
+    { PX1, PY6, 100, 40, IND_BLUE, IND_YELLOW, "PngTest", 0, ID_PNGTEST },
+    { PX1, PY7, 100, 40, IND_BLUE, IND_YELLOW, "PolyTest", 0, ID_POLYTEST },
+    { PX1, PY8, 100, 40, IND_BLUE, IND_YELLOW, "RgbTest", 0, ID_RGBTEST },
+    { PX2, PY0, 100, 40, IND_BLUE, IND_YELLOW, "SbcTest", 0, ID_SBCTEST },
+    { PX2, PY1, 100, 40, IND_BLUE, IND_YELLOW, "ScrolTst", 0, ID_SCROLTST },
+    { PX2, PY2, 100, 40, IND_BLUE, IND_YELLOW, "SpeedTst", 0, ID_SPEEDTST },
+    { PX2, PY3, 100, 40, IND_BLUE, IND_YELLOW, "WinClip", 0, ID_WINCLIP },
+    { PX2, PY4, 100, 40, IND_BLUE, IND_YELLOW, "WinTest", 0, ID_WINTEST },
+    { PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 2", 0, ID_PAGE2 },
+    { PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST },
+    { PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT } };
 
-#define NBUTTONSP2  9
+#define NBUTTONSP2 9
 
-static Button bp2[NBUTTONSP2] = {
-    {PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "FontTest", BSTATUS_SELECTED, ID_FONTTEST},
-    {PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "TextPatt", 0, ID_TEXTPATT},
-    {PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo1", 0, ID_FNTDEMO1},
-    {PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo2", 0, ID_FNTDEMO2},
-    {PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo3", 0, ID_FNTDEMO3},
-    {PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo4", 0, ID_FNTDEMO4},
-    {PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 1", 0, ID_PAGE1},
-    {PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST},
-    {PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT}
-};
+static Button bp2[NBUTTONSP2] = { { PX0, PY0, 100, 40, IND_BLUE, IND_YELLOW, "FontTest",
+                                      BSTATUS_SELECTED, ID_FONTTEST },
+    { PX0, PY1, 100, 40, IND_BLUE, IND_YELLOW, "TextPatt", 0, ID_TEXTPATT },
+    { PX0, PY2, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo1", 0, ID_FNTDEMO1 },
+    { PX0, PY3, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo2", 0, ID_FNTDEMO2 },
+    { PX0, PY4, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo3", 0, ID_FNTDEMO3 },
+    { PX0, PY5, 100, 40, IND_BLUE, IND_YELLOW, "FontDemo4", 0, ID_FNTDEMO4 },
+    { PX2, PY6, 100, 40, IND_GREEN, IND_WHITE, "Page 1", 0, ID_PAGE1 },
+    { PX2, PY7, 100, 40, IND_BROWN, IND_WHITE, "ModeTest", 0, ID_MODETEST },
+    { PX2, PY8, 100, 40, IND_RED, IND_WHITE, "Exit", 0, ID_EXIT } };
 
 static Button_Group bgp1 = { 20, 30, bp1, NBUTTONSP1, 0, 0 };
 static Button_Group bgp2 = { 20, 30, bp2, NBUTTONSP2, 0, 0 };
 static Button_Group *bgact = &bgp1;
 
-static Board brd =
-    { 0, 0, 640, 480, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
-static Board brdimg =
-    { 384, 46, 235, 157, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
+static Board brd = { 0, 0, 640, 480, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
+static Board brdimg = { 384, 46, 235, 157, IND_BLACK, IND_CYAN, IND_DARKGRAY, 1 };
 
 static GrxFont *grf_std;
 static GrxFont *grf_big;
@@ -194,8 +198,8 @@ static void ini_objects(void);
 static void paint_screen(void);
 static void the_title(int x, int y);
 static void the_info(int x, int y);
-static int pev_command(Event * ev);
-static int pev_select(Event * ev);
+static int pev_command(Event *ev);
+static int pev_select(Event *ev);
 static void paint_foot(char *s);
 static void paint_animation(void);
 static void disaster(char *s);
@@ -221,7 +225,8 @@ int main(int argc, char **argv)
             g_main_context_iteration(NULL, TRUE);
         }
         GrxEvent *ev = grx_event_get();
-        if (ev->type == GRX_EVENT_TYPE_BUTTON_PRESS || ev->type == GRX_EVENT_TYPE_BUTTON_RELEASE) {
+        if (ev->type == GRX_EVENT_TYPE_BUTTON_PRESS
+            || ev->type == GRX_EVENT_TYPE_BUTTON_RELEASE) {
             ev->button.x -= worg;
             ev->button.y -= horg;
         }
@@ -231,17 +236,17 @@ int main(int argc, char **argv)
         if (ev->type == GRX_EVENT_TYPE_KEY_DOWN && ev->key.keysym == GRX_KEY_ESCAPE) {
             break;
         }
-        if (ev->type == GRX_EVENT_TYPE_KEY_DOWN && ev->key.keysym  == GRX_KEY_LCASE_S) {
+        if (ev->type == GRX_EVENT_TYPE_KEY_DOWN && ev->key.keysym == GRX_KEY_LCASE_S) {
             grx_context_save_to_ppm(NULL, "demogrx.ppm", "DemoGRX", NULL);
             continue;
         }
         if (pev_button_group(ev, bgact)) {
             continue;
         }
-        if (pev_command((Event*)ev)) {
+        if (pev_command((Event *)ev)) {
             continue;
         }
-        if (pev_select((Event*)ev)) {
+        if (pev_select((Event *)ev)) {
             continue;
         }
         if (ev->type == GRX_EVENT_TYPE_BUTTON_PRESS) {
@@ -273,8 +278,8 @@ static void ini_graphics(void)
         grx_clear_screen(grx_color_get(120, 90, 60));
         worg = (gwidth - 640) / 2;
         horg = (gheight - 480) / 2;
-        grcglob = grx_context_new_subcontext(worg, horg, worg + 639, horg + 479,
-                                     NULL, NULL);
+        grcglob =
+            grx_context_new_subcontext(worg, horg, worg + 639, horg + 479, NULL, NULL);
         grx_set_current_context(grcglob);
     }
 }
@@ -301,14 +306,12 @@ static void ini_objects(void)
     }
 
     for (i = 0; i < NBUTTONSP1; i++) {
-        bp1[i].text_opt = grx_text_options_new_full(grf_btn,
-            egacolors[bp1[i].tfcolor], egacolors[bp1[i].tbcolor],
-            GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
+        bp1[i].text_opt = grx_text_options_new_full(grf_btn, egacolors[bp1[i].tfcolor],
+            egacolors[bp1[i].tbcolor], GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
     for (i = 0; i < NBUTTONSP2; i++) {
-        bp2[i].text_opt = grx_text_options_new_full(grf_btn,
-            egacolors[bp2[i].tfcolor], egacolors[bp2[i].tbcolor],
-            GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
+        bp2[i].text_opt = grx_text_options_new_full(grf_btn, egacolors[bp2[i].tfcolor],
+            egacolors[bp2[i].tbcolor], GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
 }
 
@@ -322,8 +325,7 @@ static void paint_screen(void)
     paint_button_group(bgact);
     paint_board(&brdimg);
     grc = grx_context_new_subcontext(brdimg.x + 4, brdimg.y + 4,
-                             brdimg.x + brdimg.wide - 5,
-                             brdimg.y + brdimg.high - 5, grcglob, NULL);
+        brdimg.x + brdimg.wide - 5, brdimg.y + brdimg.high - 5, grcglob, NULL);
     if (bgact == &bgp1)
         grx_context_load_from_pnm(grc, "pnmtest.ppm", NULL);
     else
@@ -368,13 +370,13 @@ static void the_info(int x, int y)
     grx_draw_text(aux, 0 + x, 25 + y, text_opt);
 
     sprintf(aux, "Mode: %dx%d %d bpp", grx_get_current_video_mode()->width,
-            grx_get_current_video_mode()->height, grx_get_current_video_mode()->bpp);
+        grx_get_current_video_mode()->height, grx_get_current_video_mode()->bpp);
     grx_draw_text(aux, 0 + x, 50 + y, text_opt);
 }
 
 /************************************************************************/
 
-static int pev_command(Event * ev)
+static int pev_command(Event *ev)
 {
     int i;
     char nprog[81];
@@ -427,7 +429,7 @@ static int pev_command(Event * ev)
 
 /************************************************************************/
 
-static int pev_select(Event * ev)
+static int pev_select(Event *ev)
 {
     int i;
 
@@ -449,7 +451,7 @@ static void paint_foot(char *s)
     static GrxTextOptions *text_opt;
 
     if (!text_opt) {
-        text_opt  = grx_text_options_new_full(grf_std, LIGHTGREEN, GRX_COLOR_NONE,
+        text_opt = grx_text_options_new_full(grf_std, LIGHTGREEN, GRX_COLOR_NONE,
             GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
 

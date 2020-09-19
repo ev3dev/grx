@@ -20,8 +20,8 @@
 #ifndef __GRX_TEXT_H__
 #define __GRX_TEXT_H__
 
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 
 #include <grx/color.h>
 #include <grx/common.h>
@@ -123,9 +123,9 @@ typedef struct _GrxFont GrxFont;
 GType grx_font_get_type(void);
 
 GrxFont *grx_font_load_from_file(const gchar *filename, GError **err);
-GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi, GrxFontWeight weight,
-    GrxFontSlant slant, GrxFontWidth width, gboolean monospace, const gchar *lang,
-    const gchar *script, GError **err);
+GrxFont *grx_font_load_full(const gchar *family, gint size, gint dpi,
+    GrxFontWeight weight, GrxFontSlant slant, GrxFontWidth width, gboolean monospace,
+    const gchar *lang, const gchar *script, GError **err);
 GrxFont *grx_font_load(const gchar *family, gint size, GError **err);
 
 GrxFont *grx_font_ref(GrxFont *font);
@@ -136,13 +136,13 @@ const gchar *grx_font_get_style(GrxFont *font);
 gint grx_font_get_height(GrxFont *font);
 gint grx_font_get_width(GrxFont *font);
 
-gint grx_font_dump(GrxFont *font, GrxContext *context, gint start, GrxColor fg, GrxColor bg);
+gint grx_font_dump(
+    GrxFont *font, GrxContext *context, gint start, GrxColor fg, GrxColor bg);
 
 gint grx_font_get_char_width(GrxFont *font, gunichar c);
 gint grx_font_get_char_height(GrxFont *font, gunichar c);
 gint grx_font_get_text_width(GrxFont *font, const gchar *text);
 gint grx_font_get_text_height(GrxFont *font, const gchar *text);
-
 
 /**
  * GrxTextOptions:
@@ -156,7 +156,7 @@ void grx_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options);
 GType grx_text_options_get_type(void);
 GrxTextOptions *grx_text_options_new(GrxFont *font, GrxColor fg);
 GrxTextOptions *grx_text_options_new_full(GrxFont *font, GrxColor fg, GrxColor bg,
-                                          GrxTextHAlign h_align, GrxTextVAlign v_align);
+    GrxTextHAlign h_align, GrxTextVAlign v_align);
 GrxTextOptions *grx_text_options_ref(GrxTextOptions *options);
 void grx_text_options_unref(GrxTextOptions *options);
 GrxFont *grx_text_options_get_font(GrxTextOptions *options);

@@ -35,14 +35,15 @@
  * Draws a circle on the current context centered at the specified coordinates
  * with the specified radius and line options and pixmap.
  */
-void grx_user_draw_circle_with_pixmap (int xc, int yc, int r, GrxLineOptions *o, GrxPixmap *p)
+void grx_user_draw_circle_with_pixmap(
+    int xc, int yc, int r, GrxLineOptions *o, GrxPixmap *p)
 {
 #ifdef USR_KEEP_SHAPE
-    U2SX (xc, CURC);
-    U2SY (yc, CURC);
-    SCALE (r, r, CURC->x_max, CURC->user_width);
-    grx_draw_circle_with_pixmap (xc, yc, r, o, p);
+    U2SX(xc, CURC);
+    U2SY(yc, CURC);
+    SCALE(r, r, CURC->x_max, CURC->user_width);
+    grx_draw_circle_with_pixmap(xc, yc, r, o, p);
 #else
-    grx_user_draw_ellipse_with_pixmap (xc, yc, r, r, o, p);
+    grx_user_draw_ellipse_with_pixmap(xc, yc, r, r, o, p);
 #endif /* USR_KEEP_SHAPE */
 }

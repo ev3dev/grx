@@ -16,6 +16,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <grx-3.0.h>
+
 extern GrxColor *egacolors;
 
 #define BLACK        egacolors[0]
@@ -56,64 +58,64 @@ extern GrxColor *egacolors;
 #define EV_COMMAND (GrxEventType)(-1)
 #define EV_SELECT  (GrxEventType)(-2)
 
-typedef struct{
-  GrxEventType type;
-  long p1;
-  long p2;
-  long p3;
-  } Event;
-int gfaz_ini( int width, int height, int bpp );
-int gfaz_fin( void );
+typedef struct {
+    GrxEventType type;
+    long p1;
+    long p2;
+    long p3;
+} Event;
+int gfaz_ini(int width, int height, int bpp);
+int gfaz_fin(void);
 
 #define BSTATUS_PRESSED  1
 #define BSTATUS_SELECTED 2
 
-typedef struct{
-  int x, y;                   // left upper coordinates
-  int wide, high;             // what do you mean
-  int tbcolor, tfcolor;       // text background, foreground, ind colors
-  char *text;                 // the text
-  int status;                 // see BSTATUS defs
-  int bid;                    // button id
-  // fields below are dynamically assigned
-  GrxTextOptions *text_opt;   // text options
-  } Button;
+typedef struct {
+    int x, y;             // left upper coordinates
+    int wide, high;       // what do you mean
+    int tbcolor, tfcolor; // text background, foreground, ind colors
+    char *text;           // the text
+    int status;           // see BSTATUS defs
+    int bid;              // button id
+    // fields below are dynamically assigned
+    GrxTextOptions *text_opt; // text options
+} Button;
 
-void paint_button( int x, int y, Button *b );
+void paint_button(int x, int y, Button *b);
 
-typedef struct{
-  int x, y;                   // left upper coordinates
-  Button *b;                  // button array
-  int nb;                     // button number
-  int pb;                     // point actual button
-  int abp;                    // actual button pressed
-  } Button_Group;
+typedef struct {
+    int x, y;  // left upper coordinates
+    Button *b; // button array
+    int nb;    // button number
+    int pb;    // point actual button
+    int abp;   // actual button pressed
+} Button_Group;
 
-void paint_button_group( Button_Group *bg );
+void paint_button_group(Button_Group *bg);
 int pev_button_group(GrxEvent *ev, Button_Group *bg);
 
-typedef struct{
-  int x, y;                   // left upper coordinates
-  int wide, high;             // what do you mean
-  int aid;                    // area id
-  int divx, divy;             // x, y divisors
-  int inip1, inip2;           // par1, par2 initial values
-  int incrp1, incrp2;         // par1, par2 increments
-  int invert;                 // x,y -> par1,par2 or inverted if 1
-  } Area;
+typedef struct {
+    int x, y;           // left upper coordinates
+    int wide, high;     // what do you mean
+    int aid;            // area id
+    int divx, divy;     // x, y divisors
+    int inip1, inip2;   // par1, par2 initial values
+    int incrp1, incrp2; // par1, par2 increments
+    int invert;         // x,y -> par1,par2 or inverted if 1
+} Area;
 
-typedef struct{
-  int x, y;                   // left upper coordinates
-  Area *a;                    // area array
-  } Area_Group;
+typedef struct {
+    int x, y; // left upper coordinates
+    Area *a;  // area array
+} Area_Group;
 
 int pev_area_group(GrxEvent *ev, Area_Group *ag);
 
-typedef struct{
-  int x, y;                   // left upper coordinates
-  int wide, high;             // what do you mean
-  int lcolor, bcolor, color;  // line, border, normal ind color
-  int border;                 //
-  } Board;
+typedef struct {
+    int x, y;                  // left upper coordinates
+    int wide, high;            // what do you mean
+    int lcolor, bcolor, color; // line, border, normal ind color
+    int border;                //
+} Board;
 
-void paint_board( Board *b );
+void paint_board(Board *b);

@@ -15,25 +15,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#ifndef  __MEMMODE_H_INCLUDED__
-#define  __MEMMODE_H_INCLUDED__
+#ifndef __MEMMODE_H_INCLUDED__
+#define __MEMMODE_H_INCLUDED__
 
 #ifdef __GNUC__
 #include "gcc/memmode.h"
 #endif
 
-#ifndef  LINP_PTR
-#define  LINP_PTR(p)                     (p)
+#ifndef LINP_PTR
+#define LINP_PTR(p) (p)
 #endif
-#ifndef  LINP_SEL
-#define  LINP_SEL(p)                     0
+#ifndef LINP_SEL
+#define LINP_SEL(p) 0
 #endif
 
 #ifndef MK_FP
-#define  MK_FP(s,o)      (void *)(                  \
-        ((GR_int32u)(GR_int16u)(s) << 4) +          \
-        (GR_int16u)(o)                              \
-)
+#define MK_FP(s, o) (void *)(((GR_int32u)(GR_int16u)(s) << 4) + (GR_int16u)(o))
 #endif
 
-#endif   /* whole file */
+#endif /* whole file */

@@ -37,12 +37,13 @@
  * Draw a multi-segment line on the current context that connects each point in
  * the @points array using the specified line options and pixmap.
  */
-void grx_draw_polyline_with_pixmap (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
+void grx_draw_polyline_with_pixmap(
+    int numpts, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
 
     fval.p = p;
-    _GrDrawCustomPolygon (numpts, points, o, &_GrPatternFiller, fval, FALSE, FALSE);
+    _GrDrawCustomPolygon(numpts, points, o, &_GrPatternFiller, fval, FALSE, FALSE);
 }
 
 /**
@@ -58,12 +59,13 @@ void grx_draw_polyline_with_pixmap (int numpts, GrxPoint *points, GrxLineOptions
  * Coordinate arrays can either contain or omit the closing edge of the polygon.
  * It will be automatically appended to the list if it is missing.
  */
-void grx_draw_polygon_with_pixmap (int numpts, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
+void grx_draw_polygon_with_pixmap(
+    int numpts, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
 
     fval.p = p;
-    _GrDrawCustomPolygon (numpts, points, o, &_GrPatternFiller, fval, TRUE, FALSE);
+    _GrDrawCustomPolygon(numpts, points, o, &_GrPatternFiller, fval, TRUE, FALSE);
 }
 
 /**
@@ -78,15 +80,20 @@ void grx_draw_polygon_with_pixmap (int numpts, GrxPoint *points, GrxLineOptions 
  * Draws a rectangle on the current context using the specified coordinates
  * and line options and pixmap.
  */
-void grx_draw_box_with_pixmap (int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
+void grx_draw_box_with_pixmap(
+    int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
     GrxPoint points[4];
 
-    points[0].x = x1; points[0].y = y1;
-    points[1].x = x1; points[1].y = y2;
-    points[2].x = x2; points[2].y = y2;
-    points[3].x = x2; points[3].y = y1;
+    points[0].x = x1;
+    points[0].y = y1;
+    points[1].x = x1;
+    points[1].y = y2;
+    points[2].x = x2;
+    points[2].y = y2;
+    points[3].x = x2;
+    points[3].y = y1;
     fval.p = p;
     _GrDrawCustomPolygon(4, points, o, &_GrPatternFiller, fval, TRUE, FALSE);
 }

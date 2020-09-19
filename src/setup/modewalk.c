@@ -19,45 +19,53 @@
 #include "grdriver.h"
 #include "libgrx.h"
 
-static GrxVideoMode *modewalk(GrxVideoMode *pm,GrxVideoMode *dup,GrxFrameMode md)
+static GrxVideoMode *modewalk(GrxVideoMode *pm, GrxVideoMode *dup, GrxFrameMode md)
 {
-        GrxVideoDriver *vd;
-        GrxVideoMode   *vm;
-        int n,seen = TRUE;
-        if(pm && pm->extended_info) {
-            md   = pm->extended_info->mode;
-            seen = FALSE;
-        }
-        for(vd = VDRV; vd != NULL; vd = vd->inherit) {
-            for(n = vd->n_modes,vm = vd->modes; --n >= 0; vm++) {
-                    if(vm->present == FALSE)    continue;
-                    if(vm->extended_info == NULL)     continue;
-                    if(vm->extended_info->mode != md) continue;
-                    if(dup) {
-                        if(vm == dup) return(NULL);
-                        if(vm->width  != dup->width)  continue;
-                        if(vm->height != dup->height) continue;
-                        if(vm->bpp    != dup->bpp)    continue;
-                        return(vm);
-                    }
-                    if(seen) {
-                        if(!modewalk(NULL,vm,md)) return(vm);
-                        continue;
-                    }
-                    if(pm == vm) {
-                        seen = TRUE;
-                    }
+    GrxVideoDriver *vd;
+    GrxVideoMode *vm;
+    int n, seen = TRUE;
+    if (pm && pm->extended_info) {
+        md = pm->extended_info->mode;
+        seen = FALSE;
+    }
+    for (vd = VDRV; vd != NULL; vd = vd->inherit) {
+        for (n = vd->n_modes, vm = vd->modes; --n >= 0; vm++) {
+            if (vm->present == FALSE)
+                continue;
+            if (vm->extended_info == NULL)
+                continue;
+            if (vm->extended_info->mode != md)
+                continue;
+            if (dup) {
+                if (vm == dup)
+                    return NULL;
+                if (vm->width != dup->width)
+                    continue;
+                if (vm->height != dup->height)
+                    continue;
+                if (vm->bpp != dup->bpp)
+                    continue;
+                return vm;
+            }
+            if (seen) {
+                if (!modewalk(NULL, vm, md))
+                    return vm;
+                continue;
+            }
+            if (pm == vm) {
+                seen = TRUE;
             }
         }
-        return(NULL);
+    }
+    return NULL;
 }
-                    
+
 const GrxVideoMode *grx_get_first_video_mode(GrxFrameMode fmode)
 {
-        return(modewalk(NULL,NULL,fmode));
+    return modewalk(NULL, NULL, fmode);
 }
-        
+
 const GrxVideoMode *grx_get_next_video_mode(const GrxVideoMode *prev)
 {
-        return(modewalk((GrxVideoMode *)prev,NULL,GRX_FRAME_MODE_UNDEFINED));
+    return modewalk((GrxVideoMode *)prev, NULL, GRX_FRAME_MODE_UNDEFINED);
 }

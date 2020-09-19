@@ -34,10 +34,10 @@
  *
  * This is more efficient that using grx_user_draw_line().
  */
-void grx_user_draw_hline(int x1,int x2,int y,GrxColor c)
+void grx_user_draw_hline(int x1, int x2, int y, GrxColor c)
 {
-        U2SX(x1,CURC);
-        U2SX(x2,CURC);
-        U2SY(y,CURC);
-        grx_draw_hline(x1,x2,y,c);
+    U2SX(x1, CURC);
+    U2SX(x2, CURC);
+    U2SY(y, CURC);
+    grx_draw_hline(x1, x2, y, c);
 }

@@ -18,38 +18,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <grx/common.h>
+
 /*
 ** grx_context_save_to_jpeg - Returns error
 */
 
-int grx_context_save_to_jpeg( GrxContext *grc, char *jpegfn, int quality )
+int grx_context_save_to_jpeg(GrxContext *grc, char *jpegfn, int quality)
 {
-  return -1;
+    return -1;
 }
 
 /*
 ** grx_context_save_to_jpeg_grayscale - Returns error
 */
 
-int grx_context_save_to_jpeg_grayscale( GrxContext *grc, char *jpegfn, int quality )
+int grx_context_save_to_jpeg_grayscale(GrxContext *grc, char *jpegfn, int quality)
 {
-  return -1;
+    return -1;
 }
 
 /*
 ** grx_context_load_from_jpeg - Returns error
 */
 
-int grx_context_load_from_jpeg( GrxContext *grc, char *jpegfn, int scale )
+int grx_context_load_from_jpeg(GrxContext *grc, char *jpegfn, int scale)
 {
-  return -1;
+    return -1;
 }
 
 /*
 ** grx_query_jpeg_file - Returns error
 */
 
-int grx_query_jpeg_file( char *jpegfn, int *width, int *height )
+int grx_query_jpeg_file(char *jpegfn, int *width, int *height)
 {
-  return -1;
+    return -1;
 }

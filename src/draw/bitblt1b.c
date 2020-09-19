@@ -15,10 +15,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "globals.h"
-#include "mouse.h"
-#include "libgrx.h"
 #include "clipping.h"
+#include "globals.h"
+#include "libgrx.h"
+#include "mouse.h"
 
 /**
  * grx_context_bit_blt_1bpp:
@@ -42,39 +42,42 @@
  *
  * Also see grx_bit_blt_1bpp() for operating on the current context.
  */
-void grx_context_bit_blt_1bpp(GrxContext *dst,int dx,int dy,
-                  GrxContext *src,int x1,int y1,int x2,int y2,
-                  GrxColor fg, GrxColor bg)
+void grx_context_bit_blt_1bpp(GrxContext *dst, int dx, int dy, GrxContext *src, int x1,
+    int y1, int x2, int y2, GrxColor fg, GrxColor bg)
 {
-  int oldx1,oldy1;
-  int oldx2,oldy2;
-  int dstx2,dsty2;
+    int oldx1, oldy1;
+    int oldx2, oldy2;
+    int dstx2, dsty2;
 
-  if(dst == NULL) dst = CURC;
-  if(src == NULL) src = CURC;
-        
-  if(src->gc_driver->bits_per_pixel != 1)
-    return;
-        
-  isort(x1,x2); oldx1 = x1;
-  isort(y1,y2); oldy1 = y1;
-  cxclip_ordbox(src,x1,y1,x2,y2);
-  oldx1 = (dx  += (x1 - oldx1));
-  oldy1 = (dy  += (y1 - oldy1));
-  oldx2 = dstx2 = dx + x2 - x1;
-  oldy2 = dsty2 = dy + y2 - y1;
-  clip_ordbox(dst,dx,dy,dstx2,dsty2);
-  x1 += (dx - oldx1);
-  y1 += (dy - oldy1);
-  x2 -= (oldx2 - dstx2);
-  y2 -= (oldy2 - dsty2);
-  mouse_block(src,x1,y1,x2,y2);
-  mouse_addblock(dst,dx,dy,dstx2,dsty2);
+    if (dst == NULL)
+        dst = CURC;
+    if (src == NULL)
+        src = CURC;
 
-  (dst->gc_driver->drawbitmap)((dx + dst->x_offset),(dy + dst->y_offset),
-    (x2 - x1 + 1),(y2 - y1 + 1),src->gc_base_address,src->gc_line_offset,
-    /*alex:the offset should anyway be the x1,y1 point in src, as clipped*/
-    (x1 + (y1 * (src->gc_line_offset << 3))),fg,bg);
+    if (src->gc_driver->bits_per_pixel != 1)
+        return;
 
-  mouse_unblock();
+    isort(x1, x2);
+    oldx1 = x1;
+    isort(y1, y2);
+    oldy1 = y1;
+    cxclip_ordbox(src, x1, y1, x2, y2);
+    oldx1 = (dx += (x1 - oldx1));
+    oldy1 = (dy += (y1 - oldy1));
+    oldx2 = dstx2 = dx + x2 - x1;
+    oldy2 = dsty2 = dy + y2 - y1;
+    clip_ordbox(dst, dx, dy, dstx2, dsty2);
+    x1 += (dx - oldx1);
+    y1 += (dy - oldy1);
+    x2 -= (oldx2 - dstx2);
+    y2 -= (oldy2 - dsty2);
+    mouse_block(src, x1, y1, x2, y2);
+    mouse_addblock(dst, dx, dy, dstx2, dsty2);
+
+    (dst->gc_driver->drawbitmap)((dx + dst->x_offset), (dy + dst->y_offset),
+        (x2 - x1 + 1), (y2 - y1 + 1), src->gc_base_address, src->gc_line_offset,
+        /*alex:the offset should anyway be the x1,y1 point in src, as clipped*/
+        (x1 + (y1 * (src->gc_line_offset << 3))), fg, bg);
+
+    mouse_unblock();
 }

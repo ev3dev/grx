@@ -32,11 +32,12 @@
  * Draws a rectangle on the current context using the specified coordinates
  * and options.
  */
-void grx_user_draw_box_with_options(int x1,int y1,int x2,int y2,const GrxLineOptions *lo)
+void grx_user_draw_box_with_options(
+    int x1, int y1, int x2, int y2, const GrxLineOptions *lo)
 {
-        U2SX(x1,CURC);
-        U2SX(x2,CURC);
-        U2SY(y1,CURC);
-        U2SY(y2,CURC);
-        grx_draw_box_with_options(x1,y1,x2,y2,lo);
+    U2SX(x1, CURC);
+    U2SX(x2, CURC);
+    U2SY(y1, CURC);
+    U2SY(y2, CURC);
+    grx_draw_box_with_options(x1, y1, x2, y2, lo);
 }

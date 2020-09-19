@@ -30,7 +30,7 @@
  * Draws a filled circle on the current context centered at the specified
  * coordinates with the specified radius and color.
  */
-void grx_draw_filled_circle(int xc,int yc,int r,GrxColor c)
+void grx_draw_filled_circle(int xc, int yc, int r, GrxColor c)
 {
-        grx_draw_filled_ellipse(xc,yc,r,r,c);
+    grx_draw_filled_ellipse(xc, yc, r, r, c);
 }

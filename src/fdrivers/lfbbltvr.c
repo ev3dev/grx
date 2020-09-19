@@ -34,7 +34,7 @@
 #define READ_FAR _f
 
 /* need a selector before video access */
-#define BLITSEL  src->selector
+#define BLITSEL src->selector
 
 #include "pblit_nb.h"
 

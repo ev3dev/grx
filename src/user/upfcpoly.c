@@ -18,9 +18,9 @@
 #include <grx/draw.h>
 #include <grx/pixmap.h>
 
+#include "allocate.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "allocate.h"
 #include "usercord.h"
 
 /**
@@ -41,21 +41,22 @@
  * twice. It can also be used to fill several disjoint nonoverlapping polygons
  * in a single operation.
  */
-void grx_user_draw_filled_convex_polygon_with_pixmap(int numpts,GrxPoint *points,GrxPixmap *p)
+void grx_user_draw_filled_convex_polygon_with_pixmap(
+    int numpts, GrxPoint *points, GrxPixmap *p)
 {
-        int pt;
-        GrxPoint *tmp;
-        setup_ALLOC();
-        tmp = ALLOC(sizeof(GrxPoint) * numpts);
+    int pt;
+    GrxPoint *tmp;
+    setup_ALLOC();
+    tmp = ALLOC(sizeof(GrxPoint) * numpts);
 
-        if (tmp != NULL) {
-          for ( pt = 0;pt < numpts;pt++) {
-                tmp[pt] = points[pt];
-                U2SX(tmp[pt].x,CURC);
-                U2SY(tmp[pt].y,CURC);
-          }
-          grx_draw_filled_convex_polygon_with_pixmap(numpts,tmp,p);
-          FREE(tmp);
+    if (tmp != NULL) {
+        for (pt = 0; pt < numpts; pt++) {
+            tmp[pt] = points[pt];
+            U2SX(tmp[pt].x, CURC);
+            U2SY(tmp[pt].y, CURC);
         }
-        reset_ALLOC();
+        grx_draw_filled_convex_polygon_with_pixmap(numpts, tmp, p);
+        FREE(tmp);
+    }
+    reset_ALLOC();
 }

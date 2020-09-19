@@ -17,10 +17,12 @@
  * modifications by Hartmut Schirmer (c) 1998
  */
 
-#include "globals.h"
-#include "libgrx.h"
+#include <grx/pixmap.h>
+
 #include "clipping.h"
+#include "globals.h"
 #include "image.h"
+#include "libgrx.h"
 
 /**
  * grx_pixmap_mirror:
@@ -34,35 +36,37 @@
  */
 GrxPixmap *grx_pixmap_mirror(GrxPixmap *p, GrxPixmapMirrorFlags flag)
 {
-  GrxContext  ctx, save;
-  GrxColor    col;
-  GrxPixmap   *img;
-  int yy, xx, sidex, sidey, width, height, xs, ys = 0;
-  width = p->width;
-  height = p->height;
-  img = _GrImageAllocate(&ctx,width,height);
-  if ( !img ) return(NULL);
-  save = *CURC;
-  *CURC = ctx;
-  sidex  = ( flag & GRX_PIXMAP_MIRROR_HORIZONTAL ) ? -1 : 1;
-  sidey  = ( flag & GRX_PIXMAP_MIRROR_VERTICAL ) ? -1 : 1;
-  yy     = ( flag & GRX_PIXMAP_MIRROR_VERTICAL ) ? height-1 : 0;
-  do {
-    xx = ( flag & GRX_PIXMAP_MIRROR_HORIZONTAL ) ? width-1 : 0;
-    xs = 0;
+    GrxContext ctx, save;
+    GrxColor col;
+    GrxPixmap *img;
+    gint yy, xx, sidex, sidey, width, height, xs, ys = 0;
+    width = p->width;
+    height = p->height;
+    img = _GrImageAllocate(&ctx, width, height);
+    if (!img)
+        return NULL;
+    save = *CURC;
+    *CURC = ctx;
+    sidex = (flag & GRX_PIXMAP_MIRROR_HORIZONTAL) ? -1 : 1;
+    sidey = (flag & GRX_PIXMAP_MIRROR_VERTICAL) ? -1 : 1;
+    yy = (flag & GRX_PIXMAP_MIRROR_VERTICAL) ? height - 1 : 0;
     do {
-      col = (*p->source.driver->readpixel)(&p->source,xs,ys);
-      (*CURC->gc_driver->drawpixel)(xx, yy, col);
-      xx += sidex;
-    } while(++xs < width);
-    yy += sidey;
-  } while(++ys < height);
-  *CURC = save;
-  img->is_pixmap = 1;
-  img->width  = width;
-  img->height = height;
-  img->mode   = 0;
-  img->source = ctx.frame;
-  img->source.memory_flags =  3;/* MY_CONTEXT & MY_MEMORY */
-  return(img);
+        xx = (flag & GRX_PIXMAP_MIRROR_HORIZONTAL) ? width - 1 : 0;
+        xs = 0;
+        do {
+            col = (*p->source.driver->readpixel)(&p->source, xs, ys);
+            (*CURC->gc_driver->drawpixel)(xx, yy, col);
+            xx += sidex;
+        } while (++xs < width);
+        yy += sidey;
+    } while (++ys < height);
+    *CURC = save;
+    img->is_pixmap = 1;
+    img->width = width;
+    img->height = height;
+    img->mode = 0;
+    img->source = ctx.frame;
+    img->source.memory_flags = 3; /* MY_CONTEXT & MY_MEMORY */
+
+    return img;
 }

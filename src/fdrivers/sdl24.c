@@ -27,32 +27,31 @@
 
 static
 #include "generic/putscl.c"
-
 #include "sdlframe.h"
 
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
 
-GrxFrameDriver _GrFrameDriverSDL24 = {
-    .mode               = GR_frameSDL24,            /* frame mode */
-    .rmode              = GRX_FRAME_MODE_RAM_24BPP, /* compatible RAM frame mode */
-    .is_video           = TRUE,                     /* onscreen */
-    .row_align          = 4,                        /* line width alignment */
-    .bits_per_pixel     = 24,                       /* bits per pixel */
-    .max_mem_size       = 24 * 16 * 1024 * 1024,    /* max memory size the code can handle */
-    .init               = NULL,
-    .readpixel          = readpixel,
-    .drawpixel          = sdl_drawpixel,
-    .drawline           = sdl_drawline,
-    .drawhline          = sdl_drawhline,
-    .drawvline          = sdl_drawvline,
-    .drawblock          = sdl_drawblock,
-    .drawbitmap         = sdl_drawbitmap,
-    .drawpattern        = sdl_drawpattern,
-    .bitblt             = sdl_bitblt,
-    .bltv2r             = bltv2r,
-    .bltr2v             = sdl_bltr2v,
-    .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
-    .putscanline        = sdl_putscanline,
-};
+    GrxFrameDriver _GrFrameDriverSDL24 = {
+        .mode = GR_frameSDL24,                 /* frame mode */
+        .rmode = GRX_FRAME_MODE_RAM_24BPP,     /* compatible RAM frame mode */
+        .is_video = TRUE,                      /* onscreen */
+        .row_align = 4,                        /* line width alignment */
+        .bits_per_pixel = 24,                  /* bits per pixel */
+        .max_mem_size = 24 * 16 * 1024 * 1024, /* max memory size the code can handle */
+        .init = NULL,
+        .readpixel = readpixel,
+        .drawpixel = sdl_drawpixel,
+        .drawline = sdl_drawline,
+        .drawhline = sdl_drawhline,
+        .drawvline = sdl_drawvline,
+        .drawblock = sdl_drawblock,
+        .drawbitmap = sdl_drawbitmap,
+        .drawpattern = sdl_drawpattern,
+        .bitblt = sdl_bitblt,
+        .bltv2r = bltv2r,
+        .bltr2v = sdl_bltr2v,
+        .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
+        .putscanline = sdl_putscanline,
+    };
 
 #endif /* !defined(LFB_BY_NEAR_POINTER) */

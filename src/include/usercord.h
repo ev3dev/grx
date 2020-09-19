@@ -20,17 +20,17 @@
 
 #include "usrscale.h"
 
-#define U2SX(x,c) \
-    SCALE(x,((x) - (c)->user_x_base),(c)->x_max,(c)->user_width)
-#define U2SY(y,c) \
-    SCALE(y,((y) - (c)->user_y_base),(c)->y_max,(c)->user_height)
+#define U2SX(x, c) SCALE(x, ((x) - (c)->user_x_base), (c)->x_max, (c)->user_width)
+#define U2SY(y, c) SCALE(y, ((y) - (c)->user_y_base), (c)->y_max, (c)->user_height)
 
-#define S2UX(x,c) do {                                          \
-    SCALE(x,x,(c)->user_width,(c)->x_max);                   \
-    (x) += (c)->user_x_base;                                    \
-} while(0)
+#define S2UX(x, c)                                \
+    do {                                          \
+        SCALE(x, x, (c)->user_width, (c)->x_max); \
+        (x) += (c)->user_x_base;                  \
+    } while (0)
 
-#define S2UY(y,c) do {                                          \
-    SCALE(y,y,(c)->user_height,(c)->y_max);                  \
-    (y) += (c)->user_y_base;                                    \
-} while(0)
+#define S2UY(y, c)                                 \
+    do {                                           \
+        SCALE(y, y, (c)->user_height, (c)->y_max); \
+        (y) += (c)->user_y_base;                   \
+    } while (0)

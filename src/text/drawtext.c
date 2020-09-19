@@ -14,17 +14,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <glib.h>
-
 #include <ft2build.h>
+#include <glib.h>
 #include FT_FREETYPE_H
+
+#include <string.h>
 
 #include <grx/context.h>
 #include <grx/draw.h>
 #include <grx/frame_mode.h>
 #include <grx/text.h>
 
-#include <string.h>
 #include "libgrx.h"
 #include "text.h"
 
@@ -104,11 +104,10 @@ void grx_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options)
             continue;
         }
         grx_context_new_full(GRX_FRAME_MODE_RAM_1BPP, slot->bitmap.pitch * 8,
-                             slot->bitmap.rows, slot->bitmap.buffer, &ctx);
+            slot->bitmap.rows, slot->bitmap.buffer, &ctx);
         grx_bit_blt_1bpp(x + slot->bitmap_left - x_offset,
-                         y - slot->bitmap_top + y_offset,  &ctx, 0, 0,
-                         slot->bitmap.width, slot->bitmap.rows,
-                         options->fg_color, options->bg_color);
+            y - slot->bitmap_top + y_offset, &ctx, 0, 0, slot->bitmap.width,
+            slot->bitmap.rows, options->fg_color, options->bg_color);
         x += slot->advance.x >> 6;
         y += slot->advance.y >> 6;
     }
