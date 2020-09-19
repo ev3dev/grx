@@ -46,10 +46,6 @@ GrxFrameDriver _GrFrameDriverRAM32L = {
     .putscanline = _GrFrDrvGenericPutScanline,
 };
 
-/* some systems map LFB in normal user space (eg. Linux/svgalib) */
-/* near pointer stuff is equal to ram stuff :)                   */
-#ifdef LFB_BY_NEAR_POINTER
-
 /* always do RAM to RAM blit. May result in     **
 ** bottom first blits but this shouldn't matter */
 
@@ -75,5 +71,3 @@ GrxFrameDriver _GrFrameDriverSVGA32L_LFB = {
     .getindexedscanline = _GrFrDrvGenericGetIndexedScanline,
     .putscanline = _GrFrDrvGenericPutScanline,
 };
-
-#endif

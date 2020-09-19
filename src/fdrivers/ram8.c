@@ -47,11 +47,6 @@ GrxFrameDriver _GrFrameDriverRAM8 = {
     .putscanline = putscanline,
 };
 
-/* -------------------------------------------------------------------- */
-/* some systems map LFB in normal user space (eg. Linux/svgalib) */
-/* near pointer stuff is equal to ram stuff :)                   */
-#ifdef LFB_BY_NEAR_POINTER
-
 /* always do RAM to RAM blit. May result in     **
 ** bottom first blits but this shouldn't matter */
 
@@ -77,5 +72,3 @@ GrxFrameDriver _GrFrameDriverSVGA8_LFB = {
     .getindexedscanline = getindexedscanline,
     .putscanline = putscanline,
 };
-
-#endif

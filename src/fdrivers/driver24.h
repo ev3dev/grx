@@ -32,24 +32,6 @@
 #define MULT3(x)       ((x) + (x) + (x))
 #define FOFS(x, y, lo) umuladd32((y), (lo), MULT3(x))
 
-/* #define FAR_ACCESS for video access routines */
-
-#ifdef FAR_ACCESS
-#define peek24(p)      peek_24_f((p))
-#define poke24_xor     poke_24_f_xor
-#define poke24_or      poke_24_f_or
-#define poke24_and     poke_24_f_and
-#define poke24_set     poke_24_f
-#define repfill8_xor   repfill_b_f_xor
-#define repfill8_or    repfill_b_f_or
-#define repfill8_and   repfill_b_f_and
-#define repfill8_set   repfill_b_f
-#define repfill24_xor  repfill_24_f_xor
-#define repfill24_or   repfill_24_f_or
-#define repfill24_and  repfill_24_f_and
-#define repfill24_set  repfill_24_f_set
-#define SETFARSEL(sel) setup_far_selector(sel)
-#else /* defined FAR_ACCESS */
 #define peek24(p)     peek_24((p))
 #define poke24_xor    poke_24_xor
 #define poke24_or     poke_24_or
@@ -64,19 +46,13 @@
 #define repfill24_and repfill_24_and
 #define repfill24_set repfill_24_set
 #define SETFARSEL(sel)
-#endif
 
 static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
 {
     GrxColor col;
     unsigned char *p;
     GRX_ENTER();
-#ifdef FAR_ACCESS
-    p = &SCRN->gc_base_address[FOFS(x, y, SCRN->gc_line_offset)];
-    setup_far_selector(SCRN->gc_selector);
-#else
     p = &c->base_address[FOFS(x, y, c->line_offset)];
-#endif
     col = peek24(p);
     GRX_RETURN(col);
 }
@@ -179,38 +155,7 @@ static
     if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
         _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
     else
-#ifdef FAR_ACCESS
-        _GrFrDrvPackedBitBltV2V_LFB(
-#else
         _GrFrDrvPackedBitBltR2R(
-#endif
             dst, MULT3(dx), dy, src, MULT3(sx), sy, MULT3(w), h, op);
     GRX_LEAVE();
 }
-
-#ifdef FAR_ACCESS
-
-static void bltv2r(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
-    int h, GrxColor op)
-{
-    GRX_ENTER();
-    if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
-        _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
-    else
-        _GrFrDrvPackedBitBltV2R_LFB(
-            dst, MULT3(dx), dy, src, MULT3(sx), sy, MULT3(w), h, op);
-    GRX_LEAVE();
-}
-
-static void bltr2v(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
-    int h, GrxColor op)
-{
-    GRX_ENTER();
-    if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
-        _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
-    else
-        _GrFrDrvPackedBitBltR2V_LFB(
-            dst, MULT3(dx), dy, src, MULT3(sx), sy, MULT3(w), h, op);
-    GRX_LEAVE();
-}
-#endif /* FAR_ACCESS */

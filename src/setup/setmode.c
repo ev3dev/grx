@@ -149,14 +149,14 @@ static int buildcontext(GrxVideoMode *mp, GrxFrameDriver *fdp, GrxContext *cxt)
         "buildcontext - Mode Frame selector = 0x%x", mp->extended_info->lfb_selector);
     g_debug("frame memory size: %ld", mem_size);
     sttzero(cxt);
-#if !(defined(__XWIN__) && !defined(XF86DGA_FRAMEBUFFER) && !defined(__SDL__))
+#if !(defined(__XWIN__) && !defined(XF86DGA_FRAMEBUFFER))
     if (mp->extended_info->flags & GRX_VIDEO_MODE_FLAG_LINEAR) {
         g_debug("buildcontext - Linear Mode");
         cxt->gc_base_address = LINP_PTR(mp->extended_info->frame);
         cxt->gc_selector = mp->extended_info->lfb_selector;
     }
     else
-#endif /* !(__XWIN__ && !XF86DGA_FRAMEBUFFER && !__SDL__) */
+#endif /* !(__XWIN__ && !XF86DGA_FRAMEBUFFER */
         if (mp->extended_info->flags & GRX_VIDEO_MODE_FLAG_MEMORY) {
         g_debug("buildcontext - Memory Mode");
         if (mem_size > fdp->max_mem_size) {

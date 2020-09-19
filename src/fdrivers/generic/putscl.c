@@ -14,8 +14,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <grx/color.h>
-
 void putscanline(int x, int y, int w, const GrxColor *scl, GrxColor op)
 {
     GrxColor skipc;

@@ -52,12 +52,6 @@ G_GNUC_INTERNAL extern GrxFrameDriver
     _GrFrameDriverWIN32_8,  /* WIN32 8 bpp */
     _GrFrameDriverWIN32_24, /* WIN32 24 bpp */
 
-    _GrFrameDriverSDL8,   /* SDL 8 bpp */
-    _GrFrameDriverSDL16,  /* SDL 16 bpp */
-    _GrFrameDriverSDL24,  /* SDL 24 bpp */
-    _GrFrameDriverSDL32L, /* SDL 32 bpp padded #2 */
-    _GrFrameDriverSDL32H, /* SDL 32 bpp padded #2 */
-
     _GrFrameDriverRAM1,   /* mono */
     _GrFrameDriverRAM2,   /* 4 color */
     _GrFrameDriverRAM8,   /* 256 color */

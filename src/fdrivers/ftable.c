@@ -22,22 +22,17 @@
 #include "libgrx.h"
 
 GrxFrameDriver *_GrFrameDriverTable[] = {
-#if defined(XF86DGA_FRAMEBUFFER) \
-    || (defined(LFB_BY_NEAR_POINTER) && !defined(__WIN32__))
+#if defined(XF86DGA_FRAMEBUFFER) || !defined(__WIN32__)
     &_GrFrameDriverMONO01_LFB, &_GrFrameDriverMONO10_LFB, &_GrFrameDriverCFB2_LFB,
     &_GrFrameDriverSVGA8_LFB, &_GrFrameDriverSVGA16_LFB, &_GrFrameDriverSVGA24_LFB,
     &_GrFrameDriverSVGA32L_LFB, &_GrFrameDriverSVGA32H_LFB,
 #endif
-#if defined(__XWIN__) && !defined(__SDL__)
+#if defined(__XWIN__)
     &_GrFrameDriverXWIN8, &_GrFrameDriverXWIN16, &_GrFrameDriverXWIN24,
     &_GrFrameDriverXWIN32L, &_GrFrameDriverXWIN32H,
 #endif
-#if defined(__WIN32__) && !defined(__SDL__)
+#if defined(__WIN32__)
     &_GrFrameDriverWIN32_8, &_GrFrameDriverWIN32_24,
-#endif
-#if defined(__SDL__)
-    &_GrFrameDriverSDL8, &_GrFrameDriverSDL16, &_GrFrameDriverSDL24,
-    &_GrFrameDriverSDL32L, &_GrFrameDriverSDL32H,
 #endif
     /* now the drivers for RAM based context */
     &_GrFrameDriverRAM1, &_GrFrameDriverRAM2, &_GrFrameDriverRAM8, &_GrFrameDriverRAM16,

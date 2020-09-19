@@ -7,9 +7,6 @@
                 "/usr/local/include",
                 "${workspaceRoot}"
             ],
-            "defines": [
-                "LFB_BY_NEAR_POINTER"
-            ],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
@@ -46,9 +43,6 @@
                 "/usr/include/gdk-pixbuf-2.0",
                 "/usr/include/atk-1.0"
             ],
-            "defines": [
-                "LFB_BY_NEAR_POINTER"
-            ],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
@@ -73,8 +67,7 @@
             ],
             "defines": [
                 "_DEBUG",
-                "UNICODE",
-                "LFB_BY_NEAR_POINTER"
+                "UNICODE"
             ],
             "intelliSenseMode": "msvc-x64",
             "browse": {

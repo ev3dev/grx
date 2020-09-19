@@ -30,27 +30,6 @@
 /* frame offset address calculation */
 #define FOFS(x, y, lo) umuladd32((y), (lo), ((x) << 1))
 
-/* #define FAR_ACCESS for video access routines */
-
-#ifdef FAR_ACCESS
-#define peek16         peek_w_f
-#define poke16_xor     poke_w_f_xor
-#define poke16_or      poke_w_f_or
-#define poke16_and     poke_w_f_and
-#define poke16         poke_w_f
-#define colfill16_xor  colfill_w_f_xor
-#define colfill16_or   colfill_w_f_or
-#define colfill16_and  colfill_w_f_and
-#define colfill16      colfill_w_f
-#define repfill16_xor  repfill_w_f_xor
-#define repfill16_or   repfill_w_f_or
-#define repfill16_and  repfill_w_f_and
-#define repfill16      repfill_w_f
-#define SETFARSEL(sel) setup_far_selector(sel)
-#if defined(__GNUC__) && defined(__i386__)
-#define ASM_386_SEL I386_GCC_FAR_SELECTOR
-#endif /* GCC i386 */
-#else  /* defined FAR_ACCESS */
 #define peek16        peek_w
 #define poke16_xor    poke_w_xor
 #define poke16_or     poke_w_or
@@ -65,7 +44,6 @@
 #define repfill16_and repfill_w_and
 #define repfill16     repfill_w
 #define SETFARSEL(sel)
-#endif
 
 #ifndef ASM_386_SEL
 #define ASM_386_SEL
@@ -75,14 +53,9 @@ static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
 {
     GR_int16u *pp;
     GRX_ENTER();
-#ifdef FAR_ACCESS
-    pp = (GR_int16u *)&SCRN->gc_base_address[FOFS(x, y, SCRN->gc_line_offset)];
-    setup_far_selector(SCRN->gc_selector);
-#else
-    /* problem with LFB_BY_NEAR_POINTER here? Does c always point to screen? */
+    /* problem here? Does c always point to screen? */
     pp = (GR_int16u *)&c->base_address[FOFS(x, y, c->line_offset)];
-#endif
-#if defined(MISALIGNED_16bit_OK) && !defined(FAR_ACCESS)
+#if defined(MISALIGNED_16bit_OK)
     GRX_RETURN(*pp);
 #else
     GRX_RETURN((GR_int16u)peek16(pp));
@@ -349,37 +322,7 @@ static
     if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
         _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
     else
-#ifdef FAR_ACCESS
-        _GrFrDrvPackedBitBltV2V_LFB(
-#else
         _GrFrDrvPackedBitBltR2R(
-#endif
             dst, (dx << 1), dy, src, (sx << 1), sy, (w << 1), h, op);
     GRX_LEAVE();
 }
-
-#ifdef FAR_ACCESS
-static void bltv2r(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
-    int h, GrxColor op)
-{
-    GRX_ENTER();
-    if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
-        _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
-    else
-        _GrFrDrvPackedBitBltV2R_LFB(
-            dst, (dx << 1), dy, src, (sx << 1), sy, (w << 1), h, op);
-    GRX_LEAVE();
-}
-
-static void bltr2v(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
-    int h, GrxColor op)
-{
-    GRX_ENTER();
-    if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)
-        _GrFrDrvGenericBitBlt(dst, dx, dy, src, sx, sy, w, h, op);
-    else
-        _GrFrDrvPackedBitBltR2V_LFB(
-            dst, (dx << 1), dy, src, (sx << 1), sy, (w << 1), h, op);
-    GRX_LEAVE();
-}
-#endif

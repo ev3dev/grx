@@ -32,27 +32,6 @@
 /* frame offset address calculation */
 #define FOFS(x, y, lo) umuladd32((y), (lo), (x))
 
-/* #define FAR_ACCESS for video access routines */
-
-#ifdef FAR_ACCESS
-#define peek8          peek_b_f
-#define poke8_xor      poke_b_f_xor
-#define poke8_or       poke_b_f_or
-#define poke8_and      poke_b_f_and
-#define poke8          poke_b_f
-#define colfill8_xor   colfill_b_f_xor
-#define colfill8_or    colfill_b_f_or
-#define colfill8_and   colfill_b_f_and
-#define colfill8       colfill_b_f
-#define repfill8_xor   repfill_b_f_xor
-#define repfill8_or    repfill_b_f_or
-#define repfill8_and   repfill_b_f_and
-#define repfill8       repfill_b_f
-#define SETFARSEL(sel) setup_far_selector(sel)
-#if defined(__GNUC__) && defined(__i386__)
-#define ASM_386_SEL I386_GCC_FAR_SELECTOR
-#endif /* GCC i386 */
-#else  /* defined FAR_ACCESS */
 #define peek8        peek_b
 #define poke8_xor    poke_b_xor
 #define poke8_or     poke_b_or
@@ -67,7 +46,6 @@
 #define repfill8_and repfill_b_and
 #define repfill8     repfill_b
 #define SETFARSEL(sel)
-#endif
 
 #ifndef ASM_386_SEL
 #define ASM_386_SEL
@@ -77,15 +55,9 @@ static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
 {
     GR_int8u *pp;
     GRX_ENTER();
-#ifdef FAR_ACCESS
-    pp = (GR_int8u *)&SCRN->gc_base_address[FOFS(x, y, SCRN->gc_line_offset)];
-    SETFARSEL(SCRN->gc_selector);
-    GRX_RETURN((GR_int8u)peek8(pp));
-#else
-    /* problem with LFB_BY_NEAR_POINTER here? Does c always point to screen? */
+    /* problem here? Does c always point to screen? */
     pp = (GR_int8u *)&c->base_address[FOFS(x, y, c->line_offset)];
     GRX_RETURN(*pp);
-#endif
 }
 
 /* -------------------------------------------------------------------- */
@@ -475,13 +447,7 @@ static
 
 /* -------------------------------------------------------------------- */
 
-#ifdef FAR_ACCESS
-#define bitblit _GrFrDrvPackedBitBltV2V_LFB
-#define bltr2v  _GrFrDrvPackedBitBltR2V_LFB
-#define bltv2r  _GrFrDrvPackedBitBltV2R_LFB
-#else
 #define bitblit _GrFrDrvPackedBitBltR2R
-#endif
 
     /* -------------------------------------------------------------------- */
 
