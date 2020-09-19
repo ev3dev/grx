@@ -52,8 +52,8 @@
 typedef struct _GrxCursor GrxCursor;
 
 GType grx_cursor_get_type(void);
-GrxCursor *grx_cursor_new(guint8 *pixels, gint pitch, gint width, gint height, gint x0,
-    gint y0, const GArray *colors);
+GrxCursor *grx_cursor_new(const guint8 *pixels, gint pitch, gint width, gint height,
+    gint x0, gint y0, const GArray *colors);
 GrxCursor *grx_cursor_ref(GrxCursor *cursor);
 void grx_cursor_unref(GrxCursor *cursor);
 void grx_cursor_show(GrxCursor *cursor);

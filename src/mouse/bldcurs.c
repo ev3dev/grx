@@ -20,9 +20,7 @@
 #include <grx/draw_nc.h>
 #include <grx/extents.h>
 
-#include "allocate.h"
 #include "libgrx.h"
-#include "memfill.h"
 #include "mouse.h"
 
 G_DEFINE_BOXED_TYPE(GrxCursor, grx_cursor, grx_cursor_ref, grx_cursor_unref);
@@ -47,42 +45,49 @@ G_DEFINE_BOXED_TYPE(GrxCursor, grx_cursor, grx_cursor_ref, grx_cursor_unref);
  * Returns: (transfer full) (nullable): the new cursor or %NULL if creating the
  * cursor failed.
  */
-GrxCursor *grx_cursor_new(
-    unsigned char *pixels, int pitch, int w, int h, int xo, int yo, const GArray *C)
+GrxCursor *grx_cursor_new(const guint8 *pixels, gint pitch, gint w, gint h, gint x0,
+    gint y0, const GArray *colors)
 {
+    g_return_val_if_fail(pixels != NULL, NULL);
+    g_return_val_if_fail(colors != NULL, NULL);
+
     GrxCursor *curs;
     GrxContext save;
-    int wrkw2 = (w + 7) & ~7;
-    int workw = wrkw2 << 1;
-    int workh = ((h + 7) & ~7) << 1;
-    int xx, yy;
-    curs = malloc(sizeof(GrxCursor));
-    if (!curs)
-        return NULL;
-    sttzero(curs);
+    gint wrkw2 = (w + 7) & ~7;
+    gint workw = wrkw2 << 1;
+    gint workh = ((h + 7) & ~7) << 1;
+    gint xx, yy;
+
+    curs = g_new0(GrxCursor, 1);
+
     if (!grx_context_new(workw, ((workh << 1) + h), NULL, &curs->work)) {
-        free(curs);
+        g_free(curs);
         return NULL;
     }
+
     curs->xsize = w;
     curs->ysize = h;
-    curs->xoffs = xo;
-    curs->yoffs = yo;
+    curs->xoffs = x0;
+    curs->yoffs = y0;
     curs->xwork = workw;
     curs->ywork = workh;
+
     grx_save_current_context(&save);
     grx_set_current_context(&curs->work);
+
     grx_fast_draw_filled_box(0, 0, (workw - 1), (h - 1), 0L);
+
     for (yy = 0; yy < h; yy++) {
-        unsigned char *p = (unsigned char *)pixels + (yy * pitch);
+        const guint8 *p = pixels + (yy * pitch);
         for (xx = 0; xx < w; xx++, p++) {
             if (*p)
                 grx_fast_draw_pixel(
-                    xx, yy, grx_color_get_value(grx_color_lookup(C, (*p - 1))));
+                    xx, yy, grx_color_get_value(grx_color_lookup(colors, (*p - 1))));
             else
                 grx_fast_draw_pixel((xx + wrkw2), yy, grx_color_get_value(-1L));
         }
     }
+
     grx_set_current_context(&save);
 
     return grx_cursor_ref(curs);
@@ -124,5 +129,5 @@ void grx_cursor_unref(GrxCursor *cursor)
 
     grx_cursor_hide(cursor);
     grx_context_unref(&cursor->work);
-    free(cursor);
+    g_free(cursor);
 }
