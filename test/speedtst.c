@@ -223,22 +223,22 @@ static void Message(int disp, char *txt, gvmode *gp)
 static void printresultheader(FILE *f)
 {
     fprintf(f,
-        "Driver               readp drawp line   hline vline  block  v2v    v2r    "
-        "r2v\n");
+        "Driver     mode        read px   draw px      line     hline     vline     "
+        "block       v2v       v2r       r2v\n");
 }
 
 static void printresultline(FILE *f, gvmode *gp)
 {
     fprintf(f, "%-9s %4dx%4d ", FrameDriverName(gp->fm), gp->w, gp->h);
-    fprintf(f, "%6.2f", gp->readpix.rate / (1024.0 * 1024.0));
-    fprintf(f, "%6.2f", gp->drawpix.rate / (1024.0 * 1024.0));
-    fprintf(f, "%6.2f", gp->drawlin.rate / (1024.0 * 1024.0));
-    fprintf(f, "%7.2f", gp->drawhlin.rate / (1024.0 * 1024.0));
-    fprintf(f, "%6.2f", gp->drawvlin.rate / (1024.0 * 1024.0));
-    fprintf(f, "%7.2f", gp->drawblk.rate / (1024.0 * 1024.0));
-    fprintf(f, "%7.2f", gp->blitv2v.rate / (1024.0 * 1024.0));
-    fprintf(f, "%7.2f", gp->blitv2r.rate / (1024.0 * 1024.0));
-    fprintf(f, "%7.2f", gp->blitr2v.rate / (1024.0 * 1024.0));
+    fprintf(f, "%10.2f", gp->readpix.rate / (1024.0 * 1024.0));
+    fprintf(f, "%10.2f", gp->drawpix.rate / (1024.0 * 1024.0));
+    fprintf(f, "%10.2f", gp->drawlin.rate / (1024.0 * 1024.0));
+    fprintf(f, "%10.2f", gp->drawhlin.rate / (1024.0 * 1024.0));
+    fprintf(f, "%10.2f", gp->drawvlin.rate / (1024.0 * 1024.0));
+    fprintf(f, "%10.2f", gp->drawblk.rate / (1024.0 * 1024.0));
+    fprintf(f, "%10.2f", gp->blitv2v.rate / (1024.0 * 1024.0));
+    fprintf(f, "%10.2f", gp->blitv2r.rate / (1024.0 * 1024.0));
+    fprintf(f, "%10.2f", gp->blitr2v.rate / (1024.0 * 1024.0));
     fprintf(f, "\n");
 }
 
