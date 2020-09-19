@@ -686,7 +686,7 @@ static int collectmodes(const GrxVideoDriver *drv)
     gvmode *gp = grmodes;
     GrxFrameMode fm;
     const GrxVideoMode *mp;
-    for (fm = GRX_FRAME_MODE_FIRST_GRAPHICS; fm <= GRX_FRAME_MODE_LAST_GRAPHICS; fm++) {
+    for (fm = GRX_FRAME_MODE_FIRST_GRAPHICS; fm <= GRX_FRAME_MODE_LAST_RAM; fm++) {
         for (mp = grx_get_first_video_mode(fm); mp; mp = grx_get_next_video_mode(mp)) {
             gp->fm = fm;
             gp->w = mp->width;
