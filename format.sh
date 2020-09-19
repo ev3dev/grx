@@ -3,7 +3,8 @@
 shopt -s globstar
 
 if [ "$CI" == "true" ]; then
-    OPTIONS="--dry-run -Werror --verbose"
+    clang-format --version
+    OPTIONS="--dry-run --Werror --verbose"
 else
     OPTIONS="-i"
 fi
