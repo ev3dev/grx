@@ -58,13 +58,13 @@ int gfaz_fin(void)
 
 static void par_event_queue(GrxEventType type, int p1, int p2, int p3)
 {
-    GrxEvent ev = {
-        .type = type,
+    EventEx ev = {
+        .event.type = type,
+        .event.p1 = p1,
+        .event.p2 = p2,
+        .event.p3 = p3,
     };
-    ((Event *)&ev)->p1 = p1;
-    ((Event *)&ev)->p2 = p2;
-    ((Event *)&ev)->p3 = p3;
-    grx_event_put(&ev);
+    grx_event_put(&ev.grx_event);
 }
 
 /**************************************************************************/

@@ -417,7 +417,9 @@ static int pev_command(Event *ev)
                 strcat(nprog, "x");
 #endif
                 strcat(nprog, ptable[i].prog);
-                system(nprog);
+                if (system(nprog) == -1) {
+                    perror("system");
+                }
                 ini_graphics();
                 paint_screen();
                 return 1;
@@ -502,6 +504,8 @@ static void disaster(char *s)
     gfaz_fin();
     printf("DemoGRX: %s\n", s);
     printf("press Return to continue\n");
-    fgets(aux, 80, stdin);
+    if (fgets(aux, 80, stdin) == NULL) {
+        perror("fgets");
+    }
     exit(1);
 }

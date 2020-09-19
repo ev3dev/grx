@@ -624,7 +624,9 @@ static void speedcheck(gvmode *gp, int print, int wait)
             "speedtest may take some time to process.\n"
             "Now press <CR> to continue...");
         fflush(stdout);
-        fgets(m, 40, stdin);
+        if (fgets(m, 40, stdin) == NULL) {
+            perror("fgets");
+        };
     }
 
     grx_set_mode(
@@ -641,7 +643,9 @@ static void speedcheck(gvmode *gp, int print, int wait)
         grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
         printf(
             "Setup failed : %s != %s\n", FrameDriverName(act), FrameDriverName(gp->fm));
-        fgets(m, 40, stdin);
+        if (fgets(m, 40, stdin) == NULL) {
+            perror("fgets");
+        };
         return;
     }
 
@@ -670,8 +674,11 @@ static void speedcheck(gvmode *gp, int print, int wait)
         if (rp)
             printresultline(stdout, rp);
     }
-    if (wait)
-        fgets(m, 40, stdin);
+    if (wait) {
+        if (fgets(m, 40, stdin) == NULL) {
+            perror("fgets");
+        };
+    }
 }
 
 static int collectmodes(const GrxVideoDriver *drv)

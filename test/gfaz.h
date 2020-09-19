@@ -64,6 +64,10 @@ typedef struct {
     long p2;
     long p3;
 } Event;
+typedef union {
+    GrxEvent grx_event;
+    Event event;
+} EventEx;
 int gfaz_ini(int width, int height, int bpp);
 int gfaz_fin(void);
 
