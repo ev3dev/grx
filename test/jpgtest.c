@@ -25,7 +25,7 @@
 
 static GrxTextOptions *text_opt;
 
-void imagen(char *nf, int scale)
+static void imagen(char *nf, int scale)
 {
     GrxContext *grc;
     int wide, high;
@@ -48,27 +48,18 @@ void imagen(char *nf, int scale)
     run_main_loop_until_key_press();
 }
 
-void nojpegsupport(void)
-{
-    char *s[6] = { "Warning!", "You need libjpeg (http://www.ijg.org) and enable",
-        "jpeg support in the GRX lib (edit makedefs.grx)", "to run this demo", " ",
-        "Press any key to continue..." };
-    int i;
-
-    grx_clear_screen(grx_color_get(0, 0, 100));
-    for (i = 0; i < 6; i++)
-        grx_draw_text(s[i], 90, 160 + i * 18, text_opt);
-    run_main_loop_until_key_press();
-}
-
 int main()
 {
     GrxContext *grc;
     GError *error = NULL;
 
+    if (!grx_set_mode(
+            GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, &error, 640, 480, 24)) {
+        g_error("%s", error->message);
+    }
+
     {
         GrxFont *font;
-
         font = grx_font_load(NULL, -1, &error);
         if (!font) {
             g_error("%s", error->message);
@@ -77,11 +68,6 @@ int main()
             GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
 
         grx_font_unref(font);
-    }
-
-    if (!grx_set_mode(
-            GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, &error, 640, 480, 24)) {
-        g_error("%s", error->message);
     }
 
     imagen("jpeg1.jpg", 1);

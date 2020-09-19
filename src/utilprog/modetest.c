@@ -166,15 +166,6 @@ int main(void)
     static int firstgr = 1;
     GError *error = NULL;
 
-    font = grx_font_load(NULL, -1, &error);
-    if (!font) {
-        g_error("%s", error->message);
-    }
-
-    text_opt = grx_text_options_new_full(font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
-        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
-    grx_font_unref(font);
-
     grx_set_driver(NULL, NULL);
     if (grx_get_current_video_driver() == NULL) {
         printf("No graphics driver found\n");
@@ -193,6 +184,22 @@ int main(void)
             printf("No graphics modes found\n");
             exit(1);
         }
+
+        font = grx_font_load(NULL, -1, &error);
+        if (!font) {
+            g_error("%s", error->message);
+        }
+
+        if (text_opt) {
+            grx_text_options_set_font(text_opt, font);
+        }
+        else {
+            text_opt = grx_text_options_new_full(font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
+                GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        }
+
+        grx_font_unref(font);
+
         qsort(grmodes, n_modes, sizeof(grmodes[0]), vmcmp);
         printf(
             "Graphics driver: \"%s\"\n"

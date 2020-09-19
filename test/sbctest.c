@@ -22,7 +22,7 @@ static void drawp(int border, GrxLineOptions *o, GrxPixmap *p);
 
 TESTFUNC(sbctest)
 {
-    char bits[] = { 0, 76, 50, 0, 0, 76, 60, 0 };
+    const guint8 bits[] = { 0, 76, 50, 0, 0, 76, 60, 0 };
     GrxContext *grc, *grsc;
     GrxPixmap *pat1, *pat2;
     GrxLineOptions grl;

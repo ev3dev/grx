@@ -69,7 +69,7 @@ static void par_event_queue(GrxEventType type, int p1, int p2, int p3)
 
 /**************************************************************************/
 
-void dboton(int x, int y, int an, int al, GrxTextOptions *to, char *s, int t)
+static void dboton(int x, int y, int an, int al, GrxTextOptions *to, char *s, int t)
 
 //   x, y posici�n de la esquina izquierda
 //   an, al ancho y alto

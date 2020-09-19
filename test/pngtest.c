@@ -25,7 +25,7 @@
 
 static GrxTextOptions *text_opt;
 
-void imagen(char *nf)
+static void imagen(char *nf)
 {
     GrxContext *grc;
     int wide, high;
@@ -77,6 +77,11 @@ int main()
     GrxContext *grc;
     GError *error = NULL;
 
+    if (!grx_set_mode(
+            GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, &error, 640, 480, 24)) {
+        g_error("%s", error->message);
+    }
+
     {
         GrxFont *font;
 
@@ -87,11 +92,6 @@ int main()
         text_opt = grx_text_options_new_full(font, GRX_COLOR_BLACK, GRX_COLOR_WHITE,
             GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
         grx_font_unref(font);
-    }
-
-    if (!grx_set_mode(
-            GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_BPP, &error, 640, 480, 24)) {
-        g_error("%s", error->message);
     }
 
     imagen("pngcompo.png");

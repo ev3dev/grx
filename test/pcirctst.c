@@ -32,7 +32,8 @@ static GrxLineOptions Solid = {
 
 static GrxLineOptions *Patterns[] = { &Solid, NULL };
 
-void drawellip(int xc, int yc, int rx, int ry, GrxColor c1, GrxColor c2, GrxColor c3)
+static void drawellip(
+    int xc, int yc, int rx, int ry, GrxColor c1, GrxColor c2, GrxColor c3)
 {
     double ddx = (double)rx;
     double ddy = (double)ry;

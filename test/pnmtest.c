@@ -39,6 +39,11 @@ int main(void)
     char s[81];
     GError *error = NULL;
 
+    if (!grx_set_mode(
+            GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR, &error, 640, 480, 32768)) {
+        g_error("%s", error->message);
+    }
+
     {
         GrxFont *font;
 
@@ -51,10 +56,6 @@ int main(void)
         grx_font_unref(font);
     }
 
-    if (!grx_set_mode(
-            GRX_GRAPHICS_MODE_GRAPHICS_WIDTH_HEIGHT_COLOR, &error, 640, 480, 32768)) {
-        g_error("%s", error->message);
-    }
     grx_query_pnm_file(FIMAGEPPM, &format, &wide, &high, &maxval);
     sprintf(s, "%s %d x %d pixels", FIMAGEPPM, wide, high);
     grx_draw_text(s, 10, 20, text_opt);

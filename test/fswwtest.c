@@ -32,14 +32,6 @@ int main()
     GrxContext *w1, *w2, *w3, *w4;
     GError *error = NULL;
 
-    font = grx_font_load(NULL, -1, &error);
-    if (!font) {
-        g_error("%s", error->message);
-    }
-
-    text_opt = grx_text_options_new_full(font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
-        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
-
     do {
         if (i)
             grx_set_driver("sdl::ww gw 600 gh 600 nc 256", NULL);
@@ -50,6 +42,21 @@ int main()
         if (!grx_set_mode(GRX_GRAPHICS_MODE_GRAPHICS_DEFAULT, &error)) {
             g_error("%s", error->message);
         }
+
+        font = grx_font_load(NULL, -1, &error);
+        if (!font) {
+            g_error("%s", error->message);
+        }
+
+        if (text_opt) {
+            grx_text_options_set_font(text_opt, font);
+        }
+        else {
+            text_opt = grx_text_options_new_full(font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
+                GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        }
+
+        grx_font_unref(font);
 
         x = grx_get_width();
         y = grx_get_height();
@@ -90,7 +97,6 @@ int main()
     } while (run_main_loop_until_key_press() != GRX_KEY_ESCAPE);
 
     grx_text_options_unref(text_opt);
-    grx_font_unref(font);
 
     return 0;
 }

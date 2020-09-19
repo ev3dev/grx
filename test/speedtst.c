@@ -36,14 +36,13 @@
 
 #define MEASURE_RAM_MODES 1
 
-#define READPIX_loops     (384 * 1)
-#define READPIX_X11_loops (4 * 1)
-#define DRAWPIX_loops     (256 * 1)
-#define DRAWLIN_loops     (12 * 1)
-#define DRAWHLIN_loops    (16 * 1)
-#define DRAWVLIN_loops    (12 * 1)
-#define DRAWBLK_loops     (1 * 1)
-#define BLIT_loops        (1 * 1)
+#define READPIX_loops  (64)
+#define DRAWPIX_loops  (64)
+#define DRAWLIN_loops  (64)
+#define DRAWHLIN_loops (8)
+#define DRAWVLIN_loops (64)
+#define DRAWBLK_loops  (8)
+#define BLIT_loops     (8)
 
 typedef struct {
     double rate, count;
@@ -63,6 +62,7 @@ typedef struct {
     perfm blitv2r;
     perfm blitr2v;
 } gvmode;
+
 #define FLG_measured     0x0001
 #define FLG_tagged       0x0002
 #define FLG_rammode      0x0004
@@ -74,11 +74,11 @@ typedef struct {
 #define SET_RAMMODE(g)   (g)->flags |= FLG_rammode
 #define TOGGLE_TAGGED(g) (g)->flags ^= FLG_tagged
 
-int n_modes = 0;
+static int n_modes = 0;
 #define MAX_MODES 256
-gvmode *grmodes = NULL;
+static gvmode *grmodes = NULL;
 #if MEASURE_RAM_MODES
-gvmode *rammodes = NULL;
+static gvmode *rammodes = NULL;
 #endif
 
 static GrxTextOptions *text_opt;
@@ -104,11 +104,11 @@ typedef struct XYpairs {
     struct XYpairs *nxt;
 } XY_PAIRS;
 
-XY_PAIRS *xyp = NULL;
-int *xb = NULL, *yb = NULL; /* need sorted pairs for block operations */
-int measured_any = 0;
+static XY_PAIRS *xyp = NULL;
+static int *xb = NULL, *yb = NULL; /* need sorted pairs for block operations */
+static int measured_any = 0;
 
-XY_PAIRS *checkpairs(int w, int h)
+static XY_PAIRS *checkpairs(int w, int h)
 {
     XY_PAIRS *res = xyp;
     int i;
@@ -149,19 +149,19 @@ XY_PAIRS *checkpairs(int w, int h)
     return res;
 }
 
-double SQR(int a, int b)
+static double SQR(int a, int b)
 {
     double r = DBL(a - b);
     return r * r;
 }
 
-double abs_diff(int a, int b)
+static double abs_diff(int a, int b)
 {
     double r = DBL(a - b);
     return fabs(r);
 }
 
-char *FrameDriverName(GrxFrameMode m)
+static char *FrameDriverName(GrxFrameMode m)
 {
     switch (m) {
     case GRX_FRAME_MODE_UNDEFINED:
@@ -204,7 +204,7 @@ char *FrameDriverName(GrxFrameMode m)
     return "UNKNOWN";
 }
 
-void Message(int disp, char *txt, gvmode *gp)
+static void Message(int disp, char *txt, gvmode *gp)
 {
     char msg[200];
     sprintf(msg, "%s: %d x %d x %dbpp", FrameDriverName(gp->fm), gp->w, gp->h, gp->bpp);
@@ -220,14 +220,14 @@ void Message(int disp, char *txt, gvmode *gp)
     }
 }
 
-void printresultheader(FILE *f)
+static void printresultheader(FILE *f)
 {
     fprintf(f,
         "Driver               readp drawp line   hline vline  block  v2v    v2r    "
         "r2v\n");
 }
 
-void printresultline(FILE *f, gvmode *gp)
+static void printresultline(FILE *f, gvmode *gp)
 {
     fprintf(f, "%-9s %4dx%4d ", FrameDriverName(gp->fm), gp->w, gp->h);
     fprintf(f, "%6.2f", gp->readpix.rate / (1024.0 * 1024.0));
@@ -242,7 +242,7 @@ void printresultline(FILE *f, gvmode *gp)
     fprintf(f, "\n");
 }
 
-void readpixeltest(gvmode *gp, XY_PAIRS *pairs, int loops)
+static void readpixeltest(gvmode *gp, XY_PAIRS *pairs)
 {
     int i, j;
     long t1, t2;
@@ -252,11 +252,11 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs, int loops)
 
     if (!MEASURED(gp)) {
         gp->readpix.rate = 0.0;
-        gp->readpix.count = DBL(PAIRS) * DBL(loops);
+        gp->readpix.count = DBL(PAIRS) * DBL(READPIX_loops);
     }
 
     t1 = g_get_monotonic_time();
-    for (i = loops; i > 0; --i) {
+    for (i = READPIX_loops; i > 0; --i) {
         for (j = PAIRS - 1; j >= 0; j--)
             grx_fast_get_pixel_at(x[j], y[j]);
     }
@@ -266,7 +266,7 @@ void readpixeltest(gvmode *gp, XY_PAIRS *pairs, int loops)
         gp->readpix.rate = gp->readpix.count / seconds;
 }
 
-void drawpixeltest(gvmode *gp, XY_PAIRS *pairs)
+static void drawpixeltest(gvmode *gp, XY_PAIRS *pairs)
 {
     int i, j;
     GrxColor c1 = GRX_COLOR_WHITE;
@@ -300,7 +300,7 @@ void drawpixeltest(gvmode *gp, XY_PAIRS *pairs)
         gp->drawpix.rate = gp->drawpix.count / seconds;
 }
 
-void drawlinetest(gvmode *gp, XY_PAIRS *pairs)
+static void drawlinetest(gvmode *gp, XY_PAIRS *pairs)
 {
     int i, j;
     int *x = pairs->x;
@@ -337,7 +337,7 @@ void drawlinetest(gvmode *gp, XY_PAIRS *pairs)
         gp->drawlin.rate = gp->drawlin.count / seconds;
 }
 
-void drawhlinetest(gvmode *gp, XY_PAIRS *pairs)
+static void drawhlinetest(gvmode *gp, XY_PAIRS *pairs)
 {
     int i, j;
     int *x = pairs->x;
@@ -374,7 +374,7 @@ void drawhlinetest(gvmode *gp, XY_PAIRS *pairs)
         gp->drawhlin.rate = gp->drawhlin.count / seconds;
 }
 
-void drawvlinetest(gvmode *gp, XY_PAIRS *pairs)
+static void drawvlinetest(gvmode *gp, XY_PAIRS *pairs)
 {
     int i, j;
     int *x = pairs->x;
@@ -411,7 +411,7 @@ void drawvlinetest(gvmode *gp, XY_PAIRS *pairs)
         gp->drawvlin.rate = gp->drawvlin.count / seconds;
 }
 
-void drawblocktest(gvmode *gp, XY_PAIRS *pairs)
+static void drawblocktest(gvmode *gp, XY_PAIRS *pairs)
 {
     int i, j;
     GrxColor c1 = GRX_COLOR_WHITE;
@@ -457,7 +457,7 @@ void drawblocktest(gvmode *gp, XY_PAIRS *pairs)
         gp->drawblk.rate = gp->drawblk.count / seconds;
 }
 
-void xor_draw_blocks(GrxContext *c)
+static void xor_draw_blocks(GrxContext *c)
 {
     GrxContext save;
     int i;
@@ -472,7 +472,7 @@ void xor_draw_blocks(GrxContext *c)
     grx_set_current_context(&save);
 }
 
-void blit_measure(
+static void blit_measure(
     gvmode *gp, perfm *p, int *xb, int *yb, GrxContext *dst, GrxContext *src)
 {
     int i, j;
@@ -517,7 +517,7 @@ void blit_measure(
         p->rate = p->count / seconds;
 }
 
-void blittest(gvmode *gp, XY_PAIRS *pairs, int ram)
+static void blittest(gvmode *gp, XY_PAIRS *pairs, int ram)
 {
     int j;
 
@@ -565,7 +565,7 @@ void blittest(gvmode *gp, XY_PAIRS *pairs, int ram)
 #endif
 }
 
-void measure_one(gvmode *gp, int ram)
+static void measure_one(gvmode *gp, int ram)
 {
     XY_PAIRS *pairs;
 
@@ -574,7 +574,7 @@ void measure_one(gvmode *gp, int ram)
     pairs = checkpairs(gp->w, gp->h);
     grx_draw_filled_box(0, 0, gp->w - 1, gp->h - 1, GRX_COLOR_BLACK);
     Message(RAMMODE(gp), "read pixel test", gp);
-
+    readpixeltest(gp, pairs);
     grx_draw_filled_box(0, 0, gp->w - 1, gp->h - 1, GRX_COLOR_BLACK);
     Message(RAMMODE(gp), "draw pixel test", gp);
     drawpixeltest(gp, pairs);
@@ -591,6 +591,7 @@ void measure_one(gvmode *gp, int ram)
     Message(RAMMODE(gp), "draw block test", gp);
     drawblocktest(gp, pairs);
     grx_draw_filled_box(0, 0, gp->w - 1, gp->h - 1, GRX_COLOR_BLACK);
+    Message(RAMMODE(gp), "bitblit test", gp);
     blittest(gp, pairs, ram);
     grx_draw_filled_box(0, 0, gp->w - 1, gp->h - 1, GRX_COLOR_BLACK);
     SET_MEASURED(gp);
@@ -598,7 +599,7 @@ void measure_one(gvmode *gp, int ram)
 }
 
 #if MEASURE_RAM_MODES
-int identical_measured(gvmode *tm)
+static int identical_measured(gvmode *tm)
 {
     int i;
     for (i = 0; i < n_modes; ++i) {
@@ -613,7 +614,7 @@ int identical_measured(gvmode *tm)
 
 static int first = 0;
 
-void speedcheck(gvmode *gp, int print, int wait)
+static void speedcheck(gvmode *gp, int print, int wait)
 {
     char m[41];
     gvmode *rp = NULL;
@@ -673,7 +674,7 @@ void speedcheck(gvmode *gp, int print, int wait)
         fgets(m, 40, stdin);
 }
 
-int collectmodes(const GrxVideoDriver *drv)
+static int collectmodes(const GrxVideoDriver *drv)
 {
     gvmode *gp = grmodes;
     GrxFrameMode fm;
@@ -693,7 +694,7 @@ int collectmodes(const GrxVideoDriver *drv)
     return (int)(gp - grmodes);
 }
 
-int vmcmp(const void *m1, const void *m2)
+static int vmcmp(const void *m1, const void *m2)
 {
     gvmode *md1 = (gvmode *)m1;
     gvmode *md2 = (gvmode *)m2;
@@ -709,7 +710,7 @@ int vmcmp(const void *m1, const void *m2)
 #define LINES   20
 #define COLUMNS 80
 
-void ModeText(int i, int shrt, char *mdtxt)
+static void ModeText(int i, int shrt, char *mdtxt)
 {
     char *flg;
 
@@ -750,7 +751,7 @@ void ModeText(int i, int shrt, char *mdtxt)
     }
 }
 
-int ColsCheck(int cols, int ml, int sep)
+static int ColsCheck(int cols, int ml, int sep)
 {
     int len;
 
@@ -758,7 +759,7 @@ int ColsCheck(int cols, int ml, int sep)
     return len <= COLUMNS;
 }
 
-void PrintModes(void)
+static void PrintModes(void)
 {
     char mdtxt[100];
     unsigned int maxlen;
@@ -800,14 +801,6 @@ int main(int argc, char **argv)
     GError *err = NULL;
     int i;
 
-    font = grx_font_load(NULL, -1, &err);
-    if (!font) {
-        g_error("%s", err->message);
-    }
-    text_opt = grx_text_options_new_full(font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
-        GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
-    grx_font_unref(font);
-
     grmodes = malloc(MAX_MODES * sizeof(gvmode));
     assert(grmodes != NULL);
 #if MEASURE_RAM_MODES
@@ -847,6 +840,20 @@ int main(int argc, char **argv)
         char mb[41], *m = mb;
         int tflag = 0;
         grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
+
+        font = grx_font_load(NULL, -1, &err);
+        if (!font) {
+            g_error("%s", err->message);
+        }
+        if (text_opt) {
+            grx_text_options_set_font(text_opt, font);
+        }
+        else {
+            text_opt = grx_text_options_new_full(font, GRX_COLOR_WHITE, GRX_COLOR_BLACK,
+                GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+        }
+        grx_font_unref(font);
+
         printf(
             "Graphics driver: \"%s\"\t"
             "graphics defaults: %dx%d %ld colors\n",

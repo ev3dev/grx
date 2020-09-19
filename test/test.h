@@ -90,17 +90,6 @@ int main(int argc, char **argv)
     int ret;
     GError *error = NULL;
 
-    font = grx_font_load(NULL, -1, &error);
-    if (!font) {
-        g_error("%s", error->message);
-    }
-
-    black_text = grx_text_options_new(font, GRX_COLOR_BLACK);
-    white_text = grx_text_options_new(font, GRX_COLOR_WHITE);
-    white_text_black_bg = grx_text_options_new_full(font, GRX_COLOR_WHITE,
-        GRX_COLOR_BLACK, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
-    grx_font_unref(font);
-
     Argc = argc - 1;
     Argv = argv + 1;
     if ((Argc >= 2) && (sscanf(Argv[0], "%d", &x) == 1) && (x >= 320)
@@ -141,13 +130,28 @@ int main(int argc, char **argv)
     if (!ret) {
         g_error("%s", error->message);
     }
+
+    font = grx_font_load(NULL, -1, &error);
+    if (!font) {
+        g_error("%s", error->message);
+    }
+
+    black_text = grx_text_options_new(font, GRX_COLOR_BLACK);
+    white_text = grx_text_options_new(font, GRX_COLOR_WHITE);
+    white_text_black_bg = grx_text_options_new_full(font, GRX_COLOR_WHITE,
+        GRX_COLOR_BLACK, GRX_TEXT_HALIGN_LEFT, GRX_TEXT_VALIGN_TOP);
+
     (*testfunc)();
+
     grx_set_mode(GRX_GRAPHICS_MODE_TEXT_DEFAULT, NULL);
     if (strlen(exit_message) > 0) {
         puts(exit_message);
     }
+
     grx_text_options_unref(white_text_black_bg);
     grx_text_options_unref(white_text);
+    grx_text_options_unref(black_text);
+    grx_font_unref(font);
 
     return 0;
 }

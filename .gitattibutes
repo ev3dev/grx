@@ -1,2 +1,6 @@
 * text=auto
 
+*.jpg   binary
+*.pbm   binary
+*.png   binary
+*.ppm   binary

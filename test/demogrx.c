@@ -31,10 +31,8 @@ static int gwidth = 640;
 static int gheight = 480;
 static int gbpp = 16;
 
-char *wintitle = "GRX 2.4.9, the graphics library";
-
-char *animatedtext =
-    "GRX 2.4.9, the graphics library for DJGPPv2, Linux, X11 and Win32";
+static const char wintitle[] = "GRX3, the graphics library";
+static const char animatedtext[] = "GRX3, the graphics library for embedded Linux";
 
 #define NDEMOS 33
 
@@ -78,7 +76,7 @@ typedef struct {
     char *text;
 } ProgTable;
 
-static ProgTable ptable[NDEMOS] = {
+static const ProgTable ptable[NDEMOS] = {
     { ID_ARCTEST, "arctest", "arctest.c -> test arc outline and filled arc drawing" },
     { ID_BB1TEST, "bb1test", "bb1test.c -> test grx_bit_blt_1bpp routine" },
     { ID_BLITTEST, "blittest", "blittest.c -> test various bitblt-s" },
@@ -209,6 +207,8 @@ static void disaster(char *s);
 int main(int argc, char **argv)
 {
     char buffer[100];
+
+    g_set_application_name(wintitle);
 
     if (argc >= 4) {
         gwidth = atoi(argv[1]);
@@ -342,11 +342,11 @@ static void paint_screen(void)
 static void the_title(int x, int y)
 {
     static GrxTextOptions *text_opt;
-    char *t1 = "GRX 2.4.9";
-    char *t2 = "test programs launcher";
+    static const char t1[] = "GRX3";
+    static const char t2[] = "test programs launcher";
 
     if (!text_opt) {
-        text_opt = grx_text_options_new_full(grf_big, LIGHTGREEN, GRX_COLOR_NONE,
+        text_opt = grx_text_options_new_full(grf_std, LIGHTGREEN, GRX_COLOR_NONE,
             GRX_TEXT_HALIGN_CENTER, GRX_TEXT_VALIGN_MIDDLE);
     }
 

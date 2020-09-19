@@ -22,9 +22,9 @@
 #include "test.h"
 
 #define BHH (grx_get_screen_height() / 10)
-int BWW = 83;
+static int BWW = 83;
 
-void drbox(GrxContext *src, int x, int y)
+static void drbox(GrxContext *src, int x, int y)
 {
     GrxColor c1 = grx_color_get(0, 0, 255);
     GrxColor c2 = grx_color_get(255, 0, 0);
@@ -45,7 +45,7 @@ void drbox(GrxContext *src, int x, int y)
     grx_reset_clip_box();
 }
 
-void doblits(GrxContext *src, int x, int y)
+static void doblits(GrxContext *src, int x, int y)
 {
     int xx = (grx_get_width() - BWW) / 2;
     int yy = 2;
@@ -71,7 +71,7 @@ void doblits(GrxContext *src, int x, int y)
     */
 }
 
-void bltest(GrxContext *src, int x, int y)
+static void bltest(GrxContext *src, int x, int y)
 {
     int ii;
 
@@ -83,7 +83,7 @@ void bltest(GrxContext *src, int x, int y)
     }
 }
 
-void blxtest(void)
+static void blxtest(void)
 {
     GrxContext memc;
     int cw = (BWW + 28) & ~7;
