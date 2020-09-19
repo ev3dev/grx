@@ -3,6 +3,7 @@
 shopt -s globstar
 
 if [ "$CI" == "true" ]; then
+    export PATH=/usr/bin:$PATH
     clang-format --version
     OPTIONS="--dry-run --Werror --verbose"
 else
