@@ -124,6 +124,7 @@ static gboolean readpng(FILE *f, GrxContext *grc, int use_alpha)
     int bit_depth;
     int color_type;
     int alpha_present;
+    int interlace_method;
     int i, x, y;
     unsigned char r, g, b;
     int alpha = 0;
@@ -157,8 +158,8 @@ static gboolean readpng(FILE *f, GrxContext *grc, int use_alpha)
     png_set_sig_bytes(png_ptr, 8);
     png_read_info(png_ptr, info_ptr);
 
-    png_get_IHDR(
-        png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, NULL, NULL, NULL);
+    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
+        &interlace_method, NULL, NULL);
 
     /* tell libpng to strip 16 bit/color files down to 8 bits/color */
     if (bit_depth == 16)
@@ -176,6 +177,11 @@ static gboolean readpng(FILE *f, GrxContext *grc, int use_alpha)
     /* transform grayscale images into rgb */
     if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
         png_set_gray_to_rgb(png_ptr);
+    /* prevent warnings about interlace method */
+    if (interlace_method > PNG_INTERLACE_NONE
+        && interlace_method < PNG_INTERLACE_LAST) {
+        png_set_interlace_handling(png_ptr);
+    }
 
     /* we don't do gamma correction by now */
 
