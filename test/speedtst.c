@@ -898,7 +898,7 @@ done:
 
         fprintf(
             log, "\nGraphics driver: \"%s\"\n\n", grx_get_current_video_driver()->name);
-        printf("Results: \n");
+        fprintf(log, "Results:\n");
         printresultheader(log);
 
         for (i = 0; i < n_modes; ++i)
