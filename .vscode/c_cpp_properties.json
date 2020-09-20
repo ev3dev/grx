@@ -7,6 +7,10 @@
                 "/usr/local/include",
                 "${workspaceRoot}"
             ],
+            "defines": [
+                "GRX_DEFAULT_PLUGIN_PATH=\"/usr/local/lib/grx-3.0/plugins\"",
+                "GRX_FONTCONFIG_PATH=\"/usr/local/share/grx-3.0/fonts\""
+            ],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
@@ -41,7 +45,12 @@
                 "/usr/include/harfbuzz",
                 "/usr/include/cairo",
                 "/usr/include/gdk-pixbuf-2.0",
-                "/usr/include/atk-1.0"
+                "/usr/include/atk-1.0",
+                "/usr/include/freetype2"
+            ],
+            "defines": [
+                "GRX_DEFAULT_PLUGIN_PATH=\"/usr/local/lib/grx-3.0/plugins\"",
+                "GRX_FONTCONFIG_PATH=\"/usr/local/share/grx-3.0/fonts\""
             ],
             "intelliSenseMode": "clang-x64",
             "browse": {
@@ -67,7 +76,9 @@
             ],
             "defines": [
                 "_DEBUG",
-                "UNICODE"
+                "UNICODE",
+                "GRX_DEFAULT_PLUGIN_PATH=\"/usr/local/lib/grx-3.0/plugins\"",
+                "GRX_FONTCONFIG_PATH=\"/usr/local/share/grx-3.0/fonts\""
             ],
             "intelliSenseMode": "msvc-x64",
             "browse": {

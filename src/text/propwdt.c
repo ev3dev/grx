@@ -87,7 +87,6 @@ gint grx_font_get_char_height(GrxFont *font, gunichar c)
  */
 gint grx_font_get_text_width(GrxFont *font, const gchar *text)
 {
-    FT_UInt index;
     FT_Error ret;
     gunichar c;
     gint width = 0;
@@ -103,8 +102,7 @@ gint grx_font_get_text_width(GrxFont *font, const gchar *text)
     }
 
     for (; (c = g_utf8_get_char(text)) != '\0'; text = g_utf8_next_char(text)) {
-        index = FT_Get_Char_Index(font->face, c);
-        ret = FT_Load_Glyph(font->face, index, FT_LOAD_DEFAULT);
+        ret = FT_Load_Char(font->face, c, FT_LOAD_DEFAULT);
         if (ret) {
             continue;
         }
@@ -137,14 +135,12 @@ gint grx_font_get_text_height(GrxFont *font, const gchar *text)
     return font->face->size->metrics.height >> 6;
 
 #if 0 // TODO: Handle vertical layout
-    FT_UInt index;
     FT_Error ret;
     gunichar c;
     gint height = 0;
 
     for (; (c = g_utf8_get_char(text)) != '\0'; text = g_utf8_next_char(text)) {
-        index = FT_Get_Char_Index(font->face, c);
-        ret = FT_Load_Glyph(font->face, index, FT_LOAD_DEFAULT);
+        ret = FT_Load_Char(font->face, index, FT_LOAD_DEFAULT);
         if (ret) {
             continue;
         }

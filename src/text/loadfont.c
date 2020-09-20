@@ -29,7 +29,7 @@
 static gboolean freetype_initalized;
 static FT_Library library;
 
-FT_Library grx_get_global_freetype_library(GError **err)
+static FT_Library grx_get_global_freetype_library(GError **err)
 {
     if (!freetype_initalized) {
         FT_Error ret = FT_Init_FreeType(&library);

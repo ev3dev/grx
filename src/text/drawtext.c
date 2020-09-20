@@ -46,7 +46,6 @@ void grx_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options)
     GrxContext ctx;
     gint x_offset, y_offset;
     gunichar c;
-    FT_UInt index;
     FT_Error ret;
 
     g_return_if_fail(text != NULL);
@@ -88,8 +87,7 @@ void grx_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options)
     }
 
     for (; (c = g_utf8_get_char(text)) != '\0'; text = g_utf8_next_char(text)) {
-        index = FT_Get_Char_Index(options->font->face, c);
-        ret = FT_Load_Glyph(options->font->face, index, FT_LOAD_DEFAULT);
+        ret = FT_Load_Char(options->font->face, c, FT_LOAD_DEFAULT);
         if (ret) {
             continue;
         }
