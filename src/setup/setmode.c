@@ -32,7 +32,7 @@
 #include "memfill.h"
 #include "util.h"
 
-GrxVideoMode *_gr_select_mode(
+GrxVideoMode *_grx_select_mode(
     GrxVideoDriver *drv, int w, int h, int bpp, int txt, unsigned int *ep)
 {
 #define ERROR(des, act) ((des > act) ? ((des - act) + 20000) : (act - des))

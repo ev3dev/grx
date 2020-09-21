@@ -163,7 +163,7 @@ static GrxVideoMode *mem_selectmode(
     int LineOffset;
 
     if (txt)
-        return _gr_select_mode(drv, w, h, bpp, txt, ep);
+        return _grx_select_mode(drv, w, h, bpp, txt, ep);
 
     if (w < 1 || h < 1)
         return NULL;
@@ -207,7 +207,7 @@ static GrxVideoMode *mem_selectmode(
 
     if (AllocMemBuf(size)) {
         modes[index].extended_info->frame = MemBuf;
-        return _gr_select_mode(drv, w, h, bpp, txt, ep);
+        return _grx_select_mode(drv, w, h, bpp, txt, ep);
     }
     return FALSE;
 }

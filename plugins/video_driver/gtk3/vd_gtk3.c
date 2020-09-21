@@ -371,7 +371,7 @@ static GrxVideoMode *select_mode(
         video_modes[i].line_offset = ROWSTRIDE(width);
     }
 out:
-    return _gr_select_mode(driver, width, height, bpp, text, ep);
+    return _grx_select_mode(driver, width, height, bpp, text, ep);
 }
 
 static guint get_dpi(GrxVideoDriver *driver)

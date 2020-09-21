@@ -587,12 +587,12 @@ static guint get_dpi(GrxVideoDriver *driver)
 }
 
 G_MODULE_EXPORT GrxVideoDriver grx_linuxfb_video_driver = {
-    .name = "linuxfb",              /* name */
-    .modes = modes,                 /* mode table */
-    .n_modes = itemsof(modes),      /* # of modes */
-    .detect = detect,               /* detection routine */
-    .init = init,                   /* initialization routine */
-    .reset = reset,                 /* reset routine */
-    .select_mode = _gr_select_mode, /* standard mode select routine */
+    .name = "linuxfb",               /* name */
+    .modes = modes,                  /* mode table */
+    .n_modes = itemsof(modes),       /* # of modes */
+    .detect = detect,                /* detection routine */
+    .init = init,                    /* initialization routine */
+    .reset = reset,                  /* reset routine */
+    .select_mode = _grx_select_mode, /* standard mode select routine */
     .get_dpi = get_dpi,
 };

@@ -91,7 +91,7 @@ G_GNUC_INTERNAL void _GrFrDrvGenericStretchBlt(GrxFrame *dst, int dx, int dy, in
 G_GNUC_INTERNAL extern GrxVideoModeExt _GrViDrvEGAVGAtextModeExt;
 G_GNUC_INTERNAL extern GrxVideoModeExt _GrViDrvEGAVGAcustomTextModeExt;
 
-GrxVideoMode *_gr_select_mode(
+GrxVideoMode *_grx_select_mode(
     GrxVideoDriver *drv, int w, int h, int bpp, int txt, unsigned int *ep);
 
 #endif /* whole file */
