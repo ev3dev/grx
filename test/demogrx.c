@@ -413,9 +413,6 @@ static int pev_command(Event *ev)
                 else
                     strcpy(nprog, "./");
 #endif
-#if defined(__XWIN__)
-                strcat(nprog, "x");
-#endif
                 strcat(nprog, ptable[i].prog);
                 if (system(nprog) == -1) {
                     perror("system");

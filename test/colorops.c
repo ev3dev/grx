@@ -33,9 +33,6 @@ TESTFUNC(colorops)
     int bh = y / 16;
     int bx, by;
 
-    /* This won't work very well under X11 in pseudocolor
-     * mode (256 colors or less) if not using a private
-     * color map. The missing colors break RGB mode      */
     grx_color_info_set_palette_type_rgb();
 
     bcolors.background = grx_color_get(160, 100, 30);

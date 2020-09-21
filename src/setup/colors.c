@@ -69,17 +69,6 @@ void grx_color_info_refresh_colors(void)
     }
 }
 
-/* _GR_firstFreeColor is normally zero but some systems may protect some
-** colors for other programs (eg. X11). In this case we don't touch them.
-** These variables are only used in palette modes
-*/
-#ifdef __XWIN__
-int _GR_firstFreeColor = 0;
-int _GR_lastFreeColor = -1;
-#else
-#define _GR_firstFreeColor 0
-#endif
-
 int _GrResetColors(void)
 {
 #define NSAVED 16
@@ -115,16 +104,10 @@ int _GrResetColors(void)
     case 4:
     case 8:
         CLRINFO->palette_type = GRX_COLOR_PALETTE_TYPE_COLOR_TABLE;
-#ifdef __XWIN__
-        if (_GR_lastFreeColor >= _GR_firstFreeColor)
-            CLRINFO->nfree = _GR_lastFreeColor - _GR_firstFreeColor + 1;
-        else
-#endif
-            CLRINFO->nfree = CLRINFO->ncolors - _GR_firstFreeColor;
+
         if (infosave) {
             for (i = 0; i < NSAVED; i++) {
-                load_color((i + _GR_firstFreeColor),
-                    ((struct _GR_colorInfo *)(infosave))->ctable[i].r,
+                load_color(i, ((struct _GR_colorInfo *)(infosave))->ctable[i].r,
                     ((struct _GR_colorInfo *)(infosave))->ctable[i].g,
                     ((struct _GR_colorInfo *)(infosave))->ctable[i].b);
                 CLRINFO->ctable[i].defined = TRUE;

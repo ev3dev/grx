@@ -74,7 +74,7 @@ IncludeCategories:
   - Regex:           '^<grx/'
     Priority:        3
     SortPriority:    0
-  - Regex:           '^<(fontconfig|ft2build|glib|gio|gtk|gdk|gmodule|gudev|grx-3.0|libinput|libudev|linux|jpeglib|png|windows|X11|xkbcommon)'
+  - Regex:           '^<(fontconfig|ft2build|glib|gio|gtk|gdk|gmodule|gudev|grx-3.0|libinput|libudev|linux|jpeglib|png|windows|xkbcommon)'
     Priority:        2
     SortPriority:    0
   - Regex:           '<'
