@@ -32,7 +32,6 @@ set (LIBRARY_SOURCE_FILES
     draw/roundbox.c
     events/events.c
     fdrivers/dotab8.c
-    fdrivers/ftable.c
     fdrivers/genblit.c
     fdrivers/gengiscl.c
     fdrivers/genptscl.c

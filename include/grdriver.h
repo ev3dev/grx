@@ -28,34 +28,35 @@
 ** future versions of GRX
 */
 
-G_GNUC_INTERNAL extern GrxFrameDriver
-    /*
-     * Standard frame drivers in GRX
-     */
-    /* Linear Framebuffer Modes : */
-    _GrFrameDriverMONO01_LFB,  /* mono, 0 = white, 1 = black */
-    _GrFrameDriverMONO10_LFB,  /* mono, 1 = white, 0 = black */
-    _GrFrameDriverCFB2_LFB,    /* 4 color packed pixels */
-    _GrFrameDriverSVGA8_LFB,   /* (Super) VGA 256 color */
-    _GrFrameDriverSVGA16_LFB,  /* Super VGA 32768/65536 color */
-    _GrFrameDriverSVGA24_LFB,  /* Super VGA 16M color */
-    _GrFrameDriverSVGA32L_LFB, /* Super VGA 16M color padded #1 */
-    _GrFrameDriverSVGA32H_LFB, /* Super VGA 16M color padded #2 */
+/*
+ * Standard frame drivers in GRX
+ */
 
-    _GrFrameDriverRAM1,   /* mono */
-    _GrFrameDriverRAM2,   /* 4 color */
-    _GrFrameDriverRAM8,   /* 256 color */
-    _GrFrameDriverRAM16,  /* 32768/65536 color */
-    _GrFrameDriverRAM24,  /* 16M color */
-    _GrFrameDriverRAM32L, /* 16M color padded #1 */
-    _GrFrameDriverRAM32H, /* 16M color padded #2 */
-    /*
-     * This is a NULL-terminated table of frame driver descriptor pointers. Users
-     * can provide their own table with only the desired (or additional) drivers.
-     * Otherwise the table from the GRX library is linked, which includes ALL
-     * currently available drivers (i.e. the ones above).
-     */
-    *_GrFrameDriverTable[];
+/* Linear Framebuffer Modes : */
+G_GNUC_INTERNAL extern GrxFrameDriver
+    _GrFrameDriverMONO01_LFB; /* mono, 0 = white, 1 = black */
+G_GNUC_INTERNAL extern GrxFrameDriver
+    _GrFrameDriverMONO10_LFB; /* mono, 1 = white, 0 = black */
+G_GNUC_INTERNAL extern GrxFrameDriver
+    _GrFrameDriverCFB2_LFB; /* 4 color packed pixels */
+G_GNUC_INTERNAL extern GrxFrameDriver
+    _GrFrameDriverSVGA8_LFB; /* (Super) VGA 256 color */
+G_GNUC_INTERNAL extern GrxFrameDriver
+    _GrFrameDriverSVGA16_LFB; /* Super VGA 32768/65536 color */
+G_GNUC_INTERNAL extern GrxFrameDriver
+    _GrFrameDriverSVGA24_LFB; /* Super VGA 16M color */
+G_GNUC_INTERNAL extern GrxFrameDriver
+    _GrFrameDriverSVGA32L_LFB; /* Super VGA 16M color padded #1 */
+G_GNUC_INTERNAL extern GrxFrameDriver
+    _GrFrameDriverSVGA32H_LFB; /* Super VGA 16M color padded #2 */
+
+G_GNUC_INTERNAL extern GrxFrameDriver _GrFrameDriverRAM1;   /* mono */
+G_GNUC_INTERNAL extern GrxFrameDriver _GrFrameDriverRAM2;   /* 4 color */
+G_GNUC_INTERNAL extern GrxFrameDriver _GrFrameDriverRAM8;   /* 256 color */
+G_GNUC_INTERNAL extern GrxFrameDriver _GrFrameDriverRAM16;  /* 32768/65536 color */
+G_GNUC_INTERNAL extern GrxFrameDriver _GrFrameDriverRAM24;  /* 16M color */
+G_GNUC_INTERNAL extern GrxFrameDriver _GrFrameDriverRAM32L; /* 16M color padded #1 */
+G_GNUC_INTERNAL extern GrxFrameDriver _GrFrameDriverRAM32H; /* 16M color padded #2 */
 
 /*
  * frame driver function types used inside GRX
