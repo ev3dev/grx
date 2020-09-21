@@ -15,8 +15,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include <setjmp.h>
-
 #include <grx/draw_nc.h>
 
 #include "globals.h"
@@ -29,7 +27,6 @@ static ScanFillFunc _filler;
 static GrFillArg _fa;
 static int lx, ly, mx, my, lxo, lyo;
 static GrxColor _border;
-static jmp_buf error;
 
 typedef unsigned char element;       /* for 1bit/pixel images */
 typedef unsigned short line_index;   /* start index table */
@@ -52,9 +49,10 @@ static line_index *start_flg = NULL; /* !=0: index+1 of first start element !=0 
 
 static INLINE element *generate_line(element **buf, int y)
 {
-    if (buf[y] == NULL)
-        if ((buf[y] = calloc(sizeof(element), elements)) == NULL)
-            longjmp(error, 1);
+    if (buf[y] == NULL) {
+        buf[y] = g_new0(element, elements);
+    }
+
     return buf[y];
 }
 
@@ -226,47 +224,30 @@ void _GrFloodFill(int x, int y, GrxColor border, GrFiller *f, GrFillArg fa)
     _x = x - lx;
     my -= ly;
     _y = y - ly;
-    done = calloc(sizeof(element *), (size_t)(my + 1));
-    start = calloc(sizeof(element *), (size_t)(my + 1));
-    start_flg = calloc(sizeof(line_index), (size_t)(my + 1));
-    if (done == NULL || start == NULL || start_flg == NULL) {
-        /*  ERR = grNoFloodMem; */
-        goto FreeMem;
-    }
+    done = g_new0(element *, my + 1);
+    start = g_new0(element *, my + 1);
+    start_flg = g_new0(line_index, my + 1);
 
-    if (setjmp(error) == 0) {
-        elements = calc_ofs(mx + bits_per_element) + 1;
+    elements = calc_ofs(mx + bits_per_element) + 1;
 
-        mouse_block(CURC, lx, ly, mx, my);
-        set_pix(start, _x, _y);
-        SetStartFlag(_x, _y);
-        work();
-        mouse_unblock();
-    }
-    else {
-        /* generate_line() called longjmp() : out of memory error */
-        /*  ERR = grNoFloodMem; */
-    }
+    mouse_block(CURC, lx, ly, mx, my);
+    set_pix(start, _x, _y);
+    SetStartFlag(_x, _y);
+    work();
+    mouse_unblock();
 
-FreeMem:
-    if (done != NULL) {
-        int i;
-        for (i = my; i >= 0; --i)
-            if (done[i] != NULL)
-                free(done[i]);
-        free(done);
-        done = NULL;
+    for (int i = my; i >= 0; --i) {
+        g_free(done[i]);
     }
-    if (start != NULL) {
-        int i;
-        for (i = my; i >= 0; --i)
-            if (start[i] != NULL)
-                free(start[i]);
-        free(start);
-        start = NULL;
+    g_free(done);
+    done = NULL;
+
+    for (int i = my; i >= 0; --i) {
+        g_free(start[i]);
     }
-    if (start_flg != NULL) {
-        free(start_flg);
-        start_flg = NULL;
-    }
+    g_free(start);
+    start = NULL;
+
+    g_free(start_flg);
+    start_flg = NULL;
 }
