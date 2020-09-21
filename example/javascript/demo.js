@@ -21,7 +21,7 @@
 const Grx = imports.gi.Grx;
 const Lang = imports.lang;
 
-const SimpleDemoApp = new Lang.Class({
+var SimpleDemoApp = new Lang.Class({
     Name: "SimpleDemoApp",
     Extends: Grx.Application,
 
