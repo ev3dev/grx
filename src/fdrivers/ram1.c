@@ -15,7 +15,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "allocate.h"
 #include "arith.h"
 #include "colors.h"
 #include "globals.h"

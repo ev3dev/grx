@@ -17,7 +17,6 @@
 
 #include <grx/draw.h>
 
-#include "allocate.h"
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"

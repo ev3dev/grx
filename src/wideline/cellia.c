@@ -18,7 +18,6 @@
 #include <grx/draw.h>
 #include <grx/wideline.h>
 
-#include "allocate.h"
 #include "libgrx.h"
 #include "shapes.h"
 

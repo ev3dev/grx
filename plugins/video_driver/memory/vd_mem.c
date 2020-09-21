@@ -19,7 +19,6 @@
 
 #include <gmodule.h>
 
-#include "allocate.h"
 #include "arith.h"
 #include "globals.h"
 #include "grdriver.h"

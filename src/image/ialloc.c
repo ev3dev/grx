@@ -21,7 +21,6 @@
 #include <grx/mode.h>
 #include <grx/pixmap.h>
 
-#include "allocate.h"
 #include "image.h"
 #include "libgrx.h"
 

@@ -23,7 +23,6 @@
 
 #include <grx/pixmap.h>
 
-#include "allocate.h"
 #include "colors.h"
 #include "globals.h"
 #include "libgrx.h"

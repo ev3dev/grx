@@ -184,8 +184,8 @@ set (LIBRARY_SOURCE_FILES
     user/uvline.c
     utils/error.c
     utils/resize.c
+    utils/scanline_buf.c
     utils/shiftscl.c
-    utils/tmpbuff.c
     wideline/ccirc.c
     wideline/ccirca.c
     wideline/celli.c

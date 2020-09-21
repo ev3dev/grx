@@ -19,7 +19,6 @@
  * Andrzej Lawa [FidoNet: Andrzej Lawa 2:480/19.77]
  */
 
-#include "allocate.h"
 #include "arith.h"
 #include "colors.h"
 #include "docolor.h"

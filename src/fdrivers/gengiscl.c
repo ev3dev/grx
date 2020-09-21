@@ -16,9 +16,9 @@
 
 #include <grx/context.h>
 
-#include "allocate.h"
 #include "grdriver.h"
 #include "libgrx.h"
+#include "scanline_buf.h"
 
 /* will return an array of pixel values pv[] read from frame   */
 /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
@@ -29,26 +29,32 @@ GrxColor *_GrFrDrvGenericGetIndexedScanline(GrxFrame *c, int x, int y, int w, in
     GrxColor *pixels;
     GrxColor *p;
     GRX_ENTER();
+
     DBGPRINTF(DBG_DRIVER, ("x=%d, y=%d, w=%d\n", x, y, w));
-    p = pixels = _GrTempBufferAlloc(sizeof(GrxColor) * (w + 1));
-    if (pixels) {
-        _GR_readPix readpix = c->driver->readpixel;
-        if (indx) {
-            int i, oldx = -1;
-            GrxColor col = 0;
-            for (i = 0; i < w; ++i) {
-                int xx = x + indx[i];
-                if (oldx != xx) {
-                    oldx = xx;
-                    col = (*readpix)(c, xx, y);
-                }
-                *(p++) = col;
+
+    p = pixels = _grx_get_scanline_buf(w);
+    _GR_readPix readpix = c->driver->readpixel;
+
+    if (indx) {
+        int i, oldx = -1;
+        GrxColor col = 0;
+
+        for (i = 0; i < w; ++i) {
+            int xx = x + indx[i];
+
+            if (oldx != xx) {
+                oldx = xx;
+                col = (*readpix)(c, xx, y);
             }
-        }
-        else {
-            for (; w > 0; --w)
-                *(p++) = (*readpix)(c, x++, y);
+
+            *(p++) = col;
         }
     }
+    else {
+        for (; w > 0; --w) {
+            *(p++) = (*readpix)(c, x++, y);
+        }
+    }
+
     GRX_RETURN(pixels);
 }

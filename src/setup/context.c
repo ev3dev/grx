@@ -19,7 +19,6 @@
 
 #include <glib-object.h>
 
-#include "allocate.h"
 #include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"

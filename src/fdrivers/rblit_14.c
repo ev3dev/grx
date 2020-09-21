@@ -20,7 +20,6 @@
 #include <grx/color.h>
 #include <grx/context.h>
 
-#include "allocate.h"
 #include "arith.h"
 #include "colors.h"
 #include "grdriver.h"
@@ -39,17 +38,6 @@
         poke_b((d), (_c_ & ~(msk)) | ((_c_ op(s)) & (msk))); \
     } while (0)
 #define maskset(d, c, msk) poke_b((d), (peek_b(d) & ~(msk)) | ((c) & (msk)))
-
-static unsigned char *LineBuff = NULL;
-
-static int do_alloc(int width)
-{
-    size_t bytes;
-    GRX_ENTER();
-    bytes = sizeof(char) * (((width + 7) >> 3) + 2);
-    LineBuff = _GrTempBufferAlloc(bytes);
-    GRX_RETURN(LineBuff != NULL);
-}
 
 static void get_scanline(unsigned char *dptr, unsigned char *sptr, int w)
 {
@@ -137,7 +125,8 @@ void _GR_rblit_14(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y
     gint w, gint h, GrxColor op, _GR_blitFunc bitblt, gboolean invert)
 {
     GRX_ENTER();
-    if (grx_color_get_mode(op) != GRX_COLOR_MODE_IMAGE && do_alloc(w)) {
+
+    if (grx_color_get_mode(op) != GRX_COLOR_MODE_IMAGE) {
         GR_int32u doffs, soffs;
         int oper = C_OPER(op);
         int shift = ((int)(x & 7)) - ((int)(dx & 7));
@@ -147,6 +136,8 @@ void _GR_rblit_14(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y
         int wd = ((dx + w + 7) >> 3) - (dx >> 3);
         int dskip = dst->line_offset;
         int sskip = src->line_offset;
+        guint8 *scanline = g_newa(guint8, ((w + 7) >> 3) + 2);
+
         if ((dy > y) && (dst->base_address == src->base_address)) {
             /* reverse */
             dy += h - 1;
@@ -157,22 +148,29 @@ void _GR_rblit_14(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y
             unsigned char *dptr = &dst->base_address[doffs];
             unsigned char *sptr = &src->base_address[soffs];
             int hh = h;
+
             if (shift) {
                 while (hh-- > 0) {
-                    shift_scanline(LineBuff, sptr, ws, shift);
-                    if (invert)
-                        invert_scanline(LineBuff, ws);
-                    put_scanline(dptr, LineBuff, wd, lm, rm, oper);
+                    shift_scanline(scanline, sptr, ws, shift);
+
+                    if (invert) {
+                        invert_scanline(scanline, ws);
+                    }
+
+                    put_scanline(dptr, scanline, wd, lm, rm, oper);
                     dptr -= dskip;
                     sptr -= sskip;
                 }
             }
             else {
                 while (hh-- > 0) {
-                    get_scanline(LineBuff, sptr, ws);
-                    if (invert)
-                        invert_scanline(LineBuff, ws);
-                    put_scanline(dptr, LineBuff, wd, lm, rm, oper);
+                    get_scanline(scanline, sptr, ws);
+
+                    if (invert) {
+                        invert_scanline(scanline, ws);
+                    }
+
+                    put_scanline(dptr, scanline, wd, lm, rm, oper);
                     dptr -= dskip;
                     sptr -= sskip;
                 }
@@ -186,29 +184,38 @@ void _GR_rblit_14(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y
             unsigned char *dptr = &dst->base_address[doffs];
             unsigned char *sptr = &src->base_address[soffs];
             int hh = h;
+
             if (shift) {
                 while (hh-- > 0) {
-                    shift_scanline(LineBuff, sptr, ws, shift);
-                    if (invert)
-                        invert_scanline(LineBuff, ws);
-                    put_scanline(dptr, LineBuff, wd, lm, rm, oper);
+                    shift_scanline(scanline, sptr, ws, shift);
+
+                    if (invert) {
+                        invert_scanline(scanline, ws);
+                    }
+
+                    put_scanline(dptr, scanline, wd, lm, rm, oper);
                     dptr += dskip;
                     sptr += sskip;
                 }
             }
             else {
                 while (hh-- > 0) {
-                    get_scanline(LineBuff, sptr, ws);
-                    if (invert)
-                        invert_scanline(LineBuff, ws);
-                    put_scanline(dptr, LineBuff, wd, lm, rm, oper);
+                    get_scanline(scanline, sptr, ws);
+
+                    if (invert) {
+                        invert_scanline(scanline, ws);
+                    }
+
+                    put_scanline(dptr, scanline, wd, lm, rm, oper);
                     dptr += dskip;
                     sptr += sskip;
                 }
             }
         }
     }
-    else
+    else {
         bitblt(dst, dx, dy, src, x, y, w, h, op);
+    }
+
     GRX_LEAVE();
 }
