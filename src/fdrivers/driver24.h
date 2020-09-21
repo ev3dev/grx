@@ -45,7 +45,6 @@
 #define repfill24_or  repfill_24_or
 #define repfill24_and repfill_24_and
 #define repfill24_set repfill_24_set
-#define SETFARSEL(sel)
 
 static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
 {
@@ -62,7 +61,7 @@ static INLINE void drawpixel(int x, int y, GrxColor color)
     unsigned char *p;
     GRX_ENTER();
     p = &CURC->gc_base_address[FOFS(x, y, CURC->gc_line_offset)];
-    SETFARSEL(CURC->gc_selector);
+
     switch (C_OPER(color)) {
     case C_XOR:
         poke24_xor(p, color);
@@ -87,7 +86,7 @@ static void drawhline(int x, int y, int w, GrxColor color)
     p = &CURC->gc_base_address[FOFS(x, y, CURC->gc_line_offset)];
 
     w = MULT3(w);
-    SETFARSEL(CURC->gc_selector);
+
 #ifndef GRX_HAVE_FAST_REPFILL24
     {
         GR_int8u c0;

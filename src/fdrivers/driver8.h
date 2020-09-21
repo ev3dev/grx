@@ -45,7 +45,6 @@
 #define repfill8_or  repfill_b_or
 #define repfill8_and repfill_b_and
 #define repfill8     repfill_b
-#define SETFARSEL(sel)
 
 #ifndef ASM_386_SEL
 #define ASM_386_SEL
@@ -67,7 +66,7 @@ static INLINE void drawpixel(int x, int y, GrxColor color)
     unsigned char *pp;
     GRX_ENTER();
     pp = &CURC->gc_base_address[FOFS(x, y, CURC->gc_line_offset)];
-    SETFARSEL(CURC->gc_selector);
+
     switch (C_OPER(color)) {
     case C_XOR:
         poke8_xor(pp, (GR_int8u)color);
@@ -95,7 +94,7 @@ static void drawvline(int x, int y, int h, GrxColor color)
     if (DOCOLOR8(color, copr)) {
         unsigned lwdt = CURC->gc_line_offset;
         unsigned char *pp = &CURC->gc_base_address[FOFS(x, y, lwdt)];
-        SETFARSEL(CURC->gc_selector);
+
         switch (copr) {
         case C_XOR:
             colfill8_xor(pp, lwdt, (GR_int8u)color, h);
@@ -124,7 +123,7 @@ static void drawhline(int x, int y, int w, GrxColor color)
     if (DOCOLOR8(color, copr)) {
         GR_repl cval = freplicate_b(color);
         unsigned char *pp = &CURC->gc_base_address[FOFS(x, y, CURC->gc_line_offset)];
-        SETFARSEL(CURC->gc_selector);
+
         switch (copr) {
         case C_XOR:
             repfill8_xor(pp, cval, w);
@@ -155,7 +154,7 @@ static void drawblock(int x, int y, int w, int h, GrxColor color)
         unsigned int skip = CURC->gc_line_offset;
         unsigned char *pp = &CURC->gc_base_address[FOFS(x, y, skip)];
         skip -= w;
-        SETFARSEL(CURC->gc_selector);
+
         switch (copr) {
         case C_XOR:
             do {
@@ -266,7 +265,7 @@ static void drawline(int x, int y, int dx, int dy, GrxColor color)
         xstep = 1;
 
     ptr = &CURC->gc_base_address[FOFS(x, y, CURC->gc_line_offset)];
-    SETFARSEL(CURC->gc_selector);
+
     if (dx > dy) {
         npts = dx + 1;
         error = dx >> 1;
@@ -347,7 +346,7 @@ static void drawbitmap(int x, int y, int w, int h, unsigned char *bmp, int pitch
         int skip = CURC->gc_line_offset;
         bmp += start >> 3;
         start &= 7;
-        SETFARSEL(CURC->gc_selector);
+
         do {
             GR_int8u *bp = (GR_int8u *)bmp;
             GR_int8u bits = *bp;

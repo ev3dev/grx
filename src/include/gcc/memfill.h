@@ -123,9 +123,6 @@
 #define __INLINE_STD_COLFILL__(P, V, C, SKIP, FMODE, INS, SIZE, TYPE) \
     __INLINE_386_COLFILL__(P, V, C, SKIP, INS, SIZE, TYPE, )
 
-#define __INLINE_FAR_ROWFILL__(P, V, C, FMODE, SIZE, TYPE) \
-    __INLINE_STD_ROWFILL__(P, V, C, FMODE, SIZE, TYPE)
-
 /* ============================================ special optimized fills */
 
 /* optimized byte based fill:
@@ -176,9 +173,6 @@
             : "0"((unsigned int)(c)), "1"((void *)(p)), "a"((GR_int32u)(v)) \
             : "memory");                                                    \
     } while (0)
-
-/* Video memory is near: use optimized code */
-#define repfill_b_f(p, v, c) repfill_b((p), (v), (c))
 
 /* ====================================================== 24bpp support */
 

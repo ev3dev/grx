@@ -85,18 +85,6 @@ G_GNUC_INTERNAL void _GrFrDrvGenericBitBlt(GrxFrame *dst, int dx, int dy, GrxFra
     int x, int y, int w, int h, GrxColor op);
 G_GNUC_INTERNAL void _GrFrDrvPackedBitBltR2R(GrxFrame *dst, int dx, int dy,
     GrxFrame *src, int x, int y, int w, int h, GrxColor op);
-G_GNUC_INTERNAL void _GrFrDrvPackedBitBltR2V(GrxFrame *dst, int dx, int dy,
-    GrxFrame *src, int x, int y, int w, int h, GrxColor op);
-G_GNUC_INTERNAL void _GrFrDrvPackedBitBltV2R(GrxFrame *dst, int dx, int dy,
-    GrxFrame *src, int x, int y, int w, int h, GrxColor op);
-G_GNUC_INTERNAL void _GrFrDrvPackedBitBltV2V(GrxFrame *dst, int dx, int dy,
-    GrxFrame *src, int x, int y, int w, int h, GrxColor op);
-G_GNUC_INTERNAL void _GrFrDrvPackedBitBltR2V_LFB(GrxFrame *dst, int dx, int dy,
-    GrxFrame *src, int x, int y, int w, int h, GrxColor op);
-G_GNUC_INTERNAL void _GrFrDrvPackedBitBltV2R_LFB(GrxFrame *dst, int dx, int dy,
-    GrxFrame *src, int x, int y, int w, int h, GrxColor op);
-G_GNUC_INTERNAL void _GrFrDrvPackedBitBltV2V_LFB(GrxFrame *dst, int dx, int dy,
-    GrxFrame *src, int x, int y, int w, int h, GrxColor op);
 
 G_GNUC_INTERNAL void _GrFrDrvGenericPutScanline(
     int x, int y, int w, const GrxColor *scl, GrxColor op);

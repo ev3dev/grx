@@ -43,7 +43,6 @@
 #define repfill16_or  repfill_w_or
 #define repfill16_and repfill_w_and
 #define repfill16     repfill_w
-#define SETFARSEL(sel)
 
 #ifndef ASM_386_SEL
 #define ASM_386_SEL
@@ -67,7 +66,7 @@ static INLINE void drawpixel(int x, int y, GrxColor color)
     unsigned char *ptr;
     GRX_ENTER();
     ptr = &CURC->gc_base_address[FOFS(x, y, CURC->gc_line_offset)];
-    SETFARSEL(CURC->gc_selector);
+
     switch (C_OPER(color)) {
     case C_XOR:
         poke16_xor(ptr, (GR_int16u)color);
@@ -92,7 +91,7 @@ static void drawhline(int x, int y, int w, GrxColor color)
     GRX_ENTER();
     pp = &CURC->gc_base_address[FOFS(x, y, CURC->gc_line_offset)];
     cval = freplicate_w(color);
-    SETFARSEL(CURC->gc_selector);
+
     switch (C_OPER(color)) {
     case C_XOR:
         repfill16_xor(pp, cval, w);
@@ -117,7 +116,7 @@ static void drawvline(int x, int y, int h, GrxColor color)
     GRX_ENTER();
     lwdt = CURC->gc_line_offset;
     pp = &CURC->gc_base_address[FOFS(x, y, lwdt)];
-    SETFARSEL(CURC->gc_selector);
+
     switch (C_OPER(color)) {
     case C_XOR:
         colfill16_xor(pp, lwdt, (GR_int16u)color, h);
@@ -146,7 +145,7 @@ static void drawblock(int x, int y, int w, int h, GrxColor color)
     ptr = &CURC->gc_base_address[FOFS(x, y, skip)];
     skip -= w << 1;
     cval = freplicate_w(color);
-    SETFARSEL(CURC->gc_selector);
+
     switch (C_OPER(color)) {
     case C_XOR:
         while (h-- != 0) {
@@ -251,7 +250,7 @@ static void drawline(int x, int y, int dx, int dy, GrxColor color)
         xstep = 2;
 
     ptr = &CURC->gc_base_address[FOFS(x, y, CURC->gc_line_offset)];
-    SETFARSEL(CURC->gc_selector);
+
     if (dx > dy) {
         npts = dx + 1;
         error = dx >> 1;

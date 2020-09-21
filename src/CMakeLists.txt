@@ -38,9 +38,6 @@ set (LIBRARY_SOURCE_FILES
     fdrivers/genptscl.c
     fdrivers/genstrch.c
     fdrivers/pblitr2r.c
-    fdrivers/pblitr2v.c
-    fdrivers/pblitv2r.c
-    fdrivers/pblitv2v.c
     fdrivers/ram1.c
     fdrivers/ram16.c
     fdrivers/ram2.c

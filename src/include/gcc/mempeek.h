@@ -52,12 +52,7 @@
             : "0"(C), "r"((void *)(P)));                    \
     } while (0)
 
-#define __INLINE_24_PEEK__(p) __INLINE_386_PEEK24__(p, )
-
-#define __INLINE_24_FAR_PEEK__(p) (peek_l_f(p) & 0xffffff)
-#define PEEK_24_F_READS_ONE_MORE
-
-#define __INLINE_24_POKE__(p, c, op, INS)     __INLINE_386_POKE24__(p, c, INS, )
-#define __INLINE_24_FAR_POKE__(p, c, op, INS) __INLINE_386_POKE24__(p, c, INS, )
+#define __INLINE_24_PEEK__(p)             __INLINE_386_PEEK24__(p, )
+#define __INLINE_24_POKE__(p, c, op, INS) __INLINE_386_POKE24__(p, c, INS, )
 
 #endif /* __i386__ */

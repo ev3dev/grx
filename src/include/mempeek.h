@@ -48,30 +48,6 @@
 #endif
 #endif
 
-/* the volatile modifier ensures the video ram access is really done */
-#ifndef INLINE_FAR_PEEK
-#define INLINE_FAR_PEEK(P, S, T) (*(volatile unsigned T *)(P))
-#endif
-
-#ifndef INLINE_FAR_POKE
-#ifdef NO_LEFTSIDE_PTR_CAST
-#define INLINE_FAR_POKE(P, V, OP, I, S, T)          \
-    do {                                            \
-        register unsigned T *_ISPptr = (void *)(P); \
-        *_ISPptr OP(V);                             \
-    } while (0)
-#else
-#define INLINE_FAR_POKE(P, V, OP, I, S, T) (*(volatile unsigned T *)(P)OP(V))
-#endif
-#endif
-
-/*
- * setup_far_selector(segment_selector)
- */
-#ifndef setup_far_selector
-#define setup_far_selector(S)
-#endif
-
 /*
  * peek_<SIZE>... (pointer)
  * poke_<SIZE>... (pointer,value)
@@ -83,15 +59,10 @@
     (((GR_int16u)(*((GR_int8u *)(p)))) | ((GR_int16u)(*((GR_int8u *)(p) + 1)) << 8))
 #define __SPLIT_16_POKE__(P, V, OP) \
     ((*((GR_int8u *)(P))OP((V))), (*((GR_int8u *)(P) + 1) OP((V) >> 8)))
-#define poke_w(p, v)       __SPLIT_16_POKE__(p, v, =)
-#define poke_w_xor(p, v)   __SPLIT_16_POKE__(p, v, ^=)
-#define poke_w_or(p, v)    __SPLIT_16_POKE__(p, v, |=)
-#define poke_w_and(p, v)   __SPLIT_16_POKE__(p, v, &=)
-#define peek_w_f(p)        peek_w(p)
-#define poke_w_f(p, v)     poke_w((p), (v))
-#define poke_w_f_xor(p, v) poke_w_xor((p), (v))
-#define poke_w_f_or(p, v)  poke_w_or((p), (v))
-#define poke_w_f_and(p, v) poke_w_and((p), (v))
+#define poke_w(p, v)     __SPLIT_16_POKE__(p, v, =)
+#define poke_w_xor(p, v) __SPLIT_16_POKE__(p, v, ^=)
+#define poke_w_or(p, v)  __SPLIT_16_POKE__(p, v, |=)
+#define poke_w_and(p, v) __SPLIT_16_POKE__(p, v, &=)
 #endif
 
 /* ------------------------------------- near memory (RAM) access */
@@ -167,79 +138,6 @@
 #define poke_h_and(p, v) INLINE_STD_POKE(p, v, &=, AND_INS, OP64b, GR_int64)
 #endif
 
-/* ------------------------------------- far memory (video) access */
-#ifndef peek_b_f
-#define peek_b_f(p) INLINE_FAR_PEEK(p, OP8b, GR_int8)
-#endif
-#ifndef peek_w_f
-#define peek_w_f(p) INLINE_FAR_PEEK(p, OP16b, GR_int16)
-#endif
-#ifndef peek_l_f
-#define peek_l_f(p) INLINE_FAR_PEEK(p, OP32b, GR_int32)
-#endif
-#if defined(GR_int64) && !defined(peek_h_f)
-#define peek_h_f(p) INLINE_FAR_PEEK(p, OP64b, GR_int64)
-#endif
-
-#ifndef poke_b_f
-#define poke_b_f(p, v) INLINE_FAR_POKE(p, v, =, MOV_INS, OP8b, GR_int8)
-#endif
-#ifndef poke_w_f
-#define poke_w_f(p, v) INLINE_FAR_POKE(p, v, =, MOV_INS, OP16b, GR_int16)
-#endif
-#ifndef poke_l_f
-#define poke_l_f(p, v) INLINE_FAR_POKE(p, v, =, MOV_INS, OP32b, GR_int32)
-#endif
-#if defined(GR_int64) && !defined(poke_h_f)
-#define poke_h_f(p, v) INLINE_FAR_POKE(p, v, =, MOV_INS, OP64b, GR_int64)
-#endif
-
-#define poke_b_f_set poke_b_f
-#define poke_w_f_set poke_w_f
-#define poke_l_f_set poke_l_f
-#ifdef poke_h_f
-#define poke_h_f_set poke_h_f
-#endif
-
-#ifndef poke_b_f_xor
-#define poke_b_f_xor(p, v) INLINE_FAR_POKE(p, v, ^=, XOR_INS, OP8b, GR_int8)
-#endif
-#ifndef poke_w_f_xor
-#define poke_w_f_xor(p, v) INLINE_FAR_POKE(p, v, ^=, XOR_INS, OP16b, GR_int16)
-#endif
-#ifndef poke_l_f_xor
-#define poke_l_f_xor(p, v) INLINE_FAR_POKE(p, v, ^=, XOR_INS, OP32b, GR_int32)
-#endif
-#if defined(GR_int64) && !defined(poke_h_f_xor)
-#define poke_h_f_xor(p, v) INLINE_FAR_POKE(p, v, ^=, XOR_INS, OP64b, GR_int64)
-#endif
-
-#ifndef poke_b_f_or
-#define poke_b_f_or(p, v) INLINE_FAR_POKE(p, v, |=, OR_INS, OP8b, GR_int8)
-#endif
-#ifndef poke_w_f_or
-#define poke_w_f_or(p, v) INLINE_FAR_POKE(p, v, |=, OR_INS, OP16b, GR_int16)
-#endif
-#ifndef poke_l_f_or
-#define poke_l_f_or(p, v) INLINE_FAR_POKE(p, v, |=, OR_INS, OP32b, GR_int32)
-#endif
-#if defined(GR_int64) && !defined(poke_h_f_or)
-#define poke_h_f_or(p, v) INLINE_FAR_POKE(p, v, |=, OR_INS, OP64b, GR_int64)
-#endif
-
-#ifndef poke_b_f_and
-#define poke_b_f_and(p, v) INLINE_FAR_POKE(p, v, &=, AND_INS, OP8b, GR_int8)
-#endif
-#ifndef poke_w_f_and
-#define poke_w_f_and(p, v) INLINE_FAR_POKE(p, v, &=, AND_INS, OP16b, GR_int16)
-#endif
-#ifndef poke_l_f_and
-#define poke_l_f_and(p, v) INLINE_FAR_POKE(p, v, &=, AND_INS, OP32b, GR_int32)
-#endif
-#if defined(GR_int64) && !defined(poke_h_f_and)
-#define poke_h_f_and(p, v) INLINE_FAR_POKE(p, v, &=, AND_INS, OP64b, GR_int64)
-#endif
-
 /* ------------------------------------------- special 24bpp handling --- */
 
 #define __INTERN_24_PEEK__(P, F)                                      \
@@ -256,23 +154,12 @@
 #ifndef INLINE_24_PEEK
 #define INLINE_24_PEEK(p) __INTERN_24_PEEK__(p, _n)
 #endif
-#ifndef INLINE_24_FAR_PEEK
-#define INLINE_24_FAR_PEEK(p) __INTERN_24_PEEK__(p, _f)
-#endif
-
 #ifndef INLINE_24_POKE
 #define INLINE_24_POKE(p, c, op, INS) __INTERN_24_POKE__(p, c, _n, op)
 #endif
 
-#ifndef INLINE_24_FAR_POKE
-#define INLINE_24_FAR_POKE(p, c, op, INS) __INTERN_24_POKE__(p, c, _f, op)
-#endif
-
 #ifndef peek_24
 #define peek_24(p) INLINE_24_PEEK(p)
-#endif
-#ifndef peek_24_f
-#define peek_24_f(p) INLINE_24_FAR_PEEK(p)
 #endif
 
 #ifndef poke_24_set
@@ -289,21 +176,7 @@
 #endif
 #define poke_24 poke_24_set
 
-#ifndef poke_24_f_set
-#define poke_24_f_set(p, c) INLINE_24_FAR_POKE(p, c, _set, MOV_INS)
-#endif
-#ifndef poke_24_f_xor
-#define poke_24_f_xor(p, c) INLINE_24_FAR_POKE(p, c, _xor, XOR_INS)
-#endif
-#ifndef poke_24_f_or
-#define poke_24_f_or(p, c) INLINE_24_FAR_POKE(p, c, _or, OR_INS)
-#endif
-#ifndef poke_24_f_and
-#define poke_24_f_and(p, c) INLINE_24_FAR_POKE(p, c, _and, AND_INS)
-#endif
-#define poke_24_f poke_24_f_set
-
-/* ..._n is used in some makros to keep the preprocessor happy.
+/* ..._n is used in some macros to keep the preprocessor happy.
 ** Mapped to standard near memory commands :                    */
 #define peek_b_n     peek_b
 #define peek_w_n     peek_w

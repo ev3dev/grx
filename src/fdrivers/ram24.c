@@ -18,7 +18,6 @@
  * Hartmut Schirmer (hsc@techfak.uni-kiel.de)
  */
 
-#undef FAR_ACCESS
 #include "driver24.h"
 
 GrxFrameDriver _GrFrameDriverRAM24 = {

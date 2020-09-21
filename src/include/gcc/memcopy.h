@@ -172,13 +172,6 @@
 #define __INLINE_STD_COLCOPY__(D, DSKP, S, SSKP, C, DM, SM, INS, SIZE, TYPE) \
     __INLINE_386_COLCOPY__(D, DSKP, S, SSKP, C, INS, mov, SIZE, TYPE, , )
 
-#define __INLINE_FAR_STD_ROWCOPY__(D, S, C, DM, SM, SIZE, TYPE) \
-    __INLINE_STD_ROWCOPY__(D, S, C, DM, SM, SIZE, TYPE)
-#define __INLINE_STD_FAR_ROWCOPY__(D, S, C, DM, SM, SIZE, TYPE) \
-    __INLINE_STD_ROWCOPY__(D, S, C, DM, SM, SIZE, TYPE)
-#define __INLINE_FAR_FAR_ROWCOPY__(D, S, C, DM, SM, SIZE, TYPE) \
-    __INLINE_STD_ROWCOPY__(D, S, C, DM, SM, SIZE, TYPE)
-
 #define fwdcopy_set(AP, D, S, C)                                        \
     do {                                                                \
         int _scr_;                                                      \
