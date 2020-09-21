@@ -333,7 +333,7 @@ namespace Grx {
 
         public Color get_pixel_at (int x, int y);
 
-        public Color *get_scan_line (int x1, int x2, int yy);
+        public Color *get_scanline (int x1, int x2, int yy);
 
         public Color fast_get_pixel_at (int x, int y);
 
@@ -468,8 +468,8 @@ namespace Grx {
 
     public Color get_pixel_at (int x, int y);
 
-    public Color *get_scan_line (int  x1, int x2, int yy);
-    public void put_scan_line (int x1, int x2, int yy, [CCode (array_length = false)]Color[] c, ColorMode op = ColorMode.WRITE);
+    public Color *get_scanline (int  x1, int x2, int yy);
+    public void put_scanline (int x1, int x2, int yy, [CCode (array_length = false)]Color[] c, ColorMode op = ColorMode.WRITE);
 
     /* ================================================================== */
     /*                 NON CLIPPING DRAWING PRIMITIVES                    */

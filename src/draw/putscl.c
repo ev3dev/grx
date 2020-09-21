@@ -24,12 +24,12 @@
  * @x1: the starting X coordinate
  * @x2: the ending X coordinate
  * @y: the Y coordinate
- * @scan_line: (array): the data to write
+ * @scanline: (array): the data to write
  * @op: the color operation
  *
- * Writes @scan_data to the current context using the @op operation.
+ * Writes @scanline to the current context using the @op operation.
  *
- * Data values in @scan_data must fit #GRX_COLOR_VALUE_MASK otherwise the
+ * Data values in @scanline must fit #GRX_COLOR_VALUE_MASK otherwise the
  * results are implementation dependent. So you can't supply operation code
  * with the pixel data!
  */

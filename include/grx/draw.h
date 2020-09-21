@@ -144,7 +144,7 @@ void grx_bit_blt_1bpp(gint x, gint y, GrxContext *src, gint x1, gint y1, gint x2
     gint y2, GrxColor fg, GrxColor bg);
 
 const GrxColor *grx_get_scanline(gint x1, gint x2, gint y, guint *n);
-void grx_put_scanline(gint x1, gint x2, gint y, const GrxColor *scan_line, GrxColor op);
+void grx_put_scanline(gint x1, gint x2, gint y, const GrxColor *scanline, GrxColor op);
 
 #ifndef GRX_SKIP_INLINES
 #define grx_bit_blt(x, y, s, x1, x2, y1, y2, o) \
