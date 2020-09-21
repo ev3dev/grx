@@ -21,16 +21,10 @@
 #include "grdriver.h"
 #include "libgrx.h"
 
-GrxFrameDriver *_GrFrameDriverTable[] = {
-#if !defined(__WIN32__)
-    &_GrFrameDriverMONO01_LFB, &_GrFrameDriverMONO10_LFB, &_GrFrameDriverCFB2_LFB,
-    &_GrFrameDriverSVGA8_LFB, &_GrFrameDriverSVGA16_LFB, &_GrFrameDriverSVGA24_LFB,
-    &_GrFrameDriverSVGA32L_LFB, &_GrFrameDriverSVGA32H_LFB,
-#endif
-#if defined(__WIN32__)
-    &_GrFrameDriverWIN32_8, &_GrFrameDriverWIN32_24,
-#endif
+GrxFrameDriver *_GrFrameDriverTable[] = { &_GrFrameDriverMONO01_LFB,
+    &_GrFrameDriverMONO10_LFB, &_GrFrameDriverCFB2_LFB, &_GrFrameDriverSVGA8_LFB,
+    &_GrFrameDriverSVGA16_LFB, &_GrFrameDriverSVGA24_LFB, &_GrFrameDriverSVGA32L_LFB,
+    &_GrFrameDriverSVGA32H_LFB,
     /* now the drivers for RAM based context */
     &_GrFrameDriverRAM1, &_GrFrameDriverRAM2, &_GrFrameDriverRAM8, &_GrFrameDriverRAM16,
-    &_GrFrameDriverRAM24, &_GrFrameDriverRAM32L, &_GrFrameDriverRAM32H, NULL
-};
+    &_GrFrameDriverRAM24, &_GrFrameDriverRAM32L, &_GrFrameDriverRAM32H, NULL };

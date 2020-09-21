@@ -402,17 +402,10 @@ static int pev_command(Event *ev)
         for (i = 0; i < NDEMOS; i++) {
             if (ev->p1 == ptable[i].cid) {
                 gfaz_fin();
-#if defined(__WIN32__)
-                if (ev->p1 == ID_MODETEST)
-                    strcpy(nprog, "..\\bin\\");
-                else
-                    strcpy(nprog, ".\\");
-#else
                 if (ev->p1 == ID_MODETEST)
                     strcpy(nprog, "../bin/");
                 else
                     strcpy(nprog, "./");
-#endif
                 strcat(nprog, ptable[i].prog);
                 if (system(nprog) == -1) {
                     perror("system");

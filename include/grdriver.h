@@ -42,10 +42,6 @@ G_GNUC_INTERNAL extern GrxFrameDriver
     _GrFrameDriverSVGA32L_LFB, /* Super VGA 16M color padded #1 */
     _GrFrameDriverSVGA32H_LFB, /* Super VGA 16M color padded #2 */
 
-    _GrFrameDriverWIN32_4,  /* WIN32 4 bpp */
-    _GrFrameDriverWIN32_8,  /* WIN32 8 bpp */
-    _GrFrameDriverWIN32_24, /* WIN32 24 bpp */
-
     _GrFrameDriverRAM1,   /* mono */
     _GrFrameDriverRAM2,   /* 4 color */
     _GrFrameDriverRAM8,   /* 256 color */
