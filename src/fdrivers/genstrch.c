@@ -14,7 +14,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "allocate.h"
 #include "arith.h"
 #include "globals.h"
 #include "grdriver.h"
@@ -65,7 +64,7 @@ static void stretch(GrxFrame *dst, int dx, int dy, int dw, int dh, GrxFrame *src
 {
     int maxi;
     GRX_ENTER();
-    setup_ALLOC();
+
     do {
         GrxFrame csave;
         GrxColor *pixels = NULL;
@@ -73,12 +72,10 @@ static void stretch(GrxFrame *dst, int dx, int dy, int dw, int dh, GrxFrame *src
         _GR_getIndexedScanline getscl = src->driver->getindexedscanline;
         _GR_putScanline putscl = dst->driver->putscanline;
         int rd_y = -1;
-        int *xsrc = ALLOC(sizeof(int) * dw);
-        if (!xsrc)
-            break;
+        int *xsrc = g_newa(int, dw);
+
         /* set up xsrc[0..dw-1] = (line 0,sx to dw-1,sx+sw-1).y */
         if (!XLineInit(&lne, 0, sx, dw, sw)) {
-            FREE(xsrc);
             break;
         }
         DBGPRINTF(DBG_DRIVER, ("dw=%d, sw=%d\n", dw, sw));
@@ -92,7 +89,6 @@ static void stretch(GrxFrame *dst, int dx, int dy, int dw, int dh, GrxFrame *src
         } while (!XLineCheckDone(&lne));
 
         if (!XLineInit(&lne, dy, sy, dh, sh)) {
-            FREE(xsrc);
             break;
         }
         maxi = sy + sh - 1;
@@ -107,9 +103,8 @@ static void stretch(GrxFrame *dst, int dx, int dy, int dw, int dh, GrxFrame *src
             XLineStep(&lne);
         } while (!XLineCheckDone(&lne));
         sttcopy(&CURC->frame, &csave);
-        FREE(xsrc);
     } while (0);
-    reset_ALLOC();
+
     GRX_LEAVE();
 }
 

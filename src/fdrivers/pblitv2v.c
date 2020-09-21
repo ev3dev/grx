@@ -17,7 +17,6 @@
 
 #include <grx/context.h>
 
-#include "allocate.h"
 #include "arith.h"
 #include "banking.h"
 #include "colors.h"
@@ -138,38 +137,31 @@ void _GrFrDrvPackedBitBltV2V(GrxFrame *dst, int dx, int dy, GrxFrame *src, int s
     {
         GrxFrame tmp;
         int tmpx, tmpn;
+
         tmp.line_offset = (w + 7) & ~3;
         tmpn = umax(umin(h, (TMPSIZE / tmp.line_offset)), 1);
         tmpx = tmp.line_offset * tmpn;
-#ifdef SMALL_STACK
-        tmp.base_address = _GrTempBufferAlloc(tmpx);
-#else
-        setup_alloca();
-        tmp.base_address = alloca((size_t)tmpx);
-#endif
-        if (tmp.base_address) {
-            int ydir = 0;
-            tmpx = sx & 3;
-            if (dy > sy) {
-                dy += h;
-                sy += h;
-                ydir = ~0;
-            }
-            do {
-                int cnt = umin(h, tmpn);
-                dy -= (ydir & cnt);
-                sy -= (ydir & cnt);
-                _GrFrDrvPackedBitBltV2R(
-                    &tmp, tmpx, 0, src, sx, sy, w, cnt, GRX_COLOR_MODE_WRITE);
-                _GrFrDrvPackedBitBltR2V(dst, dx, dy, &tmp, tmpx, 0, w, cnt, op);
-                dy += (~ydir & cnt);
-                sy += (~ydir & cnt);
-                h -= cnt;
-            } while (h != 0);
+        tmp.base_address = g_alloca(tmpx);
+        int ydir = 0;
+        tmpx = sx & 3;
+
+        if (dy > sy) {
+            dy += h;
+            sy += h;
+            ydir = ~0;
         }
-#ifndef SMALL_STACK
-        reset_alloca();
-#endif
+
+        do {
+            int cnt = umin(h, tmpn);
+            dy -= (ydir & cnt);
+            sy -= (ydir & cnt);
+            _GrFrDrvPackedBitBltV2R(
+                &tmp, tmpx, 0, src, sx, sy, w, cnt, GRX_COLOR_MODE_WRITE);
+            _GrFrDrvPackedBitBltR2V(dst, dx, dy, &tmp, tmpx, 0, w, cnt, op);
+            dy += (~ydir & cnt);
+            sy += (~ydir & cnt);
+            h -= cnt;
+        } while (h != 0);
     }
     GRX_LEAVE();
 }

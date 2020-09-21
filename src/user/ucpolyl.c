@@ -18,7 +18,6 @@
 #include <grx/draw.h>
 #include <grx/wideline.h>
 
-#include "allocate.h"
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
@@ -33,21 +32,15 @@
  * the @points array using the specified options.
  */
 void grx_user_draw_polyline_with_options(
-    int numpts, GrxPoint *points, const GrxLineOptions *lo)
+    gint numpts, GrxPoint *points, const GrxLineOptions *lo)
 {
-    int pt;
-    GrxPoint *tmp;
-    setup_ALLOC();
-    tmp = ALLOC(sizeof(GrxPoint) * numpts);
+    GrxPoint *tmp = g_newa(GrxPoint, numpts);
 
-    if (tmp != NULL) {
-        for (pt = 0; pt < numpts; pt++) {
-            tmp[pt] = points[pt];
-            U2SX(tmp[pt].x, CURC);
-            U2SY(tmp[pt].y, CURC);
-        }
-        grx_draw_polyline_with_options(numpts, tmp, lo);
-        FREE(tmp);
+    for (gint pt = 0; pt < numpts; pt++) {
+        tmp[pt] = points[pt];
+        U2SX(tmp[pt].x, CURC);
+        U2SY(tmp[pt].y, CURC);
     }
-    reset_ALLOC();
+
+    grx_draw_polyline_with_options(numpts, tmp, lo);
 }

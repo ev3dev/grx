@@ -18,7 +18,6 @@
 #include <grx/draw.h>
 #include <grx/pixmap.h>
 
-#include "allocate.h"
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
@@ -36,21 +35,15 @@
  * It will be automatically appended to the list if it is missing.
  */
 void grx_user_draw_filled_polygon_with_pixmap(
-    int numpts, GrxPoint *points, GrxPixmap *p)
+    gint numpts, GrxPoint *points, GrxPixmap *p)
 {
-    int pt;
-    GrxPoint *tmp;
-    setup_ALLOC();
-    tmp = ALLOC(sizeof(GrxPoint) * numpts);
+    GrxPoint *tmp = g_newa(GrxPoint, numpts);
 
-    if (tmp != NULL) {
-        for (pt = 0; pt < numpts; pt++) {
-            tmp[pt] = points[pt];
-            U2SX(tmp[pt].x, CURC);
-            U2SY(tmp[pt].y, CURC);
-        }
-        grx_draw_filled_polygon_with_pixmap(numpts, tmp, p);
-        FREE(tmp);
+    for (gint pt = 0; pt < numpts; pt++) {
+        tmp[pt] = points[pt];
+        U2SX(tmp[pt].x, CURC);
+        U2SY(tmp[pt].y, CURC);
     }
-    reset_ALLOC();
+
+    grx_draw_filled_polygon_with_pixmap(numpts, tmp, p);
 }

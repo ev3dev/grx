@@ -18,39 +18,6 @@
 
 #include <glib.h>
 
-#if defined(__alpha__) || (GRX_VERSION == GRX_VERSION_GENERIC_X11) && !defined(_AIX)
-#include <alloca.h>
-#elif defined(_MSC_VER) && defined(_WIN32)
-#include <malloc.h>
-#elif defined(__MINGW32__) && !defined(alloca)
-#define alloca __builtin_alloca
-#else
-#include <stdlib.h>
-#endif
-
-#ifndef setup_alloca
-#define setup_alloca()
-#define reset_alloca()
-#endif
-
-/* ALLOC / FREE : use alloca if possible */
-#ifdef SMALL_STACK
-#define ALLOC(sze) malloc(sze)
-#define FREE(p)    free(p)
-#define setup_ALLOC()
-#define reset_ALLOC()
-#elif defined(_MSC_VER) && !defined(_WIN32)
-#define ALLOC(sze) _alloca(sze)
-#define FREE(p)
-#define setup_ALLOC setup_alloca
-#define reset_ALLOC reset_alloca
-#else
-#define ALLOC(sze) alloca(sze)
-#define FREE(p)
-#define setup_ALLOC setup_alloca
-#define reset_ALLOC reset_alloca
-#endif
-
 /* temp buffer for blits etc. */
 G_GNUC_INTERNAL extern void *_GrTempBuffer;
 G_GNUC_INTERNAL extern unsigned _GrTempBufferBytes;

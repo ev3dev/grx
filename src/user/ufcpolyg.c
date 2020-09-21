@@ -17,7 +17,6 @@
 
 #include <grx/draw.h>
 
-#include "allocate.h"
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
@@ -40,21 +39,15 @@
  * twice. It can also be used to fill several disjoint nonoverlapping polygons
  * in a single operation.
  */
-void grx_user_draw_filled_convex_polygon(int numpts, GrxPoint *points, GrxColor c)
+void grx_user_draw_filled_convex_polygon(gint numpts, GrxPoint *points, GrxColor c)
 {
-    int pt;
-    GrxPoint *tmp;
-    setup_ALLOC();
-    tmp = ALLOC(sizeof(GrxPoint) * numpts);
+    GrxPoint *tmp = g_newa(GrxPoint, numpts);
 
-    if (tmp != NULL) {
-        for (pt = 0; pt < numpts; pt++) {
-            tmp[pt] = points[pt];
-            U2SX(tmp[pt].x, CURC);
-            U2SY(tmp[pt].y, CURC);
-        }
-        grx_draw_filled_convex_polygon(numpts, tmp, c);
-        FREE(tmp);
+    for (gint pt = 0; pt < numpts; pt++) {
+        tmp[pt] = points[pt];
+        U2SX(tmp[pt].x, CURC);
+        U2SY(tmp[pt].y, CURC);
     }
-    reset_ALLOC();
+
+    grx_draw_filled_convex_polygon(numpts, tmp, c);
 }

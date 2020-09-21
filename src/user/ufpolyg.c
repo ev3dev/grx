@@ -34,21 +34,15 @@
  * Coordinate arrays can either contain or omit the closing edge of the polygon.
  * It will be automatically appended to the list if it is missing.
  */
-void grx_user_draw_filled_polygon(int numpts, GrxPoint *points, GrxColor c)
+void grx_user_draw_filled_polygon(gint numpts, GrxPoint *points, GrxColor c)
 {
-    int pt;
-    GrxPoint *tmp;
-    setup_ALLOC();
-    tmp = ALLOC(sizeof(GrxPoint) * numpts);
+    GrxPoint *tmp = g_newa(GrxPoint, numpts);
 
-    if (tmp != NULL) {
-        for (pt = 0; pt < numpts; pt++) {
-            tmp[pt] = points[pt];
-            U2SX(tmp[pt].x, CURC);
-            U2SY(tmp[pt].y, CURC);
-        }
-        grx_draw_filled_polygon(numpts, tmp, c);
-        FREE(tmp);
+    for (gint pt = 0; pt < numpts; pt++) {
+        tmp[pt] = points[pt];
+        U2SX(tmp[pt].x, CURC);
+        U2SY(tmp[pt].y, CURC);
     }
-    reset_ALLOC();
+
+    grx_draw_filled_polygon(numpts, tmp, c);
 }

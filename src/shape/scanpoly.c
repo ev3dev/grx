@@ -18,7 +18,6 @@
 #include <grx/draw.h>
 #include <grx/extents.h>
 
-#include "allocate.h"
 #include "arith.h"
 #include "clipping.h"
 #include "globals.h"
@@ -101,146 +100,151 @@ typedef struct _scan {
         }                                                 \
     }
 
-void _GrScanPolygon(int n, GrxPoint *pt, GrFiller *f, GrFillArg c)
+void _GrScanPolygon(gint n, GrxPoint *pt, GrFiller *f, GrFillArg c)
 {
     edge *edges, *ep;
     scan *scans, *sp, *points, *segments;
-    int xmin, xmax, ymin, ymax;
-    int ypos, nedges;
+    gint xmin, xmax, ymin, ymax;
+    gint ypos, nedges;
+
     if ((n > 1) && (pt[0].x == pt[n - 1].x) && (pt[0].y == pt[n - 1].y)) {
         n--;
     }
     if (n < 1) {
         return;
     }
-    setup_ALLOC();
-    edges = (edge *)ALLOC(sizeof(edge) * (n + 2));
-    scans = (scan *)ALLOC(sizeof(scan) * (n + 8));
-    if (edges && scans) {
-        /*
-         * Build the edge table. Store only those edges which are in the
-         * valid Y region. Clip them in Y if necessary. Store them with
-         * the endpoints ordered by Y in the edge table.
-         */
-        int prevx = xmin = xmax = pt[0].x;
-        int prevy = ymin = ymax = pt[0].y;
-        nedges = 0;
-        ep = edges;
-        while (--n >= 0) {
-            if (pt[n].y >= prevy) {
-                ep->e.x = prevx;
-                ep->e.y = prevy;
-                ep->e.xlast = prevx = pt[n].x;
-                ep->e.ylast = prevy = pt[n].y;
-            }
-            else {
-                ep->e.xlast = prevx;
-                ep->e.ylast = prevy;
-                ep->e.x = prevx = pt[n].x;
-                ep->e.y = prevy = pt[n].y;
-            }
-            if ((ep->e.y > grx_get_clip_box_max_y())
-                || (ep->e.ylast < grx_get_clip_box_min_y()))
-                continue;
-            clip_line_ymin(CURC, ep->e.x, ep->e.y, ep->e.xlast, ep->e.ylast);
-            if (ymin > ep->e.y)
-                ymin = ep->e.y;
-            if (ymax < ep->e.ylast)
-                ymax = ep->e.ylast;
-            if (xmin > ep->e.x)
-                xmin = ep->e.x;
-            if (xmax < ep->e.xlast)
-                xmax = ep->e.xlast;
-            setup_edge(&ep->e);
-            ep->status = inactive;
-            nedges++;
-            ep++;
+
+    edges = g_newa(edge, n + 2);
+    scans = g_newa(scan, n + 8);
+
+    /*
+     * Build the edge table. Store only those edges which are in the
+     * valid Y region. Clip them in Y if necessary. Store them with
+     * the endpoints ordered by Y in the edge table.
+     */
+    gint prevx = xmin = xmax = pt[0].x;
+    gint prevy = ymin = ymax = pt[0].y;
+    nedges = 0;
+    ep = edges;
+
+    while (--n >= 0) {
+        if (pt[n].y >= prevy) {
+            ep->e.x = prevx;
+            ep->e.y = prevy;
+            ep->e.xlast = prevx = pt[n].x;
+            ep->e.ylast = prevy = pt[n].y;
         }
-        if ((nedges > 0) && (xmin <= grx_get_clip_box_max_x())
-            && (xmax >= grx_get_clip_box_min_x())) {
-            if (xmin < grx_get_clip_box_min_x())
-                xmin = grx_get_clip_box_min_x();
-            if (ymin < grx_get_clip_box_min_y())
-                ymin = grx_get_clip_box_min_y();
-            if (xmax > grx_get_clip_box_max_x())
-                xmax = grx_get_clip_box_max_x();
-            if (ymax > grx_get_clip_box_max_y())
-                ymax = grx_get_clip_box_max_y();
-            mouse_block(CURC, xmin, ymin, xmax, ymax);
-            /*
-             * Scan for every row between ymin and ymax.
-             * Build a linked list of disjoint segments to fill. Rules:
-             *   (1) a horizontal edge in the row contributes a segment
-             *   (2) any other edge crossing the row contributes a point
-             *   (3) every segment between even and odd points is filled
-             */
-            for (ypos = ymin; ypos <= ymax; ypos++) {
-                sp = scans;
-                points = NULL;
-                segments = NULL;
-                for (n = nedges, ep = edges; --n >= 0; ep++) {
-                    switch (ep->status) {
-                    case inactive:
-                        if (ep->e.y != ypos)
-                            break;
-                        if (ep->e.dy == 0) {
-                            ep->status = passed;
-                            xmin = ep->e.x;
-                            xmax = ep->e.xlast;
-                            isort(xmin, xmax);
-                            add_scansegment(segments, sp, xmin, xmax);
-                            sp++;
-                            break;
-                        }
-                        ep->status = active;
-                    case active:
-                        xmin = xmax = ep->e.x;
-                        if (ep->e.ylast == ypos) {
-                            ep->status = passed;
-                            xmax = ep->e.xlast;
-                            isort(xmin, xmax);
-                            add_scanpoint(points, sp, xmin, xmax);
-                            sp++;
-                        }
-                        else if (ep->e.xmajor) {
-                            xstep_edge(&ep->e);
-                            xmax = ep->e.x - ep->e.xstep;
-                            isort(xmin, xmax);
-                        }
-                        else {
-                            ystep_edge(&ep->e);
-                        }
-                        add_scanpoint(points, sp, xmin, xmax);
+        else {
+            ep->e.xlast = prevx;
+            ep->e.ylast = prevy;
+            ep->e.x = prevx = pt[n].x;
+            ep->e.y = prevy = pt[n].y;
+        }
+
+        if ((ep->e.y > grx_get_clip_box_max_y())
+            || (ep->e.ylast < grx_get_clip_box_min_y()))
+            continue;
+
+        clip_line_ymin(CURC, ep->e.x, ep->e.y, ep->e.xlast, ep->e.ylast);
+
+        if (ymin > ep->e.y)
+            ymin = ep->e.y;
+        if (ymax < ep->e.ylast)
+            ymax = ep->e.ylast;
+        if (xmin > ep->e.x)
+            xmin = ep->e.x;
+        if (xmax < ep->e.xlast)
+            xmax = ep->e.xlast;
+
+        setup_edge(&ep->e);
+        ep->status = inactive;
+        nedges++;
+        ep++;
+    }
+
+    if ((nedges > 0) && (xmin <= grx_get_clip_box_max_x())
+        && (xmax >= grx_get_clip_box_min_x())) {
+        if (xmin < grx_get_clip_box_min_x())
+            xmin = grx_get_clip_box_min_x();
+        if (ymin < grx_get_clip_box_min_y())
+            ymin = grx_get_clip_box_min_y();
+        if (xmax > grx_get_clip_box_max_x())
+            xmax = grx_get_clip_box_max_x();
+        if (ymax > grx_get_clip_box_max_y())
+            ymax = grx_get_clip_box_max_y();
+        mouse_block(CURC, xmin, ymin, xmax, ymax);
+        /*
+         * Scan for every row between ymin and ymax.
+         * Build a linked list of disjoint segments to fill. Rules:
+         *   (1) a horizontal edge in the row contributes a segment
+         *   (2) any other edge crossing the row contributes a point
+         *   (3) every segment between even and odd points is filled
+         */
+        for (ypos = ymin; ypos <= ymax; ypos++) {
+            sp = scans;
+            points = NULL;
+            segments = NULL;
+
+            for (n = nedges, ep = edges; --n >= 0; ep++) {
+                switch (ep->status) {
+                case inactive:
+                    if (ep->e.y != ypos)
+                        break;
+                    if (ep->e.dy == 0) {
+                        ep->status = passed;
+                        xmin = ep->e.x;
+                        xmax = ep->e.xlast;
+                        isort(xmin, xmax);
+                        add_scansegment(segments, sp, xmin, xmax);
                         sp++;
                         break;
-                    default:
-                        break;
                     }
-                }
-                while (points != NULL) {
-                    scan *nextpt = points->next;
-                    if (!nextpt)
-                        break;
-                    xmin = points->x1;
-                    xmax = nextpt->x2;
-                    points = nextpt->next;
-                    add_scansegment(segments, nextpt, xmin, xmax);
-                }
-                while (segments != NULL) {
-                    xmin = segments->x1;
-                    xmax = segments->x2;
-                    segments = segments->next;
-                    clip_ordxrange_(CURC, xmin, xmax, continue, CLIP_EMPTY_MACRO_ARG);
-                    (*f->scan)((xmin + CURC->x_offset), (ypos + CURC->y_offset),
-                        (xmax - xmin + 1), c);
+                    ep->status = active;
+                case active:
+                    xmin = xmax = ep->e.x;
+                    if (ep->e.ylast == ypos) {
+                        ep->status = passed;
+                        xmax = ep->e.xlast;
+                        isort(xmin, xmax);
+                        add_scanpoint(points, sp, xmin, xmax);
+                        sp++;
+                    }
+                    else if (ep->e.xmajor) {
+                        xstep_edge(&ep->e);
+                        xmax = ep->e.x - ep->e.xstep;
+                        isort(xmin, xmax);
+                    }
+                    else {
+                        ystep_edge(&ep->e);
+                    }
+                    add_scanpoint(points, sp, xmin, xmax);
+                    sp++;
+                    break;
+                default:
+                    break;
                 }
             }
-            mouse_unblock();
+
+            while (points != NULL) {
+                scan *nextpt = points->next;
+                if (!nextpt)
+                    break;
+                xmin = points->x1;
+                xmax = nextpt->x2;
+                points = nextpt->next;
+                add_scansegment(segments, nextpt, xmin, xmax);
+            }
+
+            while (segments != NULL) {
+                xmin = segments->x1;
+                xmax = segments->x2;
+                segments = segments->next;
+                clip_ordxrange_(CURC, xmin, xmax, continue, CLIP_EMPTY_MACRO_ARG);
+                (*f->scan)((xmin + CURC->x_offset), (ypos + CURC->y_offset),
+                    (xmax - xmin + 1), c);
+            }
         }
+
+        mouse_unblock();
     }
-    if (edges)
-        FREE(edges);
-    if (scans)
-        FREE(scans);
-    reset_ALLOC();
 }
