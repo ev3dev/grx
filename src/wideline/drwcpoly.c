@@ -44,18 +44,18 @@ static void intersect(GrxPoint *l1s, GrxPoint *l1e, GrxPoint *l2s, GrxPoint *l2e
         int dy1 = y12 - y11;
         int dx2 = x22 - x21;
         int dy2 = y22 - y21;
-        long det = imul32(dx2, dy1) - imul32(dx1, dy2);
+        int det = dx2 * dy1 - dx1 * dy2;
         if (det != 0) {
             /* Compute t for the parametric equation of line #2 */
             /* then: x = x21 + dx2 * t2, and y = y21 + dy2 * t2 */
             /* but do this with integer arithmetic */
             /* and do rounding instead of truncation */
-            long det_t2 = imul32(dx1, (y21 - y11)) - imul32(dy1, (x21 - x11));
-            long ldet = ABS(det);
+            int det_t2 = dx1 * (y21 - y11) - dy1 * (x21 - x11);
+            int ldet = ABS(det);
             /* make sure we're still near old start point of line #2 */
             if (ABS(det_t2) < (((ldet << 1) + ldet) >> 1)) {
-                int xdif2 = (int)(((long)(dx2 << 1) * det_t2) / det);
-                int ydif2 = (int)(((long)(dy2 << 1) * det_t2) / det);
+                int xdif2 = ((dx2 << 1) * det_t2) / det;
+                int ydif2 = ((dy2 << 1) * det_t2) / det;
                 if (xdif2 > 0)
                     xdif2++;
                 if (ydif2 > 0)
@@ -94,12 +94,12 @@ static void intersect(GrxPoint *l1s, GrxPoint *l1e, GrxPoint *l2s, GrxPoint *l2e
             int yc = (y12 + y21) >> 1;
             int xb = 0, yb = 0;
             int i;
-            long minerr = 0, err;
+            int minerr = 0, err;
             for (i = 0; i < 9; ++i) {
                 int x = xc + xr[i];
                 int y = yc + yr[i];
-                long e1 = imul32(dx1, (y - y11)) - imul32(dy1, (x - x11));
-                long e2 = imul32(dx2, (y - y21)) - imul32(dy2, (x - x21));
+                int e1 = dx1 * (y - y11) - dy1 * (x - x11);
+                int e2 = dx2 * (y - y21) - dy2 * (x - x21);
                 err = ABS(e1) + ABS(e2);
                 if (i == 0 || err < minerr) {
                     minerr = err;
@@ -144,7 +144,7 @@ static void genrect(GrxPoint p1, GrxPoint p2, int w, GrxPoint rect[4])
         wy = w;
     }
     else {
-        unsigned long minerr, error = ~0UL, w2 = imul32(w, w);
+        unsigned int minerr, error = ~0U, w2 = w * w;
         int mindelta = MIN(ABS(dx), ABS(dy));
         int maxdelta = MAX(ABS(dx), ABS(dy));
         wx1 = w / 2;
@@ -158,7 +158,7 @@ static void genrect(GrxPoint p1, GrxPoint p2, int w, GrxPoint rect[4])
             wy = wy1;
             wy1 = urscale(wx1, mindelta, maxdelta);
             minerr = error;
-            error = imul32(wx1, wx1) + imul32(wy1, wy1) - w2;
+            error = wx1 * wx1 + wy1 * wy1 - w2;
             error = ABS((int)error);
         } while (error <= minerr);
         if (ABS(dx) > ABS(dy)) {

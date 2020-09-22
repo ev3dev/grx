@@ -71,26 +71,15 @@
     }
 
 /*
- * [i|u]mul32(x,y)
- * multiply two int-s for a long result
- */
-#ifndef imul32
-#define imul32(X, Y) ((long)(X) * (long)(Y))
-#endif
-#ifndef umul32
-#define umul32(X, Y) ((unsigned long)(X) * (unsigned long)(Y))
-#endif
-
-/*
  * [i|u]scale(X,N,D)
  * scale an integer with long intermediate result but without using long
  * arithmetic all the way
  */
 #ifndef iscale
-#define iscale(X, N, D) (int)(imul32(X, N) / (long)(D))
+#define iscale(X, N, D) (int)((X) * (N) / (long)(D))
 #endif
 #ifndef uscale
-#define uscale(X, N, D) (unsigned int)(umul32(X, N) / (unsigned long)(D))
+#define uscale(X, N, D) (unsigned int)((X) * (N) / (unsigned long)(D))
 #endif
 #ifndef irscale
 #define irscale(X, N, D)                                                    \

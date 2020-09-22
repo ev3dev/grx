@@ -92,7 +92,7 @@ gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width)
  */
 gint grx_frame_mode_get_memory_size(GrxFrameMode mode, gint width, gint height)
 {
-    return umul32(grx_frame_mode_get_line_offset(mode, width), height);
+    return grx_frame_mode_get_line_offset(mode, width) * height;
 }
 
 /**
@@ -108,5 +108,5 @@ gint grx_frame_mode_get_memory_size(GrxFrameMode mode, gint width, gint height)
  */
 gint grx_frame_mode_get_context_size(GrxFrameMode mode, gint width, gint height)
 {
-    return umul32(grx_frame_mode_get_line_offset(mode, width), height);
+    return grx_frame_mode_get_line_offset(mode, width) * height;
 }

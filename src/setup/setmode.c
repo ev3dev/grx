@@ -141,7 +141,7 @@ static int buildcontext(GrxVideoMode *mp, const GrxFrameDriver *fdp, GrxContext 
     int res;
     GRX_ENTER();
     res = FALSE;
-    mem_size = umul32(mp->line_offset, mp->height);
+    mem_size = mp->line_offset * mp->height;
     g_debug("buildcontext - Mode Frame buffer = %p", mp->extended_info->frame);
     g_debug(
         "buildcontext - Mode Frame selector = 0x%x", mp->extended_info->lfb_selector);
@@ -378,7 +378,7 @@ int grx_set_mode(GrxGraphicsMode which, GError **error, ...)
                     DRVINFO->set_rw_banks = vmd.extended_info->set_rw_banks;
                     DRVINFO->splitbanks = TRUE;
                 }
-                if (umul32(vmd.line_offset, vmd.height) <= 0x10000L) {
+                if (vmd.line_offset * vmd.height <= 0x10000L) {
                     DRVINFO->splitbanks = TRUE;
                 }
             }

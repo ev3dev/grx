@@ -25,7 +25,7 @@
 #include "memfill.h"
 
 /* frame offset address calculation */
-#define FOFS(x, y, lo) (umul32((y), (int)(lo)) + ((x) >> 2))
+#define FOFS(x, y, lo) ((y) * (lo) + ((x) >> 2))
 
 static INLINE GrxColor readpixel(const GrxFrame *c, int x, int y)
 {

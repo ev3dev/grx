@@ -58,13 +58,13 @@ void _GrScanEllipse(
         int *scans = g_newa(int, ry + 1);
         int row = ry;
         int col = 0;
-        long yasq = umul32(ry, ry);
-        long xasq = umul32(rx, rx);
-        long xasq2 = xasq + xasq;
-        long yasq2 = yasq + yasq;
-        long xasq4 = xasq2 + xasq2;
-        long yasq4 = yasq2 + yasq2;
-        long error = (xasq2 * (row - 1) * row) + (yasq2 * (1 - xasq)) + xasq;
+        int yasq = ry * ry;
+        int xasq = rx * rx;
+        int xasq2 = xasq + xasq;
+        int yasq2 = yasq + yasq;
+        int xasq4 = xasq2 + xasq2;
+        int yasq4 = yasq2 + yasq2;
+        int error = (xasq2 * (row - 1) * row) + (yasq2 * (1 - xasq)) + xasq;
 
         while ((xasq * row) > (yasq * col)) {
             if (error >= 0) {
