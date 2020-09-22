@@ -75,9 +75,10 @@ int _GrResetColors(void)
     static int firsttime = TRUE;
     int i;
     if (firsttime) {
-        infosave = malloc(offsetof(struct _GR_colorInfo, ctable[NSAVED]));
+        infosave = malloc(G_STRUCT_OFFSET(struct _GR_colorInfo, ctable[NSAVED]));
         if (infosave) {
-            memcpy(infosave, CLRINFO, offsetof(struct _GR_colorInfo, ctable[NSAVED]));
+            memcpy(infosave, CLRINFO,
+                G_STRUCT_OFFSET(struct _GR_colorInfo, ctable[NSAVED]));
         }
         firsttime = FALSE;
     }

@@ -247,6 +247,8 @@ struct _GrxFrameDriver {
     gint bits_per_pixel; /* bits per pixel */
     gint max_mem_size;   /* maximum frame memory size in bytes */
     gboolean (*init)(GrxVideoMode *md);
+    /* items above here are copied when building frame driver.
+     * items below are merged. */
     GrxColor (*readpixel)(const GrxFrame *c, gint x, gint y);
     void (*drawpixel)(gint x, gint y, GrxColor c);
     void (*drawline)(gint x, gint y, gint dx, gint dy, GrxColor c);

@@ -108,7 +108,7 @@ static int buildframedriver(GrxVideoMode *mp, GrxFrameDriver *drv)
         MERGE(getindexedscanline);
         MERGE(putscanline);
         if (compl ) {
-            memcpy(drv, d2, offsetof(GrxFrameDriver, readpixel));
+            memcpy(drv, d2, G_STRUCT_OFFSET(GrxFrameDriver, readpixel));
             goto done; /* TRUE */
         }
         if (!d1) {

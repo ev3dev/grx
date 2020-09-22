@@ -145,10 +145,6 @@
 #ifndef longsof
 #define longsof(s) ((sizeof(s) + sizeof(long) - 1) / sizeof(long))
 #endif
-#ifndef offsetof
-#define offsetof(structype, field) \
-    (int)((char *)(&((structype *)(0))->field) - (char *)(0))
-#endif
 
 /*
  * [i|u]mul32(x,y)
