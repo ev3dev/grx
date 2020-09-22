@@ -22,7 +22,6 @@
 #include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "memcopy.h"
 #include "memfill.h"
 #include "util.h"
 
@@ -147,7 +146,7 @@ GrxContext *grx_context_new_subcontext(
         flags = MYCONTEXT;
     }
     sttzero(where);
-    sttcopy(&where->frame, &parent->frame);
+    memcpy(&where->frame, &parent->frame, sizeof(where->frame));
     where->ref_count = 1;
     where->gc_memory_flags = flags;
     where->x_offset = x1;
@@ -261,8 +260,8 @@ void grx_set_current_context(const GrxContext *context)
 {
     if (!context)
         context = SCRN;
-    sttcopy(CURC, context);
-    sttcopy(FDRV, context->gc_driver);
+    memcpy(CURC, context, sizeof(*CURC));
+    memcpy(FDRV, context->gc_driver, sizeof(*FDRV));
 }
 
 /**
@@ -297,7 +296,7 @@ GrxContext *grx_save_current_context(GrxContext *where)
             return NULL;
         flags = MYCONTEXT;
     }
-    sttcopy(where, CURC);
+    memcpy(where, CURC, sizeof(*where));
     where->ref_count = 1;
     where->gc_memory_flags = flags;
     return where;

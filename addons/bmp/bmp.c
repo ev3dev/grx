@@ -430,7 +430,7 @@ int GrAllocBmpImageColors(GrBmpImage *_bmp, GrBmpImageColors *_pal)
         _bmp->bi_colormap = colors;
         if (_pal) {
             _bmp->bi_erasepalette = FALSE;
-            memcpy(_pal, _bmp->bi_bmpimagecolors, sizeof(GrBmpImageColors));
+            memcpy(_pal, _bmp->bi_bmpimagecolors, sizeof(*_pal));
             _bmp->bi_palette = NULL;
             _bmp->bi_numcolors = 0;
         }

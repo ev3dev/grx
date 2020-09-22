@@ -22,7 +22,6 @@
 #include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "memcopy.h"
 #include "mouse.h"
 #include "shapes.h"
 
@@ -415,7 +414,7 @@ void _GrDrawCustomPolygon(int n, const GrxPoint *pt, const GrxLineOptions *lp,
         if (y2 < ppt.y)
             y2 = ppt.y;
     }
-    sttcopy(&preclip, CURC);
+    memcpy(&preclip, CURC, sizeof(preclip));
     preclip.x_clip_low -= p.w;
     preclip.y_clip_low -= p.w;
     preclip.x_clip_high += p.w;

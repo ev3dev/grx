@@ -20,7 +20,6 @@
 #include "colors.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "memcopy.h"
 #include "memfill.h"
 
 static void (*DACload)(GrxColor c, GrxColor r, GrxColor g, GrxColor b) = NULL;
@@ -449,14 +448,14 @@ void grx_color_info_save_colors(void *buffer)
     colorsave *cp = (colorsave *)buffer;
     cp->magic = CSAVE_MAGIC;
     cp->nc = grx_color_info_n_colors();
-    sttcopy(&cp->info, CLRINFO);
+    memcpy(&cp->info, CLRINFO, sizeof(cp->info));
 }
 
 void grx_color_info_restore_colors(void *buffer)
 {
     colorsave *cp = (colorsave *)buffer;
     if ((cp->magic == CSAVE_MAGIC) && (cp->nc == grx_color_info_n_colors())) {
-        sttcopy(CLRINFO, &cp->info);
+        memcpy(CLRINFO, &cp->info, sizeof(*CLRINFO));
         grx_color_info_refresh_colors();
     }
 }

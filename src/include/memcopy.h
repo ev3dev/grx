@@ -633,17 +633,4 @@
 #define revcopy_and(ap, d, s, c) INLINE_REV_COPY(_n_and, _n, ap, d, s, c)
 #endif
 
-/*
- * stuff to copy arrays, structures
- */
-#define memcopy(d, s, sze)                                           \
-    do {                                                             \
-        register void *_CD = (void *)(d);                            \
-        register void *_CS = (void *)(s);                            \
-        register unsigned GR_PtrInt _CC = (unsigned GR_PtrInt)(sze); \
-        DBGPRINTF(DBG_COPYFILL, ("memcopy size=%u\n", _CC));         \
-        fwdcopy_set(_CD, _CD, _CS, _CC);                             \
-    } while (0)
-#define sttcopy(dstp, srcp) memcopy((dstp), (srcp), sizeof(*(srcp)))
-
 #endif /* whole file */

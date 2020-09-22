@@ -41,7 +41,6 @@
 #include "grdriver.h"
 #include "libgrx.h"
 #include "libinput_device_manager.h"
-#include "memcopy.h"
 #include "memfill.h"
 
 #define NUM_MODES 80 /* max # of supported modes */
@@ -469,12 +468,12 @@ static void add_video_mode(
             if (!mp->extended_info) {
                 if (etp >= &exts[NUM_EXTS])
                     return;
-                sttcopy(etp, ep);
+                memcpy(etp, ep, sizeof(*etp));
                 mp->extended_info = etp;
                 *epp = ++etp;
             }
         }
-        sttcopy(*mpp, mp);
+        memcpy(*mpp, mp, sizeof(**mpp));
         (*mpp)++;
     }
 }

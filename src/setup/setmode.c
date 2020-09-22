@@ -28,7 +28,6 @@
 #include "grdriver.h"
 #include "grx/error.h"
 #include "libgrx.h"
-#include "memcopy.h"
 #include "memfill.h"
 #include "util.h"
 
@@ -88,7 +87,7 @@ static int buildframedriver(GrxVideoMode *mp, GrxFrameDriver *drv)
     d1 = _GrFindFrameDriver(mp->extended_info->mode);
     d2 = mp->extended_info->drv;
     if (d1)
-        sttcopy(drv, d1);
+        memcpy(drv, d1, sizeof(*drv));
     if (d2) {
         int compl = TRUE;
 #define MERGE(F)        \
@@ -132,7 +131,7 @@ static int buildframedriver(GrxVideoMode *mp, GrxFrameDriver *drv)
         res = FALSE;
         goto done;
     }
-    sttcopy(drv, d1);
+    memcpy(drv, d1, sizeof(*drv));
 done:
     GRX_RETURN(res);
 }
@@ -352,7 +351,7 @@ int grx_set_mode(GrxGraphicsMode which, GError **error, ...)
                 "could not find suitable video mode");
             goto done;
         }
-        sttcopy(&vmd, mdp);
+        memcpy(&vmd, mdp, sizeof(vmd));
         if ((t || buildframedriver(&vmd, &fdr))
             && (*vmd.extended_info->setup)(&vmd, noclear)
             && (t || buildcontext(&vmd, &fdr, &cxt))) {
@@ -363,7 +362,7 @@ int grx_set_mode(GrxGraphicsMode which, GError **error, ...)
                 int hh = vmd.height = imax(vh, vmd.height);
                 if (!(*vmd.extended_info->set_virtual_size)(&vmd, ww, hh, &vmd)
                     || !buildcontext(&vmd, &fdr, &cxt)) {
-                    sttcopy(&vmd, mdp);
+                    memcpy(&vmd, mdp, sizeof(vmd));
                     buildcontext(&vmd, &fdr, &cxt);
                     (*vmd.extended_info->setup)(&vmd, noclear);
                 }
@@ -386,14 +385,14 @@ int grx_set_mode(GrxGraphicsMode which, GError **error, ...)
             }
             else {
                 sttzero(&cxt);
-                sttcopy(&fdr, &DRVINFO->tdriver);
+                memcpy(&fdr, &DRVINFO->tdriver, sizeof(fdr));
                 cxt.gc_driver = &DRVINFO->tdriver;
             }
-            sttcopy(&CXTINFO->current, &cxt);
-            sttcopy(&CXTINFO->screen, &cxt);
-            sttcopy(&DRVINFO->fdriver, &fdr);
-            sttcopy(&DRVINFO->sdriver, &fdr);
-            sttcopy(&DRVINFO->actmode, &vmd);
+            memcpy(&CXTINFO->current, &cxt, sizeof(CXTINFO->current));
+            memcpy(&CXTINFO->screen, &cxt, sizeof(CXTINFO->screen));
+            memcpy(&DRVINFO->fdriver, &fdr, sizeof(DRVINFO->fdriver));
+            memcpy(&DRVINFO->sdriver, &fdr, sizeof(DRVINFO->sdriver));
+            memcpy(&DRVINFO->actmode, &vmd, sizeof(DRVINFO->actmode));
             DRVINFO->curmode = mdp;
             DRVINFO->mcode = which;
             DRVINFO->vposx = 0;

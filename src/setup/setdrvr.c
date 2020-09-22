@@ -27,7 +27,6 @@
 #include "grdriver.h"
 #include "grx/error.h"
 #include "libgrx.h"
-#include "memcopy.h"
 #include "memfill.h"
 #include "util.h"
 
@@ -236,7 +235,7 @@ int grx_set_driver(const char *drvspec, GError **error)
 
 void _GrCloseVideoDriver(void)
 {
-    sttcopy(&DRVINFO->fdriver, &DRVINFO->tdriver);
+    memcpy(&DRVINFO->fdriver, &DRVINFO->tdriver, sizeof(DRVINFO->fdriver));
     if (DRVINFO->vdriver != NULL) {
         if (DRVINFO->vdriver->reset)
             (*DRVINFO->vdriver->reset)();

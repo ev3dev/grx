@@ -14,11 +14,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <string.h>
+
 #include "arith.h"
 #include "globals.h"
 #include "grdriver.h"
 #include "libgrx.h"
-#include "memcopy.h"
 #include "mempeek.h"
 
 /* ----------------------------- generic Bresenham line code for stretching */
@@ -92,8 +93,8 @@ static void stretch(const GrxFrame *dst, int dx, int dy, int dw, int dh,
             break;
         }
         maxi = sy + sh - 1;
-        sttcopy(&csave, &CURC->frame);
-        sttcopy(&CURC->frame, dst);
+        memcpy(&csave, &CURC->frame, sizeof(csave));
+        memcpy(&CURC->frame, dst, sizeof(CURC->frame));
         do {
             int y = min(lne.y, maxi);
             if (!pixels || y != rd_y)
@@ -102,7 +103,7 @@ static void stretch(const GrxFrame *dst, int dx, int dy, int dw, int dh,
                 putscl(dx, lne.x, dw, pixels, op);
             XLineStep(&lne);
         } while (!XLineCheckDone(&lne));
-        sttcopy(&CURC->frame, &csave);
+        memcpy(&CURC->frame, &csave, sizeof(CURC->frame));
     } while (0);
 
     GRX_LEAVE();

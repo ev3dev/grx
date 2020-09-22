@@ -15,6 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <string.h>
+
 #include <grx/color.h>
 
 #include "globals.h"
@@ -30,8 +32,8 @@ static void bitblt(const GrxFrame *dst, int dx, int dy, const GrxFrame *src, int
     skipc = op ^ GRX_COLOR_MODE_IMAGE;
     step = 1;
     op &= GRX_COLOR_MODE_MASK;
-    sttcopy(&csave, &CURC->frame);
-    sttcopy(&CURC->frame, dst);
+    memcpy(&csave, &CURC->frame, sizeof(csave));
+    memcpy(&CURC->frame, dst, sizeof(CURC->frame));
     if ((dy > y) || ((dy == y) && (dx > x))) {
         x += (w - 1);
         dx += (w - 1);
@@ -51,6 +53,6 @@ static void bitblt(const GrxFrame *dst, int dx, int dy, const GrxFrame *src, int
         dy += step;
         y += step;
     } while (--h > 0);
-    sttcopy(&CURC->frame, &csave);
+    memcpy(&CURC->frame, &csave, sizeof(CURC->frame));
     GRX_LEAVE();
 }

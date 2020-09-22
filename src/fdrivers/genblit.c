@@ -15,10 +15,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+#include <string.h>
+
 #include "globals.h"
 #include "grdriver.h"
 #include "libgrx.h"
-#include "memcopy.h"
 
 void _GrFrDrvGenericBitBlt(const GrxFrame *dst, int dx, int dy, const GrxFrame *src,
     int x, int y, int w, int h, GrxColor op)
@@ -34,8 +35,8 @@ void _GrFrDrvGenericBitBlt(const GrxFrame *dst, int dx, int dy, const GrxFrame *
     skipc = op ^ GRX_COLOR_MODE_IMAGE;
     step = 1;
     op &= GRX_COLOR_MODE_MASK;
-    sttcopy(&csave, &CURC->frame);
-    sttcopy(&CURC->frame, dst);
+    memcpy(&csave, &CURC->frame, sizeof(csave));
+    memcpy(&CURC->frame, dst, sizeof(CURC->frame));
     if ((dy > y) || ((dy == y) && (dx > x))) {
         x += (w - 1);
         dx += (w - 1);
@@ -55,6 +56,6 @@ void _GrFrDrvGenericBitBlt(const GrxFrame *dst, int dx, int dy, const GrxFrame *
         dy += step;
         y += step;
     } while (--h > 0);
-    sttcopy(&CURC->frame, &csave);
+    memcpy(&CURC->frame, &csave, sizeof(CURC->frame));
     GRX_LEAVE();
 }
