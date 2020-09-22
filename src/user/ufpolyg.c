@@ -33,7 +33,7 @@
  * Coordinate arrays can either contain or omit the closing edge of the polygon.
  * It will be automatically appended to the list if it is missing.
  */
-void grx_user_draw_filled_polygon(gint numpts, GrxPoint *points, GrxColor c)
+void grx_user_draw_filled_polygon(gint numpts, const GrxPoint *points, GrxColor c)
 {
     GrxPoint *tmp = g_newa(GrxPoint, numpts);
 

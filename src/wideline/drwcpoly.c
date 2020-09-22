@@ -202,7 +202,7 @@ typedef struct {
 } linepatt;
 
 static void solidsegment1(
-    GrxPoint p1, GrxPoint p2, GrxPoint *prev, GrxPoint *next, linepatt *p)
+    GrxPoint p1, GrxPoint p2, const GrxPoint *prev, const GrxPoint *next, linepatt *p)
 {
     int x1 = p1.x, y1 = p1.y;
     int x2 = p2.x, y2 = p2.y;
@@ -211,7 +211,7 @@ static void solidsegment1(
 }
 
 static void solidsegmentw(
-    GrxPoint p1, GrxPoint p2, GrxPoint *prev, GrxPoint *next, linepatt *p)
+    GrxPoint p1, GrxPoint p2, const GrxPoint *prev, const GrxPoint *next, linepatt *p)
 {
     GrxPoint rect[4], prect[4], nrect[4];
     genrect(p1, p2, p->w, rect);
@@ -241,8 +241,9 @@ static void solidsegmentw(
     _GrScanConvexPoly(4, rect, p->f, p->c);
 }
 
-static void dashedsegment(GrxPoint p1, GrxPoint p2, GrxPoint *prev, GrxPoint *next,
-    linepatt *p, void (*doseg)(GrxPoint, GrxPoint, GrxPoint *, GrxPoint *, linepatt *))
+static void dashedsegment(GrxPoint p1, GrxPoint p2, const GrxPoint *prev,
+    const GrxPoint *next, linepatt *p,
+    void (*doseg)(GrxPoint, GrxPoint, const GrxPoint *, const GrxPoint *, linepatt *))
 {
     int on, pos, len, seg;
     int x, y, dx, dy;
@@ -356,19 +357,19 @@ static void dashedsegment(GrxPoint p1, GrxPoint p2, GrxPoint *prev, GrxPoint *ne
 }
 
 static void dashedsegment1(
-    GrxPoint p1, GrxPoint p2, GrxPoint *prev, GrxPoint *next, linepatt *p)
+    GrxPoint p1, GrxPoint p2, const GrxPoint *prev, const GrxPoint *next, linepatt *p)
 {
     dashedsegment(p1, p2, prev, next, p, solidsegment1);
 }
 
 static void dashedsegmentw(
-    GrxPoint p1, GrxPoint p2, GrxPoint *prev, GrxPoint *next, linepatt *p)
+    GrxPoint p1, GrxPoint p2, const GrxPoint *prev, const GrxPoint *next, linepatt *p)
 {
     dashedsegment(p1, p2, prev, next, p, solidsegmentw);
 }
 
-void _GrDrawCustomPolygon(int n, GrxPoint *pt, const GrxLineOptions *lp, GrFiller *f,
-    GrFillArg c, int doClose, int circle)
+void _GrDrawCustomPolygon(int n, const GrxPoint *pt, const GrxLineOptions *lp,
+    GrFiller *f, GrFillArg c, int doClose, int circle)
 {
 #define x1 start.x
 #define y1 start.y
@@ -376,7 +377,7 @@ void _GrDrawCustomPolygon(int n, GrxPoint *pt, const GrxLineOptions *lp, GrFille
 #define y2 end.y
     int i;
     GrxPoint start, end;
-    void (*doseg)(GrxPoint, GrxPoint, GrxPoint *, GrxPoint *, linepatt *);
+    void (*doseg)(GrxPoint, GrxPoint, const GrxPoint *, const GrxPoint *, linepatt *);
     linepatt p;
     GrxContext preclip;
     if (n < 2)
@@ -431,7 +432,8 @@ void _GrDrawCustomPolygon(int n, GrxPoint *pt, const GrxLineOptions *lp, GrFille
     }
     for (i = 0; i < n; i++) {
         int clipped, xmajor, length;
-        GrxPoint p1, p2, *prev, *next;
+        GrxPoint p1, p2;
+        const GrxPoint *prev, *next;
 
         if (!(i + doClose))
             continue;

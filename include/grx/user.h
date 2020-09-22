@@ -64,8 +64,8 @@ void grx_user_draw_circle_arc(
     gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
 void grx_user_draw_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end,
     GrxArcStyle style, GrxColor c);
-void grx_user_draw_polyline(gint n_points, GrxPoint *points, GrxColor c);
-void grx_user_draw_polygon(gint n_points, GrxPoint *points, GrxColor c);
+void grx_user_draw_polyline(gint n_points, const GrxPoint *points, GrxColor c);
+void grx_user_draw_polygon(gint n_points, const GrxPoint *points, GrxColor c);
 
 void grx_user_draw_filled_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_user_draw_framed_box(
@@ -76,8 +76,9 @@ void grx_user_draw_filled_circle_arc(
     gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
 void grx_user_draw_filled_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start,
     gint end, GrxArcStyle style, GrxColor c);
-void grx_user_draw_filled_polygon(gint n_points, GrxPoint *points, GrxColor c);
-void grx_user_draw_filled_convex_polygon(gint n_points, GrxPoint *points, GrxColor c);
+void grx_user_draw_filled_polygon(gint n_points, const GrxPoint *points, GrxColor c);
+void grx_user_draw_filled_convex_polygon(
+    gint n_points, const GrxPoint *points, GrxColor c);
 void grx_user_flood_fill(gint x, gint y, GrxColor border, GrxColor c);
 
 GrxColor grx_user_get_pixel_at(gint x, gint y);
@@ -96,9 +97,9 @@ void grx_user_draw_circle_arc_with_options(gint xc, gint yc, gint r, gint start,
 void grx_user_draw_ellipse_arc_with_options(gint xc, gint yc, gint rx, gint ry,
     gint start, gint end, GrxArcStyle style, const GrxLineOptions *o);
 void grx_user_draw_polyline_with_options(
-    gint n_points, GrxPoint *points, const GrxLineOptions *o);
+    gint n_points, const GrxPoint *points, const GrxLineOptions *o);
 void grx_user_draw_polygon_with_options(
-    gint n_points, GrxPoint *points, const GrxLineOptions *o);
+    gint n_points, const GrxPoint *points, const GrxLineOptions *o);
 
 void grx_user_draw_line_with_pixmap(
     gint x1, gint y1, gint x2, gint y2, GrxLineOptions *o, GrxPixmap *p);
@@ -113,9 +114,9 @@ void grx_user_draw_circle_arc_with_pixmap(gint xc, gint yc, gint r, gint start,
 void grx_user_draw_ellipse_arc_with_pixmap(gint xc, gint yc, gint rx, gint ry,
     gint start, gint end, GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p);
 void grx_user_draw_polyline_with_pixmap(
-    gint n_points, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p);
+    gint n_points, const GrxPoint *points, GrxLineOptions *o, GrxPixmap *p);
 void grx_user_draw_polygon_with_pixmap(
-    gint n_points, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p);
+    gint n_points, const GrxPoint *points, GrxLineOptions *o, GrxPixmap *p);
 
 void grx_user_draw_filled_pixel_with_pixmap(gint x, gint y, GrxPixmap *p);
 void grx_user_draw_filled_line_with_pixmap(
@@ -130,9 +131,9 @@ void grx_user_draw_filled_circle_arc_with_pixmap(
 void grx_user_draw_filled_ellipse_arc_with_pixmap(gint xc, gint yc, gint rx, gint ry,
     gint start, gint end, GrxArcStyle style, GrxPixmap *p);
 void grx_user_draw_filled_polygon_with_pixmap(
-    gint n_points, GrxPoint *points, GrxPixmap *p);
+    gint n_points, const GrxPoint *points, GrxPixmap *p);
 void grx_user_draw_filled_convex_polygon_with_pixmap(
-    gint n_points, GrxPoint *points, GrxPixmap *p);
+    gint n_points, const GrxPoint *points, GrxPixmap *p);
 void grx_user_flood_fill_with_pixmap(gint x, gint y, GrxColor border, GrxPixmap *p);
 
 void grx_user_draw_text(const gchar *text, gint x, gint y, GrxTextOptions *options);

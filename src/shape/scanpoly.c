@@ -100,7 +100,7 @@ typedef struct _scan {
         }                                                 \
     }
 
-void _GrScanPolygon(gint n, GrxPoint *pt, GrFiller *f, GrFillArg c)
+void _GrScanPolygon(gint n, const GrxPoint *pt, GrFiller *f, GrFillArg c)
 {
     edge *edges, *ep;
     scan *scans, *sp, *points, *segments;

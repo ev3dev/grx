@@ -39,7 +39,8 @@
  * twice. It can also be used to fill several disjoint nonoverlapping polygons
  * in a single operation.
  */
-void grx_user_draw_filled_convex_polygon(gint numpts, GrxPoint *points, GrxColor c)
+void grx_user_draw_filled_convex_polygon(
+    gint numpts, const GrxPoint *points, GrxColor c)
 {
     GrxPoint *tmp = g_newa(GrxPoint, numpts);
 

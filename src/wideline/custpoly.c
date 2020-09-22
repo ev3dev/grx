@@ -32,7 +32,7 @@
  * Coordinate arrays can either contain or omit the closing edge of the polygon.
  * It will be automatically appended to the list if it is missing.
  */
-void grx_draw_polygon_with_options(int n, GrxPoint *pt, const GrxLineOptions *o)
+void grx_draw_polygon_with_options(int n, const GrxPoint *pt, const GrxLineOptions *o)
 {
     GrFillArg fval;
     fval.color = o->color;

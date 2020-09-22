@@ -27,7 +27,7 @@ static GrxColor *EGA;
 #define blue  EGA[1]
 #define white EGA[15]
 
-static void testpoly(int n, GrxPoint *points, int convex)
+static void testpoly(int n, const GrxPoint *points, int convex)
 {
     grx_clear_screen(black);
     grx_draw_polygon(n, points, white);

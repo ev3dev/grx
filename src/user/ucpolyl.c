@@ -32,7 +32,7 @@
  * the @points array using the specified options.
  */
 void grx_user_draw_polyline_with_options(
-    gint numpts, GrxPoint *points, const GrxLineOptions *lo)
+    gint numpts, const GrxPoint *points, const GrxLineOptions *lo)
 {
     GrxPoint *tmp = g_newa(GrxPoint, numpts);
 

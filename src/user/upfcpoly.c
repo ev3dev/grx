@@ -41,7 +41,7 @@
  * in a single operation.
  */
 void grx_user_draw_filled_convex_polygon_with_pixmap(
-    gint numpts, GrxPoint *points, GrxPixmap *p)
+    gint numpts, const GrxPoint *points, GrxPixmap *p)
 {
     GrxPoint *tmp = g_newa(GrxPoint, numpts);
 

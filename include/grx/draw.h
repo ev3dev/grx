@@ -106,8 +106,8 @@ void grx_draw_circle_arc(
     gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
 void grx_draw_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start, gint end,
     GrxArcStyle style, GrxColor c);
-void grx_draw_polyline(gint n_points, GrxPoint *points, GrxColor c);
-void grx_draw_polygon(gint n_points, GrxPoint *points, GrxColor c);
+void grx_draw_polyline(gint n_points, const GrxPoint *points, GrxColor c);
+void grx_draw_polygon(gint n_points, const GrxPoint *points, GrxColor c);
 
 void grx_get_last_arc_coordinates(
     gint *xs, gint *ys, gint *xe, gint *ye, gint *xc, gint *yc);
@@ -127,8 +127,8 @@ void grx_draw_filled_circle_arc(
     gint xc, gint yc, gint r, gint start, gint end, GrxArcStyle style, GrxColor c);
 void grx_draw_filled_ellipse_arc(gint xc, gint yc, gint rx, gint ry, gint start,
     gint end, GrxArcStyle style, GrxColor c);
-void grx_draw_filled_polygon(gint n_points, GrxPoint *points, GrxColor c);
-void grx_draw_filled_convex_polygon(gint n_points, GrxPoint *points, GrxColor c);
+void grx_draw_filled_polygon(gint n_points, const GrxPoint *points, GrxColor c);
+void grx_draw_filled_convex_polygon(gint n_points, const GrxPoint *points, GrxColor c);
 
 void grx_flood_fill(gint x, gint y, GrxColor border, GrxColor c);
 void grx_flood_spill(

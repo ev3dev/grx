@@ -35,7 +35,7 @@
  * It will be automatically appended to the list if it is missing.
  */
 void grx_user_draw_polygon_with_options(
-    gint numpts, GrxPoint *points, const GrxLineOptions *lo)
+    gint numpts, const GrxPoint *points, const GrxLineOptions *lo)
 {
     GrxPoint *tmp = g_newa(GrxPoint, numpts);
 

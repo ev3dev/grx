@@ -45,11 +45,13 @@ G_GNUC_INTERNAL extern GrFiller _GrSolidFiller;
 G_GNUC_INTERNAL extern GrFiller _GrPatternFiller;
 
 G_GNUC_INTERNAL void _GrDrawPolygon(
-    int n, GrxPoint *pt, GrFiller *f, GrFillArg c, int doClose);
-G_GNUC_INTERNAL void _GrDrawCustomPolygon(int n, GrxPoint *pt, const GrxLineOptions *lp,
-    GrFiller *f, GrFillArg c, int doClose, int circle);
-G_GNUC_INTERNAL void _GrScanConvexPoly(int n, GrxPoint *pt, GrFiller *f, GrFillArg c);
-G_GNUC_INTERNAL void _GrScanPolygon(int n, GrxPoint *pt, GrFiller *f, GrFillArg c);
+    int n, const GrxPoint *pt, GrFiller *f, GrFillArg c, int doClose);
+G_GNUC_INTERNAL void _GrDrawCustomPolygon(int n, const GrxPoint *pt,
+    const GrxLineOptions *lp, GrFiller *f, GrFillArg c, int doClose, int circle);
+G_GNUC_INTERNAL void _GrScanConvexPoly(
+    int n, const GrxPoint *pt, GrFiller *f, GrFillArg c);
+G_GNUC_INTERNAL void _GrScanPolygon(
+    int n, const GrxPoint *pt, GrFiller *f, GrFillArg c);
 G_GNUC_INTERNAL void _GrScanEllipse(
     int xc, int yc, int rx, int ry, GrFiller *f, GrFillArg c, int filled);
 

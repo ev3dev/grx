@@ -40,7 +40,7 @@ typedef struct {
         ed.e.ylast = pt[ed.index].y;                      \
     }
 
-void _GrScanConvexPoly(int n, GrxPoint *pt, GrFiller *f, GrFillArg c)
+void _GrScanConvexPoly(int n, const GrxPoint *pt, GrFiller *f, GrFillArg c)
 {
     edge L, R;
     int xmin, xmax;

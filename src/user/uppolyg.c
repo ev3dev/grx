@@ -36,7 +36,7 @@
  * It will be automatically appended to the list if it is missing.
  */
 void grx_user_draw_polygon_with_pixmap(
-    gint numpts, GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
+    gint numpts, const GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
 {
     GrxPoint *tmp = g_newa(GrxPoint, numpts);
 

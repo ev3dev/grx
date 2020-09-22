@@ -30,7 +30,7 @@
  * Draw a multi-segment line on the current context that connects each point in
  * the @points array using the specified color.
  */
-void grx_user_draw_polyline(gint numpts, GrxPoint *points, GrxColor c)
+void grx_user_draw_polyline(gint numpts, const GrxPoint *points, GrxColor c)
 {
     GrxPoint *tmp = g_newa(GrxPoint, numpts);
 

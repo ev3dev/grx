@@ -36,7 +36,7 @@
  * twice. It can also be used to fill several disjoint nonoverlapping polygons
  * in a single operation.
  */
-void grx_draw_filled_convex_polygon(int n, GrxPoint *pt, GrxColor c)
+void grx_draw_filled_convex_polygon(int n, const GrxPoint *pt, GrxColor c)
 {
     GrFillArg fval;
     fval.color = c;

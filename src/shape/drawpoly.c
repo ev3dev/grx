@@ -24,7 +24,7 @@
 #include "mouse.h"
 #include "shapes.h"
 
-void _GrDrawPolygon(int n, GrxPoint *pt, GrFiller *f, GrFillArg c, int doClose)
+void _GrDrawPolygon(int n, const GrxPoint *pt, GrFiller *f, GrFillArg c, int doClose)
 {
     int i, px, py, x1, y1, x2, y2;
     if (n <= 0)
