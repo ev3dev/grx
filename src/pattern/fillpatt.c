@@ -26,7 +26,8 @@
 void _GrFillPatternExt(int x, int y, int sx, int sy, int width, GrxPixmap *p)
 {
     GRX_ENTER();
-    void (*bltfun)(GrxFrame *, int, int, GrxFrame *, int, int, int, int, GrxColor);
+    void (*bltfun)(
+        const GrxFrame *, int, int, const GrxFrame *, int, int, int, int, GrxColor);
     int pattwdt = p->width;
     int xdest = x;
     int ydest = y;

@@ -61,29 +61,29 @@ G_GNUC_INTERNAL extern GrxFrameDriver _GrFrameDriverRAM32H; /* 16M color padded 
 /*
  * frame driver function types used inside GRX
  */
-typedef GrxColor (*_GR_readPix)(GrxFrame *, int, int);
+typedef GrxColor (*_GR_readPix)(const GrxFrame *, int, int);
 typedef void (*_GR_drawPix)(int, int, GrxColor);
-typedef void (*_GR_blitFunc)(GrxFrame *dst, int dx, int dy, GrxFrame *src, int x, int y,
-    int w, int h, GrxColor op);
+typedef void (*_GR_blitFunc)(const GrxFrame *dst, int dx, int dy, const GrxFrame *src,
+    int x, int y, int w, int h, GrxColor op);
 typedef GrxColor *(*_GR_getIndexedScanline)(
-    GrxFrame *c, int x, int y, int w, int *indx);
+    const GrxFrame *c, int x, int y, int w, int *indx);
 typedef void (*_GR_putScanline)(int x, int y, int w, const GrxColor *scl, GrxColor op);
 
 /*
  * Frame driver utility functions
  */
-G_GNUC_INTERNAL void _GrFrDrvGenericBitBlt(GrxFrame *dst, int dx, int dy, GrxFrame *src,
-    int x, int y, int w, int h, GrxColor op);
-G_GNUC_INTERNAL void _GrFrDrvPackedBitBltR2R(GrxFrame *dst, int dx, int dy,
-    GrxFrame *src, int x, int y, int w, int h, GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvGenericBitBlt(const GrxFrame *dst, int dx, int dy,
+    const GrxFrame *src, int x, int y, int w, int h, GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvPackedBitBltR2R(const GrxFrame *dst, int dx, int dy,
+    const GrxFrame *src, int x, int y, int w, int h, GrxColor op);
 
 G_GNUC_INTERNAL void _GrFrDrvGenericPutScanline(
     int x, int y, int w, const GrxColor *scl, GrxColor op);
 G_GNUC_INTERNAL GrxColor *_GrFrDrvGenericGetIndexedScanline(
-    GrxFrame *c, int x, int y, int w, int *indx);
+    const GrxFrame *c, int x, int y, int w, int *indx);
 
-G_GNUC_INTERNAL void _GrFrDrvGenericStretchBlt(GrxFrame *dst, int dx, int dy, int dw,
-    int dh, GrxFrame *src, int sx, int sy, int sw, int sh, GrxColor op);
+G_GNUC_INTERNAL void _GrFrDrvGenericStretchBlt(const GrxFrame *dst, int dx, int dy,
+    int dw, int dh, const GrxFrame *src, int sx, int sy, int sw, int sh, GrxColor op);
 
 /*
  * Commonly used video driver data structures

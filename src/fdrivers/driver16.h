@@ -48,7 +48,7 @@
 #define ASM_386_SEL
 #endif
 
-static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
+static INLINE GrxColor readpixel(const GrxFrame *c, int x, int y)
 {
     GR_int16u *pp;
     GRX_ENTER();
@@ -309,8 +309,8 @@ done:
 #include "generic/bitmap.c"
 #include "generic/pattern.c"
 
-static void bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
-    int h, GrxColor op)
+static void bitblt(const GrxFrame *dst, int dx, int dy, const GrxFrame *src, int sx,
+    int sy, int w, int h, GrxColor op)
 {
     GRX_ENTER();
     if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)

@@ -20,7 +20,7 @@
 #include "libgrx.h"
 #include "scanline_buf.h"
 
-static GrxColor *getindexedscanline(GrxFrame *c, int x, int y, int w, int *indx)
+static GrxColor *getindexedscanline(const GrxFrame *c, int x, int y, int w, int *indx)
 {
     GrxColor *pixels;
     GrxColor *p;

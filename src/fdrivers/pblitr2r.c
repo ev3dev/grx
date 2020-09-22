@@ -32,8 +32,8 @@
 /* check if forward blit would overwrite source */
 #define OVERLAP(dp, sp) (((GR_int8 *)dp) > ((GR_int8 *)sp))
 
-void _GrFrDrvPackedBitBltR2R(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx,
-    int sy, int w, int h, GrxColor op)
+void _GrFrDrvPackedBitBltR2R(const GrxFrame *dst, int dx, int dy, const GrxFrame *src,
+    int sx, int sy, int w, int h, GrxColor op)
 {
     unsigned char *dptr, *sptr;
     unsigned dskip, sskip;

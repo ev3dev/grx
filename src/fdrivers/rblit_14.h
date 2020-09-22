@@ -22,5 +22,6 @@
 #include <grx/color.h>
 #include <grx/common.h>
 
-G_GNUC_INTERNAL void _GR_rblit_14(GrxFrame *dst, gint dx, gint dy, GrxFrame *src,
-    gint x, gint y, gint w, gint h, GrxColor op, _GR_blitFunc bitblt, gboolean invert);
+G_GNUC_INTERNAL void _GR_rblit_14(const GrxFrame *dst, gint dx, gint dy,
+    const GrxFrame *src, gint x, gint y, gint w, gint h, GrxColor op,
+    _GR_blitFunc bitblt, gboolean invert);

@@ -24,7 +24,8 @@
 /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
 /*    else             pv[i=0..w-1] = readpixel(x+indx[i],y)   */
 
-GrxColor *_GrFrDrvGenericGetIndexedScanline(GrxFrame *c, int x, int y, int w, int *indx)
+GrxColor *_GrFrDrvGenericGetIndexedScanline(
+    const GrxFrame *c, int x, int y, int w, int *indx)
 {
     GrxColor *pixels;
     GrxColor *p;

@@ -64,10 +64,9 @@ GrxColor grx_context_fast_get_pixel_at(GrxContext *context, gint x, gint y);
     ((*grx_get_current_frame_driver()->drawpixel)(   \
         ((x) + grx_get_current_context()->x_offset), \
         ((y) + grx_get_current_context()->y_offset), ((c))))
-#define grx_fast_get_pixel_at(x, y)                      \
-    ((*grx_get_current_frame_driver()->readpixel)(       \
-        (GrxFrame *)(&grx_get_current_context()->frame), \
-        ((x) + grx_get_current_context()->x_offset),     \
+#define grx_fast_get_pixel_at(x, y)                                                    \
+    ((*grx_get_current_frame_driver()->readpixel)((&grx_get_current_context()->frame), \
+        ((x) + grx_get_current_context()->x_offset),                                   \
         ((y) + grx_get_current_context()->y_offset)))
 #define grx_context_fast_get_pixel_at(c, x, y) \
     ((*(c)->gc_driver->readpixel)(             \

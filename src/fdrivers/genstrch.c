@@ -59,8 +59,8 @@ static INLINE int XLineInit(_GR_lineData *ld, int x, int y, int dx, int dy)
 #define XLineCheckDone(ldp) ((ldp)->cnt <= 0)
 
 /* ---------------------------------------------------- x- and y-dir stretch */
-static void stretch(GrxFrame *dst, int dx, int dy, int dw, int dh, GrxFrame *src,
-    int sx, int sy, int sw, int sh, GrxColor op)
+static void stretch(const GrxFrame *dst, int dx, int dy, int dw, int dh,
+    const GrxFrame *src, int sx, int sy, int sw, int sh, GrxColor op)
 {
     int maxi;
     GRX_ENTER();
@@ -110,8 +110,8 @@ static void stretch(GrxFrame *dst, int dx, int dy, int dw, int dh, GrxFrame *src
 
 /* -----------------------------------------------------general stretch blit */
 
-void _GrFrDrvGenericStretchBlt(GrxFrame *dst, int dx, int dy, int dw, int dh,
-    GrxFrame *src, int sx, int sy, int sw, int sh, GrxColor op)
+void _GrFrDrvGenericStretchBlt(const GrxFrame *dst, int dx, int dy, int dw, int dh,
+    const GrxFrame *src, int sx, int sy, int sw, int sh, GrxColor op)
 {
     GRX_ENTER();
     if (sw > 0 && dw > 0 && sh > 0 && dh > 0) {

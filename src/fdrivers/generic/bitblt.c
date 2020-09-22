@@ -20,8 +20,8 @@
 #include "globals.h"
 #include "libgrx.h"
 
-static void bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int x, int y, int w,
-    int h, GrxColor op)
+static void bitblt(const GrxFrame *dst, int dx, int dy, const GrxFrame *src, int x,
+    int y, int w, int h, GrxColor op)
 {
     GrxFrame csave;
     GrxColor skipc;

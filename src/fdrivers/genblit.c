@@ -20,11 +20,11 @@
 #include "libgrx.h"
 #include "memcopy.h"
 
-void _GrFrDrvGenericBitBlt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int x, int y,
-    int w, int h, GrxColor op)
+void _GrFrDrvGenericBitBlt(const GrxFrame *dst, int dx, int dy, const GrxFrame *src,
+    int x, int y, int w, int h, GrxColor op)
 {
     GrxFrame csave;
-    GrxColor (*readpix)(GrxFrame *, int, int);
+    GrxColor (*readpix)(const GrxFrame *, int, int);
     void (*drawpix)(int, int, GrxColor);
     GrxColor skipc;
     int step;

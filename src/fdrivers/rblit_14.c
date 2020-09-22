@@ -121,8 +121,8 @@ G_GNUC_INTERNAL extern void _GR_shift_scanline(
 #define shift_scanline(dst, src, w, sh) \
     _GR_shift_scanline((GR_int8u **)&(dst), (GR_int8u **)&(src), (w), (sh))
 
-void _GR_rblit_14(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y,
-    gint w, gint h, GrxColor op, _GR_blitFunc bitblt, gboolean invert)
+void _GR_rblit_14(const GrxFrame *dst, gint dx, gint dy, const GrxFrame *src, gint x,
+    gint y, gint w, gint h, GrxColor op, _GR_blitFunc bitblt, gboolean invert)
 {
     GRX_ENTER();
 

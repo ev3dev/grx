@@ -44,7 +44,8 @@ void grx_draw_filled_box_with_offset_pixmap(
     gint xo, gint yo, gint x1, gint y1, gint x2, gint y2, GrxPixmap *p)
 {
     int iwdt, ihgt, xoff, yoff, yy, xx, copyh, copyw;
-    void (*bltfun)(GrxFrame *, int, int, GrxFrame *, int, int, int, int, GrxColor);
+    void (*bltfun)(
+        const GrxFrame *, int, int, const GrxFrame *, int, int, int, int, GrxColor);
     xo = min(xo, min(x1, x2));
     yo = min(yo, min(y1, y2));
     clip_box(CURC, x1, y1, x2, y2);

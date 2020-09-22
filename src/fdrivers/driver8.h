@@ -49,7 +49,7 @@
 #define ASM_386_SEL
 #endif
 
-static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
+static INLINE GrxColor readpixel(const GrxFrame *c, int x, int y)
 {
     GR_int8u *pp;
     GRX_ENTER();

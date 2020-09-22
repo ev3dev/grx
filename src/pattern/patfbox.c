@@ -44,7 +44,8 @@ void grx_draw_filled_box_with_pixmap(int x1, int y1, int x2, int y2, GrxPixmap *
     x1 += CURC->x_offset;
     y1 += CURC->y_offset;
 
-    void (*bltfun)(GrxFrame *, int, int, GrxFrame *, int, int, int, int, GrxColor);
+    void (*bltfun)(
+        const GrxFrame *, int, int, const GrxFrame *, int, int, int, int, GrxColor);
     int pwdt = p->width;
     int phgt = p->height;
     int xoff = x1 % pwdt;

@@ -247,7 +247,7 @@ struct _GrxFrameDriver {
     gint bits_per_pixel; /* bits per pixel */
     gint max_mem_size;   /* maximum frame memory size in bytes */
     gboolean (*init)(GrxVideoMode *md);
-    GrxColor (*readpixel)(GrxFrame *c, gint x, gint y);
+    GrxColor (*readpixel)(const GrxFrame *c, gint x, gint y);
     void (*drawpixel)(gint x, gint y, GrxColor c);
     void (*drawline)(gint x, gint y, gint dx, gint dy, GrxColor c);
     void (*drawhline)(gint x, gint y, gint w, GrxColor c);
@@ -256,13 +256,14 @@ struct _GrxFrameDriver {
     void (*drawbitmap)(gint x, gint y, gint w, gint h, guint8 *bmp, gint pitch,
         gint start, GrxColor fg, GrxColor bg);
     void (*drawpattern)(gint x, gint y, gint w, guint8 patt, GrxColor fg, GrxColor bg);
-    void (*bitblt)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y,
-        gint w, gint h, GrxColor op);
-    void (*bltv2r)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y,
-        gint w, gint h, GrxColor op);
-    void (*bltr2v)(GrxFrame *dst, gint dx, gint dy, GrxFrame *src, gint x, gint y,
-        gint w, gint h, GrxColor op);
-    GrxColor *(*getindexedscanline)(GrxFrame *c, gint x, gint y, gint w, gint *indx);
+    void (*bitblt)(const GrxFrame *dst, gint dx, gint dy, const GrxFrame *src, gint x,
+        gint y, gint w, gint h, GrxColor op);
+    void (*bltv2r)(const GrxFrame *dst, gint dx, gint dy, const GrxFrame *src, gint x,
+        gint y, gint w, gint h, GrxColor op);
+    void (*bltr2v)(const GrxFrame *dst, gint dx, gint dy, const GrxFrame *src, gint x,
+        gint y, gint w, gint h, GrxColor op);
+    GrxColor *(*getindexedscanline)(
+        const GrxFrame *c, gint x, gint y, gint w, gint *indx);
     /* will return an array of pixel values pv[] read from frame   */
     /*    if indx == NULL: pv[i=0..w-1] = readpixel(x+i,y)         */
     /*    else             pv[i=0..w-1] = readpixel(x+indx[i],y)   */

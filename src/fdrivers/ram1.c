@@ -28,7 +28,7 @@
 /* frame offset address calculation */
 #define FOFS(x, y, lo) umuladd32((y), (lo), ((x) >> 3))
 
-static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
+static INLINE GrxColor readpixel(const GrxFrame *c, int x, int y)
 {
     GR_int8u *ptr;
     GRX_ENTER();
@@ -36,7 +36,7 @@ static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
     GRX_RETURN((GrxColor)((*ptr >> (x & 7)) & 1));
 }
 
-static INLINE GrxColor readpixel_inv(GrxFrame *c, int x, int y)
+static INLINE GrxColor readpixel_inv(const GrxFrame *c, int x, int y)
 {
     GR_int8u *ptr;
     GRX_ENTER();
@@ -215,16 +215,16 @@ static void drawvline_inv(int x, int y, int h, GrxColor color)
 #include "generic/line.c"
 #include "generic/pattern.c"
 
-static void bltr2r(GrxFrame *dst, int dx, int dy, GrxFrame *src, int x, int y, int w,
-    int h, GrxColor op)
+static void bltr2r(const GrxFrame *dst, int dx, int dy, const GrxFrame *src, int x,
+    int y, int w, int h, GrxColor op)
 {
     GRX_ENTER();
     _GR_rblit_14(dst, dx, dy, src, x, y, w, h, op, bitblt, FALSE);
     GRX_LEAVE();
 }
 
-static void bltr2r_inv(GrxFrame *dst, int dx, int dy, GrxFrame *src, int x, int y,
-    int w, int h, GrxColor op)
+static void bltr2r_inv(const GrxFrame *dst, int dx, int dy, const GrxFrame *src, int x,
+    int y, int w, int h, GrxColor op)
 {
     GRX_ENTER();
     _GR_rblit_14(dst, dx, dy, src, x, y, w, h, op, bitblt, TRUE);

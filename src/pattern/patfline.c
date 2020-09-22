@@ -28,7 +28,7 @@
 void _GrPatternFilledLine(int x1, int y1, int dx, int dy, GrxPixmap *p)
 {
     union {
-        GrxFrame *c;
+        const GrxFrame *c;
         unsigned char *b;
     } src;
     int sy, ymajor;

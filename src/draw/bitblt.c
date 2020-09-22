@@ -44,7 +44,8 @@ void grx_context_bit_blt(GrxContext *dst, int dx, int dy, GrxContext *src, int x
     int oldx1, oldy1;
     int oldx2, oldy2;
     int dstx2, dsty2;
-    void (*bltfun)(GrxFrame *, int, int, GrxFrame *, int, int, int, int, GrxColor);
+    void (*bltfun)(
+        const GrxFrame *, int, int, const GrxFrame *, int, int, int, int, GrxColor);
     if (dst == NULL)
         dst = CURC;
     if (src == NULL)

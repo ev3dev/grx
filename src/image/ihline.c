@@ -45,7 +45,8 @@ void grx_draw_hline_with_offset_pixmap(
 {
     int x2, widthimg, yimg, ximg, xdest, ydest, cpysize;
     GrxColor optype;
-    void (*bltfun)(GrxFrame *, int, int, GrxFrame *, int, int, int, int, GrxColor);
+    void (*bltfun)(
+        const GrxFrame *, int, int, const GrxFrame *, int, int, int, int, GrxColor);
     x2 = x + width;
     xo = min(xo, min(x, x2));
     yo = min(yo, y);

@@ -46,7 +46,7 @@
 #define repfill24_and repfill_24_and
 #define repfill24_set repfill_24_set
 
-static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
+static INLINE GrxColor readpixel(const GrxFrame *c, int x, int y)
 {
     GrxColor col;
     unsigned char *p;
@@ -137,8 +137,8 @@ done:
 #include "generic/pattern.c"
 #include "generic/vline.c"
 
-static void bitblt(GrxFrame *dst, int dx, int dy, GrxFrame *src, int sx, int sy, int w,
-    int h, GrxColor op)
+static void bitblt(const GrxFrame *dst, int dx, int dy, const GrxFrame *src, int sx,
+    int sy, int w, int h, GrxColor op)
 {
     GRX_ENTER();
     if (grx_color_get_mode(op) == GRX_COLOR_MODE_IMAGE)

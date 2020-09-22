@@ -27,7 +27,7 @@
 /* frame offset address calculation */
 #define FOFS(x, y, lo) (umul32((y), (int)(lo)) + ((x) >> 2))
 
-static INLINE GrxColor readpixel(GrxFrame *c, int x, int y)
+static INLINE GrxColor readpixel(const GrxFrame *c, int x, int y)
 {
     GR_int32u offs;
     GrxColor pix;
