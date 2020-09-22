@@ -43,10 +43,6 @@ typedef struct _GR_filler {
 
 G_GNUC_INTERNAL extern GrFiller _GrSolidFiller;
 G_GNUC_INTERNAL extern GrFiller _GrPatternFiller;
-/*
-G_GNUC_INTERNAL extern GrFiller _GrBitmapFiller;
-G_GNUC_INTERNAL extern GrFiller _GrPixmapFiller;
-*/
 
 G_GNUC_INTERNAL void _GrDrawPolygon(
     int n, GrxPoint *pt, GrFiller *f, GrFillArg c, int doClose);
