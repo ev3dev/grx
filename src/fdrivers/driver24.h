@@ -30,7 +30,7 @@
 
 /* frame offset address calculation */
 #define MULT3(x)       ((x) + (x) + (x))
-#define FOFS(x, y, lo) umuladd32((y), (lo), MULT3(x))
+#define FOFS(x, y, lo) ((y) * (lo) + MULT3(x))
 
 #define peek24(p)     peek_24((p))
 #define poke24_xor    poke_24_xor

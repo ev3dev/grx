@@ -82,14 +82,6 @@
 #endif
 
 /*
- * umuladd32(x,y,z)
- * multiply two unsigned-s for a long result and add an unsigned
- */
-#ifndef umuladd32
-#define umuladd32(X, Y, Z) (umul32((X), (Y)) + (Z))
-#endif
-
-/*
  * [i|u]scale(X,N,D)
  * scale an integer with long intermediate result but without using long
  * arithmetic all the way

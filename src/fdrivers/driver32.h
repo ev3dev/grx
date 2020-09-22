@@ -29,7 +29,7 @@
 #include "mempeek.h"
 
 /* frame offset address calculation */
-#define FOFS(x, y, lo) umuladd32((y), (lo), ((x) << 2))
+#define FOFS(x, y, lo) ((y) * (lo) + ((x) << 2))
 
 #define peek32     peek_l
 #define poke32_xor poke_l_xor

@@ -45,16 +45,16 @@ void _GrFrDrvPackedBitBltR2R(const GrxFrame *dst, int dx, int dy, const GrxFrame
     sskip = src->line_offset - w;
     oper = C_OPER(op);
 
-    dptr = &dst->base_address[umuladd32(dy, dst->line_offset, dx)];
-    sptr = &src->base_address[umuladd32(sy, src->line_offset, sx)];
+    dptr = &dst->base_address[dy * dst->line_offset + dx];
+    sptr = &src->base_address[sy * src->line_offset + sx];
 
     if (OVERLAP(dptr, sptr)) {
         if (oper == C_IMAGE) {
             memmove(dptr, sptr, w);
         }
         else {
-            dptr += umuladd32((h - 1), dst->line_offset, w - 1);
-            sptr += umuladd32((h - 1), src->line_offset, w - 1);
+            dptr += (h - 1) * dst->line_offset + w - 1;
+            sptr += (h - 1) * src->line_offset + w - 1;
             do {
                 ww = w;
                 switch (oper) {

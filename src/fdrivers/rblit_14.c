@@ -30,7 +30,7 @@
 #include "rblit_14.h"
 
 /* frame offset address calculation */
-#define FOFS(x, y, lo) umuladd32((y), (lo), ((x) >> 3))
+#define FOFS(x, y, lo) ((y) * (lo) + ((x) >> 3))
 
 #define maskoper(d, op, s, msk)                              \
     do {                                                     \
