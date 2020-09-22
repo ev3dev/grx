@@ -23,7 +23,7 @@
 
 #include "gfaz.h"
 
-GrxColor *egacolors;
+const GrxColor *egacolors;
 
 /* Internal routines */
 

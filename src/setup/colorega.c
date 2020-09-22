@@ -49,7 +49,7 @@ static struct {
  *
  * Returns: (array fixed-size=16): array of color indexes
  */
-GrxColor *grx_color_get_ega_colors(void)
+const GrxColor *grx_color_get_ega_colors(void)
 {
     static GrxColor egapal[16];
     int i;

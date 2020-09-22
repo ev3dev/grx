@@ -18,7 +18,7 @@
 
 #include <grx-3.0.h>
 
-extern GrxColor *egacolors;
+extern const GrxColor *egacolors;
 
 #define BLACK        egacolors[0]
 #define BLUE         egacolors[1]

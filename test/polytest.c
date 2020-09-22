@@ -21,7 +21,7 @@
 
 #include "test.h"
 
-static GrxColor *EGA;
+static const GrxColor *EGA;
 #define black EGA[0]
 #define red   EGA[12]
 #define blue  EGA[1]

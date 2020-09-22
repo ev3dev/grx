@@ -223,7 +223,7 @@ typedef enum {
     GRX_EGA_COLOR_INDEX_WHITE,
 } GrxEgaColorIndex;
 
-GrxColor *grx_color_get_ega_colors(void);
+const GrxColor *grx_color_get_ega_colors(void);
 
 /**
  * GrxColorCell:
