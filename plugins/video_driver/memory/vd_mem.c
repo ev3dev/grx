@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <glib.h>
 #include <gmodule.h>
 
 #include "arith.h"
@@ -25,40 +26,12 @@
 #include "grdriver.h"
 #include "libgrx.h"
 
-static unsigned char *MemBuf = NULL;
-static unsigned long MemBufSze = 0;
+static guint8 *mem_buf = NULL;
 
-static void FreeMemBuf(void)
+static int mem_setmode(GrxVideoMode *mp, int noclear)
 {
-    if (MemBuf)
-        free(MemBuf);
-    MemBuf = NULL;
-    MemBufSze = 0;
+    return mem_buf != NULL;
 }
-
-static int AllocMemBuf(unsigned long sze)
-{
-    int clear = 1;
-    if (!MemBuf) {
-        MemBuf = calloc(1, (size_t)sze);
-        if (!MemBuf)
-            return 0;
-        MemBufSze = sze;
-        clear = 0;
-    }
-    if (MemBufSze < sze) {
-        MemBuf = realloc(MemBuf, (size_t)sze);
-        if (!MemBuf)
-            return 0;
-        MemBufSze = sze;
-    }
-    if (clear) {
-        memset(MemBuf, 0, sze);
-    }
-    return 1;
-}
-
-static int mem_setmode(GrxVideoMode *mp, int noclear);
 
 static GrxVideoModeExt gr1ext = {
     .mode = GRX_FRAME_MODE_RAM_1BPP,     /* frame driver */
@@ -122,7 +95,7 @@ static GrxVideoModeExt gr24ext = {
 
 static int dummymode(GrxVideoMode *mp, int noclear)
 {
-    FreeMemBuf();
+    g_clear_pointer(&mem_buf, g_free);
     return TRUE;
 }
 
@@ -149,11 +122,6 @@ static GrxVideoMode modes[] = {
     { TRUE, 24, 640, 480, 0x00, 1920, 0, &gr24ext },
     { TRUE, 1, 80, 25, 0x00, 160, 0, &dummyExt }
 };
-
-static int mem_setmode(GrxVideoMode *mp, int noclear)
-{
-    return MemBuf ? TRUE : FALSE;
-}
 
 static GrxVideoMode *mem_selectmode(
     GrxVideoDriver *drv, int w, int h, int bpp, int txt, unsigned int *ep)
@@ -205,23 +173,13 @@ static GrxVideoMode *mem_selectmode(
     modes[index].bpp = bpp;
     modes[index].line_offset = LineOffset;
 
-    if (AllocMemBuf(size)) {
-        modes[index].extended_info->frame = MemBuf;
-        return _grx_select_mode(drv, w, h, bpp, txt, ep);
-    }
-    return FALSE;
+    modes[index].extended_info->frame = mem_buf = g_realloc(mem_buf, size);
+    return _grx_select_mode(drv, w, h, bpp, txt, ep);
 }
-
-/*
-static int detect (void)
-{
-        return TRUE;
-}
-*/
 
 static void mem_reset(void)
 {
-    FreeMemBuf();
+    g_clear_pointer(&mem_buf, g_free);
 }
 
 G_MODULE_EXPORT GrxVideoDriver grx_memory_video_driver = {
