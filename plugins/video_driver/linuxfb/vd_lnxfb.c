@@ -36,7 +36,6 @@
 #include <grx/events.h>
 #include <grx/extents.h>
 
-#include "arith.h"
 #include "globals.h"
 #include "grdriver.h"
 #include "libgrx.h"
@@ -587,7 +586,7 @@ static guint get_dpi(GrxVideoDriver *driver)
 G_MODULE_EXPORT GrxVideoDriver grx_linuxfb_video_driver = {
     .name = "linuxfb",               /* name */
     .modes = modes,                  /* mode table */
-    .n_modes = itemsof(modes),       /* # of modes */
+    .n_modes = G_N_ELEMENTS(modes),  /* # of modes */
     .detect = detect,                /* detection routine */
     .init = init,                    /* initialization routine */
     .reset = reset,                  /* reset routine */

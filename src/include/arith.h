@@ -145,9 +145,6 @@
 #ifndef longsof
 #define longsof(s) ((sizeof(s) + sizeof(long) - 1) / sizeof(long))
 #endif
-#ifndef itemsof
-#define itemsof(arr) (sizeof(arr) / sizeof((arr)[0]))
-#endif
 #ifndef offsetof
 #define offsetof(structype, field) \
     (int)((char *)(&((structype *)(0))->field) - (char *)(0))
