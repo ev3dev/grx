@@ -40,7 +40,7 @@
  * ending coordinates using the specified line options and pixmap.
  */
 void grx_draw_line_with_pixmap(
-    int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
+    int x1, int y1, int x2, int y2, const GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
     GrxPoint points[2];

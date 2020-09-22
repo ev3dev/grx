@@ -34,7 +34,7 @@
  * and line options and pixmap.
  */
 void grx_user_draw_box_with_pixmap(
-    int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
+    int x1, int y1, int x2, int y2, const GrxLineOptions *o, GrxPixmap *p)
 {
     U2SX(x1, CURC);
     U2SX(x2, CURC);

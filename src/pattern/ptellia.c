@@ -44,7 +44,7 @@
  * arc style and line options and pixmap.
  */
 void grx_draw_ellipse_arc_with_pixmap(int xc, int yc, int rx, int ry, int start,
-    int end, GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p)
+    int end, GrxArcStyle style, const GrxLineOptions *o, GrxPixmap *p)
 {
     GArray *points;
     GrFillArg fval;

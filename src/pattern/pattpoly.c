@@ -38,7 +38,7 @@
  * the @points array using the specified line options and pixmap.
  */
 void grx_draw_polyline_with_pixmap(
-    int numpts, const GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
+    int numpts, const GrxPoint *points, const GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
 
@@ -60,7 +60,7 @@ void grx_draw_polyline_with_pixmap(
  * It will be automatically appended to the list if it is missing.
  */
 void grx_draw_polygon_with_pixmap(
-    int numpts, const GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
+    int numpts, const GrxPoint *points, const GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
 
@@ -81,7 +81,7 @@ void grx_draw_polygon_with_pixmap(
  * and line options and pixmap.
  */
 void grx_draw_box_with_pixmap(
-    int x1, int y1, int x2, int y2, GrxLineOptions *o, GrxPixmap *p)
+    int x1, int y1, int x2, int y2, const GrxLineOptions *o, GrxPixmap *p)
 {
     GrFillArg fval;
     GrxPoint points[4];

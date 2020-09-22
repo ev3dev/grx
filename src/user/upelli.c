@@ -38,7 +38,7 @@
  * the X or Y coordinate axis
  */
 void grx_user_draw_ellipse_with_pixmap(
-    int xc, int yc, int rx, int ry, GrxLineOptions *o, GrxPixmap *p)
+    int xc, int yc, int rx, int ry, const GrxLineOptions *o, GrxPixmap *p)
 {
     U2SX(xc, CURC);
     U2SY(yc, CURC);

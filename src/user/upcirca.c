@@ -41,7 +41,7 @@
  * arc style and line options and pixmap.
  */
 void grx_user_draw_circle_arc_with_pixmap(int xc, int yc, int r, int start, int end,
-    GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p)
+    GrxArcStyle style, const GrxLineOptions *o, GrxPixmap *p)
 {
 #ifdef USR_KEEP_SHAPE
     U2SX(xc, CURC);

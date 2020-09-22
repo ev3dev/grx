@@ -18,7 +18,7 @@
 #include "test.h"
 
 static void drawpf(int border, GrxPixmap *pat);
-static void drawp(int border, GrxLineOptions *o, GrxPixmap *p);
+static void drawp(int border, const GrxLineOptions *o, GrxPixmap *p);
 
 TESTFUNC(sbctest)
 {
@@ -171,7 +171,7 @@ static void drawpf(int border, GrxPixmap *pat)
 
 /***/
 
-static void drawp(int border, GrxLineOptions *o, GrxPixmap *p)
+static void drawp(int border, const GrxLineOptions *o, GrxPixmap *p)
 {
     GrxPoint pt1[4] = { { 130, 200 }, { 140, 240 }, { 150, 250 }, { 160, 180 } };
     GrxPoint pt2[4] = { { 230, 200 }, { 235, 240 }, { 246, 250 }, { 258, 180 } };

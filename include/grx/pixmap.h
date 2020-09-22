@@ -88,23 +88,23 @@ void grx_draw_pixmap_tiled(gint x1, gint y1, gint x2, gint y2, GrxPixmap *p);
 
 void grx_draw_pixel_with_offset_pixmap(gint x0, gint y0, gint x, gint y, GrxPixmap *p);
 void grx_draw_line_with_pixmap(
-    gint x1, gint y1, gint x2, gint y2, GrxLineOptions *o, GrxPixmap *p);
+    gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o, GrxPixmap *p);
 void grx_draw_hline_with_offset_pixmap(
     gint x0, gint y0, gint x, gint y, gint width, GrxPixmap *p);
 void grx_draw_box_with_pixmap(
-    gint x1, gint y1, gint x2, gint y2, GrxLineOptions *o, GrxPixmap *p);
+    gint x1, gint y1, gint x2, gint y2, const GrxLineOptions *o, GrxPixmap *p);
 void grx_draw_circle_with_pixmap(
-    gint xc, gint yc, gint r, GrxLineOptions *o, GrxPixmap *p);
+    gint xc, gint yc, gint r, const GrxLineOptions *o, GrxPixmap *p);
 void grx_draw_ellipse_with_pixmap(
-    gint xc, gint yc, gint rx, gint ry, GrxLineOptions *o, GrxPixmap *p);
+    gint xc, gint yc, gint rx, gint ry, const GrxLineOptions *o, GrxPixmap *p);
 void grx_draw_circle_arc_with_pixmap(gint xc, gint yc, gint r, gint start, gint end,
-    GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p);
+    GrxArcStyle style, const GrxLineOptions *o, GrxPixmap *p);
 void grx_draw_ellipse_arc_with_pixmap(gint xc, gint yc, gint rx, gint ry, gint start,
-    gint end, GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p);
+    gint end, GrxArcStyle style, const GrxLineOptions *o, GrxPixmap *p);
 void grx_draw_polyline_with_pixmap(
-    gint n_points, const GrxPoint *points, GrxLineOptions *o, GrxPixmap *p);
+    gint n_points, const GrxPoint *points, const GrxLineOptions *o, GrxPixmap *p);
 void grx_draw_polygon_with_pixmap(
-    gint n_points, const GrxPoint *points, GrxLineOptions *o, GrxPixmap *p);
+    gint n_points, const GrxPoint *points, const GrxLineOptions *o, GrxPixmap *p);
 
 void grx_draw_filled_pixel_with_pixmap(gint x, gint y, GrxPixmap *p);
 void grx_draw_filled_line_with_pixmap(gint x1, gint y1, gint x2, gint y2, GrxPixmap *p);

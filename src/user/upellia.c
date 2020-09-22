@@ -39,7 +39,7 @@
  * arc style and line options and pixmap.
  */
 void grx_user_draw_ellipse_arc_with_pixmap(int xc, int yc, int rx, int ry, int start,
-    int end, GrxArcStyle style, GrxLineOptions *o, GrxPixmap *p)
+    int end, GrxArcStyle style, const GrxLineOptions *o, GrxPixmap *p)
 {
     U2SX(xc, CURC);
     U2SY(yc, CURC);

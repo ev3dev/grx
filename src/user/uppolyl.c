@@ -33,7 +33,7 @@
  * the @points array using the specified line options and  pattern.
  */
 void grx_user_draw_polyline_with_pixmap(
-    gint numpts, const GrxPoint *points, GrxLineOptions *o, GrxPixmap *p)
+    gint numpts, const GrxPoint *points, const GrxLineOptions *o, GrxPixmap *p)
 {
     GrxPoint *tmp = g_newa(GrxPoint, numpts);
 

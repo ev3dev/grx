@@ -36,7 +36,7 @@
  * with the specified radius and line options and pixmap.
  */
 void grx_user_draw_circle_with_pixmap(
-    int xc, int yc, int r, GrxLineOptions *o, GrxPixmap *p)
+    int xc, int yc, int r, const GrxLineOptions *o, GrxPixmap *p)
 {
 #ifdef USR_KEEP_SHAPE
     U2SX(xc, CURC);
