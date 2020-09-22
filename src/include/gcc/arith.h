@@ -22,10 +22,10 @@
  * arithmetic all the way
  */
 
-#define irscale(X, N, D)                                       \
-    ({                                                         \
-        register int _SclVal_ = iscale(((int)(X) << 1), N, D); \
-        (_SclVal_ + (_SclVal_ >> (bitsof(int) - 1)) + 1) >> 1; \
+#define irscale(X, N, D)                                           \
+    ({                                                             \
+        register int _SclVal_ = iscale(((int)(X) << 1), N, D);     \
+        (_SclVal_ + (_SclVal_ >> (sizeof(int) * 8 - 1)) + 1) >> 1; \
     })
 
 /* ================================================================ */

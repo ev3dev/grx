@@ -122,31 +122,6 @@
     }
 
 /*
- * couple of 'sizeof'-like useful macros
- */
-#ifndef bsizeof
-#define bsizeof(s) (sizeof(s) / sizeof(char))
-#endif
-#ifndef wsizeof
-#define wsizeof(s) (sizeof(s) / sizeof(short))
-#endif
-#ifndef lsizeof
-#define lsizeof(s) (sizeof(s) / sizeof(long))
-#endif
-#ifndef bitsof
-#define bitsof(s) (sizeof(s) * 8)
-#endif
-#ifndef bytesof
-#define bytesof(s) ((sizeof(s) + sizeof(char) - 1) / sizeof(char))
-#endif
-#ifndef wordsof
-#define wordsof(s) ((sizeof(s) + sizeof(short) - 1) / sizeof(short))
-#endif
-#ifndef longsof
-#define longsof(s) ((sizeof(s) + sizeof(long) - 1) / sizeof(long))
-#endif
-
-/*
  * [i|u]mul32(x,y)
  * multiply two int-s for a long result
  */
@@ -177,9 +152,9 @@
 #define uscale(X, N, D) (unsigned int)(umul32(X, N) / (unsigned long)(D))
 #endif
 #ifndef irscale
-#define irscale(X, N, D)                                                \
-    ((iscale(((int)(X) << 1), N, D)                                     \
-         + (((int)(X) ^ (int)(N) ^ (int)(D)) >> (bitsof(int) - 1)) + 1) \
+#define irscale(X, N, D)                                                    \
+    ((iscale(((int)(X) << 1), N, D)                                         \
+         + (((int)(X) ^ (int)(N) ^ (int)(D)) >> (sizeof(int) * 8 - 1)) + 1) \
         >> 1)
 #endif
 #ifndef urscale
