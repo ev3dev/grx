@@ -24,7 +24,7 @@ G_DEFINE_ABSTRACT_TYPE(GrxDeviceManager, grx_device_manager, G_TYPE_OBJECT)
 
 enum { SIG_0, SIG_DEVICE_ADDED, SIG_DEVICE_REMOVED, N_SIGNALS };
 
-static uint signals[N_SIGNALS] = { 0 };
+static guint signals[N_SIGNALS] = { 0 };
 
 /* class implementation */
 

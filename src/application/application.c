@@ -194,7 +194,7 @@ static void get_property(
 
 enum { SIG_0, SIG_EVENT, N_SIGNALS };
 
-static uint signals[N_SIGNALS] = { 0 };
+static guint signals[N_SIGNALS] = { 0 };
 
 /**
  * GrxApplication::event:
