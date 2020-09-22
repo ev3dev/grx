@@ -28,7 +28,6 @@
 #include "grdriver.h"
 #include "grx/error.h"
 #include "libgrx.h"
-#include "memfill.h"
 #include "util.h"
 
 GrxVideoMode *_grx_select_mode(
@@ -147,11 +146,11 @@ static int buildcontext(GrxVideoMode *mp, const GrxFrameDriver *fdp, GrxContext 
     g_debug(
         "buildcontext - Mode Frame selector = 0x%x", mp->extended_info->lfb_selector);
     g_debug("frame memory size: %ld", mem_size);
-    sttzero(cxt);
+    memset(cxt, 0, sizeof(*cxt));
 
     if (mp->extended_info->flags & GRX_VIDEO_MODE_FLAG_LINEAR) {
         g_debug("buildcontext - Linear Mode");
-        cxt->gc_base_address = LINP_PTR(mp->extended_info->frame);
+        cxt->gc_base_address = mp->extended_info->frame;
         cxt->gc_selector = mp->extended_info->lfb_selector;
     }
     else if (mp->extended_info->flags & GRX_VIDEO_MODE_FLAG_MEMORY) {
@@ -188,8 +187,8 @@ static int buildcontext(GrxVideoMode *mp, const GrxFrameDriver *fdp, GrxContext 
             g_debug("offset does not match alignment");
             goto done; /* FALSE */
         }
-        cxt->gc_base_address = LINP_PTR(mp->extended_info->frame);
-        cxt->gc_selector = LINP_SEL(mp->extended_info->frame);
+        cxt->gc_base_address = mp->extended_info->frame;
+        cxt->gc_selector = 0;
     }
     cxt->gc_is_on_screen = !(mp->extended_info->flags & GRX_VIDEO_MODE_FLAG_MEMORY);
     /* Why do we default to screen driver ?? */
@@ -384,7 +383,7 @@ int grx_set_mode(GrxGraphicsMode which, GError **error, ...)
                 }
             }
             else {
-                sttzero(&cxt);
+                memset(&cxt, 0, sizeof(cxt));
                 memcpy(&fdr, &DRVINFO->tdriver, sizeof(fdr));
                 cxt.gc_driver = &DRVINFO->tdriver;
             }

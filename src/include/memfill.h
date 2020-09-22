@@ -21,9 +21,6 @@
 #ifndef __MEMFILL_H_INCLUDED__
 #define __MEMFILL_H_INCLUDED__
 
-#ifndef __MEMMODE_H_INCLUDED__
-#include "memmode.h"
-#endif
 #ifndef __MEMPEEK_H_INCLUDED__
 #include "mempeek.h"
 #endif
@@ -615,24 +612,5 @@
 
 #define memfill_24   memfill_24_set
 #define memfill_24_f memfill_24_set_f
-
-/*
- * stuff to clear arrays, structures
- */
-/*
-#ifndef memzero
-#define memzero(p,s)            memfill_l((p),0,((s) >> 2))
-#endif
-*/
-#define memzero(p, s)                                        \
-    do {                                                     \
-        register void *_FP = (void *)(p);                    \
-        register GR_repl _FV = 0;                            \
-        register unsigned _FC = (unsigned)(s);               \
-        DBGPRINTF(DBG_COPYFILL, ("memzero size=%u\n", _FC)); \
-        repfill_b(_FP, _FV, _FC);                            \
-    } while (0)
-
-#define sttzero(p) memzero((p), sizeof(*(p)))
 
 #endif /* whole file */

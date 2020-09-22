@@ -17,10 +17,10 @@
 
 #include <string.h>
 
+#include "arith.h"
 #include "colors.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "memfill.h"
 
 static void (*DACload)(GrxColor c, GrxColor r, GrxColor g, GrxColor b) = NULL;
 
@@ -81,7 +81,7 @@ int _GrResetColors(void)
         }
         firsttime = FALSE;
     }
-    sttzero(CLRINFO);
+    memset(CLRINFO, 0, sizeof(*CLRINFO));
     DACload = DRVINFO->actmode.extended_info->load_color;
     CLRINFO->black = GRX_COLOR_NONE;
     CLRINFO->white = GRX_COLOR_NONE;

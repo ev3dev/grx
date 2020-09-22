@@ -17,7 +17,7 @@
 
 #include "globals.h"
 #include "libgrx.h"
-#include "memmode.h"
+
 #undef GrContextInfo
 
 const struct _GR_contextInfo *const GrContextInfo = &_GrContextInfo;

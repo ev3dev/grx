@@ -27,7 +27,6 @@
 #include "grdriver.h"
 #include "grx/error.h"
 #include "libgrx.h"
-#include "memfill.h"
 #include "util.h"
 
 // List of video driver plugin file names

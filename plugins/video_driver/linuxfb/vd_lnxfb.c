@@ -41,7 +41,6 @@
 #include "grdriver.h"
 #include "libgrx.h"
 #include "libinput_device_manager.h"
-#include "memfill.h"
 
 #define NUM_MODES 80 /* max # of supported modes */
 #define NUM_EXTS  15 /* max # of mode extensions */
@@ -208,7 +207,7 @@ static void reset(void)
 
     g_debug("closing vd_lnxfb");
     if (fbuffer) {
-        memzero(fbuffer, fbvar.yres * fbfix.line_length);
+        memset(fbuffer, 0, fbvar.yres * fbfix.line_length);
         munmap(fbuffer, fbfix.smem_len);
         fbuffer = NULL;
     }
@@ -338,7 +337,7 @@ static int setmode(GrxVideoMode *mp, int noclear)
         in_graphics_mode = TRUE;
     }
     if (mp->extended_info->frame && !noclear)
-        memzero(mp->extended_info->frame, fbvar.yres * fbfix.line_length);
+        memset(mp->extended_info->frame, 0, fbvar.yres * fbfix.line_length);
     return mp->extended_info->frame ? TRUE : FALSE;
 }
 
@@ -347,7 +346,7 @@ static int settext(GrxVideoMode *mp, int noclear)
     struct vt_mode vtm;
 
     if (fbuffer) {
-        memzero(fbuffer, fbvar.yres * fbfix.line_length);
+        memset(fbuffer, 0, fbvar.yres * fbfix.line_length);
         munmap(fbuffer, fbfix.smem_len);
         fbuffer = NULL;
     }
@@ -554,7 +553,7 @@ static int init(const char *options)
             return FALSE;
         }
 
-        memzero(modep, (sizeof(modes) - sizeof(modes[0])));
+        memset(modep, 0, sizeof(modes) - sizeof(modes[0]));
         if ((build_video_mode(&mode, &ext))) {
             add_video_mode(&mode, &ext, &modep, &extp);
         }

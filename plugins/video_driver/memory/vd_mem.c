@@ -16,6 +16,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 #include <gmodule.h>
 
@@ -23,7 +24,6 @@
 #include "globals.h"
 #include "grdriver.h"
 #include "libgrx.h"
-#include "memfill.h"
 
 static unsigned char *MemBuf = NULL;
 static unsigned long MemBufSze = 0;
@@ -52,8 +52,9 @@ static int AllocMemBuf(unsigned long sze)
             return 0;
         MemBufSze = sze;
     }
-    if (clear)
-        memzero(MemBuf, sze);
+    if (clear) {
+        memset(MemBuf, 0, sze);
+    }
     return 1;
 }
 
@@ -128,7 +129,7 @@ static int dummymode(GrxVideoMode *mp, int noclear)
 static GrxVideoModeExt dummyExt = {
     .mode = GRX_FRAME_MODE_TEXT, /* frame driver */
     .drv = NULL,                 /* frame driver override */
-    .frame = MK_FP(0xb800, 0),   /* frame buffer address */
+    .frame = NULL,               /* frame buffer address */
     .cprec = { 0, 0, 0 },        /* color precisions */
     .cpos = { 0, 0, 0 },         /* color component bit positions */
     .flags = 0,                  /* mode flag bits */

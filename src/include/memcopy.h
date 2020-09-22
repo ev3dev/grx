@@ -20,9 +20,6 @@
 #ifndef __MEMCOPY_H_INCLUDED__
 #define __MEMCOPY_H_INCLUDED__
 
-#ifndef __MEMMODE_H_INCLUDED__
-#include "memmode.h"
-#endif
 #ifndef __MEMPEEK_H_INCLUDED__
 #include "mempeek.h"
 #endif

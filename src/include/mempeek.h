@@ -24,10 +24,6 @@
 #ifndef __MEMPEEK_H_INCLUDED__
 #define __MEMPEEK_H_INCLUDED__
 
-#ifndef __MEMMODE_H_INCLUDED__
-#include "memmode.h"
-#endif
-
 #ifdef __GNUC__
 #include "gcc/mempeek.h"
 #endif

@@ -22,7 +22,6 @@
 #include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
-#include "memfill.h"
 #include "util.h"
 
 #define MYCONTEXT 1
@@ -83,7 +82,7 @@ GrxContext *grx_context_new_full(
         }
         flags = MYCONTEXT;
     }
-    sttzero(where);
+    memset(where, 0, sizeof(*where));
     if (!memory) {
         memory = malloc(mem_size);
         if (!memory) {
@@ -145,7 +144,7 @@ GrxContext *grx_context_new_subcontext(
             return NULL;
         flags = MYCONTEXT;
     }
-    sttzero(where);
+    memset(where, 0, sizeof(*where));
     memcpy(&where->frame, &parent->frame, sizeof(where->frame));
     where->ref_count = 1;
     where->gc_memory_flags = flags;
