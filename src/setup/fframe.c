@@ -21,7 +21,7 @@
 /*
  * This is a NULL-terminated table of frame driver descriptor pointers.
  */
-static GrxFrameDriver *_GrFrameDriverTable[] = { &_GrFrameDriverMONO01_LFB,
+static const GrxFrameDriver *_GrFrameDriverTable[] = { &_GrFrameDriverMONO01_LFB,
     &_GrFrameDriverMONO10_LFB, &_GrFrameDriverCFB2_LFB, &_GrFrameDriverSVGA8_LFB,
     &_GrFrameDriverSVGA16_LFB, &_GrFrameDriverSVGA24_LFB, &_GrFrameDriverSVGA32L_LFB,
     &_GrFrameDriverSVGA32H_LFB,
@@ -29,7 +29,7 @@ static GrxFrameDriver *_GrFrameDriverTable[] = { &_GrFrameDriverMONO01_LFB,
     &_GrFrameDriverRAM1, &_GrFrameDriverRAM2, &_GrFrameDriverRAM8, &_GrFrameDriverRAM16,
     &_GrFrameDriverRAM24, &_GrFrameDriverRAM32L, &_GrFrameDriverRAM32H, NULL };
 
-GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode)
+const GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode)
 {
     int ii = 0;
     while (_GrFrameDriverTable[ii] != NULL) {
@@ -40,8 +40,8 @@ GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode)
     return _GrFrameDriverTable[ii];
 }
 
-GrxFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode)
+const GrxFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode)
 {
-    GrxFrameDriver *dp = _GrFindFrameDriver(mode);
+    const GrxFrameDriver *dp = _GrFindFrameDriver(mode);
     return (dp && dp->is_video) ? _GrFindFrameDriver(dp->rmode) : dp;
 }

@@ -58,7 +58,7 @@ void grx_context_unref(GrxContext *ctx);
 GrxContext *grx_context_new_full(
     GrxFrameMode md, gint w, gint h, guint8 *memory, GrxContext *where)
 {
-    GrxFrameDriver *fd = _GrFindRAMframeDriver(md);
+    const GrxFrameDriver *fd = _GrFindRAMframeDriver(md);
     int offset, flags = 0;
     gint mem_size;
 

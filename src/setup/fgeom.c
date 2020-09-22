@@ -69,7 +69,7 @@ gint grx_frame_mode_get_bpp(GrxFrameMode mode)
  */
 gint grx_frame_mode_get_line_offset(GrxFrameMode mode, gint width)
 {
-    GrxFrameDriver *dp = _GrFindRAMframeDriver(mode);
+    const GrxFrameDriver *dp = _GrFindRAMframeDriver(mode);
     if (dp) {
         unsigned int w = (unsigned int)width * dp->bits_per_pixel;
         w = ((w + 7) >> 3);

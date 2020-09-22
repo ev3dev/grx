@@ -217,12 +217,12 @@ typedef enum /*< flags >*/ {
  */
 struct _GrxVideoModeExt {
     /*<private>*/
-    GrxFrameMode mode;       /* frame driver for this video mode */
-    GrxFrameDriver *drv;     /* optional frame driver override */
-    guint8 *frame;           /* frame buffer address */
-    guint8 cprec[3];         /* color component precisions */
-    guint8 cpos[3];          /* color component bit positions */
-    GrxVideoModeFlags flags; /* mode flag bits; see "grdriver.h" */
+    GrxFrameMode mode;         /* frame driver for this video mode */
+    const GrxFrameDriver *drv; /* optional frame driver override */
+    guint8 *frame;             /* frame buffer address */
+    guint8 cprec[3];           /* color component precisions */
+    guint8 cpos[3];            /* color component bit positions */
+    GrxVideoModeFlags flags;   /* mode flag bits; see "grdriver.h" */
     gboolean (*setup)(GrxVideoMode *md, gboolean no_clear);
     gboolean (*set_virtual_size)(
         GrxVideoMode *md, guint w, guint h, GrxVideoMode *result);

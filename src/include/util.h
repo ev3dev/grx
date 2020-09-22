@@ -26,8 +26,8 @@
 /*
  * internal utility functions
  */
-G_GNUC_INTERNAL GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode);
-G_GNUC_INTERNAL GrxFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode);
+G_GNUC_INTERNAL const GrxFrameDriver *_GrFindFrameDriver(GrxFrameMode mode);
+G_GNUC_INTERNAL const GrxFrameDriver *_GrFindRAMframeDriver(GrxFrameMode mode);
 
 G_GNUC_INTERNAL void _GrCloseVideoDriver(void);
 G_GNUC_INTERNAL void _GrDummyFunction(void);

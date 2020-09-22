@@ -81,7 +81,7 @@ GrxVideoMode *_grx_select_mode(
 
 static int buildframedriver(GrxVideoMode *mp, GrxFrameDriver *drv)
 {
-    GrxFrameDriver *d1, *d2;
+    const GrxFrameDriver *d1, *d2;
     int res = TRUE;
     GRX_ENTER();
     res = TRUE;
@@ -137,7 +137,7 @@ done:
     GRX_RETURN(res);
 }
 
-static int buildcontext(GrxVideoMode *mp, GrxFrameDriver *fdp, GrxContext *cxt)
+static int buildcontext(GrxVideoMode *mp, const GrxFrameDriver *fdp, GrxContext *cxt)
 {
     long mem_size;
     int res;

@@ -48,12 +48,12 @@
  */
 struct _GrxFrame {
     /*<private>*/
-    guint8 *base_address;   /* base address of frame memory */
-    gshort selector;        /* frame memory segment selector */
-    gboolean is_on_screen;  /* is it in video memory ? */
-    guint8 memory_flags;    /* memory allocation flags */
-    gint line_offset;       /* offset to next scan line in bytes */
-    GrxFrameDriver *driver; /* frame access functions */
+    guint8 *base_address;         /* base address of frame memory */
+    gshort selector;              /* frame memory segment selector */
+    gboolean is_on_screen;        /* is it in video memory ? */
+    guint8 memory_flags;          /* memory allocation flags */
+    gint line_offset;             /* offset to next scan line in bytes */
+    const GrxFrameDriver *driver; /* frame access functions */
 };
 
 /**
