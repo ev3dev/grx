@@ -214,13 +214,13 @@ GrxColor grx_color_get(unsigned char r, unsigned char g, unsigned char b)
                 if (!CLRINFO->ctable[i].writable) {
                     GR_int32u err = 0;
                     GR_int16u colerr;
-                    colerr = iabs(r - CLRINFO->ctable[i].r);
+                    colerr = ABS(r - CLRINFO->ctable[i].r);
                     colerr = colerr * colerr;
                     err += colerr;
-                    colerr = iabs(g - CLRINFO->ctable[i].g);
+                    colerr = ABS(g - CLRINFO->ctable[i].g);
                     colerr = colerr * colerr;
                     err += colerr;
-                    colerr = iabs(b - CLRINFO->ctable[i].b);
+                    colerr = ABS(b - CLRINFO->ctable[i].b);
                     colerr = colerr * colerr;
                     err += colerr;
                     if (err < minerr) {

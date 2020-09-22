@@ -21,8 +21,6 @@
 #ifndef __ARITH_H_INCLUDED__
 #define __ARITH_H_INCLUDED__
 
-#include <stdlib.h>
-
 #ifdef __GNUC__
 #include "gcc/arith.h"
 #endif
@@ -40,12 +38,6 @@
 #ifndef max
 #define max(x, y) (((x) > (y)) ? (x) : (y))
 #endif
-#ifndef __ABS
-#define __ABS(x) (((x) < (0)) ? -(x) : (x))
-#endif
-#ifndef abs
-#define abs(x) __ABS(x)
-#endif
 #ifndef scale
 #define scale(x, n, d) (((x) * (n)) / (d))
 #endif
@@ -54,9 +46,6 @@
 #endif
 #ifndef imax
 #define imax(x, y) max((int)(x), (int)(y))
-#endif
-#ifndef iabs
-#define iabs(x) abs((int)(x))
 #endif
 #ifndef umin
 #define umin(x, y) min((unsigned int)(x), (unsigned int)(y))
@@ -69,9 +58,6 @@
 #endif
 #ifndef lmax
 #define lmax(x, y) max((long)(x), (long)(y))
-#endif
-#ifndef labs
-#define labs(x) __ABS((long)(x))
 #endif
 #ifndef ulmin
 #define ulmin(x, y) min((unsigned long)(x), (unsigned long)(y))

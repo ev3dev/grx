@@ -18,7 +18,6 @@
 
 #include <grx/draw.h>
 
-#include "arith.h"
 #include "globals.h"
 #include "libgrx.h"
 #include "usercord.h"
@@ -47,7 +46,7 @@ void grx_user_draw_framed_box(
     U2SY(y2, CURC);
     SCALE(w1, wdt, CURC->x_max, CURC->user_width);
     SCALE(w2, wdt, CURC->y_max, CURC->user_height);
-    wdt = (iabs((int)w1) + iabs((int)w2)) >> 1;
+    wdt = (ABS(w1) + ABS(w2)) >> 1;
     if (wdt == 0)
         grx_draw_filled_box(x1, y1, x2, y2, c->background);
     else

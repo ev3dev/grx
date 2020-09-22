@@ -51,9 +51,9 @@ static void intersect(GrxPoint *l1s, GrxPoint *l1e, GrxPoint *l2s, GrxPoint *l2e
             /* but do this with integer arithmetic */
             /* and do rounding instead of truncation */
             long det_t2 = imul32(dx1, (y21 - y11)) - imul32(dy1, (x21 - x11));
-            long ldet = labs(det);
+            long ldet = ABS(det);
             /* make sure we're still near old start point of line #2 */
-            if (labs(det_t2) < (((ldet << 1) + ldet) >> 1)) {
+            if (ABS(det_t2) < (((ldet << 1) + ldet) >> 1)) {
                 int xdif2 = (int)(((long)(dx2 << 1) * det_t2) / det);
                 int ydif2 = (int)(((long)(dy2 << 1) * det_t2) / det);
                 if (xdif2 > 0)
@@ -100,7 +100,7 @@ static void intersect(GrxPoint *l1s, GrxPoint *l1e, GrxPoint *l2s, GrxPoint *l2e
                 int y = yc + yr[i];
                 long e1 = imul32(dx1, (y - y11)) - imul32(dy1, (x - x11));
                 long e2 = imul32(dx2, (y - y21)) - imul32(dy2, (x - x21));
-                err = labs(e1) + labs(e2);
+                err = ABS(e1) + ABS(e2);
                 if (i == 0 || err < minerr) {
                     minerr = err;
                     xb = xr[i];
@@ -145,8 +145,8 @@ static void genrect(GrxPoint p1, GrxPoint p2, int w, GrxPoint rect[4])
     }
     else {
         unsigned long minerr, error = ~0UL, w2 = imul32(w, w);
-        int mindelta = umin(iabs(dx), iabs(dy));
-        int maxdelta = umax(iabs(dx), iabs(dy));
+        int mindelta = umin(ABS(dx), ABS(dy));
+        int maxdelta = umax(ABS(dx), ABS(dy));
         wx1 = w / 2;
         if (wx1 <= 0)
             wx1 = 1;
@@ -159,10 +159,11 @@ static void genrect(GrxPoint p1, GrxPoint p2, int w, GrxPoint rect[4])
             wy1 = urscale(wx1, mindelta, maxdelta);
             minerr = error;
             error = imul32(wx1, wx1) + imul32(wy1, wy1) - w2;
-            error = labs(error);
+            error = ABS((int)error);
         } while (error <= minerr);
-        if (iabs(dx) > iabs(dy))
+        if (ABS(dx) > ABS(dy)) {
             iswap(wx, wy);
+        }
     }
     if (dx < 0)
         wy = (-wy);
@@ -445,8 +446,8 @@ void _GrDrawCustomPolygon(int n, const GrxPoint *pt, const GrxLineOptions *lp,
         x2 = p2.x;
         y2 = p2.y;
         clipped = 0;
-        xmajor = iabs(x1 - x2);
-        length = iabs(y1 - y2);
+        xmajor = ABS(x1 - x2);
+        length = ABS(y1 - y2);
         if (xmajor > length) {
             length = xmajor;
             xmajor = 1;
@@ -455,7 +456,7 @@ void _GrDrawCustomPolygon(int n, const GrxPoint *pt, const GrxLineOptions *lp,
             xmajor = 0;
         clip_line_((&preclip), x1, y1, x2, y2, goto outside, clipped = p.plength);
         if (clipped) {
-            clipped = xmajor ? iabs(p1.x - x1) : iabs(p1.y - y1);
+            clipped = xmajor ? ABS(p1.x - x1) : ABS(p1.y - y1);
             p.ppos += clipped;
             length -= clipped;
         }

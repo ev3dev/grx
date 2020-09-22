@@ -102,7 +102,7 @@ GArray *grx_generate_ellipse_arc(int cx, int cy, int rx, int ry, int start, int 
 {
     GArray *points;
     GrxPoint pt;
-    int npts = urscale(iabs(rx) + iabs(ry), 314, SEGLEN * 100);
+    int npts = urscale(ABS(rx) + ABS(ry), 314, SEGLEN * 100);
     int step, closed;
 
     points = g_array_new(FALSE, FALSE, sizeof(GrxPoint));

@@ -17,7 +17,6 @@
 
 #include <grx/draw.h>
 
-#include "arith.h"
 #include "clipping.h"
 #include "globals.h"
 #include "libgrx.h"
@@ -91,7 +90,7 @@ void _GrScanEllipse(
         }
 
         for (row = y1; row <= y2; row++) {
-            col = iabs(yc - row);
+            col = ABS(yc - row);
 
             if (!filled && (col < ry)) {
                 x1 = xc - scans[col];
