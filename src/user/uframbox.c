@@ -37,7 +37,7 @@
  * extends outside of the box using the given @width.
  */
 void grx_user_draw_framed_box(
-    int x1, int y1, int x2, int y2, int wdt, GrxFramedBoxColors *c)
+    int x1, int y1, int x2, int y2, int wdt, const GrxFramedBoxColors *c)
 {
     int w1, w2;
 

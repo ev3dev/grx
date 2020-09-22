@@ -69,7 +69,7 @@ void grx_user_draw_polygon(gint n_points, const GrxPoint *points, GrxColor c);
 
 void grx_user_draw_filled_box(gint x1, gint y1, gint x2, gint y2, GrxColor c);
 void grx_user_draw_framed_box(
-    gint x1, gint y1, gint x2, gint y2, gint width, GrxFramedBoxColors *c);
+    gint x1, gint y1, gint x2, gint y2, gint width, const GrxFramedBoxColors *c);
 void grx_user_draw_filled_circle(gint xc, gint yc, gint r, GrxColor c);
 void grx_user_draw_filled_ellipse(gint xc, gint yc, gint rx, gint ry, GrxColor c);
 void grx_user_draw_filled_circle_arc(
