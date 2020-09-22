@@ -42,17 +42,13 @@ G_DEFINE_BOXED_TYPE(GrxPixmap, grx_pixmap, grx_pixmap_copy, grx_pixmap_free);
  */
 static int _GrBestPixmapWidth(int wdt, int hgt)
 {
-    long total = grx_screen_get_context_size(wdt, hgt);
+    int total = grx_screen_get_context_size(wdt, hgt);
     int linelen = grx_screen_get_line_offset(wdt);
     int factor = 1;
     int test;
 
     if (total == 0L)
         return 0;
-#ifdef _MAXMEMPLANESIZE
-    if (total > _MAXMEMPLANESIZE)
-        return 0;
-#endif
     if ((test = (int)(BEST_MAX_CONTEXT / total)) > factor)
         factor = test;
     if ((test = (BEST_MAX_LINE / linelen)) < factor)

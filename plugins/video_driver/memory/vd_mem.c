@@ -126,7 +126,7 @@ static GrxVideoMode *mem_selectmode(
     GrxVideoDriver *drv, int w, int h, int bpp, int txt, unsigned int *ep)
 {
     int index;
-    unsigned long size;
+    gsize size;
     int LineOffset;
 
     if (txt)
@@ -162,9 +162,6 @@ static GrxVideoMode *mem_selectmode(
 
     LineOffset = (LineOffset + 7) & (~7); /* align rows to 64bit boundary */
     size *= LineOffset;
-
-    if (((size_t)size) != size)
-        return NULL;
 
     /* why ???       */
     modes[index].width = /* w<320 ? 320 : */ w;
