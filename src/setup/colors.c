@@ -43,7 +43,7 @@ static void setbits(unsigned char *prec, unsigned char *pos)
         CLRINFO->mask[i] = (tmp = 0xff ^ (0xff >> *prec));
         CLRINFO->round[i] = (tmp >> 1) & ~tmp;
         CLRINFO->shift[i] = (tmp = CLRINFO->pos[i] - 7);
-        CLRINFO->norm = imax(CLRINFO->norm, (-tmp));
+        CLRINFO->norm = MAX((int)CLRINFO->norm, -tmp);
     }
     CLRINFO->shift[0] += CLRINFO->norm;
     CLRINFO->shift[1] += CLRINFO->norm;

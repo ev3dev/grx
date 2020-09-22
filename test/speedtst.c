@@ -90,13 +90,6 @@ static GrxTextOptions *text_opt;
 #define DBL(x) ((double)(x))
 #define INT(x) ((int)(x))
 
-#ifndef min
-#define min(a, b) ((a) < (b) ? (a) : (b))
-#endif
-#ifndef max
-#define max(a, b) ((a) > (b) ? (a) : (b))
-#endif
-
 typedef struct XYpairs {
     int x[PAIRS];
     int y[PAIRS];
@@ -425,10 +418,10 @@ static void drawblocktest(gvmode *gp, XY_PAIRS *pairs)
         return;
 
     for (j = 0; j < PAIRS; j += 2) {
-        xb[j] = min(pairs->x[j], pairs->x[j + 1]);
-        xb[j + 1] = max(pairs->x[j], pairs->x[j + 1]);
-        yb[j] = min(pairs->y[j], pairs->y[j + 1]);
-        yb[j + 1] = max(pairs->y[j], pairs->y[j + 1]);
+        xb[j] = MIN(pairs->x[j], pairs->x[j + 1]);
+        xb[j + 1] = MAX(pairs->x[j], pairs->x[j + 1]);
+        yb[j] = MIN(pairs->y[j], pairs->y[j + 1]);
+        yb[j + 1] = MAX(pairs->y[j], pairs->y[j + 1]);
     }
 
     if (!MEASURED(gp)) {
@@ -526,14 +519,14 @@ static void blittest(gvmode *gp, XY_PAIRS *pairs, int ram)
 
     for (j = 0; j < PAIRS; j += 3) {
         int wh;
-        xb[j] = max(pairs->x[j], pairs->x[j + 1]);
-        xb[j + 1] = min(pairs->x[j], pairs->x[j + 1]);
+        xb[j] = MAX(pairs->x[j], pairs->x[j + 1]);
+        xb[j + 1] = MIN(pairs->x[j], pairs->x[j + 1]);
         xb[j + 2] = pairs->x[j + 2];
         wh = xb[j] - xb[j + 1];
         if (xb[j + 2] + wh >= gp->w)
             xb[j + 2] = gp->w - wh - 1;
-        yb[j] = max(pairs->y[j], pairs->y[j + 1]);
-        yb[j + 1] = min(pairs->y[j], pairs->y[j + 1]);
+        yb[j] = MAX(pairs->y[j], pairs->y[j + 1]);
+        yb[j + 1] = MIN(pairs->y[j], pairs->y[j + 1]);
         yb[j + 2] = pairs->y[j + 2];
         wh = yb[j] - yb[j + 1];
         if (yb[j + 2] + wh >= gp->h)

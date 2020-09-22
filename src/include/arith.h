@@ -30,43 +30,6 @@
 #endif
 
 /*
- * old standbys
- */
-#ifndef min
-#define min(x, y) (((x) < (y)) ? (x) : (y))
-#endif
-#ifndef max
-#define max(x, y) (((x) > (y)) ? (x) : (y))
-#endif
-#ifndef scale
-#define scale(x, n, d) (((x) * (n)) / (d))
-#endif
-#ifndef imin
-#define imin(x, y) min((int)(x), (int)(y))
-#endif
-#ifndef imax
-#define imax(x, y) max((int)(x), (int)(y))
-#endif
-#ifndef umin
-#define umin(x, y) min((unsigned int)(x), (unsigned int)(y))
-#endif
-#ifndef umax
-#define umax(x, y) max((unsigned int)(x), (unsigned int)(y))
-#endif
-#ifndef lmin
-#define lmin(x, y) min((long)(x), (long)(y))
-#endif
-#ifndef lmax
-#define lmax(x, y) max((long)(x), (long)(y))
-#endif
-#ifndef ulmin
-#define ulmin(x, y) min((unsigned long)(x), (unsigned long)(y))
-#endif
-#ifndef ulmax
-#define ulmax(x, y) max((unsigned long)(x), (unsigned long)(y))
-#endif
-
-/*
  * swap and sort stuff
  */
 #define iswap(x, y)              \

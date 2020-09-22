@@ -114,14 +114,14 @@ GArray *grx_generate_ellipse_arc(int cx, int cy, int rx, int ry, int start, int 
         end += PERIOD;
     }
     else {
-        if (start > end) {
+        while (start > end) {
             end += PERIOD;
         }
         closed = FALSE;
     }
     npts = urscale(npts, end - start, PERIOD);
-    npts = umax(npts, 16);
-    npts = umin(npts, MAXPTS);
+    npts = MAX(npts, 16);
+    npts = MIN(npts, MAXPTS);
     if (closed) {
         for (step = 1; (PERIOD / step) > npts; step <<= 1)
             ;
@@ -131,7 +131,7 @@ GArray *grx_generate_ellipse_arc(int cx, int cy, int rx, int ry, int start, int 
     else {
         int start2 = end - start - 1;
 
-        step = umax(1, (end - start) / npts);
+        step = MAX(1, (end - start) / npts);
         while (((start2 + step) / step) >= MAXPTS) {
             step++;
         }

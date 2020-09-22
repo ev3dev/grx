@@ -43,8 +43,8 @@ void grx_draw_pixel_with_offset_pixmap(gint xo, gint yo, gint x, gint y, GrxPixm
     gint xp, yp;
     GrxColor col;
 
-    xo = min(xo, x);
-    yo = min(yo, y);
+    xo = MIN(xo, x);
+    yo = MIN(yo, y);
     clip_dot(CURC, x, y);
     xp = (x - xo) % p->width;
     yp = (y - yo) % p->height;

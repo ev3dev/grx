@@ -16,7 +16,6 @@
 
 #include <string.h>
 
-#include "arith.h"
 #include "globals.h"
 #include "grdriver.h"
 #include "libgrx.h"
@@ -84,7 +83,7 @@ static void stretch(const GrxFrame *dst, int dx, int dy, int dw, int dh,
         do {
             /* we need to check for upper bound here         */
             /* in rare cases the last element could overflow */
-            xsrc[lne.x] = min(lne.y, maxi);
+            xsrc[lne.x] = MIN(lne.y, maxi);
             DBGPRINTF(DBG_DRIVER, ("xsrc[%d] = %d\n", lne.x, xsrc[lne.x]));
             XLineStep(&lne);
         } while (!XLineCheckDone(&lne));
@@ -96,7 +95,7 @@ static void stretch(const GrxFrame *dst, int dx, int dy, int dw, int dh,
         memcpy(&csave, &CURC->frame, sizeof(csave));
         memcpy(&CURC->frame, dst, sizeof(CURC->frame));
         do {
-            int y = min(lne.y, maxi);
+            int y = MIN(lne.y, maxi);
             if (!pixels || y != rd_y)
                 pixels = getscl(src, sx, (rd_y = y), dw, xsrc);
             if (pixels)

@@ -280,16 +280,16 @@ static int block(GrxContext *c, int x1, int y1, int x2, int y2)
             return 0;
         }
         isort(cx1, cx2);
-        mx1 = imin(cx1, mx1);
-        mx2 = imax(mx2, cx2);
+        mx1 = MIN(cx1, mx1);
+        mx2 = MAX(mx2, cx2);
         isort(cy1, cy2);
-        my1 = imin(cy1, my1);
-        my2 = imax(my2, cy2);
+        my1 = MIN(cy1, my1);
+        my2 = MAX(my2, cy2);
     }
-    x1 = imax(x1, mx1);
-    y1 = imax(y1, my1);
-    x2 = imin(x2, mx2);
-    y2 = imin(y2, my2);
+    x1 = MAX(x1, mx1);
+    y1 = MAX(y1, my1);
+    x2 = MIN(x2, mx2);
+    y2 = MIN(y2, my2);
     if ((x1 <= x2) && (y1 <= y2)) {
         MOUINFO->blockflag = oldblock | ERASED;
         MOUINFO->docheck = FALSE;

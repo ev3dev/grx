@@ -46,8 +46,8 @@ void grx_draw_filled_box_with_offset_pixmap(
     int iwdt, ihgt, xoff, yoff, yy, xx, copyh, copyw;
     void (*bltfun)(
         const GrxFrame *, int, int, const GrxFrame *, int, int, int, int, GrxColor);
-    xo = min(xo, min(x1, x2));
-    yo = min(yo, min(y1, y2));
+    xo = MIN(xo, MIN(x1, x2));
+    yo = MIN(yo, MIN(y1, y2));
     clip_box(CURC, x1, y1, x2, y2);
     iwdt = p->width;
     ihgt = p->height;
@@ -68,10 +68,10 @@ void grx_draw_filled_box_with_offset_pixmap(
     y2++;
     do {
         xx = x1;
-        copyh = min(y2 - yy, ihgt - yoff);
+        copyh = MIN(y2 - yy, ihgt - yoff);
         xoff = (x1 - xo) % iwdt;
         do {
-            copyw = min(x2 - xx, iwdt - xoff);
+            copyw = MIN(x2 - xx, iwdt - xoff);
             (*bltfun)(&CURC->frame, xx + CURC->x_offset, yy + CURC->y_offset,
                 &p->source, xoff, yoff, copyw, copyh, p->mode);
             xx += iwdt - xoff;

@@ -58,12 +58,12 @@ void grx_draw_filled_box_with_pixmap(int x1, int y1, int x2, int y2, GrxPixmap *
         bltfun = CURC->gc_driver->bitblt;
     }
     while (height > 0) {
-        int fillh = min(height, (phgt - yoff));
+        int fillh = MIN(height, phgt - yoff);
         int linewdt = width;
         int xpos = x1;
         int xcuroff = xoff;
         while (linewdt > 0) {
-            int fillw = min(linewdt, (pwdt - xcuroff));
+            int fillw = MIN(linewdt, pwdt - xcuroff);
             (*bltfun)(&CURC->frame, xpos, ypos, &p->source, xcuroff, yoff, fillw, fillh,
                 p->mode);
             linewdt -= fillw;

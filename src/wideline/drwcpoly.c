@@ -145,8 +145,8 @@ static void genrect(GrxPoint p1, GrxPoint p2, int w, GrxPoint rect[4])
     }
     else {
         unsigned long minerr, error = ~0UL, w2 = imul32(w, w);
-        int mindelta = umin(ABS(dx), ABS(dy));
-        int maxdelta = umax(ABS(dx), ABS(dy));
+        int mindelta = MIN(ABS(dx), ABS(dy));
+        int maxdelta = MAX(ABS(dx), ABS(dy));
         wx1 = w / 2;
         if (wx1 <= 0)
             wx1 = 1;
@@ -385,10 +385,10 @@ void _GrDrawCustomPolygon(int n, const GrxPoint *pt, const GrxLineOptions *lp,
     /* set up working pattern */
     p.f = f;
     p.c = c;
-    p.w = imax((lp->width - 1), 0);
+    p.w = MAX(lp->width - 1, 0);
     p.ppos = 0;
     p.patt = &lp->dash_pattern0;
-    p.psegs = imin(imax(lp->n_dash_patterns, 0), 8);
+    p.psegs = MIN(MAX(lp->n_dash_patterns, 0), 8);
     p.plength = 0;
     for (i = 0; i < p.psegs; i++) {
         /*          if(!p.patt[i]) { p.plength = 0; break; } */

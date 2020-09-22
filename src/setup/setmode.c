@@ -357,8 +357,8 @@ int grx_set_mode(GrxGraphicsMode which, GError **error, ...)
             if ((!t) && ((vw > vmd.width) || (vh > vmd.height))
                 && (vmd.extended_info->set_virtual_size != NULL)
                 && (vmd.extended_info->scroll != NULL)) {
-                int ww = vmd.width = imax(vw, vmd.width);
-                int hh = vmd.height = imax(vh, vmd.height);
+                int ww = vmd.width = MAX(vw, vmd.width);
+                int hh = vmd.height = MAX(vh, vmd.height);
                 if (!(*vmd.extended_info->set_virtual_size)(&vmd, ww, hh, &vmd)
                     || !buildcontext(&vmd, &fdr, &cxt)) {
                     memcpy(&vmd, mdp, sizeof(vmd));

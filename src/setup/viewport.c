@@ -39,8 +39,8 @@ int grx_set_viewport(int x, int y)
         return FALSE;
     if (!DRVINFO->actmode.extended_info->scroll)
         return FALSE;
-    x = imax(0, imin((grx_get_virtual_width() - grx_get_screen_width()), x));
-    y = imax(0, imin((grx_get_virtual_height() - grx_get_screen_height()), y));
+    x = MAX(0, MIN(grx_get_virtual_width() - grx_get_screen_width(), x));
+    y = MAX(0, MIN(grx_get_virtual_height() - grx_get_screen_height(), y));
     if ((x == grx_get_viewport_x()) && (y == grx_get_viewport_y()))
         return TRUE;
     if ((*DRVINFO->actmode.extended_info->scroll)(&DRVINFO->actmode, x, y, res)) {

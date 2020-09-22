@@ -93,8 +93,8 @@ void _GrScanConvexPoly(int n, const GrxPoint *pt, GrFiller *f, GrFillArg c)
         xmin = L.e.x;
         xmax = L.e.x;
         if (ypos == L.e.ylast) {
-            xmin = imin(xmin, L.e.xlast);
-            xmax = imax(xmax, L.e.xlast);
+            xmin = MIN(xmin, L.e.xlast);
+            xmax = MAX(xmax, L.e.xlast);
             if (ypos < ymax)
                 for (;;) {
                     next_edge(L, n, pt);
@@ -102,25 +102,25 @@ void _GrScanConvexPoly(int n, const GrxPoint *pt, GrFiller *f, GrFillArg c)
                         setup_edge(&L.e);
                         break;
                     }
-                    xmin = imin(xmin, L.e.xlast);
-                    xmax = imax(xmax, L.e.xlast);
+                    xmin = MIN(xmin, L.e.xlast);
+                    xmax = MAX(xmax, L.e.xlast);
                 }
         }
         if (ypos != ymax) {
             if (L.e.xmajor) {
                 xstep_edge(&L.e);
-                xmin = imin(xmin, (L.e.x - L.e.xstep));
-                xmax = imax(xmax, (L.e.x - L.e.xstep));
+                xmin = MIN(xmin, L.e.x - L.e.xstep);
+                xmax = MAX(xmax, L.e.x - L.e.xstep);
             }
             else {
                 ystep_edge(&L.e);
             }
         }
-        xmin = imin(xmin, R.e.x);
-        xmax = imax(xmax, R.e.x);
+        xmin = MIN(xmin, R.e.x);
+        xmax = MAX(xmax, R.e.x);
         if (ypos == R.e.ylast) {
-            xmin = imin(xmin, R.e.xlast);
-            xmax = imax(xmax, R.e.xlast);
+            xmin = MIN(xmin, R.e.xlast);
+            xmax = MAX(xmax, R.e.xlast);
             if (ypos < ymax)
                 for (;;) {
                     next_edge(R, n, pt);
@@ -128,15 +128,15 @@ void _GrScanConvexPoly(int n, const GrxPoint *pt, GrFiller *f, GrFillArg c)
                         setup_edge(&R.e);
                         break;
                     }
-                    xmin = imin(xmin, R.e.xlast);
-                    xmax = imax(xmax, R.e.xlast);
+                    xmin = MIN(xmin, R.e.xlast);
+                    xmax = MAX(xmax, R.e.xlast);
                 }
         }
         if (ypos != ymax) {
             if (R.e.xmajor) {
                 xstep_edge(&R.e);
-                xmin = imin(xmin, (R.e.x - R.e.xstep));
-                xmax = imax(xmax, (R.e.x - R.e.xstep));
+                xmin = MIN(xmin, R.e.x - R.e.xstep);
+                xmax = MAX(xmax, R.e.x - R.e.xstep);
             }
             else {
                 ystep_edge(&R.e);
