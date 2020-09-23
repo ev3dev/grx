@@ -105,8 +105,6 @@ GArray *grx_generate_ellipse_arc(int cx, int cy, int rx, int ry, int start, int 
     int npts = urscale(ABS(rx) + ABS(ry), 314, SEGLEN * 100);
     int step, closed;
 
-    points = g_array_new(FALSE, FALSE, sizeof(GrxPoint));
-
     start = irscale(start, PERIOD, GRX_MAX_ANGLE_VALUE) & (PERIOD - 1);
     end = irscale(end, PERIOD, GRX_MAX_ANGLE_VALUE) & (PERIOD - 1);
     if (start == end) {
@@ -122,6 +120,9 @@ GArray *grx_generate_ellipse_arc(int cx, int cy, int rx, int ry, int start, int 
     npts = urscale(npts, end - start, PERIOD);
     npts = MAX(npts, 16);
     npts = MIN(npts, MAXPTS);
+
+    points = g_array_sized_new(FALSE, FALSE, sizeof(GrxPoint), npts);
+
     if (closed) {
         for (step = 1; (PERIOD / step) > npts; step <<= 1)
             ;
